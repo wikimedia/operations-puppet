@@ -642,11 +642,11 @@ class misc::statistics::rsyncd($hosts_allow = undef) {
 
 
 
-# Class: misc::statistics::rsync::jobs
+# Class: misc::statistics::rsync::jobs::webrequest
 #
 # Sets up daily cron jobs to rsync log files from remote
 # logging hosts to a local destination for further processing.
-class misc::statistics::rsync::jobs {
+class misc::statistics::rsync::jobs::webrequest {
 
 	# Make sure destination directories exist.
 	# Too bad I can't do this with recurse => true.
@@ -657,7 +657,6 @@ class misc::statistics::rsync::jobs {
 		"/a/squid/archive",
 		"/a/aft",
 		"/a/aft/archive",
-		"/a/eventlogging",
 		"/a/public-datasets",
 	]:
 		ensure  => directory,
@@ -707,6 +706,20 @@ class misc::statistics::rsync::jobs {
 		source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz",
 		destination => "/a/squid/archive/mobile",
 	}
+}
+
+# Class: misc::statistics::rsync::jobs::eventlogging
+#
+
+# Sets up daily cron jobs to rsync log files from remote
+# logging hosts to a local destination for further processing.
+class misc::statistics::rsync::jobs::eventlogging {
+	file { '/a/eventlogging':
+		ensure  => directory,
+		owner   => "stats",
+		group   => "wikidev",
+		mode    => 0775,
+	}
 
 	# eventlogging logs from vanadium
 	misc::statistics::rsync_job { "eventlogging":
@@ -714,7 +727,6 @@ class misc::statistics::rsync::jobs {
 		destination => "/a/eventlogging/archive",
 	}
 }
-
 
 # Define: misc::statistics::rsync_job
 #
