@@ -756,8 +756,6 @@ node /^db10(1[45]|2[3]|3[367]|4[45])\.eqiad\.wmnet/ {
 }
 
 node "dobson.wikimedia.org" {
-    interface::ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
-    interface::ip { "dns::auth-server::ns0": interface => "eth0", address => "208.80.154.238" }
     interface::ip { "dns::recursor": interface => "eth0", address => "208.80.152.131" }
 
     include base,
@@ -777,14 +775,6 @@ node "dobson.wikimedia.org" {
         allow_from => $network::constants::all_networks
     }
     dns::recursor::monitor { "208.80.152.131": }
-
-    class { "dns::auth-server":
-        # Yes, this is an eqiad service IP. This is *not* wrong.
-        # this is a temporary measure for migrating ns0 to eqiad
-        ipaddress => [ "208.80.152.130", "208.80.154.238" ],
-        soa_name => "ns0.wikimedia.org",
-        master => $dns_auth_master
-    }
 }
 
 node "dysprosium.eqiad.wmnet" {
@@ -1383,8 +1373,6 @@ node 'lanthanum.eqiad.wmnet' {
 }
 
 node "linne.wikimedia.org" {
-    interface::ip { "dns::auth-server": interface => "eth0", address => "208.80.152.142" }
-    interface::ip { "dns::auth-server::ns1": interface => "eth0", address => "208.80.152.214" }
     interface::ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
 
     include base,
@@ -1396,12 +1384,6 @@ node "linne.wikimedia.org" {
         servers => [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ],
         peers => [ "dobson.wikimedia.org" ],
     }
-
-        class { "dns::auth-server":
-            ipaddress => [ "208.80.152.142", "208.80.152.214" ],
-            soa_name => "ns1.wikimedia.org",
-            master => $dns_auth_master
-        }
 }
 
 node /lvs[1-6]\.wikimedia\.org/ {
@@ -2129,17 +2111,10 @@ node 'netmon1001.wikimedia.org' {
 }
 
 node "nescio.esams.wikimedia.org" {
-    interface::ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
     interface::ip { "dns::recursor": interface => "eth0", address => "91.198.174.6" }
 
     include standard,
         dns::recursor::statistics
-
-    class { "dns::auth-server":
-        ipaddress => [ "91.198.174.4" ],
-        soa_name => "ns2.wikimedia.org",
-        master => $dns_auth_master
-    }
 
     include network::constants
 
