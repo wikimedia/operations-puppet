@@ -6,13 +6,14 @@ class role::authdns::base {
     system_role { 'authdns': description => 'Authoritative DNS server' }
 
     $nameservers = [
-            'ns0.wikimedia.org',
-            'ns1.wikimedia.org',
-            'ns2.wikimedia.org',
+            'rubidium.wikimedia.org',
+            'mexia.wikimedia.org',
+            'eeden.esams.wikimedia.org',
     ]
     $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
 
-    include authdns::monitoring
+# temporarily commented-out, pending end of migration
+#   include authdns::monitoring
     include authdns::ganglia
 }
 
@@ -27,7 +28,7 @@ class role::authdns::ns0 inherits role::authdns::base {
     }
 
     class { 'authdns':
-        fqdn          => 'ns0.wikimedia.org',
+        fqdn          => 'rubidium.wikimedia.org',
         ipaddress     => $ipv4,
         nameservers   => $nameservers,
         gitrepo       => $gitrepo,
@@ -45,7 +46,7 @@ class role::authdns::ns1 inherits role::authdns::base {
     }
 
     class { 'authdns':
-        fqdn          => 'ns1.wikimedia.org',
+        fqdn          => 'mexia.wikimedia.org',
         ipaddress     => $ipv4,
         nameservers   => $nameservers,
         gitrepo       => $gitrepo,
@@ -63,7 +64,7 @@ class role::authdns::ns2 inherits role::authdns::base {
     }
 
     class { 'authdns':
-        fqdn          => 'ns2.wikimedia.org',
+        fqdn          => 'eeden.esams.wikimedia.org',
         ipaddress     => $ipv4,
         nameservers   => $nameservers,
         gitrepo       => $gitrepo,

@@ -1826,21 +1826,7 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
 }
 
 node 'rubidium.wikimedia.org' {
-    # FIXME: to be switched to role::authdns::ns0 after the transition
-    include standard
-
-    $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
-    $nameservers = [
-            'rubidium.wikimedia.org',
-            'mexia.wikimedia.org',
-            'eeden.esams.wikimedia.org',
-    ]
-
-    class { 'authdns':
-        nameservers   => $nameservers,
-        gitrepo       => $gitrepo,
-    }
-    include authdns::ganglia
+	include role::authdns::ns0
 }
 
 node "mchenry.wikimedia.org" {
@@ -1873,21 +1859,7 @@ node "mchenry.wikimedia.org" {
 }
 
 node 'mexia.wikimedia.org' {
-    # FIXME: to be switched to role::authdns::ns1 after the transition
-    include standard
-
-    $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
-    $nameservers = [
-            'rubidium.wikimedia.org',
-            'mexia.wikimedia.org',
-            'eeden.esams.wikimedia.org',
-    ]
-
-    class { 'authdns':
-        nameservers   => $nameservers,
-        gitrepo       => $gitrepo,
-    }
-    include authdns::ganglia
+	include role::authdns::ns1
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
