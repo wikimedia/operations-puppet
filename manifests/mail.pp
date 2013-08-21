@@ -202,7 +202,7 @@ class exim {
 				owner   => 'root',
 				group   => 'Debian-exim',
 				mode    => '0440',
-				content => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
+				source  => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
 				require => File['/etc/exim4/dkim'],
 				notify  => Service['exim4'],
 			}
@@ -222,7 +222,7 @@ class exim {
 				owner   => 'root',
 				group   => 'Debian-exim',
 				mode    => '0440',
-				content => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
+				source  => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
 				require => File['/etc/exim4/dkim'],
 				notify  => Service['exim4'],
 			}
@@ -234,7 +234,7 @@ class exim {
 				owner   => 'root',
 				group   => 'Debian-exim',
 				mode    => '0440',
-				content => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
+				source  => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
 				require => File['/etc/exim4/dkim'],
 				notify  => Service['exim4'],
 			}
