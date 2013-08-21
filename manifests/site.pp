@@ -794,21 +794,7 @@ node "dysprosium.eqiad.wmnet" {
 }
 
 node 'eeden.esams.wikimedia.org' {
-    # FIXME: to be switched to role::authdns::ns2 after the transition
-    include standard
-
-    $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
-    $nameservers = [
-            'rubidium.wikimedia.org',
-            'mexia.wikimedia.org',
-            'eeden.esams.wikimedia.org',
-    ]
-
-    class { 'authdns':
-        nameservers   => $nameservers,
-        gitrepo       => $gitrepo,
-    }
-    include authdns::ganglia
+    include role::authdns::ns2
 }
 
 node "ekrem.wikimedia.org" {
