@@ -99,7 +99,7 @@ def main():
             continue
 
         # Write zonefile
-        open(zonepath, 'w').write(HEADER + output)
+        open(zonepath, 'w').write(HEADER + output + "\n")
 
     if not args.keep:
         # cleanup removed zones
