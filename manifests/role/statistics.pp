@@ -57,7 +57,6 @@ class role::statistics::private inherits role::statistics {
 		generic::pythonpip,
 		misc::udp2log::udp_filter,
 		# rsync logs from logging hosts
-		misc::statistics::rsync::jobs,
 		# wikistats code is run here to
 		# generate stats.wikimedia.org data
 		misc::statistics::wikistats,
