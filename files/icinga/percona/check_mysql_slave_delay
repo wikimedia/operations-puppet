@@ -39,6 +39,9 @@ else
    DELAY="$(mysql -h${HOST} -u${USER} -p${PASS} -ss -E -e "SHOW SLAVE STATUS" | awk '/Seconds_Behind_Master/{print $2}')"
 fi
 
+# $DELAY must be an int
+DELAY=$(printf "%.0f" $DELAY)
+
 if [ "${DELAY}" -gt ${CRIT:-600} ]; then
    EXITSTATUS=$STATE_CRITICAL
    STAT="CRIT"
