@@ -68,7 +68,7 @@ class role::authdns::ns1 inherits role::authdns::base {
 
 # ns2 @ esams
 class role::authdns::ns2 inherits role::authdns::base {
-    $ipv4 = '91.198.174.4'
+    $ipv4 = '91.198.174.239'
     $ipv6 = '2620:0:862:ed1a::e'
 
     interface::ip { 'authdns_ipv4':
