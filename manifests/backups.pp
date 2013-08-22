@@ -1,9 +1,9 @@
-# backups (amanda)
+# backups (amanda transitioning to bacula)
 #
 
 # Transitioning to bacula stanzas
 
-class backup::host($sets) {
+class backup::host($sets, $pool='production') {
     include role::backup::config
 
     class { 'bacula::client':
@@ -13,7 +13,16 @@ class backup::host($sets) {
         job_retention   => '6 months',
     }
 
-    create_resources(bacula::client::job, $sets)
+    # This will use uniqueid fact to distribute (hopefully evenly) machines on
+    # days of the week
+    $days = $role::backup::config::days
+    $day = inline_template('<%= @days[[@uniqueid].pack("H*").unpack("L")[0] % 7] -%>')
+
+    $jobdefaults = "Monthly-1st-${day}-${pool}"
+
+    backup::host::sets { "${sets}":
+        jobdefaults => $jobdefaults,
+    }
 }
 
 class backup::mysqlhost($xtrabackup=true, $per_db=false, $innodb_only=false) {
@@ -24,7 +33,15 @@ class backup::mysqlhost($xtrabackup=true, $per_db=false, $innodb_only=false) {
     }
 }
 
-# Utility definition to deduplicate code
+# Utility definition used internally to deduplicate code
+define backup::host::sets($jobdefaults) {
+    bacula::client::job { "${name}-${jobdefaults}":
+        fileset     => $name,
+        jobdefaults => $jobdefaults,
+    }
+}
+
+# Utility definition used internally to deduplicate code
 define backup::schedule($pool) {
     bacula::director::schedule { "Monthly-1st-${name}":
         runs => [
