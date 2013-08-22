@@ -312,6 +312,7 @@ $decommissioned_servers = [
 'srv234',
 'srv266',
 'srv278',
+'srv281',
 'storage1',
 'storage2',
 'storage3',

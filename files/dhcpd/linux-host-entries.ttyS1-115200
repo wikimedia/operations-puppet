@@ -4550,11 +4550,6 @@ host srv280 {
 	fixed-address srv280.pmtpa.wmnet;
 }
 
-host srv281 {
-	hardware ethernet 00:21:9b:9e:de:63;
-	fixed-address srv281.pmtpa.wmnet;
-}
-
 host srv282 {
 	hardware ethernet 00:21:9b:9e:a9:95;
 	fixed-address srv282.pmtpa.wmnet;
