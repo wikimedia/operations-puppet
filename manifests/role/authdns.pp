@@ -12,7 +12,6 @@ class role::authdns::base {
     ]
     $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
 
-    include authdns::monitoring
     include authdns::ganglia
 }
 

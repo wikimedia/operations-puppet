@@ -7,6 +7,7 @@ class authdns(
     $ipaddress = undef,
     $ipaddress6 = undef,
     $gitrepo = undef,
+    $monitoring = true,
 ) {
     require authdns::account
     require authdns::scripts
@@ -85,6 +86,10 @@ class authdns(
         # we prepare the config even before the package gets installed, leaving
         # no window where service would be started and answer with REFUSED
         before      => Package['gdnsd'],
+    }
+
+    if $monitoring {
+        include authdns::monitoring
     }
 
     # export the SSH host key for service hostname/IP keys too
