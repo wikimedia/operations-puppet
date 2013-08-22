@@ -67,7 +67,7 @@ class mediawiki_singlenode(
 	}
 
 	exec { 'mediawiki_setup':
-		require   => [ Git::Clone['mediawiki'],  File["${install_path}/orig"], exec['password_gen'] ],
+		require   => [ Git::Clone['mediawiki'],  File["${install_path}/orig"], Exec['password_gen'] ],
 		creates   => "${install_path}/orig/LocalSettings.php",
 		command   => "/usr/bin/php ${install_path}/maintenance/install.php ${wiki_name} admin --dbname ${database_name} --dbuser root --passfile \"${install_path}/orig/adminpass\" --server ${mwserver} --installdbuser=\"root\" --installdbpass \"${mysql_pass}\" --scriptpath '/w' --confpath \"${install_path}/orig/\"",
 		logoutput => on_failure,
