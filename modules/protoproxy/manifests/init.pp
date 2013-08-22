@@ -69,8 +69,8 @@ define protoproxy(
     $ssl_backend={},
 ) {
 
-    include protoproxy::package
-    include protoproxy::service
+    require nginx::package
+    include nginx::service
 
     nginx_site { $name:
         template => 'proxy',
@@ -78,8 +78,7 @@ define protoproxy(
         enable   => $enabled,
         require  => Package['nginx'],
         # Make sure we do the configuration before the service
-        # FIXME use notify {} ?
-        before   => Class['protoproxy::service'],
+	donotify => "false";
     }
 
 }

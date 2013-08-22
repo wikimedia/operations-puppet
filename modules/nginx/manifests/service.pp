@@ -1,8 +1,8 @@
 # vim:sw=4:ts=4:et:
 
-class protoproxy::service {
+class nginx::service {
 
-    include protoproxy::package
+    include nginx::package
 
     service { ['nginx']:
         ensure  => running,

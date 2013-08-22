@@ -24,8 +24,8 @@ define protoproxy::localssl(
     $enabled=true,
     $upstream_port='80'
 ) {
-    require protoproxy::package
-    include protoproxy::service
+    require nginx::package
+    include nginx::service
 
     # The WMF nginx module is pretty bad, and it's almost pointless to use it here.
 
@@ -36,6 +36,6 @@ define protoproxy::localssl(
     nginx_site { $name:
         require => File["/etc/nginx/sites-available/${name}"],
         enable  => $enabled,
-        notify  => Service[nginx]
+        donotify  => "false";
     }
 }
