@@ -25,6 +25,11 @@
 #
 trusted_networks <%= scope.lookupvar('network::constants::all_networks').join(" ") %>
 
+<% if short_report_template == 'true' then -%>
+# short-format report template, starting with Yes/No, used for OTRS filters
+clear_report_template
+report _YESNO_, score=_SCORE_ | host: _HOSTNAME_ | scores: _TESTSSCORES(,)_ | autolearn=_AUTOLEARN_
+<% end -%>
 
 #   Set file-locking method (flock is not safe over NFS, but is faster)
 #

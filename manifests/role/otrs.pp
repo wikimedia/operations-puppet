@@ -47,9 +47,10 @@ class role::otrs {
     apache_site { 'ticket': name => 'ticket.wikimedia.org' }
 
     class { 'spamassassin':
-        required_score => '5.0',
+        required_score => '4.0',
         use_bayes => '1',
         bayes_auto_learn => '1',
+        short_report_format => 'true',
     }
 
     class { 'exim::roled':
