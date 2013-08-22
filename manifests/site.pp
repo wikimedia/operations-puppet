@@ -62,10 +62,6 @@ class standard-noexim {
 # Default variables
 $cluster = "misc"
 
-# FIXME: move to realm.pp
-# FIXME: check if this is still correct, this was temp for a migration
-$dns_auth_master = "ns1.wikimedia.org"
-
 # Node definitions (alphabetic order)
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
