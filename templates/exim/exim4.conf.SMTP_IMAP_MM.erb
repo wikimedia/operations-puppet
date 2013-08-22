@@ -104,10 +104,8 @@ helo_try_verify_hosts = *
 untrusted_set_sender = *
 local_from_check = false
 <% end -%>
-<% if enable_otrs_server == "false" then -%>
 
 system_filter = CONFDIR/system_filter
-<% end -%>
 
 # Resource control
 check_spool_space = 50M
@@ -271,19 +269,15 @@ acl_check_connect:
 	accept
 
 acl_check_data:
+
+<% if ( enable_spamassassin == "true" ) then -%>
 <% if ( enable_otrs_server == "true" ) then -%>
-	# Run a SpamAssassin check on any non-locally submitted messages.
-	# If the message is estimated to be spam, we discard it, since
-	# rejecting only moves the problem to mchenry.
-
-	accept hosts = :
-
-	discard message = This message scored $spam_score spam points.
-		spam = otrs/defer_ok
-
-<% elsif ( enable_spamassassin == "true" ) then -%>
+	# skip spam-check for locally-submitted messages
+	accept hosts = +relay_from_hosts
+<% else -%>
 	# Let's trust local senders (Mailman) to not send out spam
 	accept hosts = +wikimedia_nets
+<% end -%>
 		set acl_m0 = trusted relay
 
 	# Run through spamassassin
@@ -295,7 +289,7 @@ acl_check_data:
 spamassassin:
 	# Only run through SpamAssassin if requested for this domain and
 	# the message is not too large (Mailman's default moderation
-	# threshold of 40 KB
+	# threshold of 40 KB)
 	accept condition = ${if >{$message_size}{400K}}
 
 	# Skip if so requested
