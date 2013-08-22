@@ -3,7 +3,7 @@
 # Ganglia monitoring
 class protoproxy::ganglia {
 
-    include protoproxy::package
+    include nginx::package
 
     file { '/usr/lib/ganglia/python_modules/apache_status.py':
         source => 'puppet:///files/ganglia/plugins/apache_status.py',

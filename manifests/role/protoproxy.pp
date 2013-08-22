@@ -27,7 +27,6 @@ class role::protoproxy::ssl::common {
 
     file { '/etc/nginx/nginx.conf':
         content => template('nginx/nginx.conf.erb'),
-        notify  => Service['nginx'],
         require => Package['nginx'],
     }
 
