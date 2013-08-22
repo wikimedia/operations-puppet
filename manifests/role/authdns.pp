@@ -72,7 +72,7 @@ class role::authdns::ns2 inherits role::authdns::base {
     $ipv6 = '2620:0:862:ed1a::e'
 
     interface::ip { 'authdns_ipv4':
-        interface => 'eth0', # note: this is interface-bound, unlike ns0/ns1
+        interface => 'lo',
         address   => $ipv4,
         prefixlen => '32',
     }
