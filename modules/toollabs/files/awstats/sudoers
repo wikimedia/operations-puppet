@@ -1,0 +1,5 @@
+# sudo policy for AWStats.
+
+# This file is managed by Puppet.
+
+local-awstats tools-webproxy = NOPASSWD: /usr/local/sbin/awstats-filter.sh

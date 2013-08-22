@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# This file is managed by Puppet.
+
+exec /usr/bin/sudo -niu local-awstats /data/project/awstats/refresh-awstats.sh
