@@ -3,6 +3,13 @@
 class misc::install-server {
 	system_role { "misc::install-server": description => "Install server" }
 
+    class { 'backup::host':
+        sets => [ 'srv-autoinstall',
+                  'srv-tftpboot',
+                  'srv-wikimedia',
+                ],
+    }
+
 	class web-server {
 		package { "lighttpd":
 			ensure => latest;

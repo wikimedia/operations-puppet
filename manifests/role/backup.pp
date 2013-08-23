@@ -4,6 +4,7 @@
 class role::backup::config {
     $director = 'helium.eqiad.wmnet'
     $database = 'db1001.eqiad.wmnet'
+    $days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
 }
 
 class role::backup::director {
@@ -35,9 +36,7 @@ class role::backup::director {
     # One schedule per day of the week.
     # Setting execution times so that it is unlikely jobs will run concurrently
     # with cron.{hourly,daily,monthly} or other cronscripts
-    $days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
-
-    backup::schedule { $days:
+    backup::schedule { $role::backup::config::days:
         pool    => 'production',
     }
 

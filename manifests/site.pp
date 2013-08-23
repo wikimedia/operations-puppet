@@ -258,25 +258,6 @@ node "brewster.wikimedia.org" {
     class { 'misc::haproxy':
         config_file =>  'puppet:///files/puppet/haproxy.cfg',
     }
-    # Backup sets
-    $backupsets = {
-        'srv-autoinstall' => {
-            fileset     => 'srv-autoinstall',
-            jobdefaults => 'Monthly-1st-Tue-production',
-        },
-        'srv-tftpboot' => {
-            fileset     => 'srv-tftpboot',
-            jobdefaults => 'Monthly-1st-Wed-production',
-        },
-        'srv-wikimedia' => {
-            fileset     => 'srv-wikimedia',
-            jobdefaults => 'Monthly-1st-Thu-production',
-        },
-    }
-
-    class { 'backup::host':
-        sets => $backupsets,
-    }
 }
 
 node "caesium.wikimedia.org" {
@@ -1050,16 +1031,9 @@ node "helium.eqiad.wmnet" {
         role::backup::director,
         role::backup::storage
 
-    # Backup sets
-    $backupsets = {
-        'roothome'  => {
-            fileset     => 'roothome',
-            jobdefaults => 'Monthly-1st-Mon-production',
-        },
-    }
-
+    # TODO: Remove this at some point (after 2013-10-31). It is here for testing reasons
     class { 'backup::host':
-        sets => $backupsets,
+        sets => [ 'roothome',],
     }
 }
 
