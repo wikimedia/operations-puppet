@@ -22,6 +22,7 @@
 
 import urllib2
 import json
+import time
 
 
 CONF = {
@@ -50,6 +51,10 @@ DESCRIPTIONS = {
     'tcp_sendfail': 'DNS TCP sendfail',
     'tcp_recvfail': 'DNS TCP recvfail',
 }
+CACHE = {
+    'time': 0,
+    'data': {},
+}
 
 
 def build_desc(skel, prop):
@@ -77,8 +82,41 @@ def fetch_metrics(url=CONF['stats_url']):
         data = response.read()
         response.close()
         metrics = json.loads(data)
-    except (urllib2.URLError, KeyError):
+    except Exception:  # pylint: disable-msg=W0703
+        # Could be URLError, HTTPError, HTTPException or ValueError (from json)
+        # doesn't matter why, as Ganglia won't propagate a message.
+        # pass, i.e. just return {}.
         pass
+
+    return metrics
+
+
+def fetch_metrics_cached(url=CONF['stats_url']):
+    """Fetches, decodes and caches metrics from gdnsd.
+    Fetches at most once a second, otherwise serving from the cache.
+    Tries to fetch twice, if the first attempt failed.
+    Serves stale data up to 15s old if both attempts failed.
+
+    :param url: URL for gdnsd's json output
+    :returns: decoded dict
+    """
+    # fetch at most once a second; especially useful considering that
+    # the callback gets called for every single metric independently
+    if time.time() - CACHE['time'] < 1 and CACHE['data']:
+        return CACHE['data']
+
+    metrics = fetch_metrics(url)
+    # failed, try once more
+    if not metrics:
+        metrics = fetch_metrics(url)
+
+    if metrics:
+        CACHE['time'] = time.time()
+        CACHE['data'] = metrics
+    else:
+        # failed twice, return cached data up to 15s to avoid dives/spikes
+        if time.time() - CACHE['time'] <= 15:
+            metrics = CACHE['data']
 
     return metrics
 
@@ -89,12 +127,12 @@ def metric_handler(name):
     :param name: metric name
     :returns: metric value
     """
-    raw = fetch_metrics()
+    raw = fetch_metrics_cached()
     try:
         _, category, metric = name.split('_', 2)
         val = raw[category][metric]
     except KeyError:
-        val = 0
+        val = None
     return val
 
 
@@ -116,7 +154,7 @@ def metric_init(params):
         'groups': CONF['groups'],
     }
 
-    raw = fetch_metrics()
+    raw = fetch_metrics_cached()
     descriptors = []
     for category in raw:
         try:
