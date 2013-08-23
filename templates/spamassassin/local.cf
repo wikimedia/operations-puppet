@@ -89,3 +89,11 @@ shortcircuit ALL_TRUSTED             on
 # shortcircuit BAYES_00                ham
 
 endif # Mail::SpamAssassin::Plugin::Shortcircuit
+
+<% if otrs_rule_scores == 'true' then -%>
+score RP_MATCHES_RCVD -0.500
+score RCVD_IN_RP_SAFE 2.000
+score RCVD_IN_RP_CERTIFIED 2.000
+score SPF_SOFTFAIL 2.000
+score SUSPICIOUS_RECIPS 2.000
+<% end -%>

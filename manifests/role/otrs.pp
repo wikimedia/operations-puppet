@@ -51,6 +51,7 @@ class role::otrs {
         use_bayes => '1',
         bayes_auto_learn => '1',
         short_report_template => 'true',
+        otrs_rule_scores => 'true',
     }
 
     class { 'exim::roled':

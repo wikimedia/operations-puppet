@@ -257,7 +257,8 @@ class spamassassin(
 		$required_score = '5.0',
 		$use_bayes = 1,
 		$bayes_auto_learn = 1,
-		$short_report_template = 'false'
+		$short_report_template = 'false',
+		$otrs_rule_scores = 'false',
 	) {
 	include network::constants
 
