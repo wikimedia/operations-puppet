@@ -15,7 +15,7 @@
 
 # == Class role::analytics::zookeeper::config
 # Bare config role class for client and server classes.
-# You may include this class manually if you need to know use the 
+# You may include this class manually if you need to know use the
 # $role::analytics::zookeeper::hosts or
 # $role::analytics::zookeeper::hosts_array variables.
 #
@@ -23,13 +23,13 @@ class role::analytics::zookeeper::config {
     # TODO: Make this configurable via labs
     # global variables.
     $labs_hosts = {
-         'kraken-puppet.pmtpa.wmflabs' => 1,
+        'kraken-puppet.pmtpa.wmflabs' => 1,
     }
 
     $production_hosts = {
-        'analytics1023.eqiad.wmnet' => 23,
-        'analytics1024.eqiad.wmnet' => 24,
-        'analytics1025.eqiad.wmnet' => 25,
+        'analytics1023.eqiad.wmnet' => 1023,
+        'analytics1024.eqiad.wmnet' => 1024,
+        'analytics1025.eqiad.wmnet' => 1025,
     }
 
     $hosts = $::realm ? {
@@ -56,6 +56,8 @@ class role::analytics::zookeeper::client {
     }
 }
 
+# == Class role::analytics::zookeeper::server
+#
 class role::analytics::zookeeper::server inherits role::analytics::zookeeper::client {
     class { '::zookeeper::server': }
 }
