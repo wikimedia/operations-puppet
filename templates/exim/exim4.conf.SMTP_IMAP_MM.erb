@@ -295,9 +295,12 @@ spamassassin:
 	# Skip if so requested
 	accept condition = ${if eq{$acl_m2}{skip_spamd}}
 
-	# Add spam headers if score >= 1
+	# Add spam headers...
 	warn spam = nonexistent:true
+<% if ( enable_otrs_server == "false" ) then -%>
+		# ...but only if score >= 1
 		condition = ${if >{$spam_score_int}{10}{1}{0}}
+<% end -%>
 		set acl_m0 = $spam_score ($spam_bar)
 		set acl_m1 = $spam_report
 		set acl_m3 = $spam_score_int
