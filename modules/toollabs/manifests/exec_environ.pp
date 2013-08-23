@@ -31,7 +31,7 @@ class toollabs::exec_environ {
       'python3',
       'r-base',
       'ruby1.9.3',
-      'tcl',
+      'tcl8.6',
 
       # Perl libraries
       'libbot-basicbot-perl',
@@ -133,6 +133,7 @@ class toollabs::exec_environ {
 
       # Other packages
       'adminbot',
+      'csh',                        # common user request
       'dc',
       'gnuplot-nox',
       'libfreetype6',
