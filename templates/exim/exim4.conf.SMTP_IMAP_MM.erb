@@ -300,6 +300,7 @@ spamassassin:
 		condition = ${if >{$spam_score_int}{10}{1}{0}}
 		set acl_m0 = $spam_score ($spam_bar)
 		set acl_m1 = $spam_report
+		set acl_m3 = $spam_score_int
 
 	# Reject spam at high scores (> 12)
 	deny message = This message scored $spam_score spam points.
