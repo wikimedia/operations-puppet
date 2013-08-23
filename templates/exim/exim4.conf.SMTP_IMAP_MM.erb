@@ -286,6 +286,24 @@ acl_check_data:
 	accept
 
 <% if ( enable_spamassassin == "true" ) then -%>
+<% if ( enable_otrs_server == "true" ) then -%>
+spamassassin:
+	# skip if message is too large (>500K)
+	accept condition = ${if >{$message_size}{500K}}
+		set acl_m0 = n/a
+		set acl_m1 = skipped, message too large
+
+	# skip if whitelisted in exim
+	accept condition = ${if eq{$acl_m2}{skip_spamd}}
+		set acl_m0 = n/a
+		set acl_m1 = skipped, exim whitelist
+
+	# Add spam headers...
+	warn spam = nonexistent:true
+		set acl_m0 = $spam_score ($spam_bar)
+		set acl_m1 = $spam_report
+		set acl_m3 = $spam_score_int
+<% else -%>
 spamassassin:
 	# Only run through SpamAssassin if requested for this domain and
 	# the message is not too large (Mailman's default moderation
@@ -297,13 +315,11 @@ spamassassin:
 
 	# Add spam headers...
 	warn spam = nonexistent:true
-<% if ( enable_otrs_server == "false" ) then -%>
 		# ...but only if score >= 1
 		condition = ${if >{$spam_score_int}{10}{1}{0}}
-<% end -%>
 		set acl_m0 = $spam_score ($spam_bar)
 		set acl_m1 = $spam_report
-		set acl_m3 = $spam_score_int
+<% end -%>
 
 	# Reject spam at high scores (> 12)
 	deny message = This message scored $spam_score spam points.
