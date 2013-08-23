@@ -17,9 +17,16 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
   $rt_mysql_host = $dbhost
   $rt_mysql_port = $dbport
 
+  include ldap::role::config::labs
+  $ldap_server = $ldap::role::config::labs::ldapconfig['servernames'][0]
+  $ldap_bind_dn = $ldap::role::config::labs::ldapconfig['proxyagent']
+  $ldap_bind_pass = $ldap::role::config::labs::ldapconfig['proxypass']
+  $ldap_base_dn = $ldap::role::config::labs::ldapconfig['basedn']
+
   package { [ 'request-tracker4',
               'rt4-db-mysql',
               'rt4-clients',
+              'rt4-extension-authenexternalauth',
               'libdbd-pg-perl' ]:
     ensure => latest;
   }
@@ -35,6 +42,13 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
     '/etc/request-tracker4/RT_SiteConfig.d/51-dbconfig-common':
       require => Package['request-tracker4'],
       content => template('rt/51-dbconfig-common.erb'),
+      notify  => Exec['update-rt-siteconfig'];
+    '/etc/request-tracker4/RT_SiteConfig.d/52-externalauth':
+      require => [
+        Package['request-tracker4'],
+        Package['rt4-extension-authenexternalauth'],
+      ],
+      content => template('rt/52-externalauth.erb'),
       notify  => Exec['update-rt-siteconfig'];
     '/etc/request-tracker4/RT_SiteConfig.d/80-wikimedia':
       require => Package['request-tracker4'],

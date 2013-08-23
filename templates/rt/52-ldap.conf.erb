@@ -1,0 +1,45 @@
+Set( @Plugins, qw(RT::Authen::ExternalAuth) );
+
+Set($ExternalAuthPriority,  [ 'LDAP' ]);
+Set($ExternalInfoPriority,  [ 'LDAP' ]);
+Set($ExternalServiceUsesSSLorTLS, 1);
+Set($AutoCreateNonExternalUsers, 0);
+
+Set($ExternalSettings, {
+    'LDAP'       =>  {
+        'type'                      =>  'ldap',
+        'server'                    =>  '<%= @ldap_server %>',
+        'user'                      =>  '<%= @ldap_bind_dn %>',
+        'pass'                      =>  '<%= @ldap_bind_pass %>',
+        'base'                      =>  'ou=people,<%= @ldap_base_dn %>',
+        'filter'                    =>  '(objectClass=posixAccount)',
+        'group'                     =>  'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+        'group_attr'                =>  'member',
+        'group_attr_value'          =>  'dn',
+        'group_scope'               =>  'base',
+        'tls'                       =>  1,
+        'ssl_version'               =>  3,
+        'net_ldap_args'             => [ version =>  3  ],
+        'attr_match_list' => [
+            'Name',
+            'EmailAddress',
+            'RealName',
+        ],
+        'attr_map' => {
+            'Name' => 'uid',
+            'EmailAddress' => 'mail',
+            'Organization' => 'physicalDeliveryOfficeName',
+            'RealName' => 'cn',
+            'ExternalAuthId' => 'uid',
+            'Gecos' => 'uid',
+            'WorkPhone' => 'telephoneNumber',
+            'Address1' => 'streetAddress',
+            'City' => 'l',
+            'State' => 'st',
+            'Zip' => 'postalCode',
+            'Country' => 'co'
+        },
+    },
+} );
+
+1;
