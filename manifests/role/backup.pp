@@ -92,6 +92,9 @@ class role::backup::director {
     bacula::director::fileset { 'svnroot':
         includes => [ '/svnroot' ]
     }
+    bacula::director::fileset { 'srv-org-wikimedia':
+        includes => [ '/srv/org/wikimedia' ]
+    }
     bacula::director::fileset { 'svnroot-bak':
         includes => [ '/svnroot/bak' ]
     }
