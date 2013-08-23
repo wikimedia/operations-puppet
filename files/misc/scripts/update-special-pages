@@ -5,7 +5,7 @@
 cd "$MW_COMMON/multiversion"
 for db in `<"$MW_DBLISTS/all.dblist"`; do
 	echo $db
-	php MWScript.php updateSpecialPages.php $db
+	sudo -u apache php MWScript.php updateSpecialPages.php $db
 	echo
 	echo
 done
