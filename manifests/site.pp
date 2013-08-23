@@ -126,16 +126,22 @@ node /^amssq47\.esams\.wikimedia\.org$/ {
 # analytics1001.wikimedia.org is the analytics cluster master.
 node "analytics1001.wikimedia.org" {
     include role::analytics
-    # analytics1001 will get event.gif UDP stream traffic.
-    # include udp2log iptables rules.
-    include misc::udp2log::iptables
 }
 
 # analytics1011-analytics1020 are Hadoop Worker nodes
 node /analytics10(1[7-9]|20).eqiad.wmnet/ {
-    include role::analytics
+    include role::analytics::common
     include role::analytics::hadoop::worker
 }
+
+# analytics1023-1025 are zookeeper server nodes
+node /analytics102[345].eqiad.wmnet/ {
+    include role::analytics
+    include role::analytics::zookeeper::server
+}
+
+
+
 
 
 ### Analytics nodes below this line need to be reinstalled.
@@ -167,7 +173,7 @@ node /analytics102[12]\.eqiad\.wmnet/ {
 }
 
 # misc unpuppetized analytics hosts
-node /analytics10(0[3457]|1[0-7]|2[234567])\.eqiad\.wmnet/ {
+node /analytics10(0[3457]|1[0-7]|2[267])\.eqiad\.wmnet/ {
     # ganglia aggregator for the Analytics cluster.
     if ($hostname == 'analytics1003' or $hostname == 'analytics1011') {
         $ganglia_aggregator = true

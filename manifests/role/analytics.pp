@@ -2,6 +2,8 @@
 
 @monitor_group { 'analytics-eqiad': description => 'analytics servers in eqiad' }
 
+# Base class for all analytics nodes.
+# All analytics nodes should include this.
 class role::analytics {
     system_role { 'role::analytics': description => 'analytics server' }
     $nagios_group = 'analytics-eqiad'
@@ -10,25 +12,50 @@ class role::analytics {
 
     include standard
     include admins::roots
-
+    # include java on all analytics servers
+    include role::analytics::java
     # Include stats system user to
     # run automated jobs and for file
     # ownership.
     include misc::statistics::user
+}
+
+# == Class role::analytics::common
+# Includes common client classes for
+# working with hadoop and other analytics services.
+#
+class role::analytics::commmon {
+    include role::analytics
+
+    # Include Hadoop ecosystem client classes.
+    include role::analytics::hadoop::client,
+        role::analytics::hive::client,
+        role::analytics::oozie::client,
+        role::analytics::pig,
+        role::analytics::sqoop
 
     # include analytics user accounts
     include role::analytics::users
 
-    # include common analytics packages
-    include role::analytics::packages
+    # We want to be able to geolocate IP addresses
+    include misc::geoip
+    # udp-filter is a useful thing!
+    include misc::udp2log::udp_filter
+    # include dclass for device classification
+    include role::analytics::dclass
+}
 
-    # Include these common classes on all analytics nodes.
-    # (for now we only include these on reinstalled and
-    #  fully puppetized nodes.)
-    if ($hostname =~ /analytics10(1[7-9]|20)/) {
-        include role::analytics::common
+
+class role::analytics::java {
+    # all analytics nodes need java installed
+    # Install Sun/Oracle Java JDK on analytics cluster
+    java { 'java-6-oracle':
+        distribution => 'oracle',
+        version      => 6,
     }
 }
+
+
 
 class role::analytics::users {
     # Analytics user accounts will be added to the
@@ -72,23 +99,8 @@ class role::analytics::users {
     sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 }
 
-# includes packages common to analytics nodes
-class role::analytics::packages {
-    # include java on all analytics servers
-    include role::analytics::java
-    # We want to be able to geolocate IP addresses
-    include misc::geoip
-    # udp-filter is a useful thing!
-    include misc::udp2log::udp_filter
 
-    # need python-lxml to try out check_ganglia
-    # (https://github.com/larsks/check_ganglia)
-    if !defined(Package['python-lxml']) {
-        package { 'python-lxml':
-            ensure => 'installed',
-        }
-    }
-
+class role::analytics::dclass {
     # install dclass JNI package
     # for device classification.
     if !defined(Package['libdclass-java']) {
@@ -113,14 +125,11 @@ class role::analytics::packages {
 
 
 
-class role::analytics::java {
-    # all analytics nodes need java installed
-    # Install Sun/Oracle Java JDK on analytics cluster
-    java { 'java-6-oracle':
-        distribution => 'oracle',
-        version      => 6,
-    }
-}
+
+
+### Classes below this line need refactored and/or removed
+### for the repaving of analytics cluster.
+
 
 
 # front end interfaces for Kraken and Hadoop
