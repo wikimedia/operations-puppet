@@ -58,6 +58,9 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         template_variables => {
             error_processor_host => $error_processor_host,
             error_processor_port => 8423,
+            # Quick hack to get authentication metrics in Ganglia (ori-l, 20-Aug-2013):
+            centralauth_log_processor_host => $error_processor_host,
+            centralauth_log_processor_port => 8324,
         },
     }
 
