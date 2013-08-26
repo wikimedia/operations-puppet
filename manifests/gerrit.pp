@@ -3,7 +3,6 @@
 
 class gerrit::instance($no_apache=false,
 		$apache_ssl=false,
-		$ircbot=false,
 		$slave=false,
 		$ssh_port="29418",
 		$db_host="",
@@ -63,9 +62,6 @@ class gerrit::instance($no_apache=false,
 		smtp_host => $smtp_host,
 		ssh_key => $ssh_key,
 	}
-
-	# Optional modules
-	if $ircbot { include gerrit::ircbot }
 }
 
 class gerrit::jetty ($ldap_hosts,
@@ -82,8 +78,7 @@ class gerrit::jetty ($ldap_hosts,
 		$smtp_host,
 		$ssh_key) {
 
-	include gerrit::crons,
-		gerrit::gitweb
+	include gerrit::crons
 
 	package { [ "openjdk-6-jre", "git-svn" ]:
 		ensure => latest;
@@ -159,8 +154,6 @@ class gerrit::jetty ($ldap_hosts,
 			group => gerrit2,
 			mode => 0444,
 			require => File["/var/lib/gerrit2/review_site/etc"];
-		"/var/lib/gerrit2/review_site/etc/hookconfig.py":
-			ensure => absent;
 		"/var/lib/gerrit2/review_site/etc/mail/ChangeSubject.vm":
 			owner => gerrit2,
 			group => gerrit2,
@@ -217,20 +210,6 @@ class gerrit::jetty ($ldap_hosts,
 			mode => 0755,
 			ensure => directory,
 			require => Exec["install_gerrit_jetty"];
-		"/var/lib/gerrit2/review_site/hooks/change-abandoned":
-			ensure => absent;
-		"/var/lib/gerrit2/review_site/hooks/hookhelper.py":
-			ensure => absent;
-		"/var/lib/gerrit2/review_site/hooks/change-merged":
-			ensure => absent;
-		"/var/lib/gerrit2/review_site/hooks/change-restored":
-			ensure => absent;
-		"/var/lib/gerrit2/review_site/hooks/comment-added":
-			ensure => absent;
-		"/var/lib/gerrit2/review_site/hooks/patchset-created":
-			ensure => absent;
-		"/var/lib/gerrit2/review_site/hooks/draft-published":
-			ensure => absent;
 	}
 
 	git::clone {
@@ -299,35 +278,6 @@ class gerrit::proxy( $no_apache = true,
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
 	apache_module { ssl: name => "ssl" }
-}
-
-class gerrit::gitweb {
-	package { [ "gitweb" ]:
-		ensure => absent;
-	}
-
-	file {
-		"/etc/apache2/conf.d/gitweb":
-			ensure => absent;
-		"/var/lib/gerrit2/review_site/etc/gitweb_config.perl":
-			ensure => absent;
-	}
-}
-
-class gerrit::ircbot {
-	package { ['ircecho']:
-		ensure => absent;
-	}
-
-	service { ['ircecho']:
-		enable => false,
-		ensure => stopped;
-	}
-
-	file {
-		"/etc/default/ircecho":
-			ensure => absent;
-	}
 }
 
 class gerrit::crons {
