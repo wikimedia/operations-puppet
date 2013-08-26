@@ -1640,7 +1640,7 @@ node "manganese.wikimedia.org" {
     $ssh_x11_forwarding = "no"
     # Note: whenever moving Gerrit out of manganese, you will need
     # to update the role::zuul::production
-    include role::gerrit::production,
+    include role::gerrit::production::old,
         backup::client
 
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
@@ -2969,10 +2969,24 @@ node "xenon.eqiad.wmnet" {
 }
 
 node "ytterbium.wikimedia.org" {
+    install_certificate{ "gerrit.wikimedia.org": ca => "RapidSSL_CA.pem" }
 
+    $sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
+            'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
+            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
+            'ALL = NOPASSWD: /usr/local/bin/svn-group',
+            'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
+            'ALL = NOPASSWD: /var/lib/gerrit2/review_site/bin/gerrit.sh' ]
+    sudo_user { [ "robla", "reedy" ]: privileges => $sudo_privs }
+
+    # full root for gerrit admin (RT-3698)
     sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
 
-    include standard-noexim
+    # Note: whenever moving Gerrit out of manganese, you will need
+    # to update the role::zuul::production
+    include role::gerrit::production,
+        backup::client,
+        accounts::demon
 }
 
 
