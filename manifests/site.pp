@@ -2091,7 +2091,7 @@ node 'netmon1001.wikimedia.org' {
 
     $cluster = "misc"
 
-    include role::smokeping
+    include standard
 
 }
 
