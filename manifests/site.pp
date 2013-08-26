@@ -2648,7 +2648,10 @@ node "stat1.wikimedia.org" {
         accounts::tnegrin,   # RT 5391
         accounts::kwang      # RT 5520
 
-    sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+    sudo_user { "otto":   privileges => ['ALL = NOPASSWD: ALL'] }
+
+    # Allow Christian to sudo -u stats to debug and test stats' automated cron jobs.
+    sudo_user { "qchris": privileges => ['ALL = (stats) NOPASSWD: ALL'] }
 
     include misc::statistics::cron_blog_pageviews,
         misc::statistics::limn::mobile_data_sync,
