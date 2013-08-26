@@ -873,7 +873,7 @@ class misc::statistics::geowiki {
 	git::clone { 'geowiki':
 		directory => $geowiki_path,
 		origin    => "https://gerrit.wikimedia.org/r/p/analytics/geowiki.git",
-		ensure    => 'present',
+		ensure    => 'latest',
 		owner     => $geowiki_user,
 	}
 
