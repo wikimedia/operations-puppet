@@ -415,7 +415,12 @@ define command{
 define command{
 	command_name	nrpe_check_mysqld
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
-}                
+}
+define command{
+	command_name	check_eventlogging_jobs
+	command_line	/usr/lib/nagios/plugins/check_eventlogging_jobs
+}
+
 
 #Generic NRPE check
 define command{

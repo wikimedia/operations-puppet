@@ -154,4 +154,15 @@ class role::eventlogging {
             hosts_allow => $backup_destinations,
         }
     }
+
+
+    ## Monitoring
+
+    nrpe::monitor_service { 'eventlogging':
+        ensure        => 'present',
+        description   => 'Check status of defined EventLogging jobs',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
+        require       => File['/usr/lib/nagios/plugins/check_eventlogging_jobs'],
+        contact_group => 'admins,analytics',
+    }
 }
