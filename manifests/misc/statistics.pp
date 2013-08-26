@@ -856,16 +856,8 @@ class misc::statistics::limn::mobile_data_sync {
 
 # == Class misc::statistics::geowiki
 # Clones analytics/geowiki python scripts
-# and installs a cron job to get recent editor data
-# from the research slave databases and generate
-# editor geocoding statistics, saved back into a db.
-#
 class misc::statistics::geowiki {
-	require misc::statistics::user,
-		passwords::mysql::research,
-		passwords::mysql::globaldev,
-		misc::statistics::packages::python,
-		misc::geoip
+	require misc::statistics::user
 
 	$geowiki_user = $misc::statistics::user::username
 	$geowiki_path = '/a/geowiki'
@@ -876,6 +868,22 @@ class misc::statistics::geowiki {
 		ensure    => 'latest',
 		owner     => $geowiki_user,
 	}
+}
+
+# == Class misc::statistics::geowiki::jobs::data
+# Installs a cron job to get recent editor data
+# from the research slave databases and generate
+# editor geocoding statistics, saved back into a db.
+#
+class misc::statistics::geowiki::jobs::data {
+	require misc::statistics::geowiki,
+		passwords::mysql::research,
+		passwords::mysql::globaldev,
+		misc::statistics::packages::python,
+		misc::geoip
+
+	$geowiki_user = $misc::statistics::geowiki::geowiki_user
+	$geowiki_path = $misc::statistics::geowiki::geowiki_path
 
 	# install MySQL conf files for db acccess
 	$research_mysql_user = $passwords::mysql::research::user
@@ -894,7 +902,6 @@ user=${research_mysql_user}
 password=${research_mysql_pass}
 host=s1-analytics-slave.eqiad.wmnet
 ",
-		require => Git::Clone['geowiki'],
 	}
 
 	file { "${geowiki_path}/.globaldev.my.cnf":
@@ -906,7 +913,6 @@ host=s1-analytics-slave.eqiad.wmnet
 user=${globaldev_mysql_user}
 password=${globaldev_mysql_pass}
 ",
-		require => Git::Clone['geowiki'],
 	}
 
 	$geowiki_backups_path = "${geowiki_path}/geowiki-backup-data"
@@ -914,7 +920,6 @@ password=${globaldev_mysql_pass}
 		ensure  => 'directory',
 		owner   => $geowiki_user,
 		group   => $geowiki_user,
-		require => Git::Clone['geowiki'],
 	}
 
 	# cron to run geowiki/process_data.py.
