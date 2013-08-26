@@ -26,7 +26,7 @@ class role::statistics::cruncher inherits role::statistics {
 		misc::statistics::gerrit_stats,
 		misc::statistics::rsync::jobs::eventlogging,
 		# editor-geocoding geowiki to generate geographic editor stats
-		misc::statistics::geowiki
+		misc::statistics::geowiki::jobs::data
 }
 
 class role::statistics::www inherits role::statistics {
