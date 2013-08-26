@@ -2836,7 +2836,8 @@ node "vanadium.eqiad.wmnet" {
 node 'hafnium.wikimedia.org' {
     include standard,
         groups::wikidev,
-        accounts::olivneh
+        accounts::olivneh,
+        misc::graphite::pystatsd
 
     sudo_user { 'olivneh':
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],

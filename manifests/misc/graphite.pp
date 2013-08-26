@@ -107,3 +107,14 @@ class misc::graphite::gdash {
 			recurse => remote;
 	}
 }
+
+class misc::graphite::pystatsd {
+    class { 'pystatsd':
+        settings => {
+            name          => '127.0.0.1',  # only listen on loopback for now.
+            transport     => 'graphite',
+            graphite_host => 'professor.pmtpa.wmnet',
+            graphite_port => 2003,
+        },
+    }
+}

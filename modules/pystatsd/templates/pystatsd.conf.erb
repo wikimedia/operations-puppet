@@ -1,0 +1,19 @@
+# pystatsd
+#
+# This is an Upstart job configuration file for pystatsd. pystatsd
+# listens on a network interface for metric data. It computes roll-ups
+# and flushes them to Graphite.
+#
+description "pystatsd metric server"
+author "Ori Livneh <ori@wikimedia.org>"
+
+respawn limit 15 5
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+
+setuid nobody
+setgid nogroup
+
+respawn
+
+exec /usr/bin/pystatsd-server <%= @settings.sort.map { |k,v| "--#{k.tr('_', '-')} #{v}" }.join(' ') %>
