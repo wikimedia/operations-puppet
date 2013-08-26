@@ -18,4 +18,9 @@ class eventlogging::monitor {
         require => File['/usr/lib/ganglia/python_modules/eventlogging_mon.py'],
         notify  => Service['gmond'],
     }
+
+    file { '/usr/lib/nagios/plugins/check_eventlogging_jobs':
+        source => 'puppet:///modules/eventlogging/check_eventlogging_jobs',
+        mode   => '0755',
+    }
 }
