@@ -1,6 +1,6 @@
 # vim:sw=4:ts=4:et:
 
-class protoproxy::package {
+class nginx::package {
 
     package { ['nginx']:
         ensure => latest,

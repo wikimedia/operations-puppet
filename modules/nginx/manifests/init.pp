@@ -9,7 +9,7 @@
 #
 #  $enabled='true' adds the site to sites-enabled; $enabled=false removes it.
 #
-define nginx($install="false", $template="", $enable="true") {
+define nginx($install="false", $template="", $enable="true", $donotify="false") {
 	if !defined (Package["nginx"]) {
 		package { ['nginx']:
 			ensure => latest;
@@ -21,15 +21,23 @@ define nginx($install="false", $template="", $enable="true") {
 	} else {
 		$template_name = $template
 	}
+
 	if ( $enable == "true" ) {
+		$ensure = "link"
+	} else {
+		$ensure = "absent"
+	}
+
+	if ( $donotify == "true" ) {
 		file { "/etc/nginx/sites-enabled/${name}":
-			ensure => "/etc/nginx/sites-available/${name}",
+			ensure => $ensure,
+			target => "/etc/nginx/sites-available/${name}",
 			notify => Service["nginx"];
 		}
 	} else {
 		file { "/etc/nginx/sites-enabled/${name}":
-			ensure => absent,
-			notify => Service["nginx"];
+			ensure => $ensure,
+			target => "/etc/nginx/sites-available/${name}";
 		}
 	}
 
@@ -46,11 +54,4 @@ define nginx($install="false", $template="", $enable="true") {
 		}
 	}
 
-	if !defined (Service["nginx"]) {
-		service { ['nginx']:
-			require => Package["nginx"],
-			enable => true,
-			ensure => running;
-		}
-	}
 }
