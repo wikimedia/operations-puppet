@@ -1,13 +1,13 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/wikitech.wikimedia.org
+### puppet:///templates/apache/sites/wikitech.wikimedia.org
 #####################################################################
 # vim: filetype=apache
 
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
 	ServerName <%= controller_hostname %>
-	
+
 	DocumentRoot /var/www
 	<Directory />
 		Options FollowSymLinks
