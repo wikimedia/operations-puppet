@@ -25,7 +25,7 @@ modules {
 }
 
 collection_group {
-  collect_every = 30
+  collect_every = 60
   time_threshold = 60
 
   metric {
