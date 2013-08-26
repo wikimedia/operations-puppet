@@ -109,7 +109,7 @@ class misc::graphite::gdash {
 }
 
 class misc::graphite::pystatsd {
-    class { 'pystatsd':
+    class { '::pystatsd':
         settings => {
             name          => '127.0.0.1',  # only listen on loopback for now.
             transport     => 'graphite',
