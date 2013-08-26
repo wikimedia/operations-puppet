@@ -892,7 +892,7 @@ class misc::statistics::geowiki {
 [client]
 user=${research_mysql_user}
 password=${research_mysql_pass}
-host=s1-analytics-slave.eqiad.wmnet'
+host=s1-analytics-slave.eqiad.wmnet
 ",
 		require => Git::Clone['geowiki'],
 	}
