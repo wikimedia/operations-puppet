@@ -11,9 +11,11 @@ if replication != "" then
   replication.sort.each { |remote,settings|
     %>[remote "<%= remote %>"]
 <%
-    settings.sort.each { |option,value|
+    settings.sort.each { |option,params|
+        Array(params).sort.each { |value|
       %>  <%= option %> = <%= value %>
 <%
+        }
     }
   }
 end
