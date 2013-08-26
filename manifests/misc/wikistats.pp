@@ -69,6 +69,31 @@ class misc::wikistats::updates {
 		}
 	}
 	# update cron jobs: usage: <project prefix>@<hour>
-	wikistats::cronjob { [ 'wp@0','lx@1','wt@2','ws@3','wn@4','wb@5','wq@6','os@7','gt@8','an@9','wf@10','wv@11','sc@12','ne@13','wr@14','et@15','mt@16','un@17','wx@18','mw@19','sw@20','ro@21','wk@21','re@22','pa@23' ]: }
+	wikistats::cronjob { [ 	'wp@0',  # Wikipedias
+				'lx@1',  # LXDE
+				'wt@2',  # Wiktionaries
+				'ws@3',  # Wikisources
+				'wn@4',  # Wikinews
+				'wb@5',  # Wikibooks
+				'wq@6',  # Wikiquotes
+				'os@7',  # OpenSUSE
+				'gt@8',  # Gentoo
+				'an@9',  # Anarchopedias
+				'wf@10', # Wikifur
+				'wv@11', # Wikiversities
+				'sc@12', # Scoutwikis
+				'ne@13', # Neoseeker
+				'wr@14', # Wikitravel
+				'et@15', # EditThis
+				'mt@16', # Metapedias
+				'un@17', # Uncylomedias
+				'wx@18', # Wikimedia Special
+				'mw@19', # Mediawikis
+				'sw@20', # Shoutwikis
+				'ro@21', # Rodovid
+				'wk@21', # Wikkii
+				're@22', # Referata
+				'pa@23', # Pardus
+			    ]: }
 
 }
