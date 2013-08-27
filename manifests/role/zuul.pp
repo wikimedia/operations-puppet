@@ -64,7 +64,7 @@ class role::zuul::production {
     zuulwikimedia::instance { 'zuul-production':
         jenkins_server   => 'http://127.0.0.1:8080/ci',
         jenkins_user     => 'zuul-bot',
-        gerrit_server    => 'manganese.wikimedia.org',
+        gerrit_server    => 'ytterbium.wikimedia.org',
         gerrit_user      => 'jenkins-bot',
         url_pattern      => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
         status_url       => 'https://integration.wikimedia.org/zuul/',
