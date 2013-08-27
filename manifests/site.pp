@@ -170,15 +170,18 @@ node /analytics102[345].eqiad.wmnet/ {
     include role::analytics::zookeeper::server
 }
 
-# NOTE: This still needs reinstalled as of 2013-08-26
-node "analytics1026.eqiad.wmnet" {
-    include standard
+# analytcis1026-1028 are Hadoop JournalNodes
+node /analytics102[678]\.eqiad\.wmnet/ {
+    include role::analytics::common
+    # JournalNode is automatically included
+    # based on value of $journalnode_hosts.
+    include role::analytics::hadoop::client
 }
 
-# analytics1027 hosts the frontend
+# analytics1029 hosts the frontend
 # interfaces to Kraken and Hadoop.
-# NOTE: This still needs reinstalled as of 2013-08-26
-node "analytics1027.eqiad.wmnet" {
+# (Hue, Oozie, Hive, etc.)
+node "analytics1029.eqiad.wmnet" {
     include standard
 }
 
