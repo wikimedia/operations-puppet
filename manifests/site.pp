@@ -2837,7 +2837,7 @@ node 'hafnium.wikimedia.org' {
     include standard,
         groups::wikidev,
         accounts::olivneh,
-        misc::graphite::pystatsd
+        role::eventlogging::graphite
 
     sudo_user { 'olivneh':
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
