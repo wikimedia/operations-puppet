@@ -30,7 +30,7 @@ class sudo::labs_project {
 		include sudo::default
 
 		# Was handled via sudo ldap, now handled via puppet
-		sudo_group { ops: privileges => ['ALL=(ALL) ALL'] }
+		sudo_group { ops: privileges => ['ALL=(ALL) NOPASSWD: ALL'] }
 		# Old way of handling this.
 		sudo_group { $instanceproject: ensure => absent }
 		# Another old way, before per-project sudo
