@@ -16,6 +16,24 @@ class role::gerrit {
 	class production::old {
 		system_role { 'role::gerrit::production': description => 'Old gerrit master' }
 
+		class { "gerrit::instance":
+			db_host      => 'db1048.eqiad.wmnet',
+			host         => 'gerrit.wikimedia.org',
+			ssh_key      => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==',
+			ssl_cert     => 'gerrit.wikimedia.org',
+			ssl_cert_key => 'gerrit.wikimedia.org',
+			smtp_host    => 'smtp.pmtpa.wmnet',
+		}
+	}
+
+	class production {
+		system_role { 'role::gerrit::production': description => 'Gerrit master' }
+
+		interface::ip { 'role::gerrit::production':
+			interface => 'eth0',
+			address   => '208.80.154.81'
+		}
+
 		$replication_basic_push_refs = [
 			'+refs/heads/*:refs/heads/*',
 			'+refs/tags/*:refs/tags/*',
@@ -29,11 +47,6 @@ class role::gerrit {
 			ssl_cert_key => 'gerrit.wikimedia.org',
 			smtp_host    => 'smtp.pmtpa.wmnet',
 			replication  => {
-				'replacement'              => {
-					'url'                  => 'gerrit2@ytterbium.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git',
-					'threads'              => '4',
-					'mirror'               => 'true',
-				},
 				# If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
 
 				# FIXME remove it when all Jenkins jobs have been migrated to the new
@@ -125,24 +138,6 @@ class role::gerrit {
 					'projects'             => 'operations/software/varnish/varnishkafka',
 				},
 			}
-		}
-	}
-
-	class production {
-		system_role { 'role::gerrit::production': description => 'Gerrit master' }
-
-		interface::ip { 'role::gerrit::production':
-			interface => 'eth0',
-			address   => '208.80.154.81'
-		}
-
-		class { "gerrit::instance":
-			db_host      => 'db1048.eqiad.wmnet',
-			host         => 'gerrit.wikimedia.org',
-			ssh_key      => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==',
-			ssl_cert     => 'gerrit.wikimedia.org',
-			ssl_cert_key => 'gerrit.wikimedia.org',
-			smtp_host    => 'smtp.pmtpa.wmnet',
 		}
 	}
 
