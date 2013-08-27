@@ -20,7 +20,7 @@ class backup::host($sets, $pool='production') {
 
     $jobdefaults = "Monthly-1st-${day}-${pool}"
 
-    backup::host::sets { "${sets}":
+    backup::host::sets { $sets:
         jobdefaults => $jobdefaults,
     }
 }
