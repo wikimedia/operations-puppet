@@ -34,9 +34,6 @@ class role::analytics::common {
         role::analytics::pig,
         role::analytics::sqoop
 
-    # include analytics user accounts
-    include role::analytics::users
-
     # We want to be able to geolocate IP addresses
     include misc::geoip
     # udp-filter is a useful thing!
