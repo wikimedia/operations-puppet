@@ -166,3 +166,20 @@ class role::eventlogging {
         contact_group => 'admins,analytics',
     }
 }
+
+
+# == Class: role::eventlogging::graphite
+#
+# Keeps a running count of incoming events by schema in Graphite by
+# emitting 'eventlogging.SCHEMA_REVISION:1' on each event to a StatsD
+# instance.
+#
+class role::eventlogging::graphite {
+    include eventlogging
+    include misc::graphite::pystatsd
+
+    eventlogging::service::consumer { 'graphite':
+        input  => 'tcp://vanadium.eqiad.wmnet:8600',
+        output => 'statsd://127.0.0.1:8125',
+    }
+}
