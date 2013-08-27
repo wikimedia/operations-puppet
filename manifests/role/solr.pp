@@ -27,6 +27,15 @@ class role::solr($schema = undef, $replication_master = undef, $average_request_
 	}
 }
 
+# == Class: role::solr::ttm
+#
+# TTMServer is a translation memory server that comes with the Translate
+# extension. The Translate extension turns MediaWiki into a tool for
+# doing collaborative translation work. This Puppet class configures a
+# Solr back-end for translation lookups. It is used by translatewiki.
+#
+# See <http://www.mediawiki.org/wiki/Help:Extension:Translate/Translation_memories#Solr_backend>.
+#
 class role::solr::ttm {
 	system_role { "solr": description => "ttm solr backend" }
 
