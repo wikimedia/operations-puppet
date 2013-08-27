@@ -107,6 +107,7 @@ class role::analytics::hadoop::production {
         journalnode_hosts                       => $journalnode_hosts,
         datanode_mounts                         => $datanode_mounts,
         dfs_name_dir                            => [$hadoop_name_directory],
+        dfs_journalnode_edits_dir               => $hadoop_journal_directory,
         dfs_block_size                          => 268435456,  # 256 MB
         io_file_buffer_size                     => 131072,
         mapreduce_map_tasks_maximum             => ($::processorcount - 2) / 2,
