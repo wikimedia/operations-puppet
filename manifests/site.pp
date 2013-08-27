@@ -2235,7 +2235,13 @@ node "professor.pmtpa.wmnet" {
         ganglia,
         ntp::client,
         udpprofile::collector,
-        misc::graphite
+        misc::graphite,
+        groups::wikidev,
+        accounts::olivneh
+
+    sudo_user { 'olivneh':
+        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+    }
 }
 
 node "project1.wikimedia.org" {
