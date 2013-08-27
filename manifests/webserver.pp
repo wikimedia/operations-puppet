@@ -40,7 +40,7 @@ class webserver::php5( $ssl = 'false' ) {
 		ensure => present;
 	}
 
-	if $ssl == 'true' {
+	if $ssl == true {
 		apache_module { ssl: name => "ssl" }
 	}
 

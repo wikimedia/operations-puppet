@@ -455,7 +455,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
 	require mediawiki::users::mwdeploy
 
 	if !defined(Class["webserver::php5"]) {
-		class {'webserver::php5': ssl => 'true'; }
+		class {'webserver::php5': ssl => true; }
 	}
 
 	if !defined(Class["memcached"]) {

@@ -431,7 +431,7 @@ class ganglia::web {
         webserver::php5-mysql,
         svn::client
 
-    class {'webserver::php5': ssl => 'true'; }
+    class {'webserver::php5': ssl => true; }
 
     if $::realm == "labs" {
         $ganglia_servername = "ganglia.wmflabs.org"
