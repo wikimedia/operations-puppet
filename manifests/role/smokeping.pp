@@ -14,19 +14,19 @@ class {'webserver::php5': ssl => true; }
 
     # be flexible about labs vs. prod
     case $::realm {
-        labs: {
+        'labs': {
             $smokeping_host = "${role::smokeping::instancename}.${role::smokeping::domain}"
             $smokeping_ssl_cert = '/etc/ssl/certs/star.wmflabs.org.pem'
-            $smokeping_ssl_key = '/etc/ssl/private/star.wmflabs..org.key'
+            $smokeping_ssl_key = '/etc/ssl/private/star.wmflabs.org.key'
             install_certificate{ 'star.wmflabs.org': }
         }
-        production: {
+        'production': {
             $smokeping_host = 'smokeping.wikimedia.org'
             $smokeping_ssl_cert = '/etc/ssl/certs/star.wikimedia.org.pem'
             $smokeping_ssl_key = '/etc/ssl/private/star.wikimedia.org.key'
             install_certificate{ 'star.wikimedia.org': }
         }
-        default: {
+        'default': {
             fail('unknown realm, should be labs or production')
         }
     }
