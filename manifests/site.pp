@@ -2969,6 +2969,14 @@ node "xenon.eqiad.wmnet" {
 }
 
 node "ytterbium.wikimedia.org" {
+
+    # Note: whenever moving Gerrit out of manganese, you will need
+    # to update the role::zuul::production
+    include role::gerrit::production,
+        backup::client,
+	groups::wikidev,
+        accounts::demon
+
     install_certificate{ "gerrit.wikimedia.org": ca => "RapidSSL_CA.pem" }
 
     $sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
@@ -2981,12 +2989,6 @@ node "ytterbium.wikimedia.org" {
 
     # full root for gerrit admin (RT-3698)
     sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
-
-    # Note: whenever moving Gerrit out of manganese, you will need
-    # to update the role::zuul::production
-    include role::gerrit::production,
-        backup::client,
-        accounts::demon
 }
 
 
