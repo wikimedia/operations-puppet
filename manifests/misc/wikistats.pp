@@ -10,7 +10,7 @@ class misc::wikistats {
 	# the web UI part (output)
 class misc::wikistats::web ( $wikistats_host, $wikistats_ssl_cert, $wikistats_ssl_key ) {
 
-	class {'webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => true; }
 	include webserver::php5-mysql
 
 	file {
@@ -35,7 +35,7 @@ class misc::wikistats::web ( $wikistats_host, $wikistats_ssl_cert, $wikistats_ss
 
 	apache_module { rewrite: name => 'rewrite' }
 
-	apache_confd { namevirtualhost: install => 'true', name => 'namevirtualhost' }
+	apache_confd { namevirtualhost: install => true, name => 'namevirtualhost' }
 	apache_site { wikistats: name => $wikistats_host }
 
 }
