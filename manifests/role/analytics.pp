@@ -24,7 +24,7 @@ class role::analytics {
 # Includes common client classes for
 # working with hadoop and other analytics services.
 #
-class role::analytics::commmon {
+class role::analytics::common {
     include role::analytics
 
     # Include Hadoop ecosystem client classes.
