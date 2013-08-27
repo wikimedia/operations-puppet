@@ -4,7 +4,7 @@ class role::smokeping {
 
     system_role { 'role::smokeping': description => 'Smokeping' }
 
-    include standard-noexim,
+    include standard,
     misc::smokeping
 
 class {'webserver::php5': ssl => true; }
