@@ -17,7 +17,7 @@ if first_delivery then
 		if $acl_m1 is not "" and $acl_m1 begins "yes" then
 			headers add "X-Spam-Flag: YES"
 		# overload X-Spam-Flag since OTRS doesn't do numeric comparison
-		elif $acl_m3 is not "" and $acl_m3 is above 25 then
+		elif $acl_m3 is not "" and $acl_m3 is above 20 then
 			headers add "X-Spam-Flag: MAYBE"
 		else
 			headers add "X-Spam-Flag: NO"
