@@ -10,13 +10,13 @@ class role::planet {
 
 	# be flexible about labs vs. prod
 	case $::realm {
-		labs: {
+		'labs': {
 			$planet_domain_name = 'wmflabs.org'
 		}
-		production: {
+		'production': {
 			$planet_domain_name = 'wikimedia.org'
 		}
-		default: {
+		'default': {
 			fail('unknown realm, should be labs or production')
 		}
 	}

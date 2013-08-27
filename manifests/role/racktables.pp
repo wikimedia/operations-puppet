@@ -22,19 +22,19 @@ class role::racktables {
 
     # be flexible about labs vs. prod
     case $::realm {
-        labs: {
+        'labs': {
             $racktables_host = "${instancename}.${domain}"
             $racktables_ssl_cert = '/etc/ssl/certs/star.wmflabs.pem'
             $racktables_ssl_key = '/etc/ssl/private/star.wmflabs.key'
             install_certificate{ 'star.wmflabs.org': }
         }
-        production: {
+        'production': {
             $racktables_host = 'racktables.wikimedia.org'
             $racktables_ssl_cert = '/etc/ssl/certs/star.wikimedia.org.pem'
             $racktables_ssl_key = '/etc/ssl/private/star.wikimedia.org.key'
             install_certificate{ 'star.wikimedia.org': }
         }
-        default: {
+        'default': {
             fail('unknown realm, should be labs or production')
         }
     }
