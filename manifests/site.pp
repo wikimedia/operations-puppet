@@ -136,25 +136,25 @@ node /analytics100[2-8]\.eqiad\.wmnet/ {
 
 # analytics1009 is the Hadoop standby NameNode
 node "analytics1009.eqiad.wmnet" {
-    include standard
-    # include role::analytics::common
-    # include role::analytics::hadoop::standby
+    include role::analytics::common
+    include role::analytics::hadoop::standby
 }
 
 # analytics1010 is the Hadoop master node
 # (primary NameNode, ResourceManager, etc.)
 node "analytics1010.eqiad.wmnet" {
-    include standard
-    # include role::analytics::common
-    # include role::analytics::hadoop::master
+    include role::analytics::common
+    include role::analytics::hadoop::master
 }
 
 
 # analytics1011-analytics1020 are Hadoop worker nodes
 node /analytics10(1[1-9]|20).eqiad.wmnet/ {
-    include standard
-    # include role::analytics::common
-    # include role::analytics::hadoop::worker
+    include role::analytics::common
+    include role::analytics::hadoop::worker
+
+    # include analytics user accounts
+    include role::analytics::users
 }
 
 # analytics1021 and analytics1022 are Kafka Brokers.
