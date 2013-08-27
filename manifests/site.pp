@@ -2823,8 +2823,7 @@ node "vanadium.eqiad.wmnet" {
         accounts::olivneh,
         role::eventlogging,
         role::ipython_notebook,
-        nrpe,
-        solr::decommission
+        nrpe
 
     sudo_user { [ 'otto', 'olivneh' ]:
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],

@@ -175,7 +175,7 @@ class role::eventlogging {
 # instance.
 #
 class role::eventlogging::graphite {
-    include eventlogging
+    include ::eventlogging
     include misc::graphite::pystatsd
 
     eventlogging::service::consumer { 'graphite':
