@@ -480,3 +480,16 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
         # add cron jobs - usage: <cluster>@<day of month>
         updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17']: }
 }
+
+class misc::maintenance::purge_abusefilter( $enabled = false ) {
+        cron { 'purge_securepoll':
+                command => "/usr/local/bin/foreachwiki extensions/AbuseFilter/maintenance/purgeOldLogIPData.php >/dev/null",
+                user => apache,
+                hour => 1,
+                ensure => $enabled ?{
+                        true => present,
+                        false => absent,
+                        default => absent
+                };
+        }
+}
