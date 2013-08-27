@@ -522,3 +522,19 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
         updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17']: }
         updatequerypages::enwiki::cronjob { ['updatequerypages-enwiki-only']: }
 }
+
+class misc::maintenance::purge_abusefilter( $enabled = false ) {
+
+        $status = $enabled ? {
+            true    => 'present',
+            false   => 'absent',
+            default => 'absent',
+        }
+
+        cron { 'purge_securepoll':
+            command => '/usr/local/bin/foreachwiki extensions/AbuseFilter/maintenance/purgeOldLogIPData.php >/dev/null 2>&1',
+            user    => 'apache',
+            hour    => '1',
+            ensure  => $status,
+        }
+}
