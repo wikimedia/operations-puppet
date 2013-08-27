@@ -165,4 +165,10 @@ class contint::packages {
     ]:
     ensure => present;
   }
+
+  package { [
+    'python-httplib2',
+    ]:
+    ensure => present
+  }
 }
