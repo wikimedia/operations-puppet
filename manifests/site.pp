@@ -1335,12 +1335,14 @@ node 'lanthanum.eqiad.wmnet' {
 
     # Used as a Jenkins slave so some folks need escalated privileges
     $gid=500
-    sudo_user { [ 'demon', 'hashar', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]: privileges => [
+    sudo_user { [ 'demon', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]: privileges => [
         'ALL = (jenkins-slave) NOPASSWD: ALL',
         'ALL = (gerritslave) NOPASSWD: ALL',
         ]
     }
 
+    # full root for Jenkins admin (RT-5677)
+    sudo_user { "hashar": privileges => ['ALL = NOPASSWD: ALL'] }
 
     # lanthanum received a SSD drive just like gallium (RT #5178) mount it
     file { '/srv/ssd':
