@@ -26,15 +26,24 @@ define salt::grain(
   $grain  = $title,
   $ensure = present,
 ) {
-  if $ensure == 'absent' {
-    exec { "/usr/local/sbin/grain-ensure remove ${grain} ${value}":
-      onlyif  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
-      require => File['/usr/local/sbin/grain-ensure'],
+  case $ensure {
+    'absent': {
+        exec { "/usr/local/sbin/grain-ensure remove ${grain} ${value}":
+          onlyif  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
+          require => File['/usr/local/sbin/grain-ensure'],
+        }
     }
-  } else {
-    exec { "/usr/local/sbin/grain-ensure add ${grain} ${value}":
-      unless  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
-      require => File['/usr/local/sbin/grain-ensure'],
+    'present': {
+        exec { "/usr/local/sbin/grain-ensure add ${grain} ${value}":
+          unless  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
+          require => File['/usr/local/sbin/grain-ensure'],
+        }
+    }
+    'singlevalue': {
+        exec { "/usr/local/sbin/grain-ensure set ${grain} ${value}":
+          unless  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
+          require => File['/usr/local/sbin/grain-ensure'],
+        }
     }
   }
 }

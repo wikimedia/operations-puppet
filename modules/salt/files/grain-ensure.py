@@ -59,6 +59,11 @@ def add(grain, value):
     return False
 
 
+def setval(grain, value):
+    caller.function('grains.setval', grain, value)
+    return True
+
+
 def contains(grain, value):
     return value in get(grain)
 
@@ -72,7 +77,7 @@ def remove(grain, value):
     return False
 
 
-actions = {'add': add, 'remove': remove, 'contains': contains}
+actions = {'add': add, 'remove': remove, 'contains': contains, 'set': setval}
 
 ap = argparse.ArgumentParser()
 ap.add_argument('action', choices=actions)
