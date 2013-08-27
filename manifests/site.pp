@@ -172,7 +172,7 @@ node /analytics102[345].eqiad.wmnet/ {
 
 # analytcis1026-1028 are Hadoop JournalNodes
 node /analytics102[678]\.eqiad\.wmnet/ {
-    include role::analytics::common
+    include role::analytics
     # JournalNode is automatically included
     # based on value of $journalnode_hosts.
     include role::analytics::hadoop::client
