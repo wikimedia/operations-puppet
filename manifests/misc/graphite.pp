@@ -39,6 +39,11 @@ class misc::graphite {
 			group => "root",
 			mode => 0444,
 			source => "puppet:///files/graphite/storage-aggregation.conf";
+		"/a/graphite/modules":
+			owner => "www-data",
+			group => "www-data",
+			mode => 0755,
+			ensure => directory;
 		"/a/graphite/storage":
 			owner => "www-data",
 			group => "www-data",
@@ -116,5 +121,36 @@ class misc::graphite::pystatsd {
             graphite_host => 'professor.pmtpa.wmnet',
             graphite_port => 2003,
         },
+    }
+}
+
+
+# == Class: misc::graphite::navtiming
+#
+# Captures NavigationTiming event and send them to StatsD / Graphite.
+# See https://meta.wikimedia.org/wiki/Schema:NavigationTiming &
+# http://www.mediawiki.org/wiki/Extension:NavigationTiming
+#
+class misc::graphite::navtiming {
+    $endpoint = 'tcp://vanadium.eqiad.wmnet:8600'
+    $statsd_host = '127.0.0.1'
+    $statsd_port = 8125
+
+    file { '/a/graphite/modules/navtiming.py':
+        source => 'puppet:///files/graphite/modules/navtiming.py',
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+        before => File['/etc/init/navtiming.conf'],
+    }
+
+    file { '/etc/init/navtiming.conf':
+        content => template('graphite/modules/navtiming.conf'),
+        before  => Service['navtiming'],
+    }
+
+    service { 'navtiming':
+        ensure   => running,
+        provider => upstart,
     }
 }
