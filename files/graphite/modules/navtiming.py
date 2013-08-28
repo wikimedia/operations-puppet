@@ -42,10 +42,9 @@ for meta in iter(zsock.recv_json, ''):
         continue
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
-    country = event.get('originCountry') or 'ZZ'
 
     for metric in metrics:
         value = event.get(metric)
-        if value > 0:
-            stat = 'navigation.%s.%s.%s:%s|ms' % (metric, site, country, value)
+        if value > 0 and value < 60000:
+            stat = 'browser.%s.%s:%s|ms' % (metric, site, value)
             sock.sendto(stat.encode('utf-8'), addr)
