@@ -40,9 +40,21 @@ class role::otrs {
             source => 'puppet:///files/otrs/crontab.otrs';
         '/var/spool/spam':
             ensure => directory,
-            owner => www-data,
+            owner => otrs,
             group => www-data,
             mode => '0775';
+        '/opt/otrs/bin/otrs.TicketExport2Mbox.pl':
+            ensure => present,
+            owner => otrs,
+            group => www-data,
+            mode => '0755',
+            source => 'puppet:///files/otrs/otrs.TicketExport2Mbox.pl';
+        '/usr/local/bin/train_spamassassin':
+            ensure => present,
+            owner => root,
+            group => root,
+            mode => '0555',
+            source => 'puppet:///files/otrs/train_spamassassin';
     }
 
     install_certificate{ "star.wikimedia.org": }
