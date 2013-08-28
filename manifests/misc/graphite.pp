@@ -151,7 +151,7 @@ class misc::graphite::navtiming {
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0755',
-        before => File['/etc/init/navtiming.conf'],
+        notify => Service['navtiming'],
     }
 
     file { '/etc/init/navtiming.conf':
