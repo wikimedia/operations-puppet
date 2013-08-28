@@ -1,0 +1,22 @@
+# navtiming
+#
+# This is an Upstart job configuration file for a Graphite metric module for
+# NavigationTiming events. For more information, see:
+# https://meta.wikimedia.org/wiki/Schema:NavigationTiming
+# http://www.mediawiki.org/wiki/Extension:NavigationTiming
+#
+description "NavigationTiming Graphite module"
+
+respawn limit 15 5
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+
+setuid nobody
+setgid nogroup
+
+respawn
+
+exec /usr/bin/python /a/graphite/modules/navtiming.py \
+    <%= @endpoint %> \
+    --statsd-host <%= @statsd_host %> \
+    --statsd-port <%= @statsd_port %>
