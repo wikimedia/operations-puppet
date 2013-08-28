@@ -90,6 +90,7 @@ class misc::wikistats::updates {
 				'wx@18', # Wikimedia Special
 				'mw@19', # Mediawikis
 				'sw@20', # Shoutwikis
+				'wy@20', # Wikivoyages
 				'ro@21', # Rodovid
 				'wk@21', # Wikkii
 				're@22', # Referata
