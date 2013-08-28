@@ -295,7 +295,7 @@ class spamassassin(
 	}
 
 	service { "spamassassin":
-		require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin], Systemuser[spamd] ],
+		require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin] ],
 		subscribe => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"] ],
 		ensure => running;
 	}

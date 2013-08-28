@@ -105,11 +105,11 @@ if (@TicketIDs) {
 			push @ArticleIDs, @TicketArticleIds,
 		} else {
 			$CommonObject{LogObject}->Log(
-	        	Priority => 'notice',
+				Priority => 'notice',
 				Message  => "Unable to find TicketID $TicketID.",
 			);
 		}
-    }
+	}
 }
 
 if (@ArticleIDs) {
@@ -131,14 +131,14 @@ if (@ArticleIDs) {
 				);
 			} else {
 				$CommonObject{LogObject}->Log(
-	            	Priority => 'error',
+					Priority => 'error',
 					Message  => "can't write to $Mbox.",
 				);
 				exit;
 			}
-        } else {
+		} else {
 			$CommonObject{LogObject}->Log(
-	        	Priority => 'notice',
+				Priority => 'notice',
 				Message  => "No plain message found for ArticleID $ArticleID.",
 			);
 		}
