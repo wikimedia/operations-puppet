@@ -42,7 +42,6 @@ import atexit
 import codecs
 import json
 import logging
-import os
 import select
 import socket
 
