@@ -255,6 +255,8 @@ class exim {
 # SpamAssassin http://spamassassin.apache.org/
 class spamassassin(
 		$required_score = '5.0',
+		$max_children = 8,
+		$nicelevel = 10,
 		$use_bayes = 1,
 		$bayes_auto_learn = 1,
 		$short_report_template = 'false',
