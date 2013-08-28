@@ -259,6 +259,8 @@ class spamassassin(
 		$bayes_auto_learn = 1,
 		$short_report_template = 'false',
 		$otrs_rule_scores = 'false',
+		$spamd_user = 'spamd',
+		$spamd_group = 'spamd',
 	) {
 	include network::constants
 
@@ -266,7 +268,18 @@ class spamassassin(
 		ensure => latest;
 	}
 
-	systemuser { "spamd": name => "spamd" }
+	# this seems broken, especially since /var/spamd is unused
+	# and spamd's homedir is created as /var/lib/spamd
+	if ( $spamd_user == "spamd" ) {
+		systemuser { "spamd": name => "spamd" }
+		file { "/var/spamd":
+			require => Systemuser[spamd],
+			ensure => directory,
+			owner => spamd,
+			group => spamd,
+			mode => 0700;
+		}
+	}
 
 	File {
 		require => Package[spamassassin],
@@ -278,21 +291,13 @@ class spamassassin(
 		"/etc/spamassassin/local.cf":
 			content => template("spamassassin/local.cf");
 		"/etc/default/spamassassin":
-			source => "puppet:///files/spamassassin/spamassassin.default";
+			content => template("spamassassin/spamassassin.default.erb");
 	}
 
 	service { "spamassassin":
-			require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin], Systemuser[spamd] ],
-			subscribe => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"] ],
-			ensure => running;
-	}
-
-	file { "/var/spamd":
-		require => Systemuser[spamd],
-		ensure => directory,
-		owner => spamd,
-		group => spamd,
-		mode => 0700;
+		require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin], Systemuser[spamd] ],
+		subscribe => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"] ],
+		ensure => running;
 	}
 
 	monitor_service { "spamd": description => "spamassassin", check_command => "nrpe_check_spamd" }

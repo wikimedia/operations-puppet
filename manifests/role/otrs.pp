@@ -38,6 +38,11 @@ class role::otrs {
             group => root,
             mode => '0444',
             source => 'puppet:///files/otrs/crontab.otrs';
+        '/var/spool/spam':
+            ensure => directory,
+            owner => www-data,
+            group => www-data,
+            mode => '0555';
     }
 
     install_certificate{ "star.wikimedia.org": }
