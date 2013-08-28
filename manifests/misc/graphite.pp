@@ -145,7 +145,7 @@ class misc::graphite::navtiming {
     }
 
     file { '/etc/init/navtiming.conf':
-        content => template('graphite/modules/navtiming.conf'),
+        content => template('graphite/modules/navtiming.conf.erb'),
         notify  => Service['navtiming'],
     }
 
