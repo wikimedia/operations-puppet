@@ -79,4 +79,12 @@ class role::otrs {
         enable_external_mail => 'true',
         smart_route_list => [ 'mchenry.wikimedia.org', 'lists.wikimedia.org' ],
     }
+
+    cron { 'otrs_train_spamassassin':
+        user => root,
+        minute => 5,
+        command => '/usr/local/bin/train_spamassassin',
+        ensure => present;
+    }
+
 }

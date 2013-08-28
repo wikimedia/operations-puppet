@@ -66,9 +66,10 @@ sub execute_shell {
 			my $line = scalar <$fh>; # this is the output itself from the current filehandle
 			chomp $line;
 			if ($ffh == fileno(R)) { # output on stdout
-				print "$line\n";
+				printlog($line);
 			} elsif ($ffh == fileno (E)) { # output on stderr
-				print "error: $line\n";
+				printlog("error: $line");
+				print "$line\n";
 			}
 		}
 	}
