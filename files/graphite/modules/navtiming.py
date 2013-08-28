@@ -14,7 +14,6 @@ import zmq
 schema_rev = 5336845
 metrics = ('connecting', 'sending', 'waiting', 'redirecting', 'receiving',
            'rendering', 'loading')
-countries = ('US', 'GB', 'JP', 'DE', 'RU', 'BR', 'CA', 'FR', 'IN')
 
 
 ap = argparse.ArgumentParser(description='NavigationTiming Graphite module')
@@ -34,24 +33,19 @@ zsock.subscribe = b''
 
 addr = args.statsd_host, args.statsd_port
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-for meta_event in iter(zsock.recv_json, ''):
-    if meta_event['revision'] != schema_rev:
+
+for meta in iter(zsock.recv_json, ''):
+    if meta['revision'] != schema_rev:
         continue
-    event = meta_event['event']
+    event = meta['event']
     if not event.get('isAnon'):
         continue
-    if 'mobileMode' in event:
-        site = 'mobile.' + event['mobileMode']
-    else:
-        site = 'desktop'
-    metric_strings = [site]
-    if event.get('originCountry') in countries:
-        metric_strings.append('%s.%s' % (event['originCountry'], site))
+
+    site = 'mobile' if 'mobileMode' in event else 'desktop'
+    country = event.get('originCountry') or 'ZZ'
+
     for metric in metrics:
-        if event.get(metric) < 0:
-            continue
-        for metric_string in metric_strings:
-            stat = ('navigation_timing.%s.%s:%s|ms' %
-                    (metric_string, metric, event[metric]))
-            stat = stat.encode('utf-8')
-            sock.sendto(stat, addr)
+        value = event.get(metric)
+        if value > 0:
+            stat = 'navigation.%s.%s.%s:%s|ms' % (metric, site, country, value)
+            sock.sendto(stat.encode('utf-8'), addr)
