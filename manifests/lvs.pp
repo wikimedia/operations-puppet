@@ -289,7 +289,6 @@ class lvs::configuration {
 					'wikiversitylb6' => "2620:0:861:ed1a::7",
 					'mediawikilb6' => "2620:0:861:ed1a::8",
 					'foundationlb6' => "2620:0:861:ed1a::9",
-					'uploadlb6' => "2620:0:861:ed1a::b",
 					'wikidatalb6' => "2620:0:861:ed1a::12",
 					'wikivoyagelb6' => "2620:0:861:ed1a::13"
 				},
@@ -315,9 +314,9 @@ class lvs::configuration {
 				'esams' => { 'bitslb' => "91.198.174.233", 'bitslb6' => "2620:0:862:ed1a::a", 'bitssvc' => "10.2.3.23" },
 			},
 			'upload' => {
-				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadlb6' => "2620:0:860:ed1a::b", 'uploadsvc' => "10.2.1.24" },
+				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
 				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadlb6' => "2620:0:861:ed1a::b", 'uploadsvc' => "10.2.2.24" },
-				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadlb6' => "2620:0:862:ed1a::b", 'uploadsvc' => "10.2.3.24" },
+				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			},
 			'payments' => {
 				'pmtpa' => "208.80.152.213",
