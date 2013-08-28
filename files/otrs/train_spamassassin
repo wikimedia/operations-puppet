@@ -7,8 +7,8 @@ use Sys::Syslog;
 # general conf
 my $spam = '/var/spool/spam/spam';
 my $ham = '/var/spool/spam/ham';
-my $user = 'spamd',
-my $group = 'spamd',
+my $user = 'otrs',
+my $group = 'otrs',
 my $lockfile = '/tmp/train_spamassassin.lock';
 chomp(my $ident = ($0 =~ /([^\/]+)$/) ? $1 : $0);
 
