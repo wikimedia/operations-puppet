@@ -42,7 +42,7 @@ class role::otrs {
             ensure => directory,
             owner => www-data,
             group => www-data,
-            mode => '0555';
+            mode => '0775';
     }
 
     install_certificate{ "star.wikimedia.org": }
@@ -57,6 +57,8 @@ class role::otrs {
         bayes_auto_learn => '1',
         short_report_template => 'true',
         otrs_rule_scores => 'true',
+        spamd_user => 'otrs',
+        spamd_group => 'otrs',
     }
 
     class { 'exim::roled':

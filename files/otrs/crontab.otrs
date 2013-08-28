@@ -7,7 +7,7 @@ MAILTO="root@wikimedia.org"
 30 0 * * 0     otrs  /opt/otrs/bin/otrs.LoaderCache.pl -o delete >> /dev/null
 
 # start generic agent
-*/20 * * * *   otrs  /opt/otrs/bin/otrs.GenericAgent.pl >> /dev/null
+*/10 * * * *   otrs  /opt/otrs/bin/otrs.GenericAgent.pl >> /dev/null
 
 # check for pending jobs
 45 */2 * * *   otrs  /opt/otrs/bin/otrs.PendingJobs.pl >> /dev/null

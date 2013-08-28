@@ -1,0 +1,124 @@
+#!/usr/bin/perl
+use strict;
+use IPC::Open3;
+use IO::Select;
+use Sys::Syslog;
+
+# general conf
+my $spam = '/var/spool/spam/spam';
+my $ham = '/var/spool/spam/ham';
+my $user = 'spamd',
+my $group = 'spamd',
+my $lockfile = '/tmp/train_spamassassin.lock';
+chomp(my $ident = ($0 =~ /([^\/]+)$/) ? $1 : $0);
+
+printlog('start!');
+
+# lock to prevent collisions
+if (my $lock_error = setlockfile('set')) {
+	printlog("exit: $lock_error");
+	exit;
+}
+
+# learn from spam
+if (-e "$spam") {
+	execute_shell("chown $user.$group $spam");
+	execute_shell("su - $user -c \"/usr/bin/sa-learn --spam --mbox $spam\"");
+	execute_shell("su - $user -c \"/usr/bin/spamassassin --add-to-blacklist --mbox < $spam\"");
+	unlink "$spam";
+	printlog("processed $spam as spam");
+}
+
+# learn from ham
+if (-e "$ham") {
+	execute_shell("chown $user.$group $ham");
+	execute_shell("su - $user -c \"/usr/bin/sa-learn --ham --mbox $ham\"");
+	execute_shell("su - $user -c \"/usr/bin/spamassassin --add-to-whitelist --mbox < $ham\"");
+	unlink "$ham";
+	printlog("processed $ham as ham");
+}
+
+setlockfile('unset');
+printlog('done!');
+
+exit;
+
+
+# open system call using open3 so we can cleanly address stderr/stdout
+sub execute_shell {
+	my $child_pid = open3(*W, *R, *E, shift);
+	close (W); # don't need the write handle at all, so we close that
+
+	# use IO::Select to step through the output of open3
+	my ($selector) = IO::Select->new();
+	$selector->add (*R, *E);
+
+	# keep looping through open3 filehandles until there is no more output on any of them
+	while (1) {
+		last if scalar ($selector->handles) == 0;
+		my @ready = $selector->can_read (1);
+		for my $fh (@ready) {
+			my $ffh = fileno($fh); # identify which handle we're dealing with
+			if (eof ($fh)) { # close the filehandle if we reach the end of output
+				$selector->remove ($fh);
+				next;
+			}
+			my $line = scalar <$fh>; # this is the output itself from the current filehandle
+			chomp $line;
+			if ($ffh == fileno(R)) { # output on stdout
+				print "$line\n";
+			} elsif ($ffh == fileno (E)) { # output on stderr
+				print "error: $line\n";
+			}
+		}
+	}
+	close(R); # we're done with the read handle
+	close(E); # we're done with the error handle
+}
+
+sub printlog {
+	my $msg = $_[0] ? $_[0] : '';
+	my $severity = $_[1] ? $_[1] : 'notice'; # notice warning error etc.
+	Sys::Syslog::setlogsock('unix');
+	Sys::Syslog::openlog($ident,'ndelay,pid','user');
+	Sys::Syslog::syslog($severity,$msg);
+	Sys::Syslog::closelog();
+}
+
+# set lockfile
+sub setlockfile {
+	my $action = shift;
+	if ($action eq 'set') {
+		return("$0 already running") if (running($0));
+		open LOCK, "> $lockfile";
+		flock (LOCK, 2) or return("$0 already running?");
+		print LOCK $$;
+		close LOCK;
+	} else {
+		unlink $lockfile;
+	}
+	return;
+}
+
+# check for lockfile
+#  -> if found, check for process matching PID
+#   -> if no matching process, whack the lockfile
+sub running {
+	my $prog = shift;
+	$prog =~ s/^(.*\/)+//g;
+	if (-e $lockfile) {
+		open LOCK, $lockfile;
+		my $checkpid = <LOCK>;
+		close LOCK;
+		if ($checkpid) {
+			chomp $checkpid;
+			if (`ps -p $checkpid -o command= | grep $prog`) {
+				return $checkpid;
+			} else {
+				printlog("removed stale lockfile for $prog ($checkpid)",'warning');
+				unlink $lockfile;
+			}
+		}
+	}
+	return;
+}
