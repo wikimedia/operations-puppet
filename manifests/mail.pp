@@ -188,6 +188,10 @@ class exim {
 				ensure => present;
 		}
 
+		class { 'backup::host':
+			sets => [ 'var-vmail', ]
+		}
+
 		class mail_relay {
 			Class["exim::config"] -> Class[exim::roled::mail_relay]
 
@@ -210,6 +214,10 @@ class exim {
 
 		class mailman {
 			Class["exim::config"] -> Class[exim::roled::mailman]
+
+			class {'backup::host':
+				sets => ['var-lib-mailman', ]
+			}
 
 			file { '/etc/exim4/aliases/lists.wikimedia.org':
 					owner => root,

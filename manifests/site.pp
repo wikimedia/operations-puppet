@@ -1822,6 +1822,10 @@ node "mchenry.wikimedia.org" {
 
     # mails the wikimedia.org mail alias file to OIT once per week
     class { misc::maintenance::mail_exim_aliases: enabled => true }
+
+    class { 'backup::host':
+        sets    => ['roothome', ]
+    }
 }
 
 node 'mexia.wikimedia.org' {

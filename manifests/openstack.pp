@@ -544,6 +544,10 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
 
 	apache_site { controller: name => "${controller_hostname}" }
 	apache_module { rewrite: name => "rewrite" }
+
+	class { 'backup::host': 
+		sets	=> [ 'a-backup', ]
+	}
 }
 
 class openstack::scheduler-service($openstack_version="folsom", $novaconfig) {

@@ -31,6 +31,10 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		ensure => latest;
 	}
 
+    class { 'backup::host':
+        sets => [ 'var-lib-puppet-ssl', ]
+    }
+
 	class ssl($server_name="puppet", $ca="false") {
 		$ssldir = "/var/lib/puppet/server/ssl"
 

@@ -726,6 +726,10 @@ class misc::statistics::rsync::jobs::eventlogging {
 		source      => "vanadium.eqiad.wmnet::eventlogging/archive/*.gz",
 		destination => "/a/eventlogging/archive",
 	}
+
+	class { 'backup::host':
+		sets => [ 'a-eventlogging', 'home', ]
+	}
 }
 
 # Define: misc::statistics::rsync_job
