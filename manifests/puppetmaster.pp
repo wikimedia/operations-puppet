@@ -313,8 +313,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	class scripts {
 		File { mode => 0555 }
 		file {
-			"/usr/local/bin/position-of-the-moon":
-				source => "puppet:///files/puppet/position-of-the-moon";
 			"/usr/local/bin/uuid-generator":
 				source => "puppet:///files/puppet/uuid-generator";
 			"/usr/local/bin/naggen":
@@ -325,6 +323,11 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				content => template("puppet/decom_servers.sh.erb");
 			"/usr/local/bin/puppet-merge":
 				source => "puppet:///files/puppet/puppet-merge";
+		}
+
+		# TODO: Remove this after file is cleaned up from all servers
+		file { "/usr/local/bin/position-of-the-moon":
+			ensure => absent,
 		}
 
 		cron {
