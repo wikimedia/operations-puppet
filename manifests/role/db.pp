@@ -112,3 +112,11 @@ class role::labsdb::manager {
             content => template('mysql/skrillex.yaml.erb');
     }
 }
+
+class role::db::maintenance {
+    include generic::mysql::packages::client
+
+    package { "percona-toolkit":
+        ensure => latest;
+    }
+}
