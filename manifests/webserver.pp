@@ -293,7 +293,7 @@ class webserver::apache {
 			$docroot = "/srv/$subdir"
 		}
 		
-		if $ssl in ["true", "only", "redirected"] {
+		if "$ssl" in ["true", "only", "redirected"] {
 			webserver::apache::module { ssl: }
 			
 			# If no cert files are defined, assume a wildcart certificate for the domain
