@@ -87,4 +87,9 @@ class role::otrs {
         ensure => present;
     }
 
+    monitor_service { "https":
+        description => "HTTPS",
+        check_command => "check_ssl_cert!*.wikimedia.org",
+    }
+
 }
