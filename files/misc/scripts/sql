@@ -5,14 +5,13 @@ db=$1
 
 MWMULTIDIR=$MW_COMMON/multiversion
 
-if [ -z $db ];then
+if [ -z $db ]; then
 	db=enwiki
+elif [ "$db" == centralauth ]; then
+	db=fawiki
 fi
-if [ "$db" == centralauth ]; then
-	host=`echo 'echo wfGetLB()->getServerName(0);' | /usr/local/bin/mwscript eval.php --wiki=fawiki`
-else
-	host=`echo 'echo wfGetLB()->getServerName(0);' | /usr/local/bin/mwscript eval.php --wiki="$db"`
-fi
+
+host=`echo 'echo wfGetLB()->getServerName(0);' | /usr/local/bin/mwscript eval.php --wiki="$db"`
 
 MU=wikiadmin
 MP=`wikiadmin_pass`
