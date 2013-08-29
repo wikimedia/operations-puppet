@@ -303,6 +303,8 @@ class misc::statistics::sites::stats {
 	</Directory>",
 	],
 	}
+
+  install_certificate{ $site_name: }
 }
 
 # community-analytics.wikimedia.org
