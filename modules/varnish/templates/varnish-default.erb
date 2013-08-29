@@ -70,7 +70,7 @@ VARNISH_ADMIN_LISTEN_PORT=<%= varnish_admin_port %>
 VARNISH_MIN_THREADS=<%= 1000 / 2 %>
 #
 # # The Maximum number of worker threads to start
-VARNISH_MAX_THREADS=<%= 4000 / 2 %>
+VARNISH_MAX_THREADS=<%= @processorcount.to_i * 500 / 2 %>
 #
 # # Idle timeout for worker threads
 VARNISH_THREAD_TIMEOUT=120
