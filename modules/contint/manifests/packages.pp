@@ -75,6 +75,7 @@ class contint::packages {
     'pep8',
     'pyflakes',
     'pylint',
+    'python-virtualenv',
 
     'luajit',
     'libevent-dev',  # PoolCounter daemon
