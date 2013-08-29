@@ -263,6 +263,7 @@ class misc::statistics::sites::stats {
 	webserver::apache::site { $site_name:
 		require => [Class["webserver::apache"], Webserver::Apache::Module["rewrite"], File["/etc/apache2/htpasswd.stats"]],
 		docroot => $docroot,
+		ssl => true,
 		aliases   => ["stats.wikipedia.org"],
 		custom => [
 			"Alias /extended $docroot/reportcard/extended",
