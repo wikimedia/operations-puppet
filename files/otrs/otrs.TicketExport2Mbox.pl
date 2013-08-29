@@ -30,9 +30,7 @@ use FindBin qw($RealBin);
 use lib dirname($RealBin);
 use lib dirname($RealBin) . '/Kernel/cpan-lib';
 use lib dirname($RealBin) . '/Custom';
-
 use Getopt::Long;
-
 use Kernel::Config;
 use Kernel::System::DB;
 use Kernel::System::Encode;
@@ -42,7 +40,7 @@ use Kernel::System::Ticket;
 use Kernel::System::Time;
 
 # create common objects
-my %CommonObject = ();
+my (%CommonObject,$Help,@TicketIDs,@TicketNumbers,@ArticleIDs);
 $CommonObject{ConfigObject} = Kernel::Config->new();
 $CommonObject{EncodeObject} = Kernel::System::Encode->new(%CommonObject);
 $CommonObject{LogObject}    = Kernel::System::Log->new(
@@ -54,12 +52,9 @@ $CommonObject{TimeObject}   = Kernel::System::Time->new(%CommonObject);
 $CommonObject{DBObject}     = Kernel::System::DB->new(%CommonObject);
 $CommonObject{TicketObject} = Kernel::System::Ticket->new(%CommonObject);
 
-my ($Help,@TicketIDs,@TicketNumbers,@ArticleIDs);
-
 GetOptions(
 	'help'                => \$Help,
 	'mbox=s'              => \$Mbox,
-	'ArticleID=s{,}'      => \@ArticleIDs,
 	'TicketNumber=s{,}'   => \@TicketNumbers,
 	'TicketID=s{,}'       => \@TicketIDs,
 );
@@ -72,86 +67,70 @@ if (($ARGV[0] =~ /^\d{16}/) and ($ARGV[1] =~ /^(\d+)/)) {
 }
 
 usage() if defined $Help;
-usage() unless @ArticleIDs or @TicketIDs or @TicketNumbers;
+usage() unless @TicketIDs or @TicketNumbers;
 
-if (@TicketNumbers) {
-	for my $TicketNumber (@TicketNumbers) {
-		my $TicketID = $CommonObject{TicketObject}->TicketIDLookup(
-			TicketNumber => $TicketNumber,
-			UserID       => 1,
-		);
-		if (defined $TicketID) {
-			push @TicketIDs, $TicketID;
-		} else {
-			$CommonObject{LogObject}->Log(
-	        	Priority => 'notice',
-				Message  => "Unable to find TicketNumber $TicketNumber.",
-			);
-		}
+for my $TicketNumber (@TicketNumbers) {
+	my $TicketID = $CommonObject{TicketObject}->TicketIDLookup(
+		TicketNumber => $TicketNumber,
+		UserID => 1,
+		Silent => 0,
+	);
+	if (defined $TicketID) {
+		push @TicketIDs, $TicketID;
+	} else {
+		printlog("Unable to find TicketNumber $TicketNumber.");	
 	}
 }
 
-if (@TicketIDs) {
-	for my $TicketID (@TicketIDs) {
-		my $TicketNumber = $CommonObject{TicketObject}->TicketNumberLookup(
+for my $TicketID (@TicketIDs) {
+	my %Ticket = $CommonObject{TicketObject}->TicketGet(
+		TicketID => $TicketID,
+		UserID    => 1,
+		Silent    => 0,
+	);
+	# this is a horrible quick & dirty hack to skip messages that appear to have been
+	# automatically queued into Junk
+	if (($Ticket{'Queue'} eq 'Junk') and ($Ticket{'Changed'} eq $Ticket{'Created'})) {
+		printlog("Skip TicketID $TicketID, it was already autoqueued to Junk.",'debug');
+	} else {
+		my @TicketArticleIds = $CommonObject{TicketObject}->ArticleIndex(
 			TicketID => $TicketID,
-			UserID   => 1,
+			UserID => 1,
+			Silent => 0,
 		);
-		if (defined $TicketNumber) {
-			my @TicketArticleIds = $CommonObject{TicketObject}->ArticleIndex(
-				TicketID => $TicketID,
-				UserID   => 1,
-			);
-			push @ArticleIDs, @TicketArticleIds,
-		} else {
-			$CommonObject{LogObject}->Log(
-				Priority => 'notice',
-				Message  => "Unable to find TicketID $TicketID.",
-			);
-		}
-	}
-}
-
-if (@ArticleIDs) {
-	my $DoneArticleIDs;
-	for my $ArticleID (@ArticleIDs) {
-		next if defined $DoneArticleIDs->{$ArticleID};
-		my $PlainMessage = $CommonObject{TicketObject}->ArticlePlain(
-			ArticleID => $ArticleID,
-			UserID    => 1,
-		);
-		if (defined $PlainMessage) {
-			my $CleanPlainMessage = cleanup($PlainMessage);
-			if (open MBOX, ">> $Mbox") {
-				print MBOX "$CleanPlainMessage\n";
-				close MBOX;
-				$CommonObject{LogObject}->Log(
-					Priority => 'debug',
-					Message  => "ArticleID $ArticleID written to $Mbox.",
-				);
-			} else {
-				$CommonObject{LogObject}->Log(
-					Priority => 'error',
-					Message  => "can't write to $Mbox.",
-				);
-				exit;
+		if (@TicketArticleIds) {
+			for my $ArticleID (@TicketArticleIds) {
+				printArticle($ArticleID);
 			}
 		} else {
-			$CommonObject{LogObject}->Log(
-				Priority => 'notice',
-				Message  => "No plain message found for ArticleID $ArticleID.",
-			);
+			printlog("Unable to find articles for TicketID $TicketID.");
 		}
-		$DoneArticleIDs->{$ArticleID} = 1;
 	}
-} else {
-	$CommonObject{LogObject}->Log(
-		Priority => 'notice',
-		Message  => "No ArticleIDs found.",
-	);
 }
+
 exit;
 
+sub printArticle {
+	my $ArticleID = shift;
+	my $PlainMessage = $CommonObject{TicketObject}->ArticlePlain(
+		ArticleID => $ArticleID,
+		UserID => 1,
+		Silent => 0,
+	);
+	if (defined $PlainMessage) {
+		my $CleanPlainMessage = cleanupArticle($PlainMessage);
+		if (open MBOX, ">> $Mbox") {
+			print MBOX "$CleanPlainMessage\n";
+			close MBOX;
+			printlog("ArticleID $ArticleID written to $Mbox.",'debug');
+		} else {
+			printlog("can't write to $Mbox.",'error');
+			exit;
+		}
+	} else {
+		printlog("No plain message found for ArticleID $ArticleID.");
+	}
+}
 
 sub usage {
 	print "\notrs.TicketExport2Mbox.pl - export messages to mbox format.\n\n" .
@@ -161,14 +140,13 @@ sub usage {
 		"$0 [options]\n" .
 		"  --help                          display this option help\n" .
 		"  --mbox /path/to/mbox            mbox output file (default $Mbox)\n" .
-		"  --ArticleID no1 no2 no3         export messages by ArticleID\n" .
 		"  --TicketID no1 no2 no3          export messages by TicketID\n" .
 		"  --TicketNumber no1 no2 no3      export messages by TicketNumber\n\n";
     exit;
 }
 
 # otrs messes with multiline headers, undo that
-sub cleanup {
+sub cleanupArticle {
 	my $msg;
 	my $position = 'head';
 	for my $line (split /^/, shift) {
@@ -181,3 +159,13 @@ sub cleanup {
 	}
 	return $msg;
 }
+
+sub printlog {
+    my $msg = $_[0] ? $_[0] : '';
+    my $priority = $_[1] ? $_[1] : 'notice';
+	$CommonObject{LogObject}->Log(
+		Priority => $priority,
+		Message  => $msg,
+	);
+}
+
