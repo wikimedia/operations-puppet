@@ -131,7 +131,7 @@ node "analytics1001.wikimedia.org" {
 # Unassigned Cisco nodes.
 # NOTE:  analytics1002-analytics1004 still need reinstalled as of 2013-08-26
 node /analytics100[2-8]\.eqiad\.wmnet/ {
-    include standard
+    include role::analytics
 
     # ganglia aggregator for the Analytics cluster.
     if ($hostname == 'analytics1003') {
