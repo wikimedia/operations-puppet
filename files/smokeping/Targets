@@ -1,124 +1,106 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/smokeping/
+#####################################################################
+
 *** Targets ***
 
 probe = FPing
-
-## You have to edit and uncomment all what you want below this.
-# Please, refer to smokeping_config man page for more info
-# The given adresses aren't real to avoid DoS.
 
 menu = Top
 title = Network Latency Grapher
 remark = Smokeping installation for Wikimedia Foundation
 
-+ Local
 
-menu = Local
-title = Local Network
++ EQIAD
 
-++ LocalMachine
-
-menu = Local Machine
-title = This host
-host = localhost
-+ US
-
-menu = US
-title = US connectivity
-
-++ EQIAD
-
-menu = eqiad
+menu = EQIAD
 title = Wikimedia Ashburn, Virginia network
 alerts = bigloss,someloss,startloss
 
-+++ core
-menu = core
+++ Core
+menu = Core
 title = Core Network Infrastructure
 
-++++ cr1-eqiad
++++ cr1-eqiad
 menu = cr1-eqiad
 title = cr1-eqiad.wikimedia.org
 host = cr1-eqiad.wikimedia.org
 
-++++ cr2-eqiad
++++ cr2-eqiad
 menu = cr2-eqiad
 title = cr2-eqiad.wikimedia.org
 host = cr2-eqiad.wikimedia.org
 
-++++ asw-a-eqiad
++++ asw-a-eqiad
 menu = asw-a-eqiad
 title = asw-a-eqiad.mgmt.eqiad.wmnet
 host = asw-a-eqiad.mgmt.eqiad.wmnet
 
-++++ asw-b-eqiad
++++ asw-b-eqiad
 menu = asw-b-eqiad
 title = asw-b-eqiad.mgmt.eqiad.wmnet
 host = asw-b-eqiad.mgmt.eqiad.wmnet
 
-++++ asw-c-eqiad
++++ asw-c-eqiad
 menu = asw-c-eqiad
 title = asw-c-eqiad.mgmt.eqiad.wmnet
 host = asw-c-eqiad.mgmt.eqiad.wmnet
 
-++++ mr1-eqiad
++++ mr1-eqiad
 menu = mr1-eqiad
 title = mr1-eqiad.mgmt.eqiad.wmnet
 host = mr1-eqiad.mgmt.eqiad.wmnet
 
-++++ msw1-eqiad
++++ msw1-eqiad
 menu = msw1-eqiad
 title = msw1-eqiad.mgmt.eqiad.wmnet
 host = msw1-eqiad.mgmt.eqiad.wmnet
 
-++++ psw1-eqiad
++++ psw1-eqiad
 menu = psw1-eqiad
 title = psw1-eqiad.mgmt.eqiad.wmnet
 host = psw1-eqiad.mgmt.eqiad.wmnet
 
-++++ psw2-eqiad
++++ psw2-eqiad
 menu = psw2-eqiad
 title = psw2-eqiad.mgmt.eqiad.wmnet
 host = psw2-eqiad.mgmt.eqiad.wmnet
 
-+++ hosts
-menu = hosts
+++ Hosts
+menu = Hosts
 title = Sampled Hosts
 
-++++ bast1001
++++ bast1001
 menu = bast1001
 title = bast1001.wikimedia.org [B4-EQIAD]
 host = bast1001.wikimedia.org
 
-++++ carbon
++++ carbon
 menu = carbon
 title = carbon.wikimedia.org [A4-EQIAD]
 host = carbon.wikimedia.org
 
-++++ iron
++++ iron
 menu = iron
 title = iron.wikimedia.org [B4-EQIAD]
 host = iron.wikimedia.org
 
-++++ ssl1009
++++ ssl1009
 menu = ssl1009
 title = ssl1009.wikimedia.org [C4-EQIAD]
 host = ssl1009.wikimedia.org
 
-
-+ services
-menu = Service latency
-title = Service latency (DNS, HTTP)
- 
-++ DNS
++ DNS
 probe = DNS
 menu = DNS latency
 title = Service latency (DNS)
  
-+++ ns0
+++ ns0
 host = ns0.wikimedia.org
 
-+++ ns1
+++ ns1
 host = ns1.wikimedia.org
 
-+++ ns2
+++ ns2
 host = ns2.wikimedia.org
