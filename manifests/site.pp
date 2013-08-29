@@ -2743,7 +2743,7 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 
 node "terbium.eqiad.wmnet" {
     include role::applicationserver::maintenance,
-        generic::mysql::packages::client,
+        role::db::maintenance,
         misc::deployment::scap_scripts,
         admins::roots,
         admins::mortals,
