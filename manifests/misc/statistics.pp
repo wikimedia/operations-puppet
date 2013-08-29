@@ -485,7 +485,9 @@ class misc::statistics::sites::metrics {
 	include webserver::apache
 	webserver::apache::module { "wsgi": }
 	webserver::apache::module { "alias": }
-	webserver::apache::module { "ssl": }
+	# ssl module already loaded by webserver.pp
+	# when using webserver::apache::site with ssl => true
+	# webserver::apache::module { "ssl": }
 
 	# install metrics.wikimedia.org SSL certificate
   install_certificate{ $site_name: }
