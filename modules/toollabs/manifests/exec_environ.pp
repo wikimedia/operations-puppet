@@ -51,6 +51,7 @@ class toollabs::exec_environ {
       'libdigest-hmac-perl',
       'libhtml-html5-entities-perl',
       'libhtml-parser-perl',
+      'libipc-run-perl',
       'libirc-utils-perl',
       'libjson-perl',
       'libjson-xs-perl',
