@@ -8,7 +8,7 @@ probe = FPing
 
 menu = Top
 title = Network Latency Grapher
-remark = Welcome to the Test SmokePing website for 'Rob'
+remark = Smokeping installation for Wikimedia Foundation
 
 + Local
 
@@ -25,89 +25,7 @@ host = localhost
 menu = US
 title = US connectivity
 
-++ pmtpa
-
-menu = pmtpa
-title = Wikimedia US network (WIKIMEDIA)
-alerts = bigloss,someloss,startloss
-
-+++ SDTPA_A1
-menu = sdtpa A1
-title = Rack A1 (sdtpa) [ms2]
-host = ms2.pmtpa.wmnet
-
-+++ SDTPA_A2
-menu = sdtpa A2
-title = Rack A2 (sdtpa) [ms7]
-host = ms7.pmtpa.wmnet
-
-+++ SDTPA_A3
-menu = sdtpa A3
-title = Rack A3 (sdtpa) [sq68]
-host = sq68.wikimedia.org
-
-+++ SDTPA_A4
-menu = sdtpa A4
-title = Rack A4 (sdtpa) [fenari]
-host = fenari.wikimedia.org
-
-#+++ SDTPA_A5
-#menu = sdtpa A5
-#title = Rack A5 (sdtpa) [temp empty]
-#host = 
-
-+++ SDTPA_B1
-menu = sdtpa B1
-title = Rack B1 (sdtpa) [sanger]
-host = sanger.wikimedia.org
-
-+++ SDTPA_B2
-menu = sdtpa B2
-title = Rack B2 (sdtpa) [db40]
-host = db40.pmtpa.wmnet
-
-+++ SDTPA_B3
-menu = sdtpa B3
-title = Rack B3 (sdtpa) [searchidx1]
-host = searchidx1.pmtpa.wmnet
-
-+++ SDTPA_B4
-menu = sdtpa B4
-title = Rack B4 (sdtpa) [williams]
-host = williams.wikimedia.org
-
-+++ SDTPA_B5
-menu = sdtpa B5
-title = Rack B5 (sdtpa) [srv258]
-host = srv258.pmtpa.wmnet
-
-+++ SDTPA_C1
-menu = sdtpa C1
-title = Rack C1 (sdtpa) [ms1]
-host = ms1.pmtpa.wmnet
-
-+++ SDTPA_C2
-menu = sdtpa C2
-title = Rack C2 (sdtpa)
-
-+++ SDTPA_C3
-menu = sdtpa C3
-title = Rack C3 (sdtpa)
-
-+++ SDTPA_D1
-menu = sdtpa D1
-title = Rack D1 (sdtpa) [srv181]
-
-+++ SDTPA_D2
-menu = sdtpa D2
-title = Rack D2 (sdtpa) [srv226]
-host = srv226.pmtpa.wmnet
-
-+++ SDTPA_D3
-menu = sdtpa D3
-title = Rack D3 (sdtpa) [srv151]
-
-++ eqiad
+++ EQIAD
 
 menu = eqiad
 title = Wikimedia Ashburn, Virginia network
@@ -115,7 +33,7 @@ alerts = bigloss,someloss,startloss
 
 +++ core
 menu = core
-title = Core Infrastructure
+title = Core Network Infrastructure
 
 ++++ cr1-eqiad
 menu = cr1-eqiad
@@ -127,37 +45,64 @@ menu = cr2-eqiad
 title = cr2-eqiad.wikimedia.org
 host = cr2-eqiad.wikimedia.org
 
-+ Europe
+++++ asw-a-eqiad
+menu = asw-a-eqiad
+title = asw-a-eqiad.mgmt.eqiad.wmnet
+host = asw-a-eqiad.mgmt.eqiad.wmnet
 
-menu = Europe
-title = European Connectivity
+++++ asw-b-eqiad
+menu = asw-b-eqiad
+title = asw-b-eqiad.mgmt.eqiad.wmnet
+host = asw-b-eqiad.mgmt.eqiad.wmnet
 
-++ esams
+++++ asw-c-eqiad
+menu = asw-c-eqiad
+title = asw-c-eqiad.mgmt.eqiad.wmnet
+host = asw-c-eqiad.mgmt.eqiad.wmnet
 
-menu = esams
-title = Wikimedia European network (WIKIMEDIA-EU / esams)
-alerts = bigloss,someloss,startloss
+++++ mr1-eqiad
+menu = mr1-eqiad
+title = mr1-eqiad.mgmt.eqiad.wmnet
+host = mr1-eqiad.mgmt.eqiad.wmnet
 
-+++ text
-menu = text
-title = text.esams.wikimedia.org
-host = text.esams.wikimedia.org
+++++ msw1-eqiad
+menu = msw1-eqiad
+title = msw1-eqiad.mgmt.eqiad.wmnet
+host = msw1-eqiad.mgmt.eqiad.wmnet
 
-+++ bits
-menu = bits
-title = bits.esams.wikimedia.org
-host = bits.esams.wikimedia.org
+++++ psw1-eqiad
+menu = psw1-eqiad
+title = psw1-eqiad.mgmt.eqiad.wmnet
+host = psw1-eqiad.mgmt.eqiad.wmnet
 
-+++ upload
-menu = upload
-title = upload.esams.wikimedia.org
-host = upload.esams.wikimedia.org
+++++ psw2-eqiad
+menu = psw2-eqiad
+title = psw2-eqiad.mgmt.eqiad.wmnet
+host = psw2-eqiad.mgmt.eqiad.wmnet
 
-+++ ipv6_labs
-probe = FPing6
-menu = ipv6 (labs)
-title = ipv6.labs.wikimedia.org
-host = ipv6.labs.wikimedia.org
++++ hosts
+menu = hosts
+title = Sampled Hosts
+
+++++ bast1001
+menu = bast1001
+title = bast1001.wikimedia.org [B4-EQIAD]
+host = bast1001.wikimedia.org
+
+++++ carbon
+menu = carbon
+title = carbon.wikimedia.org [A4-EQIAD]
+host = carbon.wikimedia.org
+
+++++ iron
+menu = iron
+title = iron.wikimedia.org [B4-EQIAD]
+host = iron.wikimedia.org
+
+++++ ssl1009
+menu = ssl1009
+title = ssl1009.wikimedia.org [C4-EQIAD]
+host = ssl1009.wikimedia.org
 
 
 + services
@@ -169,11 +114,11 @@ probe = DNS
 menu = DNS latency
 title = Service latency (DNS)
  
-+++ dns1
-host = 208.80.154.238
++++ ns0
+host = ns0.wikimedia.org
 
-+++ dns2
-host = 208.80.152.214
++++ ns1
+host = ns1.wikimedia.org
 
-+++ dns3
-host = 91.198.174.239
++++ ns2
+host = ns2.wikimedia.org
