@@ -77,5 +77,7 @@ class nrpe($allowed_hosts=undef) {
     }
 
     #Collect virtual nrpe checks
-    File <| tag == 'nrpe::check' |>
+    File <| tag == 'nrpe::check' |> {
+        require => Package['nagios-nrpe-server'],
+    }
 }
