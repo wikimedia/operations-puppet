@@ -108,7 +108,7 @@ sub vcl_fetch {
 	}
 
 	# Stream large objects, >= 1 MB
-	if (std.integer(beresp.http.Content-Length, 1048576) >= 1048576) {
+	if (std.integer(beresp.http.Content-Length, 0) > 1048576 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
 	}
 
