@@ -1,25 +1,26 @@
-# installed by puppet, see puppet/files/otrs/crontab.otrs
+MAILTO="root@localhost"
 
-MAILTO="root@wikimedia.org"
+# delete expired cache every Sunday AM
+20 0 * * 0  $HOME/bin/otrs.DeleteCache.pl --expired >> /dev/null
+30 0 * * 0  $HOME/bin/otrs.LoaderCache.pl -o delete >> /dev/null
 
-# delete expired cache weekly
-20 0 * * 0     otrs  /opt/otrs/bin/otrs.DeleteCache.pl --expired >> /dev/null
-30 0 * * 0     otrs  /opt/otrs/bin/otrs.LoaderCache.pl -o delete >> /dev/null
+# start generic agent (db) every 10 min
+*/10 * * * *    $HOME/bin/otrs.GenericAgent.pl -c db >> /dev/null
 
-# start generic agent
-*/10 * * * *   otrs  /opt/otrs/bin/otrs.GenericAgent.pl >> /dev/null
+# start generic agent (non-db) every 20 min
+*/20 * * * *    $HOME/bin/otrs.GenericAgent.pl >> /dev/null
 
-# check for pending jobs
-45 */2 * * *   otrs  /opt/otrs/bin/otrs.PendingJobs.pl >> /dev/null
+# check for pending jobs every 120 min
+45 */2 * * *    $HOME/bin/otrs.PendingJobs.pl >> /dev/null
 
 # check daily the spool directory of OTRS
-10 0 * * *     otrs  /opt/otrs/bin/otrs.cleanup >> /dev/null
+10 0 * * *  $HOME/bin/otrs.cleanup >> /dev/null
 
-# rebuild ticket index daily
-01 01 * * *    otrs  /opt/otrs/bin/otrs.RebuildTicketIndex.pl >> /dev/null
+# rebuild ticket index for OTRS daily
+01 01 * * * $HOME/bin/otrs.RebuildTicketIndex.pl >> /dev/null
 
-# purge old/idle session id's
-55 */2 * * *   otrs  /opt/otrs/bin/otrs.DeleteSessionIDs.pl --expired >> /dev/null
+# delete old/idle session ids every 2 hours
+55 */2 * * *    $HOME/bin/otrs.DeleteSessionIDs.pl --expired >> /dev/null
 
-# unlock old locked tickets
-35 * * * *     otrs  /opt/otrs/bin/otrs.UnlockTickets.pl --timeout >> /dev/null
+# unlock old locked tickets hourly
+35 * * * *  $HOME/bin/otrs.UnlockTickets.pl --timeout >> /dev/null
