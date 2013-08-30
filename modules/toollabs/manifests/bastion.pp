@@ -21,7 +21,7 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     mode => "0444",
     owner => "root",
     group => "root",
-    source => "puppet:///modules/toollabs/bastion-ssh_config",
+    source => "puppet:///modules/toollabs/submithost-ssh_config",
   }
 
   class { 'gridengine::submit_host':

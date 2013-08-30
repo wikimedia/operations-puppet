@@ -34,6 +34,14 @@ class toollabs::webserver($gridmaster) inherits toollabs {
     content => "$ipaddress\n",
   }
 
+  file { "/etc/ssh/ssh_config":
+    ensure => file,
+    mode => "0444",
+    owner => "root",
+    group => "root",
+    source => "puppet:///modules/toollabs/submithost-ssh_config",
+  }
+
   # TODO: Apache config
   # TODO: Local scripts
 }
