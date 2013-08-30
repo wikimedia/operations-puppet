@@ -83,6 +83,7 @@ class contint::packages {
     'libthai-dev',
 
     'doxygen',
+    'python-sphinx',  # python documentation
     'ruby-jsduck',
     ]: ensure => present,
   }
