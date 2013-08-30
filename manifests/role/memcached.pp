@@ -1,3 +1,4 @@
+# vim: noet
 
 # Virtual resource for monitoring server
 @monitor_group { "memcached_pmtpa": description => "pmtpa memcached" }
@@ -12,8 +13,13 @@ class role::memcached {
 	include standard,
 		webserver::base
 
+	$memcached_size = $::realm ? {
+		'production' => '89088',
+		'labs'       => '15000',
+	}
+
 	class { "::memcached":
-		memcached_size => '89088',
+		memcached_size => $memcached_size,
 		memcached_port => '11211',
 		version => '1.4.15-0wmf1',
 		memcached_options => {
