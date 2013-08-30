@@ -30,9 +30,8 @@ NameVirtualHost *:443
 	ScriptAlias /zuul/git/ /usr/lib/git-core/git-http-backend/
 
 	# Restrict access to internal network
-	<Directory <%= @zuul_git_dir %>>
-		Order Deny,Allow
-		Deny from all
+	<Directory "/usr/lib/git-core/">
+		Order Allow,Deny
 		Allow from 10.0.0.0/8
 		Allow from 127.0.0.1
 		# gallium is a slave with a public IP address
