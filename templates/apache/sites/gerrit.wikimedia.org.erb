@@ -103,12 +103,15 @@ NameVirtualHost *:443
 	#
 	# Notes
 	# 1. gitblit requires URL-encoding (%2F) of the slashes in the matched
-	# paths to project and file.  The [B] option together with
-	# 'AllowEncodedSlashes NoDecode' does this; it also converts '.' in
-	# .git and .php to "%2e" , gitblit accepts this.  (If this causes
-	# problems with other URLs you could use
-	#	RewriteMap esc int:escape
-	# and ${esc:%1} for the paths, and probably have to add [noescape] option).
+	# paths to project and file.  The [B] option does this for the
+	# backreferences; it also converts '.' in .git and .php to "%2e", gitblit
+	# accepts this. Due to the additional 'AllowEncodedSlashes On' (which
+	# is a requirement from gerrit's suggested reverse proxy configuration),
+	# the '%' in these '%2f', '%2e', ... get encoded themselves, and we end up
+	# seeing double encoded characters '%252f', '%252e', ... . To prohibit
+	# this final (unneeded, since backreferences get encoded, and the other URL
+	# parts should be safe, as they are plain literals) encoding, we add [NE]
+	# to the options.
 	# 2. Append an empty query string (which mod_rewrite is smart enough to
 	# drop), otherwise the original query string is appended -- mod_rewrite
 	# lacks a DiscardQueryString option.
@@ -125,11 +128,11 @@ NameVirtualHost *:443
 	# Rewrite a gitweb project link (no file).
 	RewriteCond ;%{QUERY_STRING} !;f=
 	RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
-	RewriteRule ^/r/gitweb$ https://git.wikimedia.org/summary/%1/HEAD? [R=301,L,B]
+	RewriteRule ^/r/gitweb$ https://git.wikimedia.org/summary/%1/HEAD? [R=301,L,B,NE]
 	# Rewrite a gitweb file link (project and file, in any order).
 	RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
 	RewriteCond ;p=%1;%{QUERY_STRING} ^;p=([^;]*).*;f=([^;]*)
-	RewriteRule ^/r/gitweb$ https://git.wikimedia.org/raw/%1/HEAD/%2? [R=301,L,B]
+	RewriteRule ^/r/gitweb$ https://git.wikimedia.org/raw/%1/HEAD/%2? [R=301,L,B,NE]
 
 	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
 
