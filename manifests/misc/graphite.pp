@@ -113,13 +113,23 @@ class misc::graphite::gdash {
 	}
 }
 
-class misc::graphite::pystatsd {
-    class { '::pystatsd':
-        settings => {
-            name          => '127.0.0.1',  # only listen on loopback for now.
-            transport     => 'graphite',
-            graphite_host => 'professor.pmtpa.wmnet',
-            graphite_port => 2003,
+class misc::graphite::statsd {
+    class { '::statsd':
+        graphite_host => 'professor.pmtpa.wmnet',
+        graphite_port => 2003,
+        settings      => {
+            flushInterval    => 60 * 1000,  # 1 min.
+            # Management API on loopback interface only.
+            mgmt_address     => '127.0.0.1',
+            percentThreshold => [ 5, 95 ],
+            # Show frequency distribution of client-side latency times.
+            # See <http://tinyurl.com/statsd-histograms>.
+            histogram        => [
+                {
+                    metric => 'browser',
+                    bins   => [ 100, 500, 1000, 2000, 5000, 'inf' ],
+                },
+            ],
         },
     }
 }
