@@ -631,22 +631,28 @@ class generic::mysql::server(
 	class { "generic::mysql::packages::client": version => $version }
 	include generic::apparmor::service
 
-	# NOTE: $::run_directory is defined in base.pp
+        # /var/run has moved to /run in newer Ubuntu versions.
+        # See: http://lwn.net/Articles/436012/
+        if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '11.10') >= 0 {
+            $run_directory = '/run'
+        } else {
+            $run_directory = '/var/run'
+        }
 
 	# if $socket was not manually specified,
 	# assume that the socket file should live in
-	# $::run_directory/mysqld/mysqld.sock, otherwise
+	# $run_directory/mysqld/mysqld.sock, otherwise
 	# just use the path that was given.
 	$socket_path = $socket ? {
-		false   => "$::run_directory/mysqld/mysqld.sock",
+		false   => "$run_directory/mysqld/mysqld.sock",
 		default => $socket,
 	}
 	# if $pid_file was not manually specified,
 	# assume that the pid file should live in
-	# $::run_directory/mysqld/mysqld.sock, otherwise
+	# $run_directory/mysqld/mysqld.sock, otherwise
 	# just use the path that was given.
 	$pid_path = $pid_file ? {
-		false   => "$::run_directory/mysqld/mysqld.pid",
+		false   => "$run_directory/mysqld/mysqld.pid",
 		default => $pid_file,
 	}
 
