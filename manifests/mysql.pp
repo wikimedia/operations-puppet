@@ -631,22 +631,20 @@ class generic::mysql::server(
 	class { "generic::mysql::packages::client": version => $version }
 	include generic::apparmor::service
 
-	# NOTE: $::run_directory is defined in base.pp
-
 	# if $socket was not manually specified,
 	# assume that the socket file should live in
 	# $::run_directory/mysqld/mysqld.sock, otherwise
 	# just use the path that was given.
 	$socket_path = $socket ? {
-		false   => "$::run_directory/mysqld/mysqld.sock",
+		false   => "$base::run_directory/mysqld/mysqld.sock",
 		default => $socket,
 	}
 	# if $pid_file was not manually specified,
 	# assume that the pid file should live in
-	# $::run_directory/mysqld/mysqld.sock, otherwise
+	# $base::run_directory/mysqld/mysqld.sock, otherwise
 	# just use the path that was given.
 	$pid_path = $pid_file ? {
-		false   => "$::run_directory/mysqld/mysqld.pid",
+		false   => "$base::run_directory/mysqld/mysqld.pid",
 		default => $pid_file,
 	}
 
