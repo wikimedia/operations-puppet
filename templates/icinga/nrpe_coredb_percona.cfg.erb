@@ -7,3 +7,5 @@ command[check_mysql_slave_running]=/usr/lib/nagios/plugins/percona/check_mysql_s
 command[check_mysql_slave_delay]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('mysql_wmf::coredb::monitoring::mysql_check_pass') %> -w 150 -c 300
 # slave check using heartbeat
 command[check_mysql_slave_heartbeat]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('mysql_wmf::coredb::monitoring::mysql_check_pass') %> -t heartbeat.heartbeat -s `/usr/local/bin/master_id.py` -w 150 -c 300
+
+command[pmp_check_mysql_processlist]=/usr/lib/nagios/plugins/percona/pmp-check-mysql-processlist -H localhost -l nagios -p <%= scope.lookupvar('mysql_wmf::coredb::monitoring::mysql_check_pass') %> -w 16 -c 32

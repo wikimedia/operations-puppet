@@ -542,6 +542,12 @@ define command{
 	command_name	nrpe_check_mysql_slave_heartbeat
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
 }
+
+define command{
+    command_name    nrpe_pmp_check_mysql_processlist
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c pmp_check_mysql_processlist
+}
+
 # end percona mysql checks
 # swift process checks (RT-2593)
 
