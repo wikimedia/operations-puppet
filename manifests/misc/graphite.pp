@@ -143,7 +143,7 @@ class misc::graphite::statsd {
 #
 class misc::graphite::navtiming {
     $endpoint = 'tcp://vanadium.eqiad.wmnet:8600'
-    $statsd_host = 'professor.pmtpa.wmnet'
+    $statsd_host = '127.0.0.1'
     $statsd_port = 8125
 
     file { '/a/graphite/modules/navtiming.py':
