@@ -22,6 +22,15 @@ class authdns::scripts {
         group  => 'root',
         source => "puppet:///modules/${module_name}/authdns-gen-zones.py",
     }
+
+    file { '/usr/local/bin/authdns-lint':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => "puppet:///modules/${module_name}/authdns-lint",
+    }
+
     file { '/usr/local/sbin/authdns-update':
         ensure => present,
         mode   => '0555',
