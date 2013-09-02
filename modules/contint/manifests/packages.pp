@@ -28,6 +28,9 @@ class contint::packages {
   # Let us create packages from Jenkins jobs
   include misc::package-builder
 
+  # Lint authdns templates & config
+  include authdns::lint
+
   include svn::client
 
   # PHP related packages
