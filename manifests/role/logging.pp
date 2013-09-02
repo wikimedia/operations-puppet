@@ -90,7 +90,7 @@ class role::beta::logging::mediawiki {
     }
 }
 
-# == Class role::logging::mediawiki::ganglia
+# == Class role::logging::mediawiki::errors
 # fluorine's udp2log instance forwards MediaWiki exceptions and fatals
 # to vanadium, as configured in templates/udp2log/filters.mw.erb. This
 # role provisions a metric module that reports error counts to Ganglia.

@@ -2848,7 +2848,7 @@ node "vanadium.eqiad.wmnet" {
         accounts::olivneh,
         role::eventlogging,
         role::ipython_notebook,
-        role::logging::mediawiki::ganglia
+        role::logging::mediawiki::errors
 
     sudo_user { [ 'otto', 'olivneh' ]:
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
