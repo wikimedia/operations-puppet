@@ -33,7 +33,7 @@ class mediawiki::monitor::errors(
     # Metric definitions.
     file { '/etc/ganglia/conf.d/mwerrors.pyconf':
         ensure  => $ensure,
-        content => template('mediawiki/mwerrors.pyconf'),
+        content => template('mediawiki/mwerrors.pyconf.erb'),
         notify  => Service['gmond'],
     }
 }
