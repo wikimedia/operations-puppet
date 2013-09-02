@@ -29,8 +29,11 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 
     # TODO: 2013-09-02 latest => 2.7.11-1ubuntu2.3 due to a puppetmaster bug in
     # 2.7.11-1ubuntu2.4. Revert it after bug is fixed
-	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails", "libmysql-ruby", "ruby-json" ]:
+	package { [ "puppetmaster", "puppetmaster-common",]:
 		ensure => '2.7.11-1ubuntu2.3',
+	}
+	package { [ "vim-puppet", "puppet-el", "rails", "libmysql-ruby", "ruby-json" ]:
+		ensure => 'latest',
 	}
 
     class { 'backup::host':
