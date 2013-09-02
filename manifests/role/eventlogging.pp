@@ -176,9 +176,10 @@ class role::eventlogging {
 #
 class role::eventlogging::graphite {
     include ::eventlogging
+    include misc::graphite::statsd
 
     eventlogging::service::consumer { 'graphite':
         input  => 'tcp://vanadium.eqiad.wmnet:8600',
-        output => 'statsd://professor.pmtpa.wmnet:8125',
+        output => 'statsd://127.0.0.1:8125',
     }
 }
