@@ -2141,6 +2141,10 @@ node /^nfs[12].pmtpa.wmnet/ {
         misc::syslog-server,
         backup::client
 
+    class { 'backup::host':
+       sets => ['var-opendj-backups', ] 
+    }
+
     # don't need udp2log monitoring on nfs hosts
     class { "role::logging::mediawiki":
         monitor => false,
