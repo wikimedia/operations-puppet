@@ -16,6 +16,11 @@ class role::gerrit {
 	class production::old {
 		system_role { 'role::gerrit::production': description => 'Old gerrit master' }
 
+		$replication_basic_push_refs = [
+			'+refs/heads/*:refs/heads/*',
+			'+refs/tags/*:refs/tags/*',
+		]
+
 		class { "gerrit::instance":
 			db_host      => 'db1048.eqiad.wmnet',
 			host         => 'gerrit.wikimedia.org',
@@ -59,8 +64,7 @@ class role::gerrit {
 					'url'                  => 'git@github.com:wikimedia/${name}',
 					'threads'              => '4',
 					'authGroup'            => 'mediawiki-replication',
-					'push'                 => '+refs/heads/*:refs/heads/*
-  push = +refs/tags/*:refs/tags/*',
+					'push'                 => $replication_basic_push_refs,
 					'remoteNameStyle'      => 'dash',
 					'mirror'               => 'true',
 				},
@@ -68,8 +72,7 @@ class role::gerrit {
 					'url'                  => 'git@github.com:wikimedia/puppet-cdh4',
 					'threads'              => '1',
 					'authGroup'            => 'mediawiki-replication',
-					'push'                 => '+refs/heads/*:refs/heads/*
-  push = +refs/tags/*:refs/tags/*',
+					'push'                 => $replication_basic_push_refs,
 					'remoteNameStyle'      => 'dash',
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/cdh4',
@@ -78,8 +81,7 @@ class role::gerrit {
 					'url'                  => 'git@github.com:wikimedia/puppet-jmxtrans',
 					'threads'              => '1',
 					'authGroup'            => 'mediawiki-replication',
-					'push'                 => '+refs/heads/*:refs/heads/*
-  push = +refs/tags/*:refs/tags/*',
+					'push'                 => $replication_basic_push_refs,
 					'remoteNameStyle'      => 'dash',
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/jmxtrans',
@@ -88,8 +90,7 @@ class role::gerrit {
 					'url'                  => 'git@github.com:wikimedia/puppet-zookeeper',
 					'threads'              => '1',
 					'authGroup'            => 'mediawiki-replication',
-					'push'                 => '+refs/heads/*:refs/heads/*
-  push = +refs/tags/*:refs/tags/*',
+					'push'                 => $replication_basic_push_refs,
 					'remoteNameStyle'      => 'dash',
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/zookeeper',
@@ -98,8 +99,7 @@ class role::gerrit {
 					'url'                  => 'git@github.com:wikimedia/kraken',
 					'threads'              => '1',
 					'authGroup'            => 'mediawiki-replication',
-					'push'                 => '+refs/heads/*:refs/heads/*
-  push = +refs/tags/*:refs/tags/*',
+					'push'                 => $replication_basic_push_refs,
 					'remoteNameStyle'      => 'dash',
 					'mirror'               => 'true',
 					'projects'             => 'analytics/kraken',
@@ -109,8 +109,7 @@ class role::gerrit {
 					'url'                  => 'git@github.com:wikimedia/puppet-kafka',
 					'threads'              => '1',
 					'authGroup'            => 'mediawiki-replication',
-					'push'                 => '+refs/heads/*:refs/heads/*
-  push = +refs/tags/*:refs/tags/*',
+					'push'                 => $replication_basic_push_refs,
 					'remoteNameStyle'      => 'dash',
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/kafka',
@@ -120,8 +119,7 @@ class role::gerrit {
 					'url'                  => 'git@github.com:wikimedia/varnishkafka',
 					'threads'              => '1',
 					'authGroup'            => 'mediawiki-replication',
-					'push'                 => '+refs/heads/*:refs/heads/*
-  push = +refs/tags/*:refs/tags/*',
+					'push'                 => $replication_basic_push_refs,
 					'remoteNameStyle'      => 'dash',
 					'mirror'               => 'true',
 					'projects'             => 'operations/software/varnish/varnishkafka',
