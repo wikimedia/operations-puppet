@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# Shell script to use for linting zone templates & config. It sets up a gdnsd
+# chroot directory, generates zone files based on the templates using
+# authdns-gen-zones and runs gdnsd checkconf.
+#
+# Written by Faidon Liambotis, Aug 2013
+
+set -e
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+die() { echo >&2 "E: $*"; exit 1; }
+
+cleanup() {
+   if [ "$CLEANUP" = "yes" ] && [ -d "$TESTDIR" ]; then
+       rm -rf $TESTDIR
+   fi
+}
+trap cleanup EXIT
+
+WORKINGDIR=$1
+TESTDIR=$2
+
+if [ -z "$WORKINGDIR" ]; then
+    die "no template dir specified"
+fi
+echo "Using $WORKINGDIR as the input working directory"
+
+if [ -z "$TESTDIR" ]; then
+    # no test directory passed, generate one and clean it up on exit
+    TESTDIR=$(mktemp -d --tmpdir 'authdns-lint.XXXXXX')
+    CLEANUP=yes
+fi
+echo "Using $TESTDIR as the output working directory (gdnsd chroot)"
+mkdir -p $TESTDIR/etc/zones
+
+if [ ! -e "$WORKINGDIR/templates" ]; then
+    die "templates not found, system misconfigured?"
+fi
+if [ ! -e "$WORKINGDIR/config-geo" ]; then
+    die "config-geo not found, system misconfigured?"
+fi
+
+echo "Generating zonefiles from zone templates"
+authdns-gen-zones $WORKINGDIR/templates $TESTDIR/etc/zones
+
+echo "Generating gdnsd config"
+cp -f $WORKINGDIR/config-geo $TESTDIR/etc/config
+
+echo "Copying GeoIP databases inside the chroot:"
+sed -nr 's/.*(geoip_db(.*)?|city_region_names)\s*=>\s*//p' $TESTDIR/etc/config \
+  | sort -u | while read file; do
+    dirname=$(dirname $file)
+    mkdir -p $TESTDIR/$dirname
+    cp $file $TESTDIR/$dirname/
+    echo "  $file"
+done
+
+gdnsd -d $TESTDIR checkconf
