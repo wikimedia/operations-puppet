@@ -2252,7 +2252,6 @@ node "professor.pmtpa.wmnet" {
         ntp::client,
         udpprofile::collector,
         misc::graphite,
-        misc::graphite::statsd,
         groups::wikidev,
         accounts::olivneh
 
