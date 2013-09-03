@@ -870,27 +870,18 @@ class misc::statistics::geowiki {
 	}
 }
 
-# == Class misc::statistics::geowiki::db_to_db_job
-# Installs a cron job to get recent editor data
-# from the research slave databases and generate
-# editor geocoding statistics, saved back into a db.
+# == Class misc::statistics::geowiki::mysql_research_conf
+# Installs a mysql configuration file to connect to geowiki's
+# research mysql instance
 #
-class misc::statistics::geowiki::db_to_db_job {
+class misc::statistics::geowiki::mysql_research_conf {
 	require misc::statistics::geowiki,
-		passwords::mysql::research,
-		passwords::mysql::globaldev,
-		misc::statistics::packages::python,
-		misc::geoip
+		passwords::mysql::research
 
 	$geowiki_user = $misc::statistics::geowiki::geowiki_user
-	$geowiki_path = $misc::statistics::geowiki::geowiki_path
 
-	# install MySQL conf files for db acccess
 	$research_mysql_user = $passwords::mysql::research::user
 	$research_mysql_pass = $passwords::mysql::research::pass
-
-	$globaldev_mysql_user = $passwords::mysql::globaldev::user
-	$globaldev_mysql_pass = $passwords::mysql::globaldev::pass
 
 	file { "${geowiki_path}/.research.my.cnf":
 		owner   => $geowiki_user,
@@ -904,6 +895,26 @@ host=s1-analytics-slave.eqiad.wmnet
 ",
 		require => Git::Clone['geowiki'],
 	}
+}
+
+# == Class misc::statistics::geowiki::db_to_db_job
+# Installs a cron job to get recent editor data
+# from the research slave databases and generate
+# editor geocoding statistics, saved back into a db.
+#
+class misc::statistics::geowiki::db_to_db_job {
+	require misc::statistics::geowiki,
+		misc::statistics::geowiki::mysql_research_conf,
+		passwords::mysql::globaldev,
+		misc::statistics::packages::python,
+		misc::geoip
+
+	$geowiki_user = $misc::statistics::geowiki::geowiki_user
+	$geowiki_path = $misc::statistics::geowiki::geowiki_path
+
+	# install MySQL conf files for db acccess
+	$globaldev_mysql_user = $passwords::mysql::globaldev::user
+	$globaldev_mysql_pass = $passwords::mysql::globaldev::pass
 
 	file { "${geowiki_path}/.globaldev.my.cnf":
 		owner   => $geowiki_user,
