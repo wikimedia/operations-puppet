@@ -44,11 +44,10 @@ class role::analytics::common {
 
 
 class role::analytics::java {
-    # all analytics nodes need java installed
-    # Install Sun/Oracle Java JDK on analytics cluster
-    java { 'java-6-oracle':
-        distribution => 'oracle',
-        version      => 6,
+    # All analytics nodes need java installed.
+    java { 'java-7-openjdk':
+        distribution => 'openjdk',
+        version      => 7,
     }
 }
 
