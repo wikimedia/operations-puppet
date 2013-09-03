@@ -136,6 +136,8 @@ $decommissioned_servers = [
 'ocg2',
 'ocg3',
 'palladium',
+'rdb1',
+'rdb2',
 'searchidx1',
 'search1',
 'search2',
