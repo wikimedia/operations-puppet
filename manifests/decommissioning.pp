@@ -10,6 +10,7 @@ $decommissioned_servers = [
 'bellin',
 'blondel',
 'br1-knams',
+'caesium', #remove after 9/5/2013
 'celsus',
 'cerium',
 'colby',
@@ -104,8 +105,6 @@ $decommissioned_servers = [
 'lardner',
 'lily',
 'lomaria',
-'loudon', #moved to frack.eqiad 7-15-13
-'mc1', #Remove mc1-16 7/12/13 or later
 'mc2',
 'mc3',
 'mc4',
@@ -329,7 +328,6 @@ $decommissioned_servers = [
 'virt1',
 'virt3',
 'virt4',
-'zinc', #reclaimed, not really decommissioned
 'wikinews-lb.wikimedia.org',
 'wtp1',
 ]
