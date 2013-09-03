@@ -892,6 +892,10 @@ class misc::statistics::geowiki::mysql::conf::research {
 user=${research_mysql_user}
 password=${research_mysql_pass}
 host=s1-analytics-slave.eqiad.wmnet
+# make_limn_files.py relies on a set default-character-set.
+# This setting was in erosen's original MySQL configuration files, and without
+# it, make_files_limpy.py fails with UnicodeDecodeError when writing out the csv files
+default-character-set=utf8
 ",
 		require => Git::Clone['geowiki'],
 	}
@@ -946,5 +950,40 @@ password=${globaldev_mysql_pass}
 		user    => $geowiki_user,
 		command => "/usr/bin/python ${geowiki_path}/geowiki/process_data.py -o ${$geowiki_backups_path} --wpfiles ${geowiki_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-1 day' +\\%Y-\\%m-\\%d` --end=`date --date='1 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_path}/.globaldev.my.cnf --dest_sql_cnf=${geowiki_path}/.research.my.cnf",
 		require => File[$geowiki_backups_path],
+	}
+}
+
+# == Class misc::statistics::geowiki::jobs::limn
+# Installs a cron job to create limn files from the geocoded editor data.
+#
+class misc::statistics::geowiki::jobs::limn {
+	require misc::statistics::geowiki,
+		misc::statistics::geowiki::mysql::conf::research,
+		misc::statistics::packages::python
+
+	$geowiki_user = $misc::statistics::geowiki::geowiki_user
+	$geowiki_path = $misc::statistics::geowiki::geowiki_path
+	$geowiki_data_path = '/a/geowiki-data'
+
+	git::clone { 'geowiki-data':
+		directory => $geowiki_data_path,
+		origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki-data.git",
+		ensure    => 'latest',
+		owner     => $geowiki_user,
+	}
+
+	# cron job to do the actual fetching from the database, computation of
+	# the limn files, and pushing the limn files to the geowiki-data
+	# repository.
+	cron { 'geowiki-process-db-to-limn':
+		minute  => 0,
+		hour    => 15,
+		user    => $geowiki_user,
+		command => "${geowiki_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir=${geowiki_data_path} --source_sql_cnf=${geowiki_path}/.research.my.cnf",
+		require => [
+			Git::Clone['geowiki'],
+			Git::Clone['geowiki-data'],
+			File["${geowiki_path}/.research.my.cnf"],
+		],
 	}
 }
