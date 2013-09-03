@@ -25,6 +25,7 @@ class toollabs::dev_environ {
       'autoconf',
       'sqlite3',
       'python-dev',
+      'libboost-python1.48-dev',
       'libmariadbclient-dev',
       'libpng3-dev',
       'libfreetype6-dev',

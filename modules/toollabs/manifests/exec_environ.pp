@@ -80,6 +80,7 @@ class toollabs::exec_environ {
       'libxml-xpathengine-perl',     # For Checkwiki.
 
       # Python libraries
+      'libboost-python1.48.0',
       'python-apport',
       'python-beautifulsoup',        # For valhallasw.
       'python-celery',
