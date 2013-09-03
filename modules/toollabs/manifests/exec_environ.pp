@@ -109,6 +109,7 @@ class toollabs::exec_environ {
       'python-problem-report',
       'python-redis',
       'python-requests',
+      'python-rsvg',
       'python-scipy',
       'python-sqlalchemy',
       'python-twisted',
