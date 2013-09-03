@@ -25,8 +25,10 @@ class role::statistics::cruncher inherits role::statistics {
 		# generate gerrit stats from stat1.
 		misc::statistics::gerrit_stats,
 		misc::statistics::rsync::jobs::eventlogging,
-		# editor-geocoding geowiki to generate geographic editor stats
-		misc::statistics::geowiki::db_to_db_job
+		# geowiki: bringing data from production slave db to research db
+		misc::statistics::geowiki::db_to_db_job,
+		# geowiki: generate limn files from research db and push them
+		misc::statistics::geowiki::db_to_limn_job
 }
 
 class role::statistics::www inherits role::statistics {
