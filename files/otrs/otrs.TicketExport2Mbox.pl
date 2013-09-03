@@ -69,6 +69,10 @@ if (($ARGV[0] =~ /^\d{16}/) and ($ARGV[1] =~ /^(\d+)/)) {
 usage() if defined $Help;
 usage() unless @TicketIDs or @TicketNumbers;
 
+my ($Day,$Month,$Year) = ($CommonObject{TimeObject}->SystemTime2Date(
+		SystemTime => $CommonObject{TimeObject}->SystemTime()
+	))[3,4,5];
+
 for my $TicketNumber (@TicketNumbers) {
 	my $TicketID = $CommonObject{TicketObject}->TicketIDLookup(
 		TicketNumber => $TicketNumber,
@@ -83,14 +87,14 @@ for my $TicketNumber (@TicketNumbers) {
 }
 
 for my $TicketID (@TicketIDs) {
-	my %Ticket = $CommonObject{TicketObject}->TicketGet(
+	my %HistoryData = $CommonObject{TicketObject}->HistoryTicketGet(
+		StopYear => $Year,
+		StopMonth => $Month,
+		StopDay => $Day,
 		TicketID => $TicketID,
 		UserID    => 1,
-		Silent    => 0,
 	);
-	# this is a horrible quick & dirty hack to skip messages that appear to have been
-	# automatically queued into Junk
-	if (($Ticket{'Queue'} eq 'Junk') and ($Ticket{'Changed'} eq $Ticket{'Created'})) {
+	if (($HistoryData{'Queue'} eq 'Junk') and ($HistoryData{'CreateQueue'} eq 'Junk')) {
 		printlog("Skip TicketID $TicketID, it was already autoqueued to Junk.",'debug');
 	} else {
 		my @TicketArticleIds = $CommonObject{TicketObject}->ArticleIndex(
