@@ -40,7 +40,7 @@ use Kernel::System::Ticket;
 use Kernel::System::Time;
 
 # create common objects
-my (%CommonObject,$Help,@TicketIDs,@TicketNumbers,@ArticleIDs);
+my (%CommonObject,$Close,$Help,@TicketIDs,@TicketNumbers,@ArticleIDs);
 $CommonObject{ConfigObject} = Kernel::Config->new();
 $CommonObject{EncodeObject} = Kernel::System::Encode->new(%CommonObject);
 $CommonObject{LogObject}    = Kernel::System::Log->new(
@@ -53,6 +53,7 @@ $CommonObject{DBObject}     = Kernel::System::DB->new(%CommonObject);
 $CommonObject{TicketObject} = Kernel::System::Ticket->new(%CommonObject);
 
 GetOptions(
+	'close'               => \$Close,
 	'help'                => \$Help,
 	'mbox=s'              => \$Mbox,
 	'TicketNumber=s{,}'   => \@TicketNumbers,
@@ -96,6 +97,8 @@ for my $TicketID (@TicketIDs) {
 	);
 	if (($HistoryData{'Queue'} eq 'Junk') and ($HistoryData{'CreateQueue'} eq 'Junk')) {
 		printlog("Skip TicketID $TicketID, it was already autoqueued to Junk.",'debug');
+	} elsif ($HistoryData{'State'} =~ /^closed successful$/) {
+		printlog("Skip TicketID $TicketID, it is already 'Closed successful'.",'debug');
 	} else {
 		my @TicketArticleIds = $CommonObject{TicketObject}->ArticleIndex(
 			TicketID => $TicketID,
@@ -106,13 +109,24 @@ for my $TicketID (@TicketIDs) {
 			for my $ArticleID (@TicketArticleIds) {
 				printArticle($ArticleID);
 			}
+			closeTicket($TicketID) if defined $Close;
 		} else {
-			printlog("Unable to find articles for TicketID $TicketID.");
+			printlog("Unable to find articles for TicketID $TicketID.",'debug');
 		}
 	}
 }
 
 exit;
+
+sub closeTicket {
+	my $TicketID = shift;
+	$CommonObject{TicketObject}->StateSet(
+		TicketID => $TicketID,
+		State => 'Closed successful',
+		UserID => 1,
+	);
+	printlog("TicketID $TicketID state changed to 'Closed successful'.",'debug');
+}
 
 sub printArticle {
 	my $ArticleID = shift;
@@ -144,6 +158,7 @@ sub usage {
 		"$0 [options]\n" .
 		"  --help                          display this option help\n" .
 		"  --mbox /path/to/mbox            mbox output file (default $Mbox)\n" .
+		"  --close                         change ticket status to 'closed successful'\n" .
 		"  --TicketID no1 no2 no3          export messages by TicketID\n" .
 		"  --TicketNumber no1 no2 no3      export messages by TicketNumber\n\n";
     exit;
