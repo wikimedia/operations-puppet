@@ -334,8 +334,36 @@ acl carrier_404_01 { // Aircel India
 	"118.102.186.240"/28;
 }
 
+acl carrier_416_03 { // Umniah Jordan
+	"5.45.128.0"/20;
+	"5.198.240.0"/21;
+	"37.44.32.0"/21;
+	"37.152.0.0"/21;
+	"37.220.112.0"/20;
+	"46.23.112.0"/20;
+	"46.248.192.0"/19;
+	"85.159.216.0"/21;
+	"91.106.96.0"/20;
+	"91.186.224.0"/19;
+	"92.241.32.0"/19;
+	"94.127.208.0"/21;
+	"95.172.192.0"/19;
+	"109.107.224.0"/19;
+	"141.105.56.0"/21;
+	"178.238.176.0"/20;
+	"185.12.244.0"/22;
+	"185.14.132.0"/22;
+	"185.19.112.0"/22;
+	"212.35.64.0"/19;
+	"212.118.0.0"/19;
+}
+
 acl carrier_426_04 { // VIVA Bahrain
 	"84.235.101.64"/26;
+}
+
+acl carrier_470_03 { // Banglalink
+	"203.223.94.0"/23;
 }
 
 sub tag_carrier {
@@ -389,6 +417,14 @@ sub tag_carrier {
 			if (req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-CS = "470-01";
 			}
+		}
+	} else if (client.ip ~ carrier_470_03) {
+		if (req.http.host ~ "(^(en|bn)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-CS = "470-03";
+		}
+	} else if (client.ip ~ carrier_416_03) {
+		if (req.http.host ~ "(^(en|ar)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-CS = "416-03";
 		}
 	} else if (client.ip ~ carrier_456_02) {
 		if (req.http.X-Subdomain == "ZERO") {
