@@ -5,6 +5,9 @@ class misc::labsdebrepo {
 	file { "/data/project/repo":
 		ensure => directory;
 	}
+	file { "/data/project/repo/Packages.gz":
+		ensure => present;
+	}
 	# run dpkg-scanpackages . /dev/null | gzip -9c > binary/Packages.gz
 	# dpkg-scanpackages is in dpkg-dev
 	package { "dpkg-dev":
@@ -21,6 +24,13 @@ class misc::labsdebrepo {
 	file { "/etc/apt/sources.list.d/labsdebrepo.list":
 		source => "puppet:///files/misc/labsdebrepo.list",
 		require => Exec["Turn dir into deb repo"];
+	}
+	file { "/etc/apt/preferences.d/labsdebrepo.pref":
+		content => 'Explanation: Prefer local repo above others
+Package: *
+Pin: origin
+Pin-Priority: 1500
+'
 	}
 }
 
