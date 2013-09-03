@@ -5,6 +5,9 @@ class misc::labsdebrepo {
 	file { "/data/project/repo":
 		ensure => directory;
 	}
+	file { "/data/project/repo/Packages.gz":
+		ensure => present;
+	}
 	# run dpkg-scanpackages . /dev/null | gzip -9c > binary/Packages.gz
 	# dpkg-scanpackages is in dpkg-dev
 	package { "dpkg-dev":
