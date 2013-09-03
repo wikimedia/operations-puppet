@@ -2106,13 +2106,8 @@ node "neon.wikimedia.org" {
     }
 }
 
-node 'netmon1001.wikimedia.org' {
-
-    $cluster = "misc"
-
-    include role::smokeping
-
-}
+# node 'netmon1001.wikimedia.org' {
+#}
 
 node "nescio.esams.wikimedia.org" {
     interface::ip { "dns::recursor": interface => "eth0", address => "91.198.174.6" }

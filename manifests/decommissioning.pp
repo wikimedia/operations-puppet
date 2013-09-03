@@ -131,6 +131,7 @@ $decommissioned_servers = [
 'ms3',
 'ms4',
 'msfe1002',
+'netmon1001', #will come back, just removing from monitoring for now -robh 2013-09-03
 'niobium',
 'ocg1',
 'ocg2',
