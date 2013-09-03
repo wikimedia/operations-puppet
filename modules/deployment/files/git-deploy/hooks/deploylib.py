@@ -134,6 +134,6 @@ class DeployLib(object):
                 return False
             elif answer == "R" or answer == "r":
                 if stage == "fetch":
-                    fetch()
+                    self.fetch()
                 if stage == "checkout":
-                    checkout(force)
+                    self.checkout(force)
