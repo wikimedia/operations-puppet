@@ -56,7 +56,6 @@ class toollabs::exec_environ {
       'libirc-utils-perl',
       'libjson-perl',
       'libjson-xs-perl',
-      'libio-socket-ssl-perl',
       'liblwp-protocol-https-perl',
       'libmediawiki-api-perl',
       'libmediawiki-bot-perl',
