@@ -113,28 +113,6 @@ class misc::graphite::gdash {
 	}
 }
 
-class misc::graphite::statsd {
-    class { '::statsd':
-        graphite_host => 'professor.pmtpa.wmnet',
-        graphite_port => 2003,
-        settings      => {
-            flushInterval    => 60 * 1000,  # 1 min.
-            # Management API on loopback interface only.
-            mgmt_address     => '127.0.0.1',
-            percentThreshold => [ 5, 95 ],
-            # Show frequency distribution of client-side latency times.
-            # See <http://tinyurl.com/statsd-histograms>.
-            histogram        => [
-                {
-                    metric => 'browser',
-                    bins   => [ 100, 500, 1000, 2000, 5000, 'inf' ],
-                },
-            ],
-        },
-    }
-}
-
-
 # == Class: misc::graphite::navtiming
 #
 # Captures NavigationTiming event and send them to StatsD / Graphite.
@@ -162,5 +140,27 @@ class misc::graphite::navtiming {
     service { 'navtiming':
         ensure   => running,
         provider => upstart,
+    }
+
+    class { '::statsd':
+        graphite_host => 'professor.pmtpa.wmnet',
+        graphite_port => 2003,
+        settings      => {
+            flushInterval    => 60 * 1000,  # 1 min.
+            # Management API on loopback interface only.
+            mgmt_address     => $statsd_host,
+            percentThreshold => [ 5, 95 ],
+            # Show frequency distribution of client-side latency times.
+            # See <http://tinyurl.com/statsd-histograms>.
+            histogram        => [
+                {
+                    metric => 'browser',
+                    bins   => [ 100, 500, 1000, 2000, 5000, 'inf' ],
+                },
+            ],
+            gangliaHost      => $::ganglia::mcast_address,
+            gangliaMulticast => true,
+            gangliaSpoofHost => 'client-side',
+        },
     }
 }
