@@ -23,6 +23,10 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+function logSocketError( err, bytes ) {
+    if ( err ) console.log( err );
+}
+
 function add( a, b ) {
     return a + b;
 }
@@ -71,8 +75,10 @@ function each( o, callback ) {
 
 var os = require( 'os' );
 var util = require( 'util' );
+var dgram = require( 'dgram' );
 
-var gmetric = require( './gmetric' );
+var Gmetric = require( './gmetric' );
+var gmetric = new Gmetric();
 
 var blankGroup = {
     count : 0,
@@ -110,6 +116,8 @@ var templates = {
     },
 };
 
+var socket = dgram.createSocket( 'udp4' );
+
 var ganglia = {
     flushed : Math.floor( new Date() / 1000 ),
     items   : [],
@@ -129,7 +137,7 @@ var ganglia = {
             name  : args.join('_'),
         } );
         if ( typeof opts.slope === 'string' ) {
-            opts.slope = gmetric.slope[opts.slope.toLowerCase()];
+            opts.slope = Gmetric.slope[opts.slope.toLowerCase()];
         }
         ganglia.items.push( opts );
     },
@@ -165,14 +173,17 @@ var ganglia = {
         ganglia.dispatch();
     },
     dispatch : function () {
+        var packed, metric;
+
         ganglia.flushed = Math.floor( new Date() / 1000 );
-        var metric, g = new gmetric();
         while ( ( metric = ganglia.items.shift() ) !== undefined ) {
-            if ( backendConfig.gangliaMulticast ) {
-                g.send_broadcast( backendConfig.gangliaHost, backendConfig.gangliaPort, metric );
-            } else {
-                g.send( backendConfig.gangliaHost, backendConfig.gangliaPort, metric );
-            }
+            packed = gmetric.pack(metric);
+            socket.send( packed.meta, 0, packed.meta.length,
+                    backendConfig.gangliaPort, backendConfig.gangliaHost,
+                    logSocketError );
+            socket.send( packed.data, 0, packed.data.length,
+                    backendConfig.gangliaPort, backendConfig.gangliaHost,
+                    logSocketError );
             ganglia.sent++;
         }
     },
@@ -192,6 +203,13 @@ exports.init = function ( start, config, events ) {
 
     if ( !Array.isArray( backendConfig.percentThreshold ) ) {
         backendConfig.percentThreshold = [ backendConfig.percentThreshold ];
+    }
+
+    if ( backendConfig.gangliaMulticast ) {
+        socket.bind();
+        socket.setBroadcast( true );
+        socket.setMulticastTTL( 128 );
+        socket.addMembership( backendConfig.gangliaHost );
     }
 
     templates.base.group = backendConfig.gangliaGroup;
