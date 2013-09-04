@@ -72,7 +72,7 @@ define protoproxy(
     require nginx::package
     include nginx::service
 
-    nginx_site { $name:
+    nginx { $name:
         template => 'proxy',
         install  => 'template',
         enable   => $enabled,

@@ -27,13 +27,11 @@ define protoproxy::localssl(
     require nginx::package
     include nginx::service
 
-    # The WMF nginx module is pretty bad, and it's almost pointless to use it here.
-
     file { "/etc/nginx/sites-available/${name}":
         content => template("${module_name}/localssl.erb");
     }
 
-    nginx_site { $name:
+    nginx { $name:
         require => File["/etc/nginx/sites-available/${name}"],
         enable  => $enabled,
         donotify  => "false";
