@@ -50,6 +50,16 @@ class statsd(
         notify  => Service['statsd'],
     }
 
+    file { '/usr/share/statsd/backends/gmetric.js':
+        source  => 'puppet:///modules/statsd/backends/gmetric.js',
+        require => Package['statsd'],
+    }
+
+    file { '/usr/share/statsd/backends/ganglia.js':
+        source  => 'puppet:///modules/statsd/backends/ganglia.js',
+        require => Package['statsd'],
+    }
+
     service { 'statsd':
         ensure   => running,
         provider => upstart,
