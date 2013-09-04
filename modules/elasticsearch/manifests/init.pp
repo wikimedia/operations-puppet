@@ -48,6 +48,9 @@ class elasticsearch($cluster_name, $heap_memory = '2G',
         notify  => Service['elasticsearch'],
         require => Package['elasticsearch'],
     }
+    file { '/usr/share/elasticsearch/plugins':
+        ensure  => directory
+    }
 
     # Keep service running
     service { 'elasticsearch':
