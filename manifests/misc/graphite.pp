@@ -146,6 +146,7 @@ class misc::graphite::navtiming {
         graphite_host => 'professor.pmtpa.wmnet',
         graphite_port => 2003,
         settings      => {
+            backends         => [ 'graphite', 'ganglia' ],
             flushInterval    => 60 * 1000,  # 1 min.
             # Management API on loopback interface only.
             mgmt_address     => $statsd_host,
