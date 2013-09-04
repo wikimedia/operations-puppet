@@ -46,6 +46,10 @@ class role::zuul::labs {
 #
 # https://www.mediawiki.org/wiki/Continuous_integration/Zuul
 #
+# The Zuul git repositories are published over the git:// protocol by using git
+# daemon. That allows remote Jenkins slaves to fetch the references crafted by
+# Zuul when a change is submitted.
+#
 class role::zuul::production {
     system_role { 'role::zuul::production': description => 'Zuul on production' }
 
@@ -71,6 +75,10 @@ class role::zuul::production {
         git_branch       => 'master',
         git_dir          => $role::zuul::configuration::zuul_git_dir,
         push_change_refs => false,
+    }
+
+    class { 'contint::zuul::git-daemon':
+      zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
     }
 
 } # /role::zuul::production
