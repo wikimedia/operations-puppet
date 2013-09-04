@@ -169,9 +169,9 @@ var ganglia = {
         var metric, g = new gmetric();
         while ( ( metric = ganglia.items.shift() ) !== undefined ) {
             if ( backendConfig.gangliaMulticast ) {
-                g.send( backendConfig.gangliaHost, backendConfig.gangliaPort, metric );
-            } else {
                 g.send_broadcast( backendConfig.gangliaHost, backendConfig.gangliaPort, metric );
+            } else {
+                g.send( backendConfig.gangliaHost, backendConfig.gangliaPort, metric );
             }
             ganglia.sent++;
         }
@@ -198,4 +198,5 @@ exports.init = function ( start, config, events ) {
     ganglia.flushed = start;
     events.on( 'flush', ganglia.flush );
     events.on( 'status', ganglia.status );
+    return true;
 };
