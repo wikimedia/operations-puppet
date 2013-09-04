@@ -2904,7 +2904,7 @@ node 'virt2.pmtpa.wmnet' {
         role::nova::api
 }
 
-node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
+node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
     $cluster = "virt"
     if $hostname =~ /^virt5$/ {
 
