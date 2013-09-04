@@ -25,6 +25,8 @@ class contint::firewall {
     require 'contint::firewall::iptables-accepts'
 
     iptables_add_service{ 'deny_all_http-alt': service => 'http-alt', jump => 'DROP' }
+    # Deny direct access to the Zuul daemon
+    iptables_add_service{ 'deny_all_zuul-daemon': service => 8001, jump => 'DROP' }
   }
 
   class iptables {
