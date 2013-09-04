@@ -1,4 +1,0 @@
-# This file is managed by Puppet!
-
-# Turn off ra
-net.ipv6.conf.all.accept_ra=0

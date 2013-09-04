@@ -5,9 +5,17 @@
 #               It is used to find the ring files in the puppet files
 class swift::base($hash_path_suffix, $cluster_name) {
 
-	# include tcp settings
-	include swift::sysctl::tcp-improvements
 	include webserver::base
+
+	# Recommendations from Swift -- see <http://tinyurl.com/swift-sysctl>.
+	sysctl::parameters { 'swift_performance':
+		values => {
+			'net.ipv4.tcp_syncookies'             => 0,
+			'net.ipv4.tcp_tw_recycle'             => 1,  # disable TIME_WAIT
+			'net.ipv4.tcp_tw_reuse'               => 1,
+			'net.ipv4.netfilter.ip_conntrack_max' => 262144,
+		},
+	}
 
 	# this is on purpose not a >=. the cloud archive only exists for
 	# precise right now, and will perhaps exist for the next LTS, but
@@ -129,17 +137,6 @@ class swift::iptables  {
 	# This exec should always occur last in the requirement chain.
 	## creating iptables rules but not enabling them to test.
 	iptables_add_exec{ "swift": service => "swift" }
-}
-class swift::sysctl::tcp-improvements($ensure="present") {
-	file { swift-performance-sysctl:
-		name => "/etc/sysctl.d/60-swift-performance.conf",
-		owner => root,
-		group => root,
-		mode => 0444,
-		notify => Exec["/sbin/start procps"],
-		source => "puppet:///files/swift/60-swift-performance.conf.sysctl",
-		ensure => $ensure
-	}
 }
 class swift::proxy {
 	Class[swift::proxy::config] -> Class[swift::proxy]
