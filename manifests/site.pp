@@ -880,7 +880,6 @@ node "fenari.wikimedia.org" {
         admins::restricted,
         misc::bastionhost,
         misc::noc-wikimedia,
-        dns::account,
         nrpe,
         drac::management,
         squid::cachemgr,
