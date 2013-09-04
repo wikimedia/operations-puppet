@@ -45,6 +45,7 @@ $iptables_ports = {
 	salt_publish => "4505",
 	salt_ret => "4506",
 	inetd => "10080",
+	zuul_webservice => "8001",
 }
 
 $iptables_protocols = {
@@ -94,6 +95,7 @@ $iptables_protocols = {
 	salt_ret => "tcp",
 	redis => "tcp",
 	inetd => "tcp",
+	zuul_webservice => "tcp",
 }
 
 class iptables::tables {
