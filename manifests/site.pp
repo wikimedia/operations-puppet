@@ -971,6 +971,7 @@ node "gallium.wikimedia.org" {
 
     include standard,
         nrpe,
+        contint::firewall,
         misc::contint::test,  # Setup iptables rules
         misc::contint::test::jenkins,  # FIXME slave scripts
         misc::contint::android::sdk,
