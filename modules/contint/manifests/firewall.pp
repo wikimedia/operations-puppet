@@ -8,6 +8,7 @@ class contint::firewall {
     require 'iptables::tables'
 
     iptables_purge_service{  'deny_all_http-alt': service => 'http-alt' }
+    iptables_purge_service{  'deny_all_zuul-daemon': service => 8001 }
   }
 
   class iptables-accepts {
@@ -25,6 +26,8 @@ class contint::firewall {
     require 'contint::firewall::iptables-accepts'
 
     iptables_add_service{ 'deny_all_http-alt': service => 'http-alt', jump => 'DROP' }
+    # Deny direct access to the Zuul daemon
+    iptables_add_service{ 'deny_all_zuul-daemon': service => 8001, jump => 'DROP' }
   }
 
   class iptables {
@@ -32,6 +35,7 @@ class contint::firewall {
     require 'contint::firewall::iptables-drops'
 
     iptables_add_exec{ $::hostname: service => 'http-alt' }
+    iptables_add_exec{ $::hostname: service => 8001 }
   }
 
   require contint::firewall::iptables
