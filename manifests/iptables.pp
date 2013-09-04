@@ -45,6 +45,7 @@ $iptables_ports = {
 	salt_publish => "4505",
 	salt_ret => "4506",
 	inetd => "10080",
+	zuul_webservice => "8001",
 }
 
 $iptables_protocols = {
