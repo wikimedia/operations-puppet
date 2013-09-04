@@ -63,6 +63,9 @@ class elasticsearch($cluster_name, $heap_memory = '2G',
         mode    => '0444',
         source  => 'puppet:///modules/elasticsearch/logrotate',
     }
+    file { '/usr/share/elasticsearch/plugins':
+        ensure  => directory
+    }
 
     # Keep service running
     service { 'elasticsearch':

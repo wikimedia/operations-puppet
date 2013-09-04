@@ -15,6 +15,9 @@ class role::elasticsearch::production {
     }
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
+    elasticsearch::plugin { 'elasticsearch-paramedic': }
+    elasticsearch::plugin { 'elasticsearch-head': }
+    elasticsearch::plugin { 'elasticsearch-segmentspy': }
 }
 
 # = Class: role::elasticsearch::beta
@@ -28,6 +31,9 @@ class role::elasticsearch::beta {
     }
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
+    elasticsearch::plugin { 'elasticsearch-paramedic': }
+    elasticsearch::plugin { 'elasticsearch-head': }
+    elasticsearch::plugin { 'elasticsearch-segmentspy': }
 }
 
 # = Class: role::elasticsearch::labs
@@ -44,4 +50,7 @@ class role::elasticsearch::labs {
     }
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
+    elasticsearch::plugin { 'elasticsearch-paramedic': }
+    elasticsearch::plugin { 'elasticsearch-head': }
+    elasticsearch::plugin { 'elasticsearch-segmentspy': }
 }
