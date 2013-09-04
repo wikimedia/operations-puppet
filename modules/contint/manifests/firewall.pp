@@ -28,6 +28,8 @@ class contint::firewall {
     iptables_add_service{ 'deny_all_http-alt': service => 'http-alt', jump => 'DROP' }
     # Deny direct access to the Zuul daemon
     iptables_add_service{ 'deny_all_zuul-daemon': service => 8001, jump => 'DROP' }
+    # Deny git daemon listening on port 9418
+    iptables_add_service{ 'deny_all_git-daemon': service => 9418, jump => 'DROP' }
   }
 
   class iptables {
