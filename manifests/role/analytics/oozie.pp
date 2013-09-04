@@ -1,4 +1,8 @@
 # == Class role::analytics::oozie::client
+# Installs oozie client, which sets up the OOZIE_URL
+# environment variable.  If you are using this class in
+# labs, you must include oozie::server on your primary
+# Hadoop NameNode for this to work.
 #
 class role::analytics::oozie::client {
     # Need hadoop client before oozie client.
@@ -14,6 +18,9 @@ class role::analytics::oozie::client {
     }
 }
 
+# == Class role::analytics::oozie::server
+# Installs oozie server backed by a MySQL database.
+#
 class role::analytics::oozie::server inherits role::analytics::oozie::client {
     if (!defined(Package['mysql-server'])) {
         package { 'mysql-server':

@@ -4,6 +4,9 @@
 # These role classes will configure Hive properly in either
 # the Analytics labs or Analytics production environments.
 #
+# If you are using these in labs, you must include hive::server
+# on your primary Hadoop NameNode.
+#
 # These classes require role::analytics::hadoop::client
 # has already been applied.  They infer some of their
 # configurations from that role.
@@ -31,7 +34,7 @@ class role::analytics::hive::client {
 
 
 # == Class role::analytics::hive::server
-# Sets up hive server and hive metastore.
+# Sets up Hive Server2 and MySQL backed Hive Metastore.
 #
 class role::analytics::hive::server inherits role::analytics::hive::client {
     if (!defined(Package['mysql-server'])) {

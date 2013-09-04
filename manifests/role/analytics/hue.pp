@@ -10,6 +10,7 @@ class role::analytics::hue {
     require role::analytics::hive::client
     require role::analytics::oozie::client
 
+    # ldap labs config is the same as ldap production.
     include ldap::role::config::labs
 
     if ($::realm == 'production') {
@@ -36,4 +37,5 @@ class role::analytics::hue {
     }
 }
 
-# TODO: Hue SQLite database backup.
+# TODO: Hue database backup.
+# TODO: Make Hue use MySQL database.
