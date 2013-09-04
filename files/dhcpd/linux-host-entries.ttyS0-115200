@@ -34,7 +34,7 @@ host analytics1006 {
 }
 
 host analytics1007 {
-	hardware ethernet 88:43:e1:c2:91:a0;
+	hardware ethernet ;
 	fixed-address analytics1007.eqiad.wmnet;
 }
 
@@ -131,6 +131,11 @@ host virt1006 {
 host virt1007 {
 	hardware ethernet 88:43:E1:C2:9D:1C;
 	fixed-address virt1007.eqiad.wmnet;
+}
+
+host virt1008 {
+	hardware ethernet 88:43:E1:C2:91:A0;
+	fixed-address virt1008.eqiad.wmnet;
 }
 
 host virt5 {
