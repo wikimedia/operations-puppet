@@ -18,6 +18,9 @@ class elasticsearch::decommission {
     file { '/etc/default/elasticsearch':
         ensure => absent,
     }
+    file { '/etc/logrotate.d/elasticsearch':
+        ensure => absent,
+    }
 
     # Stop the service
     service { 'elasticsearch':
