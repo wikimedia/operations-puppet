@@ -131,6 +131,11 @@ class role::gerrit {
 	class production {
 		system_role { 'role::gerrit::production': description => 'Gerrit master' }
 
+		interface::ip { 'role::gerrit::production':
+			interface => 'eth0',
+			address   => '208.80.154.81'
+		}
+
 		class { "gerrit::instance":
 			db_host      => 'db1048.eqiad.wmnet',
 			host         => 'gerrit.wikimedia.org',
