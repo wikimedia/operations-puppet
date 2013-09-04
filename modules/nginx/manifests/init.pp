@@ -7,9 +7,9 @@
 #  template file.  If $install='true' then a config file is pulled
 #  from files/nginx/sites/<classname>.
 #
-#  $enabled='true' adds the site to sites-enabled; $enabled=false removes it.
+#  $enabled=true adds the site to sites-enabled; $enabled=false removes it.
 #
-define nginx($install="false", $template="", $enable="true", $donotify="false") {
+define nginx($install="false", $template="", $enable=true, $donotify="false") {
 	if !defined (Package["nginx"]) {
 		package { ['nginx']:
 			ensure => latest;
@@ -22,7 +22,7 @@ define nginx($install="false", $template="", $enable="true", $donotify="false") 
 		$template_name = $template
 	}
 
-	if ( $enable == "true" ) {
+	if ( $enable == true ) {
 		$ensure = "link"
 	} else {
 		$ensure = "absent"
