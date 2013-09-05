@@ -1210,8 +1210,6 @@ node "kaulen.wikimedia.org" {
             role::bugzilla,
             admins::roots
 
-    install_certificate{ "star.wikimedia.org": }
-
 }
 
 ## labsdb dbs
