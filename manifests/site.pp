@@ -172,7 +172,7 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
 # analytics1021 and analytics1022 are Kafka Brokers.
 # NOTE:  These still need reinstalled as of 2013-08-26
 node /analytics102[12]\.eqiad\.wmnet/ {
-    include standard
+    include role::analytics
     # include role::analytics::kafka::server
 }
 
