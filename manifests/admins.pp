@@ -3116,6 +3116,7 @@ class admins::mortals {
 	include accounts::kaldari
 	include accounts::khorn
 	include accounts::krinkle
+	include accounts::manybubbles # promoted per RT 5691
 	include accounts::maxsem
 	include accounts::mflaschen
 	include accounts::mholmquist
@@ -3148,7 +3149,6 @@ class admins::restricted {
 	include accounts::bastique # access revoked
 	include accounts::daniel # access revoked
 	include accounts::dab
-	include accounts::manybubbles
 	include accounts::milimetric
 	include accounts::dartar
 	include accounts::diederik
