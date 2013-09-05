@@ -10,7 +10,6 @@ $decommissioned_servers = [
 'bellin',
 'blondel',
 'br1-knams',
-'caesium', #remove after 9/5/2013
 'celsus',
 'cerium',
 'colby',
@@ -105,6 +104,7 @@ $decommissioned_servers = [
 'lardner',
 'lily',
 'lomaria',
+'manganese', #remove 9/7/13 or later
 'mc2',
 'mc3',
 'mc4',
@@ -130,7 +130,6 @@ $decommissioned_servers = [
 'ms3',
 'ms4',
 'msfe1002',
-'netmon1001', #will come back, just removing from monitoring for now -robh 2013-09-03
 'niobium',
 'ocg1',
 'ocg2',
