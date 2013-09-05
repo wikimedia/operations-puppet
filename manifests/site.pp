@@ -2483,8 +2483,8 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
     include role::protoproxy::ssl
 }
 
-#sq31-sq36 are api squids
-node /sq(3[1-6])\.wikimedia\.org/ {
+#sq31-sq35 are api squids
+node /sq(3[1-5])\.wikimedia\.org/ {
     $squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
     if $hostname =~ /^sq3[15]$/ {
         $ganglia_aggregator = true

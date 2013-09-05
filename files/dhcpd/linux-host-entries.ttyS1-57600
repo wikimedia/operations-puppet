@@ -333,13 +333,6 @@ host sockpuppet {
 	fixed-address sockpuppet.pmtpa.wmnet;
 }
 
-host sq36 {
-	hardware ethernet 00:19:B9:DD:EF:36;
-	fixed-address sq36.wikimedia.org;
-	option pxelinux.pathprefix "lucid-installer/";
-	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host sq37 {
 	hardware ethernet 00:19:B9:DD:EF:B3;
 	fixed-address sq37.wikimedia.org;
