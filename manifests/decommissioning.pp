@@ -105,6 +105,7 @@ $decommissioned_servers = [
 'lily',
 'lomaria',
 'manganese', #remove 9/7/13 or later
+'marmontel', #reclaim
 'mc2',
 'mc3',
 'mc4',
