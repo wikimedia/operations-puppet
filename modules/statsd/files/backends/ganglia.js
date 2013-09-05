@@ -197,7 +197,7 @@ exports.init = function ( start, config, events ) {
     util._extend( backendConfig, config );
 
     if ( backendConfig.gangliaSpoofHost ) {
-        templates.base.hostname = backendConfig.gangliaSpoofHost;
+        templates.base.hostname = backendConfig.gangliaSpoofHost + ':' + backendConfig.gangliaSpoofHost;
         templates.base.spoof = 1;
     }
 
