@@ -1644,12 +1644,12 @@ class accounts {
 
                         ssh_authorized_key {
 				"py@odin":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAACAQDXGX1nI4wyGR2JjZ6+TZ4Ip2fueE0zlpR8Tr0Pt6A733UWKw7PUv0fCIjkOMbYXzbSdnmDRwckqlOSV5MK3ibNvshA/TzxDRLUkHdiTjmJXT8SHmo6RfGp/LLihZq0q6QSnslIGKRPvSejnpn4Y2DvYKsYi4Oto0qkhmbnetrg2vi2WNeUONbtgLA+xlvs/3Ql9iaoYLvbUVrMgd/2PVKRTJsuFplGeIRk5Ff/a++lKH+EerS9x52ooPLCMvPc1ptBWG7/tZlmOryAcWuvqvjZufeEGQ+TrXJ0XRZS9jAgovGJgUPLGl3Qpp5dqXjwXfqhH+xz72Dah+59bmgz6mx4dVDWTlQi1CjFEYUWfw2/4L/bGKabMZ14RObmoGWgZxziZ1Q1g0A66KIAqyQk2v9pI3Os5ngczjKwEMAJgCveBf+tDluURMzwg2S9nfr2t4cOXSp3S7tFwGZrmZVqjQv9AkpcPdXuWg/5AU7NrknCVS37+8N0DqDw0UVJ8EwDHKlC5+ZoldX4WZP394m3O6WqjcqFaCn7SGoiR/sbrNWAtKFd4MsUuXm7NF57TofWr6JJjr284ZTg09874xO9fIkngIyJzqjdzEd+awKErJBy0Ymfxn6qIQz6Nj1qjHLz6JCV1JT4EfZXxL5WTI6JYS/mQ3jdgk6TcBoaJhXKZCMnaQ==";
 				"py@tarp":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDR6AzaHdH1o3fQopIaGGmZ0wT2VxUcb1tovmrIpuoWQofr8btP5ODPZ+r5hCmDp6YZNGHxUBgp2TVXyP+e3qC0g14igtFOhgD6MgoJpmoED8e6rm3r97L3NB5vvkWpZUEIo/aNNix8A4FouR4LqvF+1rHo5vI7q70JIKR00hbS6aOjC1pw5+bRVIl5LgSOH/U9UXSfKkTCKbVArvozVyJAZ1zv6lD6U2FYWCEDlc1Q7zR5CLy2I4wmzgjMRUFS3mwMf+KMNNdFxbpZS26i+YxMdFAHVMlF6Rty9Sw3TfgBnczXZ9qlix/vJdd/KBKw70EEMgJgfCaub4PJsOAX0dY5";
@@ -3088,7 +3088,7 @@ class admins::roots {
 	include accounts::mark
 	include accounts::midom
 	include accounts::preilly # disabled
-	include accounts::py
+	include accounts::py # dislabled
 	include accounts::robh
 	include accounts::sara # disabled
 	include accounts::springle
