@@ -5,8 +5,21 @@ class misc::labsdebrepo {
 	file { "/data/project/repo":
 		ensure => directory;
 	}
+	file { "/data/project/repo/gpg":
+		ensure => directory,
+		mode => 0700;
+	}
 	file { "/data/project/repo/Packages.gz":
 		ensure => present;
+	}
+	file { "/data/project/repo/Release.conf":
+		ensure => present,
+		content => 'APT::FTPArchive::Release::Origin "Wikimedia Labs";
+APT::FTPArchive::Release::Label "Project-local repo";
+APT::FTPArchive::Release::Codename "ubuntu";
+APT::FTPArchive::Release::Architectures "noarch";
+APT::FTPArchive::Release::Components "main";
+'
 	}
 	# run dpkg-scanpackages . /dev/null | gzip -9c > binary/Packages.gz
 	# dpkg-scanpackages is in dpkg-dev
@@ -15,10 +28,23 @@ class misc::labsdebrepo {
 	}
 	exec { "Turn dir into deb repo":
 		cwd => "/data/project/repo",
-		command => "/usr/bin/dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz",
+		command => '/usr/bin/dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz &&
+			/usr/bin/apt-ftparchive -c=./Release.conf release . > ./Release &&
+			gpg --yes --lock-never --homedir ./gpg -as ./Release',
 		# only run if Packages.gz is *not* the newest file in the directory
 		onlyif => "/usr/bin/test $(find . -newer Packages.gz | wc -l) -gt 0",
 		require => [Package["dpkg-dev"], File["/data/project/repo"]];
+	}
+	exec { "keygen":
+		creates => '/data/project/repo/gpg/public.gpg',
+		command => 'echo "Key-Type: RSA
+Key-Length: 1024
+Key-Usage: sign
+Name-Real: Wikimedia Labs
+%pubring  /data/project/repo/gpg/pubring.gpg
+%secring  /data/project/repo/gpg/secring.gpg
+" | gpg --gen-key --batch',
+		provider => 'shell'
 	}
 	# add the dir-turned-repo to sources.list
 	file { "/etc/apt/sources.list.d/labsdebrepo.list":
