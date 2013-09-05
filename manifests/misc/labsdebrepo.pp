@@ -43,6 +43,7 @@ Key-Usage: sign
 Name-Real: Wikimedia Labs
 %pubring  /data/project/repo/gpg/pubring.gpg
 %secring  /data/project/repo/gpg/secring.gpg
+%transient-key
 " | gpg --gen-key --batch',
 		provider => 'shell'
 	}
