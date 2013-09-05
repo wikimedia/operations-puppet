@@ -34,8 +34,8 @@ class contint::firewall {
 
     require 'contint::firewall::iptables-drops'
 
-    iptables_add_exec{ $::hostname: service => 'http-alt' }
-    iptables_add_exec{ $::hostname: service => 'zuul_webservice' }
+    iptables_add_exec{ "${::hostname}_http-alt": service => 'http-alt' }
+    iptables_add_exec{ "${::hostname}_zuul_webservice": service => 'zuul_webservice' }
   }
 
   require contint::firewall::iptables
