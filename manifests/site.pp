@@ -1669,14 +1669,6 @@ node "magnesium.wikimedia.org" {
     include role::request-tracker-apache::production, exim::rt
 }
 
-node "marmontel.wikimedia.org" {
-    include standard,
-        admins::roots,
-        svn::client,
-        misc::blogs::wikimedia
-}
-
-
 node /^mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
     $cluster = "memcached"
     if $hostname =~ /^mc[12]$/ {
