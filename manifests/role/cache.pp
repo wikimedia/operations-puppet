@@ -31,7 +31,6 @@ class role::cache {
 					"pmtpa-squid" => [
 						'sq33.wikimedia.org',   # API
 						'sq34.wikimedia.org',   # API
-						'sq36.wikimedia.org',   # API
 						'sq37.wikimedia.org',
 						'sq59.wikimedia.org',
 						'sq60.wikimedia.org',
@@ -117,7 +116,6 @@ class role::cache {
 					"pmtpa-squid" => [
 						'sq33.wikimedia.org',   # API
 						'sq34.wikimedia.org',   # API
-						'sq36.wikimedia.org',   # API
 					],
 					"eqiad-squid" => [
 						'cp1001.eqiad.wmnet',	# API
