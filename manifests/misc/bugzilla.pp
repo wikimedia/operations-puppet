@@ -4,7 +4,9 @@ class misc::bugzilla::server {
 
 	system_role { "misc::bugzilla::server": description => "Bugzilla server" }
 
-	class {'webserver::php5': ssl => true; }
+    class {'webserver::php5': ssl => true; }
+    install_certificate{ "bugzilla.wikimedia.org": }
+
 
 	apache_site { bugzilla: name => "bugzilla.wikimedia.org" }
 	file {
