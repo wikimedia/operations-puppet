@@ -23,6 +23,64 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+function Xdr( bufSize ) {
+    this.b = new Buffer( bufSize );
+    this.b.fill( 0 );
+    this.ptr = 0;
+}
+
+Xdr.prototype.pack = function ( type, value ) {
+    switch ( type ) {
+    case 'int':
+        this.b.writeInt32BE( value, this.ptr );
+        this.ptr += 4;
+        break;
+    case 'string':
+        this.pack( 'int', value.length );
+        this.b.write( value, this.ptr );
+        this.ptr += ( ( Buffer.byteLength( value ) + 3 ) & ~0x03 );
+        break;
+    case 'boolean':
+        this.pack( 'int', value ? 1 : 0 );
+        break;
+    }
+};
+
+Xdr.prototype.getBytes = function () {
+    return this.b.slice( 0, this.ptr );
+};
+
+Xdr.meta = function ( metric ) {
+    var xdr = new Xdr( 1024 );
+
+    xdr.pack( 'int', 128 );
+    xdr.pack( 'string', metric.hostname );
+    xdr.pack( 'string', metric.name );
+    xdr.pack( 'boolean', metric.spoof );
+    xdr.pack( 'string', metric.type );
+    xdr.pack( 'string', metric.name );
+    xdr.pack( 'string', metric.units );
+    xdr.pack( 'int', metric.slope );
+    xdr.pack( 'int', metric.tmax );
+    xdr.pack( 'int', metric.dmax );
+    xdr.pack( 'int', 1 );
+    xdr.pack( 'string', 'GROUP' );
+    xdr.pack( 'string', metric.group );
+    return xdr.getBytes();
+};
+
+Xdr.data = function ( metric ) {
+    var xdr = new Xdr( 512 );
+
+    xdr.pack( 'int', 133 );
+    xdr.pack( 'string', metric.hostname );
+    xdr.pack( 'string', metric.name );
+    xdr.pack( 'boolean', metric.spoof );
+    xdr.pack( 'string', '%s' );
+    xdr.pack( 'string', metric.value.toString() );
+    return xdr.getBytes();
+};
+
 function logSocketError( err, bytes ) {
     if ( err ) console.log( err );
 }
@@ -72,13 +130,11 @@ function each( o, callback ) {
     }
 }
 
-
 var os = require( 'os' );
 var util = require( 'util' );
 var dgram = require( 'dgram' );
 
-var Gmetric = require( './gmetric' );
-var gmetric = new Gmetric();
+var slopes = [ 'zero', 'positive', 'negative', 'both', 'unspecified' ];
 
 var blankGroup = {
     count : 0,
@@ -137,7 +193,7 @@ var ganglia = {
             name  : args.join('_'),
         } );
         if ( typeof opts.slope === 'string' ) {
-            opts.slope = Gmetric.slope[opts.slope.toLowerCase()];
+            opts.slope = slopes.indexOf( opts.slope );
         }
         ganglia.items.push( opts );
     },
@@ -173,15 +229,16 @@ var ganglia = {
         ganglia.dispatch();
     },
     dispatch : function () {
-        var packed, metric;
+        var metric, meta, data;
 
         ganglia.flushed = Math.floor( new Date() / 1000 );
         while ( ( metric = ganglia.items.shift() ) !== undefined ) {
-            packed = gmetric.pack(metric);
-            socket.send( packed.meta, 0, packed.meta.length,
+            meta = Xdr.meta( metric );
+            socket.send( meta, 0, meta.length,
                     backendConfig.gangliaPort, backendConfig.gangliaHost,
                     logSocketError );
-            socket.send( packed.data, 0, packed.data.length,
+            data = Xdr.data( metric );
+            socket.send( data, 0, data.length,
                     backendConfig.gangliaPort, backendConfig.gangliaHost,
                     logSocketError );
             ganglia.sent++;
