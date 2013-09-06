@@ -21,6 +21,17 @@
  * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Ganglia-specific settings (for /etc/statsd/localConfig.js):
+ *
+ * {
+ *   "gangliaHost": "localhost",  // Hostname of Ganglia server
+ *   "gangliaPort": 8649,         // UDP port of Ganglia server
+ *   "gangliaMulticast": false,   // Use multicast?
+ *   "gangliaSpoofHost": "slave", // Associate metrics w/this hostname
+ *   "gangliaGroup": "statsd",    // Default metric group name
+ * }
+ *
  */
 
 function Xdr( bufSize ) {
