@@ -52,16 +52,16 @@ class role::analytics::kafka::config {
 
         # production Kafka uses a bunch of JBOD log_dir mounts.
         $log_dir = [
-            '/var/spool/kafka/c',
-            '/var/spool/kafka/d',
-            '/var/spool/kafka/e',
-            '/var/spool/kafka/f',
-            '/var/spool/kafka/g',
-            '/var/spool/kafka/h',
-            '/var/spool/kafka/i',
-            '/var/spool/kafka/j',
-            '/var/spool/kafka/k',
-            '/var/spool/kafka/l',
+            '/var/spool/kafka/c/data',
+            '/var/spool/kafka/d/data',
+            '/var/spool/kafka/e/data',
+            '/var/spool/kafka/f/data',
+            '/var/spool/kafka/g/data',
+            '/var/spool/kafka/h/data',
+            '/var/spool/kafka/i/data',
+            '/var/spool/kafka/j/data',
+            '/var/spool/kafka/k/data',
+            '/var/spool/kafka/l/data',
         ]
     }
 
