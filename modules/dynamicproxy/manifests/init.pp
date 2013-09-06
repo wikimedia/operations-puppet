@@ -1,4 +1,4 @@
-class labsproxy ($redis_maxmemory="512MB") {
+class dynamicproxy ($redis_maxmemory="512MB") {
     class { '::redis':
         persist   => "aof",
         dir       => "/var/lib/redis",
@@ -14,7 +14,7 @@ class labsproxy ($redis_maxmemory="512MB") {
 
     file { '/etc/nginx/sites-available/default':
         ensure  => 'file',
-        source  => 'puppet:///modules/labsproxy/proxy.conf',
+        source  => 'puppet:///modules/dynamicproxy/proxy.conf',
         require => Package['nginx-extras'],
         notify  => Service['nginx']
     }
@@ -26,7 +26,7 @@ class labsproxy ($redis_maxmemory="512MB") {
 
     file { '/etc/nginx/lua/proxy.lua':
         ensure  => 'file',
-        source  => 'puppet:///modules/labsproxy/proxy.lua',
+        source  => 'puppet:///modules/dynamicproxy/proxy.lua',
         require => File['/etc/nginx/lua'],
         notify  => Service['nginx']
     }
@@ -39,6 +39,6 @@ class labsproxy ($redis_maxmemory="512MB") {
     file { '/etc/nginx/lua/resty/redis.lua':
         ensure  => 'file',
         require => File['/etc/nginx/lua/resty'],
-        source  => 'puppet:///modules/labsproxy/redis.lua'
+        source  => 'puppet:///modules/dynamicproxy/redis.lua'
     }
 }
