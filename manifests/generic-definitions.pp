@@ -216,16 +216,6 @@ class generic::gluster-server {
 
 }
 
-# The joe editor, which has some fans among labs users
-class generic::packages::joe {
-	package { "joe" : ensure => latest; }
-}
-
-# An utility to show up a file hierarcy using ASCII art
-class generic::packages::tree {
-	package { "tree" : ensure => present; }
-}
-
 # Creating an apparmor service class
 # so we can notify the service when
 # apparmor files are changed by puppet.
