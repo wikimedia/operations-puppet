@@ -112,6 +112,7 @@ class toollabs::exec_environ {
       'python-mysqldb',
       'python-newt',
       'python-nose',
+      'python-opencv',
       'python-oursql',               # For danilo et al.
       'python-problem-report',
       'python-redis',
