@@ -64,7 +64,7 @@ http {
     # SSLv2 is insecure, only allow SSLv3 and TLSv1
     ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
     # Limit ciphers allowed
-    ssl_ciphers RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA;
+    ssl_ciphers AES128-GCM-SHA256:RC4-SHA:RC4-MD5:AES128-SHA:AES256-SHA;
     # Prefer server ciphers (Prefer RC4 first to combat BEAST)
     ssl_prefer_server_ciphers on;
     <% end %>
