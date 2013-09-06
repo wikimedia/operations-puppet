@@ -3,7 +3,7 @@ class base::vimconfig {
         owner => root,
         group => root,
         mode => 0444,
-        source => "puppet:///files/misc/vimrc.local",
+        source => "puppet:///modules/base/vimconfig/vimrc.local",
         ensure => present;
     }
 

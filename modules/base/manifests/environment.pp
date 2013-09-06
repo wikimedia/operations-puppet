@@ -16,7 +16,7 @@ class base::environment {
                     owner  => root,
                     group  => root,
                     mode   => '0444',
-                    source => 'puppet:///files/environment/mysql-ps1.sh';
+                    source => 'puppet:///modules/base/environment/mysql-ps1.sh';
             }
         } # /production
         'labs': {

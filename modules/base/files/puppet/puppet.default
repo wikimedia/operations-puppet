@@ -1,0 +1,10 @@
+#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///modules/base/puppet/puppet.default
+######################################################################
+
+# Start puppet on boot? 
+START=yes
+
+# Startup options
+DAEMON_OPTS="--splay"
