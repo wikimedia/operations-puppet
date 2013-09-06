@@ -51,7 +51,7 @@ class role::labs::tools {
 
   class proxy inherits role::labs::tools::config {
       system_role { "role::labs::tools::proxy": description => "Tool labs generic web proxy" }
-      class { '::labsproxy': }
+      class { '::dynamicproxy': }
       class { 'toollabs::infrastructure': }
   }
 
