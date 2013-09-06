@@ -93,7 +93,7 @@ class base::puppet($server='puppet', $certname=undef) {
             owner => root,
             group => root,
             mode  => 0444,
-            content => template('snmp/snmp.conf.erb'),
+            content => template('base/snmp.conf.erb'),
             require => [ Package['snmp'], File['/etc/snmp'] ];
     }
 
@@ -140,7 +140,7 @@ class base::puppet($server='puppet', $certname=undef) {
             owner => root,
             group => root,
             mode  => 0444,
-            content => template("puppet/puppet.conf.d/10-main.conf.erb"),
+            content => template("base/puppet.conf.d/10-main.conf.erb"),
             notify => Exec["compile puppet.conf"];
         '/etc/init.d/puppet':
             owner => root,
@@ -328,7 +328,7 @@ class base::tcptweaks {
     Class[base::puppet] -> Class[base::tcptweaks]
 
     file { "/etc/network/if-up.d/initcwnd":
-        content => template("misc/initcwnd.erb"),
+        content => template("base/initcwnd.erb"),
         mode => 0555,
         owner => root,
         group => root,

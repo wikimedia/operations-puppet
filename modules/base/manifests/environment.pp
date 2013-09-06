@@ -22,12 +22,12 @@ class base::environment {
         'labs': {
             file {
                 '/etc/bash.bashrc':
-                    content => template('environment/bash.bashrc'),
+                    content => template('base/environment/bash.bashrc'),
                     owner   => root,
                     group   => root,
                     mode    => '0444';
                 '/etc/skel/.bashrc':
-                    content => template('environment/skel/bashrc'),
+                    content => template('base/environment/skel/bashrc'),
                     owner   => root,
                     group   => root,
                     mode    => '0644';
