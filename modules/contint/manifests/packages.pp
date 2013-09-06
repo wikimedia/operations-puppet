@@ -20,7 +20,7 @@ class contint::packages {
     ensure => present,
   }
 
-  include generic::packages::maven
+  include contint::packages::maven
 
   # Get perl dependencies so we can lint the wikibugs perl script
   include misc::irc::wikibugs::packages
@@ -168,5 +168,14 @@ class contint::packages {
     'ruby-puppetlabs-spec-helper',
     ]:
     ensure => present;
+  }
+}
+
+class contint::packages::maven {
+  # Install Apache Maven, a java build processing tool.
+  # Class can later be used to add additional Maven plugins
+  # http://maven.apache.org/
+  package { 'maven2':
+    ensure => latest;
   }
 }
