@@ -35,7 +35,7 @@ class role::analytics::kafka::config {
                 'kraken-kafka-external.pmtpa.wmflabs' => { 'id' => 10 },
             },
         }
-
+        # labs only uses a single log_dir
         $log_dir = ['/var/spool/kafka']
     }
     # else Kafka cluster is based on $::site.
@@ -50,7 +50,7 @@ class role::analytics::kafka::config {
             # 'esams' => { },
         }
 
-        # production Kafka uses JBOD log dir mounts.
+        # production Kafka uses a bunch of JBOD log_dir mounts.
         $log_dir = [
             '/var/spool/kafka/c',
             '/var/spool/kafka/d',
@@ -66,7 +66,7 @@ class role::analytics::kafka::config {
     }
 
     $hosts = $cluster[$kafka_cluster_name]
-    $zookeeper_chroot = "/kafka-${kafka_cluster_name}"
+    $zookeeper_chroot = "/kafka/${kafka_cluster_name}"
 }
 
 # == Class role::analytics::kafka::client
