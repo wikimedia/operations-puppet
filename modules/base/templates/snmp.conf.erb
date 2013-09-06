@@ -1,12 +1,7 @@
 #####################################################################
-#### THIS FILE IS MANAGED BY PUPPET
-#### puppet:///templates/snmp/snmp.conf.erb
-####
-####  Changes to this file will be discarded by Puppet periodically
-####  and without warning.
-####
+##### THIS FILE IS MANAGED BY PUPPET
+#####  as template('base/snmp.conf.erb')
 ######################################################################
-
 mibs :
 <% if has_variable?('::ipaddress_bond0') then %>
 clientaddr <%= scope.lookupvar('::ipaddress_bond0') %>
