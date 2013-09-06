@@ -94,6 +94,7 @@ class misc::monitoring::views {
 		kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
 		kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
 	}
+	class { 'misc::monitoring::view::perceived_latency': }
 }
 
 # == Define misc:monitoring::view::udp2log
@@ -241,6 +242,59 @@ class misc::monitoring::view::analytics::data($hdfs_stat_host, $kafka_broker_hos
 			{
 				'host_regex'   => $hdfs_stat_host,
 				'metric_regex' => 'webrequest_loss_average',
+			},
+		],
+	}
+}
+
+
+# == Class: misc::monitoring::view::perceived_latency
+#
+# A Ganglia view of user-perceived latency measurements, collected via
+# the NavigationTiming extension (https://www.mediawiki.org/wiki/NavigationTiming).
+#
+class misc::monitoring::view::perceived_latency {
+	ganglia::view { 'perceived_latency':
+		graphs => [
+			{
+				title        => 'DNS (domainLookupEnd - domainLookupStart)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.dnsLookup.(desktop|mobile)_median$',
+			},
+			{
+				title        => 'Connecting (connectEnd - connectStart)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.connecting.(desktop|mobile)_median$',
+			},
+			{
+				title        => 'Sending (fetchStart - navStart)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.sending.(desktop|mobile)_median$',
+			},
+			{
+				title        => 'Waiting (responseStart - requestStart)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.waiting.(desktop|mobile)_median$',
+			},
+			{
+				title        => 'Receiving (responseEnd - responseStart)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.receiving.(desktop|mobile)_median$',
+			},
+			{
+				title        => 'Rendering (loadEventEnd - responseEnd)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.rendering.(desktop|mobile)_median$',
+			},
+			{
+				title        => 'Loading (loadEventStart - navStart)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.loading.(desktop|mobile)_median$',
+			},
+			{
+				title        => 'Redirecting (redirectEnd - redirectStart)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.redirecting.(desktop|mobile)_median$',
 			},
 		],
 	}
