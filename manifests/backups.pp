@@ -3,6 +3,12 @@
 
 # Transitioning to bacula stanzas
 
+define backup::set {
+    @backup::host::sets { "${name}":
+        jobdefaults => $backup::host::jobdefaults,
+    }
+}
+
 class backup::host($sets, $pool='production') {
     include role::backup::config
 
@@ -22,6 +28,10 @@ class backup::host($sets, $pool='production') {
 
     backup::host::sets { $sets:
         jobdefaults => $jobdefaults,
+    }
+
+    Backup::Host::Sets <| |> {
+        require => Class['bacula::client'],
     }
 }
 
