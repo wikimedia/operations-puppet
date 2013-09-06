@@ -74,9 +74,15 @@ def fetch(repo):
     repolocs = __pillar__.get('repo_locations')
     repoloc = repolocs[repo]
     sed_lists = __pillar__.get('repo_regex')
-    sed_list = sed_lists[repo]
+    try:
+        sed_list = sed_lists[repo]
+    except KeyError:
+        sed_list = []
     checkout_submodules = __pillar__.get('repo_checkout_submodules')
-    checkout_submodules = checkout_submodules[repo]
+    try:
+        checkout_submodules = checkout_submodules[repo]
+    except KeyError:
+        checkout_submodules = "False"
     gitmodules = repoloc + '/.gitmodules'
 
     # Fetch repos this repo depends on
@@ -168,11 +174,20 @@ def checkout(repo, reset=False):
     repolocs = __pillar__.get('repo_locations')
     repoloc = repolocs[repo]
     sed_lists = __pillar__.get('repo_regex')
-    sed_list = sed_lists[repo]
+    try:
+        sed_list = sed_lists[repo]
+    except KeyError:
+        sed_list = []
     checkout_submodules = __pillar__.get('repo_checkout_submodules')
-    checkout_submodules = checkout_submodules[repo]
+    try:
+        checkout_submodules = checkout_submodules[repo]
+    except KeyError:
+        checkout_submodules = "False"
     module_calls = __pillar__.get('repo_checkout_module_calls')
-    module_calls = module_calls[repo]
+    try:
+        module_calls = module_calls[repo]
+    except KeyError:
+        module_calls = []
     gitmodules = repoloc + '/.gitmodules'
     depstats = []
 
