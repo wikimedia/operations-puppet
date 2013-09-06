@@ -30,7 +30,21 @@
  *   "gangliaMulticast": false,   // Use multicast?
  *   "gangliaSpoofHost": "slave", // Associate metrics w/this hostname
  *   "gangliaGroup": "statsd",    // Default metric group name
+ *   "gangliaFilters": [],        // Array of module paths (see below)
  * }
+ *
+ * Metric filters
+ *
+ * If you want to choose which metrics get sent to Ganglia, you may set
+ * the "gangliaFilters" configuration to an array of module paths.
+ * Each module should export a "filter" function which takes a metric
+ * object. The function may modify the metric object or return false to
+ * exclude it from Ganglia reporting. For example:
+ *
+ *   exports.filter = function ( metric ) {
+ *     // Exclude counters from Ganglia reporting.
+ *     return /count/.test( metric.name ) ? false : metric;
+ *   };
  *
  */
 
@@ -141,6 +155,10 @@ function each( o, callback ) {
     }
 }
 
+function filterReduce( o, filter ) {
+    return filter.filter( o );
+}
+
 var os = require( 'os' );
 var util = require( 'util' );
 var dgram = require( 'dgram' );
@@ -183,6 +201,8 @@ var templates = {
     },
 };
 
+var filters = [];
+
 var socket = dgram.createSocket( 'udp4' );
 
 var ganglia = {
@@ -206,7 +226,8 @@ var ganglia = {
         if ( typeof opts.slope === 'string' ) {
             opts.slope = slopes.indexOf( opts.slope );
         }
-        ganglia.items.push( opts );
+        opts = filters.reduce( filterReduce, opts );
+        if ( typeof opts === 'object' ) ganglia.items.push( opts );
     },
     flush   : function ( timestamp, metrics ) {
         var delta = timestamp - ganglia.flushed;
@@ -273,11 +294,17 @@ exports.init = function ( start, config, events ) {
         backendConfig.percentThreshold = [ backendConfig.percentThreshold ];
     }
 
+    if ( backendConfig.gangliaFilters ) {
+        filters.push.apply( filters, backendConfig.gangliaFilters.map( require ) );
+    }
+
     if ( backendConfig.gangliaMulticast ) {
+        socket.on( 'listening', function () {
+            socket.setBroadcast( true );
+            socket.setMulticastTTL( 128 );
+            socket.addMembership( backendConfig.gangliaHost );
+        } );
         socket.bind();
-        socket.setBroadcast( true );
-        socket.setMulticastTTL( 128 );
-        socket.addMembership( backendConfig.gangliaHost );
     }
 
     templates.base.group = backendConfig.gangliaGroup;
