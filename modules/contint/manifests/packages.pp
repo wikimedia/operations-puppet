@@ -20,7 +20,9 @@ class contint::packages {
     ensure => present,
   }
 
-  include generic::packages::maven
+  package { 'maven2':
+    ensure => present;
+  }
 
   # Get perl dependencies so we can lint the wikibugs perl script
   include misc::irc::wikibugs::packages

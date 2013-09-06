@@ -251,16 +251,6 @@ class generic::packages::ant18 {
 	}
 }
 
-class generic::packages::maven {
-	# Install Apache Maven, a java build processing tool.
-	# Class can later be used to add additional Maven plugins
-	# http://maven.apache.org/
-	package { [
-		"maven2"
-	]: ensure => latest;
-	}
-}
-
 class generic::sysfs::enable-rps {
 	upstart_job { "enable-rps": install => "true", start => "true" }
 }
