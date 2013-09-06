@@ -1,6 +1,10 @@
 #!/bin/bash
 # Script that reports when Puppet last ran, in bold if more than an hour ago.
 # Written by Mark Bergsma <mark@wikimedia.org>
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/base/puppet/97-last-puppet-run
+#####################################################################
 
 set -e
 

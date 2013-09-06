@@ -1,3 +1,8 @@
+#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///modules/base/screenrc
+######################################################################
+
 #change the hardstatus settings to give an window list at the bottom of the
 ##screen, with the time and date and with the current window highlighted
 term screen-256color

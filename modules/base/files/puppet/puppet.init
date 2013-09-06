@@ -1,4 +1,8 @@
 #! /bin/sh
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/base/puppet/puppet.init
+#####################################################################
 ### BEGIN INIT INFO
 # Provides:          puppet
 # Required-Start:    $network $named $remote_fs $syslog

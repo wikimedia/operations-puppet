@@ -124,7 +124,7 @@ class base::puppet($server='puppet', $certname=undef) {
             owner => root,
             group => root,
             mode  => 0444,
-            source => 'puppet:///files/puppet/puppet.default';
+            source => 'puppet:///modules/base/puppet/puppet.default';
         '/etc/puppet/puppet.conf':
             owner => root,
             group => root,
@@ -146,7 +146,7 @@ class base::puppet($server='puppet', $certname=undef) {
             owner => root,
             group => root,
             mode => 0555,
-            source => 'puppet:///files/misc/puppet.init';
+            source => 'puppet:///modules/base/puppet/puppet.init';
     }
 
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
@@ -199,13 +199,13 @@ class base::puppet($server='puppet', $certname=undef) {
             mode => 0444,
             owner => root,
             group => root,
-            source => "puppet:///files/logrotate/puppet";
+            source => "puppet:///modules/base/logrotate/puppet";
     }
 
     # Report the last puppet run in MOTD
     if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "9.10") >= 0 {
         file { "/etc/update-motd.d/97-last-puppet-run":
-            source => "puppet:///files/misc/97-last-puppet-run",
+            source => "puppet:///modules/base/puppet/97-last-puppet-run",
             mode => 0555;
         }
     }
@@ -289,7 +289,7 @@ class base::instance-upstarts {
         owner => root,
         group => root,
         mode => 0444,
-        source => 'puppet:///files/upstart/ttyS0.conf';
+        source => 'puppet:///modules/base/upstart/ttyS0.conf';
     }
 
 }
@@ -300,7 +300,7 @@ class base::screenconfig {
             owner => root,
             group => root,
             mode => 0444,
-            source => "puppet:///files/misc/screenrc",
+            source => "puppet:///modules/base/screenrc",
             ensure => present;
         }
     }
@@ -350,13 +350,13 @@ class base::firewall {
         ensure  => present,
         prio    => '00',
         # we also have a default DROP around, postpone its usage for later
-        source  => 'puppet:///files/firewall/main-minimal.conf',
+        source  => 'puppet:///modules/base/firewall/main-minimal.conf',
     }
 
     ferm::conf { 'defs':
         ensure  => present,
         prio    => '00',
-        source  => "puppet:///files/firewall/defs.${::realm}",
+        source  => "puppet:///modules/base/firewall/defs.${::realm}",
     }
 
     ferm::rule { 'bastion-ssh':

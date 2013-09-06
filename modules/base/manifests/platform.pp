@@ -101,14 +101,14 @@ class base::platform::generic::sun {
             ensure => directory,
             tag    => 'thumper-udev';
         '/etc/udev/scripts/solaris-name.sh':
-            source => 'puppet:///files/udev/solaris-name.sh',
+            source => 'puppet:///modules/base/platform/solaris-name.sh',
             owner  => root,
             group  => root,
             mode   => '0555',
             tag    => 'thumper-udev';
         '/etc/udev/rules.d/99-thumper-disks.rules':
             require => File['/etc/udev/scripts/solaris-name.sh'],
-            source  => 'puppet:///files/udev/99-thumper-disks.rules',
+            source  => 'puppet:///modules/base/platform/99-thumper-disks.rules',
             owner   => root,
             group   => root,
             mode    => '0444',
