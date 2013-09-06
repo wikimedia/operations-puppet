@@ -2113,9 +2113,15 @@ node "nickel.wikimedia.org" {
 
     include standard,
         ganglia::web,
-        misc::monitoring::views
+        misc::monitoring::views,
+        groups::wikidev,
+        accounts::olivneh
 
      install_certificate{ "star.wikimedia.org": }
+
+     sudo_user { 'olivneh':
+         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+     }
 }
 
 node /^ocg[1-3]\.wikimedia\.org$/ {
