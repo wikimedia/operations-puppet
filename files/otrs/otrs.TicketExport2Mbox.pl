@@ -24,7 +24,9 @@ use strict;
 
 # default location to write mail
 my $Mbox = "/tmp/mbox";
+chomp(my $ident = ($0 =~ /([^\/]+)$/) ? $1 : $0);
 
+use Sys::Syslog;
 use File::Basename;
 use FindBin qw($RealBin);
 use lib dirname($RealBin);
@@ -47,8 +49,8 @@ $CommonObject{LogObject}    = Kernel::System::Log->new(
     LogPrefix => 'OTRS-otrs.TicketExport2Mbox.pl',
 	%CommonObject,
 );
-$CommonObject{MainObject}   = Kernel::System::Main->new(%CommonObject);
 $CommonObject{TimeObject}   = Kernel::System::Time->new(%CommonObject);
+$CommonObject{MainObject}   = Kernel::System::Main->new(%CommonObject);
 $CommonObject{DBObject}     = Kernel::System::DB->new(%CommonObject);
 $CommonObject{TicketObject} = Kernel::System::Ticket->new(%CommonObject);
 
@@ -94,6 +96,7 @@ for my $TicketID (@TicketIDs) {
 		StopDay => $Day,
 		TicketID => $TicketID,
 		UserID    => 1,
+		Silent => 0,
 	);
 	if (($HistoryData{'Queue'} eq 'Junk') and ($HistoryData{'CreateQueue'} eq 'Junk')) {
 		printlog("Skip TicketID $TicketID, it was already autoqueued to Junk.",'debug');
@@ -118,14 +121,18 @@ for my $TicketID (@TicketIDs) {
 
 exit;
 
+
+
+
 sub closeTicket {
 	my $TicketID = shift;
 	$CommonObject{TicketObject}->StateSet(
 		TicketID => $TicketID,
 		State => 'Closed successful',
 		UserID => 1,
+		Silent => 0,
 	);
-	printlog("TicketID $TicketID state changed to 'Closed successful'.",'debug');
+	OTRSLog("TicketID $TicketID state changed to 'Closed successful'.",'debug');
 }
 
 sub printArticle {
@@ -179,7 +186,7 @@ sub cleanupArticle {
 	return $msg;
 }
 
-sub printlog {
+sub OTRSLog {
     my $msg = $_[0] ? $_[0] : '';
     my $priority = $_[1] ? $_[1] : 'notice';
 	$CommonObject{LogObject}->Log(
@@ -188,3 +195,11 @@ sub printlog {
 	);
 }
 
+sub printlog {
+	my $msg = $_[0] ? $_[0] : '';
+	my $severity = $_[1] ? $_[1] : 'notice'; # notice warning error etc.
+	Sys::Syslog::setlogsock('unix');
+	Sys::Syslog::openlog($ident,'ndelay,pid','user');
+	Sys::Syslog::syslog($severity,$msg);
+	Sys::Syslog::closelog();
+}
