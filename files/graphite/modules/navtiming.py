@@ -13,7 +13,7 @@ import zmq
 
 schema_rev = 5336845
 metrics = ('connecting', 'sending', 'waiting', 'redirecting', 'receiving',
-           'rendering', 'loading')
+           'rendering', 'loading', 'dnsLookup')
 
 
 ap = argparse.ArgumentParser(description='NavigationTiming Graphite module')
