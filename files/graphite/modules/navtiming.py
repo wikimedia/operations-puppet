@@ -37,6 +37,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 for meta in iter(zsock.recv_json, ''):
     if meta['revision'] != schema_rev:
         continue
+    wiki = meta['wiki']
     event = meta['event']
     if not event.get('isAnon'):
         continue
@@ -47,4 +48,6 @@ for meta in iter(zsock.recv_json, ''):
         value = event.get(metric)
         if value > 0 and value < 60000:
             stat = 'browser.%s.%s:%s|ms' % (metric, site, value)
+            sock.sendto(stat.encode('utf-8'), addr)
+            stat = 'browser.%s.%s.%s:%s|ms' % (metric, wiki, site, value)
             sock.sendto(stat.encode('utf-8'), addr)
