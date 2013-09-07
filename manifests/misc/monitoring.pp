@@ -94,7 +94,7 @@ class misc::monitoring::views {
 		kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
 		kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
 	}
-	class { 'misc::monitoring::view::perceived_latency': }
+	class { 'misc::monitoring::view::navigation_timing': }
 }
 
 # == Define misc:monitoring::view::udp2log
@@ -248,13 +248,13 @@ class misc::monitoring::view::analytics::data($hdfs_stat_host, $kafka_broker_hos
 }
 
 
-# == Class: misc::monitoring::view::perceived_latency
+# == Class: misc::monitoring::view::navigation_timing
 #
 # A Ganglia view of user-perceived latency measurements, collected via
 # the NavigationTiming extension (https://www.mediawiki.org/wiki/NavigationTiming).
 #
-class misc::monitoring::view::perceived_latency {
-	ganglia::view { 'perceived_latency':
+class misc::monitoring::view::navigation_timing {
+	ganglia::view { 'Navigation Timing':
 		graphs => [
 			{
 				title        => 'DNS: domainLookupStart to domainLookupEnd',
