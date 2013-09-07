@@ -257,42 +257,42 @@ class misc::monitoring::view::perceived_latency {
 	ganglia::view { 'perceived_latency':
 		graphs => [
 			{
-				title        => 'DNS (domainLookupEnd - domainLookupStart)',
+				title        => 'DNS: domainLookupStart to domainLookupEnd',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.dnsLookup.(desktop|mobile)_median$',
 			},
 			{
-				title        => 'Connecting (connectEnd - connectStart)',
+				title        => 'Connecting: connectStart to connectEnd',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.connecting.(desktop|mobile)_median$',
 			},
 			{
-				title        => 'Sending (fetchStart - navStart)',
+				title        => 'Sending: navStart to fetchStart',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.sending.(desktop|mobile)_median$',
 			},
 			{
-				title        => 'Waiting (responseStart - requestStart)',
+				title        => 'Waiting: requestStart to responseStart',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.waiting.(desktop|mobile)_median$',
 			},
 			{
-				title        => 'Receiving (responseEnd - responseStart)',
+				title        => 'Receiving: responseStart to responseEnd',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.receiving.(desktop|mobile)_median$',
 			},
 			{
-				title        => 'Rendering (loadEventEnd - responseEnd)',
+				title        => 'Rendering: responseEnd to loadEventEnd',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.rendering.(desktop|mobile)_median$',
 			},
 			{
-				title        => 'Loading (loadEventStart - navStart)',
+				title        => 'Loading: navStart to loadEventStart',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.loading.(desktop|mobile)_median$',
 			},
 			{
-				title        => 'Redirecting (redirectEnd - redirectStart)',
+				title        => 'Redirecting: redirectStart to redirectEnd',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.redirecting.(desktop|mobile)_median$',
 			},
