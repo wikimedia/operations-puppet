@@ -247,6 +247,7 @@ class role::applicationserver {
 			applicationserver::packages,
 			applicationserver::cron,
 			applicationserver::sudo,
+			applicationserver::mwlogdir,
 			role::applicationserver::configuration::php
 
 		# Also include jobqueue monitoring check
