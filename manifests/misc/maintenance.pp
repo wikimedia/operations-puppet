@@ -10,7 +10,7 @@ class misc::maintenance::foundationwiki( $enabled = false ) {
 	cron { 'updatedays':
 		user => apache,
 		minute => '*/15',
-		command => '/usr/local/bin/mwscript extensions/ContributionReporting/PopulateFundraisingStatistics.php foundationwiki --op updatedays > /tmp/PopulateFundraisingStatistics-updatedays.log',
+		command => '/usr/local/bin/mwscript extensions/ContributionReporting/PopulateFundraisingStatistics.php foundationwiki --op updatedays > /var/log/PopulateFundraisingStatistics-updatedays.log',
 		ensure => $enabled ?{
 			true => present,
 			false => absent,
@@ -22,7 +22,7 @@ class misc::maintenance::foundationwiki( $enabled = false ) {
 	cron { 'populatefundraisers':
 		user => apache,
 		minute => 5,
-		command => '/usr/local/bin/mwscript extensions/ContributionReporting/PopulateFundraisingStatistics.php foundationwiki --op populatefundraisers > /tmp/PopulateFundraisingStatistics-populatefundraisers.log',
+		command => '/usr/local/bin/mwscript extensions/ContributionReporting/PopulateFundraisingStatistics.php foundationwiki --op populatefundraisers > /var/log/PopulateFundraisingStatistics-populatefundraisers.log',
 		ensure => $enabled ?{
 			true => present,
 			false => absent,
@@ -52,7 +52,7 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
 		$monthday = regsubst($name, '.*@', '\1')
 
 		cron { "cron-refreshlinks-${name}":
-			command => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only > /home/mwdeploy/refreshLinks/${name}.log 2>&1",
+			command => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only > /var/log/refreshLinks/${name}.log 2>&1",
 			user => mwdeploy,
 			hour => 0,
 			minute => 0,
@@ -78,7 +78,7 @@ class misc::maintenance::pagetriage( $enabled = false ) {
 		minute => 55,
 		hour => 20,
 		monthday => '*/2',
-		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki > /tmp/updatePageTriageQueue.en.log',
+		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki > /var/log/updatePageTriageQueue.en.log',
 		ensure => $enabled ?{
 			true => present,
 			false => absent,
@@ -91,7 +91,7 @@ class misc::maintenance::pagetriage( $enabled = false ) {
 		minute => 55,
 		hour => 14,
 		monthday => '*/2',
-		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php testwiki > /tmp/updatePageTriageQueue.test.log',
+		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php testwiki > /var/log/updatePageTriageQueue.test.log',
 		ensure => $enabled ?{
 			true => present,
 			false => absent,
@@ -417,7 +417,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
 
                 cron { "cron-updatequerypages-ancientpages-${name}":
-                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Ancientpages > /home/mwdeploy/updateSpecialPages/${name}-AncientPages.log 2>&1",
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Ancientpages > /var/log/updateSpecialPages/${name}-AncientPages.log 2>&1",
                         month => [1, 7],
                         ensure => $enabled ?{
                           true => present,
@@ -427,7 +427,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
 
                 cron { "cron-updatequerypages-deadendpages-${name}":
-                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Deadendpages > /home/mwdeploy/updateSpecialPages/${name}-DeadendPages.log 2>&1",
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Deadendpages > /var/log/updateSpecialPages/${name}-DeadendPages.log 2>&1",
                         month => [2, 8],
                         ensure => $enabled ?{
                           true => present,
@@ -437,7 +437,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
 
                 cron { "cron-updatequerypages-mostlinked-${name}":
-                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostlinked > /home/mwdeploy/updateSpecialPages/${name}-MostLinked.log 2>&1",
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostlinked > /var/log/updateSpecialPages/${name}-MostLinked.log 2>&1",
                         month => [3, 9],
                         ensure => $enabled ?{
                           true => present,
@@ -447,7 +447,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
 
                 cron { "cron-updatequerypages-mostrevisions-${name}":
-                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostrevisions > /home/mwdeploy/updateSpecialPages/${name}-MostRevisions.log 2>&1",
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostrevisions > /var/log/updateSpecialPages/${name}-MostRevisions.log 2>&1",
                         month => [4, 10],
                         ensure => $enabled ?{
                           true => present,
@@ -457,7 +457,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
 
                 cron { "cron-updatequerypages-wantedpages-${name}":
-                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Wantedpages > /home/mwdeploy/updateSpecialPages/${name}-WantedPages.log 2>&1",
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Wantedpages > /var/log/updateSpecialPages/${name}-WantedPages.log 2>&1",
                         month => [5, 11],
                         ensure => $enabled ?{
                           true => present,
@@ -467,7 +467,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
 
                 cron { "cron-updatequerypages-fewestrevisions-${name}":
-                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Fewestrevisions > /home/mwdeploy/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Fewestrevisions > /var/log/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
                         month => [6, 12],
                         ensure => $enabled ?{
                           true => present,
