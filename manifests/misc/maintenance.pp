@@ -213,7 +213,7 @@ class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
 class misc::maintenance::update_special_pages( $enabled = false ) {
 	cron {
 		update_special_pages:
-			command => "flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /home/wikipedia/logs/norotate/updateSpecialPages.log 2>&1",
+			command => "flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/updateSpecialPages.log 2>&1",
 			user => "apache",
 			monthday => "*/3",
 			hour => 5,

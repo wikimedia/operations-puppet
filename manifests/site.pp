@@ -1161,9 +1161,7 @@ node "hume.wikimedia.org" {
     class { misc::maintenance::geodata: enabled => false }
     class { misc::maintenance::update_flaggedrev_stats: enabled => false }
     class { misc::maintenance::refreshlinks: enabled => false }
-
-    # Wrong log file location
-    class { misc::maintenance::update_special_pages: enabled => true }
+    class { misc::maintenance::update_special_pages: enabled => false }
 }
 
 node "iron.wikimedia.org" {
@@ -2710,13 +2708,11 @@ node "terbium.eqiad.wmnet" {
     class { misc::maintenance::geodata: enabled => true }
     class { misc::maintenance::update_flaggedrev_stats: enabled => true }
     class { misc::maintenance::refreshlinks: enabled => true }
+    class { misc::maintenance::update_special_pages: enabled => true }
 
     # (bug 15434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
     class { misc::maintenance::updatequerypages: enabled => true }
-
-    # Broken cron jobs moved back to hume:
-    class { misc::maintenance::update_special_pages: enabled => false }
 
     # totally broken, misconfigured in non-version reporting-setup.php
     class { misc::maintenance::foundationwiki: enabled => false }
