@@ -36,6 +36,7 @@ class role::zuul::labs {
         git_branch       => 'labs',
         git_dir          => $role::zuul::configuration::zuul_git_dir,
         push_change_refs => false,
+        statsd_host      => '',
     }
 
 } # /role::zuul::labs
@@ -71,6 +72,7 @@ class role::zuul::production {
         git_branch       => 'master',
         git_dir          => $role::zuul::configuration::zuul_git_dir,
         push_change_refs => false,
+        statsd_host      => '',
     }
 
 } # /role::zuul::production
