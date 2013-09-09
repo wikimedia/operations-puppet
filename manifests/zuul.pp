@@ -13,7 +13,8 @@ class zuulwikimedia {
 		$status_url,
 		$git_branch='master',
 		$git_dir='/var/lib/zuul/git',
-		$push_change_refs
+		$push_change_refs,
+		$statsd_host = '',
 	) {
 
 			# Zuul needs an API key to interact with Jenkins:
@@ -22,7 +23,7 @@ class zuulwikimedia {
 
 			# Load class from the Zuul module:
 			class { 'zuul':
-				name => $name,
+				name             => $name,
 				jenkins_server   => $jenkins_server,
 				jenkins_user     => $jenkins_user,
 				jenkins_apikey   => $jenkins_apikey,
@@ -33,6 +34,7 @@ class zuulwikimedia {
 				git_branch       => $git_branch,
 				git_dir          => $git_dir,
 				push_change_refs => $push_change_refs,
+				statsd_host      => $statsd_host,
 			}
 
 			# nagios/icinga monitoring
