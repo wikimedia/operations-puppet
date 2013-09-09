@@ -163,7 +163,7 @@ class misc::install-server {
 		# Mirror update cron entry
 		cron { update-ubuntu-mirror:
 			require => [ Systemuser[mirror], File["update-ubuntu-mirror"] ],
-			command => "/usr/local/sbin/update-ubuntu-mirror > /dev/null",
+			command => "/usr/local/sbin/update-ubuntu-mirror 1>/dev/null 2>/var/lib/mirror/mirror.err.log",
 			user => mirror,
 			hour => '*/6',
 			minute => 43,
