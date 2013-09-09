@@ -260,5 +260,6 @@ class role::mediawiki {
     # apache service installed by wikimedia-task-appserver is not disabled here.
     class maintenance {
         include role::mediawiki::common
+        include ::mediawiki::mwlogdir
     }
 }
