@@ -131,7 +131,7 @@ def metric_init(params):
         'time_max': 60,
         'value_type': 'uint',
         'units': 'XXX',
-        'slope': 'both',
+        'slope': 'positive',        # RRD 'COUNTER' type
         'format': '%d',
         'description': 'XXX',
         'groups': CONF['groups'],
@@ -142,6 +142,7 @@ def metric_init(params):
         'name': CONF['prefix'] + 'start',
         'call_back': get_value,
         'units': 'epoch',
+        'slope': 'zero',
         'description': 'Time service started',
         }))
     descriptors.append(build_desc(skel, {
@@ -184,6 +185,7 @@ def metric_init(params):
         'name': CONF['prefix'] + 'queue_size',
         'call_back': get_value,
         'units': 'count',
+        'slope': 'both',                                # RRD 'GAUGE' type
         'description': 'Number of packets in queue',
         }))
     descriptors.append(build_desc(skel, {
@@ -191,44 +193,6 @@ def metric_init(params):
         'call_back': get_value,
         'units': 'count',
         'description': 'Maximum number of packets in queue since startup/overflow',
-        }))
-
-    # *_delta metrics compute diff from prior sample using internal cache
-    descriptors.append(build_desc(skel, {
-        'name': CONF['prefix'] + 'inpkts_recvd_delta',
-        'call_back': get_delta,
-        'units': 'pkts',
-        'description': 'Multicast packets since last check',
-        }))
-    descriptors.append(build_desc(skel, {
-        'name': CONF['prefix'] + 'inpkts_sane_delta',
-        'call_back': get_delta,
-        'units': 'pkts',
-        'description': 'Sane packets since last check',
-        }))
-    descriptors.append(build_desc(skel, {
-        'name': CONF['prefix'] + 'inpkts_enqueued_delta',
-        'call_back': get_delta,
-        'units': 'pkts',
-        'description': 'Pakets enqueued since last check',
-        }))
-    descriptors.append(build_desc(skel, {
-        'name': CONF['prefix'] + 'inpkts_dequeued_delta',
-        'call_back': get_delta,
-        'units': 'pkts',
-        'description': 'Packets dequeued since last check',
-        }))
-    descriptors.append(build_desc(skel, {
-        'name': CONF['prefix'] + 'queue_overflows_delta',
-        'call_back': get_delta,
-        'units': 'count',
-        'description': 'Number of queue overflows since last check',
-        }))
-    descriptors.append(build_desc(skel, {
-        'name': CONF['prefix'] + 'queue_max_size_delta',
-        'call_back': get_delta,
-        'units': 'count',
-        'description': 'Maximum number of packets in queue since last check/overflow',
         }))
 
     return descriptors
