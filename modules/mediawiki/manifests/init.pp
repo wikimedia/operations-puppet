@@ -4,6 +4,7 @@ class mediawiki {
     include ::mediawiki::cgroup
     include ::mediawiki::packages
     include ::mediawiki::config::base
+    include ::mediawiki::mwlogdir
 
     file { '/etc/cluster':
         owner   => 'root',
