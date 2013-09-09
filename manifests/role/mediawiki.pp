@@ -36,6 +36,7 @@ class role::mediawiki::php {
 class role::mediawiki::common( $lvs_pool = undef ) {
     include role::mediawiki::php
     include standard
+    include ::mediawiki::mwlogdir
 
     if $::realm == 'production' {
         include geoip
