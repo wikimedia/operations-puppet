@@ -38,6 +38,11 @@ while true; do
 	esac
 done
 
+# Calculate the number of parallel threads
+# Leave a couple of cores free for other stuff
+CPUS=`grep -c 'model name' /proc/cpuinfo`
+THREADS=`expr $CPUS - 2`
+
 mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb) || die
 # Regenerate the extension message file list for all active MediaWiki versions
 for i in ${mwExtVerDbSets[@]}; do
@@ -67,6 +72,7 @@ for i in ${mwExtVerDbSets[@]}; do
 	echo -n "Updating LocalisationCache for $mwVerNum... "
 	sudo -u l10nupdate $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
 		--outdir=$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n $QUIET \
+		--threads=$THREADS \
 		|| die
 	echo "done"
 done
