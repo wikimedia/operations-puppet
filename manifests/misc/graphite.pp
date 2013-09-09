@@ -148,7 +148,8 @@ class misc::graphite::navtiming {
         settings      => {
             backends         => [ './backends/graphite', './backends/ganglia' ],
             flushInterval    => 5 * 60 * 1000,  # 5 min.
-            # Management API on loopback interface only.
+            # Listen on loopback interface only.
+            address          => $statsd_host,
             mgmt_address     => $statsd_host,
             percentThreshold => [ 95 ],
             # Show frequency distribution of client-side latency times.
