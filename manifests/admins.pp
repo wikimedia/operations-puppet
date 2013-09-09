@@ -357,46 +357,53 @@ class accounts {
 		}
 	}
 
-	class cmjohnson inherits baseaccount {
-		$username = "cmjohnson"
-		$realname = "Chris Johnson"
-		$uid = 579
+    class cmjohnson inherits baseaccount {
+        $username = "cmjohnson"
+        $realname = "Chris Johnson"
+        $uid = 579
 
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname]}
 
-			ssh_authorized_key {
-				"chrisj@ubuntu":
-					ensure	=> absent,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDnDmdyh5Stw9bMTm7qL1kWuNpazc1m6HiaN0ZlaqwbUIhvtADWobHZcHvTHMwyauU/X6joE+a6pyvYgM2hr6+wRawjmgOuK8cak90weyp+i20HCiPb5GqOLE0uDmDizI8Hb50kxjiXLF6k+7cT7i0Lksa9EKhsYEwCjgnOiGor6wEvN1RlwRuwNBOZcI6OUvV39G/VP/pjpZBeUNoUZHWgpr9nbX+rlctjzK0s8sRbUamvCG3lyeB1pNIVCkY9YOwvf1D2UpRnhIm3XQspojphCFzC6HqRqZOyygweKc98fmvxkbkiyzh9XPtKyV5CtRS+9ECUmZjfmcWZpomCN2tp";
-			}
-			ssh_authorized_key {
-				"chrisj@chrisj-VPCEB23FM":
-					ensure	=> absent,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDP7wD7CRHLh4V9Sjn72a/eh3hTQhprQ3fPxUX+G7oCGuRXmWAwHcoB2Rm7vZxiAEa6hA151YOEorYN8e6bYP0eqcpEu9G9cbDirnaAhKHf+r+n9OgJmpA8hDQQ0H4MuWH9W6uQLEi1Xl9Z41/u/LlfrmD9F77ed2jXCYAYgVwuNuO5lnOevMxLWH+aCtfYdp/QtEA9a+o2j0Dc0JveqXNFlCdcacLAME2q7ZHnyRwFndMgTiljnOSb3SjV/1tkNtq3Dkhnp1T3LXgSIX7gtxbfVd2u5b8HoaQYmpXSlRhyL+ulVJDJAEFVA+tp5lbcGK4kglNnBNKrQO9Bng+FlKwR";
-			}
-			ssh_authorized_key {
-				"chrisj@chrisjohnson":
-					ensure	=> absent,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDRLeXOUkI5OZkubtTv8jVVq7itOUQ38usJdMap8zjSQw9g7kbLj66369NQrp4g8MRiD1WhDGkxL5IeU8leQcAhTYB0SmAr/JAK363a/bgcR3OJL3LZcoji6iIhhDukanXNwo19uotoqJVj+J/CdSWzIbYefihN/FGf6CW9bqHhrBKY0t8k2HaT7EXxvxx7NXlCUQCSKHlkfNyd+BT+nYQ+oQQxyxFHrvKPhs9TPy8U7eVKpU1d0DfVVlKKB65l0O2Ldny0K4i8NPv+CmwX1zJqRzqc0inqfT3Eatc6a47pqJq2tL8ah4hYyrtYh2swicY3JbOP8lVWvnV3PZ2/iRMN";
+            ssh_authorized_key {
+                "chrisj@ubuntu":
+                    ensure	=> absent,
+                    user	=> $username,
+                    type	=> "ssh-rsa",
+                    key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDnDmdyh5Stw9bMTm7qL1kWuNpazc1m6HiaN0ZlaqwbUIhvtADWobHZcHvTHMwyauU/X6joE+a6pyvYgM2hr6+wRawjmgOuK8cak90weyp+i20HCiPb5GqOLE0uDmDizI8Hb50kxjiXLF6k+7cT7i0Lksa9EKhsYEwCjgnOiGor6wEvN1RlwRuwNBOZcI6OUvV39G/VP/pjpZBeUNoUZHWgpr9nbX+rlctjzK0s8sRbUamvCG3lyeB1pNIVCkY9YOwvf1D2UpRnhIm3XQspojphCFzC6HqRqZOyygweKc98fmvxkbkiyzh9XPtKyV5CtRS+9ECUmZjfmcWZpomCN2tp";
+            }
+            ssh_authorized_key {
+                "chrisj@chrisj-VPCEB23FM":
+                    ensure	=> absent,
+                    user	=> $username,
+                    type	=> "ssh-rsa",
+                    key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDP7wD7CRHLh4V9Sjn72a/eh3hTQhprQ3fPxUX+G7oCGuRXmWAwHcoB2Rm7vZxiAEa6hA151YOEorYN8e6bYP0eqcpEu9G9cbDirnaAhKHf+r+n9OgJmpA8hDQQ0H4MuWH9W6uQLEi1Xl9Z41/u/LlfrmD9F77ed2jXCYAYgVwuNuO5lnOevMxLWH+aCtfYdp/QtEA9a+o2j0Dc0JveqXNFlCdcacLAME2q7ZHnyRwFndMgTiljnOSb3SjV/1tkNtq3Dkhnp1T3LXgSIX7gtxbfVd2u5b8HoaQYmpXSlRhyL+ulVJDJAEFVA+tp5lbcGK4kglNnBNKrQO9Bng+FlKwR";
+            }
+            ssh_authorized_key {
+                "chrisj@chrisjohnson":
+                    ensure	=> absent,
+                    user	=> $username,
+                    type	=> "ssh-rsa",
+                    key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDRLeXOUkI5OZkubtTv8jVVq7itOUQ38usJdMap8zjSQw9g7kbLj66369NQrp4g8MRiD1WhDGkxL5IeU8leQcAhTYB0SmAr/JAK363a/bgcR3OJL3LZcoji6iIhhDukanXNwo19uotoqJVj+J/CdSWzIbYefihN/FGf6CW9bqHhrBKY0t8k2HaT7EXxvxx7NXlCUQCSKHlkfNyd+BT+nYQ+oQQxyxFHrvKPhs9TPy8U7eVKpU1d0DfVVlKKB65l0O2Ldny0K4i8NPv+CmwX1zJqRzqc0inqfT3Eatc6a47pqJq2tL8ah4hYyrtYh2swicY3JbOP8lVWvnV3PZ2/iRMN";
                         }
-			ssh_authorized_key {
-				"chrisj@chrisjohnson2":
-					ensure	=> present,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDjVPy2od8cEq1waL62yVzYmppKJSg95xFecXKVUutsE8P9VcHEdGFIg+pZoOv9X9u1rV4zrjxFomLka4RD9fhV4be3r4aXIswQ08Y9fQhQ6ixs0Y0rNmfF0P/C1vxZgZ9gPp5nSIAfng+W+CU6Ecsf/0TUc136KnpliYBIOWUD0kcgTRd3cu24w+6JYHXelZXvMB7dImlb9ilkk3OehXfNuABZpBN0PHM4CDDiZeSO1G6OD38evfuigFBo1U5zezRuOdDh5tTWug3fkmGf9bBH5MKnnIEfrzsbzQomeB0fJs1LEweFlwPZAsjQ4o0riJEhLwWFUlE88ABGbPhwJ9/X";
-			}
-		}
-	}
+            ssh_authorized_key {
+                "chrisj@chrisjohnson2":
+                    ensure	=> absent,
+                    user	=> $username,
+                    type	=> "ssh-rsa",
+                    key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDjVPy2od8cEq1waL62yVzYmppKJSg95xFecXKVUutsE8P9VcHEdGFIg+pZoOv9X9u1rV4zrjxFomLka4RD9fhV4be3r4aXIswQ08Y9fQhQ6ixs0Y0rNmfF0P/C1vxZgZ9gPp5nSIAfng+W+CU6Ecsf/0TUc136KnpliYBIOWUD0kcgTRd3cu24w+6JYHXelZXvMB7dImlb9ilkk3OehXfNuABZpBN0PHM4CDDiZeSO1G6OD38evfuigFBo1U5zezRuOdDh5tTWug3fkmGf9bBH5MKnnIEfrzsbzQomeB0fJs1LEweFlwPZAsjQ4o0riJEhLwWFUlE88ABGbPhwJ9/X";
+            }
+            ssh_authorized_key {
+                "cmjohnson@wmf-production":
+                    ensure	=> present,
+                    user	=> $username,
+                    type	=> "ssh-rsa",
+                    key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC7y4rw4Np/Xy1MgQYx6dciv+vszegmZjZbh5p7PHdddLI+8wDM2Q7tz+ghm6PkKuUlcwK99fD2ixlb8FoBrznUABTEmaSMBdSIhXS2J81mJ5ycrCeb/+bG9YQ8e1sABjfFSWu07wqUgPZqx6roeduc1fkp9DvH8FasbFZcuPsgkvANwaWm+TTSY8Ik1h7l1bJHIp7iRuLRQ9fZjsZCHD4svfuU3YEyIHKPYmPQFgJn1wyYDKgIbfewcK/rFX43E9Kqd/SpKqapIex1fYWA0/MtbAzVLb3YdX/vWQP6lx4Kwzc6OPzib++RY6bR0zd14IdkGZ2wgwcqR/MRaafotARV";
+            }
+        }
+    }
 
 	class csteipp inherits baseaccount {
 		$username = "csteipp"
