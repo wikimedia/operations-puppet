@@ -3020,7 +3020,7 @@ class accounts {
         }
     }
 
-    # RT 5520
+    # RT 5726
     class kwang inherits baseaccount {
         $username = 'kwang'
         $realname = 'Kenan Wang'
@@ -3036,6 +3036,26 @@ class accounts {
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDj299MZhsLjbagT8eu7QMrmMWu0ROj1nJpGrod7sU40QXqE3JSDthmvt4YBx8EkWmYM5t5akLF8vtX+KdjxFs1m1tdSy7v4irPfVaNiswQx+GuOfEiZeb6a4oKD6PhJJ9ymkTUP0CFC2rr75jQK26vvn4aFLbridm2mzbsvTJG+88HsTz4DktEbVBFz4cSHBuQ2ckFh5I1JDdrQ/Wb9g8t4LnIdoNhjqVffzr+pGz1Fo0HH12EWpagYIikjG4iYAgpn0GQZJ1LLT4hmmnP67rH2LEKCcD92kRGO2MO4VzlF9Ij0nLbNNy9t16hQ9DT+wRGIBU51d+L/pUhXYWxIF4N',
+            }
+        }
+    }
+
+    # RT 5520
+    class siebrand inherits baseaccount {
+        $username = 'siebrand'
+        $realname = 'Siebrand Mazeland'
+        $uid      = 650
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'smazeland@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAABJQAAAQBkNzWQZaKeRyXt7jcsfsDHzR3foT6fJq3buJEqbMo/cyPimK1rfC9ZE0/Tk+5DHjD/Q6YudGakzHoCf5nj7IAQNPRsVeiPKPCyfr/mKCriVG0tsZrGpm2y0aCsteV9+Y0l4yVBbV/3WqEKSzDY/Yq/gYgnxRZGbt+WycDAAs4UeYHCSbSHszL1nLCgMJnSae9twYGkdE9etom+4acGWuFax+3DQF7R1QBItFMg4yGtc28LSkrsRpQbs29LJps1fNv1ueTxEiSf9Jyv5R7vg1Fi8ohA+0VvwbpgofqZuGdEF/nkT4Xn4ku9nq6eE0UtZ8cFj1I6XiQwM7wuf07ZcKOr',
             }
         }
     }
