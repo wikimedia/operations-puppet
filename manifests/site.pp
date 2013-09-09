@@ -1157,23 +1157,13 @@ node "hume.wikimedia.org" {
         admins::restricted,
         nrpe
 
-    # (bug 15434) Periodical run of currently disabled special pages
-    # to be run against PMTPA slaves
     class { misc::maintenance::updatequerypages: enabled => false }
-
-    # These cron jobs were left behind for some reason:
-
-    # foreachwikiindblist broken
     class { misc::maintenance::geodata: enabled => false }
+    class { misc::maintenance::update_flaggedrev_stats: enabled => false }
+    class { misc::maintenance::refreshlinks: enabled => false }
 
     # Wrong log file location
     class { misc::maintenance::update_special_pages: enabled => true }
-
-    # wikimedia-periodic-update.sh is unpuppetized and not in the scap source
-    class { misc::maintenance::update_flaggedrev_stats: enabled => false }
-
-    # Unknown issue, works for me
-    class { misc::maintenance::refreshlinks: enabled => false }
 }
 
 node "iron.wikimedia.org" {
@@ -2717,20 +2707,19 @@ node "terbium.eqiad.wmnet" {
     class { misc::maintenance::cleanup_upload_stash: enabled => true }
     class { misc::maintenance::tor_exit_node: enabled => true }
     class { misc::maintenance::aft5: enabled => true }
-
-    # Broken cron jobs moved back to hume:
     class { misc::maintenance::geodata: enabled => true }
     class { misc::maintenance::update_flaggedrev_stats: enabled => true }
-    class { misc::maintenance::update_special_pages: enabled => false }
-
     class { misc::maintenance::refreshlinks: enabled => true }
-
-    # totally broken, misconfigured in non-version reporting-setup.php
-    class { misc::maintenance::foundationwiki: enabled => false }
 
     # (bug 15434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
     class { misc::maintenance::updatequerypages: enabled => true }
+
+    # Broken cron jobs moved back to hume:
+    class { misc::maintenance::update_special_pages: enabled => false }
+
+    # totally broken, misconfigured in non-version reporting-setup.php
+    class { misc::maintenance::foundationwiki: enabled => false }
 }
 
 node /^testsearch100[1-3]\.eqiad\.wmnet/ {
