@@ -56,7 +56,7 @@ class misc::maintenance::pagetriage( $enabled = false ) {
         minute   => 55,
         hour     => 20,
         monthday => '*/2',
-        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki > /tmp/updatePageTriageQueue.en.log',
+        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki > /var/log/mediawiki/updatePageTriageQueue.en.log',
         ensure   => $enabled ?{
             true    => present,
             false   => absent,
@@ -69,7 +69,7 @@ class misc::maintenance::pagetriage( $enabled = false ) {
         minute   => 55,
         hour     => 14,
         monthday => '*/2',
-        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php testwiki > /tmp/updatePageTriageQueue.test.log',
+        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php testwiki > /var/log/mediawiki/updatePageTriageQueue.test.log',
         ensure   => $enabled ?{
             true    => present,
             false   => absent,
@@ -84,8 +84,8 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
     # selected set of wikis?
     cron {
         'translationnotifications-metawiki':
-            command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log',
             user    => 'apache',
+            command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/mediawiki/translationnotifications/digests.log',
             weekday => 1, # Monday
             hour    => 10,
             minute  => 0,
@@ -96,8 +96,8 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
             };
 
         'translationnotifications-mediawikiwiki':
-            command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log',
             user    => 'apache',
+            command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/mediawiki/translationnotifications/digests.log',
             weekday => 1, # Monday
             hour    => 10,
             minute  => 5,
@@ -193,7 +193,7 @@ class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
 class misc::maintenance::update_special_pages( $enabled = false ) {
     cron {
         'update_special_pages':
-            command  => 'flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/updateSpecialPages.log 2>&1',
+            command  => 'flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/mediawiki/updateSpecialPages.log 2>&1',
             user     => 'apache',
             monthday => '*/3',
             hour     => 5,
@@ -229,7 +229,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
 
     cron { 'wikibase-repo-prune2':
         # prunes the wb_changes table in wikidatawiki db
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune2.log',
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/mediawiki/wikidata/prune2.log',
         user    => 'apache',
         minute  => [0,15,30,45],
         ensure  => $wbenabled,
@@ -239,7 +239,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
     # This handles inserting jobs into client job queue, which then process the changes
     cron { 'wikibase-dispatch-changes3':
         # dispatches changes data to wikibase clients (e.g. wikipedia) to be processed as jobs there
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher3.log',
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/mediawiki/wikidata/dispatcher3.log',
         user    => 'apache',
         minute  => '*/5',
         ensure  => $wbenabled,
@@ -247,14 +247,14 @@ class misc::maintenance::wikidata( $enabled = false ) {
 
     cron { 'wikibase-dispatch-changes4':
         # second dispatcher to inject wikidata changes  wikibase clients (e.g. wikipedia) to be processed as jobs there
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher4.log',
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/mediawiki/wikidata/dispatcher4.log',
         user    => 'apache',
         minute  => '*/5',
         ensure  => $wbenabled,
     }
 
     cron { 'wikibase-rebuild-entityperpage':
-        command  => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildEntityPerPage.php --wiki wikidatawiki --force 2>&1 >> /var/log/wikidata/rebuildEpp.log',
+        command  => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildEntityPerPage.php --wiki wikidatawiki --force 2>&1 >> /var/log/mediawiki/wikidata/rebuildEpp.log',
         user     => 'apache',
         minute   => 30,
         hour     => 3,
@@ -403,37 +403,37 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
 
                 cron { "cron-updatequerypages-ancientpages-${name}":
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Ancientpages > /home/mwdeploy/updateSpecialPages/${name}-AncientPages.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Ancientpages > /var/log/mediawiki/updateSpecialPages/${name}-AncientPages.log 2>&1",
                         monthday => 11,
                         ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-deadendpages-${name}":
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Deadendpages > /home/mwdeploy/updateSpecialPages/${name}-DeadendPages.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Deadendpages > /var/log/mediawiki/updateSpecialPages/${name}-DeadendPages.log 2>&1",
                         monthday => 12,
                     ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-mostlinked-${name}":
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostlinked > /home/mwdeploy/updateSpecialPages/${name}-MostLinked.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostlinked > /var/log/mediawiki/updateSpecialPages/${name}-MostLinked.log 2>&1",
                         monthday => 13,
                     ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-mostrevisions-${name}":
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostrevisions > /home/mwdeploy/updateSpecialPages/${name}-MostRevisions.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostrevisions > /var/log/mediawiki/updateSpecialPages/${name}-MostRevisions.log 2>&1",
                         monthday => 14,
                         ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-wantedpages-${name}":
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Wantedpages > /home/mwdeploy/updateSpecialPages/${name}-WantedPages.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Wantedpages > /var/log/mediawiki/updateSpecialPages/${name}-WantedPages.log 2>&1",
                         monthday => 15,
                         ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-fewestrevisions-${name}":
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Fewestrevisions > /home/mwdeploy/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Fewestrevisions > /var/log/mediawiki/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
                         monthday => 16,
                         ensure   => $status
                 }
@@ -448,42 +448,42 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
 
                 cron { 'cron-updatequerypages-lonelypages-s1':
-                        command   => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages > /home/mwdeploy/updateSpecialPages/${name}-LonelyPages.log 2>&1",
+                        command   => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages > /var/log/mediawiki/updateSpecialPages/${name}-LonelyPages.log 2>&1",
                         month     => [1, 7],
                         monthday  => 18,
                         ensure    => $status
                 }
 
                 cron { 'cron-updatequerypages-mostcategories-s1':
-                        command   => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories > /home/mwdeploy/updateSpecialPages/${name}-MostCategories.log 2>&1",
+                        command   => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories > /var/log/mediawiki/updateSpecialPages/${name}-MostCategories.log 2>&1",
                         month     => [2, 8],
                         monthday  => 19,
                         ensure    => $status
                 }
 
                 cron { 'cron-updatequerypages-mostlinkedcategories-s1':
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedcategories > /home/mwdeploy/updateSpecialPages/${name}-MostLinkedCategories.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedcategories > /var/log/mediawiki/updateSpecialPages/${name}-MostLinkedCategories.log 2>&1",
                         month    => [3, 9],
                         monthday => 20,
                         ensure   => $status
                 }
 
                 cron { 'cron-updatequerypages-mostlinkedtemplates-s1':
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates > /home/mwdeploy/updateSpecialPages/${name}-MostLinkedTemplates.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates > /var/log/mediawiki/updateSpecialPages/${name}-MostLinkedTemplates.log 2>&1",
                         month    => [4, 10],
                         monthday => 21,
                         ensure   => $status
                 }
 
                 cron { 'cron-updatequerypages-uncategorizedcategories-s1':
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Uncategorizedcategories > /home/mwdeploy/updateSpecialPages/${name}-UncategorizedCategories.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Uncategorizedcategories > /var/log/mediawiki/updateSpecialPages/${name}-UncategorizedCategories.log 2>&1",
                         month    => [5, 11],
                         monthday => 22,
                         ensure   => $status
                 }
 
                 cron { 'cron-updatequerypages-wantedtemplates-s1':
-                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Wantedtemplates > /home/mwdeploy/updateSpecialPages/${name}-WantedTemplates.log 2>&1",
+                        command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Wantedtemplates > /var/log/mediawiki/updateSpecialPages/${name}-WantedTemplates.log 2>&1",
                         month    => [6, 12],
                         monthday => 23,
                         ensure   => $status
