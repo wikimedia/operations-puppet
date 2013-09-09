@@ -25,12 +25,13 @@
  * Ganglia-specific settings (for /etc/statsd/localConfig.js):
  *
  * {
- *   "gangliaHost": "localhost",  // Hostname of Ganglia server
- *   "gangliaPort": 8649,         // UDP port of Ganglia server
- *   "gangliaMulticast": false,   // Use multicast?
- *   "gangliaSpoofHost": "slave", // Associate metrics w/this hostname
- *   "gangliaGroup": "statsd",    // Default metric group name
- *   "gangliaFilters": [],        // Array of module paths (see below)
+ *   "gangliaHost": "localhost",    // Hostname of Ganglia server
+ *   "gangliaPort": 8649,           // UDP port of Ganglia server
+ *   "gangliaMulticast": false,     // Use multicast?
+ *   "gangliaSpoofHost": "slave",   // Associate metrics w/this hostname
+ *   "gangliaGroup": "statsd",      // Default metric group name
+ *   "gangliaFilters": [],          // Array of module paths (see below)
+ *   "sendMetadataInterval": 60000, // Same as send_metadata_interval
  * }
  *
  * Metric filters
@@ -174,10 +175,11 @@ var blankGroup = {
 var blankSummary = util._extend( { median: 0 }, blankGroup );
 
 var backendConfig = {
-    gangliaGroup   : 'statsd',
-    gangliaMetrics : {},
-    gangliaPort    : 8649,
-    percentThreshold: [ 95 ],
+    gangliaGroup         : 'statsd',
+    gangliaMetrics       : {},
+    gangliaPort          : 8649,
+    percentThreshold     : [ 95 ],
+    sendMetadataInterval : 60000,
 };
 
 var templates = {
@@ -205,31 +207,37 @@ var filters = [];
 
 var socket = dgram.createSocket( 'udp4' );
 
+
 var ganglia = {
-    flushed : Math.floor( new Date() / 1000 ),
-    items   : [],
-    sent    : 0,
-    status  : function ( callback ) {
+    q        : { meta: {}, data: [] },
+    flushed  : Math.floor( new Date() / 1000 ),
+    sent     : 0,
+    status   : function ( callback ) {
         callback( null, 'ganglia', 'flushed', ganglia.flushed );
         callback( null, 'ganglia', 'sent', ganglia.sent );
+        callback( null, 'ganglia', 'types', Object.keys( ganglia.q.meta ).length );
     },
-    enqueue : function ( template, name /* , ..., value */ ) {
+    enqueue  : function ( template, name /* , ..., value */ ) {
         var args = Array.prototype.slice.call( arguments, 1 ),
-            opts = {};
-        util._extend( opts, templates.base );
-        util._extend( opts, template || {} );
-        util._extend( opts, backendConfig.gangliaMetrics[name] );
-        util._extend( opts, {
+            metric = {};
+        util._extend( metric, templates.base );
+        util._extend( metric, template || {} );
+        util._extend( metric, backendConfig.gangliaMetrics[name] );
+        util._extend( metric, {
             value : args.pop(),
             name  : args.join('_'),
         } );
-        if ( typeof opts.slope === 'string' ) {
-            opts.slope = slopes.indexOf( opts.slope );
+        if ( typeof metric.slope === 'string' ) {
+            metric.slope = slopes.indexOf( metric.slope );
         }
-        opts = filters.reduce( filterReduce, opts );
-        if ( typeof opts === 'object' ) ganglia.items.push( opts );
+        metric = filters.reduce( filterReduce, metric );
+
+        if ( typeof metric === 'object' ) {
+            ganglia.q.meta[ metric.name ] = Xdr.meta( metric );
+            ganglia.q.data.push( Xdr.data( metric ) );
+        }
     },
-    flush   : function ( timestamp, metrics ) {
+    flush    : function ( timestamp, metrics ) {
         var delta = timestamp - ganglia.flushed;
 
         if ( delta < 1 )
@@ -258,21 +266,27 @@ var ganglia = {
         } );
 
         each( metrics.gauges, ganglia.enqueue );
-        ganglia.dispatch();
     },
-    dispatch : function () {
-        var metric, meta, data;
+    dequeue   : function () {
+        var meta, data, keys = Object.keys( ganglia.q.meta ), i = keys.length;
 
-        ganglia.flushed = Math.floor( new Date() / 1000 );
-        while ( ( metric = ganglia.items.shift() ) !== undefined ) {
-            meta = Xdr.meta( metric );
+        // metadata packets; emitted repeatedly
+        while ( i-- ) {
+            meta = ganglia.q.meta[keys[i]];
             socket.send( meta, 0, meta.length,
-                    backendConfig.gangliaPort, backendConfig.gangliaHost,
-                    logSocketError );
-            data = Xdr.data( metric );
+                backendConfig.gangliaPort, backendConfig.gangliaHost,
+                logSocketError );
+        }
+
+        if ( !ganglia.q.data.length )
+            return;
+
+        // metric packets; emitted once
+        ganglia.flushed = Math.floor( new Date() / 1000 );
+        while ( ( data = ganglia.q.data.shift() ) !== undefined ) {
             socket.send( data, 0, data.length,
-                    backendConfig.gangliaPort, backendConfig.gangliaHost,
-                    logSocketError );
+                backendConfig.gangliaPort, backendConfig.gangliaHost,
+                logSocketError );
             ganglia.sent++;
         }
     },
@@ -298,6 +312,14 @@ exports.init = function ( start, config, events ) {
         filters.push.apply( filters, backendConfig.gangliaFilters.map( require ) );
     }
 
+    if ( backendConfig.flushInterval < backendConfig.sendMetadataInterval ) {
+        backendConfig.sendMetadataInterval = backendConfig.flushInterval;
+    }
+
+    if ( backendConfig.flushInterval / 1000 > templates.base.tmax ) {
+        templates.base.tmax = backendConfig.flushInterval / 1000;
+    }
+
     if ( backendConfig.gangliaMulticast ) {
         socket.on( 'listening', function () {
             socket.setBroadcast( true );
@@ -311,5 +333,9 @@ exports.init = function ( start, config, events ) {
     ganglia.flushed = start;
     events.on( 'flush', ganglia.flush );
     events.on( 'status', ganglia.status );
+
+    // StatsD can flush as infrequently as it likes, but we'll emit the
+    // metadata packets every 60 seconds or fewer.
+    setInterval( ganglia.dequeue, backendConfig.sendMetadataInterval );
     return true;
 };
