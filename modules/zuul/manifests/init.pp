@@ -21,6 +21,7 @@ class zuul (
     $git_branch = 'master',
     $git_dir = '/var/lib/zuul/git',
     $push_change_refs,
+    $statsd_host = '',
 ) {
 
   # Dependencies as mentionned in zuul:tools/pip-requires
@@ -145,6 +146,14 @@ class zuul (
     group  => 'root',
     mode   => '0555',
     source => 'puppet:///modules/zuul/zuul.init',
+  }
+
+  file { '/etc/default/zuul':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => template('zuul/default.erb'),
   }
 
   exec { 'zuul-reload':
