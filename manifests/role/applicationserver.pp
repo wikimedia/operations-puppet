@@ -128,6 +128,8 @@ class role::applicationserver {
 	class appserver::test{
 		system_role { "role::applicationserver::appserver::test": description => "Test Apache Application server" }
 
+		class { "salt::setgrain": grain_name => "appserver", grain_value => "test" }
+
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
 		class { "role::applicationserver::webserver": maxclients => "100" }
@@ -138,6 +140,8 @@ class role::applicationserver {
 	# definition for role::applicationserver::common
 	class appserver::beta{
 		system_role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
+
+        class { "salt::setgrain": grain_name => "appserver", grain_value => "bits" }
 
 		class { "role::applicationserver::common": group => "beta_appserver" }
 
@@ -152,6 +156,8 @@ class role::applicationserver {
 	class appserver::api{
 		system_role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
 
+        class { "salt::setgrain": grain_name => "appserver", grain_value => "api" }
+
 		class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
 
 		class { "role::applicationserver::webserver": maxclients => "100" }
@@ -159,12 +165,16 @@ class role::applicationserver {
 	class appserver::bits{
 		system_role { "role::applicationserver::appserver::bits": description => "Bits Apache Application server" }
 
+        class { "salt::setgrain": grain_name => "appserver", grain_value => "bits" }
+
 		class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
 
 		include role::applicationserver::webserver
 	}
 	class imagescaler{
 		system_role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
+
+        class { "salt::setgrain": grain_name => "appserver", grain_value => "imagescaler" }
 
 		class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
 
@@ -178,6 +188,8 @@ class role::applicationserver {
 	}
 	class videoscaler( $run_jobs_enabled = true ){
 		system_role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
+
+        class { "salt::setgrain": grain_name => "appserver", grain_value => "videoscaler" }
 
 		class { "role::applicationserver::common": group => "videoscaler" }
 
@@ -210,6 +222,8 @@ class role::applicationserver {
 	}
 	class jobrunner( $run_jobs_enabled = true ){
 		system_role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
+
+        class { "salt::setgrain": grain_name => "appserver", grain_value => "jobrunner" }
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
