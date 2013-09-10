@@ -132,6 +132,8 @@ class role::applicationserver {
 	class appserver{
 		system::role { "role::applicationserver::appserver": description => "Standard Apache Application server" }
 
+		salt::grain { 'applicationserver': value => 'standard' }
+
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
 		if $::site == "eqiad" and $::processorcount == "16" {
@@ -149,6 +151,8 @@ class role::applicationserver {
 	class appserver::test{
 		system::role { "role::applicationserver::appserver::test": description => "Test Apache Application server" }
 
+		salt::grain { 'applicationserver': value => 'test' }
+
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
 		class { "role::applicationserver::webserver": maxclients => "100" }
@@ -159,6 +163,8 @@ class role::applicationserver {
 	# definition for role::applicationserver::common
 	class appserver::beta{
 		system::role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
+
+		salt::grain { 'applicationserver': value => 'beta' }
 
 		class { "role::applicationserver::common": group => "beta_appserver" }
 
@@ -181,6 +187,8 @@ class role::applicationserver {
 	class appserver::api{
 		system::role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
 
+		salt::grain { 'applicationserver': value => 'api' }
+
 		class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
 
 		class { "role::applicationserver::webserver": maxclients => "100" }
@@ -188,12 +196,16 @@ class role::applicationserver {
 	class appserver::bits{
 		system::role { "role::applicationserver::appserver::bits": description => "Bits Apache Application server" }
 
+		salt::grain { 'applicationserver': value => 'bits' }
+
 		class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
 
 		include role::applicationserver::webserver
 	}
 	class imagescaler{
 		system::role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
+
+		salt::grain { 'applicationserver': value => 'imagescaler' }
 
 		class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
 
@@ -207,6 +219,8 @@ class role::applicationserver {
 	}
 	class videoscaler( $run_jobs_enabled = true ){
 		system::role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
+
+		salt::grain { 'applicationserver': value => 'videoscaler' }
 
 		class { "role::applicationserver::common": group => "videoscaler" }
 
@@ -239,6 +253,8 @@ class role::applicationserver {
 	}
 	class jobrunner( $run_jobs_enabled = true ){
 		system::role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
+
+		salt::grain { 'applicationserver': value => 'jobrunner' }
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
