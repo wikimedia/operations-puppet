@@ -36,8 +36,10 @@ class statsd(
 ) {
     $config = ordered_json($settings, {
         port         => $port,
+        backends     => [ './backends/graphite', './backends/ganglia' ],
         graphiteHost => $graphite_host,
         graphitePort => $graphite_port,
+        mgmt_address => '127.0.0.1',
     })
 
     package { 'statsd':
