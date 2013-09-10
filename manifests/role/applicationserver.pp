@@ -127,6 +127,7 @@ class role::applicationserver {
 	# role class specifically for test.w.o apache(s)
 	class appserver::test{
 		system_role { "role::applicationserver::appserver::test": description => "Test Apache Application server" }
+		salt::grain { 'applicationserver': value => 'test' }
 
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
@@ -138,6 +139,7 @@ class role::applicationserver {
 	# definition for role::applicationserver::common
 	class appserver::beta{
 		system_role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
+		salt::grain { 'applicationserver': value => 'beta' }
 
 		class { "role::applicationserver::common": group => "beta_appserver" }
 
@@ -151,6 +153,7 @@ class role::applicationserver {
 	}
 	class appserver::api{
 		system_role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
+		salt::grain { 'applicationserver': value => 'api' }
 
 		class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
 
@@ -158,6 +161,7 @@ class role::applicationserver {
 	}
 	class appserver::bits{
 		system_role { "role::applicationserver::appserver::bits": description => "Bits Apache Application server" }
+		salt::grain { 'applicationserver': value => 'bits' }
 
 		class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
 
@@ -165,6 +169,7 @@ class role::applicationserver {
 	}
 	class imagescaler{
 		system_role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
+		salt::grain { 'applicationserver': value => 'imagescaler' }
 
 		class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
 
@@ -178,6 +183,7 @@ class role::applicationserver {
 	}
 	class videoscaler( $run_jobs_enabled = true ){
 		system_role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
+		salt::grain { 'applicationserver': value => 'videoscaler' }
 
 		class { "role::applicationserver::common": group => "videoscaler" }
 
@@ -210,6 +216,7 @@ class role::applicationserver {
 	}
 	class jobrunner( $run_jobs_enabled = true ){
 		system_role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
+		salt::grain { 'applicationserver': value => 'jobrunner' }
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
