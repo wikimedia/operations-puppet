@@ -129,7 +129,6 @@ class role::cache {
 				},
 				"upload" => {
 					"pmtpa-squid" => [
-						'sq42.wikimedia.org',
 						'sq43.wikimedia.org',
 						'sq44.wikimedia.org',
 						'sq45.wikimedia.org',
