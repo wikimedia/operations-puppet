@@ -146,11 +146,8 @@ class misc::graphite::navtiming {
         graphite_host => 'professor.pmtpa.wmnet',
         graphite_port => 2003,
         settings      => {
-            backends         => [ './backends/graphite', './backends/ganglia' ],
             flushInterval    => 5 * 60 * 1000,  # 5 min.
-            # Listen on loopback interface only.
             address          => $statsd_host,
-            mgmt_address     => $statsd_host,
             percentThreshold => [ 95 ],
             # Show frequency distribution of client-side latency times.
             # See <http://tinyurl.com/statsd-histograms>.
