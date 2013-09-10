@@ -113,6 +113,21 @@ class misc::graphite::gdash {
 	}
 }
 
+# == Class: misc::graphite::statsd
+#
+# StatsD instance; logs to Graphite on localhost & to Ganglia multicast.
+# Ganglia metrics will be aggregated under synthetic hostname 'statsd'.
+#
+class misc::graphite::statsd {
+    class { '::statsd':
+        settings      => {
+            gangliaHost      => $::ganglia::mcast_address,
+            gangliaMulticast => true,
+            gangliaSpoofHost => 'statsd',
+        },
+    }
+}
+
 # == Class: misc::graphite::navtiming
 #
 # Captures NavigationTiming event and send them to StatsD / Graphite.
