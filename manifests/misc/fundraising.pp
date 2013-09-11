@@ -377,7 +377,8 @@ class misc::fundraising::jenkins {
 
 	user { jenkins:
 		name => 'jenkins',
-		groups => [ 'wikidev' ];
+		gid => 'www-data',
+		groups => [ 'wikidev', 'backupmover' ];
 	}
 
 	service { 'jenkins':
