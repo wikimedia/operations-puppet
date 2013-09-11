@@ -126,6 +126,7 @@ class toollabs::exec_environ {
       'python-wadllib',
       'python-webpy',
       'python-werkzeug',
+      'python-wikitools',
       'python-zmq',
 
       # PHP libraries
