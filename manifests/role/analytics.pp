@@ -98,24 +98,7 @@ class role::analytics::users {
 
 
 class role::analytics::dclass {
-    # install dclass JNI package
-    # for device classification.
-    if !defined(Package['libdclass-java']) {
-        package { 'libdclass-java':
-            ensure  => 'installed',
-            require => Class['role::analytics::java'],
-        }
-    }
-    # Symlink libdclass* .so into /usr/lib.
-    # (Oracle java does not support multiarch.)
-    file { '/usr/lib/libdclass.so':
-        ensure => 'link',
-        target => '/usr/lib/x86_64-linux-gnu/libdclass.so.0',
-        require => Package['libdclass-java'],
-    }
-    file { '/usr/lib/libdclassjni.so':
-        ensure => 'link',
-        target => '/usr/lib/x86_64-linux-gnu/jni/libdclassjni.so',
-        require => Package['libdclass-java'],
-    }
+    include dclass,
+      dclass::java,
+      dclass::data
 }
