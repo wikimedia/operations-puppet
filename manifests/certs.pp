@@ -19,6 +19,7 @@ define create_pkcs12( $certname="$name", $cert_alias="", $password="", $user="ro
 		"${name}_create_pkcs12":
 			creates => "${location}/${certname}.p12",
 			command => "/usr/bin/openssl pkcs12 -export -name \"${certalias}\" -passout pass:${defaultpassword} -in /etc/ssl/certs/${certname}.pem -inkey /etc/ssl/private/${certname}.key -out ${location}/${certname}.p12",
+			onlyif => "[ -s /etc/ssl/private/${certname}.key ]",
 			require => [Package["openssl"], File["/etc/ssl/private/${certname}.key", "/etc/ssl/certs/${certname}.pem"]];
 	}
 
@@ -78,18 +79,12 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 	}
 }
 
-define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
+define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
 		certificates::digicert_ca,
 		certificates::wmf_ca
-
-	if ( $privatekey == "false" ) {
-		$key_loc = "puppet:///files/ssl/${name}"
-	} else {
-		$key_loc = "puppet:///private/ssl/${name}"
-	}
 
 	file {
 		# Public key
@@ -99,13 +94,28 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 			mode => 0444,
 			source => "puppet:///files/ssl/${name}.pem",
 			require => Package["openssl"];
-		# Private key
-		"/etc/ssl/private/${name}.key":
-			owner => root,
-			group => $group,
-			mode => 0440,
-			source => "${key_loc}.key",
-			require => Package["openssl"];
+	}
+
+
+	if ( $privatekey == true ) {
+
+		file {
+			# Private key
+			"/etc/ssl/private/${name}.key":
+				owner => root,
+				group => $group,
+				mode => 0440,
+				source => $keysource,
+				require => Package["openssl"];
+		}
+
+	} else {
+
+		file {
+			# empty Private key
+			"/etc/ssl/private/${name}.key":
+				ensure => present;
+		}
 	}
 
 	exec {
