@@ -133,8 +133,8 @@ class misc::graphite::navtiming {
     }
 
     file { '/usr/local/share/statsd/mediansOnlyFilter.js':
-        contents => 'exports.filter = function ( m ) { return /median$/.test( m.name ) && m; };',
-        before   => Service['statsd'],
+        content => 'exports.filter = function ( m ) { return /median$/.test( m.name ) && m; };',
+        before  => Service['statsd'],
     }
 
     file { '/etc/init/navtiming.conf':
