@@ -14,6 +14,7 @@ class role::elasticsearch::production {
         multicast_group => $multicast_group
     }
     include elasticsearch::ganglia
+    include elasticsearch::nagios::check
 }
 
 # = Class: role::elasticsearch::beta
@@ -26,6 +27,7 @@ class role::elasticsearch::beta {
         heap_memory  => '4G',
     }
     include elasticsearch::ganglia
+    include elasticsearch::nagios::check
 }
 
 # = Class: role::elasticsearch::labs
@@ -41,4 +43,5 @@ class role::elasticsearch::labs {
         cluster_name => $::elasticsearch_cluster_name,
     }
     include elasticsearch::ganglia
+    include elasticsearch::nagios::check
 }
