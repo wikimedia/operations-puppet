@@ -734,9 +734,9 @@ class misc::statistics::rsync::jobs::eventlogging {
 		destination => "/a/eventlogging/archive",
 	}
 
-	class { 'backup::host':
-		sets => [ 'a-eventlogging', 'home', ]
-	}
+	$sets = [ 'a-eventlogging', 'home', ]
+	include backup::host
+	backup::set { $sets : }
 }
 
 # Define: misc::statistics::rsync_job

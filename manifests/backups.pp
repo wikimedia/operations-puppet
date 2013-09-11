@@ -4,12 +4,16 @@
 # Transitioning to bacula stanzas
 
 define backup::set {
-    @backup::host::sets { "${name}":
-        jobdefaults => $backup::host::jobdefaults,
+    $jobdefaults = $backup::host::jobdefaults
+    if $jobdefaults != undef {
+        @bacula::client::job { "${name}-${jobdefaults}":
+            fileset     => $name,
+            jobdefaults => $jobdefaults,
+        }
     }
 }
 
-class backup::host($sets, $pool='production') {
+class backup::host($pool='production') {
     include role::backup::config
 
     class { 'bacula::client':
@@ -26,11 +30,7 @@ class backup::host($sets, $pool='production') {
 
     $jobdefaults = "Monthly-1st-${day}-${pool}"
 
-    backup::host::sets { $sets:
-        jobdefaults => $jobdefaults,
-    }
-
-    Backup::Host::Sets <| |> {
+    Bacula::Client::Job <| |> {
         require => Class['bacula::client'],
     }
 }
@@ -40,14 +40,6 @@ class backup::mysqlhost($xtrabackup=true, $per_db=false, $innodb_only=false) {
         per_database           => $per_db,
         xtrabackup             => $xtrabackup,
         mysqldump_innodb_only  => $innodb_only,
-    }
-}
-
-# Utility definition used internally to deduplicate code
-define backup::host::sets($jobdefaults) {
-    bacula::client::job { "${name}-${jobdefaults}":
-        fileset     => $name,
-        jobdefaults => $jobdefaults,
     }
 }
 
@@ -68,6 +60,7 @@ define backup::schedule($pool) {
 
 }
 
+# TODO: Deprecate all of this before 2013-01-01
 class backup::server {
 
 

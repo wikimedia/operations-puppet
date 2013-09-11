@@ -1029,11 +1029,6 @@ node "helium.eqiad.wmnet" {
         role::poolcounter,
         role::backup::director,
         role::backup::storage
-
-    # TODO: Remove this at some point (after 2013-10-31). It is here for testing reasons
-    class { 'backup::host':
-        sets => [ 'roothome',],
-    }
 }
 
 node "holmium.wikimedia.org" {
@@ -1774,9 +1769,9 @@ node "mchenry.wikimedia.org" {
     # mails the wikimedia.org mail alias file to OIT once per week
     class { misc::maintenance::mail_exim_aliases: enabled => true }
 
-    class { 'backup::host':
-        sets    => ['roothome', ]
-    }
+    # TODO: This unfortunately will not work while mchenry is still hardy
+    include backup::host
+    backup::set { 'roothome': }
 }
 
 node 'mexia.wikimedia.org' {
@@ -2087,9 +2082,8 @@ node /^nfs[12].pmtpa.wmnet/ {
         misc::syslog-server,
         backup::client
 
-    class { 'backup::host':
-       sets => ['var-opendj-backups', ]
-    }
+    include backup::host
+    backup::set { 'var-opendj-backups': }
 
     # don't need udp2log monitoring on nfs hosts
     class { "role::logging::mediawiki":

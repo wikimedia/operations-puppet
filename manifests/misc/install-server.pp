@@ -3,12 +3,12 @@
 class misc::install-server {
     system_role { 'misc::install-server': description => 'Install server' }
 
-    class { 'backup::host':
-        sets => [ 'srv-autoinstall',
-                  'srv-tftpboot',
-                  'srv-wikimedia',
-                ],
-    }
+    $sets = [ 'srv-autoinstall',
+              'srv-tftpboot',
+              'srv-wikimedia',
+            ]
+    include backup::host
+    backup::set { $sets : }
 
     class web-server {
         package { 'lighttpd':

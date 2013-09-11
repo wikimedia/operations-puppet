@@ -77,9 +77,7 @@ class misc::blogs::wikimedia {
     # 208.80.154.154 == analytics1001.wikimedia.org
     varnish::logging { 'analytics-blog' :  listener_address => '208.80.154.154', port => '8411' }
 
-    class { 'backup::host':
-        sets => [ 'srv-org-wikimedia',
-                ]
-    }
+    include backup::host
+    backup::set { 'srv-org-wikimedia': }
 }
 

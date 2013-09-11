@@ -188,14 +188,10 @@ class exim {
 				ensure => present;
 		}
 
-		if $enable_mailman != false {
-			$bsets = [ 'var-vmail', ]
-		} else {
-			$bsets = [ 'var-vmail', 'var-lib-mailman', ]
-		}
-
-		class { 'backup::host':
-			sets => $bsets,
+		include backup::host
+		backup::set { 'var-mail': }
+		if $enable_mailman {
+			backup::set { 'var-lib-mailman': }
 		}
 
 		class mail_relay {
