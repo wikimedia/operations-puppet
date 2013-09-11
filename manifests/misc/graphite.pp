@@ -9,8 +9,10 @@ class misc::graphite {
 		ensure => present;
 	}
 
-	package { [ "python-carbon", "python-graphite-web", "python-whisper" ]:
-		ensure => "0.9.9-1";
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		package { [ "python-carbon", "python-graphite-web", "python-whisper" ]:
+			ensure => "0.9.10";
+		}
 	}
 
 	file {
