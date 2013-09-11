@@ -57,6 +57,10 @@ class statsd(
         require => Package['statsd'],
     }
 
+    file { '/usr/local/share/statsd':
+        ensure => directory,
+    }
+
     service { 'statsd':
         ensure   => running,
         provider => upstart,

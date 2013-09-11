@@ -132,6 +132,11 @@ class misc::graphite::navtiming {
         notify => Service['navtiming'],
     }
 
+    file { '/usr/local/share/statsd/mediansOnlyFilter.js':
+        contents => 'exports.filter = function ( m ) { return /median$/.test( m.name ) && m; };',
+        before   => Service['statsd'],
+    }
+
     file { '/etc/init/navtiming.conf':
         content => template('graphite/modules/navtiming.conf.erb'),
         notify  => Service['navtiming'],
@@ -147,6 +152,7 @@ class misc::graphite::navtiming {
         graphite_port => 2003,
         settings      => {
             flushInterval    => 5 * 60 * 1000,  # 5 min.
+            gangliaFilters   => [ '/usr/local/share/statsd/mediansOnlyFilter.js' ],
             address          => $statsd_host,
             percentThreshold => [ 95 ],
             # Show frequency distribution of client-side latency times.
