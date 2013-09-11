@@ -49,6 +49,12 @@ class role::otrs {
             group => www-data,
             mode => '0755',
             source => 'puppet:///files/otrs/otrs.TicketExport2Mbox.pl';
+        '/opt/otrs/bin/cgi-bin/idle_agent_report':
+            ensure => present,
+            owner => otrs,
+            group => www-data,
+            mode => '0755',
+            source => 'puppet:///files/otrs/idle_agent_report';
         '/usr/local/bin/train_spamassassin':
             ensure => present,
             owner => root,
