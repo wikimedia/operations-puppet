@@ -14,6 +14,11 @@ class misc::graphite {
 	}
 
 	file {
+		"/a/graphite":
+			owner => "www-data",
+			group => "www-data",
+			mode => 0755,
+			ensure => directory;
 		"/etc/apache2/sites-available/graphite":
 			owner => "root",
 			group => "root",
