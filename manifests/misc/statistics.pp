@@ -879,6 +879,7 @@ class misc::statistics::geowiki::mysql::conf::research {
 		passwords::mysql::research
 
 	$geowiki_user = $misc::statistics::geowiki::geowiki_user
+	$geowiki_path = $misc::statistics::geowiki::geowiki_path
 
 	$research_mysql_user = $passwords::mysql::research::user
 	$research_mysql_pass = $passwords::mysql::research::pass
