@@ -599,6 +599,9 @@ class icinga::monitor::files::nagios-plugins {
       mode => '0755';
   }
 
+  # Include check_elasticsearch from elasticsearch module
+  include elasticsearch::nagios::plugin
+
   # some default configuration files conflict and should be removed
 
   file {
