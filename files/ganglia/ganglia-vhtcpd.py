@@ -192,7 +192,7 @@ def metric_init(params):
         'name': CONF['prefix'] + 'queue_max_size',
         'call_back': get_value,
         'units': 'count',
-        'description': 'Maximum number of packets in queue/overflow',
+        'description': 'Maximum number of packets in queue since startup/overflow',
         }))
 
     return descriptors
