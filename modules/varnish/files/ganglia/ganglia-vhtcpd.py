@@ -155,31 +155,31 @@ def metric_init(params):
         'name': CONF['prefix'] + 'inpkts_recvd',
         'call_back': get_value,
         'units': 'pkts',
-        'description': 'Multicast packets since startup',
+        'description': 'Multicast packets',
         }))
     descriptors.append(build_desc(skel, {
         'name': CONF['prefix'] + 'inpkts_sane',
         'call_back': get_value,
         'units': 'pkts',
-        'description': 'Sane packets since startup',
+        'description': 'Sane packets',
         }))
     descriptors.append(build_desc(skel, {
         'name': CONF['prefix'] + 'inpkts_enqueued',
         'call_back': get_value,
         'units': 'pkts',
-        'description': 'Pakets enqueued since startup',
+        'description': 'Pakets enqueued',
         }))
     descriptors.append(build_desc(skel, {
         'name': CONF['prefix'] + 'inpkts_dequeued',
         'call_back': get_value,
         'units': 'pkts',
-        'description': 'Packets dequeued since startup',
+        'description': 'Packets dequeued',
         }))
     descriptors.append(build_desc(skel, {
         'name': CONF['prefix'] + 'queue_overflows',
         'call_back': get_value,
         'units': 'count',
-        'description': 'Number of queue overflows since startup',
+        'description': 'Number of queue overflows',
         }))
     descriptors.append(build_desc(skel, {
         'name': CONF['prefix'] + 'queue_size',
@@ -192,7 +192,7 @@ def metric_init(params):
         'name': CONF['prefix'] + 'queue_max_size',
         'call_back': get_value,
         'units': 'count',
-        'description': 'Maximum number of packets in queue since startup/overflow',
+        'description': 'Maximum number of packets in queue/overflow',
         }))
 
     return descriptors
