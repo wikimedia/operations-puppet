@@ -741,7 +741,12 @@ node 'db1057.eqiad.wmnet' {
 
 ## 2013-04-10: py using db101[45] and db1023 and db1033 for testing
 ## not currently in production and/or hardware issues
-node /^db10(1[45]|2[3]|3[367]|4[45])\.eqiad\.wmnet/ {
+node /^db10(1[45]|2[3]|3[367]|44)\.eqiad\.wmnet/ {
+    include standard
+}
+
+# 2013-09-11: sp testing delayed slave mariadb 10
+node "db1045.eqiad.wmnet" {
     include standard
 }
 
@@ -2083,7 +2088,7 @@ node /^nfs[12].pmtpa.wmnet/ {
         backup::client
 
     class { 'backup::host':
-       sets => ['var-opendj-backups', ] 
+       sets => ['var-opendj-backups', ]
     }
 
     # don't need udp2log monitoring on nfs hosts
