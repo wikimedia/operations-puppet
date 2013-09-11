@@ -102,7 +102,6 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-	set beresp.http.X-Device = req.http.X-Device;
 	set beresp.http.X-CS = req.http.X-CS;
 	if ( beresp.http.X-Analytics ) {
 		# Do nothing, X-Analytics has already been handled

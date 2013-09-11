@@ -2,50 +2,9 @@
 # Shared between mobile caches and bits
 
 sub device_detection {
-
-	set req.http.X-Device = "";
-	set req.http.X-WAP = "no";
-
-	if ( req.http.User-Agent ~ "Safari" ) {
-		if ( req.http.User-Agent ~ "(iPhone|iPad)" ) {
-			set req.http.X-Device = "iphone";
-		} elsif ( req.http.User-Agent ~ "Android" ) {
-			set req.http.X-Device = "android";
-		} elsif ( req.http.User-Agent ~ "Series60" ) {
-			set req.http.X-Device = "nokia";
-		} elsif ( req.http.User-Agent ~ "webOS" ) {
-			set req.http.X-Device = "palm_pre";
-		} else {
-			set req.http.X-Device = "webkit";
-		}
-	} elsif ( req.http.User-Agent ~ "Opera/" ) {
-		if ( req.http.User-Agent ~ "Opera Mini" ) {
-			set req.http.X-Device = "operamini";
-		} elsif ( req.http.User-Agent ~ "(Opera Mobi|Wii)" ) {
-			set req.http.X-Device = "operamobile";
-		} else {
-			set req.http.X-Device = "generic"; // Desktop Opera
-		}
-	} elsif ( req.http.User-Agent ~ "BlackBerry" ) {
-		set req.http.X-Device = "blackberry";
-	} elsif ( req.http.User-Agent ~ "NetFront" ) {
-		if ( req.http.User-Agent ~ "Kindle" ) {
-			set req.http.X-Device = "kindle";
-		} else {
-			set req.http.X-Device = "netfront";
-		}
-	} elsif ( req.http.User-Agent ~ "MSIE" ) {
-		set req.http.X-Device = "ie";
-	}
-
-	if ( req.http.X-Device == "" ) {
-		if ( req.http.Accept ~ "application/vnd.wap.xhtml+xml" ) {
-			set req.http.X-Device = "generic";
-		} elsif ( req.http.Accept ~ "vnd.wap.wml" ) {
-			set req.http.X-Device = "wml";
-			set req.http.X-WAP = "yes";
-		} else {
-			set req.http.X-Device = "generic";
-		}
+	if ( req.http.Accept ~ "text/vnd.wap.wml" && req.http.Accept !~ "text/html" ) {
+		set req.http.X-WAP = "yes";
+	} else {
+		set req.http.X-WAP = "no";
 	}
 }
