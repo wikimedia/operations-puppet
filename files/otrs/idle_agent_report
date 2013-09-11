@@ -49,7 +49,7 @@ my $query = {
 
 # I use CGI.pm here instead of the built in stuff to avoid tangling with the
 # OTRS UI libaries. CGI.pm is quick and dirty way to select query and (below)
-# whether or not to output a csv file
+# whether or not to output csv or wikitable content
 my $q = CGI->new;
 my $params = $q->Vars;
 my $qn = (defined $query->{$params->{'qn'}}) ? $params->{'qn'} : 1;
@@ -156,6 +156,30 @@ if ( (! defined %SessionData) or (! defined $SessionData{'RoleAuthenticated'}) o
 		print join(',', sort keys %{$Users->{$UserID}->{'queues'}}) . "\n";
 	}
 
+} elsif (defined $params->{'wikitable'}) {
+
+	# Valid session, group membership, and successful db connection.
+	# CGI request for wikitable format. Proceed.
+
+	print "Content-type: text/plain\n\n" .
+		"== $query->{$qn}->{'desc'} ==\n" .
+		"{| class=\"wikitable sortable\"\n" .
+		"|-\n";
+	for (@{$query->{$qn}->{'cols'}},'queues') {
+		print "!$_\n";
+	}
+	print "listitem";
+	# fetch and format the user data
+	my $Users = GetUsers();
+	for my $UserID (sort { $Users->{$a}->{'row'} <=> $Users->{$b}->{'row'}} keys %{$Users}) {
+		print "\n{{../row";
+		for my $c (@{$query->{$qn}->{'cols'}}) {
+			print " | $c = $Users->{$UserID}->{$c}";
+		}
+		print " | queues = " . join(',', sort keys %{$Users->{$UserID}->{'queues'}}) . "}}";
+	}
+	print "\n|}\n";
+
 } else {
 
 	# Valid session, group membership, and successful db connection. Proceed.
@@ -181,7 +205,8 @@ if ( (! defined %SessionData) or (! defined $SessionData{'RoleAuthenticated'}) o
 		print ">$query->{$n}->{'desc'}</option>\n";
 	}
 	print "</select>\n<input type=submit value=&gt;>\n" .
-		"<input type=button value='csv' onClick=\"parent.location='$ENV{SCRIPT_URI}?qn=$qn&csv=1'\">" .
+		"<input type=button value='csv' onClick=\"parent.location='$ENV{SCRIPT_URI}?qn=$qn&csv=1'\">\n" .
+		"<input type=button value='wikitable' onClick=\"parent.location='$ENV{SCRIPT_URI}?qn=$qn&wikitable=1'\">\n" .
 		"</form><p>\n";
 
 	# the report table
