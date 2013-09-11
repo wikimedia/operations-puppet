@@ -1,4 +1,8 @@
-class dynamicproxy ($redis_maxmemory="512MB") {
+class dynamicproxy (
+    $redis_maxmemory="512MB",
+    $ssl_certificate_path,
+    $ssl_certificate_key_path
+) {
     class { '::redis':
         persist   => "aof",
         dir       => "/var/lib/redis",
@@ -14,7 +18,7 @@ class dynamicproxy ($redis_maxmemory="512MB") {
 
     file { '/etc/nginx/sites-available/default':
         ensure  => 'file',
-        source  => 'puppet:///modules/dynamicproxy/proxy.conf',
+        content => template('proxy.conf'),
         require => Package['nginx-extras'],
         notify  => Service['nginx']
     }
