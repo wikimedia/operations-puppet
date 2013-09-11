@@ -78,18 +78,12 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 	}
 }
 
-define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
+define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
 		certificates::digicert_ca,
 		certificates::wmf_ca
-
-	if ( $privatekey == "false" ) {
-		$key_loc = "puppet:///files/ssl/${name}"
-	} else {
-		$key_loc = "puppet:///private/ssl/${name}"
-	}
 
 	file {
 		# Public key
@@ -99,13 +93,19 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 			mode => 0444,
 			source => "puppet:///files/ssl/${name}.pem",
 			require => Package["openssl"];
-		# Private key
-		"/etc/ssl/private/${name}.key":
-			owner => root,
-			group => $group,
-			mode => 0440,
-			source => "${key_loc}.key",
-			require => Package["openssl"];
+	}
+
+	if ( $privatekey != false ) {
+
+		file {
+			# Private key
+			"/etc/ssl/private/${name}.key":
+				owner => root,
+				group => $group,
+				mode => 0440,
+				source => "puppet:///private/ssl/${name}",
+				require => Package["openssl"];
+		}
 	}
 
 	exec {
