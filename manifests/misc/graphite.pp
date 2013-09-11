@@ -14,6 +14,11 @@ class misc::graphite {
 	}
 
 	file {
+		"/a/graphite":
+			owner => "www-data",
+			group => "www-data",
+			mode => 0755,
+			ensure => directory;
 		"/etc/apache2/sites-available/graphite":
 			owner => "root",
 			group => "root",
@@ -66,27 +71,27 @@ net.core.rmem_default = 536870912
 
 	class { "varnish::monitoring::ganglia": varnish_instances => [ "graphite" ] }
 
-	varnish::instance { "graphite":
-		name => "",
-		vcl => "graphite",
-		port => 81,
-		admin_port => 6082,
-		storage => "-s malloc,256M",
-		backends => [ 'localhost' ],
-		directors => { 'backend' => [ 'localhost' ] },
-		vcl_config => {
-			'retry5xx' => 0
-		},
-		backend_options => {
-			'port' => 80,
-			'connect_timeout' => "5s",
-			'first_byte_timeout' => "35s",
-			'between_bytes_timeout' => "4s",
-			'max_connections' => 100,
-			'probe' => "options",
-		},
-		xff_sources => $network::constants::all_networks
-	}
+	#varnish::instance { "graphite":
+	#	name => "",
+	#	vcl => "graphite",
+	#	port => 81,
+	#	admin_port => 6082,
+	#	storage => "-s malloc,256M",
+	#	backends => [ 'localhost' ],
+	#	directors => { 'backend' => [ 'localhost' ] },
+	#	vcl_config => {
+	#		'retry5xx' => 0
+	#	},
+	#	backend_options => {
+	#		'port' => 80,
+	#		'connect_timeout' => "5s",
+	#		'first_byte_timeout' => "35s",
+	#		'between_bytes_timeout' => "4s",
+	#		'max_connections' => 100,
+	#		'probe' => "options",
+	#	},
+	#	xff_sources => $network::constants::all_networks
+	#}
 }
 
 class misc::graphite::gdash {

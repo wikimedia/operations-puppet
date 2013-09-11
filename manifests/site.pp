@@ -741,8 +741,21 @@ node 'db1057.eqiad.wmnet' {
 
 ## 2013-04-10: py using db101[45] and db1023 and db1033 for testing
 ## not currently in production and/or hardware issues
-node /^db10(1[45]|2[3]|3[367]|44)\.eqiad\.wmnet/ {
+# db1015
+# db1023
+# db1033
+# db1036
+# db1037
+# db1044
+node /^db10(15|2[3]|3[367]|44)\.eqiad\.wmnet/ {
     include standard
+}
+
+node "db1014.eqiad.wmnet" {
+    $cluster = "misc"
+    include standard,
+	misc::graphite,
+        udpprofile::collector
 }
 
 # 2013-09-11: sp testing delayed slave mariadb 10
