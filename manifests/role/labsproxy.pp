@@ -60,5 +60,7 @@ class role::eqiad-proxy {
 
 # A dynamic HTTP routing proxy, based on nginx+lua+redis
 class role::proxy-project {
-    class { '::dynamicproxy': }
+    class { '::dynamicproxy':
+        ssl_certificate_name => 'ssl-cert-snakeoil'
+    }
 }
