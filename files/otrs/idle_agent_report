@@ -19,7 +19,7 @@ use Kernel::System::AuthSession;
 my $rowlimit = 5000;
 
 
-# http://dev.otrs.org/2.4/Kernel/System/Group.html
+# http://dev.otrs.org/3.1/Kernel/System/Group.html
 # http://meta.wikimedia.org/wiki/OTRS#OTRS_administrators
 my %RoleOK2View = (
 	'OTRS admins' => 1,
@@ -73,17 +73,16 @@ $CommonObject{'SessionObject'} = Kernel::System::AuthSession->new(%CommonObject)
 
 # OTRS-authenticated sessions should have a valid Session cookie which returns
 # UserID etc. We retrieve the cookie and check against OTRS auth API.
-# see http://dev.otrs.org/2.4/Kernel/System/AuthSession.html
+# see http://dev.otrs.org/3.1/Kernel/System/AuthSession.html
 # I do not bother to update stored session data for fear of breaking something.
 my (%SessionData,$RoleAuthOk);
 my $UserRoles;
-my $ClientSessionID = $q->cookie('Session');
+my $ClientSessionID = $q->cookie('OTRSAgentInterface');
 if (defined $ClientSessionID) {
 	my $ValidSessionID = $CommonObject{'SessionObject'}->CheckSessionID(
 		'SessionID' => $ClientSessionID,
 	);
 	# use SessionData UserID to get Role membership, then check against %RoleOK2View
-	# there must be a better way but the Group API seems utterly lame and broken
 	if ($ValidSessionID) {
 		%SessionData = $CommonObject{'SessionObject'}->GetSessionIDData(
 			'SessionID' => $ClientSessionID,
