@@ -325,7 +325,7 @@ class ganglia {
                         "Search eqiad" => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
                         "Decommissioned servers esams" => "knsq1.esams.wikimedia.org",
                         "Bits caches esams" => "hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org",
-                        "Text squids esams" => "hooft.esams.wikimedia.org:11669 amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
+                        "Text squids esams" => "hooft.esams.wikimedia.org:11656 amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
                         "Upload squids esams" => "hooft.esams.wikimedia.org:11655 knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
                         "LVS loadbalancers esams" => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
                         "Miscellaneous esams" => "hooft.esams.wikimedia.org:11657",
