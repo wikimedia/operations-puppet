@@ -82,6 +82,10 @@ If you are having access problems, please see: https://wikitech.wikimedia.org/wi
 "
 		}
 	}
+
+	package { 'mosh':
+		ensure => present
+	}
 }
 
 class ssh::config {
@@ -93,7 +97,6 @@ class ssh::config {
 			$ssh_authorized_keys_file2 = "/public/keys/%u/.ssh/authorized_keys"
 		}
 	}
-
 
 	$ssh_banner = $ssh::bastion::ssh_banner
 
