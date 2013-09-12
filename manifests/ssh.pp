@@ -94,6 +94,9 @@ class ssh::config {
 		}
 	}
 
+	package { 'mosh':
+		ensure => present
+	}
 
 	$ssh_banner = $ssh::bastion::ssh_banner
 
