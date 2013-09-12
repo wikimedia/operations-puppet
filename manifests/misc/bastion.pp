@@ -15,6 +15,8 @@ class misc::bastionhost {
 		ensure => absent;
 		"traceroute":
 		ensure =>latest;
+		"mosh":
+		ensure => present;
 	}
 
 }
