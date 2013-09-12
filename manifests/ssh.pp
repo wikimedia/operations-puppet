@@ -10,10 +10,8 @@ class ssh {
 }
 
 class ssh::client {
-	if $operatingsystem == "Ubuntu" {
-		package { "openssh-client":
-			ensure => latest
-		}
+	package { "openssh-client":
+		ensure => latest
 	}
 }
 
@@ -38,13 +36,11 @@ define sshhostkey($ip, $key) {
 
 
 class ssh::hostkeys::publish {
-	if $operatingsystem == "Ubuntu" {
-		include ssh::client
-	}
+	include ssh::client
 
 	# Store this hosts's host key
 	case $sshrsakey {
-		"": { 
+		"": {
 			err("No sshrsakey on $fqdn")
 		}
 		default: {
@@ -75,56 +71,49 @@ class ssh::hostkeys::collect {
 
 class ssh::bastion {
 	$ssh_banner = '/etc/ssh/sshd_banner'
-	if $operatingsystem == "Ubuntu" {
-		if ( $realm == "labs" ) {
-			@file { $ssh_banner:
-				owner => root,
-				group => root,
-				mode  => 0444,
-				tag => 'ssh_banner',
-				content => "
+	if ( $realm == "labs" ) {
+		@file { $ssh_banner:
+			owner => root,
+			group => root,
+			mode  => 0444,
+			tag => 'ssh_banner',
+			content => "
 If you are having access problems, please see: https://wikitech.wikimedia.org/wiki/Access#Accessing_public_and_private_instances
 "
-			}
 		}
 	}
 }
 
 class ssh::config {
-	if $operatingsystem == "Ubuntu" {
-		if ( $realm == "labs" ) {
-			if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-				$ssh_authorized_keys_file = "/etc/ssh/userkeys/%u/.ssh/authorized_keys /public/keys/%u/.ssh/authorized_keys"
-			} else {
-				$ssh_authorized_keys_file = "/etc/ssh/userkeys/%u/.ssh/authorized_keys"
-				$ssh_authorized_keys_file2 = "/public/keys/%u/.ssh/authorized_keys"
-			}
+	if ( $realm == "labs" ) {
+		if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+			$ssh_authorized_keys_file = "/etc/ssh/userkeys/%u/.ssh/authorized_keys /public/keys/%u/.ssh/authorized_keys"
+		} else {
+			$ssh_authorized_keys_file = "/etc/ssh/userkeys/%u/.ssh/authorized_keys"
+			$ssh_authorized_keys_file2 = "/public/keys/%u/.ssh/authorized_keys"
 		}
 
 
-		$ssh_banner = $ssh::bastion::ssh_banner
+	$ssh_banner = $ssh::bastion::ssh_banner
 
-		File <| tag == 'ssh_banner' |>
+	File <| tag == 'ssh_banner' |>
 
-		file { "/etc/ssh/sshd_config":
-			owner => root,
-			group => root,
-			mode  => 0444,
-			content => template("ssh/sshd_config.erb");
-		}
+	file { "/etc/ssh/sshd_config":
+		owner => root,
+		group => root,
+		mode  => 0444,
+		content => template("ssh/sshd_config.erb");
 	}
 }
 
 class ssh::daemon {
-	if $operatingsystem == "Ubuntu" {
-		package { "openssh-server":
-			ensure => latest;
-		}
-		
-		service {
-			ssh:
-				ensure => running,
-				subscribe => File["/etc/ssh/sshd_config"];
-		}
+	package { "openssh-server":
+		ensure => latest;
+	}
+
+	service {
+		ssh:
+			ensure => running,
+			subscribe => File["/etc/ssh/sshd_config"];
 	}
 }
