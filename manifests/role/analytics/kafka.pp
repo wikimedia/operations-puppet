@@ -28,11 +28,11 @@ class role::analytics::kafka::config {
         # TODO: Make hostnames configurable via labs global variables.
         $cluster = {
             'main'     => {
-                'kraken-kafka.pmtpa.wmflabs'          => { 'id' => 1 },
-                'kraken-kafka1.pmtpa.wmflabs'         => { 'id' => 2 },
+                'kafka-main1.pmtpa.wmflabs'     => { 'id' => 1 },
+                'kafka-main2.pmtpa.wmflabs'     => { 'id' => 2 },
             },
-            'external' => {
-                'kraken-kafka-external.pmtpa.wmflabs' => { 'id' => 10 },
+            'external'                          => {
+                'kafka-external1.pmtpa.wmflabs' => { 'id' => 10 },
             },
         }
         # labs only uses a single log_dir
