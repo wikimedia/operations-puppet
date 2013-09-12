@@ -951,6 +951,11 @@ class role::cache {
 			before => Varnish::Instance["mobile-backend"]
 		}
 
+		package { "libvmod-netmapper":
+			ensure => latest,
+			before => Varnish::Instance["mobile-frontend"],
+		}
+
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
 
 		include varnish::monitoring::ganglia::vhtcpd
