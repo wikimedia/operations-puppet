@@ -622,7 +622,7 @@ class lvs::configuration {
 			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['apaches'][$::site],
 			'bgp' => "yes",
-			'depool-threshold' => ".6",
+			'depool-threshold' => ".9",
 			'monitors' => {
 				'ProxyFetch' => {
 					'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
