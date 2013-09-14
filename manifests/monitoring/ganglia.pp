@@ -15,7 +15,7 @@ class varnish::monitoring::ganglia($varnish_instances=['']) {
             path => "/bin:/usr/bin",
             unless => "diff -q varnish.pyconf.new varnish.pyconf && rm varnish.pyconf.new",
             command => "mv varnish.pyconf.new varnish.pyconf",
-            notify => Service[gmond];
+            notify => Service['gmond'];
     }
     Exec["generate varnish.pyconf"] -> Exec["replace varnish.pyconf"]
 }
