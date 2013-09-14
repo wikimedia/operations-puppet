@@ -5,7 +5,7 @@ class misc::monitoring::htcp-loss {
 
 	File {
 		require => File["/usr/lib/ganglia/python_modules"],
-		notify => Service[gmond]
+		notify => Service['gmond']
 	}
 
 	# Ganglia
@@ -20,7 +20,7 @@ class misc::monitoring::htcp-loss {
 			source => "puppet:///files/ganglia/plugins/compat.py";
 		"/etc/ganglia/conf.d/htcpseqcheck.pyconf":
 			# Disabled due to excessive memory and CPU usage -- TS
-			notify => Service[gmond],
+			notify => Service['gmond'],
 			ensure => absent;
 			#require => File["/etc/ganglia/conf.d"],
 			#source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
@@ -35,11 +35,11 @@ class misc::monitoring::net::udp {
 		'/usr/lib/ganglia/python_modules/udp_stats.py':
 			require => File['/usr/lib/ganglia/python_modules'],
 			source => 'puppet:///files/ganglia/plugins/udp_stats.py',
-			notify => Service[gmond];
+			notify => Service['gmond'];
 		'/etc/ganglia/conf.d/udp_stats.pyconf':
 			require => File["/usr/lib/ganglia/python_modules/udp_stats.py"],
 			source => "puppet:///files/ganglia/plugins/udp_stats.pyconf",
-			notify => Service[gmond];
+			notify => Service['gmond'];
 	}
 }
 
@@ -52,11 +52,11 @@ class misc::monitoring::kraken::loss {
 		'/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py':
 			require => File['/usr/lib/ganglia/python_modules'],
 			source => 'puppet:///files/ganglia/plugins/kraken_webrequest_loss.py',
-			notify => Service[gmond];
+			notify => Service['gmond'];
 		'/etc/ganglia/conf.d/udp_stats.pyconf':
 			require => File["/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py"],
 			source => "puppet:///files/ganglia/plugins/kraken_webrequest_loss.pyconf",
-			notify => Service[gmond];
+			notify => Service['gmond'];
 	}
 
 	# Set up icinga monitoring of Kraken HDFS data loss.

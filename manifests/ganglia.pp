@@ -193,7 +193,7 @@ class ganglia {
             group   => "root",
             mode    => 0444,
             content => template("ganglia/gmond_template.erb"),
-            notify  => Service[gmond],
+            notify  => Service['gmond'],
             ensure  => present
         }
 
@@ -204,7 +204,7 @@ class ganglia {
                         ensure => latest,
                         alias => "gmond-package";
                     "ganglia-monitor":
-                        before => Package[gmond],
+                        before => Package['gmond'],
                         ensure => purged;
                 }
             }

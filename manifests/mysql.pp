@@ -141,15 +141,15 @@ class mysql_wmf {
 			"/usr/lib/ganglia/python_modules/DBUtil.py":
 				require => File["/usr/lib/ganglia/python_modules"],
 				source => "puppet:///files/ganglia/plugins/DBUtil.py",
-				notify => Service[gmond];
+				notify => Service['gmond'];
 			"/usr/lib/ganglia/python_modules/mysql.py":
 				require => File["/usr/lib/ganglia/python_modules"],
 				source => "puppet:///files/ganglia/plugins/mysql.py",
-				notify => Service[gmond];
+				notify => Service['gmond'];
 			"/etc/ganglia/conf.d/mysql.pyconf":
 				require => File["/usr/lib/ganglia/python_modules"],
 				content => template("mysql/mysql.pyconf.erb"),
-				notify => Service[gmond];
+				notify => Service['gmond'];
 		}
 	}
 
@@ -430,15 +430,15 @@ class mysql_wmf::coredb::ganglia{
 		"/usr/lib/ganglia/python_modules/DBUtil.py":
 			require => File["/usr/lib/ganglia/python_modules"],
 			source => "puppet:///files/ganglia/plugins/DBUtil.py",
-			notify => Service[gmond];
+			notify => Service['gmond'];
 		"/usr/lib/ganglia/python_modules/mysql.py":
 			require => File["/usr/lib/ganglia/python_modules"],
 			source => "puppet:///files/ganglia/plugins/mysql.py",
-			notify => Service[gmond];
+			notify => Service['gmond'];
 		"/etc/ganglia/conf.d/mysql.pyconf":
 			require => File["/usr/lib/ganglia/python_modules"],
 			content => template("mysql/mysql.pyconf.erb"),
-			notify => Service[gmond];
+			notify => Service['gmond'];
 	}
 }
 

@@ -58,7 +58,7 @@ class role::ci::master {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        notify => Service[gmond],
+        notify => Service['gmond'],
     }
 
     file { '/etc/ganglia/conf.d/jenkins.pyconf':
@@ -69,7 +69,7 @@ class role::ci::master {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        notify => Service[gmond],
+        notify => Service['gmond'],
     }
 }
 
