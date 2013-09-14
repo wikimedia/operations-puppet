@@ -8,14 +8,14 @@ class redis::ganglia {
 			group => root,
 			mode => 0444,
 			content => template('redis/redis.pyconf.erb'),
-			notify => Service[gmond];
+			notify => Service['gmond'];
 	}
 	file { '/usr/lib/ganglia/python_modules/redis_monitoring.py':
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => 'puppet:///modules/redis/ganglia/redis_monitoring.py',
-			notify => Service[gmond];
+			notify => Service['gmond'];
 	}
 
 	# redis_monitoring.py was called redis.py before, cleanup

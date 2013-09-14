@@ -102,6 +102,6 @@ define varnish::instance(
         path => "/bin:/sbin:/usr/bin:/usr/sbin",
         command => "true",
         onlyif => "test /var/run/varnishd${instancesuffix}.pid -nt /var/run/gmond.pid",
-        notify => Service[gmond]
+        notify => Service['gmond']
     }
 }
