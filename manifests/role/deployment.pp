@@ -12,6 +12,7 @@ class role::deployment::config($deployment_servers) {
       "l10n-slot0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot0",
       "l10n-slot1" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot1",
       "l10n-beta0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-beta0",
+      "gdash/gdash" => "http://${deploy_server_pmtpa}/gdash/gdash",
       # parsoid, fluoride and eventlogging are currently eqiad-only:
       "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
@@ -28,6 +29,7 @@ class role::deployment::config($deployment_servers) {
       "l10n-slot0" => "http://${deploy_server_eqiad}/mediawiki/l10n-slot0",
       "l10n-slot1" => "http://${deploy_server_eqiad}/mediawiki/l10n-slot1",
       "l10n-beta0" => "http://${deploy_server_eqiad}/mediawiki/l10n-beta0",
+      "gdash/gdash" => "http://${deploy_server_eqiad}/gdash/gdash",
       "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
       "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
@@ -47,10 +49,11 @@ class role::deployment::config($deployment_servers) {
     "l10n-slot0" => "mediawiki",
     "l10n-slot1" => "mediawiki",
     "l10n-beta0" => "mediawiki",
+    "gdash/gdash" => "gdash",
     "parsoid/Parsoid" => "parsoid",
     "parsoid/config" => "parsoid",
     "eventlogging/EventLogging" => "eventlogging",
-    "fluoride/fluoride" => "eventlogging",
+    "fluoride/fluoride" => "fluoride",
     "test/testrepo" => "testrepo",
   }
   # Sed the .gitmodules file for the repo according to the following rules
@@ -90,6 +93,7 @@ class role::deployment::config($deployment_servers) {
     "l10n-slot0" => "/srv/deployment/mediawiki/l10n-slot0",
     "l10n-slot1" => "/srv/deployment/mediawiki/l10n-slot1",
     "l10n-beta0" => "/srv/deployment/mediawiki/l10n-beta0",
+    "gdash/gdash" => "/srv/deployment/gdash/gdash",
     "parsoid/Parsoid" => "/srv/deployment/parsoid/Parsoid",
     "parsoid/config" => "/srv/deployment/parsoid/config",
     "eventlogging/EventLogging" => "/srv/deployment/eventlogging/EventLogging",
@@ -173,6 +177,7 @@ class role::deployment::deployment_servers::common {
   deployment::deployment_repo_dependencies_link { "l10n-slot0": target => "l10n" }
   deployment::deployment_repo_dependencies_link { "l10n-slot1": target => "l10n" }
   deployment::deployment_repo_dependencies_link { "l10n-beta0": target => "l10n" }
+  deployment::deployment_repo_sync_hook_link { "gdash/gdash": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "parsoid/Parsoid": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "parsoid/config": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "eventlogging/EventLogging": target => "shared.py" }
