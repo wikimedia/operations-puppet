@@ -169,6 +169,7 @@ class toollabs::exec_environ {
       'p7zip',
       'phpunit',
       'tree'                         # Bug #48862.
+      'libdmtx'                      # Bug #53867.
       ]:
     ensure => present
   }
