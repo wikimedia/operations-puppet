@@ -148,6 +148,7 @@ class toollabs::exec_environ {
       'adminbot',
       'csh',                        # common user request
       'dc',
+      'fabric',                      # Bug #54135.
       'gnuplot-nox',
       'libfreetype6',
       'libmpc2',
