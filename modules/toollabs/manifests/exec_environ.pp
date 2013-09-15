@@ -84,6 +84,7 @@ class toollabs::exec_environ {
       'libxml-libxml-perl',
       'libxml-simple-perl',
       'libxml-xpathengine-perl',     # For Checkwiki.
+      'libimage-exiftool-perl',      # Bug #53868.
 
       # Python libraries
       'libboost-python1.48.0',
