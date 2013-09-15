@@ -34,6 +34,7 @@ class toollabs::dev_environ {
         'libboost-python1.48-dev',
         'libdjvulibre-dev',            # Bug 56972
         'libdmtx-dev',                 # Bug #53867.
+        'libfcgi-dev',                 # Bug #52902.
         'libfreetype6-dev',
         'libgdal1-dev',                # Bug 56995
         'libmariadbclient-dev',
