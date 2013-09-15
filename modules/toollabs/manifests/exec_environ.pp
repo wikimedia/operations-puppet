@@ -149,6 +149,7 @@ class toollabs::exec_environ {
       'csh',                        # common user request
       'dc',
       'gnuplot-nox',
+      'libfcgi-dev',                 # Bug #52902.
       'libfreetype6',
       'libmpc2',
       'libmpfr4',
