@@ -150,6 +150,7 @@ class toollabs::exec_environ {
       'dc',
       'fabric',                      # Bug #54135.
       'gnuplot-nox',
+      'libav-tools',                 # Bug #53870.
       'libfreetype6',
       'libmpc2',
       'libmpfr4',
