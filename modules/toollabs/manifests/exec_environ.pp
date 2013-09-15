@@ -149,6 +149,8 @@ class toollabs::exec_environ {
       'csh',                        # common user request
       'dc',
       'gnuplot-nox',
+      'libdmtx0a',                   # Bug #53867.
+      'libdmtx-dev',                 # Bug #53867.
       'libfreetype6',
       'libmpc2',
       'libmpfr4',
