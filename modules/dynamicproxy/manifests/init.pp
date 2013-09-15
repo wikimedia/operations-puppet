@@ -1,5 +1,6 @@
 class dynamicproxy (
     $redis_maxmemory="512MB",
+    $ssl=false,
     $ssl_certificate_name
 ) {
     class { '::redis':
