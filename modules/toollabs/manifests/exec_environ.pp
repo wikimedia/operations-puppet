@@ -168,6 +168,7 @@ class toollabs::exec_environ {
       'mdbtools',                    # Bug #48805.
       'p7zip',
       'phpunit',
+      'poppler-utils',               # Bug #53869.
       'tree'                         # Bug #48862.
       ]:
     ensure => present
