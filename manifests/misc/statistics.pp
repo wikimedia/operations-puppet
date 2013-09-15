@@ -985,3 +985,23 @@ class misc::statistics::geowiki::jobs::limn {
 		],
 	}
 }
+
+# == Class misc::statistics::geowiki::jobs::monitoring
+# Checks if the geowiki files served throuh http://gp.wmflabs.org are
+# up to date.
+#
+class misc::statistics::geowiki::jobs::monitoring {
+	require misc::statistics::geowiki
+
+	$geowiki_path = $misc::statistics::geowiki::geowiki_path
+
+	# cron job to fetch geowiki data via http://gp.wmflabs.org/
+	# and checks that the files are up-to-date and within
+	# meaningful ranges.
+	cron { 'geowiki-monitoring':
+		minute  => 30,
+		hour    => 21,
+		user    => $geowiki_user,
+		command => "${geowiki_path}/scripts/check_web_page.sh",
+	}
+}
