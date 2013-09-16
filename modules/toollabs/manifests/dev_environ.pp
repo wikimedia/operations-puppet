@@ -26,6 +26,7 @@ class toollabs::dev_environ {
       'sqlite3',
       'python-dev',
       'libboost-python1.48-dev',
+      'libdmtx-dev',                 # Bug #53867.
       'libmariadbclient-dev',
       'libpng3-dev',
       'libfreetype6-dev',
