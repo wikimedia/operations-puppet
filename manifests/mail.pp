@@ -189,7 +189,7 @@ class exim {
 		}
 
 		include backup::host
-		backup::set { 'var-mail': }
+		backup::set { 'var-vmail': }
 		if $enable_mailman {
 			backup::set { 'var-lib-mailman': }
 		}
