@@ -572,7 +572,7 @@ node /^db10(17|43|49|50|51|52|56)\.eqiad\.wmnet/ {
         include mha::manager
     }
 
-    if $hostname =~ /^db10(50|51|52|56)/ {
+    if $hostname =~ /^db10(50|51|52|56|37)/ {
         class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
     } elsif $hostname =~ /^db10(43|49)/ {
         class { role::coredb::s1 : mariadb => true }
@@ -745,9 +745,8 @@ node 'db1057.eqiad.wmnet' {
 # db1023
 # db1033
 # db1036
-# db1037
 # db1044
-node /^db10(15|2[3]|3[367]|44)\.eqiad\.wmnet/ {
+node /^db10(15|2[3]|3[36]|44)\.eqiad\.wmnet/ {
     include standard
 }
 
