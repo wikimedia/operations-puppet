@@ -122,7 +122,10 @@ class role::applicationserver {
 
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
-		if $::processorcount == "12" or $::processorcount == "24" {
+		if $::site == "eqiad" and $::processorcount == "16" {
+			$maxclients = "60"
+		}
+		elsif $::processorcount == "12" or $::processorcount == "24" {
 			$maxclients = "50"
 		}
 		else {
