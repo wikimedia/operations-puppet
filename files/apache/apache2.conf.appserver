@@ -40,7 +40,9 @@ StartServers 10
 #MaxClients 50
 #MaxClients 300
 #MaxClients 255
-MaxClients 40
+#MaxClients 40
+MaxClients 50
+
 
 <IfDefine SLOW>
 MaxClients 5
