@@ -155,10 +155,9 @@ class misc::graphite::navtiming {
     }
 
     class { '::statsd':
-        graphite_host => 'professor.pmtpa.wmnet',
-        graphite_port => 2003,
-        settings      => {
+        settings => {
             flushInterval    => 5 * 60 * 1000,  # 5 min.
+            backends         => [ 'ganglia' ],
             gangliaFilters   => [ '/usr/local/share/statsd/mediansOnlyFilter.js' ],
             address          => $statsd_host,
             percentThreshold => [ 95 ],

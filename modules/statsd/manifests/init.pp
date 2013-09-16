@@ -11,12 +11,6 @@
 # [*port*]
 #   Port to listen for messages on over UDP (default: 8125).
 #
-# [*graphite_host*]
-#   Hostname or IP of Graphite server (default: localhost).
-#
-# [*graphite_port*]
-#   Port of Graphite server (default: 2003).
-#
 # [*settings*]
 #   A hash of additional configuration options. For a full listing,
 #   see <https://github.com/etsy/statsd/blob/master/exampleConfig.js>.
@@ -24,24 +18,18 @@
 # === Example
 #
 #  class { 'statsd':
-#      graphite_host = 'professor.pmtpa.wmnet',
-#      graphite_port = 2004,
+#      port     => 9000,
+#      settings => {
+#          backends     => [ 'graphite' ],
+#          graphiteHost => 'professor.pmtpa.wmnet',
+#          graphitePort => 2004,
+#      },
 #  }
 #
 class statsd(
     $port          = 8125,
-    $graphite_host = 'localhost',
-    $graphite_port = 2003,
     $settings      = {},
 ) {
-    $config = ordered_json($settings, {
-        port         => $port,
-        backends     => [ './backends/graphite', './backends/ganglia' ],
-        graphiteHost => $graphite_host,
-        graphitePort => $graphite_port,
-        mgmt_address => '127.0.0.1',
-    })
-
     package { 'statsd':
         ensure => present,
     }

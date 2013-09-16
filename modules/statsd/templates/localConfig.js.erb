@@ -6,4 +6,8 @@
 
   This file is managed by Puppet.
 */
-<%= @config %>
+<%=
+  @config = @settings.merge Hash['port' => @port, 'mgmt_address' => '127.0.0.1']
+  @config['backends'].map! { |backend| "./backends/#{backend.split('/').last}" }
+  scope.function_ordered_json([@config])
+%>
