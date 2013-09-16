@@ -122,7 +122,13 @@ class role::applicationserver {
 
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
-		include role::applicationserver::webserver
+		if $::processorcount == "8" or $::processorcount == "16" {
+			$maxclients = "50"
+		}
+		else {
+			$maxclients = "40"
+		}
+		class { "role::applicationserver::webserver": maxclients => $maxclients }
 	}
 	# role class specifically for test.w.o apache(s)
 	class appserver::test{
