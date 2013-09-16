@@ -80,6 +80,9 @@
 [commentlink "cve"]
         match = "\\b(CVE\\-\\d{4}\\-\\d+)\\b"
         link = https://cve.mitre.org/cgi-bin/cvename.cgi?name=$1
+[commentlink "mingle"]
+        match = "^card\\:\\sanalytics\\s(\\d+)\\.\\d+$"
+        link =  https://mingle.corp.wikimedia.org/projects/analytics/cards/$1
 [mimetype "application/javascript"]
 	safe = true
 [mimetype "application/x-php"]
