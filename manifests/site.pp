@@ -581,8 +581,10 @@ node /^db10(17|43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|34)\.eqiad\.wmnet/ {
-    if $hostname == "db1009" {
+node /^db10(02|09|18|34|36)\.eqiad\.wmnet/ {
+    if $hostname =~ /^db10(36)/ {
+        class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
+    } elsif $hostname == "db1009" {
         class { role::coredb::s2 : mariadb => true }
     } else {
         include role::coredb::s2
@@ -744,9 +746,8 @@ node 'db1057.eqiad.wmnet' {
 # db1015
 # db1023
 # db1033
-# db1036
 # db1044
-node /^db10(15|2[3]|3[36]|44)\.eqiad\.wmnet/ {
+node /^db10(15|2[3]|33|44)\.eqiad\.wmnet/ {
     include standard
 }
 
