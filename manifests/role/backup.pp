@@ -8,6 +8,7 @@ class role::backup::config {
 }
 
 class role::backup::director {
+    include backup::host
     include role::backup::config
     include passwords::bacula
 
