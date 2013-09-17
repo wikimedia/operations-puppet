@@ -101,11 +101,11 @@ $decommissioned_servers = [
 'knsq29',
 'knsq30',
 'kuo',
+'labstore1002', #added 9/17 to remove from monitoring
+'labstore4', #added 9/17 to remove from monitoring
 'lardner',
 'lily',
 'lomaria',
-'manganese', #remove 9/7/13 or later
-'marmontel', #reclaim
 'mc2',
 'mc3',
 'mc4',
@@ -317,6 +317,7 @@ $decommissioned_servers = [
 'srv266',
 'srv278',
 'srv281',
+'ssl3004', #added 9/17 to remove from monitoring
 'storage1',
 'storage2',
 'storage3',
