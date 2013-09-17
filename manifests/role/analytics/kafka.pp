@@ -37,7 +37,16 @@ class role::analytics::kafka::config {
         }
         # labs only uses a single log_dir
         $log_dir = ['/var/spool/kafka']
+        $metrics_properties = {
+            'kafka.metrics.reporters'                => 'com.criteo.kafka.KafkaGangliaMetricsReporter',
+            'kafka.ganglia.metrics.reporter.enabled' =>  'true',
+            # TODO: use variables from new ganglia module once it is finished.
+            'kafka.ganglia.metrics.host'             => 'aggregator1.pmtpa.wmflabs',
+            'kafka.ganglia.metrics.port'             => 50090,
+            'kafka.ganglia.metrics.group'            => 'kafka',
+        }
     }
+
     # else Kafka cluster is based on $::site.
     else {
         $cluster = {
@@ -63,6 +72,14 @@ class role::analytics::kafka::config {
             '/var/spool/kafka/k/data',
             '/var/spool/kafka/l/data',
         ]
+        $metrics_properties = {
+            'kafka.metrics.reporters'                => 'com.criteo.kafka.KafkaGangliaMetricsReporter',
+            'kafka.ganglia.metrics.reporter.enabled' =>  'true',
+            # TODO: use variables from new ganglia module once it is finished.
+            'kafka.ganglia.metrics.host'             => '239.192.1.32',
+            'kafka.ganglia.metrics.port'             => 8649,
+            'kafka.ganglia.metrics.group'            => 'kafka',
+        }
     }
 
     $hosts = $cluster[$kafka_cluster_name]
@@ -85,6 +102,7 @@ class role::analytics::kafka::client inherits role::analytics::kafka::config {
 #
 class role::analytics::kafka::server inherits role::analytics::kafka::client {
     class { '::kafka::server':
-        log_dir => $log_dir,
+        log_dir            => $log_dir,
+        metrics_properties => $metrics_properties,
     }
 }
