@@ -95,7 +95,8 @@ class misc::graphite::gdash {
 	# This is all kinds of badness.
 
 	file {
-		"/a/graphite/webapp/gdash/templates":
+
+		[ "/a/graphite/webapp", "/a/graphite/webapp/gdash", "/a/graphite/webapp/gdash/templates" ]:
 			owner => "www-data",
 			group => "www-data",
 			mode => 0555,
