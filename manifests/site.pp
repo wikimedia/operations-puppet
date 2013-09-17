@@ -566,7 +566,7 @@ node /^db(42|6[12]|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(17|43|49|50|51|52|56)\.eqiad\.wmnet/ {
+node /^db10(17|43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
     if $hostname =~ /^db10(17|56)/ {
         $ganglia_aggregator = true
         include mha::manager
