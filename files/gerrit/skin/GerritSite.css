@@ -3,9 +3,8 @@
 /**
  * Add word wrapping for commit messages, so horizontal scrolling isn't needed,
  *               and for inline review messages, so we can write code there.
- * --2012-06-09, 2012-08-29
  */
-.GJEA35ODLB, .GJEA35ODOC {
+.commentPanelMessage {
 	white-space: pre-wrap !important;
 }
 
