@@ -16,7 +16,7 @@ class misc::graphite {
 	}
 
 	file {
-		"/a/graphite":
+		[ "/a/graphite", "/a/graphite/conf", "/a/graphite/modules", "/a/graphite/storage" ]:
 			owner => "www-data",
 			group => "www-data",
 			mode => 0755,
@@ -46,16 +46,6 @@ class misc::graphite {
 			group => "root",
 			mode => 0444,
 			source => "puppet:///files/graphite/storage-aggregation.conf";
-		"/a/graphite/modules":
-			owner => "www-data",
-			group => "www-data",
-			mode => 0755,
-			ensure => directory;
-		"/a/graphite/storage":
-			owner => "www-data",
-			group => "www-data",
-			mode => 0755,
-			ensure => directory;
 		"/etc/sysctl.d/99-big-rmem.conf":
 			owner => "root",
 			group => "root",
