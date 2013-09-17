@@ -37,7 +37,11 @@ class role::analytics::kafka::config {
         }
         # labs only uses a single log_dir
         $log_dir = ['/var/spool/kafka']
+        # TODO: use variables from new ganglia module once it is finished.
+        $ganglia_host = 'aggregator1.pmtpa.wmflabs'
+        $ganglia_port = 50090
     }
+
     # else Kafka cluster is based on $::site.
     else {
         $cluster = {
@@ -63,10 +67,22 @@ class role::analytics::kafka::config {
             '/var/spool/kafka/k/data',
             '/var/spool/kafka/l/data',
         ]
+        # TODO: use variables from new ganglia module once it is finished.
+        $ganglia_host = '239.192.1.32'
+        $ganglia_port = 8649
     }
 
     $hosts = $cluster[$kafka_cluster_name]
     $zookeeper_chroot = "/kafka/${kafka_cluster_name}"
+
+    $metrics_properties = {
+        'kafka.metrics.reporters'                => 'com.criteo.kafka.KafkaGangliaMetricsReporter',
+        'kafka.ganglia.metrics.reporter.enabled' =>  'true',
+        'kafka.ganglia.metrics.host'             => $ganglia_host,
+        'kafka.ganglia.metrics.port'             => $ganglia_port,
+        'kafka.ganglia.metrics.group'            => 'kafka',
+        'kafka.ganglia.metrics.exclude.regex'    => '^("kafka\.cluster".*)|("kafka\.log".*)|("kafka\.network".*)|("kafka\.server":name="ReplicaFetcherThread.*ConsumerLag.*)$'
+    }
 }
 
 # == Class role::analytics::kafka::client
@@ -85,6 +101,7 @@ class role::analytics::kafka::client inherits role::analytics::kafka::config {
 #
 class role::analytics::kafka::server inherits role::analytics::kafka::client {
     class { '::kafka::server':
-        log_dir => $log_dir,
+        log_dir            => $log_dir,
+        metrics_properties => $metrics_properties,
     }
 }

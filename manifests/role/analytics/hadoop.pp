@@ -197,7 +197,7 @@ class role::analytics::hadoop::labs {
         mapreduce_job_reuse_jvm_num_tasks       => 1,
         yarn_resourcemanager_scheduler_class    => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
         # TODO: use variables from new ganglia module once it is finished.
-        ganglia_hosts                           => ['10.4.0.79:8649'],
+        ganglia_hosts                           => ['aggregator1.pmtpa.wmflabs:50090'],
     }
 
     file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":

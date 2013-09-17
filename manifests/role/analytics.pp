@@ -118,3 +118,4 @@ class role::analytics::dclass {
         require => Package['libdclass-java'],
     }
 }
+
