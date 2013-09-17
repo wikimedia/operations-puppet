@@ -475,8 +475,68 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                           default => absent
                         };
                 }
+
+                cron { "cron-updatequerypages-lonelypages-s1":
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages > /home/mwdeploy/updateSpecialPages/${name}-LonelyPages.log 2>&1",
+                        month => [1, 7],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
+                }
+
+                cron { "cron-updatequerypages-mostcategories-s1":
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories > /home/mwdeploy/updateSpecialPages/${name}-MostCategories.log 2>&1",
+                        month => [2, 8],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
+                }
+
+                cron { "cron-updatequerypages-mostlinkedcategories-s1":
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedcategories > /home/mwdeploy/updateSpecialPages/${name}-MostLinkedCategories.log 2>&1",
+                        month => [3, 9],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
+                }
+
+                cron { "cron-updatequerypages-mostlinkedtemplates-s1":
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates > /home/mwdeploy/updateSpecialPages/${name}-MostLinkedTemplates.log 2>&1",
+                        month => [4, 10],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
+                }
+
+                cron { "cron-updatequerypages-uncategorizedcategories-s1":
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Uncategorizedcategories > /home/mwdeploy/updateSpecialPages/${name}-UncategorizedCategories.log 2>&1",
+                        month => [5, 11],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
+                }
+
+                cron { "cron-updatequerypages-wantedtemplates-s1":
+                        command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Wantedtemplates > /home/mwdeploy/updateSpecialPages/${name}-WantedTemplates.log 2>&1",
+                        month => [6, 12],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
+                }
         }
 
         # add cron jobs - usage: <cluster>@<day of month>
-        updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17']: }
+        updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's1@18', 's1@19', 's1@20', 's1@21', 's1@22', 's1@23']: }
 }
