@@ -366,6 +366,11 @@ acl carrier_470_03 { // Banglalink
 	"203.223.94.0"/23;
 }
 
+acl carrier_436_01 { // Tcell Tajikistan
+	"195.246.102.0"/23;
+	"217.8.32.0"/21;
+}
+
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers
 	   The values for the X-CS headers are obtained from
@@ -525,6 +530,10 @@ sub tag_carrier {
 			if (req.http.host ~ "(^(fr|en|mg)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-CS = "646-02";
 			}
+		}
+	} else if (client.ip ~ carrier_436_01) {
+		if (req.http.host ~ "(^(en|tg|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-CS = "436-01";
 		}
 	}
 	/* Please keep the above list alphabetized by the ACL variable */
