@@ -3,7 +3,7 @@ class contint::zuul::git-daemon(
     $zuul_git_dir = '/var/lib/zuul/git'
 ) {
 
-  packages { 'git-daemon-sysvinit': ensure => present }
+  package { 'git-daemon-sysvinit': ensure => present }
 
   # Point both git daemon paths to the same dir, this way we do not have a
   # /git/ prefix in the git:// URLs.
