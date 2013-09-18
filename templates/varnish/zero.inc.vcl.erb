@@ -371,6 +371,12 @@ acl carrier_436_01 { // Tcell Tajikistan
 	"217.8.32.0"/21;
 }
 
+acl carrier_401_01 { // Beeline Kazakhstan
+	"46.227.184.0"/24;
+	"46.227.191.0"/24;
+	"185.8.234.0"/24;
+}
+
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers
 	   The values for the X-CS headers are obtained from
@@ -534,6 +540,11 @@ sub tag_carrier {
 	} else if (client.ip ~ carrier_436_01) {
 		if (req.http.host ~ "(^(en|tg|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-CS = "436-01";
+		}
+	} else if (client.ip ~ carrier_401_01) {
+		set req.http.X-DfltLang = "ru";
+		if (req.http.host ~ "(^(ru|kk|en)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-CS = "401-01";
 		}
 	}
 	/* Please keep the above list alphabetized by the ACL variable */
