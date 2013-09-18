@@ -581,8 +581,8 @@ node /^db10(17|43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|34|36)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(36)/ {
+node /^db10(02|09|18|23|34|36)\.eqiad\.wmnet/ {
+    if $hostname =~ /^db10(23|36)/ {
         class { role::coredb::s2 : innodb_file_per_table => true, mariadb => true }
     } elsif $hostname == "db1009" {
         class { role::coredb::s2 : mariadb => true }
@@ -744,10 +744,9 @@ node 'db1057.eqiad.wmnet' {
 ## 2013-04-10: py using db101[45] and db1023 and db1033 for testing
 ## not currently in production and/or hardware issues
 # db1015
-# db1023
 # db1033
 # db1044
-node /^db10(15|2[3]|33|44)\.eqiad\.wmnet/ {
+node /^db10(15|33|44)\.eqiad\.wmnet/ {
     include standard
 }
 
