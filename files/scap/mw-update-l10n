@@ -51,7 +51,7 @@ for i in ${mwExtVerDbSets[@]}; do
 	echo -n "Updating ExtensionMessages-$mwVerNum.php..."
 	mwTempDest=$(sudo -u apache mktemp) || die
 	sudo -u apache $BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
-		--list-file=$MW_COMMON_SOURCE/wmf-config/extension-list $QUIET --output="$mwTempDest" \
+		$QUIET --output="$mwTempDest" \
 		|| die
 	sudo -u apache chmod 664 "$mwTempDest"  || die
 	cp "$mwTempDest" $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php || die
