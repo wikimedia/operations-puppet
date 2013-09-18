@@ -3060,6 +3060,26 @@ class accounts {
         }
     }
 
+    # RT 5717
+    class ebernhardson inherits baseaccount {
+        $username = 'ebernhardson'
+        $realname = 'Erik Bernhardson'
+        $uid      = 651
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'ebernhardson@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDnafs6VPTCwrVEEqllEMpH6zhLreme1qGFuLxKD5uYQu2OJ01fhxICnswF7uuDrOSs5X9kTyj4zYjoGLHkEbucv3tBunEwYvzbrtRh+WxWkNjBNqhnUkM6T3IxOIpGlXwFxs6rD57i5ZtG2RPdRbOd+NYMjjkR/tELNSwuOfwi0vFeaumqhrbs5Q4XRqcdjPpMxE/BwqqAFA0SU/WeU5ewifF+FedAwYp5LRaeGmgWt0wuRnTjib8xxyyoH8ZJa79bYHK1CSWo4HU/EPsFdAgTWhrX59UQwOWTFOztQKU6zUc50bfh3cpv3wQ/4+VXFWG4J6XMdL4jLVxZwhCebYn',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3164,6 +3184,7 @@ class admins::mortals {
 	include accounts::tfinc # move from roots RT 5485
 	include accounts::yurik #rt 4835, rt 5069
 	include accounts::zak # access revoked
+	include accounts::ebernhardson #RT 5717
 }
 
 class admins::restricted {
