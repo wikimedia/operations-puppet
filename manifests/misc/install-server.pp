@@ -52,6 +52,7 @@ class misc::install-server {
             /sbin/iptables -A tftp -s 10.0.0.0/8 -j ACCEPT;
             /sbin/iptables -A tftp -s 208.80.152.0/22 -j ACCEPT;
             /sbin/iptables -A tftp -s 91.198.174.0/24 -j ACCEPT;
+            /sbin/iptables -A tftp -s 198.35.26.0/22 -j ACCEPT;
             /sbin/iptables -A tftp -j DROP;
             /sbin/iptables -I INPUT -p udp --dport tftp -j tftp
             '
