@@ -9,6 +9,7 @@ class contint::firewall {
 
     iptables_purge_service{  'deny_all_http-alt': service => 'http-alt' }
     iptables_purge_service{  'deny_all_zuul-daemon': service => 'zuul_webservice' }
+    iptables_purge_service{  'deny_all_git-daemon': service  => 'git_daemon' }
   }
 
   class iptables-accepts {
@@ -28,6 +29,8 @@ class contint::firewall {
     iptables_add_service{ 'deny_all_http-alt': service => 'http-alt', jump => 'DROP' }
     # Deny direct access to the Zuul daemon
     iptables_add_service{ 'deny_all_zuul-daemon': service => 'zuul_webservice', jump => 'DROP' }
+    # Deny git daemon listening on port 9418
+    iptables_add_service{ 'deny_all_git-daemon': service => 'git_daemon', jump => 'DROP' }
   }
 
   class iptables {
