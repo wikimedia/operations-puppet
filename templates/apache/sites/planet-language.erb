@@ -20,7 +20,7 @@
         SSLHonorCipherOrder on
         SSLCertificateFile /etc/ssl/certs/star.planet.<%= planet_domain_name %>.pem
         SSLCertificateKeyFile /etc/ssl/private/star.planet.<%= planet_domain_name %>.key
-        SSLCACertificatePath /etc/ssl/certs/
+
         <Directory /var/www/planet/<%= @name %>>
                 Allow from all
         </Directory>

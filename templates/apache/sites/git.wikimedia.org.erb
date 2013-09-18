@@ -49,7 +49,6 @@ NameVirtualHost *:443
 	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/certs/<%= ssl_cert %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert_key %>.key
-	SSLCACertificatePath /etc/ssl/certs/
 
 	RequestHeader set X-Forwarded-Proto https
 	RequestHeader set X-Forwarded-Port 443

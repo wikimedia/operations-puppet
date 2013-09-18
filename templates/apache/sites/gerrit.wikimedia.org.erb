@@ -52,7 +52,6 @@ NameVirtualHost *:443
 	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/certs/<%= ssl_cert %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert_key %>.key
-	SSLCACertificatePath /etc/ssl/certs/
 
 	RedirectMatch ^/$ https://<%= host %>/r/
 	RedirectMatch ^/gitweb/(.*)$ https://<%= host %>/r/gitweb?p=$1
