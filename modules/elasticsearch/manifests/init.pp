@@ -39,21 +39,18 @@ class elasticsearch($cluster_name, $heap_memory = '2G',
         ensure  => present,
         content => template('elasticsearch/elasticsearch.yml.erb'),
         mode    => '0444',
-        notify  => Service['elasticsearch'],
         require => Package['elasticsearch'],
     }
     file { '/etc/elasticsearch/logging.yml':
         ensure  => file,
         content => template('elasticsearch/logging.yml.erb'),
         mode    => '0444',
-        notify  => Service['elasticsearch'],
         require => Package['elasticsearch'],
     }
     file { '/etc/default/elasticsearch':
         ensure  => file,
         content => template('elasticsearch/elasticsearch.erb'),
         mode    => '0444',
-        notify  => Service['elasticsearch'],
         require => Package['elasticsearch'],
     }
     file { '/etc/logrotate.d/elasticsearch':
@@ -63,6 +60,9 @@ class elasticsearch($cluster_name, $heap_memory = '2G',
         mode    => '0444',
         source  => 'puppet:///modules/elasticsearch/logrotate',
     }
+    # Note that we don't notify the Elasticsearch service of changes to its
+    # config files because you need to be somewhat careful when restarting it.
+    # So, for now at least, we'll be restarting it manually.
 
     # Keep service running
     service { 'elasticsearch':
