@@ -244,7 +244,8 @@ node "bastion4001.wikimedia.org" {
 
     include standard,
     admins::roots,
-    misc::management::ipmi
+    misc::management::ipmi,
+    misc::install-server::tftp-server
 
 }
 
