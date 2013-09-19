@@ -955,7 +955,8 @@ node "formey.wikimedia.org" {
     $ssh_x11_forwarding = "no"
     include standard,
         svn::server,
-        backup::client
+        backup::client,
+	role::deployment::test
 
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 }
