@@ -946,7 +946,7 @@ password=${globaldev_mysql_pass}
 		minute  => 0,
 		hour    => 12,
 		user    => $geowiki_user,
-		command => "/usr/bin/python ${geowiki_path}/geowiki/process_data.py -o ${$geowiki_backups_path} --wpfiles ${geowiki_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-1 day' +\\%Y-\\%m-\\%d` --end=`date --date='1 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_path}/.globaldev.my.cnf --dest_sql_cnf=${geowiki_path}/.research.my.cnf",
+		command => "/usr/bin/python ${geowiki_path}/geowiki/process_data.py -o ${$geowiki_backups_path} --wpfiles ${geowiki_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_path}/.globaldev.my.cnf --dest_sql_cnf=${geowiki_path}/.research.my.cnf",
 		require => File[$geowiki_backups_path],
 	}
 }
