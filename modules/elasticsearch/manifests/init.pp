@@ -31,27 +31,41 @@ class elasticsearch($cluster_name, $heap_memory = '2G',
     java { 'java-default': }
     package { 'elasticsearch':
         ensure  => present,
-        require => Java['java-default']
+        require => [
+            Java['java-default'],
+            File['/etc/elasticsearch/elasticsearch.yml'],
+            File['/etc/elasticsearch/logging.yml'],
+            File['/etc/default/elasticsearch'],
+        ]
     }
 
     # Configure
+    file { '/etc/elasticsearch':
+        ensure  => directory
+    }
     file { '/etc/elasticsearch/elasticsearch.yml':
-        ensure  => present,
+        ensure  => file,
+        owner   => root,
+        group   => root,
         content => template('elasticsearch/elasticsearch.yml.erb'),
         mode    => '0444',
-        require => Package['elasticsearch'],
+        require => File['/etc/elasticsearch'],
     }
     file { '/etc/elasticsearch/logging.yml':
         ensure  => file,
+        owner   => root,
+        group   => root,
         content => template('elasticsearch/logging.yml.erb'),
         mode    => '0444',
-        require => Package['elasticsearch'],
+        require => File['/etc/elasticsearch'],
     }
     file { '/etc/default/elasticsearch':
         ensure  => file,
+        owner   => root,
+        group   => root,
         content => template('elasticsearch/elasticsearch.erb'),
         mode    => '0444',
-        require => Package['elasticsearch'],
+        require => File['/etc/elasticsearch'],
     }
     file { '/etc/logrotate.d/elasticsearch':
         ensure  => file,
