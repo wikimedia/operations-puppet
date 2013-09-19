@@ -131,6 +131,7 @@ $decommissioned_servers = [
 'ms3',
 'ms4',
 'msfe1002',
+'mw1046', # adding to list to remove from monitoring until fixed
 'niobium',
 'ocg1',
 'ocg2',
