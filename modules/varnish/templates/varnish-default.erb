@@ -67,7 +67,9 @@ VARNISH_ADMIN_LISTEN_PORT=<%= varnish_admin_port %>
 	
 #
 # # The minimum number of worker threads to start
-VARNISH_MIN_THREADS=<%= 1000 / 2 %>
+# XXX: Maximum decreased so that this config does not break
+#      if there is a single CPU -- marc
+VARNISH_MIN_THREADS=<%= 500 / 2 %>
 #
 # # The Maximum number of worker threads to start
 VARNISH_MAX_THREADS=<%= @processorcount.to_i * 500 / 2 %>
