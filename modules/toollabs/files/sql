@@ -17,7 +17,7 @@ if [ $# -lt 1 ];then
 fi
 
 if [ "$1" = "-h" ] || [ "$1" == "--help" ];then
-	echo "Usage: sql <database>[_p] [-vh]"
+    echo "Usage: sql <database>[_p] [-vh] [command(s)]"
 	echo
 	echo "This tool allows you to easily open a connection to sql database without having to provide the credentials or a database host server"
 	echo "Example: sql frwiki_p"
@@ -99,7 +99,7 @@ case "$1" in
 	# lookup from hosts
 	if [ `echo "$1" | grep -cE '_p$'` -lt 1 ];then
 	     Log "Invalid database name, recursive attempt suffixing _p..."
-	     if (sql $1_p ${*:2});then
+	     if ($0 $1_p ${*:2});then
 		     exit 0
 	     fi
              echo "Make sure to ask for a db in format of <wiki>_p"
@@ -117,5 +117,10 @@ case "$1" in
    ;;
 esac
 
+shift
 Log "Connecting to $server"
-mysql $param -h $server $db ${*:2}
+if [ $# -lt 1 ]; then
+  exec mysql $param -h $server $db "$@"
+else
+  echo "$@" | mysql $param -h $server $db
+fi
