@@ -36,7 +36,6 @@ class toollabs::dev_environ {
       'emacs',
       'elinks',
       'mercurial',
-      'mosh',
       'tig',
       'fakeroot', # for dpkg
       'build-essential', # for dpkg
