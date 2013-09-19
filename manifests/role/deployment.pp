@@ -17,6 +17,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
       "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
       "fluoride/fluoride" => "http://${deploy_server_eqiad}/fluoride/fluoride",
+      "test/testrepo" => "http://${deploy_server_eqiad}/test/testrepo",
     },
     "eqiad" => {
       "private" => "http://${deploy_server_eqiad}/mediawiki/private",
@@ -31,6 +32,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
       "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
       "fluoride/fluoride" => "http://${deploy_server_eqiad}/fluoride/fluoride",
+      "test/testrepo" => "http://${deploy_server_eqiad}/test/testrepo",
     },
   }
   # deployment_target grain value for this repo. This must match the deployment::target
@@ -49,6 +51,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "parsoid/config" => "parsoid",
     "eventlogging/EventLogging" => "eventlogging",
     "fluoride/fluoride" => "eventlogging",
+    "test/testrepo" => "testrepo",
   }
   # Sed the .gitmodules file for the repo according to the following rules
   # TODO: rename this to something more specific
@@ -119,6 +122,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "parsoid/config" => "/srv/deployment/parsoid/config",
     "eventlogging/EventLogging" => "/srv/deployment/eventlogging/EventLogging",
     "fluoride/fluoride" => "/srv/deployment/fluoride/fluoride",
+    "test/testrepo" => "/srv/deployment/test/testrepo",
   }
   # ensure dependent repos are fetched and checked out with this repo
   # repos fetched/checkedout in order
@@ -201,6 +205,7 @@ class role::deployment::deployment_servers::common {
   deployment::deployment_repo_sync_hook_link { "parsoid/config": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "eventlogging/EventLogging": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "fluoride/fluoride": target => "shared.py" }
+  deployment::deployment_repo_sync_hook_link { "test/testrepo": target => "shared.py" }
 
   class { "apache": }
   class { "apache::mod::dav": }
@@ -273,4 +278,8 @@ class role::deployment::deployment_servers::labs {
     ],
     group => "project-deployment-prep",
   }
+}
+
+class role::deployment::test {
+    deployment::target { 'testrepo': }
 }
