@@ -506,10 +506,7 @@ sub tag_carrier {
 	} else if (client.ip ~ carrier_297_01) {
 		set req.http.X-CS = "297-01";
 	} else if (client.ip ~ carrier_426_04) {
-		set req.http.X-DfltLang = "en";
-		if (req.http.host ~ "(^(en|ar)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
-			set req.http.X-CS = "426-04";
-		}
+		set req.http.X-CS = "426-04";
 	} else if (client.ip ~ carrier_250_99) {
 		set req.http.X-DfltLang = "ru";
 		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
