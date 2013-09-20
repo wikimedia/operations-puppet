@@ -757,8 +757,7 @@ node 'db1057.eqiad.wmnet' {
 ## not currently in production and/or hardware issues
 # db1015
 # db1033
-# db1044
-node /^db10(15|33|44)\.eqiad\.wmnet/ {
+node /^db10(15|33)\.eqiad\.wmnet/ {
     include standard
 }
 
@@ -772,6 +771,12 @@ node "db1014.eqiad.wmnet" {
 # 2013-09-11: sp testing delayed slave mariadb 10
 node "db1045.eqiad.wmnet" {
     include standard
+}
+
+# ad-hoc mariadb test box
+node "db1044.eqiad.wmnet" {
+    include standard,
+        mysql_wmf
 }
 
 node "dobson.wikimedia.org" {
