@@ -1525,9 +1525,11 @@ host maerlant {
 	fixed-address maerlant.esams.wikimedia.org;
 }
 
-host manganese {
+host dickson {
 	hardware ethernet 78:2b:cb:09:0c:5a;
-	fixed-address manganese.wikimedia.org;
+	fixed-address dickson.wikimedia.org;
+	option pxelinux.pathprefix "debian-installer/";
+	filename "debian-installer/amd64/pxelinux.0";
 }
 
 host magnesium {
