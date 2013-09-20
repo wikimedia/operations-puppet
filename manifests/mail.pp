@@ -287,7 +287,7 @@ class clamav {
 			source => "puppet:///files/clamav/clamd.conf";
 	}
 
-	service { "clamd":
+	service { "clamav-daemon":
 		require => [ File["/etc/clamav/clamd.conf"], Package["clamav-daemon"] ],
 		subscribe => [ File["/etc/clamav/clamd.conf"] ],
 		ensure => running;
