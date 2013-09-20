@@ -1236,6 +1236,13 @@ host db1060 {
 	fixed-address db1060.eqiad.wmnet;
 }
 
+host dickson {
+	hardware ethernet 78:2b:cb:09:0c:5a;
+	fixed-address dickson.wikimedia.org;
+	option pxelinux.pathprefix "debian-installer/";
+	filename "debian-installer/amd64/pxelinux.0";
+}
+
 host dysprosium {
 	hardware ethernet 90:B1:1C:3B:C7:2C;
 	fixed-address dysprosium.eqiad.wmnet;
@@ -1523,11 +1530,6 @@ host lvs1006 {
 host maerlant {
 	hardware ethernet a4:ba:db:30:d1:12;
 	fixed-address maerlant.esams.wikimedia.org;
-}
-
-host manganese {
-	hardware ethernet 78:2b:cb:09:0c:5a;
-	fixed-address manganese.wikimedia.org;
 }
 
 host magnesium {
