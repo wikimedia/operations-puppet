@@ -109,6 +109,24 @@ class role::ci::slave {
     }
 }
 
+class role::ci::slave::browsertests {
+
+  system_role { 'role::ci::slave::browsertests':
+    description => 'CI Jenkins slave for browser tests' }
+
+  if $::realm != 'labs' {
+    fail( 'role::ci::slave::browsertests must only be applied in labs' )
+  }
+
+  # The slaves on labs use the `jenkins-deploy` user which is already
+  # configured in labs LDAP.  Thus, we only need to install the dependencies
+  # needed by the slave agent
+  include jenkins::slave::requisites
+
+  include contint::browsertests
+
+}
+
 # The testswarm installation
 # Although not used as of July 2013, we will resurect this one day.
 class role::ci::testswarm {
