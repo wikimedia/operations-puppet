@@ -278,6 +278,15 @@ class clamav {
 		# this takes several minutes to run
 	}
 
+	file {
+		"/etc/clamav/clamd.conf":
+			require => Package["clamav-daemon"],
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/clamav/clamd.conf";
+	}
+
 	service { "clamd":
 		require => [ File["/etc/clamav/clamd.conf"], Package["clamav-daemon"] ],
 		subscribe => [ File["/etc/clamav/clamd.conf"] ],
