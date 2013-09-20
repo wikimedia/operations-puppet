@@ -77,6 +77,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "parsoid/config" => {},
     "eventlogging/EventLogging" => {},
     "fluoride/fluoride" => {},
+    "test/testrepo" => {},
   }
   # Call these salt modules after checkout of parent repo and submodules
   # TODO: turn this into a hash so that modules can specify args too
@@ -93,6 +94,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "parsoid/config" => ["parsoid.restart_parsoid"],
     "eventlogging/EventLogging" => [],
     "fluoride/fluoride" => [],
+    "test/testrepo" => [],
   }
   # Should this repo also do a submodule update --init?
   $deployment_repo_checkout_submodules = {
@@ -108,6 +110,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "parsoid/config" => "False",
     "eventlogging/EventLogging" => "False",
     "fluoride/fluoride" => "False",
+    "test/testrepo" => "False",
   }
   $deployment_repo_locations = {
     "private" => "/srv/deployment/mediawiki/private",
