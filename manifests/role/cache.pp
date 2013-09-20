@@ -955,6 +955,10 @@ class role::cache {
 
 		include varnish::monitoring::ganglia::vhtcpd
 
+		varnish::netmapper_update {
+			'zero.json': url => 'http://meta.wikimedia.org/w/api.php?action=zeroconfig';
+		}
+
 		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
