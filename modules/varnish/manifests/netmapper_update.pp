@@ -32,8 +32,7 @@ define varnish::netmapper_update($url, $hour = '*', $minute = '*/10') {
     exec { "netmapper_update_${name}_initial":
         user    => 'netmap',
         command => $cmd,
-        creates => "/var/netmapper/${name}",
-        before  => Class[varnish::instance];
+        creates => "/var/netmapper/${name}";
     }
 
     cron { "netmapper_update_${name}":
