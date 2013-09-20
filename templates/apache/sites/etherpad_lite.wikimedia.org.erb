@@ -14,7 +14,7 @@
 	RewriteEngine on
 	ProxyVia On
 	ProxyRequests Off
-	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/
+	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/ retry=15
 	ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
 	ProxyPreserveHost On
 	RewriteRule /p/*$ https://etherpad.wikimedia.org/ [NC,L]
@@ -65,7 +65,7 @@
 	RewriteEngine on
 	ProxyVia On
 	ProxyRequests Off
-	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/
+	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/ retry=15
 	ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
 	ProxyPreserveHost On
 	RewriteRule /p/*$ https://etherpad.wikimedia.org/ [NC,L]
