@@ -8,9 +8,7 @@ class jenkins::slave(
   $workdir = '/var/lib/jenkins-slave',
 ) {
 
-  package { 'openjdk-7-jre-headless':
-    ensure => present,
-  }
+  include jenkins::slave::requisites
 
   systemuser { $user:
     ensure     => present,
