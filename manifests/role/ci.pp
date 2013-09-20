@@ -109,6 +109,55 @@ class role::ci::slave {
     }
 }
 
+# Common configuration to be applied on any labs Jenkins slave
+class role::ci::slave::labs::common {
+  # Home dir for Jenkins agent
+  #
+  # We will use neither /var/lib (partition too small) nor /home since it is
+  # GlusterFS.
+  #
+  # Instead, create a work dir on /dev/vdb which has all the instance disk
+  # space and is usually mounted on /mnt.
+  file { '/mnt/jenkins-workspace':
+    ensure => directory,
+    owner  => 'jenkins-deploy',
+    group  => 'wikidev',  # useless, but we need a group
+    mode   => '0775',
+  }
+
+  # The slaves on labs use the `jenkins-deploy` user which is already
+  # configured in labs LDAP.  Thus, we only need to install the dependencies
+  # needed by the slave agent.
+  include jenkins::slave::requisites
+}
+
+class role::ci::slave::browsertests {
+
+  system_role { 'role::ci::slave::browsertests':
+    description => 'CI Jenkins slave for browser tests' }
+
+  if $::realm != 'labs' {
+    fail( 'role::ci::slave::browsertests must only be applied in labs' )
+  }
+
+  include role::ci::slave::labs::common
+
+  # We are in labs context, so use /mnt (== /dev/vdb)
+  # Never EVER think about using GlusterFS.
+  file { '/mnt/localhost-browsertests':
+      ensure => directory,
+      owner  => 'jenkins-deploy',
+      group  => 'wikidev',
+      mode   => '0775',
+  }
+
+  class { 'contint::browsertests':
+    docroot => '/mnt/localhost-browsertests',
+    require => File['/mnt/localhost-browsertests'],
+  }
+
+}
+
 # The testswarm installation
 # Although not used as of July 2013, we will resurect this one day.
 class role::ci::testswarm {
