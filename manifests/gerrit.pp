@@ -80,7 +80,7 @@ class gerrit::jetty ($ldap_hosts,
 
 	include gerrit::crons
 
-	package { [ "openjdk-7-jre", "git-svn" ]:
+	package { [ "openjdk-7-jre" ]:
 		ensure => latest;
 	}
 
