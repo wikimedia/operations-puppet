@@ -80,6 +80,7 @@ class role::otrs {
     }
 
     class { 'exim::roled':
+        enable_clamav => 'true',
         enable_otrs_server => 'true',
         enable_spamassassin => 'true',
         enable_external_mail => 'true',

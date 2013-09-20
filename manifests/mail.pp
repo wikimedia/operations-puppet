@@ -136,20 +136,22 @@ class exim {
 	#	- $hold_domains:
 	#		List of domains to hold on the queue without processing
 	class roled(
-		$local_domains = [ "+system_domains" ],
-		$enable_mail_relay="false",
-		$enable_otrs_server="false",
-		$enable_mailman="false",
-		$enable_imap_delivery="false",
-		$enable_mail_submission="false",
-		$enable_external_mail="false",
-		$smart_route_list=[],
-		$mediawiki_relay="false",
-		$rt_relay="false",
-		$enable_spamassassin="false",
-		$outbound_ips=[ $ipaddress ],
-		$list_outbound_ips=[],
-		$hold_domains=[] ) {
+			$enable_clamav="false",
+			$enable_external_mail="false",
+			$enable_imap_delivery="false",
+			$enable_mail_relay="false",
+			$enable_mail_submission="false",
+			$enable_mailman="false",
+			$enable_otrs_server="false",
+			$enable_spamassassin="false",
+			$hold_domains=[],
+			$list_outbound_ips=[],
+			$local_domains = [ "+system_domains" ],
+			$mediawiki_relay="false",
+			$outbound_ips=[ $ipaddress ],
+			$rt_relay="false",
+			$smart_route_list=[]
+		 ) {
 
 		class { "exim::config": install_type => "heavy", queuerunner => "combined" }
 		Class["exim::config"] -> Class[exim::roled]
@@ -255,7 +257,33 @@ class exim {
 		if ( $enable_spamassassin == "true" ) {
 			Class[spamassassin] -> Class[exim::roled]
 		}
+		if ( $enable_clamav == "true" ) {
+			include clamav
+		}
 	}
+}
+
+# https://help.ubuntu.com/community/EximClamAV
+# /usr/share/doc/clamav-base/README.Debian.gz
+class clamav {
+
+	systemuser { "clamav":
+		name => "clamav",
+		groups => "Debian-exim", # needed for exim integration
+	}
+
+	package { [ "clamav-daemon" ]:
+		ensure => latest;
+		# note: freshclam needs an initial manual run to fetch virus definitions
+		# this takes several minutes to run
+	}
+
+	service { "clamd":
+		require => [ File["/etc/clamav/clamd.conf"], Package["clamav-daemon"] ],
+		subscribe => [ File["/etc/clamav/clamd.conf"] ],
+		ensure => running;
+	}
+
 }
 
 # SpamAssassin http://spamassassin.apache.org/
