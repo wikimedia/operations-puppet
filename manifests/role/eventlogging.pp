@@ -157,6 +157,24 @@ class role::eventlogging {
     }
 
 
+    ## Kafka / Hadoop
+
+    include role::analytics::kafka::client
+
+    $kafka_brokers = inline_template('<%= scope.lookupvar("role::analytics::kafka::client::brokers_array").join(",") %>')
+    $kafka_cluster = $::role::analytics::kafka::client::kafka_cluster_name
+    $kafka_topic = 'eventlogging-test01'
+
+    package { 'python-kafka':
+        ensure => present,
+    }
+
+    eventlogging::service::consumer { 'kafka':
+       input  => "tcp://${processor}:8600",
+       output => "kafka://${kafka_cluster}?brokers=${kafka_brokers}&topic=${kafka_topic}",
+    }
+
+
     ## Monitoring
 
     eventlogging::service::reporter { 'statsd':
