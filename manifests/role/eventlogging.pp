@@ -156,6 +156,18 @@ class role::eventlogging {
     }
 
 
+    ## Kafka / Hadoop
+
+    eventlogging::plugin { 'kafka':
+        source => 'puppet:///modules/eventlogging/plugins/eventlogging-kafka.py',
+    }
+
+    # eventlogging::service::consumer { 'kafka':
+    #    input  => "tcp://${processor}:8600",
+    #    output => "kafka://${kafka_host}:${kafka_port}",
+    # }
+
+
     ## Monitoring
 
     nrpe::monitor_service { 'eventlogging':
