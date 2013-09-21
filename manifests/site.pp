@@ -779,10 +779,6 @@ node "db1044.eqiad.wmnet" {
         mysql_wmf,
         mysql_wmf::datadirs,
         mysql_wmf::mysqluser
-
-    class { mysql_wmf::packages :
-        mariadb => true
-    }
 }
 
 node "dobson.wikimedia.org" {
