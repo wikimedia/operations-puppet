@@ -39,7 +39,7 @@ class toollabs::dev_environ {
       'tig',
       'fakeroot', # for dpkg
       'build-essential', # for dpkg
-      'mc', # midnight commander is favorite on toolserver, let's not make labs worse than toolserver
+      'mc', # 'Popular' on ToolServer
       'libxslt1-dev', # -- same
       'p7zip-full', # requested by Betacommand to extract files using 7zip
       'libtiff4-dev', # bug 52717
