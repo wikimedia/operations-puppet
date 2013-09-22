@@ -39,7 +39,6 @@ class toollabs::dev_environ {
       'tig',
       'fakeroot', # for dpkg
       'build-essential', # for dpkg
-      'mc', # Popular{{cn}} on Toolserver
       'libxslt1-dev', # -- same
       'p7zip-full', # requested by Betacommand to extract files using 7zip
       'libtiff4-dev', # bug 52717
