@@ -210,7 +210,7 @@ acl_check_rcpt:
 	# Require recipient domain to be local
 
 	require message = Relay not permitted
-                domains = +local_domains
+		domains = +local_domains
 <% else -%>
 	# Require recipient domain to be local, or a domain we relay for
 
@@ -277,24 +277,24 @@ acl_check_connect:
 acl_check_data:
 <% if ( enable_spamassassin == "true" ) then -%>
 <% if ( enable_otrs_server == "true" ) then -%>
-    # skip spam-check for locally-submitted messages
-    accept hosts = +relay_from_hosts
-        set acl_m0 = trusted relay
+	# skip spam-check for locally-submitted messages
+	accept hosts = +relay_from_hosts
+		set acl_m0 = trusted relay
 
-    # skip if message is too large (>500K)
-    accept condition = ${if >{$message_size}{500K}}
-        set acl_m0 = n/a
-        set acl_m1 = skipped, message too large
+	# skip if message is too large (>500K)
+	accept condition = ${if >{$message_size}{500K}}
+		set acl_m0 = n/a
+		set acl_m1 = skipped, message too large
 
-    # add spam headers...
-    warn spam = nonexistent:true
-        set acl_m0 = $spam_score ($spam_bar)
-        set acl_m1 = $spam_report
-        set acl_m3 = $spam_score_int
+	# add spam headers...
+	warn spam = nonexistent:true
+		set acl_m0 = $spam_score ($spam_bar)
+		set acl_m1 = $spam_report
+		set acl_m3 = $spam_score_int
 
-    # silently drop spam at high scores (> 12)
-    discard log_message = spam detected ($spam_score)
-        condition = ${if >{$spam_score_int}{120}{1}{0}}
+	# silently drop spam at high scores (> 12)
+	discard log_message = spam detected ($spam_score)
+		condition = ${if >{$spam_score_int}{120}{1}{0}}
 <% else -%>
 	# Let's trust local senders (Mailman) to not send out spam
 	accept hosts = +wikimedia_nets
