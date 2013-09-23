@@ -2833,7 +2833,8 @@ node 'hafnium.wikimedia.org' {
         groups::wikidev,
         accounts::olivneh,
         role::eventlogging::graphite,
-        misc::graphite::navtiming
+        misc::graphite::navtiming,
+        webperf
 
     sudo_user { 'olivneh':
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
