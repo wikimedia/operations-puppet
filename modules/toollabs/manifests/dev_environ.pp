@@ -25,6 +25,7 @@ class toollabs::dev_environ {
       'autoconf',
       'sqlite3',
       'python-dev',
+      'openjdk-7-jdk',
       'libboost-python1.48-dev',
       'libdmtx-dev',                 # Bug #53867.
       'libmariadbclient-dev',
