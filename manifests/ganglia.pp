@@ -640,6 +640,53 @@ define ganglia::view(
     }
 }
 
+# == Define ganglia::pyplugin
+#
+# Installs a Ganglia python plugin
+#
+# == Parameters:
+#
+# $plugins - the plugin name (ex: 'diskstat'), will install the python file
+# located in files/ganglia/plugins/${name}.py and expand the template from
+# templates/ganglia/plugins/${name}.pyconf.erb.
+# Default to $title as a convenience
+#
+# $opts - optional hash which can be used in the template. The defaults are
+# hardcoded in the templates. Default to {}
+#
+# == Examples:
+#
+# ganglia::pyplugin {'diskstat': }
+#
+# ganglia::pyplugin {'diskstat': opts => { 'devices' => ['sda', 'sdb'] }}
+#
+define ganglia::pyplugin($plugin = $title, $opts={} ) {
+    file { "/usr/lib/ganglia/python_modules/${plugin}.py":
+        source => "puppet:///files/ganglia/plugins/${plugin}.py",
+        notify => Service['gmond'],
+    }
+    file { "/etc/ganglia/conf.d/${plugin}.pyconf":
+        content => template("ganglia/plugins/${plugin}.pyconf.erb"),
+        notify  => Service['gmond'],
+    }
+}
+
+# == Define ganglia::plugin::diskstat
+#
+# Monitor disks statistics in Ganglia
+#
+# == Parameters:
+# $opts - hash to further configure the diskstat Ganglia plugin, accepted keys
+#         are:
+#          - *devices* array of devices to monitor (default: 'sda')
+#          - *collect_every* (default: 60)
+#          - *time_threshold* (default: 60)
+#         See templates/ganglia/plugins/diskstat.pyconf.erb
+define ganglia::plugin::diskstat( $opts={} ) {
+    ganglia::pyplugin{ $title: plugin => 'diskstat', opts => $opts }
+}
+
+
 # Copied from nagios::ganglia::monitor::enwiki
 # Will run on hume to use the local MediaWiki install so that we can use
 # maintenance scripts recycling DB connections and taking a few secs, not mins
