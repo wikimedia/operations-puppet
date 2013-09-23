@@ -1,5 +1,5 @@
 # vim: sw=2 ts=2 et
-class role::deployment::salt_masters::common($deployment_servers) {
+class role::deployment::config($deployment_servers) {
   $deploy_server_pmtpa = $deployment_servers["pmtpa"]
   $deploy_server_eqiad = $deployment_servers["eqiad"]
   $deployment_repo_urls = {
@@ -56,8 +56,6 @@ class role::deployment::salt_masters::common($deployment_servers) {
   # Sed the .gitmodules file for the repo according to the following rules
   # TODO: rename this to something more specific
   $deployment_repo_regex = {
-    "common" => {},
-    "private" => {},
     "slot0" => {
       "https://gerrit.wikimedia.org/r/p/mediawiki" => "__REPO_URL__/.git/modules",
       ".git" => "",
@@ -70,47 +68,18 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "https://gerrit.wikimedia.org/r/p/mediawiki" => "__REPO_URL__/.git/modules",
       ".git" => "",
     },
-    "l10n-slot0" => {},
-    "l10n-slot1" => {},
-    "l10n-beta0" => {},
-    "parsoid/Parsoid" => {},
-    "parsoid/config" => {},
-    "eventlogging/EventLogging" => {},
-    "fluoride/fluoride" => {},
-    "test/testrepo" => {},
   }
   # Call these salt modules after checkout of parent repo and submodules
   # TODO: turn this into a hash so that modules can specify args too
   $deployment_repo_checkout_module_calls = {
-    "private" => [],
-    "common" => [],
-    "slot0" => [],
-    "slot1" => [],
-    "beta0" => [],
-    "l10n-slot0" => [],
-    "l10n-slot1" => [],
-    "l10n-beta0" => [],
     "parsoid/Parsoid" => ["parsoid.config_symlink","parsoid.restart_parsoid"],
     "parsoid/config" => ["parsoid.restart_parsoid"],
-    "eventlogging/EventLogging" => [],
-    "fluoride/fluoride" => [],
-    "test/testrepo" => [],
   }
   # Should this repo also do a submodule update --init?
   $deployment_repo_checkout_submodules = {
-    "private" => "False",
-    "common" => "False",
     "slot0" => "True",
     "slot1" => "True",
     "beta0" => "True",
-    "l10n-slot0" => "False",
-    "l10n-slot1" => "False",
-    "l10n-beta0" => "False",
-    "parsoid/Parsoid" => "False",
-    "parsoid/config" => "False",
-    "eventlogging/EventLogging" => "False",
-    "fluoride/fluoride" => "False",
-    "test/testrepo" => "False",
   }
   $deployment_repo_locations = {
     "private" => "/srv/deployment/mediawiki/private",
@@ -141,18 +110,18 @@ class role::deployment::salt_masters::production {
     "pmtpa" => "tin.eqiad.wmnet",
     "eqiad" => "tin.eqiad.wmnet",
   }
-  class { "role::deployment::salt_masters::common":
+  class { "::role::deployment::config":
     deployment_servers => $deployment_servers,
   }
   class { "deployment::salt_master":
     deployment_servers => $deployment_servers,
-    deployment_repo_urls => $role::deployment::salt_masters::common::deployment_repo_urls,
-    deployment_repo_regex => $role::deployment::salt_masters::common::deployment_repo_regex,
-    deployment_repo_checkout_module_calls => $role::deployment::salt_masters::common::deployment_repo_checkout_module_calls,
-    deployment_repo_checkout_submodules => $role::deployment::salt_masters::common::deployment_repo_checkout_submodules,
-    deployment_repo_locations => $role::deployment::salt_masters::common::deployment_repo_locations,
-    deployment_repo_dependencies => $role::deployment::salt_masters::common::deployment_repo_dependencies,
-    deployment_repo_grains => $role::deployment::salt_masters::common::deployment_repo_grains,
+    deployment_repo_urls => $role::deployment::config::deployment_repo_urls,
+    deployment_repo_regex => $role::deployment::config::deployment_repo_regex,
+    deployment_repo_checkout_module_calls => $role::deployment::config::deployment_repo_checkout_module_calls,
+    deployment_repo_checkout_submodules => $role::deployment::config::deployment_repo_checkout_submodules,
+    deployment_repo_locations => $role::deployment::config::deployment_repo_locations,
+    deployment_repo_dependencies => $role::deployment::config::deployment_repo_dependencies,
+    deployment_repo_grains => $role::deployment::config::deployment_repo_grains,
     deployment_deploy_redis => {
       "host" => "tin.eqiad.wmnet",
       "port" => 6379,
@@ -167,18 +136,18 @@ class role::deployment::salt_masters::labs {
     # no eqiad zone, yet
     "eqiad" => "i-00000390.pmtpa.wmflabs",
   }
-  class { "role::deployment::salt_masters::common":
+  class { "role::deployment::config":
     deployment_servers => $deployment_servers,
   }
   class { "deployment::salt_master":
     deployment_servers => $deployment_servers,
-    deployment_repo_urls => $role::deployment::salt_masters::common::deployment_repo_urls,
-    deployment_repo_regex => $role::deployment::salt_masters::common::deployment_repo_regex,
-    deployment_repo_checkout_module_calls => $role::deployment::salt_masters::common::deployment_repo_checkout_module_calls,
-    deployment_repo_checkout_submodules => $role::deployment::salt_masters::common::deployment_repo_checkout_submodules,
-    deployment_repo_locations => $role::deployment::salt_masters::common::deployment_repo_locations,
-    deployment_repo_dependencies => $role::deployment::salt_masters::common::deployment_repo_dependencies,
-    deployment_repo_grains => $role::deployment::salt_masters::common::deployment_repo_grains,
+    deployment_repo_urls => $role::deployment::config::deployment_repo_urls,
+    deployment_repo_regex => $role::deployment::config::deployment_repo_regex,
+    deployment_repo_checkout_module_calls => $role::deployment::config::deployment_repo_checkout_module_calls,
+    deployment_repo_checkout_submodules => $role::deployment::config::deployment_repo_checkout_submodules,
+    deployment_repo_locations => $role::deployment::config::deployment_repo_locations,
+    deployment_repo_dependencies => $role::deployment::config::deployment_repo_dependencies,
+    deployment_repo_grains => $role::deployment::config::deployment_repo_grains,
     deployment_deploy_redis => {
       "host" => "i-00000390.pmtpa.wmflabs",
       "port" => 6379,
