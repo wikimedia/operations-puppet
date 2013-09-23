@@ -322,6 +322,8 @@ acl_check_data:
 <% end -%>
 <% end -%>
 <% if enable_clamav == "true" then -%>
+
+	# silently discard messages with malware attached
 	discard log_message = malware detected ($malware_name)
 		demime = *
 		malware = *
