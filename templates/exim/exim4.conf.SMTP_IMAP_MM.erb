@@ -78,7 +78,7 @@ hostlist otrs_mail_from_hosts = mchenry.wikimedia.org
 
 # Interfaces
 daemon_smtp_ports = smtp : ssmtp
-<% elsif ( enable_otrs_server  == "true" ) then -%>
+<% elsif enable_otrs_server == "true" then -%>
 
 # Interfaces
 daemon_smtp_ports = smtp
@@ -130,6 +130,12 @@ rfc1413_hosts =
 # Content filtering
 spamd_address = 127.0.0.1 783
 <% end %>
+<% if enable_clamav == "true" then -%>
+
+# Malware scanning
+av_scanner = clamd:/var/run/clamav/clamd.ctl
+<% end %>
+
 <% if enable_imap_delivery == "true" then -%>
 # TLS
 tls_certificate = /etc/ssl/certs/wikimedia.org.pem
@@ -269,42 +275,31 @@ acl_check_connect:
 	accept
 
 acl_check_data:
-
 <% if ( enable_spamassassin == "true" ) then -%>
 <% if ( enable_otrs_server == "true" ) then -%>
-	# skip spam-check for locally-submitted messages
-	accept hosts = +relay_from_hosts
+    # skip spam-check for locally-submitted messages
+    accept hosts = +relay_from_hosts
+        set acl_m0 = trusted relay
+
+    # skip if message is too large (>500K)
+    accept condition = ${if >{$message_size}{500K}}
+        set acl_m0 = n/a
+        set acl_m1 = skipped, message too large
+
+    # add spam headers...
+    warn spam = nonexistent:true
+        set acl_m0 = $spam_score ($spam_bar)
+        set acl_m1 = $spam_report
+        set acl_m3 = $spam_score_int
+
+    # silently drop spam at high scores (> 12)
+    discard log_message = spam detected ($spam_score)
+        condition = ${if >{$spam_score_int}{120}{1}{0}}
 <% else -%>
 	# Let's trust local senders (Mailman) to not send out spam
 	accept hosts = +wikimedia_nets
-<% end -%>
 		set acl_m0 = trusted relay
 
-	# Run through spamassassin
-	require acl = spamassassin
-<% end -%>
-	accept
-
-<% if ( enable_spamassassin == "true" ) then -%>
-<% if ( enable_otrs_server == "true" ) then -%>
-spamassassin:
-	# skip if message is too large (>500K)
-	accept condition = ${if >{$message_size}{500K}}
-		set acl_m0 = n/a
-		set acl_m1 = skipped, message too large
-
-	# skip if whitelisted in exim
-	accept condition = ${if eq{$acl_m2}{skip_spamd}}
-		set acl_m0 = n/a
-		set acl_m1 = skipped, exim whitelist
-
-	# Add spam headers...
-	warn spam = nonexistent:true
-		set acl_m0 = $spam_score ($spam_bar)
-		set acl_m1 = $spam_report
-		set acl_m3 = $spam_score_int
-<% else -%>
-spamassassin:
 	# Only run through SpamAssassin if requested for this domain and
 	# the message is not too large (Mailman's default moderation
 	# threshold of 40 KB)
@@ -319,15 +314,19 @@ spamassassin:
 		condition = ${if >{$spam_score_int}{10}{1}{0}}
 		set acl_m0 = $spam_score ($spam_bar)
 		set acl_m1 = $spam_report
-<% end -%>
 
 	# Reject spam at high scores (> 12)
 	deny message = This message scored $spam_score spam points.
 		spam = nonexistent/defer_ok
 		condition = ${if >{$spam_score_int}{120}{1}{0}}
+<% end -%>
+<% if enable_clamav == "true" then -%>
+	discard log_message = malware detected ($malware_name)
+		demime = *
+		malware = *
+<% end -%>
 
 	accept
-<% end -%>
 
 ###########
 # Routers #
@@ -654,7 +653,7 @@ postmaster:
 <% elsif enable_mail_relay != "false" then -%>
 	cannot_route_message = Address $local_part@$domain does not exist
 <% end %>
-<% if (enable_otrs_server == "true" ) -%>
+<% if enable_otrs_server == "true" then -%>
 otrs:
 	driver = accept
 	condition = ${lookup mysql{SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}'}{true}fail}
@@ -679,7 +678,7 @@ begin transports
 remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
-<% if (enable_otrs_server == "false" ) -%>
+<% if enable_otrs_server == "false" then -%>
 	interface = <; <%= outbound_ips.join(" ; ") %>
 <% end -%>
 <% if enable_mailman == "true" -%>
