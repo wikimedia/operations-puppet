@@ -4,8 +4,6 @@
 
 $decommissioned_servers = [
 'adler',
-'analytics1003',
-'analytics1004',
 'arsenic',
 'barium',
 'bayes',

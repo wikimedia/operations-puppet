@@ -130,6 +130,12 @@ node "analytics1001.wikimedia.org" {
     include role::analytics
 }
 
+# analytics1003 and analytics1004 are temporarily
+# test Kafka Brokers.
+node /analytics100[34]\.wikimedia\.org/ {
+    include role::analytics
+}
+
 # Unassigned Cisco nodes.
 # NOTE:  analytics1002 still need reinstalled as of 2013-08-26
 node /analytics100[2568]\.eqiad\.wmnet/ {
