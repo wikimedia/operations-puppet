@@ -925,6 +925,7 @@ password=${globaldev_mysql_pass}
 # == Class misc::statistics::geowiki::jobs::limn
 # Installs a cron job to create limn files from the geocoded editor data.
 #
+# Temporarily turned off reboot the geowiki repository.
 class misc::statistics::geowiki::jobs::limn {
 	require misc::statistics::geowiki,
 		misc::statistics::geowiki::mysql::conf::research,
@@ -954,6 +955,7 @@ class misc::statistics::geowiki::jobs::limn {
 			Git::Clone['geowiki-data'],
 			File["${geowiki_path}/.research.my.cnf"],
 		],
+		ensure  => absent,
 	}
 }
 
