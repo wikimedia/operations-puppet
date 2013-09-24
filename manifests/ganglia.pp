@@ -54,6 +54,7 @@ class ganglia {
             "pmtpa" => "239.192.0",
             "eqiad" => "239.192.1",
             "esams" => "239.192.20",
+            "ulsfo" => "239.192.10"
         }
 
         $name_suffix = " ${::site}"
