@@ -278,7 +278,7 @@ class ganglia {
                     $data_sources = {
                         "Miscellaneous" => "hooper.wikimedia.org tarin.pmtpa.wmnet",
                         "Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
-                        "Analytics cluster eqiad" => "analytics1003.eqiad.wmnet analytics1011.eqiad.wmnet",
+                        "Analytics cluster eqiad" => "analytics1009.eqiad.wmnet analytics1011.eqiad.wmnet",
                     }
                     $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:    0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
                     }
@@ -329,7 +329,7 @@ class ganglia {
                         "Upload squids esams" => "hooft.esams.wikimedia.org:11655 knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
                         "LVS loadbalancers esams" => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
                         "Miscellaneous esams" => "hooft.esams.wikimedia.org:11657",
-                        "Analytics cluster eqiad" => "analytics1003.eqiad.wmnet analytics1011.eqiad.wmnet",
+                        "Analytics cluster eqiad" => "analytics1009.eqiad.wmnet analytics1011.eqiad.wmnet",
                         "Memcached pmtpa" => "mc1.pmtpa.wmnet mc2.pmtpa.wmnet",
                         "Memcached eqiad" => "mc1001.eqiad.wmnet mc1002.eqiad.wmnet",
                         "Upload caches esams" => "hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
