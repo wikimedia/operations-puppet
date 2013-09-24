@@ -95,6 +95,7 @@ class misc::monitoring::views {
 		kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
 	}
 	class { 'misc::monitoring::view::navigation_timing': }
+	class { 'misc::monitoring::view::static_assets': }
 }
 
 # == Define misc:monitoring::view::udp2log
