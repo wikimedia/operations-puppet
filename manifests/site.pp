@@ -237,7 +237,7 @@ node "bast1001.wikimedia.org" {
         misc::dsh
 }
 
-node "bastion4001.wikimedia.org" {
+node "bast4001.wikimedia.org" {
     system_role { "misc": description => "Operations Bastion" }
     $cluster = "misc"
     $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet esams.wikimedia.org"

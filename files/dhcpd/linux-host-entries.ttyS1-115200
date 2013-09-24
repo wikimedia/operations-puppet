@@ -219,9 +219,9 @@ host bast1001 {
 	fixed-address bast1001.wikimedia.org;
 }
 
-host bastion4001 {
+host bast4001 {
 	hardware ethernet 90:b1:1c:4d:42:49;
-	fixed-address bastion4001.wikimedia.org;
+	fixed-address bast4001.wikimedia.org;
 }
 
 host beryllium {
