@@ -15,7 +15,7 @@ if $::projectgroup == undef {
 }
 
 # TODO: redo this in a much better way
-$all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24" ]
+$all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24", "198.35.26.0/23", "185.15.56.0/22" ]
 
 # Determine the site the server is in
 if $::ipaddress_eth0 != undef {
@@ -27,12 +27,14 @@ if $::ipaddress_eth0 != undef {
 }
 
 $site = $main_ipaddress ? {
-	/^208\.80\.15[23]\./	=> "pmtpa",
-	/^208\.80\.15[45]\./	=> "eqiad",
-	/^10\.[0-4]\./			=> "pmtpa",
-	/^10\.6[48]\./				=> "eqiad",
-	/^91\.198\.174\./		=> "esams",
-	default					=> "(undefined)"
+	/^208\.80\.15[23]\./                      => "pmtpa",
+	/^208\.80\.15[45]\./                      => "eqiad",
+	/^10\.[0-4]\./                            => "pmtpa",
+	/^10\.6[48]\./                            => "eqiad",
+	/^91\.198\.174\./                         => "esams",
+	/^198\.35\.26\.([0-9]|[1-5][0-9]|6[0-2])/ => "ulsfo",
+	/^10\.128\./                              => "ulsfo",
+	default                                   => "(undefined)"
 }
 
 $mw_primary = $::realm ? {
