@@ -15,12 +15,12 @@ host analytics1002 {
 
 host analytics1003 {
 	hardware ethernet 88:43:e1:c2:99:48;
-	fixed-address analytics1003.eqiad.wmnet;
+	fixed-address analytics1003.wikimedia.org;
 }
 
 host analytics1004 {
 	hardware ethernet 88:43:e1:c2:86:94;
-	fixed-address analytics1004.eqiad.wmnet;
+	fixed-address analytics1004.wikimedia.org;
 }
 
 host analytics1005 {
