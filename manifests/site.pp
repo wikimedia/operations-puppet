@@ -131,18 +131,16 @@ node "analytics1001.wikimedia.org" {
 }
 
 # Unassigned Cisco nodes.
-# NOTE:  analytics1002-analytics1004 still need reinstalled as of 2013-08-26
-node /analytics100[2-8]\.eqiad\.wmnet/ {
-    # ganglia aggregator for the Analytics cluster.
-    if ($::hostname == 'analytics1003') {
-        $ganglia_aggregator = true
-    }
-
+# NOTE:  analytics1002 still need reinstalled as of 2013-08-26
+node /analytics100[2568]\.eqiad\.wmnet/ {
     include role::analytics
 }
 
 # analytics1009 is the Hadoop standby NameNode
 node "analytics1009.eqiad.wmnet" {
+    # ganglia aggregator for the Ciscos in Analytics cluster.
+    $ganglia_aggregator = true
+
     include role::analytics::common
     include role::analytics::hadoop::standby
 }
@@ -156,7 +154,7 @@ node "analytics1010.eqiad.wmnet" {
 
 # analytics1011-analytics1020 are Hadoop worker nodes
 node /analytics10(1[1-9]|20).eqiad.wmnet/ {
-    # ganglia aggregator for the Analytics cluster.
+    # ganglia aggregator for the Dells in Analytics cluster.
     if ($::hostname == 'analytics1011') {
         $ganglia_aggregator = true
     }
