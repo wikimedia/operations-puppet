@@ -1,12 +1,12 @@
 [submodule "modules/cdh4"]
 	path = modules/cdh4
-	url = https://gerrit.wikimedia.org/r/operations/puppet/cdh4
+	url = https://gerrit.wikimedia.org/r/operations/puppet/cdh4.git
 [submodule "modules/zookeeper"]
 	path = modules/zookeeper
-	url = https://gerrit.wikimedia.org/r/operations/puppet/zookeeper
+	url = https://gerrit.wikimedia.org/r/operations/puppet/zookeeper.git
 [submodule "modules/jmxtrans"]
 	path = modules/jmxtrans
-	url = https://gerrit.wikimedia.org/r/operations/puppet/jmxtrans
+	url = https://gerrit.wikimedia.org/r/operations/puppet/jmxtrans.git
 [submodule "modules/kafka"]
 	path = modules/kafka
-	url = https://gerrit.wikimedia.org/r/p/operations/puppet/kafka
+	url = https://gerrit.wikimedia.org/r/p/operations/puppet/kafka.git
