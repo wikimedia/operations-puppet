@@ -1,3 +1,6 @@
+# stats.wikimedia.org
+# this file is for stat[0-9]/(ex-bayes) statistics servers (per ezachte - RT 2162)
+
 class misc::statistics::iptables-purges {
 	require "iptables::tables"
 
@@ -36,8 +39,6 @@ class misc::statistics::iptables  {
 
 	# Labs has security groups, and as such, doesn't need firewall rules
 }
-
-# this file is for stat[0-9]/(ex-bayes) statistics servers (per ezachte - RT 2162)
 
 class misc::statistics::user {
 	$username = "stats"
@@ -159,7 +160,7 @@ class misc::statistics::mediawiki {
 }
 
 # wikistats configuration for generating
-# stat.wikimedia.org data.
+# stats.wikimedia.org data.
 #
 # TODO: puppetize clone of wikistats?
 class misc::statistics::wikistats {
@@ -216,7 +217,7 @@ class misc::statistics::webserver {
 		mode    => 0750,
 		require => Class['webserver::apache'],
 	}
-	
+
 	webserver::apache::module { ['rewrite', 'proxy', 'proxy_http']:
 		require => Class['webserver::apache']
 	}
@@ -260,54 +261,19 @@ class misc::statistics::sites::stats {
 		source  => "puppet:///private/apache/htpasswd.stats",
 	}
 
-	webserver::apache::site { $site_name:
-		require => [Class["webserver::apache"], Webserver::Apache::Module["rewrite"], File["/etc/apache2/htpasswd.stats"]],
-		docroot => $docroot,
-		ssl => true,
-		certfile => '/etc/ssl/certs/stats.wikimedia.org.chained.pem',
-		certkey =>  '/etc/ssl/private/stats.wikimedia.org.key',
-		aliases   => ["stats.wikipedia.org"],
-		custom => [
-			"Alias /extended $docroot/reportcard/extended",
-			"Alias /staff $docroot/reportcard/staff \n",
-			"RewriteEngine On",
+  install_certificate{ $site_name: }
 
-	# redirect stats.wikipedia.org to stats.wikimedia.org
-	"RewriteCond %{HTTP_HOST} stats.wikipedia.org
-	RewriteRule ^(.*)$ http://$site_name\$1 [R=301,L]\n",
-
-	# Set up htpasswd authorization for some sensitive stuff
-	"<Directory \"$docroot/reportcard/staff\">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-		AuthName \"Password protected area\"
-		AuthType Basic
-		AuthUserFile /etc/apache2/htpasswd.stats
-		Require user wmf
-	</Directory>",
-	"<Directory \"$docroot/reportcard/extended\">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-		AuthName \"Password protected area\"
-		AuthType Basic
-		AuthUserFile /etc/apache2/htpasswd.stats
-		Require user internal
-	</Directory>",
-	"<Directory \"$docroot/reportcard/pediapress\">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-		AuthName \"Password protected area\"
-		AuthType Basic
-		AuthUserFile /etc/apache2/htpasswd.stats
-		Require user pediapress
-	</Directory>",
-	],
+  file {
+	"/etc/apache2/sites-available/stats.wikimedia.org":
+		ensure => present,
+		mode => '0444',
+		owner => root,
+		group => root,
+		content => template('apache/sites/stats.wikimedia.org.erb');
 	}
 
-  install_certificate{ $site_name: }
+  apache_site { statswikimedia: name => 'stats.wikimedia.org' }
+
 }
 
 # community-analytics.wikimedia.org
