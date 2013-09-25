@@ -94,6 +94,8 @@ class misc::graphite::gdash {
 	# that will probably move after the above happens.
 	# This is all kinds of badness.
 
+    deployment::target { 'gdash': }
+
 	file {
 
 		[ "/a/graphite/webapp", "/a/graphite/webapp/gdash", "/a/graphite/webapp/gdash/templates" ]:
