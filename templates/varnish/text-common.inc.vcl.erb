@@ -10,6 +10,9 @@ sub pass_requests {
 	if (req.http.Host == "login.wikimedia.org") {
 		return (pass);
 	}
+	if (req.http.Cookie ~ "mediaWiki.user.sessionId=") {
+		return (pass);
+	}
 }
 
 sub cookie_munging {
