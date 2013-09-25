@@ -6,7 +6,7 @@
 
 require 'spec_helper'
 
-describe 'gitconfig::user', :type => :define do
+describe 'git::userconfig', :type => :define do
 
 	let(:title) { 'gitconfig' }
 
