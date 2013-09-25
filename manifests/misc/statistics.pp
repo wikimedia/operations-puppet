@@ -264,12 +264,18 @@ class misc::statistics::sites::stats {
   install_certificate{ $site_name: }
 
   file {
-	"/etc/apache2/sites-available/stats.wikimedia.org":
+	'/etc/apache2/sites-available/stats.wikimedia.org':
 		ensure => present,
 		mode => '0444',
 		owner => root,
 		group => root,
 		content => template('apache/sites/stats.wikimedia.org.erb');
+	'/etc/apache2/ports.conf':
+		ensure	=> present,
+		mode	=> '0644',
+		owner	=> root,
+		group	=> root,
+		source	=> 'puppet:///files/apache/ports.conf.ssl';
 	}
 
   apache_site { statswikimedia: name => 'stats.wikimedia.org' }
