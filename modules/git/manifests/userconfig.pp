@@ -1,4 +1,4 @@
-# == gitconfig::user
+# == git::userconfig
 #
 # Generate a .gitconfig in $homedir based on a hash of gitconfig values.
 # The file will be owned by root since it is fully managed by puppet.
@@ -10,7 +10,7 @@
 #
 # Example usage:
 #
-# gitconfig::user{ 'gitconf for jenkins user':
+# git::userconfig{ 'gitconf for jenkins user':
 #   homedir => '/var/lib/jenkins',
 #   settings => {
 #     'user' => {  # '[user]'
@@ -20,14 +20,14 @@
 #   }
 # }
 #
-define gitconfig::user($homedir, $settings) {
+define git::userconfig($homedir, $settings) {
 
   file { "${homedir}/.gitconfig":
     ensure  => present,
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    content => template( 'gitconfig/gitconfig.erb' )
+    content => template( 'git/gitconfig.erb' )
   }
 
 }
