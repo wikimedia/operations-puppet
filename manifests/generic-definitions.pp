@@ -226,20 +226,6 @@ class generic::packages::tree {
 	package { "tree" : ensure => present; }
 }
 
-define git::init($directory) {
-	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
-
-	exec {
-		"git init ${title}":
-			path => "/usr/bin:/bin",
-			command => "git init",
-			cwd => "${directory}/${suffix}",
-			creates => "${directory}/${suffix}/.git/config",
-			require => Package["git-core"];
-	}
-}
-
-
 # Creating an apparmor service class
 # so we can notify the service when
 # apparmor files are changed by puppet.
