@@ -557,7 +557,7 @@ class puppet::self::master($server) {
 	# Else certname should be the labs instanceid. ($dc comes from ldap.)
 	$certname = $server ? {
 		'localhost' => 'localhost',
-		default => "${dc}.${::domain}"
+		default => "${dc}"
 	}
 
 	class { 'puppet::self::config':
@@ -624,7 +624,7 @@ class puppet::self::config(
 	$is_puppetmaster      = false,
 	$bindaddress          = undef,
 	$puppet_client_subnet = undef,
-	$certname             = "${dc}.${::domain}") inherits base::puppet
+	$certname             = "${dc}") inherits base::puppet
 {
 	include ldap::role::config::labs
 

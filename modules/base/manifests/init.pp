@@ -388,7 +388,7 @@ class base {
             # For labs, use instanceid.domain rather than the fqdn
             # to ensure we're always using a unique certname.
             # dc is an attribute from LDAP, it's set as the instanceid.
-            'labs' => "${::dc}.${::domain}",
+            'labs' => "${::dc}",
             default => undef,
         },
     }
