@@ -4,7 +4,6 @@
 
 $decommissioned_servers = [
 'adler',
-'arsenic',
 'barium',
 'bayes',
 'bellin',
@@ -131,11 +130,9 @@ $decommissioned_servers = [
 'ms3',
 'ms4',
 'msfe1002',
-'niobium',
 'ocg1',
 'ocg2',
 'ocg3',
-'palladium',
 'rdb1',
 'rdb2',
 'searchidx1',
@@ -322,7 +319,6 @@ $decommissioned_servers = [
 'storage1',
 'storage2',
 'storage3',
-'strontium',
 'thistle',
 'titantium',
 'tola',
