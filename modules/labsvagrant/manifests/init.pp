@@ -16,16 +16,16 @@ class labsvagrant {
         require => [ User['vagrant'], Exec['git_clone_vagrant'] ]
     }
 
-    file { '/vagrant/':
+    file { '/vagrant':
         ensure => 'link',
         target => '/mnt/vagrant',
         require => File['/mnt/vagrant']
     }
 
-    file { '/bin/vagrant-puppet-runner':
-        ensure => 'present',
-        source => 'puppet:///modules/labsvagrant/vagrant-puppet-runner.bash',
-        mode => 0755,
-        owner => 'root'
+    file { '/bin/labsvagrant':
+        ensure => 'link',
+        target => '/vagrant/lib/mediawiki-vagrant/labsvagrant.rb',
+        mode => '0755',
+        require => File['/vagrant']
     }
 }
