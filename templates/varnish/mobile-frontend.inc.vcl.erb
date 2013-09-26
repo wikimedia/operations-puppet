@@ -133,16 +133,16 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-	# remove X-CS & X-Analytics from beresp if they happen to have it.
-	# We used to incorrectly set them in vcl_fetch(), which means that our
+	# remove X-CS & X-Analytics from resp if they happen to have it.  We
+	# used to incorrectly set them in vcl_fetch(), which means that our
 	# cache is now poisoned with non-varied cached objects that have this
 	# incorrectly set with random carriers. Clean up after ourselves.
-	unset beresp.http.X-CS;
+	unset resp.http.X-CS;
 	if (req.http.X-Analytics) {
 		# FIXME: replace with std.log()
-		set beresp.http.X-Analytics = req.http.X-Analytics;
+		set resp.http.X-Analytics = req.http.X-Analytics;
 	} else {
-		unset beresp.http.X-Analytics;
+		unset resp.http.X-Analytics;
 	}
 
 	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
