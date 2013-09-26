@@ -2920,10 +2920,6 @@ node "iodine.wikimedia.org" {
     include role::otrs
 }
 
-node /(cerium|titanium)\.wikimedia\.org/ {
-    include standard
-}
-
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     $cluster = "parsoid"
     $nagios_group = "${cluster}_$::site"
@@ -2952,12 +2948,6 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
 node /^solr(100)?[1-3]\.(eqiad|pmtpa)\.wmnet/ {
     include standard,
         role::solr::geodata
-}
-
-## 2013-06-12
-## peter using xenon for galera cluster testing
-node "xenon.eqiad.wmnet" {
-    include standard
 }
 
 node "ytterbium.wikimedia.org" {
