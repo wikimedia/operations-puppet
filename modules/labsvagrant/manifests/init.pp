@@ -22,10 +22,17 @@ class labsvagrant {
         require => File['/mnt/vagrant']
     }
 
-    file { '/bin/vagrant-puppet-runner':
+    file { '/vagrant/lib/mediawiki-vagrant/labsgrant.rb':
         ensure => 'present',
-        source => 'puppet:///modules/labsvagrant/vagrant-puppet-runner.bash',
-        mode => 0755,
-        owner => 'root'
+        source => 'puppet:///modules/labsvagrant/labsvagrant.rb',
+        mode => '0755',
+        require => File['/vagrant']
+    }
+
+    file { '/bin/labsvagrant':
+        ensure => 'link',
+        target => '/vagrant/lib/mediawiki-vagrant/labsgrant.rb',
+        mode => '0755',
+        require => File['/vagrant/lib/mediawiki-vagrant/labsgrant.rb']
     }
 }
