@@ -214,17 +214,6 @@ node "antimony.wikimedia.org" {
     sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
-node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
-    interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
-
-    interface::add_ip6_mapped { "main":
-        require => Interface::Aggregate[bond0],
-        interface => "bond0"
-    }
-
-    include standard
-}
-
 node "bast1001.wikimedia.org" {
     system_role { "misc": description => "Bastion Server" }
     $cluster = "misc"
