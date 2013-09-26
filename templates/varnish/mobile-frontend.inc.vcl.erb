@@ -6,8 +6,6 @@ include "zero.inc.vcl";
 
 sub vcl_recv {
 	if (!req.http.X-Forwarded-Proto) {
-		call spoof_clientip;
-
 		/* This call will always set the following req.http values:
 			X-Subdomain = M or ZERO
 			X-DfltLang = en|fr|ru|...
