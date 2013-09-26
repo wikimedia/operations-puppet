@@ -69,7 +69,7 @@ class role::salt::minions {
 
 	if ($realm == "labs") {
 		$salt_master = "virt0.wikimedia.org"
-		$salt_client_id = "${dc}.${domain}"
+		$salt_client_id = "${dc}"
 		$salt_grains = {
 			"instanceproject" => $instanceproject,
 			"realm" => $realm,
