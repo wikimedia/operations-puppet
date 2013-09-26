@@ -113,7 +113,7 @@ class network::constants {
 			'ulsfo' => {
 				'public' => {
 					'public1-ulsfo' => {
-						'ipv4' => "198.35.26.0/27",
+						'ipv4' => "198.35.26.0/28",
 						'ipv6' => "2620:0:863:1::/64"
 					},
 				},
