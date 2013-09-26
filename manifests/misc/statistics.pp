@@ -33,7 +33,7 @@ class misc::statistics::iptables  {
         require "misc::statistics::iptables-drops"
 
         # This exec should always occur last in the requirement chain.
-        iptables_add_exec{ "${hostname}": service => "statistics" }
+        iptables_add_exec{ $hostname: service => "statistics" }
     }
 
     # Labs has security groups, and as such, doesn't need firewall rules
@@ -43,9 +43,9 @@ class misc::statistics::user {
     $username = "stats"
     $homedir  = "/var/lib/$username"
 
-    systemuser { "$username":
-        name   => "$username",
-        home   => "$homedir",
+    systemuser { $username:
+        name   => $username,
+        home   => $homedir,
         groups => "wikidev",
         shell  => "/bin/bash",
     }
@@ -428,7 +428,7 @@ class misc::statistics::sites::metrics {
 
     # clone the E3 Analysis repository
     git::clone { "E3Analysis":
-        directory => "$e3_analysis_path",
+        directory => $e3_analysis_path,
         origin    => "https://gerrit.wikimedia.org/r/p/analytics/user-metrics.git",
         owner     => $metrics_user,
         group     => "wikidev",
@@ -536,7 +536,7 @@ class misc::statistics::gerrit_stats {
     # from git.less.ly.
 
     git::clone { "gerrit-stats":
-        directory => "$gerrit_stats_path",
+        directory => $gerrit_stats_path,
         origin    => $gerrit_stats_repo_url,
         owner     => $gerrit_stats_user,
         require   => [User[$gerrit_stats_user], Class["misc::statistics::packages::python"]],
@@ -544,7 +544,7 @@ class misc::statistics::gerrit_stats {
     }
 
     git::clone { "gerrit-stats/data":
-        directory => "$gerrit_stats_data_path",
+        directory => $gerrit_stats_data_path,
         origin    => $gerrit_stats_data_repo_url,
         owner     => $gerrit_stats_user,
         require   => User[$gerrit_stats_user],
@@ -723,9 +723,9 @@ define misc::statistics::rsync_job($source, $destination) {
     require misc::statistics::user
 
     # ensure that the destination directory exists
-    file { "$destination":
+    file { $destination:
         ensure  => "directory",
-        owner   => "$misc::statistics::user::username",
+        owner   => $misc::statistics::user::username,
         group   => "wikidev",
         mode    => '0775',
     }
@@ -735,7 +735,7 @@ define misc::statistics::rsync_job($source, $destination) {
     # user is installed on the source host.
     cron { "rsync_${name}_logs":
         command => "/usr/bin/rsync -rt $source $destination/",
-        user    => "$misc::statistics::user::username",
+        user    => $misc::statistics::user::username,
         hour    => 8,
         minute  => 0,
     }
