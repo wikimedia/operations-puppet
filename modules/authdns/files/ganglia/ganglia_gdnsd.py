@@ -105,16 +105,19 @@ def fetch_metrics_cached(url=CONF['stats_url']):
     if time.time() - CACHE['time'] < 1 and CACHE['data']:
         return CACHE['data']
 
-    metrics = fetch_metrics(url)
-    # failed, try once more
-    if not metrics:
+    # try three times, as its very error-prone
+    # (yes, this is horrible)
+    metrics = None
+    for _ in range(3):
         metrics = fetch_metrics(url)
+        if metrics:
+            break
 
     if metrics:
         CACHE['time'] = time.time()
         CACHE['data'] = metrics
     else:
-        # failed twice, return cached data up to 15s to avoid dives/spikes
+        # failed, return cached data up to 15s to avoid dives/spikes
         if time.time() - CACHE['time'] <= 15:
             metrics = CACHE['data']
 
