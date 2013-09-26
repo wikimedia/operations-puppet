@@ -756,6 +756,106 @@ host cp3022 {
 	fixed-address cp3022.esams.wikimedia.org;
 }
 
+host cp4001 {
+	hardware ethernet 90:b1:1c:43:32:20;
+	fixed-address cp4001.ulsfo.wmnet;
+}
+
+host cp4002 {
+	hardware ethernet 90:b1:1c:45:48:56;
+	fixed-address cp4002.ulsfo.wmnet;
+}
+
+host cp4003 {
+	hardware ethernet 90:b1:1c:43:1e:37;
+	fixed-address cp4003.ulsfo.wmnet;
+}
+
+host cp4004 {
+	hardware ethernet 90:b1:1c:45:61:f4;
+	fixed-address cp4004.ulsfo.wmnet;
+}
+
+host cp4005 {
+	hardware ethernet 90:b1:1c:42:dc:fc;
+	fixed-address cp4005.ulsfo.wmnet;
+}
+
+host cp4006 {
+	hardware ethernet 90:b1:1c:43:14:c7;
+	fixed-address cp4006.ulsfo.wmnet;
+}
+
+host cp4007 {
+	hardware ethernet 90:b1:1c:45:6d:d5;
+	fixed-address cp4007.ulsfo.wmnet;
+}
+
+host cp4008 {
+	hardware ethernet 90:b1:1c:43:15:63;
+	fixed-address cp4008.ulsfo.wmnet;
+}
+
+host cp4009 {
+	hardware ethernet 90:b1:1c:45:4a:8d;
+	fixed-address cp4009.ulsfo.wmnet;
+}
+
+host cp4010 {
+	hardware ethernet 90:b1:1c:43:15:33;
+	fixed-address cp4010.ulsfo.wmnet;
+}
+
+host cp4011 {
+	hardware ethernet 90:b1:1c:43:35:fc;
+	fixed-address cp4011.ulsfo.wmnet;
+}
+
+host cp4012 {
+	hardware ethernet 90:b1:1c:42:e6:e9;
+	fixed-address cp4012.ulsfo.wmnet;
+}
+
+host cp4013 {
+	hardware ethernet 90:b1:1c:42:fa:f5;
+	fixed-address cp4013.ulsfo.wmnet;
+}
+
+host cp4014 {
+	hardware ethernet 90:b1:1c:42:e6:95;
+	fixed-address cp4014.ulsfo.wmnet;
+}
+
+host cp4015 {
+	hardware ethernet 90:b1:1c:45:4a:4a;
+	fixed-address cp4015.ulsfo.wmnet;
+}
+
+host cp4016 {
+	hardware ethernet 90:b1:1c:45:61:52;
+	fixed-address cp4016.ulsfo.wmnet;
+}
+
+host cp4017 {
+	hardware ethernet 90:b1:1c:43:00:e7;
+	fixed-address cp4017.ulsfo.wmnet;
+}
+
+host cp4018 {
+	hardware ethernet 90:b1:1c:45:4d:59;
+	fixed-address cp4018.ulsfo.wmnet;
+}
+
+host cp4019 {
+	hardware ethernet 90:b1:1c:45:61:2a;
+	fixed-address cp4019.ulsfo.wmnet;
+}
+
+host cp4020 {
+	hardware ethernet 90:b1:1c:43:13:cb;
+	fixed-address cp4020.ulsfo.wmnet;
+}
+
 host dataset2 {
 	hardware ethernet 84:2B:2B:6A:F4:60;
 	fixed-address dataset2.wikimedia.org;
@@ -1525,6 +1625,26 @@ host lvs1005 {
 host lvs1006 {
 	hardware ethernet 18:03:73:f0:8a:77;
 	fixed-address lvs1006.wikimedia.org;
+}
+
+host lvs4001 {
+	hardware ethernet 90:b1:1c:42:f0:9e;
+	fixed-address lvs4001.ulsfo.wmnet;
+}
+
+host lvs4002 {
+	hardware ethernet 90:b1:1c:45:51:ef;
+	fixed-address lvs4002.ulsfo.wmnet;
+}
+
+host lvs4003 {
+	hardware ethernet 90:b1:1c:45:5d:91;
+	fixed-address lvs4003.ulsfo.wmnet;
+}
+
+host lvs4004 {
+	hardware ethernet 90:b1:1c:42:c3:7a;
+	fixed-address lvs4004.ulsfo.wmnet;
 }
 
 host maerlant {
