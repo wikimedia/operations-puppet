@@ -13,6 +13,7 @@
 @monitor_group { "cache_bits_pmtpa": description => "pmtpa bits Varnish" }
 @monitor_group { "cache_bits_eqiad": description => "eqiad bits Varnish "}
 @monitor_group { "cache_bits_esams": description => "esams bits Varnish" }
+@monitor_group { "cache_bits_ulsfo": description => "ulsfo bits Varnish" }
 
 @monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
 @monitor_group { "cache_mobile_esams": description => "esams mobile Varnish" }
@@ -126,6 +127,7 @@ class role::cache {
 					"pmtpa" => ["sq67.wikimedia.org", "sq68.wikimedia.org", "sq69.wikimedia.org", "sq70.wikimedia.org"],
 					"eqiad" => ['cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet'],
 					"esams" => ["cp3019.esams.wikimedia.org", "cp3020.esams.wikimedia.org", "cp3021.esams.wikimedia.org", "cp3022.esams.wikimedia.org"],
+					"ulsfo" => ["cp4001.ulsfo.wmnet", "cp4002.ulsfo.wmnet", "cp4003.ulsfo.wmnet", "cp4004.ulsfo.wmnet"],
 				},
 				"upload" => {
 					"pmtpa-squid" => [
@@ -256,6 +258,7 @@ class role::cache {
 					"knsq6.esams.wikimedia.org",
 					"knsq7.esams.wikimedia.org"
 				],
+				'ulsfo' => [],
 			},
 			"upload" => {
 				"pmtpa" => [
@@ -431,8 +434,8 @@ class role::cache {
 	class varnish::logging::eventlistener {
 		if $::realm == 'production' {
 			$event_listener = $::site ? {
-				/^(pmtpa|eqiad)$/ => '10.64.21.123', # vanadium
-				'esams'           => '208.80.154.73', # gadolinium
+				/^(pmtpa|eqiad|ulsfo)$/ => '10.64.21.123',  # vanadium
+				'esams'                 => '208.80.154.73', # gadolinium
 			}
 
 			varnish::logging { 'kraken' :
