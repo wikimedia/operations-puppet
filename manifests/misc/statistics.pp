@@ -172,17 +172,20 @@ class misc::statistics::wikistats {
     ]:
         ensure => 'installed',
     }
-
-        # generates the new mobile pageviews report
-        # and syncs the file PageViewsPerMonthAll.csv to stat1002
-    cron { 'new mobile pageviews report':
-        command => '/bin/bash /a/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh',
-        user    => 'stats',
-                weekday => 1,
-        hour    => 7,
-        minute  => 20,
+    # this cron uses pigz to unzip squid archive files in parallel
+    package { 'pigz':
+        ensure => 'installed'
     }
 
+    # generates the new mobile pageviews report
+    # and syncs the file PageViewsPerMonthAll.csv to stat1002
+    cron { 'new mobile pageviews report':
+        command  => '/bin/bash /a/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh',
+        user     => 'stats',
+        monthday => 1,
+        hour     => 7,
+        minute   => 20,
+    }
 }
 
 # RT-2163
