@@ -100,6 +100,13 @@ class misc::etherpad_lite {
 		enable => true,
 		ensure => running;
 	}
+
+	# Icinga process monitoring, RT #5790
+	monitor_service { 'etherpad-lite-proc':
+		description => 'etherpad_lite_process_running',
+		check_command => 'nrpe_check_etherpad';
+	}
+
 	#FIXME
 	#service { apache2:
 	#	enable => true,
