@@ -5,7 +5,6 @@ class base::standard-packages {
         'wipe',
         'tzdata',
         'zsh-beta',
-        'jfsutils',
         'xfsprogs',
         'wikimedia-raid-utils',
         'screen',
@@ -25,6 +24,10 @@ class base::standard-packages {
     if $::lsbdistid == "Ubuntu" {
         package { $packages:
             ensure => latest;
+        }
+
+        package { 'jfsutils':
+            ensure => absent,
         }
 
         if $::network_zone == "internal" {
