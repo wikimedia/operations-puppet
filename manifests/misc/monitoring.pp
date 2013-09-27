@@ -258,6 +258,11 @@ class misc::monitoring::view::navigation_timing {
 	ganglia::view { 'Navigation Timing':
 		graphs => [
 			{
+				title        => 'pageSpeed: domInteractive to loadEventEnd',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.pageSpeed.(desktop|mobile)_median$',
+			},
+			{
 				title        => 'DNS: domainLookupStart to domainLookupEnd',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.dnsLookup.(desktop|mobile)_median$',

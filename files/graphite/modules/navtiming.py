@@ -11,9 +11,9 @@ import socket
 import zmq
 
 
-schema_rev = 5336845
+schema_revs = (5336845, 5832704)
 metrics = ('connecting', 'sending', 'waiting', 'redirecting', 'receiving',
-           'rendering', 'loading', 'dnsLookup')
+           'rendering', 'loading', 'dnsLookup', 'pageSpeed')
 
 
 ap = argparse.ArgumentParser(description='NavigationTiming Graphite module')
@@ -35,17 +35,35 @@ addr = args.statsd_host, args.statsd_port
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 for meta in iter(zsock.recv_json, ''):
-    if meta['revision'] != schema_rev:
+
+    if meta['revision'] not in schema_revs:
         continue
-    wiki = meta['wiki']
+
     event = meta['event']
+
+    if meta['revision'] == 5832704:
+        if 'fetchStart' in event:
+            event['sending'] = event['fetchStart']
+        if 'loadEventStart' in event:
+            event['loading'] = event['loadEventStart']
+        if 'responseStart' in event and 'requestStart' in event:
+            event['waiting'] = event['responseStart'] - event['requestStart']
+        if 'connectEnd' in event and 'connectStart' in event:
+            event['connecting'] = event['connectEnd'] - event['connectStart']
+        if 'responseEnd' in event and 'responseStart' in event:
+            event['receiving'] = event['responseEnd'] - event['responseStart']
+        if 'loadEventEnd' in event and 'domInteractive' in event:
+            event['pageSpeed'] = (
+                event['loadEventEnd'] - event['domInteractive'])
+
+    wiki = meta['wiki']
     if not event.get('isAnon'):
         continue
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
 
     for metric in metrics:
-        value = event.get(metric)
+        value = event.get(metric, 0)
         if value > 0 and value < 60000:
             stat = 'browser.%s.%s:%s|ms' % (metric, site, value)
             sock.sendto(stat.encode('utf-8'), addr)
