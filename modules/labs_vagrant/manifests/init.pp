@@ -22,9 +22,9 @@ class labsvagrant {
         require => File['/mnt/vagrant']
     }
 
-    file { '/bin/labsvagrant':
+    file { '/bin/labs-vagrant':
         ensure => 'link',
-        target => '/vagrant/lib/labsvagrant.rb',
+        target => '/vagrant/lib/labs-vagrant.rb',
         mode => '0555',
         require => File['/vagrant']
     }
