@@ -1,0 +1,5 @@
+$: << "<%= @install_dir %>"
+require 'gdash'
+set :run, false
+config = YAML.load_file("/etc/gdash/gdash.yaml")
+run GDash::SinatraApp.new(config[:graphite], config[:templatedir], config[:options])
