@@ -87,30 +87,26 @@ net.core.rmem_default = 536870912
 }
 
 class misc::graphite::gdash {
-	# TODO
-	# gdash fork needs to be moved out of the puppet file repo!
-	# It should then be packaged and installed via this class.
-	# For now this only installs templates to a preconfigured location
-	# that will probably move after the above happens.
-	# This is all kinds of badness.
+    $install_dir = '/srv/deployment/gdash/gdash'
 
     deployment::target { 'gdash': }
 
-	file {
-
-		[ "/a/graphite/webapp", "/a/graphite/webapp/gdash", "/a/graphite/webapp/gdash/templates" ]:
-			owner => "www-data",
-			group => "www-data",
-			mode => 0555,
-			ensure => directory,
-			recurse => true;
-		"/a/graphite/webapp/gdash/templates/dashboards/":
-			owner => "www-data",
-			group => "www-data",
-			mode => 0555,
-			source => "puppet:///files/graphite/gdash-dashboards/",
-			recurse => remote;
-	}
+    class { '::gdash':
+        graphite_host   => 'https://graphite.wikimedia.org',
+        template_source => 'puppet:///files/graphite/gdash-dashboards',
+        install_dir     => $install_dir,
+        options         => {
+          title         => 'wmf stats',
+          prefix        => '',
+          refresh_rate  => 300,
+          graph_columns => 1,
+          graph_width   => 1024,
+          hide_legend   => false,
+          graph_height  => 500,
+          whisper_dir   => '/a/graphite/storage/whisper',
+          deploy_addon  => 'target=alias(color(dashed(drawAsInfinite(deploy.sync-common-file)),"c0c0c080"),"sync-common-file")&target=alias(lineWidth(color(drawAsInfinite(deploy.sync-common-all),"gold"),2),"sync-common-all")&target=alias(lineWidth(color(drawAsInfinite(deploy.scap),"white"),2),"scap deploy")',
+        },
+    }
 }
 
 # == Class: misc::graphite::navtiming
