@@ -416,6 +416,25 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
     include role::cache::bits
 }
 
+#
+# ulsfo varnishes
+#
+
+node /^cp400[1-4]\.ulsfo\.wmnet$/ {
+    # cp4001 and cp4003 are in different racks,
+    # make them each ganglia aggregators.
+    if $::hostname =~ /^cp(4001|4003)$/ {
+        $ganglia_aggregator = true
+    }
+
+    interface::add_ip6_mapped { "main": }
+
+    include role::cache::bits
+}
+
+# TODO: cp4005-cp4020, upload, mobile (and text?).
+
+
 
 node "dataset2.wikimedia.org" {
     $cluster = "misc"
