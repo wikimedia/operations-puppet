@@ -52,7 +52,7 @@ class misc::statistics::user {
 
     # create a .gitconfig file for stats user
     file { "$homedir/.gitconfig":
-        mode    => 0664,
+        mode    => '0664',
         owner   => $username,
         content => "[user]\n\temail = otto@wikimedia.org\n\tname = Statistics User",
     }
@@ -67,7 +67,7 @@ class misc::statistics::base {
         "/a":
             owner => root,
             group => wikidev,
-            mode => 0775,
+            mode => '0775',
             ensure => directory,
             recurse => "false";
     }
@@ -213,7 +213,7 @@ class misc::statistics::webserver {
         ensure  => 'directory',
         owner   => 'root',
         group   => 'wikidev',
-        mode    => 0750,
+        mode    => '0750',
         require => Class['webserver::apache'],
     }
 
@@ -256,7 +256,7 @@ class misc::statistics::sites::stats {
     file { "/etc/apache2/htpasswd.stats":
         owner   => "root",
         group   => "root",
-        mode    => 0644,
+        mode    => '0644',
         source  => "puppet:///private/apache/htpasswd.stats",
     }
 
@@ -277,7 +277,7 @@ class misc::statistics::sites::stats {
         source  => 'puppet:///files/apache/ports.conf.ssl';
     }
 
-  apache_site { statswikimedia: name => 'stats.wikimedia.org' }
+  apache_site { 'statswikimedia': name => 'stats.wikimedia.org' }
 
 }
 
@@ -415,7 +415,7 @@ class misc::statistics::sites::metrics {
         ensure => "directory",
         owner  => $misc::statistics::user::username,
         group  => "wikidev",
-        mode   => 0775,
+        mode   => '0775',
     }
 
     # install a .htpasswd file for E3
@@ -423,7 +423,7 @@ class misc::statistics::sites::metrics {
         content  => $passwords::e3::metrics::htpasswd_content,
         owner    => $metrics_user,
         group    => "wikidev",
-        mode     => 0664,
+        mode     => '0664',
     }
 
     # clone the E3 Analysis repository
@@ -442,7 +442,7 @@ class misc::statistics::sites::metrics {
         content => template("misc/e3-metrics.settings.py.erb"),
         owner   => $metrics_user,
         group   => "root",
-        mode    => 0640,
+        mode    => '0640',
         require => Git::Clone["E3Analysis"],
     }
 
@@ -523,7 +523,7 @@ class misc::statistics::gerrit_stats {
     file { $gerrit_stats_base:
         owner  => $gerrit_stats_user,
         group  => "wikidev",
-        mode   => 0775,
+        mode   => '0775',
         ensure => "directory",
     }
 
@@ -555,7 +555,7 @@ class misc::statistics::gerrit_stats {
     # The gerrit stats script requires this file to
     # connect to gerrit MySQL database.
     file { "$gerrit_stats_user_home/.my.cnf":
-        mode  => 0600,
+        mode  => '0600',
         owner => stats,
         group => stats,
     }
@@ -638,7 +638,7 @@ class misc::statistics::rsync::jobs::webrequest {
         ensure  => directory,
         owner   => "stats",
         group   => "wikidev",
-        mode    => 0775,
+        mode    => '0775',
     }
 
     # wikipedia zero logs from oxygen
@@ -694,7 +694,7 @@ class misc::statistics::rsync::jobs::eventlogging {
         ensure  => directory,
         owner   => "stats",
         group   => "wikidev",
-        mode    => 0775,
+        mode    => '0775',
     }
 
     # eventlogging logs from vanadium
@@ -727,7 +727,7 @@ define misc::statistics::rsync_job($source, $destination) {
         ensure  => "directory",
         owner   => "$misc::statistics::user::username",
         group   => "wikidev",
-        mode    => 0775,
+        mode    => '0775',
     }
 
     # Create a daily cron job to rsync $source to $destination.
@@ -757,7 +757,7 @@ class misc::statistics::cron_blog_pageviews {
     $db_pass         = $passwords::mysql::research::pass
 
     file { $script:
-        mode    => 0755,
+        mode    => '0755',
         content => template('misc/email-blog-pageviews.erb'),
     }
 
@@ -804,14 +804,14 @@ class misc::statistics::limn::mobile_data_sync {
     file { $mysql_credentials:
         owner   => $user,
         group   => $user,
-        mode    => 0600,
+        mode    => '0600',
         content => template("misc/mysql-config-research.erb"),
     }
 
     file { $output:
         owner  => $user,
         group  => wikidev,
-        mode   => 0775,
+        mode   => '0775',
         ensure => directory,
     }
 
