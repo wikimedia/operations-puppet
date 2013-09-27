@@ -2368,7 +2368,12 @@ node "sockpuppet.pmtpa.wmnet" {
         role::deployment::salt_masters::production
 
     class { puppetmaster:
-        allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
+        allow_from => [
+            "*.wikimedia.org",
+            "*.pmtpa.wmnet",
+            "*.eqiad.wmnet",
+            "*.ulsfo.wmnet",
+         ],
         config => {
             'thin_storeconfigs' => true,
             'dbadapter' => "mysql",
@@ -2562,7 +2567,12 @@ node "stafford.pmtpa.wmnet" {
         passwords::puppet::database
 
     class { puppetmaster:
-        allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
+        allow_from => [
+            "*.wikimedia.org",
+            "*.pmtpa.wmnet",
+            "*.eqiad.wmnet",
+            "*.ulsfo.wmnet",
+         ],
         config => {
             'thin_storeconfigs' => true,
             'ca' => "false",
