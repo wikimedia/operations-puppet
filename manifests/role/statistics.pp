@@ -20,7 +20,6 @@ class role::statistics::cruncher inherits role::statistics {
 		misc::statistics::db::mysql,
 		# Aaron Halfaker (halfak) wants MongoDB for his project.
 		misc::statistics::db::mongo,
-		generic::pythonpip,
 		misc::udp2log::udp_filter,
 		# generate gerrit stats from stat1.
 		misc::statistics::gerrit_stats,
@@ -58,7 +57,6 @@ class role::statistics::private inherits role::statistics {
 		misc::statistics::dataset_mount,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
-		generic::pythonpip,
 		misc::udp2log::udp_filter,
 		# rsync logs from logging hosts
 		# wikistats code is run here to
