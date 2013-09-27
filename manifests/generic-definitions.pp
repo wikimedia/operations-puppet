@@ -228,11 +228,6 @@ class generic::apparmor::service {
 	}
 }
 
-# handle locales via puppet
-class generic::packages::locales {
-	package { "locales": ensure => latest; }
-}
-
 class generic::packages::ant18 {
 
   if ($::lsbdistcodename == "lucid") {
@@ -273,7 +268,9 @@ class generic::sysfs::enable-rps {
 # this installs a bunch of international locales, f.e. for "planet" on singer
 class generic::locales::international {
 
-	require generic::packages::locales
+	package { 'locales':
+		ensure => latest;
+	}
 
 	file { "/var/lib/locales/supported.d/local":
 		source => "puppet:///files/locales/local_int",
