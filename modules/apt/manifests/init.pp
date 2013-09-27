@@ -43,6 +43,7 @@ class apt {
 	$enable_proxy = $::site ? {
 		pmtpa   => present,
 		eqiad   => present,
+		ulsfo   => present,
 		default => absent
 	}
 	apt::conf {
