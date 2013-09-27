@@ -312,6 +312,7 @@ class lvs::configuration {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
 				'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => "2620:0:861:ed1a::a", 'bitssvc' => "10.2.2.23" },
 				'esams' => { 'bitslb' => "91.198.174.233", 'bitslb6' => "2620:0:862:ed1a::a", 'bitssvc' => "10.2.3.23" },
+				'ulsfo' => { 'bitslb' => "198.35.26.97",   'bitslb6' => "2620:0:863:ed1a::a", 'bitssvc' => "10.2.4.23" },
 			},
 			'upload' => {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
