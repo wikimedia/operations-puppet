@@ -3,7 +3,7 @@
 ### puppet:///modules/elasticsearch/logrotate
 #####################################################################
 
-/var/log/elasticsearch/* {
+/var/log/elasticsearch/*.log {
     daily
     copytruncate
     missingok
