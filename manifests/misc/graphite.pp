@@ -91,7 +91,7 @@ class misc::graphite::gdash {
 
     class { '::gdash':
         graphite_host   => 'https://graphite.wikimedia.org',
-        template_source => 'puppet:///files/graphite/gdash-dashboards',
+        template_source => 'puppet:///files/graphite/gdash',
         install_dir     => $install_dir,
         options         => {
           title         => 'wmf stats',
