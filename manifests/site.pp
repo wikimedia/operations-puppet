@@ -1887,16 +1887,30 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
     }
-
-    include role::ceph::eqiad::radosgw
-
-    if $::hostname =~ /^ms-fe100[134]$/ {
-        include role::ceph::eqiad::mon
+    if $::hostname == 'ms-fe1001' {
+        include role::swift::eqiad-prod::ganglia_reporter
     }
+
+    class { 'lvs::realserver': realserver_ips => [ '10.2.2.27' ] }
+
+    include role::swift::eqiad-prod::proxy
 }
 
-node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
-    include role::ceph::eqiad::osd
+node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
+    $all_drives = [
+        '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
+        '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
+        '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn'
+    ]
+
+    include role::swift::eqiad-prod::storage
+
+    swift::create_filesystem{ $all_drives: partition_nr => '1' }
+    # these are already partitioned and xfs formatted by the installer
+    swift::label_filesystem{ '/dev/sda3': }
+    swift::label_filesystem{ '/dev/sdb3': }
+    swift::mount_filesystem{ '/dev/sda3': }
+    swift::mount_filesystem{ '/dev/sdb3': }
 }
 
 node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
