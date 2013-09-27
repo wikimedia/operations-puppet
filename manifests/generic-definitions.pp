@@ -305,27 +305,6 @@ define generic::debconf::set($value) {
 	}
 }
 
-# python pip and virtualenv.
-# only use this on development systems.
-# in order to go to production, all dependencies need to come from debian packages, not pip.
-class generic::pythonpip {
-	package { [ "python-pip", "python-dev", "build-essential" ]:
-		ensure => latest;
-	}
-
-	# pip could be in /usr/bin/ or in /usr/local/bin
-	exec { "update_pip":
-			command => "pip install --upgrade pip",
-			path    => ["/usr/bin", "/usr/local/bin"],
-			require => Package["python-pip"];
-		"update_virtualenv":
-			command => "pip install --upgrade virtualenv",
-			path    => ["/usr/bin", "/usr/local/bin"],
-			require => Package["python-pip"];
-	}
-}
-
-
 class generic::wikidev-umask {
 
 	# set umask to 0002 for wikidev users, per RT-804
