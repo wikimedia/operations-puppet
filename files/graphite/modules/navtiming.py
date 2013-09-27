@@ -52,6 +52,8 @@ for meta in iter(zsock.recv_json, ''):
             event['connecting'] = event['connectEnd'] - event['connectStart']
         if 'responseEnd' in event and 'responseStart' in event:
             event['receiving'] = event['responseEnd'] - event['responseStart']
+        if 'loadEventEnd' in event and 'responseEnd' in event:
+            event['rendering'] = event['loadEventEnd'] - event['responseEnd']
         if 'loadEventEnd' in event and 'domInteractive' in event:
             event['pageSpeed'] = (
                 event['loadEventEnd'] - event['domInteractive'])
