@@ -20,7 +20,7 @@ class role::statistics::cruncher inherits role::statistics {
 		misc::statistics::db::mysql,
 		# Aaron Halfaker (halfak) wants MongoDB for his project.
 		misc::statistics::db::mongo,
-		generic::pythonpip,
+		role::statistics::pythonpip,
 		misc::udp2log::udp_filter,
 		# generate gerrit stats from stat1.
 		misc::statistics::gerrit_stats,
@@ -58,7 +58,7 @@ class role::statistics::private inherits role::statistics {
 		misc::statistics::dataset_mount,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
-		generic::pythonpip,
+		role::statistics::pythonpip,
 		misc::udp2log::udp_filter,
 		# rsync logs from logging hosts
 		# wikistats code is run here to
@@ -67,4 +67,25 @@ class role::statistics::private inherits role::statistics {
 		misc::statistics::packages::java,
 		misc::statistics::rsync::jobs::webrequest,
 		misc::statistics::rsync::jobs::eventlogging
+}
+
+
+# python pip and virtualenv.
+# only use this on development systems.
+# in order to go to production, all dependencies need to come from debian packages, not pip.
+class role::statistics::pythonpip {
+	package { [ "python-pip", "python-dev", "build-essential" ]:
+		ensure => latest;
+	}
+
+	# pip could be in /usr/bin/ or in /usr/local/bin
+	exec { "update_pip":
+			command => "pip install --upgrade pip",
+			path    => ["/usr/bin", "/usr/local/bin"],
+			require => Package["python-pip"];
+		"update_virtualenv":
+			command => "pip install --upgrade virtualenv",
+			path    => ["/usr/bin", "/usr/local/bin"],
+			require => Package["python-pip"];
+	}
 }
