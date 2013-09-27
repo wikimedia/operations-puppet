@@ -3012,6 +3012,7 @@ node "zinc.eqiad.wmnet" {
 node "zirconium.wikimedia.org" {
     include standard,
         admins::roots,
+        nrpe,
         role::planet,
         misc::outreach::civicrm, # contacts.wikimedia.org
         misc::etherpad_lite
