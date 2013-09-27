@@ -137,6 +137,7 @@ class toollabs::exec_environ {
       'php5-mcrypt',
       'php5-mysql',
       'php5-redis',
+      'php5-sqlite',
       'php5-xsl',
 
       # tcl packages
