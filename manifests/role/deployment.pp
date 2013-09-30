@@ -168,6 +168,42 @@ class role::deployment::deployment_servers::common {
     deployer_groups => ['wikidev'],
   }
 
+  # TODO: pull clone directories from role::deployment::config
+  git::clone { "parsoid/Parsoid":
+    directory => '/srv/deployment/parsoid/Parsoid',
+    origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Parsoid.git',
+    owner     => 'sartoris',
+    group     => 'wikidev',
+    mode      => 2775,
+    require   => Systemuser['sartoris'],
+  }
+  # parsoid/config currently has no upstream
+  git::clone { "eventlogging/EventLogging":
+    directory => '/srv/deployment/eventlogging/EventLogging',
+    origin    => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging',
+    owner     => 'sartoris',
+    group     => 'wikidev',
+    mode      => 2775,
+    require   => Systemuser['sartoris'],
+  }
+  git::clone { "flourine/flourine":
+    directory => '/srv/deployment/flouride/flouride',
+    origin    => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
+    owner     => 'sartoris',
+    group     => 'wikidev',
+    mode      => 2775,
+    require   => Systemuser['sartoris'],
+  }
+  git::clone { "gdash/gdash":
+    directory => '/srv/deployment/gdash/gdash',
+    origin    => 'https://gerrit.wikimedia.org/r/operations/software/gdash',
+    owner     => 'sartoris',
+    group     => 'wikidev',
+    mode      => 2775,
+    require   => Systemuser['sartoris'],
+  }
+  # test/testrepo has no upstream
+
   deployment::deployment_repo_sync_hook_link { "private": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "common": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "slot0": target => "shared.py" }
