@@ -1,4 +1,4 @@
-class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-deploy.conf", $deployment_restrict_umask="002", $deployment_block_file="/etc/ROLLOUTS_BLOCKED", $deployment_support_email="", $deployment_repo_name_detection="dot-git-parent-dir", $deployment_announce_email="", $deployment_send_mail_on_sync="false", $deployment_send_mail_on_revert="false", $deployment_log_directory="/var/log/git-deploy", $deployment_log_timing_data="false", $deployment_git_deploy_dir="/var/lib/git-deploy", $deployment_per_repo_config={}) {
+class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-deploy.conf", $deployment_ignorefile="/etc/git-deploy/gitignore", $deployment_ignores=['.deploy'], $deployment_restrict_umask="002", $deployment_block_file="/etc/ROLLOUTS_BLOCKED", $deployment_support_email="", $deployment_repo_name_detection="dot-git-parent-dir", $deployment_announce_email="", $deployment_send_mail_on_sync="false", $deployment_send_mail_on_revert="false", $deployment_log_directory="/var/log/git-deploy", $deployment_log_timing_data="false", $deployment_git_deploy_dir="/var/lib/git-deploy", $deployment_per_repo_config={}) {
   if ! defined(Package["git-deploy"]){
     package { "git-deploy":
       ensure => present;
@@ -68,6 +68,11 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-de
       require => [Package["git-core"]];
     "${deployment_conffile}":
       content => template("deployment/git-deploy/git-deploy.conf.erb"),
+      mode => 0444,
+      owner => root,
+      group => root;
+    "${deployment_ignorefile}":
+      content => template("deployment/git-deploy/gitignore.erb"),
       mode => 0444,
       owner => root,
       group => root;
