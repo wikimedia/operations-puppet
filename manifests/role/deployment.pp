@@ -160,7 +160,9 @@ class role::deployment::deployment_servers::common {
   # Can't include this while scap is present on tin:
   # include misc::deployment::scripts
 
-  class { "deployment::deployment_server": }
+  class { "deployment::deployment_server":
+    deployer_groups => ['wikidev'],
+  }
 
   deployment::deployment_repo_sync_hook_link { "private": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "common": target => "shared.py" }
