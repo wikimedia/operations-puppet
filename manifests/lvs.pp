@@ -488,7 +488,7 @@ class lvs::configuration {
 		"text" => {
 			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['text'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -502,7 +502,7 @@ class lvs::configuration {
 		'text-varnish' => {
 			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (Varnish)",
 			'class' => 'high-traffic1',
-			'sites' => [ 'pmtpa', 'eqiad', 'esams' ],
+			'sites' => [ 'pmtpa', 'eqiad', 'esams', 'ulsfo' ],
 			'ip' => $service_ips['text-varnish'][$::site],
 			'bgp' => 'yes',
 			'depool-threshold' => '.5',
@@ -516,7 +516,7 @@ class lvs::configuration {
 		"https" => {
 			'description' => "HTTPS services",
 			'class' => "https",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['https'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
@@ -533,7 +533,7 @@ class lvs::configuration {
 		"ipv6" => {
 			'description' => "IPv6 proto proxies (for Squid port 80)",
 			'class' => "https",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['ipv6'][$::site],
 			'port' => 80,
 			'bgp' => "yes",
@@ -545,7 +545,7 @@ class lvs::configuration {
 		"bits" => {
 			'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['bits'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -559,7 +559,7 @@ class lvs::configuration {
 		"upload" => {
 			'description' => "Images and other media, upload.${::site}.wikimedia.org",
 			'class' => "high-traffic2",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['upload'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -573,7 +573,7 @@ class lvs::configuration {
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
 			'class' => 'high-traffic1',
-			'sites' => [ 'eqiad', 'esams' ],
+			'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
 			'ip' => $service_ips['mobile'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
