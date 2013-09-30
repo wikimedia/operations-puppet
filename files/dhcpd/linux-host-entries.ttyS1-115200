@@ -1106,11 +1106,6 @@ host db1011 {
 	fixed-address db1011.eqiad.wmnet;
 }
 
-host db1014 {
-	hardware ethernet 78:2b:cb:0a:04:12;
-	fixed-address db1014.eqiad.wmnet;
-}
-
 host db1015 {
 	hardware ethernet 78:2b:cb:0a:05:8e;
 	fixed-address db1015.eqiad.wmnet;
@@ -4944,6 +4939,11 @@ host tmh1002 {
 host tola {
 	hardware ethernet 90:B1:1C:00:AE:28;
 	fixed-address tola.pmtpa.wmnet;
+}
+
+host tungsten {
+	hardware ethernet 78:2b:cb:0a:04:12;
+	fixed-address tungsten.eqiad.wmnet;
 }
 
 host vanadium {
