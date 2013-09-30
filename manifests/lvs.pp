@@ -145,18 +145,6 @@ class lvs::configuration {
 					'mediawikilb' => "91.198.174.232",
 					'foundationlb' => "91.198.174.235",
 				},
-				'ulsfo' => {
-					'textsvc'       => "10.2.4.25",
-					'wikipedialb'   => "198.35.26.97",
-					'wiktionarylb'  => "198.35.26.98",
-					'wikiquotelb'   => "198.35.26.99",
-					'wikibookslb'   => "198.35.26.100",
-					'wikisourcelb'  => "198.35.26.101",
-					'wikinewslb'    => "198.35.26.102",
-					'wikiversitylb' => "198.35.26.103",
-					'mediawikilb'   => "198.35.26.104",
-					'foundationlb'  => "198.35.26.105",
-				},
 			},
 			'text-varnish' => {
 				'pmtpa' => {
@@ -175,9 +163,19 @@ class lvs::configuration {
 					'wikivoyagelb' => '91.198.174.238',
 				},
 				'ulsfo' => {
-					'wikimedialb'  => '198.35.26.96',
-					'wikidatalb'   => '198.35.26.114',
-					'wikivoyagelb' => '198.35.26.115',
+				    'textsvc'       => "10.2.4.25",
+					'wikimedialb'   => '198.35.26.96',
+					'wikipedialb'   => "198.35.26.97",
+					'wiktionarylb'  => "198.35.26.98",
+					'wikiquotelb'   => "198.35.26.99",
+					'wikibookslb'   => "198.35.26.100",
+					'wikisourcelb'  => "198.35.26.101",
+					'wikinewslb'    => "198.35.26.102",
+					'wikiversitylb' => "198.35.26.103",
+					'mediawikilb'   => "198.35.26.104",
+					'foundationlb'  => "198.35.26.105",
+					'wikidatalb'    => '198.35.26.114',
+					'wikivoyagelb'  => '198.35.26.115',
 				},
 			},
 			'https' => {
@@ -502,7 +500,7 @@ class lvs::configuration {
 		'text-varnish' => {
 			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (Varnish)",
 			'class' => 'high-traffic1',
-			'sites' => [ 'pmtpa', 'eqiad', 'esams' ],
+			'sites' => [ 'pmtpa', 'eqiad', 'esams', 'ulsfo' ],
 			'ip' => $service_ips['text-varnish'][$::site],
 			'bgp' => 'yes',
 			'depool-threshold' => '.5',
@@ -516,7 +514,7 @@ class lvs::configuration {
 		"https" => {
 			'description' => "HTTPS services",
 			'class' => "https",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['https'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
@@ -533,7 +531,7 @@ class lvs::configuration {
 		"ipv6" => {
 			'description' => "IPv6 proto proxies (for Squid port 80)",
 			'class' => "https",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['ipv6'][$::site],
 			'port' => 80,
 			'bgp' => "yes",
@@ -545,7 +543,7 @@ class lvs::configuration {
 		"bits" => {
 			'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['bits'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -559,7 +557,7 @@ class lvs::configuration {
 		"upload" => {
 			'description' => "Images and other media, upload.${::site}.wikimedia.org",
 			'class' => "high-traffic2",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['upload'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -573,7 +571,7 @@ class lvs::configuration {
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
 			'class' => 'high-traffic1',
-			'sites' => [ 'eqiad', 'esams' ],
+			'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
 			'ip' => $service_ips['mobile'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
