@@ -1,23 +1,22 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/contint/apache/qunit.localhost
+### puppet:///modules/contint/apache/localvhost.erb
 #####################################################################
-# vim: filetype=apache
 
 # We would prefer not having external requests
-Listen 127.0.0.1:9412
-Listen [::1]:9412
+Listen 127.0.0.1:<%= @port %>
+Listen [::1]:<%= @port %>
 
-<VirtualHost *:9412>
+<VirtualHost *:<%= @port %>>
 	ServerName localhost
-	DocumentRoot /srv/localhost/qunit
+	DocumentRoot <%= @docroot %>
 
 	<Directory />
 		Order deny,allow
 		Deny from all
 	</Directory>
 
-	<Directory /srv/localhost/qunit>
+	<Directory <%= @docroot %>>
 		Options +Indexes
 		Options FollowSymLinks
 
@@ -28,6 +27,6 @@ Listen [::1]:9412
 	</Directory>
 
 	LogLevel warn
-	ErrorLog /var/log/apache2/qunit_error.log
-	CustomLog /var/log/apache2/qunit_access.log vhost_combined
+	ErrorLog /var/log/apache2/<%= @log_prefix %>_error.log
+	CustomLog /var/log/apache2/<%= @log_prefix %>_access.log vhost_combined
 </VirtualHost>
