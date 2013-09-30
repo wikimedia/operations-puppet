@@ -1657,6 +1657,79 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     interface::offload { "eth3 gro": interface => "eth3", setting => "gro", value => "off" }
 }
 
+
+# ULSFO lvs servers
+node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
+    $cluster = 'lvs'
+
+    # lvs4001 and lvs4003 are in different racks
+    if $hostname =~ /^lvs400[13]$/ {
+        $ganglia_aggregator = true
+    }
+
+    # Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
+    # So we'll have every LVS server run their own recursor
+    $nameservers_prefix = [ $ipaddress ]
+    include dns::recursor
+
+    include lvs::configuration
+    $sip = $lvs::configuration::lvs_service_ips[$::realm]
+
+    $lvs_balancer_ips = $::hostname ? {
+        /^lvs400[13]$/ => [
+            $sip['text'][$::site],
+            $sip['text-varnish'][$::site],
+            $sip['bits'][$::site],
+            $sip['mobile'][$::site],
+            $sip['ipv6'][$::site],
+            ],
+        /^lvs[24]$/ => [
+            $sip['upload'][$::site],
+            $sip['ipv6'][$::site],
+        ]
+    }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
+
+     include base,
+         ganglia
+
+     class { "lvs::balancer": service_ips => $lvs_balancer_ips }
+
+     # Make sure GRO is off
+     interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+
+
+    include base,
+        ganglia,
+        lvs::balancer::runcommand
+
+    class { "lvs::balancer": service_ips => $lvs_balancer_ips }
+
+    ##### TODO:  Do we need internal IP aliases in ulsfo???
+    #            If so, what should they be?
+    $ips = {
+        'internal' => {
+            'lvs4001' => "10.0.0.11",
+            'lvs4002' => "10.0.0.12",
+            'lvs4003' => "10.0.0.13",
+            'lvs4004' => "10.0.0.14",
+        },
+    }
+
+    interface::add_ip6_mapped { "main": interface => "eth0" }
+
+    # Set up tagged interfaces to all subnets with real servers in them
+    interface::tagged { "eth0.2":
+        base_interface => "eth0",
+        vlan_id => "2",
+        address => $ips["internal"][$hostname],
+        netmask => "255.255.0.0"
+    }
+
+    # Make sure GRO is off
+    interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+}
+
 node "maerlant.esams.wikimedia.org" {
     include standard
 }
