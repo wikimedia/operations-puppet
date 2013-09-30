@@ -1521,7 +1521,8 @@ node /lvs100[1-6]\.wikimedia\.org/ {
             $sip['search_prefix'][$::site],
             $sip['swift'][$::site],
             $sip['parsoid'][$::site],
-            $sip['parsoidcache'][$::site]
+            $sip['parsoidcache'][$::site],
+            $sip['search'][$::site]
             ]
     }
 
@@ -2837,6 +2838,7 @@ node /^testsearch100[1-3]\.eqiad\.wmnet/ {
 
     include standard
     include role::elasticsearch::production
+    class { "lvs::realserver": realserver_ips => [ "10.2.2.30" ] }
 }
 
 node "tin.eqiad.wmnet" {
