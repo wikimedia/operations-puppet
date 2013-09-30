@@ -145,6 +145,18 @@ class lvs::configuration {
 					'mediawikilb' => "91.198.174.232",
 					'foundationlb' => "91.198.174.235",
 				},
+				'ulsfo' => {
+					'textsvc'       => "10.2.4.25",
+					'wikipedialb'   => "198.35.26.97",
+					'wiktionarylb'  => "198.35.26.98",
+					'wikiquotelb'   => "198.35.26.99",
+					'wikibookslb'   => "198.35.26.100",
+					'wikisourcelb'  => "198.35.26.101",
+					'wikinewslb'    => "198.35.26.102",
+					'wikiversitylb' => "198.35.26.103",
+					'mediawikilb'   => "198.35.26.104",
+					'foundationlb'  => "198.35.26.105",
+				},
 			},
 			'text-varnish' => {
 				'pmtpa' => {
@@ -161,6 +173,11 @@ class lvs::configuration {
 					'wikimedialb' => "91.198.174.224",
 					'wikidatalb' => '91.198.174.237',
 					'wikivoyagelb' => '91.198.174.238',
+				},
+				'ulsfo' => {
+					'wikimedialb'  => '198.35.26.96',
+					'wikidatalb'   => '198.35.26.114',
+					'wikivoyagelb' => '198.35.26.115',
 				},
 			},
 			'https' => {
@@ -307,6 +324,23 @@ class lvs::configuration {
 					'wikidatalb6' => "2620:0:862:ed1a::12",
 					'wikivoyagelb6' => "2620:0:862:ed1a::13"
 				},
+				'ulsfo' => {
+					'wikimedialb6'   => "2620:0:863:ed1a::0",
+					'wikipedialb6'   => "2620:0:863:ed1a::1",
+					'wiktionarylb6'  => "2620:0:863:ed1a::2",
+					'wikiquotelb6'   => "2620:0:863:ed1a::3",
+					'wikibookslb6'   => "2620:0:863:ed1a::4",
+					'wikisourcelb6'  => "2620:0:863:ed1a::5",
+					'wikinewslb6'    => "2620:0:863:ed1a::6",
+					'wikiversitylb6' => "2620:0:863:ed1a::7",
+					'mediawikilb6'   => "2620:0:863:ed1a::8",
+					'foundationlb6'  => "2620:0:863:ed1a::9",
+					'bitslb6'        => "2620:0:863:ed1a::a",
+					'uploadlb6'      => "2620:0:863:ed1a::b",
+					'mobilelb6'      => "2620:0:863:ed1a::c",
+					'wikidatalb6'    => "2620:0:863:ed1a::d",
+					'wikivoyagelb6'  => "2620:0:863:ed1a::e",
+				},
 			},
 			'bits' => {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
@@ -318,6 +352,7 @@ class lvs::configuration {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
 				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadlb6' => "2620:0:861:ed1a::b", 'uploadsvc' => "10.2.2.24" },
 				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
+				'ulsfo' => { 'uploadlb' => "198.35.26.107",  'bitslb6'   => "2620:0:863:ed1a::b", 'bitssvc' => "10.2.4.24" },
 			},
 			'payments' => {
 				'pmtpa' => "208.80.152.213",
@@ -366,6 +401,7 @@ class lvs::configuration {
 			'mobile' => {
 				'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"},
 				'esams' => { 'mobilelb' => '91.198.174.236', 'mobilelb6' => '2620:0:862:ed1a::c', 'mobilesvc' => '10.2.3.26'},
+				'ulsfo' => { 'mobilelb' => '198.35.26.108',  'mobilelb6' => '2620:0:863:ed1a::c', 'mobilesvc' => '10.2.4.26'},
 			},
 			'swift' => {
 				'pmtpa' => "10.2.1.27",
