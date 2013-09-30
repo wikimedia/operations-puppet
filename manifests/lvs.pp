@@ -145,18 +145,7 @@ class lvs::configuration {
 					'mediawikilb' => "91.198.174.232",
 					'foundationlb' => "91.198.174.235",
 				},
-				'ulsfo' => {
-					'textsvc'       => "10.2.4.25",
-					'wikipedialb'   => "198.35.26.97",
-					'wiktionarylb'  => "198.35.26.98",
-					'wikiquotelb'   => "198.35.26.99",
-					'wikibookslb'   => "198.35.26.100",
-					'wikisourcelb'  => "198.35.26.101",
-					'wikinewslb'    => "198.35.26.102",
-					'wikiversitylb' => "198.35.26.103",
-					'mediawikilb'   => "198.35.26.104",
-					'foundationlb'  => "198.35.26.105",
-				},
+				'ulsfo' => {},
 			},
 			'text-varnish' => {
 				'pmtpa' => {
@@ -175,9 +164,19 @@ class lvs::configuration {
 					'wikivoyagelb' => '91.198.174.238',
 				},
 				'ulsfo' => {
-					'wikimedialb'  => '198.35.26.96',
-					'wikidatalb'   => '198.35.26.114',
-					'wikivoyagelb' => '198.35.26.115',
+					'textsvc'       => "10.2.4.25",
+					'wikimedialb'   => '198.35.26.96',
+					'wikipedialb'   => "198.35.26.97",
+					'wiktionarylb'  => "198.35.26.98",
+					'wikiquotelb'   => "198.35.26.99",
+					'wikibookslb'   => "198.35.26.100",
+					'wikisourcelb'  => "198.35.26.101",
+					'wikinewslb'    => "198.35.26.102",
+					'wikiversitylb' => "198.35.26.103",
+					'mediawikilb'   => "198.35.26.104",
+					'foundationlb'  => "198.35.26.105",
+					'wikidatalb'    => '198.35.26.114',
+					'wikivoyagelb'  => '198.35.26.115',
 				},
 			},
 			'https' => {
@@ -278,6 +277,7 @@ class lvs::configuration {
 					'wikidatalbsecure6' => "2620:0:862:ed1a::12",
 					'wikivoyagelbsecure6' => "2620:0:862:ed1a::13"
 				},
+				'ulsfo' => {}
 			},
 			'ipv6' => {
 				'pmtpa' => {
@@ -324,23 +324,7 @@ class lvs::configuration {
 					'wikidatalb6' => "2620:0:862:ed1a::12",
 					'wikivoyagelb6' => "2620:0:862:ed1a::13"
 				},
-				'ulsfo' => {
-					'wikimedialb6'   => "2620:0:863:ed1a::0",
-					'wikipedialb6'   => "2620:0:863:ed1a::1",
-					'wiktionarylb6'  => "2620:0:863:ed1a::2",
-					'wikiquotelb6'   => "2620:0:863:ed1a::3",
-					'wikibookslb6'   => "2620:0:863:ed1a::4",
-					'wikisourcelb6'  => "2620:0:863:ed1a::5",
-					'wikinewslb6'    => "2620:0:863:ed1a::6",
-					'wikiversitylb6' => "2620:0:863:ed1a::7",
-					'mediawikilb6'   => "2620:0:863:ed1a::8",
-					'foundationlb6'  => "2620:0:863:ed1a::9",
-					'bitslb6'        => "2620:0:863:ed1a::a",
-					'uploadlb6'      => "2620:0:863:ed1a::b",
-					'mobilelb6'      => "2620:0:863:ed1a::c",
-					'wikidatalb6'    => "2620:0:863:ed1a::d",
-					'wikivoyagelb6'  => "2620:0:863:ed1a::e",
-				},
+				'ulsfo' => {},
 			},
 			'bits' => {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
@@ -502,7 +486,7 @@ class lvs::configuration {
 		'text-varnish' => {
 			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (Varnish)",
 			'class' => 'high-traffic1',
-			'sites' => [ 'pmtpa', 'eqiad', 'esams' ],
+			'sites' => [ 'pmtpa', 'eqiad', 'esams', 'ulsfo' ],
 			'ip' => $service_ips['text-varnish'][$::site],
 			'bgp' => 'yes',
 			'depool-threshold' => '.5',
@@ -545,7 +529,7 @@ class lvs::configuration {
 		"bits" => {
 			'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['bits'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -559,7 +543,7 @@ class lvs::configuration {
 		"upload" => {
 			'description' => "Images and other media, upload.${::site}.wikimedia.org",
 			'class' => "high-traffic2",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
 			'ip' => $service_ips['upload'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -573,7 +557,7 @@ class lvs::configuration {
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
 			'class' => 'high-traffic1',
-			'sites' => [ 'eqiad', 'esams' ],
+			'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
 			'ip' => $service_ips['mobile'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
