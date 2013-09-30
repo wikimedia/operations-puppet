@@ -1680,7 +1680,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
     $lvs_balancer_ips = $::hostname ? {
         /^lvs400[13]$/ => [
-            $sip['text'][$::site],
             $sip['text-varnish'][$::site],
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
