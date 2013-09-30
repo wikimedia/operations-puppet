@@ -76,7 +76,7 @@ class role::zuul::production {
         git_branch       => 'master',
         git_dir          => $role::zuul::configuration::zuul_git_dir,
         push_change_refs => false,
-        statsd_host      => '',
+        statsd_host      => '10.64.0.18',  # tungsten.eqiad.wmnet
     }
 
     class { 'contint::zuul::git-daemon':
