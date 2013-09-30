@@ -1657,6 +1657,48 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     interface::offload { "eth3 gro": interface => "eth3", setting => "gro", value => "off" }
 }
 
+
+# ULSFO lvs servers
+node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
+    $cluster = 'lvs'
+
+    # lvs4001 and lvs4003 are in different racks
+    if $hostname =~ /^lvs400[13]$/ {
+        $ganglia_aggregator = true
+    }
+
+    include base,
+        ganglia
+
+    # Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
+    # So we'll have every LVS server run their own recursor
+    $nameservers_prefix = [ $ipaddress ]
+    include dns::recursor
+
+    include lvs::configuration
+    $sip = $lvs::configuration::lvs_service_ips[$::realm]
+
+    $lvs_balancer_ips = $::hostname ? {
+        /^lvs400[13]$/ => [
+            $sip['text'][$::site],
+            $sip['text-varnish'][$::site],
+            $sip['bits'][$::site],
+            $sip['mobile'][$::site],
+            $sip['ipv6'][$::site],
+            ],
+        /^lvs[24]$/ => [
+            $sip['upload'][$::site],
+            $sip['ipv6'][$::site],
+        ]
+    }
+
+    class { "lvs::balancer": service_ips => $lvs_balancer_ips }
+
+    interface::add_ip6_mapped { "main": interface => "eth0" }
+    # Make sure GRO is off
+    interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+}
+
 node "maerlant.esams.wikimedia.org" {
     include standard
 }
