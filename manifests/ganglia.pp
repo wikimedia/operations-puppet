@@ -341,6 +341,8 @@ class ganglia {
                         "Labs NFS cluster pmtpa" => "labstore3.pmtpa.wmnet labstore4.pmtpa.wmnet",
                         "Text caches eqiad" => "cp1052.eqiad.wmnet cp1053.eqiad.wmnet",
                         'Misc Web caches eqiad' => 'cp1043.eqiad.wmnet cp1044.eqiad.wmnet',
+                        "LVS loadbalancers ulsfo" => "lvs4001.ulsfo.wmnet lvs4003.ulsfo.wmnet",
+                        "Bits caches ulsfo" => 'cp4001.ulsfo.wmnet cp4003.ulsfo.wmnet',
                     }
                     $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
                     $rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
