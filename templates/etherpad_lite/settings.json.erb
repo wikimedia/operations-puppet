@@ -1,4 +1,6 @@
 {
+	"title": "Etherpad",
+	"favicon": "favicon.ico",
 	"ip": "<%= etherpad_ip %>",
 	"port": <%= etherpad_port %>,
 
@@ -11,7 +13,21 @@
 	},
 
 	"defaultPadText": "",
+	"sessionKey" : "",
+	"requireSession" : false,
+	"editOnly" : false,
 	"minify": true,
+	"maxAge" : 21600, // 60 * 60 * 6 = 6 hours
 	"abiword": null,
+	"requireAuthentication": false,
+	"requireAuthorization": false,
+	"socketTransportProtocols" : ["xhr-polling", "jsonp-polling", "htmlfile"],
 	"loglevel": "INFO"
+	"logconfig" :
+		{ "appenders": [
+		    { "type": "console" 
+		    //, "category": "access"// only logs pad access
+		    }
+		  ]
+		}
 }
