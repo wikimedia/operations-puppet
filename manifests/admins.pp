@@ -316,6 +316,27 @@ class accounts {
 		}
 	}
 
+	class bd808 inherits baseaccount {
+		$username = "bd808"
+		$realname = "Bryan Davis"
+		$uid = 652
+		$enabled = true
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+			if $enabled == true and $manage_home {
+				Ssh_authorized_key { require => Unixaccount[$realname]}
+
+				ssh_authorized_key {
+				"bd808+cluster8@wmf-bd808-mbp01.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAB3NzaC1yc2EAAAADAQABAAABAQCdtHX29Vcd5n950X3H11kAbQdmKTCJvOOclRKkaXGofp6UuCzgbbdK4Lfvz3cZ2dH9Kvv6M+Yf2uzh6XN470XxXIP91IzA7lVcaMV0sjOuhZKSvqe0NlA4kN/uytHGcfmBxlYAM+b1RxtveXTle3vVWefo1SkQ4fHteA8U/WWXhQ11HnCGd/ZAuiPTf4Fyfe5HFY6y4ECj7zTBEX6I6m2vDyJB7vsthfsmjWbll5Nr+wpcEp2ILVYdp+N+BUhHLkH4C6pivdxpAZQMSpACPPI7Bs+2Fmr08aVnaYKSFC6eZAFogf2lQ3l1oUVBhJRO4OX++E3TNEHNmJ6FeHD4acFv";
+			}
+		}
+	}
+
 	class brion inherits baseaccount {
 		$username = "brion"
 		$realname = "Brion Vibber"
@@ -3119,6 +3140,7 @@ class admins::mortals {
 	include accounts::anomie
 	include accounts::awight
 	include accounts::awjrichards
+	include accounts::bd808
 	include accounts::bsitu
 	include accounts::cmcmahon
 	include accounts::csteipp
