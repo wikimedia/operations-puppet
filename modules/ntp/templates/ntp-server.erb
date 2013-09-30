@@ -1,4 +1,4 @@
-# Wikimedia ntp <% if ntp_server == true %>server<% else %>client<% end %> configuration
+# Wikimedia ntp <% if @ntp_server == true %>server<% else %>client<% end %> configuration
 
 driftfile /var/lib/ntp/ntp.drift
 
@@ -16,12 +16,12 @@ filegen clockstats file clockstats type day enable
 # Specify servers explicitly for access control, as the "pool" keyword is not
 # yet supported by this version of ntpd
 
-<% servers.each do |val| -%>
+<% @servers.each do |val| -%>
 restrict <%= val %> kod notrap noquery
 server <%= val %>
 
 <% end -%>
-<% peers.each do |val| -%>
+<% @peers.each do |val| -%>
 restrict <%= val %> kod notrap noquery
 peer <%= val %>
 
@@ -39,7 +39,7 @@ peer <%= val %>
 restrict 127.0.0.1
 restrict ::1
 
-<% if ntp_server == true then -%>
+<% if @ntp_server == true then -%>
 # Clients from our own IP ranges are allowed to exchange time
 restrict 10.0.0.0 mask 255.0.0.0 kod notrap nomodify nopeer
 restrict 208.80.152.0 mask 255.255.252.0 kod notrap nomodify nopeer
