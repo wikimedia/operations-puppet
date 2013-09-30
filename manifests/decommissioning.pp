@@ -27,6 +27,7 @@ $decommissioned_servers = [
 'cp1042',
 'cp3001',
 'cp3002',
+'db1014', #renamed and reallocated as tungsten rt5871
 'dysprosium',
 'labstore1002', #added 9/17 to remove from monitoring
 'labstore4', #added 9/17 to remove from monitoring
