@@ -106,7 +106,7 @@ class role::ci::slave {
     }
 
     # .gitconfig file required for rare git write operations
-    git::userconfig { '.gitconfig for jenkins user':
+    git::userconfig { '.gitconfig for jenkins-slave user':
       homedir => '/var/lib/jenkins-slave',
       settings => {
         'user' => {
