@@ -88,7 +88,7 @@ class role::eventlogging {
 
     if $mongo_host == '127.0.0.1' {
         class { 'mongodb':
-            dbpath   => '/srv/mongodb',
+            dbpath   => '/a/mongodb',
             settings => {
                 auth => true,
             },
