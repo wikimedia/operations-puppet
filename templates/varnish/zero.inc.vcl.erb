@@ -43,7 +43,9 @@ sub tag_carrier {
 	set req.http.X-DfltPage = "/wiki/Special:ZeroRatedMobileAccess";
 
 	/* Please keep this list alphabetized by the ACL variable */
-	if (req.http.X-CS2 == "502-13") {
+	if (!req.http.X-CS2 || req.http.X-CS2 == "") {
+		// Unknown IP - skip the rest of X-CS identification
+	} else if (req.http.X-CS2 == "502-13") {
 		if (req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = "502-13";
 		}
@@ -145,17 +147,11 @@ sub tag_carrier {
 		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-CS = "420-01";
 		}
-	} else if (req.http.X-CS2 == "639-02") {
-		set req.http.X-CS = "639-02";
 	} else if (req.http.X-CS2 == "405-25") {
 		if (req.http.X-Subdomain == "ZERO") {
 			/* MCC-MNC not clear from http://en.wikipedia.org/wiki/Mobile_country_code */
 			set req.http.X-CS = "405-25";
 		}
-	} else if (req.http.X-CS2 == "297-01") {
-		set req.http.X-CS = "297-01";
-	} else if (req.http.X-CS2 == "426-04") {
-		set req.http.X-CS = "426-04";
 	} else if (req.http.X-CS2 == "250-99") {
 		set req.http.X-DfltLang = "ru";
 		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
@@ -192,6 +188,9 @@ sub tag_carrier {
 		if (req.http.host ~ "(^(ru|kk|en)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-CS = "401-01";
 		}
+	} else {
+		// Any new carriers are signed up as both m & zero for all languages
+		set req.http.X-CS = req.http.X-CS2;
 	}
 	/* Please keep the above list alphabetized by the ACL variable */
 
