@@ -97,15 +97,11 @@ class contint::website(
     group  => 'jenkins-slave',
   }
 
-  # Apache configuration for a virtual host on localhost
-  file { '/etc/apache2/sites-available/qunit.localhost':
-    mode   => '0444',
-    owner  => 'root',
-    group  => 'root',
-    source => 'puppet:///modules/contint/apache/qunit.localhost',
-  }
-  apache_site { 'qunit localhost':
-    name => 'qunit.localhost'
+  contint::localvhost { 'qunit':
+    port       => 9412,
+    docroot    => '/srv/localhost/qunit',
+    log_prefix => 'qunit',
+    require    => File['/srv/localhost/qunit'],
   }
 
 }
