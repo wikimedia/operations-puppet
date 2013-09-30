@@ -47,10 +47,12 @@ class toollabs::exec_environ {
       'libdatetime-format-strptime-perl',
       'libdbd-mysql-perl',
       'libdbd-sqlite3-perl',
+      'libdbi-perl',
       'libdigest-crc-perl',
       'libdigest-hmac-perl',
       'libhtml-html5-entities-perl',
       'libhtml-parser-perl',
+      'libhttp-message-perl',
       'libimage-exiftool-perl',      # Bug #53868.
       'libio-socket-ssl-perl',
       'libipc-run-perl',
@@ -79,10 +81,12 @@ class toollabs::exec_environ {
       'libthreads-perl',
       'libthreads-shared-perl',
       'libtime-local-perl',
+      'libtimedate-perl',
       'liburi-encode-perl',
       'liburi-perl',
       'libwww-perl',
       'libxml-libxml-perl',
+      'libxml-parser-perl',
       'libxml-simple-perl',
       'libxml-xpathengine-perl',     # For Checkwiki.
 
@@ -151,6 +155,7 @@ class toollabs::exec_environ {
       'csh',                        # common user request
       'dc',
       'fabric',                      # Bug #54135.
+      'git',
       'gnuplot-nox',
       'libav-tools',                 # Bug #53870.
       'libdmtx0a',                   # Bug #53867.
