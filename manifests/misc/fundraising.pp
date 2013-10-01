@@ -354,23 +354,6 @@ class misc::fundraising::jenkins {
 
 	system_role { 'misc::fundraising::jenkins': description => 'fundraising jenkins server' }
 
-	# FIXME: remove and use Jenkins from the WMF repository
-	exec {
-		'jenkins-apt-repo-key':
-			unless => '/bin/grep "deb http://pkg.jenkins-ci.org/debian-stable binary/" /etc/apt/sources.list.d/*',
-			command => '/usr/bin/wget -q -O - http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key | /usr/bin/apt-key add -';
-
-		'jenkins-apt-repo-add':
-			subscribe => Exec['jenkins-apt-repo-key'],
-			refreshonly => true,
-			command => '/bin/echo "deb http://pkg.jenkins-ci.org/debian-stable binary/" > /etc/apt/sources.list.d/jenkins.list';
-
-		'do-an-apt-get-update':
-			subscribe => Exec['jenkins-apt-repo-add'],
-			refreshonly => true,
-			command => '/usr/bin/apt-get update';
-	}
-
 	package { jenkins:
 		ensure => latest;
 	}
