@@ -27,10 +27,6 @@ define contint::localvhost(
         content => template('contint/apache/localvhost.erb'),
     }
 
-    $apache_listens = [
-        { 'ip' => '127.0.0.1', 'port' => $port, 'proto' => 'http', },
-        { 'ip' => '[::1]',     'port' => $port, 'proto' => 'http', },
-    ]
     file { "/etc/apache2/conf.d/listen-localhost-${port}":
         content => template('contint/apache/listen.erb'),
     }

@@ -4,15 +4,6 @@
 ######################################################################
 
 # Ports Apache is listening to in addition to the default ports:
-<%
-# Apache Listen format is:
-# Listen [IP-address:]portnumber [protocol]
-@apache_listens.sort.each do |l|
-	# Tweak ip and proto to match Apache format
-	ip = l.fetch('ip', '')
-	ip += ':' if ip != ''
-	proto = l.fetch('protocol', '')
-	proto = ' ' + proto if proto != ''
--%>
-	Listen <%= ip -%><%= l.fetch('port') -%><%= proto -%>
-<% end -%>
+
+Listen 127.0.0.1:<%= @port %> http
+Listen [::1]:<%= @port %> http
