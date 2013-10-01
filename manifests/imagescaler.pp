@@ -3,7 +3,7 @@
 # Virtual resource for the monitoring server
 @monitor_group { "imagescaler": description => "image scalers" }
 
-## need to move the /a/magick-tmp stuff to /tmp/magick-tmp this will require a mediaiwiki change, it would seem
+## need to move the /a/magick-tmp stuff to /tmp/magick-tmp this will require a mediawiki change, it would seem
 
 class imagescaler::cron {
 	cron { removetmpfiles:
@@ -45,6 +45,7 @@ class imagescaler::packages::fonts {
 	package {
 		[
 			"culmus", # bug 38946
+			"culmus-fancy", # bug 38946
 			"gsfonts",
 			"texlive-fonts-recommended",
 			"ttf-alee",
