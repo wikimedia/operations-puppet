@@ -9,11 +9,12 @@ class exim {
 		package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
 
 		if $install_type == "heavy" {
-			exec { "mkdir /var/spool/exim4/scan":
-				require => Package[exim4-daemon-heavy],
-				path => "/bin:/usr/bin",
-				creates => "/var/spool/exim4/scan"
-			}
+			 file { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
+                                ensure => directory,
+                                owner => Debian-exim,
+                                group => Debian-exim,
+				require => package[exim4-daemon-heavy]
+                        }
 
 			mount { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
 				device => "none",
@@ -22,21 +23,13 @@ class exim {
 				ensure => mounted
 			}
 
-			file { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
-				ensure => directory,
-				owner => Debian-exim,
-				group => Debian-exim
-			}
-
-			# add nagios to the Debian-exim group to allow check_disk tmpfs mounts (puppet still can't manage existing users?! so just Exec)
-			exec { "nagios_to_exim_group":
-				command => "usermod -a -G Debian-exim nagios",
-				path => "/usr/sbin";
-			}
-
-			Exec["mkdir /var/spool/exim4/scan"] -> Mount["/var/spool/exim4/scan"] -> File["/var/spool/exim4/scan"]
-			Package[exim4-daemon-heavy] -> Mount["/var/spool/exim4/db"] -> File["/var/spool/exim4/db"]
-		}
+			user { "nagios":
+                		name   => nagios,
+                		ensure => present,
+                		groups => Debian-exim,
+        		}
+		}		
+	
 
 		file {
 			"/etc/default/exim4":
