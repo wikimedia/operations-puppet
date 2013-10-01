@@ -105,3 +105,51 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         metrics_properties => $metrics_properties,
     }
 }
+
+
+# == Define role::analytics::kafka::udp2log::relay
+# Consumes varnishkafka JSON data from Kafka, transforms it
+# into the original tabular udp2log format, and sends it to
+# a UDP address via netcat.
+#
+# == Parameters:
+# $destination_ip
+# $destination_port
+# $kafka_topic
+# $kafka_group
+#
+define role::analytics::kafka::udp2log::relay(
+    $destination_ip,
+    $destination_port,
+    $kafka_topic,
+    $kafka_group = 'udp2log',
+)
+{
+    require role::analytics::kafka::client
+    require role::analytics::zookeeper::client
+
+    # Need jq for parsing varnishkafka json into tabular udp2log log format
+    package { 'jq': ensure => 'installed' }
+
+    $daemon_name = "kafka-udp2log-${title}-relay"
+
+    $zookeeper_hosts  = $role::analytics::zookeeper::config::hosts_array
+    $zookeeper_chroot = $role::analytics::kafka::config::zookeeper_chroot
+
+    # Create symlink
+    file { "/etc/init.d/${daemon_name}":
+        ensure => 'link',
+        target => '/lib/init/upstart-job';
+    }
+
+    file { "/etc/init/${daemon_name}.conf":
+        content => template('misc/kafka-udp2log-relay.upstart.conf.erb'),
+    }
+
+    service { $daemon_name:
+        ensure    => running,
+        require   => Package['jq'],
+        subscribe => File["/etc/init/${daemon_name}.conf"],
+        provider  => 'upstart',
+    }
+}
