@@ -1,4 +1,4 @@
-# == Class contint::localvhost
+# == Definition contint::localvhost
 #
 # Craft an apache configuration file to listen on localhost:$port (default to
 # port 9412) and point that vhost to $docroot (default to
@@ -14,7 +14,7 @@
 # Creates a vhost listening on 127.0.0.1:9412 having a DocumentRoot at
 # /srv/localhost/qunit.
 #
-class contint::localvhost(
+define contint::localvhost(
     $docroot = "/srv/localhost/${name}",
     $port = 9412,
     $log_prefix = $name,
