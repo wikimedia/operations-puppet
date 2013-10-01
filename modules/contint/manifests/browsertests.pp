@@ -13,17 +13,21 @@ class contint::browsertests(
     package { [
         'ruby-bundler',  # installer for qa/browsertests.git
         'rubygems',      # dependency of ruby-bundler
-        'ruby1.9',       # state of the art ruby
+        'ruby1.9.3',     # state of the art ruby
         'phantomjs',     # headless browser
     ]:
         ensure => present
     }
+
+    # Set up all packages required for MediaWiki (includes Apache)
+    package { 'wikimedia-task-appserver': ensure => present }
 
     # And we need a vhost :-)
     contint::localvhost { 'browsertests':
         port       => 9413,
         docroot    => $docroot,
         log_prefix => 'browsertests',
+        require    => Package['wikimedia-task-appserver'],
     }
 
 }
