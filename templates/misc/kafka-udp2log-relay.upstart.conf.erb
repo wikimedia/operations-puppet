@@ -1,0 +1,23 @@
+# This file is managed by Puppet!
+#
+# <%= @daemon_name %>
+
+description	"Kafka -> udp2log <%= title %> relay"
+
+start on filesystem
+stop on runlevel S
+
+respawn
+respawn limit 10 5
+umask 022
+
+# consume from Kafka, pipe into jq for JSON -> TSV tranform, and then
+# pipe into netcat which sends to a udp2log
+# instance at <%= @destination_ip %>:<%= @destination_port %>
+
+exec /usr/sbin/kafka console-consumer \
+    --topic <%= @kafka_topic %>       \
+    --group <%= @kafka_group %>       \
+    --zookeeper <%= @zookeeper_hosts.sort.join(',') %><%= @zookeeper_chroot if @zookeeper_chroot %> \
+    | /root/jq -r '.hostname + "\t" + (.sequence|tostring) + "\t" + .dt + "\t" + (.time_firstbyte|tostring) + "\t" + .ip + "\t" + .cache_status+"/"+.http_status + "\t" + (.response_size|tostring) + "\t" + .http_method + "\t" + "http://"+.uri_host+.uri_path+.uri_query + "\t" + "-" + "\t" + .content_type + "\t" + .referer + "\t" + .x_forwarded_for + "\t" + .user_agent + "\t" + .accept_language + "\t" + .x_analytics' \
+    | /bin/netcat -nu <%= @destination_ip %> <%= @destination_port %>
