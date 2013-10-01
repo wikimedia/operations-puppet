@@ -13,7 +13,7 @@ class contint::browsertests(
     package { [
         'ruby-bundler',  # installer for qa/browsertests.git
         'rubygems',      # dependency of ruby-bundler
-        'ruby1.9',       # state of the art ruby
+        'ruby1.9.3',     # state of the art ruby
         'phantomjs',     # headless browser
     ]:
         ensure => present
