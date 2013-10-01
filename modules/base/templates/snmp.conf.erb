@@ -4,9 +4,10 @@
 ######################################################################
 mibs :
 <% if has_variable?('::ipaddress_bond0') then %>
-clientaddr <%= scope.lookupvar('::ipaddress_bond0') %>
+clientaddr <%= scope.lookupvar('::ipaddress_bond0') %>:5061
 <% elsif has_variable?('::ipaddress_eth0') then %>
-clientaddr <%= scope.lookupvar('::ipaddress_eth0') %>
+clientaddr <%= scope.lookupvar('::ipaddress_eth0') %>:5061
 <% else %>
-clientaddr <%= scope.lookupvar('::ipaddress') %>
+clientaddr <%= scope.lookupvar('::ipaddress') %>:5061
 <% end %>
+clientaddrUsesPort yes
