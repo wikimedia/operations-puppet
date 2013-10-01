@@ -303,17 +303,6 @@ class generic::wikidev-umask {
 			mode => 0444,
 			source => "puppet:///files/environment/umask-wikidev-profile-d.sh";
 	}
-	# if lucid or earlier /etc/profile would overwrite umask after incl. above
-	# FIXME: remove this once fenari became precise or there is a new deploy host
-	if versioncmp($::lsbdistrelease, "10.04") <= 0 {
-		file {
-				"/etc/profile":
-				ensure => present,
-				owner => root,
-				group => root,
-				source => "puppet:///files/environment/profile-deploy-host";
-		}
-	}
 }
 
 
