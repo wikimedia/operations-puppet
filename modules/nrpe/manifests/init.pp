@@ -46,11 +46,6 @@ class nrpe($allowed_hosts=undef) {
         notify  => Service['nagios-nrpe-server'],
     }
 
-    # TODO: Remove this after the file has been purged everywhere
-    file { '/usr/lib/nagios/plugins/check_dpkg':
-        ensure  => absent,
-    }
-
     file { '/usr/local/lib/nagios/':
         ensure  => directory,
         owner   => 'root',
