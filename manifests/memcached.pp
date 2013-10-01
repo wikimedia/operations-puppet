@@ -33,17 +33,9 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 			ensure => absent;
 		}
 
-		# on lucid, this file comes from the ganglia.pp stuff, which
+		# on lucid, /usr/lib/ganglia/python_modules comes from the ganglia.pp stuff, which
 		# means there's actually a hidden dependency on ganglia.pp for
 		# the memcache class to work.
-		if $::lsbdistcodename == "hardy" {
-			file {
-				"/usr/lib/ganglia/python_modules":
-					owner => root,
-					group => root,
-					mode => 0755,
-					ensure => directory;
-			}
 		}
 		file {
 			"/usr/lib/ganglia/python_modules/memcached.py":
