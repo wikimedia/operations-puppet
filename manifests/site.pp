@@ -1677,10 +1677,10 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
             $sip['text-varnish'][$::site],
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
-            ],
-        /^lvs[24]$/ => [
+        ],
+        /^lvs400[24]$/ => [
             $sip['upload'][$::site],
-        ]
+        ],
     }
 
     class { "lvs::balancer": service_ips => $lvs_balancer_ips }
