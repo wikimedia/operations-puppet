@@ -3,14 +3,16 @@ require 'fileutils'
 
 require 'rspec/core/rake_task'
 
-symlinks = { 'spec/fixtures/modules/nrpe/files' => '../../../../files',
-  'spec/fixtures/modules/nrpe/manifests' => '../../../../manifests',
-  'spec/fixtures/modules/nrpe/templates' => '../../../../templates',
+modulename = File.basename(File.expand_path(File.dirname(__FILE__)))
+
+symlinks = { 'spec/fixtures/modules/%s/files' % modulename => '../../../../files',
+  'spec/fixtures/modules/%s/manifests' % modulename => '../../../../manifests',
+  'spec/fixtures/modules/%s/templates' % modulename => '../../../../templates',
 }
 
 
 task :setup do
-  FileUtils.mkdir_p('spec/fixtures/modules/nrpe')
+  FileUtils.mkdir_p('spec/fixtures/modules/%s' % modulename)
   symlinks.each do |x|
     if !File.exist?(x[0])
       FileUtils.ln_s(x[1], x[0])
@@ -20,7 +22,7 @@ end
 
 task :teardown do
   symlinks.each { |x| FileUtils.rm(x[0], :force => true) }
-  FileUtils.rmdir('spec/fixtures/modules/nrpe')
+  FileUtils.rmdir('spec/fixtures/modules/%s' % modulename)
   FileUtils.rmdir('spec/fixtures/modules')
 end
 
