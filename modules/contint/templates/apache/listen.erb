@@ -6,4 +6,6 @@
 # Ports Apache is listening to in addition to the default ports:
 
 Listen 127.0.0.1:<%= @port %> http
+<% if @has_ipv6 -%>
 Listen [::1]:<%= @port %> http
+<% end -%>

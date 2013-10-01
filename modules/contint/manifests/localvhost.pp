@@ -27,6 +27,14 @@ define contint::localvhost(
         content => template('contint/apache/localvhost.erb'),
     }
 
+    # Asking Apache to listen on [:1] without IPv6 ends up causing
+    # an error preventing Apache from starting up.
+    $has_ipv6 = $::realm ? {
+        'labs'       => false,
+        'production' => true,
+        default      => true,
+    }
+
     file { "/etc/apache2/conf.d/listen-localhost-${port}":
         content => template('contint/apache/listen.erb'),
     }
