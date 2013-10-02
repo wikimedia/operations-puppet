@@ -20,7 +20,11 @@ class contint::browsertests(
     }
 
     # Set up all packages required for MediaWiki (includes Apache)
-    package { 'wikimedia-task-appserver': ensure => present }
+    package { [
+        'wikimedia-task-appserver',
+        'php5-sqlite',  # MediaWiki DB backend
+        ]: ensure => present
+    }
 
     # And we need a vhost :-)
     contint::localvhost { 'browsertests':
