@@ -4,6 +4,14 @@ class labs_vagrant {
         managehome => true
     }
 
+    file { '/etc/sudoers.d/vagrant':
+        source => 'puppet:///modules/labs_vagrant/vagrant-sudoers',
+        ownder => 'root',
+        group => 'root',
+        mode => '0440',
+        require => User['vagrant']
+    }
+
     git::clone { 'vagrant':
         directory => '/mnt/vagrant/',
         origin => 'https://gerrit.wikimedia.org/r/mediawiki/vagrant'
