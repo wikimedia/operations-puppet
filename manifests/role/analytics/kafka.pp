@@ -15,6 +15,8 @@
 #   include role::analytics::kafka::server
 #
 class role::analytics::kafka::config {
+    require role::analytics::zookeeper::config
+
     # This allows labs to set the $::kafka_cluster global,
     # which will conditionally select labs hosts to include
     # in a Kafka cluster.  This allows us to test cross datacenter
@@ -36,7 +38,7 @@ class role::analytics::kafka::config {
             },
         }
         # labs only uses a single log_dir
-        $log_dir = ['/var/spool/kafka']
+        $log_dirs = ['/var/spool/kafka']
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host = 'aggregator1.pmtpa.wmflabs'
         $ganglia_port = 50090
@@ -55,7 +57,7 @@ class role::analytics::kafka::config {
         }
 
         # production Kafka uses a bunch of JBOD log_dir mounts.
-        $log_dir = [
+        $log_dirs = [
             '/var/spool/kafka/c/data',
             '/var/spool/kafka/d/data',
             '/var/spool/kafka/e/data',
@@ -72,8 +74,10 @@ class role::analytics::kafka::config {
         $ganglia_port = 8649
     }
 
-    $hosts = $cluster[$kafka_cluster_name]
+    $brokers          = $cluster[$kafka_cluster_name]
+    $zookeeper_hosts  = $role::analytics::zookeeper::config::hosts_array
     $zookeeper_chroot = "/kafka/${kafka_cluster_name}"
+    $zookeeper_url    = inline_template("<%= zookeeper_hosts.sort.join(',') %><%= zookeeper_chroot %>")
 
     $metrics_properties = {
         'kafka.metrics.reporters'                => 'com.criteo.kafka.KafkaGangliaMetricsReporter',
@@ -88,12 +92,16 @@ class role::analytics::kafka::config {
 # == Class role::analytics::kafka::client
 #
 class role::analytics::kafka::client inherits role::analytics::kafka::config {
-    require role::analytics::zookeeper::config
+    # include kafka package
+    include kafka
 
-    class { '::kafka':
-        hosts            => $hosts,
-        zookeeper_hosts  => $role::analytics::zookeeper::config::hosts_array,
-        zookeeper_chroot => $zookeeper_chroot,
+    # Let's go ahead and export a ZOOKEEPER_URL user environment variable.
+    # This makes it much more convenient to run kafka commands without having
+    # to specify the --zookeeper flag every time.
+    file { '/etc/profile.d/kafka.sh':
+        owner   => 'root',
+        mode    => '0444',
+        content => inline_template("# NOTE:  This file is managed by Puppet\nexport ZOOKEEPER_URL='$zookeeper_url'\n"),
     }
 }
 
@@ -101,7 +109,10 @@ class role::analytics::kafka::client inherits role::analytics::kafka::config {
 #
 class role::analytics::kafka::server inherits role::analytics::kafka::client {
     class { '::kafka::server':
-        log_dir            => $log_dir,
-        metrics_properties => $metrics_properties,
+        log_dirs            => $log_dirs,
+        brokers             => $brokers,
+        zookeeper_hosts     => $zookeeper_hosts,
+        zookeeper_chroot    => $zookeeper_chroot,
+        metrics_properties  => $metrics_properties,
     }
 }
