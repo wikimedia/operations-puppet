@@ -92,6 +92,7 @@ class role::ci::slave {
     system_role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages,
+        contint::slave-scripts,
         role::gerrit::production::replicationdest
 
     class { 'jenkins::slave':
@@ -164,7 +165,8 @@ class role::ci::slave::browsertests {
     fail( 'role::ci::slave::browsertests must only be applied in labs' )
   }
 
-  include role::ci::slave::labs::common
+  include role::ci::slave::labs::common,
+      contint::slave-scripts
 
   # We are in labs context, so use /mnt (== /dev/vdb)
   # Never EVER think about using GlusterFS.
