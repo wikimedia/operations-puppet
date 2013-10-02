@@ -1,6 +1,7 @@
 class labs_vagrant {
     user { 'vagrant':
-        ensure => 'present'
+        ensure => 'present',
+        managehome => true
     }
 
     git::clone { 'vagrant':
