@@ -223,7 +223,7 @@ node "bast1001.wikimedia.org" {
         admins::roots,
         admins::mortals,
         admins::restricted,
-        misc::bastionhost,
+        bastionhost,
         nrpe,
         nfs::netapp::home::othersite,
         misc::dsh
@@ -926,7 +926,7 @@ node "fenari.wikimedia.org" {
         admins::roots,
         admins::mortals,
         admins::restricted,
-        misc::bastionhost,
+        bastionhost,
         misc::noc-wikimedia,
         nrpe,
         drac,
