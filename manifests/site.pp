@@ -9,7 +9,6 @@ import "backups.pp"
 import "certs.pp"
 import "decommissioning.pp"
 import "dns.pp"
-import "drac.pp"
 import "facilities.pp"
 import "ganglia.pp"
 import "gerrit.pp"
@@ -930,7 +929,7 @@ node "fenari.wikimedia.org" {
         misc::bastionhost,
         misc::noc-wikimedia,
         nrpe,
-        drac::management,
+        drac,
         squid::cachemgr,
         accounts::awjrichards,
         accounts::erosen,
