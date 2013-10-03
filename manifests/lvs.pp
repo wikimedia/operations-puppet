@@ -372,10 +372,6 @@ class lvs::configuration {
 				'pmtpa' => "10.2.1.14",
 				'eqiad' => "10.2.2.14",
 			},
-			'search_pool5' => {
-				'pmtpa' => "10.2.1.16",
-				'eqiad' => "10.2.2.16",
-			},
 			'search_prefix' => {
 				'pmtpa' => "10.2.1.15",
 				'eqiad' => "10.2.2.15",
