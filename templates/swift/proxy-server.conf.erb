@@ -1,8 +1,6 @@
 # This file is managed by Puppet!
 
 [DEFAULT]
-#cert_file = /etc/ssl/certs/swift.pem
-#key_file = /etc/ssl/private/swift.key
 bind_port = <%= scope.lookupvar("swift::proxy::config::bind_port") %>
 workers = <%= scope.lookupvar("swift::proxy::config::num_workers") %>
 user = swift
@@ -15,21 +13,32 @@ user = swift
 #log_statsd_metric_prefix =
 
 [pipeline:main]
+<% if scope.lookupvar("swift::proxy::config::auth_backend") == 'swauth' -%>
 pipeline = rewrite healthcheck cache swauth cors proxy-logging proxy-server
+<% elsif scope.lookupvar("swift::proxy::config::auth_backend") == 'tempauth' -%>
+pipeline = rewrite healthcheck cache tempauth cors proxy-logging proxy-server
+<% end -%>
 
 [app:proxy-server]
 use = egg:swift#proxy
+<% if scope.lookupvar("swift::proxy::config::auth_backend") == 'swauth' -%>
 allow_account_management = true
+<% elsif scope.lookupvar("swift::proxy::config::auth_backend") == 'tempauth' -%>
+account_autocreate = true
+<% end -%>
 
-#[filter:tempauth]
-#use = egg:swift#tempauth
-#user_system_root = testpass .admin http://copper.wikimedia.org:8080/v1/AUTH_system
-
+<% if scope.lookupvar("swift::proxy::config::auth_backend") == 'swauth' -%>
 [filter:swauth]
 use = egg:swauth#swauth
 default_swift_cluster = local#<%= scope.lookupvar("swift::proxy::config::proxy_address") %>/v1
 set log_name = swauth
 super_admin_key = <%= scope.lookupvar("swift::proxy::config::super_admin_key") %>
+<% elsif scope.lookupvar("swift::proxy::config::auth_backend") == 'tempauth' -%>
+[filter:tempauth]
+use = egg:swift#tempauth
+user_admin_admin = <%= scope.lookupvar("swift::proxy::config::super_admin_key") %> .admin .reseller_admin <%= scope.lookupvar("swift::proxy::config::proxy_address") %>/v1/AUTH_admin
+user_mw_media = <%= scope.lookupvar("swift::proxy::config::rewrite_password") %> .admin <%= scope.lookupvar("swift::proxy::config::proxy_address") %>/v1/AUTH_mw
+<% end -%>
 
 [filter:healthcheck]
 use = egg:swift#healthcheck

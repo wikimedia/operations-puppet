@@ -1,3 +1,4 @@
+# vim: noet
 # swift.pp
 
 # $hash_path_suffix is a unique string per cluster used to hash partitions
@@ -203,8 +204,10 @@ class swift::proxy::config(
 	$proxy_address,
 	$memcached_servers,
 	$num_workers,
+	$auth_backend,
 	$super_admin_key,
 	$rewrite_account,
+	$rewrite_password,
 	$rewrite_thumb_server,
 	$shard_container_list,
 	$backend_url_format ) {
