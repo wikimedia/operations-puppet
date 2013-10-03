@@ -87,15 +87,12 @@ sub vcl_recv {
 
 	set req.hash_ignore_busy = true;
 
-/*
 	if (req.http.X-CS == "-TEST") {
 		set req.http.X-FORCE-ESI = "1";
 	}
 	else {
 		unset req.http.X-FORCE-ESI;
 	}
-*/
-	unset req.http.X-FORCE-ESI;
 
 	/* Default (now modified) Varnish vcl_recv function */
 	if (req.request != "GET" && req.request != "HEAD") {
