@@ -14,7 +14,7 @@ bgp-nexthop-ipv6 = <%= global_options['bgp-nexthop-ipv6'] %>
 #
 
 <% lvs_services.sort.each do |servicename, service| -%>
-<% if lvs_class_hosts[service['class']].include?(scope.lookupvar("::hostname")) and service['sites'].include?(site) then -%>
+<% if service['sites'].include?(site) and lvs_class_hosts[service['class']].include?(scope.lookupvar("::hostname")) then -%>
 <% if service['ip'].class.eql?(String) then
 service['ip'] = { servicename => service['ip'] }
 end -%>
