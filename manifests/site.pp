@@ -1951,19 +1951,19 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 
 node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
     $all_drives = [
-        '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
-        '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
-        '/dev/sdk', '/dev/sdl', '/dev/sdm', '/dev/sdn'
+        '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
+        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
+        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
     ]
 
     include role::swift::eqiad-prod::storage
 
     swift::create_filesystem{ $all_drives: partition_nr => '1' }
     # these are already partitioned and xfs formatted by the installer
-    swift::label_filesystem{ '/dev/sda3': }
-    swift::label_filesystem{ '/dev/sdb3': }
-    swift::mount_filesystem{ '/dev/sda3': }
-    swift::mount_filesystem{ '/dev/sdb3': }
+    swift::label_filesystem{ '/dev/sdm3': }
+    swift::label_filesystem{ '/dev/sdn3': }
+    swift::mount_filesystem{ '/dev/sdm3': }
+    swift::mount_filesystem{ '/dev/sdn3': }
 }
 
 node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
