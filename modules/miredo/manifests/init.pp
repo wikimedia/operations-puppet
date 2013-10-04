@@ -9,7 +9,7 @@ class miredo {
         group     => root,
         mode      => '0444',
         require   => Package['miredo'],
-        source    => 'puppet:///modules/miredo/files/miredo.conf',
+        source    => 'puppet:///modules/miredo/miredo.conf',
     }
 
     service { 'miredo':
