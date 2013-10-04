@@ -119,8 +119,10 @@ def checkAdaptec():
         os.chdir(oldDir)
         return 1
 
-    defunctRegex = re.compile('^\s*Defunct disk drive count\s*:\s*(\d+)')
-    logicalRegex = re.compile('^\s*Logical devices/Failed/Degraded\s*:\s*(\d+)/(\d+)/(\d+)')
+    dfre = '^\s*Defunct disk drive count\s*:\s*(\d+)'
+    ldre = '^\s*Logical devices/Failed/Degraded\s*:\s*(\d+)/(\d+)/(\d+)'
+    defunctRegex = re.compile(dfre)
+    logicalRegex = re.compile(ldre)
     status = 0
     numLogical = None
     for line in proc.stdout:
@@ -276,10 +278,11 @@ def checkMegaSas():
         return 0
 
     if failedLD > 0:
-        print 'CRITICAL: %d failed logical drive(s) (%s)' % (failedLD, ", ".join(states))
+        print 'CRITICAL: %d failed logical drive(s) (%s)' % (failedLD,
+                                                             ", ".join(states))
         return 2
 
-    print 'OK: State is Optimal, checked %d logical drive(s), %d physical drive(s)' % (numLD, numPD)
+    print 'OK: Optimal, %d logical, %d physical drive(s)' % (numLD, numPD)
     return 0
 
 
@@ -335,7 +338,7 @@ def checkSoftwareRaid():
         return 1
 
     deviceRegex = re.compile('^(/[^ ]*):$')
-    statRegex = re.compile('^ *(Active|Working|Failed|Spare) Devices *: *(\d+)')
+    statre = re.compile('^ *(Active|Working|Failed|Spare) Devices *: *(\d+)')
     currentDevice = None
     stats = {
         'Active': 0,
@@ -352,7 +355,7 @@ def checkSoftwareRaid():
             currentDevice = m.group(1)
             continue
 
-        m = statRegex.match(line)
+        m = statre.match(line)
         if m is None:
             continue
 
