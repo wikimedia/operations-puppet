@@ -110,16 +110,9 @@ def checkAdaptec():
     os.chdir('/var/log')
     devNull = open('/dev/null', 'w')
 
-    # Check if we need to run arcconf using sudo
-    try:
-        os.stat('/etc/sudoers.d/nrpe')
-        cmd = ['sudo']
-    except:
-        cmd = []
-
     # Run the command
     try:
-        proc = subprocess.Popen(cmd + ['/usr/bin/arcconf', 'getconfig', '1'],
+        proc = subprocess.Popen(['/usr/sbin/arcconf', 'getconfig', '1'],
                                 stdout=subprocess.PIPE, stderr=devNull)
     except:
         print 'WARNING: Unable to execute arcconf'

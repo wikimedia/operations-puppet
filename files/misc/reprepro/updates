@@ -36,4 +36,4 @@ GetInRelease: no
 Suite: precise
 Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
-ListShellHook: grep-dctrl -X -S megacli || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -X -S megacli -o -X -P arcconf || [ $? -eq 1 ]

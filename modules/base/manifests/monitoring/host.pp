@@ -21,7 +21,7 @@ class base::monitoring::host($contact_group = 'admins') {
     monitor_service { 'ssh': description => 'SSH', check_command => 'check_ssh', contact_group => $contact_group }
 
     if $::network_zone == 'internal' {
-        package { 'megacli':
+        package { [ 'megacli', 'arcconf' ]:
             ensure => 'latest',
         }
 
@@ -45,12 +45,7 @@ class base::monitoring::host($contact_group = 'admins') {
                 owner   => root,
                 group   => root,
                 mode    => '0440',
-                content => "
-nagios  ALL = (root) NOPASSWD: /usr/local/bin/check-raid.py
-icinga  ALL = (root) NOPASSWD: /usr/local/bin/check-raid.py
-nagios  ALL = (root) NOPASSWD: /usr/bin/arcconf getconfig 1
-icinga  ALL = (root) NOPASSWD: /usr/bin/arcconf getconfig 1
-";
+                content => "nagios  ALL = (root) NOPASSWD: /usr/local/bin/check-raid.py\n",
             }
         }
     }
