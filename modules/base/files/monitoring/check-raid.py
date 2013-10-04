@@ -235,23 +235,34 @@ def checkMegaSas():
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
     drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
     configuredRegex = re.compile('^Adapter \d+: No Virtual Drive Configured')
-    state = None
-    numDrives = None
-    configured = True
+    numPD = numLD = failedLD = 0
+    states = []
+    lines = 0
+    match = False
+
     for line in proc.stdout:
+        if len(line.strip()) and not line.startswith('Exit Code'):
+            lines += 1
+
         m = stateRegex.match(line)
         if m is not None:
+            match = True
+            numLD += 1
             state = m.group(1)
+            if state != 'Optimal':
+                failedLD += 1
+                states.append(state)
             continue
 
         m = drivesRegex.match(line)
         if m is not None:
-            numDrives = int(m.group(2))
+            match = True
+            numPD += int(m.group(2))
             continue
 
-        c = configuredRegex.match(line)
-        if c is not None:
-            configured = False
+        m = configuredRegex.match(line)
+        if m is not None:
+            match = True
             continue
 
     ret = proc.wait()
@@ -259,19 +270,19 @@ def checkMegaSas():
         print 'WARNING: MegaCli64 returned exit status %d' % (ret)
         return 1
 
-    if numDrives is None:
-        if configured:
-            print 'WARNING: Parse error processing MegaCli64 output'
-            return 1
-        else:
-            print 'OK: No disks configured for RAID'
-            return 0
+    if not match and lines > 0:
+        print 'WARNING: Parse error processing MegaCli64 output'
+        return 1
 
-    if state != 'Optimal':
-        print 'CRITICAL: %s' % (state)
+    if numLD == 0:
+        print 'OK: No disks configured for RAID'
+        return 0
+
+    if failedLD > 0:
+        print 'CRITICAL: %d failed logical drive(s) (%s)' % (failedLD, ", ".join(states))
         return 2
 
-    print 'OK: State is %s, checked %d logical device(s)' % (state, numDrives)
+    print 'OK: State is Optimal, checked %d logical drive(s), %d physical drive(s)' % (numLD, numPD)
     return 0
 
 
