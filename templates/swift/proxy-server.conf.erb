@@ -1,8 +1,8 @@
 # This file is managed by Puppet!
 
 [DEFAULT]
-bind_port = <%= scope.lookupvar("swift::proxy::config::bind_port") %>
-workers = <%= scope.lookupvar("swift::proxy::config::num_workers") %>
+bind_port = <%= @bind_port %>
+workers = <%= @num_workers %>
 user = swift
 # You can enable default statsD logging here and/or override it in sections
 # below:
@@ -13,33 +13,33 @@ user = swift
 #log_statsd_metric_prefix =
 
 [pipeline:main]
-<% if scope.lookupvar("swift::proxy::config::auth_backend") == 'swauth' -%>
+<% if @auth_backend == 'swauth' -%>
 pipeline = rewrite healthcheck cache swauth cors proxy-logging proxy-server
-<% elsif scope.lookupvar("swift::proxy::config::auth_backend") == 'tempauth' -%>
+<% elsif @auth_backend == 'tempauth' -%>
 pipeline = rewrite healthcheck cache tempauth cors proxy-logging proxy-server
 <% end -%>
 
 [app:proxy-server]
 use = egg:swift#proxy
-<% if scope.lookupvar("swift::proxy::config::auth_backend") == 'swauth' -%>
+<% if @auth_backend == 'swauth' -%>
 allow_account_management = true
-<% elsif scope.lookupvar("swift::proxy::config::auth_backend") == 'tempauth' -%>
+<% elsif @auth_backend == 'tempauth' -%>
 account_autocreate = true
 <% end -%>
 
-<% if scope.lookupvar("swift::proxy::config::auth_backend") == 'swauth' -%>
+<% if @auth_backend == 'swauth' -%>
 [filter:swauth]
 use = egg:swauth#swauth
 token_life = 604800
-default_swift_cluster = local#<%= scope.lookupvar("swift::proxy::config::proxy_address") %>/v1
+default_swift_cluster = local#<%= @proxy_address %>/v1
 set log_name = swauth
-super_admin_key = <%= scope.lookupvar("swift::proxy::config::super_admin_key") %>
-<% elsif scope.lookupvar("swift::proxy::config::auth_backend") == 'tempauth' -%>
+super_admin_key = <%= @super_admin_key %>
+<% elsif @auth_backend == 'tempauth' -%>
 [filter:tempauth]
 use = egg:swift#tempauth
 token_life = 604800
-user_admin_admin = <%= scope.lookupvar("swift::proxy::config::super_admin_key") %> .admin .reseller_admin <%= scope.lookupvar("swift::proxy::config::proxy_address") %>/v1/AUTH_admin
-user_mw_media = <%= scope.lookupvar("swift::proxy::config::rewrite_password") %> .admin <%= scope.lookupvar("swift::proxy::config::proxy_address") %>/v1/AUTH_mw
+user_admin_admin = <%= @super_admin_key" %> .admin .reseller_admin <%= @proxy_address %>/v1/AUTH_admin
+user_mw_media = <%= @rewrite_password" %> .admin <%= @proxy_address %>/v1/AUTH_mw
 <% end -%>
 
 [filter:healthcheck]
@@ -47,7 +47,7 @@ use = egg:swift#healthcheck
 
 [filter:cache]
 use = egg:swift#memcache
-memcache_servers = <%= scope.lookupvar("swift::proxy::config::memcached_servers").join(",") %>
+memcache_servers = <%= @memcached_servers.join(",") %>
 memcache_serialization_support = 2
 
 [filter:cors]
@@ -59,18 +59,18 @@ use = egg:swift#proxy_logging
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.
 # the account remains valid forever, but the token times out.
-account = <%= scope.lookupvar("swift::proxy::config::rewrite_account") %>
+account = <%= @rewrite_account %>
 # the name of the scaler cluster.
-thumbhost = <%= scope.lookupvar("swift::proxy::config::rewrite_thumb_server") %>
+thumbhost = <%= @rewrite_thumb_server %>
 # upload doesn"t like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
 user_agent = Mozilla/5.0
 # this list is the containers that should be sharded
-shard_container_list = <%= scope.lookupvar("swift::proxy::config::shard_container_list") %>
+shard_container_list = <%= @shard_container_list %>
 # backend_url_format controls whether we pass the URL through to the thumbhost unmolested
 # or mangle it to be consumed by mediawiki.  ms5 takes URLs unmolested, mediawiki wants them
 # transformed to something more palatable (specifically, turning http://upload/proj/lang/ into http://lang.proj/
 # valid options are 'asis' (leave it alone) and 'sitelang' (change upload to lang.site.org)
-backend_url_format = <%= scope.lookupvar("swift::proxy::config::backend_url_format") %>
+backend_url_format = <%= @backend_url_format %>
 
 
 
