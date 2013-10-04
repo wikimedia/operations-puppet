@@ -26,8 +26,6 @@ $decommissioned_servers = [
 'cp3001',
 'cp3002',
 'dysprosium',
-'labstore1002', #added 9/17 to remove from monitoring
-'labstore4', #added 9/17 to remove from monitoring
 'mc2',
 'mc3',
 'mc4',
