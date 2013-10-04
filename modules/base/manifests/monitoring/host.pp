@@ -33,20 +33,27 @@ class base::monitoring::host($contact_group = 'admins') {
             source => 'puppet:///modules/base/monitoring/check-raid.py';
         }
 
-        sudo_user { [ 'nagios', 'icinga' ]: privileges => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'] }
-        nrpe::monitor_service { 'raid' : description => 'RAID', nrpe_command  => 'sudo /usr/local/bin/check-raid.py' }
-        nrpe::monitor_service { 'disk_space' : description => 'Disk space', nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e' }
-        nrpe::monitor_service { 'dpkg' : description => 'DPKG', nrpe_command  => '/usr/local/lib/nagios/plugins/check_dpkg' }
+        # FIXME: this used to be redundant sudo for check-raid
+        # they can be removed when they're deployed across the fleet
+        file { [ '/etc/sudoers.d/nrpe', '/etc/sudoers.d/icinga' ]:
+            ensure => absent,
+        }
 
-        ## this is only needed for the raid checks.
-        ## should be able to move into sudo_user def above once puppet is caught up
-        if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '10.04') >= 0 {
-            file { '/etc/sudoers.d/nrpe':
-                owner   => root,
-                group   => root,
-                mode    => '0440',
-                content => "nagios  ALL = (root) NOPASSWD: /usr/local/bin/check-raid.py\n",
-            }
+        sudo_user { 'nagios':
+            privileges   => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'],
+        }
+        nrpe::monitor_service { 'raid':
+            description  => 'RAID',
+            nrpe_command => '/usr/bin/sudo /usr/local/bin/check-raid.py',
+        }
+
+        nrpe::monitor_service { 'disk_space':
+            description  => 'Disk space',
+            nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e',
+        }
+        nrpe::monitor_service { 'dpkg':
+            description  => 'DPKG',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_dpkg',
         }
     }
 }
