@@ -2908,6 +2908,19 @@ node 'hafnium.wikimedia.org' {
     }
 }
 
+# StatsD & Graphite host for eqiad. Slotted to replace professor.pmtpa.
+# RT #5871
+node 'tungsten.eqiad.wmnet' {
+    # services
+    include standard, role::statsd
+
+    # access
+    include groups::wikidev, accounts::olivneh
+    sudo_user { 'olivneh':
+        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+    }
+}
+
 node "virt1000.wikimedia.org" {
     $cluster = "virt"
     $ganglia_aggregator = true
