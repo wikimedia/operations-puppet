@@ -4,7 +4,7 @@ advantage of that powerful linter, you must have the puppet and
 puppet-lint gems:
 
   $ sudo gem install puppet
-  $ sudo gem instlal puppet-lint
+  $ sudo gem install puppet-lint
 
 Then run the linter using rake (a ruby build helper):
 
@@ -15,7 +15,16 @@ A list of top errors can be obtained using:
 
 puppet-lint doc is at https://github.com/rodjek/puppet-lint
 
- -- hashar 20120216
+
+Another target is spec, which runs unit/integration tests. You will need some
+more gems installed:
+
+  $ sudo gem install puppet rspec puppetlabs_spec_helper
+
+Then:
+
+  $rake spec
+
 =end
 
 $enable_color=false
