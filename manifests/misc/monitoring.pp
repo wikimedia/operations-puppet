@@ -319,37 +319,31 @@ class misc::monitoring::view::static_assets {
                 title        => 'Main page JavaScript byte payload',
                 host_regex   => 'client-side',
                 metric_regex => '^assets_javascript_bytes_*',
-                type         => 'stack',
             },
             {
                 title        => 'Main page JavaScript requests',
                 host_regex   => 'client-side',
                 metric_regex => '^assets_javascript_requests_*',
-                type         => 'stack',
             },
             {
                 title        => 'Main page CSS byte payload',
                 host_regex   => 'client-side',
                 metric_regex => '^assets_css_bytes_*',
-                type         => 'stack',
             },
             {
                 title        => 'Main page CSS requests',
                 host_regex   => 'client-side',
                 metric_regex => '^assets_css_requests_*',
-                type         => 'stack',
             },
             {
                 title        => 'Main page image byte payload',
                 host_regex   => 'client-side',
                 metric_regex => '^assets_image_bytes_*',
-                type         => 'stack',
             },
             {
                 title        => 'Main page image requests',
                 host_regex   => 'client-side',
                 metric_regex => '^assets_image_requests_*',
-                type         => 'stack',
             },
         ],
     }
