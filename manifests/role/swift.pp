@@ -7,7 +7,6 @@ class role::swift {
 		$nagios_group = "swift"
 
 		include standard
-		# TODO: pull in iptables rules here, or in the classes below
 	}
 	
 	class pmtpa-prod inherits role::swift::base {
