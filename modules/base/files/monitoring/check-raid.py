@@ -270,7 +270,11 @@ def checkMegaSas():
         print 'WARNING: MegaCli64 returned exit status %d' % (ret)
         return 1
 
-    if not match and lines > 0:
+    if lines == 0:
+        print 'WARNING: No known controller found'
+        return 1
+
+    if not match:
         print 'WARNING: Parse error processing MegaCli64 output'
         return 1
 
