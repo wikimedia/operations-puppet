@@ -1214,9 +1214,6 @@ node "iron.wikimedia.org" {
 
     # search QA scripts for ops use
     include search::searchqa
-
-    # include the swift cli so I can call out to swift instances
-    include swift::utilities
 }
 
 node "kaulen.wikimedia.org" {
