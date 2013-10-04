@@ -233,19 +233,26 @@ class swift::storage {
 
 	class monitoring {
 		require swift::storage::service
+		include nrpe
 		$nagios_group = "swift"
-		monitor_service { "swift-account-auditor": description => "swift-account-auditor", check_command => "nrpe_check_swift_account_auditor" }
-		monitor_service { "swift-account-reaper": description => "swift-account-reaper", check_command => "nrpe_check_swift_account_reaper" }
-		monitor_service { "swift-account-replicator": description => "swift-account-replicator", check_command => "nrpe_check_swift_account_replicator" }
-		monitor_service { "swift-account-server": description => "swift-account-server", check_command => "nrpe_check_swift_account_server" }
-		monitor_service { "swift-container-auditor": description => "swift-container-auditor", check_command => "nrpe_check_swift_container_auditor" }
-		monitor_service { "swift-container-replicator": description => "swift-container-replicator", check_command => "nrpe_check_swift_container_replicator" }
-		monitor_service { "swift-container-server": description => "swift-container-server", check_command => "nrpe_check_swift_container_server" }
-		monitor_service { "swift-container-updater": description => "swift-container-updater", check_command => "nrpe_check_swift_container_updater" }
-		monitor_service { "swift-object-auditor": description => "swift-object-auditor", check_command => "nrpe_check_swift_object_auditor" }
-		monitor_service { "swift-object-replicator": description => "swift-object-replicator", check_command => "nrpe_check_swift_object_replicator" }
-		monitor_service { "swift-object-server": description => "swift-object-server", check_command => "nrpe_check_swift_object_server" }
-		monitor_service { "swift-object-updater": description => "swift-object-updater", check_command => "nrpe_check_swift_object_updater" }
+
+		# RT-2593. Moved here from nrpe_local.cfg
+		# nrpe::monitor_service will create nrpe::check command definition and a
+		# monitor_service definition which exports to nagios
+		# TODO: Find a way to avoid that ugly single quote at the end
+		$ctemplate = "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift'"
+		nrpe::monitor_service { "swift-account-auditor": description => "swift-account-auditor", nrpe_command => "${ctemplate}-account-auditor'" }
+		nrpe::monitor_service { "swift-account-reaper": description => "swift-account-reaper", nrpe_command => "${ctemplate}-account-reaper'" }
+		nrpe::monitor_service { "swift-account-replicator": description => "swift-account-replicator", nrpe_command => "${ctemplate}-account-replicator'" }
+		nrpe::monitor_service { "swift-account-server": description => "swift-account-server", nrpe_command => "${ctemplate}-account-server'" }
+		nrpe::monitor_service { "swift-container-auditor": description => "swift-container-auditor", nrpe_command => "${ctemplate}-container-auditor'" }
+		nrpe::monitor_service { "swift-container-replicator": description => "swift-container-replicator", nrpe_command => "${ctemplate}-container-replicator'" }
+		nrpe::monitor_service { "swift-container-server": description => "swift-container-server", nrpe_command => "${ctemplate}-container-server'" }
+		nrpe::monitor_service { "swift-container-updater": description => "swift-container-updater", nrpe_command => "${ctemplate}-container-updater'" }
+		nrpe::monitor_service { "swift-object-auditor": description => "swift-object-auditor", nrpe_command => "${ctemplate}-object-auditor'" }
+		nrpe::monitor_service { "swift-object-replicator": description => "swift-object-replicator", nrpe_command => "${ctemplate}-object-replicator'" }
+		nrpe::monitor_service { "swift-object-server": description => "swift-object-server", nrpe_command => "${ctemplate}-object-server'" }
+		nrpe::monitor_service { "swift-object-updater": description => "swift-object-updater", nrpe_command => "${ctemplate}-object-updater'" }
 	}
 
 	# this class installs swift-drive-audit as a cronjob; it checks the disks every 60 minutes
