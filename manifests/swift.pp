@@ -89,12 +89,30 @@ class swift::base($hash_path_suffix, $cluster_name) {
 	}
 }
 
-class swift::proxy {
-	Class[swift::proxy::config] -> Class[swift::proxy]
+class swift::proxy(
+	$bind_port="8080",
+	$proxy_address,
+	$memcached_servers,
+	$num_workers,
+	$auth_backend,
+	$super_admin_key,
+	$rewrite_account,
+	$rewrite_password,
+	$rewrite_thumb_server,
+	$shard_container_list,
+	$backend_url_format
+	) {
+	Class[swift::base] -> Class[swift::proxy]
 
-	system_role { "swift:base": description => "swift frontend proxy" }
+	system_role { "swift::proxy": description => "swift frontend proxy" }
 
-	realize File["/etc/swift/proxy-server.conf"]
+	file { "/etc/swift/proxy-server.conf":
+		owner => swift,
+		group => swift,
+		mode => 0440,
+		content => template("swift/proxy-server.conf.erb"),
+		require => Package['swift-proxy'],
+	}
 
 	package { ['swift-proxy', 'python-swauth']:
 		ensure => present;
@@ -121,41 +139,6 @@ class swift::proxy::monitoring($host) {
 		description   => 'Swift HTTP backend',
 		check_command => "check_http_url!$host!/monitoring/backend",
 	}
-}
-
-# TODO: document parameters
-
-# Class: swift::proxy::config
-#
-# This class configures a Swift Proxy.
-#
-# Only put virtual resources in this class, as it's included
-# on non-proxy swift nodes as well.
-#
-# Parameters:
-class swift::proxy::config(
-	$bind_port="8080",
-	$proxy_address,
-	$memcached_servers,
-	$num_workers,
-	$auth_backend,
-	$super_admin_key,
-	$rewrite_account,
-	$rewrite_password,
-	$rewrite_thumb_server,
-	$shard_container_list,
-	$backend_url_format ) {
-
-	Class[swift::base] -> Class[swift::proxy::config]
-
-	# Virtual resource
-	@file { "/etc/swift/proxy-server.conf":
-		owner => swift,
-		group => swift,
-		mode => 0440,
-		content => template("swift/proxy-server.conf.erb")
-	}
-
 }
 
 class swift::storage {

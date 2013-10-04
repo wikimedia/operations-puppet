@@ -36,7 +36,7 @@ class role::swift {
 			}
 		}
 		class proxy inherits role::swift::pmtpa-prod {
-			class { "::swift::proxy::config":
+			class { "::swift::proxy":
 				bind_port => "80",
 				proxy_address => "http://ms-fe.pmtpa.wmnet",
 				num_workers => $::processorcount,
@@ -49,7 +49,6 @@ class role::swift {
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb,wikipedia-commons-local-public,wikipedia-de-local-public,wikipedia-en-local-public,wikipedia-fi-local-public,wikipedia-fr-local-public,wikipedia-he-local-public,wikipedia-hu-local-public,wikipedia-id-local-public,wikipedia-it-local-public,wikipedia-ja-local-public,wikipedia-ro-local-public,wikipedia-ru-local-public,wikipedia-th-local-public,wikipedia-tr-local-public,wikipedia-uk-local-public,wikipedia-zh-local-public,wikipedia-commons-local-temp,wikipedia-de-local-temp,wikipedia-en-local-temp,wikipedia-fi-local-temp,wikipedia-fr-local-temp,wikipedia-he-local-temp,wikipedia-hu-local-temp,wikipedia-id-local-temp,wikipedia-it-local-temp,wikipedia-ja-local-temp,wikipedia-ro-local-temp,wikipedia-ru-local-temp,wikipedia-th-local-temp,wikipedia-tr-local-temp,wikipedia-uk-local-temp,wikipedia-zh-local-temp,wikipedia-commons-local-transcoded,wikipedia-de-local-transcoded,wikipedia-en-local-transcoded,wikipedia-fi-local-transcoded,wikipedia-fr-local-transcoded,wikipedia-he-local-transcoded,wikipedia-hu-local-transcoded,wikipedia-id-local-transcoded,wikipedia-it-local-transcoded,wikipedia-ja-local-transcoded,wikipedia-ro-local-transcoded,wikipedia-ru-local-transcoded,wikipedia-th-local-transcoded,wikipedia-tr-local-transcoded,wikipedia-uk-local-transcoded,wikipedia-zh-local-transcoded,global-data-math-render",
 				backend_url_format => "sitelang"
 			}
-			include ::swift::proxy
 			class { '::swift::proxy::monitoring':
 				host => 'ms-fe.pmtpa.wmnet',
 			}
@@ -87,7 +86,7 @@ class role::swift {
 			}
 		}
 		class proxy inherits role::swift::eqiad-prod {
-			class { "::swift::proxy::config":
+			class { "::swift::proxy":
 				bind_port => "80",
 				proxy_address => "http://ms-fe.eqiad.wmnet",
 				num_workers => $::processorcount,
@@ -100,7 +99,6 @@ class role::swift {
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb,wikipedia-commons-local-public,wikipedia-de-local-public,wikipedia-en-local-public,wikipedia-fi-local-public,wikipedia-fr-local-public,wikipedia-he-local-public,wikipedia-hu-local-public,wikipedia-id-local-public,wikipedia-it-local-public,wikipedia-ja-local-public,wikipedia-ro-local-public,wikipedia-ru-local-public,wikipedia-th-local-public,wikipedia-tr-local-public,wikipedia-uk-local-public,wikipedia-zh-local-public,wikipedia-commons-local-temp,wikipedia-de-local-temp,wikipedia-en-local-temp,wikipedia-fi-local-temp,wikipedia-fr-local-temp,wikipedia-he-local-temp,wikipedia-hu-local-temp,wikipedia-id-local-temp,wikipedia-it-local-temp,wikipedia-ja-local-temp,wikipedia-ro-local-temp,wikipedia-ru-local-temp,wikipedia-th-local-temp,wikipedia-tr-local-temp,wikipedia-uk-local-temp,wikipedia-zh-local-temp,wikipedia-commons-local-transcoded,wikipedia-de-local-transcoded,wikipedia-en-local-transcoded,wikipedia-fi-local-transcoded,wikipedia-fr-local-transcoded,wikipedia-he-local-transcoded,wikipedia-hu-local-transcoded,wikipedia-id-local-transcoded,wikipedia-it-local-transcoded,wikipedia-ja-local-transcoded,wikipedia-ro-local-transcoded,wikipedia-ru-local-transcoded,wikipedia-th-local-transcoded,wikipedia-tr-local-transcoded,wikipedia-uk-local-transcoded,wikipedia-zh-local-transcoded,global-data-math-render",
 				backend_url_format => "sitelang"
 			}
-			include ::swift::proxy
 			class { '::swift::proxy::monitoring':
 				host => 'ms-fe.eqiad.wmnet',
 			}
@@ -129,7 +127,7 @@ class role::swift {
 			}
 		}
 		class proxy inherits role::swift::pmtpa-labs {
-			class { "::swift::proxy::config":
+			class { "::swift::proxy":
 				bind_port => "80",
 				proxy_address => "http://swift-fe1.pmtpa.wmflabs",
 				num_workers => $::processorcount * 2,
@@ -142,7 +140,6 @@ class role::swift {
 				shard_container_list => "",
 				backend_url_format => "asis"
 			}
-			include ::swift::proxy
 		}
 		class storage inherits role::swift::pmtpa-labs {
 			include ::swift::storage
@@ -175,7 +172,7 @@ class role::swift {
 			}
 		}
 		class proxy inherits role::swift::pmtpa-labsupgrade {
-			class { "::swift::proxy::config":
+			class { "::swift::proxy":
 				bind_port => "80",
 				proxy_address => "http://su-fe1.pmtpa.wmflabs",
 				num_workers => $::processorcount * 2,
@@ -188,7 +185,6 @@ class role::swift {
 				shard_container_list => "",
 				backend_url_format => "asis"
 			}
-			include ::swift::proxy
 		}
 		class storage inherits role::swift::pmtpa-labsupgrade {
 			include ::swift::storage
