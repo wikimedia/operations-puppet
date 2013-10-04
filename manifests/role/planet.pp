@@ -24,7 +24,8 @@ class role::planet {
 	# webserver setup
 	install_certificate{ "star.planet.${planet_domain_name}": }
 	class {'webserver::php5': ssl => true; }
-	apache_module { rewrite: name => "rewrite" }
+	apache_module { 'rewrite': name => 'rewrite' }
+	apache_module { 'expires': name => 'expires' }
 
 	# dependencies
 	Class['webserver::php5'] -> apache_module["rewrite"] -> Install_certificate["star.planet.${planet_domain_name}"]
