@@ -224,12 +224,12 @@ def check3ware():
 
 def checkMegaSas():
     try:
-        proc = subprocess.Popen(['/usr/bin/MegaCli64',
+        proc = subprocess.Popen(['/usr/sbin/megacli',
                                 '-LDInfo', '-LALL', '-aALL'],
                                 stdout=subprocess.PIPE)
     except:
         error = sys.exc_info()[1]
-        print 'WARNING: error executing MegaCli64: %s' % str(error)
+        print 'WARNING: error executing megacli: %s' % str(error)
         return 1
 
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
@@ -267,7 +267,7 @@ def checkMegaSas():
 
     ret = proc.wait()
     if ret != 0:
-        print 'WARNING: MegaCli64 returned exit status %d' % (ret)
+        print 'WARNING: megacli returned exit status %d' % (ret)
         return 1
 
     if lines == 0:
@@ -275,7 +275,7 @@ def checkMegaSas():
         return 1
 
     if not match:
-        print 'WARNING: Parse error processing MegaCli64 output'
+        print 'WARNING: Parse error processing megacli output'
         return 1
 
     if numLD == 0:
