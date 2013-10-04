@@ -9,6 +9,7 @@ class role::statsd {
         settings => {
             backends     => [ 'graphite' ],
             graphiteHost => 'professor.pmtpa.wmnet',
+            graphitePort => 2003,
         },
     }
 }
