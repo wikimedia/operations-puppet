@@ -27,3 +27,13 @@ Suite: precise-cdh4.3.1
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
 ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^hadoop-0.20-mapreduce$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^hive$|^oozie$|^hue$|^bigtop-tomcat$'  || [ $? -eq 1 ]
+
+Name: hwraid
+Method: http://hwraid.le-vert.net/ubuntu
+Components: main>non-free
+UDebComponents:
+GetInRelease: no
+Suite: precise
+Architectures: amd64 source
+VerifyRelease: 6005210E23B3D3B4
+ListShellHook: grep-dctrl -X -S megacli || [ $? -eq 1 ]

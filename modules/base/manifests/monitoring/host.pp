@@ -21,6 +21,10 @@ class base::monitoring::host($contact_group = 'admins') {
     monitor_service { 'ssh': description => 'SSH', check_command => 'check_ssh', contact_group => $contact_group }
 
     if $::network_zone == 'internal' {
+        package { 'megacli':
+            ensure => 'latest',
+        }
+
         file { '/usr/local/bin/check-raid.py':
             ensure => present,
             owner  => root,

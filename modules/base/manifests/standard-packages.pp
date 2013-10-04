@@ -6,7 +6,6 @@ class base::standard-packages {
         'tzdata',
         'zsh-beta',
         'xfsprogs',
-        'wikimedia-raid-utils',
         'screen',
         'gdb',
         'iperf',
@@ -26,7 +25,7 @@ class base::standard-packages {
             ensure => latest;
         }
 
-        package { 'jfsutils':
+        package { [ 'jfsutils', 'wikimedia-raid-utils']:
             ensure => absent,
         }
 

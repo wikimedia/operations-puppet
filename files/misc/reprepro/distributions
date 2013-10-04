@@ -4,8 +4,9 @@ Suite: hardy-wikimedia
 Codename: hardy-wikimedia
 Version: 8.04
 Architectures: source amd64
-Components: main universe
+Components: main universe non-free
 UDebComponents: main
+Update: hwraid
 Description: Wikimedia specific packages for Ubuntu Hardy
 SignWith: default
 DebOverride: deb-override
@@ -18,8 +19,9 @@ Suite: lucid-wikimedia
 Codename: lucid-wikimedia
 Version: 10.04
 Architectures: source amd64
-Components: main universe
+Components: main universe non-free
 UDebComponents: main
+Update: hwraid
 Description: Wikimedia specific packages for Ubuntu Lucid
 SignWith: default
 DebOverride: deb-override
@@ -46,9 +48,9 @@ Suite: precise-wikimedia
 Codename: precise-wikimedia
 Version: 12.04
 Architectures: source amd64 i386
-Components: main universe mariadb
+Components: main universe non-free mariadb
 UDebComponents: main
-Update: ceph jenkins cloudera
+Update: ceph jenkins cloudera hwraid
 Description: Wikimedia specific packages for Ubuntu Precise
 SignWith: default
 DebOverride: deb-override

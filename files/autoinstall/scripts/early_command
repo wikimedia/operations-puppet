@@ -16,5 +16,5 @@ killall.sh; netcfg; true
 
 # Preseed the correct wikimedia repository location
 SUITE=$(debconf-get mirror/suite)
-echo d-i apt-setup/local0/repository string  http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main universe > /tmp/apt_repository.cfg
+echo d-i apt-setup/local0/repository string  http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main universe non-free > /tmp/apt_repository.cfg
 debconf-set-selections /tmp/apt_repository.cfg
