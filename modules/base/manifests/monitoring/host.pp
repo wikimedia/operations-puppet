@@ -26,7 +26,7 @@ class base::monitoring::host($contact_group = 'admins') {
             owner  => root,
             group  => root,
             mode   => '0555',
-            source => 'puppet:///modules/base/monitoring/check-raid.py';
+            source => 'puppet:///modules/nrpe/plugins/check-raid.py';
         }
 
         sudo_user { [ 'nagios', 'icinga' ]: privileges => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'] }
