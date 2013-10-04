@@ -1215,9 +1215,6 @@ node "iron.wikimedia.org" {
     # search QA scripts for ops use
     include search::searchqa
 
-    # let's see if the swiftcleaner can run here
-    include swift::cleaner
-
     # include the swift cli so I can call out to swift instances
     include swift::utilities
 }
