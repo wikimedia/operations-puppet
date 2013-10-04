@@ -14,3 +14,10 @@ sub vcl_miss {
 sub vcl_fetch {
 	set beresp.ttl = 0s;
 }
+
+sub vcl_deliver {
+    // Don't report stale performance data if request was a cache hit.
+    if (obj.hits > 0) {
+        unset resp.http.X-Parsoid-Performance;
+    }
+}
