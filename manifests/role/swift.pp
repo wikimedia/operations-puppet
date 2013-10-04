@@ -50,7 +50,10 @@ class role::swift {
 				backend_url_format => "sitelang"
 			}
 			include ::swift::proxy
-			include ::swift::proxy::monitoring
+			class { '::swift::proxy::monitoring':
+				host => 'ms-fe.pmtpa.wmnet',
+			}
+
 		}
 		class storage inherits role::swift::pmtpa-prod {
 			include ::swift::storage
@@ -98,7 +101,9 @@ class role::swift {
 				backend_url_format => "sitelang"
 			}
 			include ::swift::proxy
-			include ::swift::proxy::monitoring
+			class { '::swift::proxy::monitoring':
+				host => 'ms-fe.eqiad.wmnet',
+			}
 		}
 		class storage inherits role::swift::eqiad-prod {
 			include ::swift::storage
