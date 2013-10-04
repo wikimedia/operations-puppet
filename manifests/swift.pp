@@ -1,5 +1,4 @@
 # vim: noet
-# swift.pp
 
 # $hash_path_suffix is a unique string per cluster used to hash partitions
 # $cluster_name is a string defining the cluster, eg eqiad-test or pmtpa-prod.
@@ -103,34 +102,15 @@ class swift::proxy {
 		ensure => present;
 	}
 
-	# we're using http for now; no need for a cert.
-	#install_cert { "swift": privatekey => true }
-
 	# use a generic (parameterized) memcached class
 	class { "memcached": memcached_size => '128', memcached_port => '11211' }
 
-	# pull in the SwiftMedia python bits
-	# note that though these are in puppet, svn is the canonical store;
-	# any changes here hsould flow back there, and those files should
-	# be checked every now and again for more recent versions.
-	# http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/SwiftMedia/
-	if ($::lsbdistcodename == "precise") {
-		file { "/usr/local/lib/python2.7/dist-packages/wmf/":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/swift/SwiftMedia/wmf/",
-			recurse => remote;
-		}
-	}
-	else {
-		file { "/usr/local/lib/python2.6/dist-packages/wmf/":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/swift/SwiftMedia/wmf/",
-			recurse => remote;
-		}
+	file { "/usr/local/lib/python2.7/dist-packages/wmf/":
+		owner => root,
+		group => root,
+		mode => 0444,
+		source => "puppet:///files/swift/SwiftMedia/wmf/",
+		recurse => remote;
 	}
 }
 
