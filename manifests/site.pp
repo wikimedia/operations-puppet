@@ -2739,6 +2739,8 @@ node "stat1002.eqiad.wmnet" {
     User<|title == ezachte|>     { groups +> [ "stats" ] }
     User<|title == spetrea|>     { groups +> [ "stats" ] }
 
+    include accounts::manybubbles  # rt 5886
+
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
     # include classes needed for storing and crunching
