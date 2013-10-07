@@ -69,9 +69,8 @@ class ldap::client::nss($ldapconfig) {
 # Remember though, that including ldap::client::nss will mean users in the
 # ldap database will then be listed as users of the system, so use care.
 class ldap::client::utils($ldapconfig) {
-    include base::mwclient
 
-    package { [ "python-ldap", "python-pycurl" ]:
+    package { [ "python-ldap", "python-pycurl", "python-mwclient" ]:
         ensure => latest;
     }
 
