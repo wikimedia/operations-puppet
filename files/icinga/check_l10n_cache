@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# Icinga plug-in for Wikimedia's MediaWiki localisation cache.
+#
+# This check should run on the host that runs l10nupdate. It ensures
+# that an up-to-date localisation cache directory exists for each
+# deployed version of MediaWiki. The check will report
+#
+#  OK       - If localisation caches are up-to-date.
+#  WARNING  - If the l10n cache files are more than 26 hours old.
+#  CRITICAL - If the l10n cache files are more than 50 hours old.
+#  UNKNOWN  - If no MediaWiki versions are in use.
+#  UNKNOWN  - If no l10n cache directory exists for a version.
+#
+. /usr/local/lib/mw-deployment-vars.sh
+. $MW_COMMON_SOURCE/multiversion/MWRealm.sh
+
+versions=($(/usr/local/bin/mwversionsinuse))
+
+if [ -z "$versions" ]; then
+    echo "UNKNOWN: mwversionsinuse returned an empty list"
+    exit 3
+fi
+
+missing=()
+critical=()
+warning=()
+
+for version in "${versions[@]}"; do
+    l10n_dir="${MW_COMMON_SOURCE}/php-${version}/cache/l10n"
+    if [ ! -d "$l10n_dir" ]; then
+        missing+=("$version")
+    elif [ ! `find "${l10n_dir}" -mtime -2.1 -print -quit` ]; then
+        critical+=("$version")
+    elif [ ! `find "${l10n_dir}" -mtime -1.1 -print -quit` ]; then
+        warning+=("$version")
+    fi
+done
+
+IFS=,
+if [ -n "$critical" ]; then
+    echo "CRITICAL: localisation cache is more than 50 hours old -- ${critical[*]}"
+    exit 2
+elif [ -n "$warning" ]; then
+    echo "WARNING: localisation cache is more than 26 hours old -- ${warning[*]}"
+    exit 1
+elif [ -n "$missing" ]; then
+    echo "UNKNOWN: localisation cache directory is missing -- ${missing[*]}"
+    exit 3
+fi
+
+echo "OK: localisation caches are up-to-date."
+exit 0
