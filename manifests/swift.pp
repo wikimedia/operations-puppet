@@ -93,6 +93,8 @@ class swift::proxy(
 	$proxy_address,
 	$memcached_servers,
 	$num_workers,
+	$statsd_host,
+	$statsd_metric_prefix,
 	$auth_backend,
 	$super_admin_key,
 	$rewrite_account,
