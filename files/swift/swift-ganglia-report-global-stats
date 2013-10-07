@@ -14,8 +14,7 @@ def get_token(username, password):
     headers['X-Auth-User'] = username
     headers['X-Auth-Key'] = password
     headers['User-Agent'] = 'swiftgangliastats'
-    headers['Host'] = 'upload.wikimedia.org'
-    req = urllib2.Request('http://ms-fe.pmtpa.wmnet/auth/v1.0', headers=headers)
+    req = urllib2.Request('http://localhost/auth/v1.0', headers=headers)
     try:
         resp = urllib2.urlopen(req)
     except urllib2.HTTPError, e:
@@ -35,8 +34,7 @@ def get_stats(username, password):
     headers['X-Auth-Token'] = token
     headers['X-Auth-User'] = username
     headers['User-Agent'] = 'swiftgangliastats'
-    # HEAD /v1/AUTH_xxdxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx HTTP/1.0 204 - - mw%3Athumbnail%2CAUTH_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    url = 'http://ms-fe.pmtpa.wmnet/v1/%s' % authid
+    url = 'http://localhost/v1/%s' % authid
     req = HEADRequest(url, headers=headers)
     try:
         resp = urllib2.urlopen(req)
@@ -86,7 +84,7 @@ def calculate_changes(current, previous):
 
 # submits the metric to ganglia using gmetric, returns the exit code of gmetric
 def submit_to_ganglia(name, value, units, valtype='int32',
-            conf='/etc/ganglia/gmond.conf', spoof='Swift pmtpa prod:Swift pmtpa prod'):
+            conf='/etc/ganglia/gmond.conf', spoof):
     retcode = subprocess.call(['/usr/bin/gmetric', '--name', name, '--type', valtype, '--conf', conf,
             '--spoof', spoof, '--value', str(value), '--units', units])
     return retcode
@@ -159,4 +157,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# vim: set nu list expandtab tabstop=4 shiftwidth=4 autoindent:
+# vim: set expandtab tabstop=4 shiftwidth=4 autoindent:
