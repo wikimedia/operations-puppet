@@ -83,8 +83,8 @@ def calculate_changes(current, previous):
     return diff
 
 # submits the metric to ganglia using gmetric, returns the exit code of gmetric
-def submit_to_ganglia(name, value, units, valtype='int32',
-            conf='/etc/ganglia/gmond.conf', spoof):
+def submit_to_ganglia(name, value, units, spoof, valtype='int32',
+            conf='/etc/ganglia/gmond.conf'):
     retcode = subprocess.call(['/usr/bin/gmetric', '--name', name, '--type', valtype, '--conf', conf,
             '--spoof', spoof, '--value', str(value), '--units', units])
     return retcode
