@@ -66,15 +66,17 @@ class role::analytics::users {
         accounts::olivneh,
         accounts::erik,
         accounts::milimetric,
-        accounts::yurik,    # RT 5158
-        accounts::spetrea,  # RT 4402
-        accounts::ram,      # RT 5059
-        accounts::maryana,  # RT 5017
-        accounts::halfak,   # RT 5233
-        accounts::abaso,    # RT 5273
-        accounts::qchris,   # RT 5403
-        accounts::tnegrin,  # RT 5391
-        accounts::ironholds # RT 5831
+        accounts::yurik,     # RT 5158
+        accounts::spetrea,   # RT 4402
+        accounts::ram,       # RT 5059
+        accounts::maryana,   # RT 5017
+        accounts::halfak,    # RT 5233
+        accounts::abaso,     # RT 5273
+        accounts::qchris,    # RT 5403
+        accounts::tnegrin,   # RT 5391
+        accounts::ironholds, # RT 5831
+        accounts::dartar,    # RT 5835
+        accounts::halfak     # RT 5836
 
     # add Analytics team members to the stats group so they can
     # access data group owned by 'stats'.
