@@ -301,6 +301,19 @@ class misc::deployment::l10nupdate {
 		ensure => present;
 	}
 
+    file { '/usr/lib/nagios/plugins/check_l10n_cache':
+        source => 'puppet:///files/icinga/check_l10n_cache',
+        mode   => '0755',
+    }
+
+    nrpe::monitor_service { 'l10nupdate':
+        ensure        => 'present',
+        description   => 'Ensure localisation caches are up-to-date',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_l10n_cache',
+        require       => File['/usr/lib/nagios/plugins/check_l10n_cache'],
+        contact_group => 'admins',
+    }
+
 	file {
 		"${scriptpath}/l10nupdate":
 			owner => root,
