@@ -2994,14 +2994,6 @@ node /virt100(5|7|8).eqiad.wmnet/ {
     include role::nova::compute
 }
 
-node "williams.wikimedia.org" {
-    include base,
-        ganglia,
-        ntp::client
-
-    install_certificate{ "star.wikimedia.org": }
-}
-
 node "iodine.wikimedia.org" {
     include role::otrs
 }

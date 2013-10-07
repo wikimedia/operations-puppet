@@ -68,4 +68,5 @@ $decommissioned_servers = [
 'virt3',
 'virt4',
 'wikinews-lb.wikimedia.org',
+'williams',
 ]
