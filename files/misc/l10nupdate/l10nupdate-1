@@ -23,8 +23,7 @@ do
 		then
 			echo "Updated $path"
 		else
-			$BINDIR/dologmsg "!log LocalisationUpdate failed: git pull of $path failed"
-			echo "Updating $path FAILED."
+			echo "LocalisationUpdate failed: git pull of $path failed"
 			exit 1
 		fi
 	else
@@ -36,8 +35,7 @@ do
 		then
 			echo "Cloned $path"
 		else
-			$BINDIR/dologmsg "!log LocalisationUpdate failed: git clone of $path failed"
-			echo "Cloning $path FAILED."
+			echo "LocalisationUpdate failed: git clone of $path failed"
 			exit 1
 		fi
 	fi
@@ -47,8 +45,7 @@ echo "git clone updated."
 # Get all MW message cache versions (and a wiki DB name for each)
 mwVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
 if [ -z "$mwVerDbSets" ]; then
-	$BINDIR/dologmsg "!log LocalisationUpdate failed: mwversionsinuse returned empty list"
-	echo "Obtaining MediaWiki version list FAILED"
+	echo "LocalisationUpdate failed: mwversionsinuse returned empty list"
 	exit 1
 fi
 
@@ -79,11 +76,9 @@ do
 		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MW_COMMON_SOURCE/php-"$mwVerNum"/cache/l10n
 		echo "Syncing to Apaches"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
-		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
-		echo "All done"
+		echo "LocalisationUpdate completed ($mwVerNum) at `date`"
 	else
-		$BINDIR/dologmsg "!log LocalisationUpdate failed ($mwVerNum) at `date`"
-		echo "FAILED"
+		echo "LocalisationUpdate failed ($mwVerNum) at `date`"
 	fi
 done
 
@@ -93,5 +88,4 @@ ALLDB=`getRealmSpecificFilename "$MW_COMMON_SOURCE/all.dblist"`
 for wiki in `<"$ALLDB"`; do
 	/usr/local/bin/mwscript extensions/WikimediaMaintenance/refreshMessageBlobs.php --wiki="$wiki"
 done
-echo "All done"
-$BINDIR/dologmsg "!log LocalisationUpdate ResourceLoader cache refresh completed at `date`"
+echo "LocalisationUpdate ResourceLoader cache refresh completed at `date`"
