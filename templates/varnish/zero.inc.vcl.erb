@@ -13,6 +13,12 @@ sub tag_carrier {
 
 	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
 
+	// For proxies, W0 banners will be shown when traffic flowed through a proxy
+	// and the carrier's configuration is known to zero-rate through that proxy.
+	// If the X-CS2 value doesn't match a ZeroRatedMobileAccess-targeted proxy,
+	// then the value will be the same as the X-CS value.
+	set req.http.X-Forwarded-By = req.http.X-CS2;
+
 	if (req.restarts == 0 && (req.http.X-CS2 == "-OPERA" || req.http.X-CS2 == "-TEST")) {
 		// Elsewhere in the VCL, the frontend appends client.ip to XFF for when
 		//   we forward to the backend varnish, and thus at this exact moment in time,
