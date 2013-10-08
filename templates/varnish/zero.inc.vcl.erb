@@ -11,6 +11,7 @@ sub tag_carrier {
 	// Note that currently, tag_carrier is *only* called when the request is not
 	//  via HTTPS (check for X-Forwarded-Proto at the top of vcl_recv in mobile-frontend.vcl).
 
+	set req.http.X-Known-Proxy = "OPERA";
 	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
 
 	if (req.restarts == 0 && (req.http.X-CS2 == "-OPERA" || req.http.X-CS2 == "-TEST")) {
