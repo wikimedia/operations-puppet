@@ -115,9 +115,9 @@ node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
     include role::cache::text
 }
 
-# amssq47 is a text varnish
-node /^amssq47\.esams\.wikimedia\.org$/ {
-    include role::cache::text, role::cache::ssl::unified
+# amssq47-62 are text varnish
+node /amssq4[7-9]|5[0-9]|6[0-2]\.esams\.wikimedia\.org$/ {
+    include role::cache::text
 
     interface::add_ip6_mapped { "main": }
 }
