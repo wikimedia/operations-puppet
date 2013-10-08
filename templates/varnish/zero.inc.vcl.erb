@@ -5,15 +5,24 @@ import netmapper;
 sub vcl_init {
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
 	netmapper.init("zero", "/var/netmapper/zero.json", 89);
+	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
+}
+
+sub tag_direct {
+	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
+	unset req.http.X-Forwarded-By;
 }
 
 sub tag_carrier {
 	// Note that currently, tag_carrier is *only* called when the request is not
 	//  via HTTPS (check for X-Forwarded-Proto at the top of vcl_recv in mobile-frontend.vcl).
 
-	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
+	set req.http.X-Forwarded-By = netmapper.map("proxies", "" + client.ip);
 
-	if (req.restarts == 0 && (req.http.X-CS2 == "-OPERA" || req.http.X-CS2 == "-TEST")) {
+	if (!req.http.X-Forwarded-By) {
+		// direct request or unknown proxy
+		call tag_direct;
+	} else if (req.restarts == 0) {
 		// Elsewhere in the VCL, the frontend appends client.ip to XFF for when
 		//   we forward to the backend varnish, and thus at this exact moment in time,
 		//   the final (or only) XFF entry always exists and always matches client.ip.
@@ -25,9 +34,18 @@ sub tag_carrier {
 		// ^ X-S-XFF now contains XFF without its final item, which was client.ip.
 
 		if (req.http.X-Stripped-XFF != "") { // If one or more IPs remain in X-S-XFF
+			// For proxies, W0 banners will be shown when traffic flowed through a proxy
+			// and the carrier's configuration is known to zero-rate through that proxy.
+			// ZeroRatedMobileAccess will look at the X-CS and X-Forwarded-By headers.
+			// If the X-Forwarded-By header is present, and if the X-Forwarded-By header
+			// is supported for the given X-CS, and all other conditions (language,
+			// subdomain, enabled status, etc.) are okay, the banner will be shown.
 			// Strip away any leading IPs, such that the result of regsub() is the
 			//  rightmost (or only) remaining IP, and use that to re-set X-CS2:
 			set req.http.X-CS2 = netmapper.map("zero", regsub(req.http.X-Stripped-XFF, "^.*, ?", ""));
+		} else {
+			// Actually a direct request (maybe a diagnostic)
+			call tag_direct;
 		}
 		unset req.http.X-Stripped-XFF; // clean up our temp var
 	}
