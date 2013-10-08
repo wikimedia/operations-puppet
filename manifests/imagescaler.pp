@@ -73,6 +73,7 @@ class imagescaler::packages::fonts {
 			"ttf-sil-padauk",
 			"ttf-sil-scheherazade",
 			"ttf-sil-yi",
+			"ttf-sinhala-lkmug", # bug 55462
 			"ttf-takao-gothic",
 			"ttf-takao-mincho",
 			"ttf-tamil-fonts",
