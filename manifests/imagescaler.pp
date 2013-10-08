@@ -45,49 +45,54 @@ class imagescaler::packages::fonts {
 	package {
 		[
 			"culmus", # bug 38946
+
+			"fonts-arabeyes"
+			"fonts-lklug-sinhala", # bug 55462
+			"fonts-arphic-ukai",
+			"fonts-arphic-uming",
+			"fonts-farsiweb",
+			"fonts-kacst",
+			"fonts-khmeros",
+			"fonts-lao",
+			"fonts-liberation",
+			"fonts-linuxlibertine",
+			"fonts-manchufont",
+			"fonts-mgopen",
+			"fonts-nafees",
+			"fonts-sil-abyssinica",
+			"fonts-sil-erza",
+			"fonts-sil-padauk",
+			"fonts-sil-scheherazade",
+			"fonts-sil-yi",
+			"fonts-takao-gothic",
+			"fonts-takao-mincho",
+			"fonts-thai-tlwg",
+			"fonts-tibetan-machine",
+			"fonts-unfonts-extra",
+
 			"gsfonts",
 			"texlive-fonts-recommended",
+
 			"ttf-alee",
-			"ttf-arabeyes",
-			"ttf-arphic-ukai",
-			"ttf-arphic-uming",
 			"ttf-bengali-fonts",
 			"ttf-devanagari-fonts",
-			"ttf-farsiweb",
 			"ttf-gujarati-fonts",
-			"ttf-kacst",
 			"ttf-kannada-fonts",
-			"ttf-khmeros",
-			"ttf-lao",
-			"ttf-liberation",
-			"ttf-linux-libertine",
 			"ttf-lyx", # "Computer Modern" - bug 38299
 			"ttf-malayalam-fonts",
-			"ttf-manchufont",
-			"ttf-mgopen",
-			"ttf-nafees",
 			"ttf-oriya-fonts",
 			"ttf-punjabi-fonts",
-			"ttf-sil-abyssinica",
-			"ttf-sil-ezra",
-			"ttf-sil-padauk",
-			"ttf-sil-scheherazade",
-			"ttf-sil-yi",
-			"ttf-sinhala-lkmug", # bug 55462
-			"ttf-takao-gothic",
-			"ttf-takao-mincho",
 			"ttf-tamil-fonts",
 			"ttf-telugu-fonts",
-			"ttf-thai-tlwg",
-			"ttf-tmuni",
 			"ttf-ubuntu-font-family",
-			"ttf-unfonts-extra",
 			"ttf-wqy-zenhei",
+
 			"xfonts-100dpi",
 			"xfonts-75dpi",
 			"xfonts-base",
 			"xfonts-mplus",
-			"xfonts-scalable"]:
+			"xfonts-scalable"
+		]:
 		ensure => latest;
 	}
 }
