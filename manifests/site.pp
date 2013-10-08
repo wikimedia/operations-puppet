@@ -2044,6 +2044,7 @@ node /^mw13[234]\.pmtpa\.wmnet$/ {
 
     include standard
     include role::elasticsearch::production
+    deployment::target { 'elasticsearchplugins': }
 }
 
 # mw1001-1016 are jobrunners (precise)
@@ -2834,6 +2835,7 @@ node /^testsearch100[1-3]\.eqiad\.wmnet/ {
     include standard
     include role::elasticsearch::production
     class { "lvs::realserver": realserver_ips => [ "10.2.2.30" ] }
+    deployment::target { 'elasticsearchplugins': }
 }
 
 node "tin.eqiad.wmnet" {
