@@ -534,6 +534,7 @@ class icinga::monitor::files::nagios-plugins {
       group => 'root',
       mode => '0644';
   }
+  File <| tag == nagiosplugin |>
 
   # WMF custom service checks
   file {
