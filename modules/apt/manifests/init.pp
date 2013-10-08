@@ -63,4 +63,12 @@ class apt {
 			value    => 'http://brewster.wikimedia.org:8080',
 			ensure   => $enable_proxy;
 	}
+
+	# apt-get should not install recommended packages
+	apt::conf { 'no-recommends':
+		ensure   => 'present',
+		priority => '90',
+		key      => 'APT::Install-Recommends',
+		value    => '0',
+	}
 }
