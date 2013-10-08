@@ -13,6 +13,8 @@ class role::elasticsearch::production {
         heap_memory     => '7G',
         multicast_group => $multicast_group
     }
+    deployment::target { 'elasticsearchplugins': }
+
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
 }
@@ -26,6 +28,8 @@ class role::elasticsearch::beta {
         cluster_name => 'beta-search',
         heap_memory  => '4G',
     }
+    deployment::target { 'elasticsearchplugins': }
+
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
 }
@@ -42,6 +46,8 @@ class role::elasticsearch::labs {
     class { '::elasticsearch':
         cluster_name => $::elasticsearch_cluster_name,
     }
+    deployment::target { 'elasticsearchplugins': }
+
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
 }

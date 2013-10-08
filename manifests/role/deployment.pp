@@ -13,6 +13,7 @@ class role::deployment::config($deployment_servers) {
       "l10n-slot1" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot1",
       "l10n-beta0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-beta0",
       "gdash/gdash" => "http://${deploy_server_pmtpa}/gdash/gdash",
+      "elasticsearch/plugins" => "http://${deploy_server_pmtpa}/elasticsearch/plugins",
       # parsoid, fluoride and eventlogging are currently eqiad-only:
       "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
@@ -35,6 +36,7 @@ class role::deployment::config($deployment_servers) {
       "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
       "fluoride/fluoride" => "http://${deploy_server_eqiad}/fluoride/fluoride",
       "test/testrepo" => "http://${deploy_server_eqiad}/test/testrepo",
+      "elasticsearch/plugins" => "http://${deploy_server_eqiad}/elasticsearch/plugins",
     },
   }
   # deployment_target grain value for this repo. This must match the deployment::target
@@ -55,6 +57,7 @@ class role::deployment::config($deployment_servers) {
     "eventlogging/EventLogging" => "eventlogging",
     "fluoride/fluoride" => "fluoride",
     "test/testrepo" => "testrepo",
+    "elasticsearch/plugins" => "elasticsearchplugins",
   }
   # Sed the .gitmodules file for the repo according to the following rules
   # TODO: rename this to something more specific
@@ -99,6 +102,7 @@ class role::deployment::config($deployment_servers) {
     "eventlogging/EventLogging" => "/srv/deployment/eventlogging/EventLogging",
     "fluoride/fluoride" => "/srv/deployment/fluoride/fluoride",
     "test/testrepo" => "/srv/deployment/test/testrepo",
+    "elasticsearch/plugins" => "/srv/deployment/elasticsearch/plugins",
   }
   # ensure dependent repos are fetched and checked out with this repo
   # repos fetched/checkedout in order
@@ -185,6 +189,7 @@ class role::deployment::deployment_servers::common {
   deployment::deployment_repo_sync_hook_link { "eventlogging/EventLogging": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "fluoride/fluoride": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "test/testrepo": target => "shared.py" }
+  deployment::deployment_repo_sync_hook_link { "elasticsearch/plugins": target => "shared.py" }
 
   class { "apache": }
   class { "apache::mod::dav": }
