@@ -179,10 +179,6 @@ define upstart_job($install="false", $start="false") {
 	}
 }
 
-class base::mwclient {
-    package { python-mwclient: ensure => latest; }
-}
-
 class generic::gluster-client {
 
 	package { "glusterfs-client":

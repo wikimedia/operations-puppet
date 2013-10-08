@@ -308,7 +308,7 @@ class role::nova::network {
 
 class role::nova::wikiupdates {
 
-    include base::mwclient
+    package { 'python-mwclient': ensure => latest; }
 
     if ($openstack_version == "essex") {
         if ($::lsbdistcodename == "lucid") {
