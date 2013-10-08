@@ -12,8 +12,17 @@ sub tag_carrier {
 	//  via HTTPS (check for X-Forwarded-Proto at the top of vcl_recv in mobile-frontend.vcl).
 
 	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
+	unset req.http.X-Forwarded-By;
 
 	if (req.restarts == 0 && (req.http.X-CS2 == "-OPERA" || req.http.X-CS2 == "-TEST")) {
+		// For proxies, W0 banners will be shown when traffic flowed through a proxy
+		// and the carrier's configuration is known to zero-rate through that proxy.
+		// ZeroRatedMobileAccess will look at the X-CS and X-Forwarded-By headers.
+		// If the X-Forwarded-By header is present, and if the X-Forwarded-By header
+		// is supported for the given X-CS, and all other conditions (language,
+		// subdomain, enabled status, etc.) are okay, the banner will be shown.
+		set req.http.X-Forwarded-By = req.http.X-CS2;
+
 		// Elsewhere in the VCL, the frontend appends client.ip to XFF for when
 		//   we forward to the backend varnish, and thus at this exact moment in time,
 		//   the final (or only) XFF entry always exists and always matches client.ip.
