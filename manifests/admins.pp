@@ -2540,8 +2540,11 @@ class accounts {
 					user   => $username,
 					type   => 'ssh-rsa',
 					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCTng4vgEtyrjtl3JDNv1Q6M1PVvHWIomE17fqODCvFx6eClupAmY1XExdj3x6sPBtZd2ZStwH0IopkKgF6172b+0fl/ReMUq9gOiywKMOc8/wf/fYuWTI2TSR8MfdYrkq6k4rkn/6WMUayHcHrYl610Wi77WJ5a6PF83QRo1D3VAy69Z8PA+P73tTur846iOgfuDBfKw8aTb6mvwnq3hELuuYFaj8cVkveqEi9m2TYDZF/TWvLRbNTQvh9MloTjpOYhtyNYqeWj4xxjVWlr++RPeFa92TeePzKag87O+k/g74tUSfTqrqjhGGK615JPHVWNWMmNUHeFcajltKAf67N';
-			}
-			ssh_authorized_key {
+				'adamw@boo':
+					ensure => present,
+					user   => $username,
+					type   => 'ssh-rsa',
+					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC7y68NOMiQ5GhM9ftumbFuNhpUSRfoWTGsKRTJiW2lyEgXPTVSeK/HEFUG5R2LWD5ylDgmt0CjcJKXnHIAkpAQtiHRboiEugm54Whfnk7H22xcTXEO0X1CAV1na7e6PGRn7UrRvMrp+TVoUIqUUKnaZa9bxHc2BnFWpr8oNhHTdQ2Gwhr+jMqJwpLIpNVaRq6Pcv0vzcvclphlLmPccs2wUze39rvxMaV4HFqJTBf6DtOe+EoNQZvs7v2V9bjjUw5SmySSZyEV6OeukNB9+1LdGXufnd5kxxR+XFdvVUSmyu9UsYni6JRKP8lJwxUJmZeXec131G1tIFe3ERf6hH0D';
 				'adamw@lytho':
 					ensure => present,
 					user   => $username,
