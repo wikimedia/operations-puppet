@@ -280,9 +280,9 @@ class role::coredb::common(
 	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
 
 	include standard,
-		mysql_wmf::coredb::ganglia,
 		mha::node,
 		cpufrequtils
+	class { 'mysql_wmf::coredb::ganglia' : mariadb => $mariadb; }
 
 	if $masters[$::site] == $::hostname
 		and ( $primary_site == $::site or $primary_site == 'both' ){
