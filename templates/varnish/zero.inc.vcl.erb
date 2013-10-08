@@ -14,6 +14,12 @@ sub tag_carrier {
 	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
 
 	if (req.restarts == 0 && (req.http.X-CS2 == "-OPERA" || req.http.X-CS2 == "-TEST")) {
+
+		if (req.http.X-CS2 == "-OPERA") {
+			// Banner is to be shown only if Opera configuration supports zero-rating
+			set req.http.X-Forwarded-By = "OperaMini";
+		}
+
 		// Elsewhere in the VCL, the frontend appends client.ip to XFF for when
 		//   we forward to the backend varnish, and thus at this exact moment in time,
 		//   the final (or only) XFF entry always exists and always matches client.ip.
