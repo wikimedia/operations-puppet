@@ -120,8 +120,6 @@ class lvs::configuration {
 					'wikisourcelb' => "208.80.152.205",
 					'wikinewslb' => "208.80.152.206",
 					'wikiversitylb' => "208.80.152.207",
-					'mediawikilb' => "208.80.152.208",
-					'foundationlb' => "208.80.152.209",
 				},
 				'eqiad' => {
 					'textsvc' => "10.2.2.25",
@@ -132,8 +130,6 @@ class lvs::configuration {
 					'wikisourcelb' => "208.80.154.229",
 					'wikinewslb' => "208.80.154.230",
 					'wikiversitylb' => "208.80.154.231",
-					'mediawikilb' => "208.80.154.232",
-					'foundationlb' => "208.80.154.233",
 				},
 				'esams' => {
 					'textsvc' => "10.2.3.25",
@@ -144,24 +140,28 @@ class lvs::configuration {
 					'wikisourcelb' => "91.198.174.229",
 					'wikinewslb' => "91.198.174.230",
 					'wikiversitylb' => "91.198.174.231",
-					'mediawikilb' => "91.198.174.232",
-					'foundationlb' => "91.198.174.235",
 				},
 				'ulsfo' => {},
 			},
 			'text-varnish' => {
 				'pmtpa' => {
 					'wikimedialb' => "208.80.152.200",
+					'mediawikilb' => "208.80.152.208",
+					'foundationlb' => "208.80.152.209",
 					'wikidatalb' => '208.80.152.218',
 					'wikivoyagelb' => "208.80.152.219"
 				},
 				'eqiad' => {
 					'wikimedialb' => "208.80.154.224",
+					'mediawikilb' => "208.80.154.232",
+					'foundationlb' => "208.80.154.233",
 					'wikidatalb' => '208.80.154.242',
 					'wikivoyagelb' => "208.80.154.243"
 				},
 				'esams' => {
 					'wikimedialb' => "91.198.174.224",
+					'mediawikilb' => "91.198.174.232",
+					'foundationlb' => "91.198.174.235",
 					'wikidatalb' => '91.198.174.237',
 					'wikivoyagelb' => '91.198.174.238',
 				},
