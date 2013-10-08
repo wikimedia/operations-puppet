@@ -21,6 +21,7 @@ sub tag_carrier {
 		//   (if any) to find the XFF value set by another upstream proxy such as
 		//   Opera Mini or Carrier Testing (or in the future, SSL).
 
+		set req.http.X-Known-Proxy = "OPERA";
 		set req.http.X-Stripped-XFF = regsub(req.http.X-Forwarded-For, ",?[^,]+$", "");
 		// ^ X-S-XFF now contains XFF without its final item, which was client.ip.
 
