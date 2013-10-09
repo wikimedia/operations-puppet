@@ -17,7 +17,6 @@ class role::statistics::cruncher inherits role::statistics {
 		misc::statistics::dataset_mount,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
-		misc::statistics::db::mysql,
 		# Aaron Halfaker (halfak) wants MongoDB for his project.
 		misc::statistics::db::mongo,
 		misc::udp2log::udp_filter,

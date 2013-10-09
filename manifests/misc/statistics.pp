@@ -484,19 +484,6 @@ class misc::statistics::sites::metrics {
     }
 }
 
-
-
-# installs a generic mysql server
-# for loading and manipulating sql dumps.
-class misc::statistics::db::mysql {
-    # install a mysql server with the
-    # datadir at /a/mysql
-    class { "generic::mysql::server":
-        datadir => "/a/mysql",
-        version => "5.5",
-    }
-}
-
 # installs MonogDB on stat1
 class misc::statistics::db::mongo {
     class { "mongodb":
