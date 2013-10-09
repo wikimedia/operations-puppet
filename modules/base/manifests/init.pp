@@ -149,6 +149,11 @@ class base::puppet($server='puppet', $certname=undef) {
             source => 'puppet:///modules/base/puppet/puppet.init';
     }
 
+    class { 'puppet_statsd':
+        statsd_host   => 'tungsten.eqiad.wmnet',
+        metric_format => 'puppet.<%= metric %>',
+    }
+
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
     exec { 'compile puppet.conf':
         path => '/usr/bin:/bin',
