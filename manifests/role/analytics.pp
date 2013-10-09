@@ -40,6 +40,9 @@ class role::analytics::common {
     include misc::udp2log::udp_filter
     # include dclass for device classification
     include role::analytics::dclass
+
+    # include Kraken repository deployment target
+    include role::analytics::kraken
 }
 
 

@@ -37,6 +37,7 @@ class role::deployment::config($deployment_servers) {
       "fluoride/fluoride" => "http://${deploy_server_eqiad}/fluoride/fluoride",
       "test/testrepo" => "http://${deploy_server_eqiad}/test/testrepo",
       "elasticsearch/plugins" => "http://${deploy_server_eqiad}/elasticsearch/plugins",
+      'analytics/kraken' => "http://${deploy_server_eqiad}/analytics/kraken",
     },
   }
   # deployment_target grain value for this repo. This must match the deployment::target
@@ -58,6 +59,7 @@ class role::deployment::config($deployment_servers) {
     "fluoride/fluoride" => "fluoride",
     "test/testrepo" => "testrepo",
     "elasticsearch/plugins" => "elasticsearchplugins",
+    'analytics/kraken' => 'analytics-kraken',
   }
   # Sed the .gitmodules file for the repo according to the following rules
   # TODO: rename this to something more specific
@@ -103,6 +105,7 @@ class role::deployment::config($deployment_servers) {
     "fluoride/fluoride" => "/srv/deployment/fluoride/fluoride",
     "test/testrepo" => "/srv/deployment/test/testrepo",
     "elasticsearch/plugins" => "/srv/deployment/elasticsearch/plugins",
+    'analytics/kraken' => '/srv/analytics/kraken',
   }
   # ensure dependent repos are fetched and checked out with this repo
   # repos fetched/checkedout in order
@@ -190,6 +193,7 @@ class role::deployment::deployment_servers::common {
   deployment::deployment_repo_sync_hook_link { "fluoride/fluoride": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "test/testrepo": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "elasticsearch/plugins": target => "shared.py" }
+  deployment::deployment_repo_sync_hook_link { 'analytics/kraken': target => "shared.py" }
 
   class { "apache": }
   class { "apache::mod::dav": }
