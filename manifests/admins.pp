@@ -3124,6 +3124,7 @@ class admins::roots {
 	include accounts::marc
 	include accounts::mark
 	include accounts::midom
+	include accounts::otto
 	include accounts::preilly # disabled
 	include accounts::py # dislabled
 	include accounts::robh
@@ -3197,7 +3198,6 @@ class admins::restricted {
 	include accounts::jamesofur
 	include accounts::khorn
 	include accounts::mgrover #RT 4600
-	include accounts::otto
 	include accounts::qchris #RT 5403
 	include accounts::rainman
 	include accounts::ram # revoked
@@ -3246,7 +3246,6 @@ class admins::privatedata {
 		accounts::milimetric,
 		accounts::diederik,
 		accounts::dartar,
-		accounts::otto,
 		accounts::spetrea,
 		accounts::yurik,        # RT 4835
 		accounts::howief,       # RT 3576
