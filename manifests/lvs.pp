@@ -1145,11 +1145,11 @@ class lvs::monitor {
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wiktionary-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wiktionarylb'],
+			ip_address => $ip['text-varnish']['eqiad']['wiktionarylb'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiquote-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikiquotelb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikiquotelb'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.eqiad.wikimedia.org":
@@ -1157,23 +1157,23 @@ class lvs::monitor {
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikisourcelb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikisourcelb'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikinews-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikinewslb'],
+			ip_address => $ip['text'-varnish]['eqiad']['wikinewslb'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiversity-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikiversitylb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikiversitylb'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"mediawiki-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['mediawikilb'],
+			ip_address => $ip['text-varnish']['eqiad']['mediawikilb'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"foundation-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['foundationlb'],
+			ip_address => $ip['text-varnish']['eqiad']['foundationlb'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.eqiad.wikimedia.org":
@@ -1267,35 +1267,35 @@ class lvs::monitor {
 			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wiktionary-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wiktionarylb'],
+			ip_address => $ip['text-varnish']['eqiad']['wiktionarylb'],
 			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiquote-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikiquotelb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikiquotelb'],
 			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikibookslb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikibookslb'],
 			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikisourcelb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikisourcelb'],
 			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikinews-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikinewslb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikinewslb'],
 			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiversity-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikiversitylb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikiversitylb'],
 			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"mediawiki-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['mediawikilb'],
+			ip_address => $ip['text-varnish']['eqiad']['mediawikilb'],
 			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"foundation-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['foundationlb'],
+			ip_address => $ip['text-varnish']['eqiad']['foundationlb'],
 			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.eqiad.wikimedia.org":
