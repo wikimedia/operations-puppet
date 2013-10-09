@@ -10,7 +10,7 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= packet_loss_log %>
 pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> <%= fundraising_log_directory %>/logs/landingpages.tsv.log
 
 ## Banner Impressions
-pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= fundraising_log_directory %>/logs/bannerImpressions-sampled100.tsv.log
+pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= | /usr/bin/tee <%= fundraising_log_directory %>/logs/bannerImpressions-sampled100.tsv.log | /usr/bin/log2udp -h <%= fundraising_udp_host %> -p <%= fundraising_udp_port %>
 
 
 ### webstatscollector -- domas

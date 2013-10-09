@@ -302,6 +302,10 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
     # keep fundraising logs in a subdir
     $fundraising_log_directory = "${log_directory}/fundraising"
 
+    # tee smapled Special:BannerImpression stream to hafnium
+    $fundraising_udp_host = 'hafnium.wikimedia.org'
+    $fundraising_udp_port = 20830
+
     file { "${fundraising_log_directory}":
         ensure  => 'directory',
         mode    => '0775',
