@@ -939,7 +939,10 @@ class misc::statistics::geowiki::jobs::limn {
     git::clone { 'geowiki-data':
         directory => $geowiki_data_path,
         origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki-data.git",
-        ensure    => 'latest',
+        # As geowiki-data currently does not exist in gerrit, requiring the
+        # latest version would break puppet's the dependecy chain. So we'll not
+        # 'ensure => latest' until the repo comes back in gerrit.
+        ensure    => 'present',
         owner     => $geowiki_user,
     }
 
