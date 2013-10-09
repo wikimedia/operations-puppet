@@ -614,11 +614,14 @@ class icinga::monitor::files::nagios-plugins {
 
 class icinga::monitor::firewall {
 
-  # deny access to port 5667 TCP (nsca) from external networks
-  # deny service snmp-trap (port 162) for external networks
+	include base::firewall
 
-  class iptables-purges {
+    # deny access to port 5667 TCP (nsca) from external networks
+	ferm::rule { 'nsca_5667':
+		rule => 'proto tcp dport 5667 { saddr $WMF_ALL ACCEPT; DROP; }'
+	}
 
+<<<<<<< HEAD
     require 'iptables::tables'
     iptables_purge_service{  'deny_pub_snmptrap': service => 'snmptrap' }
     iptables_purge_service{  'deny_pub_nsca': service => 'nsca' }
@@ -656,8 +659,13 @@ class icinga::monitor::firewall {
     iptables_add_exec{ "${hostname}_nsca": service => 'nsca' }
     iptables_add_exec{ "${hostname}_snmptrap": service => 'snmptrap' }
   }
+=======
+    # deny access to port 162 TCP (snmp-trap) from external networks
+	ferm::rule { 'snmp-trap_162':
+		rule => 'proto tcp dport 162 { saddr $WMF_ALL ACCEPT; DROP; }'
+	}
+>>>>>>> 3be4d41... add networks to ferm,convert neon iptables to ferm
 
-  require 'icinga::monitor::firewall::iptables'
 }
 
 class icinga::monitor::jobqueue {
