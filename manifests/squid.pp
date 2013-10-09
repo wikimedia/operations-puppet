@@ -7,18 +7,6 @@ class squid {
 	# Fast C External redirect helper
 	require squid::redirector
 
-	if $realm == "labs" {
-		# Nova mounts /dev/vdb on /mnt by default. We want to use that device
-		# for coss usage.
-		mount { "/mnt":
-			name => '/mnt',
-			ensure => absent;
-		}
-
-		# FIXME: Hack for arrays in LDAP - you suck puppet
-		$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
-	}
-
 	class packages {
 		package { ["squid", "squid-frontend"]:
 			ensure => latest;
