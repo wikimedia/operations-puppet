@@ -628,18 +628,20 @@ class icinga::monitor::firewall {
 
     require 'icinga::monitor::firewall::iptables-purges'
 
-    iptables_add_service{ 'lo_all': interface => 'lo', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'localhost_all': source => '127.0.0.1', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_pmtpa_nolabs': source => '10.0.0.0/14', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_esams': source => '10.21.0.0/24', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_eqiad1': source => '10.64.0.0/17', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_eqiad2': source => '10.65.0.0/20', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_virt': source => '10.4.16.0/24', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_152': source => '208.80.152.0/24', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_153': source => '208.80.153.128/26', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_154': source => '208.80.154.0/24', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_fundraising': source => '208.80.155.0/27', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_esams': source => '91.198.174.0/25', service => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'lo_all': interface            => 'lo', service                => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'localhost_all': source        => '127.0.0.1', service         => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'private_pmtpa_nolabs': source => '10.0.0.0/14', service       => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'private_esams': source        => '10.21.0.0/24', service      => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'private_eqiad1': source       => '10.64.0.0/17', service      => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'private_eqiad2': source       => '10.65.0.0/20', service      => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'private_ulsfo': source        => '10.128.0.0/17', service     => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'private_virt': source         => '10.4.16.0/24', service      => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'public_152': source           => '208.80.152.0/24', service   => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'public_153': source           => '208.80.153.128/26', service => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'public_154': source           => '208.80.154.0/24', service   => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'public_fundraising': source   => '208.80.155.0/27', service   => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'public_esams': source         => '91.198.174.0/25', service   => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'public_ulsfo': source         => '198.35.26.0/23', service    => 'all', jump => 'ACCEPT'}
   }
 
   class iptables-drops {
