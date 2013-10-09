@@ -14,7 +14,7 @@ class role::deployment::config($deployment_servers) {
       "l10n-beta0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-beta0",
       "gdash/gdash" => "http://${deploy_server_pmtpa}/gdash/gdash",
       "elasticsearch/plugins" => "http://${deploy_server_pmtpa}/elasticsearch/plugins",
-      # parsoid, fluoride and eventlogging are currently eqiad-only:
+      # parsoid, fluoride, eventlogging and analytics are currently eqiad-only:
       "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
       "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
@@ -106,7 +106,7 @@ class role::deployment::config($deployment_servers) {
     "fluoride/fluoride" => "/srv/deployment/fluoride/fluoride",
     "test/testrepo" => "/srv/deployment/test/testrepo",
     "elasticsearch/plugins" => "/srv/deployment/elasticsearch/plugins",
-    'analytics/kraken' => '/srv/analytics/kraken',
+    'analytics/kraken' => '/srv/deployment/analytics/kraken',
   }
   # ensure dependent repos are fetched and checked out with this repo
   # repos fetched/checkedout in order
