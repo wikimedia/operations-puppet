@@ -85,6 +85,12 @@ class elasticsearch($cluster_name, $heap_memory = '2G',
         require => Package['elasticsearch'],
     }
 
+    # Enabled the plugins
+    file { '/usr/share/elasticsearch/plugins':
+        ensure  => link,
+        target  => '/srv/deployment/elasticsearch/plugins',
+    }
+
     # Make sure that some pesky, misleading log files aren't kept around
     # These files are created when the server is using the default cluster_name
     # and are never written to when the server is using the correct cluster name
