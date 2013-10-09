@@ -58,16 +58,13 @@ for meta in iter(zsock.recv_json, ''):
             event['pageSpeed'] = (
                 event['loadEventEnd'] - event['domInteractive'])
 
-    wiki = meta['wiki']
-    if not event.get('isAnon'):
-        continue
-
     site = 'mobile' if 'mobileMode' in event else 'desktop'
+    auth = 'anonymous' if event.get('isAnon') else 'authenticated'
 
     for metric in metrics:
         value = event.get(metric, 0)
         if value > 0 and value < 60000:
             stat = 'browser.%s.%s:%s|ms' % (metric, site, value)
             sock.sendto(stat.encode('utf-8'), addr)
-            stat = 'browser.%s.%s.%s:%s|ms' % (metric, wiki, site, value)
+            stat = 'browser.%s.%s.%s:%s|ms' % (metric, site, auth, value)
             sock.sendto(stat.encode('utf-8'), addr)
