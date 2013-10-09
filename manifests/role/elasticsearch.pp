@@ -14,6 +14,11 @@ class role::elasticsearch::production {
         multicast_group => $multicast_group
     }
     deployment::target { 'elasticsearchplugins': }
+    # Enable the deployed plugins
+    file { '/usr/share/elasticsearch/plugins':
+        ensure  => link,
+        target  => '/srv/deployment/elasticsearch/plugins',
+    }
 
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
@@ -29,6 +34,11 @@ class role::elasticsearch::beta {
         heap_memory  => '4G',
     }
     deployment::target { 'elasticsearchplugins': }
+    # Enable the deployed plugins
+    file { '/usr/share/elasticsearch/plugins':
+        ensure  => link,
+        target  => '/srv/deployment/elasticsearch/plugins',
+    }
 
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
@@ -47,6 +57,11 @@ class role::elasticsearch::labs {
         cluster_name => $::elasticsearch_cluster_name,
     }
     deployment::target { 'elasticsearchplugins': }
+    # Enable the deployed plugins
+    file { '/usr/share/elasticsearch/plugins':
+        ensure  => link,
+        target  => '/srv/deployment/elasticsearch/plugins',
+    }
 
     include elasticsearch::ganglia
     include elasticsearch::nagios::check
