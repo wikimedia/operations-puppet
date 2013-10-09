@@ -11,7 +11,8 @@ class role::elasticsearch::production {
     class { '::elasticsearch':
         cluster_name    => "production-search-${::site}",
         heap_memory     => '7G',
-        multicast_group => $multicast_group
+        multicast_group => $multicast_group,
+        plugins_dir     => '/srv/deployment/elasticsearch/plugins',
     }
     deployment::target { 'elasticsearchplugins': }
 
@@ -27,6 +28,7 @@ class role::elasticsearch::beta {
     class { '::elasticsearch':
         cluster_name => 'beta-search',
         heap_memory  => '4G',
+        plugins_dir  => '/srv/deployment/elasticsearch/plugins',
     }
     deployment::target { 'elasticsearchplugins': }
 
@@ -45,6 +47,7 @@ class role::elasticsearch::labs {
     }
     class { '::elasticsearch':
         cluster_name => $::elasticsearch_cluster_name,
+        plugins_dir  => '/srv/deployment/elasticsearch/plugins',
     }
     deployment::target { 'elasticsearchplugins': }
 

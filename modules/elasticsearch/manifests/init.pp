@@ -19,8 +19,10 @@
 #       cluster_name = 'labs-search'
 #   }
 #
-class elasticsearch($cluster_name, $heap_memory = '2G',
-    $multicast_group = '224.2.2.4') {
+class elasticsearch($cluster_name,
+                    $heap_memory = '2G',
+                    $multicast_group = '224.2.2.4',
+                    $plugins_dir = '/usr/share/elasticsearch/plugins') {
     # Check arguments
     if $cluster_name == 'elasticsearch' {
         fail('$cluster_name must not be set to "elasticsearch"')
