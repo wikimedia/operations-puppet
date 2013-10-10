@@ -796,10 +796,14 @@ node "db1045.eqiad.wmnet" {
 
 # ad-hoc mariadb test box
 node "db1044.eqiad.wmnet" {
+    $cluster = "misc"
     include standard,
         mysql_wmf,
         mysql_wmf::datadirs,
-        mysql_wmf::mysqluser
+        mysql_wmf::mysqluser,
+        mysql_wmf::packages,
+        mysql_wmf::client,
+        mysql_wmf::conf
 }
 
 node "dobson.wikimedia.org" {
