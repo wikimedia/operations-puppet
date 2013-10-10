@@ -637,12 +637,13 @@ node /^db10(04|11|20|42|59)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(05|21|26|58)\.eqiad\.wmnet/ {
+node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
     if $hostname =~ /^db1021/ {
         $ganglia_aggregator = true
     }
-
-    if $hostname =~ /^db10(05|21|26|58)/ {
+    if $hostname =~ /^db10(45)/ {
+        class { role::coredb::s5 : innodb_file_per_table => true, mariadb => true }
+    } elsif $hostname =~ /^db10(05|21|26|58)/ {
         class { role::coredb::s5 : mariadb => true }
     } else {
         include role::coredb::s5
@@ -787,11 +788,6 @@ node "db1014.eqiad.wmnet" {
     include standard,
 	misc::graphite,
         udpprofile::collector
-}
-
-# 2013-09-11: sp testing delayed slave mariadb 10
-node "db1045.eqiad.wmnet" {
-    include standard
 }
 
 # ad-hoc mariadb test box
