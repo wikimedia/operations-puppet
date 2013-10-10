@@ -1,170 +1,118 @@
 # vim: sw=2 ts=2 et
-class role::deployment::config($deployment_servers) {
-  $deploy_server_pmtpa = $deployment_servers["pmtpa"]
-  $deploy_server_eqiad = $deployment_servers["eqiad"]
-  $deployment_repo_urls = {
-    "pmtpa" => {
-      "private" => "http://${deploy_server_pmtpa}/mediawiki/private",
-      "common" => "http://${deploy_server_pmtpa}/mediawiki/common",
-      "slot0" => "http://${deploy_server_pmtpa}/mediawiki/slot0",
-      "slot1" => "http://${deploy_server_pmtpa}/mediawiki/slot1",
-      "beta0" => "http://${deploy_server_pmtpa}/mediawiki/beta0",
-      "l10n-slot0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot0",
-      "l10n-slot1" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot1",
-      "l10n-beta0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-beta0",
-      "gdash/gdash" => "http://${deploy_server_pmtpa}/gdash/gdash",
-      "elasticsearch/plugins" => "http://${deploy_server_pmtpa}/elasticsearch/plugins",
-      # parsoid, fluoride, eventlogging and analytics are currently eqiad-only:
-      "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
-      "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
-      "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
-      "fluoride/fluoride" => "http://${deploy_server_eqiad}/fluoride/fluoride",
-      "test/testrepo" => "http://${deploy_server_eqiad}/test/testrepo",
-      'analytics/kraken' => "http://${deploy_server_eqiad}/analytics/kraken",
+class role::deployment::config {
+  $repo_config = {
+    'common'                         => {
+        'grain' => 'mediawiki',
     },
-    "eqiad" => {
-      "private" => "http://${deploy_server_eqiad}/mediawiki/private",
-      "common" => "http://${deploy_server_eqiad}/mediawiki/common",
-      "slot0" => "http://${deploy_server_eqiad}/mediawiki/slot0",
-      "slot1" => "http://${deploy_server_eqiad}/mediawiki/slot1",
-      "beta0" => "http://${deploy_server_eqiad}/mediawiki/beta0",
-      "l10n-slot0" => "http://${deploy_server_eqiad}/mediawiki/l10n-slot0",
-      "l10n-slot1" => "http://${deploy_server_eqiad}/mediawiki/l10n-slot1",
-      "l10n-beta0" => "http://${deploy_server_eqiad}/mediawiki/l10n-beta0",
-      "gdash/gdash" => "http://${deploy_server_eqiad}/gdash/gdash",
-      "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
-      "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
-      "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
-      "fluoride/fluoride" => "http://${deploy_server_eqiad}/fluoride/fluoride",
-      "test/testrepo" => "http://${deploy_server_eqiad}/test/testrepo",
-      "elasticsearch/plugins" => "http://${deploy_server_eqiad}/elasticsearch/plugins",
-      'analytics/kraken' => "http://${deploy_server_eqiad}/analytics/kraken",
+    'private'                        => {
+        'grain' => 'mediawiki',
     },
-  }
-  # deployment_target grain value for this repo. This must match the deployment::target
-  # value that is being set on the targets via puppet. If unset, the default value
-  # is the repo name
-  $deployment_repo_grains = {
-    "common" => "mediawiki",
-    "private" => "mediawiki",
-    "slot0" => "mediawiki",
-    "slot1" => "mediawiki",
-    "beta0" => "mediawiki",
-    "l10n-slot0" => "mediawiki",
-    "l10n-slot1" => "mediawiki",
-    "l10n-beta0" => "mediawiki",
-    "gdash/gdash" => "gdash",
-    "parsoid/Parsoid" => "parsoid",
-    "parsoid/config" => "parsoid",
-    "eventlogging/EventLogging" => "eventlogging",
-    "fluoride/fluoride" => "fluoride",
-    "test/testrepo" => "testrepo",
-    "elasticsearch/plugins" => "elasticsearchplugins",
-    'analytics/kraken' => 'analytics-kraken',
-  }
-  # Sed the .gitmodules file for the repo according to the following rules
-  # TODO: rename this to something more specific
-  $deployment_repo_regex = {
-    "slot0" => {
-      "https://gerrit.wikimedia.org/r/p/mediawiki" => "__REPO_URL__/.git/modules",
-      ".git" => "",
+    'slot0'                          => {
+        'grain'               => 'mediawiki',
+        'submodule_sed_regex' => {
+          'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
+          '.git' => '',
+        },
+        'checkout_submodules' => 'True',
+        'dependencies'        => ['l10n-slot0'],
     },
-    "slot1" => {
-      "https://gerrit.wikimedia.org/r/p/mediawiki" => "__REPO_URL__/.git/modules",
-      ".git" => "",
+    'slot1'                          => {
+        'grain' => 'mediawiki',
+        'submodule_sed_regex' => {
+          'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
+          '.git' => '',
+        },
+        'checkout_submodules' => 'True',
+        'dependencies'        => ['l10n-slot1'],
     },
-    "beta0" => {
-      "https://gerrit.wikimedia.org/r/p/mediawiki" => "__REPO_URL__/.git/modules",
-      ".git" => "",
+    'beta0'                          => {
+        'grain' => 'mediawiki',
+        'submodule_sed_regex' => {
+          'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
+          '.git' => '',
+        },
+        'checkout_submodules' => 'True',
+        'dependencies'        => ['l10n-beta0'],
     },
-  }
-  # Call these salt modules after checkout of parent repo and submodules
-  # TODO: turn this into a hash so that modules can specify args too
-  $deployment_repo_checkout_module_calls = {
-    "parsoid/Parsoid" => ["parsoid.config_symlink","parsoid.restart_parsoid"],
-    "parsoid/config" => ["parsoid.restart_parsoid"],
-  }
-  # Should this repo also do a submodule update --init?
-  $deployment_repo_checkout_submodules = {
-    "slot0" => "True",
-    "slot1" => "True",
-    "beta0" => "True",
-  }
-  $deployment_repo_locations = {
-    "private" => "/srv/deployment/mediawiki/private",
-    "common" => "/srv/deployment/mediawiki/common",
-    "slot0" => "/srv/deployment/mediawiki/slot0",
-    "slot1" => "/srv/deployment/mediawiki/slot1",
-    "beta0" => "/srv/deployment/mediawiki/beta0",
-    "l10n-slot0" => "/srv/deployment/mediawiki/l10n-slot0",
-    "l10n-slot1" => "/srv/deployment/mediawiki/l10n-slot1",
-    "l10n-beta0" => "/srv/deployment/mediawiki/l10n-beta0",
-    "gdash/gdash" => "/srv/deployment/gdash/gdash",
-    "parsoid/Parsoid" => "/srv/deployment/parsoid/Parsoid",
-    "parsoid/config" => "/srv/deployment/parsoid/config",
-    "eventlogging/EventLogging" => "/srv/deployment/eventlogging/EventLogging",
-    "fluoride/fluoride" => "/srv/deployment/fluoride/fluoride",
-    "test/testrepo" => "/srv/deployment/test/testrepo",
-    "elasticsearch/plugins" => "/srv/deployment/elasticsearch/plugins",
-    'analytics/kraken' => '/srv/deployment/analytics/kraken',
-  }
-  # ensure dependent repos are fetched and checked out with this repo
-  # repos fetched/checkedout in order
-  $deployment_repo_dependencies = {
-    "slot0" => ["l10n-slot0"],
-    "slot1" => ["l10n-slot1"],
-    "beta0" => ["l10n-beta0"],
-  }
+    'l10n-slot0'                     => {
+        'grain'     => 'mediawiki',
+    },
+    'l10n-slot1'                     => {
+        'grain'     => 'mediawiki',
+    },
+    'l10n-beta0'                     => {
+        'grain'     => 'mediawiki',
+    },
+    'gdash/gdash'                    => {
+        'grain' => 'gdash',
+    },
+    'parsoid/Parsoid'                => {
+        'grain'                 => 'parsoid',
+        'checkout_module_calls' => [
+            'parsoid.config_symlink',
+            'parsoid.restart_parsoid',
+        ],
+    },
+    'parsoid/config'                 => {
+        'grain'                 => 'parsoid',
+        'checkout_module_calls' => [
+            'parsoid.restart_parsoid',
+        ],
+    },
+    'eventlogging/EventLogging'      => {
+        'grain' => 'eventlogging',
+    },
+    'fluoride/fluoride'              => {
+        'grain' => 'fluoride',
+    },
+    'test/testrepo'                  => {
+        'grain' => 'testrepo',
+    },
+    'elasticsearch/plugins'          => {
+        'grain' => 'elasticsearchplugins',
+    },
+    'analytics/kraken'               => {
+        'grain' => 'analytics-kraken',
+    },
 }
 
 class role::deployment::salt_masters::production {
-  $deployment_servers = {
-    "pmtpa" => "tin.eqiad.wmnet",
-    "eqiad" => "tin.eqiad.wmnet",
-  }
-  class { "::role::deployment::config":
-    deployment_servers => $deployment_servers,
-  }
-  class { "deployment::salt_master":
-    deployment_servers => $deployment_servers,
-    deployment_repo_urls => $role::deployment::config::deployment_repo_urls,
-    deployment_repo_regex => $role::deployment::config::deployment_repo_regex,
-    deployment_repo_checkout_module_calls => $role::deployment::config::deployment_repo_checkout_module_calls,
-    deployment_repo_checkout_submodules => $role::deployment::config::deployment_repo_checkout_submodules,
-    deployment_repo_locations => $role::deployment::config::deployment_repo_locations,
-    deployment_repo_dependencies => $role::deployment::config::deployment_repo_dependencies,
-    deployment_repo_grains => $role::deployment::config::deployment_repo_grains,
-    deployment_deploy_redis => {
-      "host" => "tin.eqiad.wmnet",
-      "port" => 6379,
-      "db" => "0",
+  $deployment_config = {
+    'parent_dir' => '/srv/deployment',
+    'servers'        => {
+        'pmtpa' => 'tin.eqiad.wmnet',
+        'eqiad' => 'tin.eqiad.wmnet',
+    }
+    'redis'          => {
+      'host' => 'tin.eqiad.wmnet',
+      'port' => '6379',
+      'db'   => '0',
     },
+  }
+  class { '::role::deployment::config': }
+  class { 'deployment::salt_master':
+    repo_config       => ::role::deployment::config::$repo_config,
+    deployment_config => $deployment_config,
   }
 }
 
 class role::deployment::salt_masters::labs {
-  $deployment_servers = {
-    "pmtpa" => "i-00000390.pmtpa.wmflabs",
-    # no eqiad zone, yet
-    "eqiad" => "i-00000390.pmtpa.wmflabs",
-  }
-  class { "role::deployment::config":
-    deployment_servers => $deployment_servers,
-  }
-  class { "deployment::salt_master":
-    deployment_servers => $deployment_servers,
-    deployment_repo_urls => $role::deployment::config::deployment_repo_urls,
-    deployment_repo_regex => $role::deployment::config::deployment_repo_regex,
-    deployment_repo_checkout_module_calls => $role::deployment::config::deployment_repo_checkout_module_calls,
-    deployment_repo_checkout_submodules => $role::deployment::config::deployment_repo_checkout_submodules,
-    deployment_repo_locations => $role::deployment::config::deployment_repo_locations,
-    deployment_repo_dependencies => $role::deployment::config::deployment_repo_dependencies,
-    deployment_repo_grains => $role::deployment::config::deployment_repo_grains,
-    deployment_deploy_redis => {
-      "host" => "i-00000390.pmtpa.wmflabs",
-      "port" => 6379,
-      "db" => "0",
+  $deployment_config = {
+    'repo_locations' => '/srv/deployment',
+    'servers'        => {
+        'pmtpa' => 'i-00000390.pmtpa.wmflabs',
+        'eqiad' => 'i-00000390.pmtpa.wmflabs',
+    }
+    'redis'          => {
+      'host' => 'i-00000390.pmtpa.wmflabs',
+      'port' => '6379',
+      'db'   => '0',
     },
+  }
+  class { '::role::deployment::config': }
+  class { 'deployment::salt_master':
+    repo_config       => ::role::deployment::config::$repo_config,
+    deployment_config => $deployment_config,
   }
 }
 
