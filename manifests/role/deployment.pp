@@ -137,6 +137,26 @@ class role::deployment::salt_masters::sartoris {
   }
 }
 
+class role::deployment::salt_masters::sartoris {
+  $deployment_config = {
+    'parent_dir' => '/srv/deployment',
+    'servers'        => {
+        'pmtpa' => 'i-00000822.pmtpa.wmflabs',
+        'eqiad' => 'i-00000822.pmtpa.wmflabs',
+    },
+    'redis'          => {
+      'host' => 'i-00000822.pmtpa.wmflabs',
+      'port' => '6379',
+      'db'   => '0',
+    },
+  }
+  class { '::role::deployment::config': }
+  class { 'deployment::salt_master':
+    repo_config       => $role::deployment::config::repo_config,
+    deployment_config => $deployment_config,
+  }
+}
+
 class role::deployment::deployment_servers::common {
   # Can't include this while scap is present on tin:
   # include misc::deployment::scripts
