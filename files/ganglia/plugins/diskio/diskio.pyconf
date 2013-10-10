@@ -1,0 +1,48 @@
+# Ganglia module for disk IO stats
+# Configuration managed by Puppet.
+modules {
+    module {
+        name = "diskio"
+        language = "python"
+    }
+}
+
+collection_group {
+    collect_every = 30
+    time_threshold = 60
+    metric {
+        name = "diskio_write_bytes"
+        title = "Disk write bytes"
+        value_threshold = 0
+    }
+    metric {
+        name = "diskio_write_load"
+        title = "Disk write load"
+        value_threshold = 0
+    }
+    metric {
+        name = "diskio_total_load"
+        title = "Disk total load"
+        value_threshold = 0
+    }
+    metric {
+        name = "diskio_devices"
+        title = "Disk devices monitored"
+        value_threshold = 0
+    }
+    metric {
+        name = "diskio_util"
+        title = "Disk utilisation"
+        value_threshold = 0
+    }
+    metric {
+        name = "diskio_read_load"
+        title = "Disk read load"
+        value_threshold = 0
+    }
+    metric {
+        name = "diskio_read_bytes"
+        title = "Disk read bytes"
+        value_threshold = 0
+    }
+}

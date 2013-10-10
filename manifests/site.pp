@@ -2909,6 +2909,7 @@ node 'hafnium.wikimedia.org' {
         accounts::olivneh,
         role::eventlogging::graphite,
         misc::graphite::navtiming,
+        misc::monitoring::disk,
         webperf
 
     sudo_user { 'olivneh':

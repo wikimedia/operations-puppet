@@ -1,0 +1,9 @@
+Ganglia metric module for /proc/diskstats metrics
+
+- DiskStats.py: copied from ganglia_metrics, r69279.
+- GangliaMetrics.py: ditto.
+- diskio.py: gmond compatibility wrapper for the files above.
+- diskio.pyconf: gmond module config file.
+
+The ganglia_metrics package may be obtained from
+<http://svn.wikimedia.org/viewvc/mediawiki/trunk/ganglia_metrics/?pathrev=69279>

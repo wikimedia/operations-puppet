@@ -27,6 +27,26 @@ class misc::monitoring::htcp-loss {
 	}
 }
 
+# == Class misc::monitoring::disk
+# Sends /proc/diskstats metrics to Ganglia
+# Implementing by wrapping ganglia-metrics with an apater module that
+# makes it compatible with gmond.
+# See <http://svn.wikimedia.org/viewvc/mediawiki/trunk/ganglia_metrics/>.
+#
+class misc::monitoring::disk {
+    file {
+        '/usr/lib/ganglia/python_modules/DiskStats.py':
+            source => 'puppet:///files/ganglia/plugins/diskio/DiskStats.py';
+        '/usr/lib/ganglia/python_modules/GangliaMetrics.py':
+            source => 'puppet:///files/ganglia/plugins/diskio/GangliaMetrics.py';
+        '/usr/lib/ganglia/python_modules/diskio.py':
+            source => 'puppet:///files/ganglia/plugins/diskio/diskio.py';
+        '/etc/ganglia/conf.d/diskio.pyconf':
+            source => 'puppet:///files/ganglia/plugins/diskio/diskio.pyconf',
+            notify => Service['gmond'];
+    }
+}
+
 # == Class misc::monitoring::net::udp
 # Sends UDP statistics to ganglia.
 #
