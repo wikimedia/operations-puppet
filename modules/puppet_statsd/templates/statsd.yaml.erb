@@ -1,0 +1,6 @@
+# Configuration file for Puppet StatsD reporter
+# Managed by Puppet.
+---
+:statsd_host: '<%= @statsd_host %>'
+:statsd_port: <%= @statsd_port.to_i %>
+:metric_format: '<%= @metric_format %>'
