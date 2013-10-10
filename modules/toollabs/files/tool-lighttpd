@@ -31,8 +31,8 @@ if [ "$home" = "" -o ! -d "$home/public_html" ]; then
   exit 1
 fi
 
-export llock="$scoreboard.lock.$tool"
-export lock="$scoreboard.lock"
+export llock="/tmp/toollock.$tool"
+export lock="/tmp/toollock.lock"
 
 trap "rm -f $llock" 0
 touch $llock
@@ -144,7 +144,7 @@ cleanup() {
 
 trap "cleanup;exit 0" 15
 
-/bin/su -c "echo $user; id; set; /usr/sbin/lighttpd -f $runbase.conf -D 2>&1 >>$home/error.log" - "$user"
+/bin/su -c "/usr/sbin/lighttpd -f $runbase.conf -D 2>&1 >>$home/error.log" - "$user"
 /bin/date >"$home/lighttpd.STOPPED"
 
 cleanup
