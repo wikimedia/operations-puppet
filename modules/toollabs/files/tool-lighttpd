@@ -1,0 +1,148 @@
+#! /bin/bash
+#
+#  Copyright © 2013 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+
+tool="$1"
+user="local-$tool"
+home=$(getent passwd $user | cut -d : -f 6 | sed -e 's/\/$//')
+if [ "$(getent group $user | cut -d : -f 1)" != "$user" ]; then
+  echo "$0: $1 does not appear to be a tool" >&2
+  exit 1
+fi
+spool="/var/run/lighttpd"
+runbase="$spool/$tool"
+scoreboard="/data/project/.system/dynamic"
+
+if [ "$home" = "" -o ! -d "$home/public_html" ]; then
+  echo "$1 does not have a public_html" >&2
+  exit 1
+fi
+
+llock="$scoreboard.lock.$(hostname).$$"
+lock="$scoreboard.lock"
+trap "rm -f $llock" 0
+touch $llock
+while ! mv -n $llock $lock >/dev/null 2>&1; do
+  sleep 1
+done
+trap "rm -f $lock $scoreboard.tmp" 0
+port=4000
+past="$(grep "^$tool " $scoreboard)"
+if [ "$past" != "" ]; then
+  port=$(echo "$past" | sed -e 's/.*://')
+fi
+grep -v "^$tool " $scoreboard >$scoreboard.tmp
+while grep -q ":$port$" $scoreboard.tmp; do
+  port=$[$port+1]
+done
+echo "$tool $(hostname):$port" >>$scoreboard.tmp
+mv $scoreboard.tmp $scoreboard
+rm -f $lock
+trap "" 0
+
+cat <<EOF >$runbase.conf~
+server.modules = (
+  "mod_access",
+  "mod_accesslog",
+  "mod_alias",
+  "mod_compress",
+  "mod_redirect",
+  "mod_rewrite",
+  "mod_fastcgi",
+  "mod_cgi",
+)
+
+server.port = $port
+server.use-ipv6 = "disable"
+server.username = "local-$tool"
+server.groupname = "local-$tool"
+server.core-files = "disable"
+server.document-root = "$home/public_html"
+server.pid-file = "$runbase.pid"
+server.errorlog = "$home/error.log"
+server.breakagelog = "$home/error.log"
+server.follow-symlink = "enable"
+server.max-connections = 20
+server.max-keep-alive-idle = 60
+server.max-worker = 5
+server.stat-cache-engine = "fam"
+ssl.engine = "disable"
+
+alias.url = ( "/$tool" => "$home/public_html/" )
+
+index-file.names = ( "index.php", "index.html", "index.htm" )
+dir-listing.encoding = "utf-8"
+server.dir-listing = "disable"
+url.access-deny = ( "~", ".inc" )
+static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
+
+accesslog.use-syslog = "disable"
+accesslog.filename = "$home/access.log"
+
+cgi.assign = (
+  ".pl" => "/usr/bin/perl",
+  ".py" => "/usr/bin/python",
+  ".pyc" => "/usr/bin/python",
+)
+
+fastcgi.server += ( ".php" =>
+        ((
+                "bin-path" => "/usr/bin/php-cgi",
+                "socket" => "/tmp/php.socket.$tool",
+                "max-procs" => 1,
+                "bin-environment" => (
+                        "PHP_FCGI_CHILDREN" => "4",
+                        "PHP_FCGI_MAX_REQUESTS" => "10000"
+                ),
+                "bin-copy-environment" => (
+                        "PATH", "SHELL", "USER"
+                ),
+                "broken-scriptfilename" => "enable"
+        ))
+)
+
+EOF
+
+/usr/share/lighttpd/create-mime.assign.pl >>$runbase.conf~
+if [ -r $home/.lighttpd.conf ]; then
+  grep '^\s*server.dir_listing\s*=' $home/.lighttpd.conf >>$runbase.conf~
+  sed -e 's/server\s*\./var./g' $home/.lighttpd.conf >>$runbase.conf~
+fi
+
+chown $user:$user $runbase.conf~
+mv $runbase.conf~ $runbase.conf
+
+
+cleanup() {
+  trap "rm -f $llock" 0
+  touch $llock
+  while ! mv -n $llock $lock >/dev/null 2>&1; do
+    sleep 1
+  done
+  trap "rm -f $lock $scoreboard.tmp" 0
+  grep -v "^$tool " $scoreboard >$scoreboard.tmp
+  mv $scoreboard.tmp $scoreboard
+  rm -f $lock
+  trap "" 0
+}
+
+trap "cleanup;exit 0" 15
+
+/bin/su -c "echo $user; id; set; /usr/sbin/lighttpd -f $runbase.conf -D 2>&1 >>$home/error.log" - "$user"
+/bin/date "$home/lighttpd.STOPPED"
+
+cleanup
+exit 1
