@@ -25,6 +25,13 @@ class role::labs::tools {
     }
   }
 
+  class webnode inherits role::labs::tools::config {
+    system_role { "role::labs::tools::webnode": description => "Tool Labs clustered web host" }
+    class { 'toollabs::webnode':
+      gridmaster => $grid_master,
+    }
+  }
+
   class master inherits role::labs::tools::config {
     system_role { "role::labs::tools::master": description => "Tool Labs gridengine master" }
     class { 'toollabs::master': }
