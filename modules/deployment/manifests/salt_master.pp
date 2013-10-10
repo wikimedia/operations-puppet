@@ -1,4 +1,12 @@
-class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $returner_dir="/srv/salt/_returners", $deployment_servers={}, $deployment_repo_grains={}, $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}, $deployment_repo_dependencies = {}, $deployment_deploy_redis={}) {
+class deployment::salt_master(
+  $state_dir="/srv/salt",
+  $runner_dir="/srv/runners",
+  $pillar_dir="/srv/pillars",
+  $module_dir="/srv/salt/_modules",
+  $returner_dir="/srv/salt/_returners",
+  $repo_config,
+  $deployment_config
+  ) {
   file {
     "/etc/salt/deploy_runner.conf":
       content => template("deployment/deploy_runner.conf.erb"),
@@ -36,8 +44,14 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
       owner => root,
       group => root,
       require => [File["${pillar_dir}"]];
-    "${pillar_dir}/deployment/init.sls":
-      content => template("deployment/pillars/deploy.sls.erb"),
+    "${pillar_dir}/deployment/repo_config.sls":
+      content => ordered_json($repo_config),
+      mode => 0444,
+      owner => root,
+      group => root,
+      require => [File["${pillar_dir}/deployment"]];
+    "${pillar_dir}/deployment/deployment_config.sls":
+      content => ordered_json($deployment_config),
       mode => 0444,
       owner => root,
       group => root,
@@ -72,7 +86,7 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
   exec {
     "refresh_deployment_pillars":
       command => "/usr/bin/salt -C 'G@deployment_server:true or G@deployment_target:*' saltutil.refresh_pillar",
-      subscribe => [File["${pillar_dir}/deployment/init.sls"], File["${pillar_dir}"]],
+      subscribe => [File["${pillar_dir}/deployment/repo_config.sls"], File["${pillar_dir}/deployment/repo_config.sls"], File["${pillar_dir}"]],
       refreshonly => true,
       require => [Package["salt-master"]];
     "refresh_deployment_modules":

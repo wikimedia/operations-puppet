@@ -22,10 +22,11 @@ def _get_serv():
     '''
     Return a redis server object
     '''
-    deploy_redis = __pillar__.get('deploy_redis')
+    deployment_config = __pillar__.get('deployment_config')
+    deploy_redis = deployment_config['redis']
     serv = redis.Redis(host=deploy_redis['host'],
-                       port=deploy_redis['port'],
-                       db=deploy_redis['db'])
+                       port=int(deploy_redis['port']),
+                       db=int(deploy_redis['db']))
     return serv
 
 

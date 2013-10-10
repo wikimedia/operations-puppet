@@ -8,19 +8,20 @@ import re
 import urllib
 
 
-def _get_serv():
+def _get_redis_serv():
     '''
     Return a redis server object
     '''
-    deploy_redis = __pillar__.get('deploy_redis')
+    deployment_config = __pillar__.get('deployment_config')
+    deploy_redis = deployment_config['redis']
     serv = redis.Redis(host=deploy_redis['host'],
-                       port=deploy_redis['port'],
-                       db=deploy_redis['db'])
+                       port=int(deploy_redis['port']),
+                       db=int(deploy_redis['db']))
     return serv
 
 
 def _check_in(function, repo):
-    serv = _get_serv()
+    serv = _get_redis_serv()
     minion = __grains__.get('id')
     timestamp = time.time()
     # Ensure this repo exist in the set of repos
@@ -35,6 +36,26 @@ def _check_in(function, repo):
                   'checkout_checkin_timestamp', timestamp)
 
 
+def get_config(repo):
+    deployment_config = __pillar__.get('deployment_config')
+    config = __pillar__.get('repo_config')
+    config = config[repo]
+    if 'location' not in config:
+        repoloc = '{0}/{1}'.format(deployment_config['parent_dir'], repo)
+        config['location'] = repoloc
+    site = __grains__.get('site')
+    url = deployment_config['servers'][site]
+    config['url'] = '{0}/{1}'.format(url, repo)
+    if 'submodule_sed_regex' not in config:
+        config['submodule_sed_regex'] = {}
+    if 'checkout_submodules' not in config:
+        config['checkout_submodules'] = 'False'
+    if 'dependencies' not in config:
+        config['dependencies'] = []
+    if 'checkout_module_calls' not in config:
+        config['checkout_module_calls'] = []
+
+
 def sync_all():
     '''
     Sync all repositories. If a repo doesn't exist on target, clone as well.
@@ -43,13 +64,13 @@ def sync_all():
 
         salt -G 'cluster:appservers' deploy.sync_all
     '''
-    repo_grains = __pillar__.get('repo_grains')
+    repo_config = __pillar__.get('repo_config')
     deployment_target = __grains__.get('deployment_target')
     status = 0
     stats = {}
 
-    for repo, grain in repo_grains.items():
-        if grain not in deployment_target:
+    for repo, config in repo_config.items():
+        if config['grain'] not in deployment_target:
             continue
         if repo not in stats:
             stats[repo] = {}
@@ -67,90 +88,69 @@ def fetch(repo):
 
         salt -G 'cluster:appservers' deploy.fetch 'slot0'
     '''
-    site = __grains__.get('site')
-    repourls = __pillar__.get('repo_urls')
-    repourls = repourls[site]
-    repourl = repourls[repo]
-    repolocs = __pillar__.get('repo_locations')
-    repoloc = repolocs[repo]
-    sed_lists = __pillar__.get('repo_regex')
-    try:
-        sed_list = sed_lists[repo]
-    except KeyError:
-        sed_list = []
-    checkout_submodules = __pillar__.get('repo_checkout_submodules')
-    try:
-        checkout_submodules = checkout_submodules[repo]
-    except KeyError:
-        checkout_submodules = "False"
-    gitmodules = repoloc + '/.gitmodules'
+    config = get_config(repo)
+    gitmodules = config['location'] + '/.gitmodules'
 
-    # Fetch repos this repo depends on
-    dependencies = __pillar__.get('repo_dependencies')
-    try:
-        dependencies = dependencies[repo]
-    except KeyError:
-        dependencies = []
     depstats = []
-    for dependency in dependencies:
+    for dependency in config['dependencies']:
         depstats.append(__salt__['deploy.fetch'](dependency))
 
     # Notify the deployment system we started
     _check_in('deploy.fetch', repo)
 
     # Clone the repo if it doesn't exist yet
-    if not __salt__['file.directory_exists'](repoloc + '/.git'):
-        cmd = '/usr/bin/git clone %s %s' % (repourl + '/.git', repoloc)
+    if not __salt__['file.directory_exists'](config['location'] + '/.git'):
+        cmd = '/usr/bin/git clone %s %s' % (config['url'] + '/.git',
+                                            config['location'])
         status = __salt__['cmd.retcode'](cmd)
         if status != 0:
             return {'status': 5, 'repo': repo, 'dependencies': depstats}
 
-    cmd = '/usr/bin/git remote set-url origin %s' % repourl + "/.git"
-    __salt__['cmd.retcode'](cmd, repoloc)
+    cmd = '/usr/bin/git remote set-url origin %s' % config['url'] + "/.git"
+    __salt__['cmd.retcode'](cmd, config['location'])
 
     cmd = '/usr/bin/git fetch'
-    status = __salt__['cmd.retcode'](cmd, repoloc)
+    status = __salt__['cmd.retcode'](cmd, config['location'])
     if status != 0:
         return {'status': 10, 'repo': repo, 'dependencies': depstats}
 
     cmd = '/usr/bin/git fetch --tags'
-    status = __salt__['cmd.retcode'](cmd, repoloc)
+    status = __salt__['cmd.retcode'](cmd, config['location'])
     if status != 0:
         return {'status': 20, 'repo': repo, 'dependencies': depstats}
 
     # There's a bug with using booleans in pillars, so for now
     # we're matching against an explicit True string.
-    if checkout_submodules == "True":
+    if config['checkout_submodules'] == "True":
         cmd = '/usr/bin/git checkout .gitmodules'
-        ret = __salt__['cmd.retcode'](cmd, repoloc)
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
             return {'status': 30, 'repo': repo, 'dependencies': depstats}
         # Transform .gitmodules file based on defined seds
-        for sed in sed_list:
-            for before, after in sed.items():
-                after = after.replace('__REPO_URL__', repourl)
-                __salt__['file.sed'](gitmodules, before, after)
+        for before, after in config['submodule_sed_regex'].items():
+            after = after.replace('__REPO_URL__', config['url'])
+            __salt__['file.sed'](gitmodules, before, after)
 
         # Sync the .gitmodules config
         cmd = '/usr/bin/git submodule sync'
-        ret = __salt__['cmd.retcode'](cmd, repoloc)
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
             return {'status': 40, 'repo': repo, 'dependencies': depstats}
 
         # fetch all submodules and tag for submodules
         cmd = '/usr/bin/git submodule foreach git fetch'
-        ret = __salt__['cmd.retcode'](cmd, repoloc)
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
             return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
         # fetch all submodules and tag for submodules
         cmd = '/usr/bin/git submodule foreach git fetch --tags'
-        ret = __salt__['cmd.retcode'](cmd, repoloc)
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
             return {'status': 60, 'repo': repo, 'dependencies': depstats}
 
     cmd = '/usr/bin/git describe --always --tag origin'
-    origin_tag = __salt__['cmd.run'](cmd, repoloc)
+    origin_tag = __salt__['cmd.run'](cmd, config['location'])
     origin_tag = origin_tag.strip()
 
     return {'status': status, 'repo': repo,
@@ -167,35 +167,15 @@ def checkout(repo, reset=False):
     '''
     #TODO: replace the cmd.retcode calls with git module calls,
     # where appropriate
-    site = __grains__.get('site')
-    repourls = __pillar__.get('repo_urls')
-    repourls = repourls[site]
-    repourl = repourls[repo]
-    repolocs = __pillar__.get('repo_locations')
-    repoloc = repolocs[repo]
-    sed_lists = __pillar__.get('repo_regex')
-    try:
-        sed_list = sed_lists[repo]
-    except KeyError:
-        sed_list = []
-    checkout_submodules = __pillar__.get('repo_checkout_submodules')
-    try:
-        checkout_submodules = checkout_submodules[repo]
-    except KeyError:
-        checkout_submodules = "False"
-    module_calls = __pillar__.get('repo_checkout_module_calls')
-    try:
-        module_calls = module_calls[repo]
-    except KeyError:
-        module_calls = []
-    gitmodules = repoloc + '/.gitmodules'
+    config = get_config(repo)
+    gitmodules = config['location'] + '/.gitmodules'
     depstats = []
 
     # Notify the deployment system we started
     _check_in('deploy.checkout', repo)
 
     # Fetch the .deploy file from the server and get the current tag
-    deployfile = repourl + '/.deploy'
+    deployfile = config['url'] + '/.deploy'
     f = urllib.urlopen(deployfile)
     deployinfo = f.readlines()
     tag = ''
@@ -210,24 +190,18 @@ def checkout(repo, reset=False):
     if re.match('\W+', tag):
         return {'status': 1, 'repo': repo, 'dependencies': depstats}
 
-    # Checkout repos this repo depends on
-    dependencies = __pillar__.get('repo_dependencies')
-    try:
-        dependencies = dependencies[repo]
-    except KeyError:
-        dependencies = []
-    for dependency in dependencies:
+    for dependency in config['dependencies']:
         depstats.append(__salt__['deploy.checkout'](dependency, reset))
 
     if reset:
         # User requested we hard reset the repo to the tag
         cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
-        ret = __salt__['cmd.retcode'](cmd, repoloc)
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
             return {'status': 20, 'repo': repo, 'dependencies': depstats}
     else:
         cmd = '/usr/bin/git describe --always --tag'
-        current_tag = __salt__['cmd.run'](cmd, repoloc)
+        current_tag = __salt__['cmd.run'](cmd, config['location'])
         current_tag = current_tag.strip()
         if current_tag == tag:
             return {'status': 0, 'repo': repo,
@@ -235,32 +209,31 @@ def checkout(repo, reset=False):
 
     # Switch to the tag defined in the server's .deploy file
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
-    ret = __salt__['cmd.retcode'](cmd, repoloc)
+    ret = __salt__['cmd.retcode'](cmd, config['location'])
     if ret != 0:
         return {'status': 30, 'repo': repo, 'dependencies': depstats}
 
     # There's a bug with using booleans in pillars, so for now
     # we're matching against an explicit True string.
-    if checkout_submodules == "True":
+    if config['checkout_submodules'] == "True":
         # Transform .gitmodules file based on defined seds
-        for sed in sed_list:
-            for before, after in sed.items():
-                after = after.replace('__REPO_URL__', repourl)
-                __salt__['file.sed'](gitmodules, before, after)
+        for before, after in config['submodule_sed_regex'].items():
+            after = after.replace('__REPO_URL__', config['url'])
+            __salt__['file.sed'](gitmodules, before, after)
 
         # Sync the .gitmodules config
         cmd = '/usr/bin/git submodule sync'
-        ret = __salt__['cmd.retcode'](cmd, repoloc)
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
             return {'status': 40, 'repo': repo, 'dependencies': depstats}
 
         # Update the submodules to match this tag
         cmd = '/usr/bin/git submodule update --init'
-        ret = __salt__['cmd.retcode'](cmd, repoloc)
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
             return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
     # Call modules on the repo's behalf ignore the return on these
-    for call in module_calls:
+    for call in config['checkout_module_calls']:
         __salt__[call](repo)
     return {'status': 0, 'repo': repo, 'tag': tag, 'dependencies': depstats}
