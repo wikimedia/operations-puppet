@@ -35,7 +35,8 @@ llock="$scoreboard.lock.$(hostname).$$"
 lock="$scoreboard.lock"
 trap "rm -f $llock" 0
 touch $llock
-while ! mv -n $llock $lock >/dev/null 2>&1; do
+while [ -f $llock ]; do
+  mv -n $llock $lock
   sleep 1
 done
 trap "rm -f $lock $scoreboard.tmp" 0
@@ -129,7 +130,8 @@ mv $runbase.conf~ $runbase.conf
 cleanup() {
   trap "rm -f $llock" 0
   touch $llock
-  while ! mv -n $llock $lock >/dev/null 2>&1; do
+  while [ -f $llock ]; do
+    mv -n $llock $lock
     sleep 1
   done
   trap "rm -f $lock $scoreboard.tmp" 0
