@@ -1,9 +1,0 @@
-repo_locations: {<% deployment_repo_locations.sort.each do |repo, location| %>'<%= repo %>': '<%= location %>',<% end %>}
-repo_grains: {<% deployment_repo_grains.sort.each do |repo, grain| %>'<%= repo %>': '<%= grain %>',<% end %>}
-repo_checkout_submodules: {<% deployment_repo_checkout_submodules.sort.each do |repo, checkout_submodule| %>'<%= repo %>': '<%= checkout_submodule %>',<% end %>}
-repo_urls: {<% deployment_repo_urls.sort.each do |site, repos| %>'<%= site %>': {<% repos.sort.each do |repo, url| %>'<%= repo %>': '<%= url %>',<% end %>},<% end %>}
-repo_regex: {<% deployment_repo_regex.sort.each do |repo, regexes| %>'<%= repo %>': [<% regexes.sort.each do |before, after| %>{'<%= before %>': '<%= after %>'},<% end %>],<% end %>}
-repo_checkout_module_calls: {<% deployment_repo_checkout_module_calls.sort.each do |repo, checkout_module_calls| %>'<%= repo %>': [<% checkout_module_calls.sort.each do |call| %>'<%= call %>',<% end %>],<% end %>}
-repo_dependencies: {<% deployment_repo_dependencies.sort.each do |repo, dependencies| %>'<%= repo %>': [<% dependencies.each do |dependency| %>'<%= dependency %>',<% end %>],<% end %>}
-deploy_redis: {host: '<%= deployment_deploy_redis['host'] %>', 'port': <%= deployment_deploy_redis['port'] %>, 'db': '<%= deployment_deploy_redis['db'] %>'}
-deploy_servers: {<% deployment_servers.sort.each do |site, server| %>'<%= site %>': '<%= server %>',<% end %>}
