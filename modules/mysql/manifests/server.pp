@@ -49,7 +49,7 @@ class mysql::server (
     name     => $package_name,
     require  => $package_name ? {
       "mariadb-server-5.5" => File["/etc/apt/sources.list.d/wikimedia-mariadb.list"],
-      default => true,
+      default => undef
     }
   }
 
