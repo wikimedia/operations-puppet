@@ -11,10 +11,9 @@ def config_symlink(repo):
     Put a localsettings.js symlink in the Parsoid checkout pointing to the
     config checkout
     '''
-    repolocs = __pillar__.get('repo_locations')
-    repoloc = repolocs[repo]
-    lsSymlinkPath = repoloc + '/js/api/localsettings.js'
-    nmSymlinkPath = repoloc + '/js/node_modules'
+    config = __salt__['deploy.get_config'](repo)
+    lsSymlinkPath = config['location'] + '/js/api/localsettings.js'
+    nmSymlinkPath = config['location'] + '/js/node_modules'
     if not __salt__['file.file_exists'](lsSymlinkPath):
         try:
             os.symlink('../../../config/localsettings.js', lsSymlinkPath)

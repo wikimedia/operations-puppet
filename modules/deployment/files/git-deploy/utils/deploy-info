@@ -30,21 +30,30 @@ def main():
     repos = serv.smembers('deploy:repos')
     if options.repo:
         if options.repo not in repos:
-            print "{0}: repo does not exist".format(options.repo)
+            print "{0}: repo not found in redis".format(options.repo)
             sys.exit(1)
         else:
-            if options.repo in pillar['repo_dependencies'] and not options.nodeps:
-                dependencies = pillar['repo_dependencies'][options.repo]
+            try:
+                repo_config = pillar['repo_config'][options.repo]
+            except KeyError:
+                print "{0}: repo not found in pillar data".format(options.repo)
+                sys.exit(1)
+            if 'dependencies' in repo_config and not options.nodeps:
+                dependencies = repo_config['dependencies']
             else:
                 dependencies = []
             if options.fullreport:
                 for dependency in dependencies:
                     _repo_report(serv, dependency, fetch=options.fetch)
-                _repo_report(serv, options.repo, fetch=options.fetch, detailed=options.detailed)
+                _repo_report(serv, options.repo, fetch=options.fetch,
+                             detailed=options.detailed)
             elif options.tag:
                 for dependency in dependencies:
-                    _repo_report(serv, dependency, check_tag=options.tag, fetch=options.fetch, detailed=options.detailed)
-                _repo_report(serv, options.repo, check_tag=options.tag, fetch=options.fetch, detailed=options.detailed)
+                    _repo_report(serv, dependency, check_tag=options.tag,
+                                 fetch=options.fetch,
+                                 detailed=options.detailed)
+                _repo_report(serv, options.repo, check_tag=options.tag,
+                             fetch=options.fetch, detailed=options.detailed)
             else:
                 for dependency in dependencies:
                     current_tag = _get_current_tag(dependency, pillar)
@@ -53,7 +62,7 @@ def main():
                 _repo_report(serv, options.repo, check_tag=current_tag, fetch=options.fetch, detailed=options.detailed)
     else:
         for repo in repos:
-            if repo not in pillar['repo_locations']:
+            if repo not in pillar['repo_config']:
                 continue
             if options.fullreport:
                 _repo_report(serv, repo, fetch=options.fetch, detailed=options.detailed)
@@ -65,7 +74,11 @@ def main():
 
 
 def _get_current_tag(repo, pillar):
-        repodir = pillar['repo_locations'][repo]
+        try:
+            repodir = pillar['repo_config'][repo]['location']
+        except KeyError:
+            parent_dir = pillar['deployment_config']['parent_dir']
+            repodir = '{0}/{1}'.format(parent_dir, repo)
         f = open(repodir + '/.deploy', 'r')
         deployinfo = f.readlines()
         tag = ''

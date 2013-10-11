@@ -20,19 +20,22 @@ class DeployLib(object):
         out = p.communicate()[0]
         try:
             pillar = json.loads(out)
-            options = {'repo_locations': None,
-                       'repo_checkout_submodules': False,
-                       'repo_dependencies': []}
+            try:
+                repo_config = pillar['repo_config'][prefix]
+                parent_dir = pillar['deployment_config']['parent_dir']
+            except KeyError:
+                print ("Missing configuration for repo. "
+                       "Have you added it in puppet? Exiting.")
+                return False
+            options = {'location': '{0}/{1}'.format(parent_dir,
+                                                    prefix),
+                       'checkout_submodules': False,
+                       'dependencies': []}
             for option, default in options.items():
                 try:
-                    self.__config[option] = pillar[option][prefix]
+                    self.__config[option] = repo_config[option]
                 except KeyError:
-                    if default is not None:
-                        self.__config[option] = default
-                    else:
-                        print (option + " isn't configured. "
-                               "Have you added it in puppet? Exiting.")
-                        return False
+                    self.__config[option] = default
             self.__config['prefix'] = prefix
             return True
         except ValueError:
@@ -44,8 +47,8 @@ class DeployLib(object):
         return self.__config
 
     def update_repos(self, tag):
-        repodir = self.__config['repo_locations']
-        checkout_submodules = self.__config['repo_checkout_submodules']
+        repodir = self.__config['location']
+        checkout_submodules = self.__config['checkout_submodules']
 
         # Ensure the fetch will work for the repo
         p = subprocess.Popen('git update-server-info',
@@ -69,7 +72,7 @@ class DeployLib(object):
             out = p.communicate()[0]
 
         # Ensure repos we depend on are handled
-        dependencies = self.__config['repo_dependencies']
+        dependencies = self.__config['dependencies']
         for dependency in dependencies:
             dependency_script = ('/var/lib/git-deploy/dependencies/%s.dep' %
                                  (dependency))
