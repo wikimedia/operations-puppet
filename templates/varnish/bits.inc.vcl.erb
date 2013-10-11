@@ -8,7 +8,7 @@ sub vcl_recv {
 		error 403 "HTTP method not allowed.";
 	}
 	if (req.http.host == "<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>") {
-		if (req.url ~ "^/event\.gif") {
+		if (req.url ~ "^/event\.gif" || req.url ~ "^/stats\?") {
 			error 204;
 		}
 	/* For https-only wikis, the redirect from http to https for bits assets should occur

@@ -431,6 +431,27 @@ class role::cache {
 		}
 	}
 
+
+	# == Class: varnish::logging::client_stats
+	# Beacon for collecting client-side profiling data. Unlike events, stats
+	# are not logged immediately, but saved into localStorage and transmitted
+	# in batches.
+	class varnish::logging::client_stats {
+		$stats_listener = $::realm ? {
+			labs    => 'deployment-eventlogging.pmtpa.wmflabs',
+			default => 'hafnium.wikimedia.org',
+		}
+
+		varnish::logging { 'client_stats' :
+			listener_address => $stats_listener,
+			port             => '8490',
+			instance_name    => '',
+			cli_args         => '-m RxURL:^/stats\?. -D',
+			log_fmt          => "%q\t%l\t%n\t%t\t%h",
+			monitor          => false,
+		}
+	}
+
 	class varnish::logging::eventlistener {
 		if $::realm == 'production' {
 			$event_listener = $::site ? {
@@ -917,6 +938,7 @@ class role::cache {
 		}
 
 		include role::cache::varnish::logging::eventlistener
+		include role::cache::varnish::logging::client_stats
 	}
 
 	class mobile inherits role::cache::varnish::2layer {
