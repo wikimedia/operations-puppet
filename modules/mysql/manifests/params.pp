@@ -84,15 +84,24 @@ class mysql::params {
     }
 
     'Debian': {
+
+      # begin WMF customization
+      if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '11.10') >= 0 {
+         $run_directory = '/run'
+      } else {
+        $run_directory = '/var/run'
+      }
+      $socket               = "$run_directory/mysqld/mysqld.sock"
+      $pidfile              = "$run_directory/mysqld/mysqld.pid"
+      $datadir              = '/var/lib/mysql'
+      $log_error            = "/var/log/mysql/mysql.err"
+      # end WMF customization
+
       $basedir              = '/usr'
-      $datadir              = '/a/sqldata'
       $service_name         = 'mysql'
       $client_package_name  = 'mysql-client'
       $server_package_name  = 'mysql-server'
-      $socket               = "/tmp/mysqld.sock"
-      $pidfile              = "/a/sqldata/${::hostname}.pid"
       $config_file          = '/etc/mysql/my.cnf'
-      $log_error            = "/a/sqldata/${::hostname}.log"
       $ruby_package_name    = 'libmysql-ruby'
       $python_package_name  = 'python-mysqldb'
       $php_package_name     = 'php5-mysql'
