@@ -14,8 +14,8 @@ class CORS(object):
 
         def _start_response(status, headers, exc_info=None):
             # support just for the wildcard CORS
-            cors = ('Access-Control-Allow-Origin', '*')
-            headers.append(cors)
+            headers.append( ('Access-Control-Allow-Origin', '*') )
+            headers.append( ('Access-Control-Allow-Headers', 'Range') )
             return start_response(status, headers, exc_info)
 
         return self.app(env, _start_response)
