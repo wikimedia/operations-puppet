@@ -1,6 +1,5 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/squid
 #####################################################################
 #
 #	Logrotate fragment for squid.
