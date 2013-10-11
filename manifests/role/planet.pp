@@ -85,9 +85,9 @@ class role::planet {
             'lastupdated'   => 'Last updated',
         },
         ja => {
-            'subscribe'     => 'Subscribe',
-            'subscriptions' => 'Subscriptions',
-            'lastupdated'   => 'Last updated',
+            'subscribe'     => '購読する',
+            'subscriptions' => '登録されているブログ',
+            'lastupdated'   => '最終更新日時',
         },
         pl => {
             'subscribe'     => 'Subskrybuj',
