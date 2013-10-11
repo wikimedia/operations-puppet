@@ -74,6 +74,11 @@ class role::planet {
             'subscriptions' => 'Abonnementer',
             'lastupdated'   => 'Senest opdateret',
         },
+        id => {
+            'subscribe'     => 'Berlangganan',
+            'subscriptions' => 'Langganan',
+            'lastupdated'   => 'Terakhir diperbarui',
+        },
         it => {
             'subscribe'     => 'Abbonati',
             'subscriptions' => 'Sottoscrizioni',
