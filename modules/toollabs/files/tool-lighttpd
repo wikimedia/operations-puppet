@@ -144,8 +144,8 @@ cleanup() {
 
 trap "cleanup;exit 0" 15
 
-/bin/su -c "/usr/sbin/lighttpd -f $runbase.conf -D 2>&1 >>$home/error.log" - "$user"
-/bin/date >"$home/lighttpd.STOPPED"
+/bin/su -c "/usr/sbin/lighttpd -f $runbase.conf -D >>$home/error.log 2>&1" - "$user"
+/bin/su -c "/bin/date >$home/lighttpd.STOPPED" - "$user"
 
 cleanup
 exit 1
