@@ -50,6 +50,7 @@ class toollabs::exec_environ {
       'libdbi-perl',
       'libdigest-crc-perl',
       'libdigest-hmac-perl',
+      'libfile-nfslock-perl',
       'libhtml-html5-entities-perl',
       'libhtml-parser-perl',
       'libhttp-message-perl',

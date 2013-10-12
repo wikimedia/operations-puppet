@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/perl -w
 #
 #  Copyright © 2013 Marc-André Pelletier <mpelletier@wikimedia.org>
 #
@@ -15,5 +15,16 @@
 #  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-tool=$(/usr/bin/id -nu|sed -e 's/^local-//')
-exec /usr/local/sbin/portgrabber "$tool" /usr/local/sbin/lighttpd-starter "$tool"
+use Socket;
+
+my $tool = shift;
+my $line;
+
+socket(SOCK, PF_UNIX, SOCK_STREAM, 0)     || die "socket: $!";
+connect(SOCK, sockaddr_un("/tmp/sock.portgranter"))   || die "connect: $!";
+$| = 1;
+syswrite SOCK, "$tool\n";
+my $port = 0+<SOCK>;
+
+exec @ARGV, $port;
+

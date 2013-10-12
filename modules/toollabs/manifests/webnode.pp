@@ -82,8 +82,40 @@ class toollabs::webnode($gridmaster) inherits toollabs {
     ensure => file,
     owner => 'root',
     group => 'root',
-    mode => '0755',
+    mode => '0555',
     source => "puppet:///modules/toollabs/tool-lighttpd",
+  }
+
+  file { "/usr/local/sbin/lighttpd-starter":
+    ensure => file,
+    owner => 'root',
+    group => 'root',
+    mode => '0555',
+    source => "puppet:///modules/toollabs/lighttpd-starter",
+  }
+
+  file { "/usr/local/sbin/portgrabber":
+    ensure => file,
+    owner => 'root',
+    group => 'root',
+    mode => '0555',
+    source => "puppet:///modules/toollabs/portgrabber",
+  }
+
+  file { "/usr/local/sbin/portgranter":
+    ensure => file,
+    owner => 'root',
+    group => 'root',
+    mode => '0555',
+    source => "puppet:///modules/toollabs/portgranter",
+  }
+
+  file { "/etc/init/portgranter.conf":
+    ensure => file,
+    owner => 'root',
+    group => 'root',
+    mode => '0444',
+    source => "puppet:///modules/toollabs/portgranter.conf",
   }
 
 }
