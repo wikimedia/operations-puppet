@@ -20,6 +20,7 @@ use Socket;
 my $tool = shift;
 my $line;
 
+$^F = 8;
 socket(SOCK, PF_UNIX, SOCK_STREAM, 0)     || die "socket: $!";
 connect(SOCK, sockaddr_un("/tmp/sock.portgranter"))   || die "connect: $!";
 $| = 1;
