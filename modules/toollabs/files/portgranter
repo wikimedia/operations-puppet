@@ -45,12 +45,20 @@ sub spawn {
 my $hostname = `hostname`; chomp $hostname;
 my %clients;
 my @ports;
-my $reap = 0;
 my $update = 1;
 
 use POSIX ":sys_wait_h";
 sub REAPER {
-    $reap = 1;
+    my $child;
+    while( ($child = waitpid(-1, WNOHANG)) > 0 ) {
+        if(defined $clients{$child}) {
+            my $c = $clients{$child};
+            delete $clients{$child};
+            $update = 1;
+            unshift @ports, $c->{'port'};
+        }
+    }
+
     $SIG{CHLD} = \&REAPER;  # loathe SysV
 }
 
@@ -64,19 +72,6 @@ for(my $i=4000; $i<5000; $i++) {
 $| = 1;
 for(;;)
 {
-    if($reap) {
-        $reap = 0;
-        my $child;
-        while( ($child = waitpid(-1, WNOHANG)) > 0 ) {
-            if(defined $clients{$child}) {
-                my $c = $clients{$child};
-                delete $clients{$child};
-                $update = 1;
-                unshift @ports, $c->{'port'};
-            }
-        }
-    }
-
     if($update) {
         if(my $lock = new File::NFSLock {
             file               => "$scoreboard.new",
