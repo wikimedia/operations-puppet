@@ -19,7 +19,7 @@ use Socket;
 use File::NFSLock;
 use Fcntl qw(LOCK_EX LOCK_NB);
 
-my $scoreboard = "/tmp/dynamic";
+my $scoreboard = "/data/project/.system/dynamic";
 my $sockname = "/tmp/sock.portgranter";
 my $uaddr = sockaddr_un($sockname);
 

@@ -78,7 +78,7 @@ class toollabs::webnode($gridmaster) inherits toollabs {
   package { 'lighttpd': ensure => present }
   package { 'apache2.2-common': ensure => absent }
 
-  file { "/usr/local/sbin/tool-lighttpd":
+  file { "/usr/local/bin/tool-lighttpd":
     ensure => file,
     owner => 'root',
     group => 'root',
@@ -86,7 +86,7 @@ class toollabs::webnode($gridmaster) inherits toollabs {
     source => "puppet:///modules/toollabs/tool-lighttpd",
   }
 
-  file { "/usr/local/sbin/lighttpd-starter":
+  file { "/usr/local/bin/lighttpd-starter":
     ensure => file,
     owner => 'root',
     group => 'root',
@@ -94,7 +94,7 @@ class toollabs::webnode($gridmaster) inherits toollabs {
     source => "puppet:///modules/toollabs/lighttpd-starter",
   }
 
-  file { "/usr/local/sbin/portgrabber":
+  file { "/usr/local/bin/portgrabber":
     ensure => file,
     owner => 'root',
     group => 'root',

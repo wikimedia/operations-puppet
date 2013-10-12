@@ -16,4 +16,4 @@
 #
 
 tool=$(/usr/bin/id -nu|sed -e 's/^local-//')
-exec /usr/local/sbin/portgrabber "$tool" /usr/local/sbin/lighttpd-starter "$tool"
+exec /usr/local/bin/portgrabber "$tool" /usr/local/bin/lighttpd-starter "$tool"
