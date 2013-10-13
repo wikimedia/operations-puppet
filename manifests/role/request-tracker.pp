@@ -3,24 +3,24 @@
 class role::request-tracker-apache::labs {
 	include passwords::misc::rt
 
+	$datadir = "/srv/mysql"
+
 	class { "misc::rt-apache::server":
 		dbuser => $passwords::misc::rt::rt_mysql_user,
 		dbpass => $passwords::misc::rt::rt_mysql_pass,
 		site => $::fqdn,
-		datadir => "/a/mysql",
+		datadir => $datadir,
 	}
 
-	class { 'generic::mysql::server':
-		version => $::lsbdistrelease ? {
-			'12.04' => '5.5',
-			default => false,
-		},
-		datadir => $datadir;
+	class { 'mysql::server':
+		config_hash => {
+			'datadir' => $datadir,
+		}
 	}
 
 	exec { 'rt-db-initialize':
 		command => "/bin/echo '' | /usr/sbin/rt-setup-database --action init --dba root --prompt-for-dba-password",
-		require => Class['misc::rt-apache::server', 'generic::mysql::server'],
+		require => Class['misc::rt-apache::server', 'mysql::server'],
 		unless  => '/usr/bin/mysqlshow rt4';
 	}
 }
