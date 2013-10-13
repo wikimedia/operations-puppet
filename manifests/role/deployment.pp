@@ -258,6 +258,33 @@ class role::deployment::deployment_servers::labs {
   }
 }
 
+class role::deployment::deployment_servers::sartoris {
+  include role::deployment::deployment_servers::common
+
+  apache::vhost { "i-00000822.pmtpa.wmflabs":
+    priority		=> 10,
+    vhost_name		=> "10.4.1.19",
+    port		=> 80,
+    docroot		=> "/srv/deployment",
+    docroot_dir_allows  => ["10.4.0.0/16"],
+    serveradmin		=> "noc@wikimedia.org",
+    configure_firewall 	=> false,
+  }
+  class { "redis":
+    dir => "/srv/redis",
+    maxmemory => "500Mb",
+    monitor => "false",
+  }
+  sudo_group { "project_deployment_prep_deployment_server":
+    privileges => [
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
+    ],
+    group => "project-sartoris",
+  }
+}
+
 class role::deployment::test {
     deployment::target { 'testrepo': }
 }
