@@ -96,7 +96,16 @@ class role::salt::masters::sartoris {
 class role::salt::minions {
 
 	if ($realm == "labs") {
-		$salt_master = "virt0.wikimedia.org"
+		if ( $::salt_master_override != undef ) {
+			$salt_master = $::salt_master_override
+		} else {
+			$salt_master = "virt0.wikimedia.org"
+		}
+		if ( $::salt_master_finger_override != undef ) {
+			$salt_master_finger = $::salt_master_finger_override
+		} else {
+			$salt_master_finger = "c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
+		}
 		$salt_client_id = "${dc}"
 		$salt_grains = {
 			"instanceproject" => $instanceproject,
@@ -104,7 +113,6 @@ class role::salt::minions {
 			"site" => $site,
 			"cluster" => $cluster,
 		}
-		$salt_master_finger = "c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 	} else {
 		$salt_master = "sockpuppet.pmtpa.wmnet"
 		$salt_client_id = "${fqdn}"
