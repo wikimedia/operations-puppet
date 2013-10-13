@@ -96,7 +96,11 @@ class role::salt::masters::sartoris {
 class role::salt::minions {
 
 	if ($realm == "labs") {
-		$salt_master = "virt0.wikimedia.org"
+		if ( $::salt_master_override != undef ) {
+			$salt_master = $::salt_master_override
+		} else {
+			$salt_master = "virt0.wikimedia.org"
+		}
 		$salt_client_id = "${dc}"
 		$salt_grains = {
 			"instanceproject" => $instanceproject,
