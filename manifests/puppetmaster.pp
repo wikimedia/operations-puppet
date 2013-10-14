@@ -342,7 +342,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			removeoldreports:
 				command => "find /var/lib/puppet/reports -type f -mmin +2160 -delete",
 				user => puppet,
-				hour => 4,
+				hour => [4,16],
 				minute => 27,
 				ensure => present;
 		}
