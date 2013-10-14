@@ -283,6 +283,14 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 
 		# monitor HTTPS on puppetmaster (port 8140, SSL, expect return code 400)
 		monitor_service { "puppetmaster_https": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
+
+		# rotate apache logs
+		file { '/etc/logrotate.d/passenger':
+			ensure => present,
+			mode   => '0664',
+			source => 'puppet:///files/logrotate/passenger',
+			owner  => 'root',
+		}
 	}
 
 	# Class: puppetmaster::labs

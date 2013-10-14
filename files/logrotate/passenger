@@ -1,0 +1,15 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/passenger
+#####################################################################
+
+# Rotate puppetmaster passenger (apache) logs
+/var/log/apache2/*.log {
+	missingok
+	rotate 7
+	daily
+	compress
+	postrotate
+		[ ! -f /var/run/apache2.pid ] || kill -HUP `cat /var/run/apache2.pid`
+	endscript
+}
