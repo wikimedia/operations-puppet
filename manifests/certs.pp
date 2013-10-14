@@ -92,25 +92,20 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
 			owner => root,
 			group => $group,
 			mode => 0444,
-			source => "puppet:///files/ssl/${name}.pem",
-			require => Package["openssl"];
+			source => "puppet:///files/ssl/${name}.pem";
 	}
 
 
 	if ( $privatekey == true ) {
-
 		file {
 			# Private key
 			"/etc/ssl/private/${name}.key":
 				owner => root,
 				group => $group,
 				mode => 0440,
-				source => $keysource,
-				require => Package["openssl"];
+				source => "puppet:///private/ssl/${name}.key";
 		}
-
 	} else {
-
 		file {
 			# empty Private key
 			"/etc/ssl/private/${name}.key":
