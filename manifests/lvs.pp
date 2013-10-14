@@ -1155,7 +1155,7 @@ class lvs::monitor {
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikibookslb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikibookslb'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.eqiad.wikimedia.org":
