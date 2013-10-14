@@ -68,4 +68,16 @@ class mysql::server (
       provider => $service_provider,
     }
   }
+
+  include mysql::apparmorservice
+  # mysql is protected by apparmor.  Need to
+  # reload apparmor if the file changes.
+  file { "/etc/apparmor.d/usr.sbin.mysqld":
+    owner => 'root',
+    group => 'root',
+    mode => 0644,
+    content => template('mysql/apparmor.template.usr.sbin.mysqld.erb'),
+    require => Package['mysql-server'],
+    notify => Service['apparmor'],
+  }
 }
