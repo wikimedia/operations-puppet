@@ -329,9 +329,10 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			ensure => absent,
 		}
 
+		# Clear out reports older than 36 hours.
 		cron {
 			removeoldreports:
-				command => "find /var/lib/puppet/reports -type f -ctime +1 -delete",
+				command => "find /var/lib/puppet/reports -type f -mmin +2160 -delete",
 				user => puppet,
 				hour => 4,
 				minute => 27,
