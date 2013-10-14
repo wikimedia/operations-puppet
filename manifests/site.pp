@@ -433,7 +433,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { "main": }
 
-    include role::cache::bits
+    include role::cache::bits, role::cache::ssl::unified
 }
 
 # TODO: cp4005-cp4020, upload, mobile (and text?).
