@@ -114,6 +114,11 @@ class role::planet {
             'subscriptions' => 'Subscriptions',
             'lastupdated'   => 'Last updated',
         },
+        uk => {
+            'subscribe'     => 'Підписатися',
+            'subscriptions' => 'Підписалися',
+            'lastupdated'   => 'Обновлено',
+        },
         zh => {
             'subscribe'     => '訂閱',
             'subscriptions' => '收錄',
