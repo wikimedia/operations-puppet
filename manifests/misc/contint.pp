@@ -29,8 +29,9 @@ class misc::contint::test {
   # better place under contint module.
   class jenkins {
 
-    # FIXME needs to be migrated somewhere else
-    # Maybe contint::slave-scripts
+    # As of October 2013, the slave scripts are installed with
+    # contint::slave-scripts and land under /srv/jenkins.
+    # FIXME: clean up Jenkins jobs to no more refer to the paths below:
     file {
       '/var/lib/jenkins/.git':
         ensure => directory,
