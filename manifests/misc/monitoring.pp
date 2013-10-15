@@ -302,6 +302,11 @@ class misc::monitoring::view::navigation_timing {
 				host_regex   => 'client-side',
 				metric_regex => '^browser.redirecting.(desktop|mobile)_median$',
 			},
+			{
+				title        => 'TotalPageLoadTime: navigationStart to loadEventEnd',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.totalPageLoadTime.(desktop|mobile)_median$',
+			},
 		],
 	}
 }
