@@ -246,6 +246,7 @@ class role::deployment::deployment_servers::sartoris {
     vhost_name		=> "10.4.1.19",
     port		=> 80,
     docroot		=> "/srv/deployment",
+    docroot_group	=> "project-sartoris",
     docroot_dir_allows  => ["10.4.0.0/16"],
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
