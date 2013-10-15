@@ -2,7 +2,7 @@ cr1-sdtpa.wikimedia.org:juniper:up:
 cr2-pmtpa.wikimedia.org:juniper:up:
 csw5-pmtpa.wikimedia.org:foundry:down:
 csw1-sdtpa.wikimedia.org:foundry:up:
-csw1-esams.wikimedia.org:foundry:up:
+csw1-esams.wikimedia.org:foundry:down:
 br1-knams.wikimedia.org:foundry:down:
 asw-d1-sdtpa.mgmt.pmtpa.wmnet:foundry:up:
 asw-a4-sdtpa.mgmt.pmtpa.wmnet:foundry:up:
@@ -30,3 +30,5 @@ lab-ex4500-1.mgmt.eqiad.wmnet:juniper:down:
 msw2-pmtpa.mgmt.pmtpa.wmnet:juniper:up:
 msw2-sdtpa.mgmt.pmtpa.wmnet:juniper:up:
 pfw1-eqiad.wikimedia.org:juniper:up:
+cr1-ulsfo.wikimedia.org:juniper:up:
+cr2-ulsfo.wikimedia.org:juniper:up:
