@@ -3104,19 +3104,19 @@ class admins::roots {
 	# commit and pull to /var/lib/git/operations/private/ on stafford, to
 	# actually get them root; that file is not in the public repo.
 
-	include accounts::andrewb
 	include accounts::akosiaris
+	include accounts::andrewb
 	include accounts::ariel
 	include accounts::asher
 	include accounts::bblack
 	include accounts::ben # disabled
-	include accounts::brion #shell re-enabled dz 20121004
+	include accounts::brion # shell re-enabled dz 20121004
 	include accounts::catrope
 	include accounts::cmjohnson
 	include accounts::dzahn
 	include accounts::faidon
 	include accounts::fvassard # disabled
-	include accounts::jeluf # disabled 
+	include accounts::jeluf # disabled
 	include accounts::jgreen
 	include accounts::kate # disabled
 	include accounts::laner
@@ -3126,7 +3126,7 @@ class admins::roots {
 	include accounts::midom
 	include accounts::otto
 	include accounts::preilly # disabled
-	include accounts::py # dislabled
+	include accounts::py # disabled
 	include accounts::robh
 	include accounts::sara # disabled
 	include accounts::springle
@@ -3149,6 +3149,7 @@ class admins::mortals {
 	include accounts::cmcmahon
 	include accounts::csteipp
 	include accounts::demon
+	include accounts::ebernhardson # RT 5717
 	include accounts::gwicke
 	include accounts::halfak
 	include accounts::hashar
@@ -3160,8 +3161,8 @@ class admins::mortals {
 	include accounts::mflaschen
 	include accounts::mholmquist
 	include accounts::mlitn
-	include accounts::mwalker  #Promoted per RT 4747
-	include accounts::neilk  # revoked access per RT 2345
+	include accounts::mwalker # promoted per RT 4747
+	include accounts::neilk # revoked access per RT 2345
 	include accounts::nikerabbit
 	include accounts::nimishg # revoked
 	include accounts::olivneh
@@ -3172,11 +3173,10 @@ class admins::mortals {
 	include accounts::rmoen
 	include accounts::robla
 	include accounts::spage
-	include accounts::sumanah #RT 3752
+	include accounts::sumanah # RT 3752
 	include accounts::tfinc # move from roots RT 5485
-	include accounts::yurik #rt 4835, rt 5069
+	include accounts::yurik # RT 4835, RT 5069
 	include accounts::zak # access revoked
-	include accounts::ebernhardson #RT 5717
 }
 
 class admins::restricted {
@@ -3197,15 +3197,15 @@ class admins::restricted {
 	include accounts::ezachte
 	include accounts::jamesofur
 	include accounts::khorn
-	include accounts::mgrover #RT 4600
-	include accounts::qchris #RT 5403
+	include accounts::mgrover # RT 4600
+	include accounts::qchris # RT 5403
 	include accounts::rainman
 	include accounts::ram # revoked
 	include accounts::rcole # access revoked
 	include accounts::spetrea # RT 5406
 	include accounts::tparscal
-	include accounts::tnegrin  # RT 5391
-	include accounts::ssastry  # RT 5512
+	include accounts::tnegrin # RT 5391
+	include accounts::ssastry # RT 5512
 	include accounts::ironholds # RT 5935
 }
 
