@@ -96,6 +96,8 @@ class misc::monitoring::views {
 	}
 	class { 'misc::monitoring::view::navigation_timing': }
 	class { 'misc::monitoring::view::static_assets': }
+	class { 'misc::monitoring::view::bits_ttfb': }
+
 }
 
 # == Define misc:monitoring::view::udp2log
@@ -306,6 +308,34 @@ class misc::monitoring::view::navigation_timing {
 				title        => 'TotalPageLoadTime: navigationStart to loadEventEnd',
 				host_regex   => 'client-side',
 				metric_regex => '^browser.totalPageLoadTime.(desktop|mobile)_median$',
+			},
+		],
+	}
+}
+
+
+# == Class: misc::monitoring::view::bits_ttfb
+#
+# A Ganglia view of TTFB (time to first byte) timing data obtained via
+# the Navigation Timing API.
+#
+class misc::monitoring::view::bits_ttfb {
+	ganglia::view { 'Bits TTFB':
+		graphs => [
+			{
+				title        => 'Bits time to first byte: ULSFO',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.waiting.cp4.+_median$',
+			},
+			{
+				title        => 'Bits time to first byte: ESAMS',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.waiting.cp3.+_median$',
+			},
+			{
+				title        => 'Bits time to first byte: EQIAD',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.waiting.cp1.+_median$',
 			},
 		],
 	}
