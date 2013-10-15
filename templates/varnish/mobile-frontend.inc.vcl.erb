@@ -87,15 +87,13 @@ sub vcl_recv {
 
 	set req.hash_ignore_busy = true;
 
-/*
+<% if cluster_options.fetch( "enable_esi", false ) -%>
 	if (req.http.X-CS == "-TEST") {
 		set req.http.X-FORCE-ESI = "1";
 	}
-	else {
-		unset req.http.X-FORCE-ESI;
-	}
-*/
+<% else -%>
 	unset req.http.X-FORCE-ESI;
+<% end -%>
 
 	/* Default (now modified) Varnish vcl_recv function */
 	if (req.request != "GET" && req.request != "HEAD") {
@@ -110,9 +108,11 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
+<% if cluster_options.fetch( "enable_esi", false ) -%>
 	if (beresp.http.Enable-ESI == "1") {
 		set beresp.do_esi = true;
 	}
+<% end -%>
 
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
@@ -145,7 +145,7 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-	unset resp.http.Enable-ESI;
+#	unset resp.http.Enable-ESI;
 	unset resp.http.X-CS;
 
 	# We used to incorrectly set them in vcl_fetch(), which means that our
