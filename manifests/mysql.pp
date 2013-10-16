@@ -497,30 +497,6 @@ class mysql_wmf::client::default_charset_binary {
 # generic mysql servers and clients.  These
 # are not (yet?) meant for serious production installs.
 
-# Installs the mysql-client package
-class generic::mysql::packages::client($version = "") {
-	# This conflicts with class mysql::packages.  DO NOT use them together
-	if !$version {
-		if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-			$ver = "5.5"
-		}
-		else {
-			$ver = "5.1"
-		}
-	}
-	else {
-		$ver = $version
-	}
-
-	package { "mysql-client-${ver}":
-		ensure => latest,
-		alias  => "mysql-client",
-	}
-	package { "libmysqlclient-dev":
-		ensure => latest,
-	}
-}
-
 class generic::mysql::packages::server($version = "") {
 	# This conflicts with class mysql::packages.  DO NOT use them together
 	# if installed on a host with an external IP address, be sure to run a firewall.
@@ -628,7 +604,7 @@ class generic::mysql::server(
 	# make sure mysql-server and mysql-client are
 	# installed with the specified version.
 	class { "generic::mysql::packages::server": version => $version }
-	class { "generic::mysql::packages::client": version => $version }
+	class { 'mysql' }
 	include generic::apparmor::service
 
         # /var/run has moved to /run in newer Ubuntu versions.
