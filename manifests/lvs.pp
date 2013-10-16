@@ -501,6 +501,18 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
+		'text-https' => {
+			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (nginx)",
+			'class' => 'high-traffic1',
+			'sites' => [ 'ulsfo' ],
+			'ip' => $service_ips['text-varnish'][$::site],
+			'port' => 443,
+			'bgp' => 'no',
+			'depool-threshold' => '.5',
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options
+			},
+		},
 		"https" => {
 			'description' => "HTTPS services",
 			'class' => "https",
