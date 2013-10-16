@@ -2,7 +2,7 @@
 
 class misc::racktables {
 
-    include generic::mysql::packages::client,
+    include mysql,
         passwords::racktables
 
     # variables
