@@ -556,6 +556,18 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
+		"bits-https" => {
+			'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
+			'class' => 'high-traffic1',
+			'sites' => [ 'ulsfo' ],
+			'ip' => $service_ips['bits'][$::site],
+			'port' => 443,
+			'bgp' => 'no',
+			'depool-threshold' => '.5',
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options
+			},
+		},
 		"upload" => {
 			'description' => "Images and other media, upload.${::site}.wikimedia.org",
 			'class' => "high-traffic2",
