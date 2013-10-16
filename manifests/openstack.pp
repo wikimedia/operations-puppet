@@ -154,7 +154,7 @@ class openstack::common($openstack_version="folsom",
 		require => Class["openstack::repo"];
 	}
 
-	require mysql, generic::mysql::packages::server
+	require mysql, mysql::server::package
 
 	# For IPv6 support
 	package { [ "python-netaddr", "radvd" ]:
@@ -333,7 +333,7 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
 	if !defined(Service['mysql']) {
 		service { "mysql":		
 			enable => true,		
-			require => Class['generic::mysql::packages::server'],
+			require => Class['mysql::server::package'],
 			ensure => running;
 		}
 	}
