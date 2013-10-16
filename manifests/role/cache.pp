@@ -957,6 +957,18 @@ class role::cache {
 
 		include varnish::monitoring::ganglia::vhtcpd
 
+		case $::realm {
+			'production': {
+				$cluster_options = {
+				}
+			}
+			'labs': {
+				$cluster_options = {
+					'enable_esi'    => true,
+				}
+			}
+		}
+
 		varnish::netmapper_update {
 			'zero.json': url => 'http://meta.wikimedia.org/w/api.php?action=zeroconfig&type=ips';
 		}
@@ -1009,6 +1021,7 @@ class role::cache {
 					'between_bytes_timeout' => "4s",
 					'max_connections' => 600,
 				}],
+			cluster_options => $cluster_options,
 			wikimedia_networks => $wikimedia_networks,
 		}
 
@@ -1043,6 +1056,7 @@ class role::cache {
 				'max_connections' => 100000,
 				'probe' => "varnish",
 			}],
+			cluster_options => $cluster_options,
 		}
 
 		include role::cache::varnish::logging
