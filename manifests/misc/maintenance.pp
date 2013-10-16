@@ -211,9 +211,21 @@ class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
 }
 
 class misc::maintenance::update_special_pages( $enabled = false ) {
+
+	file {
+		"/usr/local/bin/update-special-pages":
+			source => "puppet:///files/misc/scripts/update-special-pages",
+			owner => apache,
+			group => wikidev,
+			mode => 0755,
+			ensure => present;
+		"/usr/local/bin/update-special-pages-small":
+			ensure => absent;
+	}
+
 	cron {
 		update_special_pages:
-			command => "flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/updateSpecialPages.log 2>&1",
+			command => "/usr/local/bin/update-special-pages > /var/log/updateSpecialPages.log 2>&1",
 			user => "apache",
 			monthday => "*/3",
 			hour => 5,
@@ -224,17 +236,6 @@ class misc::maintenance::update_special_pages( $enabled = false ) {
 				default => absent
 			};
 		update_special_pages_small:
-			ensure => absent;
-	}
-
-	file {
-		"/usr/local/bin/update-special-pages":
-			source => "puppet:///files/misc/scripts/update-special-pages",
-			owner => apache,
-			group => wikidev,
-			mode => 0755,
-			ensure => present;
-		"/usr/local/bin/update-special-pages-small":
 			ensure => absent;
 	}
 }
