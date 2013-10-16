@@ -91,6 +91,15 @@ class mysql::params {
       } else {
         $run_directory = '/var/run'
       }
+
+      if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, "12.04") >= 0 {
+        $ver = "5.5"
+      } else {
+        $ver = "5.1"
+      }
+      $client_package_name  = "mysql-client-${ver}"
+      $server_package_name  = "mysql-server-${ver}"
+      
       $socket               = "$run_directory/mysqld/mysqld.sock"
       $pidfile              = "$run_directory/mysqld/mysqld.pid"
       $datadir              = '/var/lib/mysql'
@@ -99,8 +108,6 @@ class mysql::params {
 
       $basedir              = '/usr'
       $service_name         = 'mysql'
-      $client_package_name  = 'mysql-client'
-      $server_package_name  = 'mysql-server'
       $config_file          = '/etc/mysql/my.cnf'
       $ruby_package_name    = 'libmysql-ruby'
       $python_package_name  = 'python-mysqldb'
