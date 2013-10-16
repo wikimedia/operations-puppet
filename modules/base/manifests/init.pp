@@ -418,7 +418,8 @@ class base {
         base::platform,
         base::access::dc-techs,
         base::screenconfig,
-        ssh,
+        ssh::client,
+        ssh::server,
         role::salt::minions
 
 
