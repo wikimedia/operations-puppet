@@ -52,8 +52,8 @@ $network_zone = $main_ipaddress ? {
 # Set some basic variables
 $nameservers = $site ? {
 	"esams"	=> [ "91.198.174.6", "208.80.152.131" ],
-	"eqiad"	=> [ "208.80.154.239", "208.80.152.131" ],
-	default	=> [ "208.80.152.131", "208.80.152.132" ]
+	"pmtpa"	=> [ "208.80.152.131", "208.80.152.132" ],
+	default	=> [ "208.80.154.239", "208.80.152.131" ],
 }
 # Allow per-server nameserver prefixes
 $nameservers_prefix = []
