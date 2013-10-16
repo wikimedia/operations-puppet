@@ -1686,6 +1686,8 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { "main": interface => "eth0" }
     # Make sure GRO is off
     interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+    # bnx2x is buggy with TPA (LRO) + LVS
+    interface::offload { "eth0 lro": interface => "eth0", setting => "lro", value => "off" }
 }
 
 node "maerlant.esams.wikimedia.org" {
