@@ -40,11 +40,20 @@ function usage() {
     phantom.exit( 1 );
 }
 
+function countCssRules() {
+    return Array.prototype.reduce.call( document.styleSheets, function ( total, styleSheet ) {
+        return styleSheet.cssRules ? total + styleSheet.cssRules.length : total;
+    }, 0 );
+}
+
 function checkAssets( url ) {
     var payload = {
-        cookies  : 0,
-        requests : { image : 0, javascript : 0, css : 0, html : 0 },
-        bytes    : { image : 0, javascript : 0, css : 0, html : 0 }
+        javascript : { requests : 0, bytes : 0 },
+        html       : { requests : 0, bytes : 0 },
+        css        : { requests : 0, bytes : 0, rules : 0 },
+        image      : { requests : 0, bytes : 0 },
+        other      : { requests : 0, bytes : 0 },
+        cookies    : { set: 0 },
     };
 
     var page = webpage.create();
@@ -55,16 +64,18 @@ function checkAssets( url ) {
 
     // Analyze incoming resource
     page.onResourceReceived = function ( res ) {
-        var type = /image|javascript|css|html/i.exec( res.contentType );
-        if ( type && res.bodySize && !/^data:/.test( res.url ) ) {
-            payload.requests[type]++;
-            payload.bytes[type] += res.bodySize;
+        var type = /image|javascript|css|html/i.exec( res.contentType ) || 'other',
+            resource = payload[type];
+        if ( res.bodySize && !/^data:/.test( res.url ) ) {
+            resource.requests++;
+            resource.bytes += res.bodySize;
         }
     };
 
     // Print network report
     page.onLoadFinished = function () {
-        payload.cookies = page.cookies.length;
+        payload.cookies.set = page.cookies.length;
+        payload.css.rules = page.evaluate( countCssRules );
         console.log( JSON.stringify( payload ) );
         phantom.exit( 0 );
     };

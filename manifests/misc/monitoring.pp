@@ -371,6 +371,11 @@ class misc::monitoring::view::static_assets {
                 metric_regex => '^assets_css_requests_*',
             },
             {
+                title        => 'Main page CSS rules',
+                host_regex   => 'client-side',
+                metric_regex => '^assets_css_rules_*',
+            },
+            {
                 title        => 'Main page image byte payload',
                 host_regex   => 'client-side',
                 metric_regex => '^assets_image_bytes_*',
@@ -379,6 +384,21 @@ class misc::monitoring::view::static_assets {
                 title        => 'Main page image requests',
                 host_regex   => 'client-side',
                 metric_regex => '^assets_image_requests_*',
+            },
+            {
+                title        => 'Main page misc. byte payload',
+                host_regex   => 'client-side',
+                metric_regex => '^assets_other_bytes_*',
+            },
+            {
+                title        => 'Main page misc. requests',
+                host_regex   => 'client-side',
+                metric_regex => '^assets_other_requests_*',
+            },
+            {
+                title        => 'Main page cookies set',
+                host_regex   => 'client-side',
+                metric_regex => '^assets_cookies_set_*',
             },
         ],
     }

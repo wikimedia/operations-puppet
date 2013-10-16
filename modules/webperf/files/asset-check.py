@@ -41,12 +41,12 @@ urls = (
 
 def dispatch_stats(name, stats):
     """Send metrics to Ganglia by shelling out to gmetric."""
-    for type in ('image', 'javascript', 'css'):
-        for measure in ('bytes', 'requests'):
+    for type, data in stats.items():
+        for measure, value in data.items():
             metric = defaults.copy()
             metric.update({
                 'name': 'assets_%s_%s_%s' % (type, measure, name),
-                'value': stats[measure][type],
+                'value': value,
                 'units': measure,
             })
             command = ['gmetric']
