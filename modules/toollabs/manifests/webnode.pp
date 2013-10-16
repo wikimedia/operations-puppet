@@ -15,12 +15,10 @@ class toollabs::webnode($gridmaster) inherits toollabs {
   include toollabs::exec_environ
   include toollabs::infrastructure
 
-  class { 'gridengine::exec_host':
+  # should be exec_host and submit_host
+  # [bleep] puppet
+  class { 'gridengine::exec_submit_host':
     gridmaster => $gridmaster,
-  }
-
-  class { 'gridengine::submit_host':
-      gridmaster => $gridmaster,
   }
 
   file { "$store/execnode-$fqdn":
