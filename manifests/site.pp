@@ -1208,7 +1208,7 @@ node "hume.wikimedia.org" {
     $cluster = "misc"
 
     include role::applicationserver::maintenance,
-        generic::mysql::packages::client,
+        mysql,
         nfs::netapp::home,
         nfs::upload,
         misc::deployment::scap_scripts,
@@ -2761,8 +2761,8 @@ node "tin.eqiad.wmnet" {
         misc::deployment,
         misc::deployment::scap_scripts,
         misc::deployment::l10nupdate,
-        generic::mysql::packages::client,
-        role::labsdb::manager,
+        mysql,
+        role::labsdb::manager
         ssh::hostkeys-collect 
 }
 

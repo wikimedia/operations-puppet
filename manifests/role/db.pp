@@ -114,7 +114,7 @@ class role::labsdb::manager {
 }
 
 class role::db::maintenance {
-    include generic::mysql::packages::client
+    include mysql
 
     package { "percona-toolkit":
         ensure => latest;
