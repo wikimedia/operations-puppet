@@ -122,7 +122,7 @@ class role::ci::slave {
         user        => 'jenkins-slave',
         group       => 'jenkins-slave',
         mount_point => '/var/lib/jenkins-slave/tmpfs',
-        size        => '128M',
+        size        => '512M',
     }
 
     # Setup Gerrit replication destination:
