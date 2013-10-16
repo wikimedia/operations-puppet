@@ -19,6 +19,10 @@ class toollabs::webnode($gridmaster) inherits toollabs {
     gridmaster => $gridmaster,
   }
 
+  class { 'gridengine::submit_host':
+      gridmaster => $gridmaster,
+  }
+
   file { "$store/execnode-$fqdn":
     ensure => file,
     owner => 'root',
