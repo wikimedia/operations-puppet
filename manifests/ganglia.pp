@@ -331,7 +331,6 @@ class ganglia {
                         "LVS loadbalancers esams"        => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
                         "Miscellaneous esams"            => "hooft.esams.wikimedia.org:11657",
                         "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1011.eqiad.wmnet",
-                        "Memcached pmtpa"                => "mc1.pmtpa.wmnet mc2.pmtpa.wmnet",
                         "Memcached eqiad"                => "mc1001.eqiad.wmnet mc1002.eqiad.wmnet",
                         "Upload caches esams"            => "hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
                         "Ceph cluster esams"             => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org",

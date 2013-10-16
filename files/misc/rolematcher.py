@@ -92,7 +92,6 @@ def manual_init():
         RoleMatcher('eqiad_text_cp', 'cp(10[0-9]+)', 1001, 1020),
         RoleMatcher('eqiad_upload_cp', 'cp(10[0-9]+)', 1021, 1036),
         RoleMatcher('eqiad_mobile_cp', 'cp(104[0-9])+', 1041, 1044),
-        RoleMatcher('eqiad_bits', '(arsenic|strontium|niobum|palladium|dysprosium)'),
         RoleMatcher('eqiad_ssl-ip6_ssl', 'ssl(10[0-9])+', 1001, 1004),
 
         RoleMatcher('esams_bits_cp', 'cp(30[0-9]+)\.esams', 3019, 3022),

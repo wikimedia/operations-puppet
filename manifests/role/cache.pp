@@ -249,7 +249,7 @@ class role::cache {
 			},
 			"bits" => {
 				"pmtpa" => [],
-				"eqiad" => ['arsenic.wikimedia.org', 'niobium.wikimedia.org', 'strontium.eqiad.wmnet', 'palladium.eqiad.wmnet'],
+				"eqiad" => [],
 				"esams" => [
 					"knsq1.esams.wikimedia.org",
 					"knsq2.esams.wikimedia.org",
