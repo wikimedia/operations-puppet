@@ -692,6 +692,7 @@ class role::cache {
 				$cluster_options = {
 					'upload_domain' => 'upload.beta.wmflabs.org',
 					'top_domain'    => 'beta.wmflabs.org',
+					'enable_esi'    => true,
 				}
 			}
 		}
@@ -868,6 +869,7 @@ class role::cache {
 				$realm_cluster_options = {
 					'top_domain' => 'beta.wmflabs.org',
 					'bits_domain' => 'bits.beta.wmflabs.org',
+					'enable_esi' => true,
 				}
 			}
 			default: {
