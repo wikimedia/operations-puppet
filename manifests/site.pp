@@ -31,7 +31,6 @@ import "role/analytics/*.pp"
 import "search.pp"
 import "snapshots.pp"
 import "squid.pp"
-import "ssh.pp"
 import "sudo.pp"
 import "svn.pp"
 import "swift.pp"
@@ -231,7 +230,8 @@ node "bast1001.wikimedia.org" {
         misc::bastionhost,
         nrpe,
         nfs::netapp::home::othersite,
-        misc::dsh
+        misc::dsh,
+        ssh::hostkeys-collect
 }
 
 node "bast4001.wikimedia.org" {
@@ -938,8 +938,8 @@ node "fenari.wikimedia.org" {
         accounts::awjrichards,
         accounts::erosen,
         generic::wikidev-umask,
-        misc::dsh
-
+        misc::dsh,
+        ssh::hostkeys-collect
     install_certificate{ "star.wikimedia.org": }
 }
 
@@ -2853,7 +2853,9 @@ node "tin.eqiad.wmnet" {
         misc::deployment::scap_scripts,
         misc::deployment::l10nupdate,
         generic::mysql::packages::client,
-        role::labsdb::manager
+        role::labsdb::manager,
+        ssh::hostkeys-collect
+        
 }
 
 node "tridge.wikimedia.org" {
