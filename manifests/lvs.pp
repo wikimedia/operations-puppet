@@ -1465,6 +1465,125 @@ class lvs::monitor {
 			critical => "false";
 	}
 
+	# ulsfo -lb addresses
+	monitor_service_lvs_http { "wikipedia-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.97", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "wikipedia-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.97", check_command => "check_https_url!en.wikipedia.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_http { "wiktionary-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.98", check_command => "check_http_lvs!en.wiktionary.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "wiktionary-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.98", check_command => "check_https_url!en.wiktionary.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_http { "wikiquote-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.99", check_command => "check_http_lvs!en.wikiquote.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "wikiquote-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.99", check_command => "check_https_url!en.wikiquote.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_http { "wikibooks-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.100", check_command => "check_http_lvs!en.wikibooks.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "wikibooks-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.100", check_command => "check_https_url!en.wikibooks.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_http { "wikisource-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.101", check_command => "check_http_lvs!en.wikisource.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "wikisource-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.101", check_command => "check_https_url!en.wikisource.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_http { "wikinews-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.102", check_command => "check_http_lvs!en.wikinews.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "wikinews-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.102", check_command => "check_https_url!en.wikinews.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_http { "wikiversity-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.103", check_command => "check_http_lvs!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "wikiversity-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.103", check_command => "check_https_url!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_http { "mediawiki-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.104", check_command => "check_http_lvs!mediawiki.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "mediawiki-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.104", check_command => "check_https_url!mediawiki.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_http { "foundation-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.105", check_command => "check_http_lvs!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
+	monitor_service_lvs_https { "foundation-lb.ulsfo.wikimedia.org": ip_address => "198.35.26.105", check_command => "check_https_url!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
+#	monitor_service_lvs_http { "bits.ulsfo.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png" }
+#	monitor_service_lvs_https { "bits.ulsfo.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
+
+	monitor_service_lvs_http {
+		"mobile-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['mobile']['ulsfo']['mobilelb'],
+			check_command => "check_http_lvs!en.m.wikipedia.org!/wiki/Main_Page";
+		"wikidata-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['text-varnish']['ulsfo']['wikidatalb'],
+			check_command => "check_http_lvs!www.wikidata.org!/",
+			critical => "false";
+		"wikivoyage-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['text-varnish']['ulsfo']['wikivoyagelb'],
+			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page",
+			critical => "false";
+		"wikimedia-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['text-varnish']['ulsfo']['wikimedialb'],
+			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+	}
+
+	monitor_service_lvs_https {
+		"mobile-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['mobile']['ulsfo']['mobilelb'],
+			check_command => "check_https_lvs!en.m.wikipedia.org!/wiki/Main_Page";
+		"wikidata-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['text-varnish']['ulsfo']['wikidatalb'],
+			check_command => "check_https_lvs!www.wikidata.org!/",
+			critical => "false";
+		"wikivoyage-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['text-varnish']['ulsfo']['wikivoyagelb'],
+			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page",
+			critical => "false";
+		"wikimedia-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['text-varnish']['ulsfo']['wikimedialb'],
+			check_command => "check_https_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+	}
+
+	# todo: we should probably monitor both eqiad/pmtpa
+	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.155.5", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus", retries => 20 }
+
+	monitor_service_lvs6_http_https {
+		"wikimedia-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikimedialb6'],
+			uri => "meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikipedia-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikipedialb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page";
+		"wiktionary-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wiktionarylb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiquote-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikiquotelb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikibooks-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikibookslb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikisource-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikisourcelb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikinews-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikinewslb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiversity-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikiversitylb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"mediawiki-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['mediawikilb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"foundation-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['foundationlb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['bits']['ulsfo']['bitslb6'],
+			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+		"upload-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['uploadlb6'],
+			uri => "upload.wikimedia.org!/monitoring/backend";
+		"mobile-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['mobile']['ulsfo']['mobilelb6'],
+			uri => "en.m.wikipedia.org!/wiki/Main_Page";
+		"wikidata-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikidatalb6'],
+			uri => "www.wikidata.org!/",
+			critical => "false";
+		"wikivoyage-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['ipv6']['ulsfo']['wikivoyagelb6'],
+			uri => "en.wikivoyage.org!/wiki/Main_Page",
+			critical => "false";
+	}
 	# Not really LVS but similar:
 
 	# FIXME: hostnames can't have spaces
