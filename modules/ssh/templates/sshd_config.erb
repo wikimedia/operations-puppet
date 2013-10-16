@@ -30,11 +30,11 @@ StrictModes yes
 RSAAuthentication yes
 PubkeyAuthentication yes
 #AuthorizedKeysFile	%h/.ssh/authorized_keys
-<% if has_variable?("ssh_authorized_keys_file") then %>
-AuthorizedKeysFile	<%= ssh_authorized_keys_file %>
+<% if @ssh_authorized_keys_file then %>
+AuthorizedKeysFile	<%= @ssh_authorized_keys_file %>
 <% end %>
-<% if has_variable?("ssh_authorized_keys_file2") then %>
-AuthorizedKeysFile2	<%= ssh_authorized_keys_file2 %>
+<% if @ssh_authorized_keys_file2 then %>
+AuthorizedKeysFile2	<%= @ssh_authorized_keys_file2 %>
 <% end %>
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
@@ -76,11 +76,11 @@ PrintLastLog yes
 TCPKeepAlive yes
 #UseLogin no
 
-<% if has_variable?("ssh_tcp_forwarding") then %>
-AllowTcpForwarding <%= ssh_tcp_forwarding %>
+<% if @ssh_tcp_forwarding then %>
+AllowTcpForwarding <%= @ssh_tcp_forwarding %>
 <% end %>
-<% if has_variable?("ssh_x11_forwarding") then %>
-X11Forwarding <%= ssh_x11_forwarding %>
+<% if @ssh_x11_forwarding then %>
+X11Forwarding <%= @ssh_x11_forwarding %>
 <% end %>
 
 
@@ -94,7 +94,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 
 UsePAM yes
 
-<% if realm == "labs" then %>
+<% if @realm == "labs" then %>
 Banner /etc/ssh/sshd_banner
 <% end %>
 
@@ -109,6 +109,11 @@ Match <%= ssh_restrict_network %>
 	PubkeyAuthentication no
 	RhostsRSAAuthentication no
 	RSAAuthentication no
+<% end %>
+<% if @realm == "production" then %>
+# allow connections from the LAN to use passwords.
+Match Address 208.80.152.*,91.198.174.0/24,10.*
+        PasswordAuthentication yes
 <% end %>
 ##
 ## Anything below this point must start with a match declaration
