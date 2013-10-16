@@ -2200,19 +2200,6 @@ node "nickel.wikimedia.org" {
      }
 }
 
-node /^ocg[1-3]\.wikimedia\.org$/ {
-
-    # online collection generator
-
-    system_role { "misc::mwlib": description => "offline collection generator" }
-
-    include standard,
-        admins::roots,
-        misc::mwlib::packages,
-        misc::mwlib::users
-
-}
-
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
     include standard-noexim
 }
