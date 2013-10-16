@@ -210,8 +210,16 @@ else
 	hpriotypes="$hpriotypes TranslateRenderJob TranslateMoveJob TranslateDeleteJob" # translate
 	hpriotypes="$hpriotypes uploadFromUrl" # upload
 	(runJobsLoopService "$hpriotypes" "y" <%= dprioprocs %>) &
+
 	# Start loops for highly I/O bound jobs that work on special services (e.g. not the DBs)
-        (runJobsLoopService "ParsoidCacheUpdateJob" "n"  $((<%= procs_per_iobound_type %> * 2)) ) &
+
+	# Legacy Parsoid jobs. TODO: Remove once this queue is drained.
+	(runJobsLoopService "ParsoidCacheUpdateJob" "n"  <%= procs_per_iobound_type %> ) &
+	# Lower priority for Parsoid dependency changes (template / file
+	# updates)
+	(runJobsLoopService "ParsoidCacheUpdateJobOnDependencyChange" "n"  <%= procs_per_iobound_type %> ) &
+	# High priority for updates to edited pages themselves
+	(runJobsLoopService "ParsoidCacheUpdateJobOnEdit" "n"  $((<%= procs_per_iobound_type %> * 2)) ) &
 fi
 
 wait
