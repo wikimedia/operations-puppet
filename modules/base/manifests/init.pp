@@ -381,6 +381,13 @@ class base {
 
     include base::tcptweaks
 
+    file { "/usr/local/sbin":
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => 0755;
+    }
+
     class { base::puppet:
         server => $::realm ? {
             'labs' => $::site ? {
