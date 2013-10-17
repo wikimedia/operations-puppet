@@ -1302,7 +1302,7 @@ class lvs::monitor {
 			uri => 'varnishcheck!/';
 	}
 
-    # ESAMS
+	# ESAMS
 
 	monitor_service_lvs_http_https {
 		"wikimedia-lb.esams.wikimedia.org":
@@ -1420,5 +1420,19 @@ class lvs::monitor {
 			ip_address => $ip['ipv6']['esams']['wikivoyagelb6'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page",
 			critical => "false";
+	}
+
+	# ULSFO
+
+	monitor_service_lvs_http_https {
+		"bits-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['bits']['ulsfo']['bitslb'],
+			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+	}
+
+	monitor_service_lvs6_http_https {
+		"bits-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['bits']['ulsfo']['bitslb6'],
+			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
 	}
 }
