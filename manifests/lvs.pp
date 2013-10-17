@@ -1046,10 +1046,6 @@ class lvs::monitor {
 
 	$ip = $lvs::configuration::lvs_service_ips['production']
 
-	monitor_service_lvs_http { "upload.esams.wikimedia.org": ip_address => "91.198.174.234", check_command => "check_http_upload" }
-	monitor_service_lvs_https { "upload.esams.wikimedia.org": ip_address => "91.198.174.234", check_command => "check_https_upload", critical => "false" }
-	monitor_service_lvs_http { "m.wikimedia.org": ip_address => "208.80.154.236", check_command => "check_http_mobile" }
-
 	monitor_service_lvs_http { "appservers.svc.pmtpa.wmnet": ip_address => "10.2.1.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "appservers.svc.eqiad.wmnet": ip_address => "10.2.2.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "api.svc.pmtpa.wmnet": ip_address => "10.2.1.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
@@ -1158,7 +1154,6 @@ class lvs::monitor {
 		"wikivoyage-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikivoyagelb6'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
-
 	}
 
 	# eqiad -lb addresses
@@ -1341,33 +1336,55 @@ class lvs::monitor {
 			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page";
 		'misc-web-lb.eqiad.wikimedia.org':
 			ip_address => $ip['misc_web']['eqiad']['misc_web'],
-			#check_command => 'check_https_lvs!git.wikimedia.org!/robots.txt';
 			check_command => 'check_https_lvs!varnishcheck!/';
 	}
 
-	# esams -lb addresses
-	monitor_service_lvs_http { "wikipedia-lb.esams.wikimedia.org": ip_address => "91.198.174.225", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikipedia-lb.esams.wikimedia.org": ip_address => "91.198.174.225", check_command => "check_https_url!en.wikipedia.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wiktionary-lb.esams.wikimedia.org": ip_address => "91.198.174.226", check_command => "check_http_lvs!en.wiktionary.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wiktionary-lb.esams.wikimedia.org": ip_address => "91.198.174.226", check_command => "check_https_url!en.wiktionary.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikiquote-lb.esams.wikimedia.org": ip_address => "91.198.174.227", check_command => "check_http_lvs!en.wikiquote.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikiquote-lb.esams.wikimedia.org": ip_address => "91.198.174.227", check_command => "check_https_url!en.wikiquote.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikibooks-lb.esams.wikimedia.org": ip_address => "91.198.174.228", check_command => "check_http_lvs!en.wikibooks.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikibooks-lb.esams.wikimedia.org": ip_address => "91.198.174.228", check_command => "check_https_url!en.wikibooks.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikisource-lb.esams.wikimedia.org": ip_address => "91.198.174.229", check_command => "check_http_lvs!en.wikisource.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikisource-lb.esams.wikimedia.org": ip_address => "91.198.174.229", check_command => "check_https_url!en.wikisource.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikinews-lb.esams.wikimedia.org": ip_address => "91.198.174.230", check_command => "check_http_lvs!en.wikinews.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikinews-lb.esams.wikimedia.org": ip_address => "91.198.174.230", check_command => "check_https_url!en.wikinews.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikiversity-lb.esams.wikimedia.org": ip_address => "91.198.174.231", check_command => "check_http_lvs!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikiversity-lb.esams.wikimedia.org": ip_address => "91.198.174.231", check_command => "check_https_url!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_http_lvs!mediawiki.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_https_url!mediawiki.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "foundation-lb.esams.wikimedia.org": ip_address => "91.198.174.235", check_command => "check_http_lvs!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "foundation-lb.esams.wikimedia.org": ip_address => "91.198.174.235", check_command => "check_https_url!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png" }
-	monitor_service_lvs_https { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
-
 	monitor_service_lvs_http {
+		"wikimedia-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikimedialb'],
+			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page";
+		"wikipedia-lb.esams.wikimedia.org":
+			ip_address => $ip['text']['esams']['wikipedialb'],
+			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wiktionary-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wiktionarylb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiquote-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikiquotelb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikibooks-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikibookslb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikisource-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikisourcelb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikinews-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikinewslb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiversity-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikiversitylb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"mediawiki-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['mediawikilb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"foundation-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['foundationlb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.esams.wikimedia.org":
+			ip_address => $ip['bits']['esams']['bitslb'],
+			check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+		"upload-lb.esams.wikimedia.org":
+			ip_address => $ip['upload']['esams']['uploadlb'],
+			check_command => "check_https_url!upload.wikimedia.org!/monitoring/backend";
 		"mobile-lb.esams.wikimedia.org":
 			ip_address => $ip['mobile']['esams']['mobilelb'],
 			check_command => "check_http_lvs!en.m.wikipedia.org!/wiki/Main_Page";
@@ -1386,6 +1403,51 @@ class lvs::monitor {
 	}
 
 	monitor_service_lvs_https {
+		"wikimedia-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikimedialb'],
+			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page";
+		"wikipedia-lb.esams.wikimedia.org":
+			ip_address => $ip['text']['esams']['wikipedialb'],
+			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wiktionary-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wiktionarylb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiquote-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikiquotelb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikibooks-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikibookslb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikisource-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikisourcelb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikinews-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikinewslb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiversity-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikiversitylb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"mediawiki-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['mediawikilb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"foundation-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['foundationlb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.esams.wikimedia.org":
+			ip_address => $ip['bits']['esams']['bitslb'],
+			check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+		"upload-lb.esams.wikimedia.org":
+			ip_address => $ip['upload']['esams']['uploadlb'],
+			check_command => "check_https_url!upload.wikimedia.org!/monitoring/backend";
 		"mobile-lb.esams.wikimedia.org":
 			ip_address => $ip['mobile']['esams']['mobilelb'],
 			check_command => "check_https_lvs!en.m.wikipedia.org!/wiki/Main_Page";
