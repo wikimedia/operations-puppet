@@ -16,8 +16,8 @@ table="query_review"
 digestif() {
 	/usr/bin/pt-query-digest --review h=${digest_host},D=${digest_db},t=${hostname}_${table},u=${mysql_user},p=${pw} \
 		--create-review-table \
-		--review-history h=${digest_host},D=${digest_db},t=${hostname}_${table}_history,u=${mysql_user},p=${pw} \
-		--create-review-history-table \
+		--history h=${digest_host},D=${digest_db},t=${hostname}_${table}_history,u=${mysql_user},p=${pw} \
+		--create-history-table \
 		--noreport \
 		--run-time $runtime \
 		--filter '$event->{fingerprint} !~ m/^select master_pos_wait/' \
