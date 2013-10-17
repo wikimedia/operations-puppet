@@ -64,10 +64,30 @@ def get_config(repo):
     if 'checkout_submodules' not in config:
         config['checkout_submodules'] = 'False'
     if 'dependencies' not in config:
-        config['dependencies'] = []
+        config['dependencies'] = {}
     if 'checkout_module_calls' not in config:
         config['checkout_module_calls'] = []
+    if 'sync_script' not in config:
+        config['sync_script'] = 'shared.py'
     return config
+
+
+def init_sync_links():
+    serv = _get_redis_serv()
+    is_deployment_server = __grains__.get('deployment_server')
+    hook_dir = __grains__.get('deployment_global_hook_dir')
+    if is_deployment_server not 'True':
+        return 0
+    repo_config = __pillar__.get('repo_config')
+    for repo in repo_config.keys():
+        config = get_config(repo)
+        repo_hook_dir = '{0}/{1}'.format(hook_dir, os.path.dirname(repo))
+        hook_link = '{0}/{1}.sync'.format(repo_hook_dir,
+                                          os.path.basename(repo))
+        if not __salt__['file.directory_exists'](repo_hook_dir):
+            sync_script = '{0}/{1}'.format(hook_dir, config)
+            __salt__['file.mkdir'](repo_hook_dir)
+            __salt__['file.symlink'](sync_script, hook_link)
 
 
 def sync_all():
@@ -106,7 +126,7 @@ def fetch(repo):
     gitmodules = config['location'] + '/.gitmodules'
 
     depstats = []
-    for dependency in config['dependencies']:
+    for dependency in config['dependencies'].keys():
         depstats.append(__salt__['deploy.fetch'](dependency))
 
     # Notify the deployment system we started
@@ -204,7 +224,7 @@ def checkout(repo, reset=False):
     if re.match('\W+', tag):
         return {'status': 1, 'repo': repo, 'dependencies': depstats}
 
-    for dependency in config['dependencies']:
+    for dependency in config['dependencies'].keys():
         depstats.append(__salt__['deploy.checkout'](dependency, reset))
 
     if reset:

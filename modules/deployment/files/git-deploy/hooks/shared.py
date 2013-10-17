@@ -15,18 +15,24 @@ def main():
     else:
         force = "False"
 
-    log = raw_input("Log message: ")
+    prefixlib = deploylib.DeployLib(prefix)
+    config = prefixlib.get_config()
+    if not config:
+        return 1
+
+    if config.automated:
+        log = 'automated deployment'
+    else:
+        log = raw_input("Log message: ")
     serv = redis.Redis(host='localhost', port=6379, db=0)
     serv.rpush("deploy:log", "!log {0} started synchronizing "
                "{1} '{2}'".format(getpass.getuser(), tag, log))
 
-    prefixlib = deploylib.DeployLib(prefix)
-    if not prefixlib.get_config():
-        return 1
     prefixlib.update_repos(tag)
     prefixlib.fetch()
     if not prefixlib.ask('fetch'):
         return 1
+    prefixlib.run_dependencies()
     prefixlib.checkout(force)
     if not prefixlib.ask('checkout', force):
         return 1

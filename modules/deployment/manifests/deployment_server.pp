@@ -92,6 +92,10 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-de
       grain  => "deployment_server",
       value  => "True";
   }
+  salt::grain { "deployment_global_hook_dir":
+      grain  => "deployment_global_hook_dir",
+      value  => $deployment_global_hook_dir;
+  }
   systemuser {
     "sartoris": name => "sartoris", shell => "/bin/false", home => "/nonexistent", groups => $deployer_groups
   }
