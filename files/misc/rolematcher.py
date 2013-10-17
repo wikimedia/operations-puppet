@@ -193,9 +193,9 @@ def init():
                     start, end = determine_start_end_range(section, hostname)
                     prefix = determine_hostname_prefix(hostname)
                     suffix = determine_hostname_suffix(hostname)
-                    if prefix in ['arsenic', 'strontium', 'niobium', 'palladium', 'dysprosium', 'holmium']:
+                    if prefix in ['holmium']:
                         if '%s-%s' % (dc, role) not in elements:
-                            matcher = RoleMatcher('%s_%s_elements' % (dc, role), '(arsenic|strontium|niobum|palladium|dysprosium|holmium)')
+                            matcher = RoleMatcher('%s_%s_elements' % (dc, role), 'holmium')
                             elements['%s-%s' % (dc, role)] = True
                             matchers.append(matcher)
                     else:
