@@ -1096,37 +1096,58 @@ class lvs::monitor {
 	monitor_service_lvs_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 
 	# PMTPA
-	monitor_service_lvs_http { "wikimedia-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.200", check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page" }
-	monitor_service_lvs_https { "wikimedia-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.200", check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikipedia-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.201", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikipedia-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.201", check_command => "check_https_url!en.wikipedia.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wiktionary-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.202", check_command => "check_http_lvs!en.wiktionary.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wiktionary-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.202", check_command => "check_https_url!en.wiktionary.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikiquote-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.203", check_command => "check_http_lvs!en.wikiquote.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikiquote-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.203", check_command => "check_https_url!en.wikiquote.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikibooks-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.204", check_command => "check_http_lvs!en.wikibooks.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikibooks-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.204", check_command => "check_https_url!en.wikibooks.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikisource-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.205", check_command => "check_http_lvs!en.wikisource.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikisource-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.205", check_command => "check_https_url!en.wikisource.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikinews-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.206", check_command => "check_http_lvs!en.wikinews.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikinews-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.206", check_command => "check_https_url!en.wikinews.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "wikiversity-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.207", check_command => "check_http_lvs!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "wikiversity-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.207", check_command => "check_https_url!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "mediawiki-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.208", check_command => "check_http_lvs!mediawiki.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "mediawiki-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.208", check_command => "check_https_url!mediawiki.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "foundation-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.209", check_command => "check_http_lvs!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_https { "foundation-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.209", check_command => "check_https_url!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
-	monitor_service_lvs_http { "bits.pmtpa.wikimedia.org": ip_address => "208.80.152.210", check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png" }
-	monitor_service_lvs_https { "bits.pmtpa.wikimedia.org": ip_address => "208.80.152.210", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
-	monitor_service_lvs_http { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_http_upload" }
-	monitor_service_lvs_https { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_https_upload", critical => "false" }
-	monitor_service_lvs_http { "wikidata-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.218", check_command => "check_http_lvs!www.wikidata.org!/" }
-	monitor_service_lvs_https { "wikidata-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.218", check_command => "check_https_url!www.wikidata.org!/", critical => "false" }
-	monitor_service_lvs_http { "wikivoyage-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.219", check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page" }
-	monitor_service_lvs_https { "wikivoyage-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.219", check_command => "check_https_url!wikivoyage.org!/wiki/Main_Page", critical => "false" }
-
-	# todo: we should probably monitor both eqiad/pmtpa
-	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.155.5", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus", retries => 20 }
+	monitor_service_lvs_http_https {
+		"wikimedia-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wikimedialb'],
+			uri => "meta.wikimedia.org!/wiki/Main_Page";
+		"wikipedia-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text']['pmtpa']['wikipedialb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page";
+		"wiktionary-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wiktionarylb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiquote-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wikiquotelb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikibooks-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wikibookslb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikisource-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wikisourcelb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikinews-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wikinewslb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiversity-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wikiversitylb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"mediawiki-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['mediawikilb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"foundation-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['foundationlb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['bits']['pmtpa']['bitslb'],
+			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+		"upload-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['upload']['pmtpa']['uploadlb'],
+			uri => "upload.wikimedia.org!/monitoring/backend";
+		"wikidata-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wikidatalb'],
+			uri => "www.wikidata.org!/";
+		"wikivoyage-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text-varnish']['pmtpa']['wikivoyagelb'],
+			uri => "en.wikivoyage.org!/wiki/Main_Page";
+	}
 
 	monitor_service_lvs6_http_https {
 		"wikimedia-lb.pmtpa.wikimedia.org":
@@ -1181,6 +1202,9 @@ class lvs::monitor {
 			ip_address => $ip['ipv6']['pmtpa']['wikivoyagelb6'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
 	}
+
+	# todo: we should probably monitor both eqiad/pmtpa
+	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.155.5", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus", retries => 20 }
 
 	# EQIAD
 	monitor_service_lvs_http_https {
