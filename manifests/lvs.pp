@@ -1022,7 +1022,12 @@ define monitor_service_lvs_https ( $ip_address, $check_command, $port=443, $crit
 
 define monitor_service_lvs_http_https ( $ip_address, $uri, $critical="true", $contact_group="admins" ) {
 	# Virtual resource for the monitoring host
-	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true", contact_group => $contact_group }
+	@monitor_host { $title:
+		ip_address => $ip_address,
+		group => "lvs",
+		critical => "true",
+		contact_group => $contact_group
+	}
 
 	@monitor_service { $title:
 		host => $title,
@@ -1043,7 +1048,11 @@ define monitor_service_lvs_http_https ( $ip_address, $uri, $critical="true", $co
 
 define monitor_service_lvs6_http_https ( $ip_address, $uri, $critical="true" ) {
 	# Virtual resource for the monitoring host
-	@monitor_host { "${title}_ipv6": ip_address => $ip_address, group => "lvs", critical => "true" }
+	@monitor_host { "${title}_ipv6":
+		ip_address => $ip_address,
+		group => "lvs",
+		critical => "true"
+	}
 
 	@monitor_service { "${title}_ipv6":
 		host => "${title}_ipv6",
@@ -1054,7 +1063,7 @@ define monitor_service_lvs6_http_https ( $ip_address, $uri, $critical="true" ) {
 	}
 
 	@monitor_service { "${title}_ipv6_https":
-		host => $title,
+		host => "${title}_ipv6",
 		group => "lvs",
 		description => "LVS HTTPS IPv6",
 		check_command => "check_https_url!${uri}",
