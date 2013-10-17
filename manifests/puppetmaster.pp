@@ -332,11 +332,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				source => "puppet:///files/puppet/puppet-merge";
 		}
 
-		# TODO: Remove this after file is cleaned up from all servers
-		file { "/usr/local/bin/position-of-the-moon":
-			ensure => absent,
-		}
-
 		# Clear out reports older than 36 hours.
 		cron {
 			removeoldreports:
