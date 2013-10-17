@@ -91,6 +91,7 @@ class misc::statistics::packages {
         'mercurial',
         'tofrodos',
         'git-review',
+        'imagemagick',
     ]:
         ensure => latest;
     }
