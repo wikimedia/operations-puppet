@@ -209,6 +209,7 @@ else
 	hpriotypes="$hpriotypes EchoNotificationJob" # echo notification
 	hpriotypes="$hpriotypes TranslateRenderJob TranslateMoveJob TranslateDeleteJob" # translate
 	hpriotypes="$hpriotypes uploadFromUrl" # upload
+	hpriotypes="$hpriotypes MassMessageJob MassMessageSubmitJob" # MassMessage
 	(runJobsLoopService "$hpriotypes" "y" <%= dprioprocs %>) &
 
 	# Start loops for highly I/O bound jobs that work on special services (e.g. not the DBs)
