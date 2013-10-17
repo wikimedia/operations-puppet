@@ -32,8 +32,9 @@ class DeployLib(object):
                 return False
             options = {'location': '{0}/{1}'.format(parent_dir,
                                                     prefix),
+                       'automated': False,
                        'checkout_submodules': False,
-                       'dependencies': []}
+                       'dependencies': {}}
             for option, default in options.items():
                 try:
                     self.__config[option] = repo_config[option]
@@ -74,11 +75,12 @@ class DeployLib(object):
                                  stderr=subprocess.PIPE)
             out = p.communicate()[0]
 
+    def run_dependencies(self):
         # Ensure repos we depend on are handled
         dependencies = self.__config['dependencies']
-        for dependency in dependencies:
-            dependency_script = ('/var/lib/git-deploy/dependencies/%s.dep' %
-                                 (dependency))
+        for dependency, script in dependencies.items():
+            dependency_script = ('/var/lib/git-deploy/dependencies/%s' %
+                                 (script))
             if os.path.exists(dependency_script):
                 dependency_script = (dependency_script + " %s %s" %
                                      (dependency, self.__config['prefix']))

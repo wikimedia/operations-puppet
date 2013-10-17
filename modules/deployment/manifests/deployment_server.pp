@@ -89,8 +89,14 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-de
       source => "puppet:///deployment/git-deploy/utils/submodule-update-server-info",
   }
   salt::grain { "deployment_server":
-      grain  => "deployment_server",
-      value  => "True";
+      grain   => "deployment_server",
+      value   => true,
+      replace => true;
+  }
+  salt::grain { "deployment_global_hook_dir":
+      grain   => "deployment_global_hook_dir",
+      value   => $deployment_global_hook_dir,
+      replace => true;
   }
   systemuser {
     "sartoris": name => "sartoris", shell => "/bin/false", home => "/nonexistent", groups => $deployer_groups
