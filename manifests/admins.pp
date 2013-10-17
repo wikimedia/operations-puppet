@@ -2351,19 +2351,21 @@ class accounts {
 	}
 
 
+	# Disabled as part of rename to 'ori'.
 	class olivneh inherits baseaccount {
 		$username = "olivneh"
 		$realname = "Ori Livneh"
 		$uid = 604
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-		if $manage_home {
-			ssh_authorized_key { 'ori@wmf.prod':
-				ensure  => present,
-				user    => $username,
-				type    => 'ssh-rsa',
-				key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCxJRZZM8H1g9SfP0pvE3SJZN3zSV4ULDMHr4sEKTYTsIeOZObG99EcauqaaDi8XBBYhvEuAkhL9xTtrG/dWTPXINEAxXl4dmHn4AEg5ycdSj0kvJHK1tbDzCbHNVzJw+3GFcoYKlzRo4qwNHXe6j0pmuX21uh+MRMiCBlrZv6ir3U/guv37Fy3Ng7AOBSC+NSSb3O8Umhb5XVGHr4wh1C28pPx9+CDhwt54ZGwTRbL4UIQ1IPYhiNbI+niK8etXKNXPS2Um6j17SNrAI903+lb2tM2CTWwj3877FvyxZFOfvZovp9uR3kIwIMM5/PyDSy9YvnHMH/O9SWEqEI/aQjR',
-				require => Unixaccount[$realname],
-			}
+		$enabled = false
+		$manage_home = false
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
+		ssh_authorized_key { 'ori@wmf.prod':
+			ensure  => absent,
+			user    => $username,
+			type    => 'ssh-rsa',
+			key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCxJRZZM8H1g9SfP0pvE3SJZN3zSV4ULDMHr4sEKTYTsIeOZObG99EcauqaaDi8XBBYhvEuAkhL9xTtrG/dWTPXINEAxXl4dmHn4AEg5ycdSj0kvJHK1tbDzCbHNVzJw+3GFcoYKlzRo4qwNHXe6j0pmuX21uh+MRMiCBlrZv6ir3U/guv37Fy3Ng7AOBSC+NSSb3O8Umhb5XVGHr4wh1C28pPx9+CDhwt54ZGwTRbL4UIQ1IPYhiNbI+niK8etXKNXPS2Um6j17SNrAI903+lb2tM2CTWwj3877FvyxZFOfvZovp9uR3kIwIMM5/PyDSy9YvnHMH/O9SWEqEI/aQjR',
+			require => Unixaccount[$realname],
 		}
 	}
 
@@ -3064,6 +3066,26 @@ class accounts {
         }
     }
 
+    # RT 5936
+    class ori inherits baseaccount {
+        $username = 'ori'
+        $realname = 'Ori Livneh'
+        $uid      = 654
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'ori@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDU6nsR19aZ2Ck2HSkdJPdx9rmw8H6UrPlHIBvt1loL8Kku+5tggcE4uTlk/rc5+Fch6EF8un0kPKz55RQCDOhV/kFHrxstBCWf+PJQC1gL9vbqyzia0OyGpCsLzYO81v7NMxkg6gELtxLBtbqE8u7m4X+YkzMxNrlqPfHjIHrVqr4RbLkJiuPvI0VsesAoPCh2MEl0Gkzl+08GDpYplhsxFwPzo9xoFMUi/YCIMKTczOhdg6nPaBMxjUkz7EKPFI3MWZcfP/as3xNL1me7M5N1iJjveGz+rXDqMglub9gN1aDllytzhE0+6h8jEDzC9DtuxGXVB8M/9eCEWsOJlIur',
+            }
+        }
+    }
+
 
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
@@ -3119,6 +3141,7 @@ class admins::roots {
 	include accounts::marc
 	include accounts::mark
 	include accounts::midom
+	include accounts::ori # RT 5936
 	include accounts::otto
 	include accounts::preilly # disabled
 	include accounts::py # disabled
@@ -3160,7 +3183,7 @@ class admins::mortals {
 	include accounts::neilk # revoked access per RT 2345
 	include accounts::nikerabbit
 	include accounts::nimishg # revoked
-	include accounts::olivneh
+	include accounts::olivneh # renamed to 'ori'
 	include accounts::pdhanda # access revoked
 	include accounts::pgehres
 	include accounts::raindrift # access revoked per RT 3088
