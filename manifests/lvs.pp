@@ -1239,7 +1239,7 @@ class lvs::monitor {
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
 		'misc-web-lb.eqiad.wikimedia.org':
 			ip_address => $ip['misc_web']['eqiad']['misc_web'],
-			check_command => 'check_http_lvs!varnishcheck!/';
+			uri => 'varnishcheck!/';
 	}
 
 	monitor_service_lvs6_http_https {
