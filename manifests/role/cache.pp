@@ -841,7 +841,7 @@ class role::cache {
 
 	class upload {
 		# FIXME: remove this hack
-		if $::site in ["eqiad","esams"] or $::realm == 'labs' {
+		if $::realm == "labs" or $::site != "pmtpa" {
 			# Varnish
 			include role::cache::varnish::upload
 		}
