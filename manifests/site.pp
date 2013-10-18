@@ -486,7 +486,7 @@ node /^db(52|53|54|57)\.pmtpa\.wmnet/ {
     }
 }
 
-node /^db(34|39|64|66)\.pmtpa\.wmnet/ {
+node /^db(34|39|66)\.pmtpa\.wmnet/ {
     if $hostname == "db39" {
         class { role::coredb::s3 : mariadb => true }
     } elsif $hostname == "db66"{
@@ -507,10 +507,8 @@ node /^db(31|51|65|72)\.pmtpa\.wmnet/ {
     }
 }
 
-node /^db(44|45|55|73|74)\.pmtpa\.wmnet/ {
-    if $hostname == "db44" {
-        class { role::coredb::s5 : mariadb => true }
-    } elsif $hostname =~ /^db(55|73|74)/{
+node /^db(45|55|73|74)\.pmtpa\.wmnet/ {
+    if $hostname =~ /^db(55|73|74)/{
         class { role::coredb::s5 : mariadb => true, innodb_file_per_table => true }
     } else {
         include role::coredb::s5
@@ -589,7 +587,7 @@ node 'db29.pmtpa.wmnet' {
 }
 
 ## not in use for various reasons
-node /^db(42|6[12]|7[5-7])\.pmtpa\.wmnet/{
+node /^db(4[24]|6[124]|7[5-7])\.pmtpa\.wmnet/{
     include standard
 }
 
@@ -609,8 +607,8 @@ node /^db10(17|43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|23|34|36)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(02|18|23|36)/ {
+node /^db10(02|09|18|34|36)\.eqiad\.wmnet/ {
+    if $hostname =~ /^db10(02|18|36)/ {
         class { role::coredb::s2 : innodb_file_per_table => true, mariadb => true }
     } elsif $hostname == "db1009" {
         class { role::coredb::s2 : mariadb => true }
@@ -779,7 +777,7 @@ node 'db1057.eqiad.wmnet' {
 ## 2013-04-10: py using db101[45] and db1023 and db1033 for testing
 ## not currently in production and/or hardware issues
 # db1033
-node /^db10(33)\.eqiad\.wmnet/ {
+node /^db10(23|33)\.eqiad\.wmnet/ {
     include standard
 }
 
