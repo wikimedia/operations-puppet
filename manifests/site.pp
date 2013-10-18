@@ -2204,22 +2204,6 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
     include standard-noexim
 }
 
-node /^owa[1-3]\.wikimedia\.org$/ {
-    # taking owa hosts out of the swift proxy cluster since they're not being used.
-    # if we have load issues we can add them back in.
-    ### the hosts are still doing pmtpa-test, but I'm taking out the role to not overwrite local perf testing changes.
-    #include role::swift::pmtpa-test::proxy
-    include groups::wikidev,
-        accounts::darrell,
-        accounts::orion,
-        accounts::smerritt,
-        accounts::john
-    sudo_user { [ "darrell" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-    sudo_user { [ "orion" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-    sudo_user { [ "smerritt" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-    sudo_user { [ "john" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-}
-
 # base_analytics_logging_node is defined in role/logging.pp
 node "oxygen.wikimedia.org" inherits "base_analytics_logging_node" {
     include
