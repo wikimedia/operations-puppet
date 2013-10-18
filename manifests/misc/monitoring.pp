@@ -97,6 +97,7 @@ class misc::monitoring::views {
 	class { 'misc::monitoring::view::navigation_timing': }
 	class { 'misc::monitoring::view::static_assets': }
 	class { 'misc::monitoring::view::bits_ttfb': }
+	class { 'misc::monitoring::view::visual_editor': }
 
 }
 
@@ -304,12 +305,29 @@ class misc::monitoring::view::navigation_timing {
 				host_regex   => 'client-side',
 				metric_regex => '^browser.redirecting.(desktop|mobile)_median$',
 			},
-			{
-				title        => 'TotalPageLoadTime: navigationStart to loadEventEnd',
-				host_regex   => 'client-side',
-				metric_regex => '^browser.totalPageLoadTime.(desktop|mobile)_median$',
-			},
 		],
+	}
+}
+
+
+# == Class: misc::monitoring::view::visual_editor
+#
+# Performance measurements from VisualEditor.
+#
+class misc::monitoring::view::visual_editor {
+	ganglia::view { 'VisualEditor':
+		graphs => [
+			{
+				title        => 'VisualEditor: DOM save',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.ve.dom.save_median$',
+			},
+			{
+				title        => 'VisualEditor: DOM retrieve',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.vw.dom.retrieve_*$',
+			},
+			],
 	}
 }
 
