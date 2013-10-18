@@ -1473,11 +1473,17 @@ class lvs::monitor {
 		"bits-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['bits']['ulsfo']['bitslb'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+		"upload-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['upload']['ulsfo']['uploadlb'],
+			uri => "upload.wikimedia.org!/monitoring/backend";
 	}
 
 	monitor_service_lvs6_http_https {
 		"bits-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['bits']['ulsfo']['bitslb6'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+		"upload-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['upload']['ulsfo']['uploadlb6'],
+			uri => "upload.wikimedia.org!/monitoring/backend";
 	}
 }
