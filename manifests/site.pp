@@ -300,6 +300,11 @@ node "carbon.wikimedia.org" {
         misc::install-server::tftp-server
 }
 
+# cerium,praseodymium and xenon are cassandra test host
+node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
+    include standard,
+}
+
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     include standard,
             role::dns::recursor
