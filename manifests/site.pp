@@ -1707,106 +1707,11 @@ node "magnesium.wikimedia.org" {
     include role::request-tracker-apache::production, exim::rt
 }
 
-node /^mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
-    $cluster = "memcached"
-    if $hostname =~ /^mc[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    case $::mw_primary {
-        'pmtpa': {
-            $redis_repl_site = false
-        }
-        'eqiad': {
-            $redis_repl_site = 'eqiad.wmnet'
-        }
-    }
-
-    # replication mappings may end up all over the place
-    # once servers die and are replaced, so making this
-    # explicit for now.
-    $redis_replication = {
-        'site' => $redis_repl_site,
-        'mc1' => 'mc1001',
-        'mc2' => 'mc1002',
-        'mc3' => 'mc1003',
-        'mc4' => 'mc1004',
-        'mc5' => 'mc1005',
-        'mc6' => 'mc1006',
-        'mc7' => 'mc1007',
-        'mc8' => 'mc1008',
-        'mc9' => 'mc1009',
-        'mc10' => 'mc1010',
-        'mc11' => 'mc1011',
-        'mc12' => 'mc1012',
-        'mc13' => 'mc1013',
-        'mc14' => 'mc1014',
-        'mc15' => 'mc1015',
-        'mc16' => 'mc1016',
-    }
-    include role::memcached,
-        passwords::redis
-
-    file { "/a":
-        ensure => directory;
-    }
-
-    class { "redis":
-        maxmemory         => "500Mb",
-        redis_replication => $redis_replication,
-        password          => $passwords::redis::main_password,
-    }
-    include redis::ganglia
-}
-
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
     $cluster = "memcached"
     if $hostname =~ /^mc100[12]$/ {
         $ganglia_aggregator = true
     }
-
-    case $::mw_primary {
-        'pmtpa': {
-            $redis_repl_site = 'pmtpa.wmnet'
-        }
-        'eqiad': {
-            $redis_repl_site = false
-        }
-    }
-
-    $redis_replication = {
-        'site' => $redis_repl_site,
-        'mc1001' => 'mc1',
-        'mc1002' => 'mc2',
-        'mc1003' => 'mc3',
-        'mc1004' => 'mc4',
-        'mc1005' => 'mc5',
-        'mc1006' => 'mc6',
-        'mc1007' => 'mc7',
-        'mc1008' => 'mc8',
-        'mc1009' => 'mc9',
-        'mc1010' => 'mc10',
-        'mc1011' => 'mc11',
-        'mc1012' => 'mc12',
-        'mc1013' => 'mc13',
-        'mc1014' => 'mc14',
-        'mc1015' => 'mc15',
-        'mc1016' => 'mc16',
-    }
-
-    include role::memcached,
-        passwords::redis
-
-    file { "/a":
-        ensure => directory;
-    }
-
-    class { "redis":
-        maxmemory         => "500Mb",
-        redis_replication => $redis_replication,
-        password          => $passwords::redis::main_password,
-    }
-    include redis::ganglia
 }
 
 node /^rdb100[1-4]\.eqiad\.wmnet/ {
