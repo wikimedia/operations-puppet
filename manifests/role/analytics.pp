@@ -41,8 +41,8 @@ class role::analytics::common {
     # include dclass for device classification
     include role::analytics::dclass
 
-    # include Kraken repository deployment target
-    deployment::target { 'analytics-kraken': }
+    # Include Kraken repository deployments.
+    include role::analytics::kraken
 }
 
 
