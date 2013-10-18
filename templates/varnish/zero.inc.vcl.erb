@@ -32,7 +32,7 @@ sub tag_carrier {
 		unset req.http.X-Stripped-XFF; // clean up our temp var
 	}
 
-	if ( req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
+	if ( req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.wikipedia\." ) {
 		set req.http.X-Subdomain = "ZERO";
 	} else {
 		set req.http.X-Subdomain = "M";
@@ -52,13 +52,13 @@ sub tag_carrier {
 	} else if (req.http.X-CS2 == "623-03") {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ha|ln|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ha|ln|eo)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "623-03";
 			}
 		}
 	} else if (req.http.X-CS2 == "413-02") {
 		if (req.http.X-Subdomain == "ZERO") {
-			if (req.http.host ~ "(^(en|ta|si)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(en|ta|si)\.zero|^zero)\.wikipedia\.") {
 				set req.http.X-CS = "413-02";
 			}
 		}
@@ -76,16 +76,16 @@ sub tag_carrier {
 	} else if (req.http.X-CS2 == "470-01") {
 		set req.http.X-DfltLang = "bn";
 		if (req.http.X-Subdomain == "ZERO") {
-			if (req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(bn)\.zero|^zero)\.wikipedia\.") {
 				set req.http.X-CS = "470-01";
 			}
 		}
 	} else if (req.http.X-CS2 == "470-03") {
-		if (req.http.host ~ "(^(en|bn)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^(en|bn)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "470-03";
 		}
 	} else if (req.http.X-CS2 == "416-03") {
-		if (req.http.host ~ "(^(en|ar)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^(en|ar)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "416-03";
 		}
 	} else if (req.http.X-CS2 == "456-02") {
@@ -99,7 +99,7 @@ sub tag_carrier {
 	} else if (req.http.X-CS2 == "624-02") {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "624-02";
 			}
 		}
@@ -120,7 +120,7 @@ sub tag_carrier {
 	} else if (req.http.X-CS2 == "604-00") {
 		set req.http.X-DfltLang =  "fr";
 		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|ar|en|es|de|it|nl|pt|ru|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(fr|ar|en|es|de|it|nl|pt|ru|zh)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "604-00";
 			}
 		}
@@ -132,19 +132,19 @@ sub tag_carrier {
 	} else if (req.http.X-CS2 == "605-01") {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "605-01";
 			}
 		}
 	} else if (req.http.X-CS2 == "641-14") {
 		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "641-14";
 			}
 		}
 	} else if (req.http.X-CS2 == "420-01") {
 		set req.http.X-DfltLang = "ar";
-		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "420-01";
 		}
 	} else if (req.http.X-CS2 == "405-25") {
@@ -154,38 +154,38 @@ sub tag_carrier {
 		}
 	} else if (req.http.X-CS2 == "250-99") {
 		set req.http.X-DfltLang = "ru";
-		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "250-99";
 		}
 	} else if (req.http.X-CS2 == "410-01") {
-		if (req.http.host ~ "(^(en|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^(en|ur)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "410-01";
 		}
 	} else if (req.http.X-CS2 == "404-01") {
-		if (req.http.host ~ "(^([a-zA-Z0-9-]+)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^([a-zA-Z0-9-]+)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "404-01";
 		}
 	} else if (req.http.X-CS2 == "510-11") {
 		set req.http.X-DfltLang = "id";
 		if (req.http.X-Subdomain == "ZERO") {
-			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.wikipedia\.") {
 				set req.http.X-CS = "510-11";
 			}
 		}
 	} else if (req.http.X-CS2 == "646-02") {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|en|mg)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(fr|en|mg)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "646-02";
 			}
 		}
 	} else if (req.http.X-CS2 == "436-01") {
-		if (req.http.host ~ "(^(en|tg|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^(en|tg|ru)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "436-01";
 		}
 	} else if (req.http.X-CS2 == "401-01") {
 		set req.http.X-DfltLang = "ru";
-		if (req.http.host ~ "(^(ru|kk|en)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^(ru|kk|en)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "401-01";
 		}
 	} else {
