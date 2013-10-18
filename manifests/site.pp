@@ -436,8 +436,15 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
     include role::cache::bits, role::cache::ssl::unified
 }
 
-# TODO: cp4005-cp4020, upload, mobile (and text?).
+node /^cp40(0[5-7]|1[3-5])\.ulsfo.wmnet$/ {
+    if $::hostname =~ /^cp(4005|4013)$/ {
+        $ganglia_aggregator = true
+    }
 
+    interface::add_ip6_mapped { "main": }
+
+    include role::cache::upload, role::cache::ssl::unified
+}
 
 
 node "dataset2.wikimedia.org" {
