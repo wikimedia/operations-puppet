@@ -24,7 +24,7 @@ class mediawiki_singlenode(
 ) {
 	require role::labs-mysql-server, webserver::php5-mysql
 
-	package { [ 'imagemagick', 'php-apc' ] :
+	package { [ 'imagemagick', 'php-apc', 'php5-cli' ] :
 		ensure => latest,
 	}
 
