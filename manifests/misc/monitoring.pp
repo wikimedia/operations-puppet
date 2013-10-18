@@ -325,7 +325,7 @@ class misc::monitoring::view::visual_editor {
 			{
 				title        => 'VisualEditor: DOM retrieve',
 				host_regex   => 'client-side',
-				metric_regex => '^browser.vw.dom.retrieve_*',
+				metric_regex => '^browser.ve.dom.retrieve_*',
 			},
 		],
 	}
