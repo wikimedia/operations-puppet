@@ -340,7 +340,7 @@ class lvs::configuration {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
 				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadlb6' => "2620:0:861:ed1a::b", 'uploadsvc' => "10.2.2.24" },
 				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
-				'ulsfo' => { 'uploadlb' => "198.35.26.107",  'bitslb6'   => "2620:0:863:ed1a::b", 'bitssvc' => "10.2.4.24" },
+				'ulsfo' => { 'uploadlb' => "198.35.26.107",  'uploadlb6' => "2620:0:863:ed1a::b", 'uploadsvc' => "10.2.4.24" },
 			},
 			'payments' => {
 				'pmtpa' => "208.80.152.213",
@@ -579,6 +579,18 @@ class lvs::configuration {
 				'ProxyFetch' => {
 					'url' => [ 'http://upload.wikimedia.org/monitoring/backend' ],
 					},
+				'IdleConnection' => $idleconnection_monitor_options
+			},
+		},
+		"upload-https" => {
+			'description' => "Images and other media, upload.${::site}.wikimedia.org",
+			'class' => "high-traffic2",
+			'sites' => [ "ulsfo" ],
+			'ip' => $service_ips['upload'][$::site],
+			'port' => 443,
+			'bgp' => "no",
+			'depool-threshold' => ".5",
+			'monitors' => {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
