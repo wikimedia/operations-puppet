@@ -16,6 +16,10 @@ metrics = ('connecting', 'sending', 'waiting', 'redirecting', 'receiving',
            'rendering', 'loading', 'dnsLookup', 'pageSpeed',
            'totalPageLoadTime')
 
+ve_schemas = {
+    'VisualEditorDOMRetrieved': 'retrieve',
+    'VisualEditorDOMSaved': 'save',
+}
 
 ap = argparse.ArgumentParser(description='NavigationTiming Graphite module')
 ap.add_argument('endpoint', help='URI of EventLogging endpoint')
@@ -35,11 +39,8 @@ zsock.subscribe = b''
 addr = args.statsd_host, args.statsd_port
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-for meta in iter(zsock.recv_json, ''):
 
-    if meta['revision'] not in schema_revs:
-        continue
-
+def handle_nav_timing(meta):
     event = meta['event']
 
     if meta['revision'] == 5832704:
@@ -76,3 +77,29 @@ for meta in iter(zsock.recv_json, ''):
             sock.sendto(stat.encode('utf-8'), addr)
             stat = 'browser.%s.%s:%s|ms' % (metric, bits_cache, value)
             sock.sendto(stat.encode('utf-8'), addr)
+
+
+def handle_ve(meta):
+    schema = ve_schemas[meta['schema']]
+    event = meta['event']
+    duration = int(round(event['duration']))
+    stat = 'browser.ve.dom.%s:%s|ms' % (schema, duration)
+    sock.sendto(stat.encode('utf-8'), addr)
+    if schema == 'retrieve':
+        if event.get('parsoidCachedResponse', False):
+            cache = 'cached'
+        else:
+            cache = 'uncached'
+        stat = 'browser.ve.dom.%s.%s:%s|ms' % (schema, cache, duration)
+        sock.sendto(stat.encode('utf-8'), addr)
+        stat = 'browser.ve.dom.%s.%s.count:1|c' % (cache, schema)
+        sock.sendto(stat.encode('utf-8'), addr)
+    stat = 'browser.ve.dom.%s.count:1|c' % schema
+    sock.sendto(stat.encode('utf-8'), addr)
+
+
+for meta in iter(zsock.recv_json, ''):
+    if meta['revision'] in schema_revs:
+        handle_nav_timing(meta)
+    if meta['schema'] in ve_schemas:
+        handle_ve(meta)
