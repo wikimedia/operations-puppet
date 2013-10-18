@@ -11,7 +11,7 @@ pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.o
 
 ## Banner Impressions
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= fundraising_log_directory %>/logs/bannerImpressions-sampled100.tsv.log
-
+pipe 1000 /usr/bin/udp-filter -F '\t' -p Special:BannerRandom >> <%= fundraising_log_directory %>/logs/bannerRequests-sampled1000.tsv.log
 
 ### webstatscollector -- domas
 # NOTE!  The files that filter and collector (on gadolinium) generates
