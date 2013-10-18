@@ -187,9 +187,15 @@ node /analytics102[345].eqiad.wmnet/ {
     include role::analytics::zookeeper::server
 }
 
-# analytics1026 is not yet assigned a role.
+# analytics1026 is a Hadoop client and job submitter.
 node "analytics1026.eqiad.wmnet" {
-    include role::analytics
+    include role::analytics::common
+    # include analytics user accounts
+    include role::analytics::users
+
+    # Including kraken import and hive partition cron jobs.
+    include role::analytics::kraken::jobs::import::pagecounts
+    include role::analytics::kraken::jobs::hive::partitions::external
 }
 
 # analytics1027 hosts the frontend
