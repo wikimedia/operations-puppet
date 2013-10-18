@@ -26,6 +26,11 @@ class role::analytics::kraken {
         # by users in the stats group.
         mode   => 2775,
     }
+
+    # many Kraken python scripts use docopt for CLI parsing.
+    package { 'python-docopt':
+        ensure => 'installed',
+    }
 }
 
 # == Class role::analytics::kraken::import::pagecounts
