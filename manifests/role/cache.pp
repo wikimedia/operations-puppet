@@ -181,6 +181,14 @@ class role::cache {
 						'cp3009.esams.wikimedia.org',
 						'cp3010.esams.wikimedia.org',
 					],
+					'ulsfo' => [
+						'cp4005.ulsfo.wmnet',
+						'cp4006.ulsfo.wmnet',
+						'cp4007.ulsfo.wmnet',
+						'cp4013.ulsfo.wmnet',
+						'cp4014.ulsfo.wmnet',
+						'cp4015.ulsfo.wmnet',
+					],
 				},
 				"mobile" => {
 					"pmtpa" => [],
@@ -309,6 +317,7 @@ class role::cache {
 					'knsq14.knams.wikimedia.org',
 					'knsq15.knams.wikimedia.org'
 				],
+				'ulsfo' => [],
 			},
 			"mobile" => {
 				"pmtpa" => [],
