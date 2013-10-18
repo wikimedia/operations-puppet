@@ -6,7 +6,7 @@ class misc::bugzilla::server {
 
     class {'webserver::php5': ssl => true; }
     install_certificate{ 'bugzilla.wikimedia.org': }
-
+    install_certificate{ 'bug-attachment.wikimedia.org': }
 
     apache_site { 'bugzilla': name => 'bugzilla.wikimedia.org' }
     file {
