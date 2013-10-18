@@ -2354,7 +2354,7 @@ class accounts {
 	# Disabled as part of rename to 'ori'.
 	class olivneh inherits baseaccount {
 		$username = "olivneh"
-		$realname = "Ori Livneh"
+		$realname = 'Ori Livneh (disabled)'
 		$uid = 604
 		$enabled = false
 		$manage_home = false
