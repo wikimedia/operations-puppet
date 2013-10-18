@@ -3806,21 +3806,6 @@ host oxygen {
 	fixed-address oxygen.wikimedia.org;
 }
 
-host owa1 {
-	hardware ethernet 84:2b:2b:06:48:81;
-	fixed-address owa1.wikimedia.org;
-}
-
-host owa2 {
-	hardware ethernet 84:2b:2b:55:5a:f1;
-	fixed-address owa2.wikimedia.org;
-}
-
-host owa3 {
-	hardware ethernet 84:2b:2b:55:57:5f;
-	fixed-address owa3.wikimedia.org;
-}
-
 host palladium {
 	hardware ethernet 18:03:73:f1:59:2d;
 	fixed-address palladium.eqiad.wmnet;
