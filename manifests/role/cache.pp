@@ -7,8 +7,9 @@
 @monitor_group { "cache_text_esams": description => "text squids esams" }
 
 @monitor_group { "cache_upload_pmtpa": description => "upload squids pmtpa" }
-@monitor_group { "cache_upload_eqiad": description => "upload squids eqiad" }
-@monitor_group { "cache_upload_esams": description => "upload squids esams" }
+@monitor_group { "cache_upload_eqiad": description => "eqiad upload Varnish" }
+@monitor_group { "cache_upload_esams": description => "esams upload Varnish" }
+@monitor_group { "cache_upload_ulsfo": description => "ulsfo upload Varnish"}
 
 @monitor_group { "cache_bits_pmtpa": description => "pmtpa bits Varnish" }
 @monitor_group { "cache_bits_eqiad": description => "eqiad bits Varnish "}
@@ -17,6 +18,7 @@
 
 @monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
 @monitor_group { "cache_mobile_esams": description => "esams mobile Varnish" }
+@monitor_group { "cache_mobile_ulsfo": description => "ulsfo mobile Varnish" }
 
 @monitor_group { "cache_parsoid_eqiad": description => "Parsoid caches eqiad" }
 
