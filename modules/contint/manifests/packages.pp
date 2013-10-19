@@ -101,6 +101,21 @@ class contint::packages {
     ensure => 'installed',
   }
 
+  # Dependencies for Wikimetrics
+  package { [
+    'python-mysqldb',
+    'python-nose',
+    'python-dev',
+    'python-sqlalchemy',
+    'python-requests',
+    'python-flask',
+    'python-celery',
+    'python-yaml',
+    'python-coverage',
+    'libmysqlclient-dev',
+    ]: ensure => 'installed',
+  }
+
   # Used to build analytics udp-filters
   package { ['libcidr0-dev', 'libanon0-dev']:
     ensure => 'latest',
