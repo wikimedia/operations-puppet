@@ -3086,6 +3086,25 @@ class accounts {
         }
     }
 
+    # RT 6013
+    class gjg inherits baseaccount {
+        $username = 'gjg'
+        $realname = 'Greg Grossmeier'
+        $uid      = 655
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'greg@x200s':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDcwwxwZqCRMBQsMIutloeVS5Nx+nljUr914Yradb8YLeo2PbqLEjVKgC6+yKHe7binFNk3rlgiXhXOm2issytl7sWUZz8YpFqxp7fDqnfVVOTGTwMtAjBoZHugz9RaR1SVlz2dRk0N5qrovffz/Av3QQIS12jX3C/GCdqCMixgwi+ecYo2xA7WJyEGFnp+0Ah8hBIn2xabZAfHhZ8dF6VifEHsgp08Ot52sOZwb99+H0SjEWRwc9decwuPGNWX94BPvWcP6dQ2bzjqR3iRkwEIvKcgMvanYUXAvPb32382QCsW0r22HtvsUvA340ISlvcauRS1GGpyYmZYGSSfgHVH',
+            }
+        }
+    }
 
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
@@ -3168,6 +3187,7 @@ class admins::mortals {
 	include accounts::csteipp
 	include accounts::demon
 	include accounts::ebernhardson # RT 5717
+	include accounts::gjg
 	include accounts::gwicke
 	include accounts::halfak
 	include accounts::hashar
