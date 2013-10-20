@@ -19,36 +19,36 @@
 class toollabs::dev_environ {
 
   package { [
-      'libtool',
-      'libxml2-dev',
-      'libxslt-dev',
+      'apt-file',
       'autoconf',
-      'sqlite3',
-      'python-dev',
-      'openjdk-7-jdk',
-      'sbt',
+      'build-essential', # for dpkg
+      'cython',
+      'dh-make-perl',
+      'elinks',
+      'emacs',
+      'fakeroot', # for dpkg
       'libboost-python1.48-dev',
       'libdmtx-dev',                 # Bug #53867.
+      'libfreetype6-dev',
       'libmariadbclient-dev',
       'libpng3-dev',
-      'libfreetype6-dev',
-      'lintian',
-      'apt-file',
-      'dh-make-perl',
-      'emacs',
-      'elinks',
-      'mercurial',
-      'tig',
-      'fakeroot', # for dpkg
-      'build-essential', # for dpkg
-      'mc', # Popular{{cn}} on Toolserver
-      'libxslt1-dev', # -- same
-      'p7zip-full', # requested by Betacommand to extract files using 7zip
       'libtiff4-dev', # bug 52717
+      'libtool',
       'libvips-dev',
+      'libxml2-dev',
+      'libxslt-dev',
+      'libxslt1-dev', # -- same
+      'lintian',
+      'mc', # Popular{{cn}} on Toolserver
+      'mercurial',
+      'openjdk-7-jdk',
+      'p7zip-full', # requested by Betacommand to extract files using 7zip
+      'python-dev',
       'qt4-qmake',
+      'sbt',
+      'sqlite3',
       'subversion',
-      'cython' ]:
+      'tig' ]:
     ensure => present
   }
 
