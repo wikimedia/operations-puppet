@@ -74,6 +74,10 @@ class role::deployment::config {
             'parsoid.restart_parsoid' => ['__REPO__'],
         },
     },
+    'math/Math'      => {
+        'grain'    => 'math',
+        'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Math',
+    },
     'eventlogging/EventLogging'      => {
         'grain'    => 'eventlogging',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging',
