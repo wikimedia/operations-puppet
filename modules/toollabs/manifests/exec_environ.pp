@@ -158,6 +158,7 @@ class toollabs::exec_environ {
       'fabric',                      # Bug #54135.
       'git',
       'gnuplot-nox',
+      'graphviz',
       'libav-tools',                 # Bug #53870.
       'libdmtx0a',                   # Bug #53867.
       'libfreetype6',
