@@ -19,6 +19,7 @@
 class toollabs::dev_environ {
 
   package { [
+      'ant',
       'apt-file',
       'autoconf',
       'build-essential', # for dpkg
