@@ -465,10 +465,9 @@ node "dataset2.wikimedia.org" {
         admins::roots,
         groups::wikidev,
         accounts::catrope,
-        misc::download-wikimedia,
-        misc::download-primary,
-        misc::download::cron-rsync-dumps,
-        misc::kiwix-mirror
+        download,
+        download::primary,
+        download::kiwix,
 }
 
 node "dataset1001.wikimedia.org" {
@@ -479,10 +478,9 @@ node "dataset1001.wikimedia.org" {
         admins::roots,
         groups::wikidev,
         accounts::catrope,
-        misc::download-wikimedia,
-        misc::download-mirror,
-        misc::download::cron-rsync-dumps,
-        misc::download-gluster
+        download,
+        download::mirror,
+        download::gluster,
 }
 
 # pmtpa dbs
