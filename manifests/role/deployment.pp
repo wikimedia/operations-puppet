@@ -91,6 +91,10 @@ class role::deployment::config {
     'parsoid/config'                 => {
         'grain'                 => 'parsoid',
     },
+    'math/Math'      => {
+        'grain'    => 'math',
+        'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Math',
+    },
     'eventlogging/EventLogging'      => {
         'grain'    => 'eventlogging',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging',
