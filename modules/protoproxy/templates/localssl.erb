@@ -3,7 +3,8 @@
 
 # SSL proxying
 server {
-	listen [::]:443 ssl;
+	listen [::]:443 ssl ipv6only=on;
+	listen 443 ssl;
 	ssl on;
 	server_name  <%= @fqdn %>;
 
