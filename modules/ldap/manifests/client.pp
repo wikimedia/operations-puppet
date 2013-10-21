@@ -151,9 +151,13 @@ class ldap::client::utils($ldapconfig) {
         "/usr/local/sbin/manage-volumes":
             ensure => absent;
         "/usr/local/sbin/ldapsupportlib.py":
+            ensure => link,
+            target => '/usr/local/bin/ldapsupportlib.py',
+            require => File['/usr/local/bin/ldapsupportlib.py'];
+        "/usr/local/bin/ldapsupportlib.py":
             owner => root,
             group => root,
-            mode  => 0544,
+            mode  => 0555,
             source => "puppet:///modules/ldap/scripts/ldapsupportlib.py";
         "/etc/ldap/scriptconfig.py":
             owner => root,
