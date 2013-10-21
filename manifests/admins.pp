@@ -2944,7 +2944,6 @@ class accounts {
         }
     }
 
-
     class springle inherits baseaccount {
         $username = "springle"
         $realname = "Sean Pringle"
