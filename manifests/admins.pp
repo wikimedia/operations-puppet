@@ -3311,6 +3311,7 @@ class admins::fr-tech {
 class admins::parsoid {
 	$gid = 500   # 'wikidev' by default
 	include groups::wikidev
+	include sudo::parsoid # RT 5934
 
 	include accounts::gwicke
 	include accounts::catrope

@@ -62,3 +62,16 @@ class sudo::appserver {
 	}
 
 }
+
+class sudo::parsoid {
+
+	file { '/etc/sudoers.d/parsoid':
+		path   => '/etc/sudoers.d/parsoid',
+		owner  => 'root',
+		group  => 'root',
+		mode   => '0440',
+		source => 'puppet:///files/sudo/sudoers.parsoid',
+		ensure => present;
+	}
+
+}

@@ -1,0 +1,14 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/sudo/sudoers.parsoid
+#####################################################################
+
+# sudoers file to let parsoid admins
+# run anything as user parsoid for debugging  (RT #5934)
+
+# User alias specification
+User_Alias      PARSOIDADMINS = gwicke, catrope
+
+# Allow admins to run commands as parsoid
+PARSOIDADMINS	ALL = (parsoid) NOPASSWD: ALL
+
