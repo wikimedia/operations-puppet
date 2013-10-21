@@ -546,6 +546,11 @@ define command{
     command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c pmp_check_mysql_processlist
 }
 
+define command{
+    command_name    nrpe_pmp_check_mysql_innodb
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c pmp_check_mysql_innodb
+}
+
 # end percona mysql checks
 define command{
         command_name    nrpe_check_ircecho

@@ -237,6 +237,11 @@ class mysql_wmf {
 				owner => root,
 				group => root,
 				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/pmp-check-mysql-innodb":
+				source => "puppet:///files/icinga/percona/pmp-check-mysql-innodb",
+				owner => root,
+				group => root,
+				mode => 0555;
 		}
 	}
 
@@ -252,6 +257,7 @@ class mysql_wmf {
 		monitor_service { "mysql replication heartbeat": description => "MySQL Replication Heartbeat", check_command => "nrpe_check_mysql_slave_heartbeat", critical => false }
 		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
 		monitor_service { "mysql processlist": description => "MySQL Processlist", check_command => "nrpe_pmp_check_mysql_processlist", critical => false }
+		monitor_service { "mysql innodb": description => "MySQL InnoDB", check_command => "nrpe_pmp_check_mysql_innodb", critical => false }
 	}
 
 	class mysqluser {
@@ -469,6 +475,7 @@ class mysql_wmf::coredb::monitoring( $crit = false, $no_slave = false ) {
 	monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
 	monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
 	monitor_service { "mysql processlist": description => "MySQL Processlist", check_command => "nrpe_pmp_check_mysql_processlist", critical => false }
+	monitor_service { "mysql innodb": description => "MySQL InnoDB", check_command => "nrpe_pmp_check_mysql_innodb", critical => false }
 
 	if $no_slave == false {
 		monitor_service { "full lvs snapshot": description => "Full LVS Snapshot", check_command => "nrpe_check_lvs", critical => false }
