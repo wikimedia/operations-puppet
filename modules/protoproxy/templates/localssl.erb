@@ -16,7 +16,7 @@ server {
 	keepalive_timeout 60;
 
 	location / {
-		proxy_pass http://127.0.0.1:<%= @upstream_port %>;
+		proxy_pass http://<%= scope.lookupvar('::ipaddress') %>:<%= @upstream_port %>;
 
 		proxy_set_header Host $host;
 		proxy_set_header X-Real-IP $remote_addr;
