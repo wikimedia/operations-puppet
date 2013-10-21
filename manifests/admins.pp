@@ -3198,6 +3198,7 @@ class admins::mortals {
 	include accounts::maxsem
 	include accounts::mflaschen
 	include accounts::mholmquist
+	include accounts::milimetric # promoted per RT 5982
 	include accounts::mlitn
 	include accounts::mwalker # promoted per RT 4747
 	include accounts::neilk # revoked access per RT 2345
@@ -3227,7 +3228,6 @@ class admins::restricted {
 	include accounts::bastique # access revoked
 	include accounts::daniel # access revoked
 	include accounts::dab
-	include accounts::milimetric
 	include accounts::dartar
 	include accounts::diederik
 	include accounts::dsc
