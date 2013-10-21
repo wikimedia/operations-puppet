@@ -12,8 +12,7 @@
 # Sample Usage:
 #
 class toollabs::bastion($gridmaster) inherits toollabs {
-  include ssh::bastion,
-    toollabs::exec_environ,
+  include toollabs::exec_environ,
     toollabs::dev_environ
 
   file { "/etc/ssh/ssh_config":
@@ -75,6 +74,10 @@ class toollabs::bastion($gridmaster) inherits toollabs {
 
   package { "misctools":
     ensure => latest,
+  }
+
+  package { 'mosh':
+    ensure => present
   }
 
   # Temporary hack to manage obsolete files in /usr/local/bin.

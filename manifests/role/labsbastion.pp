@@ -3,5 +3,7 @@ class role::labs::bastion {
         description => "Labs bastion host (with mosh enabled)"
     }
 
-   class { 'ssh::bastion': }
+    package { 'mosh':
+        ensure => present
+    }
 }
