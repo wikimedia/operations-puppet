@@ -289,24 +289,7 @@ class role::cache {
 					'sq15.wikimedia.org',
 					'sq47.wikimedia.org',
 				],
-				"eqiad" => [
-					'cp1021.eqiad.wmnet',
-					'cp1022.eqiad.wmnet',
-					'cp1023.eqiad.wmnet',
-					'cp1024.eqiad.wmnet',
-					'cp1025.eqiad.wmnet',
-					'cp1026.eqiad.wmnet',
-					'cp1027.eqiad.wmnet',
-					'cp1028.eqiad.wmnet',
-					'cp1029.eqiad.wmnet',
-					'cp1030.eqiad.wmnet',
-					'cp1031.eqiad.wmnet',
-					'cp1032.eqiad.wmnet',
-					'cp1033.eqiad.wmnet',
-					'cp1034.eqiad.wmnet',
-					'cp1035.eqiad.wmnet',
-					'cp1036.eqiad.wmnet',
-				],
+				"eqiad" => [],
 				"esams" => [
 					'knsq8.knams.wikimedia.org',
 					'knsq9.knams.wikimedia.org',
@@ -321,7 +304,7 @@ class role::cache {
 			},
 			"mobile" => {
 				"pmtpa" => [],
-				"eqiad" => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet'],
+				"eqiad" => [],
 				"esams" => []
 			},
 			"parsoid" => {

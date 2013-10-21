@@ -270,7 +270,7 @@ class ganglia {
                 # neon needs gmetad for ganglios
                 /^manutius$/: {
                     $data_sources = {
-                        "Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
+                        "Upload caches eqiad" => "cp1048.eqiad.wmnet cp1049.eqiad.wmnet"
                     }
                     $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
                 }
