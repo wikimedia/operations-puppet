@@ -3336,4 +3336,10 @@ class admins::parsoid {
 	include accounts::gwicke
 	include accounts::catrope
 	include accounts::ssastry # RT 5512
+
+	# RT 5934
+	sudo_user { ['catrope', 'gwicke']:
+		privileges => ['ALL = (parsoid) NOPASSWD: ALL'],
+	}
+
 }
