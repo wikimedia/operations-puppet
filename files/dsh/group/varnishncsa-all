@@ -3,13 +3,11 @@
 # (from stafford:/var/lib/puppet/yaml/node)
 #
 # ^cp30(0[34789]|10)\.esams\.wikimedia\.org$
-# ^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$\
 # ^cp30(0[34789]|10)\.esams\.wikimedia\.org$
 # ^cp(3019|302[0-2])\.esams\.wikimedia\.org$
 # knsq(1[6-9]|2[0-2])\.esams\.wikimedia\.org
 # amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org
-# ^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$
-# ^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$
+# ^cp104[3-4]\.(wikimedia\.org|eqiad\.wmnet)$
 #
 # otto - 2013-03-22
 
@@ -49,24 +47,6 @@ amssq59.esams.wikimedia.org
 amssq60.esams.wikimedia.org
 amssq61.esams.wikimedia.org
 amssq62.esams.wikimedia.org
-cp1021.eqiad.wmnet
-cp1022.eqiad.wmnet
-cp1023.eqiad.wmnet
-cp1024.eqiad.wmnet
-cp1025.eqiad.wmnet
-cp1026.eqiad.wmnet
-cp1027.eqiad.wmnet
-cp1028.eqiad.wmnet
-cp1029.eqiad.wmnet
-cp1030.eqiad.wmnet
-cp1031.eqiad.wmnet
-cp1032.eqiad.wmnet
-cp1033.eqiad.wmnet
-cp1034.eqiad.wmnet
-cp1035.eqiad.wmnet
-cp1036.eqiad.wmnet
-cp1041.eqiad.wmnet
-cp1042.eqiad.wmnet
 cp1043.wikimedia.org
 cp1044.wikimedia.org
 sq67.wikimedia.org
