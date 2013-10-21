@@ -303,6 +303,11 @@ node "carbon.wikimedia.org" {
 # cerium,praseodymium and xenon are cassandra test host
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     include standard
+
+    include groups::wikidev, accounts::gwicke
+    sudo_user { 'gwicke':
+        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+    }
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
