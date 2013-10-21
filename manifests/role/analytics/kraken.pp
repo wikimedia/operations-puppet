@@ -62,7 +62,7 @@ class role::analytics::kraken::jobs::import::pagecounts {
     # cron job to download any missing pagecount files from
     # dumps.wikimedia.org and store them into HDFS.
     cron { 'kraken-import-hourly-pagecounts':
-        command => "${script} --start ${start_date} ${datadir} 2>&1 /usr/bin/tee -a ${log_file}",
+        command => "${script} --start ${start_date} ${datadir} 2>&1 | /usr/bin/tee -a ${log_file}",
         user    => 'hdfs',
         minute  => 5,
         require => Exec["${script}-exists"],
