@@ -2576,6 +2576,7 @@ node "stat1.wikimedia.org" {
         accounts::ebernhardson, # RT 4959
         accounts::fschulenburg, # RT 4475
         accounts::giovanni,  # RT 3460
+        accounts::gp,        # RT 6005
         accounts::halfak,
         accounts::howief,    # RT 3576
         accounts::ironholds,

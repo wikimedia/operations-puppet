@@ -3106,6 +3106,26 @@ class accounts {
         }
     }
 
+    # RT #6005
+    class gp inherits baseaccount {
+        $username = 'gp'
+        $realname = 'Gerrit Padgham'
+        $uid      = 657
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'gp@electricalchemy.net':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-dss',
+                key    => 'AAAAB3NzaC1kc3MAAACBAIGVYfuOOXouoJBvj2uyzSp5R9EVf+gb2DYyijgQ1wIrlnK8SDa0Rp7B1JDHrrOLc8gSV5mGHl69ONvburRp5aVEUYx8NM6c/xgQIUUgO8vJsrtOFuX3lW9ibsESFngctSfV87mNynvsbp7PSeW1XwVgnLjUvp0Hp+LCGwgpA6QdAAAAFQDsvXAA0VVEu3NC5FWBj3fBLCYTrQAAAIATbbz3FoG4vbcUpuK6wenl7VKS59ZFkZ8Huq8prJCIk2Qc8GfOuaBqsPAwtyTynmm9+dHvCZPXqyBDU2fj+M6FscwSe9Dftk62+KAmRS9i1np1UqA2a/gYwlFH+t1HUCiJRR0NW6PQP0bYSNChgi9rZdKtZkAS76k6/VcGC5rPJgAAAIAgjeSts+NN3o6JPTtqzPIZL52iyQJ9w/ptFbYIFipsjzSB6bbzMSlWDUKoX37PwIVxtVdiuhcs4OUkA4bgsH2hBsMf+RnICVRAetJ3ciWHQolCNURactkI3afMkARGhQw4eq9+aTs6IGLs7miqKRhnGWhVJ/0ixHrJJLFy7D57Rg==',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
