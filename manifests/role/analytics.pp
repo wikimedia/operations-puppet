@@ -97,8 +97,8 @@ class role::analytics::users {
     User<|title == qchris|>      { groups +> [ "stats" ] }
 
 
-    # Diederik, David and Otto have sudo privileges on Analytics nodes.
-    sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
+    # Diederik, David, Dan and Otto have sudo privileges on Analytics nodes.
+    sudo_user { [ "diederik", "dsc", "otto", "milimetric" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 }
 
 
