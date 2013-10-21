@@ -332,6 +332,28 @@ class misc::monitoring::view::visual_editor {
 }
 
 
+# == Class: misc::monitoring::view::mobile
+#
+# Performance measurements from Mobile Web.
+#
+class misc::monitoring::view::mobile {
+	ganglia::view { 'Mobile Web':
+		graphs => [
+			{
+				title        => 'Mobile Web: pageSpeed (domInteractive to loadEventEnd) and rendering (responseEnd to loadEventEnd)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.(rendering|pageSpeed).mobile_median$',
+			},
+			{
+				title        => 'Mobile Web: receiving (responseStart to responseEnd)',
+				host_regex   => 'client-side',
+				metric_regex => '^browser.receiving.mobile_median$',
+			},
+		],
+	}
+}
+
+
 # == Class: misc::monitoring::view::bits_ttfb
 #
 # A Ganglia view of TTFB (time to first byte) timing data obtained via
