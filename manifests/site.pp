@@ -2574,6 +2574,7 @@ node "stat1.wikimedia.org" {
         accounts::dartar,
         accounts::declerambaul,
         accounts::ebernhardson, # RT 4959
+        accounts::fflorin, # RT 6011
         accounts::fschulenburg, # RT 4475
         accounts::giovanni,  # RT 3460
         accounts::halfak,
