@@ -313,7 +313,7 @@ class ganglia {
                         "Virtualization cluster eqiad"   => "virt1005.eqiad.wmnet virt1000.wikimedia.org",
                         "Virtualization cluster pmtpa"   => "virt5.pmtpa.wmnet virt0.wikimedia.org",
                         "Glusterfs cluster pmtpa"        => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
-                        "MySQL eqiad"                    => "db1017.eqiad.wmnet db1021.eqiad.wmnet",
+                        "MySQL eqiad"                    => "db1056.eqiad.wmnet db1021.eqiad.wmnet",
                         "LVS loadbalancers eqiad"        => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
                         "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
                         "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",

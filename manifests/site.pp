@@ -610,8 +610,8 @@ node /^db(4[24]|6[124]|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(17|43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(17|56)/ {
+node /^db10(43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
+    if $hostname =~ /^db10(56)/ {
         $ganglia_aggregator = true
         include mha::manager
     }
@@ -794,8 +794,10 @@ node 'db1057.eqiad.wmnet' {
 
 ## 2013-04-10: py using db101[45] and db1023 and db1033 for testing
 ## not currently in production and/or hardware issues
-# db1033
-node /^db10(23|33)\.eqiad\.wmnet/ {
+# db1017 -- disk mount issue
+# db1023 -- ok
+# db1033 -- bad ram dimm
+node /^db10(17|23|33)\.eqiad\.wmnet/ {
     include standard
 }
 
