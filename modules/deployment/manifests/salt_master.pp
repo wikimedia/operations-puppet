@@ -89,8 +89,8 @@ class deployment::salt_master(
       subscribe => [File["${pillar_dir}/deployment/deployment_config.sls"], File["${pillar_dir}/deployment/repo_config.sls"], File["${pillar_dir}"]],
       refreshonly => true,
       require => [Package["salt-master"]];
-    "update_sync_links":
-      command => "/usr/bin/salt -G 'deployment_server:true' deploy.init_sync_links",
+    "deployment_server_init":
+      command => "/usr/bin/salt -G 'deployment_server:true' deploy.deployment_server_init",
       subscribe => [Exec['refresh_deployment_pillars']],
       refreshonly => true,
       require => [File["${module_dir}/deploy.py"]];
