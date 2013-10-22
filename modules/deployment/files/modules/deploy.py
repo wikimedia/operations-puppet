@@ -37,6 +37,14 @@ def _check_in(function, repo):
                   'checkout_checkin_timestamp', timestamp)
 
 
+def _map_args(repo, args):
+    arg_map = {'__REPO__': repo}
+    mapped_args = []
+    for arg in args:
+        mapped_args.append(arg_map.get(arg, arg))
+    return mapped_args
+
+
 def get_config(repo):
     deployment_config = __pillar__.get('deployment_config')
     config = __pillar__.get('repo_config')
@@ -62,7 +70,8 @@ def get_config(repo):
     config.setdefault('submodule_sed_regex', {})
     config.setdefault('checkout_submodules', False)
     config.setdefault('dependencies', {})
-    config.setdefault('checkout_module_calls', [])
+    config.setdefault('checkout_module_calls', {})
+    config.setdefault('fetch_module_calls', {})
     config.setdefault('sync_script', 'shared.py')
     return config
 
@@ -183,6 +192,10 @@ def fetch(repo):
     origin_tag = __salt__['cmd.run'](cmd, config['location'])
     origin_tag = origin_tag.strip()
 
+    # Call modules on the repo's behalf ignore the return on these
+    for call, args in config['fetch_module_calls'].items():
+        mapped_args = _map_args(repo, args)
+        __salt__[call](*mapped_args)
     return {'status': status, 'repo': repo,
             'dependencies': depstats, 'tag': origin_tag}
 
@@ -262,6 +275,7 @@ def checkout(repo, reset=False):
             return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
     # Call modules on the repo's behalf ignore the return on these
-    for call in config['checkout_module_calls']:
-        __salt__[call](repo)
+    for call, args in config['checkout_module_calls'].items():
+        mapped_args = _map_args(repo, args)
+        __salt__[call](*mapped_args)
     return {'status': 0, 'repo': repo, 'tag': tag, 'dependencies': depstats}

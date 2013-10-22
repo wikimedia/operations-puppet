@@ -57,16 +57,16 @@ class role::deployment::config {
     },
     'parsoid/Parsoid'                => {
         'grain'                 => 'parsoid',
-        'checkout_module_calls' => [
-            'parsoid.config_symlink',
-            'parsoid.restart_parsoid',
-        ],
+        'checkout_module_calls' => {
+            'parsoid.config_symlink'  => ['__REPO__'],
+            'parsoid.restart_parsoid' => ['__REPO__'],
+        },
     },
     'parsoid/config'                 => {
         'grain'                 => 'parsoid',
-        'checkout_module_calls' => [
-            'parsoid.restart_parsoid',
-        ],
+        'checkout_module_calls' => {
+            'parsoid.restart_parsoid' => ['__REPO__'],
+        },
     },
     'eventlogging/EventLogging'      => {
         'grain' => 'eventlogging',
