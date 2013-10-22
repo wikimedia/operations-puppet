@@ -32,33 +32,34 @@
 # Licensed under the GNU Public License, version 2
 #
 class ipython(
-	$ipythondir = '/srv/ipython',
-	$user       = 'ipython',
-	$group      = 'ipython'
+    $ipythondir = '/srv/ipython',
+    $user       = 'ipython',
+    $group      = 'ipython'
 ) {
+    if $::operatingsystem != "Ubuntu" {
+        fail("Module $module_name is not supported on $::operatingsystem")
+    }
 
-	if $::operatingsystem != "Ubuntu" {
-		fail("Module $module_name is not supported on $::operatingsystem")
-	}
+    package { 'ipython':
+        ensure => latest,
+    }
 
-	package { 'ipython':
-		ensure => latest,
-	}
+    user { $user:
+        ensure     => present,
+        gid        => $group,
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        system     => true,
+    }
 
-	if ! defined(Group[$group]) {
-		group { $user:
-			ensure => present,
-		}
-	}
+    group { $user:
+        ensure => present,
+    }
 
-	if ! defined(User[$user]) {
-		user { $user:
-			ensure     => present,
-			gid        => $group,
-			shell      => '/bin/false',
-			home       => $ipythondir,
-			managehome => true,
-			system     => true,
-		}
-	}
+    file { $ipythondir:
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0755',
+    }
 }
