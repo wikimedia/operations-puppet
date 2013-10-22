@@ -41,8 +41,7 @@ def get_config(repo):
     deployment_config = __pillar__.get('deployment_config')
     config = __pillar__.get('repo_config')
     config = config[repo]
-    if 'type' not in config:
-        config['type'] = 'git-http'
+    config.setdefault('type', 'git-http')
     if 'location' not in config:
         repoloc = '{0}/{1}'.format(deployment_config['parent_dir'], repo)
         config['location'] = repoloc
@@ -60,14 +59,10 @@ def get_config(repo):
     else:
         scheme = 'http'
     config['url'] = '{0}://{1}/{2}'.format(scheme, server, repo)
-    if 'submodule_sed_regex' not in config:
-        config['submodule_sed_regex'] = {}
-    if 'checkout_submodules' not in config:
-        config['checkout_submodules'] = 'False'
-    if 'dependencies' not in config:
-        config['dependencies'] = {}
-    if 'checkout_module_calls' not in config:
-        config['checkout_module_calls'] = []
+    config.setdefault('submodule_sed_regex', {})
+    config.setdefault('checkout_submodules', False)
+    config.setdefault('dependencies', {})
+    config.setdefault('checkout_module_calls', [])
     config.setdefault('sync_script', 'shared.py')
     return config
 
@@ -156,9 +151,7 @@ def fetch(repo):
     if status != 0:
         return {'status': 20, 'repo': repo, 'dependencies': depstats}
 
-    # There's a bug with using booleans in pillars, so for now
-    # we're matching against an explicit True string.
-    if config['checkout_submodules'] == "True":
+    if config['checkout_submodules']:
         cmd = '/usr/bin/git checkout .gitmodules'
         ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
@@ -250,9 +243,7 @@ def checkout(repo, reset=False):
     if ret != 0:
         return {'status': 30, 'repo': repo, 'dependencies': depstats}
 
-    # There's a bug with using booleans in pillars, so for now
-    # we're matching against an explicit True string.
-    if config['checkout_submodules'] == "True":
+    if config['checkout_submodules']:
         # Transform .gitmodules file based on defined seds
         for before, after in config['submodule_sed_regex'].items():
             after = after.replace('__REPO_URL__', config['url'])

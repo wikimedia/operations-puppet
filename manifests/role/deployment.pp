@@ -13,7 +13,7 @@ class role::deployment::config {
           'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
           '.git' => '',
         },
-        'checkout_submodules' => 'True',
+        'checkout_submodules' => true,
         'dependencies'        => {
             'l10n-slot0' => 'l10n',
         },
@@ -24,7 +24,7 @@ class role::deployment::config {
           'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
           '.git' => '',
         },
-        'checkout_submodules' => 'True',
+        'checkout_submodules' => true,
         'dependencies'        => {
             'l10n-slot1' => 'l10n',
         },
@@ -35,7 +35,7 @@ class role::deployment::config {
           'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
           '.git' => '',
         },
-        'checkout_submodules' => 'True',
+        'checkout_submodules' => true,
         'dependencies'        => {
             'l10n-beta' => 'l10n',
         },
