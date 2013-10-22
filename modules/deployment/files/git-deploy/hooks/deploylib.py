@@ -19,10 +19,9 @@ class DeployLib(object):
                              stderr=subprocess.PIPE)
         out = p.communicate()[0]
         try:
+            pillar = json.loads(out)
             if 'local' in pillar:
-                pillar = json.loads(out)['local']
-            else:
-                pillar = json.loads(out)
+                pillar = pillar['local']
             try:
                 repo_config = pillar['repo_config'][prefix]
                 parent_dir = pillar['deployment_config']['parent_dir']
