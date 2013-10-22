@@ -307,6 +307,13 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     sudo_user { 'gwicke':
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
     }
+
+    # XXX: to be moved into the puppet class
+    sysctl::parameters { 'cassandra':
+        values => {
+            'vm.max_map_count' => 1048575,
+        },
+    }
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
