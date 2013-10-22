@@ -157,6 +157,14 @@ class misc::download-gluster {
 			require => Package['glusterfs-client'],
 	}
 
+	mount {
+		'/mnt/nfspagecountsdata':
+			ensure => mounted,
+			device => 'labsnfs.pmtpa.wmnet:/pagecounts',
+			fstype => 'nfs',
+			options => 'bg,rsize=8192,wsize=8192,timeo=14,intr,port=0,hard'
+	}
+
 	file {
 		'/usr/local/bin/wmfdumpsmirror.py':
 			ensure => present,
@@ -176,8 +184,8 @@ class misc::download-gluster {
 			hour        => '3',
 			command     => '/usr/local/sbin/gluster-rsync-cron.sh',
 			environment => 'MAILTO=ops-dumps@wikimedia.org',
-			require     => [ File[ ['/usr/local/bin/wmfdumpsmirror.py',
-					'/usr/local/sbin/gluster-rsync-cron.sh'] ], Mount['/mnt/glusterpublicdata'] ]
+			require     => [ File[ ['/usr/local/bin/wmfdumpsmirror.py', '/usr/local/sbin/gluster-rsync-cron.sh'] ],
+							 Mount[ ['/mnt/nfspagecountsdata', '/mnt/glusterpublicdata'] ] ]
 	}
 }
 
