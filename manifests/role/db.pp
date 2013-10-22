@@ -85,7 +85,7 @@ class role::db::labsdb( $instances = {} ) {
         owner => root,
         group => root,
         mode => 0555,
-        source => "puppet:///files/icinga/percona";
+        source => "puppet:///modules/mysql_wmf/icinga/percona";
     }
 
     nrpe::monitor_service { "mysqld":
