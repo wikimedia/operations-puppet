@@ -23,10 +23,9 @@ def main():
     p = subprocess.Popen("sudo salt-call -l quiet --out json pillar.data", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out = p.communicate()[0]
     try:
+        pillar = json.loads(out)
         if 'local' in pillar:
-            pillar = json.loads(out)['local']
-        else:
-            pillar = json.loads(out)
+            pillar = pillar['local']
     except ValueError:
         print "JSON data wasn't loaded from the pillar call. git-deploy can't configure itself. Exiting."
         return None
