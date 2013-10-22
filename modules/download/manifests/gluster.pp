@@ -1,6 +1,6 @@
 class download::gluster {
     include role::mirror::common
-    include generic::gluster-client
+    include gluster::client
 
     system::role { "download-gluster": description => "Gluster dumps copy" }
 
