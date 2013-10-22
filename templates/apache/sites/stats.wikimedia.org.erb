@@ -62,13 +62,6 @@ END
 	RewriteEngine On
 	RewriteCond %{HTTP_HOST} stats.wikipedia.org
 	RewriteRule ^(.*)$ http://stats.wikimedia.org$1 [R=301,L]
-
-	# Force https for geowiki's private data
-	<Directory "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_directory') %>">
-		RewriteEngine On
-		RewriteCond %{HTTPS} !on
-		RewriteRule (.*) https://%{HTTP_HOST}/%{REQUEST_URI} [redirect=301,last]
-	</Directory>
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -84,17 +77,6 @@ END
 	SSLCertificateFile    /etc/ssl/certs/stats.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/stats.wikimedia.org.key
 	SSLCertificateChainFile /etc/ssl/certs/stats.wikimedia.org.chained.pem
-
-	# Settings for geowiki's private data
-	<Directory "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_directory') %>">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-		AuthName "Geowiki's 'foundation only' files"
-		AuthType Basic
-		AuthUserFile "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_htpasswd_file') %>"
-		Require valid-user
-	</Directory>
 </VirtualHost>
 
 # vim: filetype=apache

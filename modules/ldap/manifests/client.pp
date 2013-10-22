@@ -116,12 +116,9 @@ class ldap::client::utils($ldapconfig) {
             mode  => 0544,
             source => "puppet:///modules/ldap/scripts/netgroup-mod";
         "/usr/local/sbin/ldaplist":
-            ensure => link,
-            target => '/usr/local/bin/ldaplist';
-        "/usr/local/bin/ldaplist":
             owner => root,
             group => root,
-            mode  => 0555,
+            mode  => 0544,
             source => "puppet:///modules/ldap/scripts/ldaplist";
         "/usr/local/sbin/change-ldap-passwd":
             owner => root,
@@ -151,13 +148,9 @@ class ldap::client::utils($ldapconfig) {
         "/usr/local/sbin/manage-volumes":
             ensure => absent;
         "/usr/local/sbin/ldapsupportlib.py":
-            ensure => link,
-            target => '/usr/local/bin/ldapsupportlib.py',
-            require => File['/usr/local/bin/ldapsupportlib.py'];
-        "/usr/local/bin/ldapsupportlib.py":
             owner => root,
             group => root,
-            mode  => 0555,
+            mode  => 0544,
             source => "puppet:///modules/ldap/scripts/ldapsupportlib.py";
         "/etc/ldap/scriptconfig.py":
             owner => root,

@@ -50,19 +50,9 @@ def get_config(repo):
     config = __pillar__.get('repo_config')
     config = config[repo]
     config.setdefault('type', 'git-http')
-    if 'location' in config:
-        location = config['location']
-        shadow_location = '{0}/.{1}'.format(os.path.dirname(location),
-                                            os.path.basename(location))
-        config['shadow_location'] = shadow_location
-    else:
-        location = '{0}/{1}'.format(deployment_config['parent_dir'], repo)
-        config['location'] = location
-        shadow_repo = '{0}/.{1}'.format(os.path.dirname(repo),
-                                        os.path.basename(repo))
-        shadow_location = '{0}/{1}'.format(deployment_config['parent_dir'],
-                                           shadow_repo)
-        config['shadow_location'] = shadow_location
+    if 'location' not in config:
+        repoloc = '{0}/{1}'.format(deployment_config['parent_dir'], repo)
+        config['location'] = repoloc
     site = __grains__.get('site')
     server = deployment_config['servers'][site]
     #TODO: fetch scheme/url from implementation
@@ -77,13 +67,13 @@ def get_config(repo):
     else:
         scheme = 'http'
     config['url'] = '{0}://{1}/{2}'.format(scheme, server, repo)
+    config.setdefault('submodule_sed_regex', {})
     config.setdefault('checkout_submodules', False)
     config.setdefault('dependencies', {})
     config.setdefault('checkout_module_calls', {})
     config.setdefault('fetch_module_calls', {})
     config.setdefault('sync_script', 'shared.py')
     config.setdefault('upstream', None)
-    config.setdefault('shadow_reference', False)
     return config
 
 
@@ -154,71 +144,6 @@ def sync_all():
     return {'status': status, 'stats': stats}
 
 
-def _update_gitmodules(config, location, shadow=False):
-    gitmodules_list = __salt__['file.find'](location, name='.gitmodules')
-    for gitmodules in gitmodules_list:
-        gitmodules_dir = os.path.dirname(gitmodules)
-        cmd = '/usr/bin/git checkout .gitmodules'
-        status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
-        if status != 0:
-            return status
-        submodules = []
-        f = open(gitmodules, 'r')
-        for line in f.readlines():
-            keyval = line.split(' = ')
-            if keyval[0].strip() == "path":
-                submodules.append(keyval[1].strip())
-        f.close()
-        if shadow:
-            # Tranform .gitmodules based on reference
-            reference_dir = gitmodules_dir.replace(location,
-                                                   config['location'])
-            f = open(gitmodules, 'w')
-            for submodule in submodules:
-                f.write('[submodule "{0}"]\n'.format(submodule))
-                f.write('\tpath = {0}\n'.format(submodule))
-                f.write('\turl = {0}/{1}\n'.format(reference_dir, submodule))
-            f.close()
-        else:
-            # Transform .gitmodules file based on url
-            cmd = '/usr/bin/git config remote.origin.url'
-            remote = __salt__['cmd.run'](cmd, gitmodules_dir)
-            if not remote:
-                return 1
-            f = open(gitmodules, 'w')
-            for submodule in submodules:
-                submodule_path = 'modules/{0}'.format(submodule)
-                f.write('[submodule "{0}"]\n'.format(submodule))
-                f.write('\tpath = {0}\n'.format(submodule))
-                f.write('\turl = {0}/{1}\n'.format(remote, submodule_path))
-            f.close()
-        # Sync submodules for this repo
-        cmd = '/usr/bin/git submodule sync'
-        status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
-        if status != 0:
-            return status
-    return 0
-
-
-def _clone(config, location, tag, shadow=False):
-    if shadow:
-        cmd = '/usr/bin/git clone --reference {0} {1}/.git {2}'
-        cmd = cmd.format(config['location'], config['url'], location)
-    else:
-        cmd = '/usr/bin/git clone {0}/.git {1}'.format(config['url'], location)
-    status = __salt__['cmd.retcode'](cmd)
-    if status != 0:
-        return status
-    status = _fetch_location(config, location, shadow=shadow)
-    if status != 0:
-        return status
-    status = _checkout_location(config, location, tag,
-                                reset=True, shadow=shadow)
-    if status != 0:
-        return status
-    return 0
-
-
 def fetch(repo):
     '''
     Call a fetch for the specified repo
@@ -228,6 +153,7 @@ def fetch(repo):
         salt -G 'cluster:appservers' deploy.fetch 'slot0'
     '''
     config = get_config(repo)
+    gitmodules = config['location'] + '/.gitmodules'
 
     depstats = []
     for dependency in config['dependencies']:
@@ -236,92 +162,65 @@ def fetch(repo):
     # Notify the deployment system we started
     _check_in('deploy.fetch', repo)
 
-    tag = _get_tag(config)
-    if not tag:
-        return {'status': 10, 'repo': repo, 'dependencies': depstats}
-
     # Clone the repo if it doesn't exist yet
     if not __salt__['file.directory_exists'](config['location'] + '/.git'):
-        status = _clone(config, config['location'], tag)
+        cmd = '/usr/bin/git clone %s %s' % (config['url'] + '/.git',
+                                            config['location'])
+        status = __salt__['cmd.retcode'](cmd)
         if status != 0:
-            return {'status': status, 'repo': repo, 'dependencies': depstats}
-    else:
-        status = _fetch_location(config, config['location'])
-        if status != 0:
-            return {'status': status, 'repo': repo, 'dependencies': depstats}
+            return {'status': 5, 'repo': repo, 'dependencies': depstats}
 
-    cmd = '/usr/bin/git show-ref refs/tags/{0}'.format(tag)
-    status = __salt__['cmd.retcode'](cmd, cwd=config['location'])
+    cmd = '/usr/bin/git remote set-url origin %s' % config['url'] + "/.git"
+    __salt__['cmd.retcode'](cmd, config['location'])
+
+    cmd = '/usr/bin/git fetch'
+    status = __salt__['cmd.retcode'](cmd, config['location'])
     if status != 0:
-        return {'status': status, 'repo': repo, 'dependencies': depstats}
+        return {'status': 10, 'repo': repo, 'dependencies': depstats}
 
-    if config['shadow_reference']:
-        shadow_gitdir = config['shadow_location'] + '/.git'
-        if not __salt__['file.directory_exists'](shadow_gitdir):
-            status = _clone(config, config['shadow_location'], tag,
-                            shadow=True)
-            if status != 0:
-                return {'status': status, 'repo': repo,
-                        'dependencies': depstats}
-        else:
-            status = _fetch_location(config, config['shadow_location'],
-                                     shadow=True)
-            if status != 0:
-                return {'status': status, 'repo': repo,
-                        'dependencies': depstats}
-            status = _checkout_location(config, config['shadow_location'], tag,
-                                        reset=False, shadow=True)
-            if status != 0:
-                return {'status': status, 'repo': repo,
-                        'dependencies': depstats}
+    cmd = '/usr/bin/git fetch --tags'
+    status = __salt__['cmd.retcode'](cmd, config['location'])
+    if status != 0:
+        return {'status': 20, 'repo': repo, 'dependencies': depstats}
+
+    if config['checkout_submodules']:
+        cmd = '/usr/bin/git checkout .gitmodules'
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
+        if ret != 0:
+            return {'status': 30, 'repo': repo, 'dependencies': depstats}
+        # Transform .gitmodules file based on defined seds
+        for before, after in config['submodule_sed_regex'].items():
+            after = after.replace('__REPO_URL__', config['url'])
+            __salt__['file.sed'](gitmodules, before, after)
+
+        # Sync the .gitmodules config
+        cmd = '/usr/bin/git submodule sync'
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
+        if ret != 0:
+            return {'status': 40, 'repo': repo, 'dependencies': depstats}
+
+        # fetch all submodules and tag for submodules
+        cmd = '/usr/bin/git submodule foreach git fetch'
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
+        if ret != 0:
+            return {'status': 50, 'repo': repo, 'dependencies': depstats}
+
+        # fetch all submodules and tag for submodules
+        cmd = '/usr/bin/git submodule foreach git fetch --tags'
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
+        if ret != 0:
+            return {'status': 60, 'repo': repo, 'dependencies': depstats}
+
+    cmd = '/usr/bin/git describe --always --tag origin'
+    origin_tag = __salt__['cmd.run'](cmd, config['location'])
+    origin_tag = origin_tag.strip()
 
     # Call modules on the repo's behalf ignore the return on these
     for call, args in config['fetch_module_calls'].items():
         mapped_args = _map_args(repo, args)
         __salt__[call](*mapped_args)
     return {'status': status, 'repo': repo,
-            'dependencies': depstats, 'tag': tag}
-
-
-def _fetch_location(config, location, shadow=False):
-    cmd = '/usr/bin/git fetch --all'
-    status = __salt__['cmd.retcode'](cmd, location)
-    if status != 0:
-        return status
-
-    # TODO: update .gitmodules recursively, then run submodule commands
-    #       recursively.
-    if config['checkout_submodules']:
-        ret = _update_gitmodules(config, location, shadow)
-        if ret != 0:
-            return ret
-
-        # fetch all submodules and tag for submodules
-        cmd = '/usr/bin/git submodule foreach --recursive git fetch --all'
-        status = __salt__['cmd.retcode'](cmd, location)
-        if status != 0:
-            return status
-    return 0
-
-
-def _get_tag(config):
-    # Fetch the .deploy file from the server and get the current tag
-    deployfile = config['url'] + '/.deploy'
-    f = urllib.urlopen(deployfile)
-    deployinfo = f.readlines()
-
-    tag = ''
-    for info in deployinfo:
-        if info.startswith('tag: '):
-            tag = info[5:]
-            tag = tag.strip()
-    if not tag:
-        return None
-    # tags are user-input and are used in shell commands, ensure they are
-    # only passing alphanumeric.
-    if re.match('\W+', tag):
-        return None
-    return tag
+            'dependencies': depstats, 'tag': origin_tag}
 
 
 def checkout(repo, reset=False):
@@ -335,60 +234,71 @@ def checkout(repo, reset=False):
     #TODO: replace the cmd.retcode calls with git module calls,
     # where appropriate
     config = get_config(repo)
+    gitmodules = config['location'] + '/.gitmodules'
     depstats = []
 
     # Notify the deployment system we started
     _check_in('deploy.checkout', repo)
 
-    tag = _get_tag(config)
+    # Fetch the .deploy file from the server and get the current tag
+    deployfile = config['url'] + '/.deploy'
+    f = urllib.urlopen(deployfile)
+    deployinfo = f.readlines()
+    tag = ''
+    for info in deployinfo:
+        if info.startswith('tag: '):
+            tag = info[5:]
+            tag = tag.strip()
     if not tag:
-        return {'status': status, 'repo': repo, 'dependencies': depstats}
+        return {'status': 10, 'repo': repo, 'dependencies': depstats}
+    # tags are user-input and are used in shell commands, ensure they are
+    # only passing alphanumeric.
+    if re.match('\W+', tag):
+        return {'status': 1, 'repo': repo, 'dependencies': depstats}
 
-    status = _checkout_location(config, config['location'], tag, reset)
-
-    if status != 0:
-        return {'status': status, 'repo': repo, 'tag': tag,
-                'dependencies': depstats}
-
-    # Call modules on the repo's behalf ignore the return on these
-    for call, args in config['checkout_module_calls'].items():
-        mapped_args = _map_args(repo, args)
-        __salt__[call](*mapped_args)
-    return {'status': status, 'repo': repo, 'tag': tag,
-            'dependencies': depstats}
-
-
-def _checkout_location(config, location, tag, reset=False, shadow=False):
     for dependency in config['dependencies']:
         depstats.append(__salt__['deploy.checkout'](dependency, reset))
 
     if reset:
         # User requested we hard reset the repo to the tag
         cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
-        ret = __salt__['cmd.retcode'](cmd, location)
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
-            return 20
+            return {'status': 20, 'repo': repo, 'dependencies': depstats}
     else:
         cmd = '/usr/bin/git describe --always --tag'
-        current_tag = __salt__['cmd.run'](cmd, location)
+        current_tag = __salt__['cmd.run'](cmd, config['location'])
         current_tag = current_tag.strip()
         if current_tag == tag:
-            return 0
+            return {'status': 0, 'repo': repo,
+                    'tag': tag, 'dependencies': depstats}
 
     # Switch to the tag defined in the server's .deploy file
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
-    ret = __salt__['cmd.retcode'](cmd, location)
+    ret = __salt__['cmd.retcode'](cmd, config['location'])
     if ret != 0:
-        return 30
+        return {'status': 30, 'repo': repo, 'dependencies': depstats}
 
     if config['checkout_submodules']:
-        ret = _update_gitmodules(config, location, shadow)
+        # Transform .gitmodules file based on defined seds
+        for before, after in config['submodule_sed_regex'].items():
+            after = after.replace('__REPO_URL__', config['url'])
+            __salt__['file.sed'](gitmodules, before, after)
+
+        # Sync the .gitmodules config
+        cmd = '/usr/bin/git submodule sync'
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
-            return ret
+            return {'status': 40, 'repo': repo, 'dependencies': depstats}
 
         # Update the submodules to match this tag
-        cmd = '/usr/bin/git submodule update --recursive --init'
-        ret = __salt__['cmd.retcode'](cmd, location)
+        cmd = '/usr/bin/git submodule update --init'
+        ret = __salt__['cmd.retcode'](cmd, config['location'])
         if ret != 0:
-            return 50
-    return 0
+            return {'status': 50, 'repo': repo, 'dependencies': depstats}
+
+    # Call modules on the repo's behalf ignore the return on these
+    for call, args in config['checkout_module_calls'].items():
+        mapped_args = _map_args(repo, args)
+        __salt__[call](*mapped_args)
+    return {'status': 0, 'repo': repo, 'tag': tag, 'dependencies': depstats}

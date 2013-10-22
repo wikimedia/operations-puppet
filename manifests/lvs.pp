@@ -215,8 +215,8 @@ class lvs::configuration {
 					'wikimedialbsecure' => "208.80.154.224",
 					'wikipedialbsecure' => "208.80.154.225",
 					'bitslbsecure' => "208.80.154.234",
-					'uploadlbsecure' => '208.80.154.240',
-					'uploadlbsecure-old' => "208.80.154.235",
+					'uploadlbsecure-new' => '208.80.154.240',
+					'uploadlbsecure' => "208.80.154.235",
 					'wiktionarylbsecure' => "208.80.154.226",
 					'wikiquotelbsecure' => "208.80.154.227",
 					'wikibookslbsecure' => "208.80.154.228",
@@ -240,8 +240,8 @@ class lvs::configuration {
 					'mediawikilbsecure6' => "2620:0:861:ed1a::8",
 					'foundationlbsecure6' => "2620:0:861:ed1a::9",
 					'bitslbsecure6' => "2620:0:861:ed1a::a",
-					'uploadlbsecure6' => '2620:0:861:ed1a::2:b',
-					'uploadlbsecure6-old' => "2620:0:861:ed1a::b",
+					'uploadlbsecure6-new' => '2620:0:861:ed1a::2:b',
+					'uploadlbsecure6' => "2620:0:861:ed1a::b",
 					'mobilelbsecure6' => "2620:0:861:ed1a::c",
 					'wikidatalbsecure6' => "2620:0:861:ed1a::12",
 					'wikivoyagelbsecure6' => "2620:0:861:ed1a::13"
@@ -342,7 +342,7 @@ class lvs::configuration {
 			},
 			'upload' => {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
-				'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb-old' => '208.80.154.235', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadlb6-old' => '2620:0:861:ed1a::b', 'uploadsvc' => '10.2.2.24' },
+				'eqiad' => { 'uploadlb-new' => '208.80.154.240', 'uploadlb' => '208.80.154.235', 'uploadlb6-new' => '2620:0:861:ed1a::2:b', 'uploadlb6' => '2620:0:861:ed1a::b', 'uploadsvc' => '10.2.2.24' },
 				'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb-old' => '91.198.174.234', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
 				'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b' },
 			},
@@ -415,7 +415,7 @@ class lvs::configuration {
 				'eqiad' => "10.2.2.28",
 			},
 			'parsoidcache' => {
-				'eqiad' => { 'parsoidlb' => '208.80.154.248', 'parsoidlb6' => '2620:0:861:ed1a::3:14', 'parsoidsvc' => '10.2.2.29' },
+				'eqiad' => "10.2.2.29",
 			},
 			'search' => {
 				'eqiad' => "10.2.2.30",
@@ -466,7 +466,7 @@ class lvs::configuration {
 				'pmtpa' => {
 					'uploadlb'  => [ '10.4.0.166', '10.4.0.187', ],
 					'uploadsvc' => [ '10.4.0.166', '10.4.0.187', ],
-				},
+        },
 			},
 			'parsoid' => {},
 			'parsoidcache' => {},
@@ -871,7 +871,7 @@ class lvs::configuration {
 		},
 		'parsoidcache' => {
 			'description' => "Varnish caches in front of Parsoid",
-			'class' => "high-traffic2",
+			'class' => "low-traffic",
 			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['parsoidcache'][$::site],
 			'port' => 80,
@@ -1116,6 +1116,7 @@ class lvs::monitor {
 	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/monitoring/backend" }
 	monitor_service_lvs_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
 	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
+	monitor_service_lvs_http { "parsoidcache.svc.eqiad.wmnet": ip_address => "10.2.2.29", check_command => "check_http_lvs!parsoid!/", contact_group => "admins,parsoid" }
 	monitor_service_lvs_http { "search.svc.eqiad.wmnet": ip_address => "10.2.2.30", check_command => "check_http_on_port!9200", contact_group => "admins" }
 
 	monitor_service_lvs_custom { "search-pool1.svc.eqiad.wmnet": ip_address => "10.2.2.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
@@ -1360,13 +1361,6 @@ class lvs::monitor {
 			ip_address => $ip['misc_web']['eqiad']['misc_web6'],
 			uri => 'varnishcheck!/';
 	}
-
-	monitor_service_lvs_http { 'parsoid-lb.eqiad.wikimedia.org':
-		ip_address => $ip['parsoidcache']['eqiad']['parsoidlb'],
-		check_command => "check_http_on_port!80",
-		contact_group => "admins,parsoid"
-	}
-	# TODO: ipv6
 
 	# ESAMS
 

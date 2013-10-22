@@ -80,12 +80,6 @@ class deployment::salt_master(
       owner => root,
       group => root,
       require => [File["${module_dir}"]];
-    "${module_dir}/mediawiki.py":
-      source => "puppet:///deployment/modules/mediawiki.py",
-      mode => 0555,
-      owner => root,
-      group => root,
-      require => [File["${module_dir}"]];
   }
 
   # If pillars or modules change, we need to sync them with the minions
@@ -102,7 +96,7 @@ class deployment::salt_master(
       require => [File["${module_dir}/deploy.py"]];
     "refresh_deployment_modules":
       command => "/usr/bin/salt -G 'deployment_target:*' saltutil.sync_modules",
-      subscribe => [File["${module_dir}/deploy.py"], File["${module_dir}/parsoid.py"], File["${module_dir}/mediawiki.py"]],
+      subscribe => [File["${module_dir}/deploy.py"],File["${module_dir}/parsoid.py"]],
       refreshonly => true,
       require => [Package["salt-master"]];
     "refresh_deployment_returners":

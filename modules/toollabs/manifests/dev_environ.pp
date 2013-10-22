@@ -29,24 +29,17 @@ class toollabs::dev_environ {
       'elinks',
       'emacs',
       'fakeroot', # for dpkg
-      'gcj-jdk',                     # Bug 56995
-      'ipython',                     # Bug 56995
       'libboost-python1.48-dev',
       'libdmtx-dev',                 # Bug #53867.
       'libfreetype6-dev',
-      'libgdal1-dev',                # Bug 56995
       'libmariadbclient-dev',
       'libpng3-dev',
-      'libproj-dev',                 # Bug 56995
-      'libprotobuf-dev',             # Bug 56995
-      'libsparsehash-dev',           # Bug 56995
       'libtiff4-dev', # bug 52717
       'libtool',
       'libvips-dev',
       'libxml2-dev',
       'libxslt-dev',
       'libxslt1-dev', # -- same
-      'libzbar-dev',                 # Bug 56996
       'lintian',
       'mc', # Popular{{cn}} on Toolserver
       'mercurial',

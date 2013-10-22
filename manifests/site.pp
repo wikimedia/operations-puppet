@@ -187,11 +187,6 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
 
 # analytics1021 and analytics1022 are Kafka Brokers.
 node /analytics102[12]\.eqiad\.wmnet/ {
-    # Kafka brokers are routed via IPv6 so that
-    # other DCs can address without public IPv4
-    # addresses.
-    interface::add_ip6_mapped { "main": }
-
     include role::analytics
     include role::analytics::kafka::server
 }
@@ -399,8 +394,6 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
     $ganglia_aggregator = true
 
-    interface::add_ip6_mapped { "main": }
-
     include role::cache::parsoid, admins::parsoid
 }
 
@@ -533,10 +526,9 @@ node "dataset2.wikimedia.org" {
         admins::roots,
         groups::wikidev,
         accounts::catrope,
-        misc::download-wikimedia,
-        misc::download-primary,
-        misc::download::cron-rsync-dumps,
-        misc::kiwix-mirror
+        download,
+        download::primary,
+        download::kiwix
 }
 
 node "dataset1001.wikimedia.org" {
@@ -547,10 +539,9 @@ node "dataset1001.wikimedia.org" {
         admins::roots,
         groups::wikidev,
         accounts::catrope,
-        misc::download-wikimedia,
-        misc::download-mirror,
-        misc::download::cron-rsync-dumps,
-        misc::download-gluster
+        download,
+        download::mirror,
+        download::gluster
 }
 
 # pmtpa dbs
@@ -1585,7 +1576,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
             $sip['dns_rec'][$::site],
             $sip['osm'][$::site],
             $sip['misc_web'][$::site],
-            $sip['parsoidcache'][$::site],
             ],
         /^lvs100[36]$/ => [
             $sip['apaches'][$::site],
@@ -1599,6 +1589,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
             $sip['search_prefix'][$::site],
             $sip['swift'][$::site],
             $sip['parsoid'][$::site],
+            $sip['parsoidcache'][$::site],
             $sip['search'][$::site]
             ]
     }

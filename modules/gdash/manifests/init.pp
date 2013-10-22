@@ -45,28 +45,4 @@ class gdash(
     file { '/opt/gdash/public/config.ru':
         content => template('gdash/config.ru.erb'),
     }
-
-    file { '/var/run/gdash':
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0755',
-    }
-
-    # Hack: protect professor.pmtpa (which is running Lucid) from trying to install uWSGI. --OL
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        uwsgi::app { 'gdash':
-            require  => File['/etc/gdash/gdash.yaml', '/opt/gdash/public/config.ru', '/var/run/gdash'],
-            settings => {
-                uwsgi => {
-                    'socket'         => '/var/run/gdash/gdash.sock',
-                    'stats'          => '/var/run/gdash/gdash-stats.sock',
-                    'rack'           => '/opt/gdash/public/config.ru',
-                    'post-buffering' => 4096,  # required by the Rack specification.
-                    'master'         => true,
-                    'die-on-term'    => true,
-                },
-            },
-        }
-    }
 }

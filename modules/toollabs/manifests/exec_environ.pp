@@ -23,7 +23,6 @@ class toollabs::exec_environ {
       # Please keep all packages in each group sorted in alphabetical order
 
       # Language Runtimes
-      'gcj-jre',                     # Bug 56995
       'golang',
       'luarocks',
       'mono-complete',
@@ -47,7 +46,6 @@ class toollabs::exec_environ {
       'libdatetime-format-duration-perl',
       'libdatetime-format-strptime-perl',
       'libdbd-mysql-perl',
-      'libdbd-sqlite2-perl',         # Bug 56995
       'libdbd-sqlite3-perl',
       'libdbi-perl',
       'libdigest-crc-perl',
@@ -97,7 +95,6 @@ class toollabs::exec_environ {
       'libboost-python1.48.0',
       'python-apport',
       'python-beautifulsoup',        # For valhallasw.
-      'python-bottle',               # Bug 56995
       'python-celery',
       'python-celery-with-redis',
       'python-egenix-mxdatetime',
@@ -124,11 +121,9 @@ class toollabs::exec_environ {
       'python-opencv',
       'python-oursql',               # For danilo et al.
       'python-problem-report',
-      'python-pysvn',                # Bug 56996
-      'python-rsvg',                 # Bug 56996
-      'python-zbar',                 # Bug 56996
       'python-redis',
       'python-requests',
+      'python-rsvg',
       'python-scipy',
       'python-sqlalchemy',
       'python-twitter',
@@ -153,12 +148,9 @@ class toollabs::exec_environ {
 
       # tcl packages
       'mysqltcl',
-      'tcl-tls',                     # Bug 56995
-      'tcl-trf',                     # Bug 56995
       'tclcurl',
       'tcllib',
       'tclthread',
-      'tdom',                        # Bug 56995
 
       # Other packages
       'adminbot',
@@ -167,12 +159,10 @@ class toollabs::exec_environ {
       'fabric',                      # Bug #54135.
       'git',
       'gnuplot-nox',
-      'graphicsmagick',              # Bug 56995
       'graphviz',
       'libav-tools',                 # Bug #53870.
       'libdmtx0a',                   # Bug #53867.
       'libfreetype6',
-      'libgdal1-1.7.0',              # Bug 56995
       'libmpc2',
       'libmpfr4',
       'libneon27-gnutls',
@@ -183,22 +173,16 @@ class toollabs::exec_environ {
       'libotf0',
       'libpcsclite1',
       'libpng3',
-      'libproj0',                    # Bug 56995
-      'libprotobuf7',                # Bug 56995
       'libquadmath0',
       'libsvn1',
       'libvips-tools',
       'libvips15',
-      'libzbar0',                    # Bug 56996
       'mariadb-client',              # For /usr/bin/mysql.
       'mdbtools',                    # Bug #48805.
       'p7zip',
       'phpunit',
       'poppler-utils',               # Bug #53869.
-      'texinfo',                     # Bug #56994
-      'tree',                        # Bug #48862.
-      'zbar-tools',                  # Bug 56996
-      'zsh',                         # Bug 56995
+      'tree'                         # Bug #48862.
       ]:
     ensure => present
   }

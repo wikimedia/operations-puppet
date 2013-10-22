@@ -9,53 +9,60 @@ class role::deployment::config {
         'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpunit',
     },
-    'integration/phpcs' => {
-        'grain' => 'contint-production-slaves',
-        'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpcs',
-    },
     'mediawiki/common'               => {
-        'grain'            => 'mediawiki',
-        'upstream'         => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
-        'shadow_reference' => true,
+        'grain'    => 'mediawiki',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
     },
     'mediawiki/private'              => {
         'grain' => 'mediawiki',
     },
     'mediawiki/slot0'                => {
-        'grain'                 => 'mediawiki',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/core',
-        'checkout_submodules'   => true,
-        'shadow_reference'      => true,
-        'fetch_module_calls' => {
-            'mediawiki.generate_localization_cache' => ['__REPO__'],
+        'grain'               => 'mediawiki',
+        'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
+        'submodule_sed_regex' => {
+          'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
+          '.git' => '',
         },
-        'checkout_module_calls' => {
-            'mediawiki.update_localization_cache' => ['__REPO__'],
+        'checkout_submodules' => true,
+        'dependencies'        => {
+            'mediawiki/l10n-slot0' => 'l10n',
         },
     },
     'mediawiki/slot1'                => {
-        'grain'                 => 'mediawiki',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/core',
-        'checkout_submodules'   => true,
-        'shadow_reference'      => true,
-        'fetch_module_calls' => {
-            'mediawiki.generate_localization_cache' => ['__REPO__'],
+        'grain'               => 'mediawiki',
+        'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
+        'submodule_sed_regex' => {
+          'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
+          '.git' => '',
         },
-        'checkout_module_calls' => {
-            'mediawiki.update_localization_cache' => ['__REPO__'],
+        'checkout_submodules' => true,
+        'dependencies'        => {
+            'mediawiki/l10n-slot1' => 'l10n',
         },
     },
     'mediawiki/beta0'                => {
-        'grain'                 => 'mediawiki',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/core',
-        'checkout_submodules'   => true,
-        'shadow_reference'      => true,
-        'fetch_module_calls' => {
-            'mediawiki.generate_localization_cache' => ['__REPO__'],
+        'grain'               => 'mediawiki',
+        'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
+        'submodule_sed_regex' => {
+          'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
+          '.git' => '',
         },
-        'checkout_module_calls' => {
-            'mediawiki.update_localization_cache' => ['__REPO__'],
+        'checkout_submodules' => true,
+        'dependencies'        => {
+            'mediawiki/l10n-beta' => 'l10n',
         },
+    },
+    'mediawiki/l10n-slot0'           => {
+        'automated' => true,
+        'grain'     => 'mediawiki',
+    },
+    'mediawiki/l10n-slot1'           => {
+        'automated' => true,
+        'grain'     => 'mediawiki',
+    },
+    'mediawiki/l10n-beta0'           => {
+        'automated' => true,
+        'grain'     => 'mediawiki',
     },
     'gdash/gdash'                    => {
         'grain'    => 'gdash',

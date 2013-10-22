@@ -20,11 +20,6 @@ class puppetmaster::gitpuppet {
             group   => 'gitpuppet',
             mode    => '0400',
             source  => 'puppet:///private/ssh/gitpuppet/gitpuppet.key';
-        '/home/gitpuppet/.ssh/gitpuppet-private-repo':
-            owner   => 'gitpuppet',
-            group   => 'gitpuppet',
-            mode    => '0400',
-            source  => 'puppet:///private/ssh/gitpuppet/gitpuppet-private.key';
         '/home/gitpuppet/.ssh/authorized_keys':
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
