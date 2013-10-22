@@ -6,6 +6,6 @@ class mysql_wmf::client::default_charset_binary {
             owner  => root,
             group  => root,
             mode   => '0644',
-            source => 'puppet:///modules/mysql_wmf/mysql/charset.cnf';
+            source => 'puppet:///modules/mysql_wmf/charset.cnf';
     }
 }
