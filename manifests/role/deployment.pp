@@ -14,7 +14,9 @@ class role::deployment::config {
           '.git' => '',
         },
         'checkout_submodules' => 'True',
-        'dependencies'        => ['l10n-slot0'],
+        'dependencies'        => {
+            'l10n-slot0' => 'l10n',
+        },
     },
     'slot1'                          => {
         'grain' => 'mediawiki',
@@ -23,7 +25,9 @@ class role::deployment::config {
           '.git' => '',
         },
         'checkout_submodules' => 'True',
-        'dependencies'        => ['l10n-slot1'],
+        'dependencies'        => {
+            'l10n-slot1' => 'l10n',
+        },
     },
     'beta0'                          => {
         'grain' => 'mediawiki',
@@ -32,15 +36,20 @@ class role::deployment::config {
           '.git' => '',
         },
         'checkout_submodules' => 'True',
-        'dependencies'        => ['l10n-beta0'],
+        'dependencies'        => {
+            'l10n-beta' => 'l10n',
+        },
     },
     'l10n-slot0'                     => {
+        'automated' => true,
         'grain'     => 'mediawiki',
     },
     'l10n-slot1'                     => {
+        'automated' => true,
         'grain'     => 'mediawiki',
     },
     'l10n-beta0'                     => {
+        'automated' => true,
         'grain'     => 'mediawiki',
     },
     'gdash/gdash'                    => {
@@ -144,26 +153,6 @@ class role::deployment::deployment_servers::common {
   class { "deployment::deployment_server":
     deployer_groups => ['wikidev'],
   }
-
-  deployment::deployment_repo_sync_hook_link { "private": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "common": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "slot0": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "slot1": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "beta0": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "l10n-slot0": target => "depends.py" }
-  deployment::deployment_repo_sync_hook_link { "l10n-slot1": target => "depends.py" }
-  deployment::deployment_repo_sync_hook_link { "l10n-beta0": target => "depends.py" }
-  deployment::deployment_repo_dependencies_link { "l10n-slot0": target => "l10n" }
-  deployment::deployment_repo_dependencies_link { "l10n-slot1": target => "l10n" }
-  deployment::deployment_repo_dependencies_link { "l10n-beta0": target => "l10n" }
-  deployment::deployment_repo_sync_hook_link { "gdash/gdash": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "parsoid/Parsoid": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "parsoid/config": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "eventlogging/EventLogging": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "fluoride/fluoride": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "test/testrepo": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "elasticsearch/plugins": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { 'analytics/kraken': target => "shared.py" }
 
   class { "apache": }
   class { "apache::mod::dav": }
