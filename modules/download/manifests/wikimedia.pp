@@ -10,7 +10,7 @@ class download::wikimedia {
         owner  => root,
         group  => root,
         path   => '/etc/lighttpd/lighttpd.conf',
-        source => 'puppet:///modules/download/files/lighttpd.conf',
+        source => 'puppet:///modules/download/lighttpd.conf',
     }
 
     service { 'lighttpd':
@@ -25,7 +25,7 @@ class download::wikimedia {
         mode    => '0444',
         owner   => root,
         group   => root,
-        source  => 'puppet:///modules/download/files/exports',
+        source  => 'puppet:///modules/download/exports',
         require => package['nfs-kernel-server'],
     }
 

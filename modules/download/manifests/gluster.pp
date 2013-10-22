@@ -15,13 +15,13 @@ class download::gluster {
     file { '/usr/local/bin/wmfdumpsmirror.py':
         ensure => present,
         mode   => '0755',
-        source => 'puppet:///modules/download/files/gluster/wmfdumpsmirror.py',
+        source => 'puppet:///modules/download/gluster/wmfdumpsmirror.py',
     }
 
     file{ '/usr/local/sbin/gluster-rsync-cron.sh':
         ensure => present,
         mode   => '0755',
-        source => 'puppet:///modules/download/files/gluster/gluster-rsync-cron.sh',
+        source => 'puppet:///modules/download/gluster/gluster-rsync-cron.sh',
     }
 
     cron { 'dumps_gluster_rsync':

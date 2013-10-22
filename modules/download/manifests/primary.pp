@@ -7,7 +7,7 @@ class download::primary {
         mode    => '0444',
         owner   => root,
         group   => root,
-        source  => 'puppet:///modules/download/files/rsync/rsyncd.conf.downloadprimary',
+        source  => 'puppet:///modules/download/rsync/rsyncd.conf.downloadprimary',
         require => Package['rsync'],
     }
 
@@ -15,7 +15,7 @@ class download::primary {
         mode    => '0444',
         owner   => root,
         group   => root,
-        source  =>'puppet:///modules/download/files/rsync/rsync.default.downloadprimary',
+        source  =>'puppet:///modules/download/rsync/rsync.default.downloadprimary',
         require => Package['rsync'],
     }
 

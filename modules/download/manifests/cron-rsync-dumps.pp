@@ -4,7 +4,7 @@ class download::cron-rsync-dumps {
         owner  => root,
         group  => root,
         path   => '/usr/local/bin/rsync-dumps.sh',
-        source => 'puppet:///modules/download/files/rsync-dumps.sh';
+        source => 'puppet:///modules/download/rsync-dumps.sh';
     }
 
     cron { 'rsync-dumps':

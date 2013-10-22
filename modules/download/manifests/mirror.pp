@@ -7,7 +7,7 @@ class download::mirror {
         mode    => '0444',
         owner   => root,
         group   => root,
-        source  => 'puppet:///modules/download/files/rsync/rsyncd.conf.downloadmirror',
+        source  => 'puppet:///modules/download/rsync/rsyncd.conf.downloadmirror',
         require => Package['rsync'],
     }
 
@@ -15,7 +15,7 @@ class download::mirror {
         mode    => '0444',
         owner   => root,
         group   => root,
-        source  => 'puppet:///modules/download/files/rsync/rsync.default.downloadmirror',
+        source  => 'puppet:///modules/download/rsync/rsync.default.downloadmirror',
         require => Package['rsync'],
     }
 
