@@ -677,7 +677,7 @@ node /^db10(06|15|22|27|40)\.eqiad\.wmnet/ {
 }
 
 node /^db10(07|24|28|39|41)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(07|24|39)/ {
+    if $hostname =~ /^db10(07|24|39|41)/ {
         class { role::coredb::s7 : innodb_file_per_table => true, mariadb => true }
     } elsif $hostname == "db1028" {
         class { role::coredb::s7 : mariadb => true }
