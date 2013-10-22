@@ -37,3 +37,12 @@ Suite: precise
 Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
 ListShellHook: grep-dctrl -X -S megacli -o -X -P arcconf || [ $? -eq 1 ]
+
+Name: cassandra
+Method: http://www.apache.org/dist/cassandra/debian
+Components: main>main
+UDebComponents:
+Suite: 20x
+Architectures: amd64 source
+VerifyRelease: 4BD736A82B5C1B00
+ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
