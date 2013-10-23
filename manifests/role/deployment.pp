@@ -1,14 +1,14 @@
 # vim: sw=2 ts=2 et
 class role::deployment::config {
   $repo_config = {
-    'common'                         => {
+    'mediawiki/common'               => {
         'grain'    => 'mediawiki',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
     },
-    'private'                        => {
+    'mediawiki/private'              => {
         'grain' => 'mediawiki',
     },
-    'slot0'                          => {
+    'mediawiki/slot0'                => {
         'grain'               => 'mediawiki',
         'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
         'submodule_sed_regex' => {
@@ -17,10 +17,10 @@ class role::deployment::config {
         },
         'checkout_submodules' => true,
         'dependencies'        => {
-            'l10n-slot0' => 'l10n',
+            'mediawiki/l10n-slot0' => 'l10n',
         },
     },
-    'slot1'                          => {
+    'mediawiki/slot1'                => {
         'grain'               => 'mediawiki',
         'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
         'submodule_sed_regex' => {
@@ -29,10 +29,10 @@ class role::deployment::config {
         },
         'checkout_submodules' => true,
         'dependencies'        => {
-            'l10n-slot1' => 'l10n',
+            'mediawiki/l10n-slot1' => 'l10n',
         },
     },
-    'beta0'                          => {
+    'mediawiki/beta0'                => {
         'grain'               => 'mediawiki',
         'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
         'submodule_sed_regex' => {
@@ -41,18 +41,18 @@ class role::deployment::config {
         },
         'checkout_submodules' => true,
         'dependencies'        => {
-            'l10n-beta' => 'l10n',
+            'mediawiki/l10n-beta' => 'l10n',
         },
     },
-    'l10n-slot0'                     => {
+    'mediawiki/l10n-slot0'           => {
         'automated' => true,
         'grain'     => 'mediawiki',
     },
-    'l10n-slot1'                     => {
+    'mediawiki/l10n-slot1'           => {
         'automated' => true,
         'grain'     => 'mediawiki',
     },
-    'l10n-beta0'                     => {
+    'mediawiki/l10n-beta0'           => {
         'automated' => true,
         'grain'     => 'mediawiki',
     },
