@@ -644,6 +644,37 @@ define ganglia::view(
     }
 }
 
+# == Define ganglia::plugin::python
+#
+# Installs a Ganglia python plugin
+#
+# == Parameters:
+#
+# $plugins - the plugin name (ex: 'diskstat'), will install the python file
+# located in files/ganglia/plugins/${name}.py and expand the template from
+# templates/ganglia/plugins/${name}.pyconf.erb.
+# Default to $title as a convenience
+#
+# $opts - optional hash which can be used in the template. The defaults are
+# hardcoded in the templates. Default to {}
+#
+# == Examples:
+#
+# ganglia::plugin::python{'diskstat': }
+#
+# ganglia::python::plugin {'diskstat': opts => { 'devices' => ['sda', 'sdb'] }}
+#
+define ganglia::python::plugin($plugin = $title, $opts={} ) {
+    file { "/usr/lib/ganglia/python_modules/${plugin}.py":
+        source => "puppet:///files/ganglia/plugins/${plugin}.py",
+        notify => Service['gmond'],
+    }
+    file { "/etc/ganglia/conf.d/${plugin}.pyconf":
+        content => template("ganglia/plugins/${plugin}.pyconf.erb"),
+        notify  => Service['gmond'],
+    }
+}
+
 # Copied from nagios::ganglia::monitor::enwiki
 # Will run on hume to use the local MediaWiki install so that we can use
 # maintenance scripts recycling DB connections and taking a few secs, not mins
