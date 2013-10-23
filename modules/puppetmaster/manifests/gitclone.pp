@@ -16,11 +16,6 @@ class puppetmaster::gitclone {
             owner   => 'gitpuppet',
             group   => 'root',
             require => File["${puppetmaster::gitdir}/operations"];
-        "${puppetmaster::gitdir}/operations/software":
-            ensure  => directory,
-            owner   => 'gitpuppet',
-            group   => 'root',
-            require => File["${puppetmaster::gitdir}/operations"];
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
@@ -117,7 +112,7 @@ class puppetmaster::gitclone {
             branch      => 'production',
             origin      => 'https://gerrit.wikimedia.org/r/p/operations/puppet';
         'operations/software':
-            require     => File["${puppetmaster::gitdir}/operations/software"],
+            require     => File["${puppetmaster::gitdir}/operations"],
             owner       => 'gitpuppet',
             directory   => "${puppetmaster::gitdir}/operations/software",
             origin      => 'https://gerrit.wikimedia.org/r/p/operations/software';
