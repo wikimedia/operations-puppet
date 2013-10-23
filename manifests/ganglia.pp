@@ -662,9 +662,9 @@ define ganglia::view(
 #
 # ganglia::plugin::python {'diskstat': }
 #
-# ganglia::python::plugin {'diskstat': opts => { 'devices' => ['sda', 'sdb'] }}
+# ganglia::plugin::python {'diskstat': opts => { 'devices' => ['sda', 'sdb'] }}
 #
-define ganglia::python::plugin( $plugin = $title, $opts = {} ) {
+define ganglia::plugin::python( $plugin = $title, $opts = {} ) {
     file { "/usr/lib/ganglia/python_modules/${plugin}.py":
         source => "puppet:///files/ganglia/plugins/${plugin}.py",
         notify => Service['gmond'],
