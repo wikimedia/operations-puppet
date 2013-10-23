@@ -194,6 +194,7 @@ class role::cache {
 					"pmtpa" => [],
 					'eqiad' => ['cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet'],
 					"esams" => ['cp3011.esams.wikimedia.org', 'cp3012.esams.wikimedia.org', 'cp3013.esams.wikimedia.org', 'cp3014.esams.wikimedia.org'],
+					"ulsfo" => ['cp4011.ulsfo.wmnet', 'cp4012.ulsfo.wmnet', 'cp4019.ulsfo.wmnet', 'cp4020.ulsfo.wmnet']
 				},
 				"parsoid" => {
 					"pmtpa" => [],
@@ -322,7 +323,8 @@ class role::cache {
 			"mobile" => {
 				"pmtpa" => [],
 				"eqiad" => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet'],
-				"esams" => []
+				"esams" => [],
+				"ulsfo" => [],
 			},
 			"parsoid" => {
 				"pmtpa" => [],
