@@ -608,6 +608,18 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
+		"mobile-https" => {
+			'description' => "MediaWiki based mobile site",
+			'class' => 'high-traffic1',
+			'sites' => [ 'ulsfo' ],
+			'ip' => $service_ips['mobile'][$::site],
+			'port' => 443,
+			'bgp' => "no",
+			'depool-threshold' => ".6",
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options
+			},
+		},
 		"payments" => {
 			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
 			'class' => "high-traffic2",
