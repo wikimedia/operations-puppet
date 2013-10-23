@@ -381,7 +381,7 @@ def metric_init(params):
  		device_mapper = 'true'
 		logging.debug('dm block devices: ' + str(devices))
 	else:
-		DEVICES = params.get('devices')
+		DEVICES = params.get('devices', '')
 
 	logging.debug('init: ' + str(params))
 
