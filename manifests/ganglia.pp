@@ -270,7 +270,7 @@ class ganglia {
                 # neon needs gmetad for ganglios
                 /^manutius$/: {
                     $data_sources = {
-                        "Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
+                        "Upload caches eqiad" => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet"
                     }
                     $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
                 }
@@ -319,7 +319,7 @@ class ganglia {
                         "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
                         "Mobile caches esams"            => "hooft.esams.wikimedia.org:11677",
                         "Bits caches eqiad"              => "cp1056.eqiad.wmnet cp1057.eqiad.wmnet",
-                        "Upload caches eqiad"            => "cp1048.eqiad.wmnet cp1049.eqiad.wmnet",
+                        "Upload caches eqiad"            => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet",
                         "SSL cluster eqiad"              => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
                         "Swift eqiad"                    => "ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet",
                         "Text squids eqiad"              => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
