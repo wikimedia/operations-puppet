@@ -80,8 +80,7 @@ class icinga::monitor::configuration::variables {
     "${icinga::monitor::configuration::variables::icinga_config_dir}/contacts.cfg",
     "${icinga::monitor::configuration::variables::icinga_config_dir}/misccommands.cfg",
     "${icinga::monitor::configuration::variables::icinga_config_dir}/resource.cfg",
-    "${icinga::monitor::configuration::variables::icinga_config_dir}/timeperiods.cfg",
-    "${icinga::monitor::configuration::variables::icinga_config_dir}/htpasswd.users"]
+    "${icinga::monitor::configuration::variables::icinga_config_dir}/timeperiods.cfg"]
 
 }
 class icinga::monitor::apache {
@@ -167,12 +166,6 @@ class icinga::monitor::configuration::files {
 
     '/etc/icinga/nsca_frack.cfg':
       source => 'puppet:///private/nagios/nsca_frack.cfg',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644';
-
-    '/etc/icinga/htpasswd.users':
-      source => 'puppet:///private/nagios/htpasswd.users',
       owner  => 'root',
       group  => 'root',
       mode   => '0644';
