@@ -2,13 +2,15 @@
 class role::deployment::config {
   $repo_config = {
     'common'                         => {
-        'grain' => 'mediawiki',
+        'grain'    => 'mediawiki',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
     },
     'private'                        => {
         'grain' => 'mediawiki',
     },
     'slot0'                          => {
         'grain'               => 'mediawiki',
+        'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
         'submodule_sed_regex' => {
           'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
           '.git' => '',
@@ -19,7 +21,8 @@ class role::deployment::config {
         },
     },
     'slot1'                          => {
-        'grain' => 'mediawiki',
+        'grain'               => 'mediawiki',
+        'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
         'submodule_sed_regex' => {
           'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
           '.git' => '',
@@ -30,7 +33,8 @@ class role::deployment::config {
         },
     },
     'beta0'                          => {
-        'grain' => 'mediawiki',
+        'grain'               => 'mediawiki',
+        'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/core',
         'submodule_sed_regex' => {
           'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
           '.git' => '',
@@ -53,10 +57,12 @@ class role::deployment::config {
         'grain'     => 'mediawiki',
     },
     'gdash/gdash'                    => {
-        'grain' => 'gdash',
+        'grain'    => 'gdash',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/gdash',
     },
     'parsoid/Parsoid'                => {
         'grain'                 => 'parsoid',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Parsoid',
         'checkout_module_calls' => {
             'parsoid.config_symlink'  => ['__REPO__'],
             'parsoid.restart_parsoid' => ['__REPO__'],
@@ -69,19 +75,23 @@ class role::deployment::config {
         },
     },
     'eventlogging/EventLogging'      => {
-        'grain' => 'eventlogging',
+        'grain'    => 'eventlogging',
+        'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging',
     },
     'fluoride/fluoride'              => {
-        'grain' => 'fluoride',
+        'grain'    => 'fluoride',
+        'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
     },
     'test/testrepo'                  => {
         'grain' => 'testrepo',
     },
     'elasticsearch/plugins'          => {
-        'grain' => 'elasticsearchplugins',
+        'grain'    => 'elasticsearchplugins',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins',
     },
     'analytics/kraken'               => {
-        'grain' => 'analytics-kraken',
+        'grain'    => 'analytics-kraken',
+        'upstream' => 'https://gerrit.wikimedia.org/r/p/analytics/kraken',
     },
   }
 }
@@ -177,6 +187,7 @@ class role::deployment::deployment_servers::production {
     vhost_name		=> "10.64.0.196",
     port		=> 80,
     docroot		=> "/srv/deployment",
+    docroot_owner	=> "sartoris",
     docroot_group	=> "wikidev",
     docroot_dir_allows  => ["10.0.0.0/16","10.64.0.0/16","208.80.152.0/22"],
     serveradmin		=> "noc@wikimedia.org",
@@ -208,6 +219,8 @@ class role::deployment::deployment_servers::labs {
     vhost_name		=> "10.4.0.58",
     port		=> 80,
     docroot		=> "/srv/deployment",
+    docroot_owner	=> "sartoris",
+    docroot_group	=> "project-deployment-prep",
     docroot_dir_allows  => ["10.4.0.0/16"],
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
@@ -235,6 +248,7 @@ class role::deployment::deployment_servers::sartoris {
     vhost_name		=> "10.4.1.19",
     port		=> 80,
     docroot		=> "/srv/deployment",
+    docroot_owner	=> "sartoris",
     docroot_group	=> "project-sartoris",
     docroot_dir_allows  => ["10.4.0.0/16"],
     serveradmin		=> "noc@wikimedia.org",
