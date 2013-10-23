@@ -132,6 +132,10 @@ class role::ci::slave {
         group  => 'root',
         mode   => '0755',
     }
+
+    # Ganglia diskstat plugin is being evaluated on contint production slaves
+    # servers merely to evaluate it for the standard role.
+    ganglia::plugin::python{'diskstat': }
 }
 
 # Common configuration to be applied on any labs Jenkins slave
