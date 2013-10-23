@@ -450,15 +450,6 @@ class role::cache {
 				/^(pmtpa|eqiad|ulsfo)$/ => '10.64.21.123',  # vanadium
 				'esams'                 => '208.80.154.73', # gadolinium
 			}
-
-			varnish::logging { 'kraken' :
-				listener_address => '208.80.154.154', # analytics1001
-				port             => '8422',
-				instance_name    => '',
-				cli_args         => '-m RxURL:^/event\.gif\?. -D',
-				log_fmt          => "%U\t%q\t%{Host}i\t%t\t%h\t%{X-Forwarded-For}i\t%{Referer}i\t%{Accept-Language}i\t%{Cookie}i\t%{X-WAP-Profile}i\t%{User-agent}i\t%l\t%n",
-				monitor          => false,
-			}
 		}
 		else {
 			$event_listener = '10.4.0.48' # deployment-eventlogging
