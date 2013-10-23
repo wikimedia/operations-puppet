@@ -92,8 +92,10 @@ class role::ci::slave {
     system_role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages,
-        contint::slave-scripts,
         role::gerrit::production::replicationdest
+
+    # Slave scripts from integration/jenkins.git deployed using Sartoris
+    deployment::target { 'ci-slave': }
 
     class { 'jenkins::slave':
         ssh_authorized_key => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA4QGc1Zs/S4s7znEYw7RifTuZ4y4iYvXl5jp5tJA9kGUGzzfL0dc4ZEEhpu+4C/TixZJXqv0N6yke67cM8hfdXnLOVJc4n/Z02uYHQpRDeLAJUAlGlbGZNvzsOLw39dGF0u3YmwDm6rj85RSvGqz8ExbvrneCVJSaYlIRvOEKw0e0FYs8Yc7aqFRV60M6fGzWVaC3lQjSnEFMNGdSiLp3Vl/GB4GgvRJpbNENRrTS3Te9BPtPAGhJVPliTflVYvULCjYVtPEbvabkW+vZznlcVHAZJVTTgmqpDZEHqp4bzyO8rBNhMc7BjUVyNVNC5FCk+D2LagmIriYxjirXDNrWlw==',
@@ -169,8 +171,11 @@ class role::ci::slave::browsertests {
     fail( 'role::ci::slave::browsertests must only be applied in labs' )
   }
 
-  include role::ci::slave::labs::common,
-      contint::slave-scripts
+  include role::ci::slave::labs::common
+
+  # Slave scripts from integration/jenkins.git deployed using Sartoris
+  deployment::target { 'ci-slave': }
+
 
   # We are in labs context, so use /mnt (== /dev/vdb)
   # Never EVER think about using GlusterFS.

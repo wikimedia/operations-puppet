@@ -1,6 +1,12 @@
 # vim: sw=2 ts=2 et
 class role::deployment::config {
   $repo_config = {
+    'integration/jenkins' => {
+        'grain'    => 'ci-slave',
+        'automated' => true,
+        'upstream' => 'https://gerrit.wikimedia.org/r/integration/jenkins',
+        'location' => '/srv/slave-scripts',
+    },
     'mediawiki/common'               => {
         'grain'    => 'mediawiki',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
