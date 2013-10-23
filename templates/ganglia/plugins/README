@@ -1,0 +1,4 @@
+Placeholder holding Ganglia plugins
+
+This directory holds python plugins for Ganglia as expected by our define
+ganglia::plugin::python().
