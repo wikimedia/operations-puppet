@@ -87,6 +87,13 @@ define git::clone(
                 require     => Package['git-core'],
             }
 
+            file { "git_repo_top_dir" :
+                ensure => directory,
+                require => "git_clone_${title}",
+                path => $directory,
+                mode => $mode
+            }
+
             # pull if $ensure == latest and if there are changes to merge in.
             if $ensure == 'latest' {
                 exec { "git_pull_${title}":
