@@ -1476,6 +1476,9 @@ class lvs::monitor {
 		"upload-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['upload']['ulsfo']['uploadlb'],
 			uri => "upload.wikimedia.org!/monitoring/backend";
+		"mobile-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['mobile']['ulsfo']['mobilelb'],
+			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 	}
 
 	monitor_service_lvs6_http_https {
@@ -1485,5 +1488,8 @@ class lvs::monitor {
 		"upload-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['upload']['ulsfo']['uploadlb6'],
 			uri => "upload.wikimedia.org!/monitoring/backend";
+		"mobile-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['mobile']['ulsfo']['mobilelb6'],
+			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 	}
 }
