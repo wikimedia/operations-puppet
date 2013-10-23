@@ -7,12 +7,13 @@ class role::salt::masters::production {
 	$salt_returner_roots = {"base"=>["/srv/salt/_returners"]}
 
 	class { "salt::master":
-		salt_runner_dirs => ["/srv/runners"],
-		salt_peer_run => {
+		salt_version        => "0.17.1-1",
+		salt_runner_dirs    => ["/srv/runners"],
+		salt_peer_run       => {
 			"tin.eqiad.wmnet" => ['deploy.*'],
 		},
-		salt_file_roots => $salt_file_roots,
-		salt_pillar_roots => $salt_pillar_roots,
+		salt_file_roots     => $salt_file_roots,
+		salt_pillar_roots   => $salt_pillar_roots,
 		salt_worker_threads => "25",
 	}
 
@@ -35,15 +36,16 @@ class role::salt::masters::labs {
 	$salt_returner_roots = {"base"=>["/srv/salt/_returners"]}
 
 	class { "salt::master":
-		salt_runner_dirs => ["/srv/runners"],
-		salt_peer_run => {
+		salt_version        => "0.17.1-1",
+		salt_runner_dirs    => ["/srv/runners"],
+		salt_peer_run       => {
 			"i-00000390.pmtpa.wmflabs" => ['deploy.*'],
 		},
-		salt_file_roots => $salt_file_roots,
-		salt_pillar_roots => $salt_pillar_roots,
+		salt_file_roots     => $salt_file_roots,
+		salt_pillar_roots   => $salt_pillar_roots,
 		salt_worker_threads => "50",
-		## event_tag => [reactors]
-		#salt_reactor => {
+		## event_tag        => [reactors]
+		#salt_reactor       => {
 		#	"auth" => ["auth.sls"],
 		#	"key" => ["key.sls"],
 		#	"minion_start" => ["minion_start.sls"],
@@ -74,12 +76,13 @@ class role::salt::masters::sartoris {
 	$salt_returner_roots = {"base"=>["/srv/salt/_returners"]}
 
 	class { "salt::master":
-		salt_runner_dirs => ["/srv/runners"],
-		salt_peer_run => {
+		salt_version        => "0.17.1-1",
+		salt_runner_dirs    => ["/srv/runners"],
+		salt_peer_run       => {
 			"i-00000822.pmtpa.wmflabs" => ['deploy.*'],
 		},
-		salt_file_roots => $salt_file_roots,
-		salt_pillar_roots => $salt_pillar_roots,
+		salt_file_roots     => $salt_file_roots,
+		salt_pillar_roots   => $salt_pillar_roots,
 		salt_worker_threads => "10",
 	}
 
@@ -125,11 +128,12 @@ class role::salt::minions {
 	}
 
 	class { "salt::minion":
-		salt_master => $salt_master,
-		salt_client_id => $salt_client_id,
-		salt_grains => $salt_grains,
+		salt_version       => "0.17.1-1",
+		salt_master        => $salt_master,
+		salt_client_id     => $salt_client_id,
+		salt_grains        => $salt_grains,
 		salt_master_finger => $salt_master_finger,
-		salt_dns_check => "False",
+		salt_dns_check     => "False",
 	}
 
 }

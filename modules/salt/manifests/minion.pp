@@ -1,4 +1,5 @@
 class salt::minion(
+  $salt_version='installed',
   $salt_master=undef,
   $salt_client_id=undef,
   $salt_cache_jobs=undef,
@@ -13,7 +14,7 @@ class salt::minion(
   $salt_dns_check=undef) {
 
   package { ["salt-minion"]:
-    ensure => present;
+    ensure => $salt_version;
   }
 
   service { "salt-minion":

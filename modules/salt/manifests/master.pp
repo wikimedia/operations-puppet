@@ -1,4 +1,5 @@
 class salt::master(
+  $salt_version="installed",
   $salt_interface=undef,
   $salt_worker_threads=undef,
   $salt_runner_dirs=["/srv/runners"],
@@ -12,7 +13,7 @@ class salt::master(
   $salt_nodegroups={}) {
 
   package { ["salt-master"]:
-    ensure => present;
+    ensure => $salt_version;
   }
 
   service { "salt-master":
