@@ -447,7 +447,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
     include role::cache::bits, role::cache::ssl::unified
 }
 
-node /^cp40(0[5-7]|1[3-5])\.ulsfo.wmnet$/ {
+node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
     if $::hostname =~ /^cp(4005|4013)$/ {
         $ganglia_aggregator = true
     }
@@ -457,6 +457,15 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo.wmnet$/ {
     include role::cache::upload, role::cache::ssl::unified
 }
 
+node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
+    if $::hostname =~ /^cp401[19]$/ {
+        $ganglia_aggregator = true
+    }
+
+    interface::add_ip6_mapped { "main": }
+
+    include role::cache::mobile, role::cache::ssl::unified
+}
 
 node "dataset2.wikimedia.org" {
     $cluster = "misc"
