@@ -11,11 +11,6 @@ class puppetmaster::gitclone {
             ensure  => directory,
             owner   => 'root',
             group   => 'root';
-        "${puppetmaster::gitdir}/operations/puppet":
-            ensure  => directory,
-            owner   => 'gitpuppet',
-            group   => 'root',
-            require => File["${puppetmaster::gitdir}/operations"];
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
@@ -106,7 +101,7 @@ class puppetmaster::gitclone {
 
     git::clone {
         'operations/puppet':
-            require     => File["${puppetmaster::gitdir}/operations/puppet"],
+            require     => File["${puppetmaster::gitdir}/operations"],
             directory   => "${puppetmaster::gitdir}/operations/puppet",
             owner       => 'gitpuppet',
             branch      => 'production',
