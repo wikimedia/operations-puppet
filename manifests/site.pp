@@ -1067,6 +1067,8 @@ node "gallium.wikimedia.org" {
         require => File['/srv/ssd'],
     }
 
+    ganglia::plugin::python{'diskstat': }
+
     install_certificate{ "star.mediawiki.org": }
     install_certificate{ "star.wikimedia.org": }
 }
@@ -1401,6 +1403,8 @@ node 'lanthanum.eqiad.wmnet' {
         options => 'noatime,nodiratime,nobarrier,logbufs=8',
         require => File['/srv/ssd'],
     }
+
+    ganglia::plugin::python{'diskstat': }
 
 }
 
