@@ -8,7 +8,12 @@ class dynamicproxy (
         maxmemory => $redis_maxmemory,
     }
 
-    package { 'nginx-extras': }
+    include misc::labsdebrepo
+
+    package { 'nginx-extras':
+        ensure => present,
+        require => Class['misc::labsdebrepo'],
+     }
 
     service { 'nginx':
         ensure  => 'running',
@@ -44,4 +49,6 @@ class dynamicproxy (
         require => File['/etc/nginx/lua/resty'],
         source  => 'puppet:///modules/dynamicproxy/redis.lua'
     }
+
+    include dynamicproxy::api
 }
