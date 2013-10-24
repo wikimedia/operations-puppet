@@ -2,35 +2,6 @@
 
 # mw maintenance/batch hosts
 
-class misc::maintenance::foundationwiki( $enabled = false ) {
-
-	system::role { "misc::maintenance::foundationwiki": description => "Misc - Maintenance Server: foundationwiki" }
-
-	# This is broken and points to a non-existing DB
-	cron { 'updatedays':
-		user => apache,
-		minute => '*/15',
-		command => '/usr/local/bin/mwscript extensions/ContributionReporting/PopulateFundraisingStatistics.php foundationwiki --op updatedays > /tmp/PopulateFundraisingStatistics-updatedays.log',
-		ensure => $enabled ?{
-			true => present,
-			false => absent,
-			default => absent
-		};
-	}
-
-	# This is broken and points to a non-existing DB
-	cron { 'populatefundraisers':
-		user => apache,
-		minute => 5,
-		command => '/usr/local/bin/mwscript extensions/ContributionReporting/PopulateFundraisingStatistics.php foundationwiki --op populatefundraisers > /tmp/PopulateFundraisingStatistics-populatefundraisers.log',
-		ensure => $enabled ?{
-			true => present,
-			false => absent,
-			default => absent
-		};
-	}
-}
-
 class misc::maintenance::refreshlinks( $enabled = false ) {
 
 	require mediawiki
