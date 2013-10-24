@@ -76,10 +76,6 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     ensure => latest,
   }
 
-  package { 'mosh':
-    ensure => present
-  }
-
   # Temporary hack to manage obsolete files in /usr/local/bin.
   # TODO: Remove when no longer needed.
   file { "/usr/local/bin/become":
@@ -89,4 +85,3 @@ class toollabs::bastion($gridmaster) inherits toollabs {
 
   # TODO: cron setup
 }
-
