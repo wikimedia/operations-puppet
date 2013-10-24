@@ -148,13 +148,29 @@ class misc::download-gluster {
 
 	system_role { "misc::download-gluster": description => "Gluster dumps copy" }
 
+	file {
+                '/mnt/glusterpublicdata':
+			ensure => directory,
+			owner => "root",
+			group => "root",
+			mode => 0775;
+	}
+
 	mount {
 		'/mnt/glusterpublicdata':
 			ensure  => mounted,
 			device  => 'labstore1.pmtpa.wmnet:/publicdata-project',
 			fstype  => 'glusterfs',
 			options => 'defaults,_netdev=bond0,log-level=WARNING,log-file=/var/log/gluster.log',
-			require => Package['glusterfs-client'],
+			require => [Package['glusterfs-client'], File['/mnt/glusterpublicdata']];
+	}
+
+	file {
+                '/mnt/nfspagecountsdata':
+			ensure => directory,
+			owner => "root",
+			group => "root",
+			mode => 0775;
 	}
 
 	mount {
@@ -162,7 +178,8 @@ class misc::download-gluster {
 			ensure => mounted,
 			device => 'labsnfs.pmtpa.wmnet:/pagecounts',
 			fstype => 'nfs',
-			options => 'bg,rsize=8192,wsize=8192,timeo=14,intr,port=0,hard'
+			options => 'bg,rsize=8192,wsize=8192,timeo=14,intr,port=0,hard',
+			require => File ['/mnt/nfspagecountsdata'];
 	}
 
 	file {
