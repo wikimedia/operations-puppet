@@ -166,23 +166,6 @@ class misc::download-gluster {
 	}
 
 	file {
-                '/mnt/nfspagecountsdata':
-			ensure => directory,
-			owner => "root",
-			group => "root",
-			mode => 0775;
-	}
-
-	mount {
-		'/mnt/nfspagecountsdata':
-			ensure => mounted,
-			device => 'labnfs.pmtpa.wmnet:/pagecounts',
-			fstype => 'nfs',
-			options => 'bg,rsize=8192,wsize=8192,timeo=14,intr,port=0,hard',
-			require => File ['/mnt/nfspagecountsdata'];
-	}
-
-	file {
 		'/usr/local/bin/wmfdumpsmirror.py':
 			ensure => present,
 			mode   => '0755',
@@ -201,8 +184,8 @@ class misc::download-gluster {
 			hour        => '3',
 			command     => '/usr/local/sbin/gluster-rsync-cron.sh',
 			environment => 'MAILTO=ops-dumps@wikimedia.org',
-			require     => [ File[ ['/usr/local/bin/wmfdumpsmirror.py', '/usr/local/sbin/gluster-rsync-cron.sh'] ],
-							 Mount[ ['/mnt/nfspagecountsdata', '/mnt/glusterpublicdata'] ] ]
+			require     => [ File[ ['/usr/local/bin/wmfdumpsmirror.py', '/usr/local/sbin/gluster-rsync-cron.sh'],
+					       ['/mnt/glusterpublicdata'] ]
 	}
 }
 

@@ -7,7 +7,7 @@ running=`pgrep -u root -f -x  '/usr/bin/rsync -a /data/xmldatadumps/public/other
 if [ -z "$running" ]; then
     /usr/bin/rsync -a /data/xmldatadumps/public/other/incr /mnt/glusterpublicdata/public/other/
 fi
-running=`pgrep -u root -f -x '/usr/bin/rsync -a /data/xmldatadumps/public/other/pagecounts-raw /mnt/nfspagecountsdata/`
+running=`pgrep -u root -f -x '/usr/bin/rsync -a /data/xmldatadumps/public/other/pagecounts-raw labnfs.pmtpa.wmnet::pagecounts`
 if [ -z "$running" ]; then
-    /usr/bin/rsync -a /data/xmldatadumps/public/other/pagecounts-raw /mnt/nfspagecountsdata/
+    /usr/bin/rsync -a /data/xmldatadumps/public/other/pagecounts-raw labnfs.pmtpa.wmnet::pagecounts
 fi
