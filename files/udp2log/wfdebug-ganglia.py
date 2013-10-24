@@ -14,7 +14,7 @@ import subprocess
 import time
 
 
-REPORTING_INTERVAL = 5  # In seconds.
+REPORTING_INTERVAL = 60  # In seconds.
 UDP_BUFSIZE = 65536  # Udp2LogConfig::BLOCK_SIZE
 METRIC_FORMAT = 'mediaWiki.wfDebug.%s'  # Format string for metric name
 
