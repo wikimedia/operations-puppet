@@ -15,7 +15,7 @@ class coredb_mysql::slow_digest {
 
     cron { 'slow_digest':
         ensure  => present,
-        command => '/usr/local/bin/send_query_digest.sh &>/dev/null',
+        command => '/usr/local/bin/send_query_digest.sh >/dev/null 2>&1',
         require => File['/usr/local/bin/send_query_digest.sh'],
         user    => 'root',
         minute  => '*/20',
@@ -24,7 +24,7 @@ class coredb_mysql::slow_digest {
 
     cron { 'tcp_query_digest':
         ensure  => present,
-        command => '/usr/local/bin/send_query_digest.sh tcpdump &>/dev/null',
+        command => '/usr/local/bin/send_query_digest.sh tcpdump >/dev/null 2>&1',
         require => File['/usr/local/bin/send_query_digest.sh'],
         user    => 'root',
         minute  => [ 5, 25, 45 ],
