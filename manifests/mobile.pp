@@ -163,7 +163,7 @@ class mobile::vumi {
 }
 
 class mobile::vumi::udp2log {
-	class { 'udp2log': monitor => false }
+	class { 'misc::udp2log': monitor => false }
 
 	file { "/var/log/vumi/metrics.log":
 		owner  => "root",
