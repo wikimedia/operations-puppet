@@ -24,6 +24,7 @@ class misc::udp2log($monitor = true) {
 	# required for monitoring udp2log instances
 	if $monitor {
 		include 
+			# TODO: Should probably include icincga package here.
 			misc::udp2log::monitoring,
 			misc::udp2log::iptables
 	}
@@ -154,15 +155,18 @@ define misc::udp2log::instance(
 		require   => [Package["udplog"], File["/etc/udp2log/${name}"], File["/etc/init.d/udp2log-${name}"]],
 	}
 
-	# include monitoring for this udp2log instance.
-	misc::udp2log::instance::monitoring { $name:
-		log_directory       => $log_directory,
-		ensure              => $ensure,
-		packet_loss_log     => $packet_loss_log,
-		monitor_packet_loss => $monitor_packet_loss,
-		monitor_processes   => $monitor_processes,
-		monitor_log_age     => $monitor_log_age,
-		require             => Service["udp2log-${name}"],
+	# only set up instance monitoring if the monitoring scripts are installed
+	if $::misc::udp2log::monitor {
+		# include monitoring for this udp2log instance.
+		misc::udp2log::instance::monitoring { $name:
+			log_directory       => $log_directory,
+			ensure              => $ensure,
+			packet_loss_log     => $packet_loss_log,
+			monitor_packet_loss => $monitor_packet_loss,
+			monitor_processes   => $monitor_processes,
+			monitor_log_age     => $monitor_log_age,
+			require             => Service["udp2log-${name}"],
+		}
 	}
 }
 
