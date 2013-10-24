@@ -9,17 +9,19 @@ class exim {
 		package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
 
 		if $install_type == "heavy" {
-			exec { "mkdir /var/spool/exim4/scan":
-				require => Package[exim4-daemon-heavy],
-				path => "/bin:/usr/bin",
-				creates => "/var/spool/exim4/scan"
-			}
+                file { [ '/var/spool/exim4/scan', '/var/spool/exim4/db' ]:
+                ensure  => directory,
+                owner   => Debian-exim,
+                group   => Debian-exim,
+                require => Package[exim4-daemon-heavy]
+            }
 
 			mount { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
-				device => "none",
-				fstype => "tmpfs",
+				require => File["/var/spool/exim4/scan", "/var/spool/exim4/db"],
+                device  => "none",
+				fstype  => "tmpfs",
 				options => "defaults",
-				ensure => mounted
+				ensure  => mounted
 			}
 
 			file { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
@@ -33,9 +35,6 @@ class exim {
 				command => "usermod -a -G Debian-exim nagios",
 				path => "/usr/sbin";
 			}
-
-			Exec["mkdir /var/spool/exim4/scan"] -> Mount["/var/spool/exim4/scan"] -> File["/var/spool/exim4/scan"]
-			Package[exim4-daemon-heavy] -> Mount["/var/spool/exim4/db"] -> File["/var/spool/exim4/db"]
 		}
 
 		file {
