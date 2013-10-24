@@ -2653,7 +2653,10 @@ node "stat1001.wikimedia.org" {
         accounts::qchris,  # RT 5474
         accounts::tnegrin  # RT 5391
 
-    sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+    sudo_user { "otto":   privileges => ['ALL = NOPASSWD: ALL'] }
+
+    # Allow Christian to sudo -u stats to debug and test stats' automated cron jobs.
+    sudo_user { "qchris": privileges => ['ALL = (stats) NOPASSWD: ALL'] }
 }
 
 node "stat1002.eqiad.wmnet" {
