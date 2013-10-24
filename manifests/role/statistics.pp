@@ -25,8 +25,6 @@ class role::statistics::cruncher inherits role::statistics {
 		misc::statistics::rsync::jobs::eventlogging,
 		# geowiki: bringing data from production slave db to research db
 		misc::statistics::geowiki::jobs::data,
-		# geowiki: generate limn files from research db and push them
-		misc::statistics::geowiki::jobs::limn,
 		# geowiki: monitors the geowiki files of http://gp.wmflabs.org/
 		misc::statistics::geowiki::jobs::monitoring
 }
@@ -45,7 +43,11 @@ class role::statistics::www inherits role::statistics {
 		# reportcard.wikimedia.org
 		misc::statistics::sites::reportcard,
 		# rsync public datasets from stat1 hourly
-		misc::statistics::public_datasets
+		misc::statistics::public_datasets,
+		# geowiki: generate limn files from research db and push them
+		# (This class is on the web-server to avoid having to move
+		# the private geowiki data between hosts)
+		misc::statistics::geowiki::jobs::limn
 }
 
 class role::statistics::private inherits role::statistics {
