@@ -1,7 +1,12 @@
 class dynamicproxy::api {
-    package { ['python-invisible-unicorn', 'python-flask-sqlalchemy', 'python-flask']:
-        ensure => 'present',
+    package { 'python-flask':
+        ensure => 'latest',
         require => Class['misc::labsdebrepo'],
+    }
+
+    package { ['python-invisible-unicorn', 'python-flask-sqlalchemy']:
+        ensure => 'present',
+        require => Package['python-flask'],
     }
 
     upstart_job{ 'dynamicproxy-api':
