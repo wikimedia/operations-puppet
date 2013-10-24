@@ -9,13 +9,6 @@ class ssh::server {
     }
 
     if ($::realm == 'labs') {
-        file { '/etc/ssh/sshd_banner':
-            owner   => root,
-            group   => root,
-            mode    => '0444',
-            content => "\nIf you are having access problems, please see:https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances\n",
-        }
-
         if versioncmp($::lsbdistrelease, '12.04') >= 0 {
             $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u/.ssh/authorized_keys /public/keys/%u/.ssh/authorized_keys'
         } else {
