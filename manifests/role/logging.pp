@@ -50,6 +50,9 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         labs       => 'deployment-fluoride.pmtpa.wmflabs',
     }
 
+    $ganglia_reporter_host = 'localhost'
+    $ganglia_reporter_port = 8324
+
     misc::udp2log::instance { "mw":
         log_directory    =>    $log_directory,
         monitor_log_age    =>    false,
@@ -58,9 +61,10 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         template_variables => {
             error_processor_host => $error_processor_host,
             error_processor_port => 8423,
-            # Quick hack to get authentication metrics in Ganglia (ori-l, 20-Aug-2013):
-            centralauth_log_processor_host => $error_processor_host,
-            centralauth_log_processor_port => 8324,
+
+            # forwarding to wfdebug-ganglia.py (see below)
+            ganglia_reporter_host => $ganglia_reporter_host,
+            ganglia_reporter_port => $ganglia_reporter_port,
         },
     }
 
@@ -74,6 +78,21 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     file { "/usr/local/bin/mw-log-cleanup":
         source => "puppet:///files/misc/scripts/mw-log-cleanup",
         mode => '0555'
+    }
+
+    file { '/usr/local/bin/wfdebug-ganglia.py':
+        source => 'puppet:///files/udp2log/wfdebug-ganglia.py',
+        mode   => '0555',
+    }
+
+    file { '/etc/init/wfdebug-ganglia.conf':
+        content => template('udp2log/wfdebug-ganglia.conf.erb'),
+    }
+
+    service { 'wfdebug-ganglia':
+        ensure    => running,
+        provider  => 'upstart',
+        subscribe => File['/usr/local/bin/wfdebug-ganglia.py', '/etc/init/wfdebug-ganglia.conf'],
     }
 }
 
