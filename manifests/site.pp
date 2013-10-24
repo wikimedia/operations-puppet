@@ -2760,9 +2760,6 @@ node "terbium.eqiad.wmnet" {
     # (bug 15434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
     class { misc::maintenance::updatequerypages: enabled => true }
-
-    # totally broken, misconfigured in non-version reporting-setup.php
-    class { misc::maintenance::foundationwiki: enabled => false }
 }
 
 node /^testsearch100[1-3]\.eqiad\.wmnet/ {
