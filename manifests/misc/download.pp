@@ -158,7 +158,7 @@ class misc::download-gluster {
 
 	mount {
 		'/mnt/glusterpublicdata':
-			ensure  => mounted,
+			ensure  => absent,
 			device  => 'labstore1.pmtpa.wmnet:/publicdata-project',
 			fstype  => 'glusterfs',
 			options => 'defaults,_netdev=bond0,log-level=WARNING,log-file=/var/log/gluster.log',
