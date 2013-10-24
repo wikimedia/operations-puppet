@@ -1386,7 +1386,15 @@ node /labstore[34]\.pmtpa\.wmnet/ {
     $ganglia_aggregator = true
 
     include standard,
-        openstack::project-nfs-storage-service
+        openstack::project-nfs-storage-service,
+        rsync::server
+
+    rsync::server::module {
+        'pagecounts':
+            path        => '/exp/pagecounts',
+            read_only   => 'false',
+            hosts_allow => ['208.80.154.11', '208.80.152.185'];
+    }
 
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 }
