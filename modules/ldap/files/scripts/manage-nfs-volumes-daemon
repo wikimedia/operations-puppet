@@ -44,6 +44,7 @@ class VolumeManager:
         # { 'project': ['10.0.0.1'] } } would manually add 10.0.0.1 to the dumps-project access list
         self.manual_shares = {'publicdata': {'project': ['208.80.154.11']}}
         self.volume_names = ['home', 'project']
+        self.redundant_volumes = [ 'project' ]
         self.loglevel = INFO
         self.logfile = None
 
@@ -84,21 +85,21 @@ class VolumeManager:
             self.project_volumes[project_name] = {}
             self.project_volumes[project_name]["present"] = os.listdir(project_path)
 
-        snap_dirs = os.listdir(self.base_snapshot_dir)
-        for snap_time in snap_dirs:
-            snap_path = os.path.join(self.base_snapshot_dir, snap_time)
-            if not os.path.isdir(snap_path):
-                continue
-
-            project_snap_dirs = os.listdir(snap_path)
-            for project_name in project_snap_dirs:
-                project_snap_path = os.path.join(snap_path, project_name)
-                if not os.path.isdir(project_snap_path):
-                    continue
-
-                if project_name not in self.project_volumes:
-                    self.project_volumes[project_name] = {}
-                self.project_volumes[project_name][snap_time] = os.listdir(project_snap_path)
+#        snap_dirs = os.listdir(self.base_snapshot_dir)
+#        for snap_time in snap_dirs:
+#            snap_path = os.path.join(self.base_snapshot_dir, snap_time)
+#            if not os.path.isdir(snap_path):
+#                continue
+#
+#            project_snap_dirs = os.listdir(snap_path)
+#            for project_name in project_snap_dirs:
+#                project_snap_path = os.path.join(snap_path, project_name)
+#                if not os.path.isdir(project_snap_path):
+#                    continue
+#
+#                if project_name not in self.project_volumes:
+#                    self.project_volumes[project_name] = {}
+#                self.project_volumes[project_name][snap_time] = os.listdir(project_snap_path)
 
     def refresh_volumes(self):
         base = self.ldapSupportLib.getBase()
@@ -175,6 +176,12 @@ class VolumeManager:
             self.log("Project %s no longer exists but still has allocated volumes." % orphan)
 
         ds.unbind()
+
+        # Ideally, we'd only want to do this if the volumes have changed
+        # /or/ the list of exports has.  Forcing it on for now, doing it
+        # every 3 min isn't too onerous.
+        self.schedule_sync_exports = True
+
         if self.schedule_sync_exports:
             if self.dry_run:
                 print "Calling sync-exports"
@@ -182,6 +189,9 @@ class VolumeManager:
                 subprocess.call(["sudo", "/usr/local/sbin/sync-exports"])
 
     def update_exports(self, project_name, volume_name, hosts):
+        if volume_name in self.redundant_volumes:
+            return
+
         if project_name not in self.project_volumes:
             if hosts:
                 self.log("Unable to set exports for %s, %s because we can't find it." % (project_name, volume_name))
