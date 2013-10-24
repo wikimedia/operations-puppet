@@ -24,6 +24,11 @@ class contint::packages {
     ensure => present;
   }
 
+  # Java style checks for mobile apps
+  package { 'checkstyle':
+    ensure => present,
+  }
+
   # Get perl dependencies so we can lint the wikibugs perl script
   include misc::irc::wikibugs::packages
 
