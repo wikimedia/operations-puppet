@@ -176,7 +176,7 @@ class misc::download-gluster {
 	mount {
 		'/mnt/nfspagecountsdata':
 			ensure => mounted,
-			device => 'labsnfs.pmtpa.wmnet:/pagecounts',
+			device => 'labnfs.pmtpa.wmnet:/pagecounts',
 			fstype => 'nfs',
 			options => 'bg,rsize=8192,wsize=8192,timeo=14,intr,port=0,hard',
 			require => File ['/mnt/nfspagecountsdata'];
