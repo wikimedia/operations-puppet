@@ -839,19 +839,19 @@ class role::cache {
 	}
 
 	class text {
-
+		# FIXME: remove this hack
 		include lvs::configuration
 		class { 'lvs::realserver':
 			realserver_ips => flatten([$lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
 				$lvs::configuration::lvs_service_ips[$::realm]['text-varnish'][$::site]])
 		}
 
-		if ($::hostname in ['cp1037', 'cp1038', 'cp1039', 'cp1040'] or $::hostname =~ /^cp10(5[2-5]|6[5-8])$/ or $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
-			# Varnish
-			include role::cache::varnish::text
+		if ($::hostname =~ /^sq[0-9][0-9]$/ or $::hostname =~ /^cp10([01][0-9]|20)$/ or $::hostname =~ /^amssq(3[1-9]|4[0-6])$/) {
+			class { "role::cache::squid::common": role => "text" }
 		}
 		else {
-			class { "role::cache::squid::common": role => "text" }
+			# Varnish
+			include role::cache::varnish::text
 		}
 	}
 
