@@ -15,3 +15,6 @@
 # Automatically generated documentation:
 /doc/*
 !/doc/README
+
+# ctags generated file (see `rake tags`)
+/tags

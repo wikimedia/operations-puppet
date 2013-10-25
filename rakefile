@@ -217,6 +217,16 @@ task :spec do
 	end
 end
 
+desc "Generates ctags"
+task :tags do
+	puts "Generating ctags file.."
+	system('ctags -R .')
+	puts "Done"
+	puts
+	puts "See https://github.com/majutsushi/tagbar/wiki#puppet for vim"
+	puts "integration with the vim tagbar plugin."
+end
+
 # Wrapper to run rspec in a module
 def run_module_spec(module_name)
 
