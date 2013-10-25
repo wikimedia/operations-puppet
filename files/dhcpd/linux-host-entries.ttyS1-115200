@@ -2511,11 +2511,6 @@ host mw109 {
 	fixed-address mw109.pmtpa.wmnet;
 }
 
-host mw110 {
-	hardware ethernet 90:B1:1C:28:DE:01;
-	fixed-address mw110.pmtpa.wmnet;
-}
-
 host mw111 {
 	hardware ethernet 90:B1:1C:28:DF:70;
 	fixed-address mw111.pmtpa.wmnet;
