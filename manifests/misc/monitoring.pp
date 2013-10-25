@@ -98,6 +98,7 @@ class misc::monitoring::views {
 	class { 'misc::monitoring::view::static_assets': }
 	class { 'misc::monitoring::view::bits_ttfb': }
 	class { 'misc::monitoring::view::visual_editor': }
+	class { 'misc::monitoring::view::mobile': }
 
 }
 
