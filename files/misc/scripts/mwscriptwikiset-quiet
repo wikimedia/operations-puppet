@@ -33,6 +33,7 @@ SCRIPTARGS="${SCRIPTARGS[@]}"
 for DBNAME in $(cat $MW_DBLISTS/$LISTFILE)
 do
 	RES=$(mwscript "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS)
+	test $? -gt 128 && break; # make Ctrl-C actually work
 	if [ -n "$RES" ]; then
 		echo "-------------------------------------"
 		echo "$DBNAME"
