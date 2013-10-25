@@ -435,7 +435,7 @@ class base {
 
     if $::realm == "labs" {
         include base::instance-upstarts,
-            generic::gluster-client
+            gluster::client
 
         # Storage backend to use for /home & /data/project
         # Configured on a per project basis inside puppet since we do not have any

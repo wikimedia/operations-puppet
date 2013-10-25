@@ -144,7 +144,7 @@ class misc::download-mediawiki {
 
 class misc::download-gluster {
 	include role::mirror::common
-	include generic::gluster-client
+	include gluster::client
 
 	system_role { "misc::download-gluster": description => "Gluster dumps copy" }
 
