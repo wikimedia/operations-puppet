@@ -24,7 +24,7 @@ sub tag_carrier {
 		set req.http.X-Stripped-XFF = regsub(req.http.X-Forwarded-For, ",?[^,]+$", "");
 		// ^ X-S-XFF now contains XFF without its final item, which was client.ip.
 
-		if (req.http.X-Stripped-XFF) { // If one or more IPs remain in X-S-XFF
+		if (req.http.X-Stripped-XFF != "") { // If one or more IPs remain in X-S-XFF
 			// Strip away any leading IPs, such that the result of regsub() is the
 			//  rightmost (or only) remaining IP, and use that to re-set X-CS2:
 			set req.http.X-CS2 = netmapper.map("zero", regsub(req.http.X-Stripped-XFF, "^.*, ?", ""));
