@@ -32,7 +32,7 @@ def fetch(repo):
     cmd = 'deploy.fetch'
     # comma in the tuple is a workaround for a bug in salt
     arg = (repo,)
-    client.cmd(grain, cmd, expr_form='grain', arg=arg, timeout=30,
+    client.cmd(grain, cmd, expr_form='grain', arg=arg, timeout=1,
                ret='deploy_redis')
     print "Fetch completed"
 
@@ -48,6 +48,6 @@ def checkout(repo, grain, reset=False):
     client = salt.client.LocalClient(__opts__['conf_file'])
     cmd = 'deploy.checkout'
     arg = (repo, reset)
-    client.cmd(grain, cmd, expr_form='grain', arg=arg, timeout=30,
+    client.cmd(grain, cmd, expr_form='grain', arg=arg, timeout=1,
                ret='deploy_redis')
     print "Checkout completed"
