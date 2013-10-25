@@ -123,39 +123,7 @@ define lighttpd_config($install="false") {
 
 }
 
-# Enables a certain NGINX site
-define nginx_site($install=false, $template="", $enable=true) {
-	if ( $template == "" ) {
-		$template_name = $name
-	} else {
-		$template_name = $template
-	}
-	if ( $enable == true ) {
-		file { "/etc/nginx/sites-enabled/${name}":
-			ensure => "/etc/nginx/sites-available/${name}",
-		}
-	} else {
-		file { "/etc/nginx/sites-enabled/${name}":
-			ensure => absent;
-		}
-	}
-
-	case $install {
-	true: {
-			file { "/etc/nginx/sites-available/${name}":
-				source => "puppet:///files/nginx/sites/${name}";
-			}
-		}
-	"template": {
-			file { "/etc/nginx/sites-available/${name}":
-				content => template("nginx/sites/${template_name}.erb");
-			}
-		}
-	}
-}
-
 # Create a symlink in /etc/init.d/ to a generic upstart init script
-
 define upstart_job($install="false", $start="false") {
 	# Create symlink
 	file { "/etc/init.d/${title}":
