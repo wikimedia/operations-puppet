@@ -1986,36 +1986,6 @@ node /^mw(11[2-9]|12[0-5])\.pmtpa\.wmnet$/ {
     include nfs::upload
 }
 
-# mw126-130 are application servers (precise)
-node /^mw1(2[6-9]|30)\.pmtpa\.wmnet$/ {
-    include role::applicationserver::appserver
-    include nfs::upload
-}
-
-# mw131-134 are pulled for elasticsearch testing
-# approved by site architect afeldman ;)
-node "mw131.pmtpa.wmnet" {
-    include accounts::manybubbles,
-        accounts::demon
-
-    sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-    sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-
-    include role::applicationserver::appserver
-    include nfs::upload
-}
-node /^mw13[234]\.pmtpa\.wmnet$/ {
-    include accounts::manybubbles,
-        accounts::demon,
-        groups::wikidev
-
-    sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-    sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-
-    include standard
-    include role::elasticsearch::production
-}
-
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     if $::hostname =~ /^mw100[12]$/ {
