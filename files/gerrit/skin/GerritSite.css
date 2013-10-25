@@ -126,6 +126,14 @@ a:hover {
 }
 
 /**
+ * https://bugzilla.wikimedia.org/show_bug.cgi?id=40941
+ * Gerrit diff font isn't big enough, either
+ */
+.patchContentTable td {
+	font-size: 9pt !important;
+}
+
+/**
  * LDAP login
  */
 #gerrit_body h1 {
