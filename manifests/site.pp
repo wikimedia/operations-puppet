@@ -1985,7 +1985,7 @@ node /^mw(7[5-9]|80)\.pmtpa\.wmnet$/ {
 }
 
 # mw81-111 are application servers (precise)
-node /^mw(8[1-9]|9[0-9]|10[0-9]|11[0-1])\.pmtpa\.wmnet$/ {
+node /^mw(8[1-9]|9[0-9]|10[0-9]|111)\.pmtpa\.wmnet$/ {
     include role::applicationserver::appserver
     include nfs::upload
 }
