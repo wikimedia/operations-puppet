@@ -5,6 +5,7 @@
 @monitor_group { "cache_text_pmtpa": description => "text squids pmtpa" }
 @monitor_group { "cache_text_eqiad": description => "text squids eqiad" }
 @monitor_group { "cache_text_esams": description => "text squids esams" }
+@monitor_group { "cache_text_ulsfo": description => "ulsfo text Varnish" }
 
 @monitor_group { "cache_upload_pmtpa": description => "upload squids pmtpa" }
 @monitor_group { "cache_upload_eqiad": description => "eqiad upload Varnish" }
@@ -126,6 +127,14 @@ class role::cache {
 						'amssq60.esams.wikimedia.org',
 						'amssq61.esams.wikimedia.org',
 						'amssq62.esams.wikimedia.org',
+					],
+					'ulsfo' => [
+						'cp4008.ulsfo.wmnet',
+						'cp4009.ulsfo.wmnet',
+						'cp4010.ulsfo.wmnet',
+						'cp4016.ulsfo.wmnet',
+						'cp4017.ulsfo.wmnet',
+						'cp4018.ulsfo.wmnet',
 					]
 				},
 				"api" => {

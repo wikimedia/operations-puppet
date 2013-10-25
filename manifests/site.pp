@@ -468,6 +468,16 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
     include role::cache::upload, role::cache::ssl::unified
 }
 
+node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
+    if $::hostname =~ /^cp(4008|4016)$/ {
+        $ganglia_aggregator = true
+    }
+
+    interface::add_ip6_mapped { "main": }
+
+    include role::cache::text, role::cache::ssl::unified
+}
+
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     if $::hostname =~ /^cp401[19]$/ {
         $ganglia_aggregator = true
