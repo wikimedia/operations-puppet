@@ -15,7 +15,7 @@ class protoproxy::ganglia {
     }
 
     # Dummy site to provide a status to Ganglia
-    nginx_site { 'localhost.conf':
+    nginx { 'localhost.conf':
         install => true,
         enable  => true,
         require => Package['nginx'],
