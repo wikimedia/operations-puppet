@@ -3218,6 +3218,7 @@ class admins::mortals {
 	include accounts::maxsem
 	include accounts::mflaschen
 	include accounts::mholmquist
+	include accounts::mhoover # Labs migration contractor
 	include accounts::milimetric # promoted per RT 5982
 	include accounts::mlitn
 	include accounts::mwalker # promoted per RT 4747

@@ -1376,6 +1376,9 @@ node /labstore[12]\.pmtpa\.wmnet/ {
     include standard,
         openstack::project-storage
 
+    # full root for mhoover, Labs migration contractor
+    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
+
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 
     if $hostname =~ /^labstore2$/ {
@@ -1394,6 +1397,9 @@ node /labstore[34]\.pmtpa\.wmnet/ {
     include standard,
         openstack::project-nfs-storage-service,
         rsync::server
+
+    # full root for mhoover, Labs migration contractor
+    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     rsync::server::module {
         'pagecounts':
@@ -2840,6 +2846,9 @@ node "virt1000.wikimedia.org" {
     $is_labs_puppet_master = "true"
     $openstack_version = "folsom"
 
+    # full root for mhoover, Labs migration contractor
+    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
+
     include standard,
         role::dns::ldap,
         ldap::role::server::labs,
@@ -2854,6 +2863,9 @@ node "virt0.wikimedia.org" {
     $is_puppet_master = "true"
     $is_labs_puppet_master = "true"
     $openstack_version = "folsom"
+
+    # full root for mhoover, Labs migration contractor
+    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
         role::dns::ldap,
@@ -2870,6 +2882,9 @@ node 'virt2.pmtpa.wmnet' {
     $cluster = "virt"
     $openstack_version = "folsom"
 
+    # full root for mhoover, Labs migration contractor
+    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
+
     include standard,
         role::nova::network,
         role::nova::api
@@ -2884,6 +2899,9 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
 
     $openstack_version = "folsom"
 
+    # full root for mhoover, Labs migration contractor
+    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
+
     include standard,
         role::nova::compute
 }
@@ -2893,6 +2911,9 @@ node /virt100(5|7|8).eqiad.wmnet/ {
     if $hostname =~ /^virt1005$/ {
         $ganglia_aggregator = true
     }
+
+    # full root for mhoover, Labs migration contractor
+    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard
 
