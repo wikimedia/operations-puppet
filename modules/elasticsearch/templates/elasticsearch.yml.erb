@@ -359,3 +359,24 @@ monitor.jvm.gc.ParNew.debug: 400ms
 monitor.jvm.gc.ConcurrentMarkSweep.warn: 10s
 monitor.jvm.gc.ConcurrentMarkSweep.info: 5s
 monitor.jvm.gc.ConcurrentMarkSweep.debug: 2s
+
+################################### Actions #################################
+## Modulo some small changes to comments this section comes directly from the
+## wonderful Elasticsearch mailing list, specifically Dan Everton.
+##
+# Require explicit index creation.  ES never autocreates the indexes the way we
+# like them.
+##
+action.auto_create_index: false
+
+##
+# Protect against accidental close/delete operations on all indices. You can
+# still close/delete individual indices.
+##
+action.disable_close_all_indices: true
+action.disable_delete_all_indices: true
+
+##
+# Disable ability to shutdown nodes via REST API.
+##
+action.disable_shutdown: true
