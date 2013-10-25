@@ -359,15 +359,12 @@ class lvs::configuration {
 				'eqiad' => "10.2.2.22",
 			},
 			'search_pool1' => {
-				'pmtpa' => "10.2.1.11",
 				'eqiad' => "10.2.2.11",
 			},
 			'search_pool2' => {
-				'pmtpa' => "10.2.1.12",
 				'eqiad' => "10.2.2.12",
 			},
 			'search_pool3' => {
-				'pmtpa' => "10.2.1.13",
 				'eqiad' => "10.2.2.13",
 			},
 			'search_pool4' => {
@@ -437,9 +434,6 @@ class lvs::configuration {
 			'bits' => {
 				'pmtpa' => "10.4.0.252",
 			},
-			'search_pool1' => {},
-			'search_pool2' => {},
-			'search_pool3' => {},
 			'dns_auth' => {},
 			'dns_rec' => {},
 			'https' => {},
@@ -462,7 +456,7 @@ class lvs::configuration {
 				'pmtpa' => {
 					'uploadlb'  => [ '10.4.0.166', '10.4.0.187', ],
 					'uploadsvc' => [ '10.4.0.166', '10.4.0.187', ],
-        },
+				},
 			},
 			'parsoid' => {},
 			'parsoidcache' => {},
@@ -726,7 +720,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 1",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'sites' => [ "pmtpa", "eqiad" ],
+			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['search_pool1'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
@@ -743,7 +737,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 2",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'sites' => [ "pmtpa", "eqiad" ],
+			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['search_pool2'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
@@ -760,7 +754,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 3",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'sites' => [ "pmtpa", "eqiad" ],
+			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['search_pool3'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
