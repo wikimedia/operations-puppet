@@ -2935,15 +2935,6 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
         misc::parsoid
 
     class { "lvs::realserver": realserver_ips => [ "10.2.2.28" ] }
-
-    if $hostname == "wtp1004" {
-        # Temporary apachebench install for Gabriel --Roan 2013-03-15
-        # Removed, no longer needed --Roan 2013-05-14
-        package { [ "apache2-utils" ]:
-            ensure => absent
-        }
-    }
-
 }
 
 node /^solr(100)?[1-3]\.(eqiad|pmtpa)\.wmnet/ {
