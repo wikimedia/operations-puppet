@@ -1367,6 +1367,7 @@ node /labstore[12]\.pmtpa\.wmnet/ {
         openstack::project-storage
 
     # full root for mhoover, Labs migration contractor
+    include admins::labs
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
@@ -1389,6 +1390,7 @@ node /labstore[34]\.pmtpa\.wmnet/ {
         rsync::server
 
     # full root for mhoover, Labs migration contractor
+    include admins::labs
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     rsync::server::module {
@@ -2858,6 +2860,7 @@ node "virt0.wikimedia.org" {
     $openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
+    include admins::labs
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
@@ -2876,6 +2879,7 @@ node 'virt2.pmtpa.wmnet' {
     $openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
+    include admins::labs
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
@@ -2893,6 +2897,7 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
     $openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
+    include admins::labs
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
@@ -2906,6 +2911,7 @@ node /virt100(5|7|8).eqiad.wmnet/ {
     }
 
     # full root for mhoover, Labs migration contractor
+    include admins::labs
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard
