@@ -714,26 +714,6 @@ class accounts {
 
 	}
 
-    # RT 6011
-    class fflorin inherits baseaccount {
-        $username = 'fflorin'
-        $realname = 'Fabrice Florin'
-        $uid      = 656
-
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
-        if $manage_home {
-            Ssh_authorized_key { require => Unixaccount[$realname] }
-
-            ssh_authorized_key { 'fab@Fab-Wikimedia-MacBoook-3.local':
-                ensure => present,
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC/j3DlDt7UtXeIRhTHPdB0uvPUAA9I3WkabDuFyPPgiF6uWnAR8YYOoOoSn80GOz18T7SQAqRr3a7lNUVhPwo6rku25cl0lt1SEHzfkRfhT7+ekf6KIaR9XH5gs3jnWi0QWoIBOoRLHoF/n/VfMo/1suQVvUTTUWHbt/QREhp0Co1OD3fnE7FpuhnJx+2aNApzwDaqh54CSY65pYGQmRAzUvNhtRqtf37AnZd5wAf2cDrgHoq1cT+jBIow2ElZaHx+msbNIwWaOFEL160rQWTsfWyKPv9XhCRDz+5/V+rDoRbaU/sDg+sph9TfDmW3yTEM9OkHGAmZmzlVfznBtlS9',
-            }
-        }
-    }
-
 	class fvassard inherits baseaccount {
 		$username = "fvassard"
 		$realname = "Fred Vassard"
@@ -3141,6 +3121,26 @@ class accounts {
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDHHt80fZmlmhzmFRgT+m0oIOs4h9ZDpqP9a4G79TZfZOA3eCuiq+kucyhdm51ge7GimzE/rhFgw3ZBVXvcdKpwTDyybArM5mOJsyg0GNp0Ns3hlJrvAudIXnxEjGlMuVF0ek3Vexi/hBzci5chqXSXxQJfUnfZnBOMiFyAGGM7KQM2W11SwTxyB9j+2McWm1ZR2rC3DjTsfbsus4BMlNYgaR7hE3ovMiCdke3NorFJ+NjZe2NjoMmSUNnGyTJvwwUncDXLELE4S2QQ4L6Vc71mMAC9VC/+qrpjTN6CEfae8nEcBvrgA1s/ahMI+3OdsWzRU0Gv3+jgqUR/641gXdkB',
+            }
+        }
+    }
+
+    # RT 6011
+    class fflorin inherits baseaccount {
+        $username = 'fflorin'
+        $realname = 'Fabrice Florin'
+        $uid      = 657
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'fab@Fab-Wikimedia-MacBoook-3.local':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC/j3DlDt7UtXeIRhTHPdB0uvPUAA9I3WkabDuFyPPgiF6uWnAR8YYOoOoSn80GOz18T7SQAqRr3a7lNUVhPwo6rku25cl0lt1SEHzfkRfhT7+ekf6KIaR9XH5gs3jnWi0QWoIBOoRLHoF/n/VfMo/1suQVvUTTUWHbt/QREhp0Co1OD3fnE7FpuhnJx+2aNApzwDaqh54CSY65pYGQmRAzUvNhtRqtf37AnZd5wAf2cDrgHoq1cT+jBIow2ElZaHx+msbNIwWaOFEL160rQWTsfWyKPv9XhCRDz+5/V+rDoRbaU/sDg+sph9TfDmW3yTEM9OkHGAmZmzlVfznBtlS9',
             }
         }
     }
