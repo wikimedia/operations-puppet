@@ -2839,6 +2839,7 @@ node "virt1000.wikimedia.org" {
     $openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
+    include accounts::mhoover
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
