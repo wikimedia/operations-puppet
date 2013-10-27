@@ -3287,6 +3287,11 @@ class admins::restricted {
 	include accounts::ironholds # RT 5935
 }
 
+class admins::labs {
+	$gid = 500  # 'wikidev' by default
+	include accounts::mhoover # Labs migration contractor
+}
+
 class admins::jenkins {
 	$gid = 500  # 'wikidev' by default
 	include groups::wikidev
