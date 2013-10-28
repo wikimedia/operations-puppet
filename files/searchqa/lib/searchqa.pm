@@ -57,18 +57,9 @@ our $conf = {
 			},
 		},
 		'pmtpa' => {
-			'search_pool1' => {
-				'lvs' => [qw(10.2.1.11)],
-				'host' => [qw(search21.pmtpa.wmnet search22.pmtpa.wmnet search23.pmtpa.wmnet search26.pmtpa.wmnet)],
-			},
-			'search_pool2' => {
-				'lvs' => [qw(10.2.1.12)],
-				'host' => [qw(search27.pmtpa.wmnet search28.pmtpa.wmnet)],
-			},
-			'search_pool3' => {
-				'lvs' => [qw(10.2.1.13)],
-				'host' => [qw(search31.pmtpa.wmnet)],
-			},
+			'search_pool1' => {},
+			'search_pool2' => {},
+			'search_pool3' => {},
 			'search_pool4' => {
 				'lvs' => [qw(10.2.1.14)],
 				'host' => [qw(search13.pmtpa.wmnet search14.pmtpa.wmnet)],
