@@ -148,22 +148,6 @@ sub vcl_error {
 
 sub vcl_deliver {
 #	unset resp.http.Enable-ESI;
-	unset resp.http.X-CS;
-
-	# We used to incorrectly set them in vcl_fetch(), which means that our
-	# cache is now poisoned with non-varied cached objects that have this
-	# incorrectly set with random carriers. Clean up after ourselves.
-	# FIXME: remove after cache expires, Sep 26 2013 + 30 days
-	if (resp.http.Vary !~ "X-CS" && resp.http.X-Analytics ~ "zero=") {
-		# no Vary: X-CS and zero in X-Analytics is an invalid combination
-		unset resp.http.X-Analytics;
-	}
-
-	if (resp.http.X-Analytics) {
-		# do nothing, MediaWiki has handled X-Analytics
-	} else if (req.http.X-Analytics) {
-		set resp.http.X-Analytics = req.http.X-Analytics;
-	}
 
 	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
 		set resp.http.Cache-Control = "s-maxage=300, must-revalidate, max-age=0";
