@@ -300,7 +300,7 @@ node "carbon.wikimedia.org" {
 }
 
 # cerium,praseodymium and xenon are cassandra test host
-node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
+node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
     include standard
 
     include groups::wikidev, accounts::gwicke
