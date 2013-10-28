@@ -1,0 +1,33 @@
+#!/bin/bash
+# carbonctl -- Manage Graphite Carbon services
+# Usage: carbonctl {start|stop|restart|status|tail}
+#
+command=$1
+shift
+case "$command" in
+    status)
+        mapfile -t instances < <(grep -Po '(?<=^\[cache:).+(?=\]$)' /etc/carbon/carbon.conf)
+        ! {
+            for name in "${instances[@]}"; do
+                /sbin/status carbon/cache NAME="$name"  |& sed 's/ //'
+            done
+            grep -Fqx '[relay]' /etc/carbon/carbon.conf && /sbin/status carbon/relay
+        } |& { sed 's/, process//' | column -t | tee /dev/stderr | grep -qv running ; } 2>&1
+        ;;
+    start)
+        /sbin/initctl emit carbon.start
+        ;;
+    stop)
+        /sbin/initctl emit carbon.stop
+        ;;
+    restart)
+        /sbin/initctl emit carbon.stop
+        /sbin/initctl emit carbon.start
+        ;;
+    tail)
+        tail "$@" /var/log/upstart/carbon_init.log
+        ;;
+    *)
+        echo >&2 "Usage: ${0##*/} {start|restart|stop|status|tail}"
+        ;;
+esac
