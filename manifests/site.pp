@@ -2836,7 +2836,7 @@ node 'hafnium.wikimedia.org' {
 # RT #5871
 node 'tungsten.eqiad.wmnet' {
     # services
-    include standard, role::statsd
+    include standard, role::statsd, role::graphite
 
     # access
     include groups::wikidev, accounts::olivneh
