@@ -3828,6 +3828,10 @@ host rubidium {
 	fixed-address rubidium.wikimedia.org;
 }
 
+host ruthenium {
+	hardware ethernet 18:03:73:f1:58:82;
+	fixed-address ruthenium.eqiad.wmnet;
+}
 
 host search13 {
 	hardware ethernet 00:26:B9:53:54:E2;
