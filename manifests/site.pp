@@ -237,7 +237,7 @@ node "arsenic.eqiad.wmnet" {
 
 
 node "bast1001.wikimedia.org" {
-    system_role { "misc": description => "Bastion Server" }
+    system::role { "misc": description => "Bastion Server" }
     $cluster = "misc"
     $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet esams.wikimedia.org"
 
@@ -254,7 +254,7 @@ node "bast1001.wikimedia.org" {
 }
 
 node "bast4001.wikimedia.org" {
-    system_role { "misc": description => "Operations Bastion" }
+    system::role { "misc": description => "Operations Bastion" }
     $cluster = "misc"
     $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet esams.wikimedia.org"
 
@@ -632,7 +632,7 @@ node 'db67.pmtpa.wmnet' {
 ## pgehres special project
 node 'db29.pmtpa.wmnet' {
     $gid = 500
-    system_role { "role::admin_tools_sul_audit_db": description => "Admin Tools/SUL Audit database" }
+    system::role { "role::admin_tools_sul_audit_db": description => "Admin Tools/SUL Audit database" }
     include base,
         standard,
         mysql_wmf,
@@ -982,7 +982,7 @@ node /es10(0[89]|10)\.eqiad\.wmnet/ {
 }
 
 node "fenari.wikimedia.org" {
-    system_role { "misc": description => "Bastion & NOC Server" }
+    system::role { "misc": description => "Bastion & NOC Server" }
     $cluster = "misc"
     $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
@@ -1271,7 +1271,7 @@ node "hume.wikimedia.org" {
 }
 
 node "iron.wikimedia.org" {
-    system_role { "misc": description => "Operations Bastion" }
+    system::role { "misc": description => "Operations Bastion" }
     $cluster = "misc"
     $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet esams.wikimedia.org"
 
@@ -1284,7 +1284,7 @@ node "iron.wikimedia.org" {
 }
 
 node "kaulen.wikimedia.org" {
-    system_role { "misc": description => "Bugzilla server" }
+    system::role { "misc": description => "Bugzilla server" }
     $gid = 500
 
     include standard,
@@ -2189,7 +2189,7 @@ node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
     mysql_wmf::pc::conf,
     mysql_wmf::packages
 
-  system_role { "mysql::pc::conf": description => "parser cache mysql server" }
+  system::role { "mysql::pc::conf": description => "parser cache mysql server" }
 }
 
 node "pdf1.wikimedia.org" {
@@ -2671,7 +2671,7 @@ node "stat1002.eqiad.wmnet" {
 }
 
 node "streber.wikimedia.org" {
-    system_role { "misc": description => "network monitoring server" }
+    system::role { "misc": description => "network monitoring server" }
 
     include passwords::root,
         base::resolving,

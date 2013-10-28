@@ -19,7 +19,7 @@ import "generic-definitions.pp"
 #		Hash containing all config settings for the [master] section of
 #		puppet.conf (ini-style)
 class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=[], $config={}) {
-	system_role { "puppetmaster": description => "Puppetmaster" }
+	system::role { "puppetmaster": description => "Puppetmaster" }
 
 	$gitdir = "/var/lib/git"
 	$volatiledir = "/var/lib/puppet/volatile"
@@ -397,7 +397,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	class dashboard($dashboard_environment="production", $db_host="localhost") {
 		require puppetmaster::passenger, passwords::puppetmaster::dashboard
 
-		system_role { "puppetmaster::dashboard": description => "Puppet Dashboard interface" }
+		system::role { "puppetmaster::dashboard": description => "Puppet Dashboard interface" }
 
 		$db_pass = $passwords::puppetmaster::dashboard::db_pass
 
@@ -508,7 +508,7 @@ class puppetmaster::self {
 # $server - hostname of the puppetmaster.
 #
 class puppet::self::client($server) {
-	system_role { 'puppetclient':
+	system::role { 'puppetclient':
 		description => "Puppet client of ${server}"
 	}
 
@@ -534,7 +534,7 @@ class puppet::self::client($server) {
 # $server - hostname of the puppetmaster.
 #
 class puppet::self::master($server) {
-	system_role { 'puppetmaster': 
+	system::role { 'puppetmaster': 
 		description  => $server ? {
 			'localhost' => 'Puppetmaster for itself',
 			default     => 'Puppetmaster for project labs instances',

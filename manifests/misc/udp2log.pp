@@ -29,7 +29,7 @@ class misc::udp2log($monitor = true) {
 			misc::udp2log::iptables
 	}
 
-	system_role { "udp2log::logger": description => "udp2log data collection server" }
+	system::role { "udp2log::logger": description => "udp2log data collection server" }
 
 	# make sure the udp2log filter config directory exists
 	file { "/etc/udp2log":

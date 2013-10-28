@@ -3,7 +3,7 @@
 # IPMItool mgmt hosts
 
 class misc::management::ipmi {
-	system_role { "misc::management::ipmi": description => "IPMI Management" }
+	system::role { "misc::management::ipmi": description => "IPMI Management" }
 	
 	package { "ipmitool":
 		ensure =>latest;

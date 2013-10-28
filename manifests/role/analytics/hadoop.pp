@@ -39,21 +39,21 @@ class role::analytics::hadoop::client {
 # Includes cdh4::hadoop::master classes
 #
 class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
-    system_role { 'role::analytics::hadoop::master': description => 'Hadoop Master (NameNode & ResourceManager)' }
+    system::role { 'role::analytics::hadoop::master': description => 'Hadoop Master (NameNode & ResourceManager)' }
     include cdh4::hadoop::master
 }
 
 # == Class role::analytics::hadoop::worker
 # Includes cdh4::hadoop::worker classes
 class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
-    system_role { 'role::analytics::hadoop::worker': description => 'Hadoop Worker (DataNode & NodeManager)' }
+    system::role { 'role::analytics::hadoop::worker': description => 'Hadoop Worker (DataNode & NodeManager)' }
     include cdh4::hadoop::worker
 }
 
 # == Class role::analytics::hadoop::standby inherits role::analytics::hadoop::client
 #
 class role::analytics::hadoop::standby inherits role::analytics::hadoop::client {
-    system_role { 'role::analytics::hadoop::standby': description => 'Hadoop Standby NameNode' }
+    system::role { 'role::analytics::hadoop::standby': description => 'Hadoop Standby NameNode' }
     include cdh4::hadoop::namenode::standby
 }
 

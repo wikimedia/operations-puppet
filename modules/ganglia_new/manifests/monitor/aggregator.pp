@@ -2,7 +2,7 @@ class ganglia_new::monitor::aggregator($sites) {
 	require ganglia_new::monitor::packages
 	include ganglia_new::configuration
 
-	system_role { "ganglia::monitor::aggregator": description => "central Ganglia aggregator" }
+	system::role { "ganglia::monitor::aggregator": description => "central Ganglia aggregator" }
 
 	file {
 		"/etc/ganglia/aggregators":

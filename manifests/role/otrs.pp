@@ -2,7 +2,7 @@
 # role/otrs.pp
 
 class role::otrs {
-    system_role { 'role::otrs::webserver': description => 'OTRS Web Application Server' }
+    system::role { 'role::otrs::webserver': description => 'OTRS Web Application Server' }
 
     $nagios_group = "${cluster}_${::site}"
 

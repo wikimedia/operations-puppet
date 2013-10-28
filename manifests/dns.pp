@@ -13,7 +13,7 @@ class dns::auth-server::ldap($dns_auth_ipaddress, $dns_auth_soa_name, $dns_auth_
 		ensure => latest;
 	}
 
-	system_role { "dns::auth-server-ldap": description => "Authoritative DNS server (LDAP)" }
+	system::role { "dns::auth-server-ldap": description => "Authoritative DNS server (LDAP)" }
 
 	file {
 		"/etc/powerdns/pdns.conf":
@@ -50,7 +50,7 @@ class dns::recursor($listen_addresses=[$::ipaddress], $allow_from=[]) {
 		ensure => latest;
 	}
 
-	system_role { "dns::recursor": description => "Recursive DNS server", ensure => "absent" }
+	system::role { "dns::recursor": description => "Recursive DNS server", ensure => "absent" }
 
 	include network::constants
 

@@ -734,7 +734,7 @@ class icinga::nsca {
 # NSCA - daemon config
 class icinga::monitor::nsca::daemon {
 
-  system_role { 'icinga::nsca::daemon': description => 'Nagios Service Checks Acceptor Daemon' }
+  system::role { 'icinga::nsca::daemon': description => 'Nagios Service Checks Acceptor Daemon' }
 
   require icinga::nsca
 

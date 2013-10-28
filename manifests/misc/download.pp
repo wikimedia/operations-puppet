@@ -20,7 +20,7 @@ class misc::download::cron-rsync-dumps {
 }
 
 class misc::download-wikimedia {
-	system_role { "misc::download-wikimedia": description => "download.wikimedia.org" }
+	system::role { "misc::download-wikimedia": description => "download.wikimedia.org" }
 
 	package { lighttpd:
 		ensure => latest;
@@ -66,7 +66,7 @@ class misc::download-wikimedia {
 }
 
 class misc::download-primary {
-	system_role { "misc::download-primary": description => "Service for rsync to internal download mirrors" }
+	system::role { "misc::download-primary": description => "Service for rsync to internal download mirrors" }
 
         include role::mirror::common
 
@@ -92,7 +92,7 @@ class misc::download-primary {
 }
 
 class misc::download-mirror {
-	system_role { "misc::download-mirror": description => "Service for rsync to external download mirrors" }
+	system::role { "misc::download-mirror": description => "Service for rsync to external download mirrors" }
 
         include role::mirror::common
 
@@ -120,7 +120,7 @@ class misc::download-mirror {
 
 class misc::download-mediawiki {
 
-	system_role { "misc::download-mediawiki": description => "MediaWiki download" }
+	system::role { "misc::download-mediawiki": description => "MediaWiki download" }
 
 	# FIXME: require apache
 
@@ -150,7 +150,7 @@ class misc::download-gluster {
 	include role::mirror::common
 	include gluster::client
 
-	system_role { "misc::download-gluster": description => "Gluster dumps copy" }
+	system::role { "misc::download-gluster": description => "Gluster dumps copy" }
 
 	file {
                 '/mnt/glusterpublicdata':
@@ -195,7 +195,7 @@ class misc::download-gluster {
 
 
 class misc::kiwix-mirror {
-	# TODO: add system_role
+	# TODO: add system::role
 
 	group { mirror:
 		ensure => "present";

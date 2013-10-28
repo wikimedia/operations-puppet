@@ -12,7 +12,7 @@ class role::backup::director {
     include role::backup::config
     include passwords::bacula
 
-    system_role { 'role::backup::director': description => 'Backup server' }
+    system::role { 'role::backup::director': description => 'Backup server' }
 
     class { 'bacula::director':
         sqlvariant          => 'mysql',
@@ -127,7 +127,7 @@ class role::backup::director {
 class role::backup::storage() {
     include role::backup::config
 
-    system_role { 'role::backup::storage': description => 'Backup Storage' }
+    system::role { 'role::backup::storage': description => 'Backup Storage' }
 
     include nfs::netapp::common
 

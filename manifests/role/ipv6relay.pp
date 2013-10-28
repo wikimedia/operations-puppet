@@ -4,7 +4,7 @@
 #
 # Provides Teredo connectivity which let IPv4 only hosts to use IPv6 with us.
 class role::ipv6relay {
-    system_role { 'role::ipv6relay': description => 'IPv6 tunnel relay (6to4/Teredo)' }
+    system::role { 'role::ipv6relay': description => 'IPv6 tunnel relay (6to4/Teredo)' }
 
     # Enable router advertisements even when forwarding is enabled
     # ("all" doesn't work with accept_ra, add eth0 here as a hack)

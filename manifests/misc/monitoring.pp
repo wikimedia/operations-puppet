@@ -1,7 +1,7 @@
 # misc/monitoring.pp
 
 class misc::monitoring::htcp-loss {
-	system_role { "misc::monitoring::htcp-loss": description => "HTCP packet loss monitor" }
+	system::role { "misc::monitoring::htcp-loss": description => "HTCP packet loss monitor" }
 
 	File {
 		require => File["/usr/lib/ganglia/python_modules"],

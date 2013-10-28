@@ -1,7 +1,7 @@
 # https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
 class misc::outreach::civicrm {
 
-    system_role { 'misc::outreach::civicrm': description => 'contacts.wikimedia.org - Drupal/CiviCRM' }
+    system::role { 'misc::outreach::civicrm': description => 'contacts.wikimedia.org - Drupal/CiviCRM' }
 
     file {
         '/etc/apache2/sites-available/contacts.wikimedia.org':

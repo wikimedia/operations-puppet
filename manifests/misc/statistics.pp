@@ -59,7 +59,7 @@ class misc::statistics::user {
 }
 
 class misc::statistics::base {
-    system_role { "misc::statistics::base": description => "statistics server" }
+    system::role { "misc::statistics::base": description => "statistics server" }
 
     include misc::statistics::packages
 
