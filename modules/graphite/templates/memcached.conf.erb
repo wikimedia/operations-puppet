@@ -1,0 +1,8 @@
+# Configuration file for memcached.
+# This file is managed by Puppet.
+-d
+logfile /var/log/memcached.log
+-m <%= @memcached_size %>
+-p 11211
+-u memcache
+-l 127.0.0.1
