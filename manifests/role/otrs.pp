@@ -10,7 +10,7 @@ class role::otrs {
         webserver::apache,
         nrpe
 
-    systemuser { 'otrs':
+    generic::systemuser { 'otrs':
         name => 'otrs',
         home => '/var/lib/otrs',
         groups => 'www-data',

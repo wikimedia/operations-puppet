@@ -242,7 +242,7 @@ class ganglia {
                 ensure      => running;
         }
 
-        systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
+        generic::systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
     }
 
     # Class for setting up the collector (gmetad)

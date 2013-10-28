@@ -5,7 +5,7 @@ class mediawiki::users::l10nupdate {
 
 	require groups::l10nupdate
 
-	systemuser { 'l10nupdate': name => 'l10nupdate', home => '/home/l10nupdate', default_group => 10002, shell => '/bin/bash' }
+	generic::systemuser { 'l10nupdate': name => 'l10nupdate', home => '/home/l10nupdate', default_group => 10002, shell => '/bin/bash' }
 
 	file {
 		"/home/l10nupdate/.ssh":

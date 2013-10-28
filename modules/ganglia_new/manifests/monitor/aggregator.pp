@@ -18,7 +18,7 @@ class ganglia_new::monitor::aggregator($sites) {
 			mode => 0444;
 	}
 
-	upstart_job { "ganglia-monitor-aggregator-instance": }
+	generic::upstart_job { "ganglia-monitor-aggregator-instance": }
 
 	define site_instances() {
 		# Instantiate aggregators for all clusters for this site ($title)

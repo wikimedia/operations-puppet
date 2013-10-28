@@ -2,7 +2,7 @@ class jenkins::user {
 
   include jenkins::group
 
-  # We do not use systemuser{} since we would like to keep
+  # We do not use generic::systemuser{} since we would like to keep
   # the group definition in the jenkins module.
   user { 'jenkins':
     name       => 'jenkins',

@@ -812,7 +812,7 @@ class icinga::monitor::snmp {
   }
 
   # snmp tarp stuff
-  systemuser { 'snmptt': name => 'snmptt', home => '/var/spool/snmptt', groups => [ 'snmptt', 'nagios' ] }
+  generic::systemuser { 'snmptt': name => 'snmptt', home => '/var/spool/snmptt', groups => [ 'snmptt', 'nagios' ] }
 
   package { 'snmpd':
     ensure => latest;

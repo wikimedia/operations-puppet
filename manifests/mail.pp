@@ -267,7 +267,7 @@ class exim {
 # /usr/share/doc/clamav-base/README.Debian.gz
 class clamav {
 
-	systemuser { "clamav":
+	generic::systemuser { "clamav":
 		name => "clamav",
 		groups => "Debian-exim", # needed for exim integration
 	}
@@ -316,7 +316,7 @@ class spamassassin(
 	# this seems broken, especially since /var/spamd is unused
 	# and spamd's homedir is created as /var/lib/spamd
 	if ( $spamd_user == "spamd" ) {
-		systemuser { "spamd": name => "spamd" }
+		generic::systemuser { "spamd": name => "spamd" }
 		file { "/var/spamd":
 			require => Systemuser[spamd],
 			ensure => directory,

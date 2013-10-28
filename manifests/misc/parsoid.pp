@@ -31,7 +31,7 @@ class misc::parsoid {
 			mode => 0555;
 	}
 
-	systemuser {
+	generic::systemuser {
 		parsoid:
 			name => "parsoid",
 			default_group => "parsoid",
