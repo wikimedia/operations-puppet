@@ -8,10 +8,10 @@ modules {
     }
 
     param host {
-        value = "http://localhost:9200/"
+        value = "http://<%= @ipaddress %>:9200/"
     }
 
-    # In order to get index specific stats specify each index seperated by
+    # In order to get index specific stats specify each index separated by
     # whitespace.
     #
     # indices can be grouped by using comma,
