@@ -204,11 +204,6 @@ host argon {
 	fixed-address argon.eqiad.wmnet;
 }
 
-host arsenic {
-	hardware ethernet 18:03:73:f1:4f:5e;
-	fixed-address arsenic.wikimedia.org;
-}
-
 host backup4001 {
 	hardware ethernet F0:1F:AF:D8:72:9A;
 	fixed-address backup4001.ulsfo.wmnet;
@@ -3709,11 +3704,6 @@ host nescio {
 host nickel {
 	hardware ethernet 78:2b:cb:08:aa:93;
 	fixed-address nickel.wikimedia.org;
-}
-
-host niobium {
-	hardware ethernet 18:03:73:f1:56:39;
-	fixed-address niobium.wikimedia.org;
 }
 
 host nitrogen {
