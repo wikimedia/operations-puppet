@@ -3,7 +3,7 @@
 
 class misc::wikistats {
 
-	system_role { 'misc::wikistats': description => 'wikistats host' }
+	system::role { 'misc::wikistats': description => 'wikistats host' }
 	systemuser { wikistats: name => 'wikistats', home => '/usr/lib/wikistats', groups => [ 'wikistats' ] }
 }
 

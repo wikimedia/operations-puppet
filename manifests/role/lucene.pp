@@ -191,7 +191,7 @@ class role::lucene {
 	}
 
 	class indexer {
-		system_role { "role::lucene::indexer": description => "Lucene search indexer" }
+		system::role { "role::lucene::indexer": description => "Lucene search indexer" }
 		$cluster = "search"
 		$nagios_group = "lucene"
 
@@ -223,7 +223,7 @@ class role::lucene {
 
 	class front_end {
 		class common($search_pool) {
-			system_role { "role::lucene::front-end": description => "Front end lucene search server" }
+			system::role { "role::lucene::front-end": description => "Front end lucene search server" }
 			$cluster = "search"
 			$nagios_group = "lucene"
 

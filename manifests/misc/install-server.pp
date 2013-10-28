@@ -1,7 +1,7 @@
 # misc/install-server.pp
 
 class misc::install-server {
-    system_role { 'misc::install-server': description => 'Install server' }
+    system::role { 'misc::install-server': description => 'Install server' }
 
     $sets = [ 'srv-autoinstall',
               'srv-tftpboot',
@@ -44,7 +44,7 @@ class misc::install-server {
     }
 
     class tftp-server {
-        system_role { 'misc::tftp-server': description => 'TFTP server' }
+        system::role { 'misc::tftp-server': description => 'TFTP server' }
 
         # TODO: replace this by iptables.pp definitions
         $iptables_command = '
@@ -97,7 +97,7 @@ class misc::install-server {
     }
 
     class caching-proxy {
-        system_role { 'misc::caching-proxy':
+        system::role { 'misc::caching-proxy':
             description => 'Caching proxy server'
         }
 
@@ -146,7 +146,7 @@ class misc::install-server {
     }
 
     class ubuntu-mirror {
-        system_role { 'misc::ubuntu-mirror':
+        system::role { 'misc::ubuntu-mirror':
             description => 'Public Ubuntu mirror'
         }
 
@@ -184,7 +184,7 @@ class misc::install-server {
     }
 
     class apt-repository {
-        system_role { 'misc::apt-repository': description => 'APT repository' }
+        system::role { 'misc::apt-repository': description => 'APT repository' }
 
         package { [ 'dpkg-dev', 'gnupg', 'reprepro', 'dctrl-tools' ]:
             ensure => latest,

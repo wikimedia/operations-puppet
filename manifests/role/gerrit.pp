@@ -2,7 +2,7 @@
 
 class role::gerrit {
 	class labs {
-		system_role { 'role::gerrit::labs': description => 'Gerrit in labs!' }
+		system::role { 'role::gerrit::labs': description => 'Gerrit in labs!' }
 
 		class { 'gerrit::instance':
 			db_host      => 'gerrit-db',
@@ -14,7 +14,7 @@ class role::gerrit {
 	}
 
 	class production::old {
-		system_role { 'role::gerrit::production': description => 'Old gerrit master' }
+		system::role { 'role::gerrit::production': description => 'Old gerrit master' }
 
 		class { "gerrit::instance":
 			db_host      => 'db1048.eqiad.wmnet',
@@ -27,7 +27,7 @@ class role::gerrit {
 	}
 
 	class production {
-		system_role { 'role::gerrit::production': description => 'Gerrit master' }
+		system::role { 'role::gerrit::production': description => 'Gerrit master' }
 
 		interface::ip { 'role::gerrit::production':
 			interface => 'eth0',
@@ -144,7 +144,7 @@ class role::gerrit {
 	# Include this role on *any* production host that wants to
 	# receive gerrit replication
 	class production::replicationdest {
-		system_role { 'role::gerrit::replicationdest': description => 'Destination for gerrit replication' }
+		system::role { 'role::gerrit::replicationdest': description => 'Destination for gerrit replication' }
 
 		class { 'gerrit::replicationdest':
 			sshkey => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw=='

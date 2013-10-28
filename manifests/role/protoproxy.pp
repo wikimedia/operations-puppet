@@ -48,7 +48,7 @@ class role::protoproxy::ssl {
     } else {
         $desc = 'SSL proxy'
     }
-    system_role { 'protoproxy::proxy_sites': description => $desc }
+    system::role { 'protoproxy::proxy_sites': description => $desc }
 
     include standard,
         certificates::wmf_ca,
@@ -360,7 +360,7 @@ class role::protoproxy::ssl::beta::common {
 #
 class role::protoproxy::ssl::beta {
 
-    system_role { 'role::protoproxy::ssl:beta': description => 'SSL proxy on beta' }
+    system::role { 'role::protoproxy::ssl:beta': description => 'SSL proxy on beta' }
 
     include role::protoproxy::ssl::beta::common
 

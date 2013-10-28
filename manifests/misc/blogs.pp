@@ -2,7 +2,7 @@
 
 # https://blog.wikimedia.org/
 class misc::blogs::wikimedia {
-    system_role { 'misc::blogs::wikimedia': description => 'blog.wikimedia.org' }
+    system::role { 'misc::blogs::wikimedia': description => 'blog.wikimedia.org' }
 
     class {'webserver::php5': ssl => true; }
 

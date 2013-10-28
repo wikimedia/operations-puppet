@@ -105,7 +105,7 @@ class swift::proxy(
 	) {
 	Class[swift::base] -> Class[swift::proxy]
 
-	system_role { "swift::proxy": description => "swift frontend proxy" }
+	system::role { "swift::proxy": description => "swift frontend proxy" }
 
 	file { "/etc/swift/proxy-server.conf":
 		owner => swift,
@@ -145,7 +145,7 @@ class swift::proxy::monitoring($host) {
 class swift::storage {
 	Class[swift::base] -> Class[swift::storage]
 
-	system_role { "swift::storage": description => "swift backend storage brick" }
+	system::role { "swift::storage": description => "swift backend storage brick" }
 
 	class packages {
 		package {

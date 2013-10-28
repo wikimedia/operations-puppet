@@ -118,7 +118,7 @@ class role::applicationserver {
 
 	## prod role classes
 	class appserver{
-		system_role { "role::applicationserver::appserver": description => "Standard Apache Application server" }
+		system::role { "role::applicationserver::appserver": description => "Standard Apache Application server" }
 
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
@@ -135,7 +135,7 @@ class role::applicationserver {
 	}
 	# role class specifically for test.w.o apache(s)
 	class appserver::test{
-		system_role { "role::applicationserver::appserver::test": description => "Test Apache Application server" }
+		system::role { "role::applicationserver::appserver::test": description => "Test Apache Application server" }
 
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
@@ -146,7 +146,7 @@ class role::applicationserver {
 	# apply both roles cause puppet will complains about a duplicate class
 	# definition for role::applicationserver::common
 	class appserver::beta{
-		system_role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
+		system::role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
 
 		class { "role::applicationserver::common": group => "beta_appserver" }
 
@@ -159,21 +159,21 @@ class role::applicationserver {
 			imagescaler::files
 	}
 	class appserver::api{
-		system_role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
+		system::role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
 
 		class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
 
 		class { "role::applicationserver::webserver": maxclients => "100" }
 	}
 	class appserver::bits{
-		system_role { "role::applicationserver::appserver::bits": description => "Bits Apache Application server" }
+		system::role { "role::applicationserver::appserver::bits": description => "Bits Apache Application server" }
 
 		class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
 
 		include role::applicationserver::webserver
 	}
 	class imagescaler{
-		system_role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
+		system::role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
 
 		class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
 
@@ -186,7 +186,7 @@ class role::applicationserver {
 			imagescaler::files
 	}
 	class videoscaler( $run_jobs_enabled = true ){
-		system_role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
+		system::role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
 
 		class { "role::applicationserver::common": group => "videoscaler" }
 
@@ -218,7 +218,7 @@ class role::applicationserver {
 		}
 	}
 	class jobrunner( $run_jobs_enabled = true ){
-		system_role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
+		system::role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 

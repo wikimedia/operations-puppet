@@ -1,7 +1,7 @@
 # misc/torrus.pp
 
 class misc::torrus {
-	system_role { "misc::torrus": description => "Torrus" }
+	system::role { "misc::torrus": description => "Torrus" }
 
 	package {
 		"torrus-common":

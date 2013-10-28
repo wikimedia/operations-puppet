@@ -5,7 +5,7 @@ class misc::fundraising {
 		mysql_wmf::client::default_charset_binary
 
 	#what is currently on grosley/aluminium
-	system_role { 'misc::fundraising': description => 'fundraising sites and operations' }
+	system::role { 'misc::fundraising': description => 'fundraising sites and operations' }
 
 	require mysql_wmf::client
 
@@ -233,7 +233,7 @@ class misc::fundraising::backup::archive_sync(
 
 class misc::fundraising::mail {
 
-	system_role { 'misc::fundraising::mail': description => 'fundraising mail server' }
+	system::role { 'misc::fundraising::mail': description => 'fundraising mail server' }
 
 	package { [ 'dovecot-imapd', 'exim4-daemon-heavy', 'exim4-config' ]:
 		ensure => latest;

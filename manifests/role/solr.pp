@@ -37,7 +37,7 @@ class role::solr($schema = undef, $replication_master = undef, $average_request_
 # See <http://www.mediawiki.org/wiki/Help:Extension:Translate/Translation_memories#Solr_backend>.
 #
 class role::solr::ttm {
-	system_role { "solr": description => "ttm solr backend" }
+	system::role { "solr": description => "ttm solr backend" }
 
 	class { "role::solr":
 		schema => "puppet:///modules/solr/schema-ttmserver.xml",
@@ -47,7 +47,7 @@ class role::solr::ttm {
 }
 
 class role::solr::geodata($replication_master = 'solr1001.eqiad.wmnet', $max_heap = undef) {
-	system_role { "solr-geodata": description => "Solr server for GeoData" }
+	system::role { "solr-geodata": description => "Solr server for GeoData" }
 
 	include standard
 

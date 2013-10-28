@@ -1,6 +1,6 @@
 # bastion hosts
 class bastionhost {
-    system_role { "bastionhost": description => "Bastion" }
+    system::role { "bastionhost": description => "Bastion" }
 
     require mysql_wmf::client
 

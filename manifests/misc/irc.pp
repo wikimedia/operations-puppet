@@ -1,7 +1,7 @@
 # IRC-related classes
 
 class misc::irc-server {
-	system_role { "misc::irc-server": description => "IRC server" }
+	system::role { "misc::irc-server": description => "IRC server" }
 
 $motd = "
 *******************************************************
@@ -56,7 +56,7 @@ class misc::mediawiki-irc-relay {
 
 	$udpmxircecho_pass = $passwords::udpmxircecho::udpmxircecho_pass
 
-	system_role { "misc::mediawiki-irc-relay": description => "MediaWiki RC to IRC relay" }
+	system::role { "misc::mediawiki-irc-relay": description => "MediaWiki RC to IRC relay" }
 
 	package { "python-irclib": ensure => latest; }
 

@@ -277,7 +277,7 @@ class role::coredb::common(
 	$masters = $topology[$shard]['masters']
 	$snapshots = $topology[$shard]['snapshot']
 
-	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
+	system::role { "dbcore": description => "Shard ${shard} Core Database server" }
 
 	include standard,
 		mha::node,

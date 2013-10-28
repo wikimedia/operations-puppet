@@ -25,7 +25,7 @@ node "base_analytics_logging_node" {
 
 class role::logging
 {
-    system_role { "role::logging": description => "log collector" }
+    system::role { "role::logging": description => "log collector" }
 
     # default gid
     $gid=500
@@ -39,7 +39,7 @@ class role::logging
 
 # mediawiki udp2log instance.  Does not use monitoring.
 class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedia/logs' ) {
-    system_role { "role::logging:mediawiki": description => "MediaWiki log collector" }
+    system::role { "role::logging:mediawiki": description => "MediaWiki log collector" }
 
     class { "misc::udp2log": monitor => $monitor }
     include misc::udp2log::utilities,
@@ -117,7 +117,7 @@ class role::beta::logging::mediawiki {
 # MediaWiki fatal and exception log messages and reports them to Ganglia.
 #
 class role::logging::mediawiki::errors {
-    system_role { 'role::logging::mediawiki::errors':
+    system::role { 'role::logging::mediawiki::errors':
         description => 'Report MediaWiki exceptions and fatals to Ganglia',
     }
 
@@ -133,7 +133,7 @@ class role::logging::mediawiki::errors {
 # relayed to the 233.58.59.1:8420 multicast group.
 #
 class role::logging::relay::webrequest-multicast {
-    system_role { 'role::logging::relay::webrequest-multicast':
+    system::role { 'role::logging::relay::webrequest-multicast':
         description => 'Webrequest log stream unicast to multicast relay',
     }
 
@@ -149,7 +149,7 @@ class role::logging::relay::webrequest-multicast {
 # Relays EventLogging traffic over to Vandadium.
 #
 class role::logging::relay::eventlogging {
-    system_role { 'misc::logging::relay::eventlogging':
+    system::role { 'misc::logging::relay::eventlogging':
         description => 'esams bits event logging to vanadium relay',
     }
 

@@ -6,7 +6,7 @@
 # CI specific requirements such as having workspace on a SSD device and Jenkins
 # monitoring.
 class role::ci::master {
-    system_role { 'role::ci::master': description => 'CI Jenkins master' }
+    system::role { 'role::ci::master': description => 'CI Jenkins master' }
 
     # We require the CI website to be on the same box as the master
     # as of July 2013.  So make sure the website has been included on the node.
@@ -89,7 +89,7 @@ class role::ci::master {
 # You will need to setup the Gerrit replication on the Gerrit server by
 # amending the role::gerrit::production class
 class role::ci::slave {
-    system_role { 'role::ci::slave': description => 'CI slave runner' }
+    system::role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages,
         contint::slave-scripts,
@@ -162,7 +162,7 @@ class role::ci::slave::labs::common {
 
 class role::ci::slave::browsertests {
 
-  system_role { 'role::ci::slave::browsertests':
+  system::role { 'role::ci::slave::browsertests':
     description => 'CI Jenkins slave for browser tests' }
 
   if $::realm != 'labs' {
@@ -191,7 +191,7 @@ class role::ci::slave::browsertests {
 # The testswarm installation
 # Although not used as of July 2013, we will resurect this one day.
 class role::ci::testswarm {
-    system_role { 'role::ci::testswarm': description => 'CI Testswarm' }
+    system::role { 'role::ci::testswarm': description => 'CI Testswarm' }
 
     include contint::testswarm
 }
@@ -203,7 +203,7 @@ class role::ci::testswarm {
 # http://integration.mediawiki.org/
 # http://integration.wikimedia.org/
 class role::ci::website {
-  system_role { 'role::ci::website': description => 'CI Websites' }
+  system::role { 'role::ci::website': description => 'CI Websites' }
 
   include role::zuul::configuration
 

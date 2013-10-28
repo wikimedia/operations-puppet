@@ -1,7 +1,7 @@
 # https://noc.wikimedia.org/
 
 class misc::noc-wikimedia {
-	system_role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
+	system::role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
 
 	package { [ "apache2", "libapache2-mod-php5", "libapache2-mod-passenger", "libsinatra-ruby", "rails" ]:
 		ensure => latest;
