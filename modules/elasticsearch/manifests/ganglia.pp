@@ -3,14 +3,14 @@ class elasticsearch::ganglia {
         owner  => root,
         group  => root,
         mode   => '0444',
-        source => 'puppet:///modules/elasticsearch/ganglia/elasticsearch.pyconf',
+        content => template('elasticsearch/ganglia/elasticsearch.pyconf.erb'),
         notify => Service['gmond'];
     }
     file { '/usr/lib/ganglia/python_modules/elasticsearch_monitoring.py':
         owner  => root,
         group  => root,
         mode   => '0444',
-        source => 'puppet:///modules/elasticsearch/ganglia/elasticsearch_monitoring.py',
+        content => template('elasticsearch/ganglia/elasticsearch_monitorying.py.erb'),
         notify => Service['gmond'];
     }
 }
