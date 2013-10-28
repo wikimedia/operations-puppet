@@ -1,5 +1,5 @@
 class misc::url-downloader {
-	system_role { "misc::url-downloader": description => "Upload-by-URL proxy" }
+	system::role { "misc::url-downloader": description => "Upload-by-URL proxy" }
 
 	file { "/etc/squid/squid.conf":
 		require => Package[squid],

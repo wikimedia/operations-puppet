@@ -3,7 +3,7 @@
 class role::authdns::base {
     include standard
 
-    system_role { 'authdns': description => 'Authoritative DNS server' }
+    system::role { 'authdns': description => 'Authoritative DNS server' }
 
     $nameservers = [
             'ns0.wikimedia.org',

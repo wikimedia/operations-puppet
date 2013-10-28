@@ -12,57 +12,57 @@ class role::labs::toolsbeta {
   }
 
   class bastion inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::bastion": description => "Tool Labs bastion" }
+    system::role { "role::labs::toolsbeta::bastion": description => "Tool Labs bastion" }
     class { 'toollabs::bastion':
       gridmaster => $grid_master,
     }
   }
 
   class execnode inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::execnode": description => "Tool Labs execution host" }
+    system::role { "role::labs::toolsbeta::execnode": description => "Tool Labs execution host" }
     class { 'toollabs::execnode':
       gridmaster => $grid_master,
     }
   }
 
   class master inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::master": description => "Tool Labs gridengine master" }
+    system::role { "role::labs::toolsbeta::master": description => "Tool Labs gridengine master" }
     class { 'toollabs::master': }
   }
 
   class shadow inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::shadow": description => "Tool Labs gridengine shadow (backup) master" }
+    system::role { "role::labs::toolsbeta::shadow": description => "Tool Labs gridengine shadow (backup) master" }
     class { 'toollabs::shadow':
       gridmaster => $grid_master,
     }
   }
 
   class webserver inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::webserver": description => "Tool Labs webserver" }
+    system::role { "role::labs::toolsbeta::webserver": description => "Tool Labs webserver" }
     class { 'toollabs::webserver':
       gridmaster => $grid_master,
     }
   }
 
   class webproxy inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::webproxy": description => "Tool Labs web proxy" }
+    system::role { "role::labs::toolsbeta::webproxy": description => "Tool Labs web proxy" }
     class { 'toollabs::webproxy': }
   }
 
   class mailrelay inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::mailrelay": description => "Tool Labs mail relay" }
+    system::role { "role::labs::toolsbeta::mailrelay": description => "Tool Labs mail relay" }
     class { 'toollabs::mailrelay':
       maildomain => "tools-beta.wmflabs.org",
     }
   }
 
   class syslog inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::syslog": description => "Central logging server for tools and services" }
+    system::role { "role::labs::toolsbeta::syslog": description => "Central logging server for tools and services" }
     class { 'toollabs::syslog': }
   }
 
   class redis inherits role::labs::toolsbeta::config {
-    system_role { "role::labs::toolsbeta::redis": description => "Server that hosts shared Redis instance" }
+    system::role { "role::labs::toolsbeta::redis": description => "Server that hosts shared Redis instance" }
     class { 'toollabs::redis': }
   }
 

@@ -2,7 +2,7 @@
 # any logging hosts
 
 class misc::syslog-server($config="nfs") {
-	system_role { "misc::syslog-server": description => "central syslog server ($config)" }
+	system::role { "misc::syslog-server": description => "central syslog server ($config)" }
 
 	package { syslog-ng:
 		ensure => latest;

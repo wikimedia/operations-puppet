@@ -3,7 +3,7 @@
 #  This will create a server running RT with apache.
 #
 class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $dbhost = 'localhost', $dbport = '3306', $datadir = '/var/lib/mysql' ) {
-  system_role { 'misc::rt-apache::server': description => 'RT server with Apache' }
+  system::role { 'misc::rt-apache::server': description => 'RT server with Apache' }
 
 
   if ! defined(Class['webserver::php5']) {

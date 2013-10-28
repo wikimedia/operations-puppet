@@ -3,7 +3,7 @@
 class misc::rancid {
 	# TODO: finish. very incomplete.
 
-	system_role { "misc::rancid": description => "Really Awful Notorious CIsco config Differ (sp)" }
+	system::role { "misc::rancid": description => "Really Awful Notorious CIsco config Differ (sp)" }
 
 	package { "rancid": ensure => present }
 	

@@ -70,7 +70,7 @@ class role::fundraising::database {
 	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
 
-	system_role { "role::fundraising::database": description => "Fundraising Database (${mysql_role})" }
+	system::role { "role::fundraising::database": description => "Fundraising Database (${mysql_role})" }
 
 	include standard,
 		mysql_wmf,
@@ -100,7 +100,7 @@ class role::fundraising::database::slave {
 
 
 class role::fundraising::database::dump_slave {
-	system_role { "role::fundraising::database::dump": description => "Fundraising Database Dump/Backup" }
+	system::role { "role::fundraising::database::dump": description => "Fundraising Database Dump/Backup" }
 	include role::fundraising::database::slave,
 		misc::fundraising::backup::backupmover_user
 

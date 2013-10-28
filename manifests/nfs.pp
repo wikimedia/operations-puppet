@@ -276,7 +276,7 @@ class nfs::netapp::fr_archive(
 
 # moved here from misc-servers.pp
 class misc::nfs-server::home {
-	system_role { "misc::nfs-server::home": description => "/home NFS" }
+	system::role { "misc::nfs-server::home": description => "/home NFS" }
 
 	class backup {
 		cron { home-rsync:
@@ -322,7 +322,7 @@ class misc::nfs-server::home {
 }
 
 class misc::nfs-server::home::rsyncd {
-	system_role { "misc::nfs-server::home::rsyncd": description => "/home rsync daemon" }
+	system::role { "misc::nfs-server::home::rsyncd": description => "/home rsync daemon" }
 
 	include rsync::server
 	rsync::server::module {
