@@ -37,6 +37,7 @@ do
 	echo "$DBNAME"
 	echo "-------------------------------------"
 	$MWSCRIPT "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS
+	test $? -gt 128 && break; # make Ctrl-C actually work
 	echo "-------------------------------------"
 	echo ""
 done
