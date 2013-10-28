@@ -906,7 +906,6 @@ class lvs::balancer(
 	) {
 
 	require "lvs::configuration"
-	include generic::sysfs::enable-rps
 	include pybal
 
 	system_role { "lvs::balancer": description => "LVS balancer" }
@@ -946,6 +945,8 @@ class lvs::balancer(
 			'net.ipv4.rt_cache_rebuild_count' => -1,
 		},
 	}
+
+	upstart_job { "enable-rps": install => "true", start => "true" }
 }
 
 # Supporting the PyBal RunCommand monitor

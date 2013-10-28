@@ -203,10 +203,6 @@ class generic::packages::ant18 {
 	}
 }
 
-class generic::sysfs::enable-rps {
-	upstart_job { "enable-rps": install => "true", start => "true" }
-}
-
 # this installs a bunch of international locales, f.e. for "planet" on singer
 class generic::locales::international {
 
