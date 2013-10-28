@@ -1,0 +1,56 @@
+#      ______                 __    _ __
+#     / ____/________ _____  / /_  (_) /____
+#    / / __/ ___/ __ `/ __ \/ __ \/ / __/ _ \
+#   / /_/ / /  / /_/ / /_/ / / / / / /_/  __/
+#   \____/_/   \__,_/ .___/_/ /_/_/\__/\___/
+#                  /_/
+#
+# Settings file for Graphite webapp.
+# This file is managed by Puppet.
+
+
+## General
+
+TIME_ZONE = 'Etc/UTC'
+DOCUMENTATION_URL = 'https://wikitech.wikimedia.org/wiki/Graphite'
+SECRET_KEY = '<%= scope.lookupvar('::passwords::graphite::graphite_web_secret_key') %>'
+
+
+## Logging
+
+LOG_RENDERING_PERFORMANCE = True
+LOG_CACHE_PERFORMANCE = True
+LOG_METRIC_ACCESS = True
+MEMCACHE_HOSTS = ['127.0.0.1:11211']
+
+
+## File paths
+
+CONF_DIR = '/etc/graphite'
+CONTENT_DIR = '/usr/share/graphite-web/static'
+GRAPHITE_ROOT = '/usr/share/graphite-web'
+INDEX_FILE = '/var/lib/graphite/search_index'
+LOG_DIR = '/var/log/graphite-web'
+STORAGE_DIR = '/var/lib/graphite/whisper'
+WHISPER_DIR = STORAGE_DIR
+
+
+## Database
+
+DATABASES = {
+    'default': {
+        'NAME': '/var/lib/graphite/graphite.db',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': ''
+    }
+}
+
+
+## Carbon
+
+<%- carbon_settings = scope.lookupvar('::graphite::carbon_settings'); if carbon_settings.key? 'relay' -%>
+CARBONLINK_HOSTS = [<%= carbon_settings['relay']['destinations'].map { |d| "\"#{d}\"" }.join(', ') %>]
+<%- end -%>
