@@ -10,7 +10,7 @@ class jenkins::slave(
 
   include jenkins::slave::requisites
 
-  systemuser { $user:
+  generic::systemuser { $user:
     ensure     => present,
     name       => $user,
     shell      => '/bin/bash',

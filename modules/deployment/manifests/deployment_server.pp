@@ -119,7 +119,7 @@ class deployment::deployment_server(
       value   => 'sartoris',
       replace => true;
   }
-  systemuser {
+  generic::systemuser {
     'sartoris': name => 'sartoris', shell => '/bin/false', home => '/nonexistent', groups => $deployer_groups
   }
 }

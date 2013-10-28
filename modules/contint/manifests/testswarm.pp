@@ -7,7 +7,7 @@
 class contint::testswarm {
 
   # Create a user to run the cronjob with
-  systemuser { 'testswarm':
+  generic::systemuser { 'testswarm':
     name   => 'testswarm',
     home   => '/var/lib/testswarm',
     shell  => '/bin/false',

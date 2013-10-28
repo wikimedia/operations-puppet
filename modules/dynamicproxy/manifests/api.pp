@@ -9,7 +9,7 @@ class dynamicproxy::api {
         require => Package['python-flask'],
     }
 
-    upstart_job{ 'dynamicproxy-api':
+    generic::upstart_job{ 'dynamicproxy-api':
         require => Package['python-invisible-unicorn', 'python-flask-sqlalchemy', 'redis', 'python-flask'],
         install => 'true',
         start   => 'true'

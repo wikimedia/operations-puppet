@@ -2,33 +2,6 @@
 #
 # File that contains generally useful definitions, e.g. for creating system users
 
-# Creates a system username with associated group, random uid/gid, and /bin/false as shell
-define systemuser($name, $home=undef, $managehome=true, $shell="/bin/false", $groups=undef, $default_group=$name, $ensure=present) {
-	# FIXME: deprecate $name parameter in favor of just using $title
-
-	if $default_group == $name {
-		group { $default_group:
-			name => $default_group,
-			ensure => present;
-		}
-	}
-
-	user { $name:
-		require => Group[$default_group],
-		name => $name,
-		gid => $default_group,
-		home => $home ? {
-			undef => "/var/lib/${name}",
-			default => $home
-		},
-		managehome => $managehome,
-		shell => $shell,
-		groups => $groups,
-		system => true,
-		ensure => $ensure;
-	}
-}
-
 # Enables a certain Apache 2 site
 define apache_site($name, $prefix="", $ensure="link") {
 	file { "/etc/apache2/sites-enabled/${prefix}${name}":
@@ -102,30 +75,6 @@ define lighttpd_config($install="false") {
 
 }
 
-# Create a symlink in /etc/init.d/ to a generic upstart init script
-define upstart_job($install="false", $start="false") {
-	# Create symlink
-	file { "/etc/init.d/${title}":
-		ensure => "/lib/init/upstart-job";
-	}
-
-	if $install == "true" {
-		file { "/etc/init/${title}.conf":
-			source => "puppet:///files/upstart/${title}.conf"
-		}
-	}
-
-	if $start == "true" {
-		exec { "start $title":
-			require => File["/etc/init/${title}.conf"],
-			subscribe => File["/etc/init/${title}.conf"],
-			refreshonly => true,
-			command => "start ${title}",
-			path => "/bin:/sbin:/usr/bin:/usr/sbin"
-		}
-	}
-}
-
 class generic::packages::ant18 {
 
   if ($::lsbdistcodename == "lucid") {
@@ -146,68 +95,5 @@ class generic::packages::ant18 {
 	} else {
 		# Ubuntu post Lucid ship by default with ant 1.8 or later
 		package { ["ant"]: ensure => installed; }
-	}
-}
-
-# this installs a bunch of international locales, f.e. for "planet" on singer
-class generic::locales::international {
-
-	package { 'locales':
-		ensure => latest;
-	}
-
-	file { "/var/lib/locales/supported.d/local":
-		source => "puppet:///files/locales/local_int",
-		owner => "root",
-		group => "root",
-		mode => 0444;
-	}
-
-	exec { "/usr/sbin/locale-gen":
-		subscribe => File["/var/lib/locales/supported.d/local"],
-		refreshonly => true,
-		require => File["/var/lib/locales/supported.d/local"];
-	}
-}
-
-# Definition: generic::debconf::set
-# Changes a debconf value
-#
-# Parameters:
-# - $title
-#		Debconf setting, e.g. mailman/used_languages
-# - $value
-#		The value $title should be set to
-define generic::debconf::set($value) {
-	exec { "debconf-communicate set $title":
-		path => "/usr/bin:/usr/sbin:/bin:/sbin",
-		command => "echo set ${title} \"${value}\" | debconf-communicate",
-		unless => "test \"$(echo get ${title} | debconf-communicate)\" = \"0 ${value}\""
-	}
-}
-
-class generic::wikidev-umask {
-
-	# set umask to 0002 for wikidev users, per RT-804
-	file {
-		"/etc/profile.d/umask-wikidev.sh":
-			ensure => present,
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/environment/umask-wikidev-profile-d.sh";
-	}
-}
-
-
-class generic::higher_min_free_kbytes {
-	# Set a high min_free_kbytes watermark.
-	# See https://wikitech.wikimedia.org/wiki/Dataset1001#Feb_8_2012
-	# FIXME: Is this setting appropriate to the nodes on which it is applied? Is
-	# the value optimal? Investigate.
-	sysctl::parameters { 'higher_min_free_kbytes':
-		values => {
-			'vm.min_free_kbytes' => 1024 * 256,
-		},
 	}
 }

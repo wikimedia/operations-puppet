@@ -32,7 +32,7 @@ class misc::irc::wikibugs {
   include misc::ircecho
   include misc::irc::wikibugs::packages
 
-  systemuser { 'wikibugs': name => 'wikibugs' }
+  generic::systemuser { 'wikibugs': name => 'wikibugs' }
 
   File {
     owner   => 'wikibugs',
