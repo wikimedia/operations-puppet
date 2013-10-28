@@ -946,6 +946,8 @@ class lvs::balancer(
 			'net.ipv4.rt_cache_rebuild_count' => -1,
 		},
 	}
+
+	upstart_job { "enable-rps": install => "true", start => "true" }
 }
 
 # Supporting the PyBal RunCommand monitor
