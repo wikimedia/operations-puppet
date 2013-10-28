@@ -2264,21 +2264,6 @@ node /^search(19|20)\.pmtpa\.wmnet/ {
     include role::lucene::front_end::prefix
 }
 
-node /^search2[1-6]\.pmtpa\.wmnet/ {
-
-    include role::lucene::front_end::pool1
-}
-
-node /^search(2[7-9]|30)\.pmtpa\.wmnet/ {
-
-    include role::lucene::front_end::pool2
-}
-
-node /^search3[1-6]\.pmtpa\.wmnet/ {
-
-    include role::lucene::front_end::pool3
-}
-
 node /^search100[0-6]\.eqiad\.wmnet/ {
     if $hostname =~ /^search100(1|2)$/ {
         $ganglia_aggregator = true
