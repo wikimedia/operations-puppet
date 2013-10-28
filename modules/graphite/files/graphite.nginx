@@ -1,0 +1,31 @@
+# Nginx configuration for Graphite webapp
+# This file is managed by Puppet
+
+upstream graphite_web {
+    server unix:/var/run/graphite-web/graphite-web.sock;
+}
+
+server {
+    listen 80;
+
+    ## Static files ##
+
+    location /content {
+        alias /usr/share/graphite-web/static;
+        expires 30d;
+    }
+
+    location /media/admin/ {
+        alias /usr/share/pyshared/django/contrib/admin/media;
+        expires 30d;
+    }
+
+
+    ## uWSGI ##
+
+    location / {
+        root /usr/share/pyshared/graphite;
+        uwsgi_pass graphite_web;
+        include uwsgi_params;
+    }
+}
