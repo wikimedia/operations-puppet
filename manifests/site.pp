@@ -299,8 +299,8 @@ node "carbon.wikimedia.org" {
         misc::install-server::tftp-server
 }
 
-# cerium,praseodymium and xenon are cassandra test host
-node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
+# cerium,praseodymium, ruthenium and xenon are cassandra test host
+node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
     include standard
 
     include groups::wikidev, accounts::gwicke
