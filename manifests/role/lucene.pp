@@ -67,37 +67,14 @@ class role::lucene {
 						"searchidx1001" => ['*']
 					}
 				},
+				# search 21-36 have been decommissioned to utilized in eqiad
 				"pmtpa" => {
-					"front_ends" => {
-						# these will be reshuffled when pmtpa is rebuilt/upgraded. blank /fake for now.
-						"pool1" => {
-							"search21" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.spell'],
-							"search22" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2'],
-							"search23" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.nspart2*'],
-							"search24" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
-							"search25" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
-							"search26" => ['enwiki.nspart2*', 'enwiki.spell'],
-						},
-						"pool2" => {
-							"search27" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
-							"search28" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
-							"search29" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
-							"search30" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
-						},
-						"pool3" => {
-							"search31" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
-								 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
-							"search32" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
-								 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
-							"search33" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
-								 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
-							"search34" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
-								 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
-							"search35" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
-								'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
-							"search36" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
-								'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
-						},
+					"front_ends" => {},
+					
+						"pool2" => {},
+						
+						"pool3" => {},
+						
 						"pool4" => {
 							"search13" => ['*?'],
 							"search14" => ['*?'],
