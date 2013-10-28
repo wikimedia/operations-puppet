@@ -2,7 +2,7 @@
 
 class misc::haproxy($config_file = undef) {
 
-	system_role { 'misc::haproxy': description => 'haproxy host' }
+	system::role { 'misc::haproxy': description => 'haproxy host' }
 
 	package { 'haproxy': ensure => present; }
 

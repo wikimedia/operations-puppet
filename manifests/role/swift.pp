@@ -10,7 +10,7 @@ class role::swift {
 	}
 	
 	class pmtpa-prod inherits role::swift::base {
-		system_role { "role::swift::pmtpa-prod": description => "Swift pmtpa production cluster" }
+		system::role { "role::swift::pmtpa-prod": description => "Swift pmtpa production cluster" }
 		include passwords::swift::pmtpa-prod
 		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773", cluster_name => "pmtpa-prod" }
 		class ganglia_reporter inherits role::swift::pmtpa-prod {
@@ -62,7 +62,7 @@ class role::swift {
 		}
 	}
 	class eqiad-prod inherits role::swift::base {
-		system_role { "role::swift::eqiad-prod": description => "Swift eqiad production cluster" }
+		system::role { "role::swift::eqiad-prod": description => "Swift eqiad production cluster" }
 		include passwords::swift::eqiad-prod
 		class { "::swift::base": hash_path_suffix => "4f93c548a5903a13", cluster_name => "eqiad-prod" }
 		class ganglia_reporter inherits role::swift::eqiad-prod {
@@ -113,7 +113,7 @@ class role::swift {
 		}
 	}
 	class pmtpa-labs inherits role::swift::base {
-		system_role { "role::swift::pmtpa-labs": description => "Swift pmtpa labs cluster" }
+		system::role { "role::swift::pmtpa-labs": description => "Swift pmtpa labs cluster" }
 		#include passwords::swift::pmtpa-labs #passwords inline because they're not secret in labs
 		class { "::swift::base": hash_path_suffix => "a222ef4c988d7ba2", cluster_name => "pmtpa-labs" }
 		class ganglia_reporter inherits role::swift::pmtpa-labs {
@@ -150,7 +150,7 @@ class role::swift {
 		}
 	}
 	class pmtpa-labsupgrade inherits role::swift::base {
-		system_role { "role::swift::pmtpa-labsupgrade": description => "Swift pmtpa labs upgradecluster" }
+		system::role { "role::swift::pmtpa-labsupgrade": description => "Swift pmtpa labs upgradecluster" }
 		#include passwords::swift::pmtpa-labs #passwords inline because they're not secret in labs
 		class { "::swift::base": hash_path_suffix => "e67dec345de3173a", cluster_name => "pmtpa-labsupgrade" }
 		class ganglia_reporter inherits role::swift::pmtpa-labsupgrade {

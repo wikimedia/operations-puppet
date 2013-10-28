@@ -11,7 +11,7 @@ class role::db::redis (
 ) {
 	$cluster = "redis"
 
-	system_role { "db::redis": description => "Redis server" }
+	system::role { "db::redis": description => "Redis server" }
 
 	include standard,
 		passwords::redis

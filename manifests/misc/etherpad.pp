@@ -6,7 +6,7 @@ class misc::etherpad {
 	$etherpad_admin_pass = $passwords::etherpad::etherpad_admin_pass
 	$etherpad_sql_pass = $passwords::etherpad::etherpad_sql_pass
 
-	system_role { "misc::etherpad": description => "Etherpad server" }
+	system::role { "misc::etherpad": description => "Etherpad server" }
 
 	require webserver::modproxy
 
@@ -72,7 +72,7 @@ class misc::etherpad_lite {
 	$etherpad_ip = '127.0.0.1'
 	$etherpad_port = '9001'
 
-	system_role { "misc::etherpad_lite": description => "Etherpad-lite server" }
+	system::role { "misc::etherpad_lite": description => "Etherpad-lite server" }
 
 	file {
 		"/etc/apache2/sites-available/etherpad.wikimedia.org":

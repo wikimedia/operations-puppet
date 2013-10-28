@@ -130,7 +130,7 @@ class squid::redirector {
 class squid::cachemgr {
 	require role::cache::configuration
 
-	system_role { "squid::cachemgr": description => "Squid Cache Manager" }
+	system::role { "squid::cachemgr": description => "Squid Cache Manager" }
 
 	file { "/etc/squid/cachemgr.conf":
 		content => template("squid/cachemgr.conf.erb"),

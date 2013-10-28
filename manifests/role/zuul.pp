@@ -20,7 +20,7 @@ class role::zuul::configuration {
 # instance. This role can not really be reused on a different instance since it
 # hardcodes several parameters such as the Gerrit IP or the URL hostnames.
 class role::zuul::labs {
-    system_role { 'role::zuul::labs': description => 'Zuul on labs!' }
+    system::role { 'role::zuul::labs': description => 'Zuul on labs!' }
 
     include contint::proxy_zuul,
         role::zuul::configuration
@@ -52,7 +52,7 @@ class role::zuul::labs {
 # Zuul when a change is submitted.
 #
 class role::zuul::production {
-    system_role { 'role::zuul::production': description => 'Zuul on production' }
+    system::role { 'role::zuul::production': description => 'Zuul on production' }
 
     # We will receive replication of git bare repositories from Gerrit
     include role::gerrit::production::replicationdest

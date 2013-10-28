@@ -284,7 +284,7 @@ class base::packages::emacs {
 
 class base::decommissioned {
     if $::hostname in $::decommissioned_servers {
-        system_role { "base::decommissioned": description => "DECOMMISSIONED server" }
+        system::role { "base::decommissioned": description => "DECOMMISSIONED server" }
     }
 }
 

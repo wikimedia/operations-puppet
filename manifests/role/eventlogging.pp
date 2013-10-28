@@ -20,7 +20,7 @@ class role::eventlogging {
     include eventlogging
     include eventlogging::monitor
 
-    system_role { 'role::eventlogging':
+    system::role { 'role::eventlogging':
         description => 'EventLogging',
     }
 

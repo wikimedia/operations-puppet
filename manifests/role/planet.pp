@@ -2,7 +2,7 @@
 
 class role::planet {
 
-    system_role { 'role::planet': description => 'Planet (venus) weblog aggregator' }
+    system::role { 'role::planet': description => 'Planet (venus) weblog aggregator' }
 
     # locales are essential for planet. if a new language is added check these too
     include standard,

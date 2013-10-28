@@ -15,7 +15,7 @@ class role::mirror::common {
 class role::mirror::media {
 	include role::mirror::common
 
-	system_role { "role::mirror::media": description => "Media mirror (rsync access for external mirrors)" }
+	system::role { "role::mirror::media": description => "Media mirror (rsync access for external mirrors)" }
 
 	file {
 		'/root/backups/rsync-media-cron.sh':

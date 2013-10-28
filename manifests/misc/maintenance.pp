@@ -4,7 +4,7 @@
 
 class misc::maintenance::foundationwiki( $enabled = false ) {
 
-	system_role { "misc::maintenance::foundationwiki": description => "Misc - Maintenance Server: foundationwiki" }
+	system::role { "misc::maintenance::foundationwiki": description => "Misc - Maintenance Server: foundationwiki" }
 
 	# This is broken and points to a non-existing DB
 	cron { 'updatedays':
@@ -71,7 +71,7 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
 
 class misc::maintenance::pagetriage( $enabled = false ) {
 
-	system_role { "misc::maintenance::pagetriage": description => "Misc - Maintenance Server: pagetriage extension" }
+	system::role { "misc::maintenance::pagetriage": description => "Misc - Maintenance Server: pagetriage extension" }
 
 	cron { 'pagetriage_cleanup_en':
 		user => apache,
@@ -302,7 +302,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
 
 class misc::maintenance::parsercachepurging( $enabled = false ) {
 
-	system_role { "misc::maintenance::parsercachepurging": description => "Misc - Maintenance Server: parser cache purging" }
+	system::role { "misc::maintenance::parsercachepurging": description => "Misc - Maintenance Server: parser cache purging" }
 
 	cron { 'parser_cache_purging':
 		user => apache,
