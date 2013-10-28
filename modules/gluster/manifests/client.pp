@@ -19,6 +19,7 @@ class gluster::client {
         ensure => present,
         mode   => '0664',
         source => 'puppet:///modules/gluster/glusterlogs',
+        group  => 'root',
         owner  => 'root',
     }
 
