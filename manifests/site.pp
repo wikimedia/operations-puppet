@@ -2145,15 +2145,9 @@ node "nickel.wikimedia.org" {
 
     include standard,
         ganglia::web,
-        misc::monitoring::views,
-        groups::wikidev,
-        accounts::olivneh
+        misc::monitoring::views
 
      install_certificate{ "star.wikimedia.org": }
-
-     sudo_user { 'olivneh':
-         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
-     }
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
@@ -2247,13 +2241,7 @@ node "professor.pmtpa.wmnet" {
         ganglia,
         ntp::client,
         udpprofile::collector,
-        misc::graphite,
-        groups::wikidev,
-        accounts::olivneh
-
-    sudo_user { 'olivneh':
-        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
-    }
+        misc::graphite
 }
 
 node "potassium.eqiad.wmnet" {
@@ -2623,7 +2611,6 @@ node "stat1.wikimedia.org" {
         accounts::mflaschen, # RT 4796
         accounts::mgrover,   # RT 4600
         accounts::mlitn,     # RT 4959
-        accounts::olivneh,   # RT 3451
         accounts::otto,
         accounts::reedy,
         accounts::rfaulk,    # RT 5040
@@ -2829,13 +2816,11 @@ node "vanadium.eqiad.wmnet" {
     $gid=500
 
     include standard,
-        groups::wikidev,
-        accounts::olivneh,
         role::eventlogging,
         role::ipython_notebook,
         role::logging::mediawiki::errors
 
-    sudo_user { [ 'otto', 'olivneh' ]:
+    sudo_user { 'otto':
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
     }
 }
@@ -2844,28 +2829,15 @@ node "vanadium.eqiad.wmnet" {
 # and MediaWiki errors. Non-critical at the moment. See RT #5514.
 node 'hafnium.wikimedia.org' {
     include standard,
-        groups::wikidev,
-        accounts::olivneh,
         role::eventlogging::graphite,
         misc::graphite::navtiming,
         webperf
-
-    sudo_user { 'olivneh':
-        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
-    }
 }
 
 # StatsD & Graphite host for eqiad. Slotted to replace professor.pmtpa.
 # RT #5871
 node 'tungsten.eqiad.wmnet' {
-    # services
     include standard, role::statsd, role::graphite
-
-    # access
-    include groups::wikidev, accounts::olivneh
-    sudo_user { 'olivneh':
-        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
-    }
 }
 
 node "virt1000.wikimedia.org" {
