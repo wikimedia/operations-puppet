@@ -1,7 +1,7 @@
 # graphite - https://graphite.wikimedia.org/
 
 class misc::graphite {
-	system_role { "misc::graphite": description => "graphite and carbon services" }
+	system::role { "misc::graphite": description => "graphite and carbon services" }
 
 	include webserver::apache2, misc::graphite::gdash
 

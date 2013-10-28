@@ -4,7 +4,7 @@
 # cd /srv ; git clone https://github.com/asher/ishmael.git ; cd ishmael ; git clone https://github.com/asher/ishmael.git sample
 #
 class misc::ishmael {
-	system_role { "misc::ishmael": description => "ishmael server" }
+	system::role { "misc::ishmael": description => "ishmael server" }
 
 	include passwords::ldap::wmf_cluster
 	$proxypass = $passwords::ldap::wmf_cluster::proxypass

@@ -116,7 +116,7 @@ class facilities::pdu_monitoring {
 
 
 class facilities::dc-cam-transcoder {
-	system_role { "misc::dc-cam-transcoder": description => "Data center camera transcoder" }
+	system::role { "misc::dc-cam-transcoder": description => "Data center camera transcoder" }
 
 	systemuser { video: name => "video", home => "/var/lib/video" }
 

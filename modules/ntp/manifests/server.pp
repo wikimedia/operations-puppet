@@ -14,7 +14,7 @@ class ntp::server(
 
   include ntp
 
-  system_role { 'ntp::server':
+  system::role { 'ntp::server':
     description => 'NTP server',
   }
 

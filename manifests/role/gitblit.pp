@@ -1,7 +1,7 @@
 # manifests/role/gitblit.pp
 
 class role::gitblit {
-	system_role { "role::gitblit": description => "Gitblit, a git viewer" }
+	system::role { "role::gitblit": description => "Gitblit, a git viewer" }
 
 	include role::gerrit::production::replicationdest
 

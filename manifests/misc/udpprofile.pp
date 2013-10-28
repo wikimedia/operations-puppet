@@ -1,6 +1,6 @@
 
 class udpprofile::collector {
-  system_role { "udpprofile::collector": description => "MediaWiki UDP profile collector" }
+  system::role { "udpprofile::collector": description => "MediaWiki UDP profile collector" }
 
   package { "udpprofile":
     ensure => latest;

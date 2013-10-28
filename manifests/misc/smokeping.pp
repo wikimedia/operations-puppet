@@ -2,7 +2,7 @@
 
 class misc::smokeping {
 
-    system_role { "misc::smokeping": description => "Smokeping server" }
+    system::role { "misc::smokeping": description => "Smokeping server" }
 
     package {
         "smokeping":

@@ -247,7 +247,7 @@ class ganglia {
 
     # Class for setting up the collector (gmetad)
     class collector {
-        system_role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
+        system::role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
 
         package { "gmetad":
             ensure => present;

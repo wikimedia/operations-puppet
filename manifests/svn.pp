@@ -1,5 +1,5 @@
 class svn::server {
-	system_role { "svn::server": description => "public SVN server" }
+	system::role { "svn::server": description => "public SVN server" }
 
 	require "svn::groups::svn"
 

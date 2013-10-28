@@ -2,7 +2,7 @@
 
 class role::smokeping {
 
-    system_role { 'role::smokeping': description => 'Smokeping' }
+    system::role { 'role::smokeping': description => 'Smokeping' }
 
     include standard,
     misc::smokeping

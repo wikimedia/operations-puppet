@@ -4,7 +4,7 @@
 # environment based on Python. See the IPython module for more details.
 #
 class role::ipython_notebook {
-    system_role { 'role::ipython_notebook':
+    system::role { 'role::ipython_notebook':
         description => 'IPython Notebook',
     }
 

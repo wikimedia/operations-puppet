@@ -6,7 +6,7 @@
 class role::db::core {
     $cluster = "mysql"
 
-    system_role { "db::core": description => "Core Database server" }
+    system::role { "db::core": description => "Core Database server" }
 
     include standard,
         mysql_wmf
@@ -19,7 +19,7 @@ class role::db::sanitarium( $instances = {} ) {
 ## 'shard9002' => { port => NUMBER+1, innodb_log_file_size => "CORRECT_M", ram => "HELLA_G" },
     $cluster = "mysql"
 
-    system_role {"role::db::sanitarium": description => "pre-labsdb dbs for Data Sanitization" }
+    system::role {"role::db::sanitarium": description => "pre-labsdb dbs for Data Sanitization" }
 
     include standard,
         cpufrequtils,
@@ -60,7 +60,7 @@ class role::db::labsdb( $instances = {} ) {
 ## 'shard9002' => { port => NUMBER+1, innodb_log_file_size => "CORRECT_M", ram => "HELLA_G" },
     $cluster = "mysql"
 
-    system_role {"role::db::labsdb": description => "labsdb dbs for labs use" }
+    system::role {"role::db::labsdb": description => "labsdb dbs for labs use" }
 
     include standard,
         cpufrequtils,

@@ -42,7 +42,7 @@ class role::dns::ldap {
 }
 
 class role::dns::recursor {
-    system_role { 'role::dns::recursor': description => 'Recursive DNS server' }
+    system::role { 'role::dns::recursor': description => 'Recursive DNS server' }
 
     include lvs::configuration, network::constants
 

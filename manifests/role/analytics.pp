@@ -5,7 +5,7 @@
 # Base class for all analytics nodes.
 # All analytics nodes should include this.
 class role::analytics {
-    system_role { 'role::analytics': description => 'analytics server' }
+    system::role { 'role::analytics': description => 'analytics server' }
     $nagios_group = 'analytics-eqiad'
     # ganglia cluster name.
     $cluster = "analytics"

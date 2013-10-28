@@ -908,7 +908,7 @@ class lvs::balancer(
 	require "lvs::configuration"
 	include pybal
 
-	system_role { "lvs::balancer": description => "LVS balancer" }
+	system::role { "lvs::balancer": description => "LVS balancer" }
 
 	package { ethtool:
 		ensure => installed;

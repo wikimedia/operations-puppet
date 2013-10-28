@@ -359,7 +359,7 @@ class mailman {
 	class listserve {
 		require mailman::base
 
-		system_role { "mailman::listserve": description => "Mailman listserver" }
+		system::role { "mailman::listserve": description => "Mailman listserver" }
 
 		file {
 			"/etc/mailman/mm_cfg.py":

@@ -1,7 +1,7 @@
 # misc/package-builder.pp
 
 class misc::package-builder {
-	system_role { "misc::package-builder": description => "Debian package builder" }
+	system::role { "misc::package-builder": description => "Debian package builder" }
 
 	class packages {
 		package { [

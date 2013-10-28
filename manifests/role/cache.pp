@@ -415,7 +415,7 @@ class role::cache {
 
 	class squid {
 		class common($role) {
-			system_role { "role::cache::${role}": description => "${role} Squid cache server"}
+			system::role { "role::cache::${role}": description => "${role} Squid cache server"}
 
 			$cluster = "squids_${role}"
 			$nagios_group = "cache_${role}_${::site}"
@@ -554,7 +554,7 @@ class role::cache {
 		$cluster = "cache_text"
 		$nagios_group = "cache_text_${::site}"
 
-		system_role { "role::cache::text": description => "text Varnish cache server" }
+		system::role { "role::cache::text": description => "text Varnish cache server" }
 
 		$varnish_be_directors = {
 			1 => {
@@ -673,7 +673,7 @@ class role::cache {
 		$cluster = "cache_upload"
 		$nagios_group = "cache_upload_${::site}"
 
-		system_role { "role::cache::upload": description => "upload Varnish cache server" }
+		system::role { "role::cache::upload": description => "upload Varnish cache server" }
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
@@ -918,7 +918,7 @@ class role::cache {
 			$memory_storage_size = 2
 		}
 
-		system_role { "role::cache::bits": description => "bits Varnish cache server" }
+		system::role { "role::cache::bits": description => "bits Varnish cache server" }
 
 		require misc::geoip
 
@@ -961,7 +961,7 @@ class role::cache {
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
-		system_role { "role::cache::mobile": description => "mobile Varnish cache server" }
+		system::role { "role::cache::mobile": description => "mobile Varnish cache server" }
 
 		include standard,
 			nrpe
@@ -1106,7 +1106,7 @@ class role::cache {
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site] }
 		}
 
-		system_role { "role::cache::parsoid": description => "Parsoid Varnish cache server" }
+		system::role { "role::cache::parsoid": description => "Parsoid Varnish cache server" }
 
 		include standard,
 			nrpe
@@ -1188,7 +1188,7 @@ class role::cache {
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site] }
 
-		system_role { 'role::cache::misc': description => 'misc Varnish cache server' }
+		system::role { 'role::cache::misc': description => 'misc Varnish cache server' }
 
 		include standard,
 			nrpe,

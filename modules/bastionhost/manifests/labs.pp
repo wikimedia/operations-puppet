@@ -1,8 +1,5 @@
-class role::labs::bastion {
-    system::role { "role::labs::bastion":
-        description => "Labs bastion host (with mosh enabled)"
-    }
-
+# bastion hosts
+class bastionhost::labs {
     file { '/etc/ssh/sshd_banner':
         owner   => root,
         group   => root,
