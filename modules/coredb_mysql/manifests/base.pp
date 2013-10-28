@@ -2,7 +2,7 @@
 class coredb_mysql::base {
     require coredb_mysql::packages
 
-    systemuser { 'mysql':
+    generic::systemuser { 'mysql':
         name  => 'mysql',
         shell => '/bin/sh',
         home  => '/home/mysql',

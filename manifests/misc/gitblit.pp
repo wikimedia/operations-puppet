@@ -11,7 +11,7 @@ class gitblit::instance($host,
 
 	include webserver::apache
 
-	systemuser { $user: name => $user }
+	generic::systemuser { $user: name => $user }
 
 	file {
 		"/etc/apache2/sites-available/git.wikimedia.org":

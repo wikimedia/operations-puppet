@@ -43,7 +43,7 @@ class misc::statistics::user {
     $username = "stats"
     $homedir  = "/var/lib/$username"
 
-    systemuser { $username:
+    generic::systemuser { $username:
         name   => $username,
         home   => $homedir,
         groups => "wikidev",

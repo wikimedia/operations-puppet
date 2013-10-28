@@ -68,7 +68,7 @@ class misc::bugzilla::communitymetrics {
 
 class misc::bugzilla::report {
 
-    systemuser { 'bzreporter': name => 'reporter', home => '/home/reporter', groups => [ 'reporter' ] }
+    generic::systemuser { 'bzreporter': name => 'reporter', home => '/home/reporter', groups => [ 'reporter' ] }
 
     require passwords::bugzilla
 

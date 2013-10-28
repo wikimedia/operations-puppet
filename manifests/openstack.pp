@@ -214,7 +214,7 @@ class openstack::project-storage-service {
 			mode => 0755;
 	}
 
-	upstart_job{ "manage-volumes":
+	generic::upstart_job{ "manage-volumes":
 		require => Package["glusterfs-server"],
 		install => "true";
 	}
@@ -227,7 +227,7 @@ class openstack::project-storage-service {
 }
 
 class openstack::project-nfs-storage-service {
-	upstart_job{ "manage-nfs-volumes":
+	generic::upstart_job{ "manage-nfs-volumes":
 		install => "true";
 	}
 
@@ -241,7 +241,7 @@ class openstack::project-nfs-storage-service {
 			'ALL = NOPASSWD: /bin/rmdir /srv/*',
 			'ALL = NOPASSWD: /usr/local/sbin/sync-exports' ]
 	sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Systemuser["nfsmanager"] }
-	systemuser { "nfsmanager": name => "nfsmanager", home => "/var/lib/nfsmanager", shell => "/bin/bash" }
+	generic::systemuser { "nfsmanager": name => "nfsmanager", home => "/var/lib/nfsmanager", shell => "/bin/bash" }
 }
 
 class openstack::project-storage {
@@ -256,7 +256,7 @@ class openstack::project-storage {
 		ensure => present;
 	}
 
-	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
+	generic::systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
 	ssh_authorized_key {
 		"glustermanager":
 			ensure	=> present,

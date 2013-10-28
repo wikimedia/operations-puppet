@@ -118,7 +118,7 @@ class facilities::pdu_monitoring {
 class facilities::dc-cam-transcoder {
 	system::role { "misc::dc-cam-transcoder": description => "Data center camera transcoder" }
 
-	systemuser { video: name => "video", home => "/var/lib/video" }
+	generic::systemuser { video: name => "video", home => "/var/lib/video" }
 
 	package { "vlc-nox":
 		ensure => latest;

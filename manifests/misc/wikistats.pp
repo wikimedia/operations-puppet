@@ -4,7 +4,7 @@
 class misc::wikistats {
 
 	system::role { 'misc::wikistats': description => 'wikistats host' }
-	systemuser { wikistats: name => 'wikistats', home => '/usr/lib/wikistats', groups => [ 'wikistats' ] }
+	generic::systemuser { wikistats: name => 'wikistats', home => '/usr/lib/wikistats', groups => [ 'wikistats' ] }
 }
 
 	# the web UI part (output)

@@ -9,7 +9,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
         ensure => latest;
     }
 
-    systemuser { 'planet': name => 'planet', home => '/var/lib/planet', groups => [ 'planet' ] }
+    generic::systemuser { 'planet': name => 'planet', home => '/var/lib/planet', groups => [ 'planet' ] }
 
     File {
         owner => 'planet',
