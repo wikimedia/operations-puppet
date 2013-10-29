@@ -2206,11 +2206,6 @@ host mw49{
 	fixed-address mw49.pmtpa.wmnet;
 }
 
-host mw50{
-	hardware ethernet 78:2b:cb:2f:ed:ed;
-	fixed-address mw50.pmtpa.wmnet;
-}
-
 host mw51{
 	hardware ethernet 78:2b:cb:2f:d3:74;
 	fixed-address mw51.pmtpa.wmnet;
