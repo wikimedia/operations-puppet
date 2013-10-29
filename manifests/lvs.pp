@@ -340,7 +340,7 @@ class lvs::configuration {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
 				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadlb6' => "2620:0:861:ed1a::b", 'uploadsvc' => "10.2.2.24" },
 				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
-				'ulsfo' => { 'uploadlb' => "198.35.26.107",  'uploadlb6' => "2620:0:863:ed1a::b", 'uploadsvc' => "10.2.4.24" },
+				'ulsfo' => { 'uploadlb-new' => '198.35.26.112', 'uploadlb' => "198.35.26.107", 'uploadlb6-new' => '2620:0:863:ed1a::2:b', 'uploadlb6' => "2620:0:863:ed1a::b", 'uploadsvc' => "10.2.4.24" },
 			},
 			'payments' => {
 				'pmtpa' => "208.80.152.213",
