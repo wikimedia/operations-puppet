@@ -55,6 +55,10 @@ class misc::download-wikimedia {
 		require => [ Package[nfs-kernel-server], File["/etc/exports"] ],
 	}
 
+	package { 'gnupg':
+		ensure => latest;
+	}
+
 	include generic::higher_min_free_kbytes
 
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
