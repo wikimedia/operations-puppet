@@ -212,11 +212,6 @@ host ms1 {
 	fixed-address ms1.pmtpa.wmnet;
 }
 
-host ms2 {
-	hardware ethernet 00:14:4f:a6:ca:e4;
-	fixed-address ms2.pmtpa.wmnet;
-}
-
 host ms3 {
 	hardware ethernet 00:14:4f:f2:c4:1c;
 	fixed-address ms3.pmtpa.wmnet;
