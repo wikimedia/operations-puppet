@@ -1,6 +1,10 @@
 # vim: sw=2 ts=2 et
 class role::deployment::config {
   $repo_config = {
+    'integration/phpunit' => {
+        'grain' => 'contint-production-slaves',
+        'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpunit',
+    },
     'mediawiki/common'               => {
         'grain'    => 'mediawiki',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
