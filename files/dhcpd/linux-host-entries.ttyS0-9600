@@ -63,94 +63,9 @@ host cam1-d-sdtpa {
 	fixed-address cam1-d-sdtpa.wikimedia.org;
 }
 
-host db11 {
-	hardware ethernet 00:14:4F:ED:A8:48;
-	fixed-address db11.pmtpa.wmnet;
-}
-
-host db12 {
-	hardware ethernet 00:14:4F:ED:FE:7C;
-	fixed-address db12.pmtpa.wmnet;
-}
-
-host db13 {
-	hardware ethernet 00:14:4F:ED:B8:40;
-	fixed-address db13.pmtpa.wmnet;
-}
-
-host db14 {
-	hardware ethernet 00:14:4f:8d:8e:ba;
-	fixed-address db14.pmtpa.wmnet;
-}
-
-host db15 {
-	hardware ethernet 00:14:4f:8d:88:c2;
-	fixed-address db15.pmtpa.wmnet;
-}
-
-host db16 {
-	hardware ethernet 00:14:4f:ed:a6:80;
-	fixed-address db16.pmtpa.wmnet;
-}
-
-host db17 {
-	hardware ethernet 00:14:4f:ee:00:84;
-	fixed-address db17.pmtpa.wmnet;
-}
-
-host db18 {
-	hardware ethernet 00:14:4f:ed:b4:c4;
-	fixed-address db18.pmtpa.wmnet;
-}
-
-host db19 {
-	hardware ethernet 00:14:4f:ed:ac:c8;
-	fixed-address db19.pmtpa.wmnet;
-}
-
-host db20 {
-	hardware ethernet 00:14:4f:ed:a9:f4;
-	fixed-address db20.pmtpa.wmnet;
-}
-
-host db21 {
-	hardware ethernet 00:14:4F:ED:A6:D8;
-	fixed-address db21.pmtpa.wmnet;
-}
-
-host db22 {
-	hardware ethernet 00:14:4f:ed:b6:d8;
-	fixed-address db22.pmtpa.wmnet;
-}
-
-host db23 {
-	hardware ethernet 00:14:4F:ED:A6:94;
-	fixed-address db23.pmtpa.wmnet;
-}
-
-host db24 {
-	hardware ethernet 00:14:4F:ED:FF:38;
-	fixed-address db24.pmtpa.wmnet;
-}
-
-host db25 {
-	hardware ethernet 00:14:4F:ED:AD:38;
-	fixed-address db25.pmtpa.wmnet;
-}
-
-host db28 {
-	hardware ethernet 00:14:4F:8D:51:46;
-	fixed-address db28.pmtpa.wmnet;
-}
-
 host db29 {
 	hardware ethernet 00:14:4F:ED:AC:28;
 	fixed-address db29.pmtpa.wmnet;
-}
-
-host db30 {
-	hardware ethernet 00:14:4F:ED:B5:38;
-	fixed-address db30.pmtpa.wmnet;
 }
 
 host db31 {
