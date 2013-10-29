@@ -222,6 +222,17 @@ node "antimony.wikimedia.org" {
     sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
+node "arsenic.eqiad.wmnet" {
+    include role::applicationserver::maintenance,
+        role::db::maintenance,
+        misc::deployment::scap_scripts,
+        admins::roots,
+        admins::mortals,
+        generic::wikidev-umask,
+        nrpe
+}
+
+
 node "bast1001.wikimedia.org" {
     system_role { "misc": description => "Bastion Server" }
     $cluster = "misc"
