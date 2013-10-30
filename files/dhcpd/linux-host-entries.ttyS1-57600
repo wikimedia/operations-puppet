@@ -3,11 +3,6 @@
 #### puppet:///files/dhcpd/linux-host-entries.ttyS1-57600
 ######################################################################
 
-host alsted {
-	hardware ethernet A4:BA:DB:0A:7B:F1;
-	fixed-address alsted.wikimedia.org;
-}
-
 host brewster {
 	hardware ethernet 00:1e:c9:ea:ab:7d;
 	fixed-address brewster.wikimedia.org;
