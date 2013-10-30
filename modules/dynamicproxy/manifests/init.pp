@@ -11,7 +11,7 @@ class dynamicproxy (
     include misc::labsdebrepo
 
     package { 'nginx-extras':
-        ensure => present,
+        ensure => latest,
         require => Class['misc::labsdebrepo'],
      }
 
