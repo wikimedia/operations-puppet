@@ -1,0 +1,21 @@
+CREATE TABLE backend (
+    id INTEGER NOT NULL,
+    url VARCHAR(256),
+    route_id INTEGER,
+    PRIMARY KEY (id),
+    FOREIGN KEY(route_id) REFERENCES route (id)
+);
+CREATE TABLE project (
+    id INTEGER NOT NULL,
+    name VARCHAR(256),
+    PRIMARY KEY (id),
+    UNIQUE (name)
+);
+CREATE TABLE route (
+    id INTEGER NOT NULL,
+    domain VARCHAR(256),
+    project_id INTEGER,
+    PRIMARY KEY (id),
+    UNIQUE (domain),
+    FOREIGN KEY(project_id) REFERENCES project (id)
+);
