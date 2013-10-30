@@ -170,7 +170,7 @@ class misc::install-server {
         }
 
         # System user and group for mirroring
-        systemuser { 'mirror': name => 'mirror', home => '/var/lib/mirror' }
+        generic::systemuser { 'mirror': name => 'mirror', home => '/var/lib/mirror' }
 
         # Mirror update cron entry
         cron { 'update-ubuntu-mirror':

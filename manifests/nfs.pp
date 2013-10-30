@@ -161,7 +161,7 @@ class nfs::home::wikipedia {
 			}
 		} # /production
 		'labs': {
-			systemuser { 'wikipediauser':
+			generic::systemuser { 'wikipediauser':
 				name => 'wikipedia',
 				home => '/home/wikipedia'
 			}

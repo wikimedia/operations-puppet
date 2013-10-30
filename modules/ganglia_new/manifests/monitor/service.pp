@@ -6,7 +6,7 @@ class ganglia_new::monitor::service() {
 		mode => 0444
 	}
 
-	upstart_job { "ganglia-monitor": }
+	generic::upstart_job { "ganglia-monitor": }
 
 	service { "ganglia-monitor":
 		require => File["/etc/init/ganglia-monitor.conf"],

@@ -307,7 +307,7 @@ class misc::fundraising::mail {
 
 class misc::fundraising::backup::backupmover_user {
 
-	systemuser { backupmover: name => 'backupmover', home => '/var/lib/backupmover', shell => '/bin/sh' }
+	generic::systemuser { backupmover: name => 'backupmover', home => '/var/lib/backupmover', shell => '/bin/sh' }
 
 	ssh_authorized_key {
 		'backupmover/root@boron':

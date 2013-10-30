@@ -23,7 +23,7 @@ class mysql_multi_instance {
     ensure => latest,
   }
 
-  systemuser {
+  generic::systemuser {
     "mysql": name => "mysql", shell => "/bin/sh", home => "/home/mysql"
   }
 
