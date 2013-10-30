@@ -3746,11 +3746,6 @@ host oxygen {
 	fixed-address oxygen.wikimedia.org;
 }
 
-host palladium {
-	hardware ethernet 18:03:73:f1:59:2d;
-	fixed-address palladium.eqiad.wmnet;
-}
-
 host pappas {
 	hardware ethernet 90:b1:1c:13:3d:22;
 	fixed-address pappas.wikimedia.org;
@@ -4624,11 +4619,6 @@ host stat1001 {
 host stat1002 {
 	hardware ethernet 78:2b:cb:0a:0e:fc;
 	fixed-address stat1002.eqiad.wmnet;
-}
-
-host strontium {
-	hardware ethernet 18:03:73:f4:ef:51;
-	fixed-address strontium.eqiad.wmnet;
 }
 
 host tellurium {
