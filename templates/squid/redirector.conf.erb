@@ -4,7 +4,7 @@
 # redirector configuration file
 
 # URL parsing regex
-pattern=^http://(?:www\.(?=mediawiki))?((?:commons|species|meta|incubator|outreach|strategy|wikimania2012|wikimania2013)\.(?=wikimedia)|\w+\.(?!wikimedia|mediawiki)|(?=mediawiki|wikimediafoundation))(wikimedia|wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage|mediawiki|wikimediafoundation)\.<%= Regexp.escape(squid_redirector_tld) %>[:\d]*/wiki/(.*)
+pattern=^http://(?:www\.(?=mediawiki))?((?:commons|species|meta|incubator|outreach|strategy|wikimania201[234])\.(?=wikimedia)|\w+\.(?!wikimedia|mediawiki)|(?=mediawiki|wikimediafoundation))(wikimedia|wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage|mediawiki|wikimediafoundation)\.<%= Regexp.escape(squid_redirector_tld) %>[:\d]*/wiki/(.*)
 
 # What to replace the matching URLs with
 replacement=302:http://%sm.%s.<%= squid_redirector_tld %>/wiki/%s
