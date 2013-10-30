@@ -4,13 +4,13 @@ class dynamicproxy::api {
         require => Class['misc::labsdebrepo'],
     }
 
-    package { ['python-invisible-unicorn', 'python-flask-sqlalchemy']:
+    package { ['python-invisible-unicorn', 'python-flask-sqlalchemy', 'uwsgi', 'uwsgi-plugin-python']:
         ensure => 'present',
         require => Package['python-flask'],
     }
 
     generic::upstart_job{ 'dynamicproxy-api':
-        require => Package['python-invisible-unicorn', 'python-flask-sqlalchemy', 'redis', 'python-flask'],
+        require => Package['python-invisible-unicorn', 'python-flask-sqlalchemy', 'redis', 'python-flask', 'uwsgi', 'uwsgi-plugin-python'],
         install => 'true',
         start   => 'true'
     }
