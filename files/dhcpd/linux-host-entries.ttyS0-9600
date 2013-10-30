@@ -202,11 +202,6 @@ host db40 {
 	fixed-address db40.pmtpa.wmnet;
 }
 
-host gilman {
-	hardware ethernet 00:14:4F:CA:1F:05;
-	fixed-address gilman.wikimedia.org;
-}
-
 host ms1 {
 	hardware ethernet 0:14:4f:a6:d0:a0;
 	fixed-address ms1.pmtpa.wmnet;
