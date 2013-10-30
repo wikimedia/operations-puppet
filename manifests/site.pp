@@ -230,6 +230,9 @@ node "arsenic.eqiad.wmnet" {
         admins::mortals,
         generic::wikidev-umask,
         nrpe
+#just adding this for the mediawiki require
+    class { misc::maintenance::pagetriage: enabled => false }
+
 }
 
 
