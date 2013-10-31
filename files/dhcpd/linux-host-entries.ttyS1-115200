@@ -269,11 +269,6 @@ host chromium {
 	fixed-address chromium.wikimedia.org;
 }
 
-host constable {
-	hardware ethernet D4:AE:52:AC:4D:C8;
-	fixed-address constable.pmtpa.wmnet;
-}
-
 host copper {
 	hardware ethernet 78:2b:cb:09:0e:9d;
 	fixed-address copper.eqiad.wmnet;
