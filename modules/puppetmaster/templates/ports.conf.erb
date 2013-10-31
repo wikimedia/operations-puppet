@@ -8,6 +8,10 @@
 NameVirtualHost *:80
 Listen 80
 
+<% if @server_type == 'backend' or @server_type == 'frontend' -%>
+Listen 8141
+<% end -%>
+
 <IfModule mod_ssl.c>
 	# If you add NameVirtualHost *:443 here, you will also have to change
 	# the VirtualHost statement in /etc/apache2/sites-available/default-ssl

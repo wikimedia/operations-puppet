@@ -36,7 +36,7 @@ class puppetmaster::passenger(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            source  => 'puppet:///modules/puppetmaster/ports.conf';
+            content => template('puppetmaster/ports.conf.erb');
     }
 
     apache_module { 'passenger':
