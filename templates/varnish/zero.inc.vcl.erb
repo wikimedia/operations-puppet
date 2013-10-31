@@ -188,7 +188,7 @@ sub tag_carrier {
 		if (req.http.host ~ "(^(ru|kk|en)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "401-01";
 		}
-	} else {
+	} else if (req.http.host ~ "(^(zero|m)\.wikipedia\.")  {
 		// Any new carriers are signed up as both m & zero for all languages
 		set req.http.X-CS = req.http.X-CS2;
 	}
