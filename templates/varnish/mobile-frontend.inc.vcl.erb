@@ -9,15 +9,23 @@ sub vcl_recv {
 		/* This call will always set the following req.http values:
 			X-Subdomain = M or ZERO
 			X-DfltLang = en|fr|ru|...
-		  This value is only set if the carrier has been successfully detected
+		  These value are set only if the carrier has been successfully detected
 			X-CS = "502-13"
+			X-Origin-Ip = "1.1.1.1"
+			X-Forwarded-By = "OPERA" (is set only if passed through a known proxy)
 		*/
 		call tag_carrier;
 
 		/* Assemble X-Analytics header */
 		if (req.http.X-CS) {
-			set req.http.X-Analytics = "zero=" + req.http.X-CS;
+			set req.http.X-Analytics = "zero=" + req.http.X-CS + ";ip=" + req.http.X-Origin-Ip;
+			if (req.http.X-Forwarded-By) {
+				set req.http.X-Analytics = req.http.X-Analytics + ";proxy=" + req.http.X-Forwarded-By;
+			}
 		}
+		unset req.http.X-Origin-Ip;
+		// Do not unset X-Forwarded-By - various proxies such as Opera might have different settings
+		// and apache might have to vary output based on that
 	} else {
 		set req.http.X-Subdomain = "M";
 	}
