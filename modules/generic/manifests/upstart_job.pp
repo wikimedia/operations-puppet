@@ -17,6 +17,7 @@ define generic::upstart_job($install="false", $start="false") {
 			subscribe => File["/etc/init/${title}.conf"],
 			refreshonly => true,
 			command => "start ${title}",
+			unless => "status ${title} | grep -q start/running",
 			path => "/bin:/sbin:/usr/bin:/usr/sbin"
 		}
 	}
