@@ -273,6 +273,10 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
+	if (obj.status == 400 || obj.status == 413) {
+		return(deliver);
+	}
+
 <% if vcl_config.fetch("retry503", "0") != "0" -%>
 	if (obj.status == 503 && req.restarts < <%= vcl_config["retry503"].to_i %>) {
 		return(restart);
