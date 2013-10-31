@@ -153,7 +153,7 @@ class misc::install-server {
         # Top level directory must exist
         file { '/srv/ubuntu/':
             ensure  => directory,
-            require => Systemuser[mirror],
+            require => Generic::Systemuser[mirror],
             mode    => '0755',
             owner   => 'mirror',
             group   => 'mirror',
@@ -175,7 +175,7 @@ class misc::install-server {
         # Mirror update cron entry
         cron { 'update-ubuntu-mirror':
             ensure  => present,
-            require => [ Systemuser[mirror], File['update-ubuntu-mirror'] ],
+            require => [ Generic::Systemuser[mirror], File['update-ubuntu-mirror'] ],
             command => '/usr/local/sbin/update-ubuntu-mirror 1>/dev/null 2>/var/lib/mirror/mirror.err.log',
             user    => mirror,
             hour    => '*/6',

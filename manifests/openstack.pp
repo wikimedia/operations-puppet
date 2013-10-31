@@ -240,7 +240,7 @@ class openstack::project-nfs-storage-service {
 	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
 			'ALL = NOPASSWD: /bin/rmdir /srv/*',
 			'ALL = NOPASSWD: /usr/local/sbin/sync-exports' ]
-	sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Systemuser["nfsmanager"] }
+	sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["nfsmanager"] }
 	generic::systemuser { "nfsmanager": name => "nfsmanager", home => "/var/lib/nfsmanager", shell => "/bin/bash" }
 }
 
@@ -250,7 +250,7 @@ class openstack::project-storage {
 	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /a/*',
 			'ALL = NOPASSWD: /bin/rmdir /a/*',
 			'ALL = NOPASSWD: /usr/sbin/gluster *' ]
-	sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Systemuser["glustermanager"] }
+	sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["glustermanager"] }
 
 	package { "python-paramiko":
 		ensure => present;
@@ -263,7 +263,7 @@ class openstack::project-storage {
 			user	=> "glustermanager",
 			type	=> "ssh-rsa",
 			key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==",
-			require => Systemuser["glustermanager"];
+			require => Generic::Systemuser["glustermanager"];
 	}
 	file {
 		"/var/lib/glustermanager/.ssh/id_rsa":
@@ -277,7 +277,7 @@ class openstack::project-storage {
 			owner => glustermanager,
 			group => glustermanager,
 			mode => 0700,
-			require => Systemuser["glustermanager"];
+			require => Generic::Systemuser["glustermanager"];
 	}
 }
 

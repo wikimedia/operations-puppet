@@ -168,7 +168,7 @@ class nfs::home::wikipedia {
 
 			file { "/home/wikipedia":
 				ensure => directory,
-				require => Systemuser['wikipediauser']
+				require => Generic::Systemuser['wikipediauser']
 			}
 		}
 	}

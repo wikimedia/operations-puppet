@@ -328,7 +328,7 @@ class gerrit::replicationdest( $sshkey, $extra_groups = undef, $slaveuser = "ger
     key => $sshkey,
     type => "ssh-rsa",
     user => $slaveuser,
-    require => Systemuser[$slaveuser],
+    require => Generic::Systemuser[$slaveuser],
     ensure => present;
   }
 }

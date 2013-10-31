@@ -318,7 +318,7 @@ class spamassassin(
 	if ( $spamd_user == "spamd" ) {
 		generic::systemuser { "spamd": name => "spamd" }
 		file { "/var/spamd":
-			require => Systemuser[spamd],
+			require => Generic::Systemuser[spamd],
 			ensure => directory,
 			owner => spamd,
 			group => spamd,

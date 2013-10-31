@@ -9,7 +9,7 @@ class mediawiki::users::l10nupdate {
 
 	file {
 		"/home/l10nupdate/.ssh":
-			require => Systemuser["l10nupdate"],
+			require => Generic::Systemuser["l10nupdate"],
 			owner => l10nupdate,
 			group => l10nupdate,
 			mode => 0500,

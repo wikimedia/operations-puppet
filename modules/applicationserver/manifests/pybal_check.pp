@@ -7,7 +7,7 @@ class applicationserver::pybal_check {
 
 	file {
 		"/var/lib/pybal-check/.ssh":
-			require => Systemuser["pybal-check"],
+			require => Generic::Systemuser["pybal-check"],
 			owner => "pybal-check",
 			group => "pybal-check",
 			mode => 0550,

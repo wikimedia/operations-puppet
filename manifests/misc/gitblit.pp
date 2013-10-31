@@ -31,19 +31,19 @@ class gitblit::instance($host,
 			owner => $user,
 			group => $user,
 			source => "puppet:///files/gitblit/gitblit.properties",
-			require => Systemuser[$user];
+			require => Generic::Systemuser[$user];
 		"/var/lib/${user}/data/header.md":
 			mode => 0444,
 			owner => $user,
 			group => $user,
 			source => "puppet:///files/gitblit/header.md",
-			require => Systemuser[$user];
+			require => Generic::Systemuser[$user];
 		"/etc/init.d/gitblit":
 			mode => 0554,
 			owner => $user,
 			group => $user,
 			source => "puppet:///files/gitblit/gitblit-ubuntu",
-			require => Systemuser[$user];
+			require => Generic::Systemuser[$user];
 		"/var/www/robots.txt":
 			mode => 0444,
 			owner => root,
@@ -56,7 +56,7 @@ class gitblit::instance($host,
 			subscribe => File["/var/lib/${user}/data/gitblit.properties"],
 			enable => true,
 			ensure => running,
-			require => Systemuser[$user];
+			require => Generic::Systemuser[$user];
 	}
 
 	apache_site { git: name => "git.wikimedia.org" }

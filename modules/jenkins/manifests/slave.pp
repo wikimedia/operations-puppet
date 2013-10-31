@@ -21,7 +21,7 @@ class jenkins::slave(
     owner   => $user,
     group   => $user,
     mode    => '0775',
-    require => Systemuser[$user],
+    require => Generic::Systemuser[$user],
   }
 
   # Finally publish the Jenkins master authorized key
