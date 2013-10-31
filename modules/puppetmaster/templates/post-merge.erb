@@ -1,0 +1,26 @@
+#!/bin/sh
+
+PATH=/usr/bin:/bin
+export PATH
+<% end -%>
+
+if [ "$USER" = "gitpuppet" ]; then
+    # Add an apache reload, since puppet is stupid and will botch
+    # catalogues in a way that does not show up on the clients and causes
+    # an insane amount of confusion. A reload makes it regenerate them properly.
+    #/etc/init.d/apache2 reload
+
+    # This bug has allegedly been fixed, so let's try with touch site.pp again
+    touch /etc/puppet/manifests/site.pp
+
+    # TODO: After migration delete the sockpuppet references
+    <%- if @server_type == 'frontend' -%>
+    # If no key is forwarded then this will use the ready-made equivalent command
+    #  on worker and ignore our command.
+        <%- @workers.each do |worker| -%>
+        ssh -t -t <%= worker -%> 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
+        <%- end -%>
+    <%- elsif @hostname == 'sockpuppet.pmtpa.wmnet' -%>
+    ssh -t -t stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
+    <%- end -%>
+fi

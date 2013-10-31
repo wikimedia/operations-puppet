@@ -1,4 +1,4 @@
-# Service user to handle the post-merge hook on sockpuppet
+# Service user to handle the post-merge hook on master
 class puppetmaster::gitpuppet {
     user { 'gitpuppet':
         ensure     => present,
