@@ -1475,6 +1475,9 @@ class lvs::monitor {
 	# ULSFO
 
 	monitor_service_lvs_http_https {
+		"text-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['text-varnish']['ulsfo']['textlb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"bits-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['bits']['ulsfo']['bitslb'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
@@ -1487,6 +1490,9 @@ class lvs::monitor {
 	}
 
 	monitor_service_lvs6_http_https {
+		"text-lb.ulsfo.wikimedia.org":
+			ip_address => $ip['text-varnish']['ulsfo']['textlb6'],
+			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"bits-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['bits']['ulsfo']['bitslb6'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
