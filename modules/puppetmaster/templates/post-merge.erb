@@ -1,0 +1,20 @@
+#!/bin/sh
+
+PATH=/usr/bin:/bin
+export PATH
+
+if [ "$USER" = "gitpuppet" ]; then
+	touch /etc/puppet/manifests/site.pp
+
+	<%- if @server_type == 'frontend' -%>
+	# If no key is forwarded then this will use the ready-made equivalent command
+	#  on worker and ignore our command.
+		<%- @workers.each do |worker| -%>
+		<%- if worker == @fqdn then next end -%>
+	ssh -t -t <%= worker -%> 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
+		<%- end -%>
+	<%- elsif @hostname == 'sockpuppet.pmtpa.wmnet' -%>
+	# TODO: After migration delete the sockpuppet references
+	ssh -t -t stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
+	<%- end -%>
+fi
