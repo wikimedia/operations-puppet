@@ -12,7 +12,9 @@ modulepath = /etc/puppet/private/modules:/etc/puppet/modules
 
 # SSL
 ssldir = /var/lib/puppet/server/ssl/
+<% if @server_type == 'standalone' -%>
 ssl_client_header = SSL_CLIENT_S_DN 
 ssl_client_verify_header = SSL_CLIENT_VERIFY
+<%- end -%>
 hostcert = /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
