@@ -14,7 +14,7 @@ class zuulwikimedia {
 		$git_branch='master',
 		$git_dir='/var/lib/zuul/git',
 		$push_change_refs,
-		$statsd_host = '',
+		$statsd_host = ''
 	) {
 
 			# Zuul needs an API key to interact with Jenkins:

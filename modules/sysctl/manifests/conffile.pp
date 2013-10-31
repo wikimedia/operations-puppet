@@ -7,7 +7,7 @@ define sysctl::conffile(
     $file     = $title,
     $content  = undef,
     $source   = undef,
-    $priority = '10',
+    $priority = '10'
 ) {
     include sysctl
 
