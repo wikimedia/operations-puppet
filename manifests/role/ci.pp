@@ -49,13 +49,6 @@ class role::ci::master {
         ],
     }
 
-    contint::tmpfs { 'tmpfs for jenkins CI master':
-        user        => 'jenkins',
-        group       => 'jenkins',
-        mount_point => '/var/lib/jenkins/tmpfs',
-        size        => '512M',
-    }
-
     # Ganglia monitoring for Jenkins
     # The upstream module is named 'jenkins' which conflicts with python-jenkins
     # since gmond will lookup the 'jenkins' python module in the system path
