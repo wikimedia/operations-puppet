@@ -12,22 +12,15 @@ class mysql_wmf(
     #######################################################################
     ### MASTERS - make sure to update here whenever changing replication
     #######################################################################
-    if $::hostname =~ /^blondel/ {
-        $master = true
-        $writable = true
-    } else {
-        $master = false
-    }
+
+    $master = false
+
 
     #######################################################################
     ### Cluster Definitions - update if changing / building new dbs
     #######################################################################
-    if $::hostname =~ /^blondel|bellin$/ {
-        $db_cluster = 'm1'
-    }
-    else {
-        $db_cluster = undef
-    }
+
+    $db_cluster = undef
 
     if ($db_cluster) {
         file { '/etc/db.cluster':
