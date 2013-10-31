@@ -7,6 +7,7 @@ memory_limit = 100M
 display_errors = Off
 log_errors = On
 error_log = syslog
+date.timezone = UTC
 
 ; Maximum file size (also in squid)
 post_max_size = 100M
@@ -25,3 +26,4 @@ mysql.connect_timeout = 1
 session.save_path = /tmp
 
 display_errors = On
+
