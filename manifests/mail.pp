@@ -305,7 +305,7 @@ class spamassassin(
 		$short_report_template = 'false',
 		$otrs_rule_scores = 'false',
 		$spamd_user = 'spamd',
-		$spamd_group = 'spamd',
+		$spamd_group = 'spamd'
 	) {
 	include network::constants
 

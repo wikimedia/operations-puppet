@@ -55,7 +55,7 @@ define misc::logging::relay(
 	$listen_port,
 	$destination_ip,
 	$destination_port,
-	$multicast = false,
+	$multicast = false
 )
 {
 	require misc::logging::socat

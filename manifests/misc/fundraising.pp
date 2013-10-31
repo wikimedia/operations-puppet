@@ -180,7 +180,7 @@ class misc::fundraising::backup::dump_fundraising_database(
 		$user = 'root',
 		$hour,
 		$minute,
-		$weekday = '*',
+		$weekday = '*'
 	) {
 
 	file {
@@ -207,7 +207,7 @@ class misc::fundraising::backup::archive_sync(
 		$user = 'root',
 		$hour,
 		$minute,
-		$weekday = '*',
+		$weekday = '*'
 	) {
 
 	file {

@@ -269,7 +269,7 @@ class role::coredb::common(
 	$enable_unsafe_locks = false,
 	$large_slave_trans_retries = false,
 	$slow_query_digest = true,
-	$heartbeat_enabled = true,
+	$heartbeat_enabled = true
 	) inherits role::coredb::config {
 
 	$cluster = $logical_cluster

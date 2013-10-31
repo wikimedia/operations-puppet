@@ -186,7 +186,7 @@ define misc::udp2log::instance::monitoring(
 	$packet_loss_log     = undef,
 	$monitor_packet_loss = true,
 	$monitor_processes   = true,
-	$monitor_log_age     = true,
+	$monitor_log_age     = true
 ) {
 	require misc::udp2log::monitoring
 
