@@ -222,7 +222,7 @@ class openstack::project-storage-service {
 	service { "manage-volumes":
 		enable => true,
 		ensure => running,
-		require => Upstart_job["manage-volumes"];
+		require => Generic::Upstart_job["manage-volumes"];
 	}
 }
 
@@ -234,7 +234,7 @@ class openstack::project-nfs-storage-service {
 	service { "manage-nfs-volumes":
 		enable => true,
 		ensure => running,
-		require => Upstart_job["manage-nfs-volumes"];
+		require => Generic::Upstart_job["manage-nfs-volumes"];
 	}
 
 	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',

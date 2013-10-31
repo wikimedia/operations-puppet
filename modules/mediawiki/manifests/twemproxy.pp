@@ -6,7 +6,7 @@ class mediawiki::twemproxy {
   generic::upstart_job { "twemproxy": install => "true", start => "true" }
 
   service { twemproxy:
-    require => [ Package[twemproxy], Upstart_job[twemproxy] ],
+    require => [ Package[twemproxy], Generic::Upstart_job[twemproxy] ],
     provider => upstart,
     ensure => running;
   }
