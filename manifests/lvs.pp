@@ -336,7 +336,6 @@ class lvs::configuration {
 			},
 			'payments' => {
 				'pmtpa' => "208.80.152.213",
-				'eqiad' => "208.80.154.237",
 			},
 			'apaches' => {
 				'pmtpa' => "10.2.1.1",
@@ -615,7 +614,7 @@ class lvs::configuration {
 		"payments" => {
 			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
 			'class' => "high-traffic2",
-			'sites' => [ "pmtpa", "eqiad" ],
+			'sites' => [ "pmtpa" ],
 			'ip' => $service_ips['payments'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
@@ -1229,8 +1228,13 @@ class lvs::monitor {
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
 	}
 
-	# todo: we should probably monitor both eqiad/pmtpa
-	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.155.5", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus", retries => 20 }
+	# FIXME: remove after pmtpa decommissioning
+	monitor_service_lvs_custom { "payments.wikimedia.org":
+		ip_address => "208.80.155.5",
+		port => 443,
+		check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus",
+		retries => 20
+	}
 
 	# EQIAD
 	monitor_service_lvs_http_https {
