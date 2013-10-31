@@ -1,7 +1,10 @@
 brewster
 capella
 celsus
+<<<<<<< HEAD
 constable
+=======
+>>>>>>> 3a4a6a2... remove constable from netboot/dhcp/dsh
 dobson
 ekrem
 emery
