@@ -11,7 +11,11 @@ sub tag_carrier {
 	// Note that currently, tag_carrier is *only* called when the request is not
 	//  via HTTPS (check for X-Forwarded-Proto at the top of vcl_recv in mobile-frontend.vcl).
 
-	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
+	// The X-TrustedProxy and X-TrueIp headers are used as temporary values to pass to analytics
+	// And will be unset by the end of the vcl_recv()
+	unset req.http.X-TrustedProxy;
+	set req.http.X-TrueIp = "" + client.ip;
+	set req.http.X-CS2 = netmapper.map("zero", req.http.X-TrueIp);
 
 	if (req.restarts == 0 && (req.http.X-CS2 == "-OPERA" || req.http.X-CS2 == "-TEST")) {
 		// Elsewhere in the VCL, the frontend appends client.ip to XFF for when
@@ -25,9 +29,14 @@ sub tag_carrier {
 		// ^ X-S-XFF now contains XFF without its final item, which was client.ip.
 
 		if (req.http.X-Stripped-XFF != "") { // If one or more IPs remain in X-S-XFF
+			
+			// A trusted proxy has been detected, record its name for analytics
+			set req.http.X-TrustedProxy = regsub(req.http.X-CS2, "^-", "");
+
 			// Strip away any leading IPs, such that the result of regsub() is the
 			//  rightmost (or only) remaining IP, and use that to re-set X-CS2:
-			set req.http.X-CS2 = netmapper.map("zero", regsub(req.http.X-Stripped-XFF, "^.*, ?", ""));
+			set req.http.X-TrueIp = regsub(req.http.X-Stripped-XFF, "^.*, ?", "");
+			set req.http.X-CS2 = netmapper.map("zero", req.http.X-TrueIp);
 		}
 		unset req.http.X-Stripped-XFF; // clean up our temp var
 	}

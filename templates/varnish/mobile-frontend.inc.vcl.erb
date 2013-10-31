@@ -9,15 +9,22 @@ sub vcl_recv {
 		/* This call will always set the following req.http values:
 			X-Subdomain = M or ZERO
 			X-DfltLang = en|fr|ru|...
-		  This value is only set if the carrier has been successfully detected
+		  These value are set only if the carrier has been successfully detected
 			X-CS = "502-13"
+			X-TrueIp = "1.1.1.1"
+			X-TrustedProxy = "OPERA" (is set only if passed through a known proxy)
 		*/
 		call tag_carrier;
 
 		/* Assemble X-Analytics header */
 		if (req.http.X-CS) {
-			set req.http.X-Analytics = "zero=" + req.http.X-CS;
+			set req.http.X-Analytics = "zero=" + req.http.X-CS + ";ip=" + X-TrueIp;
+			if (req.http.X-TrustedProxy) {
+				set req.http.X-Analytics = req.http.X-Analytics + ";proxy=" + req.http.X-TrustedProxy;
+			}
 		}
+		unset req.http.X-TrueIp;
+		unset req.http.X-TrustedProxy;
 	} else {
 		set req.http.X-Subdomain = "M";
 	}
