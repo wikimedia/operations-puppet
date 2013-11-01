@@ -651,7 +651,7 @@ node 'db29.pmtpa.wmnet' {
 }
 
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
-node /^db(3[29]|4[2-6]|5[1235689]|6[124]|7[5-7])\.pmtpa\.wmnet/{
+node /^db(6[124]|7[5-7])\.pmtpa\.wmnet/{
     include standard
 }
 
