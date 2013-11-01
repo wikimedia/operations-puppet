@@ -4636,11 +4636,6 @@ host tin {
 	fixed-address tin.eqiad.wmnet;
 }
 
-host titanium {
-	hardware ethernet 78:2b:cb:08:aa:57;
-	fixed-address titanium.wikimedia.org;
-}
-
 host tmh1 {
 	hardware ethernet d4:be:d9:af:68:a0;
 	fixed-address tmh1.pmtpa.wmnet;
