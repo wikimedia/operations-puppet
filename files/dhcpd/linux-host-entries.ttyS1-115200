@@ -4337,11 +4337,6 @@ host srv265 {
 	fixed-address srv265.pmtpa.wmnet;
 }
 
-host srv266 {
-	hardware ethernet  00:22:19:6b:cd:6a;
-	fixed-address srv266.pmtpa.wmnet;
-}
-
 host srv267 {
 	hardware ethernet 00:21:9b:9f:a7:f9;
 	fixed-address srv267.pmtpa.wmnet;
@@ -4395,11 +4390,6 @@ host  srv276 {
 host srv277 {
 	hardware ethernet 00:21:9b:9e:c2:55;
 	fixed-address srv277.pmtpa.wmnet;
-}
-
-host srv278 {
-	hardware ethernet 00:21:9b:9e:d8:06;
-	fixed-address srv278.pmtpa.wmnet;
 }
 
 host srv279 {
