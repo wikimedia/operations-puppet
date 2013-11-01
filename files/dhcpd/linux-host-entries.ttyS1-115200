@@ -1534,22 +1534,22 @@ host kuo {
 
 host labstore1 {
 	hardware ethernet 78:2b:cb:76:1c:d2;
-	fixed-address 10.0.0.41;
+	fixed-address labstore1.pmtpa.wmnet;
 }
 
 host labstore2 {
 	hardware ethernet 78:2b:cb:75:8e:43;
-	fixed-address 10.0.0.42;
+	fixed-address labstore2.pmtpa.wmnet;
 }
 
 host labstore3 {
 	hardware ethernet 78:2b:cb:76:1b:45;
-	fixed-address 10.0.0.43;
+	fixed-address labstore3.pmtpa.wmnet;
 }
 
 host labstore4 {
 	hardware ethernet 78:2b:cb:76:24:6b;
-	fixed-address 10.0.0.44;
+	fixed-address labstore4.pmtpa.wmnet;
 }
 
 host labstore1001 {
