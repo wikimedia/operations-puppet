@@ -530,7 +530,7 @@ node "dataset1001.wikimedia.org" {
 }
 
 # pmtpa dbs
-node /^db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
+node /^db(60|63|69|71)\.pmtpa\.wmnet/ {
     if $hostname == "db71"{
         class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
     } else {
@@ -538,62 +538,54 @@ node /^db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
     }
 }
 
-node /^db(52|53|54|57)\.pmtpa\.wmnet/ {
-    if $hostname == "db52" {
-        class { role::coredb::s2 : mariadb => true }
-    } elsif $hostname == "db57"{
+node /^db(54|57)\.pmtpa\.wmnet/ {
+    if $hostname == "db57"{
         class { role::coredb::s2 : innodb_file_per_table => true }
     } else {
         include role::coredb::s2
     }
 }
 
-node /^db(34|39|66)\.pmtpa\.wmnet/ {
-    if $hostname == "db39" {
-        class { role::coredb::s3 : mariadb => true }
-    } elsif $hostname == "db66"{
+node /^db(34|66)\.pmtpa\.wmnet/ {
+    if $hostname == "db66"{
         class { role::coredb::s3 : innodb_file_per_table => true }
     } else {
         include role::coredb::s3
     }
 }
 
-node /^db(31|51|65|72)\.pmtpa\.wmnet/ {
-    if $hostname =~ /^db51/ {
+node /^db(31|65|72)\.pmtpa\.wmnet/ {
+    if $hostname =~ /^db65/ {
         $ganglia_aggregator = true
     }
-    if $hostname =~ /^db(51|65|72)/ {
+    if $hostname =~ /^db(65|72)/ {
         class { role::coredb::s4 : mariadb => true, innodb_file_per_table => true }
     } else {
         include role::coredb::s4
     }
 }
 
-node /^db(45|55|73|74)\.pmtpa\.wmnet/ {
-    if $hostname =~ /^db(55|73|74)/{
+node /^db(73|74)\.pmtpa\.wmnet/ {
+    if $hostname =~ /^db(73|74)/{
         class { role::coredb::s5 : mariadb => true, innodb_file_per_table => true }
     } else {
         include role::coredb::s5
     }
 }
 
-node /^db(43|46|47|50)\.pmtpa\.wmnet/ {
+node /^db(47|50)\.pmtpa\.wmnet/ {
     if $hostname =~ /^db50/ {
         $ganglia_aggregator = true
     }
-    if $hostname == "db43" {
-        class { role::coredb::s6 : mariadb => true }
-    } elsif $hostname == "db50"{
+    if $hostname == "db50"{
         class { role::coredb::s6 : innodb_file_per_table => true }
     } else {
         include role::coredb::s6
     }
 }
 
-node /^db(37|56|58|68)\.pmtpa\.wmnet/ {
-    if $hostname == "db58" {
-        class { role::coredb::s7 : mariadb => true }
-    } elsif $hostname == "db68"{
+node /^db(37|68)\.pmtpa\.wmnet/ {
+    if $hostname == "db68"{
         class { role::coredb::s7 : innodb_file_per_table => true }
     } else {
         include role::coredb::s7
@@ -648,8 +640,8 @@ node 'db29.pmtpa.wmnet' {
     }
 }
 
-## not in use for various reasons
-node /^db(4[24]|6[124]|7[5-7])\.pmtpa\.wmnet/{
+## imminent decomission/reclaim from pmtpa pending 12th floor reorg
+node /^db(3[29]|4[2-6]|5[1235689]|6[124]|7[5-7])\.pmtpa\.wmnet/{
     include standard
 }
 
