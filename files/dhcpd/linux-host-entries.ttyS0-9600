@@ -147,7 +147,3 @@ host statistics1 {
 	fixed-address statistics1.wikimedia.org;
 }
 
-host storage1 {
-	hardware ethernet 00:30:48:5D:9E:36;
-	fixed-address storage1.pmtpa.wmnet;
-}
