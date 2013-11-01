@@ -298,11 +298,6 @@ host sanger {
 	fixed-address sanger.wikimedia.org;
 }
 
-host singer {
-	hardware ethernet 00:1e:c9:ea:53:f1;
-	fixed-address singer.wikimedia.org;
-}
-
 host snapshot1 {
 	hardware ethernet 00:21:9b:8e:95:50;
 	fixed-address snapshot1.pmtpa.wmnet;
