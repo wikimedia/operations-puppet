@@ -2173,6 +2173,34 @@ node "oxygen.wikimedia.org" inherits "base_analytics_logging_node" {
         include role::logging::udp2log::lucene
 }
 
+node 'palladium.eqiad.wmnet' {
+    include passwords::puppet::database
+
+    include standard,
+        backup::client,
+        misc::management::ipmi,
+        role::salt::masters::production,
+        role::deployment::salt_masters::production
+
+    class { puppetmaster:
+        allow_from => [
+            '*.wikimedia.org',
+            '*.pmtpa.wmnet',
+            '*.eqiad.wmnet',
+            '*.ulsfo.wmnet',
+         ],
+        server_type => 'frontend',
+        workers => ['palladium.eqiad.wmnet', 'strontium.eqiad.wmnet'],
+        config => {
+            'thin_storeconfigs' => true,
+            'dbadapter' => 'mysql',
+            'dbuser' => 'puppet',
+            'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
+            'dbserver' => 'db9.pmtpa.wmnet' #TODO: Migrate to db1001
+        }
+    }
+}
+
 node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
   include role::db::core,
     mysql_wmf::mysqluser,
@@ -2552,6 +2580,30 @@ node "stafford.pmtpa.wmnet" {
     }
 }
 
+node 'strontium.eqiad.wmnet' {
+    include standard,
+        passwords::puppet::database
+
+    class { puppetmaster:
+        allow_from => [
+            '*.wikimedia.org',
+            '*.pmtpa.wmnet',
+            '*.eqiad.wmnet',
+            '*.ulsfo.wmnet',
+         ],
+        server_type => 'backend',
+        config => {
+            'thin_storeconfigs' => true,
+            'ca' => 'false',
+            'ca_server' => 'palladium.eqiad.wmnet',
+            'dbadapter' => 'mysql',
+            'dbuser' => 'puppet',
+            'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
+            'dbserver' => 'db9.pmtpa.wmnet', #TODO: Move to db1001
+            'dbconnections' => '256',
+        }
+    }
+}
 
 node "stat1.wikimedia.org" {
     include role::statistics::cruncher
