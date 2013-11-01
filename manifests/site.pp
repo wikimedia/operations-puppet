@@ -2225,12 +2225,6 @@ node "professor.pmtpa.wmnet" {
     }
 }
 
-node "project1.wikimedia.org" {
-    $cluster = "misc"
-
-    include standard
-}
-
 node "potassium.eqiad.wmnet" {
     include standard,
         role::poolcounter
