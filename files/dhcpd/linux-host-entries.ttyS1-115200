@@ -866,31 +866,6 @@ host dataset1001 {
 	fixed-address dataset1001.wikimedia.org;
 }
 
-host db42 {
-	hardware ethernet e4:1f:13:69:cd:40;
-	fixed-address db42.pmtpa.wmnet;
-}
-
-host db43 {
-	hardware ethernet 78:2b:cb:15:8d:8f;
-	fixed-address db43.pmtpa.wmnet;
-}
-
-host db44 {
-	hardware ethernet 78:2b:cb:15:8a:8d;
-	fixed-address db44.pmtpa.wmnet;
-}
-
-host db45 {
-	hardware ethernet 78:2b:cb:15:8c:b0;
-	fixed-address db45.pmtpa.wmnet;
-}
-
-host db46 {
-	hardware ethernet 78:2b:cb:15:85:56;
-	fixed-address db46.pmtpa.wmnet;
-}
-
 host db47 {
 	hardware ethernet 78:2b:cb:15:8d:ca;
 	fixed-address db47.pmtpa.wmnet;
@@ -911,49 +886,14 @@ host db50 {
 	fixed-address db50.pmtpa.wmnet;
 }
 
-host db51 {
-	hardware ethernet 78:2b:cb:6b:e2:c4;
-	fixed-address db51.pmtpa.wmnet;
-}
-
-host db52 {
-	hardware ethernet 78:2b:cb:67:fd:1f;
-	fixed-address db52.pmtpa.wmnet;
-}
-
-host db53 {
-	hardware ethernet 78:2b:cb:6b:d2:82;
-	fixed-address db53.pmtpa.wmnet;
-}
-
 host db54 {
 	hardware ethernet 78:2b:cb:6b:aa:33;
 	fixed-address db54.pmtpa.wmnet;
 }
 
-host db55 {
-	hardware ethernet 78:2b:cb:66:ce:4b;
-	fixed-address db55.pmtpa.wmnet;
-}
-
-host db56 {
-	hardware ethernet 78:2b:cb:6b:ce:d0;
-	fixed-address db56.pmtpa.wmnet;
-}
-
 host db57 {
 	hardware ethernet 78:2b:cb:6b:c6:ef;
 	fixed-address db57.pmtpa.wmnet;
-}
-
-host db58 {
-	hardware ethernet 78:2b:cb:66:aa:40;
-	fixed-address db58.pmtpa.wmnet;
-}
-
-host db59 {
-	hardware ethernet d4:ae:52:68:9d:69;
-	fixed-address db59.pmtpa.wmnet;
 }
 
 host db60 {
