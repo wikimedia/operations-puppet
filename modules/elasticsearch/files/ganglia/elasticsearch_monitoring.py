@@ -1,8 +1,9 @@
 #! /usr/bin/python
 
 """
-Elasticsearch ganglia monitoring from
+Elasticsearch ganglia monitoring originally from
 https://github.com/ganglia/gmond_python_modules/tree/master/elasticsearch
+and heavily hacked.
 """
 
 try:
@@ -16,711 +17,397 @@ import urllib2
 from functools import partial
 
 
-# short name to full path for stats
-keyToPath = dict()
+# Used to merge stat descriptions
+def merge(skel, stat):
+    d = skel.copy()
+    d.update(stat)
+    return d
 
-# Initial time modification stamp - Used to determine
-# when JSON is updated
-last_update = time.time()
+# Stat types
+GUAGE = {
+    'slope': 'both',
+}
+BYTES_GUAGE = merge(GUAGE, {
+    'units': 'bytes'
+})
 
-# INDICES METRICS #
+COUNTER = {
+    'slope': 'positive',
+}
+TIME = merge(COUNTER, {
+    'units': 'ms/sec',
+})
+BYTES = merge(COUNTER, {
+    'units': 'bytes/sec',
+})
 
+
+# Stats to be collected
+stats = dict()
 ## CACHE
-keyToPath['es_cache_field_eviction'] = "nodes.%s.indices.cache.field_evictions"
-keyToPath['es_cache_field_size'] = "nodes.%s.indices.cache.field_size_in_bytes"
-keyToPath['es_cache_filter_count'] = "nodes.%s.indices.cache.filter_count"
-keyToPath[
-    'es_cache_filter_evictions'] = "nodes.%s.indices.cache.filter_evictions"
-keyToPath[
-    'es_cache_filter_size'] = "nodes.%s.indices.cache.filter_size_in_bytes"
+stats['es_filter_cache_size'] = merge(BYTES_GUAGE, {
+    'path': 'indices.filter_cache.memory_size_in_bytes',
+    'description': 'Filter Cache Size'
+})
+stats['es_filter_cache_evictions'] = merge(COUNTER, {
+    'path': 'indices.filter_cache.evictions',
+    'description': 'Filter Cache Evictions/sec',
+})
+stats['es_id_cache_size'] = merge(BYTES_GUAGE, {
+    'path': 'indices.id_cache.memory_size_in_bytes',
+    'description': 'Id Cache Size',
+})
+stats['es_fielddata_cache_size'] = merge(BYTES_GUAGE, {
+    'path': 'indices.fielddata.memory_size_in_bytes',
+    'description': 'Field Data Cache Size'
+})
+stats['es_fielddata_cache_evictions'] = merge(COUNTER, {
+    'path': 'indices.fielddata.evictions',
+    'units': 'evictions/sec',
+    'description': 'Field Data Cache Evictions/sec',
+})
 
 ## DOCS
-keyToPath['es_docs_count'] = "nodes.%s.indices.docs.count"
-keyToPath['es_docs_deleted'] = "nodes.%s.indices.docs.deleted"
+stats['es_docs_count'] = merge(GUAGE, {
+    'path': 'indices.docs.count',
+    'units': 'docs',
+    'description': 'Documents',
+})
+stats['es_docs_deleted'] = merge(GUAGE, {
+    'path': 'indices.docs.deleted',
+    'units': 'docs',
+    'description': 'Deleted Documents',
+})
 
 ## FLUSH
-keyToPath['es_flush_total'] = "nodes.%s.indices.flush.total"
-keyToPath['es_flush_time'] = "nodes.%s.indices.flush.total_time_in_millis"
+stats['es_flushes'] = merge(COUNTER, {
+    'path': 'indices.flush.total',
+    'units': 'flushes',
+    'description': 'Flushes/sec',
+})
+stats['es_flush_time'] = merge(TIME, {
+    'path': 'indices.flush.total_time_in_millis',
+    'description': 'Flush Time/sec'
+})
 
 ## GET
-keyToPath['es_get_exists_time'] = "nodes.%s.indices.get.exists_time_in_millis"
-keyToPath['es_get_exists_total'] = "nodes.%s.indices.get.exists_total"
-keyToPath['es_get_time'] = "nodes.%s.indices.get.time_in_millis"
-keyToPath['es_get_total'] = "nodes.%s.indices.get.total"
-keyToPath[
-    'es_get_missing_time'] = "nodes.%s.indices.get.missing_time_in_millis"
-keyToPath['es_get_missing_total'] = "nodes.%s.indices.get.missing_total"
+stats['es_gets'] = merge(COUNTER, {
+    'path': 'indices.get.total',
+    'units': 'gets/sec',
+    'description': 'Gets/sec',
+})
+stats['es_get_time'] = merge(TIME, {
+    'path': 'indices.get.time_in_millis',
+    'description': 'Get Time/sec'
+})
+stats['es_gets_exists'] = merge(COUNTER, {
+    'path': 'indices.get.exists_total',
+    'units': 'get/sec',
+    'description': 'Get (exists)/sec',
+})
+stats['es_get_exists_time'] = merge(TIME, {
+    'path': 'indices.get.exists_time_in_millis',
+    'description': 'Get (exists) Time/sec'
+})
+stats['es_gets_missing'] = merge(COUNTER, {
+    'path': 'indices.get.missing_total',
+    'units': 'get/sec',
+    'description': 'Gets (missing)/sec',
+})
+stats['es_get_missing_time'] = merge(TIME, {
+    'path': 'indices.get.missing_time_in_millis',
+    'description': 'Gets (missing) Time/sec'
+})
 
 ## INDEXING
-keyToPath['es_indexing_delete_time'] = "nodes.%s.indices.indexing.delete_time_in_millis"
-keyToPath[
-    'es_indexing_delete_total'] = "nodes.%s.indices.indexing.delete_total"
-keyToPath['es_indexing_index_time'] = "nodes.%s.indices.indexing.index_time_in_millis"
-keyToPath['es_indexing_index_total'] = "nodes.%s.indices.indexing.index_total"
+stats['es_deletes'] = merge(COUNTER, {
+    'path': 'indices.indexing.delete_total',
+    'units': 'deletes/sec',
+    'description': 'Deletes/sec',
+})
+stats['es_delete_time'] = merge(TIME, {
+    'path': 'indices.indexing.delete_time_in_millis',
+    'description': 'Delete Time/sec'
+})
+stats['es_indexes'] = merge(COUNTER, {
+    'path': 'indices.indexing.index_total',
+    'units': 'indexes/sec',
+    'description': 'Indexes Requests/sec',
+})
+stats['es_index_time'] = merge(TIME, {
+    'path': 'indices.indexing.index_time_in_millis',
+    'description': 'Index Time/sec'
+})
 
 ## MERGES
-keyToPath['es_merges_current'] = "nodes.%s.indices.merges.current"
-keyToPath['es_merges_current_docs'] = "nodes.%s.indices.merges.current_docs"
-keyToPath['es_merges_current_size'] = "nodes.%s.indices.merges.current_size_in_bytes"
-keyToPath['es_merges_total'] = "nodes.%s.indices.merges.total"
-keyToPath['es_merges_total_docs'] = "nodes.%s.indices.merges.total_docs"
-keyToPath[
-    'es_merges_total_size'] = "nodes.%s.indices.merges.total_size_in_bytes"
-keyToPath['es_merges_time'] = "nodes.%s.indices.merges.total_time_in_millis"
+stats['es_merges'] = merge(COUNTER, {
+    'path': 'indices.merges.total',
+    'units': 'merges/sec',
+    'description': 'Merges/sec',
+})
+stats['es_merge_time'] = merge(TIME, {
+    'path': 'indices.merges.total_time_in_millis',
+    'description': 'Merge Time/sec'
+})
+stats['es_merge_data'] = merge(BYTES, {
+    'path': 'indices.merges.total_size_in_bytes',
+    'description': 'Bytes/sec'
+})
 
 ## REFRESH
-keyToPath['es_refresh_total'] = "nodes.%s.indices.refresh.total"
-keyToPath['es_refresh_time'] = "nodes.%s.indices.refresh.total_time_in_millis"
+stats['es_refreshes'] = merge(COUNTER, {
+    'path': 'indices.refresh.total',
+    'units': 'refreshes/sec',
+    'description': 'Refreshes/sec',
+})
+stats['es_refresh_time'] = merge(TIME, {
+    'path': 'indices.refresh.total_time_in_millis',
+    'description': 'Refresh Time/sec'
+})
+
+## WARMER
+stats['es_warmers'] = merge(COUNTER, {
+    'path': 'indices.warmer.total',
+    'units': 'warmers/sec',
+    'description': 'Warmers/sec',
+})
+stats['es_warmer_time'] = merge(TIME, {
+    'path': 'indices.warmer.total_time_in_millis',
+    'description': 'Warmer Time/sec'
+})
 
 ## SEARCH
-keyToPath['es_query_current'] = "nodes.%s.indices.search.query_current"
-keyToPath['es_query_total'] = "nodes.%s.indices.search.query_total"
-keyToPath['es_query_time'] = "nodes.%s.indices.search.query_time_in_millis"
-keyToPath['es_fetch_current'] = "nodes.%s.indices.search.fetch_current"
-keyToPath['es_fetch_total'] = "nodes.%s.indices.search.fetch_total"
-keyToPath['es_fetch_time'] = "nodes.%s.indices.search.fetch_time_in_millis"
+stats['es_queries'] = merge(COUNTER, {
+    'path': 'indices.search.query_total',
+    'units': 'queries/sec',
+    'description': 'Queries/sec',
+})
+stats['es_query_time'] = merge(TIME, {
+    'path': 'indices.search.query_time_in_millis',
+    'description': 'Query Time/sec'
+})
+stats['es_fetches'] = merge(COUNTER, {
+    'path': 'indices.search.fetch_total',
+    'units': 'fetches/sec',
+    'description': 'Fetches/sec',
+})
+stats['es_fetch_time'] = merge(TIME, {
+    'path': 'indices.search.fetch_time_in_millis',
+    'description': 'Fetch Time/sec'
+})
 
 ## STORE
-keyToPath['es_indices_size'] = "nodes.%s.indices.store.size_in_bytes"
+stats['es_indices_size'] = merge(BYTES_GUAGE, {
+    'path': 'indices.store.size_in_bytes',
+    'description': 'Indices Size'
+})
+stats['es_indices_throttle_time'] = merge(TIME, {
+    'path': 'indices.store.throttle_time_in_millis',
+    'description': 'Throttle Time/sec'
+})
 
 # JVM METRICS #
 ## MEM
-keyToPath['es_heap_committed'] = "nodes.%s.jvm.mem.heap_committed_in_bytes"
-keyToPath['es_heap_used'] = "nodes.%s.jvm.mem.heap_used_in_bytes"
-keyToPath[
-    'es_non_heap_committed'] = "nodes.%s.jvm.mem.non_heap_committed_in_bytes"
-keyToPath['es_non_heap_used'] = "nodes.%s.jvm.mem.non_heap_used_in_bytes"
+stats['es_heap_committed'] = merge(BYTES_GUAGE, {
+    'path': 'jvm.mem.heap_committed_in_bytes',
+    'description': 'Java Heap Committed (Bytes)',
+})
+stats['es_heap_used'] = merge(BYTES_GUAGE, {
+    'path': 'jvm.mem.heap_used_in_bytes',
+    'description': 'Java Heap Used (Bytes)',
+})
+stats['es_non_heap_committed'] = merge(BYTES_GUAGE, {
+    'path': 'jvm.mem.non_heap_committed_in_bytes',
+    'description': 'Java Non Heap Committed (Bytes)',
+})
+stats['es_non_heap_used'] = merge(BYTES_GUAGE, {
+    'path': 'jvm.mem.non_heap_used_in_bytes',
+    'description': 'Java Non Heap Used (Bytes)',
+})
 
 ## THREADS
-keyToPath['es_threads'] = "nodes.%s.jvm.threads.count"
-keyToPath['es_threads_peak'] = "nodes.%s.jvm.threads.peak_count"
+stats['es_jvm_threads'] = merge(GUAGE, {
+    'path': 'jvm.threads.count',
+    'units': 'threads',
+    'description': 'JVM Threads',
+})
 
 ## GC
-keyToPath['es_gc_time'] = "nodes.%s.jvm.gc.collection_time_in_millis"
-keyToPath['es_gc_count'] = "nodes.%s.jvm.gc.collection_count"
+for name, path in [('par_new', 'ParNew'),
+                   ('concurrent_mark_sweep', 'ConcurrentMarkSweep')]:
+    stats['es_' + name + '_gcs'] = merge(COUNTER, {
+        'path': 'jvm.gc.collectors.' + path + '.collection_count',
+        'units': 'collections/sec',
+        'description': 'Collections/sec',
+    })
+    stats['es_' + name + '_gc_time'] = merge(TIME, {
+        'path': 'jvm.gc.collectors.' + path + '.collection_time_in_millis',
+        'description': 'Collection Time/sec'
+    })
 
-# TRANSPORT METRICS #
-keyToPath['es_transport_open'] = "nodes.%s.transport.server_open"
-keyToPath['es_transport_rx_count'] = "nodes.%s.transport.rx_count"
-keyToPath['es_transport_rx_size'] = "nodes.%s.transport.rx_size_in_bytes"
-keyToPath['es_transport_tx_count'] = "nodes.%s.transport.tx_count"
-keyToPath['es_transport_tx_size'] = "nodes.%s.transport.tx_size_in_bytes"
+
+## Buffer Pools
+for name in ['direct', 'mapped']:
+    stats['es_jvm_' + name + '_buffer_pools'] = merge(GUAGE, {
+        'path': 'jvm.buffer_pools.' + name + '.count',
+        'units': 'pools',
+        'description': 'Pools',
+    })
+    stats['es_jvm_' + name + '_buffer_pool_used'] = merge(BYTES_GUAGE, {
+        'path': 'jvm.buffer_pools.' + name + '.used_in_bytes',
+        'description': 'Pool Used Bytes',
+    })
+    stats['es_jvm_' + name + '_buffer_pool_total'] = merge(BYTES_GUAGE, {
+        'path': 'jvm.buffer_pools.' + name + '.total_capacity_in_bytes',
+        'description': 'Pool Total Capacity Bytes',
+    })
+
+
+# FILE SYSTEM METRICS #
+stats['es_fs_reads'] = merge(COUNTER, {
+    'path': 'fs.data.0.disk_reads',
+    'units': 'reads/sec',
+    'description': 'Reads/sec',
+})
+stats['es_fs_read_bytes'] = merge(BYTES, {
+    'path': 'fs.data.0.disk_read_size_in_bytes',
+    'description': 'Bytes Read/sec',
+})
+stats['es_fs_writes'] = merge(COUNTER, {
+    'path': 'fs.data.0.disk_writes',
+    'units': 'writes/sec',
+    'description': 'Writes/sec',
+})
+stats['es_fs_write_bytes'] = merge(BYTES, {
+    'path': 'fs.data.0.disk_write_size_in_bytes',
+    'description': 'Bytes Written/sec',
+})
+stats['es_fs_disk_queue'] = merge(GUAGE, {
+    'path': 'fs.data.0.disk_queue',
+    'units': 'operations',
+    'description': 'Disk Queue',
+})
+stats['es_fs_disk_service_time'] = merge(GUAGE, {
+    'path': 'fs.data.0.disk_service_time',
+    'units': 'millis',
+    'description': 'Disk Service Time (millis)',
+})
 
 # HTTP METRICS #
-keyToPath['es_http_current_open'] = "nodes.%s.http.current_open"
-keyToPath['es_http_total_open'] = "nodes.%s.http.total_opened"
+stats['es_http_current_connections'] = merge(GUAGE, {
+    'path': 'http.current_open',
+    'units': 'connections',
+    'description': 'Open Connections',
+})
+stats['es_http_connections'] = merge(COUNTER, {
+    'path': 'http.total_opened',
+    'units': 'connections/sec',
+    'description': 'New Connections/sec',
+})
 
 # PROCESS METRICS #
-keyToPath[
-    'es_open_file_descriptors'] = "nodes.%s.process.open_file_descriptors"
+stats['es_open_file_descriptors'] = merge(GUAGE, {
+    'path': 'process.open_file_descriptors',
+    'units': 'file descriptors',
+    'description': 'Open File Descriptors',
+})
+
+# THREAD POOL METRICS #
+for name in ['generic', 'index', 'get', 'snapshot', 'merge', 'suggest', 'bulk',
+             'optimize', 'warmer', 'flush', 'search', 'percolate',
+             'management', 'refresh']:
+    stats['es_thread_pool_' + name + '_size'] = merge(GUAGE, {
+        'path': 'thread_pool.' + name + '.threads',
+        'units': 'threads',
+        'description': 'Threads',
+    })
+    stats['es_thread_pool_' + name + '_queue'] = merge(GUAGE, {
+        'path': 'thread_pool.' + name + '.queue',
+        'units': 'operations',
+        'description': 'Operations',
+    })
+    stats['es_thread_pool_' + name + '_active'] = merge(GUAGE, {
+        'path': 'thread_pool.' + name + '.active',
+        'units': 'operations',
+        'description': 'Operations',
+    })
+    stats['es_thread_pool_' + name + '_rejected'] = merge(COUNTER, {
+        'path': 'thread_pool.' + name + '.rejected',
+        'units': 'operations/sec',
+        'description': 'Operations/sec',
+    })
+    stats['es_thread_pool_' + name + '_completed'] = merge(COUNTER, {
+        'path': 'thread_pool.' + name + '.completed',
+        'units': 'operations/sec',
+        'description': 'Operations/sec',
+    })
+
+
+# Global holding the last time we fetched data from ES.  We only fetch it every
+# 3 seconds.
+mainResult = dict()
+mainResult['last_update'] = 0
 
 
 def dig_it_up(obj, path):
+    def tryint(s):
+        try:
+            return int(s)
+        except:
+            return s
     try:
         if type(path) in (str, unicode):
-            path = path.split('.')
+            path = [tryint(s) for s in path.split('.')]
         return reduce(lambda x, y: x[y], path, obj)
     except:
         return False
 
 
 def update_result(result, url):
-    global last_update
-
-    # If time delta is > 20 seconds, then update the JSON results
+    # If time delta is > 3 seconds, then update the JSON results
     now = time.time()
-    diff = now - last_update
-    if diff > 20:
-        print '[elasticsearch] ' + str(diff) + ' seconds passed - Fetching ' + url
-        result = json.load(urllib2.urlopen(url, None, 2))
-        last_update = now
-
+    diff = now - result['last_update']
+    if diff > 3:
+        result['stats'] = json.load(urllib2.urlopen(url, None, 2))
+        result['last_update'] = now
     return result
 
 
-def get_stat_index(result, url, path, name):
-    result = update_result(result, url)
-    val = dig_it_up(result, path)
+def getStat(url, name):
+    update_result(mainResult, url)
 
-    if not isinstance(val, bool):
-        return int(val)
-    else:
-        return None
-
-
-def getStat(result, url, name):
-    result = update_result(result, url)
-
-    node = result['nodes'].keys()[0]
-    val = dig_it_up(result, keyToPath[name] % node)
+    node = mainResult['stats']['nodes'].keys()[0]
+    val = dig_it_up(mainResult['stats'],
+                    'nodes.%s.%s' % (node, stats[name]['path']))
 
     # Check to make sure we have a valid result
-    # JsonPath returns False if no match found
     if not isinstance(val, bool):
-        return int(val)
+        return float(val)
     else:
         return None
-
-
-def create_desc(skel, prop):
-    d = skel.copy()
-    for k, v in prop.iteritems():
-        d[k] = v
-    return d
-
-
-def get_indices_descriptors(index, skel, result, url):
-    metric_tpl = 'es_index_{0}_{{0}}'.format(index)
-    callback = partial(get_stat_index, result, url)
-    _create_desc = partial(create_desc, skel)
-
-    descriptors = [
-        _create_desc({
-            'call_back': partial(callback, '_all.primaries.docs.count'),
-            'name': metric_tpl.format('docs_count'),
-            'description': 'document count for index {0}'.format(index),
-        }),
-        _create_desc({
-            'call_back': partial(callback, '_all.primaries.store.size_in_bytes'),
-            'name': metric_tpl.format('size'),
-            'description': 'size in bytes for index {0}'.format(index),
-            'units': 'Bytes',
-            'format': '%.0f',
-            'value_type': 'double'
-        })
-    ]
-
-    return descriptors
 
 
 def metric_init(params):
     descriptors = []
 
-    print('[elasticsearch] Received the following parameters')
-    print(params)
-
     host = params.get('host', 'http://localhost:9200/')
     url_cluster = '{0}_cluster/nodes/_local/stats?all=true'.format(host)
-
-    # First iteration - Grab statistics
-    print('[elasticsearch] Fetching ' + url_cluster)
-    result = json.load(urllib2.urlopen(url_cluster, None, 2))
-
     metric_group = params.get('metric_group', 'elasticsearch')
 
     Desc_Skel = {
         'name': 'XXX',
-        'call_back': partial(getStat, result, url_cluster),
-        'time_max': 60,
-        'value_type': 'uint',
+        'call_back': partial(getStat, url_cluster),
+        'time_max': 10,
+        'value_type': 'double',
         'units': 'units',
-        'slope': 'both',
-        'format': '%d',
+        'format': '%.0f',
         'description': 'XXX',
         'groups': metric_group,
     }
-
-    indices = params.get('indices', '*').split()
-    for index in indices:
-        url_indices = '{0}{1}/_stats'.format(host, index)
-        print('[elasticsearch] Fetching ' + url_indices)
-
-        r_indices = json.load(urllib2.urlopen(url_indices, None, 2))
-        descriptors += get_indices_descriptors(index,
-                                               Desc_Skel,
-                                               r_indices,
-                                               url_indices)
-
-    _create_desc = partial(create_desc, Desc_Skel)
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_heap_committed',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'description': 'Java Heap Committed (Bytes)',
-            'value_type': 'double'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_heap_used',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'description': 'Java Heap Used (Bytes)',
-            'value_type': 'double'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_non_heap_committed',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'description': 'Java Non Heap Committed (Bytes)',
-            'value_type': 'double'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_non_heap_used',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'description': 'Java Non Heap Used (Bytes)',
-            'value_type': 'double'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_threads',
-            'units': 'threads',
-            'format': '%d',
-            'description': 'Threads (open)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_threads_peak',
-            'units': 'threads',
-            'format': '%d',
-            'description': 'Threads Peak (open)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_gc_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Java GC Time (ms)'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_transport_open',
-            'units': 'sockets',
-            'format': '%d',
-            'description': 'Transport Open (sockets)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_transport_rx_count',
-            'units': 'rx',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'RX Count'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_transport_rx_size',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'slope': 'positive',
-            'description': 'RX (Bytes)',
-            'value_type': 'double',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_transport_tx_count',
-            'units': 'tx',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'TX Count'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_transport_tx_size',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'slope': 'positive',
-            'description': 'TX (Bytes)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_http_current_open',
-            'units': 'sockets',
-            'format': '%d',
-            'description': 'HTTP Open (sockets)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_http_total_open',
-            'units': 'sockets',
-            'format': '%d',
-            'description': 'HTTP Open (sockets)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_indices_size',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'description': 'Index Size (Bytes)',
-            'value_type': 'double',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_gc_count',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Java GC Count',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_merges_current',
-            'format': '%d',
-            'description': 'Merges (current)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_merges_current_docs',
-            'format': '%d',
-            'description': 'Merges (docs)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_merges_total',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Merges (total)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_merges_total_docs',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Merges (total docs)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_merges_current_size',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'description': 'Merges size (current)',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_merges_total_size',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'slope': 'positive',
-            'description': 'Merges size (total)',
-            'value_type': 'double',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_merges_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Merges Time (ms)'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_refresh_total',
-            'units': 'refreshes',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Total Refresh'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_refresh_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Total Refresh Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_docs_count',
-            'units': 'docs',
-            'format': '%.0f',
-            'description': 'Number of Documents',
-            'value_type': 'double'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_docs_deleted',
-            'units': 'docs',
-            'format': '%.0f',
-            'description': 'Number of Documents Deleted',
-            'value_type': 'double'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_open_file_descriptors',
-            'units': 'files',
-            'format': '%d',
-            'description': 'Open File Descriptors',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_cache_field_eviction',
-            'units': 'units',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Field Cache Evictions',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_cache_field_size',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'description': 'Field Cache Size',
-            'value_type': 'double',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_cache_filter_count',
-            'format': '%d',
-            'description': 'Filter Cache Count',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_cache_filter_evictions',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Filter Cache Evictions',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_cache_filter_size',
-            'units': 'Bytes',
-            'format': '%.0f',
-            'description': 'Filter Cache Size',
-            'value_type': 'double'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_query_current',
-            'units': 'Queries',
-            'format': '%d',
-            'description': 'Current Queries',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_query_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Total Query Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_fetch_current',
-            'units': 'fetches',
-            'format': '%d',
-            'description': 'Current Fetches',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_fetch_total',
-            'units': 'fetches',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Total Fetches'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_fetch_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Total Fetch Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_flush_total',
-            'units': 'flushes',
-            'format': '%d',
-            'description': 'Total Flushes',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_flush_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Total Flush Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_get_exists_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Exists Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_get_exists_total',
-            'units': 'total',
-            'format': '%d',
-            'description': 'Exists Total',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_get_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Get Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_get_total',
-            'units': 'total',
-            'format': '%d',
-            'description': 'Get Total',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_get_missing_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Missing Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_get_missing_total',
-            'units': 'total',
-            'format': '%d',
-            'description': 'Missing Total',
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_indexing_delete_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Delete Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_indexing_delete_total',
-            'units': 'docs',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Delete Total'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_indexing_index_time',
-            'units': 'ms',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Indexing Time'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_indexing_index_total',
-            'units': 'docs',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Indexing Documents Total'
-        })
-    )
-
-    descriptors.append(
-        _create_desc({
-            'name': 'es_query_total',
-            'units': 'Queries',
-            'format': '%d',
-            'slope': 'positive',
-            'description': 'Total Queries'
-        })
-    )
+    for stat_name, stat in stats.iteritems():
+        d = merge(Desc_Skel, stat)
+        d['name'] = stat_name
+        descriptors.append(d)
     return descriptors
 
 
