@@ -1,0 +1,11 @@
+Code-Review+1: Reedy <reedy@wikimedia.org>
+Code-Review+1: ArielGlenn <ariel@wikimedia.org>
+Code-Review+1: Aaron Schulz <aschulz@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Ori.livneh <ori@wikimedia.org>
+Code-Review+1: BryanDavis <bdavis@wikimedia.org>
+Submitted-by: Ori.livneh <ori@wikimedia.org>
+Submitted-at: Sat, 02 Nov 2013 04:09:16 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/93083
+Project: operations/puppet
+Branch: refs/heads/production
