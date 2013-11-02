@@ -60,9 +60,6 @@ $BINDIR/dologmsg "!log $USER Started syncing Wikimedia installation... : $*"
 # Disable logging
 export DOLOGMSGNOLOG=1
 
-# Builds wikiversions.cdb and syncs it to the apaches with the dat file
-sync-wikiversions || die
-
 echo 'Copying style sheets to apaches...'
 # Ignore errors from dsh since it gives an exit status of 1 on a connection timeout
 dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/local/bin/scap-1skins'
@@ -81,6 +78,9 @@ RSYNC_SERVERS=`echo $RSYNC_SERVERS`
 echo 'Copying code to apaches...'
 dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\"
 echo 'Finished'
+
+# Builds wikiversions.cdb and syncs it to the apaches with the dat file
+sync-wikiversions || die
 
 export DOLOGMSGNOLOG=""
 $BINDIR/dologmsg "!log $USER Finished syncing Wikimedia installation... : $*"
