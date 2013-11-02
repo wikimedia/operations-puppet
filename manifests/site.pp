@@ -530,24 +530,24 @@ node "dataset1001.wikimedia.org" {
 }
 
 # pmtpa dbs
-node /^db(60|63|69|71)\.pmtpa\.wmnet/ {
-    if $hostname == "db71"{
-        class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
-    } else {
-        class { role::coredb::s1 : mariadb => true }
-    }
+node /^db(60|63)\.pmtpa\.wmnet/ {
+    class { role::coredb::s1 : mariadb => true }
 }
 
-node /^db(54|57)\.pmtpa\.wmnet/ {
-    if $hostname == "db57"{
+node /^db(54|57|69)\.pmtpa\.wmnet/ {
+    if $hostname == "db69"{
+        class { role::coredb::s2 : innodb_file_per_table => true, mariadb => true }
+    } elsif $hostname == "db57"{
         class { role::coredb::s2 : innodb_file_per_table => true }
     } else {
         include role::coredb::s2
     }
 }
 
-node /^db(34|66)\.pmtpa\.wmnet/ {
-    if $hostname == "db66"{
+node /^db(34|66|71)\.pmtpa\.wmnet/ {
+    if $hostname == "db71"{
+        class { role::coredb::s3 : innodb_file_per_table => true, mariadb => true }
+    } elsif $hostname == "db66"{
         class { role::coredb::s3 : innodb_file_per_table => true }
     } else {
         include role::coredb::s3
