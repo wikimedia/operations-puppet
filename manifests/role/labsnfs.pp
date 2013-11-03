@@ -34,8 +34,8 @@ class role::labsnfs::client {
 			content => template("labsnfs/auto.time.project.erb");
 	}
 
-    file { "/etc/init/nfs-noidmap.conf":
-            source => "puppet:///files/upstart/nfs-noidmap.conf"
-    }
+	file { "/etc/init/nfs-noidmap.conf":
+		source => "puppet:///files/nfs/upstart-nfs-noidmap.conf"
+	}
 }
 
