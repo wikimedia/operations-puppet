@@ -228,10 +228,15 @@ node "arsenic.eqiad.wmnet" {
         admins::roots,
         admins::mortals,
         generic::wikidev-umask,
-        nrpe
-#just adding this for the mediawiki require
-    class { misc::maintenance::pagetriage: enabled => false }
+        nrpe,
+        accounts::demon,
+        groups::wikidev
 
+    # rt 6189: temporary root for testing
+    sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+
+    #just adding this for the mediawiki require
+    class { misc::maintenance::pagetriage: enabled => false }
 }
 
 
