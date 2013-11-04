@@ -5,17 +5,28 @@ class misc::bugzilla::server {
     system::role { 'misc::bugzilla::server': description => 'Bugzilla server' }
 
     class {'webserver::php5': ssl => true; }
+
     install_certificate{ 'bugzilla.wikimedia.org': }
     install_certificate{ 'bug-attachment.wikimedia.org': }
 
     apache_site { 'bugzilla': name => 'bugzilla.wikimedia.org' }
+
     file {
         '/etc/apache2/sites-available/bugzilla.wikimedia.org':
+            ensure  => present,
             source  => 'puppet:///files/apache/sites/bugzilla.wikimedia.org',
-            mode    => '0444',
-            owner   => root,
-            group   => www-data;
+            owner   => 'root',
+            group   => 'www-data',
+            mode    => '0444';
     }
+
+    file { [ '/srv/org','/srv/org/wikimedia','/srv/org/wikimedia/bugzilla']:
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+    }
+
 }
 
 class misc::bugzilla::crons {
