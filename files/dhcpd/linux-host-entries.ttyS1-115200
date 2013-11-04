@@ -4610,11 +4610,6 @@ host labsudb2 {
 	fixed-address labsudb2.pmtpa.wmnet;
 }
 
-host wtp1 {
-	hardware ethernet 00:21:9B:97:ED:C6;
-	fixed-address wtp1.pmtpa.wmnet;
-}
-
 host wtp1001 {
 	hardware ethernet 90:B1:1C:2D:85:30;
 	fixed-address wtp1001.eqiad.wmnet;
