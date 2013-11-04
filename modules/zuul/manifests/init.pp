@@ -45,6 +45,11 @@ class zuul (
     'python-statsd',
 
     'python-setuptools',
+
+    # For Zuul post v1.3.0
+    'python-pbr',
+    'python-gear',
+    'python-apscheduler',
   ]
 
   package { $packages:
