@@ -12,6 +12,8 @@ class zuul (
     $jenkins_server,
     $jenkins_user,
     $jenkins_apikey,
+    $gearman_server,
+    $gearman_server_start,
     $gerrit_server,
     $gerrit_user,
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
@@ -107,6 +109,14 @@ class zuul (
       File['/etc/zuul'],
       Package['jenkins'],
     ],
+  }
+
+  file { '/etc/zuul/gearman-logging.conf':
+      ensure => present,
+      owner  => 'jenkins',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/zuul/gearman-logging.conf',
   }
 
   # Additionally provide a publicly readeable configuration file
