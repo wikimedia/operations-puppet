@@ -1,3 +1,10 @@
+[gearman]
+server=<%= gearman_server %>
+
+[gearman_server]
+start=<%= gearman_server %>
+log_config=/etc/zuul/gearman-logging.conf
+
 [jenkins]
 server=<%= jenkins_server %>
 user=<%= jenkins_user %>
