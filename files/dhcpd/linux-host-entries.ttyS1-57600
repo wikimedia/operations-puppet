@@ -485,11 +485,6 @@ host srv257 {
 	fixed-address srv257.pmtpa.wmnet;
 }
 
-host storage3 {
-	hardware ethernet 00:1e:c9:b5:7b:0d;
-	fixed-address storage3.pmtpa.wmnet;
-}
-
 host streber {
 	hardware ethernet 00:1E:C9:E2:74:03;
 	fixed-address streber.wikimedia.org;
