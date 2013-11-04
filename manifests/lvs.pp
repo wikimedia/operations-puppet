@@ -405,7 +405,10 @@ class lvs::configuration {
 			'parsoidcache' => {
 				'eqiad' => "10.2.2.29",
 			},
-			'search' => {
+			'publicparsoid' => {
+				'eqiad' => "208.80.154.162",
+			},
+			'search'        => {
 				'eqiad' => "10.2.2.30",
 			},
 		},
@@ -454,10 +457,11 @@ class lvs::configuration {
 				'pmtpa' => {
 					'uploadlb'  => [ '10.4.0.166', '10.4.0.187', ],
 					'uploadsvc' => [ '10.4.0.166', '10.4.0.187', ],
-        },
+				},
 			},
 			'parsoid' => {},
 			'parsoidcache' => {},
+			'publicparsoid' => {},
 			'search' => {},
 		}
 	}
@@ -857,6 +861,20 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
 		},
+		'publicparsoid' => {
+			'description' => "Public parsoid wikitext parser for VisualEditor",
+			'class' => "high-traffic2",
+			'sites' => [ "eqiad" ],
+			'ip' => $service_ips['publicparsoid'][$::site],
+			'port' => 8000,
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://localhost:8000/' ],
+				},
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
 		'parsoidcache' => {
 			'description' => "Varnish caches in front of Parsoid",
 			'class' => "low-traffic",
@@ -1104,6 +1122,7 @@ class lvs::monitor {
 	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/monitoring/backend" }
 	monitor_service_lvs_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
 	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
+	monitor_service_lvs_http { "parsoid-lb.eqiad.wikimedia.org": ip_address => "208.80.154.162", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
 	monitor_service_lvs_http { "parsoidcache.svc.eqiad.wmnet": ip_address => "10.2.2.29", check_command => "check_http_lvs!parsoid!/", contact_group => "admins,parsoid" }
 	monitor_service_lvs_http { "search.svc.eqiad.wmnet": ip_address => "10.2.2.30", check_command => "check_http_on_port!9200", contact_group => "admins" }
 

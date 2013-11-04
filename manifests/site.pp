@@ -1572,6 +1572,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
             $sip['dns_rec'][$::site],
             $sip['osm'][$::site],
             $sip['misc_web'][$::site],
+            $sip['publicparsoid'][$::site],
             ],
         /^lvs100[36]$/ => [
             $sip['apaches'][$::site],
