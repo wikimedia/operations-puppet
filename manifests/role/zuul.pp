@@ -43,6 +43,33 @@ class role::zuul::labs {
 
 } # /role::zuul::labs
 
+# Temporary role to test out the migration of Zuul to be gearman based
+class role::zuul::labs::gearman {
+    system::role { 'role::zuul::labs::gearman': description => 'Zuul on labs with gearman!' }
+
+    package { 'jenkins': ensure => present, }  # hack
+
+    include contint::proxy_zuul,
+        role::zuul::configuration
+
+    # Setup the instance for labs usage
+    zuulwikimedia::instance { 'zuul-labs-gearman':
+        gearman_server       => '127.0.0.1',
+        gearman_server_start => true,
+        jenkins_server       => 'http://127.0.0.1:8080/ci',
+        jenkins_user         => 'zuul',
+        gerrit_server        => '10.4.0.172',  # integration-jenkins2.pmtpa.wmflabs
+        gerrit_user          => 'jenkins',
+        url_pattern          => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
+        status_url           => 'http://integration.wmflabs.org/zuul/status',
+        git_branch           => 'labs',
+        git_dir              => $role::zuul::configuration::zuul_git_dir,
+        push_change_refs     => false,
+        statsd_host          => '',
+    }
+
+} # /role::zuul::labs::gearman
+
 # Class: role::zuul::production
 #
 # Install the continuous integration Zuul instance for production usage.
