@@ -7,6 +7,8 @@ class zuulwikimedia {
 	define instance(
 		$jenkins_server,
 		$jenkins_user,
+		$gearman_server,
+		$gearman_server_start,
 		$gerrit_server,
 		$gerrit_user,
 		$url_pattern,
@@ -23,18 +25,20 @@ class zuulwikimedia {
 
 			# Load class from the Zuul module:
 			class { 'zuul':
-				name             => $name,
-				jenkins_server   => $jenkins_server,
-				jenkins_user     => $jenkins_user,
-				jenkins_apikey   => $jenkins_apikey,
-				gerrit_server    => $gerrit_server,
-				gerrit_user      => $gerrit_user,
-				url_pattern      => $url_pattern,
-				status_url       => $status_url,
-				git_branch       => $git_branch,
-				git_dir          => $git_dir,
-				push_change_refs => $push_change_refs,
-				statsd_host      => $statsd_host,
+				name                 => $name,
+				gearman_server       => $gearman_server,
+				gearman_server_start => $gearman_server_start,
+				jenkins_server       => $jenkins_server,
+				jenkins_user         => $jenkins_user,
+				jenkins_apikey       => $jenkins_apikey,
+				gerrit_server        => $gerrit_server,
+				gerrit_user          => $gerrit_user,
+				url_pattern          => $url_pattern,
+				status_url           => $status_url,
+				git_branch           => $git_branch,
+				git_dir              => $git_dir,
+				push_change_refs     => $push_change_refs,
+				statsd_host          => $statsd_host,
 			}
 
 			# nagios/icinga monitoring

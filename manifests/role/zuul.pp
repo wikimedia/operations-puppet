@@ -27,16 +27,18 @@ class role::zuul::labs {
 
     # Setup the instance for labs usage
     zuulwikimedia::instance { 'zuul-labs':
-        jenkins_server   => 'http://10.4.0.172:8080/ci',
-        jenkins_user     => 'zuul',
-        gerrit_server    => '10.4.0.172',
-        gerrit_user      => 'jenkins',
-        url_pattern      => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
-        status_url       => 'http://integration.wmflabs.org/zuul/status',
-        git_branch       => 'labs',
-        git_dir          => $role::zuul::configuration::zuul_git_dir,
-        push_change_refs => false,
-        statsd_host      => '',
+        gearman_server       => '127.0.0.1',
+        gearman_server_start => true,
+        jenkins_server       => 'http://10.4.0.172:8080/ci',
+        jenkins_user         => 'zuul',
+        gerrit_server        => '10.4.0.172',
+        gerrit_user          => 'jenkins',
+        url_pattern          => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
+        status_url           => 'http://integration.wmflabs.org/zuul/status',
+        git_branch           => 'labs',
+        git_dir              => $role::zuul::configuration::zuul_git_dir,
+        push_change_refs     => false,
+        statsd_host          => '',
     }
 
 } # /role::zuul::labs
@@ -67,16 +69,18 @@ class role::zuul::production {
 
     # TODO: should require Mount['/srv/ssd']
     zuulwikimedia::instance { 'zuul-production':
-        jenkins_server   => 'http://127.0.0.1:8080/ci',
-        jenkins_user     => 'zuul-bot',
-        gerrit_server    => 'ytterbium.wikimedia.org',
-        gerrit_user      => 'jenkins-bot',
-        url_pattern      => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
-        status_url       => 'https://integration.wikimedia.org/zuul/',
-        git_branch       => 'master',
-        git_dir          => $role::zuul::configuration::zuul_git_dir,
-        push_change_refs => false,
-        statsd_host      => '10.64.0.18',  # tungsten.eqiad.wmnet
+        gearman_server       => '127.0.0.1',
+        gearman_server_start => true,
+        jenkins_server       => 'http://127.0.0.1:8080/ci',
+        jenkins_user         => 'zuul-bot',
+        gerrit_server        => 'ytterbium.wikimedia.org',
+        gerrit_user          => 'jenkins-bot',
+        url_pattern          => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
+        status_url           => 'https://integration.wikimedia.org/zuul/',
+        git_branch           => 'master',
+        git_dir              => $role::zuul::configuration::zuul_git_dir,
+        push_change_refs     => false,
+        statsd_host          => '10.64.0.18',  # tungsten.eqiad.wmnet
     }
 
     class { 'contint::zuul::git-daemon':
