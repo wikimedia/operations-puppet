@@ -13,7 +13,7 @@ if [ "$USER" = "gitpuppet" ]; then
 		<%- if worker == @fqdn then next end -%>
 	ssh -t -t <%= worker -%> 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
 		<%- end -%>
-	<%- elsif @hostname == 'sockpuppet.pmtpa.wmnet' -%>
+	<%- elsif @fqdn == 'sockpuppet.pmtpa.wmnet' -%>
 	# TODO: After migration delete the sockpuppet references
 	ssh -t -t stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
 	<%- end -%>
