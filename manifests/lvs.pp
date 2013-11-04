@@ -336,6 +336,7 @@ class lvs::configuration {
 			},
 			'payments' => {
 				'pmtpa' => "208.80.152.213",
+				'eqiad' => {},
 			},
 			'apaches' => {
 				'pmtpa' => "10.2.1.1",
