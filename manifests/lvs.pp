@@ -1118,41 +1118,41 @@ class lvs::monitor {
 	# PMTPA
 	monitor_service_lvs_http_https {
 		"wikimedia-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wikimedialb'],
+			ip_address => $ip['text']['pmtpa']['wikimedialb'],
 			uri => "meta.wikimedia.org!/wiki/Main_Page";
 		"wikipedia-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['text']['pmtpa']['wikipedialb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"wiktionary-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wiktionarylb'],
+			ip_address => $ip['text']['pmtpa']['wiktionarylb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiquote-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wikiquotelb'],
+			ip_address => $ip['text']['pmtpa']['wikiquotelb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wikibookslb'],
+			ip_address => $ip['text']['pmtpa']['wikibookslb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wikisourcelb'],
+			ip_address => $ip['text']['pmtpa']['wikisourcelb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikinews-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wikinewslb'],
+			ip_address => $ip['text']['pmtpa']['wikinewslb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiversity-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wikiversitylb'],
+			ip_address => $ip['text']['pmtpa']['wikiversitylb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"mediawiki-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['mediawikilb'],
+			ip_address => $ip['text']['pmtpa']['mediawikilb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"foundation-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['foundationlb'],
+			ip_address => $ip['text']['pmtpa']['foundationlb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.pmtpa.wikimedia.org":
@@ -1162,10 +1162,10 @@ class lvs::monitor {
 			ip_address => $ip['upload']['pmtpa']['uploadlb'],
 			uri => "upload.wikimedia.org!/monitoring/backend";
 		"wikidata-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wikidatalb'],
+			ip_address => $ip['text']['pmtpa']['wikidatalb'],
 			uri => "www.wikidata.org!/";
 		"wikivoyage-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text-varnish']['pmtpa']['wikivoyagelb'],
+			ip_address => $ip['text']['pmtpa']['wikivoyagelb'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
 	}
 
