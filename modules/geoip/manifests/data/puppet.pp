@@ -15,5 +15,6 @@ class geoip::data::puppet(
     ensure  => directory,
     source  => $source,
     recurse => true,
+    backup  => false,
   }
 }
