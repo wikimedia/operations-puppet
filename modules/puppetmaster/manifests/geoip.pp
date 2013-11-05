@@ -6,6 +6,11 @@ class puppetmaster::geoip {
     $geoip_destdir = "${puppetmaster::volatiledir}/GeoIP"
     $environment = 'http_proxy=http://brewster.wikimedia.org:8080'
 
+    # geoip::data classes depend on this
+    file { $geoip_destdir:
+        ensure => directory,
+    }
+
     # installs the geoip-bin package
     class { '::geoip':
         data_provider  => undef,
