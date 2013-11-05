@@ -164,7 +164,13 @@ class lvs::configuration {
 					'wikidatalb' => '208.80.154.242',
 					'wikivoyagelb' => "208.80.154.243"
 				},
-				'esams' => {},
+				'esams' => {
+					'textlb'    => '91.198.174.192',
+					'loginlb'   => '91.198.174.201',
+
+					#'textlb6'   => '2620:0:862:ed1a::1',
+					'loginlb6'  => '2620:0:862:ed1a::1:9',
+				},
 				'ulsfo' => {
 					'textlb'    => '198.35.26.96',
 					'loginlb'   => '198.35.26.105',
@@ -239,6 +245,8 @@ class lvs::configuration {
 					'wikivoyagelbsecure6' => "2620:0:861:ed1a::13"
 				},
 				'esams' => {
+					'textlbsecure' => '91.198.174.192',
+					'loginlbsecure' => '91.198.174.201',
 					'wikimedialbsecure' => "91.198.174.224",
 					'wikipedialbsecure' => "91.198.174.225",
 					'bitslbsecure' => "91.198.174.233",
@@ -256,6 +264,8 @@ class lvs::configuration {
 					'wikidatalbsecure' => '91.198.174.237',
 					'wikivoyagelbsecure' => '91.198.174.238',
 
+					#'textlb6secure'   => '2620:0:862:ed1a::1',
+					'loginlbsecure6' => '2620:0:862:ed1a::1:9',
 					'wikimedialbsecure6' => "2620:0:862:ed1a::0",
 					'wikipedialbsecure6' => "2620:0:862:ed1a::1",
 					'wiktionarylbsecure6' => "2620:0:862:ed1a::2",
