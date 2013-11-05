@@ -135,6 +135,17 @@ class lvs::configuration {
 				'esams' => {
 					'textsvc' => "10.2.3.25",
 					'wikipedialb' => "91.198.174.225",
+					'wikimedialb' => "91.198.174.224",
+					'wiktionarylb' => "91.198.174.226",
+					'wikiquotelb' => "91.198.174.227",
+					'wikibookslb' => "91.198.174.228",
+					'wikisourcelb' => "91.198.174.229",
+					'wikinewslb' => "91.198.174.230",
+					'wikiversitylb' => "91.198.174.231",
+					'mediawikilb' => "91.198.174.232",
+					'foundationlb' => "91.198.174.235",
+					'wikidatalb' => '91.198.174.237',
+					'wikivoyagelb' => '91.198.174.238',
 				},
 				'ulsfo' => {},
 			},
@@ -153,19 +164,7 @@ class lvs::configuration {
 					'wikidatalb' => '208.80.154.242',
 					'wikivoyagelb' => "208.80.154.243"
 				},
-				'esams' => {
-					'wikimedialb' => "91.198.174.224",
-					'wiktionarylb' => "91.198.174.226",
-					'wikiquotelb' => "91.198.174.227",
-					'wikibookslb' => "91.198.174.228",
-					'wikisourcelb' => "91.198.174.229",
-					'wikinewslb' => "91.198.174.230",
-					'wikiversitylb' => "91.198.174.231",
-					'mediawikilb' => "91.198.174.232",
-					'foundationlb' => "91.198.174.235",
-					'wikidatalb' => '91.198.174.237',
-					'wikivoyagelb' => '91.198.174.238',
-				},
+				'esams' => {},
 				'ulsfo' => {
 					'textlb'    => '198.35.26.96',
 					'loginlb'   => '198.35.26.105',
@@ -1355,42 +1354,42 @@ class lvs::monitor {
 
 	monitor_service_lvs_http_https {
 		"wikimedia-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wikimedialb'],
+			ip_address => $ip['text']['esams']['wikimedialb'],
 			uri => "meta.wikimedia.org!/wiki/Main_Page";
 		"wikipedia-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['wikipedialb'],
 			uri => "meta.wikimedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wiktionary-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wiktionarylb'],
+			ip_address => $ip['text']['esams']['wiktionarylb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiquote-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wikiquotelb'],
+			ip_address => $ip['text']['esams']['wikiquotelb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wikibookslb'],
+			ip_address => $ip['text']['esams']['wikibookslb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wikisourcelb'],
+			ip_address => $ip['text']['esams']['wikisourcelb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikinews-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wikinewslb'],
+			ip_address => $ip['text']['esams']['wikinewslb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiversity-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wikiversitylb'],
+			ip_address => $ip['text']['esams']['wikiversitylb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"mediawiki-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['mediawikilb'],
+			ip_address => $ip['text']['esams']['mediawikilb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"foundation-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['foundationlb'],
+			ip_address => $ip['text']['esams']['foundationlb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.esams.wikimedia.org":
@@ -1403,11 +1402,11 @@ class lvs::monitor {
 			ip_address => $ip['mobile']['esams']['mobilelb'],
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 		"wikidata-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wikidatalb'],
+			ip_address => $ip['text']['esams']['wikidatalb'],
 			uri => "www.wikidata.org!/",
 			critical => "false";
 		"wikivoyage-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['wikivoyagelb'],
+			ip_address => $ip['text']['esams']['wikivoyagelb'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page",
 			critical => "false";
 	}
