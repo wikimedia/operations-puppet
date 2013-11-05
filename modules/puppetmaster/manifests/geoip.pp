@@ -18,14 +18,15 @@ class puppetmaster::geoip {
     }
 
     if $is_labs_puppet_master {
-        # compatibility symlinks
+        # compatibility symlinks, so that users can use the stable paths
+        # GeoIP.dat/GeoIPCity.dat between labs and production
         file { "$geoip_destdir/GeoIP.dat":
             ensure => link,
-            target => "$geoip_destdir/GeoLite.dat",
+            target => 'GeoLite.dat',
         }
         file { "$geoip_destdir/GeoIPCity.dat":
             ensure => link,
-            target => "$geoip_destdir/GeoLiteCity.dat",
+            target => 'GeoLiteCity.dat',
         }
     } else {
         # Fetch the proprietary paid-for MaxMind database
