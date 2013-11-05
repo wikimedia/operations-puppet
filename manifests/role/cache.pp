@@ -85,14 +85,6 @@ class role::cache {
 						'cp1068.eqiad.wmnet',
 					],
 					"esams-squid" => [
-						"knsq23.knams.wikimedia.org",
-						"knsq24.knams.wikimedia.org",
-						"knsq25.knams.wikimedia.org",
-						"knsq26.knams.wikimedia.org",
-						"knsq27.knams.wikimedia.org",
-						"knsq28.knams.wikimedia.org",
-						"knsq29.knams.wikimedia.org",
-
 						"amssq31.esams.wikimedia.org",
 						"amssq32.esams.wikimedia.org",
 						"amssq33.esams.wikimedia.org",
@@ -272,8 +264,14 @@ class role::cache {
 					'knsq5.knams.wikimedia.org',
 					'knsq6.knams.wikimedia.org',
 					'knsq7.knams.wikimedia.org',
-
-					"knsq30.knams.wikimedia.org"
+					'knsq23.knams.wikimedia.org',
+					'knsq24.knams.wikimedia.org',
+					'knsq25.knams.wikimedia.org',
+					'knsq26.knams.wikimedia.org',
+					'knsq27.knams.wikimedia.org',
+					'knsq28.knams.wikimedia.org',
+					'knsq29.knams.wikimedia.org',
+					'knsq30.knams.wikimedia.org'
 				]
 			},
 			"api" => {
