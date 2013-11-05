@@ -214,8 +214,6 @@ else
 
 	# Start loops for highly I/O bound jobs that work on special services (e.g. not the DBs)
 
-	# Legacy Parsoid jobs. TODO: Remove once this queue is drained.
-	(runJobsLoopService "ParsoidCacheUpdateJob" "n"  <%= procs_per_iobound_type %> ) &
 	# Lower priority for Parsoid dependency changes (template / file
 	# updates)
 	(runJobsLoopService "ParsoidCacheUpdateJobOnDependencyChange" "n"  <%= procs_per_iobound_type %> ) &
