@@ -78,15 +78,6 @@ class role::analytics::kafka::config {
     $zookeeper_hosts  = $role::analytics::zookeeper::config::hosts_array
     $zookeeper_chroot = "/kafka/${kafka_cluster_name}"
     $zookeeper_url    = inline_template("<%= zookeeper_hosts.sort.join(',') %><%= zookeeper_chroot %>")
-
-    $metrics_properties = {
-        'kafka.metrics.reporters'                => 'com.criteo.kafka.KafkaGangliaMetricsReporter',
-        'kafka.ganglia.metrics.reporter.enabled' =>  'true',
-        'kafka.ganglia.metrics.host'             => $ganglia_host,
-        'kafka.ganglia.metrics.port'             => $ganglia_port,
-        'kafka.ganglia.metrics.group'            => 'kafka',
-        'kafka.ganglia.metrics.exclude.regex'    => '^("kafka\.cluster".*)|("kafka\.log".*)|("kafka\.network".*)|("kafka\.server":name="ReplicaFetcherThread.*ConsumerLag.*)$'
-    }
 }
 
 # == Class role::analytics::kafka::client
@@ -113,6 +104,11 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         brokers             => $brokers,
         zookeeper_hosts     => $zookeeper_hosts,
         zookeeper_chroot    => $zookeeper_chroot,
-        metrics_properties  => $metrics_properties,
+    }
+
+    # Include the Kafka Server Jmxtrans instance
+    # to send Kafka Broker metrics to Ganglia
+    class { '::kafka::server::jmxtrans':
+        ganglia => "${ganglia_host}:${ganglia_port}",
     }
 }
