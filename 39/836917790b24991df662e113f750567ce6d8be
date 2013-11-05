@@ -1,0 +1,8 @@
+Code-Review+1: Ottomata <otto@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Akosiaris <akosiaris@wikimedia.org>
+Submitted-by: Faidon Liambotis <faidon@wikimedia.org>
+Submitted-at: Tue, 05 Nov 2013 14:53:52 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/93709
+Project: operations/puppet
+Branch: refs/heads/production
