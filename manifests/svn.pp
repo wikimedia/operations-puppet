@@ -1,7 +1,7 @@
 class svn::server {
-	system::role { "svn::server": description => "public SVN server" }
+	system::role { 'svn::server': description => 'public SVN server' }
 
-	require "svn::groups::svn"
+	require 'svn::groups::svn'
 
 	# include webserver::php5
 
@@ -44,10 +44,10 @@ class svn::server {
     include backup::host
     backup::set { 'svnroot': }
 
-	apache_site { "svn": name => "svn", prefix => "000-" }
-	apache_module { authz_svn: name => "authz_svn" }
+	apache_site { 'svn': name => 'svn', prefix => '000-' }
+	apache_module { 'authz_svn': name => 'authz_svn' }
 
-	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
+	monitor_service { 'https': description => 'HTTPS', check_command => 'check_ssl_cert!svn.wikimedia.org' }
 
 	cron { 'svnuser_generation':
 			command => '(cd /var/cache/svnusers && svn up) > /dev/null 2>&1',
@@ -71,21 +71,21 @@ class svn::server {
 		}
 
 		file {
-			"/etc/apache2/svn-authz":
+			'/etc/apache2/svn-authz':
 				owner => 'root',
 				group => 'root',
 				mode => '0444',
-				source => "puppet:///private/svn/svn-authz";
-			"/etc/viewvc/viewvc.conf":
+				source => 'puppet:///private/svn/svn-authz';
+			'/etc/viewvc/viewvc.conf':
 				owner => 'root',
 				group => 'root',
 				mode => '0444',
-				source => "puppet:///files/svn/viewvc.conf";
-			"/etc/viewvc/templates/revision.ezt":
+				source => 'puppet:///files/svn/viewvc.conf';
+			'/etc/viewvc/templates/revision.ezt':
 				owner => 'root',
 				group => 'root',
 				mode => '0444',
-				source => "puppet:///files/svn/revision.ezt";
+				source => 'puppet:///files/svn/revision.ezt';
 		}
 	}
 
@@ -100,8 +100,8 @@ class svn::server {
 
 class svn::groups {
 	class svn {
-		group { "svn":
-			name => "svn",
+		group { 'svn':
+			name => 'svn',
 			gid => 550,
 			alias => 550,
 			ensure => present,
