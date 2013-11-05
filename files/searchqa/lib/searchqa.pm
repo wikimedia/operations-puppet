@@ -23,10 +23,6 @@ our $conf = {
 	'datacenter' => 'eqiad,pmtpa', # process both datacenters by default
 	'pool_mode' => 'lvs', # (lvs|host) query lvs IP or individual host IPs?
 	'api_hosts' => [ qw(
-		search1.pmtpa.wmnet search2.pmtpa.wmnet search3.pmtpa.wmnet search4.pmtpa.wmnet search5.pmtpa.wmnet
-		search6.pmtpa.wmnet search7.pmtpa.wmnet search8.pmtpa.wmnet search9.pmtpa.wmnet search10.pmtpa.wmnet
-		search11.pmtpa.wmnet search12.pmtpa.wmnet search13.pmtpa.wmnet search14.pmtpa.wmnet search15.pmtpa.wmnet
-		search16.pmtpa.wmnet search17.pmtpa.wmnet search18.pmtpa.wmnet search19.pmtpa.wmnet search20.pmtpa.wmnet
 		search1001.eqiad.wmnet search1002.eqiad.wmnet search1003.eqiad.wmnet search1004.eqiad.wmnet
 		search1005.eqiad.wmnet search1006.eqiad.wmnet search1007.eqiad.wmnet search1008.eqiad.wmnet
 		search1009.eqiad.wmnet search1010.eqiad.wmnet search1011.eqiad.wmnet search1012.eqiad.wmnet
@@ -54,19 +50,6 @@ our $conf = {
 			'search_prefix' => {
 				'lvs' => [qw(10.2.2.15)],
 				'host' => [qw(search1017.eqiad.wmnet search1018.eqiad.wmnet)],
-			},
-		},
-		'pmtpa' => {
-			'search_pool1' => {},
-			'search_pool2' => {},
-			'search_pool3' => {},
-			'search_pool4' => {
-				'lvs' => [qw(10.2.1.14)],
-				'host' => [qw(search13.pmtpa.wmnet search14.pmtpa.wmnet)],
-			},
-			'search_prefix' => {
-				'lvs' => [qw(10.2.1.15)],
-				'host' => [qw(search19.pmtpa.wmnet search20.pmtpa.wmnet)],
 			},
 		},
 	},
