@@ -11,11 +11,6 @@ class puppetmaster::geoip {
         ensure => directory,
     }
 
-    # installs the geoip-bin package
-    class { '::geoip':
-        data_provider  => undef,
-    }
-
     # fetch the GeoLite databases
     class { 'geoip::data::lite':
         data_directory => $geoip_destdir,

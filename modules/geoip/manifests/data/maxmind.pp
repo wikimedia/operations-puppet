@@ -23,13 +23,7 @@
 #   }
 # }
 # ...
-# # Include the geoip module (which uses puppet sync for .dat files by default):
-# node client_node1 {
-#   include geoip
-# }
-#
-# # Or if you only want the .dat files:
-# node client_node2 {
+# node client_node {
 #   include geoip::data::puppet
 # }
 #
@@ -40,6 +34,9 @@ class geoip::data::maxmind(
   $user_id        = false,
   $product_ids    = [106])
 {
+  # we need the geoipupdate binary from geoip-bin
+  require geoip::bin
+
   if ! defined(File[$data_directory]) {
     file { $data_directory:
       ensure => directory,
