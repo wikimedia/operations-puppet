@@ -205,11 +205,6 @@ class nfs::upload {
 			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
 			require => File["/mnt/upload6"],
 			ensure => absent;
-		"/mnt/upload5":
-			device => "ms1.wikimedia.org:/export/upload",
-			fstype => "nfs",
-			name => "/mnt/upload5",
-			ensure => absent;
 	}
 }
 
