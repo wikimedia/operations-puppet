@@ -116,19 +116,6 @@ class lvs::configuration {
 				'pmtpa' => {
 					'textsvc' => "10.2.1.25",
 					'wikipedialb' => "208.80.152.201",
-				},
-				'eqiad' => {
-					'textsvc' => "10.2.2.25",
-					'wikipedialb' => "208.80.154.225",
-				},
-				'esams' => {
-					'textsvc' => "10.2.3.25",
-					'wikipedialb' => "91.198.174.225",
-				},
-				'ulsfo' => {},
-			},
-			'text-varnish' => {
-				'pmtpa' => {
 					'wikimedialb' => "208.80.152.200",
 					'wiktionarylb' => "208.80.152.202",
 					'wikiquotelb' => "208.80.152.203",
@@ -141,6 +128,18 @@ class lvs::configuration {
 					'wikidatalb' => '208.80.152.218',
 					'wikivoyagelb' => "208.80.152.219"
 				},
+				'eqiad' => {
+					'textsvc' => "10.2.2.25",
+					'wikipedialb' => "208.80.154.225",
+				},
+				'esams' => {
+					'textsvc' => "10.2.3.25",
+					'wikipedialb' => "91.198.174.225",
+				},
+				'ulsfo' => {},
+			},
+			'text-varnish' => {
+				'pmtpa' => {},
 				'eqiad' => {
 					'wikimedialb' => "208.80.154.224",
 					'wiktionarylb' => "208.80.154.226",
