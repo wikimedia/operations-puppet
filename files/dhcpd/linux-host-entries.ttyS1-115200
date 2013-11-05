@@ -3717,46 +3717,6 @@ host ruthenium {
 	fixed-address ruthenium.eqiad.wmnet;
 }
 
-host search13 {
-	hardware ethernet 00:26:B9:53:54:E2;
-	fixed-address search13.pmtpa.wmnet;
-}
-
-host search14 {
-	hardware ethernet 00:26:B9:53:55:A4;
-	fixed-address search14.pmtpa.wmnet;
-}
-
-host search15 {
-	hardware ethernet 00:26:B9:53:3F:82;
-	fixed-address search15.pmtpa.wmnet;
-}
-
-host search16 {
-	hardware ethernet 00:26:B9:53:55:F5;
-	fixed-address search16.pmtpa.wmnet;
-}
-
-host search17 {
-	hardware ethernet 00:26:B9:53:4F:C4;
-	fixed-address search17.pmtpa.wmnet;
-}
-
-host search18 {
-	hardware ethernet 00:26:B9:53:3E:B5;
-	fixed-address search18.pmtpa.wmnet;
-}
-
-host search19 {
-	hardware ethernet 00:26:B9:53:54:DF;
-	fixed-address search19.pmtpa.wmnet;
-}
-
-host search20 {
-	hardware ethernet 00:26:B9:53:52:32;
-	fixed-address search20.pmtpa.wmnet;
-}
-
 host search1001 {
 	hardware ethernet 84:2b:2b:77:50:b2;
 	fixed-address search1001.eqiad.wmnet;
