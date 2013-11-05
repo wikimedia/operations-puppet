@@ -22,7 +22,7 @@ class puppetmaster::geoip {
         environment    => $environment,
     }
 
-    if $::is_labs_puppet_master {
+    if $is_labs_puppet_master {
         # compatibility symlinks
         file { "$geoip_destdir/GeoIP.dat":
             ensure => link,
