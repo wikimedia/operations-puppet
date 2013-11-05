@@ -199,11 +199,6 @@ host antimony {
 	fixed-address antimony.wikimedia.org;
 }
 
-host argon {
-	hardware ethernet 78:2b:cb:09:11:f0;
-	fixed-address argon.eqiad.wmnet;
-}
-
 host arsenic {
 	hardware ethernet 18:03:73:f1:4f:5e;
 	fixed-address arsenic.eqiad.wmnet;
@@ -3585,11 +3580,6 @@ host mw1220 {
 	fixed-address mw1220.eqiad.wmnet;
 }
 
-host neodymium {
-	hardware ethernet 90:B1:1C:2D:79:8C;
-	fixed-address neodymium.eqiad.wmnet;
-}
-
 host neon {
 	hardware ethernet 78:2b:cb:08:a4:2f;
 	fixed-address neon.wikimedia.org;
@@ -3700,11 +3690,6 @@ host potassium {
 host praseodymium {
 	hardware ethernet 90:B1:1C:00:9E:2B;
 	fixed-address praseodymium.eqiad.wmnet;
-}
-
-host promethium {
-	hardware ethernet 90:B1:1C:2D:6F:0C;
-	fixed-address promethium.eqiad.wmnet;
 }
 
 host rdb1001 {
