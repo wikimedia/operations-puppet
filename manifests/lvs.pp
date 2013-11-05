@@ -269,8 +269,8 @@ class lvs::configuration {
 					'mediawikilbsecure6' => "2620:0:862:ed1a::8",
 					'foundationlbsecure6' => "2620:0:862:ed1a::9",
 					'bitslbsecure6' => "2620:0:862:ed1a::a",
-					'uploadlbsecure6-new' => '2620:0:862:ed1a::2:b',
-					'uploadlbsecure6' => "2620:0:862:ed1a::b",
+					'uploadlbsecure6' => '2620:0:862:ed1a::2:b',
+					'uploadlbsecure6-old' => "2620:0:862:ed1a::b",
 					'mobilelbsecure6' => '2620:0:862:ed1a::c',
 					'wikidatalbsecure6' => "2620:0:862:ed1a::12",
 					'wikivoyagelbsecure6' => "2620:0:862:ed1a::13"
@@ -318,7 +318,7 @@ class lvs::configuration {
 					'wikiversitylb6' => "2620:0:862:ed1a::7",
 					'mediawikilb6' => "2620:0:862:ed1a::8",
 					'foundationlb6' => "2620:0:862:ed1a::9",
-					'uploadlb6' => "2620:0:862:ed1a::b",
+					'uploadlb6-old' => "2620:0:862:ed1a::b",
 					'wikidatalb6' => "2620:0:862:ed1a::12",
 					'wikivoyagelb6' => "2620:0:862:ed1a::13"
 				},
@@ -333,7 +333,7 @@ class lvs::configuration {
 			'upload' => {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
 				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadlb6' => "2620:0:861:ed1a::b", 'uploadsvc' => "10.2.2.24" },
-				'esams' => { 'uploadlb-new' => '91.198.174.208', 'uploadlb' => '91.198.174.234', 'uploadlb6-new' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
+				'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb-old' => '91.198.174.234', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
 				'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b' },
 			},
 			'payments' => {
@@ -1457,7 +1457,7 @@ class lvs::monitor {
 			ip_address => $ip['bits']['esams']['bitslb6'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
 		"upload-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['uploadlb6'],
+			ip_address => $ip['upload']['esams']['uploadlb6'],
 			uri => "upload.wikimedia.org!/monitoring/backend";
 		"mobile-lb.esams.wikimedia.org":
 			ip_address => $ip['mobile']['esams']['mobilelb6'],
