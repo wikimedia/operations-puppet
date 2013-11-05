@@ -1,0 +1,88 @@
+#!/bin/sh
+
+# This is based on geoip-database-contrib_update from Debian's
+# geoip-database-contrib package. The original source can be found at
+# http://git.debian.org/?p=collab-maint/geoip-database-contrib.git
+# and is
+# Copyright: 2010/2013, Ludovico Cavedon <cavedon@debian.org>
+#                       Patrick Matthäi <pmatthaei@debian.org>
+# License: GPL-2+
+#
+# It was modified by Faidon Liambotis for use by the Wikimedia Foundation
+
+DESTDIR=$1
+if [ ! -d "$DESTDIR" ]; then
+	echo "Usage: $0 <destdir>"
+	exit 1
+fi
+
+GEOIP_URL="http://geolite.maxmind.com/download/geoip/database/"
+
+GEOLITE_COUNTRY_PATH="GeoLiteCountry/"
+GEOLITE_COUNTRY_FILE="GeoIP.dat.gz"
+
+GEOLITE_COUNTRY_IPV6_PATH=""
+GEOLITE_COUNTRY_IPV6_FILE="GeoIPv6.dat.gz"
+
+GEOLITE_CITY_PATH=""
+GEOLITE_CITY_FILE="GeoLiteCity.dat.gz"
+
+GEOLITE_CITY_IPV6_PATH="GeoLiteCityv6-beta/"
+GEOLITE_CITY_IPV6_FILE="GeoLiteCityv6.dat.gz"
+
+GEOLITE_ASNUM_PATH="asnum/"
+GEOLITE_ASNUM_FILE="GeoIPASNum.dat.gz"
+
+GEOLITE_ASNUM_IPV6_PATH="asnum/"
+GEOLITE_ASNUM_IPV6_FILE="GeoIPASNumv6.dat.gz"
+
+FAILED=0
+
+for url in \
+    "$GEOIP_URL$GEOLITE_COUNTRY_PATH$GEOLITE_COUNTRY_FILE" \
+    "$GEOIP_URL$GEOLITE_COUNTRY_IPV6_PATH$GEOLITE_COUNTRY_IPV6_FILE" \
+    "$GEOIP_URL$GEOLITE_CITY_PATH$GEOLITE_CITY_FILE" \
+    "$GEOIP_URL$GEOLITE_CITY_IPV6_PATH$GEOLITE_CITY_IPV6_FILE" \
+    "$GEOIP_URL$GEOLITE_ASNUM_PATH$GEOLITE_ASNUM_FILE" \
+    "$GEOIP_URL$GEOLITE_ASNUM_IPV6_PATH$GEOLITE_ASNUM_IPV6_FILE"
+do
+    echo "Downloading: $url"
+
+    # Download file in the same directory as the final one so that the "mv"
+    # below can be atomic.
+    TEMPGZ=$(mktemp --tmpdir=$DESTDIR/ --suffix=.gz)
+    TEMP=${TEMPGZ%.gz}
+    FILEGZ=$(basename $url)
+    FILE=${FILEGZ%.gz}
+
+    # MaxMind is being totally inconsistent and names both GeoIP Country and
+    # GeoLite Country with the same file. Explicitly rename this to
+    # GeoLite.dat, so that we can happily coexist with geoipupdate.
+    case "$FILE" in
+        GeoIP.dat)
+            FILE="GeoLite.dat"
+            ;;
+    esac
+
+    /usr/bin/wget -q -t3 -T15 "$url" -O $TEMPGZ
+
+    if [ "$?" != "0" ]
+    then
+        echo "Failed to download $url"
+    else
+        /bin/gunzip -f $TEMPGZ
+
+        if [ "$?" != "0" ]
+        then
+            echo "Failed to decompress $FILEGZ"
+        else
+            rm -f $DESTDIR/$FILE
+            mv $TEMP $DESTDIR/$FILE
+            chmod 644 $DESTDIR/$FILE
+        fi
+    fi
+
+    rm -f $TEMP $TEMPGZ
+done
+
+exit 0
