@@ -66,56 +66,8 @@ class role::lucene {
 					"indexers" => {
 						"searchidx1001" => ['*']
 					}
-				},
-				"pmtpa" => {
-					"front_ends" => {
-						# servers search21 -36 have been decommissioned.
-						"pool1" => {},
-						"pool2" => {},
-						"pool3" => {},
-						"pool4" => {
-							"search13" => ['*?'],
-							"search14" => ['*?'],
-							"search15" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
-								'wikidatawiki', 'metawiki', 'enwiktionary',
-								'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
-							"search16" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
-								'wikidatawiki', 'metawiki', 'enwiktionary',
-								'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
-							"search17" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
-							"search18" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
-						},
-						"prefix" => {
-							"search19" => ['*.prefix'],
-							"search20" => ['*.prefix'],
-						},
-						# assigned to fake host to disable them
-						"disabled" => {
-							"search1000x" => ['*tspart1', '*tspart2', 'en-titles*', 'de-titles*', 'ja-titles*', 'it-titles*',
-								'sv-titles*', 'pl-titles*', 'pt-titles*', 'es-titles*', 'zh-titles*', 'nl-titles*', 'ru-titles*', 'fr-titles*',
-								'commonswiki.spell', 'commonswiki.nspart1.hl', 'commonswiki.nspart1', 'commonswiki.nspart2.hl', 'commonswiki.nspart2',
-								'*.related', 'jawiki.nspart1.hl', 'jawiki.nspart2.hl', 'zhwiki.nspart1.hl', 'zhwiki.nspart2.hl'],
-						}
-					},
-					"indexers" => {
-						"searchidx2" => ['*'],
-					}
 				}
-			},  # production
-			'labs' => {
-				'pmtpa' => {
-					'front_ends' => {
-						'poolbeta' => {
-							# deployment-search01
-							'10.4.1.81' => ['*'],
-						}
-					},
-					'indexers' => {
-							# deployment-searchidx01.pmtpa.wmflabs
-							'10.4.0.56' => ['*'],
-					},
-				},  # labs pmtpa
-			},  # labs
+			}
 		}
 
 		# hash for lsearch-global configuration template
