@@ -871,7 +871,7 @@ class misc::statistics::geowiki::jobs::data {
         misc::statistics::geowiki::mysql::conf::research,
         passwords::mysql::globaldev,
         misc::statistics::packages::python,
-        misc::geoip
+        geoip
 
     $geowiki_user = $misc::statistics::geowiki::geowiki_user
     $geowiki_path = $misc::statistics::geowiki::geowiki_path

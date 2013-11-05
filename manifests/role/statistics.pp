@@ -13,7 +13,7 @@ class role::statistics::cruncher inherits role::statistics {
 	system::role { "role::statistics": description => "statistics number crunching server" }
 
 	# include classes needed for crunching data on stat1.
-	include misc::geoip,
+	include geoip,
 		misc::statistics::dataset_mount,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
@@ -52,7 +52,7 @@ class role::statistics::private inherits role::statistics {
 	system::role { "role::statistics": description => "statistics private data host" }
 
 	# include classes needed for crunching private data on stat1002
-	include misc::geoip,
+	include geoip,
 		misc::statistics::dataset_mount,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,

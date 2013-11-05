@@ -35,7 +35,7 @@ class role::analytics::common {
         role::analytics::sqoop
 
     # We want to be able to geolocate IP addresses
-    include misc::geoip
+    include geoip
     # udp-filter is a useful thing!
     include misc::udp2log::udp_filter
     # include dclass for device classification
