@@ -41,6 +41,9 @@ class svn::server {
 			mode => '0775';
 	}
 
+    include backup::host
+    backup::set { 'svnroot': }
+
 	apache_site { "svn": name => "svn", prefix => "000-" }
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
