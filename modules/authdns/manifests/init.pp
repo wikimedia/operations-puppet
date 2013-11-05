@@ -11,7 +11,7 @@ class authdns(
 ) {
     require authdns::account
     require authdns::scripts
-    require geoip::data::package
+    require geoip::data::puppet
 
     package { 'gdnsd':
         ensure => installed,
