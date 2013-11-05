@@ -117,21 +117,6 @@ host db40 {
 	fixed-address db40.pmtpa.wmnet;
 }
 
-host ms1 {
-	hardware ethernet 0:14:4f:a6:d0:a0;
-	fixed-address ms1.pmtpa.wmnet;
-}
-
-host ms3 {
-	hardware ethernet 00:14:4f:f2:c4:1c;
-	fixed-address ms3.pmtpa.wmnet;
-}
-
-host ms4 {
-	hardware ethernet 00:14:4f:f2:91:24;
-	fixed-address ms4.pmtpa.wmnet;
-}
-
 host ms5 {
 	hardware ethernet 0:14:4f:f2:9c:54;
 	fixed-address ms5.pmtpa.wmnet;
