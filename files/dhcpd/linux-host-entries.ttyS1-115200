@@ -1566,11 +1566,6 @@ host manutius {
 	fixed-address manutius.wikimedia.org;
 }
 
-host marmontel {
-	hardware ethernet d4:be:d9:af:68:bb;
-	fixed-address marmontel.wikimedia.org;
-}
-
 host mc1001 {
 	hardware ethernet 00:1b:21:7a:88:0b;
 	fixed-address mc1001.eqiad.wmnet;
