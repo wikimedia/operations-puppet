@@ -103,7 +103,7 @@ class role::cache {
 						"amssq46.esams.wikimedia.org",
 					],
 					"esams" => [
-						'amssq47.esams.wikimedia.org',
+						#'amssq47.esams.wikimedia.org', # Test host
 						'amssq48.esams.wikimedia.org',
 						'amssq49.esams.wikimedia.org',
 						'amssq50.esams.wikimedia.org',
