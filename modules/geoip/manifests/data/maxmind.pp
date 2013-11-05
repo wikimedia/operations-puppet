@@ -4,7 +4,7 @@
 # This also installs a cron job to do this weekly.
 #
 # == Parameters
-# $data_directory - Where the data files should live.  default: $geoip::data::data_directory
+# $data_directory - Where the data files should live.
 # $environment    - The environment parameter to pass to exec and cron for the
 #                   geoipupdate download command. default: undef
 # $license_key    - MaxMind license key.  Required.
@@ -34,12 +34,18 @@
 # }
 #
 class geoip::data::maxmind(
-  $data_directory = $geoip::data::data_directory,
+  $data_directory = '/usr/share/GeoIP',
   $environment    = undef,
   $license_key    = false,
   $user_id        = false,
-  $product_ids    = [106]) inherits geoip::data
+  $product_ids    = [106])
 {
+  if ! defined(File[$data_directory]) {
+    file { $data_directory:
+      ensure => directory,
+    }
+  }
+
   $config_file = '/etc/GeoIP.conf'
 
   validate_string($license_key)

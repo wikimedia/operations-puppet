@@ -1,20 +1,25 @@
 # == Class geoip::data::lite
-# Installs Maxmind GeoLite database files by downloading
-# them from Maxmind with a wget wrapper script.
-# This also installs a cron job to do this weekly.
+# Installs Maxmind GeoLite database files by downloading them from Maxmind with
+# a wget wrapper script. This also installs a cron job to do this weekly.
 #
 # == Parameters
-# $data_directory - Where the data files should live.  default: $geoip::data::data_directory
+# $data_directory - Where the data files should live.
 # $environment    - The environment parameter to pass to exec and cron for the
 #                   geoliteupdate download command. default: undef
 
 class geoip::data::lite(
-  $data_directory = $geoip::data::data_directory,
-  $environment    = undef) inherits geoip::data
+  $data_directory = '/usr/share/GeoIP',
+  $environment    = undef)
 {
+  if ! defined(File[$data_directory]) {
+    file { $data_directory:
+      ensure => directory,
+    }
+  }
+
   file { '/usr/local/bin/geoliteupdate':
     ensure => present,
-    mdoe   => '0555',
+    mode   => '0555',
     owner  => 'root',
     group  => 'root',
     source => "puppet:///${module_name}/geoliteupdate",

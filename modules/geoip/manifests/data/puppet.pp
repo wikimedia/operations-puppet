@@ -3,16 +3,16 @@
 #
 # == Parameters
 # $source         - A valid puppet source directory.
-# $data_directory - Where the data files should live. Default: $geoip::data::data_directory
+# $data_directory - Where the data files should live.
 #
 class geoip::data::puppet(
   $source,
-  $data_directory = $geoip::data::data_directory,
-) inherits geoip::data
+  $data_directory = '/usr/share/GeoIP',
+)
 {
-  # Recursively copy the $data_directory from $source.
-  # (The file resource for $data_directory is defined in geoip::data.)
-  File[$data_directory] {
+  # recursively copy the $data_directory from $source.
+  file { $data_directory:
+    ensure  => directory,
     source  => $source,
     recurse => true,
   }
