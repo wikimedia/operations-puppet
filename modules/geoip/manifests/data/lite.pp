@@ -13,6 +13,10 @@ class geoip::data::lite(
   $environment    = undef) inherits geoip::data
 {
   file { '/usr/local/bin/geoliteupdate':
+    ensure => present,
+    mdoe   => '0555',
+    owner  => 'root',
+    group  => 'root',
     source => "puppet:///${module_name}/geoliteupdate",
   }
 
