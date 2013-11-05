@@ -8,19 +8,9 @@
 # in the geoip module itself.  What to do?  hmmm hooo...
 #
 class misc::geoip {
-  # If running in production,
-  # then sync GeoIP .dat files from puppetmaster.
   if ($::realm == 'production') {
-    class { '::geoip':
-      data_provider => 'puppet',
-      puppet_source => 'puppet:///volatile/GeoIP',
-    }
-  }
-
-  # Else just use the geoip-database package
-  else {
-    class { '::geoip':
-      data_provider => 'package',
-    }
+    include geoip::data::puppet
+  } else {
+    include geoip::data::package
   }
 }
