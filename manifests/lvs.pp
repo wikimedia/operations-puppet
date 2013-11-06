@@ -1363,6 +1363,9 @@ class lvs::monitor {
 	# ESAMS
 
 	monitor_service_lvs_http_https {
+		"text-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['textlb'],
+			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"wikimedia-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['wikimedialb'],
 			uri => "meta.wikimedia.org!/wiki/Main_Page";
@@ -1422,6 +1425,9 @@ class lvs::monitor {
 	}
 
 	monitor_service_lvs6_http_https {
+		#"text-lb.esams.wikimedia.org":
+		#	ip_address => $ip['text-varnish']['esams']['textlb6'],
+		#	uri => "en.wikipedia.org!/wiki/Main_Page";
 		"wikimedia-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikimedialb6'],
 			uri => "meta.wikimedia.org!/wiki/Main_Page",
