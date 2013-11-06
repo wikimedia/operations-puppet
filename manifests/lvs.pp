@@ -133,7 +133,6 @@ class lvs::configuration {
 					'wikipedialb' => "208.80.154.225",
 				},
 				'esams' => {
-					'textsvc' => "10.2.3.25",
 					'wikipedialb' => "91.198.174.225",
 					'wikimedialb' => "91.198.174.224",
 					'wiktionarylb' => "91.198.174.226",
@@ -165,6 +164,7 @@ class lvs::configuration {
 					'wikivoyagelb' => "208.80.154.243"
 				},
 				'esams' => {
+					'textsvc'   => '10.2.3.25',
 					'textlb'    => '91.198.174.192',
 					'loginlb'   => '91.198.174.201',
 
