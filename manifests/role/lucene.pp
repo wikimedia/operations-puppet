@@ -4,6 +4,10 @@ class role::lucene {
 	class configuration {
 		$nodes = {
 			'production' => {
+				"pmtpa" => {
+					"front_ends" => {},
+					"indexers" => {}
+				},
 				"eqiad" => {
 					"front_ends" => {
 						# enwiki
