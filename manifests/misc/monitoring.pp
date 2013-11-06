@@ -116,8 +116,9 @@ class misc::monitoring::views {
 # == Parameters:
 # $host_regex - regex to pass to ganglia::view for matching host names in the view.
 #
-define misc::monitoring::view::udp2log($host_regex) {
+define misc::monitoring::view::udp2log($host_regex, $ensure = 'present') {
     ganglia::view { $name:
+        ensure => $ensure,
         graphs => [
             {
                 'host_regex'   => $host_regex,
@@ -179,8 +180,9 @@ define misc::monitoring::view::udp2log($host_regex) {
 # == Parameters:
 # $kafka_broker_host_regex   - regex matching kafka broker hosts
 #
-define misc::monitoring::view::kafka($kafka_broker_host_regex) {
+define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'present') {
     ganglia::view { $name:
+        ensure => $ensure,
         graphs => [
             # Messages In
             {
@@ -237,8 +239,9 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex) {
 # $kafka_broker_host_regex   - regex matching kafka broker hosts
 # $kafka_producer_host_regex - regex matching kafka producer hosts, this is the same as upd2log hosts
 #
-class misc::monitoring::view::analytics::data($hdfs_stat_host, $kafka_broker_host_regex, $kafka_producer_host_regex) {
+class misc::monitoring::view::analytics::data($hdfs_stat_host, $kafka_broker_host_regex, $kafka_producer_host_regex, $ensure = 'present') {
     ganglia::view { 'analytics-data':
+        ensure => $ensure,
         graphs => [
             {
                 'host_regex'   => $kafka_producer_host_regex,
