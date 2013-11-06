@@ -2,6 +2,11 @@ class misc::beta::autoupdater {
 
 	require misc::deployment::common_scripts
 
+	# Parsoid JavaScript dependencies are updated on beta via npm
+	package { 'npm':
+		ensure => present,
+	}
+
 	file {
 		# Old shell version
 		"/usr/local/bin/wmf-beta-autoupdate":
