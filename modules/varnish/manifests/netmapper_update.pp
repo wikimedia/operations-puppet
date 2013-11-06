@@ -24,7 +24,7 @@ class varnish::netmapper_update_common {
     }
 }
 
-define varnish::netmapper_update($url, $hour = '*', $minute = '*/10') {
+define varnish::netmapper_update($url, $hour = '*', $minute = '*/5') {
     require 'varnish::netmapper_update_common'
 
     $cmd = "/usr/share/varnish/netmapper_update.sh \"${name}\" \"${url}\""
