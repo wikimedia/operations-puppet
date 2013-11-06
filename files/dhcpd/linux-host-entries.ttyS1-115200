@@ -161,12 +161,12 @@ host analytics1020 {
 
 host analytics1021 {
 	hardware ethernet 90:b1:1c:06:c9:a2;
-	fixed-address analytics1021.eqiad.wmnet;
+	fixed-address analytics1021.wikimedia.org;
 }
 
 host analytics1022 {
 	hardware ethernet 90:b1:1c:12:88:3c;
-	fixed-address analytics1022.eqiad.wmnet;
+	fixed-address analytics1022.wikimedia.org;
 }
 
 host analytics1023 {
