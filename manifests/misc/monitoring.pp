@@ -187,35 +187,35 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
             # Messages In
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-MessagesInPerSec.FifteenMinuteRate',
+                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-MessagesInPerSec.OneMinuteRate',
                 'type'         => 'stack',
             },
 
             # Bytes In
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-BytesInPerSec.FifteenMinuteRate',
+                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-BytesInPerSec.OneMinuteRate',
                 'type'         => 'stack',
             },
 
             # BytesOut
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-BytesOutPerSec.FifteenMinuteRate',
+                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-BytesOutPerSec.OneMinuteRate',
                 'type'         => 'stack',
             },
 
             # Produce Requests
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.network.RequestMetrics.Produce-RequestsPerSec.FifteenMinuteRate',
+                'metric_regex' => 'kafka.network.RequestMetrics.Produce-RequestsPerSec.OneMinuteRate',
                 'type'         => 'stack',
             },
 
             # Failed Produce Requests
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-FailedProduceRequestsPerSec.FifteenMinuteRate',
+                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-FailedProduceRequestsPerSec.OneMinuteRate',
                 'type'         => 'stack',
             },
 
