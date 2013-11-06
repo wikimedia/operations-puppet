@@ -108,7 +108,7 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/zookeeper',
 				},
-			    'github-kraken'           => {
+				'github-kraken'           => {
 					'url'                  => 'git@github.com:wikimedia/kraken',
 					'threads'              => '1',
 					'authGroup'            => 'mediawiki-replication',
@@ -136,6 +136,26 @@ class role::gerrit {
 					'remoteNameStyle'      => 'dash',
 					'mirror'               => 'true',
 					'projects'             => 'operations/software/varnish/varnishkafka',
+				},
+
+				'github-oojs-core' => {
+					'url'                  => 'git@github.com:wikimedia/oojs',
+					'threads'              => '1',
+					'authGroup'            => 'mediawiki-replication',
+					'push'                 => $replication_basic_push_refs,
+					'remoteNameStyle'      => 'dash',
+					'mirror'               => 'true',
+					'projects'             => 'oojs/core',
+				},
+
+				'github-oojs-ui' => {
+					'url'                  => 'git@github.com:wikimedia/oojs-ui',
+					'threads'              => '1',
+					'authGroup'            => 'mediawiki-replication',
+					'push'                 => $replication_basic_push_refs,
+					'remoteNameStyle'      => 'dash',
+					'mirror'               => 'true',
+					'projects'             => 'oojs/ui',
 				},
 			}
 		}
