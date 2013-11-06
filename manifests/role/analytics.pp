@@ -10,10 +10,10 @@ class role::analytics {
     # ganglia cluster name.
     $cluster = "analytics"
 
+    package { 'openjdk-7-jdk': }
+
     include standard
     include admins::roots
-    # include java on all analytics servers
-    include role::analytics::java
     # Include stats system user to
     # run automated jobs and for file
     # ownership.
@@ -44,16 +44,6 @@ class role::analytics::common {
     # Include Kraken repository deployments.
     include role::analytics::kraken
 }
-
-
-class role::analytics::java {
-    # All analytics nodes need java installed.
-    java { 'java-7-openjdk':
-        distribution => 'openjdk',
-        version      => 7,
-    }
-}
-
 
 
 class role::analytics::users {
@@ -109,7 +99,6 @@ class role::analytics::dclass {
     if !defined(Package['libdclass-java']) {
         package { 'libdclass-java':
             ensure  => 'installed',
-            require => Class['role::analytics::java'],
         }
     }
     # Symlink libdclass* .so into /usr/lib.
