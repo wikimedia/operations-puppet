@@ -82,23 +82,28 @@ class misc::monitoring::views {
     misc::monitoring::view::udp2log { 'udp2log':
         host_regex => 'emery|oxygen|erbium',
     }
-    misc::monitoring::view::udp2log { 'udp2log-analytics':
-        host_regex => 'analytics100[689].eqiad.wmnet',
-    }
+
     misc::monitoring::view::kafka { 'kafka':
-        kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
-        kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
+        kafka_broker_host_regex   => 'analytics102[12].*',
     }
-    class { 'misc::monitoring::view::analytics::data':
-        hdfs_stat_host            => 'analytics1027.eqiad.wmnet',
-        kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
-        kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
-    }
+
     class { 'misc::monitoring::view::navigation_timing': }
     class { 'misc::monitoring::view::static_assets': }
     class { 'misc::monitoring::view::bits_ttfb': }
     class { 'misc::monitoring::view::visual_editor': }
     class { 'misc::monitoring::view::mobile': }
+
+    # disabled views
+    misc::monitoring::view::udp2log { 'udp2log-analytics':
+        ensure     => 'absent',
+        host_regex => 'analytics100[689].eqiad.wmnet',
+    }
+    class { 'misc::monitoring::view::analytics::data':
+        ensure                    => 'absent',
+        hdfs_stat_host            => 'analytics1027.eqiad.wmnet',
+        kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
+        kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
+    }
 
 }
 
@@ -173,45 +178,50 @@ define misc::monitoring::view::udp2log($host_regex) {
 #
 # == Parameters:
 # $kafka_broker_host_regex   - regex matching kafka broker hosts
-# $kafka_producer_host_regex - regex matching kafka producer hosts
 #
-define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_producer_host_regex) {
+define misc::monitoring::view::kafka($kafka_broker_host_regex) {
     ganglia::view { $name:
         graphs => [
+            # Messages In
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka_network_SocketServerStats.ProduceRequestsPerSecond',
+                'metric_regex' => 'kafka\.server\.BrokerTopicMetrics\..+-MessagesInPerSec\.FifteenMinuteRate',
                 'type'         => 'stack',
             },
+
+            # Bytes In
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka_network_SocketServerStats.FetchRequestsPerSecond',
+                'metric_regex' => 'kafka\.server\.BrokerTopicMetrics\..+-BytesInPerSec\.FifteenMinuteRate',
                 'type'         => 'stack',
             },
+
+            # BytesOut
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka_network_SocketServerStats.BytesWrittenPerSecond',
+                'metric_regex' => 'kafka\.server\.BrokerTopicMetrics\..+-BytesOutPerSec\.FifteenMinuteRate',
                 'type'         => 'stack',
             },
+
+            # Produce Requests
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka_network_SocketServerStats.BytesReadPerSecond',
+                'metric_regex' => 'kafka\.network\.RequestMetrics\.Produce-RequestsPerSec\.FifteenMinuteRate',
                 'type'         => 'stack',
             },
+
+            # Failed Produce Requests
             {
                 'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka_message_LogFlushStats.FlushesPerSecond',
+                'metric_regex' => 'kafka\.server\.BrokerTopicMetrics\..+-FailedProduceRequestsPerSec\.FifteenMinuteRate',
                 'type'         => 'stack',
             },
+
+            # Under Replicated Partitions
             {
-                'host_regex'   => $kafka_producer_host_regex,
-                'metric_regex' => 'udp2log_kafka_producer_.+.ProduceRequestsPerSecond',
-                'type'         => 'stack',
-            },
-            {
-                'host_regex'   => $kafka_producer_host_regex,
-                'metric_regex' => 'udp2log_kafka_producer_.+.AsyncProducerEvents',
-                'type'         => 'stack',
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => 'kafka\.server\.ReplicaManager\.UnderReplicatedPartitions\.Value',
+                'type'         => 'line',
             },
         ],
     }
