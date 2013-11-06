@@ -59,7 +59,7 @@ class role::eqiad-proxy {
 }
 
 # A dynamic HTTP routing proxy, based on nginx+lua+redis
-class role::proxy-project {
+class role::dyanamicproxy {
     install_certificate{ 'star.wmflabs.org':
         privatekey => false
     }
