@@ -148,6 +148,9 @@ node "analytics1009.eqiad.wmnet" {
     # ganglia aggregator for the Ciscos in Analytics cluster.
     $ganglia_aggregator = true
 
+    # include analytics user accounts
+    include role::analytics::users
+
     include role::analytics::common
     include role::analytics::hadoop::standby
 }
@@ -155,6 +158,9 @@ node "analytics1009.eqiad.wmnet" {
 # analytics1010 is the Hadoop master node
 # (primary NameNode, ResourceManager, etc.)
 node "analytics1010.eqiad.wmnet" {
+    # include analytics user accounts
+    include role::analytics::users
+
     include role::analytics::common
     include role::analytics::hadoop::master
 }
@@ -165,12 +171,11 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
     if ($::hostname == 'analytics1011') {
         $ganglia_aggregator = true
     }
+    # include analytics user accounts
+    include role::analytics::users
 
     include role::analytics::common
     include role::analytics::hadoop::worker
-
-    # include analytics user accounts
-    include role::analytics::users
 }
 
 # analytics1021 and analytics1022 are Kafka Brokers.
@@ -187,10 +192,10 @@ node /analytics102[345].eqiad.wmnet/ {
 
 # analytics1026 is a Hadoop client and job submitter.
 node "analytics1026.eqiad.wmnet" {
-    include role::analytics::common
     # include analytics user accounts
     include role::analytics::users
-
+    
+    include role::analytics::common
     # Including kraken import and hive partition cron jobs.
     include role::analytics::kraken::jobs::import::pagecounts
     include role::analytics::kraken::jobs::hive::partitions::external
