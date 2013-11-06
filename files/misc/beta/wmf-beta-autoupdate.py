@@ -12,6 +12,7 @@ MUST be run as the `mwdeploy` user although that is not enforced by the script.
 
 import argparse
 import logging
+import os.path
 import subprocess
 import sys
 
@@ -52,6 +53,7 @@ def main():
         pull_mediawiki(),
         pull_extensions(),
         update_extensions(),
+        update_parsoid_deps(),
         update_l10n(),
     ]
     logger.info("Executions completed %s", exit_codes)
@@ -102,6 +104,13 @@ def update_extensions():
     """Registers and updates MediaWiki extensions submodules"""
     return runner(name='mwext', path=PATH_MWEXT, cmd=[
         'git', 'submodule', 'update', '--init', '--recursive'])
+
+
+def update_parsoid_deps():
+    """Fetch parsoid Javascript dependencies using npm"""
+    parsoid_path = os.path.join(PATH_MWEXT, 'Parsoid/js')
+    return runner(name='parsoid-deps', path=parsoid_path, cmd=[
+        'npm', 'install', '--verbose', '--color', 'always'])
 
 
 def update_l10n():
