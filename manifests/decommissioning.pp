@@ -5,7 +5,7 @@
 $decommissioned_servers = [
 'br1-knams',
 'controller',
-'cp1021',
+'cp1021',    # cp 1021-1042 were reclaimed, 5981
 'cp1022',
 'cp1023',
 'cp1024',
@@ -25,7 +25,7 @@ $decommissioned_servers = [
 'cp1042',
 'cp3001',
 'cp3002',
-'db32',
+'db32', # db32,39,426,51-3,55-6,58-9 decommed: rt 6231
 'db39',
 'db42',
 'db43',
@@ -41,10 +41,10 @@ $decommissioned_servers = [
 'db59',
 # 'dysprosium', add this back later when it's reclaimed
 'ms1',
-'ms2',
+'ms2',        #5994 decommed
 'ms3',
-'ms4',
-'search21',
+'ms4',        #885  decommed
+'search21',   #6106 decommed search21-36
 'search22',
 'search23',
 'search24',
@@ -60,29 +60,29 @@ $decommissioned_servers = [
 'search34',
 'search35',
 'search36',
-'sq31',
-'sq32',
-'sq33',
-'sq34',
-'sq35',
-'sq36',
-'sq38',
-'sq39',
-'sq40',
-'sq41',
-'sq42',
-'sq44',
-'sq45',
-'sq46',
-'sq47',
-'sq48',
+'sq31',  #1706 decommed
+'sq32',  #2472 decommed
+'sq33',  #4992 decommed
+'sq34',  #2823 decommed
+'sq35',  #1404 decommed
+'sq36',  #5727 decommed
+'sq38',  #2017 decommed
+'sq39',  #2581 decommed
+'sq40',  #2581 decommed
+'sq41',  #5646 decommed
+'sq42',  #5754 decommed
+'sq44',  #6367 decommed
+'sq45',  #5986 decommed
+'sq46',  #2581 decommed
+'sq47',  #1597 decommed
+'sq48',  #6274 decommed
 'ssl3004', #added 9/17
-'virt1001',
+'virt1001', #3687 renamed virt1001-3
 'virt1002',
 'virt1003',
-'virt1',
+'virt1',  #5645 decommed
 'virt3',
 'virt4',
 'wikinews-lb.wikimedia.org',
-'williams',
+'williams', #5908 decommed
 ]
