@@ -590,7 +590,10 @@ class role::cache {
 				default => ['default_ttl=2592000'],
 			},
 			storage => $::realm ? {
-				'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+				'production' => $::hostname ? {
+					/^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+					default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+				},
 				'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
 			},
 			directors => $varnish_be_directors[$cluster_tier],
