@@ -927,8 +927,9 @@ class misc::statistics::geowiki::jobs::limn {
         misc::statistics::packages::python
 
     $geowiki_user = $misc::statistics::geowiki::geowiki_user
+    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
     $geowiki_scripts_path = $misc::statistics::geowiki::geowiki_scripts_path
-    $geowiki_data_path = '/a/geowiki-data'
+    $geowiki_data_path = "${geowiki_base_path}/data"
     $geowiki_mysql_research_conf_file = $misc::statistics::geowiki::mysql::conf::research::conf_file
 
     git::clone { 'geowiki-data':
