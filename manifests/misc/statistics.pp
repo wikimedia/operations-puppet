@@ -821,9 +821,9 @@ class misc::statistics::geowiki {
 
     $geowiki_user = $misc::statistics::user::username
     $geowiki_base_path = '/a/geowiki'
-    $geowiki_scripts_path = "${geowiki_base_path}"
+    $geowiki_scripts_path = "${geowiki_base_path}/scripts"
 
-    git::clone { 'geowiki':
+    git::clone { 'geowiki-scripts':
         directory => $geowiki_scripts_path,
         origin    => "https://gerrit.wikimedia.org/r/p/analytics/geowiki.git",
         ensure    => 'latest',
@@ -950,7 +950,7 @@ class misc::statistics::geowiki::jobs::limn {
         user    => $geowiki_user,
         command => "${geowiki_scripts_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir=${geowiki_data_path} --source_sql_cnf=${geowiki_mysql_research_conf_file}",
         require => [
-            Git::Clone['geowiki'],
+            Git::Clone['geowiki-scripts'],
             Git::Clone['geowiki-data'],
             File[$geowiki_mysql_research_conf_file],
         ],
