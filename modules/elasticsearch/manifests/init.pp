@@ -34,7 +34,7 @@ class elasticsearch($cluster_name,
     package { 'elasticsearch':
         ensure  => present,
         require => [
-            Java['java-default'],
+            Package['openjdk-7-jdk'],
             File['/etc/elasticsearch/elasticsearch.yml'],
             File['/etc/elasticsearch/logging.yml'],
             File['/etc/default/elasticsearch'],
