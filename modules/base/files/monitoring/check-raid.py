@@ -34,6 +34,8 @@ def main():
             status = checkMegaSas()
         elif utility == 'zpool':
             status = checkZfs()
+        elif utility == 'mptsas':
+            status = checkmptsas()
         elif utility == 'mdadm':
             status = checkSoftwareRaid()
         else:
@@ -75,6 +77,12 @@ def getLinuxUtility():
     if utility is not None:
         return utility
 
+    try:
+        f = open("/proc/scsi/mptsas/0", "r")
+        return "mptsas"
+    except IOError:
+        pass
+
     # Try mdadm
     devices = getSoftwareRaidDevices()
     if len(devices):
@@ -102,6 +110,40 @@ def getSoftwareRaidDevices():
     proc.wait()
 
     return devices
+
+
+def checkmptsas():
+    status = 0
+    if not os.path.exists('/usr/sbin/mpt-status'):
+        print 'mpt-status not installed'
+        return 255
+
+    try:
+        proc = subprocess.Popen([
+                                '/usr/sbin/mpt-status',
+                                '--autoload',
+                                '--status_only'],
+                                stdout=subprocess.PIPE)
+    except Exception as e:
+        print 'Unable to execute mpt-status: %s' % e
+        return 254
+
+    log_drive_re = re.compile('^log_id \d (\w+)$')
+    phy_drive_re = re.compile('^phys_id (\d) (\w+)$')
+
+    for line in proc.stdout:
+        m = log_drive_re.match(line)
+        if m is not None:
+            print 'RAID STATUS: %s' % m.group(1)
+            if m.group(1) != 'OPTIMAL':
+                status = 1
+        m = phy_drive_re.match(line)
+        if m is not None:
+            print 'DISK %s STATUS: %s' % (m.group(1), m.group(2))
+
+    proc.wait()
+
+    return status
 
 
 def checkAdaptec():
