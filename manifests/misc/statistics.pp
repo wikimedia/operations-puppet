@@ -893,6 +893,25 @@ class misc::statistics::geowiki::repo::data_private_bare {
     }
 }
 
+# == Class misc::statistics::geowiki::repo::data_private
+# Makes sure the geowiki's data-private repository is available.
+#
+class misc::statistics::geowiki::repo::data_private {
+    require misc::statistics::geowiki,
+        misc::statistics::geowiki::repo::data_private_bare
+
+    $geowiki_user = $misc::statistics::geowiki::geowiki_user
+    $geowiki_private_data_path = "${geowiki_base_path}/data-private"
+    $geowiki_private_data_bare_path = $misc::statistics::geowiki::repo::data_private_bare::geowiki_private_data_bare_path
+
+    git::clone { 'geowiki-data-private':
+        directory => $geowiki_private_data_path,
+        origin    => "file://${geowiki_private_data_bare_path}",
+        ensure    => 'latest',
+        owner     => $geowiki_user,
+    }
+}
+
 # == Class misc::statistics::geowiki::jobs::data
 # Installs a cron job to get recent editor data
 # from the research slave databases and generate
@@ -952,27 +971,19 @@ password=${globaldev_mysql_pass}
 class misc::statistics::geowiki::jobs::limn {
     require misc::statistics::geowiki,
         misc::statistics::geowiki::mysql::conf::research,
-        misc::statistics::geowiki::repo::data_private_bare,
+        misc::statistics::geowiki::repo::data_private,
         misc::statistics::packages::python
 
     $geowiki_user = $misc::statistics::geowiki::geowiki_user
     $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
     $geowiki_scripts_path = $misc::statistics::geowiki::geowiki_scripts_path
     $geowiki_public_data_path = "${geowiki_base_path}/data-public"
-    $geowiki_private_data_path = "${geowiki_base_path}/data-private"
-    $geowiki_private_data_bare_path = $misc::statistics::geowiki::repo::data_private_bare::geowiki_private_data_bare_path
+    $geowiki_private_data_path = $misc::statistics::geowiki::repo::data_private::geowiki_private_data_path
     $geowiki_mysql_research_conf_file = $misc::statistics::geowiki::mysql::conf::research::conf_file
 
     git::clone { 'geowiki-data-public':
         directory => $geowiki_public_data_path,
         origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki/data-public.git",
-        ensure    => 'latest',
-        owner     => $geowiki_user,
-    }
-
-    git::clone { 'geowiki-data-private':
-        directory => $geowiki_private_data_path,
-        origin    => "file://${geowiki_private_data_bare_path}",
         ensure    => 'latest',
         owner     => $geowiki_user,
     }
