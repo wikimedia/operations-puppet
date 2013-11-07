@@ -863,6 +863,36 @@ default-character-set=utf8
     }
 }
 
+# == Class misc::statistics::geowiki::repo::data_private_bare
+# Makes sure the geowiki's bare data-private repository is available.
+#
+class misc::statistics::geowiki::repo::data_private_bare {
+    require misc::statistics::geowiki
+
+    $geowiki_user = $misc::statistics::geowiki::geowiki_user
+    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
+    $geowiki_private_data_bare_path = "${geowiki_base_path}/data-private-bare"
+
+    file { "$geowiki_private_data_bare_path":
+        ensure => directory,
+        owner  => $geowiki_user,
+        group  => $geowiki_user,
+        mode   => '0640',
+    }
+
+    # The bare repository lives on stat1, so it's available there directly.
+    # Other hosts need to rsync it over
+    if $::hostname != 'stat1' {
+        cron { 'geowiki data-private bare sync':
+            command => "/usr/bin/rsync -rt --delete rsync://stat1.wikimedia.org${geowiki_private_data_bare_path} ${geowiki_private_data_bare_path}",
+            require => File["$geowiki_private_data_bare_path"],
+            user    => 'root',
+            hour  => '17',
+            minute  => '0',
+        }
+    }
+}
+
 # == Class misc::statistics::geowiki::jobs::data
 # Installs a cron job to get recent editor data
 # from the research slave databases and generate
@@ -922,6 +952,7 @@ password=${globaldev_mysql_pass}
 class misc::statistics::geowiki::jobs::limn {
     require misc::statistics::geowiki,
         misc::statistics::geowiki::mysql::conf::research,
+        misc::statistics::geowiki::repo::data_private_bare,
         misc::statistics::packages::python
 
     $geowiki_user = $misc::statistics::geowiki::geowiki_user
@@ -929,7 +960,7 @@ class misc::statistics::geowiki::jobs::limn {
     $geowiki_scripts_path = $misc::statistics::geowiki::geowiki_scripts_path
     $geowiki_public_data_path = "${geowiki_base_path}/data-public"
     $geowiki_private_data_path = "${geowiki_base_path}/data-private"
-    $geowiki_private_data_bare_path = "${geowiki_base_path}/data-private-bare"
+    $geowiki_private_data_bare_path = $misc::statistics::geowiki::repo::data_private_bare::geowiki_private_data_bare_path
     $geowiki_mysql_research_conf_file = $misc::statistics::geowiki::mysql::conf::research::conf_file
 
     git::clone { 'geowiki-data-public':
