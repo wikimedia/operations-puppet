@@ -30,7 +30,7 @@ class elasticsearch($cluster_name,
 
     # Install
     # Get a jdk on which to run elasticsearch
-    java { 'java-default': }
+    package { 'openjdk-7-jdk': }
     package { 'elasticsearch':
         ensure  => present,
         require => [
