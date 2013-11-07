@@ -897,8 +897,8 @@ password=${globaldev_mysql_pass}
 ",
     }
 
-    $geowiki_backups_path = "${geowiki_base_path}/geowiki-backup-data"
-    file { $geowiki_backups_path:
+    $geowiki_log_path = "${geowiki_base_path}/logs"
+    file { $geowiki_log_path:
         ensure  => 'directory',
         owner   => $geowiki_user,
         group   => $geowiki_user,
@@ -907,13 +907,13 @@ password=${globaldev_mysql_pass}
     # cron to run geowiki/process_data.py.
     # This will query the production slaves and
     # store results in the research staging database.
-    # Backup files will be kept $geowiki_backups_path.
+    # Logs will be kept $geowiki_log_path.
     cron { 'geowiki-process-data':
         minute  => 0,
         hour    => 12,
         user    => $geowiki_user,
-        command => "/usr/bin/python ${geowiki_scripts_path}/geowiki/process_data.py -o ${$geowiki_backups_path} --wpfiles ${geowiki_scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${geowiki_mysql_research_conf_file}",
-        require => File[$geowiki_backups_path],
+        command => "/usr/bin/python ${geowiki_scripts_path}/geowiki/process_data.py -o ${$geowiki_log_path} --wpfiles ${geowiki_scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${geowiki_mysql_research_conf_file}",
+        require => File[$geowiki_log_path],
     }
 }
 
