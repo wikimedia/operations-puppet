@@ -32,11 +32,12 @@ class base::monitoring::host($contact_group = 'admins') {
             mode   => '0555',
             source => 'puppet:///modules/base/monitoring/check-raid.py';
         }
-
-        # FIXME: this used to be redundant sudo for check-raid
-        # they can be removed when they're deployed across the fleet
-        file { [ '/etc/sudoers.d/nrpe', '/etc/sudoers.d/icinga' ]:
-            ensure => absent,
+        file { '/usr/local/lib/nagios/plugins/check_puppet_disabled':
+            ensure => present,
+            owner  => root,
+            group  => root,
+            mode   => '0555',
+            source => 'puppet:///modules/base/monitoring/check_puppet_disabled';
         }
 
         sudo_user { 'nagios':
@@ -54,6 +55,10 @@ class base::monitoring::host($contact_group = 'admins') {
         nrpe::monitor_service { 'dpkg':
             description  => 'DPKG',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_dpkg',
+        }
+        nrpe::monitor_service { 'puppet_disabled':
+            description  => 'puppet disabled',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_puppet_disabled',
         }
     }
 }
