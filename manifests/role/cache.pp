@@ -465,6 +465,33 @@ class role::cache {
 		}
 	}
 
+	# == Class varnish::kafka
+	# Sets up a varnishkafka instance producing varnish
+	# logs to the analytics Kafka brokers in eqiad.
+	class varnish::kafka($topic)
+	{
+		if $::realm == 'production' {
+			require role::analytics::kafka::config
+			$kafka_brokers = keys($role::analytics::kafka::config::brokers)
+
+			class { '::varnishkafka':
+				brokers                  => $kafka_brokers,
+				topic                    => $topic,
+				format_type              => 'json',
+				# Note: statictag tricks varnishkafka into allowing hardcoded string into a json field.
+				# Hardcoding the $fqdn into hostname rather than using %l to account for
+				# possible slip ups where varnish only writes the short hostname for %l.
+				format                   => "%{statictag0@hostname?${::fqdn}}x %{@sequence!num?0}n %{%FT%T@dt}t %{Varnish:time_firstbyte@time_firstbyte!num?0.0}x %{@ip}h %{Varnish:handling@cache_status}x %{@http_status}s %{@response_size!num?0}b %{@http_method}m %{Host@uri_host}i %{@uri_path}U %{@uri_query}q %{Content-Type@content_type}o %{Referer@referer}i %{X-Forwarded-For@x_forwarded_for}i %{User-Agent@user_agent}i %{Accept-Language@accept_language}i %{X-Analytics@x_analytics}i",
+				format_key_type          => 'string',
+				# Kafka partion key is machine hostname
+				format_key               => "${::fqdn}",
+				# 3 minutes, large to account for potential cross DC latencies
+				topic_message_timeout_ms => 180000,
+				compression_codec        => 'snappy',
+			}
+		}
+	}
+
 	class varnish::logging::eventlistener {
 		if $::realm == 'production' {
 			$event_listener = $::site ? {
@@ -1096,7 +1123,9 @@ class role::cache {
 			cluster_options => $cluster_options,
 		}
 
-		include role::cache::varnish::logging
+		class { 'role::cache::varnish::kafka':
+			topic => 'varnish-mobile'
+		}
 	}
 
 	class parsoid inherits role::cache::varnish::2layer {
