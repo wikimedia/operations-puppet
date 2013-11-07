@@ -18,7 +18,7 @@ def main():
     elif osName == 'Linux':
         utility = getLinuxUtility()
     else:
-        print ('WARNING: Operating system "%s" is not '
+        print ('WARNING: operating system "%s" is not '
                'supported by this check script' % (osName))
         sys.exit(1)
 
@@ -115,18 +115,20 @@ def checkAdaptec():
         proc = subprocess.Popen(['/usr/sbin/arcconf', 'getconfig', '1'],
                                 stdout=subprocess.PIPE, stderr=devNull)
     except:
-        print 'WARNING: Unable to execute arcconf'
+        print 'WARNING: unable to execute arcconf'
         os.chdir(oldDir)
         return 1
 
-    defunctRegex = re.compile('^\s*Defunct disk drive count\s*:\s*(\d+)')
-    logicalRegex = re.compile('^\s*Logical devices/Failed/Degraded\s*:\s*(\d+)/(\d+)/(\d+)')
+    dre = '^\s*Defunct disk drive count\s*:\s*(\d+)'
+    defunctRegex = re.compile(dre)
+    lre = '^\s*Logical devices/Failed/Degraded\s*:\s*(\d+)/(\d+)/(\d+)'
+    logicalRegex = re.compile(lre)
     status = 0
     numLogical = None
     for line in proc.stdout:
         m = defunctRegex.match(line)
         if m is not None and m.group(1) != '0':
-            print 'CRITICAL: Defunct disk drive count: ' + m.group(1)
+            print 'CRITICAL: defunct disk drive count: ' + m.group(1)
             status = 2
             break
 
@@ -264,22 +266,22 @@ def checkMegaSas():
         return 1
 
     if lines == 0:
-        print 'WARNING: No known controller found'
+        print 'WARNING: no known controller found'
         return 1
 
     if not match:
-        print 'WARNING: Parse error processing megacli output'
+        print 'WARNING: parse error processing megacli output'
         return 1
 
     if numLD == 0:
-        print 'OK: No disks configured for RAID'
+        print 'OK: no disks configured for RAID'
         return 0
 
     if failedLD > 0:
-        print 'CRITICAL: %d failed logical drive(s) (%s)' % (failedLD, ", ".join(states))
+        print 'CRITICAL: %d failed LD(s) (%s)' % (failedLD, ", ".join(states))
         return 2
 
-    print 'OK: State is Optimal, checked %d logical drive(s), %d physical drive(s)' % (numLD, numPD)
+    print 'OK: optimal, %d logical, %d physical' % (numLD, numPD)
     return 0
 
 
@@ -322,7 +324,7 @@ def checkZfs():
 def checkSoftwareRaid():
     devices = getSoftwareRaidDevices()
     if len(devices) == 0:
-        print 'WARNING: Unexpectedly checked no devices'
+        print 'WARNING: unexpectedly checked no devices'
         return 1
 
     args = ['/sbin/mdadm', '--detail']
@@ -334,8 +336,10 @@ def checkSoftwareRaid():
         print 'WARNING: error executing mdadm: %s' % str(error)
         return 1
 
-    deviceRegex = re.compile('^(/[^ ]*):$')
-    statRegex = re.compile('^ *(Active|Working|Failed|Spare) Devices *: *(\d+)')
+    dre = '^(/[^ ]*):$'
+    deviceRegex = re.compile()
+    sre = '^ *(Active|Working|Failed|Spare) Devices *: *(\d+)'
+    statRegex = re.compile(sre)
     currentDevice = None
     stats = {
         'Active': 0,
