@@ -929,30 +929,36 @@ class misc::statistics::geowiki::jobs::limn {
     $geowiki_user = $misc::statistics::geowiki::geowiki_user
     $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
     $geowiki_scripts_path = $misc::statistics::geowiki::geowiki_scripts_path
-    $geowiki_data_path = "${geowiki_base_path}/data"
+    $geowiki_public_data_path = "${geowiki_base_path}/data-public"
+    $geowiki_private_data_path = "${geowiki_base_path}/data-private"
+    $geowiki_private_data_bare_path = "${geowiki_base_path}/data-private-bare"
     $geowiki_mysql_research_conf_file = $misc::statistics::geowiki::mysql::conf::research::conf_file
 
-    git::clone { 'geowiki-data':
-        directory => $geowiki_data_path,
-        origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki-data.git",
-        # As geowiki-data currently does not exist in gerrit, requiring the
-        # latest version would break puppet's the dependecy chain. So we'll not
-        # 'ensure => latest' until the repo comes back in gerrit.
-        ensure    => 'present',
+    git::clone { 'geowiki-data-public':
+        directory => $geowiki_public_data_path,
+        origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki/data-public.git",
+        ensure    => 'latest',
+        owner     => $geowiki_user,
+    }
+
+    git::clone { 'geowiki-data-private':
+        directory => $geowiki_private_data_path,
+        origin    => "file://${geowiki_private_data_bare_path}",
+        ensure    => 'latest',
         owner     => $geowiki_user,
     }
 
     # cron job to do the actual fetching from the database, computation of
-    # the limn files, and pushing the limn files to the geowiki-data
-    # repository.
+    # the limn files, and pushing the limn files to the data repositories
     cron { 'geowiki-process-db-to-limn':
         minute  => 0,
         hour    => 15,
         user    => $geowiki_user,
-        command => "${geowiki_scripts_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir=${geowiki_data_path} --source_sql_cnf=${geowiki_mysql_research_conf_file}",
+        command => "${geowiki_scripts_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir_public=${geowiki_public_data_path} --basedir_private=${geowiki_private_data_path} --source_sql_cnf=${geowiki_mysql_research_conf_file}",
         require => [
             Git::Clone['geowiki-scripts'],
-            Git::Clone['geowiki-data'],
+            Git::Clone['geowiki-data-public'],
+            Git::Clone['geowiki-data-private'],
             File[$geowiki_mysql_research_conf_file],
         ],
         ensure  => absent,
