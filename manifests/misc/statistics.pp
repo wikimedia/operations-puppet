@@ -883,7 +883,8 @@ class misc::statistics::geowiki::jobs::data {
     $globaldev_mysql_user = $passwords::mysql::globaldev::user
     $globaldev_mysql_pass = $passwords::mysql::globaldev::pass
 
-    file { "${geowiki_path}/.globaldev.my.cnf":
+    $geowiki_mysql_globaldev_conf_file = "${geowiki_path}/.globaldev.my.cnf"
+    file { $geowiki_mysql_globaldev_conf_file:
         owner   => $geowiki_user,
         group   => $geowiki_user,
         mode    => '0400',
@@ -909,7 +910,7 @@ password=${globaldev_mysql_pass}
         minute  => 0,
         hour    => 12,
         user    => $geowiki_user,
-        command => "/usr/bin/python ${geowiki_path}/geowiki/process_data.py -o ${$geowiki_backups_path} --wpfiles ${geowiki_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_path}/.globaldev.my.cnf --dest_sql_cnf=${geowiki_mysql_research_conf_file}",
+        command => "/usr/bin/python ${geowiki_path}/geowiki/process_data.py -o ${$geowiki_backups_path} --wpfiles ${geowiki_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${geowiki_mysql_research_conf_file}",
         require => File[$geowiki_backups_path],
     }
 }
