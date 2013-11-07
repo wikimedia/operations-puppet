@@ -34,6 +34,8 @@ def main():
             status = checkMegaSas()
         elif utility == 'zpool':
             status = checkZfs()
+        elif utility == 'mptsas':
+            status = checkmptsas()
         elif utility == 'mdadm':
             status = checkSoftwareRaid()
         else:
@@ -75,6 +77,12 @@ def getLinuxUtility():
     if utility is not None:
         return utility
 
+    try:
+        f = open("/proc/scsi/mptsas/0", "r")
+        return "mptsas"
+    except IOError:
+        pass
+
     # Try mdadm
     devices = getSoftwareRaidDevices()
     if len(devices):
@@ -104,6 +112,37 @@ def getSoftwareRaidDevices():
     return devices
 
 
+def checkmptsas():
+    status = 0
+    if not os.path.exists('/usr/sbin/mpt-status'):
+        print 'mpt-status not installed'
+        return 255
+
+    try:
+        proc = subprocess.Popen(['/usr/sbin/mpt-status', '--autoload',
+                            '--status_only'], stdout=subprocess.PIPE)
+    except Exception as e:
+        print 'Unable to execute mpt-status: %s' % e
+        return 254
+
+    log_drive_re = re.compile('^log_id \d (\w+)$')
+    phy_drive_re = re.compile('^phys_id (\d) (\w+)$')
+
+    for line in proc.stdout:
+        m = log_drive_re.match(line)
+        if m is not None:
+            print 'RAID STATUS: %s' % m.group(1)
+            if m.group(1) != 'OPTIMAL':
+                status = 1
+        m = phy_drive_re.match(line)
+        if m is not None:
+            print 'DISK %s STATUS: %s' % (m.group(1), m.group(2))
+
+    proc.wait()
+
+    return status
+
+
 def checkAdaptec():
     # Need to change directory so that the log file goes to the right place
     oldDir = os.getcwd()
@@ -119,18 +158,19 @@ def checkAdaptec():
         os.chdir(oldDir)
         return 1
 
-    defunctRegex = re.compile('^\s*Defunct disk drive count\s*:\s*(\d+)')
-    logicalRegex = re.compile('^\s*Logical devices/Failed/Degraded\s*:\s*(\d+)/(\d+)/(\d+)')
+    deviceRe = re.compile('^\s*Defunct disk drive count\s*:\s*(\d+)')
+    lre = '^\s*Logical devices/Failed/Degraded\s*:\s*(\d+)/(\d+)/(\d+)'
+    logicalRe = re.compile(lre)
     status = 0
     numLogical = None
     for line in proc.stdout:
-        m = defunctRegex.match(line)
+        m = deviceRe.match(line)
         if m is not None and m.group(1) != '0':
             print 'CRITICAL: Defunct disk drive count: ' + m.group(1)
             status = 2
             break
 
-        m = logicalRegex.match(line)
+        m = logicalRe.match(line)
         if m is not None:
             numLogical = int(m.group(1))
             if m.group(2) != '0' and m.group(3) != '0':
@@ -276,10 +316,11 @@ def checkMegaSas():
         return 0
 
     if failedLD > 0:
-        print 'CRITICAL: %d failed logical drive(s) (%s)' % (failedLD, ", ".join(states))
+        print 'CRITICAL: %d failed logical drive(s) (%s)' % (
+                failedLD, ", ".join(states))
         return 2
 
-    print 'OK: State is Optimal, checked %d logical drive(s), %d physical drive(s)' % (numLD, numPD)
+    print 'OK: Optimal, %d logical (s), %d physical (s)' % (numLD, numPD)
     return 0
 
 
@@ -334,8 +375,8 @@ def checkSoftwareRaid():
         print 'WARNING: error executing mdadm: %s' % str(error)
         return 1
 
-    deviceRegex = re.compile('^(/[^ ]*):$')
-    statRegex = re.compile('^ *(Active|Working|Failed|Spare) Devices *: *(\d+)')
+    deviceRe = re.compile('^(/[^ ]*):$')
+    statRe = re.compile('^ *(Active|Working|Failed|Spare) Devices *: *(\d+)')
     currentDevice = None
     stats = {
         'Active': 0,
@@ -344,7 +385,7 @@ def checkSoftwareRaid():
         'Spare': 0
     }
     for line in proc.stdout:
-        m = deviceRegex.match(line)
+        m = deviceRe.match(line)
         if m is None:
             if currentDevice is None:
                 continue
@@ -352,7 +393,7 @@ def checkSoftwareRaid():
             currentDevice = m.group(1)
             continue
 
-        m = statRegex.match(line)
+        m = statre.match(line)
         if m is None:
             continue
 
