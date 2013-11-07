@@ -1,11 +1,27 @@
-# kraken.pp - role classes dealing with Kraken repository related puppetization.
+# kraken.pp - role classes dealing with Kraken data analysis.
 
 # == Class role::analytics::kraken
 # Kraken refers to the Analytics codebase used to generate
 # analytics for WMF.
 class role::analytics::kraken {
     # Need Hadoop client classes included to use Kraken.
-    include role::analytics::common
+    include role::analytics::clients
+
+    # We want to be able to geolocate IP addresses
+    include geoip
+    # udp-filter is a useful thing!
+    include misc::udp2log::udp_filter
+
+    # many Kraken python scripts use docopt for CLI parsing.
+    package { 'python-docopt':
+        ensure => 'installed',
+    }
+
+    # Many kraken jobs use dclass for
+    # User Agent Device classification
+    package { 'libdclass-java':
+        ensure  => 'installed',
+    }
 
     # Include Kraken repository deployment target.
     deployment::target { 'analytics-kraken': }
@@ -24,13 +40,9 @@ class role::analytics::kraken {
         group  => 'stats',
         # setgid bit here to make kraken log files writeable
         # by users in the stats group.
-        mode   => 2775,
+        mode   => '2775',
     }
 
-    # many Kraken python scripts use docopt for CLI parsing.
-    package { 'python-docopt':
-        ensure => 'installed',
-    }
 }
 
 # == Class role::analytics::kraken::import::pagecounts

@@ -2,15 +2,14 @@
 
 @monitor_group { 'analytics-eqiad': description => 'analytics servers in eqiad' }
 
+# == Class role::analytics
 # Base class for all analytics nodes.
 # All analytics nodes should include this.
 class role::analytics {
     system::role { 'role::analytics': description => 'analytics server' }
     $nagios_group = 'analytics-eqiad'
     # ganglia cluster name.
-    $cluster = "analytics"
-
-    package { 'openjdk-7-jdk': }
+    $cluster = 'analytics'
 
     include standard
     include admins::roots
@@ -18,13 +17,17 @@ class role::analytics {
     # run automated jobs and for file
     # ownership.
     include misc::statistics::user
+
+    package { 'openjdk-7-jdk': }
 }
 
-# == Class role::analytics::common
+# == Class role::analytics::clients
 # Includes common client classes for
 # working with hadoop and other analytics services.
-#
-class role::analytics::common {
+# This class is often included by including
+# role::analytics::kraken, but you may include
+# it on its own if you don't need any kraken code.
+class role::analytics::clients {
     include role::analytics
 
     # Include Hadoop ecosystem client classes.
@@ -33,19 +36,14 @@ class role::analytics::common {
         role::analytics::oozie::client,
         role::analytics::pig,
         role::analytics::sqoop
-
-    # We want to be able to geolocate IP addresses
-    include geoip
-    # udp-filter is a useful thing!
-    include misc::udp2log::udp_filter
-    # include dclass for device classification
-    include role::analytics::dclass
-
-    # Include Kraken repository deployments.
-    include role::analytics::kraken
 }
 
-
+# == Class role::analytics::users
+# Users that should be on analytics nodes.
+# This class is not included on *all* analytics
+# nodes, just ones where it is useful for users to
+# have accounts.  I.e. hadoop related nodes.
+# Users do not need accounts on Kafka or Zookeeper nodes.
 class role::analytics::users {
     # Analytics user accounts will be added to the
     # 'stats' group which gets created by this class.
@@ -72,46 +70,30 @@ class role::analytics::users {
         accounts::halfak,    # RT 5836
         accounts::ypanda     # RT 6103
 
-    # add Analytics team members to the stats group so they can
-    # access data group owned by 'stats'.
-    User<|title == milimetric|>  { groups +> [ "stats" ] }
-    User<|title == yurik|>       { groups +> [ "stats" ] }
-    User<|title == dartar|>      { groups +> [ "stats" ] }
-    User<|title == dsc|>         { groups +> [ "stats" ] }
-    User<|title == diederik|>    { groups +> [ "stats" ] }
-    User<|title == erik|>        { groups +> [ "stats" ] }
-    User<|title == erosen|>      { groups +> [ "stats" ] }
-    User<|title == olivneh|>     { groups +> [ "stats" ] }
-    User<|title == otto|>        { groups +> [ "stats" ] }
-    User<|title == spetrea|>     { groups +> [ "stats" ] }
-    User<|title == abaso|>       { groups +> [ "stats" ] }
-    User<|title == qchris|>      { groups +> [ "stats" ] }
+    # NOTE:  If you are filling an RT request for Hadoop access,
+    # you will need to add the user to the list of accounts above,
+    # as well as manually create the user's HDFS home directory.
+    # Once the user's posix account is created on analytics1010
+    # (the Hadoop NameNode), run these commands:
+    #
+    #   sudo -u hdfs hadoop fs -mkdir /user/<username>
+    #   sudo -u hdfs hadoop fs -chown <username>:stats /user/<username>
+    #
 
+    # Users in the stats group will be able to read private data in HDFS.
+    User<|title == milimetric|>  { groups +> [ 'stats' ] }
+    User<|title == yurik|>       { groups +> [ 'stats' ] }
+    User<|title == dartar|>      { groups +> [ 'stats' ] }
+    User<|title == dsc|>         { groups +> [ 'stats' ] }
+    User<|title == diederik|>    { groups +> [ 'stats' ] }
+    User<|title == erik|>        { groups +> [ 'stats' ] }
+    User<|title == erosen|>      { groups +> [ 'stats' ] }
+    User<|title == olivneh|>     { groups +> [ 'stats' ] }
+    User<|title == otto|>        { groups +> [ 'stats' ] }
+    User<|title == spetrea|>     { groups +> [ 'stats' ] }
+    User<|title == abaso|>       { groups +> [ 'stats' ] }
+    User<|title == qchris|>      { groups +> [ 'stats' ] }
 
-    # Diederik, David and Otto have sudo privileges on Analytics nodes.
-    sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
+    # Diederik and Otto have sudo privileges on Analytics nodes.
+    sudo_user { [ 'diederik', 'otto' ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 }
-
-
-class role::analytics::dclass {
-    # install dclass JNI package
-    # for device classification.
-    if !defined(Package['libdclass-java']) {
-        package { 'libdclass-java':
-            ensure  => 'installed',
-        }
-    }
-    # Symlink libdclass* .so into /usr/lib.
-    # (Oracle java does not support multiarch.)
-    file { '/usr/lib/libdclass.so':
-        ensure => 'link',
-        target => '/usr/lib/x86_64-linux-gnu/libdclass.so.0',
-        require => Package['libdclass-java'],
-    }
-    file { '/usr/lib/libdclassjni.so':
-        ensure => 'link',
-        target => '/usr/lib/x86_64-linux-gnu/jni/libdclassjni.so',
-        require => Package['libdclass-java'],
-    }
-}
-

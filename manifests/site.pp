@@ -151,7 +151,7 @@ node "analytics1009.eqiad.wmnet" {
     # include analytics user accounts
     include role::analytics::users
 
-    include role::analytics::common
+    include role::analytics::kraken
     include role::analytics::hadoop::standby
 }
 
@@ -161,7 +161,7 @@ node "analytics1010.eqiad.wmnet" {
     # include analytics user accounts
     include role::analytics::users
 
-    include role::analytics::common
+    include role::analytics::kraken
     include role::analytics::hadoop::master
 }
 
@@ -174,7 +174,7 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
     # include analytics user accounts
     include role::analytics::users
 
-    include role::analytics::common
+    include role::analytics::kraken
     include role::analytics::hadoop::worker
 }
 
@@ -195,7 +195,7 @@ node "analytics1026.eqiad.wmnet" {
     # include analytics user accounts
     include role::analytics::users
     
-    include role::analytics::common
+    include role::analytics::kraken
     # Including kraken import and hive partition cron jobs.
     include role::analytics::kraken::jobs::import::pagecounts
     include role::analytics::kraken::jobs::hive::partitions::external
@@ -205,7 +205,7 @@ node "analytics1026.eqiad.wmnet" {
 # interfaces to Kraken and Hadoop.
 # (Hue, Oozie, Hive, etc.)
 node "analytics1027.eqiad.wmnet" {
-    include role::analytics::common
+    include role::analytics::clients
     include role::analytics::hive::server
     include role::analytics::oozie::server
     include role::analytics::hue
