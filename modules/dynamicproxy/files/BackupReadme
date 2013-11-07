@@ -1,0 +1,8 @@
+This dir contains backups of the sqlite database used by dynamicproxy-api.
+
+To restore:
+
+$ gunzip proxy-whatever.bak.gz
+$ sqlite3 proxy-whatever.bak < data.db
+
+Then replace /etc/dynamicproxy-api/data.db with the restored file.

@@ -15,10 +15,34 @@ class dynamicproxy::api {
         start   => 'true'
     }
 
-    file { '/etc/dynamicproxy-api':
-        ensure => 'directory',
-        owner => 'www-data',
-        group => 'www-data',
+    file {
+        '/etc/dynamicproxy-api':
+            ensure => 'directory',
+            owner  => 'www-data',
+            group  => 'www-data';
+        '/data/project/backup':
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '755';
+        '/data/project/backup/README':
+            source => 'puppet:///modules/dynamicproxy/BackupReadme',
+            require => File['/data/project/backup'];
+        '/usr/local/sbin/proxydb-bak.sh':
+            mode => '555',
+            owner => root,
+            group => root,
+            source => 'puppet:///modules/dynamicproxy/proxydb-bak.sh',
+    }
+
+    cron {
+        'proxydb-bak':
+            ensure  => present,
+            user    => root,
+            hour    => 1,
+            minute  => 0,
+            command => '/usr/local/sbin/proxydb-bak.sh > /dev/null 2>&1',
+            require => File["/data/project/backup"];
     }
 
     # Create initial db file if it doesn't exist, but don't clobber if it does.
