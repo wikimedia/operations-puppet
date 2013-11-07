@@ -7,7 +7,7 @@ class contint::packages {
 
   # Make sure we use ant version 1.8 or we will have a conflict
   # with android
-  include generic::packages::ant18
+  include contint::packages::ant18
 
   # Get several OpenJDK packages including the jdk to build mobile
   # applications.
@@ -171,4 +171,28 @@ class contint::packages {
     ]:
     ensure => present;
   }
+}
+
+
+class contint::packages::ant18 {
+
+  if ($::lsbdistcodename == "lucid") {
+		# When specifying 'latest' for package 'ant' on Lucid it will actually
+		# install ant1.7 which might not be the version we want. This is similar to
+		# the various gcc version packaged in Debian, albeit ant1.7 and ant1.8 are
+		# conflicting with each others.
+		# Thus, this let us explicitly install ant version 1.8
+		package { [
+			"ant1.8"
+		]: ensure => installed;
+		}
+		package { [
+			"ant",
+			"ant1.7"
+		]: ensure => absent;
+		}
+	} else {
+		# Ubuntu post Lucid ship by default with ant 1.8 or later
+		package { ["ant"]: ensure => installed; }
+	}
 }
