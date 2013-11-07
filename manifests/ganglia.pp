@@ -298,7 +298,7 @@ class ganglia {
                         "Jobrunners eqiad "              => "mw1001.eqiad.wmnet mw1002.eqiad.wmnet",
                         "Bits application servers pmtpa" => "srv248.pmtpa.wmnet srv249.pmtpa.wmnet",
                         "Bits application servers eqiad" => "mw1151.eqiad.wmnet mw1152.eqiad.wmnet",
-                        "MySQL"                          => "db50.pmtpa.wmnet db51.pmtpa.wmnet",
+                        "MySQL"                          => "db50.pmtpa.wmnet",
                         "PDF servers"                    => "pdf1.wikimedia.org pdf2.wikimedia.org",
                         "LVS loadbalancers pmtpa"        => "lvs1.wikimedia.org lvs2.wikimedia.org",
                         "Miscellaneous"                  => "hooper.wikimedia.org tarin.pmtpa.wmnet",
