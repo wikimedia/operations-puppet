@@ -379,7 +379,7 @@ def checkSoftwareRaid():
         return 1
 
     dre = '^(/[^ ]*):$'
-    deviceRegex = re.compile()
+    deviceRegex = re.compile(dre)
     sre = '^ *(Active|Working|Failed|Spare) Devices *: *(\d+)'
     statRegex = re.compile(sre)
     currentDevice = None
