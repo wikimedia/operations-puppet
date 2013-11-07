@@ -955,6 +955,8 @@ class misc::statistics::geowiki::jobs::limn {
 # Checks if the geowiki files served throuh http://gp.wmflabs.org are
 # up to date.
 #
+# Disabled for now due to restructuring of geowiki.
+#
 class misc::statistics::geowiki::jobs::monitoring {
     require misc::statistics::geowiki
 
@@ -969,5 +971,7 @@ class misc::statistics::geowiki::jobs::monitoring {
         hour    => 21,
         user    => $geowiki_user,
         command => "${geowiki_path}/scripts/check_web_page.sh",
+        # Disabled for now due to restructuring of geowiki
+        ensure  => absent,
     }
 }
