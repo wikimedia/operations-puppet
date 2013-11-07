@@ -2950,6 +2950,8 @@ node /virt100(5|7|8).eqiad.wmnet/ {
 
 node "iodine.wikimedia.org" {
     include role::otrs
+
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 }
 
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
