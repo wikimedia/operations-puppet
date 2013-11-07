@@ -119,7 +119,7 @@ class misc::statistics::packages::python {
 
 # Installs java.
 class misc::statistics::packages::java {
-    java { 'default-java': }
+    package { 'openjdk-7-jdk': }
 }
 
 # Mounts /data from dataset2 server.
