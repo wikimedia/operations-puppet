@@ -73,11 +73,6 @@ host db31 {
 	fixed-address db31.pmtpa.wmnet;
 }
 
-host db32 {
-	hardware ethernet 00:21:28:6B:9D:CA;
-	fixed-address db32.pmtpa.wmnet;
-}
-
 host db33 {
 	hardware ethernet 00:21:28:6B:9D:86;
 	fixed-address db33.pmtpa.wmnet;
@@ -105,11 +100,6 @@ host db37 {
 host db38 {
 	hardware ethernet 00:21:28:6B:9D:B6;
 	fixed-address db38.pmtpa.wmnet;
-}
-
-host db39 {
-	hardware ethernet 00:21:28:6B:CD:9E;
-	fixed-address db39.pmtpa.wmnet;
 }
 
 host db40 {
