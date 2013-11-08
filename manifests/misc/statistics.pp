@@ -903,6 +903,7 @@ class misc::statistics::geowiki::data::private {
         misc::statistics::geowiki::data::private_bare::sync
 
     $geowiki_user = $misc::statistics::geowiki::geowiki_user
+    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
     $geowiki_private_data_path = "${geowiki_base_path}/data-private"
     $geowiki_private_data_bare_path = $misc::statistics::geowiki::data::private_bare::sync::geowiki_private_data_bare_path
 
