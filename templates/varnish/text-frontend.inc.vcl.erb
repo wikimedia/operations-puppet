@@ -3,6 +3,19 @@
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 
+# A random director with the same backends as the default 'backend' (chash) director
+director backend_random random {
+<%
+	@varnish_directors['backend'].each do |backend|
+		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+-%>
+	{
+		.backend = <%= name %>;
+		.weight = <%= @backend_option(backend, "weight", 10) %>;
+	}
+<% 	end -%>
+}
+
 sub mobile_redirect {
 	if ((req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|sendo|sharp|softbank|symbian|teleca|up.browser|webos)"
 		|| req.http.User-Agent ~ "^(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
@@ -37,6 +50,10 @@ sub vcl_recv {
 	call rewrite_proxy_urls;
 	call mobile_redirect;
 	call pass_requests;
+
+	if (req.url == "/wiki/Special:CentralAutoLogin/start?type=script") {
+		set req.backend = backend_random;
+	}
 
 	/* Users that just logged out, should not get a 304 for their
 	 * (locally cached) logged in pages. */
