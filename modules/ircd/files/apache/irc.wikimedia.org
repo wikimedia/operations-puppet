@@ -1,8 +1,9 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/irc.wikimedia.org
+### puppet:///modules/ircd/files/apache/irc.wikimedia.org
 #####################################################################
 # vim: filetype=apache
+# redirect irc.wikimedia.org to IRC site on meta.wm.org
 
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org

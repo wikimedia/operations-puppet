@@ -900,8 +900,7 @@ node 'eeden.esams.wikimedia.org' {
 
 node "ekrem.wikimedia.org" {
     include standard,
-        misc::irc-server,
-        misc::mediawiki-irc-relay
+            role::ircd
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
