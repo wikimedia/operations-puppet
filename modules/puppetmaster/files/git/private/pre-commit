@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Local commits are not allowed in this repository. Please go to frontend puppetmaster and commit to /root/private"
+exit 1

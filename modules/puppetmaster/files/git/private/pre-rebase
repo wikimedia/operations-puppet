@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Local rebases are not allowed in this repository. Please go to frontend puppetmaster and rebase (why do you want to rebase anyways????) to /root/private"
+exit 1

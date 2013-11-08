@@ -73,6 +73,18 @@ class puppetmaster::gitclone {
                 source  => 'puppet:///modules/puppetmaster/git/private/post-merge',
                 owner   => 'gitpuppet',
                 mode    => '0550';
+            "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-commit":
+                source  => 'puppet:///modules/puppetmaster/git/private/pre-commit',
+                owner   => 'gitpuppet',
+                mode    => '0550';
+            "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-merge":
+                source  => 'puppet:///modules/puppetmaster/git/private/pre-merge',
+                owner   => 'gitpuppet',
+                mode    => '0550';
+            "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-rebase":
+                source  => 'puppet:///modules/puppetmaster/git/private/pre-rebase',
+                owner   => 'gitpuppet',
+                mode    => '0550';
             '/etc/puppet/private':
                 ensure => link,
                 target => "${puppetmaster::gitdir}/operations/private",
