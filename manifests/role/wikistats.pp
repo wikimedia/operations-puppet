@@ -1,6 +1,8 @@
 # wikistats host role class
 class role::wikistats {
 
+    system_role { 'wikistats': description => 'wikistats host' }
+
 	# config - labs vs. production
 	case $::realm {
 		'labs': {
@@ -19,8 +21,10 @@ class role::wikistats {
 	}
 
 	# main
-	class { 'misc::wikistats': }
-	class { 'misc::wikistats::web': wikistats_host => $wikistats_host, wikistats_ssl_cert => $wikistats_ssl_cert, wikistats_ssl_key => $wikistats_ssl_key  }
-	class { 'misc::wikistats::updates': }
+    class { 'wikistats':
+        wikistats_host     => $wikistats_host,
+        wikistats_ssl_cert => $wikistats_ssl_cert,
+        wikistats_ssl_key  => $wikistats_ssl_key
+    }
 
 }
