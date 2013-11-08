@@ -898,8 +898,7 @@ node 'eeden.esams.wikimedia.org' {
 
 node "ekrem.wikimedia.org" {
     include standard,
-        misc::irc-server,
-        misc::mediawiki-irc-relay
+            role::irc-server
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
@@ -2113,7 +2112,7 @@ node "neon.wikimedia.org" {
 node "nescio.esams.wikimedia.org" {
     interface::ip { "dns::recursor": interface => "eth0", address => "91.198.174.6" }
 
-    include standard,
+        include standard,
         dns::recursor::statistics
 
     include network::constants
