@@ -887,7 +887,7 @@ class misc::statistics::geowiki::data::private_bare::sync {
     # Other hosts need to rsync it over
     if $::hostname != $geowiki_private_data_bare_host {
         cron { 'geowiki data-private bare sync':
-            command => "/usr/bin/rsync -rt --delete rsync://${geowiki_private_data_bare_host_fqdn}${geowiki_private_data_bare_path} ${geowiki_private_data_bare_path}",
+            command => "/usr/bin/rsync -rt --delete rsync://${geowiki_private_data_bare_host_fqdn}${geowiki_private_data_bare_path}/ ${geowiki_private_data_bare_path}/",
             require => File["$geowiki_private_data_bare_path"],
             user    => $geowiki_user,
             hour  => '17',
