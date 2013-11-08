@@ -2,8 +2,11 @@ class varnish::monitoring::ganglia($varnish_instances=['']) {
     $instances = join($varnish_instances, ",")
 
     file { "/usr/lib/ganglia/python_modules/varnish.py":
+        owner   => 'root',
+        root    => 'root',
+        mode    => '0444',
         require => File["/usr/lib/ganglia/python_modules"],
-        source => "puppet:///modules/${module_name}/ganglia/ganglia-varnish.py";
+        source  => "puppet:///modules/${module_name}/ganglia/ganglia-varnish.py";
     }
 
     exec {

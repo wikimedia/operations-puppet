@@ -13,6 +13,9 @@ class geoip::data::puppet(
   # recursively copy the $data_directory from $source.
   file { $data_directory:
     ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
     source  => $source,
     recurse => true,
     backup  => false,
