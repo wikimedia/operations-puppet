@@ -515,28 +515,18 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 node "dataset2.wikimedia.org" {
     $cluster = "misc"
     $gid=500
-    include standard,
-        admins::roots,
-        groups::wikidev,
-        accounts::catrope,
-        misc::download-wikimedia,
-        misc::download-primary,
-        misc::download::cron-rsync-dumps,
-        misc::kiwix-mirror
+
+    include role::download::primary
+
 }
 
 node "dataset1001.wikimedia.org" {
     $cluster = "misc"
     $gid=500
     interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
-    include standard,
-        admins::roots,
-        groups::wikidev,
-        accounts::catrope,
-        misc::download-wikimedia,
-        misc::download-mirror,
-        misc::download::cron-rsync-dumps,
-        misc::download-gluster
+
+    include role::download::secondary
+
 }
 
 # pmtpa dbs
