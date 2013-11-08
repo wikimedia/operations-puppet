@@ -39,7 +39,7 @@ RailsAutoDetect Off
 	ProxyPass / balancer://mycluster/
 	<Proxy balancer://mycluster>
 	  <%- @workers.each do |worker| -%>
-		  BalancerMember https://<%= worker %>:8141
+		  BalancerMember https://<%= worker %>:8141 connectiontimeout=1 retry=500
 	  <%- end -%>
 	  Order allow,deny
 	  Allow from all
