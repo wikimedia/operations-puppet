@@ -7,13 +7,13 @@
 #
 
 # Package dependencies for the wikibugs script
-class misc::irc::wikibugs::packages {
+class irc::wikibugs::packages {
   package { 'libemail-mime-perl':
     ensure => present;
   }
 }
 
-class misc::irc::wikibugs {
+class irc::wikibugs {
 
   # We are an IRC bot!
 

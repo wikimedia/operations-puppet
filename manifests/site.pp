@@ -898,8 +898,7 @@ node 'eeden.esams.wikimedia.org' {
 
 node "ekrem.wikimedia.org" {
     include standard,
-        misc::irc-server,
-        misc::mediawiki-irc-relay
+        role::irc-server,
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
@@ -2085,15 +2084,17 @@ node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
 node "neon.wikimedia.org" {
     $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
-    $ircecho_logs = { "/var/log/icinga/irc.log" => "#wikimedia-operations" }
-    $ircecho_nick = "icinga-wm"
-    $ircecho_server = "chat.freenode.net"
     include standard,
         icinga::monitor,
         misc::ishmael,
-        misc::ircecho,
         tcpircbot,
         passwords::logmsgbot
+
+    class { 'irc::ircecho':
+        ircecho_nick   => 'icinga-wm',
+        ircecho_server => 'chat.freenode.net',
+        ircecho_logs   => '/var/log/icinga/irc.log" => "#wikimedia-operations',
+    }
 
     tcpircbot::instance { 'logmsgbot':
         channel  => '#wikimedia-operations',
