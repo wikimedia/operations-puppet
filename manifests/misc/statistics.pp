@@ -888,7 +888,7 @@ class misc::statistics::geowiki::data::private_bare::sync {
         cron { 'geowiki data-private bare sync':
             command => "/usr/bin/rsync -rt --delete rsync://${geowiki_private_data_bare_host_fqdn}${geowiki_private_data_bare_path} ${geowiki_private_data_bare_path}",
             require => File["$geowiki_private_data_bare_path"],
-            user    => 'root',
+            user    => $geowiki_user,
             hour  => '17',
             minute  => '0',
         }
