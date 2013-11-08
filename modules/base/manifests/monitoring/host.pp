@@ -25,9 +25,19 @@ class base::monitoring::host($contact_group = 'admins') {
             ensure => 'latest',
         }
 
+        file { '/etc/default/mpt-statusd':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => 'RUN_DAEMON=no',
+        }
+
         service { 'mpt-statusd':
-            ensure => stopped,
-            enable => false,
+            ensure      => stopped,
+            enable      => false,
+            hasstatus   => false,
+            stop        => '/usr/bin/pkill -9 -f mpt-statusd',
         }
 
         file { '/usr/local/bin/check-raid.py':
