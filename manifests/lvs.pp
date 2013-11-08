@@ -403,7 +403,7 @@ class lvs::configuration {
 			},
 			'osm' => {
 				'pmtpa' => "208.80.152.216",
-				'eqiad' => "208.80.154.240",
+				'eqiad' => "208.80.154.244",
 			},
 			'misc_web' => {
 				'pmtpa' => { 'misc_web' => '208.80.152.217', 'misc_web6' => '2620:0:860:ed1a::11' },
@@ -658,7 +658,7 @@ class lvs::configuration {
 		"osm" => {
 			'description' => "OpenStreetMap tiles",
 			'class' => "high-traffic2",
-			'sites' => [ "pmtpa", "eqiad" ],
+			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['osm'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
