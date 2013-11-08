@@ -828,6 +828,7 @@ class misc::statistics::geowiki {
         origin    => "https://gerrit.wikimedia.org/r/p/analytics/geowiki.git",
         ensure    => 'latest',
         owner     => $geowiki_user,
+        group     => $geowiki_user,
     }
 }
 
@@ -912,6 +913,7 @@ class misc::statistics::geowiki::data::private {
         origin    => "file://${geowiki_private_data_bare_path}",
         ensure    => 'latest',
         owner     => $geowiki_user,
+        group     => $geowiki_user,
     }
 }
 
@@ -989,6 +991,7 @@ class misc::statistics::geowiki::jobs::limn {
         origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki/data-public.git",
         ensure    => 'latest',
         owner     => $geowiki_user,
+        group     => $geowiki_user,
     }
 
     # cron job to do the actual fetching from the database, computation of
