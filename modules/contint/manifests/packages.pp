@@ -25,7 +25,7 @@ class contint::packages {
   }
 
   # Get perl dependencies so we can lint the wikibugs perl script
-  include misc::irc::wikibugs::packages
+  include irc::wikibugs::packages
 
   # Let us create packages from Jenkins jobs
   include misc::package-builder

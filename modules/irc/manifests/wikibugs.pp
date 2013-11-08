@@ -6,14 +6,7 @@
 # Sourcecode: svn /trunk/tools/wikibugs
 #
 
-# Package dependencies for the wikibugs script
-class misc::irc::wikibugs::packages {
-  package { 'libemail-mime-perl':
-    ensure => present;
-  }
-}
-
-class misc::irc::wikibugs {
+class irc::wikibugs {
 
   # We are an IRC bot!
 
@@ -29,8 +22,8 @@ class misc::irc::wikibugs {
   $ircecho_nick = 'wikibugs'
   $ircecho_server = 'chat.freenode.net'
 
-  include misc::ircecho
-  include misc::irc::wikibugs::packages
+  include irc::ircecho
+  include irc::wikibugs::packages
 
   generic::systemuser { 'wikibugs': name => 'wikibugs' }
 
@@ -52,8 +45,8 @@ class misc::irc::wikibugs {
   git::clone { 'wikibugs' :
     directory => '/var/lib/wikibugs/bin',
     origin    => 'https://gerrit.wikimedia.org/r/p/wikimedia/bugzilla/wikibugs.git',
-    owner     => wikibugs,
-    group     => wikidev,
+    owner     => 'wikibugs',
+    group     => 'wikidev',
     require   => User['wikibugs'];
   }
 }
