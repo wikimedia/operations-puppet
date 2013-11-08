@@ -105,15 +105,15 @@
 </ul>
 
 <p>
-<strong><%= planet_languages[title]['lastupdated'] %>:</strong><br>
+<strong><%= planet_languages[title]['lastupdated'] %></strong><br>
 <TMPL_VAR date><br>
-<em>All times are UTC.</em><br>
+<em><%= planet_languages[title]['alltimesutc'] %></em><br>
 <br>
-Powered by:<br>
+<%= planet_languages[title]['poweredby'] %><br>
 <a href="http://www.planetplanet.org/"><img src="images/planet.png" width="80" height="15" alt="Planet" border="0"></a>
 </p>
 <p>
-<h2>Wikimedia</h2>
+<h2><%= planet_languages[title]['wikimedia'] %></h2>
 <ul>
 <li><a href="http://ar.planet.wikimedia.org/">ar.planet.wm</a></li>
 <li><a href="http://ca.planet.wikimedia.org/">ca.planet.wm</a></li>
@@ -121,6 +121,7 @@ Powered by:<br>
 <li><a href="http://de.planet.wikimedia.org/">de.planet.wm</a></li>
 <li><a href="http://en.planet.wikimedia.org/">en.planet.wm</a></li>
 <li><a href="http://es.planet.wikimedia.org/">es.planet.wm</a></li>
+<li><a href="http://fr.planet.wikimedia.org/">fr.planet.wm</a></li>
 <li><a href="http://gmq.planet.wikimedia.org/">gmq.planet.wm</a></li>
 <li><a href="http://id.planet.wikimedia.org/">id.planet.wm</a></li>
 <li><a href="http://it.planet.wikimedia.org/">it.planet.wm</a></li>
@@ -135,7 +136,7 @@ Powered by:<br>
 </ul>
 </p>
 <p>
-<h2>Planetarium:</h2>
+<h2><%= planet_languages[title]['planetarium'] %></h2>
 <ul>
 <li><a href="http://www.planetapache.org/">Planet Apache</a></li>
 <li><a href="http://planet.debian.net/">Planet Debian</a></li>
