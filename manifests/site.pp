@@ -1119,13 +1119,6 @@ node "gallium.wikimedia.org" {
     install_certificate{ "star.wikimedia.org": }
 }
 
-node "gurvin.wikimedia.org" {
-    include base,
-        ganglia,
-        ntp::client,
-        certificates::wmf_ca
-}
-
 node "harmon.pmtpa.wmnet" {
     $cluster = "misc"
 
