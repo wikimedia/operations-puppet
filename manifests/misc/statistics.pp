@@ -913,7 +913,8 @@ class misc::statistics::geowiki::data::private {
         origin    => "file://${geowiki_private_data_bare_path}",
         ensure    => 'latest',
         owner     => $geowiki_user,
-        group     => $geowiki_user,
+        group     => 'www-data',
+        mode      => 0750,
     }
 }
 
