@@ -16,8 +16,11 @@ class role::deployment::config {
           '.git' => '',
         },
         'checkout_submodules' => true,
-        'dependencies'        => {
-            'mediawiki/l10n-slot0' => 'l10n',
+        'fetch_module_calls' => {
+            'mediawiki.generate_localization_cache' => ['__REPO__'],
+        },
+        'checkout_module_calls' => {
+            'mediawiki.update_localization_cache' => ['__REPO__'],
         },
     },
     'mediawiki/slot1'                => {
@@ -28,8 +31,11 @@ class role::deployment::config {
           '.git' => '',
         },
         'checkout_submodules' => true,
-        'dependencies'        => {
-            'mediawiki/l10n-slot1' => 'l10n',
+        'fetch_module_calls' => {
+            'mediawiki.generate_localization_cache' => ['__REPO__'],
+        },
+        'checkout_module_calls' => {
+            'mediawiki.update_localization_cache' => ['__REPO__'],
         },
     },
     'mediawiki/beta0'                => {
@@ -40,21 +46,12 @@ class role::deployment::config {
           '.git' => '',
         },
         'checkout_submodules' => true,
-        'dependencies'        => {
-            'mediawiki/l10n-beta' => 'l10n',
+        'fetch_module_calls' => {
+            'mediawiki.generate_localization_cache' => ['__REPO__'],
         },
-    },
-    'mediawiki/l10n-slot0'           => {
-        'automated' => true,
-        'grain'     => 'mediawiki',
-    },
-    'mediawiki/l10n-slot1'           => {
-        'automated' => true,
-        'grain'     => 'mediawiki',
-    },
-    'mediawiki/l10n-beta0'           => {
-        'automated' => true,
-        'grain'     => 'mediawiki',
+        'checkout_module_calls' => {
+            'mediawiki.update_localization_cache' => ['__REPO__'],
+        },
     },
     'gdash/gdash'                    => {
         'grain'    => 'gdash',
