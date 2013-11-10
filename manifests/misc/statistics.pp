@@ -253,8 +253,12 @@ class misc::statistics::public_datasets {
 
 # stats.wikimedia.org
 class misc::statistics::sites::stats {
+    require misc::statistics::geowiki::data::private
+
     $site_name = "stats.wikimedia.org"
     $docroot = "/srv/$site_name/htdocs"
+    $geowiki_private_directory = "$docroot/geowiki-private"
+    $geowiki_private_htpasswd_file = "/etc/apache2/htpasswd.stats-geowiki"
 
     # add htpasswd file for stats.wikimedia.org
     file { "/etc/apache2/htpasswd.stats":
@@ -262,6 +266,23 @@ class misc::statistics::sites::stats {
         group   => "root",
         mode    => '0644',
         source  => "puppet:///private/apache/htpasswd.stats",
+    }
+
+    # add htpasswd file for private geowiki data
+    file { $geowiki_private_htpasswd_file:
+        owner   => "root",
+        group   => "www-data",
+        mode    => '0640',
+        source  => "puppet:///private/apache/htpasswd.stats-geowiki",
+    }
+
+    # link geowiki checkout from docroot
+    file { $geowiki_private_directory:
+        ensure  => "link",
+        target  => $misc::statistics::geowiki::data::private::geowiki_private_data_path,
+        owner   => "root",
+        group   => "www-data",
+        mode    => '0750',
     }
 
     install_certificate{ $site_name: }

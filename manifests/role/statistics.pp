@@ -45,9 +45,7 @@ class role::statistics::www inherits role::statistics {
 		# reportcard.wikimedia.org
 		misc::statistics::sites::reportcard,
 		# rsync public datasets from stat1 hourly
-		misc::statistics::public_datasets,
-		# rsync geowiki's data-private from stat1 daily
-		misc::statistics::geowiki::data::private
+		misc::statistics::public_datasets
 }
 
 class role::statistics::private inherits role::statistics {
