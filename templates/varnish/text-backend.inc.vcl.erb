@@ -3,7 +3,7 @@
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 
-<% if vcl_config.fetch("cluster_tier", "1") != "1" -%>
+<% if @vcl_config.fetch("cluster_tier", "1") != "1" -%>
 # A random director with the same backends as the default 'backend' (chash) director
 <%
 default_backend = @vcl_config.fetch("default_backend", "backend")
@@ -16,7 +16,6 @@ director <%= default_backend %>_random random {
 -%>
 	{
 		.backend = <%= name %>;
-		.weight = <%= backend_option(backend, "weight", 10) %>;
 	}
 <% 	end -%>
 }

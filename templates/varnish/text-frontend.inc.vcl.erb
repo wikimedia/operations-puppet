@@ -15,7 +15,6 @@ director <%= default_backend %>_random random {
 -%>
 	{
 		.backend = <%= name %>;
-		.weight = <%= backend_option(backend, "weight", 10) %>;
 	}
 <% 	end -%>
 }
