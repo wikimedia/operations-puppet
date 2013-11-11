@@ -2,12 +2,18 @@
 define generic::upstart_job($install="false", $start="false") {
 	# Create symlink
 	file { "/etc/init.d/${title}":
-		ensure => "/lib/init/upstart-job";
+		ensure  => link,
+		owner   => 'root',
+		group   => 'root',
+		target  => '/lib/init/upstart-job',
 	}
 
 	if $install == "true" {
 		file { "/etc/init/${title}.conf":
-			source => "puppet:///modules/generic/upstart/${title}.conf"
+			owner   => 'root',
+			group   => 'root',
+			mode	=> '0444',
+			source  => "puppet:///modules/generic/upstart/${title}.conf",
 		}
 	}
 
