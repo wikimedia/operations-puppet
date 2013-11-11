@@ -62,12 +62,12 @@ class DeployLib(object):
             print err
         # Ensure the fetch will work for the submodules
         if checkout_submodules:
-            p = subprocess.Popen('git submodule foreach "git tag %s"' % tag,
-                                 cwd=repodir, shell=True,
+            cmd = 'git submodule foreach --recursive "git tag {0}"'.format(tag)
+            p = subprocess.Popen(cmd, cwd=repodir, shell=True,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
             out = p.communicate()[0]
-            p = subprocess.Popen('git submodule foreach '
+            p = subprocess.Popen('git submodule foreach --recursive '
                                  '"submodule-update-server-info"',
                                  cwd=repodir, shell=True,
                                  stdout=subprocess.PIPE,
