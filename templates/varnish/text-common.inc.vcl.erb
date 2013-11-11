@@ -7,7 +7,9 @@ sub pass_requests {
 	if (req.http.Host ~ "^test\.") {
 		return (pass);
 	}
-	if (req.http.Host == "login.wikimedia.org") {
+	/* TODO: remove this special case */
+	if (req.http.Host == "login.wikimedia.org"
+		&& req.url !~ "^/wiki/Special:CentralAutoLogin/checkLoggedIn") {
 		return (pass);
 	}
 }
