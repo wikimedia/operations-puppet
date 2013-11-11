@@ -13,7 +13,7 @@ def generate_localization_cache(repo):
     config = __salt__['deploy.get_config'](repo)
     common_config = __salt__['deploy.get_config']('mediawiki/common')
     cmd = 'php {0}/maintenance/mergeMessageFileList.php' \
-          '--list-file={1]/wmf-config/extension-list' \
+          '--list-file={1}/wmf-config/extension-list' \
           '--output={1}/l10n-{2}/ExtensionMessages.php'
     cmd.format(config['shadow_location'],
                common_config['shadow_location'],
