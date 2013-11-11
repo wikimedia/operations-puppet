@@ -3,6 +3,25 @@
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 
+<% if vcl_config.fetch("cluster_tier", "1") != "1" -%>
+# A random director with the same backends as the default 'backend' (chash) director
+<%
+default_backend = @vcl_config.fetch("default_backend", "backend")
+-%>
+director <%= default_backend %>_random random {
+	.retries = 5;
+<%
+	@varnish_directors[default_backend].each do |backend|
+		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+-%>
+	{
+		.backend = <%= name %>;
+		.weight = <%= backend_option(backend, "weight", 10) %>;
+	}
+<% 	end -%>
+}
+<% end -%>
+
 sub vcl_recv {
 	call vcl_recv_purge;
 	call restrict_access;
@@ -19,6 +38,12 @@ sub vcl_recv {
 
 <% end -%>
 	call pass_requests;
+<% if vcl_config.fetch("cluster_tier", "1") != "1" -%>
+
+	if (req.url == "/wiki/Special:CentralAutoLogin/start?type=script") {
+		set req.backend =  @vcl_config.fetch("default_backend", "backend")_random;
+	}
+<% end -%>
 
 	call evaluate_cookie;
 
