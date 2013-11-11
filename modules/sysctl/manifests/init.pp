@@ -7,6 +7,9 @@
 class sysctl {
     file { '/etc/sysctl.d':
         ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
         recurse => true,
         purge   => true,
         force   => true,

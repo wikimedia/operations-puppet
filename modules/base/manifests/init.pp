@@ -210,8 +210,10 @@ class base::puppet($server='puppet', $certname=undef) {
     # Report the last puppet run in MOTD
     if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "9.10") >= 0 {
         file { "/etc/update-motd.d/97-last-puppet-run":
-            source => "puppet:///modules/base/puppet/97-last-puppet-run",
-            mode => 0555;
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///modules/base/puppet/97-last-puppet-run',
         }
     }
 }
