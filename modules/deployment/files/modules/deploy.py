@@ -156,23 +156,46 @@ def sync_all():
 
 
 def _update_gitmodules(config, location, shadow=False):
-    gitmodules = '{0}/.gitmodules'.format(location)
-
-    cmd = '/usr/bin/git checkout .gitmodules'
-    status = __salt__['cmd.retcode'](cmd, location)
-    if status != 0:
-        return status
-
-    # Transform .gitmodules file based on defined seds
-    for before, after in config['submodule_sed_regex'].items():
+    gitmodules_list = __salt__['file.find'](location, name='.gitmodules')
+    for gitmodules in gitmodules_list:
+        gitmodules_dir = os.path.dirname(gitmodules)
+        cmd = '/usr/bin/git checkout .gitmodules'
+        status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
+        if status != 0:
+            return status
         if shadow:
-            # When fetching a shadow reference, we want to use the repo's
-            # filesystem location rather than the deployment url.
-            repo_url = config['location']
+            # Tranform .gitmodules based on reference
+            submodules = []
+            f = open(gitmodules, 'r')
+            for line in f.readlines():
+                keyval = line.split(' = ')
+                if keyval[0].strip() == "path":
+                    submodules.append(keyval[1].strip())
+            f.close()
+            f.open(gitmodules, 'w')
+            reference_dir = gitmodules_dir.replace(location,
+                                                   config['location'])
+            for submodule in submodules:
+                f.write('[submodule "{0}"]\n'.format(submodule))
+                f.write('\tpath = {0}\n'.format(submodule))
+                f.write('\turl = {0}/{1}\n'.format(reference_dir, submodule))
+            f.close()
         else:
-            repo_url = config['url']
-        after = after.replace('__REPO_URL__', repo_url)
-        __salt__['file.sed'](gitmodules, before, after)
+            # Transform .gitmodules file based on defined seds
+            for before, after in config['submodule_sed_regex'].items():
+                if shadow:
+                    # When fetching a shadow reference, we want to use the repo's
+                    # filesystem location rather than the deployment url.
+                    repo_url = config['location']
+                else:
+                    repo_url = config['url']
+                after = after.replace('__REPO_URL__', repo_url)
+                __salt__['file.sed'](gitmodules, before, after)
+        # Sync submodules for this repo
+        cmd = '/usr/bin/git submodule sync'
+        status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
+        if status != 0:
+            return status
     return 0
 
 
@@ -260,20 +283,14 @@ def _fetch_location(config, location, shadow=False):
         if ret != 0:
             return ret
 
-        # Sync the .gitmodules config
-        cmd = '/usr/bin/git submodule sync'
+        # fetch all submodules and tag for submodules
+        cmd = '/usr/bin/git submodule foreach --recursive git fetch'
         status = __salt__['cmd.retcode'](cmd, location)
         if status != 0:
             return status
 
         # fetch all submodules and tag for submodules
-        cmd = '/usr/bin/git submodule foreach git fetch'
-        status = __salt__['cmd.retcode'](cmd, location)
-        if status != 0:
-            return status
-
-        # fetch all submodules and tag for submodules
-        cmd = '/usr/bin/git submodule foreach git fetch --tags'
+        cmd = '/usr/bin/git submodule foreach --recursive git fetch --tags'
         status = __salt__['cmd.retcode'](cmd, location)
         if status != 0:
             return status
@@ -353,14 +370,8 @@ def _checkout_location(config, location, shadow=False):
         if ret != 0:
             return ret
 
-        # Sync the .gitmodules config
-        cmd = '/usr/bin/git submodule sync'
-        ret = __salt__['cmd.retcode'](cmd, location)
-        if ret != 0:
-            return 40
-
         # Update the submodules to match this tag
-        cmd = '/usr/bin/git submodule update --init'
+        cmd = '/usr/bin/git submodule update --recursive --init'
         ret = __salt__['cmd.retcode'](cmd, location)
         if ret != 0:
             return 50
