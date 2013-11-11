@@ -622,10 +622,6 @@ node /^db4[89]\.pmtpa\.wmnet/ {
     include role::coredb::m2
 }
 
-node "db78.pmtpa.wmnet" {
-    # moved to frack puppet
-}
-
 ## researchdb
 node 'db67.pmtpa.wmnet' {
     class { role::coredb::researchdb : mariadb => true }
@@ -745,10 +741,6 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 ## m2 shard
 node /^db104[68]\.eqiad\.wmnet/ {
     include role::coredb::m2
-}
-
-node "db1008.eqiad.wmnet" {
-    # moved to frack puppet
 }
 
 ## researchdb
