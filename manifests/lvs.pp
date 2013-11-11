@@ -129,7 +129,6 @@ class lvs::configuration {
 					'wikivoyagelb' => "208.80.152.219"
 				},
 				'eqiad' => {
-					'textsvc' => "10.2.2.25",
 					'wikipedialb' => "208.80.154.225",
 				},
 				'esams' => {
@@ -151,6 +150,7 @@ class lvs::configuration {
 			'text-varnish' => {
 				'pmtpa' => {},
 				'eqiad' => {
+					'textsvc' => "10.2.2.25",
 					'wikimedialb' => "208.80.154.224",
 					'wiktionarylb' => "208.80.154.226",
 					'wikiquotelb' => "208.80.154.227",
