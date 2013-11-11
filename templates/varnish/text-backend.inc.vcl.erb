@@ -40,7 +40,7 @@ sub vcl_recv {
 <% if vcl_config.fetch("cluster_tier", "1") != "1" -%>
 
 	if (req.url == "/wiki/Special:CentralAutoLogin/start?type=script") {
-		set req.backend =  @vcl_config.fetch("default_backend", "backend")_random;
+		set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>_random;
 	}
 <% end -%>
 
