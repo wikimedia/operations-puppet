@@ -16,10 +16,10 @@ class puppetmaster::ssl(
             $ssldir
         ]:
             ensure  => directory,
-            before  => $before,
             owner   => 'puppet',
             group   => 'root',
-            mode    => '0771';
+            mode    => '0771',
+            before  => $before;
         [
             '/var/lib/puppet',
             "${ssldir}/ca",

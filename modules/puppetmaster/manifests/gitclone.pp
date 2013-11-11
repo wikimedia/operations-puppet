@@ -24,37 +24,43 @@ class puppetmaster::gitclone {
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
+            group   => 'gitpuppet',
             content => template('puppetmaster/post-merge.erb'),
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-commit":
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
+            group   => 'gitpuppet',
             source  => 'puppet:///modules/puppetmaster/git/pre-commit',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-merge":
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
+            group   => 'gitpuppet',
             source  => 'puppet:///modules/puppetmaster/git/pre-merge',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/pre-rebase":
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
+            group   => 'gitpuppet',
             source  => 'puppet:///modules/puppetmaster/git/pre-rebase',
             mode    => '0550';
         "${puppetmaster::gitdir}/operations/software/.git/hooks/pre-commit":
             require => Git::Clone['operations/software'],
+            owner   => 'gitpuppet',
+            group   => 'gitpuppet',
             source  => 'puppet:///modules/puppetmaster/git/pre-commit',
             mode    => '0550';
         $puppetmaster::volatiledir:
             ensure  => directory,
-            mode    => '0750',
             owner   => 'root',
-            group   => 'puppet';
+            group   => 'puppet',
+            mode    => '0750';
         "$puppetmaster::volatiledir/misc":
             ensure  => directory,
-            mode    => '0750',
             owner   => 'root',
-            group   => 'puppet';
+            group   => 'puppet',
+            mode    => '0750';
     }
 
     if ! $is_labs_puppet_master {
@@ -68,22 +74,27 @@ class puppetmaster::gitclone {
             "${puppetmaster::gitdir}/operations/private":
                 ensure  => directory,
                 owner   => 'gitpuppet',
+                group   => 'puppet',
                 mode    => '0750';
             "${puppetmaster::gitdir}/operations/private/.git/hooks/post-merge":
                 source  => 'puppet:///modules/puppetmaster/git/private/post-merge',
                 owner   => 'gitpuppet',
+                group   => 'gitpuppet',
                 mode    => '0550';
             "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-commit":
                 source  => 'puppet:///modules/puppetmaster/git/private/pre-commit',
                 owner   => 'gitpuppet',
+                group   => 'gitpuppet',
                 mode    => '0550';
             "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-merge":
                 source  => 'puppet:///modules/puppetmaster/git/private/pre-merge',
                 owner   => 'gitpuppet',
+                group   => 'gitpuppet',
                 mode    => '0550';
             "${puppetmaster::gitdir}/operations/private/.git/hooks/pre-rebase":
                 source  => 'puppet:///modules/puppetmaster/git/private/pre-rebase',
                 owner   => 'gitpuppet',
+                group   => 'gitpuppet',
                 mode    => '0550';
             '/etc/puppet/private':
                 ensure => link,

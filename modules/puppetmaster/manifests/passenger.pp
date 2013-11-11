@@ -67,8 +67,9 @@ class puppetmaster::passenger(
     # rotate apache logs
     file { '/etc/logrotate.d/passenger':
         ensure => present,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0664',
         source => 'puppet:///modules/puppetmaster/logrotate-passenger',
-        owner  => 'root',
     }
 }

@@ -47,11 +47,11 @@ class puppetmaster(
         ensure => latest;
     }
 
-        if $server_type == 'frontend' {
-            apache_module { 'proxy': name => 'proxy' }
-            apache_module { 'proxy_http': name => 'proxy_http' }
-            apache_module { 'proxy_balancer': name => 'proxy_balancer' }
-        }
+    if $server_type == 'frontend' {
+        apache_module { 'proxy': name => 'proxy' }
+        apache_module { 'proxy_http': name => 'proxy_http' }
+        apache_module { 'proxy_balancer': name => 'proxy_balancer' }
+    }
 
     include backup::host
     backup::set { 'var-lib-puppet-ssl': }
