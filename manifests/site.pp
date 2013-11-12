@@ -121,6 +121,13 @@ node /^amssq47\.esams\.wikimedia\.org$/ {
 
 # amssq48-62 are text varnish
 node /^amssq(4[8-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org$/ {
+
+    sysctl::parameters { 'vm dirty page flushes':
+        values => {
+            'vm.dirty_background_ratio' => 5,
+        }
+    }
+
     include role::cache::text
 
     interface::add_ip6_mapped { "main": }
