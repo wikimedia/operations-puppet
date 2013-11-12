@@ -1091,7 +1091,7 @@ node "gallium.wikimedia.org" {
         contint::firewall,
         misc::contint::test,  # Setup iptables rules
         misc::contint::test::jenkins,  # FIXME slave scripts
-        misc::contint::android::sdk,
+        contint::android-sdk,
         role::ci::master,
         role::ci::slave,
         role::ci::testswarm,
