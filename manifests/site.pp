@@ -180,6 +180,11 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
 
 # analytics1021 and analytics1022 are Kafka Brokers.
 node /analytics102[12]\.eqiad\.wmnet/ {
+    # Kafka brokers are routed via IPv6 so that
+    # other DCs can address without public IPv4
+    # addresses.
+    interface::add_ip6_mapped { "main": }
+
     include role::analytics
     include role::analytics::kafka::server
 }
