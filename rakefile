@@ -38,10 +38,13 @@ if Rake.application.tty_output?
 		$enable_color=true
 	rescue LoadError
 		puts "Cant load puppet/util/colors .. no color for you!"
-		# define our own colorization method that simply output the message
-		def console_color( level, message )
-			return message
-		end
+	end
+end
+
+unless respond_to? :console_color
+	# define our own colorization method that simply output the message
+	def console_color( level, message )
+		return message
 	end
 end
 
