@@ -1248,7 +1248,7 @@ class lvs::monitor {
 			ip_address => $ip['text-varnish']['eqiad']['wikimedialb'],
 			uri => "meta.wikimedia.org!/wiki/Main_Page";
 		"wikipedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikipedialb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikipedialb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"wiktionary-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text-varnish']['eqiad']['wiktionarylb'],
