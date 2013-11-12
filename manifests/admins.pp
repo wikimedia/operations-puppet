@@ -2838,7 +2838,6 @@ class accounts {
 		$username = "yurik"
 		$realname = "Yuri Astrakhan"
 		$uid = 636
-		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2847,10 +2846,10 @@ class accounts {
 
 			ssh_authorized_key {
 				"yastrakhan@wikimedia.org":
-				ensure => absent,
+				ensure => present,
 				user   => $username,
 				type   => "ssh-rsa",
-				key    => "AAAAB3NzaC1yc2EAAAABJQAAAgEAks66YFTBrrC9Wv/rPwIf9cTJO1RxsXHMEcWJjosn9fxvUS57KAw2UrCwinu1T1Hng59V+grHxp2wY7Bke3NmYng2OQacH2HKekPFP3fG82OQlj0YRE52deNwlrfBIx7Yg915zpXjXSQi9D5DIncYN/8jE7Q3Shlw0yRfFLmP02zpiX0Vm1d+g8FM0aMaIPR80KlIFSADEYoo2LD9b9gKsIJQ3643geAlzjye7VTr+ojGaPrW7w+tB5ikPgtx8jQnve5UpfKaQHJcdS1of3GNy3/08i+gScog3oxkneBPIW0Wkb3sNwPZ2Y+vxYSIKzO6z/V/HGSNOYQJy7QJRApBav6sKZxdBSPGi3+6vgHxf4IgUVtikJGzTZ2jtWoqNv/j4h4gfehPkr5hQBJIkJQwTM/JPPbWPGOiWmFQkZeDTsoZGgi5B9hmM3UlelN7egyDZXCEvCirR9moviYI9Dr8VQsT/koyRX3kYdEQV19bHiou+ze6mmKO3OI4EmHkdtR55J1cR3/+7Q8GCAfTiD2KKj7yUEjZMewdOcbZzn29AXkc+90wiuWUWxqan7T5iePRvNPfjHg6ntJDs3tG/WdgF8HluXcWGZHa1Fk2kobK+/WFkGz4CuW9asbUgg+2TOLjvYFzEKgKqS8194nf0WZvRnjy3oFeuj0wwdALmuZDnus=",
+				key    => "AAAAB3NzaC1yc2EAAAABIwAAAgEA4nAjWgQOlzel8gYe/Hsl3DpT7KF7ygNVl7mZBG7285YUakrr2Hj8fSn0YfYX8b4u+FTywah7adefxTCuG6x9PkEzKAYSnaWXRxz3C2bZclkxXaKcVR+IJUG/9WyqwLxVj/UeATsuydSEljcwoMkTkV0m1p5hFNShTwslOiKA6VIwVQPufMjFaduUMXl3H1MzA0ymO/xzkMsOmsqXLgOIE6GOE1r3kzQHSD7tvb0o9dwtApUEhRiwGPnWxlDaGpWhzNQ9hHXGZG2XvfDvhVZ6HNJ/wR+x0WI1xX6b27fPbDPYkQDxOrts6G3F4WjDqmPLMYJGcsBXwueh99X2LaaDX6rWU1vq37Hj8Q8ROEdsL/RX30t8WdOj7YRGBEMbZliaGJNhTyOK2nFOBLKRcLSYVXtCvjFa9iTSqG8ZHdwho+vYRcs26hxMa1bWdS+Sg/YUJlfCxZk+zi5xryF/pog0IJdyqgNDqPau0w6DZKphlo8/eXcLJB6KkuaJ2xE52iqLokGGHu+EyYyOSrBSCOLsvbHvOwe9ESqDiJs1TAxjXqoOzNfWZKrfeoZb0AqycDwwbvM3oQB4/N590Jsb6frozsDCo+y08AYfjhM+lIFY2SdZHOmEzmNTDwJYf2MQOc7Mi/5wl+tMMnkXU0OPz9Y5ItDyfTwIsyESumVa3FYSE2s=",
 			}
 		}
 	}
