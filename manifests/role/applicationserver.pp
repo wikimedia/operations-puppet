@@ -86,6 +86,8 @@ class role::applicationserver {
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] }
 		}
+
+		deployment::target { "mediawiki": }
 	}
 
 	# This class installs everything necessary for an apache webserver
