@@ -58,6 +58,11 @@ sub vcl_recv {
 	/* Allow purging */
 	call vcl_recv_purge;
 
+	/* FIXME: we're seeing an issue with Range requests and gzip/gunzip.
+	 * Disable Range requests for now.
+	 */
+	unset req.http.Range;
+
 	call rewrite_proxy_urls;
 	call mobile_redirect;
 	call pass_requests;
