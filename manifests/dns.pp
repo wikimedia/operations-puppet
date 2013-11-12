@@ -101,10 +101,16 @@ class dns::recursor($listen_addresses=[$::ipaddress], $allow_from=[]) {
 
 		file {
 			"/usr/local/powerdnsstats":
-				source => "puppet:///files/powerdns/recursorstats/scripts",
+				owner	=> 'root',				
+				group	=> 'root',
+				mode	=> '0555',
+				source 	=> 'puppet:///files/powerdns/recursorstats/scripts',
 				recurse => remote;
 			"/var/www/pdns":
-				source => "puppet:///files/powerdns/recursorstats/www",
+				owner	=> 'root',				
+				group	=> 'root',
+				mode	=> '0444',
+				source 	=> 'puppet:///files/powerdns/recursorstats/www',
 				recurse => remote;
 		}
 
