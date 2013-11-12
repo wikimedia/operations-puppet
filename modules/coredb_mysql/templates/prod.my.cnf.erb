@@ -74,6 +74,13 @@ log_slow_verbosity=Query_plan
 optimizer_switch='mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,extended_keys=off'
 #thread_handling=pool-of-threads
 #extra_port=3308
+
+# https://mariadb.com/kb/en/user-statistics/
+userstat = 1
+
+# until we switch to RBR
+log-warnings = 0
+
 <% else %>
 rpl_transaction_enabled
 reserved_super_connections=20
