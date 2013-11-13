@@ -46,6 +46,7 @@ class toollabs::dev_environ {
       'libxml2-dev',
       'libxslt-dev',
       'libxslt1-dev', # -- same
+      'libzbar-dev',                 # Bug 56996
       'lintian',
       'mc', # Popular{{cn}} on Toolserver
       'mercurial',

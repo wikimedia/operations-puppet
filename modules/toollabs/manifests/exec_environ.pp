@@ -124,6 +124,9 @@ class toollabs::exec_environ {
       'python-opencv',
       'python-oursql',               # For danilo et al.
       'python-problem-report',
+      'python-pysvn',                # Bug 56996
+      'python-rsvg',                 # Bug 56996
+      'python-zbar',                 # Bug 56996
       'python-redis',
       'python-requests',
       'python-rsvg',
@@ -187,6 +190,7 @@ class toollabs::exec_environ {
       'libsvn1',
       'libvips-tools',
       'libvips15',
+      'libzbar0',                    # Bug 56996
       'mariadb-client',              # For /usr/bin/mysql.
       'mdbtools',                    # Bug #48805.
       'p7zip',
@@ -194,6 +198,7 @@ class toollabs::exec_environ {
       'poppler-utils',               # Bug #53869.
       'texinfo',                     # Bug #56994
       'tree',                        # Bug #48862.
+      'zbar-tools',                  # Bug 56996
       'zsh',                         # Bug 56995
       ]:
     ensure => present
