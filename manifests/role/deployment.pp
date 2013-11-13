@@ -5,6 +5,10 @@ class role::deployment::config {
         'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpunit',
     },
+    'integration/phpcs' => {
+        'grain' => 'contint-production-slaves',
+        'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpcs',
+    },
     'mediawiki/common'               => {
         'grain'    => 'mediawiki',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
