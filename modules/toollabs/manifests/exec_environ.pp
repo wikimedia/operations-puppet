@@ -129,7 +129,6 @@ class toollabs::exec_environ {
       'python-zbar',                 # Bug 56996
       'python-redis',
       'python-requests',
-      'python-rsvg',
       'python-scipy',
       'python-sqlalchemy',
       'python-twitter',
