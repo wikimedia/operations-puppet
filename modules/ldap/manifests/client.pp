@@ -116,9 +116,12 @@ class ldap::client::utils($ldapconfig) {
             mode  => 0544,
             source => "puppet:///modules/ldap/scripts/netgroup-mod";
         "/usr/local/sbin/ldaplist":
+            ensure => link,
+            target => '/usr/local/bin/ldaplist';
+        "/usr/local/bin/ldaplist":
             owner => root,
             group => root,
-            mode  => 0544,
+            mode  => 0555,
             source => "puppet:///modules/ldap/scripts/ldaplist";
         "/usr/local/sbin/change-ldap-passwd":
             owner => root,
