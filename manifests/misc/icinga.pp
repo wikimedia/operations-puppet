@@ -666,10 +666,11 @@ class icinga::monitor::jobqueue {
     mode => '0755';
   }
 
-  nrpe::monitor_service { 'check_job_queue':
-    description => 'check_job_queue',
-    nrpe_command => '/usr/lib/nagios/plugins/check_job_queue',
-  }
+  ## Disabled: extremely spammy. --O.L.
+  # nrpe::monitor_service { 'check_job_queue':
+  #  description => 'check_job_queue',
+  #  nrpe_command => '/usr/lib/nagios/plugins/check_job_queue',
+  # }
 }
 
 class icinga::monitor::naggen {
