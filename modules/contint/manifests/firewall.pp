@@ -1,50 +1,40 @@
+# vim: set ts=4 sw=4 et:
 class contint::firewall {
 
-  # prevent users from accessing port 8080 directly (but still allow from
-  # localhost and own net)
+    include base::firewall
 
-  class iptables-purges {
+    # Restrict some services to be only reacheable from localhost over both
+    # IPv4 and IPv6 (to be safe)
 
-    require 'iptables::tables'
+    # Jenkins on port 8080, reacheable via Apache proxying the requests
+    ferm::rule { 'jenkins_localhost_only':
+        rule => 'proto tcp dport 8080 { saddr (127.0.0.1 ::1) ACCEPT; DROP; }'
+    }
+    # Zuul status page on port 8001, reacheable via Apache proxying the requests
+    ferm::rule { 'zuul_localhost_only':
+        rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; DROP; }'
+    }
+    # Gearman is used between Zuul and the Jenkin master, both on the same
+    # server and communicating over localhost
+    ferm::rule { 'gearman_localhost_only':
+        rule => 'proto tcp dport 4730 { saddr (127.0.0.1 ::1) ACCEPT; DROP; }'
+    }
 
-    iptables_purge_service{  'deny_all_http-alt': service => 'http-alt' }
-    iptables_purge_service{  'deny_all_zuul-daemon': service => 'zuul_webservice' }
-    iptables_purge_service{  'deny_all-gearman': service => 'gearman' }
-    iptables_purge_service{  'deny_all_git-daemon': service  => 'git_daemon' }
-  }
+    # The master runs a git-daemon process used by slave to fetch changes from
+    # the Zuul git repository. It is only meant to be used from slaves, so
+    # reject outside calls.
+    ferm::rule { 'git-daemon_internal':
+        rule => 'proto tcp dport 9418 { saddr $INTERNAL ACCEPT; DROP; }'
+    }
 
-  class iptables-accepts {
+    # ALLOWS:
 
-    require 'contint::firewall::iptables-purges'
+    # web access
+    ferm::rule { 'allow_http':
+        rule => 'proto tcp dport http ACCEPT;'
+    }
+    ferm::rule { 'allow_https':
+        rule => 'proto tcp dport https ACCEPT;'
+    }
 
-    iptables_add_service{ 'lo_all': interface => 'lo', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'localhost_all': source => '127.0.0.1', service => 'all', jump => 'ACCEPT' }
-
-    # We really need to drop Zuul gearman there or anyone in wikimedia network
-    # would be able to reach Zuul gearman daemon.
-    iptables_add_service{ 'deny_all-gearman': service => 'gearman', jump => 'DROP' }
-
-    iptables_add_service{ 'private_all': source => '10.0.0.0/8', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_all': source => '208.80.152.0/22', service => 'all', jump => 'ACCEPT' }
-  }
-
-  class iptables-drops {
-
-    require 'contint::firewall::iptables-accepts'
-
-    iptables_add_service{ 'deny_all_http-alt': service => 'http-alt', jump => 'DROP' }
-    # Deny direct access to the Zuul daemon
-    iptables_add_service{ 'deny_all_zuul-daemon': service => 'zuul_webservice', jump => 'DROP' }
-    # Deny git daemon listening on port 9418
-    iptables_add_service{ 'deny_all_git-daemon': service => 'git_daemon', jump => 'DROP' }
-  }
-
-  class iptables {
-
-    require 'contint::firewall::iptables-drops'
-
-    iptables_add_exec{ $::hostname: service => 'contint' }
-  }
-
-  require contint::firewall::iptables
 }
