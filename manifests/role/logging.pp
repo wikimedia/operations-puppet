@@ -50,7 +50,11 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         labs       => 'deployment-fluoride.pmtpa.wmflabs',
     }
 
-    $ganglia_reporter_host = 'localhost'
+    $ganglia_reporter_host = $::realm ? {
+        production => 'localhost',
+        labs       => 'logstash.pmtpa.wmflabs',
+    }
+
     $ganglia_reporter_port = 8324
 
     misc::udp2log::instance { "mw":
