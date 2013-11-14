@@ -923,6 +923,7 @@ class role::cache {
 			vcl => "bits",
 			port => 80,
 			admin_port => 6082,
+			runtime_parameters => ['session_max=400000'],
 			storage => "-s malloc,${memory_storage_size}G",
 			directors => $varnish_directors[$cluster_tier],
 			director_type => "random",
