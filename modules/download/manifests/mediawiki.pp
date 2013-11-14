@@ -1,6 +1,6 @@
 class download::mediawiki {
 
-    system_role { "download-mediawiki": description => "MediaWiki download" }
+    system::role { "download-mediawiki": description => "MediaWiki download" }
 
     package { 'apache':
         ensure => present,

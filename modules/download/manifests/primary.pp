@@ -1,5 +1,5 @@
 class download::primary {
-    system_role { "download-primary": description => "Service for rsync to internal download mirrors" }
+    system::role { "download-primary": description => "Service for rsync to internal download mirrors" }
 
     include role::mirror::common
 

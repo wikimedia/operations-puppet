@@ -1,5 +1,5 @@
 class download::wikimedia {
-    system_role { "download-wikimedia": description => "download.wikimedia.org" }
+    system::role { "download-wikimedia": description => "download.wikimedia.org" }
 
     package { 'lighttpd':
         ensure => latest;
