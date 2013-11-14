@@ -97,7 +97,7 @@ class base::puppet($server='puppet', $certname=undef) {
             require => [ Package['snmp'], File['/etc/snmp'] ];
     }
 
-    monitor_service { 'puppet freshness': description => 'Puppet freshness', check_command => 'puppet-FAIL', passive => 'true', freshness => 36000, retries => 1 ; }
+    monitor_service { 'puppet freshness': description => 'Puppet freshness', check_command => 'puppet-FAIL', passive => 'true', freshness => 10800, retries => 1 ; }
 
     case $::realm {
         'production': {
