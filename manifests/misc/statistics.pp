@@ -919,8 +919,12 @@ class misc::statistics::geowiki::data::private_bare::sync {
     }
 
     # The bare repository lives on stat1, so it's available there directly.
+    # It only needs backup (as the repo is not living in gerrit)
     # Other hosts need to rsync it over
-    if $::hostname != $misc::statistics::geowiki::params::private_data_bare_host {
+    if $::hostname == $misc::statistics::geowiki::params::private_data_bare_host {
+        include backup::host
+        backup::set { 'a-geowiki-data-private-bare': }
+    } else {
         cron { 'geowiki data-private bare sync':
             command => "/usr/bin/rsync -rt --delete rsync://${misc::statistics::geowiki::params::private_data_bare_host_fqdn}${misc::statistics::geowiki::params::private_data_bare_path}/ ${misc::statistics::geowiki::params::private_data_bare_path}/",
             require => File["$misc::statistics::geowiki::params::private_data_bare_path"],
