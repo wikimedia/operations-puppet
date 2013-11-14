@@ -156,9 +156,7 @@ class role::applicationserver {
 
 		# Load the class just like the role::applicationserver::imagescaler
 		# role.
-		include imagescaler::cron,
-			imagescaler::packages,
-			imagescaler::files
+		include imagescaler
 	}
 	class appserver::api{
 		system::role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
@@ -183,18 +181,14 @@ class role::applicationserver {
 
 		# When adding class there, please also update the appserver::beta
 		# class which mix both webserver and imagescaler roles.
-		include	imagescaler::cron,
-			imagescaler::packages,
-			imagescaler::files
+		include	imagescaler
 	}
 	class videoscaler( $run_jobs_enabled = true ){
 		system::role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
 
 		class { "role::applicationserver::common": group => "videoscaler" }
 
-		include imagescaler::cron,
-			imagescaler::packages,
-			imagescaler::files
+		include imagescaler
 
 		class {"mediawiki::jobrunner":
 			run_jobs_enabled => $run_jobs_enabled,
