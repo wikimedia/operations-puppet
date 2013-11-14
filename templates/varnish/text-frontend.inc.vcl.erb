@@ -67,7 +67,7 @@ sub vcl_recv {
 	call mobile_redirect;
 	call pass_requests;
 
-	if (req.url == "/wiki/Special:CentralAutoLogin/start?type=script") {
+	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 		set req.backend = backend_random;
 	}
 
