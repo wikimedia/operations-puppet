@@ -22,7 +22,7 @@
 		AuthLDAPBindPassword <%= proxypass %>
 		AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
 		Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
-
+        Require ldap-group cn=wmde,ou=groups,dc=wikimeida,dc=org
 		RedirectMatch ^/$ "https://graphite.wikimedia.org/dashboard/"
 
 		ProxyPass http://graphite.pmtpa.wmnet:81/
@@ -92,6 +92,7 @@
 		AuthLDAPBindPassword <%= proxypass %>
 		AuthLDAPURL "ldap://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
 		Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+        Require ldap-group cn=wmde,ou=groups,dc=wikimeida,dc=org
 		#Require valid-user
 
 		ProxyPass http://ishmael.pmtpa.wmnet/
