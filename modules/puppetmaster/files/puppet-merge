@@ -14,7 +14,7 @@ of submodule changes.
 If the changes are acceptable, HEAD will be fast-forwarded
 to FETCH_HEAD.
 
-<basedir> defaults to /root/puppet.
+<basedir> defaults to /var/lib/git/operations/puppet
 
 "
 
