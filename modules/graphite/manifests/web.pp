@@ -20,7 +20,6 @@ class graphite::web(
     include ::passwords::graphite
 
     package { [ 'nginx-full', 'nginx-full-dbg' ]: }
-    package { [ 'uwsgi', 'uwsgi-plugin-python' ]: }
     package { [ 'memcached', 'python-memcache' ]: }
     package { 'graphite-web': }
 
@@ -91,16 +90,18 @@ class graphite::web(
         subscribe => File['/etc/memcached.conf'],
     }
 
-
-    file { '/etc/init/graphite-web.conf':
-        content => template('graphite/graphite-web.conf.erb'),
-        require => Package['uwsgi-plugin-python'],
-    }
-
-    service { 'graphite-web':
-        ensure    => running,
-        provider  => upstart,
-        require   => File['/var/run/graphite-web', '/var/log/graphite-web'],
-        subscribe => File['/etc/init/graphite-web.conf'],
+    uwsgi::app { 'graphite-web':
+        settings => {
+            uwsgi => {
+                'plugins'     => 'python',
+                'socket'      => '/var/run/graphite-web/graphite-web.sock',
+                'stats'       => '/var/run/graphite-web/graphite-web-stats.sock',
+                'wsgi-file'   => '/usr/share/graphite-web/graphite.wsgi',
+                'die-on-term' => true,
+                'master'      => true,
+                'processes'   => $uwsgi_processes,
+            },
+        },
+        require => File['/var/run/graphite-web', '/var/log/graphite-web'],
     }
 }
