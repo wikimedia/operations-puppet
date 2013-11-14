@@ -1599,7 +1599,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
             $sip['search_prefix'][$::site],
             $sip['swift'][$::site],
             $sip['parsoid'][$::site],
-            $sip['parsoidcache'][$::site],  # FIXME: remove after migration
             $sip['search'][$::site]
             ]
     }
