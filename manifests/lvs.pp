@@ -1363,7 +1363,7 @@ class lvs::monitor {
 
 	monitor_service_lvs_http { 'parsoid-lb.eqiad.wikimedia.org':
 		ip_address => $ip['parsoidcache']['eqiad']['parsoidlb'],
-		check_command => "check_http_on_port!8000",
+		check_command => "check_http_on_port!80",
 		contact_group => "admins,parsoid"
 	}
 	# TODO: ipv6
