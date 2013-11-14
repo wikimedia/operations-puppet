@@ -29,9 +29,15 @@ class role::gerrit {
 	class production {
 		system::role { 'role::gerrit::production': description => 'Gerrit master' }
 
-		interface::ip { 'role::gerrit::production':
+		interface::ip { 'role::gerrit::production_ipv4':
 			interface => 'eth0',
-			address   => '208.80.154.81'
+			address   => '208.80.154.81',
+			prefixlen => '32',
+		}
+		interface::ip { 'role::gerrit::production_ipv6':
+			interface => 'eth0',
+			address   => '2620:0:861:3:208:80:154:81',
+			prefixlen => '128',
 		}
 
 		$replication_basic_push_refs = [
