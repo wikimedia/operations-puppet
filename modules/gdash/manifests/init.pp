@@ -27,10 +27,12 @@ class gdash(
         recurse => true,
         force   => true,
         source  => $template_source,
+        before  => Uwsgi::App['gdash'],
     }
 
     file { '/etc/gdash/gdash.yaml':
         content => ordered_json($settings),
+        before  => Uwsgi::App['gdash'],
     }
 
     file { '/opt/gdash':
@@ -44,5 +46,27 @@ class gdash(
 
     file { '/opt/gdash/public/config.ru':
         content => template('gdash/config.ru.erb'),
+        before  => Uwsgi::App['gdash'],
+    }
+
+    file { '/var/run/gdash':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+        before => Uwsgi::App['gdash'],
+    }
+
+    uwsgi::app { 'gdash':
+        settings => {
+            uwsgi => {
+                'socket'         => '/var/run/gdash/gdash.sock',
+                'stats'          => '/var/run/gdash/gdash-stats.sock',
+                'rack'           => '/opt/gdash/public/config.ru',
+                'post-buffering' => 4096,  # required by the Rack specification.
+                'master'         => true,
+                'die-on-term'    => true,
+            },
+        },
     }
 }
