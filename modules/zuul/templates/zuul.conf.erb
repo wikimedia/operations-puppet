@@ -1,26 +1,26 @@
 [gearman]
-server=<%= gearman_server %>
+server=<%= @gearman_server %>
 
 [gearman_server]
-start=<%= gearman_server_start %>
+start=<%= @gearman_server_start %>
 log_config=/etc/zuul/gearman-logging.conf
 
 [jenkins]
-server=<%= jenkins_server %>
-user=<%= jenkins_user %>
-apikey=<%= jenkins_apikey %>
+server=<%= @jenkins_server %>
+user=<%= @jenkins_user %>
+apikey=<%= @jenkins_apikey %>
 
 [gerrit]
-server=<%= gerrit_server %>
-user=<%= gerrit_user %>
-<% if gerrit_baseurl %>baseurl=<%= gerrit_baseurl %><% end %>
+server=<%= @gerrit_server %>
+user=<%= @gerrit_user %>
+<% if @gerrit_baseurl %>baseurl=<%= @gerrit_baseurl %><% end %>
 sshkey=/var/lib/jenkins/.ssh/id_rsa
 
 [zuul]
 layout_config=/etc/zuul/wikimedia/layout.yaml
 log_config=/etc/zuul/logging.conf
 state_dir=/var/lib/zuul
-git_dir=<%= git_dir %>
-push_change_refs=<%= push_change_refs %>
-url_pattern=<%= url_pattern %>
-status_url=<%= status_url %>
+git_dir=<%= @git_dir %>
+push_change_refs=<%= @push_change_refs %>
+url_pattern=<%= @url_pattern %>
+status_url=<%= @status_url %>
