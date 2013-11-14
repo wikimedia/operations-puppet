@@ -65,7 +65,7 @@ class misc::wikistats::updates {
 			user => wikistats,
 			hour => $hour,
 			minute => 0,
-			ensure => present,
+			ensure => absent,
 		}
 	}
 	# update cron jobs: usage: <project prefix>@<hour>
