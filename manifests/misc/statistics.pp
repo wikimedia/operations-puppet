@@ -279,7 +279,7 @@ class misc::statistics::sites::stats {
     # link geowiki checkout from docroot
     file { $geowiki_private_directory:
         ensure  => "link",
-        target  => $misc::statistics::geowiki::data::private::geowiki_private_data_path,
+        target  => "${misc::statistics::geowiki::data::private::geowiki_private_data_path}/datafiles",
         owner   => "root",
         group   => "www-data",
         mode    => '0750',
