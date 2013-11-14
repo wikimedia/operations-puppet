@@ -61,6 +61,6 @@ class role::solr::geodata($replication_master = 'solr1001.eqiad.wmnet', $max_hea
 class role::solr::geodata::labs {
 	class { "role::solr::geodata":
 		replication_master => undef,
-		max_heap => "1G",
+		max_heap => "256M",
 	}
 }
