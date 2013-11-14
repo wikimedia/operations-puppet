@@ -1583,6 +1583,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
             $sip['dns_rec'][$::site],
             $sip['osm'][$::site],
             $sip['misc_web'][$::site],
+            $sip['parsoidcache'][$::site],
             ],
         /^lvs100[36]$/ => [
             $sip['apaches'][$::site],
@@ -1596,7 +1597,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
             $sip['search_prefix'][$::site],
             $sip['swift'][$::site],
             $sip['parsoid'][$::site],
-            $sip['parsoidcache'][$::site],
+            $sip['parsoidcache'][$::site],  # FIXME: remove after migration
             $sip['search'][$::site]
             ]
     }
