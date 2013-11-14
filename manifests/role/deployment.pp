@@ -1,6 +1,10 @@
 # vim: sw=2 ts=2 et
 class role::deployment::config {
   $repo_config = {
+    'integration/mediawiki-tools-codesniffer' => {
+        'grain' => 'contint-production-slaves',
+        'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer',
+    },
     'integration/phpunit' => {
         'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpunit',
