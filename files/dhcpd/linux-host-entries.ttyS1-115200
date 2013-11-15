@@ -1177,6 +1177,66 @@ host ekrem {
 	fixed-address ekrem.wikimedia.org;
 }
 
+host elastic1001 {
+	hardware ethernet d4:ae:52:6e:e3:32;
+	fixed-address elastic1001.eqiad.wmnet;
+}
+
+host elastic1002 {
+	hardware ethernet d4:ae:52:70:46:da;
+	fixed-address elastic1002.eqiad.wmnet;
+}
+
+host elastic1003 {
+	hardware ethernet d4:ae:52:6e:f1:15;
+	fixed-address elastic1003.eqiad.wmnet;
+}
+
+host elastic1004 {
+	hardware ethernet d4:ae:52:6e:e9:e0;
+	fixed-address elastic1004.eqiad.wmnet;
+}
+
+host elastic1005 {
+	hardware ethernet d4:ae:52:6a:32:b6;
+	fixed-address elastic1005.eqiad.wmnet;
+}
+
+host elastic1006 {
+	hardware ethernet d4:ae:52:6e:f1:60;
+	fixed-address elastic1006.eqiad.wmnet;
+}
+
+host elastic1007 {
+	hardware ethernet a4:ba:db:19:cd:29;
+	fixed-address elastic1007.eqiad.wmnet;
+}
+
+host elastic1008 {
+	hardware ethernet d4:ae:52:6e:ea:1c;
+	fixed-address elastic1008.eqiad.wmnet;
+}
+
+host elastic1009 {
+	hardware ethernet d4:ae:52:6e:dc:73;
+	fixed-address elastic1009.eqiad.wmnet;
+}
+
+host elastic1010 {
+	hardware ethernet d4:ae:52:64:da:54;
+	fixed-address elastic1010.eqiad.wmnet;
+}
+
+host elastic1011 {
+	hardware ethernet d4:ae:52:64:da:69;
+	fixed-address elastic1011.eqiad.wmnet;
+}
+
+host elastic1012 {
+	hardware ethernet d4:ae:52:70:2b:f6;
+	fixed-address elastic1012.eqiad.wmnet;
+}
+
 host emery {
 	hardware ethernet 84:2b:2b:06:47:59;
 	fixed-address emery.wikimedia.org;
