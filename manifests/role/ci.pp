@@ -5,6 +5,8 @@
 # Setup a Jenkins installation attended to be used as a master. This setup some
 # CI specific requirements such as having workspace on a SSD device and Jenkins
 # monitoring.
+#
+# CI test server as per RT #1204
 class role::ci::master {
     system::role { 'role::ci::master': description => 'CI Jenkins master' }
 
@@ -30,6 +32,22 @@ class role::ci::master {
         },  # end of [core] section
       },  # end of settings
       require => User['jenkins'],
+    }
+
+    # As of October 2013, the slave scripts are installed with
+    # contint::slave-scripts and land under /srv/jenkins.
+    # FIXME: clean up Jenkins jobs to no more refer to the paths below:
+    file { '/var/lib/jenkins/.git':
+        ensure => directory,
+        mode   => '2775',  # group sticky bit
+        group  => 'jenkins',
+    }
+
+    file { '/var/lib/jenkins/bin':
+        ensure => directory,
+        owner  => 'jenkins',
+        group  => 'wikidev',
+        mode   => '0775';
     }
 
     file { '/srv/ssd/jenkins':
