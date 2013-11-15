@@ -28,12 +28,12 @@ class role::swift {
 				owner   => 'root',
 				group   => 'root',
 				mode    => '0440',
-				content => template("swift/swift-ganglia-report-global-stats.conf.erb");
+				content => template("swift/swift-ganglia-report-global-stats.conf.erb"),
 			}
 			cron { "swift-ganglia-report-global-stats":
+				ensure  => present,
 				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:thumb' -c pmtpa-prod",
-				user => root,
-				ensure => present;
+				user    => root,
 			}
 		}
 		class proxy inherits role::swift::pmtpa-prod {
@@ -74,7 +74,6 @@ class role::swift {
 				group  => 'root',
 				mode   => '0555',
 				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
-				ensure => present;
 			}
 			# config file to hold the password
 			$password = $passwords::swift::eqiad-prod::rewrite_password
@@ -82,12 +81,12 @@ class role::swift {
 				owner   => 'root',
 				group   => 'root',
 				mode    => '0440',
-				content => template("swift/swift-ganglia-report-global-stats.conf.erb");
+				content => template("swift/swift-ganglia-report-global-stats.conf.erb"),
 			}
 			cron { "swift-ganglia-report-global-stats":
+				ensure  => present,
 				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:media' -c eqiad-prod",
-				user => root,
-				ensure => present;
+				user    => root,
 			}
 		}
 		class proxy inherits role::swift::eqiad-prod {
@@ -122,15 +121,15 @@ class role::swift {
 		class ganglia_reporter inherits role::swift::pmtpa-labs {
 			# one host per cluster should report global stats
 			file { "/usr/local/bin/swift-ganglia-report-global-stats":
+				ensure => present,
 				path => "/usr/local/bin/swift-ganglia-report-global-stats",
 				mode => 0555,
 				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
-				ensure => present;
 			}
 			cron { "swift-ganglia-report-global-stats":
+				ensure  => present,
 				command => "/usr/local/bin/swift-ganglia-report-global-stats -u 'mw:thumbnail' -p userpassword -c pmtpa-labs",
-				user => root,
-				ensure => present;
+				user    => root,
 			}
 		}
 		class proxy inherits role::swift::pmtpa-labs {
@@ -159,10 +158,10 @@ class role::swift {
 		class ganglia_reporter inherits role::swift::pmtpa-labsupgrade {
 			# one host per cluster should report global stats
 			file { "/usr/local/bin/swift-ganglia-report-global-stats":
+				ensure => present,
 				path => "/usr/local/bin/swift-ganglia-report-global-stats",
 				mode => 0555,
 				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
-				ensure => present;
 			}
 			# config file to hold the password (which isn't secret in labs)
 			$password = "userpassword"
@@ -170,12 +169,12 @@ class role::swift {
 				mode => 0440,
 				owner => root,
 				group => root,
-				content => template("swift/swift-ganglia-report-global-stats.conf.erb");
+				content => template("swift/swift-ganglia-report-global-stats.conf.erb"),
 			}
 			cron { "swift-ganglia-report-global-stats":
+				ensure  => present,
 				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:thumbnail' -c pmtpa-labsupgrade",
-				user => root,
-				ensure => present;
+				user    => root,
 			}
 		}
 		class proxy inherits role::swift::pmtpa-labsupgrade {
