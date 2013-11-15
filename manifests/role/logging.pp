@@ -80,16 +80,23 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     }
 
     file { "/usr/local/bin/mw-log-cleanup":
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
         source => "puppet:///files/misc/scripts/mw-log-cleanup",
-        mode => '0555'
     }
 
     file { '/usr/local/bin/wfdebug-ganglia.py':
-        source => 'puppet:///files/udp2log/wfdebug-ganglia.py',
+        owner  => 'root',
+        group  => 'root',
         mode   => '0555',
+        source => 'puppet:///files/udp2log/wfdebug-ganglia.py',
     }
 
     file { '/etc/init/wfdebug-ganglia.conf':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
         content => template('udp2log/wfdebug-ganglia.conf.erb'),
     }
 
