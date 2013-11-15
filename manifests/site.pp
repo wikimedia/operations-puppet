@@ -2757,7 +2757,7 @@ node "terbium.eqiad.wmnet" {
     class { misc::maintenance::updatequerypages: enabled => true }
 }
 
-node /^testsearch100[1-3]\.eqiad\.wmnet/ {
+node /^(testsearch100[1-3]|elastic10(0[1-9]|1[0-2]))\.eqiad\.wmnet/ {
     include accounts::manybubbles,
         accounts::demon,
         groups::wikidev
@@ -2766,7 +2766,7 @@ node /^testsearch100[1-3]\.eqiad\.wmnet/ {
     sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard
-    include role::elasticsearch::production
+    include role::elasticsearch
     class { "lvs::realserver": realserver_ips => [ "10.2.2.30" ] }
 }
 
