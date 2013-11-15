@@ -108,8 +108,10 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
 			mode => 0664,
 			ensure => directory;
 		"/etc/logrotate.d/l10nupdate":
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0444',
 			source => "puppet:///files/logrotate/translationnotifications",
-			mode => 0444;
 	}
 }
 
