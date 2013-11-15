@@ -12,6 +12,13 @@
 #       smaller.
 # - $multicast_group:  multicast group to use for peer discovery.  Defaults to
 #       elasticsearch's default: '224.2.2.4'.
+# - $minimum_master_nodes:  how many master nodes must be online for this node
+#       to believe that the Elasticsearch cluster is functioning correctly.
+#       Defaults to 1.  Should be set to number of masster eligable nodes in
+#       cluster / 2 + 1.
+# - $master_eligable:  is this node eligable to be a master node?  Defaults to
+#       true.
+# - $holds_data: should this node hold data?  Defaults to true.
 #
 # == Sample usage:
 #
@@ -22,7 +29,10 @@
 class elasticsearch($cluster_name,
                     $heap_memory = '2G',
                     $multicast_group = '224.2.2.4',
-                    $plugins_dir = '/usr/share/elasticsearch/plugins') {
+                    $plugins_dir = '/usr/share/elasticsearch/plugins',
+                    $minimum_master_nodes = 1,
+                    $master_eligable = true,
+                    $holds_data = true) {
     # Check arguments
     if $cluster_name == 'elasticsearch' {
         fail('$cluster_name must not be set to "elasticsearch"')
