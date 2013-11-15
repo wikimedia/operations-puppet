@@ -13,6 +13,10 @@ class role::deployment::config {
         'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpcs',
     },
+    'integration/slave-scripts' => {
+        'grain' => 'contint-production-slaves',
+        'upstream' => 'https://gerrit.wikimedia.org/r/integration/jenkins',
+    },
     'mediawiki/common'               => {
         'grain'            => 'mediawiki',
         'upstream'         => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
