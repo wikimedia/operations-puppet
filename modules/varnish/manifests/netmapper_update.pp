@@ -19,8 +19,10 @@ class varnish::netmapper_update_common {
     }
 
     file { '/usr/share/varnish/netmapper_update.sh':
-        source => "puppet:///modules/${module_name}/netmapper_update.sh",
+        owner  => 'root',
+        group  => 'root',
         mode   => '0555';
+        source => "puppet:///modules/${module_name}/netmapper_update.sh",
     }
 }
 
