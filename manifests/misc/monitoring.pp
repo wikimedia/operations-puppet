@@ -48,13 +48,19 @@ class misc::monitoring::htcp-loss {
 class misc::monitoring::net::udp {
     file {
         '/usr/lib/ganglia/python_modules/udp_stats.py':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => 'puppet:///files/ganglia/plugins/udp_stats.py',
             require => File['/usr/lib/ganglia/python_modules'],
-            source => 'puppet:///files/ganglia/plugins/udp_stats.py',
-            notify => Service['gmond'];
+            notify  => Service['gmond'];
         '/etc/ganglia/conf.d/udp_stats.pyconf':
-            require => File["/usr/lib/ganglia/python_modules/udp_stats.py"],
-            source => "puppet:///files/ganglia/plugins/udp_stats.pyconf",
-            notify => Service['gmond'];
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => 'puppet:///files/ganglia/plugins/udp_stats.pyconf',
+            require => File['/usr/lib/ganglia/python_modules/udp_stats.py'],
+            notify  => Service['gmond'];
     }
 }
 
