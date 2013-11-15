@@ -9,20 +9,24 @@ class misc::syslog-server($config="nfs") {
 	}
 
 	file { "/etc/syslog-ng/syslog-ng.conf":
-		require => Package[syslog-ng],
-		source => "puppet:///files/syslog-ng/syslog-ng.conf.${config}",
-		mode => 0444;
+		owner   => 'root',
+		group   => 'root',
+		mode    => '0444',
+		source  => "puppet:///files/syslog-ng/syslog-ng.conf.${config}",
+		require => Package['syslog-ng'],
 	}
 	
 	# FIXME: handle properly
 	if $config == "nfs" {
-		file { "/etc/logrotate.d/remote-logs":
-			source => "puppet:///files/syslog-ng/remote-logs",
-			mode => 0444;
-		"/home/wikipedia/syslog":
-			owner => root,
-			group => root,
-			mode  => 0755;
+		file { '/etc/logrotate.d/remote-logs':
+			owner   => 'root',
+			group   => 'root',
+			mode    => '0444',
+			source  => 'puppet:///files/syslog-ng/remote-logs';
+		'/home/wikipedia/syslog':
+			owner => 'root',
+			group => 'root',
+			mode  => '0755';
 		}
 	}
 
