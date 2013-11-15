@@ -5,6 +5,15 @@
 
 set -e
 
+# TODO: Remove this after sockpuppet is dead
+if [ `hostname` = "sockpuppet" ]; then
+        echo "You shouldn't run puppet-merge here. Sockpuppet is unused. Go to palladium.eqiad.wmnet instead"
+        read -p "force(N/y)? " answer
+        if [ "$answer" != 'y' ]; then
+                exit 1
+        fi
+fi
+
 usage="$(basename ${0}) [<basedir>]
 
 Fetches changes from origin and from all submodules.
