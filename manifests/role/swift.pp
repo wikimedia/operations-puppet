@@ -74,7 +74,6 @@ class role::swift {
 				group  => 'root',
 				mode   => '0555',
 				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
-				ensure => present;
 			}
 			# config file to hold the password
 			$password = $passwords::swift::eqiad-prod::rewrite_password
