@@ -1,6 +1,5 @@
-
 # Class: udp2log
-# 
+#
 # Includes packages and setup for misc::udp2log::instances.
 # Make sure you include this class if you plan on using
 # the misc::udp2log::instance define below.
@@ -9,7 +8,7 @@
 #    $monitor  - If true, monitoring scripts will be installed.  Default: true
 class misc::udp2log($monitor = true) {
 
-	include 
+	include
 		contacts::udp2log,
 		misc::udp2log::udp_filter
 
@@ -23,7 +22,7 @@ class misc::udp2log($monitor = true) {
 	# include the monitoring scripts
 	# required for monitoring udp2log instances
 	if $monitor {
-		include 
+		include
 			# TODO: Should probably include icincga package here.
 			misc::udp2log::monitoring,
 			misc::udp2log::iptables
@@ -340,13 +339,19 @@ class misc::udp2log::monitoring {
 	# send udp2log socket stats to ganglia.
 	file {
 		'/usr/lib/ganglia/python_modules/udp2log_socket.py':
+			owner   => 'root',
+			group   => 'root',
+			mode    => '0444',
+			source  => 'puppet:///files/ganglia/plugins/udp2log_socket.py',
 			require => File['/usr/lib/ganglia/python_modules'],
-			source => 'puppet:///files/ganglia/plugins/udp2log_socket.py',
-			notify => Service['gmond'];
+			notify  => Service['gmond'];
 		'/etc/ganglia/conf.d/udp2log_socket.pyconf':
-			require => File["/usr/lib/ganglia/python_modules/udp2log_socket.py"],
-			source => "puppet:///files/ganglia/plugins/udp2log_socket.pyconf",
-			notify => Service['gmond'];
+			owner   => 'root',
+			group   => 'root',
+			mode    => '0444',
+			source  => 'puppet:///files/ganglia/plugins/udp2log_socket.pyconf',
+			require => File['/usr/lib/ganglia/python_modules/udp2log_socket.py'],
+			notify  => Service['gmond'];
 	}
 
 	# include general UDP statistic monitoring.
