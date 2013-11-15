@@ -37,14 +37,20 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 		# means there's actually a hidden dependency on ganglia.pp for
 		# the memcache class to work.
 		file {
-			"/usr/lib/ganglia/python_modules/memcached.py":
-				require => File["/usr/lib/ganglia/python_modules"],
-				source => "puppet:///files/ganglia/plugins/memcached.py",
-				notify => Service['gmond'];
-			"/etc/ganglia/conf.d/memcached.pyconf":
-				require => File["/usr/lib/ganglia/python_modules/memcached.py"],
-				source => "puppet:///files/ganglia/plugins/memcached.pyconf",
-				notify => Service['gmond'];
+			'/usr/lib/ganglia/python_modules/memcached.py':
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0444',
+				source  => 'puppet:///files/ganglia/plugins/memcached.py',
+				require => File['/usr/lib/ganglia/python_modules'],
+				notify  => Service['gmond'];
+			'/etc/ganglia/conf.d/memcached.pyconf':
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0444',
+				source  => 'puppet:///files/ganglia/plugins/memcached.pyconf',
+				require => File['/usr/lib/ganglia/python_modules/memcached.py'],
+				notify  => Service['gmond'];
 		}
 	}
 
