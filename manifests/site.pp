@@ -2784,7 +2784,9 @@ node "tin.eqiad.wmnet" {
         misc::deployment::l10nupdate,
         mysql,
         role::labsdb::manager,
-        ssh::hostkeys-collect 
+        ssh::hostkeys-collect
+
+    package { 'unzip': ensure => present } # for reedy RT #6322
 }
 
 node "tridge.wikimedia.org" {
