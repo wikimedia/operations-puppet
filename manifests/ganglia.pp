@@ -670,10 +670,16 @@ define ganglia::view(
 #
 define ganglia::plugin::python( $plugin = $title, $opts = {} ) {
     file { "/usr/lib/ganglia/python_modules/${plugin}.py":
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
         source => "puppet:///files/ganglia/plugins/${plugin}.py",
         notify => Service['gmond'],
     }
     file { "/etc/ganglia/conf.d/${plugin}.pyconf":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         content => template("ganglia/plugins/${plugin}.pyconf.erb"),
         notify  => Service['gmond'],
     }
