@@ -43,12 +43,12 @@ node.name: <%= @hostname %>
 # and to allow or deny to store the data.
 #
 # Allow this node to be eligible as a master node (enabled by default):
-#
-# node.master: true
-#
+
+node.master: <%= @master_eligible %>
+
 # Allow this node to store data (enabled by default):
-#
-# node.data: true
+
+node.data: <%= @holds_data %>
 
 # You can exploit these settings to design advanced cluster topologies.
 #
@@ -300,7 +300,7 @@ bootstrap.mlockall: true
 # operational within the cluster. Set this option to a higher value (2-4)
 # for large clusters (>3 nodes):
 #
-# discovery.zen.minimum_master_nodes: 1
+discovery.zen.minimum_master_nodes: <%= @minimum_master_nodes %>
 discovery.zen.ping.multicast.group: <%= @multicast_group %>
 
 # Set the time to wait for ping responses from other nodes when discovering.
