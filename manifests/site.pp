@@ -904,18 +904,6 @@ node "ekrem.wikimedia.org" {
         misc::mediawiki-irc-relay
 }
 
-node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet$/ {
-    include accounts::manybubbles,
-        accounts::demon,
-        groups::wikidev
-
-    sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-    sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-
-    include standard
-    include role::elasticsearch::production
-}
-
 # base_analytics_logging_node is defined in role/logging.pp
 node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
     include
@@ -2770,7 +2758,19 @@ node /^testsearch100[1-3]\.eqiad\.wmnet/ {
     sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard
-    include role::elasticsearch::production
+    include elasticsearch::decommission
+}
+
+node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
+    include accounts::manybubbles,
+        accounts::demon,
+        groups::wikidev
+
+    sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+    sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+
+    include standard
+    include role::elasticsearch
     class { "lvs::realserver": realserver_ips => [ "10.2.2.30" ] }
 }
 
