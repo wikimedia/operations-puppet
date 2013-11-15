@@ -112,7 +112,7 @@ class role::applicationserver {
 			"/usr/lib/ganglia/python_modules/apache_status.py":
 				owner  => 'root',
 				group  => 'root',
-				mode   => '0555',
+				mode   => '0444',
 				source => 'puppet:///files/ganglia/plugins/apache_status.py',
 				notify => Service['gmond'];
 			"/etc/ganglia/conf.d/apache_status.pyconf":
