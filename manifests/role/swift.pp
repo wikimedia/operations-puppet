@@ -16,17 +16,18 @@ class role::swift {
 		class ganglia_reporter inherits role::swift::pmtpa-prod {
 			# one host per cluster should report global stats
 			file { "/usr/local/bin/swift-ganglia-report-global-stats":
-				path => "/usr/local/bin/swift-ganglia-report-global-stats",
-				mode => 0555,
-				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
-				ensure => present;
+				ensure => present,
+				owner  => 'root',
+				group  => 'root',
+				mode   => '0555',
+				source => 'puppet:///files/swift/swift-ganglia-report-global-stats',
 			}
 			# config file to hold the password
 			$password = $passwords::swift::pmtpa-prod::rewrite_password
 			file { "/etc/swift-ganglia-report-global-stats.conf":
-				mode => 0440,
-				owner => root,
-				group => root,
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0440',
 				content => template("swift/swift-ganglia-report-global-stats.conf.erb");
 			}
 			cron { "swift-ganglia-report-global-stats":
