@@ -266,8 +266,10 @@ class misc::maintenance::wikidata( $enabled = false ) {
 			mode => 0664,
 			ensure => directory;
 		"/etc/logrotate.d/wikidata":
-			source => "puppet:///files/logrotate/wikidata",
-			mode => 0444;
+			owner  => 'root',
+			mode   => 'root',
+			mode   => '0444',
+			source => 'puppet:///files/logrotate/wikidata',
 	}
 }
 
