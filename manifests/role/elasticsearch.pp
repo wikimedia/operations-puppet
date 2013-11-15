@@ -1,53 +1,66 @@
-# = Class: role::elasticsearch::production
+# = Class: role::elasticsearch::config
 #
-# This class manages an elasticsearch service in a WMF-specific way for
-# production.
+# This class sets up Elasticsearch configuration in a WMF-specific way.
 #
-class role::elasticsearch::production {
-    $multicast_group = $::site ? {
-        'eqiad' => '224.2.2.5',
-        'pmtpa' => '224.2.2.6',
+class role::elasticsearch::config {
+    # Config
+    if ($::realm == 'labs') {
+        $multicast_group = '224.2.2.4'
+        $master_eligible = true
+        if ($::hostname =~ /^deployment-/) {
+            # Beta
+            # Has four nodes all of which can be master
+            $minimum_master_nodes = 3
+            $cluster_name         = 'beta-search'
+            $heap_memory          = '4G'
+        } else {
+            # Regular labs instance
+            # We don't know how many instances will be in each labs project so
+            # we got with the lowest common denominator assuming that you can
+            # recover from a split brain on your own.  It'd be good practice
+            # in case we have one in production.
+            $minimum_master_nodes = 1
+            # This should be configured per project
+            if $::elasticsearch_cluster_name == undef {
+                $message = 'must be set to something unique to the labs project'
+                fail("\$::elasticsearch_cluster_name $message")
+            }
+            $cluster_name         = $::elasticsearch_cluster_name
+            $heap_memory          = '2G'
+        }
+    } else {
+        # Production
+        $multicast_group = $::site ? {
+            'eqiad' => '224.2.2.5',
+            'pmtpa' => '224.2.2.6',
+        }
+        $master_eligible = $::hostname ? {
+            /^elastic1001/        => true,  # Rack A3
+            /^elastic1007/        => true,  # Rack C5
+            # TODO Move this when we get machines on another row/rack
+            /^elastic1012/        => true,  # Rack C5
+            default               => false,
+        }
+        $minimum_master_nodes = 2
+        $cluster_name         = "production-search-${::site}"
+        $heap_memory          = '30G'
     }
-    class { '::elasticsearch':
-        cluster_name    => "production-search-${::site}",
-        heap_memory     => '7G',
-        multicast_group => $multicast_group,
-        plugins_dir     => '/srv/deployment/elasticsearch/plugins',
-    }
-    deployment::target { 'elasticsearchplugins': }
-
-    include elasticsearch::ganglia
-    include elasticsearch::nagios::check
 }
 
-# = Class: role::elasticsearch::beta
+# = Class: role::elasticsearch
 #
-# This class manages an elasticsearch service in a WMF-specific way for beta.
+# This class sets up Elasticsearch in a WMF-specific way.
 #
-class role::elasticsearch::beta {
-    class { '::elasticsearch':
-        cluster_name => 'beta-search',
-        heap_memory  => '4G',
-        plugins_dir  => '/srv/deployment/elasticsearch/plugins',
-    }
-    deployment::target { 'elasticsearchplugins': }
+class role::elasticsearch inherits role::elasticsearch::config {
 
-    include elasticsearch::ganglia
-    include elasticsearch::nagios::check
-}
-
-# = Class: role::elasticsearch::labs
-#
-# This class manages an elasticsearch service in a WMF-specific way for labs.
-# Note that this requires the elasticsearch_cluster_name global to be set.
-#
-class role::elasticsearch::labs {
-    if $::elasticsearch_cluster_name == undef {
-        fail("$::elasticsearch_cluster_name must be set to something unique for your cluster")
-    }
+    # Install
     class { '::elasticsearch':
-        cluster_name => $::elasticsearch_cluster_name,
-        plugins_dir  => '/srv/deployment/elasticsearch/plugins',
+        multicast_group      => $multicast_group,
+        master_eligible      => $master_eligible,
+        minimum_master_nodes => $minimum_master_nodes,
+        cluster_name         => $cluster_name,
+        heap_memory          => $heap_memory,
+        plugins_dir          => '/srv/deployment/elasticsearch/plugins',
     }
     deployment::target { 'elasticsearchplugins': }
 
