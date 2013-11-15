@@ -2757,7 +2757,7 @@ node "terbium.eqiad.wmnet" {
     class { misc::maintenance::updatequerypages: enabled => true }
 }
 
-node /^testsearch100[1-3]\.eqiad\.wmnet/ {
+node /^(testsearch100[1-3]|elastic10(0[0-9]|11))\.eqiad\.wmnet/ {
     include accounts::manybubbles,
         accounts::demon,
         groups::wikidev
@@ -2765,8 +2765,21 @@ node /^testsearch100[1-3]\.eqiad\.wmnet/ {
     sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
     sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
+    # TODO before merging: which nodes should be master eligible?
+    # Hopefully they are on different racks.
+    $master_eligible = $hostname ? {
+        /^testsearch100[1-3]/ => true,
+        'elastic1000'         => true,
+        'elastic1011'         => true,
+        'elastic1004'         => true,
+        default               => false,
+    }
+
     include standard
-    include role::elasticsearch::production
+    class { "role::elasticsearch::production":
+        minimum_master_nodes => 2,
+        master_eligible      => $master_eligible,
+    }
     class { "lvs::realserver": realserver_ips => [ "10.2.2.30" ] }
 }
 
