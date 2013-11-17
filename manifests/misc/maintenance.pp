@@ -382,18 +382,19 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
         define updatequerypages::cronjob() {
 
                 $cluster = regsubst($name, '@.*', '\1')
-                $monthday = regsubst($name, '.*@', '\1')
+                # Currently they're all monthly, this part is kept for BC and in case we change mind
+                # $monthday = regsubst($name, '.*@', '\1')
 
                 Cron {
                         user => mwdeploy,
                         hour => 1,
                         minute => 0,
-                        monthday => $monthday,
+                        month => absent,
                 }
 
                 cron { "cron-updatequerypages-ancientpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Ancientpages > /home/mwdeploy/updateSpecialPages/${name}-AncientPages.log 2>&1",
-                        month => absent,
+                        monthday => 11,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -403,7 +404,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-deadendpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Deadendpages > /home/mwdeploy/updateSpecialPages/${name}-DeadendPages.log 2>&1",
-                        month => absent,
+                        monthday => 12,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -413,7 +414,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-mostlinked-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostlinked > /home/mwdeploy/updateSpecialPages/${name}-MostLinked.log 2>&1",
-                        month => absent,
+                        monthday => 13,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -423,7 +424,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-mostrevisions-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostrevisions > /home/mwdeploy/updateSpecialPages/${name}-MostRevisions.log 2>&1",
-                        month => absent,
+                        monthday => 14,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -433,7 +434,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-wantedpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Wantedpages > /home/mwdeploy/updateSpecialPages/${name}-WantedPages.log 2>&1",
-                        month => absent,
+                        monthday => 15,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -443,7 +444,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-fewestrevisions-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Fewestrevisions > /home/mwdeploy/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
-                        month => absent,
+                        monthday => 16,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -527,7 +528,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 }
         }
 
-        # add cron jobs - usage: <cluster>@<day of month>
+        # add cron jobs - usage: <cluster>@<day of month> (monthday currently unused, only sets cronjob name)
         updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17']: }
         updatequerypages::enwiki::cronjob { ['updatequerypages-enwiki-only']: }
 }
