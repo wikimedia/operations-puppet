@@ -58,5 +58,10 @@ class lvs::balancer(
         },
     }
 
-    generic::upstart_job { "enable-rps": install => "true", start => "true" }
+    interface::rps { 'eth0': }
+
+    # XXX: old RPS mechanism; remove after a successful run; 2014-04-21
+    file { '/etc/init/enable-rps.conf':
+        ensure => absent,
+    }
 }
