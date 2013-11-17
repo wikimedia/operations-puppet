@@ -950,7 +950,12 @@ class lvs::balancer(
 		},
 	}
 
-	generic::upstart_job { "enable-rps": install => "true", start => "true" }
+	interface::rps { 'eth0': }
+
+	# XXX: old RPS mechanism; remove after a successful run; 2013-11-18
+	file { '/etc/init/enable-rps.conf':
+		ensure => absent,
+	}
 }
 
 # Supporting the PyBal RunCommand monitor
