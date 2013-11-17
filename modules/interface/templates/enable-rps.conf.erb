@@ -1,0 +1,9 @@
+# enable-rps
+
+description "Enable RPS on <%= @interface %> RX queues"
+
+start on filesystem
+task
+script
+	interface-rps <%= @interface %>
+end script
