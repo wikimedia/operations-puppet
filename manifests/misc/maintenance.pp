@@ -386,14 +386,14 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 Cron {
                         user => mwdeploy,
-                        hour => 1,
                         minute => 0,
                         monthday => $monthday,
+                        month => absent,
                 }
 
                 cron { "cron-updatequerypages-ancientpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Ancientpages > /home/mwdeploy/updateSpecialPages/${name}-AncientPages.log 2>&1",
-                        month => absent,
+                        hour => 1,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -403,7 +403,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-deadendpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Deadendpages > /home/mwdeploy/updateSpecialPages/${name}-DeadendPages.log 2>&1",
-                        month => absent,
+                        hour => 3,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -413,7 +413,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-mostlinked-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostlinked > /home/mwdeploy/updateSpecialPages/${name}-MostLinked.log 2>&1",
-                        month => absent,
+                        hour => 5,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -423,7 +423,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-mostrevisions-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostrevisions > /home/mwdeploy/updateSpecialPages/${name}-MostRevisions.log 2>&1",
-                        month => absent,
+                        hour => 7,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -433,7 +433,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-wantedpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Wantedpages > /home/mwdeploy/updateSpecialPages/${name}-WantedPages.log 2>&1",
-                        month => absent,
+                        hour => 9,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
@@ -443,7 +443,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
 
                 cron { "cron-updatequerypages-fewestrevisions-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Fewestrevisions > /home/mwdeploy/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
-                        month => absent,
+                        hour => 11,
                         ensure => $enabled ?{
                           true => present,
                           false => absent,
