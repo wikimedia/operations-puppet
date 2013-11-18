@@ -942,13 +942,6 @@ node "loudon.wikimedia.org" {
     #include    role::fundraising::logger
 }
 
-node "grosley.wikimedia.org" {
-    # moved to frack puppet
-    #include role::fundraising::civicrm,
-    #   accounts::file_mover
-    #class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
-}
-
 node "aluminium.wikimedia.org" {
     include role::fundraising::civicrm,
         accounts::file_mover

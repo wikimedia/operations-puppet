@@ -209,11 +209,6 @@ host backup4001 {
 	fixed-address backup4001.ulsfo.wmnet;
 }
 
-host barium {
-	hardware ethernet 90:B1:1C:00:9F:20;
-	fixed-address barium.wikimedia.org;
-}
-
 host bast1001 {
 	hardware ethernet 78:2b:cb:09:11:ba;
 	fixed-address bast1001.wikimedia.org;
