@@ -9,13 +9,17 @@ class ganglia_new::monitor::aggregator($sites) {
 			ensure => directory,
 			mode => 0555;
 		"/etc/init/ganglia-monitor-aggregator.conf":
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0444',
 			source => "puppet:///modules/$module_name/upstart/ganglia-monitor-aggregator.conf",
 			before => Service["ganglia-monitor-aggregator"],
-			mode => 0444;
 		"/etc/init/ganglia-monitor-aggregator-instance.conf":
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0444',
 			source => "puppet:///modules/$module_name/upstart/ganglia-monitor-aggregator-instance.conf",
 			before => Service["ganglia-monitor-aggregator"],
-			mode => 0444;
 	}
 
 	generic::upstart_job { "ganglia-monitor-aggregator-instance": }
