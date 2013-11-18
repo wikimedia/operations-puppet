@@ -1,0 +1,19 @@
+<VirtualHost _default_:443>
+    ServerName   <%= web_address %>
+    #ServerAlias  wikimetrics.instance-proxy.wmflabs.org metrics.wikimedia.org
+
+    SSLEngine On
+    SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+    SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+    SSLCACertificatePath  /etc/ssl/certs/
+
+    ProxyRequests Off
+    ProxyPreserveHost On
+
+
+    # Set a header so the main vhost can know if SSL is being used.
+    RequestHeader set SSL on
+    <Location />
+        ProxyPass http://127.0.0.1:81/
+    </Location>
+</VirtualHost>

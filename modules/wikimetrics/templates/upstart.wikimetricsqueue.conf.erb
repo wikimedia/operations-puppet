@@ -1,0 +1,5 @@
+start on startup
+script
+    cd <%= wikimetrics_root %>
+    wikimetrics --mode queue --db-config <%= db_config %> --queue-config <%= queue_config %>
+end script

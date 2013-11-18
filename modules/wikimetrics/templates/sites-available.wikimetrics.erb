@@ -1,0 +1,33 @@
+<VirtualHost *:80>
+  ServerName   <%= web_address %>
+  #ServerAlias  wikimetrics.instance-proxy.wmflabs.org wikimetrics.pmtpa.wmflabs
+  DocumentRoot <%= document_root %>
+  ServerAdmin  noc@wikimedia.org
+
+  ErrorLog /var/log/apache2/error.metrics.log
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
+
+  CustomLog /var/log/apache2/access.metrics.log combined
+
+  RewriteEngine on
+  # Redirect any non HTTPS request to HTTPS
+  # This HTTP Header is set by Yuvi's proxy-dammit instance
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://metrics.wmflabs.org$1 [L,R]
+
+  WSGIDaemonProcess api user=www-data group=wikidev threads=10 python-path=<%= document_root %>
+  WSGIScriptAlias / <%= wsgi_path %>
+
+  <Directory <%= document_root %>>
+      WSGIProcessGroup api
+      WSGIApplicationGroup %{GLOBAL}
+
+      Options Indexes FollowSymLinks MultiViews
+      AllowOverride None
+      Order deny,allow
+      Allow from all
+  </Directory>
+
+</VirtualHost>
