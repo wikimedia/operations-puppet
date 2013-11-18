@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo
+echo "\033[1;31m"
+echo "This system is no longer an active puppetmaster."
+echo "Everything you did here should now be done on palladium."
+echo "\033[0m"
+echo

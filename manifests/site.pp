@@ -2346,6 +2346,12 @@ node "sockpuppet.pmtpa.wmnet" {
             'dbserver' => "db1001.eqiad.wmnet",
         }
     }
+
+    # Display notice that this is no longer an active puppetmaster.
+    file {"/etc/update-motd.d/99-obsolete-puppetmaster":
+        ensure => 'present',
+        source => 'puppet:///modules/puppetmaster/motd/99-obsolete';
+    }
 }
 
 node "sodium.wikimedia.org" {
@@ -2547,6 +2553,12 @@ node "stafford.pmtpa.wmnet" {
             'dbserver' => "db1001.eqiad.wmnet",
             'dbconnections' => "256",
         }
+    }
+
+    # Display notice that this is no longer an active puppetmaster.
+    file {"/etc/update-motd.d/99-obsolete-puppetmaster":
+        ensure => 'present',
+        source => 'puppet:///modules/puppetmaster/motd/99-obsolete';
     }
 }
 
