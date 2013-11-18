@@ -125,9 +125,18 @@ class lucene {
 		}
 
 		if $lucene::server::indexer == false {
-			monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
+			monitor_service { 'lucene':
+				description   => 'Lucene',
+				check_command => 'check_lucene',
+				retries => 6
+			}
 
-			monitor_service { 'lucene_search': description => 'search indices - check lucene status page', check_command => "check_lucene_frontend" }
+			# CRITICAL for months (oldest 158d old); clearly not a serious issue
+			# --faidon, 2013-11-18
+			# monitor_service { 'lucene_search':
+			# 	description   => 'search indices - check lucene status page',
+			# 	check_command => 'check_lucene_frontend'
+			# }
 		}
 	}
 
