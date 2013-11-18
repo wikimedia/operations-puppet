@@ -104,6 +104,13 @@ innodb-use-sys-malloc
 innodb-write-io-threads=8
 innodb-checksums=1
 
+# try to improve innodb index cardinality accuracy on large tables
+# might need to be even higher and innodb_stats_on_metadata=OFF
+innodb_stats_sample_pages = 16
+
+# encourage more ref lookups when joining tables with nullable fields
+innodb_stats_method = nulls_unequal
+
 <% if innodb_file_per_table == true then -%>
 innodb_file_per_table
 <% end -%>
