@@ -1,0 +1,26 @@
+SECRET_KEY  : '<%= @flask_secret_key %>'
+DEBUG       : False
+
+GOOGLE_CLIENT_SECRET                : '<%= @google_client_secret %>'
+GOOGLE_BASE_URL                     : 'https://www.google.com/accounts/'
+GOOGLE_AUTH_URI                     : 'https://accounts.google.com/o/oauth2/auth'
+GOOGLE_TOKEN_URI                    : 'https://accounts.google.com/o/oauth2/token'
+GOOGLE_CLIENT_EMAIL                 : '<%= @google_client_email %>'
+GOOGLE_CLIENT_ID                    : '<%= @google_client_id %>'
+GOOGLE_AUTH_PROVIDER_X509_CERT_URL  : 'https://www.googleapis.com/oauth2/v1/certs'
+GOOGLE_AUTH_SCOPE                   : 'https://www.googleapis.com/auth/userinfo.email'
+GOOGLE_USERINFO_URI                 : 'https://www.googleapis.com/oauth2/v1/userinfo'
+GOOGLE_REDIRECT_URI                 : 'http<%= 's' if @ssl_redirect %>://<%= @server_name %>/auth/google'
+GOOGLE_JAVASCRIPT_ORIGIN            : 'http<%= 's' if @ssl_redirect %>://<%= @server_name %>'
+
+META_MW_BASE_URL                    : 'https://meta.wikimedia.org/'
+META_MW_BASE_INDEX                  : 'w/index.php'
+META_MW_TOKEN_URI                   : 'w/index.php?title=Special:OAuth/token'
+META_MW_AUTH_URI                    : 'wiki/Special:OAuth/authorize'
+META_MW_USERINFO_URI                : 'w/api.php?action=query&meta=userinfo&format=json'
+META_MW_REDIRECT_URI                : http<%= 's' if @ssl_redirect %>://<%= @server_name %>/auth/meta_mw'
+META_MW_CONSUMER_KEY                : '<%= @meta_mw_consumer_key %>'
+META_MW_CLIENT_SECRET               : '<%= @meta_mw_client_secret %>'
+
+SERVER_HOST                         : '0.0.0.0'
+SERVER_PORT                         : 5000
