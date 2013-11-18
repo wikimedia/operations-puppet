@@ -851,6 +851,16 @@ class misc::statistics::geowiki {
         owner     => $geowiki_user,
         group     => $geowiki_user,
     }
+
+    # Since git::clone does not set ownership on existing directories,
+    # we have to force ownership explicitly.
+    file { "$geowiki_scripts_path":
+        ensure  => directory,
+        require => Git::Clone['geowiki-scripts'],
+        owner   => $geowiki_user,
+        group   => $geowiki_user,
+        mode    => 0750,
+    }
 }
 
 # == Class misc::statistics::geowiki::mysql::conf::research
@@ -937,6 +947,16 @@ class misc::statistics::geowiki::data::private {
         group     => 'www-data',
         mode      => 0750,
     }
+
+    # Since git::clone does not set ownership on existing directories,
+    # we have to force ownership explicitly.
+    file { "$geowiki_private_data_path":
+        ensure  => directory,
+        require => Git::Clone['geowiki-data-private'],
+        owner   => $geowiki_user,
+        group   => 'www-data',
+        mode    => 0750,
+    }
 }
 
 # == Class misc::statistics::geowiki::jobs::data
@@ -1014,6 +1034,16 @@ class misc::statistics::geowiki::jobs::limn {
         ensure    => 'latest',
         owner     => $geowiki_user,
         group     => $geowiki_user,
+    }
+
+    # Since git::clone does not set ownership on existing directories,
+    # we have to force ownership explicitly.
+    file { "$geowiki_public_data_path":
+        ensure  => directory,
+        require => Git::Clone['geowiki-data-public'],
+        owner   => $geowiki_user,
+        group   => $geowiki_user,
+        mode    => 0750,
     }
 
     # cron job to do the actual fetching from the database, computation of
