@@ -63,10 +63,13 @@ class base::monitoring::host($contact_group = 'admins') {
             nrpe_command => '/usr/bin/sudo /usr/local/bin/check-raid.py',
         }
 
+        # the -A -i ... part is a gross hack to workaround Varnish partitions
+        # that are purposefully at 99%. Better ideas are welcome.
         nrpe::monitor_service { 'disk_space':
             description  => 'Disk space',
-            nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e',
+            nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"',
         }
+
         nrpe::monitor_service { 'dpkg':
             description  => 'DPKG',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_dpkg',
