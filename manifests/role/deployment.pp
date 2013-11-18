@@ -94,6 +94,10 @@ class role::deployment::config {
         'grain'    => 'analytics-kraken',
         'upstream' => 'https://gerrit.wikimedia.org/r/p/analytics/kraken',
     },
+    'analytics/wikimetrics'          => {
+        'grain'    => 'analytics-wikimetrics',
+        'upstream' => 'https://gerrit.wikimedia.org/r/p/analytics/wikimetrics',
+    },
   }
 }
 
