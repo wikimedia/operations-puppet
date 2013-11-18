@@ -158,12 +158,6 @@ class misc::deployment::common_scripts {
 	}
 }
 
-# Scripts for the new git-deploy deployment system
-class misc::deployment::scripts {
-	include misc::deployment::common_scripts
-	class { "misc::deployment::vars": system => "git-deploy" }
-}
-
 # Scripts for the old rsync-based deployment system
 class misc::deployment::scap_scripts {
 	include misc::deployment::common_scripts
