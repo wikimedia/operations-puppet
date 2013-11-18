@@ -24,3 +24,18 @@ class passwords::mysql::eventlogging { }
 class passwords::mongodb::eventlogging { }
 class passwords::racktables { }
 
+class passwords::wikimetrics {
+    $flask_secret_key     = 'SLIJSsliejsl ise lsiejsa3s$#$ 432 wsj ls8u(*OPS4s4w ls; lsis^%RSDFVCASDl5e;  el li'
+    $google_client_secret = 'KgqnHVWfsP0uu4hR0juAjkOY'
+    $google_client_id     = '133082872359@developer.gserviceaccount.com'
+    $google_client_email  = '133082872359-jaud8u6qisr4uvob6hs614clm9tt7pmv.apps.googleusercontent.com'
+
+    # Wikimetrics Database Creds
+    $db_user_wikimetrics = 'wikimetrics'
+    $db_pass_wikimetrics = 'jGKuwks*&^k86I87jk*'
+    $db_host_wikimetrics = 'localhost'
+    $db_name_wikimetrics = 'wikimetrics'
+    # Mediawiki Database Creds
+    $db_user_mediawiki = 'u2543'
+    $db_pass_mediawiki = 'tohbahrutiezooko'
+}
