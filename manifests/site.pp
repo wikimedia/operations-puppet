@@ -2703,6 +2703,7 @@ node "streber.wikimedia.org" {
         ssh,
         ganglia,
         ntp::client,
+        role::salt::minions,
         admins::roots,
 #       misc::torrus,
         misc::rancid,
