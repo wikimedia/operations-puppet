@@ -9,7 +9,10 @@ class misc::fundraising {
 
 	require mysql_wmf::client
 
-	package { [ 'libapache2-mod-php5', 'php5-cli', 'php-pear', 'php5-common', 'php5-curl', 'php5-dev', 'php5-gd', 'php5-mysql', 'php5-sqlite', 'subversion', 'phpunit', 'python-scipy', 'python-matplotlib', 'python-libxml2', 'python-sqlite', 'python-sqlitecachec', 'python-urlgrabber', 'python-argparse', 'python-dev', 'python-setuptools', 'python-mysqldb', 'libapache2-mod-python', 'r-base', 'r-cran-rmysql', 'python-rpy2' ]:
+	package { [ 'libapache2-mod-php5', 'php5-cli', 'php-pear', 'php5-common', 'php5-curl', 'php5-dev', 'php5-gd',
+		'php5-mysql', 'php5-sqlite', 'subversion', 'phpunit', 'python-scipy', 'python-matplotlib', 'python-libxml2',
+		'python-sqlite', 'python-sqlitecachec', 'python-urlgrabber', 'python-argparse', 'python-dev',
+		'python-setuptools', 'python-mysqldb', 'libapache2-mod-python', 'r-base', 'r-cran-rmysql', 'python-rpy2' ]:
 		ensure => latest;
 	}
 
@@ -48,23 +51,6 @@ class misc::fundraising {
 			mode => 2770,
 			ensure => directory;
 
-		#civicrm dev confs
-		'/srv/org.wikimedia.civicrm-dev/sites/default/civicrm.settings.php':
-			owner => 'root',
-			group => 'www-data',
-			mode => 0440,
-			source => 'puppet:///private/misc/fundraising/dev.civicrm.civicrm.settings.php';
-		'/srv/org.wikimedia.civicrm-dev/sites/default/settings.php':
-			owner => 'root',
-			group => 'www-data',
-			mode => 0440,
-			source => 'puppet:///private/misc/fundraising/dev.civicrm.settings.php';
-		'/srv/org.wikimedia.civicrm-dev/files':
-			owner => 'root',
-			group => 'www-data',
-			mode => 2770,
-			ensure => directory;
-
 		#misc fundraising confs
 		'/opt/fundraising-misc/queue_handling/payflowpro/executeStompPFPPendingProcessorSA.php':
 			owner => 'root',
@@ -98,11 +84,6 @@ class misc::fundraising {
 			ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php';
 
 		#apache conf stuffs
-		'/etc/php5/apache2/php.ini':
-			owner => 'root',
-			group => 'root',
-			mode => 0444,
-			source => 'puppet:///private/php/php.ini.civicrm';
 		'/etc/apache2/sites-available/000-donate':
 			owner => 'root',
 			group => 'root',
@@ -118,22 +99,12 @@ class misc::fundraising {
 			group => 'root',
 			mode => 0444,
 			source => 'puppet:///private/misc/fundraising/apache.conf.civicrm-ssl';
-		'/etc/apache2/sites-available/003-civicrm-dev':
-			owner => 'root',
-			group => 'root',
-			mode => 0444,
-			source => 'puppet:///private/misc/fundraising/apache.conf.civicrm-dev';
-		'/etc/apache2/sites-available/004-civicrm-dev-ssl':
-			owner => 'root',
-			group => 'root',
-			mode => 0444,
-			source => 'puppet:///private/misc/fundraising/apache.conf.civicrm-dev-ssl';
-		'/etc/apache2/sites-available/005-fundraising':
+		'/etc/apache2/sites-available/003-fundraising':
 			owner => 'root',
 			group => 'root',
 			mode => 0444,
 			source => 'puppet:///private/misc/fundraising/apache.conf.fundraising';
-		'/etc/apache2/sites-available/006-fundraising-ssl':
+		'/etc/apache2/sites-available/004-fundraising-ssl':
 			owner => 'root',
 			group => 'root',
 			mode => 0444,
@@ -151,7 +122,12 @@ class misc::fundraising {
 			mode => 0440,
 			source => 'puppet:///files/sudo/sudoers.drupal_fundraising';
 
-		# other stuff
+		# php config
+		'/etc/php5/apache2/php.ini':
+			owner => 'root',
+			group => 'root',
+			mode => 0444,
+			source => 'puppet:///private/php/php.ini.civicrm';
 		'/etc/php5/cli/php.ini':
 			owner => 'root',
 			group => 'root',
@@ -167,12 +143,8 @@ class misc::fundraising {
 	apache_site { 'donate': name => '000-donate' }
 	apache_site { 'civicrm': name => '001-civicrm' }
 	apache_site { 'civicrm-ssl': name => '002-civicrm-ssl' }
-	apache_site { 'civicrm-dev': name => '003-civicrm-dev' }
-	apache_site { 'civicrm-dev-ssl': name => '004-civicrm-dev-ssl' }
-	apache_site { 'fundraising': name => '005-fundraising' }
-	apache_site { 'fundraising-ssl': name => '006-fundraising-ssl' }
-	#apache_site { 'fundraising-analytics': name => '007-fundraising-analytics' }
-	#apache_site { 'community-analytics': name => '008-community-analytics' }
+	apache_site { 'fundraising': name => '003-fundraising' }
+	apache_site { 'fundraising-ssl': name => '004-fundraising-ssl' }
 
 }
 
