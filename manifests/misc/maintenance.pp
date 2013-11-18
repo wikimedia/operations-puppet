@@ -269,7 +269,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
 			ensure => directory;
 		"/etc/logrotate.d/wikidata":
 			owner  => 'root',
-			mode   => 'root',
+			group   => 'root',
 			mode   => '0444',
 			source => 'puppet:///files/logrotate/wikidata',
 	}
