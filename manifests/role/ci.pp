@@ -24,6 +24,10 @@ class role::ci::master {
           'name'  => 'Wikimedia Jenkins Bot',
           'email' => 'jenkins@gallium.wikimedia.org',
         },  # end of [user] section
+        'core' => {
+          # bug 56717: avoid eating all RAM when repacking
+          'packedGitLimit' => '2G',
+        },  # end of [core] section
       },  # end of settings
       require => User['jenkins'],
     }
