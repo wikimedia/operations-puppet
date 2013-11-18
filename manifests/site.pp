@@ -587,19 +587,17 @@ node /^db(31|65|72)\.pmtpa\.wmnet/ {
     }
 }
 
-node /^db(73|74)\.pmtpa\.wmnet/ {
-    if $hostname =~ /^db(73|74)/{
-        class { role::coredb::s5 : mariadb => true, innodb_file_per_table => true }
-    } else {
-        include role::coredb::s5
-    }
+node /^db(73)\.pmtpa\.wmnet/ {
+    class { role::coredb::s5 : mariadb => true, innodb_file_per_table => true }
 }
 
-node /^db(47|50)\.pmtpa\.wmnet/ {
+node /^db(47|50|74)\.pmtpa\.wmnet/ {
     if $hostname =~ /^db50/ {
         $ganglia_aggregator = true
     }
-    if $hostname == "db50"{
+    if $hostname == "db74" {
+        class { role::coredb::s6 : mariadb => true, innodb_file_per_table => true }
+    } elsif $hostname == "db50"{
         class { role::coredb::s6 : innodb_file_per_table => true }
     } else {
         include role::coredb::s6
