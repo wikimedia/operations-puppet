@@ -2209,7 +2209,7 @@ node 'palladium.eqiad.wmnet' {
             'dbadapter' => 'mysql',
             'dbuser' => 'puppet',
             'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver' => 'db9.pmtpa.wmnet' #TODO: Migrate to db1001
+            'dbserver' => 'db1001.eqiad.wmnet',
         }
     }
 }
@@ -2362,7 +2362,7 @@ node "sockpuppet.pmtpa.wmnet" {
             'dbadapter' => "mysql",
             'dbuser' => "puppet",
             'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver' => "db9.pmtpa.wmnet"
+            'dbserver' => "db1001.eqiad.wmnet",
         }
     }
 }
@@ -2563,7 +2563,7 @@ node "stafford.pmtpa.wmnet" {
             'dbadapter' => "mysql",
             'dbuser' => "puppet",
             'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver' => "db9.pmtpa.wmnet",
+            'dbserver' => "db1001.eqiad.wmnet",
             'dbconnections' => "256",
         }
     }
@@ -2588,7 +2588,7 @@ node 'strontium.eqiad.wmnet' {
             'dbadapter' => 'mysql',
             'dbuser' => 'puppet',
             'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver' => 'db9.pmtpa.wmnet', #TODO: Move to db1001
+            'dbserver' => 'db1001.eqiad.wmnet',
             'dbconnections' => '256',
         }
     }
