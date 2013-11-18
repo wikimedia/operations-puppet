@@ -108,6 +108,7 @@ class role::deployment::config {
         'grain'    => 'analytics-kraken',
         'upstream' => 'https://gerrit.wikimedia.org/r/p/analytics/kraken',
     },
+<<<<<<< HEAD
     'ocg/collection'                 => {
         'grain'                 => 'ocg-collection',
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection/OfflineContentGenerator',
@@ -122,6 +123,12 @@ class role::deployment::config {
             'service.restart' => ['ocg-collection'] 
         },
     }
+=======
+    'analytics/wikimetrics'          => {
+        'grain'    => 'analytics-wikimetrics',
+        'upstream' => 'https://gerrit.wikimedia.org/r/p/analytics/wikimetrics',
+    },
+>>>>>>> 33e4442... [not ready for review] Productionizing Wikimetrics
   }
 }
 
