@@ -37,4 +37,8 @@ class contint::firewall {
         rule => 'proto tcp dport https ACCEPT;'
     }
 
+    ferm::rule { 'restrict_ssh_to_bastions':
+        rule => 'proto tcp dport ssh { saddr $BASTION ACCEPT; DROP; }'
+    }
+
 }
