@@ -921,15 +921,6 @@ node /(ersch|tarin)\.pmtpa\.wmnet/ {
         role::poolcounter
 }
 
-node "erzurumi.pmtpa.wmnet" {
-    include role::fundraising::messaging
-}
-
-node "loudon.wikimedia.org" {
-    # moved to frack puppet
-    #include    role::fundraising::logger
-}
-
 node "aluminium.wikimedia.org" {
     include role::fundraising::civicrm,
         accounts::file_mover
@@ -3006,3 +2997,30 @@ node "zirconium.wikimedia.org" {
 node default {
     include standard
 }
+
+# as of 2013-11-18 these fundraising servers use frack puppet
+#
+# barium.frack.eqiad.wmnet
+# boron.frack.eqiad.wmnet
+# db78.pmtpa.wmnet
+# db1008.frack.eqiad.wmnet
+# db1025.frack.eqiad.wmnet
+# erzurumi.pmtpa.wmnet
+# indium.frack.eqiad.wmnet
+# loudon.wikimedia.org (pmtpa)
+# lutetium.frack.eqiad.wmnet
+# pappas.wikimedia.org (pmtpa)
+# pay-lvs1001.frack.eqiad.wmnet
+# pay-lvs1002.frack.eqiad.wmnet
+# payments1.wikimedia.org (pmtpa)
+# payments2.wikimedia.org (pmtpa)
+# payments3.wikimedia.org (pmtpa)
+# payments4.wikimedia.org (pmtpa)
+# payments1001.frack.eqiad.wmnet
+# payments1002.frack.eqiad.wmnet
+# payments1003.frack.eqiad.wmnet
+# payments1004.frack.eqiad.wmnet
+# samarium.frack.eqiad.wmnet
+# silicon.frack.eqiad.wmnet
+# tellurium.frack.eqiad.wmnet
+# thulium.frack.eqiad.wmnet
