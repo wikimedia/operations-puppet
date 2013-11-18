@@ -148,33 +148,6 @@ class misc::fundraising {
 
 }
 
-class misc::fundraising::backup::dump_fundraising_database(
-		$user = 'root',
-		$hour,
-		$minute,
-		$weekday = '*'
-	) {
-
-	file {
-		'/usr/local/bin/dump_fundraisingdb':
-			owner => 'root',
-			group => 'root',
-			mode => 0755,
-			source => 'puppet:///files/misc/scripts/dump_fundraisingdb',
-	}
-
-	cron {
-		'dump_fundraising_database':
-			user => $user,
-			weekday => $weekday,
-			hour => $minute,
-			minute => $hour,
-			command => '/usr/local/bin/dump_fundraisingdb',
-			ensure => present;
-	}
-
-}
-
 class misc::fundraising::backup::archive_sync(
 		$user = 'root',
 		$hour,
