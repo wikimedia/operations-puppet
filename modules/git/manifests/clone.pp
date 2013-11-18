@@ -68,7 +68,7 @@ define git::clone(
             }
 
             $deptharg = $depth ?  {
-                'full' => '',
+                'full'  => '',
                 default => " --depth=$depth"
             }
 
@@ -85,6 +85,17 @@ define git::clone(
                 group       => $group,
                 timeout     => $timeout,
                 require     => Package['git-core'],
+            }
+
+            if (!defined(File["git_clone_${title}_directory"])) {
+                file { "git_clone_${title}_directory":
+                    path    => $directory,
+                    ensure  => 'directory',
+                    mode    => $mode,
+                    owner   => $owner,
+                    group   => $group,
+                    require => Exec["git_clone_${title}"],
+                }
             }
 
             # pull if $ensure == latest and if there are changes to merge in.
