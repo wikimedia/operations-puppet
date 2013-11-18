@@ -1,0 +1,5 @@
+start on startup
+script
+    cd <%= @wikimetrics_path %>
+    wikimetrics --mode queue --db-config /etc/wikimetrics/db_config.yaml --queue-config /etc/wikimetrics/queue_config.yaml
+end script

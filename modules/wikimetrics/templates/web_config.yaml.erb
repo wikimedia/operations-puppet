@@ -1,0 +1,19 @@
+SECRET_KEY  : '<%= @flask_secret_key %>'
+DEBUG       : False
+
+GOOGLE_CLIENT_SECRET                : '<%= @google_client_secret %>'
+GOOGLE_BASE_URL                     : 'https://www.google.com/accounts/'
+GOOGLE_AUTH_URI                     : 'https://accounts.google.com/o/oauth2/auth'
+GOOGLE_TOKEN_URI                    : 'https://accounts.google.com/o/oauth2/token'
+GOOGLE_CLIENT_EMAIL                 : '133082872359@developer.gserviceaccount.com'
+GOOGLE_CLIENT_ID                    : '<%= @google_client_id %>'
+GOOGLE_AUTH_PROVIDER_X509_CERT_URL  : 'https://www.googleapis.com/oauth2/v1/certs'
+GOOGLE_AUTH_SCOPE                   : 'https://www.googleapis.com/auth/userinfo.email'
+GOOGLE_USERINFO_URI                 : 'https://www.googleapis.com/oauth2/v1/userinfo'
+GOOGLE_REDIRECT_URI                 : 'http<%= 's' if @ssl_redirect %>://<%= @server_name %>/auth/google'
+GOOGLE_JAVASCRIPT_ORIGIN            : 'http<%= 's' if @ssl_redirect %>://<%= @server_name %>'
+
+TWITTER_AUTH_URI                    : 'https://api.twitter.com/oauth/request_token'
+
+SERVER_HOST                         : '0.0.0.0'
+SERVER_PORT                         : 5000
