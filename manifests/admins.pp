@@ -558,7 +558,7 @@ class accounts {
 
                         ssh_authorized_key {
 				"dschoonover@wikimedia.org":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA90Dj4DCHCIIRQv4K3+s+HAZUWZXmmY6rEhgaClq7tWZ2cnwQrGZJbRlhgTjfykPkyI6l+hx1xqMDz4ORGzMf1y/Ee5tEa+Btca1kfvY/N8bma1c3xO40M06/AC+1jyRsvng6byoCpDzbN+TrLWhwkKZglACR9i0eqoa8eJ6Sv9L1hz6bqjDoS8DXEx1xJNT/It60wyB08OVN2s2WiM/Cr340j6AdkyoTx9O2oigiOdOqfTUVXpK87zU6Ph4PxbkDtpfmyPEwX1LPmuwAie6b3MW0/G48sIZpJG0847m4qEDE4k04/E6jDYFssGB1vWDTAA1O0L2rIcQ5K6d4bFkzgQ==";
@@ -3251,7 +3251,7 @@ class admins::restricted {
 	include accounts::dab
 	include accounts::dartar
 	include accounts::diederik
-	include accounts::dsc
+	include accounts::dsc # access revoked
 	include accounts::erik
 	include accounts::ezachte
 	include accounts::jamesofur
@@ -3274,7 +3274,7 @@ class admins::jenkins {
 	include jenkins::group
 
 	include accounts::demon
-	include accounts::dsc
+	include accounts::dsc #account disabled
 	include accounts::hashar
 	include accounts::krinkle
 	include accounts::reedy
