@@ -922,12 +922,11 @@ node /(ersch|tarin)\.pmtpa\.wmnet/ {
 }
 
 node "erzurumi.pmtpa.wmnet" {
-    include role::fundraising::messaging
+    # moved to frack puppet
 }
 
 node "loudon.wikimedia.org" {
     # moved to frack puppet
-    #include    role::fundraising::logger
 }
 
 node "aluminium.wikimedia.org" {
