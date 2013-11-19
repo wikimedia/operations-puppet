@@ -16,4 +16,9 @@ class role::gitblit {
 	ferm::rule { 'gitblit_8080':
 		rule => 'proto tcp dport 8080 { saddr $INTERNAL ACCEPT; DROP; }'
 	}
+	# only accept nrpe/5666 from internal
+	ferm::rule { 'nrpe_5666':
+		rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; DROP; }'
+	}
+
 }
