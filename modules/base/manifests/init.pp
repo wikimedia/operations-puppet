@@ -350,14 +350,14 @@ class base::tcptweaks {
 }
 
 # Don't include this sub class on all hosts yet
+# NOTE: Policy is DROP by default
 class base::firewall {
     include ferm
 
     ferm::conf { 'main':
         ensure  => present,
         prio    => '00',
-        # we also have a default DROP around, postpone its usage for later
-        source  => 'puppet:///modules/base/firewall/main-minimal.conf',
+        source  => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
 
     ferm::conf { 'defs':
