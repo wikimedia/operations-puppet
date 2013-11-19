@@ -58,12 +58,6 @@ class puppetmaster::passenger(
         }
     }
 
-    # monitor HTTPS on puppetmaster (port 8140, SSL, expect return code 400)
-    monitor_service { 'puppetmaster_https':
-        description     => 'Puppetmaster HTTPS',
-        check_command   => 'check_http_puppetmaster'
-    }
-
     # rotate apache logs
     file { '/etc/logrotate.d/passenger':
         ensure => present,
