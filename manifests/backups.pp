@@ -33,6 +33,14 @@ class backup::host($pool='production') {
     Bacula::Client::Job <| |> {
         require => Class['bacula::client'],
     }
+
+    # If the machine includes base::firewall then let internal servers
+    # connect to us
+    # TODO: Remove this after #96226 is resolved. It will allow for more
+    # fine-grained filtering restricting specifically to director
+    ferm::rule { 'bacula':
+        rule => 'proto tcp dport 9102 { saddr $INTERNAL ACCEPT; }'
+    }
 }
 
 class backup::mysqlhost($xtrabackup=true, $per_db=false, $innodb_only=false) {
