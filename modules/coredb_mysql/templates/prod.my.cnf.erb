@@ -108,8 +108,10 @@ innodb-checksums=1
 # might need to be even higher and innodb_stats_on_metadata=OFF
 innodb_stats_sample_pages = 16
 
+<% if has_variable?("mariadb") and mariadb == true then -%>
 # encourage more ref lookups when joining tables with nullable fields
 innodb_stats_method = nulls_unequal
+<% end -%>
 
 <% if innodb_file_per_table == true then -%>
 innodb_file_per_table
