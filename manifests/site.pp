@@ -2313,29 +2313,11 @@ node "silver.wikimedia.org" {
 }
 
 node "sockpuppet.pmtpa.wmnet" {
-    include passwords::puppet::database
-
     include standard,
         backup::client,
         misc::management::ipmi,
         role::salt::masters::production,
         role::deployment::salt_masters::production
-
-    class { puppetmaster:
-        allow_from => [
-            "*.wikimedia.org",
-            "*.pmtpa.wmnet",
-            "*.eqiad.wmnet",
-            "*.ulsfo.wmnet",
-         ],
-        config => {
-            'thin_storeconfigs' => true,
-            'dbadapter' => "mysql",
-            'dbuser' => "puppet",
-            'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver' => "db1001.eqiad.wmnet",
-        }
-    }
 
     # Display notice that this is no longer an active puppetmaster.
     file {"/etc/update-motd.d/99-obsolete-puppetmaster":
@@ -2523,27 +2505,7 @@ node /sq(79|8[0-6])\.wikimedia\.org/ {
 }
 
 node "stafford.pmtpa.wmnet" {
-    include standard,
-        passwords::puppet::database
-
-    class { puppetmaster:
-        allow_from => [
-            "*.wikimedia.org",
-            "*.pmtpa.wmnet",
-            "*.eqiad.wmnet",
-            "*.ulsfo.wmnet",
-         ],
-        config => {
-            'thin_storeconfigs' => true,
-            'ca' => "false",
-            'ca_server' => "sockpuppet.pmtpa.wmnet",
-            'dbadapter' => "mysql",
-            'dbuser' => "puppet",
-            'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver' => "db1001.eqiad.wmnet",
-            'dbconnections' => "256",
-        }
-    }
+    include standard
 
     # Display notice that this is no longer an active puppetmaster.
     file {"/etc/update-motd.d/99-obsolete-puppetmaster":
