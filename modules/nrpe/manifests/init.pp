@@ -71,6 +71,11 @@ class nrpe($allowed_hosts=undef) {
         require => Package['nagios-nrpe-server'],
     }
 
+    # firewall nrpe-server, only accept nrpe/5666 from internal
+    ferm::rule { 'nrpe_5666':
+        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; DROP; }'
+    }
+
     #Collect virtual nrpe checks
     File <| tag == 'nrpe::check' |> {
         require => Package['nagios-nrpe-server'],
