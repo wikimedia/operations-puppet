@@ -11,7 +11,7 @@
 [Planet]
 
 name            = ca.planet.wikimedia
-link            = http://ca.planet.<%= planet_domain_name %>/
+link            = http://ca.planet.<%= scope.lookupvar('misc::planet-venus::planet_domain_name') %>/
 owner_name      = planet
 owner_email     = planet@wikimedia.org
 output_theme    = /usr/share/planet-venus/theme/wikimedia/ca
