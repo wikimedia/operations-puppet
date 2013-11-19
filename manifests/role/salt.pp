@@ -117,7 +117,7 @@ class role::salt::minions {
 			"cluster" => $cluster,
 		}
 	} else {
-		$salt_master = "sockpuppet.pmtpa.wmnet"
+		$salt_master = [ "sockpuppet.pmtpa.wmnet", "palladium.eqiad.wmnet" ]
 		$salt_client_id = "${fqdn}"
 		$salt_grains = {
 			"realm" => $realm,
