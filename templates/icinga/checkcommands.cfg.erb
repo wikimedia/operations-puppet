@@ -80,12 +80,10 @@ define command{
         command_line    $USER1$/check_http -H $HOSTADDRESS$ -p $ARG1$
         }
 
-# 'check_http' on a puppetmaster (SSL,port 8140,expect 400)
-# XXX(ori-l, 11-Oct-2013): set timeout to 60 (-t 60) to prevent flapping.
 define command{
-	command_name	check_http_puppetmaster
-	command_line	$USER1$/check_http --ssl -p 8140 -e 400 -t 60 -H $HOSTADDRESS$
-	}
+        command_name    check_https_port_status
+        command_line    $USER1$/check_http -S -H $HOSTADDRESS$ -p $ARG1$ -e $ARG2$
+        }
 
 # Example usage:  check_solr!500:1000|5
 define command{
