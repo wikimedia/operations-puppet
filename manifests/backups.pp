@@ -33,6 +33,11 @@ class backup::host($pool='production') {
     Bacula::Client::Job <| |> {
         require => Class['bacula::client'],
     }
+
+    # If the machine includes base::firewall then let director connect to us
+    ferm::rule { 'bacula_director':
+        rule => "proto tcp dport 9102 { saddr ${role::backup::config::director} ACCEPT; }"
+    }
 }
 
 class backup::mysqlhost($xtrabackup=true, $per_db=false, $innodb_only=false) {
