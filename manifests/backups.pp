@@ -45,12 +45,9 @@ class backup::host($pool='production') {
     }
     File <| tag == 'backup-motd' |>
 
-    # If the machine includes base::firewall then let internal servers
-    # connect to us
-    # TODO: Remove this after #96226 is resolved. It will allow for more
-    # fine-grained filtering restricting specifically to director
-    ferm::rule { 'bacula':
-        rule => 'proto tcp dport 9102 { saddr $ALL_NETWORKS ACCEPT; }'
+    # If the machine includes base::firewall then let director connect to us
+    ferm::rule { 'bacula_director':
+        rule => "proto tcp dport 9102 { saddr ${role::backup::config::director_ip} ACCEPT; }"
     }
 }
 
