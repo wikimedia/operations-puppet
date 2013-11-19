@@ -67,6 +67,20 @@ class puppetmaster(
         ca          => $config['ca']
     }
 
+    # monitor HTTPS on puppetmaster (port 8140, SSL, expect return code 400)
+    if $server_type == 'frontend' or $server_type == 'standalone' {
+        monitor_service { 'puppetmaster_https':
+            description     => 'puppetmaster https',
+            check_command   => 'check_http_puppetmaster_frontend'
+        }
+    }
+    if $server_type == 'backend' or $server_type == 'standalone' {
+        monitor_service { 'puppetmaster_https':
+            description     => 'puppetmaster https',
+            check_command   => 'check_http_puppetmaster_backend'
+        }
+    }
+
     include puppetmaster::scripts
     include puppetmaster::geoip
     include puppetmaster::gitclone
