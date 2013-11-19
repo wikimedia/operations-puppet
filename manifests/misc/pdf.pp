@@ -3,12 +3,12 @@
 # installs (requested) font packages
 class misc::pdf::fonts {
 
-	# dejavu: meta for all DejaVu variants - http://dejavu.sourceforge.net/
-	# indic-fonts: meta for all free Indian language fonts - <debian-in-workers@lists.alioth.debian.org>
+    # dejavu: meta for all DejaVu variants - http://dejavu.sourceforge.net/
+    # indic-fonts: meta for all free Indian language fonts - <debian-in-workers@lists.alioth.debian.org>
 
-	package { [ 'ttf-dejavu', 'ttf-indic-fonts' ]:
-		ensure => latest;
-	}
+    package { [ 'ttf-dejavu', 'ttf-indic-fonts' ]:
+        ensure => latest;
+    }
 
 }
 
@@ -21,7 +21,7 @@ class misc::pdf::math {
 
 # tool for manipulating PDF - http://packages.ubuntu.com/search?keywords=pdftk
 class misc::pdf::pdftk {
-	package { 'pdftk':
-		ensure => latest;
-	}
+    package { 'pdftk':
+        ensure => latest;
+    }
 }
