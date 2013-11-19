@@ -1142,7 +1142,7 @@ class role::cache {
 					'connect_timeout' => "5s",
 					'first_byte_timeout' => "5m",
 					'between_bytes_timeout' => "20s",
-					'max_connections' => 600,
+					'max_connections' => 1000,
 				}],
 		}
 
