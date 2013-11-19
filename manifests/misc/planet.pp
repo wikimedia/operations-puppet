@@ -114,14 +114,14 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
     define planetapachesite {
 
         file {
-            "/etc/apache2/sites-available/${title}.planet.${planet_domain_name}":
+            "/etc/apache2/sites-available/${title}.planet.${misc::planet-venus::planet_domain_name}":
                 mode    => '0444',
                 owner   => root,
                 group   => root,
                 content => template('apache/sites/planet-language.erb');
         }
 
-        apache_site { "${title}-planet": name => "${title}.planet.${planet_domain_name}" }
+        apache_site { "${title}-planet": name => "${title}.planet.${misc::planet-venus::planet_domain_name}" }
     }
 
     # Apache site without language, redirects to meta
