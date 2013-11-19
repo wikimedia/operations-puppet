@@ -41,6 +41,8 @@ class elasticsearch($cluster_name,
     # Install
     # Get a jdk on which to run elasticsearch
     package { 'openjdk-7-jdk': }
+    # Most Elasticsearch maintenance is done with curl so have it handy
+    package { 'curl': }
     package { 'elasticsearch':
         ensure  => present,
         require => [
