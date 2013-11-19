@@ -2,6 +2,14 @@
 ##### THIS FILE IS MANAGED BY PUPPET
 #####  as template('base/puppet.cron.erb')
 ######################################################################
-<% $crontime = scope.lookupvar('base::puppet::crontime') -%>
-<%= $crontime %>,<%= $crontime.to_i + 30 %>	*	*	*	*	root	timeout <% if scope.function_versioncmp([lsbdistrelease, "12.04"]) >= 0 %> -k 300<% end %> 1800 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff >> /var/log/puppet.log 2>&1
+<%-
+interval = scope.lookupvar('base::puppet::interval')
+crontime = scope.lookupvar('base::puppet::crontime')
+numtimes = 60 / interval
+tmp = Array.new(numtimes) { |t| t = t * interval + crontime }
+tmp = tmp.map { |x| if x < 60 then x  else x - 60 end }
+tmp = tmp.sort()
+times = tmp.join(',')
+-%>
+<%= times %>	*	*	*	*	root	timeout <% if scope.function_versioncmp([lsbdistrelease, "12.04"]) >= 0 %> -k 300<% end %> 1800 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff >> /var/log/puppet.log 2>&1
 @reboot	root	timeout <% if scope.function_versioncmp([lsbdistrelease, "12.04"]) >= 0 %> -k 300<% end %> 1800 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff >> /var/log/puppet.log 2>&1
