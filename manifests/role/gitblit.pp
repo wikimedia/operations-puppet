@@ -16,4 +16,14 @@ class role::gitblit {
     ferm::rule { 'gitblit_8080':
         rule => 'proto tcp dport 8080 { saddr $INTERNAL ACCEPT; DROP; }'
     }
+
+    # Allow anybody to access HTTP/HTTPS
+    ferm::service { 'http':
+        proto   => 'tcp',
+        port    => 'http',
+    }
+    ferm::service { 'https':
+        proto   => 'tcp',
+        port    => 'https',
+    }
 }
