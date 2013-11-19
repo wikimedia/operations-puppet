@@ -73,7 +73,10 @@ class nrpe($allowed_hosts=undef) {
 
     # firewall nrpe-server, only accept nrpe/5666 from internal
     ferm::rule { 'nrpe_5666':
-        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; DROP; }'
+        # FIXME: 208.80.154.14 is neon address. That is the source address
+        # whenever checking hosts on their public IP address. Should instead
+        # allow Wikimedia networks.
+        rule => 'proto tcp dport 5666 { saddr (208.80.154.14 $INTERNAL) ACCEPT; DROP; }'
     }
 
     #Collect virtual nrpe checks
