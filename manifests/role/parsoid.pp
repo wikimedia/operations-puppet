@@ -2,8 +2,8 @@
 @monitor_group { "parsoid_eqiad": description => "eqiad parsoid servers" }
 @monitor_group { "parsoid_pmtpa": description => "pmtpa parsoid servers" }
 
-class misc::parsoid {
-	system::role { "misc::parsoid": description => "Parsoid server" }
+class role::parsoid::production {
+	system::role { "role::parsoid::production": description => "Parsoid server" }
 	deployment::target { "parsoid": }
 
 	package { [ "nodejs", "npm", "build-essential" ]:

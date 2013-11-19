@@ -2897,7 +2897,7 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     include standard,
         admins::roots,
         admins::parsoid,
-        misc::parsoid
+        role::parsoid::production
 
     class { "lvs::realserver": realserver_ips => [ "10.2.2.28" ] }
 }
