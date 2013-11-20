@@ -81,9 +81,11 @@ class role::analytics::hadoop::production {
     # on DataNode hosts is a good or bad idea.
     # Doing this here now for lack of a better place.
     $journalnode_hosts        = [
-        'analytics1011.eqiad.wmnet',
-        'analytics1012.eqiad.wmnet',
-        'analytics1013.eqiad.wmnet',
+        'analytics1011.eqiad.wmnet',  # Row A2
+        'analytics1012.eqiad.wmnet',  # Row A2 # remove this soon.
+        'analytics1013.eqiad.wmnet',  # Row A2
+        'analytics1014.eqiad.wmnet',  # Row C7
+        # TODO: Add a Row D journalnode once Row D is available.
     ]
 
     $hadoop_name_directory    = '/var/lib/hadoop/name'
