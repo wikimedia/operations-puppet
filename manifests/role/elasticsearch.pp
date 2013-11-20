@@ -52,7 +52,6 @@ class role::elasticsearch::config {
 # This class sets up Elasticsearch in a WMF-specific way.
 #
 class role::elasticsearch inherits role::elasticsearch::config {
-
     # Install
     class { '::elasticsearch':
         multicast_group      => $multicast_group,
