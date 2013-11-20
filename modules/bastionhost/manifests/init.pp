@@ -4,7 +4,8 @@ class bastionhost {
 
     require mysql_wmf::client
 
-    include sudo::appserver
+    include sudo::appserver,
+            base::firewall
 
     package { "irssi":
         ensure => absent;
