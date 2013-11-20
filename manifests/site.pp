@@ -856,7 +856,7 @@ node /^db10(17|23|33)\.eqiad\.wmnet/ {
 node "db1014.eqiad.wmnet" {
     $cluster = "misc"
     include standard,
-	misc::graphite,
+    misc::graphite,
         udpprofile::collector
 }
 
@@ -1034,7 +1034,7 @@ node "formey.wikimedia.org" {
         webserver::php5,
         svn::server,
         backup::client,
-	role::deployment::test
+        role::deployment::test
 
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 }
@@ -2235,6 +2235,11 @@ node "professor.pmtpa.wmnet" {
 node "potassium.eqiad.wmnet" {
     include standard,
         role::poolcounter
+}
+
+node "rhodium.eqiad.wmnet" {
+    include role::ocg,
+        accounts::mwalker
 }
 
 node "sanger.wikimedia.org" {
