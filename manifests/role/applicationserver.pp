@@ -22,8 +22,10 @@ class role::applicationserver {
 	}
 
 	class configuration::php {
+		include role::applicationserver
+
 		class { 'applicationserver::config::php':
-			fatal_log_file => "udp://${mediawiki_log_aggregator}",
+			fatal_log_file => "udp://${role::applicationserver::mediawiki_log_aggregator}",
 		}
 	}
 
