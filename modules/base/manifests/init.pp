@@ -366,6 +366,11 @@ class base::firewall {
         source  => "puppet:///modules/base/firewall/defs.${::realm}",
     }
 
+    ferm::rule { 'bastion-ssh':
+        ensure => present,
+        rule   => 'proto tcp dport ssh saddr $BASTION ACCEPT;',
+    }
+
     ferm::rule { 'icinga-all':
         ensure => present,
         rule   => 'saddr $ICINGA ACCEPT;',

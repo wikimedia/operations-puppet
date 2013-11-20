@@ -6,6 +6,6 @@
 @def $INTERNAL_V6 = (2620:0:100::/56);
 @def $INTERNAL = ($INTERNAL_V4 $INTERNAL_V6);
 
-@def ICINGA_V4 = (208.80.154.14);
-@def ICINGA_V6 = (2620:0:861:1:7a2b:cbff:fe08:a42f);
-@def ICINGA = ($ICINGA_V4 $ICINGA_V6);
+@def $ICINGA_V4 = (208.80.154.14);
+@def $ICINGA_V6 = (2620:0:861:1:7a2b:cbff:fe08:a42f);
+@def $ICINGA = ($ICINGA_V4 $ICINGA_V6);
