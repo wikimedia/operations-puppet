@@ -2716,6 +2716,9 @@ node "terbium.eqiad.wmnet" {
 }
 
 node /^testsearch100[1-3]\.eqiad\.wmnet/ {
+    # ganglia cluster name.
+    $cluster = 'elasticsearch'
+
     include accounts::manybubbles,
         accounts::demon,
         groups::wikidev
@@ -2728,6 +2731,9 @@ node /^testsearch100[1-3]\.eqiad\.wmnet/ {
 }
 
 node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
+    # ganglia cluster name.
+    $cluster = 'elasticsearch'
+
     include accounts::manybubbles,
         accounts::demon,
         groups::wikidev

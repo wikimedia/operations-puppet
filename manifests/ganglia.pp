@@ -162,6 +162,9 @@ class ganglia {
             'cache_misc'    => {
                 'name'      => 'Misc Web caching cluster',
                 'ip_oct'    => '41' },
+            'elasticsearch' => {
+                'name'      => 'Elasticsearch cluster',
+                'ip_oct'    => '42' },
         }
         # NOTE: Do *not* add new clusters *per site* anymore,
         # the site name will automatically be appended now,
@@ -344,6 +347,7 @@ class ganglia {
                         "Upload caches ulsfo"            => 'cp4005.ulsfo.wmnet cp4013.ulsfo.wmnet',
                         "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
                         "Text caches ulsfo"              => 'cp4008.ulsfo.wmnet cp4016.ulsfo.wmnet',
+                        "Elasticsearch eqiad"            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet',
 
                     }
                     $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
