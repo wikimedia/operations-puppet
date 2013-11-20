@@ -160,6 +160,29 @@ class toollabs::exec_environ {
       'tclthread',
       'tdom',                        # Bug 56995
 
+      # C++ packages
+      'qt5-default',                 # Bug 57241
+      'qdbus-qt5',                   # Bug 57241
+      'libqwt5-qt4',                 # Bug 57241
+      'qtcore4-l10n',                # Bug 57241
+      'qt4-linguist-tools',          # Bug 57241
+      'qdbus',                       # Bug 57241
+      'libqt4-core',                 # Bug 57241
+      'libqt4-dbus',                 # Bug 57241
+      'libqt4-declarative',          # Bug 57241
+      'libqt4-designer',             # Bug 57241
+      'libqt4-gui',                  # Bug 57241
+      'libqt4-network',              # Bug 57241
+      'libqt4-opengl',               # Bug 57241
+      'libqt4-script',               # Bug 57241
+      'libqt4-sql',                  # Bug 57241
+      'libqt4-sql-mysql',            # Bug 57241
+      'libqt4-svg',                  # Bug 57241
+      'libqt4-test',                 # Bug 57241
+      'libqt4-webkit',               # Bug 57241
+      'libqt4-xml',                  # Bug 57241
+      'libqt4-xmlpatterns',          # Bug 57241
+
       # Other packages
       'adminbot',
       'csh',                        # common user request
