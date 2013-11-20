@@ -2733,6 +2733,9 @@ node /^testsearch100[1-3]\.eqiad\.wmnet/ {
 node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
     # ganglia cluster name.
     $cluster = 'elasticsearch'
+    if $hostname =~ /^elastic100[17]/ {
+        $ganglia_aggregator = true
+    }
 
     include accounts::manybubbles,
         accounts::demon,
