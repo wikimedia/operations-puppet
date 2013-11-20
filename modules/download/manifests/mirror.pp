@@ -1,5 +1,5 @@
 class download::mirror {
-    system::role { "download-mirror": description => "Service for rsync to external download mirrors" }
+    system::role { "download::mirror": description => "Service for rsync to external download mirrors" }
 
     include role::mirror::common
 

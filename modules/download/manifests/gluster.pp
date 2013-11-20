@@ -2,7 +2,7 @@ class download::gluster {
     include role::mirror::common
     include gluster::client
 
-    system::role { "download-gluster": description => "Gluster dumps copy" }
+    system::role { "download::gluster": description => "Gluster dumps copy" }
 
     mount { '/mnt/glusterpublicdata':
         ensure  => mounted,
