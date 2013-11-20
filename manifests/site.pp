@@ -1865,7 +1865,7 @@ node "neon.wikimedia.org" {
     $ircecho_server = "chat.freenode.net"
     include standard,
         icinga::monitor,
-        misc::ishmael,
+        role::ishmael,
         misc::ircecho,
         tcpircbot,
         passwords::logmsgbot
