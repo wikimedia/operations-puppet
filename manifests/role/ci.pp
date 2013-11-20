@@ -205,6 +205,21 @@ class role::ci::slave::browsertests {
 
 }
 
+class role::ci::slave::labs {
+
+  system::role { 'role::ci::slave::labs':
+    description => 'CI Jenkins slave on labs' }
+
+  if $::realm != 'labs' {
+    fail("role::ci::slave::labs must only be applied in labs")
+  }
+
+  include role::ci::slave::labs::common,
+    # Include package unsafe for production
+    contint::packages::labs
+
+}
+
 # The testswarm installation
 # Although not used as of July 2013, we will resurect this one day.
 class role::ci::testswarm {
