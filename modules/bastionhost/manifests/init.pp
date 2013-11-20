@@ -4,11 +4,7 @@ class bastionhost {
         ensure => absent,
     }
 
-    package { 'traceroute':
-        ensure =>latest,
-    }
-
-    package { 'mosh':
+    package { [ 'traceroute', 'mosh']:
         ensure => present,
     }
 }
