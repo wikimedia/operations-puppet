@@ -73,7 +73,7 @@ class nrpe($allowed_hosts=undef) {
 
     # firewall nrpe-server, only accept nrpe/5666 from internal
     ferm::rule { 'nrpe_5666':
-        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; DROP; }'
+        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; }'
     }
 
     #Collect virtual nrpe checks
