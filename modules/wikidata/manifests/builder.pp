@@ -1,0 +1,74 @@
+# == Class: wikidata::builder
+
+class wikidata::builder {
+
+	package { [
+		'nodejs',
+		'npm',
+		'php5',
+		'git',
+		]:
+		ensure => 'present';
+	}
+
+	exec { 'grunt-cli_install':
+		user	=> 'root',
+		command	=> '/usr/bin/npm install -g grunt-cli',
+		require	=> [ Package['nodejs'], Package['npm'] ],
+	}
+
+	file { '/home/wdbuilder':
+		ensure	=> 'directory',
+		owner	=> 'wdbuilder',
+		group	=> 'wdbuilder',
+		mode	=> '0700',
+		require	=> [ User['wdbuilder'], Group['wdbuilder'] ],
+	}
+
+	group { 'wdbuilder':
+		ensure	=> present,
+	}
+
+	user { 'wdbuilder':
+		ensure		=> 'present',
+		home		=> '/home/wdbuilder',
+		name		=> 'wdbuilder',
+		shell		=> '/bin/bash',
+		managehome	=> true,
+	}
+
+	git::clone { 'clone_wikidatabuilder':
+		directory	=> '/home/wdbuilder/buildscript',
+		origin		=> 'https://github.com/wmde/WikidataBuilder.git',
+		ensure		=> 'latest',
+		owner		=> 'wdbuilder',
+		group		=> 'wdbuilder',
+	}
+
+	git::clone { 'clone_wikidata':
+		directory	=> '/home/wdbuilder/wikidata',
+		# TODO use a different repo once deploying!
+		origin		=> 'https://github.com/addshore/WikidataBuild.git',
+		ensure		=> 'latest',
+		owner		=> 'wdbuilder',
+		group		=> 'wdbuilder',
+	}
+
+	exec { 'npm_install':
+		user	=> 'root',
+		cwd		=> '/home/wdbuilder/buildscript',
+		command	=> '/usr/bin/npm install',
+		require	=> [ Package['npm'] ],
+	}
+
+# TODO uncomment when ready
+#	cron { 'builder_cron':
+#		ensure	=> present,
+#		# TODO commit the build to another repo
+#		command	=> 'cd /home/wdbuilder/buildscript && grunt build:Wikidata_master',
+#		user	=> 'wdbuilder',
+#		hour	=> '*/1',
+#		minute	=> [ 0, 30 ],
+#	}
+
+}
