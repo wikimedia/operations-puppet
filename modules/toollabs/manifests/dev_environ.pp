@@ -48,6 +48,8 @@ class toollabs::dev_environ {
       'libxslt1-dev', # -- same
       'libzbar-dev',                 # Bug 56996
       'lintian',
+      'links',
+      'lynx',
       'mc', # Popular{{cn}} on Toolserver
       'mercurial',
       'openjdk-7-jdk',
