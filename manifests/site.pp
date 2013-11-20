@@ -2240,6 +2240,7 @@ node "potassium.eqiad.wmnet" {
 node "rhodium.eqiad.wmnet" {
     $gid = 500
     include role::ocg,
+		groups::wikidev,
         accounts::mwalker
 }
 
