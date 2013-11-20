@@ -5,7 +5,7 @@
 class misc::deployment {
 	system::role { "misc::deployment": description => "Deployment host" }
 	include misc::deployment::scap_primary,
-		misc::dsh
+		    dsh
 }
 
 # Scripts common to both git-deploy and scap

@@ -271,7 +271,7 @@ node "bast1001.wikimedia.org" {
         bastionhost,
         nrpe,
         nfs::netapp::home::othersite,
-        misc::dsh,
+        role::dsh,
         ssh::hostkeys-collect
 }
 
@@ -987,7 +987,7 @@ node "fenari.wikimedia.org" {
         accounts::awjrichards,
         accounts::erosen,
         generic::wikidev-umask,
-        misc::dsh,
+        role::dsh,
         ssh::hostkeys-collect
     install_certificate{ "star.wikimedia.org": }
 }
