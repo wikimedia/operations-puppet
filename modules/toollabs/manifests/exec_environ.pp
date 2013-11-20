@@ -195,6 +195,7 @@ class toollabs::exec_environ {
       'p7zip',
       'phpunit',
       'poppler-utils',               # Bug #53869.
+      'rrdtool',                     # Bug 57004
       'texinfo',                     # Bug #56994
       'tree',                        # Bug #48862.
       'zbar-tools',                  # Bug 56996
