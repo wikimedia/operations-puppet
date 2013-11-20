@@ -192,6 +192,7 @@ class toollabs::exec_environ {
       'libzbar0',                    # Bug 56996
       'mariadb-client',              # For /usr/bin/mysql.
       'mdbtools',                    # Bug #48805.
+      'socat',                       # Bug 57005
       'p7zip',
       'phpunit',
       'poppler-utils',               # Bug #53869.
