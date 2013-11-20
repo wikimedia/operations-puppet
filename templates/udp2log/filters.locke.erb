@@ -40,8 +40,8 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> /a/squid/packet-loss.log
 #pipe 100 /usr/bin/udp-filter -F '\t' -d "m.wikipedia.org" >> /a/squid/mobile.tab.log
 
 # All 5xx error responses -- domas
-# TODO:  /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.log
-#pipe 1 /a/squid/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.tab.log
+# TODO:  /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org"' >> /a/squid/5xx.log
+#pipe 1 /a/squid/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org"' >> /a/squid/5xx.tab.log
 
 
 
