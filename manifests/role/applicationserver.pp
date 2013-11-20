@@ -16,17 +16,15 @@
 
 class role::applicationserver {
 
+	$mediawiki_log_aggregator = $::realm ? {
+		'production' => 'fluorine.eqiad.wmnet:8420',
+		'labs'       => 'deployment-bastion.pmtpa.wmflabs:8420',
+	}
+
 	class configuration::php {
-		# Passed to wmerrors extension
-		$fatal_log_file = $::realm ? {
-			'production' => 'udp://10.64.0.21:8420',
-			'labs'       => 'udp://10.4.0.58:8420',  # deployment-bastion
-		}
-
 		class { 'applicationserver::config::php':
-			fatal_log_file => $fatal_log_file,
+			fatal_log_file => "udp://${mediawiki_log_aggregator}",
 		}
-
 	}
 
 # Class: role::applicationserver
@@ -94,10 +92,13 @@ class role::applicationserver {
 	class webserver($maxclients="40") {
 		include	::applicationserver,
 			applicationserver::pybal_check,
-			applicationserver::syslog,
 			role::applicationserver::configuration::php
 
 		class { "applicationserver::config::apache": maxclients => $maxclients }
+
+		class { '::applicationserver::syslog':
+			apache_log_aggregator => $::role::applicationserver::mediawiki_log_aggregator,
+		}
 
 		monitor_service { "appserver http":
 			description => "Apache HTTP",
