@@ -13,6 +13,11 @@ sub filter_noise {
 sub vcl_recv {
 	call filter_noise;
 
+	/* FIXME: we're seeing an issue with Range requests and gzip/gunzip.
+	 * Disable Range requests for now.
+	 */
+	unset req.http.Range;
+
 	if (!req.http.X-Forwarded-Proto) {
 		/* This call will always set the following req.http values:
 			X-Subdomain = M or ZERO
