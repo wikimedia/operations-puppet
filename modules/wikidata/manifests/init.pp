@@ -1,0 +1,5 @@
+# == Class: wikidata
+
+class wikidata {
+
+}
