@@ -92,12 +92,13 @@ class role::applicationserver {
 	class webserver($maxclients="40") {
 		include	::applicationserver,
 			applicationserver::pybal_check,
+			role::applicationserver,
 			role::applicationserver::configuration::php
 
 		class { "applicationserver::config::apache": maxclients => $maxclients }
 
 		class { '::applicationserver::syslog':
-			apache_log_aggregator => $::role::applicationserver::mediawiki_log_aggregator,
+			apache_log_aggregator => $role::applicationserver::mediawiki_log_aggregator,
 		}
 
 		monitor_service { "appserver http":
