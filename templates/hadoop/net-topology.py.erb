@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+
+# NOTE: This file is managed by Puppet.
+
+# Returns a rack/row name for the given node name.
+
+# Usage:
+#   net-topology.sh <ipaddr|fqdn>
+
+import socket
+from sys import argv
+
+# Maps fqdn to a unique /datacenter/rack/row id.
+nodes = {
+    'analytics1009.eqiad.wmnet':  '/eqiad/A/2',
+    'analytics1010.eqiad.wmnet':  '/eqiad/B/3',
+    'analytics1011.eqiad.wmnet':  '/eqiad/A/2',
+    'analytics1012.eqiad.wmnet':  '/eqiad/A/2',
+    'analytics1013.eqiad.wmnet':  '/eqiad/A/2',
+    'analytics1014.eqiad.wmnet':  '/eqiad/C/7',
+    'analytics1015.eqiad.wmnet':  '/eqiad/C/7',
+    'analytics1016.eqiad.wmnet':  '/eqiad/C/7',
+    'analytics1017.eqiad.wmnet':  '/eqiad/C/7',
+    'analytics1018.eqiad.wmnet':  '/eqiad/C/7',
+    'analytics1019.eqiad.wmnet':  '/eqiad/C/7',
+    'analytics1020.eqiad.wmnet':  '/eqiad/C/7',
+}
+
+if len(argv) < 2:
+    node = 'default'
+else:
+    node = argv[1]
+
+# If the node doesn't have a key in nodes, perhaps it is a
+# short hostname or IP address.  Look it up!
+if not nodes.has_key(node):
+    node = socket.getfqdn(node)
+
+print(nodes.get(node, '/default-rack'))

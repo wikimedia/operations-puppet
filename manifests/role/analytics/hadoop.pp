@@ -126,6 +126,8 @@ class role::analytics::hadoop::production {
         yarn_resourcemanager_scheduler_class    => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
         # TODO: use variables from new ganglia module once it is finished.
         ganglia_hosts                           => ['239.192.1.32:8649'],
+        # use net-topology.py.erb to map hostname to /datacenter/rack/row id.
+        net_topology_script_template            => 'hadoop/net-topology.py.erb',
     }
 
     file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":

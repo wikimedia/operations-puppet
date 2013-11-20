@@ -173,6 +173,10 @@ node "analytics1010.eqiad.wmnet" {
 }
 
 # analytics1011-analytics1020 are Hadoop worker nodes
+# NOTE:  If you add, remove or move Hadoop nodes, you should edit
+# templates/hadoop/net-topology.py.erb to make sure the
+# hostname -> /datacenter/rack/row id is correct.  This is
+# used for Hadoop network topology awareness.
 node /analytics10(1[1-9]|20).eqiad.wmnet/ {
     # ganglia aggregator for the Dells in Analytics cluster.
     if ($::hostname == 'analytics1011') {
