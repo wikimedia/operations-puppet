@@ -2237,6 +2237,11 @@ node "potassium.eqiad.wmnet" {
         role::poolcounter
 }
 
+node "rhodium.eqiad.wmnet" {
+	include role::ocg,
+        accounts::mwalker
+}
+
 node "sanger.wikimedia.org" {
     $gid = 500
 
