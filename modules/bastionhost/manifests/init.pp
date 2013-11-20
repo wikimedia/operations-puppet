@@ -4,6 +4,8 @@ class bastionhost {
 
     require mysql_wmf::client
 
+    include base::firewall
+
     package { "irssi":
         ensure => absent;
         "traceroute-nanog":
