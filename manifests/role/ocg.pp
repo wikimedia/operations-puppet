@@ -13,3 +13,12 @@ class role::ocg {
             ensure => latest;
     }
 }
+
+class role::ocg::test {
+    system::role { "ocg-test": description => "offline content generator testing" }
+
+    package {
+        [ 'redis-server' ]:
+            ensure => latest;
+    }
+}
