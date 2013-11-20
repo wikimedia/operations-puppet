@@ -198,13 +198,6 @@ class nfs::upload {
 			options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
 			require => File["/mnt/thumbs"],
 			ensure => absent;
-		"/mnt/upload6":
-			device => "ms7.pmtpa.wmnet:/export/upload",
-			fstype => "nfs",
-			name => "/mnt/upload6",
-			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
-			require => File["/mnt/upload6"],
-			ensure => absent;
 	}
 }
 
