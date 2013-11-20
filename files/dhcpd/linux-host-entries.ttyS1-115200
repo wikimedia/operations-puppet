@@ -234,11 +234,6 @@ host calcium {
 	fixed-address calcium.wikimedia.org;
 }
 
-host caesium {
-	hardware ethernet D4:AE:52:B5:4E:60;
-	fixed-address caesium.wikimedia.org;
-}
-
 host carbon {
 	hardware ethernet 78:2b:cb:09:0e:a0;
 	fixed-address carbon.wikimedia.org;
