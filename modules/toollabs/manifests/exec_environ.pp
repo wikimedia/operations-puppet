@@ -197,6 +197,7 @@ class toollabs::exec_environ {
       'phpunit',
       'poppler-utils',               # Bug #53869.
       'rrdtool',                     # Bug 57004
+      'ufraw-batch',                 # Bug 57008
       'texinfo',                     # Bug #56994
       'tree',                        # Bug #48862.
       'zbar-tools',                  # Bug 56996
