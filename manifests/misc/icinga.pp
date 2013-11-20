@@ -45,7 +45,7 @@ class icinga::monitor {
     nagios::gsbmonitoring,
     mysql,
     nrpe,
-    misc::dsh::files
+    dsh::files
 
   Class['icinga::monitor::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service']
 
