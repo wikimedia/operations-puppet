@@ -4,7 +4,13 @@ class bastionhost {
 
     require mysql_wmf::client
 
-    include sudo::appserver
+    include sudo::appserver,
+    include base::firewall
+
+    ferm::service { 'ssh':
+        proto => 'tcp',
+        port  => 'ssh',
+    }
 
     package { "irssi":
         ensure => absent;
