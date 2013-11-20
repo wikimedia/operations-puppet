@@ -1,7 +1,10 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/rsyslog/40-appserver.conf
+### puppet:///rsyslog/40-appserver.conf.erb
 #####################################################################
+
+# Emulate MediaWiki's wfDebugLog / wfErrorLog format
+$template MediaWiki,"%programname% %timegenerated% %HOSTNAME%: %msg%\n"
 
 # Maximum 100MB log file size
 $outchannel apache2,/var/log/apache2.log,100000000,/usr/local/bin/apache-syslog-rotate
@@ -9,6 +12,8 @@ $outchannel apache2,/var/log/apache2.log,100000000,/usr/local/bin/apache-syslog-
 # Send apache2 messages to the apache output channel
 :programname,isequal,"apache2" $apache2
 
+# ..and to the MediaWiki log aggregator
+& @<%= @apache_log_aggregator %>;MediaWiki
+
 # Discard apache2 messages before they get to 50-default.conf
-# This should be after remote logging if you want remote logging of apache messages
 & ~

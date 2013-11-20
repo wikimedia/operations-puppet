@@ -1,5 +1,5 @@
 # syslog instance and configuration for applicationservers
-class applicationserver::syslog {
+class applicationserver::syslog( $apache_log_aggregator ) {
 	require base::remote-syslog
 
 	file {
@@ -8,7 +8,7 @@ class applicationserver::syslog {
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/rsyslog/40-appserver.conf",
+			content => template("rsyslog/40-appserver.conf.erb"),
 			ensure => present;
 		"/usr/local/bin/apache-syslog-rotate":
 			owner => root,
