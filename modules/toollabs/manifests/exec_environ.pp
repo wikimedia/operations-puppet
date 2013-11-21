@@ -55,6 +55,7 @@ class toollabs::exec_environ {
       'libfile-nfslock-perl',
       'libhtml-html5-entities-perl',
       'libhtml-parser-perl',
+      'libhtml-template-perl',       # Bug 57123
       'libhttp-message-perl',
       'libimage-exiftool-perl',      # Bug #53868.
       'libio-socket-ssl-perl',
