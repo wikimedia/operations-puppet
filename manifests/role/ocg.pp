@@ -8,6 +8,8 @@
 class role::ocg {
     system::role { "ocg": description => "offline content generator base" }
 
+    include standard
+
     package {
         [ 'nodejs' ]:
             ensure => latest;
