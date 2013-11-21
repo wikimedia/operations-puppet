@@ -6,3 +6,5 @@ MW_CRON_LOGS=/home/wikipedia/logs/norotate
 MW_RSYNC_HOST=<%= mw_rsync_host %>
 MW_DSH_ARGS=('-cM' '-g' 'mediawiki-installation' '-o' '-oSetupTimeout=30' '-F30')
 MW_RSYNC_ARGS=('-a' '--delay-updates' '--compress' '--delete' '--exclude=**/.svn/lock' '--exclude=**/.git/objects' '--exclude=**/.git/**/objects' '--no-perms')
+MW_STATSD_HOST=<%= mw_statsd_host %>
+MW_STATSD_PORT=<%= mw_statsd_port %>
