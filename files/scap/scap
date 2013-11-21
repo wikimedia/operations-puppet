@@ -1,5 +1,6 @@
 #!/bin/bash
 
+SCAP_START=$(date +%s)
 NODEFILE=
 
 function cleanup() {
@@ -55,7 +56,7 @@ echo " done"
 /usr/local/bin/mw-update-l10n || die
 
 # Notify
-$BINDIR/dologmsg "!log $USER Started syncing Wikimedia installation... : $*"
+$BINDIR/dologmsg "!log $USER started scap${*:+: }$*"
 
 # Disable logging
 export DOLOGMSGNOLOG=1
@@ -82,8 +83,14 @@ echo 'Finished'
 # Builds wikiversions.cdb and syncs it to the apaches with the dat file
 sync-wikiversions || die
 
+SCAP_END=$(date +%s)
+DIFF=$((SCAP_END-SCAP_START))
+MINS=$(((DIFF/60)%60))
+SECS=$((DIFF%60))
+printf "scap completed in %02d:%02d\n" $MINS $SECS
+
 export DOLOGMSGNOLOG=""
-$BINDIR/dologmsg "!log $USER Finished syncing Wikimedia installation... : $*"
+$BINDIR/dologmsg "!log $USER finished scap${*:+: }$*"
 $BINDIR/deploy2graphite scap
 
 cleanup
