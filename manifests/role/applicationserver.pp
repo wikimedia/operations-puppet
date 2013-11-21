@@ -260,9 +260,5 @@ class role::applicationserver {
 			applicationserver::cron,
 			applicationserver::sudo,
 			role::applicationserver::configuration::php
-
-		# Also include jobqueue monitoring check
-		include icinga::monitor::jobqueue
 	}
-
 }

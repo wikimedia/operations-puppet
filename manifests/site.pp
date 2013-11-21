@@ -2696,6 +2696,7 @@ node "terbium.eqiad.wmnet" {
     include role::applicationserver::maintenance,
         role::db::maintenance,
         misc::deployment::scap_scripts,
+        icinga::monitor::jobqueue,
         admins::roots,
         admins::mortals,
         admins::restricted,
