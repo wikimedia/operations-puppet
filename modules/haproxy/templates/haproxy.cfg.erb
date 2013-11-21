@@ -28,5 +28,5 @@ listen	puppet
 	bind :8140
 	mode tcp
 	balance roundrobin
-    server <%= @endpoint_hostname %> <%= @endpoint_ip %>
+	server <%= @endpoint_hostname %> <%= @endpoint_ip %>
 	acl esams src 91.198.174.0/24

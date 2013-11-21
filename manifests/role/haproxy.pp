@@ -1,6 +1,8 @@
-class role::haproxy{
+class role::puppetproxy {
 
-    system::role { 'haproxy': description => 'haproxy host' }
+    system::role { 'puppetproxy':
+        description => 'Puppet proxying through haproxy host',
+    }
 
     class { 'haproxy':
         endpoint_hostname => 'palladium',
