@@ -308,10 +308,8 @@ node "brewster.wikimedia.org" {
         backup::client
 
     # set up brewster to use haproxy to proxy puppet
-    # to stafford.
-    class { 'misc::haproxy':
-        config_file =>  'puppet:///files/puppet/haproxy.cfg',
-    }
+    # to palladium.      
+    system::role { 'haproxy': description => 'haproxy host' }        
 }
 
 node "calcium.wikimedia.org" {
