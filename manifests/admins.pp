@@ -3126,6 +3126,25 @@ class accounts {
         }
     }
 
+    class mhoover inherits baseaccount {
+        $username = 'mhoover'
+        $realname = 'Mike Hoover'
+        $uid      = 656
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'mhoover@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDHHt80fZmlmhzmFRgT+m0oIOs4h9ZDpqP9a4G79TZfZOA3eCuiq+kucyhdm51ge7GimzE/rhFgw3ZBVXvcdKpwTDyybArM5mOJsyg0GNp0Ns3hlJrvAudIXnxEjGlMuVF0ek3Vexi/hBzci5chqXSXxQJfUnfZnBOMiFyAGGM7KQM2W11SwTxyB9j+2McWm1ZR2rC3DjTsfbsus4BMlNYgaR7hE3ovMiCdke3NorFJ+NjZe2NjoMmSUNnGyTJvwwUncDXLELE4S2QQ4L6Vc71mMAC9VC/+qrpjTN6CEfae8nEcBvrgA1s/ahMI+3OdsWzRU0Gv3+jgqUR/641gXdkB',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
