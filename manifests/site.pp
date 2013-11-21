@@ -2827,7 +2827,10 @@ node 'hafnium.wikimedia.org' {
 # StatsD & Graphite host for eqiad. Slotted to replace professor.pmtpa.
 # RT #5871
 node 'tungsten.eqiad.wmnet' {
-    include standard, role::statsd, role::graphite
+    include standard
+    include role::statsd
+    include role::graphite
+    include role::gdash
 }
 
 node "virt1000.wikimedia.org" {
