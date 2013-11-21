@@ -1,14 +1,22 @@
-# == Class haproxy
+# Class haproxy
 # Installs haproxy and ensures that it is running.
-# Note: This class does not currently manage haproxy.cfg.
-#
-class haproxy
-{
-	package { "haproxy":
+class haproxy{
+    system::role { 'haproxy': description => 'haproxy host' }
+
+    package { 'haproxy':
 		ensure => present,
+
+    }
+	file { '/etc/haproxy/haproxy.cfg':
+        ensure  => present,
+		mode    => '0444',
+		owner   => 'root',
+		group   => 'root',
+		content => template('haproxy/haproxy.erb'),
+		notify  => Service['haproxy'],
 	}
 
-	service { "haproxy":
+	service { 'haproxy':
 		ensure     => running,
 		enable     => true,
 		hasstatus  => true,
