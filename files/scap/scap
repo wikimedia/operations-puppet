@@ -91,7 +91,7 @@ printf "scap completed in %02dm %02ds.\n" $MINS $SECS
 
 export DOLOGMSGNOLOG=""
 $BINDIR/dologmsg "!log $USER finished scap${*:+: }$*"
-$BINDIR/deploy2graphite scap
+$BINDIR/deploy2graphite scap $DIFF
 
 cleanup
 exit 0
