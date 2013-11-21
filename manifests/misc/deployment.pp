@@ -367,10 +367,11 @@ class misc::deployment::vars ($system = 'scap') {
 		$mw_rsync_host = 'tin.eqiad.wmnet'
 
 		file { $mw_common_source:
-			ensure => directory,
-			owner  => root,
-			group  => wikidev,
-			mode   => '0775',
+			ensure  => directory,
+			replace => false,  # FIXME: /a/common is a symlink on some systems
+			owner   => root,
+			group   => wikidev,
+			mode    => '0775',
 		}
 	} else {
 		$mw_rsync_host = 'deployment-bastion.pmtpa.wmflabs'
