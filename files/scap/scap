@@ -87,7 +87,7 @@ SCAP_END=$(date +%s)
 DIFF=$((SCAP_END-SCAP_START))
 MINS=$(((DIFF/60)%60))
 SECS=$((DIFF%60))
-printf "scap completed in %02d:%02d\n" $MINS $SECS
+printf "scap completed in %02dm %02ds.\n" $MINS $SECS
 
 export DOLOGMSGNOLOG=""
 $BINDIR/dologmsg "!log $USER finished scap${*:+: }$*"
