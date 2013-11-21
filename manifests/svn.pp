@@ -49,6 +49,13 @@ class svn::server {
 
 	monitor_service { 'https': description => 'HTTPS', check_command => 'check_ssl_cert!svn.wikimedia.org' }
 
+	ferm::rule { 'svn_80':
+		rule => 'proto tcp dport 80 ACCEPT;'
+	}
+	ferm::rule { 'svn_443':
+		rule => 'proto tcp dport 443 ACCEPT;'
+	}
+
 	cron { 'svnuser_generation':
 			command => '(cd /var/cache/svnusers && svn up) > /dev/null 2>&1',
 			user => 'www-data',
