@@ -127,7 +127,7 @@ class toollabs::exec_environ {
       'python-oursql',               # For danilo et al.
       'python-problem-report',
       'python-pyinotify',            # Bug 57003
-      'python-pysvn',                # Bug 56996
+      'python-svn',                  # Bug 56996
       'python-rsvg',                 # Bug 56996
       'python-zbar',                 # Bug 56996
       'python-redis',
