@@ -55,6 +55,7 @@ class toollabs::dev_environ {
       'openjdk-7-jdk',
       'p7zip-full', # requested by Betacommand to extract files using 7zip
       'python-dev',
+      'python-coverage',             # Bug 57002
       'qt4-qmake',
       'sbt',
       'sqlite3',

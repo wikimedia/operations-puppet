@@ -89,6 +89,7 @@ class toollabs::exec_environ {
       'liburi-encode-perl',
       'liburi-perl',
       'libwww-perl',
+      'libwww-mechanize-perl',       # Bug 57118
       'libxml-libxml-perl',
       'libxml-parser-perl',
       'libxml-simple-perl',
@@ -125,6 +126,7 @@ class toollabs::exec_environ {
       'python-opencv',
       'python-oursql',               # For danilo et al.
       'python-problem-report',
+      'python-pyinotify',            # Bug 57003
       'python-pysvn',                # Bug 56996
       'python-rsvg',                 # Bug 56996
       'python-zbar',                 # Bug 56996
@@ -197,6 +199,8 @@ class toollabs::exec_environ {
       'p7zip',
       'phpunit',
       'poppler-utils',               # Bug #53869.
+      'pstoedit',                    # Bug 57000
+      'pv',                          # Bug 57001
       'rrdtool',                     # Bug 57004
       'ufraw-batch',                 # Bug 57008
       'texinfo',                     # Bug #56994
