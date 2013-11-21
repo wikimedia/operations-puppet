@@ -6,7 +6,7 @@
 @monitor_group { "ocg_eqiad": description => "offline content generator eqiad" }
 
 class role::ocg {
-    system::role { "ocg": description => "offline content generator" }
+    system::role { "ocg": description => "offline content generator base" }
 
     package {
         [ 'nodejs' ]:
@@ -17,8 +17,8 @@ class role::ocg {
 class role::ocg::test {
     system::role { "ocg-test": description => "offline content generator testing" }
 
-    package {
-        [ 'redis-server' ]:
-            ensure => latest;
+    class { 'redis':
+        maxmemory => '500Mb',
+        password  => $passwords::redis::ocg_test_password,
     }
 }
