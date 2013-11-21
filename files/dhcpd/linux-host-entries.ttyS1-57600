@@ -162,20 +162,6 @@ host sq43 {
 	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host sq44 {
-	hardware ethernet 00:15:C5:F2:D9:32;
-	fixed-address sq44.wikimedia.org;
-	option pxelinux.pathprefix "lucid-installer/";
-	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host sq48 {
-	hardware ethernet 00:19:B9:DF:48:A5;
-	fixed-address sq48.wikimedia.org;
-	option pxelinux.pathprefix "lucid-installer/";
-	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host sq49 {
 	hardware ethernet 00:15:C5:F2:D8:4C;
 	fixed-address sq49.wikimedia.org;

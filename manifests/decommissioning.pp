@@ -71,9 +71,11 @@ $decommissioned_servers = [
 'sq40',
 'sq41',
 'sq42',
+'sq44',
 'sq45',
 'sq46',
 'sq47',
+'sq48',
 'ssl3004', #added 9/17
 'virt1001',
 'virt1002',
