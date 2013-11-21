@@ -98,6 +98,20 @@ class role::deployment::config {
         'grain'    => 'analytics-kraken',
         'upstream' => 'https://gerrit.wikimedia.org/r/p/analytics/kraken',
     },
+    'ocg/collection'                 => {
+        'grain'                 => 'ocg-collection',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection/OfflineContentGenerator',
+        'checkout_module_calls' => {
+            'service.restart' => ['ocg-collection'] 
+        },
+    },
+    'ocg/config'                     => {
+        'grain'                 => 'ocg',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/operations/ocg-config.git',
+        'checkout_module_calls' => {
+            'service.restart' => ['ocg-collection'] 
+        },
+    }
   }
 }
 

@@ -7,12 +7,19 @@
 
 class role::ocg {
     system::role { "ocg": description => "offline content generator base" }
+    
+    deployment::target { 'ocg': }
 
     include standard
 
     package {
         [ 'nodejs' ]:
             ensure => latest;
+    }
+
+    file { '/etc/ocg':
+        ensure  => link,
+        target  => '/srv/deployment/ocg/config/'
     }
 }
 
@@ -22,5 +29,61 @@ class role::ocg::test {
     class { 'redis':
         maxmemory => '500Mb',
         password  => $passwords::redis::ocg_test_password,
+    }
+}
+
+class role::ocg::collection {
+    system::role { "ocg-collection": description => "offline concent generator for Collection extension" }
+    
+    deployment::target { 'ocg-collection': }
+    
+    package { [
+        'imagemagick',
+        'inkscape',
+        'texlive-fonts-recommended',
+        'texlive-latex-recommended',
+        'texlive-xetex',
+        'unzip',
+        'zip',
+        ]: ensure => latest;
+    }
+    
+    file { '/var/lib/ocg':
+        ensure => directory,
+        owner  => ocg,
+        group  => wikidev,
+        mode   => '2775',
+    }
+    
+    file { '/var/lib/ocg/collection':
+        ensure => link,
+        target => '/srv/deployment/ocg/collection',
+    }
+
+    file { '/etc/init/ocg-collection':
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0555',
+        source => 'puppet:///files/misc/ocg-collection.conf',
+    }
+    
+    generic::systemuser { 'ocg':
+        name          => 'ocg',
+        default_group => 'ocg',
+        home          => '/var/lib/ocg',
+    }
+
+    service { 'ocg-collection':
+        ensure     => running,
+        hasstatus  => false,
+        hasrestart => false,
+        enable     => true,
+        require    => File['/etc/init/ocg-collection.conf'],
+    }
+
+    monitor_service { 'ocg-collection':
+        description   => 'Offline Content Generation - Collection',
+        check_command => 'check_http_on_port!17080',
     }
 }
