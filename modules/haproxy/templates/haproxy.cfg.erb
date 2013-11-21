@@ -28,6 +28,5 @@ listen	puppet
 	bind :8140
 	mode tcp
 	balance roundrobin
-	#server sockpuppet 10.0.0.245
-	server stafford 10.0.0.24
+    server <%= @endpoint_hostname %> <%= @endpoint_ip %>
 	acl esams src 91.198.174.0/24
