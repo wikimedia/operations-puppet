@@ -1,7 +1,9 @@
 #! /bin/bash
 
-usage() { 
-	echo "Usage: $0 deploytype"
+. /usr/local/lib/mw-deployment-vars.sh
+
+usage() {
+	echo "Usage: $0 deploy_type [deploy_duration_seconds]"
 	echo "$0 will log an entry at graphite.wikimedia.org indicating that a"
 	echo " deploy event of the type indicated has occurred."
 	echo " Expected deploy events include sync-common, sync-file, scap, etc."
@@ -15,12 +17,12 @@ usage() {
 [ "${1/-h}" != "$1" ] && usage
 
 if [ -z $DOLOGMSGNOLOG ]; then
-	if [ "$1" ] && [ -z "$2" ] ; then 
+	if [ "$1" ] ; then
 		utime="$(date +%s)"
-		echo "deploy.$1 1 $utime" | nc -w1 -q0 professor.pmtpa.wmnet 2003 || /bin/true
-		echo "deploy.any 1 $utime" | nc -w1 -q0 professor.pmtpa.wmnet 2003 || /bin/true
+		echo "deploy.$1 1 $utime" | nc -w1 -q0 $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
+		echo "deploy.any 1 $utime" | nc -w1 -q0 $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
+		test -n "$2" && echo "deploy.${1}.timing:${2}000|ms" | nc -w1 -q0 $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
 	else
 		usage
 	fi
 fi
-

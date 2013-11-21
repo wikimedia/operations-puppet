@@ -366,6 +366,9 @@ class misc::deployment::vars ($system = 'scap') {
 	if $::realm == 'production' {
 		$mw_rsync_host = 'tin.eqiad.wmnet'
 
+		$mw_statsd_host = 'professor.pmtpa.wmnet'
+		$mw_statsd_port = 2003
+
 		file { $mw_common_source:
 			ensure  => directory,
 			replace => false,  # FIXME: /a/common is a symlink on some systems
@@ -375,6 +378,9 @@ class misc::deployment::vars ($system = 'scap') {
 		}
 	} else {
 		$mw_rsync_host = 'deployment-bastion.pmtpa.wmflabs'
+
+		$mw_statsd_host = 'deployment-bastion.pmtpa.wmflabs'
+		$mw_statsd_port = 2003
 
 		file { '/data/project/apache':
 			ensure => directory,
