@@ -75,4 +75,9 @@ class role::graphite {
         description  => 'Graphite Carbon',
         nrpe_command => '/sbin/carbonctl check',
     }
+
+    monitor_service { 'reqstats_5xx':
+        description   => 'HTTP 5xx req/min',
+        check_command => 'check_reqstats_5xx!http://graphite.wikimedia.org!-2hours!250!500',
+    }
 }
