@@ -25,7 +25,6 @@ class graphite::web(
     include ::graphite
     include ::passwords::graphite
 
-    package { [ 'nginx-full', 'nginx-full-dbg' ]: }
     package { [ 'memcached', 'python-memcache' ]: }
     package { 'graphite-web': }
 
@@ -34,30 +33,8 @@ class graphite::web(
         require => Package['graphite-web'],
     }
 
-    file { '/etc/nginx/sites-available/graphite':
+    nginx::site { 'graphite':
         content => template('graphite/graphite.nginx.erb'),
-        require => Package['nginx-full'],
-    }
-
-    file { '/etc/nginx/sites-enabled':
-        ensure  => directory,
-        recurse => true,
-        purge   => true,
-        force   => true,
-        require => Package['nginx-full'],
-    }
-
-    file { '/etc/nginx/sites-enabled/graphite':
-        ensure => link,
-        target => '/etc/nginx/sites-available/graphite',
-        notify => Service['nginx'],
-    }
-
-    service { 'nginx':
-        ensure   => running,
-        enable   => true,
-        provider => 'debian',
-        require  => Package['nginx-full'],
     }
 
     file { [
