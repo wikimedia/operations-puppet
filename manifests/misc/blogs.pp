@@ -79,5 +79,9 @@ class misc::blogs::wikimedia {
 
     include backup::host
     backup::set { 'srv-org-wikimedia': }
-}
 
+    include base::firewall
+    ferm::rule { 'blog':
+        rule => 'proto tcp dport (http https) ACCEPT;'
+    }
+}
