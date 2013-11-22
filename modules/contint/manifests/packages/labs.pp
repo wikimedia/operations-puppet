@@ -11,6 +11,14 @@ class contint::packages::labs {
     package { [
         'npm',
         'python-pip',
+
+        # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
+        'zip',
+
+        # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
+        'unzip',
+        'librsvg2-bin',
+        'imagemagick',
         ]: ensure => present,
     }
 
