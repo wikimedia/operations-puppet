@@ -169,6 +169,8 @@ class toollabs::exec_environ {
       'dc',
       'djvulibre-bin',               # Bug 56972
       'djvulibre-plugin',            # Bug 56972
+      'doxygen',                     # Bug 56326
+      'doxygen-latex',               # Bug 56326
       'fabric',                      # Bug #54135.
       'git',
       'gnuplot-nox',
