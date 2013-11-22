@@ -1,4 +1,14 @@
 # vim: sw=2 ts=2 et
+
+# repo not showing up on tin even after puppet has run on
+# sockpuppet, palladium and tin? one possible explanation:
+# Ryan_Lane: https://gerrit.wikimedia.org/r/operations/ocg-config.git
+# Ryan_Lane: ^^ that's wrong
+# Ryan_Lane: just use https://gerrit.wikimedia.org/r/operations/ocg-config
+# Ryan_Lane: I ran this on tin: salt-call deploy.deployment_server_init
+# Ryan_Lane: to see that
+# Ryan_Lane: it showed a git exit code of 128
+
 class role::deployment::config {
   $repo_config = {
     'integration/mediawiki-tools-codesniffer' => {
@@ -107,7 +117,7 @@ class role::deployment::config {
     },
     'ocg/config'                     => {
         'grain'                 => 'ocg',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/operations/ocg-config.git',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/operations/ocg-config',
         'checkout_module_calls' => {
             'service.restart' => ['ocg-collection'] 
         },
