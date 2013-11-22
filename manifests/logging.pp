@@ -11,7 +11,7 @@ define varnish::logging($listener_address, $port="8420", $cli_args="", $log_fmt=
     }
 
     $shm_name = $instance_name ? {
-        "" => $hostname,
+        "" => $::hostname,
         default => $instance_name
     }
 
