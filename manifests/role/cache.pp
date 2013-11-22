@@ -1031,6 +1031,10 @@ class role::cache {
 			'zero.json': url => 'http://meta.wikimedia.org/w/api.php?action=zeroconfig&type=ips';
 		}
 
+		varnish::netmapper_update {
+			'proxies.json': url => 'http://meta.wikimedia.org/w/api.php?action=zeroconfig&type=proxies';
+		}
+
 		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
