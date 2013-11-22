@@ -112,7 +112,6 @@ class misc::monitoring::views {
     class { 'misc::monitoring::view::static_assets': }
     class { 'misc::monitoring::view::bits_ttfb': }
     class { 'misc::monitoring::view::visual_editor': }
-    class { 'misc::monitoring::view::mobile': }
 
     # disabled views
     misc::monitoring::view::udp2log { 'udp2log-analytics':
@@ -361,28 +360,6 @@ class misc::monitoring::view::visual_editor {
                 title        => 'VisualEditor: DOM retrieve',
                 host_regex   => 'client-side',
                 metric_regex => '^browser.ve.dom.retrieve_*',
-            },
-        ],
-    }
-}
-
-
-# == Class: misc::monitoring::view::mobile
-#
-# Performance measurements from Mobile Web.
-#
-class misc::monitoring::view::mobile {
-    ganglia::view { 'Mobile Web':
-        graphs => [
-            {
-                title        => 'Mobile Web: pageSpeed (domInteractive to loadEventEnd) and rendering (responseEnd to loadEventEnd)',
-                host_regex   => 'client-side',
-                metric_regex => '^browser.(rendering|pageSpeed).mobile_median$',
-            },
-            {
-                title        => 'Mobile Web: receiving (responseStart to responseEnd)',
-                host_regex   => 'client-side',
-                metric_regex => '^browser.receiving.mobile_median$',
             },
         ],
     }
