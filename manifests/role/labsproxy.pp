@@ -7,9 +7,8 @@ class role::pmtpa-proxy {
 	$proxy_hostname = "pmtpa-proxy"
 	$proxy_internal_domain = "pmtpa.wmflabs"
 
-	nginx { "pmtpa-labs-proxy":
-		install => "template",
-		template => "labs-proxy";
+	nginx::site { 'pmtpa-labs-proxy':
+		content => template('nginx/sites/labs-proxy.erb'),
 	}
 
 	file {
@@ -37,9 +36,8 @@ class role::eqiad-proxy {
 	$proxy_hostname = "eqiad-proxy"
 	$proxy_internal_domain = "eqiad.wmflabs"
 
-	nginx { "eqiad-labs-proxy":
-		install => "template",
-		template => "labs-proxy";
+	nginx::site { 'eqiad-labs-proxy':
+		content => template('nginx/sites/labs-proxy.erb'),
 	}
 
 	file {
