@@ -40,6 +40,22 @@ class role::gerrit {
 			prefixlen => '128',
 		}
 
+		include base::firewall
+		ferm::service { 'gerrit_ssh':
+			proto  => 'tcp',
+			port   => '29418',
+		}
+
+		ferm::service { 'gerrit_http':
+			proto  => 'tcp',
+			port   => 'http',
+		}
+
+		ferm::service { 'gerrit_https':
+			proto  => 'tcp',
+			port   => 'https',
+		}
+
 		$replication_basic_push_refs = [
 			'+refs/heads/*:refs/heads/*',
 			'+refs/tags/*:refs/tags/*',
