@@ -11,7 +11,6 @@ class role::backup::director {
     include backup::host
     include role::backup::config
     include passwords::bacula
-    require misc::statistics::geowiki::params
 
     system::role { 'role::backup::director': description => 'Backup server' }
 
@@ -72,9 +71,6 @@ class role::backup::director {
     }
     bacula::director::fileset { 'a-eventlogging':
         includes => [ '/a/eventlogging' ]
-    }
-    bacula::director::fileset { 'a-geowiki-data-private-bare':
-        includes => [ $misc::statistics::geowiki::params::private_data_bare_path ]
     }
     bacula::director::fileset { 'home':
         includes => [ '/home' ]
