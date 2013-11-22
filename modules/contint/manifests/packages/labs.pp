@@ -16,9 +16,12 @@ class contint::packages::labs {
         'zip',
 
         # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
-        'unzip',
-        #'librsvg2-bin',  # provided by misc::contint::packages
-        'imagemagick',
+        # Provided by openstack::common:
+        #'unzip',
+        # provided by misc::contint::packages:
+        #'librsvg2-bin',
+        #'imagemagick',
+
         ]: ensure => present,
     }
 
