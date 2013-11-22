@@ -208,7 +208,7 @@ class role::nova::common {
 	include passwords::misc::scripts
 
 	class { "openstack::common":
-		openstack_version => $openstack_version,
+		openstack_version => $openstack::version::openstack_version,
 		novaconfig => $novaconfig,
 		instance_status_wiki_host => "wikitech.wikimedia.org",
 		instance_status_wiki_domain => "labs",
@@ -218,6 +218,7 @@ class role::nova::common {
 		instance_status_wiki_user => $passwords::misc::scripts::wikinotifier_user,
 		instance_status_wiki_pass => $passwords::misc::scripts::wikinotifier_pass
 	}
+	Class ['openstack::version'] -> Class ['role::nova::common']
 }
 
 class role::nova::manager {
@@ -225,13 +226,14 @@ class role::nova::manager {
 	$novaconfig = $role::nova::config::novaconfig
 
 	class { "openstack::openstack-manager":
-		openstack_version => $openstack_version,
+		openstack_version => $openstack::version::openstack_version,
 		novaconfig => $novaconfig,
 		certificate => $realm ? {
 			"production" => "star.wikimedia.org",
 			"labs" => "star.wmflabs",
 		}
 	}
+	Class ['openstack::version'] -> Class ['role::nova::manager']
 }
 
 class role::nova::controller {
@@ -254,12 +256,12 @@ class role::nova::controller {
 
 	include role::nova::common
 
-	class { "openstack::scheduler-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
-	class { "openstack::glance-service": openstack_version => $openstack_version, glanceconfig => $glanceconfig }
-	class { "openstack::queue-server": openstack_version => $openstack_version, novaconfig => $novaconfig }
+	class { "openstack::scheduler-service": openstack_version => $openstack::version::openstack_version, novaconfig => $novaconfig }
+	class { "openstack::glance-service": openstack_version => $openstack::version::openstack_version, glanceconfig => $glanceconfig }
+	class { "openstack::queue-server": openstack_version => $openstack::version::openstack_version, novaconfig => $novaconfig }
 	class { "openstack::iptables": }
 	class { "openstack::database-server":
-		openstack_version => $openstack_version,
+		openstack_version => $openstack::version::openstack_version,
 		novaconfig => $novaconfig,
 		glanceconfig => $glanceconfig,
 		keystoneconfig => $keystoneconfig,
@@ -268,6 +270,7 @@ class role::nova::controller {
 	if $realm == "production" {
 		class { "role::puppet::server::labs": }
 	}
+	Class ['openstack::version'] -> Class ['role::nova::controller']
 }
 
 class role::nova::api {
@@ -276,7 +279,8 @@ class role::nova::api {
 
 	include role::nova::common
 
-	class { "openstack::api-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
+	class { "openstack::api-service": openstack_version => $openstack::version::openstack_version, novaconfig => $novaconfig }
+	Class ['openstack::version'] -> Class ['role::nova::api']
 }
 
 class role::nova::network::bonding {
@@ -303,14 +307,15 @@ class role::nova::network {
 		}
 	}
 
-	class { "openstack::network-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
+	class { "openstack::network-service": openstack_version => $openstack::version::openstack_version, novaconfig => $novaconfig }
+	Class ['openstack::version'] -> Class ['role::nova::network']
 }
 
 class role::nova::wikiupdates {
 
     package { 'python-mwclient': ensure => latest; }
 
-    if ($openstack_version == "essex") {
+    if ($openstack::version::openstack_version == "essex") {
         if ($::lsbdistcodename == "lucid") {
 		    file { "/usr/local/lib/python2.6/dist-packages/wikinotifier.py":
 			    source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
@@ -336,6 +341,7 @@ class role::nova::wikiupdates {
             require => Package["python-mwclient"],
         }
     }
+    Class ['openstack::version'] -> Class ['role::nova::wikiupdates']
 }
 
 class role::nova::compute {
@@ -353,10 +359,11 @@ class role::nova::compute {
 		down => 'ip link set $IFACE down',
 	}
 
-	class { "openstack::compute-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
+	class { "openstack::compute-service": openstack_version => $openstack::version::openstack_version, novaconfig => $novaconfig }
 
 	if $realm == "labs" {
 		include role::nova::api,
 			role::nova::network
 	}
+	Class ['openstack::version'] -> Class ['role::nova::compute']
 }
