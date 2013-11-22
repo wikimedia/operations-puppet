@@ -1,3 +1,6 @@
+class openstack::version ($openstack_version='folsom') {
+}
+
 class openstack::iptables-purges {
 	require "iptables::tables"
 

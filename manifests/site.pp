@@ -2845,11 +2845,11 @@ node "virt1000.wikimedia.org" {
     $ganglia_aggregator = true
     $is_puppet_master = "true"
     $is_labs_puppet_master = "true"
-    $openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
+    class { 'openstack::version' : openstack_version => "folsom" }
     include standard,
         role::dns::ldap,
         ldap::role::server::labs,
@@ -2863,11 +2863,11 @@ node "virt0.wikimedia.org" {
 
     $is_puppet_master = "true"
     $is_labs_puppet_master = "true"
-    $openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
+    class { 'openstack::version' : openstack_version => "folsom" }
     include standard,
         role::dns::ldap,
         ldap::role::server::labs,
@@ -2881,11 +2881,11 @@ node "virt0.wikimedia.org" {
 
 node 'virt2.pmtpa.wmnet' {
     $cluster = "virt"
-    $openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
+    class { 'openstack::version' : openstack_version => "folsom" }
     include standard,
         role::nova::network,
         role::nova::api
@@ -2898,11 +2898,10 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
         $ganglia_aggregator = true
     }
 
-    $openstack_version = "folsom"
-
     # full root for mhoover, Labs migration contractor
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
+    class { 'openstack::version' : openstack_version => "folsom" }
     include standard,
         role::nova::compute
 }
@@ -2918,7 +2917,7 @@ node /virt100(5|7|8).eqiad.wmnet/ {
 
     include standard
 
-    $openstack_version = "folsom"
+    class { 'openstack::version' : openstack_version => "folsom" }
     if $::hostname =~ /^virt1005$/ {
         include role::nova::network,
             role::nova::api

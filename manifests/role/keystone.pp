@@ -64,5 +64,6 @@ class role::keystone::server {
 		"eqiad" => $role::keystone::config::eqiad::keystoneconfig,
 	}
 
-	class { "openstack::keystone-service": openstack_version => $openstack_version, keystoneconfig => $keystoneconfig }
+	class { "openstack::keystone-service": openstack_version => $openstack::version::openstack_version, keystoneconfig => $keystoneconfig }
+	Class ['openstack::version'] -> Class ['role::keystone::server']
 }
