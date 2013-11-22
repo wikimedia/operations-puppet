@@ -77,8 +77,8 @@ class puppetmaster(
         }
     }
     if $server_type == 'frontend' or $server_type == 'backend' {
-        monitor_service { 'puppetmaster_https':
-            description     => 'puppetmaster https',
+        monitor_service { 'puppetmaster_backend_https':
+            description     => 'puppetmaster backend https',
             check_command   => 'check_https_port_status!8141!400',
         }
     }
