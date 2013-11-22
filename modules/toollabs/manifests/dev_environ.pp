@@ -32,6 +32,7 @@ class toollabs::dev_environ {
       'gcj-jdk',                     # Bug 56995
       'ipython',                     # Bug 56995
       'libboost-python1.48-dev',
+      'libdjvulibre-dev',            # Bug 56972
       'libdmtx-dev',                 # Bug #53867.
       'libfreetype6-dev',
       'libgdal1-dev',                # Bug 56995

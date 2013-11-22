@@ -167,6 +167,8 @@ class toollabs::exec_environ {
       'adminbot',
       'csh',                        # common user request
       'dc',
+      'djvulibre-bin',               # Bug 56972
+      'djvulibre-plugin',            # Bug 56972
       'fabric',                      # Bug #54135.
       'git',
       'gnuplot-nox',
