@@ -9,7 +9,8 @@ class gitblit::instance($host,
 	$ssl_cert="",
 	$ssl_cert_key="") {
 
-	include webserver::apache
+	include webserver::apache,
+		nrpe
 
 	generic::systemuser { $user: name => $user }
 
@@ -57,6 +58,10 @@ class gitblit::instance($host,
 			enable => true,
 			ensure => running,
 			require => Generic::Systemuser[$user];
+	}
+	nrpe::monitor_service { "gitblit":
+		description => "gitblit process",
+		nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar gitblit.jar'"
 	}
 
 	apache_site { git: name => "git.wikimedia.org" }

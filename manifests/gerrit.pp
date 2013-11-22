@@ -78,7 +78,8 @@ class gerrit::jetty ($ldap_hosts,
 		$smtp_host,
 		$ssh_key) {
 
-	include gerrit::crons
+	include gerrit::crons,
+		nrpe
 
 	package { [ "openjdk-7-jre" ]:
 		ensure => latest;
@@ -244,7 +245,10 @@ class gerrit::jetty ($ldap_hosts,
 			status => "/etc/init.d/gerrit check",
 			require => Exec["install_gerrit_jetty"];
 	}
-
+	nrpe::monitor_service { "gerrit":
+		description => "gerrit process",
+		nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^GerritCodeReview .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war'"
+	}
 }
 
 class gerrit::proxy( $no_apache = true,
