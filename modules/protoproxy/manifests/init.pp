@@ -58,27 +58,18 @@
 #  }
 #
 define protoproxy(
-    $proxy_addresses={},
     $proxy_server_name,
     $proxy_server_cert_name,
     $proxy_backend,
+    $proxy_addresses={},
     $enabled=false,
     $proxy_listen_flags='',
     $proxy_port='80',
     $ipv6_enabled=false,
     $ssl_backend={},
 ) {
-
-    require nginx::package
-    include nginx::service
-
-    nginx { $name:
-        template => 'proxy',
-        install  => 'template',
+    nginx::site { $name:
+        content  => template('protoproxy/proxy.erb'),
         enable   => $enabled,
-        require  => Package['nginx'],
-        # Make sure we do the configuration before the service
-	donotify => "false";
     }
-
 }

@@ -17,22 +17,21 @@
 # - nginx package
 class role::protoproxy::ssl::common {
 
-    include nginx::package
-
     # Tune kernel settings
     include webserver::base
 
     $nginx_worker_connections = '32768'
     $nginx_use_ssl = true
 
+    class { 'nginx': managed => false, }
+
     file { '/etc/nginx/nginx.conf':
         content => template('nginx/nginx.conf.erb'),
-        require => Package['nginx'],
+        require => Class['nginx'],
     }
 
     file { '/etc/logrotate.d/nginx':
         content => template('nginx/logrotate'),
-        require => Package['nginx'],
     }
 
 }

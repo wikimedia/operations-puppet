@@ -1,57 +1,37 @@
-# Installs nginx and sets up an NGINX site.
+# == Class: nginx
 #
-#  $install='true' or 'template' causes an nginx config
-#  to be installed from either a file or a template, respectively.
+# Nginx is a popular, high-performance HTTP server and reverse proxy.
+# This module is very small and simple, providing an 'nginx::site' resource
+# type that takes an Nginx configuration file as input.
 #
-#  If $install='template' then the config file is pulled from the named
-#  template file.  If $install='true' then a config file is pulled
-#  from files/nginx/sites/<classname>.
+# === Parameters
 #
-#  $enabled=true adds the site to sites-enabled; $enabled=false removes it.
+# [*managed*]
+#   If true (the default), changes to Nginx configuration files and site
+#   definition files will trigger a restart of the Nginx server. If
+#   false, the service will need to be manually restarted for the
+#   configuration changes to take effect.
 #
-define nginx($install="false", $template="", $enable=true, $donotify="false") {
-	if !defined (Package["nginx"]) {
-		package { ['nginx']:
-			ensure => latest;
-		}
-	}
+class nginx(
+    $managed = true,
+) {
+    package { [ 'nginx-full', 'nginx-full-dbg' ]: }
 
-	if ( $template == "" ) {
-		$template_name = $name
-	} else {
-		$template_name = $template
-	}
+    service { 'nginx':
+        enable   => true,
+        provider => 'debian',
+        require  => Package['nginx-full'],
+    }
 
-	if ( $enable == true ) {
-		$ensure = "link"
-	} else {
-		$ensure = "absent"
-	}
+    file { [ '/etc/nginx/conf.d', '/etc/nginx/sites-available', '/etc/nginx/sites-enabled' ]:
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
+        force   => true,
+        require => Package['nginx-full'],
+    }
 
-	if ( $donotify == "true" ) {
-		file { "/etc/nginx/sites-enabled/${name}":
-			ensure => $ensure,
-			target => "/etc/nginx/sites-available/${name}",
-			notify => Service["nginx"];
-		}
-	} else {
-		file { "/etc/nginx/sites-enabled/${name}":
-			ensure => $ensure,
-			target => "/etc/nginx/sites-available/${name}";
-		}
-	}
-
-	case $install {
-	"true": {
-			file { "/etc/nginx/sites-available/${name}":
-				source => "puppet:///files/nginx/sites/${name}";
-			}
-		}
-	"template": {
-			file { "/etc/nginx/sites-available/${name}":
-				content => template("nginx/sites/${template_name}.erb");
-			}
-		}
-	}
-
+    if $managed {
+        File <| tag == 'nginx' |> ~> Service['nginx']
+    }
 }

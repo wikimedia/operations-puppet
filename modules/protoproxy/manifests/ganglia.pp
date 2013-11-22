@@ -3,8 +3,6 @@
 # Ganglia monitoring
 class protoproxy::ganglia {
 
-    include nginx::package
-
     file { '/usr/lib/ganglia/python_modules/apache_status.py':
         source => 'puppet:///files/ganglia/plugins/apache_status.py',
         notify => Service['gmond'];
@@ -15,10 +13,8 @@ class protoproxy::ganglia {
     }
 
     # Dummy site to provide a status to Ganglia
-    nginx { 'localhost.conf':
-        install => true,
-        enable  => true,
-        require => Package['nginx'],
+    nginx::site { 'localhost':
+        content => template('protoproxy/localhost.erb'),
     }
 
 }
