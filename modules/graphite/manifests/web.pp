@@ -35,7 +35,7 @@ class graphite::web(
     }
 
     file { '/etc/nginx/sites-available/graphite':
-        source  => template('graphite/graphite.nginx.erb'),
+        content => template('graphite/graphite.nginx.erb'),
         require => Package['nginx-full'],
     }
 
