@@ -17,8 +17,10 @@ class contint::packages::labs {
 
         # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
         'unzip',
-        #'librsvg2-bin',  # provided by misc::contint::packages
-        'imagemagick',
+        # provided by misc::contint::packages:
+        #'librsvg2-bin',
+        #'imagemagick',
+
         ]: ensure => present,
     }
 
