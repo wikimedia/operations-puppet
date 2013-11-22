@@ -67,7 +67,9 @@ class role::graphite {
         },
     }
 
-    class { '::graphite::web': }
+    class { '::graphite::web':
+        server_name => 'graphite.wikimedia.org',
+    }
 
     nrpe::monitor_service { 'carbon':
         description  => 'Graphite Carbon',

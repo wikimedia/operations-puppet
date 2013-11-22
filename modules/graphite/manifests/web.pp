@@ -6,6 +6,11 @@
 #
 # === Parameters
 #
+# [*server_name*]
+#   Name of virtual server. May contain wildcards.
+#   See <http://nginx.org/en/docs/http/server_names.html>.
+#   Defaults to '_', which is catch-all.
+#
 # [*uwsgi_processes*]
 #   Number of uWSGI workers to run.
 #
@@ -13,6 +18,7 @@
 #   Size of memcached store, in megabytes (default: 200).
 #
 class graphite::web(
+    $server_name     = '_',
     $uwsgi_processes = 4,
     $memcached_size  = 200,
 ) {
@@ -29,7 +35,7 @@ class graphite::web(
     }
 
     file { '/etc/nginx/sites-available/graphite':
-        source  => 'puppet:///modules/graphite/graphite.nginx',
+        source  => template('graphite/graphite.nginx.erb'),
         require => Package['nginx-full'],
     }
 
