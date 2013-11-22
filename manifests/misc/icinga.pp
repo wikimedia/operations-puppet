@@ -718,7 +718,7 @@ class icinga::monitor::naggen {
   }
 
   # Decommission servers
-  decommission_monitor_host { $decommissioned_servers: }
+  decommission_monitor_host { $::decommissioned_servers: }
 }
 
 # NSCA - Nagios Service Check Acceptor

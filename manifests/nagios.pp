@@ -61,7 +61,7 @@ define monitor_service ($description, $check_command, $host=$::hostname, $retrie
 		fail("Parameter $host not defined!")
 	}
 
-	if $::hostname in $decommissioned_servers {
+	if $::hostname in $::decommissioned_servers {
 		# Export the nagios service instance
 		@@nagios_service { "$::hostname $title":
 			target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg",
