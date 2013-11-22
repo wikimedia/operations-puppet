@@ -38,10 +38,6 @@ sub tag_carrier {
 		set req.http.X-Subdomain = "M";
 	}
 
-	// go to english by default
-	set req.http.X-DfltLang = "en";
-	set req.http.X-DfltPage = "/wiki/Special:ZeroRatedMobileAccess";
-
 	/* Please keep this list alphabetized by the ACL variable */
 	if (!req.http.X-CS2) {
 		// Unknown IP - skip the rest of X-CS identification
@@ -50,7 +46,6 @@ sub tag_carrier {
 			set req.http.X-CS = "502-13";
 		}
 	} else if (req.http.X-CS2 == "623-03") {
-		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ha|ln|eo)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "623-03";
@@ -69,12 +64,10 @@ sub tag_carrier {
 			}
 		}
 	} else if (req.http.X-CS2 == "520-18") {
-		set req.http.X-DfltLang = "th";
 		if (req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = "520-18";
 		}
 	} else if (req.http.X-CS2 == "470-01") {
-		set req.http.X-DfltLang = "bn";
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(bn)\.zero|^zero)\.wikipedia\.") {
 				set req.http.X-CS = "470-01";
@@ -97,19 +90,16 @@ sub tag_carrier {
 			set req.http.X-CS = "652-02";
 		}
 	} else if (req.http.X-CS2 == "624-02") {
-		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "624-02";
 			}
 		}
 	} else if (req.http.X-CS2 == "630-86") {
-		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			set req.http.X-CS = "630-86";
 		}
 	} else if (req.http.X-CS2 == "612-03") {
-		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			set req.http.X-CS = "612-03";
 		}
@@ -118,19 +108,16 @@ sub tag_carrier {
 			set req.http.X-CS = "639-07";
 		}
 	} else if (req.http.X-CS2 == "604-00") {
-		set req.http.X-DfltLang =  "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|ar|en|es|de|it|nl|pt|ru|zh)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "604-00";
 			}
 		}
 	} else if (req.http.X-CS2 == "614-04") {
-		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			set req.http.X-CS = "614-04";
 		}
 	} else if (req.http.X-CS2 == "605-01") {
-		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "605-01";
@@ -143,7 +130,6 @@ sub tag_carrier {
 			}
 		}
 	} else if (req.http.X-CS2 == "420-01") {
-		set req.http.X-DfltLang = "ar";
 		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "420-01";
 		}
@@ -153,7 +139,6 @@ sub tag_carrier {
 			set req.http.X-CS = "405-25";
 		}
 	} else if (req.http.X-CS2 == "250-99") {
-		set req.http.X-DfltLang = "ru";
 		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "250-99";
 		}
@@ -166,14 +151,12 @@ sub tag_carrier {
 			set req.http.X-CS = "404-01";
 		}
 	} else if (req.http.X-CS2 == "510-11") {
-		set req.http.X-DfltLang = "id";
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.wikipedia\.") {
 				set req.http.X-CS = "510-11";
 			}
 		}
 	} else if (req.http.X-CS2 == "646-02") {
-		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|en|mg)\.m|^m)\.wikipedia\.") {
 				set req.http.X-CS = "646-02";
@@ -184,7 +167,6 @@ sub tag_carrier {
 			set req.http.X-CS = "436-01";
 		}
 	} else if (req.http.X-CS2 == "401-01") {
-		set req.http.X-DfltLang = "ru";
 		if (req.http.host ~ "(^(ru|kk|en)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "401-01";
 		}
