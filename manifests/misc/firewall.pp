@@ -28,7 +28,7 @@ class firewall {
 	# This is the definition called from all service manifests, e.g.
 	# open_port { "mail": port => 25 }
 
-	define open_port ($hostname=$hostname,$ip_address=$ipaddress, $protocol="tcp",$port) {
+	define open_port ($hostname=$::hostname,$ip_address=$::ipaddress, $protocol="tcp",$port) {
 		@@exported_acl_rule { $title: 
 			hostname => $hostname,
 			ip_address => $ip_address,

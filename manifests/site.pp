@@ -65,7 +65,7 @@ $cluster = "misc"
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
     $cluster = "lvs"
 
-    if $hostname =~ /^amslvs[12]$/ {
+    if $::hostname =~ /^amslvs[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -105,7 +105,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
     $squid_coss_disks = [ 'sda5', 'sdb5' ]
-    if $hostname =~ /^amssq3[12]$/ {
+    if $::hostname =~ /^amssq3[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -363,7 +363,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 
 node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
     $squid_coss_disks = [ 'sda5', 'sdb5' ]
-    if $hostname =~ /^cp100(1|2)$/ {
+    if $::hostname =~ /^cp100(1|2)$/ {
         $ganglia_aggregator = true
     }
 
@@ -559,9 +559,9 @@ node /^db(60|63)\.pmtpa\.wmnet/ {
 }
 
 node /^db(54|57|69)\.pmtpa\.wmnet/ {
-    if $hostname == "db69"{
+    if $::hostname == "db69"{
         class { role::coredb::s2 : innodb_file_per_table => true, mariadb => true }
-    } elsif $hostname == "db57"{
+    } elsif $::hostname == "db57"{
         class { role::coredb::s2 : innodb_file_per_table => true }
     } else {
         include role::coredb::s2
@@ -569,9 +569,9 @@ node /^db(54|57|69)\.pmtpa\.wmnet/ {
 }
 
 node /^db(34|66|71)\.pmtpa\.wmnet/ {
-    if $hostname == "db71"{
+    if $::hostname == "db71"{
         class { role::coredb::s3 : innodb_file_per_table => true, mariadb => true }
-    } elsif $hostname == "db66"{
+    } elsif $::hostname == "db66"{
         class { role::coredb::s3 : innodb_file_per_table => true }
     } else {
         include role::coredb::s3
@@ -579,10 +579,10 @@ node /^db(34|66|71)\.pmtpa\.wmnet/ {
 }
 
 node /^db(31|65|72)\.pmtpa\.wmnet/ {
-    if $hostname =~ /^db65/ {
+    if $::hostname =~ /^db65/ {
         $ganglia_aggregator = true
     }
-    if $hostname =~ /^db(65|72)/ {
+    if $::hostname =~ /^db(65|72)/ {
         class { role::coredb::s4 : mariadb => true, innodb_file_per_table => true }
     } else {
         include role::coredb::s4
@@ -594,12 +594,12 @@ node /^db(73)\.pmtpa\.wmnet/ {
 }
 
 node /^db(47|50|74)\.pmtpa\.wmnet/ {
-    if $hostname =~ /^db50/ {
+    if $::hostname =~ /^db50/ {
         $ganglia_aggregator = true
     }
-    if $hostname == "db74" {
+    if $::hostname == "db74" {
         class { role::coredb::s6 : mariadb => true, innodb_file_per_table => true }
-    } elsif $hostname == "db50"{
+    } elsif $::hostname == "db50"{
         class { role::coredb::s6 : innodb_file_per_table => true }
     } else {
         include role::coredb::s6
@@ -607,7 +607,7 @@ node /^db(47|50|74)\.pmtpa\.wmnet/ {
 }
 
 node /^db(37|68)\.pmtpa\.wmnet/ {
-    if $hostname == "db68"{
+    if $::hostname == "db68"{
         class { role::coredb::s7 : innodb_file_per_table => true }
     } else {
         include role::coredb::s7
@@ -665,14 +665,14 @@ node /^db(6[124]|7[5-7])\.pmtpa\.wmnet/{
 
 # eqiad dbs
 node /^db10(43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(56)/ {
+    if $::hostname =~ /^db10(56)/ {
         $ganglia_aggregator = true
         include mha::manager
     }
 
-    if $hostname =~ /^db10(50|51|52|56|37)/ {
+    if $::hostname =~ /^db10(50|51|52|56|37)/ {
         class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
-    } elsif $hostname =~ /^db10(43|49)/ {
+    } elsif $::hostname =~ /^db10(43|49)/ {
         class { role::coredb::s1 : mariadb => true }
     } else {
         include role::coredb::s1
@@ -680,9 +680,9 @@ node /^db10(43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
 }
 
 node /^db10(02|09|18|34|36)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(02|18|34|36)/ {
+    if $::hostname =~ /^db10(02|18|34|36)/ {
         class { role::coredb::s2 : innodb_file_per_table => true, mariadb => true }
-    } elsif $hostname == "db1009" {
+    } elsif $::hostname == "db1009" {
         class { role::coredb::s2 : mariadb => true }
     } else {
         include role::coredb::s2
@@ -690,9 +690,9 @@ node /^db10(02|09|18|34|36)\.eqiad\.wmnet/ {
 }
 
 node /^db10(03|10|19|35|38)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(03|19|35|38)/ {
+    if $::hostname =~ /^db10(03|19|35|38)/ {
         class { role::coredb::s3 : innodb_file_per_table => true, mariadb => true }
-    } elsif $hostname == "db1010" {
+    } elsif $::hostname == "db1010" {
         class { role::coredb::s3 : mariadb => true }
     } else {
         include role::coredb::s3
@@ -700,7 +700,7 @@ node /^db10(03|10|19|35|38)\.eqiad\.wmnet/ {
 }
 
 node /^db10(04|11|20|42|59)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(04|11|20|42|59)/ {
+    if $::hostname =~ /^db10(04|11|20|42|59)/ {
         class { role::coredb::s4 : mariadb => true }
     } else {
         include role::coredb::s4
@@ -708,12 +708,12 @@ node /^db10(04|11|20|42|59)\.eqiad\.wmnet/ {
 }
 
 node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db1021/ {
+    if $::hostname =~ /^db1021/ {
         $ganglia_aggregator = true
     }
-    if $hostname =~ /^db10(45)/ {
+    if $::hostname =~ /^db10(45)/ {
         class { role::coredb::s5 : innodb_file_per_table => true, mariadb => true }
-    } elsif $hostname =~ /^db10(05|21|26|58)/ {
+    } elsif $::hostname =~ /^db10(05|21|26|58)/ {
         class { role::coredb::s5 : mariadb => true }
     } else {
         include role::coredb::s5
@@ -721,9 +721,9 @@ node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
 }
 
 node /^db10(06|15|22|27|40)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(06|22|40)/ {
+    if $::hostname =~ /^db10(06|22|40)/ {
         class { role::coredb::s6 : innodb_file_per_table => true, mariadb => true }
-    } elsif $hostname =~ /^db10(15|27)/ {
+    } elsif $::hostname =~ /^db10(15|27)/ {
         class { role::coredb::s6 : mariadb => true }
     } else {
         include role::coredb::s6
@@ -731,9 +731,9 @@ node /^db10(06|15|22|27|40)\.eqiad\.wmnet/ {
 }
 
 node /^db10(07|24|28|39|41)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db10(07|24|39|41)/ {
+    if $::hostname =~ /^db10(07|24|39|41)/ {
         class { role::coredb::s7 : innodb_file_per_table => true, mariadb => true }
-    } elsif $hostname == "db1028" {
+    } elsif $::hostname == "db1028" {
         class { role::coredb::s7 : mariadb => true }
     } else {
         include role::coredb::s7
@@ -955,7 +955,7 @@ node /es([89]|10)\.pmtpa\.wmnet/ {
 }
 
 node /es100[5-7]\.eqiad\.wmnet/ {
-    if $hostname == "es1006" {
+    if $::hostname == "es1006" {
         class { role::coredb::es2 : mariadb => true }
     } else {
         include role::coredb::es2
@@ -963,7 +963,7 @@ node /es100[5-7]\.eqiad\.wmnet/ {
 }
 
 node /es10(0[89]|10)\.eqiad\.wmnet/ {
-    if $hostname == "es1009" {
+    if $::hostname == "es1009" {
         class { role::coredb::es3 : mariadb => true }
     } else {
         include role::coredb::es3
@@ -1381,7 +1381,7 @@ node /labstore[12]\.pmtpa\.wmnet/ {
 
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 
-    if $hostname =~ /^labstore2$/ {
+    if $::hostname =~ /^labstore2$/ {
         include openstack::project-storage-service
     }
 
@@ -1461,7 +1461,7 @@ node "linne.wikimedia.org" {
 node /lvs[1-6]\.wikimedia\.org/ {
     $cluster = "lvs"
 
-    if $hostname =~ /^lvs[12]$/ {
+    if $::hostname =~ /^lvs[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -1525,7 +1525,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
     interface::tagged { "eth0.2":
         base_interface => "eth0",
         vlan_id => "2",
-        address => $ips["internal"][$hostname],
+        address => $ips["internal"][$::hostname],
         netmask => "255.255.0.0"
     }
 
@@ -1536,7 +1536,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 node /lvs100[1-6]\.wikimedia\.org/ {
     $cluster = "lvs"
 
-    if $hostname =~ /^lvs100[12]$/ {
+    if $::hostname =~ /^lvs100[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -1713,7 +1713,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     $cluster = 'lvs'
 
     # lvs4001 and lvs4003 are in different racks
-    if $hostname =~ /^lvs400[13]$/ {
+    if $::hostname =~ /^lvs400[13]$/ {
         $ganglia_aggregator = true
     }
 
@@ -1762,7 +1762,7 @@ node "magnesium.wikimedia.org" {
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
     $cluster = "memcached"
-    if $hostname =~ /^mc100[12]$/ {
+    if $::hostname =~ /^mc100[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -1865,10 +1865,10 @@ node /ms100[4]\.eqiad\.wmnet/ {
 }
 
 node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
-    if $hostname =~ /^ms-fe[12]$/ {
+    if $::hostname =~ /^ms-fe[12]$/ {
         $ganglia_aggregator = true
     }
-    if $hostname =~ /^ms-fe1$/ {
+    if $::hostname =~ /^ms-fe1$/ {
         include role::swift::pmtpa-prod::ganglia_reporter
     }
 
@@ -2268,7 +2268,7 @@ node "sanger.wikimedia.org" {
 }
 
 node /^search100[0-6]\.eqiad\.wmnet/ {
-    if $hostname =~ /^search100(1|2)$/ {
+    if $::hostname =~ /^search100(1|2)$/ {
         $ganglia_aggregator = true
     }
 
@@ -2400,7 +2400,7 @@ node /^srv24[89]\.pmtpa\.wmnet$/ {
 
 # srv250-257 are API application servers (precise)
 node /^srv25[0-7]\.pmtpa\.wmnet$/ {
-    if $hostname =~ /^srv25[45]$/ {
+    if $::hostname =~ /^srv25[45]$/ {
         $ganglia_aggregator = true
     }
     include role::applicationserver::appserver::api
@@ -2409,7 +2409,7 @@ node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 
 # srv258-289 are applicationservers (precise)
 node /^srv(25[89]|2[6-8][0-9])\.pmtpa\.wmnet$/ {
-    if $hostname =~ /^srv25[89]$/ {
+    if $::hostname =~ /^srv25[89]$/ {
         $ganglia_aggregator = true
     }
 
@@ -2424,7 +2424,7 @@ node /^srv(29[0-9]|30[01])\.pmtpa\.wmnet$/ {
 }
 
 node /ssl[1-4]\.wikimedia\.org/ {
-    if $hostname =~ /^ssl[12]$/ {
+    if $::hostname =~ /^ssl[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -2434,7 +2434,7 @@ node /ssl[1-4]\.wikimedia\.org/ {
 }
 
 node /ssl100[1-9]\.wikimedia\.org/ {
-    if $hostname =~ /^ssl100[12]$/ {
+    if $::hostname =~ /^ssl100[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -2444,7 +2444,7 @@ node /ssl100[1-9]\.wikimedia\.org/ {
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
-    if $hostname =~ /^ssl300[12]$/ {
+    if $::hostname =~ /^ssl300[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -2463,7 +2463,7 @@ node /sq(3[7-9]|40)\.wikimedia\.org/ {
 # sq43-50 are old 4 disk upload squids
 node /sq(4[3-9]|50)\.wikimedia\.org/ {
     $squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
-    if $hostname =~ /^sq4[3]$/ {
+    if $::hostname =~ /^sq4[3]$/ {
         $ganglia_aggregator = true
     }
 
@@ -2479,7 +2479,7 @@ node /sq5[0-8]\.wikimedia\.org/ {
 # sq59-66 are text squids
 node /sq(59|6[0-6])\.wikimedia\.org/ {
     $squid_coss_disks = [ 'sda5', 'sdb5' ]
-    if $hostname =~ /^sq(59|60)$/ {
+    if $::hostname =~ /^sq(59|60)$/ {
         $ganglia_aggregator = true
     }
 
@@ -2488,7 +2488,7 @@ node /sq(59|6[0-6])\.wikimedia\.org/ {
 
 # sq67-70 are varnishes for bits.wikimedia.org
 node /sq(6[7-9]|70)\.wikimedia\.org/ {
-    if $hostname =~ /^sq6[68]$/ {
+    if $::hostname =~ /^sq6[68]$/ {
         $ganglia_aggregator = true
     }
 
@@ -2747,7 +2747,7 @@ node /^testsearch100[1-3]\.eqiad\.wmnet/ {
 node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
     # ganglia cluster name.
     $cluster = 'elasticsearch'
-    if $hostname =~ /^elastic100[17]/ {
+    if $::hostname =~ /^elastic100[17]/ {
         $ganglia_aggregator = true
     }
 
@@ -2789,7 +2789,7 @@ node "tridge.wikimedia.org" {
 
 # tmh1/tmh2 video encoding server (precise only)
 node /^tmh[1-2]\.pmtpa\.wmnet/ {
-    if $hostname =~ /^tmh[12]$/ {
+    if $::hostname =~ /^tmh[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -2800,7 +2800,7 @@ node /^tmh[1-2]\.pmtpa\.wmnet/ {
 
 # tmh1001/tmh1002 video encoding server (precise only)
 node /^tmh100[1-2]\.eqiad\.wmnet/ {
-    if $hostname =~ /^tmh100[12]$/ {
+    if $::hostname =~ /^tmh100[12]$/ {
         $ganglia_aggregator = true
     }
     class { role::applicationserver::videoscaler: run_jobs_enabled => true }
@@ -2893,7 +2893,7 @@ node 'virt2.pmtpa.wmnet' {
 
 node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
     $cluster = "virt"
-    if $hostname =~ /^virt5$/ {
+    if $::hostname =~ /^virt5$/ {
 
         $ganglia_aggregator = true
     }
@@ -2909,7 +2909,7 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
 
 node /virt100(5|7|8).eqiad.wmnet/ {
     $cluster = "virt"
-    if $hostname =~ /^virt1005$/ {
+    if $::hostname =~ /^virt1005$/ {
         $ganglia_aggregator = true
     }
 
@@ -2919,7 +2919,7 @@ node /virt100(5|7|8).eqiad.wmnet/ {
     include standard
 
     $openstack_version = "folsom"
-    if $hostname =~ /^virt1005$/ {
+    if $::hostname =~ /^virt1005$/ {
         include role::nova::network,
             role::nova::api
         interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.155.255" }
@@ -2935,7 +2935,7 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     $cluster = "parsoid"
     $nagios_group = "${cluster}_$::site"
 
-    if $hostname == "wtp1001" {
+    if $::hostname == "wtp1001" {
         $ganglia_aggregator = true
     }
 

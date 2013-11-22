@@ -7,7 +7,7 @@ $nagios_config_dir = "/etc/nagios"
 
 $ganglia_url = "http://ganglia.wikimedia.org"
 
-define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=present, $critical="false", $contact_group="admins") {
+define monitor_host ($ip_address=$::ipaddress, $group=$nagios_group, $ensure=present, $critical="false", $contact_group="admins") {
 	if ! $ip_address {
 		fail("Parameter $ip_address not defined!")
 	}
@@ -34,7 +34,7 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 		ensure => $ensure;
 	}
 
-	if $title == $hostname {
+	if $title == $::hostname {
 		$image = $operatingsystem ? {
 			"Ubuntu"	=> "ubuntu",
 			"Solaris" 	=> "sunlogo",
@@ -56,14 +56,14 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 	}
 }
 
-define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
+define monitor_service ($description, $check_command, $host=$::hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
 	if ! $host {
 		fail("Parameter $host not defined!")
 	}
 
-	if $hostname in $decommissioned_servers {
+	if $::hostname in $decommissioned_servers {
 		# Export the nagios service instance
-		@@nagios_service { "$hostname $title":
+		@@nagios_service { "$::hostname $title":
 			target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg",
 			host_name => $host,
 			servicegroups => $group ? {
@@ -88,7 +88,7 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 	}
 	else {
 		# Export the nagios service instance
-		@@nagios_service { "$hostname $title":
+		@@nagios_service { "$::hostname $title":
 			target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg",
 			host_name => $host,
 			servicegroups => $group ? {
