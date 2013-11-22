@@ -600,6 +600,10 @@ define command{
 	command_line	$USER1$/check_elasticsearch -H $HOSTADDRESS$
 }
 
+define command{
+	command_name	check_reqstats_5xx
+	command_line	$USER1$/check_graphite -U $ARG1$ --from $ARG2$  -t reqstats.5xx -W $ARG3$ -C $ARG4$
+}
 
 
 # Checks whether a host belongs to given dsh group(s)
