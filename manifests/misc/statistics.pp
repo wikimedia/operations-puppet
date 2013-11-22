@@ -39,8 +39,16 @@ class misc::statistics::iptables  {
     # Labs has security groups, and as such, doesn't need firewall rules
 }
 
-class misc::statistics::user {
+# == Class misc::statistics::user::params
+# Parameters for the statistics user
+class misc::statistics::user::params {
     $username = "stats"
+}
+
+class misc::statistics::user {
+    require misc::statistics::user::params
+
+    $username = $misc::statistics::user::params::username
     $homedir  = "/var/lib/$username"
 
     generic::systemuser { $username:
@@ -253,7 +261,8 @@ class misc::statistics::public_datasets {
 
 # stats.wikimedia.org
 class misc::statistics::sites::stats {
-    require misc::statistics::geowiki::data::private
+    require misc::statistics::geowiki::data::private,
+        misc::statistics::geowiki::params
 
     $site_name = "stats.wikimedia.org"
     $docroot = "/srv/$site_name/htdocs"
@@ -279,7 +288,7 @@ class misc::statistics::sites::stats {
     # link geowiki checkout from docroot
     file { $geowiki_private_directory:
         ensure  => "link",
-        target  => "${misc::statistics::geowiki::data::private::geowiki_private_data_path}/datafiles",
+        target  => "${misc::statistics::geowiki::params::private_data_path}/datafiles",
         owner   => "root",
         group   => "www-data",
         mode    => '0750',
@@ -835,21 +844,36 @@ class misc::statistics::limn::mobile_data_sync {
 }
 
 
+# == Class misc::statistics::geowiki::params
+# Parameters for geowiki classes
+class misc::statistics::geowiki::params {
+    require misc::statistics::user::params
+
+    $username                    = $misc::statistics::user::params::username
+    $base_path                   = '/a/geowiki'
+    $log_path                    = "${base_path}/logs"
+    $scripts_path                = "${base_path}/scripts"
+    $private_data_bare_path      = "${base_path}/data-private-bare"
+    $private_data_bare_host      = "stat1"
+    $private_data_bare_host_fqdn = "${geowiki_private_data_bare_host}.wikimedia.org"
+    $private_data_path           = "${base_path}/data-private"
+    $public_data_path            = "${base_path}/data-public"
+    $mysql_conf_research_file    = "${base_path}/.research.my.cnf"
+    $mysql_conf_globaldev_file   = "${base_path}/.globaldev.my.cnf"
+}
+
 # == Class misc::statistics::geowiki
 # Clones analytics/geowiki python scripts
 class misc::statistics::geowiki {
-    require misc::statistics::user
-
-    $geowiki_user = $misc::statistics::user::username
-    $geowiki_base_path = '/a/geowiki'
-    $geowiki_scripts_path = "${geowiki_base_path}/scripts"
+    require misc::statistics::user,
+        misc::statistics::geowiki::params
 
     git::clone { 'geowiki-scripts':
-        directory => $geowiki_scripts_path,
+        directory => $misc::statistics::geowiki::params::scripts_path,
         origin    => "https://gerrit.wikimedia.org/r/p/analytics/geowiki.git",
         ensure    => 'latest',
-        owner     => $geowiki_user,
-        group     => $geowiki_user,
+        owner     => $misc::statistics::geowiki::params::username,
+        group     => $misc::statistics::geowiki::params::username,
     }
 }
 
@@ -861,16 +885,12 @@ class misc::statistics::geowiki::mysql::conf::research {
     require misc::statistics::geowiki,
         passwords::mysql::research
 
-    $geowiki_user = $misc::statistics::geowiki::geowiki_user
-    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
-
     $research_mysql_user = $passwords::mysql::research::user
     $research_mysql_pass = $passwords::mysql::research::pass
 
-    $conf_file = "${geowiki_base_path}/.research.my.cnf"
-    file { $conf_file:
-        owner   => $geowiki_user,
-        group   => $geowiki_user,
+    file { $misc::statistics::geowiki::params::mysql_conf_research_file:
+        owner   => $misc::statistics::geowiki::params::username,
+        group   => $misc::statistics::geowiki::params::username,
         mode    => '0400',
         content => "
 [client]
@@ -891,26 +911,20 @@ default-character-set=utf8
 class misc::statistics::geowiki::data::private_bare::sync {
     require misc::statistics::geowiki
 
-    $geowiki_user = $misc::statistics::geowiki::geowiki_user
-    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
-    $geowiki_private_data_bare_path = "${geowiki_base_path}/data-private-bare"
-    $geowiki_private_data_bare_host = "stat1"
-    $geowiki_private_data_bare_host_fqdn = "${geowiki_private_data_bare_host}.wikimedia.org"
-
-    file { "$geowiki_private_data_bare_path":
+    file { $misc::statistics::geowiki::params::private_data_bare_path:
         ensure => directory,
-        owner  => $geowiki_user,
-        group  => $geowiki_user,
+        owner  => $misc::statistics::geowiki::params::username,
+        group  => $misc::statistics::geowiki::params::username,
         mode   => '0640',
     }
 
     # The bare repository lives on stat1, so it's available there directly.
     # Other hosts need to rsync it over
-    if $::hostname != $geowiki_private_data_bare_host {
+    if $::hostname != $misc::statistics::geowiki::params::private_data_bare_host {
         cron { 'geowiki data-private bare sync':
-            command => "/usr/bin/rsync -rt --delete rsync://${geowiki_private_data_bare_host_fqdn}${geowiki_private_data_bare_path}/ ${geowiki_private_data_bare_path}/",
-            require => File["$geowiki_private_data_bare_path"],
-            user    => $geowiki_user,
+            command => "/usr/bin/rsync -rt --delete rsync://${misc::statistics::geowiki::params::private_data_bare_host_fqdn}${misc::statistics::geowiki::params::private_data_bare_path}/ ${misc::statistics::geowiki::params::private_data_bare_path}/",
+            require => File[$misc::statistics::geowiki::params::private_data_bare_path],
+            user    => $misc::statistics::geowiki::params::username,
             hour  => '17',
             minute  => '0',
         }
@@ -924,16 +938,11 @@ class misc::statistics::geowiki::data::private {
     require misc::statistics::geowiki,
         misc::statistics::geowiki::data::private_bare::sync
 
-    $geowiki_user = $misc::statistics::geowiki::geowiki_user
-    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
-    $geowiki_private_data_path = "${geowiki_base_path}/data-private"
-    $geowiki_private_data_bare_path = $misc::statistics::geowiki::data::private_bare::sync::geowiki_private_data_bare_path
-
     git::clone { 'geowiki-data-private':
-        directory => $geowiki_private_data_path,
-        origin    => "file://${geowiki_private_data_bare_path}",
+        directory => $misc::statistics::geowiki::params::private_data_path,
+        origin    => "file://${misc::statistics::geowiki::params::private_data_bare_path}",
         ensure    => 'latest',
-        owner     => $geowiki_user,
+        owner     => $misc::statistics::geowiki::params::username,
         group     => 'www-data',
         mode      => 0750,
     }
@@ -951,20 +960,13 @@ class misc::statistics::geowiki::jobs::data {
         misc::statistics::packages::python,
         geoip
 
-    $geowiki_user = $misc::statistics::geowiki::geowiki_user
-    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
-    $geowiki_scripts_path = $misc::statistics::geowiki::geowiki_scripts_path
-
-    $geowiki_mysql_research_conf_file = $misc::statistics::geowiki::mysql::conf::research::conf_file
-
     # install MySQL conf files for db acccess
     $globaldev_mysql_user = $passwords::mysql::globaldev::user
     $globaldev_mysql_pass = $passwords::mysql::globaldev::pass
 
-    $geowiki_mysql_globaldev_conf_file = "${geowiki_base_path}/.globaldev.my.cnf"
-    file { $geowiki_mysql_globaldev_conf_file:
-        owner   => $geowiki_user,
-        group   => $geowiki_user,
+    file { $misc::statistics::geowiki::params::mysql_conf_globaldev_file:
+        owner   => $misc::statistics::geowiki::params::username,
+        group   => $misc::statistics::geowiki::params::username,
         mode    => '0400',
         content => "
 [client]
@@ -973,23 +975,22 @@ password=${globaldev_mysql_pass}
 ",
     }
 
-    $geowiki_log_path = "${geowiki_base_path}/logs"
-    file { $geowiki_log_path:
+    file { $misc::statistics::geowiki::params::log_path:
         ensure  => 'directory',
-        owner   => $geowiki_user,
-        group   => $geowiki_user,
+        owner   => $misc::statistics::geowiki::params::username,
+        group   => $misc::statistics::geowiki::params::username,
     }
 
     # cron to run geowiki/process_data.py.
     # This will query the production slaves and
     # store results in the research staging database.
-    # Logs will be kept $geowiki_log_path.
+    # Logs will be kept at log path.
     cron { 'geowiki-process-data':
         minute  => 0,
         hour    => 12,
-        user    => $geowiki_user,
-        command => "/usr/bin/python ${geowiki_scripts_path}/geowiki/process_data.py -o ${$geowiki_log_path} --wpfiles ${geowiki_scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${geowiki_mysql_research_conf_file}",
-        require => File[$geowiki_log_path],
+        user    => $misc::statistics::geowiki::params::username,
+        command => "/usr/bin/python ${misc::statistics::geowiki::params::scripts_path}/geowiki/process_data.py -o ${misc::statistics::geowiki::params::log_path} --wpfiles ${misc::statistics::geowiki::params::scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${misc::statistics::geowiki::params::mysql_conf_globaldev_file} --dest_sql_cnf=${misc::statistics::geowiki::params::mysql_conf_research_file}",
+        require => File[$misc::statistics::geowiki::params::log_path],
     }
 }
 
@@ -1001,19 +1002,12 @@ class misc::statistics::geowiki::jobs::limn {
         misc::statistics::geowiki::data::private,
         misc::statistics::packages::python
 
-    $geowiki_user = $misc::statistics::geowiki::geowiki_user
-    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
-    $geowiki_scripts_path = $misc::statistics::geowiki::geowiki_scripts_path
-    $geowiki_public_data_path = "${geowiki_base_path}/data-public"
-    $geowiki_private_data_path = $misc::statistics::geowiki::data::private::geowiki_private_data_path
-    $geowiki_mysql_research_conf_file = $misc::statistics::geowiki::mysql::conf::research::conf_file
-
     git::clone { 'geowiki-data-public':
-        directory => $geowiki_public_data_path,
+        directory => $misc::statistics::user::params::public_data_path,
         origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki/data-public.git",
         ensure    => 'latest',
-        owner     => $geowiki_user,
-        group     => $geowiki_user,
+        owner     => $misc::statistics::geowiki::params::username,
+        group     => $misc::statistics::geowiki::params::username,
     }
 
     # cron job to do the actual fetching from the database, computation of
@@ -1021,13 +1015,13 @@ class misc::statistics::geowiki::jobs::limn {
     cron { 'geowiki-process-db-to-limn':
         minute  => 0,
         hour    => 15,
-        user    => $geowiki_user,
-        command => "${geowiki_scripts_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir_public=${geowiki_public_data_path} --basedir_private=${geowiki_private_data_path} --source_sql_cnf=${geowiki_mysql_research_conf_file}",
+        user    => $misc::statistics::geowiki::params::username,
+        command => "${misc::statistics::geowiki::params::scripts_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir_public=${misc::statistics::user::params::public_data_path} --basedir_private=${misc::statistics::geowiki::params::private_data_path} --source_sql_cnf=${misc::statistics::geowiki::params::mysql_conf_research_file}",
         require => [
             Git::Clone['geowiki-scripts'],
             Git::Clone['geowiki-data-public'],
             Git::Clone['geowiki-data-private'],
-            File[$geowiki_mysql_research_conf_file],
+            File[$misc::statistics::geowiki::params::mysql_conf_research_file],
         ],
     }
 }
@@ -1041,17 +1035,14 @@ class misc::statistics::geowiki::jobs::limn {
 class misc::statistics::geowiki::jobs::monitoring {
     require misc::statistics::geowiki
 
-    $geowiki_user = $misc::statistics::geowiki::geowiki_user
-    $geowiki_scripts_path = $misc::statistics::geowiki::geowiki_scripts_path
-
     # cron job to fetch geowiki data via http://gp.wmflabs.org/
     # and checks that the files are up-to-date and within
     # meaningful ranges.
     cron { 'geowiki-monitoring':
         minute  => 30,
         hour    => 21,
-        user    => $geowiki_user,
-        command => "${geowiki_scripts_path}/scripts/check_web_page.sh",
+        user    => $misc::statistics::geowiki::params::username,
+        command => "${misc::statistics::geowiki::params::scripts_path}/scripts/check_web_page.sh",
         # Disabled for now due to restructuring of geowiki
         ensure  => absent,
     }
