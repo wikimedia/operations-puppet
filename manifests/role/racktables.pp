@@ -18,7 +18,7 @@ class role::racktables {
     }
 
     # dependencies
-    Class['webserver::php5'] -> apache_module['rewrite']
+    Class['webserver::php5'] -> Apache_module['rewrite']
 
     # be flexible about labs vs. prod
     case $::realm {

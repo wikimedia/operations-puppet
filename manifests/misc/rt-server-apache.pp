@@ -81,10 +81,11 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
 
   exec { 'update-rt-siteconfig':
     command     => '/usr/sbin/update-rt-siteconfig-4',
-    subscribe   => file[
+    subscribe   => File[
                         '/etc/request-tracker4/RT_SiteConfig.d/50-debconf',
                         '/etc/request-tracker4/RT_SiteConfig.d/51-dbconfig-common',
-                        '/etc/request-tracker4/RT_SiteConfig.d/80-wikimedia' ],
+                        '/etc/request-tracker4/RT_SiteConfig.d/80-wikimedia'
+                   ],
     require     => Package[ 'request-tracker4', 'rt4-db-mysql', 'rt4-clients' ],
     refreshonly => true,
     notify      => Service[apache2];
