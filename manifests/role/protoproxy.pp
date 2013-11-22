@@ -17,8 +17,6 @@
 # - nginx package
 class role::protoproxy::ssl::common {
 
-    include nginx::package
-
     # Tune kernel settings
     include webserver::base
 

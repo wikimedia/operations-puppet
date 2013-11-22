@@ -1,57 +1,28 @@
-# Installs nginx and sets up an NGINX site.
+# == Class: nginx
 #
-#  $install='true' or 'template' causes an nginx config
-#  to be installed from either a file or a template, respectively.
+# Nginx is a popular, high-performance HTTP server and reverse proxy.
+# This module is very small and simple, providing an 'nginx::site' resource
+# type that takes an Nginx configuration file as input.
 #
-#  If $install='template' then the config file is pulled from the named
-#  template file.  If $install='true' then a config file is pulled
-#  from files/nginx/sites/<classname>.
+# You don't need to include this class in your manifests; declaring an
+# nginx::site resource will pull it in automatically.
 #
-#  $enabled=true adds the site to sites-enabled; $enabled=false removes it.
-#
-define nginx($install="false", $template="", $enable=true, $donotify="false") {
-	if !defined (Package["nginx"]) {
-		package { ['nginx']:
-			ensure => latest;
-		}
-	}
+class nginx {
+    package { [ 'nginx-full', 'nginx-full-dbg' ]: }
 
-	if ( $template == "" ) {
-		$template_name = $name
-	} else {
-		$template_name = $template
-	}
+    file { [ '/etc/nginx/sites-enabled', '/etc/nginx/sites-available' ]:
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
+        force   => true,
+        require => Package['nginx-full'],
+        notify  => Service['nginx'],
+    }
 
-	if ( $enable == true ) {
-		$ensure = "link"
-	} else {
-		$ensure = "absent"
-	}
-
-	if ( $donotify == "true" ) {
-		file { "/etc/nginx/sites-enabled/${name}":
-			ensure => $ensure,
-			target => "/etc/nginx/sites-available/${name}",
-			notify => Service["nginx"];
-		}
-	} else {
-		file { "/etc/nginx/sites-enabled/${name}":
-			ensure => $ensure,
-			target => "/etc/nginx/sites-available/${name}";
-		}
-	}
-
-	case $install {
-	"true": {
-			file { "/etc/nginx/sites-available/${name}":
-				source => "puppet:///files/nginx/sites/${name}";
-			}
-		}
-	"template": {
-			file { "/etc/nginx/sites-available/${name}":
-				content => template("nginx/sites/${template_name}.erb");
-			}
-		}
-	}
-
+    service { 'nginx':
+        ensure   => running,
+        enable   => true,
+        provider => 'debian',
+        require  => Package['nginx-full'],
+    }
 }
