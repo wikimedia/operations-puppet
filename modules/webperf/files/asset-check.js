@@ -59,7 +59,7 @@ function checkAssets( url ) {
     var page = webpage.create();
 
     if ( options.ua ) {
-        page.settings.userAgent = ua;
+        page.settings.userAgent = options.ua;
     }
 
     // Analyze incoming resource
