@@ -101,7 +101,6 @@ $private_wikis = [ 'arbcom_dewiki',
 
 $private_tables = [ 'accountaudit_login',
 		'arbcom1_vote',
-		'archive',
 		'archive_old',
 		'blob_orphans',
 		'blob_tracking',
