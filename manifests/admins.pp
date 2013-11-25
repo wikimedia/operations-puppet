@@ -3289,6 +3289,8 @@ class admins::restricted {
 
 class admins::labs {
 	$gid = 500  # 'wikidev' by default
+	include groups::wikidev
+
 	include accounts::mhoover # Labs migration contractor
 }
 
