@@ -53,13 +53,12 @@ class role::labs::tools {
 
   class webproxy inherits role::labs::tools::config {
     system::role { "role::labs::tools::webproxy": description => "Tool Labs web proxy" }
-    class { 'toollabs::webproxy': }
+    include toollabs::webproxy
   }
 
   class proxy inherits role::labs::tools::config {
       system::role { "role::labs::tools::proxy": description => "Tool labs generic web proxy" }
-      class { '::dynamicproxy': }
-      class { 'toollabs::infrastructure': }
+      include ::dynamicproxy, toollabs::infrastructure
   }
 
   class mailrelay inherits role::labs::tools::config {
