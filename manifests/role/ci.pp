@@ -189,6 +189,14 @@ class role::ci::slave::browsertests {
   include role::ci::slave::labs::common,
       contint::slave-scripts
 
+  contint::tmpfs { 'tmpfs for jenkins CI slave':
+      user        => 'jenkins-deploy',
+      group       => 'wikidev',
+      # Jobs expect the tmpfs to be in $HOME/tmpfs
+      mount_point => '/home/jenkins-deploy/tmpfs',
+      size        => '128M',
+  }
+
   # We are in labs context, so use /mnt (== /dev/vdb)
   # Never EVER think about using GlusterFS.
   file { '/mnt/localhost-browsertests':
