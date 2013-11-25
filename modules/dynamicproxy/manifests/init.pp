@@ -49,6 +49,4 @@ class dynamicproxy (
         require => File['/etc/nginx/lua/resty'],
         source  => 'puppet:///modules/dynamicproxy/redis.lua'
     }
-
-    include dynamicproxy::api
 }
