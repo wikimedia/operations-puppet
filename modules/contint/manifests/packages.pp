@@ -140,6 +140,13 @@ class contint::packages {
     ensure => latest,
   }
 
+  # qunit tests depends on curl
+  package { [
+      'curl',
+    ]: ensure => present,
+  }
+
+
   # Colordiff gives us nice coloring in Jenkins console whenever
   # it is used instead of the stock diff.
   package { 'colordiff':
