@@ -8,3 +8,8 @@ sub vcl_miss {
 		error 412 "Entity not in cache";
 	}
 }
+
+sub vcl_fetch {
+	# make sure to gzip all Parsoid HTML
+	set beresp.do_gzip = true;
+}
