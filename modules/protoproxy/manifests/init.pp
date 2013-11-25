@@ -70,6 +70,6 @@ define protoproxy(
 ) {
     nginx::site { $name:
         content  => template('protoproxy/proxy.erb'),
-        enable   => $enabled,
+        enabled  => $enabled,
     }
 }
