@@ -87,9 +87,8 @@ define git::clone(
                 require     => Package['git-core'],
             }
 
-            if (!defined(File["git_clone_${title}_directory"])) {
-                file { "git_clone_${title}_directory":
-                    path    => $directory,
+            if (!defined(File[$directory])) {
+                file { $directory:
                     ensure  => 'directory',
                     mode    => $mode,
                     owner   => $owner,
