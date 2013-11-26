@@ -9,6 +9,7 @@ class toollabs::proxy inherits toollabs {
                ]
 
     class { '::dynamicproxy':
-        notfound_servers => $apaches
+        notfound_servers => $apaches,
+        luahandler => 'urlproxy.lua'
     }
 }
