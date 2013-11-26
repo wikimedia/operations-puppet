@@ -25,13 +25,14 @@ class webperf {
     }
 
     file { '/srv/webperf/asset-check.js':
-        source => 'puppet:///modules/webperf/asset-check.js',
+        source  => 'puppet:///modules/webperf/asset-check.js',
         require => Package['phantomjs'],
     }
 
     file { '/srv/webperf/asset-check.py':
-        source => 'puppet:///modules/webperf/asset-check.py',
-        require => [ File['/srv/webperf/asset-check.js'], Package['ganglia-monitor'] ],
+        source  => 'puppet:///modules/webperf/asset-check.py',
+        require => [ File['/srv/webperf/asset-check.js'],
+Package['ganglia-monitor'] ],
     }
 
     file { '/etc/init/asset-check.conf':
