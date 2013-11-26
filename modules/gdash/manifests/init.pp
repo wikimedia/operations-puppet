@@ -56,8 +56,18 @@ class gdash(
 
     deployment::target { 'gdash': }
 
+    package { [ 'ruby-rack', 'ruby-sinatra', 'rubygems' ]: }
+
     file { '/etc/gdash':
         ensure => directory,
+    }
+
+    file { '/etc/gdash/gdash.yaml':
+        content => ordered_json($settings),
+    }
+
+    file { '/etc/gdash/config.ru':
+        content => template('gdash/config.ru.erb'),
     }
 
     file { $template_dir:
@@ -68,23 +78,6 @@ class gdash(
         source  => $template_source,
     }
 
-    file { '/etc/gdash/gdash.yaml':
-        content => ordered_json($settings),
-    }
-
-    file { '/opt/gdash':
-        ensure => directory,
-    }
-
-    file { '/opt/gdash/public':
-        ensure => link,
-        target => "${install_dir}/public",
-    }
-
-    file { '/opt/gdash/public/config.ru':
-        content => template('gdash/config.ru.erb'),
-    }
-
     file { '/var/run/gdash':
         ensure => directory,
         owner  => 'www-data',
@@ -93,7 +86,7 @@ class gdash(
     }
 
     uwsgi::app { 'gdash':
-        require  => File['/etc/gdash/gdash.yaml', '/opt/gdash/public/config.ru', '/var/run/gdash'],
+        require  => File['/etc/gdash/gdash.yaml', '/etc/gdash/config.ru', '/var/run/gdash'],
         settings => {
             uwsgi => {
                 'socket'         => '/var/run/gdash/gdash.sock',
