@@ -4,12 +4,10 @@
 # It powers <https://gdash.wikimedia.org>.
 #
 class role::gdash {
-    deployment::target { 'gdash': }
-
     class { '::gdash':
+        server_name     => 'gdash.wikimedia.org',
         graphite_host   => 'https://graphite.wikimedia.org',
         template_source => 'puppet:///files/graphite/gdash',
-        install_dir     => '/srv/deployment/gdash/gdash',
         options         => {
           title         => 'wmf stats',
           graph_columns => 1,
