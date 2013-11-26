@@ -8,6 +8,7 @@ class mysql_wmf(
     $mariadb = false,
     ) {
     monitor_service { 'mysql disk space': description => 'MySQL disk space', check_command => 'nrpe_check_disk_6_3', critical => true }
+    monitor_service { 'mysqld': description => 'mysqld processes', check_command => 'nrpe_check_mysqld', critical => true }
 
     #######################################################################
     ### MASTERS - make sure to update here whenever changing replication
