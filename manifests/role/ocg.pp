@@ -77,6 +77,7 @@ class role::ocg::collection {
     }
 
     service { 'ocg-collection':
+	provider   => upstart,
         ensure     => running,
         hasstatus  => false,
         hasrestart => false,

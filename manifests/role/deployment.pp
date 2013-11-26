@@ -117,7 +117,7 @@ class role::deployment::config {
     },
     'ocg/config'                     => {
         'grain'                 => 'ocg',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/operations/ocg-config',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/operations/software/ocg-config',
         'checkout_module_calls' => {
             'service.restart' => ['ocg-collection'] 
         },
