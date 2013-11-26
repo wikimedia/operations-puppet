@@ -1,4 +1,17 @@
 class dynamicproxy::api {
+    file { '/etc/nginx/sites-available/api':
+        ensure => 'file',
+        content => template('dynamicproxy/api.conf'),
+        require => Package['nginx-extras'],
+        notify => Service['nginx']
+    }
+
+    file { '/etc/nginx/sites-enabled/api':
+        ensure => 'link',
+        target => '/etc/nginx/sites-available/api',
+        require => File['/etc/nginx/sites-available/api']
+    }
+
     package { 'python-flask':
         ensure => 'latest',
         require => Class['misc::labsdebrepo'],
