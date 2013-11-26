@@ -1,7 +1,8 @@
 class dynamicproxy (
     $redis_maxmemory="512MB",
     $ssl_certificate_name=false,
-    $notfound_servers=[]
+    $notfound_servers=[],
+    $luahandler="domainproxy.lua"
 ) {
     class { '::redis':
         persist   => "aof",
@@ -35,7 +36,7 @@ class dynamicproxy (
 
     file { '/etc/nginx/lua/proxy.lua':
         ensure  => 'file',
-        source  => 'puppet:///modules/dynamicproxy/proxy.lua',
+        source  => "puppet:///modules/dynamicproxy/$luahandler",
         require => File['/etc/nginx/lua'],
         notify  => Service['nginx']
     }
