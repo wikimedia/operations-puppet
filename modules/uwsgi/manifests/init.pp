@@ -14,10 +14,11 @@ class uwsgi {
     package { $plugins: }
 
     service { 'uwsgi':
-        ensure   => running,
-        enable   => true,
-        provider => 'debian',
-        require  => Package['uwsgi'],
+        ensure     => running,
+        enable     => true,
+        provider   => 'debian',
+        hasrestart => true,
+        require    => Package['uwsgi'],
     }
 
     file { [ '/etc/uwsgi/apps-available', '/etc/uwsgi/apps-enabled' ]:
