@@ -91,7 +91,7 @@ class gdash(
             uwsgi => {
                 'socket'         => '/var/run/gdash/gdash.sock',
                 'stats'          => '/var/run/gdash/gdash-stats.sock',
-                'rack'           => '/opt/gdash/public/config.ru',
+                'rack'           => '/etc/gdash/config.ru',
                 'post-buffering' => 4096,  # required by the Rack specification.
                 'master'         => true,
                 'die-on-term'    => true,

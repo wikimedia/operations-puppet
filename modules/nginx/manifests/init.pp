@@ -18,9 +18,10 @@ class nginx(
     package { [ 'nginx-full', 'nginx-full-dbg' ]: }
 
     service { 'nginx':
-        enable   => true,
-        provider => 'debian',
-        require  => Package['nginx-full'],
+        enable     => true,
+        provider   => 'debian',
+        hasrestart => true,
+        require    => Package['nginx-full'],
     }
 
     file { [ '/etc/nginx/conf.d', '/etc/nginx/sites-available', '/etc/nginx/sites-enabled' ]:
