@@ -76,7 +76,7 @@ sub tag_carrier {
 	} else if (req.http.X-CS2 == "470-01") {
 		set req.http.X-DfltLang = "bn";
 		if (req.http.X-Subdomain == "ZERO") {
-			if (req.http.host ~ "(^(bn)\.zero|^zero)\.wikipedia\.") {
+			if (req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.wikipedia\.") {
 				set req.http.X-CS = "470-01";
 			}
 		}
