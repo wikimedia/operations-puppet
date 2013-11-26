@@ -1,6 +1,7 @@
 class dynamicproxy (
     $redis_maxmemory="512MB",
-    $ssl_certificate_name=false
+    $ssl_certificate_name=false,
+    $notfound_servers=[]
 ) {
     class { '::redis':
         persist   => "aof",
