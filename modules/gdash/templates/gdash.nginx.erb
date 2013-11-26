@@ -7,7 +7,7 @@ upstream gdash {
 
 server {
     listen 80;
-    server_name <%= @server_name %>
+    server_name <%= @server_name %>;
 
     ## Static files ##
 
@@ -27,6 +27,6 @@ server {
         include uwsgi_params;
         uwsgi_pass gdash;
         root /srv/deployment/gdash/gdash/public;
-        uwsgi_modifier1 7;  # http://tinyurl.com/rack-uwsgi-modifier
+        uwsgi_modifier1 7;  # see <http://tinyurl.com/rack-uwsgi-modifier>
     }
 }
