@@ -1,5 +1,34 @@
 -- Lua file run by nginx that does appropriate routing
 
+-- Sorted pairs, sorting based on length of key
+-- From http://stackoverflow.com/a/15706820
+function spairs(t, order)
+    -- collect the keys
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
+
+    -- if order function given, sort by it by passing the table and keys a, b,
+    -- otherwise just sort the keys 
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
+
+    -- return the iterator function
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
+end
+
+function length_comparison(t, a, b)
+   return a:len() > b:len()
+end
+
 local redis = require 'resty.redis'
 local red = redis:new()
 red:set_timeout(1000)
@@ -32,7 +61,7 @@ end
 
 local routes = red:array_to_hash(routes_arr)
 
-for pattern, backend in pairs(routes) do
+for pattern, backend in spairs(routes, length_comparison) do
    if ngx.re.match(rest, pattern) ~= nil then
       ngx.var.backend = backend
       ngx.exit(ngx.OK)
