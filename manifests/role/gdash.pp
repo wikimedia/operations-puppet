@@ -16,7 +16,7 @@ class role::gdash {
           graph_height  => 500,
           graph_width   => 1024,
           hide_legend   => false,
-          deploy_addon  => 'target=alias(color(dashed(drawAsInfinite(deploy.sync-common-file)),"c0c0c080"),"sync-common-file")&target=alias(lineWidth(color(drawAsInfinite(deploy.sync-common-all),"gold"),2),"sync-common-all")&target=alias(lineWidth(color(drawAsInfinite(deploy.scap),"white"),2),"scap deploy")',
+          deploy_addon  => template('gdash/deploy_addon'),
         },
     }
 }

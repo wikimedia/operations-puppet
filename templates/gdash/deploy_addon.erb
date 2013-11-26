@@ -1,0 +1,18 @@
+<%=
+  # The result of this template is used as the value of the deploy_addon
+  # configuration variable for Gdash. It is a Graphite API URI query fragment
+  # that specifies how deployments should be indicated on Gdash graphs.
+
+  [
+
+    # sync-common-file
+    'alias(color(dashed(drawAsInfinite(deploy.sync-common-file)),"c0c0c080"),"sync-common-file")',
+
+    # sync-common-all
+    'alias(color(lineWidth(drawAsInfinite(deploy.sync-common-all),2),"gold"),"sync-common-all")',
+
+    # scap
+    'alias(color(lineWidth(drawAsInfinite(deploy.scap),2),"white"),"scap deploy")',
+
+  ].join('&')
+%>
