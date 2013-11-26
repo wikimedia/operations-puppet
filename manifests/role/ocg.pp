@@ -62,7 +62,7 @@ class role::ocg::collection {
         target => '/srv/deployment/ocg/collection',
     }
 
-    file { '/etc/init/ocg-collection':
+    file { '/etc/init/ocg-collection.conf':
         ensure => present,
         owner  => root,
         group  => root,
