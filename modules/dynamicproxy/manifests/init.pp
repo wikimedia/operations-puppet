@@ -29,6 +29,12 @@ class dynamicproxy (
         notify  => Service['nginx']
     }
 
+    file { '/etc/nginx/sites-enabled/default':
+        ensure => 'link',
+        target => '/etc/nginx/sites-available/default',
+        require => File['/etc/nginx/sites-available/default']
+    }
+
     file { '/etc/nginx/lua':
         ensure  => 'directory',
         require => Package['nginx-extras']
