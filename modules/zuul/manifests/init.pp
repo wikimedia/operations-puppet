@@ -9,21 +9,21 @@
 
 # == Class: zuul
 class zuul (
-    $jenkins_server,
-    $jenkins_user,
-    $jenkins_apikey,
-    $gearman_server,
-    $gearman_server_start,
-    $gerrit_server,
-    $gerrit_user,
+    $jenkins_server = 'UNSET',
+    $jenkins_user = 'UNSET',
+    $jenkins_apikey =  'UNSET',
+    $gearman_server = 'UNSET',
+    $gearman_server_start = 'UNSET',
+    $gerrit_server = 'UNSET',
+    $gerrit_user = 'UNSET',
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
-    $url_pattern,
-    $status_url = "https://${::fqdn}/zuul/status",
+    $url_pattern = 'UNSET',
+    $status_url = 'UNSET',
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
     $git_branch = 'master',
     $git_dir = '/var/lib/zuul/git',
-    $push_change_refs,
-    $statsd_host = '',
+    $push_change_refs = 'UNSET',
+    $statsd_host = 'UNSET',
 ) {
 
   # Dependencies as mentionned in zuul:tools/pip-requires
@@ -127,7 +127,8 @@ class zuul (
   # Additionally provide a publicly readeable configuration file
   exec { 'craft public zuul conf':
     cwd         => '/etc/zuul/',
-    command     => '/bin/sed "s/apikey=.*/apikey=<obfuscacated>/" /etc/zuul/zuul.conf > /etc/zuul/public.conf',
+    command     => '/bin/sed "s/apikey=.*/apikey=<obfuscacated>/"
+/etc/zuul/zuul.conf > /etc/zuul/public.conf',
     refreshonly => true,
   }
 
