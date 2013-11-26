@@ -42,7 +42,7 @@
 class gdash(
     $server_name     = '_',
     $template_source = 'puppet:///modules/gdash/templates-empty',
-    $install_dir,
+    $install_dir     = '/srv/deployment/gdash/gdash',
     $graphite_host,
     $options,
 ) {
@@ -53,6 +53,8 @@ class gdash(
         templatedir => $template_dir,
         options     => $options,
     }
+
+    deployment::target { 'gdash': }
 
     file { '/etc/gdash':
         ensure => directory,
