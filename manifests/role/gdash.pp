@@ -16,7 +16,7 @@ class role::gdash {
           graph_height  => 500,
           graph_width   => 1024,
           hide_legend   => false,
-          deploy_addon  => template('gdash/deploy_addon'),
+          deploy_addon  => template('gdash/deploy_addon.erb'),
         },
     }
 }
