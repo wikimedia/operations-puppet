@@ -97,6 +97,10 @@ class role::deployment::config {
         'grain'    => 'fluoride',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
     },
+    'mwprof/mwprof'                  => {
+        'grain'    => 'mwprof',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof',
+    },
     'test/testrepo'                  => {
         'grain' => 'testrepo',
     },
