@@ -48,6 +48,9 @@ def main():
         logging.getLevelName(logging.ERROR))
 
     logger = logging.getLogger('main')
+
+    parsoid_pre = parsoid_head_ts()
+
     logger.info("Starting updating tasks...")
     exit_codes = [
         pull_mediawiki(),
@@ -56,6 +59,11 @@ def main():
         update_parsoid_deps(),
         update_l10n(),
     ]
+
+    parsoid_post = parsoid_head_ts()
+    if parsoid_post is not parsoid_pre:
+        logger.info("Restarting updated Parsoid code base")
+        exit_codes.append(restart_parsoid())
     logger.info("Executions completed %s", exit_codes)
 
     final_exit = 0
@@ -90,6 +98,18 @@ def parse_args():
     return parser.parse_args()
 
 
+def git_head_ts(git_dir):
+    proc = subprocess.check_output(
+        ['git', '--git-dir', git_dir, 'log',
+         '--pretty=tformat:%ct', '-1', 'HEAD'])
+    return proc.rstrip('\n')
+
+
+def parsoid_head_ts():
+    """Returns timestamp of the HEAD committer date"""
+    return git_head_ts(os.path.join(PATH_MWEXT, 'Parsoid/.git'))
+
+
 def pull_mediawiki():
     """Updates MediaWiki core"""
     return runner(name='mwcore', path=PATH_MWCORE, cmd=['git', 'pull'])
@@ -111,6 +131,12 @@ def update_parsoid_deps():
     parsoid_path = os.path.join(PATH_MWEXT, 'Parsoid/js')
     return runner(name='parsoid-deps', path=parsoid_path, cmd=[
         'npm', 'install', '--verbose', '--color', 'always'])
+
+
+def restart_parsoid():
+    logger = logging.getLogger(__name__)
+    logger.warn("restarting parsoid is not yet implemented")
+    return 0
 
 
 def update_l10n():
