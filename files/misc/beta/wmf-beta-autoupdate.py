@@ -13,11 +13,15 @@ MUST be run as the `mwdeploy` user although that is not enforced by the script.
 import argparse
 import logging
 import os.path
+import time
 import subprocess
 import sys
 
 PATH_MWCORE = '/home/wikipedia/common/php-master'
 PATH_MWEXT = '/home/wikipedia/common/php-master/extensions'
+
+# Beta cluster instance used to run Parsoid daemon
+PARSOID_INSTANCE = 'deployment-parsoid2.pmtpa.wmflabs'
 
 
 def main():
@@ -48,6 +52,9 @@ def main():
         logging.getLevelName(logging.ERROR))
 
     logger = logging.getLogger('main')
+
+    parsoid_pre = parsoid_head_ts()
+
     logger.info("Starting updating tasks...")
     exit_codes = [
         pull_mediawiki(),
@@ -56,6 +63,11 @@ def main():
         update_parsoid_deps(),
         update_l10n(),
     ]
+
+    parsoid_post = parsoid_head_ts()
+    if parsoid_post is not parsoid_pre:
+        logger.info("Restarting updated Parsoid code base")
+        exit_codes.append(restart_parsoid())
     logger.info("Executions completed %s", exit_codes)
 
     final_exit = 0
@@ -90,6 +102,18 @@ def parse_args():
     return parser.parse_args()
 
 
+def git_head_ts(git_dir):
+    proc = subprocess.check_output(
+        ['git', '--git-dir', git_dir, 'log',
+         '--pretty=tformat:%ct', '-1', 'HEAD'])
+    return proc.rstrip('\n')
+
+
+def parsoid_head_ts():
+    """Returns timestamp of the HEAD committer date"""
+    return git_head_ts(os.path.join(PATH_MWEXT, 'Parsoid/.git'))
+
+
 def pull_mediawiki():
     """Updates MediaWiki core"""
     return runner(name='mwcore', path=PATH_MWCORE, cmd=['git', 'pull'])
@@ -111,6 +135,37 @@ def update_parsoid_deps():
     parsoid_path = os.path.join(PATH_MWEXT, 'Parsoid/js')
     return runner(name='parsoid-deps', path=parsoid_path, cmd=[
         'npm', 'install', '--verbose', '--color', 'always'])
+
+
+def restart_parsoid():
+    """Restart parsoid daemon via ssh"""
+    logger = logging.getLogger(__name__)
+    logger.info("restarting parsoid on %s", PARSOID_INSTANCE)
+
+    parsoid_restart_cmd = [
+        'ssh', PARSOID_INSTANCE,
+        'sudo -u root /etc/init.d/parsoid restart']
+    logger.info("Executing %s", parsoid_restart_cmd)
+    try:
+        cmd = subprocess.Popen(args=parsoid_restart_cmd)
+    except OSError, exception:
+        logger.error(exception)
+        return False
+
+    logger.info('Waiting for parsoid to launch...')
+    time.sleep(5)
+    logger.info('Checking parsoid is running...')
+
+    try:
+        cmd = subprocess.Popen([
+            'ssh', PARSOID_INSTANCE,
+            '/etc/init.d/parsoid', 'status'])
+        status_exit_code = cmd.wait()
+    except OSError, exception:
+        logger.error(exception)
+        return False
+
+    return status_exit_code
 
 
 def update_l10n():
