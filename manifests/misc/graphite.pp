@@ -3,7 +3,7 @@
 class misc::graphite {
 	system::role { "misc::graphite": description => "graphite and carbon services" }
 
-	include webserver::apache2, misc::graphite::gdash
+	include webserver::apache2
 
 	package { [ "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-setuptools", "libapache2-mod-python", "libcairo2", "python-cairo", "python-simplejson", "python-django", "python-django-tagging", "python-twisted", "python-twisted-runner", "python-twisted-web", "memcached", "python-memcache" ]:
 		ensure => present;
@@ -84,28 +84,6 @@ net.core.rmem_default = 536870912
 	#}
 }
 
-class misc::graphite::gdash {
-    $install_dir = '/srv/deployment/gdash/gdash'
-
-    deployment::target { 'gdash': }
-
-    class { '::gdash':
-        graphite_host   => 'https://graphite.wikimedia.org',
-        template_source => 'puppet:///files/graphite/gdash',
-        install_dir     => $install_dir,
-        options         => {
-          title         => 'wmf stats',
-          prefix        => '',
-          refresh_rate  => 300,
-          graph_columns => 1,
-          graph_width   => 1024,
-          hide_legend   => false,
-          graph_height  => 500,
-          whisper_dir   => '/a/graphite/storage/whisper',
-          deploy_addon  => 'target=alias(color(dashed(drawAsInfinite(deploy.sync-common-file)),"c0c0c080"),"sync-common-file")&target=alias(lineWidth(color(drawAsInfinite(deploy.sync-common-all),"gold"),2),"sync-common-all")&target=alias(lineWidth(color(drawAsInfinite(deploy.scap),"white"),2),"scap deploy")',
-        },
-    }
-}
 
 # == Class: misc::graphite::navtiming
 #
