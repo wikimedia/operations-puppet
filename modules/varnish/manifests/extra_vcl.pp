@@ -4,7 +4,7 @@ define varnish::extra_vcl {
     if !defined(File[$filename]) {
         file { $filename:
             content => template("varnish/${vcl}.inc.vcl.erb"),
-            mode => 0444;
+            mode    => '0444',
         }
     }
 }
