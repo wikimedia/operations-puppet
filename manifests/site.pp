@@ -1366,10 +1366,6 @@ node /labstore[12]\.pmtpa\.wmnet/ {
     include standard,
         openstack::project-storage
 
-    # full root for mhoover, Labs migration contractor
-    include admins::labs
-    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
-
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 
     if $::hostname =~ /^labstore2$/ {
@@ -1388,10 +1384,6 @@ node /labstore[34]\.pmtpa\.wmnet/ {
     include standard,
         openstack::project-nfs-storage-service,
         rsync::server
-
-    # full root for mhoover, Labs migration contractor
-    include admins::labs
-    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     rsync::server::module {
         'pagecounts':
