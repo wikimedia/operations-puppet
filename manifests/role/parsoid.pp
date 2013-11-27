@@ -3,13 +3,7 @@
 @monitor_group { 'parsoid_eqiad': description => 'eqiad parsoid servers' }
 @monitor_group { 'parsoid_pmtpa': description => 'pmtpa parsoid servers' }
 
-class role::parsoid::production {
-    system::role { 'role::parsoid::production':
-        description => 'Parsoid server'
-    }
-
-    deployment::target { 'parsoid': }
-
+class role::parsoid::common {
     package { [
         'nodejs',
         'npm',
@@ -22,11 +16,6 @@ class role::parsoid::production {
         owner  => parsoid,
         group  => wikidev,
         mode   => '2775',
-    }
-
-    file { '/var/lib/parsoid/Parsoid':
-        ensure => link,
-        target => '/srv/deployment/parsoid/Parsoid',
     }
 
     file { '/etc/init.d/parsoid':
@@ -59,8 +48,40 @@ class role::parsoid::production {
         require    => File['/etc/init.d/parsoid'],
     }
 
+}
+
+class role::parsoid::production {
+    system::role { 'role::parsoid::production':
+        description => 'Parsoid server'
+    }
+
+    include role::parsoid::common
+
+    deployment::target { 'parsoid': }
+
+    file { '/var/lib/parsoid/Parsoid':
+        ensure => link,
+        target => '/srv/deployment/parsoid/Parsoid',
+    }
+
     monitor_service { 'parsoid':
         description   => 'Parsoid',
         check_command => 'check_http_on_port!8000',
+    }
+}
+
+class role::parsoid::beta {
+    system::role { 'role::parsoid::beta':
+        description => 'Parsoid server (on beta)'
+    }
+
+    include role::parsoid::common
+
+    file { '/var/lib/parsoid/Parsoid':
+        ensure => link,
+        target => '/data/project/apache/common-local/php-master/extensions/Parsoid',
+        owner  => parsoid,
+        group  => wikidev,
+        mode   => '2775',
     }
 }
