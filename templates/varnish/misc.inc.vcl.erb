@@ -10,6 +10,9 @@ sub vcl_recv {
 	} elsif (req.http.Host == "gerrit.wikimedia.org") {
 		set req.backend = ytterbium;
 		return (lookup);
+	} elsif (req.http.Host == "gdash.wikimedia.org") {
+		set req.backend = tungsten;
+		return (lookup);
 	}
 }
 
