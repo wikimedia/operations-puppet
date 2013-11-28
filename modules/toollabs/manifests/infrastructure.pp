@@ -14,19 +14,19 @@
 #
 class toollabs::infrastructure {
 
-  file { "/etc/update-motd.d/40-infrastructure-banner":
-    ensure => file,
-    mode => "0755",
-    owner => "root",
-    group => "root",
-    source => "puppet:///modules/toollabs/40-${instanceproject}-infrastructure-banner",
-  }
+    file { '/etc/update-motd.d/40-infrastructure-banner':
+        ensure => file,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => "puppet:///modules/toollabs/40-${instanceproject}-infrastructure-banner",
+    }
 
-  # Infrastructure instances are limited to an (arbitrarily picked) local
-  # service group and root.
+    # Infrastructure instances are limited to an (arbitrarily picked) local
+    # service group and root.
 
-  File <| title == '/etc/security/access.conf' |> {
-    content => "-:ALL EXCEPT (local-admin) root:ALL\n",
-  }
+    File <| title == '/etc/security/access.conf' |> {
+        content => "-:ALL EXCEPT (local-admin) root:ALL\n",
+    }
 }
 

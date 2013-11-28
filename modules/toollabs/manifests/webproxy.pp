@@ -11,8 +11,8 @@
 # Sample Usage:
 #
 class toollabs::webproxy inherits toollabs {
-  include toollabs::infrastructure
+    include toollabs::infrastructure
 
-  #TODO: apache config
+    #TODO: apache config
 }
 

@@ -17,14 +17,13 @@ class toollabs::tyrant($gridmaster) inherits toollabs {
         gridmaster => $gridmaster,
     }
 
-  file { "$store/submithost-$fqdn":
-    ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0444',
-    require => File[$store],
-    content => "$ipaddress\n",
-  }
-
+    file { "${store}/submithost-${fqdn}":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File[$store],
+        content => "${ipaddress}\n",
+    }
 }
 
