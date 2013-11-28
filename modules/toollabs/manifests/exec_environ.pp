@@ -143,6 +143,7 @@ class toollabs::exec_environ {
       'python-werkzeug',
       'python-wikitools',
       'python-zmq',
+      'uwsgi',
 
       # PHP libraries
       'php5-cli',
