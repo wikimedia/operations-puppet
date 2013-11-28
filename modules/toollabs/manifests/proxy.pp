@@ -3,13 +3,10 @@
 class toollabs::proxy inherits toollabs {
     include toollabs::infrastructure
 
-    $apaches = [ 'tools-webserver-01.pmtpa.wmflabs',
-                 'tools-webserver-02.pmtpa.wmflabs',
-                 'tools-webserver-03.pmtpa.wmflabs'
-               ]
+    $apaches = [ 'tools-webserver-01.pmtpa.wmflabs', 'tools-webserver-02.pmtpa.wmflabs', 'tools-webserver-03.pmtpa.wmflabs' ]
 
     class { '::dynamicproxy':
         notfound_servers => $apaches,
-        luahandler => 'urlproxy.lua'
+        luahandler       => 'urlproxy.lua'
     }
 }

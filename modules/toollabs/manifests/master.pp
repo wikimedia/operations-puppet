@@ -29,20 +29,20 @@ class toollabs::master inherits toollabs {
   #
 
   file { $repo:
-    ensure => directory,
-    owner => 'local-admin',
-    group => 'local-admin',
-    mode => '0755',
-    require => Service["autofs"],
+    ensure  => directory,
+    owner   => 'local-admin',
+    group   => 'local-admin',
+    mode    => '0755',
+    require => Service['autofs'],
   }
 
-  file { "$repo/update-repo.sh":
-    ensure => file,
-    owner => 'local-admin',
-    group => 'local-admin',
-    mode => '0550',
+  file { "${repo/update-repo.sh}":
+    ensure  => file,
+    owner   => 'local-admin',
+    group   => 'local-admin',
+    mode    => '0550',
     require => File[$repo],
-    source => "puppet:///modules/toollabs/update-repo.sh",
+    source  => 'puppet:///modules/toollabs/update-repo.sh',
   }
 
 }

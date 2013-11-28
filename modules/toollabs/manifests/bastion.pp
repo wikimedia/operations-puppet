@@ -15,41 +15,41 @@ class toollabs::bastion($gridmaster) inherits toollabs {
   include toollabs::exec_environ,
     toollabs::dev_environ
 
-  file { "/etc/ssh/ssh_config":
+  file { '/etc/ssh/ssh_config':
     ensure => file,
-    mode => "0444",
-    owner => "root",
-    group => "root",
-    source => "puppet:///modules/toollabs/submithost-ssh_config",
+    mode   => '0444',
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/toollabs/submithost-ssh_config',
   }
 
   class { 'gridengine::submit_host':
     gridmaster => $gridmaster,
   }
 
-  file { "/etc/update-motd.d/40-bastion-banner":
+  file { '/etc/update-motd.d/40-bastion-banner':
     ensure => file,
-    mode => "0755",
-    owner => "root",
-    group => "root",
+    mode   => '0755',
+    owner  => 'root',
+    group  => 'root',
     source => "puppet:///modules/toollabs/40-${instanceproject}-bastion-banner",
   }
 
-  file { "$store/submithost-$fqdn":
-    ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0444',
+  file { "${store/submithost-$fqdn}":
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
     require => File[$store],
-    content => "$ipaddress\n",
+    content => "${ipaddress\n}",
   }
 
-  file { "/usr/bin/sql":
+  file { '/usr/bin/sql':
     ensure => file,
-    mode => "0755",
-    owner => "root",
-    group => "root",
-    source => "puppet:///modules/toollabs/sql",
+    mode   => '0755',
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/toollabs/sql',
   }
 
   # Display tips.
@@ -57,30 +57,28 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     ensure => present,
   }
 
-  file { "/etc/profile.d/motd-tips.sh":
-    ensure => file,
-    mode => "0555",
-    owner => "root",
-    group => "root",
-    source => "puppet:///modules/toollabs/motd-tips.sh",
+  file { '/etc/profile.d/motd-tips.sh':
+    ensure  => file,
+    mode    => '0555',
+    owner   => 'root',
+    group   => 'root',
+    source  => 'puppet:///modules/toollabs/motd-tips.sh',
     require => Package['grep'],
   }
 
-  file { [ '/data/project/.system/tips.sh',
-           '/data/project/.system/bin/tips.sh',
-           '/data/project/.system/bin/tips2.sh' ]:
+  file { [ '/data/project/.system/tips.sh', '/data/project/.system/bin/tips.sh', '/data/project/.system/bin/tips2.sh' ]:
     ensure => absent,
   }
 
-  package { "misctools":
+  package { 'misctools':
     ensure => latest,
   }
 
   # Temporary hack to manage obsolete files in /usr/local/bin.
   # TODO: Remove when no longer needed.
-  file { "/usr/local/bin/become":
+  file { '/usr/local/bin/become':
     ensure => link,
-    target => "/usr/bin/become"
+    target => '/usr/bin/become',
   }
 
   # TODO: cron setup
