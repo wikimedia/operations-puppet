@@ -21,13 +21,13 @@ class toollabs::webnode($gridmaster) inherits toollabs {
     gridmaster => $gridmaster,
   }
 
-  file { "$store/execnode-$fqdn":
-    ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0444',
+  file { "${store}/execnode-${fqdn}":
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
     require => File[$store],
-    content => "$ipaddress\n",
+    content => "${ipaddress\n}",
   }
 
   # Execution hosts have funky access requirements; they need to be ssh-able
@@ -36,88 +36,88 @@ class toollabs::webnode($gridmaster) inherits toollabs {
   # We override /etc/ssh/shosts.equiv and /etc/security/access.conf
   # accordingly from information collected from the project store.
 
-  file { "/usr/local/sbin/project-make-shosts":
+  file { '/usr/local/sbin/project-make-shosts':
     ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0755',
-    source => "puppet:///modules/toollabs/project-make-shosts",
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    source => 'puppet:///modules/toollabs/project-make-shosts',
   }
 
-  exec { "make-shosts":
-    command => "/usr/local/sbin/project-make-shosts >/etc/ssh/shosts.equiv~",
+  exec { 'make-shosts':
+    command => '/usr/local/sbin/project-make-shosts >/etc/ssh/shosts.equiv~',
     require => File['/usr/local/sbin/project-make-shosts', $store],
   }
 
-  file { "/etc/ssh/shosts.equiv":
-    ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0444',
-    source => "/etc/ssh/shosts.equiv~",
+  file { '/etc/ssh/shosts.equiv':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    source  => '/etc/ssh/shosts.equiv~',
     require => Exec['make-shosts'],
   }
 
-  file { "/usr/local/sbin/project-make-access":
+  file { '/usr/local/sbin/project-make-access':
     ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0755',
-    source => "puppet:///modules/toollabs/project-make-access",
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    source => 'puppet:///modules/toollabs/project-make-access',
   }
 
-  exec { "make-access":
-    command => "/usr/local/sbin/project-make-access >/etc/security/access.conf~",
+  exec { 'make-access':
+    command => '/usr/local/sbin/project-make-access >/etc/security/access.conf~',
     require => File['/usr/local/sbin/project-make-access', $store],
   }
 
   File <| title == '/etc/security/access.conf' |> {
     content => undef,
-    source => "/etc/security/access.conf~",
+    source  => '/etc/security/access.conf~',
     require => Exec['make-access'],
   }
 
   package { 'lighttpd': ensure => present }
   package { 'apache2.2-common': ensure => absent }
 
-  file { "/usr/local/bin/tool-lighttpd":
+  file { '/usr/local/bin/tool-lighttpd':
     ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0555',
-    source => "puppet:///modules/toollabs/tool-lighttpd",
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0555',
+    source => 'puppet:///modules/toollabs/tool-lighttpd',
   }
 
-  file { "/usr/local/bin/lighttpd-starter":
+  file { '/usr/local/bin/lighttpd-starter':
     ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0555',
-    source => "puppet:///modules/toollabs/lighttpd-starter",
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0555',
+    source => 'puppet:///modules/toollabs/lighttpd-starter',
   }
 
-  file { "/usr/local/bin/portgrabber":
+  file { '/usr/local/bin/portgrabber':
     ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0555',
-    source => "puppet:///modules/toollabs/portgrabber",
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0555',
+    source => 'puppet:///modules/toollabs/portgrabber',
   }
 
-  file { "/usr/local/sbin/portgranter":
+  file { '/usr/local/sbin/portgranter':
     ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0555',
-    source => "puppet:///modules/toollabs/portgranter",
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0555',
+    source => 'puppet:///modules/toollabs/portgranter',
   }
 
-  file { "/etc/init/portgranter.conf":
+  file { '/etc/init/portgranter.conf':
     ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0444',
-    source => "puppet:///modules/toollabs/portgranter.conf",
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0444',
+    source => 'puppet:///modules/toollabs/portgranter.conf',
   }
 
 }

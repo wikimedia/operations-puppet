@@ -13,8 +13,8 @@
 #
 class toollabs {
 
-  $store = "/data/project/.system/store"
-  $repo  = "/data/project/.system/deb"
+  $store = '/data/project/.system/store'
+  $repo  = '/data/project/.system/deb'
 
   #
   # The $store is an incredibly horrid workaround the fact that we cannot
@@ -27,53 +27,53 @@ class toollabs {
   #
 
   file { $store:
-    ensure => directory,
-    owner => 'root',
-    group => 'root',
-    mode => '0755',
-    require => Service["autofs"],
+    ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Service['autofs'],
   }
 
-  file { "$store/hostkey-$fqdn":
-    ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0444',
+  file { "${store}/hostkey-${fqdn}":
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
     require => File[$store],
-    content => "[$fqdn]:*,[$ipaddress]:* ssh-rsa $sshrsakey\n$fqdn ssh-rsa $sshrsakey\n",
+    content => "[${fqdn}]:*,[${ipaddress}]:* ssh-rsa ${sshrsakey}\n${fqdn} ssh-rsa ${sshrsakey}\n",
   }
 
-  exec { "make_known_hosts":
-    command => "/bin/cat $store/hostkey-* >/etc/ssh/ssh_known_hosts~",
+  exec { 'make_known_hosts':
+    command => '/bin/cat $store/hostkey-* >/etc/ssh/ssh_known_hosts~',
     require => File[$store],
   }
 
-  file { "/etc/ssh/ssh_known_hosts":
-    ensure => file,
-    require => Exec["make_known_hosts"],
-    source => "/etc/ssh/ssh_known_hosts~",
-    mode => "0444",
-    owner => "root",
-    group => "root",
+  file { '/etc/ssh/ssh_known_hosts':
+    ensure  => file,
+    require => Exec['make_known_hosts'],
+    source  => '/etc/ssh/ssh_known_hosts~',
+    mode    => '0444',
+    owner   => 'root',
+    group   => 'root',
   }
 
   # this is a link to shared folder
-  file { "/shared":
+  file { '/shared':
     ensure => link,
-    target => "/data/project/.shared";
+    target => '/data/project/.shared'
   }
 
   # Replaced by toollabs::bastion's /etc/profile.d/motd-tips.sh.
-  file { "/etc/profile.d/tips.sh":
+  file { '/etc/profile.d/tips.sh':
     ensure => absent,
   }
 
-  file { "/root/.bashrc":
+  file { '/root/.bashrc':
     ensure => file,
-    source => "puppet:///modules/toollabs/rootrc",
-    mode => "0750",
-    owner => "root",
-    group => "root",
+    source => 'puppet:///modules/toollabs/rootrc',
+    mode   => '0750',
+    owner  => 'root',
+    group  => 'root',
   }
 
 
@@ -82,47 +82,47 @@ class toollabs {
   # don't care that packages need updating, or that filesystems
   # will be checked, for instance)
 
-  file { "/etc/update-motd.d":
-    ensure => directory,
-    mode => "0755",
-    owner => "root",
-    group => "root",
-    force => true,
+  file { '/etc/update-motd.d':
+    ensure  => directory,
+    mode    => '0755',
+    owner   => 'root',
+    group   => 'root',
+    force   => true,
     recurse => true,
-    purge => true,
+    purge   => true,
   }
 
   # We keep a project-locat apt repo where we stuff packages we build
   # that are intended to be local to the project.  By keeping it on the
   # shared storage, we have no need to set up a server to use it.
 
-  file { "/etc/apt/sources.list.d/local.list":
-    ensure => file,
-    content => "deb [ arch=amd64 trusted=yes ] file:$repo/ amd64/\ndeb [ arch=all trusted=yes ] file:$repo/ all/\n",
-    mode => "0444",
-    owner => "root",
-    group => "root",
+  file { '/etc/apt/sources.list.d/local.list':
+    ensure  => file,
+    content => "deb [ arch=amd64 trusted=yes ] file:${repo}/ amd64/\ndeb [arch=all trusted=yes ] file:${repo}/ all/\n",
+    mode    => '0444',
+    owner   => 'root',
+    group   => 'root',
   }
 
   # Trustworthy enough
-  file { "/etc/apt/sources.list.d/mariadb.list":
-    ensure => file,
+  file { '/etc/apt/sources.list.d/mariadb.list':
+    ensure  => file,
     content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu precise main\n",
-    mode => "0444",
-    owner => "root",
-    group => "root",
+    mode    => '0444',
+    owner   => 'root',
+    group   => 'root',
   }
 
   File <| title == '/etc/exim4/exim4.conf' |> {
     content => undef,
-    source => [ "$store/mail-relay", "puppet:///modules/toollabs/exim4-norelay.conf" ],
-    notify => Service['exim4'],
+    source  => [ "${store}/mail-relay", 'puppet:///modules/toollabs/exim4-norelay.conf' ],
+    notify  => Service['exim4'],
   }
 
-  file { "/var/mail":
+  file { '/var/mail':
     ensure => link,
-    force => true,
-    target => "$store/mail",
+    force  => true,
+    target => "${store}/mail",
   }
 
 }
