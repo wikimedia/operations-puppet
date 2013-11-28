@@ -25,21 +25,21 @@ class toollabs::webserver($gridmaster) inherits toollabs {
     ensure => present
   }
 
-  file { "$store/submithost-$fqdn":
-    ensure => file,
-    owner => 'root',
-    group => 'root',
-    mode => '0444',
+  file { "${store}/submithost-${fqdn}":
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
     require => File[$store],
-    content => "$ipaddress\n",
+    content => "${ipaddress}\n",
   }
 
-  file { "/etc/ssh/ssh_config":
+  file { '/etc/ssh/ssh_config':
     ensure => file,
-    mode => "0444",
-    owner => "root",
-    group => "root",
-    source => "puppet:///modules/toollabs/submithost-ssh_config",
+    mode   => '0444',
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/toollabs/submithost-ssh_config',
   }
 
   # TODO: Apache config
