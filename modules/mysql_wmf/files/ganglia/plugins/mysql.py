@@ -230,6 +230,11 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
 		'uptime'
 	)
 
+        # If the server's uptime *decreased*, it must have been restarted since
+        # we last polled, which means that its counters were reset.
+        if int(global_status['uptime']) < int(mysql_stats_last.get('uptime', 0)):
+            mysql_stats_last.clear()
+
 	# don't put all of global_status in mysql_stats b/c it's so big
 	for key in interesting_global_status_vars:
 		if key in non_delta:
