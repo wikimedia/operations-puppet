@@ -14,14 +14,14 @@
 # Sample Usage:
 #
 class toollabs::redis (
-    $maxmemory = "1GB"
+    $maxmemory = '1GB'
 ) inherits toollabs {
     include toollabs::infrastructure
 
     class { '::redis':
-        persist   => "aof",
-        dir       => "/var/lib/redis",
-        maxmemory => $maxmemory,
+        persist         => 'aof',
+        dir             => '"/var/lib/redis',
+        maxmemory       => $maxmemory,
         # Disable the following commands, to try to limit people from
         # Trampling on each others' keys
         rename_commands => {
@@ -36,7 +36,7 @@ class toollabs::redis (
             "DEBUG"     => "",
             "MONITOR"   => ""
         },
-        monitor => true
+        monitor         => true
     }
 
     # Enable Ganglia monitoring.

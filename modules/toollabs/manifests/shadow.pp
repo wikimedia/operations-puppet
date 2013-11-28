@@ -12,14 +12,14 @@
 # Sample Usage:
 #
 class toollabs::shadow($gridmaster) inherits toollabs {
-  include toollabs::infrastructure,
-    toollabs::exec_environ
+    include toollabs::infrastructure,
+        toollabs::exec_environ
 
-  class { 'gridengine::shadow_master':
-    gridmaster => $gridmaster,
-  }
+    class { 'gridengine::shadow_master':
+        gridmaster => $gridmaster,
+    }
 
-  # TODO: grid setup
-  # TODO: project-local NFS (job queue)
+    # TODO: grid setup
+    # TODO: project-local NFS (job queue)
 }
 

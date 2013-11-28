@@ -11,8 +11,8 @@
 # Sample Usage:
 #
 class toollabs::syslog inherits toollabs {
-  include toollabs::infrastructure
+    include toollabs::infrastructure
 
-  #TODO:  config
+    #TODO:  config
 }
 

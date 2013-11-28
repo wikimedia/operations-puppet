@@ -11,39 +11,38 @@
 # Sample Usage:
 #
 class toollabs::master inherits toollabs {
-  include gridengine::master,
-    toollabs::infrastructure,
-    toollabs::exec_environ
+   include gridengine::master,
+        toollabs::infrastructure,
+        toollabs::exec_environ
 
-  # TODO: Grid config
-  # TODO: (conditional) shadow config
-  # TODO: project-local NFS (job queue)
+    # TODO: Grid config
+    # TODO: (conditional) shadow config
+    # TODO: project-local NFS (job queue)
 
 
-  #
-  # These things are done on toollabs::master because they
-  # need to be done exactly once per project (they live on the
-  # shared filesystem), and there can only be exactly one
-  # gridmaster in this setup.  They could have been done on
-  # any singleton instance.
-  #
+    #
+    # These things are done on toollabs::master because they
+    # need to be done exactly once per project (they live on the
+    # shared filesystem), and there can only be exactly one
+    # gridmaster in this setup.  They could have been done on
+    # any singleton instance.
+    #
 
-  file { $repo:
-    ensure => directory,
-    owner => 'local-admin',
-    group => 'local-admin',
-    mode => '0755',
-    require => Service["autofs"],
-  }
+    file { $repo:
+        ensure  => directory,
+        owner   => 'local-admin',
+        group   => 'local-admin',
+        mode    => '0755',
+        require => Service['autofs'],
+    }
 
-  file { "$repo/update-repo.sh":
-    ensure => file,
-    owner => 'local-admin',
-    group => 'local-admin',
-    mode => '0550',
-    require => File[$repo],
-    source => "puppet:///modules/toollabs/update-repo.sh",
-  }
-
+    file { "${repo}/update-repo.sh":
+        ensure  => file,
+        owner   => 'local-admin',
+        group   => 'local-admin',
+        mode    => '0550',
+        require => File[$repo],
+        source  => 'puppet:///modules/toollabs/update-repo.sh',
+    }
 }
 
