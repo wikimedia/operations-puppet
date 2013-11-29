@@ -13,6 +13,7 @@ class zuulwikimedia {
 		$gerrit_user,
 		$url_pattern,
 		$status_url,
+		$config_git_branch='master',
 		$git_branch='master',
 		$git_dir='/var/lib/zuul/git',
 		$push_change_refs,
@@ -56,7 +57,7 @@ class zuulwikimedia {
 					group => jenkins,
 					mode => 0775,
 					origin => "https://gerrit.wikimedia.org/r/p/integration/zuul-config.git",
-					branch => "master",
+					branch => $config_git_branch,
 			}
 
 			# Logging configuration
