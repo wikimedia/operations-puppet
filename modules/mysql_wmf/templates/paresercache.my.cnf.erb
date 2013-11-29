@@ -44,9 +44,9 @@ max_connect_errors=1000000000
 temp-pool
 
 #rpl_transaction_enabled
-reserved_super_connections=20
+#reserved_super_connections=20
 
-innodb-use-purge-thread=1
+#innodb-use-purge-thread=1
 
 <% ram = memorysize.split[0]; ram = Float(ram) * 0.8; 
 ram = ram.round; ram = String(ram) + "G"; %>
@@ -60,19 +60,19 @@ innodb-old-blocks-pct=80
 innodb-old-blocks-time=1000
 innodb-read-io-threads=16
 innodb-thread-concurrency=0
-innodb-thread-lifo=1
+#innodb-thread-lifo=1
 innodb-use-sys-malloc
 innodb-write-io-threads=8
 innodb-checksums=1
 innodb-flush-log-at-trx-commit=0
 
 # disabling these helped prevent write stalls during heavier write loads with ssd's
-innodb-flush-neighbors-on-checkpoint=0
-innodb-flush-neighbors-for-lru=0
+#innodb-flush-neighbors-on-checkpoint=0
+#innodb-flush-neighbors-for-lru=0
 
 innodb_data_file_path=ibdata1:1500G
 
-connection_recycle=1
+#connection_recycle=1
 
 # Riiiveeeeer!
 # binlog_format=statement
