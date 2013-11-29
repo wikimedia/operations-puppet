@@ -63,6 +63,9 @@ udp_recv_channel {
   mcast_join = <%= mcast_address %>
   port = 8649
   bind = <%= mcast_address %>
+  /* Increase the buffer size. With the default setting (224KB), Tim observed
+     ~30% packet loss on a cluster with 12 hosts and ~300 metrics per host. */
+  buffer = 4194304
 }
 
 /* You can specify as many tcp_accept_channels as you like to share
