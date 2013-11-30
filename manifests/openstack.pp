@@ -103,6 +103,7 @@ class openstack::iptables-drops {
 	iptables_add_service{ "deny_all_salt_publish": service => "salt_publish", jump => "DROP" }
 	iptables_add_service{ "deny_all_salt_ret": service => "salt_ret", jump => "DROP" }
 	iptables_add_service{ "deny_all_amanda": service => "inetd", jump => "DROP" }
+	iptables_add_service{ "deny_all_nrpe": service => "nrpe", jump => "DROP" }
 }
 
 class openstack::iptables  {
@@ -513,6 +514,8 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
 
 	include backup::host
 	backup::set {'a-backup': }
+
+	include nrpe
 }
 
 class openstack::scheduler-service($openstack_version="folsom", $novaconfig) {
