@@ -9,6 +9,7 @@ import os.path
 import re
 import subprocess
 import sys
+import glob
 
 
 def main():
@@ -69,13 +70,13 @@ def getLinuxUtility():
         elif name == 'megadev':
             utility = 'megarc'
             break
-        elif name == 'megaraid_sas_ioctl':
-            utility = 'MegaCli'
-            break
 
     f.close()
     if utility is not None:
         return utility
+
+    if len(glob.glob("/sys/bus/pci/drivers/megaraid_sas/00*")) > 0:
+        return 'MegaCli'
 
     try:
         f = open("/proc/scsi/mptsas/0", "r")
