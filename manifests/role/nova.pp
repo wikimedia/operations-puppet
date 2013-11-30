@@ -257,7 +257,7 @@ class role::nova::controller {
 	class { "openstack::scheduler-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 	class { "openstack::glance-service": openstack_version => $openstack_version, glanceconfig => $glanceconfig }
 	class { "openstack::queue-server": openstack_version => $openstack_version, novaconfig => $novaconfig }
-	class { "openstack::iptables": }
+	class { "openstack::firewall": }
 	class { "openstack::database-server":
 		openstack_version => $openstack_version,
 		novaconfig => $novaconfig,

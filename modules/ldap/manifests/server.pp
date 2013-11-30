@@ -1,52 +1,6 @@
 # ldap
 #
 
-class ldap::server::iptables-purges {
-
-    require "iptables::tables"
-
-    # The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
-    iptables_purge_service{ "ldap_deny_all": service => "ldap" }
-    iptables_purge_service{ "ldaps_deny_all": service => "ldaps" }
-
-    # When removing or modifying a rule, place the old rule here, otherwise it won't
-    # be purged, and will stay in the iptables forever
-
-}
-
-class ldap::server::iptables-accepts {
-
-    require "ldap::server::iptables-purges"
-
-    # Remember to place modified or removed rules into purges!
-    iptables_add_service{ "ldap_server_corp": service => "ldap", source => "216.38.130.188", jump => "ACCEPT" }
-    iptables_add_service{ "ldaps_server_corp": service => "ldaps", source => "216.38.130.188", jump => "ACCEPT" }
-    iptables_add_service{ "ldaps_server_neon": service => "ldaps", source => "208.80.154.14", jump => "ACCEPT" }
-
-}
-
-class ldap::server::iptables-drops {
-
-    require "ldap::server::iptables-accepts"
-
-    iptables_add_service{ "ldap_server_deny_all": service => "ldap", jump => "DROP" }
-    iptables_add_service{ "ldaps_server_deny_all": service => "ldaps", jump => "DROP" }
-
-}
-
-class ldap::server::iptables  {
-
-    # We use the following requirement chain:
-    # iptables -> iptables::drops -> iptables::accepts -> iptables::purges
-    #
-    # This ensures proper ordering of the rules
-    require "ldap::server::iptables-drops"
-
-    # This exec should always occur last in the requirement chain.
-    iptables_add_exec{ "ldap_server": service => "ldap_server" }
-
-}
-
 class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $base_dn, $proxyagent, $proxyagent_pass, $server_bind_ips, $initial_password, $first_master=false ) {
     package { [ "openjdk-6-jre" ]:
         ensure => latest;
