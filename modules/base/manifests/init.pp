@@ -127,6 +127,13 @@ class base::puppet($server='puppet', $certname=undef) {
                 path => "/bin:/usr/bin",
                 require => Package['snmp']
             }
+            # This is a temporary check so that I can do some
+            #  reporting about puppet freshness.  (abogott, 2013-12-06)
+            exec { 'puppet snmp reporting':
+                command => "snmptrap -v 1 -c public monitoring-devel.pmtpa.wmflabs .1.3.6.1.4.1.33298 ${::instancename}.${::site}.wmflabs 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
+                path => "/bin:/usr/bin",
+                require => Package['snmp']
+            }
         }
         default: {
             err('realm must be either "labs" or "production".')
