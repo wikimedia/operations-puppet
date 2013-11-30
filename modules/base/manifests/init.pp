@@ -123,7 +123,7 @@ class base::puppet($server='puppet', $certname=undef) {
         }
         'labs': {
             exec { 'puppet snmp trap':
-                command => "snmptrap -v 1 -c public nagios-main.pmtpa.wmflabs .1.3.6.1.4.1.33298 ${::instancename}.${::site}.wmflabs 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
+                command => "snmptrap -v 1 -c public nagios.wmflabs.org .1.3.6.1.4.1.33298 ${::instancename}.${::site}.wmflabs 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
                 path => "/bin:/usr/bin",
                 require => Package['snmp']
             }
