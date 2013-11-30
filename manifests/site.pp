@@ -2031,9 +2031,6 @@ node "sanger.wikimedia.org" {
         groups::wikidev,
         accounts::jdavis,
         backup::client
-
-    ## hardy doesn't support augeas, so we can't do this. /stab
-    #include ldap::server::iptables
 }
 
 node /^search100[0-6]\.eqiad\.wmnet/ {

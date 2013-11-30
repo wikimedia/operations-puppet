@@ -1,121 +1,52 @@
-class openstack::iptables-purges {
-	require "iptables::tables"
-
-	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
-	iptables_purge_service{ "deny_all_mysql": service => "mysql" }
-	iptables_purge_service{ "deny_all_memcached": service => "memcached" }
-	iptables_purge_service{ "deny_all_ldap": service => "ldap" }
-	iptables_purge_service{ "deny_all_ldap_backend": service => "ldap_backend" }
-	iptables_purge_service{ "deny_all_ldaps": service => "ldaps" }
-	iptables_purge_service{ "deny_all_ldaps_backend": service => "ldaps_backend" }
-	iptables_purge_service{ "deny_all_ldap_admin_connector": service => "ldap_admin_connector" }
-	iptables_purge_service{ "deny_all_ldap_replication": service => "ldap_replication" }
-	iptables_purge_service{ "deny_all_puppetmaster": service => "puppetmaster" }
-	iptables_purge_service{ "deny_all_glance_api": service => "glance_api" }
-	iptables_purge_service{ "deny_all_glance_registry": service => "glance_registry" }
-	iptables_purge_service{ "deny_all_beam1": service => "beam1" }
-	iptables_purge_service{ "deny_all_beam2": service => "beam2" }
-	iptables_purge_service{ "deny_all_beam3": service => "beam3" }
-	iptables_purge_service{ "deny_all_epmd": service => "epmd" }
-	iptables_purge_service{ "deny_all_keystone_service": service => "keystone_service" }
-	iptables_purge_service{ "deny_all_keystone_admin": service => "keystone_admin" }
-	iptables_purge_service{ "deny_all_salt_publish": service => "salt_publish" }
-	iptables_purge_service{ "deny_all_salt_ret": service => "salt_ret" }
-	iptables_purge_service{ "deny_all_inetd": service => "inetd" }
-
-	# When removing or modifying a rule, place the old rule here, otherwise it won't
-	# be purged, and will stay in the iptables forever
-}
-
-class openstack::iptables-accepts {
-	require "openstack::iptables-purges"
-
-	# Rememeber to place modified or removed rules into purges!
-	iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "virt0_all": source => "208.80.152.32", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "neon_all": source => "208.80.154.14", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_private": source => "10.0.0.0/8", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_private": source => "10.0.0.0/8", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_private": source => "10.0.0.0/8", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_backend_private": source => "10.0.0.0/8", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_public": source => "208.80.152.0/22", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_public": source => "208.80.152.0/22", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_public": source => "208.80.152.0/22", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_backend_public": source => "208.80.152.0/22", service => "ldaps_backend", jump => "ACCEPT" }
-
-	iptables_add_service{ "ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_admin_connector_virt0": source => "208.80.152.32", service => "ldap_admin_connector", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_admin_connector_virt1000": source => "208.80.154.18", service => "ldap_admin_connector", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_replication_nfs1": source => "10.0.0.244", service => "ldap_replication", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_replication_virt0": source => "208.80.152.32", service => "ldap_replication", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_replication_virt1000": source => "208.80.154.18", service => "ldap_replication", jump => "ACCEPT" }
-	iptables_add_service{ "keystone_service_nova_virt0": source => "208.80.152.32", service => "keystone_service", jump => "ACCEPT" }
-	iptables_add_service{ "keystone_admin_nova_virt0": source => "208.80.152.32", service => "keystone_admin", jump => "ACCEPT" }
-	iptables_add_service{ "keystone_service_nova_virt1000": source => "208.80.154.18", service => "keystone_service", jump => "ACCEPT" }
-	iptables_add_service{ "keystone_admin_nova_virt1000": source => "208.80.154.18", service => "keystone_admin", jump => "ACCEPT" }
-	iptables_add_service{ "amanda": source => "208.80.152.170", service => "inetd", jump => "ACCEPT" }
-	iptables_add_service{ "puppet_private": source => "10.0.0.0/8", service => "puppetmaster", jump => "ACCEPT" }
-	iptables_add_service{ "salt_publish_private": source => "10.0.0.0/8", service => "salt_publish", jump => "ACCEPT" }
-	iptables_add_service{ "salt_ret_private": source => "10.0.0.0/8", service => "salt_ret", jump => "ACCEPT" }
-	if ($site == "pmtpa") {
-		iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
-		iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
-		iptables_add_service{ "beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
-		iptables_add_service{ "beam3_nova": source => "10.4.16.0/24", service => "beam3", jump => "ACCEPT" }
-		iptables_add_service{ "keystone_service_nova": source => "10.4.16.0/24", service => "keystone_service", jump => "ACCEPT" }
-		iptables_add_service{ "keystone_admin_nova": source => "10.4.16.0/24", service => "keystone_admin", jump => "ACCEPT" }
-	}
-	if ($site == "eqiad") {
-		iptables_add_service{ "mysql_nova": source => "10.64.20.0/24", service => "mysql", jump => "ACCEPT" }
-		iptables_add_service{ "glance_api_nova": source => "10.64.20.0/24", service => "glance_api", jump => "ACCEPT" }
-		iptables_add_service{ "beam2_nova": source => "10.64.20.0/24", service => "beam2", jump => "ACCEPT" }
-		iptables_add_service{ "beam3_nova": source => "10.64.20.0/24", service => "beam3", jump => "ACCEPT" }
-		iptables_add_service{ "keystone_service_nova": source => "10.64.20.0/24", service => "keystone_service", jump => "ACCEPT" }
-		iptables_add_service{ "keystone_admin_nova": source => "10.64.20.0/24", service => "keystone_admin", jump => "ACCEPT" }
-	}
-}
-
-class openstack::iptables-drops {
-	require "openstack::iptables-accepts"
-
-	# Deny by default
-	iptables_add_service{ "deny_all_mysql": service => "mysql", jump => "DROP" }
-	iptables_add_service{ "deny_all_memcached": service => "memcached", jump => "DROP" }
-	iptables_add_service{ "deny_all_ldap": service => "ldap", jump => "DROP" }
-	iptables_add_service{ "deny_all_ldap_backend": service => "ldap_backend", jump => "DROP" }
-	iptables_add_service{ "deny_all_ldaps": service => "ldaps", jump => "DROP" }
-	iptables_add_service{ "deny_all_ldaps_backend": service => "ldaps_backend", jump => "DROP" }
-	iptables_add_service{ "deny_all_ldap_admin_connector": service => "ldap_admin_connector", jump => "DROP" }
-	iptables_add_service{ "deny_all_replication": service => "ldap_replication", jump => "DROP" }
-	iptables_add_service{ "deny_all_puppetmaster": service => "puppetmaster", jump => "DROP" }
-	iptables_add_service{ "deny_all_glance_api": service => "glance_api", jump => "DROP" }
-	iptables_add_service{ "deny_all_glance_registry": service => "glance_registry", jump => "DROP" }
-	iptables_add_service{ "deny_all_beam1": service => "beam1", jump => "DROP" }
-	iptables_add_service{ "deny_all_beam2": service => "beam2", jump => "DROP" }
-	iptables_add_service{ "deny_all_beam3": service => "beam3", jump => "DROP" }
-	iptables_add_service{ "deny_all_epmd": service => "epmd", jump => "DROP" }
-	iptables_add_service{ "deny_all_keystone_service": service => "keystone_service", jump => "DROP" }
-	iptables_add_service{ "deny_all_keystone_admin": service => "keystone_admin", jump => "DROP" }
-	iptables_add_service{ "deny_all_salt_publish": service => "salt_publish", jump => "DROP" }
-	iptables_add_service{ "deny_all_salt_ret": service => "salt_ret", jump => "DROP" }
-	iptables_add_service{ "deny_all_amanda": service => "inetd", jump => "DROP" }
-	iptables_add_service{ "deny_all_nrpe": service => "nrpe", jump => "DROP" }
-}
-
-class openstack::iptables  {
-	if $realm == "production" {
-		# We use the following requirement chain:
-		# iptables -> iptables::drops -> iptables::accepts -> iptables::accept-established -> iptables::purges
-		#
-		# This ensures proper ordering of the rules
-		require "openstack::iptables-drops"
-
-		# This exec should always occur last in the requirement chain.
-		iptables_add_exec{ "${hostname}": service => "openstack" }
+class openstack::firewall {
+    $labs_private_net = '10.0.0.0/0'
+	if ($::site == 'pmtpa') {
+		$labs_nodes = '10.4.16.0/24'
+		# virt1000
+		$other_master = '208.80.154.18'
+	} elsif ($::site == 'eqiad') {
+		$labs_nodes = '10.68.20.0/24'
+		# virt0
+		$other_master = '208.80.152.32'
 	}
 
-	# Labs has security groups, and as such, doesn't need firewall rules
+	# LDAP
+	ferm::rule { 'ldap_private_labs':
+		rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (ldap ldaps) ACCEPT;',
+	}
+	ferm::rule { 'ldap_backend_private_labs':
+		rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (1389 1636) ACCEPT;',
+	}
+	ferm::rule {' ldap_admin_replication':
+		rule => "saddr (10.0.0.244 $other_master) proto tcp dport (4444 8989) ACCEPT;",
+	}
+
+	# internal services to Labs virt servers
+	ferm::rule { 'keystone':
+		rule => "saddr ($other_master $labs_nodes) proto tcp dport (5000 35357) ACCEPT;",
+	}
+	ferm::rule { 'mysql_nova':
+		rule => "saddr $labs_nodes proto tcp dport (3306) ACCEPT;",
+	}
+	ferm::rule { 'beam_nova':
+		rule => "saddr $labs_nodes proto tcp dport (5672 56918) ACCEPT;",
+	}
+	ferm::rule { 'glance_api_nova':
+		rule => "saddr $labs_nodes proto tcp dport 9292 ACCEPT;",
+	}
+
+	# services provided to Labs instances
+	ferm::rule { 'puppetmaster':
+		rule => "saddr $labs_private_net proto tcp dport 8140 ACCEPT;",
+	}
+	ferm::rule { 'salt':
+		rule => "saddr $labs_private_net proto tcp dport (4505 4506) ACCEPT;",
+	}
+
+	# allow amanda from tridge; will be dropped soon
+	ferm::rule { 'amanda':
+		rule => 'saddr 208.80.152.170 proto tcp dport 10080 ACCEPT;',
+	}
 }
 
 class openstack::repo($openstack_version="folsom") {
