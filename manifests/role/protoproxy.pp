@@ -272,7 +272,7 @@ class role::protoproxy::ssl {
     }
     protoproxy{ 'mobilewikipedia':
         proxy_addresses => {
-            'pmtpa' => [ '127.0.0.1', '[2620:0:860:ed1a::c]' ],
+            'pmtpa' => [ '127.0.0.1' ],
             'eqiad' => [ '208.80.154.236', '[2620:0:861:ed1a::c]' ],
             'esams' => [ '91.198.174.236', '[2620:0:862:ed1a::c]' ],
         },
