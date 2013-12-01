@@ -66,12 +66,6 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     require => Package['grep'],
   }
 
-  file { [ '/data/project/.system/tips.sh',
-           '/data/project/.system/bin/tips.sh',
-           '/data/project/.system/bin/tips2.sh' ]:
-    ensure => absent,
-  }
-
   package { "misctools":
     ensure => latest,
   }

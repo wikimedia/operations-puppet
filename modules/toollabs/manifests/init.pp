@@ -63,11 +63,6 @@ class toollabs {
     target => "/data/project/.shared";
   }
 
-  # Replaced by toollabs::bastion's /etc/profile.d/motd-tips.sh.
-  file { "/etc/profile.d/tips.sh":
-    ensure => absent,
-  }
-
   file { "/root/.bashrc":
     ensure => file,
     source => "puppet:///modules/toollabs/rootrc",
