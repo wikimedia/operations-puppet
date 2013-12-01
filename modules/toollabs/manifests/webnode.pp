@@ -78,7 +78,6 @@ class toollabs::webnode($gridmaster) inherits toollabs {
   }
 
   package { 'lighttpd': ensure => present }
-  package { 'apache2.2-common': ensure => absent }
 
   file { "/usr/local/bin/tool-lighttpd":
     ensure => file,
