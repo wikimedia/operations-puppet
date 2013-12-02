@@ -2746,6 +2746,15 @@ node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
     class { "lvs::realserver": realserver_ips => [ "10.2.2.30" ] }
 }
 
+node /^logstash100[1-3]\.eqiad\.wmnet$/ {
+    include standard
+    include groups::wikidev
+
+    sudo_user { ['aaron', 'bd808']:  # RT 6366
+        privileges => ['ALL = NOPASSWD: ALL'],
+    }
+}
+
 node "tin.eqiad.wmnet" {
     $cluster = "misc"
     $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
