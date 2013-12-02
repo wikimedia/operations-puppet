@@ -1,5 +1,7 @@
 class varnish::netmapper_update_common {
-    group { 'netmap': ensure => present; }
+    group { 'netmap':
+        ensure => present,
+    }
 
     user { 'netmap':
         home       => '/var/netmapper',
@@ -7,7 +9,7 @@ class varnish::netmapper_update_common {
         system     => true,
         managehome => false,
         shell      => '/bin/false',
-        require    => Group['netmap'];
+        require    => Group['netmap'],
     }
 
     file { '/var/netmapper':
@@ -15,7 +17,7 @@ class varnish::netmapper_update_common {
         owner   => 'netmap',
         group   => 'netmap',
         require => User['netmap'],
-        mode    => '0755';
+        mode    => '0755',
     }
 
     file { '/usr/share/varnish/netmapper_update.sh':
@@ -34,13 +36,13 @@ define varnish::netmapper_update($url, $hour = '*', $minute = '*/5') {
     exec { "netmapper_update_${name}_initial":
         user    => 'netmap',
         command => $cmd,
-        creates => "/var/netmapper/${name}";
+        creates => "/var/netmapper/${name}",
     }
 
     cron { "netmapper_update_${name}":
         user    => 'netmap',
         command => $cmd,
         hour    => $hour,
-        minute  => $minute;
+        minute  => $minute,
     }
 }
