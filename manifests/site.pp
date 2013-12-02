@@ -2727,21 +2727,6 @@ node "terbium.eqiad.wmnet" {
     class { misc::maintenance::updatequerypages: enabled => true }
 }
 
-node /^testsearch100[1-3]\.eqiad\.wmnet/ {
-    # ganglia cluster name.
-    $cluster = 'elasticsearch'
-
-    include accounts::manybubbles,
-        accounts::demon,
-        groups::wikidev
-
-    sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-    sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-
-    include standard
-    include elasticsearch::decommission
-}
-
 node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
     # ganglia cluster name.
     $cluster = 'elasticsearch'
