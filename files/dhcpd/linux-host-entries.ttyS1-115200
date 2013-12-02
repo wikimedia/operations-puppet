@@ -1521,6 +1521,21 @@ host lanthanum {
 	fixed-address lanthanum.eqiad.wmnet;
 }
 
+host logstash1001 {
+	hardware ethernet 90:B1:1C:00:B1:4B;
+	fixed-address logstash1001.eqiad.wmnet;
+	}
+
+host logstash1002 {
+	hardware ethernet D4:AE:52:AF:65:94;
+	fixed-address logstash1002.eqiad.wmnet;
+	}
+
+host logstash1003 {
+	hardware ethernet D4:AE:52:AF:4B:AF;
+	fixed-address logstash1003.eqiad.wmnet;
+	}
+
 host lvs5 {
 	hardware ethernet 00:21:9B:97:EE:7A;
 	fixed-address lvs5.wikimedia.org;
@@ -4513,21 +4528,6 @@ host tellurium {
 host terbium {
 	hardware ethernet 90:B1:1C:25:9D:72;
 	fixed-address terbium.eqiad.wmnet;
-	}
-
-host testsearch1001 {
-	hardware ethernet 90:B1:1C:00:B1:4B;
-	fixed-address testsearch1001.eqiad.wmnet;
-	}
-
-	host testsearch1002 {
-	hardware ethernet D4:AE:52:AF:65:94;
-	fixed-address testsearch1002.eqiad.wmnet;
-	}
-
-	host testsearch1003 {
-	hardware ethernet D4:AE:52:AF:4B:AF;
-	fixed-address testsearch1003.eqiad.wmnet;
 	}
 
 host tin {
