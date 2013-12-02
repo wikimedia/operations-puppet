@@ -36,6 +36,8 @@ RailsAutoDetect Off
 
 	SSLProxyEngine on
 	ProxyPassMatch ^/([^/]+/certificate.*)$ https://<%= @fqdn %>:8141
+	ProxyPassMatch ^/([^/]+/report/.*)$ https://<%= @fqdn %>:8141
+	ProxyPassMatch ^/([^/]+/file_bucket_file/md5/.*)$ https://<%= @fqdn %>:8141
 	ProxyPass / balancer://mycluster/
 	<Proxy balancer://mycluster>
 	  <%- @workers.each do |worker| -%>
