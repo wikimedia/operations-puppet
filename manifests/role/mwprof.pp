@@ -3,7 +3,7 @@
 # Sets up mwprof.
 #
 class role::mwprof {
-    system::role { 'role::mwprof': description => 'MediaWiki profiler', }
-    package { [ 'build-essential', 'libdb-dev' ]: }
-    deployment::target { 'mwprof': }
+    class { '::mwprof':
+        collector_port = 3812,
+    }
 }
