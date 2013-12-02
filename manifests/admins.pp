@@ -906,18 +906,11 @@ class accounts {
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-			ssh_authorized_key { "krinkle @ MacBook Pro, Mid-2011":
-				ensure	=> absent,
-				user	=> $username,
-				type	=> "ssh-rsa",
-				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCm44jLSJBG8Qul5VNqrgvfUCjOACM0v1RzehkF7XMYRr+yBzBGJlRSHOs6/aUoBauJDPdM2VSb1LR3PCALwczYmA4Slnm/9rTfq0U/CAeFjHKBiQey4cntKFrYIUM0Qf+XsaDBQ2uK9C2GOw3Lo9RIYfq8Kz7keS+xtkk/6t1oypAcdG6Yt4Wi9z8Mgwmtd08mmT17yszxCf9emq5fo8otUC5nxWmXhAtnL5baaPDbi/0CpX6jm4BIAMm2jhGN6raYHLPIBhqk/uUa3k2EqkQ2gncY1judpyiUHmNB7dg9rDpbHF9pR+EvdE+tGRq8iirJzEbP4ErF0Vw461swIOB5"
-			}
-
-			ssh_authorized_key { "krinkle @ MacBook Pro, Early-2013":
+			ssh_authorized_key { "krinkle @ krinkle-mbb003":
 				ensure	=> present,
 				user	=> $username,
 				type	=> "ssh-rsa",
-				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCrF4bY2ygHf70rOL3GGIWGurAXo2d5X07g+tzV5189kgKZs7Bz7l8R3NwzcCwuSIQqEWryjZN/lGa6lUhXaln16Ks/tn21eSfuI7TFjWZbLbQHJtf+QYhLA6dRBk87qfGW2z05w526OxRt7vPYo6uutdV+jt1wbpbMhA40cttsyDzWVqZ63TwielxaAZFABA1Tr5cWZbS0tz0Bmoiri8PPPDjeV9GCS6ApRZAeOJjtAeChu4RwEgTgHLkdACGJSg96G0BCT0Zd0RE7q357j8DlMbvw6a93DIrlhSrma0snHRHsi/fS7g8ULa/HmhweJocM+Rzd+URAaBSegNnlK/Hr"
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDftk5lndsGU70RXMNRlwGOT2qr/SSBQZog07fs4F5wBL5Uevf0bZkwFokissYOO02cgYy2q6SyN64SppfnWXjOJtX7uv1gasfxmufNMx1c/JIl3m+DUodkGzXsECM66ykHSmaIjLvdpsqS5FJ7FzmkAOQsQVvnzK+Ltb7XyOd1zf6y90SB6wo03RHalLoAXEP0GmKPyv0Tzvad3wjSxS6FxTAFji7wtdSdwOxd4xOQ606h4H7J/JRHWJrmGX9yn8BLPDXXB/3a1lBasaZXEyhd+a2RXvnMgPdqfRSpQRD6gRsaMoj6UiKG1+RoUlttXaKb4COI8llG+Q3tVzWm6IJr"
 			}
 		}
 	}
