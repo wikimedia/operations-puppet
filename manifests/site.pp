@@ -2189,7 +2189,11 @@ node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
         mysql_wmf::datadirs,
         mysql_wmf::pc::conf
 
-    class { mysql_wmf::packages : mariadb => true }
+    if $::hostname =~ /^pc100(1|2|3)/ {
+        class { mysql_wmf::packages : mariadb => true }
+    } else {
+        include mysql_wmf::packages
+    }
 
     system::role { "mysql::pc::conf": description => "parser cache mysql server" }
 }
