@@ -54,6 +54,7 @@ class toollabs::dev_environ {
       'mc', # Popular{{cn}} on Toolserver
       'mercurial',
       'openjdk-7-jdk',
+      'pep8',                        # Bug 57863
       'p7zip-full', # requested by Betacommand to extract files using 7zip
       'python-dev',
       'python-coverage',             # Bug 57002
