@@ -25,6 +25,7 @@ class mwprof(
         shell      => '/bin/false',
         home       => '/nonexistent',
         system     => true,
+        managehome => false,
     }
 
     file {

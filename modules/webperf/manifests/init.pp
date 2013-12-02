@@ -13,11 +13,12 @@ class webperf {
     }
 
     user { 'webperf':
-        ensure => present,
-        gid    => 'webperf',
-        shell  => '/bin/false',
-        home   => '/nonexistent',
-        system => true,
+        ensure     => present,
+        gid        => 'webperf',
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        system     => true,
+        managehome => false,
     }
 
     file { '/srv/webperf':

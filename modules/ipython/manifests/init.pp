@@ -49,6 +49,7 @@ class ipython(
         gid        => $group,
         shell      => '/bin/false',
         home       => '/nonexistent',
+        managehome => false,
         system     => true,
     }
 
