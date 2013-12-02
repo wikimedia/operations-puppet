@@ -1,0 +1,157 @@
+#!/usr/bin/python
+
+#####################################################################
+### adminadd
+###
+###  This is a tool to generate new user entries in Admins.pp.
+###
+###  Run it like this:
+###
+###    ./adminadd marc
+###
+###  You'll be prompted for your ldap password, which is most likely
+###  the same as your wikitech password.
+###
+###  It will modify Admins.pp with a new entry for marc, keeping the uid
+###  and username and such in sync with labs ldap.
+###
+###  Don't commit the changed file until you've checked it and added
+###  your public key; otherewise it won't do much.
+###
+###
+### THIS SCRIPT IS STRANGE!
+###
+###  adminadd is in the puppet repo, but it is not installed by puppet.
+###  Rather, it is run in place (next to Admins.pp)
+###
+#####################################################################
+
+
+import sys
+sys.path.append('../modules/ldap/files/scripts')
+import traceback
+import copy
+import os
+from optparse import OptionParser
+
+
+adminManifest = "admins.pp"
+insertFlag = "-- ADMINADD Insertion Point --"
+
+patchTemplate = '''    class %(name)s inherits baseaccount {
+        $username = '%(name)s'
+        $realname = '%(realname)s'
+        $uid      = %(uid)s
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { '%(mail)s':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => '<your production public key goes here>',
+        }
+    }
+    }
+
+'''
+
+try:
+    import ldap
+    import ldap.modlist
+    import ldapsupportlib
+except ImportError:
+    sys.stderr.write("Unable to import LDAP library.\n")
+    sys.stderr.write("Probably this will work better on a labs instance.\n")
+    sys.exit(1)
+
+
+def main():
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage('adminadd [options] <username> \nexample: adminadd laner')
+
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+    ldapSupportLib.addParserOptions(parser, "user")
+
+    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
+    (options, args) = parser.parse_args()
+
+    if len(args) != 1:
+        parser.error("addadmin expects exactly one argument, unless using --rename.")
+
+    options.authuser = 'user'
+    ldapSupportLib.setBindInfoByOptions(options, parser)
+
+    base = ldapSupportLib.getBase()
+
+    ds = ldapSupportLib.connect()
+
+    # w00t We're in!
+    try:
+        username = args[0]
+        PosixData = ds.search_s("ou=people," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=inetOrgPerson)(uid=" + username + "))")
+        if not PosixData:
+            raise ldap.NO_SUCH_OBJECT()
+        dn = PosixData[0][0]
+
+    gid = PosixData[0][1]['gidNumber'][0]
+    uid = PosixData[0][1]['uidNumber'][0]
+    mail = PosixData[0][1]['mail'][0]
+
+    if 'displayName' in PosixData[0][1]:
+        realName = PosixData[0][1]['displayName'][0]
+    else:
+        realName = PosixData[0][1]['givenName'][0]
+
+    patchString = patchTemplate % {'name': args[0],
+                                   'uid': uid,
+                                   'realname': realName,
+                                   'mail': mail}
+    tmpfile = "%s.tmp" % adminManifest
+    f = open(adminManifest)
+    g = open(tmpfile, "w")
+
+    for line in f:
+        if insertFlag in line:
+            g.write(patchString)
+        g.write(line)
+    f.close()
+    g.close()
+
+    os.rename(tmpfile, adminManifest)
+
+    print "Done!"
+    print "To view the change, type 'git diff %s" % adminManifest
+    print "Before committing, be sure to proofread and add your public key."
+
+    except ldap.UNWILLING_TO_PERFORM, msg:
+        sys.stderr.write("LDAP was unwilling to create the user. Error was: %s\n" % msg[0]["info"])
+        ds.unbind()
+        sys.exit(1)
+    except ldap.NO_SUCH_OBJECT:
+        sys.stderr.write("The user you are trying to modify doesn't exist.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.PROTOCOL_ERROR:
+        sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
+        traceback.print_exc(file=sys.stderr)
+        ds.unbind()
+        sys.exit(1)
+    except Exception:
+        try:
+            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            traceback.print_exc(file=sys.stderr)
+            ds.unbind()
+        except Exception:
+            sys.stderr.write("Also failed to unbind.\n")
+            traceback.print_exc(file=sys.stderr)
+        sys.exit(1)
+
+    ds.unbind()
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()

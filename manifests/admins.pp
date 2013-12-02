@@ -3221,6 +3221,10 @@ class accounts {
         }
     }
 
+    # -- ADMINADD Insertion Point --
+    # ^ That line is a marker for the 'adminadd' tool.  New accounts are inserted
+    # immediately before the insertion point.
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
