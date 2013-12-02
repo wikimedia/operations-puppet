@@ -1288,7 +1288,8 @@ node 'labsdb1002.eqiad.wmnet' {
             's2' => {
                 'port' => 3306,
                 'innodb_log_file_size' => "2000M",
-                'ram' => "48G",
+                # kernel oom killer striking mysqld. reduce footprint during investigation
+                'ram' => "32G",
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs' => 'mysql',
                 'slave_transaction_retries' => 100000,
@@ -1298,7 +1299,8 @@ node 'labsdb1002.eqiad.wmnet' {
             's4' => {
                 'port' => 3307,
                 'innodb_log_file_size' => "2000M",
-                'ram' => "48G",
+                # kernel oom killer striking mysqld. reduce footprint during investigation
+                'ram' => "32G",
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs' => 'mysql',
                 'slave_transaction_retries' => 100000,
@@ -1308,7 +1310,8 @@ node 'labsdb1002.eqiad.wmnet' {
             's5' => {
                 'port' => 3308,
                 'innodb_log_file_size' => "1000M",
-                'ram' => "48G",
+                # kernel oom killer striking mysqld. reduce footprint during investigation
+                'ram' => "32G",
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs' => 'mysql',
                 'slave_transaction_retries' => 100000,
