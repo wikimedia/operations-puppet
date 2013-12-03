@@ -13,6 +13,9 @@ sub vcl_recv {
 	} elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
 		set req.backend = tungsten;
 		return (lookup);
+	} elsif (req.http.Host == "scholarships.wikimedia.org") {
+		set req.backend = zirconium;
+		return (lookup);
 	}
 }
 
