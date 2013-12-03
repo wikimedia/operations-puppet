@@ -108,6 +108,10 @@ class base::monitoring::host($contact_group = 'admins') {
         description  => 'puppet disabled',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_puppet_disabled',
     }
+    nrpe::monitor_service { 'puppet_checkpuppetrun':
+        description  => 'puppet last run',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_puppetrun',
+    }
     nrpe::monitor_service {'check_eth':
         description  => 'check configured eth',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_eth',
