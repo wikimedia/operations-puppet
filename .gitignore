@@ -18,3 +18,6 @@
 
 # ctags generated file (see `rake tags`)
 /tags
+
+# local ruby configuration
+/.rbenv-version
