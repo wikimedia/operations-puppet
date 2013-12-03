@@ -2994,7 +2994,8 @@ node "zirconium.wikimedia.org" {
         nrpe,
         role::planet,
         misc::outreach::civicrm, # contacts.wikimedia.org
-        misc::etherpad_lite
+        misc::etherpad_lite,
+        role::wikimania_scholarships
 
     interface::add_ip6_mapped { "main": interface => "eth0" }
 }
