@@ -26,6 +26,7 @@ class role::deployment::config {
     'integration/slave-scripts' => {
         'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/jenkins',
+        'checkout_submodules'   => true,
     },
     'mediawiki/common'               => {
         'grain'            => 'mediawiki',
