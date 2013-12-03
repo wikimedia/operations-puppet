@@ -113,6 +113,10 @@ server {
 		proxy_pass http://<%= name %>;
 		proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
 
+		# this should be in sync with Varnish's first_byte_timeout
+		# and PHP's max_execution_time
+		proxy_read_timeout 180s;
+
 		proxy_set_header Host $host;
 		proxy_set_header X-Real-IP $remote_addr;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
