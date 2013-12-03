@@ -79,9 +79,9 @@ class role::parsoid::beta {
 
     sudo_user { 'jenkins-deploy': privileges => [
         # Need to allow jenkins-deploy to reload parsoid
-        # Since the "parsoid" user is local, we cant add the sudo policy in
+        # Since the "root" user is local, we cant add the sudo policy in
         # OpenStack manager interface at wikitech
-        'ALL = (parsoid) NOPASSWD:/etc/init.d/parsoid',
+        'ALL = (root) NOPASSWD:/etc/init.d/parsoid',
     ] }
 
     file { '/var/lib/parsoid/Parsoid':
