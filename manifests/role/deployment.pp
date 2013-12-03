@@ -126,6 +126,10 @@ class role::deployment::config {
             'service.restart' => ['ocg-collection'] 
         },
     }
+    'scholarships/scholarships'      => {
+        'grain'    => 'scholarships',
+        'upstream' => 'https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships',
+    },
   }
 }
 
