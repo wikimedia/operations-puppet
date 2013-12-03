@@ -3259,6 +3259,7 @@ class admins::mortals {
 	include accounts::rmoen
 	include accounts::robla
 	include accounts::spage
+	include accounts::ssastry # RT 5512
 	include accounts::sumanah # RT 3752
 	include accounts::tfinc # move from roots RT 5485
 	include accounts::yurik # RT 4835, RT 5069
