@@ -4,7 +4,7 @@
 #
 class rsync {
 
-  package { 'rsync':
-    ensure => installed,
-  } -> Rsync::Get<| |>
+    package { 'rsync':
+        ensure => installed,
+    } -> Rsync::Get<| |>
 }

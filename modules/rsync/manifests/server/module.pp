@@ -33,24 +33,24 @@
 #   }
 #
 define rsync::server::module (
-  $path,
-  $comment         = undef,
-  $read_only       = 'yes',
-  $write_only      = 'no',
-  $list            = 'yes',
-  $uid             = '0',
-  $gid             = '0',
-  $incoming_chmod  = '0644',
-  $outgoing_chmod  = '0644',
-  $max_connections = '0',
-  $lock_file       = '/var/run/rsyncd.lock',
-  $secrets_file    = undef,
-  $auth_users      = undef,
-  $hosts_allow     = undef,
-  $hosts_deny      = undef)  {
+    $path,
+    $comment         = undef,
+    $read_only       = 'yes',
+    $write_only      = 'no',
+    $list            = 'yes',
+    $uid             = '0',
+    $gid             = '0',
+    $incoming_chmod  = '0644',
+    $outgoing_chmod  = '0644',
+    $max_connections = '0',
+    $lock_file       = '/var/run/rsyncd.lock',
+    $secrets_file    = undef,
+    $auth_users      = undef,
+    $hosts_allow     = undef,
+    $hosts_deny      = undef)  {
 
-  file { "${rsync::server::rsync_fragments}/frag-${name}":
-    content => template('rsync/module.erb'),
-    notify  => Exec['compile fragments'],
-  }
+    file { "${rsync::server::rsync_fragments}/frag-${name}":
+        content => template('rsync/module.erb'),
+        notify  => Exec['compile fragments'],
+    }
 }
