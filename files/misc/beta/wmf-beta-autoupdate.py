@@ -109,6 +109,7 @@ def parse_args():
 
 
 def git_head_ts(git_dir):
+    """Returns timestamp of the HEAD committer date"""
     proc = subprocess.check_output(
         ['git', '--git-dir', git_dir, 'log',
          '--pretty=tformat:%ct', '-1', 'HEAD'])
@@ -116,7 +117,7 @@ def git_head_ts(git_dir):
 
 
 def parsoid_head_ts():
-    """Returns timestamp of the HEAD committer date"""
+    """Returns timestamp of the HEAD committer date for Parsoid"""
     return git_head_ts(os.path.join(PATH_MWEXT, 'Parsoid/.git'))
 
 
