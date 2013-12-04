@@ -60,7 +60,6 @@ def main():
         pull_mediawiki(),
         pull_extensions(),
         update_extensions(),
-        update_parsoid_deps(),
         update_l10n(),
     ]
 
@@ -68,6 +67,8 @@ def main():
     logger.debug('Parsoid HEAD timestamps: %s -> %s',
                  parsoid_pre, parsoid_post)
     if parsoid_post != parsoid_pre:
+        logger.info("Updating Parsoid npm dependencies")
+        exit_codes.append(update_parsoid_deps())
         logger.info("Restarting updated Parsoid code base")
         exit_codes.append(restart_parsoid())
     else:
