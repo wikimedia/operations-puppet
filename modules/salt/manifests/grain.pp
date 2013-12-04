@@ -31,27 +31,27 @@
 #  }
 #
 define salt::grain(
-  $value,
-  $grain  = $title,
-  $ensure = present,
-  $replace = false,
-) {
-  $command = $replace ? {
-    true => 'set',
-    default => 'add',
-  }
-  case $ensure {
-    'absent': {
-        exec { "/usr/local/sbin/grain-ensure remove ${grain} ${value}":
-          onlyif  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
-          require => File['/usr/local/sbin/grain-ensure'],
+        $value,
+        $grain  = $title,
+        $ensure = present,
+        $replace = false,) 
+    {
+    $command = $replace ? {
+        true => 'set',
+        default => 'add',
+    }
+    case $ensure {
+        'absent': {
+            exec { "/usr/local/sbin/grain-ensure remove ${grain} ${value}":
+            onlyif  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
+            require => File['/usr/local/sbin/grain-ensure'],
+            }
+        } 
+        'present': {
+            exec { "/usr/local/sbin/grain-ensure ${command} ${grain} ${value}":
+            unless  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
+            require => File['/usr/local/sbin/grain-ensure'],
+            }
         }
     }
-    'present': {
-        exec { "/usr/local/sbin/grain-ensure ${command} ${grain} ${value}":
-          unless  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
-          require => File['/usr/local/sbin/grain-ensure'],
-        }
-    }
-  }
 }
