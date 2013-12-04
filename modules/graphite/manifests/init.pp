@@ -21,9 +21,9 @@ class graphite(
         conf_dir       => '/etc/carbon',
         log_dir        => '/var/log/carbon',
         pid_dir        => '/var/run/carbon',
-        storage_dir    => '/var/lib/graphite',
-        whitelists_dir => '/var/lib/graphite/lists',
-        local_data_dir => '/var/lib/graphite/whisper',
+        storage_dir    => '/var/lib/carbon',
+        whitelists_dir => '/var/lib/carbon/lists',
+        local_data_dir => '/var/lib/carbon/whisper',
     }
 
     $carbon_defaults = {
@@ -35,7 +35,7 @@ class graphite(
         source => 'puppet:///modules/graphite/graphite.limits.conf',
     }
 
-    file { '/var/lib/graphite':
+    file { '/var/lib/carbon':
         ensure  => directory,
         owner   => '_graphite',
         group   => '_graphite',
