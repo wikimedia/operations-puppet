@@ -171,6 +171,12 @@ class contint::packages {
     ]:
     ensure => present;
   }
+
+  package { [
+    'djvulibre-bin',
+    ]: ensure => present;
+  }
+
 }
 
 
