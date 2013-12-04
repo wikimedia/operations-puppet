@@ -17,9 +17,4 @@ class redis::ganglia {
         source => 'puppet:///modules/redis/ganglia/redis_monitoring.py',
         notify => Service['gmond'],
     }
-
-    # redis_monitoring.py was called redis.py before, cleanup
-    file { '/usr/lib/ganglia/python_modules/redis.py':
-        ensure => absent,
-    }
 }
