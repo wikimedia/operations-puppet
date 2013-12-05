@@ -599,7 +599,7 @@ class icinga::monitor::files::nagios-plugins {
   }
 
   # Include check_elasticsearch from elasticsearch module
-  include elasticsearch::nagios::plugin
+  # include elasticsearch::nagios::plugin  # Disabled (OL, 2013-12-04)
 
   # some default configuration files conflict and should be removed
 

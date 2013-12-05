@@ -3,8 +3,8 @@
 # This class sets up LogStash+Elasticsearch configuration in a WMF-specific way
 #
 class role::logstash {
-    include ::elasticsearch::ganglia
-    include ::elasticsearch::nagios::check
+    # include ::elasticsearch::ganglia
+    # include ::elasticsearch::nagios::check
 
     deployment::target { 'elasticsearchplugins': }
 
