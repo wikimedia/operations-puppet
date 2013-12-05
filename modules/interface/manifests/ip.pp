@@ -16,6 +16,6 @@ define interface::ip($interface, $address, $prefixlen="32") {
     exec { $ipaddr_command:
         path    => "/bin:/usr/bin",
         returns => [0, 2],
-        onlyif  => "ip address show ${interface} | grep -q ${prefix}",
+        unless  => "ip address show ${interface} | grep -q ${prefix}",
     }
 }
