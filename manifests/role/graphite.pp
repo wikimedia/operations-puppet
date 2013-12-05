@@ -1,12 +1,33 @@
 class role::graphite {
     class { '::graphite':
-        storage_schemas => {
+        storage_schemas     => {
             # Retain data at a one-minute resolution for one year and at a
             # ten-minute resolution for ten years. It's clear & easy to remember.
             # Avoid making this more complicated that it needs to be.
             'default' => {
                 pattern    => '.*',
                 retentions => '1m:1y,10m:10y',
+            },
+        },
+
+        storage_aggregation => {
+            'min'     => {
+                pattern           => '\.(lower|min)$',
+                xFilesFactor      => 0.1,
+                aggregationMethod => 'min',
+            },
+            'max'     => {
+                pattern           => '\.(upper|max)$',
+                xFilesFactor      => 0.1,
+                aggregationMethod => 'max',
+            },
+            'sum'     => {
+                pattern           => '\.(count|sum)$',
+                xFilesFactor      => 0,
+                aggregationMethod => 'sum',
+            },
+            'default' => {
+                xFilesFactor      => 0.2,
             },
         },
 
@@ -22,7 +43,7 @@ class role::graphite {
         #
         # If we need to scale up, the next step is multi-node.
         # <http://tinyurl.com/graphite-cluster-setup>.
-        carbon_settings => {
+        carbon_settings     => {
             'cache'   => {
                 line_receiver_interface   => '127.0.0.1',  # Only the relay binds to 0.0.0.0.
                 pickle_receiver_interface => '127.0.0.1',
@@ -53,7 +74,7 @@ class role::graphite {
 
             ## Carbon relay ##
 
-            'relay' => {
+            'relay'   => {
                 line_receiver_interface   => '0.0.0.0',
                 pickle_receiver_interface => '0.0.0.0',
                 relay_method              => 'consistent-hashing',

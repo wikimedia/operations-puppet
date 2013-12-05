@@ -9,8 +9,9 @@
 #  - Graphite webapp, a webapp which renders graphs on demand
 #
 class graphite(
-    $storage_schemas,
     $carbon_settings,
+    $storage_schemas,
+    $storage_aggregation = {},
 ) {
     package { 'graphite-carbon': }
     package { 'python-whisper': }
@@ -52,6 +53,12 @@ class graphite(
 
     file { '/etc/carbon/carbon.conf':
         content => configparser_format($carbon_defaults, $carbon_settings),
+        require => Package['graphite-carbon'],
+        notify  => Service['carbon'],
+    }
+
+    file { '/etc/carbon/storage-aggregation.conf':
+        content => configparser_format($storage_aggregation),
         require => Package['graphite-carbon'],
         notify  => Service['carbon'],
     }
