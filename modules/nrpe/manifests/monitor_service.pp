@@ -17,6 +17,8 @@
 #    $retries
 #       Defaults to 3. The number of times a service will be retried before
 #       notifying
+#    $timeout
+#       Defaults to 10. The check timeout in seconds (check_nrpe -t option)
 #    $ensure
 #       Defaults to present
 #
@@ -24,6 +26,7 @@ define nrpe::monitor_service( $description,
                               $nrpe_command,
                               $contact_group = 'admins',
                               $retries       = 3,
+                              $timeout       = 10,
                               $ensure        = 'present') {
 
     nrpe::check { "check_${title}":
@@ -36,7 +39,7 @@ define nrpe::monitor_service( $description,
     ::monitor_service { $title:
         ensure        => $ensure,
         description   => $description,
-        check_command => "nrpe_check!check_${title}",
+        check_command => "nrpe_check!check_${title}!${timeout}",
         contact_group => $contact_group,
         retries       => $retries,
     }

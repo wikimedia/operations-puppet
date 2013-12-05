@@ -419,9 +419,11 @@ define command{
 
 
 #Generic NRPE check
+# ARG1: command to execute on remote host
+# ARG2: timeout in seconds
 define command{
 	command_name	nrpe_check
-	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -t $ARG2$
 }
 
 define command{
