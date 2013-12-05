@@ -10,6 +10,27 @@ class role::graphite {
             },
         },
 
+        storage_aggregation => {
+            min => {
+                pattern           => '\.(lower|min)$',
+                xFilesFactor      => 0.1,
+                aggregationMethod => 'min',
+            },
+            max => {
+                pattern           => '\.(upper|max)$',
+                xFilesFactor      => 0.1,
+                aggregationMethod => 'max',
+            },
+            sum => {
+                pattern           => '\.(count|sum)$',
+                xFilesFactor      => 0,
+                aggregationMethod => 'sum',
+            },
+            default => {
+                xFilesFactor      => 0.2,
+            },
+        },
+
         # All metric data goes through a single carbon-relay instance, which
         # forwards each data point to one of four carbon-cache instances, using a
         # consistent hash ring to distribute the load.
