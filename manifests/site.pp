@@ -3000,7 +3000,9 @@ node "zirconium.wikimedia.org" {
         role::planet,
         misc::outreach::civicrm, # contacts.wikimedia.org
         misc::etherpad_lite,
-        role::wikimania_scholarships
+        role::wikimania_scholarships,
+        groups::wikidev,
+        accounts::bd808
 
     interface::add_ip6_mapped { "main": interface => "eth0" }
 }
