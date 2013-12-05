@@ -40,8 +40,18 @@ sub vcl_recv {
 	} else if (req.http.host == "m.wikimediafoundation.org") {
 		set req.http.host = "wikimediafoundation.org";
 	} else {
+
 		/* Replace <language>.(m|zero).<project>.org by <language>.<project>.org */
 		set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
+
+		/* Rewrite <language>.wap.wikipedia.org to new mobile site */
+		set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.wap\.", "\1.mobile.");
+
+		/* Support the old mobile.wikipedia.org wap gateway */
+		if (req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org$") {
+			set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.", "\1.");
+			set req.url = regsub(req.url, "\S+[\?&]go=([^&]+).*", "/wiki/\1");
+		}
 	}
 
 	/* Allow purging */
@@ -60,6 +70,10 @@ sub vcl_recv {
 		 */
 	} else {
 		unset req.http.Cookie;
+	}
+
+	if (req.http.host == "mobile.wikipedia.org") {
+		error 666 "http://en.mobile.wikipedia.org" + req.url;
 	}
 
 	call device_detection;
