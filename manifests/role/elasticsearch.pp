@@ -64,6 +64,6 @@ class role::elasticsearch inherits role::elasticsearch::config {
     }
     deployment::target { 'elasticsearchplugins': }
 
-    include elasticsearch::ganglia
-    include elasticsearch::nagios::check
+    include ::elasticsearch::ganglia
+    include ::elasticsearch::nagios::check
 }
