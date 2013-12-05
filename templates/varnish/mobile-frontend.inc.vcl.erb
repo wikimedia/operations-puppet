@@ -21,7 +21,6 @@ sub vcl_recv {
 	if (!req.http.X-Forwarded-Proto) {
 		/* This call will always set the following req.http values:
 			X-Subdomain = M or ZERO
-			X-DfltLang = en|fr|ru|...
 		  This value is only set if the carrier has been successfully detected
 			X-CS = "502-13"
 		*/
@@ -73,24 +72,9 @@ sub vcl_recv {
 		unset req.http.Cookie;
 	}
 
-	if (req.http.host == "m.wikipedia.org") {
-		if (req.http.X-CS) {
-			// Carrier detected
-			error 666 "http://" + req.http.X-DfltLang + ".m.wikipedia.org" + req.http.X-DfltPage;
-		} else {
-			// Regular m.* request, unknown carrier, navigate to english page with the same URL
-			error 666 "http://en.m.wikipedia.org" + req.url;
-		}
-	} else if (req.http.host == "zero.wikipedia.org") {
-		// All ZERO requests should go to the Special:ZeroRatedMobileAccess, even for unknown carrier
-		error 666 "http://" + req.http.X-DfltLang + ".zero.wikipedia.org" + req.http.X-DfltPage;
-	} else if (req.http.host == "mobile.wikipedia.org") {
+	if (req.http.host == "mobile.wikipedia.org") {
 		error 666 "http://en.mobile.wikipedia.org" + req.url;
 	}
-
-	// Don't need to redirect, unset default language
-	unset req.http.X-DfltLang;
-	unset req.http.X-DfltPage;
 
 	call device_detection;
 
@@ -143,10 +127,6 @@ sub vcl_fetch {
 }
 
 sub vcl_error {
-	// At this point we no longer need the default language.
-	unset req.http.X-DfltLang;
-	unset req.http.X-DfltPage;
-
 	/* Support mobile redirects */
 	if (obj.status == 666) {
 		set obj.http.Location = obj.response;
