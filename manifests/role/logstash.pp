@@ -1,6 +1,8 @@
-# = Class: role::logstash
+@monitor_group { 'logstash_eqiad': description => 'eqiad logstash' }
+
+# == Class: role::logstash
 #
-# This class sets up LogStash+Elasticsearch configuration in a WMF-specific way
+# Provisions LogStash and ElasticSearch.
 #
 class role::logstash {
     include ::elasticsearch::ganglia
