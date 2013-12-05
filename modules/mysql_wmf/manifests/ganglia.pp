@@ -15,46 +15,48 @@ class mysql_wmf::ganglia(
 
     # FIXME: this belongs in ganglia.pp, not here.
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '8.04') == 0 {
-        file {
-            '/etc/ganglia':
+        file { '/etc/ganglia':
                 ensure => directory,
-                owner  => root,
-                group  => root,
-                mode   => '0755';
-            '/etc/ganglia/conf.d':
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0755',
+        }
+        file { '/etc/ganglia/conf.d':
                 ensure => directory,
-                owner  => root,
-                group  => root,
-                mode   => '0755';
-            '/usr/lib/ganglia/python_modules':
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0755',
+        }
+        file { '/usr/lib/ganglia/python_modules':
                 ensure => directory,
-                owner  => root,
-                group  => root,
-                mode   => '0755';
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0755',
         }
     }
 
-    file {
-        '/usr/lib/ganglia/python_modules/DBUtil.py':
+    file { '/usr/lib/ganglia/python_modules/DBUtil.py':
             require => File['/usr/lib/ganglia/python_modules'],
             source  => 'puppet:///modules/mysql_wmf/ganglia/plugins/DBUtil.py',
             notify  => Service['gmond'],
-            owner  => root,
-            group  => root,
-            mode   => '0644';
-        '/usr/lib/ganglia/python_modules/mysql.py':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+    }
+    file { '/usr/lib/ganglia/python_modules/mysql.py':
             require => File['/usr/lib/ganglia/python_modules'],
             source  => 'puppet:///modules/mysql_wmf/ganglia/plugins/mysql.py',
             notify  => Service['gmond'],
-            owner  => root,
-            group  => root,
-            mode   => '0644';
-        '/etc/ganglia/conf.d/mysql.pyconf':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+    }
+    file { '/etc/ganglia/conf.d/mysql.pyconf':
             require => File['/usr/lib/ganglia/python_modules'],
             content => template('mysql_wmf/mysql.pyconf.erb'),
             notify  => Service['gmond'],
-            owner  => root,
-            group  => root,
-            mode   => '0644';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
     }
 }

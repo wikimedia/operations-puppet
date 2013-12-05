@@ -10,5 +10,5 @@ class mysql_wmf::monitor::percona inherits mysql_wmf {
     monitor_service { 'mysql replication heartbeat': description => 'MySQL Replication Heartbeat', check_command => 'nrpe_check_mysql_slave_heartbeat', critical => false }
     monitor_service { 'mysql slave delay': description => 'MySQL Slave Delay', check_command => 'nrpe_check_mysql_slave_delay', critical => false }
     monitor_service { 'mysql processlist': description => 'MySQL Processlist', check_command => 'nrpe_pmp_check_mysql_processlist', critical => false }
-    monitor_service { "mysql innodb": description => "MySQL InnoDB", check_command => "nrpe_pmp_check_mysql_innodb", critical => false }
+    monitor_service { 'mysql innodb': description => 'MySQL InnoDB', check_command => 'nrpe_pmp_check_mysql_innodb', critical => false }
 }

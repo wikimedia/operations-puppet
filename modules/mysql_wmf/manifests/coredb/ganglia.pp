@@ -11,30 +11,31 @@ class mysql_wmf::coredb::ganglia(
 
     # Ganglia
     package { 'python-mysqldb':
-        ensure => present;
+        ensure => present,
     }
 
-    file {
-        '/usr/lib/ganglia/python_modules/DBUtil.py':
+    file { '/usr/lib/ganglia/python_modules/DBUtil.py':
             require => File['/usr/lib/ganglia/python_modules'],
             source  => 'puppet:///modules/mysql_wmf/ganglia/plugins/DBUtil.py',
             notify  => Service['gmond'],
-            owner  => root,
-            group  => root,
-            mode   => '0644';
-        '/usr/lib/ganglia/python_modules/mysql.py':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+    }
+    file { '/usr/lib/ganglia/python_modules/mysql.py':
             require => File['/usr/lib/ganglia/python_modules'],
             source  => 'puppet:///modules/mysql_wmf/ganglia/plugins/mysql.py',
             notify  => Service['gmond'],
-            owner  => root,
-            group  => root,
-            mode   => '0644';
-        '/etc/ganglia/conf.d/mysql.pyconf':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+    }
+    file{ '/etc/ganglia/conf.d/mysql.pyconf':
             require => File['/usr/lib/ganglia/python_modules'],
             content => template('mysql_wmf/mysql.pyconf.erb'),
             notify  => Service['gmond'],
-            owner  => root,
-            group  => root,
-            mode   => '0644';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
     }
 }

@@ -31,23 +31,23 @@ class mysql_wmf(
         # to write to read_only=1 databases.
         if ($db_cluster !~ /fund/) {
             include passwords::misc::scripts
-            file {
-                '/root/.my.cnf':
-                    owner   => root,
-                    group   => root,
+            file { '/root/.my.cnf':
+                    owner   => 'root',
+                    group   => 'root',
                     mode    => '0400',
-                    content => template('mysql_wmf/root.my.cnf.erb');
-                '/etc/init.d/pt-heartbeat':
-                    owner  => root,
-                    group  => root,
+                    content => template('mysql_wmf/root.my.cnf.erb'),
+            }
+            file { '/etc/init.d/pt-heartbeat':
+                    owner  => 'root',
+                    group  => 'root',
                     mode   => '0555',
-                    source => 'puppet:///modules/mysql_wmf/pt-heartbeat.init';
+                    source => 'puppet:///modules/mysql_wmf/pt-heartbeat.init',
             }
             service { 'pt-heartbeat':
                 ensure    => running,
                 require   => [ File['/etc/init.d/pt-heartbeat'], Package[percona-toolkit] ],
                 subscribe => File['/etc/init.d/pt-heartbeat'],
-                hasstatus => false;
+                hasstatus => false,
             }
             include mysql_wmf::monitor::percona
             if ($db_cluster =~ /^m1/) {
@@ -57,10 +57,10 @@ class mysql_wmf(
     }
 
     file { '/usr/local/bin/master_id.py':
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/mysql_wmf/master_id.py'
+        source => 'puppet:///modules/mysql_wmf/master_id.py',
     }
 
     class { 'mysql_wmf::ganglia': mariadb => $mariadb; }
@@ -75,43 +75,43 @@ class mysql_wmf::mysqluser {
 }
 
 class mysql_wmf::datadirs {
-    file {
-        '/a/sqldata':
-            ensure  => directory,
-            owner   => mysql,
-            group   => mysql,
-            mode    => '0755',
-            require => User['mysql'];
-        '/a/tmp':
-            ensure  => directory,
-            owner   => mysql,
-            group   => mysql,
-            mode    => '0755',
-            require => User['mysql'];
+    file { '/a/sqldata':
+        ensure  => directory,
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0755',
+        require => User['mysql'],
+    }
+    file { '/a/tmp':
+        ensure  => directory,
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0755',
+        require => User['mysql'],
     }
 }
 
 class mysql_wmf::pc::conf inherits mysql_wmf {
     file { '/etc/my.cnf':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        content => template('mysql_wmf/paresercache.my.cnf.erb')
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('mysql_wmf/paresercache.my.cnf.erb'),
     }
     file { '/etc/mysql/my.cnf':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/mysql_wmf/empty-my.cnf'
+        source => 'puppet:///modules/mysql_wmf/empty-my.cnf',
     }
 }
 
 class mysql_wmf::mysqlpath {
     file { '/etc/profile.d/mysqlpath.sh':
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/mysql_wmf/mysqlpath.sh'
+        source => 'puppet:///modules/mysql_wmf/mysqlpath.sh',
     }
 }
 
@@ -120,11 +120,11 @@ class mysql_wmf::mysqlpath {
 class mysql_wmf::client {
     if versioncmp($::lsbdistrelease, '12.04') >= 0 {
         package { 'mysql-client-5.5':
-            ensure => latest;
+            ensure => latest,
         }
     } else {
         package { 'mysql-client-5.1':
-            ensure => latest;
+            ensure => latest,
         }
     }
 }
@@ -135,12 +135,11 @@ class mysql_wmf::slow_digest {
     $digest_host = 'db9.pmtpa.wmnet'
     $digest_db = 'query_digests'
 
-    file {
-        '/usr/local/bin/send_query_digest.sh':
-            owner   => root,
-            group   => root,
-            mode    => '0500',
-            content => template('mysql_wmf/send_query_digest.sh.erb');
+    file { '/usr/local/bin/send_query_digest.sh':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0500',
+        content => template('mysql_wmf/send_query_digest.sh.erb'),
     }
 
     if $mysql_wmf::db_cluster {
@@ -150,7 +149,7 @@ class mysql_wmf::slow_digest {
             require => File['/usr/local/bin/send_query_digest.sh'],
             user    => root,
             minute  => '*/20',
-            hour    => '*';
+            hour    => '*',
         }
         cron { 'tcp_query_digest':
             ensure  => present,
@@ -158,7 +157,7 @@ class mysql_wmf::slow_digest {
             require => File['/usr/local/bin/send_query_digest.sh'],
             user    => root,
             minute  => [5, 25, 45],
-            hour    => '*';
+            hour    => '*',
         }
     }
 }
