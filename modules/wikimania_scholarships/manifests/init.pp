@@ -33,7 +33,7 @@ class wikimania_scholarships(
     $smtp_host    = 'localhost'
 ) {
 
-    include passwords::mysql::wikimania_scholarship,
+    include passwords::mysql::wikimania_scholarships,
         webserver::php5,
         webserver::php5-mysql
 
