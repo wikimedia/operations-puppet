@@ -33,6 +33,7 @@ fi
 
 cat <<EOF >$runbase.conf~
 server.modules = (
+  "mod_setenv",
   "mod_access",
   "mod_accesslog",
   "mod_alias",
