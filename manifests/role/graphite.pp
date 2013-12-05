@@ -10,6 +10,7 @@ class role::graphite {
             },
         },
 
+        # Aggregation methods for whisper files.
         storage_aggregation => {
             'min'     => {
                 pattern           => '\.(lower|min)$',
@@ -25,9 +26,6 @@ class role::graphite {
                 pattern           => '\.(count|sum)$',
                 xFilesFactor      => 0,
                 aggregationMethod => 'sum',
-            },
-            'default' => {
-                xFilesFactor      => 0.2,
             },
         },
 
