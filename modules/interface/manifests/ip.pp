@@ -1,7 +1,7 @@
 # Expects address without a length, like address => "208.80.152.10", prefixlen => "32"
 define interface::ip($interface, $address, $prefixlen="32") {
     $prefix = "${address}/${prefixlen}"
-    $ipaddr_command = "ip address add ${prefix} dev ${interface}"
+    $ipaddr_command = "ip addr add ${prefix} dev ${interface}"
 
     if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
         # Use augeas to add an 'up' command to the interface
