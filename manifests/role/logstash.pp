@@ -8,6 +8,10 @@ class role::logstash {
 
     deployment::target { 'elasticsearchplugins': }
 
+    @monitor_group { 'logstash_eqiad':
+        description => 'eqiad logstash',
+    }
+
     class { '::elasticsearch':
         multicast_group      => '224.2.2.5',
         master_eligible      => true,
