@@ -146,10 +146,6 @@ sub tag_carrier {
 		if (req.http.host ~ "(^(en|ur)\.(zero|m)|^(zero|m))\.wikipedia\.") {
 			set req.http.X-CS = "410-01";
 		}
-	} else if (req.http.X-CS2 == "404-01") {
-		if (req.http.host ~ "(^([a-zA-Z0-9-]+)\.(zero|m)|^(zero|m))\.wikipedia\.") {
-			set req.http.X-CS = "404-01";
-		}
 	} else if (req.http.X-CS2 == "510-11") {
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.wikipedia\.") {
