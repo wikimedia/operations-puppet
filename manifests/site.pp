@@ -2752,6 +2752,7 @@ node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
 
 node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     include standard
+    include role::logstash
 
     include groups::wikidev
     include accounts::aaron
