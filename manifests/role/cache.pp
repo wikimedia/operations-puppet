@@ -885,7 +885,7 @@ class role::cache {
 				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 			},
 			2 => {
-				"backend" => flatten(values($role::cache::configuration::backends[$::realm]['bits']))
+				"backend" => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits'])))
 			}
 		}
 
