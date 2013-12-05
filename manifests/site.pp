@@ -2746,7 +2746,7 @@ node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
     sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard
-    include role::elasticsearch
+    include role::elasticsearch::server
     class { "lvs::realserver": realserver_ips => [ "10.2.2.30" ] }
 }
 

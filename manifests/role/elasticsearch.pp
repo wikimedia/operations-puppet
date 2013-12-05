@@ -47,11 +47,11 @@ class role::elasticsearch::config {
     }
 }
 
-# = Class: role::elasticsearch
+# = Class: role::elasticsearch::server
 #
 # This class sets up Elasticsearch in a WMF-specific way.
 #
-class role::elasticsearch inherits role::elasticsearch::config {
+class role::elasticsearch::server inherits role::elasticsearch::config {
 
     # Install
     class { '::elasticsearch':
