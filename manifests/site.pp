@@ -2754,6 +2754,10 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     include accounts::aaron
     include accounts::bd808
 
+    if $::hostname =~ /^logstash100[13]$/ {
+        $ganglia_aggregator = true
+    }
+
     sudo_user { ['aaron', 'bd808']:  # RT 6366
         privileges => ['ALL = NOPASSWD: ALL'],
     }
