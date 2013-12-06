@@ -2747,18 +2747,17 @@ node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
 }
 
 node /^logstash100[1-3]\.eqiad\.wmnet$/ {
+    $cluster = 'logstash'
+    if $::hostname =~ /^logstash100[13]$/ {
+        $ganglia_aggregator = true
+    }
+
     include standard
     include role::logstash
 
     include groups::wikidev
     include accounts::aaron
     include accounts::bd808
-
-    $cluster = 'logstash'
-
-    if $::hostname =~ /^logstash100[13]$/ {
-        $ganglia_aggregator = true
-    }
 
     sudo_user { ['aaron', 'bd808']:  # RT 6366
         privileges => ['ALL = NOPASSWD: ALL'],
