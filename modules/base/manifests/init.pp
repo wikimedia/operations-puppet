@@ -367,6 +367,7 @@ class base::tcptweaks {
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
 class base::firewall {
+    include network::constants
     include ferm
 
     ferm::conf { 'main':
@@ -375,20 +376,25 @@ class base::firewall {
         source  => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
 
+    $defscontent = $::realm ? {
+        'labs'  => template("base/firewall/defs.production.erb", "base/firewall/defs.labs.erb"),
+        default => template("base/firewall/defs.${::realm}.erb"),
+    }
+
     ferm::conf { 'defs':
         ensure  => present,
         prio    => '00',
-        source  => "puppet:///modules/base/firewall/defs.${::realm}",
+        content => $defscontent,
     }
 
     ferm::rule { 'bastion-ssh':
         ensure => present,
-        rule   => 'proto tcp dport ssh saddr $BASTION ACCEPT;',
+        rule   => 'proto tcp dport ssh saddr $BASTION_HOSTS ACCEPT;',
     }
 
     ferm::rule { 'icinga-all':
         ensure => present,
-        rule   => 'saddr $ICINGA ACCEPT;',
+        rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
     }
 }
 
