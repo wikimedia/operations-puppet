@@ -1,6 +1,5 @@
-# setup Bugzilla instance for WMF
+# this class sets up a custom Bugzilla instance for Wikimedia
 # also see README.md
-
 class bugzilla {
 
     # system role for motd
