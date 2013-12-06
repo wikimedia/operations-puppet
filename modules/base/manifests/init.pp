@@ -234,8 +234,9 @@ class base::remote-syslog {
             ($::hostname != "nfs2") and
             ($::hostname != "aluminium") and
             ($::instancename != 'deployment-bastion') {
+
         package { rsyslog:
-            ensure => latest;
+            ensure => present,
         }
 
         # remote syslog destination
