@@ -17,7 +17,6 @@ class role::fundraising::civicrm {
 	include standard-noexim,
 		accounts::mhernandez,
 		accounts::zexley,
-		accounts::sahar,
 		accounts::pcoombe,
 		admins::fr-tech,
 		admins::roots,
