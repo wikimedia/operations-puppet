@@ -15,4 +15,7 @@
 	echo $PARSOIDPID > /var/run/parsoid.pid
 	wait $PARSOIDPID
 	rm /var/run/parsoid.pid
-) &
+) < /dev/null > /dev/null 2>&1 &
+# Prevent init script to hang when executing from ssh by redirecting file
+# descriptors. The FDs are passed to child and thus are kept open preventing
+# ssh command from terminating.
