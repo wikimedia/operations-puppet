@@ -2,11 +2,11 @@
 # like admin audit log and community metrics
 
 define bugzilla::logmail (
-    $bz_path     = '/srv/org/wikimedia/bugzilla',
     $script_name,
-    $script_user = 'www-data',
-    $rcpt_address,
     $sndr_address,
+    $rcpt_address,
+    $bz_path     = '/srv/org/wikimedia/bugzilla',
+    $script_user = 'www-data',
     $hour        = '0',
     $minute      = '0',
     $monthday    = '*',
