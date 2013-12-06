@@ -1,6 +1,6 @@
-# setup Apache site and SSL certs for WMF Bugzilla
-# requires: {'webserver::php5': ssl => true; } on node
-
+# this class sets up the Apache site config and SSL certs
+# for a Wikimedia Bugzilla installation
+# it expects {'webserver::php5': ssl => true; } on the node
 class bugzilla::apache ($svc_name, $attach_svc_name, $docroot){
 
     # separate cert and ServerName for attachments for security
