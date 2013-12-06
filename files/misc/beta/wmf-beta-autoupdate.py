@@ -20,9 +20,6 @@ import sys
 PATH_MWCORE = '/home/wikipedia/common/php-master'
 PATH_MWEXT = '/home/wikipedia/common/php-master/extensions'
 
-# Beta cluster instance used to run Parsoid daemon
-PARSOID_INSTANCE = 'deployment-parsoid2.pmtpa.wmflabs'
-
 
 def main():
     """
@@ -147,14 +144,11 @@ def update_parsoid_deps():
 def restart_parsoid():
     """Restart parsoid daemon via ssh"""
     logger = logging.getLogger(__name__)
-    logger.info("restarting parsoid on %s", PARSOID_INSTANCE)
+    logger.info("restarting parsoid")
 
-    parsoid_restart_cmd = [
-        'ssh', PARSOID_INSTANCE,
-        'sudo -u root /etc/init.d/parsoid restart']
-    logger.info("Executing %s", parsoid_restart_cmd)
+    parsoid_init_cmd = '/usr/local/bin/wmf-beta-parsoid-remote.sh'
     try:
-        cmd = subprocess.Popen(args=parsoid_restart_cmd)
+        cmd = subprocess.Popen(args=[parsoid_init_cmd, 'restart'])
     except OSError, exception:
         logger.error(exception)
         return False
@@ -164,9 +158,7 @@ def restart_parsoid():
     logger.info('Checking parsoid is running...')
 
     try:
-        cmd = subprocess.Popen([
-            'ssh', PARSOID_INSTANCE,
-            '/etc/init.d/parsoid', 'status'])
+        cmd = subprocess.Popen(args=[parsoid_init_cmd, 'status'])
         status_exit_code = cmd.wait()
     except OSError, exception:
         logger.error(exception)
