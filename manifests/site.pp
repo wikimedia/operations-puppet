@@ -2754,6 +2754,8 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     include accounts::aaron
     include accounts::bd808
 
+    $cluster = 'logstash'
+
     if $::hostname =~ /^logstash100[13]$/ {
         $ganglia_aggregator = true
     }
