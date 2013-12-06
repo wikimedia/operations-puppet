@@ -932,11 +932,7 @@ node "erbium.eqiad.wmnet" inherits "base_analytics_logging_node" {
 
 # es1 equad
 node /es100[1-4]\.eqiad\.wmnet/ {
-    if $::hostname =~ /^es100[234]/ {
-        class { role::coredb::es1 : mariadb => true }
-    } else {
-        include role::coredb::es1
-    }
+    class { role::coredb::es1 : mariadb => true }
 }
 
 node /es[1-4]\.pmtpa\.wmnet/ {
