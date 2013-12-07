@@ -163,6 +163,12 @@ class toollabs::exec_environ {
       'tclthread',
       'tdom',                        # Bug 56995
 
+      # Fonts
+      'fonts-ipafont-gothic',        # for vCat tool (Japanese fonts)
+      'fonts-unfonts-core',          # for vCat tool (Korean fonts)
+      'ttf-dejavu-core',             # for vCat tool (default font)
+      'ttf-indic-fonts',             # for vCat tool (fonts for many Indic languages)
+
       # Other packages
       'adminbot',
       'csh',                        # common user request
