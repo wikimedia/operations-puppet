@@ -175,14 +175,11 @@ class toollabs::exec_environ {
         'php5-sqlite',
         'php5-xsl',
 
-        # tcl packages
-        'mysqltcl',
-        'tcl-tls',                     # Bug 56995
-        'tcl-trf',                     # Bug 56995
-        'tclcurl',
-        'tcllib',
-        'tclthread',
-        'tdom',                        # Bug 56995
+        # Fonts
+        'fonts-ipafont-gothic',        # for vCat tool (Japanese fonts)
+        'fonts-unfonts-core',          # for vCat tool (Korean fonts)
+        'ttf-dejavu-core',             # for vCat tool (default font)
+        'ttf-indic-fonts',             # for vCat tool (fonts for many Indic languages)
 
         # Other packages
         'adminbot',
