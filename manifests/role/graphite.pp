@@ -1,4 +1,6 @@
 class role::graphite {
+    include ::passwords::graphite
+
     class { '::graphite':
         storage_schemas     => {
             # Retain data at a one-minute resolution for one year and at a
@@ -88,6 +90,9 @@ class role::graphite {
 
     class { '::graphite::web':
         server_name => 'graphite.wikimedia.org',
+        admin_user  => $::passwords::graphite::user,
+        admin_pass  => $::passwords::graphite::pass,
+        secret_key  => $::passwords::graphite::secret_key,
     }
 
     nrpe::monitor_service { 'carbon':

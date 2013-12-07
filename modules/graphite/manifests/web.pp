@@ -17,13 +17,25 @@
 # [*memcached_size*]
 #   Size of memcached store, in megabytes (default: 200).
 #
+# [*admin_user*]
+#   Username for Django admin account (default: 'admin').
+#
+# [*admin_pass*]
+#   Password for Django admin account.
+#
+# [*secret_key*]
+#   This is used to provide cryptographic signing, and should be set to a
+#   unique, unpredictable value.
+#
 class graphite::web(
+    $admin_pass,
+    $secret_key,
     $server_name     = '_',
     $uwsgi_processes = 4,
     $memcached_size  = 200,
+    $admin_user      = 'admin',
 ) {
     include ::graphite
-    include ::passwords::graphite
 
     package { [ 'memcached', 'python-memcache' ]: }
     package { 'graphite-web': }
@@ -87,5 +99,17 @@ class graphite::web(
             },
         },
         require => File['/var/run/graphite-web', '/var/log/graphite-web'],
+    }
+
+    file { '/sbin/graphite-auth':
+        source  => 'puppet:///modules/graphite/graphite-auth',
+        mode    => '0755',
+        require => Uwsgi::App['graphite-web'],
+    }
+
+    exec { 'create_graphite_admin':
+        command => "/sbin/graphite-auth set $admin_user $admin_pass",
+        unless  => "/sbin/graphite-auth check $admin_user $admin_pass",
+        require => File['/sbin/graphite-auth'],
     }
 }
