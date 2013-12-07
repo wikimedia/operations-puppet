@@ -31,6 +31,7 @@ class graphite::web(
     file { '/etc/graphite/local_settings.py':
         content => template('graphite/local_settings.py.erb'),
         require => Package['graphite-web'],
+        notify  => Service['uwsgi'],
     }
 
     nginx::site { 'graphite':
