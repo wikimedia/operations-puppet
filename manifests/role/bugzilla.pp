@@ -1,8 +1,8 @@
 # manifests/role/bugzilla.pp
 
-class role::bugzilla {
+class role::bugzilla::old {
 
-    system::role { "role::bugzilla": description => "Bugzilla server" }
+    system::role { 'role::bugzilla::old': description => '(old/current) Bugzilla server' }
 
     include misc::bugzilla::server,
             misc::bugzilla::crons,
@@ -11,3 +11,10 @@ class role::bugzilla {
             misc::bugzilla::auditlog
 
 }
+
+class role::bugzilla {
+
+    system::role { 'role::bugzilla': description => '(new/upcoming) Bugzilla server' }
+    class {'bugzilla': }
+}
+
