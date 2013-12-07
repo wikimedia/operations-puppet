@@ -1,14 +1,18 @@
 class role::graphite {
     include ::passwords::graphite
 
+    system::role { 'role::graphite':
+        description => 'real-time metrics processor',
+    },
+
     class { '::graphite':
         storage_schemas     => {
-            # Retain data at a one-minute resolution for one year and at a
-            # ten-minute resolution for ten years. It's clear & easy to remember.
-            # Avoid making this more complicated that it needs to be.
+            # Retain aggregated data at a one-minute resolution for one week; at
+            # five-minute resolution for one month; at 15-minute resolution for
+            # one year; and at one-hour resolution for five years.
             'default' => {
                 pattern    => '.*',
-                retentions => '1m:1y,10m:10y',
+                retentions => '1m:7d,5m:30d,15m:1y,1h:5y',
             },
         },
 
