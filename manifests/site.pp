@@ -1263,7 +1263,7 @@ node "kaulen.wikimedia.org" {
     $gid = 500
 
     include standard,
-            role::bugzilla,
+            role::bugzilla::old,
             admins::roots
 
 }
@@ -3001,7 +3001,8 @@ node "zirconium.wikimedia.org" {
         role::planet,
         misc::outreach::civicrm, # contacts.wikimedia.org
         misc::etherpad_lite,
-        role::wikimania_scholarships
+        role::wikimania_scholarships,
+        role::bugzilla
 
     interface::add_ip6_mapped { "main": interface => "eth0" }
 }
