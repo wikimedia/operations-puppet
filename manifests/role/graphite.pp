@@ -93,10 +93,11 @@ class role::graphite {
     }
 
     class { '::graphite::web':
-        server_name => 'graphite.wikimedia.org',
-        admin_user  => $::passwords::graphite::user,
-        admin_pass  => $::passwords::graphite::pass,
-        secret_key  => $::passwords::graphite::secret_key,
+        server_name       => 'graphite.wikimedia.org',
+        admin_user        => $::passwords::graphite::user,
+        admin_pass        => $::passwords::graphite::pass,
+        secret_key        => $::passwords::graphite::secret_key,
+        documentation_url => '//wikitech.wikimedia.org/wiki/Graphite',
     }
 
     nrpe::monitor_service { 'carbon':

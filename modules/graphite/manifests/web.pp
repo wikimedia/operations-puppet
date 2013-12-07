@@ -27,13 +27,18 @@
 #   This is used to provide cryptographic signing, and should be set to a
 #   unique, unpredictable value.
 #
+# [*documentation_url*]
+#   Overrides the Documentation link used in the header of the Graphite
+#   Composer (default: 'http://graphite.readthedocs.org/').
+#
 class graphite::web(
     $admin_pass,
     $secret_key,
-    $server_name     = '_',
-    $uwsgi_processes = 4,
-    $memcached_size  = 200,
-    $admin_user      = 'admin',
+    $server_name       = '_',
+    $uwsgi_processes   = 4,
+    $memcached_size    = 200,
+    $admin_user        = 'admin',
+    $documentation_url = 'http://graphite.readthedocs.org/',
 ) {
     include ::graphite
 
