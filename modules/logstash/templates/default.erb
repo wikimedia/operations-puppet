@@ -1,0 +1,25 @@
+#####################################################################
+## THIS FILE IS MANAGED BY PUPPET
+## puppet:///modules/logstash/default
+#####################################################################
+
+# Start logstash on boot?
+START=yes
+
+# Java JVM options
+LS_JAVA_OPTS="-Xms<%= @heap_memory_mb %>m -Xmx<%= @heap_memory_mb %>m"
+LS_JAVA_OPTS="${LS_JAVA_OPTS} -Djava.io.tmpdir=/var/lib/logstash"
+
+# Location of configuration files.
+# All files in this directory are concatenated in alphabetical order.
+CONF_DIR=<%= @config_dir %>
+
+# Logstash will look for ruby plugins in the logstash/{inputs,filters,outputs}
+# subdirectories of plugin_dir
+PLUGIN_DIR=/var/lib
+
+# Logstash options
+# Note: the sysv init script prepends these options with "agent -f ${CONF_DIR}"
+LS_OPTS="--log /var/log/logstash/logstash.log"
+LS_OPTS="${LS_OPTS} --pluginpath ${PLUGIN_DIR}"
+LS_OPTS="${LS_OPTS} --filterworkers <%= @filter_workers %>"
