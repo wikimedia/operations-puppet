@@ -1,0 +1,14 @@
+#####################################################################
+## THIS FILE IS MANAGED BY PUPPET
+## puppet:///modules/logstash/default
+#####################################################################
+
+export JAVA_OPTS='-Xms<%= @heap_memory %> -Xmx<%= @heap_memory %>'
+
+# Load the logstash config from a specific file, directory, or a wildcard. If
+# given a directory or wildcard, config files will be read from the directory
+# in alphabetical order.
+export LOGSTASH_CONFIG='<%= @config_dir %>/*.conf'
+
+# Run COUNT filter workers (default: 1)
+export FILTER_WORKERS=<%= @filter_workers %>
