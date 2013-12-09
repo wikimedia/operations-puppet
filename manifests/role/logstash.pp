@@ -1,3 +1,4 @@
+# vim:sw=4 ts=4 sts=4 et:
 @monitor_group { 'logstash_eqiad': description => 'eqiad logstash' }
 
 # == Class: role::logstash
@@ -7,6 +8,8 @@
 class role::logstash {
     include ::elasticsearch::ganglia
     include ::elasticsearch::nagios::check
+    include ::passwords::logstash
+    include ::redis::ganglia
 
     deployment::target { 'elasticsearchplugins': }
 
@@ -19,8 +22,6 @@ class role::logstash {
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
     }
 
-    include ::passwords::logstash
-
     class { '::redis':
         maxmemory         => '1Gb',
         dir               => '/var/run/redis',
@@ -29,5 +30,33 @@ class role::logstash {
         password          => $passwords::logstash::redis,
     }
 
-    include ::redis::ganglia
+
+    class { '::logstash':
+       heap_memory    => '128m',
+       filter_workers => '3',
+    }
+
+    class { '::logstash::input::udp2log':
+        port => '8324'
+    }
+    class { '::logstash::input::syslog':
+        port => '514',
+    }
+    class { '::logstash::input::redis':
+        host => '127.0.0.1',
+        key  => 'logstash',
+    }
+
+    @logstash::conf { 'color-filter':
+        content => 'filter { mutate { gsub => [ "message", "\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]", "" ] } }',
+        priority    => 50,
+    }
+
+    class { '::logstash::output::elasticsearch':
+        host        => '127.0.0.1',
+        replication => 'async',
+        require_tag => 'es',
+        priority    => 90,
+    }
+
 }
