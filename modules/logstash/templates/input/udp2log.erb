@@ -1,0 +1,7 @@
+input {
+  # MediaWiki log stream forwarded by udp2log
+  udp {
+    type => "udp2log"
+    port => <%= @port %>
+  }
+}

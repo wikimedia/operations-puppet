@@ -18,4 +18,34 @@ class role::logstash {
         heap_memory          => '5G',
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
     }
+
+    class { '::logstash':
+       heap_memory    => '128m',
+       filter_workers => '3',
+    }
+
+    class { '::logstash::input::udp2log':
+        port => '8324'
+    }
+    class { '::logstash::input::syslog':
+        port => '514',
+    }
+    class { '::logstash::input::redis':
+        host => '127.0.0.1',
+        key  => 'logstash',
+    }
+
+    @logstash::conf { 'color-filter':
+        content => 'filter { mutate { gsub => [ "message", "\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]", "" ] } }',
+        priority    => 50,
+    }
+
+    class { '::logstash::output::elasticsearch':
+        host        => '127.0.0.1',
+        replication => 'async',
+        require_tag => 'es',
+        priority    => 90,
+    }
+
 }
+# vim:sw=4 ts=4 sts=4 et:
