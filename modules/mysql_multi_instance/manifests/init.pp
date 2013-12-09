@@ -27,6 +27,7 @@ class mysql_multi_instance {
     }
 
     generic::systemuser { 'mysql':
+        name  => 'mysql',
         shell => '/bin/sh',
         home  => '/home/mysql',
     }
