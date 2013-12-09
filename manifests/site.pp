@@ -152,7 +152,7 @@ node /analytics100[2568]\.eqiad\.wmnet/ {
 
 # analytics1009 is the Hadoop standby NameNode
 node "analytics1009.eqiad.wmnet" {
-    # ganglia aggregator for the Ciscos in Analytics cluster.
+    # ganglia aggregator for the Analytics Cluster in Row A
     $ganglia_aggregator = true
 
     # include analytics user accounts
@@ -178,8 +178,8 @@ node "analytics1010.eqiad.wmnet" {
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
 node /analytics10(1[1-9]|20).eqiad.wmnet/ {
-    # ganglia aggregator for the Dells in Analytics cluster.
-    if ($::hostname == 'analytics1011') {
+    # ganglia aggregator for Analytics clustr in Row C
+    if ($::hostname == 'analytics1014') {
         $ganglia_aggregator = true
     }
     # include analytics user accounts
