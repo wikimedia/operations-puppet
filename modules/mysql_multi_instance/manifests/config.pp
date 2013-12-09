@@ -82,21 +82,21 @@
 #   port = 3300
 #
 define mysql_multi_instance::config (
-  $settings,
+    $settings,
 ) {
 
-  if is_hash($settings) {
-    $content = template('mysql_multi_instance/my.conf.cnf.erb')
-  } else {
-    $content = $settings
-  }
+    if is_hash($settings) {
+        $content = template('mysql_multi_instance/my.conf.cnf.erb')
+    } else {
+        $content = $settings
+    }
 
-  file { "/etc/mysql/${name}":
-    ensure  => file,
-    content => $content,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    require => Package['mysql-server'],
-  }
+    file { "/etc/mysql/${name}":
+        ensure  => file,
+        content => $content,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['mysql-server'],
+    }
 }
