@@ -256,59 +256,56 @@ class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $e
     ganglia::view { 'varnishkafka':
         ensure => $ensure,
         graphs => [
-            # Queues:
-            # msgq -> xmit_msgq -> outbuf -> waitresp
+            # delivery report errors
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.varnishkafka\.kafka_drerr',
+                'type'         => 'stack',
+            },
+            # round trip time average
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.rdkafka.brokers..+\.rtt\.avg',
+                'type'         => 'line',
+            },
 
+            # Queues:
+            #   msgq -> xmit_msgq -> outbuf -> waitresp
             # message queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+.msgq_cnt',
+                'metric_regex' => 'kafka.rdkafka.topics..+\.msgq_cnt',
                 'type'         => 'stack',
             },
             # transmit message queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+.xmit_msgq_cnt',
+                'metric_regex' => 'kafka.rdkafka.topics..+\.xmit_msgq_cnt',
                 'type'         => 'stack',
             },
             # output buffer queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+.outbuf_cnt',
+                'metric_regex' => 'kafka.rdkafka.brokers..+\.outbuf_cnt',
                 'type'         => 'stack',
             },
             # waiting for response buffer count
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+.waitresp_cnt',
+                'metric_regex' => 'kafka.rdkafka.brokers..+\.waitresp_cnt',
                 'type'         => 'stack',
             },
 
             # transaction bytes
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+.txbytes',
+                'metric_regex' => 'kafka.rdkafka.topics..+\.txbytes',
                 'type'         => 'stack',
             },
-
             # transaction messages
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+.txmsgs',
-                'type'         => 'stack',
-            },
-
-            # round trip time average
-            {
-                'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.brokers..+.rtt.avg',
-                'type'         => 'line',
-            },
-
-            # delivery report errors
-            {
-                'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.varnishkafka.kafka_drerr',
+                'metric_regex' => 'kafka.rdkafka.topics..+\.txmsgs',
                 'type'         => 'stack',
             },
         ],
