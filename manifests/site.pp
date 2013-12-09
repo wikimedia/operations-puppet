@@ -949,7 +949,7 @@ node /es([89]|10)\.pmtpa\.wmnet/ {
 }
 
 node /es100[5-7]\.eqiad\.wmnet/ {
-    if $::hostname == "es1006" {
+    if $::hostname =~ /^es100[67]/ {
         class { role::coredb::es2 : mariadb => true }
     } else {
         include role::coredb::es2
