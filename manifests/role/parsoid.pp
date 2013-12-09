@@ -8,7 +8,7 @@ class role::parsoid::common {
         'nodejs',
         'npm',
         'build-essential',
-        ]: ensure => latest,
+        ]: ensure => present,
     }
 
     file { '/var/lib/parsoid':
