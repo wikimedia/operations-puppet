@@ -1700,6 +1700,7 @@ class accounts {
 	class asher inherits baseaccount {
 		$username = "asher"
 		$realname = "Asher Feldman"
+		$enabled = false
 		$uid = 561
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -1709,7 +1710,7 @@ class accounts {
 
                         ssh_authorized_key {
 				"afeldman@WMF263s-MacBook-Pro.local":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-dss",
 					key	=> "AAAAB3NzaC1kc3MAAACBAMcz1/0w6tfUkS2RWeLS4voMnMcKf2Q3EVfAcBX818ssY/aGusB/CAl/NuUyPIzTHIE2gd62WYH0Krz+CGZ1qOzAxs+IoB3CjjbulXf0uIatcTu/OSrqoe0hXf6G1UidVl+7Ymomlwb7AMWScZeWKHmECbc5QQjLJ4h/Ply/65P7AAAAFQDJuUJ9zKoPn2GNx22da5s0WSS6gQAAAIAZr4we0xRJRk7pTLO+Ep+GOnccLycZlNctUMTZ5oDlGk9BJT3pjiYE3BXd1k8OwlDiLE37EiLP4oJXIsVXSm0EuN3o65Oi1opB7rV4rL7nbjZQdJUu+UN8ikQPe+3KQsiziupsP8nufgvufvbmQECNLHkYEiZsDdQjhCwHafdjUQAAAIAJX+wEMbR2dNlh/+sX3QTxYLSMuOKSGp9SzPwqyqX82GO4oD7iFKX6mBFYmFLq/JopGwKqxUQKhBhkBLYaCEN0K+DOnkxNz8oeGRx2YvQLfOiBISuHHL0QMy9RfTvGl7eE5JrwE6hkOzN3U2CeI2fHcsosdsL0poDmUz68GpOGTA==";
@@ -3188,7 +3189,7 @@ class admins::roots {
 	include accounts::akosiaris
 	include accounts::andrewb
 	include accounts::ariel
-	include accounts::asher
+	include accounts::asher # disabled
 	include accounts::bblack
 	include accounts::ben # disabled
 	include accounts::brion # shell re-enabled dz 20121004
