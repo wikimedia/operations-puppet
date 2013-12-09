@@ -253,7 +253,7 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
 # == Class misc::monitoring::view::varnishkafka
 #
 class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $ensure = 'present') {
-    ganglia::view { $name:
+    ganglia::view { 'varnishkafka':
         ensure => $ensure,
         graphs => [
             # Queues:
