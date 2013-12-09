@@ -17,4 +17,15 @@ class puppetmaster::labs {
             require => File['/usr/local/sbin/puppetsigner.py'],
             user    => 'root',
     }
+
+    include passwords::openstack::keystone 
+    $labsstatus_password = $passwords::openstack::keystone::keystone_ldap_user_pass
+    $labsstatus_username = 'novaadmin'
+    $labsstatus_region = 'pmtpa'
+    $labsstatus_auth_url = 'http://virt0.wikimedia.org:35357/v2.0'
+    
+    file { '/etc/labsstatus.cfg':
+        ensure => present,
+        content => template('puppetmaster/labsstatus.cfg.erb'),
+    }
 }
