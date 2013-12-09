@@ -107,6 +107,7 @@ class misc::monitoring::views {
     misc::monitoring::view::kafka { 'kafka':
         kafka_broker_host_regex   => 'analytics102[12].*',
     }
+    class { 'misc::monitoring::view::varnishkafka': }
 
     class { 'misc::monitoring::view::navigation_timing': }
     class { 'misc::monitoring::view::static_assets': }
@@ -248,6 +249,73 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
         ],
     }
 }
+
+# == Class misc::monitoring::view::varnishkafka
+#
+class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $ensure = 'present') {
+    ganglia::view { $name:
+        ensure => $ensure,
+        graphs => [
+            # Queues:
+            # msgq -> xmit_msgq -> outbuf -> waitresp
+
+            # message queue count
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.rdkafka.topics..+.msgq_cnt',
+                'type'         => 'stack',
+            },
+            # transmit message queue count
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.rdkafka.topics..+.xmit_msgq_cnt',
+                'type'         => 'stack',
+            },
+            # output buffer queue count
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.rdkafka.topics..+.outbuf_cnt',
+                'type'         => 'stack',
+            },
+            # waiting for response buffer count
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.rdkafka.topics..+.waitresp_cnt',
+                'type'         => 'stack',
+            },
+
+            # transaction bytes
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.rdkafka.topics..+.txbytes',
+                'type'         => 'stack',
+            },
+
+            # transaction messages
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.rdkafka.topics..+.txmsgs',
+                'type'         => 'stack',
+            },
+
+            # round trip time average
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.rdkafka.brokers..+.rtt.avg',
+                'type'         => 'line',
+            },
+
+            # delivery report errors
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.varnishkafka.kafka_drerr',
+                'type'         => 'stack',
+            },
+        ],
+    }
+}
+
+
 
 # == Class misc::monitoring::view::analytics::data
 # View for analytics data flow.
