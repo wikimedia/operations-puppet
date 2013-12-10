@@ -98,6 +98,7 @@ class toollabs::exec_environ {
       # Python libraries
       'libboost-python1.48.0',
       'python-apport',
+      'python-babel',                # Bug 58220
       'python-beautifulsoup',        # For valhallasw.
       'python-bottle',               # Bug 56995
       'python-celery',
@@ -148,6 +149,7 @@ class toollabs::exec_environ {
       'php5-cli',
       'php5-curl',
       'php5-gd',
+      'php5-intl',                   # Bug 55652
       'php5-mcrypt',
       'php5-mysql',
       'php5-redis',
