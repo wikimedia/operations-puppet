@@ -47,7 +47,7 @@ def main():
             LOG.warning('service-restart must be run within a repository or'
                         ' --repo must be provided')
             raise SystemExit(1)
-    cmd = ("sudo salt-call -l quiet --out=json publish.runner "
+    cmd = ("sudo salt-call -l quiet --out json publish.runner "
            "deploy.restart '{0}','{1}'")
     p = subprocess.Popen(cmd.format(repo, args.batch),
                          shell=True,
