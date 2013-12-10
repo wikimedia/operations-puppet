@@ -68,7 +68,8 @@ sub vcl_recv {
 	call mobile_redirect;
 	call pass_requests;
 
-	if (req.url ~ "^/wiki/Special:CentralAutoLogin/" ||
+	if (req.request == "POST" ||
+	    req.url ~ "^/wiki/Special:CentralAutoLogin/" ||
 	    req.url ~ "^/w/index.php?title=Spezial:Zentrale_automatische_Anmeldung/") {
 		set req.backend = backend_random;
 		set req.hash_ignore_busy = true;
