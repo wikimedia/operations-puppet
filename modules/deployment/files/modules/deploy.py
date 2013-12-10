@@ -84,6 +84,7 @@ def get_config(repo):
     config.setdefault('sync_script', 'shared.py')
     config.setdefault('upstream', None)
     config.setdefault('shadow_reference', False)
+    config.setdefault('service_name', None)
     return config
 
 
@@ -392,3 +393,21 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
         if ret != 0:
             return 50
     return 0
+
+
+def restart(repo):
+    '''
+    Restart the service associated with this repo.
+
+    CLI Example::
+
+        salt -G 'cluster:appservers' deploy.restart 'slot0'
+    '''
+    config = get_config(repo)
+    _check_in('deploy.restart', repo)
+
+    if config['service_name']:
+        status = __salt__['service.restart'](config['service_name'])
+        return {'status': status}
+    else:
+        return {}
