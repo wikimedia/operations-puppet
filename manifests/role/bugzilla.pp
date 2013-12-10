@@ -16,6 +16,6 @@ class role::bugzilla {
 
     system::role { 'role::bugzilla': description => '(new/upcoming) Bugzilla server' }
 
-    include bugzilla
+    include ::bugzilla
 }
 
