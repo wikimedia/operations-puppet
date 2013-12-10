@@ -72,7 +72,7 @@ class role::otrs {
     class { 'spamassassin':
         required_score => '3.5',
         use_bayes => '1',
-        bayes_auto_learn => '1',
+        bayes_auto_learn => '0',
         short_report_template => 'true',
         otrs_rule_scores => 'true',
         spamd_user => 'otrs',
