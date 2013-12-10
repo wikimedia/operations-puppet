@@ -60,19 +60,18 @@ def _record_function(serv, function, timestamp, minion, ret_data):
 
 def _record(serv, function, timestamp, minion, ret_data):
     repo = ret_data['repo']
+    redis_key = 'deploy:{0}:minions:{1}'.format(repo, minion)
+    if function == "deploy.restart":
+        if 'status' in ret_data:
+            serv.hset(redis_key, 'restart_status', ret_data['status'])
+            serv.hset(redis_key, 'restart_timestamp', timestamp)
     if function == "deploy.fetch":
         if ret_data['status'] == 0:
-            serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                      'fetch_tag', ret_data['tag'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'fetch_status', ret_data['status'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'fetch_timestamp', timestamp)
+            serv.hset(redis_key, 'fetch_tag', ret_data['tag'])
+        serv.hset(redis_key, 'fetch_status', ret_data['status'])
+        serv.hset(redis_key, 'fetch_timestamp', timestamp)
     if function == "deploy.checkout":
         if ret_data['status'] == 0:
-            serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                      'tag', ret_data['tag'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'checkout_status', ret_data['status'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'checkout_timestamp', timestamp)
+            serv.hset(redis_key, 'tag', ret_data['tag'])
+        serv.hset(redis_key, 'checkout_status', ret_data['status'])
+        serv.hset(redis_key, 'checkout_timestamp', timestamp)

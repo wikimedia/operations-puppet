@@ -29,12 +29,13 @@ def _check_in(function, repo):
     serv.sadd('deploy:repos', repo)
     # Ensure this minion exists in the set of minions
     serv.sadd('deploy:{0}:minions'.format(repo), minion)
+    minion_key = 'deploy:{0}:minions:{1}'.format(repo, minion)
     if function == "deploy.fetch":
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'fetch_checkin_timestamp', timestamp)
+        serv.hset(minion_key, 'fetch_checkin_timestamp', timestamp)
     elif function == "deploy.checkout":
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'checkout_checkin_timestamp', timestamp)
+        serv.hset(minion_key, 'checkout_checkin_timestamp', timestamp)
+    elif function == "deploy.restart":
+        serv.hset(minion_key, 'restart_checkin_timestamp', timestamp)
 
 
 def _map_args(repo, args):
@@ -84,6 +85,7 @@ def get_config(repo):
     config.setdefault('sync_script', 'shared.py')
     config.setdefault('upstream', None)
     config.setdefault('shadow_reference', False)
+    config.setdefault('service_name', None)
     return config
 
 
@@ -392,3 +394,21 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
         if ret != 0:
             return 50
     return 0
+
+
+def restart(repo):
+    '''
+    Restart the service associated with this repo.
+
+    CLI Example::
+
+        salt -G 'cluster:appservers' deploy.restart 'slot0'
+    '''
+    config = get_config(repo)
+    _check_in('deploy.restart', repo)
+
+    if config['service_name']:
+        status = __salt__['service.restart'](config['service_name'])
+        return {'status': status}
+    else:
+        return {}
