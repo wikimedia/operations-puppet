@@ -2,7 +2,7 @@
 
 # == Class: role::logstash
 #
-# Provisions LogStash and ElasticSearch.
+# Provisions LogStash, Redis, and ElasticSearch.
 #
 class role::logstash {
     include ::elasticsearch::ganglia
@@ -18,4 +18,15 @@ class role::logstash {
         heap_memory          => '5G',
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
     }
+
+    include ::passwords::logstash
+
+    class { "::redis":
+        maxmemory         => '5Gb',
+        persist           => undef,
+        redis_replication => undef,
+        password          => $passwords::logstash::redis,
+    }
+
+    include ::redis::ganglia
 }
