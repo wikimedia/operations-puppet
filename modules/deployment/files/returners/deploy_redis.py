@@ -12,6 +12,9 @@ are the defaults:
 
 import redis
 import time
+import logging
+
+log = logging.getLogger(__name__)
 
 
 def __virtual__():
@@ -35,9 +38,12 @@ def returner(ret):
     Return data to a redis data store
     '''
     function = ret['fun']
+    log.debug('Entering deploy_redis returner')
+    log.debug('function: {0}'.format(function))
     if not function.startswith('deploy.'):
         return False
     ret_data = ret['return']
+    log.debug('ret_data: {0}'.format(ret_data))
     minion = ret['id']
     timestamp = time.time()
     serv = _get_serv()
@@ -60,19 +66,18 @@ def _record_function(serv, function, timestamp, minion, ret_data):
 
 def _record(serv, function, timestamp, minion, ret_data):
     repo = ret_data['repo']
+    minion_key = 'deploy:{0}:minions:{1}'.format(repo, minion)
     if function == "deploy.fetch":
         if ret_data['status'] == 0:
-            serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                      'fetch_tag', ret_data['tag'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'fetch_status', ret_data['status'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'fetch_timestamp', timestamp)
-    if function == "deploy.checkout":
+            serv.hset(minion_key, 'fetch_tag', ret_data['tag'])
+        serv.hset(minion_key, 'fetch_status', ret_data['status'])
+        serv.hset(minion_key, 'fetch_timestamp', timestamp)
+    elif function == "deploy.checkout":
         if ret_data['status'] == 0:
-            serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                      'tag', ret_data['tag'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'checkout_status', ret_data['status'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
-                  'checkout_timestamp', timestamp)
+            serv.hset(minion_key, 'tag', ret_data['tag'])
+        serv.hset(minion_key, 'checkout_status', ret_data['status'])
+        serv.hset(minion_key, 'checkout_timestamp', timestamp)
+    elif function == "deploy.restart":
+        if 'status' in ret_data:
+            serv.hset(minion_key, 'restart_status', ret_data['status'])
+            serv.hset(minion_key, 'restart_timestamp', timestamp)

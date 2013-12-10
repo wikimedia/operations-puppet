@@ -37,7 +37,7 @@ def fetch(repo):
     print "Fetch completed"
 
 
-def checkout(repo, grain, reset=False):
+def checkout(repo, reset=False):
     '''
     Checkout from a master, for the specified repo
     '''
@@ -51,3 +51,24 @@ def checkout(repo, grain, reset=False):
     client.cmd(grain, cmd, expr_form='grain', arg=arg, timeout=1,
                ret='deploy_redis')
     print "Checkout completed"
+
+
+def restart(repo, batch='5'):
+    '''
+    Restart the service associated with this repo. If no service is associated
+    this call will do nothing.
+    '''
+    grain = __get_conf(repo, 'deployment_repo_grains')
+    if not grain:
+        return "No grain defined for this repo."
+    grain = "deployment_target:" + grain
+    client = salt.client.LocalClient(__opts__['conf_file'])
+    cmd = 'deploy.restart'
+    # comma in the tuple is a workaround for a bug in salt
+    arg = (repo,)
+    ret = []
+    for data in client.cmd_batch(grain, cmd, expr_form='grain', arg=arg,
+                                 timeout=30, ret='deploy_redis', batch=batch):
+        ret.append(data)
+    print "Restart completed"
+    return ret
