@@ -81,14 +81,11 @@ class role::deployment::config {
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Parsoid',
         'checkout_module_calls' => {
             'parsoid.config_symlink'  => ['__REPO__'],
-            'parsoid.restart_parsoid' => ['__REPO__'],
         },
+        'service_name'          => 'parsoid',
     },
     'parsoid/config'                 => {
         'grain'                 => 'parsoid',
-        'checkout_module_calls' => {
-            'parsoid.restart_parsoid' => ['__REPO__'],
-        },
     },
     'eventlogging/EventLogging'      => {
         'grain'    => 'eventlogging',
