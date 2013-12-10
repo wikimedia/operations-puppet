@@ -244,6 +244,7 @@ class role::deployment::deployment_servers::production {
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.restart *",
     ],
     group => "wikidev",
   }
@@ -273,6 +274,7 @@ class role::deployment::deployment_servers::labs {
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.restart *",
     ],
     group => "project-deployment-prep",
   }
@@ -302,6 +304,7 @@ class role::deployment::deployment_servers::sartoris {
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.restart *",
     ],
     group => "project-sartoris",
   }
