@@ -674,6 +674,7 @@ class icinga::monitor::jobqueue {
   nrpe::monitor_service { 'check_job_queue':
     description => 'check_job_queue',
     nrpe_command => '/usr/lib/nagios/plugins/check_job_queue',
+    timeout => 30,
   }
 }
 
