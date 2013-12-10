@@ -3,9 +3,6 @@
 
 class bugzilla {
 
-    # system role for motd
-    system::role { 'role::bugzilla': description => 'Bugzilla server' }
-
     file { [ '/srv/org','/srv/org/wikimedia','/srv/org/wikimedia/bugzilla']:
             ensure => directory,
             owner  => 'root',
