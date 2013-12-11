@@ -360,6 +360,11 @@ class misc::monitoring::view::navigation_timing {
     ganglia::view { 'Navigation Timing':
         graphs => [
             {
+                title        => 'totalPageLoadTime: navStart to loadEventEnd',
+                host_regex   => 'client-side',
+                metric_regex => '^browser.totalPageLoadTime.(desktop|mobile)_median$',
+            },
+            {
                 title        => 'pageSpeed: domInteractive to loadEventEnd',
                 host_regex   => 'client-side',
                 metric_regex => '^browser.pageSpeed.(desktop|mobile)_median$',
