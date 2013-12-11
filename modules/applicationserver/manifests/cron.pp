@@ -17,5 +17,10 @@ class applicationserver::cron {
 			user => root,
 			minute => 34,
 			ensure => present;
+		"bug58299":   # Hack! Fix the bug and kill this job. --Bd808
+			command => 'find /tmp -name URL\?\?\?\?\?\? -mmin +60  -delete',
+			user => root,
+			minute => 42,
+			ensure => present;
 	}
 }
