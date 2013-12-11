@@ -1,0 +1,15 @@
+Offline Content Generation
+------------
+Offline Content Generation is a collection of HTTP services running
+under Node.JS providing some sort of document rendering process.
+
+Collection
+    * https://www.mediawiki.org/wiki/Extension:Collection
+
+    Collection is a MediaWiki extension that bundles wiki articles into
+    books. These books can be submitted to a server running the
+    ocg-collection role for rendering into PDF / ZIM / ePUB formats.
+
+    This role uses Redis as a queueing / status system, Swift for
+    backend storage, LaTeX as a renderer, and a variety of other tools
+    for media manipulation.
