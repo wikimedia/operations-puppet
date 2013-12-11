@@ -387,24 +387,33 @@ class misc::deployment::vars ($system = 'scap') {
 		$mw_statsd_host = 'deployment-bastion.pmtpa.wmflabs'
 		$mw_statsd_port = 2003
 
-		file { '/data/project/apache':
-			ensure => directory,
-			owner  => mwdeploy,
-			group  => mwdeploy,
-			mode   => '0775',
-		}
+        # The Apache directories must belong to the mwdeploy user known on
+        # deployment-bastion.pmtpa.wmflabs. That is the instance used by
+        # Jenkins to deploy and updte the code.
+        # Since /data/project is shared and 'mwdeploy' can have a different uid
+        # on each instance, running owner => mwdeploy would change the UID and
+        # break Jenkins job with some permission denied.
+        # See also bug 58325
+        if ( $::instancename == 'deployment-bastion' ) {
+            file { '/data/project/apache':
+                ensure => directory,
+                owner  => mwdeploy,
+                group  => mwdeploy,
+                mode   => '0775',
+            }
 
-		file { '/data/project/apache/common-local':
-			ensure => directory,
-			owner  => mwdeploy,
-			group  => mwdeploy,
-			mode   => '0775',
-		}
+            file { '/data/project/apache/common-local':
+                ensure => directory,
+                owner  => mwdeploy,
+                group  => mwdeploy,
+                mode   => '0775',
+            }
 
-		file { $mw_common_source:
-			ensure => link,
-			target => '/data/project/apache/common-local',
-		}
+            file { $mw_common_source:
+                ensure => link,
+                target => '/data/project/apache/common-local',
+            }
+        }
 	}
 
 	file {
