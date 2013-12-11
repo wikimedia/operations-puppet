@@ -77,10 +77,10 @@ do
 		# Copy the LC files
 		echo "Completed. Copying LC files to $MW_COMMON_SOURCE"
 		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MW_COMMON_SOURCE/php-"$mwVerNum"/cache/l10n
-		echo "Syncing to Apaches"
+		echo "Syncing to Apaches at `date`"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
 		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
-		echo "All done"
+		echo "All done at `date`"
 	else
 		$BINDIR/dologmsg "!log LocalisationUpdate failed ($mwVerNum) at `date`"
 		echo "FAILED"
