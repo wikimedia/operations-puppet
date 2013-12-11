@@ -3005,7 +3005,9 @@ node "zirconium.wikimedia.org" {
         misc::outreach::civicrm, # contacts.wikimedia.org
         misc::etherpad_lite,
         role::wikimania_scholarships,
-        role::bugzilla
+        role::bugzilla,
+        groups::wikidev,
+        accounts::bd808 # rt 6448
 
     interface::add_ip6_mapped { "main": interface => "eth0" }
 }
