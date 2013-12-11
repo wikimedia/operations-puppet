@@ -95,6 +95,13 @@ class role::deployment::config {
         'grain'    => 'eventlogging',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging',
     },
+    'ocg/ocg' => {
+        'grain'                 => 'ocg',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection/deploy',
+        'checkout_module_calls' => {
+            'service.restart' => ['ocg'],
+        },
+    },
     'fluoride/fluoride'              => {
         'grain'    => 'fluoride',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
@@ -114,20 +121,6 @@ class role::deployment::config {
     'analytics/kraken'               => {
         'grain'    => 'analytics-kraken',
         'upstream' => 'https://gerrit.wikimedia.org/r/p/analytics/kraken',
-    },
-    'ocg/collection'                 => {
-        'grain'                 => 'ocg-collection',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Collection/OfflineContentGenerator',
-        'checkout_module_calls' => {
-            'service.restart' => ['ocg-collection'] 
-        },
-    },
-    'ocg/config'                     => {
-        'grain'                 => 'ocg',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/operations/ocg-config',
-        'checkout_module_calls' => {
-            'service.restart' => ['ocg-collection'] 
-        },
     },
     'scholarships/scholarships'      => {
         'grain'    => 'scholarships',

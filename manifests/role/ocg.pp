@@ -1,91 +1,42 @@
 # vim: set ts=4 et sw=4:
 # role/ocg.pp
-# offline content generator
+# Offline content generator for the MediaWiki collection extension
 
 # Virtual resources for the monitoring server
-@monitor_group { "ocg_eqiad": description => "offline content generator eqiad" }
+@monitor_group { 'ocg_eqiad': description => 'offline content generator eqiad' }
 
 class role::ocg {
-    system::role { "ocg": description => "offline content generator base" }
-    
-    deployment::target { 'ocg': }
+    system::role { 'ocg': description => 'offline content generator for MediaWiki Collection extension' }
 
-    include standard
+    include ocg
+    include passwords::redis
 
-    package {
-        [ 'nodejs' ]:
-            ensure => latest;
+    class { 'ocg':
+        redis_host      => 'rdb1002.eqiad.wmnet',
+        redis_password  => $passwords::redis::main_password,
+        temp_dir        => '/srv/deployment/ocg/tmp',
     }
 
-    file { '/etc/ocg':
-        ensure  => link,
-        target  => '/srv/deployment/ocg/config/'
+    monitor_service { 'ocg':
+        description   => 'Offline Content Generation - Collection',
+        check_command => "check_http_on_port!80",
     }
 }
 
 class role::ocg::test {
-    system::role { "ocg-test": description => "offline content generator testing" }
+    system::role { 'ocg-test': description => 'offline content generator for MediaWiki Collection extension (testing)' }
+
+    include ocg
+    include passwords::redis
+
+    class { 'ocg':
+        redis_host      => 'localhost',
+        redis_password  => $passwords::redis::ocg_test_password,
+        temp_dir        => '/srv/deployment/ocg/tmp',
+    }
 
     class { 'redis':
-        maxmemory => '500Mb',
-        password  => $passwords::redis::ocg_test_password,
+        maxmemory       => '500Mb',
+        password        => $passwords::redis::ocg_test_password,
     }
-}
-
-class role::ocg::collection {
-    system::role { "ocg-collection": description => "offline concent generator for Collection extension" }
-    
-    deployment::target { 'ocg-collection': }
-    
-    package { [
-        'imagemagick',
-        'inkscape',
-        'latex-xcolor',
-        'lmodern',
-        'texlive-fonts-recommended',
-        'texlive-latex-recommended',
-        'texlive-xetex',
-        'unzip',
-        'zip',
-        ]: ensure => latest;
-    }
-    
-    file { '/var/lib/ocg':
-        ensure => directory,
-        owner  => ocg,
-        group  => wikidev,
-        mode   => '2775',
-    }
-    
-    file { '/var/lib/ocg/collection':
-        ensure => link,
-        target => '/srv/deployment/ocg/collection',
-    }
-
-    file { '/etc/init/ocg-collection.conf':
-        ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0555',
-        source => 'puppet:///files/misc/ocg-collection.conf',
-    }
-    
-    generic::systemuser { 'ocg':
-        name          => 'ocg',
-        default_group => 'ocg',
-        home          => '/var/lib/ocg',
-    }
-
-    service { 'ocg-collection':
-        ensure     => running,
-        hasstatus  => false,
-        hasrestart => false,
-        enable     => true,
-        require    => File['/etc/init/ocg-collection.conf'],
-    }
-
-    #monitor_service { 'ocg-collection':
-    #    description   => 'Offline Content Generation - Collection',
-    #    check_command => 'check_http_on_port!17080',
-    #}
 }
