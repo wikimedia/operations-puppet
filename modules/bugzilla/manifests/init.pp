@@ -15,6 +15,7 @@
 # - the apache site config
 # - the SSL certs
 # - the /srv/org/wikimedia dir
+# - the bugzilla localconfig file
 # - cronjobs and scripts:
 #  - auditlog mail for bz admins, bash
 #  - mail report for community metrics, bash
@@ -25,13 +26,23 @@
 # to the bugzilla path and clone our modifications
 # from the wikimedia/bugzilla/modifcations repo
 #
-class bugzilla {
+class bugzilla ( $db_host, $db_name, $db_user ) {
 
+    # document root
     file { [ '/srv/org','/srv/org/wikimedia','/srv/org/wikimedia/bugzilla']:
             ensure => directory,
             owner  => 'root',
             group  => 'root',
             mode   => '0755';
+    }
+
+    # bugzilla localconfig
+    file { '/srv/org/wikimedia/bugzilla/localconfig':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'www-data',
+        mode    => '0440',
+        content => template('bugzilla/localconfig.erb'),
     }
 
     # basic apache site and certs
