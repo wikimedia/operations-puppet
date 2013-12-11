@@ -3273,7 +3273,6 @@ class admins::restricted {
 	include accounts::austin # access revoked
 	include accounts::avar
 	include accounts::bastique # access revoked
-	include accounts::bd808    # rt 6448
 	include accounts::daniel # access revoked
 	include accounts::dab
 	include accounts::dartar
