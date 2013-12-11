@@ -27,7 +27,6 @@ import "role/analytics/*.pp"
 import "search.pp"
 import "snapshots.pp"
 import "sudo.pp"
-import "svn.pp"
 import "swift.pp"
 import "webserver.pp"
 import "zuul.pp"
@@ -189,7 +188,7 @@ node "antimony.wikimedia.org" {
         groups::wikidev,
         accounts::demon,
         role::gitblit,
-        svn::server
+        role::subversion
 
     # full root for gerrit admin (RT-3698)
     sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
@@ -222,7 +221,7 @@ node "bast1001.wikimedia.org" {
     interface::add_ip6_mapped { "main": interface => "eth0" }
 
     include standard,
-        svn::client,
+        subversion::client,
         admins::roots,
         admins::mortals,
         admins::restricted,
@@ -867,7 +866,7 @@ node "fenari.wikimedia.org" {
     interface::add_ip6_mapped { "main": interface => "eth0" }
 
     include role::applicationserver::maintenance,
-        svn::client,
+        subversion::client,
         nfs::netapp::home,
         admins::roots,
         admins::mortals,
@@ -919,7 +918,7 @@ node "formey.wikimedia.org" {
     $ssh_x11_forwarding = "no"
     include standard,
         webserver::php5,
-        svn::server,
+        role::subversion,
         backup::client,
         role::deployment::test
 
