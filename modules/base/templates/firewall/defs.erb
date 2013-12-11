@@ -21,7 +21,7 @@ special_hosts = scope.lookupvar('network::constants::special_hosts')
 
 # Realm: <%= realm %>, # Site: <%= site %>, # Sphere: <%= sphere %>, # Network: <%= network %>
 				<%-
-				descr = "#{site.upcase()}_#{sphere.upcase()}_#{network.upcase()}"
+				descr = "#{site.upcase()}_#{sphere.upcase()}_#{network.upcase()}".gsub('-', '_').gsub('+', '_')
 				familydescrs = Array.new()
 				families.each_pair do |family, address|
 					familydescr = "#{descr}_#{family.upcase()}"
