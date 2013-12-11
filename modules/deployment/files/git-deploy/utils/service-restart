@@ -67,7 +67,10 @@ def main():
     minion_data = minion_data['local']
     for i in minion_data:
         for minion, data in i.items():
-            LOG.info('{0}: {1}'.format(minion, data['status']))
+            try:
+                LOG.info('{0}: {1}'.format(minion, data['status']))
+            except KeyError:
+                LOG.info('{0}: No status available'.format(minion))
 
 if __name__ == "__main__":
     main()
