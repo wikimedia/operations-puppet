@@ -212,13 +212,6 @@ class role::lucene {
 		class pool5 {
 			class { "role::lucene::front_end::common": search_pool => "search_pool5" }
 		}
-		# Search frontend for the beta cluster
-		class poolbeta {
-			if $::realm == 'labs' {
-				require role::lucene::beta
-			}
-			class { "role::lucene::front_end::common": search_pool => "search_poolbeta" }
-		}
 		class prefix {
 			class { "role::lucene::front_end::common": search_pool => "search_prefix" }
 		}

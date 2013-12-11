@@ -456,7 +456,6 @@ class lvs::configuration {
 			'search_pool3' => {},
 			'search_pool4' => {},
 			'search_pool5' => {},
-			'search_poolbeta' => {},
 			'search_prefix' => {},
 			'swift' => {
 				'pmtpa' => '10.4.1.103',  # deployment-upload.pmtpa.wmflabs
