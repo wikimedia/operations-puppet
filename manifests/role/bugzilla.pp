@@ -16,6 +16,11 @@ class role::bugzilla {
 
     system::role { 'role::bugzilla': description => '(new/upcoming) Bugzilla server' }
 
-    include ::bugzilla
+    class { 'bugzilla':
+        db_host => 'db1001.eqiad.wmnet',
+        db_name => 'bugzilla4',
+        db_user => 'bugs',
+    }
+
 }
 
