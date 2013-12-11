@@ -7,6 +7,8 @@
 class role::logstash {
     include ::elasticsearch::ganglia
     include ::elasticsearch::nagios::check
+    include ::passwords::logstash
+    include ::redis::ganglia
 
     deployment::target { 'elasticsearchplugins': }
 
@@ -19,14 +21,11 @@ class role::logstash {
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
     }
 
-    include ::passwords::logstash
-
     class { '::redis':
         maxmemory         => '1Gb',
+        dir               => '/var/run/redis',
         persist           => undef,
         redis_replication => undef,
         password          => $passwords::logstash::redis,
     }
-
-    include ::redis::ganglia
 }
