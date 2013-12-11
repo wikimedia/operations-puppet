@@ -58,14 +58,14 @@ for meta in iter(zsock.recv_json, ''):
         if 'loadEventEnd' in event and 'domInteractive' in event:
             event['pageSpeed'] = (
                 event['loadEventEnd'] - event['domInteractive'])
-        if 'loadEventEnd' in event and 'navigationStart' in event:
-            event['totalPageLoadTime'] = (
-                event['loadEventEnd'] - event['navigationStart'])
+        if 'loadEventEnd' in event:
+            event['totalPageLoadTime'] = event['loadEventEnd']
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
 
     bits_cache = meta.get('recvFrom', '').split('.')[0]
+    wiki = meta.get('wiki', '')
 
     for metric in metrics:
         value = event.get(metric, 0)
@@ -76,3 +76,6 @@ for meta in iter(zsock.recv_json, ''):
             sock.sendto(stat.encode('utf-8'), addr)
             stat = 'browser.%s.%s:%s|ms' % (metric, bits_cache, value)
             sock.sendto(stat.encode('utf-8'), addr)
+            if wiki == 'eswiki':
+                stat = 'browser.%s.%s.%s:%s|ms' % (wiki, metric, site, value)
+                sock.sendto(stat.encode('utf-8'), addr)
