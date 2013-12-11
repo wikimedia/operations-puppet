@@ -586,6 +586,10 @@ class role::cache {
 			},
 		}
 
+		if $::realm == 'production' {
+			$storage_size_main = 300
+		}
+
 		include standard,
 			nrpe
 
@@ -612,7 +616,7 @@ class role::cache {
 			storage => $::realm ? {
 				'production' => $::hostname ? {
 					/^cp10[5-9][0-9]$/ => '-s main1=persistent,/srv/sda3/varnish.main1,100G -s main1b=persistent,/srv/sda3/varnish.main1b,200G -s main2=persistent,/srv/sdb3/varnish.main2,100G -s main2b=persistent,/srv/sdb3/varnish.main2b,200G',
-					/^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+					/^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,100G",
 					default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
 				},
 				'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
