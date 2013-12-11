@@ -2032,12 +2032,13 @@ node "potassium.eqiad.wmnet" {
 
 node "rhodium.eqiad.wmnet" {
     $gid = 500
-    include role::ocg,
-        role::ocg::collection,
-        role::ocg::test,
+    include role::ocg::test,
         groups::wikidev,
         admins::roots,
-        accounts::mwalker
+        accounts::mwalker,
+        accounts::cscott,
+        accounts::maxsem,
+        accounts::anomie
 }
 
 node "sanger.wikimedia.org" {

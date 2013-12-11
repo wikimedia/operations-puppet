@@ -1,0 +1,10 @@
+###########################################################
+### THIS FILE IS MANAGED BY PUPPET
+### /modules/ocg/templates/ocg.rsyslog.conf.erb
+#####################################################################
+
+# Rsyslog configuration file for the MediaWiki Collection extension OCG
+# Funnels all OCG related syslog activity to /var/log/ocg
+
+:programname,startswith,"mw-ocg" /var/log/ocg/ocg.log
+&~
