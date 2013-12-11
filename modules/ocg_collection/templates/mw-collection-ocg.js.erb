@@ -1,0 +1,22 @@
+/* ---------------------------------------------------------------------
+ * THIS FILE IS MANAGED BY PUPPET
+ * /modules/ocg_collection/templates/mw-collection-ocg.js.erb
+ *
+ * It is intended to be included by the main configuration file
+ * in the deploy repository. This just allows puppetization of
+ * sensitive parameters that are better defined via puppet.
+ * ------------------------------------------------------------------ */
+
+modules.export = {
+	"coordinator": {
+		"hostname": "<%= @host_name %>"
+	},
+	"redis": {
+		"host": <%= @redis_host %>
+		"port": <%= @redis_port %>
+		"password": <%= @redis_password %>
+	},
+	"backend": {
+		"ocg_collection_temp_dir": <%= @temp_dir %>
+	}
+};

@@ -1,0 +1,15 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/ocg/logrotate
+#####################################################################
+
+/var/log/ocg/*.log {
+       daily
+       olddir /var/log/ocg/archive
+       notifempty
+       maxage 180
+       rotate 1000
+       dateext
+       compress
+       missingok
+}
