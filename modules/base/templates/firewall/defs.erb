@@ -1,0 +1,39 @@
+<%-
+external_networks = scope.lookupvar('network::constants::external_networks')
+all_networks = scope.lookupvar('network::constants::all_networks')
+all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
+special_hosts = scope.lookupvar('network::constants::special_hosts')
+-%>
+
+@def $EXTERNAL_NETWORKS = (<%- external_networks.each do |external_net| -%><%= external_net %> <% end -%>);
+@def $ALL_NETWORKS = (<%- all_networks.each do |net| -%><%= net %> <% end -%>);
+
+<%- special_hosts.each_pair do |realm, services | -%>
+	<%- if @realm != realm then next end -%>
+	<%- services.each_pair do |service, addresses| -%>
+@def $<%= service.upcase() -%> = (<%- addresses.each do |address| -%><%= address %> <% end -%>);
+	<%- end -%>
+<%- end -%>
+<%- all_network_subnets.each_pair do |realm, sites| -%>
+	<%- sites.each_pair do |site, spheres| -%>
+		<%- spheres.each_pair do |sphere, networks | -%>
+			<%- networks.each_pair do |network, families| -%>
+
+# Realm: <%= realm %>, # Site: <%= site %>, # Sphere: <%= sphere %>, # Network: <%= network %>
+				<%-
+				descr = "#{site.upcase()}_#{sphere.upcase()}_#{network.upcase()}"
+				familydescrs = Array.new()
+				families.each_pair do |family, address|
+					familydescr = "#{descr}_#{family.upcase()}"
+					familydescrs << familydescr -%>
+@def $<%= familydescr %> = (<%= address %>);
+				<%- end -%>
+@def $<%= descr %> = (<%- familydescrs.each do |fd|%>$<%= fd %> <% end -%>);
+			<%- end -%>
+		<%- end -%>
+	<%- end -%>
+<%- end -%>
+
+@def $INTERNAL_V4 = (10.0.0.0/8);
+@def $INTERNAL_V6 = (2620:0:100::/56);
+@def $INTERNAL = ($INTERNAL_V4 $INTERNAL_V6);
