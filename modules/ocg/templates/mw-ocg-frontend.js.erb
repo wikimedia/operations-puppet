@@ -1,0 +1,22 @@
+/* ---------------------------------------------------------------------
+ * THIS FILE IS MANAGED BY PUPPET
+ * /modules/ocg_collection/templates/mw-collection-ocg.js.erb
+ *
+ * It is intended to be included by the main configuration file
+ * in the deploy repository. This just allows puppetization of
+ * sensitive parameters that are better defined via puppet.
+ * ------------------------------------------------------------------ */
+
+module.exports = function (config) {
+	config.coordinator.hostname = "<%= @host_name %>";
+
+	config.redis.host = "<%= @redis_host %>";
+	config.redis.port = "<%= @redis_port %>";
+	config.redis.password = "<%= @redis_password %>";
+
+	config.frontend.port = <%= @service_port %>;
+	config.backend.temp_dir = "<%= @temp_dir %>";
+
+	// Import the public local settings
+	return require("<%= @deploy_path %>/LocalSettings.js")(config)
+}
