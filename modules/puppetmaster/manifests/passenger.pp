@@ -66,4 +66,8 @@ class puppetmaster::passenger(
         mode   => '0664',
         source => 'puppet:///modules/puppetmaster/logrotate-passenger',
     }
+    # installed by apache2.x-common and would override our settings
+    file { '/etc/logrotate.d/apache2':
+        ensure => absent,
+    }
 }
