@@ -27,7 +27,7 @@ class role::gdash {
 
     file { '/etc/apache2/sites-enabled/gdash':
         ensure => link,
-        target => '/etc/apache2/sites-available/graphite',
+        target => '/etc/apache2/sites-available/gdash',
         notify => Service['httpd'],
     }
 }
