@@ -73,6 +73,7 @@ class apache::params {
     $mod_passenger_package = 'libapache2-mod-passenger'
     $mod_python_package    = 'libapache2-mod-python'
     $mod_wsgi_package      = 'libapache2-mod-wsgi'
+    $mod_uwsgi_package     = 'libapache2-mod-uwsgi'
     $mod_auth_kerb_package = 'libapache2-mod-auth-kerb'
     $apache_dev            = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
     $vdir                  = '/etc/apache2/sites-enabled/'
