@@ -106,7 +106,7 @@ class role::graphite {
 
     file {
         '/etc/apache2/sites-available/graphite':
-            content => template('apache/graphite.apache.erb');
+            content => template('graphite/graphite.apache.erb');
         '/etc/apache2/sites-enabled/graphite':
             target  => '/etc/apache2/sites-available/graphite';
     }
