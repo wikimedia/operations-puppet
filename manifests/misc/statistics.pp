@@ -522,6 +522,13 @@ class misc::statistics::db::mongo {
     }
 }
 
+# installs node.js on stat1
+class misc::statistics::nodejs {
+	package { "nodejs":
+		ensure => latest,
+	}
+}
+
 # == Class misc::statistics::gerrit_stats
 #
 # Installs diederik's gerrit-stats python

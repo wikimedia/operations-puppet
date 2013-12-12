@@ -19,6 +19,8 @@ class role::statistics::cruncher inherits role::statistics {
 		misc::statistics::plotting,
 		# Aaron Halfaker (halfak) wants MongoDB for his project.
 		misc::statistics::db::mongo,
+		# Mark Holmquist added node.js for EventLogging scripts
+		misc::statistics::nodejs,
 		misc::udp2log::udp_filter,
 		# generate gerrit stats from stat1.
 		misc::statistics::gerrit_stats,
