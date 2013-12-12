@@ -2642,12 +2642,14 @@ node "stat1002.eqiad.wmnet" {
     # over from there.
     include admins::privatedata
 
-    # add ezachte and spetrea to stats group so they can
+    include accounts::manybubbles  # rt 5886
+    include accounts::ironholds    # rt 6452
+
+    # add ezachte, spetrea, ironholds to stats group so they can
     # access files created by stats user cron jobs.
     User<|title == ezachte|>     { groups +> [ "stats" ] }
     User<|title == spetrea|>     { groups +> [ "stats" ] }
-
-    include accounts::manybubbles  # rt 5886
+    User<|title == ironholds|>   { groups +> [ "stats" ] }
 
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
