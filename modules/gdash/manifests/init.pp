@@ -2,14 +2,9 @@
 #
 # Gdash is a Sinatra webapp that generates Graphite dashboard views
 # based on YAML configuration files. This Puppet module provisions Gdash
-# with uWSGI as application container and Nginx as reverse proxy.
+# with uWSGI as application container.
 #
 # === Parameters
-#
-# [*server_name*]
-#   Name of virtual server. May contain wildcards.
-#   See <http://nginx.org/en/docs/http/server_names.html>.
-#   Defaults to '_', which is catch-all.
 #
 # [*template_source*]
 #   Local file system path or Puppet URI for directory containing
@@ -40,7 +35,6 @@
 #  }
 #
 class gdash(
-    $server_name     = '_',
     $template_source = 'puppet:///modules/gdash/templates-empty',
     $install_dir     = '/srv/deployment/gdash/gdash',
     $graphite_host,
@@ -97,9 +91,5 @@ class gdash(
                 'die-on-term'    => true,
             },
         },
-    }
-
-    nginx::site { 'gdash':
-        content => template('gdash/gdash.nginx.erb'),
     }
 }
