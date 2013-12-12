@@ -1,4 +1,4 @@
-title   "HTTP 4xx Responses/hour -1week"
+title   "HTTP 4xx Responses/hour -2month"
 linewidth 2
 linemode "connected"
 hide_legend "false"
