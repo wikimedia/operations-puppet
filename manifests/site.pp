@@ -2648,6 +2648,7 @@ node "stat1002.eqiad.wmnet" {
     User<|title == spetrea|>     { groups +> [ "stats" ] }
 
     include accounts::manybubbles  # rt 5886
+    include accounts::ironholds    # rt 6452
 
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
