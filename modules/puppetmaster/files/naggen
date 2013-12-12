@@ -28,6 +28,29 @@ require 'getoptlong'
 
 require 'puppet/file_bucket/dipper'
 
+# see commit cd5645ff5421acb8a376b1fa2b9302de8af032d3
+# in 2.7.x, make to_s deterministic
+class Nagios::Base
+    def to_s
+        str = "define #{self.type} {\n"
+
+        @parameters.keys.sort.each { |param|
+            value = @parameters[param]
+            str += %{\t%-30s %s\n} % [ param,
+                if value.is_a? Array
+                    value.join(",").sub(';', '\;')
+                else
+                    value.sub(';', '\;')
+                end
+                ]
+        }
+
+        str += "}\n"
+
+        str
+    end
+end
+
 # Monkey-patch the puppet resources so we can easily convert them to nagios
 # config snippets.
 class Puppet::Parser::Resource
