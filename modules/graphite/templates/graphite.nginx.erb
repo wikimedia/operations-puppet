@@ -2,7 +2,7 @@
 # This file is managed by Puppet
 
 upstream graphite_web {
-    server unix:/var/run/graphite-web/graphite-web.sock;
+    server <%= @listen_socket[0] == '/' ? "unix:#{@listen_socket}" : @listen_socket %>;
 }
 
 server {

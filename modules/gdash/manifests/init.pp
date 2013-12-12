@@ -16,6 +16,10 @@
 # [*graphite_host*]
 #   Graphs will be rendered by constructing URLs to this Graphite host.
 #
+# [*listen_socket*]
+#   Serve Gdash via this socket, specified as host:port or /path/to/uds.sock.
+#   Default: '/var/run/gdash/gdash.sock'.
+#
 # [*options*]
 #   Gdash configuration options, supplied as a Puppet hash.
 #   See <https://github.com/ripienaar/gdash/blob/master/README.md> for
@@ -37,6 +41,7 @@
 class gdash(
     $template_source = 'puppet:///modules/gdash/templates-empty',
     $install_dir     = '/srv/deployment/gdash/gdash',
+    $listen_socket   = '/var/run/gdash/gdash.sock',
     $graphite_host,
     $options,
 ) {
@@ -83,7 +88,7 @@ class gdash(
         require  => File['/etc/gdash/gdash.yaml', '/etc/gdash/config.ru', '/var/run/gdash'],
         settings => {
             uwsgi => {
-                'socket'         => '/var/run/gdash/gdash.sock',
+                'socket'         => $listen_socket,
                 'stats'          => '/var/run/gdash/gdash-stats.sock',
                 'rack'           => '/etc/gdash/config.ru',
                 'post-buffering' => 4096,  # required by the Rack specification.

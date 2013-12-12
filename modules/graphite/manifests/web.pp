@@ -5,6 +5,10 @@
 #
 # === Parameters
 #
+# [*listen_socket*]
+#   Serve Graphite via this socket, specified as host:port or /path/to/uds.sock.
+#   Default: '/var/run/graphite-web/graphite-web.sock'.
+#
 # [*uwsgi_processes*]
 #   Number of uWSGI workers to run.
 #
@@ -28,6 +32,7 @@
 class graphite::web(
     $admin_pass,
     $secret_key,
+    $listen_socket     = '/var/run/graphite-web/graphite-web.sock',
     $uwsgi_processes   = 4,
     $memcached_size    = 200,
     $admin_user        = 'admin',
@@ -85,7 +90,7 @@ class graphite::web(
         settings => {
             uwsgi => {
                 'plugins'     => 'python',
-                'socket'      => '/var/run/graphite-web/graphite-web.sock',
+                'socket'      => $listen_socket,
                 'stats'       => '/var/run/graphite-web/graphite-web-stats.sock',
                 'wsgi-file'   => '/usr/share/graphite-web/graphite.wsgi',
                 'die-on-term' => true,

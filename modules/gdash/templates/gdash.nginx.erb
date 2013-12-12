@@ -2,7 +2,7 @@
 # This file is managed by Puppet
 
 upstream gdash {
-    server unix:/var/run/gdash/gdash.sock;
+    server <%= @listen_socket[0] == '/' ? "unix:#{@listen_socket}" : @listen_socket %>;
 }
 
 server {
