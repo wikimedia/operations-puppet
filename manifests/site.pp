@@ -752,11 +752,21 @@ node /^db104[68]\.eqiad\.wmnet/ {
     }
 }
 
-## researchdb
+## researchdb s1
 node 'db1047.eqiad.wmnet' {
     class { role::coredb::researchdb :
         mariadb => true,
         innodb_file_per_table => true,
+    }
+}
+
+## researchdb s5
+node 'db1017.eqiad.wmnet' {
+    class { role::coredb::researchdb :
+        shard => "s5",
+        mariadb => true,
+        innodb_file_per_table => true,
+        innodb_log_file_size => "1000M"
     }
 }
 
@@ -841,10 +851,9 @@ node 'db1057.eqiad.wmnet' {
 
 ## 2013-04-10: py using db101[45] and db1023 and db1033 for testing
 ## not currently in production and/or hardware issues
-# db1017 -- disk mount issue
 # db1023 -- ok
 # db1033 -- bad ram dimm
-node /^db10(17|23|33)\.eqiad\.wmnet/ {
+node /^db10(23|33)\.eqiad\.wmnet/ {
     include standard
 }
 
