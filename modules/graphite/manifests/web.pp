@@ -1,15 +1,9 @@
 # == Class: graphite::web
 #
 # Configures the Graphite webapp, a Django webapp for browsing metric data and
-# constructing graphs. Configures Nginx as HTTP server / reverse proxy and
-# uWSGI as the application server.
+# constructing graphs, with uWSGI as the application server.
 #
 # === Parameters
-#
-# [*server_name*]
-#   Name of virtual server. May contain wildcards.
-#   See <http://nginx.org/en/docs/http/server_names.html>.
-#   Defaults to '_', which is catch-all.
 #
 # [*uwsgi_processes*]
 #   Number of uWSGI workers to run.
@@ -34,7 +28,6 @@
 class graphite::web(
     $admin_pass,
     $secret_key,
-    $server_name       = '_',
     $uwsgi_processes   = 4,
     $memcached_size    = 200,
     $admin_user        = 'admin',
@@ -51,9 +44,6 @@ class graphite::web(
         notify  => Service['uwsgi'],
     }
 
-    nginx::site { 'graphite':
-        content => template('graphite/graphite.nginx.erb'),
-    }
 
     file { [
         '/var/lib/graphite-web',
@@ -103,7 +93,7 @@ class graphite::web(
                 'processes'   => $uwsgi_processes,
             },
         },
-        require => File['/var/run/graphite-web', '/var/log/graphite-web'],
+        require  => File['/var/run/graphite-web', '/var/log/graphite-web'],
     }
 
     file { '/sbin/graphite-auth':
@@ -113,8 +103,8 @@ class graphite::web(
     }
 
     exec { 'create_graphite_admin':
-        command => "/sbin/graphite-auth set $admin_user $admin_pass",
-        unless  => "/sbin/graphite-auth check $admin_user $admin_pass",
+        command => "/sbin/graphite-auth set ${admin_user} ${admin_pass}",
+        unless  => "/sbin/graphite-auth check ${admin_user} ${admin_pass}",
         require => File['/sbin/graphite-auth'],
     }
 }
