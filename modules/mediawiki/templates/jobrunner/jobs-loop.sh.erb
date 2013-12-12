@@ -219,6 +219,9 @@ else
 	(runJobsLoopService "ParsoidCacheUpdateJobOnDependencyChange" "n"  <%= procs_per_iobound_type %> ) &
 	# High priority for updates to edited pages themselves
 	(runJobsLoopService "ParsoidCacheUpdateJobOnEdit" "n"  $((<%= procs_per_iobound_type %> * 2)) ) &
+
+	# GWToolset
+	(runJobsLoopService "gwtoolsetUploadMetadataJob gwtoolsetUploadMediafileJob gwtoolsetGWTFileBackendCleanupJob" "n"  <%= procs_per_iobound_type %> ) &
 fi
 
 wait
