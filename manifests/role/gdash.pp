@@ -21,7 +21,7 @@ class role::gdash {
 
     file {
         '/etc/apache2/sites-available/graphite':
-            content => template('apache/gdash.wikimedia.org.erb');
+            content => template('apache/sites/gdash.wikimedia.org.erb');
         '/etc/apache2/sites-enabled/graphite':
             target  => '/etc/apache2/sites-available/graphite';
     }
