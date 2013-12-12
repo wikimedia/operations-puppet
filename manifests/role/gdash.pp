@@ -18,6 +18,7 @@ class role::gdash {
     }
 
     include ::apache
+    include ::apache::mod::uwsgi
 
     file {
         '/etc/apache2/sites-available/gdash':

@@ -1,8 +1,8 @@
 # Apache configuration for gdash.wikimedia.org
 # This file is managed by Puppet.
-<VirtualHost *>
+<VirtualHost *:80>
     ServerName gdash.wikimedia.org
 
-    ProxyPass unix:/var/run/gdash/gdash.sock
-    ProxyPassReverse unix:/var/run/gdash/gdash.sock
+    uWSGIsocket /var/run/gdash/gdash.sock
+    SetHandler uwsgi-handler
 </VirtualHost>

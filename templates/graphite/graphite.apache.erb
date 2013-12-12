@@ -1,6 +1,6 @@
 # Apache configuration for graphite.wikimedia.org
 # This file is managed by Puppet.
-<VirtualHost *>
+<VirtualHost *:80>
     ServerName graphite.wikimedia.org
 
     <Location />
@@ -19,8 +19,8 @@
 
         # uWSGI reverse-proxy
 
-        ProxyPass unix:/var/run/graphite-web/graphite-web.sock
-        ProxyPassReverse unix:/var/run/graphite-web/graphite-web.sock
+        uWSGIsocket /var/run/graphite-web/graphite-web.sock
+        SetHandler uwsgi-handler
     </Location>
 
     <Location /render>

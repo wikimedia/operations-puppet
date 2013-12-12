@@ -101,7 +101,7 @@ class role::graphite {
 
 
     include ::apache
-    include ::apache::mod::proxy
+    include ::apache::mod::uwsgi
     include ::passwords::ldap::production
 
     file {
