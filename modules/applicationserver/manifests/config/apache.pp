@@ -40,9 +40,11 @@ class applicationserver::config::apache(
 		}
 	} else {  # labs
 		# bug 38996 - Apache service does not run on start, need a fake
-		# sync to start it up.
+		# sync to start it up though don't bother restarting it is already
+		# running.
 		exec { 'Fake sync apache wmf config on beta':
 			command => '/bin/true',
+			unless  => "/bin/ps -C apache2 > /dev/null",
 			notify  => Service[apache],
 		}
 	}
