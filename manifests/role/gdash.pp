@@ -20,9 +20,9 @@ class role::gdash {
     include ::apache
 
     file {
-        '/etc/apache2/sites-available/graphite':
+        '/etc/apache2/sites-available/gdash':
             content => template('apache/sites/gdash.wikimedia.org.erb');
-        '/etc/apache2/sites-enabled/graphite':
+        '/etc/apache2/sites-enabled/gdash':
             target  => '/etc/apache2/sites-available/graphite';
     }
 }
