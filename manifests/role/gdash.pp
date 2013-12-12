@@ -20,10 +20,12 @@ class role::gdash {
     include ::apache
     include ::apache::mod::uwsgi
 
-    file {
-        '/etc/apache2/sites-available/gdash':
-            content => template('apache/sites/gdash.wikimedia.org.erb');
-        '/etc/apache2/sites-enabled/gdash':
-            target  => '/etc/apache2/sites-available/graphite';
+    file { '/etc/apache2/sites-available/gdash':
+        content => template('apache/sites/gdash.wikimedia.org.erb'),
+    }
+
+    file { '/etc/apache2/sites-enabled/gdash':
+        ensure => link,
+        target => '/etc/apache2/sites-available/graphite';
     }
 }

@@ -104,11 +104,15 @@ class role::graphite {
     include ::apache::mod::uwsgi
     include ::passwords::ldap::production
 
-    file {
-        '/etc/apache2/sites-available/graphite':
-            content => template('graphite/graphite.apache.erb');
-        '/etc/apache2/sites-enabled/graphite':
-            target  => '/etc/apache2/sites-available/graphite';
+    apache::mod { 'authnz_ldap': }
+
+    file { '/etc/apache2/sites-available/graphite':
+        content => template('graphite/graphite.apache.erb'),
+    }
+
+    file { '/etc/apache2/sites-enabled/graphite':
+        ensure => link,
+        target => '/etc/apache2/sites-available/graphite';
     }
 
     nrpe::monitor_service { 'carbon':

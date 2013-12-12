@@ -3,6 +3,10 @@
 <VirtualHost *:80>
     ServerName gdash.wikimedia.org
 
-    uWSGIsocket /var/run/gdash/gdash.sock
-    SetHandler uwsgi-handler
+    <Location />
+        SetHandler uwsgi-handler
+        uWSGIForceScriptName /
+        uWSGImodifier1 7
+        uWSGIsocket /var/run/gdash/gdash.sock
+    </Location>
 </VirtualHost>
