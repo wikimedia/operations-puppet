@@ -52,6 +52,11 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
         docroot         => '/srv/org/wikimedia/bugzilla/',
     }
 
+    # perl modules
+    package { 'libdatetime-perl':
+        ensure => present;
+    }
+
     # community metrics mail
     bugzilla::logmail {'communitymetrics':
         script_name  => 'bugzilla_community_metrics.sh',
