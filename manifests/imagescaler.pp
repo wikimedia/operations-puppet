@@ -64,7 +64,7 @@ class imagescaler::packages::fonts {
 			"fonts-sil-ezra",
 			"fonts-sil-padauk",
 			"fonts-sil-scheherazade",
-			"fonts-sil-yi",
+			"fonts-sil-nuosusil",  # used to be fonts-sil-yi RT 6500
 			"fonts-takao-gothic",
 			"fonts-takao-mincho",
 			"fonts-thai-tlwg",
