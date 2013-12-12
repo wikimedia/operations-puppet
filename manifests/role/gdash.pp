@@ -5,7 +5,6 @@
 #
 class role::gdash {
     class { '::gdash':
-        server_name     => 'gdash.wikimedia.org',
         graphite_host   => 'https://graphite.wikimedia.org',
         template_source => 'puppet:///files/graphite/gdash',
         options         => {
@@ -16,5 +15,14 @@ class role::gdash {
           hide_legend   => false,
           deploy_addon  => template('gdash/deploy_addon.erb'),
         },
+    }
+
+    include ::apache
+
+    file {
+        '/etc/apache2/sites-available/graphite':
+            content => template('apache/gdash.wikimedia.org.erb');
+        '/etc/apache2/sites-enabled/graphite':
+            target  => '/etc/apache2/sites-available/graphite';
     }
 }
