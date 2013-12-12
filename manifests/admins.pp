@@ -3152,6 +3152,25 @@ class accounts {
         }
     }
 
+    class gage inherits baseaccount {
+        $username = 'gage'
+        $realname = 'Jeff Gage'
+        $uid      = 4177
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'jgerard@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCs/SColtnog9MyumWcau/7bfSvJhot5bSZWGnTPI9QjMupTQH0WCr1IWdD6NMvGsiDd81RzpfdNO0qCvyXQgAXFBs2O8ORea9kNOi/VElyGh9HJkqUERsMScrLFrhhmUyNVTw1gnk3sanRXASTC7zSXiZS5a5mqr9LfzPYhw04K57XCspFwERsg7kkIMYbl/yPMFmmPTUsLWTPMyF7xyn0TnrOTUx32RGIj4G/Kcsc8kcvSDGpiZSLvoC1QxuXEWOK0N7fd8PcL0YEYArLTPTdzM2CTvP7jEB0totPtxgWLFy+03aohdtX/cnWe1i1Udfh4dr5Z8/1x7BBSW1NX0JJ',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3198,6 +3217,7 @@ class admins::roots {
 	include accounts::dzahn
 	include accounts::faidon
 	include accounts::fvassard # disabled
+	include accounts::gage
 	include accounts::jeluf # disabled
 	include accounts::jgreen
 	include accounts::kate # disabled
