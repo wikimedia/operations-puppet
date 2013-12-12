@@ -93,11 +93,22 @@ class role::graphite {
     }
 
     class { '::graphite::web':
-        server_name       => 'graphite.wikimedia.org',
         admin_user        => $::passwords::graphite::user,
         admin_pass        => $::passwords::graphite::pass,
         secret_key        => $::passwords::graphite::secret_key,
         documentation_url => '//wikitech.wikimedia.org/wiki/Graphite',
+    }
+
+
+    include ::apache
+    include ::apache::mod::proxy
+    include ::passwords::ldap::production
+
+    file {
+        '/etc/apache2/sites-available/graphite':
+            content => template('apache/graphite.apache.erb');
+        '/etc/apache2/sites-enabled/graphite':
+            target  => '/etc/apache2/sites-available/graphite';
     }
 
     nrpe::monitor_service { 'carbon':

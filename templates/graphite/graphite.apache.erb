@@ -1,0 +1,31 @@
+# Apache configuration for graphite.wikimedia.org
+# This file is managed by Puppet.
+<VirtualHost *>
+    ServerName graphite.wikimedia.org
+
+    <Location />
+        Order allow,deny
+        Allow from all
+
+        # LDAP authentication
+
+        AuthName 'Wikimedia LDAP'
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= scope.lookupvar('::passwords::ldap::production::proxypass') %>
+        AuthLDAPURL ldaps://virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
+        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+
+        # uWSGI reverse-proxy
+
+        ProxyPass unix:/var/run/graphite-web/graphite-web.sock
+        ProxyPassReverse unix:/var/run/graphite-web/graphite-web.sock
+    </Location>
+
+    <Location /render>
+        Satisfy Any
+        Allow from all
+    </Location>
+
+</VirtualHost>
