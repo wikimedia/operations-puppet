@@ -18,7 +18,7 @@
 #   Class['install-server::web-server']
 #   Class['install-server::dhcp-server']
 #   Define['backup::set']
-#   Class['ferm']
+#   Class['base::firewall']
 #   Define['ferm::rule']
 #   Define['apt::pin']
 #
@@ -31,15 +31,32 @@ class role::installserver {
                         DHCP and Web server',
     }
 
-    include ferm
+    include base::firewall
     include backup::host
     include install-server::ubuntu-mirror
     include install-server::apt-repository
     include install-server::preseed-server
+
     include install-server::tftp-server
+    ferm::rule { 'tftp':
+        rule => 'proto tcp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
+    }
+
     include install-server::caching-proxy
+    ferm::rule { 'proxy':
+        rule => 'proto tcp dport 8080 { saddr $ALL_NETWORKS ACCEPT; }'
+    }
+
     include install-server::web-server
+    ferm::service { 'http':
+        proto => 'tcp',
+        port  => 'http'
+    }
+
     include install-server::dhcp-server
+    ferm::rule { 'dhcp':
+        rule => 'proto udp dport dhcp { saddr $ALL_NETWORKS ACCEPT; }'
+    }
 
     # System user and group for mirroring
     generic::systemuser { 'mirror':
@@ -54,10 +71,6 @@ class role::installserver {
               'srv-wikimedia',
             ]
     backup::set { $sets : }
-
-    ferm::rule { 'tftp':
-        rule => 'proto tcp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
-    }
 
     # pin package to the default, Ubuntu version, instead of our own
     apt::pin { [ 'squid', 'squid-common', 'squid-langpack' ]:
@@ -90,7 +103,7 @@ class role::installserver {
 # Requires:
 #
 #   Class['install-server::tftp-server']
-#   Class['ferm']
+#   Class['base::firewall']
 #   Define['ferm::rule']
 #
 # Sample Usage:
@@ -101,7 +114,7 @@ class role::installserver::tftp-server {
         description => 'WMF TFTP server',
     }
 
-    include ferm
+    include base::firewall
     include install-server::tftp-server
 
     ferm::rule { 'tftp':

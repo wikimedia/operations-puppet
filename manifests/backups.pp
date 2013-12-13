@@ -39,7 +39,7 @@ class backup::host($pool='production') {
     # TODO: Remove this after #96226 is resolved. It will allow for more
     # fine-grained filtering restricting specifically to director
     ferm::rule { 'bacula':
-        rule => 'proto tcp dport 9102 { saddr $INTERNAL ACCEPT; }'
+        rule => 'proto tcp dport 9102 { saddr $ALL_NETWORKS ACCEPT; }'
     }
 }
 
