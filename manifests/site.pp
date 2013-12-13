@@ -292,6 +292,14 @@ node "bast4001.wikimedia.org" {
     misc::management::ipmi,
     role::installserver::tftp-server
 
+    # TODO: should have bastionhost class and it should open ssh access
+    # but it is ready yet. Fix and remove this. tftp-server includes
+    # base::firewall and policy is set to DROP
+    ferm::service { 'ssh':
+        proto   => 'tcp',
+        port    => 'ssh',
+    }
+
 }
 
 node "beryllium.wikimedia.org" {
@@ -1139,6 +1147,25 @@ node "hooft.esams.wikimedia.org" {
         admins::roots,
         admins::mortals,
         admins::restricted
+
+    # TODO: 2013-12-13. rsync is an unpuppetized service on hooft. Ferms is
+    # applied through role::installserver::tftp-server and policy is DROP.
+    # Temporarily opening access. Must puppetize properly
+    ferm::service { 'rsync':
+        proto => 'tcp',
+        port  => '873',
+    }
+    # TODO: Same for udpmcast
+    ferm::service { 'udpmcast':
+        proto => 'udp',
+        port  => '4827',
+    }
+    # TODO: should have bastionhost class and it should open ssh access
+    # but it is ready yet. Fix and remove this
+    ferm::service { 'ssh':
+        proto   => 'tcp',
+        port    => 'ssh',
+    }
 
     class { "ganglia_new::monitor::aggregator": sites => ["esams"] }
 }

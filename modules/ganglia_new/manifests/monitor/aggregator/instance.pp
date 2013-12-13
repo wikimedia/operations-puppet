@@ -25,6 +25,11 @@ define ganglia_new::monitor::aggregator::instance($site) {
 		$ensure = "absent"
 	}
 
+	# This will only be realized if base::firewall (well ferm..) is included
+	ferm::rule { "aggregator-${id}":
+		rule => "proto udp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
+	}
+
 	file { "/etc/ganglia/aggregators/${id}.conf":
 		require => File["/etc/ganglia/aggregators"],
 		mode => 0444,
