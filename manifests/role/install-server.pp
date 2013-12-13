@@ -39,7 +39,7 @@ class role::installserver {
 
     include install-server::tftp-server
     ferm::rule { 'tftp':
-        rule => 'proto tcp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
+        rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
     }
 
     include install-server::caching-proxy
@@ -118,6 +118,6 @@ class role::installserver::tftp-server {
     include install-server::tftp-server
 
     ferm::rule { 'tftp':
-        rule => 'proto tcp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
+        rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
     }
 }
