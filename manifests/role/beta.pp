@@ -15,6 +15,15 @@ class role::beta::autoupdater {
 
 }
 
+class role::beta::natfixup {
+
+    system::role { 'role::beta::natfix':
+        description => 'Server has beta NAT fixup'
+    }
+
+    include misc::beta::natfixup
+}
+
 class role::beta::maintenance {
     class{ 'misc::maintenance::geodata': enabled => true }
 }
