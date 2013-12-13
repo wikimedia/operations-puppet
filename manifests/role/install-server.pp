@@ -55,7 +55,7 @@ class role::installserver {
 
     include install-server::dhcp-server
     ferm::rule { 'dhcp':
-        rule => 'proto udp dport dhcp { saddr $ALL_NETWORKS ACCEPT; }'
+        rule => 'proto udp dport bootps { saddr $ALL_NETWORKS ACCEPT; }'
     }
 
     # System user and group for mirroring
