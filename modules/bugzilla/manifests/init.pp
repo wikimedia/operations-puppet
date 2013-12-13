@@ -52,9 +52,38 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
         docroot         => '/srv/org/wikimedia/bugzilla/',
     }
 
-    # perl modules
-    package { 'libdatetime-perl':
-        ensure => present;
+    # Perl modules needed by Bugzilla
+    # mostly per https://wiki.mozilla.org/Bugzilla:Prerequisites#Ubuntu
+    package { [
+        'libdatetime-perl', # manipulating dates, times and timestamps
+        'libappconfig-perl', # configuration file and command line handling
+        'libdate-calc-perl', # provides a variety of date calculations
+        'libtemplate-perl', # template processing system
+        'libmime-tools-perl', # MIME-compliant messages (formerly libmime-perl)
+        'liburi-perl', # manipulate and access URI strings
+        'libdatetime-timezone-perl', # framework exposing the Olson time zone database
+        'libemail-send-perl', # deprecated, but we can't use libemail-sender-perl just yet
+        'libemail-messageid-perl', # unique mail Message-ID generation
+        'libemail-mime-perl', # for easily handling MIME-encoded messages
+        'libmime-types-perl', # determining MIME types and Transfer Encoding
+        'libdbi-perl', #  Perl Database Interface (DBI)
+        'libdbd-mysql-perl', # Perl5 database interface to the MySQL database
+        'libcgi-pm-perl', # module for CGI applications (creating/parsing web forms)
+        'libmath-random-isaac-perl', # Perl interface to the ISAAC PRNG algorithm
+        'libmath-random-isaac-xs-perl', # ISAAC PRNG (C/XS Accelerated) (faster)
+        'libxml-twig-perl', # processing huge XML documents
+        'libgd-graph-perl', # Graph Plotting Module for Perl 5
+        'libchart-perl', # collection of chart creation modules (GD)
+        'libjson-rpc-perl', # Perl implementation of JSON-RPC 1.1 protocol
+        'libjson-xs-perl', # manipulating JSON-formatted data (C/XS-accelerated)
+        'libtest-taint-perl', # test taintedness of data from an unsafe source
+        'libsoap-lite-perl', # SOAP client and server
+        'libtemplate-plugin-gd-perl', # GD plugin(s) for the Template Toolkit
+        'libhtml-scrubber-perl', # scrubbing/sanitizing HTML
+        'libencode-detect-perl', # detects the encoding of data
+        'libtheschwartz-perl', # reliable job queue
+        'libapache2-mod-perl2', # Apache2 Perl ('400% to 2000% speed increase':)
+        ]: ensure => present,
     }
 
     # community metrics mail
