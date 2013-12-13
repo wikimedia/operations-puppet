@@ -76,6 +76,8 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
+	unset resp.http.X-MediaWiki-Original;
+
 	if (resp.http.X-Content-Range) {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
 		remove resp.http.X-Content-Range;

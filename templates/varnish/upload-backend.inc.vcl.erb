@@ -126,6 +126,11 @@ sub vcl_fetch {
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
 
+	# Derive the corresponding original URL and store it with the object
+	if (!beresp.http.X-MediaWiki-Original && req.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
+		set beresp.http.X-MediaWiki-Original = regsub(req.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
+	}
+
 	return (deliver);
 }
 
