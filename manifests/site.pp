@@ -2216,7 +2216,8 @@ node "pdf1.wikimedia.org" {
 
     include role::pdf,
         groups::wikidev,
-        accounts::file_mover
+        accounts::file_mover,
+        accounts::mwalker     #rt 6468
 }
 
 node "pdf2.wikimedia.org" {
@@ -2225,7 +2226,8 @@ node "pdf2.wikimedia.org" {
 
     include role::pdf,
         groups::wikidev,
-        accounts::file_mover
+        accounts::file_mover,
+        accounts::mwalker     #rt 6468
 }
 
 node "pdf3.wikimedia.org" {
@@ -2233,7 +2235,8 @@ node "pdf3.wikimedia.org" {
 
     include role::pdf,
         groups::wikidev,
-        accounts::file_mover
+        accounts::file_mover,
+        accounts::mwalker     #rt 6468
 }
 
 node "professor.pmtpa.wmnet" {
