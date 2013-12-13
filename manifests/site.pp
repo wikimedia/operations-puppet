@@ -290,7 +290,7 @@ node "bast4001.wikimedia.org" {
     include standard,
     admins::roots,
     misc::management::ipmi,
-    role::install-server::tftp-server
+    role::installserver::tftp-server
 
 }
 
@@ -307,7 +307,7 @@ node "brewster.wikimedia.org" {
     $tftpboot_server_type = 'master'
 
     include standard,
-        role::install-server,
+        role::installserver,
         backup::client
 
     # set up brewster to use haproxy to proxy puppet
@@ -337,7 +337,7 @@ node "carbon.wikimedia.org" {
 
     include standard,
         backup::client,
-        role::install-server
+        role::installserver
 }
 
 # cerium,praseodymium, ruthenium and xenon are cassandra test host
@@ -1135,7 +1135,7 @@ node "hooft.esams.wikimedia.org" {
     $domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"
 
     include standard,
-        role::install-server::tftp-server,
+        role::installserver::tftp-server,
         admins::roots,
         admins::mortals,
         admins::restricted

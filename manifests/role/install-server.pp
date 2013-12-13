@@ -1,4 +1,4 @@
-# Class: role::install-server
+# Class: role::installserver
 #
 # A WMF role class used to install all the install-server stuff
 #
@@ -23,9 +23,9 @@
 #   Define['apt::pin']
 #
 # Sample Usage:
-#       include role::install-server
+#       include role::installserver
 
-class role::install-server {
+class role::installserver {
     system::role { 'role::install-server':
         description => 'WMF Install server. APT repo, Forward Caching, TFTP, \
                         DHCP and Web server',
@@ -40,6 +40,13 @@ class role::install-server {
     include install-server::caching-proxy
     include install-server::web-server
     include install-server::dhcp-server
+
+    # System user and group for mirroring
+    generic::systemuser { 'mirror':
+        name => 'mirror',
+        home => '/var/lib/mirror',
+        before => Class['install-server::ubuntu-mirror'],
+    }
 
     # Backup
     $sets = [ 'srv-autoinstall',
@@ -87,9 +94,9 @@ class role::install-server {
 #   Define['ferm::rule']
 #
 # Sample Usage:
-#       include role::install-server::tftp-server
+#       include role::installserver::tftp-server
 
-class role::install-server::tftp-server {
+class role::installserver::tftp-server {
     system::role { 'role::install-server::tftp-server':
         description => 'WMF TFTP server',
     }
