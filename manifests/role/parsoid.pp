@@ -91,4 +91,12 @@ class role::parsoid::beta {
         group  => wikidev,
         mode   => '2775',
     }
+
+    # Beta parsoid server has some ferm DNAT rewriting rules (bug 45868) so we
+    # have to explicitly allow parsoid port 8000
+    ferm::service { 'http':
+        proto => 'tcp',
+        port  => '8000'
+    }
+
 }
