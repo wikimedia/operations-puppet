@@ -89,6 +89,7 @@ class misc::statistics::packages {
         'p7zip-full',
         'subversion',
         'mercurial',
+        'nodejs',
         'tofrodos',
         'git-review',
         'imagemagick',
