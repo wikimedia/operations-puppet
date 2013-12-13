@@ -169,6 +169,14 @@ class role::applicationserver {
 		include imagescaler::cron,
 			imagescaler::packages,
 			imagescaler::files
+
+		# Beta application servers have some ferm DNAT rewriting rules (bug
+		# 45868) so we have to explicitly allow http (port 80)
+		ferm::service { 'http':
+			proto => 'tcp',
+			port  => 'http'
+		}
+
 	}
 	class appserver::api{
 		system::role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
