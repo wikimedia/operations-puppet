@@ -69,3 +69,35 @@ class role::install-server {
         check_command => 'check_http',
     }
 }
+
+# Class: role::install-server::tftp-server
+#
+# A WMF role class used to install all the install-server TFTP stuff
+#
+# Parameters:
+#
+# Actions:
+#       Install and configure all needed software to have an installation server
+#       TFTP server ready
+#
+# Requires:
+#
+#   Class['install-server::tftp-server']
+#   Class['ferm']
+#   Define['ferm::rule']
+#
+# Sample Usage:
+#       include role::install-server::tftp-server
+
+class role::install-server::tftp-server {
+    system::role { 'role::install-server::tftp-server':
+        description => 'WMF TFTP server',
+    }
+
+    include ferm
+    include install-server::tftp-server
+
+    ferm::rule { 'tftp':
+        rule => 'proto tcp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
+    }
+}
