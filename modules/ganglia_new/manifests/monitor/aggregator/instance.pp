@@ -26,8 +26,12 @@ define ganglia_new::monitor::aggregator::instance($site) {
 	}
 
 	# This will only be realized if base::firewall (well ferm..) is included
-	ferm::rule { "aggregator-${id}":
+	ferm::rule { "aggregator-udp-${id}":
 		rule => "proto udp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
+	}
+	# This will only be realized if base::firewall (well ferm..) is included
+	ferm::rule { "aggregator-tcp-${id}":
+		rule => "proto tcp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
 	}
 
 	file { "/etc/ganglia/aggregators/${id}.conf":
