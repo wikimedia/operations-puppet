@@ -52,9 +52,29 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
         docroot         => '/srv/org/wikimedia/bugzilla/',
     }
 
-    # perl modules
-    package { 'libdatetime-perl':
-        ensure => present;
+    # Perl modules needed by Bugzilla
+    # mostly per https://wiki.mozilla.org/Bugzilla:Prerequisites#Ubuntu
+    package { [
+        'libdatetime-perl', # manipulating dates, times and timestamps
+        'libappconfig-perl', # configuration file and command line handling
+        'libdate-calc-perl', # provides a variety of date calculations
+        'libtemplate-perl', # template processing system
+        'libmime-tools-perl', # MIME-compliant messages (formerly libmime-perl)
+        'libdatetime-timezone-perl', # framework exposing the Olson time zone database
+        'libemail-sender-perl', # sending email (replaced libemail-send-perl!)
+        'libemail-address-perl', # RFC 2822 address parsing and creation
+        'libemail-date-format-perl', # generate RFC-2822-valid date strings
+        'libemail-messageid-perl', # unique mail Message-ID generation
+        'libemail-mime-contenttype-perl', # parsing MIME Content-Type headers
+        'libemail-mime-perl', # for easily handling MIME-encoded messages
+        'libemail-simple-perl', # parse RFC 2822 headers and message format
+        'libmime-types-perl', # determining MIME types and Transfer Encoding
+        'libdbi-perl', #  Perl Database Interface (DBI)
+        'libdbd-mysql-perl', # Perl5 database interface to the MySQL database
+        'libcgi-pm-perl', # module for CGI applications (creating/parsing web forms)
+        'libmath-random-isaac-perl', # Perl interface to the ISAAC PRNG algorithm
+        'libmath-random-isaac-xs-perl', # ISAAC PRNG (C/XS Accelerated) (faster)
+        ]: ensure => present,
     }
 
     # community metrics mail
