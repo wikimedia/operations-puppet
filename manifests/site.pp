@@ -923,12 +923,12 @@ node /es100[1-4]\.eqiad\.wmnet/ {
     class { role::coredb::es1 : mariadb => true }
 }
 
-node /es1\.pmtpa\.wmnet/ {
+node /es4\.pmtpa\.wmnet/ {
     include role::coredb::es1
 }
 
 # es2-3
-node /es5\.pmtpa\.wmnet/ {
+node /es7\.pmtpa\.wmnet/ {
   include role::coredb::es2
 }
 
@@ -937,7 +937,7 @@ node /es8\.pmtpa\.wmnet/ {
 }
 
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
-node /^es([234679]|10)\.pmtpa\.wmnet/{
+node /^es([123569]|10)\.pmtpa\.wmnet/{
     include standard
 }
 
