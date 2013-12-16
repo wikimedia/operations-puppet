@@ -68,7 +68,7 @@ def restart(repo, batch='10%'):
     arg = (repo,)
     ret = []
     for data in client.cmd_batch(grain, cmd, expr_form='grain', arg=arg,
-                                 timeout=30, ret='deploy_redis', batch=batch):
+                                 timeout=60, ret='deploy_redis', batch=batch):
         ret.append(data)
     print "Restart completed"
     return ret
