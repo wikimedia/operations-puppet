@@ -71,16 +71,19 @@ do
 		  --all \
 		  --quiet
 	then
-		echo "Rebuilding localization cache"
+		echo "Rebuilding localization cache at `date`"
 		/usr/local/bin/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
 		                  --quiet --outdir=/var/lib/l10nupdate/cache-"$mwVerNum"
 		# Copy the LC files
-		echo "Completed. Copying LC files to $MW_COMMON_SOURCE"
+		echo "Completed at `date`. Copying LC files to $MW_COMMON_SOURCE"
 		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MW_COMMON_SOURCE/php-"$mwVerNum"/cache/l10n
-		echo "Syncing to Apaches"
+		echo "Syncing to Apaches at `date`"
+		SYNC_START=$(date +%s)
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
+		SYNC_END=$(date +%s)
 		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
-		echo "All done"
+		echo "All done at `date`"
+		$BINDIR/deploy2graphite l10nupdate-sync $((SYNC_END-SYNC_START))
 	else
 		$BINDIR/dologmsg "!log LocalisationUpdate failed ($mwVerNum) at `date`"
 		echo "FAILED"
