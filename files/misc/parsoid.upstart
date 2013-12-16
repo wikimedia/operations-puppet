@@ -1,0 +1,35 @@
+# vim: set ft=upstart:
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/misc/parsoid.upstart
+#####################################################################
+
+description "Parsoid HTTP service"
+
+start on (local-filesystem and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+# up ulimit -n a bit
+limit nofile 10000 10000
+
+setuid "parsoid"
+setgid "parsoid"
+
+env DEFAULTFILE=/etc/default/parsoid
+env VCAP_APP_PORT="8000"
+env NODE_PATH="/var/lib/parsoid/Parsoid/js/node_modules"
+
+respawn
+
+script
+    if [ -f "$DEFAULTFILE" ] ; then
+        . "$DEFAULTFILE"
+    fi
+    if [ "x$PARSOID_LOG_FILE" = "x" ] ; then
+        PARSOID_LOG_FILE='/dev/null'
+    fi
+
+    chdir "/var/lib/parsoid/Parsoid"
+    exec /usr/bin/nodejs js/api/server.js < /dev/null >> "$PARSOID_LOG_FILE" 2>&1
+end script
