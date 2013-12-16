@@ -27,34 +27,24 @@
 #   include tcpircbot
 #
 #   tcpircbot::instance { 'announcebot':
-#     channel  => '#wikimedia-operations',
+#     channels => ['#wikimedia-operations'],
 #     password => $passwords::irc::announcebot,
 #   }
 #
-class tcpircbot (
-    $user        = 'tcpircbot',
-    $group       = 'tcpircbot',
-    $dir         = '/srv/tcpircbot',
-) {
+class tcpircbot {
     package { [ 'python-irclib', 'python-netaddr' ]:
         ensure => present,
     }
 
-    if ! defined(Group[$group]) {
-        group { $group:
-            ensure => present,
-        }
-    }
+    group { 'tcpircbot': }
 
-    if ! defined(User[$user]) {
-        user { $user:
-            ensure     => present,
-            gid        => $group,
-            shell      => '/bin/false',
-            home       => $dir,
-            managehome => true,
-            system     => true,
-        }
+    user { 'tcpircbot':
+        ensure     => present,
+        gid        => 'tcpircbot',
+        shell      => '/bin/false',
+        home       => '/srv/tcpircbot',
+        managehome => true,
+        system     => true,
     }
 
     file { "${dir}/tcpircbot.py":

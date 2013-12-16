@@ -8,10 +8,10 @@ description "TCP socket to IRC bot: <%= @title %>"
 start on (local-filesystems and net-device-up IFACE!=lo)
 stop on runlevel [!2345]
 
-setuid <%= scope.lookupvar('tcpircbot::user') %>
-setgid <%= scope.lookupvar('tcpircbot::group') %>
+setuid tcpircbot
+setgid tcpircbot
 
-chdir "<%= scope.lookupvar('tcpircbot::dir') %>"
+chdir /srv/tcpircbot
 exec python tcpircbot.py "<%= @title %>.json"
 
 respawn

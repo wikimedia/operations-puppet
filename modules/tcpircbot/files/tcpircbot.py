@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 """
 TCP -> IRC forwarder bot
-Forward data from a TCP socket to an IRC channel
+Forward data from a TCP socket to one or more IRC channels
 
 Usage: tcpircbot.py CONFIGFILE
 
@@ -10,7 +10,7 @@ CONFIGFILE should be a JSON file with the following structure:
 
   {
       "irc": {
-          "channel": "#wikimedia-operations",
+          "channels": ["#wikimedia-operations", "#wikimedia-dev"],
           "network": ["irc.freenode.net", 7000, "serverpassword"],
           "nickname": "tcpircbot",
           "ssl": true
@@ -61,11 +61,11 @@ logging.basicConfig(level=logging.INFO, stream=sys.stderr,
 
 
 class ForwarderBot(ircbot.SingleServerIRCBot):
-    """Minimal IRC bot; joins a channel."""
+    """Minimal IRC bot; joins channels."""
 
-    def __init__(self, network, nickname, channel, **options):
+    def __init__(self, network, nickname, channels, **options):
         ircbot.SingleServerIRCBot.__init__(self, [network], nickname, nickname)
-        self.channel = channel
+        self.channels = channels
         self.options = options
         for event in ['disconnect', 'join', 'part', 'welcome']:
             self.connection.add_global_handler(event, self.log_event)
@@ -85,7 +85,8 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
                          % vars(event))
 
     def on_welcome(self, connection, event):
-        connection.join(self.channel)
+        for channel in self.channels:
+            connection.join(channel)
 
 
 if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
@@ -126,7 +127,9 @@ def is_ip_allowed(ip):
     """
     ip = netaddr.IPAddress(ip)
     if 'cidr' in config['tcp']:
-        cidrs = config['tcp']['cidr'].split(',')
+        cidrs = config['tcp']['cidr']
+        if not isinstance(cidrs, list):
+            cidrs = cidrs.split(',')
         return any(ip in netaddr.IPNetwork(cidr) for cidr in cidrs)
     return ip.is_private() or ip.is_loopback()
 
@@ -149,7 +152,8 @@ while 1:
             data = codecs.decode(data, 'utf8', 'replace').strip()
             if data:
                 logging.info('TCP %s: "%s"', sock.getpeername(), data)
-                bot.connection.privmsg(bot.channel, data)
+                for channel in bot.channels:
+                    bot.connection.privmsg(channel, data)
             else:
                 sock.close()
                 sockets.remove(sock)

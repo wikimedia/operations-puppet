@@ -2110,7 +2110,7 @@ node "neon.wikimedia.org" {
         passwords::logmsgbot
 
     tcpircbot::instance { 'logmsgbot':
-        channel  => '#wikimedia-operations',
+        channels => ['#wikimedia-operations', '#wikimedia-dev'],
         password => $passwords::logmsgbot::logmsgbot_password,
         cidr     => [
             '::ffff:10.64.21.123/128',    # vanadium
