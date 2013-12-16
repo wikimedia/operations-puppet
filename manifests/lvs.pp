@@ -1279,45 +1279,6 @@ class lvs::monitor {
 		"text-lb.esams.wikimedia.org":
 			ip_address => $ip['text-varnish']['esams']['textlb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
-		"wikimedia-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikimedialb'],
-			uri => "meta.wikimedia.org!/wiki/Main_Page";
-		"wikipedia-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikipedialb'],
-			uri => "meta.wikimedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wiktionary-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wiktionarylb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiquote-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikiquotelb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikibooks-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikibookslb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikisource-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikisourcelb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikinews-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikinewslb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiversity-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikiversitylb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"mediawiki-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['mediawikilb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"foundation-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['foundationlb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 		"bits-lb.esams.wikimedia.org":
 			ip_address => $ip['bits']['esams']['bitslb'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
@@ -1327,59 +1288,12 @@ class lvs::monitor {
 		"mobile-lb.esams.wikimedia.org":
 			ip_address => $ip['mobile']['esams']['mobilelb'],
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
-		"wikidata-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikidatalb'],
-			uri => "www.wikidata.org!/",
-			critical => "false";
-		"wikivoyage-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikivoyagelb'],
-			uri => "en.wikivoyage.org!/wiki/Main_Page",
-			critical => "false";
 	}
 
 	monitor_service_lvs6_http_https {
-		#"text-lb.esams.wikimedia.org":
-		#	ip_address => $ip['text-varnish']['esams']['textlb6'],
-		#	uri => "en.wikipedia.org!/wiki/Main_Page";
-		"wikimedia-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikimedialb6'],
-			uri => "meta.wikimedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikipedia-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikipedialb6'],
+		"text-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['textlb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
-		"wiktionary-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wiktionarylb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiquote-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikiquotelb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikibooks-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikibookslb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikisource-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikisourcelb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikinews-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikinewslb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiversity-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikiversitylb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"mediawiki-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['mediawikilb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"foundation-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['foundationlb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 		"bits-lb.esams.wikimedia.org":
 			ip_address => $ip['bits']['esams']['bitslb6'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
@@ -1389,14 +1303,6 @@ class lvs::monitor {
 		"mobile-lb.esams.wikimedia.org":
 			ip_address => $ip['mobile']['esams']['mobilelb6'],
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
-		"wikidata-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikidatalb6'],
-			uri => "www.wikidata.org!/",
-			critical => "false";
-		"wikivoyage-lb.esams.wikimedia.org":
-			ip_address => $ip['ipv6']['esams']['wikivoyagelb6'],
-			uri => "en.wikivoyage.org!/wiki/Main_Page",
-			critical => "false";
 	}
 
 	# ULSFO
