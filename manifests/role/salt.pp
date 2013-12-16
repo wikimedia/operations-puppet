@@ -102,7 +102,10 @@ class role::salt::minions {
 		if ( $::salt_master_override != undef ) {
 			$salt_master = $::salt_master_override
 		} else {
-			$salt_master = "virt0.wikimedia.org"
+			$salt_master = ? $site {
+				"pmtpa" => ["virt0.wikimedia.org", "virt1000.wikimedia.org"],
+				"eqiad" => ["virt1000.wikimedia.org", "virt0.wikimedia.org"],
+			}
 		}
 		if ( $::salt_master_finger_override != undef ) {
 			$salt_master_finger = $::salt_master_finger_override
