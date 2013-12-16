@@ -18,14 +18,6 @@ class role::parsoid::common {
         mode   => '2775',
     }
 
-    file { '/etc/init.d/parsoid':
-        ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0555',
-        source => 'puppet:///files/misc/parsoid.init',
-    }
-
     file { '/usr/bin/parsoid':
         ensure => present,
         owner  => root,
@@ -38,14 +30,6 @@ class role::parsoid::common {
         name          => 'parsoid',
         default_group => 'parsoid',
         home          => '/var/lib/parsoid',
-    }
-
-    service { 'parsoid':
-        ensure     => running,
-        hasstatus  => true,
-        hasrestart => true,
-        enable     => true,
-        require    => File['/etc/init.d/parsoid'],
     }
 
 }
@@ -62,6 +46,22 @@ class role::parsoid::production {
     file { '/var/lib/parsoid/Parsoid':
         ensure => link,
         target => '/srv/deployment/parsoid/Parsoid',
+    }
+
+    # production uses an init script whereas labs experiments with upstart
+    file { '/etc/init.d/parsoid':
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0555',
+        source => 'puppet:///files/misc/parsoid.init',
+    }
+    service { 'parsoid':
+        ensure     => running,
+        hasstatus  => true,
+        hasrestart => true,
+        enable     => true,
+        require    => File['/etc/init.d/parsoid'],
     }
 
     monitor_service { 'parsoid':
@@ -92,11 +92,32 @@ class role::parsoid::beta {
         mode   => '2775',
     }
 
+    # beta uses upstart:
+    file { '/etc/init.d/parsoid':
+        ensure => 'link',
+        target => '/lib/init/upstart-job',
+    }
+    file { '/etc/init/parsoid.conf':
+        source => 'puppet:///files/misc/parsoid.upstart',
+    }
+    service { 'parsoid':
+        ensure     => running,
+        hasstatus  => true,
+        hasrestart => true,
+        enable     => true,
+        provider   => 'upstart',
+        subscribe  => File['/etc/init/parsoid.conf'],
+        require    => File['/etc/init.d/parsoid'],
+    }
+
     # Beta parsoid server has some ferm DNAT rewriting rules (bug 45868) so we
     # have to explicitly allow parsoid port 8000
     ferm::service { 'http':
         proto => 'tcp',
         port  => '8000'
+    }
+    ferm::rule { 'ssh-from-beta-bastion':
+        rule => 'proto tcp dport ssh { saddr 10.4.0.58 ACCEPT; }',
     }
 
 }
