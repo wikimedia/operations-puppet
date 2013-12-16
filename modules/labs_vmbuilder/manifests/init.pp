@@ -27,6 +27,13 @@ class labs_vmbuilder($vmbuilder_version) {
             Package['python-vm-builder'],
         ];
     }
+    file { '/etc/vmbuilder/firstscripts/firstboot.sh':
+        mode    => 0555,
+        source  => 'puppet:///labs_vmbuilder/firstboot.sh',
+        require => [
+            Package['python-vm-builder'],
+        ];
+    }
 
     file { "${vmbuilder_filepath}":
         ensure => directory,

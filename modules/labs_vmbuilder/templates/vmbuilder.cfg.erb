@@ -3,7 +3,7 @@ arch = amd64
 part = /etc/vmbuilder/files/vmbuilder.partition
 copy = /etc/vmbuilder/postinst/postinst.copy
 execscript = /etc/vmbuilder/postinst/postinst.sh
-#firstboot = /etc/vmbuilder/firstscripts/firstboot.sh
+firstboot = /etc/vmbuilder/firstscripts/firstboot.sh
 lock-user = true
 # Required for sudo-ldap. We're going to disable this
 # first boot.
@@ -17,5 +17,5 @@ flavour = virtual
 proxy = http://brewster.wikimedia.org:8080
 mirror = http://ubuntu.wikimedia.org/ubuntu/
 components = main,restricted,multiverse,universe
-addpkg = coreutils, snmp, wipe, tzdata, zsh-beta, jfsutils, xfsprogs, screen, gdb, iperf, atop, htop, vim, sysstat, ngrep, acct, git-core, lldpd, emacs23, libpam-ldapd, autofs5, autofs5-ldap, ldap-utils, libnss-ldapd, nss-updatedb, libnss-db, nscd, libpam-ldapd, python-ldap, python-pycurl, openssl, ca-certificates, ssl-cert, rsyslog, exim4-config, exim4-daemon-light, cloud-init, cloud-utils, euca2ools, openssh-server, curl, apparmor, libapparmor1
+addpkg = coreutils, snmp, wipe, tzdata, zsh-beta, jfsutils, xfsprogs, screen, gdb, iperf, atop, htop, vim, sysstat, ngrep, acct, git-core, lldpd, emacs23, libpam-ldapd, autofs5, autofs5-ldap, ldap-utils, libnss-ldapd, nss-updatedb, libnss-db, nscd, libpam-ldapd, python-ldap, python-pycurl, openssl, ca-certificates, ssl-cert, rsyslog, exim4-config, exim4-daemon-light, cloud-init, cloud-utils, euca2ools, openssh-server, curl, apparmor, libapparmor1, ubuntu-standard
 removepkg = mlocate
