@@ -30,9 +30,7 @@ class role::cache {
 		$active_nodes = {
 			'production' => {
 				"text" => {
-					"pmtpa-squid" => [],
 					"pmtpa" => [],
-					"eqiad-squid" => [],
 					"eqiad" => [
 						'cp1052.eqiad.wmnet',
 						'cp1053.eqiad.wmnet',
@@ -43,7 +41,6 @@ class role::cache {
 						'cp1067.eqiad.wmnet',
 						'cp1068.eqiad.wmnet',
 					],
-					"esams-squid" => [],
 					"esams" => [
 						#'amssq47.esams.wikimedia.org', # Test host
 						'amssq48.esams.wikimedia.org',
@@ -72,8 +69,8 @@ class role::cache {
 					]
 				},
 				"api" => {
-					"pmtpa-squid" => [],
-					"eqiad-squid" => [],
+					"pmtpa" => [],
+					"eqiad" => [],
 					"esams" => [],
 				},
 				"bits" => {
@@ -83,9 +80,7 @@ class role::cache {
 					"ulsfo" => ["cp4001.ulsfo.wmnet", "cp4002.ulsfo.wmnet", "cp4003.ulsfo.wmnet", "cp4004.ulsfo.wmnet"],
 				},
 				"upload" => {
-					"pmtpa-squid" => [],
 					"pmtpa" => [],
-					"eqiad-squid" => [],
 					'eqiad' => [
 						'cp1048.eqiad.wmnet',
 						'cp1049.eqiad.wmnet',
@@ -96,7 +91,6 @@ class role::cache {
 						'cp1063.eqiad.wmnet',
 						'cp1064.eqiad.wmnet',
 					],
-					"esams-squid" => [],
 					"esams" => [
 						'cp3003.esams.wikimedia.org',
 						'cp3004.esams.wikimedia.org',
