@@ -1,5 +1,5 @@
 # role/cache.pp
-# cache::squid and cache::varnish role classes
+# cache::varnish role classes
 
 # Virtual resources for the monitoring server
 @monitor_group { "cache_text_eqiad": description => "eqiad text Varnish" }
@@ -398,45 +398,6 @@ class role::cache {
 		}
 	}
 
-	class squid {
-		class common($role) {
-			system::role { "role::cache::${role}": description => "${role} Squid cache server"}
-
-			$cluster = "squids_${role}"
-			$nagios_group = "cache_${role}_${::site}"
-
-			include lvs::configuration
-
-			include	standard,
-				::squid
-
-			if !defined(Class['lvs::realserver']) {
-				class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$role][$::site] }
-			}
-
-			# Monitoring
-			monitor_service {
-				"frontend http":
-					description => "Frontend Squid HTTP",
-					check_command => $role ? {
-						text => 'check_http',
-						upload => 'check_http_upload',
-					};
-				"backend http":
-					description => "Backend Squid HTTP",
-					check_command => $role ? {
-						text => 'check_http_on_port!3128',
-						upload => 'check_http_upload_on_port!3128',
-					};
-			}
-
-			# HTCP packet loss monitoring on the ganglia aggregators
-			if $ganglia_aggregator and $::site != "esams" {
-				include misc::monitoring::htcp-loss
-			}
-		}
-	}
-	
 	class varnish::logging {
 		if $::realm == 'production' {
 			$cliargs = '-m RxRequest:^(?!PURGE$) -D'
@@ -875,25 +836,12 @@ class role::cache {
 				$lvs::configuration::lvs_service_ips[$::realm]['text-varnish'][$::site]])
 		}
 
-		if ($::hostname =~ /^sq[0-9][0-9]$/ or $::hostname =~ /^cp10([01][0-9]|20)$/ or $::hostname =~ /^amssq(3[1-9]|4[0-6])$/) {
-			class { "role::cache::squid::common": role => "text" }
-		}
-		else {
-			# Varnish
-			include role::cache::varnish::text
-		}
+		include role::cache::varnish::text
 	}
 
 	class upload {
 		# FIXME: remove this hack
-		if $::realm == "labs" or $::site != "pmtpa" {
-			# Varnish
-			include role::cache::varnish::upload
-		}
-		else {
-			# Squid
-			class { "role::cache::squid::common": role => "upload" }
-		}
+		include role::cache::varnish::upload
 	}
 
 	class bits inherits role::cache::varnish::1layer {
