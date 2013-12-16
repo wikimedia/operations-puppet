@@ -168,7 +168,7 @@ class lvs::configuration {
 					'textlb'    => '91.198.174.192',
 					'loginlb'   => '91.198.174.201',
 
-					#'textlb6'   => '2620:0:862:ed1a::1',
+					'textlb6'   => '2620:0:862:ed1a::1',
 					'loginlb6'  => '2620:0:862:ed1a::1:9',
 				},
 				'ulsfo' => {
@@ -266,10 +266,10 @@ class lvs::configuration {
 					'wikidatalbsecure' => '91.198.174.237',
 					'wikivoyagelbsecure' => '91.198.174.238',
 
-					#'textlb6secure'   => '2620:0:862:ed1a::1',
+					'textlb6secure'   => '2620:0:862:ed1a::1',
 					'loginlbsecure6' => '2620:0:862:ed1a::1:9',
 					'wikimedialbsecure6' => "2620:0:862:ed1a::0",
-					'wikipedialbsecure6' => "2620:0:862:ed1a::1",
+					#'wikipedialbsecure6' => "2620:0:862:ed1a::1",
 					'wiktionarylbsecure6' => "2620:0:862:ed1a::2",
 					'wikiquotelbsecure6' => "2620:0:862:ed1a::3",
 					'wikibookslbsecure6' => "2620:0:862:ed1a::4",
@@ -319,7 +319,7 @@ class lvs::configuration {
 				},
 				'esams' => {
 					'wikimedialb6' => "2620:0:862:ed1a::0",
-					'wikipedialb6' => "2620:0:862:ed1a::1",
+					#'wikipedialb6' => "2620:0:862:ed1a::1",
 					'wiktionarylb6' => "2620:0:862:ed1a::2",
 					'wikiquotelb6' => "2620:0:862:ed1a::3",
 					'wikibookslb6' => "2620:0:862:ed1a::4",
