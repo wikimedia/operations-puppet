@@ -28,7 +28,6 @@ import "role/*.pp"
 import "role/analytics/*.pp"
 import "search.pp"
 import "snapshots.pp"
-import "squid.pp"
 import "sudo.pp"
 import "svn.pp"
 import "swift.pp"
@@ -943,7 +942,6 @@ node "fenari.wikimedia.org" {
         misc::noc-wikimedia,
         nrpe,
         drac,
-        squid::cachemgr,
         accounts::awjrichards,
         accounts::erosen,
         generic::wikidev-umask,
