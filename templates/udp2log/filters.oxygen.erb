@@ -16,7 +16,7 @@ pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= log_direc
 # pull in $role::cache::configuration::active_nodes
 # to find mobile host names and build a regex on which to grep.
 cache_configuration = scope.lookupvar('::role::cache::configuration::active_nodes')
-mobile_hosts_regex = '(' + cache_configuration['production']['mobile'].values.flatten.join('|') + ')'
+mobile_hosts_regex = '(' + cache_configuration['production']['mobile'].values.flatten.sort.join('|') + ')'
 -%>
 
 ### Mobile traffic filter
