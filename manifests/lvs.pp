@@ -1292,7 +1292,7 @@ class lvs::monitor {
 
 	monitor_service_lvs6_http_https {
 		"text-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['textlb6'],
+			ip_address => $ip['ipv6']['esams']['wikipedialb6'], # FIXME
 			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"bits-lb.esams.wikimedia.org":
 			ip_address => $ip['bits']['esams']['bitslb6'],
