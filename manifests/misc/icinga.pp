@@ -27,6 +27,7 @@ class icinga::monitor {
   include icinga::user,
     icinga::monitor::packages,
     passwords::nagios::mysql,
+    base::firewall,
     icinga::monitor::firewall,
     icinga::monitor::configuration::files,
     icinga::monitor::files::nagios-plugins,
@@ -616,44 +617,49 @@ class icinga::monitor::firewall {
   # deny access to port 5667 TCP (nsca) from external networks
   # deny service snmp-trap (port 162) for external networks
 
-  class iptables-purges {
+  # iptables_add_service{ 'lo_all': interface            => 'lo', service                => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'deny_pub_nsca': service => 'nsca', jump => 'DROP' }
+  # iptables_add_service{ 'deny_pub_snmptrap': service => 'snmptrap', jump => 'DROP' }
+  # iptables_add_service{ 'TEMP_deny_smtp': service => 'smtp', jump => 'DROP' }
+  # handled in base::firewall
 
-    require 'iptables::tables'
-    iptables_purge_service{  'deny_pub_snmptrap': service => 'snmptrap' }
-    iptables_purge_service{  'deny_pub_nsca': service => 'nsca' }
+  # iptables_add_service{ 'localhost_all': source        => '127.0.0.1', service         => 'all', jump => 'ACCEPT' }
+  # this is (hopefully) covered by lo rule in base::firewall
+
+  # iptables_add_service{ 'private_pmtpa_nolabs': source => '10.0.0.0/14', service       => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'private_esams': source        => '10.21.0.0/24', service      => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'private_eqiad1': source       => '10.64.0.0/17', service      => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'private_eqiad2': source       => '10.65.0.0/20', service      => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'private_ulsfo': source        => '10.128.0.0/17', service     => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'private_virt': source         => '10.4.16.0/24', service      => 'all', jump => 'ACCEPT' }
+  # note this includes analytics, do we want stricter limits? because it is *all*
+  ferm::rule { 'icinga_private_ips_accept':
+          rule => 'saddr (10.65.0.0/20 $PMTPA_PRIVATE_VIRT_HOSTS'+
+                  ' $PMTPA_PRIVATE_PRIVATE 10.21.0.0/24 $EQIAD_PRIVATE_ANALYTICS1_A_EQIAD'+
+                  ' $EQIAD_PRIVATE_ANALYTICS1_B_EQIAD $EQIAD_PRIVATE_ANALYTICS1_C_EQIAD'+
+                  ' $EQIAD_PRIVATE_LABS_HOSTS1_A_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_B_EQIAD'+
+                  ' $EQIAD_PRIVATE_LABS_HOSTS1_C_EQIAD $EQIAD_PRIVATE_PRIVATE1_A_EQIAD'+
+                  ' $EQIAD_PRIVATE_PRIVATE1_B_EQIAD $EQIAD_PRIVATE_PRIVATE1_C_EQIAD'+
+                  ' $ULSFO_PRIVATE_PRIVATE1_ULSFO) ACCEPT;'
   }
 
-  class iptables-accepts {
-
-    require 'icinga::monitor::firewall::iptables-purges'
-
-    iptables_add_service{ 'lo_all': interface            => 'lo', service                => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'localhost_all': source        => '127.0.0.1', service         => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_pmtpa_nolabs': source => '10.0.0.0/14', service       => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_esams': source        => '10.21.0.0/24', service      => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_eqiad1': source       => '10.64.0.0/17', service      => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_eqiad2': source       => '10.65.0.0/20', service      => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_ulsfo': source        => '10.128.0.0/17', service     => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'private_virt': source         => '10.4.16.0/24', service      => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_152': source           => '208.80.152.0/24', service   => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_153': source           => '208.80.153.128/26', service => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_154': source           => '208.80.154.0/24', service   => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_fundraising': source   => '208.80.155.0/27', service   => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_esams': source         => '91.198.174.0/25', service   => 'all', jump => 'ACCEPT' }
-    iptables_add_service{ 'public_ulsfo': source         => '198.35.26.0/23', service    => 'all', jump => 'ACCEPT'}
+  # iptables_add_service{ 'public_152': source           => '208.80.152.0/24', service   => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'public_153': source           => '208.80.153.128/26', service => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'public_154': source           => '208.80.154.0/24', service   => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'public_fundraising': source   => '208.80.155.0/27', service   => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'public_esams': source         => '91.198.174.0/25', service   => 'all', jump => 'ACCEPT' }
+  # iptables_add_service{ 'public_ulsfo': source         => '198.35.26.0/23', service    => 'all', jump => 'ACCEPT'}
+  ferm::rule { 'icinga_public_ips46_accept':
+          rule => 'saddr $EXTERNAL_NETWORKS ACCEPT;'
   }
 
-  class iptables-drops {
-
-    require 'icinga::monitor::firewall::iptables-accepts'
-    iptables_add_service{ 'deny_pub_nsca': service => 'nsca', jump => 'DROP' }
-    iptables_add_service{ 'deny_pub_snmptrap': service => 'snmptrap', jump => 'DROP' }
-    iptables_add_service{ 'TEMP_deny_smtp': service => 'smtp', jump => 'DROP' }
+  # public services that run on neon
+  ferm::rule { 'icinga_http':
+          rule => 'proto tcp dport (http https) ACCEPT;'
   }
 
   class iptables {
 
-    require 'icinga::monitor::firewall::iptables-drops'
     iptables_add_exec{ "${hostname}_nsca": service => 'nsca' }
     iptables_add_exec{ "${hostname}_snmptrap": service => 'snmptrap' }
   }
