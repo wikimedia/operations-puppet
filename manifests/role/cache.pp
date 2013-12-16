@@ -2,17 +2,14 @@
 # cache::varnish role classes
 
 # Virtual resources for the monitoring server
-@monitor_group { "cache_text_pmtpa": description => "text squids pmtpa" }
-@monitor_group { "cache_text_eqiad": description => "text squids eqiad" }
-@monitor_group { "cache_text_esams": description => "text squids esams" }
+@monitor_group { "cache_text_eqiad": description => "eqiad text Varnish" }
+@monitor_group { "cache_text_esams": description => "esams text Varnish" }
 @monitor_group { "cache_text_ulsfo": description => "ulsfo text Varnish" }
 
-@monitor_group { "cache_upload_pmtpa": description => "upload squids pmtpa" }
 @monitor_group { "cache_upload_eqiad": description => "eqiad upload Varnish" }
 @monitor_group { "cache_upload_esams": description => "esams upload Varnish" }
 @monitor_group { "cache_upload_ulsfo": description => "ulsfo upload Varnish"}
 
-@monitor_group { "cache_bits_pmtpa": description => "pmtpa bits Varnish" }
 @monitor_group { "cache_bits_eqiad": description => "eqiad bits Varnish "}
 @monitor_group { "cache_bits_esams": description => "esams bits Varnish" }
 @monitor_group { "cache_bits_ulsfo": description => "ulsfo bits Varnish" }
