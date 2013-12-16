@@ -584,7 +584,7 @@ node /^db(68)\.pmtpa\.wmnet/ {
 }
 
 ## x1 shard
-node /^db(36|38)\.pmtpa\.wmnet/ {
+node /^db(38)\.pmtpa\.wmnet/ {
     include role::coredb::x1
 }
 
@@ -594,12 +594,12 @@ node "db9.pmtpa.wmnet" {
 }
 
 ## m1 shard (new)
-node /^db(33|35)\.pmtpa\.wmnet/ {
+node /^db(35)\.pmtpa\.wmnet/ {
     class { role::coredb::m1 : mariadb => true }
 }
 
 ## m2 shard
-node /^db4[89]\.pmtpa\.wmnet/ {
+node /^db(48)\.pmtpa\.wmnet/ {
     include role::coredb::m2
 }
 
@@ -923,17 +923,22 @@ node /es100[1-4]\.eqiad\.wmnet/ {
     class { role::coredb::es1 : mariadb => true }
 }
 
-node /es[1-4]\.pmtpa\.wmnet/ {
+node /es1\.pmtpa\.wmnet/ {
     include role::coredb::es1
 }
 
 # es2-3
-node /es[5-7]\.pmtpa\.wmnet/ {
+node /es5\.pmtpa\.wmnet/ {
   include role::coredb::es2
 }
 
-node /es([89]|10)\.pmtpa\.wmnet/ {
+node /es8\.pmtpa\.wmnet/ {
   include role::coredb::es3
+}
+
+## imminent decomission/reclaim from pmtpa pending 12th floor reorg
+node /^es([234679]|10)\.pmtpa\.wmnet/{
+    include standard
 }
 
 node /es100[5-7]\.eqiad\.wmnet/ {
