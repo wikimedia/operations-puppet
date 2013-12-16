@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [ -f '/root/.firstboot' ]
-then
-	# Only run firstboot once
-	exit
-fi
-
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 restart rsyslog
@@ -51,5 +45,3 @@ echo "master_finger: ${saltfinger}" >> /etc/salt/minion
 
 # Force initial puppet run
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${idfqdn} --server=${master}
-
-touch /root/.firstboot
