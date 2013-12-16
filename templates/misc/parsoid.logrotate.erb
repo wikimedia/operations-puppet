@@ -1,0 +1,13 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/parsoid
+#####################################################################
+
+<%= $parsoid_log_file %> {
+    daily
+    copytruncate
+    missingok
+    compress
+    notifempty
+    rotate 15
+}
