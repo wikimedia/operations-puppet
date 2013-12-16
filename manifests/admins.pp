@@ -3152,6 +3152,7 @@ class accounts {
         }
     }
 
+    # RT 6491
     class gage inherits baseaccount {
         $username = 'gage'
         $realname = 'Jeff Gage'
@@ -3167,6 +3168,25 @@ class accounts {
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCs/SColtnog9MyumWcau/7bfSvJhot5bSZWGnTPI9QjMupTQH0WCr1IWdD6NMvGsiDd81RzpfdNO0qCvyXQgAXFBs2O8ORea9kNOi/VElyGh9HJkqUERsMScrLFrhhmUyNVTw1gnk3sanRXASTC7zSXiZS5a5mqr9LfzPYhw04K57XCspFwERsg7kkIMYbl/yPMFmmPTUsLWTPMyF7xyn0TnrOTUx32RGIj4G/Kcsc8kcvSDGpiZSLvoC1QxuXEWOK0N7fd8PcL0YEYArLTPTdzM2CTvP7jEB0totPtxgWLFy+03aohdtX/cnWe1i1Udfh4dr5Z8/1x7BBSW1NX0JJ',
+            }
+        }
+    }
+
+    class msyed inherits baseaccount {
+        $username = 'msyed'
+        $realname = 'Moiz Syed'
+        $uid      = <UNSPECIFIED>
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'msyed@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDDKH+F3be/hR2mp2CxoUGRo+MvdP/hsEqRZc7R/cUOJM6/kWJubxT5upjLiSt6JU8sIsAzqD5qprhYjdWl+y9HwZLpN7Jb1iUwStsCpFH3fq2/fKFoDpMF/10Hn24VUtaoE5NJoUThshJPF8zfysmbZElaCT58FvJt3KHKcIeAjeg6y5IvoDZtgVpbTYn0BxD0UyQ+qy6UmlPja6/oh5h4gTZNpZoP3SSMf99MO1jDC05EBqSYT/FeeylRqMUGYL9lyJxGkRyc7RQ654y6kFb3YmYgYxzYPghE3fvHToOByxoygsyJWWB3lXO7Lw0CLW68OrU94t4qR9IXjNt8Xv3d',
             }
         }
     }
