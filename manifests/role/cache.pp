@@ -32,48 +32,9 @@ class role::cache {
 		$active_nodes = {
 			'production' => {
 				"text" => {
-					"pmtpa-squid" => [
-						'sq37.wikimedia.org',
-						'sq59.wikimedia.org',
-						'sq60.wikimedia.org',
-						'sq61.wikimedia.org',
-						'sq62.wikimedia.org',
-						'sq63.wikimedia.org',
-						'sq64.wikimedia.org',
-						'sq65.wikimedia.org',
-						'sq66.wikimedia.org',
-						'sq71.wikimedia.org',
-						'sq72.wikimedia.org',
-						'sq73.wikimedia.org',
-						'sq74.wikimedia.org',
-						'sq75.wikimedia.org',
-						'sq76.wikimedia.org',
-						'sq77.wikimedia.org',
-						'sq78.wikimedia.org',
-					],
+					"pmtpa-squid" => [],
 					"pmtpa" => [],
-					"eqiad-squid" => [
-						'cp1001.eqiad.wmnet',	# API
-						'cp1002.eqiad.wmnet',	# API
-						'cp1003.eqiad.wmnet',	# API
-						'cp1004.eqiad.wmnet',	# API
-						'cp1005.eqiad.wmnet',	# API
-						'cp1006.eqiad.wmnet',
-						'cp1007.eqiad.wmnet',
-						'cp1008.eqiad.wmnet',
-						'cp1009.eqiad.wmnet',
-						'cp1010.eqiad.wmnet',
-						'cp1011.eqiad.wmnet',
-						'cp1012.eqiad.wmnet',
-						'cp1013.eqiad.wmnet',
-						'cp1014.eqiad.wmnet',
-						'cp1015.eqiad.wmnet',
-						'cp1016.eqiad.wmnet',
-						'cp1017.eqiad.wmnet',
-						'cp1018.eqiad.wmnet',
-						'cp1019.eqiad.wmnet',
-						'cp1020.eqiad.wmnet',
-					],
+					"eqiad-squid" => [],
 					"eqiad" => [
 						'cp1052.eqiad.wmnet',
 						'cp1053.eqiad.wmnet',
@@ -84,24 +45,7 @@ class role::cache {
 						'cp1067.eqiad.wmnet',
 						'cp1068.eqiad.wmnet',
 					],
-					"esams-squid" => [
-						"amssq31.esams.wikimedia.org",
-						"amssq32.esams.wikimedia.org",
-						"amssq33.esams.wikimedia.org",
-						"amssq34.esams.wikimedia.org",
-						"amssq35.esams.wikimedia.org",
-						"amssq36.esams.wikimedia.org",
-						"amssq37.esams.wikimedia.org",
-						"amssq38.esams.wikimedia.org",
-						"amssq39.esams.wikimedia.org",
-						"amssq40.esams.wikimedia.org",
-						"amssq41.esams.wikimedia.org",
-						"amssq42.esams.wikimedia.org",
-						"amssq43.esams.wikimedia.org",
-						"amssq44.esams.wikimedia.org",
-						"amssq45.esams.wikimedia.org",
-						"amssq46.esams.wikimedia.org",
-					],
+					"esams-squid" => [],
 					"esams" => [
 						#'amssq47.esams.wikimedia.org', # Test host
 						'amssq48.esams.wikimedia.org',
@@ -130,15 +74,8 @@ class role::cache {
 					]
 				},
 				"api" => {
-					"pmtpa-squid" => [
-					],
-					"eqiad-squid" => [
-						'cp1001.eqiad.wmnet',	# API
-						'cp1002.eqiad.wmnet',	# API
-						'cp1003.eqiad.wmnet',	# API
-						'cp1004.eqiad.wmnet',	# API
-						'cp1005.eqiad.wmnet',	# API
-					],
+					"pmtpa-squid" => [],
+					"eqiad-squid" => [],
 					"esams" => [],
 				},
 				"bits" => {
@@ -148,29 +85,7 @@ class role::cache {
 					"ulsfo" => ["cp4001.ulsfo.wmnet", "cp4002.ulsfo.wmnet", "cp4003.ulsfo.wmnet", "cp4004.ulsfo.wmnet"],
 				},
 				"upload" => {
-					"pmtpa-squid" => [
-						'sq43.wikimedia.org',
-						'sq49.wikimedia.org',
-						'sq50.wikimedia.org',
-
-						'sq51.wikimedia.org',
-						'sq52.wikimedia.org',
-						'sq53.wikimedia.org',
-						'sq54.wikimedia.org',
-						'sq55.wikimedia.org',
-						'sq56.wikimedia.org',
-						'sq57.wikimedia.org',
-						'sq58.wikimedia.org',
-
-						'sq79.wikimedia.org',
-						'sq80.wikimedia.org',
-						'sq81.wikimedia.org',
-						'sq82.wikimedia.org',
-						'sq83.wikimedia.org',
-						'sq84.wikimedia.org',
-						'sq85.wikimedia.org',
-						'sq86.wikimedia.org',
-					],
+					"pmtpa-squid" => [],
 					"pmtpa" => [],
 					"eqiad-squid" => [],
 					'eqiad' => [
@@ -252,8 +167,47 @@ class role::cache {
 					"sq35.wikimedia.org",
 					'sq38.wikimedia.org',
 					'sq40.wikimedia.org',
+					'sq37.wikimedia.org',
+					'sq59.wikimedia.org',
+					'sq60.wikimedia.org',
+					'sq61.wikimedia.org',
+					'sq62.wikimedia.org',
+					'sq63.wikimedia.org',
+					'sq64.wikimedia.org',
+					'sq65.wikimedia.org',
+					'sq66.wikimedia.org',
+					'sq71.wikimedia.org',
+					'sq72.wikimedia.org',
+					'sq73.wikimedia.org',
+					'sq74.wikimedia.org',
+					'sq75.wikimedia.org',
+					'sq76.wikimedia.org',
+					'sq77.wikimedia.org',
+					'sq78.wikimedia.org',
+
 				],
-				"eqiad" => [],
+				"eqiad" => [
+					'cp1001.eqiad.wmnet',	# API
+					'cp1002.eqiad.wmnet',	# API
+					'cp1003.eqiad.wmnet',	# API
+					'cp1004.eqiad.wmnet',	# API
+					'cp1005.eqiad.wmnet',	# API
+					'cp1006.eqiad.wmnet',
+					'cp1007.eqiad.wmnet',
+					'cp1008.eqiad.wmnet',
+					'cp1009.eqiad.wmnet',
+					'cp1010.eqiad.wmnet',
+					'cp1011.eqiad.wmnet',
+					'cp1012.eqiad.wmnet',
+					'cp1013.eqiad.wmnet',
+					'cp1014.eqiad.wmnet',
+					'cp1015.eqiad.wmnet',
+					'cp1016.eqiad.wmnet',
+					'cp1017.eqiad.wmnet',
+					'cp1018.eqiad.wmnet',
+					'cp1019.eqiad.wmnet',
+					'cp1020.eqiad.wmnet',
+				],
 				"esams" => [
 					'knsq1.knams.wikimedia.org',
 					'knsq2.knams.wikimedia.org',
@@ -269,7 +223,23 @@ class role::cache {
 					'knsq27.knams.wikimedia.org',
 					'knsq28.knams.wikimedia.org',
 					'knsq29.knams.wikimedia.org',
-					'knsq30.knams.wikimedia.org'
+					'knsq30.knams.wikimedia.org',
+					"amssq31.esams.wikimedia.org",
+					"amssq32.esams.wikimedia.org",
+					"amssq33.esams.wikimedia.org",
+					"amssq34.esams.wikimedia.org",
+					"amssq35.esams.wikimedia.org",
+					"amssq36.esams.wikimedia.org",
+					"amssq37.esams.wikimedia.org",
+					"amssq38.esams.wikimedia.org",
+					"amssq39.esams.wikimedia.org",
+					"amssq40.esams.wikimedia.org",
+					"amssq41.esams.wikimedia.org",
+					"amssq42.esams.wikimedia.org",
+					"amssq43.esams.wikimedia.org",
+					"amssq44.esams.wikimedia.org",
+					"amssq45.esams.wikimedia.org",
+					"amssq46.esams.wikimedia.org",
 				]
 			},
 			"api" => {
@@ -308,6 +278,27 @@ class role::cache {
 					'sq14.wikimedia.org',
 					'sq15.wikimedia.org',
 					'sq47.wikimedia.org',
+					'sq43.wikimedia.org',
+					'sq49.wikimedia.org',
+					'sq50.wikimedia.org',
+
+					'sq51.wikimedia.org',
+					'sq52.wikimedia.org',
+					'sq53.wikimedia.org',
+					'sq54.wikimedia.org',
+					'sq55.wikimedia.org',
+					'sq56.wikimedia.org',
+					'sq57.wikimedia.org',
+					'sq58.wikimedia.org',
+
+					'sq79.wikimedia.org',
+					'sq80.wikimedia.org',
+					'sq81.wikimedia.org',
+					'sq82.wikimedia.org',
+					'sq83.wikimedia.org',
+					'sq84.wikimedia.org',
+					'sq85.wikimedia.org',
+					'sq86.wikimedia.org',
 				],
 				"eqiad" => [
 					'cp1021.eqiad.wmnet',
