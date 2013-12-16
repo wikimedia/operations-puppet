@@ -1127,110 +1127,15 @@ class lvs::monitor {
 
 	# PMTPA
 	monitor_service_lvs_http_https {
-		"wikimedia-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikimedialb'],
-			uri => "meta.wikimedia.org!/wiki/Main_Page";
-		"wikipedia-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikipedialb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page";
-		"wiktionary-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wiktionarylb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiquote-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikiquotelb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikibooks-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikibookslb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikisource-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikisourcelb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikinews-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikinewslb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiversity-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikiversitylb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"mediawiki-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['mediawikilb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"foundation-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['foundationlb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 		"bits-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['bits']['pmtpa']['bitslb'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
-		"upload-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['upload']['pmtpa']['uploadlb'],
-			uri => "upload.wikimedia.org!/monitoring/backend";
-		"wikidata-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikidatalb'],
-			uri => "www.wikidata.org!/";
-		"wikivoyage-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikivoyagelb'],
-			uri => "en.wikivoyage.org!/wiki/Main_Page";
 	}
 
 	monitor_service_lvs6_http_https {
-		"wikimedia-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikimedialb6'],
-			uri => "meta.wikimedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikipedia-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikipedialb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page";
-		"wiktionary-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wiktionarylb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiquote-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikiquotelb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikibooks-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikibookslb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikisource-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikisourcelb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikinews-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikinewslb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiversity-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikiversitylb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"mediawiki-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['mediawikilb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"foundation-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['foundationlb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 		"bits-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['bits']['pmtpa']['bitslb6'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
-		"upload-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['uploadlb6'],
-			uri => "upload.wikimedia.org!/monitoring/backend";
-		"wikidata-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikidatalb6'],
-			uri => "www.wikidata.org!/";
-		"wikivoyage-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['ipv6']['pmtpa']['wikivoyagelb6'],
-			uri => "en.wikivoyage.org!/wiki/Main_Page";
 	}
 
 	# FIXME: remove after pmtpa decommissioning
