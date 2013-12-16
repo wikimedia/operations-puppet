@@ -102,16 +102,6 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
     interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
 }
 
-# amssq31-46 are text squids
-node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
-    $squid_coss_disks = [ 'sda5', 'sdb5' ]
-    if $::hostname =~ /^amssq3[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::cache::text
-}
-
 # amssq47 is a text varnish
 node /^amssq47\.esams\.wikimedia\.org$/ {
     include role::cache::text, role::cache::ssl::unified
@@ -370,25 +360,6 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
             role::dns::recursor
 
     interface::add_ip6_mapped { "main": interface => "eth0" }
-}
-
-node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
-    $squid_coss_disks = [ 'sda5', 'sdb5' ]
-    if $::hostname =~ /^cp100(1|2)$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::cache::text
-}
-
-node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
-    interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
-
-    interface::add_ip6_mapped { "main":
-        require => Interface::Aggregate[bond0],
-        interface => "bond0"
-    }
-    include standard
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
@@ -2461,39 +2432,6 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
     include role::protoproxy::ssl
 }
 
-# sq37-40 are text squids
-node /sq(3[7-9]|40)\.wikimedia\.org/ {
-    $squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
-
-    include role::cache::text
-}
-
-# sq43-50 are old 4 disk upload squids
-node /sq(4[3-9]|50)\.wikimedia\.org/ {
-    $squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
-    if $::hostname =~ /^sq4[3]$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::cache::upload
-}
-
-# sq51-58 are new ssd upload squids
-node /sq5[0-8]\.wikimedia\.org/ {
-    $squid_coss_disks = [ 'sdb5' ]
-    include role::cache::upload
-}
-
-# sq59-66 are text squids
-node /sq(59|6[0-6])\.wikimedia\.org/ {
-    $squid_coss_disks = [ 'sda5', 'sdb5' ]
-    if $::hostname =~ /^sq(59|60)$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::cache::text
-}
-
 # sq67-70 are varnishes for bits.wikimedia.org
 node /sq(6[7-9]|70)\.wikimedia\.org/ {
     if $::hostname =~ /^sq6[68]$/ {
@@ -2511,20 +2449,6 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
     }
 
     include role::cache::bits
-}
-
-# sq71-78 are text squids
-node /sq7[1-8]\.wikimedia\.org/ {
-    $squid_coss_disks = [ 'sda5', 'sdb5' ]
-
-    include role::cache::text
-}
-
-# sq79-86 are upload squids
-node /sq(79|8[0-6])\.wikimedia\.org/ {
-    $squid_coss_disks = [ 'sdb5' ]
-
-    include role::cache::upload
 }
 
 node "stafford.pmtpa.wmnet" {
