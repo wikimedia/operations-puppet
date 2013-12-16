@@ -58,7 +58,7 @@ def main():
             if not PosixData:
                 subprocess.Popen(['/usr/bin/salt-key -y -d ' + host], shell=True, stdout=subprocess.PIPE)
             else:
-                subprocess.Popen(['/usr/bin/salt-key -a ' + host], shell=True, stderr=subprocess.PIPE)
+                subprocess.Popen(['/usr/bin/salt-key -y -a ' + host], shell=True, stderr=subprocess.PIPE)
     except ldap.PROTOCOL_ERROR:
         sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
         traceback.print_exc(file=sys.stderr)
