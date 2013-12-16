@@ -1,5 +1,5 @@
 class role::labs_vmbuilder {
     class { "::labs_vmbuilder":
-        vmbuilder_version => "2";
+        vmbuilder_version => "3";
     }
 }
