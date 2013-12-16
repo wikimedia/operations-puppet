@@ -5,15 +5,24 @@ import netmapper;
 sub vcl_init {
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
 	netmapper.init("zero", "/var/netmapper/zero.json", 89);
+	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
+}
+
+sub tag_direct {
+	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
+	unset req.http.X-Forwarded-By;
 }
 
 sub tag_carrier {
 	// Note that currently, tag_carrier is *only* called when the request is not
 	//  via HTTPS (check for X-Forwarded-Proto at the top of vcl_recv in mobile-frontend.vcl).
 
-	set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
+	set req.http.X-Forwarded-By = netmapper.map("proxies", "" + client.ip);
 
-	if (req.restarts == 0 && (req.http.X-CS2 == "-OPERA" || req.http.X-CS2 == "-TEST")) {
+	if (!req.http.X-Forwarded-By) {
+		// direct request or unknown proxy
+		call tag_direct;
+	} else if (req.restarts == 0) {
 		// Elsewhere in the VCL, the frontend appends client.ip to XFF for when
 		//   we forward to the backend varnish, and thus at this exact moment in time,
 		//   the final (or only) XFF entry always exists and always matches client.ip.
@@ -22,17 +31,22 @@ sub tag_carrier {
 		//   Opera Mini or Carrier Testing (or in the future, SSL).
 
 		set req.http.X-Stripped-XFF = regsub(req.http.X-Forwarded-For, ",?[^,]+$", "");
-		// ^ X-S-XFF now contains XFF without its final item, which was client.ip.
+		// X-Stripped-XFF now contains XFF without its final item, which was client.ip.
 
-		if (req.http.X-Stripped-XFF != "") { // If one or more IPs remain in X-S-XFF
+		if (req.http.X-Stripped-XFF != "") { // If one or more IPs remain in X-Stripped-XFF
+			// For proxies, W0 banners will be shown when traffic flowed through a proxy
+			// and the carrier's configuration is known to zero-rate through that proxy.
 			// Strip away any leading IPs, such that the result of regsub() is the
 			//  rightmost (or only) remaining IP, and use that to re-set X-CS2:
 			set req.http.X-CS2 = netmapper.map("zero", regsub(req.http.X-Stripped-XFF, "^.*, ?", ""));
+		} else {
+			// Actually a direct request (maybe a diagnostic)
+			call tag_direct;
 		}
 		unset req.http.X-Stripped-XFF; // clean up our temp var
 	}
 
-	if ( req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\." ) {
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\." ) {
 		set req.http.X-Subdomain = "ZERO";
 	} else {
 		set req.http.X-Subdomain = "M";
@@ -41,136 +55,159 @@ sub tag_carrier {
 	/* Please keep this list alphabetized by the ACL variable */
 	if (!req.http.X-CS2) {
 		// Unknown IP - skip the rest of X-CS identification
+	} else if (req.http.host !~ "^([a-zA-Z0-9-]+\.)?(m|zero)\.wikipedia\.") {
+		// This is not wikipedia project - skip the rest of X-CS identification
 	} else if (req.http.X-CS2 == "502-13") {
-		if (req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = "502-13";
 		}
 	} else if (req.http.X-CS2 == "623-03") {
-		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ha|ln|eo)\.m|^m)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ha|ln|eo)\.m|^m)\.") {
 				set req.http.X-CS = "623-03";
 			}
 		}
 	} else if (req.http.X-CS2 == "413-02") {
-		if (req.http.X-Subdomain == "ZERO") {
-			if (req.http.host ~ "(^(en|ta|si)\.zero|^zero)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(en|ta|si)\.zero|^zero)\.") {
 				set req.http.X-CS = "413-02";
 			}
 		}
 	} else if (req.http.X-CS2 == "502-16") {
-		if (req.http.X-Subdomain == "ZERO") {
-			if (req.http.User-Agent ~ "Opera") {
-				set req.http.X-CS = "502-16";
-			}
+		if (req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
+			set req.http.X-CS = "502-16";
 		}
 	} else if (req.http.X-CS2 == "520-18") {
-		if (req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = "520-18";
 		}
 	} else if (req.http.X-CS2 == "470-01") {
-		if (req.http.X-Subdomain == "ZERO") {
-			if (req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+			if (req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.") {
 				set req.http.X-CS = "470-01";
 			}
 		}
 	} else if (req.http.X-CS2 == "470-03") {
-		if (req.http.host ~ "(^(en|bn)\.(zero|m)|^(zero|m))\.wikipedia\.") {
-			set req.http.X-CS = "470-03";
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(en|bn)\.(zero|m)|^(zero|m))\.") {
+				set req.http.X-CS = "470-03";
+			}
 		}
 	} else if (req.http.X-CS2 == "416-03") {
-		if (req.http.host ~ "(^(en|ar)\.(zero|m)|^(zero|m))\.wikipedia\.") {
-			set req.http.X-CS = "416-03";
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(en|ar)\.(zero|m)|^(zero|m))\.") {
+				set req.http.X-CS = "416-03";
+			}
 		}
 	} else if (req.http.X-CS2 == "456-02") {
-		if (req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = "456-02";
 		}
 	} else if (req.http.X-CS2 == "652-02") {
-		if (req.http.X-Subdomain == "M") {
+		if ((!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = "652-02";
 		}
 	} else if (req.http.X-CS2 == "624-02") {
-		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.") {
 				set req.http.X-CS = "624-02";
 			}
 		}
 	} else if (req.http.X-CS2 == "630-86") {
-		if (req.http.X-Subdomain == "M") {
+		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = "630-86";
 		}
 	} else if (req.http.X-CS2 == "612-03") {
-		if (req.http.X-Subdomain == "M") {
+		if ((!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = "612-03";
 		}
 	} else if (req.http.X-CS2 == "639-07") {
-		if (req.http.X-Subdomain == "M") {
+		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = "639-07";
 		}
 	} else if (req.http.X-CS2 == "604-00") {
-		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|ar|en|es|de|it|nl|pt|ru|zh)\.m|^m)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(fr|ar|en|es|de|it|nl|pt|ru|zh)\.m|^m)\.") {
 				set req.http.X-CS = "604-00";
 			}
 		}
 	} else if (req.http.X-CS2 == "614-04") {
-		if (req.http.X-Subdomain == "M") {
+		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = "614-04";
 		}
 	} else if (req.http.X-CS2 == "605-01") {
-		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.") {
 				set req.http.X-CS = "605-01";
 			}
 		}
 	} else if (req.http.X-CS2 == "641-14") {
-		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.") {
 				set req.http.X-CS = "641-14";
 			}
 		}
 	} else if (req.http.X-CS2 == "420-01") {
-		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.wikipedia\.") {
-			set req.http.X-CS = "420-01";
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.") {
+				set req.http.X-CS = "420-01";
+			}
 		}
 	} else if (req.http.X-CS2 == "405-25") {
-		if (req.http.X-Subdomain == "ZERO") {
-			/* MCC-MNC not clear from http://en.wikipedia.org/wiki/Mobile_country_code */
+		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = "405-25";
 		}
 	} else if (req.http.X-CS2 == "250-99") {
-		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.wikipedia\.") {
-			set req.http.X-CS = "250-99";
+		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+			if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.") {
+				set req.http.X-CS = "250-99";
+			}
 		}
 	} else if (req.http.X-CS2 == "410-01") {
-		if (req.http.host ~ "(^(en|ur)\.(zero|m)|^(zero|m))\.wikipedia\.") {
-			set req.http.X-CS = "410-01";
+		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+			if (req.http.host ~ "(^(en|ur)\.(zero|m)|^(zero|m))\.") {
+				set req.http.X-CS = "410-01";
+			}
 		}
 	} else if (req.http.X-CS2 == "510-11") {
-		if (req.http.X-Subdomain == "ZERO") {
-			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.") {
 				set req.http.X-CS = "510-11";
 			}
 		}
 	} else if (req.http.X-CS2 == "646-02") {
-		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|en|mg)\.m|^m)\.wikipedia\.") {
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(fr|en|mg)\.m|^m)\.") {
 				set req.http.X-CS = "646-02";
 			}
 		}
 	} else if (req.http.X-CS2 == "436-01") {
-		if (req.http.host ~ "(^(en|tg|ru)\.(zero|m)|^(zero|m))\.wikipedia\.") {
-			set req.http.X-CS = "436-01";
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(en|tg|ru)\.(zero|m)|^(zero|m))\.") {
+				set req.http.X-CS = "436-01";
+			}
 		}
 	} else if (req.http.X-CS2 == "401-01") {
-		if (req.http.host ~ "(^(ru|kk|en)\.(zero|m)|^(zero|m))\.wikipedia\.") {
-			set req.http.X-CS = "401-01";
+		if (!req.http.X-Forwarded-By) {
+			if (req.http.host ~ "(^(ru|kk|en)\.(zero|m)|^(zero|m))\.") {
+				set req.http.X-CS = "401-01";
+			}
 		}
-	} else if (req.http.host ~ "(zero|m)\.wikipedia\.")  {
-		// Any new carriers are signed up as both m & zero for all languages
-		set req.http.X-CS = req.http.X-CS2;
+	} else if (req.http.X-CS2 == "297-01") {
+		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+			set req.http.X-CS = "297-01";
+		}
+	} else {
+		if (!req.http.X-Forwarded-By) {
+			// Any new carriers are signed up as both m & zero for all languages, without proxy support
+			set req.http.X-CS = req.http.X-CS2;
+		}
 	}
 	/* Please keep the above list alphabetized by the ACL variable */
 
 	unset req.http.X-CS2; // temp variable for netmapper -> X-CS stuff
+	// Seeing as the origin servers won't need it, no need to send XFB.
+	// As of 13-December-2013, Opera Mini is the only proxy setup with
+	// zero-rating with some carriers.
+	unset req.http.X-Forwarded-By;
 }
