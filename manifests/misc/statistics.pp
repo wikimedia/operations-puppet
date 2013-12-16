@@ -98,6 +98,8 @@ class misc::statistics::packages {
     }
 
     include misc::statistics::packages::python
+    # include mysql module base class to install mysql client
+    class { '::mysql': }
 }
 
 
