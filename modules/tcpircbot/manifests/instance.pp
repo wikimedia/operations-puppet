@@ -5,8 +5,8 @@
 #
 # === Parameters
 #
-# [*channel*]
-#   Echo read messages to this IRC channel.
+# [*channels*]
+#   Echo read messages to these IRC channels.
 #
 # [*nickname*]
 #   Bot's preferred IRC nick. Should be registered with nickserv. Defaults to
@@ -53,7 +53,7 @@
 #   }
 #
 define tcpircbot::instance(
-    $channel,
+    $channels,
     $password,
     $nickname    = $title,
     $server_host = 'chat.freenode.net',
