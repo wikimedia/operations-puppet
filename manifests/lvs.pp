@@ -112,12 +112,6 @@ class lvs::configuration {
 	# NOTE! This hash is referenced in many other manifests
 	$lvs_service_ips = {
 		'production' => {
-			'text' => {
-				'pmtpa' => {},
-				'eqiad' => {},
-				'esams' => {},
-				'ulsfo' => {},
-			},
 			'text-varnish' => {
 				'pmtpa' => {},
 				'eqiad' => {
@@ -370,24 +364,10 @@ class lvs::configuration {
 	$service_ips = $lvs_service_ips[$::realm]
 
 	$lvs_services = {
-		"text" => {
-			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org",
-			'class' => "high-traffic1",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
-			'ip' => $service_ips['text'][$::site],
-			'bgp' => "yes",
-			'depool-threshold' => ".5",
-			'monitors' => {
-				'ProxyFetch' => {
-					'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
-				},
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
 		'text-varnish' => {
 			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (Varnish)",
 			'class' => 'high-traffic1',
-			'sites' => [ 'pmtpa', 'eqiad', 'esams', 'ulsfo' ],
+			'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
 			'ip' => $service_ips['text-varnish'][$::site],
 			'bgp' => 'yes',
 			'depool-threshold' => '.5',
