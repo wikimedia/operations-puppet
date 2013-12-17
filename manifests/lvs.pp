@@ -128,22 +128,8 @@ class lvs::configuration {
 					'wikidatalb' => '208.80.152.218',
 					'wikivoyagelb' => "208.80.152.219"
 				},
-				'eqiad' => {
-				},
-				'esams' => {
-					'wikipedialb' => "91.198.174.225",
-					'wikimedialb' => "91.198.174.224",
-					'wiktionarylb' => "91.198.174.226",
-					'wikiquotelb' => "91.198.174.227",
-					'wikibookslb' => "91.198.174.228",
-					'wikisourcelb' => "91.198.174.229",
-					'wikinewslb' => "91.198.174.230",
-					'wikiversitylb' => "91.198.174.231",
-					'mediawikilb' => "91.198.174.232",
-					'foundationlb' => "91.198.174.235",
-					'wikidatalb' => '91.198.174.237',
-					'wikivoyagelb' => '91.198.174.238',
-				},
+				'eqiad' => {},
+				'esams' => {},
 				'ulsfo' => {},
 			},
 			'text-varnish' => {
