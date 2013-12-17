@@ -33,6 +33,8 @@ sed -i "s/_FQDN_/${idfqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 
 /etc/init.d/autofs restart
+/etc/init.d/nslcd restart
+/etc/init.d/nscd restart
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 /etc/init.d/ssh stop
 /etc/init.d/ssh start
