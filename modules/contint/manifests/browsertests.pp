@@ -23,6 +23,7 @@ class contint::browsertests(
     package { [
         'wikimedia-task-appserver',
         'php5-sqlite',  # MediaWiki DB backend
+        'libsikuli-script-java',  # bug 54393
         ]: ensure => present
     }
 
