@@ -37,8 +37,8 @@ class wikimania_scholarships(
         webserver::php5,
         webserver::php5-mysql
 
-    $mysql_user = $passwords::mysql::wikimania_scholarships::user
-    $mysql_pass = $passwords::mysql::wikimania_scholarships::password
+    $mysql_user = $passwords::mysql::wikimania_scholarships::app_user
+    $mysql_pass = $passwords::mysql::wikimania_scholarships::app_password
     $log_file   = "udp://${udp2log_dest}/scholarships"
 
     # Check arguments
@@ -77,18 +77,14 @@ class wikimania_scholarships(
             content => template('wikimania_scholarships/env.erb');
     }
 
-    # FIXME: Log2udp for log file?
-
     # Webserver setup
-
     exec { 'enable mod_rewrite':
         command => '/usr/sbin/a2enmod rewrite',
         unless  => '/usr/sbin/apache2ctl -M | /bin/grep -q rewrite',
         notify  => Service['apache2'],
     }
 
-    # Disabled while waiting for security review. --OL 5-Dec-2013
-    # apache_site { 'wikimania_scholarships': name => $hostname }
+    apache_site { 'wikimania_scholarships': name => $hostname }
 
     apache_confd { 'namevirtualhost':
         install => true,
