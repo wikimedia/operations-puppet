@@ -275,20 +275,7 @@ class lvs::configuration {
 					'wikidatalb6' => "2620:0:861:ed1a::12",
 					'wikivoyagelb6' => "2620:0:861:ed1a::13"
 				},
-				'esams' => {
-					'wikimedialb6' => "2620:0:862:ed1a::0",
-					#'wikipedialb6' => "2620:0:862:ed1a::1",
-					'wiktionarylb6' => "2620:0:862:ed1a::2",
-					'wikiquotelb6' => "2620:0:862:ed1a::3",
-					'wikibookslb6' => "2620:0:862:ed1a::4",
-					'wikisourcelb6' => "2620:0:862:ed1a::5",
-					'wikinewslb6' => "2620:0:862:ed1a::6",
-					'wikiversitylb6' => "2620:0:862:ed1a::7",
-					'mediawikilb6' => "2620:0:862:ed1a::8",
-					'foundationlb6' => "2620:0:862:ed1a::9",
-					'wikidatalb6' => "2620:0:862:ed1a::12",
-					'wikivoyagelb6' => "2620:0:862:ed1a::13"
-				},
+				'esams' => {},
 				'ulsfo' => {},
 			},
 			'bits' => {
