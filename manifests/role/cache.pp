@@ -343,7 +343,6 @@ class role::cache {
 				'api' => $lvs::configuration::lvs_service_ips['production']['api'],
 				'rendering' => $lvs::configuration::lvs_service_ips['production']['rendering'],
 				'bits' => {
-					'pmtpa' => flatten([$lvs::configuration::lvs_service_ips['production']['bits']['pmtpa']['bitslb']]),
 					'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['bits']['eqiad']['bitslb']]),
 				},
 				'bits_appservers' => {
