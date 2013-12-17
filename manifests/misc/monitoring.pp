@@ -270,10 +270,10 @@ class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $e
                 'metric_regex' => 'kafka.varnishkafka\.kafka_drerr',
                 'type'         => 'stack',
             },
-            # round trip time average rate
+            # round trip time average
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.brokers..+\.rtt\.avg.per_second',
+                'metric_regex' => 'kafka.rdkafka.brokers..+\.rtt\.avg',
                 'type'         => 'line',
             },
 
