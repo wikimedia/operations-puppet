@@ -26,7 +26,7 @@ class download::wikimedia {
         owner   => root,
         group   => root,
         source  => 'puppet:///modules/download/exports',
-        require => package['nfs-kernel-server'],
+        require => Package['nfs-kernel-server'],
     }
 
     service { 'nfs-kernel-server':
