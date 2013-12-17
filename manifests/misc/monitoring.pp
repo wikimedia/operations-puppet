@@ -368,6 +368,11 @@ class misc::monitoring::view::navigation_timing {
     ganglia::view { 'Navigation Timing':
         graphs => [
             {
+                title        => 'mediaWikiLoadComplete: startup.js to window.onload',
+                host_regex   => 'client-side',
+                metric_regex => '^browser.mediaWikiLoadComplete.(desktop|mobile)_median$',
+            },
+            {
                 title        => 'totalPageLoadTime: navStart to loadEventEnd',
                 host_regex   => 'client-side',
                 metric_regex => '^browser.totalPageLoadTime.(desktop|mobile)_median$',

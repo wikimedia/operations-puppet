@@ -11,10 +11,10 @@ import socket
 import zmq
 
 
-schema_revs = (5336845, 5832704)
+schema_revs = (5832704, 6703470)
 metrics = ('connecting', 'sending', 'waiting', 'redirecting', 'receiving',
            'rendering', 'loading', 'dnsLookup', 'pageSpeed',
-           'totalPageLoadTime')
+           'totalPageLoadTime', 'mediaWikiLoadComplete')
 
 
 ap = argparse.ArgumentParser(description='NavigationTiming Graphite module')
@@ -42,24 +42,23 @@ for meta in iter(zsock.recv_json, ''):
 
     event = meta['event']
 
-    if meta['revision'] == 5832704:
-        if 'fetchStart' in event:
-            event['sending'] = event['fetchStart']
-        if 'loadEventStart' in event:
-            event['loading'] = event['loadEventStart']
-        if 'responseStart' in event and 'requestStart' in event:
-            event['waiting'] = event['responseStart'] - event['requestStart']
-        if 'connectEnd' in event and 'connectStart' in event:
-            event['connecting'] = event['connectEnd'] - event['connectStart']
-        if 'responseEnd' in event and 'responseStart' in event:
-            event['receiving'] = event['responseEnd'] - event['responseStart']
-        if 'loadEventEnd' in event and 'responseEnd' in event:
-            event['rendering'] = event['loadEventEnd'] - event['responseEnd']
-        if 'loadEventEnd' in event and 'domInteractive' in event:
-            event['pageSpeed'] = (
-                event['loadEventEnd'] - event['domInteractive'])
-        if 'loadEventEnd' in event:
-            event['totalPageLoadTime'] = event['loadEventEnd']
+    if 'fetchStart' in event:
+        event['sending'] = event['fetchStart']
+    if 'loadEventStart' in event:
+        event['loading'] = event['loadEventStart']
+    if 'responseStart' in event and 'requestStart' in event:
+        event['waiting'] = event['responseStart'] - event['requestStart']
+    if 'connectEnd' in event and 'connectStart' in event:
+        event['connecting'] = event['connectEnd'] - event['connectStart']
+    if 'responseEnd' in event and 'responseStart' in event:
+        event['receiving'] = event['responseEnd'] - event['responseStart']
+    if 'loadEventEnd' in event and 'responseEnd' in event:
+        event['rendering'] = event['loadEventEnd'] - event['responseEnd']
+    if 'loadEventEnd' in event and 'domInteractive' in event:
+        event['pageSpeed'] = (
+            event['loadEventEnd'] - event['domInteractive'])
+    if 'loadEventEnd' in event:
+        event['totalPageLoadTime'] = event['loadEventEnd']
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
