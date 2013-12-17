@@ -55,10 +55,10 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "keystone_service_nova_virt1000": source => "208.80.154.18", service => "keystone_service", jump => "ACCEPT" }
 	iptables_add_service{ "keystone_admin_nova_virt1000": source => "208.80.154.18", service => "keystone_admin", jump => "ACCEPT" }
 	iptables_add_service{ "amanda": source => "208.80.152.170", service => "inetd", jump => "ACCEPT" }
+	iptables_add_service{ "puppet_private": source => "10.0.0.0/8", service => "puppetmaster", jump => "ACCEPT" }
+	iptables_add_service{ "salt_publish_private": source => "10.0.0.0/8", service => "salt_publish", jump => "ACCEPT" }
+	iptables_add_service{ "salt_ret_private": source => "10.0.0.0/8", service => "salt_ret", jump => "ACCEPT" }
 	if ($site == "pmtpa") {
-		iptables_add_service{ "puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
-		iptables_add_service{ "salt_publish_private": source => "10.4.0.0/16", service => "salt_publish", jump => "ACCEPT" }
-		iptables_add_service{ "salt_ret_private": source => "10.4.0.0/16", service => "salt_ret", jump => "ACCEPT" }
 		iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
 		iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
 		iptables_add_service{ "beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
@@ -67,9 +67,6 @@ class openstack::iptables-accepts {
 		iptables_add_service{ "keystone_admin_nova": source => "10.4.16.0/24", service => "keystone_admin", jump => "ACCEPT" }
 	}
 	if ($site == "eqiad") {
-		iptables_add_service{ "puppet_private": source => "10.68.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
-		iptables_add_service{ "salt_publish_private": source => "10.68.0.0/16", service => "salt_publish", jump => "ACCEPT" }
-		iptables_add_service{ "salt_ret_private": source => "10.68.0.0/16", service => "salt_ret", jump => "ACCEPT" }
 		iptables_add_service{ "mysql_nova": source => "10.64.20.0/24", service => "mysql", jump => "ACCEPT" }
 		iptables_add_service{ "glance_api_nova": source => "10.64.20.0/24", service => "glance_api", jump => "ACCEPT" }
 		iptables_add_service{ "beam2_nova": source => "10.64.20.0/24", service => "beam2", jump => "ACCEPT" }
