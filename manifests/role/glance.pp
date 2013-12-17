@@ -70,9 +70,16 @@ class role::glance::server {
     include role::glance::config::pmtpa
     include role::glance::config::eqiad
 
-    $glanceconfig = $::site ? {
-        'pmtpa' => $role::glance::config::pmtpa::glanceconfig,
-        'eqiad' => $role::glance::config::eqiad::glanceconfig,
+    if $::realm == "labs" and $::openstack_site_override != undef {
+        $glanceconfig = $::openstack_site_override ? {
+            "pmtpa" => $role::glance::config::pmtpa::glanceconfig,
+            "eqiad" => $role::glance::config::eqiad::glanceconfig,
+        }
+    } else {
+        $glanceconfig = $::site ? {
+            "pmtpa" => $role::glance::config::pmtpa::glanceconfig,
+            "eqiad" => $role::glance::config::eqiad::glanceconfig,
+        }
     }
 
     class { 'openstack::glance-service':
