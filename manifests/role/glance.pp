@@ -13,23 +13,19 @@ class role::glance::config::pmtpa inherits role::glance::config {
 
     $keystoneconfig = $role::keystone::config::pmtpa::keystoneconfig
 
-    $db_host = $::realm ? {
-        'production' => 'virt0.wikimedia.org',
-        'labs'       => 'localhost',
-    }
-
-    $bind_ip = $::realm ? {
-        'production' => '208.80.152.32',
-        'labs'       => '127.0.0.1',
-        }
-
     $pmtpaglanceconfig = {
-        db_host                => $db_host,
-        bind_ip                => $bind_ip,
-        keystone_admin_token   => $keystoneconfig['admin_token'],
-        keystone_auth_host     => $keystoneconfig['bind_ip'],
+        db_host => $realm ? {
+            'production' => 'virt0.wikimedia.org',
+            'labs' => $::ipaddress_eth0,
+        },
+        bind_ip => $realm ? {
+            'production' => '208.80.152.32',
+            'labs' => $::ipaddress_eth0,
+        },
+        keystone_admin_token => $keystoneconfig['admin_token'],
+        keystone_auth_host => $keystoneconfig['bind_ip'],
         keystone_auth_protocol => $keystoneconfig['auth_protocol'],
-        keystone_auth_port     => $keystoneconfig['auth_port'],
+        keystone_auth_port => $keystoneconfig['auth_port'],
     }
     $glanceconfig = merge($pmtpaglanceconfig, $commonglanceconfig)
 }
@@ -55,13 +51,18 @@ class role::glance::config::eqiad inherits role::glance::config {
     }
 
     $eqiadglanceconfig = {
-        db_host                => $db_host,
-        bind_ip                => $bind_ip,
-        auth_uri               => $auth_uri,
-        keystone_admin_token   => $keystoneconfig['admin_token'],
-        keystone_auth_host     => $keystoneconfig['bind_ip'],
+        db_host => $realm ? {
+            'production' => 'virt1000.wikimedia.org',
+            'labs' => $::ipaddress_eth0,
+        },
+        bind_ip => $realm ? {
+            'production' => '208.80.154.18',
+            'labs' => $::ipaddress_eth0,
+        },
+        keystone_admin_token => $keystoneconfig['admin_token'],
+        keystone_auth_host => $keystoneconfig['bind_ip'],
         keystone_auth_protocol => $keystoneconfig['auth_protocol'],
-        keystone_auth_port     => $keystoneconfig['auth_port'],
+        keystone_auth_port => $keystoneconfig['auth_port'],
     }
     $glanceconfig = merge($eqiadglanceconfig, $commonglanceconfig)
 }
