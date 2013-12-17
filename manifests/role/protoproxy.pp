@@ -88,7 +88,7 @@ class role::protoproxy::ssl {
         proxy_backend     => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.200' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled       => true,
         enabled => true,
@@ -105,7 +105,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.23' },
             'eqiad' => { 'primary' => '10.2.2.23' },
-            'esams' => { 'primary' => '10.2.3.23', 'secondary' => '208.80.152.210' },
+            'esams' => { 'primary' => '10.2.3.23', 'secondary' => '208.80.154.234' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -121,7 +121,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.24' },
             'eqiad' => { 'primary' => '10.2.2.24' },
-            'esams' => { 'primary' => '10.2.3.24', 'secondary' => '208.80.152.211' },
+            'esams' => { 'primary' => '10.2.3.24', 'secondary' => '208.80.154.240' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -137,7 +137,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.201' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -153,7 +153,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.202' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -169,7 +169,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.203' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -185,7 +185,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.204' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -201,7 +201,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.205' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -217,7 +217,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.206' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -233,7 +233,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.207' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -249,7 +249,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.208' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -265,7 +265,7 @@ class role::protoproxy::ssl {
         proxy_backend => {
             'pmtpa' => { 'primary' => '10.2.1.25' },
             'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.152.209' },
+            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled => true,
         enabled => true,
@@ -298,7 +298,7 @@ class role::protoproxy::ssl {
             proxy_backend => {
                 'pmtpa' => { 'primary' => '10.2.1.25' },
                 'eqiad' => { 'primary' => '10.2.2.25' },
-                'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.242' },
+                'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
                 },
                 ipv6_enabled => true,
                 enabled => true,
@@ -315,7 +315,7 @@ class role::protoproxy::ssl {
             proxy_backend => {
                 'pmtpa' => { 'primary' => '10.2.1.25' },
                 'eqiad' => { 'primary' => '10.2.2.25' },
-                'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.243' },
+                'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
                 },
                 ipv6_enabled => true,
                 enabled => true,
@@ -331,7 +331,7 @@ class role::protoproxy::ssl {
             proxy_backend => {
                 'pmtpa' => { 'primary' => '10.64.16.146' },
                 'eqiad' => { 'primary' => '10.64.16.146' },
-                'esams' => { 'primary' => '208.80.152.200', 'secondary' => '208.80.152.200' },
+                'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
             },
             ssl_backend => { 'esams' => 'true' },
             enabled => true,
