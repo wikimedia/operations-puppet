@@ -59,9 +59,16 @@ class role::keystone::server {
 	include role::keystone::config::pmtpa,
 		role::keystone::config::eqiad
 
-	$keystoneconfig = $site ? {
-		"pmtpa" => $role::keystone::config::pmtpa::keystoneconfig,
-		"eqiad" => $role::keystone::config::eqiad::keystoneconfig,
+	if $::realm == "labs" and $::openstack_site_override != undef {
+		$keystoneconfig = $::openstack_site_override ? {
+			"pmtpa" => $role::keystone::config::pmtpa::keystoneconfig,
+			"eqiad" => $role::keystone::config::eqiad::keystoneconfig,
+		}
+	} else {
+		$keystoneconfig = $::site ? {
+			"pmtpa" => $role::keystone::config::pmtpa::keystoneconfig,
+			"eqiad" => $role::keystone::config::eqiad::keystoneconfig,
+		}
 	}
 
 	class { "openstack::keystone-service": openstack_version => $openstack_version, keystoneconfig => $keystoneconfig }

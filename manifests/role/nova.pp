@@ -2,9 +2,16 @@ class role::nova::config {
 	include role::nova::config::pmtpa,
 		role::nova::config::eqiad
 
-	$novaconfig = $site ? {
-		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
-		"eqiad" => $role::nova::config::eqiad::novaconfig,
+	if $::realm == "labs" and $::openstack_site_override != undef {
+		$novaconfig = $::openstack_site_override ? {
+			"pmtpa" => $role::nova::config::pmtpa::novaconfig,
+			"eqiad" => $role::nova::config::eqiad::novaconfig,
+		}
+	} else {
+		$novaconfig = $::site ? {
+			"pmtpa" => $role::nova::config::pmtpa::novaconfig,
+			"eqiad" => $role::nova::config::eqiad::novaconfig,
+		}
 	}
 }
 
@@ -243,13 +250,24 @@ class role::nova::controller {
 		role::glance::config::pmtpa,
 		role::glance::config::eqiad
 
-	$glanceconfig = $site ? {
-		"pmtpa" => $role::glance::config::pmtpa::glanceconfig,
-		"eqiad" => $role::glance::config::eqiad::glanceconfig,
-	}
-	$keystoneconfig = $site ? {
-		"pmtpa" => $role::keystone::config::pmtpa::keystoneconfig,
-		"eqiad" => $role::keystone::config::eqiad::keystoneconfig,
+	if $::realm == "labs" and $::openstack_site_override != undef {
+		$glanceconfig = $::openstack_site_override ? {
+			"pmtpa" => $role::glance::config::pmtpa::glanceconfig,
+			"eqiad" => $role::glance::config::eqiad::glanceconfig,
+		}
+		$keystoneconfig = $::openstack_site_override ? {
+			"pmtpa" => $role::keystone::config::pmtpa::keystoneconfig,
+			"eqiad" => $role::keystone::config::eqiad::keystoneconfig,
+		}
+	} else {
+		$glanceconfig = $::site ? {
+			"pmtpa" => $role::glance::config::pmtpa::glanceconfig,
+			"eqiad" => $role::glance::config::eqiad::glanceconfig,
+		}
+		$keystoneconfig = $::site ? {
+			"pmtpa" => $role::keystone::config::pmtpa::keystoneconfig,
+			"eqiad" => $role::keystone::config::eqiad::keystoneconfig,
+		}
 	}
 
 	include role::nova::common
@@ -289,7 +307,7 @@ class role::nova::network {
 
 	include role::nova::common
 
-	if ($::site == "pmtpa") {
+	if $::realm == "production" and $::site == "pmtpa" {
 		require role::nova::network::bonding
 
 		interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
