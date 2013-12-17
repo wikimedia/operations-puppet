@@ -22,7 +22,7 @@ class role::nova::config::common {
 		db_name => "nova",
 		db_user => "nova",
 		db_pass => $passwords::openstack::nova::nova_db_pass,
-		my_ip => $ipaddress_eth0,
+		my_ip => $::ipaddress_eth0,
 		ldap_base_dn => "dc=wikimedia,dc=org",
 		ldap_user_dn => "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
 		ldap_user_pass => $passwords::openstack::nova::nova_ldap_user_pass,
@@ -49,7 +49,7 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
 	$keystoneconfig = $role::keystone::config::pmtpa::keystoneconfig
 	$controller_hostname = $realm ? {
 		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
+		"labs" => $::ipaddress_eth0,
 	}
 
 
@@ -72,15 +72,15 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
 		network_public_interface => "eth0",
 		network_host => $realm ? {
 			"production" => "10.4.0.1",
-			"labs" => "127.0.0.1",
+			"labs" => $::ipaddress_eth0,
 		},
 		api_host => $realm ? {
 			"production" => "virt2.pmtpa.wmnet",
-			"labs" => "localhost",
+			"labs" => $::ipaddress_eth0,
 		},
 		api_ip => $realm ? {
 			"production" => "10.4.0.1",
-			"labs" => "127.0.0.1",
+			"labs" => $::ipaddress_eth0,
 		},
 		fixed_range => $realm ? {
 			"production" => "10.4.0.0/21",
@@ -92,7 +92,7 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
 		},
 		network_public_ip => $realm ? {
 			"production" => "208.80.153.192",
-			"labs" => "127.0.0.1",
+			"labs" => $::ipaddress_eth0,
 		},
 		dmz_cidr => $realm ? {
 			"production" => "208.80.153.0/22,10.0.0.0/8",
@@ -139,7 +139,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 	$keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
 	$controller_hostname = $realm ? {
 		"production" => "virt1000.wikimedia.org",
-		"labs" => "localhost",
+		"labs" => $::ipaddress_eth0,
 	}
 
 	$eqiadnovaconfig = {
@@ -161,15 +161,15 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 		network_public_interface => "eth0",
 		network_host => $realm ? {
 			"production" => "10.68.16.1",
-			"labs" => "127.0.0.1",
+			"labs" => $::ipaddress_eth0,
 		},
 		api_host => $realm ? {
 			"production" => "virt1005.eqiad.wmnet",
-			"labs" => "localhost",
+			"labs" => $::ipaddress_eth0,
 		},
 		api_ip => $realm ? {
 			"production" => "10.68.16.1",
-			"labs" => "127.0.0.1",
+			"labs" => $::ipaddress_eth0,
 		},
 		fixed_range => $realm ? {
 			"production" => "10.68.16.0/21",
@@ -181,7 +181,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 		},
 		network_public_ip => $realm ? {
 			"production" => "208.80.155.255",
-			"labs" => "127.0.0.1",
+			"labs" => $::ipaddress_eth0,
 		},
 		dmz_cidr => $realm ? {
 			"production" => "208.80.155.0/22,10.0.0.0/8",

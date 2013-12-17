@@ -16,11 +16,11 @@ class role::glance::config::pmtpa inherits role::glance::config {
 	$pmtpaglanceconfig = {
 		db_host => $realm ? {
 			"production" => "virt0.wikimedia.org",
-			"labs" => "localhost",
+			"labs" => $::ipaddress_eth0,
 		},
 		bind_ip => $realm ? {
 			"production" => "208.80.152.32",
-			"labs" => "127.0.0.1",
+			"labs" => $::ipaddress_eth0,
 		},
 		keystone_admin_token => $keystoneconfig["admin_token"],
 		keystone_auth_host => $keystoneconfig["bind_ip"],
@@ -38,11 +38,11 @@ class role::glance::config::eqiad inherits role::glance::config {
 	$eqiadglanceconfig = {
 		db_host => $realm ? {
 			"production" => "virt1000.wikimedia.org",
-			"labs" => "localhost",
+			"labs" => $::ipaddress_eth0,
 		},
 		bind_ip => $realm ? {
 			"production" => "208.80.154.18",
-			"labs" => "127.0.0.1",
+			"labs" => $::ipaddress_eth0,
 		},
 		keystone_admin_token => $keystoneconfig["admin_token"],
 		keystone_auth_host => $keystoneconfig["bind_ip"],
