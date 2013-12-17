@@ -152,7 +152,7 @@ class openstack::common($openstack_version="folsom",
 		require => Class["openstack::repo"];
 	}
 
-	require mysql, mysql::server::package
+	require mysql
 
 	# For IPv6 support
 	package { [ "python-netaddr", "radvd" ]:
@@ -293,6 +293,8 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
 	$keystone_db_name = $keystoneconfig["db_name"]
 	$keystone_db_user = $keystoneconfig["db_user"]
 	$keystone_db_pass = $keystoneconfig["db_pass"]
+
+	require mysql::server::package
 
 	if !defined(Service['mysql']) {
 		service { "mysql":		
