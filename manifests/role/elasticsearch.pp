@@ -36,7 +36,7 @@ class role::elasticsearch::config {
         }
         $master_eligible = $::hostname ? {
             /^elastic1001/        => true,  # Rack A3
-            /^elastic1007/        => true,  # Rack C5
+            /^elastic1008/        => true,  # Rack C5
             # TODO Move this when we get machines on another row/rack
             /^elastic1012/        => true,  # Rack C5
             default               => false,
