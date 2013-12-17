@@ -1496,6 +1496,11 @@ host labstore4 {
 	fixed-address labstore4.pmtpa.wmnet;
 }
 
+host labnet1001 {
+	hardware ethernet d4:be:d9:af:66:c2;
+	fixed-address labnet1001.eqiad.wmnet;
+}
+
 host labstore1001 {
 	hardware ethernet d4:ae:52:76:5b:0d;
 	fixed-address labstore1001.eqiad.wmnet;
