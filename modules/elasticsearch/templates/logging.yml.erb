@@ -7,10 +7,9 @@ logger:
   # https://github.com/elasticsearch/elasticsearch/issues/4203
   action.admin.cluster.node.stats: INFO
 
-  # We'd like to know more about shard allocation and management because we've
-  # had an outage due to unknown allocation problems.  This will cause more
-  # logging but it should be worth it.
-  cluster: TRACE
+  # If you need to know more about shard allocation you to set this to debug.
+  # Trace seems to generate enough logs to slow down the process.
+  # cluster: DEBUG
 
   # reduce the logging for aws, too much is logged under the default INFO
   com.amazonaws: WARN
