@@ -827,8 +827,7 @@ class role::cache {
 		# FIXME: remove this hack
 		include lvs::configuration
 		class { 'lvs::realserver':
-			realserver_ips => flatten([$lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
-				$lvs::configuration::lvs_service_ips[$::realm]['text-varnish'][$::site]])
+			realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
 		}
 
 		include role::cache::varnish::text

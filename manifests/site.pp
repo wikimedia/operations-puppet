@@ -78,7 +78,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
     $lvs_balancer_ips = $::hostname ? {
         /^amslvs[13]$/ => [
-            $sip['text-varnish'][$::site],
+            $sip['text'][$::site],
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
             $sip['ipv6'][$::site],
@@ -1454,7 +1454,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
             $sip['misc_web'][$::site],
             ],
         /^lvs[26]$/ => [
-            $sip['text-varnish'][$::site],
+            $sip['text'][$::site],
             $sip['bits'][$::site],
             $sip['ipv6'][$::site],
             ],
@@ -1520,7 +1520,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
     $lvs_balancer_ips = $::hostname? {
         /^lvs100[14]$/ => [
-            $sip['text-varnish'][$::site],
+            $sip['text'][$::site],
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
             $sip['ipv6'][$::site],
@@ -1699,7 +1699,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
     $lvs_balancer_ips = $::hostname ? {
         /^lvs400[13]$/ => [
-            $sip['text-varnish'][$::site],
+            $sip['text'][$::site],
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
         ],

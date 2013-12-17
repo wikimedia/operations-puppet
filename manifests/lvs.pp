@@ -112,7 +112,7 @@ class lvs::configuration {
 	# NOTE! This hash is referenced in many other manifests
 	$lvs_service_ips = {
 		'production' => {
-			'text-varnish' => {
+			'text' => {
 				'pmtpa' => {},
 				'eqiad' => {
 					'textsvc' => "10.2.2.25",
@@ -312,9 +312,6 @@ class lvs::configuration {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
 			},
-			'text-varnish' => {
-				'pmtpa' => [],
-			},
 			'apaches' => {
 				'pmtpa' => "10.4.0.254",
 			},
@@ -364,11 +361,11 @@ class lvs::configuration {
 	$service_ips = $lvs_service_ips[$::realm]
 
 	$lvs_services = {
-		'text-varnish' => {
+		'text' => {
 			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (Varnish)",
 			'class' => 'high-traffic1',
 			'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
-			'ip' => $service_ips['text-varnish'][$::site],
+			'ip' => $service_ips['text'][$::site],
 			'bgp' => 'yes',
 			'depool-threshold' => '.5',
 			'monitors' => {
@@ -382,7 +379,7 @@ class lvs::configuration {
 			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (nginx)",
 			'class' => 'high-traffic1',
 			'sites' => [ 'ulsfo' ],
-			'ip' => $service_ips['text-varnish'][$::site],
+			'ip' => $service_ips['text'][$::site],
 			'port' => 443,
 			'bgp' => 'no',
 			'depool-threshold' => '.5',
@@ -1011,41 +1008,41 @@ class lvs::monitor {
 	# EQIAD
 	monitor_service_lvs_http_https {
 		"wikimedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikimedialb'],
+			ip_address => $ip['text']['eqiad']['wikimedialb'],
 			uri => "meta.wikimedia.org!/wiki/Main_Page";
 		"wikipedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikipedialb'],
+			ip_address => $ip['text']['eqiad']['wikipedialb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"wiktionary-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wiktionarylb'],
+			ip_address => $ip['text']['eqiad']['wiktionarylb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiquote-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikiquotelb'],
+			ip_address => $ip['text']['eqiad']['wikiquotelb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikibookslb'],
+			ip_address => $ip['text']['eqiad']['wikibookslb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikisourcelb'],
+			ip_address => $ip['text']['eqiad']['wikisourcelb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikinews-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikinewslb'],
+			ip_address => $ip['text']['eqiad']['wikinewslb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiversity-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikiversitylb'],
+			ip_address => $ip['text']['eqiad']['wikiversitylb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"mediawiki-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['mediawikilb'],
+			ip_address => $ip['text']['eqiad']['mediawikilb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"foundation-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['foundationlb'],
+			ip_address => $ip['text']['eqiad']['foundationlb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.eqiad.wikimedia.org":
@@ -1058,10 +1055,10 @@ class lvs::monitor {
 			ip_address => $ip['mobile']['eqiad']['mobilelb'],
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 		"wikidata-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikidatalb'],
+			ip_address => $ip['text']['eqiad']['wikidatalb'],
 			uri => "www.wikidata.org!/";
 		"wikivoyage-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text-varnish']['eqiad']['wikivoyagelb'],
+			ip_address => $ip['text']['eqiad']['wikivoyagelb'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
 		'misc-web-lb.eqiad.wikimedia.org':
 			ip_address => $ip['misc_web']['eqiad']['misc_web'],
@@ -1139,7 +1136,7 @@ class lvs::monitor {
 
 	monitor_service_lvs_http_https {
 		"text-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['textlb'],
+			ip_address => $ip['text']['esams']['textlb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"bits-lb.esams.wikimedia.org":
 			ip_address => $ip['bits']['esams']['bitslb'],
@@ -1154,7 +1151,7 @@ class lvs::monitor {
 
 	monitor_service_lvs6_http_https {
 		"text-lb.esams.wikimedia.org":
-			ip_address => $ip['text-varnish']['esams']['textlb6'],
+			ip_address => $ip['text']['esams']['textlb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"bits-lb.esams.wikimedia.org":
 			ip_address => $ip['bits']['esams']['bitslb6'],
@@ -1171,7 +1168,7 @@ class lvs::monitor {
 
 	monitor_service_lvs_http_https {
 		"text-lb.ulsfo.wikimedia.org":
-			ip_address => $ip['text-varnish']['ulsfo']['textlb'],
+			ip_address => $ip['text']['ulsfo']['textlb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"bits-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['bits']['ulsfo']['bitslb'],
@@ -1186,7 +1183,7 @@ class lvs::monitor {
 
 	monitor_service_lvs6_http_https {
 		"text-lb.ulsfo.wikimedia.org":
-			ip_address => $ip['text-varnish']['ulsfo']['textlb6'],
+			ip_address => $ip['text']['ulsfo']['textlb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
 		"bits-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['bits']['ulsfo']['bitslb6'],
