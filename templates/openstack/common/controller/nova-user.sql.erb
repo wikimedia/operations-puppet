@@ -1,2 +1,5 @@
 GRANT USAGE ON *.* to '<%= nova_db_user %>'@'%' IDENTIFIED BY '<%=nova_db_pass %>';
+GRANT USAGE ON *.* to '<%= nova_db_user %>'@'127.0.0.1' IDENTIFIED BY '<%=nova_db_pass %>';
+GRANT USAGE ON *.* to '<%= nova_db_user %>'@'localhost' IDENTIFIED BY '<%=nova_db_pass %>';
 GRANT ALL PRIVILEGES ON <%= nova_db_name %>.* to '<%= nova_db_user %>'@'%';
+FLUSH PRIVILEGES;

@@ -1,2 +1,5 @@
 GRANT USAGE ON *.* to '<%= puppet_db_user %>'@'%' IDENTIFIED BY '<%= puppet_db_pass %>';
+GRANT USAGE ON *.* to '<%= puppet_db_user %>'@'127.0.0.1' IDENTIFIED BY '<%= puppet_db_pass %>';
+GRANT USAGE ON *.* to '<%= puppet_db_user %>'@'localhost' IDENTIFIED BY '<%= puppet_db_pass %>';
 GRANT ALL PRIVILEGES ON <%= puppet_db_name %>.* to '<%= puppet_db_user %>'@'%';
+FLUSH PRIVILEGES;
