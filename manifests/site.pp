@@ -2435,25 +2435,6 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
     include role::protoproxy::ssl
 }
 
-# sq67-70 are varnishes for bits.wikimedia.org
-node /sq(6[7-9]|70)\.wikimedia\.org/ {
-    if $::hostname =~ /^sq6[68]$/ {
-        $ganglia_aggregator = true
-    }
-
-    interface::aggregate { "bond0":
-        orig_interface => "eth0",
-        members => [ "eth0", "eth1", "eth2", "eth3" ]
-    }
-
-    interface::add_ip6_mapped { "main":
-        require => Interface::Aggregate[bond0],
-        interface => "bond0"
-    }
-
-    include role::cache::bits
-}
-
 node "stafford.pmtpa.wmnet" {
     include standard
 
