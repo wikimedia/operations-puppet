@@ -445,6 +445,13 @@ class role::cache {
 			}
 
 			class { '::varnishkafka::monitoring': }
+
+			# Generate icinga alert if varnishkafka is not running.
+			nrpe::monitor_service { 'varnishkafka':
+				description  => 'Varnishkafka log producer',
+				nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C varnishkafka',
+				require      => Class['::varnishkafka'],
+			}
 		}
 	}
 
