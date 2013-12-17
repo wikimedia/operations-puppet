@@ -256,16 +256,24 @@ class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $e
     ganglia::view { 'varnishkafka':
         ensure => $ensure,
         graphs => [
-            # delivery report errors
+            # delivery report errors rate
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.varnishkafka\.kafka_drerr.per_second',
+                'type'         => 'stack',
+            },
+            # delivery report errors.
+            # drerr is important, but seems to happen in bursts.
+            # let's show the total drerr in the view as well.
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 'metric_regex' => 'kafka.varnishkafka\.kafka_drerr',
                 'type'         => 'stack',
             },
-            # round trip time average
+            # round trip time average rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.brokers..+\.rtt\.avg',
+                'metric_regex' => 'kafka.rdkafka.brokers..+\.rtt\.avg.per_second',
                 'type'         => 'line',
             },
 
@@ -296,16 +304,16 @@ class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $e
                 'type'         => 'stack',
             },
 
-            # transaction bytes
+            # transaction bytes rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+\.txbytes',
+                'metric_regex' => 'kafka.rdkafka.topics..+\.txbytes.per_second',
                 'type'         => 'stack',
             },
-            # transaction messages
+            # transaction messages rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+\.txmsgs',
+                'metric_regex' => 'kafka.rdkafka.topics..+\.txmsgs.per_second',
                 'type'         => 'stack',
             },
         ],
