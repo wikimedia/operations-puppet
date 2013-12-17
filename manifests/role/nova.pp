@@ -308,7 +308,9 @@ class role::nova::network {
 
 class role::nova::wikiupdates {
 
-    package { 'python-mwclient': ensure => latest; }
+    if $::realm == "production" {
+        package { 'python-mwclient': ensure => latest; }
+    }
 
     if ($openstack_version == "essex") {
         if ($::lsbdistcodename == "lucid") {
