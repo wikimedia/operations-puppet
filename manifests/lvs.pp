@@ -113,21 +113,7 @@ class lvs::configuration {
 	$lvs_service_ips = {
 		'production' => {
 			'text' => {
-				'pmtpa' => {
-					'textsvc' => "10.2.1.25",
-					'wikipedialb' => "208.80.152.201",
-					'wikimedialb' => "208.80.152.200",
-					'wiktionarylb' => "208.80.152.202",
-					'wikiquotelb' => "208.80.152.203",
-					'wikibookslb' => "208.80.152.204",
-					'wikisourcelb' => "208.80.152.205",
-					'wikinewslb' => "208.80.152.206",
-					'wikiversitylb' => "208.80.152.207",
-					'mediawikilb' => "208.80.152.208",
-					'foundationlb' => "208.80.152.209",
-					'wikidatalb' => '208.80.152.218',
-					'wikivoyagelb' => "208.80.152.219"
-				},
+				'pmtpa' => {},
 				'eqiad' => {},
 				'esams' => {},
 				'ulsfo' => {},
@@ -167,35 +153,11 @@ class lvs::configuration {
 			},
 			'https' => {
 				'pmtpa' => {
-					'wikimedialbsecure' => "208.80.152.200",
-					'wikipedialbsecure' => "208.80.152.201",
 					'bitslbsecure' => "208.80.152.210",
 					'uploadlbsecure' => "208.80.152.211",
-					'wiktionarylbsecure' => "208.80.152.202",
-					'wikiquotelbsecure' => "208.80.152.203",
-					'wikibookslbsecure' => "208.80.152.204",
-					'wikisourcelbsecure' => "208.80.152.205",
-					'wikinewslbsecure' => "208.80.152.206",
-					'wikiversitylbsecure' => "208.80.152.207",
-					'mediawikilbsecure' => "208.80.152.208",
-					'foundationlbsecure' => "208.80.152.209",
-					'wikidatalbsecure' => "208.80.152.218",
-					'wikivoyagelbsecure' => "208.80.152.219",
 
-					'wikimedialbsecure6' => "2620:0:860:ed1a::0",
-					'wikipedialbsecure6' => "2620:0:860:ed1a::1",
-					'wiktionarylbsecure6' => "2620:0:860:ed1a::2",
-					'wikiquotelbsecure6' => "2620:0:860:ed1a::3",
-					'wikibookslbsecure6' => "2620:0:860:ed1a::4",
-					'wikisourcelbsecure6' => "2620:0:860:ed1a::5",
-					'wikinewslbsecure6' => "2620:0:860:ed1a::6",
-					'wikiversitylbsecure6' => "2620:0:860:ed1a::7",
-					'mediawikilbsecure6' => "2620:0:860:ed1a::8",
-					'foundationlbsecure6' => "2620:0:860:ed1a::9",
 					'bitslbsecure6' => "2620:0:860:ed1a::a",
 					'uploadlbsecure6' => "2620:0:860:ed1a::b",
-					'wikidatalbsecure6' => "2620:0:860:ed1a::12",
-					'wikivoyagelbsecure6' => "2620:0:860:ed1a::13"
 				},
 				'eqiad' => {
 					'wikimedialbsecure' => "208.80.154.224",
@@ -246,21 +208,7 @@ class lvs::configuration {
 				'ulsfo' => {}
 			},
 			'ipv6' => {
-				'pmtpa' => {
-					'wikimedialb6' => "2620:0:860:ed1a::0",
-					'wikipedialb6' => "2620:0:860:ed1a::1",
-					'wiktionarylb6' => "2620:0:860:ed1a::2",
-					'wikiquotelb6' => "2620:0:860:ed1a::3",
-					'wikibookslb6' => "2620:0:860:ed1a::4",
-					'wikisourcelb6' => "2620:0:860:ed1a::5",
-					'wikinewslb6' => "2620:0:860:ed1a::6",
-					'wikiversitylb6' => "2620:0:860:ed1a::7",
-					'mediawikilb6' => "2620:0:860:ed1a::8",
-					'foundationlb6' => "2620:0:860:ed1a::9",
-					'uploadlb6' => "2620:0:860:ed1a::b",
-					'wikidatalb6' => "2620:0:860:ed1a::12",
-					'wikivoyagelb6' => "2620:0:860:ed1a::13"
-				},
+				'pmtpa' => {},
 				'eqiad' => {
 					'wikimedialb6' => "2620:0:861:ed1a::0",
 					'wikipedialb6' => "2620:0:861:ed1a::1",
