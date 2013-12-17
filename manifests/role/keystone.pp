@@ -22,21 +22,17 @@ class role::keystone::config {
 }
 class role::keystone::config::pmtpa inherits role::keystone::config {
     $pmtpakeystoneconfig = {
-        db_host      => $::realm ? {
-            'production' => 'virt0.wikimedia.org',
-            'labs'       => 'localhost',
+        db_host => $realm ? {
+            "production" => "virt0.wikimedia.org",
+            "labs" => $::ipaddress_eth0,
         },
-        ldap_host    => $::realm ? {
-            'production' => 'virt0.wikimedia.org',
-            'labs'       => 'localhost',
+        ldap_host => $realm ? {
+            "production" => "virt0.wikimedia.org",
+            "labs" => $::ipaddress_eth0,
         },
-        bind_ip      => $::realm ? {
-            'production' => '208.80.152.32',
-            'labs'       => '127.0.0.1',
-        },
-        token_driver => $::realm ? {
-            'production' => 'redis',
-            'labs'       => 'redis',
+        bind_ip => $realm ? {
+            "production" => "208.80.152.32",
+            "labs" => $::ipaddress_eth0,
         },
     }
     $keystoneconfig = merge($pmtpakeystoneconfig, $commonkeystoneconfig)
@@ -44,21 +40,17 @@ class role::keystone::config::pmtpa inherits role::keystone::config {
 
 class role::keystone::config::eqiad inherits role::keystone::config {
     $eqiadkeystoneconfig = {
-        db_host      => $::realm ? {
-            'production' => 'virt1000.wikimedia.org',
-            'labs'       => 'localhost',
+        db_host => $realm ? {
+            "production" => "virt1000.wikimedia.org",
+            "labs" => $::ipaddress_eth0,
         },
-        ldap_host    => $::realm ? {
-            'production' => 'virt1000.wikimedia.org',
-            'labs'       => 'localhost',
+        ldap_host => $realm ? {
+            "production" => "virt1000.wikimedia.org",
+            "labs" => $::ipaddress_eth0,
         },
-        bind_ip      => $::realm ? {
-            'production' => '208.80.154.18',
-            'labs'       => '127.0.0.1',
-        },
-        token_driver => $::realm ? {
-            'production' => 'redis',
-            'labs'       => 'redis',
+        bind_ip => $realm ? {
+            "production" => "208.80.154.18",
+            "labs" => $::ipaddress_eth0,
         },
     }
     $keystoneconfig = merge($eqiadkeystoneconfig, $commonkeystoneconfig)
