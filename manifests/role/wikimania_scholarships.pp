@@ -6,16 +6,16 @@ class role::wikimania_scholarships {
 
     class { '::wikimania_scholarships':
         # Opening date for 2014 application cycle
-        open_date    => '2014-01-01T00:00:00Z',
+        open_date    => '2014-01-06T00:00:00Z',
         # Closing date for 2014 application cycle
-        close_date   => '2014-02-28T23:59:59Z',
+        close_date   => '2014-02-17T23:59:59Z',
         hostname     => 'scholarships.wikimedia.org',
         deploy_dir   => '/srv/deployment/scholarships/scholarships',
         # Send logs to fluorine
         udp2log_dest => '10.64.0.21:8420',
         serveradmin  => 'root@wikimedia.org',
         # Misc MySQL shard
-        mysql_host   => 'db1001.eqiad.wmnet',
+        mysql_host   => 'db1048.eqiad.wmnet',
         mysql_db     => 'scholarships',
         smtp_host    => 'smtp.pmtpa.wmnet'
     }
