@@ -81,7 +81,7 @@ class role::protoproxy::ssl {
         proxy_addresses   => {
             'pmtpa' => [ '208.80.152.200', '[2620:0:860:ed1a::]' ],
             'eqiad' => [ '208.80.154.224', '[2620:0:861:ed1a::]' ],
-            'esams' => [ '91.198.174.192', '91.198.174.201', '91.198.174.224', '[2620:0:862:ed1a::]', '[2620:0:862:ed1a::1:9]' ],
+            'esams' => [ '91.198.174.192', '91.198.174.201', '[2620:0:862:ed1a::1:9]' ],
         },
         proxy_server_name => '*.wikimedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -114,7 +114,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.211', '[2620:0:860:ed1a::b]' ],
             'eqiad' => [ '208.80.154.240', '208.80.154.235', '[2620:0:861:ed1a::2:b]', '[2620:0:861:ed1a::b]' ],
-            'esams' => [ '91.198.174.208', '91.198.174.234', '[2620:0:862:ed1a::2:b]', '[2620:0:862:ed1a::b]' ],
+            'esams' => [ '91.198.174.208', '[2620:0:862:ed1a::2:b]' ],
         },
         proxy_server_name => 'upload.wikimedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -130,7 +130,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.201', '[2620:0:860:ed1a::1]' ],
             'eqiad' => [ '208.80.154.225', '[2620:0:861:ed1a::1]' ],
-            'esams' => [ '91.198.174.225', '[2620:0:862:ed1a::1]' ],
+            'esams' => [ '[2620:0:862:ed1a::1]' ],
         },
         proxy_server_name => '*.wikipedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -146,7 +146,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.202', '[2620:0:860:ed1a::2]' ],
             'eqiad' => [ '208.80.154.226', '[2620:0:861:ed1a::2]' ],
-            'esams' => [ '91.198.174.226', '[2620:0:862:ed1a::2]' ],
+            'esams' => [],
         },
         proxy_server_name => '*.wiktionary.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -162,7 +162,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.203', '[2620:0:860:ed1a::3]' ],
             'eqiad' => [ '208.80.154.227', '[2620:0:861:ed1a::3]' ],
-            'esams' => [ '91.198.174.227', '[2620:0:862:ed1a::3]' ],
+            'esams' => [],
         },
         proxy_server_name => '*.wikiquote.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -178,7 +178,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.204', '[2620:0:860:ed1a::4]' ],
             'eqiad' => [ '208.80.154.228', '[2620:0:861:ed1a::4]' ],
-            'esams' => [ '91.198.174.228', '[2620:0:862:ed1a::4]' ],
+            'esams' => [],
         },
         proxy_server_name => '*.wikibooks.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -194,7 +194,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.205', '[2620:0:860:ed1a::5]' ],
             'eqiad' => [ '208.80.154.229', '[2620:0:861:ed1a::5]' ],
-            'esams' => [ '91.198.174.229', '[2620:0:862:ed1a::5]' ],
+            'esams' => [],
         },
         proxy_server_name => '*.wikisource.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -210,7 +210,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.206', '[2620:0:860:ed1a::6]' ],
             'eqiad' => [ '208.80.154.230', '[2620:0:861:ed1a::6]' ],
-            'esams' => [ '91.198.174.230', '[2620:0:862:ed1a::6]' ],
+            'esams' => [],
         },
         proxy_server_name => '*.wikinews.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -226,7 +226,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.207', '[2620:0:860:ed1a::7]' ],
             'eqiad' => [ '208.80.154.231', '[2620:0:861:ed1a::7]' ],
-            'esams' => [ '91.198.174.231', '[2620:0:862:ed1a::7]' ],
+            'esams' => [],
         },
         proxy_server_name => '*.wikiversity.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -242,7 +242,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.208', '[2620:0:860:ed1a::8]' ],
             'eqiad' => [ '208.80.154.232', '[2620:0:861:ed1a::8]' ],
-            'esams' => [ '91.198.174.232', '[2620:0:862:ed1a::8]' ],
+            'esams' => [],
         },
         proxy_server_name => '*.mediawiki.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -258,7 +258,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.209', '[2620:0:860:ed1a::9]' ],
             'eqiad' => [ '208.80.154.233', '[2620:0:861:ed1a::9]' ],
-            'esams' => [ '91.198.174.235', '[2620:0:862:ed1a::9]' ],
+            'esams' => [],
         },
         proxy_server_name => '*.wikimediafoundation.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -291,7 +291,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.218', '[2620:0:860:ed1a::12]' ],
             'eqiad' => [ '208.80.154.242', '[2620:0:861:ed1a::12]' ],
-            'esams' => [ '91.198.174.237', '[2620:0:862:ed1a::12]' ],
+            'esams' => [],
             },
             proxy_server_name => '*.wikidata.org',
             proxy_server_cert_name => 'unified.wikimedia.org',
@@ -308,7 +308,7 @@ class role::protoproxy::ssl {
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.219', '[2620:0:860:ed1a::13]' ],
             'eqiad' => [ '208.80.154.243', '[2620:0:861:ed1a::13]' ],
-            'esams' => [ '91.198.174.238', '[2620:0:862:ed1a::13]' ],
+            'esams' => [],
             },
             proxy_server_name => '*.wikivoyage.org',
             proxy_server_cert_name => 'unified.wikimedia.org',
