@@ -1065,15 +1065,10 @@ class role::cache {
 		# udp2log kafka consumer is implemented and deployed.
 		include role::cache::varnish::logging
 
-		# 2013-12-03: Rolling deployment of varnishkafka to mobiles.
-		# This conditional will be removed once all production mobiles are running
-		# varnishkafka.
-		if ($::realm == 'labs' or $hostname =~ /cp1046|cp3011|cp4011/) {
-			# Install a varnishkafka producer to send
-			# varnish webrequest logs to Kafka.
-			class { 'role::cache::varnish::kafka':
-				topic => 'webrequest-mobile'
-			}
+		# Install a varnishkafka producer to send
+		# varnish webrequest logs to Kafka.
+		class { 'role::cache::varnish::kafka':
+			topic => 'webrequest-mobile'
 		}
 	}
 
