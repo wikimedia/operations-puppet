@@ -6,13 +6,9 @@ description "profiling data collector"
 
 stop on runlevel [!2345] or mwprof.stop
 
-expect fork
-
 setuid mwprof
 setgid mwprof
 
-env COLLECTOR_PORT=<%= @collector_port %>
-chdir /run/mwprof
-exec /srv/deployment/mwprof/mwprof/collector
+exec /srv/deployment/mwprof/mwprof/mwprof --listen-port=<%= @collector_port %>
 
 respawn

@@ -13,7 +13,7 @@ class mwprof(
 
     deployment::target { 'mwprof': }
 
-    package { [ 'build-essential', 'libdb-dev' ]: }
+    package { [ 'build-essential', 'libglib2.0-dev', 'glib-networking' ]: }
 
     group { 'mwprof':
         ensure => present,
