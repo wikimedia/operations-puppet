@@ -1,16 +1,57 @@
 # network.pp
 
 class network::constants {
-	$external_networks = [
-			    '91.198.174.0/24',
-			    '208.80.152.0/22',
-			    '2620:0:860::/46',
-			    '198.35.26.0/23',
-			    '185.15.56.0/22',
-			    '2a02:ec80::/32',
-			    ]
+        # what do we do with: 2620:0:86{1,2,3}::ed1a (lvs)? 2620:0:863:f* ?
+        #  208.80.154.192/27 and 208.80.154.224/27? 10.2.x? 
+        $external_prod_networks = [
+                                   '91.198.174.0/24',     # esams
+                                   '2620:0:862::/48',     # esams
+                                   '208.80.152.0/24',     # pmtpa
+                                   '2620:0:860::/48',     # pmtpa
+                                   '208.80.154.0/25',     # eqiad
+                                   '208.80.154.128/26',   # eqiad
+                                   '2620:0:861:0::/56',   # eqiad
+                                   '198.35.26.0/23',      # ulsfo
+                                   '2620:0:863:1::/64',   # ulsfo
+                                   '185.15.56.0/22',      # toolserver
+                                   '2a02:ec80::/32',      # toolserver
+                                   ]
+
+        $external_labs_networks = [
+                                   '208.80.153.0/24',
+                                   ]
+
+        $external_networks = concat($external_prod_networks, $external_labs_networks)
+
+        $private_prod_networks = [
+                                  '10.64.0.0/16',         # eqiad
+                                  '10.68.0.0/16',         # eqiad
+                                  '2620:0:861:100::/56',  # eqiad
+                                  '2620:0:861:200::/56',  # eqiad
+                                  '10.128.0.0/25',        # ulsfo
+                                  '2620:0:863:101::/64'   # ulsfo
+                                  '10.0.0.0/16',  # pmtpa
+                                  '10.2.1.0/24',  # pmtpa
+                                  '10.4.16.0/24', # pmtpa
+                                  '10.3.0.0/16',  # pmtpa
+                                  ]
+
+        $private_mgmt_networks = [
+                                  '10.21.0.0/16',    # esams
+                                  '10.65.0.0/16',    # eqiad
+                                  '10.128.128.0/26', # ulsfo
+                                  '10.1.0.0/16',     # pmtpa
+                                  ]
+
+        $private_labs_networks = [
+                                  '10.4.0.0/24',
+                                  '10.4.1.0/24',
+                                  ]
+
+        $private_networks = concat($private_prod_networks, $private_mgmt_networks, $private_labs_networks)
+
 	# NOTE: Should we just use stdlib's concat function and just add 10.0.0.0/8
-	# to external_networks to populate this one?
+	# to external_networks to populate this one? NO because it leaves out some private ipv6 subnets now
 	$all_networks = [
 			'91.198.174.0/24',
 			'208.80.152.0/22',
