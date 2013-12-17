@@ -15,12 +15,12 @@ class role::glance::config::pmtpa inherits role::glance::config {
 
     $db_host = $::realm ? {
         'production' => 'virt0.wikimedia.org',
-        'labs'       => 'localhost',
+        'labs'       => $::ipaddress_eth0,
     }
 
     $bind_ip = $::realm ? {
         'production' => '208.80.152.32',
-        'labs'       => '127.0.0.1',
+        'labs'       => $::ipaddress_eth0,
         }
 
     $pmtpaglanceconfig = {
@@ -41,17 +41,17 @@ class role::glance::config::eqiad inherits role::glance::config {
 
     $db_host = $::realm ? {
         'production' => 'virt1000.wikimedia.org',
-        'labs'       => 'localhost',
+        'labs'       => $::ipaddress_eth0,
     }
 
     $bind_ip = $::realm ? {
         'production' => '208.80.154.18',
-        'labs'       => '127.0.0.1',
-        }
+        'labs'       => $::ipaddress_eth0,
+    }
 
     $auth_uri = $::realm ? {
         'production' => 'http://virt1000.wikimedia.org:5000',
-        'labs'       => 'http://localhost:5000',
+        'labs'       => "http://$::ipaddress_eth0:5000",
     }
 
     $eqiadglanceconfig = {
