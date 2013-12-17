@@ -81,7 +81,7 @@ class role::protoproxy::ssl {
         proxy_addresses   => {
             'pmtpa' => [ '208.80.152.200', '[2620:0:860:ed1a::]' ],
             'eqiad' => [ '208.80.154.224', '[2620:0:861:ed1a::]' ],
-            'esams' => [ '91.198.174.192', '91.198.174.201', '[2620:0:862:ed1a::1:9]' ],
+            'esams' => [ '91.198.174.192', '91.198.174.201', '91.198.174.224', '[2620:0:862:ed1a::1:9]' ],
         },
         proxy_server_name => '*.wikimedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
