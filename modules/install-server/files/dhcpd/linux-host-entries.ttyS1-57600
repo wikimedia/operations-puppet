@@ -148,34 +148,6 @@ host sockpuppet {
 	fixed-address sockpuppet.pmtpa.wmnet;
 }
 
-host sq37 {
-	hardware ethernet 00:19:B9:DD:EF:B3;
-	fixed-address sq37.wikimedia.org;
-	option pxelinux.pathprefix "lucid-installer/";
-	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host sq43 {
-	hardware ethernet 00:19:B9:DF:48:78;
-	fixed-address sq43.wikimedia.org;
-	option pxelinux.pathprefix "lucid-installer/";
-	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host sq49 {
-	hardware ethernet 00:15:C5:F2:D8:4C;
-	fixed-address sq49.wikimedia.org;
-	option pxelinux.pathprefix "lucid-installer/";
-	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host sq50 {
-	hardware ethernet 00:15:C5:F2:D8:92;
-	fixed-address sq50.wikimedia.org;
-	option pxelinux.pathprefix "lucid-installer/";
-	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host srv193 {
 	hardware ethernet 00:21:9B:8B:D9:7A;
 	fixed-address srv193.pmtpa.wmnet;
