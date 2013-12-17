@@ -1018,17 +1018,6 @@ class lvs::monitor {
 	monitor_service_lvs_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 
 	# PMTPA
-	monitor_service_lvs_http_https {
-		"bits-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['bits']['pmtpa']['bitslb'],
-			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
-	}
-
-	monitor_service_lvs6_http_https {
-		"bits-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['bits']['pmtpa']['bitslb6'],
-			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
-	}
 
 	# FIXME: remove after pmtpa decommissioning
 	monitor_service_lvs_custom { "payments.wikimedia.org":
