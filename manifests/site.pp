@@ -2405,16 +2405,6 @@ node /^srv(29[0-9]|30[01])\.pmtpa\.wmnet$/ {
     include nfs::upload
 }
 
-node /ssl[1-4]\.wikimedia\.org/ {
-    if $::hostname =~ /^ssl[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::protoproxy::ssl
-
-    interface::add_ip6_mapped { "main": interface => "eth0" }
-}
-
 node /ssl100[1-9]\.wikimedia\.org/ {
     if $::hostname =~ /^ssl100[12]$/ {
         $ganglia_aggregator = true
