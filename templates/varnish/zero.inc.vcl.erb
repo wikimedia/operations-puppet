@@ -9,37 +9,45 @@ sub vcl_init {
 }
 
 sub tag_carrier {
-	// Note that currently, tag_carrier is *only* called when the request is not
-	//  via HTTPS (check for X-Forwarded-Proto at the top of vcl_recv in mobile-frontend.vcl).
+	// Elsewhere in the VCL, the frontend appends client.ip to XFF for when
+	// we forward to the backend varnish, and thus at this exact moment in time,
+	// the final (or only) XFF entry always exists and always matches client.ip.
 
-	set req.http.X-Forwarded-By = netmapper.map("proxies", "" + client.ip);
+	// Remove the last entry in XFF, which we assume to be the same as client.ip
+	// TODO: assert regsub(req.http.X-Stripped-XFF, "^.*, ?", "") == "" + client.ip
+	set req.http.X-Stripped-XFF = regsub(req.http.X-Forwarded-For, ",?[^,]+$", "");
+
+	if (req.http.X-Forwarded-Proto) {
+		// HTTPS traffic, remove the last XFF value which is the SSL proxy
+		set req.http.X-Client-Ip = regsub(req.http.X-Stripped-XFF, "^.*, ?", "");
+		set req.http.X-Stripped-XFF = regsub(req.http.X-Stripped-XFF, ",?[^,]+$", "");
+	} else {
+		// Non-HTTPS traffic, assume client.ip is the same as the last value in XFF
+		set req.http.X-Client-Ip = client.ip;
+	}
+
+	// Did this request go via proxy?
+	set req.http.X-Forwarded-By = netmapper.map("proxies", req.http.X-Client-Ip);
 
 	if (!req.http.X-Forwarded-By) {
 		// direct request or unknown proxy
-		set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
+		set req.http.X-CS2 = netmapper.map("zero", req.http.X-Client-Ip);
 	} else if (req.restarts == 0) {
-		// Elsewhere in the VCL, the frontend appends client.ip to XFF for when
-		//   we forward to the backend varnish, and thus at this exact moment in time,
-		//   the final (or only) XFF entry always exists and always matches client.ip.
-		//   So we must first get past this and look for the next entry to the left
-		//   (if any) to find the XFF value set by another upstream proxy such as
-		//   Opera Mini or Carrier Testing (or in the future, SSL).
 
-		set req.http.X-Stripped-XFF = regsub(req.http.X-Forwarded-For, ",?[^,]+$", "");
-		// X-Stripped-XFF now contains XFF without its final item, which was client.ip.
-
-		if (req.http.X-Stripped-XFF != "") { // If one or more IPs remain in X-Stripped-XFF
+		if (req.http.X-Stripped-XFF) { // If one or more IPs remain in X-Stripped-XFF
 			// For proxies, W0 banners will be shown when traffic flowed through a proxy
 			// and the carrier's configuration is known to zero-rate through that proxy.
-			// Strip away any leading IPs, such that the result of regsub() is the
-			//  rightmost (or only) remaining IP, and use that to re-set X-CS2:
+			// Use that to re-set X-CS2:
 			set req.http.X-CS2 = netmapper.map("zero", regsub(req.http.X-Stripped-XFF, "^.*, ?", ""));
 		} else {
 			// Actually a direct request (maybe a diagnostic)
-			set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
+			set req.http.X-CS2 = netmapper.map("zero", req.http.X-Client-Ip);
+			// It is now possible (although unlikelly), that both X-CS2 and X-Forwarded-By are set
 		}
-		unset req.http.X-Stripped-XFF; // clean up our temp var
 	}
+	 // clean up our temp vars
+	unset req.http.X-Stripped-XFF;
+	unset req.http.X-Client-Ip;
 
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\." ) {
 		set req.http.X-Subdomain = "ZERO";
@@ -52,35 +60,35 @@ sub tag_carrier {
 	} else if (req.http.host !~ "^([a-zA-Z0-9-]+\.)?(m|zero)\.wikipedia\.") {
 		// This is not wikipedia project - skip the rest of X-CS identification
 	} else if (req.http.X-CS2 == "502-13") {
-		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "623-03") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((fr|ar|sg|en|es|zh|ha|ln|eo)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "413-02") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((en|ta|si)\.)?zero\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "502-16") {
-		if (req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-Proto && req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "520-18") {
-		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "470-01") {
-		if (req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-Proto && req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "470-03") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((en|bn)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
@@ -92,77 +100,77 @@ sub tag_carrier {
 			}
 		}
 	} else if (req.http.X-CS2 == "456-02") {
-		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "652-02") {
-		if ((!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
+		if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "624-02") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((fr|en|es|de|zh|ar|ha|ln|yo|eo)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "630-86") {
-		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "612-03") {
-		if ((!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
+		if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "639-07") {
-		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "604-00") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((fr|ar|en|es|de|it|nl|pt|ru|zh)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "614-04") {
-		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "605-01") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((ar|en|fr|es|de|it|ru|ja|zh)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "641-14") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((ko|fr|de|en|zh|sw|rw|ar|hi|es)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "420-01") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((ar|bn|en|tl|ur)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "405-25") {
-		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "250-99") {
-		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+		if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
 			if (req.http.host ~ "^((en|ru)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "410-01") {
-		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+		if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
 			if (req.http.host ~ "^((en|ur)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "510-11") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((id|en|zh|ar|hi|ms|jv|su)\.)?zero\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
@@ -174,19 +182,19 @@ sub tag_carrier {
 			}
 		}
 	} else if (req.http.X-CS2 == "436-01") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((en|tg|ru)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "401-01") {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((ru|kk|en)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "297-01") {
-		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+		if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "655-12") {
@@ -194,7 +202,7 @@ sub tag_carrier {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else {
-		if (!req.http.X-Forwarded-By) {
+		if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			// Any new carriers are signed up as both m & zero for all languages, without proxy support
 			set req.http.X-CS = req.http.X-CS2;
 		}
