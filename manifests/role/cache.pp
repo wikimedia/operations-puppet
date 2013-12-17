@@ -465,6 +465,36 @@ class role::cache {
 		}
 	}
 
+	class ssl($sitename, $certname) {
+		include certificates::wmf_ca, role::protoproxy::ssl::common
+
+		# Assumes that LVS service IPs are setup elsewhere
+
+		# Nagios monitoring
+		monitor_service { "https":
+			description => "HTTPS",
+			check_command => "check_ssl_cert!*.wikimedia.org",
+		}
+
+		install_certificate { $certname:
+			before => Protoproxy::Localssl[$sitename]
+		}
+
+		protoproxy::localssl { $sitename:
+			proxy_server_cert_name => $certname,
+			upstream_port => '80',
+			enabled => true
+		}
+	}
+
+	class ssl::wikimedia {
+		class{ '::role::cache::ssl': sitename => 'wikimedia', certname => 'star.wikimedia.org' }
+	}
+
+	class ssl::unified {
+		class{ '::role::cache::ssl': sitename => 'unified', certname => 'unified.wikimedia.org' }
+	}
+
 	# Ancestor class for all Varnish clusters
 	class varnish::base {
 		include lvs::configuration, role::cache::configuration, network::constants
@@ -518,11 +548,13 @@ class role::cache {
 		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
 	}
 
-	class varnish::text inherits role::cache::varnish::2layer {
+	class text inherits role::cache::varnish::2layer {
 		$cluster = "cache_text"
 		$nagios_group = "cache_text_${::site}"
 
 		system::role { "role::cache::text": description => "text Varnish cache server" }
+
+		class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
 
 		$varnish_be_directors = {
 			1 => {
@@ -645,7 +677,7 @@ class role::cache {
 		}
 	}
 
-	class varnish::upload inherits role::cache::varnish::2layer {
+	class upload inherits role::cache::varnish::2layer {
 		$cluster = "cache_upload"
 		$nagios_group = "cache_upload_${::site}"
 
@@ -791,51 +823,6 @@ class role::cache {
 		if $ganglia_aggregator and $::site != "esams" {
 			include misc::monitoring::htcp-loss
 		}
-	}
-
-	class ssl($sitename, $certname) {
-		include certificates::wmf_ca, role::protoproxy::ssl::common
-
-		# Assumes that LVS service IPs are setup elsewhere
-
-		# Nagios monitoring
-		monitor_service { "https":
-			description => "HTTPS",
-			check_command => "check_ssl_cert!*.wikimedia.org",
-		}
-
-		install_certificate { $certname:
-			before => Protoproxy::Localssl[$sitename]
-		}
-
-		protoproxy::localssl { $sitename:
-			proxy_server_cert_name => $certname,
-			upstream_port => '80',
-			enabled => true
-		}
-	}
-
-	class ssl::wikimedia {
-		class{ '::role::cache::ssl': sitename => 'wikimedia', certname => 'star.wikimedia.org' }
-	}
-
-	class ssl::unified {
-		class{ '::role::cache::ssl': sitename => 'unified', certname => 'unified.wikimedia.org' }
-	}
-
-	class text {
-		# FIXME: remove this hack
-		include lvs::configuration
-		class { 'lvs::realserver':
-			realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
-		}
-
-		include role::cache::varnish::text
-	}
-
-	class upload {
-		# FIXME: remove this hack
-		include role::cache::varnish::upload
 	}
 
 	class bits inherits role::cache::varnish::1layer {
