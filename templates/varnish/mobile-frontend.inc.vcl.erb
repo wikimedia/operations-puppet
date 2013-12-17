@@ -18,20 +18,16 @@ sub vcl_recv {
 	 */
 	unset req.http.Range;
 
-	if (!req.http.X-Forwarded-Proto) {
-		/* This call will always set the following req.http values:
-			X-Subdomain = M or ZERO
-		  This value is only set if the carrier has been successfully detected
-			X-CS = "502-13"
-		*/
-		call tag_carrier;
+	/* This call will always set the following req.http values:
+		X-Subdomain = M or ZERO
+	  This value is only set if the carrier has been successfully detected
+		X-CS = "502-13"
+	*/
+	call tag_carrier;
 
-		/* Assemble X-Analytics header */
-		if (req.http.X-CS) {
-			set req.http.X-Analytics = "zero=" + req.http.X-CS;
-		}
-	} else {
-		set req.http.X-Subdomain = "M";
+	/* Assemble X-Analytics header */
+	if (req.http.X-CS) {
+		set req.http.X-Analytics = "zero=" + req.http.X-CS;
 	}
 
 	/* Rewrite m.mediawiki.org to mediawiki.org etc */
