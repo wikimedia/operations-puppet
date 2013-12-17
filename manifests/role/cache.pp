@@ -438,6 +438,10 @@ class role::cache {
 				# number of production nodes, we will allow puppet
 				# to restart varnishkafka.
 				should_subscribe             => false,
+				# Write out stats to varnishkafka.stats.json
+				# this often.  This is set at 15 so that
+				# stats will be fresh when polled from gmetad.
+				log_statistics_interval      => 15,
 			}
 
 			class { '::varnishkafka::monitoring': }
