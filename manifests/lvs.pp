@@ -202,7 +202,6 @@ class lvs::configuration {
 					'wikipedialbsecure' => "208.80.154.225",
 					'bitslbsecure' => "208.80.154.234",
 					'uploadlbsecure' => '208.80.154.240',
-					'uploadlbsecure-old' => "208.80.154.235",
 					'wiktionarylbsecure' => "208.80.154.226",
 					'wikiquotelbsecure' => "208.80.154.227",
 					'wikibookslbsecure' => "208.80.154.228",
@@ -227,7 +226,6 @@ class lvs::configuration {
 					'foundationlbsecure6' => "2620:0:861:ed1a::9",
 					'bitslbsecure6' => "2620:0:861:ed1a::a",
 					'uploadlbsecure6' => '2620:0:861:ed1a::2:b',
-					'uploadlbsecure6-old' => "2620:0:861:ed1a::b",
 					'mobilelbsecure6' => "2620:0:861:ed1a::c",
 					'wikidatalbsecure6' => "2620:0:861:ed1a::12",
 					'wikivoyagelbsecure6' => "2620:0:861:ed1a::13"
@@ -288,7 +286,6 @@ class lvs::configuration {
 					'wikiversitylb6' => "2620:0:862:ed1a::7",
 					'mediawikilb6' => "2620:0:862:ed1a::8",
 					'foundationlb6' => "2620:0:862:ed1a::9",
-					'uploadlb6-old' => "2620:0:862:ed1a::b",
 					'wikidatalb6' => "2620:0:862:ed1a::12",
 					'wikivoyagelb6' => "2620:0:862:ed1a::13"
 				},
@@ -302,8 +299,8 @@ class lvs::configuration {
 			},
 			'upload' => {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
-				'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb-old' => '208.80.154.235', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadlb6-old' => '2620:0:861:ed1a::b', 'uploadsvc' => '10.2.2.24' },
-				'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb-old' => '91.198.174.234', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
+				'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadsvc' => '10.2.2.24' },
+				'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
 				'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b' },
 			},
 			'payments' => {
