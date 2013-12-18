@@ -512,6 +512,7 @@ node "dataset2.wikimedia.org" {
     $cluster = "misc"
     $gid=500
 
+    include accounts::brion
     include role::download::primary
 }
 
@@ -520,6 +521,7 @@ node "dataset1001.wikimedia.org" {
     $gid=500
     interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
+    include accounts::brion
     include role::download::secondary
 }
 

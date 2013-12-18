@@ -3232,7 +3232,6 @@ class admins::roots {
 	include accounts::asher # disabled
 	include accounts::bblack
 	include accounts::ben # disabled
-	include accounts::brion # shell re-enabled dz 20121004
 	include accounts::catrope
 	include accounts::cmjohnson
 	include accounts::dzahn
@@ -3269,6 +3268,7 @@ class admins::mortals {
 	include accounts::awight
 	include accounts::awjrichards
 	include accounts::bd808
+	include accounts::brion # per user request, rt 4798
 	include accounts::bsitu
 	include accounts::cmcmahon
 	include accounts::csteipp
