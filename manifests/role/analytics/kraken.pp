@@ -104,12 +104,15 @@ class role::analytics::kraken::jobs::hive::partitions::external {
         creates => $script,
     }
 
+
+    #   TODO: Change this path to a proper location
+    #         once we know where it will be deployed.
+    $hive_options = '--auxpath /home/otto/hive-serdes-1.0-SNAPSHOT.jar'
+
     # cron job to automatically create hive partitions for any
     # newly imported data.
-    #   TODO: Add -o '--auxpath /path/to/hive-serdes-1.0-SNAPSHOT.jar'
-    #         once we know where it will be deployed.
     cron { 'kraken-create-external-hive-partitions':
-        command => "${script} --database ${database} ${datadir} 2>&1 | /usr/bin/tee -a ${log_file}",
+        command => "${script} --database ${database} --hive-options='${hive_options}' ${datadir} 2>&1 | /usr/bin/tee -a ${log_file}",
         user    => 'hdfs',
         minute  => 15,
         require => Exec["${script}-exists"],
