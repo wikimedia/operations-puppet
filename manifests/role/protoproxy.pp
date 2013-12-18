@@ -97,8 +97,8 @@ class role::protoproxy::ssl {
     protoproxy{ 'bits':
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.210', '[2620:0:860:ed1a::a]' ],
-            'eqiad' => [ '208.80.154.234', '[2620:0:861:ed1a::a]' ],
-            'esams' => [ '91.198.174.233', '[2620:0:862:ed1a::a]' ],
+            'eqiad' => [ '208.80.154.234', '[2620:0:861:ed1a::1:a]', '[2620:0:861:ed1a::a]' ],
+            'esams' => [ '91.198.174.202', '91.198.174.233', '[2620:0:862:ed1a::1:a]', '[2620:0:862:ed1a::a]' ],
         },
         proxy_server_name => 'bits.wikimedia.org geoiplookup.wikimedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -113,7 +113,7 @@ class role::protoproxy::ssl {
     protoproxy{ 'upload':
         proxy_addresses => {
             'pmtpa' => [ '208.80.152.211', '[2620:0:860:ed1a::b]' ],
-            'eqiad' => [ '208.80.154.240', '208.80.154.235', '[2620:0:861:ed1a::2:b]', '[2620:0:861:ed1a::b]' ],
+            'eqiad' => [ '208.80.154.240', '[2620:0:861:ed1a::2:b]' ],
             'esams' => [ '91.198.174.208', '[2620:0:862:ed1a::2:b]' ],
         },
         proxy_server_name => 'upload.wikimedia.org',
