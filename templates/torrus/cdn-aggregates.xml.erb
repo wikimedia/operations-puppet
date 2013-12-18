@@ -8,7 +8,11 @@ end
 
 def node_list_squid(role, site)
 	realm = scope.lookupvar('::realm')
-	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site+'-squid']
+	active = scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site+'-squid']
+	if (active.nil?)
+		active = []
+	end
+	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + active
 end
 
 def squid_rpn(role, site, list=nil)
