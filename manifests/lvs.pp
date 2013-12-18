@@ -223,12 +223,6 @@ class lvs::configuration {
 				},
 				'ulsfo' => {}
 			},
-			'ipv6' => {
-				'pmtpa' => {},
-				'eqiad' => {},
-				'esams' => {},
-				'ulsfo' => {},
-			},
 			'bits' => {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
 				'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6-new' => '2620:0:861:ed1a::1:a', 'bitslb6' => "2620:0:861:ed1a::a", 'bitssvc' => "10.2.2.23" },
@@ -339,7 +333,6 @@ class lvs::configuration {
 			'dns_auth' => {},
 			'dns_rec' => {},
 			'https' => {},
-			'ipv6' => {},
 			'misc_web' => {},
 			'mobile' => {},
 			'osm' => {},
@@ -409,18 +402,6 @@ class lvs::configuration {
 				#'ProxyFetch' => {
 				#	 'url' => [ 'https://meta.wikimedia.org/wiki/Main_Page' ],
 				#	 },
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-		"ipv6" => {
-			'description' => "IPv6 proto proxies (for Squid port 80)",
-			'class' => "https",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
-			'ip' => $service_ips['ipv6'][$::site],
-			'port' => 80,
-			'bgp' => "yes",
-			'depool-threshold' => ".5",
-			'monitors' => {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
