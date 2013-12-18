@@ -133,7 +133,6 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/kafka',
 				},
-
 				'github-varnish-varnishkafka' => {
 					'url'                  => 'git@github.com:wikimedia/varnishkafka',
 					'threads'              => '1',
@@ -143,7 +142,6 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'operations/software/varnish/varnishkafka',
 				},
-
 				'github-oojs-core' => {
 					'url'                  => 'git@github.com:wikimedia/oojs',
 					'threads'              => '1',
@@ -153,7 +151,6 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'oojs/core',
 				},
-
 				'github-oojs-ui' => {
 					'url'                  => 'git@github.com:wikimedia/oojs-ui',
 					'threads'              => '1',
