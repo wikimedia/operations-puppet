@@ -106,6 +106,13 @@ class toollabs {
         owner   => 'root',
         group   => 'root',
     }
+    file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
+        ensure => file,
+        source => 'puppet:///modules/toollabs/mariadb.gpg',
+        mode => '0444',
+        owner => 'root',
+        group => 'root',
+    }
 
     File <| title == '/etc/exim4/exim4.conf' |> {
         content => undef,
