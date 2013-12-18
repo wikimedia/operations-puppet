@@ -48,8 +48,8 @@ class misc::beta::autoupdater {
 
 		# The Parsoid restart script needs jenkins-deploy ssh credentials
 		# to connect to the beta parsoid instance
-		"ALL = (jenkins-deploy) NOPASSD: $beta_parsoid_remote_script restart",
-		"ALL = (jenkins-deploy) NOPASSD: $beta_parsoid_remote_script status",
+		"ALL = (jenkins-deploy) NOPASSWD:$beta_parsoid_remote_script restart",
+		"ALL = (jenkins-deploy) NOPASSWD:$beta_parsoid_remote_script status",
 
 		# mergeMessageFileList.php is run by mw-update-l10n as the apache user
 		# since https://gerrit.wikimedia.org/r/#/c/44548/
