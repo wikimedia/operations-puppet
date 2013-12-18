@@ -180,6 +180,7 @@ class lvs::configuration {
 					'wikiversitylbsecure6' => "2620:0:861:ed1a::7",
 					'mediawikilbsecure6' => "2620:0:861:ed1a::8",
 					'foundationlbsecure6' => "2620:0:861:ed1a::9",
+					'bitslb6secure6-new' => '2620:0:861:ed1a::1:a',
 					'bitslbsecure6' => "2620:0:861:ed1a::a",
 					'uploadlbsecure6' => '2620:0:861:ed1a::2:b',
 					'mobilelbsecure6' => "2620:0:861:ed1a::c",
@@ -189,6 +190,7 @@ class lvs::configuration {
 				'esams' => {
 					'textlbsecure' => '91.198.174.192',
 					'loginlbsecure' => '91.198.174.201',
+					'bitslbsecure-new' => '91.198.174.202',
 					'bitslbsecure' => "91.198.174.233",
 					'uploadlbsecure' => '91.198.174.208',
 					'mobilelbsecure' => '91.198.174.236',
@@ -196,6 +198,7 @@ class lvs::configuration {
 
 					'textlb6secure'   => '2620:0:862:ed1a::1',
 					'loginlbsecure6' => '2620:0:862:ed1a::1:9',
+					'bitslbsecure6-new' => '2620:0:862:ed1a::1:a',
 					'bitslbsecure6' => "2620:0:862:ed1a::a",
 					'uploadlbsecure6' => '2620:0:862:ed1a::2:b',
 					'mobilelbsecure6' => '2620:0:862:ed1a::c',
