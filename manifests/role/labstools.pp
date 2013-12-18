@@ -7,8 +7,8 @@ class role::labs::tools {
         }
 
         $grid_master = $::site? {
-            'eqiad' =>  'tools-master.eqiad.wmflabs',
-            default =>  'tools-master.pmtpa.wmflabs',
+            'eqiad' => "${::instanceproject}-master.eqiad.wmflabs",
+            default => "${::instanceproject}-master.pmtpa.wmflabs",
         }
     }
 
@@ -70,7 +70,10 @@ class role::labs::tools {
     class mailrelay inherits role::labs::tools::config {
         system::role { 'role::labs::tools::mailrelay': description => 'Tool Labs mail relay' }
         class { 'toollabs::mailrelay':
-            maildomain => 'tools.wmflabs.org',
+            maildomain => $::instanceproject ? {
+                'toolsbeta' => 'tools-beta.wmflabs.org',
+                default     => 'tools.wmflabs.org',
+            },
             gridmaster => $grid_master,
         }
     }
