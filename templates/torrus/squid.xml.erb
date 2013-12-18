@@ -17,11 +17,13 @@ def squid_nodes(role, site)
 		result << "</subtree>"
 	end
 
-	active_nodes.each do |node|
-		result << "<subtree name=\"#{node}\">"
-		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
-		result << "\t<apply-template name=\"wikimedia-squid-server\"/>"
-		result << "</subtree>"
+	if (! active_nodes.nil?)
+		active_nodes.each do |node|
+			result << "<subtree name=\"#{node}\">"
+			result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
+			result << "\t<apply-template name=\"wikimedia-squid-server\"/>"
+			result << "</subtree>"
+		end
 	end
 	
 	return result
