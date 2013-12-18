@@ -66,7 +66,10 @@ class role::labs::tools {
   class mailrelay inherits role::labs::tools::config {
     system::role { "role::labs::tools::mailrelay": description => "Tool Labs mail relay" }
     class { 'toollabs::mailrelay':
-      maildomain => "tools.wmflabs.org",
+      maildomain => $::instanceproject ? {
+        'toolsbeta' => 'tools-beta.wmflabs.org',
+        default     => 'tools.wmflabs.org',
+      },
       gridmaster => $grid_master,
     }
   }
