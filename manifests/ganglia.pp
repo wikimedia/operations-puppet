@@ -75,12 +75,6 @@ class ganglia {
             "mysql"     =>  {
                 "name"      => "MySQL",
                 "ip_oct"    => "5" },
-            "squids_upload" =>  {
-                "name"      => "Upload squids",
-                "ip_oct"    => "6" },
-            "squids_text"   =>  {
-                "name"      => "Text squids",
-                "ip_oct"    => "7" },
             "misc"      =>  {
                 "name"      => "Miscellaneous",
                 "ip_oct"    => "8" },
@@ -111,9 +105,6 @@ class ganglia {
             "bits_appserver"    => {
                 "name"      => "Bits application servers",
                 "ip_oct"    => "24" },
-            "squids_api"        => {
-                "name"      => "API squids",
-                "ip_oct"    => "25" },
             "ssl"       => {
                 "name"      => "SSL cluster",
                 "ip_oct"    => "26" },
@@ -308,11 +299,8 @@ class ganglia {
                         "PDF servers"                    => "pdf1.wikimedia.org pdf2.wikimedia.org",
                         "LVS loadbalancers pmtpa"        => "lvs1.wikimedia.org lvs2.wikimedia.org",
                         "Miscellaneous"                  => "hooper.wikimedia.org tarin.pmtpa.wmnet",
-                        "Text squids"                    => "sq59.wikimedia.org sq60.wikimedia.org",
-                        "Bits caches pmtpa"              => "manutius.wikimedia.org:8670 sq67.wikimedia.org sq68.wikimedia.org",
                         "Fundraiser payments"            => "payments1.wikimedia.org payments2.wikimedia.org",
                         "Fundraising eqiad"              => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
-                        "SSL cluster"                    => "ssl1.wikimedia.org ssl2.wikimedia.org",
                         "SSL cluster esams"              => "hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
                         "Swift pmtpa"                    => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",
                         "Virtualization cluster eqiad"   => "virt1005.eqiad.wmnet virt1000.wikimedia.org",
@@ -330,8 +318,6 @@ class ganglia {
                         "Text squids eqiad"              => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
                         "Search eqiad"                   => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
                         "Bits caches esams"              => "hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org",
-                        "Text squids esams"              => "hooft.esams.wikimedia.org:11656 amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
-                        "Upload squids esams"            => "hooft.esams.wikimedia.org:11655",
                         "LVS loadbalancers esams"        => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
                         "Miscellaneous esams"            => "hooft.esams.wikimedia.org:11657",
                         "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
