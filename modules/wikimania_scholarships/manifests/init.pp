@@ -92,8 +92,7 @@ class wikimania_scholarships(
         notify  => Service['apache2'],
     }
 
-    # Disabled until scheduled deployment (19 Dec 2013)
-    # apache_site { 'wikimania_scholarships': name => $hostname }
+    apache_site { 'wikimania_scholarships': name => $hostname }
 
     apache_confd { 'namevirtualhost':
         install => true,
