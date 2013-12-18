@@ -267,7 +267,7 @@ class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $e
             # let's show the total drerr in the view as well.
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.varnishkafka\.kafka_drerr',
+                'metric_regex' => 'kafka.varnishkafka\.kafka_drerr$',
                 'type'         => 'stack',
             },
             # round trip time average
