@@ -60,7 +60,6 @@ class role::parsoid::production {
         ensure     => running,
         hasstatus  => true,
         hasrestart => true,
-        enable     => true,
         require    => File['/etc/init.d/parsoid'],
     }
 
