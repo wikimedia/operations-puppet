@@ -11,6 +11,7 @@ class role::wikimania_scholarships {
         close_date   => '2014-02-17T23:59:59Z',
         hostname     => 'scholarships.wikimedia.org',
         deploy_dir   => '/srv/deployment/scholarships/scholarships',
+        cache_dir    => '/var/cache/scholarships',
         # Send logs to fluorine
         udp2log_dest => '10.64.0.21:8420',
         serveradmin  => 'root@wikimedia.org',

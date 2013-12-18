@@ -8,6 +8,7 @@
 # - $close_date: date/time after which applications will no longer be accepted
 # - $hostname: hostname for apache vhost
 # - $deploy_dir: directory application is deployed to
+# - $cache_dir: directory for caching twig templates
 # - $udp2log_dest: log destination
 # - $serveradmin: administrative contact email address
 # - $mysql_host: mysql database server
@@ -26,6 +27,7 @@ class wikimania_scholarships(
     $close_date   = 'UNSET',
     $hostname     = 'scholarships.wikimedia.org',
     $deploy_dir   = '/srv/deployment/scholarships/scholarships',
+    $cache_dir    = '/var/cache/scholarships',
     $udp2log_dest = '10.64.0.21:8420',
     $serveradmin  = 'root@wikimedia.org',
     $mysql_host   = 'localhost',
@@ -75,6 +77,12 @@ class wikimania_scholarships(
             group   => 'root',
             notify  => Service['apache2'],
             content => template('wikimania_scholarships/env.erb');
+
+        $cache_dir:
+            ensure => directory,
+            mode   => '0755',
+            owner  => 'www-data',
+            group  => 'root';
     }
 
     # Webserver setup
