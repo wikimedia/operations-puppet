@@ -22,7 +22,7 @@ class nrpe($allowed_hosts=undef) {
                 'nagios-plugins-basic',
                 'nagios-plugins-extra',
                 'nagios-plugins-standard',
-             ]:
+            ]:
         ensure => present,
     }
 
