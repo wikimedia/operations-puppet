@@ -115,8 +115,13 @@ class lvs::configuration {
 			'text' => {
 				'pmtpa' => {},
 				'eqiad' => {
-					'textsvc' => "10.2.2.25",
-					'wikimedialb' => "208.80.154.224",
+					'textsvc' => '10.2.2.25',
+					'textlb' => '208.80.154.224',
+					'loginlb' => '208.80.154.233',
+
+					'textlb6' => '2620:0:861:ed1a::1',
+					'loginlb6' => '2620:0:861:ed1a::1:9',
+
 					'wikipedialb' => "208.80.154.225",
 					'wiktionarylb' => "208.80.154.226",
 					'wikiquotelb' => "208.80.154.227",
@@ -125,9 +130,22 @@ class lvs::configuration {
 					'wikinewslb' => "208.80.154.230",
 					'wikiversitylb' => "208.80.154.231",
 					'mediawikilb' => "208.80.154.232",
-					'foundationlb' => "208.80.154.233",
+					#'foundationlb' => "208.80.154.233",
 					'wikidatalb' => '208.80.154.242',
-					'wikivoyagelb' => "208.80.154.243"
+					'wikivoyagelb' => "208.80.154.243",
+
+					'wikimedialb6' => "2620:0:861:ed1a::0",
+					'wikipedialb6' => "2620:0:861:ed1a::1",
+					'wiktionarylb6' => "2620:0:861:ed1a::2",
+					'wikiquotelb6' => "2620:0:861:ed1a::3",
+					'wikibookslb6' => "2620:0:861:ed1a::4",
+					'wikisourcelb6' => "2620:0:861:ed1a::5",
+					'wikinewslb6' => "2620:0:861:ed1a::6",
+					'wikiversitylb6' => "2620:0:861:ed1a::7",
+					'mediawikilb6' => "2620:0:861:ed1a::8",
+					'foundationlb6' => "2620:0:861:ed1a::9",
+					'wikidatalb6' => "2620:0:861:ed1a::12",
+					'wikivoyagelb6' => "2620:0:861:ed1a::13",
 				},
 				'esams' => {
 					'textsvc'   => '10.2.3.25',
@@ -207,20 +225,7 @@ class lvs::configuration {
 			},
 			'ipv6' => {
 				'pmtpa' => {},
-				'eqiad' => {
-					'wikimedialb6' => "2620:0:861:ed1a::0",
-					'wikipedialb6' => "2620:0:861:ed1a::1",
-					'wiktionarylb6' => "2620:0:861:ed1a::2",
-					'wikiquotelb6' => "2620:0:861:ed1a::3",
-					'wikibookslb6' => "2620:0:861:ed1a::4",
-					'wikisourcelb6' => "2620:0:861:ed1a::5",
-					'wikinewslb6' => "2620:0:861:ed1a::6",
-					'wikiversitylb6' => "2620:0:861:ed1a::7",
-					'mediawikilb6' => "2620:0:861:ed1a::8",
-					'foundationlb6' => "2620:0:861:ed1a::9",
-					'wikidatalb6' => "2620:0:861:ed1a::12",
-					'wikivoyagelb6' => "2620:0:861:ed1a::13"
-				},
+				'eqiad' => {},
 				'esams' => {},
 				'ulsfo' => {},
 			},
@@ -1010,119 +1015,36 @@ class lvs::monitor {
 
 	# EQIAD
 	monitor_service_lvs_http_https {
-		"wikimedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikimedialb'],
-			uri => "meta.wikimedia.org!/wiki/Main_Page";
-		"wikipedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikipedialb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page";
-		"wiktionary-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wiktionarylb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiquote-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikiquotelb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikibooks-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikibookslb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikisource-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikisourcelb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikinews-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikinewslb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiversity-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikiversitylb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"mediawiki-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['mediawikilb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"foundation-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['foundationlb'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"bits-lb.eqiad.wikimedia.org":
+		'text-lb.eqiad.wikimedia.org':
+			ip_address => $ip['text']['eqiad']['textlb'],
+			uri => 'en.wikipedia.org!/wiki/Main_Page';
+		'bits-lb.eqiad.wikimedia.org':
 			ip_address => $ip['bits']['eqiad']['bitslb'],
-			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
-		"upload-lb.eqiad.wikimedia.org":
+			uri => 'bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png';
+		'upload-lb.eqiad.wikimedia.org':
 			ip_address => $ip['upload']['eqiad']['uploadlb'],
-			uri => "upload.wikimedia.org!/monitoring/backend";
-		"mobile-lb.eqiad.wikimedia.org":
+			uri => 'upload.wikimedia.org!/monitoring/backend';
+		'mobile-lb.eqiad.wikimedia.org':
 			ip_address => $ip['mobile']['eqiad']['mobilelb'],
-			uri => "en.m.wikipedia.org!/wiki/Main_Page";
-		"wikidata-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikidatalb'],
-			uri => "www.wikidata.org!/";
-		"wikivoyage-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikivoyagelb'],
-			uri => "en.wikivoyage.org!/wiki/Main_Page";
+			uri => 'en.m.wikipedia.org!/wiki/Main_Page';
 		'misc-web-lb.eqiad.wikimedia.org':
 			ip_address => $ip['misc_web']['eqiad']['misc_web'],
 			uri => 'varnishcheck!/';
 	}
 
 	monitor_service_lvs6_http_https {
-		"wikimedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikimedialb6'],
-			uri => "meta.wikimedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikipedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikipedialb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page";
-		"wiktionary-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wiktionarylb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiquote-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikiquotelb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikibooks-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikibookslb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikisource-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikisourcelb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikinews-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikinewslb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"wikiversity-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikiversitylb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"mediawiki-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['mediawikilb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"foundation-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['foundationlb6'],
-			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
-		"bits-lb.eqiad.wikimedia.org":
+		'text-lb.eqiad.wikimedia.org':
+			ip_address => $ip['text']['eqiad']['textlb6'],
+			uri => 'en.wikipedia.org!/wiki/Main_Page';
+		'bits-lb.eqiad.wikimedia.org':
 			ip_address => $ip['bits']['eqiad']['bitslb6'],
-			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
-		"upload-lb.eqiad.wikimedia.org":
+			uri => 'bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png';
+		'upload-lb.eqiad.wikimedia.org':
 			ip_address => $ip['upload']['eqiad']['uploadlb6'],
-			uri => "upload.wikimedia.org!/monitoring/backend";
-		"mobile-lb.eqiad.wikimedia.org":
+			uri => 'upload.wikimedia.org!/monitoring/backend';
+		'mobile-lb.eqiad.wikimedia.org':
 			ip_address => $ip['mobile']['eqiad']['mobilelb6'],
-			uri => "en.m.wikipedia.org!/wiki/Main_Page";
-		"wikidata-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikidatalb6'],
-			uri => "www.wikidata.org!/";
-		"wikivoyage-lb.eqiad.wikimedia.org":
-			ip_address => $ip['ipv6']['eqiad']['wikivoyagelb6'],
-			uri => "en.wikivoyage.org!/wiki/Main_Page";
+			uri => 'en.m.wikipedia.org!/wiki/Main_Page';
 		'misc-web-lb.eqiad.wikimedia.org':
 			ip_address => $ip['misc_web']['eqiad']['misc_web6'],
 			uri => 'varnishcheck!/';
