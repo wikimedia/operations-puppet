@@ -2,7 +2,7 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
     include ldap::role::config::labs,
         certificates::wmf_ca
 
-    if ( $realm == "labs" ) {
+    if ( $::realm == 'labs' ) {
         $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs', 'access']
 
         include certificates::wmf_labs_ca
@@ -10,9 +10,9 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
         $includes = $ldapincludes
     }
 
-    class{ "ldap::client::includes":
+    class{ 'ldap::client::includes':
         ldapincludes => $includes,
-        ldapconfig => $ldap::role::config::labs::ldapconfig
+        ldapconfig   => $ldap::role::config::labs::ldapconfig
     }
 }
 
@@ -22,9 +22,9 @@ class ldap::role::client::corp {
 
     $ldapincludes = ['openldap', 'utils']
 
-    class{ "ldap::client::includes":
+    class{ 'ldap::client::includes':
         ldapincludes => $ldapincludes,
-        ldapconfig => $ldap::role::config::corp::ldapconfig
+        ldapconfig   => $ldap::role::config::corp::ldapconfig
     }
 }
 
