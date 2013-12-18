@@ -51,10 +51,6 @@ class lvs::configuration {
 			},
 			default => undef,
 		},
-		'specials' => $::realm ? {
-			'production' => [ "lvs1", "lvs2" ],
-			'labs' => [ "i-00000051" ],
-		},
 		'low-traffic' => $::realm ? {
 			'production' => $::site ? {
 				'pmtpa' => [ "lvs3", "lvs4" ],
