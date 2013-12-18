@@ -160,6 +160,15 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'oojs/ui',
 				},
+				'github-VisualEditor' => {
+					'url'                  => 'git@github.com:wikimedia/VisualEditor',
+					'threads'              => '1',
+					'authGroup'            => 'mediawiki-replication',
+					'push'                 => $replication_basic_push_refs,
+					'remoteNameStyle'      => 'dash',
+					'mirror'               => 'true',
+					'projects'             => 'VisualEditor/VisualEditor',
+				},
 			}
 		}
 	}
