@@ -81,11 +81,9 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
             $sip['text'][$::site],
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
-            $sip['ipv6'][$::site],
             ],
         /^amslvs[24]$/ => [
             $sip['upload'][$::site],
-            $sip['ipv6'][$::site],
             ]
     }
 
@@ -1449,7 +1447,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
     $lvs_balancer_ips = $::hostname ? {
         /^lvs[15]$/ => [
             $sip['upload'][$::site],
-            $sip['ipv6'][$::site],
             $sip['payments'][$::site],
             $sip['dns_rec'][$::site],
             $sip['osm'][$::site],
@@ -1458,7 +1455,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
         /^lvs[26]$/ => [
             $sip['text'][$::site],
             $sip['bits'][$::site],
-            $sip['ipv6'][$::site],
             ],
         /^lvs[34]$/ => [
             $sip['apaches'][$::site],
@@ -1525,11 +1521,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
             $sip['text'][$::site],
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
-            $sip['ipv6'][$::site],
             ],
         /^lvs100[25]$/ => [
             $sip['upload'][$::site],
-            $sip['ipv6'][$::site],
             $sip['payments'][$::site],
             $sip['dns_rec'][$::site],
             $sip['osm'][$::site],
