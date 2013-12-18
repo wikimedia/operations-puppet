@@ -134,7 +134,6 @@ class role::parsoid::beta {
         ensure     => running,
         hasstatus  => true,
         hasrestart => true,
-        enable     => true,
         provider   => 'upstart',
         subscribe  => [
             File['/etc/default/parsoid'],
