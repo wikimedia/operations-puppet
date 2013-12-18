@@ -430,11 +430,6 @@ class role::cache {
 				queue_buffering_max_messages => 1000000,
 				# large timeout to account for potential cross DC latencies
 				topic_request_timeout_ms     => 30000, # request ack timeout
-				# For now, we will not subscribe varnishkafka to its
-				# config files.  Once varnishkafka is deployed on a larger
-				# number of production nodes, we will allow puppet
-				# to restart varnishkafka.
-				should_subscribe             => false,
 				# Write out stats to varnishkafka.stats.json
 				# this often.  This is set at 15 so that
 				# stats will be fresh when polled from gmetad.
@@ -1063,7 +1058,7 @@ class role::cache {
 		# Install a varnishkafka producer to send
 		# varnish webrequest logs to Kafka.
 		class { 'role::cache::varnish::kafka':
-			topic => 'webrequest-mobile'
+			topic => 'webrequest_mobile'
 		}
 	}
 
