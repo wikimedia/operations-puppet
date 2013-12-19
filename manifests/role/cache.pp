@@ -408,7 +408,7 @@ class role::cache {
     # == Class varnish::kafka
     # Sets up a varnishkafka instance producing varnish
     # logs to the analytics Kafka brokers in eqiad.
-    class varnish::kafka($topic)
+    class varnish::kafka($topic, $varnish_name = 'frontend')
     {
         # ToDo: Remove production conditional once this works
         # is verified to work in labs.
@@ -422,6 +422,7 @@ class role::cache {
                 topic                        => $topic,
                 format_type                  => 'json',
                 compression_codec            => 'snappy',
+                varnish_name                 => $varnish_name,
                 # Note: fake_tag tricks varnishkafka into allowing hardcoded string into a JSON field.
                 # Hardcoding the $fqdn into hostname rather than using %l to account for
                 # possible slip ups where varnish only writes the short hostname for %l.
