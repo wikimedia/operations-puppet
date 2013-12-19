@@ -236,6 +236,14 @@ class toollabs::exec_environ {
         ensure => present
     }
 
+    file { '/etc/mysql/conf.d/override.my.cnf':
+        ensure => file,
+        mode => '0444',
+        owner => 'root',
+        group => 'root',
+        source => 'puppet:///modules/toollabs/override.my.cnf',
+    }
+
     sysctl::parameters { 'tool labs':
         values => {
             'vm.overcommit_memory' => 2,
