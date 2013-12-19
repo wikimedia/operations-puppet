@@ -82,12 +82,12 @@ sub vcl_recv {
 
 <% if cluster_options.fetch( "enable_esi", false ) -%>
 	if (req.http.X-CS == "-TEST") {
-		set req.http.X-FORCE-ESI = "1";
+		set req.http.Surrogate-Capability = "frontend=ESI/1.0";
 	} else {
-		unset req.http.X-FORCE-ESI;
+		unset req.http.Surrogate-Capability;
 	}
 <% else -%>
-	unset req.http.X-FORCE-ESI;
+	unset req.http.Surrogate-Capability;
 <% end -%>
 
 	/* Default (now modified) Varnish vcl_recv function */
@@ -104,7 +104,8 @@ sub vcl_recv {
 
 sub vcl_fetch {
 <% if cluster_options.fetch( "enable_esi", false ) -%>
-	if (beresp.http.Enable-ESI == "1") {
+	if (beresp.http.Surrogate-Control ~ "ESI/1.0") {
+		unset beresp.http.Surrogate-Control;
 		set beresp.do_esi = true;
 	}
 <% end -%>
