@@ -22,6 +22,23 @@ class toollabs::exec_environ {
     package { [
         # Please keep all packages in each group sorted in alphabetical order
 
+        # Locales (Bug 58500)
+        'language-pack-zh-hans',
+        'language-pack-zh-hant',
+        'language-pack-es',
+        'language-pack-en',
+        'language-pack-hi',
+        'language-pack-ar',
+        'language-pack-pt',
+        'language-pack-bn',
+        'language-pack-ru',
+        'language-pack-ja',
+        'language-pack-pa',
+        'language-pack-de',
+        'language-pack-fr',
+        'language-pack-nl',
+        'language-pack-iw',
+
         # Language Runtimes
         'gcj-jre',                     # Bug 56995
         'golang',
@@ -168,6 +185,7 @@ class toollabs::exec_environ {
         # Other packages
         'adminbot',
         'csh',                        # common user request
+        'csvtool',                     # Bug 58649
         'dc',
         'djvulibre-bin',               # Bug 56972
         'djvulibre-plugin',            # Bug 56972
@@ -195,6 +213,7 @@ class toollabs::exec_environ {
         'libproj0',                    # Bug 56995
         'libprotobuf7',                # Bug 56995
         'libquadmath0',
+        'librsvg2-bin',                # Bug 58516
         'libsvn1',
         'libvips-tools',
         'libvips15',

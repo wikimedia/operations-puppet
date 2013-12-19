@@ -40,6 +40,7 @@ class toollabs::dev_environ {
         'libpng3-dev',
         'libproj-dev',                 # Bug 56995
         'libprotobuf-dev',             # Bug 56995
+        'librsvg2-dev',                # Bug 58516
         'libsparsehash-dev',           # Bug 56995
         'libtiff4-dev', # bug 52717
         'libtool',
