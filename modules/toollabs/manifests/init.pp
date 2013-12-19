@@ -44,7 +44,7 @@ class toollabs {
     }
 
     exec { 'make_known_hosts':
-        command => '/bin/cat $store/hostkey-* >/etc/ssh/ssh_known_hosts~',
+        command => "/bin/cat $store/hostkey-* >/etc/ssh/ssh_known_hosts~",
         require => File[$store],
     }
 
