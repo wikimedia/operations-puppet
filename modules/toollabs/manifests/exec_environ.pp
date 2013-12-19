@@ -246,7 +246,15 @@ class toollabs::exec_environ {
         'zbar-tools',                  # Bug 56996
         'zsh',                         # Bug 56995
         ]:
-        ensure => present
+        ensure => 'present',
+    }
+
+    file { '/etc/mysql/conf.d/override.my.cnf':
+        ensure => 'file',
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/toollabs/override.my.cnf',
     }
 
     sysctl::parameters { 'tool labs':
