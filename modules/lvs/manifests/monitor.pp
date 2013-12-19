@@ -28,7 +28,7 @@ class lvs::monitor {
     # PMTPA
 
     # FIXME: remove after pmtpa decommissioning
-    lvs::monitor_service6_custom { "payments.wikimedia.org":
+    lvs::monitor_service_custom { "payments.wikimedia.org":
         ip_address => "208.80.155.5",
         port => 443,
         check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus",
