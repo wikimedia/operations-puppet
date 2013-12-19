@@ -37,7 +37,7 @@ class toollabs::exec_environ {
         'language-pack-de',
         'language-pack-fr',
         'language-pack-nl',
-        'language-pack-iw',
+        'language-pack-he',
 
         # Language Runtimes
         'gcj-jre',                     # Bug 56995
