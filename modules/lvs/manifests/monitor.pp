@@ -113,7 +113,7 @@ class lvs::monitor {
 
     # ULSFO
 
-    lvs::monitor_service6_http_https {
+    lvs::monitor_service_http_https {
         "text-lb.ulsfo.wikimedia.org":
             ip_address => $ip['text']['ulsfo']['textlb'],
             uri => "en.wikipedia.org!/wiki/Main_Page";
