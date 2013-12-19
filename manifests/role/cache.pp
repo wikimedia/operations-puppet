@@ -959,7 +959,7 @@ class role::cache {
         }
 
         varnish::netmapper_update {
-            'zero.json': url => 'http://meta.wikimedia.org/w/api.php?action=zeroconfig&type=ips';
+            'zero.json': url => 'http://meta.wikimedia.org/w/api.php?action=zeroconfig&type=carriers';
         }
 
         varnish::netmapper_update {
