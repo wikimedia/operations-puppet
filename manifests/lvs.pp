@@ -272,6 +272,7 @@ class lvs::configuration {
 				'eqiad' => "10.2.2.16",
 			},
 			'mobile' => {
+				'pmtpa' => {},
 				'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"},
 				'esams' => { 'mobilelb' => '91.198.174.236', 'mobilelb6' => '2620:0:862:ed1a::c', 'mobilesvc' => '10.2.3.26'},
 				'ulsfo' => { 'mobilelb' => '198.35.26.108',  'mobilelb6' => '2620:0:863:ed1a::c', 'mobilesvc' => '10.2.4.26'},
@@ -300,6 +301,7 @@ class lvs::configuration {
 				'eqiad' => "10.2.2.28",
 			},
 			'parsoidcache' => {
+				'pmtpa' => {},
 				'eqiad' => { 'parsoidlb' => '208.80.154.248', 'parsoidlb6' => '2620:0:861:ed1a::3:14', 'parsoidsvc' => '10.2.2.29' },
 			},
 			'search' => {
@@ -352,6 +354,51 @@ class lvs::configuration {
 			'parsoid' => {},
 			'parsoidcache' => {},
 			'search' => {},
+		}
+	}
+
+	$subnet_ips = {
+		'public1-a-eqiad' => {
+			'lvs1004' => "208.80.154.58",
+			'lvs1005' => "208.80.154.59",
+			'lvs1006' => "208.80.154.60",
+		},
+		'public1-b-eqiad' => {
+			'lvs1001' => "208.80.154.140",
+			'lvs1002' => "208.80.154.141",
+			'lvs1003' => "208.80.154.142",
+		},
+		'public1-c-eqiad' => {
+			'lvs1001' => "208.80.154.78",
+			'lvs1002' => "208.80.154.68",
+			'lvs1003' => "208.80.154.69",
+			'lvs1004' => "208.80.154.70",
+			'lvs1005' => "208.80.154.71",
+			'lvs1006' => "208.80.154.72",
+		},
+		'private1-a-eqiad' => {
+			'lvs1001' => "10.64.1.1",
+			'lvs1002' => "10.64.1.2",
+			'lvs1003' => "10.64.1.3",
+			'lvs1004' => "10.64.1.4",
+			'lvs1005' => "10.64.1.5",
+			'lvs1006' => "10.64.1.6",
+		},
+		'private1-b-eqiad' => {
+			'lvs1001' => "10.64.17.1",
+			'lvs1002' => "10.64.17.2",
+			'lvs1003' => "10.64.17.3",
+			'lvs1004' => "10.64.17.4",
+			'lvs1005' => "10.64.17.5",
+			'lvs1006' => "10.64.17.6",
+		},
+		'private1-c-eqiad' => {
+			'lvs1001' => "10.64.33.1",
+			'lvs1002' => "10.64.33.2",
+			'lvs1003' => "10.64.33.3",
+			'lvs1004' => "10.64.33.4",
+			'lvs1005' => "10.64.33.5",
+			'lvs1006' => "10.64.33.6",
 		}
 	}
 
@@ -767,7 +814,7 @@ class lvs::balancer(
 	require "lvs::configuration"
 	include pybal
 
-	system::role { "lvs::balancer": description => "LVS balancer" }
+	system::role { "lvs::balancer": description => "LVS balancer", ensure => absent }
 
 	package { ethtool:
 		ensure => installed;

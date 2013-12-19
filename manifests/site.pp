@@ -62,37 +62,11 @@ $cluster = "misc"
 # Node definitions (alphabetic order)
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
-    $cluster = "lvs"
-
     if $::hostname =~ /^amslvs[12]$/ {
         $ganglia_aggregator = true
     }
 
-    # Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-    # So we'll have every LVS server run their own recursor
-    $nameservers_prefix = [ $ipaddress ]
-    include dns::recursor
-
-    include lvs::configuration
-    $sip = $lvs::configuration::lvs_service_ips[$::realm]
-
-    $lvs_balancer_ips = $::hostname ? {
-        /^amslvs[13]$/ => [
-            $sip['text'][$::site],
-            $sip['bits'][$::site],
-            $sip['mobile'][$::site],
-            ],
-        /^amslvs[24]$/ => [
-            $sip['upload'][$::site],
-            ]
-    }
-
-    interface::add_ip6_mapped { "main": interface => "eth0" }
-
-    include base,
-        ganglia
-
-    class { "lvs::balancer": service_ips => $lvs_balancer_ips }
+    include role::lvs::balancer
 
     # Make sure GRO is off
     interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
@@ -1430,51 +1404,11 @@ node "linne.wikimedia.org" {
 }
 
 node /lvs[1-6]\.wikimedia\.org/ {
-    $cluster = "lvs"
-
     if $::hostname =~ /^lvs[12]$/ {
         $ganglia_aggregator = true
     }
 
-    # Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-    # So we'll have every LVS server run their own recursor
-    $nameservers_prefix = [ $ipaddress ]
-    include dns::recursor
-
-    include lvs::configuration
-    $sip = $lvs::configuration::lvs_service_ips[$::realm]
-
-    $lvs_balancer_ips = $::hostname ? {
-        /^lvs[15]$/ => [
-            $sip['upload'][$::site],
-            $sip['payments'][$::site],
-            $sip['dns_rec'][$::site],
-            $sip['osm'][$::site],
-            $sip['misc_web'][$::site],
-            ],
-        /^lvs[26]$/ => [
-            $sip['text'][$::site],
-            $sip['bits'][$::site],
-            ],
-        /^lvs[34]$/ => [
-            $sip['apaches'][$::site],
-            $sip['rendering'][$::site],
-            $sip['api'][$::site],
-            $sip['search_pool1'][$::site],
-            $sip['search_pool2'][$::site],
-            $sip['search_pool3'][$::site],
-            $sip['search_pool4'][$::site],
-            $sip['search_pool5'][$::site],
-            $sip['search_prefix'][$::site],
-            $sip['swift'][$::site],
-            ]
-    }
-
-    include base,
-        ganglia,
-        lvs::balancer::runcommand
-
-    class { "lvs::balancer": service_ips => $lvs_balancer_ips }
+    include role::lvs::balancer
 
     $ips = {
         'internal' => {
@@ -1502,100 +1436,14 @@ node /lvs[1-6]\.wikimedia\.org/ {
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
-    $cluster = "lvs"
-
     if $::hostname =~ /^lvs100[12]$/ {
         $ganglia_aggregator = true
     }
 
-    # Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-    # So we'll have every LVS server run their own recursor
-    $nameservers_prefix = [ $ipaddress ]
-    include dns::recursor
+    include role::lvs::balancer
 
     include lvs::configuration
-    $sip = $lvs::configuration::lvs_service_ips[$::realm]
-
-    $lvs_balancer_ips = $::hostname? {
-        /^lvs100[14]$/ => [
-            $sip['text'][$::site],
-            $sip['bits'][$::site],
-            $sip['mobile'][$::site],
-            ],
-        /^lvs100[25]$/ => [
-            $sip['upload'][$::site],
-            $sip['payments'][$::site],
-            $sip['dns_rec'][$::site],
-            $sip['osm'][$::site],
-            $sip['misc_web'][$::site],
-            $sip['parsoidcache'][$::site],
-            ],
-        /^lvs100[36]$/ => [
-            $sip['apaches'][$::site],
-            $sip['api'][$::site],
-            $sip['rendering'][$::site],
-            $sip['search_pool1'][$::site],
-            $sip['search_pool2'][$::site],
-            $sip['search_pool3'][$::site],
-            $sip['search_pool4'][$::site],
-            $sip['search_pool5'][$::site],
-            $sip['search_prefix'][$::site],
-            $sip['swift'][$::site],
-            $sip['parsoid'][$::site],
-            $sip['search'][$::site]
-            ]
-    }
-
-    include base,
-        ganglia,
-        lvs::balancer::runcommand
-
-    class { "lvs::balancer": service_ips => $lvs_balancer_ips }
-
-    $ips = {
-        'public1-a-eqiad' => {
-            'lvs1004' => "208.80.154.58",
-            'lvs1005' => "208.80.154.59",
-            'lvs1006' => "208.80.154.60",
-        },
-        'public1-b-eqiad' => {
-            'lvs1001' => "208.80.154.140",
-            'lvs1002' => "208.80.154.141",
-            'lvs1003' => "208.80.154.142",
-        },
-        'public1-c-eqiad' => {
-            'lvs1001' => "208.80.154.78",
-            'lvs1002' => "208.80.154.68",
-            'lvs1003' => "208.80.154.69",
-            'lvs1004' => "208.80.154.70",
-            'lvs1005' => "208.80.154.71",
-            'lvs1006' => "208.80.154.72",
-        },
-        'private1-a-eqiad' => {
-            'lvs1001' => "10.64.1.1",
-            'lvs1002' => "10.64.1.2",
-            'lvs1003' => "10.64.1.3",
-            'lvs1004' => "10.64.1.4",
-            'lvs1005' => "10.64.1.5",
-            'lvs1006' => "10.64.1.6",
-        },
-        'private1-b-eqiad' => {
-            'lvs1001' => "10.64.17.1",
-            'lvs1002' => "10.64.17.2",
-            'lvs1003' => "10.64.17.3",
-            'lvs1004' => "10.64.17.4",
-            'lvs1005' => "10.64.17.5",
-            'lvs1006' => "10.64.17.6",
-        },
-        'private1-c-eqiad' => {
-            'lvs1001' => "10.64.33.1",
-            'lvs1002' => "10.64.33.2",
-            'lvs1003' => "10.64.33.3",
-            'lvs1004' => "10.64.33.4",
-            'lvs1005' => "10.64.33.5",
-            'lvs1006' => "10.64.33.6",
-        }
-    }
+    $ips = $lvs::configuration::subnet_ips
 
     # Set up tagged interfaces to all subnets with real servers in them
     case $::hostname {
@@ -1675,40 +1523,16 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
-    $cluster = 'lvs'
-
     # lvs4001 and lvs4003 are in different racks
     if $::hostname =~ /^lvs400[13]$/ {
         $ganglia_aggregator = true
     }
 
-    include base,
-        ganglia
+    include role::lvs::balancer
 
-    # Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-    # So we'll have every LVS server run their own recursor
-    $nameservers_prefix = [ $ipaddress ]
-    include dns::recursor
-
-    include lvs::configuration
-    $sip = $lvs::configuration::lvs_service_ips[$::realm]
-
-    $lvs_balancer_ips = $::hostname ? {
-        /^lvs400[13]$/ => [
-            $sip['text'][$::site],
-            $sip['bits'][$::site],
-            $sip['mobile'][$::site],
-        ],
-        /^lvs400[24]$/ => [
-            $sip['upload'][$::site],
-        ],
-    }
-
-    class { "lvs::balancer": service_ips => $lvs_balancer_ips }
-
-    interface::add_ip6_mapped { "main": interface => "eth0" }
     # Make sure GRO is off
     interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+
     # bnx2x is buggy with TPA (LRO) + LVS
     interface::offload { "eth0 lro": interface => "eth0", setting => "lro", value => "off" }
 }
