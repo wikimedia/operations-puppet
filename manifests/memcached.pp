@@ -48,6 +48,10 @@ class memcached (
 		}
 	}
 
+	include ::memcached::ganglia
+}
+
+class memcached::ganglia {
 	# Ganglia
 	package { 'python-memcache':
 		ensure => absent,
