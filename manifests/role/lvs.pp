@@ -51,9 +51,9 @@ class role::lvs::balancer {
     include base,
         ganglia
 
-    class { "lvs::balancer": service_ips => $lvs_balancer_ips }
+    class { "::lvs::balancer": service_ips => $lvs_balancer_ips }
 
     if $::site in ['pmtpa', 'eqiad'] {
-        include lvs::balancer::runcommand
+        include ::lvs::balancer::runcommand
     }
 }
