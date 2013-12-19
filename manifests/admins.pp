@@ -2736,6 +2736,15 @@ class accounts {
 				type   => "ssh-rsa",
 				key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCV5f/HfkCTtWhZnZVwYs+jN6yy+Ru/eBGih+K6HvCI2DDXM0OOZVfVOVCDLPCvYIZD1m//ghibiM3jl5DFrLlAUkuyzuQsjv5AOfo28/kOcsN+o6T8wmQ27oJBbCy2YWqi5r8eypTvh/VTSt1BfEKwyg5KEtPqSKOy3G6dtjYOebSCM2EEGqfDcU/+9KKCsXTeTRgBU3pOHgymQ1zXbxrLazQGGAAUyp1e1T4chg3RtOU0cXe5i9+yQuP8ZlPApLG9/7xN/OIKX7EBrSQn6J2BZMSOw2Uwe38ROjCbFljt+mQF01p4QLZQ2Vm4UjdZiY+ZsMULeDntkqgjalmOvWCj",
 			}
+
+			ssh_authorized_key {
+				"ypanda@Yuvi-Panda.local":
+				ensure => present,
+				user   => $username,
+				type   => "ssh-rsa",
+				key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDrR80D68OpttnWGCY49ImSHPvzdCah1NckZv2U/y3Trmjp2EEeIohL8IG3iSjEnB1JirkPe1/0mHkbm0bfxqp17fHWy1g94Teb118woWt69A6pDJvnzp20faFRxOIl7UJjZ+n/Q4HSg7YToYW4hIM/I5KRKnEzi102aFHgV0cGGbxONPn0MiiEXkovlQ59gcNPWO/Wqe7gAcMIjoMvAcaumemUC5nXz8CIiFJLEfVVJ251c4q6C8TUJsxfbxkeN69AT/YqOiAO10eCbXgh0BNDactXy9oVx6u38E271KshW+ScJ671VuBQdTvv2DhrdFj2GsdzqlVYHQI9ny2JgtMX",
+			}
+
 		}
 	}
 
