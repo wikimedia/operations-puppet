@@ -1511,8 +1511,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
     # Row D subnets on eth3
 
-    interface::add_ip6_mapped { "main": interface => "eth0" }
-
     # Make sure GRO is off
     interface::manual { "eth1": interface => "eth1", before => Interface::Offload["eth1 gro"] }
     interface::manual { "eth2": interface => "eth2", before => Interface::Offload["eth2 gro"] }
