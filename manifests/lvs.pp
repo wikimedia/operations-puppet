@@ -903,29 +903,6 @@ class lvs::realserver($realserver_ips=[]) {
 	}
 }
 
-class lvs::static_labs_ips {
-	require "lvs::configuration"
-
-	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
-	$pybal = $lvs::configuration::pybal
-	$lvs_services = $lvs::configuration::lvs_services
-
-	# Hack because puppet is a broken piece of crap
-	$text = $lvs_services["text"]
-
-	interface::ip { "wikimedialb": interface => "eth0", address => $text['ip']['wikimedialb'] }
-	interface::ip { "wikipedialb": interface => "eth0", address => $text['ip']['wikipedialb'] }
-	interface::ip { "wiktionarylb": interface => "eth0", address => $text['ip']['wiktionarylb'] }
-	interface::ip { "wikiquotelb": interface => "eth0", address => $text['ip']['wikiquotelb'] }
-	interface::ip { "wikibookslb": interface => "eth0", address => $text['ip']['wikibookslb'] }
-	interface::ip { "wikisourcelb": interface => "eth0", address => $text['ip']['wikisourcelb'] }
-	interface::ip { "wikinewslb": interface => "eth0", address => $text['ip']['wikinewslb'] }
-	interface::ip { "wikiversitylb": interface => "eth0", address => $text['ip']['wikiversitylb'] }
-	interface::ip { "mediawikilb": interface => "eth0", address => $text['ip']['mediawikilb'] }
-	interface::ip { "foundationlb": interface => "eth0", address => $text['ip']['foundationlb'] }
-
-}
-
 # FIXME: This definitely needs some smarter logic and cleaning up.
 
 define monitor_service_lvs_custom ( $description="LVS", $ip_address, $port=80, $check_command, $retries=3 ) {
