@@ -810,6 +810,7 @@ class lvs::configuration {
 class lvs::balancer(
 	$service_ips=[],
 	$lvs_services,
+	$lvs_class_hosts,
 	$pybal_global_options,
 	$site
 	) {
