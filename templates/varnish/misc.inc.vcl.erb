@@ -6,17 +6,22 @@ sub vcl_recv {
 		/* gitblit requires the following request headers: */
 		set req.http.X-Forwarded-Proto = "https";
 		set req.http.X-Forwarded-Port = "443";
-		return (lookup);
 	} elsif (req.http.Host == "gerrit.wikimedia.org") {
 		set req.backend = ytterbium;
-		return (lookup);
 	} elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
 		set req.backend = tungsten;
-		return (lookup);
 	} elsif (req.http.Host == "scholarships.wikimedia.org") {
 		set req.backend = zirconium;
-		return (lookup);
+	} else {
+		error 404 "Domain not served here.";
 	}
+
+	if (req.request != "GET" && req.request != "HEAD") {
+		/* We only deal with GET and HEAD by default */
+		return (pass);
+	}
+
+	return (lookup);
 }
 
 sub vcl_error {
