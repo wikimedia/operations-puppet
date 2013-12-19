@@ -80,14 +80,11 @@ sub vcl_recv {
 
 	set req.hash_ignore_busy = true;
 
+	unset req.http.Surrogate-Capability;
 <% if cluster_options.fetch( "enable_esi", false ) -%>
 	if (req.http.X-CS == "-TEST") {
-		set req.http.X-FORCE-ESI = "1";
-	} else {
-		unset req.http.X-FORCE-ESI;
+		set req.http.Surrogate-Capability = "frontend=ESI/1.0";
 	}
-<% else -%>
-	unset req.http.X-FORCE-ESI;
 <% end -%>
 
 	/* Default (now modified) Varnish vcl_recv function */
@@ -104,10 +101,11 @@ sub vcl_recv {
 
 sub vcl_fetch {
 <% if cluster_options.fetch( "enable_esi", false ) -%>
-	if (beresp.http.Enable-ESI == "1") {
+	if (beresp.http.Surrogate-Control ~ "ESI/1.0") {
 		set beresp.do_esi = true;
 	}
 <% end -%>
+	unset beresp.http.Surrogate-Control;
 
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
