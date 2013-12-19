@@ -293,6 +293,7 @@ class lvs::configuration {
                 'eqiad' => { 'misc_web' => '208.80.154.241', 'misc_web6' => '2620:0:861:ed1a::11' },
             },
             'parsoid' => {
+                'pmtpa' => {},
                 'eqiad' => "10.2.2.28",
             },
             'parsoidcache' => {
@@ -300,6 +301,7 @@ class lvs::configuration {
                 'eqiad' => { 'parsoidlb' => '208.80.154.248', 'parsoidlb6' => '2620:0:861:ed1a::3:14', 'parsoidsvc' => '10.2.2.29' },
             },
             'search' => {
+                'pmtpa' => {},
                 'eqiad' => "10.2.2.30",
             },
         },
