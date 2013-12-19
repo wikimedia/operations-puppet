@@ -464,7 +464,7 @@ class role::cache {
             port             => '8422',
             instance_name    => '',
             cli_args         => '-m RxURL:^/event\.gif\?. -D',
-            log_fmt          => "%q\t%l\t%n\t%t\t%h",
+            log_fmt          => '%q\t%l\t%n\t%t\t%h\t"%{User-agent}i"',
             monitor          => false,
         }
     }
