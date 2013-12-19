@@ -39,7 +39,7 @@ class toollabs::dev_environ {
         'libfreetype6-dev',
         'libgdal1-dev',                # Bug 56995
         'libmariadbclient-dev',
-        'libpng3-dev',
+        'libpng12-dev',
         'libproj-dev',                 # Bug 56995
         'libprotobuf-dev',             # Bug 56995
         'librsvg2-dev',                # Bug 58516
@@ -48,8 +48,7 @@ class toollabs::dev_environ {
         'libtool',
         'libvips-dev',
         'libxml2-dev',
-        'libxslt-dev',
-        'libxslt1-dev', # -- same
+        'libxslt1-dev',
         'libzbar-dev',                 # Bug 56996
         'lintian',
         'links',
