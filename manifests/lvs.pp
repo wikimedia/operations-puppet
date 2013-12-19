@@ -803,11 +803,16 @@ class lvs::configuration {
 # Class: lvs::balancer
 # Parameters:
 #	- $service_ips: list of service IPs to bind to loopback
+#	- $lvs_services: A configuration hash of LVS services
+#	- $pybal_global_options: A configuration hash of PyBal global options
+#	- $site: Site name used in PyBal configuration
 class lvs::balancer(
-	$service_ips=[]
+	$service_ips=[],
+	$lvs_services,
+	$pybal_global_options,
+	$site
 	) {
 
-	require "lvs::configuration"
 	include pybal
 
 	system::role { "lvs::balancer": description => "LVS balancer", ensure => absent }
@@ -817,10 +822,10 @@ class lvs::balancer(
 	}
 
 	class { 'pybal::configuration':
-		global_options => $lvs::configuration::pybal,
-		lvs_services => $lvs::configuration::lvs_services,
-		lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
-		site => $::site
+		global_options => $pybal_global_options,
+		lvs_services => $lvs_services,
+		lvs_class_hosts => $lvs_class_hosts,
+		site => $site
 	}
 
 	# Tune the ip_vs conn_tab_bits parameter
