@@ -804,6 +804,7 @@ class lvs::configuration {
 # Parameters:
 #	- $service_ips: list of service IPs to bind to loopback
 #	- $lvs_services: A configuration hash of LVS services
+#	- $lvs_class_hosts: A configuration hash of PyBal class hosts
 #	- $pybal_global_options: A configuration hash of PyBal global options
 #	- $site: Site name used in PyBal configuration
 class lvs::balancer(
