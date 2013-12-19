@@ -1,0 +1,4 @@
+Explanation: Work around broken libvips-dev package in WMF repository
+Package: libvips-dev
+Pin: release o=Ubuntu
+Pin-Priority: 2002
