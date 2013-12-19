@@ -903,28 +903,26 @@ class lvs::realserver($realserver_ips=[]) {
 	}
 }
 
-# FIXME: This definitely needs some smarter logic and cleaning up.
-
-define monitor_service_lvs_custom ( $description="LVS", $ip_address, $port=80, $check_command, $retries=3 ) {
+define lvs::monitor_service_custom ( $description="LVS", $ip_address, $port=80, $check_command, $retries=3 ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true" }
 	@monitor_service { $title: host => $title, group => "lvs", description => $description, check_command => $check_command, critical => "true", retries => $retries }
 }
 
-define monitor_service_lvs_http ( $ip_address, $check_command, $critical="true", $contact_group="admins" ) {
+define lvs::monitor_service_http ( $ip_address, $check_command, $critical="true", $contact_group="admins" ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true", contact_group => $contact_group }
 	@monitor_service { $title: host => $title, group => "lvs", description => "LVS HTTP IPv4", check_command => $check_command, critical => $critical, contact_group => $contact_group }
 }
 
-define monitor_service_lvs_https ( $ip_address, $check_command, $port=443, $critical="true" ) {
+define lvs::monitor_service_https ( $ip_address, $check_command, $port=443, $critical="true" ) {
 	$title_https = "${title}_https"
 	# Virtual resource for the monitoring host
 	@monitor_host { $title_https: ip_address => $ip_address, group => "lvs", critical => "true" }
 	@monitor_service { $title_https: host => $title, group => "lvs", description => "LVS HTTPS IPv4", check_command => $check_command, critical => $critical }
 }
 
-define monitor_service_lvs_http_https ( $ip_address, $uri, $critical="true", $contact_group="admins" ) {
+define lvs::monitor_service_http_https ( $ip_address, $uri, $critical="true", $contact_group="admins" ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { $title:
 		ip_address => $ip_address,
@@ -950,7 +948,7 @@ define monitor_service_lvs_http_https ( $ip_address, $uri, $critical="true", $co
 	}
 }
 
-define monitor_service_lvs6_http_https ( $ip_address, $uri, $critical="true" ) {
+define lvs::monitor_service6_http_https ( $ip_address, $uri, $critical="true" ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { "${title}_ipv6":
 		ip_address => $ip_address,
@@ -982,28 +980,28 @@ class lvs::monitor {
 
     # INTERNAL
 
-	monitor_service_lvs_http { "appservers.svc.pmtpa.wmnet": ip_address => "10.2.1.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
-	monitor_service_lvs_http { "appservers.svc.eqiad.wmnet": ip_address => "10.2.2.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
-	monitor_service_lvs_http { "api.svc.pmtpa.wmnet": ip_address => "10.2.1.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
-	monitor_service_lvs_http { "api.svc.eqiad.wmnet": ip_address => "10.2.2.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
-	monitor_service_lvs_http { "rendering.svc.pmtpa.wmnet": ip_address => "10.2.1.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
-	monitor_service_lvs_http { "rendering.svc.eqiad.wmnet": ip_address => "10.2.2.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
-	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/monitoring/backend" }
-	monitor_service_lvs_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
-	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
-	monitor_service_lvs_http { "search.svc.eqiad.wmnet": ip_address => "10.2.2.30", check_command => "check_http_on_port!9200", contact_group => "admins" }
+	lvs::monitor_service_http { "appservers.svc.pmtpa.wmnet": ip_address => "10.2.1.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
+	lvs::monitor_service_http { "appservers.svc.eqiad.wmnet": ip_address => "10.2.2.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
+	lvs::monitor_service_http { "api.svc.pmtpa.wmnet": ip_address => "10.2.1.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
+	lvs::monitor_service_http { "api.svc.eqiad.wmnet": ip_address => "10.2.2.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
+	lvs::monitor_service_http { "rendering.svc.pmtpa.wmnet": ip_address => "10.2.1.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
+	lvs::monitor_service_http { "rendering.svc.eqiad.wmnet": ip_address => "10.2.2.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
+	lvs::monitor_service_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/monitoring/backend" }
+	lvs::monitor_service_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
+	lvs::monitor_service_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
+	lvs::monitor_service_http { "search.svc.eqiad.wmnet": ip_address => "10.2.2.30", check_command => "check_http_on_port!9200", contact_group => "admins" }
 
-	monitor_service_lvs_custom { "search-pool1.svc.eqiad.wmnet": ip_address => "10.2.2.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-	monitor_service_lvs_custom { "search-pool2.svc.eqiad.wmnet": ip_address => "10.2.2.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-	monitor_service_lvs_custom { "search-pool3.svc.eqiad.wmnet": ip_address => "10.2.2.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-	monitor_service_lvs_custom { "search-pool4.svc.eqiad.wmnet": ip_address => "10.2.2.14", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-	monitor_service_lvs_custom { "search-pool5.svc.eqiad.wmnet": ip_address => "10.2.2.16", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-	monitor_service_lvs_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	lvs::monitor_service6_custom { "search-pool1.svc.eqiad.wmnet": ip_address => "10.2.2.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	lvs::monitor_service6_custom { "search-pool2.svc.eqiad.wmnet": ip_address => "10.2.2.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	lvs::monitor_service6_custom { "search-pool3.svc.eqiad.wmnet": ip_address => "10.2.2.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	lvs::monitor_service6_custom { "search-pool4.svc.eqiad.wmnet": ip_address => "10.2.2.14", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	lvs::monitor_service6_custom { "search-pool5.svc.eqiad.wmnet": ip_address => "10.2.2.16", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	lvs::monitor_service6_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 
 	# PMTPA
 
 	# FIXME: remove after pmtpa decommissioning
-	monitor_service_lvs_custom { "payments.wikimedia.org":
+	lvs::monitor_service6_custom { "payments.wikimedia.org":
 		ip_address => "208.80.155.5",
 		port => 443,
 		check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus",
@@ -1011,7 +1009,7 @@ class lvs::monitor {
 	}
 
 	# EQIAD
-	monitor_service_lvs_http_https {
+	lvs::monitor_service_http_https {
 		'text-lb.eqiad.wikimedia.org':
 			ip_address => $ip['text']['eqiad']['textlb'],
 			uri => 'en.wikipedia.org!/wiki/Main_Page';
@@ -1029,7 +1027,7 @@ class lvs::monitor {
 			uri => 'varnishcheck!/';
 	}
 
-	monitor_service_lvs6_http_https {
+	lvs::monitor_service6_http_https {
 		'text-lb.eqiad.wikimedia.org':
 			ip_address => $ip['text']['eqiad']['textlb6'],
 			uri => 'en.wikipedia.org!/wiki/Main_Page';
@@ -1047,7 +1045,7 @@ class lvs::monitor {
 			uri => 'varnishcheck!/';
 	}
 
-	monitor_service_lvs_http { 'parsoid-lb.eqiad.wikimedia.org':
+	lvs::monitor_service_http { 'parsoid-lb.eqiad.wikimedia.org':
 		ip_address => $ip['parsoidcache']['eqiad']['parsoidlb'],
 		check_command => "check_http_on_port!80",
 		contact_group => "admins,parsoid"
@@ -1056,7 +1054,7 @@ class lvs::monitor {
 
 	# ESAMS
 
-	monitor_service_lvs_http_https {
+	lvs::monitor_service_http_https {
 		"text-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['textlb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
@@ -1071,7 +1069,7 @@ class lvs::monitor {
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 	}
 
-	monitor_service_lvs6_http_https {
+	lvs::monitor_service6_http_https {
 		"text-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['textlb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
@@ -1088,7 +1086,7 @@ class lvs::monitor {
 
 	# ULSFO
 
-	monitor_service_lvs_http_https {
+	lvs::monitor_service6_http_https {
 		"text-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['text']['ulsfo']['textlb'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
@@ -1103,7 +1101,7 @@ class lvs::monitor {
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 	}
 
-	monitor_service_lvs6_http_https {
+	lvs::monitor_service6_http_https {
 		"text-lb.ulsfo.wikimedia.org":
 			ip_address => $ip['text']['ulsfo']['textlb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page";
