@@ -114,6 +114,16 @@ class toollabs {
         group => 'root',
     }
 
+    # The WMF repository has a custom, but broken package libvips-dev
+    # that requires a package libtiff5-alt-dev, but does not provide
+    # it.  To work around this, we pin it so that the vanilla Ubuntu
+    # version of libvips-dev gets preferred.
+    apt::pin { 'wikimedia-tools':
+        package  => 'libvips-dev',
+        pin      => 'release o=Ubuntu',
+        priority => 2002,
+    }
+
     File <| title == '/etc/exim4/exim4.conf' |> {
         content => undef,
         source  => [ "${store}/mail-relay", 'puppet:///modules/toollabs/exim4-norelay.conf' ],
@@ -126,4 +136,3 @@ class toollabs {
         target => "${store}/mail",
     }
 }
-
