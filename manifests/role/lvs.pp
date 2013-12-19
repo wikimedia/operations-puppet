@@ -10,7 +10,7 @@ class role::lvs::balancer {
     # Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
     # So we'll have every LVS server run their own recursor
     $nameservers_prefix = [ $::ipaddress ]
-    class { 'dns::recursor': listen_address => [ $::ipaddress ] }
+    class { 'dns::recursor': listen_addresses => [ $::ipaddress ] }
 
     include lvs::configuration
     $sip = $lvs::configuration::lvs_service_ips[$::realm]
