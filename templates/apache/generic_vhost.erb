@@ -34,12 +34,12 @@
 </VirtualHost>
 <% end -%>
 
-<% if ["true", "only", "redirected"].include?("ssl") -%>
+<% if ["true", "only", "redirected"].include?(ssl) -%>
 <VirtualHost *:443>
 	ServerName <%= title %>
-	<% if aliases.length > 0 -%>
+<% if aliases.length > 0 -%>
 	ServerAlias <%= aliases.join(" ") %>
-	<% end -%>
+<% end -%>
 	ServerAdmin root@wikimedia.org
 
 	SSLEngine on
