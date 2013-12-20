@@ -9,8 +9,6 @@
 #
 class ishmael (
     $site_name,
-    $ssl_cert,
-    $ssl_ca,
     $config_main,
     $config_sample,
     $docroot,
@@ -28,10 +26,8 @@ class ishmael (
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
-        content => template("ishamel/apache/${site_name}.erb");
+        content => template("ishmael/apache/${site_name}.erb");
     }
-
-    install_certificate{ $ssl_cert: }
 
     apache_site { 'ishmael': name => $site_name }
 

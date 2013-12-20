@@ -4,10 +4,8 @@ class role::ishmael {
 
     system::role { 'role::ishmael': description => 'ishmael server' }
 
-    class { 'ishmael':
+    class { '::ishmael':
         site_name     => 'ishmael.wikimedia.org',
-        ssl_cert      => 'star.wikimedia.org',
-        ssl_ca        => 'RapidSSL_CA',
         config_main   => '/srv/ishmael/conf.php',
         config_sample => '/srv/ishmael/sample/conf.php',
         docroot       => '/srv/ishmael',
