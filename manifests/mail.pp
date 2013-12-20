@@ -416,10 +416,10 @@ class mailman {
 		}
 
 		# Enable CGI module
-		lighttpd_config { "10-cgi": require => Class["webserver::static"] }
+		mailman_lighttpd_config { "10-cgi": require => Class["webserver::static"] }
 
 		# Install Mailman specific Lighttpd config file
-		lighttpd_config { "50-mailman":
+		mailman_lighttpd_config { "50-mailman":
 			require => [ Class["webserver::static"], File["/etc/lighttpd/htdigest"] ],
 			install => "true"
 		}
@@ -440,4 +440,36 @@ class mailman {
 	}
 
 	include listserve, web-ui
+}
+
+
+# Enables a certain Lighttpd config
+#
+# TODO:  ensure => false removes symlink.  ensure => purged removes available file.
+define mailman_lighttpd_config($install="false") {
+	# Reload lighttpd if the site config file changes.
+	# This subscribes to both the real file and the symlink.
+	exec { "lighttpd_reload_${title}":
+		command     => "/usr/sbin/service service lighttpd reload",
+		refreshonly => true,
+	}
+
+	if $install == "true" {
+		file { "/etc/lighttpd/conf-available/${title}.conf":
+			source => "puppet:///files/lighttpd/${title}.conf",
+			owner => root,
+			group => www-data,
+			mode => 0444,
+			before => File["/etc/lighttpd/conf-enabled/${title}.conf"],
+			notify => Exec["lighttpd_reload_${title}"],
+		}
+	}
+
+	# Create a symlink to the available config file
+	# in the conf-enabled directory.  Notify
+	file { "/etc/lighttpd/conf-enabled/${title}.conf":
+		ensure => "/etc/lighttpd/conf-available/${title}.conf",
+		notify => Exec["lighttpd_reload_${title}"],
+	}
+
 }
