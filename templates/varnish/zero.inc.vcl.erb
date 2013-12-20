@@ -13,6 +13,11 @@ sub tag_carrier {
 	//  via HTTPS (check for X-Forwarded-Proto at the top of vcl_recv in mobile-frontend.vcl).
 
 	set req.http.X-Forwarded-By = netmapper.map("proxies", "" + client.ip);
+	// netmapper returns an empty string when not found, not NULL,
+	// need to normalize before using implicit bool cast
+	if (req.http.X-Forwarded-By == "") {
+		unset req.http.X-Forwarded-By;
+	}
 
 	if (!req.http.X-Forwarded-By) {
 		// direct request or unknown proxy
@@ -39,6 +44,11 @@ sub tag_carrier {
 			set req.http.X-CS2 = netmapper.map("zero", "" + client.ip);
 		}
 		unset req.http.X-Stripped-XFF; // clean up our temp var
+	}
+
+	// Normalize X-CS2 to be used as bool
+	if (req.http.X-CS2 == "") {
+		unset req.http.X-CS2;
 	}
 
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\." ) {
