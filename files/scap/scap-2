@@ -18,3 +18,7 @@ else
 	echo "failed"
 	exit 1
 fi
+
+# Rebuild the CDB files from the JSON versions
+/usr/local/bin/mergeCdbFileUpdates --directory="$MW_COMMON/php-$mwVerNum/cache/l10n"
+	|| die
