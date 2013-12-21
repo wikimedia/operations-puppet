@@ -11,6 +11,10 @@
 
 class role::deployment::config {
   $repo_config = {
+    'integration/kss' => {
+        'grain' => 'contint-production-slaves',
+        'upstream' => 'https://gerrit.wikimedia.org/r/integration/kss',
+    },
     'integration/mediawiki-tools-codesniffer' => {
         'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer',
