@@ -69,11 +69,18 @@ for i in ${mwExtVerDbSets[@]}; do
 		echo "done"
 	fi
 
+	# Rebuild all the CDB files for each language
 	echo -n "Updating LocalisationCache for $mwVerNum... "
 	sudo -u l10nupdate $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
 		--outdir=$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n $QUIET \
 		--threads=$THREADS \
 		|| die
+
+	# Include JSON versions of the CDB files and add MD5 files
+	sudo -u l10nupdate /usr/local/bin/refreshCdbJsonFiles --directory="$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n" \
+		--threads=$THREADS \
+		|| die
+
 	echo "done"
 done
 

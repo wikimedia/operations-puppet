@@ -18,3 +18,12 @@ else
 	echo "failed"
 	exit 1
 fi
+
+# Leave some of the cores free for apache processes
+CPUS=`grep -c 'model name' /proc/cpuinfo`
+THREADS=`expr $CPUS / 2`
+
+# Rebuild the CDB files from the JSON versions
+/usr/local/bin/mergeCdbFileUpdates --directory="$MW_COMMON/php-$mwVerNum/cache/l10n" \
+	--threads=$THREADS \
+	|| die
