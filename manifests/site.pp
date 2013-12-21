@@ -2635,25 +2635,23 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
         role::nova::compute
 }
 
-node /virt100(5|7|8).eqiad.wmnet/ {
+node "labnet1001.eqiad.wmnet" {
     $cluster = "virt"
-    if $::hostname =~ /^virt1005$/ {
-        $ganglia_aggregator = true
-    }
 
     # full root for mhoover, Labs migration contractor
     include admins::labs
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard
+}
 
-    $openstack_version = "folsom"
-    if $::hostname =~ /^virt1005$/ {
-        include role::nova::network,
-            role::nova::api
-        interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.155.255" }
-    }
-    include role::nova::compute
+node /virt100[1-9].eqiad.wmnet/ {
+    $cluster = "virt"
+    # full root for mhoover, Labs migration contractor
+    include admins::labs
+    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
+
+    include standard
 }
 
 node "iodine.wikimedia.org" {
