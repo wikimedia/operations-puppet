@@ -33,17 +33,10 @@ if [ -z "$mwVerDbSets" ]; then
 fi
 
 # Perform syntax check
-echo -n "Checking syntax..."
+echo -n "Checking syntax of wmf-config and multiversion..."
 if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/wmf-config && $BINDIR/lint $MW_COMMON_SOURCE/multiversion ) ); then
 	die "Found syntax errors, cannot sync."
 fi
-# Check syntax for all active MediaWiki versions
-for i in ${mwVerDbSets[@]}; do
-	mwVerNum=${i%=*}
-	if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/php-$mwVerNum ) ); then
-		die "Found syntax errors in $mwVerNum, cannot sync."
-	fi
-done
 echo " done"
 
 # Update the current machine so that serialization works.
