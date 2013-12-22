@@ -53,130 +53,130 @@ sub tag_carrier {
 		// This is not wikipedia project - skip the rest of X-CS identification
 	} else if (req.http.X-CS2 == "502-13") {
 		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-			set req.http.X-CS = "502-13";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "623-03") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((fr|ar|sg|en|es|zh|ha|ln|eo)\.)?m\.") {
-				set req.http.X-CS = "623-03";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "413-02") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((en|ta|si)\.)?zero\.") {
-				set req.http.X-CS = "413-02";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "502-16") {
 		if (req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
-			set req.http.X-CS = "502-16";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "520-18") {
 		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-			set req.http.X-CS = "520-18";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "470-01") {
 		if (req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
-			set req.http.X-CS = "470-01";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "470-03") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((en|bn)\.)?(zero|m)\.") {
-				set req.http.X-CS = "470-03";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "416-03") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((en|ar)\.)?(zero|m)\.") {
-				set req.http.X-CS = "416-03";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "456-02") {
 		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-			set req.http.X-CS = "456-02";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "652-02") {
 		if ((!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
-			set req.http.X-CS = "652-02";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "624-02") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((fr|en|es|de|zh|ar|ha|ln|yo|eo)\.)?m\.") {
-				set req.http.X-CS = "624-02";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "630-86") {
 		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-			set req.http.X-CS = "630-86";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "612-03") {
 		if ((!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
-			set req.http.X-CS = "612-03";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "639-07") {
 		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-			set req.http.X-CS = "639-07";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "604-00") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((fr|ar|en|es|de|it|nl|pt|ru|zh)\.)?m\.") {
-				set req.http.X-CS = "604-00";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "614-04") {
 		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-			set req.http.X-CS = "614-04";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "605-01") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((ar|en|fr|es|de|it|ru|ja|zh)\.)?m\.") {
-				set req.http.X-CS = "605-01";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "641-14") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((ko|fr|de|en|zh|sw|rw|ar|hi|es)\.)?m\.") {
-				set req.http.X-CS = "641-14";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "420-01") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((ar|bn|en|tl|ur)\.)?(zero|m)\.") {
-				set req.http.X-CS = "420-01";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "405-25") {
 		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-			set req.http.X-CS = "405-25";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "250-99") {
 		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
 			if (req.http.host ~ "^((en|ru)\.)?(zero|m)\.") {
-				set req.http.X-CS = "250-99";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "410-01") {
 		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
 			if (req.http.host ~ "^((en|ur)\.)?(zero|m)\.") {
-				set req.http.X-CS = "410-01";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "510-11") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((id|en|zh|ar|hi|ms|jv|su)\.)?zero\.") {
-				set req.http.X-CS = "510-11";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "646-02") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((fr|en|mg)\.)?m\.") {
-				set req.http.X-CS = "646-02";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "436-01") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((en|tg|ru)\.)?(zero|m)\.") {
-				set req.http.X-CS = "436-01";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "436-04") {
@@ -186,12 +186,12 @@ sub tag_carrier {
 	} else if (req.http.X-CS2 == "401-01") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((ru|kk|en)\.)?(zero|m)\.") {
-				set req.http.X-CS = "401-01";
+				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "297-01") {
 		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-			set req.http.X-CS = "297-01";
+			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else {
 		if (!req.http.X-Forwarded-By) {
