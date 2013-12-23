@@ -142,30 +142,36 @@ class role::analytics::hadoop::production {
     ]
 
     class { 'cdh4::hadoop':
-        namenode_hosts                          => $namenode_hosts,
-        nameservice_id                          => $nameservice_id,
-        journalnode_hosts                       => $journalnode_hosts,
-        datanode_mounts                         => $datanode_mounts,
-        dfs_name_dir                            => [$hadoop_name_directory],
-        dfs_journalnode_edits_dir               => $hadoop_journal_directory,
-        dfs_block_size                          => 268435456,  # 256 MB
-        io_file_buffer_size                     => 131072,
-        mapreduce_map_tasks_maximum             => ($::processorcount - 2) / 2,
-        mapreduce_reduce_tasks_maximum          => ($::processorcount - 2) / 2,
-        mapreduce_job_reuse_jvm_num_tasks       => 1,
-        mapreduce_map_memory_mb                 => 1536,
-        mapreduce_reduce_memory_mb              => 3072,
-        mapreduce_map_java_opts                 => '-Xmx1024M',
-        mapreduce_reduce_java_opts              => '-Xmx2560M',
-        mapreduce_reduce_shuffle_parallelcopies => 10,
-        mapreduce_task_io_sort_mb               => 200,
-        mapreduce_task_io_sort_factor           => 10,
-        yarn_nodemanager_resource_memory_mb     => 40960,
-        yarn_resourcemanager_scheduler_class    => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
+        namenode_hosts                           => $namenode_hosts,
+        nameservice_id                           => $nameservice_id,
+        journalnode_hosts                        => $journalnode_hosts,
+        datanode_mounts                          => $datanode_mounts,
+        dfs_name_dir                             => [$hadoop_name_directory],
+        dfs_journalnode_edits_dir                => $hadoop_journal_directory,
+        dfs_block_size                           => 268435456,  # 256 MB
+        io_file_buffer_size                      => 131072,
+        # Turn on Snappy compression by default for maps and final outputs
+        mapreduce_intermediate_compression       => true,
+        mapreduce_intermediate_compression_codec => 'org.apache.hadoop.io.compress.SnappyCodec',
+        mapreduce_output_compression             => true,
+        mapreduce_output_compression_codec       => 'org.apache.hadoop.io.compress.SnappyCodec',
+        mapreduce_output_compression_type        => BLOCK,
+        mapreduce_map_tasks_maximum              => ($::processorcount - 2) / 2,
+        mapreduce_reduce_tasks_maximum           => ($::processorcount - 2) / 2,
+        mapreduce_job_reuse_jvm_num_tasks        => 1,
+        mapreduce_map_memory_mb                  => 1536,
+        mapreduce_reduce_memory_mb               => 3072,
+        mapreduce_map_java_opts                  => '-Xmx1024M',
+        mapreduce_reduce_java_opts               => '-Xmx2560M',
+        mapreduce_reduce_shuffle_parallelcopies  => 10,
+        mapreduce_task_io_sort_mb                => 200,
+        mapreduce_task_io_sort_factor            => 10,
+        yarn_nodemanager_resource_memory_mb      => 40960,
+        yarn_resourcemanager_scheduler_class     => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
         # TODO: use variables from new ganglia module once it is finished.
-        ganglia_hosts                           => ['239.192.1.32:8649'],
+        ganglia_hosts                            => ['239.192.1.32:8649'],
         # use net-topology.py.erb to map hostname to /datacenter/rack/row id.
-        net_topology_script_template            => 'hadoop/net-topology.py.erb',
+        net_topology_script_template             => 'hadoop/net-topology.py.erb',
     }
 
     file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
@@ -237,20 +243,26 @@ class role::analytics::hadoop::labs {
     }
 
     class { 'cdh4::hadoop':
-        namenode_hosts                          => $namenode_hosts,
-        nameservice_id                          => $nameservice_id,
-        journalnode_hosts                       => $journalnode_hosts,
-        datanode_mounts                         => $datanode_mounts,
-        dfs_name_dir                            => [$hadoop_name_directory],
-        dfs_journalnode_edits_dir               => $hadoop_journal_directory,
-        dfs_block_size                          => 268435456,  # 256 MB
-        io_file_buffer_size                     => 131072,
-        mapreduce_map_tasks_maximum             => 2,
-        mapreduce_reduce_tasks_maximum          => 2,
-        mapreduce_job_reuse_jvm_num_tasks       => 1,
-        yarn_resourcemanager_scheduler_class    => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
+        namenode_hosts                           => $namenode_hosts,
+        nameservice_id                           => $nameservice_id,
+        journalnode_hosts                        => $journalnode_hosts,
+        datanode_mounts                          => $datanode_mounts,
+        dfs_name_dir                             => [$hadoop_name_directory],
+        dfs_journalnode_edits_dir                => $hadoop_journal_directory,
+        dfs_block_size                           => 268435456,  # 256 MB
+        io_file_buffer_size                      => 131072,
+        # Turn on Snappy compression by default for maps and final outputs
+        mapreduce_intermediate_compression       => true,
+        mapreduce_intermediate_compression_codec => 'org.apache.hadoop.io.compress.SnappyCodec',
+        mapreduce_output_compression             => true,
+        mapreduce_output_compression_codec       => 'org.apache.hadoop.io.compress.SnappyCodec',
+        mapreduce_output_compression_type        => BLOCK,
+        mapreduce_map_tasks_maximum              => 2,
+        mapreduce_reduce_tasks_maximum           => 2,
+        mapreduce_job_reuse_jvm_num_tasks        => 1,
+        yarn_resourcemanager_scheduler_class     => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
         # TODO: use variables from new ganglia module once it is finished.
-        ganglia_hosts                           => ['aggregator1.pmtpa.wmflabs:50090'],
+        ganglia_hosts                            => ['aggregator1.pmtpa.wmflabs:50090'],
     }
 
     file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
