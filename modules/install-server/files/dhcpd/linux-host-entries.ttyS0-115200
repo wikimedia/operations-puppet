@@ -3,15 +3,6 @@
 #### puppet:///files/dhcpd/linux-host-entries.ttyS0-115200
 ######################################################################
 
-host analytics1001 {
-	hardware ethernet 88:43:e1:c2:99:8e;
-	fixed-address analytics1001.wikimedia.org;
-}
-
-host analytics1002 {
-	hardware ethernet 00:22:bd:d3:60:58;
-	fixed-address analytics1002.eqiad.wmnet;
-}
 
 host analytics1003 {
 	hardware ethernet 88:43:e1:c2:99:48;
@@ -23,24 +14,9 @@ host analytics1004 {
 	fixed-address analytics1004.wikimedia.org;
 }
 
-host analytics1005 {
-	hardware ethernet 88:43:e1:c2:53:9c;
-	fixed-address analytics1005.eqiad.wmnet;
-}
-
-host analytics1006 {
-	hardware ethernet 88:43:e1:c2:85:b4;
-	fixed-address analytics1006.eqiad.wmnet;
-}
-
 host analytics1007 {
 	hardware ethernet ;
 	fixed-address analytics1007.eqiad.wmnet;
-}
-
-host analytics1008 {
-	hardware ethernet 88:43:e1:c2:50:7e;
-	fixed-address analytics1008.eqiad.wmnet;
 }
 
 host analytics1009 {
@@ -181,4 +157,29 @@ host virt12 {
 host virt15 {
 	hardware ethernet 88:43:E1:C2:7B:6C;
 	fixed-address virt15.pmtpa.wmnet;
+}
+
+host virt1001 {
+	hardware ethernet 88:43:e1:c2:99:8e;
+	fixed-address virt1001.wikimedia.org;
+}
+
+host virt1002 {
+	hardware ethernet 00:22:bd:d3:60:58;
+	fixed-address virt1002.eqiad.wmnet;
+}
+
+host virt1003 {
+	hardware ethernet 88:43:e1:c2:53:9c;
+	fixed-address virt1003.eqiad.wmnet;
+}
+
+host virt1008 {
+	hardware ethernet 88:43:e1:c2:85:b4;
+	fixed-address virt1008.eqiad.wmnet;
+}
+
+host virt1009 {
+	hardware ethernet 88:43:e1:c2:50:7e;
+	fixed-address virt1009.eqiad.wmnet;
 }
