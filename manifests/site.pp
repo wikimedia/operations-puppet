@@ -576,13 +576,13 @@ node /^db(6[012456]|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
+node /^db10(33|43|49|50|51|52|56|37)\.eqiad\.wmnet/ {
     if $::hostname =~ /^db10(56)/ {
         $ganglia_aggregator = true
         include mha::manager
     }
 
-    if $::hostname =~ /^db10(50|51|52|56|37)/ {
+    if $::hostname =~ /^db10(33|50|51|52|56|37)/ {
         class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
     } elsif $::hostname =~ /^db10(43|49)/ {
         class { role::coredb::s1 : mariadb => true }
@@ -768,11 +768,9 @@ node 'db1057.eqiad.wmnet' {
     }
 }
 
-## 2013-04-10: py using db101[45] and db1023 and db1033 for testing
 ## not currently in production and/or hardware issues
 # db1023 -- ok
-# db1033 -- bad ram dimm
-node /^db10(23|33)\.eqiad\.wmnet/ {
+node /^db10(23)\.eqiad\.wmnet/ {
     include standard
 }
 
