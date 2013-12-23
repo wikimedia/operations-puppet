@@ -3363,6 +3363,7 @@ class admins::restricted {
 	include accounts::tnegrin # RT 5391
 	include accounts::ssastry # RT 5512
 	include accounts::ironholds # RT 5935
+	include accounts::nuria # RT 6535
 }
 
 class admins::labs {
