@@ -2545,7 +2545,8 @@ node "vanadium.eqiad.wmnet" {
     include standard,
         role::eventlogging,
         role::ipython_notebook,
-        role::logging::mediawiki::errors
+        role::logging::mediawiki::errors,
+        accounts::nuria         # RT 6535
 }
 
 # Hosts visualization / monitoring of EventLogging event streams
