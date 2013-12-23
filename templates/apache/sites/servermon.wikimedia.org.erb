@@ -1,0 +1,55 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+
+    ServerName servermon.wikimedia.org
+
+    RewriteEngine on
+    RewriteRule ^/(.*)$ https://servermon.wikimedia.org/$1 [R=301]
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+    ServerName servermon.wikimedia.org
+
+    SSLEngine On
+    # TODO: Abusing librenms cert+key for now
+    SSLCertificateFile /etc/ssl/certs/librenms.wikimedia.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/librenms.wikimedia.org.key
+    SSLCACertificatePath /etc/ssl/certs
+    <%= @ssl_settings.join("\n") %>
+
+    DocumentRoot /srv/nonexistent
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+	Order Allow,Deny
+	Allow from all
+        AuthName "WMF Labs (use wiki login name not shell)"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= @proxypass %>
+        AuthLDAPURL "ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        Require ldap-group cn=ops,ou=groups,dc=wikimedia,dc=org
+	# TODO: Evaluate which other groups we need. Possible ones are:
+        # Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+        # Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
+    </Directory>
+
+    ErrorLog /var/log/apache2/servermon.wikimedia.org-error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    ProxyPass / http://localhost:8090
+    ProxyPassReverse / http://localhost:8090
+
+    CustomLog /var/log/apache2/servermon.wikimedia.org-access.log combined
+    ServerSignature On
+</VirtualHost>
