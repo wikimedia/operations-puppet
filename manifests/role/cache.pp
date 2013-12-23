@@ -1010,7 +1010,7 @@ class role::cache {
                 {
                     'port' => 80,
                     'connect_timeout' => "5s",
-                    'first_byte_timeout' => "35s",
+                    'first_byte_timeout' => "180s",
                     'between_bytes_timeout' => "4s",
                     'max_connections' => 600,
                 }],
@@ -1044,7 +1044,7 @@ class role::cache {
                 'port' => 3128,
                 'weight' => $backend_weight,
                 'connect_timeout' => "5s",
-                'first_byte_timeout' => "35s",
+                'first_byte_timeout' => "185s",
                 'between_bytes_timeout' => "2s",
                 'max_connections' => 100000,
                 'probe' => "varnish",
