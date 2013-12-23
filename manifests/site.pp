@@ -2528,8 +2528,8 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
 
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
 # processes it, and broadcasts to internal subscribers.
-node "vanadium.eqiad.wmnet" {
-    $gid=500
+node 'vanadium.eqiad.wmnet' {
+    $gid = 500
 
     include standard,
         role::eventlogging,
@@ -2537,6 +2537,10 @@ node "vanadium.eqiad.wmnet" {
         role::logging::mediawiki::errors,
         groups::wikidev,
         accounts::nuria         # RT 6535
+
+    sudo_user { 'nuria':
+        privileges => ['ALL = NOPASSWD: ALL'],
+    }
 }
 
 # Hosts visualization / monitoring of EventLogging event streams
