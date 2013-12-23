@@ -15,58 +15,56 @@
 class install-server::apt-repository {
     package { [
         'dpkg-dev',
+        'dctrl-tools',
         'gnupg',
         'reprepro',
-        'dctrl-tools'
         ]:
-        ensure => latest,
+        ensure => present,
     }
 
     # TODO: add something that sets up /etc/environment for reprepro
 
     file { '/srv/wikimedia':
-            ensure  => directory,
-            mode    => '0755',
-            owner   => 'root',
-            group   => 'root';
+        ensure  => directory,
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
     }
 
-    # TODO: This has been long enough in deprecation, time to ensure
-    # deletion, remove this resource at some later time
-    file { '/usr/local/sbin/update-repository':
-            ensure  => absent,
+    # reprepro configuration
+    file { '/srv/wikimedia/conf':
+        ensure  => directory,
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
     }
 
-    # Reprepro configuration
-    file {
-        '/srv/wikimedia/conf':
-            ensure  => directory,
-            mode    => '0755',
-            owner   => 'root',
-            group   => 'root';
-        '/srv/wikimedia/conf/log':
-            ensure  => present,
-            mode    => '0755',
-            owner   => 'root',
-            group   => 'root',
-            source  => 'puppet:///modules/install-server/reprepro-log';
-        '/srv/wikimedia/conf/distributions':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            source  => 'puppet:///modules/install-server/reprepro-distributions';
-        '/srv/wikimedia/conf/updates':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            source  => 'puppet:///modules/install-server/reprepro-updates';
-        '/srv/wikimedia/conf/incoming':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            source  => 'puppet:///modules/install-server/reprepro-incoming';
+    file { '/srv/wikimedia/conf/log':
+        ensure  => present,
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/install-server/reprepro/log',
+    }
+    file { '/srv/wikimedia/conf/distributions':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/install-server/reprepro/distributions',
+    }
+    file { '/srv/wikimedia/conf/updates':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/install-server/reprepro/updates',
+    }
+    file { '/srv/wikimedia/conf/incoming':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/install-server/reprepro/incoming',
     }
 }
