@@ -12,10 +12,5 @@ class applicationserver::cron {
 			hour => 5,
 			minute => 0,
 			ensure => present;
-		"bug55541":   # Hack! Fix the bug and kill this job. --Ori
-			command => 'find /tmp -name \*.tif -mmin +60  -delete',
-			user => root,
-			minute => 34,
-			ensure => present;
 	}
 }
