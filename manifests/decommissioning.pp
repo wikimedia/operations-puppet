@@ -128,9 +128,6 @@ $decommissioned_servers = [
 'sq85',  #6520 decommed
 'sq86',  #6520 decommed
 'ssl3004', #added 9/17
-'virt1001', #3687 renamed virt1001-3
-'virt1002',
-'virt1003',
 'virt1',  #5645 decommed
 'virt3',
 'virt4',
