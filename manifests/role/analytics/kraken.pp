@@ -74,7 +74,7 @@ class role::analytics::kraken::jobs::import::pagecounts {
     # cron job to download any missing pagecount files from
     # dumps.wikimedia.org and store them into HDFS.
     cron { 'kraken-import-hourly-pagecounts':
-        command => "${script} --start ${start_date} ${datadir} 2>&1 | /usr/bin/tee -a ${log_file}",
+        command => "${script} --start ${start_date} ${datadir} >> ${log_file} 2>&1",
         user    => 'hdfs',
         minute  => 5,
         require => Exec["${script}-exists"],
@@ -112,7 +112,7 @@ class role::analytics::kraken::jobs::hive::partitions::external {
     # cron job to automatically create hive partitions for any
     # newly imported data.
     cron { 'kraken-create-external-hive-partitions':
-        command => "${script} --database ${database} --hive-options='${hive_options}' ${datadir} 2>&1 | /usr/bin/tee -a ${log_file}",
+        command => "${script} --database ${database} --hive-options='${hive_options}' ${datadir} >> ${log_file} 2>&1",
         user    => 'hdfs',
         minute  => 15,
         require => Exec["${script}-exists"],
