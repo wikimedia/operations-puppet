@@ -2226,6 +2226,7 @@ node 'netmon1001.wikimedia.org' {
     include misc::torrus::xml-generation::cdn
     include passwords::network
     include ganglia::collector
+    include role::servermon
 
     class { 'ganglia_new::monitor::aggregator':
         sites => ['pmtpa', 'eqiad'],
