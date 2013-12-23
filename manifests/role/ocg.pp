@@ -84,8 +84,8 @@ class role::ocg::collection {
         require    => File['/etc/init/ocg-collection.conf'],
     }
 
-    monitor_service { 'ocg-collection':
-        description   => 'Offline Content Generation - Collection',
-        check_command => 'check_http_on_port!17080',
-    }
+    #monitor_service { 'ocg-collection':
+    #    description   => 'Offline Content Generation - Collection',
+    #    check_command => 'check_http_on_port!17080',
+    #}
 }
