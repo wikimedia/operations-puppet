@@ -2546,6 +2546,7 @@ node "vanadium.eqiad.wmnet" {
         role::eventlogging,
         role::ipython_notebook,
         role::logging::mediawiki::errors,
+        groups::wikidev,
         accounts::nuria         # RT 6535
 }
 
