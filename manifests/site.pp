@@ -2546,10 +2546,6 @@ node "vanadium.eqiad.wmnet" {
         role::eventlogging,
         role::ipython_notebook,
         role::logging::mediawiki::errors
-
-    sudo_user { 'otto':
-        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
-    }
 }
 
 # Hosts visualization / monitoring of EventLogging event streams
