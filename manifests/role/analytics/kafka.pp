@@ -106,6 +106,13 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         zookeeper_chroot    => $zookeeper_chroot,
     }
 
+    # Generate icinga alert if Kafka Server is not running.
+    nrpe::monitor_service { 'kafka':
+        description  => 'Kafka Broker Server',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "kafka.Kafka /etc/kafka/server.properties"',
+        require      => Class['::kafka::server'],
+    }
+
     $jmxtrans_outfile = '/var/log/kafka/kafka-jmx.log'
     file { $jmxtrans_outfile:
         ensure  => 'present',
@@ -135,4 +142,12 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 }
 "
     }
+
+    # Generate icinga alert if this jmxtrans instance is not running.
+    nrpe::monitor_service { 'jmxtrans':
+        description  => 'jmxtrans',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "-jar jmxtrans-all.jar"',
+        require      => Class['::kafka::server::jmxtrans'],
+    }
+
 }

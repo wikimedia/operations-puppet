@@ -43,6 +43,23 @@ class role::analytics::hadoop::client {
 class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::master': description => 'Hadoop Master (NameNode & ResourceManager)' }
     include cdh4::hadoop::master
+
+    # Icinga process alerts for NameNode, ResourceManager and HistoryServer
+    nrpe::monitor_service { 'hadoop-hdfs-namenode':
+        description  => 'Hadoop Namenode (Primary)',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
+        require      => Class['::cdh4::hadoop::master'],
+    }
+    nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
+        description  => 'Hadoop ResourceManager',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
+        require      => Class['::cdh4::hadoop::master'],
+    }
+    nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
+        description  => 'Hadoop HistoryServer',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
+        require      => Class['::cdh4::hadoop::master'],
+    }
 }
 
 # == Class role::analytics::hadoop::worker
@@ -50,13 +67,32 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
 class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::worker': description => 'Hadoop Worker (DataNode & NodeManager)' }
     include cdh4::hadoop::worker
+
+    # Icinga process alerts for DataNode and NodeManager
+    nrpe::monitor_service { 'hadoop-hdfs-datanode':
+        description  => 'Hadoop DataNode',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
+        require      => Class['::cdh4::hadoop::worker'],
+    }
+    nrpe::monitor_service { 'hadoop-yarn-nodemanager':
+        description  => 'Hadoop NodeManager',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
+        require      => Class['::cdh4::hadoop::worker'],
+    }
 }
 
-# == Class role::analytics::hadoop::standby inherits role::analytics::hadoop::client
-#
+# == Class role::analytics::hadoop::standby
+# Include standby namenode classes
 class role::analytics::hadoop::standby inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::standby': description => 'Hadoop Standby NameNode' }
     include cdh4::hadoop::namenode::standby
+
+    # Icinga process alert for Stand By NameNode
+    nrpe::monitor_service { 'hadoop-hdfs-namenode':
+        description  => 'Hadoop Namenode (Stand By)',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
+        require      => Class['::cdh4::hadoop::namenode::standby'],
+    }
 }
 
 
@@ -139,6 +175,17 @@ class role::analytics::hadoop::production {
     file { "$::cdh4::hadoop::config_directory/fair-scheduler-allocation.xml":
         content => template('hadoop/fair-scheduler-allocation.xml.erb'),
         require => Class['cdh4::hadoop'],
+    }
+
+    # If the current node is a journalnode, then
+    # go ahead and include an icinga alert for the
+    # JournalNode process.
+    if member($journalnode_hosts, $::fqdn) {
+        nrpe::monitor_service { 'hadoop-hdfs-journalnode':
+            description  => 'Hadoop JournalNode',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
+            require      => Class['::cdh4::hadoop'],
+        }
     }
 }
 
