@@ -115,6 +115,10 @@ class role::deployment::config {
         'grain'    => 'scap',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/scap',
     },
+    'servermon/servermon'            => {
+        'grain'        => 'servermon',
+        'service_name' => 'servermon',
+    },
   }
 }
 

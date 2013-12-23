@@ -1,0 +1,10 @@
+CONFIG = {
+    'mode': 'django',
+    'working_dir': '<%= @directory %>',
+    'args': (
+        '--bind=0.0.0.0:8080',
+        '--workers=4',
+        '--timeout=15',
+        'settings.py',
+    ),
+}
