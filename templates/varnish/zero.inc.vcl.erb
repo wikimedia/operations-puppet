@@ -180,7 +180,7 @@ sub tag_carrier {
 			}
 		}
 	} else if (req.http.X-CS2 == "436-04") {
-		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+		if (!req.http.X-Forwarded-By) {
 			set req.http.X-CS = req.http.X-CS2;
 		}
 	} else if (req.http.X-CS2 == "401-01") {
