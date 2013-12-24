@@ -3,6 +3,11 @@
 # ALPHABETIC order!
 
 $decommissioned_servers = [
+'analytics1001', #renamed virt1001
+'analytics1002', #renamed virt1002
+'analytics1005', #renamed virt1003
+'analytics1006', #renamed virt1008
+'analytics1008', #renamed virt1009
 'br1-knams',
 'controller',
 'cp1021',    # cp 1021-1042 were reclaimed, 5981
