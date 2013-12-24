@@ -59,6 +59,7 @@ class toollabs::exec_environ {
         'libcrypt-gcrypt-perl',
         'libcrypt-openssl-bignum-perl',
         'libcrypt-openssl-rsa-perl',
+        'libberkeleydb-perl',          # Bug 58785
         'libdata-compare-perl',        # For Checkwiki.
         'libdata-dumper-simple-perl',
         'libdatetime-format-duration-perl',
@@ -99,6 +100,7 @@ class toollabs::exec_environ {
         'libstring-shellquote-perl',   # For jsub.
         'libtask-weaken-perl',
         'libtest-exception-perl',      # For Checkwiki.
+        'libtext-diff-perl',           # Bug 58744
         'libthreads-perl',
         'libthreads-shared-perl',
         'libtime-local-perl',
