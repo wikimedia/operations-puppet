@@ -86,7 +86,7 @@ host pc1003 {
 
 host virt1001 {
 	hardware ethernet 88:43:e1:c2:99:8e;
-	fixed-address virt1001.wikimedia.org;
+	fixed-address virt1001.eqiad.wmnet;
 }
 
 host virt1002 {
