@@ -4,8 +4,6 @@
 
 $decommissioned_servers = [
 'analytics1001', #renamed virt1001
-'analytics1002', #renamed virt1002
-'analytics1005', #renamed virt1003
 'analytics1006', #renamed virt1008
 'analytics1008', #renamed virt1009
 'br1-knams',
@@ -30,18 +28,27 @@ $decommissioned_servers = [
 'cp1042',
 'cp3001',
 'cp3002',
-'db32', # db32,39,426,51-3,55-6,58-9 decommed: rt 6231
+'db31',
+'db32',
+'db33',
+'db34',
+'db36',
+'db37',
 'db39',
 'db42',
 'db43',
 'db44',
 'db45',
 'db46',
+'db47',
+'db49',
+'db50',
 'db51',
 'db52',
 'db53',
 'db55',
 'db56',
+'db57',
 'db58',
 'db59',
 #dysprosium -- add this back later when it is reclaimed
