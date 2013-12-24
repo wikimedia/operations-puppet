@@ -36,6 +36,9 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
             mode   => '0755';
     }
 
+    # db pass and site secret from private repo
+    include passwords::bugzilla
+
     # bugzilla localconfig
     file { '/srv/org/wikimedia/bugzilla/localconfig':
         ensure  => present,
