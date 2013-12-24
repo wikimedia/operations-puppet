@@ -39,6 +39,16 @@ class mediawiki::sync {
 			group  => root,
 			mode   => '0555',
 			source => 'puppet:///files/scap/sync-common';
+		"${scriptpath}/mergeCdbFileUpdates":
+			owner  => root,
+			group  => root,
+			mode   => '0555',
+			source => 'puppet:///files/scap/mergeCdbFileUpdates';
+		"${scriptpath}/refreshCdbJsonFiles":
+			owner  => root,
+			group  => root,
+			mode   => '0555',
+			source => 'puppet:///files/scap/refreshCdbJsonFiles';
 
 		# Fix $scriptpath screwup
 		"/scap-1": ensure => absent;
