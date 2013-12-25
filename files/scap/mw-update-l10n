@@ -77,7 +77,7 @@ for i in ${mwExtVerDbSets[@]}; do
 		|| die
 
 	# Include JSON versions of the CDB files and add MD5 files
-	sudo -u l10nupdate /usr/local/bin/refreshCdbJsonFiles --directory="$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n" \
+	sudo -u l10nupdate $BINDIR/refreshCdbJsonFiles --directory="$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n" \
 		--threads=$THREADS \
 		|| die
 
