@@ -1,5 +1,6 @@
 #!/bin/bash
 
+BINDIR=/usr/local/bin
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:
 TERM=dumb
 
@@ -23,7 +24,11 @@ fi
 CPUS=`grep -c 'model name' /proc/cpuinfo`
 THREADS=`expr $CPUS / 2`
 
+mwVersions=$($BINDIR/mwversionsinuse)
 # Rebuild the CDB files from the JSON versions
-/usr/local/bin/mergeCdbFileUpdates --directory="$MW_COMMON/php-$mwVerNum/cache/l10n" \
-	--threads=$THREADS \
-	|| die
+# Regenerate the extension message file list for all active MediaWiki versions
+for mwVerNum in ${mwVersions[@]}; do
+	/usr/local/bin/mergeCdbFileUpdates --directory="$MW_COMMON/php-$mwVerNum/cache/l10n" \
+		--threads=$THREADS \
+		|| die
+done
