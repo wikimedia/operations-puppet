@@ -166,6 +166,7 @@ class MergeCdbFileUpdates {
 					dba_insert( $key, $value, $handle );
 				}
 				dba_close( $handle );
+				chmod( $tmpFileName, 0644 );
 				// Move the temporary CDB file over the old one..
 				if ( !rename( $tmpFileName, "$directory/$file" ) ) {
 					$this->error( "Unable to move the new CDB file to '$file'." );
