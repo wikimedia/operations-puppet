@@ -202,6 +202,7 @@ class RefreshCdbJsonFiles {
 				$this->error( "Could not write '$file.MD5'." );
 				continue;
 			}
+			chmod( $tmpFileName, 0644 );
 			if ( !rename( $tmpFileName, "$directory/upstream/$file.json" ) ) {
 				$this->error( "Could not write '$directory/upstream/$file.json'." );
 				continue;
