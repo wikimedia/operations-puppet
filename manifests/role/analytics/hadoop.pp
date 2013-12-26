@@ -31,10 +31,17 @@ class role::analytics::hadoop::client {
     # based on $::realm
     if ($::realm == 'labs') {
         include role::analytics::hadoop::labs
+        $ganglia_host = 'aggregator1.pmtpa.wmflabs'
+        $ganglia_port = 50090
     }
     else {
         include role::analytics::hadoop::production
+        # TODO: use variables from new ganglia module once it is finished.
+        $ganglia_host = '239.192.1.32'
+        $ganglia_port = 8649
     }
+
+
 }
 
 # == Class role::analytics::hadoop::master
@@ -60,6 +67,19 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
         require      => Class['::cdh4::hadoop::master'],
     }
+
+
+    # Hadoop nodes are spread across multiple rows
+    # and need to be able to send multicast packets
+    # multiple network hops.  Hadoop GangliaContext
+    # does not support this.  See:
+    # https://issues.apache.org/jira/browse/HADOOP-10181
+    # We use jmxtrans instead.
+
+    # Use jmxtrans for sending metrics to ganglia
+    class { 'cdh4::hadoop::jmxtrans::master':
+        ganglia => "${ganglia_host}:${ganglia_port}",
+    }
 }
 
 # == Class role::analytics::hadoop::worker
@@ -79,6 +99,18 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
         require      => Class['::cdh4::hadoop::worker'],
     }
+
+    # Hadoop nodes are spread across multiple rows
+    # and need to be able to send multicast packets
+    # multiple network hops.  Hadoop GangliaContext
+    # does not support this.  See:
+    # https://issues.apache.org/jira/browse/HADOOP-10181
+    # We use jmxtrans instead.
+
+    # Use jmxtrans for sending metrics to ganglia
+    class { 'cdh4::hadoop::jmxtrans::worker':
+        ganglia => "${ganglia_host}:${ganglia_port}",
+    }
 }
 
 # == Class role::analytics::hadoop::standby
@@ -92,6 +124,11 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
         description  => 'Hadoop Namenode (Stand By)',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
         require      => Class['::cdh4::hadoop::namenode::standby'],
+    }
+
+    # Use jmxtrans for sending metrics to ganglia
+    class { 'cdh4::hadoop::jmxtrans::namenode':
+        ganglia => "${ganglia_host}:${ganglia_port}",
     }
 }
 
@@ -168,8 +205,6 @@ class role::analytics::hadoop::production {
         mapreduce_task_io_sort_factor            => 10,
         yarn_nodemanager_resource_memory_mb      => 40960,
         yarn_resourcemanager_scheduler_class     => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
-        # TODO: use variables from new ganglia module once it is finished.
-        ganglia_hosts                            => ['239.192.1.32:8649'],
         # use net-topology.py.erb to map hostname to /datacenter/rack/row id.
         net_topology_script_template             => 'hadoop/net-topology.py.erb',
     }
@@ -261,8 +296,6 @@ class role::analytics::hadoop::labs {
         mapreduce_reduce_tasks_maximum           => 2,
         mapreduce_job_reuse_jvm_num_tasks        => 1,
         yarn_resourcemanager_scheduler_class     => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
-        # TODO: use variables from new ganglia module once it is finished.
-        ganglia_hosts                            => ['aggregator1.pmtpa.wmflabs:50090'],
     }
 
     file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
