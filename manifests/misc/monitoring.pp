@@ -325,37 +325,37 @@ class misc::monitoring::view::hadoop($master, $worker_regex, $ensure = 'present'
             {
                 'host_regex'   => $master,
                 'metric_regex' => 'Hadoop.ResourceManager.QueueMetrics.*ActiveApplications',
-                'type'         => 'stacked',
+                'type'         => 'stack',
             },
             # ResourceManager failed applications
             {
                 'host_regex'   => $master,
                 'metric_regex' => 'Hadoop.ResourceManager.QueueMetrics.*AppsFailed',
-                'type'         => 'stacked',
+                'type'         => 'stack',
             },
             # NodeManager containers running
             {
                 'host_regex'   => $worker_regex,
                 'metric_regex' => 'Hadoop.NodeManager.NodeManagerMetrics.ContainersRunning',
-                'type'         => 'stacked',
+                'type'         => 'stack',
             },
             # NodeManager Allocated Memeory GB
             {
                 'host_regex'   => $worker_regex,
                 'metric_regex' => 'Hadoop.NodeManager.NodeManagerMetrics.AllocatedGB',
-                'type'         => 'stacked',
+                'type'         => 'stack',
             },
             # Worker Node bytes_in
             {
                 'host_regex'   => $worker_regex,
                 'metric_regex' => 'bytes_in',
-                'type'         => 'stacked',
+                'type'         => 'stack',
             },
             # Worker Node bytes_out
             {
                 'host_regex'   => $worker_regex,
                 'metric_regex' => 'bytes_out',
-                'type'         => 'stacked',
+                'type'         => 'stack',
             },
             # Primary NameNode File activity
             {
