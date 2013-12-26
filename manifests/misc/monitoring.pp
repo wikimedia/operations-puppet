@@ -309,6 +309,64 @@ class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $e
 
 
 
+
+# == Class misc::monitoring::view::hadoop
+#
+class misc::monitoring::view::hadoop($master, $worker_regex, $ensure = 'present') {
+    ganglia::view { 'hadoop':
+        ensure => $ensure,
+        graphs => [
+            # ResourceManager active applications
+            {
+                'host_regex'   => $master,
+                'metric_regex' => 'Hadoop.ResourceManager.QueueMetrics.*ActiveApplications',
+                'type'         => 'stacked',
+            },
+            # ResourceManager failed applications
+            {
+                'host_regex'   => $master,
+                'metric_regex' => 'Hadoop.ResourceManager.QueueMetrics.*AppsFailed',
+                'type'         => 'stacked',
+            },
+            # NodeManager containers running
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => 'Hadoop.NodeManager.NodeManagerMetrics.ContainersRunning',
+                'type'         => 'stacked',
+            },
+            # NodeManager Allocated Memeory GB
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => 'Hadoop.NodeManager.NodeManagerMetrics.AllocatedGB',
+                'type'         => 'stacked',
+            },
+            # Worker Node bytes_in
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => 'bytes_in',
+                'type'         => 'stacked',
+            },
+            # Worker Node bytes_out
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => 'bytes_out',
+                'type'         => 'stacked',
+            },
+            # Primary NameNode File activity
+            {
+                'host_regex'   => $master,
+                'metric_regex' => 'Hadoop.NameNode.NameNodeActivity.Files(Created|Deleted|Renamed|Appended)',
+                'type'         => 'line',
+            },
+        ],
+    }
+}
+
+
+
+
+
+
 # == Class misc::monitoring::view::analytics::data
 # View for analytics data flow.
 # This is a class instead of a define because it is specific enough to never need
