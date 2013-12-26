@@ -12,7 +12,6 @@ sub vcl_recv {
 		set req.backend = tungsten;
 	} elsif (req.http.Host == "scholarships.wikimedia.org") {
 		set req.backend = zirconium;
-                return (pass);
 	} else {
 		error 404 "Domain not served here";
 	}
