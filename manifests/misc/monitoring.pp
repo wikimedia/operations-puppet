@@ -113,6 +113,11 @@ class misc::monitoring::views {
     class { 'misc::monitoring::view::static_assets': }
     class { 'misc::monitoring::view::bits_ttfb': }
     class { 'misc::monitoring::view::visual_editor': }
+
+    class { 'misc::monitoring::view::hadoop':
+        master       => 'analytics1010.eqiad.wmnet',
+        worker_regex => 'analytics10(1[1-9]|20).eqiad.wmnet',
+    }
 }
 
 # == Define misc:monitoring::view::udp2log
