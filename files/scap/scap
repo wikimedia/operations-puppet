@@ -40,6 +40,11 @@ if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/wmf-config && $BINDIR/lint $MW_COMMON_SO
 fi
 echo " done"
 
+# Builds wikiversions.cdb so it gets synced out with the dat file
+if ( ! $MW_COMMON_SOURCE/multiversion/refreshWikiversionsCDB ); then
+	die "Could not rebuild the wikiversions.cdb file"
+fi
+
 # Update the current machine so that serialization works.
 # Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
 # and mwscript work with the right version of the files.
@@ -73,9 +78,6 @@ RSYNC_SERVERS=`echo $RSYNC_SERVERS`
 echo 'Copying code to apaches...'
 dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\"
 echo 'Finished'
-
-# Builds wikiversions.cdb and syncs it to the apaches with the dat file
-sync-wikiversions || die
 
 SCAP_END=$(date +%s)
 DIFF=$((SCAP_END-SCAP_START))
