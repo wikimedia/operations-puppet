@@ -3221,6 +3221,25 @@ class accounts {
         }
     }
 
+    class aude inherits baseaccount {
+        $username = 'aude'
+        $realname = 'Katie Filbert'
+        $uid      = 1185
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'aude.wiki@gmail.com':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC+OiQ1ptiP6VqmiP8IOp0sKET9pQHOJxscK6bAvAmAP72DL9MgLIBaWpaL9iWsb/DMXI2CQpEnu88VMVXCSgiqw+Gy6Q93pAquAQWAzkMnDD+QvxTm23oFCxP795IEP3JMHuONNg2x3NU3jYaOADOGZX41nRhbkO4yl32jQCTF9i670KS+CFDHxRzmOMzNhlytWJYyVPS6iqUGykaFcebFNThMtRtQF+pWJNreCFxZoXp1TyzkiJE1rX98tj2yhVQmET6mENuGXuAES/Atzpxp8zvsckHn06Mm1RZZmIExEqn/JdK6nHs1UoSNpsI195ltzkKSEWdFdYKRLZNFuRBL',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3294,6 +3313,7 @@ class admins::mortals {
 	include accounts::abaso
 	include accounts::andrew
 	include accounts::anomie
+	include accounts::aude # RT 6460
 	include accounts::awight
 	include accounts::awjrichards
 	include accounts::bd808
