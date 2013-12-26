@@ -152,8 +152,6 @@ class RefreshCdbJsonFiles {
 				continue;
 			}
 
-			$this->output( "Creating JSON file for '$file'...\n" );
-
 			// Open the CDB file for iteration
 			$cdbHandle = dba_open( "$directory/$file", 'r-', 'cdb' );
 			if ( $cdbHandle === false ) {

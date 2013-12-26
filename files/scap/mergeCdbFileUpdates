@@ -141,7 +141,6 @@ class MergeCdbFileUpdates {
 			$md5Local = is_file( "$directory/$file" ) ? md5_file( "$directory/$file" ) : '';
 			// If the hashes do not match, fetch the diff needed to update the CDB
 			if ( $md5Local !== $md5Upstream ) {
-				$this->output( "Updating '$file'...\n" );
 				// Get the CDB contents from the JSON file
 				$jsonPath = "$directory/upstream/$file.json";
 				if ( !is_file( $jsonPath ) ) {
