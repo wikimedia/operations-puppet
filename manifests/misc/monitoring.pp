@@ -113,19 +113,6 @@ class misc::monitoring::views {
     class { 'misc::monitoring::view::static_assets': }
     class { 'misc::monitoring::view::bits_ttfb': }
     class { 'misc::monitoring::view::visual_editor': }
-
-    # disabled views
-    misc::monitoring::view::udp2log { 'udp2log-analytics':
-        ensure     => 'absent',
-        host_regex => 'analytics100[689].eqiad.wmnet',
-    }
-    class { 'misc::monitoring::view::analytics::data':
-        ensure                    => 'absent',
-        hdfs_stat_host            => 'analytics1027.eqiad.wmnet',
-        kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
-        kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
-    }
-
 }
 
 # == Define misc:monitoring::view::udp2log
