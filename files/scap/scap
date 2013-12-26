@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Acquire a non-blocking lock to prevent parallel runs
+exec 200>/var/lock/scap || exit 1
+flock -n 200 || { echo "WARNING: could not acquire /var/lock/scap; scap is already running." >&2; exit 1; }
+
 SCAP_START=$(date +%s)
 NODEFILE=
 
@@ -7,6 +11,8 @@ function cleanup() {
 	if [ -n "$NODEFILE" ]; then
 		rm -f "$NODEFILE"
 	fi
+	# The lock is automatically released on exit, but do it here for good measure
+	flock -u 200
 }
 
 function die() {
