@@ -194,7 +194,7 @@ class RefreshCdbJsonFiles {
 				continue;
 			}
 			// Create the MD5 and JSON files...
-			$bytes = file_put_contents( "$directory/upstream/$file.MD5", $newCdbMd5 );
+			$bytes = file_put_contents( "$directory/upstream/$file.MD5", $newCdbMd5, LOCK_EX );
 			if ( $bytes !== strlen( $newCdbMd5 ) ) {
 				unlink( $tmpFileName );
 				$this->error( "Could not write '$file.MD5'." );
