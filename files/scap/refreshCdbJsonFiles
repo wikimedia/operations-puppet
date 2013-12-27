@@ -133,7 +133,9 @@ class RefreshCdbJsonFiles {
 		$numUpdated = array_sum( explode( "\n", file_get_contents( $tmpFileName ) ) );
 		unlink( $tmpFileName );
 
-		$this->output( "Updated $numUpdated JSON file(s) in '$directory'.\n" );
+		if ( $numUpdated > 0 ) {
+			$this->output( "Updated $numUpdated JSON file(s) in '$directory'.\n" );
+		}
 	}
 
 	/**
