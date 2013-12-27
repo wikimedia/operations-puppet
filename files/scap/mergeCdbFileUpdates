@@ -120,7 +120,9 @@ class MergeCdbFileUpdates {
 		$numRebuilt = array_sum( explode( "\n", file_get_contents( $tmpFileName ) ) );
 		unlink( $tmpFileName );
 
-		$this->output( "Updated $numRebuilt CDB file(s) in '$directory'.\n" );
+		if ( $numRebuilt > 0 ) {
+			$this->output( "Updated $numRebuilt CDB file(s) in '$directory'.\n" );
+		}
 	}
 
 	/**
