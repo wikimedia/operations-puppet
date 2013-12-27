@@ -41,7 +41,7 @@ fi
 echo " done"
 
 # Update the current machine so that serialization works.
-# Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
+# Push wikiversions.dat changes so mwversionsinuse, set-group-write,
 # and mwscript work with the right version of the files.
 /usr/local/bin/sync-common || die
 
