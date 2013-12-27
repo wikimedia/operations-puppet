@@ -7,8 +7,8 @@
 
 # Configuration and defaults
 
-profilehost = "professor.pmtpa.wmnet"
-profileport = 3811
+profilehost = "tungsten.eqiad.wmnet"
+profileport = 3812
 
 db = "all"
 sort = "real"
