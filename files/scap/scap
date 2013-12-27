@@ -55,10 +55,6 @@ $BINDIR/dologmsg "!log $USER started scap${*:+: }$*"
 # Disable logging
 export DOLOGMSGNOLOG=1
 
-echo 'Copying style sheets to apaches...'
-# Ignore errors from dsh since it gives an exit status of 1 on a connection timeout
-dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/local/bin/scap-1skins'
-
 echo 'Updating rsync proxies...'
 dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- /usr/local/bin/scap-1
 
