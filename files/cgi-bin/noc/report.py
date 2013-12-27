@@ -1,9 +1,13 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/cgi-bin/noc/report.py
 #####################################################################
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # Configuration and defaults
 
@@ -30,7 +34,6 @@ import sys
 print "Content-type: text/html; charset=utf-8"
 print "\n"
 
-utf8 = codecs.getencoder("UTF-8")
 form = cgi.SvFormContentDict()
 
 if "db" in form:
@@ -50,10 +53,9 @@ if "compare" in form:
     compare = form["compare"]
 
 
-class SocketSource (socket.socket):
+class SocketSource(socket.socket):
     def read(self, what):
-        enc = self.recv(what, 0)
-        return enc.decode('latin-1').encode('utf-8')
+        return self.recv(what, 0)
 
 sock = SocketSource()
 sock.connect((profilehost, profileport))
@@ -140,6 +142,6 @@ for event in events:
     row = rowformat % \
         (event[0].replace(",", ", "), event[1]["count"], event[1]["cpu"] / total["cpu"] * 100, event[1]["onecpu"] * 1000,
             event[1]["real"] / total["real"] * 100, event[1]["onereal"] * 1000)
-    print utf8(row)[0]
+    print row
 
 print "</table>"
