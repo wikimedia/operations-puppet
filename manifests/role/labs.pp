@@ -80,12 +80,5 @@ class role::labs::tools {
     }
   }
 
-  class tyrant inherits role::labs::tools::config {
-    system::role { "role::labs::tools::tyrant": description => "Tool Labs UWSGI emperor" }
-    class { 'toollabs::tyrant':
-      gridmaster => $grid_master,
-    }
-  }
-
 } # class role::labs::tools
 
