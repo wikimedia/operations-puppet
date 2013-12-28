@@ -129,6 +129,10 @@ class role::deployment::config {
         'grain'    => 'scholarships',
         'upstream' => 'https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships',
     },
+    'kibana/kibana'      => {
+        'grain'    => 'kibana',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/kibana',
+    },
   }
 }
 
