@@ -67,4 +67,11 @@ class role::logstash {
         priority        => 90,
     }
 
+    class { '::kibana':
+        hostname     => 'kibana.wikimedia.org',
+        ldap_authurl => 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
+        ldap_binddn  => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
+        ldap_group   => 'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+        auth_realm   => 'WMF Labs (use wiki login name not shell)',
+    }
 }
