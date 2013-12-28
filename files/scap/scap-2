@@ -11,8 +11,17 @@ if [ -z "$SERVER" ]; then
 	SERVER="${MW_RSYNC_HOST}"
 fi
 
+RSYNC_ARGS=MW_RSYNC_ARGS
+# Only looks at certain MW version if specified
+if [ -n "$MW_VERSIONS_SYNC" ]; then
+	RSYNC_ARGS+=("--exclude='php-*'")
+	for v in ${MW_VERSIONS_SYNC[@]}; do
+		RSYNC_ARGS+=("--include='php-$v'")
+	done
+fi
+
 echo -n Copying to `hostname -s` from "$SERVER"...
-if rsync "${MW_RSYNC_ARGS[@]}" "$SERVER"::common/ "${MW_COMMON}"
+if rsync "${RSYNC_ARGS[@]}" "$SERVER"::common/ "${MW_COMMON}"
 then
 	echo "ok"
 else
@@ -24,7 +33,13 @@ fi
 CPUS=`grep -c 'model name' /proc/cpuinfo`
 THREADS=`expr $CPUS / 2`
 
-mwVersions=$($BINDIR/mwversionsinuse)
+# Only looks at certain MW version if specified
+if [ -n "$MW_VERSIONS_SYNC" ]; then
+	mwVersions=$MW_VERSIONS_SYNC
+else
+	mwVersions=$($BINDIR/mwversionsinuse)
+fi
+
 # Rebuild the CDB files from the JSON versions
 # Regenerate the extension message file list for all active MediaWiki versions
 for mwVerNum in ${mwVersions[@]}; do
