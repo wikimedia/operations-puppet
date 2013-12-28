@@ -48,6 +48,20 @@ mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb) || die
 for i in ${mwExtVerDbSets[@]}; do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
+
+	# Only looks at certain MW version if specified
+	if [ -n "$MW_VERSIONS_SYNC" ]; then
+		skip=1
+		for v in ${MW_VERSIONS_SYNC[@]}; do
+			if [ "$mwVerNum" == "$v" ]; then
+				skip=0
+			fi
+		done
+		if [ "$skip" -eq "1" ]; then
+			continue
+		fi
+	fi
+
 	echo -n "Updating ExtensionMessages-$mwVerNum.php..."
 	mwTempDest=$(sudo -u apache mktemp) || die
 	sudo -u apache $BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
