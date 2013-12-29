@@ -53,6 +53,7 @@ class toollabs::exec_environ {
 
         # Perl libraries
         'libbot-basicbot-perl',
+        'libbsd-resource-perl',        # Bug 54690.
         'libcache-memcached-fast-perl',
         'libclass-data-inheritable-perl',
         'libcommon-sense-perl',
@@ -139,6 +140,7 @@ class toollabs::exec_environ {
         'python-irclib',
         'python-keyring',
         'python-launchpadlib',
+        'python-lxml',                 # Bug #59083.
         'python-mysql.connector',
         'python-mysqldb',
         'python-newt',
