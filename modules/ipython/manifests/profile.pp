@@ -15,22 +15,22 @@
 #   False by default.
 #
 define ipython::profile(
-	$user       = $ipython::user,
-	$ipythondir = $ipython::ipythondir,
-	$parallel   = false
+    $user       = $ipython::user,
+    $ipythondir = $ipython::ipythondir,
+    $parallel   = false
 ) {
-	include ipython
+    include ipython
 
-	$options = $parallel ? {
-		true    => '--parallel',
-		default => '',
-	}
+    $options = $parallel ? {
+        true    => '--parallel',
+        default => '',
+    }
 
-	exec { "ipython profile ${title}":
-		command     => "/usr/bin/ipython profile create ${title} ${options}",
-		creates     => "${ipythondir}/profile_${title}",
-		environment => "IPYTHONDIR=${ipythondir}",
-		require     => Package['ipython'],
-		user        => $user,
-	}
+    exec { "ipython profile ${title}":
+        command     => "/usr/bin/ipython profile create ${title} ${options}",
+        creates     => "${ipythondir}/profile_${title}",
+        environment => "IPYTHONDIR=${ipythondir}",
+        require     => Package['ipython'],
+        user        => $user,
+    }
 }
