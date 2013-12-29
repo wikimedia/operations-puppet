@@ -51,60 +51,60 @@
 #   Notebook session (default: none).
 #
 class ipython::notebook(
-	$profile      = 'nbserver',
-	$user         = $ipython::user,
-	$group        = $ipython::group,
-	$ipythondir   = $ipython::ipythondir,
-	$mplconfigdir = "${ipython::ipythondir}/matplotlib",
-	$notebookdir  = "${ipython::ipythondir}/notebooks",
-	$port         = 8888,
-	$ip           = '*',
-	$certfile     = undef,
-	$password     = undef,
-	$exec_files   = []
+    $profile      = 'nbserver',
+    $user         = $ipython::user,
+    $group        = $ipython::group,
+    $ipythondir   = $ipython::ipythondir,
+    $mplconfigdir = "${ipython::ipythondir}/matplotlib",
+    $notebookdir  = "${ipython::ipythondir}/notebooks",
+    $port         = 8888,
+    $ip           = '*',
+    $certfile     = undef,
+    $password     = undef,
+    $exec_files   = []
 ) inherits ipython {
 
-	ipython::profile { $profile: }
+    ipython::profile { $profile: }
 
-	package { [ 'ipython-notebook', 'python-matplotlib', 'python-scipy' ]:
-		ensure => latest,
-	}
+    package { [ 'ipython-notebook', 'python-matplotlib', 'python-scipy' ]:
+        ensure => latest,
+    }
 
-	file { $notebookdir:
-		ensure  => directory,
-		owner   => $user,
-		group   => $group,
-		mode    => '0775',
-	}
+    file { $notebookdir:
+        ensure  => directory,
+        owner   => $user,
+        group   => $group,
+        mode    => '0775',
+    }
 
-	file { $mplconfigdir:
-		ensure  => directory,
-		owner   => $user,
-		group   => $group,
-		mode    => '0775',
-	}
+    file { $mplconfigdir:
+        ensure  => directory,
+        owner   => $user,
+        group   => $group,
+        mode    => '0775',
+    }
 
-	file { "${profile} notebook config":
-		path    => "${ipythondir}/profile_${profile}/ipython_notebook_config.py",
-		require => Ipython::Profile[$profile],
-		content => template('ipython/ipython_notebook_config.py.erb'),
-		owner   => $user,
-		group   => $group,
-		mode    => '0444',
-	}
+    file { "${profile} notebook config":
+        path    => "${ipythondir}/profile_${profile}/ipython_notebook_config.py",
+        require => Ipython::Profile[$profile],
+        content => template('ipython/ipython_notebook_config.py.erb'),
+        owner   => $user,
+        group   => $group,
+        mode    => '0444',
+    }
 
-	file { '/etc/init/ipython-notebook.conf':
-		content => template('ipython/ipython-notebook.conf.erb'),
-		require => File["${profile} notebook config"],
-	}
+    file { '/etc/init/ipython-notebook.conf':
+        content => template('ipython/ipython-notebook.conf.erb'),
+        require => File["${profile} notebook config"],
+    }
 
-	service { 'ipython-notebook':
-		ensure    => running,
-		provider  => 'upstart',
-		subscribe => File['/etc/init/ipython-notebook.conf'],
-		require   => [
-			Package['ipython-notebook'],
-			File['/etc/init/ipython-notebook.conf'],
-		],
-	}
+    service { 'ipython-notebook':
+        ensure    => running,
+        provider  => 'upstart',
+        subscribe => File['/etc/init/ipython-notebook.conf'],
+        require   => [
+                    Package['ipython-notebook'],
+                    File['/etc/init/ipython-notebook.conf'],
+        ],
+    }
 }
