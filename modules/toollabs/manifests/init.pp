@@ -74,7 +74,7 @@ class toollabs {
     # Tool Labs is enduser-facing, so we want to control the motd
     # properly (most things make no sense for community users: they
     # don't care that packages need updating, or that filesystems
-    # will be checked, for instance)
+    # will be checked, for instance).
 
     file { '/etc/update-motd.d':
         ensure  => directory,
@@ -86,7 +86,7 @@ class toollabs {
         purge   => true,
     }
 
-    # We keep a project-locat apt repo where we stuff packages we build
+    # We keep a project-local apt repo where we stuff packages we build
     # that are intended to be local to the project.  By keeping it on the
     # shared storage, we have no need to set up a server to use it.
 
@@ -126,4 +126,3 @@ class toollabs {
         target => "${store}/mail",
     }
 }
-

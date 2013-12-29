@@ -563,27 +563,27 @@ class ganglia::logtailer {
 }
 
 
-# == Define ganlia::view
+# == Define ganglia::view
 # Defines a Ganglia view JSON file.
 # See http://sourceforge.net/apps/trac/ganglia/wiki/ganglia-web-2#JSONdefinitionforviews
 # for documentation on Ganglia view JSON format.
 #
 # == Parameters:
-# $graphs       - Shortcut for of describing items that represent aggregate_graphs.
+# $graphs       - Shortcut for describing items that represent aggregate_graphs.
 # $items        - Should match exactly the JSON structure expected by Ganglia for views.
 # $view_type    - If you are using aggregate_graphs, this must be set to 'standard'.
 #                 'regex' will allow you to use non-aggregate graphs and match hostnames by regex.
 #                 Default: 'standard'.
 # $default_size - Default size for graphs.  Default: 'large'.
 # $conf_dir     - Path to directory where ganglia view JSON files should live.
-#                 Defaults to the appropriate directory based on WMF $::realm.  Default: to /var/lib/ganglia/conf
-# $template     - The ERb template to use for the JSON file.  Only change this if you need to do fancier things than this define allows.
+#                 Defaults to the appropriate directory based on WMF $::realm.  Default: /var/lib/ganglia/conf.
+# $template     - The ERB template to use for the JSON file.  Only change this if you need to do fancier things than this define allows.
 #
 # == Examples:
-# # A 'regex' (non aggregate graph) view:
+# # A 'regex' (non-aggregate graph) view:
 # # Note that no aggregate_graphs are used.
 # # This will add 4 graphs to the 'cpu' view.
-# # (i.e. cpu_user and cpu_system for each myhost and myhost1)
+# # (i.e. cpu_user and cpu_system for each myhost0 and myhost1)
 # $host_regex = 'myhost[01]'
 # ganglia::view { 'cpu':
 #   view_type => 'regex',
@@ -651,10 +651,10 @@ define ganglia::view(
 # $plugins - the plugin name (ex: 'diskstat'), will install the Python file
 # located in files/ganglia/plugins/${name}.py and expand the template from
 # templates/ganglia/plugins/${name}.pyconf.erb.
-# Defaults to $title as a convenience
+# Defaults to $title as a convenience.
 #
-# $opts - optional hash which can be used in the template. The defaults are
-# hardcoded in the templates. Default to {}
+# $opts - optional hash which can be used in the template.  The
+# defaults are hardcoded in the templates. Defaults to {}.
 #
 # == Examples:
 #
