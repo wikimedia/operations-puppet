@@ -17,19 +17,23 @@ define interface::tun6to4($remove=undef) {
             ]
     }
 
-    if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
+    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '10.04') >= 0 {
         if $remove == 'true' {
-            exec { "/sbin/ifdown tun6to4": before => Augeas["tun6to4"] }
+            exec { '/sbin/ifdown tun6to4':
+                before => Augeas['tun6to4'],
+            }
         }
 
         # Use augeas
-        augeas { "tun6to4":
-            context => "/files/etc/network/interfaces/",
-            changes => $augeas_cmd;
+        augeas { 'tun6to4':
+            context => '/files/etc/network/interfaces/',
+            changes => $augeas_cmd,
         }
 
         if $remove != 'true' {
-            exec { "/sbin/ifup tun6to4": require => Augeas["tun6to4"] }
+            exec { '/sbin/ifup tun6to4':
+                require => Augeas['tun6to4'],
+            }
         }
     }
 }
