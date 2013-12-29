@@ -1,14 +1,14 @@
 define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
     if ! $interface {
-        $all_interfaces = split($::interfaces, ",")
+        $all_interfaces = split($::interfaces, ',')
         $intf = $all_interfaces[0]
     }
     else {
         $intf = $interface
     }
 
-    if ! member(split($::interfaces, ","), $intf) {
-        warning("Not adding IPv6 address to $intf because this interface does not exist!")
+    if ! member(split($::interfaces, ','), $intf) {
+        warning("Not adding IPv6 address to ${intf} because this interface does not exist!")
     }
     else {
         if ! $ipv4_address {
@@ -22,8 +22,8 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
 
         interface::ip { $title:
             interface => $intf,
-            address => $ipv6_address,
-            prefixlen => "64"
+            address   => $ipv6_address,
+            prefixlen => '64'
         }
     }
 }
