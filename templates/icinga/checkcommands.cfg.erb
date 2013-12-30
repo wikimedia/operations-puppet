@@ -564,38 +564,21 @@ define command{
 }
 
 
-# Analytics Kraken checks
-# Check that Kafka Brokers are getting ProduceRequests.
+# Analytics checks
+
+# Check that Kafka Brokers are getting messages produced to them.
 define command{
-	command_name	check_kafka_broker_produce_requests_min
-	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka_network_SocketServerStats.ProduceRequestsPerSecond -w $ARG1$ -c $ARG2$ -o lt
-}
-# Check that Kafka Brokers are not getting too many ProduceRequests.
-define command{
-	command_name	check_kafka_broker_produce_requests_max
-	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka_network_SocketServerStats.ProduceRequestsPerSecond -w $ARG1$ -c $ARG2$ -o gt
+	command_name	check_kafka_broker_messages_in
+	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate -w $ARG1$ -c $ARG2$ -o lt
 }
 
-# Check that udp2log Kakfa producers are producing
 define command{
-	command_name	check_kafka_producer_produce_events
-	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m udp2log_kafka_producer_$ARG1$.AsyncProducerEvents -w $ARG2$ -c $ARG3$ -o lt
+	command_name	check_varnishkafka_drerr
+	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka.varnishkafka.kafka_drerr.per_second -w $ARG1$ -c $ARG2$ -o gt
 }
 
 
-
-# Alerts for data loss in Kraken HDFS.
-define command{
-	command_name	check_kraken_webrequest_loss_positive
-	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m webrequest_loss_average -w $ARG1$ -c $ARG2$ -o gt
-}
-
-# Data loss percentage CAN be negative if we receive duplicate traffic
-# (this has happened before).  We need an extra alert if the percentages goes negative.
-define command{
-	command_name	check_kraken_webrequest_loss_negative
-	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m webrequest_loss_average -w $ARG1$ -c $ARG2$ -o lt
-}
+# Elasticsearch Checks
 
 define command{
 	command_name	check_elasticsearch

@@ -445,6 +445,13 @@ class role::cache {
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C varnishkafka',
                 require      => Class['::varnishkafka'],
             }
+
+            # Generate an alert if we ever see any delivery report errors
+            monitor_service { 'varnishkafka-drerr':
+                description     => 'Varnishkafka Delivery Errors',
+                check_command   => "check_varnishkafka_drerr!0.0!0.0",
+                require         => Class['::varnishkafka::monitoring'],
+            }
         }
     }
 
