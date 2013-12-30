@@ -29,7 +29,7 @@ class misc::irc::wikibugs {
   $ircecho_nick = 'wikibugs'
   $ircecho_server = 'chat.freenode.net'
 
-  include misc::ircecho
+  include ircecho
   include misc::irc::wikibugs::packages
 
   generic::systemuser { 'wikibugs': name => 'wikibugs' }
