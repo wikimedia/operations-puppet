@@ -53,7 +53,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
 
     # Icinga process alerts for NameNode, ResourceManager and HistoryServer
     nrpe::monitor_service { 'hadoop-hdfs-namenode':
-        description  => 'Hadoop Namenode (Primary)',
+        description  => 'Hadoop Namenode - Primary',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
         require      => Class['::cdh4::hadoop::master'],
     }
@@ -121,7 +121,7 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
 
     # Icinga process alert for Stand By NameNode
     nrpe::monitor_service { 'hadoop-hdfs-namenode':
-        description  => 'Hadoop Namenode (Stand By)',
+        description  => 'Hadoop Namenode - Stand By',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
         require      => Class['::cdh4::hadoop::namenode::standby'],
     }
