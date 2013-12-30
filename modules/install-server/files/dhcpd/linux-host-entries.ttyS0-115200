@@ -116,7 +116,7 @@ host virt1006 {
 }
 
 host virt1007 {
-	hardware ethernet 88:43:E1:C2:9D:1C;
+	hardware ethernet 88:43:E1:C2:91:AE;
 	fixed-address virt1007.eqiad.wmnet;
 }
 
