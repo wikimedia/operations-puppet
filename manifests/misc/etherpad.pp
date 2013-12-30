@@ -12,42 +12,29 @@ class misc::etherpad {
 
     # NB: this has some GUI going on all up in it. first install must be done by hand.
     package { 'etherpad':
-        ensure => latest;
+        ensure => absent, # Wait until Jan 10 2014 and then turn this into purged
     }
 
     service { 'etherpad':
-        ensure  => running,
+        ensure  => stopped,
         require => Package['etherpad'];
     }
 
     file {
         '/etc/init.d/etherpad':
-            source => 'puppet:///files/misc/etherpad/etherpad.init',
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root';
+            absent => absent,
+            source => 'puppet:///files/misc/etherpad/etherpad.init';
         '/etc/apache2/sites-available/etherpad.proxy':
-            source => 'puppet:///files/misc/etherpad/etherpad.proxy.apache.conf',
-            mode   => '0444',
-            owner  => 'root',
-            group  => 'root';
+            absent => absent,
+            source => 'puppet:///files/misc/etherpad/etherpad.proxy.apache.conf';
         '/etc/etherpad/etherpad.local.properties':
-            content => template('etherpad/etherpad.local.properties.erb'),
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root';
+            absent => absent,
+            content => template('etherpad/etherpad.local.properties.erb');
     }
 
     apache_module { 'proxy': name => 'proxy' }
 
-    apache_site { 'etherpad_proxy': name => 'etherpad.proxy'}
-
-    # Nagios monitoring
-    monitor_service { 'etherpad http':
-        description => 'Etherpad HTTP',
-        check_command => 'check_http_on_port!9000';
-    }
-
+    apache_site { 'etherpad_proxy': ensure => absent, }
 }
 
 class misc::etherpad_lite {
