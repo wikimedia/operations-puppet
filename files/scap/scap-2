@@ -11,7 +11,7 @@ if [ -z "$SERVER" ]; then
 	SERVER="${MW_RSYNC_HOST}"
 fi
 
-RSYNC_ARGS=${MW_RSYNC_ARGS[@]}
+RSYNC_ARGS=("${MW_RSYNC_ARGS[@]}")
 # Only looks at certain MW version if specified
 if [ -n "$MW_VERSIONS_SYNC" ]; then
 	RSYNC_ARGS+=("--exclude='php-*'")
