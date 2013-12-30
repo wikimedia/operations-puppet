@@ -77,6 +77,9 @@ do
 		# Copy the LC files
 		echo "Completed at `date`. Copying LC files to $MW_COMMON_SOURCE"
 		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MW_COMMON_SOURCE/php-"$mwVerNum"/cache/l10n
+		# Include JSON versions of the CDB files and add MD5 files
+		/usr/local/bin/refreshCdbJsonFiles --directory="$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n"
+
 		echo "Syncing to Apaches at `date`"
 		SYNC_START=$(date +%s)
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
