@@ -274,9 +274,12 @@ class ganglia {
                 # neon runs gmetad for ganglios
                 /^neon$/: {
                     $data_sources = {
-                        "Miscellaneous"           => "hooper.wikimedia.org tarin.pmtpa.wmnet",
-                        "Miscellaneous eqiad"     => "carbon.wikimedia.org ms1004.eqiad.wmnet",
-                        "Analytics cluster eqiad" => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
+                        "Miscellaneous"                  => "hooper.wikimedia.org tarin.pmtpa.wmnet",
+                        "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
+                        "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
+                        "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
+                        "Mobile caches esams"            => "hooft.esams.wikimedia.org:11677",
+                        "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
                     }
                     $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:    0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
                     }
