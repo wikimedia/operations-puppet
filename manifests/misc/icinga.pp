@@ -39,7 +39,7 @@ class icinga::monitor {
     icinga::monitor::apache,
     icinga::monitor::files::misc,
     icinga::monitor::logrotate,
-#    icinga::ganglia::ganglios,
+    icinga::ganglia::ganglios,
     facilities::pdu_monitoring,
     lvs::monitor,
     nagios::gsbmonitoring,
