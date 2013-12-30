@@ -3213,10 +3213,16 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'nuria@wikimedia.org':
-                ensure => present,
+                ensure => absent,
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC5UHmmvoplLSsc7WH0xijDJiWzs5LaVkIoi+yWBfHta17lGUfRCsE8DTQCe30k959gKGDBP2sI1srmKtgSMNIfQTOG7rt2/qZCYkrU6xA3XSFVi73zUHOyIzG41XO5F36uF7HVNKnxhkoxWkUpZ1tv5f2PEUUhBznH0JQw9BRrWbBqah9m8o8MTFDkeJuK3HgMhUzwg25t0LZAajaK4Mc3Bocdv1uzs+RxswyOWgJqPxQY+75bG+/rZ+n0bETKkDoy6ZmCiVw4PSBCX0zGWHrZQ89FzoUdM59hKSu/xnkOV/PO92iT22Pzd6NKgbAxrwXDteuUh0+6cL5du4pwH5cr',
+            }
+            ssh_authorized_key { 'nuria@wikimedia.org-production':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDIUCvA8K9rgp4n0hCJxbFt66CSbo9JhkSvQwlMj4+mxj9Mypf5/TLoRVPNVEwF4htjKmMdtaXDzGDTJUJPh9SPWqi1wP0YGydxv7z8BAIgaRliCHycviGE3nHjcxkiG+U2zxBL7Bc/Jy7d5Ky2qC/5Nu7jhBRF+kq3haZ0zx0T0cSmTvvUDfKt27uuLWxBA8Z4z2kNYVCpVL4pvlGPkqhZO75wPIUsCAlPH3Tq+Cq8FIc7BoZgjFQ+g6okpUF2PZY4eVoMR2MS8WIwQlOXwe+AMh+JEgq7oH//LN03IDX7YJQCNbmJ6MR0YdB1TOQHF/RKFImGBdDEC0vx6/QeIVOr',
             }
         }
     }
