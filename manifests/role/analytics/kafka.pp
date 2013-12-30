@@ -150,4 +150,14 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         require      => Class['::kafka::server::jmxtrans'],
     }
 
+    # Set up icinga monitoring of Kafka broker  per second.
+    # If this drops too low, trigger an alert.
+    # These thresholds have to be manually set.
+    # adjust them if you add or remove data from Kafka topics.
+    monitor_service { 'kafka-broker-MessagesIn':
+        description     => 'Kafka Broker Messages In',
+        check_command   => "check_kafka_broker_messages_in!1500.0!$1000.0",
+        require         => Class['::kafka::server::jmxtrans'],
+    }
 }
+
