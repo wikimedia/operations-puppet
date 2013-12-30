@@ -2941,7 +2941,7 @@ class accounts {
 					ensure => present,
 					user   => $username,
 					type   => 'ssh-rsa',
-					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC5BDWG/6bvsz87yKBkFf1ryKSbF2/CNzxTJn1Ux135/ALq6xcr5/+zS4KA6g7D/P80hfvTq9+oaPVVLVX+ANGomCv/kqvyClDvEnU8r4TEAPkZBrOWHAaexn/6oJkY7xoWbm+ElTPTDJfedWFYPKJx82dWt5CBtij5jpZ5CE2/Lt+i4gTH1G8n3Mo9gCnA8AlhMDTr18XssfqAS0aylmCwd24TJQJE3d/2NYdoytKfTebg87lJ0hbFJcxHVsS1/ivT5+in2wSfLXOIQiJPI/ykagoD9z2FSVOiMcdnrL44Xb373QaS7bEAxpjBJrCUQzeJfEvS4nbPpOpJfSN1+7Kp dandreescu@wikimedia.org',
+					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC5BDWG/6bvsz87yKBkFf1ryKSbF2/CNzxTJn1Ux135/ALq6xcr5/+zS4KA6g7D/P80hfvTq9+oaPVVLVX+ANGomCv/kqvyClDvEnU8r4TEAPkZBrOWHAaexn/6oJkY7xoWbm+ElTPTDJfedWFYPKJx82dWt5CBtij5jpZ5CE2/Lt+i4gTH1G8n3Mo9gCnA8AlhMDTr18XssfqAS0aylmCwd24TJQJE3d/2NYdoytKfTebg87lJ0hbFJcxHVsS1/ivT5+in2wSfLXOIQiJPI/ykagoD9z2FSVOiMcdnrL44Xb373QaS7bEAxpjBJrCUQzeJfEvS4nbPpOpJfSN1+7Kp',
 			}
 		}
 	}
