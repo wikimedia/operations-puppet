@@ -242,10 +242,11 @@ class ganglia {
         generic::systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
     }
 
-    # Class for setting up the collector (gmetad)
-    class collector {
-        system::role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
-
+    # == Class ganglia::collector::config
+    # Ganglia gmetad config.  This class does not start
+    # gmetad.  Include ganglia::collector instead if you want to do that.
+    class collector::config {
+        
         package { "gmetad":
             ensure => present;
         }
@@ -352,6 +353,14 @@ class ganglia {
             mode => 0444,
             ensure  => present
         }
+    }
+
+    # == Class ganglia::collector
+    # This class inherits ganglia::collector::config
+    # to install gmetad.conf, and then ensures that
+    # gmetad is running.
+    class collector inherits ganglia::collector::config {
+        system::role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
 
         # for labs, gmond.conf and gmetad.conf are generated every 4 hours by a cron job
         if $::realm == "labs" {

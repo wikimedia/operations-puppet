@@ -864,7 +864,7 @@ class icinga::monitor::snmp {
 }
 
 class icinga::ganglia::ganglios {
-  include ganglia::collector
+  include ganglia::collector::config
 
   package { 'ganglios':
     ensure => latest;
