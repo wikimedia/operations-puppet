@@ -107,7 +107,9 @@ class misc::monitoring::views {
     misc::monitoring::view::kafka { 'kafka':
         kafka_broker_host_regex   => 'analytics102[12].*',
     }
-    class { 'misc::monitoring::view::varnishkafka': }
+    misc::monitoring::view::varnishkafka { 'webrequest':
+        topic_regex => 'webrequest_.+',
+    }
 
     class { 'misc::monitoring::view::navigation_timing': }
     class { 'misc::monitoring::view::static_assets': }
@@ -242,10 +244,10 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
     }
 }
 
-# == Class misc::monitoring::view::varnishkafka
+# == Define misc::monitoring::view::varnishkafka
 #
-class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $ensure = 'present') {
-    ganglia::view { 'varnishkafka':
+define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $topic_regex = '.+', $ensure = 'present') {
+    ganglia::view { "varnishkafka-${title}"':
         ensure => $ensure,
         graphs => [
             # delivery report errors rate
@@ -274,13 +276,13 @@ class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $e
             # message queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+\.msgq_cnt',
+                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.msgq_cnt",
                 'type'         => 'stack',
             },
             # transmit message queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+\.xmit_msgq_cnt',
+                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.xmit_msgq_cnt",
                 'type'         => 'stack',
             },
             # output buffer queue count
@@ -299,13 +301,13 @@ class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $e
             # transaction bytes rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+\.txbytes.per_second',
+                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.txbytes.per_second",
                 'type'         => 'stack',
             },
             # transaction messages rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'kafka.rdkafka.topics..+\.txmsgs.per_second',
+                'metric_regex' => "kafka.rdkafka.topics.${topic_regex}\\.txmsgs.per_second",
                 'type'         => 'stack',
             },
         ],
