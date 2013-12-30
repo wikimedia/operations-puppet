@@ -34,7 +34,7 @@ class misc::etherpad {
 
     apache_module { 'proxy': name => 'proxy' }
 
-    apache_site { 'etherpad_proxy': ensure => absent, }
+    apache_site { 'etherpad_proxy': name => 'etherpad.proxy', ensure => absent, }
 }
 
 class misc::etherpad_lite {
