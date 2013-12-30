@@ -1853,7 +1853,7 @@ node "neon.wikimedia.org" {
     include standard,
         icinga::monitor,
         role::ishmael,
-        misc::ircecho,
+        role::ircecho,
         tcpircbot,
         passwords::logmsgbot
 
