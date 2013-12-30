@@ -305,21 +305,7 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
             $ircecho_nick = "labs-home-wm"
             $ircecho_server = "chat.freenode.net"
 
-            package { "ircecho":
-                ensure => latest;
-            }
-
-            service { "ircecho":
-                require => Package[ircecho],
-                ensure => running;
-            }
-
-            file {
-                "/etc/default/ircecho":
-                    require => Package[ircecho],
-                    content => template('ircecho/default.erb'),
-                    owner => root,
-                    mode => 0755;
+    include role::echoirc
             }
 
             cron { "manage-exports":
@@ -332,6 +318,4 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
                 ensure => absent;
             }
         }
-
-    }
 }
