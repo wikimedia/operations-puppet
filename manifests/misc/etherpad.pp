@@ -22,13 +22,13 @@ class misc::etherpad {
 
     file {
         '/etc/init.d/etherpad':
-            absent => absent,
+            ensure => absent,
             source => 'puppet:///files/misc/etherpad/etherpad.init';
         '/etc/apache2/sites-available/etherpad.proxy':
-            absent => absent,
+            ensure => absent,
             source => 'puppet:///files/misc/etherpad/etherpad.proxy.apache.conf';
         '/etc/etherpad/etherpad.local.properties':
-            absent => absent,
+            ensure  => absent,
             content => template('etherpad/etherpad.local.properties.erb');
     }
 
