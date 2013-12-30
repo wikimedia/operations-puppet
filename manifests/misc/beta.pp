@@ -40,6 +40,7 @@ class misc::beta::autoupdater {
 	sudo_user { "mwdeploy" : privileges => [
 		'ALL = (l10nupdate) NOPASSWD:/usr/local/bin/mw-update-l10n',
 		'ALL = (l10nupdate) NOPASSWD:/usr/local/bin/mwscript',
+		'ALL = (l10nupdate) NOPASSWD:/usr/local/bin/refreshCdbJsonFiles',
 		# Some script running as mwdeploy explicily use "sudo -u mwdeploy"
 		# which makes Ubuntu to request a password. The following rule
 		# make sure we are not going to ask the password to mwdeploy when
