@@ -181,7 +181,7 @@ class RefreshCdbJsonFiles {
 				if ( $first ) {
 					$first = false;
 				} else {
-					$data = ',' . $data;
+					$data = ",\n" . $data;
 				}
 				fwrite( $jsonHandle, $data );
 				$bytes += strlen( $data );
