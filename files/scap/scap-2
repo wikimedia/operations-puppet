@@ -44,6 +44,6 @@ fi
 # Regenerate the extension message file list for all active MediaWiki versions
 for mwVerNum in ${mwVersions[@]}; do
 	$BINDIR/mergeCdbFileUpdates --directory="$MW_COMMON/php-$mwVerNum/cache/l10n" \
-		--threads=$THREADS \
+		--no-checksum --threads=$THREADS \
 		|| die
 done
