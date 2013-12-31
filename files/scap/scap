@@ -35,19 +35,24 @@ fi
 
 DSH_EXPORTS=
 # Only sync the active version(s) if requested
-if [ -n "$1" ]; then
-	# This will export MW_VERSIONS_SYNC to sync-common/mw-update-l10n
-	if [ "$1" == "active" ]; then
+if [[ "$1" == --versions=?* ]]; then
+	versions="${1#--versions=}"
+	shift
+	if [ "$versions" == "active" ]; then
 		# All active MW versions
 		export MW_VERSIONS_SYNC=$($BINDIR/mwversionsinuse --home)
-	elif [ -d "$MW_COMMON_SOURCE/$1" ]; then
+	elif [ -d "$MW_COMMON_SOURCE/$versions" ]; then
 		# A specific MW version
-		export MW_VERSIONS_SYNC=$1
+		export MW_VERSIONS_SYNC="$versions"
 	else
-		die "Invalid MediaWiki version \"$1\""
+		die "Invalid MediaWiki version \"$versions\""
 	fi
+	unset versions
 	# This will export MW_VERSIONS_SYNC to scap-1 on the proxies/servers
+	echo "MediaWiki versions selected for sync (via --versions): $MW_VERSIONS_SYNC"
 	DSH_EXPORTS="export MW_VERSIONS_SYNC=\"$MW_VERSIONS_SYNC\";"
+else
+	echo "Syncing all versions."
 fi
 
 # Perform syntax check
