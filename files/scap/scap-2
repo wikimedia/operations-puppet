@@ -14,10 +14,10 @@ fi
 RSYNC_ARGS=("${MW_RSYNC_ARGS[@]}")
 # Only looks at certain MW version if specified
 if [ -n "$MW_VERSIONS_SYNC" ]; then
-	RSYNC_ARGS+=("--exclude='php-*'")
 	for v in ${MW_VERSIONS_SYNC[@]}; do
-		RSYNC_ARGS+=("--include='php-$v'")
+		RSYNC_ARGS+=("--include='php-$v/'")
 	done
+	RSYNC_ARGS+=("--exclude='php-*/'")
 fi
 
 echo -n Copying to `hostname -s` from "$SERVER"...
