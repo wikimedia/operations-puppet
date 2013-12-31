@@ -35,7 +35,7 @@ fi
 
 DSH_EXPORTS=
 # Only sync the active version(s) if requested
-if [ -n "$1" ]; then
+if [[ "$1" =~ ^(active|php-[0-9]+\.[0-9]+wmf[0-9]+)$ ]]; then
 	# This will export MW_VERSIONS_SYNC to sync-common/mw-update-l10n
 	if [ "$1" == "active" ]; then
 		# All active MW versions
