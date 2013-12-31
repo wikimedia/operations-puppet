@@ -47,12 +47,16 @@ class MergeCdbFileUpdates {
 		foreach ( array( 'directory' ) as $par ) {
 			if ( !isset( $params[$par] ) ) {
 				die( "Usage: mergeCdbFileUpdates " .
-					"--directory <directory> --threads <integer>\n"
+					"--directory <directory> --threads <integer> [--trustmtime]\n\n" .
+					"The --trustmtime option assumes that the CDB files match the " .
+					"upstream JSON files if their mtimes match.\nWithout it, the hash " .
+					"of the CDB files is checked against the upstream hash files.\n"
 				);
 			}
 		}
 		$this->params = $params;
 		$this->params['threads'] = isset( $params['threads'] ) ? $params['threads'] : 1;
+		$this->params['trustmtime'] = !empty( $params['trustmtime'] );
 	}
 
 	public function execute() {
@@ -138,29 +142,34 @@ class MergeCdbFileUpdates {
 				$this->error( "Skipped file '$file'; no MD5 file." );
 				continue;
 			}
-			$md5Upstream = file_get_contents( "$directory/upstream/$file.MD5" );
-			// Get the MD5 of the local CDB file (which may not exist)
-			$md5Local = is_file( "$directory/$file" ) ? md5_file( "$directory/$file" ) : '';
+			$cdbPath = "$directory/$file";
+			$jsonPath = "$directory/upstream/$file.json";
+			// Get the upstream JSON file timestamp and local CDB file timestamp
+			$jsonTimestamp = is_file( $jsonPath ) ? filemtime( $jsonPath ) : 0;
+			// Check if a rebuild is needed
+			if ( $this->params['trustmtime'] ) {
+				$cdbTimestamp = is_file( $cdbPath ) ? filemtime( $cdbPath ) : 0;
+				$needRebuild = ( $cdbTimestamp !== $jsonTimestamp );
+			} else {
+				$md5Upstream = file_get_contents( "$directory/upstream/$file.MD5" );
+				$md5Local = is_file( $cdbPath ) ? md5_file( $cdbPath ) : '';
+				$needRebuild = ( $md5Local !== $md5Upstream );
+			}
 			// If the hashes do not match, fetch the diff needed to update the CDB
-			if ( $md5Local !== $md5Upstream ) {
-				// Get the CDB contents from the JSON file
-				$jsonPath = "$directory/upstream/$file.json";
-				if ( !is_file( $jsonPath ) ) {
-					$this->error( "Could not find '$jsonPath'." );
-					continue;
-				}
+			if ( $needRebuild ) {
 				// @FIXME: stream this instead loading to RAM
 				$data = json_decode( file_get_contents( $jsonPath ), true );
+				if ( $data === null ) {
+					$this->error( "Could not read '$jsonPath'.", 1 ); // bail
+				}
 				// Open a temporary new CDB file
 				$tmpFileName = tempnam( "/tmp", $file );
 				if ( $tmpFileName === false ) {
-					$this->error( "Could not create temp file with tempnam()." );
-					continue;
+					$this->error( "Could not create temp file with tempnam().", 1 ); // bail
 				}
 				$handle = dba_open( $tmpFileName, 'n', 'cdb_make' );
 				if ( $handle === false ) {
-					$this->error( "Could not open temp CDB file '$tmpFileName'." );
-					continue;
+					$this->error( "Could not open temp CDB file '$tmpFileName'.", 1 ); // bail
 				}
 				// Convert the JSON data to CDB...
 				foreach ( $data as $key => $value ) {
@@ -169,9 +178,11 @@ class MergeCdbFileUpdates {
 				dba_close( $handle );
 				chmod( $tmpFileName, 0644 );
 				// Move the temporary CDB file over the old one..
-				if ( !rename( $tmpFileName, "$directory/$file" ) ) {
-					$this->error( "Unable to move the new CDB file to '$file'." );
+				if ( !rename( $tmpFileName, $cdbPath ) ) {
+					$this->error( "Unable to move the new CDB file to '$file'.", 1 );
 				}
+				// Set its timestamp to match the upstream JSON file
+				touch( $cdbPath, $jsonTimestamp );
 				++$rebuilt;
 			}
 		}
