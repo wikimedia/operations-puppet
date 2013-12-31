@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Ori.livneh <ori@wikimedia.org>
+Submitted-by: Ori.livneh <ori@wikimedia.org>
+Submitted-at: Tue, 31 Dec 2013 03:24:51 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/104704
+Project: operations/puppet
+Branch: refs/heads/production
