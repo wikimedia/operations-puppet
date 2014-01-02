@@ -112,6 +112,8 @@ class role::parsoid::beta {
     }
 
     $parsoid_log_file = '/var/log/parsoid/parsoid.log'
+    # For beta, override NODE_PATH:
+    $parsoid_node_path = '/srv/deployment/parsoid/deploy/node_modules'
 
     file { '/etc/default/parsoid':
         ensure  => present,
