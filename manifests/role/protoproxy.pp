@@ -248,8 +248,8 @@ class role::protoproxy::ssl {
     }
     protoproxy{ 'mobilewikipedia':
         proxy_addresses => {
-            'eqiad' => [ '208.80.154.236', '[2620:0:861:ed1a::c]' ],
-            'esams' => [ '91.198.174.236', '[2620:0:862:ed1a::c]' ],
+            'eqiad' => [ '208.80.154.236', '[2620:0:861:ed1a::1:c]', '[2620:0:861:ed1a::c]' ],
+            'esams' => [ '91.198.174.204', '91.198.174.236', '[2620:0:862:ed1a::1:c]', '[2620:0:862:ed1a::c]' ],
         },
         proxy_server_name => '*.m.wikipedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
