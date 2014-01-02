@@ -221,7 +221,7 @@ class lvs::configuration {
                 'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
                 'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => '2620:0:861:ed1a::1:a', 'bitslb6-old' => "2620:0:861:ed1a::a", 'bitssvc' => "10.2.2.23" },
                 'esams' => { 'bitslb' => '91.198.174.202', 'bitslb-old' => "91.198.174.233", 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitslb6-old' => "2620:0:862:ed1a::a", 'bitssvc' => "10.2.3.23" },
-                'ulsfo' => { 'bitslb' => "198.35.26.106", 'bitslb6' => '2620:0:863:ed1a::1:a', 'bitslb6-old' => "2620:0:863:ed1a::a", 'bitssvc' => "10.2.4.23" },
+                'ulsfo' => { 'bitslb' => "198.35.26.106", 'bitslb6' => '2620:0:863:ed1a::1:a', 'bitssvc' => "10.2.4.23" },
             },
             'upload' => {
                 'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
@@ -273,7 +273,7 @@ class lvs::configuration {
                 'pmtpa' => {},
                 'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilelb6-old' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"},
                 'esams' => { 'mobilelb-new' => '91.198.174.204', 'mobilelb' => '91.198.174.236', 'mobilelb6-new' => '2620:0:862:ed1a::1:c', 'mobilelb6' => '2620:0:862:ed1a::c', 'mobilesvc' => '10.2.3.26'},
-                'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6' => '2620:0:863:ed1a::1:c', 'mobilelb6-old' => '2620:0:863:ed1a::c', 'mobilesvc' => '10.2.4.26'},
+                'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6' => '2620:0:863:ed1a::1:c', 'mobilesvc' => '10.2.4.26'},
             },
             'swift' => {
                 'pmtpa' => "10.2.1.27",
