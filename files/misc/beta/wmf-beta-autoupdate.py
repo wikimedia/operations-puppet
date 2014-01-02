@@ -169,7 +169,7 @@ def restart_parsoid():
 
 def update_l10n():
     """Localisation cache update"""
-    return runner(name='mw-update-l10n', cmd=['mw-update-l10n'])
+    return runner(name='mw-update-l10n', cmd=['mw-update-l10n', '--verbose'])
 
 
 def runner(cmd, path=None, name=None):
