@@ -199,16 +199,16 @@ class lvs::configuration {
                 'esams' => {
                     'textlbsecure' => '91.198.174.192',
                     'loginlbsecure' => '91.198.174.201',
-                    'bitslbsecure-new' => '91.198.174.202',
-                    'bitslbsecure' => "91.198.174.233",
+                    'bitslbsecure' => '91.198.174.202',
+                    'bitslbsecure-old' => "91.198.174.233",
                     'uploadlbsecure' => '91.198.174.208',
                     'mobilelbsecure' => '91.198.174.236',
                     'donatelbsecure' => '91.198.174.224',
 
                     'textlb6secure'   => '2620:0:862:ed1a::1',
                     'loginlbsecure6' => '2620:0:862:ed1a::1:9',
-                    'bitslbsecure6-new' => '2620:0:862:ed1a::1:a',
-                    'bitslbsecure6' => "2620:0:862:ed1a::a",
+                    'bitslbsecure6' => '2620:0:862:ed1a::1:a',
+                    'bitslbsecure6-old' => "2620:0:862:ed1a::a",
                     'uploadlbsecure6' => '2620:0:862:ed1a::2:b',
                     'mobilelbsecure6' => '2620:0:862:ed1a::c',
                 },
@@ -217,7 +217,7 @@ class lvs::configuration {
             'bits' => {
                 'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
                 'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6-new' => '2620:0:861:ed1a::1:a', 'bitslb6' => "2620:0:861:ed1a::a", 'bitssvc' => "10.2.2.23" },
-                'esams' => { 'bitslb-new' => '91.198.174.202', 'bitslb' => "91.198.174.233", 'bitslb6-new' => '2620:0:862:ed1a::1:a', 'bitslb6' => "2620:0:862:ed1a::a", 'bitssvc' => "10.2.3.23" },
+                'esams' => { 'bitslb' => '91.198.174.202', 'bitslb-old' => "91.198.174.233", 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitslb6-old' => "2620:0:862:ed1a::a", 'bitssvc' => "10.2.3.23" },
                 'ulsfo' => { 'bitslb' => "198.35.26.106", 'bitslb6-new' => '2620:0:863:ed1a::1:a', 'bitslb6' => "2620:0:863:ed1a::a", 'bitssvc' => "10.2.4.23" },
             },
             'upload' => {
