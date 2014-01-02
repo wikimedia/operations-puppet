@@ -55,6 +55,10 @@ else
 	echo "Syncing all versions."
 fi
 
+if [[ "$MW_SCAP_BETA" == "1" ]]; then
+	DSH_EXPORTS="export MW_SCAP_BETA=1; $DSH_EXPORTS"
+fi
+
 # Perform syntax check
 echo -n "Checking syntax of wmf-config and multiversion..."
 if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/wmf-config && $BINDIR/lint $MW_COMMON_SOURCE/multiversion ) ); then
@@ -79,6 +83,7 @@ export DOLOGMSGNOLOG=1
 
 echo 'Updating rsync proxies...'
 dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-1"
+echo 'Finished'
 
 # Do the main code update in random order to avoid overloading any given rsync server
 NODEFILE=$(mktemp)
@@ -91,6 +96,12 @@ RSYNC_SERVERS=`echo $RSYNC_SERVERS`
 echo 'Copying code to apaches...'
 dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\""
 echo 'Finished'
+
+if [[ "$MW_SCAP_BETA" == "1" ]]; then
+	echo 'Rebuilding CDB files from /upstream...'
+	dsh -cM -g mediawiki-installation -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-rebuild-cdbs"
+	echo 'Finished'
+fi
 
 # Builds wikiversions.cdb and syncs it to the apaches with the dat file
 sync-wikiversions || die
