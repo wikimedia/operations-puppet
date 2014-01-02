@@ -6,6 +6,14 @@
 # File where the parsoid daemon will write stdin and stdout to
 PARSOID_LOG_FILE=<%= @parsoid_log_file %>
 
+# Checkout of mediawiki/services/parsoid
+<% if @parsoid_base_path then %>
+PARSOID_BASE_PATH=<%= @parsoid_base_path %>
+<% else %>
+# Override in puppet using parsoid_base_path
+#PARSOID_BASE_PATH
+<% end %>
+
 # Checkout of mediawiki/services/parsoid/deploy
 <% if @parsoid_node_path then %>
 NODE_PATH=<%= @parsoid_node_path %>
