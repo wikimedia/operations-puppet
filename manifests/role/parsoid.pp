@@ -92,6 +92,27 @@ class role::parsoid::beta {
         mode   => '2775',
     }
 
+    # Jenkins copy repositories and config under /srv/deployment
+    file { '/srv/deployment':
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+    }
+    file { '/srv/deployment/parsoid':
+        ensure => directory,
+        owner  => jenkins-deploy,
+        group  => wikidev,
+        mode   => '0755',
+    }
+    file { '/srv/deployment/parsoid/localsettings.js':
+        ensure => present,
+        owner  => jenkins-deploy,
+        group  => wikidev,
+        mode   => '0555',
+        source => 'puppet://files/misc/parsoid-localsettings-beta.js',
+    }
+
     # beta uses upstart:
     file { '/etc/init.d/parsoid':
         ensure => 'link',
