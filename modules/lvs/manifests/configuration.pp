@@ -192,6 +192,7 @@ class lvs::configuration {
                     'bitslbsecure6' => '2620:0:861:ed1a::1:a',
                     'bitslbsecure6-old' => "2620:0:861:ed1a::a",
                     'uploadlbsecure6' => '2620:0:861:ed1a::2:b',
+                    'mobilelbsecure6-new' => '2620:0:861:ed1a::1:c',
                     'mobilelbsecure6' => "2620:0:861:ed1a::c",
                     'wikidatalbsecure6' => "2620:0:861:ed1a::12",
                     'wikivoyagelbsecure6' => "2620:0:861:ed1a::13"
@@ -202,6 +203,7 @@ class lvs::configuration {
                     'bitslbsecure' => '91.198.174.202',
                     'bitslbsecure-old' => "91.198.174.233",
                     'uploadlbsecure' => '91.198.174.208',
+                    'mobilelbsecure-new' => '91.198.174.204',
                     'mobilelbsecure' => '91.198.174.236',
                     'donatelbsecure' => '91.198.174.224',
 
@@ -210,6 +212,7 @@ class lvs::configuration {
                     'bitslbsecure6' => '2620:0:862:ed1a::1:a',
                     'bitslbsecure6-old' => "2620:0:862:ed1a::a",
                     'uploadlbsecure6' => '2620:0:862:ed1a::2:b',
+                    'mobilelbsecure6-new' => '2620:0:862:ed1a::1:c',
                     'mobilelbsecure6' => '2620:0:862:ed1a::c',
                 },
                 'ulsfo' => {}
@@ -268,9 +271,9 @@ class lvs::configuration {
             },
             'mobile' => {
                 'pmtpa' => {},
-                'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"},
-                'esams' => { 'mobilelb' => '91.198.174.236', 'mobilelb6' => '2620:0:862:ed1a::c', 'mobilesvc' => '10.2.3.26'},
-                'ulsfo' => { 'mobilelb' => '198.35.26.108',  'mobilelb6' => '2620:0:863:ed1a::c', 'mobilesvc' => '10.2.4.26'},
+                'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6-new' => '2620:0:861:ed1a::1:c', 'mobilelb6' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"},
+                'esams' => { 'mobilelb-new' => '91.198.174.204', 'mobilelb' => '91.198.174.236', 'mobilelb6-new' => '2620:0:862:ed1a::1:c', 'mobilelb6' => '2620:0:862:ed1a::c', 'mobilesvc' => '10.2.3.26'},
+                'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6-new' => '2620:0:863:ed1a::1:c', 'mobilelb6' => '2620:0:863:ed1a::c', 'mobilesvc' => '10.2.4.26'},
             },
             'swift' => {
                 'pmtpa' => "10.2.1.27",
