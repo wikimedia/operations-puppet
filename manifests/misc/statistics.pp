@@ -525,6 +525,16 @@ class misc::statistics::db::mongo {
     }
 }
 
+# Install dev environments
+class misc::statistics::dev {
+    package { [
+            'python-dev', # RT 6561
+            'python3-dev', # RT 6561
+            ]:
+            ensure => installed,
+    }
+}
+
 # == Class misc::statistics::gerrit_stats
 #
 # Installs diederik's gerrit-stats python
