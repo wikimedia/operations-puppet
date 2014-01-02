@@ -12,8 +12,6 @@ MUST be run as the `mwdeploy` user although that is not enforced by the script.
 
 import argparse
 import logging
-import os.path
-import time
 import subprocess
 import sys
 
@@ -50,8 +48,6 @@ def main():
 
     logger = logging.getLogger('main')
 
-    parsoid_pre = parsoid_head_ts()
-
     logger.info("Starting updating tasks...")
     exit_codes = [
         pull_mediawiki(),
@@ -59,17 +55,6 @@ def main():
         update_extensions(),
         update_l10n(),
     ]
-
-    parsoid_post = parsoid_head_ts()
-    logger.debug('Parsoid HEAD timestamps: %s -> %s',
-                 parsoid_pre, parsoid_post)
-    if parsoid_post != parsoid_pre:
-        logger.info("Updating Parsoid npm dependencies")
-        exit_codes.append(update_parsoid_deps())
-        logger.info("Restarting updated Parsoid code base")
-        exit_codes.append(restart_parsoid())
-    else:
-        logger.debug('Skipping Parsoid restart since code has not changed')
 
     logger.info("Executions completed %s", exit_codes)
 
@@ -113,11 +98,6 @@ def git_head_ts(git_dir):
     return proc.rstrip('\n')
 
 
-def parsoid_head_ts():
-    """Returns timestamp of the HEAD committer date for Parsoid"""
-    return git_head_ts(os.path.join(PATH_MWEXT, 'Parsoid/.git'))
-
-
 def pull_mediawiki():
     """Updates MediaWiki core"""
     return runner(name='mwcore', path=PATH_MWCORE, cmd=['git', 'pull'])
@@ -132,39 +112,6 @@ def update_extensions():
     """Registers and updates MediaWiki extensions submodules"""
     return runner(name='mwext', path=PATH_MWEXT, cmd=[
         'git', 'submodule', 'update', '--init', '--recursive'])
-
-
-def update_parsoid_deps():
-    """Fetch parsoid Javascript dependencies using npm"""
-    parsoid_path = os.path.join(PATH_MWEXT, 'Parsoid/js')
-    return runner(name='parsoid-deps', path=parsoid_path, cmd=[
-        'npm', 'install', '--verbose', '--color', 'always'])
-
-
-def restart_parsoid():
-    """Restart parsoid daemon via ssh"""
-    logger = logging.getLogger(__name__)
-    logger.info("restarting parsoid")
-
-    parsoid_init_cmd = '/usr/local/bin/wmf-beta-parsoid-remote.sh'
-    try:
-        cmd = subprocess.Popen(args=[parsoid_init_cmd, 'restart'])
-    except OSError, exception:
-        logger.error(exception)
-        return False
-
-    logger.info('Waiting for parsoid to launch...')
-    time.sleep(5)
-    logger.info('Checking parsoid is running...')
-
-    try:
-        cmd = subprocess.Popen(args=[parsoid_init_cmd, 'status'])
-        status_exit_code = cmd.wait()
-    except OSError, exception:
-        logger.error(exception)
-        return False
-
-    return status_exit_code
 
 
 def update_l10n():
