@@ -99,10 +99,13 @@ SCAP_END=$(date +%s)
 DIFF=$((SCAP_END-SCAP_START))
 MINS=$(((DIFF/60)%60))
 SECS=$((DIFF%60))
-printf "scap completed in %02dm %02ds.\n" $MINS $SECS
+printf -v SCAPTIME "scap completed in %02dm %02ds.\n" $MINS $SECS
+
+echo "$SCAPTIME"
 
 export DOLOGMSGNOLOG=""
 $BINDIR/dologmsg "!log $USER finished scap${*:+: }$*"
+$BINDIR/dologmsg "$SCAPTIME"
 $BINDIR/deploy2graphite scap $DIFF
 
 cleanup
