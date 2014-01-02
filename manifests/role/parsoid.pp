@@ -110,7 +110,7 @@ class role::parsoid::beta {
         owner  => jenkins-deploy,
         group  => wikidev,
         mode   => '0555',
-        source => 'puppet://files/misc/parsoid-localsettings-beta.js',
+        source => 'puppet:///files/misc/parsoid-localsettings-beta.js',
     }
 
     # beta uses upstart:
