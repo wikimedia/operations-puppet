@@ -11,6 +11,13 @@ class misc::rancid {
 		name => 'rancid'
 	}
 
+	file { '/etc/rancid/rancid.conf':
+		require => Package['rancid'],
+		owner => root,
+		group => root,
+		source => 'puppet:///files/misc/rancid/rancid.conf'
+	}
+
 	file { "/var/lib/rancid/core":
 		require => [ Package["rancid"], Generic::Systemuser['rancid'] ],
 		owner => rancid,
