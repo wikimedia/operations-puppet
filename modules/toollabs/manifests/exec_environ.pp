@@ -148,6 +148,7 @@ class toollabs::exec_environ {
         'python-opencv',
         'python-oursql',               # For danilo et al.
         'python-problem-report',
+        'python-pyexiv2',              # Bug 59122.
         'python-pyinotify',            # Bug 57003
         'python-svn',                  # Bug 56996
         'python-rsvg',                 # Bug 56996
