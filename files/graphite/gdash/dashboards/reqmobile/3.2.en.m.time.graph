@@ -7,9 +7,9 @@ logbase 2
 
 field :a, :color => "blue",
 		:alias => "none",
-			:data => 'cactiStyle(alias(reqstats.en_m_wikipedia_org.tp99,"99th percentile"))'
+			:data => 'cactiStyle(alias(MediaWiki.reqstats.en_m_wikipedia_org.tp99,"99th percentile"))'
 
 field :b, :color => "red",
 		:alias => "none",
-			:data => 'cactiStyle(alias(reqstats.en_m_wikipedia_org.tp50,"50th percentile"))'
+			:data => 'cactiStyle(alias(MediaWiki.reqstats.en_m_wikipedia_org.tp50,"50th percentile"))'
 

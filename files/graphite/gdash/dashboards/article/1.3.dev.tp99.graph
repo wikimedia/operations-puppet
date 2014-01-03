@@ -6,4 +6,4 @@ hide_legend "false"
 from "-8hours"
 
 field :devavg, :alias => "none",
-               :data  => 'cactiStyle(substr(Article.*.tp99,1,2))'
+               :data  => 'cactiStyle(substr(MediaWiki.Article.*.tp99,1,2))'

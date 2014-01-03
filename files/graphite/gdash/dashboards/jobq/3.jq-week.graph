@@ -6,24 +6,24 @@ from "-1week"
 
 field :push, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(stats.job-insert.count,"Jobs Queued/min"))'
+               :data  => 'cactiStyle(alias(MediaWiki.stats.job-insert.count,"Jobs Queued/min"))'
 
 field :run, :color => "green",
                :alias => "none",
-               :data  => 'cactiStyle(alias(stats.job-pop.count,"Jobs Run/min"))'
+               :data  => 'cactiStyle(alias(MediaWiki.stats.job-pop.count,"Jobs Run/min"))'
 
 field :pushdupl, :color => "red",
                :alias => "none",
-               :data  => 'cactiStyle(alias(stats.job-insert-duplicate.count,"Duplicate jobs Queued/min"))'
+               :data  => 'cactiStyle(alias(MediaWiki.stats.job-insert-duplicate.count,"Duplicate jobs Queued/min"))'
 
 field :rundupl, :color => "purple",
                :alias => "none",
-               :data  => 'cactiStyle(alias(stats.job-pop-duplicate.count,"Duplicate jobs run/min"))'
+               :data  => 'cactiStyle(alias(MediaWiki.stats.job-pop-duplicate.count,"Duplicate jobs run/min"))'
 
 field :recycle, :color => "orange",
                :alias => "none",
-               :data  => 'cactiStyle(alias(stats.job-recycle.count,"Jobs recycled/min"))'
+               :data  => 'cactiStyle(alias(MediaWiki.stats.job-recycle.count,"Jobs recycled/min"))'
 
 field :abandon, :color => "brown",
                :alias => "none",
-               :data  => 'cactiStyle(alias(stats.job-abandon.count,"Jobs abandoned/min"))'
+               :data  => 'cactiStyle(alias(MediaWiki.stats.job-abandon.count,"Jobs abandoned/min"))'

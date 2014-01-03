@@ -6,4 +6,4 @@ from "-1 day"
 
 field :a, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(reqstats.4xx,"4xx resp/min"))'
+               :data  => 'cactiStyle(alias(MediaWiki.reqstats.4xx,"4xx resp/min"))'

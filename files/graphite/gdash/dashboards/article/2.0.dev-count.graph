@@ -6,4 +6,4 @@ hide_legend "false"
 from "-1week"
 
 field :count, :alias => "none",
-               :data  => 'cactiStyle(substr(Article.*.count,1,2))'
+               :data  => 'cactiStyle(substr(MediaWiki.Article.*.count,1,2))'

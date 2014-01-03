@@ -6,8 +6,8 @@ from "-8hours"
 
 field :tp99, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(-total.tp99, "99% PHP Request Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.-total.tp99, "99% PHP Request Latency (ms)"))'
 
 field :tp90, :color => "green",
                :alias => "none",
-               :data  => 'cactiStyle(alias(-total.tp90, "90% PHP Request Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.-total.tp90, "90% PHP Request Latency (ms)"))'

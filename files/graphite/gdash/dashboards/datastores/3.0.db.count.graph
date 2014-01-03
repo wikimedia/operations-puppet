@@ -6,12 +6,12 @@ from "-1week"
 
 field :slave, :color => "blue",
                :alias => "mysql slave queries",
-               :data  => "DatabaseBase.query.count"
+               :data  => "MediaWiki.DatabaseBase.query.count"
 
 field :master, :color => "yellow",
                :alias => "mysql master queries",
-               :data  => "DatabaseBase.query-master.count"
+               :data  => "MediaWiki.DatabaseBase.query-master.count"
 
 field :memc, :color => "grey",
                :alias => "memcached gets",
-               :data  => "MWMemcached.get.count"
+               :data  => "MediaWiki.MWMemcached.get.count"

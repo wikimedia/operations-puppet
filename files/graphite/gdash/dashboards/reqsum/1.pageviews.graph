@@ -6,5 +6,5 @@ from "-8hours"
 
 field :a, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(scale(reqstats.pageviews,"0.01666"), "pageviews/sec"))'
+               :data  => 'cactiStyle(alias(scale(MediaWiki.reqstats.pageviews,"0.01666"), "pageviews/sec"))'
 

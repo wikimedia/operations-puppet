@@ -6,4 +6,4 @@ hide_legend "false"
 from "-1month"
 
 field :count, :alias => "none",
-               :data  => 'cactiStyle(substr(mostDeviant(10,maximumAbove(IndexPager.doQuery.*.count,1)),2,3))'
+               :data  => 'cactiStyle(substr(mostDeviant(10,maximumAbove(MediaWiki.IndexPager.doQuery.*.count,1)),2,3))'

@@ -6,5 +6,5 @@ hide_legend "false"
 from "-8hours"
 
 field :tavg, :alias => "none",
-               :data  => 'cactiStyle(PoolCounter.Client.*.tavg)'
+               :data  => 'cactiStyle(MediaWiki.PoolCounter.Client.*.tavg)'
 

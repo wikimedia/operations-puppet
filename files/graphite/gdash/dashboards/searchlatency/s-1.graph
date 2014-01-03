@@ -6,4 +6,4 @@ from "-8hours"
 
 field :a, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(LuceneSearchSet.newFromQuery.tavg,"Avg Query Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.LuceneSearchSet.newFromQuery.tavg,"Avg Query Latency (ms)"))'

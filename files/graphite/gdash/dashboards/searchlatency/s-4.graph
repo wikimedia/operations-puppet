@@ -6,4 +6,4 @@ linemode "connected"
 
 field :la, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(LuceneSearchSet.newFromQuery.tp99,"99% Query Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.LuceneSearchSet.newFromQuery.tp99,"99% Query Latency (ms)"))'
