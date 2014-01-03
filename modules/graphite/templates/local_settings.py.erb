@@ -47,5 +47,11 @@ DATABASES = {
 ## Carbon
 
 <%- carbon_settings = scope.lookupvar('::graphite::carbon_settings'); if carbon_settings.key? 'relay' -%>
-CARBONLINK_HOSTS = [<%= carbon_settings['relay']['destinations'].map { |d| "\"#{d}\"" }.join(', ') %>]
+CARBONLINK_HOSTS = [<%=
+    carbon_settings['relay']['destinations'].map { |dest|
+        host, pickle_receiver_port, name = dest.split(':')
+        cache_query_port = carbon_settings["cache:#{name}"]['cache_query_port']
+        "\"#{host}:#{cache_query_port}\""
+    }.join(', ')
+%>]
 <%- end -%>
