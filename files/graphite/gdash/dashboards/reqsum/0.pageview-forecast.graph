@@ -7,6 +7,6 @@ from "-1hours"
 forecast :reqs, :data => 'reqstats.pageviews',
 	:alias => "pageview/min",
 	:forecast_color => "green",
-	:bands_color => "white",
+	:bands_color => "black",
 	:color => "blue"
 
