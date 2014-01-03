@@ -935,6 +935,13 @@ class openstack::keystone-service($openstack_version="folsom", $keystoneconfig) 
         require => Class["openstack::repo"];
     }
 
+    if $keystoneconfig['token_driver'] == 'redis' {
+        package { [ "python-keystone-redis" ]:
+            ensure => present;
+        }
+    }
+
+
     service { "keystone":
         ensure => running,
         subscribe => File['/etc/keystone/keystone.conf'],
