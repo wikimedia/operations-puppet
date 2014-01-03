@@ -15,7 +15,7 @@ class misc::rancid {
 		require => Package['rancid'],
 		owner => root,
 		group => root,
-		mode => 0555,
+		mode => 0444,
 		source => 'puppet:///files/misc/rancid/rancid.conf'
 	}
 
@@ -23,7 +23,7 @@ class misc::rancid {
 		require => [ Package["rancid"], Generic::Systemuser['rancid'] ],
 		owner => rancid,
 		group => rancid,
-		mode => 0444,
+		mode => 0550,
 		recurse => remote,
 		source => "puppet:///files/misc/rancid/core";
 	}
@@ -32,7 +32,13 @@ class misc::rancid {
 		require => File['/var/lib/rancid/core'],
 		owner => root,
 		group => root,
-		mode => 0555,
+		mode => 0444,
 		source => 'puppet:///files/misc/rancid/rancid.cron'
+	}
+
+	file { '/var/log/rancid':
+		owner => rancid,
+		group => rancid,
+		mode => 0550
 	}
 }
