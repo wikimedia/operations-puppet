@@ -1869,9 +1869,6 @@ node "neon.wikimedia.org" {
     }
 }
 
-# node 'netmon1001.wikimedia.org' {
-#}
-
 node "nescio.esams.wikimedia.org" {
     interface::ip { "dns::recursor": interface => "eth0", address => "91.198.174.6" }
 
@@ -1887,6 +1884,11 @@ node "nescio.esams.wikimedia.org" {
 
     dns::recursor::monitor { "91.198.174.6": }
 
+}
+
+node 'netmon1001.wikimedia.org' {
+    include standard,
+        misc::rancid
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
