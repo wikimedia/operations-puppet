@@ -11,6 +11,8 @@ class misc::rancid {
 		name => 'rancid'
 	}
 
+	include passwords::rancid
+
 	file { '/etc/rancid/rancid.conf':
 		require => Package['rancid'],
 		owner => root,
@@ -26,6 +28,14 @@ class misc::rancid {
 		mode => 0550,
 		recurse => remote,
 		source => "puppet:///files/misc/rancid/core";
+	}
+
+	file { '/var/lib/rancid/.cloginrc':
+		require => Package['rancid'],
+		owner => rancid,
+		group => rancid,
+		mode => 0440,
+		content => template('rancid/cloginrc.erb')
 	}
 
 	file { '/etc/cron.d/rancid':

@@ -1,0 +1,9 @@
+add autoenable csw1-sdtpa.wikimedia.org {1}
+add autoenable asw-d1-sdtpa.mgmt.pmtpa.wmnet {1}
+add autoenable asw-d2-sdtpa.mgmt.pmtpa.wmnet {1}
+add autoenable asw-d3-sdtpa.mgmt.pmtpa.wmnet {1}
+add autoenable asw-a4-sdtpa.mgmt.pmtpa.wmnet {1}
+add autoenable asw-a5-sdtpa.mgmt.pmtpa.wmnet {1}
+
+add method * {ssh}
+add password * {<%= scope.lookupvar("passwords::rancid::rancidpass") %>}
