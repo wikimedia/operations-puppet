@@ -5,6 +5,13 @@ class role::keystone::config {
 		db_name => "keystone",
 		db_user => "keystone",
 		db_pass => $passwords::openstack::keystone::keystone_db_pass,
+		token_driver => $realm ? {
+			'production' => 'sql',
+			'labs'       => 'redis',
+		},
+		token_driver_password => $realm ? {
+			'labs'       => $passwords::openstack::keystone::keystone_db_pass,
+		},
 		ldap_base_dn => "dc=wikimedia,dc=org",
 		ldap_user_dn => "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
 		ldap_user_id_attribute => "uid",
