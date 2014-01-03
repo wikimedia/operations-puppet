@@ -44,7 +44,7 @@ if [ "$MW_SCAP_BETA" != "1" ]; then
 	# Rebuild the CDB files from the JSON versions
 	# Regenerate the extension message file list for all active MediaWiki versions
 	for mwVerNum in ${mwVersions[@]}; do
-		sudo -u mwdeploy $BINDIR/mergeCdbFileUpdates --directory="$MW_COMMON/php-$mwVerNum/cache/l10n" \
+		$BINDIR/mergeCdbFileUpdates --directory="$MW_COMMON/php-$mwVerNum/cache/l10n" \
 			--trustmtime --threads=$THREADS
 	done
 fi
