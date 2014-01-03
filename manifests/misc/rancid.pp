@@ -6,9 +6,13 @@ class misc::rancid {
 	system::role { "misc::rancid": description => "Really Awful Notorious CIsco config Differ (sp)" }
 
 	package { "rancid": ensure => present }
-	
+
+	generic::systemuser { 'rancid':
+		name => 'rancid'
+	}
+
 	file { "/var/lib/rancid/core":
-		require => Package["rancid"],
+		require => [ Package["rancid"], Generic::Systemuser['rancid'] ],
 		owner => rancid,
 		group => rancid,
 		mode => 0444,
