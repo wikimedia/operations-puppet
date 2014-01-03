@@ -11,10 +11,18 @@ local frontend = ngx.re.match(ngx.var.http_host, "^([^:]*)")[1]
 
 local backend = red:srandmember('frontend:' .. frontend)
 
+local miscs = red:smembers('miscsettings:' .. frontend)
+
 if backend == ngx.null then
     -- Handle frontends wihout any configuration in them
     ngx.exit(404)
 end
 
+miscentries = ""
+for i = 1, miscs do
+    miscentries .= miscs[i] . "\n"
+end
+
 ngx.var.backend = backend
 ngx.var.vhost = frontend
+ngx.var.miscsettings = miscentries
