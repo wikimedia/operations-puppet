@@ -25,7 +25,7 @@ if [ -z "$SERVER" ]; then
 	SERVER="${MW_RSYNC_HOST}"
 fi
 
-sudo -u mwdeploy /usr/local/bin/scap-2 "$SERVER"
+sudo -u mwdeploy MW_VERSIONS_SYNC="$MW_VERSIONS_SYNC" MW_SCAP_BETA="$MW_SCAP_BETA" /usr/local/bin/scap-2 "$SERVER"
 
 echo Done
 exit 0
