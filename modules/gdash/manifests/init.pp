@@ -66,6 +66,9 @@ class gdash(
 
     file { $template_dir:
         ensure  => directory,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
         purge   => true,
         recurse => true,
         force   => true,
