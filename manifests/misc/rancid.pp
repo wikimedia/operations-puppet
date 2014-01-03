@@ -25,7 +25,7 @@ class misc::rancid {
 		require => [ Package["rancid"], Generic::Systemuser['rancid'] ],
 		owner => rancid,
 		group => rancid,
-		mode => 0550,
+		mode => 'o-rwx',
 		recurse => remote,
 		source => "puppet:///files/misc/rancid/core";
 	}
@@ -49,6 +49,6 @@ class misc::rancid {
 	file { '/var/log/rancid':
 		owner => rancid,
 		group => rancid,
-		mode => 0550
+		mode => 0750
 	}
 }
