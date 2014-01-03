@@ -14,7 +14,7 @@
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
         AuthLDAPBindPassword <%= scope.lookupvar('::passwords::ldap::production::proxypass') %>
-        AuthLDAPURL ldaps://virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn
+        AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
 
         # uWSGI reverse-proxy
