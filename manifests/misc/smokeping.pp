@@ -4,18 +4,16 @@ class misc::smokeping {
 
     system::role { "misc::smokeping": description => "Smokeping server" }
 
-    package {
-        "smokeping":
+    package { "smokeping":
         ensure => latest;
     }
 
-    package {
-        "curl":
+    package { "curl":
         ensure => latest;
-        }
+    }
 
-    file { "/etc/smokeping/config.d/" :
-        require => Package[smokeping],
+    file { "/etc/smokeping/config.d/":
+        require => Package['smokeping'],
         ensure => directory,
         recurse => true,
         owner => "root",
@@ -24,9 +22,8 @@ class misc::smokeping {
         source => "puppet:///files/smokeping";
     }
 
-    service { smokeping:
-        require => [ Package[smokeping],
-        File["/etc/smokeping/config.d" ] ],
+    service { 'smokeping':
+        require => [ Package['smokeping'], File["/etc/smokeping/config.d"] ],
         subscribe => File["/etc/smokeping/config.d" ],
         ensure => running;
     }
