@@ -314,6 +314,7 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
         } else {
             # This was added to all nodes accidentally
             cron { "manage-exports":
+                command => "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log >/dev/null 2>&1",
                 ensure => absent;
             }
         }
