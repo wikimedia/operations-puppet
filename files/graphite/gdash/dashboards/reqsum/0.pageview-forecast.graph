@@ -4,7 +4,7 @@ linemode "connected"
 hide_legend "false"
 from "-1hours"
 
-forecast :reqs, :data => 'MediaWiki.reqstats.pageviews',
+forecast :reqs, :data => 'reqstats.pageviews',
 	:alias => "pageview/min",
 	:forecast_color => "green",
 	:bands_color => "white",

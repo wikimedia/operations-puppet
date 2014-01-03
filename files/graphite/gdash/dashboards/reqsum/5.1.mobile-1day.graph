@@ -6,4 +6,4 @@ from "-1 day"
 
 field :a, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(scale(MediaWiki.reqstats.mobile_pageviews,"0.01666"), "mobile pageviews/sec"))'
+               :data  => 'cactiStyle(alias(scale(reqstats.mobile_pageviews,"0.01666"), "mobile pageviews/sec"))'

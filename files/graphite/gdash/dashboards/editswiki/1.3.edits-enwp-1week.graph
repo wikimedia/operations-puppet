@@ -6,8 +6,8 @@ from "-1 week"
 
 field :a, :color => "blue",
 		:alias => "none",
-			:data => 'cactiStyle(alias(summarize(MediaWiki.reqstatsedits.en_wikipedia_org.edit, "1hour"),"edit requests/hour"))'
+			:data => 'cactiStyle(alias(summarize(reqstats.edits.en_wikipedia_org.edit, "1hour"),"edit requests/hour"))'
 
 field :b, :color => "red",
 		:alias => "none",
-			:data => 'cactiStyle(alias(summarize(MediaWiki.reqstatsedits.en_wikipedia_org.submits, "1hour"),"edit submits/hour"))'
+			:data => 'cactiStyle(alias(summarize(reqstats.edits.en_wikipedia_org.submits, "1hour"),"edit submits/hour"))'

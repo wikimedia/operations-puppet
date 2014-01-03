@@ -6,8 +6,8 @@ from "-8hours"
 
 field :a, :color => "blue",
 		:alias => "none",
-			:data => 'cactiStyle(alias(MediaWiki.reqstatsedits.en_wikipedia_org.edit,"edit requests/min"))'
+			:data => 'cactiStyle(alias(reqstats.edits.en_wikipedia_org.edit,"edit requests/min"))'
 
 field :b, :color => "red",
 		:alias => "none",
-			:data => 'cactiStyle(alias(MediaWiki.reqstatsedits.en_wikipedia_org.submits,"edit submits/min"))'
+			:data => 'cactiStyle(alias(reqstats.edits.en_wikipedia_org.submits,"edit submits/min"))'

@@ -5,4 +5,4 @@ hide_legend "false"
 from "-1 week"
 
 field :a, :alias => "none",
-               :data  => 'cactiStyle(substr(highestMax(summarize(exclude(MediaWiki.reqstatsedits.*.submits,"MediaWiki.reqstatsedits.en_wikiped"),"1hour"),10),2,3))'
+               :data  => 'cactiStyle(substr(highestMax(summarize(exclude(reqstats.edits.*.submits,"reqstats.edits.en_wikiped"),"1hour"),10),2,3))'

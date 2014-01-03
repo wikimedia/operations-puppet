@@ -6,4 +6,4 @@ from "-8hours"
 logbase 2
 
 field :a, :alias => "none",
-               :data  => 'cactiStyle(substr(scale(highestMax(exclude(MediaWiki.reqstats.*_m_wikipedia_org.pageviews,"(^_|[A-Z])"),12),"0.016666"),1,2))'
+               :data  => 'cactiStyle(substr(scale(highestMax(exclude(reqstats.*_m_wikipedia_org.pageviews,"(^_|[A-Z])"),12),"0.016666"),1,2))'

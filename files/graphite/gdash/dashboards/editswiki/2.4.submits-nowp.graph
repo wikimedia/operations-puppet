@@ -5,4 +5,4 @@ hide_legend "false"
 from "-8hours"
 
 field :a, :alias => "none",
-               :data  => 'cactiStyle(substr(highestMax(exclude(MediaWiki.reqstatsedits.*.submits,"wikiped"),10),2,3))'
+               :data  => 'cactiStyle(substr(highestMax(exclude(reqstats.edits.*.submits,"wikiped"),10),2,3))'

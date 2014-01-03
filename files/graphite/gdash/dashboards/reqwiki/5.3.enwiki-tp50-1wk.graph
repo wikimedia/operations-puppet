@@ -6,9 +6,9 @@ from "-1 week"
 
 field :a, :color => "blue",
 		:alias => "none",
-			:data => 'cactiStyle(MediaWiki.reqstats.en_wikipedia_org.tp99)'
+			:data => 'cactiStyle(reqstats.en_wikipedia_org.tp99)'
 
 field :b, :color => "red",
 		:alias => "none",
-			:data => 'cactiStyle(MediaWiki.reqstats.en_wikipedia_org.tp50)'
+			:data => 'cactiStyle(reqstats.en_wikipedia_org.tp50)'
 

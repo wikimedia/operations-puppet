@@ -6,4 +6,4 @@ from "-2month"
 
 field :a, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.reqstats.4xx,"1hr"),"4xx resp/hour"))'
+               :data  => 'cactiStyle(alias(summarize(reqstats.4xx,"1hr"),"4xx resp/hour"))'
