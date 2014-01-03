@@ -7,4 +7,4 @@ area "first"
 
 field :a, :color => "blue",
 		:alias => "none",
-			:data => 'cactiStyle(alias(summarize(reqstats.mobile_pageviews, "1day"),"reqs/day"))'
+			:data => 'cactiStyle(alias(summarize(MediaWiki.reqstats.mobile_pageviews, "1day"),"reqs/day"))'

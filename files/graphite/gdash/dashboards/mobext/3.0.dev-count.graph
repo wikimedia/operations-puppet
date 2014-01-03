@@ -6,4 +6,4 @@ hide_legend "false"
 from "-1month"
 
 field :count, :alias => "none",
-               :data  => 'cactiStyle(substr(mostDeviant(10,maximumAbove(ExtMobileFrontend.*.count,1)),1,2))'
+               :data  => 'cactiStyle(substr(mostDeviant(10,maximumAbove(MediaWiki.ExtMobileFrontend.*.count,1)),1,2))'

@@ -5,5 +5,5 @@ hide_legend "false"
 from "-8hours"
 
 field :a, :alias => "none",
-               #:data  => 'legendValue(substr(highestMax(exclude(reqstats.edits.*.edit,"reqstats.edits.en_wikiped"),10),2,3),"avg")'
-               :data  => 'cactiStyle(substr(highestMax(exclude(reqstats.edits.*.edit,"reqstats.edits.en_wikiped"),10),2,3))'
+               #:data  => 'legendValue(substr(highestMax(exclude(MediaWiki.reqstatsedits.*.edit,"MediaWiki.reqstatsedits.en_wikiped"),10),2,3),"avg")'
+               :data  => 'cactiStyle(substr(highestMax(exclude(MediaWiki.reqstatsedits.*.edit,"MediaWiki.reqstatsedits.en_wikiped"),10),2,3))'

@@ -6,11 +6,11 @@ from "-8hours"
 
 field :a, :color => "red", 
    :alias => "none",
-   :data  => 'cactiStyle(alias(reqstats.500,"500 resp/min"))',
+   :data  => 'cactiStyle(alias(MediaWiki.reqstats.500,"500 resp/min"))',
    :logbase => 10
 
 field :b, :color => "blue",
    :alias => "none",
-   :data  => 'cactiStyle(alias(reqstats.5xx,"5xx resp/min"))',
+   :data  => 'cactiStyle(alias(MediaWiki.reqstats.5xx,"5xx resp/min"))',
    :logbase => 10
 

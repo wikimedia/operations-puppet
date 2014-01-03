@@ -6,4 +6,4 @@ from "-1 day"
 
 field :a, :color => "blue",
 		:alias => "none",
-			:data => 'cactiStyle(alias(reqstats.edits.en_wikipedia_org.tp50,"50% edit latency"))'
+			:data => 'cactiStyle(alias(MediaWiki.reqstatsedits.en_wikipedia_org.tp50,"50% edit latency"))'

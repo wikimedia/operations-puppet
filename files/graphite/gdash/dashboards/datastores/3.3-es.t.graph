@@ -6,8 +6,8 @@ from "-1week"
 logbase 2
 field :tavg, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(query.SELECT.blob_text_FROM_blobs_clusterN_WHERE_blob_id_X_LIMIT_N.tavg,"avg (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.query.SELECT.blob_text_FROM_blobs_clusterN_WHERE_blob_id_X_LIMIT_N.tavg,"avg (ms)"))'
 
 field :tp99, :color => "red",
                :alias => "none",
-               :data  => 'cactiStyle(alias(query.SELECT.blob_text_FROM_blobs_clusterN_WHERE_blob_id_X_LIMIT_N.tp99,"99% (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.query.SELECT.blob_text_FROM_blobs_clusterN_WHERE_blob_id_X_LIMIT_N.tp99,"99% (ms)"))'

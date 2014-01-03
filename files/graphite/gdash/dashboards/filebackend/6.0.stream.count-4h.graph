@@ -6,4 +6,4 @@ from "-1day"
 linemode "connected" 
 
 field :stream, :alias => "none",
-               :data  => 'cactiStyle(StreamFile.*.count)'
+               :data  => 'cactiStyle(MediaWiki.StreamFile.*.count)'

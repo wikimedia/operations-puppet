@@ -8,16 +8,16 @@ ymax 100
 
 field :hit, :color => "green",
                :alias => "none",
-               :data  => 'cactiStyle(alias(asPercent(stats.pcache_hit.count,sumSeries(stats.pcache_[hm]*.count)),"Hit"))'
+               :data  => 'cactiStyle(alias(asPercent(MediaWiki.stats.pcache_hit.count,sumSeries(stats.pcache_[hm]*.count)),"Hit"))'
 
 field :absent, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(asPercent(stats.pcache_miss_absent.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (absent)"))'
+               :data  => 'cactiStyle(alias(asPercent(MediaWiki.stats.pcache_miss_absent.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (absent)"))'
 
 field :expired, :color => "red",
                :alias => "none",
-               :data  => 'cactiStyle(alias(asPercent(stats.pcache_miss_expired.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (expire)"))'
+               :data  => 'cactiStyle(alias(asPercent(MediaWiki.stats.pcache_miss_expired.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (expire)"))'
 
 field :stub, :color => "orange",
                :alias => "none",
-               :data  => 'cactiStyle(alias(asPercent(stats.pcache_miss_stub.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (stub)"))'
+               :data  => 'cactiStyle(alias(asPercent(MediaWiki.stats.pcache_miss_stub.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (stub)"))'

@@ -6,5 +6,5 @@ hide_legend "false"
 from "-1week"
 
 field :tp99, :alias => "none",
-               :data  => 'cactiStyle(PoolCounter.Client.*.tp99)'
+               :data  => 'cactiStyle(MediaWiki.PoolCounter.Client.*.tp99)'
 

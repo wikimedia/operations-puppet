@@ -6,4 +6,4 @@ from "-1day"
 linemode "connected" 
 
 field :lock, :alias => "none",
-               :data  => 'cactiStyle(LockManager.*.tavg)'
+               :data  => 'cactiStyle(MediaWiki.LockManager.*.tavg)'

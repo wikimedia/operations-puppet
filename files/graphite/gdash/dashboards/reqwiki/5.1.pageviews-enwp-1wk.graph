@@ -6,5 +6,5 @@ from "-1 week"
 
 field :a, :color => "blue",
 		:alias => "none",
-			:data => 'cactiStyle(alias(hitcount(scale(reqstats.en_wikipedia_org.pageviews, "0.016666"), "1hour"),"reqs/hour"))'
+			:data => 'cactiStyle(alias(hitcount(scale(MediaWiki.reqstats.en_wikipedia_org.pageviews, "0.016666"), "1hour"),"reqs/hour"))'
 

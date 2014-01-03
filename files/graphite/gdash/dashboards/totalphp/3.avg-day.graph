@@ -6,8 +6,8 @@ from "-1day"
 
 field :tavg, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(-total.tavg, "Avg PHP Request Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.-total.tavg, "Avg PHP Request Latency (ms)"))'
 
 field :tp50, :color => "green",
                :alias => "none",
-               :data  => 'cactiStyle(alias(-total.tp50, "50% PHP Request Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.-total.tp50, "50% PHP Request Latency (ms)"))'

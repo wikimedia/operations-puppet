@@ -6,4 +6,4 @@ from "-8hours"
 linemode "connected" 
 
 field :stream, :alias => "none",
-               :data  => 'cactiStyle(StreamFile.*.tp90)'
+               :data  => 'cactiStyle(MediaWiki.StreamFile.*.tp90)'

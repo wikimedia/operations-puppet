@@ -6,5 +6,5 @@ from "-7 day"
 
 field :a, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(hitcount(scale(reqstats.pageviews,"0.01666"), "1hour"), "pageviews/hour"))'
+               :data  => 'cactiStyle(alias(hitcount(scale(MediaWiki.reqstats.pageviews,"0.01666"), "1hour"), "pageviews/hour"))'
 

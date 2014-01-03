@@ -6,4 +6,4 @@ from "-1month"
 
 field :tp99, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(-total.tp99, "99% PHP Request Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.-total.tp99, "99% PHP Request Latency (ms)"))'
