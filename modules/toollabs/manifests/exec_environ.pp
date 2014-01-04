@@ -203,6 +203,7 @@ class toollabs::exec_environ {
         'libdmtx0a',                   # Bug #53867.
         'libfreetype6',
         'libgdal1-1.7.0',              # Bug 56995
+        'libjpeg-turbo-progs',         # Bug 59654.
         'libmpc2',
         'libmpfr4',
         'libneon27-gnutls',
