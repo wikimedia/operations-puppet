@@ -112,7 +112,7 @@ MINS=$(((DIFF/60)%60))
 SECS=$((DIFF%60))
 printf -v HUMAN_DIFF "%02dm %02ds" $MINS $SECS
 
-echo "scap completed in $HUMAN_DIFF.\n"
+echo "scap completed in $HUMAN_DIFF."
 
 export DOLOGMSGNOLOG=""
 $BINDIR/dologmsg "!log $USER finished scap${*:+: }$* (duration: $HUMAN_DIFF)"
