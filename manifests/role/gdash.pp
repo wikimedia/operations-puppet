@@ -8,7 +8,7 @@ class role::gdash {
         graphite_host   => 'https://graphite.wikimedia.org',
         template_source => 'puppet:///files/graphite/gdash',
         options         => {
-          title         => 'wmf stats',
+          title         => 'WMF stats',
           graph_columns => 1,
           graph_height  => 500,
           graph_width   => 1024,
