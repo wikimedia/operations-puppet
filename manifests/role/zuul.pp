@@ -35,6 +35,7 @@ class role::zuul::labs {
         gerrit_user          => 'jenkins',
         url_pattern          => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
         status_url           => 'http://integration.wmflabs.org/zuul/status',
+        zuul_url             => '',  # FIXME
         config_git_branch    => 'labs',
         git_branch           => 'labs',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
@@ -78,6 +79,7 @@ class role::zuul::production {
         gerrit_user          => 'jenkins-bot',
         url_pattern          => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
         status_url           => 'https://integration.wikimedia.org/zuul/',
+        zuul_url             => 'http://integration.wikimedia.org/zuul/git',
         config_git_branch    => 'master',
         git_branch           => 'master',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
