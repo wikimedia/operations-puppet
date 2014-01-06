@@ -1919,7 +1919,7 @@ node "nickel.wikimedia.org" {
         ganglia::web,
         misc::monitoring::views
 
-     install_certificate{ "star.wikimedia.org": }
+     install_certificate{ "ganglia.wikimedia.org": }
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
