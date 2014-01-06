@@ -1,4 +1,4 @@
-# modules/ganglia/manifests/configuration.pp
+m# modules/ganglia/manifests/configuration.pp
 
 class ganglia_new::configuration {
 	# NOTE: Do *not* add new clusters *per site* anymore,
@@ -111,7 +111,11 @@ class ganglia_new::configuration {
 	case $::realm {
 		'production': {
 			$url = "http://ganglia.wikimedia.org"
-			$gmetad_hosts = [ "208.80.152.15", "208.80.154.150" ]
+			# 208.80.154.14 is neon (icinga).
+			# It is not actually a gmetad host, but it should
+			# be allowed to query gmond instances for use by
+			# ganglios.
+			$gmetad_hosts = [ "208.80.152.15", "208.80.154.150", "208.80.154.14" ]
 			$aggregator_hosts = {
 				'pmtpa' => [ "208.80.152.15", "208.80.154.150" ],
 				'eqiad' => [ "208.80.152.15", "208.80.154.150" ],
