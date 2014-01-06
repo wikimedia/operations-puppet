@@ -1,4 +1,4 @@
-m# modules/ganglia/manifests/configuration.pp
+# modules/ganglia/manifests/configuration.pp
 
 class ganglia_new::configuration {
 	# NOTE: Do *not* add new clusters *per site* anymore,
