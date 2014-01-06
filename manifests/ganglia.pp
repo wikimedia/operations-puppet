@@ -456,8 +456,8 @@ class ganglia::web {
         $ganglia_webdir = "/srv/org/wikimedia/ganglia-web-latest"
         $ganglia_confdir = "/srv/org/wikimedia/ganglia-web-conf"
 
-        $ganglia_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
-        $ganglia_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
+        $ganglia_ssl_cert = "/etc/ssl/certs/ganglia.wikimedia.org.pem"
+        $ganglia_ssl_key = "/etc/ssl/private/ganglia.wikimedia.org.key"
     }
 
     file {
