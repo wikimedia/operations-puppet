@@ -281,8 +281,8 @@ acl_check_data:
 	accept hosts = +relay_from_hosts
 		set acl_m0 = trusted relay
 
-	# skip if message is too large (>500K)
-	accept condition = ${if >{$message_size}{500K}}
+	# skip if message is too large (>4M)
+	accept condition = ${if >{$message_size}{4M}}
 		set acl_m0 = n/a
 		set acl_m1 = skipped, message too large
 
