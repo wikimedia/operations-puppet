@@ -907,7 +907,7 @@ node "fenari.wikimedia.org" {
         generic::wikidev-umask,
         misc::dsh,
         ssh::hostkeys-collect
-    install_certificate{ "star.wikimedia.org": }
+    install_certificate{ "noc.wikimedia.org": }
 }
 
 node "fluorine.eqiad.wmnet" {
