@@ -86,6 +86,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
         'libencode-detect-perl', # detects the encoding of data
         'libtheschwartz-perl', # reliable job queue
         'libapache2-mod-perl2', # Apache2 Perl ('400% to 2000% speed increase':)
+        'graphviz', # graph drawing tools
         ]: ensure => present,
     }
 
