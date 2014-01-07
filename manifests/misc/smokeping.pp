@@ -1,7 +1,7 @@
 # Smokeping server
 
 class misc::smokeping {
-    system::role { "misc::smokeping": description => "Smokeping server" }
+    system::role { "misc::smokeping": description => "Smokeping" }
 
     include config
 
@@ -21,7 +21,7 @@ class misc::smokeping {
 }
 
 class misc::smokeping::config {
-	Package['smokeping'] -> Class['misc::smokeping::config']
+    Package['smokeping'] -> Class['misc::smokeping::config']
 
     file { "/etc/smokeping/config.d/":
         require => Package['smokeping'],
@@ -31,5 +31,14 @@ class misc::smokeping::config {
         group => "root",
         mode => 0444,
         source => "puppet:///files/smokeping";
+    }
+}
+
+class misc::smokeping::web {
+    @webserver::apache::module { 'fcgid': }
+    @webserver::apache::site { 'smokeping.wikimedia.org':
+        require => Webserver::Apache::Module['fcgid'],
+        docroot => '/var/www',
+        includes => ['/etc/torrus/torrus-apache2.conf']
     }
 }
