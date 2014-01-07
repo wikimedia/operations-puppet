@@ -169,15 +169,6 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'VisualEditor/VisualEditor',
 				},
-				'github-camus'           => {
-					'url'                  => 'git@github.com:wikimedia/camus',
-					'threads'              => '1',
-					'authGroup'            => 'mediawiki-replication',
-					'push'                 => $replication_basic_push_refs,
-					'remoteNameStyle'      => 'dash',
-					'mirror'               => 'true',
-					'projects'             => 'analytics/camus',
-				},
 			}
 		}
 	}
