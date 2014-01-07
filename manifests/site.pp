@@ -837,7 +837,7 @@ node "aluminium.wikimedia.org" {
     include role::fundraising::civicrm,
         accounts::file_mover
     class { 'misc::fundraising::backup::archive_sync': hour => [0,8,16], minute => 5 }
-    interface::ip { "fundraising.wikimedia.org": interface => "eth0", address => "208.80.152.143" }
+    interface::ip { "fundraising.wikimedia.org": interface => "eth0", address => "208.80.154.12" }
 }
 
 # erbium is a webrequest udp2log host
