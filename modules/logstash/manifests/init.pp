@@ -63,6 +63,4 @@ class logstash(
     service { 'logstash':
         enable  => true,
     }
-
-    Logstash::Conf <| |>
 }
