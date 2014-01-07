@@ -6,6 +6,9 @@
 # Start logstash on boot?
 START=yes
 
+# Location of the logstash jar file
+LS_JAR=/opt/logstash/logstash.jar
+
 # Java JVM options
 LS_JAVA_OPTS="-Xms<%= @heap_memory_mb %>m -Xmx<%= @heap_memory_mb %>m"
 LS_JAVA_OPTS="${LS_JAVA_OPTS} -Djava.io.tmpdir=/var/lib/logstash"
@@ -21,5 +24,7 @@ PLUGIN_DIR=/var/lib
 # Logstash options
 # Note: the sysv init script prepends these options with "agent -f ${CONF_DIR}"
 LS_OPTS="--log /var/log/logstash/logstash.log"
-LS_OPTS="${LS_OPTS} --pluginpath ${PLUGIN_DIR}"
 LS_OPTS="${LS_OPTS} --filterworkers <%= @filter_workers %>"
+# XXX: Don't add plugin dir until we need it.
+# Logstash refuses to start if missing
+#LS_OPTS="${LS_OPTS} --pluginpath ${PLUGIN_DIR}"

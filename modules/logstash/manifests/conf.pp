@@ -30,6 +30,9 @@ define logstash::conf(
 
     file { "${logstash::config_dir}/${priority}-${config_file}.conf":
         ensure  => $ensure,
+        group   => 'root',
+        mode    => '0644',
+        owner   => 'root',
         content => $content,
         source  => $source,
         require => Package['logstash'],
