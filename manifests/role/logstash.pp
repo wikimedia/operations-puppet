@@ -9,7 +9,6 @@ class role::logstash {
     include ::elasticsearch::ganglia
     include ::elasticsearch::nagios::check
     include ::passwords::logstash
-    include ::redis::ganglia
 
     deployment::target { 'elasticsearchplugins': }
 
@@ -30,6 +29,9 @@ class role::logstash {
         password          => $passwords::logstash::redis,
     }
 
+    # 'redis::ganglia' includes 'redis', and thus must be included below
+    # the parametrized class above.
+    include ::redis::ganglia
 
     class { '::logstash':
        heap_memory_mb => 128,
