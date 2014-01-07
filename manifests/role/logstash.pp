@@ -59,6 +59,11 @@ class role::logstash {
         priority => 50,
     }
 
+    logstash::conf { 'filter-mw-via-udp2log':
+        source   => 'puppet:///files/logstash/filter-mw-via-udp2log.conf',
+        priority => 50,
+    }
+
     class { '::logstash::output::elasticsearch':
         host            => '127.0.0.1',
         replication     => 'async',
