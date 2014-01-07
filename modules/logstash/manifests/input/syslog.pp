@@ -20,8 +20,6 @@ class logstash::input::syslog(
     $priority = 10,
     $ensure   = present,
 ) {
-    require logstash
-
     logstash::conf{ 'input-syslog':
         content  => template('logstash/input/syslog.erb'),
         priority => $priority,

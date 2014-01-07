@@ -20,8 +20,6 @@ class logstash::input::udp2log(
     $priority = 10,
     $ensure   = present,
 ) {
-    require logstash
-
     logstash::conf{ 'input-udp2log':
         content  => template('logstash/input/udp2log.erb'),
         priority => $priority,

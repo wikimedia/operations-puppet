@@ -26,8 +26,6 @@ define logstash::conf(
     $priority = 10,
     $ensure   = present,
 ) {
-    include logstash
-
     $config_file = inline_template('<%= @title.gsub(/\W/, "-") %>')
 
     file { "${logstash::config_dir}/${priority}-${config_file}.conf":

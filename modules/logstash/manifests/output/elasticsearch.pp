@@ -40,8 +40,6 @@ class logstash::output::elasticsearch(
     $priority        = 10,
     $ensure          = present,
 ) {
-    require logstash
-
     logstash::conf{ 'output-elasticsearch':
         content  => template('logstash/output/elasticsearch.erb'),
         priority => $priority,

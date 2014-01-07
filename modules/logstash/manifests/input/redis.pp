@@ -27,8 +27,6 @@ class logstash::input::redis(
     $priority   = 10,
     $ensure     = present,
 ) {
-    require logstash
-
     logstash::conf{ 'input-redis':
         content  => template('logstash/input/redis.erb'),
         priority => $priority,
