@@ -6,6 +6,8 @@ sub vcl_recv {
 		/* gitblit requires the following request headers: */
 		set req.http.X-Forwarded-Proto = "https";
 		set req.http.X-Forwarded-Port = "443";
+	} elsif (req.http.Host == "doc.wikimedia.org" || req.http.Host == "integration.wikimedia.org") {
+		set req.backend = gallium;
 	} elsif (req.http.Host == "gerrit.wikimedia.org") {
 		set req.backend = ytterbium;
 	} elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
