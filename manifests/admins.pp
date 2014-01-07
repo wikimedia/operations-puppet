@@ -3253,6 +3253,25 @@ class accounts {
         }
     }
 
+    class ssmith inherits baseaccount {
+        $username = 'ssmith'
+        $realname = 'Sherah Smith'
+        $uid      = 658
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'ssmith@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDmJFv/VzIMGs+/e7pue7Jdz/btDh0NJtjvrfN2Wgsj+pb6L9EJcPCLpl8jKxzLKBN2yimVZgWm/+xkOuUdj/0iLtkLSDpWEbJA50WZO7ZTC3xzI6P+xpFr/UUNDrniGyxx7TLfV6g++9Rrj8/j0ycFjpEAgLBko+yF73bXLxIRJ/Z18pToU3+d8sAqHYTlxjWci67E0cXI+C+qOmkzGOXv5+2eC16L6+WiMx+IA0slMOAGVwFutKhgt34/8I1xDuNGpitCT/+JhDICtJh8XvtqXT2cOQ9ATyDrs24LsTNzBmeO6eRnJiREVBgxQYQByj+BNdwN8QtUvt/2tAmFr76H',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3464,6 +3483,7 @@ class admins::fr-tech {
 	include accounts::khorn
 	include accounts::pgehres
 	include accounts::mwalker
+	include accounts::ssmith
 
 }
 
