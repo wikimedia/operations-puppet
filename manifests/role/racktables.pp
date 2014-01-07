@@ -30,9 +30,9 @@ class role::racktables {
         }
         'production': {
             $racktables_host = 'racktables.wikimedia.org'
-            $racktables_ssl_cert = '/etc/ssl/certs/star.wikimedia.org.pem'
-            $racktables_ssl_key = '/etc/ssl/private/star.wikimedia.org.key'
-            install_certificate{ 'star.wikimedia.org': }
+            $racktables_ssl_cert = '/etc/ssl/certs/racktables.wikimedia.org.pem'
+            $racktables_ssl_key = '/etc/ssl/private/racktables.wikimedia.org.key'
+            install_certificate{ 'racktables.wikimedia.org': }
         }
         'default': {
             fail('unknown realm, should be labs or production')
