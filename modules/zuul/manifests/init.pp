@@ -23,7 +23,7 @@ class zuul (
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
     $git_branch = 'master',
     $git_dir = '/var/lib/zuul/git',
-    $push_change_refs,
+    $push_change_refs = false,
     $statsd_host = '',
 ) {
 
