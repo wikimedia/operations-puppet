@@ -29,7 +29,7 @@ class logstash::input::redis(
 ) {
     require logstash
 
-    @logstash::conf{ 'input-redis':
+    logstash::conf{ 'input-redis':
         content  => template('logstash/input/redis.erb'),
         priority => $priority,
         ensure   => $ensure,

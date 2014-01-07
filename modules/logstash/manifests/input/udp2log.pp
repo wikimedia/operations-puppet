@@ -22,7 +22,7 @@ class logstash::input::udp2log(
 ) {
     require logstash
 
-    @logstash::conf{ 'input-udp2log':
+    logstash::conf{ 'input-udp2log':
         content  => template('logstash/input/udp2log.erb'),
         priority => $priority,
         ensure   => $ensure,

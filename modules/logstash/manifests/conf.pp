@@ -16,7 +16,7 @@
 #
 # == Sample usage:
 #
-#   @logstash::conf { 'debug':
+#   logstash::conf { 'debug':
 #     content => 'output { stdout { codec => rubydebug } }'
 #   }
 #

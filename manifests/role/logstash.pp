@@ -49,12 +49,12 @@ class role::logstash {
         key  => 'logstash',
     }
 
-    @logstash::conf { 'filter-strip-ansi-color':
+    logstash::conf { 'filter-strip-ansi-color':
         source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
         priority => 50,
     }
 
-    @logstash::conf { 'filter-syslog':
+    logstash::conf { 'filter-syslog':
         source   => 'puppet:///files/logstash/filter-syslog.conf',
         priority => 50,
     }

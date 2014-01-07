@@ -22,7 +22,7 @@ class logstash::input::syslog(
 ) {
     require logstash
 
-    @logstash::conf{ 'input-syslog':
+    logstash::conf{ 'input-syslog':
         content  => template('logstash/input/syslog.erb'),
         priority => $priority,
         ensure   => $ensure,
