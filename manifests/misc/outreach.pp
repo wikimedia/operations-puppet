@@ -13,6 +13,6 @@ class misc::outreach::civicrm {
     }
 
     apache_site { 'contacts': name => 'contacts.wikimedia.org' }
-
+    install_certificate{ "contacts.wikimedia.org": }
 }
 
