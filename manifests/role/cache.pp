@@ -456,14 +456,9 @@ class role::cache {
     }
 
     class varnish::logging::eventlistener {
-        if $::realm == 'production' {
-            $event_listener = $::site ? {
-                /^(pmtpa|eqiad|ulsfo)$/ => '10.64.21.123',  # vanadium
-                'esams'                 => '208.80.154.73', # gadolinium
-            }
-        }
-        else {
-            $event_listener = '10.4.0.48' # deployment-eventlogging
+        $event_listener = $::realm ? {
+            'production' => '10.64.21.123',  # vanadium
+            'labs'       => '10.4.0.48',     # deployment-eventlogging
         }
 
         varnish::logging { 'vanadium' :
