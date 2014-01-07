@@ -11,7 +11,7 @@ class smokeping::web {
         require => [Webserver::Apache::Module['fcgid'], File['/usr/share/smokeping/www/smokeping.fcgi']],
         docroot => '/var/www',
         custom => [
-            'AliasMatch ^/($|smokeping.cgi) /usr/share/smokeping/www/smokeping.fcgi',
+            'AliasMatch ^/($|smokeping\.cgi) /usr/share/smokeping/www/smokeping.fcgi',
             'Alias /images /var/cache/smokeping/images/'
             ],
     }
