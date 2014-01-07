@@ -56,7 +56,7 @@ class logstash(
         group   => 'root',
         mode    => '0644',
         owner   => 'root',
-        source  => 'puppet://modules/logstash/conf.d-README',
+        source  => 'puppet:///modules/logstash/conf.d-README',
         require => File[$config_dir],
     }
 

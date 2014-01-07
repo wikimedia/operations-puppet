@@ -53,7 +53,7 @@ class logstash::output::elasticsearch(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///files/logstash/logstash_delete_index.sh',
+        source  => 'puppet:///modules/logstash/logstash_delete_index.sh',
     }
 
     file { "/usr/local/bin/logstash_optimize_index.sh":
@@ -61,7 +61,7 @@ class logstash::output::elasticsearch(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///files/logstash/logstash_optimize_index.sh',
+        source  => 'puppet:///modules/logstash/logstash_optimize_index.sh',
     }
 
     $ensure_cron = $manage_indices ? {
