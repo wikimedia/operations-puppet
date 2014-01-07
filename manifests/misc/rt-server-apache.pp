@@ -8,6 +8,7 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
 
   if ! defined(Class['webserver::php5']) {
     class {'webserver::php5': ssl => true; }
+    install_certificate{ 'rt.wikimedia.org': }
   }
 
 
