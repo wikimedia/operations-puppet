@@ -41,7 +41,7 @@ if [[ "$1" == --versions=?* ]]; then
 	if [ "$versions" == "active" ]; then
 		# All active MW versions
 		export MW_VERSIONS_SYNC=$($BINDIR/mwversionsinuse --home)
-	elif [ -d "$MW_COMMON_SOURCE/$versions" ]; then
+	elif [ -d "$MW_COMMON_SOURCE/php-$versions" ]; then
 		# A specific MW version
 		export MW_VERSIONS_SYNC="$versions"
 	else
