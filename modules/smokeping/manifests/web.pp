@@ -1,8 +1,18 @@
 class smokeping::web {
+    file { '/usr/share/smokeping/www/smokeping.fcgi':
+        source => "puppet:///${module_name}/smokeping.fcgi",
+        owner => root,
+        group => root,
+        mode => 0555,
+    }
+
     @webserver::apache::module { 'fcgid': }
     @webserver::apache::site { 'smokeping.wikimedia.org':
-        require => Webserver::Apache::Module['fcgid'],
+        require => [Webserver::Apache::Module['fcgid'], File['/usr/share/smokeping/www/smokeping.fcgi']],
         docroot => '/var/www',
-        includes => ['/etc/torrus/torrus-apache2.conf']
+        custom => [
+            'AliasMatch ^/($|smokeping.cgi) /usr/share/smokeping/www/smokeping.fcgi',
+            'Alias /images /var/cache/smokeping/images/'
+            ],
     }
 }
