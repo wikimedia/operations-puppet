@@ -1,43 +1,5 @@
 # vim:ft=apache:
 <VirtualHost *:80>
-	ServerName graphite.wikimedia.org
-	Redirect / "https://graphite.wikimedia.org/"
-</VirtualHost>
-
-<VirtualHost *:443>
-	ServerName graphite.wikimedia.org
-
-	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
-
-	<Location />
-		Order allow,deny
-		Allow from all
-
-		AuthName "WMF Labs (use wiki login name not shell)"
-		AuthType Basic
-		AuthBasicProvider ldap
-		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-		AuthLDAPBindPassword <%= proxypass %>
-		AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
-		Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
-
-		RedirectMatch ^/$ "https://graphite.wikimedia.org/dashboard/"
-
-		ProxyPass http://graphite.pmtpa.wmnet:81/
-		ProxyPassReverse http://graphite.pmtpa.wmnet:81/
-	</Location> 
-
-	<Location "/render">
-		Satisfy Any
-		Allow from all
-	</Location>
-
-</VirtualHost>
-
-# this doesn't belong here, shh.
-<VirtualHost *:80>
 	ServerName ishmael.wikimedia.org
 	Redirect / "https://ishmael.wikimedia.org/"
 </VirtualHost>

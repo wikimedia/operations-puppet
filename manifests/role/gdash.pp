@@ -6,7 +6,7 @@
 class role::gdash {
     class { '::gdash':
         graphite_host   => 'https://graphite.wikimedia.org',
-        template_source => 'puppet:///files/graphite/gdash',
+        template_source => 'puppet:///files/gdash',
         options         => {
           title         => 'WMF stats',
           graph_columns => 1,
