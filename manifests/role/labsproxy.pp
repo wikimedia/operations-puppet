@@ -62,7 +62,8 @@ class role::dynamicproxy {
         privatekey => false
     }
     class { '::dynamicproxy':
-        ssl_certificate_name => 'star.wmflabs.org'
+        ssl_certificate_name => 'star.wmflabs.org',
+        set_xff => true
     }
     include dynamicproxy::api
 }
