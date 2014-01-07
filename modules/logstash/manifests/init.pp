@@ -22,7 +22,10 @@ class logstash(
 
     $config_dir   = '/etc/logstash/conf.d'
 
-    package { 'openjdk-7-jdk': }
+    # OL: commented this out because it conflicts with the elasticsearch module.
+    # The logstash role depends on both. Probably this resource should not be in
+    # either module but in a separate module altogether.
+    # package { 'openjdk-7-jdk': }
 
     package { 'logstash':
         ensure  => '1.2.2-debian1',
