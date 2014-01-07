@@ -766,7 +766,6 @@ node /^db10(23)\.eqiad\.wmnet/ {
 node "db1014.eqiad.wmnet" {
     $cluster = "misc"
     include standard,
-    misc::graphite,
         udpprofile::collector
 }
 
@@ -2022,7 +2021,6 @@ node "professor.pmtpa.wmnet" {
         ganglia,
         ntp::client,
         udpprofile::collector,
-        misc::graphite
 }
 
 node "potassium.eqiad.wmnet" {
@@ -2550,8 +2548,9 @@ node 'vanadium.eqiad.wmnet' {
 node 'hafnium.wikimedia.org' {
     include standard,
         role::eventlogging::graphite,
-        misc::graphite::navtiming,
-        webperf
+        webperf,
+        webperf::asset_check,
+        webperf::navtiming
 }
 
 # StatsD & Graphite host for eqiad. Slotted to replace professor.pmtpa.
