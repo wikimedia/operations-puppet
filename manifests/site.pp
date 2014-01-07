@@ -1887,7 +1887,10 @@ node "nescio.esams.wikimedia.org" {
 
 node 'netmon1001.wikimedia.org' {
     include standard,
-        misc::rancid
+        webserver::apache,
+        misc::rancid,
+        smokeping,
+        smokeping::web
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
