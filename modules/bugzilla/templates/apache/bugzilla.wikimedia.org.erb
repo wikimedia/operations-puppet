@@ -2,8 +2,11 @@
 # ! THIS FILE IS MANAGED BY PUPPET !
 # ./modules/bugzilla/templates/apache/bugzilla.wikimedia.org.erb
 
-NameVirtualHost *:80
-NameVirtualHost *:443
+# you should already have these in ports.conf
+# on Debian *:443 might be missing there but we puppetize that
+# if you need them, uncomment the next 2 lines
+# NameVirtualHost *:80
+# NameVirtualHost *:443
 
 <VirtualHost *:80>
 	ServerAdmin webmaster@wikimedia.org
