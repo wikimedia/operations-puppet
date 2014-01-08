@@ -1183,6 +1183,9 @@ class role::cache {
                 'ytterbium.wikimedia.org',
                 'tungsten.eqiad.wmnet',
                 'zirconium.wikimedia.org',
+                'logstash1001.eqiad.wmnet',
+                'logstash1002.eqiad.wmnet',
+                'logstash1003.eqiad.wmnet',
             ],
             backend_options => [
             {
@@ -1190,12 +1193,23 @@ class role::cache {
                 'port' => 8080,
             },
             {
+                'backend_match' => '^logstash',
+                'probe'         => 'logstash',
+            },
+            {
                 'port' => 80,
                 'connect_timeout' => '5s',
                 'first_byte_timeout' => '35s',
                 'between_bytes_timeout' => '4s',
                 'max_connections' => 100,
-            }]
+            }],
+            directors => {
+                'logstash' => [
+                    'logstash1001.eqiad.wmnet',
+                    'logstash1002.eqiad.wmnet',
+                    'logstash1003.eqiad.wmnet',
+                ]
+            },
         }
     }
 }

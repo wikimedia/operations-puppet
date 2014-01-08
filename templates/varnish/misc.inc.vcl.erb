@@ -12,6 +12,8 @@ sub vcl_recv {
 		set req.backend = ytterbium;
 	} elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
 		set req.backend = tungsten;
+	} elsif (req.http.Host == "logstash.wikimedia.org"){
+		set req.backend = logstash;
 	} elsif (req.http.Host == "scholarships.wikimedia.org") {
 		set req.backend = zirconium;
 	} else {
@@ -20,6 +22,11 @@ sub vcl_recv {
 
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET and HEAD */
+		return (pass);
+	}
+
+	if (req.http.Authorization) {
+		/* Don't cache authorized content */
 		return (pass);
 	}
 
