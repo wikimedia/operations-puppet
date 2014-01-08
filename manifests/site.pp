@@ -2478,6 +2478,7 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
 
     include standard
     include role::logstash
+    include role::kibana
 
     include groups::wikidev
     include accounts::aaron
