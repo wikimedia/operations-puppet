@@ -19,7 +19,7 @@ class zuul (
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $url_pattern,
     $status_url = "https://${::fqdn}/zuul/status",
-    $zuul_url = 'http://integration.wikimedia.org/zuul/git',
+    $zuul_url = 'git://zuul.eqiad.wmnet',
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
     $git_branch = 'master',
     $git_dir = '/var/lib/zuul/git',
