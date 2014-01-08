@@ -136,6 +136,9 @@ class role::deployment::config {
     'librenms/librenms'                  => {
         'grain'    => 'librenms',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/librenms',
+    'kibana/kibana'      => {
+        'grain'    => 'kibana',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/kibana',
     },
   }
 }
