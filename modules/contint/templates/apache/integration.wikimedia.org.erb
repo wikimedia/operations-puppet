@@ -17,6 +17,62 @@ NameVirtualHost *:443
 	RewriteCond %{HTTP:X-Forwarded-Proto} !https
 	RewriteRule (.) https://integration.wikimedia.org%{REQUEST_URI} [R=301]
 
+	DocumentRoot /srv/org/wikimedia/integration
+	RewriteRule ^/favicon\.ico$ /favicon.php [L]
+
+	Include *_proxy
+
+	<Directory />
+		Order Deny,Allow
+		AllowOverride All
+	</Directory>
+
+	<Directory /srv/org/wikimedia/integration>
+		Options FollowSymLinks
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	<Directory /srv/org/wikimedia/integration/logs>
+		# Let people browse the console logs
+		Options +Indexes
+	</Directory>
+
+	<Directory /srv/org/wikimedia/integration/*Mobile/nightly/>
+		Options +Indexes
+		IndexOptions FancyIndexing
+		IndexOptions SuppressIcon
+		IndexOptions SuppressRules
+		IndexOptions SuppressDescription
+		IndexOptions SuppressHTMLPreamble
+		IndexOptions HTMLTable
+		IndexOptions VersionSort
+		IndexOptions NameWidth=*
+
+		ServerSignature Off
+
+		IndexStyleSheet "../../nightly.css"
+		HeaderName "HEADER.html"
+		ReadmeName "README.html"
+		IndexIgnore "*.html" ".."
+	</Directory>
+
+	# Generic nightly builds, no specific HTML there
+	<Directory /srv/org/wikimedia/integration/nightly/>
+		Options +Indexes
+		IndexOptions FancyIndexing
+		IndexOptions SuppressDescription
+		IndexOptions HTMLTable
+		IndexOptions VersionSort
+		IndexOptions NameWidth=*
+	</Directory>
+
+	<Directory /srv/org/wikimedia/integration/nightly/mediawiki/core>
+		IndexOrderDefault Descending Date
+	</Directory>
+
+
 </VirtualHost>
 
 <VirtualHost *:443>
