@@ -39,6 +39,11 @@ define mysql_multi_instance::instance(
     }else {
       $slave_transaction_retries = 10
     }
+    if has_key( $instances[$name],  'max_user_connections') {
+      $max_user_connections = $instances[$name]['max_user_connections']
+    }else {
+      $max_user_connections = 10
+    }
 
     $serverid = inline_template("<%= ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + String(${port}); server_id %>")
     include passwords::nagios::mysql
@@ -124,7 +129,7 @@ define mysql_multi_instance::instance(
           'thread_stack'                   => '192K',
           'thread_cache_size'              => 300,
           'max_connections'                => 2000,
-          'max_user_connections'           => 10,
+          'max_user_connections'           => $max_user_connections,
           'table_open_cache'               => 50000,
           'table_definition_cache'         => 40000,
           'query_cache_size'               => 0,
