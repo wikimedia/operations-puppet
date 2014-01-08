@@ -9,7 +9,7 @@ usage() {
 	echo " Expected deploy events include sync-common, sync-file, scap, etc."
 	echo " These messages can be suppressed by setting an environment variable $DOLOGMSGNOLOG."
 	echo ""
-	echo "  IF YOU'RE RUNNING THIS BY HAND, PLEASE STOP.  Go ask Asher why.  :)"
+	echo "  IF YOU'RE RUNNING THIS BY HAND, PLEASE STOP."
 	echo ""
 	exit
 }
@@ -19,9 +19,9 @@ usage() {
 if [ -z $DOLOGMSGNOLOG ]; then
 	if [ "$1" ] ; then
 		utime="$(date +%s)"
-		echo "deploy.$1 1 $utime" | nc -w1 -q0 $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
-		echo "deploy.any 1 $utime" | nc -w1 -q0 $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
-		test -n "$2" && echo "deploy.${1}.timing:${2}000|ms" | nc -w1 -q0 $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
+		echo "deploy.$1 1 $utime" | nc -w1 -q0 $MW_CARBON_HOST $MW_CARBON_PORT || /bin/true
+		echo "deploy.any 1 $utime" | nc -w1 -q0 $MW_CARBON_HOST $MW_CARBON_PORT || /bin/true
+		test -n "$2" && echo "deploy.${1}.timing:${2}000|ms" | nc -w1 -q0 $MW_CARBON_HOST $MW_CARBON_PORT || /bin/true
 	else
 		usage
 	fi
