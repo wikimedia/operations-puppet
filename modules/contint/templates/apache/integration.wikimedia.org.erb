@@ -12,31 +12,8 @@ NameVirtualHost *:443
 	ErrorLog /var/log/apache2/integration_error.log
 	CustomLog /var/log/apache2/integration_access.log vhost_combined
 
-	# Force any request to HTTPS except the Zuul git repository
-	RedirectMatch permanent ^/((?!(zuul\/git)).*) https://integration.wikimedia.org/$1
-
-	# Publish Zuul git repositories
-	#
-	# This let Jenkins slaves the possibility to fetch git references crafted
-	# by Zuul.
-
-	SetEnv GIT_PROJECT_ROOT <%= @zuul_git_dir %>/
-	# Allow access to any repository:
-	SetEnv GIT_HTTP_EXPORT_ALL
-
-	# Rewrites borrowed from OpenStack Zuul configuration
-	AliasMatch ^/zuul/git/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$ <%= @zuul_git_dir %>/$1
-	AliasMatch ^/zuul/git/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ <%= @zuul_git_dir %>/$1
-	ScriptAlias /zuul/git/ /usr/lib/git-core/git-http-backend/
-
-	# Restrict access to internal network
-	<Directory "/usr/lib/git-core/">
-		Order Allow,Deny
-		Allow from 10.0.0.0/8
-		Allow from 127.0.0.1
-		# gallium is a slave with a public IP address
-		Allow from 208.80.154.135
-	</Directory>
+	# Force any request to HTTPS
+	RedirectMatch permanent ^/(.*) https://integration.wikimedia.org/$1
 
 </VirtualHost>
 
