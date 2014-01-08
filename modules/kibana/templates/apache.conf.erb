@@ -1,0 +1,70 @@
+# vim: sw=2 ts=2 sts=2 et ft=apache
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/kibana/apache.conf
+#####################################################################
+
+<VirtualHost *:80>
+  ServerName <%= @hostname %>
+  ServerAdmin <%= @serveradmin %>
+
+  DocumentRoot <%= @deploy_dir %>/src
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Directory /etc/kibana>
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory <%= @deploy_dir %>/src>
+    Options Indexes -Multiviews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Location />
+    AuthName "<%= @auth_realm %>"
+    AuthType Basic
+    AuthBasicProvider ldap
+    AuthLDAPBindDN <%= @ldap_binddn %>
+    AuthLDAPBindPassword <%= @proxypass %>
+    AuthLDAPURL "<%= @ldap_authurl %>"
+    Require ldap-group <%= @ldap_group %>
+  </Location>
+
+  Alias /config.js /etc/kibana/config.js
+
+  ProxyRequests Off
+
+  <Proxy http://<%= @es_host %>:<%= @es_port %>>
+    ProxySet connectiontimeout=5 timeout=90 retry=0
+  </Proxy>
+
+  # Proxy for _aliases and .*/_search
+  <LocationMatch "^/(_nodes|_aliases|_search|.*/_search|_mapping|.*/_mapping)$">
+    ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1
+    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1
+  </LocationMatch>
+
+  # Proxy for kibana-int/{dashboard,temp} stuff
+  <LocationMatch "^/(kibana-int/dashboard/|kibana-int/temp)(.*)$">
+    ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1$2
+    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1$2
+  </LocationMatch>
+
+  # Expose the cluster status for internal health checks
+  <Location "/status">
+    ProxyPass http://<%= @es_host %>:<%= @es_port %>/
+    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/
+    # Allow internal hosts to access this URI without authenticating
+    Allow from 10.0.0.0/8
+    Allow from 2620:0:860::/46
+    Satisfy Any
+  </Location>
+
+</VirtualHost>
