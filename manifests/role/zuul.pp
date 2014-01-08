@@ -79,7 +79,7 @@ class role::zuul::production {
         gerrit_user          => 'jenkins-bot',
         url_pattern          => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
         status_url           => 'https://integration.wikimedia.org/zuul/',
-        zuul_url             => 'http://integration.wikimedia.org/zuul/git',
+        zuul_url             => 'git://zuul.eqiad.wmnet',
         config_git_branch    => 'master',
         git_branch           => 'master',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
@@ -87,6 +87,7 @@ class role::zuul::production {
         statsd_host          => '10.64.0.18',  # tungsten.eqiad.wmnet
     }
 
+    # Serves Zuul git repositories on git://zuul.eqiad.wmnet/...
     class { 'contint::zuul::git-daemon':
       zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
     }
