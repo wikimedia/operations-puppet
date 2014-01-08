@@ -12,7 +12,7 @@ class misc::etherpad {
 
     # NB: this has some GUI going on all up in it. first install must be done by hand.
     package { 'etherpad':
-        ensure => absent, # Wait until Jan 10 2014 and then turn this into purged
+        ensure => purged, # Wait until Jan 10 2014 and then turn this into purged
     }
 
     service { 'etherpad':
