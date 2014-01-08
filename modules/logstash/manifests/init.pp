@@ -61,6 +61,10 @@ class logstash(
     }
 
     service { 'logstash':
-        enable  => true,
+        enable     => true,
+        ensure     => running,
+        provider   => 'debian',
+        hasstatus  => true,
+        hasrestart => true,
     }
 }

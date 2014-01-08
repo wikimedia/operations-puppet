@@ -42,7 +42,7 @@ class role::logstash {
         port => 8324,
     }
     class { '::logstash::input::syslog':
-        port => 514,
+        port => 10514,
     }
     class { '::logstash::input::redis':
         host => '127.0.0.1',
