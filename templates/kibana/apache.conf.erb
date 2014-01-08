@@ -1,0 +1,92 @@
+# vim: sw=2 ts=2 sts=2 et ft=apache
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/kibana/apache.conf
+#####################################################################
+
+<VirtualHost *:80>
+  ServerName <%= @hostname %>
+  ServerAdmin <%= @serveradmin %>
+
+  DocumentRoot <%= @deploy_dir %>/src
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+    Order Allow,Deny
+    Deny from all
+  </Directory>
+
+  <Directory /etc/kibana>
+    Allow from all
+  </Directory>
+
+  <Directory <%= @deploy_dir %>/src>
+    Order Allow,Deny
+    Allow from all
+  </Directory>
+
+  <Location />
+    AuthName "<%= @auth_realm %>"
+    AuthType Basic
+    AuthBasicProvider ldap
+    AuthLDAPBindDN <%= @ldap_binddn %>
+    AuthLDAPBindPassword <%= @ldap_bindpass %>
+    AuthLDAPURL "<%= @ldap_authurl %>"
+    Require ldap-group <%= @ldap_group %>
+  </Location>
+
+  Alias /config.js /etc/kibana/config.js
+
+  ProxyRequests Off
+
+  <Proxy http://<%= @es_host %>:<%= @es_port %>>
+    ProxySet connectiontimeout=5 timeout=90 retry=0
+  </Proxy>
+
+  # Tell caches that we are using http authentication
+  Header set Vary Authorization
+
+  # Allow caching of static content for 1 hour
+  # We will override this below for dynamic content
+  Header set Cache-Control "public, must-revalidate, max-age=3600"
+
+  # Elasticsearch searches
+  <LocationMatch "^/(_search|.*/_search)$">
+    ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1
+    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1
+    # Disallow caching of search results
+    Header set Cache-Control "private, must-revalidate, max-age=0"
+    Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
+  </LocationMatch>
+
+  # Elasticsearch meta-data requests
+  <LocationMatch "^/(_nodes|_aliases|_mapping|.*/_mapping)$">
+    ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1
+    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1
+    # Allow caching for 15 minutes
+    Header set Cache-Control "public, must-revalidate, max-age=900"
+  </LocationMatch>
+
+  # Storage/retrival of saved dashboards via elasticsearch
+  <LocationMatch "^/(kibana-int/dashboard/|kibana-int/temp)(.*)$">
+    ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1$2
+    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1$2
+    # Allow caching for 5 minutes
+    Header set Cache-Control "public, must-revalidate, max-age=900"
+  </LocationMatch>
+
+  # Expose the cluster status for internal health checks
+  <LocationMatch "^/status$">
+    ProxyPass http://<%= @es_host %>:<%= @es_port %>/
+    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/
+    # Disallow caching of status checks
+    Header set Cache-Control "private, must-revalidate, max-age=0"
+    Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
+    # Allow internal hosts to access this URI without authenticating
+    Allow from 10.0.0.0/8
+    Allow from 2620:0:860::/46
+    Satisfy Any
+  </LocationMatch>
+
+</VirtualHost>
