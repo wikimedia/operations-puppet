@@ -39,7 +39,18 @@
 	ErrorLog /var/log/apache2/doc_error.log
 	CustomLog /var/log/apache2/doc_access.log vhost_combined
 
-	Redirect permanent / https://doc.wikimedia.org/
+
+	# Force any request to HTTPS if not passed via https (misc web varnish)
+	RewriteEngine On
+	RewriteCond %{HTTP:X-Forwarded-Proto} !https
+	RewriteRule (.) https://doc.wikimedia.org%{REQUEST_URI} [R=301]
+
+	DocumentRoot /srv/org/wikimedia/doc
+
+	# Favicon proxy
+	RewriteEngine On
+	RewriteRule ^/favicon\.ico$ /favicon.php [L]
+
 </VirtualHost>
 
 <VirtualHost *:443>
