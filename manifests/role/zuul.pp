@@ -87,6 +87,7 @@ class role::zuul::production {
         statsd_host          => '10.64.0.18',  # tungsten.eqiad.wmnet
     }
 
+    # Serves Zuul git repositories on git://zuul.eqiad.wmnet/...
     class { 'contint::zuul::git-daemon':
       zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
     }
