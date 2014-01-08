@@ -26,14 +26,10 @@ class misc::beta::autoupdater {
 			ensure => absent;
 	}
 
-	$beta_parsoid_remote_script = '/usr/local/bin/wmf-beta-parsoid-remote.sh'
-
-	file { $beta_parsoid_remote_script:
-		ensure => present,
-		source => 'puppet:///files/misc/beta/wmf-beta-parsoid-remote.sh',
-		owner  => root,
-		group  => root,
-		mode   => 0555,
+	# Phased out in favor of a dedicated Jenkins job running directly on the
+	# beta parsoid instance.
+	file { '/usr/local/bin/wmf-beta-parsoid-remote.sh':
+		ensure => absent,
 	}
 
 	# Make sure wmf-beta-autoupdate can run the l10n updater as l10nupdate
@@ -46,11 +42,6 @@ class misc::beta::autoupdater {
 		# make sure we are not going to ask the password to mwdeploy when
 		# it tries to identify as mwdeploy.
 		'ALL = (mwdeploy) NOPASSWD: ALL',
-
-		# The Parsoid restart script needs jenkins-deploy ssh credentials
-		# to connect to the beta parsoid instance
-		"ALL = (jenkins-deploy) NOPASSWD:$beta_parsoid_remote_script restart",
-		"ALL = (jenkins-deploy) NOPASSWD:$beta_parsoid_remote_script status",
 
 		# mergeMessageFileList.php is run by mw-update-l10n as the apache user
 		# since https://gerrit.wikimedia.org/r/#/c/44548/
