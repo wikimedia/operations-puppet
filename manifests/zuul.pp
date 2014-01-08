@@ -46,6 +46,10 @@ class zuulwikimedia {
 
         # nagios/icinga monitoring
         monitor_service { 'zuul': description => 'zuul_service_running', check_command => 'nrpe_check_zuul' }
+        nrpe::monitor_service { 'zuul_gearman':
+            description  => 'zuul_gearman_service',
+            nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 4730 --timeout=2',
+        }
 
         # Deploy Wikimedia Zuul configuration files.
 
