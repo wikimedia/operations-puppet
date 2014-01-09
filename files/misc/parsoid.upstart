@@ -20,9 +20,11 @@ env DEFAULTFILE=/etc/default/parsoid
 
 # Basic build in default, would be overridden by whatever
 # is defined in the DEFAULTFILE defined above
+# These settings are based on checking out the
+# mediawiki/services/parsoid/deploy repo
 env VCAP_APP_PORT="8000"
-env NODE_PATH="/var/lib/parsoid/Parsoid/js/node_modules"
-env PARSOID_BASE_PATH="/var/lib/parsoid/Parsoid"
+env NODE_PATH="/var/lib/parsoid/Parsoid/node_modules"
+env PARSOID_BASE_PATH="/var/lib/parsoid/Parsoid/src"
 
 respawn
 

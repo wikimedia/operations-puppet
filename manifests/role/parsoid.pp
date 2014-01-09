@@ -18,6 +18,7 @@ class role::parsoid::common {
         mode   => '2775',
     }
 
+    # SSS FIXME: What uses this?
     file { '/usr/bin/parsoid':
         ensure => present,
         owner  => root,
@@ -48,19 +49,42 @@ class role::parsoid::production {
         target => '/srv/deployment/parsoid/Parsoid',
     }
 
-    # production uses an init script whereas labs experiments with upstart
+    # production uses upstart as well now
+    # This uses the same file and service config as beta labs.
     file { '/etc/init.d/parsoid':
-        ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0555',
-        source => 'puppet:///files/misc/parsoid.init',
+        ensure => 'link',
+        target => '/lib/init/upstart-job',
+    }
+    file { '/etc/init/parsoid.conf':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        source => 'puppet:///files/misc/parsoid.upstart',
+    }
+
+    # SSS FIXME: Is this the right log file path?
+    $parsoid_log_file  = '/var/log/parsoid/parsoid.log'
+    $parsoid_node_path = '/srv/deployment/parsoid/deploy/node_modules'
+    $parsoid_base_path = '/srv/deployment/parsoid/deploy/src'
+
+    file { '/etc/default/parsoid':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        content => template('misc/parsoid.default.erb'),
+        require => File['/var/log/parsoid'],
     }
     service { 'parsoid':
         ensure     => running,
         hasstatus  => true,
         hasrestart => true,
-        enable     => true,
+        provider   => 'upstart',
+        subscribe  => [
+            File['/etc/default/parsoid'],
+            File['/etc/init/parsoid.conf'],
+        ],
         require    => File['/etc/init.d/parsoid'],
     }
 

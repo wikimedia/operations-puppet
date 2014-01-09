@@ -5,12 +5,16 @@
 ### puppet:///files/misc/parsoid
 #####################################################################
 
+# SSS FIXME: Who/what uses this script? Can this be deleted?
+# And, /var/lib/parsoid/Parsoid also seems incorrect since
+# it should be /srv/deployment/parsoid/Parsoid?
+
 # Script to start Parsoid
 
 (
-	cd /var/lib/parsoid/Parsoid/js/lib
-	export NODE_PATH=/var/lib/parsoid/Parsoid/js/lib/node_modules
-	sudo -E -u parsoid nohup node /var/lib/parsoid/Parsoid/js/api/server.js > /var/lib/parsoid/nohup.out 2>&1 &
+	cd /var/lib/parsoid/Parsoid/src/lib
+	export NODE_PATH=/var/lib/parsoid/Parsoid/node_modules
+	sudo -E -u parsoid nohup node /var/lib/parsoid/Parsoid/src/api/server.js > /var/lib/parsoid/nohup.out 2>&1 &
 	PARSOIDPID=$!
 	echo $PARSOIDPID > /var/run/parsoid.pid
 	wait $PARSOIDPID
