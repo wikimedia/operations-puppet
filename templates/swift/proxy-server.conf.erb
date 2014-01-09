@@ -13,9 +13,9 @@ log_statsd_metric_prefix = <%= @statsd_metric_prefix %>
 
 [pipeline:main]
 <% if @auth_backend == 'swauth' -%>
-pipeline = rewrite healthcheck cache swauth cors proxy-logging proxy-server
+pipeline = rewrite healthcheck cache tempurl swauth cors proxy-logging proxy-server
 <% elsif @auth_backend == 'tempauth' -%>
-pipeline = rewrite healthcheck cache tempauth cors proxy-logging proxy-server
+pipeline = rewrite healthcheck cache tempurl tempauth cors proxy-logging proxy-server
 <% end -%>
 
 [app:proxy-server]
