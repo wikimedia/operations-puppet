@@ -9,7 +9,7 @@ class role::fundraising::civicrm {
 	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
 
-	install_certificate{ "star.wikimedia.org": }
+	#install_certificate{ "star.wikimedia.org": }
 
 	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
