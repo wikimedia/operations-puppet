@@ -1,6 +1,8 @@
 <?php
 # This file is managed by Puppet!
 
-$config = <%= scope.function_phpdump(@config) %>;
+$puppet_config = <%= scope.function_phpdump(@config) %>;
+
+$config = array_merge($config, $puppet_config);
 
 ?>

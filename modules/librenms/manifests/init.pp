@@ -44,13 +44,6 @@ class librenms(
         require => Group['librenms'],
     }
 
-    file { [ '/var/lib/librenms', '/var/lib/librenms/rrd' ]:
-        ensure  => directory,
-        owner   => 'librenms',
-        group   => 'librenms',
-        mode    => '0755',
-    }
-
     file { '/etc/logrotate.d/librenms':
         ensure => present,
         owner  => 'root',
@@ -61,10 +54,11 @@ class librenms(
     package { [
             'php5-cli',
             'php5-gd',
-            'php5-json',
             'php5-mcrypt',
             'php5-mysql',
             'php5-snmp',
+            'php-net-ipv4',
+            'php-net-ipv6',
             'php-pear',
             'fping',
             'graphviz',
@@ -90,7 +84,7 @@ class librenms(
     cron { 'librenms-discovery-new':
         ensure  => present,
         user    => 'librenms',
-        command => "${install_dir}/discovery.php -h all >> /dev/null 2>&1",
+        command => "${install_dir}/discovery.php -h new >> /dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }

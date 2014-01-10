@@ -19,10 +19,13 @@ class role::librenms {
     $install_dir = '/srv/deployment/librenms/librenms'
 
     $config = {
+        'project_name'     => 'Wikimedia NMS',
+        'project_id'       => 'librenms',
+        'title_image'      => 'url(//upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wikimedia_Foundation_RGB_logo_with_text.svg/100px-Wikimedia_Foundation_RGB_logo_with_text.svg.png)',
+
         'install_dir'      => $install_dir,
-        'html_dir'         => "${install_dir}/html",
+        'rrd_dir'          => '/srv/librenms/rrd',
         'log_file'         => '/var/log/librenms.log',
-        'rrd_dir'          => '/var/lib/librenms/rrd',
 
         'db_host'          => 'db1001.eqiad.wmnet',
         'db_user'          => $passwords::librenms::db_user,
@@ -57,9 +60,9 @@ class role::librenms {
         config      => $config,
     }
 
-    @webserver::apache::module { 'php5': }
+    @webserver::apache::module { [ 'php5', 'rewrite' ]: }
     @webserver::apache::site { $sitename:
-        docroot => $install_dir,
+        docroot => "${install_dir}/html",
         require => [
             Webserver::Apache::Module['php5'],
             Class['::librenms'],
@@ -72,7 +75,7 @@ class role::librenms {
     }
 
     monitor_service { 'librenms':
-        description   => 'HTTP',
+        description   => 'LibreNMS HTTP',
         check_command => "check_http_url!${sitename}!http://${sitename}",
     }
 }
