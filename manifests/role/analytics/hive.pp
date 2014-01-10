@@ -29,6 +29,11 @@ class role::analytics::hive::client {
     else {
         include role::analytics::hive::production
     }
+
+    # Include hcatalog class so that Hive client's can use
+    # ths JsonSerDe from it.  If we expand the usage of HCatalog
+    # in the future, this will probably move to its own role.
+    class { '::cdh4::hcatalog': }
 }
 
 
