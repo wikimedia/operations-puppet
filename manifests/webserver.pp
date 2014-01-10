@@ -299,8 +299,8 @@ class webserver::apache {
 	define site(
 		$aliases=[], 
 		$ssl="false", 
-		$certfile=undef, 
-		$certkey=undef, 
+		$certfile="/etc/ssl/certs/${title}.pem",
+		$certkey="/etc/ssl/private/${title}.key",
 		$docroot=undef, 
 		$custom=[], 
 		$includes=[],
@@ -314,14 +314,6 @@ class webserver::apache {
 		
 		if "$ssl" in ["true", "only", "redirected"] {
 			webserver::apache::module { ssl: }
-			
-			# If no cert files are defined, assume a named certificate for the domain
-			if ! $certfile {
-				$certfile = "/etc/ssl/certs/${title}.pem"
-			}
-			if ! $certkey {
-				$certkey = "/etc/ssl/private/${title}.key"
-			}
 		}
 		
 		file {
