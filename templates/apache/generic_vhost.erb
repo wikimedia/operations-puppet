@@ -1,6 +1,6 @@
 # This file is managed by Puppet!
 
-<% if ssl != "only" -%>
+<% if ["true", "false"].include?(ssl) -%>
 <VirtualHost *:80>
 	ServerName <%= title %>
 <% if aliases.length > 0 -%>
@@ -34,13 +34,25 @@
 </VirtualHost>
 <% end -%>
 
+<% if ssl == "redirected" -%>
+<VirtualHost *:80>
+	ServerName <%= title %>
+<% if aliases.length > 0 -%>
+	ServerAlias <%= aliases.join(" ") %>
+<% end -%>
+	ServerAdmin <%= server_admin %>
+
+	Redirect permanent / https://<%= title %>/
+</VirtualHost>
+<% else %>
+
 <% if ["true", "only", "redirected"].include?(ssl) -%>
 <VirtualHost *:443>
 	ServerName <%= title %>
 <% if aliases.length > 0 -%>
 	ServerAlias <%= aliases.join(" ") %>
 <% end -%>
-	ServerAdmin root@wikimedia.org
+	ServerAdmin <%= server_admin %>
 
 	SSLEngine on
 	SSLProtocol -ALL +SSLv3 +TLSv1
@@ -48,6 +60,7 @@
 	SSLHonorCipherOrder on
 	SSLCertificateFile <%= certfile %>
 	SSLCertificateKeyFile <%= certkey %>
+	SSLCACertificatePath /etc/ssl/certs
 
 	DocumentRoot <%= docroot %>
 	<Directory <%= docroot %>>
