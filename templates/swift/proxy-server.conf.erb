@@ -75,3 +75,6 @@ backend_url_format = <%= @backend_url_format %>
 
 paste.filter_factory = wmf.rewrite:filter_factory
 
+[filter:tempurl]
+# Default includes PUT, which is a bit scary and not useful for wmf
+methods = GET HEAD
