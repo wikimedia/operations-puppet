@@ -1094,13 +1094,14 @@ node "manutius.wikimedia.org" {
     $corerouters = [
         "cr1-sdtpa.wikimedia.org",
         "cr2-pmtpa.wikimedia.org",
-        "csw1-esams.wikimedia.org",
         "csw1-sdtpa.wikimedia.org",
         "cr1-esams.wikimedia.org",
         "cr2-knams.wikimedia.org",
         "csw2-esams.wikimedia.org",
         "cr1-eqiad.wikimedia.org",
         "cr2-eqiad.wikimedia.org",
+        "cr1-ulsfo.wikimedia.org",
+        "cr2-ulsfo.wikimedia.org",
         "mr1-pmtpa.mgmt.pmtpa.wmnet",
         "pfw1-eqiad.wikimedia.org"
     ]
