@@ -1894,6 +1894,8 @@ node 'netmon1001.wikimedia.org' {
         smokeping,
         smokeping::web,
         role::librenms
+
+    interface::add_ip6_mapped { "main": }
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
