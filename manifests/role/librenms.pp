@@ -49,18 +49,22 @@ class role::librenms {
         config      => $config,
     }
 
+    install_certificate { $hostname: }
+
     @webserver::apache::module { 'php5': }
     @webserver::apache::site { $hostname,
         aliases => [ 'observium.wikimedia.org' ],
         docroot => $install_dir,
+        ssl     => 'redirected',
         require => [
             Webserver::Apache::Module['php5'],
+            Install_certificate[$hostname],
             Class['librenms'],
         ],
     }
 
     monitor_service { 'librenms':
         description   => 'HTTP',
-        check_command => "check_http_url!${hostname}!http://${hostname}",
+        check_command => "check_https_url!${hostname}!http://${hostname}",
     }
 }
