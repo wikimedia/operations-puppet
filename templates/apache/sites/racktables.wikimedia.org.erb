@@ -23,6 +23,7 @@
 	SSLHonorCipherOrder on
 	SSLCertificateFile <%= racktables_ssl_cert %>
 	SSLCertificateKeyFile <%= racktables_ssl_key %>
+	SSLCACertificatePath /etc/ssl/certs
 
 	DocumentRoot /srv/org/wikimedia/racktables/wwwroot
         <Directory />
