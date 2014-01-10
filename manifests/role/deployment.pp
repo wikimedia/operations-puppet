@@ -133,6 +133,10 @@ class role::deployment::config {
         'grain'    => 'scholarships',
         'upstream' => 'https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships',
     },
+    'librenms/librenms'                  => {
+        'grain'    => 'librenms',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/librenms',
+    },
   }
 }
 

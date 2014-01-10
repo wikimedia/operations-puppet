@@ -1,0 +1,6 @@
+/var/log/librenms.log {
+    rotate 7
+    daily
+    compress
+    missingok
+}
