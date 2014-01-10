@@ -305,8 +305,8 @@ class webserver::apache {
 		$custom=[], 
 		$includes=[],
 		$server_admin="root@wikimedia.org",
-		$access_log="/var/log/apache2/access.log",
-		$error_log="/var/log/apache2/error.log",
+		$access_log="/var/log/apache2/${title}.access.log",
+		$error_log="/var/log/apache2/${title}.error.log",
 		$ensure=present
 		) {
 
