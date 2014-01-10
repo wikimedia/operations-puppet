@@ -26,6 +26,11 @@ allow_account_management = true
 account_autocreate = true
 <% end -%>
 
+[filter:tempurl]
+use = egg:swift#tempurl
+# default includes PUT
+methods = GET HEAD
+
 <% if @auth_backend == 'swauth' -%>
 [filter:swauth]
 use = egg:swauth#swauth
@@ -74,4 +79,3 @@ backend_url_format = <%= @backend_url_format %>
 
 
 paste.filter_factory = wmf.rewrite:filter_factory
-
