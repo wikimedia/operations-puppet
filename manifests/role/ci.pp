@@ -189,6 +189,11 @@ class role::ci::slave::browsertests {
   include role::ci::slave::labs::common,
       contint::slave-scripts
 
+  /**
+   * FIXME breaks puppet because jenkins-deploy is not known
+   * by puppet since it is provided via LDAP.
+   */
+  /**
   contint::tmpfs { 'tmpfs for jenkins CI slave':
       user        => 'jenkins-deploy',
       group       => 'wikidev',
@@ -196,6 +201,7 @@ class role::ci::slave::browsertests {
       mount_point => '/home/jenkins-deploy/tmpfs',
       size        => '128M',
   }
+  **/
 
   # We are in labs context, so use /mnt (== /dev/vdb)
   # Never EVER think about using GlusterFS.
