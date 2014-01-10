@@ -96,4 +96,9 @@ class librenms(
         minute  => '*/5',
         require => User['librenms'],
     }
+
+    file { '/usr/local/sbin/librenms-syslog':
+        ensure => link,
+        target => "${install_dir}/syslog.php",
+    }
 }

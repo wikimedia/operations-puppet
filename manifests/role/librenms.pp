@@ -44,7 +44,6 @@ class role::librenms {
         },
 
         'enable_inventory' => 1,
-        'enable_syslog'    => 1,
         'email_backend'    => 'sendmail',
         'alerts'           => {
             'port_util_alert' => true,
@@ -58,12 +57,23 @@ class role::librenms {
             },
         },
 
+        'enable_syslog'    => 1,
+        'syslog_filter'    => [
+            'message repeated',
+            'Connection from UDP: [',
+            'CMD ( /usr/libexec/atrun)',
+            'CMD (newsyslog)',
+        ],
+
         'auth_mechanism'   => 'mysql',
     }
 
     class { '::librenms':
         install_dir => $install_dir,
         config      => $config,
+    }
+    class { '::librenms::syslog':
+        require => Class['::librenms']
     }
 
     install_certificate { $sitename: }
