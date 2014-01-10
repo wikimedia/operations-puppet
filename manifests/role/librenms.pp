@@ -19,11 +19,10 @@ class role::librenms {
     $install_dir = '/srv/deployment/librenms/librenms'
 
     $config = {
-        'project_name'     => 'Wikimedia NMS',
-        'project_id'       => 'librenms',
         'title_image'      => 'url(//upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wikimedia_Foundation_RGB_logo_with_text.svg/100px-Wikimedia_Foundation_RGB_logo_with_text.svg.png)',
 
         'install_dir'      => $install_dir,
+        'html_dir'         => "${install_dir}/html",
         'rrd_dir'          => '/srv/librenms/rrd',
         'log_file'         => '/var/log/librenms.log',
 
@@ -34,6 +33,14 @@ class role::librenms {
 
         'snmp'             => {
             'community' => [ $passwords::network::snmp_ro_community ],
+        },
+
+        'nets'             => $network::constants::external_networks,
+        'autodiscovery'    => {
+            'xdp'      => true,
+            'ospf'     => true,
+            'bgp'      => false,
+            'snmpscan' => false,
         },
 
         'enable_inventory' => 1,
@@ -52,7 +59,6 @@ class role::librenms {
         },
 
         'auth_mechanism'   => 'mysql',
-        'nets'             => $network::constants::external_networks,
     }
 
     class { '::librenms':

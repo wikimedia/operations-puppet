@@ -68,6 +68,7 @@ class librenms(
             'nmap',
             'python-mysqldb',
             'rrdtool',
+            'snmp-mibs-downloader',
             'whois',
         ]:
         ensure => present,
@@ -91,7 +92,7 @@ class librenms(
     cron { 'librenms-poller-all':
         ensure  => present,
         user    => 'librenms',
-        command => "${install_dir}/poller.php -h all >> /dev/null 2>&1",
+        command => "/usr/bin/python ${install_dir}/poller-wrapper.py 16 >> /dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
