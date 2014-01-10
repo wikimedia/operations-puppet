@@ -105,10 +105,8 @@ class role::analytics::kraken::jobs::hive::partitions::external {
     }
 
 
-    #   TODO: Change this path to a proper location
-    #         once we know where it will be deployed.
-    $hive_options = '--auxpath /home/otto/hive-serdes-1.0-SNAPSHOT.jar'
-
+    # Use hcatalog jar for JsonSerDe
+    $hive_options = '--auxpath /usr/lib/hcatalog/share/hcatalog/hcatalog-core-0.5.0-cdh4.3.1.jar'
     # cron job to automatically create hive partitions for any
     # newly imported data.
     cron { 'kraken-create-external-hive-partitions':
