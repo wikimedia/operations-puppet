@@ -44,7 +44,7 @@ class role::librenms {
         'nets'             => $network::constants::external_networks,
     }
 
-    class { 'librenms':
+    class { '::librenms':
         install_dir => $install_dir,
         config      => $config,
     }
