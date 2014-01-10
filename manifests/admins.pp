@@ -3272,6 +3272,27 @@ class accounts {
         }
     }
 
+    # RT 6533
+    class kartik inherits baseaccount {
+        $username = 'kartik'
+        $realname = 'Kartik Mistry'
+        $uid      = 3033
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'kartikm@olive':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAwavUwjlUmLv0CJGAvtUfjuLkuukC1tNUi0BmMzOnmbtqJ1oY/RJ40HySJuV3RxFNCvFuMztqatX6icE82G+nBNUa5dzPKThWjsq9+rEyaT2KeEkJTXxBqzrWikV6GaIDCOYMVcw+0DMVfdhd/OxgcetYDgMADKolkcJ1YjPRI/HLKBtWDOS3X/tkl4xjYTKuARGH3lBTrmDZQm3XXKmlvnL5GXAcFu9C+rWhAGYefrIgWCGcQeNZa20A9dcIYRzERJ93szFdeEpJqGvQ2niCOmJfa4eyuc9jAvY9Xjp9XMXkCzRBfmhq9h1qRS4EpfRlm5cDs/RL+VRD2lVMLApE9Q==',
+            }
+        }
+    }
+
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3360,6 +3381,7 @@ class admins::mortals {
 	include accounts::halfak
 	include accounts::hashar
 	include accounts::kaldari
+	include accounts::kartik # RT 6533
 	include accounts::khorn
 	include accounts::krinkle
 	include accounts::manybubbles # promoted per RT 5691
