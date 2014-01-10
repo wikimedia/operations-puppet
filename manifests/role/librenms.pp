@@ -54,7 +54,7 @@ class role::librenms {
         docroot => $install_dir,
         require => [
             Webserver::Apache::Module['php5'],
-            Class['librenms'],
+            Class['::librenms'],
         ],
     }
 
