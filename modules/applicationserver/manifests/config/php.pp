@@ -41,14 +41,6 @@ class applicationserver::config::php(
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/php/igbinary.ini";
-		"/etc/php5/conf.d/wikidiff2.ini":
-			mode => 0444,
-			owner => root,
-			group => root,
-			content => "
-; This file is managed by Puppet!
-extension=wikidiff2.so
-";
 		"/etc/php5/conf.d/mail.ini":
 			mode => 0444,
 			owner => root,
