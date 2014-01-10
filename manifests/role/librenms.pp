@@ -66,11 +66,15 @@ class role::librenms {
         config      => $config,
     }
 
+    install_certificate { $sitename: }
+
     @webserver::apache::module { [ 'php5', 'rewrite' ]: }
     @webserver::apache::site { $sitename:
         docroot => "${install_dir}/html",
+        ssl     => 'redirected',
         require => [
             Webserver::Apache::Module['php5'],
+            Install_certificate[$sitename],
             Class['::librenms'],
         ],
     }
@@ -81,7 +85,7 @@ class role::librenms {
     }
 
     monitor_service { 'librenms':
-        description   => 'LibreNMS HTTP',
-        check_command => "check_http_url!${sitename}!http://${sitename}",
+        description   => 'LibreNMS HTTPS',
+        check_command => "check_https_url!${sitename}!http://${sitename}",
     }
 }
