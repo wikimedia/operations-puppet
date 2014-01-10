@@ -312,11 +312,6 @@ class webserver::apache {
 
 		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
 		
-		if ! $docroot {
-			$subdir = inline_template("scope.lookupvar('webserver::apache::site::title').strip.split.reverse.join('/')")
-			$docroot = "/srv/$subdir"
-		}
-		
 		if "$ssl" in ["true", "only", "redirected"] {
 			webserver::apache::module { ssl: }
 			

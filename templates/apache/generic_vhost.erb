@@ -8,6 +8,7 @@
 <% end -%>
 	ServerAdmin <%= server_admin %>
 
+<% if docroot -%>
 	DocumentRoot <%= docroot %>
 	<Directory <%= docroot %>>
 		Options Indexes FollowSymLinks MultiViews
@@ -15,6 +16,8 @@
 		Order allow,deny
 		allow from all
 	</Directory>
+<% end -%>
+
 
 	ErrorLog <%= error_log %>
 	# Possible values include: debug, info, notice, warn, error, crit,
@@ -62,6 +65,7 @@
 	SSLCertificateKeyFile <%= certkey %>
 	SSLCACertificatePath /etc/ssl/certs
 
+<% if docroot -%>
 	DocumentRoot <%= docroot %>
 	<Directory <%= docroot %>>
 		Options Indexes FollowSymLinks MultiViews
@@ -69,6 +73,7 @@
 		Order allow,deny
 		allow from all
 	</Directory>
+<% end -%>
 
 	ErrorLog <%= error_log %>
 	# Possible values include: debug, info, notice, warn, error, crit,
