@@ -284,10 +284,10 @@ class webserver::apache {
 	# Parameters:
 	#	$aliases=[]       - array of ServerAliases
 	#	$ssl="false"      - if true, sets up an ssl certificate for $title
-	#	$certfile=undef   - defaults to /etc/ssl/certs/${wildcard_domain}.pem, based on $title
-	#	$certkey=undef    - defaults to "/etc/ssl/private/${wildcard_domain}.key based on $title
+	#	$certfile=undef   - defaults to /etc/ssl/certs/${title}.pem
+	#	$certkey=undef    - defaults to "/etc/ssl/private/${title}.key
 	#	$docroot=undef    - defaults to: $title == 'stats.wikimedia.org', then /srv/stats.wikimedia.org
-	#	$custom=[]        - custom Apachce config strings to put into virtual host site file
+	#	$custom=[]        - custom Apache config strings to put into virtual host site file
 	#	$includes=[]
 	#	$server_admin="root@wikimedia.org",
 	#	$access_log       - path to access log, default: /var/log/apache2/access.log
@@ -320,13 +320,12 @@ class webserver::apache {
 		if "$ssl" in ["true", "only", "redirected"] {
 			webserver::apache::module { ssl: }
 			
-			# If no cert files are defined, assume a wildcart certificate for the domain
-			$wildcard_domain = regsubst($title, '^[^\.]+', "*")
+			# If no cert files are defined, assume a named certificate for the domain
 			if ! $certfile {
-				$certfile = "/etc/ssl/certs/${wildcard_domain}.pem"
+				$certfile = "/etc/ssl/certs/${title}.pem"
 			}
 			if ! $certkey {
-				$certkey = "/etc/ssl/private/${wildcard_domain}.key"
+				$certkey = "/etc/ssl/private/${title}.key"
 			}
 		}
 		
