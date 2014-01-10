@@ -1891,7 +1891,8 @@ node 'netmon1001.wikimedia.org' {
         webserver::apache,
         misc::rancid,
         smokeping,
-        smokeping::web
+        smokeping::web,
+        role::librenms
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
