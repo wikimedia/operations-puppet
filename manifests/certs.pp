@@ -83,6 +83,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
+		certificates::rapidssl_ca_2,
 		certificates::digicert_ca,
 		certificates::wmf_ca
 
@@ -245,6 +246,27 @@ class certificates::rapidssl_ca {
 		'/bin/ln -sf /etc/ssl/certs/RapidSSL_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0':
 			unless => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0\" ]",
 			require => File["/etc/ssl/certs/RapidSSL_CA.pem"];
+	}
+
+}
+
+class certificates::rapidssl_ca_2 {
+
+	include certificates::packages
+
+	file {
+		"/etc/ssl/certs/RapidSSL_CA_2.pem":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/ssl/RapidSSL_CA_2.pem",
+			require => Package["openssl"];
+	}
+
+	exec {
+		'/bin/ln -sf /etc/ssl/certs/RapidSSL_CA_2.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA_2.pem).0':
+			unless => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA_2.pem).0\" ]",
+			require => File["/etc/ssl/certs/RapidSSL_CA_2.pem"];
 	}
 
 }
