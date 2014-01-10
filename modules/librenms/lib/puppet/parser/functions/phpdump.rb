@@ -29,6 +29,6 @@ end
 module Puppet::Parser::Functions
   newfunction(:phpdump, :type => :rvalue) do |args|
     fail 'phpdump() requires an argument' if args.empty?
-    phpdump(args.inject(:merge))
+    phpdump(args)
   end
 end
