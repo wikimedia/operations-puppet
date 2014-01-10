@@ -132,9 +132,9 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
 		# have SSL enabled.
 		$cas = $name ? {
 			"unified.wikimedia.org" => "DigiCertHighAssuranceCA-3.pem",
-			"star.wikimedia.org" => "Equifax_Secure_CA.pem",
+			"star.wikimedia.org" => "Equifax Secure Certificate Authority",
 			"star.wikipedia.org" => "DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem",
-			"star.wiktionary.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
+			"star.wiktionary.org" => "Equifax Secure Certificate Authority",
 			"star.wikiquote.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
 			"star.wikibooks.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
 			"star.wikisource.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
