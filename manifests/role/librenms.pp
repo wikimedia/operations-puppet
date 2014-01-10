@@ -7,6 +7,14 @@ class role::librenms {
 
     $sitename = 'librenms.wikimedia.org'
 
+    # FIXME: deployment::target really needs to handle this better
+    file { [ '/srv/deployment', '/srv/deployment/librenms' ]:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     deployment::target { 'librenms': }
     $install_dir = '/srv/deployment/librenms/librenms'
 

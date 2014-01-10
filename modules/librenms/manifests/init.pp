@@ -44,11 +44,11 @@ class librenms(
         require => Group['librenms'],
     }
 
-    file { '/var/lib/librenms/rrd':
+    file { [ '/var/lib/librenms', '/var/lib/librenms/rrd' ]:
         ensure  => directory,
         owner   => 'librenms',
         group   => 'librenms',
-        mode    => '0555',
+        mode    => '0755',
     }
 
     file { '/etc/logrotate.d/librenms':
@@ -85,17 +85,20 @@ class librenms(
         command => "${install_dir}/discovery.php -h all >> /dev/null 2>&1",
         hour    => '*/6',
         minute  => '33',
+        require => User['librenms'],
     }
     cron { 'librenms-discovery-new':
         ensure  => present,
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h all >> /dev/null 2>&1",
         minute  => '*/5',
+        require => User['librenms'],
     }
     cron { 'librenms-poller-all':
         ensure  => present,
         user    => 'librenms',
         command => "${install_dir}/poller.php -h all >> /dev/null 2>&1",
         minute  => '*/5',
+        require => User['librenms'],
     }
 }
