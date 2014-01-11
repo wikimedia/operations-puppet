@@ -621,8 +621,8 @@ node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(06|15|22|27|40)\.eqiad\.wmnet/ {
-    if $::hostname =~ /^db10(06|22|40)/ {
+node /^db10(06|15|22|23|27|40)\.eqiad\.wmnet/ {
+    if $::hostname =~ /^db10(06|22|23|40)/ {
         class { role::coredb::s6 : innodb_file_per_table => true, mariadb => true }
     } elsif $::hostname =~ /^db10(15|27)/ {
         class { role::coredb::s6 : mariadb => true }
@@ -755,12 +755,6 @@ node 'db1057.eqiad.wmnet' {
             },
         }
     }
-}
-
-## not currently in production and/or hardware issues
-# db1023 -- ok
-node /^db10(23)\.eqiad\.wmnet/ {
-    include standard
 }
 
 node "db1014.eqiad.wmnet" {
