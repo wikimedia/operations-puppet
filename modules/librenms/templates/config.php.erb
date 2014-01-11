@@ -1,5 +1,11 @@
 <?php
-# This file is managed by Puppet!
+
+# This file is managed by Puppet, do not modify manually.
+
+$config['install_dir'] = "<%= @install_dir %>";
+$config['html_dir']    = "<%= @install_dir %>/html";
+$config['rrd_dir']     = "<%= @rrd_dir %>";
+$config['log_file']    = "/var/log/librenms.log";
 
 $puppet_config = <%= scope.function_phpdump(@config) %>;
 

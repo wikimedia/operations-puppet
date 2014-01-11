@@ -21,11 +21,6 @@ class role::librenms {
     $config = {
         'title_image'      => 'url(//upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wikimedia_Foundation_RGB_logo_with_text.svg/100px-Wikimedia_Foundation_RGB_logo_with_text.svg.png)',
 
-        'install_dir'      => $install_dir,
-        'html_dir'         => "${install_dir}/html",
-        'rrd_dir'          => '/srv/librenms/rrd',
-        'log_file'         => '/var/log/librenms.log',
-
         'db_host'          => 'db1001.eqiad.wmnet',
         'db_user'          => $passwords::librenms::db_user,
         'db_pass'          => $passwords::librenms::db_pass,
@@ -72,6 +67,7 @@ class role::librenms {
 
     class { '::librenms':
         install_dir => $install_dir,
+        rrd_dir     => '/srv/librenms/rrd',
         config      => $config,
     }
     class { '::librenms::syslog':

@@ -8,11 +8,16 @@
 #   Configuration for LibreNMS, in a puppet hash format.
 #
 # [*install_dir*]
-#   Installation directory for LibreNMS.
+#   Installation directory for LibreNMS. Defaults to /srv/librenms.
+#
+# [*rrd_dir*]
+#   Location where RRD files are going to be placed. Defaults to "rrd" under
+#   *install_dir*.
 #
 class librenms(
-    $config,
+    $config={},
     $install_dir='/srv/librenms',
+    $rrd_dir="${install_dir}/rrd",
 ) {
     group { 'librenms':
         ensure => present,
@@ -68,6 +73,7 @@ class librenms(
             'nmap',
             'python-mysqldb',
             'rrdtool',
+            #'snmp',
             'snmp-mibs-downloader',
             'whois',
         ]:
@@ -77,7 +83,7 @@ class librenms(
     cron { 'librenms-discovery-all':
         ensure  => present,
         user    => 'librenms',
-        command => "${install_dir}/discovery.php -h all >> /dev/null 2>&1",
+        command => "${install_dir}/discovery.php -h all >/dev/null 2>&1",
         hour    => '*/6',
         minute  => '33',
         require => User['librenms'],
@@ -85,18 +91,20 @@ class librenms(
     cron { 'librenms-discovery-new':
         ensure  => present,
         user    => 'librenms',
-        command => "${install_dir}/discovery.php -h new >> /dev/null 2>&1",
+        command => "${install_dir}/discovery.php -h new >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-poller-all':
         ensure  => present,
         user    => 'librenms',
-        command => "/usr/bin/python ${install_dir}/poller-wrapper.py 16 >> /dev/null 2>&1",
+        command => "python ${install_dir}/poller-wrapper.py 16 >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
 
+    # syslog script, in an install_dir-agnostic location
+    # used by librenms::syslog or a custom alternative placed manually.
     file { '/usr/local/sbin/librenms-syslog':
         ensure => link,
         target => "${install_dir}/syslog.php",
