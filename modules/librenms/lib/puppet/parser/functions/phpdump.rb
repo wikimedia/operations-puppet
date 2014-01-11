@@ -11,7 +11,7 @@ def phpdump(o, level=1)
     contents = ''
     o.sort.each do |k, v|
       contents += indent*level
-      contents += "\"#{k}\" => " + phpdump(v, level+1)
+      contents += k.to_pson + " => " + phpdump(v, level+1)
       contents += ",\n"
     end
     "array(\n" + contents + indent*(level-1) + ")"
@@ -21,8 +21,10 @@ def phpdump(o, level=1)
     "TRUE"
   when FalseClass
     "FALSE"
+  when nil
+    "NULL"
   else
-    '"' + o.to_s + '"'
+    o.include?('.') ? Float(o).to_s : Integer(o).to_s rescue o.to_pson
   end
 end
 
