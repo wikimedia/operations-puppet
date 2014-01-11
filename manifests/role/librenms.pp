@@ -61,8 +61,9 @@ class role::librenms {
         'syslog_filter'    => [
             'message repeated',
             'Connection from UDP: [',
-            'CMD ( /usr/libexec/atrun)',
+            'CMD (   /usr/libexec/atrun)',
             'CMD (newsyslog)',
+            'CMD (adjkerntz -a)',
         ],
 
         'auth_mechanism'   => 'mysql',
