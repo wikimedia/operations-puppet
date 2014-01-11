@@ -10,7 +10,7 @@ GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
 GITREPOS="core extensions"
 
 umask 0002
-echo "Starting l10nupdate at `date`."
+echo "Starting l10nupdate at `date --rfc-3339=seconds`."
 
 # Update i18n messages from git to the HEAD of master, or create the clone if it doesn't exist yet
 echo "Updating git clone ..."
@@ -71,24 +71,24 @@ do
 		  --all \
 		  --quiet
 	then
-		echo "Rebuilding localization cache at `date`"
+		echo "Rebuilding localization cache at `date --rfc-3339=seconds`"
 		/usr/local/bin/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
 		                  --quiet --outdir=/var/lib/l10nupdate/cache-"$mwVerNum"
 		# Copy the LC files
-		echo "Completed at `date`. Copying LC files to $MW_COMMON_SOURCE"
+		echo "Completed at `date --rfc-3339=seconds`. Copying LC files to $MW_COMMON_SOURCE"
 		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MW_COMMON_SOURCE/php-"$mwVerNum"/cache/l10n
 		# Include JSON versions of the CDB files and add MD5 files
 		/usr/local/bin/refreshCdbJsonFiles --directory="$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n"
 
-		echo "Syncing to Apaches at `date`"
+		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
 		SYNC_START=$(date +%s)
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
 		SYNC_END=$(date +%s)
-		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
-		echo "All done at `date`"
+		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date --rfc-3339=seconds`"
+		echo "All done at `date --rfc-3339=seconds`"
 		$BINDIR/deploy2graphite l10nupdate-sync $((SYNC_END-SYNC_START))
 	else
-		$BINDIR/dologmsg "!log LocalisationUpdate failed ($mwVerNum) at `date`"
+		$BINDIR/dologmsg "!log LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
 		echo "FAILED"
 	fi
 done
@@ -100,4 +100,4 @@ for wiki in `<"$ALLDB"`; do
 	/usr/local/bin/mwscript extensions/WikimediaMaintenance/refreshMessageBlobs.php --wiki="$wiki"
 done
 echo "All done"
-$BINDIR/dologmsg "!log LocalisationUpdate ResourceLoader cache refresh completed at `date`"
+$BINDIR/dologmsg "!log LocalisationUpdate ResourceLoader cache refresh completed at `date --rfc-3339=seconds`"
