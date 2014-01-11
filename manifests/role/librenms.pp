@@ -64,6 +64,7 @@ class role::librenms {
             'CMD (   /usr/libexec/atrun)',
             'CMD (newsyslog)',
             'CMD (adjkerntz -a)',
+            'kernel time sync enabled',
         ],
 
         'auth_mechanism'   => 'mysql',
