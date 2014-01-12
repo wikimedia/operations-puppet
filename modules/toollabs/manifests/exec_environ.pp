@@ -19,6 +19,23 @@ class toollabs::exec_environ {
     include generic::locales::international
     include identd
 
+    # Set up host aliases and NAT for LabsDB.
+    include role::labsdb::client
+
+    # Make tools.wmflabs.org work by aliasing it to tools-webproxy.
+    host { 'tools.wmflabs.org':
+        ip => '10.4.1.89',
+        host_aliases => 'tools';
+    }
+
+    # TODO: Remove when files have been removed.
+    file { '/data/project/.system/hosts':
+        ensure => absent;
+    }
+    file { '/data/project/.system/iptables.conf':
+        ensure => absent;
+    }
+
     package { [
         # Please keep all packages in each group sorted in alphabetical order
 
