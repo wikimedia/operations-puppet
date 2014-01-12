@@ -7,26 +7,26 @@ class gridengine::exec_submit_host($gridmaster = $grid_master) {
         gridmaster => $gridmaster,
     }
 
-    package { "gridengine-exec":
+    package { 'gridengine-exec':
         ensure => latest,
     }
 
-    package { [ "gridengine-client", "jobutils" ]:
+    package { [ 'gridengine-client', 'jobutils' ]:
         ensure => latest,
     }
 
-    file { "/var/lib/gridengine/default/common/accounting":
+    file { '/var/lib/gridengine/default/common/accounting':
         ensure => link,
-               target => "/data/project/.system/accounting",
+        target => '/data/project/.system/accounting',
     }
 
 # Not actually possible in the labs
-#	@@sshkey { $fqdn:
-#		ensure => present,
-#		type => 'ssh-dss',
-#		key => $sshdsakey,
-#		tag => "sshkey-$grid_master",
-#	}
+#   @@sshkey { $fqdn:
+#       ensure => present,
+#       type => 'ssh-dss',
+#       key => $sshdsakey,
+#       tag => "sshkey-$grid_master",
+#   }
 
 }
 
