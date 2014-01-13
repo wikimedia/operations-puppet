@@ -3494,7 +3494,8 @@ class admins::privatedata {
 		accounts::awight,       # RT 5048
 		accounts::abaso,        # RT 5446
 		accounts::qchris,       # RT 5474
-		accounts::tnegrin       # RT 5391
+		accounts::tnegrin,      # RT 5391
+		accounts::nuria         # RT 6617
 }
 
 class admins::fr-tech {
