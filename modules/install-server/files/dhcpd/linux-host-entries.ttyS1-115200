@@ -1310,11 +1310,6 @@ host hooft {
 	fixed-address hooft.esams.wikimedia.org;
 }
 
-host hooper {
-	hardware ethernet 84:2b:2b:06:4c:58;
-	fixed-address hooper.wikimedia.org;
-}
-
 host hydrogen {
 	hardware ethernet 78:2b:cb:09:0c:21;
 	fixed-address hydrogen.wikimedia.org;
