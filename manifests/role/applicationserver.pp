@@ -242,7 +242,7 @@ class role::applicationserver {
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "mediawiki::jobrunner": dprioprocs => 16, iprioprocs => 6, procs_per_iobound_type => 5, run_jobs_enabled => $run_jobs_enabled }
+		class { "mediawiki::jobrunner": dprioprocs => 17, iprioprocs => 6, procs_per_iobound_type => 5, run_jobs_enabled => $run_jobs_enabled }
 		include applicationserver::config::base,
 			applicationserver::packages,
 			applicationserver::cron,
