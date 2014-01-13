@@ -274,7 +274,7 @@ class ganglia {
                 # neon runs gmetad for ganglios
                 /^neon$/: {
                     $data_sources = {
-                        "Miscellaneous"                  => "hooper.wikimedia.org tarin.pmtpa.wmnet",
+                        "Miscellaneous"                  => "tarin.pmtpa.wmnet",
                         "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
                         "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
                         "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
@@ -285,7 +285,6 @@ class ganglia {
                     }
                 default: {
                     $data_sources = {
-                        "Decommissioned servers pmtpa"   => "eiximenis.wikimedia.org",
                         "Video scalers pmtpa"            => "tmh1.pmtpa.wmnet tmh2.pmtpa.wmnet",
                         "Video scalers eqiad"            => "tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet",
                         "Image scalers pmtpa"            => "mw75.pmtpa.wmnet mw76.pmtpa.wmnet",
@@ -301,7 +300,7 @@ class ganglia {
                         "MySQL"                          => "db1050.eqiad.wmnet",
                         "PDF servers"                    => "pdf1.wikimedia.org pdf2.wikimedia.org",
                         "LVS loadbalancers pmtpa"        => "lvs1.wikimedia.org lvs2.wikimedia.org",
-                        "Miscellaneous"                  => "hooper.wikimedia.org tarin.pmtpa.wmnet",
+                        "Miscellaneous"                  => "tarin.pmtpa.wmnet",
                         "Fundraiser payments"            => "payments1.wikimedia.org payments2.wikimedia.org",
                         "Fundraising eqiad"              => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
                         "SSL cluster esams"              => "hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",

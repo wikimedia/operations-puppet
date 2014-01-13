@@ -1130,16 +1130,6 @@ node "manutius.wikimedia.org" {
     class { "ganglia_new::monitor::aggregator": sites => ["pmtpa", "eqiad"] }
 }
 
-node "hooper.wikimedia.org" {
-    $ganglia_aggregator = true
-
-    include standard,
-        admins::roots,
-        svn::client
-
-    install_certificate{ "star.wikimedia.org": }
-}
-
 node "hume.wikimedia.org" {
     $cluster = "misc"
 
