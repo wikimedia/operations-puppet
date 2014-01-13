@@ -1,42 +1,5 @@
 # Etherpad
 
-class misc::etherpad {
-
-    include passwords::etherpad
-    $etherpad_admin_pass = $passwords::etherpad::etherpad_admin_pass
-    $etherpad_sql_pass = $passwords::etherpad::etherpad_sql_pass
-
-    system::role { 'misc::etherpad': description => 'Etherpad server' }
-
-    require webserver::modproxy
-
-    # NB: this has some GUI going on all up in it. first install must be done by hand.
-    package { 'etherpad':
-        ensure => purged, # Wait until Jan 10 2014 and then turn this into purged
-    }
-
-    service { 'etherpad':
-        ensure  => stopped,
-        require => Package['etherpad'];
-    }
-
-    file {
-        '/etc/init.d/etherpad':
-            ensure => absent,
-            source => 'puppet:///files/misc/etherpad/etherpad.init';
-        '/etc/apache2/sites-available/etherpad.proxy':
-            ensure => absent,
-            source => 'puppet:///files/misc/etherpad/etherpad.proxy.apache.conf';
-        '/etc/etherpad/etherpad.local.properties':
-            ensure  => absent,
-            content => template('etherpad/etherpad.local.properties.erb');
-    }
-
-    apache_module { 'proxy': name => 'proxy' }
-
-    apache_site { 'etherpad_proxy': name => 'etherpad.proxy', ensure => absent, }
-}
-
 class misc::etherpad_lite {
 
     include passwords::etherpad_lite

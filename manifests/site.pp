@@ -1154,8 +1154,7 @@ node "hooper.wikimedia.org" {
 
     include standard,
         admins::roots,
-        svn::client,
-        misc::etherpad
+        svn::client
 
     install_certificate{ "star.wikimedia.org": }
 }
