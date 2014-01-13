@@ -4,9 +4,16 @@
 class poolcounter {
     include nrpe
 
+    # Process running
     monitor_service { 'poolcounterd':
         description   => 'poolcounter',
         check_command => 'nrpe_check_poolcounterd',
+    }
+
+    # TCP port 7531 reacheable
+    monitor_service { 'poolcounterd_port_7531':
+        description   => 'Poolcounter connection',
+        check_command => 'check_tcp!7531',
     }
 
     package { 'poolcounter':
