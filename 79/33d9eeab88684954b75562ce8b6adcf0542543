@@ -1,0 +1,8 @@
+Verified+2: jenkins-bot
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+1: Guido.iaquinti <guido.iaquinti@gmail.com>
+Submitted-by: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-at: Mon, 13 Jan 2014 11:53:37 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/104919
+Project: operations/puppet
+Branch: refs/heads/production
