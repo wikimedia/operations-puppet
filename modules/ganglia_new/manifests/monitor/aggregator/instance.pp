@@ -1,44 +1,44 @@
 define ganglia_new::monitor::aggregator::instance($site) {
-	Ganglia_new::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
+    Ganglia_new::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
 
-	include ganglia_new::configuration, network::constants
+    include ganglia_new::configuration, network::constants
 
-	$aggregator = true
+    $aggregator = true
 
-	$cluster = regsubst($title, '^(.*)_[^_]+$', '\1')
-	if has_key($ganglia_new::configuration::clusters[$cluster], 'sites') {
-		$sites = $ganglia_new::configuration::clusters[$cluster]['sites']
-	} else {
-		$sites = $ganglia_new::configuration::default_sites
-	}
-	$id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$site]
-	$desc = $ganglia_new::configuration::clusters[$cluster]['name']
-	$portnr = $ganglia_new::configuration::base_port + $id
-	$gmond_port = $::realm ? {
-		production => $portnr,
-		labs => $::project_gid
-	}
-	$cname = "${desc} ${::site}"
-	if $site in $sites {
-		$ensure = "present"
-	} else {
-		$ensure = "absent"
-	}
+    $cluster = regsubst($title, '^(.*)_[^_]+$', '\1')
+    if has_key($ganglia_new::configuration::clusters[$cluster], 'sites') {
+        $sites = $ganglia_new::configuration::clusters[$cluster]['sites']
+    } else {
+        $sites = $ganglia_new::configuration::default_sites
+    }
+    $id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$site]
+    $desc = $ganglia_new::configuration::clusters[$cluster]['name']
+    $portnr = $ganglia_new::configuration::base_port + $id
+    $gmond_port = $::realm ? {
+        production => $portnr,
+        labs => $::project_gid
+    }
+    $cname = "${desc} ${::site}"
+    if $site in $sites {
+        $ensure = 'present'
+    } else {
+        $ensure = 'absent'
+    }
 
-	# This will only be realized if base::firewall (well ferm..) is included
-	ferm::rule { "aggregator-udp-${id}":
-		rule => "proto udp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
-	}
-	# This will only be realized if base::firewall (well ferm..) is included
-	ferm::rule { "aggregator-tcp-${id}":
-		rule => "proto tcp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
-	}
+    # This will only be realized if base::firewall (well ferm..) is included
+    ferm::rule { "aggregator-udp-${id}":
+        rule => "proto udp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
+    }
+    # This will only be realized if base::firewall (well ferm..) is included
+    ferm::rule { "aggregator-tcp-${id}":
+        rule => "proto tcp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
+    }
 
-	file { "/etc/ganglia/aggregators/${id}.conf":
-		require => File["/etc/ganglia/aggregators"],
-		mode => 0444,
-		content => template("$module_name/gmond.conf.erb"),
-		notify => Service["ganglia-monitor-aggregator"],
-		ensure => $ensure
-	}
+    file { "/etc/ganglia/aggregators/${id}.conf":
+        ensure   => $ensure,
+        erequire => File['/etc/ganglia/aggregators'],
+        mode     => '0444',
+        content  => template("${module_name}/gmond.conf.erb"),
+        notify   => Service['ganglia-monitor-aggregator'],
+    }
 }
