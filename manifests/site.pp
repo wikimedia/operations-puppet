@@ -117,6 +117,8 @@ node "analytics1010.eqiad.wmnet" {
     # analytics1010 is analytics Ganglia aggregator for Row B
     $ganglia_aggregator = true
 
+    include standard,
+        nrpe,
     # include analytics user accounts
     include role::analytics::users
 
