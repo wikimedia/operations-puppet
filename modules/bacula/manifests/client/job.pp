@@ -27,12 +27,12 @@ define bacula::client::job($fileset, $jobdefaults) {
     # We export to the director
     @@file { "/etc/bacula/jobs.d/${::fqdn}-${name}.conf":
         ensure  => present,
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         mode    => '0440',
         content => template('bacula/bacula-client-job.erb'),
         notify  => Service['bacula-director'],
         require => File['/etc/bacula/jobs.d'],
-        tag     => "bacula-client-$director",
+        tag     => "bacula-client-${director}",
     }
 }

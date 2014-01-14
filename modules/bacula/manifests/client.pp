@@ -46,8 +46,8 @@ class bacula::client(
 
     file { '/etc/bacula/bacula-fd.conf':
         ensure  => present,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         notify  => Service['bacula-fd'],
         content => template('bacula/bacula-fd.conf.erb'),
@@ -61,20 +61,20 @@ class bacula::client(
     # managed one. Bacula needs the keypair in one single file though hence this
     # resource
     exec { 'concat-bacula-keypair':
-        command => "/bin/cat /var/lib/puppet/ssl/certs/$::fqdn.pem \
- /var/lib/puppet/ssl/private_keys/$::fqdn.pem > \
- /var/lib/puppet/ssl/private_keys/bacula-keypair-$::fqdn.pem",
-        creates => "/var/lib/puppet/ssl/private_keys/bacula-keypair-$::fqdn.pem",
+        command => "/bin/cat /var/lib/puppet/ssl/certs/${::fqdn}.pem \
+ /var/lib/puppet/ssl/private_keys/${::fqdn}.pem > \
+ /var/lib/puppet/ssl/private_keys/bacula-keypair-${::fqdn}.pem",
+        creates => "/var/lib/puppet/ssl/private_keys/bacula-keypair-${::fqdn}.pem",
     }
 
     # We export oufself to the director
-    @@file { "/etc/bacula/clients.d/$::fqdn.conf":
+    @@file { "/etc/bacula/clients.d/${::fqdn}.conf":
         ensure  => present,
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         mode    => '0440',
         content => template('bacula/bacula-client.erb'),
         notify  => Service['bacula-director'],
-        tag     => "bacula-client-$director",
+        tag     => "bacula-client-${director}",
     }
 }

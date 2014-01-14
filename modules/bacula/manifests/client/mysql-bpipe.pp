@@ -33,10 +33,10 @@
 #
 # Sample Usage:
 #       bacula::client::mysql-bpipe { 'mybpipe':
-#           per_database	       => false,
-#           xtrabackup	           => true,
-#           xbstream_dir           => '/var/tmp/xbstream',
-#           mysqldump_innodb_only  => false,
+#           per_database            => false,
+#           xtrabackup              => true,
+#           xbstream_dir            => '/var/tmp/xbstream',
+#           mysqldump_innodb_only   => false,
 #       }
 
 define bacula::client::mysql-bpipe(
@@ -50,8 +50,8 @@ define bacula::client::mysql-bpipe(
                 ) {
     file { "/etc/bacula/scripts/bpipe-mysql-${name}":
         ensure  => present,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0550',
         content => template('bacula/bpipe-mysql-db.erb'),
         require => Class['bacula::client'],
@@ -64,10 +64,10 @@ define bacula::client::mysql-bpipe(
             }
         }
 
-        file { "$xbstream_dir":
+        file { $xbstream_dir:
             ensure  => directory,
-            owner   => root,
-            group   => root,
+            owner   => 'root',
+            group   => 'root',
             mode    => '0440',
         }
     }

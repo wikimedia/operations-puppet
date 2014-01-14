@@ -44,8 +44,8 @@ define bacula::storage::device($device_type, $media_type,
 
     file { "/etc/bacula/sd-devices.d/${name}.conf":
         ensure  => present,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         notify  => Service['bacula-sd'],
         content => template('bacula/bacula-sd.device.conf.erb'),
@@ -55,12 +55,12 @@ define bacula::storage::device($device_type, $media_type,
     # We export ourself to the director
     @@file { "/etc/bacula/storages.d/${::hostname}-${name}.conf":
         ensure  => present,
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         mode    => '0640',
         content => template('bacula/bacula-storage.erb'),
         notify  => Service['bacula-director'],
         require => File['/etc/bacula/storages.d'],
-        tag     => "bacula-storage-$director",
+        tag     => "bacula-storage-${director}",
     }
 }

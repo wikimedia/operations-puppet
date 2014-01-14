@@ -35,13 +35,13 @@ class bacula::storage(
 
     # bacula-sd depends on bacula-sd-sqlvariant. Let's rely on dependencies to
     # install it
-    package { "bacula-sd-$sqlvariant":
+    package { "bacula-sd-${sqlvariant}":
         ensure  => installed,
     }
 
     service { 'bacula-sd':
         ensure  => running,
-        require => Package["bacula-sd-$sqlvariant"],
+        require => Package["bacula-sd-${sqlvariant}"],
     }
 
     file { '/etc/bacula/sd-devices.d':
@@ -50,18 +50,18 @@ class bacula::storage(
         force   => true,
         purge   => true,
         mode    => '0444',
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         require => File['/etc/bacula/bacula-sd.conf'],
     }
 
     file { '/etc/bacula/bacula-sd.conf':
         ensure  => present,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         notify  => Service['bacula-sd'],
         content => template('bacula/bacula-sd.conf.erb'),
-        require => Package["bacula-sd-$sqlvariant"],
+        require => Package["bacula-sd-${sqlvariant}"],
     }
 }
