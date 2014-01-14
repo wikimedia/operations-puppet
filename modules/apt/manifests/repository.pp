@@ -15,8 +15,8 @@ define apt::repository(
 
     file { "/etc/apt/sources.list.d/${name}.list":
         ensure  => $ensure,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
         content => "${binline}${srcline}",
     }
@@ -36,8 +36,8 @@ define apt::repository(
     if $keyfile {
         file { "/var/lib/apt/keys/${name}.gpg":
             ensure  => present,
-            owner   => root,
-            group   => root,
+            owner   => 'root',
+            group   => 'root',
             mode    => '0400',
             source  => $keyfile,
             require => File['/var/lib/apt/keys'],
@@ -51,9 +51,9 @@ define apt::repository(
     }
 
     exec { "apt-update-for-${name}":
-        command => '/usr/bin/apt-get update',
-        timeout => 240,
-        returns => [ 0, 100 ],
+        command     => '/usr/bin/apt-get update',
+        timeout     => 240,
+        returns     => [ 0, 100 ],
         subscribe   => File["/etc/apt/sources.list.d/${name}.list"],
         refreshonly => true,
     }
