@@ -1,0 +1,63 @@
+!# Wikimedia pmacct netflow collector configuration file (one daemon per collector)
+!# This file is managed by Puppet!
+!#
+!# Note: '!' is used for comments, '#' added for better syntax highlighting
+!#
+!# Custom configuration made from template for <%= @name %>
+
+daemonize: true
+syslog: daemon
+pidfile: /var/run/nfacctd-<%= @name %>.pid
+
+!# Maxmind Country Database
+!# FIXME: Production location variable?
+geoip_ipv4_file: /opt/maxmind/GeoIP.dat
+
+plugins: print[asn], print[country], print[port], print[iface], print[src]
+
+print_output: csv
+print_refresh_time: 300
+
+!# Enforce 5m boundaries on time windows eg 00,05,10
+print_time_roundoff: m
+
+aggregate[asn]: dst_as,as_path,peer_dst_as
+print_output_file[asn]: <%= @home %>/logs/<%= @name %>-asn-%Y%m%d-%H%M.txt
+
+aggregate[country]: dst_host_country
+print_output_file[country]: <%= @home %>/logs/<%= @name %>-country-%Y%m%d-%H%M.txt
+
+aggregate[port]: src_port
+print_output_file[port]: <%= @home %>/logs/<%= @name %>-src_port-%Y%m%d-%H%M.txt
+
+aggregate[iface]: out_iface
+print_output_file[iface]: <%= @home %>/logs/<%= @name %>-interface-%Y%m%d-%H%M.txt
+
+aggregate[src]: src_host
+print_output_file[src]: <%= @home %>/logs/<%= @name %>-src_host-%Y%m%d-%H%M.txt
+
+!# Netflow UDP Port
+nfacctd_port: <%= @port %>
+
+!# Disable some warnings due to JunOS bugs
+nfacctd_disable_checks: true
+
+!# FIXME: Use a map file, which can be relaoded with a SIGUSR2
+!# Correct for sampling rate by upscaling byte counts
+nfacctd_ext_sampling_rate: <%= @samplerate %>
+nfacctd_renormalize: true
+
+!# BGP Config
+bgp_daemon: true
+bgp_daemon_max_peers: 1
+
+!# Note:  JunOS does not support custom bgp ports, so we are using iptables NAT redirect to accomplish the same locally
+!# eg. iptables --table nat --append PREROUTING --proto tcp --source 208.80.152.196 --dport 179 --jump REDIRECT --to-ports 6001
+!# Using same port number as Flow, but BGP is TCP and Flow is UDP
+bgp_daemon_port: <%= @port %>
+
+!# Rely on BGP for destination ASN (IPFIX buggy)
+nfacctd_as_new: bgp
+
+! Strip as-path to first 3 hops
+!bgp_aspath_radius: 3
