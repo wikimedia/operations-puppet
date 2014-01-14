@@ -30,9 +30,10 @@ sub mobile_redirect {
 		# Separate regexps for clarity, but multiple regsubs instead of
 		# "if host ~"/regsub matches for efficiency. Be careful to not
 		# write overlapping/chaining regexps.
-		set req.http.MobileHost = regsub(req.http.Host, "^(www\.)?(mediawiki|wikimediafoundation)\.", "m.\2.");
-		set req.http.MobileHost = regsub(req.http.Host, "^(commons|species|meta|incubator|outreach|strategy|wikimania201[234])\.(wikimedia)\.", "\1.m.\2.");
-		set req.http.MobileHost = regsub(req.http.Host, "^((?!www)\w+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
+		set req.http.MobileHost = req.http.Host;
+		set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikimediafoundation)\.", "m.\2.");
+		set req.http.MobileHost = regsub(req.http.MobileHost, "^(commons|species|meta|incubator|outreach|strategy|wikimania201[234])\.(wikimedia)\.", "\1.m.\2.");
+		set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!www)\w+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
 
 		if (req.http.Host != req.http.MobileHost) {
 			if (req.http.X-Forwarded-Proto) {
