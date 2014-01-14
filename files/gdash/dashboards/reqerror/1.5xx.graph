@@ -1,6 +1,5 @@
 title   "HTTP 5xx Responses -8hours"
 linewidth 2
-logbase 2
 linemode "connected"
 hide_legend "false"
 from "-8hours"

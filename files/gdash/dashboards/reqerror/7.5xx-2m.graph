@@ -1,6 +1,5 @@
 title   "HTTP 5xx Responses/hour -2month"
 linewidth 2
-logbase 10
 linemode "connected"
 hide_legend "false"
 from "-2month"
