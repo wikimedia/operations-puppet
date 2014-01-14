@@ -15,9 +15,9 @@ class role::fundraising::civicrm {
 
 	$gid = 500
 	include standard-noexim,
-		accounts::mhernandez,
-		accounts::zexley,
-		accounts::pcoombe,
+		#accounts::mhernandez, # migrated to lutetium
+		#accounts::zexley, # migrated to lutetium
+		#accounts::pcoombe, # migrated to lutetium
 		admins::fr-tech,
 		admins::roots,
 		backup::client,
