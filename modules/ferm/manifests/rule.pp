@@ -13,8 +13,7 @@ define ferm::rule(
         group   => root,
         mode    => '0400',
         content => template('ferm/rule.erb'),
-        require => File['/etc/ferm/conf.d'],
-        require => Class['ferm'],
+        require => [ File['/etc/ferm/conf.d'], Class['ferm'] ],
         notify  => Service['ferm'],
         tag     => 'ferm',
     }
