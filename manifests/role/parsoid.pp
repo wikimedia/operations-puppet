@@ -48,6 +48,11 @@ class role::parsoid::production {
         target => '/srv/deployment/parsoid/Parsoid',
     }
 
+    file { '/var/lib/parsoid/deploy':
+        ensure => link,
+        target => '/srv/deployment/parsoid/deploy',
+    }
+
     # production uses an init script whereas labs experiments with upstart
     file { '/etc/init.d/parsoid':
         ensure => present,
@@ -56,6 +61,48 @@ class role::parsoid::production {
         mode   => '0555',
         source => 'puppet:///files/misc/parsoid.init',
     }
+
+    # upstart config prep, will replace sysv init above
+    # Use name that does not match the 'parsoid' service name for now to avoid
+    # it taking precedence over the init script
+    # TODO: remove init script and rename back to parsoid.conf
+    file { '/etc/init/parsoid-test.conf':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        source => 'puppet:///files/misc/parsoid.upstart',
+    }
+    file { '/var/log/parsoid':
+        ensure => directory,
+        owner  => parsoid,
+        group  => parsoid,
+        mode   => '0775',
+    }
+
+    $parsoid_log_file = '/var/log/parsoid/parsoid.log'
+    $parsoid_node_path = '/var/lib/parsoid/deploy/node_modules'
+    $parsoid_base_path = '/var/lib/parsoid/deploy/src'
+
+    #TODO: Duplication of code from beta class, deduplicate somehow
+    file { '/etc/default/parsoid':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        content => template('misc/parsoid.default.erb'),
+        require => File['/var/log/parsoid'],
+    }
+
+    file { '/etc/logrotate.d/parsoid':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        content => template('misc/parsoid.logrotate.erb'),
+    }
+
+    # Still using the old init script for now
     service { 'parsoid':
         ensure     => running,
         hasstatus  => true,

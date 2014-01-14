@@ -91,6 +91,12 @@ class role::deployment::config {
     'parsoid/config'                 => {
         'grain'                 => 'parsoid',
     },
+    'parsoid/deploy'                => {
+        'grain'                 => 'parsoid',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy',
+        'checkout_submodules'   => true,
+        'service_name'          => 'parsoid',
+    },
     'eventlogging/EventLogging'      => {
         'grain'    => 'eventlogging',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging',
