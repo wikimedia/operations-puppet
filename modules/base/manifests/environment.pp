@@ -10,42 +10,42 @@ class base::environment {
                 onlyif  => "grep -q '^#alias ll' /root/.bashrc"
             }
 
-            file {
-                '/etc/profile.d/mysql-ps1.sh':
+            file { '/etc/profile.d/mysql-ps1.sh':
                     ensure => present,
-                    owner  => root,
-                    group  => root,
+                    owner  => 'root',
+                    group  => 'root',
                     mode   => '0444',
-                    source => 'puppet:///modules/base/environment/mysql-ps1.sh';
+                    source => 'puppet:///modules/base/environment/mysql-ps1.sh',
             }
         } # /production
         'labs': {
-            file {
-                '/etc/bash.bashrc':
+            file { '/etc/bash.bashrc':
                     content => template('base/environment/bash.bashrc'),
-                    owner   => root,
-                    group   => root,
-                    mode    => '0444';
-                '/etc/skel/.bashrc':
+                    owner   => 'root',
+                    group   => 'root',
+                    mode    => '0444',
+            }
+
+            file { '/etc/skel/.bashrc':
                     content => template('base/environment/skel/bashrc'),
-                    owner   => root,
-                    group   => root,
-                    mode    => '0644';
+                    owner   => 'root',
+                    group   => 'root',
+                    mode    => '0644',
             }
             if( $::instancename ) {
                 file { '/etc/wmflabs-instancename':
-                    owner   => root,
-                    group   => root,
+                    owner   => 'root',
+                    group   => 'root',
                     mode    => '0444',
-                    content => "${::instancename}\n" ;
+                    content => "${::instancename}\n",
                 }
             }
             if( $::instanceproject ) {
                 file { '/etc/wmflabs-project':
-                    owner   => root,
-                    group   => root,
+                    owner   => 'root',
+                    group   => 'root',
                     mode    => '0444',
-                    content => "${::instanceproject}\n" ;
+                    content => "${::instanceproject}\n",
                 }
             }
         } # /labs
@@ -58,17 +58,16 @@ class base::environment {
 
     # Once upon a time provided by wikimedia-base debian package
     file { '/etc/wikimedia-site':
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
-        content => "${::site}\n" ;
+        content => "${::site}\n",
     }
 
     file { '/etc/wikimedia-realm':
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
-        content => "${::realm}\n" ;
+        content => "${::realm}\n",
     }
-
 }
