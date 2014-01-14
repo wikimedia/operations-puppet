@@ -3253,6 +3253,7 @@ class accounts {
         }
     }
 
+	# RT 6568
     class ssmith inherits baseaccount {
         $username = 'ssmith'
         $realname = 'Sherah Smith'
@@ -3268,6 +3269,26 @@ class accounts {
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDmJFv/VzIMGs+/e7pue7Jdz/btDh0NJtjvrfN2Wgsj+pb6L9EJcPCLpl8jKxzLKBN2yimVZgWm/+xkOuUdj/0iLtkLSDpWEbJA50WZO7ZTC3xzI6P+xpFr/UUNDrniGyxx7TLfV6g++9Rrj8/j0ycFjpEAgLBko+yF73bXLxIRJ/Z18pToU3+d8sAqHYTlxjWci67E0cXI+C+qOmkzGOXv5+2eC16L6+WiMx+IA0slMOAGVwFutKhgt34/8I1xDuNGpitCT/+JhDICtJh8XvtqXT2cOQ9ATyDrs24LsTNzBmeO6eRnJiREVBgxQYQByj+BNdwN8QtUvt/2tAmFr76H',
+            }
+        }
+    }
+
+	# RT 6619
+    class gdubuc inherits baseaccount {
+        $username = 'gdubuc'
+        $realname = 'Gilles Dubuc'
+        $uid      = 659
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'kouiskas@Ta-Mere.local':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDMDCMiDMjp3hY+P3DBJ1D2/IxS0xMHpS5MpKgxd1rU7aOHByncrRWL4tJ2isyi8/Q5H6XH81eWBat295U+3hqTq7YDuRiNoyPQPvwgT7guJPS3z8AbrlosUSIBc0B4YnrJXKeSTYEvHqQTGeozGDn1XaP2/xjeQR9wpKPpa0Mq7S3CMv8BEhvJLDVmwEP46AvGMeeZ2IgxlbH2GAAcZrGi8bvlq0eFcB0I/q51k/kITAMiBrTXo9sJ7FyXXvPnwmScfzIZFqO33lktMaYs5q2w7sad2Wtpz2tR+hMNm9Xoj0znPgKiZ1yFfGoKN7U62FDIJq23IrIRRUbinI/F220p',
             }
         }
     }
@@ -3376,6 +3397,7 @@ class admins::mortals {
 	include accounts::csteipp
 	include accounts::demon
 	include accounts::ebernhardson # RT 5717
+	include accounts::gdubuc # RT 6619
 	include accounts::gjg
 	include accounts::gwicke
 	include accounts::halfak
