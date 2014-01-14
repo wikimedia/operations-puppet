@@ -310,10 +310,10 @@ sub vcl_fetch {
 		#
 		# Note that max_restarts is 4 by default, so Varnish would
 		# otherwise detect this as a loop and present its own 503.
-		if (req.restarts < 4) {
+		if (req.restarts < 3) {
 			return(restart);
 		} else {
-			return(pass);
+			return(deliver);
 		}
 	}
 <% end -%>
