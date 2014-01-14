@@ -14,7 +14,6 @@ define ferm::rule(
         mode    => '0400',
         content => template('ferm/rule.erb'),
         require => File['/etc/ferm/conf.d'],
-        require => Class['ferm'],
         notify  => Service['ferm'],
         tag     => 'ferm',
     }
