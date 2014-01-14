@@ -2597,6 +2597,7 @@ node "virt0.wikimedia.org" {
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
+        nrpe,
         role::dns::ldap,
         ldap::role::server::labs,
         ldap::role::client::labs,
