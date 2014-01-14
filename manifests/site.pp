@@ -1888,7 +1888,8 @@ node 'netmon1001.wikimedia.org' {
         smokeping::web,
         role::librenms,
 	geoip,
-	pmacct
+	pmacct,
+	ferm
 
     interface::add_ip6_mapped { "main": }
 }
