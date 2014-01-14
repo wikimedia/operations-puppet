@@ -1,5 +1,5 @@
 class apt::noupgrade {
-  package { "update-manager-core":
-    ensure => absent;
-  }
+    package { 'update-manager-core':
+        ensure => absent,
+    }
 }
