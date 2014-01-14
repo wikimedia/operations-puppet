@@ -1,3 +1,5 @@
+# NOTE: This is being replaced by ferm
+
 $iptables_ports = {
 	all => "",
 	beam1 => "33416",
