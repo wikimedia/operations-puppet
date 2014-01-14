@@ -217,7 +217,7 @@ else
 
 	# Lower priority for Parsoid dependency changes (template / file
 	# updates)
-	(runJobsLoopService "ParsoidCacheUpdateJobOnDependencyChange" "n"  <%= procs_per_iobound_type %> ) &
+	(runJobsLoopService "ParsoidCacheUpdateJobOnDependencyChange" "n"  $((<%= procs_per_iobound_type %> * 2)) ) &
 	# High priority for updates to edited pages themselves
 	(runJobsLoopService "ParsoidCacheUpdateJobOnEdit" "n"  $((<%= procs_per_iobound_type %> * 2)) ) &
 
