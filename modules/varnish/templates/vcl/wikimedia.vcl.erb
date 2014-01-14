@@ -305,7 +305,16 @@ sub vcl_fetch {
 	}
 <% if vcl_config.fetch("retry5xx", "0") == "1" -%>
 	if (beresp.status >= 500 && beresp.status < 505) {
-		return(restart);
+		# Retry the backend request 3 times, then give up and display
+		# the backend's error page, instead of our own.
+		#
+		# Note that max_restarts is 4 by default, so Varnish would
+		# otherwise detect this as a loop and present its own 503.
+		if (req.restarts < 4) {
+			return(restart);
+		} else {
+			return(pass);
+		}
 	}
 <% end -%>
 	set beresp.grace = 60m;
