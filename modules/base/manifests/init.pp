@@ -1,4 +1,3 @@
-
 class base::access::dc-techs {
     # add account and sudoers rules for data center techs
     #include accounts::cmjohnson
@@ -22,43 +21,45 @@ class base::access::dc-techs {
 class base::grub {
     # Disable the 'quiet' kernel command line option so console messages
     # will be printed.
-    exec {
-        'grub1 remove quiet':
-            path => '/bin:/usr/bin',
-            command => "sed -i '/^# defoptions.*[= ]quiet /s/quiet //' /boot/grub/menu.lst",
-            onlyif => "grep -q '^# defoptions.*[= ]quiet ' /boot/grub/menu.lst",
-            notify => Exec['update-grub'];
-        'grub2 remove quiet':
-            path => '/bin:/usr/bin',
-            command => "sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"/s/quiet splash//' /etc/default/grub",
-            onlyif => "grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"' /etc/default/grub",
-            notify => Exec['update-grub'];
+    exec { 'grub1 remove quiet':
+        path    => '/bin:/usr/bin',
+        command => "sed -i '/^# defoptions.*[= ]quiet /s/quiet //' /boot/grub/menu.lst",
+        onlyif  => "grep -q '^# defoptions.*[= ]quiet ' /boot/grub/menu.lst",
+        notify  => Exec['update-grub'],
+    }
+
+    exec { 'grub2 remove quiet':
+        path    => '/bin:/usr/bin',
+        command => "sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"/s/quiet splash//' /etc/default/grub",
+        onlyif  => "grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"' /etc/default/grub",
+        notify  => Exec['update-grub'],
     }
 
     # Ubuntu Precise Pangolin no longer has a server kernel flavour.
     # The generic flavour uses the CFQ I/O scheduler, which is rather
     # suboptimal for some of our I/O work loads. Override with deadline.
     # (the installer does this too, but not for Lucid->Precise upgrades)
-    if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
-        exec {
-            'grub1 iosched deadline':
-                path => "/bin:/usr/bin",
-                command => "sed -i '/^# kopt=/s/\$/ elevator=deadline/' /boot/grub/menu.lst",
-                unless => "grep -q '^# kopt=.*elevator=deadline' /boot/grub/menu.lst",
-                onlyif => "test -f /boot/grub/menu.lst",
-                notify => Exec["update-grub"];
-            'grub2 iosched deadline':
-                path => "/bin:/usr/bin",
-                command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\\"\$/ elevator=deadline\\\"/' /etc/default/grub",
-                unless => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=deadline' /etc/default/grub",
-                onlyif => 'test -f /etc/default/grub',
-                notify => Exec['update-grub'];
+    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
+        exec { 'grub1 iosched deadline':
+            path    => "/bin:/usr/bin",
+            command => "sed -i '/^# kopt=/s/\$/ elevator=deadline/' /boot/grub/menu.lst",
+            unless  => "grep -q '^# kopt=.*elevator=deadline' /boot/grub/menu.lst",
+            onlyif  => "test -f /boot/grub/menu.lst",
+            notify  => Exec["update-grub"],
+        }
+
+        exec { 'grub2 iosched deadline':
+            path    => "/bin:/usr/bin",
+            command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\\"\$/ elevator=deadline\\\"/' /etc/default/grub",
+            unless  => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=deadline' /etc/default/grub",
+            onlyif  => 'test -f /etc/default/grub',
+            notify  => Exec['update-grub'];
         }
     }
 
     exec { 'update-grub':
         refreshonly => true,
-        path => "/bin:/usr/bin:/sbin:/usr/sbin"
+        path        => '/bin:/usr/bin:/sbin:/usr/sbin',
     }
 }
 
@@ -75,40 +76,41 @@ class base::puppet($server='puppet', $certname=undef) {
     $freshnessinterval = $interval * 60 * 6
 
     package { [ 'puppet', 'facter', 'coreutils' ]:
-        ensure => latest;
+        ensure => latest,
     }
 
     if $::lsbdistid == 'Ubuntu' and (versioncmp($::lsbdistrelease, '10.04') == 0 or versioncmp($::lsbdistrelease, '8.04') == 0) {
         package {'timeout':
-            ensure => latest;
+            ensure => latest,
         }
     }
 
     # monitoring via snmp traps
-    package { [ 'snmp' ]:
-        ensure => latest;
+    package { 'snmp':
+        ensure => latest,
     }
 
-    file {
-        '/etc/snmp':
-            ensure => directory,
-            owner => root,
-            group => root,
-            mode  => 0644,
-            require => Package['snmp'];
-        '/etc/snmp/snmp.conf':
-            ensure => present,
-            owner => root,
-            group => root,
-            mode  => 0444,
-            content => template('base/snmp.conf.erb'),
-            require => [ Package['snmp'], File['/etc/snmp'] ];
+    file { '/etc/snmp':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['snmp'],
+    }
+
+    file { '/etc/snmp/snmp.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('base/snmp.conf.erb'),
+        require => [ Package['snmp'], File['/etc/snmp'] ],
     }
 
     monitor_service { 'puppet freshness':
         description     => 'Puppet freshness',
         check_command   => 'puppet-FAIL',
-        passive         => 'true',
+        passive         => true,
         freshness       => $freshnessinterval,
         retries         => 1,
     }
@@ -116,20 +118,20 @@ class base::puppet($server='puppet', $certname=undef) {
     case $::realm {
         'production': {
             exec {  'neon puppet snmp trap':
-                    command => "snmptrap -v 1 -c public neon.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
-                    path => '/bin:/usr/bin',
-                    require => Package['snmp']
+                command => "snmptrap -v 1 -c public neon.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
+                path    => '/bin:/usr/bin',
+                require => Package['snmp'],
             }
         }
         'labs': {
             # The next two notifications are read in by the labsstatus.rb puppet report handler.
             #  It needs to know project/hostname for nova access.
-            notify{"instanceproject: $::instanceproject":}
-            notify{"hostname: $::instancename":}
+            notify{"instanceproject: ${::instanceproject}":}
+            notify{"hostname: ${::instancename}":}
             exec { 'puppet snmp trap':
                 command => "snmptrap -v 1 -c public nagios-main.pmtpa.wmflabs .1.3.6.1.4.1.33298 ${::instancename}.${::site}.wmflabs 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
-                path => "/bin:/usr/bin",
-                require => Package['snmp']
+                path    => '/bin:/usr/bin',
+                require => Package['snmp'],
             }
         }
         default: {
@@ -137,34 +139,41 @@ class base::puppet($server='puppet', $certname=undef) {
         }
     }
 
-    file {
-        '/etc/default/puppet':
-            owner => root,
-            group => root,
-            mode  => 0444,
-            source => 'puppet:///modules/base/puppet/puppet.default';
-        '/etc/puppet/puppet.conf':
-            owner => root,
-            group => root,
-            mode => 0444,
-            ensure => file,
-            notify => Exec['compile puppet.conf'];
-        '/etc/puppet/puppet.conf.d/':
-            owner => root,
-            group => root,
-            mode => 0550,
-            ensure => directory;
-        '/etc/puppet/puppet.conf.d/10-main.conf':
-            owner => root,
-            group => root,
-            mode  => 0444,
-            content => template("base/puppet.conf.d/10-main.conf.erb"),
-            notify => Exec["compile puppet.conf"];
-        '/etc/init.d/puppet':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///modules/base/puppet/puppet.init';
+    file { '/etc/default/puppet':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/base/puppet/puppet.default',
+    }
+
+    file { '/etc/puppet/puppet.conf':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        notify => Exec['compile puppet.conf'],
+    }
+
+    file { '/etc/puppet/puppet.conf.d/':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+    }
+
+    file { '/etc/puppet/puppet.conf.d/10-main.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('base/puppet.conf.d/10-main.conf.erb'),
+        notify  => Exec['compile puppet.conf'],
+    }
+
+    file { '/etc/init.d/puppet':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/base/puppet/puppet.init',
     }
 
     class { 'puppet_statsd':
@@ -174,56 +183,58 @@ class base::puppet($server='puppet', $certname=undef) {
 
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
     exec { 'compile puppet.conf':
-        path => '/usr/bin:/bin',
-        command => "cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf",
-        refreshonly => true;
+        path        => '/usr/bin:/bin',
+        command     => "cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf",
+        refreshonly => true,
     }
 
     # Keep puppet running -- no longer. now via cron
-    cron {
-        restartpuppet:
-            require => File[ [ '/etc/default/puppet' ] ],
-            command => '/etc/init.d/puppet restart > /dev/null',
-            user => root,
-            # Restart every 4 hours to avoid the runs bunching up and causing an
-            # overload of the master every 40 mins. This can be reverted back to a
-            # daily restart after we switch to puppet 2.7.14+ since that version
-            # uses a scheduling algorithm which should be more resistant to
-            # bunching.
-            hour => [0, 4, 8, 12, 16, 20],
-            minute => 37,
-            ensure => absent;
-        remove-old-lockfile:
-            require => Package[puppet],
-            command => "[ -f /var/lib/puppet/state/puppetdlock ] && find /var/lib/puppet/state/puppetdlock -ctime +1 -delete",
-            user => root,
-            minute => 43,
-            ensure => absent;
+    cron { 'restartpuppet':
+        ensure  => absent,
+        require => File['/etc/default/puppet'],
+        command => '/etc/init.d/puppet restart > /dev/null',
+        user    => 'root',
+        # Restart every 4 hours to avoid the runs bunching up and causing an
+        # overload of the master every 40 mins. This can be reverted back to a
+        # daily restart after we switch to puppet 2.7.14+ since that version
+        # uses a scheduling algorithm which should be more resistant to
+        # bunching.
+        hour    => [0, 4, 8, 12, 16, 20],
+        minute  => '37',
+    }
+
+    cron { 'remove-old-lockfile':
+        ensure  => absent,
+        require => Package['puppet'],
+        command => "[ -f /var/lib/puppet/state/puppetdlock ] && find /var/lib/puppet/state/puppetdlock -ctime +1 -delete",
+        user    => 'root',
+        minute  => '43',
     }
 
     ## do not use puppet agent
-    service {"puppet":
+    service {'puppet':
+        ensure => stopped,
         enable => false,
-        ensure => stopped;
     }
 
-    file {
-        "/etc/cron.d/puppet":
-            require => File[ [ "/etc/default/puppet" ] ],
-            mode => 0444,
-            owner => root,
-            group => root,
-            content => template("base/puppet.cron.erb");
-        "/etc/logrotate.d/puppet":
-            mode => 0444,
-            owner => root,
-            group => root,
-            source => "puppet:///modules/base/logrotate/puppet";
+    file { '/etc/cron.d/puppet':
+        require => File['/etc/default/puppet'],
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('base/puppet.cron.erb'),
+    }
+
+    file { '/etc/logrotate.d/puppet':
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/logrotate/puppet',
     }
 
     # Report the last puppet run in MOTD
-    if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "9.10") >= 0 {
-        file { "/etc/update-motd.d/97-last-puppet-run":
+    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '9.10') >= 0 {
+        file { '/etc/update-motd.d/97-last-puppet-run':
             owner   => 'root',
             group   => 'root',
             mode    => '0555',
@@ -233,13 +244,13 @@ class base::puppet($server='puppet', $certname=undef) {
 }
 
 class base::remote-syslog {
-    if ($::lsbdistid == "Ubuntu") and
-            ($::hostname != "nfs1") and
-            ($::hostname != "nfs2") and
-            ($::hostname != "aluminium") and
+    if ($::lsbdistid == 'Ubuntu') and
+            ($::hostname != 'nfs1') and
+            ($::hostname != 'nfs2') and
+            ($::hostname != 'aluminium') and
             ($::instancename != 'deployment-bastion') {
 
-        package { rsyslog:
+        package { 'rsyslog':
             ensure => present,
         }
 
@@ -268,23 +279,23 @@ class base::remote-syslog {
             default => present,
         }
 
-        file { "/etc/rsyslog.d/90-remote-syslog.conf":
-            ensure => absent;
+        file { '/etc/rsyslog.d/90-remote-syslog.conf':
+            ensure => absent,
         }
 
-        file { "/etc/rsyslog.d/30-remote-syslog.conf":
-            ensure => $ensure_remote,
-            require => Package[rsyslog],
-            owner => root,
-            group => root,
-            mode => 0444,
+        file { '/etc/rsyslog.d/30-remote-syslog.conf':
+            ensure  => $ensure_remote,
+            require => Package['rsyslog'],
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
             content => "*.info;mail.none;authpriv.none;cron.none    @${syslog_remote_real}\n",
         }
 
-        service { rsyslog:
-            require => Package[rsyslog],
-            subscribe => File["/etc/rsyslog.d/30-remote-syslog.conf"],
-            ensure => running;
+        service { 'rsyslog':
+            ensure    => running,
+            require   => Package['rsyslog'],
+            subscribe => File['/etc/rsyslog.d/30-remote-syslog.conf'],
         }
     }
 }
@@ -293,45 +304,45 @@ class base::remote-syslog {
 #
 # Installs emacs package
 class base::packages::emacs {
-    package { "emacs23":
-        ensure => "installed",
-        alias  => "emacs",
+    package { 'emacs23':
+        ensure => 'installed',
+        alias  => 'emacs',
     }
 }
 
 class base::decommissioned {
     if $::hostname in $::decommissioned_servers {
-        system::role { "base::decommissioned": description => "DECOMMISSIONED server" }
+        system::role { 'base::decommissioned': description => 'DECOMMISSIONED server' }
     }
 }
 
 class base::instance-upstarts {
 
-    file {"/etc/init/ttyS0.conf":
-        owner => root,
-        group => root,
-        mode => 0444,
+    file { '/etc/init/ttyS0.conf':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
         source => 'puppet:///modules/base/upstart/ttyS0.conf';
     }
 
 }
 
 class base::screenconfig {
-    if $::lsbdistid == "Ubuntu" {
-        file {  "/root/.screenrc":
-            owner => root,
-            group => root,
-            mode => 0444,
-            source => "puppet:///modules/base/screenrc",
-            ensure => present;
+    if $::lsbdistid == 'Ubuntu' {
+        file { '/root/.screenrc':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/base/screenrc',
         }
     }
 }
 
 # handle syslog permissions (e.g. 'make common logs readable by normal users (RT-2712)')
-class base::syslogs($readable = 'false') {
+class base::syslogs($readable = false) {
 
-    $common_logs = [ "syslog", "messages" ]
+    $common_logs = [ 'syslog', 'messages' ]
 
     define syslogs::readable() {
 
@@ -340,7 +351,7 @@ class base::syslogs($readable = 'false') {
         }
     }
 
-    if $readable == 'true' {
+    if $readable == true {
         syslogs::readable { $common_logs: }
     }
 }
@@ -349,18 +360,18 @@ class base::syslogs($readable = 'false') {
 class base::tcptweaks {
     Class[base::puppet] -> Class[base::tcptweaks]
 
-    file { "/etc/network/if-up.d/initcwnd":
-        content => template("base/initcwnd.erb"),
-        mode => 0555,
-        owner => root,
-        group => root,
-        ensure => present;
+    file { '/etc/network/if-up.d/initcwnd':
+        ensure  => present,
+        content => template('base/initcwnd.erb'),
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
     }
 
-    exec { "/etc/network/if-up.d/initcwnd":
-        require => File["/etc/network/if-up.d/initcwnd"],
-        subscribe => File["/etc/network/if-up.d/initcwnd"],
-        refreshonly => true;
+    exec { '/etc/network/if-up.d/initcwnd':
+        require     => File['/etc/network/if-up.d/initcwnd'],
+        subscribe   => File['/etc/network/if-up.d/initcwnd'],
+        refreshonly => true,
     }
 }
 
@@ -377,8 +388,8 @@ class base::firewall {
     }
 
     $defscontent = $::realm ? {
-        'labs'  => template("base/firewall/defs.erb", "base/firewall/defs.labs.erb"),
-        default => template("base/firewall/defs.erb"),
+        'labs'  => template('base/firewall/defs.erb', 'base/firewall/defs.labs.erb'),
+        default => template('base/firewall/defs.erb'),
     }
 
     ferm::conf { 'defs':
@@ -402,33 +413,33 @@ class base {
     include apt
     include apt::update
 
-    if ($::realm == "labs") {
+    if ($::realm == 'labs') {
         include apt::unattendedupgrades,
             apt::noupgrade
     }
 
     include base::tcptweaks
 
-    file { "/usr/local/sbin":
+    file { '/usr/local/sbin':
         ensure => directory,
-        owner  => root,
-        group  => root,
-        mode   => 0755;
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
-    class { base::puppet:
+    class { 'base::puppet':
         server => $::realm ? {
             'labs' => $::site ? {
                 'pmtpa' => 'virt0.wikimedia.org',
                 'eqiad' => 'virt1000.wikimedia.org',
             },
-            default => "puppet",
+            default => 'puppet',
         },
         certname => $::realm ? {
             # For labs, use instanceid.domain rather than the fqdn
             # to ensure we're always using a unique certname.
             # dc is an attribute from LDAP, it's set as the instanceid.
-            'labs' => "${::dc}",
+            'labs'  => $::dc,
             default => undef,
         },
     }
@@ -454,14 +465,14 @@ class base {
     # include base::monitor::host.
     # if $nagios_contact_group is set, then use it
     # as the monitor host's contact group.
-    class { "base::monitoring::host":
+    class { 'base::monitoring::host':
         contact_group => $::nagios_contact_group ? {
-            undef   => "admins",
-            default => $::nagios_contact_group,
+            undef     => 'admins',
+            default   => $::nagios_contact_group,
         }
     }
 
-    if $::realm == "labs" {
+    if $::realm == 'labs' {
         include base::instance-upstarts,
             gluster::client
 
@@ -475,21 +486,21 @@ class base {
         }
 
         # make common logs readable
-        class {'base::syslogs': readable => 'true'; }
+        class {'base::syslogs': readable => true }
 
         # Add directory for data automounts
-        file { "/data":
+        file { '/data':
             ensure => directory,
-            owner => root,
-            group => root,
-            mode => 0755;
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
         }
         # Add directory for public (ro) automounts
-        file { "/public":
+        file { '/public':
             ensure => directory,
-            owner => root,
-            group => root,
-            mode => 0755;
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
         }
     }
 }

@@ -20,27 +20,28 @@ class base::standard-packages {
         'ack-grep',
     ]
 
-    if $::lsbdistid == "Ubuntu" {
+    if $::lsbdistid == 'Ubuntu' {
         package { $packages:
-            ensure => latest;
+            ensure => latest,
         }
 
         package { [ 'jfsutils', 'wikimedia-raid-utils']:
             ensure => absent,
         }
 
-        if $::network_zone == "internal" {
+        if $::network_zone == 'internal' {
             include nrpe
         }
 
         # Run lldpd on all >= Lucid hosts
-        if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-            package { lldpd: ensure => latest; }
+        if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '10.04') >= 0 {
+            package { 'lldpd':
+                ensure => latest, }
         }
 
         # DEINSTALL these packages
-        package { [ "mlocate", "os-prober" ]:
-            ensure => absent;
+        package { [ 'mlocate', 'os-prober' ]:
+            ensure => absent,
         }
     }
 }
