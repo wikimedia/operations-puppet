@@ -14,6 +14,9 @@ sub vcl_recv {
 		set req.backend = tungsten;
 	} elsif (req.http.Host == "logstash.wikimedia.org"){
 		set req.backend = logstash;
+		if (req.url ~ "^/status.*") {
+			error 404 "Page not found.";
+		}
 	} elsif (req.http.Host == "scholarships.wikimedia.org") {
 		set req.backend = zirconium;
 	} else {
