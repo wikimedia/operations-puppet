@@ -53,4 +53,10 @@ class ferm {
     # the rules are virtual resources for cases where they are defined in a
     # class but the host doesn't have the ferm class included
     File <| tag == 'ferm' |>
+
+    #allow udp dpt 123
+
+    ferm::rule { 'allow_ntp':
+        rule => 'proto udp port 123 ACCEPT;'
+    }
 }
