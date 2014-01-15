@@ -53,6 +53,7 @@ def main():
         pull_mediawiki(),
         pull_extensions(),
         update_extensions(),
+        update_visualeditor(),
         update_l10n(),
     ]
 
@@ -112,6 +113,17 @@ def update_extensions():
     """Registers and updates MediaWiki extensions submodules"""
     return runner(name='mwext', path=PATH_MWEXT, cmd=[
         'git', 'submodule', 'update', '--init', '--recursive'])
+
+
+def update_visualeditor():
+    """Pull VisualEditor individually
+
+    VisualEditor replication to mediawiki/extensions.git is broken due to a
+    bug in Gerrit. We pull it directly without using the submodule system at
+    all. See bug 49846
+    """
+    ve_path = PATH_MWEXT + '/VisualEditor'
+    return runner(name='visualeditorpull', path=ve_path, cmd=['git', 'pull'])
 
 
 def update_l10n():
