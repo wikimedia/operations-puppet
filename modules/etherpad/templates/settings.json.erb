@@ -1,15 +1,15 @@
 {
 	"title": "Etherpad",
 	"favicon": "favicon.ico",
-	"ip": "<%= etherpad_ip %>",
-	"port": <%= etherpad_port %>,
+	"ip": "<%= @etherpad_ip %>",
+	"port": <%= @etherpad_port %>,
 
 	"dbType": "mysql",
 	"dbSettings": {
-		"user": "<%= etherpad_db_user %>",
-		"host": "<%= etherpad_db_host %>",
-		"password": "<%= etherpad_db_pass %>",
-		"database": "<%= etherpad_db_name %>"
+		"user": "<%= @etherpad_db_user %>",
+		"host": "<%= @etherpad_db_host %>",
+		"password": "<%= @etherpad_db_pass %>",
+		"database": "<%= @etherpad_db_name %>"
 	},
 
 	"defaultPadText": "",

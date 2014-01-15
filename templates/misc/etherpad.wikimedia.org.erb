@@ -1,15 +1,12 @@
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///templates/apache/sites/etherpad_lite.wikimedia.org.erb
-#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///templates/etherpad.wikimedia.org.erb
+######################################################################
 # vim: filetype=apache
 
 <VirtualHost *:80>
 
     ServerName <%= @etherpad_host %>
-<% if @etherpad_serveraliases -%>
-    ServerAlias <%= @etherpad_serveraliases %>
-<% end -%>
 
     RewriteEngine on
     ProxyVia On
@@ -17,7 +14,7 @@
     ProxyPass / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/ retry=15
     ProxyPassReverse / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/
     ProxyPreserveHost On
-    RewriteRule /p/*$ https://etherpad.wikimedia.org/ [NC,L]
+    RewriteRule /p/*$ https://<%= @etherpad_host %>/ [NC,L]
     RewriteCond %{REQUEST_URI} !^/locales/
     RewriteCond %{REQUEST_URI} !^/locales.json
     RewriteCond %{REQUEST_URI} !^/admin
@@ -34,10 +31,10 @@
     RewriteCond %{REQUEST_URI} !^/jserror
     RewriteCond %{REQUEST_URI} !/favicon.ico
     RewriteCond %{REQUEST_URI} !/robots.txt
-    RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/p/$1 [L]
+    RewriteRule ^/+(.+)$ https://<%= @etherpad_host %>/p/$1 [L]
 
-    RewriteCond %{HTTP_HOST} !etherpad.wikimedia.org
-    RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/$1 [R=301,L]
+    RewriteCond %{HTTP_HOST} !<%= @etherpad_host %>
+    RewriteRule ^/+(.+)$ https://<%= @etherpad_host %>/$1 [R=301,L]
 
     <Proxy *>
         Options FollowSymLinks MultiViews
@@ -48,16 +45,14 @@
 
 </VirtualHost>
 
-<VirtualHost *:443>
+
+<VirtualHost *:80>
 
     ServerName <%= @etherpad_host %>
-<% if @etherpad_serveraliases -%>
-    ServerAlias <%= @etherpad_serveraliases %>
-<% end -%>
 
     SSLEngine on
     SSLProtocol +ALL -SSLv2
-    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH
+    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDH
     SSLHonorCipherOrder on
     SSLCertificateFile <%= @etherpad_ssl_cert %>
     SSLCertificateKeyFile <%= @etherpad_ssl_key %>
@@ -69,7 +64,7 @@
     ProxyPass / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/ retry=15
     ProxyPassReverse / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/
     ProxyPreserveHost On
-    RewriteRule /p/*$ https://etherpad.wikimedia.org/ [NC,L]
+    RewriteRule /p/*$ https://<%= @etherpad_host %>/ [NC,L]
     RewriteCond %{REQUEST_URI} !^/locales/
     RewriteCond %{REQUEST_URI} !^/locales.json
     RewriteCond %{REQUEST_URI} !^/admin
@@ -86,10 +81,10 @@
     RewriteCond %{REQUEST_URI} !^/jserror
     RewriteCond %{REQUEST_URI} !/favicon.ico
     RewriteCond %{REQUEST_URI} !/robots.txt
-    RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/p/$1 [L]
+    RewriteRule ^/+(.+)$ https://<%= @etherpad_host %>/p/$1 [L]
 
-    RewriteCond %{HTTP_HOST} !etherpad.wikimedia.org
-    RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/$1 [R=301,L]
+    RewriteCond %{HTTP_HOST} !<%= @etherpad_host %>
+    RewriteRule ^/+(.+)$ https://<%= @etherpad_host %>/$1 [R=301,L]
 
     <Proxy *>
         Options FollowSymLinks MultiViews
