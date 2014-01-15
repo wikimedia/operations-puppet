@@ -8,7 +8,6 @@
 class role::ocg {
     system::role { 'ocg': description => 'offline content generator for MediaWiki Collection extension' }
 
-    include ocg
     include passwords::redis
 
     class { 'ocg':
@@ -26,7 +25,6 @@ class role::ocg {
 class role::ocg::test {
     system::role { 'ocg-test': description => 'offline content generator for MediaWiki Collection extension (testing)' }
 
-    include ocg
     include passwords::redis
 
     class { 'ocg':
