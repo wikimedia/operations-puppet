@@ -57,6 +57,6 @@ class ferm {
     #allow udp dpt 123
 
     ferm::rule { 'allow_ntp':
-        rule => 'proto udp port 123 ACCEPT;'
+        rule => 'proto udp dport 123 ACCEPT;'
     }
 }
