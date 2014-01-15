@@ -77,7 +77,7 @@
   </LocationMatch>
 
   # Expose the cluster status for internal health checks
-  <LocationMatch "^/status$">
+  <Location /status>
     ProxyPass http://<%= @es_host %>:<%= @es_port %>/
     ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/
     # Disallow caching of status checks
@@ -87,6 +87,6 @@
     Allow from 10.0.0.0/8
     Allow from 2620:0:860::/46
     Satisfy Any
-  </LocationMatch>
+  </Location>
 
 </VirtualHost>
