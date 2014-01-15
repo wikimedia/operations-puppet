@@ -2943,7 +2943,7 @@ node 'zirconium.wikimedia.org' {
     include nrpe
     include role::planet
     include misc::outreach::civicrm # contacts.wikimedia.org
-    include misc::etherpad_lite
+    include role::etherpad
     include role::wikimania_scholarships
     include role::bugzilla
     include groups::wikidev
