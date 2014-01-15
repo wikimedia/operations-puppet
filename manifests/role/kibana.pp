@@ -45,4 +45,3 @@ class role::kibana {
         notify  => Service['httpd'],
     }
 }
-
