@@ -82,9 +82,8 @@
   </LocationMatch>
 
   # Expose the cluster status for internal health checks
+  RewriteRule ^/status$ http://<%= @es_host %>:<%= @es_port %>/ [P]
   <Location /status>
-    ProxyPass http://<%= @es_host %>:<%= @es_port %>/
-    ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/
     # Disallow caching of status checks
     Header set Cache-Control "private, must-revalidate, max-age=0"
     Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
