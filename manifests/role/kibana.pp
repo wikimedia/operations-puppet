@@ -27,6 +27,7 @@ class role::kibana {
         'headers',
         'proxy',
         'proxy_http',
+        'rewrite',
     ]: }
 
     file { "/etc/apache2/sites-available/${hostname}":
