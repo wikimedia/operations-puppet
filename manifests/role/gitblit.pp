@@ -1,14 +1,14 @@
 # manifests/role/gitblit.pp
 
 class role::gitblit {
-    system::role { "role::gitblit": description => "Gitblit, a git viewer" }
+    system::role { 'role::gitblit': description => 'Gitblit, a git viewer' }
 
     include role::gerrit::production::replicationdest
 
-    class { "gitblit::instance":
-        host => "git.wikimedia.org",
-        ssl_cert => "git.wikimedia.org",
-        ssl_cert_key => "git.wikimedia.org"
+    class { 'gitblit::instance':
+        host         => 'git.wikimedia.org',
+        ssl_cert     => 'git.wikimedia.org',
+        ssl_cert_key => 'git.wikimedia.org'
     }
 
     # Firewall GitBlit, it should be accessed from localhost or Varnish

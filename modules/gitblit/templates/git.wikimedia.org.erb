@@ -1,7 +1,7 @@
 #####################################################################
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///templates/apache/sites/git.wikimedia.org.erb
+### puppet:///modules/gitblit/templates/git.wikimedia.org.erb
 #####################################################################
 # vim: filetype=apache
 
@@ -10,7 +10,7 @@ LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" c
 NameVirtualHost *:80
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
-	ServerName <%= host %>
+	ServerName <%= @host %>
 
 	DocumentRoot /var/www
 	<Directory />
