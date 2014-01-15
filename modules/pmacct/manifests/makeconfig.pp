@@ -14,7 +14,7 @@ define pmacct::makeconfig ($name, $port, $ip, $samplerate) {
 
     # Corresponding ferm rule for firewall redirect
     ferm::rule {"${name}-BGP":
-        rule  => "proto tcp dport 179 source ${ip} REDIRECT to-ports ${port}",
+        rule  => "proto tcp dport 179 source ${ip} REDIRECT to-ports ${port};",
         table => 'nat',
         chain => 'PREROUTING',
     }
