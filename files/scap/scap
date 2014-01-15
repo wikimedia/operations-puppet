@@ -101,7 +101,8 @@ echo 'Rebuilding CDB files from /upstream...'
 dsh -cM -g mediawiki-installation -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-rebuild-cdbs"
 echo 'Finished'
 
-# Builds wikiversions.cdb and syncs it to the apaches with the dat file
+# Builds wikiversions.cdb and syncs it to the apaches with the dat file.
+# This is done after all else so that deploying new MW versions is easier.
 sync-wikiversions || die
 
 SCAP_END=$(date +%s)
