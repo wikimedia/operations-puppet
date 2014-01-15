@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Gage <jgerard@wikimedia.org>
+Submitted-by: Gage <jgerard@wikimedia.org>
+Submitted-at: Wed, 15 Jan 2014 01:41:12 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/107532
+Project: operations/puppet
+Branch: refs/heads/production
