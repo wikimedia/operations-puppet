@@ -1342,12 +1342,12 @@ node 'lanthanum.eqiad.wmnet' {
 }
 
 node "linne.wikimedia.org" {
-    interface::ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
+    interface::ip { 'url-downloader': interface => 'eth0', address => '208.80.152.143' }
 
     include base,
         ganglia,
         exim::simple-mail-sender,
-        misc::url-downloader
+        url-downloader
 
     class { 'ntp::server':
         servers => [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ],
