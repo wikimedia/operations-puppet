@@ -143,6 +143,9 @@ class role::lucene {
 			include admins::roots,
 				admins::mortals,
 				admins::restricted
+
+			sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+			sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 		}
 	}
 
