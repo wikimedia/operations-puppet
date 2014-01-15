@@ -1886,10 +1886,7 @@ node 'netmon1001.wikimedia.org' {
         misc::rancid,
         smokeping,
         smokeping::web,
-        role::librenms,
-	geoip,
-	pmacct,
-	ferm
+        role::librenms
 
     interface::add_ip6_mapped { "main": }
 }
