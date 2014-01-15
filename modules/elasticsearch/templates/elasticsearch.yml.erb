@@ -363,7 +363,7 @@ monitor.jvm.gc.ConcurrentMarkSweep.debug: 2s
 # Require explicit index creation.  ES never autocreates the indexes the way we
 # like them.
 ##
-action.auto_create_index: false
+action.auto_create_index: <%= @auto_create_index %>
 
 ##
 # Protect against accidental close/delete operations on all indices. You can

@@ -19,6 +19,8 @@
 # - $master_eligible:  is this node eligible to be a master node?  Defaults to
 #       true.
 # - $holds_data: should this node hold data?  Defaults to true.
+# - $auto_create_index: should the cluster automatically create new indices?
+#       Defaults to false.
 #
 # == Sample usage:
 #
@@ -32,7 +34,8 @@ class elasticsearch($cluster_name,
                     $plugins_dir = '/usr/share/elasticsearch/plugins',
                     $minimum_master_nodes = 1,
                     $master_eligible = true,
-                    $holds_data = true) {
+                    $holds_data = true,
+                    $auto_create_index = false) {
     # Check arguments
     if $cluster_name == 'elasticsearch' {
         fail('$cluster_name must not be set to "elasticsearch"')

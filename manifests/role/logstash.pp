@@ -19,6 +19,7 @@ class role::logstash {
         cluster_name         => "production-logstash-${::site}",
         heap_memory          => '5G',
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
+        auto_create_index    => true,
     }
 
     class { '::redis':
