@@ -11,6 +11,14 @@ class role::gitblit {
         ssl_cert_key => "git.wikimedia.org"
     }
 
+    file { '/etc/apache2/sites-available/git.wikimedia.org':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('gitblit/git.wikimedia.org.erb'),
+    }
+
     # Firewall GitBlit, it should be accessed from localhost or Varnish
     include base::firewall
     ferm::rule { 'gitblit_8080':
