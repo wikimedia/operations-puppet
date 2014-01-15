@@ -2725,7 +2725,7 @@ node "zirconium.wikimedia.org" {
         nrpe,
         role::planet,
         misc::outreach::civicrm, # contacts.wikimedia.org
-        misc::etherpad_lite,
+        etherpad,
         role::wikimania_scholarships,
         role::bugzilla,
         groups::wikidev,
