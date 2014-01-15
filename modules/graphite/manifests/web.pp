@@ -96,15 +96,28 @@ class graphite::web(
         require  => File['/var/run/graphite-web', '/var/log/graphite-web'],
     }
 
-    file { '/sbin/graphite-auth':
-        source  => 'puppet:///modules/graphite/graphite-auth',
-        mode    => '0755',
+    file { '/usr/local/sbin/graphite-index':
+        source  => 'puppet:///modules/graphite/graphite-index',
+        mode    => '0555',
         require => Uwsgi::App['graphite-web'],
     }
 
+    file { '/usr/local/sbin/graphite-auth':
+        source  => 'puppet:///modules/graphite/graphite-auth',
+        mode    => '0555',
+        require => Uwsgi::App['graphite-web'],
+    }
+
+    cron { 'update_graphite_index':
+        command => '/usr/local/sbin/graphite-index',
+        user    => 'www-data',
+        hour    => '*/1',
+        require => File['/usr/local/sbin/graphite-index'],
+    }
+
     exec { 'create_graphite_admin':
-        command => "/sbin/graphite-auth set ${admin_user} ${admin_pass}",
-        unless  => "/sbin/graphite-auth check ${admin_user} ${admin_pass}",
-        require => File['/sbin/graphite-auth'],
+        command => "/usr/local/sbin/graphite-auth set ${admin_user} ${admin_pass}",
+        unless  => "/usr/local/sbin/graphite-auth check ${admin_user} ${admin_pass}",
+        require => File['/usr/local/sbin/graphite-auth'],
     }
 }
