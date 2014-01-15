@@ -94,7 +94,7 @@ RSYNC_SERVERS=`sed 's/^#.*//' /etc/dsh/group/scap-proxies` || die
 RSYNC_SERVERS=`echo $RSYNC_SERVERS`
 
 echo 'Copying code to apaches...'
-dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\""
+dsh -F40 -cM -f "$NODEFILE" -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\""
 echo 'Finished'
 
 echo 'Rebuilding CDB files from /upstream...'
