@@ -157,7 +157,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     monitor_ganglia { 'kafka-broker-MessagesIn':
         description        => 'Kafka Broker Messages In',
         metric             => 'kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate',
-        warning_threshold  => ':1500.0'
+        warning_threshold  => ':1500.0',
         critical_threshold => ':1000.0',
         require            => Class['::kafka::server::jmxtrans'],
     }
