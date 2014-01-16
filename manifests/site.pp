@@ -962,6 +962,11 @@ node "gallium.wikimedia.org" {
         ,'ALL = (postgres) NOPASSWD: /usr/bin/psql'
     ]}
 
+    # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
+    sudo_user { 'jenkins-slave': privileges => [
+        'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
+    ]}
+
     # full root for Jenkins admin (RT-4101)
     sudo_user { "hashar": privileges => ['ALL = NOPASSWD: ALL'] }
 
