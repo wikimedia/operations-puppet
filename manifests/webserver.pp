@@ -155,7 +155,7 @@ class webserver::apache {
 	define module {
 		Class[webserver::apache::packages] -> Webserver::Apache::Module[$title] -> Class[webserver::apache::config]
 
-		$packagename = $operatingsystem ? {
+		$packagename = $::operatingsystem ? {
 			Ubuntu => $title ? {
 				perl => "libapache2-mod-perl2",
 
