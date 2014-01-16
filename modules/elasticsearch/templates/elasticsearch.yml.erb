@@ -270,21 +270,24 @@ bootstrap.mlockall: true
 # nodes during initial recovery, replica allocation, rebalancing,
 # or when adding and removing nodes.
 
+# Note that we used to have much higher settings and while they made recoveries
+# faster they also pegged the disk on some machines at 100% utilization.
+
 # Set the number of concurrent recoveries happening on a node:
 #
 # 1. During the initial recovery
-cluster.routing.allocation.node_initial_primaries_recoveries: 4
+cluster.routing.allocation.node_initial_primaries_recoveries: 3
 
 # 2. During adding/removing nodes, rebalancing, etc
-cluster.routing.allocation.node_concurrent_recoveries: 15
+cluster.routing.allocation.node_concurrent_recoveries: 3
 
 # Set to throttle throughput when recovering (eg. 100mb, by default 20mb):
-indices.recovery.max_bytes_per_sec: 100mb
+indices.recovery.max_bytes_per_sec: 40mb
 
 
 # Set to limit the number of open concurrent streams when
 # recovering a shard from a peer:
-indices.recovery.concurrent_streams: 5
+indices.recovery.concurrent_streams: 3
 
 
 ################################## Discovery ##################################
@@ -376,3 +379,15 @@ action.disable_delete_all_indices: true
 # Disable ability to shutdown nodes via REST API.
 ##
 action.disable_shutdown: true
+
+
+##
+# Enable the disk space aware shard allocator
+##
+cluster.routing.allocation.disk.threshold_enabled: true
+# Stop allocating new shards to nodes with 85% disk utilization
+cluster.routing.allocation.disk.watermark.low: .85
+# Move shards off of nodes with 95% disk utilization
+cluster.routing.allocation.disk.watermark.high: .95
+# Check disk utilization every 60 seconds
+cluster.info.update.interval: 60
