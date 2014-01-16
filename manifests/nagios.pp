@@ -348,8 +348,6 @@ define monitor_ganglia(
     $contact_group         = 'admins'
 )
 {
-    Class['icinga::ganglia::check'] -> Monitor_ganglia[$title]
-
     # checkcommands.cfg's check_ganglia command has
     # many positional arguments that
     # are passed to check_ganglia script:
