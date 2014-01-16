@@ -7,14 +7,14 @@ $nagios_config_dir = "/etc/nagios"
 
 $ganglia_url = "http://ganglia.wikimedia.org"
 
-define monitor_host ($ip_address=$::ipaddress, $group=$nagios_group, $ensure=present, $critical="false", $contact_group="admins") {
+define monitor_host ($ip_address=$::ipaddress, $group=$::nagios_group, $ensure=present, $critical="false", $contact_group="admins") {
 	if ! $ip_address {
 		fail("Parameter $ip_address not defined!")
 	}
 
 	# Export the nagios host instance
 	@@nagios_host { $title:
-		target => "${nagios_config_dir}/puppet_hosts.cfg",
+		target => "${::nagios_config_dir}/puppet_hosts.cfg",
 		host_name => $title,
 		address => $ip_address,
 		hostgroups => $group ? {
@@ -35,7 +35,7 @@ define monitor_host ($ip_address=$::ipaddress, $group=$nagios_group, $ensure=pre
 	}
 
 	if $title == $::hostname {
-		$image = $operatingsystem ? {
+		$image = $::operatingsystem ? {
 			"Ubuntu"	=> "ubuntu",
 			"Solaris" 	=> "sunlogo",
 			default		=> "linux40"
@@ -43,11 +43,11 @@ define monitor_host ($ip_address=$::ipaddress, $group=$nagios_group, $ensure=pre
 
 		# Couple it with some hostextinfo
 		@@nagios_hostextinfo { $title:
-			target => "${nagios_config_dir}/puppet_hostextinfo.cfg",
+			target => "${::nagios_config_dir}/puppet_hostextinfo.cfg",
 			host_name => $title,
 			notes => $title,
 			# Needs c= cluster parameter. Let's fix this cleanly with Puppet 2.6 hashes
-			notes_url => "${ganglia_url}/?c=${ganglia::cname}&h=${fqdn}&m=&r=hour&s=descending&hc=4",
+			notes_url => "${::ganglia_url}/?c=${ganglia_new::monitor::config::cname}&h=${fqdn}&m=&r=hour&s=descending&hc=4",
 			icon_image => "${image}.png",
 			vrml_image => "${image}.png",
 			statusmap_image => "${image}.gd2",
@@ -56,7 +56,7 @@ define monitor_host ($ip_address=$::ipaddress, $group=$nagios_group, $ensure=pre
 	}
 }
 
-define monitor_service ($description, $check_command, $host=$::hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
+define monitor_service ($description, $check_command, $host=$::hostname, $retries=3, $group=$::nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
 	if ! $host {
 		fail("Parameter $host not defined!")
 	}
@@ -89,7 +89,7 @@ define monitor_service ($description, $check_command, $host=$::hostname, $retrie
 	else {
 		# Export the nagios service instance
 		@@nagios_service { "$::hostname $title":
-			target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg",
+			target => "${::nagios_config_dir}/puppet_checks.d/${host}.cfg",
 			host_name => $host,
 			servicegroups => $group ? {
 				/.+/ => $group,
@@ -136,7 +136,7 @@ define monitor_service ($description, $check_command, $host=$::hostname, $retrie
 define monitor_group ($description, $ensure=present) {
 	# Nagios hostgroup instance
 	nagios_hostgroup { $title:
-		target => "${nagios_config_dir}/puppet_hostgroups.cfg",
+		target => "${::nagios_config_dir}/puppet_hostgroups.cfg",
 		hostgroup_name => $title,
 		alias => $description,
 		ensure => $ensure;
@@ -144,7 +144,7 @@ define monitor_group ($description, $ensure=present) {
 
 	# Nagios servicegroup instance
 	nagios_servicegroup { $title:
-		target => "${nagios_config_dir}/puppet_servicegroups.cfg",
+		target => "${::nagios_config_dir}/puppet_servicegroups.cfg",
 		servicegroup_name => $title,
 		alias => $description,
 		ensure => $ensure;
