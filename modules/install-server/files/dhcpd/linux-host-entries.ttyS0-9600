@@ -63,11 +63,6 @@ host cam1-d-sdtpa {
 	fixed-address cam1-d-sdtpa.wikimedia.org;
 }
 
-host db29 {
-	hardware ethernet 00:14:4F:ED:AC:28;
-	fixed-address db29.pmtpa.wmnet;
-}
-
 host db35 {
 	hardware ethernet 00:21:28:6B:CD:52;
 	fixed-address db35.pmtpa.wmnet;
