@@ -68,7 +68,7 @@ define tcpircbot::instance(
     file { "${tcpircbot::dir}/${title}.json":
         ensure  => present,
         content => template('tcpircbot/tcpircbot.json.erb'),
-        require => User[$tcpircbot::user],
+        require => User['tcpircbot'],
     }
 
     file { "/etc/init/tcpircbot-${title}.conf":

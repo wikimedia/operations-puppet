@@ -8,12 +8,6 @@
 #
 # === Parameters
 #
-# [*user*]
-#   Run tcpircbot instances as this system user (default: 'tcpircbot').
-#
-# [*group*]
-#   Run tcpircbot under this gid (default: 'tcpircbot').
-#
 # [*dir*]
 #   Directory for tcpircbot script and configuration files and home directory
 #   for user.
@@ -31,7 +25,10 @@
 #     password => $passwords::irc::announcebot,
 #   }
 #
-class tcpircbot {
+class tcpircbot(
+    $dir         = '/srv/tcpircbot',
+) {
+
     package { [ 'python-irclib', 'python-netaddr' ]:
         ensure => present,
     }
@@ -42,7 +39,7 @@ class tcpircbot {
         ensure     => present,
         gid        => 'tcpircbot',
         shell      => '/bin/false',
-        home       => '/srv/tcpircbot',
+        home       => $dir,
         managehome => true,
         system     => true,
     }
@@ -50,8 +47,8 @@ class tcpircbot {
     file { "${dir}/tcpircbot.py":
         ensure => present,
         source => 'puppet:///modules/tcpircbot/tcpircbot.py',
-        owner  => $user,
-        group  => $group,
+        owner  => 'tcpircbot',
+        group  => 'tcpircbot',
         mode   => '0555',
     }
 }
