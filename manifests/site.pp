@@ -540,25 +540,6 @@ node 'db67.pmtpa.wmnet' {
     class { role::coredb::researchdb : mariadb => true }
 }
 
-## pgehres special project
-node 'db29.pmtpa.wmnet' {
-    $gid = 500
-    system::role { "role::admin_tools_sul_audit_db": description => "Admin Tools/SUL Audit database" }
-    include base,
-        standard,
-        mysql_wmf,
-        #mysql::conf, doing this by hand b/c this is a weird short-term use box
-        mysql_wmf::datadirs,
-        mysql_wmf::mysqluser,
-        mysql_wmf::packages,
-        ntp::client,
-        admins::roots,
-        accounts::pgehres
-    package { [ 'php5', 'php5-cli', 'php5-mysql', 'python-sqlalchemy']:
-        ensure => latest;
-    }
-}
-
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
 node /^db(6[012456]|7[5-7])\.pmtpa\.wmnet/{
     include standard
