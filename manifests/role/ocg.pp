@@ -10,7 +10,7 @@ class role::ocg {
 
     include passwords::redis
 
-    class { 'ocg':
+    class { '::ocg':
         redis_host      => 'rdb1002.eqiad.wmnet',
         redis_password  => $passwords::redis::main_password,
         temp_dir        => '/srv/deployment/ocg/tmp',
@@ -27,7 +27,7 @@ class role::ocg::test {
 
     include passwords::redis
 
-    class { 'ocg':
+    class { '::ocg':
         redis_host      => 'localhost',
         redis_password  => $passwords::redis::ocg_test_password,
         temp_dir        => '/srv/deployment/ocg/tmp',
