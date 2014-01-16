@@ -105,6 +105,7 @@ class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $
                     File["${certificate_location}/${certificate}.p12"]],
     }
 
+<<<<<<< HEAD
     exec { 'start_opendj':
         subscribe   => Exec['create_ldap_db'],
         refreshonly => true,
@@ -121,7 +122,7 @@ class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $
     exec { 'rebuild_indexes':
         subscribe   => Exec['create_indexes'],
         refreshonly => true,
-        command     => "/etc/init.d/opendj stop; su - opendj -c '/usr/opendj/bin/rebuild-index --rebuildAll -b ${ldap::server::config::base_dn}'; /etc/init.d/opendj start",
+        command     => "/etc/init.d/opendj stop; su - opendj -c '/usr/opendj/bin/rebuild-index --rebuildAll -b ${base_dn}'; /etc/init.d/opendj start",
     }
     # Add the wmf CA to the opendj admin connector's truststore
     exec { 'add_ca_to_admintruststore':
