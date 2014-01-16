@@ -65,7 +65,7 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
 
     def __init__(self, network, nickname, channels, **options):
         ircbot.SingleServerIRCBot.__init__(self, [network], nickname, nickname)
-        self.channels = channels
+        self.target_channels = channels
         self.options = options
         for event in ['disconnect', 'join', 'part', 'welcome']:
             self.connection.add_global_handler(event, self.log_event)
@@ -85,7 +85,7 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
                          % vars(event))
 
     def on_welcome(self, connection, event):
-        for channel in self.channels:
+        for channel in self.target_channels:
             connection.join(channel)
 
 
@@ -152,7 +152,7 @@ while 1:
             data = codecs.decode(data, 'utf8', 'replace').strip()
             if data:
                 logging.info('TCP %s: "%s"', sock.getpeername(), data)
-                for channel in bot.channels:
+                for channel in bot.target_channels:
                     bot.connection.privmsg(channel, data)
             else:
                 sock.close()
