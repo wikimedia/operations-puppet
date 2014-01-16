@@ -71,7 +71,7 @@ class role::analytics::hive::production {
     class { '::cdh4::hive':
         metastore_host  => 'analytics1027.eqiad.wmnet',
         jdbc_password   => $passwords::analytics::hive_jdbc_password,
-        zookeeper_hosts => $role::analytics::zookeeper::hosts_array,
+        zookeeper_hosts => $role::analytics::zookeeper::config::hosts_array,
     }
 }
 
@@ -81,6 +81,6 @@ class role::analytics::hive::production {
 class role::analytics::hive::labs {
     class { '::cdh4::hive':
         metastore_host  => $role::analytics::hadoop::labs::namenode_hosts[0],
-        zookeeper_hosts => $role::analytics::zookeeper::hosts_array,
+        zookeeper_hosts => $role::analytics::zookeeper::config::hosts_array,
     }
 }
