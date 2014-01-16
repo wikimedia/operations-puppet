@@ -97,10 +97,9 @@ class role::deployment::config {
     },
     'ocg/ocg' => {
         'grain'                 => 'ocg',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection/deploy',
-        'checkout_module_calls' => {
-            'service.restart' => ['ocg'],
-        },
+        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection',
+        'service_name'          => 'ocg',
+        'checkout_submodules'   => true,
     },
     'fluoride/fluoride'              => {
         'grain'    => 'fluoride',
