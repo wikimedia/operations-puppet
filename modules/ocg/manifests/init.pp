@@ -37,24 +37,31 @@ class ocg (
         ensure => present,
         notify => Service['ocg'],
     }
-
+    
     package {
         [
             'texlive-xetex',
             'texlive-latex-recommended',
             'texlive-latex-extra',
+            'texlive-generic-extra',
             'texlive-fonts-recommended',
             'texlive-fonts-extra',
             'texlive-lang-all',
-            'latex-xcolor',
             'fonts-hosny-amiri',
-            'fonts-nakula',
+            'ttf-devanagari-fonts',
             'fonts-nafees',
-            'fonts-smc',
+            'ttf-indic-fonts-core',
+            'ttf-malayalam-fonts',
+            'fonts-arphic-uming',
+            'fonts-arphic-ukai',
+            'fonts-droid',
+            'fonts-baekmuk',
+            'latex-xcolor',
+            'lmodern',
             'imagemagick',
             'librsvg2-bin',
-            'zip',
             'unzip',
+            'zip',
         ]:
         ensure => present,
         before => Service['ocg']
