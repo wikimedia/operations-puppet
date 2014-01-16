@@ -114,6 +114,7 @@ define misc::udp2log::instance(
 		owner   => root,
 		group   => root,
 		content => template("udp2log/filters.${name}.erb"),
+        $webrequest_filter_directory => '/a/log/webrequest/bin'
 	}
 
 	# init service script for this udp2log instance
