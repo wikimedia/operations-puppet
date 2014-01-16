@@ -5,7 +5,7 @@
 # Virtual resources for the monitoring server
 @monitor_group { 'ocg_eqiad': description => 'offline content generator eqiad' }
 
-class role::ocg {
+class role::ocg::production {
     system::role { 'ocg': description => 'offline content generator for MediaWiki Collection extension' }
 
     include passwords::redis
