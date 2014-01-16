@@ -448,11 +448,11 @@ class role::cache {
 
             # Generate an alert if we ever see any delivery report errors
             monitor_ganglia { 'varnishkafka-drerr':
-                description        => 'Varnishkafka Delivery Errors',
-                metric             => 'kafka.varnishkafka.kafka_drerr.per_second',
-                warning_threshold  => '0.0',
-                critical_threshold => '0.0',
-                require            => Class['::varnishkafka::monitoring'],
+                description => 'Varnishkafka Delivery Errors',
+                metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
+                warning     => '0.0',
+                critical    => '0.0',
+                require     => Class['::varnishkafka::monitoring'],
             }
         }
     }

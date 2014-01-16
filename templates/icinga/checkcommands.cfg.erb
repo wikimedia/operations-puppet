@@ -495,12 +495,6 @@ define command{
 	command_line	$USER1$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -C $ARG5$
 }
 
-# check that logging packet loss is not too high
-define command{
-	command_name	check_packet_loss_ave
-	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m packet_loss_average -w $ARG1$ -c $ARG2$ -o gt
-}
-
 define command{
 	command_name    check_memory_used
 	command_line    $USER3$/check_ganglios_memory_v2 -H $HOSTADDRESS -w $ARG1$ -c $ARG2$
@@ -509,7 +503,7 @@ define command{
 # check arbitrary ganglia metric values
 define command{
 	command_name	check_ganglia
-	command_line	$USER1$/check_ganglia -q -g $ARG1$ -p $ARG2$ -H $HOSTADDRESS$ -m '$ARG3$' -w '$ARG4$' -c '$ARG5$'
+	command_line	$USER1$/check_ganglia -q -g $ARG1$ -p $ARG2$ -H $ARG3$ -m '$ARG4$' -w '$ARG5$' -c '$ARG6$'
 }
 
 # percona mysql checks
@@ -559,21 +553,6 @@ define command{
         command_name    check_to_check_nagios_paging
         command_line    $USER1$/check_to_check_nagios_paging
 }
-
-
-# Analytics checks
-
-# Check that Kafka Brokers are getting messages produced to them.
-define command{
-	command_name	check_kafka_broker_messages_in
-	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate -w $ARG1$ -c $ARG2$ -o lt
-}
-
-define command{
-	command_name	check_varnishkafka_drerr
-	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka.varnishkafka.kafka_drerr.per_second -w $ARG1$ -c $ARG2$ -o gt
-}
-
 
 # Elasticsearch Checks
 

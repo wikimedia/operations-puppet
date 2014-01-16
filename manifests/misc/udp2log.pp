@@ -256,8 +256,8 @@ define misc::udp2log::instance::monitoring(
 		monitor_ganglia{ "udp2log-${name}-packetloss":
 			description           => 'Packetloss_Average',
 			metric                => 'packet_loss_average',
-			warning_threshold     => '4',
-			critical_threshold    => '8',
+			warning               => '4',
+			critical              => '8',
 			contact_group         => "admins,analytics",
 			# ganglia-logtailer only runs every 5.
 			# let's make nagios check every 2 minutes (to match ganglia_parser)

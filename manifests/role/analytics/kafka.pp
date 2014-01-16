@@ -155,11 +155,11 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     # These thresholds have to be manually set.
     # adjust them if you add or remove data from Kafka topics.
     monitor_ganglia { 'kafka-broker-MessagesIn':
-        description        => 'Kafka Broker Messages In',
-        metric             => 'kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate',
-        warning_threshold  => ':1500.0',
-        critical_threshold => ':1000.0',
-        require            => Class['::kafka::server::jmxtrans'],
+        description => 'Kafka Broker Messages In',
+        metric      => 'kafka.server.BrokerTopicMetrics.Al       lTopicsMessagesInPerSec.FifteenMinuteRate',
+        warning     => ':1500.0',
+        critical    => ':1000.0',
+        require     => Class['::kafka::server::jmxtrans'],
     }
 }
 
