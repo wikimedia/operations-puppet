@@ -98,16 +98,16 @@ define misc::udp2log::instance(
 	$monitor_log_age     = true,
 	$template_variables  = undef,
 	$recv_queue          = undef,
-	$logrotate_template  = 'udp2log/logrotate_udp2log.erb')
-{
+	$logrotate_template  = 'udp2log/logrotate_udp2log.erb',
+){
 	# This define requires that the udp2log class has
 	# been included.  The udp2log class is parameterized,
 	# so we don't want to use the require statement here
 	# to make sure it is included.  This just sets
 	# up the dependency.
 	Class["misc::udp2log"] -> Misc::Udp2log::Instance[$title]
-	
-	# the udp2log instance's filter config file
+
+    # the udp2log instance's filter config file
 	file { "/etc/udp2log/${name}":
 		require => Package[udplog],
 		mode    => 0744,

@@ -298,7 +298,7 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
         monitor_packet_loss  => false,
     }
 }
-
+	template_variables => { 'webrequest_filter_directory' => webrequest_filter_directory },
 # == Class role::logging::udp2log::erbium
 # Erbium udp2log instance:
 # - Fundraising: This requires write permissions on the netapp mount.
