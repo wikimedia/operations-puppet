@@ -22,7 +22,7 @@ class geoip::data::lite(
     mode   => '0555',
     owner  => 'root',
     group  => 'root',
-    source => "puppet:///${module_name}/geoliteupdate",
+    source => 'puppet:///modules/geoip/geoliteupdate',
   }
 
   $geoliteupdate_command = "/usr/local/bin/geoliteupdate ${data_directory}"
@@ -39,7 +39,7 @@ class geoip::data::lite(
   cron { 'geoliteupdate':
     ensure      => present,
     command     => "${geoliteupdate_command} &> /dev/null",
-    user        => root,
+    user        => 'root',
     weekday     => 0,
     hour        => 3,
     minute      => 30,
