@@ -555,6 +555,13 @@ class role::cache {
 
         # Ganglia monitoring
         class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
+
+        # monitor memory usage to deal with fragmentation. here on a trial
+        # basis, should be moved to base if the metrics prove to be sensible
+        # and useful.
+        ganglia::plugin::python { 'vm_stats': }
+        ganglia::plugin::python { 'mem_stats': }
+        ganglia::plugin::python { 'mem_fragmentation': }
     }
 
     class text inherits role::cache::varnish::2layer {
