@@ -2031,7 +2031,8 @@ node "potassium.eqiad.wmnet" {
 
 node "rhodium.eqiad.wmnet" {
     $gid = 500
-    include role::ocg::test,
+    include standard,
+        role::ocg::test,
         groups::wikidev,
         admins::roots,
         accounts::mwalker,
