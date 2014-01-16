@@ -106,7 +106,7 @@ define misc::udp2log::instance(
 	# to make sure it is included.  This just sets
 	# up the dependency.
 	Class["misc::udp2log"] -> Misc::Udp2log::Instance[$title]
-	
+
 	# the udp2log instance's filter config file
 	file { "/etc/udp2log/${name}":
 		require => Package[udplog],
