@@ -7,6 +7,7 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 
     $rolename = regsubst($title, ':', '-', 'G')
     $motd_filename = "/etc/update-motd.d/05-role-${rolename}"
+    salt::grain { $rolename: value => $rolename }
 
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '9.10') >= 0 {
         file { $motd_filename:
