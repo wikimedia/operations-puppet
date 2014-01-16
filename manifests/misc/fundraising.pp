@@ -39,12 +39,13 @@ class misc::fundraising {
             owner => 'root',
             group => 'www-data',
             mode => 0440,
-            ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php';
-        '/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
-            owner => 'root',
-            group => 'www-data',
-            mode => 0440,
-            ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php';
+            ensure => '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php';
+            #ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php';
+        #'/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
+        #    owner => 'root',
+        #    group => 'www-data',
+        #    mode => 0440,
+        #    ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php';
         '/srv/org.wikimedia.civicrm/files':
             owner => 'root',
             group => 'www-data',
