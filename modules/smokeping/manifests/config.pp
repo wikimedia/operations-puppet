@@ -3,11 +3,11 @@ class smokeping::config {
 
     file { '/etc/smokeping/config.d':
         require => Package['smokeping'],
-        ensure => directory,
+        ensure  => directory,
         recurse => true,
-        owner => 'root',
-        group => 'root',
-        mode => 0444,
-        source => "puppet:///${module_name}/config.d";
+        owner   => 'root',
+        group   => 'root',
+        mode    => 0444,
+        source  => 'puppet:///smokeping/config.d',
     }
 }
