@@ -52,27 +52,32 @@ class misc::fundraising {
             ensure => directory;
 
         #misc fundraising confs
-        '/opt/fundraising-misc/queue_handling/payflowpro/executeStompPFPPendingProcessorSA.php':
-            owner => 'root',
+        #'/opt/fundraising-misc/queue_handling/payflowpro/executeStompPFPPendingProcessorSA.php':
+        '/etc/fundraising/executeStompPFPPendingProcessorSA.php':
+            owner => 'www-data',
             group => 'wikidev',
             mode => 0440,
             source => 'puppet:///private/misc/fundraising/misc.executeStompPFPPendingProcessorSA.php';
-        '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php':
-            owner => 'root',
+        #'/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php':
+        '/etc/fundraising/IPNListener_Recurring.php':
+            owner => 'www-data',
             group => 'wikidev',
             mode => 0440,
             source => 'puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php';
-        '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php':
+        #'/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php':
+        '/etc/fundraising/IPNListener_Standalone.php':
             owner => 'www-data',
             group => 'wikidev',
             mode => 0440,
             source => 'puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php';
-        '/opt/fundraising-misc/auditing/paypal-audit/auth.cfg':
+        #'/opt/fundraising-misc/auditing/paypal-audit/auth.cfg':
+        '/etc/fundraising/paypal-audit/auth.cfg':
             owner => 'www-data',
             group => 'wikidev',
             mode => 0440,
             source => 'puppet:///private/misc/fundraising/fundraising-misc.auth.cfg';
-        '/opt/fundraising-misc/public_reporting/update_config.php':
+        #'/opt/fundraising-misc/public_reporting/update_config.php':
+        '/etc/fundraising/update_config.php':
             owner => 'root',
             group => 'root',
             mode => 0440,
