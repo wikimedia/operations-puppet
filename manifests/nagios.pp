@@ -307,15 +307,19 @@ class misc::zfs::monitoring {
 #   monitor_ganglia { 'hdfs-capacity-remaining':
 #       description          => 'GB free in HDFS',
 #       metric               => 'Hadoop.NameNode.FSNamesystem.CapacityRemainingGB',
-#       warning_threshold    => ':1024',
-#       critical_threshold   => ':512,
+#       warning              => ':1024',
+#       critical             => ':512,
 #   }
 #
 # == Parameters
 # $description          - Description of icinga alert
 # $metric               - ganglia metric name
 # $warning              - alert warning threshold
-# $critical_threshold   - alert critical threshold
+# $critical             - alert critical threshold
+# $metric_host          - hostname in ganglia we want to monitor.
+#                         Can't use nagios macro in checkcommands.cfg
+#                         because fqdn is not available.
+#                         Default: $::fqdn of this node
 # $gmetad_host          - Default: 'nickel.wikimedia.org'
 # $gmetad_query_port    - gmetad XML query interface port.  Default: 8654
 # $host
@@ -332,8 +336,9 @@ class misc::zfs::monitoring {
 define monitor_ganglia(
     $description,
     $metric,
-    $warning_threshold,
-    $critical_threshold,
+    $warning,
+    $critical,
+    $metric_host           = $::fqdn,
     $gmetad_host           = 'nickel.wikimedia.org',
     $gmetad_query_port     = 8654,
     $host                  = $::hostname,
@@ -353,6 +358,7 @@ define monitor_ganglia(
     # are passed to check_ganglia script:
     #   $ARG1$  -g gmetad host
     #   $ARG2$  -p gmetad xml query port
+    #   $ARG3$  -H Host for which we want metrics
     #   $ARG3$  -m ganglia metric name
     #   $ARG4$  -w warning threshold
     #   $ARG5$  -c critical threshold
@@ -360,7 +366,7 @@ define monitor_ganglia(
      monitor_service { $title:
          ensure                => $ensure,
          description           => $description,
-         check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric}!${warning_threshold}!${critical_threshold}",
+         check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}",
          retries               => $retries,
          group                 => $group,
          critical              => $critical,
