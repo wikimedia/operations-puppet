@@ -18,5 +18,5 @@ module.exports = function (config) {
 	config.backend.temp_dir = "<%= @temp_dir %>";
 
 	// Import the public local settings
-	return require("/srv/deployment/ocg/LocalSettings.js")(config)
+	return require("/srv/deployment/ocg/ocg/LocalSettings.js")(config)
 }
