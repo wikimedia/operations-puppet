@@ -359,9 +359,9 @@ define monitor_ganglia(
     #   $ARG1$  -g gmetad host
     #   $ARG2$  -p gmetad xml query port
     #   $ARG3$  -H Host for which we want metrics
-    #   $ARG3$  -m ganglia metric name
-    #   $ARG4$  -w warning threshold
-    #   $ARG5$  -c critical threshold
+    #   $ARG4$  -m ganglia metric name
+    #   $ARG5$  -w warning threshold
+    #   $ARG6$  -c critical threshold
 
      monitor_service { $title:
          ensure                => $ensure,

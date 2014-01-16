@@ -450,8 +450,9 @@ class role::cache {
             monitor_ganglia { 'varnishkafka-drerr':
                 description => 'Varnishkafka Delivery Errors',
                 metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
-                warning     => '0.0',
-                critical    => '0.0',
+                # alert if this is anything other than 0.0
+                warning     => '!0.0:0.0',
+                critical    => '!0.0:0.0',
                 require     => Class['::varnishkafka::monitoring'],
             }
         }
