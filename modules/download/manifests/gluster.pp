@@ -2,7 +2,7 @@ class download::gluster {
     include role::mirror::common
     include gluster::client
 
-    system::role { "download::gluster": description => "Gluster dumps copy" }
+    system::role { 'download::gluster': description => 'Gluster dumps copy' }
 
     mount { '/mnt/glusterpublicdata':
         ensure  => mounted,
@@ -26,11 +26,14 @@ class download::gluster {
 
     cron { 'dumps_gluster_rsync':
         ensure      => present,
-        user        => root,
+        user        => 'root',
         minute      => '50',
         hour        => '3',
         command     => '/usr/local/sbin/gluster-rsync-cron.sh',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        require     => [ File[ ['/usr/local/bin/wmfdumpsmirror.py','/usr/local/sbin/gluster-rsync-cron.sh'] ], Mount['/mnt/glusterpublicdata'] ]
+        require     => [File[['/usr/local/bin/wmfdumpsmirror.py',
+                        '/usr/local/sbin/gluster-rsync-cron.sh'] ],
+                        Mount['/mnt/glusterpublicdata']
+                        ],
     }
 }
