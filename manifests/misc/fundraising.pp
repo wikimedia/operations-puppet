@@ -40,32 +40,26 @@ class misc::fundraising {
             group => 'www-data',
             mode => 0440,
             ensure => '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php';
-            #ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php';
-        #'/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
-        #    owner => 'root',
-        #    group => 'www-data',
-        #    mode => 0440,
-        #    ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php';
         '/srv/org.wikimedia.civicrm/files':
             owner => 'root',
             group => 'www-data',
             mode => 2770,
             ensure => directory;
-
-        #legacy paypal IPN listener stuff
 		'/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
-            owner => 'www-data',
-            group => 'wikidev',
+            owner => 'root',
+            group => 'www-data',
             mode => 0440,
             source => 'puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php';
+
+		# fundraising wiki stuff
         '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php':
-            owner => 'www-data',
-            group => 'wikidev',
+            owner => 'root',
+            group => 'www-data',
             mode => 0440,
             source => 'puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php';
         '/etc/fundraising/legacy_paypal_config.php':
-            owner => 'www-data',
-            group => 'wikidev',
+            owner => 'root',
+            group => 'www-data',
             mode => 0440,
             source => 'puppet:///private/misc/fundraising/legacy_paypal_config.php';
 
