@@ -40,6 +40,7 @@ class icinga::monitor {
     icinga::monitor::files::misc,
     icinga::monitor::logrotate,
     icinga::ganglia::ganglios,
+    icinga::ganglia::check,
     facilities::pdu_monitoring,
     lvs::monitor,
     nagios::gsbmonitoring,
@@ -880,6 +881,30 @@ class icinga::ganglia::ganglios {
     mode => '0755',
     owner => icinga;
   }
+}
+
+# == Class icinga::ganglia::check
+# Installs check_ganglia package and sets up
+# symlink into /usr/lib/nagios/plugins.
+# check_ganglia allows arbitrary values
+# to be queried from ganglia and checked for
+# nagios/icinga.  This is better than ganglios,
+# as it queries gmetad's xml query interfaces
+# directly, rather than downloading and mangling
+# xmlfiles from each aggregator.
+#
+# TODO: will deprectate and remove ganglios soon.
+#
+class icinga::ganglia::check {
+    package { 'check-ganglia':
+        ensure  => 'installed',
+    }
+
+    file { '/usr/lib/nagios/plugins/check_ganglia':
+        ensure  => 'link',
+        target  => '/usr/bin/check_ganglia',
+        require => Package['check-ganglia'],
+    }
 }
 
 class icinga::monitor::logrotate {
