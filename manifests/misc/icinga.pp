@@ -893,8 +893,6 @@ class icinga::ganglia::ganglios {
 # directly, rather than downloading and mangling
 # xmlfiles from each aggregator.
 #
-# TODO: will deprectate and remove ganglios soon.
-#
 class icinga::ganglia::check {
     package { 'check-ganglia':
         ensure  => 'installed',
