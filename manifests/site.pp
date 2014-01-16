@@ -2035,7 +2035,6 @@ node "rhodium.eqiad.wmnet" {
         groups::wikidev,
         admins::roots,
         accounts::mwalker,
-        accounts::cscott,
         accounts::maxsem,
         accounts::anomie
 }
