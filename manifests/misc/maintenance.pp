@@ -532,3 +532,23 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
         updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17']: }
         updatequerypages::enwiki::cronjob { ['updatequerypages-enwiki-only']: }
 }
+
+class misc::maintenance::purgecheckuser( $enabled = false ) {
+
+    system::role { "misc::maintenance::purgecheckuser": description => "Misc - Maintenance Server: purge old checkuser data" }
+
+    cron { 'purge_old_checkuser':
+        user    => apache,
+        minute  => 0,
+        hour    => 1,
+        weekday => 0,
+        # Purge entries older than 30d * 86400s/d = 2592000s
+        command => '/usr/local/bin/foreachwiki extensions/CheckUser/maintenance/purgeOldData.php 2>&1 > ',
+        ensure  => $enabled ?{
+            true    => present,
+            false   => absent,
+            default => absent
+        };
+    }
+
+}
