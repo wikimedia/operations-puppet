@@ -634,6 +634,9 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 
 ## m2 shard
 node /^db104[68]\.eqiad\.wmnet/ {
+    if $::hostname =~ /^db1048/ {
+        $ganglia_aggregator = true
+    }
     if $::hostname =~ /^db1046/ {
         class { role::coredb::m2 : mariadb => true }
     } else {
