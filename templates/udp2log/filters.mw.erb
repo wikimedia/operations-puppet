@@ -8,3 +8,6 @@ pipe 1 egrep '^(fatal|exception) ' | /usr/bin/log2udp -h <%= @template_variables
 
 # Forward all messages to Ganglia reporter
 pipe 1 /usr/bin/log2udp -h <%= @template_variables['ganglia_reporter_host'] %> -p <%= @template_variables['ganglia_reporter_port'] %>
+
+# Forward all messages to Logstash
+pipe 1 /usr/bin/log2udp -h <%= @template_variables['logstash_host'] %> -p <%= @template_variables['logstash_port'] %>
