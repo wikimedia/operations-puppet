@@ -24,18 +24,20 @@ class network::constants {
 	$special_hosts = {
 		'production' => {
 			'bastion_hosts' => [
-					'208.80.152.165',
-					'208.80.154.149',
-					'91.198.174.113',
-					'198.35.26.5',
-					'2620:0:860:2:21e:c9ff:feea:ab95',
-					'2620:0:861:2:7a2b:cbff:fe09:11ba',
-					'2620:0:862:1:a6ba:dbff:fe30:d770',
-					'2620:0:863:1:92b1:1cff:fe4d:4249',
+					'208.80.152.165', # fenari.wikimedia.org
+					'208.80.154.149', # bast1001.wikimedia.org
+					'91.198.174.113', # hooft.esams.wikimedia.org
+					'198.35.26.5', # bast4001.wikimedia.org
+                    '208.80.154.151', # iron.wikimedia.org
+					'2620:0:860:2:21e:c9ff:feea:ab95', # fenari.wikimedia.org
+					'2620:0:861:2:7a2b:cbff:fe09:11ba', # bast.wikimedia.org
+					'2620:0:862:1:a6ba:dbff:fe30:d770', # hooft.esams.wikimedia.org
+					'2620:0:863:1:92b1:1cff:fe4d:4249', # bast4001.wikimedia.org
+					'2620:0:861:2:7a2b:cbff:fe09:d5c', # iron.wikimedia.org
 					],
 			'monitoring_hosts' => [
-					    '208.80.154.14',
-					    '2620:0:861:1:7a2b:cbff:fe08:a42f',
+					    '208.80.154.14', # neon.wikimedia.org
+					    '2620:0:861:1:7a2b:cbff:fe08:a42f', # neon.wikimedia.org
 					    ]
 		},
 		'labs' => {
