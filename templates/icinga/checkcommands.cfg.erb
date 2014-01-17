@@ -464,7 +464,7 @@ define command{
 
 define command{
 	command_name	puppet-FAIL
-	command_line	date --date @$LASTSERVICEOK$ +"Last successful Puppet run was %c" && exit 2
+	command_line	LANG=C date --date @$LASTSERVICEOK$ +"Last successful Puppet run was %c" && exit 2
 }
 
 define command{
