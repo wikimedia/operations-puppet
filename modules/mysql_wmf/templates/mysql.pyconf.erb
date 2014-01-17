@@ -217,9 +217,9 @@ collection_group {
   # This reports free space in the first free innodb table found
   # that the ganglia (dbstats) users has select access to.
   # Normally this is non, so a grant must be made to enable this.
-  metric {
-    name = "mysql_innodb_free_space"
-  }
+  # metric {
+  #   name = "mysql_innodb_free_space"
+  # }
 
   metric {
     name = "mysql_binlog_space_used"
