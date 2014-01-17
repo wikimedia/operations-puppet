@@ -50,12 +50,14 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         labs       => 'deployment-fluoride.pmtpa.wmflabs',
     }
 
-    $ganglia_reporter_host = $::realm ? {
-        production => 'localhost',
+    $logstash_host = $::realm ? {
+        # TODO: Find a way to use multicast that doesn't cause duplicate
+        # messages to be stored in logstash. This is a SPOF.
+        production => 'logstash1001.eqiad.wmnet',
         labs       => 'logstash.pmtpa.wmflabs',
     }
 
-    $ganglia_reporter_port = 8324
+    $logstash_port = 8324
 
     misc::udp2log::instance { "mw":
         log_directory    =>    $log_directory,
@@ -66,9 +68,9 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
             error_processor_host => $error_processor_host,
             error_processor_port => 8423,
 
-            # forwarding to wfdebug-ganglia.py (see below)
-            ganglia_reporter_host => $ganglia_reporter_host,
-            ganglia_reporter_port => $ganglia_reporter_port,
+            # forwarding to logstash
+            logstash_host => $logstash_host,
+            logstash_port => $logstash_port,
         },
     }
 
@@ -84,26 +86,6 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         group  => 'root',
         mode   => '0555',
         source => "puppet:///files/misc/scripts/mw-log-cleanup",
-    }
-
-    file { '/usr/local/bin/wfdebug-ganglia.py':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///files/udp2log/wfdebug-ganglia.py',
-    }
-
-    file { '/etc/init/wfdebug-ganglia.conf':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        content => template('udp2log/wfdebug-ganglia.conf.erb'),
-    }
-
-    service { 'wfdebug-ganglia':
-        ensure    => running,
-        provider  => 'upstart',
-        subscribe => File['/usr/local/bin/wfdebug-ganglia.py', '/etc/init/wfdebug-ganglia.conf'],
     }
 }
 
