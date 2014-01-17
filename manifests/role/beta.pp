@@ -27,3 +27,12 @@ class role::beta::natfixup {
 class role::beta::maintenance {
     class{ 'misc::maintenance::geodata': enabled => true }
 }
+
+class role::beta::fatalmonitor {
+
+    system::role { 'role::beta::fatalmonitor':
+        description => 'Monitor fatal errors and mails qa list'
+    }
+
+    include misc::beta::fatalmonitor
+}
