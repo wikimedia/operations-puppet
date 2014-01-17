@@ -100,6 +100,23 @@ define misc::beta::natdestrewrite( $public_ip, $private_ip ) {
 
 }
 
+class misc::beta::fatalmonitor {
+
+	file { '/usr/local/bin/monitor_fatals':
+		owner  => 'root',
+		group  => 'root',
+		mode   => '0555',
+		source => 'puppet:///files/misc/beta/monitor_fatals.rb',
+	}
+
+	cron { 'beta_monitor_fatals_every_hours':
+		require => File['/usr/local/bin/monitor_fatals'],
+		command => '/usr/local/bin/monitor_fatals',
+		user    => nobody,
+		hour    => '*',
+	}
+}
+
 
 class misc::beta::sync-site-resources {
 	file { "/usr/local/bin/sync-site-resources":
@@ -118,4 +135,3 @@ class misc::beta::sync-site-resources {
 		ensure => present,
 	}
 }
-
