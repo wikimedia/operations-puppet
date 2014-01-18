@@ -546,13 +546,13 @@ node /^db(6[012456]|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(33|37|43|49|50|51|52|55|56)\.eqiad\.wmnet/ {
+node /^db10(37|43|49|50|51|52|55|56)\.eqiad\.wmnet/ {
     if $::hostname =~ /^db10(56)/ {
         $ganglia_aggregator = true
         include mha::manager
     }
 
-    if $::hostname =~ /^db10(33|37|49|50|51|52|55|56)/ {
+    if $::hostname =~ /^db10(37|49|50|51|52|55|56)/ {
         class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
     } elsif $::hostname =~ /^db10(43)/ {
         class { role::coredb::s1 : mariadb => true }
@@ -612,8 +612,8 @@ node /^db10(06|15|22|23|27)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(07|24|28|39|41)\.eqiad\.wmnet/ {
-    if $::hostname =~ /^db10(07|24|39|41)/ {
+node /^db10(07|24|28|33|39|41)\.eqiad\.wmnet/ {
+    if $::hostname =~ /^db10(07|24|33|39|41)/ {
         class { role::coredb::s7 : innodb_file_per_table => true, mariadb => true }
     } elsif $::hostname == "db1028" {
         class { role::coredb::s7 : mariadb => true }
