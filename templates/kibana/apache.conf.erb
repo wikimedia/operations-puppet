@@ -66,11 +66,11 @@
   </LocationMatch>
 
   # Elasticsearch meta-data requests
-  <LocationMatch "^/(_nodes|_aliases|_mapping|.*/_mapping)$">
+  <LocationMatch "^/(_nodes|_aliases|.*/_aliases|_mapping|.*/_mapping)$">
     ProxyPassMatch http://<%= @es_host %>:<%= @es_port %>/$1
     ProxyPassReverse http://<%= @es_host %>:<%= @es_port %>/$1
-    # Allow caching for 15 minutes
-    Header set Cache-Control "public, must-revalidate, max-age=900"
+    # Allow caching for 1 minute
+    Header set Cache-Control "public, must-revalidate, max-age=60"
   </LocationMatch>
 
   # Storage/retrieval of saved dashboards via elasticsearch
