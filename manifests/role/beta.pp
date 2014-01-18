@@ -7,21 +7,21 @@
 # branches.
 class role::beta::autoupdater {
 
-    include misc::beta::autoupdater
+    include beta::autoupdater
 
-    system::role { 'role::beta::autoupdater':
+    system::role { 'role::beta':
         description => 'Server is autoupdating MediaWiki core and extension on beta.'
     }
 
 }
 
-class role::beta::natfixup {
+class role::beta::natfix {
 
     system::role { 'role::beta::natfix':
         description => 'Server has beta NAT fixup'
     }
 
-    include misc::beta::natfixup
+    include beta::natfix
 }
 
 class role::beta::maintenance {
