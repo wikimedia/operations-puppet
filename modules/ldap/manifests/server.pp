@@ -73,7 +73,7 @@ class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $
         require => Package['ldap-utils', 'opendj'],
     }
 
-    file { '$certificate_location':
+    file { $certificate_location:
         ensure  => directory,
         require => Package['opendj'],
     }
