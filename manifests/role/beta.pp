@@ -1,38 +1,26 @@
 # vim: set sw=4 ts=4 expandtab:
 
-# == Class: role::beta::autoupdater
-#
-# For host continuously updating MediaWiki core and extensions on the beta
-# cluster. This is the lame way to automatically pull any code merged in master
-# branches.
-class role::beta::autoupdater {
-
-    include misc::beta::autoupdater
-
-    system::role { 'role::beta::autoupdater':
-        description => 'Server is autoupdating MediaWiki core and extension on beta.'
+class role::beta::bastion {
+    system::role { 'role::beta::bastion':
+        description => 'Bastion and work machine for beta cluster'
     }
 
+    class { 'misc::maintenance::geodata': enabled => true }
+
+    include beta::autoupdater,
+        beta::fatalmonitor,
+        beta::syncsiteresources
 }
 
-class role::beta::natfixup {
-
+# Should be applied on any instance that needs to access DNS entries pointing
+# back to the beta cluster. This should be applied at a minimum on any instance
+# running MediaWiki.
+#
+# WARNING: this will enable firewall (managed by ferm) with a default DROP policy
+class role::beta::natfix {
     system::role { 'role::beta::natfix':
         description => 'Server has beta NAT fixup'
     }
 
-    include misc::beta::natfixup
-}
-
-class role::beta::maintenance {
-    class{ 'misc::maintenance::geodata': enabled => true }
-}
-
-class role::beta::fatalmonitor {
-
-    system::role { 'role::beta::fatalmonitor':
-        description => 'Monitor fatal errors and mails qa list'
-    }
-
-    include misc::beta::fatalmonitor
+    include beta::natfix
 }
