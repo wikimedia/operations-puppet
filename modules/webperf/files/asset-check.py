@@ -11,7 +11,6 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import json
-import itertools
 import logging
 import subprocess
 import time
