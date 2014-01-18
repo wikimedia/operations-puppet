@@ -36,7 +36,10 @@ class role::logstash {
 
     class { '::logstash':
        heap_memory_mb => 128,
-       filter_workers => 3,
+       # TODO: the multiline filter that is used in several places in the
+       # current configuration isn't thread safe and can cause crashes or
+       # garbled output when used with more than one thread worker.
+       filter_workers => 1,
     }
 
     class { '::logstash::input::udp2log':
