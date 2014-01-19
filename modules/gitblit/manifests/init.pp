@@ -69,6 +69,7 @@ class gitblit(
         ensure    => running,
         subscribe => File['/var/lib/gitblit/data/gitblit.properties'],
         enable    => true,
+        hasstatus => false,
     }
 
     apache_site { 'git':
