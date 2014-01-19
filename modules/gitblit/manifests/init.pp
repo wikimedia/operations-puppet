@@ -20,7 +20,7 @@ class gitblit(
         ensure     => present,
         gid        => 'gitblit',
         shell      => '/bin/false',
-        home       => '/nonexistent',
+        home       => '/var/lib/gitblit',
         system     => true,
         managehome => false,
     }
