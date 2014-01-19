@@ -120,15 +120,17 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_versio
 
 			# if the ganglia mysql users has been granted select access to an innodb table
 			# in the global space, this will report data_free for the global space.
-			cursor = conn.cursor(MySQLdb.cursors.Cursor)
-			cursor.execute('SELECT DATA_FREE FROM information_schema.TABLES WHERE ENGINE="InnoDB" LIMIT 1')
-			ibdata_free = ""
-			res = cursor.fetchone()
-			if res:
-				ibdata_free = res[0]
-			else:
-				ibdata_free = False
-			cursor.close()
+			#cursor = conn.cursor(MySQLdb.cursors.Cursor)
+			# Disabled 2014-01-19 springle: too slow
+			#cursor.execute('SELECT DATA_FREE FROM information_schema.TABLES WHERE ENGINE="InnoDB" LIMIT 1')
+			#ibdata_free = ""
+			#res = cursor.fetchone()
+			#if res:
+			#	ibdata_free = res[0]
+			#else:
+			#	ibdata_free = False
+			#cursor.close()
+			ibdata_free = False
 
 		if get_master:
 			cursor = conn.cursor(MySQLdb.cursors.Cursor)
