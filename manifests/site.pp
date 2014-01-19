@@ -1056,6 +1056,7 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 }
 
 node "manutius.wikimedia.org" {
+
     $corerouters = [
         "cr1-sdtpa.wikimedia.org",
         "cr2-pmtpa.wikimedia.org",
@@ -1850,9 +1851,64 @@ node 'netmon1001.wikimedia.org' {
         misc::rancid,
         smokeping,
         smokeping::web,
-        role::librenms
+        role::librenms,
+        misc::torrus,
+        misc::torrus::web,
+        misc::torrus::xml-generation::cdn
 
     interface::add_ip6_mapped { "main": }
+
+    $corerouters = [
+        "cr1-sdtpa.wikimedia.org",
+        "cr2-pmtpa.wikimedia.org",
+        "csw1-sdtpa.wikimedia.org",
+        "cr1-esams.wikimedia.org",
+        "cr2-knams.wikimedia.org",
+        "csw2-esams.wikimedia.org",
+        "cr1-eqiad.wikimedia.org",
+        "cr2-eqiad.wikimedia.org",
+        "cr1-ulsfo.wikimedia.org",
+        "cr2-ulsfo.wikimedia.org",
+        "mr1-pmtpa.mgmt.pmtpa.wmnet",
+        "pfw1-eqiad.wikimedia.org"
+    ]
+
+    $accessswitches = [
+        "asw-a4-sdtpa.mgmt.pmtpa.wmnet",
+        "asw-a5-sdtpa.mgmt.pmtpa.wmnet",
+        "asw-b-sdtpa.mgmt.pmtpa.wmnet",
+        "asw-d-pmtpa.mgmt.pmtpa.wmnet",
+        "asw-d1-sdtpa.mgmt.pmtpa.wmnet",
+        "asw-d2-sdtpa.mgmt.pmtpa.wmnet",
+        "asw-d3-sdtpa.mgmt.pmtpa.wmnet",
+        "asw2-d3-sdtpa.mgmt.pmtpa.wmnet",
+        "asw-a-eqiad.mgmt.eqiad.wmnet",
+        "asw-b-eqiad.mgmt.eqiad.wmnet",
+        "asw-c-eqiad.mgmt.eqiad.wmnet",
+        "asw2-a5-eqiad.mgmt.eqiad.wmnet",
+        "psw1-eqiad.mgmt.eqiad.wmnet",
+        "msw1-eqiad.mgmt.eqiad.wmnet",
+        "msw2-pmtpa.mgmt.pmtpa.wmnet",
+        "msw2-sdtpa.mgmt.pmtpa.wmnet"
+    ]
+
+    $storagehosts = [ "nas1-a.pmtpa.wmnet", "nas1-b.pmtpa.wmnet", "nas1001-a.eqiad.wmnet", "nas1001-b.eqiad.wmnet" ]
+
+
+    misc::torrus::discovery::ddxfile {
+        "corerouters":
+            subtree => "/Core_routers",
+            snmp_community => $snmp_ro_community,
+            hosts => $corerouters;
+        "accessswitches":
+            subtree => "/Access_switches",
+            snmp_community => $snmp_ro_community,
+            hosts => $accessswitches;
+        "storage":
+            subtree => "/Storage",
+            snmp_community => $snmp_ro_community,
+            hosts => $storagehosts
+    }
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
