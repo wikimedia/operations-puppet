@@ -57,6 +57,10 @@ sub vcl_fetch {
 		}
 	}
 
+	if (beresp.http.content-type ~ "image/svg+xml") {
+		set beresp.do_gzip = true;
+	}
+
 	# Stream large objects, >= 1 or 32 MB
 <% stream_threshold = vcl_config.fetch("cluster_tier", "1") == "1" ? 33554432 : 1048576 -%>
 	if (std.integer(beresp.http.Content-Length, 33554432) >= <%= stream_threshold %> || beresp.http.Content-Length ~ "^[0-9]{9}") {
