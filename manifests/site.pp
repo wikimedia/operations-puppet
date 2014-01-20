@@ -1113,9 +1113,7 @@ node "manutius.wikimedia.org" {
 
     include standard,
         webserver::apache,
-        misc::torrus,
-        misc::torrus::web,
-        misc::torrus::xml-generation::cdn,
+        torrus,
         ganglia::collector
 
     include passwords::network
