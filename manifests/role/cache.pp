@@ -1116,6 +1116,7 @@ class role::cache {
                 $cluster_options = {
                     'upload_domain' => 'upload.wikimedia.org',
                     'top_domain'    => 'org',
+                    'do_gzip'       => true,
                 }
             }
             'labs': {
