@@ -16,7 +16,6 @@ class coredb_mysql(
 ) {
 
     include coredb_mysql::base
-    include coredb_mysql::conf
     include coredb_mysql::packages
     include coredb_mysql::utils
 
@@ -28,6 +27,22 @@ class coredb_mysql(
         include coredb_mysql::heartbeat
     }
 
-    Class['coredb_mysql'] -> Class['coredb_mysql::conf']
     Class['coredb_mysql'] -> Class['coredb_mysql::packages']
+
+# coredb_mysql required packages
+
+    file { '/etc/db.cluster':
+        content => $coredb_mysql::shard,
+    }
+
+    file { '/etc/my.cnf':
+        content => template('coredb_mysql/prod.my.cnf.erb'),
+    }
+
+    file { '/etc/mysql/my.cnf':
+        ensure => link,
+        target => '/etc/my.cnf',
+    }
 }
+
+
