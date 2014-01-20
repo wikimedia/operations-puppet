@@ -5,10 +5,12 @@
 # === Required parameters
 #
 # $+directory+:: path to clone the repository into.
-# $+origin+:: Origin repository URL.
 #
 # === Optional parameters
 #
+# $+origin+:: If this is not specified, the the $title repository will be
+#             checked out from gerrit using a default gerrit url.
+#             If you set this, please specify the full repository url.
 # $+branch+:: Branch you would like to check out.
 # $+ensure+:: _absent_, _present_, or _latest_.  Defaults to _present_.
 #             - _present_ (default) will just clone once.
@@ -23,7 +25,7 @@
 #
 # === Example usage
 #
-#   git::clone{ 'my_clone_name':
+#   git::clone { 'my_clone_name':
 #       directory => '/path/to/clone/container',
 #       origin    => 'http://blabla.org/core.git',
 #       branch    => 'the_best_branch'
@@ -31,9 +33,15 @@
 #
 # Will clone +http://blabla.org/core.git+ branch +the_best_branch+ at
 #  +/path/to/clone/container/core+
+#
+#   # Example: check out from gerrit:
+#   git::clone { 'analytics/wikimetrics':
+#       directory = '/srv/wikimetrics',
+#   }
+#
 define git::clone(
     $directory,
-    $origin,
+    $origin=undef,
     $branch='',
     $ssh='',
     $ensure='present',
@@ -42,6 +50,13 @@ define git::clone(
     $timeout='300',
     $depth='full',
     $mode=0755) {
+
+    $gerrit_url_format = 'https://gerrit.wikimedia.org/r/p/%s.git'
+
+    $remote = $origin ? {
+        undef   => sprintf($gerrit_url_format, $title),
+        default => $origin,
+    }
 
     case $ensure {
         'absent': {
@@ -76,7 +91,7 @@ define git::clone(
             Exec { path => '/usr/bin:/bin' }
             # clone the repository
             exec { "git_clone_${title}":
-                command     => "git clone ${brancharg}${origin}${deptharg} $directory",
+                command     => "git clone ${brancharg}${remote}${deptharg} $directory",
                 logoutput   => on_failure,
                 cwd         => '/tmp',
                 environment => $env,
