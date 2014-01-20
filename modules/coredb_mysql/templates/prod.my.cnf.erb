@@ -21,7 +21,7 @@ tmpdir		= /a/tmp/
 
 skip-external-locking
 
-<% if skip_name_resolve == true then -%>
+<% if coredb_mysql::skip_name_resolve == true then -%>
 skip-name-resolve
 <% end -%>
 
