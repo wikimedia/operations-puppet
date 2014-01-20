@@ -11,6 +11,7 @@ class role::cache::bits inherits role::cache::1layer {
     $common_cluster_options = {
         'test_hostname'      => 'test.wikipedia.org',
         'enable_geoiplookup' => true,
+        'do_gzip'            => true,
     }
 
     $default_backend = 'backend'
@@ -33,7 +34,6 @@ class role::cache::bits inherits role::cache::1layer {
             $realm_cluster_options = {
                 'top_domain'  => 'beta.wmflabs.org',
                 'bits_domain' => 'bits.beta.wmflabs.org',
-                'do_gzip'     => true,
             }
         }
         default: {
