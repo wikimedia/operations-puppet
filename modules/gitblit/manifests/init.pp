@@ -51,11 +51,8 @@ class gitblit(
         source  => 'puppet:///modules/gitblit/header.md',
     }
 
-    file { '/etc/init.d/gitblit':
-        mode    => '0554',
-        owner   => 'gitblit',
-        group   => 'gitblit',
-        source  => 'puppet:///modules/gitblit/gitblit-ubuntu',
+    file { '/etc/init/gitblit.conf':
+        source  => 'puppet:///modules/gitblit/gitblit.conf',
     }
 
     file { '/var/www/robots.txt':
@@ -67,8 +64,9 @@ class gitblit(
 
     service { 'gitblit':
         ensure    => running,
+        provider  => 'upstart',
         subscribe => File['/var/lib/gitblit/data/gitblit.properties'],
-        enable    => true,
+        require   => File['/etc/init/gitblit.conf'],
     }
 
     apache_site { 'git':
