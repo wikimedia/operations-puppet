@@ -111,6 +111,12 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     class { 'cdh4::hadoop::jmxtrans::worker':
         ganglia => "${ganglia_host}:${ganglia_port}",
     }
+
+    # Require r-base on hadoop worker nodes.
+    # A highlighted issue with analytics1011 is the inability to do any post-processing (except through base python)
+    package { "r-base":
+        ensure => "present"
+    }
 }
 
 # == Class role::analytics::hadoop::standby
