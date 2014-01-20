@@ -131,6 +131,10 @@ sub vcl_fetch {
 		set beresp.http.X-MediaWiki-Original = regsub(req.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
 	}
 
+	if (beresp.http.content-type ~ "image/svg+xml") {
+		set beresp.do_gzip = true;
+	}
+
 	return (deliver);
 }
 
