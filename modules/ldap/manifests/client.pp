@@ -355,7 +355,7 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
 
     if $realm == 'labs' {
         if $managehome {
-            $ircecho_logs = { "/var/log/manage-exports.log" => "#wikimedia-labs" }
+            $ircecho_logs = { "/var/log/manage-exports.log" => "#wikimedia-labs-nagios" }
             $ircecho_nick = "labs-home-wm"
             $ircecho_server = "chat.freenode.net"
             include role::echoirc
