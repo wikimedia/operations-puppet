@@ -38,6 +38,7 @@ RailsAutoDetect Off
 	ProxyPassMatch ^/([^/]+/certificate.*)$ https://<%= @fqdn %>:8141
 	ProxyPassMatch ^/([^/]+/report/.*)$ https://<%= @fqdn %>:8141
 	ProxyPassMatch ^/([^/]+/file_bucket_file/md5/.*)$ https://<%= @fqdn %>:8141
+	ProxyPassMatch ^/([^/]+/file_metadata(s)?/volatile/.*)$ https://<%= @fqdn %>:8141
 	ProxyPass / balancer://mycluster/
 	<Proxy balancer://mycluster>
 	  <%- @workers.each do |worker| -%>
@@ -51,12 +52,12 @@ RailsAutoDetect Off
 
 	<Location />
 		Order Allow,Deny
-<% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
+		<%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
 		Allow from <%= entry.gsub(/^\*/, "") %>
-<% end -%>
-<% scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
+		<% end -%>
+		<%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
 		Deny from <%= entry.gsub(/^\*/, "") %>
-<% end -%>
+		<% end -%>
 	</Location>
 
 	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
@@ -66,10 +67,10 @@ RailsAutoDetect Off
 		Order allow,deny
 		allow from all
 	</Directory>
+	<%- end -%>
 
 	LogFormat "%h %l %u %{%Y-%m-%d %H:%M:%S}t \"%r\" %>s %O %D \"%{Referer}i\" \"%{User-Agent}i\"" puppetmaster
-	CustomLog /var/log/apache2/access.log puppetmaster
-	<%- end -%>
+	CustomLog /var/log/apache2/puppetmaster.log puppetmaster
 </VirtualHost>
 <%- end -%>
 
@@ -87,12 +88,12 @@ RailsAutoDetect Off
 
 	<Location />
 		Order Allow,Deny
-<% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
+		<%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
 		Allow from <%= entry.gsub(/^\*/, "") %>
-<% end -%>
-<% scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
+		<% end -%>
+		<%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
 		Deny from <%= entry.gsub(/^\*/, "") %>
-<% end -%>
+		<% end -%>
 	</Location>
 
 	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
@@ -104,6 +105,6 @@ RailsAutoDetect Off
 	</Directory>
 
 	LogFormat "%h %l %u %{%Y-%m-%d %H:%M:%S}t \"%r\" %>s %O %D \"%{Referer}i\" \"%{User-Agent}i\"" puppetmaster
-	CustomLog /var/log/apache2/access.log puppetmaster
+	CustomLog /var/log/apache2/puppetmaster-backend.log puppetmaster
 </VirtualHost>
 <%- end -%>
