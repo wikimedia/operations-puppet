@@ -12,14 +12,30 @@ class ldap::role::server::labs {
     $proxyagent = $ldap::role::config::labs::ldapconfig['proxyagent']
     $proxypass = $ldap::role::config::labs::ldapconfig['proxypass']
 
-    $certificate = $realm ? {
-        'production' => 'star.wikimedia.org',
-        'labs'       => 'star.wmflabs',
+    case $::realm {
+        'labs': {
+            $certificate = 'star.wmflabs',
+            $ca_name = 'wmf-labs.pem',
+        }
+        'production': {
+            $ca_name = 'RapidSSL_CA.pem',
+                case $::hostname {
+                    'virt0.wikimedia.org': {
+                        $certificate = 'virt0.wikimedia.org',
+                    }
+                    'virt1000.wikimedia.org': {
+                        $certificate = 'virt1000.wikimedia.org',
+                    }
+                    'default': {
+                        fail('Production realm ldap certificates for virt0/1000 only!')
+                    }
+                }
+        }
+        'default': {
+            fail('unknown realm, should be labs or production')
+        }
     }
-    $ca_name = $realm ? {
-        'production' => 'Equifax_Secure_CA.pem',
-        'labs'       => 'wmf-labs.pem',
-    }
+
     install_certificate{ $certificate: }
     # Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
     # Add it into the instance location, and ensure opendj can read it.
