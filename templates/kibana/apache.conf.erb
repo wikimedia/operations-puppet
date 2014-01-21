@@ -87,9 +87,10 @@
     # Disallow caching of status checks
     Header set Cache-Control "private, must-revalidate, max-age=0"
     Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
-    # Allow internal hosts to access this URI without authenticating
-    Allow from 10.0.0.0/8
-    Allow from 2620:0:860::/46
+    # Allow access this URI without authenticating
+    # Due to varnish frontend, all reqests are seen by Apache as being internal
+    # so using IP ranges is not any more restrictive than "all".
+    Allow from all
     Satisfy Any
   </Location>
 
