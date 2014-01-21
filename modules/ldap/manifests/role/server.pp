@@ -13,11 +13,17 @@ class ldap::role::server::labs {
     $proxypass = $ldap::role::config::labs::ldapconfig['proxypass']
 
     $certificate = $realm ? {
-        'production' => 'star.wikimedia.org',
+        'production' => {
+            if $::hostname == 'virt0.wikimedia.org' {
+                'virt0.wikimedia.org',}
+            elseif $::hostname == 'virt1000.wikimedia.org' {
+                'virt1000.wikimedia.org',}
+            else fail('Certificates only exist for virt0 and virt1000')
+        }
         'labs'       => 'star.wmflabs',
-    }
+        }
     $ca_name = $realm ? {
-        'production' => 'Equifax_Secure_CA.pem',
+        'production' => 'RapidSSL_CA.pem',
         'labs'       => 'wmf-labs.pem',
     }
     install_certificate{ $certificate: }
