@@ -8,10 +8,7 @@ class varnish::common::vcl {
         content => template('varnish/geoip.inc.vcl.erb'),
     }
     file { '/etc/varnish/device-detection.inc.vcl':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('varnish/device-detection.inc.vcl.erb'),
+        ensure  => absent,
     }
     file { '/etc/varnish/errorpage.inc.vcl':
         owner   => 'root',
