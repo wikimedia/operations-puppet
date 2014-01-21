@@ -68,7 +68,8 @@ class role::analytics::users {
         accounts::ironholds, # RT 5831
         accounts::dartar,    # RT 5835
         accounts::halfak,    # RT 5836
-        accounts::ypanda     # RT 6103
+        accounts::ypanda,    # RT 6103
+        accounts::csalvia    # RT 6664
 
     # NOTE:  If you are filling an RT request for Hadoop access,
     # you will need to add the user to the list of accounts above,
@@ -93,6 +94,7 @@ class role::analytics::users {
     User<|title == spetrea|>     { groups +> [ 'stats' ] }
     User<|title == abaso|>       { groups +> [ 'stats' ] }
     User<|title == qchris|>      { groups +> [ 'stats' ] }
+    User<|title == csalvia|>     { groups +> [ 'stats' ] }
 
     # Diederik and Otto have sudo privileges on Analytics nodes.
     sudo_user { [ 'diederik', 'otto' ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
