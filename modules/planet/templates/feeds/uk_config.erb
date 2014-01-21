@@ -1,0 +1,31 @@
+# ! This file is managed by puppet !
+# uk.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = uk.planet.wikimedia
+link            = http://uk.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/uk
+cache_directory = /var/cache/planet/uk/
+output_dir      = /var/www/planet/uk/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[http://wikimediaukraine.wordpress.com/feed/]
+name=Вікімедіа Україна
+
+[http://wle.org.ua/feed/]
+name=Вікі любить Землю
+
