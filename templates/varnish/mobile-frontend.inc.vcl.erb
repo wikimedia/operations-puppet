@@ -72,7 +72,8 @@ sub vcl_recv {
 		unset req.http.Cookie;
 	}
 
-	call device_detection;
+	/* FIXME: temporary for the migration of disabling WAP */
+	set req.http.X-WAP = "no";
 
 	if ( req.http.host ~ "^test\." ) {
 		return (pass);
