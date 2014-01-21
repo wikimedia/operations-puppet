@@ -1,7 +1,6 @@
 # Varnish VCL include file for mobile frontends
 
 include "errorpage.inc.vcl";
-include "device-detection.inc.vcl";
 include "zero.inc.vcl";
 
 sub filter_noise {
@@ -72,7 +71,8 @@ sub vcl_recv {
 		unset req.http.Cookie;
 	}
 
-	call device_detection;
+	/* FIXME: temporary for the migration of disabling WAP */
+	set req.http.X-WAP = "no";
 
 	if ( req.http.host ~ "^test\." ) {
 		return (pass);
