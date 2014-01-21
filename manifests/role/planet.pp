@@ -4,10 +4,6 @@ class role::planet {
 
     system::role { 'role::planet': description => 'Planet (venus) weblog aggregator' }
 
-    # locales are essential for planet. if a new language is added check these too
-    include standard,
-    generic::locales::international
-
     # be flexible about labs vs. prod
     case $::realm {
         'labs': {
@@ -21,17 +17,8 @@ class role::planet {
         }
     }
 
-    # webserver setup
-    install_certificate{ "star.planet.${planet_domain_name}": }
-    class {'webserver::php5': ssl => true; }
-    apache_module { 'rewrite': name => 'rewrite' }
-    apache_module { 'expires': name => 'expires' }
-
-    # dependencies
-    Class['webserver::php5'] -> Apache_module['rewrite'] -> Install_certificate["star.planet.${planet_domain_name}"]
-
     # List all planet languages and translations for
-    # index.html.tmpl here.  Configurations, directories and
+    # index.html.tmpl here. Configurations, directories and
     # cronjobs are auto-created from this hash.
     $planet_languages = {
         ar => {
@@ -201,10 +188,14 @@ class role::planet {
         },
     }
 
-    # the actual planet-venus class doing all the rest
-    class {'misc::planet-venus':
+    # protocol-relative link to a meta or index page for all planets
+    $planet_meta_link = "meta.wikimedia.org/wiki/Planet_Wikimedia"
+
+    # the 'planet' class from modules/planet/init.pp does the setup
+    class {'::planet':
         planet_domain_name => $planet_domain_name,
         planet_languages   => $planet_languages,
+        planet_meta_link   => $planet_meta_link
     }
 }
 
