@@ -2,9 +2,22 @@
 #
 # Provisions a service which gather stats about static assets count
 # and size using a headless browser instance. Stats are forwarded to
-# Ganglia using gmetric.
+# StatsD.
 #
-class webperf::asset_check {
+# === Parameters
+#
+# [*statsd_host*]
+#   Write stats to this StatsD instance. Default: '127.0.0.1'.
+#
+# [*statsd_port*]
+#   Write stats to this StatsD instance. Default: 8125.
+#
+class webperf::asset_check(
+    statsd_host = '127.0.0.1',
+    statsd_port = 8125,
+) {
+    include ::webperf
+
     package { 'phantomjs':
         ensure => present,
     }

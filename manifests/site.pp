@@ -2528,16 +2528,14 @@ node 'vanadium.eqiad.wmnet' {
 }
 
 # Hosts visualization / monitoring of EventLogging event streams
-# and MediaWiki errors. Non-critical at the moment. See RT #5514.
+# and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
-    include standard,
-        role::eventlogging::graphite,
-        webperf,
-        webperf::asset_check,
-        webperf::navtiming
+    include standard
+    include role::eventlogging::graphite
+    include role::webperf
 }
 
-# StatsD & Graphite
+# Primary Graphite, StatsD, and profiling data aggregation host.
 node 'tungsten.eqiad.wmnet' {
     include standard
     include role::graphite
