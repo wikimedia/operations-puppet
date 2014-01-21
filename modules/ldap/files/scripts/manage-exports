@@ -10,6 +10,7 @@ import sys
 import traceback
 import ldapsupportlib
 import os
+import socket
 import homedirectorymanager
 import datetime
 from optparse import OptionParser
@@ -30,6 +31,7 @@ class ExportManager:
         self.keysdir = "/mnt/keys/"
         self.loglevel = INFO
         self.logfile = None
+        self.hostname = socket.gethostname()
 
     def run(self):
         parser = OptionParser(conflict_handler="resolve")
@@ -66,7 +68,7 @@ class ExportManager:
             if not os.path.ismount(self.keysdir):
                 os.system("mount -t glusterfs labstore2.pmtpa.wmnet:/keys %s" % self.keysdir)
                 if not os.path.ismount(self.keysdir):
-                    self.log("Failed to mount the key volume %s" % self.keysdir)
+                    self.log("%s failed to mount the key volume %s" % (self.hostname, self.keysdir))
                     raise Exception('mount failure')
             if not os.path.exists(self.keysdir + '/autofs_check'):
                 os.mkdir(self.keysdir + '/autofs_check', 0755)
