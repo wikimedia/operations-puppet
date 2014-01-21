@@ -4,7 +4,7 @@
 #
 # This file is managed by Puppet.
 #
-description "Report static asset stats to Ganglia"
+description "Report static asset stats to StatsD"
 
 start on (local-filesystems and net-device-up IFACE!=lo)
 

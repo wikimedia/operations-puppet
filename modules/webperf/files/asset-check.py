@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
   Gather stats about static assets count / size via asset-check.js
-  Use gmetric to forward them to Ganglia.
+  and forward them to StatsD.
 
-  Copyright (C) 2013, Ori Livneh <ori@wikimedia.org>
+  Copyright (C) 2013, 2014, Ori Livneh <ori@wikimedia.org>
   Licensed under the terms of the GPL, version 2 or later.
 """
 import sys
@@ -44,7 +44,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
 def dispatch_stats(name, stats):
-    """Send metrics to Ganglia by shelling out to gmetric."""
+    """Send metrics to StatsD."""
     for type, data in stats.items():
         for measure, value in data.items():
             stat = ('frontend.assets.%s.%s.%s:%s|ms' %
