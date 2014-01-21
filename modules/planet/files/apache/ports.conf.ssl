@@ -1,0 +1,10 @@
+# ! this file is managed by puppet !
+# simple Apache ports.conf with enabled SSL (NameVirtualHost *:443)
+
+NameVirtualHost *:80
+Listen 80
+
+<IfModule mod_ssl.c>
+    NameVirtualHost *:443
+    Listen 443
+</IfModule>

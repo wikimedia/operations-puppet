@@ -1,0 +1,31 @@
+# config for planet.wikimedia.org -> redirect to page on meta
+# actual *.planet language versions are in planet-language.erb
+
+<VirtualHost *:443>
+    ServerName planet.<%= scope.lookupvar('planet::planet_domain_name') %>
+    SSLEngine on
+    SSLProtocol -ALL +SSLv3 +TLSv1
+    SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
+    SSLHonorCipherOrder on
+    SSLCertificateFile /etc/ssl/certs/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.pem
+    SSLCertificateChainFile /etc/ssl/certs/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.chained.pem
+    SSLCertificateKeyFile /etc/ssl/private/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.key
+
+    RewriteEngine on
+    RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+
+    RedirectTemp / https://<%= scope.lookupvar('planet::planet_meta_link') %>
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName planet.<%= scope.lookupvar('planet::planet_domain_name') %>
+    php_admin_flag engine off
+
+    DocumentRoot /var/www/planet
+
+    Redirect /atom.xml http://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/atom.xml
+    Redirect /rss10.xml http://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/rss10.xml
+    Redirect /rss20.xml http://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/rss20.xml
+
+    RedirectTemp / http://<%= scope.lookupvar('planet::planet_meta_link') %>
+</VirtualHost>
