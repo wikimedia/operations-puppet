@@ -6,6 +6,7 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 
 import argparse
+import logging
 import socket
 
 import zmq
@@ -15,6 +16,7 @@ schema_revs = (5832704, 6703470)
 metrics = ('connecting', 'sending', 'waiting', 'redirecting', 'receiving',
            'rendering', 'loading', 'dnsLookup', 'pageSpeed',
            'totalPageLoadTime', 'mediaWikiLoadComplete')
+prefix = 'frontend.navtiming'
 
 
 ap = argparse.ArgumentParser(description='NavigationTiming Graphite module')
@@ -34,6 +36,17 @@ zsock.subscribe = b''
 
 addr = args.statsd_host, args.statsd_port
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
+def dispatch_stat(*args):
+    if len(args) < 2:
+        raise ArgumentError
+    value = args.pop()
+    name = '.'.join([prefix] + args)
+    stat = '%s:%s|ms' % (name, value)
+    sock.sendto(stat.encode('utf-8'), addr)
+    logging.info(stat)
+
 
 for meta in iter(zsock.recv_json, ''):
 
@@ -69,12 +82,6 @@ for meta in iter(zsock.recv_json, ''):
     for metric in metrics:
         value = event.get(metric, 0)
         if value > 0 and value < 60000:
-            stat = 'browser.%s.%s:%s|ms' % (metric, site, value)
-            sock.sendto(stat.encode('utf-8'), addr)
-            stat = 'browser.%s.%s.%s:%s|ms' % (metric, site, auth, value)
-            sock.sendto(stat.encode('utf-8'), addr)
-            stat = 'browser.%s.%s:%s|ms' % (metric, bits_cache, value)
-            sock.sendto(stat.encode('utf-8'), addr)
-            if wiki == 'eswiki':
-                stat = 'browser.%s.%s.%s:%s|ms' % (wiki, metric, site, value)
-                sock.sendto(stat.encode('utf-8'), addr)
+            dispatch_stat(metric, site, value)
+            dispatch_stat(metric, site, auth, value)
+            dispatch_stat(metric, bits_cache, value)
