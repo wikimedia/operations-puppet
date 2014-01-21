@@ -55,6 +55,7 @@ class puppetmaster(
 
     include backup::host
     backup::set { 'var-lib-puppet-ssl': }
+    backup::set { 'var-lib-puppet-volatile': }
 
     class { 'puppetmaster::passenger':
         bind_address    => $bind_address,

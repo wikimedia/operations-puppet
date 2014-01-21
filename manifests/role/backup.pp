@@ -115,6 +115,9 @@ class role::backup::director {
     bacula::director::fileset { 'var-lib-puppet-ssl':
         includes => [ '/var/lib/puppet/ssl' ]
     }
+    bacula::director::fileset { 'var-lib-puppet-volatile':
+        includes => [ '/var/lib/puppet/volatile' ]
+    }
     bacula::director::fileset { 'var-opendj-backups':
         includes => [ '/var/opendj/backups' ]
     }
