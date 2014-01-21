@@ -42,10 +42,10 @@ RailsAutoDetect Off
 	ProxyPass / balancer://mycluster/
 	<Proxy balancer://mycluster>
 	  <%- @workers.each do |worker| -%>
-		  BalancerMember https://<%= worker %>:8141 connectiontimeout=1 retry=500 timeout=900
+		BalancerMember https://<%= worker %>:8141 connectiontimeout=1 retry=500 timeout=900
 	  <%- end -%>
-	  Order allow,deny
-	  Allow from all
+		Order allow,deny
+		Allow from all
 	</Proxy>
 	<%- else -%>
 	RackBaseURI /
@@ -54,10 +54,10 @@ RailsAutoDetect Off
 		Order Allow,Deny
 		<%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
 		Allow from <%= entry.gsub(/^\*/, "") %>
-		<% end -%>
+		<%- end -%>
 		<%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
 		Deny from <%= entry.gsub(/^\*/, "") %>
-		<% end -%>
+		<%- end -%>
 	</Location>
 
 	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
@@ -90,10 +90,10 @@ RailsAutoDetect Off
 		Order Allow,Deny
 		<%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
 		Allow from <%= entry.gsub(/^\*/, "") %>
-		<% end -%>
+		<%- end -%>
 		<%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
 		Deny from <%= entry.gsub(/^\*/, "") %>
-		<% end -%>
+		<%- end -%>
 	</Location>
 
 	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
