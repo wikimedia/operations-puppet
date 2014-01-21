@@ -389,6 +389,27 @@ health_stats['es_unassigned_shards'] = merge(GAUGE, {
     'description': 'shards initializing'
 })
 
+# Index stats
+index_stats = dict()
+index_stats['es_%(group)s_queries'] = merge(COUNTER, {
+    'path': '_all.total.search.groups.%(group)s.query_total',
+    'units': 'queries/sec',
+    'description': 'Queries/sec',
+})
+index_stats['es_%(group)s_query_time'] = merge(TIME, {
+    'path': '_all.total.search.groups.%(group)s.query_time_in_millis',
+    'description': 'Query Time/sec'
+})
+index_stats['es_%(group)s_fetches'] = merge(COUNTER, {
+    'path': '_all.total.search.groups.%(group)s.fetch_total',
+    'units': 'fetches/sec',
+    'description': 'Fetches/sec',
+})
+index_stats['es_%(group)s_fetch_time'] = merge(TIME, {
+    'path': '_all.total.search.groups.%(group)s.fetch_time_in_millis',
+    'description': 'Fetch Time/sec'
+})
+
 
 def dig_it_up(obj, path):
     def tryint(s):
@@ -404,12 +425,16 @@ def dig_it_up(obj, path):
         return False
 
 
+def load(url):
+    return json.load(urllib2.urlopen(url, None, 2))
+
+
 def update_result(data):
     # If time delta is > 3 seconds, then update the JSON results
     now = time.time()
     diff = now - data['last_update']
     if diff > 3:
-        data['stats'] = json.load(urllib2.urlopen(data['url'], None, 2))
+        data['stats'] = load(data['url'])
         data['last_update'] = now
 
 
@@ -469,6 +494,23 @@ def metric_init(params):
     }
     Desc_Skel['call_back'] = partial(get_stat, health_result, health_stats)
     init(health_stats)
+
+    # Monitor search grouped stats by making a stat per group.
+    url = '{0}_stats/search?groups=_all'.format(host)
+    index_stats_result = {
+        'last_update': 0,
+        'url': url,
+        'path_transformer': noop_path_transformer,
+    }
+    for group in load(url)['_all']['total']['search']['groups']:
+        group_index_stats = dict()
+        for stat_name, stat in index_stats.iteritems():
+            stat_name = stat_name % {'group': group.replace(' ', '_')}
+            path = stat['path'] % {'group': group}
+            group_index_stats[stat_name] = merge(stat, {'path': path})
+        Desc_Skel['call_back'] = partial(
+            get_stat, index_stats_result, group_index_stats)
+        init(group_index_stats)
 
     return descriptors
 
