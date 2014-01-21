@@ -33,8 +33,14 @@ class webperf::asset_check(
     }
 
     file { '/etc/init/asset-check.conf':
-        source  => 'puppet:///modules/webperf/asset-check.conf',
-        require => [ File['/srv/webperf/asset-check.py'], User['webperf'] ],
+        content => template('webperf/asset-check.conf.erb'),
+        notify  => Service['asset-check'],
+        require => [
+            File['/srv/webperf/asset-check.py'],
+            File['/srv/webperf/asset-check.js'],
+            Package['phantomjs'],
+            User['webperf']
+        ],
     }
 
     service { 'asset-check':

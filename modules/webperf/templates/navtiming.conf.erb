@@ -5,17 +5,19 @@
 # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
 # http://www.mediawiki.org/wiki/Extension:NavigationTiming
 #
+# This file is managed by Puppet.
+#
 description "NavigationTiming Graphite module"
-
-respawn limit 15 5
 
 start on (local-filesystems and net-device-up IFACE!=lo)
 
-setuid nobody
-setgid nogroup
+setuid webperf
+setgid webperf
 
 respawn
+respawn limit 15 5
 
+chdir /srv/webperf
 exec /usr/bin/python /srv/webperf/navtiming.py \
     <%= @endpoint %> \
     --statsd-host <%= @statsd_host %> \

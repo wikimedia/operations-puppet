@@ -10,20 +10,15 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+import argparse
 import json
 import logging
+import socket
 import subprocess
 import time
 
 
 interval = 300  # 5 minutes.
-
-defaults = {
-    'type': 'uint32',
-    'group': 'assets',
-    'tmax': interval,
-    'spoof': 'client-side:client-side',
-}
 
 urls = (
     ('commons', 'http://commons.wikimedia.org/wiki/Main_Page'),
@@ -38,20 +33,24 @@ urls = (
 )
 
 
+ap = argparse.ArgumentParser(description='Asset check Graphite module')
+ap.add_argument('--statsd-host', default='localhost',
+                type=socket.gethostbyname)
+ap.add_argument('--statsd-port', default=8125, type=int)
+args = ap.parse_args()
+
+addr = args.statsd_host, args.statsd_port
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
 def dispatch_stats(name, stats):
     """Send metrics to Ganglia by shelling out to gmetric."""
     for type, data in stats.items():
         for measure, value in data.items():
-            metric = defaults.copy()
-            metric.update({
-                'name': 'assets_%s_%s_%s' % (type, measure, name),
-                'value': value,
-                'units': measure,
-            })
-            command = ['gmetric']
-            args = sorted('--%s=%s' % (k, v) for k, v in metric.items())
-            command.extend(args)
-            subprocess.call(command)
+            stat = ('frontend.assets.%s.%s.%s:%s|ms' %
+                    (type, measure, name, value))
+            logging.info(stat)
+            sock.sendto(stat.encode('utf-8'), addr)
 
 
 def gather_stats():
