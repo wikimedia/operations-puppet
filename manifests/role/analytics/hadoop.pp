@@ -1,4 +1,4 @@
-# role/analytics/hadoop.pp
+ # role/analytics/hadoop.pp
 #
 # Role classes for Analytics Hadoop nodes.
 # These role classes will configure Hadoop properly in either
@@ -67,7 +67,14 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
         require      => Class['::cdh4::hadoop::master'],
     }
-
+    # Alert if this NameNode is not active
+    monitor_ganglia { 'hadoop-hdfs-namenode-primary-is-active':
+        description => 'Hadoop NameNode Primary Is Active',
+        metric      => 'Hadoop.NameNode.FSNamesystem.tag_HAState',
+        warning     => '!active',
+        critical    => '!active',
+        require      => Class['::cdh4::hadoop::master'],
+    }
 
     # Hadoop nodes are spread across multiple rows
     # and need to be able to send multicast packets
