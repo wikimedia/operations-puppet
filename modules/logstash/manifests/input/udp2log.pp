@@ -1,6 +1,6 @@
 # vim:sw=4 ts=4 sts=4 et:
 
-# = Class: logstash::input::udp2log
+# = Define: logstash::input::udp2log
 #
 # Configure logstash to collect input as a udp2log relay listener.
 #
@@ -11,18 +11,18 @@
 #
 # == Sample usage:
 #
-#   class { 'logstash::input::udp2log':
-#       udp2log_port => 8324,
+#   logstash::input::udp2log {
+#       port => 8324,
 #   }
 #
-class logstash::input::udp2log(
+define logstash::input::udp2log(
+    $ensure   = present,
     $port     = 8324,
     $priority = 10,
-    $ensure   = present,
 ) {
-    logstash::conf{ 'input-udp2log':
+    logstash::conf { "input-udp2log-${title}":
+        ensure   => $ensure,
         content  => template('logstash/input/udp2log.erb'),
         priority => $priority,
-        ensure   => $ensure,
     }
 }

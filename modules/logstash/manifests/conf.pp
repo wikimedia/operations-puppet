@@ -26,16 +26,13 @@ define logstash::conf(
     $priority = 10,
     $ensure   = present,
 ) {
-    $config_file = inline_template('<%= @title.gsub(/\W/, "-") %>')
+    $config_name = inline_template('<%= @title.gsub(/\W/, "-") %>')
 
-    file { "${logstash::config_dir}/${priority}-${config_file}.conf":
+    file { "/etc/logstash/conf.d/${priority}-${config_name}.conf":
         ensure  => $ensure,
-        group   => 'root',
-        mode    => '0644',
-        owner   => 'root',
         content => $content,
         source  => $source,
-        require => Package['logstash'],
+        require => File['/etc/logstash/conf.d'],
         notify  => Service['logstash'],
     }
 }
