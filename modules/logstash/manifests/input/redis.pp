@@ -1,6 +1,6 @@
 # vim:sw=4 ts=4 sts=4 et:
 
-# = Class: logstash::input::redis
+# = Define: logstash::input::redis
 #
 # Configure logstash to collect input from a Redis server
 #
@@ -14,22 +14,22 @@
 #
 # == Sample usage:
 #
-#   class { 'logstash::input::redis':
+#   logstash::inputs::redis { 'redis':
 #       host => '127.0.0.1',
 #       key  => 'logstash',
 #   }
 #
-class logstash::input::redis(
+define logstash::input::redis(
+    $ensure     = present,
     $host       = '127.0.0.1',
     $port       = 6379,
     $data_type  = 'list',
     $key        = 'logstash',
     $priority   = 10,
-    $ensure     = present,
 ) {
-    logstash::conf{ 'input-redis':
+    logstash::conf { "input-redis-${title}":
+        ensure   => $ensure,
         content  => template('logstash/input/redis.erb'),
         priority => $priority,
-        ensure   => $ensure,
     }
 }

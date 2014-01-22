@@ -1,28 +1,28 @@
 # vim:sw=4 ts=4 sts=4 et:
 
-# = Class: logstash::input::syslog
+# = Define: logstash::input::syslog
 #
 # Configure logstash to collect input as a syslog listener.
 #
 # == Parameters:
+# - $ensure: Whether the config should exist.
 # - $port: port to listen for syslog input on
 # - $priority: Configuration loading priority. Default '10'.
-# - $ensure: Whether the config should exist.
 #
 # == Sample usage:
 #
-#   class { 'logstash::input::syslog':
+#   logstash::input::syslog { 'syslog':
 #       port => 514,
-#   }
+#    }
 #
-class logstash::input::syslog(
+define logstash::input::syslog(
+    $ensure   = present,
     $port     = 514,
     $priority = 10,
-    $ensure   = present,
 ) {
-    logstash::conf{ 'input-syslog':
+    logstash::conf { "input-syslog-${title}":
+        ensure   => $ensure,
         content  => template('logstash/input/syslog.erb'),
         priority => $priority,
-        ensure   => $ensure,
     }
 }
