@@ -40,15 +40,17 @@ class logstash::output::elasticsearch(
     $priority        = 10,
     $ensure          = present,
 ) {
+    $uri = "http://${host}:${port}"
+
     logstash::conf{ 'output-elasticsearch':
+        ensure   => $ensure,
         content  => template('logstash/output/elasticsearch.erb'),
         priority => $priority,
-        ensure   => $ensure,
     }
 
     # TODO: add support for manage_template when we upgrade to v1.3.2+
 
-    file { "/usr/local/bin/logstash_delete_index.sh":
+    file { '/usr/local/bin/logstash_delete_index.sh':
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
@@ -56,7 +58,7 @@ class logstash::output::elasticsearch(
         source  => 'puppet:///modules/logstash/logstash_delete_index.sh',
     }
 
-    file { "/usr/local/bin/logstash_optimize_index.sh":
+    file { '/usr/local/bin/logstash_optimize_index.sh':
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
@@ -71,7 +73,7 @@ class logstash::output::elasticsearch(
 
     cron { 'logstash_delete_index':
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_delete_index.sh http://${host}:${port}",
+        command => "/usr/local/bin/logstash_delete_index.sh ${uri}",
         user    => 'root',
         hour    => 0,
         minute  => 42,
@@ -80,7 +82,7 @@ class logstash::output::elasticsearch(
 
     cron { 'logstash_optimize_index':
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_optimize_index.sh http://${host}:${port}",
+        command => "/usr/local/bin/logstash_optimize_index.sh ${uri}",
         user    => 'root',
         hour    => 1,
         # Stagger execution on each node of cluster to avoid running in

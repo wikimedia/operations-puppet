@@ -1,3 +1,0 @@
-# This directory contains Logstash configuration fragments that are managed by
-# Puppet.
-# PUPPET WILL DELETE ANY UNMANAGED FILES IN THIS DIRECTORY WITHOUT WARNING.

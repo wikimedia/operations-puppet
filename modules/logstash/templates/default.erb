@@ -15,7 +15,7 @@ LS_JAVA_OPTS="${LS_JAVA_OPTS} -Djava.io.tmpdir=/var/lib/logstash"
 
 # Location of configuration files.
 # All files in this directory are concatenated in alphabetical order.
-CONF_DIR=<%= @config_dir %>
+CONF_DIR=/etc/logstash/conf.d
 
 # Logstash will look for ruby plugins in the logstash/{inputs,filters,outputs}
 # subdirectories of plugin_dir
