@@ -20,10 +20,10 @@ class ldap::role::server::labs {
         'production': {
             $ca_name = 'RapidSSL_CA.pem'
                 case $::hostname {
-                    'virt0.wikimedia.org': {
+                    'virt0': {
                         $certificate = 'virt0.wikimedia.org'
                     }
-                    'virt1000.wikimedia.org': {
+                    'virt1000': {
                         $certificate = 'virt1000.wikimedia.org'
                     }
                     'default': {
