@@ -1,7 +1,6 @@
 # sets up a user and file for the 'bugzilla_report.php' script
 # only parameter: user name that will run this (also used for group)
 # requires: passwords::bugzilla for the PHP script to connect to db
-# fix me: the historic PHP script contains a hardcoded "db9" value
 class bugzilla::reporter ($bz_report_user = 'reporter') {
 
     generic::systemuser { 'bzreporter':
