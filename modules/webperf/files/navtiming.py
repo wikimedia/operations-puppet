@@ -27,6 +27,9 @@ ap.add_argument('--statsd-port', default=8125, type=int)
 
 args = ap.parse_args()
 
+logging.basicConfig(format='%(asctime)-15s %(message)s', level=logging.INFO,
+                    stream=sys.stdout)
+
 ctx = zmq.Context()
 zsock = ctx.socket(zmq.SUB)
 zsock.hwm = 3000
@@ -41,11 +44,11 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 def dispatch_stat(*args):
     if len(args) < 2:
         raise ArgumentError
+    args = list(args)
     value = args.pop()
     name = '.'.join([prefix] + args)
     stat = '%s:%s|ms' % (name, value)
     sock.sendto(stat.encode('utf-8'), addr)
-    logging.info(stat)
 
 
 for meta in iter(zsock.recv_json, ''):
@@ -82,6 +85,4 @@ for meta in iter(zsock.recv_json, ''):
     for metric in metrics:
         value = event.get(metric, 0)
         if value > 0 and value < 60000:
-            dispatch_stat(metric, site, value)
             dispatch_stat(metric, site, auth, value)
-            dispatch_stat(metric, bits_cache, value)
