@@ -14,24 +14,6 @@
 	Redirect permanent / https://doc.wikimedia.org/
 </VirtualHost>
 
-<VirtualHost *:443>
-	ServerName doc.mediawiki.org
-
-	LogLevel warn
-	ErrorLog /var/log/apache2/doc_error.log
-	CustomLog /var/log/apache2/doc_access.log vhost_combined
-
-	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
-	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
-
-	Redirect permanent / https://doc.wikimedia.org/
-</VirtualHost>
-
 <VirtualHost *:80>
 	ServerName doc.wikimedia.org
 
@@ -51,27 +33,4 @@
 	RewriteEngine On
 	RewriteRule ^/favicon\.ico$ /favicon.php [L]
 
-</VirtualHost>
-
-<VirtualHost *:443>
-	ServerName doc.wikimedia.org
-	ServerAdmin noc@wikimedia.org
-
-	DocumentRoot /srv/org/wikimedia/doc
-
-	# Favicon proxy
-	RewriteEngine On
-	RewriteRule ^/favicon\.ico$ /favicon.php [L]
-
-	LogLevel warn
-	ErrorLog /var/log/apache2/doc_error.log
-	CustomLog /var/log/apache2/doc_access.log vhost_combined
-
-	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
-	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
 </VirtualHost>
