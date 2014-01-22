@@ -33,11 +33,6 @@ host ersch {
 	fixed-address ersch.pmtpa.wmnet;
 }
 
-host erzurumi {
-	hardware ethernet 00:1e:c9:ea:53:f4;
-	fixed-address erzurumi.pmtpa.wmnet;
-}
-
 host fenari {
 	hardware ethernet 00:1E:C9:EA:AB:95;
 	fixed-address fenari.wikimedia.org;
@@ -71,11 +66,6 @@ host linne {
 host locke {
 	hardware ethernet 00:18:8b:44:6c:d0;
 	fixed-address locke.wikimedia.org;
-}
-
-host loudon {
-	hardware ethernet 00:1E:C9:E2:73:FA;
-	fixed-address loudon.wikimedia.org;
 }
 
 host lvs1 {

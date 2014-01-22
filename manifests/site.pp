@@ -2724,9 +2724,7 @@ node default {
 # db78.pmtpa.wmnet
 # db1008.frack.eqiad.wmnet
 # db1025.frack.eqiad.wmnet
-# erzurumi.pmtpa.wmnet
 # indium.frack.eqiad.wmnet
-# loudon.wikimedia.org (pmtpa)
 # lutetium.frack.eqiad.wmnet
 # pappas.wikimedia.org (pmtpa)
 # pay-lvs1001.frack.eqiad.wmnet

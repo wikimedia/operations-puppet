@@ -29,7 +29,6 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
         # pull from archive peers and fundraising db dumpers
         #$mirror->{'1'} = "rsync $archive_pull backupmover\@db1025.frack.eqiad.wmnet:/a/archive/ /a/archive/";
         $mirror->{'2'} = "rsync $archive_pull backupmover\@barium.frack.eqiad.wmnet:/archive/ /a/archive/";
-        $mirror->{'3'} = "rsync $archive_pull backupmover\@loudon.wikimedia.org:/archive/ /a/archive/";
         $mirror->{'4'} = "rsync $archive_pull backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
         $mirror->{'5'} = "rsync $archive_pull backupmover\@db78.pmtpa.wmnet:/a/archive/ /a/archive/";
 
@@ -41,7 +40,6 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 } elsif ($conf->{'HOSTNAME'} eq 'barium') {
 
         $mirror->{'1'} = "rsync $archive_pull backupmover\@aluminium.wikimedia.org:/archive/ /archive/";
-        $mirror->{'2'} = "rsync $archive_pull backupmover\@loudon.wikimedia.org:/archive/ /archive/";
         #$mirror->{'3'} = "rsync $archive_pull backupmover\@db1025.frack.eqiad.wmnet:/a/archive/ /archive/";
         $mirror->{'4'} = "rsync $archive_pull backupmover\@db78.pmtpa.wmnet:/a/archive/ /archive/";
 
@@ -50,14 +48,12 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 	# pull from archive peers and db dumpers
 	#$mirror->{'1'} = "rsync $archive_pull backupmover\@db1025.frack.eqiad.wmnet:/a/archive/ /a/archive/";	
 	$mirror->{'2'} = "rsync $archive_pull backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
-	$mirror->{'3'} = "rsync $archive_pull backupmover\@loudon.wikimedia.org:/archive/ /a/archive/";
 
 } elsif ($conf->{'HOSTNAME'} eq 'aluminium') {
 
 	# pull from archive peers and db dumpers
 	$mirror->{'1'} = "rsync $archive_pull backupmover\@db78.pmtpa.wmnet:/a/archive/ /archive/";
 	#$mirror->{'2'} = "rsync $archive_pull backupmover\@db1025.frack.eqiad.wmnet:/a/archive/ /archive/";
-	$mirror->{'3'} = "rsync $archive_pull backupmover\@loudon.wikimedia.org:/archive/ /archive/";
 
 	# collect local syslog stuff from paypal to local archive
 	$mirror->{'4'} = "rsync -ar --exclude=*log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
