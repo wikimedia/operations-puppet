@@ -71,8 +71,8 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     monitor_ganglia { 'hadoop-hdfs-namenode-primary-is-active':
         description => 'Hadoop NameNode Primary Is Active',
         metric      => 'Hadoop.NameNode.FSNamesystem.tag_HAState',
-        warning     => '!active',
-        critical    => '!active',
+        warning     => '\!active',
+        critical    => '\!active',
         require      => Class['::cdh4::hadoop::master'],
     }
 
