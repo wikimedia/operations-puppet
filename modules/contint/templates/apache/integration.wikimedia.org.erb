@@ -4,7 +4,6 @@
 #####################################################################
 # vim: filetype=apache
 
-NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName integration.wikimedia.org
 
@@ -12,11 +11,6 @@ NameVirtualHost *:443
 	ErrorLog /var/log/apache2/integration_error.log
 	CustomLog /var/log/apache2/integration_access.log vhost_combined
 
-	# Force any request to HTTPS if not passed via https (misc web varnish)
-	RewriteEngine On
-	RewriteCond %{HTTP:X-Forwarded-Proto} !https
-	RewriteRule (.) https://integration.wikimedia.org%{REQUEST_URI} [R=301]
-
 	DocumentRoot /srv/org/wikimedia/integration
 	RewriteRule ^/favicon\.ico$ /favicon.php [L]
 
@@ -72,81 +66,5 @@ NameVirtualHost *:443
 		IndexOrderDefault Descending Date
 	</Directory>
 
-
-</VirtualHost>
-
-<VirtualHost *:443>
-	ServerName integration.wikimedia.org
-	ServerAdmin noc@wikimedia.org
-
-	DocumentRoot /srv/org/wikimedia/integration
-
-	# Favicon proxy
-	RewriteEngine On
-	RewriteRule ^/favicon\.ico$ /favicon.php [L]
-
-	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
-	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
-
-	LogLevel warn
-	ErrorLog /var/log/apache2/integration_error.log
-	CustomLog /var/log/apache2/integration_access.log vhost_combined
-
-	Include *_proxy
-
-	<Directory />
-		Order Deny,Allow
-		AllowOverride All
-	</Directory>
-
-	<Directory /srv/org/wikimedia/integration>
-		Options FollowSymLinks
-		AllowOverride All
-		Order allow,deny
-		allow from all
-	</Directory>
-
-	<Directory /srv/org/wikimedia/integration/logs>
-		# Let people browse the console logs
-		Options +Indexes
-	</Directory>
-
-	<Directory /srv/org/wikimedia/integration/*Mobile/nightly/>
-		Options +Indexes
-		IndexOptions FancyIndexing
-		IndexOptions SuppressIcon
-		IndexOptions SuppressRules
-		IndexOptions SuppressDescription
-		IndexOptions SuppressHTMLPreamble
-		IndexOptions HTMLTable
-		IndexOptions VersionSort
-		IndexOptions NameWidth=*
-
-		ServerSignature Off
-
-		IndexStyleSheet "../../nightly.css"
-		HeaderName "HEADER.html"
-		ReadmeName "README.html"
-		IndexIgnore "*.html" ".."
-	</Directory>
-
-	# Generic nightly builds, no specific HTML there
-	<Directory /srv/org/wikimedia/integration/nightly/>
-		Options +Indexes
-		IndexOptions FancyIndexing
-		IndexOptions SuppressDescription
-		IndexOptions HTMLTable
-		IndexOptions VersionSort
-		IndexOptions NameWidth=*
-	</Directory>
-
-	<Directory /srv/org/wikimedia/integration/nightly/mediawiki/core>
-		IndexOrderDefault Descending Date
-	</Directory>
 
 </VirtualHost>
