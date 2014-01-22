@@ -181,6 +181,13 @@ class accounts {
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDN9+TME+RHccrQypKmHUXdRdlr1TVQkhCEL6DJ4dMA2CaWIsqwIkfqIjzBzVoqLUxNVjVPh+AF8ahrtSnx5qQKrPn3icv1G1J1J9d4pagHuFcNQiYWS+7xk5P/rz8GETOcNkKOl4ZaCJf1KGvSiFv67mC8ERqY3238UIougv74uTm8u6KHfJQoNMMgtQ0YlGD5pD5HjKMMkzSG2Li6a9gR7nXQ4WKHDKyZW1lt8v4U4v79ZcTTIDk8jie6DNOgJLq6NHpurosfMjZI7d7wWi84mqQTazTpgNvRtaAyO3dg+iZYGrc0d642e+kBA6izMlz8QpWOiem5tR1PGN2itTrL";
 			}
+				ssh_authorized_key {
+				"bjorsch@wikimedia.org-2":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAACAQDGhaxbWveDEQ8giBB9YMMDJrNIYGS8Mlz03EYp74ZlQIzxyIaRpJiGjWPthDMioWINFrKbZSQVkYeDuiVNpvC1r14iry/LukVaCBSG/M8VCX1lEAGKTU6CwGiBWuoKrTeMkuPMnciasuSVsllHwluAUxiMw5Y3VcyFUcqI8FIKWZ8p2ovsTa/H1ADaGEGDD6FHp34Mu3k/xMbBZ+xZwOm8igLmEPbpOxJp6CcdBDK2Wqwp4mpMutgC5FxLBHCbmnXoMopnNc02xhDEi6IUqaV36nwxp7HaqqTYdSNJvLK1v4aIZCjlYGDQnVNiLK4lhkVWEzt35XwtBx13JBVgRAPv6EM+E2kiZviV6mPoRhPh6NJNPITLhC9lE4HBVrR25Cxe6l74w53enARfRythtDobD5EZE0CtvSZO/lRwYxwGqJd2EEE+JV+oAPhG8OxD8/IBTRAa7RsZcazluzs+M6h0iSSn5yz1D1H9J6IvXn+cRKg/6KWRCBehCKBGDtVhZMKpnvHMjDnK/GmXuD/V5mSqpZBoJjEYyuQi6pDj+9RRV2UeDcjSvU8bqYSZA3iiMUe7i9xMlN9st6NnKhqgZE5nAAF2MxFVdVzk5qk5e/VPBGM8Gw9PUT73m8RLBcRrmz32keLodrNtReo5768SIxS6GwVFWKtZRj9OTGCAJtN0yQ==";
+			}
 		}
 	}
 	class ashields inherits baseaccount {
