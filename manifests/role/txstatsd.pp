@@ -8,7 +8,7 @@ class role::txstatsd {
     class { '::txstatsd':
         settings => {
             statsd => {
-                'carbon-cache-host' => 'localhost',
+                'carbon-cache-host' => 'tungsten.eqiad.wmnet',
                 'carbon-cache-port' => 2003,
                 'listen-port'       => 8125,
                 'listen-tcp-port'   => 8125,
