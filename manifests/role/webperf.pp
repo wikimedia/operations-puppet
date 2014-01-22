@@ -4,17 +4,20 @@
 # into StatsD.
 #
 class role::webperf {
-    include ::role::txstatsd
+    $statsd_host = 'tungsten.eqiad.wmnet'
 
     # Aggregate client-side latency measurements collected via the
     # NavigationTiming MediaWiki extension and send them to Graphite.
     # See <https://www.mediawiki.org/wiki/Extension:NavigationTiming>
     class { '::webperf::navtiming':
-        endpoint => 'tcp://vanadium.eqiad.wmnet:8600',
+        endpoint    => 'tcp://vanadium.eqiad.wmnet:8600',
+        statsd_host => $statsd_host,
     }
 
     # Provisions a service which gather stats about static assets count
     # and size using a headless browser instance. Stats are forwarded to
     # Ganglia using gmetric.
-    class { '::webperf::asset_check': }
+    class { '::webperf::asset_check':
+        statsd_host => $statsd_host,
+    }
 }
