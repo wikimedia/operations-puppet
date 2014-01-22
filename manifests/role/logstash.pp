@@ -42,28 +42,30 @@ class role::logstash {
        filter_workers => 1,
     }
 
-    class { '::logstash::input::udp2log':
+    logstash::input::udp2log { 'mediawiki':
         port => 8324,
     }
-    class { '::logstash::input::syslog':
+
+    logstash::input::syslog { 'syslog':
         port => 10514,
     }
-    class { '::logstash::input::redis':
+
+    logstash::input::redis { 'redis':
         host => '127.0.0.1',
         key  => 'logstash',
     }
 
-    logstash::conf { 'filter-strip-ansi-color':
+    logstash::conf { 'filter_strip_ansi_color':
         source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
         priority => 50,
     }
 
-    logstash::conf { 'filter-syslog':
+    logstash::conf { 'filter_syslog':
         source   => 'puppet:///files/logstash/filter-syslog.conf',
         priority => 50,
     }
 
-    logstash::conf { 'filter-mw-via-udp2log':
+    logstash::conf { 'filter_mw_via_udp2log':
         source   => 'puppet:///files/logstash/filter-mw-via-udp2log.conf',
         priority => 50,
     }
@@ -72,7 +74,7 @@ class role::logstash {
         host            => '127.0.0.1',
         replication     => 'async',
         require_tag     => 'es',
-        manage_indices  => 'true',
+        manage_indices  => true,
         priority        => 90,
     }
 

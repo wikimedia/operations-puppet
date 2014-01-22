@@ -36,37 +36,21 @@ class elasticsearch($cluster_name,
                     $master_eligible = true,
                     $holds_data = true,
                     $auto_create_index = false) {
+
+    include ::elasticsearch::packages
+
     # Check arguments
     if $cluster_name == 'elasticsearch' {
         fail('$cluster_name must not be set to "elasticsearch"')
     }
 
-    # Install
-    # Get a jdk on which to run elasticsearch
-    package { 'openjdk-7-jdk': }
-    # Most Elasticsearch maintenance is done with curl so have it handy
-    package { 'curl': }
-    package { 'elasticsearch':
-        ensure  => present,
-        require => [
-            Package['openjdk-7-jdk'],
-            File['/etc/elasticsearch/elasticsearch.yml'],
-            File['/etc/elasticsearch/logging.yml'],
-            File['/etc/default/elasticsearch'],
-        ]
-    }
-
-    # Configure
-    file { '/etc/elasticsearch':
-        ensure  => directory
-    }
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
         owner   => root,
         group   => root,
         content => template('elasticsearch/elasticsearch.yml.erb'),
         mode    => '0444',
-        require => File['/etc/elasticsearch'],
+        require => Package['elasticsearch'],
     }
     file { '/etc/elasticsearch/logging.yml':
         ensure  => file,
@@ -74,7 +58,7 @@ class elasticsearch($cluster_name,
         group   => root,
         content => template('elasticsearch/logging.yml.erb'),
         mode    => '0444',
-        require => File['/etc/elasticsearch'],
+        require => Package['elasticsearch'],
     }
     file { '/etc/default/elasticsearch':
         ensure  => file,
@@ -82,7 +66,7 @@ class elasticsearch($cluster_name,
         group   => root,
         content => template('elasticsearch/elasticsearch.erb'),
         mode    => '0444',
-        require => File['/etc/elasticsearch'],
+        require => Package['elasticsearch'],
     }
     file { '/etc/logrotate.d/elasticsearch':
         ensure  => file,

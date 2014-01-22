@@ -1,8 +1,8 @@
-# vim:sw=4 ts=4 sts=4 et:
-
 # = Class: logstash
 #
-# This class installs/configures/manages the Logstash service.
+# Logstash is a flexible log aggregation framework built on top of
+# Elasticsearch, a distributed document store. It lets you configure logging
+# pipelines that ingress log data from various sources in a variety of formats.
 #
 # == Parameters:
 # - $heap_memory_mb: amount of memory to allocate to logstash in megabytes.
@@ -19,13 +19,7 @@ class logstash(
     $heap_memory_mb = 64,
     $filter_workers = 1,
 ) {
-
-    $config_dir   = '/etc/logstash/conf.d'
-
-    # OL: commented this out because it conflicts with the elasticsearch module.
-    # The logstash role depends on both. Probably this resource should not be in
-    # either module but in a separate module altogether.
-    # package { 'openjdk-7-jdk': }
+    include ::elasticsearch::packages
 
     package { 'logstash':
         ensure  => '1.2.2-debian1',
@@ -33,37 +27,24 @@ class logstash(
     }
 
     file { '/etc/default/logstash':
-        ensure  => present,
-        group   => 'root',
-        mode    => '0444',
-        owner   => 'root',
         content => template('logstash/default.erb'),
         require => Package['logstash'],
         notify  => Service['logstash'],
     }
 
-    file { $config_dir:
+    file { '/etc/logstash/conf.d':
         ensure  => directory,
-        group   => 'root',
-        mode    => '0644',
-        owner   => 'root',
+        recurse => true,
         purge   => true,
+        force   => true,
+        source  => 'puppet:///modules/logstash/conf.d',
         require => Package['logstash'],
     }
 
-    file { "${config_dir}/README":
-        ensure  => present,
-        group   => 'root',
-        mode    => '0644',
-        owner   => 'root',
-        source  => 'puppet:///modules/logstash/conf.d-README',
-        require => File[$config_dir],
-    }
-
     service { 'logstash':
-        enable     => true,
         ensure     => running,
         provider   => 'debian',
+        enable     => true,
         hasstatus  => true,
         hasrestart => true,
     }
