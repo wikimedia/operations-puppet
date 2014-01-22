@@ -1,7 +1,9 @@
 include "errorpage.inc.vcl";
 
 sub vcl_recv {
-	if (req.http.Host == "git.wikimedia.org") {
+	if (req.http.Host == "blog.wikimedia.org") {
+		set req.backend = holmium;
+	} elsif (req.http.Host == "git.wikimedia.org") {
 		set req.backend = antimony;
 		/* gitblit requires the following request headers: */
 		set req.http.X-Forwarded-Proto = "https";
