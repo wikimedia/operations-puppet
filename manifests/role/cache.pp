@@ -1183,6 +1183,7 @@ class role::cache {
             backends => [
                 'antimony.wikimedia.org',
                 'gallium.wikimedia.org',  # CI server
+                'holmium.eikimrfis.org',
                 'ytterbium.wikimedia.org',
                 'tungsten.eqiad.wmnet',
                 'zirconium.wikimedia.org',
