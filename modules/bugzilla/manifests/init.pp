@@ -94,7 +94,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
     bugzilla::logmail {'communitymetrics':
         script_name  => 'bugzilla_community_metrics.sh',
         rcpt_address => 'bugzilla-admin@wikimedia.org',
-        sndr_address => 'bugzilla-metrics@wikimedia.org',
+        sndr_address => 'bugzilla-daemon@wikimedia.org',
         monthday     => '1',
     }
 
@@ -102,7 +102,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
     bugzilla::logmail {'auditlog':
         script_name  => 'bugzilla_audit_log.sh',
         rcpt_address => 'bugzilla-admin@wikimedia.org',
-        sndr_address => 'bugzilla-audit@wikimedia.org',
+        sndr_address => 'bugzilla-daemon@wikimedia.org',
         monthday     => '*',
     }
 
