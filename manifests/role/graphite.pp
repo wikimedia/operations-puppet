@@ -51,6 +51,7 @@ class role::graphite {
             'cache'   => {
                 line_receiver_interface   => '127.0.0.1',  # Only the relay binds to 0.0.0.0.
                 pickle_receiver_interface => '127.0.0.1',
+                max_cache_size            => 10 * 1000 * 1000,
             },
 
             ## Carbon caches ##
