@@ -999,9 +999,6 @@ node "gallium.wikimedia.org" {
         options => 'noatime,nodiratime,nobarrier,logbufs=8',
         require => File['/srv/ssd'],
     }
-
-    install_certificate{ "star.mediawiki.org": }
-    install_certificate{ "star.wikimedia.org": }
 }
 
 node "harmon.pmtpa.wmnet" {
