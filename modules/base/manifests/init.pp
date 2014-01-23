@@ -110,7 +110,7 @@ class base::puppet($server='puppet', $certname=undef) {
     monitor_service { 'puppet freshness':
         description     => 'Puppet freshness',
         check_command   => 'puppet-FAIL',
-        passive         => true,
+        passive         => 'true',
         freshness       => $freshnessinterval,
         retries         => 1,
     }
