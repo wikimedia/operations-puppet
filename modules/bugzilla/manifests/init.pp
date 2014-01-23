@@ -116,7 +116,9 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
     $bz_path = '/srv/org/wikimedia/bugzilla'
     $whine = 'whine.pl'
 
+    # disabled, it's broken on new server
     cron { 'bugzilla_whine':
+        ensure  => absent,
         command => "${bz_path}/${whine}",
         user    => 'root',
         minute  => '15',
