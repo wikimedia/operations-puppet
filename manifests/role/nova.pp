@@ -231,10 +231,10 @@ class role::nova::manager {
 		'production': {
 			case $::hostname {
 				'virt0': {
-					$certificate = 'virt0.wikimedia.org'
+					$certificate = 'star.wikimedia.org'
 				}
 				'virt1000': {
-					$certificate = 'virt1000.wikimedia.org'
+					$certificate = 'star.wikimedia.org'
 				}
 				'default': {
 					fail('Production realm ldap certificates for virt0/1000 only!')
