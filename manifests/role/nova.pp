@@ -229,17 +229,9 @@ class role::nova::manager {
 			$certificate = 'star.wmflabs'
 		}
 		'production': {
-			case $::hostname {
-				'virt0': {
-					$certificate = 'virt0.wikimedia.org'
-				}
-				'virt1000': {
-					$certificate = 'virt1000.wikimedia.org'
-				}
-				'default': {
-					fail('Production realm ldap certificates for virt0/1000 only!')
-				}
-			}
+			# Some day soon this should be 'wikitech.wikimedia.org'
+			# ...once we buy that cert.
+			$certificate = 'star.wikimedia.org'
 		}
 		'default': {
 			fail('unknown realm, should be labs or production')
