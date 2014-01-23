@@ -219,6 +219,8 @@ node "bast1001.wikimedia.org" {
     $cluster = "misc"
     $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet esams.wikimedia.org"
 
+    interface::add_ip6_mapped { "main": interface => "eth0" }
+
     include standard,
         svn::client,
         admins::roots,
@@ -235,6 +237,8 @@ node "bast4001.wikimedia.org" {
     system::role { "misc": description => "Operations Bastion" }
     $cluster = "misc"
     $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet esams.wikimedia.org"
+
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 
     include standard,
     admins::roots,
@@ -871,6 +875,8 @@ node "fenari.wikimedia.org" {
     $cluster = "misc"
     $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
+    interface::add_ip6_mapped { "main": interface => "eth0" }
+
     include role::applicationserver::maintenance,
         svn::client,
         nfs::netapp::home,
@@ -1164,6 +1170,8 @@ node "iron.wikimedia.org" {
     system::role { "misc": description => "Operations Bastion" }
     $cluster = "misc"
     $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet esams.wikimedia.org"
+
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 
     include standard,
     admins::roots,
