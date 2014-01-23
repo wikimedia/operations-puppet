@@ -90,21 +90,21 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
         ]: ensure => present,
     }
 
-    # community metrics mail
-    #bugzilla::logmail {'communitymetrics':
-    #    script_name  => 'bugzilla_community_metrics.sh',
-    #    rcpt_address => 'communitymetrics@wikimedia.org',
-    #    sndr_address => '3962@rt.wikimedia.org',
-    #    monthday     => '1',
-    #}
+    # community metrics mail (RT #3962)
+    bugzilla::logmail {'communitymetrics':
+        script_name  => 'bugzilla_community_metrics.sh',
+        rcpt_address => 'bugzilla-admin@wikimedia.org',
+        sndr_address => 'bugzilla-metrics@wikimedia.org',
+        monthday     => '1',
+    }
 
-    # audit log mail for admins
-    #bugzilla::logmail {'auditlog':
-    #    script_name  => 'bugzilla_audit_log.sh',
-    #    rcpt_address => 'bugzilla-admin@wikimedia.org',
-    #    sndr_address => '4802@rt.wikimedia.org',
-    #    monthday     => '*',
-    #}
+    # audit log mail for admins (RT #4802)
+    bugzilla::logmail {'auditlog':
+        script_name  => 'bugzilla_audit_log.sh',
+        rcpt_address => 'bugzilla-admin@wikimedia.org',
+        sndr_address => 'bugzilla-audit@wikimedia.org',
+        monthday     => '*',
+    }
 
     # bugzilla reporter PHP script
     class {'bugzilla::reporter':
