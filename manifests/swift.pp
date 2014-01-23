@@ -89,6 +89,7 @@ class swift::base($hash_path_suffix, $cluster_name) {
 }
 
 class swift::proxy(
+	$statsd_sample_rate_factor = 1,
 	$bind_port="8080",
 	$proxy_address,
 	$memcached_servers,

@@ -6,9 +6,10 @@ workers = <%= @num_workers %>
 user = swift
 <% if @statsd_host -%>
 log_statsd_host = <%= @statsd_host %>
-<% end -%>
+log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
 <% if @statsd_metric_prefix -%>
 log_statsd_metric_prefix = <%= @statsd_metric_prefix %>
+<% end -%>
 <% end -%>
 
 [pipeline:main]
