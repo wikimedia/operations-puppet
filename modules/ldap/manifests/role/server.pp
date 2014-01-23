@@ -18,13 +18,13 @@ class ldap::role::server::labs {
             $ca_name = 'wmf-labs.pem'
         }
         'production': {
-            $ca_name = 'RapidSSL_CA.pem'
+            $ca_name = 'Equifax_Secure_CA.pem'
                 case $::hostname {
                     'virt0': {
-                        $certificate = 'virt0.wikimedia.org'
+                        $certificate = 'star.wikimedia.org'
                     }
                     'virt1000': {
-                        $certificate = 'virt1000.wikimedia.org'
+                        $certificate = 'star.wikimedia.org'
                     }
                     'default': {
                         fail('Production realm ldap certificates for virt0/1000 only!')
