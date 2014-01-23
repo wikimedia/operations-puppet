@@ -229,14 +229,14 @@ class role::nova::manager {
 			$certificate = 'star.wmflabs'
 		}
 		'production': {
-			# Some day soon this should be 'wikitech.wikimedia.org'
-			# ...once we buy that cert.
-			$certificate = 'star.wikimedia.org'
+			$certificate = 'wikitech.wikimedia.org'
 		}
 		'default': {
 			fail('unknown realm, should be labs or production')
 		}
 	}
+
+	install_certificate{ $certificate: }
 
 	class { "openstack::openstack-manager":
 		openstack_version => $openstack_version,
