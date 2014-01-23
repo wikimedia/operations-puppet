@@ -190,7 +190,7 @@ class role::applicationserver {
 
 		class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
 
-		include role::applicationserver::webserver
+		class { "role::applicationserver::webserver": maxclients => "100" }
 	}
 	class imagescaler{
 		system::role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
