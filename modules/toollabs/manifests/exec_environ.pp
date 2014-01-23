@@ -141,6 +141,7 @@ class toollabs::exec_environ {
         'python-keyring',
         'python-launchpadlib',
         'python-lxml',                 # Bug #59083.
+        'python-magic',                # Bug #60211.
         'python-mysql.connector',
         'python-mysqldb',
         'python-newt',
