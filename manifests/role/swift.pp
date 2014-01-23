@@ -42,8 +42,6 @@ class role::swift {
 				proxy_address => "http://ms-fe.pmtpa.wmnet",
 				num_workers => $::processorcount,
 				memcached_servers => [ "ms-fe1.pmtpa.wmnet:11211", "ms-fe2.pmtpa.wmnet:11211", "ms-fe3.pmtpa.wmnet:11211", "ms-fe4.pmtpa.wmnet:11211" ],
-				statsd_host => '10.64.0.18',  # tungsten.eqiad.wmnet
-				statsd_metric_prefix => "swift.pmtpa.${::hostname}",
 				auth_backend => 'swauth',
 				super_admin_key => $passwords::swift::pmtpa-prod::super_admin_key,
 				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
@@ -95,9 +93,6 @@ class role::swift {
 				proxy_address => "http://ms-fe.eqiad.wmnet",
 				num_workers => $::processorcount,
 				memcached_servers => [ "ms-fe1001.eqiad.wmnet:11211", "ms-fe1002.eqiad.wmnet:11211", "ms-fe1003.eqiad.wmnet:11211", "ms-fe1004.eqiad.wmnet:11211" ],
-				statsd_host => '10.64.0.18',  # tungsten.eqiad.wmnet
-				statsd_metric_prefix => "swift.eqiad.${::hostname}",
-				statsd_sample_rate_factor => 0.01,
 				auth_backend => 'tempauth',
 				super_admin_key => $passwords::swift::eqiad-prod::super_admin_key,
 				rewrite_account => 'AUTH_mw',

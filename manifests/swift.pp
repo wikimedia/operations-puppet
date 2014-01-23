@@ -89,13 +89,13 @@ class swift::base($hash_path_suffix, $cluster_name) {
 }
 
 class swift::proxy(
+	$statsd_host = undef,
+	$statsd_metric_prefix = undef,
 	$statsd_sample_rate_factor = 1,
 	$bind_port="8080",
 	$proxy_address,
 	$memcached_servers,
 	$num_workers,
-	$statsd_host,
-	$statsd_metric_prefix,
 	$auth_backend,
 	$super_admin_key,
 	$rewrite_account,
