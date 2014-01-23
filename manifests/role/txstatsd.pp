@@ -9,10 +9,10 @@ class role::txstatsd {
         settings => {
             statsd => {
                 'carbon-cache-host' => 'localhost',
-                'carbon-cache-port' => 2003,
+                'carbon-cache-port' => 2004,
                 'listen-port'       => 8125,
-                'listen-tcp-port'   => 8125,
                 'statsd-compliance' => 0,
+                'prefix'            => '',
             },
         },
     }
