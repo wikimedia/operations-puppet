@@ -31,7 +31,7 @@ END
 )
 
 # send it out per mail
-cat <<EOF | /usr/bin/mail -s "bugzilla audit log" ${rcpt_address} -- -f ${sndr_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "bugzilla audit log" ${rcpt_address}
 
 Hi Bugzilla admins,
 
