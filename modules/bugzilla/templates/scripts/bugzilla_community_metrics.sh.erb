@@ -53,7 +53,7 @@ activeusers=$(echo $my_result | cut -d " " -f3)
 lastmonth=$(date --date="last month" +%Y-%m)
 
 # the actual email
-cat <<EOF | /usr/bin/mail -s "bugzilla stats - ${lastmonth}" ${rcpt_address} -- -f ${sndr_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "bugzilla stats - ${lastmonth}" ${rcpt_address}
 
 Hi Community Metrics team,
 
