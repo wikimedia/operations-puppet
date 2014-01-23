@@ -224,12 +224,32 @@ class role::nova::manager {
 	include role::nova::config
 	$novaconfig = $role::nova::config::novaconfig
 
+	case $::realm {
+		'labs': {
+			$certificate = 'star.wmflabs'
+		}
+		'production': {
+			case $::hostname {
+				'virt0': {
+					$certificate = 'virt0.wikimedia.org'
+				}
+				'virt1000': {
+					$certificate = 'virt1000.wikimedia.org'
+				}
+				'default': {
+					fail('Production realm ldap certificates for virt0/1000 only!')
+				}
+			}
+		}
+		'default': {
+			fail('unknown realm, should be labs or production')
+		}
+	}
+
 	class { "openstack::openstack-manager":
 		openstack_version => $openstack_version,
 		novaconfig => $novaconfig,
-		certificate => $realm ? {
-			"production" => "star.wikimedia.org",
-			"labs" => "star.wmflabs",
+		certificate => $certificate,
 		}
 	}
 }
