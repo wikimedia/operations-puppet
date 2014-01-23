@@ -52,10 +52,8 @@ def dispatch_stat(*args):
 
 
 for meta in iter(zsock.recv_json, ''):
-
     if meta['revision'] not in schema_revs:
         continue
-
     event = meta['event']
 
     if 'fetchStart' in event:
@@ -79,10 +77,12 @@ for meta in iter(zsock.recv_json, ''):
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
 
-    bits_cache = meta.get('recvFrom', '').split('.')[0]
-    wiki = meta.get('wiki', '')
+    # bits_cache = meta.get('recvFrom', '').split('.')[0]
+    # wiki = meta.get('wiki', '')
 
     for metric in metrics:
         value = event.get(metric, 0)
         if value > 0 and value < 60000:
             dispatch_stat(metric, site, auth, value)
+            dispatch_stat(metric, site, 'overall', value)
+            dispatch_stat(metric, 'overall', value)
