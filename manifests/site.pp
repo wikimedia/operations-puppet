@@ -1031,6 +1031,8 @@ node "hooft.esams.wikimedia.org" {
     $ganglia_aggregator = true
     $domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"
 
+    interface::add_ip6_mapped { "main": interface => "eth0" }
+
     include standard,
         role::installserver::tftp-server,
         admins::roots,
