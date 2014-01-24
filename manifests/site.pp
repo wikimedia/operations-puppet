@@ -1991,14 +1991,6 @@ node "pdf3.wikimedia.org" {
         accounts::mwalker     #rt 6468
 }
 
-node "professor.pmtpa.wmnet" {
-    $cluster = "misc"
-    include base,
-        ganglia,
-        ntp::client,
-        udpprofile::collector
-}
-
 node "potassium.eqiad.wmnet" {
     include standard,
         role::poolcounter
