@@ -1214,6 +1214,7 @@ class role::cache {
                     'logstash1003.eqiad.wmnet',
                 ]
             },
+            allowed_methods => '^(GET|HEAD|POST|PURGE|PUT)$',
         }
     }
 }

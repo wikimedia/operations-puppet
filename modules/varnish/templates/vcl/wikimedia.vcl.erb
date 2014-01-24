@@ -272,7 +272,7 @@ sub restrict_access {
 
 <% end -%>
 sub vcl_recv {
-	if (req.request !~ "^(GET|HEAD|POST|PURGE)$"
+	if (req.request !~ "<%= @allowed_methods %>"
 		&& !(req.request == "OPTIONS" && req.http.Origin)) {
 		/* We only deal with GET, HEAD and POST by default */
 		error 403 "HTTP method not allowed.";

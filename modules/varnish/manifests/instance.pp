@@ -14,7 +14,8 @@ define varnish::instance(
     $backend_options,
     $cluster_options={},
     $wikimedia_networks=[],
-    $xff_sources=[]
+    $xff_sources=[],
+    $allowed_methods='^(GET|HEAD|POST|PURGE)$',
 ) {
 
     include varnish::common
