@@ -1186,6 +1186,7 @@ class role::cache {
                 'layer' => 'frontend',
                 'ssl_proxies' => $wikimedia_networks,
                 'default_backend' => 'antimony',    # FIXME
+                'allowed_methods' => '^(GET|HEAD|POST|PURGE|PUT)$',
             },
             backends => [
                 'antimony.wikimedia.org',
