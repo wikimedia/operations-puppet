@@ -361,6 +361,12 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
 			group => root,
 			content => template('apache/sites/wikitech.wikimedia.org.erb'),
 			ensure => present;
+		"/var/www/robots.txt":
+			ensure  => present,
+			mode    => '0644',
+			owner   => 'root',
+			group   => 'root',
+			content => template('openstack/labs-robots.txt.erb');
 		"/a":
 			mode => 755,
 			owner => root,
