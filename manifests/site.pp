@@ -2352,6 +2352,12 @@ node "stat1002.eqiad.wmnet" {
     # include classes needed for storing and crunching
     # private data on stat1002.
     include role::statistics::private
+
+    # Include Hadoop and other analytics cluster
+    # clients so that analysts can use the number
+    # crunching packages already installed on stat1002
+    # in post processing of Hadoop generated datasets.
+    include role::analytics::clients
 }
 
 node "streber.wikimedia.org" {
