@@ -1,5 +1,5 @@
 -- Copyright (C) 2012 Yichun Zhang (agentzh)
-
+-- BSD License https://github.com/agentzh/lua-resty-redis#copyright-and-license
 
 local sub = string.sub
 local tcp = ngx.socket.tcp
