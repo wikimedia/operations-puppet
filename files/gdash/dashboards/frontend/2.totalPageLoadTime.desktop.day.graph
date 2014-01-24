@@ -1,8 +1,9 @@
-title 'mediaWikiLoadStart to document.onload on desktop sites, last hour'
+title 'mediaWikiLoadStart to document.onload on desktop sites, last day'
 linewidth 1
 linemode 'connected'
 hide_legend 'false'
-from '-1hour'
+from '-1day'
+vtitle milliseconds
 
 field :q2, :color => 'blue',
            :alias => 'Median',
