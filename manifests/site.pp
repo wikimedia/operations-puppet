@@ -2010,6 +2010,7 @@ node "potassium.eqiad.wmnet" {
         role::poolcounter
 }
 
+# QA box for the new PDF system
 node "rhodium.eqiad.wmnet" {
     $gid = 500
     include standard,
@@ -2018,7 +2019,8 @@ node "rhodium.eqiad.wmnet" {
         admins::roots,
         accounts::mwalker,
         accounts::maxsem,
-        accounts::anomie
+        accounts::anomie,
+        accounts::cscott
 }
 
 node "sanger.wikimedia.org" {
