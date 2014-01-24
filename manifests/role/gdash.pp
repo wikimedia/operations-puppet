@@ -14,13 +14,6 @@ class role::gdash {
           graph_width   => 1024,
           hide_legend   => false,
           deploy_addon  => template('gdash/deploy_addon.erb'),
-          intervals     => [
-              [ '-1hour',  '1 hour'  ],
-              [ '-2hour',  '2 hour'  ],
-              [ '-1day',   '1 day'   ],
-              [ '-1month', '1 month' ],
-              [ '-1year',  '1 year'  ],
-          ],
         },
     }
 
