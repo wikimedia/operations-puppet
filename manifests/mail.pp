@@ -188,6 +188,11 @@ class exim {
 				group => Debian-exim,
 				mode => 0444,
 				ensure => present;
+			"/usr/local/bin/collect_exim_stats_via_gmetric":
+				owner => root,
+				group => Debian-exim,
+				mode => 0755,
+				source => 'puppet:///files/ganglia/collect_exim_stats_via_gmetric';
 		}
 
 		include backup::host
@@ -246,6 +251,12 @@ class exim {
 				require => File['/etc/exim4/dkim'],
 				notify  => Service['exim4'],
 			}
+		}
+
+		cron { 'collect_exim_stats_via_gmetric':
+			user => 'root',
+			command => '/usr/local/bin/collect_exim_stats_via_gmetric',
+			ensure => present;
 		}
 
 		if ( $enable_mailman == "true" ) {
