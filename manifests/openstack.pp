@@ -366,7 +366,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
 			mode   => '0644',
 			owner  => 'root',
 			group  => 'root',
-			source => "puppet:///openstack/wikitech-robots.txt";
+			source => "puppet:///files/openstack/wikitech-robots.txt";
 		"/a":
 			mode => 755,
 			owner => root,
