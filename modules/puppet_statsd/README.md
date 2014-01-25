@@ -23,7 +23,7 @@ And include the class on all nodes you want to report:
 
 ```puppet
 class { 'puppet_statsd':
-  statsd_host   => 'tungsten.eqiad.wmnet',
+  statsd_host   => 'statsd.eqiad.wmnet',
   statsd_port   => 8125,
   metric_format => 'puppet.<%= metric %>.<%= hostname %>',
 }

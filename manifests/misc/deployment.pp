@@ -371,7 +371,7 @@ class misc::deployment::vars ($system = 'scap') {
 	if $::realm == 'production' {
 		$mw_rsync_host = 'tin.eqiad.wmnet'
 
-		$mw_carbon_host = 'tungsten.eqiad.wmnet'
+		$mw_carbon_host = 'statsd.eqiad.wmnet'
 		$mw_carbon_port = 2003
 
 		file { $mw_common_source:

@@ -177,7 +177,7 @@ class base::puppet($server='puppet', $certname=undef) {
     }
 
     class { 'puppet_statsd':
-        statsd_host   => 'tungsten.eqiad.wmnet',
+        statsd_host   => 'statsd.eqiad.wmnet',
         metric_format => 'puppet.<%= metric %>',
     }
 

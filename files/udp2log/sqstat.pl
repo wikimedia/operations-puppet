@@ -42,7 +42,7 @@ use POSIX qw(ceil);
 
 $0 = "/usr/local/bin/sqstat";
 
-my $carbon_server = "tungsten.eqiad.wmnet";
+my $carbon_server = "statsd.eqiad.wmnet";
 my $carbon_port = 2003;
 my $carbon = IO::Socket::INET->new(
 	PeerAddr => $carbon_server,

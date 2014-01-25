@@ -4,7 +4,7 @@
 # into StatsD.
 #
 class role::webperf {
-    $statsd_host = 'tungsten.eqiad.wmnet'
+    $statsd_host = 'statsd.eqiad.wmnet'
 
     # Aggregate client-side latency measurements collected via the
     # NavigationTiming MediaWiki extension and send them to Graphite.

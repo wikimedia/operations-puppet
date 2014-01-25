@@ -1,4 +1,4 @@
-title 'mediaWikiLoadStart to document.onload on mobile sites, last day'
+title 'navigationStart to loadEventEnd on mobile sites, last hour'
 linewidth 1
 linemode 'connected'
 hide_legend 'false'
@@ -7,8 +7,8 @@ vtitle 'milliseconds'
 
 field :q2, :color => 'blue',
            :alias => 'Median',
-           :data  => 'frontend.navtiming.mediaWikiLoadComplete.mobile.overall.median'
+           :data  => 'frontend.navtiming.totalPageLoadTime.mobile.overall.median'
 
 field :q3, :color => 'red',
            :alias => '75th percentile',
-           :data  => 'frontend.navtiming.mediaWikiLoadComplete.mobile.overall.75percentile'
+           :data  => 'frontend.navtiming.totalPageLoadTime.mobile.overall.75percentile'
