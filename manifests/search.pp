@@ -2,7 +2,7 @@
 # vim: set noet :
 
 # Virtual resource for the monitoring server
-@monitor_group { 'lucene': description => 'pmtpa search servers' }
+@monitor_group { 'lucene': description => 'eqiad search servers' }
 
 class lucene {
 
