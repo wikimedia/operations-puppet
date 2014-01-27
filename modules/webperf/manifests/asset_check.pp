@@ -29,7 +29,7 @@ class webperf::asset_check(
 
     file { '/srv/webperf/asset-check.py':
         source  => 'puppet:///modules/webperf/asset-check.py',
-        require => [ File['/srv/webperf/asset-check.js'], Package['ganglia-monitor'] ],
+        require => File['/srv/webperf/asset-check.js'],
     }
 
     file { '/etc/init/asset-check.conf':
