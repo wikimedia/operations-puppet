@@ -2630,14 +2630,14 @@ node /virt1001.eqiad.wmnet/ {
     $cluster = "virt"
 
     include standard
-    include role::labs_controller
+    include ::role::labs_controller
 }
 
 node /virt1002.eqiad.wmnet/ {
     $cluster = "virt"
 
     include standard
-    include role::labs_computenode
+    include ::role::labs_computenode
 }
 
 node /virt1003.eqiad.wmnet/ {

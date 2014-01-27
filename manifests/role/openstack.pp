@@ -3,7 +3,7 @@
 class role::labs_controller {
     # NOTE:  Every single one of these passwords needs to come from Private
     # before this class is used for anything.
-    class { 'openstack::controller':
+    class { '::openstack::controller':
         public_address          => '10.64.20.4', # not really public!
         public_interface        => 'eth0',
         private_interface       => 'eth1',
@@ -37,7 +37,7 @@ class role::labs_netnode {
 
 # Many of these.  These are the boxes that actually host the labs VMs.
 class role::labs_computenode {
-    class { 'openstack::compute':
+    class { '::openstack::compute':
         private_interface  => 'eth1',
         internal_address   => $::ipaddress_eth0,
         libvirt_type       => 'kvm',
