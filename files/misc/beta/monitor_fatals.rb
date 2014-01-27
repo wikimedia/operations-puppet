@@ -2,7 +2,7 @@
 
 require 'net/smtp'
 
-fatals_file="/data/project/logs/fatals.log"
+fatals_file="/data/project/logs/fatal.log"
 seconds_since_last_run=3600
 
 def send_email
