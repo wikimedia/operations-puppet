@@ -2626,7 +2626,28 @@ node "labnet1001.eqiad.wmnet" {
     include standard
 }
 
-node /virt100[1-9].eqiad.wmnet/ {
+node /virt1001.eqiad.wmnet/ {
+    $cluster = "virt"
+
+    include standard
+    include role::labs_controller
+}
+
+node /virt1002.eqiad.wmnet/ {
+    $cluster = "virt"
+
+    include standard
+    include role::labs_computenode
+}
+
+node /virt1003.eqiad.wmnet/ {
+    $cluster = "virt"
+
+    include standard
+    include role::labs_computenode
+}
+
+node /virt100[4-9].eqiad.wmnet/ {
     $cluster = "virt"
     # full root for mhoover, Labs migration contractor
     include admins::labs
