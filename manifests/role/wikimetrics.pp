@@ -130,10 +130,10 @@ class role::wikimetrics {
         db_host_wikimetrics   => $db_host_wikimetrics,
         db_name_wikimetrics   => $db_name_wikimetrics,
 
-        db_user_mediawiki     => $db_user_labsdb,
-        db_pass_mediawiki     => $db_pass_labsdb,
-        db_host_mediawiki     => '{0}.labsdb',
-        db_name_mediawiki     => '{0}_p',
+        db_user_mediawiki     => $db_user_mediawiki,
+        db_pass_mediawiki     => $db_pass_mediawiki,
+        db_host_mediawiki     => $db_host_mediawiki,
+        db_name_mediawiki     => $db_name_mediawiki,
 
         # wikimetrics runs on the LabsDB usually,
         # where this table is called 'revision_userindex'.
