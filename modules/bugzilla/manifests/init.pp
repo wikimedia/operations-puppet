@@ -93,7 +93,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
     # community metrics mail (RT #3962)
     bugzilla::logmail {'communitymetrics':
         script_name  => 'bugzilla_community_metrics.sh',
-        rcpt_address => 'bugzilla-admin@wikimedia.org',
+        rcpt_address => 'communitymetrics@wikimedia.org',
         sndr_address => 'bugzilla-daemon@wikimedia.org',
         monthday     => '1',
     }
