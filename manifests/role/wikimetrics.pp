@@ -19,6 +19,10 @@
 #                               daemon, wikimetrics will be managed
 #                               as a python daemon process via upstart.
 #                               Default: apache
+# $wikimetrics_ssl_redirect   - If true, apache will force redirect any
+#                               requests made to https:://$server_name...
+#                               This does nothing if you are running in
+#                               daemon mode.  Default: false
 # $wikimetrics_server_name    - Apache ServerName.  This is not used if
 #                               $web_mode is daemon.  Default: $::fqdn
 # $wikimetrics_server_aliases - comma separated list of Apache ServerAlias-es.
@@ -85,7 +89,17 @@ class role::wikimetrics {
         },
         default => $::wikimetrics_server_port,
     }
+    $ssl_redirect = $::wikimetrics_ssl_redirect ? {
+        undef   => false,
+        default => $::wikimetrics_ssl_redirect,
+    }
 
+    # need pip :/
+    if !defined(Package['python-pip']) {
+        package { 'python-pip':
+            ensure => 'installed',
+        }
+    }
     if !defined(Package['mysql-server']) {
         package { 'mysql-server':
             ensure => 'installed',
@@ -99,10 +113,10 @@ class role::wikimetrics {
         # clone wikimetrics as root user so it can write to /srv
         repository_owner      => 'root',
 
-
         server_name           => $server_name,
         server_aliases        => $server_aliases,
         server_port           => $server_port,
+        ssl_redirect          => $ssl_redirect,
 
         flask_secret_key      => $flask_secret_key,
         google_client_id      => $google_client_id,
@@ -138,7 +152,15 @@ class role::wikimetrics {
         creates => '/usr/local/bin/wikimetrics',
         path    => '/usr/local/bin:/usr/bin:/bin',
         user    => 'root',
-        require => Class['::wikimetrics'],
+        require => [Package['python-pip'], Class['::wikimetrics']],
+    }
+
+    # The redis module by default sets up redis in /a.  Oh well!
+    if !defined(File['/a']) {
+        file { '/a':
+            ensure => directory,
+            before => Class['::wikimetrics::queue']
+        }
     }
 
     # TODO: Support installation of queue, web and database
