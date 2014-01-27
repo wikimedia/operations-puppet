@@ -3,6 +3,7 @@
 # Simple check to see if we can write and then read back from an ActiveMQ server
 #
 # ex. check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
+# FIXME - replace erzurumi reference with new server
 
 use strict;
 use Net::Stomp;
