@@ -24,7 +24,9 @@
 class role::analytics::hadoop::client {
     # need java before hadoop is installed
     if (!defined(Package['openjdk-7-jdk'])) {
-        package { 'openjdk-7-jdk': }
+        package { 'openjdk-7-jdk':
+            ensure => 'installed',
+        }
     }
 
     # include common labs or production hadoop configs

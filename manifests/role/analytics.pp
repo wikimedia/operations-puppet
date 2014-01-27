@@ -18,7 +18,11 @@ class role::analytics {
     # ownership.
     include misc::statistics::user
 
-    package { 'openjdk-7-jdk': }
+    if !defined(Package['openjdk-7-jdk']) {
+        package { 'openjdk-7-jdk':
+            ensure => 'installed',
+        }
+    }
 }
 
 # == Class role::analytics::clients
