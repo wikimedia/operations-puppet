@@ -1,0 +1,17 @@
+# Apache configuration for performance.wikimedia.org
+# This file is managed by Puppet.
+<VirtualHost *:80>
+    ServerName performance.wikimedia.org
+
+    DocumentRoot /var/www/performance
+
+    <Directory />
+        AllowOverride None
+    </Directory>
+
+    <Directory /var/www/performance>
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+</VirtualHost>
