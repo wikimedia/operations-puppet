@@ -1,0 +1,108 @@
+#!/bin/bash
+#
+# assumes that openstack credentails are set in this file
+source <%= @rc_file_path %>
+
+<% if @image_type == 'cirros' -%>
+
+# Grab an image.  Cirros is a nice small Linux that's easy to deploy
+wget --quiet https://launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-x86_64-disk.img
+
+# Add it to glance so that we can use it in Openstack
+glance add name='cirros image' is_public=true container_format=bare disk_format=qcow2 < cirros-0.3.0-x86_64-disk.img
+
+# Caputre the Image ID so taht we can call the right UUID for this image
+IMAGE_ID=`glance index | grep 'cirros image' | head -1 |  awk -F' ' '{print $1}'`
+
+login_user='cirros'
+<% else -%>
+
+# otherwise, use an Ubuntu precise image. This is a larger image, but a little more
+# feature-full and realistic
+wget --quiet  http://cloud-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img
+# import that image into glance
+glance add name="precise-amd64" is_public=true container_format=ovf disk_format=qcow2 < precise-server-cloudimg-amd64-disk1.img
+# Caputre the Image ID so taht we can call the right UUID for this image
+IMAGE_ID=`glance index | grep 'precise-amd64' | head -1 |  awk -F' ' '{print $1}'`
+login_user='ubuntu'
+<% end -%>
+
+
+# create a pub/priv keypair
+key_path=/tmp/id_rsa
+if [ ! -f $key_path ]; then
+  ssh-keygen -f $key_path -t rsa -N ''
+fi
+
+#add the public key to nova.
+nova --no-cache keypair-add --pub_key /tmp/id_rsa.pub key_cirros
+
+
+instance_name='<%= @image_type %>_test_vm'
+
+<% if @neutron -%>
+
+neutron net-create public --router:external=True
+neutron subnet-create --allocation-pool start=172.16.2.128,end=172.16.2.150 public 172.16.2.0/24
+
+neutron net-create net1
+neutron subnet-create net1 10.0.0.0/24
+
+neutron_net=`neutron net-list | grep net1 | awk -F' ' '{print $2}'`
+neutron_public_net=`neutron net-list | grep public | awk -F' ' '{print $2}'`
+neutron_prv_subnet=`neutron subnet-list | grep '10.0.0.0/24' | awk -F' ' '{print $2}'`
+
+neutron router-create router1
+neutron router-interface-add router1 $neutron_prv_subnet
+neutron router-gateway-set router1 $neutron_public_net
+
+
+nova --no-cache boot --flavor 1 --image $IMAGE_ID --key_name key_cirros --nic net-id=$neutron_net $instance_name
+<% else -%>
+  <% if @floating_ip -%>
+# create a security group so that we can allow ssh, http, and ping traffic
+# when we add a floating IP (assuming you are adding floating IPs)
+nova --no-cache secgroup-create nova_test 'Cirros test security group'
+nova --no-cache secgroup-add-rule nova_test tcp 22 22 0.0.0.0/0
+nova --no-cache secgroup-add-rule nova_test tcp 80 80 0.0.0.0/0
+nova --no-cache secgroup-add-rule nova_test icmp -1 -1 0.0.0.0/0
+# request a floating IP address, and extract the address from the results message
+floating_ip=`nova --no-cache floating-ip-create | grep None | awk '{print $2}'`
+  <% end -%>
+  # Boot the added image against the "1" flavor which by default maps to a micro instance.  <% if @floating_ip -%> Include the cirros_test group so our address will work when we add it later <% end %>
+nova --no-cache boot --flavor 1 <% if @floating_ip -%>--security_groups nova_test<% end %> --image ${IMAGE_ID} --key_name key_cirros $instance_name
+<% end -%>
+
+# let the system catch up
+sleep <%= @sleep_time %>
+
+# Show the state of the system we just requested.
+nova --no-cache show $instance_name
+
+# wait for the server to boot
+sleep <%= @sleep_time %>
+
+<% if @floating_ip -%>
+# Now add the floating IP we reserved earlier to the machine.
+  # if not neutron
+  nova --no-cache add-floating-ip $instance_name $floating_ip
+# Wait  and then try to SSH to the node, leveraging the private key
+# we generated earlier.
+sleep <%= @sleep_time %>
+ssh $login_user@$floating_ip -i /tmp/id_rsa -o StrictHostKeyChecking=no hostname
+<% end -%>
+
+<% if @neutron %>
+# get port
+ip_addr=`nova show $instance_name | grep 'net1 network' | awk -F'|' '{print $3}'`
+port_id=`neutron port-list | grep $ip_addr | awk -F' ' '{print $2}'`
+floating_ip=`neutron floatingip-create --port_id $port_id $neutron_public_net | grep floating_ip_address | awk '{print $4}'`
+neutron security-group-create test_sec_group
+nova add-secgroup $instance_name test_sec_group
+neutron security-group-rule-create --protocol icmp --direction ingress test_sec_group
+neutron security-group-rule-create --protocol tcp --port-range-min 22 \
+  --port-range-max 22 --direction ingress test_sec_group
+sleep <%= @sleep_time %>
+ssh $login_user@$floating_ip -i /tmp/id_rsa -o StrictHostKeyChecking=no hostname
+<% end %>
+exit 0

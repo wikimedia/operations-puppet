@@ -1,0 +1,17 @@
+#!/bin/sh
+<% if @keystone_admin_token -%>
+export OS_SERVICE_TOKEN='<%= @keystone_admin_token.gsub(/'/){ %q(\') } %>'
+export OS_SERVICE_ENDPOINT='http://<%= @controller_node %>:35357/v2.0/'
+<% end -%>
+export OS_NO_CACHE='<%= @use_no_cache %>'
+export OS_TENANT_NAME='<%= @admin_tenant %>'
+export OS_USERNAME='<%= @admin_user %>'
+export OS_PASSWORD='<%= @admin_password.gsub(/'/){ %q(\') } %>'
+export OS_AUTH_URL='http://<%= @controller_node %>:5000/v2.0/'
+export OS_AUTH_STRATEGY='keystone'
+export OS_REGION_NAME='<%= @region_name %>'
+export CINDER_ENDPOINT_TYPE='<%= @cinder_endpoint_type %>'
+export GLANCE_ENDPOINT_TYPE='<%= @glance_endpoint_type %>'
+export KEYSTONE_ENDPOINT_TYPE='<%= @keystone_endpoint_type %>'
+export NOVA_ENDPOINT_TYPE='<%= @nova_endpoint_type %>'
+export NEUTRON_ENDPOINT_TYPE='<%= @neutron_endpoint_type %>'
