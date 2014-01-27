@@ -113,7 +113,7 @@ class misc::beta::fatalmonitor {
 		require => File['/usr/local/bin/monitor_fatals'],
 		command => '/usr/local/bin/monitor_fatals',
 		user    => nobody,
-		hour    => 12,
+		hour    => '0','12'
 	}
 }
 
