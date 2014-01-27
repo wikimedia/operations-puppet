@@ -2547,6 +2547,7 @@ node 'tungsten.eqiad.wmnet' {
     include role::txstatsd
     include role::gdash
     include role::mwprof
+    include role::performance
 }
 
 node "virt1000.wikimedia.org" {
