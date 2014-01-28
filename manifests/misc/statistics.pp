@@ -691,12 +691,6 @@ class misc::statistics::rsync::jobs::webrequest {
         destination => "/a/squid/archive/api",
     }
 
-    # teahouse logs from emery
-    misc::statistics::rsync_job { "teahouse":
-        source      => "emery.wikimedia.org::udp2log/webrequest/archive/teahouse*.gz",
-        destination => "/a/squid/archive/teahouse",
-    }
-
     # arabic banner logs from emery
     misc::statistics::rsync_job { "arabic_banner":
         source      => "emery.wikimedia.org::udp2log/webrequest/archive/arabic-banner*.gz",
