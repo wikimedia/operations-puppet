@@ -911,6 +911,12 @@ class role::cache {
         }
 
         include role::cache::varnish::logging::eventlistener
+
+        # Install a varnishkafka producer to send
+        # varnish webrequest logs to Kafka.
+        class { 'role::cache::varnish::kafka':
+            topic => 'webrequest_bits'
+        }
     }
 
     class mobile inherits role::cache::varnish::2layer {
