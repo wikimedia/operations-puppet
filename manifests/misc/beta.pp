@@ -109,10 +109,6 @@ class misc::beta::fatalmonitor {
 		source => 'puppet:///files/misc/beta/monitor_fatals.rb',
 	}
 
-	cron { 'beta_monitor_fatals_every_hours':
-		ensure => absent,
-	}
-
 	cron { 'beta_monitor_fatals_twice_per_days':
 		require => File['/usr/local/bin/monitor_fatals'],
 		command => '/usr/local/bin/monitor_fatals',
