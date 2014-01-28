@@ -424,7 +424,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             user => root,
             hour => 3,
             minute => 0,
-            command => 'find /a/backup -type f -mtime +7 -delete',
+            command => 'find /a/backup -type f -mtime +4 -delete',
             require => File["/a/backup"],
             ensure => present;
     }
