@@ -117,6 +117,8 @@ class misc::beta::fatalmonitor {
 		require => File['/usr/local/bin/monitor_fatals'],
 		command => '/usr/local/bin/monitor_fatals',
 		user    => nobody,
+		# Whenever changing the frequency please update the duration
+		# in files/misc/beta/monitor_fatals.rb
 		minute  => 0,
 		hour    => ['0','12']
 	}

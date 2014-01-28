@@ -3,7 +3,7 @@
 require 'net/smtp'
 
 fatals_file="/data/project/logs/fatal.log"
-seconds_since_last_run=3600
+seconds_since_last_run = 12 * 60 * 60  # 12 hours
 
 def send_email
             message = <<MESSAGE_END
