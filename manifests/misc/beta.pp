@@ -110,9 +110,14 @@ class misc::beta::fatalmonitor {
 	}
 
 	cron { 'beta_monitor_fatals_every_hours':
+		ensure => absent,
+	}
+
+	cron { 'beta_monitor_fatals_twice_per_days':
 		require => File['/usr/local/bin/monitor_fatals'],
 		command => '/usr/local/bin/monitor_fatals',
 		user    => nobody,
+		minute  => 0,
 		hour    => ['0','12']
 	}
 }
