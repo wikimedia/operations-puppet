@@ -227,17 +227,20 @@ class role::nova::manager {
 	case $::realm {
 		'labs': {
 			$certificate = 'star.wmflabs'
+			$ca = ''
 		}
 		'production': {
 			$certificate = 'wikitech.wikimedia.org'
-			$ca_name = 'RapidSSL_CA.pem'
+			$ca = 'RapidSSL_CA.pem GeoTrust_Global_CA.pem'
 		}
 		'default': {
 			fail('unknown realm, should be labs or production')
 		}
 	}
 
-	install_certificate{ $certificate: }
+	install_certificate { $certificate:
+		ca => $ca
+	}
 
 	class { "openstack::openstack-manager":
 		openstack_version => $openstack_version,
