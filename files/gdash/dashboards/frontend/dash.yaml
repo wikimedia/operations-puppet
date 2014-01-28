@@ -1,2 +1,2 @@
-:name: Client-side latency
-:description: Site performance metrics captured on the client
+:name: Frontend: page load timing
+:description: User-perceived Page Load Times
