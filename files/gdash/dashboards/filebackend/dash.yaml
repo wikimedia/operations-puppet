@@ -1,2 +1,2 @@
-:name: (mw) FileBackendStore
+:name: FileBackendStore
 :description: MediaWiki FileBackendStore, StreamFile, and LockManager
