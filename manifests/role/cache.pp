@@ -915,8 +915,8 @@ class role::cache {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
         class { 'role::cache::varnish::kafka':
-            topic => 'webrequest_bits'
-            varnish_name => $::hostname
+            topic => 'webrequest_bits',
+            varnish_name => $::hostname,
         }
     }
 
