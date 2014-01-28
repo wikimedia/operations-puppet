@@ -34,6 +34,11 @@ class mediawiki::sync {
 			group  => root,
 			mode   => '0555',
 			source => 'puppet:///files/scap/scap-rebuild-cdbs';
+		"${scriptpath}/scap-recompile":
+			owner  => root,
+			group  => root,
+			mode   => '0555',
+			source => 'puppet:///files/scap/scap-recompile';
 		"${scriptpath}/sync-common":
 			owner  => root,
 			group  => root,
