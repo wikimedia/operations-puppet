@@ -5,6 +5,12 @@
 
 set -e
 
+# Colorized output helpers
+RED=$(tput bold; tput setaf 1)
+MAGENTA=$(tput bold; tput setaf 9)
+RESET=$(tput sgr0)
+
+
 # TODO: Remove this after sockpuppet is dead
 if [ `hostname` = "sockpuppet" ]; then
         echo "You shouldn't run puppet-merge here. Sockpuppet is unused. Go to palladium.eqiad.wmnet instead"
@@ -83,6 +89,11 @@ fi
 echo ""
 echo ""
 echo "------------------------------"
+git log HEAD..${fetch_head_sha1} --format="${MAGENTA}%cn${RESET}: %s (%t)"
+if ! git log HEAD..${fetch_head_sha1} --format=%ce | sort | uniq | wc -l | grep -Eq '\s+1$'; then
+    echo "${RED}WARNING${RESET}: Revision range includes commits from multiple committers!"
+fi
+
 echo -n "Merge these changes? (yes/no)? "
 
 read answer
