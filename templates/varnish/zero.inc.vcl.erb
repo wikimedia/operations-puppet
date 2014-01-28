@@ -189,6 +189,10 @@ sub tag_carrier {
 		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
 			set req.http.X-CS = req.http.X-CS2;
 		}
+	} else if (req.http.X-CS2 == "655-12") {
+		if (req.http.X-Forwarded-By == "Opera") {
+			set req.http.X-CS = req.http.X-CS2;
+		}
 	} else {
 		if (!req.http.X-Forwarded-By) {
 			// Any new carriers are signed up as both m & zero for all languages, without proxy support
