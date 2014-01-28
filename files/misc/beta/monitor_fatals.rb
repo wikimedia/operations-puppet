@@ -11,7 +11,14 @@ From: Beta fatals <qa@lists.wikimedia.org>
 To: Software quality <qa@lists.wikimedia.org>
 Subject: New fatal errors on beta labs
 
-            The file at /data/project/logs/fatal.log on the deployment cluster has a new entry within the last hour.  You should check it out.
+The file at /data/project/logs/fatal.log on the deployment cluster has a new
+entry within the last hour.  You should check it out by connecting on any
+instance on the beta cluster (ie: deployment-bastion.pmtpa.wmflabs ).
+
+You can also look at logstash:
+
+https://logstash.wmflabs.org/#/dashboard/elasticsearch/fatalmonitor
+
 MESSAGE_END
 
   Net::SMTP.start('mchenry.wikimedia.org') do |smtp|
