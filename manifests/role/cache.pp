@@ -916,6 +916,7 @@ class role::cache {
         # varnish webrequest logs to Kafka.
         class { 'role::cache::varnish::kafka':
             topic => 'webrequest_bits'
+            varnish_name => $::hostname
         }
     }
 
