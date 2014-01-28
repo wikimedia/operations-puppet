@@ -1,13 +1,13 @@
 {
     "irc": {
-        "channels": <%= @channels.to_pson %>,
+        "channels": <%= Array(@channels).to_pson %>,
         "network": ["<%= @server_host %>", <%= @server_port %>, "<%= @nickname %>:<%= @password %>"],
         <% if @ssl %>"ssl": true,<% end %>
         "nickname": "<%= @nickname %>"
     },
     "tcp": {
         "max_clients": <%= @max_clients %>,
-        <% if @cidr %>"cidr": <%= @cidr.is_a?(Array) ? @cidr.to_pson : [@cidr].to_pson %>,<% end %>
+        <% if @cidr %>"cidr": <%= Array(@cidr).to_pson %>,<% end %>
         "port": <%= @listen_port %>
     }
 }
