@@ -601,14 +601,8 @@ node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(06|10|15|22|23|27)\.eqiad\.wmnet/ {
-    if $::hostname =~ /^db10(06|10|15|22|23)/ {
-        class { role::coredb::s6 : innodb_file_per_table => true, mariadb => true }
-    } elsif $::hostname =~ /^db10(27)/ {
-        class { role::coredb::s6 : mariadb => true }
-    } else {
-        include role::coredb::s6
-    }
+node /^db10(06|10|15|22|23)\.eqiad\.wmnet/ {
+    class { role::coredb::s6 : innodb_file_per_table => true, mariadb => true }
 }
 
 node /^db10(07|28|33|39|41)\.eqiad\.wmnet/ {
@@ -751,7 +745,8 @@ node "db1044.eqiad.wmnet" {
 
 # out of action
 # db1024 RT 6672
-node /^db10(24)\.eqiad\.wmnet/ {
+# db1027 spare
+node /^db10(24|27)\.eqiad\.wmnet/ {
     include standard
 }
 
