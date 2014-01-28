@@ -32,5 +32,8 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 for meta in iter(zsock.recv_json, ''):
     if meta['revision'] == 7254808:
         for point in meta['event']['points'].split(','):
-            stat = point.replace('=', ':') + '|ms'
+            metric, value = point.split('=')
+            stat = '%s:%s|ms' % (metric, value)
+            sock.sendto(stat.encode('utf-8'), addr)
+            stat = '%s.count:1|c' % metric
             sock.sendto(stat.encode('utf-8'), addr)
