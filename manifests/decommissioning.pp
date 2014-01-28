@@ -60,6 +60,7 @@ $decommissioned_servers = [
 'ms2',        #5994 decommed
 'ms3',
 'ms4',        #885  decommed
+'professor',  #6269 decommed
 'search21',   #6106 decommed search21-36
 'search22',
 'search23',
