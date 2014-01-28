@@ -2542,7 +2542,7 @@ node "virt1000.wikimedia.org" {
     $ganglia_aggregator = true
     $is_puppet_master = "true"
     $is_labs_puppet_master = "true"
-    $openstack_version = "folsom"
+    $::openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
     include admins::labs
@@ -2563,7 +2563,7 @@ node "virt0.wikimedia.org" {
 
     $is_puppet_master = "true"
     $is_labs_puppet_master = "true"
-    $openstack_version = "folsom"
+    $::openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
     include admins::labs
@@ -2582,7 +2582,7 @@ node "virt0.wikimedia.org" {
 
 node 'virt2.pmtpa.wmnet' {
     $cluster = "virt"
-    $openstack_version = "folsom"
+    $::openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
     include admins::labs
@@ -2600,7 +2600,7 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
         $ganglia_aggregator = true
     }
 
-    $openstack_version = "folsom"
+    $::openstack_version = "folsom"
 
     # full root for mhoover, Labs migration contractor
     include admins::labs
