@@ -42,8 +42,7 @@ sub vcl_fetch {
 	return (deliver);
 }
 
-<% if site == "pmtpa" or site == "eqiad" -%>
-# FIXME: Implement some proper topology code for primary DCs and downstream cache sites
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 sub vcl_miss {
 	/* transform backend url: /<sitename>/load.php -> /w/load.php
 	   set host header for backend to <sitename>
