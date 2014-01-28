@@ -45,6 +45,7 @@
 	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/certs/<%= certificate %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= certificate %>.key
+	SSLCACertificatePath /etc/ssl/certs/
 
 	RedirectMatch ^/$ https://<%= controller_hostname %>/wiki/
 
