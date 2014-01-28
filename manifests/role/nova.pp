@@ -230,6 +230,7 @@ class role::nova::manager {
 		}
 		'production': {
 			$certificate = 'wikitech.wikimedia.org'
+			$ca_name = 'RapidSSL_CA.pem'
 		}
 		'default': {
 			fail('unknown realm, should be labs or production')
