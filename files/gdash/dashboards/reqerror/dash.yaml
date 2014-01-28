@@ -1,2 +1,2 @@
-:name: Varnish: HTTP Error Rate
-:description: Rate of 4/5xx Requests
+:name: "Varnish: HTTP Error Rate"
+:description: "Rate of 4/5xx Requests"
