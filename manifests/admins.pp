@@ -3477,6 +3477,7 @@ class admins::mortals {
 	include accounts::tfinc # move from roots RT 5485
 	include accounts::yurik # RT 4835, RT 5069
 	include accounts::zak # access revoked
+	include accounts::jgonera # RT 6716
 }
 
 class admins::restricted {
