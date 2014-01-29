@@ -131,8 +131,8 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
     # 1) get statistics for the day:
     # tmp. disabled, collectstats.pl is missing
     cron { 'bugzilla_collectstats':
-        ensure  => 'absent',
-        command => "${bz_path}/${collectstats}",
+        ensure  => 'present',
+        command => "cd ${bz_path}; ./${collectstats}",
         user    => 'root',
         hour    => '0',
         minute  => '5',
@@ -142,8 +142,8 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
     # 2) on sunday, regenerates the whole statistics data
     # temp. disabled, collectstats.pl is missing
     cron { 'bugzilla_collectstats_regenerate':
-        ensure  => 'absent',
-        command => "${bz_path}/${collectstats} --regenerate",
+        ensure  => 'present',
+        command => "cd ${bz_path}; ./${collectstats} --regenerate",
         user    => root,
         hour    => 0,
         minute  => 5,
