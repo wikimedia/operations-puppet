@@ -232,8 +232,8 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
             command => "/usr/bin/mysql -uroot < /etc/nova/nova-user.sql",
             require => [Class['mysql'], File["/etc/nova/nova-user.sql", "/etc/nova/nova-user.cnf", "/root/.my.cnf"]];
         'create_nova_db':
-            unless => "/usr/bin/mysql -uroot $nova_db_name -e 'exit'",
-            command => "/usr/bin/mysql -uroot -e \"create database $nova_db_name;\"",
+            unless => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $nova_db_name -e 'exit'",
+            command => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot -e \"create database $nova_db_name;\"",
             require => [Class['mysql'], File["/root/.my.cnf"]],
             before => Exec['create_nova_db_user'];
         'create_puppet_db_user':
@@ -241,8 +241,8 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
             command => "/usr/bin/mysql -uroot < /etc/puppet/puppet-user.sql",
             require => [Class['mysql'], File["/etc/puppet/puppet-user.sql", "/etc/puppet/puppet-user.cnf", "/root/.my.cnf"]];
         'create_puppet_db':
-            unless => "/usr/bin/mysql -uroot $puppet_db_name -e 'exit'",
-            command => "/usr/bin/mysql -uroot -e \"create database $puppet_db_name;\"",
+            unless => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $puppet_db_name -e 'exit'",
+            command => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot -e \"create database $puppet_db_name;\"",
             require => [Class['mysql'], File["/root/.my.cnf"]],
             before => Exec['create_puppet_db_user'];
         'create_glance_db_user':
@@ -250,8 +250,8 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
             command => "/usr/bin/mysql -uroot < /etc/glance/glance-user.sql",
             require => [Class['mysql'], File["/etc/glance/glance-user.sql","/etc/glance/glance-user.cnf","/root/.my.cnf"]];
         'create_glance_db':
-            unless => "/usr/bin/mysql -uroot $glance_db_name -e 'exit'",
-            command => "/usr/bin/mysql -uroot -e \"create database $glance_db_name;\"",
+            unless => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $glance_db_name -e 'exit'",
+            command => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot -e \"create database $glance_db_name;\"",
             require => [Class['mysql'], File["/root/.my.cnf"]],
             before => Exec['create_glance_db_user'];
     }
@@ -262,8 +262,8 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
             command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
             require => [Class['mysql'], File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]];
         'create_keystone_db':
-            unless => "/usr/bin/mysql -uroot $keystone_db_name -e 'exit'",
-            command => "/usr/bin/mysql -uroot -e \"create database $keystone_db_name;\"",
+            unless => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $keystone_db_name -e 'exit'",
+            command => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot -e \"create database $keystone_db_name;\"",
             require => [Class['mysql'], File["/root/.my.cnf"]],
             before => Exec['create_keystone_db_user'];
     }
