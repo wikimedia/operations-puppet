@@ -19,3 +19,7 @@ pipe 100 /usr/bin/udp-filter -F '\t' -p Special:BannerRandom >> <%= fundraising_
 # apergos running on snapshot1.
 # gadolinium.wikimedia.org:3815 should be the webstats collector process.
 pipe 1 /usr/local/bin/filter | /usr/bin/log2udp -h gadolinium.wikimedia.org -p 3815
+
+### API Usage
+pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= log_directory %>/api-usage.tsv.log
+
