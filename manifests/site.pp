@@ -2542,7 +2542,7 @@ node "virt1000.wikimedia.org" {
     $ganglia_aggregator = true
     $is_puppet_master = "true"
     $is_labs_puppet_master = "true"
-    $openstack_version = "folsom"
+    $openstack_version = "havana"
 
     # full root for mhoover, Labs migration contractor
     include admins::labs
@@ -2612,33 +2612,27 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
 
 node "labnet1001.eqiad.wmnet" {
     $cluster = "virt"
+    $openstack_version = "havana"
+
+    include standard,
+        role::nova::network,
+        role::nova::api
 
     # full root for mhoover, Labs migration contractor
     include admins::labs
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
-
-    include standard
 }
 
-node /virt1001.eqiad.wmnet/ {
+node /virt100[1-3].eqiad.wmnet/ {
     $cluster = "virt"
+    if $::hostname =~ /^virt1001$/ {
+        $ganglia_aggregator = true
+    }
 
-    include standard
-    include ::role::labs_controller
-}
+    $openstack_version = "havana"
 
-node /virt1002.eqiad.wmnet/ {
-    $cluster = "virt"
-
-    include standard
-    include ::role::labs_computenode
-}
-
-node /virt1003.eqiad.wmnet/ {
-    $cluster = "virt"
-
-    include standard
-    include role::labs_computenode
+    include standard,
+        role::nova::compute
 }
 
 node /virt100[4-9].eqiad.wmnet/ {
