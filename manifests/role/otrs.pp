@@ -63,7 +63,7 @@ class role::otrs {
             source => 'puppet:///files/otrs/train_spamassassin';
     }
 
-    install_certificate{ "star.wikimedia.org": }
+    install_certificate{ "ticket.wikimedia.org": ca => "RapidSSL_CA.pem" }
     apache_module { 'perl': name => 'perl' }
     apache_module { 'rewrite': name => 'rewrite' }
     apache_module { 'ssl': name => 'ssl' }
