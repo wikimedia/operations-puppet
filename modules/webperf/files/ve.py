@@ -35,5 +35,5 @@ for meta in iter(zsock.recv_json, ''):
             metric, value = point.split('=')
             stat = '%s:%s|ms' % (metric, value)
             sock.sendto(stat.encode('utf-8'), addr)
-            stat = '%s.count:1|c' % metric
-            sock.sendto(stat.encode('utf-8'), addr)
+            stat = '%s:1|c' % metric
+            # sock.sendto(stat.encode('utf-8'), addr)

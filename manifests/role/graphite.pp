@@ -18,18 +18,18 @@ class role::graphite {
 
         # Aggregation methods for whisper files.
         storage_aggregation => {
-            'min'     => {
-                pattern           => '\.(lower|min)$',
+            'min' => {
+                pattern           => '\.min$',
                 xFilesFactor      => 0.1,
                 aggregationMethod => 'min',
             },
-            'max'     => {
-                pattern           => '\.(upper|max)$',
+            'max' => {
+                pattern           => '\.max$',
                 xFilesFactor      => 0.1,
                 aggregationMethod => 'max',
             },
-            'sum'     => {
-                pattern           => '\.(count|sum)$',
+            'sum' => {
+                pattern           => '\.count$',
                 xFilesFactor      => 0,
                 aggregationMethod => 'sum',
             },
