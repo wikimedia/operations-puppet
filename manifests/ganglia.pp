@@ -435,7 +435,7 @@ class ganglia::web {
     require ganglia::collector,
         webserver::php5-gd,
         webserver::php5-mysql,
-        svn::client
+        subversion::client
 
     class {'webserver::php5': ssl => true; }
 
