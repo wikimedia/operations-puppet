@@ -183,6 +183,7 @@ node "analytics1027.eqiad.wmnet" {
 # git.wikimedia.org
 node "antimony.wikimedia.org" {
     install_certificate{ "git.wikimedia.org": ca => "RapidSSL_CA.pem" }
+    install_certificate{ "svn.wikimedia.org": ca => "RapidSSL_CA.pem" }
 
     include standard,
         groups::wikidev,
