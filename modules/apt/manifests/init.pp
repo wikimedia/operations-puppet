@@ -57,6 +57,11 @@ class apt {
             priority => '80',
             key      => 'Acquire::http::Proxy::security.ubuntu.com',
             value    => 'http://brewster.wikimedia.org:8080';
+        'ubuntu-cloud-archive-proxy':
+            ensure   => $enable_proxy,
+            priority => '80',
+            key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
+            value    => 'http://brewster.wikimedia.org:8080';
         'old-releases-proxy':
             ensure   => $enable_proxy,
             priority => '80',
