@@ -2739,7 +2739,6 @@ node default {
 # db1025.frack.eqiad.wmnet
 # indium.frack.eqiad.wmnet
 # lutetium.frack.eqiad.wmnet
-# pappas.wikimedia.org (pmtpa)
 # pay-lvs1001.frack.eqiad.wmnet
 # pay-lvs1002.frack.eqiad.wmnet
 # payments1.wikimedia.org (pmtpa)

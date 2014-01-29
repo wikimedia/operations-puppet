@@ -3544,13 +3544,6 @@ host palladium {
 	fixed-address palladium.eqiad.wmnet;
 }
 
-host pappas {
-	hardware ethernet 90:b1:1c:13:3d:22;
-	fixed-address pappas.wikimedia.org;
-	next-server 10.64.40.66;
-	filename "/pxelinux.0";
-}
-
 host payments1 {
 	hardware ethernet 84:2b:2b:54:91:75;
 	fixed-address payments1.pmtpa.wmnet;
