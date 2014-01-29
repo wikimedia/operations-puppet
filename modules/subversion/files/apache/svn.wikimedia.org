@@ -53,8 +53,10 @@ NameVirtualHost *:443
 	SSLProtocol -ALL +SSLv3 +TLSv1
 	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
 	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCertificateFile /etc/ssl/certs/svn.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/svn.wikimedia.org.key
+	SSLCACertificatePath /etc/ssl/certs/
+
 
 	<Location />
 		# Some annoying bots that have slowed things down in the past
