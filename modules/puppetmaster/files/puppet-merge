@@ -90,7 +90,8 @@ echo ""
 echo ""
 echo "------------------------------"
 git log HEAD..${fetch_head_sha1} --format="${MAGENTA}%cn${RESET}: %s (%t)"
-if ! git log HEAD..${fetch_head_sha1} --format=%ce | sort | uniq | wc -l | grep -Eq '\s+1$'; then
+ncommiters=$(git log HEAD..${fetch_head_sha1} --format=%ce | sort | uniq | wc -l)
+if [ $ncommiters -ne 1 ]; then
     echo "${RED}WARNING${RESET}: Revision range includes commits from multiple committers!"
 fi
 
