@@ -24,7 +24,7 @@ class deployment::salt_master(
     }
 
     file { "${state_dir}/top.sls":
-        source  => 'puppet:///deployment/states/top.sls',
+        source  => 'puppet:///modules/deployment/states/top.sls',
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -32,7 +32,7 @@ class deployment::salt_master(
     }
 
     file { "${state_dir}/deploy/sync_all.sls":
-        source  => 'puppet:///deployment/states/deploy/sync_all.sls',
+        source  => 'puppet:///modules/deployment/states/deploy/sync_all.sls',
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -40,7 +40,7 @@ class deployment::salt_master(
     }
 
     file { "${runner_dir}/deploy.py":
-        source  => 'puppet:///deployment/runners/deploy.py',
+        source  => 'puppet:///modules/deployment/runners/deploy.py',
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
@@ -80,7 +80,7 @@ class deployment::salt_master(
     }
 
     file { "${module_dir}/deploy.py":
-        source  => 'puppet:///deployment/modules/deploy.py',
+        source  => 'puppet:///modules/deployment/modules/deploy.py',
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
@@ -88,7 +88,7 @@ class deployment::salt_master(
     }
 
     file { "${returner_dir}/deploy_redis.py":
-        source  => 'puppet:///deployment/returners/deploy_redis.py',
+        source  => 'puppet:///modules/deployment/returners/deploy_redis.py',
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
@@ -96,7 +96,7 @@ class deployment::salt_master(
     }
 
     file { "${module_dir}/parsoid.py":
-        source  => 'puppet:///deployment/modules/parsoid.py',
+        source  => 'puppet:///modules/deployment/modules/parsoid.py',
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
@@ -104,7 +104,7 @@ class deployment::salt_master(
     }
 
     file { "${module_dir}/mwprof.py":
-        source  => 'puppet:///deployment/modules/mwprof.py',
+        source  => 'puppet:///modules/deployment/modules/mwprof.py',
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
@@ -112,7 +112,7 @@ class deployment::salt_master(
     }
 
     file { "${module_dir}/mediawiki.py":
-        source  => 'puppet:///deployment/modules/mediawiki.py',
+        source  => 'puppet:///modules/deployment/modules/mediawiki.py',
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
