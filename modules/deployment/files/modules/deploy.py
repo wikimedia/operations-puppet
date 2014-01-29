@@ -90,26 +90,13 @@ def get_config(repo):
 
 
 def deployment_server_init():
-    serv = _get_redis_serv()
     is_deployment_server = __grains__.get('deployment_server')
-    hook_dir = __grains__.get('deployment_global_hook_dir')
     if not is_deployment_server:
         return 0
     deploy_user = __grains__.get('deployment_repo_user')
     repo_config = __pillar__.get('repo_config')
     for repo in repo_config:
         config = get_config(repo)
-        repo_sync_dir = '{0}/sync/{1}'.format(hook_dir, os.path.dirname(repo))
-        sync_link = '{0}/{1}.sync'.format(repo_sync_dir,
-                                          os.path.basename(repo))
-        # Create repo sync dir
-        if not __salt__['file.directory_exists'](repo_sync_dir):
-            __salt__['file.mkdir'](repo_sync_dir)
-        # Create repo sync script link
-        if not __salt__['file.file_exists'](sync_link):
-            sync_script = '{0}/sync/{1}'.format(hook_dir,
-                                                config['sync_script'])
-            __salt__['file.symlink'](sync_script, sync_link)
         # Clone repo from upstream or init repo with no upstream
         if not __salt__['file.directory_exists'](config['location'] + '/.git'):
             if config['upstream']:
@@ -124,7 +111,7 @@ def deployment_server_init():
             # git clone does ignores umask and does explicit mkdir with 755
             __salt__['file.set_mode'](config['location'], 2775)
             # Set the repo name in the repo's config
-            cmd = 'git config deploy.tag-prefix %s' % repo
+            cmd = 'git config deploy.repo-name %s' % repo
             status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
                                              runas=deploy_user, umask=002)
             if status != 0:
