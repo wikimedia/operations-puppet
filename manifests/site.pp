@@ -2742,10 +2742,6 @@ node default {
 # pappas.wikimedia.org (pmtpa)
 # pay-lvs1001.frack.eqiad.wmnet
 # pay-lvs1002.frack.eqiad.wmnet
-# payments1.wikimedia.org (pmtpa)
-# payments2.wikimedia.org (pmtpa)
-# payments3.wikimedia.org (pmtpa)
-# payments4.wikimedia.org (pmtpa)
 # payments1001.frack.eqiad.wmnet
 # payments1002.frack.eqiad.wmnet
 # payments1003.frack.eqiad.wmnet
