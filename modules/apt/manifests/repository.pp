@@ -5,6 +5,7 @@ define apt::repository(
     $source=true,
     $comment_old=false,
     $keyfile='',
+    $priority='',
     $ensure=present
 ) {
     $binline = "deb ${uri} ${dist} ${components}\n"
@@ -13,12 +14,17 @@ define apt::repository(
         default => '',
     }
 
+    $pinline = $priority ? {
+        '' => '',
+        default    => "Pin-Priority: ${priority}\n",
+    }
+
     file { "/etc/apt/sources.list.d/${name}.list":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => "${binline}${srcline}",
+        content => "${binline}${srcline}${pinline}",
     }
 
     if $comment_old {
