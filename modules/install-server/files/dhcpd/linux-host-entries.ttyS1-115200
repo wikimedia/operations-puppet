@@ -3551,26 +3551,6 @@ host pappas {
 	filename "/pxelinux.0";
 }
 
-host payments1 {
-	hardware ethernet 84:2b:2b:54:91:75;
-	fixed-address payments1.pmtpa.wmnet;
-}
-
-host payments2 {
-	hardware ethernet 84:2b:2b:55:19:25;
-	fixed-address payments2.pmtpa.wmnet;
-}
-
-host payments3 {
-	hardware ethernet 84:2b:2b:55:16:fc;
-	fixed-address payments3.pmtpa.wmnet;
-}
-
-host payments4 {
-	hardware ethernet 84:2b:2b:55:16:ea;
-	fixed-address payments4.pmtpa.wmnet;
-}
-
 host pdf2 {
 	hardware ethernet 00:21:9B:93:CC:34;
 	fixed-address pdf2.wikimedia.org;
