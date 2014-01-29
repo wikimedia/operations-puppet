@@ -33,7 +33,7 @@ class contint::packages {
     # Lint authdns templates & config
     include authdns::lint
 
-    include svn::client
+    include subversion::client
 
     # PHP related packages
     package { [
