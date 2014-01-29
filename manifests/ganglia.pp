@@ -300,7 +300,6 @@ class ganglia {
                         "PDF servers"                    => "pdf1.wikimedia.org pdf2.wikimedia.org",
                         "LVS loadbalancers pmtpa"        => "lvs1.wikimedia.org lvs2.wikimedia.org",
                         "Miscellaneous"                  => "tarin.pmtpa.wmnet",
-                        "Fundraiser payments"            => "payments1.wikimedia.org payments2.wikimedia.org",
                         "Fundraising eqiad"              => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
                         "SSL cluster esams"              => "hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
                         "Swift pmtpa"                    => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",
