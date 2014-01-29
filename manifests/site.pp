@@ -2414,6 +2414,7 @@ node "terbium.eqiad.wmnet" {
     class { misc::maintenance::update_flaggedrev_stats: enabled => true }
     class { misc::maintenance::refreshlinks: enabled => true }
     class { misc::maintenance::update_special_pages: enabled => true }
+    class { misc::maintenance::purge_checkuser: enabled => true }
 
     # (bug 15434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
