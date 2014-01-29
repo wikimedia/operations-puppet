@@ -323,7 +323,7 @@ class role::nova::network {
 
 		interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
 
-		interface::taged { "bond1.1102":
+		interface::tagged { "bond1.1102":
 			base_interface => "bond1",
 			vlan_id        => "1102",
 			method         => "manual",
