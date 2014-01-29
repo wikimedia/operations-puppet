@@ -532,3 +532,28 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
         updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17']: }
         updatequerypages::enwiki::cronjob { ['updatequerypages-enwiki-only']: }
 }
+
+class misc::maintenance::purge_checkuser( $enabled = false ) {
+    $scriptpath = "/usr/local/bin"
+
+    file {
+        "${scriptpath}/purge-checkuser":
+        owner => root,
+        group => root,
+        mode => 0555,
+        source => "puppet:///files/misc/scripts/purge-checkuser";
+    }
+
+    cron { 'purge-checkuser':
+        user => root,
+        minute => 0,
+        hour => 0,
+        weekday => 0,
+        command => "${scriptpath}/purge-checkuser"
+        ensure => $enabled ?{
+            true => present,
+            false => absent,
+            default => absent
+        }
+    }
+}
