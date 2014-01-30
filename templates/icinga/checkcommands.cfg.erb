@@ -373,10 +373,6 @@ define command{
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_spamd
 }
 define command{
-	command_name	nrpe_check_poolcounterd
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
-}
-define command{
         command_name    nrpe_check_carbon_cache
         command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_carbon_cache
 }
