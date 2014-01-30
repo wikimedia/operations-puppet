@@ -2,6 +2,7 @@
 
 verbose=True
 auth_strategy=keystone
+compute_driver=nova.virt.libvirt.LibvirtDriver
 connection_type=libvirt
 root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 instance_name_template=i-%08x
