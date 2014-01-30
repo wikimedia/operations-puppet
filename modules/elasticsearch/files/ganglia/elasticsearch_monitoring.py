@@ -225,6 +225,17 @@ main_stats['es_non_heap_used'] = merge(BYTES_GAUGE, {
     'description': 'Java Non Heap Used (Bytes)',
 })
 
+## MEMORY POOLS
+for name in ['young', 'survivor', 'old']:
+    main_stats['es_' + name + '_heap_used'] = merge(BYTES_GAUGE, {
+        'path': 'jvm.mem.pools.' + name + '.used_in_bytes',
+        'description': name.capitalize() + ' Generation Used (Bytes)',
+    })
+    main_stats['es_' + name + '_heap_max'] = merge(BYTES_GAUGE, {
+        'path': 'jvm.mem.pools.' + name + '.max_in_bytes',
+        'description': name.capitalize() + ' Generation Max (Bytes)',
+    })
+
 ## THREADS
 main_stats['es_jvm_threads'] = merge(GAUGE, {
     'path': 'jvm.threads.count',
@@ -233,20 +244,18 @@ main_stats['es_jvm_threads'] = merge(GAUGE, {
 })
 
 ## GC
-for name, path in [('par_new', 'ParNew'),
-                   ('concurrent_mark_sweep', 'ConcurrentMarkSweep')]:
+for name in ['young', 'old']:
     main_stats['es_' + name + '_gcs'] = merge(COUNTER, {
-        'path': 'jvm.gc.collectors.' + path + '.collection_count',
+        'path': 'jvm.gc.collectors.' + name + '.collection_count',
         'units': 'collections/sec',
         'description': 'Collections/sec',
     })
     main_stats['es_' + name + '_gc_time'] = merge(TIME, {
-        'path': 'jvm.gc.collectors.' + path + '.collection_time_in_millis',
+        'path': 'jvm.gc.collectors.' + name + '.collection_time_in_millis',
         'description': 'Collection Time/sec'
     })
 
-
-## Buffer Pools
+## BUFFER POOLS
 for name in ['direct', 'mapped']:
     main_stats['es_jvm_' + name + '_buffer_pools'] = merge(GAUGE, {
         'path': 'jvm.buffer_pools.' + name + '.count',
