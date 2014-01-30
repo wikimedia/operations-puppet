@@ -17,11 +17,11 @@ class poolcounter {
     }
 
     package { 'poolcounter':
-        ensure => latest,
+        ensure => 'latest',
     }
 
     service { 'poolcounter':
-        ensure  => running,
+        ensure  => 'running',
         require => Package['poolcounter'],
     }
 }
