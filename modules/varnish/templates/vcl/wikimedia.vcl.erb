@@ -310,6 +310,17 @@ sub vcl_fetch {
 	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > <%= vcl_config.fetch("cache4xx", "5m") %>) {
 		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
 	}
+	elif ((beresp.status == 301 || beresp.status == 302)
+		&& beresp.http.Location ~ "^http"
+		&& beresp.http.Vary !~ "X-Forwarded-Proto") {
+		/* HACK: Fix up missing Vary headers on Apache redirects */
+		/* See http://stackoverflow.com/a/3711110/8171 */
+		if (beresp.http.Vary) {
+			set beresp.http.Vary = beresp.http.Vary + ",X-Forwarded-Proto";
+		} else {
+			set beresp.http.Vary = "X-Forwarded-Proto";
+		}
+	}
 <% if vcl_config.fetch("retry5xx", "0") == "1" -%>
 	if (beresp.status >= 500 && beresp.status < 505) {
 		# Retry the backend request 3 times, then give up and display
