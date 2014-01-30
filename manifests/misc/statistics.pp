@@ -687,7 +687,7 @@ class misc::statistics::rsync::jobs::webrequest {
 
     # API logs from emery
     misc::statistics::rsync_job { "api":
-        source      => "emery.wikimedia.org::udp2log/webrequest/archive/api-usage*.gz",
+        source      => "erbium.wikimedia.org::udp2log/webrequest/archive/api-usage*.gz",
         destination => "/a/squid/archive/api",
     }
 
