@@ -1,9 +1,21 @@
+# vim:sw=4 ts=4 sts=4 et:
+
 # == Class: kibana
 #
 # Kibana is a JavaScript web application for visualizing log data and other
 # types of time-stamped data. It integrates with ElasticSearch and LogStash.
 #
-class kibana {
+# == Parameters:
+# - $default_route: Default landing page
+#
+# == Sample usage:
+#
+#   class { 'kibana':
+#       default_route => '/dashboard/elasticsearch/default',
+#   }
+class kibana (
+    $default_route = '/dashboard/file/default.json'
+){
     deployment::target { 'kibana': }
 
     file { '/etc/kibana':
