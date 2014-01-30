@@ -12,8 +12,5 @@ file 1000 <%= log_directory %>/sampled-1000.tsv.log
 ### API Usage
 pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= log_directory %>/api-usage.tsv.log 
 
-### GLAM NARA / National Archives - RT 2212
-pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -b country >> <%= log_directory %>/glam_nara.tsv.log
-
 ## This feeds all http related graphs in graphite / gdash.wikimedia.org
 pipe 2 /usr/local/bin/sqstat 2
