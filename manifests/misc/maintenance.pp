@@ -214,7 +214,7 @@ class misc::maintenance::update_special_pages( $enabled = false ) {
 
 class misc::maintenance::wikidata( $enabled = false ) {
 
-    $enabled = $::enabled ? {
+    $wbenabled = $enabled ? {
         true    => 'present',
         false   => 'absent',
         default => 'absent',
@@ -227,7 +227,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
 #        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune2.log',
 #        user    => 'mwdeploy',
 #        minute  => [0,15,30,45],
-#        ensure  => $enabled,
+#        ensure  => $wbenabled,
 #    }
 
     cron { 'wikibase-repo-prune':
@@ -242,7 +242,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
 #        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher3.log',
 #        user    => 'mwdeploy',
 #        minute  => '*/5',
-#        ensure  => $enabled,
+#        ensure  => $wbenabled,
 #    }
 
 #    cron { 'wikibase-dispatch-changes4':
@@ -250,7 +250,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
 #        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher4.log',
 #        user    => 'mwdeploy',
 #        minute  => '*/5',
-#        ensure  => $enabled,
+#        ensure  => $wbenabled,
 #    }
 
     cron { 'wikibase-dispatch-changes':
