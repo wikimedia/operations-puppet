@@ -187,6 +187,7 @@ node "antimony.wikimedia.org" {
     include standard,
         groups::wikidev,
         accounts::demon,
+        accounts::qchris, # RT 6720
         role::gitblit,
         role::subversion
 
@@ -2674,7 +2675,8 @@ node "ytterbium.wikimedia.org" {
     include role::gerrit::production,
         backup::client,
         groups::wikidev,
-        accounts::demon
+        accounts::demon,
+        accounts::qchris # RT 6720
 
     install_certificate{ "gerrit.wikimedia.org": ca => "RapidSSL_CA.pem" }
 
