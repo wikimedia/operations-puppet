@@ -29,7 +29,7 @@ function (Settings) {
      *
      * +default_route: '/dashboard/elasticsearch/WebLogs',+
      */
-    default_route     : '/dashboard/file/default.json',
+    default_route     : '<%= @default_route %>',
 
     /** @scratch /configuration/config.js/5
      * ==== kibana-int
@@ -60,6 +60,7 @@ function (Settings) {
       'bettermap',
       'query',
       'terms',
+      'stats',
       'sparklines'
     ]
   });
