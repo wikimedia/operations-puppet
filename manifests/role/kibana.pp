@@ -19,7 +19,9 @@ class role::kibana {
     $auth_realm    = 'WMF Labs (use wiki login name not shell)'
     $serveradmin   = 'root@wikimedia.org'
 
-    class { '::kibana': }
+    class { '::kibana':
+        default_route => '/dashboard/elasticsearch/default',
+    }
 
     apache::mod { [
         'alias',
