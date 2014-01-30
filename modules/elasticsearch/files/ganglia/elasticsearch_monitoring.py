@@ -451,6 +451,12 @@ def get_stat(data, stats, name):
         return None
 
 
+def deunicode(s):
+    if isinstance(s, unicode):
+        return s.encode('ascii', 'ignore')
+    return s
+
+
 def metric_init(params):
     descriptors = []
 
@@ -506,7 +512,8 @@ def metric_init(params):
         group_index_stats = dict()
         for stat_name, stat in index_stats.iteritems():
             stat_name = stat_name % {'group': group.replace(' ', '_')}
-            path = stat['path'] % {'group': group}
+            stat_name = deunicode(stat_name)
+            path = deunicode(stat['path'] % {'group': group})
             group_index_stats[stat_name] = merge(stat, {'path': path})
         Desc_Skel['call_back'] = partial(
             get_stat, index_stats_result, group_index_stats)
