@@ -153,19 +153,19 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 		flat_network_bridge => "br1118",
 		network_public_interface => "eth0",
 		network_host => $realm ? {
-			"production" => "10.68.16.1",
+			"production" => "10.64.20.13",
 			"labs" => "127.0.0.1",
 		},
 		api_host => $realm ? {
-			"production" => "virt1005.eqiad.wmnet",
+			"production" => "labnet1001.eqiad.wmnet",
 			"labs" => "localhost",
 		},
 		api_ip => $realm ? {
-			"production" => "10.68.16.1",
+			"production" => "10.64.20.13",
 			"labs" => "127.0.0.1",
 		},
 		fixed_range => $realm ? {
-			"production" => "10.68.16.0/21",
+			"production" => "10.68.16.0/24",
 			"labs" => "192.168.0.0/21",
 		},
 		dhcp_start => $realm ? {
