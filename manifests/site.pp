@@ -2613,6 +2613,7 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
 node "labnet1001.eqiad.wmnet" {
     $cluster = "virt"
     $openstack_version = "havana"
+    $ganglia_aggregator = true
 
     include standard,
         role::nova::network,

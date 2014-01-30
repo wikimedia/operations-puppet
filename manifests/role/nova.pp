@@ -157,7 +157,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 			"labs" => "127.0.0.1",
 		},
 		api_host => $realm ? {
-			"production" => "virt1005.eqiad.wmnet",
+			"production" => "labnet1001.eqiad.wmnet",
 			"labs" => "localhost",
 		},
 		api_ip => $realm ? {
