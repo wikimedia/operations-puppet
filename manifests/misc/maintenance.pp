@@ -213,42 +213,49 @@ class misc::maintenance::update_special_pages( $enabled = false ) {
 }
 
 class misc::maintenance::wikidata( $enabled = false ) {
-    cron {
-        wikibase-repo-prune:
-            command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune.log",
-            user    => mwdeploy,
-            minute  => [0,15,30,45],
-            ensure  => $enabled ?{
-                true    => present,
-                false   => absent,
-                default => absent
-            };
+
+    $enabled = $::enabled ? {
+        true    => 'present',
+        false   => 'absent',
+        default => 'absent',
+    }
+
+# not enabled yet until wikidata gets switched to new build of Wikibase
+#
+#    cron { wikibase-repo-prune2:
+#        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune2.log',
+#        user    => 'mwdeploy',
+#        minute  => [0,15,30,45],
+#        ensure  => $enabled,
+#    }
+
+    cron { wikibase-repo-prune:
+        ensure => 'absent'
     }
 
     # Run the dispatcher script every 5 minutes
     # This handles inserting jobs into client job queue, which then process the changes
-    cron {
-        wikibase-dispatch-changes:
-            command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher.log",
-            user    => mwdeploy,
-            minute  => "*/5",
-            ensure  => $enabled ?{
-                true    => present,
-                false   => absent,
-                default => absent
-            };
+    # not enabled yet until wikidata gets switched to new build of Wikibase
+#    cron { wikibase-dispatch-changes3:
+#        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher3.log',
+#        user    => 'mwdeploy',
+#        minute  => '*/5',
+#        ensure  => $enabled,
+#    }
+
+#    cron { wikibase-dispatch-changes4:
+#        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher4.log',
+#        user    => 'mwdeploy',
+#        minute  => '*/5',
+#        ensure  => $enabled,
+#    }
+
+    cron { wikibase-dispatch-changes:
+        ensure => 'absent';
     }
 
-    cron {
-        wikibase-dispatch-changes2:
-            command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher2.log",
-            user    => mwdeploy,
-            minute  => "*/5",
-            ensure  => $enabled ?{
-                true    => present,
-                false   => absent,
-                default => absent
-            };
+    cron { wikibase-dispatch-changes2:
+        ensure => 'absent';
     }
 
     cron {
