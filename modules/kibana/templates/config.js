@@ -17,7 +17,7 @@ function (Settings) {
      *
      * Our apache config acts as a reverse proxy to the elasticsearch cluster.
      */
-    elasticsearch: "//"+window.location.hostname,
+    elasticsearch: '//' + window.location.hostname,
 
     /** @scratch /configuration/config.js/5
      * ==== default_route
@@ -29,7 +29,7 @@ function (Settings) {
      *
      * +default_route: '/dashboard/elasticsearch/WebLogs',+
      */
-    default_route     : '/dashboard/file/default.json',
+    default_route     : <%= @default_route.to_pson %>,
 
     /** @scratch /configuration/config.js/5
      * ==== kibana-int
@@ -60,6 +60,7 @@ function (Settings) {
       'bettermap',
       'query',
       'terms',
+      'stats',
       'sparklines'
     ]
   });
