@@ -24,4 +24,10 @@ pipe 1 /usr/local/bin/filter | /usr/bin/log2udp -h gadolinium.wikimedia.org -p 3
 pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= webrequest_log_directory %>/api-usage.tsv.log
 
 ### GLAM NARA / National Archives - RT 2212
-#pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -b country >> <%=log_directory %>/glam_nara.tsv.log
+pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -b country >> <%=log_directory %>/glam_nara.tsv.log
+
+### udp2log packet loss monitoring
+pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= log_directory %>/packet-loss.log
+
+### This feeds all http related graphs in graphite / gdash.wikimedia.org
+pipe 2 /usr/local/bin/sqstat 2
