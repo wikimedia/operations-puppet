@@ -108,6 +108,12 @@ class openstack::common($openstack_version="folsom",
             mode => 0440,
             require => Package['nova-common'];
     }
+
+    if ( $openstack_version == 'havana' ) {
+        package { 'python-novaclient':
+            ensure => present,
+        }
+    }
 }
 
 class openstack::queue-server($openstack_version, $novaconfig) {
