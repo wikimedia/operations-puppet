@@ -22,7 +22,7 @@ fi
 
 mwIP=/usr/local/apache/common-local/php-"$mwVerNum"
 MATHPATH=$mwIP/extensions/Math/math
-rsync -r --exclude=.svn/ --exclude=.git/ $MATHPATH/ "$builddir"
+rsync -r --exclude=.git/ $MATHPATH/ "$builddir"
 cd "$builddir"
 if make -f Makefile texvc >/dev/null 2>/dev/null; then
 	echo "ok"
@@ -41,6 +41,9 @@ if [ -z "$builddir" ]; then
         echo "Unable to create temporary directory"
         exit 1
 fi
+
+MATHPATH=$mwIP/extensions/Math/texvccheck
+rsync -r --exclude=.git/ $MATHPATH/ "$builddir"
 
 if make -f Makefile texvccheck >/dev/null 2>/dev/null; then
 	echo "ok"
