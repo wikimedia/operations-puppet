@@ -5,6 +5,22 @@ class exim {
 		$primary_mx = [ "208.80.152.186", "2620::860:2:219:b9ff:fedd:c027" ]
 	}
 
+	class stats {
+
+		file { 'files/ganglia/collect_exim_stats_via_gmetric':
+				owner => root,
+				group => Debian-exim,
+				mode => 0755,
+				source => 'puppet:///files/ganglia/collect_exim_stats_via_gmetric',
+		}
+
+		cron { 'collect_exim_stats_via_gmetric':
+			user => 'root',
+			command => '/usr/local/bin/collect_exim_stats_via_gmetric',
+			ensure => present;
+		}
+	}
+
 	class config($install_type="light", $queuerunner="queueonly") {
 		package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
 
@@ -188,11 +204,6 @@ class exim {
 				group => Debian-exim,
 				mode => 0444,
 				ensure => present;
-			"/usr/local/bin/collect_exim_stats_via_gmetric":
-				owner => root,
-				group => Debian-exim,
-				mode => 0755,
-				source => 'puppet:///files/ganglia/collect_exim_stats_via_gmetric';
 		}
 
 		include backup::host
@@ -253,11 +264,7 @@ class exim {
 			}
 		}
 
-		cron { 'collect_exim_stats_via_gmetric':
-			user => 'root',
-			command => '/usr/local/bin/collect_exim_stats_via_gmetric',
-			ensure => present;
-		}
+		include exim::stats
 
 		if ( $enable_mailman == "true" ) {
 			include mailman
