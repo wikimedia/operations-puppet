@@ -21,7 +21,7 @@
 #      port     => 9000,
 #      settings => {
 #          backends     => [ 'graphite' ],
-#          graphiteHost => 'professor.pmtpa.wmnet',
+#          graphiteHost => '',
 #          graphitePort => 2004,
 #      },
 #  }
