@@ -35,5 +35,5 @@ script
     fi
 
     chdir "$PARSOID_BASE_PATH"
-    exec /usr/bin/nodejs api/server.js -c ../../conf/wmf/localsettings.js < /dev/null >> "$PARSOID_LOG_FILE" 2>&1
+    exec /usr/bin/nodejs api/server.js -c ../conf/wmf/localsettings.js < /dev/null >> "$PARSOID_LOG_FILE" 2>&1
 end script
