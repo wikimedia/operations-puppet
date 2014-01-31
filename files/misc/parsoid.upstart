@@ -18,11 +18,12 @@ setgid "parsoid"
 
 env DEFAULTFILE=/etc/default/parsoid
 
-# Basic build in default, would be overridden by whatever
-# is defined in the DEFAULTFILE defined above
+# Basic built-in defaults. Overridden by whatever
+# is defined in the DEFAULTFILE defined above.
 env VCAP_APP_PORT="8000"
 env NODE_PATH="/var/lib/parsoid/deploy/node_modules"
 env PARSOID_BASE_PATH="/var/lib/parsoid/deploy/src"
+env PARSOID_LOG_FILE="/dev/null"
 
 respawn
 
@@ -30,10 +31,6 @@ script
     if [ -f "$DEFAULTFILE" ] ; then
         . "$DEFAULTFILE"
     fi
-    if [ "x$PARSOID_LOG_FILE" = "x" ] ; then
-        PARSOID_LOG_FILE='/dev/null'
-    fi
-
     chdir "$PARSOID_BASE_PATH"
     exec /usr/bin/nodejs api/server.js -c ../conf/wmf/localsettings.js < /dev/null >> "$PARSOID_LOG_FILE" 2>&1
 end script
