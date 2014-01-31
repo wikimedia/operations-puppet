@@ -67,7 +67,7 @@ class role::parsoid::production {
     # it taking precedence over the init script
     # TODO: remove init script and rename back to parsoid.conf
     file { '/etc/init/parsoid-test.conf':
-        ensure  => present,
+        ensure  => absent,
         owner   => root,
         group   => root,
         mode    => '0444',
