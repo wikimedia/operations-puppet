@@ -66,7 +66,7 @@ class role::parsoid::production {
     # Use name that does not match the 'parsoid' service name for now to avoid
     # it taking precedence over the init script
     # TODO: remove init script and rename back to parsoid.conf
-    file { '/etc/init/parsoid-test.conf':
+    file { '/etc/init/parsoid.conf':
         ensure  => present,
         owner   => root,
         group   => root,
@@ -108,7 +108,11 @@ class role::parsoid::production {
         hasstatus  => true,
         hasrestart => true,
         enable     => true,
-        require    => File['/etc/init.d/parsoid'],
+        provider   => 'upstart',
+        subscribe  => [
+            File['/etc/default/parsoid'],
+            File['/etc/init/parsoid.conf'],
+        ],
     }
 
     monitor_service { 'parsoid':
