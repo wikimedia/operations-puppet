@@ -13,7 +13,7 @@
 #    and add an 'import "passwords.pp" line near the top.
 #
 # == Globals
-# These parameters can be set globally or via labsconsole
+# These parameters can be set globally or via wikitech.
 # $wikimetrics_web_mode       - Either 'apache' or 'daemon'. If apache, 
 #                               wikimetrics will be run in WSGI.  If
 #                               daemon, wikimetrics will be managed
