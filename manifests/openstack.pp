@@ -650,20 +650,18 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
         require => Package["nova-compute"];
     }
 
-    if ( $openstack_version != 'havana' ) {
-        file {
-            "/etc/libvirt/qemu/networks/autostart/default.xml":
-                ensure => absent;
-            # Live hack to use qcow2 ephemeral base images. Need to upstream
-            # a config option for this in havana.
-            "/usr/share/pyshared/nova/virt/libvirt/driver.py":
-                source => "puppet:///files/openstack/${openstack_version}/nova/virt-libvirt-driver",
-                notify => Service["nova-compute"],
-                owner => "root",
-                group => "root",
-                mode => 0444,
-                require => Package["nova-common"];
-        }
+    file {
+        "/etc/libvirt/qemu/networks/autostart/default.xml":
+            ensure => absent;
+        # Live hack to use qcow2 ephemeral base images. Need to upstream
+        # a config option for this in havana.
+        "/usr/share/pyshared/nova/virt/libvirt/driver.py":
+            source => "puppet:///files/openstack/${openstack_version}/nova/virt-libvirt-driver",
+            notify => Service["nova-compute"],
+            owner => "root",
+            group => "root",
+            mode => 0444,
+            require => Package["nova-common"];
     }
 }
 
