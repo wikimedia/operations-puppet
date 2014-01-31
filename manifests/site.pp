@@ -1544,6 +1544,7 @@ node "mchenry.wikimedia.org" {
         ldap::role::client::corp,
         backup::client,
         privateexim::aliases::private,
+        exim::stats,
         groups::wikidev,
         accounts::jdavis
 
