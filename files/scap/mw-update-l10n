@@ -43,6 +43,10 @@ done
 CPUS=`grep -c 'model name' /proc/cpuinfo`
 THREADS=`expr $CPUS - 2`
 
+if [ $THREADS -lt 1 ]; then
+	THREADS=1
+fi
+
 mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb) || die
 # Regenerate the extension message file list for all active MediaWiki versions
 for i in ${mwExtVerDbSets[@]}; do
