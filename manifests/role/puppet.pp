@@ -47,7 +47,7 @@ class role::puppet::server::labs {
 #
 # $::puppetmaster must be set as a global variable.
 # This allows puppet classes to be configured via LDAP
-# and labsconsole instance configuration.
+# and wikitech instance configuration.
 #
 class role::puppet::self {
 	# If $::puppetmaster is not set, assume

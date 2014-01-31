@@ -8,7 +8,7 @@ class role::labs::bastion {
             owner   => root,
             group   => root,
             mode    => '0444',
-            content => "\nIf you are having access problems, please see:https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances\n",
+            content => "\nIf you are having access problems, please see: https://wikitech.wikimedia.org/wiki/Access#Accessing_public_and_private_instances\n",
         }
     }
 
