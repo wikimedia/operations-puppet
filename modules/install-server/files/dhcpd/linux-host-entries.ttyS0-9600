@@ -89,11 +89,6 @@ host ms6 {
 	fixed-address ms6.esams.wikimedia.org;
 }
 
-host professor {
-	hardware ethernet 00:14:4f:ed:a8:48;
-	fixed-address professor.pmtpa.wmnet;
-}
-
 host statistics1 {
 	hardware ethernet 00:14:4f:e6:b7:40;
 	fixed-address statistics1.wikimedia.org;
