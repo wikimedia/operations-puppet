@@ -516,12 +516,22 @@ class openstack::neutron-service(
         require => Package['neutron-server'],
         mode    => '0440',
     }
+
     file { '/etc/neutron/api-paste.ini':
         content => template("openstack/${$openstack_version}/neutron/api-paste.ini.erb"),
         owner   => 'neutron',
         group   => 'neutron',
         notify  => Service['neutron-server'],
         require => Package['neutron-server'],
+        mode    => '0440',
+    }
+
+    file { '/etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini':
+        content => template("openstack/${$openstack_version}/neutron/ovs_neutron_plugin.ini.erb"),
+        owner   => 'neutron',
+        group   => 'neutron',
+        notify  => Service['openvswitch-switch'],
+        require => Package['neutron-plugin-openvswitch-agent'],
         mode    => '0440',
     }
 }
