@@ -2616,7 +2616,7 @@ node "labnet1001.eqiad.wmnet" {
     $ganglia_aggregator = true
 
     include standard,
-        role::nova::network,
+        role::neutron::server,
         role::nova::api
 
     # full root for mhoover, Labs migration contractor
