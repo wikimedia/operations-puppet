@@ -34,9 +34,7 @@ class role::neutron::config::eqiad inherits role::neutron::config {
 class role::neutron::server {
     include role::neutron::config::eqiad
 
-    $neutronconfig = $::site ? {
-        'eqiad' => $role::neutron::config::eqiad::neutronconfig,
-    }
+    $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
     class { 'openstack::neutron-service':
         openstack_version => $openstack_version,
