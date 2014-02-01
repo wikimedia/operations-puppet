@@ -513,6 +513,27 @@ class openstack::neutron-service(
         require   => Package['neutron-server'],
     }
 
+    exec { 'create_br-int':
+            unless => "ovs-vsctl br-exists br-int",
+            command => "ovs-vsctl add-br br-int",
+            require => Service['openvswitch-switch'],
+    }
+
+    exec { 'create_br-ex':
+            unless => "ovs-vsctl br-exists br-ex",
+            command => "ovs-vsctl add-br br-ex",
+            require => Service['openvswitch-switch'],
+    }
+
+    $external_interface = 'eth1'
+
+    exec { 'add-port':
+            unless => "ovs-vsctl list-ports br-ex | grep ${external_interface}",
+            command => "ovs-vsctl add-port br-ex ${external_interface}",
+            require => Service['openvswitch-switch'],
+            after => Exec['create_br-ex'],
+    }
+
     file { '/etc/neutron/neutron.conf':
         content => template("openstack/${$openstack_version}/neutron/neutron.conf.erb"),
         owner   => 'neutron',
