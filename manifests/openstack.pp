@@ -479,6 +479,40 @@ class openstack::conductor-service($openstack_version="folsom", $novaconfig) {
     }
 }
 
+class openstack::neutron-service($openstack_version="folsom", $neutronconfig) {
+    if ! defined(Class["openstack::repo"]) {
+        class { "openstack::repo": openstack_version => $openstack_version }
+    }
+
+    package { "neutron-server":
+        ensure => present,
+        require => Class["openstack::repo"];
+    }
+
+    service { "neutron-server":
+        ensure => running,
+        subscribe => File['/etc/nova/nova.conf'],
+        require => Package["neutron-server"];
+    }
+
+    file {
+        "/etc/neutron/neutron.conf":
+            content => template("openstack/${$openstack_version}/neutron/neutron.conf.erb"),
+            owner => neutron,
+            group => nogroup,
+            notify => Service["neutron-server"],
+            require => Package["neutron-server"],
+            mode => 0440;
+        "/etc/neutron/api-paste.ini":
+            content => template("openstack/${$openstack_version}/neutron/api-paste.ini.erb"),
+            owner => neutron,
+            group => neutron,
+            notify => Service["neutron-server"],
+            require => Package["neutron-server"],
+            mode => 0440;
+    }
+}
+
 class openstack::network-service($openstack_version="folsom", $novaconfig) {
     if ! defined(Class["openstack::repo"]) {
         class { "openstack::repo": openstack_version => $openstack_version }
