@@ -492,6 +492,16 @@ class openstack::neutron-service(
         require => Class['openstack::repo'],
     }
 
+    package { 'neutron-plugin-openvswitch-agent':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+
+    service { 'openvswitch-switch':
+        ensure    => 'running',
+        require   => Package['neutron-server'],
+    }
+
     service { 'neutron-server':
         ensure    => 'running',
         subscribe => File['/etc/nova/nova.conf'],
