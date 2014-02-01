@@ -497,9 +497,14 @@ class openstack::neutron-service(
         require => Class['openstack::repo'],
     }
 
+    package { 'openvswitch-datapath-dkms':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+
     service { 'openvswitch-switch':
         ensure    => 'running',
-        require   => Package['neutron-server'],
+        require   => Package['neutron-server', 'neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
     }
 
     service { 'neutron-server':
