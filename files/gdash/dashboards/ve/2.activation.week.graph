@@ -1,0 +1,14 @@
+title 'VisualEditor activation time, one-minute sliding window, last week'
+linewidth 1
+linemode 'connected'
+hide_legend 'false'
+from '-1week'
+vtitle 'milliseconds'
+
+field :q2, :color => 'blue',
+           :alias => 'Median',
+           :data  => 've.performance.system.activation.median'
+
+field :q3, :color => 'red',
+           :alias => '75th percentile',
+           :data  => 've.performance.system.activation.75percentile'
