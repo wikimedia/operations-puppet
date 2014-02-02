@@ -7,8 +7,16 @@
 class mysql_wmf(
     $mariadb = false,
     ) {
-    monitor_service { 'mysql disk space': description => 'MySQL disk space', check_command => 'nrpe_check_disk_6_3', critical => true }
-    monitor_service { 'mysqld': description => 'mysqld processes', check_command => 'nrpe_check_mysqld', critical => true }
+    nrpe::monitor_service { 'mysql disk space':
+        description   => 'MySQL disk space',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e',
+        critical      => true,
+    }
+    monitor_service { 'mysqld':
+        description   => 'mysqld processes',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
+        critical      => true,
+    }
 
     #######################################################################
     ### MASTERS - make sure to update here whenever changing replication
