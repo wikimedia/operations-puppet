@@ -32,9 +32,9 @@ class jenkins {
   }
 
   # nagios monitoring
-  monitor_service { 'jenkins':
+  nrpe::monitor_service { 'jenkins':
     description   => 'jenkins_service_running',
-    check_command => 'nrpe_check_jenkins'
+    nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar /usr/share/jenkins/jenkins.war'"
   }
 
   file { '/var/lib/jenkins':
