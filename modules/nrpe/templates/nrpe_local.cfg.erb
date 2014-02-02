@@ -17,7 +17,6 @@ command[check_jenkins]=/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-
 command[check_mailman]=/usr/lib/nagios/plugins/check_procs -w 1:25 -c 1:35 -a mailman
 command[check_spamd]=/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd
 command[check_varnishncsa]=/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:6 -C varnishncsa
-command[check_mysqld]=/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld
 command[check_carbon_cache]=/usr/lib/nagios/plugins/check_procs -c 1:2 -a carbon-cache.py
 command[check_profiler_to_carbon]=/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^/usr/bin/python /usr/udpprofile/sbin/profiler-to-carbon'
 command[check_profiling_collector]=/usr/lib/nagios/plugins/check_procs -c 1:20 -C collector
