@@ -21,8 +21,16 @@ class mysql_wmf::coredb::monitoring( $crit = false, $no_slave = false ) {
         source  => 'puppet:///modules/mysql_wmf/icinga/percona',
     }
 
-    monitor_service { 'mysql disk space': description => 'MySQL disk space', check_command => 'nrpe_check_disk_6_3', critical => true }
-    monitor_service { 'mysqld': description => 'mysqld processes', check_command => 'nrpe_check_mysqld', critical => $crit }
+    nrpe::monitor_service { 'mysql disk space':
+        description   => 'MySQL disk space',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e',
+        critical      => true,
+    }
+    nrpe::monitor_service { 'mysqld':
+        description   => 'mysqld processes',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
+        critical      => $crit,
+    }
     monitor_service { 'mysql recent restart': description => 'MySQL Recent Restart', check_command => 'nrpe_check_mysql_recent_restart', critical => $crit }
     monitor_service { 'mysql processlist': description => 'MySQL Processlist', check_command => 'nrpe_pmp_check_mysql_processlist', critical => false }
     monitor_service { 'mysql innodb': description => 'MySQL InnoDB', check_command => 'nrpe_pmp_check_mysql_innodb', critical => false }
