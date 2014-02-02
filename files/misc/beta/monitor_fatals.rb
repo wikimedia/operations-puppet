@@ -3,6 +3,8 @@
 require 'net/smtp'
 
 fatals_file="/data/project/logs/fatal.log"
+
+# Please also adjust the text message below
 seconds_since_last_run = 12 * 60 * 60  # 12 hours
 
 def send_email
@@ -12,8 +14,8 @@ To: Software quality <qa@lists.wikimedia.org>
 Subject: New fatal errors on beta labs
 
 The file at /data/project/logs/fatal.log on the deployment cluster has a new
-entry within the last hour.  You should check it out by connecting on any
-instance on the beta cluster (ie: deployment-bastion.pmtpa.wmflabs ).
+entry within the last twelve hours.  You should check it out by connecting on
+any instance on the beta cluster (ie: deployment-bastion.pmtpa.wmflabs ).
 
 You can also look at logstash:
 
