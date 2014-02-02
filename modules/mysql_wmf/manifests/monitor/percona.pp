@@ -2,7 +2,11 @@ class mysql_wmf::monitor::percona inherits mysql_wmf {
     $crit = $::master
     require 'mysql_wmf::monitor::percona::files'
 
-    monitor_service { 'mysqld': description => 'mysqld processes', check_command => 'nrpe_check_mysqld', critical => $crit }
+    nrpe::monitor_service { 'mysqld':
+        description   => 'mysqld processes',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
+        critical      => $crit,
+    }
     monitor_service { 'mysql recent restart': description => 'MySQL Recent Restart', check_command => 'nrpe_check_mysql_recent_restart', critical => $crit }
     monitor_service { 'full lvs snapshot': description => 'Full LVS Snapshot', check_command => 'nrpe_check_lvs', critical => false }
     monitor_service { 'mysql idle transaction': description => 'MySQL Idle Transactions', check_command => 'nrpe_check_mysql_idle_transactions', critical => false }
