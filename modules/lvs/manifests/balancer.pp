@@ -51,7 +51,7 @@ class lvs::balancer(
             # removed in >= 3.6 kernels.
             'net.ipv4.rt_cache_rebuild_count' => -1,
         },
-        priority => 60,
+        priority => '60',
     }
 
     generic::upstart_job { "enable-rps": install => "true", start => "true" }
