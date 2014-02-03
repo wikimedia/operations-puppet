@@ -2544,9 +2544,7 @@ node "virt1000.wikimedia.org" {
     $is_labs_puppet_master = "true"
     $openstack_version = "havana"
 
-    # full root for mhoover, Labs migration contractor
     include admins::labs
-    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
         role::dns::ldap,
@@ -2565,9 +2563,7 @@ node "virt0.wikimedia.org" {
     $is_labs_puppet_master = "true"
     $openstack_version = "folsom"
 
-    # full root for mhoover, Labs migration contractor
     include admins::labs
-    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
         role::dns::ldap,
@@ -2584,9 +2580,7 @@ node 'virt2.pmtpa.wmnet' {
     $cluster = "virt"
     $openstack_version = "folsom"
 
-    # full root for mhoover, Labs migration contractor
     include admins::labs
-    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
         role::nova::network,
@@ -2602,9 +2596,7 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
 
     $openstack_version = "folsom"
 
-    # full root for mhoover, Labs migration contractor
     include admins::labs
-    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard,
         role::nova::compute
@@ -2619,9 +2611,7 @@ node "labnet1001.eqiad.wmnet" {
         role::neutron::server,
         role::nova::api
 
-    # full root for mhoover, Labs migration contractor
     include admins::labs
-    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
 node /virt100[1-4].eqiad.wmnet/ {
@@ -2635,9 +2625,7 @@ node /virt100[1-4].eqiad.wmnet/ {
 
 node /virt100[5-9].eqiad.wmnet/ {
     $cluster = "virt"
-    # full root for mhoover, Labs migration contractor
     include admins::labs
-    sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard
 }
