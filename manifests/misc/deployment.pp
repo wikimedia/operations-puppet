@@ -186,6 +186,11 @@ class misc::deployment::scap_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/scap/scap";
+		"${scriptpath}/scappy":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/scap/scappy";
 		"${scriptpath}/sync-common-all":
 			owner => root,
 			group => root,
