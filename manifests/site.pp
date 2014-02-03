@@ -576,7 +576,7 @@ node /^db10(02|09|18|34|36|60)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
+node /^db10(03|19|27|35|38)\.eqiad\.wmnet/ {
     class { role::coredb::s3 : innodb_file_per_table => true, mariadb => true }
 }
 
@@ -745,8 +745,7 @@ node "db1044.eqiad.wmnet" {
 
 # out of action
 # db1024 RT 6672
-# db1027 spare
-node /^db10(24|27)\.eqiad\.wmnet/ {
+node /^db10(24)\.eqiad\.wmnet/ {
     include standard
 }
 
