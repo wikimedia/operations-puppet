@@ -2624,7 +2624,7 @@ node "labnet1001.eqiad.wmnet" {
     sudo_user { "mhoover": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
-node /virt100[1-3].eqiad.wmnet/ {
+node /virt100[1-4].eqiad.wmnet/ {
     $cluster = "virt"
 
     $openstack_version = "havana"
@@ -2633,7 +2633,7 @@ node /virt100[1-3].eqiad.wmnet/ {
         role::nova::compute
 }
 
-node /virt100[4-9].eqiad.wmnet/ {
+node /virt100[5-9].eqiad.wmnet/ {
     $cluster = "virt"
     # full root for mhoover, Labs migration contractor
     include admins::labs
