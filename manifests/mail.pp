@@ -356,7 +356,10 @@ class spamassassin(
 		ensure => running;
 	}
 
-	monitor_service { "spamd": description => "spamassassin", check_command => "nrpe_check_spamd" }
+	nrpe::monitor_service { 'spamd':
+        description   => 'spamassassin',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd',
+    }
 }
 
 class mailman {
@@ -407,7 +410,7 @@ class mailman {
 			pattern => "mailmanctl"
 		}
 
-		monitor_service { "procs_mailman": description => "mailman", check_command => "nrpe_check_mailman" }
+		monitor_service { 'procs_mailman': description => "mailman", check_command => "nrpe_check_mailman" }
 	}
 
 	class web-ui {
