@@ -30,7 +30,7 @@ respawn
 script
     # kill any init-based instances for init -> upstart transition
     if [ -x "/etc/init.d/parsoid" ] ; then
-        /etc/init.d/parsoid stop
+        /etc/init.d/parsoid stop || /bin/true
     fi
 
     if [ -f "$DEFAULTFILE" ] ; then
