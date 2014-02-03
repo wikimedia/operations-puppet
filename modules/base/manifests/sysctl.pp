@@ -50,5 +50,8 @@ class base::sysctl {
             'net.ipv4.tcp_keepalive_intvl'  => 1,
             'net.ipv4.tcp_keepalive_probes' => 2,
         },
+        #  FIXME: 50 is our general 'override' priority, so maybe this should be
+        #   30 -- more than ubuntu default but less than case-specific overrides?
+        priority => '50',
     }
 }

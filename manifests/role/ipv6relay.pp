@@ -18,6 +18,7 @@ class role::ipv6relay {
             'net.ipv6.conf.default.forwarding' => 1,
             'net.ipv6.conf.eth0.accept_ra'     => 2,
         },
+        priority => '50',
     }
 
     # Teredo

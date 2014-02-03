@@ -598,6 +598,7 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
             # Disable RA
             'net.ipv6.conf.all.accept_ra'     => 0,
         },
+	priority => '50',
     }
 }
 
