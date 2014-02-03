@@ -24,6 +24,7 @@ class webserver::base {
 			'net.ipv4.tcp_synack_retries'  => 2,
 			'net.ipv4.tcp_syn_retries'     => 2,
 		},
+		priority => '60',
 	}
 }
 

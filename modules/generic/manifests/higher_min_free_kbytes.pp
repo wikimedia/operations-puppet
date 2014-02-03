@@ -6,4 +6,5 @@ class generic::higher_min_free_kbytes {
     sysctl::parameters { 'higher_min_free_kbytes':
         values => { 'vm.min_free_kbytes' => 1024 * 256,},
     }
+    priority => '60',
 }
