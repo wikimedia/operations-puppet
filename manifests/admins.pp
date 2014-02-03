@@ -3140,6 +3140,7 @@ class accounts {
         $username = 'mhoover'
         $realname = 'Mike Hoover'
         $uid      = 656
+	$enabled = false
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -3147,7 +3148,7 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'mhoover@wikimedia.org':
-                ensure => present,
+                ensure => absent,
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDHHt80fZmlmhzmFRgT+m0oIOs4h9ZDpqP9a4G79TZfZOA3eCuiq+kucyhdm51ge7GimzE/rhFgw3ZBVXvcdKpwTDyybArM5mOJsyg0GNp0Ns3hlJrvAudIXnxEjGlMuVF0ek3Vexi/hBzci5chqXSXxQJfUnfZnBOMiFyAGGM7KQM2W11SwTxyB9j+2McWm1ZR2rC3DjTsfbsus4BMlNYgaR7hE3ovMiCdke3NorFJ+NjZe2NjoMmSUNnGyTJvwwUncDXLELE4S2QQ4L6Vc71mMAC9VC/+qrpjTN6CEfae8nEcBvrgA1s/ahMI+3OdsWzRU0Gv3+jgqUR/641gXdkB',
@@ -3457,7 +3458,7 @@ class admins::mortals {
 	include accounts::maxsem
 	include accounts::mflaschen
 	include accounts::mholmquist
-	include accounts::mhoover # Labs migration contractor
+	include accounts::mhoover # access revoked
 	include accounts::milimetric # promoted per RT 5982
 	include accounts::mlitn
 	include accounts::mwalker # promoted per RT 4747
@@ -3516,7 +3517,7 @@ class admins::labs {
 	$gid = 500  # 'wikidev' by default
 	include groups::wikidev
 
-	include accounts::mhoover # Labs migration contractor
+	include accounts::mhoover # access revoked
 }
 
 class admins::jenkins {
