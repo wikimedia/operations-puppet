@@ -492,6 +492,16 @@ class openstack::neutron-service(
         require => Class['openstack::repo'],
     }
 
+    package { 'neutron-dhcp-agent':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+
+    package { 'neutron-l3-agent':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+
     package { 'neutron-plugin-openvswitch-agent':
         ensure  => 'present',
         require => Class['openstack::repo'],
@@ -500,6 +510,10 @@ class openstack::neutron-service(
     package { 'openvswitch-datapath-dkms':
         ensure  => 'present',
         require => Class['openstack::repo'],
+    }
+
+    package { 'dnsmasq':
+        ensure  => 'present',
     }
 
     service { 'openvswitch-switch':
@@ -559,6 +573,21 @@ class openstack::neutron-service(
         notify  => Service['openvswitch-switch'],
         require => Package['neutron-plugin-openvswitch-agent'],
         mode    => '0440',
+    }
+
+    sysctl::parameters { 'openstack':
+        values => {
+            # Turn off IP filter
+            'net.ipv4.conf.default.rp_filter' => 0,
+            'net.ipv4.conf.all.rp_filter'     => 0,
+
+            # Enable IP forwarding
+            'net.ipv4.ip_forward'             => 1,
+            'net.ipv6.conf.all.forwarding'    => 1,
+
+            # Disable RA
+            'net.ipv6.conf.all.accept_ra'     => 0,
+        },
     }
 }
 
