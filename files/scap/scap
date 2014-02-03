@@ -1,121 +1,132 @@
-#!/bin/bash
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  you know, scap.
 
-# Acquire a non-blocking lock to prevent parallel runs
-exec 200>/var/lock/scap || exit 1
-flock -n 200 || { echo "WARNING: could not acquire /var/lock/scap; scap is already running." >&2; exit 1; }
+"""
+import argparse
+import contextlib
+import fcntl
+import os
+import struct
+import subprocess
+import time
 
-SCAP_START=$(date +%s)
-NODEFILE=
 
-function cleanup() {
-	if [ -n "$NODEFILE" ]; then
-		rm -f "$NODEFILE"
-	fi
-	# The lock is automatically released on exit, but do it here for good measure
-	flock -u 200
-}
+MW_COMMON = '/usr/local/apache/common-local'
+MW_COMMON_SOURCE = '/a/common'
 
-function die() {
-	cleanup
-	if [ -n "$*" ]; then
-		echo >&2 "$*"
-	else
-		echo >&2 "sync failed" 
-	fi
-	exit 1
-}
 
-. /usr/local/lib/mw-deployment-vars.sh
+@contextlib.contextmanager
+def lock(filename):
+    """Context manager. Acquires a file lock on entry, releases on exit."""
+    # FIXME: Actually use this.
+    with open(filename) as fd:
+        fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        yield
+        fcntl.lockf(fd, fcntl.LOCK_UN)
 
-BINDIR=/usr/local/bin
 
-if [ ! -S "$SSH_AUTH_SOCK" ]; then
-	die "SSH_AUTH_SOCK not set or not pointing to a socket. Did you start your ssh-agent?"
-fi
+def irc_echo(message, address=('neon.wikimedia.org', 9200)):
+    """Echo a message on #wikimedia-operations via logmsgbot."""
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    return sock.sendto(string, address)
 
-DSH_EXPORTS=
-# Only sync the active version(s) if requested
-if [[ "$1" == --versions=?* ]]; then
-	versions="${1#--versions=}"
-	shift
-	if [ "$versions" == "active" ]; then
-		# All active MW versions
-		export MW_VERSIONS_SYNC=$($BINDIR/mwversionsinuse --home)
-	elif [ -d "$MW_COMMON_SOURCE/php-$versions" ]; then
-		# A specific MW version
-		export MW_VERSIONS_SYNC="$versions"
-	else
-		die "Invalid MediaWiki version \"$versions\""
-	fi
-	unset versions
-	# This will export MW_VERSIONS_SYNC to scap-1 on the proxies/servers
-	echo "MediaWiki versions selected for sync (via --versions): $MW_VERSIONS_SYNC"
-	DSH_EXPORTS="export MW_VERSIONS_SYNC=\"$MW_VERSIONS_SYNC\";"
-else
-	echo "Syncing all versions."
-fi
 
-if [[ "$MW_SCAP_BETA" == "1" ]]; then
-	DSH_EXPORTS="export MW_SCAP_BETA=1; $DSH_EXPORTS"
-fi
+def cdb_items(buf):
+    """Iterates over CDB key/value pairs."""
+    table_start, = struct.unpack_from('<L', buf)
+    offset = 2048
+    while offset < table_start:
+        lengths = struct.unpack_from('<LL', buf, offset)
+        offset += 8
+        yield struct.unpack_from('%ds %ds' % lengths, buf, offset)
+        offset += sum(lengths)
+
+
+def get_branches(wikiversions_cdb_path):
+    """Get the set of active branches from a wikiversions.cdb file."""
+    with open(wikiversions_cdb_path, 'rb') as f:
+        cdb = f.read()
+        return {v for k, v in cdb_items(cdb) if k.startswith('ver:')}
+
+
+def dsh(command, group):
+    """Run a command on multiple hosts via DSH."""
+    group_file = os.path.join('/etc/dsh/group', group)
+    return subprocess.check_call(['dsh', '-F40', '-cM', '-f', group_file, '-o',
+                                  '-oSetupTimeout=10', '--', command.strip()])
+
+
+def check_syntax(*paths):
+    """Run lint.php on `paths`; raise CalledProcessError if nonzero exit."""
+    command = ['/usr/bin/php', '-n', '-dextension=parsekit.so',
+               '/usr/local/bin/lint.php'] + list(paths)
+    return subprocess.check_call(command)
+
+
+ap = argparse.ArgumentParser(description='Deploy MediaWiki')
+ap.add_argument('--active', action='store_true', default=False,
+                help='only sync active branches')
+ap.add_argument('message', nargs=argparse.REMAINDER)
+args = ap.parse_args()
+
+env = ''
+if args.active:
+    branches = get_branches('%s/wikiversions.cdb' % MW_COMMON)
+    env = 'export MW_VERSIONS_SYNC="%s"; ' % ' '.join(branches)
+
+assert 'SSH_AUTH_SOCK' in os.environ
+
+start = time.time()
 
 # Perform syntax check
-echo -n "Checking syntax of wmf-config and multiversion..."
-if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/wmf-config && $BINDIR/lint $MW_COMMON_SOURCE/multiversion ) ); then
-	die "Found syntax errors, cannot sync."
-fi
-echo " done"
+print('Checking syntax of wmf-config and multiversion... ')
+check_syntax('%s/wmf-config' % MW_COMMON_SOURCE)
+check_syntax('%s/multiversion' % MW_COMMON_SOURCE)
+print('done')
 
 # Update the current machine so that serialization works.
 # Push wikiversions.dat changes so mwversionsinuse, set-group-write,
 # and mwscript work with the right version of the files.
-/usr/local/bin/sync-common || die
+subprocess.check_call('/usr/local/bin/sync-common')
 
 # Update list of extension message files and regenerate
 # the localisation cache
-/usr/local/bin/mw-update-l10n || die
+subprocess.check_call('/usr/local/bin/mw-update-l10n')
 
 # Notify
-$BINDIR/dologmsg "!log $USER started scap${*:+: }$*"
+irc_echo('!log %s started scap: %s' % (os.getlogin(), args.message))
 
-# Disable logging
-export DOLOGMSGNOLOG=1
+print('Updating rsync proxies...')
+dsh('/usr/local/bin/scap-1' % versions)
+print('Finished')
 
-echo 'Updating rsync proxies...'
-dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-1"
-echo 'Finished'
+with open('/etc/dsh/group/scap-proxies') as f:
+    rsync_servers = ' '.join(ln.strip() for ln in f if not ln.startswith('#'))
 
-# Do the main code update in random order to avoid overloading any given rsync server
-NODEFILE=$(mktemp)
-shuf < /etc/dsh/group/mediawiki-installation > "$NODEFILE" || die
+# Randomize the order of target machines
+with open('/etc/dsh/group/mediawiki-installation', 'rt') as f:
+    hosts = random.shuffle(ln for ln in f if not ln.startswith('#'))
+    with tempfile.NamedTemporaryFile(prefix='scap') as tmp:
+        tmp.write(''.join(hosts))
+        NODEFILE = tmp.name
+        print('Copying code to apaches...',)
+        dsh('%s /usr/local/bin/scap-1 "%s"'
+            % (env, versions, rsync_servers), tmp.name)
+        print('Finished')
 
-RSYNC_SERVERS=`sed 's/^#.*//' /etc/dsh/group/scap-proxies` || die
-# Condense whitespace
-RSYNC_SERVERS=`echo $RSYNC_SERVERS`
+        print('Rebuilding CDB files from /upstream...',)
+        dsh('%s /usr/local/bin/scap-rebuild-cdbs' % env, tmp.name)
+        print('Finished')
 
-echo 'Copying code to apaches...'
-dsh -F40 -cM -f "$NODEFILE" -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\""
-echo 'Finished'
-
-echo 'Rebuilding CDB files from /upstream...'
-dsh -cM -g mediawiki-installation -o -oSetupTimeout=10 -- "$DSH_EXPORTS /usr/local/bin/scap-rebuild-cdbs"
-echo 'Finished'
 
 # Builds wikiversions.cdb and syncs it to the apaches with the dat file.
 # This is done after all else so that deploying new MW versions is easier.
-sync-wikiversions || die
+subprocess.check_call('sync-wikiversions')
 
-SCAP_END=$(date +%s)
-DIFF=$((SCAP_END-SCAP_START))
-MINS=$(((DIFF/60)%60))
-SECS=$((DIFF%60))
-printf -v HUMAN_DIFF "%02dm %02ds" $MINS $SECS
-
-echo "scap completed in $HUMAN_DIFF."
-
-export DOLOGMSGNOLOG=""
-$BINDIR/dologmsg "!log $USER finished scap${*:+: }$* (duration: $HUMAN_DIFF)"
-$BINDIR/deploy2graphite scap $DIFF
-
-cleanup
-exit 0
+stop = time.time()
+duration = '%02dm %02ds' % divmod(stop - start, 60)
+print('scap completed in %s' % duration)
+irc_echo('!log %s finished scap: %s (duration: %s)'
+         % (os.getlogin(), args.message, duration))
