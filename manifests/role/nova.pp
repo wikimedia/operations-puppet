@@ -379,4 +379,20 @@ class role::nova::compute {
 		include role::nova::api,
 			role::nova::network
 	}
+
+	if $realm == 'production' {
+		mount { '/var/lib/nova/instances':
+			ensure => mounted,
+			device => '/dev/md1',
+			fstype => 'xfs',
+			options => 'defaults',
+		}
+	}
 }
+
+
+
+
+==================
+
+
