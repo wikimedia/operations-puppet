@@ -245,11 +245,11 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $
     ganglia::view { "varnishkafka-${title}":
         ensure => $ensure,
         graphs => [
-            # delivery report errors rate
+            # delivery report error rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 'metric_regex' => 'kafka.varnishkafka\.kafka_drerr.per_second',
-                'type'         => 'stack',
+                'type'         => 'line',
             },
             # delivery report errors.
             # drerr is important, but seems to happen in bursts.
@@ -257,8 +257,15 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 'metric_regex' => 'kafka.varnishkafka\.kafka_drerr$',
-                'type'         => 'stack',
+                'type'         => 'line',
             },
+            # transaction error rate
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'kafka.varnishkafka\.txerr.per_second',
+                'type'         => 'line',
+            },
+
             # round trip time average
             {
                 'host_regex'   => $varnishkafka_host_regex,
@@ -303,6 +310,12 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 'metric_regex' => "kafka.rdkafka.topics.${topic_regex}\\.txmsgs.per_second",
+                'type'         => 'stack',
+            },
+            # varnish client_reqs, show this just for comparision
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                'metric_regex' => 'varnish.client_req',
                 'type'         => 'stack',
             },
         ],
