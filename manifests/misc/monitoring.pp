@@ -279,25 +279,25 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.msgq_cnt",
-                'type'         => 'stack',
+                'type'         => 'line',
             },
             # transmit message queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.xmit_msgq_cnt",
-                'type'         => 'stack',
+                'type'         => 'line',
             },
             # output buffer queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 'metric_regex' => 'kafka.rdkafka.brokers..+\.outbuf_cnt',
-                'type'         => 'stack',
+                'type'         => 'line',
             },
             # waiting for response buffer count
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 'metric_regex' => 'kafka.rdkafka.brokers..+\.waitresp_cnt',
-                'type'         => 'stack',
+                'type'         => 'line',
             },
 
             # transaction bytes rate
