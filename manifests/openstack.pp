@@ -514,14 +514,14 @@ class openstack::neutron-service(
     }
 
     exec { 'create_br-int':
-            unless => "ovs-vsctl br-exists br-int",
-            command => "ovs-vsctl add-br br-int",
+            unless => "/usr/bin/ovs-vsctl br-exists br-int",
+            command => "/usr/bin/ovs-vsctl add-br br-int",
             require => Service['openvswitch-switch'],
     }
 
     exec { 'create_br-ex':
-            unless => "ovs-vsctl br-exists br-ex",
-            command => "ovs-vsctl add-br br-ex",
+            unless => "/usr/bin/ovs-vsctl br-exists br-ex",
+            command => "/usr/bin/ovs-vsctl add-br br-ex",
             require => Service['openvswitch-switch'],
             before => Exec['add-port'],
     }
@@ -529,8 +529,8 @@ class openstack::neutron-service(
     $external_interface = 'eth1'
 
     exec { 'add-port':
-            unless => "ovs-vsctl list-ports br-ex | grep ${external_interface}",
-            command => "ovs-vsctl add-port br-ex ${external_interface}",
+            unless => "/usr/bin/ovs-vsctl list-ports br-ex | /bin/grep ${external_interface}",
+            command => "/usr/bin/ovs-vsctl add-port br-ex ${external_interface}",
             require => Service['openvswitch-switch'],
     }
 
