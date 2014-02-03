@@ -51,5 +51,6 @@ class base::sysctl {
             'net.ipv4.tcp_keepalive_intvl'  => 1,
             'net.ipv4.tcp_keepalive_probes' => 2,
         },
+        priority => '60',
     }
 }

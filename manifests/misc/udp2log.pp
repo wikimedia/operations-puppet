@@ -17,6 +17,7 @@ class misc::udp2log($monitor = true) {
 			'net.core.rmem_max'     => 536870912,
 			'net.core.rmem_default' => 4194304,
 		},
+		priority => '99',
 	}
 
 	# include the monitoring scripts

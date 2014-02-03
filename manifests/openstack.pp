@@ -711,7 +711,7 @@ class openstack::neutron-nethost(
             # Disable RA
             'net.ipv6.conf.all.accept_ra'     => 0,
         },
-        priority => 50,
+        priority => '60',
     }
 }
 
@@ -758,7 +758,7 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
             # Disable RA
             'net.ipv6.conf.all.accept_ra'     => 0,
         },
-        priority => 50,
+        priority => '50',
     }
 }
 
@@ -916,7 +916,7 @@ class openstack::neutron-compute($neutronconfig, $data_interface_ip) {
             'net.ipv4.conf.default.rp_filter' => 0,
             'net.ipv4.conf.all.rp_filter'     => 0,
         },
-        priority => 50,
+        priority => '50',
     }
 
     package { 'neutron-plugin-openvswitch-agent':
