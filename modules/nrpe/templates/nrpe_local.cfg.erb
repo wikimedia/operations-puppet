@@ -13,7 +13,6 @@ command[check_disk_6_4]=/usr/lib/nagios/plugins/check_disk -w 6% -c 4% -l -e
 command[check_ram]=/usr/lib/nagios/plugins/check_ram.sh 20 5 b
 
 # process checks, we can't make this generic because we don't pass args via nrpe (security)
-command[check_mailman]=/usr/lib/nagios/plugins/check_procs -w 1:25 -c 1:35 -a mailman
 command[check_varnishncsa]=/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:6 -C varnishncsa
 command[check_mysqld]=/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld
 command[check_etherpad_lite]=/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^node node_modules/ep_etherpad-lite/node/server.js'
