@@ -365,10 +365,6 @@ define command{
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mailman
 }
 define command{
-	command_name	nrpe_check_spamd
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_spamd
-}
-define command{
         command_name    nrpe_check_carbon_cache
         command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_carbon_cache
 }
