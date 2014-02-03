@@ -523,6 +523,7 @@ class openstack::neutron-service(
             unless => "ovs-vsctl br-exists br-ex",
             command => "ovs-vsctl add-br br-ex",
             require => Service['openvswitch-switch'],
+            before => Exec['add-port'],
     }
 
     $external_interface = 'eth1'
@@ -531,7 +532,6 @@ class openstack::neutron-service(
             unless => "ovs-vsctl list-ports br-ex | grep ${external_interface}",
             command => "ovs-vsctl add-port br-ex ${external_interface}",
             require => Service['openvswitch-switch'],
-            after => Exec['create_br-ex'],
     }
 
     file { '/etc/neutron/neutron.conf':
