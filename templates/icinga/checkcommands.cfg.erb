@@ -361,8 +361,21 @@ define command{
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
 }
 define command{
-	command_name	nrpe_check_mailman
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mailman
+	command_name	nrpe_check_spamd
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_spamd
+}
+define command{
+        command_name    nrpe_check_carbon_cache
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_carbon_cache
+}
+define command{
+        command_name    nrpe_check_profiler_to_carbon
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_profiler_to_carbon
+}
+define command{
+        command_name    nrpe_check_profiling_collector
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_profiling_collector
+>>>>>>> fc2b153... mail: change mailman check to use nrpe::monitor_service
 }
 define command{
         command_name    nrpe_check_etherpad_lite
