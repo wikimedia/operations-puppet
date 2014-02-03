@@ -407,7 +407,10 @@ class mailman {
 			pattern => "mailmanctl"
 		}
 
-		monitor_service { "procs_mailman": description => "mailman", check_command => "nrpe_check_mailman" }
+		nrpe::monitor_service { 'procs_mailman':
+            description  => 'mailman',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:25 -c 1:35 -a mailman',
+        }
 	}
 
 	class web-ui {
