@@ -58,6 +58,7 @@ class role::neutron::server {
         # By hand, unpuppetized step: # ip addr del 10.64.20.13/24 dev eth0
         # and: # ifconfig eth0 promisc
 
+        # In Openstack terms, this is the 'data' interface
         interface::tagged { 'eth1.1102':
             base_interface => 'eth1',
             vlan_id => '1102',
@@ -65,5 +66,16 @@ class role::neutron::server {
             up => 'ip link set $IFACE up',
             down => 'ip link set $IFACE down',
         }
+
+        # In Openstack terms, this is the 'management' interface
+        interface::tagged { 'eth1.1122':
+            base_interface => 'eth1',
+            vlan_id => '1122',
+            method => 'manual',
+            up => 'ip link set $IFACE up',
+            down => 'ip link set $IFACE down',
+        }
+
+        # In Openstack terms, eth0 is the external interface.
     }
 }
