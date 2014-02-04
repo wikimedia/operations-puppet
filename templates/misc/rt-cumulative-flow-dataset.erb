@@ -1,0 +1,108 @@
+#!/bin/bash
+
+# Written by Diederik van Liere (dvanliere@wikimedia.org) for WMF
+# These MySQL queries jointly create a cumulative flow dataset
+# that can be used to visualize a chart called the cumulative flow
+# diagram (cdf). A cdf is a key chart in Kanban like operations
+# and it visualizes two key metrics:
+# 1) Work-in-Progress (WIP) -- for any given day, how many tickets
+were worked on?
+# 2) Mean Cycle Time -- how much does it take between an RT ticket
+gets submitted and resolved.
+#
+# RT does not have metrics regarding the 'size' of the task, so each
+# ticket is weighted equally.
+
+DATE=`date --date=yesterday +%Y-%m-%d`;
+
+echo "Generating the cumulative flow dataset for $DATE UTC"
+
+#RT was taken into production around August 1st, 2010
+
+mysql log -h <%= db_host %> -p<%= db_pass %> -u<%= db_user %> <%= db_database %=> -e "
+
+DROP TABLE calendar;
+DROP TABLE ints;
+
+CREATE TABLE IF NOT EXISTS calendar (
+    datefield DATE,
+    new MEDIUMINT,
+    open MEDIUMINT,
+    resolved MEDIUMINT,
+    PRIMARY KEY (datefield)
+    );
+
+CREATE TABLE IF NOT EXISTS ints (
+    i tinyint
+    );
+
+INSERT INTO ints VALUES (0),(1),(2),(3),(4),(5),(6),(7),(8),(9);
+
+INSERT INTO
+    calendar (datefield)
+SELECT
+    DATE('2010-01-08') + INTERVAL a.i*10000 + b.i*1000 + c.i*100 + d.i*10 + e.i DAY
+FROM
+    ints a JOIN ints b JOIN ints c JOIN ints d JOIN ints e
+WHERE
+    (a.i*10000 + b.i*1000 + c.i*100 + d.i*10 + e.i) <= (SELECT DATEDIFF(CURDATE(), DATE('2010-01-08')))
+ORDER BY 1;
+
+
+-- Days that the ticket was marked new
+UPDATE
+    calendar
+JOIN (SELECT calendar.datefield AS date_new, SUM(IFNULL(IF(DATE(Tickets.Created) > '1970-01-01', 1, 0), 0)) AS new
+    FROM
+    Tickets
+RIGHT JOIN
+    calendar ON DATE(calendar.datefield) BETWEEN Tickets.Created AND IF(DATE(Tickets.Started) = '1970-01-01', CURDATE(), Tickets.Started)
+GROUP BY
+    date_new)
+AS
+    new_query
+ON
+    calendar.datefield = new_query.date_new
+SET
+    calendar.new = new_query.new;
+
+-- Days that the ticket was marked open
+UPDATE
+    calendar
+JOIN (SELECT calendar.datefield AS date_open, SUM(IFNULL(IF(DATE(Tickets.Started) > '1970-01-01', 1, 0), 0)) AS open
+FROM
+    Tickets
+RIGHT JOIN
+    calendar
+ON
+    DATE(calendar.datefield) BETWEEN Tickets.Started AND IF(DATE(Tickets.Resolved) = '1970-01-01', CURDATE(), Tickets.Resolved)
+GROUP BY
+    date_open)
+AS
+    open_query
+ON
+    calendar.datefield = open_query.date_open
+SET
+    calendar.open = open_query.open;
+
+-- Days that the ticket was marked resolved
+UPDATE
+    calendar
+JOIN (SELECT calendar.datefield AS date_resolved, SUM(IFNULL(IF(DATE(Tickets.Resolved) > '1970-01-01', 1, 0), 0)) AS resolved
+FROM
+    Tickets
+RIGHT JOIN
+    calendar
+ON
+    DATE(calendar.datefield) >= IF(DATE(Tickets.Resolved) = '1970-01-01', CURDATE(), Tickets.Resolved)
+GROUP BY
+    date_resolved)
+AS
+    resolved_query
+ON
+    calendar.datefield = resolved_query.date_resolved
+SET
+    calendar.resolved = resolved_query.resolved;
+" >> /tmp/rt-cdf.log 2>&1
+
+
