@@ -559,6 +559,11 @@ define command{
 	command_line	$USER1$/check_graphite -U $ARG1$ --from $ARG2$  -t reqstats.5xx -W $ARG3$ -C $ARG4$
 }
 
+define command{
+        command_name	check_sysctl
+        command_line	$USER1$/check_sysctl $ARG1$
+}
+
 
 # Checks whether a host belongs to given dsh group(s)
 define command{
