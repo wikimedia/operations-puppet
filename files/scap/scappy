@@ -157,14 +157,16 @@ def scap():
             # Randomize the order of target machines
             hosts = [ln for ln in f if not ln.startswith('#')]
             random.shuffle(hosts)
-            with tempfile.NamedTemporaryFile(prefix='scap') as tmp:
-                tmp.write(''.join(hosts))
-                log.debug('copying code to apaches')
-                dsh('/usr/local/bin/scap-1 "%s"' % rsync_servers,
-                    tmp.name, env)
-
-                log.debug('rebuilding CDB files from /upstream')
-                dsh('/usr/local/bin/scap-rebuild-cdbs', tmp.name, env)
+            with tempfile.NamedTemporaryFile(delete=False) as tmp:
+                try:
+                    tmp.write(''.join(hosts))
+                    log.debug('copying code to apaches')
+                    dsh('/usr/local/bin/scap-1 "%s"' % rsync_servers,
+                        tmp.name, env)
+                    log.debug('rebuilding CDB files from /upstream')
+                    dsh('/usr/local/bin/scap-rebuild-cdbs', tmp.name, env)
+                finally:
+                    os.remove(tmp.name)
 
         # Builds wikiversions.cdb and syncs it to the apaches with the dat
         # file. This is done after all else so that deploying new MW versions
