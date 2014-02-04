@@ -526,6 +526,11 @@ class openstack::neutron-nethost(
         require => Class['openstack::repo'],
     }
 
+    package { 'neutron-metadata-agent':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+
     package { 'neutron-plugin-openvswitch-agent':
         ensure  => 'present',
         require => Class['openstack::repo'],
