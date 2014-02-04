@@ -7,7 +7,7 @@ define sysctl::parameters(
     $values,
     $ensure   = present,
     $file     = $title,
-    $priority = '10'
+    $priority = 60
 ) {
     sysctl::conffile { $file:
         ensure   => $ensure,

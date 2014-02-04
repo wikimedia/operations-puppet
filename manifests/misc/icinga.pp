@@ -617,6 +617,12 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
+    file { '/usr/lib/nagios/plugins/check_sysctl':
+        source => 'puppet:///files/icinga/check_sysctl',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
