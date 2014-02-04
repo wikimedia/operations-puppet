@@ -172,60 +172,38 @@ class misc::deployment::scap_scripts {
 
 	file {
 		"${scriptpath}/mw-update-l10n":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/mw-update-l10n";
+			ensure => link,
+			target => "/srv/scap/bin/mw-update-l10n";
 		"${scriptpath}/restart-twemproxy":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/restart-twemproxy";
+			ensure => link,
+			target => "/srv/scap/bin/restart-twemproxy";
 		"${scriptpath}/scap":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/scap";
+			ensure => link,
+			target => "/srv/scap/bin/scap";
 		"${scriptpath}/scappy":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/scappy";
+			ensure => link,
+			target => "/srv/scap/bin/scappy";
 		"${scriptpath}/sync-common-all":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/sync-common-all";
+			ensure => link,
+			target => "/srv/scap/bin/sync-common-all";
 		"${scriptpath}/sync-common-file":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/sync-common-file";
+			ensure => link,
+			target => "/srv/scap/bin/sync-common-file";
 		"${scriptpath}/sync-dblist":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/sync-dblist";
+			ensure => link,
+			target => "/srv/scap/bin/sync-dblist";
 		"${scriptpath}/sync-dir":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/sync-dir";
+			ensure => link,
+			target => "/srv/scap/bin/sync-dir";
 		"${scriptpath}/sync-docroot":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/sync-docroot";
+			ensure => link,
+			target => "/srv/scap/bin/sync-docroot";
 		"${scriptpath}/sync-file":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/sync-file";
+			ensure => link,
+			target => "/srv/scap/bin/sync-file";
 		"${scriptpath}/sync-wikiversions":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/scap/sync-wikiversions";
+			ensure => link,
+			target => "/srv/scap/bin/sync-wikiversions";
 	}
 }
 
