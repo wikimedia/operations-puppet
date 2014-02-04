@@ -21,7 +21,7 @@ class beta::autoupdater {
     }
 
     # Make sure wmf-beta-autoupdate can run the l10n updater as l10nupdate
-    sudo_user { 'mwdeploy' :
+    sudo::user { 'mwdeploy' :
         privileges => [
             'ALL = (l10nupdate) NOPASSWD:/usr/local/bin/mw-update-l10n',
             'ALL = (l10nupdate) NOPASSWD:/usr/local/bin/mwscript',

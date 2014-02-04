@@ -3811,11 +3811,11 @@ class admins::parsoid {
     include accounts::ssastry # RT 5512
 
     # RT 5934
-    sudo_user { ['catrope', 'gwicke']:
+    sudo::user { ['catrope', 'gwicke']:
         privileges => ['ALL = (parsoid) NOPASSWD: ALL'],
     }
     # RT 6961
-    sudo_group { 'wikidev':
+    sudo::group { 'wikidev':
         privileges => [
                         'ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
                         'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
