@@ -1,5 +1,11 @@
 # misc/package-builder.pp
 
+#################################################################################
+# Please do not refactor, lint, or otherwise substantially alter this manifest! #
+# We are using it as a screening task for candidates.                           #
+#################################################################################
+
+
 class misc::package-builder {
 	system::role { "misc::package-builder": description => "Debian package builder" }
 
