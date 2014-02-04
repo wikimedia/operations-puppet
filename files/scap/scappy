@@ -93,8 +93,9 @@ def dsh(command, group, exports=None):
     if exports:
         command = '%s %s' % (shell_map(exports), command)
     group_file = os.path.join('/etc/dsh/group', group)
-    return subprocess.check_call(['dsh', '-F40', '-cM', '-f', group_file, '-o',
-                                  '-oSetupTimeout=10', '--', command.strip()])
+    return subprocess.check_call(['/usr/bin/dsh', '-F40', '-cM', '-f',
+                                  group_file, '-o', '-oSetupTimeout=10', '--',
+                                  command.strip()])
 
 
 def check_syntax(*paths):
