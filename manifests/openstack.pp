@@ -479,7 +479,7 @@ class openstack::conductor-service($openstack_version="folsom", $novaconfig) {
     }
 }
 
-class openstack::neutron-controller($neutronconfig) {
+class openstack::neutron-controller($neutronconfig, $data_interface_ip) {
     package { 'neutron-server':
         ensure  => 'present',
         require => Class['openstack::repo'],
@@ -504,13 +504,23 @@ class openstack::neutron-controller($neutronconfig) {
         ensure  => 'present',
         require => Class['openstack::repo'],
     }
+
+    file { '/etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini':
+        content => template("openstack/${$openstack_version}/neutron/ovs_neutron_plugin.ini.erb"),
+        owner   => 'neutron',
+        group   => 'neutron',
+        notify  => Service['neutron-server', 'neutron-plugin-openvswitch-agent'],
+        require => Package['neutron-server', 'neutron-plugin-openvswitch-agent'],
+        mode    => '0440',
+    }
 }
 
 # Set up neutron on a dedicated network node
 class openstack::neutron-nethost(
     $openstack_version='folsom',
     $external_interface='eth0',
-    $neutronconfig
+    $neutronconfig,
+    $data_interface_ip
 ) {
     if ! defined(Class['openstack::repo']) {
         class { 'openstack::repo': openstack_version => $openstack_version }
@@ -820,7 +830,7 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
 }
 
 # Set up neutron on a compute node
-class openstack::neutron-compute($neutronconfig) {
+class openstack::neutron-compute($neutronconfig, $data_interface_ip) {
     sysctl::parameters { 'openstack':
         values => {
             'net.ipv4.conf.default.rp_filter' => 0,
@@ -859,6 +869,15 @@ class openstack::neutron-compute($neutronconfig) {
         content => template("openstack/${$openstack_version}/neutron/neutron.conf.erb"),
         owner   => 'neutron',
         group   => 'nogroup',
+        require => Package['neutron-plugin-openvswitch-agent'],
+        mode    => '0440',
+    }
+
+    file { '/etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini':
+        content => template("openstack/${$openstack_version}/neutron/ovs_neutron_plugin.ini.erb"),
+        owner   => 'neutron',
+        group   => 'neutron',
+        notify  => Service['neutron-plugin-openvswitch-agent'],
         require => Package['neutron-plugin-openvswitch-agent'],
         mode    => '0440',
     }
