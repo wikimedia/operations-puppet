@@ -9,7 +9,7 @@ class labs_vagrant {
         managehome => true,
     }
 
-    sudo_user { 'vagrant' :
+    sudo::user { 'vagrant' :
         privileges => [
             'ALL=(ALL) NOPASSWD:ALL',
         ],
@@ -17,7 +17,7 @@ class labs_vagrant {
     }
 
     # Primary group for modern wikitech accounts
-    sudo_group { 'wikidev_vagrant':
+    sudo::group { 'wikidev_vagrant':
         privileges => [
             'ALL = (vagrant) NOPASSWD: ALL',
         ],
@@ -27,7 +27,7 @@ class labs_vagrant {
 
     # Primary group for users imported from old svn credentials
     # Bug: 63028
-    sudo_group { 'svn_vagrant':
+    sudo::group { 'svn_vagrant':
         privileges => [
             'ALL = (vagrant) NOPASSWD: ALL',
         ],

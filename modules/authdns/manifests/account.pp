@@ -18,7 +18,7 @@ class authdns::account {
         ensure     => 'present',
     }
 
-    sudo_user { $user:
+    sudo::user { $user:
         privileges => 'ALL=NOPASSWD: /usr/local/sbin/authdns-local-update',
     }
 

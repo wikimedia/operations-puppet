@@ -23,7 +23,6 @@ import 'openstack.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
 import 'search.pp'
-import 'sudo.pp'
 import 'swift.pp'
 import 'webserver.pp'
 import 'zuul.pp'
@@ -260,7 +259,7 @@ node 'antimony.wikimedia.org' {
     include role::subversion
 
     # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon':
+    sudo::user { 'demon':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
@@ -371,7 +370,7 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
     include accounts::gwicke
     include accounts::ssastry
 
-    sudo_user { ['gwicke', 'ssastry']:
+    sudo::user { ['gwicke', 'ssastry']:
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
     }
 
@@ -997,7 +996,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 node 'gallium.wikimedia.org' {
     $cluster = 'misc'
     $gid= '500'
-    sudo_user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
+    sudo::user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
         privileges => [
             'ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
@@ -1010,14 +1009,14 @@ node 'gallium.wikimedia.org' {
     }
 
     # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
-    sudo_user { 'jenkins-slave':
+    sudo::user { 'jenkins-slave':
         privileges => [
             'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
         ]
     }
 
     # full root for Jenkins admin (RT-4101)
-    sudo_user { 'hashar':
+    sudo::user { 'hashar':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -1328,7 +1327,7 @@ node 'lanthanum.eqiad.wmnet' {
 
     # Used as a Jenkins slave so some folks need escalated privileges
     $gid= '500'
-    sudo_user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
+    sudo::user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
         privileges => [
         'ALL = (jenkins-slave) NOPASSWD: ALL',
         'ALL = (gerritslave) NOPASSWD: ALL',
@@ -1336,7 +1335,7 @@ node 'lanthanum.eqiad.wmnet' {
     }
 
     # full root for Jenkins admin (RT-5677)
-    sudo_user { 'hashar':
+    sudo::user { 'hashar':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -2225,7 +2224,7 @@ node 'stat1001.wikimedia.org' {
     include accounts::qchris   # RT 5474
     include accounts::tnegrin  # RT 5391
 
-    sudo_user { 'otto':
+    sudo::user { 'otto':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
@@ -2251,7 +2250,7 @@ node 'stat1002.eqiad.wmnet' {
     User<|title == spetrea|>     { groups +> [ 'stats' ] }
     User<|title == ironholds|>   { groups +> [ 'stats' ] }
 
-    sudo_user { 'otto':
+    sudo::user { 'otto':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -2320,7 +2319,7 @@ node 'stat1003.wikimedia.org' {
 
     # Allow Christian to sudo -u stats
     # to debug and test stats' automated cron jobs.
-    sudo_user { 'qchris':
+    sudo::user { 'qchris':
         privileges => ['ALL = (stats) NOPASSWD: ALL'],
     }
 
@@ -2420,7 +2419,7 @@ node /^elastic10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
     include accounts::demon
     include groups::wikidev
 
-    sudo_user { ['manybubbles', 'demon'] :
+    sudo::user { ['manybubbles', 'demon'] :
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -2447,7 +2446,7 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     include accounts::manybubbles
     include accounts::demon
 
-    sudo_user { ['aaron', 'bd808', 'manybubbles', 'demon']:  # RT 6366, 6896
+    sudo::user { ['aaron', 'bd808', 'manybubbles', 'demon']:  # RT 6366, 6896
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
@@ -2520,7 +2519,7 @@ node 'vanadium.eqiad.wmnet' {
     include groups::wikidev
     include accounts::nuria         # RT 6535
 
-    sudo_user { 'nuria':
+    sudo::user { 'nuria':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
@@ -2670,7 +2669,7 @@ node 'ytterbium.wikimedia.org' {
     }
 
     # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon':
+    sudo::user { 'demon':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }

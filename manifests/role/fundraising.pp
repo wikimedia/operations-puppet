@@ -14,7 +14,7 @@ class role::fundraising::civicrm {
     $cluster = 'fundraising'
     $nagios_group = "${cluster}_${::site}"
 
-    sudo_user { 'khorn':
+    sudo::user { 'khorn':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 

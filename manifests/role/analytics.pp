@@ -109,5 +109,5 @@ class role::analytics::users {
     }
 
     # Diederik and Otto have sudo privileges on Analytics nodes.
-    sudo_user { [ 'diederik', 'otto' ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
+    sudo::user { [ 'diederik', 'otto' ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 }

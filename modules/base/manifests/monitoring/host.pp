@@ -68,7 +68,7 @@ class base::monitoring::host($contact_group = 'admins') {
         source => 'puppet:///modules/base/check_sysctl',
     }
 
-    sudo_user { 'nagios':
+    sudo::user { 'nagios':
         privileges   => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'],
     }
     nrpe::monitor_service { 'raid':
