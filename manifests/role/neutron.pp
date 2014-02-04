@@ -51,7 +51,9 @@ class role::neutron::server {
     }
 
     if ($::site == 'eqiad') {
-        interface::ip { 'openstack::network_service_public_dynamic_snat': interface => 'lo', address => $site ? { 'pmtpa' => '208.80.153.192', 'eqiad' => '208.80.155.255' } }
+        interface::ip { 'openstack::network_service_public_dynamic_snat': interface => 'lo', address => '208.80.155.255' }
+
+        interface::ip { 'openstack::external_interface': interface => 'br-ex', address => '10.64.20.13', prefixlen => '24' }
 
         interface::tagged { 'eth1.1102':
             base_interface => 'eth1',
