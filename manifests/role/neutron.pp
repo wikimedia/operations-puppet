@@ -41,6 +41,7 @@ class role::neutron::config::eqiad inherits role::neutron::config {
 
 class role::neutron::computenode {
     include role::neutron::config::eqiad
+    $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
     class { 'openstack::neutron-compute':
         neutronconfig     => $neutronconfig,
@@ -49,6 +50,7 @@ class role::neutron::computenode {
 
 class role::neutron::controller {
     include role::neutron::config::eqiad
+    $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
     class { 'openstack::neutron-controller':
         neutronconfig     => $neutronconfig,
