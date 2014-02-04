@@ -55,6 +55,9 @@ class role::neutron::server {
 
         interface::ip { 'openstack::external_interface': interface => 'br-ex', address => '10.64.20.13', prefixlen => '24' }
 
+        # By hand, unpuppetized step: # ip addr del 10.64.20.13/24 dev eth0
+        # and: # ifconfig eth0 promisc
+
         interface::tagged { 'eth1.1102':
             base_interface => 'eth1',
             vlan_id => '1102',
