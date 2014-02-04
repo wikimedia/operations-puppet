@@ -509,7 +509,7 @@ class openstack::neutron-controller($neutronconfig, $data_interface_ip) {
         content => template("openstack/${$openstack_version}/neutron/ovs_neutron_plugin.ini.erb"),
         owner   => 'neutron',
         group   => 'neutron',
-        notify  => Service['neutron-server', 'neutron-plugin-openvswitch-agent'],
+        notify  => Service['neutron-server'],
         require => Package['neutron-server', 'neutron-plugin-openvswitch-agent'],
         mode    => '0440',
     }
