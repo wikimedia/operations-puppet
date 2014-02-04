@@ -11,7 +11,7 @@ class role::fundraising::civicrm {
 
 	#install_certificate{ "star.wikimedia.org": }
 
-	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo::user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$gid = 500
 	include standard-noexim,

@@ -160,7 +160,7 @@ class openstack::project-nfs-storage-service {
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
             'ALL = NOPASSWD: /bin/rmdir /srv/*',
             'ALL = NOPASSWD: /usr/local/sbin/sync-exports' ]
-    sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["nfsmanager"] }
+    sudo::user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["nfsmanager"] }
     generic::systemuser { "nfsmanager": name => "nfsmanager", home => "/var/lib/nfsmanager", shell => "/bin/bash" }
 }
 
@@ -170,7 +170,7 @@ class openstack::project-storage {
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /a/*',
             'ALL = NOPASSWD: /bin/rmdir /a/*',
             'ALL = NOPASSWD: /usr/sbin/gluster *' ]
-    sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["glustermanager"] }
+    sudo::user { [ "glustermanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["glustermanager"] }
 
     package { "python-paramiko":
         ensure => present;
