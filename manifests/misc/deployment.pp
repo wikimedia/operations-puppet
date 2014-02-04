@@ -170,6 +170,15 @@ class misc::deployment::scap_scripts {
 
 	$scriptpath = "/usr/local/bin"
 
+	# This repository is the staging area for the scap rewrite.
+	git::clone { 'mediawiki/tools/scap':
+		directory => '/srv/scap',
+		owner     => 'mwdeploy',
+		group     => 'mwdeploy',
+		mode      => '0775',
+		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/tools/scap.git',
+	}
+
 	file {
 		"${scriptpath}/mw-update-l10n":
 			owner => root,
