@@ -39,12 +39,28 @@ class role::neutron::config::eqiad inherits role::neutron::config {
     $neutronconfig = merge($eqiadneutronconfig, $commonneutronconfig)
 }
 
+class role::neutron::computenode {
+    include role::neutron::config::eqiad
+
+    class { 'openstack::neutron-compute':
+        neutronconfig     => $neutronconfig,
+    }
+}
+
+class role::neutron::controller {
+    include role::neutron::config::eqiad
+
+    class { 'openstack::neutron-controller':
+        neutronconfig     => $neutronconfig,
+    }
+}
+
 class role::neutron::server {
     include role::neutron::config::eqiad
 
     $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
-    class { 'openstack::neutron-service':
+    class { 'openstack::neutron-nethost':
         openstack_version => $openstack_version,
         external_interface => 'eth5.1122',
         neutronconfig     => $neutronconfig

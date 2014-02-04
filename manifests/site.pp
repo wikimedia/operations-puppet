@@ -2551,7 +2551,8 @@ node "virt1000.wikimedia.org" {
         ldap::role::client::labs,
         role::nova::controller,
         role::salt::masters::labs,
-        role::deployment::salt_masters::labs
+        role::deployment::salt_masters::labs,
+        role::neutron::controller
 }
 
 node "virt0.wikimedia.org" {
@@ -2619,7 +2620,8 @@ node /virt100[1-4].eqiad.wmnet/ {
     $openstack_version = "havana"
 
     include standard,
-        role::nova::compute
+        role::nova::compute,
+        role::neutron::computenode
 }
 
 node /virt100[5-9].eqiad.wmnet/ {

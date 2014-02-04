@@ -479,18 +479,41 @@ class openstack::conductor-service($openstack_version="folsom", $novaconfig) {
     }
 }
 
-class openstack::neutron-service(
+class openstack::neutron-controller($neutronconfig) {
+    package { 'neutron-server':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+
+    service { 'neutron-server':
+        ensure    => 'running',
+        subscribe => File['/etc/nova/nova.conf'],
+        require   => Package['neutron-server'],
+    }
+
+    file { '/etc/neutron/neutron.conf':
+        content => template("openstack/${$openstack_version}/neutron/neutron.conf.erb"),
+        owner   => 'neutron',
+        group   => 'nogroup',
+        notify  => Service['neutron-server'],
+        require => Package['neutron-server'],
+        mode    => '0440',
+    }
+
+    package { 'neutron-plugin-openvswitch-agent':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+}
+
+# Set up neutron on a dedicated network node
+class openstack::neutron-nethost(
     $openstack_version='folsom',
     $external_interface='eth0',
     $neutronconfig
 ) {
     if ! defined(Class['openstack::repo']) {
         class { 'openstack::repo': openstack_version => $openstack_version }
-    }
-
-    package { 'neutron-server':
-        ensure  => 'present',
-        require => Class['openstack::repo'],
     }
 
     package { 'neutron-dhcp-agent':
@@ -519,13 +542,27 @@ class openstack::neutron-service(
 
     service { 'openvswitch-switch':
         ensure    => 'running',
-        require   => Package['neutron-server', 'neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
+        require   => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
     }
 
-    service { 'neutron-server':
+    service { 'neutron-plugin-openvswitch-agent':
         ensure    => 'running',
-        subscribe => File['/etc/nova/nova.conf'],
-        require   => Package['neutron-server'],
+        require   => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
+    }
+
+    service { 'neutron-dhcp-agent':
+        ensure    => 'running',
+        require   => Package['neutron-dhcp-agent'],
+    }
+
+    service { 'neutron-l3-agent':
+        ensure    => 'running',
+        require   => Package['neutron-l3-agent'],
+    }
+
+    service { 'neutron-metadata-agent':
+        ensure    => 'running',
+        require   => Package['neutron-metadata-agent'],
     }
 
     exec { 'create_br-int':
@@ -552,8 +589,8 @@ class openstack::neutron-service(
         content => template("openstack/${$openstack_version}/neutron/neutron.conf.erb"),
         owner   => 'neutron',
         group   => 'nogroup',
-        notify  => Service['neutron-server'],
-        require => Package['neutron-server'],
+        notify  => Service['neutron-dhcp-agent', 'neutron-l3-agent', 'neutron-metadata-agent', 'neutron-plugin-openvswitch-agent'],
+        require => Package['neutron-dhcp-agent', 'neutron-l3-agent', 'neutron-metadata-agent', 'neutron-plugin-openvswitch-agent'],
         mode    => '0440',
     }
 
@@ -561,8 +598,8 @@ class openstack::neutron-service(
         content => template("openstack/${$openstack_version}/neutron/api-paste.ini.erb"),
         owner   => 'neutron',
         group   => 'neutron',
-        notify  => Service['neutron-server'],
-        require => Package['neutron-server'],
+        notify  => Service['neutron-dhcp-agent', 'neutron-l3-agent', 'neutron-metadata-agent', 'neutron-plugin-openvswitch-agent'],
+        require => Package['neutron-dhcp-agent', 'neutron-l3-agent', 'neutron-metadata-agent', 'neutron-plugin-openvswitch-agent'],
         mode    => '0440',
     }
 
@@ -570,8 +607,8 @@ class openstack::neutron-service(
         content => template("openstack/${$openstack_version}/neutron/ovs_neutron_plugin.ini.erb"),
         owner   => 'neutron',
         group   => 'neutron',
-        notify  => Service['openvswitch-switch'],
-        require => Package['neutron-plugin-openvswitch-agent'],
+        notify  => Service['neutron-dhcp-agent', 'neutron-l3-agent', 'neutron-metadata-agent', 'neutron-plugin-openvswitch-agent'],
+        require => Package['neutron-dhcp-agent', 'neutron-l3-agent', 'neutron-metadata-agent', 'neutron-plugin-openvswitch-agent'],
         mode    => '0440',
     }
 
@@ -774,6 +811,46 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
             group => "root",
             mode => 0444,
             require => Package["nova-common"];
+    }
+}
+
+# Set up neutron on a compute node
+class openstack::neutron-compute($neutronconfig) {
+    sysctl::parameters { 'openstack':
+        values => {
+            'net.ipv4.conf.default.rp_filter' => 0,
+            'net.ipv4.conf.all.rp_filter'     => 0,
+        },
+        priority => 50,
+    }
+
+    package { 'neutron-plugin-openvswitch-agent':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+
+    package { 'openvswitch-datapath-dkms':
+        ensure  => 'present',
+        require => Class['openstack::repo'],
+    }
+
+    service { 'openvswitch-switch':
+        ensure    => 'running',
+        require   => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
+    }
+
+    exec { 'create_br-int':
+        unless => "/usr/bin/ovs-vsctl br-exists br-int",
+        command => "/usr/bin/ovs-vsctl add-br br-int",
+        require => Service['openvswitch-switch'],
+    }
+
+    file { '/etc/neutron/neutron.conf':
+        content => template("openstack/${$openstack_version}/neutron/neutron.conf.erb"),
+        owner   => 'neutron',
+        group   => 'nogroup',
+        require => Package['neutron-plugin-openvswitch-agent'],
+        mode    => '0440',
     }
 }
 

@@ -56,6 +56,7 @@ core_plugin = neutron.plugins.openvswitch.ovs_neutron_plugin.OVSNeutronPluginV2
 # The strategy to be used for auth.
 # Supported values are 'keystone'(default), 'noauth'.
 auth_strategy = keystone
+auth_uri = <%= neutronconfig["auth_uri"] %>
 
 # Base MAC address. The first 3 octets will remain unchanged. If the
 # 4h octet is not 00, it will also used. The others will be
