@@ -19,6 +19,9 @@
 #       notifying
 #    $timeout
 #       Defaults to 10. The check timeout in seconds (check_nrpe -t option)
+#    $critical
+#       Defaults to 'false'. It will passed directly to monitor_service which
+#       will use nagios_service, so extra care, it is not a boolean, it is a string
 #    $ensure
 #       Defaults to present
 #
@@ -27,6 +30,7 @@ define nrpe::monitor_service( $description,
                               $contact_group = 'admins',
                               $retries       = 3,
                               $timeout       = 10,
+                              $critical      = 'false',
                               $ensure        = 'present') {
 
     nrpe::check { "check_${title}":
@@ -42,5 +46,6 @@ define nrpe::monitor_service( $description,
         check_command => "nrpe_check!check_${title}!${timeout}",
         contact_group => $contact_group,
         retries       => $retries,
+        critical      => $critical,
     }
 }

@@ -6,6 +6,7 @@ describe 'nrpe::monitor_service', :type => :define do
         :description   => 'this is a description',
         :contact_group => 'none',
         :nrpe_command  => '/usr/local/bin/mycommand -i this -o that',
+        :critical      => 'false',
         }
     end
 
@@ -23,7 +24,8 @@ describe 'nrpe::monitor_service', :type => :define do
             :contact_group => 'none',
             :retries       => 3,
             :ensure        => 'present',
-            :check_command => 'nrpe!check_something'
+            :check_command => 'nrpe!check_something',
+            :critical      => 'false'
         )
     end
 end
