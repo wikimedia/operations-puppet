@@ -592,6 +592,11 @@ class icinga::monitor::files::nagios-plugins {
       owner => 'root',
       group => 'root',
       mode => '0755';
+    '/usr/lib/nagios/plugins/check_sysctl':
+      source => 'puppet:///files/icinga/check_sysctl',
+      owner => 'root',
+      group => 'root',
+      mode => '0755';
     '/usr/lib/nagios/plugins/check_graphite':
       source => 'puppet:///files/icinga/check_graphite',
       owner => 'root',

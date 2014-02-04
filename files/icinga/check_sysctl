@@ -1,0 +1,28 @@
+#!/bin/bash
+# Icinga plugin that compares reference and actual values of sysctl
+# parameters and emits an alert if the values don't match.
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ] || [ "$#" != "1" ]; then
+   echo "Icinga check for tunable kernel parameters (sysctl)."
+   echo "Usage: $0 param1=value1[,param2=value2,...]"
+   exit 0
+fi
+
+bad=()
+IFS=',' read -a items <<< "$1"
+for item in "${items[@]}"; do
+    parameter=${item%=*}
+    expected=$(sed 's/\s\+/ /g' <<< ${item#*=})
+    actual=$(sysctl -b $parameter 2>/dev/null | sed 's/\s\+/ /g')
+    if [ "$actual" != "$expected" ]; then
+        bad+=("$parameter")
+    fi
+done
+
+if [ "${#bad[@]}" = 0 ]; then
+    echo "OK: kernel parameters are set to expected value."
+    exit 0
+else
+    IFS=','; echo "CRITICAL: kernel parameter(s) ${bad[*]} have unexpected value(s)."
+    exit 2
+fi

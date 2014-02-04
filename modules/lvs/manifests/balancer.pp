@@ -53,7 +53,16 @@ class lvs::balancer(
             # removed in >= 3.6 kernels.
             'net.ipv4.rt_cache_rebuild_count' => -1,
         },
-        priority => 50,
+        priority => 60,
+    }
+
+    # Reverse path forwarding (controllable via net.**.rp_filter sysctl
+    # parameters) is enabled for all hosts by default for security reasons.
+    # But it MUST be OFF for hosts that are configured as advanced routers
+    # with multiple interfaces, such as the LVS balancers.
+    monitor_service { 'sysctl_rp_filter':
+        check_command => 'check_sysctl|net.ipv4.conf.all.rp_filter=0,net.ipv4.conf.default.rp_filter=0',
+        require       => Sysctl::Parameters['lvs'],
     }
 
     generic::upstart_job { "enable-rps": install => "true", start => "true" }
