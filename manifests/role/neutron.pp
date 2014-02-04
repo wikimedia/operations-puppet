@@ -46,7 +46,7 @@ class role::neutron::server {
 
     class { 'openstack::neutron-service':
         openstack_version => $openstack_version,
-        external_interface => 'eth1.1122',
+        external_interface => 'eth5.1122',
         neutronconfig     => $neutronconfig
     }
 
@@ -55,11 +55,11 @@ class role::neutron::server {
 
         interface::ip { 'openstack::external_interface': interface => 'br-ex', address => '10.64.22.11', prefixlen => '24' }
 
-        # By hand, unpuppetized step: # ifconfig eth1.1122 promisc
+        # By hand, unpuppetized step: # ifconfig eth5.1122 promisc
 
         # In Openstack terms, this is the 'data' interface
-        interface::tagged { 'eth1.1102':
-            base_interface => 'eth1',
+        interface::tagged { 'eth4.1102':
+            base_interface => 'eth4',
             vlan_id => '1102',
             method => 'manual',
             up => 'ip link set $IFACE up',
@@ -67,8 +67,8 @@ class role::neutron::server {
         }
 
         # In Openstack terms, this is the 'external' interface
-        interface::tagged { 'eth1.1122':
-            base_interface => 'eth1',
+        interface::tagged { 'eth5.1122':
+            base_interface => 'eth5',
             vlan_id => '1122',
             method => 'manual',
             up => 'ip link set $IFACE up',
