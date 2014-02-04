@@ -51,6 +51,9 @@ dhcp_lease_time=86400
 fixed_ip_disassociate_timeout=172800
 iscsi_helper=tgtadm
 
+neutron_metadata_proxy_shared_secret = <%= novaconfig["metadata_pass"] %>
+service_neutron_metadata_proxy = true
+
 # Settings for wikistatus, the plugin that updates OSM with instance status:
 wiki_host=<%= instance_status_wiki_host %>
 wiki_domain=<%= instance_status_wiki_domain %>
