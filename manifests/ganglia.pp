@@ -315,7 +315,6 @@ class ganglia {
                         "Upload caches eqiad"            => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet",
                         "SSL cluster eqiad"              => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
                         "Swift eqiad"                    => "ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet",
-                        "Text squids eqiad"              => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
                         "Search eqiad"                   => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
                         "Bits caches esams"              => "hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org",
                         "LVS loadbalancers esams"        => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
