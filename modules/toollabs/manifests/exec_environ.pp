@@ -23,21 +23,22 @@ class toollabs::exec_environ {
         # Please keep all packages in each group sorted in alphabetical order
 
         # Locales (Bug 58500)
+        'language-pack-ar',
+        'language-pack-bn',
+        'language-pack-de',
+        'language-pack-en',
+        'language-pack-es',
+        'language-pack-fr',
+        'language-pack-he',
+        'language-pack-hi',
+        'language-pack-ja',
+        'language-pack-nl',
+        'language-pack-pa',
+        'language-pack-pt',
+        'language-pack-ru',
+        'language-pack-uk',            # Bug 60730.
         'language-pack-zh-hans',
         'language-pack-zh-hant',
-        'language-pack-es',
-        'language-pack-en',
-        'language-pack-hi',
-        'language-pack-ar',
-        'language-pack-pt',
-        'language-pack-bn',
-        'language-pack-ru',
-        'language-pack-ja',
-        'language-pack-pa',
-        'language-pack-de',
-        'language-pack-fr',
-        'language-pack-nl',
-        'language-pack-he',
 
         # Language Runtimes
         'gcj-jre',                     # Bug 56995
@@ -258,4 +259,3 @@ class toollabs::exec_environ {
 
   # TODO: quotas
 }
-
