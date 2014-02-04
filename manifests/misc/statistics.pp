@@ -798,6 +798,38 @@ class misc::statistics::cron_blog_pageviews {
     }
 }
 
+# Class: misc::statistics::cron_rt_cdf
+#
+# Sets up daily cron jobs to run a script which
+# generates a cumulative flow dataset used in
+# Kanban to measure work in progress and cycle time.
+# See also https://rt.wikimedia.org/Ticket/Display.html?id=6761
+class misc::statistics::cron_rt_cdf {
+    include passwords::mysql::rt_readonly
+
+    $script          = '/usr/local/bin/rt-cdf.sh'
+
+    $db_host         = ''
+    $db_user         = $passwords::mysql::rt_readonly::user
+    $db_pass         = $passwords::mysql::rt_readonly::pass
+    $db_database     = 'rt4'
+
+    file { $script:
+        mode    => '0755',
+        content => template('misc/rt-cumulative-flow-dataset.erb'),
+    }
+
+    # Create a daily cron job to run the blog script
+    # This requires that the $misc::statistics::user::username
+    # user is installed on the source host.
+    cron { 'blog_pageviews_email':
+        command => $script,
+        user    => $misc::statistics::user::username,
+        hour    => 1,
+        minute  => 0,
+    }
+}
+
 
 # Class: misc::statistics::limn::mobile_data_sync
 #
