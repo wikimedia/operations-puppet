@@ -21,3 +21,11 @@ NODE_PATH=<%= @parsoid_node_path %>
 # Override in puppet using parsoid_node_path
 #NODE_PATH=
 <% end %>
+
+# Checkout of mediawiki/services/parsoid/deploy
+<% if @parsoid_settings_file then %>
+PARSOID_SETTINGS_FILE=<%= @parsoid_settings_file %>
+<% else %>
+# Override in puppet using parsoid_settings_file
+#PARSOID_SETTINGS_FILE=/etc/parsoid/settings.js
+<% end %>
