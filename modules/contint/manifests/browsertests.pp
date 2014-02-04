@@ -21,6 +21,9 @@ class contint::browsertests(
 
     # Set up all packages required for MediaWiki (includes Apache)
     package { [
+        'chromium-browser',
+        'firefox',
+        'xvfb',  # headless testing
         'wikimedia-task-appserver',
         'php5-sqlite',  # MediaWiki DB backend
         'libsikuli-script-java',  # bug 54393
