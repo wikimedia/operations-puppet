@@ -65,6 +65,7 @@ class role::neutron::server {
             method => 'manual',
             up => 'ip link set $IFACE up',
             down => 'ip link set $IFACE down',
+            address => '10.68.16.1',
         }
 
         # In Openstack terms, this is the 'external' interface
