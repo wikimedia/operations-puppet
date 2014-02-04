@@ -46,16 +46,17 @@ class role::neutron::server {
 
     class { 'openstack::neutron-service':
         openstack_version => $openstack_version,
+        external_interface => 'eth0',
         neutronconfig     => $neutronconfig
     }
 
-    if ($::site == "eqiad") {
-        interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
+    if ($::site == 'eqiad') {
+        interface::ip { 'openstack::network_service_public_dynamic_snat': interface => 'lo', address => $site ? { 'pmtpa' => '208.80.153.192', 'eqiad' => '208.80.155.255' } }
 
-        interface::tagged { "eth1.1102":
-            base_interface => "bond1",
-            vlan_id => "1102",
-            method => "manual",
+        interface::tagged { 'eth1.1102':
+            base_interface => 'eth1',
+            vlan_id => '1102',
+            method => 'manual',
             up => 'ip link set $IFACE up',
             down => 'ip link set $IFACE down',
         }
