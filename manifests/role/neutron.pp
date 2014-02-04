@@ -53,6 +53,8 @@ class role::neutron::server {
     if ($::site == 'eqiad') {
         interface::ip { 'openstack::network_service_public_dynamic_snat': interface => 'lo', address => '208.80.155.255' }
 
+        interface::ip { 'openstack::external_interface': interface => 'eth4.1102', address => '10.68.16.1', prefixlen => '24' }
+
         #interface::ip { 'openstack::external_interface': interface => 'br-ex', address => '10.64.22.11', prefixlen => '24' }
 
         # By hand, unpuppetized step: # ifconfig eth5.1122 promisc
