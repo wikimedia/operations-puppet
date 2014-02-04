@@ -46,6 +46,7 @@ class role::neutron::server {
 
     class { 'openstack::neutron-service':
         openstack_version => $openstack_version,
+        external_interface => 'eth0',
         neutronconfig     => $neutronconfig
     }
 

@@ -481,6 +481,7 @@ class openstack::conductor-service($openstack_version="folsom", $novaconfig) {
 
 class openstack::neutron-service(
     $openstack_version='folsom',
+    $external_interface='eth1',
     $neutronconfig
 ) {
     if ! defined(Class['openstack::repo']) {
@@ -540,7 +541,6 @@ class openstack::neutron-service(
             before => Exec['add-port'],
     }
 
-    $external_interface = 'eth1'
 
     exec { 'add-port':
             unless => "/usr/bin/ovs-vsctl list-ports br-ex | /bin/grep ${external_interface}",
