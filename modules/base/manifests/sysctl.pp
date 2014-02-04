@@ -22,6 +22,7 @@ class base::sysctl {
 
             # We don't want 10-ipv6-privacy.conf, so skip it.
         },
+        priority => 10,
     }
 
     sysctl::parameters { 'wikimedia base':
