@@ -4,7 +4,7 @@ class base::access::dc-techs {
 
     # hardy doesn't support sudoers.d; only do sudo_user for lucid and later
     if versioncmp($::lsbdistrelease, '10.04') >= 0 {
-        sudo_user { [ 'cmjohnson' ]: privileges => [
+        sudo::user { [ 'cmjohnson' ]: privileges => [
             'ALL = (root) NOPASSWD: /sbin/fdisk',
             'ALL = (root) NOPASSWD: /sbin/mdadm',
             'ALL = (root) NOPASSWD: /sbin/parted',

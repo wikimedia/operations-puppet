@@ -240,7 +240,7 @@ class role::deployment::deployment_servers::production {
   package { "percona-toolkit":
     ensure => latest;
   }
-  sudo_group { "wikidev_deployment_server":
+  sudo::group { "wikidev_deployment_server":
     privileges => [
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
@@ -270,7 +270,7 @@ class role::deployment::deployment_servers::labs {
     maxmemory => "500Mb",
     monitor => "false",
   }
-  sudo_group { "project_deployment_prep_deployment_server":
+  sudo::group { "project_deployment_prep_deployment_server":
     privileges => [
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
@@ -300,7 +300,7 @@ class role::deployment::deployment_servers::sartoris {
     maxmemory => "500Mb",
     monitor => "false",
   }
-  sudo_group { "project_deployment_prep_deployment_server":
+  sudo::group { "project_deployment_prep_deployment_server":
     privileges => [
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",

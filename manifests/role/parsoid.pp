@@ -130,7 +130,7 @@ class role::parsoid::beta {
 
     include role::parsoid::common
 
-    sudo_user { 'jenkins-deploy': privileges => [
+    sudo::user { 'jenkins-deploy': privileges => [
         # Need to allow jenkins-deploy to reload parsoid
         # Since the "root" user is local, we cant add the sudo policy in
         # OpenStack manager interface at wikitech

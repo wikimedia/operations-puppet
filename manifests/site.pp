@@ -25,7 +25,6 @@ import 'role/*.pp'
 import 'role/analytics/*.pp'
 import 'search.pp'
 import 'snapshots.pp'
-import 'sudo.pp'
 import 'swift.pp'
 import 'webserver.pp'
 import 'zuul.pp'
@@ -212,7 +211,7 @@ node 'antimony.wikimedia.org' {
     include role::subversion
 
     # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon':
+    sudo::user { 'demon':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
@@ -229,7 +228,7 @@ node 'arsenic.eqiad.wmnet' {
     include groups::wikidev
 
     # rt 6189: temporary root for testing
-    sudo_user { 'demon':
+    sudo::user { 'demon':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -348,7 +347,7 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
     include groups::wikidev
     include accounts::gwicke
 
-    sudo_user { 'gwicke':
+    sudo::user { 'gwicke':
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
     }
 
@@ -1015,10 +1014,10 @@ node 'formey.wikimedia.org' {
             'ALL = NOPASSWD: /usr/local/bin/svn-group',
             'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
             'ALL = NOPASSWD: /var/lib/gerrit2/review_site/bin/gerrit.sh' ]
-    sudo_user { [ 'robla', 'sumanah', 'reedy' ]: privileges => $sudo_privs }
+    sudo::user { [ 'robla', 'sumanah', 'reedy' ]: privileges => $sudo_privs }
 
     # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon': privileges => ['ALL = NOPASSWD: ALL'] }
+    sudo::user { 'demon': privileges => ['ALL = NOPASSWD: ALL'] }
 
     $gid = '550'
     $ldapincludes = ['openldap', 'nss', 'utils']
@@ -1059,7 +1058,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 node 'gallium.wikimedia.org' {
     $cluster = 'misc'
     $gid= '500'
-    sudo_user { [ 'demon', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]:
+    sudo::user { [ 'demon', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]:
         privileges => [
             'ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
@@ -1072,14 +1071,14 @@ node 'gallium.wikimedia.org' {
     }
 
     # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
-    sudo_user { 'jenkins-slave':
+    sudo::user { 'jenkins-slave':
         privileges => [
             'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
         ]
     }
 
     # full root for Jenkins admin (RT-4101)
-    sudo_user { 'hashar':
+    sudo::user { 'hashar':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -1473,7 +1472,7 @@ node 'lanthanum.eqiad.wmnet' {
 
     # Used as a Jenkins slave so some folks need escalated privileges
     $gid= '500'
-    sudo_user { [ 'demon', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]:
+    sudo::user { [ 'demon', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]:
         privileges => [
         'ALL = (jenkins-slave) NOPASSWD: ALL',
         'ALL = (gerritslave) NOPASSWD: ALL',
@@ -1481,7 +1480,7 @@ node 'lanthanum.eqiad.wmnet' {
     }
 
     # full root for Jenkins admin (RT-5677)
-    sudo_user { 'hashar':
+    sudo::user { 'hashar':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -2527,13 +2526,13 @@ node 'stat1.wikimedia.org' {
     include accounts::csalvia      # RT 6664
     include accounts::leila        # RT 6765
 
-    sudo_user { 'otto':
+    sudo::user { 'otto':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
     # Allow Christian to sudo -u stats
     # to debug and test stats' automated cron jobs.
-    sudo_user { 'qchris':
+    sudo::user { 'qchris':
         privileges => ['ALL = (stats) NOPASSWD: ALL'],
     }
 
@@ -2557,7 +2556,7 @@ node 'stat1001.wikimedia.org' {
     include accounts::qchris   # RT 5474
     include accounts::tnegrin  # RT 5391
 
-    sudo_user { 'otto':
+    sudo::user { 'otto':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
@@ -2582,7 +2581,7 @@ node 'stat1002.eqiad.wmnet' {
     User<|title == spetrea|>     { groups +> [ 'stats' ] }
     User<|title == ironholds|>   { groups +> [ 'stats' ] }
 
-    sudo_user { 'otto':
+    sudo::user { 'otto':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -2682,7 +2681,7 @@ node /^elastic10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
     include accounts::demon
     include groups::wikidev
 
-    sudo_user { ['manybubbles', 'demon'] :
+    sudo::user { ['manybubbles', 'demon'] :
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 
@@ -2709,7 +2708,7 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     include accounts::manybubbles
     include accounts::demon
 
-    sudo_user { ['aaron', 'bd808', 'manybubbles', 'demon']:  # RT 6366, 6896
+    sudo::user { ['aaron', 'bd808', 'manybubbles', 'demon']:  # RT 6366, 6896
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
@@ -2777,7 +2776,7 @@ node 'vanadium.eqiad.wmnet' {
     include groups::wikidev
     include accounts::nuria         # RT 6535
 
-    sudo_user { 'nuria':
+    sudo::user { 'nuria':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
@@ -2955,7 +2954,7 @@ node 'ytterbium.wikimedia.org' {
     }
 
     # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon':
+    sudo::user { 'demon':
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
