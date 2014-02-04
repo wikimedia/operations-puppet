@@ -45,7 +45,7 @@ class role::neutron::computenode {
 
     class { 'openstack::neutron-compute':
         neutronconfig     => $neutronconfig,
-        data_interface_ip => $::ip_address,
+        data_interface_ip => $::ipaddress,
     }
 }
 
@@ -55,7 +55,7 @@ class role::neutron::controller {
 
     class { 'openstack::neutron-controller':
         neutronconfig     => $neutronconfig,
-        data_interface_ip => $::ip_address,
+        data_interface_ip => $::ipaddress,
     }
 }
 
