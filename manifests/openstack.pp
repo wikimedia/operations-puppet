@@ -503,11 +503,6 @@ class openstack::neutron-service(
         require => Class['openstack::repo'],
     }
 
-    package { 'neutron-plugin-openvswitch-agent':
-        ensure  => 'present',
-        require => Class['openstack::repo'],
-    }
-
     package { 'openvswitch-datapath-dkms':
         ensure  => 'present',
         require => Class['openstack::repo'],
