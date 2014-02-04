@@ -123,6 +123,7 @@ def scap():
     config = get_config()
     env = {}
     args = parse_args()
+    message = ' '.join(args.message) or '(no message)'
     if args.active:
         branches = get_branches('%(MW_COMMON)s/wikiversions.cdb' % config)
         env['MW_VERSIONS_SYNC'] = ' '.join(branches)
@@ -143,7 +144,7 @@ def scap():
         subprocess.check_call('/usr/local/bin/mw-update-l10n')
 
         # Notify
-        log.info('started scap: %s', args.message)
+        log.info('started scap: %s', message)
 
         log.debug('updating rsync proxies')
         dsh('/usr/local/bin/scap-1', 'scap-proxies', env)
@@ -172,7 +173,7 @@ def scap():
 
     stop = time.time()
     duration = '%02dm %02ds' % divmod(stop - start, 60)
-    log.info('finished scap: %s (duration: %s)', args.message, duration)
+    log.info('finished scap: %s (duration: %s)', message, duration)
     # TODO: record scap in graphite
 
 
