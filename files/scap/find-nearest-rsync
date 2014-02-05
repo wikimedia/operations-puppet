@@ -20,7 +20,9 @@ $p->hires();
 
 foreach my $host ( @ARGV ) {
 	my ( $success, $rtt, $ip ) = $p->ping( $host );
-	if ( not defined( $bestHost ) ) {
+	if ( not $success ) {
+		next;
+	} elsif ( not defined( $bestHost ) ) {
 		$bestHost = $host;
 		$bestRTT = $rtt;
 	} elsif ( $rtt < $bestRTT ) {
