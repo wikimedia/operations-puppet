@@ -185,8 +185,7 @@ class role::ci::slave::browsertests {
     fail( 'role::ci::slave::browsertests must only be applied in labs' )
   }
 
-  include role::ci::slave::labs::common,
-      contint::slave-scripts
+  include role::ci::slave::labs::common
 
   /**
    * FIXME breaks puppet because jenkins-deploy is not known
@@ -228,6 +227,8 @@ class role::ci::slave::labs {
   }
 
   include role::ci::slave::labs::common,
+    # git-deploy replacement on labs
+    contint::slave-scripts,
     # Include package unsafe for production
     contint::packages::labs
 
