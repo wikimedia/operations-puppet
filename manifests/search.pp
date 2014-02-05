@@ -7,14 +7,14 @@
 class lucene {
 
     class server($indexer=false, $udplogging=true) {
-        Class['lucene::config'] -> Class['lucene::server']
         Class['lucene::packages'] -> Class['lucene::server']
+
+        require role::lucene::configuration
 
         include passwords::lucene
         $lucene_oai_pass = $passwords::lucene::oai_pass
 
         include lucene::packages,
-            lucene::config,
             lucene::service
 
         if $indexer == true {
@@ -36,9 +36,6 @@ class lucene {
             require => Package['oracle-j2sdk1.6'],
         }
     }
-
-    class config {
-        require role::lucene::configuration
 
         file { '/a/search/conf/lsearch-global-2.1.conf':
             ensure  => 'present',
@@ -127,8 +124,6 @@ class lucene {
             hour    => '0',
             minute  => '0',
         }
-
-    }
 
     class service {
         service { 'lucene-search-2':
