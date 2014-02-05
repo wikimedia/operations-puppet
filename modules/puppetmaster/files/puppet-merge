@@ -78,7 +78,7 @@ else
      git submodule update --quiet --init)
 
     # show the diff between the $basedir puppet directory and the $tmpdir puppet directory
-    diff -Nr -x "private" -x ".git" "${basedir}" "${tmpdir}" || true
+    diff -uNr -x "private" -x ".git" "${basedir}" "${tmpdir}" || true
 
     # We've shown the diff so we are done with $tmpdir.  Remove it.
     rm -r "${tmpdir}"
