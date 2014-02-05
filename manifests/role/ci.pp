@@ -107,7 +107,6 @@ class role::ci::slave {
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages,
-        contint::slave-scripts,
         role::gerrit::production::replicationdest
 
     deployment::target { 'contint-production-slaves': }
