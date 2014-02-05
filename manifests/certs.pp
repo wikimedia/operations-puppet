@@ -128,9 +128,10 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
     if ( $ca ) {
         $cas = $ca
     } else {
-        # PEM files should be listed in order: intermediate -> intermediate -> ... -> root
+        # PEM files should be listed in order: intermediate0 -> intermediate1 -> ... -> intermediateN
         # If this is out of order either servers will fail to start, or will not properly
         # have SSL enabled.
+        # Do not include the root cert
         $cas = $name ? {
             "unified.wikimedia.org" => "DigiCertHighAssuranceCA-3.pem",
             "star.wikimedia.org" => "RapidSSL_CA.pem RapidSSL_CA_2.pem GeoTrust_Global_CA.pem",
@@ -145,7 +146,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
             "star.wikimediafoundation.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
             "star.wmflabs.org" => "RapidSSL_CA.pem",
             "star.wmflabs" => "wmf-labs.pem",
-            "star.planet.wikimedia.org" => "DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem",
+            "star.planet.wikimedia.org" => "DigiCertHighAssuranceCA-3.pem",
             default => "wmf-ca.pem",
         }
     }
