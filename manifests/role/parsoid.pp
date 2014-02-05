@@ -81,6 +81,7 @@ class role::parsoid::production {
 
     $parsoid_log_file = '/var/log/parsoid/parsoid.log'
     $parsoid_node_path = '/var/lib/parsoid/deploy/node_modules'
+    $parsoid_settings_file = '../conf/wmf/localsettings.js'
     $parsoid_base_path = '/var/lib/parsoid/deploy/src'
 
     #TODO: Duplication of code from beta class, deduplicate somehow
@@ -185,6 +186,9 @@ class role::parsoid::beta {
     $parsoid_log_file = '/var/log/parsoid/parsoid.log'
     # For beta, override NODE_PATH:
     $parsoid_node_path = '/srv/deployment/parsoid/deploy/node_modules'
+    # Also override PARSOID_SETTINGS_FILE
+    $parsoid_settings_file = '/srv/deployment/parsoid/localsettings.js'
+
     # Checkout of mediawiki/services/parsoid
     $parsoid_base_path = '/srv/deployment/parsoid/parsoid'
 
