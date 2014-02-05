@@ -229,6 +229,12 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
                 'type'         => 'stack',
             },
 
+            # Replica Max Lag
+            {
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => 'kafka.server.ReplicaFetcherManager.Replica-MaxLag.Value',
+                'type'         => 'line',
+            },
             # Under Replicated Partitions
             {
                 'host_regex'   => $kafka_broker_host_regex,
