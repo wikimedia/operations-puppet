@@ -143,7 +143,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
             "star.wikiversity.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
             "star.mediawiki.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
             "star.wikimediafoundation.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
-            "star.wmflabs.org" => "wmf-labs.pem",
+            "star.wmflabs.org" => "RapidSSL_CA.pem",
             "star.wmflabs" => "wmf-labs.pem",
             "star.planet.wikimedia.org" => "DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem",
             default => "wmf-ca.pem",
