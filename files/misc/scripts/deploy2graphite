@@ -19,9 +19,9 @@ usage() {
 if [ -z $DOLOGMSGNOLOG ]; then
 	if [ "$1" ] ; then
 		utime="$(date +%s)"
-		echo "deploy.$1 1 $utime" | nc -w1 -q0 $MW_CARBON_HOST $MW_CARBON_PORT || /bin/true
-		echo "deploy.any 1 $utime" | nc -w1 -q0 $MW_CARBON_HOST $MW_CARBON_PORT || /bin/true
-		test -n "$2" && echo "deploy.${1}.timing:${2}000|ms" | nc -w1 -q0 $MW_CARBON_HOST $MW_CARBON_PORT || /bin/true
+		echo "deploy.${1}:1|c" | nc -w1 -q0 -u $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
+		echo "deploy.all:1|c" | nc -w1 -q0 -u $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
+		test -n "$2" && echo "deploy.${1}.timing:${2}000|ms" | nc -w1 -q0 -u $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
 	else
 		usage
 	fi
