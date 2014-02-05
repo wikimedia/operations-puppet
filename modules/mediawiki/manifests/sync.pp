@@ -6,6 +6,15 @@ class mediawiki::sync {
 	require mediawiki::packages
 	require mediawiki::users::l10nupdate
 
+	# This repository is the staging area for the scap rewrite.
+	git::clone { 'mediawiki/tools/scap':
+		directory => '/srv/scap',
+		owner     => 'root',
+		group     => 'mwdeploy',
+		mode      => '0775',
+		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/tools/scap.git',
+	}
+
 	$scriptpath = "/usr/local/bin"
 
 	file {
