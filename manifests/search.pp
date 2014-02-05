@@ -14,7 +14,6 @@ class lucene {
         $lucene_oai_pass = $passwords::lucene::oai_pass
 
         include lucene::packages,
-            lucene::config,
             lucene::service
 
         if $indexer == true {
@@ -37,7 +36,6 @@ class lucene {
         }
     }
 
-    class config {
         require role::lucene::configuration
 
         file { '/a/search/conf/lsearch-global-2.1.conf':
@@ -127,8 +125,6 @@ class lucene {
             hour    => '0',
             minute  => '0',
         }
-
-    }
 
     class service {
         service { 'lucene-search-2':

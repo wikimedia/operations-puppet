@@ -1,5 +1,5 @@
 # Set root logger level and its only appender to A1.
-log4j.rootLogger=INFO, A1<% if udplogging == true then -%>, udp2log<% end -%>
+log4j.rootLogger=INFO, A1<% if @udplogging == true then -%>, udp2log<% end -%>
 
 # A1 is set to be a ConsoleAppender.
 #log4j.appender.A1=org.apache.log4j.ConsoleAppender
@@ -18,7 +18,7 @@ log4j.appender.A1.layout.ConversionPattern=%d [%t] %-5p %c %x - %m%n
 # Log progress messages from the incremental indexer
 log4j.logger.org.wikimedia.lsearch.oai.IncrementalUpdater=INFO
 
-<% if udplogging == true then -%>
+<% if @udplogging == true then -%>
 # udp2log log4j appender.
 # Logs to Oxygen's udp2log-lucene instance on port 51234
 log4j.appender.udp2log=org.wikimedia.log4j.Udp2LogAppender
