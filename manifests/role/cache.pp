@@ -429,6 +429,10 @@ class role::cache {
                 format                       => "%{fake_tag0@hostname?${::fqdn}}x %{@sequence!num?0}n %{%FT%T@dt}t %{Varnish:time_firstbyte@time_firstbyte!num?0.0}x %{@ip}h %{Varnish:handling@cache_status}x %{@http_status}s %{@response_size!num?0}b %{@http_method}m %{Host@uri_host}i %{@uri_path}U %{@uri_query}q %{Content-Type@content_type}o %{Referer@referer}i %{X-Forwarded-For@x_forwarded_for}i %{User-Agent@user_agent}i %{Accept-Language@accept_language}i %{X-Analytics@x_analytics}o",
                 message_send_max_retries     => 3,
                 queue_buffering_max_messages => 2000000,
+                # bits varnishes do about 6000 reqs / sec each.
+                # We want to buffer for about max 1 second.
+                batch_num_messages           => 6000,
+
                 # large timeout to account for potential cross DC latencies
                 topic_request_timeout_ms     => 30000, # request ack timeout
                 # Write out stats to varnishkafka.stats.json
