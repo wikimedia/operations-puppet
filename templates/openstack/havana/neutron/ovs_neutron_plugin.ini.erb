@@ -11,6 +11,13 @@
 # Example: tenant_network_type = gre
 # Example: tenant_network_type = vxlan
 
+tenant_network_type = gre
+tunnel_id_ranges = 1:1000
+enable_tunneling = True
+integration_bridge = br-int
+tunnel_bridge = br-tun
+local_ip = <%= data_interface_ip %>
+
 # (ListOpt) Comma-separated list of
 # <physical_network>[:<vlan_min>:<vlan_max>] tuples enumerating ranges
 # of VLAN IDs on named physical networks that are available for
