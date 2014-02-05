@@ -40,8 +40,11 @@ class role::analytics::kafka::config {
         # labs only uses a single log_dir
         $log_dirs = ['/var/spool/kafka']
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host = 'aggregator1.pmtpa.wmflabs'
-        $ganglia_port = 50090
+        $ganglia_host   = 'aggregator1.pmtpa.wmflabs'
+        $ganglia_port   = 50090
+
+        # Use default ulimit for labs kafka
+        $nofiles_ulimit = 8192
     }
 
     # else Kafka cluster is based on $::site.
@@ -70,8 +73,11 @@ class role::analytics::kafka::config {
             '/var/spool/kafka/l/data',
         ]
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host = '239.192.1.32'
-        $ganglia_port = 8649
+        $ganglia_host   = '239.192.1.32'
+        $ganglia_port   = 8649
+
+        # Increase ulimit for production kafka.
+        $nofiles_ulimit = 65536
     }
 
     $brokers          = $cluster[$kafka_cluster_name]
@@ -104,6 +110,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         brokers             => $brokers,
         zookeeper_hosts     => $zookeeper_hosts,
         zookeeper_chroot    => $zookeeper_chroot,
+        nofiles_ulimit      => $nofiles_ulimit,
     }
 
     # Generate icinga alert if Kafka Server is not running.
