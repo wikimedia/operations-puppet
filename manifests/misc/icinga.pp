@@ -587,13 +587,6 @@ class icinga::monitor::files::nagios-plugins {
       owner => 'root',
       group => 'root',
       mode => '0755';
-#after absent everywhere, remove entire resource as it is not used
-    '/usr/lib/nagios/plugins/check_ram.sh':
-      ensure => 'absent',
-      source => 'puppet:///files/icinga/check_ram.sh',
-      owner => 'root',
-      group => 'root',
-      mode => '0755';
     '/usr/lib/nagios/plugins/check_graphite':
       source => 'puppet:///files/icinga/check_graphite',
       owner => 'root',
