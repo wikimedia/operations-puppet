@@ -1,0 +1,5 @@
+# -*- text -*-
+# File managed by puppet, do not edit by hand
+standby_mode = on
+primary_conninfo = 'host=<%= @master_server %> user=replication password=<%= @replication_pass %>'
+restore_command = 'cp -f /srv/wal/%f %p </dev/null'
