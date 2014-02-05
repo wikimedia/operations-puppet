@@ -128,34 +128,6 @@ class misc::fundraising {
 
 }
 
-class misc::fundraising::backup::archive_sync(
-        $user = 'root',
-        $hour,
-        $minute,
-        $weekday = '*'
-    ) {
-
-    file {
-        '/usr/local/bin/offhost_backups':
-            owner => 'root',
-            group => 'root',
-            mode => 0755,
-            source => 'puppet:///files/misc/scripts/offhost_backups',
-    }
-
-    cron {
-        'offhost_backups':
-            user => $user,
-            weekday => $weekday,
-            hour => $hour,
-            minute => $minute,
-            command => '/usr/local/bin/offhost_backups',
-            ensure => present;
-    }
-
-}
-
-
 class misc::fundraising::mail {
 
     system::role { 'misc::fundraising::mail': description => 'fundraising mail server' }
