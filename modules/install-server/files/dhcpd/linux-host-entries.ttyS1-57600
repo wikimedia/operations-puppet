@@ -43,11 +43,6 @@ host formey {
 	fixed-address formey.wikimedia.org;
 }
 
-host grosley {
-	hardware ethernet 00:1e:c9:ea:53:fd;
-	fixed-address grosley.wikimedia.org;
-}
-
 host hume {
 	hardware ethernet 00:1d:09:33:f2:35;
 	fixed-address hume.wikimedia.org;
