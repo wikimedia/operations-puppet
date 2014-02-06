@@ -681,7 +681,7 @@ class role::cache {
         include role::cache::varnish::logging
 
         # HTCP packet loss monitoring on the ganglia aggregators
-        if $ganglia_aggregator and $::site != "esams" {
+        if $::ganglia_aggregator and $::site != "esams" {
             include misc::monitoring::htcp-loss
         }
     }
@@ -829,7 +829,7 @@ class role::cache {
         include role::cache::varnish::logging
 
         # HTCP packet loss monitoring on the ganglia aggregators
-        if $ganglia_aggregator and $::site != "esams" {
+        if $::ganglia_aggregator and $::site != "esams" {
             include misc::monitoring::htcp-loss
         }
     }
