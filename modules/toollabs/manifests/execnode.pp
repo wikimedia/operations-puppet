@@ -26,13 +26,13 @@ class toollabs::execnode($gridmaster) inherits toollabs {
         source => "puppet:///modules/toollabs/40-${instanceproject}-exechost-banner",
     }
 
-    file { "${store}/execnode-${fqdn}":
+    file { "${store}/execnode-${::fqdn}":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => File[$store],
-        content => "${ipaddress}\n",
+        content => "${::ipaddress}\n",
     }
 
     # Execution hosts have funky access requirements; they need to be ssh-able
