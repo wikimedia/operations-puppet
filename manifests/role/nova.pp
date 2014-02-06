@@ -16,6 +16,7 @@ class role::nova::config::common {
 		db_user => "nova",
 		db_pass => $passwords::openstack::nova::nova_db_pass,
 		metadata_pass => $passwords::openstack::nova::nova_metadata_pass,
+		neutron_ldap_user_pass => $passwords::openstack::neutron::neutron_ldap_user_pass,
 		my_ip => $ipaddress_eth0,
 		ldap_base_dn => "dc=wikimedia,dc=org",
 		ldap_user_dn => "uid=novaadmin,ou=people,dc=wikimedia,dc=org",

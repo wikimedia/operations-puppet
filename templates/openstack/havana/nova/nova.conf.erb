@@ -47,7 +47,9 @@ iscsi_helper=tgtadm
 network_api_class = nova.network.neutronv2.api.API
 neutron_url = http://<%= novaconfig['controller_hostname'] %>:9696
 neutron_auth_strategy = keystone
-neutron_admin_token = <%= novaconfig['keystone_admin_token'] %>
+neutron_admin_tenant_name=testlabs
+neutron_admin_username=neutron
+neutron_admin_password=<%= novaconfig['neutron_ldap_user_pass'] %>
 neutron_admin_auth_url = http://<%= novaconfig['controller_hostname'] %>:35357/v2.0
 linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
 firewall_driver = nova.virt.libvirt.firewall.IptablesFirewallDriver
