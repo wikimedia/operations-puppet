@@ -101,7 +101,6 @@ class toollabs::exec_environ {
         'libredis-perl',
         'libsocket-getaddrinfo-perl',
         'libstring-diff-perl',
-        'libstring-shellquote-perl',   # For jsub.
         'libtask-weaken-perl',
         'libtest-exception-perl',      # For Checkwiki.
         'libtext-diff-perl',           # Bug 58744
