@@ -181,10 +181,6 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 			"production" => "208.80.155.0/22,10.0.0.0/8",
 			"labs" => "10.4.0.0/21",
 		},
-		controller_hostname => $realm ? {
-			"production" => "wikitech.wikimedia.org",
-			"labs" => $fqdn,
-		},
         	auth_uri => $::realm ? {
             		'production' => 'http://virt1000.wikimedia.org:5000',
             		'labs' => 'http://localhost:5000',
@@ -193,6 +189,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 			"production" => "http://wikitech.wikimedia.org:8000",
 			"labs" => "http://${hostname}.${domain}:8000",
 		},
+		controller_hostname => $controller_hostname,
 		ldap_host => $controller_hostname,
 		puppet_host => $controller_hostname,
 		puppet_db_host => $controller_hostname,
