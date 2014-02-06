@@ -567,13 +567,7 @@ node /^db10(37|43|49|50|51|52|55|56)\.eqiad\.wmnet/ {
 }
 
 node /^db10(02|09|18|34|36|60)\.eqiad\.wmnet/ {
-    if $::hostname =~ /^db10(02|18|34|36|60)/ {
-        class { role::coredb::s2 : innodb_file_per_table => true, mariadb => true }
-    } elsif $::hostname == "db1009" {
-        class { role::coredb::s2 : mariadb => true }
-    } else {
-        include role::coredb::s2
-    }
+    class { role::coredb::s2 : innodb_file_per_table => true, mariadb => true }
 }
 
 node /^db10(03|19|27|35|38)\.eqiad\.wmnet/ {
@@ -581,11 +575,7 @@ node /^db10(03|19|27|35|38)\.eqiad\.wmnet/ {
 }
 
 node /^db10(04|11|20|40|42|59)\.eqiad\.wmnet/ {
-    if $::hostname =~ /^db10(04|11|20|40|42|59)/ {
-        class { role::coredb::s4 : mariadb => true }
-    } else {
-        include role::coredb::s4
-    }
+    class { role::coredb::s4 : mariadb => true }
 }
 
 node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
