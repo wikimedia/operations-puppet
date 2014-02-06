@@ -655,6 +655,7 @@ class openstack::neutron-nethost(
             # Disable RA
             'net.ipv6.conf.all.accept_ra'     => 0,
         },
+        priority => 50,
     }
 }
 
@@ -694,6 +695,7 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
             # Disable RA
             'net.ipv6.conf.all.accept_ra'     => 0,
         },
+        priority => 50,
     }
 }
 
