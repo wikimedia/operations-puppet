@@ -57,7 +57,7 @@ ip, mask = prefix.split('/')
     }
 <% end -%>
   }
-<% if scope.function_versioncmp([lsbdistrelease, "12.04"]) >= 0 %>
+<% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %>
   /* Increase the buffer size. With the default setting (224KB), Tim observed
      ~30% packet loss on a cluster with 12 hosts and ~300 metrics per host. */
   buffer = 4194304
