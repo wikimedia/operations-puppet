@@ -31,6 +31,12 @@ class deployment::deployment_server(
         }
     }
 
+    exec { 'eventual_consistency_deployment_server_init':
+        path    => ['/usr/bin'],
+        command => 'salt-call deploy.deployment_server_init',
+        require => [Package['salt-minion']];
+    }
+
     $deployment_global_hook_dir = "${deployment_git_deploy_dir}/hooks"
     $deployment_dependencies_dir = "${deployment_git_deploy_dir}/dependencies"
     file { $deployment_global_hook_dir:
