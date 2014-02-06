@@ -309,6 +309,11 @@ host boron {
 	fixed-address boron.wikimedia.org;
 }
 
+host caesium {
+	hardware ethernet d4:ae:52:b5:4e:60;
+	fixed-address caesium.eqiad.wmnet;
+}
+
 host calcium {
 	hardware ethernet 78:2b:cb:08:b9:e9;
 	fixed-address calcium.wikimedia.org;
@@ -4121,11 +4126,6 @@ host stat1002 {
 host strontium {
 	hardware ethernet 18:03:73:f4:ef:51;
 	fixed-address strontium.eqiad.wmnet;
-}
-
-host tantalum {
-	hardware ethernet 78:2b:cb:2d:f3:d9;
-	fixed-address tantalum.eqiad.wmnet;
 }
 
 host tellurium {
