@@ -8,14 +8,14 @@
 
 # Set the location of the salt master server, if the master server cannot be
 # resolved, then the minion will fail to start.
-<% if salt_master.is_a? Array %>
+<% if salt_master.is_a? Array -%>
 master:
-<% salt_master.each do |name| %>
+<% salt_master.each do |name| -%>
   - <%= name  %>
-<% end %>
-<% else %>
+<% end -%>
+<% else -%>
 master: <%= salt_master %>
-<% end %>
+<% end -%>
 
 # Set the number of seconds to wait before attempting to resolve
 # the master hostname if name resolution fails. Defaults to 30 seconds.

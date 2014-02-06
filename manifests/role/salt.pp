@@ -120,7 +120,16 @@ class role::salt::minions {
 			"cluster" => $cluster,
 		}
 	} else {
-		$salt_master = [ "sockpuppet.pmtpa.wmnet", "palladium.eqiad.wmnet" ]
+		## Disabling multi-master salt for now, until synchronization
+		## issues are handled for puppet managing salt.
+		## When minions fetch modules/returners/pillars/etc. it's necessary
+		## for both salt masters to have the same sets of data or inconsistencies
+		## can occur.
+		#$salt_master = $site ? {
+		#	"pmtpa" => [ "sockpuppet.pmtpa.wmnet", "palladium.eqiad.wmnet" ],
+		#	"eqiad" => [ "palladium.eqiad.wmnet", "sockpuppet.pmtpa.wmnet" ],
+		#}
+		$salt_master = "palladium.eqiad.wmnet"
 		$salt_client_id = "${fqdn}"
 		$salt_grains = {
 			"realm" => $realm,
