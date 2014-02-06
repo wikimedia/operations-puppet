@@ -7,6 +7,10 @@ class contint::website(
 
   require contint::publish-console
 
+  # Need to send Vary: X-Forwarded-Proto since most sites are forced to HTTPS
+  # and behind a varnish cache. See also bug 60822
+  apache_module { 'headers': name => 'headers' }
+
   # Static files in these docroots are in integration/docroot.git
 
   file { '/srv/org':

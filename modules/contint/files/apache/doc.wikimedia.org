@@ -27,6 +27,8 @@
 	RewriteCond %{HTTP:X-Forwarded-Proto} !https
 	RewriteRule (.) https://doc.wikimedia.org%{REQUEST_URI} [R=301]
 
+	Header always merge Vary X-Forwarded-Proto
+
 	DocumentRoot /srv/org/wikimedia/doc
 
 	# Favicon proxy
