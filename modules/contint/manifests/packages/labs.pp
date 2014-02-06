@@ -25,4 +25,13 @@ class contint::packages::labs {
         ]: ensure => present,
     }
 
+    # Bring tox/virtualenv... from pip  bug 44443
+    # TODO: Reevaluate this once we switch to trusty. Maybe provider being apt
+    # would be better then
+    package { 'tox':
+        ensure   => present,
+        provider => 'pip',
+        require  => Package['python-pip'],
+    }
+
 }
