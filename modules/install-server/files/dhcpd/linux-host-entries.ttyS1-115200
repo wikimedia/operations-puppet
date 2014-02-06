@@ -4123,6 +4123,11 @@ host strontium {
 	fixed-address strontium.eqiad.wmnet;
 }
 
+host tantalum {
+	hardware ethernet 78:2b:cb:2d:f3:d9;
+	fixed-address tantalum.eqiad.wmnet;
+}
+
 host tellurium {
 	hardware ethernet 00:10:18:E4:1E:26;
 	fixed-address tellurium.eqiad.wmnet;
