@@ -577,11 +577,6 @@ class icinga::monitor::files::nagios-plugins {
       owner => 'root',
       group => 'root',
       mode => '0755';
-    '/usr/lib/nagios/plugins/check_stomp.pl':
-      source => 'puppet:///files/icinga/check_stomp.pl',
-      owner => 'root',
-      group => 'root',
-      mode => '0755';
     '/usr/lib/nagios/plugins/check_nrpe':
       source => 'puppet:///files/icinga/check_nrpe',
       owner => 'root',
@@ -765,11 +760,6 @@ class icinga::monitor::packages {
     ensure => latest;
   }
 
-  # Stomp Perl module to monitor erzurumi (RT #703)
-  # FIXME: remove erzurumi reference?
-  package { 'libnet-stomp-perl':
-    ensure => latest;
-  }
 }
 
 class icinga::monitor::service {
