@@ -394,12 +394,6 @@ define command{
 	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -t $ARG2$
 }
 
-# FIXME: replace erzurumi reference with new server
-define command{
-	command_name	check_stomp
-	command_line	/usr/lib/nagios/plugins/check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
-}
-
 define command{
 	command_name	check_longqueries
 	command_line	/usr/lib/nagios/plugins/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= nagios_mysql_check_pass %> -w 30 -c 66

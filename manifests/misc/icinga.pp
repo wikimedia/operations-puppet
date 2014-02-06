@@ -765,11 +765,6 @@ class icinga::monitor::packages {
     ensure => latest;
   }
 
-  # Stomp Perl module to monitor erzurumi (RT #703)
-  # FIXME: remove erzurumi reference?
-  package { 'libnet-stomp-perl':
-    ensure => latest;
-  }
 }
 
 class icinga::monitor::service {
