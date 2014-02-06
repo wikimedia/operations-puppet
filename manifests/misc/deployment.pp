@@ -177,12 +177,12 @@ class misc::deployment::scap_scripts {
 		"${scriptpath}/restart-twemproxy":
 			ensure => link,
 			target => "/srv/scap/bin/restart-twemproxy";
+		"${scriptpath}/scap-old":
+			ensure => link,
+			target => "/srv/scap/bin/scap-old";
 		"${scriptpath}/scap":
 			ensure => link,
 			target => "/srv/scap/bin/scap";
-		"${scriptpath}/scappy":
-			ensure => link,
-			target => "/srv/scap/bin/scappy";
 		"${scriptpath}/sync-common-all":
 			ensure => link,
 			target => "/srv/scap/bin/sync-common-all";
