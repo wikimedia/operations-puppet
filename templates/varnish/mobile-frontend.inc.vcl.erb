@@ -18,20 +18,23 @@ sub vcl_recv {
 	 */
 	unset req.http.Range;
 
-	if (!req.http.X-Forwarded-Proto) {
-		/* This call will always set the following req.http values:
-			X-Subdomain = M or ZERO
-		  This value is only set if the carrier has been successfully detected
-			X-CS = "502-13"
-		*/
-		call tag_carrier;
-
-		/* Assemble X-Analytics header */
-		if (req.http.X-CS) {
-			set req.http.X-Analytics = "zero=" + req.http.X-CS;
+	// Only do tag_carrier logic on first start, and only for (m|zero).wp
+	if (req.restarts == 0) {
+		// Always set X-Subdomain
+		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\.") {
+			set req.http.X-Subdomain = "ZERO";
+		} else {
+			set req.http.X-Subdomain = "M";
 		}
-	} else {
-		set req.http.X-Subdomain = "M";
+	
+		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?(m|zero)\.wikipedia\.") {
+			call tag_carrier;
+		}
+	}
+
+	/* Assemble X-Analytics header */
+	if (req.http.X-CS) {
+		set req.http.X-Analytics = "zero=" + req.http.X-CS;
 	}
 
 	/* Rewrite m.mediawiki.org to mediawiki.org etc */
