@@ -10,6 +10,7 @@ class role::nova::config {
 
 class role::nova::config::common {
 	include passwords::openstack::nova
+	include passwords::openstack::neutron
 
 	$commonnovaconfig = {
 		db_name => "nova",
