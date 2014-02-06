@@ -15,6 +15,11 @@
 
 	RewriteEngine On
 	RewriteRule ^/favicon\.ico$ /favicon.php [L]
+	# Force any request to HTTPS if not passed via https (misc web varnish)
+	RewriteCond %{HTTP:X-Forwarded-Proto} !https
+	RewriteRule (.) https://integration.wikimedia.org%{REQUEST_URI} [R=301]
+
+	Header always merge Vary X-Forwarded-Proto
 
 	Include *_proxy
 
