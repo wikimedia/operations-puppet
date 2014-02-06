@@ -2603,7 +2603,7 @@ node "labnet1001.eqiad.wmnet" {
     include admins::labs
 }
 
-node /virt100[1-4].eqiad.wmnet/ {
+node /virt1001.eqiad.wmnet/ {
     $cluster = "virt"
 
     $openstack_version = "havana"
@@ -2613,7 +2613,7 @@ node /virt100[1-4].eqiad.wmnet/ {
         role::neutron::computenode
 }
 
-node /virt100[5-9].eqiad.wmnet/ {
+node /virt100[2-9].eqiad.wmnet/ {
     $cluster = "virt"
     include admins::labs
 
