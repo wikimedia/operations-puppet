@@ -25,13 +25,13 @@ class toollabs::webserver($gridmaster) inherits toollabs {
         ensure => present
     }
 
-    file { "${store}/submithost-${fqdn}":
+    file { "${store}/submithost-${::fqdn}":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => File[$store],
-        content => "${ipaddress}\n",
+        content => "${::ipaddress}\n",
     }
 
     file { '/etc/ssh/ssh_config':
