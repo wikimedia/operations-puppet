@@ -185,6 +185,10 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 			"production" => "wikitech.wikimedia.org",
 			"labs" => $fqdn,
 		},
+        	auth_uri => $::realm ? {
+            		'production' => 'http://virt1000.wikimedia.org:5000',
+            		'labs' => 'http://localhost:5000',
+        	},
 		ajax_proxy_url => $realm ? {
 			"production" => "http://wikitech.wikimedia.org:8000",
 			"labs" => "http://${hostname}.${domain}:8000",

@@ -44,6 +44,10 @@ class role::glance::config::eqiad inherits role::glance::config {
 			"production" => "208.80.154.18",
 			"labs" => "127.0.0.1",
 		},
+        	auth_uri => $::realm ? {
+            		'production' => 'http://virt1000.wikimedia.org:5000',
+            		'labs' => 'http://localhost:5000',
+        	},
 		keystone_admin_token => $keystoneconfig["admin_token"],
 		keystone_auth_host => $keystoneconfig["bind_ip"],
 		keystone_auth_protocol => $keystoneconfig["auth_protocol"],
