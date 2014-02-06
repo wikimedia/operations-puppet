@@ -137,6 +137,10 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 		"production" => "virt1000.wikimedia.org",
 		"labs" => "localhost",
 	}
+	$controller_address = $realm ? {
+		"production" => '208.80.154.18',
+		"labs" => "127.0.0.1",
+	}
 
 	$eqiadnovaconfig = {
 		db_host => $controller_hostname,

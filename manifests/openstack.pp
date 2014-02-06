@@ -443,6 +443,21 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     backup::set {'a-backup': }
 
     include nrpe
+
+    if ($::site == 'eqiad') {
+        package { 'nova-xvpvncproxy':
+            ensure => present,
+        }
+        package { 'nova-novncproxy':
+            ensure => present,
+        }
+        package { 'nova-consoleauth':
+            ensure => present,
+        }
+        package { 'novnc':
+            ensure => present,
+        }
+    }
 }
 
 class openstack::scheduler-service($openstack_version="folsom", $novaconfig) {
