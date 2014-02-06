@@ -1230,7 +1230,7 @@ node 'labsdb1003.eqiad.wmnet' {
             's3' => {
                 'port' => 3306,
                 'innodb_log_file_size' => "500M",
-                'ram' => "48G",
+                'ram' => "32G",
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs' => 'mysql',
                 'slave_transaction_retries' => 100000,
@@ -1240,7 +1240,7 @@ node 'labsdb1003.eqiad.wmnet' {
             's6' => {
                 'port' => 3307,
                 'innodb_log_file_size' => "500M",
-                'ram' => "48G",
+                'ram' => "32G",
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs' => 'mysql',
                 'slave_transaction_retries' => 100000,
@@ -1250,7 +1250,7 @@ node 'labsdb1003.eqiad.wmnet' {
             's7' => {
                 'port' => 3308,
                 'innodb_log_file_size' => "500M",
-                'ram' => "48G",
+                'ram' => "32G",
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs' => 'mysql',
                 'slave_transaction_retries' => 100000,
