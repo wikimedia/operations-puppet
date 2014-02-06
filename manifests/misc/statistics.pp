@@ -528,13 +528,13 @@ class misc::statistics::rsync::jobs::webrequest {
         destination => "/a/squid/archive/zero",
     }
 
-    # API logs from emery
+    # API logs from erbium
     misc::statistics::rsync_job { "api":
         source      => "erbium.eqiad.wmnet::udp2log/webrequest/archive/api-usage*.gz",
         destination => "/a/squid/archive/api",
     }
 
-    # sampled-1000 logs from emery
+    # sampled-1000 logs from erbium
     misc::statistics::rsync_job { "sampled_1000":
         source      => "erbium.eqiad.wmnet::udp2log/webrequest/archive/sampled-1000*.gz",
         destination => "/a/squid/archive/sampled",
