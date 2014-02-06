@@ -2,23 +2,23 @@
 # This file is managed by Puppet!
 
 upstream <%= name %> {
-<% if site == "esams" then -%>
+<% if @site == "esams" then -%>
 	# TODO: find a way to properly support proxy_port
 	server <%= proxy_backend["esams"]["primary"] %>;
 <% end -%>
-<% if site == "pmtpa" then -%>
+<% if @site == "pmtpa" then -%>
 	# max fails is ignored when using one host, so we use the same host twice
 	server <%= proxy_backend["pmtpa"]["primary"] %>:<%= proxy_port %>;
 	server <%= proxy_backend["pmtpa"]["primary"] %>:<%= proxy_port %>;
 <% end -%>
-<% if site == "eqiad" then -%>
+<% if @site == "eqiad" then -%>
 	# max fails is ignored when using one host, so we use the same host twice
 	server <%= proxy_backend["eqiad"]["primary"] %>:<%= proxy_port %>;
 	server <%= proxy_backend["eqiad"]["primary"] %>:<%= proxy_port %>;
 <% end -%>
 }
 
-<% if site == "esams" then -%>
+<% if @site == "esams" then -%>
 upstream <%= name %>_fallback {
 	# fallback always uses 443
 	server <%= proxy_backend["esams"]["secondary"] %>:443;
@@ -42,7 +42,7 @@ if proxy_addresses.has_key?(site) then
 end  # if
 -%>
 	# For LVS-DR, we must listen to the RIP and the VIP addresses
-	listen <%= ipaddress %>:443;
+	listen <%= @ipaddress %>:443;
 	ssl on;
 	server_name  <%= proxy_server_name %>;
 
@@ -59,7 +59,7 @@ end  # if
 		<% else %>
 		proxy_pass http://<%= name %>;
 		<% end %>
-		<% if site == "esams" then -%>
+		<% if @site == "esams" then -%>
 proxy_intercept_errors on;
 		error_page 502 503 504 = @fallback;
 		<% end -%>
@@ -77,7 +77,7 @@ proxy_intercept_errors on;
 		proxy_redirect off;
 		proxy_buffering off;
 	}
-	<% if site == "esams" then -%>
+	<% if @site == "esams" then -%>
 location @fallback {
 		proxy_pass https://<%= name %>_fallback;
 
@@ -101,7 +101,7 @@ server {
 	<% if proxy_address[0].chr != '[' then next end %>
 	listen <%= proxy_address %>:80;
 <% end -%>
-	listen <%= ipaddress %>:80;
+	listen <%= @ipaddress %>:80;
 	server_name  <%= proxy_server_name %>;
 
 	error_log   /var/log/nginx/<%= name %>-ipv6.error.log;
