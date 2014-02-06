@@ -42,7 +42,7 @@ if proxy_addresses.has_key?(site) then
 end  # if
 -%>
 	# For LVS-DR, we must listen to the RIP and the VIP addresses
-	listen <%= ipaddress %>:443;
+	listen <%= @ipaddress %>:443;
 	ssl on;
 	server_name  <%= proxy_server_name %>;
 
@@ -101,7 +101,7 @@ server {
 	<% if proxy_address[0].chr != '[' then next end %>
 	listen <%= proxy_address %>:80;
 <% end -%>
-	listen <%= ipaddress %>:80;
+	listen <%= @ipaddress %>:80;
 	server_name  <%= proxy_server_name %>;
 
 	error_log   /var/log/nginx/<%= name %>-ipv6.error.log;
