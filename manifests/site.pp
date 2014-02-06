@@ -566,7 +566,7 @@ node /^db10(37|43|49|50|51|52|55|56)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|34|36|60)\.eqiad\.wmnet/ {
+node /^db10(02|09|18|24|36|60)\.eqiad\.wmnet/ {
     class { role::coredb::s2 : innodb_file_per_table => true, mariadb => true }
 }
 
@@ -734,8 +734,8 @@ node "db1044.eqiad.wmnet" {
 }
 
 # out of action
-# db1024 RT 6672
-node /^db10(24)\.eqiad\.wmnet/ {
+# db1034 RT 6783
+node /^db10(34)\.eqiad\.wmnet/ {
     include standard
 }
 
