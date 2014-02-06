@@ -25,15 +25,7 @@ dmz_cidr=<%= novaconfig["dmz_cidr"] %>
 libvirt_type=<%= novaconfig["libvirt_type"] %>
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
-flat_network_dhcp_start=<%= novaconfig["dhcp_start"] %>
 dhcp_domain=<%= novaconfig["dhcp_domain"] %>
-network_manager=nova.network.manager.FlatDHCPManager
-flat_interface=<%= novaconfig["network_flat_interface"] %>
-flat_injected=False
-flat_network_bridge=<%= novaconfig["flat_network_bridge"] %>
-fixed_range=<%= novaconfig["fixed_range"] %>
-public_interface=<%= novaconfig["network_public_interface"] %>
-routing_source_ip=<%= novaconfig["network_public_ip"] %>
 node_availability_zone=<%= novaconfig["zone"] %>
 zone_name=<%= novaconfig["zone"] %>
 quota_floating_ips=<%= novaconfig["quota_floating_ips"] %>
@@ -50,6 +42,15 @@ dhcp_lease_time=86400
 # timeout expired leases after 48 hours
 fixed_ip_disassociate_timeout=172800
 iscsi_helper=tgtadm
+
+# network/neutron settings
+network_api_class = nova.network.neutronv2.api.API
+neutron_url = http://<%= novaconfig['controller_hostname'] %>:9696
+neutron_auth_strategy = keystone
+neutron_admin_token = <%= novaconfig['keystone_admin_token'] %>
+neutron_admin_auth_url = http://<%= novaconfig['controller_hostname'] %>:35357/v2.0
+linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
+firewall_driver = nova.virt.libvirt.firewall.IptablesFirewallDriver
 
 neutron_metadata_proxy_shared_secret = <%= novaconfig["metadata_pass"] %>
 service_neutron_metadata_proxy = true
