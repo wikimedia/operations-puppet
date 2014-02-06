@@ -389,4 +389,11 @@ class role::nova::compute {
 			options => 'defaults',
 		}
 	}
+
+	file { '/var/lib/nova/instances':
+		ensure => directory,
+		owner => 'nova',
+		group => 'nova',
+		require => Mount['/var/lib/nova/instances'],
+	}
 }
