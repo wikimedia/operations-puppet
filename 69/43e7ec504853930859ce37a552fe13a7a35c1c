@@ -1,0 +1,8 @@
+Verified+2: jenkins-bot
+Code-Review+1: Tim Landscheidt <tim@tim-landscheidt.de>
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-by: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-at: Fri, 07 Feb 2014 11:41:52 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/111781
+Project: operations/puppet
+Branch: refs/heads/production
