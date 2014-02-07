@@ -2532,6 +2532,7 @@ node "virt1000.wikimedia.org" {
     $is_puppet_master = "true"
     $is_labs_puppet_master = "true"
     $openstack_version = "havana"
+    $use_neutron = false
 
     include admins::labs
 
@@ -2541,8 +2542,12 @@ node "virt1000.wikimedia.org" {
         ldap::role::client::labs,
         role::nova::controller,
         role::salt::masters::labs,
-        role::deployment::salt_masters::labs,
-        role::neutron::controller
+        role::deployment::salt_masters::labs
+
+    if $use_neutron == true {
+        include role::neutron::controller
+    }
+
 }
 
 node "virt0.wikimedia.org" {
@@ -2552,6 +2557,7 @@ node "virt0.wikimedia.org" {
     $is_puppet_master = "true"
     $is_labs_puppet_master = "true"
     $openstack_version = "folsom"
+    $use_neutron = false
 
     include admins::labs
 
@@ -2569,6 +2575,7 @@ node "virt0.wikimedia.org" {
 node 'virt2.pmtpa.wmnet' {
     $cluster = "virt"
     $openstack_version = "folsom"
+    $use_neutron = false
 
     include admins::labs
 
@@ -2585,6 +2592,7 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
     }
 
     $openstack_version = "folsom"
+    $use_neutron = false
 
     include admins::labs
 
@@ -2595,23 +2603,31 @@ node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
 node "labnet1001.eqiad.wmnet" {
     $cluster = "virt"
     $openstack_version = "havana"
+    $use_neutron = false
+
     $ganglia_aggregator = true
 
     include standard,
-        role::neutron::nethost,
-        role::nova::api
+        role::nova::api,
+        admins::labs
 
-    include admins::labs
+    if $use_neutron == true {
+        include role::neutron::nethost
+    }
 }
 
 node /virt1001.eqiad.wmnet/ {
     $cluster = "virt"
 
     $openstack_version = "havana"
+    $use_neutron = false
 
     include standard,
-        role::nova::compute,
-        role::neutron::computenode
+        role::nova::compute
+
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
 }
 
 node /virt100[2-9].eqiad.wmnet/ {
