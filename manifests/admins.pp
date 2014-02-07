@@ -1584,7 +1584,7 @@ class accounts {
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA5i6EW2Qwvv8bEEVOM9UQnSU9i+83pz0tmJ9zU37jimdMNmuxUb/2hi1mzmJlDRYDiZ08dIIO02MhkkQROQ629kWU+Dyx2RkxAtHF+vDmShpsp/PNSsPs6+3qDJs89Af7SRvAQJ3jVmQqJ1TzqniiLu1Ab87TDJoFNE2WjqlPlUWDLZa88023CO65dL8e907QR7OHYPLxbpiJMLYFvdJ1nByquo9t+iV3Iu8/WQS1JOPsGriN282qyc3EErir03et75kS7h+1Zhr+Z6BB0MO2cd6SJDl1cChcIrlHzs4zpufUzWXq9ELBmIaxYBH5iUYYM4ezSyA+qEbDnEpweJiW5w=="
 			}
 			ssh_authorized_key { "laner@Free-Public-Wifi.local":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDRsK78adkRJfbYrsZznpbwldoSpQyyQXrXG6WzrJEBAVIAKz5gPSM8zmJ/kj89QygYRaKRPWAcuF5GZhSho15dwDXm5M0ZTva4/m/Hu4H3j7oxx3PKjZKBiygP7mSu/32TJs7FynPGAFVl/B766Snn9Ll/xwrx4lg3v9ZNEpNMJZ0DQTFZ1xXD2Ns08JvxW1csAEoNrpqH6tTdXdHmhurXdKQq1G/JmKR3/KVWbB1MNvUwCY0mQbN1icuy+JsOXbvXEftumigXRV16reLvX3q4sNmYSFfOGOMMW7K9d+nDc4TRNrUjm8R0AEZ6BxTJsvpahDi1gCOfZnGmpGKUEWgZ"
