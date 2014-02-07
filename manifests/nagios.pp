@@ -15,6 +15,7 @@ define monitor_host(
     $contact_group = 'admins'
 )
 {
+    include ganglia_new::monitor::config
     if ! $ip_address {
         fail("Parameter $ip_address not defined!")
     }
