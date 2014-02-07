@@ -47,6 +47,15 @@ class role::neutron::computenode {
         neutronconfig     => $neutronconfig,
         data_interface_ip => $::ipaddress,
     }
+
+    # In Openstack terms, this is the 'external' interface
+    interface::tagged { 'eth1.1102':
+        base_interface => 'eth1',
+        vlan_id => '1102',
+        method => 'manual',
+        up => 'ip link set $IFACE up',
+        down => 'ip link set $IFACE down',
+    }
 }
 
 class role::neutron::controller {
