@@ -57,7 +57,7 @@ class role::logstash {
 
     logstash::conf { 'filter_strip_ansi_color':
         source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
-        priority => 50,
+        priority => 40,
     }
 
     logstash::conf { 'filter_syslog':
@@ -68,6 +68,11 @@ class role::logstash {
     logstash::conf { 'filter_mw_via_udp2log':
         source   => 'puppet:///files/logstash/filter-mw-via-udp2log.conf',
         priority => 50,
+    }
+
+    logstash::conf { 'filter_add_normalized_message':
+        source   => 'puppet:///files/logstash/filter-add-normalized-message.conf',
+        priority => 60,
     }
 
     class { '::logstash::output::elasticsearch':
