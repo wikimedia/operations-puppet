@@ -12,7 +12,7 @@ class mysql_wmf(
         nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e',
         critical      => true,
     }
-    monitor_service { 'mysqld':
+    nrpe::monitor_service { 'mysqld':
         description   => 'mysqld processes',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
         critical      => true,
