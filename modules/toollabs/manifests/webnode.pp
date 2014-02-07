@@ -21,13 +21,13 @@ class toollabs::webnode($gridmaster) inherits toollabs {
         gridmaster => $gridmaster,
     }
 
-    file { "${store}/execnode-${fqdn}":
+    file { "${store}/execnode-${::fqdn}":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => File[$store],
-        content => "${ipaddress}\n",
+        content => "${::ipaddress}\n",
     }
 
     # Execution hosts have funky access requirements; they need to be ssh-able

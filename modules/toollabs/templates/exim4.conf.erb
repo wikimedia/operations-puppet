@@ -1,8 +1,8 @@
 
-primary_hostname = relay.<%= maildomain %>
-qualify_domain = <%= maildomain %>
+primary_hostname = relay.<%= @maildomain %>
+qualify_domain = <%= @maildomain %>
 
-domainlist local_domains = <%= maildomain %>
+domainlist local_domains = <%= @maildomain %>
 domainlist relay_to_domains =
 hostlist relay_from_hosts = 10.0.0.0/8
 
@@ -103,7 +103,7 @@ procmailpipe:
 
 local_delivery:
   driver = appendfile
-  file = <%= store %>/mail/$local_part
+  file = <%= @store %>/mail/$local_part
   delivery_date_add
   envelope_to_add
   return_path_add
