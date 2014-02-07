@@ -19,6 +19,7 @@ class role::nova::config::common {
 		metadata_pass => $passwords::openstack::nova::nova_metadata_pass,
 		neutron_ldap_user_pass => $passwords::openstack::neutron::neutron_ldap_user_pass,
 		my_ip => $ipaddress_eth0,
+		use_neutron => $use_neutron,
 		ldap_base_dn => "dc=wikimedia,dc=org",
 		ldap_user_dn => "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
 		ldap_user_pass => $passwords::openstack::nova::nova_ldap_user_pass,
@@ -374,8 +375,8 @@ class role::nova::compute {
 	include role::nova::wikiupdates,
  		role::nova::common
 
-        # Havana uses neutron -- neutron roles configure their own interfaces.
-	if ( $openstack_version != "havana" ) {
+        # Neutron roles configure their own interfaces.
+	if ( $use_neutron == false ) {
 		interface::tagged { $novaconfig["network_flat_interface"]:
 			base_interface => $novaconfig["network_flat_interface_name"],
 			vlan_id => $novaconfig["network_flat_interface_vlan"],
