@@ -3402,6 +3402,26 @@ class accounts {
         }
     }
 
+    # RT 6785
+    class phuedx inherits baseaccount {
+        $username = 'phuedx'
+        $realname = 'Sam Smith'
+        $uid      = 3926
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'samsmith@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC9+TJfrksUVwMxt5Oj6NZxacj3UyKQNN+J48r7nF2SSVoH3hOLpXLB5Vep09X2bxyH+1AsqGQKGLW8a5DSTcEhLQ5Rc01GmaV461e51lxJoRRlDtCI6+sqBJRstZVWUrxYeAjAhaif0CWmepySMWytrFrLJuTQ08L+R4XH9uXxWfE+qY6KBjrrOGKS+98E13vYlxegxpctz729ZC0jDrikSNX47lu5us5OTMotaYPOu/lFYO8RUmqQnGNMjoKJjKQJclDZUp9fV3YWPW9XtJR6z1CACJIqng0501bWulMsjw/nWySoJLrh4H99KeLUVSiEWibupoTI6FKO2PC0vrzF',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3508,6 +3528,7 @@ class admins::mortals {
 	include accounts::olivneh # renamed to 'ori'
 	include accounts::pdhanda # access revoked
 	include accounts::pgehres
+	include accounts::phuedx  # granted per RT 6785
 	include accounts::raindrift # access revoked per RT 3088
 	include accounts::reedy
 	include accounts::rmoen
