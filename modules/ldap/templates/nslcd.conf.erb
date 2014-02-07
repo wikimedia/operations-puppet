@@ -33,12 +33,12 @@ tls_cacertdir /etc/ssl/certs
 tls_cacertfile /etc/ssl/certs/<%= ldapconfig["ca"] %>
 
 
-<% if scope.function_versioncmp([lsbdistrelease, "12.04"]) >= 0 %># Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
+<% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %># Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
 validnames /^[a-z][a-z0-9_-]*$/i<% end %>
 
 # Group mapping for sudo-ldap.
-<% if scope.function_versioncmp([lsbdistrelease, "12.04"]) < 0 %>map group uniquemember member<% end %>
+<% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) < 0 %>map group uniquemember member<% end %>
 <% if realm == "labs" %>map passwd loginshell "/bin/bash"<% end %>
 
 pagesize <%= ldapconfig["pagesize"] %>
-<% if scope.function_versioncmp([lsbdistrelease, "12.04"]) >= 0 %>nss_min_uid <%= ldapconfig["nss_min_uid"] %><% end %>
+<% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %>nss_min_uid <%= ldapconfig["nss_min_uid"] %><% end %>
