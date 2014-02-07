@@ -95,14 +95,6 @@ class deployment::salt_master(
         require => [File[$returner_dir]],
     }
 
-    file { "${module_dir}/parsoid.py":
-        source  => 'puppet:///modules/deployment/modules/parsoid.py',
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        require => [File[$module_dir]],
-    }
-
     file { "${module_dir}/mwprof.py":
         source  => 'puppet:///modules/deployment/modules/mwprof.py',
         mode    => '0555',
