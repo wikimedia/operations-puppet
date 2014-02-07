@@ -363,12 +363,15 @@ class role::nova::compute {
 	include role::nova::wikiupdates,
  		role::nova::common
 
-	interface::tagged { $novaconfig["network_flat_interface"]:
-		base_interface => $novaconfig["network_flat_interface_name"],
-		vlan_id => $novaconfig["network_flat_interface_vlan"],
-		method => "manual",
-		up => 'ip link set $IFACE up',
-		down => 'ip link set $IFACE down',
+        # Havana uses neutron -- neutron roles configure their own interfaces.
+	if ( $openstack_version != "havana" ) {
+		interface::tagged { $novaconfig["network_flat_interface"]:
+			base_interface => $novaconfig["network_flat_interface_name"],
+			vlan_id => $novaconfig["network_flat_interface_vlan"],
+			method => "manual",
+			up => 'ip link set $IFACE up',
+			down => 'ip link set $IFACE down',
+		}
 	}
 
 	class { "openstack::compute-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
