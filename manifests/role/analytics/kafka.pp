@@ -171,5 +171,30 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         critical    => ':1000.0',
         require     => Class['::kafka::server::jmxtrans'],
     }
-}
 
+    # Alert if any Kafka has under replicated partitions.
+    # If it does, this means a broker replica is falling behind
+    # and will be removed from the ISR.
+    monitor_ganglia { 'kafka-broker-UnderReplicatedPartitions':
+        description => 'Kafka Broker Under Replicated Partitions',
+        metric      => 'kafka.server.ReplicaManager.UnderReplicatedPartitions.Value',
+        # Any under replicated partitions are bad.
+        # Over 10 means (probably) that at least an entire topic
+        # is under replicated.
+        warning     => '1',
+        critical    => '10',
+        require     => Class['::kafka::server::jmxtrans'],
+    }
+
+    # Alert if any Kafka Broker replica lag is too high
+    monitor_ganglia { 'kafka-broker-Replica-MaxLag':
+        description => 'Kafka Broker Replica Lag',
+        metric      => 'kafka.server.ReplicaFetcherManager.Replica-MaxLag.Value',
+        # As of 2014-02 replag could catch up at more than 1000 msgs / sec,
+        # (probably more like 2 or 3 K / second). At that rate, 1M messages
+        # behind should catch back up in at least 30 minutes.
+        warning     => '1000000',
+        critical    => '5000000',
+        require     => Class['::kafka::server::jmxtrans'],
+    }
+}
