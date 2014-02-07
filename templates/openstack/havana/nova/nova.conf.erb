@@ -64,8 +64,8 @@ vnc_keymap=en-us
 vnc_password=None
 vnc_port=5900
 vnc_port_total=10000
-vncserver_listen=<%= novaconfig['my_ip'] %>
-vncserver_proxyclient_address=<%= novaconfig['controller_address'] %>
+vncserver_listen=0.0.0.0
+vncserver_proxyclient_address=<%= novaconfig['my_ip'] %>
 
 
 # Settings for wikistatus, the plugin that updates OSM with instance status:
