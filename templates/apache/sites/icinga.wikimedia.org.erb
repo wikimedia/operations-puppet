@@ -20,7 +20,7 @@ Alias /icinga /usr/share/icinga/htdocs
 	ServerAlias neon.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 	SSLEngine On
-	SSLProtocol -ALL +SSLv3 +TLSv1
+	SSLProtocol -ALL +SSLv3 +TLSv1 +TLSv1.1 +TLSv1.2
 	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
 	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/private/icinga.wikimedia.org.pem
@@ -70,7 +70,7 @@ Alias /icinga /usr/share/icinga/htdocs
 <VirtualHost *:443>
 	ServerName icinga-admin.wikimedia.org
 	SSLEngine On
-	SSLProtocol -ALL +SSLv3 +TLSv1
+	SSLProtocol -ALL +SSLv3 +TLSv1 +TLSv1.1 +TLSv1.2
 	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
 	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/private/star.wikimedia.org.pem

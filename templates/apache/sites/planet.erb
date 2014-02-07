@@ -4,7 +4,7 @@
 <VirtualHost *:443>
 	ServerName planet.<%= scope.lookupvar('misc::planet-venus::planet_domain_name') %>
 	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
+	SSLProtocol -ALL +SSLv3 +TLSv1 +TLSv1.1 +TLSv1.2
 	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
 	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/certs/star.planet.<%= scope.lookupvar('misc::planet-venus::planet_domain_name') %>.pem
