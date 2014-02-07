@@ -7,7 +7,7 @@
 class mysql_wmf(
     $mariadb = false,
     ) {
-    nrpe::monitor_service { 'mysql disk space':
+    nrpe::monitor_service { 'mysql_disk_space':
         description   => 'MySQL disk space',
         nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e',
         critical      => true,
