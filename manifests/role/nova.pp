@@ -148,6 +148,17 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 		glance_host => $controller_hostname,
 		rabbit_host => $controller_hostname,
 		cc_host => $controller_hostname,
+		network_flat_interface => $realm ? {
+			"production" => "eth1.1118",
+			"labs" => "eth0.1118",
+		},
+		network_flat_interface_name => $realm ? {
+			"production" => "eth1",
+			"labs" => "eth0",
+		},
+		network_flat_interface_vlan => "1118",
+		flat_network_bridge => "br1118",
+		network_public_interface => "eth0",
 		network_host => $realm ? {
 			"production" => "10.64.20.13",
 			"labs" => "127.0.0.1",
