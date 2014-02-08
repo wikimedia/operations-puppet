@@ -2613,6 +2613,8 @@ node "labnet1001.eqiad.wmnet" {
 
     if $use_neutron == true {
         include role::neutron::nethost
+    } else {
+        include role::nova::network
     }
 }
 
