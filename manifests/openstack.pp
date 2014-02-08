@@ -406,7 +406,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             mode => '0644',
             owner => 'root',
             group => 'root',
-            content => template('openstack/common/controller/ports-wikitech.conf.erb'),
+            source => 'puppet:///files/openstack/controller/ports-wikitech.conf',
     }
 
     cron {
