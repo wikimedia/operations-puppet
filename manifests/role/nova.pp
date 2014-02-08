@@ -339,6 +339,18 @@ class role::nova::network {
 		}
 	}
 
+	if ($::site == "eqiad") {
+		interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
+
+		interface::tagged { "eth4.1118":
+			base_interface => "eth4",
+			vlan_id => "1118",
+			method => "manual",
+			up => 'ip link set $IFACE up',
+			down => 'ip link set $IFACE down',
+		}
+	}
+
 	class { "openstack::network-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 }
 
