@@ -682,6 +682,18 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
         require => Package["dnsmasq"];
     }
 
+    if ( $openstack_version == 'havana' ) {
+        package { 'nova-api-metadata':
+            ensure => present,
+        }
+
+        service { "nova-api-metadata":
+            ensure => running,
+            subscribe => File['/etc/nova/nova.conf'],
+            require => Package["nova-api-metadata"];
+        }
+    }
+
     sysctl::parameters { 'openstack':
         values => {
             # Turn off IP filter
