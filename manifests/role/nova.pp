@@ -208,7 +208,15 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 		keystone_auth_protocol => $keystoneconfig["auth_protocol"],
 		keystone_auth_port => $keystoneconfig["auth_port"],
 	}
-	$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig )
+	if ( $::hostname == "labnet1001" ) {
+		$networkconfig = {
+			network_flat_interface =>  "eth4.1118",
+			network_flat_interface_name => "eth4",
+		}
+		$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig, $networkconfig )
+	} else {
+		$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig )
+	}
 }
 
 class role::nova::common {
