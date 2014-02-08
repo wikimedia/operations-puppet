@@ -3362,6 +3362,26 @@ class accounts {
         }
     }
 
+    # RT 6731
+    class hoo inherits baseaccount {
+        $username = 'hoo'
+        $realname = 'Marius Hoch'
+        $uid      = 2133
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'hoch_m@marius-notebook':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQCcNLT7ND174wiCEzvGm3xVNyhn/PiBURvMD5SofUN2sY505IY2+X2tayZl+ASp3fqRxMXRJS3UcT3Pi3bI2i3RNjCJCryx4YL09w/KcuhsJjGgRIdV9o+ZLjD3V0+B0xt/igTQwxq3UepQzzZIbGGkRf3iJVRFqjmdW8iwg49MMG0hsmu6dTvf3lGLgm2pihbXYIDDTCOAFhpDjGkLGeygp9tymAnxByUDyRW5sclu0Q9ftkCKlRwj79gFP4f9UeroOXG2UOqB+E0nc/9HyX5lGbGU54Q35iwAczWf0taw4lGXwxZfBWwsai9eGzt+4JlPwf/s/8gA7KWcz3LS/qKja8/xhcOcUgr+B/Lv3LgwutgCMYmORDtEQgzXhc8IDABZp6kb7wSYzxEQ/c2JhzPub257+l3r1WPIZKvi6DKHznHE+4lHsD8G0zzW9ZRyrchn4KXFiUzSSaqdvoT6rb1zV5UANIrlz6ndPSgLkra/dwinru1WzwJDZtBWMaP9GVCOSWxWWFwS0PEqo9FOj/exVgEU2NiqzhKZ3Zi4dbJOB5S6h/oTXf0zHtULclXgnd+S8Z86oXjcJmh61LmOVkETEc/ydZnw5P9AOs1Xq7FTDQtCzZziahjRgZcsPaJz0m026tR3qEI3AVulQ2kcuj5QVx1ZO5ogAjeCxvHLV4FQWw==',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3466,6 +3486,7 @@ class admins::mortals {
 	include accounts::nikerabbit
 	include accounts::nimishg # revoked
 	include accounts::olivneh # renamed to 'ori'
+	include accounts::hoo # RT 6731
 	include accounts::pdhanda # access revoked
 	include accounts::pgehres
 	include accounts::raindrift # access revoked per RT 3088
