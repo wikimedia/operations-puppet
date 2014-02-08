@@ -3362,6 +3362,26 @@ class accounts {
         }
     }
 
+    # RT 6731
+    class hoo inherits baseaccount {
+        $username = 'hoo'
+        $realname = 'Marius Hoch'
+        $uid      = 2133
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'hooman-wmf-production':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'XXXXXXX',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3497,6 +3517,7 @@ class admins::restricted {
 	include accounts::dsc # access revoked
 	include accounts::erik
 	include accounts::ezachte
+	include accounts::hoo # RT 6731
 	include accounts::jamesofur
 	include accounts::khorn
 	include accounts::mgrover # RT 4600
