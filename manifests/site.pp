@@ -990,13 +990,6 @@ node "gallium.wikimedia.org" {
     }
 }
 
-node "harmon.pmtpa.wmnet" {
-    $cluster = "misc"
-
-    include standard,
-        admins::roots
-}
-
 node "helium.eqiad.wmnet" {
     include standard,
         role::poolcounter,
