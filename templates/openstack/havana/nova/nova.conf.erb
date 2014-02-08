@@ -16,7 +16,6 @@ sql_connection=mysql://<%= novaconfig["db_user"] %>:<%= novaconfig["db_pass"] %>
 image_service=nova.image.glance.GlanceImageService
 s3_host=<%= novaconfig["glance_host"] %>
 glance_api_servers=<%= novaconfig["glance_host"] %>:9292
-rabbit_host=<%= novaconfig["rabbit_host"] %>
 cc_host=<%= novaconfig["cc_host"] %>
 network_host=<%= novaconfig["network_host"] %>
 ec2_url=http://<%= novaconfig["api_host"] %>:8773/services/Cloud
@@ -42,6 +41,12 @@ dhcp_lease_time=86400
 # timeout expired leases after 48 hours
 fixed_ip_disassociate_timeout=172800
 iscsi_helper=tgtadm
+
+rabbit_host=<%= novaconfig["rabbit_host"] %>
+rabbit_port = 5672
+rabbit_use_ssl = false
+rabbit_userid = guest
+rabbit_password = guest
 
 <% if novaconfig["use_neutron"] -%>
 # network/neutron settings
