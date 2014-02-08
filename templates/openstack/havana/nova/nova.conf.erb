@@ -57,6 +57,7 @@ firewall_driver = nova.virt.libvirt.firewall.IptablesFirewallDriver
 neutron_metadata_proxy_shared_secret = <%= novaconfig["metadata_pass"] %>
 service_neutron_metadata_proxy = true
 <% else -%>
+network_api_class=nova.network.api.API
 flat_network_dhcp_start=<%= novaconfig["dhcp_start"] %>
 network_manager=nova.network.manager.FlatDHCPManager
 flat_interface=<%= novaconfig["network_flat_interface"] %>
