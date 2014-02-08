@@ -400,6 +400,15 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             source => "puppet:///files/openstack/mw-xml.sh";
     }
 
+    file { "/etc/apache2/conf.d/ports-wikitech.conf":
+            ensure => present,
+            require => [ Package[php5] ],
+            mode => 0644,
+            owner => root,
+            group => root,
+            content => template("openstack/common/controller/ports-wikitech.conf.erb"),
+    }
+
     cron {
         "run-jobs":
             user => mwdeploy,
