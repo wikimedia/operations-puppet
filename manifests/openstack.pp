@@ -672,14 +672,26 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
     service { "nova-network":
         ensure => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require => Package["nova-network"];
+        require => Package['nova-network'];
     }
 
     # dnsmasq is run manually by nova-network, we don't want the service running
     service { "dnsmasq":
         enable => false,
         ensure => stopped,
-        require => Package["dnsmasq"];
+        require => Package['dnsmasq'];
+    }
+
+    if ( $openstack_version == 'havana' ) {
+        package { 'nova-api-metadata':
+            ensure => present,
+        }
+
+        service { "nova-api-metadata":
+            ensure => running,
+            subscribe => File['/etc/nova/nova.conf'],
+            require => Package['nova-api-metadata'];
+        }
     }
 
     sysctl::parameters { 'openstack':
