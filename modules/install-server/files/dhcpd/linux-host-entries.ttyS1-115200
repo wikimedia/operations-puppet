@@ -1290,11 +1290,6 @@ host hafnium {
 	fixed-address hafnium.wikimedia.org;
 }
 
-host harmon {
-	hardware ethernet 84:2b:2b:06:36:4f;
-	fixed-address harmon.pmtpa.wmnet;
-}
-
 host helium {
 	hardware ethernet 78:2b:cb:09:0f:c8;
 	fixed-address helium.eqiad.wmnet;
