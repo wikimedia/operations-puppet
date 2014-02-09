@@ -80,17 +80,6 @@ class role::deployment::config {
         'grain'    => 'gdash',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/gdash',
     },
-    'parsoid/Parsoid'                => {
-        'grain'                 => 'parsoid',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/Parsoid',
-        'checkout_module_calls' => {
-            'parsoid.config_symlink'  => ['__REPO__'],
-        },
-        'service_name'          => 'parsoid',
-    },
-    'parsoid/config'                 => {
-        'grain'                 => 'parsoid',
-    },
     'parsoid/deploy'                => {
         'grain'                 => 'parsoid',
         'upstream'              => 'https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy',
