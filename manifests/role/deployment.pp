@@ -1,14 +1,7 @@
 # vim: sw=2 ts=2 et
 
-# repo not showing up on tin even after puppet has run on
-# sockpuppet, palladium and tin? one possible explanation:
-# Ryan_Lane: https://gerrit.wikimedia.org/r/operations/ocg-config.git
-# Ryan_Lane: ^^ that's wrong
-# Ryan_Lane: just use https://gerrit.wikimedia.org/r/operations/ocg-config
-# Ryan_Lane: I ran this on tin: salt-call deploy.deployment_server_init
-# Ryan_Lane: to see that
-# Ryan_Lane: it showed a git exit code of 128
-
+# Configuration info: https://wikitech.wikimedia.org/wiki/Trebuchet#Adding_a_new_repo
+# Troubleshooting: https://wikitech.wikimedia.org/wiki/Trebuchet#Troubleshooting
 class role::deployment::config {
   $repo_config = {
     'integration/kss' => {
@@ -155,46 +148,6 @@ class role::deployment::salt_masters::production {
   }
 }
 
-class role::deployment::salt_masters::labs {
-  $deployment_config = {
-    'parent_dir' => '/srv/deployment',
-    'servers'        => {
-        'pmtpa' => 'i-00000390.pmtpa.wmflabs',
-        'eqiad' => 'i-00000390.pmtpa.wmflabs',
-    },
-    'redis'          => {
-      'host' => 'i-00000390.pmtpa.wmflabs',
-      'port' => '6379',
-      'db'   => '0',
-    },
-  }
-  class { '::role::deployment::config': }
-  class { 'deployment::salt_master':
-    repo_config       => $role::deployment::config::repo_config,
-    deployment_config => $deployment_config,
-  }
-}
-
-class role::deployment::salt_masters::sartoris {
-  $deployment_config = {
-    'parent_dir' => '/srv/deployment',
-    'servers'        => {
-        'pmtpa' => 'i-00000822.pmtpa.wmflabs',
-        'eqiad' => 'i-00000822.pmtpa.wmflabs',
-    },
-    'redis'          => {
-      'host' => 'i-00000822.pmtpa.wmflabs',
-      'port' => '6379',
-      'db'   => '0',
-    },
-  }
-  class { '::role::deployment::config': }
-  class { 'deployment::salt_master':
-    repo_config       => $role::deployment::config::repo_config,
-    deployment_config => $deployment_config,
-  }
-}
-
 class role::deployment::deployment_servers::common {
   # Can't include this while scap is present on tin:
   # include misc::deployment::scripts
@@ -251,46 +204,42 @@ class role::deployment::deployment_servers::production {
   }
 }
 
-class role::deployment::deployment_servers::labs {
-  include role::deployment::deployment_servers::common
-
-  apache::vhost { "i-00000390.pmtpa.wmflabs":
-    priority		=> 10,
-    vhost_name		=> "10.4.0.58",
-    port		=> 80,
-    docroot		=> "/srv/deployment",
-    docroot_owner	=> "sartoris",
-    docroot_group	=> "project-deployment-prep",
-    docroot_dir_allows  => ["10.4.0.0/16"],
-    serveradmin		=> "noc@wikimedia.org",
-    configure_firewall 	=> false,
+class role::deployment::salt_masters::labs {
+  # Enable multiple test environments within a single project
+  if ( $::deployment_server_override != undef ) {
+    $deployment_server = $::deployment_server_override
+  } else {
+    $deployment_server = "${::instanceproject}-deploy.eqiad.wmflabs"
   }
-  class { "redis":
-    dir => "/srv/redis",
-    maxmemory => "500Mb",
-    monitor => "false",
-  }
-  sudo_group { "project_deployment_prep_deployment_server":
-    privileges => [
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data",
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *",
-    ],
-    group => "project-deployment-prep",
+  $deployment_config = {
+    'parent_dir' => '/srv/deployment',
+    'servers'        => {
+        'pmtpa' => $deployment_server,
+        'eqiad' => $deployment_server,
+    },
+    'redis'          => {
+      'host' => $deployment_server,
+      'port' => '6379',
+      'db'   => '0',
+    },
   }
 }
 
-class role::deployment::deployment_servers::sartoris {
+class role::deployment::deployment_servers::labs {
   include role::deployment::deployment_servers::common
 
-  apache::vhost { "i-00000822.pmtpa.wmflabs":
+  # Enable multiple test environments within a single project
+  if ( $::deployment_server_override != undef ) {
+    $deployment_server = $::deployment_server_override
+  } else {
+    $deployment_server = "${::instanceproject}-deploy.eqiad.wmflabs"
+  }
+  apache::vhost { $deployment_server:
     priority		=> 10,
-    vhost_name		=> "10.4.1.19",
     port		=> 80,
     docroot		=> "/srv/deployment",
-    docroot_owner	=> "sartoris",
-    docroot_group	=> "project-sartoris",
+    docroot_owner	=> "${::instanceproject}",
+    docroot_group	=> "project-${::instanceproject}",
     docroot_dir_allows  => ["10.4.0.0/16"],
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
@@ -300,14 +249,14 @@ class role::deployment::deployment_servers::sartoris {
     maxmemory => "500Mb",
     monitor => "false",
   }
-  sudo_group { "project_deployment_prep_deployment_server":
+  sudo_group { "project_${::instanceproject}_deployment_server":
     privileges => [
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *",
     ],
-    group => "project-sartoris",
+    group => "project-${::instanceproject}",
   }
 }
 
