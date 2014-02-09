@@ -90,11 +90,12 @@ def get_config(repo):
 
 
 def deployment_server_init():
+    ret_status = 0
     serv = _get_redis_serv()
     is_deployment_server = __grains__.get('deployment_server')
     hook_dir = __grains__.get('deployment_global_hook_dir')
     if not is_deployment_server:
-        return 0
+        return ret_status
     deploy_user = __grains__.get('deployment_repo_user')
     repo_config = __pillar__.get('repo_config')
     for repo in repo_config:
@@ -120,7 +121,8 @@ def deployment_server_init():
             status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
                                              umask=002)
             if status != 0:
-                return status
+                ret_status = 1
+                continue
             # git clone does ignores umask and does explicit mkdir with 755
             __salt__['file.set_mode'](config['location'], 2775)
             # Set the repo name in the repo's config
@@ -128,8 +130,9 @@ def deployment_server_init():
             status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
                                              runas=deploy_user, umask=002)
             if status != 0:
-                return status
-    return 0
+                ret_status = 1
+                continue
+    return ret_status
 
 
 def sync_all():
