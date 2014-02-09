@@ -116,10 +116,25 @@ def deployment_server_init():
             if config['upstream']:
                 cmd = '/usr/bin/git clone %s/.git %s' % (config['upstream'],
                                                          config['location'])
+                status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
+                                                 umask=002)
+                if status != 0:
+                    ret_status = 1
+                    continue
+                # We don't check the checkout_submodules config flag here
+                # on purpose. The deployment server should always have a
+                # fully recursive clone and minions should decide whether
+                # or not they'll use the submodules. This avoids consistency
+                # issues in the case where submodules are later enabled, but
+                # someone forgets to check them out.
+                cmd = '/usr/bin/git submodule update --init --recursive'
+                status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
+                                                 umask=002,
+                                                 cwd=config['location'])
             else:
                 cmd = '/usr/bin/git init %s' % (config['location'])
-            status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
-                                             umask=002)
+                status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
+                                                 umask=002)
             if status != 0:
                 ret_status = 1
                 continue
