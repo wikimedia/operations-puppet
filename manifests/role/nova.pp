@@ -150,15 +150,15 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 		rabbit_host => $controller_hostname,
 		cc_host => $controller_hostname,
 		network_flat_interface => $realm ? {
-			"production" => "eth1.1118",
+			"production" => "eth1.1102",
 			"labs" => "eth0.1118",
 		},
 		network_flat_interface_name => $realm ? {
 			"production" => "eth1",
 			"labs" => "eth0",
 		},
-		network_flat_interface_vlan => "1118",
-		flat_network_bridge => "br1118",
+		network_flat_interface_vlan => "1102",
+		flat_network_bridge => "br1102",
 		network_public_interface => "eth0",
 		network_host => $realm ? {
 			"production" => "10.64.20.13",
@@ -210,7 +210,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 	}
 	if ( $::hostname == "labnet1001" ) {
 		$networkconfig = {
-			network_flat_interface =>  "eth4.1118",
+			network_flat_interface =>  "eth4.1102",
 			network_flat_interface_name => "eth4",
 		}
 		$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig, $networkconfig )
@@ -342,9 +342,9 @@ class role::nova::network {
 	if ($::site == "eqiad") {
 		interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
 
-		interface::tagged { "eth4.1118":
+		interface::tagged { "eth4.1102":
 			base_interface => "eth4",
-			vlan_id => "1118",
+			vlan_id => "1102",
 			method => "manual",
 			up => 'ip link set $IFACE up',
 			down => 'ip link set $IFACE down',
