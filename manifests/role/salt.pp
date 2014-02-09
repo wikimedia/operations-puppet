@@ -26,6 +26,7 @@ class role::salt::masters::production {
 
 }
 
+# A salt master that manages all labs minions
 class role::salt::masters::labs {
 
 	$salt_state_roots = {"base"=>["/srv/salt"]}
@@ -65,7 +66,8 @@ class role::salt::masters::labs {
 
 }
 
-class role::salt::masters::sartoris {
+# A salt master manages minions within a project
+class role::salt::masters::labs::project_master {
 
 	$salt_state_roots = {"base"=>["/srv/salt"]}
 	$salt_file_roots = {"base"=>["/srv/salt"]}
@@ -75,8 +77,11 @@ class role::salt::masters::sartoris {
 
 	class { "salt::master":
 		salt_runner_dirs    => ["/srv/runners"],
+                # For simplicity of test/dev we trust all of labs
+                # to run deploy module calls, but rely on security groups
+                # to secure this.
 		salt_peer_run       => {
-			"i-00000822.pmtpa.wmflabs" => ['deploy.*'],
+			".*.pmtpa.wmflabs" => ['deploy.*'],
 		},
 		salt_file_roots     => $salt_file_roots,
 		salt_pillar_roots   => $salt_pillar_roots,
