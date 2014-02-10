@@ -18,9 +18,9 @@ class role::coredb::config {
 		},
 		's2' => {
 			'hosts' => { 'pmtpa' => [ 'db69' ],
-				'eqiad' => [ 'db1002', 'db1009', 'db1018', 'db1034', 'db1036', 'db1060' ] },
+				'eqiad' => [ 'db1002', 'db1009', 'db1018', 'db1024', 'db1034', 'db1036', 'db1060' ] },
 			'primary_site' => $::mw_primary,
-			'masters' => { 'pmtpa' => 'db69', 'eqiad' => 'db1036' },
+			'masters' => { 'pmtpa' => 'db69', 'eqiad' => 'db1024' },
 			'snapshot' => [ 'db1018' ],
 			'no_master' => [ 'db1002', 'db1018' ]
 		},
