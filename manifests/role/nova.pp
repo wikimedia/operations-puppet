@@ -210,8 +210,8 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 	}
 	if ( $::hostname == "labnet1001" ) {
 		$networkconfig = {
-			network_flat_interface =>  "eth4.1102",
-			network_flat_interface_name => "eth4",
+			network_flat_interface =>  "eth1.1102",
+			network_flat_interface_name => "eth1",
 		}
 		$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig, $networkconfig )
 	} else {
@@ -342,8 +342,8 @@ class role::nova::network {
 	if ($::site == "eqiad") {
 		interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
 
-		interface::tagged { "eth4.1102":
-			base_interface => "eth4",
+		interface::tagged { "eth1.1102":
+			base_interface => "eth1",
 			vlan_id => "1102",
 			method => "manual",
 			up => 'ip link set $IFACE up',
