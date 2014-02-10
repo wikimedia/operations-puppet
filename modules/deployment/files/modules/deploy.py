@@ -286,20 +286,26 @@ def fetch(repo):
 
 
 def _fetch_location(config, location, shadow=False):
-    cmd = '/usr/bin/git fetch --all'
+    cmd = '/usr/bin/git fetch'
+    status = __salt__['cmd.retcode'](cmd, location)
+    if status != 0:
+        return status
+    cmd = '/usr/bin/git fetch --tags'
     status = __salt__['cmd.retcode'](cmd, location)
     if status != 0:
         return status
 
-    # TODO: update .gitmodules recursively, then run submodule commands
-    #       recursively.
     if config['checkout_submodules']:
         ret = _update_gitmodules(config, location, shadow)
         if ret != 0:
             return ret
 
-        # fetch all submodules and tag for submodules
-        cmd = '/usr/bin/git submodule foreach --recursive git fetch --all'
+        # fetch all submodules and tags for submodules
+        cmd = '/usr/bin/git submodule foreach --recursive git fetch'
+        status = __salt__['cmd.retcode'](cmd, location)
+        if status != 0:
+            return status
+        cmd = '/usr/bin/git submodule foreach --recursive git fetch --tags'
         status = __salt__['cmd.retcode'](cmd, location)
         if status != 0:
             return status
