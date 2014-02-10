@@ -6,10 +6,17 @@ class mediawiki::sync {
 	require mediawiki::packages
 	require mediawiki::users::l10nupdate
 
-	# This repository is the staging area for the scap rewrite.
+	file { '/srv/scap':
+		ensure => directory,
+		owner  => 'mwdeploy',
+		group  => 'mwdeploy',
+		mode   => '0755',
+		before => Git::Clone['mediawiki/tools/scap'],
+	}
+
 	git::clone { 'mediawiki/tools/scap':
 		directory => '/srv/scap',
-		owner     => 'root',
+		owner     => 'mwdeploy',
 		group     => 'mwdeploy',
 		mode      => '0775',
 		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/tools/scap.git',
