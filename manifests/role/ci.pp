@@ -188,6 +188,17 @@ class role::ci::slave::labs::common {
       mode   => '0775',
   }
 
+  git::userconfig { '.gitconfig for jenkins-deploy user':
+      homedir  => '/mnt/home/jenkins-deploy',
+      settings => {
+        'user' => {
+          'name'  => 'Wikimedia Jenkins Deploy',
+          'email' => "jenkins-deploy@${::instancename}.${::site}.wmflabs",
+        },  # end of [user] section
+      },  # end of settings
+      require => File['/mnt/home/jenkins-deploy'],
+  }
+
   # The slaves on labs use the `jenkins-deploy` user which is already
   # configured in labs LDAP.  Thus, we only need to install the dependencies
   # needed by the slave agent.
