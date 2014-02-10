@@ -14,6 +14,8 @@ sub vcl_recv {
 		set req.backend = tungsten;
 	} elsif (req.http.Host == "logstash.wikimedia.org"){
 		set req.backend = logstash;
+	} elsif (req.http.Host == "releases.wikimedia.org") {
+		set req.backend = caesium;
 	} elsif (req.http.Host == "scholarships.wikimedia.org") {
 		set req.backend = zirconium;
 	} else {
