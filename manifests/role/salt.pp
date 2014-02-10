@@ -7,7 +7,6 @@ class role::salt::masters::production {
 	$salt_returner_roots = {"base"=>["/srv/salt/_returners"]}
 
 	class { "salt::master":
-		salt_version        => "0.17.1-1${lsbdistcodename}",
 		salt_runner_dirs    => ["/srv/runners"],
 		salt_peer_run       => {
 			"tin.eqiad.wmnet" => ['deploy.*'],
@@ -36,7 +35,6 @@ class role::salt::masters::labs {
 	$salt_returner_roots = {"base"=>["/srv/salt/_returners"]}
 
 	class { "salt::master":
-		salt_version        => "0.17.1-1${lsbdistcodename}",
 		salt_runner_dirs    => ["/srv/runners"],
 		salt_peer_run       => {
 			"i-00000390.pmtpa.wmflabs" => ['deploy.*'],
@@ -76,7 +74,6 @@ class role::salt::masters::sartoris {
 	$salt_returner_roots = {"base"=>["/srv/salt/_returners"]}
 
 	class { "salt::master":
-		salt_version        => "0.17.1-1${lsbdistcodename}",
 		salt_runner_dirs    => ["/srv/runners"],
 		salt_peer_run       => {
 			"i-00000822.pmtpa.wmflabs" => ['deploy.*'],
@@ -140,7 +137,6 @@ class role::salt::minions {
 	}
 
 	class { "salt::minion":
-		salt_version       => "0.17.1-1${lsbdistcodename}",
 		salt_master        => $salt_master,
 		salt_client_id     => $salt_client_id,
 		salt_grains        => $salt_grains,
