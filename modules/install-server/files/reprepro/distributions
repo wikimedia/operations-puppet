@@ -62,7 +62,7 @@ Label: Wikimedia
 Suite: trusty-wikimedia
 Codename: trusty-wikimedia
 Version: 14.04
-Architectures: source amd64
+Architectures: source amd64 i386
 Components: main universe non-free
 UDebComponents: main
 Update: hwraid
