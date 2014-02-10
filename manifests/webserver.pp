@@ -60,10 +60,11 @@ class webserver::php5( $ssl = 'false' ) {
 
 	include webserver::base
 
-	package { [ "apache2-mpm-prefork", "libapache2-mod-php5" ]:
-		ensure => present;
-	}
-
+    if ! defined( Package['apache2-mpm-prefork'] ) {
+	    package { [ "apache2-mpm-prefork", "libapache2-mod-php5" ]:
+		    ensure => present;
+	    }
+    }
 	if $ssl == true {
 		apache_module { ssl: name => "ssl" }
 	}
@@ -146,11 +147,12 @@ class webserver::apache2::rpaf {
 
 class webserver::apache {
 	class packages($mpm="prefork") {
+    if ! defined( Package['apache2-mpm-prefork'] ) {
 		package { ["apache2", "apache2-mpm-${mpm}"]:
 			ensure => present;
 		}
 	}
-
+}
 	# TODO: documentation of parameters
 	define module {
 		Class[webserver::apache::packages] -> Webserver::Apache::Module[$title] -> Class[webserver::apache::config]
