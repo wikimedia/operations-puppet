@@ -176,7 +176,7 @@ class role::ci::slave::labs::common {
   # bug 61144
   file { '/mnt/home':
     ensure => directory,
-    user   => 'root',
+    owner  => 'root',
     group  => 'root',
     mode   => '0755',
   }
