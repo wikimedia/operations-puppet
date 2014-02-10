@@ -1,7 +1,6 @@
 class base::standard-packages {
 
     $packages = [
-        'wikimedia-base',
         'wipe',
         'tzdata',
         'zsh-beta',

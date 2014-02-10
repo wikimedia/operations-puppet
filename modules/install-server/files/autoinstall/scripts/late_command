@@ -8,9 +8,9 @@ mkdir /target/root/.ssh
 wget -O /target/root/.ssh/authorized_keys http://apt.wikimedia.org/autoinstall/ssh/authorized_keys
 chmod go-rwx /target/root/.ssh/authorized_keys
 
-# Install wikimedia-base which pulls in a lot of other stuff, and
-# openssh-server just to be sure
-apt-install wikimedia-base openssh-server puppet
+# install openssh-server to make the machine accessible
+# and puppet because we'll need it soon anyway
+apt-install openssh-server puppet
 
 # Change /etc/motd to read the auto-install date
 chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
@@ -18,7 +18,7 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Disable IPv6 privacy extensions before the first boot
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
 
-# Install patched intel ixgbe kernel module
-if [ -d /sys/module/ixgbe ]; then
+# Install patched intel ixgbe kernel module (precise only)
+if grep -qs '3\.6' /sys/module/ixgbe/version; then
 	apt-install ixgbe-dkms
 fi
