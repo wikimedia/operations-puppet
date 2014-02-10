@@ -6,6 +6,7 @@ class ssh::server {
     service { 'ssh':
         ensure    => running,
         subscribe => File['/etc/ssh/sshd_config'];
+        provider  => 'upstart',
     }
 
     if ($::realm == 'labs') {
