@@ -1,6 +1,6 @@
 # logging (udp2log) servers
 
-# base node definition from which logging nodes (emery, locke, oxygen, etc)
+# base node definition from which logging nodes (emery, oxygen, etc)
 # inherit. Note that there is no real node named "base_analytics_logging_node".
 # This is done as a base node primarily so that we can override the
 # $nagios_contact_group variable.

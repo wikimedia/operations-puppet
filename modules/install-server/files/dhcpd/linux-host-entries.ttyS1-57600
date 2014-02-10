@@ -58,11 +58,6 @@ host linne {
 	fixed-address linne.wikimedia.org;
 }
 
-host locke {
-	hardware ethernet 00:18:8b:44:6c:d0;
-	fixed-address locke.wikimedia.org;
-}
-
 host lvs1 {
 	hardware ethernet 00:1e:c9:ab:80:4e;
 	fixed-address lvs1.wikimedia.org;

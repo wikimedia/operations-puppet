@@ -1037,24 +1037,6 @@ node "hooft.esams.wikimedia.org" {
     class { "ganglia_new::monitor::aggregator": sites => ["esams"] }
 }
 
-# base_analytics_logging_node is defined in role/logging.pp
-
-node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
-    include
-        accounts::dsc,
-        accounts::tstarling,
-        accounts::datasets,
-        accounts::milimetric,
-        accounts::tnegrin,       # RT 5391
-        misc::udp2log::utilities,
-        misc::udp2log
-
-    sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-    # fundraising banner log pipeline (moved to gadolinium)
-    #include misc::fundraising::udp2log_rotation
-}
-
 node "manutius.wikimedia.org" {
     $corerouters = [
         "cr1-sdtpa.wikimedia.org",
