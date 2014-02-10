@@ -1,6 +1,6 @@
 # logging (udp2log) servers
 
-# base node definition from which logging nodes (emery, locke, oxygen, etc)
+# base node definition from which logging nodes (emery, oxygen, etc)
 # inherit. Note that there is no real node named "base_analytics_logging_node".
 # This is done as a base node primarily so that we can override the
 # $nagios_contact_group variable.
@@ -221,8 +221,6 @@ class role::logging::webstatscollector {
     }
 
     # Gzip pagecounts files hourly.
-    # This originally lived as an unpuppetized
-    # cron on locke that ran /a/webstats/scripts/tar.
     cron { 'webstats-dumps-gzip':
         command => "/bin/gzip ${webstats_dumps_directory}/pagecounts-????????-?????? 2> /dev/null",
         minute  => 2,
@@ -231,8 +229,6 @@ class role::logging::webstatscollector {
     }
 
     # Delete webstats dumps that are older than 10 days daily.
-    # This originally lived as an unpuppetized
-    # cron on locke that ran /a/webstats/scripts/purge.
     cron { 'webstats-dumps-delete':
         command => "/usr/bin/find ${webstats_dumps_directory} -maxdepth 1 -type f -mtime +10 -delete",
         minute  => 28,
