@@ -56,3 +56,18 @@ SignWith: default
 DebOverride: deb-override
 Log:
  log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: trusty-wikimedia
+Codename: trusty-wikimedia
+Version: 14.04
+Architectures: source amd64
+Components: main universe non-free
+UDebComponents: main
+Update: hwraid
+Description: Wikimedia specific packages for Ubuntu Trusty Tahr
+SignWith: default
+DebOverride: deb-override
+Log:
+ log

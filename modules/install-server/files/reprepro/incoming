@@ -1,4 +1,4 @@
 Name: default
 IncomingDir: incoming
 TempDir: /tmp
-Allow: hardy-wikimedia karmic-wikimedia lucid-wikimedia lucid-wikimedia-mysql hardy>hardy-wikimedia karmic>karmic-wikimedia lucid>lucid-wikimedia precise>precise-wikimedia
+Allow: hardy-wikimedia lucid-wikimedia lucid-wikimedia-mysql precise-wikimedia trusty-wikimedia hardy>hardy-wikimedia lucid>lucid-wikimedia precise>precise-wikimedia trusty>trusty-wikimedia
