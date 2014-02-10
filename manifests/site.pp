@@ -2541,6 +2541,7 @@ node "virt1000.wikimedia.org" {
         ldap::role::server::labs,
         ldap::role::client::labs,
         role::nova::controller,
+        role::nova::manager,
         role::salt::masters::labs,
         role::deployment::salt_masters::labs
 
