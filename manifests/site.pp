@@ -301,6 +301,13 @@ node "carbon.wikimedia.org" {
         role::installserver
 }
 
+node "caesium.eqiad.wmnet" {
+    $cluster = "misc"
+
+    include standard
+    include role::releases
+}
+
 # cerium,praseodymium, ruthenium and xenon are cassandra test host
 node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
     include standard
