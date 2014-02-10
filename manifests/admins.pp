@@ -2412,7 +2412,7 @@ class accounts {
 
 			ssh_authorized_key  {
 				"haitham":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIEAzIL4+oaq/jC6cUsF/Pd9xwOJQLOXLrhPs825Z5sdlK8jM3rfkKNGiVhvDu8sv2FEjDnOFcaTUrPnsA7QFUM+QkO9U3XfIxnn/CHgXUwUCAvX1/GOuM2bMGKNrzNa+R5qOYYAYE1I0MalQCH2jfdsbe9hEKxS3IygzzmQEsbvMvE=";
