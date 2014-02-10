@@ -170,6 +170,24 @@ class role::ci::slave::labs::common {
     mode   => '0775',
   }
 
+  # Create a homedir for `jenkins-deploy` so it does not ends up being created
+  # on /home which is using GlusterFS on the integration project.  The user is
+  # only LDAP and is not created by puppet
+  # bug 61144
+  file { '/mnt/home':
+    ensure => directory,
+    user   => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+
+  file { '/mnt/home/jenkins-deploy':
+      ensure => directory,
+      owner  => 'jenkins-deploy',
+      group  => 'wikidev',
+      mode   => '0775',
+  }
+
   # The slaves on labs use the `jenkins-deploy` user which is already
   # configured in labs LDAP.  Thus, we only need to install the dependencies
   # needed by the slave agent.
