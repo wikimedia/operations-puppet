@@ -253,11 +253,6 @@ host srv257 {
 	fixed-address srv257.pmtpa.wmnet;
 }
 
-host streber {
-	hardware ethernet 00:1E:C9:E2:74:03;
-	fixed-address streber.wikimedia.org;
-}
-
 host tarin {
 	hardware ethernet 00:26:B9:5C:42:FA;
 	fixed-address tarin.pmtpa.wmnet;

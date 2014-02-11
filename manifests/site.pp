@@ -2336,32 +2336,6 @@ node "stat1002.eqiad.wmnet" {
     include role::analytics::clients
 }
 
-node "streber.wikimedia.org" {
-    system::role { "misc": description => "network monitoring server" }
-
-    include passwords::root,
-        base::resolving,
-        base::sysctl,
-        base::motd,
-        base::vimconfig,
-        base::standard-packages,
-        base::monitoring::host,
-        base::environment,
-        base::platform,
-        ssh,
-        ganglia,
-        ntp::client,
-        role::salt::minions,
-        admins::roots,
-#       misc::torrus,
-        misc::rancid,
-        firewall::builder
-
-    class { "misc::syslog-server": config => "network" }
-
-    install_certificate{ "star.wikimedia.org": }
-}
-
 node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
     $gid=500
     include base,
