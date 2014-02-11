@@ -74,7 +74,8 @@ class role::analytics::users {
         accounts::halfak,    # RT 5836
         accounts::ypanda,    # RT 6103
         accounts::csalvia,   # RT 6664
-        accounts::nuria      # RT 6683
+        accounts::nuria,     # RT 6683
+        accounts::sahar      # RT 6767
 
 
     # NOTE:  If you are filling an RT request for Hadoop access,
