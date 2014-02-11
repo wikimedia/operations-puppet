@@ -3590,6 +3590,8 @@ host rdb1004 {
 host rhodium {
 	hardware ethernet 18:03:73:f1:56:d2;
 	fixed-address rhodium.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host rubidium {
