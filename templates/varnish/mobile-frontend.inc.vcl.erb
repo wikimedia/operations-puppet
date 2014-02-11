@@ -135,7 +135,19 @@ sub vcl_error {
 
 sub vcl_deliver {
 #	unset resp.http.Enable-ESI;
-	unset resp.http.X-CS;
+
+	// All mobile responses need to have the X-CS set if it came from a zero network.
+	// This allows apps to detect when we switch from zero to non-zero and back,
+	// or when the user switches from one network to another and both are zero (multi-sim phones).
+	// The client should constantly check each response for this header, and if it changes,
+	// re-request the partner's message info.
+	// This value is only based on Varnish's zero detection, not the backend processing of any sort
+	// We are in vcl_deliver, so changing it here would not affect the cached object
+	if (req.http.X-CS) {
+		set resp.http.X-CS = req.http.X-CS;
+	} else {
+		unset resp.http.X-CS;
+	}
 
 	if (resp.http.X-Analytics) {
 		# do nothing, MediaWiki has handled X-Analytics
