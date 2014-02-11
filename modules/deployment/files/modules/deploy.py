@@ -12,6 +12,8 @@ import os
 def _get_redis_serv():
     '''
     Return a redis server object
+
+    :rtype: A Redis object
     '''
     deployment_config = __pillar__.get('deployment_config')
     deploy_redis = deployment_config['redis']
@@ -22,6 +24,16 @@ def _get_redis_serv():
 
 
 def _check_in(function, repo):
+    """
+    Private function used for reporting that a function has started.
+    Writes to redis with basic status information.
+
+    :param function: The function being reported on.
+    :type function: str
+    :param repo: The repository being acted on.
+    :type repo: str
+    :rtype: None
+    """
     serv = _get_redis_serv()
     minion = __grains__.get('id')
     timestamp = time.time()
@@ -39,6 +51,16 @@ def _check_in(function, repo):
 
 
 def _map_args(repo, args):
+    """
+    Maps a set of arguments to a predefined set of values. Currently only
+    __REPO__ is support and will be replaced with the repository name.
+
+    :param repo: The repo name used for mapping.
+    :type repo: str
+    :param args: An array of arguments to map.
+    :type args: list
+    :rtype: list
+    """
     arg_map = {'__REPO__': repo}
     mapped_args = []
     for arg in args:
@@ -47,6 +69,14 @@ def _map_args(repo, args):
 
 
 def get_config(repo):
+    """
+    Fetches the configuration for this repo from the pillars and returns
+    a hash with the munged configuration (with defaults and helper config).
+
+    :param repo: The specific repo for which to return config data.
+    :type repo: str
+    :rtype: hash
+    """
     deployment_config = __pillar__.get('deployment_config')
     config = __pillar__.get('repo_config')
     config = config[repo]
@@ -90,6 +120,14 @@ def get_config(repo):
 
 
 def deployment_server_init():
+    """
+    Initializes a set of repositories on the deployment server. This
+    function will only run on the deployment server and will initialize
+    any repository defined in the pillar configuration. This function is
+    safe to call at any point.
+
+    :rtype: int
+    """
     serv = _get_redis_serv()
     is_deployment_server = __grains__.get('deployment_server')
     hook_dir = __grains__.get('deployment_global_hook_dir')
@@ -134,11 +172,20 @@ def deployment_server_init():
 
 def sync_all():
     '''
-    Sync all repositories. If a repo doesn't exist on target, clone as well.
+    Sync all repositories for this minion. If a repo doesn't exist on target,
+    clone it as well. This function will ensure all repositories for the
+    minion are at the current tag as defined by the master and is
+    be safe to call at any point.
 
-    CLI Example::
+    CLI Example (from the master):
 
-        salt -G 'cluster:appservers' deploy.sync_all
+        salt -G 'deployment_target:test' deploy.sync_all
+
+    CLI Example (from a minion):
+
+        salt-call deploy.sync_all
+
+    :rtype: hash
     '''
     repo_config = __pillar__.get('repo_config')
     deployment_target = __grains__.get('deployment_target')
@@ -157,6 +204,23 @@ def sync_all():
 
 
 def _update_gitmodules(config, location, shadow=False):
+    """
+    Finds all .gitmodules in a repository, changes all submodules within them
+    to point to the correct submodule on the deployment server, then runs
+    a submodule sync. This function is in support of recursive submodules.
+
+    In the case we need to update a shadow reference repo, the .gitmodules
+    files will have their submodules point to the reference clone.
+
+    :param config: The config hash for the repo (as pulled from get_config).
+    :type config: hash
+    :param location: The location on the filesystem to find the .gitmodules
+                     files.
+    :type location: str
+    :param shadow: Defines whether or not this is a shadow reference repo.
+    :type shadow: bool
+    :rtype: int
+    """
     gitmodules_list = __salt__['file.find'](location, name='.gitmodules')
     for gitmodules in gitmodules_list:
         gitmodules_dir = os.path.dirname(gitmodules)
@@ -203,6 +267,21 @@ def _update_gitmodules(config, location, shadow=False):
 
 
 def _clone(config, location, tag, shadow=False):
+    """
+    Perform a clone of a repo at a specified location, and
+    do a fetch and checkout of the repo to ensure it's at the
+    current deployment tag.
+
+    :param config: Config hash as fetched from get_config
+    :type config: hash
+    :param location: The location on the filesystem to clone this repo.
+    :type location: str
+    :param tag: The tag to ensure this clone is checked out to.
+    :type tag: str
+    :param shadow: Whether or not this repo is a shadow reference.
+    :type shadow: bool
+    :rtype: int
+    """
     if shadow:
         cmd = '/usr/bin/git clone --reference {0} {1}/.git {2}'
         cmd = cmd.format(config['location'], config['url'], location)
@@ -225,9 +304,17 @@ def fetch(repo):
     '''
     Call a fetch for the specified repo
 
-    CLI Example::
+    CLI Example (from the master):
 
-        salt -G 'cluster:appservers' deploy.fetch 'slot0'
+        salt -G 'deployment_target:test' deploy.fetch 'test/testrepo'
+
+    CLI Example (from the minion):
+
+        salt-call deploy.fetch 'test/testrepo'
+
+    :param repo: The repo on which to perform the fetch.
+    :type repo: str
+    :rtype: hash
     '''
     config = get_config(repo)
 
@@ -286,6 +373,16 @@ def fetch(repo):
 
 
 def _fetch_location(config, location, shadow=False):
+    """
+    Fetch a repo at a specified location. Optionally define this repo as a
+    shadow repo.
+
+    :param config: Config hash as fetched from get_config.
+    :type config: hash
+    :param location: The location on the filesystem to run the fetch.
+    :type location: str
+    :rtype: int
+    """
     cmd = '/usr/bin/git fetch'
     status = __salt__['cmd.retcode'](cmd, location)
     if status != 0:
@@ -313,6 +410,14 @@ def _fetch_location(config, location, shadow=False):
 
 
 def _get_tag(config):
+    """
+    Fetch the current deploy file from the repo on the deployment server and
+    return the current tag associated with it.
+
+    :param config: Config hash as fetched from get_config.
+    :type config: hash
+    :rtype: str
+    """
     # Fetch the .deploy file from the server and get the current tag
     deployfile = config['url'] + '/.deploy'
     f = urllib.urlopen(deployfile)
@@ -336,9 +441,21 @@ def checkout(repo, reset=False):
     '''
     Checkout the current deployment tag. Assumes a fetch has been run.
 
-    CLI Example::
+    CLI Example (on master):
 
-        salt -G 'cluster:appservers' deploy.checkout 'slot0'
+        salt -G 'deployment_target:test' deploy.checkout 'test/testrepo'
+
+    CLI Example (on minion):
+
+        salt deploy.checkout 'test/testrepo'
+
+    :param repo: The repo name to check out.
+    :type repo: str
+    :param reset: Whether or not to do a checkout and hard reset based
+                  on if the repo is already at the defined tag on the
+                  deployment server.
+    :type reset: bool
+    :rtype: hash
     '''
     #TODO: replace the cmd.retcode calls with git module calls,
     # where appropriate
@@ -367,6 +484,24 @@ def checkout(repo, reset=False):
 
 
 def _checkout_location(config, location, tag, reset=False, shadow=False):
+    """
+    Checkout a repo at the specified location to the specified tag. If reset
+    is true checkout the repo even if it is already at the tag defined on the
+    deployment server. Optionally specify if this is a shadow reference repo.
+
+    :param config: Config hash as fetched from get_config.
+    :type config: hash
+    :param location: The location on the filesystem to run this checkout.
+    :type location: str
+    :param tag: The tag to checkout this location to.
+    :type tag: str
+    :param reset: Whether or not to checkout this repo if it is already at the
+                  tag specified by the deployment server.
+    :type reset: bool
+    :param shadow: Whether or not this is a shadow reference repo.
+    :type shadow: bool
+    :rtype: int
+    """
     for dependency in config['dependencies']:
         depstats.append(__salt__['deploy.checkout'](dependency, reset))
 
@@ -406,9 +541,17 @@ def restart(repo):
     '''
     Restart the service associated with this repo.
 
-    CLI Example::
+    CLI Example (on the master):
 
-        salt -G 'cluster:appservers' deploy.restart 'slot0'
+        salt -G 'deployment_target:test' deploy.restart 'test/testrepo'
+
+    CLI Example (on the minion):
+
+        salt-call deploy.restart 'test/testrepo'
+
+    :param repo: The repo name used to find the service to restart.
+    :type repo: str
+    :rtype: hash
     '''
     config = get_config(repo)
     _check_in('deploy.restart', repo)
