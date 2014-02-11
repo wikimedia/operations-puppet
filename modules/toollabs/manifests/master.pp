@@ -16,7 +16,6 @@ class toollabs::master inherits toollabs {
         toollabs::exec_environ
 
     # TODO: Grid config
-    # TODO: (conditional) shadow config
     # TODO: project-local NFS (job queue)
 
 

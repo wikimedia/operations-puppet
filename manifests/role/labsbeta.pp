@@ -30,13 +30,6 @@ class role::labs::toolsbeta {
     class { 'toollabs::master': }
   }
 
-  class shadow inherits role::labs::toolsbeta::config {
-    system::role { "role::labs::toolsbeta::shadow": description => "Tool Labs gridengine shadow (backup) master" }
-    class { 'toollabs::shadow':
-      gridmaster => $grid_master,
-    }
-  }
-
   class webserver inherits role::labs::toolsbeta::config {
     system::role { "role::labs::toolsbeta::webserver": description => "Tool Labs webserver" }
     class { 'toollabs::webserver':
