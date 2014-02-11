@@ -296,6 +296,7 @@ class base::remote-syslog {
             ensure    => running,
             require   => Package['rsyslog'],
             subscribe => File['/etc/rsyslog.d/30-remote-syslog.conf'],
+            provivder => 'upstart',
         }
     }
 }
