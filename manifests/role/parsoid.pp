@@ -102,6 +102,15 @@ class role::parsoid::production {
         content => template('misc/parsoid.logrotate.erb'),
     }
 
+    cron { 'parsoid-hourly-logrot':
+        ensure  => present,
+        command => '/usr/sbin/logrotate /etc/logrotate.d/parsoid',
+        user    => 'root',
+        hour    => '*',
+        minute  => '12',
+       require => File['/etc/logrotate.d/parsoid'],
+    }
+
     # Still using the old init script for now
     service { 'parsoid':
         ensure     => running,
