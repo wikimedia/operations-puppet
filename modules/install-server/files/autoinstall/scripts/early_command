@@ -3,8 +3,7 @@
 set -e
 set -x
 
-# redo network configuration statically
-
+## redo network configuration statically
 # at least trusty has ip under /sbin
 if [ -x /sbin/ip -o -x /bin/ip ]; then
 	IP=$(ip address show dev eth0 | egrep '^[[:space:]]+inet ' | cut -d ' ' -f 6 | cut -d '/' -f 1)
@@ -12,12 +11,21 @@ else
 	IP=$(ifconfig | grep "inet addr" | cut -d ' ' -f 12 | sed 's/addr://' | grep -v 127\.0\.0\.1)
 fi
 
-echo d-i netcfg/get_ipaddress string $IP > /tmp/static_net.cfg
+# netcfg backwards-compatible notes:
+# - disable_autoconfig is needed for >= precise
+# - disable_dhcp is supported but deprecated in favor of disable_autoconfig
+#   starting with netcfg 1.101 (wheezy/trusty)
+# - kill-all-dhcp has replaced killall.sh since netcfg 1.86 (>= wheezy/trusty)
+
+cat > /tmp/static_net.cfg <<EOF
+d-i netcfg/get_ipaddress string $IP
+d-i netcfg/disable_dhcp boolean true
+d-i netcfg/disable_autoconfig boolean true
+EOF
 debconf-set-selections /tmp/static_net.cfg
-# kill-all-dhcp is >= wheezy/trusty (netcfg 1.86)
 killall.sh || kill-all-dhcp; netcfg
 
-# Preseed the correct wikimedia repository location
+## preseed the correct wikimedia repository location
 SUITE=$(debconf-get mirror/suite)
 echo d-i apt-setup/local0/repository string  http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main universe non-free > /tmp/apt_repository.cfg
 debconf-set-selections /tmp/apt_repository.cfg
