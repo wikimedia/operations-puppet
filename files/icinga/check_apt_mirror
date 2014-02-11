@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# Plugin to check if ubuntu mirror is up to date with upstream
+# by Matanya Moses (matanya@foss.co.il)
+#
+##########################################################
+hostname=`hostname`
+upstreamdate=`curl -s https://launchpad.net/ubuntu/+mirror/ubuntu.wikimedia.org-archive |grep UTC| cut -f2 -d'"'`
+t1=`date --date="$upstreamdate" +%s`
+
+dt2=`date +%Y-%m-%d\ %H:%M:%S`
+t2=`date --date="$dt2" +%s`
+
+let "tDiff=$t2-$t1"
+
+let "dDiff=$tDiff/86400"
+
+if [ "$dDiff" -lt "2" -o "$dDiff" -eq  "2" ]; then
+        echo "OK: Ubuntu mirror sync on $hostname is $dDiff days behind upstream"
+        exit 0
+ elif [ "$dDiff" -gt "2" ]; then
+        echo "Critical: Ubuntu mirror sync on $hostname is $dDiff days behind upstream"
+        exit 2
+ else
+        echo "Unknown"
+        exit 3
+fi
+
