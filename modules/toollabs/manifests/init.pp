@@ -125,4 +125,19 @@ class toollabs {
         force  => true,
         target => "${store}/mail",
     }
+
+    # FIXME: Some tools don't have sudo rules in LDAP at the moment.
+    define tools_sudo_ldap_fix ($tool = $title, $ensure = 'present') {
+        sudo_group { "local-${tool}":
+            ensure     => $ensure,
+            group      => "local-${tool}",
+            privileges => ["ALL=(local-${tool}) NOPASSWD: ALL"];
+        }
+    }
+    tools_sudo_ldap_fix { ['afcbot', 'anagrimes', 'csbot', 'daahbot', 'ftl',
+                           'legobot', 'matilda', 'wiktioutils']:
+    }
+    file { '/etc/sudoers.d/tools-ldap-fix':
+        ensure => absent;
+    }
 }
