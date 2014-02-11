@@ -3574,6 +3574,7 @@ class admins::restricted {
 	include accounts::nuria # RT 6535
 	include accounts::csalvia # RT 6664
 	include accounts::leila # RT 6765
+	include accounts::sahar # RT 6767
 }
 
 class admins::labs {
@@ -3633,7 +3634,8 @@ class admins::privatedata {
 		accounts::tnegrin,      # RT 5391
 		accounts::nuria,        # RT 6617
 		accounts::csalvia,      # RT 6664
-		accounts::leila         # RT 6765
+		accounts::leila,        # RT 6765
+		accounts::sahar         # RT 6767
 }
 
 class admins::fr-tech {
