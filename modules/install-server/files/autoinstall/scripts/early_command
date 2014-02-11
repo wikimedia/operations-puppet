@@ -29,3 +29,21 @@ killall.sh || kill-all-dhcp; netcfg
 SUITE=$(debconf-get mirror/suite)
 echo d-i apt-setup/local0/repository string  http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main universe non-free > /tmp/apt_repository.cfg
 debconf-set-selections /tmp/apt_repository.cfg
+
+# apt-setup doesn't allow us to set up pinning and hence everything we install
+# with apt-install bypasses pinning. hack around this by creating a
+# base-installer early hook that does this right before apt-get update
+cat > /usr/lib/base-installer.d/10aptpinning <<EOF
+#!/bin/sh
+set -e
+
+APT_PREFDIR=/target/etc/apt/preferences.d
+[ ! -d "\$APT_PREFDIR" ] && mkdir -p "\$APT_PREFDIR"
+
+cat >\$APT_PREFDIR/wikimedia <<EOT
+Package: *
+Pin: release o=Wikimedia
+Pin-Priority: 1001
+EOT
+EOF
+chmod +x /usr/lib/base-installer.d/10aptpinning
