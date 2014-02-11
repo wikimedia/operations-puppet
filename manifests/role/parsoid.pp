@@ -55,11 +55,7 @@ class role::parsoid::production {
 
     # production uses an init script whereas labs experiments with upstart
     file { '/etc/init.d/parsoid':
-        ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0555',
-        source => 'puppet:///files/misc/parsoid.init',
+        ensure => absent,
     }
 
     # upstart config prep, will replace sysv init above
@@ -132,6 +128,7 @@ class role::parsoid::beta {
         # Need to allow jenkins-deploy to reload parsoid
         # Since the "root" user is local, we cant add the sudo policy in
         # OpenStack manager interface at wikitech
+        # TODO: adjust for upstart!
         'ALL = (root) NOPASSWD:/etc/init.d/parsoid',
     ] }
 
@@ -165,6 +162,7 @@ class role::parsoid::beta {
     }
 
     # beta uses upstart:
+    # FIXME: move users to upstart
     file { '/etc/init.d/parsoid':
         ensure => 'link',
         target => '/lib/init/upstart-job',
@@ -218,7 +216,6 @@ class role::parsoid::beta {
             File['/etc/default/parsoid'],
             File['/etc/init/parsoid.conf'],
         ],
-        require    => File['/etc/init.d/parsoid'],
     }
 
     # Beta parsoid server has some ferm DNAT rewriting rules (bug 45868) so we
