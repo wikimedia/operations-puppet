@@ -27,7 +27,7 @@ class ganglia_new::monitor::aggregator($sites) {
 	define site_instances() {
 		# Instantiate aggregators for all clusters for this site ($title)
 		$cluster_list = suffix(keys($ganglia_new::configuration::clusters), "_${title}")
-		instance{ $cluster_list: site => $title }
+		instance{ $cluster_list: monitored_site => $title }
 	}
 
 	site_instances{ $sites: }

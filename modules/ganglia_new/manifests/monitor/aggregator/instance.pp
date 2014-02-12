@@ -1,4 +1,4 @@
-define ganglia_new::monitor::aggregator::instance($site) {
+define ganglia_new::monitor::aggregator::instance($monitored_site) {
 	Ganglia_new::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
 
 	include ganglia_new::configuration, network::constants
@@ -11,7 +11,7 @@ define ganglia_new::monitor::aggregator::instance($site) {
 	} else {
 		$sites = $ganglia_new::configuration::default_sites
 	}
-	$id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$site]
+	$id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$monitored_site]
 	$desc = $ganglia_new::configuration::clusters[$cluster]['name']
 	$portnr = $ganglia_new::configuration::base_port + $id
 	$gmond_port = $::realm ? {
@@ -19,7 +19,7 @@ define ganglia_new::monitor::aggregator::instance($site) {
 		labs => $::project_gid
 	}
 	$cname = "${desc} ${::site}"
-	if $site in $sites {
+	if $monitored_site in $sites {
 		$ensure = "present"
 	} else {
 		$ensure = "absent"
