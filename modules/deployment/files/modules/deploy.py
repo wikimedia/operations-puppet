@@ -81,6 +81,9 @@ def get_config(repo):
     config = __pillar__.get('repo_config')
     config = config[repo]
     config.setdefault('type', 'git-http')
+    # location is the location on the filesystem of the repository
+    # shadow_location is the location on the filesystem of the shadow
+    # reference repository.
     if 'location' in config:
         location = config['location']
         shadow_location = '{0}/.{1}'.format(os.path.dirname(location),
@@ -107,14 +110,37 @@ def get_config(repo):
         scheme = 'git'
     else:
         scheme = 'http'
+    # The url of the repository on the deployment server
     config['url'] = '{0}://{1}/{2}'.format(scheme, server, repo)
+    # checkout_submodules determines whether or not this repo should
+    # recursively fetch and checkout submodules.
     config.setdefault('checkout_submodules', False)
+    # dependencies are a set of repositories that should be fetched
+    # and checked out before this repo. This is a deprecated feature.
     config.setdefault('dependencies', {})
-    config.setdefault('checkout_module_calls', {})
+    # fetch_module_calls is a hash of salt modules with a list of arguments
+    # that will be called at the end of the fetch stage.
+    # TODO (ryan-lane): add a pre-fetch option
     config.setdefault('fetch_module_calls', {})
+    # checkout_module_calls is a hash of salt modules with a list of arguments
+    # that will be called at the end of the checkout stage.
+    # TODO (ryan-lane): add a pre-checkout option
+    config.setdefault('checkout_module_calls', {})
+    # sync_script specifies the script that should be linked to on the
+    # deployment server for the perl git-deploy. This option is deprecated.
     config.setdefault('sync_script', 'shared.py')
+    # upstream specifies the upstream url of the repository and is used
+    # to clone repositories on the deployment server.
     config.setdefault('upstream', None)
+    # shadow_reference determines whether or not to make a reference clone
+    # of a repository on the minions during the fetch stage. This feature
+    # enables fetch_module_calls modules to run commands against the current
+    # checkout of code before it's made live.
     config.setdefault('shadow_reference', False)
+    # service_name is the service associated with this repository and
+    # allows the deployment module to run service restart/stop/start/etc
+    # for services without allowing end-users the ability to restart all
+    # services on the targets.
     config.setdefault('service_name', None)
     return config
 
@@ -138,6 +164,7 @@ def deployment_server_init():
     repo_config = __pillar__.get('repo_config')
     for repo in repo_config:
         config = get_config(repo)
+        # Begin deprecated perl git-deploy support
         repo_sync_dir = '{0}/sync/{1}'.format(hook_dir, os.path.dirname(repo))
         sync_link = '{0}/{1}.sync'.format(repo_sync_dir,
                                           os.path.basename(repo))
@@ -149,6 +176,7 @@ def deployment_server_init():
             sync_script = '{0}/sync/{1}'.format(hook_dir,
                                                 config['sync_script'])
             __salt__['file.symlink'](sync_script, sync_link)
+        # End deprecated perl git-deploy support
         # Clone repo from upstream or init repo with no upstream
         if not __salt__['file.directory_exists'](config['location'] + '/.git'):
             if config['upstream']:
@@ -211,6 +239,7 @@ def sync_all():
     stats = {}
 
     for repo, config in repo_config.items():
+        # Ensure the minion is a deployment target for this repo
         if config['grain'] not in deployment_target:
             continue
         if repo not in stats:
@@ -242,10 +271,12 @@ def _update_gitmodules(config, location, shadow=False):
     gitmodules_list = __salt__['file.find'](location, name='.gitmodules')
     for gitmodules in gitmodules_list:
         gitmodules_dir = os.path.dirname(gitmodules)
+        # First ensure we're working with an unmodified .gitmodules file
         cmd = '/usr/bin/git checkout .gitmodules'
         status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
         if status != 0:
             return status
+        # Get a list of the submodules
         submodules = []
         f = open(gitmodules, 'r')
         for line in f.readlines():
@@ -254,7 +285,8 @@ def _update_gitmodules(config, location, shadow=False):
                 submodules.append(keyval[1].strip())
         f.close()
         if shadow:
-            # Tranform .gitmodules based on reference
+            # Tranform .gitmodules based on reference. Point the submodules
+            # to the local git repository this repo references.
             reference_dir = gitmodules_dir.replace(location,
                                                    config['location'])
             f = open(gitmodules, 'w')
@@ -264,7 +296,10 @@ def _update_gitmodules(config, location, shadow=False):
                 f.write('\turl = {0}/{1}\n'.format(reference_dir, submodule))
             f.close()
         else:
-            # Transform .gitmodules file based on url
+            # Transform .gitmodules file based on url. Point the submodules
+            # to the appropriate place on the deployment server. We can base
+            # this on a subpath of the repository since the deployment server
+            # isn't a bare clone.
             cmd = '/usr/bin/git config remote.origin.url'
             remote = __salt__['cmd.run'](cmd, gitmodules_dir)
             if not remote:
@@ -276,7 +311,8 @@ def _update_gitmodules(config, location, shadow=False):
                 f.write('\tpath = {0}\n'.format(submodule))
                 f.write('\turl = {0}/{1}\n'.format(remote, submodule_path))
             f.close()
-        # Sync submodules for this repo
+        # Have git update its submodule configuration from the .gitmodules
+        # file.
         cmd = '/usr/bin/git submodule sync'
         status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
         if status != 0:
@@ -336,18 +372,24 @@ def fetch(repo):
     '''
     config = get_config(repo)
 
+    # Call fetch on all repositories we depend on and add it to the stats for
+    # reporting back. Deprecated.
     depstats = []
     for dependency in config['dependencies']:
         depstats.append(__salt__['deploy.fetch'](dependency))
 
-    # Notify the deployment system we started
+    # Notify the deployment system we started.
     _check_in('deploy.fetch', repo)
 
+    # We need to fetch the tag in case we need to clone and also to ensure the
+    # fetch has the tag as defined in the deployment.
     tag = _get_tag(config)
     if not tag:
         return {'status': 10, 'repo': repo, 'dependencies': depstats}
 
-    # Clone the repo if it doesn't exist yet
+    # Clone the repo if it doesn't exist yet otherwise just fetch. Note that
+    # clone will also properly checkout the repo to the necessary tag, so this
+    # won't put the repo into an inconsistent state.
     if not __salt__['file.directory_exists'](config['location'] + '/.git'):
         status = _clone(config, config['location'], tag)
         if status != 0:
@@ -357,11 +399,15 @@ def fetch(repo):
         if status != 0:
             return {'status': status, 'repo': repo, 'dependencies': depstats}
 
+    # Check to see if the deployment tag has been fetched.
     cmd = '/usr/bin/git show-ref refs/tags/{0}'.format(tag)
     status = __salt__['cmd.retcode'](cmd, cwd=config['location'])
     if status != 0:
         return {'status': status, 'repo': repo, 'dependencies': depstats}
 
+    # Do the same steps as above for the shadow reference, but in the case of
+    # a normal fetch also do a checkout so that fetch_module_calls can use
+    # a full checkout.
     if config['shadow_reference']:
         shadow_gitdir = config['shadow_location'] + '/.git'
         if not __salt__['file.directory_exists'](shadow_gitdir):
@@ -382,7 +428,11 @@ def fetch(repo):
                 return {'status': status, 'repo': repo,
                         'dependencies': depstats}
 
-    # Call modules on the repo's behalf ignore the return on these
+    # Call a set of salt modules, but map the args beforehand.
+    # TODO (ryan-lane): Currently if the module calls fail no error is
+    #                   returned and this will silently continue on fail.
+    #                   We should modify the config hash to allow for failure
+    #                   options.
     for call, args in config['fetch_module_calls'].items():
         mapped_args = _map_args(repo, args)
         __salt__[call](*mapped_args)
@@ -405,6 +455,8 @@ def _fetch_location(config, location, shadow=False):
     status = __salt__['cmd.retcode'](cmd, location)
     if status != 0:
         return status
+    # The deployment tags may not be linked to any branch, so it's safest
+    # to fetch them explicitly.
     cmd = '/usr/bin/git fetch --tags'
     status = __salt__['cmd.retcode'](cmd, location)
     if status != 0:
@@ -420,6 +472,8 @@ def _fetch_location(config, location, shadow=False):
         status = __salt__['cmd.retcode'](cmd, location)
         if status != 0:
             return status
+        # The deployment tags will not be linked to any branch for submodules,
+        # so it's required to fetch them explicitly.
         cmd = '/usr/bin/git submodule foreach --recursive git fetch --tags'
         status = __salt__['cmd.retcode'](cmd, location)
         if status != 0:
@@ -475,8 +529,6 @@ def checkout(repo, reset=False):
     :type reset: bool
     :rtype: hash
     '''
-    #TODO: replace the cmd.retcode calls with git module calls,
-    # where appropriate
     config = get_config(repo)
     depstats = []
 
@@ -493,7 +545,11 @@ def checkout(repo, reset=False):
         return {'status': status, 'repo': repo, 'tag': tag,
                 'dependencies': depstats}
 
-    # Call modules on the repo's behalf ignore the return on these
+    # Call a set of salt modules, but map the args beforehand.
+    # TODO (ryan-lane): Currently if the module calls fail no error is
+    #                   returned and this will silently continue on fail.
+    #                   We should modify the config hash to allow for failure
+    #                   options.
     for call, args in config['checkout_module_calls'].items():
         mapped_args = _map_args(repo, args)
         __salt__[call](*mapped_args)
@@ -520,6 +576,8 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
     :type shadow: bool
     :rtype: int
     """
+    # Call checkout on all repositories we depend on and add it to the stats
+    # for reporting back. Deprecated.
     for dependency in config['dependencies']:
         depstats.append(__salt__['deploy.checkout'](dependency, reset))
 
@@ -530,13 +588,15 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
         if ret != 0:
             return 20
     else:
+        # Find the current tag. If it matches the requested deployment tag
+        # then no further work is needed, just return.
         cmd = '/usr/bin/git describe --always --tag'
         current_tag = __salt__['cmd.run'](cmd, location)
         current_tag = current_tag.strip()
         if current_tag == tag:
             return 0
 
-    # Switch to the tag defined in the server's .deploy file
+    # Checkout to the tag requested by the deployment.
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
     ret = __salt__['cmd.retcode'](cmd, location)
     if ret != 0:
@@ -574,10 +634,13 @@ def restart(repo):
     config = get_config(repo)
     _check_in('deploy.restart', repo)
 
+    # Call restart on all repositories we depend on and add it to the stats
+    # for reporting back. Deprecated.
     depstats = []
     for dependency in config['dependencies']:
         depstats.append(__salt__['deploy.restart'](dependency))
 
+    # Get the service associated with this repo and have salt call a restart.
     if config['service_name']:
         status = __salt__['service.restart'](config['service_name'])
         return {'status': status, 'repo': repo, 'dependencies': depstats}
