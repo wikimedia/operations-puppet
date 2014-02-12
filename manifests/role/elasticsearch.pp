@@ -65,5 +65,6 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
     deployment::target { 'elasticsearchplugins': }
 
     include ::elasticsearch::ganglia
+    include ::elasticsearch::hot-threads-log
     include ::elasticsearch::nagios::check
 }
