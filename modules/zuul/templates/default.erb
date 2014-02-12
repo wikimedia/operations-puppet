@@ -1,4 +1,4 @@
-<% if scope.lookupvar("zuul::statsd_host") != "" %>
-export STATSD_HOST=<%= scope.lookupvar("zuul::statsd_host") %>
+<% if @statsd_host != "" %>
+export STATSD_HOST=<%= @statsd_host %>
 export STATSD_PORT=8125
 <% end %>
