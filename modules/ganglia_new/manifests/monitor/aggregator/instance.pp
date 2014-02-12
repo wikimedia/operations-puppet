@@ -1,4 +1,4 @@
-define ganglia_new::monitor::aggregator::instance($site) {
+define ganglia_new::monitor::aggregator::instance($monitored_site) {
 	Ganglia_new::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
 
 	include ganglia_new::configuration, network::constants
@@ -19,7 +19,7 @@ define ganglia_new::monitor::aggregator::instance($site) {
 		labs => $::project_gid
 	}
 	$cname = "${desc} ${::site}"
-	if $site in $sites {
+	if $monitored_site in $sites {
 		$ensure = "present"
 	} else {
 		$ensure = "absent"
