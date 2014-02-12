@@ -3422,6 +3422,26 @@ class accounts {
         }
     }
 
+    # RT 6760
+    class santhosh inherits baseaccount {
+        $username = 'santhosh'
+        $realname = 'Santhosh Thottingal'
+        $uid      = 2024
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'santhosh@thottingal':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEArK3LPgIbkKgXNG0l5g6vRND236f3Bm6h9kiweycy4l+J14B1hY0o1baG8FNxgSpRxhZ1xeqdZceSii5fDfNEx4SnUEImCruH3PedumYb5pn5FIlZHEHvMOmjVobkSqES+ZZ5JrYLk8Xc4+elDULF80ERAx/8k6hwMHPJiYJwv26652GyE1nqmBj5KRMxmrpnGenirjLl8fnfRgFX3EqTliGTKqZ0B7vBVLNC3kM++EwFhLpwfQaB6/Jt6fdgksyIx6vB2f3mPQOWKetHw8Iu4VeAYNgt/KzXzvWNnS9Z9Uw8Ushn21BX2Oe7h4iICly8RDsQbVoT2PKmqLpNVAcOZQ==',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3575,6 +3595,7 @@ class admins::restricted {
 	include accounts::csalvia # RT 6664
 	include accounts::leila # RT 6765
 	include accounts::sahar # RT 6767
+	include accounts::santhosh # RT 6760
 }
 
 class admins::labs {
@@ -3635,7 +3656,8 @@ class admins::privatedata {
 		accounts::nuria,        # RT 6617
 		accounts::csalvia,      # RT 6664
 		accounts::leila,        # RT 6765
-		accounts::sahar         # RT 6767
+		accounts::sahar,        # RT 6767
+		accounts::santhosh      # RT 6760
 }
 
 class admins::fr-tech {
