@@ -18,8 +18,8 @@ class role::bugzilla {
 
     class { '::bugzilla':
         db_host => 'db1001.eqiad.wmnet',
-        db_name => 'bugzilla_testing',
-        db_user => 'bugs_test',
+        db_name => 'bugzilla',
+        db_user => 'bugs',
     }
 
 }
