@@ -171,6 +171,8 @@ node "analytics1026.eqiad.wmnet" {
 # interfaces to Kraken and Hadoop.
 # (Hue, Oozie, Hive, etc.)
 node "analytics1027.eqiad.wmnet" {
+    include role::analytics::users
+
     include role::analytics::clients
     include role::analytics::hive::server
     include role::analytics::oozie::server
