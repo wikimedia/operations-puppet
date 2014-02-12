@@ -7,6 +7,7 @@ import time
 import re
 import urllib
 import os
+import salt
 
 
 def _get_redis_serv():
@@ -116,6 +117,9 @@ def get_config(repo):
     # checkout_submodules determines whether or not this repo should
     # recursively fetch and checkout submodules.
     config.setdefault('checkout_submodules', False)
+    # If gitfat_enabled is true, git-fat will be initiliazed and
+    # git-fat pull will be run on each target as part of the checkout.
+    config.setdefault('gitfat_enabled', False)
     # dependencies are a set of repositories that should be fetched
     # and checked out before this repo. This is a deprecated feature.
     config.setdefault('dependencies', {})
@@ -319,6 +323,51 @@ def _update_gitmodules(config, location, shadow=False):
         if status != 0:
             return status
     return 0
+
+
+def _gitfat_installed():
+    return salt.utils.which('git-fat')
+
+
+def _init_gitfat(location):
+    '''
+    Runs git fat init at this location.
+
+    :param location: The location on the filesystem to run git fat init
+    :type location: str
+    '''
+    # if it isn't then initialize it now
+    cmd = '/usr/bin/git fat init'
+    return __salt__['cmd.retcode'](cmd, location)
+
+
+# TODO: git fat gc?
+def _update_gitfat(location):
+    '''
+    Runs git-fat pull at this location.
+    If git fat has not been initialized for the
+    repository at this location, _init_gitfat
+    will be called first.
+
+    :param location: The location on the filesystem to run git fat pull
+    :type location: str
+    :rtype int
+    '''
+
+    # Make sure git fat is installed.
+    if _gitfat_installed() != 0:
+        return 40
+
+    # Make sure git fat is initialized.
+    cmd = '/usr/bin/git config --get filter.fat.smudge'
+    if __salt__['cmd.run'](cmd, location) != 'git-fat filter-smudge':
+        status = _init_gitfat(location)
+        if status != 0:
+            return status
+
+    # Run git fat pull.
+    cmd = '/usr/bin/git fat pull'
+    return __salt__['cmd.retcode'](cmd, location)
 
 
 def _clone(config, location, tag, shadow=False):
@@ -613,6 +662,13 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
         ret = __salt__['cmd.retcode'](cmd, location)
         if ret != 0:
             return 50
+
+    # Trigger git-fat pull if gitfat_enabled
+    if config['gitfat_enabled']:
+        ret = _update_gitfat(location)
+        if ret != 0:
+            return ret
+
     return 0
 
 
