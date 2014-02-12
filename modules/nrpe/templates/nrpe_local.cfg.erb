@@ -6,6 +6,12 @@ allowed_hosts=<%= @nrpe_allowed_hosts %>
 <% else -%>
 allowed_hosts=127.0.0.1 # Created by fallback. Check your puppet calls are ok
 <% end -%>
+# Bind only to the primary (management) IP address and not one of the service addresses
+# An assumption is made here that ipaddress fact will have the management address and not
+# a service address
+<% if @ipaddress %>
+server_address=<%= @ipaddress %>
+<% end -%>
 
 command[check_disk_5_2]=/usr/lib/nagios/plugins/check_disk -w 5% -c 2% -l -e
 command[check_disk_6_3]=/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e
