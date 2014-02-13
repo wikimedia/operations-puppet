@@ -77,23 +77,6 @@ class misc::bugzilla::communitymetrics {
     }
 }
 
-class misc::bugzilla::report {
-
-    generic::systemuser { 'bzreporter': name => 'reporter', home => '/home/reporter', groups => [ 'reporter' ] }
-
-    require passwords::bugzilla
-
-    file { 'bugzilla_report':
-        path    => '/home/reporter/bugzilla_report.php',
-        owner   => 'reporter',
-        group   => 'reporter',
-        mode    => '0550',
-        content => template('misc/bugzilla_report.php'),
-        ensure  => present,
-    }
-
-}
-
 # RT-4802 - mail bz audit_log to bugzilla admins
 class misc::bugzilla::auditlog {
 
