@@ -62,7 +62,10 @@ class eventlogging {
         '/etc/eventlogging.d/multiplexers',
         '/etc/eventlogging.d/processors'
     ]:
-        ensure => directory,
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
+        force   => true,
         before => File['/etc/init/eventlogging'],
     }
 
@@ -77,6 +80,8 @@ class eventlogging {
     file { '/etc/init/eventlogging':
         source  => 'puppet:///modules/eventlogging/init',
         recurse => true,
+        purge   => true,
+        force   => true,
     }
 
     # 'eventlogging/init' is the master upstart task; it walks
