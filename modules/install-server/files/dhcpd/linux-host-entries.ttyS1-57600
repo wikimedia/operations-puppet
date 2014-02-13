@@ -13,11 +13,6 @@ host capella {
 	fixed-address capella.wikimedia.org;
 }
 
-host db9 {
-	hardware ethernet 00:18:8B:43:73:CE;
-	fixed-address db9.pmtpa.wmnet;
-}
-
 host db10 {
 	hardware ethernet 00:18:8B:42:06:00;
 	fixed-address db10.pmtpa.wmnet;
