@@ -67,7 +67,7 @@ sub tag_carrier {
 		}
 	} else if (req.http.X-CS2 == "623-03") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((fr|ar|sg|en|es|zh|ha|ln|eo)\.)?m\.") {
+			if (req.http.host ~ "^((fr|ar|sg|en|es|zh|ha|ln|eo|yo)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
