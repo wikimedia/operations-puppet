@@ -73,7 +73,7 @@ sub tag_carrier {
 		}
 	} else if (req.http.X-CS2 == "413-02") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((en|ta|si)\.)?zero\.") {
+			if (req.http.host ~ "^((en|ta|si|simple)\.)?zero\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
