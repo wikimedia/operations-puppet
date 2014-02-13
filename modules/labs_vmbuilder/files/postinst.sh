@@ -1,5 +1,6 @@
 #!/bin/bash
 
+chroot $1 echo '' > /etc/resolvconf/resolv.conf.d/original
 chroot $1 passwd -ld root
 chroot $1 passwd -ld ubuntu
 chroot $1 printf "%s\t%s\t%s\t%s\n" cloud-init cloud-init/datasources multiselect  "ConfigDrive, Ec2" | debconf-set-selections
