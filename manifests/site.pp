@@ -534,11 +534,6 @@ node /^db(38)\.pmtpa\.wmnet/ {
     include role::coredb::x1
 }
 
-## m1 shard (used to be db9|blondel|bellin in the past)
-node "db9.pmtpa.wmnet" {
-    include role::db::core
-}
-
 ## m1 shard (new)
 node /^db(35)\.pmtpa\.wmnet/ {
     class { role::coredb::m1 : mariadb => true }

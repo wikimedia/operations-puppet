@@ -140,7 +140,7 @@ class mysql_wmf::client {
 class mysql_wmf::slow_digest {
     include passwords::mysql::querydigest
     $mysql_user = 'ops'
-    $digest_host = 'db9.pmtpa.wmnet'
+    $digest_host = 'db1001.pmtpa.wmnet'
     $digest_db = 'query_digests'
 
     file { '/usr/local/bin/send_query_digest.sh':
