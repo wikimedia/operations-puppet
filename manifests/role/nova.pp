@@ -60,7 +60,7 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
 			"production" => "eth1.103",
 			"labs" => "eth0.103",
 		},
-		network_flat_interface_name => $realm ? {
+		network_flat_tagged_base_interface => $realm ? {
 			"production" => "eth1",
 			"labs" => "eth0",
 		},
@@ -119,7 +119,7 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
 				"production" => "bond1.103",
 				"labs" => "eth0.103",
 			},
-			network_flat_interface_name => $realm ? {
+			network_flat_tagged_base_interface => $realm ? {
 				"production" => "bond1",
 				"labs" => "eth0",
 			},
@@ -153,7 +153,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 			"production" => "eth1.1102",
 			"labs" => "eth0.1118",
 		},
-		network_flat_interface_name => $realm ? {
+		network_flat_tagged_base_interface => $realm ? {
 			"production" => "eth1",
 			"labs" => "eth0",
 		},
@@ -211,7 +211,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 	if ( $::hostname == "labnet1001" ) {
 		$networkconfig = {
 			network_flat_interface =>  "eth1.1102",
-			network_flat_interface_name => "eth1",
+			network_flat_tagged_base_interface => "eth1",
 		}
 		$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig, $networkconfig )
 	} else {
@@ -327,28 +327,16 @@ class role::nova::network {
 
 	if ($::site == "pmtpa") {
 		require role::nova::network::bonding
-
-		interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
-
-		interface::tagged { "bond1.103":
-			base_interface => "bond1",
-			vlan_id => "103",
-			method => "manual",
-			up => 'ip link set $IFACE up',
-			down => 'ip link set $IFACE down',
-		}
 	}
 
-	if ($::site == "eqiad") {
-		interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
+	interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
 
-		interface::tagged { "eth1.1102":
-			base_interface => "eth1",
-			vlan_id => "1102",
-			method => "manual",
-			up => 'ip link set $IFACE up',
-			down => 'ip link set $IFACE down',
-		}
+	interface::tagged { $novaconfig["network_flat_interface"]:
+		base_interface => $novaconfig["network_flat_tagged_base_interface"],
+		vlan_id => $novaconfig["network_flat_interface_vlan"],
+		method => "manual",
+		up => 'ip link set $IFACE up',
+		down => 'ip link set $IFACE down',
 	}
 
 	class { "openstack::network-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
@@ -398,7 +386,7 @@ class role::nova::compute {
         # Neutron roles configure their own interfaces.
 	if ( $use_neutron == false ) {
 		interface::tagged { $novaconfig["network_flat_interface"]:
-			base_interface => $novaconfig["network_flat_interface_name"],
+			base_interface => $novaconfig["network_flat_tagged_base_interface"],
 			vlan_id => $novaconfig["network_flat_interface_vlan"],
 			method => "manual",
 			up => 'ip link set $IFACE up',
