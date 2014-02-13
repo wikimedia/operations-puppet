@@ -155,10 +155,6 @@ sub tag_carrier {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
-	} else if (req.http.X-CS2 == "405-25") {
-		if (!req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-			set req.http.X-CS = req.http.X-CS2;
-		}
 	} else if (req.http.X-CS2 == "250-99") {
 		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
 			if (req.http.host ~ "^((en|ru)\.)?(zero|m)\.") {
