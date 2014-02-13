@@ -95,7 +95,7 @@ class network::constants {
                         'ipv6' => '2620:0:861:201::/64'
                     },
                     'labs-instances1-b-eqiad' => {
-                        'ipv4' => '10.68.16.0/24',
+                        'ipv4' => '10.68.16.0/21',
                         'ipv6' => '2620:0:861:202::/64'
                     },
                     'labs-instances1-c-eqiad' => {
