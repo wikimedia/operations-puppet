@@ -1145,7 +1145,6 @@ node "kaulen.wikimedia.org" {
     $gid = 500
 
     include standard,
-            role::bugzilla::old,
             admins::roots
 
 }
