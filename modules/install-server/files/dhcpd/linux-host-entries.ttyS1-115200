@@ -1349,7 +1349,7 @@ host labstore4 {
 }
 
 host labnet1001 {
-	hardware ethernet 00:0a:f7:50:42:28;
+	hardware ethernet d4:be:d9:af:66:ba;
 	fixed-address labnet1001.eqiad.wmnet;
 }
 
