@@ -37,6 +37,11 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/dologmsg";
+		"${scriptpath}/mwgrep":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/mwgrep";
 		"${scriptpath}/deploy2graphite":
 			owner => root,
 			group => root,

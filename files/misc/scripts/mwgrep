@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+ mwgrep
+ ~~~~~~
+ Grep for CSS or JS code in the MediaWiki NS of Wikimedia Wikis
+ Usage: mwgrep [--max-results N] TERM
+
+"""
+import argparse
+import json
+import urllib
+import urllib2
+
+
+BASE_URI = 'http://search.svc.eqiad.wmnet:9200/_all/page/_search'
+BASE_QUERY = "text:'{0}' AND namespace:8 AND title:(js css)"
+
+ap = argparse.ArgumentParser(description='Grep for CSS/JS in MediaWiki: NS')
+ap.add_argument('term', type=BASE_QUERY.format, help='text to search for')
+ap.add_argument('--max-results', type=int, default=100)
+args = ap.parse_args()
+
+qs = urllib.urlencode(dict(q=args.term, size=args.max_results))
+req = urllib2.urlopen('?'.join((BASE_URI, qs)))
+result = json.load(req)['hits']
+
+for hit in result['hits']:
+    db_name = hit['_index'].split('_', 1)[0]
+    title = hit['_source']['title']
+    print db_name, title
+
+print '(total: %s, shown: %s)' % (result['total'], len(result['hits']))
