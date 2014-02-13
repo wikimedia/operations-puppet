@@ -1136,11 +1136,9 @@ node "iron.wikimedia.org" {
 }
 
 node "kaulen.wikimedia.org" {
-    system::role { "misc": description => "Bugzilla server" }
     $gid = 500
 
     include standard,
-            role::bugzilla::old,
             admins::roots
 
 }
