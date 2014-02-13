@@ -61,6 +61,9 @@ class role::otrs {
             group => root,
             mode => '0555',
             source => 'puppet:///files/otrs/train_spamassassin';
+        '/opt/otrs/Kernel/Output/HTML/OTRS':
+            ensure => link,
+            target => '/opt/otrs/Kernel/Output/HTML/Standard';
     }
 
     install_certificate{ "ticket.wikimedia.org": ca => "RapidSSL_CA.pem" }
