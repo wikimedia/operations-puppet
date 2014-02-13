@@ -21,8 +21,13 @@ ap.add_argument('term', type=BASE_QUERY.format, help='text to search for')
 ap.add_argument('--max-results', type=int, default=100)
 args = ap.parse_args()
 
-qs = urllib.urlencode(dict(q=args.term, size=args.max_results))
-req = urllib2.urlopen('?'.join((BASE_URI, qs)))
+query = {
+    'size': args.max_results,
+    'analyzer': 'keyword',
+    'q': args.term,
+}
+
+req = urllib2.urlopen(BASE_URI + '?' + urllib.urlencode(query))
 result = json.load(req)['hits']
 
 for hit in result['hits']:
