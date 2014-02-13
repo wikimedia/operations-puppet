@@ -95,10 +95,11 @@ class role::eventlogging {
         }
     }
 
-    eventlogging::service::consumer { 'vanadium':
-        input  => "tcp://${processor}:8600",
-        output => "mongodb://${mongo_user}:${mongo_pass}@${mongo_host}:27017",
-    }
+    # Disabled -- ori, 13-Feb-2014
+    # eventlogging::service::consumer { 'vanadium':
+    #     input  => "tcp://${processor}:8600",
+    #     output => "mongodb://${mongo_user}:${mongo_pass}@${mongo_host}:27017",
+    # }
 
 
     ## MySQL / MariaDB
