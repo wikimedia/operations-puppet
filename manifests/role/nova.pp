@@ -173,7 +173,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 			"labs" => "127.0.0.1",
 		},
 		fixed_range => $realm ? {
-			"production" => "10.68.16.0/24",
+			"production" => "10.68.16.0/21",
 			"labs" => "192.168.0.0/21",
 		},
 		dhcp_start => $realm ? {
