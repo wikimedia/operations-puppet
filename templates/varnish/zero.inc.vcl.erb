@@ -67,13 +67,13 @@ sub tag_carrier {
 		}
 	} else if (req.http.X-CS2 == "623-03") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((fr|ar|sg|en|es|zh|ha|ln|eo)\.)?m\.") {
+			if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "413-02") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((en|ta|si)\.)?zero\.") {
+			if (req.http.host ~ "^((en|si|simple|ta)\.)?zero\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
@@ -111,7 +111,7 @@ sub tag_carrier {
 		}
 	} else if (req.http.X-CS2 == "624-02") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((fr|en|es|de|zh|ar|ha|ln|yo|eo)\.)?m\.") {
+			if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
@@ -129,7 +129,7 @@ sub tag_carrier {
 		}
 	} else if (req.http.X-CS2 == "604-00") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((fr|ar|en|es|de|it|nl|pt|ru|zh)\.)?m\.") {
+			if (req.http.host ~ "^((fr|en|ar|es|de|it|zh|nl|pt|ru)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
@@ -139,25 +139,25 @@ sub tag_carrier {
 		}
 	} else if (req.http.X-CS2 == "605-01") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((ar|en|fr|es|de|it|ru|ja|zh)\.)?m\.") {
+			if (req.http.host ~ "^((fr|ru|ja|zh|it|de|en|es|ar)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "641-14") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((ko|fr|de|en|zh|sw|rw|ar|hi|es)\.)?m\.") {
+			if (req.http.host ~ "^((en|zh|ar|hi|fr|sw|rw|de|es|ko)\.)?m\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "420-01") {
 		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((ar|bn|en|tl|ur)\.)?(zero|m)\.") {
+			if (req.http.host ~ "^((ar|tl|en|bn|ur)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
 	} else if (req.http.X-CS2 == "250-99") {
 		if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-			if (req.http.host ~ "^((en|ru)\.)?(zero|m)\.") {
+			if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
@@ -176,12 +176,6 @@ sub tag_carrier {
 	} else if (req.http.X-CS2 == "646-02") {
 		if (!req.http.X-Forwarded-By) {
 			if (req.http.host ~ "^((fr|en|mg)\.)?m\.") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		}
-	} else if (req.http.X-CS2 == "436-01") {
-		if (!req.http.X-Forwarded-By) {
-			if (req.http.host ~ "^((en|tg|ru)\.)?(zero|m)\.") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		}
