@@ -28,6 +28,9 @@ env PARSOID_SETTINGS_FILE="../conf/wmf/localsettings.js"
 
 respawn
 
+# wait 60 seconds for a graceful restart before killing the master
+kill timeout 60
+
 script
     if [ -f "$DEFAULTFILE" ] ; then
         . "$DEFAULTFILE"
