@@ -508,16 +508,18 @@ def metric_init(params):
         'url': url,
         'path_transformer': noop_path_transformer,
     }
-    for group in load(url)['_all']['total']['search']['groups']:
-        group_index_stats = dict()
-        for stat_name, stat in index_stats.iteritems():
-            stat_name = stat_name % {'group': group.replace(' ', '_')}
-            stat_name = deunicode(stat_name)
-            path = deunicode(stat['path'] % {'group': group})
-            group_index_stats[stat_name] = merge(stat, {'path': path})
-        Desc_Skel['call_back'] = partial(
-            get_stat, index_stats_result, group_index_stats)
-        init(group_index_stats)
+    stat_groups = load(url)
+    if 'groups' in stat_groups['_all']['total']['search']:
+        for group in stat_groups['_all']['total']['search']['groups']:
+            group_index_stats = dict()
+            for stat_name, stat in index_stats.iteritems():
+                stat_name = stat_name % {'group': group.replace(' ', '_')}
+                stat_name = deunicode(stat_name)
+                path = deunicode(stat['path'] % {'group': group})
+                group_index_stats[stat_name] = merge(stat, {'path': path})
+            Desc_Skel['call_back'] = partial(
+                get_stat, index_stats_result, group_index_stats)
+            init(group_index_stats)
 
     return descriptors
 
