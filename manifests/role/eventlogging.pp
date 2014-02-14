@@ -43,7 +43,7 @@ class role::eventlogging {
     }
 
     eventlogging::service::processor { 'server-side events':
-        format => '%n EventLogging %j',
+        format => '%{seqId}d EventLogging %j',
         input  => "tcp://${processor}:8421",
         output => 'tcp://*:8521',
     }
@@ -59,7 +59,7 @@ class role::eventlogging {
     }
 
     eventlogging::service::processor { 'client-side events':
-        format => '%q %l %n %t %h',
+        format => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
         input  => "tcp://${processor}:8422",
         output => 'tcp://*:8522',
     }

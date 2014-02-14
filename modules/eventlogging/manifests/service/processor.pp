@@ -10,12 +10,15 @@
 #   scanf-like format string, specifying the layout of EventLogging
 #   fields in raw log records. The available format specifiers are:
 #
-#     %h    Client IP
-#     %j    JSON object
-#     %l    Hostname of origin
-#     %n    Sequence ID
-#     %q    Query-string-encoded JSON
-#     %t    Timestamp in NCSA format
+#     %h       Client IP
+#     %j       JSON object
+#     %q       Query-string-encoded JSON
+#     %t       Timestamp in NCSA format
+#     %{..}i   Tab-delimited string
+#     %{..}s   Space-delimited string
+#     %{..}d   Integer
+#
+#   (Where '..' is the desired property name for the matching group.)
 #
 #   All other parts of the format string are interpreted as Python
 #   regexp syntax. See <http://docs.python.org/2/library/re.html>
