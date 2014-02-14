@@ -595,7 +595,7 @@ node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(06|10|15|22|23)\.eqiad\.wmnet/ {
+node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
     class { role::coredb::s6 : innodb_file_per_table => true, mariadb => true }
 }
 
@@ -604,7 +604,7 @@ node /^db10(07|28|33|39|41)\.eqiad\.wmnet/ {
 }
 
 ## x1 shard
-node /^db10(29|30|31)\.eqiad\.wmnet/ {
+node /^db10(29|31)\.eqiad\.wmnet/ {
     include role::coredb::x1
 }
 
