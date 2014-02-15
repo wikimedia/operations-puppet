@@ -2248,7 +2248,6 @@ node "stat1.wikimedia.org" {
         accounts::spage,
         accounts::maryana,   # RT 3517
         accounts::mflaschen, # RT 4796
-        accounts::mgrover,   # RT 4600
         accounts::mlitn,     # RT 4959
         accounts::otto,
         accounts::reedy,
