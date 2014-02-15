@@ -2501,7 +2501,7 @@ node 'stat1.wikimedia.org' {
     include accounts::spage
     include accounts::maryana      # RT 3517
     include accounts::mflaschen    # RT 4796
-    include accounts::mgrover      # RT 4600
+    include accounts::mgrover      # RT 4600,revoked 6854
     include accounts::mlitn        # RT 4959
     include accounts::otto
     include accounts::reedy
