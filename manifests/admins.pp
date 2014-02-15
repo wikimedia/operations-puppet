@@ -2861,7 +2861,7 @@ class accounts {
 		$username = "mgrover"
 		$realname = "Michelle Grover"
 		$uid = 637
-
+        $enabled = false
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
@@ -2869,7 +2869,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"norbertgrover@Norberts-MacBook-Pro.local":
-				ensure => present,
+				ensure => absent,
 				user   => $username,
 				type   => "ssh-rsa",
 				key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC9npOnzY3kpFadPdPnd1FenTwI50a50zB8+92LDqgaaJU8yYXTncKb24F54/OEtjjedTAYwyS3FsDqlkBU9N5h14UAZuv8Yp813duY1yIfpGBurHirbcPBr/zbtgWtk48Gay2Prup63+CHRLGYR2HDx6csRKfb0wOo1NFtZTuttVu+eCZ9yZ35DmK1fctNPJtbfFVxVa7cyqHY0Fvu/m98EynGReaMiD6yzgIede2mnTLF6S0+Hn9bCX2oXt2aTZY8Wjb3osXACCtK1kjorf65OrMvjgvLDYCASF1D7ckCNlWaTzdKsjNjUiUmuB3DI6G3OxC82OV2xsBXRDB9k3Ah",
@@ -3581,7 +3581,6 @@ class admins::restricted {
 	include accounts::hoo # RT 6731
 	include accounts::jamesofur
 	include accounts::khorn
-	include accounts::mgrover # RT 4600
 	include accounts::qchris # RT 5403
 	include accounts::rainman
 	include accounts::ram # revoked
@@ -3646,7 +3645,6 @@ class admins::privatedata {
 		accounts::spetrea,
 		accounts::yurik,        # RT 4835
 		accounts::howief,       # RT 3576
-		accounts::mgrover,      # RT 4600
 		accounts::olivneh,      # RT 3451
 		accounts::mwalker,      # RT 5038
 		accounts::awight,       # RT 5048
