@@ -555,13 +555,13 @@ node /^db(6[012456]|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(37|43|49|50|51|52|55|56)\.eqiad\.wmnet/ {
+node /^db10(34|37|43|49|50|51|52|55|56)\.eqiad\.wmnet/ {
     if $::hostname =~ /^db10(56)/ {
         $ganglia_aggregator = true
         include mha::manager
     }
 
-    if $::hostname =~ /^db10(37|49|50|51|52|55|56)/ {
+    if $::hostname =~ /^db10(34|37|49|50|51|52|55|56)/ {
         class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
     } elsif $::hostname =~ /^db10(43)/ {
         class { role::coredb::s1 : mariadb => true }
@@ -735,12 +735,6 @@ node "db1044.eqiad.wmnet" {
         mysql_wmf,
         mysql_wmf::datadirs,
         mysql_wmf::mysqluser
-}
-
-# out of action
-# db1034 RT 6783
-node /^db10(34)\.eqiad\.wmnet/ {
-    include standard
 }
 
 node "dobson.wikimedia.org" {
