@@ -2300,12 +2300,13 @@ class accounts {
 		$username = "smerritt"
 		$realname = "Samuel Merritt (SwiftStack)"
 		$uid = 600
+		$enabled = false
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 			ssh_authorized_key {
 				"sam@torgobook":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAACAQC9uJEKclnZ5I4Ghnms5jJmDDbwYFt3tMA5kBD1vXElvk1CGp8zKYBSGSURRH/Gi3JJG+tMh8HlrSOCJksAeqBpwz8eGK0CO0wf7S9r3oIvwuhWKjk19lA+2YakHKoVg0kIoD29AbJItEjxreRtWc253Zax+nGXT59e9+hCSwOEwxMPb90WES4VB0NzWGeO4J8wII5KGLeIlVPEtorbZMKVbDx1EchZyHayFAJNBl1e0jieFxjaKapAttyO4HNb5F/2J36dVhCANtMCCnA3+94YeHvIwAadDRJ2g4GsMTGZkHX/B+oneDfQ99bru6H+e0ETKcOq4Gx65AiWLdEn5rR1FvcpecADREORbnEu37k9hnMCUO9RXiUwygdy7LMSe7ivu5lW5Ld5ozYNMw9eCDQZmCTbHPRE2d5oVGZeubZ5uImd3G7kblqY301lH54zNOD4o+91YxqUzl06cfo/W6mfhEJGRsAKBFrp7hWiUm+3SQsEhYtDSZWbh4IeYqs9+wzLqC/KbYiufj674qZM10DBbBCA9rpV5IfiqtNrwxnA++MvlMhUtAczeNrqq/xLI3rBtuFk4XawtzQuXzcpeKX/NU/RplwUV/zSc72bLCLcCMQujFE1VHP1EfCUbXNv7m04/P4W8ZpWb4EoniASDkRf8sTbxu98waHgV+OS3+1qMQ==";
