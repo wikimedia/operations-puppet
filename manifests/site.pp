@@ -2538,6 +2538,65 @@ node 'stat1.wikimedia.org' {
 }
 
 node 'stat1001.wikimedia.org' {
+
+    include admins::globaldev, # RT 3119
+        accounts::ezachte,
+        accounts::abartov,    # RT 4106
+        accounts::aengels,
+        accounts::akhanna,
+        accounts::bsitu,      # RT 4959
+        accounts::milimetric, # RT 3540
+        accounts::diederik,
+        accounts::dsc,
+        accounts::dartar,
+        accounts::declerambaul,
+        accounts::ebernhardson, # RT 4959,5717
+        accounts::fflorin, # RT 6011
+        accounts::fschulenburg, # RT 4475
+        accounts::giovanni,  # RT 3460
+        accounts::halfak,
+        accounts::howief,    # RT 3576
+        accounts::ironholds,
+        accounts::jdlrobson,
+        accounts::jgonera,
+        accounts::jmorgan,
+        accounts::kaldari,   # RT 4959
+        accounts::spage,
+        accounts::maryana,   # RT 3517
+        accounts::mflaschen, # RT 4796
+        accounts::mgrover,   # RT 4600,6854 access revoked
+        accounts::mlitn,     # RT 4959
+        accounts::otto,
+        accounts::reedy,
+        accounts::rfaulk,    # RT 5040
+        accounts::spetrea,   # RT 3584
+        accounts::swalling,  # RT 3653
+        accounts::yurik,     # RT 4835
+        accounts::mwalker,   # RT 5038
+        accounts::awight,    # RT 5048
+        accounts::jforrester,# RT 5302
+        accounts::qchris,    # RT 5474
+        accounts::tnegrin,   # RT 5391
+        accounts::kwang,     # RT 5520
+        accounts::siebrand,  # RT 5726
+        accounts::mholmquist,# RT 6009
+        accounts::msyed,     # RT 6506
+        accounts::nuria,     # RT 6525
+        accounts::csalvia,   # RT 6664
+        accounts::leila      # RT 6765
+
+    sudo_user { "otto":   privileges => ['ALL = NOPASSWD: ALL'] }
+
+    # Allow Christian to sudo -u stats to debug and test stats' automated cron jobs.
+    sudo_user { "qchris": privileges => ['ALL = (stats) NOPASSWD: ALL'] }
+
+    include misc::statistics::cron_blog_pageviews,
+        misc::statistics::limn::mobile_data_sync,
+        misc::statistics::iptables
+}
+
+node "stat1001.wikimedia.org" {
+
     include role::statistics::www
 
     # special accounts
