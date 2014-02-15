@@ -2245,7 +2245,6 @@ node "stat1.wikimedia.org" {
         accounts::jgonera,
         accounts::jmorgan,
         accounts::kaldari,   # RT 4959
-        accounts::lwelling,  # RT 4959
         accounts::spage,
         accounts::maryana,   # RT 3517
         accounts::mflaschen, # RT 4796
