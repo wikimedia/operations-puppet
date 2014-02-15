@@ -2283,12 +2283,13 @@ class accounts {
 		$username = "orion"
 		$realname = "Alpha Ori (SwiftStack)"
 		$uid = 599
+		$enabled = false
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 			ssh_authorized_key {
 				"orion.auld@gmail.com":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA6Yx97JRhDTfvqqPkdUu4V/ZR3HV/G/p2oZlcpqBcBennofWqVvvpNOBi1FLbLSuMeBipn33TdQDqijCN/G61oTzk6JwtkGiBTf7x76AqMIa64GqznopsbRYPHjDu9u0cF9EUdY13/gaXJ8whW4KgL34hXRoY9StZdxbot6DLsKWbIrM3hF4bLQEMltFgJe5Pdq+B9eFtdHkZbdjtYmhfAmHp5r74P/bfCkziiNZ5GNLbuOcqUnJgKEzqewDViQmJ9WYDcYaPVWqD8fR7ueFW3m4UqT9KZ1IJGBGlPdTLNvUyHF9T64H5uicI/J13jedlYo8+fM6hixcP7SSsb3cDdQ==";
