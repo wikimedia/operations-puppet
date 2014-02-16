@@ -38,6 +38,12 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
+	/* Compress SVG and ICO files on the fly, they are inefficient */
+	/* I have no idea if this is doing it right, I'm making it up. Remove this comment if works. */
+	if (beresp.http.content.type ~ "image/svg+xml" || beresp.http.content.type ~ "image/x-icon") {
+		set beresp.do_gzip = true;
+	}
+
 	/* Don't run the default vcl_fetch function */
 	return (deliver);
 }
