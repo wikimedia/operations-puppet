@@ -15,5 +15,6 @@ host=`echo 'echo wfGetLB()->getServerName(0);' | /usr/local/bin/mwscript eval.ph
 
 MU=wikiadmin
 MP=`wikiadmin_pass`
-mysql -u $MU -p$MP -h $host -D enwiki "$@"
 
+shift
+mysql -u $MU -p$MP -h $host -D $db "$@"
