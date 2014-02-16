@@ -58,6 +58,11 @@ sub vcl_fetch {
 <% end -%>
 	call hhvm_is_cacheable;
 
+	/* Compress ico and SVG files */
+	if (beresp.http.content-type ~ "^image/(x-icon|svg)") {
+		set beresp.do_gzip = true;
+	}
+
 	/* Don't run the default vcl_fetch function */
 	return (deliver);
 }
