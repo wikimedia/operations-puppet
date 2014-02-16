@@ -1281,7 +1281,9 @@ class role::cache {
                 }
             }
             default: {
-                $realm_cluster_options = {}
+                $realm_cluster_options = {
+                    'do_gzip' => true,
+                }
             }
         }
         $cluster_options = merge($common_cluster_options, $realm_cluster_options)
