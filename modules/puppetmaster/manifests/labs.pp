@@ -18,6 +18,22 @@ class puppetmaster::labs {
             user    => 'root',
     }
 
+    cron { 'update_public_puppet_repos':
+        ensure => present,
+        command => '(cd /var/lib/git/operations/puppet && /usr/bin/git pull && /usr/bin/git submodule update --init) > /dev/null 2>&1',
+        user => 'gitpuppet',
+        environment => 'GIT_SSH=/var/lib/git/ssh',
+        minute => 2,
+    }
+
+    cron { 'update_private_puppet_repos':
+        ensure => present,
+        command => '(cd /var/lib/git/operations/labs/private && /usr/bin/git pull) > /dev/null 2>&1',
+        user => 'gitpuppet',
+        environment => 'GIT_SSH=/var/lib/git/ssh',
+        minute => 2,
+    }
+
     include passwords::openstack::keystone
     $labsstatus_password = $passwords::openstack::keystone::keystone_ldap_user_pass
     $labsstatus_username = 'novaadmin'
