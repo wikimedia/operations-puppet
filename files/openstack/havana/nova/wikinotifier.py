@@ -110,7 +110,7 @@ class WikiStatus(object):
                          'state_description']
 
     def __init__(self):
-        self.host = FLAGS.wiki_host
+        self.host = CONF.wiki_host
         self.site = None
         self.kclient = {}
         self.tenant_manager = {}
@@ -125,8 +125,8 @@ class WikiStatus(object):
                                           retry_timeout=5,
                                           max_retries=3)
             if self.site:
-                self.site.login(FLAGS.wiki_login, FLAGS.wiki_password,
-                                domain=FLAGS.wiki_domain)
+                self.site.login(CONF.wiki_login, CONF.wiki_password,
+                                domain=CONF.wiki_domain)
                 self._wiki_logged_in = True
             else:
                 LOG.warning("Unable to reach %s.  We'll keep trying, "
@@ -136,10 +136,10 @@ class WikiStatus(object):
         if tenant_id not in self.kclient:
             self.kclient[tenant_id] = keystoneclient.Client(
                 token='devstack',
-                username=FLAGS.wiki_keystone_login,
-                password=FLAGS.wiki_keystone_password,
+                username=CONF.wiki_keystone_login,
+                password=CONF.wiki_keystone_password,
                 tenant_id=tenant_id,
-                endpoint=FLAGS.wiki_keystone_auth_url)
+                endpoint=CONF.wiki_keystone_auth_url)
 
             self.tenant_manager[tenant_id] = self.kclient[tenant_id].tenants
             self.user_manager[tenant_id] = self.kclient[tenant_id].users
@@ -148,9 +148,9 @@ class WikiStatus(object):
 
     def notify(self, ctxt, message):
         event_type = message.get('event_type')
-        if event_type in FLAGS.wiki_eventtype_blacklist:
+        if event_type in CONF.wiki_eventtype_blacklist:
             return
-        if event_type not in FLAGS.wiki_eventtype_whitelist:
+        if event_type not in CONF.wiki_eventtype_whitelist:
             LOG.debug("Ignoring message type %s" % event_type)
             return
 
@@ -163,8 +163,8 @@ class WikiStatus(object):
             template_param_dict[field] = payload[field]
 
         tenant_id = payload['tenant_id']
-        if (FLAGS.wiki_use_keystone and self._keystone_login(tenant_id,
-                                                             ctxt)):
+        if (CONF.wiki_use_keystone and self._keystone_login(tenant_id,
+                                                            ctxt)):
             tenant_obj = self.tenant_manager[tenant_id].get(tenant_id)
             user_obj = self.user_manager[tenant_id].get(payload['user_id'])
             tenant_name = tenant_obj.name
@@ -177,9 +177,9 @@ class WikiStatus(object):
         simple_id = inst.id
         ec2_id = 'i-%08x' % inst.id
 
-        if FLAGS.wiki_instance_dns_domain:
-            fqdn = "%s.%s" % (instance_name, FLAGS.wiki_instance_dns_domain)
-            resourceName = "%s.%s" % (ec2_id, FLAGS.wiki_instance_dns_domain)
+        if CONF.wiki_instance_dns_domain:
+            fqdn = "%s.%s" % (instance_name, CONF.wiki_instance_dns_domain)
+            resourceName = "%s.%s" % (ec2_id, CONF.wiki_instance_dns_domain)
         else:
             fqdn = instance_name
             resourceName = ec2_id
@@ -193,7 +193,7 @@ class WikiStatus(object):
         template_param_dict['fqdn'] = fqdn
         template_param_dict['ec2_id'] = ec2_id
         template_param_dict['project_name'] = inst.project_id
-        template_param_dict['region'] = FLAGS.wiki_instance_region
+        template_param_dict['region'] = CONF.wiki_instance_region
 
         try:
             fixed_ips = db.fixed_ip_get_by_instance(ctxt,
@@ -234,7 +234,7 @@ class WikiStatus(object):
                                                             end_comment)
 
         self._wiki_login()
-        pagename = "%s%s" % (FLAGS.wiki_page_prefix, resourceName)
+        pagename = "%s%s" % (CONF.wiki_page_prefix, resourceName)
         LOG.debug("wikistatus:  Writing instance info"
                   " to page http://%s/wiki/%s" %
                   (self.host, pagename))
