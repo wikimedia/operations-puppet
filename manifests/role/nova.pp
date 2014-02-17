@@ -348,10 +348,15 @@ class role::nova::wikiupdates {
         package { 'python-mwclient': ensure => latest; }
     }
 
-    if ($openstack_version == "essex") {
+    if ($openstack_version == "folsom") {
+        package { 'python-openstack-wikistatus':
+            ensure => installed,
+            require => Package["python-mwclient"],
+        }
+    } else {
         if ($::lsbdistcodename == "lucid") {
 		    file { "/usr/local/lib/python2.6/dist-packages/wikinotifier.py":
-			    source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+			    source => "puppet:///files/openstack/${openstack_version}/nova/wikinotifier.py",
 			    mode => 0644,
 			    owner => root,
 			    group => root,
@@ -360,7 +365,7 @@ class role::nova::wikiupdates {
 		    }
 	    } else {
 		    file { "/usr/local/lib/python2.7/dist-packages/wikinotifier.py":
-			    source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+			    source => "puppet:///files/openstack/${openstack_version}/nova/wikinotifier.py",
 			    mode => 0644,
 			    owner => root,
 			    group => root,
@@ -368,11 +373,6 @@ class role::nova::wikiupdates {
 			    notify => Service["nova-compute"]
 		    }
 	    }
-    } else {
-        package { 'python-openstack-wikistatus':
-            ensure => installed,
-            require => Package["python-mwclient"],
-        }
     }
 }
 
