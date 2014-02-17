@@ -14,24 +14,24 @@
 #    under the License.
 import sys
 
+sys.path.append("/home/andrew/mwclient/")
 import mwclient
 
 from keystoneclient.v2_0 import client as keystoneclient
 
-from nova import context
 from nova import db
 from nova import exception
-from nova.image import glance
+from nova import image
 from nova.openstack.common import log as logging
 from nova import utils
 
 from oslo.config import cfg
 
-LOG = logging.getLogger("nova.notifier.list_notifier")
+LOG = logging.getLogger('%s' % __name__)
 
 wiki_opts = [
     cfg.StrOpt('wiki_host',
-               default='localhost',
+               default='deployment.wikimedia.beta.wmflabs.org',
                help='Mediawiki host to receive updates.'),
     cfg.StrOpt('wiki_domain',
                default='labs',
@@ -58,7 +58,7 @@ wiki_opts = [
                default='http://127.0.0.1:35357/v2.0',
                help='keystone auth url'),
     cfg.StrOpt('wiki_keystone_login',
-               default='keystonelogin',
+               default='admin',
                help='keystone admin login'),
     cfg.StrOpt('wiki_keystone_password',
                default='keystonepass',
@@ -82,9 +82,10 @@ wiki_opts = [
                     help='Event types to always handle.'),
     cfg.MultiStrOpt('wiki_eventtype_blacklist',
                     default=[],
-                    help='Event types to always ignore. '
+                    help='Event types to always ignore.'
                     'In the event of a conflict, '
                     'this overrides the whitelist.')]
+
 
 CONF = cfg.CONF
 CONF.register_opts(wiki_opts)
@@ -96,13 +97,6 @@ end_comment = "<!-- autostatus end -->"
 
 class WikiStatus(object):
     """Notifier class which posts instance info to a wiki page.
-
-    Activate with something like this:
-
-    --notification_driver = nova.notifier.list_notifier
-    --list_notifier_drivers = nova.wikinotifier.WikiStatus
-
-    (This is a crippled version of this file, specially for essex.)
     """
 
     RawTemplateFields = ['created_at',
@@ -116,22 +110,23 @@ class WikiStatus(object):
                          'state_description']
 
     def __init__(self):
+        self.host = FLAGS.wiki_host
         self.site = None
         self.kclient = {}
         self.tenant_manager = {}
         self.user_manager = {}
         self._wiki_logged_in = False
-        self.glance_service = glance.GlanceImageService()
+        self._image_service = image.glance.get_default_image_service()
 
     def _wiki_login(self):
         if not self._wiki_logged_in:
             if not self.site:
-                self.site = mwclient.Site(("https", FLAGS.wiki_host),
+                self.site = mwclient.Site(("https", self.host),
                                           retry_timeout=5,
                                           max_retries=3)
             if self.site:
-                self.site.login(FLAGS.wiki_login,
-                                FLAGS.wiki_password, domain=FLAGS.wiki_domain)
+                self.site.login(FLAGS.wiki_login, FLAGS.wiki_password,
+                                domain=FLAGS.wiki_domain)
                 self._wiki_logged_in = True
             else:
                 LOG.warning("Unable to reach %s.  We'll keep trying, "
@@ -139,20 +134,19 @@ class WikiStatus(object):
 
     def _keystone_login(self, tenant_id, ctxt):
         if tenant_id not in self.kclient:
-            self.kclient[tenant_id] = keystoneclient.Client(token='devstack',
-                                                            username=FLAGS.wiki_keystone_login,
-                                                            password=FLAGS.wiki_keystone_password,
-                                                            tenant_id=tenant_id,
-                                                            endpoint=FLAGS.wiki_keystone_auth_url)
+            self.kclient[tenant_id] = keystoneclient.Client(
+                token='devstack',
+                username=FLAGS.wiki_keystone_login,
+                password=FLAGS.wiki_keystone_password,
+                tenant_id=tenant_id,
+                endpoint=FLAGS.wiki_keystone_auth_url)
 
             self.tenant_manager[tenant_id] = self.kclient[tenant_id].tenants
             self.user_manager[tenant_id] = self.kclient[tenant_id].users
 
         return self.kclient[tenant_id]
 
-    def notify(self, message):
-
-        ctxt = context.get_admin_context()
+    def notify(self, ctxt, message):
         event_type = message.get('event_type')
         if event_type in FLAGS.wiki_eventtype_blacklist:
             return
@@ -161,21 +155,16 @@ class WikiStatus(object):
             return
 
         payload = message['payload']
+        instance = payload['instance_id']
         instance_name = payload['display_name']
-        uuid = payload['instance_id']
-
-        if FLAGS.wiki_instance_dns_domain:
-            fqdn = "%s.%s" % (instance_name, FLAGS.wiki_instance_dns_domain)
-        else:
-            fqdn = instance_name
 
         template_param_dict = {}
         for field in self.RawTemplateFields:
             template_param_dict[field] = payload[field]
 
         tenant_id = payload['tenant_id']
-        if (FLAGS.wiki_use_keystone and
-                self._keystone_login(tenant_id, ctxt)):
+        if (FLAGS.wiki_use_keystone and self._keystone_login(tenant_id,
+                                                             ctxt)):
             tenant_obj = self.tenant_manager[tenant_id].get(tenant_id)
             user_obj = self.user_manager[tenant_id].get(payload['user_id'])
             tenant_name = tenant_obj.name
@@ -183,9 +172,17 @@ class WikiStatus(object):
             template_param_dict['tenant'] = tenant_name
             template_param_dict['username'] = user_name
 
-        inst = db.instance_get_by_uuid(ctxt, uuid)
-        old_school_id = inst.id
-        ec2_id = 'i-%08x' % old_school_id
+        inst = db.instance_get_by_uuid(ctxt, payload['instance_id'])
+
+        simple_id = inst.id
+        ec2_id = 'i-%08x' % inst.id
+
+        if FLAGS.wiki_instance_dns_domain:
+            fqdn = "%s.%s" % (instance_name, FLAGS.wiki_instance_dns_domain)
+            resourceName = "%s.%s" % (ec2_id, FLAGS.wiki_instance_dns_domain)
+        else:
+            fqdn = instance_name
+            resourceName = ec2_id
 
         template_param_dict['cpu_count'] = inst.vcpus
         template_param_dict['disk_gb_current'] = inst.ephemeral_gb
@@ -199,61 +196,81 @@ class WikiStatus(object):
         template_param_dict['region'] = FLAGS.wiki_instance_region
 
         try:
-            fixed_ips = db.fixed_ip_get_by_instance(ctxt, old_school_id)
+            fixed_ips = db.fixed_ip_get_by_instance(ctxt,
+                                                    payload['instance_id'])
         except exception.FixedIpNotFoundForInstance:
             fixed_ips = []
         ips = []
         floating_ips = []
         for fixed_ip in fixed_ips:
             ips.append(fixed_ip.address)
-        for floating_ip in db.floating_ip_get_by_fixed_ip_id(ctxt, fixed_ip.id):
-            floating_ips.append(floating_ip.address)
+            for f_ip in db.floating_ip_get_by_fixed_ip_id(ctxt,
+                                                          fixed_ip.id):
+                floating_ips.append(f_ip.address)
 
         template_param_dict['private_ip'] = ','.join(ips)
         template_param_dict['public_ip'] = ','.join(floating_ips)
 
-        sec_groups = db.security_group_get_by_instance(ctxt, old_school_id)
+        sec_groups = db.security_group_get_by_instance(ctxt, simple_id)
         grps = [grp.name for grp in sec_groups]
         template_param_dict['security_group'] = ','.join(grps)
+
+        image = self._image_service.show(ctxt, inst.image_ref)
+        image_name = image.get('name', inst.image_ref)
+        template_param_dict['image_name'] = image_name
 
         fields_string = ""
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
+        clear_page = False
         if event_type == 'compute.instance.delete.start':
-            page_string = "\n%s\nThis instance has been deleted.\n%s\n" % (begin_comment,
-                                                                           end_comment)
+            page_string = ("\n%s\nThis instance has been deleted.\n%s\n" %
+                           (begin_comment, end_comment))
+            clear_page = True
         else:
-            page_string = "\n%s\n{{InstanceStatus%s}}\n%s\n" % (begin_comment,
-                                                                fields_string,
-                                                                end_comment)
+            page_string = "%s\n{{InstanceStatus%s}}\n%s" % (begin_comment,
+                                                            fields_string,
+                                                            end_comment)
 
         self._wiki_login()
-        pagename = "%s%s" % (FLAGS.wiki_page_prefix, ec2_id)
+        pagename = "%s%s" % (FLAGS.wiki_page_prefix, resourceName)
         LOG.debug("wikistatus:  Writing instance info"
                   " to page http://%s/wiki/%s" %
-                  (FLAGS.wiki_host, pagename))
+                  (self.host, pagename))
 
         page = self.site.Pages[pagename]
         try:
             pText = page.edit()
-            start_replace_index = pText.find(begin_comment)
-            if start_replace_index == -1:
-                # Just stick it at the end.
-                newText = "%s%s" % (page_string, pText)
+            if clear_page:
+                newText = page_string
             else:
-                # Replace content between comment tags.
-                end_replace_index = pText.find(end_comment, start_replace_index)
-                if end_replace_index == -1:
-                    end_replace_index = start_replace_index + len(begin_comment)
+                start_replace_index = pText.find(begin_comment)
+                if start_replace_index == -1:
+                    # Just stick new text at the top.
+                    newText = "%s\n%s" % (page_string, pText)
                 else:
-                    end_replace_index += len(end_comment)
-                newText = "%s%s%s" % (pText[:start_replace_index],
-                                      page_string,
-                                      pText[end_replace_index:])
+                    # Replace content between comment tags.
+                    end_replace_index = pText.find(end_comment,
+                                                   start_replace_index)
+                    if end_replace_index == -1:
+                        end_replace_index = (start_replace_index +
+                                             len(begin_comment))
+                    else:
+                        end_replace_index += len(end_comment)
+                    newText = "%s%s%s" % (pText[:start_replace_index],
+                                          page_string,
+                                          pText[end_replace_index:])
             page.save(newText, "Auto update of instance info.")
         except (mwclient.errors.InsufficientPermission,
                 mwclient.errors.LoginError):
             LOG.debug("Failed to update wiki page..."
                       " trying to re-login next time.")
             self._wiki_logged_in = False
+
+
+notifier = WikiStatus()
+
+
+def notify(ctxt, message):
+    notifier.notify(ctxt, message)
