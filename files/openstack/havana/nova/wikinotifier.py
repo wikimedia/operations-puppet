@@ -21,12 +21,11 @@ from keystoneclient.v2_0 import client as keystoneclient
 from nova import context
 from nova import db
 from nova import exception
-from nova import flags
 from nova.image import glance
-from nova import log as logging
-from nova.openstack.common import cfg
-from nova.notifier import api
+from nova.openstack.common import log as logging
 from nova import utils
+
+from oslo.config import cfg
 
 LOG = logging.getLogger("nova.notifier.list_notifier")
 
@@ -87,8 +86,9 @@ wiki_opts = [
                     'In the event of a conflict, '
                     'this overrides the whitelist.')]
 
-FLAGS = flags.FLAGS
-FLAGS.register_opts(wiki_opts)
+CONF = cfg.CONF
+CONF.register_opts(wiki_opts)
+
 
 
 begin_comment = "<!-- autostatus begin -->"
