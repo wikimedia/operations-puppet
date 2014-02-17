@@ -1,0 +1,14 @@
+title 'navigationStart to loadEventEnd on mobile sites, last month'
+linewidth 1
+linemode 'connected'
+hide_legend 'false'
+from '-1month'
+vtitle 'milliseconds'
+
+field :q2, :color => 'blue',
+           :alias => 'Median',
+           :data  => 'frontend.navtiming.totalPageLoadTime.mobile.overall.median'
+
+field :q3, :color => 'red',
+           :alias => '75th percentile',
+           :data  => 'frontend.navtiming.totalPageLoadTime.mobile.overall.75percentile'
