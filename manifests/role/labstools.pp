@@ -1,7 +1,3 @@
-#
-# This is a nice generic place to make project-specific roles with a sane
-# naming scheme.
-#
 
 class role::labs::tools {
 
