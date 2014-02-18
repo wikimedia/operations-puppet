@@ -804,8 +804,6 @@ node "erbium.eqiad.wmnet" inherits "base_analytics_logging_node" {
     include role::logging::udp2log::erbium
 
     include accounts::tnegrin       # RT 5391
-    include accounts::nuria         # RT 6836
-
 }
 
 # es1 equad
