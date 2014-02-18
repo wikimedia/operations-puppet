@@ -231,8 +231,8 @@ class role::nova::common {
 		instance_status_wiki_host => "wikitech.wikimedia.org",
 		instance_status_wiki_domain => "labs",
 		instance_status_wiki_page_prefix => "Nova_Resource:",
-		instance_status_wiki_region => "pmtpa",
-		instance_status_dns_domain => "pmtpa.wmflabs",
+		instance_status_wiki_region => $::site,
+		instance_status_dns_domain => "${::site}.wmflabs",
 		instance_status_wiki_user => $passwords::misc::scripts::wikinotifier_user,
 		instance_status_wiki_pass => $passwords::misc::scripts::wikinotifier_pass
 	}

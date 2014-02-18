@@ -19,7 +19,7 @@ import mwclient
 
 from keystoneclient.v2_0 import client as keystoneclient
 
-from nova import db
+from nova import conductor
 from nova import exception
 from nova import image
 from nova.openstack.common import log as logging
@@ -27,7 +27,7 @@ from nova import utils
 
 from oslo.config import cfg
 
-LOG = logging.getLogger('%s' % __name__)
+LOG = logging.getLogger('nova.%s' % __name__)
 
 wiki_opts = [
     cfg.StrOpt('wiki_host',
@@ -117,6 +117,7 @@ class WikiStatus(object):
         self.user_manager = {}
         self._wiki_logged_in = False
         self._image_service = image.glance.get_default_image_service()
+        self.conductor_api = conductor.API()
 
     def _wiki_login(self):
         if not self._wiki_logged_in:
@@ -172,10 +173,10 @@ class WikiStatus(object):
             template_param_dict['tenant'] = tenant_name
             template_param_dict['username'] = user_name
 
-        inst = db.instance_get_by_uuid(ctxt, payload['instance_id'])
+        inst = self.conductor_api.instance_get_by_uuid(ctxt, payload['instance_id'])
 
-        simple_id = inst.id
-        ec2_id = 'i-%08x' % inst.id
+        simple_id = inst['id']
+        ec2_id = 'i-%08x' % simple_id
 
         if CONF.wiki_instance_dns_domain:
             fqdn = "%s.%s" % (instance_name, CONF.wiki_instance_dns_domain)
@@ -184,39 +185,46 @@ class WikiStatus(object):
             fqdn = instance_name
             resourceName = ec2_id
 
-        template_param_dict['cpu_count'] = inst.vcpus
-        template_param_dict['disk_gb_current'] = inst.ephemeral_gb
-        template_param_dict['host'] = inst.host
-        template_param_dict['reservation_id'] = inst.reservation_id
-        template_param_dict['availability_zone'] = inst.availability_zone
-        template_param_dict['original_host'] = inst.launched_on
+        template_param_dict['cpu_count'] = inst['vcpus']
+        template_param_dict['disk_gb_current'] = inst['ephemeral_gb']
+        template_param_dict['host'] = inst['host']
+        template_param_dict['reservation_id'] = inst['reservation_id']
+        template_param_dict['availability_zone'] = inst['availability_zone']
+        template_param_dict['original_host'] = inst['launched_on']
         template_param_dict['fqdn'] = fqdn
         template_param_dict['ec2_id'] = ec2_id
-        template_param_dict['project_name'] = inst.project_id
+        template_param_dict['project_name'] = inst['project_id']
         template_param_dict['region'] = CONF.wiki_instance_region
 
-        try:
-            fixed_ips = db.fixed_ip_get_by_instance(ctxt,
-                                                    payload['instance_id'])
-        except exception.FixedIpNotFoundForInstance:
-            fixed_ips = []
+        fixed_ips = []
+
+        if False:
+            try:
+                fixed_ips = self.conductor_api.fixed_ip_get_by_instance(
+                    ctxt,
+                    payload['instance_id'])
+            except exception.FixedIpNotFoundForInstance:
+                fixed_ips = []
         ips = []
         floating_ips = []
-        for fixed_ip in fixed_ips:
-            ips.append(fixed_ip.address)
-            for f_ip in db.floating_ip_get_by_fixed_ip_id(ctxt,
-                                                          fixed_ip.id):
-                floating_ips.append(f_ip.address)
+
+        if False:
+            for fixed_ip in fixed_ips:
+                ips.append(fixed_ip.address)
+                for f_ip in self.conductor_api.floating_ip_get_by_fixed_ip_id(
+                        ctxt,
+                        fixed_ip.id):
+                    floating_ips.append(f_ip.address)
 
         template_param_dict['private_ip'] = ','.join(ips)
         template_param_dict['public_ip'] = ','.join(floating_ips)
 
-        sec_groups = db.security_group_get_by_instance(ctxt, simple_id)
-        grps = [grp.name for grp in sec_groups]
+        sec_groups = self.conductor_api.security_group_get_by_instance(ctxt, inst)
+        grps = [grp['name'] for grp in sec_groups]
         template_param_dict['security_group'] = ','.join(grps)
 
-        image = self._image_service.show(ctxt, inst.image_ref)
-        image_name = image.get('name', inst.image_ref)
+        image = self._image_service.show(ctxt, inst['image_ref'])
+        image_name = image.get('name', inst['image_ref'])
         template_param_dict['image_name'] = image_name
 
         fields_string = ""
