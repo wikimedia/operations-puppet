@@ -22,6 +22,7 @@ from keystoneclient.v2_0 import client as keystoneclient
 from nova import conductor
 from nova import exception
 from nova import image
+from nova import network
 from nova.openstack.common import log as logging
 from nova import utils
 
@@ -196,25 +197,19 @@ class WikiStatus(object):
         template_param_dict['project_name'] = inst['project_id']
         template_param_dict['region'] = CONF.wiki_instance_region
 
-        fixed_ips = []
-
-        if False:
-            try:
-                fixed_ips = self.conductor_api.fixed_ip_get_by_instance(
-                    ctxt,
-                    payload['instance_id'])
-            except exception.FixedIpNotFoundForInstance:
-                fixed_ips = []
         ips = []
         floating_ips = []
 
-        if False:
-            for fixed_ip in fixed_ips:
-                ips.append(fixed_ip.address)
-                for f_ip in self.conductor_api.floating_ip_get_by_fixed_ip_id(
-                        ctxt,
-                        fixed_ip.id):
-                    floating_ips.append(f_ip.address)
+        try:
+            nw_info = network.API().get_instance_nw_info(ctxt, inst)
+            ip_objs = nw_info.fixed_ips()
+            floating_ip_objs = nw_info.floating_ips()
+
+            ips = [ip['address'] for ip in ip_objs]
+            floating_ips = [ip['address'] for ip in floating_ip_objs]
+        except exception.FixedIpNotFoundForInstance:
+            ips = []
+            floating_ips = []
 
         template_param_dict['private_ip'] = ','.join(ips)
         template_param_dict['public_ip'] = ','.join(floating_ips)
