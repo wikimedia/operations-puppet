@@ -2275,9 +2275,9 @@ node "stat1.wikimedia.org" {
     # Allow Christian to sudo -u stats to debug and test stats' automated cron jobs.
     sudo_user { "qchris": privileges => ['ALL = (stats) NOPASSWD: ALL'] }
 
-    include misc::statistics::cron_blog_pageviews,
-        misc::statistics::limn::mobile_data_sync,
-        misc::statistics::iptables
+    include statistics::cron_blog_pageviews,
+        statistics::limn::mobile_data_sync,
+        statistics::firewall
 }
 
 node "stat1001.wikimedia.org" {
