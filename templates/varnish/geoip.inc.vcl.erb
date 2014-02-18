@@ -102,3 +102,45 @@ sub geoip_lookup {
 		geo_set_cache_control(sp);
 	}C
 }
+
+
+sub geoip_cookie {
+	C{
+		GeoIPRecord *record;
+		static void *invalid_chars_re;
+		char *set_cookie_header, *cookie;
+
+		char *ip = geo_get_xff_ip(sp);
+		int af = geo_get_addr_family(ip);
+		if (af == -1) {
+			ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
+			af = geo_get_addr_family(ip);
+		}
+
+		record = GeoIP_record_by_addr(gi, ip);
+		if (record) {
+			VRT_re_init(&invalid_chars_re, "[;,\\s]");
+			cookie = VRT_WrkString(
+				sp,
+				"GeoIP=",
+				record->country_code,
+				":",
+				VRT_regsub(sp, 0, record->city, invalid_chars_re, "_"),
+				"; path=/",
+				vrt_magic_string_end
+			);
+			GeoIPRecord_delete(record);
+		} else {
+			cookie = VRT_WrkString(sp, "GeoIP=::", af == PF_INET6 ? "IPv6" : "", "; path=/", vrt_magic_string_end);
+		}
+
+		set_cookie_header = VRT_GetHdr(sp, HDR_RESP, "\013set-cookie:");
+		if (set_cookie_header == NULL) {
+			// New header
+			VRT_SetHdr(sp, HDR_RESP, "\013Set-Cookie:", cookie, vrt_magic_string_end);
+		} else {
+			// Append to existing header
+			VRT_SetHdr(sp, HDR_RESP, "\013Set-Cookie:", set_cookie_header, "; ", cookie, vrt_magic_string_end);
+		}
+	}C
+}
