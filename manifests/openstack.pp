@@ -144,16 +144,6 @@ class openstack::project-storage-service {
         ensure => running,
         require => Generic::Upstart_job["manage-volumes"];
     }
-
-    if ($::site == 'eqiad') {
-        cron { "Update labs ssh keys":
-                ensure => present,
-                user => root,
-                command => '/usr/local/sbin/manage-keys-nfs --logfile=/var/log/manage-keys.log >/dev/null 2>&1',
-                hour => '*',
-                minute => '*/5',
-        }
-    }
 }
 
 class openstack::project-nfs-storage-service {
@@ -171,6 +161,16 @@ class openstack::project-nfs-storage-service {
             'ALL = NOPASSWD: /usr/local/sbin/sync-exports' ]
     sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["nfsmanager"] }
     generic::systemuser { "nfsmanager": name => "nfsmanager", home => "/var/lib/nfsmanager", shell => "/bin/bash" }
+
+    if ($::site == 'eqiad') {
+        cron { "Update labs ssh keys":
+                ensure => present,
+                user => root,
+                command => '/usr/local/sbin/manage-keys-nfs --logfile=/var/log/manage-keys.log >/dev/null 2>&1',
+                hour => '*',
+                minute => '*/5',
+        }
+    }
 }
 
 class openstack::project-storage {
