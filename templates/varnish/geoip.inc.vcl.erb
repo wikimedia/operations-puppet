@@ -1,14 +1,5 @@
 # Varnish VCL include file
 
-# GeoIP
-# declare the function signature
-# so we can use them
-C{
-	#include <string.h>
-	double TIM_real(void);
-	void TIM_format(double t, char *p);
-}C
-
 # init GeoIP code
 C{
 	#include <dlfcn.h>
@@ -22,25 +13,64 @@ C{
 	#include <netdb.h>
 	#include <arpa/inet.h>
 
-	GeoIP *gi;
-	void geo_init () {
-		if (!gi) {
+	GeoIP *gi = NULL;
+
+	void geo_init();
+	int geo_get_addr_family (const char *addr);
+	char * geo_get_ip_for_lookup (const struct sess *sp);
+	void geo_set_cache_control (const struct sess *sp);
+	double TIM_real(void);
+	void TIM_format(double t, char *p);
+
+	inline void geo_init () {
+		if (gi == NULL) {
 			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MMAP_CACHE);
 		}
 	}
-	getaddrfamily(const char *addr) {
-		struct addrinfo hint, *info=0;
+
+	int geo_get_addr_family (const char *addr) {
+		struct addrinfo hint;
+		struct addrinfo *info = NULL;
+		int ret, result;
+
 		memset(&hint, 0, sizeof(hint));
 		hint.ai_family = AF_UNSPEC;
 		hint.ai_flags = AI_NUMERICHOST;
-		int ret = getaddrinfo(addr, 0, &hint, &info);
+
+		ret = getaddrinfo(addr, 0, &hint, &info);
 		if (ret) {
 			freeaddrinfo(info);
 			return -1;
 		}
-		int result = info->ai_family;
+
+		result = info->ai_family;
 		freeaddrinfo(info);
 		return result;
+	}
+
+	char * geo_get_ip_for_lookup (const struct sess *sp) {
+		char *last = NULL;
+		char *xff = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		char *xff_ip_str = strtok_r(xff, ",", &last);  // XFF can be a comma-delimited list of IPs
+
+		if (xff_ip_str == NULL) {
+			// It isn't a list; get the full header
+			xff_ip_str = xff;
+		}
+		// Ensure the header is set & XFF is a valid IP
+		if (xff_ip_str && geo_get_addr_family(xff_ip_str) != -1) {
+			// Use the XFF IP instead of the client IP
+			return xff_ip_str;
+		}
+		return VRT_IP_string(sp, VRT_r_client_ip(sp));
+	}
+
+	void geo_set_cache_control (const struct sess *sp) {
+		char date[40];
+
+		TIM_format(TIM_real(), date);
+		VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:", date, vrt_magic_string_end);
+		VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:", "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
 	}
 }C
 
@@ -48,32 +78,12 @@ sub geoip_lookup {
 	set obj.http.Content-Type = "text/javascript";
 
 	C{
-		char *ip;
-		char *last;
-		char date[40];
-		char json[255];
+		char *ip = geo_get_ip_for_lookup(sp);
+		char json[255] = "Geo = {}";
 
-		// XFF can be a comma delimited list of IPs
-		char *xff_ip_str = strtok_r(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",", &last);
-		if (xff_ip_str == NULL) {
-			// It isn't a list; get the full header
-			xff_ip_str = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
-		}
-		// Ensure the header is set
-		if (xff_ip_str) {
-			// Ensure XFF is a valid IP
-			if (getaddrfamily(xff_ip_str) != -1) {
-				// Use the XFF IP instead of the client IP
-				ip = xff_ip_str;
-			} else {
-				ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
-			}
-		} else {
-			ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
-		}
-
-		if (!gi) { geo_init(); }
+		geo_init();
 		GeoIPRecord *record = GeoIP_record_by_addr(gi, ip);
+
 		if (record) {
 			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\",\"netmask\":\"%d\"}",
 				record->city,
@@ -83,13 +93,9 @@ sub geoip_lookup {
 				ip,
 				24 // HACK
 			);
-			VRT_synth_page(sp, 0, json,  vrt_magic_string_end);
 			GeoIPRecord_delete(record);
-		} else {
-			VRT_synth_page(sp, 0, "Geo = {}",  vrt_magic_string_end);
 		}
-		TIM_format(TIM_real(), date);
-		VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:", date, vrt_magic_string_end);
-		VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:", "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
+		VRT_synth_page(sp, 0, json,  vrt_magic_string_end);
+		geo_set_cache_control(sp);
 	}C
 }
