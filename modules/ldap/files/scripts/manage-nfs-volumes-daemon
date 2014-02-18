@@ -32,10 +32,10 @@ class VolumeManager:
         self.dry_run = False
 
         # TODO: Pull this info from a configuration file
-        self.base_dir = '/srv/'
-        self.base_snapshot_dir = '/time/'
-        self.base_export_volume_dir = '/exp/'
-        self.export_snapshot_dir = '.snapshot'
+        self.base_dir = '/srv/project/'
+        #self.base_snapshot_dir = '/time/'
+        #self.export_snapshot_dir = '.snapshot'
+        self.base_export_volume_dir = '/exp/project/'
         self.base_exports_dir = '/etc/exports.d/'
         # Volumes in projects listed as global; so: { 'dumps': ['xml'] } would be
         # an xml share in the dumps project being listed as global.
