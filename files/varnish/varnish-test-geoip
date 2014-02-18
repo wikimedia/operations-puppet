@@ -1,0 +1,18 @@
+#/usr/bin/env bash
+# Unit tests for /geoiplookup
+# Usage: varnish-test-geoip HOSTNAME
+# e.g.: varnish-test-geoip cp4002.ulsfo.wmnet
+
+url="${1:-localhost}/geoiplookup" fails=0
+pass() { echo "$(tput bold; tput setaf 2)PASSED:$(tput sgr0) $*"; }
+fail() { echo "$(tput bold; tput setaf 1)FAILED:$(tput sgr0) $*"; fails=$(($fails+1)); }
+assert() { curl -s -H "Host: bits.wikimedia.org" \
+  ${3:+-H "X-Forwarded-For: ${3}"} ${url} | grep -q "${2}" && pass $1 || fail $1; }
+
+assert "IPv6 XFF" "IPv6:true" 2001:db8:85a3::8a2e:370:7334
+assert "IPv4 normal" "San Francisco" 192.195.83.38
+assert "IPv4 lookup failure" "Geo = {}" 127.0.0.1
+assert "IPv4 lookup failure (no XFF)" "Geo = {}"
+assert "IPv4 XFF list" "Sheung Wan" 1.32.255.255,192.195.83.38
+
+exit $fails

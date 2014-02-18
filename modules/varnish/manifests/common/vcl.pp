@@ -19,4 +19,12 @@ class varnish::common::vcl {
         mode    => '0444',
         content => template('varnish/errorpage.inc.vcl.erb'),
     }
+
+    # VCL unit tests
+    file { '/usr/local/sbin/varnish-test-geoip':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///files/varnish/varnish-test-geoip',
+    }
 }
