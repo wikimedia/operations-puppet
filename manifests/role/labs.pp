@@ -4,8 +4,6 @@ class role::labs::instance {
     include "ldap::role::client::labs"
 
     if $::site == "eqiad" {
-        service { 'autofs': ensure => stopped }  # Temporary measure to kill extant ones
-
         $nfs_opts = "vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime"
         $nfs_server = "labstore.svc.eqiad.wmnet"
 
