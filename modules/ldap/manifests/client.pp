@@ -197,6 +197,13 @@ class ldap::client::utils($ldapconfig) {
         source => 'puppet:///modules/ldap/scripts/manage-nfs-volumes-daemon',
     }
 
+    file { '/usr/local/sbin/manage-keys-nfs':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+        source => 'puppet:///modules/ldap/scripts/manage-keys-nfs',
+    }
+
     file { '/usr/local/sbin/manage-volumes':
         ensure => absent,
     }
