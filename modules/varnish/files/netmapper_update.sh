@@ -24,15 +24,5 @@ trap cleanup EXIT
 
 wget -q --timeout 47 -O "$TEMP_FN" "$URL"
 
-# XXX After software is deployed:
-# /usr/bin/vnm_validate $TEMP_FN
-
-OLD_MD5=0
-NEW_MD5=`md5sum "$TEMP_FN" | cut -b 1-32`
-if [ -f "$FN_ABS" ]; then
-	OLD_MD5=`md5sum "$FN_ABS" | cut -b 1-32`
-fi
-
-if [ $OLD_MD5 != $NEW_MD5 ]; then
-	mv -f "$TEMP_FN" "$FN_ABS"
-fi
+/usr/bin/vnm_validate "$TEMP_FN"
+/usr/bin/cmp -s "$TEMP_FN" "$FN_ABS" || mv -f "$TEMP_FN" "$FN_ABS"
