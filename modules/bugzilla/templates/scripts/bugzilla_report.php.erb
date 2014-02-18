@@ -306,7 +306,7 @@ $ok = mysql_connect("<%= scope.lookupvar('bugzilla::db_host') %>", "bugs", "<%= 
 if (!$ok)
         reportFailure("DB connection failure");
 
-$ok = mysql_select_db("bugzilla3");
+$ok = mysql_select_db("<%= scope.lookupvar('bugzilla::db_name') %>");
 if (!$ok)
         reportFailure("DB selection failure");
 
