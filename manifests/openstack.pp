@@ -144,6 +144,14 @@ class openstack::project-storage-service {
         ensure => running,
         require => Generic::Upstart_job["manage-volumes"];
     }
+
+    cron { "Update labs ssh keys":
+            ensure => present,
+            user => root,
+            command => '/usr/local/sbin/manage-keys --logfile=/var/log/manage-keys.log >/dev/null 2>&1'
+            hour => *,
+            minute => '*/5',
+    }
 }
 
 class openstack::project-nfs-storage-service {
