@@ -1,68 +1,79 @@
 # statistics servers (per ezachte - RT 2162)
 
+system::role { '::statistics':
+    description => 'statistics server',
+    }
+
+    # Manually set a list of statistics servers.
+    $servers = ['stat1.wikimedia.org', 'stat1001.wikimedia.org',
+'stat1002.eqiad.wmnet', 'analytics1027.eqiad.wmnet']
+
+    # set up rsync modules for copying files
+    # on statistic servers in /a
+    class { 'statistics::rsyncd':
+        hosts_allow => $servers }
+
 class role::statistics {
 	include standard,
 		admins::roots,
-		misc::statistics::user,
+		::statistics,
 		backup::client,  # amanda backups
-		misc::statistics::base,
 		base::packages::emacs
 }
 
 class role::statistics::cruncher inherits role::statistics {
-	system::role { "role::statistics": description => "statistics number crunching server" }
+	system::role { 'role::statistics':
+        description => 'statistics number crunching server',
+    }
 
 	# include classes needed for crunching data on stat1.
 	include geoip,
-		misc::statistics::dataset_mount,
-		misc::statistics::mediawiki,
-		misc::statistics::plotting,
-		# Aaron Halfaker (halfak) wants MongoDB for his project.
-		misc::statistics::db::mongo,
-		# Aaron Halfaker (halfak) wants python{,3}-dev environments for module
-		# oursql
-		misc::statistics::dev,
+		statistics::dataset_mount,
+		statistics::mediawiki,
+		statistics::packages,
 		misc::udp2log::udp_filter,
 		# generate gerrit stats from stat1.
-		misc::statistics::gerrit_stats,
-		misc::statistics::rsync::jobs::eventlogging,
+		statistics::gerrit_stats,
+		statistics::rsync_jobs::eventlogging,
 		# geowiki: bringing data from production slave db to research db
-		misc::statistics::geowiki::jobs::data,
+		statistics::geowiki::jobs::data,
 		# geowiki: generate limn files from research db and push them
-		misc::statistics::geowiki::jobs::limn,
+		statistics::geowiki::jobs::limn,
 		# geowiki: monitors the geowiki files of http://gp.wmflabs.org/
-		misc::statistics::geowiki::jobs::monitoring
+		statistics::geowiki::jobs::monitoring
 }
 
 class role::statistics::www inherits role::statistics {
-	system::role { "role::statistics": description => "statistics web server" }
+	system::role { 'role::statistics':
+        description => 'statistics web server',
+    }
 
 	include
-		misc::statistics::webserver,
+		::statistics::apache,
 		# stats.wikimedia.org
-		misc::statistics::sites::stats,
+		statistics::sites::stats,
 		# community-analytics.wikimedia.org
-		misc::statistics::sites::community_analytics,
+		statistics::sites::community_analytics,
 		# reportcard.wikimedia.org
-		misc::statistics::sites::reportcard,
+		statistics::sites::reportcard,
 		# rsync public datasets from stat1 hourly
-		misc::statistics::public_datasets
+		statistics::public_datasets
 }
 
 class role::statistics::private inherits role::statistics {
-	system::role { "role::statistics": description => "statistics private data host" }
+	system::role { 'role::statistics':
+        description => 'statistics private data host',
+    }
 
 	# include classes needed for crunching private data on stat1002
 	include geoip,
-		misc::statistics::dataset_mount,
-		misc::statistics::mediawiki,
-		misc::statistics::plotting,
+		statistics::mediawiki,
+		statistics::packages,
 		misc::udp2log::udp_filter,
 		# rsync logs from logging hosts
 		# wikistats code is run here to
 		# generate stats.wikimedia.org data
-		misc::statistics::wikistats,
-		misc::statistics::packages::java,
-		misc::statistics::rsync::jobs::webrequest,
-		misc::statistics::rsync::jobs::eventlogging
+		statistics::wikistats,
+		statistics::rsync_jobs::webrequest,
+		statistics::rsync_jobs::eventlogging
 }
