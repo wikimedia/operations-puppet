@@ -479,36 +479,4 @@ class base {
             default   => $::nagios_contact_group,
         }
     }
-
-    if $::realm == 'labs' {
-        include base::instance-upstarts,
-            gluster::client
-
-        # Storage backend to use for /home & /data/project
-        # Configured on a per project basis inside puppet since we do not have any
-        # other good way to do so yet.
-        # FIXME  this is ugly and need to be removed whenever we got rid of
-        # the Gluster shared storage.
-        if $::instanceproject == 'deployment-prep' {
-                include role::labsnfs::client
-        }
-
-        # make common logs readable
-        class {'base::syslogs': readable => true }
-
-        # Add directory for data automounts
-        file { '/data':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-        # Add directory for public (ro) automounts
-        file { '/public':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-    }
 }
