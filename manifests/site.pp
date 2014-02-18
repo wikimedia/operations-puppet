@@ -1234,6 +1234,7 @@ node 'labsdb1003.eqiad.wmnet' {
 
 node /labstore[12]\.pmtpa\.wmnet/ {
 
+    $site = 'pmtpa'
     $cluster = "gluster"
     $ldapincludes = ['openldap', 'nss', 'utils']
 
@@ -1252,6 +1253,7 @@ node /labstore[12]\.pmtpa\.wmnet/ {
 
 node /labstore[34]\.pmtpa\.wmnet/ {
 
+    $site = 'pmtpa'
     $cluster = "labsnfs"
     $ldapincludes = ['openldap', 'nss', 'utils']
 
@@ -1273,6 +1275,7 @@ node /labstore[34]\.pmtpa\.wmnet/ {
 
 node /labstore100[12]\.eqiad\.wmnet/ {
 
+    $site = 'eqiad'
     $cluster = "labsnfs"
     $ldapincludes = ['openldap', 'nss', 'utils']
 

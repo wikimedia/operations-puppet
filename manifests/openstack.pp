@@ -153,7 +153,6 @@ class openstack::project-nfs-storage-service {
 
     service { "manage-nfs-volumes":
         enable => true,
-        ensure => running,
         require => Generic::Upstart_job["manage-nfs-volumes"];
     }
 
