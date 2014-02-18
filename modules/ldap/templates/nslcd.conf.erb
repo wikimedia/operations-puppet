@@ -16,16 +16,16 @@ base passwd <%= ldapconfig["users_rdn"] %>,<%= ldapconfig["basedn"] %>
 base shadow <%= ldapconfig["users_rdn"] %>,<%= ldapconfig["basedn"] %>
 base group <%= ldapconfig["groups_rdn"] %>,<%= ldapconfig["basedn"] %>
 
-<% if realm == "labs" %><% if site == "eqiad" -%>
+<% if site == "eqiad" -%>
 base passwd <%= ldapconfig["users_rdn"] %>,ou=servicegroups,<%= ldapconfig["basedn"] %>
 base shadow <%= ldapconfig["users_rdn"] %>,ou=servicegroups,<%= ldapconfig["basedn"] %>
 base group ou=servicegroups,<%= ldapconfig["basedn"] %>
-<% else -%>
+<% elsif realm == "labs" -%>
 <% if has_variable?("instanceproject") then -%>
 base passwd <%= ldapconfig["users_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= ldapconfig["basedn"] %>
 base shadow <%= ldapconfig["users_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= ldapconfig["basedn"] %>
 base group <%= ldapconfig["groups_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= ldapconfig["basedn"] %>
-<% end %><% end %><% end -%>
+<% end %><% end -%>
 
 # The DN to bind with for normal lookups.
 binddn cn=proxyagent,ou=profile,<%= ldapconfig["basedn"] %>
