@@ -124,6 +124,12 @@ class role::parsoid::production {
         description   => 'Parsoid',
         check_command => 'check_http_on_port!8000',
     }
+    # until logging is handled differently, rt 6851
+    nrpe::monitor_service { 'parsoid_disk_space':
+        description   => 'parsoid disk space',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 40% -c 3% -l -e',
+        critical      => true,
+    }
 }
 
 class role::parsoid::beta {
