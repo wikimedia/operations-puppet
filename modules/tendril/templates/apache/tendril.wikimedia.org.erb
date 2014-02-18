@@ -1,0 +1,43 @@
+# vim: filetype=apache
+# !! this file is managed by puppet !!
+
+NameVirtualHost *:80
+NameVirtualHost *:443
+
+<VirtualHost *:443>
+	ServerName <%= @site_name %>
+	SSLEngine On
+	SSLProtocol -ALL +SSLv3 +TLSv1
+	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
+	SSLHonorCipherOrder on
+	SSLCertificateFile /etc/ssl/private/tendril.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
+	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+	DocumentRoot <%= @docroot %>
+
+	<Directory "<%= @docroot %>">
+		Options FollowSymLinks
+		SSLRequireSSL
+		Options ExecCGI
+		DirectoryIndex index.php
+		AllowOverride All
+		Order Allow,Deny
+		Allow From All
+		AuthName "<%= @auth_name %>"
+		AuthType Basic
+		AuthBasicProvider ldap
+		AuthLDAPBindDN <%= @ldap_binddn %>
+		AuthLDAPBindPassword <%= @proxypass %>
+		AuthLDAPURL "<%= @ldap_authurl %>"
+		Require ldap-group <%= @ldap_group %>
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName <%= @site_name %>
+	DocumentRoot <%= @docroot %>
+
+	RewriteEngine on
+	RewriteCond %{SERVER_PORT} !^443$
+	RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R]
+</VirtualHost>
