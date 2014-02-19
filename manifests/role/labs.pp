@@ -1,13 +1,8 @@
 
 class role::labs::instance {
 
-    if $::site != 'pmtpa' {
-        # Labs instances in pmtpa include this class explicitly
-        # via ldap.
-        include ldap::role::client::labs
-    }
-
-    include base::instance-upstarts
+    include ldap::role::client::labs,
+        base::instance-upstarts
 
     # make common logs readable
     class {'base::syslogs': readable => true }
