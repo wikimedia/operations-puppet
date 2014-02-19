@@ -106,14 +106,18 @@ class role::analytics::kafka::client inherits role::analytics::kafka::config {
 #
 class role::analytics::kafka::server inherits role::analytics::kafka::client {
     class { '::kafka::server':
-        log_dirs             => $log_dirs,
-        brokers              => $brokers,
-        zookeeper_hosts      => $zookeeper_hosts,
-        zookeeper_chroot     => $zookeeper_chroot,
-        nofiles_ulimit       => $nofiles_ulimit,
-        # bump this up to 2 to get a little more
+        log_dirs                        => $log_dirs,
+        brokers                         => $brokers,
+        zookeeper_hosts                 => $zookeeper_hosts,
+        zookeeper_chroot                => $zookeeper_chroot,
+        nofiles_ulimit                  => $nofiles_ulimit,
+        # Bump this up to 2 to get a little more
         # parallelism between replicas.
-        num_replica_fetchers => 2,
+        num_replica_fetchers            => 2,
+        # Setting this larger so that it is sure to be bigger
+        # than batch size from varnishkafka.
+        # See: https://issues.apache.org/jira/browse/KAFKA-766
+        replica_lag_max_messages        => 10000,
     }
 
     # Generate icinga alert if Kafka Server is not running.
