@@ -162,6 +162,13 @@ class openstack::project-nfs-storage-service {
     sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["nfsmanager"] }
     generic::systemuser { "nfsmanager": name => "nfsmanager", home => "/var/lib/nfsmanager", shell => "/bin/bash" }
 
+    file { '/etc/exports.d':
+        ensure => directory,
+        owner => 'root',
+        group => 'nfsmanager',
+        mode => '02775',
+    }
+
     if ($::site == 'eqiad') {
         cron { "Update labs ssh keys":
                 ensure => present,
