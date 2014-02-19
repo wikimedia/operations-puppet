@@ -50,20 +50,19 @@ class jenkins {
     owner  => 'jenkins',
     group  => 'jenkins',
   }
-  # access.log rotation. Not provided by upstream Debian package
-  # https://issues.jenkins-ci.org/browse/JENKINS-18870
+
+#FIXME: jenkins log rotation and init script
+# access.log rotation. Not provided by upstream Debian package
+# https://issues.jenkins-ci.org/browse/JENKINS-18870
 #  file { '/etc/logrotate.d/jenkins_accesslog':
 #  owner  => 'root',
 #  group  => 'root',
-#    mode   => '0444',
-#    source => 'puppet:///modules/jenkins/jenkins_accesslog.logrotate',
+#  mode   => '0444',
+#  source => 'puppet:///modules/jenkins/jenkins_accesslog.logrotate',
 #  }
-  # Jenkins init script is broken and does not track the proper PID
-  # additionally kill -s ALRM kills jenkins instead of making it reopen its
-  # files.
-  file { '/etc/logrotate.d/jenkins_accesslog':
-    ensure => absent,
-  }
+# Jenkins init script is broken and does not track the proper PID      
+# additionally kill -s ALRM kills jenkins instead of making it reopen
+# its files. 
 
   file { '/etc/default/jenkins':
     owner  => 'root',
