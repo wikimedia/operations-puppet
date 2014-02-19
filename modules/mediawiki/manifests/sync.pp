@@ -19,55 +19,41 @@ class mediawiki::sync {
 
 	file {
 		"${scriptpath}/find-nearest-rsync":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/find-nearest-rsync';
+			ensure  => link,
+			target  => '/srv/scap/bin/find-nearest-rsync',
+			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/mwversionsinuse":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/mwversionsinuse';
+			ensure  => link,
+			target  => '/srv/scap/bin/mwversionsinuse',
+			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/scap-1":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/scap-1';
+			ensure  => link,
+			target  => '/srv/scap/bin/scap-1',
+			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/scap-2":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/scap-2';
+			ensure  => link,
+			target  => '/srv/scap/bin/scap-2',
+			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/scap-rebuild-cdbs":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/scap-rebuild-cdbs';
+			ensure  => link,
+			target  => '/srv/scap/bin/scap-rebuild-cdbs',
+			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/scap-recompile":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/scap-recompile';
+			ensure  => link,
+			target  => '/srv/scap/bin/scap-recompile',
+			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/sync-common":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/sync-common';
+			ensure  => link,
+			target  => '/srv/scap/bin/sync-common',
+			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/mergeCdbFileUpdates":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/mergeCdbFileUpdates';
+			ensure  => link,
+			target  => '/srv/scap/bin/mergeCdbFileUpdates',
+			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/refreshCdbJsonFiles":
-			owner  => root,
-			group  => root,
-			mode   => '0555',
-			source => 'puppet:///files/scap/refreshCdbJsonFiles';
-
-		# Fix $scriptpath screwup
-		"/scap-1": ensure => absent;
-		"/scap-2": ensure => absent;
-		"/sync-common": ensure => absent;
+			ensure  => link,
+			target  => '/srv/scap/bin/refreshCdbJsonFiles',
+			require => Git::Clone['mediawiki/tools/scap'];
 	}
 
 	exec { 'mw-sync':
