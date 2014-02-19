@@ -114,7 +114,7 @@ class network::constants {
                         'ipv4' => '10.64.20.0/24',
                         'ipv6' => '2620:0:861:118::/64'
                     },
-                    'labs-hosts1-c-eqiad' => {
+                    'labs-support1-c-eqiad' => {
                         'ipv4' => '10.64.37.0/24',
                         'ipv6' => '2620:0:861:119::/64'
                     },
