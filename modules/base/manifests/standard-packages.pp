@@ -24,10 +24,6 @@ class base::standard-packages {
             ensure => latest,
         }
 
-        package { [ 'jfsutils', 'wikimedia-raid-utils']:
-            ensure => absent,
-        }
-
         if $::network_zone == 'internal' {
             include nrpe
         }
