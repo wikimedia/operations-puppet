@@ -242,6 +242,7 @@ class toollabs::exec_environ {
         'pv',                          # Bug 57001
         'rrdtool',                     # Bug 57004
         'ufraw-batch',                 # Bug 57008
+        'tabix',                       # Bug 61501
         'texinfo',                     # Bug #56994
         'tree',                        # Bug #48862.
         'zbar-tools',                  # Bug 56996
