@@ -37,6 +37,11 @@ dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 /etc/init.d/ssh stop
 /etc/init.d/ssh start
 
+# Set up nfs ssh keys.  Puppet will refresh this if all goes well.
+mkdir -p /public/keys
+/bin/mount -o ro,vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime labstore.svc.eqiad.wmnet:/keys /public/keys
+/usr/bin/service ssh restart
+
 # Initial salt config
 echo -e "master:\n  - ${master}\n  - ${master_secondary}" > /etc/salt/minion
 echo "id: ${idfqdn}" >> /etc/salt/minion
