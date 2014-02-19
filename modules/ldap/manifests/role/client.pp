@@ -3,11 +3,7 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
         certificates::wmf_ca
 
     if ( $::realm == 'labs' ) {
-        if( $::site == 'eqiad' ) {
-            $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'access']
-        } else {
-            $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs', 'access']
-        }
+        $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs', 'access']
 
         include certificates::wmf_labs_ca
     } else {

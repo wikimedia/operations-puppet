@@ -479,4 +479,15 @@ class base {
             default   => $::nagios_contact_group,
         }
     }
+
+    # A bunch of labs-specific stuff was moved from here
+    #  into role::labs::instance.  Tampa instances don't include
+    #  that class in ldap, though, so they need it here.
+    #
+    #  This can be removed after pmtpa labs is shut down.
+    if $::realm == 'labs' {
+        if $::site == 'pmtpa' {
+           include role::labs::instance 
+        }
+    }
 }
