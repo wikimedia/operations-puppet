@@ -97,4 +97,10 @@ score RCVD_IN_RP_CERTIFIED 2.000
 score SPF_SOFTFAIL 2.000
 score SUSPICIOUS_RECIPS 2.000
 score DEAR_SOMETHING 1.500
+
+# temporary workaround for bayes_999 snafu
+body BAYES_99    eval:check_bayes('0.99', '0.999')
+body BAYES_999   eval:check_bayes('0.999', '1.00')
+score BAYES_99   0  0  3.8    3.5
+score BAYES_999  0  0  4.0    3.7
 <% end -%>
