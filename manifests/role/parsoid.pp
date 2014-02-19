@@ -53,11 +53,6 @@ class role::parsoid::production {
         target => '/srv/deployment/parsoid/deploy',
     }
 
-    # production uses an init script whereas labs experiments with upstart
-    file { '/etc/init.d/parsoid':
-        ensure => absent,
-    }
-
     # upstart config prep, will replace sysv init above
     # Use name that does not match the 'parsoid' service name for now to avoid
     # it taking precedence over the init script
