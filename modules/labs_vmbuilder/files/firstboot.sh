@@ -27,12 +27,10 @@ fi
 sed -i "s/_PROJECT_/${project}/g" /etc/security/access.conf
 sed -i "s/_PROJECT_/${project}/g" /etc/ldap/ldap.conf
 sed -i "s/_PROJECT_/${project}/g" /etc/sudo-ldap.conf
-sed -i "s/_PROJECT_/${project}/g" /etc/default/autofs
 sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${idfqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 
-/etc/init.d/autofs restart
 /etc/init.d/nslcd restart
 /etc/init.d/nscd restart
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server

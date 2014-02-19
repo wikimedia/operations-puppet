@@ -2,8 +2,6 @@
 /etc/vmbuilder/files/vmbuilder_version /etc/wmflabs_imageversion
 /etc/ldap.conf /etc/ldap.conf
 /etc/vmbuilder/files/nss_ldap.conf /etc/ldap/ldap.conf
-/etc/autofs_ldap_auth.conf /etc/autofs_ldap_auth.conf
-/etc/vmbuilder/files/default_autofs /etc/default/autofs
 /etc/nscd.conf /etc/nscd.conf
 /etc/vmbuilder/files/nslcd.conf /etc/nslcd.conf
 /etc/nsswitch.conf /etc/nsswitch.conf
