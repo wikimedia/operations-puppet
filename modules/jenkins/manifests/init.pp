@@ -58,12 +58,6 @@ class jenkins {
 #    mode   => '0444',
 #    source => 'puppet:///modules/jenkins/jenkins_accesslog.logrotate',
 #  }
-  # Jenkins init script is broken and does not track the proper PID
-  # additionally kill -s ALRM kills jenkins instead of making it reopen its
-  # files.
-  file { '/etc/logrotate.d/jenkins_accesslog':
-    ensure => absent,
-  }
 
   file { '/etc/default/jenkins':
     owner  => 'root',
