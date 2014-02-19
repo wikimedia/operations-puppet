@@ -2,7 +2,7 @@
 
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
-restart rsyslog
+#restart rsyslog
 
 binddn=`grep 'binddn' /etc/ldap.conf | sed 's/.* //'`
 bindpw=`grep 'bindpw' /etc/ldap.conf | sed 's/.* //'`
