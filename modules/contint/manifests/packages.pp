@@ -187,6 +187,12 @@ class contint::packages {
         ]:
         ensure => present;
     }
+
+    package { [
+        'ocaml-nox',
+        ]:
+        ensure => present;
+    }
 }
 
 
