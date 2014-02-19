@@ -23,7 +23,7 @@ class puppetmaster::labs {
         command => '(cd /var/lib/git/operations/puppet && /usr/bin/git pull && /usr/bin/git submodule update --init) > /dev/null 2>&1',
         user => 'gitpuppet',
         environment => 'GIT_SSH=/var/lib/git/ssh',
-        minute => '*/2',
+        minute => '*/1',
     }
 
     cron { 'update_private_puppet_repos':
@@ -31,7 +31,7 @@ class puppetmaster::labs {
         command => '(cd /var/lib/git/operations/labs/private && /usr/bin/git pull) > /dev/null 2>&1',
         user => 'gitpuppet',
         environment => 'GIT_SSH=/var/lib/git/ssh',
-        minute => '*/2',
+        minute => '*/1',
     }
 
     include passwords::openstack::keystone
