@@ -273,7 +273,7 @@ class VolumeManager:
         project_hosts = {}
         if hostdata:
             for host in hostdata:
-                if "aRecord" in host[1]
+                if "aRecord" in host[1]:
                     host_ip = host[1]["aRecord"][0]
                     puppet_vars = host[1]["puppetvar"]
                     for puppet_var in puppet_vars:
