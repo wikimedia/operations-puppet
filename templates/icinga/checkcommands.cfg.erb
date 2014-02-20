@@ -294,6 +294,11 @@ define command{
 	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u $ARG2$
 	}
 
+define command{
+	command_name	check_http_url_on_port_with_string
+	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -p $ARG2$ -u $ARG3$ -s $ARG4$
+	}
+
 define command {
 	command_name	check_https_url
 	command_line	$USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u $ARG2$
