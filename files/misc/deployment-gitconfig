@@ -1,0 +1,2 @@
+[url "ssh://gerrit.wikimedia.org:29418/"]
+	insteadOf = "https://gerrit.wikimedia.org/r/p/"
