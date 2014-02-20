@@ -13,6 +13,7 @@ chroot $1 /etc/init.d/salt-minion stop
 chroot $1 mv /etc/puppet/puppet.conf.install /etc/puppet/puppet.conf
 chroot $1 mv /etc/default/puppet.install /etc/default/puppet
 chroot $1 rm /etc/ssh/ssh_host*key*
+chroot $1 sed -i '/^kernel/s/$/ console=ttyS0/' /boot/grub/menu.lst
 chroot $1 sed -i 's/console=hvc0/xencons=hvc0 console=hvc0/' /boot/grub/menu.lst
 chroot $1 rm -f /etc/sudo-ldap.conf
 chroot $1 ln -s /etc/ldap/ldap.conf /etc/sudo-ldap.conf
