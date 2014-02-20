@@ -73,11 +73,20 @@ driver = keystone.catalog.backends.sql.Catalog
 # template_file = default_catalog.templates
 
 [token]
+<% if keystoneconfig["token_driver"] == 'redis' %>
+driver = keystoneredis.token.TokenNoList
+<% else %>
 driver = keystone.token.backends.sql.Token
+<% end %>
 
 # Amount of time a token should remain valid (in seconds)
 # Using 7.1 days, as we'll set MediaWiki to 7 days
 expiration = 613440
+
+<% if keystoneconfig["token_driver"] == 'redis' %>
+[redis]
+password = <%= keystoneconfig["token_driver_password"] %>
+<% end -%>
 
 [policy]
 driver = keystone.policy.backends.rules.Policy
