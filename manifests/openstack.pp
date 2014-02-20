@@ -1,4 +1,6 @@
 class openstack::firewall {
+    include base::firewall
+
     $labs_private_net = '10.0.0.0/0'
     if ($::site == 'pmtpa') {
         $labs_nodes = '10.4.16.0/24'
