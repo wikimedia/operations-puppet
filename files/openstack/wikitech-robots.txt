@@ -147,3 +147,4 @@ Disallow: /w/
 Disallow: /trap/
 Disallow: /wiki/Special:Search
 Disallow: /wiki/Special:Random
+Disallow: /wiki/Special:*
