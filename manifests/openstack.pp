@@ -7,7 +7,7 @@ class openstack::firewall {
         # virt1000
         $other_master = '208.80.154.18'
     } elsif ($::site == 'eqiad') {
-        $labs_nodes = '10.68.20.0/24'
+        $labs_nodes = '10.64.20.0/24'
         # virt0
         $other_master = '208.80.152.32'
     }
