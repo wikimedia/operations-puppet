@@ -37,9 +37,7 @@ class role::keystone::config::pmtpa inherits role::keystone::config {
 			'production' => 'sql',
 			'labs'       => 'redis',
 		},
-		token_driver_password => $realm ? {
-			'labs'       => $passwords::openstack::keystone::keystone_db_pass,
-		},
+		token_driver_password => $passwords::openstack::keystone::keystone_db_pass,
 	}
 	$keystoneconfig = merge($pmtpakeystoneconfig, $commonkeystoneconfig)
 }
@@ -62,9 +60,7 @@ class role::keystone::config::eqiad inherits role::keystone::config {
 			'production' => 'redis',
 			'labs'       => 'redis',
 		},
-		token_driver_password => $realm ? {
-			'labs'       => $passwords::openstack::keystone::keystone_db_pass,
-		},
+		token_driver_password => $passwords::openstack::keystone::keystone_db_pass,
 	}
 	$keystoneconfig = merge($eqiadkeystoneconfig, $commonkeystoneconfig)
 }
