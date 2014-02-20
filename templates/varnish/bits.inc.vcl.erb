@@ -39,6 +39,11 @@ sub vcl_recv {
 
 sub vcl_fetch {
 	/* Don't run the default vcl_fetch function */
+
+	/* Compress ico and SVG files */
+	if (beresp.http.content-type ~ "^image/(x-icon|svg)") {
+		set beresp.do_gzip = true;
+	}
 	return (deliver);
 }
 
