@@ -134,6 +134,9 @@ class role::ci::slave {
       require => User['jenkins-slave'],
     }
 
+    # Maven require a webproxy on production slaves
+    include contint::maven-webproxy
+
     contint::tmpfs { 'tmpfs for jenkins CI slave':
         user        => 'jenkins-slave',
         group       => 'jenkins-slave',
