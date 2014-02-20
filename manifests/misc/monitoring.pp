@@ -241,6 +241,18 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
                 'metric_regex' => 'kafka.server.ReplicaManager.UnderReplicatedPartitions.Value',
                 'type'         => 'line',
             },
+            # ISR Shrinks
+            {
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => 'kafka.server.ReplicaManager.ISRShrinks.FiveMinuteAverage',
+                'type'         => 'line',
+            },
+            # ISR Expands
+            {
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => 'kafka.server.ReplicaManager.ISRExpands.FiveMinuteAverage',
+                'type'         => 'line',
+            },
         ],
     }
 }
