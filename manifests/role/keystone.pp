@@ -83,7 +83,7 @@ class role::keystone::redis {
 
     if ($::realm == 'production') {
         $replication = {
-            'virt0' => 'virt1000.eqiad.wmnet'
+            'virt0' => 'virt1000.wikimedia.org'
         }
     } else {
         $replication = {
