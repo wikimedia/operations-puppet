@@ -70,15 +70,17 @@ class role::keystone::config::eqiad inherits role::keystone::config {
 }
 
 class role::keystone::server {
-	include role::keystone::config::pmtpa,
-		role::keystone::config::eqiad
+    include role::keystone::config::pmtpa,
+            role::keystone::config::eqiad
 
-	$keystoneconfig = $site ? {
-		"pmtpa" => $role::keystone::config::pmtpa::keystoneconfig,
-		"eqiad" => $role::keystone::config::eqiad::keystoneconfig,
-	}
+    $keystoneconfig = $site ? {
+        "pmtpa" => $role::keystone::config::pmtpa::keystoneconfig,
+        "eqiad" => $role::keystone::config::eqiad::keystoneconfig,
+    }
 
-	class { "openstack::keystone-service": openstack_version => $openstack_version, keystoneconfig => $keystoneconfig }
+    class { "openstack::keystone-service": openstack_version => $openstack_version, keystoneconfig => $keystoneconfig }
+
+    include role::keystone::redis
 }
 
 class role::keystone::redis {
@@ -87,20 +89,10 @@ class role::keystone::redis {
     class { "::redis":
         maxmemory                 => "250mb",
         persist                   => "aof",
-        redis_replication         => { 'virt0.pmtpa.wmnet' => 'virt1000.eqiad.wmnet' },
-        password                  => $passwords::openstack::keystone::keystone_db_pass,
-        dir                       => "/var/lib/redis/",
-        auto_aof_rewrite_min_size => "64mb",
-    }
-}
-
-class role::keystone::redis::labs {
-    include passwords::openstack::keystone
-
-    class { "::redis":
-        maxmemory                 => "250mb",
-        persist                   => "aof",
-        redis_replication         => { 'nova-precise3' => 'nova-precise2' },
+        redis_replication         => $realm ? {
+            'production' => { 'virt0.pmtpa.wmnet' => 'virt1000.eqiad.wmnet' },
+            'labs'       => { 'nova-precise3' => 'nova-precise2' },
+        },
         password                  => $passwords::openstack::keystone::keystone_db_pass,
         dir                       => "/var/lib/redis/",
         auto_aof_rewrite_min_size => "64mb",
