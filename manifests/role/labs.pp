@@ -82,6 +82,7 @@ class role::labs::instance {
             ensure => mounted, atboot => true, fstype => 'nfs', options => "ro,${nfs_opts}",
             device => "${nfs_server}:/keys",
             require => File['/public/keys'],
+            notify => Service['ssh'],
         }
 
     } else {
