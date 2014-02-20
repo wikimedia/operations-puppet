@@ -57,7 +57,7 @@ class role::keystone::config::eqiad inherits role::keystone::config {
 			"labs" => "127.0.0.1",
 		},
 		token_driver => $realm ? {
-			'production' => 'redis',
+			'production' => 'sql',
 			'labs'       => 'redis',
 		},
 	}
