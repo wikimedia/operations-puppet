@@ -5,13 +5,6 @@ class role::keystone::config {
 		db_name => "keystone",
 		db_user => "keystone",
 		db_pass => $passwords::openstack::keystone::keystone_db_pass,
-		token_driver => $realm ? {
-			'production' => 'sql',
-			'labs'       => 'redis',
-		},
-		token_driver_password => $realm ? {
-			'labs'       => $passwords::openstack::keystone::keystone_db_pass,
-		},
 		ldap_base_dn => "dc=wikimedia,dc=org",
 		ldap_user_dn => "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
 		ldap_user_id_attribute => "uid",
@@ -40,6 +33,13 @@ class role::keystone::config::pmtpa inherits role::keystone::config {
 			"production" => "208.80.152.32",
 			"labs" => "127.0.0.1",
 		},
+		token_driver => $realm ? {
+			'production' => 'sql',
+			'labs'       => 'redis',
+		},
+		token_driver_password => $realm ? {
+			'labs'       => $passwords::openstack::keystone::keystone_db_pass,
+		},
 	}
 	$keystoneconfig = merge($pmtpakeystoneconfig, $commonkeystoneconfig)
 }
@@ -58,6 +58,13 @@ class role::keystone::config::eqiad inherits role::keystone::config {
 			"production" => "208.80.154.18",
 			"labs" => "127.0.0.1",
 		},
+		token_driver => $realm ? {
+			'production' => 'redis',
+			'labs'       => 'redis',
+		},
+		token_driver_password => $realm ? {
+			'labs'       => $passwords::openstack::keystone::keystone_db_pass,
+		},
 	}
 	$keystoneconfig = merge($eqiadkeystoneconfig, $commonkeystoneconfig)
 }
@@ -72,6 +79,19 @@ class role::keystone::server {
 	}
 
 	class { "openstack::keystone-service": openstack_version => $openstack_version, keystoneconfig => $keystoneconfig }
+}
+
+class role::keystone::redis {
+    include passwords::openstack::keystone
+
+    class { "::redis":
+        maxmemory                 => "250mb",
+        persist                   => "aof",
+        redis_replication         => { 'virt0.pmtpa.wmnet' => 'virt1000.eqiad.wmnet' },
+        password                  => $passwords::openstack::keystone::keystone_db_pass,
+        dir                       => "/var/lib/redis/",
+        auto_aof_rewrite_min_size => "64mb",
+    }
 }
 
 class role::keystone::redis::labs {
