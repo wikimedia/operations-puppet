@@ -66,3 +66,16 @@ class role::keystone::server {
 
 	class { "openstack::keystone-service": openstack_version => $openstack_version, keystoneconfig => $keystoneconfig }
 }
+
+class role::keystone::redis::labs {
+    include passwords::openstack::keystone
+
+    class { "::redis":
+        maxmemory                 => "250mb",
+        persist                   => "aof",
+        redis_replication         => { 'nova-precise3' => 'nova-precise2' },
+        password                  => $passwords::openstack::keystone::keystone_db_pass,
+        dir                       => "/var/lib/redis/",
+        auto_aof_rewrite_min_size => "64mb",
+    }
+}
