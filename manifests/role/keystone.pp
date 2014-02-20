@@ -83,7 +83,7 @@ class role::keystone::redis {
 
     if ($::realm == 'production') {
         $replication = {
-            'virt0.pmtpa.wmnet' => 'virt1000.eqiad.wmnet'
+            'virt0' => 'virt1000.eqiad.wmnet'
         }
     } else {
         $replication = {
