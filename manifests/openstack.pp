@@ -12,6 +12,11 @@ class openstack::firewall {
         $other_master = '208.80.152.32'
     }
 
+    # Wikitech HTTP/HTTPS
+    ferm::rule { 'http_public':
+        rule => 'saddr (0.0.0.0/0) proto tcp dport (http https) ACCEPT;',
+    }
+
     # LDAP
     ferm::rule { 'ldap_private_labs':
         rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (ldap ldaps) ACCEPT;',
