@@ -2617,6 +2617,7 @@ node 'tin.eqiad.wmnet' {
     include generic::wikidev-umask
     include role::deployment::deployment_servers::production
     include misc::deployment
+    include misc::deployment::gitconfig
     include misc::deployment::scap_scripts
     include misc::deployment::l10nupdate
     include mysql
