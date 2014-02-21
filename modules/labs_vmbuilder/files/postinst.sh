@@ -27,6 +27,7 @@ else
   mv /etc/puppet/puppet.conf.install /etc/puppet/puppet.conf
   mv /etc/default/puppet.install /etc/default/puppet
   rm /etc/ssh/ssh_host*key*
+  sed -i 's/\/dev\/sda/\/dev\/vda/' /etc/fstab
   sed -i '/^kernel/s/$/ console=ttyS0/' /boot/grub/menu.lst
   sed -i 's/console=hvc0/xencons=hvc0 console=hvc0/' /boot/grub/menu.lst
   rm -f /etc/sudo-ldap.conf
