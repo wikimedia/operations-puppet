@@ -40,7 +40,7 @@ class ExportManager:
         ldapSupportLib = ldapsupportlib.LDAPSupportLib()
         ldapSupportLib.addParserOptions(parser)
 
-        parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdin)")
+        parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdout)")
         parser.add_option("--loglevel", dest="loglevel", help="Change level of logging; NONE, INFO, DEBUG (default: INFO)")
         (options, args) = parser.parse_args()
         ldapSupportLib.setBindInfoByOptions(options, parser)
