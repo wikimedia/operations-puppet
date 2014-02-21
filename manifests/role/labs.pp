@@ -35,7 +35,7 @@ class role::labs::instance {
 
         file { '/data/project':
             ensure => directory, owner => 'root', group => 'root', mode => '0755',
-            require => File['/data'],
+            require => File['/data', '/etc/idmapd.conf'],
         }
         mount { '/data/project':
             ensure => mounted, atboot => true, fstype => 'nfs', options => "rw,${nfs_opts}",
@@ -45,7 +45,7 @@ class role::labs::instance {
 
         file { '/data/scratch':
             ensure => directory, owner => 'root', group => 'root', mode => '0755',
-            require => File['/data'],
+            require => File['/data', '/etc/idmapd.conf'],
         }
         mount { '/data/scratch':
             ensure => mounted, atboot => true, fstype => 'nfs', options => "rw,${nfs_opts}",
@@ -83,6 +83,19 @@ class role::labs::instance {
             device => "${nfs_server}:/keys",
             require => File['/public/keys'],
             notify => Service['ssh'],
+        }
+
+        service { 'idmapd':
+            ensure => running,
+            subscribe => File['/etc/idmapd.conf'],
+        }
+
+        file { '/etc/idmapd.conf':
+            ensure => present,
+            owner => root,
+            group => root,
+            mode => 0444,
+            source => 'puppet:///files/nfs/idmapd.conf',
         }
 
     } else {
