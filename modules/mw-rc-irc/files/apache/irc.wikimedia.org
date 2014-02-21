@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ircd/files/apache/irc.wikimedia.org
+### puppet:///modules/ircd/apache/irc.wikimedia.org
 #####################################################################
 # vim: filetype=apache
 # redirect irc.wikimedia.org to IRC site on meta.wm.org

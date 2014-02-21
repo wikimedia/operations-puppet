@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ldap/scripts/homedirectorymanager.py
+### puppet:///modules/ldap/scripts/homedirectorymanager.py
 #####################################################################
 
 import sys

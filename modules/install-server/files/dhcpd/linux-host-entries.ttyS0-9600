@@ -1,6 +1,6 @@
 #####################################################################
 #### THIS FILE IS MANAGED BY PUPPET
-#### puppet:///files/dhcpd/linux-host-entries.ttyS0-9600
+#### puppet:///modules/install-server/dhcpd/linux-host-entries.ttyS0-9600
 ######################################################################
 
 host scs-c1-pmtpa {

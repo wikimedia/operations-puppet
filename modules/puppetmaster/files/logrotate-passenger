@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/passenger
+### puppet:///modules/puppetmaster/logrotate-passenger
 #####################################################################
 
 # Rotate puppetmaster passenger (apache) logs
