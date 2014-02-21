@@ -35,7 +35,7 @@ class ExportManager:
 
     def run(self):
         parser = OptionParser(conflict_handler="resolve")
-        parser.set_usage('manage-exports [options]')
+        parser.set_usage('manage-keys-nfs [options]')
 
         ldapSupportLib = ldapsupportlib.LDAPSupportLib()
         ldapSupportLib.addParserOptions(parser)
