@@ -41,7 +41,7 @@ class role::solr::ttm {
 
 	class { "role::solr":
 		schema => "puppet:///modules/solr/schema-ttmserver.xml",
-		average_request_time => '1000:1500', # Translate uses fairly slow queries
+		average_request_time => '5000:8000', # Translate uses fairly slow queries
 		max_heap => "1G",
 	}
 }
