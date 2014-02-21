@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ldap/scripts/change-ldap-passwd
+### puppet:///modules/ldap/scripts/change-ldap-passwd
 #####################################################################
 
 import sys

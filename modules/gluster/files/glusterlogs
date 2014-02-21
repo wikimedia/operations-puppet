@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/glusterlogs
+### puppet:///modules/gluster/glusterlogs
 #####################################################################
 
 

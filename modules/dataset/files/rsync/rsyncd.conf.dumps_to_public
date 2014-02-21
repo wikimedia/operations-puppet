@@ -1,5 +1,6 @@
 #####################################################################
-### puppet:///files/rsync/rsyncd.conf.dumps_to_public
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/dataset/rsync/rsyncd.conf.dumps_to_public
 #####################################################################
 
 # rsync config for public retrievers/mirrors of XML dumps
