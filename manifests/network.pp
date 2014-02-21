@@ -76,6 +76,10 @@ class network::constants {
                         'ipv4' => '208.80.154.64/26',
                         'ipv6' => '2620:0:861:3::/64'
                     },
+                    'public1-d-eqiad' => {
+                        'ipv4' => '208.80.155.128/26',
+                        'ipv6' => '2620:0:861:4::/64'
+                    },
                 },
                 'private' => {
                     'private1-a-eqiad' => {
@@ -89,6 +93,10 @@ class network::constants {
                     'private1-c-eqiad' => {
                         'ipv4' => '10.64.32.0/22',
                         'ipv6' => '2620:0:861:103::/64'
+                    },
+                    'private1-d-eqiad' => {
+                        'ipv4' => '10.64.48.0/22',
+                        'ipv6' => '2620:0:861:107::/64'
                     },
                     'labs-instances1-a-eqiad' => {
                         'ipv4' => '10.68.0.0/24',
