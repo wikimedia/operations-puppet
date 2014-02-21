@@ -511,6 +511,14 @@ class role::cache {
             'labs' => ["vdb"],
         }
 
+        # This seems to prevent long term memory fragmentation issues that
+        #  result in XFS log spam + bad problems for varnish health in the long run
+        cron { varnish_vm_compact_cron:
+            command => "echo 1 >/proc/sys/vm/compact_memory",
+            user => root,
+            minute => "*";
+        }
+
         #class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
     }
 
