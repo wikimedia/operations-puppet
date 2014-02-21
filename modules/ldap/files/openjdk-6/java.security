@@ -1,7 +1,7 @@
 #
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/openjdk-6/java.security
+### puppet:///modules/ldap/openjdk-6/java.security
 #####################################################################
 #
 # This is the "master security properties file".

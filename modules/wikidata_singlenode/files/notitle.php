@@ -1,7 +1,7 @@
 <?php
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/mediawiki/notitle.php
+### puppet:///modules/wikidata_singlenode/notitle.php
 ###
 ###  Changes to this file will be clobbered by Puppet.
 ###  If you need to hand-edit local settings, modify

@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ocg/logrotate
+### puppet:///modules/ocg/logrotate
 #####################################################################
 
 /var/log/ocg/*.log {

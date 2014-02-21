@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ldap/scripts/add-ldap-user
+### puppet:///modules/ldap/scripts/add-ldap-user
 #####################################################################
 
 import sys

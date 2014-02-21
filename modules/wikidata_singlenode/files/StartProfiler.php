@@ -1,7 +1,7 @@
 <?php
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/mediawiki/StartProfiler.php
+### puppet:///modules/wikidata_singlenode/StartProfiler.php
 ###
 ###  Changes to this file will be clobbered by Puppet.
 ###

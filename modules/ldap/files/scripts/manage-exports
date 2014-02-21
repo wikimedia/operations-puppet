@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ldap/scripts/manage-exports
+### puppet:///modules/ldap/scripts/manage-exports
 #####################################################################
 
 

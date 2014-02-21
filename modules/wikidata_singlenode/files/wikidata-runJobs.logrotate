@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/wikidata-runJobs
+### puppet:///modules/wikidata_singlenode/wikidata-runJobs.logrotate
 #####################################################################
 
 /var/log/runJobs.log {

@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ldap/scripts/ldapsupportlib.py
+### puppet:///modules/ldap/scripts/ldapsupportlib.py
 #####################################################################
 
 import os

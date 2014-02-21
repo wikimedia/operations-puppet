@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/rsync/rsync.default.downloadprimary
+### puppet:///modules/download/rsync/rsync.default.downloadprimary
 #####################################################################
 
 # defaults file for rsync daemon mode

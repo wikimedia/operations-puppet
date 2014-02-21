@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/rsync/rsyncd.conf.downloadmirror
+### puppet:///modules/download/rsync/rsyncd.conf.downloadmirror
 #####################################################################
 
 # rsync conf file for mirror sites of XML dumps

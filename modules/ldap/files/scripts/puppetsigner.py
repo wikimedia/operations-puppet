@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ldap/scripts/puppetsigner.py
+### puppet:///modules/ldap/scripts/puppetsigner.py
 #####################################################################
 
 import sys

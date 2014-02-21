@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/wikidata-replication
+### puppet:///modules/wikidata_singlenode/wikidata-replication.logrotate
 #####################################################################
 
 /var/log/dispatchChanges.log {

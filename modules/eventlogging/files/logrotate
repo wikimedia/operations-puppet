@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/eventlogging/logrotate
+### puppet:///modules/eventlogging/logrotate
 #####################################################################
 
 /var/log/eventlogging/*.log {

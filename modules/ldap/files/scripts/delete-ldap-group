@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ldap/scripts/delete-ldap-group
+### puppet:///modules/ldap/scripts/delete-ldap-group
 #####################################################################
 
 import sys
