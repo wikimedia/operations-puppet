@@ -13,7 +13,8 @@
 #
 class toollabs::bastion($gridmaster) inherits toollabs {
     include toollabs::exec_environ,
-        toollabs::dev_environ
+        toollabs::dev_environ,
+        toollabs::gridnode
 
     file { '/etc/ssh/ssh_config':
         ensure => file,
