@@ -12,6 +12,11 @@ class openstack::firewall {
         $other_master = '208.80.152.32'
     }
 
+    # Wikitech ssh
+    ferm::rule { 'ssh_public':
+        rule => 'saddr (0.0.0.0/0) proto tcp dport (ssh) ACCEPT;',
+    }
+
     # Wikitech HTTP/HTTPS
     ferm::rule { 'http_public':
         rule => 'saddr (0.0.0.0/0) proto tcp dport (http https) ACCEPT;',
