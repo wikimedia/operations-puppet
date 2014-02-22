@@ -13,12 +13,8 @@
 class toollabs::master inherits toollabs {
     include gridengine::master,
         toollabs::infrastructure,
-        toollabs::exec_environ
-
-    # TODO: Grid config
-    # TODO: (conditional) shadow config
-    # TODO: project-local NFS (job queue)
-
+        toollabs::exec_environ,
+        toollabs::gridnode
 
     #
     # These things are done on toollabs::master because they
@@ -43,6 +39,15 @@ class toollabs::master inherits toollabs {
         mode    => '0550',
         require => File[$repo],
         source  => 'puppet:///modules/toollabs/update-repo.sh',
+    }
+
+    if $::site != 'eqiad' {
+        cron { 'push-accounting-to-shared':
+            ensure  => present,
+            command => 'cp -f /var/lib/gridengine/default/common/accounting /data/project/.system/accounting.tmp && mv -f /data/project/.system/accounting.tmp /data/project/.system/accounting',
+            user    => 'root',
+            minute  => '*/5',
+        }
     }
 }
 

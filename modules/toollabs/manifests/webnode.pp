@@ -12,8 +12,9 @@
 # Sample Usage:
 #
 class toollabs::webnode($gridmaster) inherits toollabs {
-    include toollabs::exec_environ
-    include toollabs::infrastructure
+    include toollabs::exec_environ,
+        toollabs::infrastructure,
+        toollabs::gridnode
 
     # should be exec_host and submit_host
     # [bleep] puppet

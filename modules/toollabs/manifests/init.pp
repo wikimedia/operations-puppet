@@ -13,8 +13,9 @@
 #
 class toollabs {
 
-    $store = '/data/project/.system/store'
-    $repo  = '/data/project/.system/deb'
+    $sysdir = '/data/project/.system'
+    $store  = "$sysdir/store"
+    $repo   = "$sysdir/deb"
 
     #
     # The $store is an incredibly horrid workaround the fact that we cannot
@@ -26,15 +27,23 @@ class toollabs {
     # known_hosts and HBA of the execution nodes.
     #
 
+    file { $sysdir:
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'tools.admin',
+        mode    => '02775',
+        require => $::site? {
+            'eqiad' =>  Mount['/data/project'],
+            default =>  Service['autofs'],
+        },
+    }
+
     file { $store:
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => $::site? {
-            'eqiad' =>  Mount['/data/project'],
-            default =>  Service['autofs'],
-        },
+        require => File[$sysdir],
     }
 
     file { "${store}/hostkey-${::fqdn}":

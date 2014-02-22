@@ -13,7 +13,8 @@
 #
 class toollabs::shadow($gridmaster) inherits toollabs {
     include toollabs::infrastructure,
-        toollabs::exec_environ
+        toollabs::exec_environ,
+        toollabs::gridnode
 
     class { 'gridengine::shadow_master':
         gridmaster => $gridmaster,
