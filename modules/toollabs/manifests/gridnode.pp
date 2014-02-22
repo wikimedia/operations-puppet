@@ -20,7 +20,7 @@ class toollabs::gridnode inherits toollabs {
         file { '/var/lib/gridengine':
             ensure  => link,
             target  => "${sysdir}/gridengine",
-            require => "${sysdir}/gridengine",
+            require => File["${sysdir}/gridengine"],
             before  => Package['gridengine-common'],
         }
 
