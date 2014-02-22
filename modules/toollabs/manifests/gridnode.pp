@@ -13,7 +13,7 @@ class toollabs::gridnode inherits toollabs {
     if $::site == 'eqiad' {
 
         file { "${sysdir}/gridengine":
-            endure  => directory,
+            ensure  => directory,
             require => File[$sysdir],
         }
 
