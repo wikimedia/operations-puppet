@@ -17,13 +17,17 @@ class toollabs::gridnode inherits toollabs {
             require => File[$sysdir],
         }
 
+        file { '/var/lib/gridengine':
+            ensure  => directory,
+        }
+
         mount { '/var/lib/gridengine':
             ensure  => mounted,
             atboot  => False,
             device  => "${sysdir}/gridengine",
             fstype  => none,
-            options => 'rw.bind',
-            require => File["${sysdir}/gridengine"],
+            options => 'rw,bind',
+            require => File["${sysdir}/gridengine", '/var/lib/gridengine'],
             before  => Package['gridengine-common'],
         }
 
