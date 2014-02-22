@@ -5,11 +5,9 @@ class gridengine::exec_host($gridmaster = $grid_master) {
         gridmaster => $gridmaster,
     }
 
-        package { 'gridengine-exec':
-                ensure => latest,
-        }
-
-# Not actually possible in the labs
-#   Sshkey <<| tag == "sshkey-$grid_master" |>>
+    package { 'gridengine-exec':
+        ensure  => latest,
+        require => Package['gridengine-common'],
+    }
 }
 

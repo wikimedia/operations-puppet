@@ -6,15 +6,9 @@ class gridengine::shadow_master($gridmaster = $grid_master) {
         gridmaster => $gridmaster,
     }
 
-        package { 'gridengine-master':
-            ensure => latest,
-        }
+    package { 'gridengine-master':
+        ensure => latest,
+        require => Package['gridengine-common'],
+    }
 
-# Not actually possible in the labs
-#   @@sshkey { $fqdn:
-#       ensure => present,
-#       type => 'ssh-dss',
-#       key => $sshdsakey,
-#       tag => "sshkey-$grid_master",
-#   }
 }

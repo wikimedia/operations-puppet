@@ -8,7 +8,8 @@ class gridengine::exec_submit_host($gridmaster = $grid_master) {
     }
 
     package { 'gridengine-exec':
-        ensure => latest,
+        ensure  => latest,
+        require => Package['gridengine-common'],
     }
 
     package { [ 'gridengine-client', 'jobutils' ]:
@@ -19,14 +20,5 @@ class gridengine::exec_submit_host($gridmaster = $grid_master) {
         ensure => link,
         target => '/data/project/.system/accounting',
     }
-
-# Not actually possible in the labs
-#   @@sshkey { $fqdn:
-#       ensure => present,
-#       type => 'ssh-dss',
-#       key => $sshdsakey,
-#       tag => "sshkey-$grid_master",
-#   }
-
 }
 
