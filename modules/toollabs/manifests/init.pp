@@ -16,22 +16,25 @@ class toollabs {
     $store = '/data/project/.system/store'
     $repo  = '/data/project/.system/deb'
 
-  #
-  # The $store is an incredibly horrid workaround the fact that we cannot
-  # use exported resources in our puppet setup: individual instances store
-  # information in a shared filesystem that are collected locally into
-  # files to finish up the configuration.
-  #
-  # Case in point here: SSH host keys distributed around the project for
-  # known_hosts and HBA of the execution nodes.
-  #
+    #
+    # The $store is an incredibly horrid workaround the fact that we cannot
+    # use exported resources in our puppet setup: individual instances store
+    # information in a shared filesystem that are collected locally into
+    # files to finish up the configuration.
+    #
+    # Case in point here: SSH host keys distributed around the project for
+    # known_hosts and HBA of the execution nodes.
+    #
 
     file { $store:
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => Service['autofs'],
+        require => $::site? {
+            'eqiad' =>  Mount['/data/project'],
+            default =>  Service['autofs'],
+        },
     }
 
     file { "${store}/hostkey-${::fqdn}":
