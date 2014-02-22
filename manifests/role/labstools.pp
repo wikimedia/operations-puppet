@@ -2,7 +2,9 @@
 class role::labs::tools {
 
   class config {
-    include role::labsnfs::client # temporary measure
+    if $::site != 'eqiad' {
+        include role::labsnfs::client # temporary measure
+    }
 
     $grid_master = $::site? {
         'eqiad' =>  "tools-master.eqiad.wmflabs",
