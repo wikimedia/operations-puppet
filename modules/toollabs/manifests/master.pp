@@ -29,7 +29,7 @@ class toollabs::master inherits toollabs {
         owner   => 'local-admin',
         group   => 'local-admin',
         mode    => '0755',
-        require => Service['autofs'],
+        require => File[$sysdir],
     }
 
     file { "${repo}/update-repo.sh":
