@@ -87,7 +87,7 @@ paste.filter_factory = nova.api.openstack.auth:NoAuthMiddleware.factory
 
 [filter:ratelimit]
 paste.filter_factory = nova.api.openstack.compute.limits:RateLimitingMiddleware.factory
-limits =(POST, "*", .*, 10, MINUTE);(POST, "*/servers", ^/servers, 50, DAY);(PUT, "*", .*, 10, MINUTE);(GET, "*changes-since*", .*changes-since.*, 3, MINUTE);(DELETE, "*", .*, 100, MINUTE)
+limits =(POST, "*", .*, 30, MINUTE);(POST, "*/servers", ^/servers, 1, MINUTE);(PUT, "*", .*, 30, MINUTE);(GET, "*changes-since*", .*changes-since.*, 30, MINUTE);(DELETE, "*", .*, 100, MINUTE)
 
 [filter:sizelimit]
 paste.filter_factory = nova.api.sizelimit:RequestBodySizeLimiter.factory
