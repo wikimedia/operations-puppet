@@ -23,7 +23,7 @@
 #  }
 #
 class txstatsd($settings) {
-    package { 'python-txstatsd': }
+    package { [ 'python-txstatsd', 'python-twisted-web' ]: }
 
     file { '/etc/init/txstatsd.conf':
         source => 'puppet:///modules/txstatsd/txstatsd.conf',
@@ -56,7 +56,7 @@ class txstatsd($settings) {
         subscribe => File['/etc/txstatsd/txstatsd.cfg'],
         require   => [
             File['/etc/init/txstatsd.conf'],
-            Package['python-txstatsd'],
+            Package['python-txstatsd', 'python-twisted-web'],
             User['txstatsd'],
         ],
     }
