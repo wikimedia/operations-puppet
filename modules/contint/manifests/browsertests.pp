@@ -36,6 +36,8 @@ class contint::browsertests(
     include ::mediawiki::packages
 
     # Set up all packages required for MediaWiki (includes Apache)
+    include mediawiki::packages::math
+
     package { [
         'chromium-browser',
         'firefox',
