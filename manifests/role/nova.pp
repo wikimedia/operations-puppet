@@ -318,7 +318,7 @@ class role::nova::controller {
 	# Script to migrate instance from one dc to another (specifically, pmtpa to eqiad)
 	file { "/root/dc-migrate":
 		ensure => present,
-		source => "puppet:///files/openstack/${openstack_version}/virtscripts/dc-migrate",
+		source => "puppet:///files/openstack/havana/virtscripts/dc-migrate",
 		mode => 0755,
 		owner => root,
 		group => root,
