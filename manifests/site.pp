@@ -1275,6 +1275,7 @@ node 'iron.wikimedia.org' {
     include standard
     include admins::roots
     include misc::management::ipmi
+    include role::access_new_install
 
     # search QA scripts for ops use
     include search::searchqa
@@ -2134,6 +2135,7 @@ node 'palladium.eqiad.wmnet' {
     include misc::management::ipmi
     include role::salt::masters::production
     include role::deployment::salt_masters::production
+    include role::access_new_install
 
     class { 'puppetmaster':
         allow_from  => [
