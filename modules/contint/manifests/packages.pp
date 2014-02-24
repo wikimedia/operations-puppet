@@ -188,6 +188,9 @@ class contint::packages {
         ensure => present;
     }
 
+    # Math related packages
+    include mediawiki::packages::math
+
     package { [
         'ocaml-nox',
         ]:
