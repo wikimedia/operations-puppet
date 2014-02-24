@@ -55,22 +55,6 @@ class mediawiki::packages {
         ensure => present,
     }
 
-    # TeX packages
-    package { [
-        'texlive',
-        'texlive-bibtex-extra',
-        'texlive-font-utils',
-        'texlive-fonts-extra',
-        'texlive-lang-all',
-        'texlive-latex-extra',
-        'texlive-math-extra',
-        'texlive-pictures',
-        'texlive-pstricks',
-        'texlive-publishers',
-    ]:
-        ensure => present,
-    }
-
     # Math
     package { [
         'dvipng',
@@ -81,6 +65,8 @@ class mediawiki::packages {
     ]:
         ensure => present,
     }
+    include mediawiki::packages::math
+
 
     # PDF and DjVu
     package { [
@@ -103,5 +89,9 @@ class mediawiki::packages {
         'tidy',
     ]:
         ensure => present,
+    }
+
+    package { 'wikimedia-task-appserver':
+        ensure => latest;
     }
 }
