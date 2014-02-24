@@ -167,6 +167,8 @@ class base::puppet($server='puppet', $certname=undef) {
         mode    => '0444',
         content => template('base/puppet.conf.d/10-main.conf.erb'),
         notify  => Exec['compile puppet.conf'],
+        notify  => Exec['delete master ca.pem'],
+        notify  => Exec['delete master crl.pem'],
     }
 
     file { '/etc/init.d/puppet':
@@ -185,6 +187,20 @@ class base::puppet($server='puppet', $certname=undef) {
     exec { 'compile puppet.conf':
         path        => '/usr/bin:/bin',
         command     => "cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf",
+        refreshonly => true,
+    }
+
+    # Clear master certs if puppet.conf changed
+    exec { 'delete master ca.pem':
+        path        => '/usr/bin:/bin',
+        command     => 'rm -f /var/lib/puppet/ssl/certs/ca.pem',
+        refreshonly => true,
+    }
+
+    # Clear master certs if puppet.conf changed
+    exec { 'delete master crl.pem':
+        path        => '/usr/bin:/bin',
+        command     => 'rm -f /var/lib/puppet/ssl/crl.pem',
         refreshonly => true,
     }
 
