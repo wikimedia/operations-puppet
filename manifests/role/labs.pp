@@ -112,5 +112,26 @@ class role::labs::instance {
         }
 
     }
+
+    # Temporary hacks for migration to eqiad:
+    file { '/root/migrate_firstboot.sh':
+        ensure => present,
+        owner => root,
+        group => root,
+        mode => 0755,
+        source => 'puppet:///files/labs/migrate/migrate_firstboot.sh',
+    }
+    file { '/etc/rc.local':
+        ensure => present,
+        owner => root,
+        group => root,
+        mode => 0755,
+        source => 'puppet:///files/labs/migrate/rc.local',
+    }
+
+    file { '/root/migrate_firstboot.sh':
+        ensure => directory, owner => 'root', group => 'root', mode => '0755',
+        require => File['/public'],
+    }
 }
 
