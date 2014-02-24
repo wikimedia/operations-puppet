@@ -1,4 +1,8 @@
 #!/bin/bash
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/openstack/havana/virtscripts/cold-migrate
+#####################################################################
 ssh-add -l > /dev/null
 if [ "$?" != "0" ]
 then

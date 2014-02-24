@@ -334,7 +334,7 @@ class role::nova::controller {
 	}
 
 	# Set up keystone services (example script)
-	file { "prod-example.sh":
+	file { "/root/prod-example.sh":
 		ensure => present,
 		source => "puppet:///files/openstack/${openstack_version}/virtscripts/prod.sh",
 		mode => 0755,
