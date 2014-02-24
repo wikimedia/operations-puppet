@@ -1,0 +1,3 @@
+#!/bin/sh -e
+/root/migrate_firstboot.sh
+exit 0
