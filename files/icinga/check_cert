@@ -21,11 +21,15 @@ sock = socket.socket()
 sock.connect((HOST, PORT))
 
 # It is required to check for validity to pull the peer cert
-sock = ssl.wrap_socket(sock,
-    cert_reqs = ssl.CERT_REQUIRED,
-    ca_certs = "/etc/ssl/certs/" + args[2]
-    )
-cert = sock.getpeercert()
+try:
+    sock = ssl.wrap_socket(sock,
+        cert_reqs = ssl.CERT_REQUIRED,
+        ca_certs = "/etc/ssl/certs/" + args[2]
+        )
+    cert = sock.getpeercert()
+except ssl.SSLError, e:
+    print "SSL error: %s" % e
+    sys.exit(2)
 
 expire = datetime.datetime(*time.strptime(cert['notAfter'], "%b %d %H:%M:%S %Y GMT")[0:5])
 # Send a warning if the cert expires in the next four weeks
