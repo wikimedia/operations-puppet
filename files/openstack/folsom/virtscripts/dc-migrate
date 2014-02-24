@@ -1,0 +1,73 @@
+#!/bin/bash
+#set -x
+ssh-add -l > /dev/null
+if [ "$?" != "0" ]
+then
+	echo "You must have a forwarded agent to use this script"
+	exit 1
+fi
+INSTANCENAME=$1
+PROJECT=$2
+FROMREGION='pmtpa'
+TOREGION='eqiad'
+FROMAUTH="http://virt0.wikimedia.org:35357/v2.0"
+TOAUTH="http://virt1000.wikimedia.org:35357/v2.0"
+FROMPUPPETMASTER="virt0.wikimedia.org"
+TOPUPPETMASTER="virt1000.wikimedia.org"
+TOINSTANCE=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep ' id ' | awk '{ print $4 }'`
+if [ -n "$TOINSTANCE" ]; then
+	echo "Name conflict!  ${INSTANCENAME} already exists in ${TOREGION} with ID \"${TOINSTANCE}\""
+	exit 1
+fi
+echo "(That error was a good thing.)"
+echo ""
+FROMIMAGE=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep ' image ' | awk '{gsub ( "[()]","" ) ; print $(NF-1) }'`
+FROMFLAVOR=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep ' flavor ' | awk '{gsub ( "[()]","" ) ; print $5 }'`
+FROMSECURITYRAW=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep ' security_groups ' | awk  -F "|" '{ print $3 }'`
+FROMSECURITY=`python -c "print ','.join([o['name'] for o in ${FROMSECURITYRAW}])"`
+FROMHOST=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:host' | awk '{ print $4 }'`
+FROMINSTANCENAME=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:instance_name' | awk '{ print $4 }'`
+FROMINSTANCE=$FROMINSTANCENAME
+echo "Creating initial image in $TOREGION"
+cd /srv/org/wikimedia/controller/wikis/w && php ./extensions/OpenStackManager/maintenance/createInstance.php --image ${FROMIMAGE} --flavor ${FROMFLAVOR} --instance ${INSTANCENAME} --project ${PROJECT} --region ${TOREGION} --securitygroups ${FROMSECURITY}
+echo "The new instance is building.  Waiting for it to be assigned a host..."
+TOHOST=''
+while [ -z $TOHOST ]; do
+	sleep 10
+	TOHOST=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:host' | awk '{ print $4 }'`
+done
+TOINSTANCENAME=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:instance_name' | awk '{ print $4 }'`
+TOINSTANCE=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep ' id ' | awk '{ print $4 }'`
+echo ""
+echo "Migrating $FROMINSTANCE from $FROMHOST to $TOINSTANCE on $TOHOST"
+echo ""
+echo "Destroying new instance on $TOHOST"
+echo ""
+ssh $TOHOST.$TOREGION.wmnet "virsh destroy ${TOINSTANCE}"
+#echo "Clearing resolv.conf in instance on $FROMHOST"
+#echo ""
+#salt ${FROMINSTANCE}.${FROMREGION}.wmflabs cmd.run "rm -rf /etc/resolvconf/resolv.conf.d/original"
+#salt ${FROMINSTANCE}.${FROMREGION}.wmflabs cmd.run "rm -rf /etc/resolv.conf"
+echo "Destroying instance on $FROMHOST"
+echo ""
+ssh $FROMHOST.$FROMREGION.wmnet "virsh destroy ${FROMINSTANCE}"
+echo ""
+sleep 30
+echo ""
+echo "Rsyncing instance from $FROMHOST to $TOHOST"
+echo ""
+# This one is right, but currently impossible due to filtering
+#ssh -A $FROMHOST.$FROMREGION.wmnet "rsync -S -av /var/lib/nova/instances/${FROMINSTANCE} ${TOHOST}.${TOREGION}.wmnet:/var/lib/nova/instances/${TOINSTANCE}"
+# This is dumb but will work
+rsync -S -av ${FROMHOST}.${FROMREGION}.wmnet:/var/lib/nova/instances/${FROMINSTANCE} /tmp/
+rsync -S -av /tmp/${FROMINSTANCE}/* ${TOHOST}.${TOREGION}.wmnet:/var/lib/nova/instances/${TOINSTANCE}
+rm -r /tmp/${FROMINSTANCE}
+echo ""
+echo ""
+echo ""
+echo "Clearing stale puppet cert (if any)"
+puppet cert clean ${TOINSTANCENAME}.${TOREGION}.wmflabs
+echo ""
+echo "Rebooting the instance"
+echo ""
+OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} reboot ${INSTANCENAME}

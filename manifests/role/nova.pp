@@ -304,6 +304,43 @@ class role::nova::controller {
 	if $realm == "production" {
 		class { "role::puppet::server::labs": }
 	}
+
+
+	# Cold-migrate instances between compute nodes
+	file { "/root/cold-migrate"
+		ensure => present,
+		source => "puppet:///files/openstack/${openstack_version}/virtscripts/cold-migrate",
+		mode => 0755,
+		owner => root,
+		group => root,
+	}
+
+	# Migrate instance from one dc to another (specifically, pmtpa to eqiad)
+	file { "/root/dc-migrate"
+		ensure => present,
+		source => "puppet:///files/openstack/${openstack_version}/virtscripts/dc-migrate",
+		mode => 0755,
+		owner => root,
+		group => root,
+	}
+
+	# Log analysis tool
+	file { "/root/logstat.py"
+		ensure => present,
+		source => "puppet:///files/openstack/${openstack_version}/virtscripts/logstat.py",
+		mode => 0755,
+		owner => root,
+		group => root,
+	}
+
+	# Set up keystone services (example script)
+	file { "prod-example.sh"
+		ensure => present,
+		source => "puppet:///files/openstack/${openstack_version}/virtscripts/prod.sh",
+		mode => 0755,
+		owner => root,
+		group => root,
+	}
 }
 
 class role::nova::api {
