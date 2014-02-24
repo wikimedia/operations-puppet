@@ -244,6 +244,44 @@ class role::ci::slave::browsertests {
     require => File['/mnt/localhost-browsertests'],
   }
 
+  # For CirrusSearch testing:
+  file { '/mnt/elasticsearch':
+    ensure => 'directory',
+  }
+  file { '/var/lib/elasticsearch':
+    ensure  => 'link',
+    require => '/mnt/elasticsearch',
+    target  => '/mnt/elasticsearch',
+  }
+  class { '::elasticsearch':
+    cluster_name => 'jenkins',
+    heap_memory  => '1G', #We have small data in test
+    require      => File['/var/lib/elasticsearch'],
+    # We don't have reliable multicast in labs but we don't mind because we
+    # only use a single instance
+
+    # Right now we're not testing with any of the plugins we plan to install
+    # later.  We'll cross that bridge when we come to it.
+  }
+
+  # For CirrusSearch testing:
+  file { '/mnt/redis':
+    ensure => 'directory',
+  }
+  file { '/var/lib/redis':
+    ensure  => 'link',
+    require => '/mnt/redis',
+    target  => '/mnt/redis',
+  }
+  class { '::redis':
+    maxmemory                 => '128mb',
+    persist                   => 'aof',
+    redis_replication         => undef,
+    password                  => 'notsecure',
+    dir                       => '/var/lib/redis',
+    auto_aof_rewrite_min_size => '32mb',
+    require                   => File['/var/lib/redis'],
+  }
 }
 
 class role::ci::slave::labs {
