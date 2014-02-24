@@ -193,6 +193,12 @@ class contint::packages {
         ]:
         ensure => present;
     }
+
+    package { [
+        'texlive-lang-greek',
+        ]:
+        ensure => present;
+    }
 }
 
 
