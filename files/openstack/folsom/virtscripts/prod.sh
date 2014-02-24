@@ -8,7 +8,7 @@ set -x
 
 # Using token auth env variables
 SERVICE_ENDPOINT=http://virt0.wikimedia.org:35357/v2.0/
-SERVICE_TOKEN=gooz1ooZa4ohtee
+SERVICE_TOKEN=<redacted>
 
 # ENDPOINT URLS
 NOVA_PUBLIC_URL="http://virt2.pmtpa.wmnet:8774/v2/\$(tenant_id)s"
