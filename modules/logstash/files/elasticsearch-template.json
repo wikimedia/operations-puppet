@@ -2,10 +2,10 @@
   "template" : "logstash-*",
   "settings" : {
     "number_of_shards" : 1,
-    "number_of_replicas" : 1,
+    "number_of_replicas" : 2,
     "index.cache.field.type" : "soft",
     "index.refresh_interval" : "5s",
-    "index.routing.allocation.total_shards_per_node" : 2,
+    "index.routing.allocation.total_shards_per_node" : 1,
     "analysis" : {
       "analyzer" : {
         "default" : {
