@@ -4,6 +4,8 @@ class role::ishmael {
 
     system::role { 'role::ishmael': description => 'ishmael server' }
 
+    install_certificate{ 'ishmael.wikimedia.org': ca => 'RapidSSL_CA.pem' }
+
     class { '::ishmael':
         site_name     => 'ishmael.wikimedia.org',
         config_main   => '/srv/ishmael/conf.php',
