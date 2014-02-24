@@ -1,7 +1,7 @@
 #!/bin/bash
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/openstack/folsom/virtscripts/dc-migrate
+### puppet:///files/openstack/havana/virtscripts/dc-migrate
 #####################################################################
 #set -x
 ssh-add -l > /dev/null
@@ -42,6 +42,7 @@ while [ -z $TOHOST ]; do
 done
 TOINSTANCENAME=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:instance_name' | awk '{ print $4 }'`
 TOINSTANCE=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep ' id ' | awk '{ print $4 }'`
+sleep 2
 echo ""
 echo "Migrating $FROMINSTANCE from $FROMHOST to $TOINSTANCE on $TOHOST"
 echo ""
@@ -51,8 +52,16 @@ ssh $TOHOST.$TOREGION.wmnet "virsh destroy ${TOINSTANCE}"
 echo "Clearing resolv.conf in instance on $FROMHOST"
 echo ""
 salt ${FROMINSTANCE}.${FROMREGION}.wmflabs cmd.run "rm -f /etc/resolv.conf"
+salt ${FROMINSTANCE}.${FROMREGION}.wmflabs cmd.run "rm -f /etc/resolvconf/resolv.conf.d/original"
+echo ""
+echo "Enabling puppet master cert refresh"
+salt ${FROMINSTANCE}.${FROMREGION}.wmflabs cmd.run "touch /root/allowcertdeletion"
+echo ""
+sleep 1
 echo "Destroying instance on $FROMHOST"
 echo ""
+OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} stop ${INSTANCENAME}
+sleep 5
 ssh $FROMHOST.$FROMREGION.wmnet "virsh destroy ${FROMINSTANCE}"
 echo ""
 sleep 30
