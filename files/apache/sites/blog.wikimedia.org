@@ -115,3 +115,21 @@ NameVirtualHost *:443
                     RewriteCond %{HTTP_HOST} ^blog.wikimediafoundation.org
                     RewriteRule ^/$ http://blog.wikimedia.org/ [R=301]
 </VirtualHost>
+
+<VirtualHost *:443>
+ServerAdmin noc@wikimedia.org
+ServerName techblog.wikimedia.org
+SSLEngine on		
+SSLCertificateFile /etc/ssl/certs/techblog.wikimedia.org.pem
+SSLCertificateKeyFile /etc/ssl/private/techblog.wikimedia.org.key
+SSLCACertificatePath /etc/ssl/certs/
+		
+ServerAlias blog.wikimediafoundation.org
+RewriteEngine On
+RewriteRule ^/feed/(.*) https://blog.wikimedia.org/c/technology/feed/$1 [R=301] 
+RewriteRule ^/category/(.*) https://blog.wikimedia.org/c/$1 [R=301]
+RewriteRule ^/20(.*) https://blog.wikimedia.org/20$1 [R=301]
+RewriteRule ^/wp-content/(.*) https://blog.wikimedia.org/wp-content/$1 [R=301] 
+RewriteCond %{HTTP_HOST} ^techblog.wikimedia.org
+RewriteRule ^/$ https://blog.wikimedia.org/c/technology/ [R=301]
+</VirtualHost>

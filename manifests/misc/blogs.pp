@@ -33,6 +33,8 @@ class misc::blogs::wikimedia {
     include nrpe
     class { 'memcached': memcached_ip => '127.0.0.1' }
     install_certificate{ 'blog.wikimedia.org': }
+    install_certificate{ 'techblog.wikimedia.org': }
+
 
     # There's not really a good reason for this to be "",
     # except that it was like that when I found it.
