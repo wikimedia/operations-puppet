@@ -161,13 +161,38 @@ class base::puppet($server='puppet', $certname=undef) {
         mode   => '0550',
     }
 
-    file { '/etc/puppet/puppet.conf.d/10-main.conf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('base/puppet.conf.d/10-main.conf.erb'),
-        notify  => Exec['compile puppet.conf'],
+    case $::realm {
+        'production': {
+            file { '/etc/puppet/puppet.conf.d/10-main.conf':
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                content => template('base/puppet.conf.d/10-main.conf.erb'),
+                notify  => Exec['compile puppet.conf'],
+            }
+        }
+        'labs': {
+
+            file { '/etc/puppet/puppet.conf.d/10-main.conf':
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                content => template('base/puppet.conf.d/10-main.conf.erb'),
+                notify  => Exec['compile puppet.conf'],
+                notify  => Exec['delete master certs'],
+            }
+
+            # Clear master certs if puppet.conf changed
+            exec { 'delete master certs':
+                path        => '/usr/bin:/bin',
+                command     => 'rm -f /var/lib/puppet/ssl/certs/ca.pem && rm -f /var/lib/puppet/ssl/crl.pem && rm -f /root/allowcertdeletion',
+                onlyif      => 'test -f /root/allowcertdeletion',
+                refreshonly => true,
+            }
+
+        }
     }
+
 
     file { '/etc/init.d/puppet':
         owner  => 'root',
