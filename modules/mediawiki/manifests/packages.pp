@@ -11,6 +11,8 @@ class mediawiki::packages {
     }
   }
 
+  include mediawiki::packages::math
+
   package { 'wikimedia-task-appserver':
     ensure => latest;
   }
