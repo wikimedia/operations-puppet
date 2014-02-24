@@ -265,22 +265,13 @@ class role::ci::slave::browsertests {
   }
 
   # For CirrusSearch testing:
-  file { '/mnt/redis':
-    ensure => 'directory',
-  }
-  file { '/var/lib/redis':
-    ensure  => 'link',
-    require => '/mnt/redis',
-    target  => '/mnt/redis',
-  }
   class { '::redis':
     maxmemory                 => '128mb',
     persist                   => 'aof',
     redis_replication         => undef,
     password                  => 'notsecure',
-    dir                       => '/var/lib/redis',
+    dir                       => '/mnt/redis',
     auto_aof_rewrite_min_size => '32mb',
-    require                   => File['/var/lib/redis'],
   }
 }
 
