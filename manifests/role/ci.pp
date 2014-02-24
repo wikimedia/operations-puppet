@@ -244,6 +244,25 @@ class role::ci::slave::browsertests {
     require => File['/mnt/localhost-browsertests'],
   }
 
+  # For CirrusSearch testing:
+  class { '::elasticsearch':
+    multicast_group      => , # no multicast on labs :(
+      master_eligible      => ,
+      minimum_master_nodes => ,
+      cluster_name         => ,
+      heap_memory          => ,
+      plugins_dir          => ,
+    }
+
+    class { '::redis':
+      maxmemory                 => '128mb',
+      persist                   => 'aof',
+      redis_replication         => undef,
+      password                  => 'notsecure',
+      dir                       => '/var/lib/redis',
+      auto_aof_rewrite_min_size => '32mb',
+    }
+
 }
 
 class role::ci::slave::labs {
