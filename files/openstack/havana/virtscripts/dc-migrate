@@ -43,6 +43,9 @@ done
 TOINSTANCENAME=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:instance_name' | awk '{ print $4 }'`
 TOINSTANCE=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep ' id ' | awk '{ print $4 }'`
 echo ""
+echo "Clearing resolv.conf on $FROMINSTANCE"
+salt $FROMINSTANCE.$FROMREGION.wmnet cmd.run "rm -f /etc/resolv.conf"
+echo ""
 echo "Migrating $FROMINSTANCE from $FROMHOST to $TOINSTANCE on $TOHOST"
 echo ""
 echo "Destroying new instance on $TOHOST"
