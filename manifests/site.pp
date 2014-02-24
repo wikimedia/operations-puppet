@@ -1280,13 +1280,6 @@ node 'iron.wikimedia.org' {
     include search::searchqa
 }
 
-node 'kaulen.wikimedia.org' {
-    $gid = '500'
-
-    include standard
-    include admins::roots
-}
-
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
     class { 'role::db::labsdb':

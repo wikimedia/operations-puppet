@@ -43,11 +43,6 @@ host hume {
 	fixed-address hume.wikimedia.org;
 }
 
-host kaulen {
-	hardware ethernet 00:26:B9:5C:2C:85;
-	fixed-address kaulen.wikimedia.org;
-}
-
 host linne {
 	hardware ethernet 00:1e:c9:ea:ab:a7;
 	fixed-address linne.wikimedia.org;
