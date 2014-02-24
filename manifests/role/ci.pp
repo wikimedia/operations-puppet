@@ -250,7 +250,7 @@ class role::ci::slave::browsertests {
   }
   file { '/var/lib/elasticsearch':
     ensure  => 'link',
-    require => '/mnt/elasticsearch',
+    require => File['/mnt/elasticsearch'],
     target  => '/mnt/elasticsearch',
   }
   class { '::elasticsearch':
