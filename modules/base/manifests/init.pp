@@ -169,6 +169,17 @@ class base::puppet($server='puppet', $certname=undef) {
         notify  => Exec['compile puppet.conf'],
     }
 
+    if $::realm == 'labs' {
+        # Clear master certs if puppet.conf changed
+        exec { 'delete master certs':
+            path        => '/usr/bin:/bin',
+            command     => 'rm -f /var/lib/puppet/ssl/certs/ca.pem && rm -f /var/lib/puppet/ssl/crl.pem && rm -f /root/allowcertdeletion',
+            onlyif      => 'test -f /root/allowcertdeletion',
+            subscribe   => File['/etc/puppet/puppet.conf.d/10-main.conf'],
+            refreshonly => true,
+        }
+    }
+
     file { '/etc/init.d/puppet':
         owner  => 'root',
         group  => 'root',
