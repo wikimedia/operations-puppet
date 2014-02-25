@@ -21,6 +21,7 @@ ProxyRequests		Off
 	SetEnvIf User-Agent Sogou bad_browser
 	SetEnvIf User-Agent Sosospider bad_browser
 	SetEnvIf User-Agent TweetmemeBot bad_browser
+	SetEnvIf User-Agent ZumBot bad_browser
 
 	Order deny,allow
 	deny from env=bad_browser
