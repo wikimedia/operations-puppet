@@ -134,8 +134,8 @@ sub geoip_lookup {
 sub geoip_cookie {
 	C{
 		GeoIPRecord *record;
-		char *set_cookie_header, *cookie;
-		char latlon[20];
+		char *set_cookie_header;
+		char geo_cookie[255];
 
 		char *ip = geo_get_xff_ip(sp);
 		int af = geo_get_addr_family(ip);
@@ -149,27 +149,26 @@ sub geoip_cookie {
 
 		if (record) {
 			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/ */
-			snprintf(latlon, sizeof(latlon), "%.4f:%.4f", record->latitude, record->longitude);
-			cookie = VRT_WrkString(sp, "GeoIP=",
-				record->country_code,                   ":",
-				geo_sanitize_for_cookie(record->city),  ":",
-				latlon,                                 ":",
-				(af == AF_INET6) ? "v6" : "v4",         "; path=/",
-				vrt_magic_string_end);
+			snprintf(geo_cookie, sizeof(geo_cookie), "GeoIP=%s:%s:%.4f:%.4f:%s; path=/",
+				geo_sanitize_for_cookie(record->country_code),
+				geo_sanitize_for_cookie(record->city),
+				record->latitude,
+				record->longitude,
+				(af == AF_INET6) ? "v6" : "v4"
+			);
 			GeoIPRecord_delete(record);
 		} else {
 			/* Set-Cookie: GeoIP=::::v6; path=/ */
-			cookie = VRT_WrkString(sp, "GeoIP=::::", (af == AF_INET6) ? "v6" : "v4",
-				"; path=/", vrt_magic_string_end);
+			snprintf(geo_cookie, sizeof(geo_cookie), "GeoIP=::::%s; path=/", (af == AF_INET6) ? "v6" : "v4");
 		}
 
 		set_cookie_header = VRT_GetHdr(sp, HDR_RESP, "\013set-cookie:");
 		if (set_cookie_header == NULL) {
 			// New header
-			VRT_SetHdr(sp, HDR_RESP, "\013Set-Cookie:", cookie, vrt_magic_string_end);
+			VRT_SetHdr(sp, HDR_RESP, "\013Set-Cookie:", geo_cookie, vrt_magic_string_end);
 		} else {
 			// Append to existing header
-			VRT_SetHdr(sp, HDR_RESP, "\013Set-Cookie:", set_cookie_header, "; ", cookie, vrt_magic_string_end);
+			VRT_SetHdr(sp, HDR_RESP, "\013Set-Cookie:", set_cookie_header, "; ", geo_cookie, vrt_magic_string_end);
 		}
 	}C
 }
