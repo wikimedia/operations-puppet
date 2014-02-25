@@ -33,7 +33,7 @@ FROMHOST=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${F
 FROMINSTANCENAME=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:instance_name' | awk '{ print $4 }'`
 FROMINSTANCE=$FROMINSTANCENAME
 echo "Creating initial image in $TOREGION"
-cd /srv/org/wikimedia/controller/wikis/w && php ./extensions/OpenStackManager/maintenance/createInstance.php --image ${FROMIMAGE} --flavor ${FROMFLAVOR} --instance ${INSTANCENAME} --project ${PROJECT} --region ${TOREGION} --securitygroups ${FROMSECURITY}
+cd /srv/org/wikimedia/controller/wikis/w && php ./extensions/OpenStackManager/maintenance/createInstance.php --image ${FROMIMAGE} --flavor ${FROMFLAVOR} --instance ${INSTANCENAME} --project ${PROJECT} --region ${TOREGION} --securitygroups ${FROMSECURITY} --copypuppet ${FROMINSTANCE} --copypuppetregion ${FROMREGION}
 echo "The new instance is building.  Waiting for it to be assigned a host..."
 TOHOST=''
 while [ -z $TOHOST ]; do
