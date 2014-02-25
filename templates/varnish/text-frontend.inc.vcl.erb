@@ -129,8 +129,10 @@ sub vcl_deliver {
 		&& req.url !~ "(?i)bcache=1") {
 		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 	}
+<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 	/* Perform GeoIP look-up and send the result as a session cookie */
 	if (req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
 		call geoip_cookie;
 	}
+<% end -%>
 }
