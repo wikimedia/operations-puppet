@@ -1,6 +1,4 @@
 mchenry.wikimedia.org   /root default
-sockpuppet.pmtpa.wmnet /svnroot default
-sockpuppet.pmtpa.wmnet /var/lib/puppet/ssl default
 db10.pmtpa.wmnet /a/sqldata {
 	default
 	include "./db10-bin.*"

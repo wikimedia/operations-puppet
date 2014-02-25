@@ -108,11 +108,6 @@ host snapshot4 {
 	fixed-address snapshot4.pmtpa.wmnet;
 }
 
-host sockpuppet {
-	hardware ethernet 00:1e:c9:ea:53:ee;
-	fixed-address sockpuppet.pmtpa.wmnet;
-}
-
 host srv193 {
 	hardware ethernet 00:21:9B:8B:D9:7A;
 	fixed-address srv193.pmtpa.wmnet;

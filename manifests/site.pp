@@ -2309,20 +2309,6 @@ node 'silver.wikimedia.org' {
     include mobile::vumi::udp2log
 }
 
-node 'sockpuppet.pmtpa.wmnet' {
-    include standard
-    include backup::client
-    include misc::management::ipmi
-    include role::salt::masters::production
-    include role::deployment::salt_masters::production
-
-    # Display notice that this is no longer an active puppetmaster.
-    file { '/etc/update-motd.d/99-obsolete-puppetmaster':
-        ensure => 'present',
-        source => 'puppet:///modules/puppetmaster/motd/99-obsolete',
-    }
-}
-
 node 'sodium.wikimedia.org' {
 
     $nameservers_prefix = [ $ipaddress ]
