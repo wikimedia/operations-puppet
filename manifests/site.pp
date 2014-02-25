@@ -98,11 +98,18 @@ node /^amssq(4[8-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# analytics1003 and analytics1004 are temporarily
-# test Kafka Brokers.
-node /analytics100[34]\.wikimedia\.org/ {
+
+# analytics1003 is being used for testing kafkatee
+# in preperation for replacing udp2log
+node 'analytics1003.eqiad.wmnet' {
+    include role::analytics
+    include role::analytics::kafkatee::webrequest::mobile
+}
+
+node 'analytics1004.eqiad.wmnet' {
     include role::analytics
 }
+
 
 # analytics1009 is the Hadoop standby NameNode
 node 'analytics1009.eqiad.wmnet' {
