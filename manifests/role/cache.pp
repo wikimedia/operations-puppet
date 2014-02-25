@@ -558,6 +558,7 @@ class role::cache {
         system::role { "role::cache::text": description => "text Varnish cache server" }
 
         require geoip
+        require geoip::dev # for VCL compilation using libGeoIP
 
         class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
 
@@ -878,6 +879,7 @@ class role::cache {
         system::role { "role::cache::bits": description => "bits Varnish cache server" }
 
         require geoip
+        require geoip::dev # for VCL compilation using libGeoIP
 
         include standard,
             nrpe
