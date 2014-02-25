@@ -54,9 +54,9 @@ class role::analytics::kafka::config {
                 'analytics1021.eqiad.wmnet' => { 'id' => 21 },
                 'analytics1022.eqiad.wmnet' => { 'id' => 22 },
             },
-            # 'ulsfo' => { },
-            # 'pmtpa' => { },
-            # 'esams' => { },
+            'ulsfo' => { },
+            'pmtpa' => { },
+            'esams' => { },
         }
 
         # production Kafka uses a bunch of JBOD log_dir mounts.
