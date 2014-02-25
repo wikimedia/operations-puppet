@@ -73,6 +73,10 @@ C{
 	char *
 	geo_sanitize_for_cookie(char *string) {
 		char *ptr;
+
+		if (string == NULL) {
+			return string;
+		}
 		for (ptr = string; *ptr; ptr++) {
 			if (strchr(";, ", *ptr)) {
 				*ptr = '_';
@@ -134,8 +138,8 @@ sub geoip_lookup {
 sub geoip_cookie {
 	C{
 		GeoIPRecord *record;
-		char *set_cookie_header, *cookie;
-		char latlon[20];
+		char *set_cookie_header;
+		char cookie[255];
 
 		char *ip = geo_get_xff_ip(sp);
 		int af = geo_get_addr_family(ip);
@@ -149,18 +153,17 @@ sub geoip_cookie {
 
 		if (record) {
 			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/ */
-			snprintf(latlon, sizeof(latlon), "%.4f:%.4f", record->latitude, record->longitude);
-			cookie = VRT_WrkString(sp, "GeoIP=",
-				record->country_code,                   ":",
-				geo_sanitize_for_cookie(record->city),  ":",
-				latlon,                                 ":",
-				(af == AF_INET6) ? "v6" : "v4",         "; path=/",
-				vrt_magic_string_end);
+			snprintf(cookie, sizeof(cookie), "GeoIP=%s:%s:%.4f:%.4f:%s; path=/",
+				record->country_code ? geo_sanitize_for_cookie(record->country_code) : "",
+				record->city ? geo_sanitize_for_cookie(record->city) : "",
+				record->latitude ? record->latitude : "",
+				record->longitude ? record->longitude : "",
+				(af == AF_INET6) ? "v6" : "v4"
+			);
 			GeoIPRecord_delete(record);
 		} else {
 			/* Set-Cookie: GeoIP=::::v6; path=/ */
-			cookie = VRT_WrkString(sp, "GeoIP=::::", (af == AF_INET6) ? "v6" : "v4",
-				"; path=/", vrt_magic_string_end);
+			snprintf(cookie, sizeof(cookie), "GeoIP=::::%s; path=/", (af == AF_INET6) ? "v6" : "v4");
 		}
 
 		set_cookie_header = VRT_GetHdr(sp, HDR_RESP, "\013set-cookie:");
