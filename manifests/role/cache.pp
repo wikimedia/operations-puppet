@@ -557,6 +557,8 @@ class role::cache {
 
         system::role { "role::cache::text": description => "text Varnish cache server" }
 
+        require geoip
+
         class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
 
         $varnish_be_directors = {
@@ -670,6 +672,9 @@ class role::cache {
                     'probe' => "varnish",
                     'weight' => $backend_weight,
                 }],
+            cluster_options => {
+                'enable_geoiplookup' => true,
+            },
         }
 
         include role::cache::varnish::logging
