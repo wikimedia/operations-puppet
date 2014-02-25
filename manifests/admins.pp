@@ -3469,7 +3469,7 @@ class admins::roots {
 	include groups::wikidev
 
 	# In addition to adding the user to this list, you MUST add the user's key
-	# to /root/private/files/ssh/root-authorized-keys on sockpuppet, then git
+	# to /root/private/files/ssh/root-authorized-keys on palladium, then git
 	# commit and pull to /var/lib/git/operations/private/ on stafford, to
 	# actually get them root; that file is not in the public repo.
 
