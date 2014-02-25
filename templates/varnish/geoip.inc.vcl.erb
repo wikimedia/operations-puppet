@@ -21,13 +21,15 @@ C{
 	char * geo_sanitize_for_cookie (char *string);
 	void geo_set_cache_control (const struct sess *sp);
 
-	inline void geo_init () {
+	void
+	geo_init() {
 		if (gi == NULL) {
 			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MMAP_CACHE);
 		}
 	}
 
-	int geo_get_addr_family (const char *addr) {
+	int
+	geo_get_addr_family(const char *addr) {
 		struct addrinfo hint;
 		struct addrinfo *info = NULL;
 		int ret, result;
@@ -46,7 +48,12 @@ C{
 		return result;
 	}
 
-	char * geo_get_xff_ip (const struct sess *sp) {
+	/*
+	 * Return the first IP address from the X-Forwarded-For header of the
+	 * incoming request, or NULL if no such header was set.
+	 */
+	char *
+	geo_get_xff_ip(const struct sess *sp) {
 		char *xff = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
 		char *xff_list_item, *last;
 
@@ -59,17 +66,26 @@ C{
 		return xff;
 	}
 
-	char * geo_sanitize_for_cookie (char *string) {
-	    char *ptr;
-	    for (ptr = string; *ptr; ptr++) {
-		if (strchr(";, ", *ptr)) {
-		    *ptr = '_';
+	/*
+	 * Make a string safe to use as a cookie value in a Set-Cookie header by
+	 * replacing characters that are disallowed by RFC 6265 with underscores.
+	 */
+	char *
+	geo_sanitize_for_cookie(char *string) {
+		char *ptr;
+		for (ptr = string; *ptr; ptr++) {
+			if (strchr(";, ", *ptr)) {
+				*ptr = '_';
+			}
 		}
-	    }
-	    return string;
+		return string;
 	}
 
-	void geo_set_cache_control (const struct sess *sp) {
+	/*
+	 * Set Last-Modified and Cache-Control headers for GeoIP requests.
+	 */
+	void
+	geo_set_cache_control(const struct sess *sp) {
 		char *now = VRT_time_string(sp, VRT_r_now(sp));
 		VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:", now, vrt_magic_string_end);
 		VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:", "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
@@ -135,10 +151,10 @@ sub geoip_cookie {
 			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v6; path=/ */
 			snprintf(latlon, sizeof(latlon), "%.4f:%.4f", record->latitude, record->longitude);
 			cookie = VRT_WrkString(sp, "GeoIP=",
-				record->country_code,			":",
-				geo_sanitize_for_cookie(record->city),	":",
+				record->country_code,                   ":",
+				geo_sanitize_for_cookie(record->city),  ":",
 				latlon,                                 ":",
-				AF_INET6 ? "v6" : "v4",			"; path=/",
+				AF_INET6 ? "v6" : "v4",                 "; path=/",
 				vrt_magic_string_end);
 			GeoIPRecord_delete(record);
 		} else {
