@@ -7,6 +7,25 @@
 	ServerName localhost
 	DocumentRoot <%= @docroot %>
 
+	# Attempt to match production URLs:
+    #
+	#   http://localhost:9413/CirrusSearch/wiki/
+	#   http://localhost:9413/CirrusSearch/wiki/Main_Page
+	#   http://localhost:9413/CirrusSearch/w/api.php
+	#   http://localhost:9413/CirrusSearch/w/index.php
+    #
+    # Needs a symlink for w to .
+    #
+    # And MediaWiki configuration (handled in JJB):
+    #
+    #   $wgScriptPath = '/CirrusSearch/w';
+    #   $wgArticlePath = '/CirrusSearch/wiki/$1';
+
+	RewriteEngine on
+	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+	RewriteRule ^/([\w-]+)/(.*)?$ /$1/index.php [L]
+
 	<Directory />
 		Order deny,allow
 		Deny from all
