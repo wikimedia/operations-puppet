@@ -7,6 +7,15 @@
 	ServerName localhost
 	DocumentRoot <%= @docroot %>
 
+	# Lame examples::
+	# http://localhost:9413/CirrusSearch/
+	# http://localhost:9413/CirrusSearch/Main_Page
+	# http://localhost:9413/CirrusSearch/api.php
+	RewriteEngine on
+	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+	RewriteRule ^/([\w-]+)/(.*)?$ /$1/index.php [L]
+
 	<Directory />
 		Order deny,allow
 		Deny from all
