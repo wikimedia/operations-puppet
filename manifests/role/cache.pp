@@ -674,7 +674,7 @@ class role::cache {
                     'weight' => $backend_weight,
                 }],
             cluster_options => {
-                'enable_geoiplookup' => false,
+                'enable_geoiplookup' => true,
             },
         }
 
