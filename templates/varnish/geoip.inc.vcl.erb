@@ -148,18 +148,18 @@ sub geoip_cookie {
 		record = GeoIP_record_by_addr(gi, ip);
 
 		if (record) {
-			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v6; path=/ */
+			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/ */
 			snprintf(latlon, sizeof(latlon), "%.4f:%.4f", record->latitude, record->longitude);
 			cookie = VRT_WrkString(sp, "GeoIP=",
 				record->country_code,                   ":",
 				geo_sanitize_for_cookie(record->city),  ":",
 				latlon,                                 ":",
-				AF_INET6 ? "v6" : "v4",                 "; path=/",
+				(af == AF_INET6) ? "v6" : "v4",         "; path=/",
 				vrt_magic_string_end);
 			GeoIPRecord_delete(record);
 		} else {
 			/* Set-Cookie: GeoIP=::::v6; path=/ */
-			cookie = VRT_WrkString(sp, "GeoIP=::::", AF_INET6 ? "v6" : "v4",
+			cookie = VRT_WrkString(sp, "GeoIP=::::", (af == AF_INET6) ? "v6" : "v4",
 				"; path=/", vrt_magic_string_end);
 		}
 
