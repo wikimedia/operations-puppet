@@ -7,6 +7,25 @@
 	ServerName localhost
 	DocumentRoot <%= @docroot %>
 
+	# Attempt to match production URLs:
+	#
+	#   http://localhost:9413/CirrusSearch/wiki/
+	#   http://localhost:9413/CirrusSearch/wiki/Main_Page
+	#   http://localhost:9413/CirrusSearch/w/api.php
+	#   http://localhost:9413/CirrusSearch/w/index.php
+	#
+	# Needs a symlink for w to . which is created by the Jenkins job.
+	#
+	# And MediaWiki configuration (handled in JJB):
+	#
+	#   $wgScriptPath = '/CirrusSearch/w';
+	#   $wgArticlePath = '/CirrusSearch/wiki/$1';
+
+    AcceptPathInfo on
+
+	RewriteEngine on
+	RewriteRule ^/([\w-]+)/wiki(/.*?)$ %{DOCUMENT_ROOT}/$1/w/index.php [L]
+
 	<Directory />
 		Order deny,allow
 		Deny from all
