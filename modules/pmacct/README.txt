@@ -1,0 +1,63 @@
+# mysql schema is also necessary -- documenting here
+
+#drop database if exists pmacct;
+#create database pmacct;
+
+use pmacct;
+
+drop table if exists traffic_by_asn;
+create table if not exists traffic_by_asn (
+        agent_id INT(4) UNSIGNED NOT NULL,
+        as_dst INT(4) UNSIGNED NOT NULL,
+	as_path CHAR(21) NOT NULL,
+	peer_as_dst INT(4) UNSIGNED NOT NULL,
+        packets INT UNSIGNED NOT NULL,
+	bytes BIGINT UNSIGNED NOT NULL,
+	stamp_inserted DATETIME NOT NULL,
+	stamp_updated DATETIME,
+	PRIMARY KEY (agent_id, as_dst, as_path, peer_as_dst, stamp_inserted)
+);
+
+drop table if exists traffic_by_country;
+create table if not exists traffic_by_country (
+       agent_id INT(4) UNSIGNED NOT NULL,
+       country_ip_dst CHAR(2) NOT NULL,
+       packets INT UNSIGNED NOT NULL,
+       bytes BIGINT UNSIGNED NOT NULL,
+       stamp_inserted DATETIME NOT NULL,
+       stamp_updated DATETIME,
+       PRIMARY KEY (agent_id, country_ip_dst, stamp_inserted)
+);
+
+drop table if exists traffic_by_sourceport;
+create table if not exists traffic_by_sourceport  (
+       agent_id INT(4) UNSIGNED NOT NULL,
+       src_port INT(2) UNSIGNED NOT NULL,
+       packets INT UNSIGNED NOT NULL,
+       bytes BIGINT UNSIGNED NOT NULL,
+       stamp_inserted DATETIME NOT NULL,
+       stamp_updated DATETIME,
+       PRIMARY KEY (agent_id, src_port, stamp_inserted)
+);
+
+drop table if exists traffic_by_interface;
+create table if not exists traffic_by_interface  (
+       agent_id INT(4) UNSIGNED NOT NULL,
+       iface_out INT(4) UNSIGNED NOT NULL,
+       packets INT UNSIGNED NOT NULL,
+       bytes BIGINT UNSIGNED NOT NULL,
+       stamp_inserted DATETIME NOT NULL,
+       stamp_updated DATETIME,
+       PRIMARY KEY (agent_id, iface_out, stamp_inserted)
+);
+
+drop table if exists traffic_by_sourceip;
+create table if not exists traffic_by_sourceip  (
+       agent_id INT(4) UNSIGNED NOT NULL,
+       ip_src CHAR(15) NOT NULL,
+       packets INT UNSIGNED NOT NULL,
+       bytes BIGINT UNSIGNED NOT NULL,
+       stamp_inserted DATETIME NOT NULL,
+       stamp_updated DATETIME,
+       PRIMARY KEY (agent_id, ip_src, stamp_inserted)
+);
