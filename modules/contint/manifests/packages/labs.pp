@@ -12,6 +12,9 @@ class contint::packages::labs {
         'npm',
         'python-pip',
 
+        # Let us compile python modules:
+        'python-dev',
+
         # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
         'zip',
 
