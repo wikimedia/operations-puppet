@@ -12,7 +12,8 @@ class mediawiki($twemproxy = true) {
 	# It's recommended by timidity and there's no simple way to avoid installing it
 	service { 'timidity':
 		enable => false,
-		ensure => stopped;
+		ensure => stopped,
+		after  => 'wikimedia-task-appserver',
 	}
 
 	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup, packages
