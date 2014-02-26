@@ -645,9 +645,6 @@ class role::cache {
             wikimedia_networks => $wikimedia_networks,
         }
 
-        # Try new geo_cookie code on a single text Varnish
-        $enable_geo_cookie = ($::hostname == 'cp1066')
-
         varnish::instance { "text-frontend":
             name => "frontend",
             vcl => "text-frontend",
@@ -677,7 +674,7 @@ class role::cache {
                     'weight' => $backend_weight,
                 }],
             cluster_options => {
-                'enable_geoiplookup' => $enable_geo_cookie,
+                'enable_geoiplookup' => false,
             },
         }
 
