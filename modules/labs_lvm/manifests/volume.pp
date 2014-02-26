@@ -22,7 +22,7 @@ define labs_lvm::volume(
     file { '/usr/local/sbin/make-instance-vol':
         ensure      => file,
         source      => 'puppet:///modules/labs_lvm/make-instance-vol',
-        requires    => Package['lvm2'],
+        require     => Package['lvm2'],
         mode        => 0544,
         owner       => 'root',
         group       => 'root',
@@ -30,7 +30,7 @@ define labs_lvm::volume(
 
     exec { "create-vd-$volname":
         creates     => "/dev/vd/$volname",
-        requires    => [
+        require     => [
                          File['/usr/local/sbin/make-instance-vol'],
                          Exec['create-volume-group']
                        ],
@@ -50,7 +50,7 @@ define labs_lvm::volume(
         device      => "/dev/mapper/vd-$volname",
         options     => "defaults,noauto",
         fstype      => $fstype,
-        requires    => [
+        require     => [
                          Exec["create-vd-$volname"],
                          File[$mountat],
                        ],

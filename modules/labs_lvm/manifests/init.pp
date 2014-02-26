@@ -22,7 +22,7 @@ class labs_lvm($disk) {
     file { '/usr/local/sbin/make-instance-vg':
         ensure      => file,
         source      => 'puppet:///modules/labs_lvm/make-instance-vg',
-        requires    => Package['lvm2'],
+        require     => Package['lvm2'],
         mode        => 0544,
         owner       => 'root',
         group       => 'root',
@@ -30,7 +30,7 @@ class labs_lvm($disk) {
 
     exec { 'create-volume-group':
         creates     => '/dev/vd',
-        requires    => File['/usr/local/sbin/make-instance-vg'],
+        require     => File['/usr/local/sbin/make-instance-vg'],
         command     => "/usr/local/sbin/make-instance-vg '$disk'",
     }
 
