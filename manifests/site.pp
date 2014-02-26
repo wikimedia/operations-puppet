@@ -2222,7 +2222,7 @@ node 'potassium.eqiad.wmnet' {
 }
 
 # QA box for the new PDF system
-node 'rhodium.eqiad.wmnet' {
+node 'tantalum.eqiad.wmnet' {
     $gid = '500'
     include standard
     include role::ocg::test

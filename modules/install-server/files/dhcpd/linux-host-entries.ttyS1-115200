@@ -3587,9 +3587,9 @@ host rdb1004 {
 	fixed-address rdb1004.eqiad.wmnet;
 }
 
-host rhodium {
-	hardware ethernet 18:03:73:f1:56:d2;
-	fixed-address rhodium.eqiad.wmnet;
+host tantalum {
+	hardware ethernet 78:2B:CB:2D:F3:D9;
+	fixed-address tantalum.eqiad.wmnet;
 	option pxelinux.pathprefix "trusty-installer/";
 	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
