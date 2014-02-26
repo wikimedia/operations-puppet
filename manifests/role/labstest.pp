@@ -5,7 +5,7 @@
 
 class role::labs::instancetest {
 
-    class { 'labs_lvm':
+    class { '::labs_lvm':
         device => '/dev/vda'
     }
 
