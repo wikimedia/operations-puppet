@@ -9,7 +9,7 @@ class role::labs::instancetest {
         device => '/dev/vda'
     }
 
-    class { 'labs_lvm::volume':
+    labs_lvm::volume { 'store':
         mountpoint => '/mnt'
     }
 
