@@ -43,7 +43,7 @@ define labs_lvm::volume(
     }
 
     exec { "create-vd-$volname":
-        creates     => "/dev/vd/$volname",
+        onlyif      => "! /sbin/lvdisplay -c vd/$volname",
         require     => [
                          File['/usr/local/sbin/make-instance-vol'],
                          Exec['create-volume-group']
