@@ -77,15 +77,17 @@ define varnish::instance(
     service { "varnish${instancesuffix}":
         ensure    => running,
         require   => [
-                File["/etc/default/varnish${instancesuffix}"],
-                File["/etc/init.d/varnish${instancesuffix}"],
                 File["/etc/varnish/${vcl}.inc.vcl"],
                 File["/etc/varnish/wikimedia_${vcl}.vcl"],
                 Mount['/var/lib/varnish']
             ],
         hasstatus => false,
         pattern   => "/var/run/varnishd${instancesuffix}.pid",
-        subscribe => Package['varnish'],
+        subscribe => [
+                File["/etc/default/varnish${instancesuffix}"],
+                File["/etc/init.d/varnish${instancesuffix}"],
+                Package['varnish']
+            ],
         before    => Exec['generate varnish.pyconf'],
     }
 
