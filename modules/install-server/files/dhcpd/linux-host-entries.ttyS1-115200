@@ -1363,14 +1363,14 @@ host labstore1002 {
 	fixed-address labstore1002.eqiad.wmnet;
 }
 
-host labstore1003 {
+host labsdb1004 {
 	hardware ethernet d4:ae:52:76:66:59;
-	fixed-address labstore1003.eqiad.wmnet;
+	fixed-address labsdb1004.eqiad.wmnet;
 }
 
-host labstore1004 {
+host labsdb1005 {
 	hardware ethernet d4:ae:52:76:5c:b2;
-	fixed-address labstore1004.eqiad.wmnet;
+	fixed-address labsdb1005.eqiad.wmnet;
 }
 
 host lanthanum {
