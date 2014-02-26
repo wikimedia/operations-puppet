@@ -2,15 +2,12 @@
 #
 # Manages LVM in labs instance for extra storage.  labs_lvm
 # only ensures the volume group exists, creating (and mounting)
-# actual logical volumes is done with labs_lvm::volume.
+# actual logical volumes is done with labs_lvm::volume resources.
 #
 # Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
+#   disk    => disk from which the LVM will be constructed
+#              (as a physical partition spanning the last
+#              unallocated segment of the disk)
 #
 
 class labs_lvm($disk) {

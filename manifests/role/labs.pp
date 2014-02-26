@@ -98,6 +98,10 @@ class role::labs::instance {
             source => 'puppet:///files/nfs/idmapd.conf',
         }
 
+        class { '::labs_lvm':
+            disk => '/dev/vda',
+        }
+
     } else {
 
         include gluster::client
