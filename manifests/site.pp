@@ -1378,6 +1378,19 @@ node 'labsdb1003.eqiad.wmnet' {
     }
 }
 
+node 'labsdb1004.eqiad.wmnet' {
+    include role::osm::master
+
+    $osm_slave = 'labsdb1005.eqiad.wmnet'
+    $osm_slave_v4 = '10.64.37.9'
+}
+
+node 'labsdb1005.eqiad.wmnet' {
+    include role::osm::slave
+
+    $master_server = 'labsdb1004.eqiad.wmnet'
+}
+
 node /labstore[12]\.pmtpa\.wmnet/ {
 
     $site = 'pmtpa'
