@@ -26,6 +26,7 @@ class labs_lvm($disk) {
     }
 
     exec { 'create-volume-group':
+        path        => [ "/bin", "/usr/bin", "/sbin", "/usr/sbin" ],
         onlyif      => "! /sbin/vgdisplay -c vd",
         require     => File['/usr/local/sbin/make-instance-vg'],
         command     => "/usr/local/sbin/make-instance-vg '$disk'",
