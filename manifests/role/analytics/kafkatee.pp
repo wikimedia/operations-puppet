@@ -65,6 +65,16 @@ ${webrequest_log_directory}/*.log {
 }
 "
     }
+
+    # stat1002.eqiad.wmnet == 10.64.0.16
+    $hosts_allow = ['10.64.0.16']
+    include rsync::server
+    rsync::server::module { 'webrequest':
+        comment => 'kafkatee generated webrequest log files',
+        path        => $webrequest_log_directory,
+        read_only   => 'true',
+        hosts_allow => $hosts_allow,
+    }
 }
 
 
@@ -97,4 +107,3 @@ class role::analytics::kafkatee::input::webrequest::mobile {
         options     => { 'encoding' => 'json' },
     }
 }
-

@@ -510,11 +510,16 @@ class misc::statistics::rsync::jobs::webrequest {
     # See: https://projects.puppetlabs.com/issues/86
     # for a much too long discussion on why I can't.
     file { [
-        "/a/squid",
-        "/a/squid/archive",
-        "/a/aft",
-        "/a/aft/archive",
-        "/a/public-datasets",
+        '/a/squid',
+        '/a/squid/archive',
+        '/a/aft',
+        '/a/aft/archive',
+        '/a/public-datasets',
+        # Moving away from 'squid' nonmenclature for
+        # webrequest logs.  Kafkatee generated log
+        # files will be rsynced into /a/log.
+        '/a/log',
+        '/a/log/webrequest',
     ]:
         ensure  => directory,
         owner   => "stats",
@@ -550,6 +555,12 @@ class misc::statistics::rsync::jobs::webrequest {
     misc::statistics::rsync_job { "mobile":
         source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz",
         destination => "/a/squid/archive/mobile",
+    }
+
+    # rsync kafkatee generated webrequest logs
+    misc::statistics::rsync_job { 'webrequest_mobile':
+        source      => 'analytics1003.eqiad.wmnet::webrequest/archive/mobile*.gz',
+        destination => '/a/log/webrequest/mobile',
     }
 }
 
