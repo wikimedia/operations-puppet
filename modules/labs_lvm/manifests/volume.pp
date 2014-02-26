@@ -1,8 +1,6 @@
-# Class: labs_lvm
+# resource: labs_lvm::volume
 #
-# Manages LVM in labs instance for extra storage.  labs_lvm
-# only ensures the volume group exists, creating (and mounting)
-# actual logical volumes is done with labs_lvm::volume.
+# TODO: document
 #
 # Parameters:
 #
@@ -13,9 +11,9 @@
 # Sample Usage:
 #
 
-class labs_lvm::volume(
-    $name       = 'store',
-    $mountpoint = '/mnt',
+define labs_lvm::volume(
+    $name       = $title,
+    $mountpoint = "/mnt/$title",
     $size       = '100%FREE',
     $fstype     = 'ext4',
     $mkfs_opt   = ''
@@ -39,13 +37,23 @@ class labs_lvm::volume(
         command     => "/usr/local/sbin/make-instance-vol '$name' '$size' '$fstype' $mkfs_opt",
     }
 
+    file { $mountpoint:
+        ensure      => directory,
+        owner       => 'root',
+        group       => 'root',
+        mode        => 0555,
+    }
+
     mount { $mountpoint:
         ensure      => mounted,
         atboot      => false,
         device      => "/dev/mapper/vd-$name",
         options     => "defaults,noauto",
         fstype      => $fstype,
-        requires    => Exec["create-vd-$name"],
+        requires    => [
+                         Exec["create-vd-$name"],
+                         File[$mountpoint],
+                       ],
     }
 
 }
