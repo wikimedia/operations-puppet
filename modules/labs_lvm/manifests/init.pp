@@ -13,7 +13,7 @@
 # Sample Usage:
 #
 
-class labs_lvm($device) {
+class labs_lvm($disk) {
 
     package { 'lvm2':
         ensure      => present,
@@ -31,7 +31,7 @@ class labs_lvm($device) {
     exec { 'create-volume-group':
         creates     => '/dev/vd',
         requires    => File['/usr/local/sbin/make-instance-vg'],
-        command     => "/usr/local/sbin/make-instance-vg '$device'",
+        command     => "/usr/local/sbin/make-instance-vg '$disk'",
     }
 
 }

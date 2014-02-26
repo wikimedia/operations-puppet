@@ -12,8 +12,8 @@
 #
 
 define labs_lvm::volume(
-    $name       = $title,
-    $mountpoint = "/mnt/$title",
+    $volname    = $title,
+    $mountat    = "/mnt/$title",
     $size       = '100%FREE',
     $fstype     = 'ext4',
     $mkfs_opt   = ''
@@ -28,31 +28,31 @@ define labs_lvm::volume(
         group       => 'root',
     }
 
-    exec { "create-vd-$name":
-        creates     => "/dev/vd/$name",
+    exec { "create-vd-$volname":
+        creates     => "/dev/vd/$volname",
         requires    => [
                          File['/usr/local/sbin/make-instance-vol'],
                          Exec['create-volume-group']
                        ],
-        command     => "/usr/local/sbin/make-instance-vol '$name' '$size' '$fstype' $mkfs_opt",
+        command     => "/usr/local/sbin/make-instance-vol '$volname' '$size' '$fstype' $mkfs_opt",
     }
 
-    file { $mountpoint:
+    file { $mountat:
         ensure      => directory,
         owner       => 'root',
         group       => 'root',
         mode        => 0555,
     }
 
-    mount { $mountpoint:
+    mount { $mountat:
         ensure      => mounted,
         atboot      => false,
-        device      => "/dev/mapper/vd-$name",
+        device      => "/dev/mapper/vd-$volname",
         options     => "defaults,noauto",
         fstype      => $fstype,
         requires    => [
-                         Exec["create-vd-$name"],
-                         File[$mountpoint],
+                         Exec["create-vd-$volname"],
+                         File[$mountat],
                        ],
     }
 

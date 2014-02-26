@@ -6,11 +6,11 @@
 class role::labs::instancetest {
 
     class { '::labs_lvm':
-        device => '/dev/vda'
+        disk => '/dev/vda'
     }
 
     labs_lvm::volume { 'store':
-        mountpoint => '/mnt'
+        mountat => '/mnt'
     }
 
 }
