@@ -63,6 +63,17 @@ class base::monitoring::host($contact_group = 'admins') {
             nrpe_command => '/usr/bin/sudo /usr/local/bin/check-raid.py',
         }
 
+        # Check for disk usage on the root partition for labs instances
+        # This is mapped to the monitoring template - ensure you update
+        # labsnagiosbuilder/templates/classes/base.cfg under labs/nagios-builder
+        # to reflect this check name
+        if $::realm == 'labs' {
+            nrpe::monitor_service { 'root_disk_space':
+                description  => 'Disk space on /',
+                nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 5% -c 2% -l -e -p /',
+            }
+        }
+
         # the -A -i ... part is a gross hack to workaround Varnish partitions
         # that are purposefully at 99%. Better ideas are welcome.
         nrpe::monitor_service { 'disk_space':
