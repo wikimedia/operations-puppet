@@ -12,6 +12,7 @@
 #
 # Sample Usage:
 #
+
 class labs_lvm($device) {
 
     package { 'lvm2':
@@ -31,43 +32,6 @@ class labs_lvm($device) {
         creates     => '/dev/vd',
         requires    => File['/usr/local/sbin/make-instance-vg'],
         command     => "/usr/local/sbin/make-instance-vg '$device'",
-    }
-
-}
-
-class labs_lvm::volume(
-    $name       = 'store',
-    $mountpoint = '/mnt',
-    $size       = '100%FREE',
-    $fstype     = 'ext4',
-    $mkfs_opt   = ''
-) {
-
-    file { '/usr/local/sbin/make-instance-vol':
-        ensure      => file,
-        source      => 'puppet:///modules/labs_lvm/make-instance-vol',
-        requires    => Package['lvm2'],
-        mode        => 0544,
-        owner       => 'root',
-        group       => 'root',
-    }
-
-    exec { "create-vd-$name":
-        creates     => "/dev/vd/$name",
-        requires    => [
-                         File['/usr/local/sbin/make-instance-vol'],
-                         Exec['create-volume-group']
-                       ],
-        command     => "/usr/local/sbin/make-instance-vol '$name' '$size' '$fstype' $mkfs_opt",
-    }
-
-    mount { $mountpoint:
-        ensure      => mounted,
-        atboot      => false,
-        device      => "/dev/mapper/vd-$name",
-        options     => "defaults,noauto",
-        fstype      => $fstype,
-        requires    => Exec["create-vd-$name"],
     }
 
 }
