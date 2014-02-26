@@ -125,12 +125,30 @@ class role::cache {
                 }
             },
             'labs' => {
-                'api'    => { 'pmtpa' => '127.0.0.1', },
-                'bits'   => { 'pmtpa' => '127.0.0.1', },
-                'mobile' => { 'pmtpa' => '127.0.0.1', },
-                'text'   => { 'pmtpa' => '127.0.0.1', },
-                'upload' => { 'pmtpa' => '127.0.0.1', },
-                'parsoid' => { 'pmtpa' => '127.0.0.1', },
+                'api'    => {
+                    'eqiad' => '127.0.0.1',
+                    'pmtpa' => '127.0.0.1',
+                },
+                'bits'   => {
+                    'eqiad' => '127.0.0.1',
+                    'pmtpa' => '127.0.0.1',
+                },
+                'mobile' => {
+                    'eqiad' => '127.0.0.1',
+                    'pmtpa' => '127.0.0.1',
+                },
+                'text'   => {
+                    'eqiad' => '127.0.0.1',
+                    'pmtpa' => '127.0.0.1',
+                },
+                'upload' => {
+                    'eqiad' => '127.0.0.1',
+                    'pmtpa' => '127.0.0.1',
+                },
+                'parsoid' => {
+                    'eqiad' => '127.0.0.1',
+                    'pmtpa' => '127.0.0.1',
+                },
             },
         }
 
@@ -335,37 +353,56 @@ class role::cache {
             },
             'labs' => {
                 'appservers' => {
+                    'eqiad' => [
+                        '10.68.16.74',  # deployment-apache01
+                        '10.68.16.11',  # deployment-apache02
+                    ],
                     'pmtpa' => [
                         '10.4.0.166',  # deployment-apache32
                         '10.4.0.187',  # deployment-apache33
                     ],
                 },
                 'api' => {
+                    'eqiad' => [
+                        '10.68.16.74',  # deployment-apache01
+                        '10.68.16.11',  # deployment-apache02
+                    ],
                     'pmtpa' => [
                         '10.4.0.166',  # deployment-apache32
                         '10.4.0.187',  # deployment-apache33
                     ],
                 },
                 'bits' => {
+                    # FIXME does eqiad.wmflabs needs that?
                     'pmtpa' => "10.4.0.252",
                 },
                 'bits_appservers' => {
+                    'eqiad' => [
+                        '10.68.16.74',  # deployment-apache01
+                        '10.68.16.11',  # deployment-apache02
+                    ],
                     'pmtpa' => [
                         '10.4.0.166',  # deployment-apache32
                         '10.4.0.187',  # deployment-apache33
                     ],
                 },
                 'rendering' => {
+                    'eqiad' => [
+                        '10.68.16.74',  # deployment-apache01
+                        '10.68.16.11',  # deployment-apache02
+                    ],
                     'pmtpa' => [
                         '10.4.0.166',  # deployment-apache32
                         '10.4.0.187',  # deployment-apache33
                     ],
                 },
                 'test_appservers' => {
-                    'pmtpa' => [ '10.4.0.166' ],
+                    'eqiad' => [ '10.68.16.74' ],  # deployment-apache01
+                    'pmtpa' => [ '10.4.0.166' ],  # deployment-apache32
                 },
                 'parsoid' => {
-                    'pmtpa' => [ '10.4.1.121' ], # deployment-parsoid2
+                    'eqiad' => [ '10.68.16.17' ],  # deployment-parsoid04
+                    'pmtpa' => [ '10.4.1.121' ],   # deployment-parsoid2
                 }
             }
         }
