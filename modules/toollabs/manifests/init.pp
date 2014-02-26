@@ -30,7 +30,10 @@ class toollabs {
     file { $sysdir:
         ensure  => directory,
         owner   => 'root',
-        group   => 'tools.admin',
+        group   => $::site ? {
+            'eqiad' => 'tools.admin',
+            default => 'local-admin',
+        },
         mode    => '02775',
         require => $::site? {
             'eqiad' =>  Mount['/data/project'],
