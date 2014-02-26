@@ -37,10 +37,10 @@ class puppet::self::master($server) {
     }
 
     # If localhost, then just name the cert 'localhost'.
-    # Else certname should be the labs instanceid. ($dc comes from ldap.)
+    # Else certname should be the labs instanceid. ($::ec2id comes from instance metadata.)
     $certname = $server ? {
         'localhost' => 'localhost',
-        default     => $dc
+        default     => "${::ec2id}.${::domain}"
     }
 
     class { 'puppet::self::config':

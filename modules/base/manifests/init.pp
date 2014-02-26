@@ -446,8 +446,8 @@ class base {
         certname => $::realm ? {
             # For labs, use instanceid.domain rather than the fqdn
             # to ensure we're always using a unique certname.
-            # dc is an attribute from LDAP, it's set as the instanceid.
-            'labs'  => $::dc,
+            # $::ec2id is a fact that queries the instance metadata
+            'labs'  => "${::ec2id}.${::domain}",
             default => undef,
         },
     }
