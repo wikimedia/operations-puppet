@@ -20,7 +20,7 @@ class role::analytics::kafkatee {
         ensure      => 'directory',
         owner       => 'kafkatee',
         group       => 'kafkatee',
-        require     => Class['kafaktee'],
+        require     => Class['::kafkatee'],
     }
 }
 
@@ -38,12 +38,12 @@ class role::analytics::kafkatee::webrequest inherits role::analytics::kafkatee {
         ensure      => 'directory',
         owner       => 'kafkatee',
         group       => 'kafkatee',
-        require     => Class['kafaktee'],
+        require     => Class['::kafkatee'],
     }
 
     # if the logs in $log_directory should be rotated
     # then configure a logrotate.d script to do so.
-    file { '/etc/logrotate.d/kafaktee-webrequest':
+    file { '/etc/logrotate.d/kafkatee-webrequest':
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
