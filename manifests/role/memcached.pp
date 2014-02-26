@@ -15,7 +15,7 @@ class role::memcached {
 
 	$memcached_size = $::realm ? {
 		'production' => '89088',
-		'labs'       => '15000',
+		'labs'       => '3000',
 	}
 
 	class { "::memcached":
