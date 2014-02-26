@@ -13,6 +13,9 @@ class role::releases {
 
     role::releases::access { 'brion': group => 'mobileupld' }
     role::releases::access { 'csteipp': group => 'mwupld' }
+    role::releases::access { 'csteipp': group => 'mwupld' } # RT 6861
+    role::releases::access { 'hashar': group => 'mwupld' } # RT 6861
+    role::releases::access { 'reedy': group => 'mwupld' } # RT 6861
 }
 
 class role::releases::groups {
