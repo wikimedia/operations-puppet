@@ -27,6 +27,10 @@ class role::deployment::config {
         'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpcs',
     },
+    'integration/php-coveralls' => {
+        'grain' => 'contint-production-slaves',
+        'upstream' => 'https://gerrit.wikimedia.org/r/integration/php-coveralls',
+    },
     'integration/slave-scripts' => {
         'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/jenkins',
