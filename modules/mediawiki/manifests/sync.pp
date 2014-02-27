@@ -54,6 +54,12 @@ class mediawiki::sync {
 			ensure  => link,
 			target  => '/srv/scap/bin/refreshCdbJsonFiles',
 			require => Git::Clone['mediawiki/tools/scap'];
+		"/srv/scap/docs":
+			ensure  => directory,
+			user    => 'root',
+			group   => 'wikidev',
+			mode    => '2775',
+			require => Git::Clone['mediawiki/tools/scap'];
 	}
 
 	exec { 'mw-sync':
