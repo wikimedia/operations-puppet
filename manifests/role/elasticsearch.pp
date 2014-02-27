@@ -5,14 +5,19 @@
 class role::elasticsearch::config {
     # Config
     if ($::realm == 'labs') {
-        $multicast_group = '224.2.2.4'
-        $master_eligible = true
+        $multicast_group    = '224.2.2.4'
+        $master_eligible    = true
+        $recover_after_time = '1m'
         if ($::hostname =~ /^deployment-/) {
             # Beta
             # Has four nodes all of which can be master
             $minimum_master_nodes = 3
             $cluster_name         = 'beta-search'
             $heap_memory          = '4G'
+            $expected_nodes       = 4
+            # The cluster can limp along just fine with three nodes so we'll
+            # let it
+            $recover_after_nodes  = 3
         } else {
             # Regular labs instance
             # We don't know how many instances will be in each labs project so
@@ -27,6 +32,10 @@ class role::elasticsearch::config {
             }
             $cluster_name         = $::elasticsearch_cluster_name
             $heap_memory          = '2G'
+            # Leave recovery settings and let labs users deal with inefficient
+            # full cluster restarts rather than make them configure more stuff
+            $expected_nodes       = 1
+            $recover_after_nodes  = 1
         }
     } else {
         # Production
@@ -44,6 +53,13 @@ class role::elasticsearch::config {
         $minimum_master_nodes = 2
         $cluster_name         = "production-search-${::site}"
         $heap_memory          = '30G'
+        $expected_nodes       = 12
+        # We're pretty tight on space on the cluster right now so we really
+        # can't get away with running without almost all the nodes.
+        $recover_after_nodes  = 10
+        # We really do want all the nodes to come back properly so lets give
+        # them quite a bit of time.
+        $recover_after_time   = '20m'
     }
 }
 
@@ -61,6 +77,9 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         cluster_name         => $cluster_name,
         heap_memory          => $heap_memory,
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
+        expected_nodes       => $expected_nodes,
+        recover_after_nodes  => $recover_after_nodes,
+        recover_after_time   => $recover_after_time,
     }
     deployment::target { 'elasticsearchplugins': }
 
