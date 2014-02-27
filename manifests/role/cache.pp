@@ -694,9 +694,15 @@ class role::cache {
 
         class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
+        $swift_site = $::realm ? {
+            # Both production DCs have swift
+            'production' => $::mw_primary,
+            'labs'       => $::site,
+        }
+
         $varnish_be_directors = {
             1 => {
-                "backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['eqiad'],
+                "backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift'][$swift_site],
                 "rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
             },
             2 => {
