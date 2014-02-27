@@ -391,3 +391,11 @@ cluster.routing.allocation.disk.watermark.low: 0.85
 cluster.routing.allocation.disk.watermark.high: 0.95
 # Check disk utilization every 60 seconds
 cluster.info.update.interval: 60s
+
+##
+# Setup full cluster restart recovery.
+##
+gateway:
+    recover_after_nodes: $recover_after_nodes
+    recover_after_time: $recover_after_time
+    expected_nodes: $expected_nodes
