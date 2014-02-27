@@ -4,6 +4,10 @@
 
 # TODO: completely rewrite this file
 
+# NOTE: To choose the UID for a new user, try to match what's in ldap
+# mutante: it's just easy to find one that is not taken. and it matches 
+# mutante: so, like root@formey:~# ldaplist -l passwd mah
+
 # NOTE: To completely disable an account, you should
 # 1) set variable $enabled = false
 # 2) set all ssh authorized keys to ensure => absent
@@ -3459,6 +3463,48 @@ class accounts {
         }
     }
 
+    # RT 6861->6929
+    class mglaser inherits baseaccount {
+        $username = 'mglaser'
+        $realname = 'Markus Glaser'
+        $uid      = 1229
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            # key still needs verification
+            #Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            #ssh_authorized_key { 'hwsvn@84-16-252-165.local':
+            #    ensure => present,
+            #    user   => $username,
+            #    type   => 'ssh-rsa',
+            #    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAlpNpOKH1JJu3qBsBwYJFO2DVnE9tzkPuMTe7qZLTpnSDo5AtlzByJ9t+g82PA/NKp6XivRCaEeVxxDQkUOKKl3rg5DVFUkka5BwoymTIiXEpw8abnaiYrCNTN2SDCUKcS8wdbK9nCMvaueYEEvi3HZ3jZZRV9TunSXpJAlb6Y4U/EMmlxTb6xSvFr6AWWt8OgtVISZZuJh4CPTQEQwW0j71vOtAEzBAtSrRVZJS29KXiue19D5mtYpdjWnORtfarowPwkO3UmE1NiBPg4jCClSOcJ/yvr4GM9dTdeXVt4fTrojI9uW/YkHDwZ+2DLpGWj22TO8nvj8KiJMCFwoi4+Q==',
+            #}
+        }
+    }
+
+    # RT 6861->6930
+    class mah inherits baseaccount {
+        $username = 'mah'
+        $realname = 'Mark Hershberger'
+        $uid      = 1232
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            # key still needs verification
+            #Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            #ssh_authorized_key { 'mah@local':
+            #    ensure => present,
+            #    user   => $username,
+            #    type   => 'ssh-dss',
+            #    key    => 'AAAAB3NzaC1kc3MAAAEBAN3UPFafraObEOzTDiqAIfwETAlVNaZser+uksj62kO5Z7iz05h2MbWCM74UWQ8kvJGFTaSaqQQMDwBu6xfGiZyYaY9o7mr4OqwM2KrfDqPDbNqdItjawLmOHP3JH6C8CC9V2C8EZ1aky/oMmWB8fcWxo/JtCkl+XKFn4EFXi+Rs7vBn+OxNj0MTtRM+kW+zcJbfyx2Gy3G83nRtiX7s4m4KH9o8lvJdTHALGbGwNiXx3/3zVW88Fr3lCufExiD0j7UkNOdyl0ZQcNOdv28qgS0vnflBndfNjK5eEFHG/qOaXncoXVJHiUMaO+LlYDEpwxx9QQvszmMBxPHIXro2jEMAAAAVAN34B6rWiOhdtHLzHTngjemp+EONAAABAQC7qPUEL5GreTTmOvKwZRoZPUhU/NOO6vUPJB7bGNnqE/nchk00lKH4iRRarLiv3fFG+pOv++Xs9Teh2FQGcEHalGtbpPkS2hbV54i9GvQyIFnGXIDyjHPaKnnsMsUad4JyJ/E43OLZT7RNHRX9kuoL0P25qJGMGeCLX9ngl+gvj6g3322heV4B5bXCKUUVndhb8WBqNo6ym1GTgouWQNddANTeGxDIiM0PYYjIJwtXy+ITXLxsuvAB7Lha00NYuWJZZYovIS2L7PeBhH47x30giRe6LYQBpiw4W9H+7WpOLM/kVifP12smuxy9cItcKkhQ3oKe8zxDbPDV9XKhscibAAABAEI5U/xp3WPp7AwP+slys3HTvzRTcpKjKXDyMcW9dH6NjJg50DyJfne0PZX27mQNEyN2BQxuTfMLMa+aNN9OAMEfr7wZm18kTpMbMj2u1+YxPVxmUTwS540w4Rp/LV4RF4MuABdjjx9Qfja3MzbSyz4QUAztWu49kBQ1G0ksLEtceTnX9IvMldEuyp9KkHu4VJiwgpZgTKTht59PSVda+H7870U1PttDMvvkoVNBzIH6BDh7CPqrgj5R3jndv1N8H9rmX/jcQ1Y/7omzBLfDTNVQsRDNAsTu2w6PFgYRYylorzJEJZPubFpKPjALYqLjMsV58rR1uPrax69glVKtQiM=',
+            #}
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3614,6 +3660,8 @@ class admins::restricted {
 	include accounts::sahar # RT 6767
 	include accounts::santhosh # RT 6760
 	include accounts::aaharoni # RT 6760
+    include accounts::mglaser # RT 6861->6929
+    include accounts::mah # RT 6861->6930
 }
 
 class admins::labs {
