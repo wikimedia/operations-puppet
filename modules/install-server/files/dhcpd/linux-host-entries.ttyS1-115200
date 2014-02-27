@@ -1168,6 +1168,25 @@ host elastic1012 {
 	hardware ethernet d4:ae:52:70:2b:f6;
 	fixed-address elastic1012.eqiad.wmnet;
 }
+host elastic1013 {
+	hardware ethernet d4:ae:52:70:2d:e3;
+	fixed-address elastic1013.eqiad.wmnet;
+}
+
+host elastic1014 {
+	hardware ethernet d4:ae:52:70:2d:19;
+	fixed-address elastic1014.eqiad.wmnet;
+}
+
+host elastic1015 {
+	hardware ethernet d4:ae:52:6e:ea:4c;
+	fixed-address elastic1015.eqiad.wmnet;
+}
+
+host elastic1016 {
+	hardware ethernet d4:ae:52:6e:e7:7e;
+	fixed-address elastic1016.eqiad.wmnet;
+}
 
 host emery {
 	hardware ethernet 84:2b:2b:06:47:59;
