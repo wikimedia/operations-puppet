@@ -21,6 +21,21 @@
 # - $holds_data: should this node hold data?  Defaults to true.
 # - $auto_create_index: should the cluster automatically create new indices?
 #       Defaults to false.
+# - $expected_nodes: after a full cluster restart the cluster will immediately
+#       start after this many nodes rejoin.  Defaults to 1 but shouldn't stay
+#       that way in production.  Should be set to the number of nodes in the
+#       cluster.
+# - $recover_after_nodes: after a full cluster restart once this many nodes
+#       join the cluster it will wait $recover_after_time for this for
+#       $expected_nodes to join.   If they don't it'll start anyway. Defaults to
+#       1 but shouldn't stay that way in production.  Set this to however many
+#       nodes would allow the cluster to limp along and continue working. Note
+#       that if the cluster does come up without all the nodes it'll have to
+#       create new replicas which is inefficient if the other node does come
+#       back.
+# - $recover_after_time: see $recover_after_nodes.  Defaults to a minute
+#       because that feels like a decent amount of time to wait for the
+#       remaining nodes to catch up.
 #
 # == Sample usage:
 #
@@ -35,7 +50,10 @@ class elasticsearch($cluster_name,
                     $minimum_master_nodes = 1,
                     $master_eligible = true,
                     $holds_data = true,
-                    $auto_create_index = false) {
+                    $auto_create_index = false,
+                    $expected_nodes = 1,
+                    $recover_after_nodes = 1,
+                    $recover_after_time = '1s') {
 
     include ::elasticsearch::packages
 

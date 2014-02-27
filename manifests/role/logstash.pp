@@ -20,6 +20,9 @@ class role::logstash {
         heap_memory          => '5G',
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
         auto_create_index    => true,
+        expected_nodes       => 3,
+        recover_after_nodes  => 2,
+        recover_after_time   => '1m',
     }
 
     class { '::redis':
