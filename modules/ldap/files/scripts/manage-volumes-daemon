@@ -330,18 +330,19 @@ class VolumeManager:
         project_hosts = {}
         if hostdata:
             for host in hostdata:
-                host_ip = host[1]["aRecord"][0]
-                puppet_vars = host[1]["puppetvar"]
-                for puppet_var in puppet_vars:
-                    var_arr = puppet_var.split('=')
-                    if len(var_arr) == 2 and var_arr[0] == "instanceproject":
-                        project = var_arr[1]
-                        if project in project_hosts:
-                            project_hosts[project].append(host_ip)
-                        else:
-                            project_hosts[project] = [host_ip]
-                        # No need to go any further, we aren't reading other variables
-                        break
+                if "aRecord" in host[1]:
+                    host_ip = host[1]["aRecord"][0]
+                    puppet_vars = host[1]["puppetvar"]
+                    for puppet_var in puppet_vars:
+                        var_arr = puppet_var.split('=')
+                        if len(var_arr) == 2 and var_arr[0] == "instanceproject":
+                            project = var_arr[1]
+                            if project in project_hosts:
+                                project_hosts[project].append(host_ip)
+                            else:
+                                project_hosts[project] = [host_ip]
+                            # No need to go any further, we aren't reading other variables
+                            break
         return project_hosts
 
     # returns an array containing zero, one, or both of 'project', 'volume'
