@@ -85,12 +85,16 @@ ${webrequest_log_directory}/*.log {
 class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::kafkatee::webrequest {
     include role::analytics::kafkatee::input::webrequest::mobile
 
+    # 1/100 sampling of traffic to mobile varnishes
     ::kafkatee::output { 'mobile-sampled-100':
         destination => "${webrequest_log_directory}/mobile-sampled-100.tsv.log",
         sample      => 100,
     }
-
-    # TODO: wikipedia-zero log output
+    # Capture all logs with 'zero=' set.  The X-Analytics header is set with this
+    # by mobile varnish frontends upon getting a Wikipedia Zero request.
+    ::kafkatee::output { 'zero':
+        destination => "/bin/grep -P 'zero=\\d{3}-\\d{2}' >> ${webrequest_log_directory}/zero.tsv.log"
+    }
 }
 
 
