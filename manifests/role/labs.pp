@@ -98,9 +98,12 @@ class role::labs::instance {
             source => 'puppet:///files/nfs/idmapd.conf',
         }
 
-        class { '::labs_lvm':
-            disk => '/dev/vda',
-        }
+        # This needs to be disabled for now; it's image-based
+        # not site-based
+        #
+        # class { '::labs_lvm':
+        #     disk => '/dev/vda',
+        # }
 
     } else {
 
