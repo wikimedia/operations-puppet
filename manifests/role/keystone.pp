@@ -35,7 +35,7 @@ class role::keystone::config::pmtpa inherits role::keystone::config {
 			"labs" => "127.0.0.1",
 		},
 		token_driver => $realm ? {
-			'production' => 'sql',
+			'production' => 'redis',
 			'labs'       => 'redis',
 		},
 	}
@@ -83,7 +83,7 @@ class role::keystone::redis {
 
     if ($::realm == 'production') {
         $replication = {
-            'virt0' => 'virt1000.wikimedia.org'
+            'virt1000' => 'virt0.wikimedia.org'
         }
     } else {
         $replication = {
