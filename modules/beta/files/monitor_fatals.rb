@@ -2,7 +2,8 @@
 
 require 'net/smtp'
 
-fatals_file="/data/project/logs/fatal.log"
+#fatals_file="/data/project/logs/fatal.log"
+@fatals_file="fatal.log"
 
 # Please also adjust the text message below
 seconds_since_last_run = 12 * 60 * 60  # 12 hours
@@ -14,7 +15,12 @@ To: Software quality <qa@lists.wikimedia.org>
 Subject: New fatal errors on beta labs
 
 The file at /data/project/logs/fatal.log on the deployment cluster has a new
-entry within the last twelve hours.  You should check it out by connecting on
+entry within the last twelve hours.  
+
+The extensions with fatal errors:
+#{@extensions_message_inclusion}
+
+You should check it out by connecting on
 any instance on the beta cluster (ie: deployment-bastion.pmtpa.wmflabs ).
 
 You can also look at logstash:
@@ -29,9 +35,26 @@ MESSAGE_END
   end
 end
 
-if File.exist?(fatals_file)
-  last_modified_time=File.mtime(fatals_file)
+def find_problem_extensions
+  @extensions_with_fatals = []
+  File.open(@fatals_file) do |file|
+    file.each_line do |line|
+      extensions_re = /extensions\/\w+/
+      @extensions_with_fatals << extensions_re.match(line).to_s.gsub("extensions/", "")
+    end
+
+    @extensions_with_fatals = @extensions_with_fatals.uniq
+    @extensions_message_inclusion = ""
+    @extensions_with_fatals.each do |ext|
+      @extensions_message_inclusion << ext + "\n"
+    end
+  end
+end
+
+if File.exist?(@fatals_file)
+  last_modified_time=File.mtime(@fatals_file)
   if Time.now.to_i - last_modified_time.to_i < seconds_since_last_run
+    find_problem_extensions
     send_email
   end
 end
