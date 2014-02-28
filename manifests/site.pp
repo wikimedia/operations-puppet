@@ -1709,7 +1709,7 @@ node 'magnesium.wikimedia.org' {
     include admin
     include role::diamond
     include role::racktables
-    include role::rt
+    include role::requesttracker
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
