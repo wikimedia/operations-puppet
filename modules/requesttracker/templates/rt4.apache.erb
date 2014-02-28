@@ -2,16 +2,16 @@
 #
 <VirtualHost *:80>
 
-  ServerName <%=@site%>
+  ServerName <%=@apache_site%>
 
   RewriteEngine on
-  RewriteRule ^/(.*)$ https://<%=@site%>/$1 [R=301]
+  RewriteRule ^/(.*)$ https://<%=@apache_site%>/$1 [R=301]
 
 </VirtualHost>
 
 <VirtualHost *:443>
 
-  ServerName <%=@site%>
+  ServerName <%=@apache_site%>
 
   SSLEngine on
   SSLProtocol +ALL -SSLv2
