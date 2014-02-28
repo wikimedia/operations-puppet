@@ -188,6 +188,20 @@ class role::ci::slave::labs::common {
       mode   => '0775',
   }
 
+  file { '/mnt/home/jenkins-deploy/.pip':
+      ensure => directory,
+      owner  => 'jenkins-deploy',
+      group  => 'wikidev',
+      mode   => '0775',
+  }
+  file { '/mnt/home/jenkins-deploy/.pip/pip.conf':
+      ensure => present,
+      owner  => 'jenkins-deploy',
+      group  => 'wikidev',
+      mode   => '0775',
+      source => 'puppet:///modules/contint/pip-labs-slaves.conf',
+  }
+
   git::userconfig { '.gitconfig for jenkins-deploy user':
       homedir  => '/mnt/home/jenkins-deploy',
       settings => {
