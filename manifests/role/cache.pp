@@ -696,7 +696,7 @@ class role::cache {
 
         $varnish_be_directors = {
             1 => {
-                "backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['eqiad'],
+                "backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift'][$::mw_primary],
                 "rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
             },
             2 => {
