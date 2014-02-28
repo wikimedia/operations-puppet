@@ -2196,16 +2196,6 @@ node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
     }
 }
 
-node 'pdf1.wikimedia.org' {
-    $ganglia_aggregator = true
-    $cluster = 'pdf'
-
-    include role::pdf
-    include groups::wikidev
-    include accounts::file_mover
-    include accounts::mwalker     #rt 6468
-}
-
 node 'pdf2.wikimedia.org' {
     $ganglia_aggregator = true
     $cluster = 'pdf'
