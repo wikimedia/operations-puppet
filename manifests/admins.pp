@@ -344,6 +344,11 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCdtHX29Vcd5n950X3H11kAbQdmKTCJvOOclRKkaXGofp6UuCzgbbdK4Lfvz3cZ2dH9Kvv6M+Yf2uzh6XN470XxXIP91IzA7lVcaMV0sjOuhZKSvqe0NlA4kN/uytHGcfmBxlYAM+b1RxtveXTle3vVWefo1SkQ4fHteA8U/WWXhQ11HnCGd/ZAuiPTf4Fyfe5HFY6y4ECj7zTBEX6I6m2vDyJB7vsthfsmjWbll5Nr+wpcEp2ILVYdp+N+BUhHLkH4C6pivdxpAZQMSpACPPI7Bs+2Fmr08aVnaYKSFC6eZAFogf2lQ3l1oUVBhJRO4OX++E3TNEHNmJ6FeHD4acFv";
+				"bd808@tin":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCeyxkfyEzZ1lD6uiZB0jRnwFYABEHPLdpa6W64945lUdtEnS4vgCdEEtJLaOhN9ju4eo/Q7828fCjuMymOgqd3EfsBa6dLedV4UGvrH7P4g0m5SHNgFowzcH8eOB7eyTtnT3Y0D5Vtmz8bpTLl3hORWGqW66+UT4g4L86FR/CqaTQaaYQDMLfRj41RgzbDAAXtXaKg75S0yAHRYW4pjQDctOQykazu/hQ2qqfkxOUjF4r/DOBtY2IM2a4tBjFYB5JIEadG1GiyFTfSWwXc5zPmkyPdw/fzkGYifvgrVodUT2KiagZAPfO8vGKhUq1gv+CMR/1a9aOSEML8Edd8/SLH";
 			}
 		}
 	}
