@@ -2671,7 +2671,7 @@ node 'terbium.eqiad.wmnet' {
     }
 }
 
-node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
+node /^elastic10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
     # ganglia cluster name.
     $cluster = 'elasticsearch'
     if $::hostname =~ /^elastic100[17]/ {
