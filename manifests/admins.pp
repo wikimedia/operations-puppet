@@ -4,9 +4,28 @@
 
 # TODO: completely rewrite this file
 
-# NOTE: To choose the UID for a new user, try to match what's in ldap
-# mutante: it's just easy to find one that is not taken. and it matches 
-# mutante: so, like root@formey:~# ldaplist -l passwd mah
+# NOTE: To choose the UID for a new user please lookup
+# the existing UID in (labs) LDAP and use that.
+# currently you do this on formey, example:
+#
+# ldaplist -l passwd someuser
+# ...
+# uidNumber: 1234
+#
+# advantages: no more duplicate UIDs that needed fixing,
+# matching UID across production and labs,
+# no need to grep|sort for the latest free UID anymore
+# almost every user who gets prod. shell already has a
+# labs user. if not, ask them nicely to make one first
+
+# NOTE: SSH keys added to this file always need to be verified.
+# acceptable methods of verification include:
+# gpg signing, having them pasted on office wiki user pages,
+# having them +1 by logged in gerrit users
+# unacceptable methods include:
+# plain email (senders can't be trusted),
+# IRC (definitely if not registered/identified with nickserv)
+# RT-only (because it can be emailed)
 
 # NOTE: To completely disable an account, you should
 # 1) set variable $enabled = false
@@ -3623,6 +3642,7 @@ class admins::mortals {
 	include accounts::jgonera # RT 6716
 }
 
+# Users having access to machines with private data (like terbium)
 class admins::restricted {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
@@ -3658,8 +3678,13 @@ class admins::restricted {
 	include accounts::sahar # RT 6767
 	include accounts::santhosh # RT 6760
 	include accounts::aaharoni # RT 6760
-    include accounts::mglaser # RT 6861->6929
-    include accounts::mah # RT 6861->6930
+}
+
+# Users having access to the bastion hosts to jump to other machines from there
+# This doesn't include fenari as that one holds private data!
+class admins::bastion {
+	include accounts::mglaser # RT 6861->6929
+	include accounts::mah # RT 6861->6930
 }
 
 class admins::labs {

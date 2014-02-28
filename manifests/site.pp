@@ -256,6 +256,7 @@ node 'bast1001.wikimedia.org' {
     include admins::roots
     include admins::mortals
     include admins::restricted
+    include admins::bastion
     include bastionhost
     include nrpe
     include nfs::netapp::home::othersite
