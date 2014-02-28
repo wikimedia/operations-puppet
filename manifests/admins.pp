@@ -5,7 +5,7 @@
 # TODO: completely rewrite this file
 
 # NOTE: To choose the UID for a new user, try to match what's in ldap
-# mutante: it's just easy to find one that is not taken. and it matches 
+# mutante: it's just easy to find one that is not taken. and it matches
 # mutante: so, like root@formey:~# ldaplist -l passwd mah
 
 # NOTE: To completely disable an account, you should
@@ -1145,7 +1145,7 @@ class accounts {
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-			ssh_authorized_key { 
+			ssh_authorized_key {
 				'rainman@localhost.localdomain':
 					ensure  => absent,
 					user    => $username,
@@ -3623,6 +3623,7 @@ class admins::mortals {
 	include accounts::jgonera # RT 6716
 }
 
+# Users having access to machines with private data (like terbium)
 class admins::restricted {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
@@ -3658,6 +3659,11 @@ class admins::restricted {
 	include accounts::sahar # RT 6767
 	include accounts::santhosh # RT 6760
 	include accounts::aaharoni # RT 6760
+}
+
+# Users having access to the bastion hosts to jump to other machines from there
+# This doesn't include fenari as that one holds private data!
+class admins::bastion {
     include accounts::mglaser # RT 6861->6929
     include accounts::mah # RT 6861->6930
 }
