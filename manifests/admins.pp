@@ -3522,6 +3522,26 @@ class accounts {
         }
     }
 
+    # RT 6895
+    class legoktm inherits baseaccount {
+        $username = 'legoktm'
+        $realname = 'Kunal Mehta'
+        $uid      = 2552
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'legoktm@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC17bogEBqaICwvnLi3RHl89/qqmliaQLkKMsMEubghU7Y0ntnRA5C1edkzzXT6fdGCRsubhflfSogSZLErSp0x9gR6YmPGYKn1OGbLK/FIpEdcbNd/zGBBF1U/9KSkJLgNKACXDRfMcqyMpnAaGDcUDdUZaRJ7nOJ703VH5pp1ommdv3acRWTPQ9hF1WUwlXPAD2VjIqJKrVPVMqVafcbPNO9FVyV94dOKURUPRmIPVxGWruLB2Dp+a2sZqh5KBR1PkV5wpBRev0IBOAFGE3aG9fAB+Xbj7bppTd5ov8EILU8xw0Xj9eFxiSuBWZ4b+rWGzKBj6OPm9TNg+pSGZr55',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3677,8 +3697,9 @@ class admins::restricted {
 	include accounts::sahar # RT 6767
 	include accounts::santhosh # RT 6760
 	include accounts::aaharoni # RT 6760
-    include accounts::mglaser # RT 6861->6929
-    include accounts::mah # RT 6861->6930
+	include accounts::mglaser # RT 6861->6929
+	include accounts::mah # RT 6861->6930
+	include accounts::legoktm # RT 6895
 }
 
 class admins::labs {
