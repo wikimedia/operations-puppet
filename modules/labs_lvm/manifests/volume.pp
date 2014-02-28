@@ -27,7 +27,7 @@
 
 define labs_lvm::volume(
     $volname    = $title,
-    $mountat    = "/mnt/$volume",
+    $mountat    = "/mnt/$volname",
     $size       = '100%FREE',
     $fstype     = 'ext4',
     $mkfs_opt   = ''
@@ -43,7 +43,7 @@ define labs_lvm::volume(
     }
 
     exec { "create-vd-$volname":
-        onlyif      => "/bin/bash -c '! /sbin/lvdisplay -c vd/$volname'",
+        unless      => "/sbin/lvdisplay -c vd/$volname",
         require     => [
                          File['/usr/local/sbin/make-instance-vol'],
                          Exec['create-volume-group']
@@ -57,9 +57,9 @@ define labs_lvm::volume(
 
     mount { $mountat:
         ensure      => mounted,
-        atboot      => false,
+        atboot      => true,
         device      => "/dev/mapper/vd-$volname",
-        options     => "defaults,noauto",
+        options     => "defaults",
         fstype      => $fstype,
         require     => [
                          Exec["create-vd-$volname"],

@@ -10,7 +10,7 @@
 #              unallocated segment of the disk)
 #
 
-class labs_lvm($disk) {
+class labs_lvm($disk = '/dev/vda') {
 
     package { 'lvm2':
         ensure      => present,
@@ -26,7 +26,7 @@ class labs_lvm($disk) {
     }
 
     exec { 'create-volume-group':
-        onlyif      => "/bin/bash -c '! /sbin/vgdisplay -c vd'",
+        unless      => '/sbin/vgdisplay -c vd',
         require     => File['/usr/local/sbin/make-instance-vg'],
         command     => "/usr/local/sbin/make-instance-vg '$disk'",
     }
