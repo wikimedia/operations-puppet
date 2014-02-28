@@ -83,11 +83,6 @@ host nfs2 {
 	fixed-address nfs2.pmtpa.wmnet;
 }
 
-host pdf1 {
-	hardware ethernet 00:21:9b:8b:d9:52;
-	fixed-address pdf1.wikimedia.org;
-}
-
 host sanger {
 	hardware ethernet 00:19:B9:DD:86:EB;
 	fixed-address sanger.wikimedia.org;
