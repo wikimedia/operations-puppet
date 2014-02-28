@@ -1,2 +1,3 @@
-root 10240
-swap 1024
+root 8192
+/var 2048
+swap 2048
