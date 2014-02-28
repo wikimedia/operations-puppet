@@ -16,7 +16,7 @@ class misc::etherpad_lite {
     } else {
         $etherpad_host = 'etherpad.wikimedia.org'
         $etherpad_serveraliases = 'epl.wikimedia.org'
-        install_certificate{ "etherpad.wikimedia.org": }
+        install_certificate{ 'etherpad.wikimedia.org': ca => 'RapidSSL_CA.pem' }
         $etherpad_ssl_cert = '/etc/ssl/certs/etherpad.wikimedia.org.pem'
         $etherpad_ssl_key = '/etc/ssl/private/etherpad.wikimedia.org.key'
     }
