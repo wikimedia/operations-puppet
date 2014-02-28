@@ -1,0 +1,14 @@
+# This file is managed by Puppet!
+
+Set($rtname, 'wikimedia');
+Set($Organization, "<%=@apache_site%>");
+
+Set($CorrespondAddress , "correspond@<%=@apache_site%>");
+Set($CommentAddress , "comment@<%=@apache_site%>");
+
+# THE WEBSERVER:
+
+Set($WebPath , "");
+Set($WebBaseURL , "https://<%=@apache_site%>");
+Set($WebDomain, '<%=@apache_site%>');
+Set($WebPort, 443);
