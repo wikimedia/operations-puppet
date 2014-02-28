@@ -1,17 +1,16 @@
 #  Production RT
 class role::rt {
-    system::role { 'role::rt': description => 'RT' }
+    system::role { 'role::requesttracker': description => 'RT' }
 
     include passwords::misc::rt
 
     install_certificate { 'rt.wikimedia.org': }
 
-    class { 'misc::rt':
-        site   => 'rt.wikimedia.org',
-        dbhost => 'db1001.eqiad.wmnet',
-        dbport => '',
-        dbuser => $passwords::misc::rt::rt_mysql_user,
-        dbpass => $passwords::misc::rt::rt_mysql_pass,
+    class { '::requesttracker':
+        apache_site   => 'rt.wikimedia.org',
+        dbhost        => 'db1001.eqiad.wmnet',
+        dbuser        => $passwords::misc::rt::rt_mysql_user,
+        dbpass        => $passwords::misc::rt::rt_mysql_pass,
     }
 
     class { 'exim::roled':
@@ -42,11 +41,16 @@ class role::rt {
         port  => '443',
     }
 
+    monitor_service { 'RT-https':
+        description   => 'RT-HTTPS',
+        check_command => 'check_https_url!rt.wikimedia.org!/',
+    }
+
 }
 
 #  Labs/testing RT
 class role::rt::labs {
-    system::role { 'role::rt': description => 'RT (Labs)' }
+    system::role { 'role::rt::labs': description => 'RT (Labs)' }
 
     include passwords::misc::rt
 
@@ -55,11 +59,11 @@ class role::rt::labs {
 
     $datadir = '/srv/mysql'
 
-    class { 'misc::rt':
-        site    => $::fqdn,
-        dbuser  => $passwords::misc::rt::rt_mysql_user,
-        dbpass  => $passwords::misc::rt::rt_mysql_pass,
-        datadir => $datadir,
+    class { '::requesttracker':
+        apache_site    => $::fqdn,
+        dbuser         => $passwords::misc::rt::rt_mysql_user,
+        dbpass         => $passwords::misc::rt::rt_mysql_pass,
+        datadir        => $datadir,
     }
 
     class { 'mysql::server':
@@ -71,7 +75,7 @@ class role::rt::labs {
     exec { 'rt-db-initialize':
         command => "/bin/echo '' | /usr/sbin/rt-setup-database --action init --dba root --prompt-for-dba-password",
         unless  => '/usr/bin/mysqlshow rt4',
-        require => Class['misc::rt', 'mysql::server'],
+        require => Class['::requesttracker', 'mysql::server'],
     }
 }
 
