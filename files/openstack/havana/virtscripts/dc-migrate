@@ -77,7 +77,7 @@ echo ""
 sleep 1
 echo "Destroying instance on $FROMHOST"
 echo ""
-OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} stop ${INSTANCENAME}
+OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} stop ${INSTANCENAME}
 sleep 5
 ssh $FROMHOST.$FROMREGION.wmnet "virsh destroy ${FROMINSTANCE}"
 echo ""
