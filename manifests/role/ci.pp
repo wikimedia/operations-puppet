@@ -188,6 +188,27 @@ class role::ci::slave::labs::common {
       mode   => '0775',
   }
 
+  file { '/mnt/home/jenkins-deploy/.pip':
+      ensure => directory,
+      owner  => 'jenkins-deploy',
+      group  => 'wikidev',
+      mode   => '0775',
+  }
+  file { '/mnt/home/jenkins-deploy/.pip/pip.conf':
+      ensure  => present,
+      owner   => 'jenkins-deploy',
+      group   => 'wikidev',
+      mode    => '0775',
+      content => "
+# This file is managed by puppet
+# See role::ci::slave::labs::common
+
+# Configure a shared cache to speedup dependencies
+[install]
+download-cache = ~/cache/pip
+",
+  }
+
   git::userconfig { '.gitconfig for jenkins-deploy user':
       homedir  => '/mnt/home/jenkins-deploy',
       settings => {
