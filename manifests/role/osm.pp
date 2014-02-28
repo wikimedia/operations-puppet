@@ -1,6 +1,10 @@
 # OSM role classes
 
+class role::osm::common {
+    include standard
+}
 class role::osm::master {
+    include role::osm::common
     include postgresql::master
     include postgresql::postgis
     include passwords::osm
@@ -34,6 +38,7 @@ class role::osm::master {
 }
 
 class role::osm::slave {
+    include role::osm::common
     include postgresql::postgis
     include passwords::osm
 
