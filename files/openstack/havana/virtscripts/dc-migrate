@@ -39,12 +39,21 @@ if [ "$FROMINSTANCESTATUS" != 'ACTIVE' ]; then
 	echo "ERROR: ${INSTANCENAME} must be ACTIVE before we can migrate it."
 	exit 1
 fi
+echo ""
 FROMIMAGE=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep ' image ' | awk '{gsub ( "[()]","" ) ; print $(NF-1) }'`
 FROMFLAVOR=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep ' flavor ' | awk '{gsub ( "[()]","" ) ; print $5 }'`
 FROMSECURITYRAW=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep ' security_groups ' | awk  -F "|" '{ print $3 }'`
 FROMSECURITY=`python -c "print ','.join([o['name'] for o in ${FROMSECURITYRAW}])"`
 FROMHOST=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:host' | awk '{ print $4 }'`
 FROMINSTANCE=$FROMINSTANCENAME
+echo "Testing salt on ${FROMINSTANCE}.${FROMREGION}"
+echo ""
+salt ${FROMINSTANCE}.${FROMREGION}.wmflabs test.ping
+if [ "$?" != "0" ]
+then
+	echo "${INSTAMCENAME} is not responding to salt."
+	exit 1
+fi
 echo "Creating initial image in $TOREGION"
 CREATED=`cd /srv/org/wikimedia/controller/wikis/w && php ./extensions/OpenStackManager/maintenance/createInstance.php --image ${FROMIMAGE} --flavor ${FROMFLAVOR} --instance ${INSTANCENAME} --project ${PROJECT} --region ${TOREGION} --securitygroups ${FROMSECURITY} --copypuppet ${FROMINSTANCE} --copypuppetregion ${FROMREGION}`
 if [ "$CREATED" != "created instance." ]; then
@@ -82,6 +91,17 @@ sleep 5
 ssh $FROMHOST.$FROMREGION.wmnet "virsh destroy ${FROMINSTANCE}"
 echo ""
 sleep 5
+echo "Verifying that both instances are now stopped."
+FROMINSTANCESTATUS=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${FROMAUTH} nova --os-region ${FROMREGION} show ${INSTANCENAME} | grep ' status ' | awk '{ print $4 }'`
+if [ "$FROMINSTANCESTATUS" != 'SHUTOFF' ]; then
+	echo "ERROR: the ${FROMREGION} ${INSTANCENAME} failed to shut down.  We can't copy files."
+	exit 1
+fi
+TOINSTANCESTATUS=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep ' status ' | awk '{ print $4 }'`
+if [ "$TOINSTANCESTATUS" != 'SHUTOFF' ]; then
+	echo "ERROR: the ${TOREGION} ${INSTANCENAME} failed to shut down.  We can't copy files."
+	exit 1
+fi
 echo ""
 echo "Rsyncing instance from $FROMHOST to $TOHOST"
 echo ""
