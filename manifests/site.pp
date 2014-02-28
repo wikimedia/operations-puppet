@@ -2670,6 +2670,18 @@ node 'terbium.eqiad.wmnet' {
         enabled => true,
     }
 }
+node /^elastic101[3-6]\.eqiad\.wmnet/ {
+    # ganglia cluster name.
+    $cluster = 'elasticsearch'
+    include standard
+    include accounts::manybubbles
+    include accounts::demon
+    include groups::wikidev
+    sudo_user { ['manybubbles', 'demon'] :
+        privileges => ['ALL = NOPASSWD: ALL'],
+    }
+}
+
 
 node /^elastic10(0[1-9]|1[0-2])\.eqiad\.wmnet/ {
     # ganglia cluster name.
