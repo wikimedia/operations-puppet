@@ -2,32 +2,39 @@
 #
 #  This will create a server running RT with apache.
 #
-class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $dbhost = 'localhost', $dbport = '3306', $datadir = '/var/lib/mysql' ) {
-  system::role { 'misc::rt-apache::server': description => 'RT server with Apache' }
+class requesttracker (
+    $dbuser,
+    $dbpass,
+    $site = 'rt.wikimedia.org',
+    $dbhost = 'localhost',
+    $dbport = '3306',
+    $datadir = '/var/lib/mysql'
+) {
 
+    system::role { 'misc::rt-apache::server': description => 'RT server with Apache' }
 
-  if ! defined(Class['webserver::php5']) {
-    class {'webserver::php5': ssl => true; }
-  }
+    if ! defined(Class['webserver::php5']) {
+        class {'webserver::php5': ssl => true; }
+    }
 
-    install_certificate{ 'rt.wikimedia.org': }
+    install_certificate{ $site: }
 
-  $rt_mysql_user = $dbuser
-  $rt_mysql_pass = $dbpass
-  $rt_mysql_host = $dbhost
-  $rt_mysql_port = $dbport
+    $rt_mysql_user = $dbuser
+    $rt_mysql_pass = $dbpass
+    $rt_mysql_host = $dbhost
+    $rt_mysql_port = $dbport
 
-  package { [ 'request-tracker4',
-              'rt4-db-mysql',
-              'rt4-clients',
-              'libdbd-pg-perl' ]:
-    ensure => latest;
-  }
+    package { [
+        'request-tracker4',
+        'rt4-db-mysql',
+        'rt4-clients',
+        'libdbd-pg-perl' ]:
+        ensure => latest;
+    }
 
+    $rtconf = '# This file is for the command-line client, /usr/bin/rt.\n\nserver http://localhost/rt\n'
 
-  $rtconf = '# This file is for the command-line client, /usr/bin/rt.\n\nserver http://localhost/rt\n'
-
-  file {
+    file {
     '/etc/request-tracker4/RT_SiteConfig.d/50-debconf':
       require => Package['request-tracker4'],
       content => template('rt/50-debconf.erb'),
@@ -94,9 +101,9 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
   }
 
   file { "/etc/apache2/sites-available/${site}":
-    ensure  => present,
-    owner   => root,
-    group   => root,
+    ensure  => 'present',
+    owner   => 'root',
+    group   => 'root',
     mode    => '0644',
     content => template('rt/rt4.apache.erb'),
   }
@@ -105,10 +112,10 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
   # avoid [warn] _default_ VirtualHost overlap
 
   file { '/etc/apache2/ports.conf':
-    ensure => present,
+    ensure => 'present',
     mode   => '0444',
-    owner  => root,
-    group  => root,
+    owner  => 'root',
+    group  => 'root',
     source => 'puppet:///files/apache/ports.conf.ssl';
   }
 
