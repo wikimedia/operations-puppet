@@ -24,8 +24,8 @@ mobile_hosts_regex = '(' + cache_configuration['production']['mobile'].values.fl
 pipe 100 /bin/grep -P '<%= mobile_hosts_regex %>' >> <%= log_directory %>/mobile-sampled-100.tsv.log
 
 ### All 5xx error responses -- domas (now using udp-filter instead of 5xx-filter).
-# pipe 1 <%= @template_variables['webrequest_filter_directory'] %>/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= log_directory %>/5xx.tsv.log
-pipe 1 /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= log_directory %>/5xx.tsv.log
+# pipe 1 <%= @template_variables['webrequest_filter_directory'] %>/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org"' >> <%= log_directory %>/5xx.tsv.log
+pipe 1 /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org"' >> <%= log_directory %>/5xx.tsv.log
 
 
 ### Vrije Universiteit
