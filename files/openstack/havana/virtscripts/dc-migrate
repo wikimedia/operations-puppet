@@ -120,7 +120,7 @@ echo ""
 echo ""
 echo ""
 echo "Clearing stale puppet cert (if any)"
-puppet cert clean ${TOINSTANCENAME}.${TOREGION}.wmflabs
+ssh ${TOPUPPETMASTER} "puppet cert clean ${TOINSTANCENAME}.${TOREGION}.wmflabs"
 echo ""
 echo "Rebooting the instance"
 echo ""
