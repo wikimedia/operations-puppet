@@ -19,7 +19,6 @@ class role::osm::master {
             method   => 'md5',
             attrs    => 'REPLICATION',
             database => 'replication',
-            require  => Class['postgresql::master'],
         }
     }
     if $osm_slave_v6 {
@@ -32,7 +31,6 @@ class role::osm::master {
             method   => 'md5',
             attrs    => 'REPLICATION',
             database => 'replication',
-            require  => Class['postgresql::master'],
         }
     }
 }
