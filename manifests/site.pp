@@ -1387,16 +1387,16 @@ node 'labsdb1003.eqiad.wmnet' {
 }
 
 node 'labsdb1004.eqiad.wmnet' {
-    include role::osm::master
-
     $osm_slave = 'labsdb1005.eqiad.wmnet'
     $osm_slave_v4 = '10.64.37.9'
+
+    include role::osm::master
 }
 
 node 'labsdb1005.eqiad.wmnet' {
-    include role::osm::slave
+    $osm_master = 'labsdb1004.eqiad.wmnet'
 
-    $master_server = 'labsdb1004.eqiad.wmnet'
+    include role::osm::slave
 }
 
 node /labstore[12]\.pmtpa\.wmnet/ {

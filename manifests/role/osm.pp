@@ -9,7 +9,7 @@ class role::osm::master {
     include postgresql::postgis
     include passwords::osm
 
-    if $::osm_slave_v4 {
+    if $osm_slave_v4 {
         postgresql::user { "replication@${::osm_slave}-v4":
             ensure   => 'present',
             user     => 'replication',
@@ -22,7 +22,7 @@ class role::osm::master {
             require  => Class['postgresql::master'],
         }
     }
-    if $::osm_slave_v6 {
+    if $osm_slave_v6 {
         postgresql::user { "replication@${::osm_slave}-v6":
             ensure   => 'present',
             user     => 'replication',
@@ -43,7 +43,7 @@ class role::osm::slave {
     include passwords::osm
 
     class {'postgresql::slave':
-        master_server    => $::osm_master,
+        master_server    => $osm_master,
         replication_pass => $passwords::osm::replication_pass,
     }
 }
