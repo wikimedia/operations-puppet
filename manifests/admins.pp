@@ -3610,6 +3610,7 @@ class admins::mortals {
 	include accounts::gwicke
 	include accounts::halfak
 	include accounts::hashar
+	include accounts::hoo    # RT 6731, RT 6939
 	include accounts::kaldari
 	include accounts::kartik # RT 6533
 	include accounts::khorn
