@@ -2971,13 +2971,6 @@ node 'ytterbium.wikimedia.org' {
 }
 
 
-node 'yvon.wikimedia.org' {
-    include base
-    include ganglia
-    include ntp::client
-    include certificates::wmf_ca
-}
-
 node 'zhen.wikimedia.org' {
     include standard
     include groups::wikidev

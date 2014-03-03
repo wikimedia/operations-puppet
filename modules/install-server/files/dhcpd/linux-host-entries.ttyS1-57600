@@ -247,8 +247,4 @@ host tridge {
 	fixed-address tridge.wikimedia.org;
 }
 
-host yvon {
-	hardware ethernet 00:1e:c9:ea:53:eb;
-	fixed-address yvon.wikimedia.org;
-}
 
