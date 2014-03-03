@@ -67,23 +67,16 @@ C{
 	}
 
 	/*
-	 * Make a string safe to use as a cookie value in a Set-Cookie header by
-	 * replacing characters that are disallowed by RFC 6265 with underscores.
-	 * Note: we could do better by using the standard iconv library to
-	 * convert from ISO-8859-1 to ASCII//TRANSLIT, so that e.g. "Genève"
-	 * becomes "Geneve" instead of "Gen_ve", but I'm unsure as to whether
-	 * it's worth the complexity/performance hit.
+	 * Make a string safe to use as a cookie value in a Set-Cookie header
+	 * by replacing CTLs, DEL, 8-bit characters, space, double-quote,
+	 * comma, semicolon, and backslash with an underscore.
 	 */
 	char *
 	geo_sanitize_for_cookie(char *string) {
-		if (string) {
-			char *ptr;
-			for (ptr = string; *ptr; ptr++) {
-				/* This disallows CTLs, DEL, 8-bit chars, space,
-				 * double-quote, comma, semicolon, and backslash */
-				if(*ptr < 0x21 || *ptr > 0x7E || strchr("\",;\\", *ptr))
-					*ptr = '_';
-				ptr++;
+		char *ptr;
+		for (ptr = string; ptr && *ptr; ptr++) {
+			if (*ptr < 0x21 || *ptr > 0x7E || strchr("\",;\\", *ptr)) {
+				*ptr = '_';
 			}
 		}
 		return string;
