@@ -5,9 +5,12 @@
 class role::elasticsearch::config {
     # Config
     if ($::realm == 'labs') {
-        $multicast_group    = '224.2.2.4'
-        $master_eligible    = true
-        $recover_after_time = '1m'
+        $multicast_group      = '224.2.2.4'
+        $master_eligible      = true
+        $recover_after_time   = '1m'
+        $awareness_attributes = false
+        $row                  = false
+        $rack                 = false
         if ($::hostname =~ /^deployment-/) {
             # Beta
             # Has four nodes all of which can be master
@@ -44,22 +47,31 @@ class role::elasticsearch::config {
             'pmtpa' => '224.2.2.6',
         }
         $master_eligible = $::hostname ? {
-            /^elastic1001/        => true,  # Rack A3
-            /^elastic1008/        => true,  # Rack C5
-            # TODO Move this when we get machines on another row/rack
-            /^elastic1012/        => true,  # Rack C5
-            default               => false,
+            /^elastic1001/ => true,
+            /^elastic1008/ => true,
+            /^elastic1013/ => true,
+            default        => false,
         }
         $minimum_master_nodes = 2
         $cluster_name         = "production-search-${::site}"
         $heap_memory          = '30G'
-        $expected_nodes       = 12
-        # We're pretty tight on space on the cluster right now so we really
-        # can't get away with running without almost all the nodes.
+        $expected_nodes       = 16
+        # We should be able to run "OK" with 10 servers.
         $recover_after_nodes  = 10
-        # We really do want all the nodes to come back properly so lets give
-        # them quite a bit of time.
+        # But it'd save time if we just waited for all of them to come back so
+        # lets give them plenty of time to restart.
         $recover_after_time   = '20m'
+        $rack = $::hostname ? {
+            /^elastic100[0-6]/          => 'A3',
+            /^elastic10(0[7-9]|1[0-2])/ => 'C5',
+            /^elastic101[3-6]/          => 'D3',
+            default                     => fail("Don't know rack for $::host"),
+        }
+        $row                  = regsubst($rack, '^(.).$', '\1' )
+        # We're not turning on awareness_attributes right yet.  We'll do that
+        # with the setting update API after things settle down with the 1.0
+        # release then we'll update puppet.
+        $awareness_attributes = false
     }
 }
 
@@ -80,6 +92,9 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         expected_nodes       => $expected_nodes,
         recover_after_nodes  => $recover_after_nodes,
         recover_after_time   => $recover_after_time,
+        awareness_attributes => $awareness_attributes,
+        row                  => $row,
+        rack                 => $rack,
     }
     deployment::target { 'elasticsearchplugins': }
 
