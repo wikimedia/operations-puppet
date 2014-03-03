@@ -118,7 +118,17 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         # Setting this larger so that it is sure to be bigger
         # than batch size from varnishkafka.
         # See: https://issues.apache.org/jira/browse/KAFKA-766
-        replica_lag_max_messages        => 10000,
+        # webrequest_bits is about 50k msgs/sec, and has 10 partitions.
+        # That's 5000 msgs/second/partition, so this should allow
+        # a partition to get behind by up to 10 seconds before
+        # removing it from the ISR.  This will be longer for
+        # less voluminous topics.
+        replica_lag_max_messages        => 50000,
+        # Setting this to a value according to https://cwiki.apache.org/confluence/display/KAFKA/FAQ#FAQ-HowtoreducechurnsinISR?WhendoesabrokerleavetheISR?
+        # 1 / MinFetcHRate * 1000.  I assume this result to be in seconds, since the default for max_ms is 10000.
+        # MinFetchRate ~= 45. 1/45*1000 ~= 22.  Setting this to 30 seconds to overcompensate.
+        # See also: http://ganglia.wikimedia.org/latest/graph_all_periods.php?title=&vl=&x=&n=&hreg%5B%5D=analytics102%5B12%5D.*&mreg%5B%5D=kafka.server.ReplicaFetcherManager.Replica-MinFetchRate.Value&gtype=line&glegend=show&aggregate=1
+        replica_lag_time_max_ms         => 30000,
     }
 
     # Generate icinga alert if Kafka Server is not running.
