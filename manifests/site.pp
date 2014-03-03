@@ -1391,14 +1391,14 @@ node 'labsdb1004.eqiad.wmnet' {
     $osm_slave_v4 = '10.64.37.9'
 
     include role::osm::master
-    include role::labs::db::slave
+    #include role::labs::db::slave
 }
 
 node 'labsdb1005.eqiad.wmnet' {
     $osm_master = 'labsdb1004.eqiad.wmnet'
 
     include role::osm::slave
-    include role::labs::db::master
+    #include role::labs::db::master
 }
 
 node /labstore[12]\.pmtpa\.wmnet/ {
