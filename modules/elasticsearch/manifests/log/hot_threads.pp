@@ -12,6 +12,9 @@ class elasticsearch::log::hot_threads {
     }
 
     cron { 'elasticsearch-hot-threads-log':
+        # Turned of to check if this is causing the every five minutes small
+        # load spikes
+        ensure  => 'absent',
         command => "python $script 2>&1 >> $log",
         #So the destination directory exists
         require => Package['elasticsearch'],
