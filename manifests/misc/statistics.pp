@@ -562,6 +562,11 @@ class misc::statistics::rsync::jobs::webrequest {
         source      => 'analytics1003.eqiad.wmnet::webrequest/archive/mobile*.gz',
         destination => '/a/log/webrequest/mobile',
     }
+    # rsync kafkatee generated webrequest logs
+    misc::statistics::rsync_job { 'webrequest_zero':
+        source      => 'analytics1003.eqiad.wmnet::webrequest/archive/zero*.gz',
+        destination => '/a/log/webrequest/zero',
+    }
 }
 
 # Class: misc::statistics::rsync::jobs::eventlogging
