@@ -17,7 +17,8 @@
 
 tool="$1"
 port="$2"
-user="local-$tool"
+prefix=$(/bin/cat /etc/wmflabs-project)
+user="$prefix.$tool"
 home=$(getent passwd $user | cut -d : -f 6 | sed -e 's/\/$//')
 if [ "$(getent group $user | cut -d : -f 1)" != "$user" ]; then
   echo "$0: $1 does not appear to be a tool" >&2
@@ -46,8 +47,8 @@ server.modules = (
 
 server.port = $port
 server.use-ipv6 = "disable"
-server.username = "local-$tool"
-server.groupname = "local-$tool"
+server.username = "$prefix.$tool"
+server.groupname = "$prefix.$tool"
 server.core-files = "disable"
 server.document-root = "$home/public_html"
 server.pid-file = "$runbase.pid"

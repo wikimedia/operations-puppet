@@ -15,5 +15,6 @@
 #  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-tool=$(/usr/bin/id -nu|sed -e 's/^local-//')
+prefix=$(/bin/cat /etc/wmflabs-project)
+tool=$(/usr/bin/id -nu|sed -e "s/^${prefix}.//")
 exec /usr/local/bin/portgrabber "$tool" /usr/local/bin/lighttpd-starter "$tool"
