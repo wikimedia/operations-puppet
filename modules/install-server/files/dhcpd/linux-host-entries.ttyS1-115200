@@ -4347,11 +4347,6 @@ host ytterbium {
 	fixed-address ytterbium.wikimedia.org;
 }
 
-host zhen {
-	hardware ethernet d4:be:d9:af:68:4f;
-	fixed-address zhen.wikimedia.org;
-}
-
 host zinc {
 	hardware ethernet 78:2b:cb:09:0e:3d;
 	fixed-address zinc.wikimedia.org;
