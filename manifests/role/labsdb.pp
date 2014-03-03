@@ -13,7 +13,7 @@ class role::labs::db::master {
 
             'server-id'                 => '1',
             'report_host'               => 'labsdbmaster',
-            'log_bin'                   => '/srv/labsdb/binlogs',
+            'log_bin'                   => true,
             'max_binlog_size'           => '100M',
 
             'innodb_log_file_size'      => '64M',
@@ -42,7 +42,7 @@ class role::labs::db::slave {
 
             'server-id'                 => '2',
             'report_host'               => 'labsdbslave',
-            'log_bin'                   => '/srv/labsdb/binlogs',
+            'log_bin'                   => true,
             'max_binlog_size'           => '100M',
             'relay_log'                 => '/srv/labsdb/relay',
             'relay_log_index'           => '/srv/labsdb/relay.index',
