@@ -105,8 +105,6 @@ class role::wikimetrics {
             ensure => 'installed',
         }
     }
-    class { '::wikimetrics::database': }
-
     class { '::wikimetrics':
         path                  => $wikimetrics_path,
 
@@ -139,8 +137,9 @@ class role::wikimetrics {
         # where this table is called 'revision_userindex'.
         # The mediawiki database usually calls this 'revision'.
         revision_tablename    => 'revision_userindex',
-        require               => Class['::wikimetrics::database'],
     }
+
+    class { '::wikimetrics::database': }
 
     # Run the wikimetrics/scripts/install script
     # in order to pip install proper dependencies.
