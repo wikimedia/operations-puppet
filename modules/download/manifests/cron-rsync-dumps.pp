@@ -8,7 +8,7 @@ class download::cron-rsync-dumps {
     }
 
     cron { 'rsync-dumps':
-        ensure  => absent,
+        ensure  => present,
         command => '/usr/local/bin/rsync-dumps.sh',
         user    => root,
         minute  => '0',
