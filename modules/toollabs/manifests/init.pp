@@ -13,6 +13,8 @@
 #
 class toollabs {
 
+    include labs_lvm
+
     $sysdir = '/data/project/.system'
     $store  = "$sysdir/store"
     $repo   = "$sysdir/deb"
