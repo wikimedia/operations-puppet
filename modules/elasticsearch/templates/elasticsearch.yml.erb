@@ -399,3 +399,11 @@ gateway:
     recover_after_nodes: <%= @recover_after_nodes %>
     recover_after_time: <%= @recover_after_time %>
     expected_nodes: <%= @expected_nodes %>
+
+
+##
+# Row/rack awareness attributes
+##
+<% if @awareness_attributes %>cluster.routing.allocation.awareness.attributes: <%= @awareness_attributes %><% end %>
+<% if @row  %>node.row: <%=  @row  %><% end %>
+<% if @rack %>node.rack: <%= @rack %><% end %>
