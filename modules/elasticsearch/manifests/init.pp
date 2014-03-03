@@ -36,6 +36,12 @@
 # - $recover_after_time: see $recover_after_nodes.  Defaults to a minute
 #       because that feels like a decent amount of time to wait for the
 #       remaining nodes to catch up.
+# - $awareness_attributes: attributes used for allocation awareness, comma
+#       separated.  Defaults to false meaning none.
+# - $row: row this node is on.  Can be used for allocation awareness.  Defaults
+#       to false meaning don't set it.
+# - $rack: rack this node is on.  Can be used for allocation awareness.
+#       Defaults to false meaning don't set it.
 #
 # == Sample usage:
 #
@@ -53,7 +59,10 @@ class elasticsearch($cluster_name,
                     $auto_create_index = false,
                     $expected_nodes = 1,
                     $recover_after_nodes = 1,
-                    $recover_after_time = '1s') {
+                    $recover_after_time = '1s',
+                    $awareness_attributes = false,
+                    $row = false,
+                    $rack = false) {
 
     include ::elasticsearch::packages
 
