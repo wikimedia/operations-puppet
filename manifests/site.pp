@@ -2970,13 +2970,6 @@ node 'ytterbium.wikimedia.org' {
     }
 }
 
-
-node 'zhen.wikimedia.org' {
-    include standard
-    include groups::wikidev
-    include mobile::vumi
-}
-
 node 'zinc.eqiad.wmnet' {
 
     include standard
