@@ -10,7 +10,8 @@ GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
 GITREPOS="core extensions"
 
 umask 0002
-echo "Starting l10nupdate at `date --rfc-3339=seconds`."
+BEGAN=$(date +"%s")
+echo "Starting l10nupdate at $(date -ud @$BEGAN)."
 
 # Update i18n messages from git to the HEAD of master, or create the clone if it doesn't exist yet
 echo "Updating git clone ..."
@@ -100,4 +101,7 @@ for wiki in `<"$ALLDB"`; do
 	/usr/local/bin/mwscript extensions/WikimediaMaintenance/refreshMessageBlobs.php --wiki="$wiki"
 done
 echo "All done"
-$BINDIR/dologmsg "!log LocalisationUpdate ResourceLoader cache refresh completed at `date --rfc-3339=seconds`"
+ENDED=$(date +"%s")
+LENGTH=$(($ENDED-$BEGAN))
+$BINDIR/deploy2graphite l10n $LENGTH
+$BINDIR/dologmsg "!log LocalisationUpdate ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $(date -ud @"$LENGTH" +'%-Mm %-Ss'))"
