@@ -41,7 +41,6 @@ define varnish::netmapper_update($url, $hour = '*', $minute = '*/5') {
 
     cron { "netmapper_update_${name}":
         user    => 'netmap',
-        ensure  => absent, # temporary hack for zero issue...
         command => $cmd,
         hour    => $hour,
         minute  => $minute,
