@@ -974,11 +974,11 @@ class role::cache {
         }
 
         varnish::netmapper_update {
-            'zero.json': url => 'http://meta.wikimedia.org/w/api.php?action=zeroconfig&type=carriers';
+            'zero.json': url => 'http://noc.wikimedia.org/~bblack/zero/zero.json';
         }
 
         varnish::netmapper_update {
-            'proxies.json': url => 'http://meta.wikimedia.org/w/api.php?action=zeroconfig&type=proxies';
+            'proxies.json': url => 'http://noc.wikimedia.org/~bblack/zero/proxies.json';
         }
 
         varnish::instance { "mobile-backend":
