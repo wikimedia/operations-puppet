@@ -55,7 +55,7 @@ then
 	exit 1
 fi
 echo "Creating initial image in $TOREGION"
-CREATED=`cd /srv/org/wikimedia/controller/wikis/w && php ./extensions/OpenStackManager/maintenance/createInstance.php --image ${FROMIMAGE} --flavor ${FROMFLAVOR} --instance ${INSTANCENAME} --project ${PROJECT} --os-region ${TOREGION} --securitygroups ${FROMSECURITY} --copypuppet ${FROMINSTANCE} --copypuppetregion ${FROMREGION}`
+CREATED=`cd /srv/org/wikimedia/controller/wikis/w && php ./extensions/OpenStackManager/maintenance/createInstance.php --image ${FROMIMAGE} --flavor ${FROMFLAVOR} --instance ${INSTANCENAME} --project ${PROJECT} --region ${TOREGION} --securitygroups ${FROMSECURITY} --copypuppet ${FROMINSTANCE} --copypuppetregion ${FROMREGION}`
 if [ "$CREATED" != "created instance." ]; then
 	echo "ERROR: Failed to create new instance in ${TOREGION}"
 	exit 1
