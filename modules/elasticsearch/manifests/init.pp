@@ -101,7 +101,12 @@ class elasticsearch($cluster_name,
     service { 'elasticsearch':
         ensure  => running,
         enable  => true,
-        require => Package['elasticsearch'],
+        require => [
+            Package['elasticsearch'],
+            File['/etc/elasticsearch/elasticsearch.yml'],
+            File['/etc/elasticsearch/logging.yml'],
+            File['/etc/default/elasticsearch'],
+        ],
     }
 
     # Make sure that some pesky, misleading log files aren't kept around
