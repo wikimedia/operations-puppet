@@ -19,6 +19,7 @@ class beta::natfix {
     # the web interface :-D
     #
     $nat_mappings = {
+        # pmtpa
         'deployment-cache-text1'    => {public_ip  => '208.80.153.219',
                                         private_ip => '10.4.1.133' },
         'deployment-cache-upload04' => {public_ip  => '208.80.153.242',
@@ -29,6 +30,18 @@ class beta::natfix {
                                         private_ip => '10.4.0.48' },
         'deployment-cache-mobile01' => {public_ip  => '208.80.153.143',
                                         private_ip => '10.4.1.82' },
+        # eqiad
+        'deployment-cache-text02'   => {public_ip  => '208.80.155.135',
+                                        private_ip => '10.68.16.16' },
+        'deployment-cache-upload01' => {public_ip  => '208.80.155.136',
+                                        private_ip => '10.68.16.53' },
+        'deployment-cache-bits01'   => {public_ip  => '208.80.155.137',
+                                        private_ip => '10.68.16.12' },
+        'deployment-eventlogging02' => {public_ip  => '208.80.155.138',
+                                        private_ip => '10.68.16.52' },
+        'deployment-cache-mobile03' => {public_ip  => '208.80.155.139',
+                                        private_ip => '10.68.16.13' },
+
     }
     create_resources( 'beta::natdestrewrite', $nat_mappings )
 }
