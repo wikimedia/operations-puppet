@@ -645,6 +645,8 @@ class role::cache {
             wikimedia_networks => $wikimedia_networks,
         }
 
+        $text_enable_geo = ( $::realm == 'labs' )
+
         varnish::instance { "text-frontend":
             name => "frontend",
             vcl => "text-frontend",
@@ -674,7 +676,7 @@ class role::cache {
                     'weight' => $backend_weight,
                 }],
             cluster_options => {
-                'enable_geoiplookup' => false,
+                'enable_geoiplookup' => $text_enable_geo,
             },
         }
 
