@@ -34,4 +34,11 @@ ProxyRequests		Off
 	# successfullyy created and fails beacuse it is server the cached 404).
 	SetEnvIf Request_URI .*/api/json.* NO_CACHE
 	Header set Cache-Control "no-cache,must-revalidate" env=NO_CACHE
+
+	# Prevent access to certain URLs - bug 61964
+	SetEnvIf Request_URI ^/ci/computer/.*/builds DENY_BUILDS_ACCESS
+	SetEnvIf Request_URI ^/ci/user/.*/builds DENY_BUILDS_ACCESS
+	SetEnvIf Request_URI ^/ci/view/.*/builds DENY_BUILDS_ACCESS
+	Order deny,allow
+	deny from env=DENY_BUILDS_ACCESS
 </Proxy>
