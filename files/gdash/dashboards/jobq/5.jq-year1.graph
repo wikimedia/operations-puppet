@@ -1,0 +1,30 @@
+title   "Average Jobs Per Day -1year"
+linewidth 1
+linemode "staircase"
+hide_legend "false"
+from "-1year"
+area "first"
+
+field :push, :color => "green",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-pop.count, "1week"),"Jobs Run/week"))'
+
+field :run, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-insert.count, "1week"),"Jobs Queued/week"))'
+
+field :pushdupl, :color => "red",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-insert-duplicate.count, "1week"),"Duplicate jobs Queued/week"))'
+
+field :rundupl, :color => "purple",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-pop-duplicate.count, "1week"),"Duplicate jobs run/week"))'
+
+field :recycle, :color => "orange",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-recycle.count, "1week"),"Jobs recycled/week"))'
+
+field :abandon, :color => "brown",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-abandon.count, "1week"),"Jobs abandoned/week"))'
