@@ -6,9 +6,9 @@ from "-1year"
 
 field :a, :color => "red",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(reqstats.500,"1h"),"500 resp/hour"))'
+               :data  => 'cactiStyle(alias(summarize(removeBelowValue(reqstats.500,1),"1h"),"500 resp/hour"))'
 
 field :b, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(reqstats.5xx,"1h"),"5xx resp/hour"))'
+               :data  => 'cactiStyle(alias(summarize(removeBelowValue(reqstats.5xx,1),"1h"),"5xx resp/hour"))'
 

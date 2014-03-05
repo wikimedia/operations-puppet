@@ -1,14 +1,15 @@
 title   "HTTP 5xx Responses -1day"
 linewidth 2
+logbase 10
 linemode "staircase"
 hide_legend "false"
 from "-1 day"
 
 field :a, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(reqstats.5xx,"5xx resp/min"))'
+               :data  => 'cactiStyle(alias(removeBelowValue(reqstats.5xx,1),"5xx resp/min"))'
 
 field :b, :color => "red",
                :alias => "none",
-               :data  => 'cactiStyle(alias(reqstats.500,"500 resp/min"))'
+               :data  => 'cactiStyle(alias(removeBelowValue(reqstats.500,1),"500 resp/min"))'
 
