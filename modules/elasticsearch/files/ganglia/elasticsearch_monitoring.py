@@ -351,6 +351,27 @@ for name in ['generic', 'index', 'get', 'snapshot', 'merge', 'suggest', 'bulk',
         'description': 'Operations/sec',
     })
 
+# Search groups
+search_group_stats = dict()
+search_group_stats['es_%(group)s_queries'] = merge(COUNTER, {
+    'path': 'indices.search.groups.%(group)s.query_total',
+    'units': 'queries/sec',
+    'description': 'Queries/sec',
+})
+search_group_stats['es_%(group)s_query_time'] = merge(TIME, {
+    'path': 'indices.search.groups.%(group)s.query_time_in_millis',
+    'description': 'Query Time/sec'
+})
+search_group_stats['es_%(group)s_fetches'] = merge(COUNTER, {
+    'path': 'indices.search.groups.%(group)s.fetch_total',
+    'units': 'fetches/sec',
+    'description': 'Fetches/sec',
+})
+search_group_stats['es_%(group)s_fetch_time'] = merge(TIME, {
+    'path': 'indices.search.groups.%(group)s.fetch_time_in_millis',
+    'description': 'Fetch Time/sec'
+})
+
 # Health stats to be collected
 health_stats = dict()
 health_stats['es_nodes'] = merge(GAUGE, {
@@ -387,27 +408,6 @@ health_stats['es_unassigned_shards'] = merge(GAUGE, {
     'path': 'unassigned_shards',
     'units': 'shards',
     'description': 'shards initializing'
-})
-
-# Index stats
-index_stats = dict()
-index_stats['es_%(group)s_queries'] = merge(COUNTER, {
-    'path': '_all.total.search.groups.%(group)s.query_total',
-    'units': 'queries/sec',
-    'description': 'Queries/sec',
-})
-index_stats['es_%(group)s_query_time'] = merge(TIME, {
-    'path': '_all.total.search.groups.%(group)s.query_time_in_millis',
-    'description': 'Query Time/sec'
-})
-index_stats['es_%(group)s_fetches'] = merge(COUNTER, {
-    'path': '_all.total.search.groups.%(group)s.fetch_total',
-    'units': 'fetches/sec',
-    'description': 'Fetches/sec',
-})
-index_stats['es_%(group)s_fetch_time'] = merge(TIME, {
-    'path': '_all.total.search.groups.%(group)s.fetch_time_in_millis',
-    'description': 'Fetch Time/sec'
 })
 
 
@@ -482,13 +482,34 @@ def metric_init(params):
     def main_path_transformer(data, path):
         node = data['stats']['nodes'].keys()[0]
         return 'nodes.%(node)s.%(path)s' % {'node': node, 'path': path}
+    main_url = '{0}/_nodes/_local/stats?groups=_all'.format(host)
     main_result = {
         'last_update': 0,
-        'url': '{0}_cluster/nodes/_local/stats?all=true'.format(host),
+        'url': main_url,
         'path_transformer': main_path_transformer,
     }
     Desc_Skel['call_back'] = partial(get_stat, main_result, main_stats)
     init(main_stats)
+
+    # Monitor search grouped stats by making a stat per group.
+    stats_groups_results = {
+        'last_update': 0,
+        'url': main_url,
+        'path_transformer': main_path_transformer,
+    }
+    main_data = load(main_url)
+    node = main_data['nodes'].keys()[0]
+    if 'groups' in main_data['nodes'][node]['indices']['search']:
+        for group in main_data['nodes'][node]['indices']['search']['groups']:
+            group_index_stats = dict()
+            for stat_name, stat in search_group_stats.iteritems():
+                stat_name = stat_name % {'group': group.replace(' ', '_')}
+                stat_name = deunicode(stat_name)
+                path = deunicode(stat['path'] % {'group': group})
+                group_index_stats[stat_name] = merge(stat, {'path': path})
+            Desc_Skel['call_back'] = partial(
+                get_stat, stats_groups_results, group_index_stats)
+            init(group_index_stats)
 
     # Cluster health stats and the last time we fetched them.
     def noop_path_transformer(data, path):
@@ -500,26 +521,6 @@ def metric_init(params):
     }
     Desc_Skel['call_back'] = partial(get_stat, health_result, health_stats)
     init(health_stats)
-
-    # Monitor search grouped stats by making a stat per group.
-    url = '{0}_stats/search?groups=_all'.format(host)
-    index_stats_result = {
-        'last_update': 0,
-        'url': url,
-        'path_transformer': noop_path_transformer,
-    }
-    stat_groups = load(url)
-    if 'groups' in stat_groups['_all']['total']['search']:
-        for group in stat_groups['_all']['total']['search']['groups']:
-            group_index_stats = dict()
-            for stat_name, stat in index_stats.iteritems():
-                stat_name = stat_name % {'group': group.replace(' ', '_')}
-                stat_name = deunicode(stat_name)
-                path = deunicode(stat['path'] % {'group': group})
-                group_index_stats[stat_name] = merge(stat, {'path': path})
-            Desc_Skel['call_back'] = partial(
-                get_stat, index_stats_result, group_index_stats)
-            init(group_index_stats)
 
     return descriptors
 
