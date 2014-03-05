@@ -101,7 +101,7 @@ class role::deployment::config {
         'checkout_submodules'   => true,
     },
     'fluoride/fluoride'              => {
-        'grain'    => 'fluoride',
+        'grain'    => 'eventlogging',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
     },
     'mwprof/mwprof'                  => {
