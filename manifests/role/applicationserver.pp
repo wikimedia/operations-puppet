@@ -80,6 +80,10 @@ class role::applicationserver {
 				options => 'defaults,nobootwait,comment=cloudconfig',
 				require => Mount['/mnt'],
 			}
+
+			# Include HHVM for testing
+			include ::applicationserver::hhvm
+
 		}
 
 		if $lvs_pool != undef {
