@@ -228,7 +228,7 @@ class ldap::client::utils($ldapconfig) {
         content => template('ldap/scriptconfig.py.erb'),
     }
 
-    if ( $realm != 'labs' ) {
+    if ( $::realm != 'labs' ) {
         file { '/etc/ldap/.ldapscriptrc':
             owner   => 'root',
             group   => 'root',
@@ -261,7 +261,7 @@ class ldap::client::openldap($ldapconfig) {
 
 class ldap::client::autofs($ldapconfig) {
     # TODO: parametize this.
-    if $realm == 'labs' {
+    if $::realm == 'labs' {
         $homedir_location = "/export/home/${instanceproject}"
         $nfs_server_name = $instanceproject ? {
             default => 'labs-nfs1',
@@ -360,7 +360,7 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
         }
     }
 
-    if $realm == 'labs' {
+    if $::realm == 'labs' {
         if $managehome {
             $ircecho_logs = { "/var/log/manage-exports.log" => "#wikimedia-labs" }
             $ircecho_nick = "labs-home-wm"
