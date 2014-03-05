@@ -66,19 +66,26 @@ class role::applicationserver {
 		if $::realm == 'labs' {
 			# MediaWiki configuration specific to labs instances ('beta' project)
 			class { "mediawiki": twemproxy => false }
-			# Umount /dev/vdb from /mnt ...
-			mount { '/mnt':
-				name => '/mnt',
-				ensure => absent,
-			}
 
-			# ... and mount it on /srv
-			mount { '/srv':
-				ensure => mounted,
-				device => '/dev/vdb',
-				fstype => 'auto',
-				options => 'defaults,nobootwait,comment=cloudconfig',
-				require => Mount['/mnt'],
+			if $::site == 'pmtpa' {
+				# Umount /dev/vdb from /mnt ...
+				mount { '/mnt':
+					name => '/mnt',
+					ensure => absent,
+				}
+
+				# ... and mount it on /srv
+				mount { '/srv':
+					ensure => mounted,
+					device => '/dev/vdb',
+					fstype => 'auto',
+					options => 'defaults,nobootwait,comment=cloudconfig',
+					require => Mount['/mnt'],
+				}
+			} elsif $::site == 'eqiad' {
+				# Does not come with /dev/vdb, we need to mount it using lvm
+				include labs_lvm
+				labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
 			}
 		}
 
