@@ -242,10 +242,10 @@ class role::deployment::deployment_servers::production {
   }
   sudo_group { "wikidev_deployment_server":
     privileges => [
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json publish.runner deploy.restart *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *",
     ],
     group => "wikidev",
   }
@@ -272,10 +272,10 @@ class role::deployment::deployment_servers::labs {
   }
   sudo_group { "project_deployment_prep_deployment_server":
     privileges => [
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json publish.runner deploy.restart *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *",
     ],
     group => "project-deployment-prep",
   }
@@ -302,10 +302,10 @@ class role::deployment::deployment_servers::sartoris {
   }
   sudo_group { "project_deployment_prep_deployment_server":
     privileges => [
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *",
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json publish.runner deploy.restart *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *",
     ],
     group => "project-sartoris",
   }
