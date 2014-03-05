@@ -2587,8 +2587,14 @@ node 'tin.eqiad.wmnet' {
     }
 }
 
+# titinium hosts archiva.wikimedia.org
 node 'titanium.wikimedia.org' {
+    $cluster = 'misc'
+
     include standard
+    include admins::roots
+
+    include role::archiva
 }
 
 
