@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 #  -------------------------------------------------------
 #             -=- <check_mysql-replication.pl> -=-
@@ -7,7 +7,11 @@
 #  Description : yet another plugin to check your mysql
 #  replication threads and your lag synchronisation
 #
-#  Version : 0.1
+#  Just want to thank Bartlomiej 'guzik' Syryjczyk,
+#  Brian Rudy, Leif Neland, Christoph Maser and Peter Lecki
+#  to help me to improve this little script
+#
+#  Version : 0.2.6
 #  -------------------------------------------------------
 #  In :
 #     - see the How to use section
@@ -21,6 +25,7 @@
 #  Fix Me/Todo :
 #     - too many things ;) but let me know what do you think about it
 #     - what about a comparaison with the master status ?
+#     - use the Nagios lib for the return code
 #
 # ####################################################################
 
@@ -46,16 +51,44 @@
 #
 # 1 - first you have to create an user with the REPLICATION CLIENT
 #     (or you can just grant this privilege)
-# mysql> GRANT REPLICATION CLIENT ON *.* TO 'replicateur'@'localhost'
+# mysql> GRANT REPLICATION CLIENT TO 'replicateur'@'localhost' IDENTIFIED
+#        BY 'password';
+# or
+# mysql> GRANT REPLICATION CLIENT TO 'replicateur'@'localhost'
 #
 # 2 - then just run the script :
-# $./check_mysql-replication.pl --help
+# $ ./check_mysql-replication.pl --help
 # ####################################################################
 
 # ####################################################################
 # Changelog :
 # -----------
-#
+#   Date:30/04/2013   Version:0.2.6     Author:Erwan Ben Souiden
+#   >> Fix http://yoolink.to/DWq
+# --------------------------------------------------------------------
+#   Date:24/07/2012   Version:0.2.5     Author:Erwan Ben Souiden
+#   >> Little fix by Peter Lecki to return exit code 2 when lag value
+#   is null for lag action
+# --------------------------------------------------------------------
+#   Date:25/03/2010   Version:0.2.4     Author:Christoph Maser
+#   >> Add a little check if replication is up otherwise 
+#   $result->{Slave_IO_State} is undefined.
+# --------------------------------------------------------------------
+#   Date:18/03/2010   Version:0.2.3     Author:Erwan Ben Souiden
+#   >> Bugfix to catch condition when lag check is run and 
+#   relication is not running. Minor Perl synax fixes for ePN. 
+#   from Brian Rudy (brudyNO@SPAMpraecogito.com)
+# --------------------------------------------------------------------
+#   Date:09/03/2010   Version:0.2.2     Author:Erwan Ben Souiden
+#   >> Updates to allow both process and lag checks in one pass
+#   from Brian Rudy (brudyNO@SPAMpraecogito.com)
+# --------------------------------------------------------------------
+#   Date:15/02/2010   Version:0.2.1     Author:Erwan Ben Souiden
+#   >> little security update in DSN thank to Leif Neland
+# --------------------------------------------------------------------
+#   Date:22/10/2009   Version:0.2     Author:Erwan Ben Souiden
+#   >> little update thank to Bartlomiej 'guzik' Syryjczyk
+#   for now, no database is needed in DSN
 # --------------------------------------------------------------------
 #   Date:22/06/2009   Version:0.1     Author:Erwan Ben Souiden
 #   >> creation
@@ -72,7 +105,7 @@ use Getopt::Long qw(:config no_ignore_case);
 
 # Generic variables
 # -----------------
-my $version = '0.1';
+my $version = '0.2.6';
 my $author = 'Erwan Labynocle Ben Souiden';
 my $a_mail = 'erwan@aleikoum.net';
 my $script_name = 'check_mysql-replication.pl';
@@ -97,8 +130,8 @@ GetOptions (
     'slave-port=i' => \ $slave_port,
     'sl=s' => \ $slave_login,
     'slave-login=s' => \ $slave_login,
-    'spd=s' => \ $slave_pwd,
-    'slave-password=s' => \ $slave_pwd,
+    'spd:s' => \ $slave_pwd,
+    'slave-password:s' => \ $slave_pwd,
     'w=i' => \ $warning,
     'warning=i' => \ $warning,
     'c=i' => \ $critical,
@@ -120,8 +153,8 @@ GetOptions (
     'verbose' => \ $verbose_value
 );
 
-print_usage() if ($help_value);
-print_version() if ($version_value);
+&print_usage() if ($help_value);
+&print_version() if ($version_value);
 
 
 # Syntax check of your specified options
@@ -151,61 +184,83 @@ my $plugstate = "OK";
 
 print "DEBUG : action = $action\n" if ($verbose_value);
 
-# process action
-# --------------
-if ($action eq 'process') {
-
-    my $flag = 0;
-
-    # About the slave
-    my $result = request_executor ("$slave_address",$slave_port,$slave_login,$slave_pwd,"SHOW SLAVE STATUS;");
-    my ($s_slave_io_running,$s_slave_sql_running) = ($result->{Slave_IO_Running},$result->{Slave_SQL_Running});
-    my ($master_address,$master_port,$master_login) = ($result->{Master_Host},$result->{Master_Port},$result->{Master_User});
-    my ($s_last_errno,$s_last_error) = ($result->{Last_Errno},$result->{Last_Error});
-
-    # now we can analyse
-    $flag ++ if ($s_slave_io_running ne 'Yes');
-    $flag ++ if ($s_slave_sql_running ne 'Yes');
-
-    $return .= 'Slave_IO_Running state : '.$s_slave_io_running.', Slave_SQL_Running state : '.$s_slave_sql_running;
-
-    if ($flag > 0) {
-        $plugstate = "CRITICAL";
-        $return .= 'last_errno : '.$s_last_errno.', last error : '.$s_last_error if (($s_last_errno) or ($s_last_error));
-    }
-
-    $return .= ' ; synchronized with '.$master_login.'@'.$master_address.':'.$master_port if ($more_value);
-}
-
-# lag action
-# ----------
-elsif ($action eq 'lag') { 
-
-    # About the slave
-    my $result = request_executor ("$slave_address",$slave_port,$slave_login,$slave_pwd,"SHOW SLAVE STATUS;");
-    my $s_slave_sbm = $result->{Seconds_Behind_Master};
-    my ($master_address,$master_port,$master_login) = ($result->{Master_Host},$result->{Master_Port},$result->{Master_User});
-
-    $return .= ' Seconds_Behind_Master : '.$s_slave_sbm.'s';
-
-    # now we can analyse
-    $plugstate = "WARNING" if (($s_slave_sbm >= $warning) and ($s_slave_sbm < $critical));
-    $plugstate = "CRITICAL" if ($s_slave_sbm >= $critical);
-    $plugstate = "CRITICAL" if (lc($s_slave_sbm) eq "null");
-
-    $return .= ' ; synchronized with '.$master_login.'@'.$master_address.':'.$master_port if ($more_value);
-    $return .= ' | behindMaster='.$s_slave_sbm.'s' if ($perfdata_value);
-}
-
-# default
-# -------
-else {
-    print $display.'problem ! action value must be "process" or "lag"';
+unless (($action eq 'process') || ($action eq 'both') || ($action eq 'lag')) {
+    print $display.'problem ! action value must be "process", "lag" or "both"';
     exit $ERRORS{"UNKNOWN"};
 }
 
+# Let's start the game
+
+# First we check if replication is Running
+my $result = &request_executor("$slave_address",$slave_port,$slave_login,$slave_pwd,"SHOW SLAVE STATUS");
+my $s_slave_sios = $result->{Slave_IO_State} || '';
+if (($s_slave_sios eq 'Waiting for master to send event') or ($s_slave_sios eq 'Queueing master event to the relay log')) {
+
+    my $flag = 0;
+
+    # process action
+    # --------------
+    if (($action eq 'process') || ($action eq 'both')) {
+
+        # About the slave
+        my $result = &request_executor("$slave_address",$slave_port,$slave_login,$slave_pwd,"SHOW SLAVE STATUS");
+        my ($s_slave_io_running,$s_slave_sql_running) = ($result->{Slave_IO_Running},$result->{Slave_SQL_Running});
+        my ($master_address,$master_port,$master_login) = ($result->{Master_Host},$result->{Master_Port},$result->{Master_User});
+        my ($s_last_errno,$s_last_error) = ($result->{Last_Errno},$result->{Last_Error});
+
+        # now we can analyse
+        $flag ++ if ($s_slave_io_running ne 'Yes');
+        $flag ++ if ($s_slave_sql_running ne 'Yes');
+
+        $return .= 'Slave_IO_Running state : '.$s_slave_io_running.', Slave_SQL_Running state : '.$s_slave_sql_running;
+
+        if ($flag > 0) {
+            $plugstate = "CRITICAL";
+            $return .= 'last_errno : '.$s_last_errno.', last error : '.$s_last_error if (($s_last_errno) or ($s_last_error));
+        }
+
+        $return .= ' ; synchronized with '.$master_login.'@'.$master_address.':'.$master_port if ($more_value);
+    }
+
+    # lag action
+    # ----------
+    if ($action eq 'lag' || (($action eq 'both') && ($flag == 0))) { 
+
+        # About the slave
+        my $result = &request_executor("$slave_address",$slave_port,$slave_login,$slave_pwd,"SHOW SLAVE STATUS");
+        my $s_slave_sbm = $result->{Seconds_Behind_Master};
+        my $s_slave_sios = $result->{Slave_IO_State};
+        my ($master_address,$master_port,$master_login) = ($result->{Master_Host},$result->{Master_Port},$result->{Master_User});
+
+        if (defined $s_slave_sbm) {
+            $return .= ', ' if ($action eq 'both'); 
+            $return .= 'Seconds_Behind_Master : '.$s_slave_sbm.'s';
+
+            # now we can analyse
+            $plugstate = "WARNING" if (($s_slave_sbm >= $warning) and ($s_slave_sbm < $critical));
+            $plugstate = "CRITICAL" if (($s_slave_sbm >= $critical) or ($s_slave_sbm eq ''));
+
+            $return .= ' ; synchronized with '.$master_login.'@'.$master_address.':'.$master_port if ($more_value);
+            $return .= ' | behindMaster='.$s_slave_sbm.'s' if ($perfdata_value);
+        }
+        else {
+            # Replication isn't running, so lag doesn't matter
+            $plugstate = "CRITICAL";
+            $return .= ' Replication not running';
+        }
+    }
+}    
+else {
+    # not in waiting state!
+    $return = " Slave IO State not correct, slave stopped or replication broken!";
+    $plugstate = "CRITICAL";
+}
+
+
 print $display.$action." - ".$plugstate." - ".$return;
 exit $ERRORS{$plugstate};
+
+
 
 # ####################################################################
 # function 1 :  display the help
@@ -239,10 +294,11 @@ Options:
     mysql password
     default is password1
  -a, --action=STRING
-    specify the action : process|lag
+    specify the action : process|lag|both
     default is process
     process : display state of slave threads
     lag : display the number of second behind the master
+    both : do process, then lag checks in one pass
  -c, --critical=INT
     specify a threshold for the lag action.
     default is 10
@@ -296,7 +352,7 @@ EOT
 # ------------------------------
 sub request_executor() {
     my ($host,$port,$user,$pwd,$request) = @_;
-    my $dsn = "DBI:mysql:database=mysql;host=$host:$port";
+    my $dsn = "DBI:mysql:database=;host=$host:$port";
     my $dbh = DBI->connect($dsn, $user, $pwd) or die "connexion failed $DBI::errstr\n";
     my $sth = $dbh->prepare($request);
     $sth->execute();
