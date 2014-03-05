@@ -800,7 +800,7 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
         class { "openstack::repo": openstack_version => $openstack_version }
     }
 
-    if ( $realm == "production" ) {
+    if ( $::realm == "production" ) {
         $certname = "virt-star.${site}.wmnet"
         install_certificate{ "${certname}": }
         install_additional_key{ "${certname}": key_loc => "/var/lib/nova", owner => "nova", group => "libvirtd", require => Package["nova-common"] }
