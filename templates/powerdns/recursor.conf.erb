@@ -6,7 +6,7 @@
 		result = []
 
 		if ips.is_a?(Hash) then
-			ips.values.each do |v|
+			ips.sort.map do |k, v|
 				result += flatten_ips(v)
 			end
 		elsif ips.is_a?(Array) then
