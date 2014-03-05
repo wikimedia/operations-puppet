@@ -74,4 +74,4 @@ UDebComponents:
 Suite: precise
 Architectures: amd64
 VerifyRelease: 5A16E7281BE7A449
-ListShellHook: grep-dctrl -X -S hhvm || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -X -P hhvm -o -X -P hhvm-fastcgi || [ $? -eq 1 ]
