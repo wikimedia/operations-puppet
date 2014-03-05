@@ -1,0 +1,100 @@
+#!/bin/sh
+
+#
+# This script is intended to be used to symlink .jar files found
+# in an Archiva repository into a directory with links named by
+# the .jars' sha1 sum.  If the .jar file's sha1 does not match the
+# sha1 that archiva expects, the file will not be symlinked.
+#
+
+
+usage () {
+    script_name=$(basename ${0})
+    echo "
+${script_name} <artifact-repository-path> <git-fat-path> [--real-paths]
+  Creates symlinks from all .jars found in <artifact-repository-path>
+  to sha1 filenames in <git-fat-path>.
+
+  If --real-paths is passed as the last argument, the full absolute
+  real paths to targets in artifact-repository-path will be used
+  when creating symlinks.  Otherwise targets will be linked to
+  as they are returned by find.  (WMF is not currently using this option).
+
+  Example: ${script_name} /var/lib/archiva/repositories /var/lib/git-fat/archiva
+"
+}
+
+# Prints absolute realpath of a file.
+# This works on OS X using python and Linux using readlink -f.
+real_path () {
+    # if on OS X, use python.  OS X doesn't have readlink -f
+    if [ $(uname) = 'Darwin' ]; then
+        echo $(python -c "import os,sys; print os.path.realpath(sys.argv[1])" "${1}")
+    # else just use readlink -f
+    else
+        echo $(readlink -f "${1}")
+    fi
+}
+
+if [ -z "${1}" -o -z "${2}" ]; then
+    usage
+    exit 1
+fi
+
+
+
+artifact_repository_path="${1}"
+git_fat_path="${2}"
+
+if [ "${3}" = '--real-paths' ]; then
+    real_paths='yes'
+else
+    real_paths='no'
+fi
+
+
+exitval=0
+
+# First remove any broken links (files that have been deleted from archiva)
+/usr/bin/find -L "${git_fat_path}" -type l -exec rm -v {} \;
+
+# Find all .jar files and symlink them.
+# We sort them so that any jars with identical shas will have the
+# alphanumerically latest jar linked last.
+find $artifact_repository_path -type f -name "*.jar" | sort | xargs shasum | while read line; do
+    # get the filenames and their sha1 sums out of the shasum output
+    sha1=$(echo ${line} | awk '{print $1}');
+    file=$(echo ${line} | awk '{print $2}');
+
+    # If  no .jars were found, shasum will operate on empty stdin.
+    # We can stop now if file is ever '-'.
+    if [ "${file}" = '-' ]; then
+        echo "No .jar files found in ${artifact_repository_path} to symlink."
+        break
+    fi
+
+
+    # $archiva_file will be symlinked from $git_fat_file
+    git_fat_file="${git_fat_path}/${sha1}"
+
+    if [ "${real_paths}" = 'yes' ]; then
+        archiva_file=$(real_path "${file}")
+    else
+        archiva_file="${file}"
+    fi
+
+    # Archiva keeps sha1s of every file it downloads in its repository.
+    # Make sure archiva's sha1 sum matches the sha1 we just computed.
+    archiva_sha1=$(awk '{print $1}' ${archiva_file}.sha1)
+    if [ "${sha1}" != "${archiva_sha1}" ]; then
+        echo "WARNING: ${archiva_file} sha1 does not match expected sha1 from archiva: ${sha1} != ${archiva_sha1}.  Not symlinking into git-fat store."
+        test -f "${git_fat_file}" && rm -fv "${git_fat_file}"
+        exitval=1
+        continue
+    fi
+    
+    # symlink $git_fat_file -> $archiva_file if it isn't already a link
+    test -L "${git_fat_file}" || /bin/ln -svf "${archiva_file}" "${git_fat_file}"
+done
+
+exit $exitval
