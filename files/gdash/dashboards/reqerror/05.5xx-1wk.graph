@@ -1,5 +1,6 @@
 title   "HTTP 5xx Responses/hour -1week"
 linewidth 2
+logbase 10
 linemode "connected"
 hide_legend "false"
 from "-1 week"
