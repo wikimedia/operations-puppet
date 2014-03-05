@@ -26,4 +26,12 @@ ProxyRequests		Off
 	Order deny,allow
 	deny from env=bad_browser
 
+	# Jenkins is behind the misc varnish, the API calls lacks cache headers
+	# and their 4xx errors ends up being cached which causes troubles when
+	#
+	# Jenkins job builder creates a job (it check whether a job exists by
+	# hitting the API, which cache a 404, then checks whether the job got
+	# successfullyy created and fails beacuse it is server the cached 404).
+	SetEnvIf Request_URI .*/api/json.* NO_CACHE
+	Header set Cache-Control "no-cache,must-revalidate" env=NO_CACHE
 </Proxy>
