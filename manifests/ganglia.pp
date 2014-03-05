@@ -335,7 +335,7 @@ class ganglia {
                         "Upload caches ulsfo"            => 'cp4005.ulsfo.wmnet cp4013.ulsfo.wmnet',
                         "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
                         "Text caches ulsfo"              => 'cp4008.ulsfo.wmnet cp4016.ulsfo.wmnet',
-                        "Elasticsearch eqiad"            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet',
+                        "Elasticsearch eqiad"            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet elastic1013.eqiad.wmnet',
                         "Logstash eqiad"                 => 'logstash1001.eqiad.wmnet logstash1003.eqiad.wmnet',
 
                     }
