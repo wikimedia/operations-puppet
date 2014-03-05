@@ -18,7 +18,7 @@ class role::applicationserver {
 
 	$mediawiki_log_aggregator = $::realm ? {
 		'production' => 'fluorine.eqiad.wmnet:8420',
-		'labs'       => 'deployment-bastion.pmtpa.wmflabs:8420',
+		'labs'       => "deployment-bastion.${::site}.wmflabs:8420",
 	}
 
 	class configuration::php {
