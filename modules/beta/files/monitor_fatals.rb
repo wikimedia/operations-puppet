@@ -15,7 +15,7 @@ Subject: New fatal errors on beta labs
 
 The file at /data/project/logs/fatal.log on the deployment cluster has a new
 entry within the last twelve hours.  You should check it out by connecting on
-any instance on the beta cluster (ie: deployment-bastion.pmtpa.wmflabs ).
+any instance on the beta cluster (ie: deployment-bastion).
 
 You can also look at logstash:
 
