@@ -2626,6 +2626,9 @@ node 'tin.eqiad.wmnet' {
 
 node 'titanium.wikimedia.org' {
     include standard
+    include admins::roots
+
+    include role::archiva
 }
 
 
