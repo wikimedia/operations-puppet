@@ -370,14 +370,14 @@ class misc::deployment::vars ($system = 'scap') {
 			mode    => '0775',
 		}
 	} else {
-		$mw_rsync_host = 'deployment-bastion.pmtpa.wmflabs'
+		$mw_rsync_host = "deployment-bastion.${::site}.wmflabs"
 
-		$mw_carbon_host = 'deployment-bastion.pmtpa.wmflabs'
+		$mw_carbon_host = "deployment-bastion.${::site}.wmflabs"
 		$mw_carbon_port = 2003
 
         # The Apache directories must belong to the mwdeploy user known on
-        # deployment-bastion.pmtpa.wmflabs. That is the instance used by
-        # Jenkins to deploy and updte the code.
+        # deployment-bastion.{eqiad,pmtpa}.wmflabs. They are the instances used
+        # by Jenkins to deploy and updte the code.
         # Since /data/project is shared and 'mwdeploy' can have a different uid
         # on each instance, running owner => mwdeploy would change the UID and
         # break Jenkins job with some permission denied.
