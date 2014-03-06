@@ -958,8 +958,8 @@ node 'fenari.wikimedia.org' {
     include generic::wikidev-umask
     include misc::dsh
     include ssh::hostkeys-collect
-
     install_certificate{ 'noc.wikimedia.org': }
+
 }
 
 node 'fluorine.eqiad.wmnet' {
@@ -2506,6 +2506,7 @@ node 'terbium.eqiad.wmnet' {
     include misc::deployment::scap_scripts
     include icinga::monitor::jobqueue
     include misc::monitoring::jobqueue
+    include misc::maintenance::updatetranslationstats
     include admins::roots
     include admins::mortals
     include admins::restricted
