@@ -19,6 +19,7 @@
 # $+owner+:: Owner of $directory, default: _root_.  git commands will be run
 #  by this user.
 # $+group+:: Group owner of $directory, default: 'root'
+# $+recurse_submodules:: If true, git
 # $+mode+:: Permission mode of $directory, default: 0755
 # $+ssh+:: SSH command/wrapper to use when checking out, default: ''
 # $+timeout+:: Time out in seconds for the exec command, default: 300
@@ -49,6 +50,7 @@ define git::clone(
     $group='root',
     $timeout='300',
     $depth='full',
+    $recurse_submodules=false,
     $mode=0755) {
 
     $gerrit_url_format = 'https://gerrit.wikimedia.org/r/p/%s.git'
@@ -70,6 +72,10 @@ define git::clone(
 
         # otherwise clone the repository
         default: {
+            $recurse_submodules_arg = $recurse_submodules ? {
+                true    => '--recurse-submodules ',
+                default => '',
+            }
             # if branch was specified
             if $branch {
                 $brancharg = "-b $branch "
@@ -91,7 +97,7 @@ define git::clone(
             Exec { path => '/usr/bin:/bin' }
             # clone the repository
             exec { "git_clone_${title}":
-                command     => "git clone ${brancharg}${remote}${deptharg} $directory",
+                command     => "git clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg} $directory",
                 logoutput   => on_failure,
                 cwd         => '/tmp',
                 environment => $env,
@@ -100,6 +106,7 @@ define git::clone(
                 group       => $group,
                 timeout     => $timeout,
                 require     => Package['git-core'],
+                notify      => $notify_submodule_exec,
             }
 
             if (!defined(File[$directory])) {
@@ -112,11 +119,12 @@ define git::clone(
                 }
             }
 
+
             # pull if $ensure == latest and if there are changes to merge in.
             if $ensure == 'latest' {
                 exec { "git_pull_${title}":
                     cwd       => $directory,
-                    command   => "git pull --quiet${deptharg}",
+                    command   => "git pull ${recurse_submodules_arg}--quiet${deptharg}",
                     logoutput => on_failure,
                     # git diff --quiet will exit 1 (return false)
                     #  if there are differences
@@ -124,8 +132,22 @@ define git::clone(
                     user      => $owner,
                     group     => $group,
                     require   => Exec["git_clone_${title}"],
+                    notify    => $notify_submodule_exec,
+                }
+                # If we want submodules up to date, then we need
+                # to run git submodule update --init after
+                # git pull is run.
+                if $recurse_submodules {
+                    exec { "git_submodule_update_${title}":
+                        command     => 'git submodule update --init',
+                        cwd         => $directory,
+                        environment => $env,
+                        refreshonly => true,
+                        subscribe   => Exec["git_pull_${title}"],
+                    }
                 }
             }
+
         }
     }
 }
