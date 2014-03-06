@@ -880,7 +880,8 @@ node "fenari.wikimedia.org" {
         accounts::erosen,
         generic::wikidev-umask,
         misc::dsh,
-        ssh::hostkeys-collect
+        ssh::hostkeys-collect,
+        misc::maintenance::updatetranslationstats
     install_certificate{ "noc.wikimedia.org": }
 }
 
