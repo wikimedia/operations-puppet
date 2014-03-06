@@ -28,7 +28,7 @@ def main():
     ldapSupportLib.addParserOptions(parser)
 
     parser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="Show the database and search filter used for this search")
-    parser.add_option("-l", "--longlisting", action="store_true", dest="longlisting", help="List all the attributes for each  entry  matching  the search  criteria.  By default, ldaplist lists only the Distiguished Name of the entries found.")
+    parser.add_option("-l", "--longlisting", action="store_true", dest="longlisting", help="List all the attributes for each entry matching the search criteria.  By default, ldaplist lists only the Distinguished Name of the entries found.")
     parser.add_option("-h", action="store_true", dest="helpme", help="Show available databases to search")
     parser.add_option("-d", "--showdatabase", action="store_true", dest="showdatabase", help="Show the base dn being used for this database")
     parser.add_option("-a", "--showattributes", dest="showattributes", help="Show the given attributes")
