@@ -25,7 +25,7 @@ class role::labs::instance {
 
     if $::site == 'eqiad' {
 
-        $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime'
+        $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc'
         $nfs_server = 'labstore.svc.eqiad.wmnet'
 
         mount { '/home':
