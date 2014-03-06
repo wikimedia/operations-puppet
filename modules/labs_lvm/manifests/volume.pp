@@ -43,6 +43,7 @@ define labs_lvm::volume(
     }
 
     exec { "create-vd-$volname":
+        creates     => "/dev/vd/$volname",
         unless      => "/sbin/lvdisplay -c vd/$volname",
         require     => [
                          File['/usr/local/sbin/make-instance-vol'],
@@ -58,7 +59,7 @@ define labs_lvm::volume(
     mount { $mountat:
         ensure      => mounted,
         atboot      => true,
-        device      => "/dev/mapper/vd-$volname",
+        device      => "/dev/vd/$volname",
         options     => "defaults",
         fstype      => $fstype,
         require     => [
