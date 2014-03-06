@@ -2519,6 +2519,9 @@ node 'terbium.eqiad.wmnet' {
     class { 'misc::maintenance::translationnotifications':
         enabled => true,
     }
+    class { 'misc::maintenance::updatetranslationstats':
+        enabled => true,
+    }
     class { 'misc::maintenance::wikidata':
         enabled => true,
     }

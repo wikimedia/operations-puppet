@@ -377,6 +377,26 @@ class misc::maintenance::mail_exim_aliases( $enabled = false ) {
 
 }
 
+class misc::maintenance::updatetranslationstats( $enabled => $ensure='absent' ) {
+    # Include this to a maintenance host to update translation stats.
+
+    file { '/usr/local/bin/characterEditStatsTranslate':
+       ensure => $enabled,
+       owner  => 'mwdeploy',
+       group  => 'mwdeploy',
+       mode   => 0775,
+       source => 'puppet:///files/misc/scripts/characterEditStatsTranslate',
+    }
+    cron { 'updatetranslationstats':
+        user    => 'mwdeploy',
+        minute  => 0,
+        hour    => 0,
+        weekday => 1,
+        command => '/usr/local/bin/characterEditStatsTranslate',
+        ensure  => $enabled,
+    }
+}
+
 class misc::maintenance::updatequerypages( $enabled = false ) {
         # Include this to add cron jobs calling updateSpecialPages.php on all clusters.
 
