@@ -1924,55 +1924,6 @@ node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
     include standard
 }
 
-# mw1-16 are application servers for jobrunners only (precise)
-node /^mw([1-9]|1[0-6])\.pmtpa\.wmnet$/ {
-    if $::hostname =~ /^mw[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    class { 'role::applicationserver::jobrunner':
-        run_jobs_enabled => false,
-    }
-}
-
-# mw17-59 are application servers (precise)
-node /^mw(1[7-9]|[2-5][0-9])\.pmtpa\.wmnet$/ {
-    include role::applicationserver::appserver
-    include nfs::upload
-}
-
-# mw60-61 are bits application servers (precise)
-node /^mw6[01]\.pmtpa\.wmnet$/ {
-    include role::applicationserver::appserver::bits
-}
-
-# mw62-74 are api application servers (precise)
-node /^mw(6[2-9]|7[0-4])\.pmtpa\.wmnet$/ {
-    include role::applicationserver::appserver::api
-    include nfs::upload
-}
-
-# mw75-80 are imagescalers (precise)
-node /^mw(7[5-9]|80)\.pmtpa\.wmnet$/ {
-    if $::hostname =~ /^mw7[56]$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::applicationserver::imagescaler
-}
-
-# mw81-111 are application servers (precise)
-node /^mw(8[1-9]|9[0-9]|10[0-9]|111)\.pmtpa\.wmnet$/ {
-    include role::applicationserver::appserver
-    include nfs::upload
-}
-
-# mw112-125 are api application servers (precise)
-node /^mw(11[2-9]|12[0-5])\.pmtpa\.wmnet$/ {
-    include role::applicationserver::appserver::api
-    include nfs::upload
-}
-
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     if $::hostname =~ /^mw100[12]$/ {
@@ -2358,52 +2309,6 @@ node 'sodium.wikimedia.org' {
         address   => '2620:0:861:1::2',
         prefixlen => '128',
     }
-}
-
-# srv193 was test.wikipedia.org (precise)
-# on 20130711 test has been switched over to mw1017
-node 'srv193.pmtpa.wmnet' {
-    include role::applicationserver::appserver::test
-    include nfs::upload
-    include nfs::netapp::home
-    include memcached
-}
-
-# srv235-247 are application servers (precise)
-node /^srv(23[5-9]|24[0-7])\.pmtpa\.wmnet$/ {
-    include role::applicationserver::appserver
-    include nfs::upload
-}
-
-# srv248-249 are bits application servers (precise)
-node /^srv24[89]\.pmtpa\.wmnet$/ {
-    $ganglia_aggregator = true
-    include role::applicationserver::appserver::bits
-}
-
-# srv250-257 are API application servers (precise)
-node /^srv25[0-7]\.pmtpa\.wmnet$/ {
-    if $::hostname =~ /^srv25[45]$/ {
-        $ganglia_aggregator = true
-    }
-    include role::applicationserver::appserver::api
-    include nfs::upload
-}
-
-# srv258-289 are applicationservers (precise)
-node /^srv(25[89]|2[6-8][0-9])\.pmtpa\.wmnet$/ {
-    if $::hostname =~ /^srv25[89]$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::applicationserver::appserver
-    include nfs::upload
-}
-
-# srv290-301 are API application servers (precise)
-node /^srv(29[0-9]|30[01])\.pmtpa\.wmnet$/ {
-    include role::applicationserver::appserver::api
-    include nfs::upload
 }
 
 node /ssl100[1-9]\.wikimedia\.org/ {
