@@ -49,6 +49,7 @@ define git::clone(
     $group='root',
     $timeout='300',
     $depth='full',
+    $submodules_enabled=false,
     $mode=0755) {
 
     $gerrit_url_format = 'https://gerrit.wikimedia.org/r/p/%s.git'
@@ -87,6 +88,14 @@ define git::clone(
                 default => " --depth=$depth"
             }
 
+            # If $submodules_enabled, then make
+            # the clone and pull execs notify
+            # the git submodule update --init command.
+            $notify_submodule_exec = $submodules_enabled ? {
+                true    => Exec["git_submodule_update_${title}"],
+                default => undef,
+            }
+
             # set PATH for following execs
             Exec { path => '/usr/bin:/bin' }
             # clone the repository
@@ -100,6 +109,7 @@ define git::clone(
                 group       => $group,
                 timeout     => $timeout,
                 require     => Package['git-core'],
+                notify      => $notify_submodule_exec,
             }
 
             if (!defined(File[$directory])) {
@@ -111,6 +121,7 @@ define git::clone(
                     require => Exec["git_clone_${title}"],
                 }
             }
+
 
             # pull if $ensure == latest and if there are changes to merge in.
             if $ensure == 'latest' {
@@ -124,7 +135,17 @@ define git::clone(
                     user      => $owner,
                     group     => $group,
                     require   => Exec["git_clone_${title}"],
+                    notify    => $notify_submodule_exec,
                 }
+            }
+
+            # this will only happen if the git clone or git pull
+            # exec run and notify this.
+            exec { "git_submodule_update_${title}":
+                command     => 'git submodule update --init',
+                cwd         => $directory,
+                environment => $env,
+                refreshonly => true,
             }
         }
     }
