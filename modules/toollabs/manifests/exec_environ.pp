@@ -235,6 +235,7 @@ class toollabs::exec_environ {
         'mariadb-client',              # For /usr/bin/mysql.
         'mdbtools',                    # Bug #48805.
         'socat',                       # Bug 57005
+        'supybot',                     # Bug 61088.
         'p7zip',
         'phpunit',
         'poppler-utils',               # Bug #53869.
