@@ -17,7 +17,7 @@ Returns the keys of a hash as an array.
       raise(Puppet::ParseError, 'keys(): Requires hash to work with')
     end
 
-    result = hash.keys
+    result = hash.keys.sort
 
     return result
   end
