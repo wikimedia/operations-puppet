@@ -987,8 +987,9 @@ node 'fenari.wikimedia.org' {
     include generic::wikidev-umask
     include misc::dsh
     include ssh::hostkeys-collect
-
+    include misc::maintenance::updatetranslationstats
     install_certificate{ 'noc.wikimedia.org': }
+
 }
 
 node 'fluorine.eqiad.wmnet' {
