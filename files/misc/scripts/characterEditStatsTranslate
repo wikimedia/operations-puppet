@@ -1,0 +1,17 @@
+#!/bin/bash
+# Maintenance report script to produce activity stats for some Translate wikis
+REPORT="$HOME/public_html/Translate-wikis-characterEditStats.txt"
+
+echo -e "{{/Report}} generated on $(date --rfc-3339=seconds)\n" > $REPORT
+for wiki in commonswiki incubatorwiki mediawikiwiki metawiki outreachwiki wikidata; do
+    echo -e "== $wiki ==\n=== Last 30 days ===\n<pre>\n" >> $REPORT
+    /usr/local/bin/mwscript extensions/Translate/scripts/characterEditStats.php \
+        --top 50 --days 30 >> $REPORT
+    echo -e "</pre>\n=== Last year ===\n<pre>" >> $REPORT
+    /usr/local/bin/mwscript extensions/Translate/scripts/characterEditStats.php \
+        --days 365 >> $REPORT
+    echo -e "</pre>\n" >> $REPORT
+    done
+
+cat $REPORT | /usr/local/bin/mwscript edit.php --wiki=metawiki --user "FuzzyBot" \
+    --bot --summary "Update stats" "Meta:Babylon/Translation_stats"

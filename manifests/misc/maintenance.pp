@@ -377,6 +377,23 @@ class misc::maintenance::mail_exim_aliases( $enabled = false ) {
 
 }
 
+class misc::maintenance::updatetranslationstats( $enabled = false ) {
+    # Include this to a maintenance host to update translation stats.
+
+    cron { 'updatetranslationstats':
+        user    => mwdeploy,
+        minute  => 0,
+        hour    => 0,
+        weekday => 1,
+        command => "/usr/bin/characterEditStatsTranslate",
+        ensure  => $enabled ?{
+            true    => present,
+            false   => absent,
+            default => absent
+        };
+    }
+}
+
 class misc::maintenance::updatequerypages( $enabled = false ) {
         # Include this to add cron jobs calling updateSpecialPages.php on all clusters.
 
