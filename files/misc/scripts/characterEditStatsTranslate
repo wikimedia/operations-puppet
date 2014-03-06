@@ -1,0 +1,18 @@
+#!/bin/bash
+{
+  # We transclude a subpage so that wikignomes can maintain documentation of this
+  # report on wiki without bothering the code. Newlines needs -e.
+  echo -e "{{/Report}} generated on $(date --rfc-3339=seconds)\n"
+
+  # Pick the main multilingual Translate wikis, all closely related to Meta
+  for wiki in commonswiki incubatorwiki mediawikiwiki metawiki outreachwiki ; do
+    echo -e "== $wiki ==\n=== Last 30 days ===\n<pre>\n"
+    /usr/local/bin/mwscript extensions/Translate/scripts/characterEditStats.php \
+        --wiki $wiki --top 50 --days 30
+    echo -e "</pre>\n=== Last year ===\n<pre>"
+    /usr/local/bin/mwscript extensions/Translate/scripts/characterEditStats.php \
+        --wiki $wiki --days 365
+    echo -e "</pre>\n"
+  done
+} | /usr/local/bin/mwscript edit.php --wiki=metawiki --user "FuzzyBot" \
+    --bot --summary "Update stats" "Meta:Babylon/Translation_stats"
