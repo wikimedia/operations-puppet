@@ -41,6 +41,7 @@ sub mobile_redirect {
 			} else {
 				set req.http.Location = "http://" + req.http.MobileHost + req.url;
 			}
+			set req.http.Content-Length = '0'; # https://bugzilla.wikimedia.org/show_bug.cgi?id=62245
 			error 666 "Found";
 		}
 		unset req.http.MobileHost;
