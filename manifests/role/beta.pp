@@ -8,8 +8,13 @@ class role::beta::bastion {
     class { 'misc::maintenance::geodata': enabled => true }
 
     include beta::autoupdater
-    include beta::fatalmonitor
     include beta::syncsiteresources
+
+    # Disable fatalmonitor on eqiad beta cluster to avoid duplicate emails.
+    # FIXME remove condition once beta cluster has been migrated.
+    if $::site == 'pmtpa' {
+        include beta::fatalmonitor
+    }
 }
 
 # Should be applied on any instance that needs to access DNS entries pointing
