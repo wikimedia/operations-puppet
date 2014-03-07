@@ -25,7 +25,7 @@ sub mobile_redirect {
 		|| req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
 		&& req.http.User-Agent !~ "(iPad|Android.3|(?i)tablet|PlayBook|Wii)"
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
-		&& req.url ~ "^/wiki/") {
+		&& req.url ~ "^/wiki[/\?]") {
 
 		# Separate regexps for clarity, but multiple regsubs instead of
 		# "if host ~"/regsub matches for efficiency. Be careful to not
