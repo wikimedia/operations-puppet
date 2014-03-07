@@ -729,6 +729,13 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
         require => Package["dnsmasq"];
     }
 
+    file { '/etc/dnsmasq-nova.conf':
+        source => "puppet:///files/openstack/${openstack_version}/nova/dnsmasq-nova.conf",
+        owner => 'root',
+        group => 'root',
+        mode => '0444',
+    }
+
     sysctl::parameters { 'openstack':
         values => {
             # Turn off IP filter
