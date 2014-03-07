@@ -74,9 +74,9 @@ class toollabs::exec_environ {
         'libdigest-hmac-perl',
         'libfile-nfslock-perl',
         'libhtml-html5-entities-perl',
+        'libhtml-format-perl',
         'libhtml-parser-perl',
         'libhtml-template-perl',       # Bug 57123
-        'libhtml-text-perl',
         'libhttp-message-perl',
         'libimage-exiftool-perl',      # Bug #53868.
         'libio-socket-ssl-perl',
