@@ -2,7 +2,7 @@
 #
 #  This will create a server running RT with apache.
 #
-class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $dbhost = 'localhost', $dbport = '3306', $datadir = '/var/lib/mysql' ) {
+class misc::rt-apache::server ( $dbuser, $dbpass, $website = 'rt.wikimedia.org', $dbhost = 'localhost', $dbport = '3306', $datadir = '/var/lib/mysql' ) {
   system::role { 'misc::rt-apache::server': description => 'RT server with Apache' }
 
 
@@ -93,7 +93,7 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
     notify      => Service[apache2];
   }
 
-  file { "/etc/apache2/sites-available/${site}":
+  file { "/etc/apache2/sites-available/${website}":
     ensure  => present,
     owner   => root,
     group   => root,
@@ -116,8 +116,8 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
     name => 'perl',
   }
 
-  apache_site { "${site}":
-    name => "${site}"
+  apache_site { "${website}":
+    name => "${website}"
   }
 
 }
