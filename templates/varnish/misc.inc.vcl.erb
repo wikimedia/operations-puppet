@@ -18,6 +18,8 @@ sub vcl_recv {
 		set req.backend = caesium;
 	} elsif (req.http.Host == "scholarships.wikimedia.org") {
 		set req.backend = zirconium;
+	} elsif (req.http.Host == "parsoid-tests.wikimedia.org") {
+		set req.backend = ruthenium;
 	} else {
 		error 404 "Domain not served here";
 	}
