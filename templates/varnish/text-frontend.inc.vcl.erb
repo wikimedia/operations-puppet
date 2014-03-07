@@ -114,6 +114,9 @@ sub vcl_error {
 		set obj.http.Location = req.http.Location;
 		set obj.status = 302;
 		set obj.http.Connection = "keep-alive";
+		if (!obj.http.Content-Length) {
+			set obj.http.Content-Length = '0'; # https://bugzilla.wikimedia.org/show_bug.cgi?id=62245
+		}
 		return(deliver);
 	}
 
