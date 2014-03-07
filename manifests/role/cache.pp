@@ -1196,6 +1196,7 @@ class role::cache {
                 'ytterbium.wikimedia.org',
                 'tungsten.eqiad.wmnet',
                 'zirconium.wikimedia.org',
+                'ruthenium.wikimedia.org', # parsoid rt test server
                 'logstash1001.eqiad.wmnet',
                 'logstash1002.eqiad.wmnet',
                 'logstash1003.eqiad.wmnet',
@@ -1204,6 +1205,10 @@ class role::cache {
             {
                 'backend_match' => '^(antimony|ytterbium)',
                 'port' => 8080,
+            },
+            {
+                'backend_match' => '^(ruthenium)',
+                'port' => 8001,
             },
             {
                 'backend_match' => '^logstash',
