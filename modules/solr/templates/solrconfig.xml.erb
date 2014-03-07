@@ -1050,7 +1050,7 @@
   <% if replication_master != :undef then -%>
      <requestHandler name="/replication" class="solr.ReplicationHandler" >
 
-       <% if scope.lookupvar('::fqdn') == replication_master then -%>
+       <% if @fqdn == replication_master then -%>
 
        <lst name="master">
          <str name="replicateAfter">commit</str>
