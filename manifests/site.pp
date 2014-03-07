@@ -1638,6 +1638,18 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         netmask        => '255.255.252.0',
     }
     # Row D subnets on eth3
+    interface::tagged { 'eth3.1004':
+        base_interface => 'eth3',
+        vlan_id        => '1004',
+        address        => $ips['public1-d-eqiad'][$::hostname],
+        netmask        => '255.255.255.224',
+    }
+    interface::tagged { 'eth3.1020':
+        base_interface => 'eth3',
+        vlan_id        => '1020',
+        address        => $ips['private1-d-eqiad'][$::hostname],
+        netmask        => '255.255.252.0',
+    }
 
     # Make sure GRO is off
     interface::manual { 'eth1':
