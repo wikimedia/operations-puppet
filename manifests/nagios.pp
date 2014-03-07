@@ -54,8 +54,6 @@ define monitor_host(
             target          => "${::nagios_config_dir}/puppet_hostextinfo.cfg",
             host_name       => $title,
             notes           => $title,
-            # Needs c       = cluster parameter. Let's fix this cleanly with Puppet 2.6 hashes
-            notes_url       => "${::ganglia_url}/?c=${ganglia_new::monitor::config::cname}&h=${fqdn}&m=&r=hour&s=descending&hc=4",
             icon_image      => "${image}.png",
             vrml_image      => "${image}.png",
             statusmap_image => "${image}.gd2",
