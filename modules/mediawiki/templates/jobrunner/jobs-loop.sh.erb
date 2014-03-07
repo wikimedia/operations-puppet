@@ -210,6 +210,8 @@ else
 	hpriotypes="$hpriotypes TranslateRenderJob TranslateMoveJob TranslateDeleteJob" # translate
 	hpriotypes="$hpriotypes uploadFromUrl" # upload
 	hpriotypes="$hpriotypes MassMessageJob MassMessageSubmitJob" # MassMessage
+	hpriotypes="$hpriotypes cirrusSearchLinksUpdatePrioritized" # CirrusSearch priority jobs
+	hpriotypes="$hpriotypes cirrusSearchDeletePages" # CirrusSearch priority jobs
 	(runJobsLoopService "$hpriotypes" "y" <%= dprioprocs %>) &
 
 	# Start loops for highly I/O bound jobs that work on special services (e.g. not the DBs)
