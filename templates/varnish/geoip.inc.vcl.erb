@@ -135,7 +135,7 @@ sub geoip_lookup {
 sub geoip_cookie {
 	C{
 		GeoIPRecord *record;
-		char *set_cookie_header;
+		char *geo_header;
 		const char *cookie_out = NULL;
 		char cookie_buf[255];
 
@@ -166,13 +166,17 @@ sub geoip_cookie {
 		}
 
 		if (cookie_out) {
-			set_cookie_header = VRT_GetHdr(sp, HDR_RESP, "\013set-cookie:");
-			if (set_cookie_header == NULL) {
-				// New header
-				VRT_SetHdr(sp, HDR_RESP, "\013Set-Cookie:", cookie_out, vrt_magic_string_end);
-			} else {
-				// Append to existing header
-				VRT_SetHdr(sp, HDR_RESP, "\013Set-Cookie:", set_cookie_header, "; ", cookie_out, vrt_magic_string_end);
+			/*
+			 * If multiple Set-Cookie headers are set, VRT_GetHdr will only get the first,
+			 * but VRT_SetHdr will clobber all of them. Varnish provides no facility for
+			 * combining multiple instances of a particular header. We hack around that
+			 * by creating a header with a unique name ("Xet-Cookie"), and then changing
+			 * the name to "Set-Cookie".
+			 */
+			VRT_SetHdr(sp, HDR_RESP, "\013Xet-Cookie:", cookie_out, vrt_magic_string_end);
+			geo_header = VRT_GetHdr(sp, HDR_RESP, "\013Xet-Cookie:");
+			if (geo_header != NULL && strncmp(geo_header - 12, "Xet-Cookie: ", 12) == 0) {
+				*(geo_header - 12) = 'S';
 			}
 		}
 	}C
