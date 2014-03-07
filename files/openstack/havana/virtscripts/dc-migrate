@@ -55,7 +55,10 @@ then
 	exit 1
 fi
 echo "Creating initial image in $TOREGION"
-CREATED=`cd /srv/org/wikimedia/controller/wikis/w && php ./extensions/OpenStackManager/maintenance/createInstance.php --image ${FROMIMAGE} --flavor ${FROMFLAVOR} --instance ${INSTANCENAME} --project ${PROJECT} --region ${TOREGION} --securitygroups ${FROMSECURITY} --copypuppet ${FROMINSTANCE} --copypuppetregion ${FROMREGION}`
+# eqiad has different default flavors than pmtpa.  I've copied over duplicates of pmtpa flavors, and named them things like 'pmtpa-ID' where ID is the pmtpa ID.
+#  Their IDs are 1000 + pmtpa flavor ID.
+TOFLAVOR=`expr ${FROMFLAVOR} + 1000`
+CREATED=`cd /srv/org/wikimedia/controller/wikis/w && php ./extensions/OpenStackManager/maintenance/createInstance.php --image ${FROMIMAGE} --flavor ${TOFLAVOR} --instance ${INSTANCENAME} --project ${PROJECT} --region ${TOREGION} --securitygroups ${FROMSECURITY} --copypuppet ${FROMINSTANCE} --copypuppetregion ${FROMREGION}`
 if [ "$CREATED" != "created instance." ]; then
 	echo "ERROR: Failed to create new instance in ${TOREGION}"
 	exit 1
