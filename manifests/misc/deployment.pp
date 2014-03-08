@@ -425,7 +425,8 @@ class misc::deployment::scap_primary {
 
 class misc::deployment::gitconfig {
 	exec { 'git url rewriting':
-		command => 'git config --global url."ssh://gerrit.wikimedia.org:29418/".insteadOf "https://gerrit.wikimedia.org/r/p/"',
-		unless => 'git config --global url."ssh://gerrit.wikimedia.org:29418/".insteadOf | grep -q "https://gerrit.wikimedia.org/r/p/"';
+		provider => 'shell',
+		command  => '/usr/bin/git config --global url."ssh://gerrit.wikimedia.org:29418/".insteadOf "https://gerrit.wikimedia.org/r/p/"',
+		unless   => '/usr/bin/git config --global url."ssh://gerrit.wikimedia.org:29418/".insteadOf | /bin/grep -q "https://gerrit.wikimedia.org/r/p/"';
 	}
 }
