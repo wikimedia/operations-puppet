@@ -228,11 +228,24 @@ sub tag_carrier {
 }
 
 sub vcl_deliver {
-	// This, and the supporting X-ZeroTLS bits above in tag_carrier, to be removed after 30 days
+	// This, and the supporting X-ZeroTLS bits above in tag_carrier set a cookie
+	// to tell the browser if contributory features would be zero-rated.
+	// Once a carrier's config above has had req.http.X-ZeroTLS set to 1 for
+	// 30 days after HTTPS enablement, then then specific block above can be removed
+	// because the origin will have populated the cache sufficiently.
+	// Notice that a cookie of ZeroOpts=   (empty value) tells the browser to
+	// not enable the contributory features. Thus the need to check expressly
+	// whether an origin-set (possibly from cache) cookie does not contains the
+	// value of 'tls' in the last else if() (implying it is a cookie with the empty
+	// value). Remember, this entire block of code only runs if req.http.X-ZeroTLS
+	// is true, so we're fine overriding the cookie.
 	if (req.http.X-ZeroTLS) {
 		if (!resp.http.Set-Cookie) {
 			set resp.http.Set-Cookie = "ZeroOpts=tls";
 		} else if(resp.http.Set-Cookie !~ "ZeroOpts=") {
+			set resp.http.Set-Cookie = resp.http.Set-Cookie + "; ZeroOpts=tls";
+		} else if(resp.http.Set-Cookie !~ "ZeroOpts=tls") {
+			set resp.http.Set-Cookie = regsub(resp.http.Set-Cookie, "ZeroOpts=[^;]*;?", "");
 			set resp.http.Set-Cookie = resp.http.Set-Cookie + "; ZeroOpts=tls";
 		}
 	}
