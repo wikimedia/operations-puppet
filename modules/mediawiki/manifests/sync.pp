@@ -19,21 +19,15 @@ class mediawiki::sync {
 
 	file {
 		"${scriptpath}/find-nearest-rsync":
-			ensure  => link,
-			target  => '/srv/scap/bin/find-nearest-rsync',
-			require => Git::Clone['mediawiki/tools/scap'];
+			ensure  => absent;
 		"${scriptpath}/mwversionsinuse":
 			ensure  => link,
 			target  => '/srv/scap/bin/mwversionsinuse',
 			require => Git::Clone['mediawiki/tools/scap'];
 		"${scriptpath}/scap-1":
-			ensure  => link,
-			target  => '/srv/scap/bin/scap-1',
-			require => Git::Clone['mediawiki/tools/scap'];
+			ensure  => absent;
 		"${scriptpath}/scap-2":
-			ensure  => link,
-			target  => '/srv/scap/bin/scap-2',
-			require => Git::Clone['mediawiki/tools/scap'];
+			ensure  => absent;
 		"${scriptpath}/scap-rebuild-cdbs":
 			ensure  => link,
 			target  => '/srv/scap/bin/scap-rebuild-cdbs',
