@@ -422,10 +422,3 @@ class misc::deployment::scap_primary {
 			hosts_allow => ['10.0.0.0/16', '10.64.0.0/22', '10.64.16.0/24', '208.80.152.0/22', '10.64.32.0/22'];
     }
 }
-
-class misc::deployment::gitconfig {
-	exec { 'git url rewriting':
-		command => 'git config --global url."ssh://gerrit.wikimedia.org:29418/".insteadOf "https://gerrit.wikimedia.org/r/p/"',
-		unless => 'git config --global url."ssh://gerrit.wikimedia.org:29418/".insteadOf | grep -q "https://gerrit.wikimedia.org/r/p/"';
-	}
-}
