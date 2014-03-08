@@ -3,35 +3,48 @@
 """
  mwgrep
  ~~~~~~
- Grep for CSS or JS code in the MediaWiki NS of Wikimedia Wikis
- Usage: mwgrep [--max-results N] TERM
+ Grep for CSS or JS code in wiki pages
+ Usage: mwgrep [--user] [--max-results N] [--timeout N] TERM
 
 """
 import argparse
 import json
+import urllib
 import urllib2
 
 
+TIMEOUT = 30
 BASE_URI = 'http://search.svc.eqiad.wmnet:9200/_all/page/_search'
+NS_MEDIAWIKI = 8
+NS_USER = 2
 
-ap = argparse.ArgumentParser(description='Grep for CSS/JS in MediaWiki: NS')
+ap = argparse.ArgumentParser(description='Grep for CSS/JS in wiki pages')
 ap.add_argument('term', help='text to search for')
 ap.add_argument('--max-results', type=int, default=100)
+ap.add_argument('--timeout', type=int, default=30)
+ap.add_argument('--user', action='store_const', const=NS_USER,
+                default=NS_MEDIAWIKI, dest='ns',
+                help='search NS_USER rather than NS_MEDIAWIKI')
 args = ap.parse_args()
 
 filters = [
-    {'term': {'namespace': '8'}},
+    {'term': {'namespace': str(args.ns)}},
     {'regexp': {'title.keyword': '.*\\.(js|css)'}},
     {'script': {'script': "_source['text'].contains('%s')" % args.term}},
 ]
 
-query = {
+search = {
     'size': args.max_results,
     'fields': ['namespace', 'title'],
     'query': {'filtered': {'filter': {'bool': {'must': filters}}}},
 }
 
-req = urllib2.urlopen(BASE_URI, json.dumps(query))
+query = {
+    'timeout': args.timeout,
+}
+
+uri = BASE_URI + '?' + urllib.urlencode(query)
+req = urllib2.urlopen(uri, json.dumps(search))
 result = json.load(req)['hits']
 
 for hit in result['hits']:
