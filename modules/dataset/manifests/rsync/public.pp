@@ -13,7 +13,7 @@ class dataset::rsync::public($enable=true) {
 
     include role::mirror::common
     include dataset::rsync::common
-    file { '/etc/rsyncd.d/20-rsync-dumps_to_public':
+    file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
         ensure  => $ensure,
         mode    => '0444',
         owner   => 'root',
