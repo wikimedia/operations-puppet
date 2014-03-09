@@ -7,39 +7,15 @@ class role::download::common {
             admins::roots,
             groups::wikidev,
             accounts::catrope
-
 }
 
-# additional classes on a primary server
-class role::download::primary {
-
-    system::role { 'role::download::primary': description => 'primary download server' }
-
-    include role::download::common,
-            download,
-            download::primary,
-            download::kiwix
-
-}
-
-# additional classes on a secondary server
-class role::download::secondary {
-
-    system::role { 'role::download::primary': description => 'secondary download server' }
-
-    include role::download::common,
-            download,
-            download::mirror,
-            download::gluster
-
-
-}
-
+# download.wikimedia.org
 class role::download::wikimedia {
     include role::download::common
     include ::download::wikimedia
 }
 
+# download.mediawiki.org
 class role::download::mediawiki {
     include role::download::common
     include ::download::mediawiki
