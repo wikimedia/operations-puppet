@@ -530,7 +530,9 @@ node 'dataset2.wikimedia.org' {
     $gid= '500'
 
     include accounts::brion
-    include role::download::primary
+#    include role::download::primary
+    include role::dataset::secondary
+    include role::download::wikimedia
 }
 
 node 'dataset1001.wikimedia.org' {
