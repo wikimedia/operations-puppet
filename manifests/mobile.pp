@@ -1,59 +1,20 @@
 # This file is for mobile classes
-class mobile::vumi::iptables-purges {
-    require 'iptables::tables'
-
-    # The deny_all rule must always be purged,
-    #otherwise ACCEPTs can be placed below it
-    iptables_purge_service{ 'deny_all_redis':
-        service => 'redis',
-    }
-
-    # When removing or modifying a rule,
-    #place the old rule here, otherwise it won't
-    # be purged, and will stay in the iptables forever
-}
-
-class mobile::vumi::iptables-accepts {
-    require 'mobile::vumi::iptables-purges'
-
-    # Rememeber to place modified or removed rules into purges!
-    iptables_add_service{ 'redis_internal':
-        source  => '208.80.152.0/22',
-        service => 'redis',
-        jump    => 'ACCEPT',
-    }
-}
-
-class mobile::vumi::iptables-drops {
-    require 'mobile::vumi::iptables-accepts'
-
-    # Deny by default
-    iptables_add_service{ 'deny_all_redis':
-        service => 'redis',
-        jump    => 'DROP',
-    }
-}
-
-class mobile::vumi::iptables  {
+class mobile::vumi::firewall {
+ 
     if $::realm == 'production' {
-        # We use the following requirement chain:
-        # iptables -> iptables::drops -> iptables::accepts -> iptables::accept-established -> iptables::purges
-        # This ensures proper ordering of the rules
-        require 'mobile::vumi::iptables-drops'
-
-        # This exec should always occur last in the requirement chain.
-        iptables_add_exec{ $::hostname:
-            service => 'vumi',
+        ferm::service { 'redis_internal':
+            proto => 'tcp',
+            dport => '6379',
+            saddr => '$INTERNAL',
         }
     }
-
     # Labs has security groups, and as such, doesn't need firewall rules
 }
 
 class mobile::vumi {
 
     include passwords::mobile::vumi,
-        mobile::vumi::iptables
+        mobile::vumi::firewall
 
     $testvumi_pw          = $passwords::mobile::vumi::wikipedia_xmpp_sms_out
     $vumi_pw              = $passwords::mobile::vumi::wikipedia_xmpp
