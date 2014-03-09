@@ -1,0 +1,13 @@
+#####################################################################
+### puppet:///files/rsync/rsyncd.conf.pagecounts
+#####################################################################
+
+# write access from stat1 and stat1002 to pagecounts-ez directory.
+# Erik Z uses this.  See RT 2162.
+[pagecounts-ez]
+uid = backup
+gid = wikidev
+read only = false
+path = /data/xmldatadumps/public/other/pagecounts-ez
+hosts allow = stat1.wikimedia.org stat1002.eqiad.wmnet
+

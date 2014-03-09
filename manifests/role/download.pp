@@ -34,3 +34,13 @@ class role::download::secondary {
 
 
 }
+
+class role::download::wikimedia {
+    include role::download::common
+    include ::download::wikimedia
+}
+
+class role::download::mediawiki {
+    include role::download::common
+    include ::download::mediawiki
+}

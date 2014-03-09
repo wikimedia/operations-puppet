@@ -1,0 +1,11 @@
+#####################################################################
+### puppet:///files/rsync/rsyncd.conf.searchlogs
+#####################################################################
+
+# lucene search logs are rsynced from stat1 or oxygen.
+[search-logs]
+uid = backup
+gid = wikidev
+read only = false
+path = /data/xmldatadumps/public/other/search
+hosts allow = stat1.wikimedia.org oxygen.wikimedia.org
