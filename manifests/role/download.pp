@@ -3,8 +3,7 @@
 # common classes included by all download servers
 class role::download::common {
 
-    include download,
-            standard,
+    include standard,
             admins::roots,
             groups::wikidev,
             accounts::catrope
@@ -17,6 +16,7 @@ class role::download::primary {
     system::role { 'role::download::primary': description => 'primary download server' }
 
     include role::download::common,
+            download,
             download::primary,
             download::kiwix
 
@@ -28,6 +28,7 @@ class role::download::secondary {
     system::role { 'role::download::primary': description => 'secondary download server' }
 
     include role::download::common,
+            download,
             download::mirror,
             download::gluster
 
