@@ -23,9 +23,4 @@ class download::wikimedia {
         description   => 'LighttpdHTTP',
         check_command => 'check_http'
     }
-
-    monitor_service { 'nfs':
-        description   => 'NFS',
-        check_command => 'check_tcp!2049'
-    }
 }
