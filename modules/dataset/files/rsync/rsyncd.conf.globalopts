@@ -1,0 +1,15 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+#####################################################################
+
+
+#####################################################################
+### puppet:///files/rsync/rsyncd.conf.globalopts
+#####################################################################
+# rsync conf file for mirror sites of XML dumps
+#
+max connections = 10
+dont compress = *
+uid = backup
+gid = backup
+read only = true
