@@ -1,0 +1,41 @@
+#####################################################################
+### puppet:///files/rsync/rsyncd.conf.dumps_to_public
+#####################################################################
+
+# rsync config for public retrievers/mirrors of XML dumps
+
+[dumpmirrorslastfivedumps]
+read only = true
+# this will include only the last five good dumps.
+# include/exclude list coming soon...
+path = /data/xmldatadumps/public
+# added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
+# for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
+# added odysseus.fi.muni.cz, May 11, 2012 -- atg
+# for odysseus.fi.muni.cz, contact: Jan Kasprzak <ftp-admin@fi.muni.cz>
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz
+
+[dumpmirrorsalldumps]
+read only = true
+# this includes only dumps, no archives, no other datasets
+path = /data/xmldatadumps/public
+exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
+# added mirror.fr.wickedway.nl, June 8 2012 -- atg
+# for mirror.fr.wickedway.nl contact:  mirror@wickedway.nl
+hosts allow = mirror.fr.wickedway.nl
+
+[dumpmirrorseverything]
+read only = true
+# this includes archives, other datasets
+path = /data/xmldatadumps/public
+exclude = **tmp/ **temp/ **bad/ **save/
+# added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
+# for wansecurity, contact: Robert Smith <rtsmith@wansecurity.com>
+# we manage this, see file in /home/wikipedia/docs/mirrors
+# added your.org, Feb 2 2012 -- atg
+# for your.org, contact: Kevin Day <kevin@your.org>
+# they manage it but we have access; see file in /home/wikipedia/docs/mirrors
+# added amazonaws.com, Oct 31 2012 -- atg
+# we are still in the process of setting it up, for access see file in /home/w/docs/mirrors
+# it will eventually be managed by folks at amazon
+hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com 69.31.98.2
