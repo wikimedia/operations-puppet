@@ -542,7 +542,9 @@ node 'dataset1001.wikimedia.org' {
     }
 
     include accounts::brion
-    include role::download::secondary
+#    include role::download::secondary
+    include role::dataset::primary
+    include role::download::wikimedia
 }
 
 # pmtpa dbs
