@@ -2432,7 +2432,7 @@ node 'stat1.wikimedia.org' {
 
     include misc::statistics::cron_blog_pageviews
     include misc::statistics::limn::mobile_data_sync
-    include misc::statistics::iptables
+    include misc::statistics::firewall
 }
 
 node 'stat1001.wikimedia.org' {
