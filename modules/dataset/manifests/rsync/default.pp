@@ -5,12 +5,12 @@ class dataset::rsync::default(
     $rsync_config_file = undef
     ) {
     if $public == true {
-        $rsync_nice = '10'
-        $rsync_ionice = '-c3'
-    }
-    else {
         $rsync_nice = undef
         $rsync_ionice = undef
+    }
+    else {
+        $rsync_nice = '10'
+        $rsync_ionice = '-c3'
     }
 
     file { '/etc/default/rsync':
