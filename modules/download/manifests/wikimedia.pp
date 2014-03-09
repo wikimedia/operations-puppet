@@ -17,22 +17,6 @@ class download::wikimedia {
         ensure => running,
     }
 
-    package { 'nfs-kernel-server':
-        ensure => present,
-    }
-
-    file { '/etc/exports':
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/download/exports',
-        require => Package['nfs-kernel-server'],
-    }
-
-    service { 'nfs-kernel-server':
-        require => [ Package['nfs-kernel-server'], File['/etc/exports'] ],
-    }
-
     include generic::higher_min_free_kbytes
 
     monitor_service { 'lighttpd http':
