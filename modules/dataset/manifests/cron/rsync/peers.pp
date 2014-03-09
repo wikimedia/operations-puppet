@@ -28,7 +28,7 @@ class dataset::cron::rsync::peers($enable=true) {
 
     cron { 'rsync-dumps':
         ensure  => $ensure,
-        command => '/usr/local/bin/rsync-dumps.py',
+        command => '/usr/bin/python /usr/local/bin/rsync-dumps.py',
         user    => 'root',
         minute  => '0',
         hour    => '*/2',
