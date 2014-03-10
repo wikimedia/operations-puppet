@@ -3542,6 +3542,26 @@ class accounts {
         }
     }
 
+    # RT 7004
+    class rush inherits baseaccount {
+        $username = 'rush'
+        $realname = 'Chase Pettet'
+        $uid      = 4610
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'legoktm@wikimedia.org':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'XXXXXXXXXXXXXXXXXXXXXXXX',
+            }
+        }
+    }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -3600,6 +3620,7 @@ class admins::roots {
 	include accounts::otto
 	include accounts::preilly # disabled
 	include accounts::py # disabled
+    include accounts::rush # RT 7004
 	include accounts::robh
 	include accounts::sara # disabled
 	include accounts::springle
