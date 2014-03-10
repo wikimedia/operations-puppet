@@ -279,11 +279,6 @@ host antimony {
 	fixed-address antimony.wikimedia.org;
 }
 
-host arsenic {
-	hardware ethernet 18:03:73:f1:4f:5e;
-	fixed-address arsenic.eqiad.wmnet;
-}
-
 host backup4001 {
 	hardware ethernet F0:1F:AF:D8:72:9A;
 	fixed-address backup4001.ulsfo.wmnet;

@@ -221,29 +221,6 @@ node 'antimony.wikimedia.org' {
     }
 }
 
-node 'arsenic.eqiad.wmnet' {
-    include role::applicationserver::maintenance
-    include role::db::maintenance
-    include misc::deployment::scap_scripts
-    include admins::roots
-    include admins::mortals
-    include generic::wikidev-umask
-    include nrpe
-    include accounts::demon
-    include groups::wikidev
-
-    # rt 6189: temporary root for testing
-    sudo_user { 'demon':
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
-
-    #just adding this for the mediawiki require
-    class { 'misc::maintenance::pagetriage':
-        enabled => false,
-    }
-}
-
-
 node 'bast1001.wikimedia.org' {
     system::role { 'misc':
         description => 'Bastion Server',

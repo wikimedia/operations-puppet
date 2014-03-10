@@ -8,6 +8,7 @@ $decommissioned_servers = [
 'analytics1005', #renamed virt1003
 'analytics1006', #renamed virt1008
 'analytics1008', #renamed virt1009
+'arsenic',
 'br1-knams',
 'controller',
 'cp1021',    # cp 1021-1042 were reclaimed, 5981
