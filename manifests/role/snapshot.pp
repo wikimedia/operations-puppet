@@ -1,5 +1,10 @@
 class role::snapshot::common {
+    include groups::wikidev
+
+    include admins::roots
+    include admins::mortals
     include accounts::datasets
+    include sudo::appserver
 }
 
 class role::snapshot::cron::centralauthdump($enable=true) {
