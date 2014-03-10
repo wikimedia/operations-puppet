@@ -111,7 +111,7 @@ node 'analytics1004.eqiad.wmnet' {
 
     # Nik will temporarly use analytics1004
     # to do some elasticsearch load testing.
-    include manybubbles
+    include accounts::manybubbles
 }
 
 
