@@ -139,8 +139,6 @@ class role::wikimetrics {
         revision_tablename    => 'revision_userindex',
     }
 
-    class { '::wikimetrics::database': }
-
     # Run the wikimetrics/scripts/install script
     # in order to pip install proper dependencies.
     # Note:  This is not in the wikimetrics puppet module
@@ -152,6 +150,10 @@ class role::wikimetrics {
         path    => '/usr/local/bin:/usr/bin:/bin',
         user    => 'root',
         require => [Package['python-pip'], Class['::wikimetrics']],
+    }
+
+    class { '::wikimetrics::database':
+        require => Exec['install_wikimetrics_dependencies'],
     }
 
     # The redis module by default sets up redis in /a.  Oh well!
