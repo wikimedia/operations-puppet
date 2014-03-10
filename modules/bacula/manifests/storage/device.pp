@@ -33,7 +33,7 @@
 #           spool_dir      => '/tmp/spool',
 #           max_spool_size => '32212254720',
 #       }
-
+#
 define bacula::storage::device($device_type, $media_type,
                                 $archive_device, $max_concur_jobs,
                                 $spool_dir=undef, $max_spool_size=undef) {

@@ -29,7 +29,7 @@
 #           max_vols   => 10,
 #           storage     => 'mystor',
 #           volume_retention => '20 days',
-
+#
 define bacula::director::pool(
                             $max_vols,
                             $storage,

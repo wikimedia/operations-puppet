@@ -28,7 +28,7 @@
 #           schedule    => '1st-Sat',
 #           pool        => 'mypool',
 #       }
-
+#
 define bacula::director::jobdefaults(
                                     $when,
                                     $pool,

@@ -38,7 +38,7 @@
 #           xbstream_dir            => '/var/tmp/xbstream',
 #           mysqldump_innodb_only   => false,
 #       }
-
+#
 define bacula::client::mysql-bpipe(
                 $per_database,
                 $xtrabackup,

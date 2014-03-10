@@ -19,7 +19,7 @@
 #           fileset     => 'root',
 #           jobdefaults => 'ourdefaults',
 #       }
-
+#
 define bacula::client::job($fileset, $jobdefaults) {
 
     $director = $::bacula::client::director

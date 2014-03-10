@@ -25,7 +25,7 @@
 #           sd_max_concur_jobs  => 5,
 #           sqlvariant          => 'mysql',
 #       }
-
+#
 class bacula::storage(
                     $director,
                     $sd_max_concur_jobs,

@@ -22,7 +22,7 @@
 #   nrpe::check { 'check_myprocess':
 #       $command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C myprocess'
 #   }
-
+#
 define nrpe::check($command, $ensure='present') {
     # If the nrpe class is not included, this entire definition will never be
     # realized making it a no-op

@@ -26,7 +26,7 @@
 #       class { 'bacula::client':
 #           director    => 'dir.example.com',
 #       }
-
+#
 class bacula::client(
                     $director,
                     $catalog,

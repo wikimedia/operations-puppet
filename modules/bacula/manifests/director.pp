@@ -22,7 +22,7 @@
 #           sqlvariant              => 'mysql',
 #           max_dir_concur_jobs     => '10',
 #       }
-
+#
 class bacula::director(
                     $sqlvariant,
                     $max_dir_concur_jobs,

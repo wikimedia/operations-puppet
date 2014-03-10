@@ -16,7 +16,7 @@
 #       class { 'bacula::console':
 #           director    => 'dir.example.com',
 #       }
-
+#
 class bacula::console($director) {
 
     package { 'bacula-console':

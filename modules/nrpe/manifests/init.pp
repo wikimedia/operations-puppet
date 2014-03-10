@@ -15,7 +15,7 @@
 #
 # Sample Usage:
 #   include nrpe
-
+#
 class nrpe($allowed_hosts=undef) {
     package { [ 'nagios-nrpe-server',
                 'nagios-plugins',
