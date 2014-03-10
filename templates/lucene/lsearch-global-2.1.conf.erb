@@ -5,8 +5,8 @@
 <% # Shortcuts for convenience
 active_nodes   = scope.lookupvar('role::lucene::configuration::nodes')
 lsearch_global = scope.lookupvar('role::lucene::configuration::lsearch_global')
-realm = scope.lookupvar('::realm')
-site  = scope.lookupvar('::site')
+realm = @realm
+site  = @site
 -%>
 
 # Logical structure, maps different roles to certain db
@@ -53,7 +53,7 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 [Index-Path]
 <default> : /search
 
-<% if scope.lookupvar('::realm') == 'production' -%>
+<% if @realm == 'production' -%>
 [OAI]
 simplewiki : http://simple.wikipedia.org/w/index.php
 rswikimedia : http://rs.wikimedia.org/w/index.php
