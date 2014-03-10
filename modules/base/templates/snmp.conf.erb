@@ -8,5 +8,5 @@ clientaddr <%= scope.lookupvar('::ipaddress_bond0') %>:0
 <% elsif has_variable?('::ipaddress_eth0') then %>
 clientaddr <%= scope.lookupvar('::ipaddress_eth0') %>:0
 <% else %>
-clientaddr <%= scope.lookupvar('::ipaddress') %>:0
+clientaddr <%= @ipaddress %>:0
 <% end %>
