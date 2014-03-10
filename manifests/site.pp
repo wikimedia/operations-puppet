@@ -108,6 +108,10 @@ node 'analytics1003.eqiad.wmnet' {
 
 node 'analytics1004.eqiad.wmnet' {
     include role::analytics
+
+    # Nik will temporarly use analytics1004
+    # to do some elasticsearch load testing.
+    include manybubbles
 }
 
 
