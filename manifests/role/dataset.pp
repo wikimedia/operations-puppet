@@ -11,6 +11,14 @@ class role::dataset::common {
 
 }
 
+class role::dataset::pagecountsraw(enable=true) {
+    class { '::dataset::cron::pagecountsraw':
+        enable => $enable,
+        user   => 'datasets',
+        from   => 'gadolinium.wikimedia.org',
+    }
+}
+
 # a dumps primary server has dumps generated on this host; other directories
 # of content may or may not be generated here (but should all be eventually)
 # mirrors to the public should not be provided from here via rsync
@@ -32,6 +40,7 @@ class role::dataset::primary {
         grabs        => $grabs,
         uploads      => $uploads,
     }
+    class { 'role::dataset::pagecountsraw': enable => false }
     include role::dataset::common
 }
 
@@ -55,5 +64,6 @@ class role::dataset::secondary {
         grabs        => $grabs,
         uploads      => $uploads,
     }
+    class { 'role::dataset::pagecountsraw': enable => true }
     include role::dataset::common
 }
