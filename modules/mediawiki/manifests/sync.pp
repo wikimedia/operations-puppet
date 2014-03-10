@@ -18,16 +18,10 @@ class mediawiki::sync {
 	$scriptpath = "/usr/local/bin"
 
 	file {
-		"${scriptpath}/find-nearest-rsync":
-			ensure  => absent;
 		"${scriptpath}/mwversionsinuse":
 			ensure  => link,
 			target  => '/srv/scap/bin/mwversionsinuse',
 			require => Git::Clone['mediawiki/tools/scap'];
-		"${scriptpath}/scap-1":
-			ensure  => absent;
-		"${scriptpath}/scap-2":
-			ensure  => absent;
 		"${scriptpath}/scap-rebuild-cdbs":
 			ensure  => link,
 			target  => '/srv/scap/bin/scap-rebuild-cdbs',
