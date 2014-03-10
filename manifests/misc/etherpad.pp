@@ -35,6 +35,15 @@ class misc::etherpad_lite {
             notify  => Service['apache2'],
             content => template('apache/sites/etherpad_lite.wikimedia.org.erb'),
     }
+    file {
+        '/usr/share/etherpad-lite/src/static/robots.txt':
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            source  => 'puppet:///files/misc/etherpad-robots.txt',
+    }
+
 
     apache_site { 'controller': name => 'etherpad.wikimedia.org' }
     # FIX ME - move this to a common role to avoid duplicate defs

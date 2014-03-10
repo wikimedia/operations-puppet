@@ -1,0 +1,7 @@
+User-agent: ia_archiver
+Allow: /
+Allow: /p/
+
+User-agent: *
+Disallow: /p/
+Disallow: /newpad
