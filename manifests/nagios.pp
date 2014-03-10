@@ -44,7 +44,6 @@ define monitor_host(
     if $title == $::hostname {
         $image = $::operatingsystem ? {
             'Ubuntu'  => 'ubuntu',
-            'Solaris' => 'sunlogo',
             default   => 'linux40'
         }
 
