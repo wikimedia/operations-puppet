@@ -34,10 +34,7 @@ class toollabs {
         owner   => 'root',
         group   => 'tools.admin',
         mode    => '02775',
-        require => $::site? {
-            'eqiad' =>  Mount['/data/project'],
-            default =>  Service['autofs'],
-        },
+        require => Mount['/data/project'],
     }
 
     file { $store:
