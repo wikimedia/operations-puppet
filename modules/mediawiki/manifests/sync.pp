@@ -17,31 +17,35 @@ class mediawiki::sync {
 
 	$scriptpath = "/usr/local/bin"
 
-	file {
-		"${scriptpath}/mwversionsinuse":
-			ensure  => link,
-			target  => '/srv/scap/bin/mwversionsinuse',
-			require => Git::Clone['mediawiki/tools/scap'];
-		"${scriptpath}/scap-rebuild-cdbs":
-			ensure  => link,
-			target  => '/srv/scap/bin/scap-rebuild-cdbs',
-			require => Git::Clone['mediawiki/tools/scap'];
-		"${scriptpath}/scap-recompile":
-			ensure  => link,
-			target  => '/srv/scap/bin/scap-recompile',
-			require => Git::Clone['mediawiki/tools/scap'];
-		"${scriptpath}/sync-common":
-			ensure  => link,
-			target  => '/srv/scap/bin/sync-common',
-			require => Git::Clone['mediawiki/tools/scap'];
-		"${scriptpath}/mergeCdbFileUpdates":
-			ensure  => link,
-			target  => '/srv/scap/bin/mergeCdbFileUpdates',
-			require => Git::Clone['mediawiki/tools/scap'];
-		"${scriptpath}/refreshCdbJsonFiles":
-			ensure  => link,
-			target  => '/srv/scap/bin/refreshCdbJsonFiles',
-			require => Git::Clone['mediawiki/tools/scap'];
+	file { "${scriptpath}/mwversionsinuse":
+		ensure  => link,
+		target  => '/srv/scap/bin/mwversionsinuse',
+		require => Git::Clone['mediawiki/tools/scap'],
+	}
+	file { "${scriptpath}/scap-rebuild-cdbs":
+		ensure  => link,
+		target  => '/srv/scap/bin/scap-rebuild-cdbs',
+		require => Git::Clone['mediawiki/tools/scap'],
+	}
+	file { "${scriptpath}/scap-recompile":
+		ensure  => link,
+		target  => '/srv/scap/bin/scap-recompile',
+		require => Git::Clone['mediawiki/tools/scap'],
+	}
+	file { "${scriptpath}/sync-common":
+		ensure  => link,
+		target  => '/srv/scap/bin/sync-common',
+		require => Git::Clone['mediawiki/tools/scap'],
+	}
+	file { "${scriptpath}/mergeCdbFileUpdates":
+		ensure  => link,
+		target  => '/srv/scap/bin/mergeCdbFileUpdates',
+		require => Git::Clone['mediawiki/tools/scap'],
+	}
+	file { "${scriptpath}/refreshCdbJsonFiles":
+		ensure  => link,
+		target  => '/srv/scap/bin/refreshCdbJsonFiles',
+		require => Git::Clone['mediawiki/tools/scap'],
 	}
 
 	exec { 'mw-sync':
@@ -56,4 +60,3 @@ class mediawiki::sync {
 		logoutput   => on_failure;
 	}
 }
-
