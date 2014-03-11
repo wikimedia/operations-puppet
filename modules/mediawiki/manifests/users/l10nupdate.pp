@@ -5,7 +5,18 @@ class mediawiki::users::l10nupdate {
 
 	require groups::l10nupdate
 
-	generic::systemuser { 'l10nupdate': name => 'l10nupdate', home => '/home/l10nupdate', default_group => 10002, shell => '/bin/bash' }
+	$uid = $::realm ? {
+		'labs'  => 4716,  # LDAP user created via Wikitech
+		default => undef,
+	}
+
+	generic::systemuser { 'l10nupdate':
+		name          => 'l10nupdate',
+		home          => '/home/l10nupdate',
+		uid           => $uid,
+		default_group => 'l10nupdate',
+		shell         => '/bin/bash'
+	}
 
 	file {
 		"/home/l10nupdate/.ssh":
