@@ -2,7 +2,7 @@
 
 class role::bugzilla {
 
-    system::role { 'role::bugzilla': description => '(new/upcoming) Bugzilla server' }
+    system::role { 'role::bugzilla': description => 'Bugzilla server' }
 
     class { '::bugzilla':
         db_host => 'db1001.eqiad.wmnet',
