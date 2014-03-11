@@ -10,4 +10,4 @@ echo '+:ALL:' $(for host in submithost-*; do
     cat $host
   fi
 done)
-echo '-:ALL EXCEPT root:ALL'
+echo '-:ALL EXCEPT (tools.admin) root:ALL'
