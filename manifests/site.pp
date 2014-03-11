@@ -1230,7 +1230,6 @@ node 'hume.wikimedia.org' {
     include nfs::netapp::home
     include nfs::upload
     include misc::deployment::scap_scripts
-    include misc::monitoring::jobqueue
     include admins::roots
     include admins::mortals
     include admins::restricted
@@ -2510,6 +2509,7 @@ node 'terbium.eqiad.wmnet' {
     include role::db::maintenance
     include misc::deployment::scap_scripts
     include icinga::monitor::jobqueue
+    include misc::monitoring::jobqueue
     include admins::roots
     include admins::mortals
     include admins::restricted
