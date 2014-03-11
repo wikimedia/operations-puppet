@@ -1,5 +1,5 @@
 =begin
-This rakefile is meant to trigger your local puppet-linter. To take
+This RakeFile is meant to trigger your local puppet-linter. To take
 advantage of that powerful linter, you must have the puppet and
 puppet-lint gems:
 
