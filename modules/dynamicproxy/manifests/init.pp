@@ -17,7 +17,8 @@ class dynamicproxy (
     $ssl_certificate_name=false,
     $notfound_servers=[],
     $luahandler='domainproxy.lua',
-    $set_xff=false
+    $set_xff=false,
+    $resolver,
 ) {
     class { '::redis':
         persist   => 'aof',
