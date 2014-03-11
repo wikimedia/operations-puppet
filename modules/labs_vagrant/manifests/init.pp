@@ -1,7 +1,8 @@
 class labs_vagrant {
     user { 'vagrant':
         ensure     => 'present',
-        managehome => true
+        home       => '/mnt/vagrant-user',
+        managehome => true,
     }
 
     file { '/etc/sudoers.d/vagrant':
