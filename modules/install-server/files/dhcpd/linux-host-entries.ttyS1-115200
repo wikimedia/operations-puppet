@@ -1081,6 +1081,20 @@ host db1060 {
 	hardware ethernet 90:B1:1C:2A:D3:BA;
 	fixed-address db1060.eqiad.wmnet;
 }
+host db1061 {
+	hardware ethernet C8:1F:66:B8:1B:38;
+	fixed-address db1061.eqiad.wmnet;
+}
+
+host db1062 {
+	hardware ethernet C8:1F:66:B8:1D:F4;
+	fixed-address db1062.eqiad.wmnet;
+}
+
+host db1063 {
+	hardware ethernet C8:1F:66:B8:1A:40;
+	fixed-address db1063.eqiad.wmnet;
+}
 
 host dickson {
 	hardware ethernet 78:2b:cb:09:0c:5a;
