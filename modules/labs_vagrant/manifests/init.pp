@@ -1,6 +1,7 @@
 class labs_vagrant {
     user { 'vagrant':
         ensure     => 'present',
+        home       => '/mnt/vagrant-user'
         managehome => true
     }
 
