@@ -25,38 +25,38 @@ class misc::fundraising {
             source => 'puppet:///private/misc/fundraising/logrotate.fundraising-civicrm';
 
         #civicrm confs
-        '/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php':
-            owner => 'root',
-            group => 'www-data',
-            mode => 0440,
-            source => 'puppet:///private/misc/fundraising/civicrm.civicrm.settings.php';
-        '/srv/org.wikimedia.civicrm/sites/default/settings.php':
-            owner => 'root',
-            group => 'www-data',
-            mode => 0440,
-            source => 'puppet:///private/misc/fundraising/civicrm.settings.php';
-        '/srv/org.wikimedia.civicrm/fundcore_gateway/paypal':
-            owner => 'root',
-            group => 'www-data',
-            mode => 0440,
-            ensure => '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php';
-        '/srv/org.wikimedia.civicrm/files':
-            owner => 'root',
-            group => 'www-data',
-            mode => 2770,
-            ensure => directory;
-		'/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
-            owner => 'root',
-            group => 'www-data',
-            mode => 0440,
-            source => 'puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php';
+        #'/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php':
+        #    owner => 'root',
+        #    group => 'www-data',
+        #    mode => 0440,
+        #    source => 'puppet:///private/misc/fundraising/civicrm.civicrm.settings.php';
+        #'/srv/org.wikimedia.civicrm/sites/default/settings.php':
+        #    owner => 'root',
+        #    group => 'www-data',
+        #    mode => 0440,
+        #    source => 'puppet:///private/misc/fundraising/civicrm.settings.php';
+        #'/srv/org.wikimedia.civicrm/fundcore_gateway/paypal':
+        #    owner => 'root',
+        #    group => 'www-data',
+        #    mode => 0440,
+        #    ensure => '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php';
+        #'/srv/org.wikimedia.civicrm/files':
+        #    owner => 'root',
+        #    group => 'www-data',
+        #    mode => 2770,
+        #    ensure => directory;
+		#'/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
+        #    owner => 'root',
+        #    group => 'www-data',
+        #    mode => 0440,
+        #    source => 'puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php';
 
 		# fundraising wiki stuff
-        '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php':
-            owner => 'root',
-            group => 'www-data',
-            mode => 0440,
-            source => 'puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php';
+        #'/srv/org.wikimedia.fundraising/IPNListener_Standalone.php':
+        #    owner => 'root',
+        #    group => 'www-data',
+        #    mode => 0440,
+        #    source => 'puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php';
         '/etc/fundraising/legacy_paypal_config.php':
             owner => 'root',
             group => 'www-data',
@@ -222,16 +222,6 @@ class misc::fundraising::backup::backupmover_user {
             user    => backupmover,
             type    => 'ssh-rsa',
             key     => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAv86yzKoTo6pcgfJVQ51FAIcQ8NwUhWd93SKNRTqDmIkkMOe6lVruEManMOqJXGcVWp8WpCvqzkIyx77Y5HZISzVZL3hEfkJL85HyOn8gWB9jF2uNYa16Ik2nXR/HxP0w/xajJM8RL6qlC6x2hkCFsHYWt28ug82auZUHhW2mJwzdbJx5iHw7tHJiwXvBbXFs0WyjOB/J/mh/H+ohlcI5zH9S8pGgypMeFUen3wpgP18auiigARyhCTgtBRoWos9TmM16DMjskronEjvC3ArCBll5nUiuU0mrpPVfADSycMrYR2Glw3KhkwGAxbM3QMAq476U67JctXWPuqBnLazDPQ==';
-        'backupmover/root@grosley':
-            ensure  => present,
-            user    => backupmover,
-            type    => 'ssh-rsa',
-            key     => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAxFTyC11zMrjacT0aXzAbBUKDkUYpQrxQFC/lnb7vO4aQkAZx3eC3IU0Xe5dDTK97CSOeuexkHOU4++dUXcbeBmsXX0lr/za7M5mb0IKRTxvk8+arls+WhPCZctimhsIHg/vfhGT0s57LHQHAXVmGTumYdQ3rbOVfsHubgjhyT7u2nlLLUi/cG2yP5S4nKF16wiXljrdcUdjNSXN5jsW6U0M/hNgFcz2uI33s6hNWPUcOfaHCwfI0FgOBdsNTlRyCqFydKoa9kd2NKVbdO3L3q0xOdugaUsnRuEKNi3pEQKVOxWy1o62oR1gL9NUwzJJiOA9dahDZ2z9ej696aEBW4w==';
-        'backupmover/root@db78':
-            ensure  => present,
-            user    => backupmover,
-            type    => 'ssh-rsa',
-            key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC3f6OaJUZInlh35vv5qfCvOk8RA40Jsa76MFqoHAJeLXeFwMexZCbXWz/FeyXEOuvel6i9NCeu5C3tTxv1fTSylahCUg1CuOTwNVpIfZ15ZkeAwiPwEyaDCa9vfwHzI52sOHikCja9ah2OLuvqoV/tv0HdxtZlIc9QnOBwXe7jqwX9LfNynltl3um6+3Z85fo5Vfs/nPBzqet8lQw2XsJ1um26C0gIwfOtjxNN43+Q5jIRZj9ggLgil0ucFCITGJlUKGbQ5VueQaJs5JgAGKLbYMq6jl9j5kdtDSu0szlKKDwJQepoRcags5m2nJBFG06clwOuKi8urTfvpZb5B7mp';
         'backupmover/root@barium':
             ensure  => present,
             user    => backupmover,
