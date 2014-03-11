@@ -32,7 +32,7 @@ class puppet::self::master($server) {
         'localhost' => '127.0.0.1',
         default => $::site ? {
             'pmtpa' => '10.4.0.0/21',
-            'eqiad' => undef,  # eqiad does not have labs yet.
+            'eqiad' => '10.68.0.0/21',
         }
     }
 
