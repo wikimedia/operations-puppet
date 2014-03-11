@@ -29,6 +29,14 @@ class dataset::cron::rsync::labs($enable=true) {
         require => File['/mnt/dumps'],
     }
 
+    file { '/mnt/dumps/public':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Mount['/mnt/dumps'],
+    }
+
     file { '/usr/local/bin/wmfdumpsmirror.py':
         ensure => 'present',
         mode   => '0755',
@@ -48,9 +56,9 @@ class dataset::cron::rsync::labs($enable=true) {
         hour        => '3',
         command     => '/usr/local/sbin/labs-rsync-cron.sh',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        require     => [File['/usr/local/bin/wmfdumpsmirror.py'],
-                       File['/usr/local/sbin/labs-rsync-cron.sh'],
-                       Mount['/mnt/dumps']],
+        require     => File['/usr/local/bin/wmfdumpsmirror.py',
+                            '/usr/local/sbin/labs-rsync-cron.sh',
+                            '/mnt/dumps/public'],
     }
 }
 
