@@ -41,13 +41,5 @@ class toollabs::master inherits toollabs {
         source  => 'puppet:///modules/toollabs/update-repo.sh',
     }
 
-    if $::site != 'eqiad' {
-        cron { 'push-accounting-to-shared':
-            ensure  => present,
-            command => 'cp -f /var/lib/gridengine/default/common/accounting /data/project/.system/accounting.tmp && mv -f /data/project/.system/accounting.tmp /data/project/.system/accounting',
-            user    => 'root',
-            minute  => '*/5',
-        }
-    }
 }
 
