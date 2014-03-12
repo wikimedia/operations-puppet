@@ -1396,23 +1396,23 @@ node /labstore[34]\.pmtpa\.wmnet/ {
 
     $site = 'pmtpa'
     $cluster = 'labsnfs'
-    $ldapincludes = ['openldap', 'nss', 'utils']
-
-    $ganglia_aggregator = true
+#    $ldapincludes = ['openldap', 'nss', 'utils']
+#
+#    $ganglia_aggregator = true
 
     include standard
-    include openstack::project-nfs-storage-service
-    include rsync::server
-
-    rsync::server::module {
-        'pagecounts':
-            path        => '/exp/pagecounts',
-            read_only   => 'false',
-            hosts_allow => ['208.80.154.11', '208.80.152.185'],
-    }
-
-    class { 'ldap::role::client::labs':
-        ldapincludes => $ldapincludes }
+#    include openstack::project-nfs-storage-service
+#    include rsync::server
+#
+#    rsync::server::module {
+#        'pagecounts':
+#            path        => '/exp/pagecounts',
+#            read_only   => 'false',
+#            hosts_allow => ['208.80.154.11', '208.80.152.185'],
+#    }
+#
+#    class { 'ldap::role::client::labs':
+#        ldapincludes => $ldapincludes }
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
