@@ -5,34 +5,34 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-	ServerName doc.mediawiki.org
+    ServerName doc.mediawiki.org
 
-	LogLevel warn
-	ErrorLog /var/log/apache2/doc_error.log
-	CustomLog /var/log/apache2/doc_access.log vhost_combined
+    LogLevel warn
+    ErrorLog /var/log/apache2/doc_error.log
+    CustomLog /var/log/apache2/doc_access.log vhost_combined
 
-	Redirect permanent / https://doc.wikimedia.org/
+    Redirect permanent / https://doc.wikimedia.org/
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName doc.wikimedia.org
+    ServerName doc.wikimedia.org
 
-	LogLevel warn
-	ErrorLog /var/log/apache2/doc_error.log
-	CustomLog /var/log/apache2/doc_access.log vhost_combined
+    LogLevel warn
+    ErrorLog /var/log/apache2/doc_error.log
+    CustomLog /var/log/apache2/doc_access.log vhost_combined
 
 
-	# Force any request to HTTPS if not passed via https (misc web varnish)
-	RewriteEngine On
-	RewriteCond %{HTTP:X-Forwarded-Proto} !https
-	RewriteRule (.) https://doc.wikimedia.org%{REQUEST_URI} [R=301]
+    # Force any request to HTTPS if not passed via https (misc web varnish)
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule (.) https://doc.wikimedia.org%{REQUEST_URI} [R=301]
 
-	Header always merge Vary X-Forwarded-Proto
+    Header always merge Vary X-Forwarded-Proto
 
-	DocumentRoot /srv/org/wikimedia/doc
+    DocumentRoot /srv/org/wikimedia/doc
 
-	# Favicon proxy
-	RewriteEngine On
-	RewriteRule ^/favicon\.ico$ /favicon.php [L]
+    # Favicon proxy
+    RewriteEngine On
+    RewriteRule ^/favicon\.ico$ /favicon.php [L]
 
 </VirtualHost>

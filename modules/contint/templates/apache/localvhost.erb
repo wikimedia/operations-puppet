@@ -2,46 +2,47 @@
 ### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///modules/contint/apache/localvhost.erb
 #####################################################################
+# vim: filetype=apache
 
 <VirtualHost *:<%= @port %>>
-	ServerName localhost
-	DocumentRoot <%= @docroot %>
+    ServerName localhost
+    DocumentRoot <%= @docroot %>
 
-	# Attempt to match production URLs:
-	#
-	#   http://localhost:9413/CirrusSearch/wiki/
-	#   http://localhost:9413/CirrusSearch/wiki/Main_Page
-	#   http://localhost:9413/CirrusSearch/w/api.php
-	#   http://localhost:9413/CirrusSearch/w/index.php
-	#
-	# Needs a symlink for w to . which is created by the Jenkins job.
-	#
-	# And MediaWiki configuration (handled in JJB):
-	#
-	#   $wgScriptPath = '/CirrusSearch/w';
-	#   $wgArticlePath = '/CirrusSearch/wiki/$1';
+    # Attempt to match production URLs:
+    #
+    #   http://localhost:9413/CirrusSearch/wiki/
+    #   http://localhost:9413/CirrusSearch/wiki/Main_Page
+    #   http://localhost:9413/CirrusSearch/w/api.php
+    #   http://localhost:9413/CirrusSearch/w/index.php
+    #
+    # Needs a symlink for w to . which is created by the Jenkins job.
+    #
+    # And MediaWiki configuration (handled in JJB):
+    #
+    #   $wgScriptPath = '/CirrusSearch/w';
+    #   $wgArticlePath = '/CirrusSearch/wiki/$1';
 
-	AcceptPathInfo on
+    AcceptPathInfo on
 
-	RewriteEngine on
-	RewriteRule ^/([\w-]+)/wiki(/.*?)$ %{DOCUMENT_ROOT}/$1/w/index.php [L]
+    RewriteEngine on
+    RewriteRule ^/([\w-]+)/wiki(/.*?)$ %{DOCUMENT_ROOT}/$1/w/index.php [L]
 
-	<Directory />
-		Order deny,allow
-		Deny from all
-	</Directory>
+    <Directory />
+        Order deny,allow
+        Deny from all
+    </Directory>
 
-	<Directory <%= @docroot %>>
-		Options +Indexes
-		Options FollowSymLinks
+    <Directory <%= @docroot %>>
+        Options +Indexes
+        Options FollowSymLinks
 
-		Order deny,allow
-		Deny from all
-		Allow from 127.0.0.1/32
-		Allow from ::1/128
-	</Directory>
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.1/32
+        Allow from ::1/128
+    </Directory>
 
-	LogLevel warn
-	ErrorLog /var/log/apache2/<%= @log_prefix %>_error.log
-	CustomLog /var/log/apache2/<%= @log_prefix %>_access.log vhost_combined
+    LogLevel warn
+    ErrorLog /var/log/apache2/<%= @log_prefix %>_error.log
+    CustomLog /var/log/apache2/<%= @log_prefix %>_access.log vhost_combined
 </VirtualHost>
