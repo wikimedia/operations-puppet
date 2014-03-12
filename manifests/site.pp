@@ -2473,7 +2473,7 @@ node 'stat1002.eqiad.wmnet' {
     include role::analytics::clients
 }
 
-node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
+node /^snapshot([1-3]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
     $gid= '500'
     include base
     include ntp::client
@@ -2489,6 +2489,12 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
     include accounts::datasets
     include nfs::data
     include groups::wikidev
+}
+
+node /^snapshot4.pmtpa.wmnet/ {
+    $gid= '500'
+    include snapshot
+    include role::snapshot::cron::secondary
 }
 
 node 'terbium.eqiad.wmnet' {
