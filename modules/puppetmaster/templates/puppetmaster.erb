@@ -35,10 +35,17 @@ RailsAutoDetect Off
 	RequestHeader set X-Client-Verify %{SSL_CLIENT_VERIFY}e
 
 	SSLProxyEngine on
+	# Certificates should only be in the frontend. It is terminating SSL connections from clients and authenticating them
+	# The connection to the backends is also SSL encrypted but by frontend and backends do not authenticate connections
 	ProxyPassMatch ^/([^/]+/certificate.*)$ https://<%= @fqdn %>:8141
+	# Reports should only be in one place. Choosing the frontend by default for simplicity
 	ProxyPassMatch ^/([^/]+/report/.*)$ https://<%= @fqdn %>:8141
+	# File buckets should only be in one place. Choosing the frontend by default for simplicity
 	ProxyPassMatch ^/([^/]+/file_bucket_file/md5/.*)$ https://<%= @fqdn %>:8141
+	# Volatile should only be in one place. Choosing the frontend by default for simplicity
 	ProxyPassMatch ^/([^/]+/file_metadata(s)?/volatile/.*)$ https://<%= @fqdn %>:8141
+	ProxyPassMatch ^/([^/]+/file_content/volatile/.*)$ https://<%= @fqdn %>:8141
+	# The rest gets balanced
 	ProxyPass / balancer://mycluster/
 	<Proxy balancer://mycluster>
 	  <%- @workers.each do |worker| -%>
