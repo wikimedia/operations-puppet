@@ -31,7 +31,7 @@ class varnish::netmapper_update_common {
 define varnish::netmapper_update($url, $hour = '*', $minute = '*/5') {
     require 'varnish::netmapper_update_common'
 
-    $cmd = "/usr/share/varnish/netmapper_update.sh \"${name}\" \"${url}\""
+    $cmd = "/usr/share/varnish/netmapper_update.sh \"${name}\" \"${url}\" >/dev/null 2>&1"
 
     exec { "netmapper_update_${name}_initial":
         user    => 'netmap',
