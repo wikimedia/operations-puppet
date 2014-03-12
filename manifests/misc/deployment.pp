@@ -185,6 +185,9 @@ class misc::deployment::scap_scripts {
 		"${scriptpath}/scap":
 			ensure => link,
 			target => "/srv/scap/bin/scap";
+		"${scriptpath}/scap-purge-l10n-cache":
+			ensure => link,
+			target => "/srv/scap/bin/scap-purge-l10n-cache";
 		"${scriptpath}/sync-common-file":
 			ensure => link,
 			target => "/srv/scap/bin/sync-common-file";
