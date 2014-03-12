@@ -38,10 +38,10 @@ ProxyRequests		Off
 
 	# Prevent access to certain URLs - bug 61964
 	SetEnvIf Request_URI ^/ci/computer/.*/builds DENY_BUILDS_ACCESS
-	SetEnvIf Request_URI ^/ci/computer/.*/rss.* DENY_BUILDS_ACCESS
 	SetEnvIf Request_URI ^/ci/user/.*/builds DENY_BUILDS_ACCESS
 	SetEnvIf Request_URI ^/ci/view/.*/builds DENY_BUILDS_ACCESS
-	SetEnvIf Request_URI ^/ci/rss(All|Failed|Latest) DENY_BUILD_ACCESS
+	# Blacklist RSS feeds entirely
+	SetEnvIf Request_URI ^/ci/.*/rss(All|Failed|Latest) DENY_BUILDS_ACCESS
 	Order deny,allow
 	deny from env=DENY_BUILDS_ACCESS
 </Proxy>
