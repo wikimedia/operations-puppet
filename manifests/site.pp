@@ -615,7 +615,6 @@ node /^db10(34|37|43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
         $ganglia_aggregator = true
         include mha::manager
     }
-
     if $::hostname =~ /^db10(34|37|49|50|51|52|55|56|61|61)/ {
         class { 'role::coredb::s1':
             innodb_file_per_table => true,
@@ -629,10 +628,10 @@ node /^db10(34|37|43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
 }
 
 node /^db10(02|09|18|34|36|60|63)\.eqiad\.wmnet/ {
-        class { 'role::coredb::s2':
-            innodb_file_per_table => true,
-            mariadb               => true,
-        }
+    class { 'role::coredb::s2':
+        innodb_file_per_table => true,
+        mariadb               => true,
+    }
 }
 
 node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
@@ -643,9 +642,9 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
 }
 
 node /^db10(04|11|20|40|42|59)\.eqiad\.wmnet/ {
-        class { 'role::coredb::s4':
-            mariadb => true,
-        }
+    class { 'role::coredb::s4':
+        mariadb => true,
+    }
 }
 
 node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
@@ -667,10 +666,10 @@ node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
 }
 
 node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
-        class { 'role::coredb::s6':
-            innodb_file_per_table => true,
-            mariadb               => true,
-        }
+    class { 'role::coredb::s6':
+        innodb_file_per_table => true,
+        mariadb               => true,
+    }
 }
 
 node /^db10(07|28|33|39|41)\.eqiad\.wmnet/ {
