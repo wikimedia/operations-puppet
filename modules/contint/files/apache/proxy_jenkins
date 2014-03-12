@@ -18,6 +18,7 @@ ProxyRequests		Off
 	SetEnvIf User-Agent bingbot bad_browser
 	SetEnvIf User-Agent Baiduspider bad_browser
 	SetEnvIf User-Agent JikeSpider bad_browser
+	SetEnvIf User-Agent SISTRIX bad_browser
 	SetEnvIf User-Agent Sogou bad_browser
 	SetEnvIf User-Agent Sosospider bad_browser
 	SetEnvIf User-Agent TweetmemeBot bad_browser
