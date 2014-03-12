@@ -24,7 +24,6 @@ import 'openstack.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
 import 'search.pp'
-import 'snapshots.pp'
 import 'sudo.pp'
 import 'swift.pp'
 import 'webserver.pp'
@@ -2473,28 +2472,21 @@ node 'stat1002.eqiad.wmnet' {
     include role::analytics::clients
 }
 
-node /^snapshot([1-3]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
+node /^snapshot([1-3]\.pmtpa|100[124]\.eqiad)\.wmnet/ {
     $gid= '500'
-    include base
-    include ntp::client
-    include ganglia
-    include mediawiki::sync
-    include snapshots::packages
-    include snapshots::sync
-    include snapshots::files
-    include snapshots::noapache
-    include sudo::appserver
-    include admins::roots
-    include admins::mortals
-    include accounts::datasets
-    include nfs::data
-    include groups::wikidev
+    include snapshot
 }
 
-node /^snapshot4.pmtpa.wmnet/ {
+node 'snapshot4.pmtpa.wmnet' {
     $gid= '500'
     include snapshot
     include role::snapshot::cron::secondary
+}
+
+node 'snapshot1003.eqiad.wmnet' {
+    $gid= '500'
+    include snapshot
+    include role::snapshot::cron::primary
 }
 
 node 'terbium.eqiad.wmnet' {
