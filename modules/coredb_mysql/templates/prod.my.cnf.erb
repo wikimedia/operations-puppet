@@ -65,7 +65,7 @@ temp-pool
 <% if has_variable?("mariadb") and mariadb == true then -%>
 query_cache_type=0
 
-# these were set as compile time defaults in our mysql builds
+# these were set as compile time defaults in our old 5.1 mysql builds
 character_set_server=binary
 character_set_filesystem=binary
 collation_server=binary
@@ -80,6 +80,11 @@ userstat = 1
 
 # until we switch to RBR
 log-warnings = 0
+
+# MariaDB uses ARIA instead of MyISAM for implicit temporary tables that
+# hit disk for whever reason. The default 128M page cache is a bottleneck
+# particularly on slaves in 'vslow' load balancing group.
+aria_pagecache_buffer_size = 256M
 
 <% else %>
 rpl_transaction_enabled
