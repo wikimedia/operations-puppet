@@ -1,6 +1,6 @@
 class snapshot::sync {
     require snapshot::packages
-    require mediawiki::sync
+    include mediawiki::sync
 
     exec { 'snapshot-trigger-mw-sync':
         command => '/bin/true',
