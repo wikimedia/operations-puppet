@@ -19,9 +19,6 @@ if [ -e /etc/apache2/core-dump-max-size ]; then
 	chmod 700 /usr/local/apache/core
 fi
 
-# For Ubuntu 8.04+
-APACHE_HTTPD="$HTTPD"
-
 # For Ubuntu 10.04+
 APACHE_PID_FILE="/var/run/apache2.pid"
 
