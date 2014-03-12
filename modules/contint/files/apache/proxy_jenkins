@@ -41,6 +41,7 @@ ProxyRequests		Off
 	SetEnvIf Request_URI ^/ci/computer/.*/rss.* DENY_BUILDS_ACCESS
 	SetEnvIf Request_URI ^/ci/user/.*/builds DENY_BUILDS_ACCESS
 	SetEnvIf Request_URI ^/ci/view/.*/builds DENY_BUILDS_ACCESS
+	SetEnvIf Request_URI ^/ci/rss(All|Failed|Latest) DENY_BUILD_ACCESS
 	Order deny,allow
 	deny from env=DENY_BUILDS_ACCESS
 </Proxy>
