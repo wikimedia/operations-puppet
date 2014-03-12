@@ -576,6 +576,7 @@ node /^db(74)\.pmtpa\.wmnet/ {
 
 node /^db(68)\.pmtpa\.wmnet/ {
     class { 'role::coredb::s7':
+        # Sole mysql 5.1 pmtpa slave
         innodb_file_per_table => true,
     }
 }
@@ -615,15 +616,9 @@ node /^db10(34|37|43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
         $ganglia_aggregator = true
         include mha::manager
     }
-    if $::hostname =~ /^db10(34|37|49|50|51|52|55|56|61|61)/ {
-        class { 'role::coredb::s1':
-            innodb_file_per_table => true,
-            mariadb               => true,
-        }
-    } else {
-        class { 'role::coredb::s1':
-            mariadb => true,
-        }
+    class { 'role::coredb::s1':
+        innodb_file_per_table => true,
+        mariadb               => true,
     }
 }
 
@@ -636,14 +631,17 @@ node /^db10(02|09|18|34|36|60|63)\.eqiad\.wmnet/ {
 
 node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
     class { 'role::coredb::s3':
-        innodb_file_per_table => true,
+        # Many more tables than other shards.
+        # innodb_file_per_table=off to reduce file handles.
+        innodb_file_per_table => false,
         mariadb               => true,
     }
 }
 
 node /^db10(04|11|20|40|42|59)\.eqiad\.wmnet/ {
     class { 'role::coredb::s4':
-        mariadb => true,
+        innodb_file_per_table => true,
+        mariadb               => true,
     }
 }
 
@@ -651,17 +649,9 @@ node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
     if $::hostname =~ /^db1021/ {
         $ganglia_aggregator = true
     }
-    if $::hostname =~ /^db10(45)/ {
-        class { 'role::coredb::s5':
-            innodb_file_per_table => true,
-            mariadb               => true,
-        }
-    } elsif $::hostname =~ /^db10(05|21|26|58)/ {
-        class { 'role::coredb::s5':
-            mariadb => true,
-        }
-    } else {
-        include role::coredb::s5
+    class { 'role::coredb::s5':
+        innodb_file_per_table => true,
+        mariadb               => true,
     }
 }
 
