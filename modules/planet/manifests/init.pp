@@ -45,7 +45,7 @@ class planet (
     planet::docroot { $planet_languages_keys: }
 
     # creates one Apache VirtualHost per language
-    planet::apachesite{ $planet_languages_keys: }
+    planet::apachesite { $planet_languages_keys: }
 
     # creates one RSS/Atom feed config per language
     planet::config { $planet_languages_keys: }

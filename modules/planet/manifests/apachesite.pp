@@ -1,5 +1,5 @@
 # defined type: an apache site config for a planet-venus language version
-define planet::site {
+define planet::apachesite {
 
     $sites_directory = '/etc/apache2/sites-available'
 
