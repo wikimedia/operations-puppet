@@ -1,3 +1,4 @@
 #!/bin/sh
 # this is puppetized
-sudo -u www-data /srv/drush/drush.php $@
+#sudo -u www-data /srv/drush/drush.php $@
+sudo -u www-data /usr/local/drush/drush.php $@
