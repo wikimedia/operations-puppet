@@ -5,11 +5,11 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-	ServerName integration.mediawiki.org
+    ServerName integration.mediawiki.org
 
-	LogLevel warn
-	ErrorLog /var/log/apache2/integration_error.log
-	CustomLog /var/log/apache2/integration_access.log vhost_combined
+    LogLevel warn
+    ErrorLog /var/log/apache2/integration_error.log
+    CustomLog /var/log/apache2/integration_access.log vhost_combined
 
-	Redirect permanent / https://integration.wikimedia.org/
+    Redirect permanent / https://integration.wikimedia.org/
 </VirtualHost>

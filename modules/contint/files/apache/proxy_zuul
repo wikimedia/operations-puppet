@@ -14,6 +14,6 @@ ProxyRequests		Off
 # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
 
 <Proxy http://localhost:8001/*>
-	Order deny,allow
-	Allow from all
+    Order deny,allow
+    Allow from all
 </Proxy>
