@@ -610,7 +610,7 @@ node /^db(6[012456]|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(34|37|43|49|50|51|52|55|56)\.eqiad\.wmnet/ {
+node /^db10(34|37|43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
     if $::hostname =~ /^db10(56)/ {
         $ganglia_aggregator = true
         include mha::manager
@@ -630,7 +630,7 @@ node /^db10(34|37|43|49|50|51|52|55|56)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|34|36|60)\.eqiad\.wmnet/ {
+node /^db10(02|09|18|34|36|60|63)\.eqiad\.wmnet/ {
         class { 'role::coredb::s2':
             innodb_file_per_table => true,
             mariadb               => true,
