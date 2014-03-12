@@ -23,11 +23,6 @@ host dobson {
 	fixed-address dobson.wikimedia.org;
 }
 
-host ersch {
-	hardware ethernet A4:BA:DB:0E:09:43;
-	fixed-address ersch.pmtpa.wmnet;
-}
-
 host fenari {
 	hardware ethernet 00:1E:C9:EA:AB:95;
 	fixed-address fenari.wikimedia.org;

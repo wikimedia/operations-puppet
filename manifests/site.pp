@@ -864,7 +864,7 @@ node 'emery.wikimedia.org' inherits 'base_analytics_logging_node' {
     include role::logging::udp2log::emery
 }
 
-node /(ersch|tarin)\.pmtpa\.wmnet/ {
+node tarin.pmtpa.wmnet {
     $ganglia_aggregator = true
     include standard
     include role::poolcounter
