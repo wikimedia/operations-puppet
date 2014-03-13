@@ -568,7 +568,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key { 'daniel.kinzler@wikimedia.de':
-				ensure  => absent,
+				ensure  => present,
 				user    => $username,
 				type    => "ssh-rsa",
 				key => "AAAAB3NzaC1yc2EAAAABJQAAAIEAuH1eNAxPgzMG0GoCZBtNx/eTnneQRT0Z/IZvbj0uQusaNlSG7MlFrUEI/HWCwIcWZlAdMBCvp2Ywc7+flvgH+JuBzbjvXDhhkC9o0/9wxKEwGRnP8RDnNBlaouzk/ROP4m8L2FZahAahFzoqDqYxzBl7bQ/iw+N811rAo+R0AGU=";
