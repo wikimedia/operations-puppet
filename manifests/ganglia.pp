@@ -284,7 +284,6 @@ class ganglia {
                     }
                 default: {
                     $data_sources = {
-                        "Video scalers pmtpa"            => "tmh1.pmtpa.wmnet tmh2.pmtpa.wmnet",
                         "Video scalers eqiad"            => "tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet",
                         "Image scalers pmtpa"            => "mw75.pmtpa.wmnet mw76.pmtpa.wmnet",
                         "API application servers pmtpa"  => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
