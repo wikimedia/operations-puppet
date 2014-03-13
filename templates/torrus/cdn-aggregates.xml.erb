@@ -2,12 +2,12 @@
 
 <%
 def node_list(role, site)
-	realm = scope.lookupvar('::realm')
+	realm = @realm
 	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
 end
 
 def node_list_squid(role, site)
-	realm = scope.lookupvar('::realm')
+	realm = @realm
 	active = scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site+'-squid']
 	if (active.nil?)
 		active = []
