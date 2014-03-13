@@ -2765,7 +2765,7 @@ node 'labnet1001.eqiad.wmnet' {
     }
 }
 
-node /virt100[1-6].eqiad.wmnet/ {
+node /virt100[1-7].eqiad.wmnet/ {
     $cluster = 'virt'
     $openstack_version = 'havana'
     $use_neutron = false
@@ -2777,7 +2777,7 @@ node /virt100[1-6].eqiad.wmnet/ {
     }
 }
 
-node /virt100[7-9].eqiad.wmnet/ {
+node /virt100[8-9].eqiad.wmnet/ {
     $cluster = 'virt'
     include admins::labs
 
