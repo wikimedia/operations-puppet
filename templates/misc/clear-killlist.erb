@@ -2,7 +2,7 @@
 
 DAYS=3
 
-<% if scope.lookupvar('::realm') == 'production' -%>
+<% if @realm == 'production' -%>
 /usr/local/bin/foreachwikiindblist /usr/local/apache/common/wikipedia.dblist extensions/GeoData/solrupdate.php --clear-killlist $DAYS --noindex
 /usr/local/bin/foreachwikiindblist /usr/local/apache/common/special.dblist extensions/GeoData/solrupdate.php --clear-killlist $DAYS --noindex
 /usr/local/bin/foreachwikiindblist /usr/local/apache/common/wikivoyage.dblist extensions/GeoData/solrupdate.php --clear-killlist $DAYS --noindex
