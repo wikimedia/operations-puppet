@@ -4181,16 +4181,6 @@ host tin {
 	fixed-address tin.eqiad.wmnet;
 }
 
-host tmh1 {
-	hardware ethernet d4:be:d9:af:68:a0;
-	fixed-address tmh1.pmtpa.wmnet;
-}
-
-host tmh2 {
-	hardware ethernet d4:be:d9:af:68:6a;
-	fixed-address tmh2.pmtpa.wmnet;
-}
-
 host tmh1001 {
 	hardware ethernet 18:03:73:f1:4f:82;
 	fixed-address tmh1001.eqiad.wmnet;

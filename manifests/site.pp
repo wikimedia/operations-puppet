@@ -2616,19 +2616,6 @@ node 'tridge.wikimedia.org' {
     include backup::server
 }
 
-# tmh1/tmh2 video encoding server (precise only)
-node /^tmh[1-2]\.pmtpa\.wmnet/ {
-    if $::hostname =~ /^tmh[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    class { 'role::applicationserver::videoscaler':
-        run_jobs_enabled => false,
-    }
-
-    include nfs::upload
-}
-
 # tmh1001/tmh1002 video encoding server (precise only)
 node /^tmh100[1-2]\.eqiad\.wmnet/ {
     if $::hostname =~ /^tmh100[12]$/ {
