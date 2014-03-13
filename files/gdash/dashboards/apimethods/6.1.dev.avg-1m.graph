@@ -6,4 +6,4 @@ hide_legend "false"
 from "-1month"
 
 field :devavg, :alias => "none",
-               :data  => 'cactiStyle(substr(highestMax(maximumAbove(MediaWiki.API.*.tavg,1),10),0,2))'
+               :data  => 'cactiStyle(highestMax(maximumAbove(MediaWiki.API.*.tavg,1),10),0)'
