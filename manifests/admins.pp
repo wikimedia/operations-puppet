@@ -560,7 +560,7 @@ class accounts {
 		$username = "daniel"
 		$realname = "Daniel Kinzler"
 		$uid = 545
-		$enabled = false
+		$enabled = true
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 
