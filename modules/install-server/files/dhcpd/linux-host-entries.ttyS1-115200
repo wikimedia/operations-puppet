@@ -3840,26 +3840,6 @@ host solr1003 {
 	fixed-address solr1003.eqiad.wmnet;
 }
 
-host sq67 {
-	hardware ethernet 00:21:9B:9A:63:0F;
-	fixed-address sq67.wikimedia.org;
-}
-
-host sq68 {
-	hardware ethernet 00:21:9B:9A:09:E5;
-	fixed-address sq68.wikimedia.org;
-}
-
-host sq69 {
-	hardware ethernet 00:21:9B:9A:A8:C6;
-	fixed-address sq69.wikimedia.org;
-}
-
-host sq70 {
-	hardware ethernet 00:21:9B:9A:C6:E7;
-	fixed-address sq70.wikimedia.org;
-}
-
 host srv258 {
 	hardware ethernet 00:21:9b:9e:a7:04;
 	fixed-address srv258.pmtpa.wmnet;
