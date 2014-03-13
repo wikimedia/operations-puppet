@@ -129,4 +129,9 @@ class role::graphite {
         description   => 'HTTP 5xx req/min',
         check_command => 'check_reqstats_5xx!http://graphite.wikimedia.org!-1hours!250!500',
     }
+
+    monitor_service { 'check_api_latency':
+        description   => 'API Requests Latency',
+        check_command => 'check_api_latency!http://graphite.wikimedia.org!-1hours!10!20',
+    }
 }
