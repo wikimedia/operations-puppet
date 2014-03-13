@@ -31,6 +31,7 @@ class toollabs::dev_environ {
         'fakeroot', # for dpkg
         'gcj-jdk',                     # Bug 56995
         'ipython',                     # Bug 56995
+        'joe',                         # Bug 62236.
         'libboost-python1.48-dev',
         'libdjvulibre-dev',            # Bug 56972
         'libdmtx-dev',                 # Bug #53867.
