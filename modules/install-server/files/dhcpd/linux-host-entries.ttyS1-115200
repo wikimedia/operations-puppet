@@ -3802,21 +3802,6 @@ host sodium {
 	fixed-address sodium.wikimedia.org;
 }
 
-host solr1 {
-	hardware ethernet 90:B1:1C:22:D4:C8;
-	fixed-address solr1.pmtpa.wmnet;
-}
-
-host solr2 {
-	hardware ethernet 90:B1:1C:23:31:85;
-	fixed-address solr2.pmtpa.wmnet;
-}
-
-host solr3 {
-	hardware ethernet 90:B1:1C:23:20:4D;
-	fixed-address solr3.pmtpa.wmnet;
-}
-
 host solr1001 {
 	hardware ethernet 90:B1:1C:23:23:BF;
 	fixed-address solr1001.eqiad.wmnet;
