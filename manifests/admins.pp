@@ -3694,7 +3694,7 @@ class admins::restricted {
 	include accounts::avar
 	include accounts::bastique # access revoked
 	include accounts::cscott # RT 6655
-	include accounts::daniel # access revoked
+	include accounts::daniel
 	include accounts::dab
 	include accounts::dartar
 	include accounts::diederik
