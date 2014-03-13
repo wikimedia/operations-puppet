@@ -62,3 +62,11 @@ restrict 208.80.154.14 mask 255.255.255.255 kod notrap nomodify nopeer
 # next lines.  Please do this only if you trust everybody on the network!
 #disable auth
 #broadcastclient
+<% if @realm == "labs" then -%>
+
+# On Labs the default "interface" configuration leads to ntpd
+# complaining that it can't create a IPv6 socket for eth0
+# (cf. https://bugzilla.wikimedia.org/60166).  To work around that, we
+# let ntpd listen only on IPv4.
+interface listen ipv4
+<% end -%>
