@@ -220,7 +220,7 @@ class role::cache {
                 "esams" => [],
             },
             "bits" => {
-                "pmtpa" => ["sq67.wikimedia.org", "sq68.wikimedia.org", "sq69.wikimedia.org", "sq70.wikimedia.org"],
+                "pmtpa" => [],
                 "eqiad" => [],
                 "esams" => [
                     "knsq1.esams.wikimedia.org",
