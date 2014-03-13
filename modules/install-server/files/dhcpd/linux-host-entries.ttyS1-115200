@@ -3628,8 +3628,8 @@ host rdb1004 {
 host tantalum {
 	hardware ethernet 78:2B:CB:2D:F3:D9;
 	fixed-address tantalum.eqiad.wmnet;
-	#option pxelinux.pathprefix "trusty-installer/";
-	#filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host rubidium {
