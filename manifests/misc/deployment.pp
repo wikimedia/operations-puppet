@@ -391,6 +391,13 @@ class misc::deployment::vars ($system = 'scap') {
                 mode   => '0775',
             }
 
+            file { '/a':
+                ensure => directory,
+                owner  => root,
+                group  => root,
+                mode   => '0775',
+            }
+
             file { $mw_common_source:
                 ensure => link,
                 target => '/data/project/apache/common-local',
