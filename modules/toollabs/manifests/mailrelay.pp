@@ -10,11 +10,12 @@
 #
 # Sample Usage:
 #
-class toollabs::mailrelay($maildomain) inherits toollabs {
-    include toollabs::infrastructure
+class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
+    include toollabs::infrastructure,
+        toollabs::gridnode
 
-    package { 'procmail':
-        ensure => present,
+    class { 'gridengine::submit_host':
+        gridmaster => $gridmaster,
     }
 
     file { "${store}/mail-relay":

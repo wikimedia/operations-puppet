@@ -53,6 +53,7 @@ class role::labs::toolsbeta {
     system::role { "role::labs::toolsbeta::mailrelay": description => "Tool Labs mail relay" }
     class { 'toollabs::mailrelay':
       maildomain => "tools-beta.wmflabs.org",
+      gridmaster => $grid_master,
     }
   }
 
