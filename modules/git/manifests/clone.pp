@@ -107,10 +107,10 @@ define git::clone(
 
             if $shared {
                 $shared_arg = '-c core.sharedRepository=066'
-                $git = 'umask 002; git'
+                $git = 'umask 002; /usr/bin/git'
             } else {
                 $shared_arg = ''
-                $git = 'git'
+                $git = '/usr/bin/git'
             }
 
             # set PATH for following execs
@@ -183,7 +183,7 @@ define git::clone(
                     logoutput => on_failure,
                     # git diff --quiet will exit 1 (return false)
                     #  if there are differences
-                    unless    => '${git} fetch && git diff --quiet remotes/origin/HEAD',
+                    unless    => "${git} fetch && /usr/bin/git diff --quiet remotes/origin/HEAD",
                     user      => $owner,
                     group     => $group,
                     require   => Exec["git_clone_${title}"],
