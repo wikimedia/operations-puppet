@@ -143,8 +143,8 @@ define git::clone(
                 # Changing an existing git repository to be shared by a group is ugly,
                 # but here's how you do it without causing log churn.
                 exec { "git_clone_${title}_configure_shared_repository":
-                    command => 'git config --local core.sharedRepository 066',
-                    unless  => 'test $(git config --local core.sharedRepository) = 066',
+                    command => 'git config --local core.sharedRepository group',
+                    unless  => 'test $(git config --local core.sharedRepository) = group',
                     cwd     => $directory,
                     require => Exec["git_clone_${title}"],
                     notify  => Exec["git_clone_${title}_set_group_owner"],
