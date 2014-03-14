@@ -11,7 +11,7 @@ class mediawiki::sync {
 		directory => '/srv/scap',
 		owner     => 'root',
 		group     => 'wikidev',
-		mode      => '0775',
+		shared    => true,
 		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/tools/scap.git',
 	}
 
