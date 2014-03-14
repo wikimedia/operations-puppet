@@ -1,0 +1,14 @@
+#! /bin/bash
+#
+# THIS FILE IS MAINTAINED BY PUPPET
+# source: modules/toollabs/files/maintainers
+# from:   toollabs::mailrelay
+#
+
+echo $(
+  (/usr/bin/ldapsearch -LLL -x -b "cn=$1,ou=servicegroups,dc=wikimedia,dc=org" member|grep member:|while read x dn
+  do
+    /usr/bin/ldapsearch -LLL -x -b "$dn" mail
+  done) |
+  /bin/sed -ne '/^mail: \(.*\)/{;s//\1,/;p;}'
+) | sed -e 's/,\s*$//'
