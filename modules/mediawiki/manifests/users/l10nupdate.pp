@@ -10,7 +10,7 @@ class mediawiki::users::l10nupdate {
         generic::systemuser { 'l10nupdate':
             name          => 'l10nupdate',
             home          => '/home/l10nupdate',
-            default_group => 'l10nupdate',
+            default_group => 10002,
             shell         => '/bin/bash',
             before        => File['/home/l10nupdate/.ssh'],
         }
