@@ -102,11 +102,6 @@ class role::beta::logging::mediawiki {
         log_directory => '/data/project/logs';
     }
 
-    # Shortcut
-    file { '/home/wikipedia/logs':
-        ensure => 'link',
-        target => '/data/project/logs';
-    }
 }
 
 # == Class role::logging::mediawiki::errors
