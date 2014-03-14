@@ -36,7 +36,7 @@ result = json.load(req)['hits']
 
 for hit in result['hits']:
     db = hit['_index'].split('_', 1)[0]
-    title = hit['fields']['title']
+    title = hit['fields']['title'][0]
     print('{:<20}{}'.format(db, title))
 
 print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
