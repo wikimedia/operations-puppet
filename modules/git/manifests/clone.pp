@@ -20,7 +20,7 @@
 #  by this user.
 # $+group+:: Group owner of $directory, default: 'root'
 # $+recurse_submodules:: If true, git
-# $+mode+:: Permission mode of $directory, default: 0755
+# $+mode+:: Permission mode of $directory, default: 2755 if shared, 0755 otherwise
 # $+ssh+:: SSH command/wrapper to use when checking out, default: ''
 # $+timeout+:: Time out in seconds for the exec command, default: 300
 #
@@ -48,16 +48,26 @@ define git::clone(
     $ensure='present',
     $owner='root',
     $group='root',
+    $shared=false,
     $timeout='300',
     $depth='full',
     $recurse_submodules=false,
-    $mode=0755) {
+    $mode=undef) {
 
     $gerrit_url_format = 'https://gerrit.wikimedia.org/r/p/%s.git'
 
     $remote = $origin ? {
         undef   => sprintf($gerrit_url_format, $title),
         default => $origin,
+    }
+
+    if $mode == undef {
+        $file_mode = $shared ? {
+            true    => '2755',
+            default => '0755',
+        }
+    } else {
+        $file_mode = $mode
     }
 
     case $ensure {
@@ -93,11 +103,16 @@ define git::clone(
                 default => " --depth=$depth"
             }
 
+            $shared_arg = $shared ? {
+                true    => '-c core.sharedRepository=group',
+                default => '',
+            }
+
             # set PATH for following execs
             Exec { path => '/usr/bin:/bin' }
             # clone the repository
             exec { "git_clone_${title}":
-                command     => "git clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg} $directory",
+                command     => "git ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg} $directory",
                 logoutput   => on_failure,
                 cwd         => '/tmp',
                 environment => $env,
@@ -112,13 +127,43 @@ define git::clone(
             if (!defined(File[$directory])) {
                 file { $directory:
                     ensure  => 'directory',
-                    mode    => $mode,
+                    mode    => $file_mode,
                     owner   => $owner,
                     group   => $group,
                     require => Exec["git_clone_${title}"],
                 }
             }
 
+            if ( $shared and $group != 'root' ) {
+                # Changing an existing git repository to be shared by a group is ugly,
+                # but here's how you do it without causing log churn.
+                exec { "git_clone_${title}_configure_shared_repository":
+                    command => 'git config --local core.sharedRepository group',
+                    unless  => 'test $(git config --local core.sharedRepository) = group',
+                    cwd     => $directory,
+                }
+
+                exec { "git_clone_${title}_set_group_owner":
+                    command => "chgrp -R '${group}' '${directory}'",
+                    onlyif  => "find '${directory}' ! -group '${group}'",
+                    cwd     => $directory,
+                    require => Exec["git_clone_${title}_configure_shared_repository"],
+                }
+
+                exec { "git_clone_${title}_group_writable":
+                    command => "find '${directory}' ! -perm -g=wX,o= -exec chmod g+wX,o= '{}' ';'":
+                    onlyif  => "find '${directory}' ! -perm -g=wX,o=",
+                    cwd     => $directory,
+                    require => Exec["git_clone_${title}_set_group_owner"],
+                }
+
+                exec { "git_clone_${title}_sgid_bit":
+                    command => "find '${directory}' -mindepth 1 -type d -and ! -perm -g+s -exec chmod g+s '{}' ';'",
+                    onlyif  => "find '${directory}' -mindepth 1 -type d -and ! -perm -g+s",
+                    cwd     => $directory,
+                    require => Exec["git_clone_${title}_set_group_owner"],
+                }
+            }
 
             # pull if $ensure == latest and if there are changes to merge in.
             if $ensure == 'latest' {
