@@ -1,0 +1,75 @@
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/dumps/configs/wikidump.conf.erb
+#############################################################
+
+[wiki]
+dblist=<%= @config[configtype]['dblist'] %>
+privatelist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/private.dblist
+flaggedrevslist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/flaggedrevs.dblist
+biglist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/big.dblist
+skipdblist=<%= @config[configtype]['skipdblist'] %>
+wikidatalist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/wikidata.dblist
+dir=<%= scope.lookupvar('snapshot::dirs::apachedir') %>
+adminsettings=wmf-config/AdminSettings.php
+forcenormal=1
+
+#testing
+#halt=1
+
+[output]
+public=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public
+private=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/private
+temp=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/temp
+templatedir=<%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/templs
+index=backup-index.html
+webroot=http://download.wikimedia.org
+fileperms=0644
+
+[reporting]
+adminmail=ops-dumps@wikimedia.org
+mailfrom=root@wikimedia.org
+smtpserver=smtp.pmtpa.wmnet
+staleage=3600
+
+[database]
+
+[tools]
+php=/usr/bin/php
+mysql=/usr/bin/mysql
+mysqldump=/usr/bin/mysqldump
+gzip=/bin/gzip
+bzip2=/bin/bzip2
+sevenzip=/usr/bin/7za
+checkforbz2footer=/usr/local/bin/checkforbz2footer
+writeuptopageid=/usr/local/bin/writeuptopageid
+recompressxml=/usr/local/bin/recompressxml
+
+[cleanup]
+keep=<%= @config[configtype]['keep'] %>
+
+[chunks]
+<% if @config[configtype].has_key?('chunksEnabled') -%>
+chunksEnabled=<%= @config[configtype]['chunksEnabled'] %>
+<% end -%>
+<% if @config[configtype].has_key?('recombineHistory') -%>
+recombineHistory=<%= @config[configtype]['recombineHistory'] %>
+<% end -%>
+<% if @config[configtype].has_key?('checkpointTime') -%>
+checkpointTime=<%= @config[configtype]['checkpointTime'] %>
+<% end -%>
+
+[otherformats]
+multistream=1
+
+[pageslogging]
+batchsize=1000000
+
+<% if @config[configtype].has_key?('wikis') %>
+<% @config[configtype]['wikis'].keys.sort.each do |w| -%>
+[<%= [w] %>]
+pagesPerChunkHistory=<%= @config[configtype]['wikis'][w]['pagesPerChunkHistory'] %>
+pagesPerChunkAbstract=<%= @config[configtype]['wikis'][w]['pagesPerChunkAbstract'] %>
+
+<% end -%>
+<% end -%>
