@@ -4064,25 +4064,6 @@ host srv301 {
 	hardware ethernet 00:21:9b:a6:1e:e6;
 	fixed-address srv301.pmtpa.wmnet;
 }
-host ssl1 {
-	hardware ethernet 78:2b:cb:47:00:6e;
-	fixed-address ssl1.wikimedia.org;
-}
-
-host ssl2 {
-	hardware ethernet 78:2b:cb:48:f9:61;
-	fixed-address ssl2.wikimedia.org;
-}
-
-host ssl3 {
-	hardware ethernet 78:2b:cb:49:00:15;
-	fixed-address ssl3.wikimedia.org;
-}
-
-host ssl4 {
-	hardware ethernet 78:2b:cb:48:f9:58;
-	fixed-address ssl4.wikimedia.org;
-}
 
 host ssl1001 {
 	hardware ethernet 78:2b:cb:09:10:91;
