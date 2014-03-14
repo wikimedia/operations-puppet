@@ -15,7 +15,7 @@ class mediawiki::users::l10nupdate {
             before        => File['/home/l10nupdate/.ssh'],
         }
     } else {
-        file { '/home/l10update':
+        file { '/home/l10nupdate':
             owner  => 'l10nupdate',
             group  => 'l10nupdate',
             mode   => '0750',
