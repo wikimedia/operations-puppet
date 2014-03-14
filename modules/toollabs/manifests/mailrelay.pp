@@ -27,10 +27,27 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
         content => template('toollabs/mail-relay.erb'),
     }
 
+    file { '/usr/local/sbin/localuser':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///files/toollabs/localuser',
+    }
+
+    file { '/usr/local/sbin/maintainers':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///files/toollabs/maintainers',
+    }
+
     File <| title == '/etc/exim4/exim4.conf' |> {
         source  => undef,
         content => template('toollabs/exim4.conf.erb'),
         notify  => Service['exim4'],
+        require => File['/usr/local/sbin/localuser', '/usr/local/sbin/maintainers'],
     }
 
     File <| title == '/etc/default/exim4' |> {

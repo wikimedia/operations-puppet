@@ -1,3 +1,8 @@
+#
+# THIS FILE IS MAINTAINED BY PUPPET
+# source: modules/toollabs/templates/exim4.conf.erb
+# from:   toollabs::mailrelay
+#
 
 primary_hostname = relay.<%= @maildomain %>
 qualify_domain = <%= @maildomain %>
@@ -14,6 +19,8 @@ never_users = root
 host_lookup = *
 ignore_bounce_errors_after = 2d
 timeout_frozen_after = 7d
+
+local_from_suffix = .*
 
 begin acl
 
@@ -52,6 +59,85 @@ accept
 
 begin routers
 
+tool_fallback:
+  driver = redirect
+  local_part_prefix = <%= instanceproject %>.
+  not_local_part_prefix_optional
+  caseful_local_part
+  local_parts = passwd;<%= instanceproject %>.$local_part
+  check_ancestor
+  modemask = 002
+  data = $local_part.maintainers
+
+user_forward:
+  driver = redirect
+  caseful_local_part
+  check_local_user
+  no_expn
+  check_ancestor
+  modemask = 002
+  data = ${run{/usr/local/sbin/localuser $local_part}{$value}fail}
+
+tool_forward_specific:
+  driver = redirect
+  local_part_suffix = .*
+  not_local_part_suffix_optional
+  caseful_local_part
+  local_parts = passwd;<%= instanceproject %>.$local_part
+  require_files = <%= instanceproject %>.$local_part:$home/.forward$local_part_suffix
+  user = <%= instanceproject %>.$local_part
+  group = <%= instanceproject %>.$local_part
+  router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
+  file = $home/.forward$local_part_suffix
+  no_expn
+  check_ancestor
+  modemask = 002
+  pipe_transport = gridqueue
+  no_allow_filter
+  no_allow_defer
+  allow_fail
+  forbid_include
+  forbid_file
+  forbid_smtp_code
+  hide_child_in_errmsg
+
+tool_forward_general:
+  driver = redirect
+  local_part_suffix = .*
+  not_local_part_suffix_optional
+  caseful_local_part
+  local_parts = passwd;<%= instanceproject %>.$local_part
+  require_files = <%= instanceproject %>.$local_part:$home/.forward
+  user = <%= instanceproject %>.$local_part
+  group = <%= instanceproject %>.$local_part
+  router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
+  file = $home/.forward
+  no_expn
+  check_ancestor
+  modemask = 002
+  pipe_transport = gridqueue
+  no_allow_filter
+  no_allow_defer
+  allow_fail
+  forbid_include
+  forbid_file
+  forbid_smtp_code
+  hide_child_in_errmsg
+
+tool_default:
+  driver = redirect
+  local_part_suffix = .*
+  not_local_part_suffix_optional
+  caseful_local_part
+  local_parts = passwd;<%= instanceproject %>.$local_part
+  user = <%= instanceproject %>.$local_part
+  group = <%= instanceproject %>.$local_part
+  router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
+  no_expn
+  check_ancestor
+  modemask = 002
+  data = ${run{/usr/local/sbin/maintainers <%= instanceproject %>.$local_part}{$value}fail}
+
 dnslookup:
   driver = dnslookup
   domains = ! +local_domains
@@ -65,48 +151,19 @@ system_aliases:
   allow_defer
   data = ${lookup{$local_part}lsearch{/etc/aliases}}
 
-userforward:
-  driver = redirect
-  check_local_user
-  file = $home/.forward
-  no_verify
-  no_expn
-  check_ancestor
-
-userprocmail:
-  driver = accept
-  check_local_user
-  require_files = $local_part:$home/.procmailrc
-  transport = procmailpipe
-  no_verify
-  no_expn
-
-localuser:
-  driver = accept
-  check_local_user
-  transport = local_delivery
-
 begin transports
+
+gridqueue:
+  driver = pipe
+  batch_max = 1
+  umask = 007
+  path = /bin:/usr/bin:/usr/local/bin
+  allow_commands = jmail
+  return_fail_output
+  temp_errors = 73:74:75
 
 remote_smtp:
   driver = smtp
-
-procmailpipe:
-  driver = pipe
-  command = "/usr/bin/procmail -d"
-  return_path_add
-  delivery_date_add
-  path = "/bin:/usr/bin:/usr/local/bin"
-  envelope_to_add
-  check_string = "From "
-  escape_string = ">From "
-
-local_delivery:
-  driver = appendfile
-  file = <%= @store %>/mail/$local_part
-  delivery_date_add
-  envelope_to_add
-  return_path_add
 
 begin retry
 *   *   F,2h,15m; G,16h,1h,1.5; F,4d,6h

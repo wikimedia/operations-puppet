@@ -1,0 +1,12 @@
+#! /bin/bash
+#
+# THIS FILE IS MAINTAINED BY PUPPET
+# source: modules/toollabs/files/localuser
+# from:   toollabs::mailrelay
+#
+
+echo $(
+  /usr/bin/ldapsearch -LLL -x -b "uid=$1,ou=people,dc=wikimedia,dc=org" mail |
+  	/bin/sed -ne '/^mail: \(.*\)/{;s//\1,/;p;}'
+) | sed -e 's/,\s*$//'
+
