@@ -9,10 +9,16 @@ class mediawiki($twemproxy = true) {
 	}
 
 	# Disable timidity-daemon
-	# It's recommended by timidity and there's no simple way to avoid installing it
-	service { 'timidity':
-		enable => false,
-		ensure => stopped;
+	#
+	# Timidity is a dependency for the MediaWiki extension Score and is
+	# installed via wikimedia-task-appserver.
+	#
+	# The 'timidity' package used to install the daemon, but it is recommended
+	# to disable it anyway. In Precise, the daemon is provided by a package
+	# 'timidity-daemon', so we just need to ensure it is not installed to
+	# disable it properly.
+	package { 'timidity-daemon':
+		ensure => absent,
 	}
 
 	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup, packages
