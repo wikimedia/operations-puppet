@@ -1,6 +1,4 @@
-import os
 import sys
-import re
 import subprocess
 import socket
 
@@ -43,23 +41,26 @@ class Rsyncer(object):
 
             if 'primary' in hosts[self.host]:
                 # this host rsyncs everything except a specific list of dirs
-                dir_args = ["--exclude=/" + d.strip('/') + "/" for d in excludes]
+                dir_args = ["--exclude=/" + d.strip('/') + "/"
+                            for d in excludes]
                 for h in targets:
                     if 'dirs' in hosts[h]:
                         dir_args.extend(["--exclude=/" + d.strip('/') + "/"
                                          for d in hosts[h]['dirs']])
 
             elif 'dirs' in hosts[self.host]:
-                # this host keeps data in a specific list of dirs and must rsync
-                # those everywhere else
+                # this host keeps data in a specific list of dirs and must
+                # rsync those everywhere else
 
-                dirs_to_include = [d.strip('/') for d in hosts[self.host]['dirs']]
+                dirs_to_include = [d.strip('/')
+                                   for d in hosts[self.host]['dirs']]
                 if not len(dirs_to_include):
                     # no specific dirs to sync
                     continue
 
                 dir_args = ["--include=/" + d + "/" for d in dirs_to_include]
-                dir_args.extend(["--include=/" + d + "/**" for d in dirs_to_include])
+                dir_args.extend(["--include=/" + d + "/**"
+                                 for d in dirs_to_include])
                 dir_args.append('--exclude=*')
 
             else:
@@ -70,7 +71,8 @@ class Rsyncer(object):
                           targets, dir_args)
 
     def check_output(self, command):
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT)
         output, unused_err = process.communicate()
         retcode = process.poll()
         if retcode:
@@ -79,7 +81,8 @@ class Rsyncer(object):
 
     def do_rsync(self, src, dest, targets, dir_args):
         for t in targets:
-            command = ["/usr/bin/pgrep", "-u", "root", "-f", "%s::%s" % (t, dest)]
+            command = ["/usr/bin/pgrep", "-u", "root",
+                       "-f", "%s::%s" % (t, dest)]
             result = subprocess.call(command)
             if result != 1:  # already running or some error
                 continue
@@ -92,7 +95,7 @@ class Rsyncer(object):
                 output = None
                 try:
                     output = self.check_output(command)
-                except subprocess.CalledProcessError, e:
+                except subprocess.CalledProcessError:
                     # fixme might want to do something with error output
                     pass
                 if output:
@@ -103,9 +106,10 @@ class Rsyncer(object):
                                    "DUMPS RSYNC " + self.host,
                                    'ops-dumps' + '@' + 'wikimedia' + '.org']
                         proc = subprocess.Popen(command, stdin=subprocess.PIPE)
-                        (out, errs) = p.communicate(input=output)
+                        (out, errs) = proc.communicate(input=output)
                         if errs:
-                            print errs  # give up and hope something else sees this
+                            # give up and hope something else sees this
+                            print errs
 
 
 def usage(message):
@@ -138,37 +142,64 @@ if __name__ == '__main__':
 
     r = Rsyncer(max_bandwidth, dryrun, list_only)
 
-    # the rsync commands we would expect to see on...
-    # primary for '/public/':
-    #   /usr/bin/rsync -v --bwlimit=40000 -a --delete --exclude=wikidump_* --exclude=md5temp.*
-    #          --exclude=/dir-done-by-secondary/ --exclude=/another-dir-done-by-secondary/
-    #          --exclude=/other/ /data/xmldatadumps/public/ remotehost::data/xmldatadumps/public/
-    # secondary for '/public/':
-    #   /usr/bin/rsync -v --bwlimit=40000 -a --delete --exclude=wikidump_* --exclude=md5temp.*
-    #          --include=/dir-done-by-secondary/ ---include=/another-dir-done-by-secondary/
-    #          --include=/dir-done-by-secndary/** --include=/another-dir-done-by-secondary/**
-    #          --exclude=* /data/xmldatadumps/public/ remotehost::data/xmldatadumps/public/
+    # The rsync commands we would expect to see on...
+    #
+    # Primary for '/public/':
+    #   /usr/bin/rsync -v --bwlimit=40000 -a --delete
+    #          --exclude=wikidump_* --exclude=md5temp.*
+    #          --exclude=/dir-done-by-secondary/
+    #          --exclude=/another-dir-done-by-secondary/
+    #          --exclude=/other/
+    #          /data/xmldatadumps/public/
+    #          remotehost::data/xmldatadumps/public/
+    #
+    # Secondary for '/public/':
+    #   /usr/bin/rsync -v --bwlimit=40000 -a --delete
+    #          --exclude=wikidump_* --exclude=md5temp.*
+    #          --include=/dir-done-by-secondary/
+    #          --include=/another-dir-done-by-secondary/
+    #          --include=/dir-done-by-secndary/**
+    #          --include=/another-dir-done-by-secondary/**
+    #          --exclude=*
+    #          /data/xmldatadumps/public/
+    #          remotehost::data/xmldatadumps/public/
+    #
     # primary for '/public/other/':
-    #   /usr/bin/rsync -v --bwlimit=40000 -a --delete --exclude=wikidump_* --exclude=md5temp.*
-    #          --exclude=/subdir-done-by-secondary/ --exclude=/another-subdir-done-by-secondary/
-    #          /data/xmldatadumps/public/other/ remotehost::data/xmldatadumps/public/other/
+    #   /usr/bin/rsync -v --bwlimit=40000 -a --delete
+    #          --exclude=wikidump_* --exclude=md5temp.*
+    #          --exclude=/subdir-done-by-secondary/
+    #          --exclude=/another-subdir-done-by-secondary/
+    #          /data/xmldatadumps/public/other/
+    #          remotehost::data/xmldatadumps/public/other/
+    #
     # secondary for '/public/other/':
-    #   /usr/bin/rsync -v --bwlimit=40000 -a --delete --exclude=wikidump_* --exclude=md5temp.*
-    #          --include=/subdir-done-by-secondary/ --include=/another-dir-done-by-secondary/
-    #          --include=/subdir-done-by-secondary/** --include=/another-subdir-done-by-secondary/**
-    #          --exclude=* /data/xmldatadumps/public/other/ remotehost::data/xmldatadumps/public/other/
+    #   /usr/bin/rsync -v --bwlimit=40000 -a --delete
+    #          --exclude=wikidump_* --exclude=md5temp.*
+    #          --include=/subdir-done-by-secondary/
+    #          --include=/another-dir-done-by-secondary/
+    #          --include=/subdir-done-by-secondary/**
+    #          --include=/another-subdir-done-by-secondary/**
+    #          --exclude=*
+    #          /data/xmldatadumps/public/other/
+    #          remotehost::data/xmldatadumps/public/other/
 
     host_info = {
         'public': {  # job name
-            'source': '/data/xmldatadumps/public/',  # absolute path
-            'dest': 'data/xmldatadumps/public/',     # will be prefixed by 'servername::' in rsync
+            # source is an absolute path
+            'source': '/data/xmldatadumps/public/',
+            # dest will be prefixed by 'servername::' in rsync
+            'dest': 'data/xmldatadumps/public/',
             'hosts': {
-                'dataset1001': {'primary': True},    # everything but a specific list of dirs will be pushed
-                'dataset2': {'dirs': []}             # only the specified list of dirs is here
+                # everything but a specific list of dirs will be pushed:
+                'dataset1001': {'primary': True},
+                # only the specified list of dirs is here:
+                'dataset2': {'dirs': []}
             }
         },
         'other': {   # job name
-            'exclude': {'dir': 'other', 'job': 'public'},  # don't sync this when doing the 'public' job
+            # don't sync this when doing the 'public' job:
+            'exclude': {'dir': 'other', 'job': 'public'},
+
             'source': '/data/xmldatadumps/public/other/',
             'dest': 'data/xmldatadumps/public/other/',
             'hosts': {
