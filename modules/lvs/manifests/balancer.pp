@@ -56,5 +56,5 @@ class lvs::balancer(
         priority => 50,
     }
 
-    generic::upstart_job { "enable-rps": install => "true", start => "true" }
+    generic::upstart_job { "enable-rps": install => true, start => true }
 }
