@@ -1030,7 +1030,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 node 'gallium.wikimedia.org' {
     $cluster = 'misc'
     $gid= '500'
-    sudo_user { [ 'demon', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]:
+    sudo_user { [ 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
         privileges => [
             'ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
@@ -1445,7 +1445,7 @@ node 'lanthanum.eqiad.wmnet' {
 
     # Used as a Jenkins slave so some folks need escalated privileges
     $gid= '500'
-    sudo_user { [ 'demon', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]:
+    sudo_user { [ 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
         privileges => [
         'ALL = (jenkins-slave) NOPASSWD: ALL',
         'ALL = (gerritslave) NOPASSWD: ALL',
