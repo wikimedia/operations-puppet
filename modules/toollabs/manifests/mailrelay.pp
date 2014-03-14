@@ -32,7 +32,7 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///files/toollabs/localuser',
+        source  => 'puppet:///modules/toollabs/localuser',
     }
 
     file { '/usr/local/sbin/maintainers':
@@ -40,7 +40,7 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///files/toollabs/maintainers',
+        source  => 'puppet:///modules/toollabs/maintainers',
     }
 
     File <| title == '/etc/exim4/exim4.conf' |> {
