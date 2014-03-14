@@ -106,19 +106,19 @@ define git::clone(
             }
 
             if $shared {
-                $umask = '002'
-                $shared_arg = '-c core.sharedRepository=umask'
+                $shared_arg = '-c core.sharedRepository=066'
+                $git = 'umask 002; git'
             } else {
-                $umask = undef
                 $shared_arg = ''
+                $git = 'git'
             }
 
             # set PATH for following execs
             Exec { path => '/usr/bin:/bin' }
             # clone the repository
             exec { "git_clone_${title}":
-                command     => "git ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg} ${directory}",
-                umask       => $umask,
+                command     => "${git} ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg} ${directory}",
+                provider    => shell,
                 logoutput   => on_failure,
                 cwd         => '/tmp',
                 environment => $env,
@@ -143,9 +143,8 @@ define git::clone(
                 # Changing an existing git repository to be shared by a group is ugly,
                 # but here's how you do it without causing log churn.
                 exec { "git_clone_${title}_configure_shared_repository":
-                    command => 'git config --local core.sharedRepository false',
-                    unless  => 'test $(git config --local core.sharedRepository) = false',
-                    umask   => $umask,
+                    command => 'git config --local core.sharedRepository 066',
+                    unless  => 'test $(git config --local core.sharedRepository) = 066',
                     cwd     => $directory,
                     require => Exec["git_clone_${title}"],
                     notify  => Exec["git_clone_${title}_set_group_owner"],
@@ -179,12 +178,12 @@ define git::clone(
             if $ensure == 'latest' {
                 exec { "git_pull_${title}":
                     cwd       => $directory,
-                    command   => "git ${shared_arg} pull ${recurse_submodules_arg}--quiet${deptharg}",
-                    umask     => $umask,
+                    command   => "${git} ${shared_arg} pull ${recurse_submodules_arg}--quiet${deptharg}",
+                    provider  => shell,
                     logoutput => on_failure,
                     # git diff --quiet will exit 1 (return false)
                     #  if there are differences
-                    unless    => 'git fetch && git diff --quiet remotes/origin/HEAD',
+                    unless    => '${git} fetch && git diff --quiet remotes/origin/HEAD',
                     user      => $owner,
                     group     => $group,
                     require   => Exec["git_clone_${title}"],
@@ -194,10 +193,13 @@ define git::clone(
                 # git pull is run.
                 if $recurse_submodules {
                     exec { "git_submodule_update_${title}":
-                        command     => "git ${shared_arg} submodule update --init",
+                        command     => "${git} ${shared_arg} submodule update --init",
+                        provider    => shell,
                         cwd         => $directory,
                         environment => $env,
                         refreshonly => true,
+                        user        => $owner,
+                        group       => $group,
                         subscribe   => Exec["git_pull_${title}"],
                     }
                 }
