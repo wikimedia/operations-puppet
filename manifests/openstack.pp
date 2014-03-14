@@ -158,7 +158,7 @@ class openstack::project-storage-service {
 
     generic::upstart_job{ "manage-volumes":
         require => Package["glusterfs-server"],
-        install => "true";
+        install => true;
     }
 
     service { "manage-volumes":
@@ -170,7 +170,7 @@ class openstack::project-storage-service {
 
 class openstack::project-nfs-storage-service {
     generic::upstart_job{ "manage-nfs-volumes":
-        install => "true";
+        install => true;
     }
 
     service { "manage-nfs-volumes":
