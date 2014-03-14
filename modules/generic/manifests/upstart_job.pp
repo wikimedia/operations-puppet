@@ -8,7 +8,7 @@ define generic::upstart_job($install=false, $start=false) {
         target  => '/lib/init/upstart-job',
     }
 
-    if $install == true {
+    if $install == true or $install == 'true' {
         file { "/etc/init/${title}.conf":
             owner    => 'root',
             group   => 'root',
@@ -17,7 +17,7 @@ define generic::upstart_job($install=false, $start=false) {
         }
     }
 
-    if $start == true {
+    if $start == true or $start == 'true' {
         exec { "start ${title}":
             require     => File["/etc/init/${title}.conf"],
             subscribe   => File["/etc/init/${title}.conf"],
