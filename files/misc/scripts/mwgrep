@@ -1,10 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
- mwgrep
- ~~~~~~
- Grep for CSS or JS code in wiki pages
- Usage: mwgrep [--user] [--max-results N] [--timeout N] TERM
+  usage: mwgrep [-h] [--max-results N] [--timeout N] [--user] term
+
+  Grep for CSS and JS code fragments in MediaWiki wiki pages
+
+  positional arguments:
+    term             text to search for
+
+  optional arguments:
+    -h, --help       show this help message and exit
+    --max-results N  show at most this many results (default: 100)
+    --timeout N      abort search after this many seconds (default: 30)
+    --user           search NS_USER rather than NS_MEDIAWIKI
+
+  mwgrep will grep the MediaWiki namespace across Wikimedia wikis. specify
+  --user to search the user namespace instead.
 
 """
 import argparse
@@ -18,13 +29,38 @@ BASE_URI = 'http://search.svc.eqiad.wmnet:9200/_all/page/_search'
 NS_MEDIAWIKI = 8
 NS_USER = 2
 
-ap = argparse.ArgumentParser(description='Grep for CSS/JS in wiki pages')
+ap = argparse.ArgumentParser(
+    prog='mwgrep',
+    description='Grep for CSS and JS code fragments in MediaWiki wiki pages',
+    epilog='mwgrep will grep the MediaWiki namespace across Wikimedia wikis. '
+           'specify --user to search the user namespace instead.'
+)
 ap.add_argument('term', help='text to search for')
-ap.add_argument('--max-results', type=int, default=100)
-ap.add_argument('--timeout', type=int, default=30)
-ap.add_argument('--user', action='store_const', const=NS_USER,
-                default=NS_MEDIAWIKI, dest='ns',
-                help='search NS_USER rather than NS_MEDIAWIKI')
+
+ap.add_argument(
+    '--max-results',
+    metavar='N',
+    type=int, default=100,
+    help='show at most this many results (default: 100)'
+)
+
+ap.add_argument(
+    '--timeout',
+    metavar='N',
+    type=int,
+    default=30,
+    help='abort search after this many seconds (default: 30)'
+)
+
+ap.add_argument(
+    '--user',
+    action='store_const',
+    const=NS_USER,
+    default=NS_MEDIAWIKI,
+    dest='ns',
+    help='search NS_USER rather than NS_MEDIAWIKI'
+)
+
 args = ap.parse_args()
 
 filters = [
