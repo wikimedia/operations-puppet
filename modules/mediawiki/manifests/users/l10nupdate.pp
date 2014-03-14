@@ -13,7 +13,7 @@ class mediawiki::users::l10nupdate {
             uid           => $uid,
             default_group => 'l10nupdate',
             shell         => '/bin/bash',
-            before        => '/home/l10nupdate/.ssh',
+            before        => File['/home/l10nupdate/.ssh'],
         }
     } else {
         file { '/home/l10update':
@@ -21,7 +21,7 @@ class mediawiki::users::l10nupdate {
             group  => 'l10nupdate',
             mode   => '0750',
             ensure => directory,
-            before => '/home/l10nupdate/.ssh',
+            before => File['/home/l10nupdate/.ssh'],
         }
     }
 
