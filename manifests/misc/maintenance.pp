@@ -42,7 +42,7 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
 
 class misc::maintenance::pagetriage( $enabled = false ) {
 
-    system::role { "misc::maintenance::pagetriage": description => "Misc - Maintenance Server: pagetriage extension" }
+    system::role { 'misc::maintenance::pagetriage': description => 'Misc - Maintenance Server: pagetriage extension' }
 
     cron { 'pagetriage_cleanup_en':
         user     => apache,
@@ -77,7 +77,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
     # selected set of wikis?
     cron {
         'translationnotifications-metawiki':
-            command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log",
+            command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log',
             user    => l10nupdate,  # which user?
             weekday => 1, # Monday
             hour    => 10,
@@ -89,7 +89,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
             };
 
         'translationnotifications-mediawikiwiki':
-            command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log",
+            command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log',
             user    => l10nupdate, # which user?
             weekday => 1, # Monday
             hour    => 10,
@@ -102,23 +102,23 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
     }
 
     file {
-        "/var/log/translationnotifications":
+        '/var/log/translationnotifications':
             owner  => l10nupdate, # user ?
             group  => wikidev,
             mode   => '0664',
             ensure => directory;
-        "/etc/logrotate.d/l10nupdate":
+        '/etc/logrotate.d/l10nupdate':
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
-            source => "puppet:///files/logrotate/translationnotifications",
+            source => 'puppet:///files/logrotate/translationnotifications',
     }
 }
 
 class misc::maintenance::tor_exit_node( $enabled = false ) {
     cron {
         'tor_exit_node_update':
-            command => "/usr/local/bin/mwscript extensions/TorBlock/loadExitNodes.php --wiki=aawiki --force > /dev/null",
+            command => '/usr/local/bin/mwscript extensions/TorBlock/loadExitNodes.php --wiki=aawiki --force > /dev/null',
             user    => apache,
             minute  => '*/20',
             ensure  => $enabled ?{
@@ -132,7 +132,7 @@ class misc::maintenance::tor_exit_node( $enabled = false ) {
 class misc::maintenance::echo_mail_batch( $enabled = false ) {
     cron {
         'echo_mail_batch':
-            command => "/usr/local/bin/foreachwikiindblist /usr/local/apache/common/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php",
+            command => '/usr/local/bin/foreachwikiindblist /usr/local/apache/common/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php',
             user    => apache,
             minute  => 0,
             hour    => 0,
@@ -146,8 +146,8 @@ class misc::maintenance::echo_mail_batch( $enabled = false ) {
 
 class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
     file {
-        "/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh":
-            source => "puppet:///files/misc/scripts/wikimedia-periodic-update.sh",
+        '/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh':
+            source => 'puppet:///files/misc/scripts/wikimedia-periodic-update.sh',
             owner  => apache,
             group  => wikidev,
             mode   => '0755',
@@ -156,10 +156,10 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
 
     cron {
         'update_flaggedrev_stats':
-            command => "/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null",
-            user    => "apache",
-            hour    => "*/2",
-            minute  => "0",
+            command => '/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null',
+            user    => 'apache',
+            hour    => '*/2',
+            minute  => '0',
             ensure  => $enabled ?{
                 true    => present,
                 false   => absent,
@@ -171,8 +171,8 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
 class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
     cron {
         'cleanup_upload_stash':
-            command => "/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php > /dev/null",
-            user    => "apache",
+            command => '/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php > /dev/null',
+            user    => 'apache',
             hour    => 1,
             minute  => 0,
             ensure  => $enabled ?{
@@ -186,9 +186,9 @@ class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
 class misc::maintenance::update_special_pages( $enabled = false ) {
     cron {
         'update_special_pages':
-            command  => "flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/updateSpecialPages.log 2>&1",
-            user     => "apache",
-            monthday => "*/3",
+            command  => 'flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/updateSpecialPages.log 2>&1',
+            user     => 'apache',
+            monthday => '*/3',
             hour     => 5,
             minute   => 0,
             ensure   => $enabled ?{
@@ -201,13 +201,13 @@ class misc::maintenance::update_special_pages( $enabled = false ) {
     }
 
     file {
-        "/usr/local/bin/update-special-pages":
-            source => "puppet:///files/misc/scripts/update-special-pages",
+        '/usr/local/bin/update-special-pages':
+            source => 'puppet:///files/misc/scripts/update-special-pages',
             owner  => apache,
             group  => wikidev,
             mode   => '0755',
             ensure => present;
-        "/usr/local/bin/update-special-pages-small":
+        '/usr/local/bin/update-special-pages-small':
             ensure => absent;
     }
 }
@@ -270,12 +270,12 @@ class misc::maintenance::wikidata( $enabled = false ) {
     }
 
     file {
-        "/var/log/wikidata":
+        '/var/log/wikidata':
             owner  => mwdeploy,
             group  => mwdeploy,
             mode   => '0664',
             ensure => directory;
-        "/etc/logrotate.d/wikidata":
+        '/etc/logrotate.d/wikidata':
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
@@ -285,7 +285,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
 
 class misc::maintenance::parsercachepurging( $enabled = false ) {
 
-    system::role { "misc::maintenance::parsercachepurging": description => "Misc - Maintenance Server: parser cache purging" }
+    system::role { 'misc::maintenance::parsercachepurging': description => 'Misc - Maintenance Server: parser cache purging' }
 
     cron { 'parser_cache_purging':
         user    => apache,
@@ -305,28 +305,28 @@ class misc::maintenance::parsercachepurging( $enabled = false ) {
 
 class misc::maintenance::geodata( $enabled = false ) {
     file {
-        "/usr/local/bin/update-geodata":
+        '/usr/local/bin/update-geodata':
             ensure  => present,
-            content => template( "misc/update-geodata.erb" ),
+            content => template( 'misc/update-geodata.erb' ),
             mode    => '0555';
-        "/usr/local/bin/clear-killlist":
+        '/usr/local/bin/clear-killlist':
             ensure  => present,
-            content => template( "misc/clear-killlist.erb" ),
+            content => template( 'misc/clear-killlist.erb' ),
             mode    => '0555';
     }
 
     cron {
-        "update-geodata":
-            command => "/usr/local/bin/update-geodata >/dev/null",
+        'update-geodata':
+            command => '/usr/local/bin/update-geodata >/dev/null',
             user    => apache,
-            minute  => "*/30",
+            minute  => '*/30',
             ensure  => $enabled ?{
                 true    => present,
                 false   => absent,
                 default => absent
             };
-        "clear-killlist":
-            command => "/usr/local/bin/clear-killlist >/dev/null",
+        'clear-killlist':
+            command => '/usr/local/bin/clear-killlist >/dev/null',
             user    => apache,
             hour    => 8,
             minute  => 45,
@@ -353,7 +353,7 @@ class misc::maintenance::aft5($enabled=false) {
         }
     }
 
-    cronjob{ ["enwiki", "dewiki", "frwiki"]: cronenabled => $enabled }
+    cronjob{ ['enwiki', 'dewiki', 'frwiki']: cronenabled => $enabled }
 }
 
 class misc::maintenance::mail_exim_aliases( $enabled = false ) {
@@ -469,7 +469,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                         minute => 0,
                 }
 
-                cron { "cron-updatequerypages-lonelypages-s1":
+                cron { 'cron-updatequerypages-lonelypages-s1':
                         command   => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages > /home/mwdeploy/updateSpecialPages/${name}-LonelyPages.log 2>&1",
                         month     => [1, 7],
                         monthday  => 18,
@@ -480,7 +480,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                         };
                 }
 
-                cron { "cron-updatequerypages-mostcategories-s1":
+                cron { 'cron-updatequerypages-mostcategories-s1':
                         command   => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories > /home/mwdeploy/updateSpecialPages/${name}-MostCategories.log 2>&1",
                         month     => [2, 8],
                         monthday  => 19,
@@ -491,7 +491,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                         };
                 }
 
-                cron { "cron-updatequerypages-mostlinkedcategories-s1":
+                cron { 'cron-updatequerypages-mostlinkedcategories-s1':
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedcategories > /home/mwdeploy/updateSpecialPages/${name}-MostLinkedCategories.log 2>&1",
                         month    => [3, 9],
                         monthday => 20,
@@ -502,7 +502,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                         };
                 }
 
-                cron { "cron-updatequerypages-mostlinkedtemplates-s1":
+                cron { 'cron-updatequerypages-mostlinkedtemplates-s1':
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates > /home/mwdeploy/updateSpecialPages/${name}-MostLinkedTemplates.log 2>&1",
                         month    => [4, 10],
                         monthday => 21,
@@ -513,7 +513,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                         };
                 }
 
-                cron { "cron-updatequerypages-uncategorizedcategories-s1":
+                cron { 'cron-updatequerypages-uncategorizedcategories-s1':
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Uncategorizedcategories > /home/mwdeploy/updateSpecialPages/${name}-UncategorizedCategories.log 2>&1",
                         month    => [5, 11],
                         monthday => 22,
@@ -524,7 +524,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                         };
                 }
 
-                cron { "cron-updatequerypages-wantedtemplates-s1":
+                cron { 'cron-updatequerypages-wantedtemplates-s1':
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Wantedtemplates > /home/mwdeploy/updateSpecialPages/${name}-WantedTemplates.log 2>&1",
                         month    => [6, 12],
                         monthday => 23,
