@@ -1,0 +1,2 @@
+# Include a local per-project Debian repo for Labs.
+deb [trusted=yes] file://<%= @dir =>/ /
