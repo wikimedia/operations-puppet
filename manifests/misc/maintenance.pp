@@ -13,7 +13,7 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
             ensure => directory,
             owner  => mwdeploy,
             group  => mwdeploy,
-            mode   => 0664,
+            mode   => '0664',
         }
     }
 
@@ -76,7 +76,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
     # or just one which runs the scripts which iterates over
     # selected set of wikis?
     cron {
-        translationnotifications-metawiki:
+        'translationnotifications-metawiki':
             command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log",
             user    => l10nupdate,  # which user?
             weekday => 1, # Monday
@@ -88,7 +88,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
                 default => absent
             };
 
-        translationnotifications-mediawikiwiki:
+        'translationnotifications-mediawikiwiki':
             command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log",
             user    => l10nupdate, # which user?
             weekday => 1, # Monday
@@ -105,7 +105,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
         "/var/log/translationnotifications":
             owner  => l10nupdate, # user ?
             group  => wikidev,
-            mode   => 0664,
+            mode   => '0664',
             ensure => directory;
         "/etc/logrotate.d/l10nupdate":
             owner  => 'root',
@@ -117,7 +117,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
 
 class misc::maintenance::tor_exit_node( $enabled = false ) {
     cron {
-        tor_exit_node_update:
+        'tor_exit_node_update':
             command => "/usr/local/bin/mwscript extensions/TorBlock/loadExitNodes.php --wiki=aawiki --force > /dev/null",
             user    => apache,
             minute  => '*/20',
@@ -131,7 +131,7 @@ class misc::maintenance::tor_exit_node( $enabled = false ) {
 
 class misc::maintenance::echo_mail_batch( $enabled = false ) {
     cron {
-        echo_mail_batch:
+        'echo_mail_batch':
             command => "/usr/local/bin/foreachwikiindblist /usr/local/apache/common/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php",
             user    => apache,
             minute  => 0,
@@ -150,12 +150,12 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
             source => "puppet:///files/misc/scripts/wikimedia-periodic-update.sh",
             owner  => apache,
             group  => wikidev,
-            mode   => 0755,
+            mode   => '0755',
             ensure => present;
     }
 
     cron {
-        update_flaggedrev_stats:
+        'update_flaggedrev_stats':
             command => "/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null",
             user    => "apache",
             hour    => "*/2",
@@ -170,7 +170,7 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
 
 class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
     cron {
-        cleanup_upload_stash:
+        'cleanup_upload_stash':
             command => "/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php > /dev/null",
             user    => "apache",
             hour    => 1,
@@ -185,7 +185,7 @@ class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
 
 class misc::maintenance::update_special_pages( $enabled = false ) {
     cron {
-        update_special_pages:
+        'update_special_pages':
             command  => "flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/updateSpecialPages.log 2>&1",
             user     => "apache",
             monthday => "*/3",
@@ -196,7 +196,7 @@ class misc::maintenance::update_special_pages( $enabled = false ) {
                 false   => absent,
                 default => absent
             };
-        update_special_pages_small:
+        'update_special_pages_small':
             ensure => absent;
     }
 
@@ -205,7 +205,7 @@ class misc::maintenance::update_special_pages( $enabled = false ) {
             source => "puppet:///files/misc/scripts/update-special-pages",
             owner  => apache,
             group  => wikidev,
-            mode   => 0755,
+            mode   => '0755',
             ensure => present;
         "/usr/local/bin/update-special-pages-small":
             ensure => absent;
@@ -260,12 +260,12 @@ class misc::maintenance::wikidata( $enabled = false ) {
     }
 
     cron {
-        wikibase-poll-test2:
+        'wikibase-poll-test2':
             ensure => absent;
     }
 
     cron {
-        wikibase-poll-huwiki:
+        'wikibase-poll-huwiki':
             ensure => absent;
     }
 
@@ -273,7 +273,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
         "/var/log/wikidata":
             owner  => mwdeploy,
             group  => mwdeploy,
-            mode   => 0664,
+            mode   => '0664',
             ensure => directory;
         "/etc/logrotate.d/wikidata":
             owner  => 'root',
@@ -308,11 +308,11 @@ class misc::maintenance::geodata( $enabled = false ) {
         "/usr/local/bin/update-geodata":
             ensure  => present,
             content => template( "misc/update-geodata.erb" ),
-            mode    => 0555;
+            mode    => '0555';
         "/usr/local/bin/clear-killlist":
             ensure  => present,
             content => template( "misc/clear-killlist.erb" ),
-            mode    => 0555;
+            mode    => '0555';
     }
 
     cron {
@@ -384,7 +384,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 ensure => directory,
                 owner  => mwdeploy,
                 group  => mwdeploy,
-                mode   => 0664,
+                mode   => '0664',
         }
 
         define updatequerypages::cronjob() {
