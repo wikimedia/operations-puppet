@@ -2659,6 +2659,7 @@ node 'tungsten.eqiad.wmnet' {
     include role::txstatsd
     include role::gdash
     include role::mwprof
+    include role::mwprof::reporter
     include role::performance
 }
 
