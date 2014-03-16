@@ -37,8 +37,6 @@ deny    message       = Restricted characters in address
 accept  local_parts   = postmaster
         domains       = +local_domains
 
-require verify        = sender
-
 accept  hosts         = +relay_from_hosts
         control       = submission
 
