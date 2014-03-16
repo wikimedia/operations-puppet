@@ -38,12 +38,11 @@ class role::protoproxy::ssl::common {
 
 # For production
 class role::protoproxy::ssl {
-
     include lvs::configuration
 
-    $enable_ipv6_proxy = true
+    class {'protoproxy::params': enable_ipv6_proxy => true }
 
-    if $enable_ipv6_proxy {
+    if $protoproxy::params::enable_ipv6_proxy {
         $desc = 'SSL and IPv6 proxy'
     } else {
         $desc = 'SSL proxy'
@@ -307,8 +306,6 @@ class role::protoproxy::ssl {
 
 class role::protoproxy::ssl::beta::common {
 
-    $enable_ipv6_proxy = false
-
     include standard,
         certificates::wmf_labs_ca,
         role::protoproxy::ssl::common
@@ -324,6 +321,10 @@ class role::protoproxy::ssl::beta::common {
 # Nginx will listen on the real instance IP, proxy_addresses are not needed.
 #
 class role::protoproxy::ssl::beta {
+
+    # Don't run an ipv6 proxy on beta
+    class {'protoproxy::params': enable_ipv6_proxy => false}
+
 
     system::role { 'role::protoproxy::ssl:beta': description => 'SSL proxy on beta' }
 
