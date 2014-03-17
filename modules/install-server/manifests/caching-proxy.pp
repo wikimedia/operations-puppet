@@ -13,10 +13,19 @@
 #   include install-server::caching-proxy
 
 class install-server::caching-proxy {
+    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
+        $confdir = '/etc/squid3'
+        $package_name = 'squid3'
+        $service_name = 'squid3'
+    } else {
+        $confdir = '/etc/squid'
+        $package_name = 'squid'
+        $service_name = 'squid'
+    }
 
-    file { '/etc/squid/squid.conf':
+    file { "${confdir}/squid.conf":
         ensure  => present,
-        require => Package[squid],
+        require => Package[$package_name],
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -25,21 +34,23 @@ class install-server::caching-proxy {
 
     file { '/etc/logrotate.d/squid':
         ensure  => present,
-        require => Package[squid],
+        require => Package[$package_name],
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
         source  => 'puppet:///modules/install-server/squid-logrotate',
     }
 
-    package { 'squid':
+    package { $package_name:
         ensure => latest,
     }
 
-    service { 'squid':
+    service { $service_name:
         ensure      => running,
-        require     => [ File['/etc/squid/squid.conf'], Package[squid] ],
-        subscribe   => File['/etc/squid/squid.conf'],
+        require     => [
+                        File["${confdir}/squid.conf"],
+                        Package[$package_name]
+                       ],
+        subscribe   => File["${confdir}/squid.conf"],
     }
-
 }
