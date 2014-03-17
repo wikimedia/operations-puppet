@@ -14,7 +14,7 @@ adminsettings=wmf-config/AdminSettings.php
 
 [output]
 incrementalsdir=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/incr
-templatedir=<%= scope.lookupvar('snapshot::dirs::addschangesdir') %>
+templatedir=<%= scope.lookupvar('snapshot::dirs::addschangesdir') -%>/templs
 temp=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/temp
 webroot=http://download.wikimedia.org
 fileperms=0644
