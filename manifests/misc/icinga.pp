@@ -848,7 +848,7 @@ class icinga::monitor::snmp {
   # FIXME: smptt crashes periodically on precise
   cron { 'restart_snmptt':
     ensure => present,
-    command => 'service snmptt restart 2>&1',
+    command => 'service snmptt restart >/dev/null 2>/dev/null',
     user => root,
     hour => [0, 4, 8, 12, 16, 20],
     minute => 7;
