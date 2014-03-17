@@ -203,8 +203,8 @@ if __name__ == '__main__':
             'source': '/data/xmldatadumps/public/other/',
             'dest': 'data/xmldatadumps/public/other/',
             'hosts': {
-                'dataset1001': {'dirs': []},
-                'dataset2': {'primary': True}
+                'dataset2': {'dirs': []},
+                'dataset1001': {'primary': True}
             }
         }
     }
