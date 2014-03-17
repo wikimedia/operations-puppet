@@ -1750,6 +1750,14 @@ host ms-be3004 {
 	fixed-address ms-be3004.esams.wikimedia.org;
 }
 
+# ms-be3004's primary NIC is broken and can't PXE(?). The secondary NIC works
+# for PXE, and the primary NIC works otherwise, so add an entry here as to
+# allow for this strange mode of booting the installer.
+host ms-be3004-B {
+	hardware ethernet 24:B6:FD:F6:1C:3D;
+	fixed-address ms-be3004.esams.wikimedia.org;
+}
+
 host ms-fe1 {
 	hardware ethernet d4:be:d9:af:84:27;
 	fixed-address ms-fe1.pmtpa.wmnet;
