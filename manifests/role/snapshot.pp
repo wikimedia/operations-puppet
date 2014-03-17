@@ -55,10 +55,19 @@ class role::snapshot::cron::primary {
     class { 'role::snapshot::cron::centralauthdump':
         enable => true,
     }
+    class { 'snapshot::dumps::pagetitles':
+        # can't enable yet
+        enable => false,
+        user   => 'datasets',
+    }
 }
 
 class role::snapshot::cron::secondary {
     class { 'role::snapshot::cron::centralauthdump':
         enable => false,
+    }
+    class { 'snapshot::dumps::pagetitles':
+        enable => false,
+        user   => 'datasets',
     }
 }
