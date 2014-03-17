@@ -3,7 +3,7 @@
 
 # == Class: role::logstash
 #
-# Provisions LogStash, Redis, and ElasticSearch.
+# Provisions Logstash, Redis, and ElasticSearch.
 #
 class role::logstash {
     include ::elasticsearch::ganglia
@@ -12,16 +12,25 @@ class role::logstash {
 
     deployment::target { 'elasticsearchplugins': }
 
+    $minimum_master_nodes = $::realm ? {
+        'production' => 2,
+        'labs'       => 1,
+    }
+    $expected_nodes = $::realm ? {
+        'production' => 2,
+        'labs'       => 1,
+    }
+
     class { '::elasticsearch':
         multicast_group      => '224.2.2.5',
         master_eligible      => true,
-        minimum_master_nodes => 2,
-        cluster_name         => "production-logstash-${::site}",
+        minimum_master_nodes => $minimum_master_nodes,
+        cluster_name         => "${::realm}-logstash-${::site}",
         heap_memory          => '5G',
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
         auto_create_index    => true,
-        expected_nodes       => 3,
-        recover_after_nodes  => 2,
+        expected_nodes       => $expected_nodes,
+        recover_after_nodes  => $minimum_master_nodes,
         recover_after_time   => '1m',
     }
 

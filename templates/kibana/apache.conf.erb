@@ -11,10 +11,12 @@
   DocumentRoot <%= @deploy_dir %>/src
 
   RewriteEngine on
+<%- if @require_ssl -%>
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteCond %{REQUEST_URI} !^/status$
   RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+<%- end -%>
 
   <Directory />
     Options FollowSymLinks
@@ -32,15 +34,11 @@
     Allow from all
   </Directory>
 
+<%- if @apache_auth -%>
   <Location />
-    AuthName "<%= @auth_realm %>"
-    AuthType Basic
-    AuthBasicProvider ldap
-    AuthLDAPBindDN <%= @ldap_binddn %>
-    AuthLDAPBindPassword <%= @ldap_bindpass %>
-    AuthLDAPURL "<%= @ldap_authurl %>"
-    Require ldap-group <%= @ldap_group %>
+<%= @apache_auth -%>
   </Location>
+<%- end -%>
 
   Alias /config.js /etc/kibana/config.js
 
