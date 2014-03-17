@@ -243,9 +243,9 @@ class role::deployment::deployment_servers::labs {
     priority		=> 10,
     port		=> 80,
     docroot		=> "/srv/deployment",
-    docroot_owner	=> "${::instanceproject}",
+    docroot_owner	=> 'trebuchet',
     docroot_group	=> "project-${::instanceproject}",
-    docroot_dir_allows  => ["10.4.0.0/16"],
+    docroot_dir_allows  => ['10.0.0.0/8'],
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
   }
