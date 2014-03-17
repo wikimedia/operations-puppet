@@ -40,6 +40,9 @@ if ( ! $wgLogo or $wgLogo == '/wiki/skins/common/images/wiki.png' ) {
 # Give the jobs more memory so they don't get canceled every time they run.
 $wgMaxShellMemory = 1024 * 1024;
 
+# Cache where it's easy to
+$wgMainCacheType = CACHE_ACCEL;
+
 # Offer possibility to require addition things in the respective role
 <% role_requires.each do | req | -%>
 require_once( <%=req%> );
