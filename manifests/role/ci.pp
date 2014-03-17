@@ -152,6 +152,9 @@ class role::ci::slave {
         mode   => '0755',
     }
 
+    # set up & maintain a coredumps directory
+    include contint::coredumps
+
     # Ganglia diskstat plugin is being evaluated on contint production slaves
     # servers merely to evaluate it for the standard role. -- hashar, 23-Oct-2013
     ganglia::plugin::python { 'diskstat': }
