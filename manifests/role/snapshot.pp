@@ -56,8 +56,7 @@ class role::snapshot::cron::primary {
         enable => true,
     }
     class { 'snapshot::dumps::pagetitles':
-        # can't enable yet
-        enable => false,
+        enable => true,
         user   => 'datasets',
     }
     class { 'snapshot::addschanges':
@@ -66,13 +65,11 @@ class role::snapshot::cron::primary {
         user   => 'datasets',
     }
     class { 'snapshot::dumps::dumplists':
-        # can't enable yet
-        enable => false,
+        enable => true,
         user   => 'backup',
     }
     class { 'snapshot::dumps::mediadirlists':
-        # can't enable yet
-        enable => false,
+        enable => true,
         user   => 'datasets',
     }
 }

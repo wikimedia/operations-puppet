@@ -29,18 +29,18 @@ class role::dataset::primary {
         'labs'   => true,
     }
     $grabs = {
-#        'kiwix' => true,
+        'kiwix' => true,
     }
     $uploads = {
-#        'pagecounts' => true,
-#        'searchlogs' => true,
+        'pagecounts' => true,
+        'searchlogs' => true,
     }
     class { 'dataset':
         rsync        => $rsync,
         grabs        => $grabs,
         uploads      => $uploads,
     }
-    class { 'role::dataset::pagecountsraw': enable => false }
+    class { 'role::dataset::pagecountsraw': enable => true }
     include role::dataset::common
 }
 
@@ -53,17 +53,17 @@ class role::dataset::secondary {
         'peers'  => true,
     }
     $uploads = {
-        'pagecounts' => true,
-        'searchlogs' => true,
+#        'pagecounts' => true,
+#        'searchlogs' => true,
     }
     $grabs = {
-        'kiwix' => true,
+#        'kiwix' => true,
     }
     class { 'dataset':
         rsync        => $rsync,
         grabs        => $grabs,
         uploads      => $uploads,
     }
-    class { 'role::dataset::pagecountsraw': enable => true }
+    class { 'role::dataset::pagecountsraw': enable => false }
     include role::dataset::common
 }
