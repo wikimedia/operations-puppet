@@ -3755,6 +3755,8 @@ class admins::jenkins {
 	include accounts::krinkle
 	include accounts::reedy
 	include accounts::mholmquist
+	include accounts::csteipp
+	include accounts::aaron
 }
 
 class admins::dctech {
