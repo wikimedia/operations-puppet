@@ -2472,20 +2472,31 @@ node 'stat1002.eqiad.wmnet' {
     include role::analytics::clients
 }
 
-node /^snapshot([1-3]\.pmtpa|100[124]\.eqiad)\.wmnet/ {
+# pmtpa to go away soon
+node /^snapshot[1-3]\.pmtpa\.wmnet/ {
     $gid= '500'
     include snapshot
 }
-
 node 'snapshot4.pmtpa.wmnet' {
     $gid= '500'
     include snapshot
     include role::snapshot::cron::secondary
 }
 
+node 'snapshot1001.eqiad.wmnet' {
+    $gid= '500'
+    include snapshot
+    class { 'snapshot::dumps': hugewikis => true }
+}
+node /^snapshot100[24]\.eqiad\.wmnet/ {
+    $gid= '500'
+    include snapshot
+    include snapshot::dumps
+}
 node 'snapshot1003.eqiad.wmnet' {
     $gid= '500'
     include snapshot
+    include snapshot::dumps
     include role::snapshot::cron::primary
 }
 
