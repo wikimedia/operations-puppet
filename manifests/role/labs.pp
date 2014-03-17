@@ -34,7 +34,7 @@ class role::labs::instance {
         }
 
         file { '/data/project':
-            ensure => directory, owner => 'root', group => 'root', mode => '0755',
+            ensure => directory,
             require => File['/data', '/etc/idmapd.conf'],
         }
         mount { '/data/project':
@@ -44,7 +44,7 @@ class role::labs::instance {
         }
 
         file { '/data/scratch':
-            ensure => directory, owner => 'root', group => 'root', mode => '0755',
+            ensure => directory,
             require => File['/data', '/etc/idmapd.conf'],
         }
         mount { '/data/scratch':
@@ -54,7 +54,7 @@ class role::labs::instance {
         }
 
         file { '/public/dumps':
-            ensure => directory, owner => 'root', group => 'root', mode => '0755',
+            ensure => directory,
             require => File['/public'],
         }
         mount { '/public/dumps':
@@ -64,7 +64,7 @@ class role::labs::instance {
         }
 
         file { '/public/backups':
-            ensure => directory, owner => 'root', group => 'root', mode => '0755',
+            ensure => directory,
             require => File['/public'],
         }
         mount { '/public/backups':
@@ -75,7 +75,7 @@ class role::labs::instance {
 
 
         file { '/public/keys':
-            ensure => directory, owner => 'root', group => 'root', mode => '0755',
+            ensure => directory,
             require => File['/public'],
         }
         mount { '/public/keys':
