@@ -18,7 +18,7 @@ class dataset::rsync::public($enable=true) {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///dataset/rsync/rsyncd.conf.dumps_to_public',
+        source  => 'puppet:///modules/dataset/rsync/rsyncd.conf.dumps_to_public',
         notify  => Exec['update-rsyncd.conf'],
     }
 }

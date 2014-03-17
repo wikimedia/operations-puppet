@@ -18,7 +18,7 @@ class dataset::rsync::searchlogs($enable=true) {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///dataset/rsync/rsyncd.conf.searchlogs',
+        source  => 'puppet:///modules/dataset/rsync/rsyncd.conf.searchlogs',
         notify  => Exec['update-rsyncd.conf'],
     }
 }
