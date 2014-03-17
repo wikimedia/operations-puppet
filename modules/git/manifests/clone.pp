@@ -63,7 +63,7 @@ define git::clone(
 
     if $mode == undef {
         $file_mode = $shared ? {
-            true    => '2755',
+            true    => '2775',
             default => '0755',
         }
     } elsif $shared and $mode !~ /^277\d/ {
