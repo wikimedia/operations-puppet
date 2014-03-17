@@ -99,6 +99,16 @@ class groups {
 		}
 	}
 
+	class datasets {
+		group { "datasets":
+			name		=> "datasets",
+			gid		=> 10003,
+			alias		=> 10003,
+			ensure		=> present,
+			allowdupe	=> false,
+		}
+	}
+
 	# group file_mover is used by fundraising
 	# to move udp2log fundraising logs around.
 	class file_mover {
@@ -1660,6 +1670,8 @@ class accounts {
 		$username = "datasets"
 		$realname = "datasets"
 		$uid = 10003
+		$gid = 10003
+		include groups::datasets
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
