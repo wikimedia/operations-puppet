@@ -2534,9 +2534,6 @@ node 'terbium.eqiad.wmnet' {
     class { 'misc::maintenance::tor_exit_node':
         enabled => true,
     }
-    class { 'misc::maintenance::aft5':
-        enabled => true,
-    }
     class { 'misc::maintenance::geodata':
         enabled => true,
     }
