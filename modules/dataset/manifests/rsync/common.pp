@@ -7,7 +7,7 @@ class dataset::rsync::common($ensure='present') {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///dataset/rsync/rsyncd.conf.globalopts',
+        source  => 'puppet:///modules/dataset/rsync/rsyncd.conf.globalopts',
         notify  => Exec['update-rsyncd.conf'],
     }
     exec { 'update-rsyncd.conf':

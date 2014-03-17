@@ -19,7 +19,7 @@ class dataset::rsync::peers($enable=true) {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///dataset/rsync/rsyncd.conf.datasets_to_peers',
+        source  => 'puppet:///modules/dataset/rsync/rsyncd.conf.datasets_to_peers',
         notify  => Exec['update-rsyncd.conf'],
     }
 }
