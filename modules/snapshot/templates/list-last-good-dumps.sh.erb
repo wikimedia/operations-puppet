@@ -1,0 +1,9 @@
+#!/bin/bash
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/list-last-good-dumps.sh.erb
+#############################################################
+
+# generate lists of most recent completed successful dumps for rsync (dirs, files)
+python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,4,5 --dirlisting 'rsync-dirlist-last-%s-good.txt' --configfile <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/confs/wikidump.conf.monitor --rsynclists --relpath --outputdir <%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/
+python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,4,5 --filelisting 'rsync-filelist-last-%s-good.txt' --configfile <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/confs/wikidump.conf.monitor --rsynclists --relpath --outputdir <%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/ --toplevel
