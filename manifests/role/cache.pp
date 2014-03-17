@@ -682,7 +682,7 @@ class role::cache {
             wikimedia_networks => $wikimedia_networks,
         }
 
-        $text_enable_geo = ( $::realm == 'labs' )
+        $text_enable_geo = ( $::realm == 'labs' or $::hostname == 'cp1066' )
         varnish::instance { "text-frontend":
             name => "frontend",
             vcl => "text-frontend",
