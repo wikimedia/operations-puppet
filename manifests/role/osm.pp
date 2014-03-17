@@ -8,7 +8,7 @@ class role::osm::master {
     include postgresql::master
     include postgresql::postgis
     include passwords::osm
-    postgres::spatialdb { 'gis': }
+    postgresql::spatialdb { 'gis': }
 
     if $osm_slave_v4 {
         postgresql::user { "replication@${::osm_slave}-v4":
@@ -42,7 +42,7 @@ class role::osm::slave {
     include passwords::osm
     # Note: This is here to illustrate the fact that the slave is expected to
     # have the same dbs as the master.
-    #postgres::spatialdb { 'gis': }
+    #postgresql::spatialdb { 'gis': }
 
     class {'postgresql::slave':
         master_server    => $osm_master,
