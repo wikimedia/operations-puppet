@@ -111,7 +111,7 @@ class deployment::salt_master(
         require => [File[$module_dir]],
     }
 
-  # If pillars or modules change, we need to sync them with the minions
+    # If pillars or modules change, we need to sync them with the minions
     exec { 'refresh_deployment_pillars':
         command     => "/usr/bin/salt -C 'G@deployment_server:true or G@deployment_target:*' saltutil.refresh_pillar",
         subscribe   => [File["${pillar_dir}/deployment/deployment_config.sls"],
@@ -129,7 +129,7 @@ class deployment::salt_master(
     }
 
     exec { 'refresh_deployment_modules':
-        command     => "/usr/bin/salt -G 'deployment_target:*' saltutil.sync_modules",
+        command     => "/usr/bin/salt -C 'G@deployment_server:true or G@deployment_target:*' saltutil.sync_modules",
         subscribe   => [File["${module_dir}/deploy.py"],
                         File["${module_dir}/mwprof.py"],
                         File["${module_dir}/mediawiki.py"]],
@@ -138,7 +138,7 @@ class deployment::salt_master(
     }
 
     exec { 'refresh_deployment_returners':
-        command     => "/usr/bin/salt -G 'deployment_target:*' saltutil.sync_returners",
+        command     => "/usr/bin/salt -C 'G@deployment_server:true or G@deployment_target:*' saltutil.sync_returners",
         subscribe   => [File["${returner_dir}/deploy_redis.py"]],
         refreshonly => true,
         require     => [Package['salt-master']],
