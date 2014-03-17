@@ -84,4 +84,5 @@ sub vcl_deliver {
 	}
 
 	set resp.http.Access-Control-Allow-Origin = "*";
+	set resp.http.Access-Control-Expose-Headers = "Age, Content-Length, Date, X-Cache, X-Varnish";
 }
