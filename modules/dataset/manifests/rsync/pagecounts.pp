@@ -19,7 +19,7 @@ class dataset::rsync::pagecounts($enable=true) {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///dataset/rsync/rsyncd.conf.pagecounts',
+        source  => 'puppet:///modules/dataset/rsync/rsyncd.conf.pagecounts',
         notify  => Exec['update-rsyncd.conf'],
     }
 }
