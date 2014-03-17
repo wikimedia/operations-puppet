@@ -362,7 +362,7 @@ class role::nova::network {
 
 	include role::nova::common
 
-	if ($::site == "pmtpa") {
+	if ($::site == 'pmtpa' and $::realm == 'production') {
 		require role::nova::network::bonding
 	}
 
