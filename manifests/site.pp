@@ -213,11 +213,6 @@ node 'antimony.wikimedia.org' {
     include accounts::qchris # RT 6720
     include role::gitblit
     include role::subversion
-
-    # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon':
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
 }
 
 node 'bast1001.wikimedia.org' {
@@ -2825,11 +2820,6 @@ node 'ytterbium.wikimedia.org' {
 
     install_certificate{ 'gerrit.wikimedia.org':
         ca => 'RapidSSL_CA.pem',
-    }
-
-    # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon':
-        privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
 
