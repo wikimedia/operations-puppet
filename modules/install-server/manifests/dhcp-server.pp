@@ -24,7 +24,7 @@ class install-server::dhcp-server {
     }
     file { $confdir:
         ensure      => directory,
-        require     => Package[$package_service_name],
+        require     => Package[$package_name],
         recurse     => true,
         owner       => 'root',
         group       => 'root',
