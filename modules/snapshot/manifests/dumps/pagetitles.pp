@@ -30,6 +30,21 @@ class snapshot::dumps::pagetitles(
         owner   => $user,
         group   => root,
     }
+    file { "${snapshot::dirs::wikiqueriesdir}/confs":
+        ensure  => 'directory',
+        path    => "${snapshot::dirs::wikiqueriesdir}/confs",
+        mode    => '0755',
+        owner   => $user,
+        group   => root,
+    }
+    file { "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf":
+        ensure  => 'present',
+        path    => "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf",
+        mode    => '0644',
+        owner   => $user,
+        group   => root,
+        content => template('snapshot/wq.conf.erb'),
+    }
 
     cron { 'pagetitles-ns0':
         ensure      => $ensure,

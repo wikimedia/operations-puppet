@@ -1,0 +1,20 @@
+[wiki]
+mediawiki=<%= scope.lookupvar('snapshot::dirs::apachedir') %>
+allwikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/all.dblist
+privatewikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/private.dblist
+closedwikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/closed.dblist
+adminsettings=wmf-config/AdminSettings.php
+
+[output]
+wikiqueriesdir=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/pagetitles
+temp=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/temp
+fileperms=0644
+
+[database]
+
+[tools]
+php=/usr/bin/php
+mysql=/usr/bin/mysql
+gzip=/bin/gzip
+bzip2=/bin/bzip2
+multiversion=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/multiversion/MWScript.php
