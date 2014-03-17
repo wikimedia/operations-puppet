@@ -87,21 +87,21 @@ class snapshot::dumps::configs(
             owner  => 'root',
             group  => 'root',
         }
-        snapshot::dumps::wikiconf { 'wikidumps.conf':
+        snapshot::dumps::wikiconf { 'wikidump.conf':
             configtype => 'smallwikis',
             config     => $config,
         }
-        snapshot::dumps::wikiconf { 'wikidumps.conf.bigwikis':
+        snapshot::dumps::wikiconf { 'wikidump.conf.bigwikis':
             configtype => 'bigwikis',
             config     => $config,
         }
         if ($hugewikis_enable) {
-            snapshot::dumps::wikiconf { 'wikidumps.conf.hugewikis':
+            snapshot::dumps::wikiconf { 'wikidump.conf.hugewikis':
                 configtype => 'hugewikis',
                 config     => $config,
             }
         }
-        snapshot::dumps::wikiconf { 'wikidumps.conf.monitor':
+        snapshot::dumps::wikiconf { 'wikidump.conf.monitor':
             configtype => 'monitor',
             config     => $config,
         }
