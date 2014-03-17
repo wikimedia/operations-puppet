@@ -60,6 +60,11 @@ class role::snapshot::cron::primary {
         enable => false,
         user   => 'datasets',
     }
+    class { 'snapshot::addschanges':
+        # can't enable yet
+        enable => false,
+        user   => 'datasets',
+    }
 }
 
 class role::snapshot::cron::secondary {
@@ -67,6 +72,10 @@ class role::snapshot::cron::secondary {
         enable => false,
     }
     class { 'snapshot::dumps::pagetitles':
+        enable => false,
+        user   => 'datasets',
+    }
+    class { 'snapshot::addschanges':
         enable => false,
         user   => 'datasets',
     }

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Incremental dumps</title>
+        <style type="text/css">
+                html, body {
+                        background-color: #ffffff;
+                        color: black;
+                }
+                .siteinfo {
+                        text-align: center;
+                }
+                li {
+                        background-color: #ffffff;
+                        list-style-type: none;
+                }
+                li li {
+                        background-color: white;
+                }
+                li ul {
+                        margin-top: 4px;
+                        margin-bottom: 8px;
+                }
+                .detail {
+                        font-weight: normal;
+                        font-style: italic;
+                }
+                .updates {
+                        font: monospace;
+                        font-size: smaller;
+                }
+                .status {
+                        font-weight: bold;
+                        padding-left: 1em;
+                        padding-right: 1em;
+                }
+                .in-progress {
+                        font-weight: bold;
+                }
+                .failed {
+                        color: Maroon;
+                        font-weight: bold;
+                }
+                .waiting {
+                        color: Silver; /* Gray ? */
+                }
+                .progress {
+                        font-family: monospace;
+                        font-size: 80%%;
+                        margin-left: .5in;
+                }
+        </style>
+</head>
+
+<body>
+        <h1>Adds/changes dumps</h1>
+
+        <p class="siteinfo">
+                This is the Wikimedia adds/changes dump service.
+                Please read the <a href='legal.html'>copyrights</a> information.
+                See <a href="http://meta.wikimedia.org/wiki/Data_dumps">Meta:Data dumps</a>
+                for documentation on the provided data formats.
+        </p>
+        <p>
+          <strong>Here's the big fat disclaimer.</strong>
+        </p>
+        <p>
+          <em>This service is experimental.</em>  At any time it may not be working, for a day, a week or a month.
+          It is not intended to replace the full XML dumps.  We don't expect users to be able to construct
+          full dumps of a given date from the incrementals and an older dump.  We don't guarantee that the data
+          included in these dumps is complete, or correct, or won't break your Xbox.  In short: don't blame us (but
+          do get on the email list and send mail: see <a href="https://lists.wikimedia.org/mailman/listinfo/xmldatadumps-l">xmldatadumps-l</a>).
+        </p>
+        <p>
+          The data provided in these files is ''partial data''.  To be precise:
+          <ul>
+            <li>* Revisions included in these dumps are not up to the minute.  We write out those that were
+            created up to 12 hours ago; this gives local editing communities time to delete revisions
+            with sensitive information, vulgarities and other vandalism, etc.</li>
+            <li>* New pages entered for the first time during the time interval are included</li>
+            <li>* Revisions of undeleted pages will be included only if new revision IDs need to be assigned to
+            the restored revisions.  For most revisions this will not be the case.  </li>
+            <li>* Information about moves and deletes are not included.</li>
+            <li>* Imported revisions will be included if they were imported during the time interval, since they
+            will have new revisions IDs.</li>
+            <li>* As with all dumps, hidden revisions or more generally revisions not readable by the general public
+            are not provided.</li>
+            <li>* When a wiki is closed, it no longer shows up in this list.</li>
+          </ul>
+        </p>
+        <p>
+          What is in these files:
+        </p>
+        <p>
+          The stubs file consists of the metadata for revision texts of each page, where the revision texts were
+          added within the time interval.  These look just like the history stubs files you would find on our XML data dumps
+          page, having the exact same format but only new revisions since the last adds/changes dump. This means you get
+          metadata for articles, user pages, discussion pages, etc.  If you want articles only, you will need to write a
+          filter to grab just those entries.
+        </p>
+        <p>
+          The revs file consists of the metadata plus the wikitext for each new revision since the last adds/changes dump.
+          This is in the same format as the pages-meta-history files you would find on our XML data dumps page.  This means
+          you get articles, user pages, discussion pages, etc.  If you want articles only, you will need to write a
+          filter to grab just those entries.
+        </p>
+        <p>
+          The md5sums.txt file contains the md5 hash of the stubs file and the revs file, so that downloaders can verify
+          the integrity of the files after download.
+        </p>
+        <p>
+          The file maxrevid.txt contains the largest revision ID on the project from 12 hours before the start of the
+          run or 12 hours before midnight on dates run after the fact.
+        </p>
+        <p>
+          The file status.txt, if it exists, will contain the value "done" in cases where the run is complete and was
+          successful.
+        </p>
+        <h2>Adds/changes dump listing (links to latest complete run)</h2>
+        <ul>
+                %(items)s
+        </ul>
+        <hr>
+          <p>
+            Return to <a href="/other/">our other datasets</a>, the
+            <a href="/backup-index.html">XML data dumps</a>, or
+            <a href="/index.html">the main index</a>.
+          <p/>
+</body>
+</html>

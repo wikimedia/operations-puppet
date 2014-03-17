@@ -1,0 +1,37 @@
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/addschanges.conf.erb
+#############################################################
+
+# configuration file for adds/changes dumps
+
+[wiki]
+mediawiki=<%= scope.lookupvar('snapshot::dirs::apachedir') %>
+allwikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/all.dblist
+privatewikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/private.dblist
+closedwikislist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/closed.dblist
+adminsettings=wmf-config/AdminSettings.php
+
+[output]
+incrementalsdir=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/incr
+templatedir=<%= scope.lookupvar('snapshot::dirs::addschangesdir') %>
+temp=<%= scope.lookupvar('snapshot::dirs::datadir') -%>/temp
+webroot=http://download.wikimedia.org
+fileperms=0644
+# revisions must be at least this much older than time of current run
+# (or from 23:59 on specified date) to be dumped
+delay=43200
+
+[database]
+
+[tools]
+php=/usr/bin/php
+mysql=/usr/bin/mysql
+gzip=/bin/gzip
+bzip2=/bin/bzip2
+checkforbz2footer=/usr/local/bin/checkforbz2footer
+writeuptopageid=/usr/local/bin/writeuptopageid
+multiversion=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/multiversion/MWScript.php
+
+[cleanup]
+keep=35
