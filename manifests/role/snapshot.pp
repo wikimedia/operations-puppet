@@ -9,6 +9,7 @@ class role::snapshot::common {
 
 class role::snapshot::cron::centralauthdump($enable=true) {
     include role::snapshot::common
+    include snapshot::dirs
 
     file { '/usr/local/bin/dumpcentralauth.sh':
         mode    => '0755',
@@ -39,7 +40,7 @@ class role::snapshot::cron::centralauthdump($enable=true) {
 
     cron { 'centralauth-dump':
         ensure      => $ensure,
-        command     => "/usr/local/bin/dumpcentralauth.sh --site ${dbsite} --config /backups/dumps/production/confs/wikidump.conf",
+        command     => "/usr/local/bin/dumpcentralauth.sh --site ${dbsite} --config ${snapshot::dirs::dumpsdir}/confs/wikidump.conf",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => datasets,
         minute      => '15',
