@@ -70,6 +70,11 @@ class role::snapshot::cron::primary {
         enable => false,
         user   => 'backup',
     }
+    class { 'snapshot::dumps::mediadirlists':
+        # can't enable yet
+        enable => false,
+        user   => 'datasets',
+    }
 }
 
 class role::snapshot::cron::secondary {
@@ -87,5 +92,9 @@ class role::snapshot::cron::secondary {
     class { 'snapshot::dumps::dumplists':
         enable => false,
         user   => 'backup',
+    }
+    class { 'snapshot::dumps::mediadirlists':
+        enable => false,
+        user   => 'datasets',
     }
 }
