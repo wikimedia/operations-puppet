@@ -610,7 +610,7 @@ node /^db(6[012456]|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(34|37|43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
+node /^db10(43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
     if $::hostname =~ /^db10(56)/ {
         $ganglia_aggregator = true
         include mha::manager
@@ -644,7 +644,7 @@ node /^db10(04|11|20|40|42|59)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
+node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
     if $::hostname =~ /^db1021/ {
         $ganglia_aggregator = true
     }
@@ -798,7 +798,7 @@ node 'db1014.eqiad.wmnet' {
 }
 
 # ad-hoc mariadb test box
-node 'db1044.eqiad.wmnet' {
+node /^db10(34|44)\.eqiad\.wmnet/ {
     $cluster = 'misc'
     include standard
     include mysql_wmf
