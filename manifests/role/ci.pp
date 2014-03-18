@@ -161,6 +161,13 @@ class role::ci::slave {
 
 # Common configuration to be applied on any labs Jenkins slave
 class role::ci::slave::labs::common {
+
+    if $::site == 'eqiad' {
+        # Does not come with /dev/vdb, we need to mount it using lvm
+        require labs_lvm
+        labs_lvm::volume { 'second-local-disk': mountat => '/mnt' }
+    }
+
     # Home dir for Jenkins agent
     #
     # We will use neither /var/lib (partition too small) nor /home since it is
