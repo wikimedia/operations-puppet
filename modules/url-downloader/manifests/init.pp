@@ -7,7 +7,7 @@ class url-downloader {
         owner   => 'root',
         group   => 'root',
         path    => '/etc/squid/squid.conf',
-        source  => 'puppet:///url-downloader/copy-by-url-proxy.conf',
+        source  => 'puppet:///modules/url-downloader/copy-by-url-proxy.conf',
     }
 
     # pin package to the default, Ubuntu version, instead of our own
