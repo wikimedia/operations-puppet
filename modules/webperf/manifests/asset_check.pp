@@ -13,8 +13,8 @@
 #   Write stats to this StatsD instance. Default: 8125.
 #
 class webperf::asset_check(
-    statsd_host = '127.0.0.1',
-    statsd_port = 8125,
+    $statsd_host = '127.0.0.1',
+    $statsd_port = 8125,
 ) {
     include ::webperf
 
