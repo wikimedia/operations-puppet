@@ -11,7 +11,7 @@ class role::dataset::common {
 
 }
 
-class role::dataset::pagecountsraw(enable=true) {
+class role::dataset::pagecountsraw($enable=true) {
     class { '::dataset::cron::pagecountsraw':
         enable => $enable,
         user   => 'datasets',
