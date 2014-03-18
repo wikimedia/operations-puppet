@@ -3824,5 +3824,13 @@ class admins::parsoid {
 	sudo_user { ['catrope', 'gwicke']:
 		privileges => ['ALL = (parsoid) NOPASSWD: ALL'],
 	}
-
+    # RT 6961
+	sudo_group { 'wikidev':
+		privileges => [
+                        'ALL = (root) NOPASSWD:service parsoid stop',
+                        'ALL = (root) NOPASSWD:service parsoid start',
+                        'ALL = (root) NOPASSWD:service parsoid restart',
+                        'ALL = (root) NOPASSWD:service parsoid reload',
+                      ],
+	}
 }

@@ -99,7 +99,6 @@ class role::parsoid::production {
        require => File['/etc/logrotate.d/parsoid'],
     }
 
-    # Still using the old init script for now
     service { 'parsoid':
         ensure     => running,
         hasstatus  => true,
