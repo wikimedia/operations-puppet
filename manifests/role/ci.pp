@@ -8,6 +8,7 @@
 #
 # CI test server as per RT #1204
 class role::ci::master {
+
     system::role { 'role::ci::master': description => 'CI Jenkins master' }
 
     # We require the CI website to be on the same box as the master
@@ -16,22 +17,22 @@ class role::ci::master {
 
     # Load the Jenkins module, that setup a Jenkins master
     include ::jenkins,
-      contint::proxy_jenkins
+        contint::proxy_jenkins
 
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins user':
-      homedir => '/var/lib/jenkins',
-      settings => {
-        'user' => {
-          'name'  => 'Wikimedia Jenkins Bot',
-          'email' => 'jenkins@gallium.wikimedia.org',
-        },  # end of [user] section
-        'core' => {
-          # bug 56717: avoid eating all RAM when repacking
-          'packedGitLimit' => '2G',
-        },  # end of [core] section
-      },  # end of settings
-      require => User['jenkins'],
+        homedir => '/var/lib/jenkins',
+        settings => {
+            'user' => {
+                'name'  => 'Wikimedia Jenkins Bot',
+                'email' => 'jenkins@gallium.wikimedia.org',
+            },  # end of [user] section
+            'core' => {
+                # bug 56717: avoid eating all RAM when repacking
+                'packedGitLimit' => '2G',
+            },  # end of [core] section
+        },  # end of settings
+        require => User['jenkins'],
     }
 
     # As of October 2013, the slave scripts are installed with
@@ -104,6 +105,7 @@ class role::ci::master {
 # You will need to setup the Gerrit replication on the Gerrit server by
 # amending the role::gerrit::production class
 class role::ci::slave {
+
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages,
@@ -124,14 +126,14 @@ class role::ci::slave {
 
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins-slave user':
-      homedir => '/var/lib/jenkins-slave',
-      settings => {
-        'user' => {
-          'name'  => 'Wikimedia Jenkins Bot',
-          'email' => "jenkins-slave@${::fqdn}",
-        },  # end of [user] section
-      },  # end of settings
-      require => User['jenkins-slave'],
+        homedir => '/var/lib/jenkins-slave',
+        settings => {
+            'user' => {
+                'name'  => 'Wikimedia Jenkins Bot',
+                'email' => "jenkins-slave@${::fqdn}",
+            },  # end of [user] section
+        },  # end of settings
+        require => User['jenkins-slave'],
     }
 
     # Maven require a webproxy on production slaves
@@ -159,159 +161,168 @@ class role::ci::slave {
 
 # Common configuration to be applied on any labs Jenkins slave
 class role::ci::slave::labs::common {
-  # Home dir for Jenkins agent
-  #
-  # We will use neither /var/lib (partition too small) nor /home since it is
-  # GlusterFS.
-  #
-  # Instead, create a work dir on /dev/vdb which has all the instance disk
-  # space and is usually mounted on /mnt.
-  file { '/mnt/jenkins-workspace':
-    ensure => directory,
-    owner  => 'jenkins-deploy',
-    group  => 'wikidev',  # useless, but we need a group
-    mode   => '0775',
-  }
 
-  # Create a homedir for `jenkins-deploy` so it does not ends up being created
-  # on /home which is using GlusterFS on the integration project.  The user is
-  # only LDAP and is not created by puppet
-  # bug 61144
-  file { '/mnt/home':
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-  }
+    if $::site == 'eqiad' {
+        # Does not come with /dev/vdb, we need to mount it using lvm
+        require labs_lvm
+        labs_lvm::volume { 'second-local-disk': mountat => '/mnt' }
+    }
 
-  file { '/mnt/home/jenkins-deploy':
-      ensure => directory,
-      owner  => 'jenkins-deploy',
-      group  => 'wikidev',
-      mode   => '0775',
-  }
+    # Home dir for Jenkins agent
+    #
+    # We will use neither /var/lib (partition too small) nor /home since it is
+    # GlusterFS.
+    #
+    # Instead, create a work dir on /dev/vdb which has all the instance disk
+    # space and is usually mounted on /mnt.
+    file { '/mnt/jenkins-workspace':
+        ensure => directory,
+        owner  => 'jenkins-deploy',
+        group  => 'wikidev',  # useless, but we need a group
+        mode   => '0775',
+    }
 
-  file { '/mnt/home/jenkins-deploy/.pip':
-      ensure => directory,
-      owner  => 'jenkins-deploy',
-      group  => 'wikidev',
-      mode   => '0775',
-  }
-  file { '/mnt/home/jenkins-deploy/.pip/pip.conf':
-      ensure => present,
-      owner  => 'jenkins-deploy',
-      group  => 'wikidev',
-      mode   => '0775',
-      source => 'puppet:///modules/contint/pip-labs-slaves.conf',
-  }
+    # Create a homedir for `jenkins-deploy` so it does not ends up being created
+    # on /home which is using GlusterFS on the integration project.  The user is
+    # only LDAP and is not created by puppet
+    # bug 61144
+    file { '/mnt/home':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 
-  git::userconfig { '.gitconfig for jenkins-deploy user':
-      homedir  => '/mnt/home/jenkins-deploy',
-      settings => {
-        'user' => {
-          'name'  => 'Wikimedia Jenkins Deploy',
-          'email' => "jenkins-deploy@${::instancename}.${::site}.wmflabs",
-        },  # end of [user] section
-      },  # end of settings
-      require => File['/mnt/home/jenkins-deploy'],
-  }
+    file { '/mnt/home/jenkins-deploy':
+        ensure => directory,
+        owner  => 'jenkins-deploy',
+        group  => 'wikidev',
+        mode   => '0775',
+    }
 
-  # The slaves on labs use the `jenkins-deploy` user which is already
-  # configured in labs LDAP.  Thus, we only need to install the dependencies
-  # needed by the slave agent.
-  include jenkins::slave::requisites
+    file { '/mnt/home/jenkins-deploy/.pip':
+        ensure => directory,
+        owner  => 'jenkins-deploy',
+        group  => 'wikidev',
+        mode   => '0775',
+    }
+    file { '/mnt/home/jenkins-deploy/.pip/pip.conf':
+        ensure => present,
+        owner  => 'jenkins-deploy',
+        group  => 'wikidev',
+        mode   => '0775',
+        source => 'puppet:///modules/contint/pip-labs-slaves.conf',
+    }
+
+    git::userconfig { '.gitconfig for jenkins-deploy user':
+        homedir  => '/mnt/home/jenkins-deploy',
+        settings => {
+            'user' => {
+                'name'  => 'Wikimedia Jenkins Deploy',
+                'email' => "jenkins-deploy@${::instancename}.${::site}.wmflabs",
+            },  # end of [user] section
+        },  # end of settings
+        require => File['/mnt/home/jenkins-deploy'],
+    }
+
+    # The slaves on labs use the `jenkins-deploy` user which is already
+    # configured in labs LDAP.  Thus, we only need to install the dependencies
+    # needed by the slave agent.
+    include jenkins::slave::requisites
 }
 
 class role::ci::slave::browsertests {
 
-  system::role { 'role::ci::slave::browsertests':
-    description => 'CI Jenkins slave for browser tests' }
+    system::role { 'role::ci::slave::browsertests':
+        description => 'CI Jenkins slave for browser tests' }
 
-  if $::realm != 'labs' {
-    fail( 'role::ci::slave::browsertests must only be applied in labs' )
-  }
+    if $::realm != 'labs' {
+        fail( 'role::ci::slave::browsertests must only be applied in labs' )
+    }
 
-  include role::ci::slave::labs::common
+    include role::ci::slave::labs::common
 
-  /**
-   * FIXME breaks puppet because jenkins-deploy is not known
-   * by puppet since it is provided via LDAP.
-   */
-  /**
-  contint::tmpfs { 'tmpfs for jenkins CI slave':
-      user        => 'jenkins-deploy',
-      group       => 'wikidev',
-      # Jobs expect the tmpfs to be in $HOME/tmpfs
-      mount_point => '/home/jenkins-deploy/tmpfs',
-      size        => '128M',
-  }
-  **/
+    /**
+    * FIXME breaks puppet because jenkins-deploy is not known
+    * by puppet since it is provided via LDAP.
+    */
+    /**
+    contint::tmpfs { 'tmpfs for jenkins CI slave':
+        user        => 'jenkins-deploy',
+        group       => 'wikidev',
+        # Jobs expect the tmpfs to be in $HOME/tmpfs
+        mount_point => '/home/jenkins-deploy/tmpfs',
+        size        => '128M',
+    }
+    **/
 
-  # We are in labs context, so use /mnt (== /dev/vdb)
-  # Never EVER think about using GlusterFS.
-  file { '/mnt/localhost-browsertests':
-      ensure => directory,
-      owner  => 'jenkins-deploy',
-      group  => 'wikidev',
-      mode   => '0775',
-  }
+    # We are in labs context, so use /mnt (== /dev/vdb)
+    # Never EVER think about using GlusterFS.
+    file { '/mnt/localhost-browsertests':
+        ensure => directory,
+        owner  => 'jenkins-deploy',
+        group  => 'wikidev',
+        mode   => '0775',
+    }
 
-  class { 'contint::browsertests':
-    docroot => '/mnt/localhost-browsertests',
-    require => File['/mnt/localhost-browsertests'],
-  }
+    class { 'contint::browsertests':
+        docroot => '/mnt/localhost-browsertests',
+        require => File['/mnt/localhost-browsertests'],
+    }
 
-  # For CirrusSearch testing:
-  file { '/mnt/elasticsearch':
-    ensure => 'directory',
-  }
-  file { '/var/lib/elasticsearch':
-    ensure  => 'link',
-    require => File['/mnt/elasticsearch'],
-    target  => '/mnt/elasticsearch',
-  }
-  class { '::elasticsearch':
-    cluster_name => 'jenkins',
-    heap_memory  => '1G', #We have small data in test
-    require      => File['/var/lib/elasticsearch'],
-    # We don't have reliable multicast in labs but we don't mind because we
-    # only use a single instance
+    # For CirrusSearch testing:
+    file { '/mnt/elasticsearch':
+        ensure => 'directory',
+    }
+    file { '/var/lib/elasticsearch':
+        ensure  => 'link',
+        require => File['/mnt/elasticsearch'],
+        target  => '/mnt/elasticsearch',
+    }
+    class { '::elasticsearch':
+        cluster_name => 'jenkins',
+        heap_memory  => '1G', #We have small data in test
+        require      => File['/var/lib/elasticsearch'],
+        # We don't have reliable multicast in labs but we don't mind because we
+        # only use a single instance
 
-    # Right now we're not testing with any of the plugins we plan to install
-    # later.  We'll cross that bridge when we come to it.
-  }
+        # Right now we're not testing with any of the plugins we plan to install
+        # later.  We'll cross that bridge when we come to it.
+    }
 
-  # For CirrusSearch testing:
-  class { '::redis':
-    maxmemory                 => '128mb',
-    persist                   => 'aof',
-    redis_replication         => undef,
-    password                  => 'notsecure',
-    dir                       => '/mnt/redis',
-    auto_aof_rewrite_min_size => '32mb',
-  }
+    # For CirrusSearch testing:
+    class { '::redis':
+        maxmemory                 => '128mb',
+        persist                   => 'aof',
+        redis_replication         => undef,
+        password                  => 'notsecure',
+        dir                       => '/mnt/redis',
+        auto_aof_rewrite_min_size => '32mb',
+    }
+
 }
 
 class role::ci::slave::labs {
 
-  system::role { 'role::ci::slave::labs':
-    description => 'CI Jenkins slave on labs' }
+    system::role { 'role::ci::slave::labs':
+        description => 'CI Jenkins slave on labs' }
 
-  if $::realm != 'labs' {
-    fail("role::ci::slave::labs must only be applied in labs")
-  }
+    if $::realm != 'labs' {
+        fail("role::ci::slave::labs must only be applied in labs")
+    }
 
-  include role::ci::slave::labs::common,
-    # git-deploy replacement on labs
-    contint::slave-scripts,
-    # Include package unsafe for production
-    contint::packages::labs
+    include role::ci::slave::labs::common,
+        # git-deploy replacement on labs
+        contint::slave-scripts,
+        # Include package unsafe for production
+        contint::packages::labs
 
 }
 
 # The testswarm installation
 # Although not used as of July 2013, we will resurect this one day.
 class role::ci::testswarm {
+
     system::role { 'role::ci::testswarm': description => 'CI Testswarm' }
 
     include contint::testswarm
@@ -324,11 +335,12 @@ class role::ci::testswarm {
 # http://integration.mediawiki.org/
 # http://integration.wikimedia.org/
 class role::ci::website {
-  system::role { 'role::ci::website': description => 'CI Websites' }
 
-  include role::zuul::configuration
+    system::role { 'role::ci::website': description => 'CI Websites' }
 
-  class { 'contint::website':
-    zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
-  }
+    include role::zuul::configuration
+
+    class { 'contint::website':
+        zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
+    }
 }
