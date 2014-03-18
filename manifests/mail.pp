@@ -104,19 +104,6 @@ class exim {
 		include exim::service
 	}
 
-	class rt {
-		class { exim::roled:
-         		local_domains => [ "+system_domains", "+rt_domains" ],
-         		enable_mail_relay => "false",
-			enable_external_mail => "true",
-			smart_route_list => [ "mchenry.wikimedia.org", "lists.wikimedia.org" ],
-         		enable_mailman => "false",
-         		rt_relay => "true",
-         		enable_mail_submission => "false",
-         		enable_spamassassin => "false"
- 		}
-	}
-
 	class smtp {
 		include passwords::exim
 		$otrs_mysql_password = $passwords::exim::otrs_mysql_password
