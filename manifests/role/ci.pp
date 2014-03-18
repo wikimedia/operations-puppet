@@ -166,6 +166,17 @@ class role::ci::slave::labs::common {
         # Does not come with /dev/vdb, we need to mount it using lvm
         require labs_lvm
         labs_lvm::volume { 'second-local-disk': mountat => '/mnt' }
+        # Will make sure /mnt is mounted before populating file there or they
+        # might end up being being created locally and hidden by the mount.
+        $slash_mnt_require = Mount['/mnt']
+    } else {
+        file { '/mnt':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0775',
+        }
+        $slash_mnt_require = File['/mnt']
     }
 
     # Home dir for Jenkins agent
@@ -176,10 +187,11 @@ class role::ci::slave::labs::common {
     # Instead, create a work dir on /dev/vdb which has all the instance disk
     # space and is usually mounted on /mnt.
     file { '/mnt/jenkins-workspace':
-        ensure => directory,
-        owner  => 'jenkins-deploy',
-        group  => 'wikidev',  # useless, but we need a group
-        mode   => '0775',
+        ensure  => directory,
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',  # useless, but we need a group
+        mode    => '0775',
+        require => $slash_mnt_require,
     }
 
     # Create a homedir for `jenkins-deploy` so it does not ends up being created
@@ -191,6 +203,7 @@ class role::ci::slave::labs::common {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+        require => $slash_mnt_require,
     }
 
     file { '/mnt/home/jenkins-deploy':
