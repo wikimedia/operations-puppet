@@ -358,17 +358,17 @@ log {
 
 # Remote log messages
 destination df_remote {
-	file("/home/wikipedia/syslog/syslog" group(500));
+	file("<%= basepath %>/syslog" group(500));
  };
 
 # Apache messages
 destination df_remote_apache {
-	file("/home/wikipedia/syslog/apache.log" group(500));
+	file("<%= basepath %>/apache.log" group(500));
 };
 
 # OpenSwift messages
 destination df_swift {
-	file("/home/wikipedia/syslog/swift" group(500));
+	file("<%= basepath %>/swift" group(500));
 };
 
 # Wikimedia filters
