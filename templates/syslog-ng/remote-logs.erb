@@ -3,10 +3,10 @@
 ### puppet:///templates/syslog-ng/remote-logs.erb
 #####################################################################
 
-/home/wikipedia/syslog/* {
+<%= basepath %>/* {
 	rotate 7
 	dateext
-	olddir /home/wikipedia/syslog/archive
+	olddir <%= basepath %>/archive
 	daily
 	compress
 	missingok
