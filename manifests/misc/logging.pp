@@ -12,7 +12,7 @@ class misc::syslog-server($config="nfs") {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => "puppet:///files/syslog-ng/syslog-ng.conf.${config}",
+        content => template("syslog-ng/syslog-ng.conf.${config}.erb"),
         require => Package['syslog-ng'],
     }
 
@@ -22,7 +22,7 @@ class misc::syslog-server($config="nfs") {
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            source  => 'puppet:///files/syslog-ng/remote-logs',
+            content => template('syslog-ng/remote-logs.erb'),
         }
         file { '/home/wikipedia/syslog':
             owner => 'root',
