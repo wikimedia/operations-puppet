@@ -7,8 +7,6 @@
 # available and validation fails, aborts commit.
 #
 # Author: Ori Livneh
-
-
 if ! $(hash puppet &>/dev/null) ; then
     echo "WARNING: puppet not found; skipping syntax checks" >&2
     exit 0
