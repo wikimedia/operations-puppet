@@ -14,6 +14,12 @@
 #  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 #  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
+##
+## THIS FILE IS MANAGED BY PUPPET
+##
+## Source: modules/toollabs/files/lighttpd-starter
+## From:   modules/toollabs/manifests/webnode.pp
+##
 
 tool="$1"
 port="$2"
@@ -26,6 +32,10 @@ if [ "$(getent group $user | cut -d : -f 1)" != "$user" ]; then
 fi
 spool="/var/run/lighttpd"
 runbase="$spool/$tool"
+workers=5
+if [ -r "/data/project/.system/config/$tool.workers" ]; then
+  workers=$(cat "/data/project/.system/config/$tool.workers")
+fi
 
 if [ "$home" = "" -o ! -d "$home/public_html" ]; then
   echo "$1 does not have a public_html" >&2
@@ -57,7 +67,7 @@ server.breakagelog = "$home/error.log"
 server.follow-symlink = "enable"
 server.max-connections = 20
 server.max-keep-alive-idle = 60
-server.max-worker = 5
+server.max-worker = $workers
 server.stat-cache-engine = "fam"
 ssl.engine = "disable"
 
