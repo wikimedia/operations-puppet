@@ -1,6 +1,17 @@
 # misc/logging.pp
 # any logging hosts
-class misc::syslog-server($config='nfs') {
+
+# == Class misc::syslog-server
+#
+# Setup syslog-ng as a cluster wide syslog receiver.
+#
+# == Parameters:
+#
+# $config - Type of configuration to apply (nfs, network). Default 'nfs'
+# $basepath - Path where to write logs to, without trailing slash.
+#             Default: '/home/wikipedia/syslog'
+#
+class misc::syslog-server($config='nfs', $basepath='/home/wikipedia/syslog') {
 
     system::role { 'misc::syslog-server': description => "central syslog server (${config})" }
 
@@ -24,10 +35,17 @@ class misc::syslog-server($config='nfs') {
             mode    => '0444',
             content => template('syslog-ng/remote-logs.erb'),
         }
-        file { '/home/wikipedia/syslog':
-            owner => 'root',
-            group => 'root',
-            mode  => '0755',
+
+        exec { 'create_syslog_basepath':
+            command => "/bin/mkdir -p ${basepath}",
+            creates => $basepath,
+        }
+        file { $basepath:
+            ensure  => directory,
+            require => Exec['create_syslog_basepath'],
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
         }
     }
 
