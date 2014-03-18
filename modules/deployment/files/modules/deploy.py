@@ -576,6 +576,7 @@ def checkout(repo, reset=False):
     '''
     config = get_config(repo)
     depstats = []
+    status = -1
 
     # Notify the deployment system we started
     _check_in('deploy.checkout', repo)
