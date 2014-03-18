@@ -356,8 +356,8 @@ class misc::deployment::vars ($system = 'scap') {
 	if $::realm == 'production' {
 		$mw_rsync_host = 'tin.eqiad.wmnet'
 
-		$mw_carbon_host = 'statsd.eqiad.wmnet'
-		$mw_carbon_port = 2003
+		$mw_statsd_host = 'statsd.eqiad.wmnet'
+		$mw_statsd_port = 8125
 
 		file { $mw_common_source:
 			ensure  => directory,
@@ -369,8 +369,8 @@ class misc::deployment::vars ($system = 'scap') {
 	} else {
 		$mw_rsync_host = "deployment-bastion.${::site}.wmflabs"
 
-		$mw_carbon_host = "deployment-bastion.${::site}.wmflabs"
-		$mw_carbon_port = 2003
+		$mw_statsd_host = "deployment-bastion.${::site}.wmflabs"
+		$mw_statsd_port = 8125
 
         # The Apache directories must belong to the mwdeploy user known on
         # deployment-bastion.{eqiad,pmtpa}.wmflabs. They are the instances used
