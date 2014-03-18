@@ -90,11 +90,11 @@ class role::salt::masters::labs::project_master {
 
 class role::salt::minions {
 
-	if ($realm == "labs") {
+	if ($::realm == "labs") {
 		if ( $::salt_master_override != undef ) {
 			$salt_master = $::salt_master_override
 		} else {
-			$salt_master = $site ? {
+			$salt_master = $::site ? {
 				"pmtpa" => ["virt0.wikimedia.org", "virt1000.wikimedia.org"],
 				"eqiad" => ["virt1000.wikimedia.org", "virt0.wikimedia.org"],
 			}
@@ -107,8 +107,8 @@ class role::salt::minions {
 		$salt_client_id = "${dc}"
 		$salt_grains = {
 			"instanceproject" => $instanceproject,
-			"realm" => $realm,
-			"site" => $site,
+			"realm" => $::realm,
+			"site" => $::site,
 			"cluster" => $cluster,
 		}
 	} else {
@@ -124,8 +124,8 @@ class role::salt::minions {
 		$salt_master = "palladium.eqiad.wmnet"
 		$salt_client_id = "${fqdn}"
 		$salt_grains = {
-			"realm" => $realm,
-			"site" => $site,
+			"realm" => $::realm,
+			"site" => $::site,
 			"cluster" => $cluster,
 		}
 		$salt_master_finger = "f6:1d:a7:1f:7e:12:10:40:75:d5:73:af:0c:be:7d:7c"
