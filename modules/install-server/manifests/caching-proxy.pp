@@ -29,7 +29,7 @@ class install-server::caching-proxy {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/install-server/squid-apt-proxy.conf',
+        source  => "puppet:///modules/install-server/${package_name}-apt-proxy.conf",
     }
 
     file { '/etc/logrotate.d/squid':
@@ -38,7 +38,7 @@ class install-server::caching-proxy {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/install-server/squid-logrotate',
+        source  => "puppet:///modules/install-server/${package_name}-logrotate",
     }
 
     package { $package_name:
