@@ -2,15 +2,17 @@
 #
 #  This will create a server running RT with apache.
 #
-class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $dbhost = 'localhost', $dbport = '3306', $datadir = '/var/lib/mysql' ) {
-  system::role { 'misc::rt-apache::server': description => 'RT server with Apache' }
-
-
+class misc::rt(
+  $dbuser,
+  $dbpass,
+  $site = 'rt.wikimedia.org',
+  $dbhost = 'localhost',
+  $dbport = '3306',
+  $datadir = '/var/lib/mysql',
+) {
   if ! defined(Class['webserver::php5']) {
     class {'webserver::php5': ssl => true; }
   }
-
-    install_certificate{ 'rt.wikimedia.org': }
 
   $rt_mysql_user = $dbuser
   $rt_mysql_pass = $dbpass
@@ -23,7 +25,6 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
               'libdbd-pg-perl' ]:
     ensure => latest;
   }
-
 
   $rtconf = '# This file is for the command-line client, /usr/bin/rt.\n\nserver http://localhost/rt\n'
 

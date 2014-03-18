@@ -1695,8 +1695,7 @@ node 'magnesium.wikimedia.org' {
     $cluster = 'misc'
 
     include role::racktables
-    include role::request-tracker-apache::production
-    include exim::rt
+    include role::rt
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
