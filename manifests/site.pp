@@ -1997,10 +1997,14 @@ node /^nfs[12].pmtpa.wmnet/ {
 
     include standard
     include misc::nfs-server::home::rsyncd
-    include misc::syslog-server
     include backup::client
     include backup::host
     backup::set { 'var-opendj-backups': }
+
+    class { 'misc::syslog-server':
+        config   => 'nfs',
+        basepath => '/home/wikipedia/syslog',
+    }
 
     # don't need udp2log monitoring on nfs hosts
     class { 'role::logging::mediawiki':
