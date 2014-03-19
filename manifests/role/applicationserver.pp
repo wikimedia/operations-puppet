@@ -74,7 +74,7 @@ class role::applicationserver {
 
 		if $::realm == 'labs' {
 			# MediaWiki configuration specific to labs instances ('beta' project)
-			class { "mediawiki": twemproxy => false }
+			include mediawiki
 
 			if $::site == 'pmtpa' {
 				# Umount /dev/vdb from /mnt ...
