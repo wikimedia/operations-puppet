@@ -106,7 +106,7 @@ define git::clone(
             }
 
             if $shared {
-                $shared_arg = '-c core.sharedRepository=066'
+                $shared_arg = '-c core.sharedRepository=group'
                 $git = 'umask 002; /usr/bin/git'
             } else {
                 $shared_arg = ''
