@@ -58,22 +58,19 @@ class toollabs::master inherits toollabs {
     # any singleton instance.
     #
 
-    file { $toollabs::repo:
-        ensure  => directory,
-        owner   => 'tools.admin',
-        group   => 'tools.admin',
-        mode    => '0755',
-        require => File[$toollabs::sysdir],
-    }
-
+    # TODO: Remove after migration.
     file { "${toollabs::repo}/update-repo.sh":
-        ensure  => file,
-        owner   => 'tools.admin',
-        group   => 'tools.admin',
-        mode    => '0550',
-        require => File[$toollabs::repo],
-        source  => 'puppet:///modules/toollabs/update-repo.sh',
+        ensure => absent,
     }
-
+    exec { 'Move Tools all packages to new structure':
+        command => "/bin/mv -i ${toollabs::repo}/all/*.deb ${toollabs::repo}/ && /bin/rm -f ${toollabs::repo}/all/Packages && /bin/rmdir ${toollabs::repo}/all",
+        onlyif => "/usr/bin/test -d ${toollabs::repo}/all",
+        notify => Exec["Turn ${toollabs::repo} into deb repo"],
+    }
+    exec { 'Move Tools amd64 packages to new structure':
+        command => "/bin/mv -i ${toollabs::repo}/amd64/*.deb ${toollabs::repo}/ && /bin/rm -f ${toollabs::repo}/amd64/Packages && /bin/rmdir ${toollabs::repo}/amd64",
+        onlyif => "/usr/bin/test -d ${toollabs::repo}/amd64",
+        notify => Exec["Turn ${toollabs::repo} into deb repo"],
+    }
 }
 
