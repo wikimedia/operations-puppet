@@ -152,7 +152,7 @@ define git::clone(
 
                 exec { "git_clone_${title}_set_group_owner":
                     command => "chgrp -R '${group}' '${directory}'",
-                    onlyif  => "find '${directory}' ! -group '${group}'",
+                    onlyif  => "find '${directory}' ! -group '${group}' -print -quit | grep ''",
                     cwd     => $directory,
                     require => Exec["git_clone_${title}_configure_shared_repository"],
                     notify  => Exec["git_clone_${title}_group_writable"],
@@ -160,7 +160,7 @@ define git::clone(
 
                 exec { "git_clone_${title}_group_writable":
                     command => "find '${directory}' ! -perm -g=wX,o= -exec chmod g+wX,o= '{}' ';'",
-                    onlyif  => "find '${directory}' ! -perm -g=wX,o=",
+                    onlyif  => "find '${directory}' ! -perm -g=wX,o= -print -quit | grep ''",
                     cwd     => $directory,
                     require => Exec["git_clone_${title}_set_group_owner"],
                     notify  => Exec["git_clone_${title}_sgid_bit"],
@@ -168,7 +168,7 @@ define git::clone(
 
                 exec { "git_clone_${title}_sgid_bit":
                     command => "find '${directory}' -mindepth 1 -type d -and ! -perm -g+s -exec chmod g+s '{}' ';'",
-                    onlyif  => "find '${directory}' -mindepth 1 -type d -and ! -perm -g+s",
+                    onlyif  => "find '${directory}' -mindepth 1 -type d -and ! -perm -g+s -print -quit | grep ''",
                     cwd     => $directory,
                     require => Exec["git_clone_${title}_group_writable"],
                 }
