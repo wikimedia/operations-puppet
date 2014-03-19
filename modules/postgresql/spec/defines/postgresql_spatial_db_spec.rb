@@ -12,6 +12,7 @@ describe 'postgresql::spatialdb', :type => :define do
         it { should contain_exec('create_postgis-somedb') }
         it { should contain_exec('create_spatial_ref_sys-somedb') }
         it { should contain_exec('create_comments-somedb') }
+        it { should contain_exec('create_extension_hstore-somedb') }
     end
 end
 
