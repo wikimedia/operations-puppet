@@ -1730,6 +1730,21 @@ host ms-be1012 {
 	fixed-address ms-be1012.eqiad.wmnet;
 }
 
+host ms-be1013 {
+	hardware ethernet F8:BC:12:3C:7A:EC;
+	fixed-address ms-be1013.eqiad.wmnet;
+}
+
+host ms-be1014 {
+	hardware ethernet F8:BC:12:3C:8A:78;
+	fixed-address ms-be1014.eqiad.wmnet;
+}
+
+host ms-be1015 {
+	hardware ethernet C8:1F:66:E0:E9:B5;
+	fixed-address ms-be1015.eqiad.wmnet;
+}
+
 host ms-be3001 {
 	hardware ethernet 24:B6:FD:F6:13:AC;
 	fixed-address ms-be3001.esams.wikimedia.org;
