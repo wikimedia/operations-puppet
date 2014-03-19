@@ -16,7 +16,7 @@ class role::lvs::balancer {
     $sip = $lvs::configuration::lvs_service_ips[$::realm]
 
     $lvs_balancer_ips = $::hostname ? {
-        /^(amslvs[13]|lvs[26]|lvs100[14]|lvs400[13])$/ => [
+        /^(amslvs[13]|lvs100[14]|lvs400[13])$/ => [
             $sip['text'][$::site],
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
@@ -24,7 +24,7 @@ class role::lvs::balancer {
         /^(amslvs[24]|lvs400[24])$/ => [
             $sip['upload'][$::site],
             ],
-        /^(lvs[15]|lvs100[25])$/ => [
+        /^(lvs100[25])$/ => [
             $sip['upload'][$::site],
             $sip['payments'][$::site],
             $sip['dns_rec'][$::site],
@@ -32,7 +32,7 @@ class role::lvs::balancer {
             $sip['misc_web'][$::site],
             $sip['parsoidcache'][$::site],
             ],
-        /^(lvs[34]|lvs100[36])$/ => [
+        /^(lvs100[36])$/ => [
             $sip['apaches'][$::site],
             $sip['api'][$::site],
             $sip['rendering'][$::site],

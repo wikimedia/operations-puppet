@@ -1495,44 +1495,6 @@ node 'linne.wikimedia.org' {
     }
 }
 
-node /lvs[1-6]\.wikimedia\.org/ {
-    if $::hostname =~ /^lvs[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::lvs::balancer
-
-    $ips = {
-        'internal' => {
-            'lvs1' => '10.0.0.11',
-            'lvs2' => '10.0.0.12',
-            'lvs3' => '10.0.0.13',
-            'lvs4' => '10.0.0.14',
-            'lvs5' => '10.0.0.15',
-            'lvs6' => '10.0.0.16',
-        },
-    }
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
-    # Set up tagged interfaces to all subnets with real servers in them
-    interface::tagged { 'eth0.2':
-        base_interface => 'eth0',
-        vlan_id        => '2',
-        address        => $ips['internal'][$::hostname],
-        netmask        => '255.255.0.0',
-    }
-
-    # Make sure GRO is off
-    interface::offload { 'eth0 gro':
-        interface => 'eth0',
-        setting   => 'gro',
-        value     => 'off',
-    }
-}
-
 node /lvs100[1-6]\.wikimedia\.org/ {
     if $::hostname =~ /^lvs100[12]$/ {
         $ganglia_aggregator = true
