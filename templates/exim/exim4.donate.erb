@@ -132,7 +132,7 @@ system_aliases:
 	allow_defer
 	forbid_file
 	
-<% if exim_bounce_collector == "true" then -%>
+<% if scope.lookupvar('role::fundraising::civicrm::exim_bounce_collector') == "true" then -%>
 # Deliver bounce-*@donate.wikimedia.org to mbox
 	
 bounce_mail:
@@ -161,7 +161,7 @@ remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
 	connection_max_messages = 300
-<% if exim_signs_dkim == "true" then -%>
+<% if scope.lookupvar('role::fundraising::civicrm::exim_signs_dkim') == "true" then -%>
 	dkim_domain = wikimedia.org
 	dkim_selector = fundraising
 	dkim_private_key = /etc/exim4/wikimedia.org-fundraising-private.key
@@ -178,7 +178,7 @@ aggressive_remote_smtp:
 	command_timeout = 30s
 	data_timeout = 30s
 	final_timeout = 1m
-<% if exim_signs_dkim == "true" then -%>
+<% if scope.lookupvar('role::fundraising::civicrm::exim_signs_dkim') == "true" then -%>
 	dkim_domain = wikimedia.org
 	dkim_selector = fundraising
 	dkim_private_key = /etc/exim4/wikimedia.org-fundraising-private.key
@@ -204,7 +204,7 @@ civimail_delivery:
 	user = civimail
 	group = civimail
 
-<% if exim_bounce_collector == "true" then -%>
+<% if scope.lookupvar('role::fundraising::civicrm::exim_bounce_collector') == "true" then -%>
 bounce_mail_delivery:
 	driver = appendfile
 	file = /var/mail/bounce
