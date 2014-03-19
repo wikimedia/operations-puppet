@@ -4,6 +4,7 @@
 #
 class puppet::self::gitclone {
     $gitdir = '/var/lib/git'
+    $volatiledir = '/var/lib/puppet/volatile'
 
     file { $gitdir:
         ensure => directory,
@@ -37,6 +38,18 @@ class puppet::self::gitclone {
         group   => 'root',
         mode    => '0600',
         source  => 'puppet:///private/ssh/labs-puppet-key',
+    }
+    file { $volatiledir:
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'puppet',
+        mode    => '0750',
+    }
+    file { "${volatiledir}/misc":
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'puppet',
+        mode    => '0750',
     }
     git::clone { 'operations/puppet':
         directory => "${gitdir}/operations/puppet",
