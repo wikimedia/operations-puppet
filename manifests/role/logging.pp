@@ -47,7 +47,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 
     $error_processor_host = $::realm ? {
         production => 'vanadium.eqiad.wmnet',
-        labs       => 'deployment-fluoride.pmtpa.wmflabs',
+        labs       => "deployment-fluoride.${::site}.wmflabs",
     }
 
     # TODO remove once beta cluster is migrated to eqiad
