@@ -5,7 +5,6 @@ class lvs::configuration {
     $lvs_class_hosts = {
         'high-traffic1' => $::realm ? {
             'production' => $::site ? {
-                'pmtpa' => [ "lvs2", "lvs6" ],
                 'eqiad' => [ "lvs1001", "lvs1004" ],
                 'esams' => [ "amslvs1", "amslvs3" ],
                 'ulsfo' => [ "lvs4001", "lvs4003" ],
@@ -19,7 +18,6 @@ class lvs::configuration {
         },
         'high-traffic2' => $::realm ? {
             'production' => $::site ? {
-                'pmtpa' => [ "lvs1", "lvs5" ],
                 'eqiad' => [ "lvs1002", "lvs1005" ],
                 'esams' => [ "amslvs2", "amslvs4" ],
                 'ulsfo' => [ "lvs4002", "lvs4004" ],
@@ -35,7 +33,6 @@ class lvs::configuration {
         # http services
         'https' => $::realm ? {
             'production' => $::site ? {
-                'pmtpa' => [ 'lvs1', 'lvs2', 'lvs5', 'lvs6' ],
                 'eqiad' => [ 'lvs1001', 'lvs1002', 'lvs1004', 'lvs1005' ],
                 'esams' => [ 'amslvs1', 'amslvs2', 'amslvs3', 'amslvs4' ],
                 default => undef,
@@ -48,7 +45,6 @@ class lvs::configuration {
         },
         'low-traffic' => $::realm ? {
             'production' => $::site ? {
-                'pmtpa' => [ "lvs3", "lvs4" ],
                 'eqiad' => [ "lvs1003", "lvs1006" ],
                 'esams' => [ ],
                 default => undef,
@@ -104,7 +100,6 @@ class lvs::configuration {
     $lvs_service_ips = {
         'production' => {
             'text' => {
-                'pmtpa' => {},
                 'eqiad' => {
                     'textsvc' => '10.2.2.25',
                     'textlb' => '208.80.154.224',
@@ -155,13 +150,6 @@ class lvs::configuration {
                 },
             },
             'https' => {
-                'pmtpa' => {
-                    'bitslbsecure' => "208.80.152.210",
-                    'uploadlbsecure' => "208.80.152.211",
-
-                    'bitslbsecure6' => "2620:0:860:ed1a::a",
-                    'uploadlbsecure6' => "2620:0:860:ed1a::b",
-                },
                 'eqiad' => {
                     'wikimedialbsecure' => "208.80.154.224",
                     'wikipedialbsecure' => "208.80.154.225",
@@ -218,13 +206,11 @@ class lvs::configuration {
                 'ulsfo' => {}
             },
             'bits' => {
-                'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
                 'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => '2620:0:861:ed1a::1:a', 'bitslb6-old' => "2620:0:861:ed1a::a", 'bitssvc' => "10.2.2.23" },
                 'esams' => { 'bitslb' => '91.198.174.202', 'bitslb-old' => "91.198.174.233", 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitslb6-old' => "2620:0:862:ed1a::a", 'bitssvc' => "10.2.3.23" },
                 'ulsfo' => { 'bitslb' => "198.35.26.106", 'bitslb6' => '2620:0:863:ed1a::1:a', 'bitssvc' => "10.2.4.23" },
             },
             'upload' => {
-                'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
                 'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadsvc' => '10.2.2.24' },
                 'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
                 'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b' },
@@ -234,43 +220,33 @@ class lvs::configuration {
                 'eqiad' => {},
             },
             'apaches' => {
-                'pmtpa' => "10.2.1.1",
                 'eqiad' => "10.2.2.1",
             },
             'rendering' => {
-                'pmtpa' => "10.2.1.21",
                 'eqiad' => "10.2.2.21",
             },
             'api' => {
-                'pmtpa' => "10.2.1.22",
                 'eqiad' => "10.2.2.22",
             },
             'search_pool1' => {
-                'pmtpa' => "10.2.1.11",
                 'eqiad' => "10.2.2.11",
             },
             'search_pool2' => {
-                'pmtpa' => "10.2.1.12",
                 'eqiad' => "10.2.2.12",
             },
             'search_pool3' => {
-                'pmtpa' => "10.2.1.13",
                 'eqiad' => "10.2.2.13",
             },
             'search_pool4' => {
-                'pmtpa' => "10.2.1.14",
                 'eqiad' => "10.2.2.14",
             },
             'search_prefix' => {
-                'pmtpa' => "10.2.1.15",
                 'eqiad' => "10.2.2.15",
             },
             'search_pool5' => {
-                'pmtpa' => "10.2.1.16",
                 'eqiad' => "10.2.2.16",
             },
             'mobile' => {
-                'pmtpa' => {},
                 'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilelb6-old' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"},
                 'esams' => { 'mobilelb-new' => '91.198.174.204', 'mobilelb' => '91.198.174.236', 'mobilelb6-new' => '2620:0:862:ed1a::1:c', 'mobilelb6' => '2620:0:862:ed1a::c', 'mobilesvc' => '10.2.3.26'},
                 'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6' => '2620:0:863:ed1a::1:c', 'mobilesvc' => '10.2.4.26'},
@@ -296,15 +272,12 @@ class lvs::configuration {
                 'eqiad' => { 'misc_web' => '208.80.154.241', 'misc_web6' => '2620:0:861:ed1a::11' },
             },
             'parsoid' => {
-                'pmtpa' => {},
                 'eqiad' => "10.2.2.28",
             },
             'parsoidcache' => {
-                'pmtpa' => {},
                 'eqiad' => { 'parsoidlb' => '208.80.154.248', 'parsoidlb6' => '2620:0:861:ed1a::3:14', 'parsoidsvc' => '10.2.2.29' },
             },
             'search' => {
-                'pmtpa' => {},
                 'eqiad' => "10.2.2.30",
             },
         },
@@ -453,7 +426,7 @@ class lvs::configuration {
         "https" => {
             'description' => "HTTPS services",
             'class' => "https",
-            'sites' => [ "pmtpa", "eqiad", "esams" ],
+            'sites' => [ "eqiad", "esams" ],
             'ip' => $service_ips['https'][$::site],
             'port' => 443,
             'scheduler' => 'sh',
@@ -470,7 +443,7 @@ class lvs::configuration {
         "bits" => {
             'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
             'class' => "high-traffic1",
-            'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
+            'sites' => [ "eqiad", "esams", "ulsfo" ],
             'ip' => $service_ips['bits'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".5",
@@ -496,7 +469,7 @@ class lvs::configuration {
         "upload" => {
             'description' => "Images and other media, upload.${::site}.wikimedia.org",
             'class' => "high-traffic2",
-            'sites' => [ "pmtpa", "eqiad", "esams", "ulsfo" ],
+            'sites' => [ "eqiad", "esams", "ulsfo" ],
             'ip' => $service_ips['upload'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".5",
@@ -615,9 +588,9 @@ class lvs::configuration {
             },
         },
         "apaches" => {
-            'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
+            'description' => "Main MediaWiki application server cluster, appservers.svc.eqiad.wmnet",
             'class' => "low-traffic",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['apaches'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".9",
@@ -630,9 +603,9 @@ class lvs::configuration {
             },
         },
         "rendering" => {
-            'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.pmtpa.wmnet",
+            'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.eqiad.wmnet",
             'class' => "low-traffic",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['rendering'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".74",
@@ -645,9 +618,9 @@ class lvs::configuration {
             },
         },
         "api" => {
-            'description' => "MediaWiki API cluster, api.svc.pmtpa.wmnet",
+            'description' => "MediaWiki API cluster, api.svc.eqiad.wmnet",
             'class' => "low-traffic",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['api'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".6",
@@ -663,7 +636,7 @@ class lvs::configuration {
             'description' => "Lucene search pool 1",
             'class' => "low-traffic",
             'protocol' => "tcp",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['search_pool1'][$::site],
             'port' => 8123,
             'scheduler' => "wrr",
@@ -680,7 +653,7 @@ class lvs::configuration {
             'description' => "Lucene search pool 2",
             'class' => "low-traffic",
             'protocol' => "tcp",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['search_pool2'][$::site],
             'port' => 8123,
             'scheduler' => "wrr",
@@ -697,7 +670,7 @@ class lvs::configuration {
             'description' => "Lucene search pool 3",
             'class' => "low-traffic",
             'protocol' => "tcp",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['search_pool3'][$::site],
             'port' => 8123,
             'scheduler' => "wrr",
@@ -714,7 +687,7 @@ class lvs::configuration {
             'description' => "Lucene search pool 4",
             'class' => "low-traffic",
             'protocol' => "tcp",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['search_pool4'][$::site],
             'port' => 8123,
             'scheduler' => "wrr",
@@ -731,7 +704,7 @@ class lvs::configuration {
             'description' => "Lucene search pool 5",
             'class' => "low-traffic",
             'protocol' => "tcp",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['search_pool5'][$::site],
             'port' => 8123,
             'scheduler' => "wrr",
@@ -748,7 +721,7 @@ class lvs::configuration {
             'description' => "Lucene search prefix pool",
             'class' => "low-traffic",
             'protocol' => "tcp",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['search_prefix'][$::site],
             'port' => 8123,
             'scheduler' => "wrr",

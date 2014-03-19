@@ -292,7 +292,6 @@ class ganglia {
                         "Bits application servers eqiad" => "mw1151.eqiad.wmnet mw1152.eqiad.wmnet",
                         "MySQL"                          => "db1050.eqiad.wmnet",
                         "PDF servers"                    => "pdf2.wikimedia.org pdf3.wikimedia.org",
-                        "LVS loadbalancers pmtpa"        => "lvs1.wikimedia.org lvs2.wikimedia.org",
                         "Miscellaneous"                  => "tarin.pmtpa.wmnet",
                         "Fundraising eqiad"              => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
                         "SSL cluster esams"              => "hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
