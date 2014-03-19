@@ -166,18 +166,9 @@ sub geoip_cookie {
 		}
 
 		if (cookie_out) {
-			/*
-			 * If multiple Set-Cookie headers are set, VRT_GetHdr will only get the first,
-			 * but VRT_SetHdr will clobber all of them. Varnish provides no facility for
-			 * combining multiple instances of a particular header. We hack around that
-			 * by creating a header with a unique name ("Xet-Cookie"), and then changing
-			 * the name to "Set-Cookie".
-			 */
-			VRT_SetHdr(sp, HDR_RESP, "\013Xet-Cookie:", cookie_out, vrt_magic_string_end);
-			geo_header = VRT_GetHdr(sp, HDR_RESP, "\013Xet-Cookie:");
-			if (geo_header != NULL && strncmp(geo_header - 12, "Xet-Cookie: ", 12) == 0) {
-				*(geo_header - 12) = 'S';
-			}
+                        /* Use libvmod-header to ensure the Set-Cookie header we are adding does not
+                           clobber or manipulate existing cookie headers (if any). */
+			Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:", cookie_out, vrt_magic_string_end);
 		}
 	}C
 }
