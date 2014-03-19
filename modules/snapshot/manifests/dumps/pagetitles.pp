@@ -61,7 +61,7 @@ class snapshot::dumps::pagetitles(
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         command     => "cd ${snapshot::dirs::wikiqueriesdir}; python wikiqueries.py --configfile confs/wq.conf  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${snapshot::dirs::datadir}/public/other/mediatitles/{d}' --query 'select page_title from page where page_namespace=6;'",
-        minute      => '30',
+        minute      => '50',
         hour        => '8',
         require     => File["${snapshot::dirs::datadir}/public/other/mediatitles"],
     }
