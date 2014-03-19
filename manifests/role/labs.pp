@@ -63,6 +63,21 @@ class role::labs::instance {
             require => File['/public/dumps'],
         }
 
+        # Symbolic links for pmtpa compatibility.
+        file { '/public/datasets':
+            ensure  => 'directory',
+            owner   => 'root',
+            group   => 'root',
+            require => File['/public'],
+        }
+        file { '/public/datasets/public':
+            ensure  => 'target',
+            owner   => 'root',
+            group   => 'root',
+            target  => '/public/dumps/public',
+            require => File['/public/datasets'],
+        }
+
         file { '/public/backups':
             ensure => directory,
             require => File['/public'],
