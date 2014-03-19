@@ -33,12 +33,7 @@ class toollabs::master inherits toollabs {
     }
 
     file { "${repo}/update-repo.sh":
-        ensure  => file,
-        owner   => 'local-admin',
-        group   => 'local-admin',
-        mode    => '0550',
-        require => File[$repo],
-        source  => 'puppet:///modules/toollabs/update-repo.sh',
+        ensure  => absent,
     }
 
 }

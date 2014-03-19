@@ -101,13 +101,8 @@ class toollabs {
     # that are intended to be local to the project.  By keeping it on the
     # shared storage, we have no need to set up a server to use it.
 
-    file { '/etc/apt/sources.list.d/local.list':
-        ensure  => file,
-        content => "deb [ arch=amd64 trusted=yes ] file:${repo}/ amd64/\ndeb [arch=all trusted=yes ] file:${repo}/ all/\n",
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-    }
+    misc::labsdebrepo { 'arch=amd64', 'trusted=yes', "$repo/amd64": }
+    misc::labsdebrepo { 'arch=all', 'trusted=yes', "$repo/all": }
 
     # Trustworthy enough
     file { '/etc/apt/sources.list.d/mariadb.list':
