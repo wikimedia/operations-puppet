@@ -2519,7 +2519,7 @@ node 'terbium.eqiad.wmnet' {
         enabled => true,
     }
     class { 'misc::maintenance::updatetranslationstats':
-        enabled => true,
+        ensure => 'present',
     }
     class { 'misc::maintenance::wikidata':
         enabled => true,
