@@ -164,8 +164,8 @@ class role::ci::slave::labs::common {
 
     if $::site == 'eqiad' {
         # Does not come with /dev/vdb, we need to mount it using lvm
-        require labs_lvm
-        labs_lvm::volume { 'second-local-disk': mountat => '/mnt' }
+        require role::labs::lvm::mnt
+
         # Will make sure /mnt is mounted before populating file there or they
         # might end up being being created locally and hidden by the mount.
         $slash_mnt_require = Mount['/mnt']
