@@ -43,26 +43,6 @@ host linne {
 	fixed-address linne.wikimedia.org;
 }
 
-host lvs1 {
-	hardware ethernet 00:1e:c9:ab:80:4e;
-	fixed-address lvs1.wikimedia.org;
-}
-
-host lvs2 {
-	hardware ethernet 00:1E:C9:AB:7F:C2;
-	fixed-address lvs2.wikimedia.org;
-}
-
-host lvs3 {
-	hardware ethernet 00:1e:c9:ab:7e:4a;
-	fixed-address lvs3.wikimedia.org;
-}
-
-host lvs4 {
-	hardware ethernet 00:1E:C9:AB:7D:FC;
-	fixed-address lvs4.wikimedia.org;
-}
-
 host mchenry {
 	hardware ethernet 00:19:B9:DD:C0:27;
 	fixed-address mchenry.wikimedia.org;
