@@ -7,8 +7,14 @@ class role::osm::master {
     include role::osm::common
     include postgresql::master
     include postgresql::postgis
+    include osm::packages
     include passwords::osm
+
     postgresql::spatialdb { 'gis': }
+    osm::populatedb { 'gis':
+        input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
+        require => Postgresql::Spatialdb['gis']
+    }
 
     if $osm_slave_v4 {
         postgresql::user { "replication@${::osm_slave}-v4":
