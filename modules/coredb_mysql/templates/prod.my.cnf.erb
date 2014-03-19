@@ -6,7 +6,7 @@ socket		= /tmp/mysql.sock
 
 <% ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; %>
 server_id=<%= server_id %>
-<% if read_only == false then -%>
+<% if @read_only == false then -%>
 # writes are enabled
 read_only = 0
 <% else %>
@@ -21,17 +21,17 @@ tmpdir		= /a/tmp/
 
 skip-external-locking
 
-<% if skip_name_resolve == true then -%>
+<% if @skip_name_resolve == true then -%>
 skip-name-resolve
 <% end -%>
 
-<% if mysql_myisam == true then -%>
+<% if @mysql_myisam == true then -%>
 myisam-recover = QUICK
 key_buffer		= 1024M
 <% else %>
 key_buffer		= 1M
 <% end -%>
-max_allowed_packet	= <%= mysql_max_allowed_packet %>
+max_allowed_packet	= <%= @mysql_max_allowed_packet %>
 thread_stack		= 192K
 thread_cache_size	= 300
 
@@ -46,7 +46,7 @@ log_slow_queries
 #log_queries_not_using_indexes 
 long_query_time = 0.45
 
-<% if disable_binlogs != true then -%>
+<% if @disable_binlogs != true then -%>
 log_bin
 log_slave_updates
 sync_binlog = 1
@@ -62,7 +62,7 @@ max_connect_errors=1000000000
 
 temp-pool
 
-<% if has_variable?("mariadb") and mariadb == true then -%>
+<% if @mariadb == true then -%>
 query_cache_type=0
 
 # these were set as compile time defaults in our old 5.1 mysql builds
@@ -113,12 +113,12 @@ innodb-checksums=1
 # might need to be even higher and innodb_stats_on_metadata=OFF
 innodb_stats_sample_pages = 16
 
-<% if has_variable?("mariadb") and mariadb == true then -%>
+<% if @mariadb == true then -%>
 # encourage more ref lookups when joining tables with nullable fields
 innodb_stats_method = nulls_unequal
 <% end -%>
 
-<% if innodb_file_per_table == true then -%>
+<% if @innodb_file_per_table == true then -%>
 innodb_file_per_table
 <% end -%>
 
@@ -126,17 +126,17 @@ innodb_file_per_table
 #innodb-autoinc-lock-mode=2
 #innodb-locks-unsafe-for-binlog
 
-<% if long_timeouts == true then -%>
+<% if @long_timeouts == true then -%>
 interactive_timeout = 129600
 wait_timeout = 129600
 <% end -%>
 
-<% if enable_unsafe_locks == true then -%>
+<% if @enable_unsafe_locks == true then -%>
 # since no binlogs on this slave, and writes only to intern db's
 innodb-locks-unsafe-for-binlog
 <% end -%>
 
-<% if large_slave_trans_retries == true then -%>
+<% if @large_slave_trans_retries == true then -%>
 slave_transaction_retries = 4294967295
 <% end -%>
 
