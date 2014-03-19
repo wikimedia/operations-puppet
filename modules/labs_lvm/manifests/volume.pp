@@ -17,6 +17,7 @@
 #   fstype   => filesystem type.  Defaults to ext4.
 #   mkfs_opt => options for the mkfs if the filesystem needs to
 #               be created.
+#   options  => mount options
 #
 # Requires:
 #   The node must have included the labs_lvm class.
@@ -30,7 +31,8 @@ define labs_lvm::volume(
     $mountat    = "/mnt/$volname",
     $size       = '100%FREE',
     $fstype     = 'ext4',
-    $mkfs_opt   = ''
+    $mkfs_opt   = '',
+    $options    = 'defaults',
 ) {
 
     file { '/usr/local/sbin/make-instance-vol':
@@ -61,7 +63,7 @@ define labs_lvm::volume(
         ensure      => mounted,
         atboot      => true,
         device      => "/dev/vd/$volname",
-        options     => "defaults",
+        options     => $options,
         fstype      => $fstype,
         require     => [
                          Exec["create-vd-$volname"],
