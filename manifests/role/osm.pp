@@ -2,13 +2,24 @@
 
 class role::osm::common {
     include standard
+
+    file { '/etc/postgresql/9.1/main':
+        ensure => 'present',
+        owner   => 'root',
+        group   => 'rooot',
+        mode    => '0444',
+        source  => 'puppet:///files/osm/tuning.conf',
+    }
 }
+
 class role::osm::master {
     include role::osm::common
-    include postgresql::master
     include postgresql::postgis
     include osm::packages
     include passwords::osm
+    class { 'postgresql::master':
+        includes => 'tuning.conf'
+    }
 
     postgresql::spatialdb { 'gis': }
     osm::populatedb { 'gis':
@@ -53,5 +64,6 @@ class role::osm::slave {
     class {'postgresql::slave':
         master_server    => $osm_master,
         replication_pass => $passwords::osm::replication_pass,
+        includes         => 'tuning.conf',
     }
 }
