@@ -229,7 +229,6 @@ sub tag_carrier {
 		}
 		unset req.http.X-CS2;
 	} // end of if(X-CS2)
-	unset req.http.X-Forwarded-By;
 }
 
 sub vcl_deliver {

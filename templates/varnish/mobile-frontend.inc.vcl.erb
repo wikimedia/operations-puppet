@@ -31,11 +31,6 @@ sub vcl_recv {
 		}
 	}
 
-	/* Assemble X-Analytics header */
-	if (req.http.X-CS) {
-		set req.http.X-Analytics = "zero=" + req.http.X-CS;
-	}
-
 	/* Rewrite m.mediawiki.org to mediawiki.org etc */
 	if (req.http.host == "m.mediawiki.org") {
 		set req.http.host = "www.mediawiki.org";
@@ -152,10 +147,29 @@ sub vcl_deliver {
 		unset resp.http.X-CS;
 	}
 
-	if (resp.http.X-Analytics) {
-		# do nothing, MediaWiki has handled X-Analytics
-	} else if (req.http.X-Analytics) {
-		set resp.http.X-Analytics = req.http.X-Analytics;
+	/* Assemble X-Analytics header
+	   Some of the headers used for X-Analytics is not varied on, so add them after the backend processing
+	*/
+	if (req.http.X-CS) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";zero=" + req.http.X-CS;
+		} else {
+			set resp.http.X-Analytics = "zero=" + req.http.X-CS;
+		}
+	}
+	if (req.http.X-Forwarded-Proto) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";https=1";
+		} else {
+			set resp.http.X-Analytics = "https=1";
+		}
+	}
+	if (req.http.X-Forwarded-By) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Forwarded-By;
+		} else {
+			set resp.http.X-Analytics = "proxy=" + req.http.X-Forwarded-By;
+		}
 	}
 
 	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
