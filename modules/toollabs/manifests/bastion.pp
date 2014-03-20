@@ -58,6 +58,10 @@ class toollabs::bastion($gridmaster) inherits toollabs {
         ensure => present,
     }
 
+    package { 'git-review':
+        ensure => present,
+    }
+
     file { '/etc/profile.d/motd-tips.sh':
         ensure  => file,
         mode    => '0555',
