@@ -385,3 +385,7 @@ class misc::deployment::vars ($system = 'scap') {
 class misc::deployment::scap_primary {
 	class { 'generic::rsyncd': config => "scap-primary" }
 }
+
+class misc::deployment::scap_proxy {
+	class { 'generic::rsyncd': config => "scap" }
+}
