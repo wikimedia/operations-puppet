@@ -229,7 +229,13 @@ sub tag_carrier {
 		}
 		unset req.http.X-CS2;
 	} // end of if(X-CS2)
-	unset req.http.X-Forwarded-By;
+	if ( req.http.X-Forwarded-By ) {
+		// Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
+		// unset X-Forwarded-By. We still need that value in the resulting X-Analytics header,
+		// so create a copy to be used in the vcl_deliver.
+		set req.http.X-Forwarded-By2 = req.http.X-Forwarded-By;
+		unset req.http.X-Forwarded-By;
+	}
 }
 
 sub vcl_deliver {
@@ -244,5 +250,37 @@ sub vcl_deliver {
 		// We must use header.remove()/append() here because there can be multiple unrelated Set-Cookie headers
 		header.remove(resp.http.Set-Cookie,"ZeroOpts=");
 		header.append(resp.http.Set-Cookie,"ZeroOpts=tls");
+	}
+
+	// All mobile responses need to have the X-CS set if it came from a zero network.
+	// This allows apps to detect when we switch from zero to non-zero and back,
+	// or when the user switches from one network to another and both are zero (multi-sim phones).
+	// The client should constantly check each response for this header, and if it changes,
+	// re-request the partner's message info.
+	// This value is only based on Varnish's zero detection, not the backend processing of any sort
+	// We are in vcl_deliver, so changing it here would not affect the cached object
+	if (req.http.X-CS) {
+		set resp.http.X-CS = req.http.X-CS;
+	} else {
+		unset resp.http.X-CS;
+	}
+
+	/* Assemble X-Analytics header
+	   Some of the headers used for X-Analytics is not varied on, so add them after the backend processing
+	   Note that vcl_deliver in other files may also modify X-Analytics
+	*/
+	if (req.http.X-CS) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";zero=" + req.http.X-CS;
+		} else {
+			set resp.http.X-Analytics = "zero=" + req.http.X-CS;
+		}
+	}
+	if (req.http.X-Forwarded-By2) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Forwarded-By2;
+		} else {
+			set resp.http.X-Analytics = "proxy=" + req.http.X-Forwarded-By2;
+		}
 	}
 }

@@ -31,11 +31,6 @@ sub vcl_recv {
 		}
 	}
 
-	/* Assemble X-Analytics header */
-	if (req.http.X-CS) {
-		set req.http.X-Analytics = "zero=" + req.http.X-CS;
-	}
-
 	/* Rewrite m.mediawiki.org to mediawiki.org etc */
 	if (req.http.host == "m.mediawiki.org") {
 		set req.http.host = "www.mediawiki.org";
@@ -139,23 +134,16 @@ sub vcl_error {
 sub vcl_deliver {
 #	unset resp.http.Enable-ESI;
 
-	// All mobile responses need to have the X-CS set if it came from a zero network.
-	// This allows apps to detect when we switch from zero to non-zero and back,
-	// or when the user switches from one network to another and both are zero (multi-sim phones).
-	// The client should constantly check each response for this header, and if it changes,
-	// re-request the partner's message info.
-	// This value is only based on Varnish's zero detection, not the backend processing of any sort
-	// We are in vcl_deliver, so changing it here would not affect the cached object
-	if (req.http.X-CS) {
-		set resp.http.X-CS = req.http.X-CS;
-	} else {
-		unset resp.http.X-CS;
-	}
-
-	if (resp.http.X-Analytics) {
-		# do nothing, MediaWiki has handled X-Analytics
-	} else if (req.http.X-Analytics) {
-		set resp.http.X-Analytics = req.http.X-Analytics;
+	/* Assemble X-Analytics header
+	   Some of the headers used for X-Analytics is not varied on, so add them after the backend processing
+	   Note that vcl_deliver in other files may also modify X-Analytics.
+	*/
+	if (req.http.X-Forwarded-Proto) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";https=1";
+		} else {
+			set resp.http.X-Analytics = "https=1";
+		}
 	}
 
 	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
