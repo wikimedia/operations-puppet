@@ -39,10 +39,11 @@ class puppet::self::gitclone {
         source  => 'puppet:///private/ssh/labs-puppet-key',
     }
     git::clone { 'operations/puppet':
-        directory => "${gitdir}/operations/puppet",
-        branch    => 'production',
-        origin    => 'https://gerrit.wikimedia.org/r/operations/puppet.git',
-        require   => File["${gitdir}/operations"],
+        directory          => "${gitdir}/operations/puppet",
+        branch             => 'production',
+        origin             => 'https://gerrit.wikimedia.org/r/operations/puppet.git',
+        recurse_submodules => true,
+        require            => File["${gitdir}/operations"],
     }
     git::clone { 'labs/private':
         directory => "${gitdir}/labs/private",
