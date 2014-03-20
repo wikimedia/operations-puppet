@@ -17,6 +17,7 @@ class base::standard-packages {
         'acct',
         'git-core',
         'ack-grep',
+        'tree',
     ]
 
     if $::lsbdistid == 'Ubuntu' {
