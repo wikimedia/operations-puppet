@@ -426,3 +426,7 @@ class misc::deployment::scap_primary {
 			hosts_allow => ['10.0.0.0/16', '10.64.0.0/22', '10.64.16.0/24', '208.80.152.0/22', '10.64.32.0/22', '10.64.48.0/22'];
     }
 }
+
+class misc::deployment::scap_proxy {
+	class { 'generic::rsyncd': config => "scap" }
+}
