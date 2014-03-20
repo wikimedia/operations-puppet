@@ -1977,6 +1977,11 @@ node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
     include role::applicationserver::appserver
 }
 
+# mw1010 and mw1070 are scap proxies
+node /^mw10(10|70)\.eqiad\.wmnet$/ {
+    include misc::deployment::scap_proxy
+}
+
 node 'neon.wikimedia.org' {
     $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org'
 

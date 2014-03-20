@@ -21,6 +21,16 @@ class network::constants {
             '10.0.0.0/8',
             ]
 
+    # Networks hosting MediaWiki application servers
+    $mw_appserver_networks = [
+            '10.0.0.0/16',        # private-pmtpa
+            '10.64.0.0/22',       # private1-a-eqiad
+            '10.64.16.0/22',      # private1-b-eqiad
+            '10.64.32.0/22',      # private1-c-eqiad
+            '10.64.48.0/22',      # private1-d-eqiad
+            '208.80.152.0/22',    # external
+            ]
+
     $special_hosts = {
         'production' => {
             'bastion_hosts' => [
