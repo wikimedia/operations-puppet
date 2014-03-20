@@ -1913,9 +1913,14 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
+    if $::hostname == 'mw1010' {
+        include misc::deployment::scap_proxy
+    }
+
     class { 'role::applicationserver::jobrunner':
         run_jobs_enabled => true,
     }
+
 }
 
 # mw1017-1113 are apaches (precise)
@@ -1923,6 +1928,11 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     if $::hostname =~ /^mw101[78]$/ {
         $ganglia_aggregator = true
     }
+
+    if $::hostname == 'mw1070' {
+        include misc::deployment::scap_proxy
+    }
+
 
     # mw1017 is test.wikipedia.org (precise)
     if $::hostname == 'mw1017' {
