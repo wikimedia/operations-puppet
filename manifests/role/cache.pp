@@ -1009,12 +1009,21 @@ class role::cache {
             }
         }
 
+        # Zero mobile related configuration.
+        #
+        # /zero/ files are only reacheable from production (ie not from labs)
+        # /zero-beta/ are publicly available but do not contain actual carrier
+        # data.
+        $zero_realm = $::realm ? {
+            production => 'zero',
+            labs       => 'zero-beta',
+        }
         varnish::netmapper_update {
-            'zero.json': url => 'http://noc.wikimedia.org/~bblack/zero/zero.json';
+            'zero.json': url => "http://noc.wikimedia.org/~bblack/${zero_realm}/zero.json";
         }
 
         varnish::netmapper_update {
-            'proxies.json': url => 'http://noc.wikimedia.org/~bblack/zero/proxies.json';
+            'proxies.json': url => "http://noc.wikimedia.org/~bblack/${zero_realm}/proxies.json";
         }
 
         varnish::instance { "mobile-backend":
