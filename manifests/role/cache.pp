@@ -1009,12 +1009,16 @@ class role::cache {
             }
         }
 
-        varnish::netmapper_update {
-            'zero.json': url => 'http://noc.wikimedia.org/~bblack/zero/zero.json';
-        }
+        # Zero mobile related configuration.
+        # Cant be published on labs.
+        if $::realm == 'production' {
+            varnish::netmapper_update {
+                'zero.json': url => 'http://noc.wikimedia.org/~bblack/zero/zero.json';
+            }
 
-        varnish::netmapper_update {
-            'proxies.json': url => 'http://noc.wikimedia.org/~bblack/zero/proxies.json';
+            varnish::netmapper_update {
+                'proxies.json': url => 'http://noc.wikimedia.org/~bblack/zero/proxies.json';
+            }
         }
 
         varnish::instance { "mobile-backend":
