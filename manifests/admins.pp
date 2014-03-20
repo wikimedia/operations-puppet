@@ -3817,10 +3817,10 @@ class admins::parsoid {
     # RT 6961
     sudo_group { 'wikidev':
         privileges => [
-                        'ALL = (root) NOPASSWD: /sbin/service parsoid stop',
-                        'ALL = (root) NOPASSWD: /sbin/service parsoid start',
-                        'ALL = (root) NOPASSWD: /sbin/service parsoid restart',
-                        'ALL = (root) NOPASSWD: /sbin/service parsoid reload',
+                        'ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
+                        'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
+                        'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
+                        'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload',
                       ],
     }
 
