@@ -17,6 +17,15 @@ sub vcl_recv {
 	} else {
 		error 403 "Requested target domain not allowed.";
 	}
+
+	/* Workaround Flash's stupidity where Range is an unoverridable
+	 * blacklist. Also needs an appropriate crossdomain.xml.
+	 * Added for Brion's OGV player experiments --2014-03-20
+	 */
+	if (req.http.X-Range) {
+		set req.http.Range = req.http.X-Range;
+		unset req.http.X-Range;
+	}
 }
 
 sub vcl_hit {
