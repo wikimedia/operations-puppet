@@ -2596,8 +2596,9 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     include accounts::bd808
     include accounts::manybubbles
     include accounts::demon
+    include accounts::krinkle
 
-    sudo_user { ['aaron', 'bd808', 'manybubbles', 'demon']:  # RT 6366, 6896
+    sudo_user { ['aaron', 'bd808', 'manybubbles', 'demon', 'krinkle']:  # RT 6366, 6896, 7089
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
