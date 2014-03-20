@@ -329,11 +329,6 @@ host chromium {
 	fixed-address chromium.wikimedia.org;
 }
 
-host cobalt {
-	hardware ethernet 78:2b:cb:08:a1:68;
-	fixed-address cobalt.wikimedia.org;
-}
-
 host copper {
 	hardware ethernet 78:2b:cb:09:0e:9d;
 	fixed-address copper.eqiad.wmnet;
@@ -4153,6 +4148,11 @@ host terbium {
 host tin {
 	hardware ethernet 90:b1:1c:00:a4:1d;
 	fixed-address tin.eqiad.wmnet;
+}
+
+host titanium {
+	hardware ethernet 78:2b:cb:08:aa:57;
+	fixed-address titanium.wikimedia.org;
 }
 
 host tmh1001 {
