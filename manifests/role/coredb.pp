@@ -239,7 +239,10 @@ class role::coredb::researchdb( $shard="s1", $innodb_log_file_size = "2000M", $m
 		long_timeouts => true,
 		enable_unsafe_locks => true,
 		large_slave_trans_retries => true,
-		innodb_file_per_table => $innodb_file_per_table
+		innodb_file_per_table => $innodb_file_per_table,
+		# send researchdb icinga alerts to admins
+		# and analytics icinga contact groups.
+		contact_group => 'admins,analytics',
 	}
 }
 
@@ -269,7 +272,8 @@ class role::coredb::common(
 	$enable_unsafe_locks = false,
 	$large_slave_trans_retries = false,
 	$slow_query_digest = true,
-	$heartbeat_enabled = true
+	$heartbeat_enabled = true,
+	$contact_group = 'admins',
 	) inherits role::coredb::config {
 
 	$cluster = $logical_cluster
@@ -303,7 +307,10 @@ class role::coredb::common(
 			heartbeat_enabled => $heartbeat_enabled,
 		}
 
-		class { "mysql_wmf::coredb::monitoring": crit => true }
+		class { "mysql_wmf::coredb::monitoring":
+			crit          => true,
+			contact_group => $contact_group,
+		}
 
 	}
 	else {
