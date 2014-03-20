@@ -273,6 +273,7 @@ class misc::statistics::sites::stats {
 
     $site_name = "stats.wikimedia.org"
     $docroot = "/srv/$site_name/htdocs"
+    $cgi_bin = "/srv/$site_name/cgi-bin"
     $geowiki_private_directory = "$docroot/geowiki-private"
     $geowiki_private_htpasswd_file = "/etc/apache2/htpasswd.stats-geowiki"
 
