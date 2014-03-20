@@ -1079,6 +1079,18 @@ node 'gallium.wikimedia.org' {
         options => 'noatime,nodiratime,nobarrier,logbufs=8',
         require => File['/srv/ssd'],
     }
+
+    # Override the jshintrc files provided by role::ci::website
+    # Bug 52456
+    file { '/srv/ssd/jenkins-slave/.jshintrc':
+        ensure  => present,
+        content => "{}\n",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        after   => Class['role::ci::slave'],
+    }
+
 }
 
 node 'helium.eqiad.wmnet' {
