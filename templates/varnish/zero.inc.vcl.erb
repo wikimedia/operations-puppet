@@ -208,6 +208,18 @@ sub tag_carrier {
 				set req.http.X-ZeroTLS = "1";
 				set req.http.X-CS = req.http.X-CS2;
 			}
+		} else if (req.http.X-CS2 == "515-03") {
+			if (req.http.X-Forwarded-By == "Opera") {
+				set req.http.X-CS = "900-00";
+			} else if (!req.http.X-Forwarded-By && req.http.User-Agent ~ "PowerApp") {
+				set req.http.X-CS = "900-01";
+			} else if (req.http.X-Forwarded-By && req.http.User-Agent ~ "PowerApp") {
+				set req.http.X-CS = "900-02";
+			} else if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+				set.req.http.X-CS = req.http.X-CS2;
+			} else {
+				set req.http.X-CS = "900-03;
+			}
 		} else if (req.http.X-CS2 == "TEST") {
 			// Test carrier allows all proxies and SSL
 			set req.http.X-ZeroTLS = "1";
