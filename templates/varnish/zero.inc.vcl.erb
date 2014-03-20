@@ -225,6 +225,18 @@ sub tag_carrier {
 		}
 		unset req.http.X-CS2;
 	} // end of if(X-CS2)
+
+	/* Assemble X-Analytics header */
+	if (req.http.X-CS) {
+		set req.http.X-Analytics = "zero=" + req.http.X-CS;
+		if (req.http.X-Forwarded-Proto) {
+			set req.http.X-Analytics = req.http.X-Analytics + ";https=1";
+		}
+		if (req.http.X-Forwarded-By) {
+			set req.http.X-Analytics = req.http.X-Analytics + ";proxy=" + req.http.X-Forwarded-By;
+		}
+	}
+
 	unset req.http.X-Forwarded-By;
 }
 
@@ -240,5 +252,11 @@ sub vcl_deliver {
 		// We must use header.remove()/append() here because there can be multiple unrelated Set-Cookie headers
 		header.remove(resp.http.Set-Cookie,"ZeroOpts=");
 		header.append(resp.http.Set-Cookie,"ZeroOpts=tls");
+	}
+
+	if (resp.http.X-Analytics) {
+		# do nothing, MediaWiki has handled X-Analytics
+	} else if (req.http.X-Analytics) {
+		set resp.http.X-Analytics = req.http.X-Analytics;
 	}
 }

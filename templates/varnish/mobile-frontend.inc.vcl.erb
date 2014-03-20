@@ -31,11 +31,6 @@ sub vcl_recv {
 		}
 	}
 
-	/* Assemble X-Analytics header */
-	if (req.http.X-CS) {
-		set req.http.X-Analytics = "zero=" + req.http.X-CS;
-	}
-
 	/* Rewrite m.mediawiki.org to mediawiki.org etc */
 	if (req.http.host == "m.mediawiki.org") {
 		set req.http.host = "www.mediawiki.org";
@@ -150,12 +145,6 @@ sub vcl_deliver {
 		set resp.http.X-CS = req.http.X-CS;
 	} else {
 		unset resp.http.X-CS;
-	}
-
-	if (resp.http.X-Analytics) {
-		# do nothing, MediaWiki has handled X-Analytics
-	} else if (req.http.X-Analytics) {
-		set resp.http.X-Analytics = req.http.X-Analytics;
 	}
 
 	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
