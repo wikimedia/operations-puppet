@@ -329,6 +329,11 @@ host chromium {
 	fixed-address chromium.wikimedia.org;
 }
 
+host cobalt {
+	hardware ethernet 78:2b:cb:08:a1:68;
+	fixed-address cobalt.wikimedia.org;
+}
+
 host copper {
 	hardware ethernet 78:2b:cb:09:0e:9d;
 	fixed-address copper.eqiad.wmnet;
