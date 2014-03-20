@@ -349,6 +349,10 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     }
 }
 
+node 'cobalt.wikimedia.org' {
+    include standard
+}
+
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
     if $::hostname =~ /^cp103[78]$/ {
         $ganglia_aggregator = true
