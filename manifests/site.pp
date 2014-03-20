@@ -1977,8 +1977,8 @@ node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
     include role::applicationserver::appserver
 }
 
-# mw1010 and mw1070 are scap proxies
-node /^mw10(10|70)\.eqiad\.wmnet$/ {
+# mw1010, mw1070, mw1161, mw1201 are scap proxies
+node /^mw(1010|1070|1161|1201)\.eqiad\.wmnet$/ {
     include misc::deployment::scap_proxy
 }
 
