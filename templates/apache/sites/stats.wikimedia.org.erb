@@ -16,6 +16,9 @@ common_config = <<END
 		allow from all
 	</Directory>
 
+	# Allow CGI scripts for this site
+	ScriptAlias /srv/stats.wikimedia.org/cgi-bin
+
 	ErrorLog /var/log/apache2/error.log
 	# Possible values include: debug, info, notice, warn, error, crit,
 	# alert, emerg.
@@ -54,6 +57,7 @@ common_config = <<END
 		AuthUserFile /etc/apache2/htpasswd.stats
 		Require user pediapress
 	</Directory>
+
 END
 -%>
 
