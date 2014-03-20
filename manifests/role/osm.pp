@@ -51,6 +51,17 @@ class role::osm::master {
             database => 'replication',
         }
     }
+
+    # OSM user
+    postgresql::user { "osm@labs":
+            ensure   => 'present',
+            user     => 'osm',
+            password => $passwords::osm::osm_password,
+            cidr     => "10.68.16.0/21",
+            type     => 'host',
+            method   => 'md5',
+            database => 'gis',
+    }
 }
 
 class role::osm::slave {
