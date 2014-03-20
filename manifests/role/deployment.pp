@@ -179,6 +179,7 @@ class role::deployment::deployment_servers::common {
 
 class role::deployment::deployment_servers::production {
   include role::deployment::deployment_servers::common
+  include network::constants
 
   apache::vhost { "tin.eqiad.wmnet":
     priority		=> 10,
@@ -187,7 +188,7 @@ class role::deployment::deployment_servers::production {
     docroot		=> "/srv/deployment",
     docroot_owner	=> "trebuchet",
     docroot_group	=> "wikidev",
-    docroot_dir_allows  => ["10.0.0.0/16","10.64.0.0/16","208.80.152.0/22"],
+    docroot_dir_allows  => $::network::constants::mw_appserver_networks,
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
   }
