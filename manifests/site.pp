@@ -1972,11 +1972,19 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 # mw1161-1188 are apaches (precise)
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 
+    if $::hostname == 'mw1161' {
+        include misc::deployment::scap_proxy
+    }
+
     include role::applicationserver::appserver
 }
 
 # mw1189-1208 are api apaches (precise)
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
+
+    if $::hostname == 'mw1201' {
+        include misc::deployment::scap_proxy
+    }
 
     include role::applicationserver::appserver::api
 }
