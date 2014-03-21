@@ -8,6 +8,23 @@ class contint::packages::labs {
 
     include contint::packages
 
+    # Let us create packages from Jenkins jobs
+    include misc::package-builder
+
+    # Shell script wrappers to ease package building
+    # Package generated via the mirror operations/debs/jenkins-debian-glue.git
+    packages { [
+        'jenkins-debian-glue',
+        'jenkins-debian-glue-buildenv',
+        'jenkins-debian-glue-buildenv-git',
+        'jenkins-debian-glue-buildenv-lintian',
+        'jenkins-debian-glue-buildenv-piuparts',
+        'jenkins-debian-glue-buildenv-taptools',
+        ]:
+            ensure  => latest,
+            require => Class['misc::package-builder'],
+    }
+
     package { [
         'npm',
         'python-pip',
