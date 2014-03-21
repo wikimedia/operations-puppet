@@ -5,6 +5,7 @@
 
 BINDIR=/usr/local/bin
 MWMULTIDIR=$MW_COMMON_SOURCE/multiversion
+# The configuration in CommonSettings.php should match GITDIR and GITREPOS
 GITDIR=/var/lib/l10nupdate/mediawiki
 GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
 GITREPOS="core extensions"
@@ -64,12 +65,8 @@ do
 	fi
 
 	echo "Running updates for $mwVerNum (on $mwDbName)"
-	# --svnurl below is a misnomer, obviously, but LU will take it just fine
-	# Eventually LU should also be changed to be able to use git, for 3rd party usage
 	if /usr/local/bin/mwscript extensions/LocalisationUpdate/update.php \
 		  --wiki="$mwDbName" \
-		  --svnurl=$GITDIR \
-		  --all \
 		  --quiet
 	then
 		echo "Rebuilding localization cache at `date --rfc-3339=seconds`"
