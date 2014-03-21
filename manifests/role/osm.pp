@@ -3,7 +3,7 @@
 class role::osm::common {
     include standard
 
-    file { '/etc/postgresql/9.1/main':
+    file { '/etc/postgresql/9.1/main/tuning.conf':
         ensure => 'present',
         owner   => 'root',
         group   => 'root',
