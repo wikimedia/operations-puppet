@@ -3703,6 +3703,7 @@ class admins::mortals {
     include accounts::jgonera # RT 6716
 }
 
+# Users having access to machines with private data (like terbium)
 class admins::restricted {
     $gid = '500'  # 'wikidev' by default
     include groups::wikidev
@@ -3738,9 +3739,12 @@ class admins::restricted {
     include accounts::sahar # RT 6767
     include accounts::santhosh # RT 6760
     include accounts::aaharoni # RT 6760
+    include accounts::legoktm # RT 6895
+}
+
+class admins::release {
     include accounts::mglaser # RT 6861->6929
     include accounts::mah # RT 6861->6930
-    include accounts::legoktm # RT 6895
 }
 
 class admins::labs {
