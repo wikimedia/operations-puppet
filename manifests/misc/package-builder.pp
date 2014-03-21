@@ -10,6 +10,11 @@
 #
 # Installs pbuilder/cowbuilder images
 #
+# You should really use one of the two role class instead:
+#
+# - role::package::builder
+# - role::package::builder::labs
+#
 # === Parameters:
 #
 # [*pbuilder_root]
@@ -19,7 +24,7 @@ class misc::package-builder(
     $pbuilder_root = '/var/cache/pbuilder'
 ){
 
-    system::role { 'misc::package-builder': description => 'Debian package builder' }
+    system::role { 'misc::package-builder': description => 'Debian package builder (deprecated use role::package::builder)' }
 
     class packages {
         package { [
