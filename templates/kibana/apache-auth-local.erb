@@ -1,0 +1,5 @@
+    AuthName "<%= @auth_realm %>"
+    AuthType Basic
+    AuthUserFile <%= @auth_file %>
+    AuthGroupFile /dev/null
+    Require valid-user
