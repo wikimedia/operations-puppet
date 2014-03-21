@@ -1,0 +1,8 @@
+[client]
+user     = root
+password = <%= @password %>
+socket   = /tmp/mysql.sock
+
+[mysql]
+prompt = 'MariaDB <%= @prompt %> \h \d > '
+pager  = less -niSFX
