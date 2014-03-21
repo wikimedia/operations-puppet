@@ -92,7 +92,9 @@ class misc::package-builder {
             $realdist = values_at(split($title, '-'),1)
         }
 
-        notify { "Creating image ${title} (distribution: ${realdist}, pbuilder: ${realpbuilder})": }
+        notify { "creating-image-${title}":
+            message => "Creating image ${title} (distribution: ${realdist}, pbuilder: ${realpbuilder})"
+        }
 
         require packages
 
