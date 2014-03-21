@@ -1,0 +1,8 @@
+Code-Review+1: Aude <aude.wiki@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-by: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-at: Fri, 21 Mar 2014 11:51:38 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/119870
+Project: operations/puppet
+Branch: refs/heads/production
