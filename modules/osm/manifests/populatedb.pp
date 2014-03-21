@@ -21,8 +21,9 @@ define osm::populatedb(
     ) {
 
     # Check if our db tables exist
-    $tables_exist = "/usr/bin/psql --tuples-only -c \'SELECT table_catalog,table_name FROM information_schema.tables;\' | /bin/grep \'^ ${name}\' | /bin/grep \'planet_osm\'"
+    $tables_exist = "/usr/bin/psql -d ${name} --tuples-only -c \'SELECT table_name FROM information_schema.tables;\' | /bin/grep \'planet_osm\'"
 
+    # Note. This is not needed anymore with osm2pgsql 0.81
     exec { "load_900913-${name}":
         command => "/usr/bin/psql -d ${name} -f /usr/share/osm2pgsql/osm2pgsql/900913.sql",
         user    => 'postgres',
