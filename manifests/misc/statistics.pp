@@ -129,7 +129,7 @@ class misc::statistics::packages::java {
     }
 }
 
-# Mounts /data from dataset2 server.
+# Mounts /data from dataset1001 server.
 # xmldumps and other misc files needed
 # for generating statistics are here.
 class misc::statistics::dataset_mount {
@@ -139,9 +139,9 @@ class misc::statistics::dataset_mount {
     file { "/mnt/data": ensure => directory }
 
     mount { "/mnt/data":
-        device => "208.80.152.185:/data",
+        device => "208.80.154.11:/data",
         fstype => "nfs",
-        options => "ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.152.185",
+        options => "ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.154.11",
         atboot => true,
         require => [File['/mnt/data'], Class["nfs::common"]],
         ensure => mounted,
