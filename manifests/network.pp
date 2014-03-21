@@ -122,6 +122,9 @@ class network::constants {
                         'ipv4' => '10.64.20.0/24',
                         'ipv6' => '2620:0:861:118::/64'
                     },
+                    'labs-hosts1-d-eqiad' => {
+                        'ipv4' => '10.64.52.0/24',
+                    },
                     'labs-support1-c-eqiad' => {
                         'ipv4' => '10.64.37.0/24',
                         'ipv6' => '2620:0:861:119::/64'
@@ -137,6 +140,10 @@ class network::constants {
                     'analytics1-c-eqiad' => {
                         'ipv4' => '10.64.36.0/24',
                         'ipv6' => '2620:0:861:106::/64'
+                    },
+                    'analytics1-d-eqiad' => {
+                        'ipv4' => '10.64.53.0/24',
+                        'ipv6' => '2620:0:861:108::/64'
                     }
                 },
             },
