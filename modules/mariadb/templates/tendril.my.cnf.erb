@@ -1,0 +1,70 @@
+# tendril.wikimedia.org -- write heavy!
+
+# Please use separate .cnf templates for each type of server.
+# A maze of variables and if/then/else/end just confuses things,
+# plus separate templates are easy to diff.
+
+<%
+    ia = ipaddress.split('.');
+    server_id = ia[0] + ia[2] + ia[3];
+
+    ram = memorysize.split[0];
+    ram = Float(ram) * 0.75;
+    ram = ram.round;
+    ram = String(ram) + "G";
+%>
+
+[client]
+port   = 3306
+socket = /tmp/mysql.sock
+
+[mysqld]
+
+#log_bin
+#log_slave_updates
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+user      = mysql
+socket    = /tmp/mysql.sock
+port      = 3306
+datadir   = /a/sqldata/
+tmpdir    = /a/tmp/
+server_id = <%= server_id %>
+read_only = 0
+
+max_connections    = 250
+max_allowed_packet = 16M
+sync_binlog        = 0
+binlog_format      = statement
+expire_logs_days   = 30
+connect_timeout    = 3
+max_connect_errors = 1000000000
+query_cache_size   = 0
+query_cache_type   = 0
+event_scheduler    = 1
+
+table_open_cache       = 5000
+table_definition_cache = 5000
+
+transaction-isolation          = READ-COMMITTED
+innodb_file_per_table          = 1
+innodb_buffer_pool_size        = <%= ram %>
+innodb_log_file_size           = 5G
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method            = O_DIRECT
+innodb_thread_concurrency      = 0
+innodb_io_capacity             = 1000
+innodb_read_io_threads         = 16
+innodb_write_io_threads        = 8
+innodb_old_blocks_pct          = 80
+innodb_old_blocks_time         = 1000
+aria_pagecache_buffer_size     = 1G
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/
