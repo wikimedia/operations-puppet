@@ -3775,11 +3775,6 @@ host searchidx1001 {
 	fixed-address searchidx1001.eqiad.wmnet;
 }
 
-host searchidx2 {
-	hardware ethernet 14:fe:b5:d2:45:59;
-	fixed-address searchidx2.pmtpa.wmnet;
-}
-
 host silver {
 	hardware ethernet 18:03:73:f1:58:67;
 	fixed-address silver.wikimedia.org;

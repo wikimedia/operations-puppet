@@ -2229,11 +2229,6 @@ node /^searchidx100[0-2]\.eqiad\.wmnet/ {
     include role::lucene::indexer
 }
 
-node 'searchidx2.pmtpa.wmnet' {
-
-    include role::lucene::indexer
-}
-
 node 'silver.wikimedia.org' {
     include standard
     include groups::wikidev
