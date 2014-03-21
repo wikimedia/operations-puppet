@@ -6,7 +6,18 @@
 ########################################################################
 
 
-class misc::package-builder {
+# == Class: misck::package-builder
+#
+# Installs pbuilder/cowbuilder images
+#
+# === Parameters:
+#
+# [*pbuilder_root]
+#  Base path to create images in. Default: '/var/cache/pbuilder'
+#
+class misc::package-builder(
+    $pbuilder_root = '/var/cache/pbuilder'
+){
 
     system::role { 'misc::package-builder': description => 'Debian package builder' }
 
@@ -116,8 +127,6 @@ class misc::package-builder {
             }
         }
 
-        $pbuilder_root = '/var/cache/pbuilder'
-
         $othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe'"
         $components = "--components 'main universe'"
         $image_file = "${pbuilder_root}/${file_prefix}${realdist}.${file_ext}"
@@ -186,9 +195,9 @@ class misc::package-builder {
             }
         }
 
-        file { "/var/cache/pbuilder/base.${file_ext}":
+        file { "${pbuilder_root}/base.${file_ext}":
             ensure  => link,
-            target  => "/var/cache/pbuilder/${file_prefix}${defaultdist}.${file_ext}",
+            target  => "${pbuilder_root}/${file_prefix}${defaultdist}.${file_ext}",
             require => Image["${title}-${defaultdist}"],
         }
     }
