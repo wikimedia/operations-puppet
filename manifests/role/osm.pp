@@ -68,7 +68,7 @@ class role::osm::master {
             password => $passwords::osm::osm_password,
             cidr     => "10.68.16.0/21",
             type     => 'host',
-            method   => 'md5',
+            method   => 'trust',
             database => 'gis',
     }
 }
