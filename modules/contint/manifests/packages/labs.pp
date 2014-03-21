@@ -13,7 +13,7 @@ class contint::packages::labs {
 
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
-    packages { [
+    package { [
         'jenkins-debian-glue',
         'jenkins-debian-glue-buildenv',
         'jenkins-debian-glue-buildenv-git',
