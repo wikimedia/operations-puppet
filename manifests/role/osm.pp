@@ -10,6 +10,15 @@ class role::osm::common {
         mode    => '0444',
         source  => 'puppet:///files/osm/tuning.conf',
     }
+
+    sysctl::parameters { 'postgres_shmem':
+        values => {
+            # That is derived after tuning postgresql, deriving automatically is
+            # not the safest idea yet.
+            'kernel.shmmax' => 8388608000,
+        },
+        priority => 50,
+    }
 }
 
 class role::osm::master {
