@@ -797,13 +797,8 @@ node 'db1014.eqiad.wmnet' {
     include udpprofile::collector
 }
 
-# ad-hoc mariadb test box
-node /^db10(34|44)\.eqiad\.wmnet/ {
-    $cluster = 'misc'
-    include standard
-    include mysql_wmf
-    include mysql_wmf::datadirs
-    include mysql_wmf::mysqluser
+node 'db1044.eqiad.wmnet' {
+    include role::mariadb::tendril
 }
 
 node 'dobson.wikimedia.org' {
