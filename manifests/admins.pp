@@ -3889,6 +3889,7 @@ class admins::mortals {
     include accounts::jgonera # RT 6716
 }
 
+# access to terbium, fluorine (private data) and bastion hosts
 class admins::restricted {
     $gid = '500'  # 'wikidev' by default
     include groups::wikidev
@@ -3925,9 +3926,8 @@ class admins::restricted {
     include accounts::santhosh # RT 6760
     include accounts::aaharoni # renamed to amire80
     include accounts::amire80 # RT 6760
-    include accounts::mglaser # RT 6861->6929
-    include accounts::mah # RT 6861->6930
     include accounts::legoktm # RT 6895
+
 }
 
 # access to bastion hosts (but not more)
@@ -3946,7 +3946,8 @@ class admins::bastion {
     include accounts::haithams
     include accounts::mhurd  # RT 7345
     include accounts::dbrant # RT 7399
-
+    include accounts::mglaser # RT 6861->6929
+    include accounts::mah # RT 6861->6930
 }
 
 class admins::labs {
