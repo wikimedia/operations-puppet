@@ -32,7 +32,7 @@ class install-server::caching-proxy {
         source  => "puppet:///modules/install-server/${package_name}-apt-proxy.conf",
     }
 
-    file { '/etc/logrotate.d/squid':
+    file { "/etc/logrotate.d/${package_name}":
         ensure  => present,
         require => Package[$package_name],
         mode    => '0444',

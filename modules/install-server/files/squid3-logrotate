@@ -2,7 +2,7 @@
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
 #
-#	Logrotate fragment for squid.
+#	Logrotate fragment for squid3.
 #
 /var/log/squid3/*.log {
 	daily
@@ -16,6 +16,6 @@
 		test ! -x /usr/sbin/sarg-reports || /usr/sbin/sarg-reports
 	endscript
 	postrotate
-		test ! -e /var/run/squid.pid || /usr/sbin/squid3 -k rotate
+		test ! -e /var/run/squid3.pid || /usr/sbin/squid3 -k rotate
 	endscript
 }
