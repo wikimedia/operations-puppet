@@ -16,7 +16,7 @@ if [ ! -f /data/project/.system/tips ]; then
 fi
 
 # Don't display tips for root and tool accounts.
-if [ $UID -eq 0 ] || [ "${USER:0:6}" = "local-" ]; then
+if [ $UID -eq 0 ] || [ "${USER:0:6}" = "tools." ]; then
     return
 fi
 
