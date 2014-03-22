@@ -26,7 +26,7 @@ if [ "$SHLVL" -gt 1 ]; then
 fi
 
 # If user is sysadmin print the sysadmin motd instead.
-if groups | fgrep -qw local-admin; then
+if groups | fgrep -qw tools.admin; then
     if [ -f /etc/motd.sysadmin ]; then
         echo
         echo

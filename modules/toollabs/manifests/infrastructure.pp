@@ -26,7 +26,7 @@ class toollabs::infrastructure {
     # service group and root.
 
     File <| title == '/etc/security/access.conf' |> {
-        content => "-:ALL EXCEPT (local-admin) root:ALL\n",
+        content => "-:ALL EXCEPT (tools.admin) root:ALL\n",
     }
 }
 
