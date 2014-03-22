@@ -81,15 +81,12 @@ class RouteRequestHandler(SocketServer.BaseRequestHandler):
             return
 
         # Only tool accounts are allowed to ask for routes
-        # Assume that *only* tool accounts will have local- prefix
-        # Since user accounts need to be approved, and I doubt anything with local-
-        # will make it.
-        if not user.startswith('local-'):
+        if not user.startswith('tools.'):
             self.request.send("This service available only to tool accounts")
             self.request.close()
             return
 
-        toolname = user.replace("local-", "")
+        toolname = user.replace("tools.", "")
 
         redis_key = "prefix:%s" % toolname
 
