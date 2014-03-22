@@ -109,7 +109,7 @@ tool_forward_general:
   user = <%= instanceproject %>.$local_part
   group = <%= instanceproject %>.$local_part
   router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
-  file = <%= instanceproject %>.$local_part:$home/.forward
+  file = $home/.forward
   no_expn
   check_ancestor
   modemask = 002
