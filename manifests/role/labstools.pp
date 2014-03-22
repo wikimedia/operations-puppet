@@ -74,6 +74,13 @@ class role::labs::tools {
         }
     }
 
+    class toolwatcher inherits role::labs::tools::config {
+        system::role { 'role::labs::tools::toolwatcher':
+            description => 'Tool Labs directory structure creator for new tools',
+        }
+        include toollabs::toolwatcher
+    }
+
     ##
     ## NOTE: Those roles are transitional, and should be removed
     ## from Wikitech entirely in favor of role::labs::tools::compute
