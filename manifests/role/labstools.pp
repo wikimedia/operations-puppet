@@ -83,5 +83,10 @@ class role::labs::tools {
     }
   }
 
+  class toolwatcher inherits role::labs::tools::config {
+    system::role { "role::labs::tools::toolwatcher": description => "Server that runs toolwatcher" }
+    include toollabs::toolwatcher
+  }
+
 } # class role::labs::tools
 
