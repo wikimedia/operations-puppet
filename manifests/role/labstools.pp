@@ -75,11 +75,6 @@ class role::labs::tools {
         }
     }
 
-    class syslog inherits role::labs::tools::config {
-        system::role { 'role::labs::tools::syslog': description => 'Central logging server for tools and services' }
-        class { 'toollabs::syslog': }
-    }
-
     class redis inherits role::labs::tools::config {
         system::role { 'role::labs::tools::redis': description => 'Server that hosts shared Redis instance' }
         class { 'toollabs::redis':
