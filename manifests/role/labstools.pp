@@ -46,13 +46,6 @@ class role::labs::tools {
     }
   }
 
-  class webserver inherits role::labs::tools::config {
-    system::role { "role::labs::tools::webserver": description => "Tool Labs webserver" }
-    class { 'toollabs::webserver':
-      gridmaster => $grid_master,
-    }
-  }
-
   class webproxy inherits role::labs::tools::config {
     system::role { "role::labs::tools::webproxy": description => "Tool Labs web proxy" }
     include toollabs::webproxy
