@@ -63,26 +63,6 @@ host sanger {
 	fixed-address sanger.wikimedia.org;
 }
 
-host snapshot1 {
-	hardware ethernet 00:21:9b:8e:95:50;
-	fixed-address snapshot1.pmtpa.wmnet;
-}
-
-host snapshot2 {
-	hardware ethernet 00:21:9b:8e:93:a2;
-	fixed-address snapshot2.pmtpa.wmnet;
-}
-
-host snapshot3 {
-	hardware ethernet 00:21:9b:8e:95:0a;
-	fixed-address snapshot3.pmtpa.wmnet;
-}
-
-host snapshot4 {
-	hardware ethernet f0:4d:a2:40:b5:72;
-	fixed-address snapshot4.pmtpa.wmnet;
-}
-
 host srv193 {
 	hardware ethernet 00:21:9B:8B:D9:7A;
 	fixed-address srv193.pmtpa.wmnet;
