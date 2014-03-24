@@ -432,7 +432,7 @@ class ganglia::web {
 
     if $::realm == "labs" {
         $ganglia_servername = "ganglia.wmflabs.org"
-        $ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
+        $ganglia_serveralias = "aggregator1.eqiad.wmflabs"
         $ganglia_webdir = "/usr/share/ganglia-webfrontend"
         $ganglia_confdir = "/var/lib/ganglia/conf"
 
