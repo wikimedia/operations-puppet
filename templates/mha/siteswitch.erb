@@ -2,7 +2,7 @@
 user=root
 password=<%= mysql_root_pass %>
 repl_user=repl
-repl_password=<%= mysql_repl_pass %>
+repl_password=<%= scope.lookupvar('mha::manager inherits role::coredb::config::mysql_repl_pass') %>
 ssh_user=mysql
 ssh_options="-i /home/mysql/.ssh/mysql.key"
 remote_workdir=/a/tmp
