@@ -1749,10 +1749,6 @@ node /mobile100[1-4]\.wikimedia\.org/ {
     include standard-noexim
 }
 
-node 'ms5.pmtpa.wmnet' {
-    include standard
-}
-
 node 'ms6.esams.wikimedia.org' {
     interface::aggregate { 'bond0':
         orig_interface => 'eth0',

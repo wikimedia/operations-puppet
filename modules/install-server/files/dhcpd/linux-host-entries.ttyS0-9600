@@ -79,18 +79,8 @@ host db40 {
 	fixed-address db40.pmtpa.wmnet;
 }
 
-host ms5 {
-	hardware ethernet 0:14:4f:f2:9c:54;
-	fixed-address ms5.pmtpa.wmnet;
-}
-
 host ms6 {
 	hardware ethernet 0:14:4f:f2:a3:10;
 	fixed-address ms6.esams.wikimedia.org;
-}
-
-host statistics1 {
-	hardware ethernet 00:14:4f:e6:b7:40;
-	fixed-address statistics1.wikimedia.org;
 }
 

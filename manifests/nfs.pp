@@ -203,14 +203,6 @@ class nfs::upload {
         ensure => 'directory',
     }
 
-    mount { '/mnt/thumbs':
-        ensure  => 'absent',
-        device  => 'ms5.pmtpa.wmnet:/export/thumbs',
-        fstype  => 'nfs',
-        name    => '/mnt/thumbs',
-        options => 'bg,soft,tcp,timeo=14,intr,nfsvers=3',
-        require => File['/mnt/thumbs'],
-    }
 }
 
 # Setup /mnt/{thumbs,upload6} as symlink to /data/project/<subdir>
