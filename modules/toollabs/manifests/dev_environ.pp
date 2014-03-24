@@ -68,7 +68,7 @@ class toollabs::dev_environ {
         'sqlite3',
         'subversion',
         'tig' ]:
-        ensure => present
+        ensure => latest,
     }
 
     # TODO: deploy scripts
