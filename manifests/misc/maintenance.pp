@@ -230,7 +230,6 @@ class misc::maintenance::wikidata( $enabled = false ) {
 
     # Run the dispatcher script every 5 minutes
     # This handles inserting jobs into client job queue, which then process the changes
-    # not enabled yet until wikidata gets switched to new build of Wikibase
     cron { 'wikibase-dispatch-changes3':
         # dispatches changes data to wikibase clients (e.g. wikipedia) to be processed as jobs there
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher3.log',
@@ -245,6 +244,15 @@ class misc::maintenance::wikidata( $enabled = false ) {
         user    => 'apache',
         minute  => '*/5',
         ensure  => $wbenabled,
+    }
+
+    cron { 'wikibase-rebuild-entityperpage':
+        command  => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildEntityPerPage.php --wiki wikidatawiki --force 2>&1 >> /var/log/wikidata/rebuildEpp.log',
+        user     => 'mwdeploy',
+        minute   => 30,
+        hour     => 3,
+        weekday  => 0,
+        ensure   => $wbenabled,
     }
 
     file {
