@@ -83,14 +83,6 @@ class toollabs::execnode($gridmaster) inherits toollabs {
         require => Exec['make-access'],
     }
 
-    file { '/usr/bin/sql':
-        ensure => file,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/toollabs/sql',
-    }
-
     # TODO: grid node setup
 }
 
