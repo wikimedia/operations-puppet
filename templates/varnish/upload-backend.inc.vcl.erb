@@ -87,6 +87,12 @@ sub vcl_recv {
 	call vcl_recv_purge;
 	call restrict_access;
 
+	if (req.url ~ "\?download$") {
+		/* Pretend that the parameter wasn't there for caching purposes */
+		set req.url = regsub(req.url, "?download", "");
+		set req.http.X-Content-Disposition = "attachment";
+	}
+
 	if ( req.http.host != "<%= cluster_options.fetch('upload_domain', 'upload.wikimedia.org') %>") {
 		error 403 "Requested target domain not allowed.";
 	}
@@ -165,4 +171,11 @@ sub vcl_deliver {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
 		remove resp.http.X-Content-Range;
 	}
+
+	if (req.http.X-Content-Disposition == "attachment") {
+		set resp.http.Content-Disposition = "attachment";
+	}
+
+	set resp.http.Access-Control-Allow-Origin = "*";
+	set resp.http.Access-Control-Expose-Headers = "Age, Content-Length, Date, X-Cache, X-Varnish";
 }
