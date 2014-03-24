@@ -1,6 +1,5 @@
 import os
 import re
-import subprocess
 import urllib
 import sys
 import getopt
@@ -168,7 +167,7 @@ class DumpList(object):
         # previous list, if any, before we get started. arbitrarily:
         # a change of more than 5% in size
         if (len(oldProjects) and
-                float(len(self.projects))/float(len(oldProjects)) < .95):
+                float(len(self.projects)) / float(len(oldProjects)) < .95):
             sys.stderr.write("Warning: New list of projects is much"
                              " smaller than previous run, %s"
                              " compared to %s\n" % (len(self.projects),
@@ -409,11 +408,11 @@ class DumpList(object):
                 fpath = self.getAbsOutDirPath(f)
                 if exists(fpath + ".tmp"):
                     if exists(fpath):
-                        os.rename(fpath, fpath+".old")
-                    os.rename(fpath+".tmp", fpath)
+                        os.rename(fpath, fpath + ".old")
+                    os.rename(fpath + ".tmp", fpath)
                 else:
-                    raise DumpListError("No output file %s created."
-                                        " Something is wrong." % fpath+".tmp")
+                    raise DumpListError("No output file %s created. "
+                                        "Something is wrong." % fpath + ".tmp")
 
                 if self.rsynclists:
                     self.convertFileNamesForRsyncInput(f)
