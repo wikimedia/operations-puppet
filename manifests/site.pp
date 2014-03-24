@@ -2421,17 +2421,6 @@ node 'stat1002.eqiad.wmnet' {
     include role::analytics::clients
 }
 
-# pmtpa to go away soon
-node /^snapshot[1-3]\.pmtpa\.wmnet/ {
-    $gid= '500'
-    include snapshot
-}
-node 'snapshot4.pmtpa.wmnet' {
-    $gid= '500'
-    include snapshot
-    include role::snapshot::cron::secondary
-}
-
 node 'snapshot1001.eqiad.wmnet' {
     $gid= '500'
     include snapshot
