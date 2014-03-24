@@ -251,6 +251,15 @@ class misc::maintenance::wikidata( $enabled = false ) {
         ensure  => $wbenabled,
     }
 
+    cron { 'wikibase-rebuild-entityperpage':
+        command  => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildEntityPerPage.php --wiki wikidatawiki --force 2>&1 >> /var/log/wikidata/rebuildEpp.log',
+        user     => 'mwdeploy',
+        minute   => 30,
+        hour     => 3,
+        monthday => 1,
+        ensure   => $wbenabled,
+    }
+
     cron { 'wikibase-dispatch-changes':
         ensure => 'absent',
     }
