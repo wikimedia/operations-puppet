@@ -90,7 +90,7 @@ class puppetmaster(
     include puppetmaster::gitclone
     include puppetmaster::gitpuppet
 
-    if $is_labs_puppet_master {
+    if $::is_labs_puppet_master {
         include puppetmaster::labs
     }
 }

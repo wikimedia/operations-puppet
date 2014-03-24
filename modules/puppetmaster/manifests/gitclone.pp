@@ -53,7 +53,7 @@ class puppetmaster::gitclone {
             mode    => '0750';
     }
 
-    if ! $is_labs_puppet_master {
+    if ! $::is_labs_puppet_master {
         # Set up private repo.
         # Note that puppet does not actually clone the repo -- puppetizing that
         # turns out to be a big, insecure mess.  On a new puppetmaster you will

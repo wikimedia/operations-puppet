@@ -17,7 +17,7 @@ class puppetmaster::geoip {
         environment    => $environment,
     }
 
-    if $is_labs_puppet_master {
+    if $::is_labs_puppet_master {
         # compatibility symlinks, so that users can use the stable paths
         # GeoIP.dat/GeoIPCity.dat between labs and production
         file { "$geoip_destdir/GeoIP.dat":
