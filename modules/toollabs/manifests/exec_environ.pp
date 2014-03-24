@@ -240,6 +240,7 @@ class toollabs::exec_environ {
         'p7zip',
         'phpunit',
         'poppler-utils',               # Bug #53869.
+        'postgresql-client-9.1',
         'pstoedit',                    # Bug 57000
         'pv',                          # Bug 57001
         'rrdtool',                     # Bug 57004
