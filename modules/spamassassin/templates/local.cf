@@ -23,10 +23,10 @@
 #   Set which networks or hosts are considered 'trusted' by your mail
 #   server (i.e. not spammers)
 #
-trusted_networks <%= scope.lookupvar('network::constants::all_networks').join(" ") %>
+trusted_networks <%= @trusted_networks.join(" ") %>
 
-<% if short_report_template == 'true' then -%>
-# short-format report template, starting with Yes/No, used for OTRS filters
+<% if @short_report_template == 'true' then -%>
+# short-format report template, starting with Yes/No.
 clear_report_template
 report _YESNO_, score=_SCORE_ | host: _HOSTNAME_ | scores: _TESTSSCORES(,)_ | autolearn=_AUTOLEARN_
 <% end -%>
@@ -38,17 +38,17 @@ lock_method flock
 
 #   Set the threshold at which a message is considered spam (default: 5.0)
 #
-required_score <%= required_score %>
+required_score <%= @required_score %>
 
 
 #   Use Bayesian classifier (default: 1)
 #
-use_bayes <%= use_bayes %>
+use_bayes <%= @use_bayes %>
 
 
 #   Bayesian classifier auto-learning (default: 1)
 #
-bayes_auto_learn <%= bayes_auto_learn %>
+bayes_auto_learn <%= @bayes_auto_learn %>
 
 
 #   Set headers which may provide inappropriate cues to the Bayesian
@@ -90,17 +90,6 @@ shortcircuit ALL_TRUSTED             on
 
 endif # Mail::SpamAssassin::Plugin::Shortcircuit
 
-<% if otrs_rule_scores == 'true' then -%>
-score RP_MATCHES_RCVD -0.500
-score RCVD_IN_RP_SAFE 2.000
-score RCVD_IN_RP_CERTIFIED 2.000
-score SPF_SOFTFAIL 2.000
-score SUSPICIOUS_RECIPS 2.000
-score DEAR_SOMETHING 1.500
-
-# temporary workaround for bayes_999 snafu
-body BAYES_99    eval:check_bayes('0.99', '0.999')
-body BAYES_999   eval:check_bayes('0.999', '1.00')
-score BAYES_99   0  0  3.8    3.5
-score BAYES_999  0  0  4.0    3.7
-<% end -%>
+<% @custom_scores.sort.each do |name, score| -%>
+score <%= name %> <%= score %>
+<%- end -%>

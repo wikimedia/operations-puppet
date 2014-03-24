@@ -2223,6 +2223,7 @@ node 'sodium.wikimedia.org' {
         required_score   => '4.0',
         use_bayes        => '0',
         bayes_auto_learn => '0',
+        trusted_networks => $network::constants::all_networks,
     }
 
     class { 'exim::roled':
