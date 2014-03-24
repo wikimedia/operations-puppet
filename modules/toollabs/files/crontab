@@ -45,19 +45,20 @@ die "$0: usage error: only one operation permitted\n" if $num > 1;
 
 my @args;
 my $uid = $<;
+my $target = $uid;
 my $uname = getpwuid $uid;
 my $dashu = '';
 
 if(defined $opts{'u'}) {
-    my $uname = $opts{'u'};
-    my $target = getpwnam $uname;
+    $uname = $opts{'u'};
+    $target = getpwnam $uname;
     die "$0: user '$uname' unknown\n" unless defined $target;
     die "must be privileged to use -u\n" unless $uid==0 or $uid == $target;
-    push @args, '-u', $opts{'u'} if $uid != $target;
+    push @args, '-u', $uname if $uid != $target;
     $dashu = " -u $uname" if $uid != $target;
 }
 
-die "$0: only tools are allowed crontabs" unless $uid==0 or $target>39999;
+die "$0: only tools are allowed crontabs\n" unless $uid==0 or $target>39999;
 
 push @args, '-i'  if $opts{'i'} and $opts{'r'};
 
