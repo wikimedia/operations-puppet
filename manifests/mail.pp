@@ -268,38 +268,6 @@ class exim {
 	}
 }
 
-# https://help.ubuntu.com/community/EximClamAV
-# /usr/share/doc/clamav-base/README.Debian.gz
-class clamav {
-
-	generic::systemuser { "clamav":
-		name => "clamav",
-		groups => "Debian-exim", # needed for exim integration
-	}
-
-	package { [ "clamav-daemon" ]:
-		ensure => latest;
-		# note: freshclam needs an initial manual run to fetch virus definitions
-		# this takes several minutes to run
-	}
-
-	file {
-		"/etc/clamav/clamd.conf":
-			require => Package["clamav-daemon"],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/clamav/clamd.conf";
-	}
-
-	service { "clamav-daemon":
-		require => [ File["/etc/clamav/clamd.conf"], Package["clamav-daemon"] ],
-		subscribe => [ File["/etc/clamav/clamd.conf"] ],
-		ensure => running;
-	}
-
-}
-
 class mailman {
 	class base {
 		# lighttpd needs to be installed first, or the mailman package will pull in apache2
