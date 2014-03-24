@@ -56,7 +56,7 @@ sub radosgw_rewrite {
 				"^/(score)/(.+)$",
 				"/swift/v1/global-data-\1-render/\2");
 		}
-		
+
 		if (bereq.url ~ "^/swift/v1/") {
 			set bereq.http.host = "ms-fe.eqiad.wmnet";
 		}
@@ -118,7 +118,7 @@ sub vcl_fetch {
 	} else {
 		call pick_main_stevedore;
 	}
-	
+
 	if (beresp.http.Content-Range) {
 		/* Varnish itself doesn't ask for ranges, so this must have been
 		 * a passed range request
