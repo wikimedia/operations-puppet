@@ -54,4 +54,15 @@ class contint::packages::labs {
         require  => Package['python-pip'],
     }
 
+    # puppet-lint to validate our Puppet manifests
+    # TODO: Reevaluate this once we switch to trusty.
+    package { 'rubygems':
+        ensure => present,
+    }
+    package { 'puppet-lint':
+        ensure   => present,
+        provider => 'gem',
+        require  => Package['rubygems'],
+    }
+
 }
