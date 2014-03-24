@@ -77,9 +77,15 @@ class role::otrs {
         use_bayes => '1',
         bayes_auto_learn => '0',
         short_report_template => 'true',
-        otrs_rule_scores => 'true',
         spamd_user => 'otrs',
         spamd_group => 'otrs',
+        trusted_networks => $network::constants::all_networks,
+        custom_scores => {
+            'RP_MATCHES_RCVD'   => '-0.500',
+            'SPF_SOFTFAIL'      => '2.000',
+            'SUSPICIOUS_RECIPS' => '2.000',
+            'DEAR_SOMETHING'    => '1.500',
+        },
     }
 
     class { 'exim::roled':
