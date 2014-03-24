@@ -57,7 +57,7 @@ if(defined $opts{'u'}) {
     $dashu = " -u $uname" if $uid != $target;
 }
 
-die "$0: only tools are allowed crontabs" unless $uid=0 or $target>39999;
+die "$0: only tools are allowed crontabs" unless $uid==0 or $target>39999;
 
 push @args, '-i'  if $opts{'i'} and $opts{'r'};
 
