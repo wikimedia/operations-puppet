@@ -6,9 +6,10 @@ class role::otrs {
 
     $nagios_group = "${cluster}_${::site}"
 
-    include standard-noexim,
-        webserver::apache,
-        nrpe
+    include standard-noexim
+    include webserver::apache
+    include nrpe
+    include network::constants
 
     generic::systemuser { 'otrs':
         name => 'otrs',
