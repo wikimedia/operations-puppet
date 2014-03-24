@@ -1,6 +1,6 @@
 # Class: toollabs::bastion
 #
-# This role sets up an bastion/dev instance in the Tool Labs model.
+# This role sets up an submit host instance in the Tool Labs model.
 #
 # Parameters:
 #       gridmaster => FQDN of the gridengine master
@@ -11,9 +11,8 @@
 #
 # Sample Usage:
 #
-class toollabs::bastion($gridmaster) inherits toollabs {
+class toollabs::submit($gridmaster) inherits toollabs {
     include toollabs::exec_environ,
-        toollabs::dev_environ,
         toollabs::gridnode
 
     file { '/etc/ssh/ssh_config':
@@ -33,7 +32,7 @@ class toollabs::bastion($gridmaster) inherits toollabs {
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-        source => "puppet:///modules/toollabs/40-${instanceproject}-bastion-banner",
+        source => "puppet:///modules/toollabs/40-${instanceproject}-submithost-banner",
     }
 
     file { "${store}/submithost-${::fqdn}":
@@ -45,30 +44,8 @@ class toollabs::bastion($gridmaster) inherits toollabs {
         content => "${::ipaddress}\n",
     }
 
-    # Display tips.
-    package { 'grep':
-        ensure => present,
-    }
-
-    file { '/etc/profile.d/motd-tips.sh':
-        ensure  => file,
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/toollabs/motd-tips.sh',
-        require => Package['grep'],
-    }
-
     package { 'misctools':
         ensure => latest,
     }
-
-    file { '/usr/local/bin/xcrontab':
-        ensure => file,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/toollabs/crontab',
-    }
-
 }
+
