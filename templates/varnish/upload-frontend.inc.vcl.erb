@@ -10,6 +10,14 @@ sub vcl_recv {
 		error 403 "HTTP method not allowed.";
 	}
 
+	/* Look for a "download" request parameter */
+	if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
+		/* Pretend that the parameter wasn't there for caching purposes */
+		set req.url = regsub(req.url, "(?i)(\?|&)download(=.*)?$", "");
+		set req.url = regsub(req.url, "(?i)(\?|&)download(=[^&]+)?&", "\1");
+		set req.http.X-Content-Disposition = "attachment";
+	}
+
 	if ( req.http.host == "<%= cluster_options.fetch('upload_domain', 'upload.wikimedia.org') %>") {
 		# Replace double slashes
 		set req.url = regsuball(req.url, "/{2,}", "/");
@@ -81,6 +89,10 @@ sub vcl_deliver {
 	if (resp.http.X-Content-Range) {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
 		remove resp.http.X-Content-Range;
+	}
+
+	if (req.http.X-Content-Disposition == "attachment") {
+		set resp.http.Content-Disposition = "attachment";
 	}
 
 	set resp.http.Access-Control-Allow-Origin = "*";
