@@ -144,7 +144,7 @@ my $crlino = 0;
 my $modified = 0;
 if(open NEW, "| /usr/bin/ssh tools-submit /usr/bin/crontab$dashu -") {
     foreach my $line (@crontab) {
-        if($line =~ m/^([^#]\S*\s+\S+\s+\S+\s+\S+\s+\S+\s+)(\S+)([^#\n]*)(#.*)?\n?$/) {
+        if($line =~ m/^([^#]\S*\s+\S+\s+\S+\s+\S+\s+\S+\s+|\@\S+\s+)(\S+)([^#\n]*)(#.*)?\n?$/) {
             $crlino++;
             my($sched, $cmd, $args, $cmt) = ($1, $2, $3, $4);
             unless($cmd =~ m[^(/usr/(local/)?bin/)?(jsub|jstart|jmail|qsub)$]) {
