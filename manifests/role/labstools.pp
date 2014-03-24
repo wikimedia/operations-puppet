@@ -46,6 +46,13 @@ class role::labs::tools {
     }
   }
 
+  class submit inherits role::labs::tools::config {
+      system::role { "role::labs::tools::submit": description => "Tool Labs job submit (cron) host" }
+      class { 'toollabs::submit':
+          gridmaster => $grid_master,
+      }
+  }
+
   class webproxy inherits role::labs::tools::config {
     system::role { "role::labs::tools::webproxy": description => "Tool Labs web proxy" }
     include toollabs::webproxy
