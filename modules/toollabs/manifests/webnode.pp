@@ -79,7 +79,7 @@ class toollabs::webnode($gridmaster) inherits toollabs {
     }
 
     package { 'lighttpd': 
-        ensure => present,
+        ensure => latest,
     }
 
     file { '/usr/local/bin/tool-lighttpd':

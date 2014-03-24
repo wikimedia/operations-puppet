@@ -249,7 +249,7 @@ class toollabs::exec_environ {
         'zbar-tools',                  # Bug 56996
         'zsh',                         # Bug 56995
         ]:
-        ensure => present
+        ensure => latest,
     }
 
     sysctl::parameters { 'tool labs':
