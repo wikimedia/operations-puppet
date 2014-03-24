@@ -1,4 +1,4 @@
-# Class: toollabs::bastion
+# Class: toollabs::submit
 #
 # This role sets up an submit host instance in the Tool Labs model.
 #
@@ -25,6 +25,10 @@ class toollabs::submit($gridmaster) inherits toollabs {
 
     class { 'gridengine::submit_host':
         gridmaster => $gridmaster,
+    }
+
+    class { 'toollabs::hba':
+        store => $store,
     }
 
     file { '/etc/update-motd.d/40-bastion-banner':
