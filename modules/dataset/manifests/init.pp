@@ -5,7 +5,7 @@ class dataset(
     #            'peer'   for rsync of data between internal peers
     #                     (wmf servers)
     #            'labs'   for rsync of some dumps to labs public fileshare
-    #    $uploads: 'pagecounts', 'searchlogs' to allow the corresponding rsync
+    #    $uploads: 'pagecounts' to allow the corresponding rsync
     #              to those directories from the appropriate hosts
     #    $grabs: 'kiwix' to copy kiwix (offline wiki) tarballs from upstream
     #            to local filesystem
@@ -36,10 +36,6 @@ class dataset(
 
     $rsync_labs_enable = has_key($rsync,'labs')
     class { 'dataset::cron::rsync::labs': enable => $rsync_labs_enable }
-
-    $uploads_searchlogs_enable = has_key($uploads,'searchlogs')
-    class { 'dataset::rsync::searchlogs':
-        enable => $uploads_searchlogs_enable }
 
     $uploads_pagecounts_enable = has_key($uploads,'pagecounts')
     class { 'dataset::rsync::pagecounts':
