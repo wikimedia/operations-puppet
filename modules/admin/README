@@ -1,0 +1,83 @@
+This module is meant to contain all defined users, groups, and permissions.
+
+This setup follow a Per-User Group outline as is the Debian default[1], it is applied so that
+both users and groups across the environment are unique.
+
+Structure explained:
+
+admin/
+├── files
+│   ├── home            <- all users can make a /home/<me> that is dropped on hosts.
+│   └── sudoers
+├── manifests
+│   ├── group.pp        <- group definition that handled WMF type users with PUG
+│   ├── groups          <- define groups under here
+│   ├── role            <- roles are a combination of groups/users and permissions to be assigned.
+│   ├── sudo.pp         <- defined sudo resource for allocating rights
+│   ├── sudoers.pp      <- ensures state of main sudoers config
+│   ├── user.pp         <- defined user type that handled /home, PUG, sudo, etc
+│   └── users           <- define groups under here
+└── templates
+    └── sudoers.erb
+
+Examples:
+
+Creating an new user:
+
+users/
+├── myusers.pp
+
+class admin::users::myusers {
+
+    #UID must be unique, and should match LDAP
+    @admin::user { 'newuser':
+            realname   => 'newuser',
+            uid        => 456,
+            ssh_keys   => ['ssh-rsa myfakekeyhash']
+    }
+}
+
+Defining a group:
+
+groups/
+├── carnies.pp
+
+class admin::groups::carnies {
+    @admin::group { 'mycarnies':
+            ensure => present,
+               gid => 1111,
+        sudo_privs => ['ALL=(ALL) NOPASSWD: /go/bumper/cars'],
+           members => [ 'newuser'],
+    }
+}
+
+Assigning them to a role:
+
+roles/
+├── bumper_cars.pp
+
+class admin::role::bumper_cars {
+    include admin::groups::carnies
+    realize Admin::Group[mycarnies]
+
+    include admin::users::myusers
+    realize Admin::User[newuser]
+
+}
+
+Assigning one-off permissions for a role:
+
+NOTE: If it pertains to more than one user, a group is better.
+
+roles/
+├── carnies.pp
+
+admin::sudo{ 'special_perms':
+    user       => 'newuser',
+    filename   => 'newuser_oneoff',
+    comment    => 'needed to be awesome',
+    privs => ['ALL = NOPASSWD: /usr/bin/cotton_candy'],
+}
+
+Reference:
+1 - https://www.debian.org/doc/manuals/securing-debian-howto/footnotes.en.html#f30
