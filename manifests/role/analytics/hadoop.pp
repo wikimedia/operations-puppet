@@ -33,7 +33,7 @@ class role::analytics::hadoop::client {
     # based on $::realm
     if ($::realm == 'labs') {
         include role::analytics::hadoop::labs
-        $ganglia_host = 'aggregator1.pmtpa.wmflabs'
+        $ganglia_host = 'aggregator.eqiad.wmflabs'
         $ganglia_port = 50090
     }
     else {

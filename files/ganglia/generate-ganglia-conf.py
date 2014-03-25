@@ -24,7 +24,7 @@ gdir = '/etc/ganglia'  # ganglia directory
 gmetadconf = os.path.join(gdir, 'gmetad.conf')  # live gmetad conf file
 gmetadconfstub = gmetadconf + '.labsstub'  # gmetad conf stub file
 gmetadconfnew = gmetadconf + '.new'  # location to stage new gmetad conf file
-gserver = 'aggregator1.eqiad.wmflabs'  # hostname of the aggregator server
+gserver = 'aggregator.eqiad.wmflabs'  # hostname of the aggregator server
 gmetadaemon = 'gmetad'  # name of gmetad daemon (for restarting)
 gmetadps = 'gmetad'  # name of gmetad ps (for verifying restart)
 
@@ -61,7 +61,7 @@ def _get_projects_gids():
 def gen_ganglia_conf():
     """Generate new ganglia config files, using defaults from gconfstub and
        dynamically adding data_source lines for each project (found in ldap),
-       e.g., data_source "testlabs" aggregator1.eqiad.wmflabs:21002"""
+       e.g., data_source "testlabs" aggregator.eqiad.wmflabs:21002"""
     # get dict of project names and group IDs from ldap, or exit on failure
     try:
         pg = _get_projects_gids()
@@ -78,7 +78,7 @@ def gen_ganglia_conf():
                 if p[:8] != 'project-':
                     continue
                 # write out data_source line to conf file, e.g.,
-                # data_source "testlabs" aggregator1.eqiad.wmflabs:21002
+                # data_source "testlabs" aggregator.eqiad.wmflabs:21002
                 f.write('data_source "%s" %s:%d\n' % (p[8:], gserver, pg[p]))
     f.close()
 
