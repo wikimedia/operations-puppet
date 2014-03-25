@@ -362,6 +362,11 @@ node 'caesium.eqiad.wmnet' {
 
 # cerium,praseodymium, ruthenium and xenon are cassandra test host
 node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
+
+    system::role { 'role::cassandra-test':
+        description => 'Cassandra test server',
+    }
+
     include standard
     include groups::wikidev
     include accounts::gwicke
@@ -2231,6 +2236,10 @@ node 'silver.wikimedia.org' {
 
 node 'sodium.wikimedia.org' {
 
+    system::role { 'role::lists':
+        description => 'Mailing list server',
+    }
+
     $nameservers_prefix = [ $ipaddress ]
 
     include base
@@ -2615,6 +2624,11 @@ node 'titanium.wikimedia.org' {
 
 
 node 'tridge.wikimedia.org' {
+
+    system::role { 'role::backup':
+        description => 'Backup server',
+    }
+
     include base
     include backup::server
 }
