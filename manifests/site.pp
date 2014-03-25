@@ -2070,18 +2070,14 @@ node 'palladium.eqiad.wmnet' {
     }
 }
 
-node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
+node /pc100[1-3]\.eqiad\.wmnet/ {
 
     include role::db::core
     include mysql_wmf::mysqluser
     include mysql_wmf::datadirs
     include mysql_wmf::pc::conf
 
-    if $::hostname =~ /^pc100(1|2|3)/ {
-        class { mysql_wmf::packages : mariadb => true }
-    } else {
-        include mysql_wmf::packages
-    }
+    class { mysql_wmf::packages : mariadb => true }
 
     system::role { 'mysql::pc::conf':
         description => 'parser cache mysql server',
