@@ -7,7 +7,7 @@
 #
 -%>
 server {
-  listen <%= @listen_port %>;
+  listen <%= @listen %>;
   location / {
     proxy_pass <%= @proxy_pass %>;
   }
