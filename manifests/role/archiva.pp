@@ -14,9 +14,8 @@ class role::archiva {
     }
 
     class { '::archiva':
+        port    => 80,
         require => Package['openjdk-7-jdk'],
     }
-    class { '::archiva::gitfat':
-        port => 80,
-    }
+    class { '::archiva::gitfat': }
 }
