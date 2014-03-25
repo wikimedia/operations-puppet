@@ -1,0 +1,12 @@
+# This file is managed by Puppet!
+
+<%- if @comment %>
+#<%= @comment %>
+<%- end %>
+<%- privs.each do |privilege| -%>
+<%- if @is_group == true %>
+%<%= @name %> <%= privilege %>
+<%- else %>
+<%= @name %> <%= privilege %>
+<%- end -%>
+<%- end -%>
