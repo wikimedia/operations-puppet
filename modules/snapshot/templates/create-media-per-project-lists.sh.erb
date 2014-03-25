@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/create-media-per-project-lists.sh.erb
+#############################################################
+
+DATE=`/bin/date '+%Y%m%d'`
+outputdir="<%= scope.lookupvar('snapshot::dirs::datadir') -%>/public/other/imageinfo/$DATE"
+wqdir="<%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') %>"
+errors=0
+
+python "$wqdir/listmediaperproject.py" --outputdir "$outputdir" \
+       --remotereponame commonswiki --wqpath "$wqdir/confs/wikiqueries.py" \
+       --wqconfig "$wqdir/wq.conf.media" --nooverwrite --localonly
+if [ $? -ne 0 ]; then
+    echo "failed sql dump of image tables"
+    errors=1
+fi
+
+python "$wqdir/listmediaperproject.py" --outputdir "$outputdir" \
+       --remotereponame commonswiki --wqpath "$wqdir/confs/wikiqueries.py" \
+       --wqconfig "$wqdir/wq.conf.media" --nooverwrite --remoteonly
+if [ $? -ne 0 ]; then
+    echo "failed sql dump of globalimagelink tables"
+    errors=1
+fi
+
+exit $errors
