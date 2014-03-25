@@ -1,20 +1,33 @@
 #!/bin/bash
 
-db=$1
-. /usr/local/lib/mw-deployment-vars.sh
+# This file is managed by Puppet (files/misc/scripts/sql).
 
+# Read configuration.
+. /usr/local/lib/mw-deployment-vars.sh
 MWMULTIDIR=$MW_COMMON/multiversion
 
-if [ -z $db ]; then
-	db=enwiki
-elif [ "$db" == centralauth ]; then
-	db=fawiki
+# Database that the user wants to use/query.
+db=$1
+shift
+
+# Default to enwiki if no database is specified.
+if [ -z "$db" ]; then
+    db=enwiki
 fi
 
-host=`echo 'echo wfGetLB()->getServerName(0);' | /usr/local/bin/mwscript eval.php --wiki="$db"`
+# Look up MySQL host to connect to.  For centralauth the host cannot
+# be determined this way, so we need to use fawiki instead as it is
+# located on the same server.
+if [ "$db" == "centralauth" ]; then
+    lookupdb="fawiki"
+else
+    lookupdb="$db"
+fi
+host=`echo 'echo wfGetLB()->getServerName(0);' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
+# MySQL user credentials.
 MU=wikiadmin
 MP=`wikiadmin_pass`
 
-shift
-mysql -u $MU -p$MP -h $host -D $db "$@"
+# Execute mysql.
+exec mysql -u $MU -p$MP -h $host -D $db "$@"
