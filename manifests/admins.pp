@@ -1977,7 +1977,7 @@ class accounts {
 
                         ssh_authorized_key {
                 'giovanni@titanus.local':
-                    ensure => 'present',
+                    ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAs/+a5RVrxt3LPd4+zr/xtMAQfm+HpYk6lOAhfG6JZB6NusRKOR6HFbzTKFQ7v9S676bLZXdD8Cu2tuVspegMdx+RGw4uNlISrxpyp5FXBiXpC10oRVlk5cMthhWp94JDuBFsVstuXR9FotRF3aScM1Hdv5cRFyXDvJTgprESXwFm0uH9MDi7xdJpTKYAV/8Q83IFKwz/6IUKEQ8cnBKfLY9wVIgoQd6I1eQ/4pVuoLcCUQIh/zreFMbfhyehArKVPeyOtgR4gRKZJxlQcVuvbzZFLexyHf9VZrO87IXf+LaSwvWVlBPGDD//8g0Kl7yVCgQHlLzbctB9fBZIk3FS8Q=='

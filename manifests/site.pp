@@ -2319,7 +2319,7 @@ node 'stat1.wikimedia.org' {
     include accounts::ebernhardson # RT 4959,5717
     include accounts::fflorin      # RT 6011
     include accounts::fschulenburg # RT 4475, revoked RT 7117
-    include accounts::giovanni     # RT 3460
+    include accounts::giovanni     # RT 3460,revoked 6854
     include accounts::halfak
     include accounts::howief       # RT 3576
     include accounts::ironholds
