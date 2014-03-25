@@ -38,6 +38,7 @@ import 'stages.pp'
 
 # Class for *most* servers, standard includes
 class standard {
+    include admin::role::ops
     include base
     include ganglia
     include ntp::client
@@ -45,6 +46,7 @@ class standard {
 }
 
 class standard-noexim {
+    include admin::role::ops
     include base
     include ganglia
     include ntp::client
@@ -57,6 +59,7 @@ $cluster = 'misc'
 # Node definitions (alphabetic order)
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
+    include admin::role::ops
     if $::hostname =~ /^amslvs[12]$/ {
         $ganglia_aggregator = true
     }
@@ -77,6 +80,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
 # amssq47 is a text varnish
 node /^amssq47\.esams\.wikimedia\.org$/ {
+    include admin::role::ops
     include role::cache::text
     include role::cache::ssl::unified
 
@@ -85,6 +89,7 @@ node /^amssq47\.esams\.wikimedia\.org$/ {
 
 # amssq48-62 are text varnish
 node /^amssq(4[8-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org$/ {
+    include admin::role::ops
 
     sysctl::parameters { 'vm dirty page flushes':
         values => {
@@ -253,6 +258,7 @@ node 'bast4001.wikimedia.org' {
     }
 
     include standard
+    include admin::role::ops
     include admins::roots
     include misc::management::ipmi
     include role::installserver::tftp-server
@@ -350,6 +356,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^cp103[78]$/ {
         $ganglia_aggregator = true
     }
@@ -368,6 +375,7 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
+    include admin::role::ops
     $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main': }
@@ -377,6 +385,7 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
+    include admin::role::ops
     if $::hostname =~ /^cp104[67]$/ {
         $ganglia_aggregator = true
     }
@@ -387,6 +396,7 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 }
 
 node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^(cp1048|cp1061)$/ {
         $ganglia_aggregator = true
     }
@@ -397,6 +407,7 @@ node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^cp105[23]$/ {
         $ganglia_aggregator = true
     }
@@ -407,6 +418,7 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 }
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
+    include admin::role::ops
     if $::hostname =~ /^cp105[67]$/ {
         $ganglia_aggregator = true
     }
@@ -430,6 +442,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 }
 
 node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
+    include admin::role::ops
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
     }
@@ -440,12 +453,14 @@ node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
 }
 
 node /^cp301[1-4]\.esams\.wikimedia\.org$/ {
+    include admin::role::ops
     interface::add_ip6_mapped { 'main': }
 
     include role::cache::mobile
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
+    include admin::role::ops
     if $::hostname =~ /^cp(3019|3020)$/ {
         $ganglia_aggregator = true
     }
@@ -460,6 +475,7 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
+    include admin::role::ops
     # cp4001 and cp4003 are in different racks,
     # make them each ganglia aggregators.
     if $::hostname =~ /^cp(4001|4003)$/ {
@@ -473,6 +489,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^cp(4005|4013)$/ {
         $ganglia_aggregator = true
     }
@@ -484,6 +501,7 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^cp(4008|4016)$/ {
         $ganglia_aggregator = true
     }
@@ -495,6 +513,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^cp401[19]$/ {
         $ganglia_aggregator = true
     }
@@ -506,6 +525,7 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 }
 
 node 'dataset2.wikimedia.org' {
+    include admin::role::ops
     $cluster = 'misc'
     $gid= '500'
 
@@ -516,6 +536,7 @@ node 'dataset2.wikimedia.org' {
 }
 
 node 'dataset1001.wikimedia.org' {
+    include admin::role::ops
     $cluster = 'misc'
     $gid= '500'
     interface::aggregate { 'bond0':
@@ -531,6 +552,7 @@ node 'dataset1001.wikimedia.org' {
 
 # pmtpa dbs
 node /^db(63)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     $ganglia_aggregator = true
     class { 'role::coredb::s1':
         mariadb               => true,
@@ -539,6 +561,7 @@ node /^db(63)\.pmtpa\.wmnet/ {
 }
 
 node /^db(69)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s2':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -546,6 +569,7 @@ node /^db(69)\.pmtpa\.wmnet/ {
 }
 
 node /^db(71)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s3':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -553,6 +577,7 @@ node /^db(71)\.pmtpa\.wmnet/ {
 }
 
 node /^db(72)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s4':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -560,6 +585,7 @@ node /^db(72)\.pmtpa\.wmnet/ {
 }
 
 node /^db(73)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s5':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -567,6 +593,7 @@ node /^db(73)\.pmtpa\.wmnet/ {
 }
 
 node /^db(74)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s6':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -574,6 +601,7 @@ node /^db(74)\.pmtpa\.wmnet/ {
 }
 
 node /^db(68)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s7':
         # Sole mysql 5.1 pmtpa slave
         innodb_file_per_table => true,
@@ -582,11 +610,13 @@ node /^db(68)\.pmtpa\.wmnet/ {
 
 ## x1 shard
 node /^db(38)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     include role::coredb::x1
 }
 
 ## m1 shard (new)
 node /^db(35)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::m1':
         mariadb => true,
     }
@@ -594,11 +624,13 @@ node /^db(35)\.pmtpa\.wmnet/ {
 
 ## m2 shard
 node /^db(48)\.pmtpa\.wmnet/ {
+    include admin::role::ops
     include role::coredb::m2
 }
 
 ## researchdb
 node 'db67.pmtpa.wmnet' {
+    include admin::role::ops
     class { 'role::coredb::researchdb':
         mariadb => true,
     }
@@ -611,6 +643,7 @@ node /^db(6[012456]|7[5-7])\.pmtpa\.wmnet/{
 
 # eqiad dbs
 node /^db10(43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
+    include admin::role::ops
     if $::hostname =~ /^db10(56)/ {
         $ganglia_aggregator = true
         include mha::manager
@@ -622,6 +655,7 @@ node /^db10(43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
 }
 
 node /^db10(02|09|18|34|36|60|63)\.eqiad\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s2':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -629,6 +663,7 @@ node /^db10(02|09|18|34|36|60|63)\.eqiad\.wmnet/ {
 }
 
 node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s3':
         # Many more tables than other shards.
         # innodb_file_per_table=off to reduce file handles.
@@ -638,6 +673,7 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
 }
 
 node /^db10(04|11|20|40|42|59)\.eqiad\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s4':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -645,6 +681,7 @@ node /^db10(04|11|20|40|42|59)\.eqiad\.wmnet/ {
 }
 
 node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
+    include admin::role::ops
     if $::hostname =~ /^db1021/ {
         $ganglia_aggregator = true
     }
@@ -655,6 +692,7 @@ node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
 }
 
 node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s6':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -662,6 +700,7 @@ node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
 }
 
 node /^db10(07|28|33|39|41)\.eqiad\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::s7':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -670,11 +709,13 @@ node /^db10(07|28|33|39|41)\.eqiad\.wmnet/ {
 
 ## x1 shard
 node /^db10(29|31)\.eqiad\.wmnet/ {
+    include admin::role::ops
     include role::coredb::x1
 }
 
 ## m1 shard
 node /^db10(01|16)\.eqiad\.wmnet/ {
+    include admin::role::ops
     class { 'role::coredb::m1':
         mariadb => true,
     }
@@ -682,6 +723,7 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 
 ## m2 shard
 node /^db104[68]\.eqiad\.wmnet/ {
+    include admin::role::ops
     if $::hostname =~ /^db1048/ {
         $ganglia_aggregator = true
     }
@@ -696,6 +738,7 @@ node /^db104[68]\.eqiad\.wmnet/ {
 
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
+    include admin::role::ops
     class { 'role::coredb::researchdb':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -704,6 +747,7 @@ node 'db1047.eqiad.wmnet' {
 
 ## researchdb s5
 node 'db1017.eqiad.wmnet' {
+    include admin::role::ops
     class { 'role::coredb::researchdb':
         shard                 => 's5',
         mariadb               => true,
@@ -714,6 +758,7 @@ node 'db1017.eqiad.wmnet' {
 
 ## SANITARIUM
 node 'db1053.eqiad.wmnet' {
+    include admin::role::ops
     class { 'role::db::sanitarium':
         instances => {
             's1' => {
@@ -729,6 +774,7 @@ node 'db1053.eqiad.wmnet' {
 }
 
 node 'db1054.eqiad.wmnet' {
+    include admin::role::ops
     class { 'role::db::sanitarium':
         instances => {
             's2' => {
@@ -760,6 +806,7 @@ node 'db1054.eqiad.wmnet' {
 }
 
 node 'db1057.eqiad.wmnet' {
+    include admin::role::ops
     class { 'role::db::sanitarium':
         instances => {
             's3' => {
@@ -807,6 +854,7 @@ node /^db10(34|44)\.eqiad\.wmnet/ {
 }
 
 node 'dobson.wikimedia.org' {
+    include admin::role::ops
     interface::ip { 'dns::recursor':
         interface => 'eth0',
         address   => '208.80.152.131',
@@ -844,6 +892,7 @@ node 'dysprosium.eqiad.wmnet' {
 }
 
 node 'eeden.esams.wikimedia.org' {
+    include admin::role::ops
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -857,6 +906,7 @@ node 'ekrem.wikimedia.org' {
 
 # base_analytics_logging_node is defined in role/logging.pp
 node 'emery.wikimedia.org' inherits 'base_analytics_logging_node' {
+    include admin::role::ops
     include generic::higher_min_free_kbytes
     include admins::mortals
     include accounts::milimetric # RT 4312
@@ -871,6 +921,7 @@ node 'tarin.pmtpa.wmnet' {
 }
 
 node 'aluminium.wikimedia.org' {
+    include admin::role::ops
     include role::fundraising::civicrm
     include accounts::file_mover
 
@@ -882,6 +933,7 @@ node 'aluminium.wikimedia.org' {
 
 # erbium is a webrequest udp2log host
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
+    include admin::role::ops
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::erbium
     include accounts::tnegrin       # RT 5391
@@ -913,6 +965,7 @@ node /^es([569]|10)\.pmtpa\.wmnet/{
 }
 
 node /es100[5-7]\.eqiad\.wmnet/ {
+    include admin::role::ops
     if $::hostname =~ /^es100[67]/ {
         class { 'role::coredb::es2':
             mariadb => true,
@@ -923,6 +976,7 @@ node /es100[5-7]\.eqiad\.wmnet/ {
 }
 
 node /es10(0[89]|10)\.eqiad\.wmnet/ {
+    include admin::role::ops
     if $::hostname =~ /^es10(09|10)/ {
         class { 'role::coredb::es3':
             mariadb => true,
@@ -933,6 +987,7 @@ node /es10(0[89]|10)\.eqiad\.wmnet/ {
 }
 
 node 'fenari.wikimedia.org' {
+    include admin::role::ops
     system::role { 'misc':
         description => 'Bastion & NOC Server',
     }
@@ -946,6 +1001,7 @@ node 'fenari.wikimedia.org' {
     include role::applicationserver::maintenance
     include subversion::client
     include nfs::netapp::home
+    include admin::role::ops
     include admins::roots
     include admins::mortals
     include admins::restricted
@@ -966,6 +1022,7 @@ node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
     include standard
+    include admin::role::ops
     include admins::roots
     include admins::mortals
     include admins::restricted
@@ -1009,6 +1066,7 @@ node 'formey.wikimedia.org' {
 # gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
 node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
+    include admin::role::ops
     include accounts::milimetric
     include accounts::tnegrin     # RT 5391
 
@@ -1063,6 +1121,7 @@ node 'gallium.wikimedia.org' {
     include role::ci::testswarm
     include role::ci::website
     include role::zuul::production
+    include admin::role::ops
     include admins::roots
     include admins::jenkins
 
@@ -1209,6 +1268,7 @@ node 'manutius.wikimedia.org' {
 }
 
 node 'hume.wikimedia.org' {
+    include admin::role::ops
     $cluster = 'misc'
 
     include role::applicationserver::maintenance
@@ -1260,6 +1320,7 @@ node 'iron.wikimedia.org' {
 
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
+    include admin::role::ops
     class { 'role::db::labsdb':
         instances => {
             's1' => {
@@ -1277,6 +1338,7 @@ node 'labsdb1001.eqiad.wmnet' {
 }
 
 node 'labsdb1002.eqiad.wmnet' {
+    include admin::role::ops
     class { 'role::db::labsdb':
         instances => {
             's2' => {
@@ -1320,6 +1382,7 @@ node 'labsdb1002.eqiad.wmnet' {
 }
 
 node 'labsdb1003.eqiad.wmnet' {
+    include admin::role::ops
     class { 'role::db::labsdb':
         instances => {
             's3' => {
@@ -1357,6 +1420,7 @@ node 'labsdb1003.eqiad.wmnet' {
 }
 
 node 'labsdb1004.eqiad.wmnet' {
+    include admin::role::ops
     $osm_slave = 'labsdb1005.eqiad.wmnet'
     $osm_slave_v4 = '10.64.37.9'
 
@@ -1365,6 +1429,7 @@ node 'labsdb1004.eqiad.wmnet' {
 }
 
 node 'labsdb1005.eqiad.wmnet' {
+    include admin::role::ops
     $osm_master = 'labsdb1004.eqiad.wmnet'
 
     include role::osm::slave
@@ -1474,6 +1539,7 @@ node 'lanthanum.eqiad.wmnet' {
 }
 
 node 'linne.wikimedia.org' {
+    include admin::role::ops
     interface::ip { 'url-downloader':
         interface => 'eth0',
         address   => '208.80.152.143',
@@ -1496,6 +1562,7 @@ node 'linne.wikimedia.org' {
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
+    include admin::role::ops
     if $::hostname =~ /^lvs100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1622,6 +1689,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
+    include admin::role::ops
     # lvs4001 and lvs4003 are in different racks
     if $::hostname =~ /^lvs400[13]$/ {
         $ganglia_aggregator = true
@@ -1653,6 +1721,7 @@ node 'maerlant.esams.wikimedia.org' {
 }
 
 node 'magnesium.wikimedia.org' {
+    include admin::role::ops
 
     $cluster = 'misc'
 
@@ -1661,6 +1730,7 @@ node 'magnesium.wikimedia.org' {
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
+    include admin::role::ops
     $cluster = 'memcached'
     if $::hostname =~ /^mc100[12]$/ {
         $ganglia_aggregator = true
@@ -1681,6 +1751,7 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 }
 
 node /^rdb100[1-4]\.eqiad\.wmnet/ {
+    include admin::role::ops
     $ganglia_aggregator = true
 
     $redis_replication = {
@@ -1694,6 +1765,7 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
 }
 
 node 'rubidium.wikimedia.org' {
+    include admin::role::ops
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -1701,6 +1773,7 @@ node 'rubidium.wikimedia.org' {
 }
 
 node 'mchenry.wikimedia.org' {
+    include admin::role::ops
     $gid = '500'
 
     include base
@@ -1739,6 +1812,7 @@ node 'mchenry.wikimedia.org' {
 }
 
 node 'mexia.wikimedia.org' {
+    include admin::role::ops
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -1775,6 +1849,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 }
 
 node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^ms-fe[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1790,6 +1865,7 @@ node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
 }
 
 node /^ms-be(3|[6-8]|10)\.pmtpa\.wmnet$/ {
+    include admin::role::ops
     # the ms-be hosts that are 720xds with ssds have two more disks
     # but with the h310s they show up as m and n, those get the OS
     $all_drives = [ '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
@@ -1807,6 +1883,7 @@ node /^ms-be(3|[6-8]|10)\.pmtpa\.wmnet$/ {
 }
 
 node /^ms-be(1|2|4|5|9|11|12)\.pmtpa\.wmnet$/ {
+    include admin::role::ops
     # the ms-be hosts with ssds have two more disks
     # this is the 720xds with h710 layout
     $all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
@@ -1824,6 +1901,7 @@ node /^ms-be(1|2|4|5|9|11|12)\.pmtpa\.wmnet$/ {
 }
 
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1837,6 +1915,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
+    include admin::role::ops
     $all_drives = [
         '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
@@ -1865,6 +1944,7 @@ node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
 
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^mw100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1876,6 +1956,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 
 # mw1017-1113 are apaches (precise)
 node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^mw101[78]$/ {
         $ganglia_aggregator = true
     }
@@ -1890,6 +1971,7 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
 # mw1114-1148 are api apaches (precise)
 node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^mw111[45]$/ {
         $ganglia_aggregator = true
     }
@@ -1899,6 +1981,7 @@ node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
 
 # mw1149-1152 are bits apaches (precise)
 node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^mw115[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1908,6 +1991,7 @@ node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
+    include admin::role::ops
     if $::hostname =~ /^mw115[34]$/ {
         $ganglia_aggregator = true
     }
@@ -1917,18 +2001,21 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 
 # mw1161-1188 are apaches (precise)
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
+    include admin::role::ops
 
     include role::applicationserver::appserver
 }
 
 # mw1189-1208 are api apaches (precise)
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
+    include admin::role::ops
 
     include role::applicationserver::appserver::api
 }
 
 # mw1209-1220 are apaches (precise)
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
+    include admin::role::ops
 
     include role::applicationserver::appserver
 }
@@ -2025,6 +2112,7 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
 
 # base_analytics_logging_node is defined in role/logging.pp
 node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
+    include admin::role::ops
     include accounts::awjrichards
     include accounts::datasets
     include accounts::dsc
@@ -2071,6 +2159,7 @@ node 'palladium.eqiad.wmnet' {
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::db::core
     include mysql_wmf::mysqluser
@@ -2085,6 +2174,7 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
 }
 
 node 'pdf2.wikimedia.org' {
+    include admin::role::ops
     $ganglia_aggregator = true
     $cluster = 'pdf'
 
@@ -2095,6 +2185,7 @@ node 'pdf2.wikimedia.org' {
 }
 
 node 'pdf3.wikimedia.org' {
+    include admin::role::ops
     $cluster = 'pdf'
 
     include role::pdf
@@ -2122,6 +2213,7 @@ node 'tantalum.eqiad.wmnet' {
 }
 
 node 'sanger.wikimedia.org' {
+    include admin::role::ops
     $gid = '500'
 
     include base
@@ -2136,6 +2228,7 @@ node 'sanger.wikimedia.org' {
 }
 
 node /^search100[0-6]\.eqiad\.wmnet/ {
+    include admin::role::ops
     if $::hostname =~ /^search100(1|2)$/ {
         $ganglia_aggregator = true
     }
@@ -2144,41 +2237,49 @@ node /^search100[0-6]\.eqiad\.wmnet/ {
 }
 
 node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::lucene::front_end::pool2
 }
 
 node /^search101[1-4]\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::lucene::front_end::pool3
 }
 
 node /^search101[56]\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::lucene::front_end::pool4
 }
 
 node /^search10(19|20)\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::lucene::front_end::pool5
 }
 
 node /^search101[78]\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::lucene::front_end::prefix
 }
 
 node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::lucene::front_end::pool4
 }
 
 node /^search102[3-4]\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::lucene::front_end::pool3
 }
 
 node /^searchidx100[0-2]\.eqiad\.wmnet/ {
+    include admin::role::ops
 
     include role::lucene::indexer
 }
@@ -2191,6 +2292,7 @@ node 'silver.wikimedia.org' {
 }
 
 node 'sodium.wikimedia.org' {
+    include admin::role::ops
 
     $nameservers_prefix = [ $ipaddress ]
 
@@ -2243,6 +2345,7 @@ node 'sodium.wikimedia.org' {
 }
 
 node /ssl100[1-9]\.wikimedia\.org/ {
+    include admin::role::ops
     if $::hostname =~ /^ssl100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -2255,6 +2358,7 @@ node /ssl100[1-9]\.wikimedia\.org/ {
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
+    include admin::role::ops
     if $::hostname =~ /^ssl300[12]$/ {
         $ganglia_aggregator = true
     }
@@ -2302,6 +2406,7 @@ node 'strontium.eqiad.wmnet' {
 }
 
 node 'stat1.wikimedia.org' {
+    include admin::role::ops
     include role::statistics::cruncher
 
     # special accounts
@@ -2368,6 +2473,7 @@ node 'stat1.wikimedia.org' {
 }
 
 node 'stat1001.wikimedia.org' {
+    include admin::role::ops
     include role::statistics::www
 
     # special accounts
@@ -2388,6 +2494,7 @@ node 'stat1001.wikimedia.org' {
 }
 
 node 'stat1002.eqiad.wmnet' {
+    include admin::role::ops
     # stat1002 is intended to be the private
     # webrequest access log storage host.
     # Users should not use it for app development.
@@ -2423,16 +2530,19 @@ node 'stat1002.eqiad.wmnet' {
 }
 
 node 'snapshot1001.eqiad.wmnet' {
+    include admin::role::ops
     $gid= '500'
     include snapshot
     class { 'snapshot::dumps': hugewikis => true }
 }
 node /^snapshot100[24]\.eqiad\.wmnet/ {
+    include admin::role::ops
     $gid= '500'
     include snapshot
     include snapshot::dumps
 }
 node 'snapshot1003.eqiad.wmnet' {
+    include admin::role::ops
     $gid= '500'
     include snapshot
     include snapshot::dumps
@@ -2440,6 +2550,7 @@ node 'snapshot1003.eqiad.wmnet' {
 }
 
 node 'terbium.eqiad.wmnet' {
+    include admin::role::ops
     include role::applicationserver::maintenance
     include role::db::maintenance
     include misc::deployment::scap_scripts
@@ -2576,6 +2687,7 @@ node 'titanium.wikimedia.org' {
 
 
 node 'tridge.wikimedia.org' {
+    include admin::role::ops
     include base
     include backup::server
 }
@@ -2736,6 +2848,7 @@ node /virt100[8-9].eqiad.wmnet/ {
 }
 
 node 'iodine.wikimedia.org' {
+    include admin::role::ops
     include role::otrs
 
     interface::add_ip6_mapped { 'main':
@@ -2767,6 +2880,7 @@ node /^solr100[1-3]\.eqiad\.wmnet/ {
 }
 
 node 'ytterbium.wikimedia.org' {
+    include admin::role::ops
 
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
