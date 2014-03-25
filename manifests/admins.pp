@@ -2355,12 +2355,14 @@ class accounts {
         $username = 'erosen'
         $realname = 'Evan Rosen'
         $uid      = '602'
+        $enabled  = false
+
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
             ssh_authorized_key {
                 'erosen@wikimedia.org':
-                    ensure => 'present',
+                    ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDGV+SyDPodS8lRJBv/JndZJ7pbM3mlqMN2bbE8ABUj5P5YYOiJDoLjPr8hczeYt1qMhbepp89nLSqUD8BgoJVNoiUokmi4lKK0PnPhqGVN+RFnamlHCibAPjbEBWaBWEl0u/9EtU4S0r7uQaKEnNJwcr7/8lu4KzDznViUVACGDdGpyRLZ388Phu93HOK2KPXtyxZPlwjW6wKIN3nyhew0X7LxzYF8rINl3Nf4lUF1fnK2NbfEq3S0bQfVcyWwRrgMUMA+w0plJQpHdLr+agvZo/SdtFrNFugQrMk1d+FNzEFnoDshwHfcmwjSaU+M8ZdbS+jq97X8HoL22yXFyD/B',
