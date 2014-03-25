@@ -11,16 +11,16 @@ wqdir="<%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') %>"
 errors=0
 
 python "$wqdir/listmediaperproject.py" --outputdir "$outputdir" \
-       --remotereponame commonswiki --wqpath "$wqdir/confs/wikiqueries.py" \
-       --wqconfig "$wqdir/wq.conf.media" --nooverwrite --localonly
+       --remotereponame commonswiki --wqpath "$wqdir/wikiqueries.py" \
+       --wqconfig "$wqdir/confs/wq.conf.media" --nooverwrite --localonly
 if [ $? -ne 0 ]; then
     echo "failed sql dump of image tables"
     errors=1
 fi
 
 python "$wqdir/listmediaperproject.py" --outputdir "$outputdir" \
-       --remotereponame commonswiki --wqpath "$wqdir/confs/wikiqueries.py" \
-       --wqconfig "$wqdir/wq.conf.media" --nooverwrite --remoteonly
+       --remotereponame commonswiki --wqpath "$wqdir/wikiqueries.py" \
+       --wqconfig "$wqdir/confs/wq.conf.media" --nooverwrite --remoteonly
 if [ $? -ne 0 ]; then
     echo "failed sql dump of globalimagelink tables"
     errors=1
