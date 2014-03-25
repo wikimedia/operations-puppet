@@ -5,8 +5,10 @@ db=$1
 
 MWMULTIDIR=$MW_COMMON/multiversion
 
+useDB=$db
 if [ -z $db ]; then
 	db=enwiki
+	useDB=enwiki
 elif [ "$db" == centralauth ]; then
 	db=fawiki
 fi
@@ -17,4 +19,4 @@ MU=wikiadmin
 MP=`wikiadmin_pass`
 
 shift
-mysql -u $MU -p$MP -h $host -D $db "$@"
+mysql -u $MU -p$MP -h $host -D $useDB "$@"
