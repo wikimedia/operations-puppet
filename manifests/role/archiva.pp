@@ -13,9 +13,24 @@ class role::archiva {
         }
     }
 
+    $archiva_port = 8080
     class { '::archiva':
-        port    => 80,
+        port    => $archiva_port,
         require => Package['openjdk-7-jdk'],
     }
-    class { '::archiva::gitfat': }
+
+    class { '::archiva::gitfat':
+        require => Class['::archiva']
+    }
+
+    # Set up simple Nginx reverse proxy port 80 to port $archiva_port
+    $listen     = 80
+    $proxy_pass = "http://127.0.0.1:${archiva_port}/"
+    class { '::nginx':
+        require => Class['::archiva'],
+    }
+    nginx::site { 'archiva':
+        content => template('nginx/sites/simple-proxy.erb'),
+        require => Class['::nginx'],
+    }
 }
