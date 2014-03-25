@@ -842,26 +842,6 @@ class accounts {
         }
     }
 
-    class jdavis inherits baseaccount {
-        $username = 'jdavis'
-        $realname = 'Jon Davis'
-        $uid      = '1004'
-        $enabled  = false
-
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
-        if $manage_home {
-            Ssh_authorized_key { require => Unixaccount[$realname] }
-
-            ssh_authorized_key { 'jdavis@wikimedia.org':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABJQAAAQEAliYsMiUqipe/HtqzehVebaH8/kVl6RddesJC8fy/jV4TTTFpp+Ow9zpwqgS4lVgeYmrHnp3iDraTiqLlTzoB9e3hXwatzysUASn6sgep5zSTIqC7pb5xYHi6dsI+47L72vFoGfZdugXUYXqgml5JIRk++CK2KaH6udsxev/vW7iJWLxoPbXA9/dsX32/JHnHcNKWkYSjOvl+kvDsLqgnBO+smrLqLey5h1T6BObo7sM6hUUe+COpzNyJC5stP/GMUaYohHu2u9lwcIUFDB/5Wn7aY2ZyNgeoiGrS2angNoI2kNMucHw0eAtIFpXVYuuz7+ijDdGICeh0auIRfOg54Q==';
-            }
-        }
-    }
-
     class jeluf inherits baseaccount {
         $username = 'jeluf'
         $realname = 'Jens Frank'
