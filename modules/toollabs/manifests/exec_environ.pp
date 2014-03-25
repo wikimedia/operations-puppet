@@ -209,6 +209,7 @@ class toollabs::exec_environ {
         'gnuplot-nox',
         'graphicsmagick',              # Bug 56995
         'graphviz',
+        'imagemagick',                 # Bug 63000
         'ksh',
         'libav-tools',                 # Bug #53870.
         'libdmtx0a',                   # Bug #53867.
