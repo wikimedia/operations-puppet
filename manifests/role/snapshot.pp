@@ -28,6 +28,10 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
+    class { 'snapshot::mediaperprojectlists':
+        enable => true,
+        user   => 'datasets',
+    }
 }
 
 class role::snapshot::cron::secondary {
@@ -48,6 +52,10 @@ class role::snapshot::cron::secondary {
         user   => 'backup',
     }
     class { 'snapshot::dumps::mediadirlists':
+        enable => false,
+        user   => 'datasets',
+    }
+    class { 'snapshot::mediaperprojectlists':
         enable => false,
         user   => 'datasets',
     }
