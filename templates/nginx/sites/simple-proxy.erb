@@ -1,0 +1,14 @@
+<%
+#
+# Nginx ERb template for a simple reverse proxy site.
+# Parameters:
+#   @listen      - Example:  host:port
+#   @proxy_pass  - Example:  http://host:port/
+#
+-%>
+server {
+  listen <%= @listen_port %>;
+  location / {
+    proxy_pass <%= @proxy_pass %>;
+  }
+}
