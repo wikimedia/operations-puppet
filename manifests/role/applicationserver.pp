@@ -70,6 +70,10 @@ class role::applicationserver {
 				description => "twemproxy process",
 				nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody -C nutcracker"
 			}
+			nrpe::monitor_service { 'twemproxy port':
+				description => 'twemproxy port',
+				nrpe_command  => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11211 --timeout=2',
+			}
 		}
 
 		if $::realm == 'labs' {
