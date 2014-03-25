@@ -2746,6 +2746,7 @@ class accounts {
         $username = 'fschulenburg'
         $realname = 'Frank Schulenburg'
         $uid      = '629'
+        $enabled  = false
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2754,7 +2755,7 @@ class accounts {
 
             ssh_authorized_key {
                 'fschulenburg@wikimedia.org':
-                ensure => 'present',
+                ensure => 'absent',
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDQ3FGGK/7KG8GJULGzcZ6A1X9TGWsJKgzrWIlnPMWtdPoXRq29Ypc5NyXCY7g7ruDSq0mDpxubsTi0WNqreY44eAsAbuXz9F8iXn6aJOqIf/fbWjSOnBjXAoVT848M5drts/nWCLAYJ5VGfdUEhBNW6czeut3enPfCUOAUoYgax8S/SFFzgmsmwo/rupySYRLoY5KbxxEL7vdgCwSGrxwFDzsfVsQsazStwKIMfja/u6Nx7QhMGx4U+tQNUXEXGJ14xb2IA2h9lJpLldOTLpYm+JAE7t2Vvi5STvQUxfTGTmQSBE6GMibFxvWf2IbTPK7wVvZg2mWPvdI9P2dfBE0J',
