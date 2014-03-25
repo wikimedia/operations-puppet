@@ -40,7 +40,7 @@ class role::analytics::kafka::config {
         # labs only uses a single log_dir
         $log_dirs = ['/var/spool/kafka']
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host   = 'aggregator1.pmtpa.wmflabs'
+        $ganglia_host   = 'aggregator.eqiad.wmflabs'
         $ganglia_port   = 50090
 
         # Use default ulimit for labs kafka
