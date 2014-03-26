@@ -8,6 +8,8 @@ sub vcl_recv {
 		set req.http.X-Forwarded-Port = "443";
 	} elsif (req.http.Host == "doc.wikimedia.org" || req.http.Host == "integration.wikimedia.org") {
 		set req.backend = gallium;
+	} elsif (req.http.Host == "download.wikimedia.org") {
+		set req.backend = dataset1001.wikimedia.org;
 	} elsif (req.http.Host == "gerrit.wikimedia.org") {
 		set req.backend = ytterbium;
 	} elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "graphite.wikimedia.org" || req.http.Host == "performance.wikimedia.org") {
