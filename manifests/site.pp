@@ -2307,7 +2307,7 @@ node 'stat1.wikimedia.org' {
     # special accounts
     include admins::globaldev  # RT 3119
     include accounts::ezachte
-    include accounts::abartov      # RT 4106
+    #include accounts::abartov      # RT 4106, revoked 6789
     include accounts::aengels
     include accounts::akhanna
     include accounts::bsitu        # RT 4959
