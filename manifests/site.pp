@@ -239,6 +239,7 @@ node 'bast1001.wikimedia.org' {
     include standard
     include subversion::client
     include admins::roots
+    include admin::role::deployment
     include admins::mortals
     include admins::restricted
     include bastionhost
@@ -909,6 +910,7 @@ node 'ekrem.wikimedia.org' {
 node 'emery.wikimedia.org' inherits 'base_analytics_logging_node' {
     include admin::role::ops
     include generic::higher_min_free_kbytes
+    include admin::role::deployment
     include admins::mortals
     include accounts::milimetric # RT 4312
     include accounts::tnegrin    # RT 5391
@@ -1004,6 +1006,7 @@ node 'fenari.wikimedia.org' {
     include nfs::netapp::home
     include admin::role::ops
     include admins::roots
+    include admin::role::deployment
     include admins::mortals
     include admins::restricted
     include bastionhost
@@ -1025,6 +1028,7 @@ node 'fluorine.eqiad.wmnet' {
     include standard
     include admin::role::ops
     include admins::roots
+    include admin::role::deployment
     include admins::mortals
     include admins::restricted
     include nrpe
@@ -1148,6 +1152,7 @@ node 'hooft.esams.wikimedia.org' {
     include standard
     include role::installserver::tftp-server
     include admins::roots
+    include admin::role::deployment
     include admins::mortals
     include admins::restricted
 
@@ -1261,6 +1266,7 @@ node 'hume.wikimedia.org' {
     include nfs::upload
     include misc::deployment::scap_scripts
     include admins::roots
+    include admin::role::deployment
     include admins::mortals
     include admins::restricted
     include nrpe
@@ -2541,6 +2547,7 @@ node 'terbium.eqiad.wmnet' {
     include icinga::monitor::jobqueue
     include misc::monitoring::jobqueue
     include admins::roots
+    include admin::role::deployment
     include admins::mortals
     include admins::restricted
     include generic::wikidev-umask
@@ -2643,6 +2650,7 @@ node 'tin.eqiad.wmnet' {
 
     include standard
     include admins::roots
+    include admin::role::deployment
     include admins::mortals
     include generic::wikidev-umask
     include role::deployment::deployment_servers::production

@@ -37,7 +37,7 @@ define admin::group(
         gid       => $gid,
     }
 
-    if !empty($sudo_privs) { 
+    if !empty($sudo_privs) {
         admin::sudo { $name:
             ensure     => $ensure,
             filename   => $name,
