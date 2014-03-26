@@ -342,7 +342,7 @@ def _update_gitfat(location):
     '''
 
     # Make sure git fat is installed.
-    if _gitfat_installed() != 0:
+    if not _gitfat_installed():
         return 40
 
     # Make sure git fat is initialized.

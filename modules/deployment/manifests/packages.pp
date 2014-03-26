@@ -9,4 +9,9 @@ class deployment::packages {
         ensure => present,
       }
     }
+    if ! defined(Package['git-fat']){
+      package { 'git-fat':
+        ensure => present,
+      }
+    }
 }
