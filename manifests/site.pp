@@ -1087,29 +1087,13 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 
 node 'gallium.wikimedia.org' {
     $cluster = 'misc'
-    $gid= '500'
-    sudo_user { [ 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
-        privileges => [
-            'ALL = (jenkins) NOPASSWD: ALL',
-            'ALL = (jenkins-slave) NOPASSWD: ALL',
-            'ALL = (gerritslave) NOPASSWD: ALL',
-            'ALL = NOPASSWD: /etc/init.d/jenkins',
-            'ALL = (testswarm) NOPASSWD: ALL',
-            'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
-            'ALL = (postgres) NOPASSWD: /usr/bin/psql',
-        ]
-    }
+    include admin::role::jenkins
 
     # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
     sudo_user { 'jenkins-slave':
         privileges => [
             'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
         ]
-    }
-
-    # full root for Jenkins admin (RT-4101)
-    sudo_user { 'hashar':
-        privileges => ['ALL = NOPASSWD: ALL'],
     }
 
     include standard
@@ -1123,7 +1107,6 @@ node 'gallium.wikimedia.org' {
     include role::zuul::production
     include admin::role::ops
     include admins::roots
-    include admins::jenkins
 
     # gallium received a SSD drive (RT #4916) mount it
     file { '/srv/ssd':
