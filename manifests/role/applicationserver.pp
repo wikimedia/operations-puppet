@@ -187,7 +187,7 @@ class role::applicationserver {
 	class appserver::beta{
 		system::role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
 
-		class { "role::applicationserver::common": group => "beta_appserver", hhvm => false }
+		class { "role::applicationserver::common": group => "beta_appserver", hhvm => true }
 
 		include role::applicationserver::webserver
 

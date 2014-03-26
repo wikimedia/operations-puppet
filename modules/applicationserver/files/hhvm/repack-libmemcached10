@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Hack: modify libmemcached10 package to remove spurious conflict with libmemcached6,
+# as has already been done upstream; see <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=700091>.
+# Only needed while waiting for RT 7133.
+
+DEB="/var/cache/apt/archives/libmemcached10_1.0.8-1~wmf+precise1_amd64.deb"
+PKG=$(basename "$DEB")
+BASE="/srv/pkg"
+DIR="$BASE/libmemcached10"
+
+if [ ! -f "$DEB" ]; then
+    echo "No package file -- nothing to do."
+    exit 0
+fi
+
+if dpkg-deb -I /var/cache/apt/archives/libmemcached10_1.0.8-1~wmf+precise1_amd64.deb 2>/dev/null | grep -qv Conflicts ; then
+    echo "Package already patched."
+    exit 0
+fi
+
+mkdir -p "$BASE"
+rm -rf "$DIR"
+dpkg-deb -x "$DEB" "$DIR"
+dpkg-deb -e "$DEB" "$DIR/DEBIAN"
+sed -i '/Conflicts/d' "$DIR/DEBIAN/control"
+dpkg-deb -b "$DIR" "$DEB"
+dpkg -i /var/cache/apt/archives/libmemcached10_1.0.8-1~wmf+precise1_amd64.deb
