@@ -7,20 +7,18 @@
 #   @server_properties   - Example: ['client_max_body_size 256M', 'other_thing 123']
 #   @location_properties - Example: ['this_prop yes', 'one_more_prop 456']
 #
-@server_properties.sort
-@location_properties.sort
 -%>
 server {
   listen <%= @listen %>;
 
-<% @server_properties.each do |property| -%>
-  <%= property %>;
+<% if @server_properties -%>
+  <%= @server_properties.sort.join(";\n  ") -%>;
 <% end -%>
 
   location / {
     proxy_pass <%= @proxy_pass %>;
-<% @location_properties.each do |property| -%>
-    <%= property %>;
+<% if @location_properties -%>
+    <%= @location_properties.sort.join(";\n    ") -%>;
 <% end -%>
   }
 }
