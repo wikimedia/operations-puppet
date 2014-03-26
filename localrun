@@ -1,0 +1,27 @@
+#!/bin/bash
+usage ()
+{
+  echo "${0} -- running puppet locally"
+  echo ''
+  echo '        ./localrun [lint] [-h] -- runs puppet against local host'
+  echo ''
+  exit
+}
+
+PUPPET_BINARY=/usr/bin/puppet
+#test -x $PUPPET_BINARY || { echo "$PUPPET_BINARY not installed";
+#        if [ "$1" = "-h" ]; then exit 0;
+#        else usage; exit 1; fi; }
+
+if [ "$1" == "-h" ]
+  then
+    usage
+    exit 0
+fi
+
+if [ "$1" == "lint" ]
+  then
+  "$PWD""/linter"
+fi
+
+puppet apply --modulepath=modules $@ manifests/site.pp 2>&1 | grep  -v 'exported resources'
