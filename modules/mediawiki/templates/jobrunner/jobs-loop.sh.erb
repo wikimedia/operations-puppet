@@ -218,9 +218,9 @@ else
 
 	# Lower priority for Parsoid dependency changes (template / file
 	# updates)
-	(runJobsLoopService "ParsoidCacheUpdateJobOnDependencyChange" "n"  $((<%= procs_per_iobound_type %> * 2)) ) &
+	(runJobsLoopService "ParsoidCacheUpdateJobOnDependencyChange" "n"  $((<%= procs_per_iobound_type %> * 3)) ) &
 	# High priority for updates to edited pages themselves
-	(runJobsLoopService "ParsoidCacheUpdateJobOnEdit" "n"  $((<%= procs_per_iobound_type %> * 2)) ) &
+	(runJobsLoopService "ParsoidCacheUpdateJobOnEdit" "n"  $((<%= procs_per_iobound_type %> * 3)) ) &
 
 	# GWToolset
 	(runJobsLoopService "gwtoolsetUploadMetadataJob gwtoolsetUploadMediafileJob gwtoolsetGWTFileBackendCleanupJob" "n"  <%= procs_per_iobound_type %> ) &
