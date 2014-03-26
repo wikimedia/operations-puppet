@@ -53,3 +53,26 @@ class role::mariadb::tendril {
         tmpdir   => '/a/tmp',
     }
 }
+
+# MariaDB 10 delayed slaves replicating all shards
+class role::mariadb::dbstore {
+
+    $cluster = 'mysql'
+
+    system::role { 'role::mariadb::dbstore':
+        description => 'Delayed Slave',
+    }
+
+    # No packages yet! MariaDB 10 beta tarball in /opt
+    #include mariadb::packages
+
+    include passwords::misc::scripts
+
+    class { 'mariadb::config':
+        prompt   => 'DBSTORE',
+        config   => 'mariadb/dbstore.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/a/sqldata',
+        tmpdir   => '/a/tmp',
+    }
+}

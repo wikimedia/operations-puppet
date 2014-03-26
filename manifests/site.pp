@@ -802,6 +802,11 @@ node 'db1044.eqiad.wmnet' {
     include role::mariadb::tendril
 }
 
+node /^dbstore100(1|2)\.eqiad\.wmnet/ {
+    include standard
+    include role::mariadb::dbstore
+}
+
 node 'dobson.wikimedia.org' {
     interface::ip { 'dns::recursor':
         interface => 'eth0',

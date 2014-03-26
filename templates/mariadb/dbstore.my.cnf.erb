@@ -1,0 +1,58 @@
+# destore delayed slaves
+
+# Please use separate .cnf templates for each type of server.
+
+[client]
+port   = 3306
+socket = /tmp/mysql.sock
+
+[mysqld]
+
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+user      = mysql
+socket    = /tmp/mysql.sock
+port      = 3306
+datadir   = <%= @datadir %>
+tmpdir    = <%= @tmpdir %>
+server_id = <%= @server_id %>
+read_only = 1
+
+max_connections    = 50
+max_allowed_packet = 16M
+connect_timeout    = 3
+query_cache_size   = 0
+query_cache_type   = 0
+event_scheduler    = 1
+user_stat          = 1
+
+table_open_cache       = 50000
+table_definition_cache = 50000
+
+character_set_server     = binary
+character_set_filesystem = binary
+collation_server         = binary
+
+transaction-isolation          = READ-COMMITTED
+innodb_file_per_table          = 1
+innodb_buffer_pool_size        = 48G
+innodb_log_file_size           = 4G
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method            = O_DIRECT
+innodb_thread_concurrency      = 0
+innodb_io_capacity             = 1000
+innodb_read_io_threads         = 16
+innodb_write_io_threads        = 8
+innodb_stats_sample_pages      = 16
+innodb_stats_method            = nulls_unequal
+innodb_locks_unsafe_for_binlog = 1
+aria_pagecache_buffer_size     = 32G
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/
