@@ -24,11 +24,13 @@ class role::archiva {
     }
 
     # Set up simple Nginx reverse proxy port 80 to port $archiva_port
-    $listen     = 80
-    $proxy_pass = "http://127.0.0.1:${archiva_port}/"
     class { '::nginx':
         require => Class['::archiva'],
     }
+    $listen     = 80
+    $proxy_pass = "http://127.0.0.1:${archiva_port}/"
+    # need large body size to allow for .jar deployment
+    $server_properties = ['client_max_body_size 256M']
     nginx::site { 'archiva':
         content => template('nginx/sites/simple-proxy.erb'),
         require => Class['::nginx'],
