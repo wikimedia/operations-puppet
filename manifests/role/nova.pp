@@ -420,6 +420,11 @@ class role::nova::compute {
 	include role::nova::wikiupdates,
  		role::nova::common
 
+        system::role { 'role::nova::compute':
+                ensure      => 'present',
+                description => 'openstack nova compute node',
+        }
+
         # Neutron roles configure their own interfaces.
 	if ( $use_neutron == false ) {
 		interface::tagged { $novaconfig["network_flat_interface"]:
