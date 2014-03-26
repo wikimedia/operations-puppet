@@ -32,6 +32,21 @@ class mariadb::config(
         target => '/etc/my.cnf',
     }
 
+    # Include these manually. If we're testing on systems with tarballs
+    # instead of debs, the user won't exist.
+    group { 'mysql':
+        ensure => present,
+    }
+
+    user { 'mysql':
+        ensure     => present,
+        gid        => 'mysql',
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        system     => true,
+        managehome => false,
+    }
+
     file { "$datadir":
         ensure  => directory,
         owner   => 'mysql',
