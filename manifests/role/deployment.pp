@@ -110,8 +110,9 @@ class role::deployment::config {
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins',
     },
     'analytics/kraken'               => {
-        'grain'    => 'analytics-kraken',
-        'upstream' => 'https://gerrit.wikimedia.org/r/p/analytics/kraken',
+        'grain'          => 'analytics-kraken',
+        'gitfat_enabled' => true,
+        'upstream'       => 'https://gerrit.wikimedia.org/r/p/analytics/kraken',
     },
     'scholarships/scholarships'      => {
         'grain'    => 'scholarships',
