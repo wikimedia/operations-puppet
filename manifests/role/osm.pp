@@ -30,6 +30,11 @@ class role::osm::master {
         includes => 'tuning.conf'
     }
 
+    system::role { 'role::osm::master':
+        ensure      => 'present',
+        description => 'openstreetmaps db master',
+    }
+
     postgresql::spatialdb { 'gis': }
     osm::populatedb { 'gis':
         input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
@@ -80,6 +85,11 @@ class role::osm::slave {
     # Note: This is here to illustrate the fact that the slave is expected to
     # have the same dbs as the master.
     #postgresql::spatialdb { 'gis': }
+
+    system::role { 'role::osm::slave':
+        ensure      => 'present',
+        description => 'openstreetmaps db slave',
+    }
 
     class {'postgresql::slave':
         master_server    => $osm_master,
