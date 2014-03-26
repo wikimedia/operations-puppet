@@ -376,6 +376,7 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
     include admin::role::ops
+    include admin::role::parsoid
     $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main': }
@@ -2850,6 +2851,7 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     include standard
     include admins::roots
     include admins::parsoid
+    include admin::role::parsoid
     include role::parsoid::production
 
     class { 'lvs::realserver':
