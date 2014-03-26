@@ -40,4 +40,14 @@ class admin::users::dev {
         ssh_keys => ['ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3k6XjeMEmIHonzsmRBbHCkeVhxS6oObibs3PPP4DAO3WYXPIGBye+OpPtCpSZUuVp4t/GwnqIHCM0MrlVoFKeFcC3tHtVwmxhIsTp/RQRPjjKNdH60Iz6RlDTZ3TJDaYkYOiW7spdCONLzkYpOgkiph973aMNQ3D0vS87jht1apUl06bkxYeC+Bziq4DSBVNqpGKa+NqSYOvtS1kapwCYTtRm6YASb0YeMXzTUyfClgvq86h9XLsbx7klWgjHfKbfi/yheAm5EY6jxicnYaVAmy2gq2ERO9e2dVbpJihHmhPTpdRba5Eln0CoPkWrLVX0jyiAVB4biRtYoTtxGDPww=='],
     }
 
+    @admin::user { 'gwicke':
+        realname => 'Gabriel Wicke',
+        uid      => 622,
+    }
+
+    @admin::user { 'ssastry': #RT 5512
+        realname => 'Subramanya Sastry',
+        uid      => 648,
+        gid      => $default_gid,
+    }
 }

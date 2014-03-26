@@ -18,4 +18,9 @@ class admin::groups::misc {
                       ],
         members    => ['demon', 'krinkle', 'reedy', 'dsc', 'mholmquist']
     }
+
+    @admin::group { 'parsoid':
+        gid        => 510,
+        members    => ['gwicke', 'ssastry'],
+    }
 }
