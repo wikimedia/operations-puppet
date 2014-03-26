@@ -24,7 +24,7 @@ class ldap::role::config::labs {
         'script_user_pass'     => $passwords::ldap::labs::script_user_pass,
         'user_id_attribute'    => 'uid',
         'tenant_id_attribute'  => 'cn',
-        'ca'                   => 'RapidSSL_CA.pem',
+        'ca'                   => 'Equifax_Secure_CA.pem',
         'wikildapdomain'       => 'labs',
         'wikicontrollerapiurl' => 'https://wikitech.wikimedia.org/w/api.php',
         'sudobasedn'           => $sudobasedn,
