@@ -96,6 +96,12 @@ class ocg (
         notify  => Service['ocg'],
     }
 
+    file { ['/srv/deployment','/srv/deployment/ocg']:
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+    }
+
     file { $temp_dir:
         ensure  => directory,
         owner   => 'ocg',
