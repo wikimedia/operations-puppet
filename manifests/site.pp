@@ -798,6 +798,7 @@ node 'db1014.eqiad.wmnet' {
 }
 
 node 'db1044.eqiad.wmnet' {
+    include standard
     include role::mariadb::tendril
 }
 
