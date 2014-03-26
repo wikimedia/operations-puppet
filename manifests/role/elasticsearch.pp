@@ -81,6 +81,11 @@ class role::elasticsearch::config {
 #
 class role::elasticsearch::server inherits role::elasticsearch::config {
 
+    system::role { 'role::elasticsearch::server':
+        ensure      => 'present',
+        description => 'elasticsearch server',
+    }
+
     # Install
     class { '::elasticsearch':
         multicast_group      => $multicast_group,
