@@ -31,7 +31,7 @@ class applicationserver::hhvm {
     }
 
     exec { '/usr/local/sbin/repack-libmemcached10':
-        onlyif => '/usr/bin/dpkg-deb -I /var/cache/apt/archives/libmemcached10_1.0.8-1~wmf+precise1_amd64.deb 2>/dev/null | /bin/grep -q Conflicts',
+        unless => '/usr/local/sbin/repack-libmemcached10 --verify',
         before => Package['hhvm-fastcgi'],
     }
 
@@ -58,14 +58,14 @@ class applicationserver::hhvm {
         notify  => Service['hhvm'],
     }
 
-    file { '/etc/init.d/hhvm-fastcgi':
+    file { [ '/etc/init.d/hhvm-fastcgi', '/etc/init.d/hhvm' ]:
         ensure  => absent,
         require => Package['hhvm-fastcgi'],
     }
 
     file { '/etc/init/hhvm':
         source  => 'puppet:///modules/applicationserver/hhvm/hhvm.upstart',
-        require => File['/etc/init.d/hhvm-fastcgi', '/etc/hhvm/server.hdf'],
+        require => File['/etc/init.d/hhvm-fastcgi', '/etc/init.d/hhvm', '/etc/hhvm/server.hdf'],
     }
 
     service { 'hhvm':
