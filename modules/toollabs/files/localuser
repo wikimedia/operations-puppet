@@ -5,6 +5,12 @@
 # from:   toollabs::mailrelay
 #
 
+# Mail for root is handled by the maintainers of the admin service
+# group.
+if [ "x$1" = "xroot" ]; then
+    exec maintainers tools.admin
+fi
+
 echo $(
   /usr/bin/ldapsearch -LLL -x -b "uid=$1,ou=people,dc=wikimedia,dc=org" mail |
   	/bin/sed -ne '/^mail: \(.*\)/{;s//\1,/;p;}'
