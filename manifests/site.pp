@@ -116,10 +116,11 @@ node 'analytics1004.eqiad.wmnet' {
 
 # analytics1009 is the Hadoop standby NameNode
 node 'analytics1009.eqiad.wmnet' {
+    $nagios_group = 'analytics-eqiad'
+    # ganglia cluster name.
+    $cluster = 'analytics'
     # analytics1009 is analytics Ganglia aggregator for Row A
     $ganglia_aggregator = true
-    include role::analytics
-
     include standard
     include admins::roots
 
@@ -133,10 +134,11 @@ node 'analytics1009.eqiad.wmnet' {
 # analytics1010 is the Hadoop master node
 # (primary NameNode, ResourceManager, etc.)
 node 'analytics1010.eqiad.wmnet' {
+    $nagios_group = 'analytics-eqiad'
+    # ganglia cluster name.
+    $cluster = 'analytics'
     # analytics1010 is analytics Ganglia aggregator for Row B
     $ganglia_aggregator = true
-    include role::analytics
-
     include standard
     include admins::roots
 
@@ -153,12 +155,13 @@ node 'analytics1010.eqiad.wmnet' {
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
 node /analytics10(1[1-9]|20).eqiad.wmnet/ {
+    $nagios_group = 'analytics-eqiad'
+    # ganglia cluster name.
+    $cluster = 'analytics'
     # analytics1014 is analytics Ganglia aggregator for Row C
     if $::hostname == 'analytics1014' {
         $ganglia_aggregator = true
     }
-    include role::analytics
-
     include standard
     include admins::roots
 
@@ -171,13 +174,13 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
 
 # analytics1021 and analytics1022 are Kafka Brokers.
 node /analytics102[12]\.eqiad\.wmnet/ {
+    $nagios_group = 'analytics-eqiad'
+    # ganglia cluster name.
+    $cluster = 'analytics'
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
     # addresses.
     interface::add_ip6_mapped { 'main': }
-
-    include role::analytics
-
     include standard
     include admins::roots
 
@@ -187,8 +190,9 @@ node /analytics102[12]\.eqiad\.wmnet/ {
 
 # analytics1023-1025 are zookeeper server nodes
 node /analytics102[345].eqiad.wmnet/ {
-    include role::analytics
-
+    $nagios_group = 'analytics-eqiad'
+    # ganglia cluster name.
+    $cluster = 'analytics'
     include standard
     include admins::roots
 
@@ -198,14 +202,14 @@ node /analytics102[345].eqiad.wmnet/ {
 
 # analytics1026 is a Hadoop client and job submitter.
 node 'analytics1026.eqiad.wmnet' {
-    include role::analytics
-
+    $nagios_group = 'analytics-eqiad'
+    # ganglia cluster name.
+    $cluster = 'analytics'
     include standard
     include admins::roots
 
     # include analytics user accounts
     include role::analytics::users
-
     include role::analytics::kraken
     # Including kraken import and hive partition cron jobs.
     include role::analytics::kraken::jobs::import::pagecounts
@@ -217,8 +221,9 @@ node 'analytics1026.eqiad.wmnet' {
 # (Hue, Oozie, Hive, etc.)
 
 node 'analytics1027.eqiad.wmnet' {
-    include role::analytics
-
+    $nagios_group = 'analytics-eqiad'
+    # ganglia cluster name.
+    $cluster = 'analytics'
     include standard
     include admins::roots
 

@@ -7,9 +7,6 @@
 # All analytics nodes should include this.
 class role::analytics {
     system::role { 'role::analytics': description => 'analytics server' }
-    $nagios_group = 'analytics-eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics'
 
     if !defined(Package['openjdk-7-jdk']) {
         package { 'openjdk-7-jdk':
