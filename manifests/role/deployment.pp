@@ -106,8 +106,9 @@ class role::deployment::config {
         'service_name' => 'puppet',
     },
     'elasticsearch/plugins'          => {
-        'grain'    => 'elasticsearchplugins',
-        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins',
+        'grain'          => 'elasticsearchplugins',
+        'gitfat_enabled' => true,
+        'upstream'       => 'https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins',
     },
     'analytics/kraken'               => {
         'grain'          => 'analytics-kraken',
