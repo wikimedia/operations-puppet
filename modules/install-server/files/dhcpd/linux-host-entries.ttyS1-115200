@@ -4115,6 +4115,11 @@ host stat1002 {
 	fixed-address stat1002.eqiad.wmnet;
 }
 
+host stat1003 {
+	hardware ethernet F0:1F:AF:E8:BA:E3;
+	fixed-address stat1003.wikimedia.org;
+}
+
 host strontium {
 	hardware ethernet 18:03:73:f4:ef:51;
 	fixed-address strontium.eqiad.wmnet;
