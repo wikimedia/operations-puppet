@@ -6,7 +6,18 @@
 ########################################################################
 
 
-class misc::package-builder {
+# == Class: misck::package-builder
+#
+# Installs pbuilder/cowbuilder images
+#
+# === Parameters:
+#
+# [*pbuilder_root]
+#  Base path to create images in. Default: '/var/cache/pbuilder'
+#
+class misc::package-builder(
+    $pbuilder_root = '/var/cache/pbuilder'
+){
 
     system::role { 'misc::package-builder': description => 'Debian package builder' }
 
@@ -65,6 +76,9 @@ class misc::package-builder {
     #  set by default which means the distribution will be interpolated from the
     #  defined title (see *namevar*).
     #
+    # [*pbuilder_root*]
+    #  Base path for pbuilder images. Defaults to '/var/cache/pbuilder'
+    #
     # === Examples
     #
     # Creating an image for cowbuilder and the raring distribution:
@@ -80,7 +94,11 @@ class misc::package-builder {
     #   $images = [ 'cowbuilder-precise', 'cowbuilder-lucid' ],
     #   image { $images: }
     #
-    define image( $pbuilder=undef, $dist=undef ) {
+    define image(
+        $pbuilder=undef,
+        $dist=undef,
+        $pbuilder_root='/var/cache/pbuilder'
+    ) {
         if $pbuilder {
             $realpbuilder = $pbuilder
         } else {
@@ -116,8 +134,6 @@ class misc::package-builder {
             }
         }
 
-        $pbuilder_root = '/var/cache/pbuilder'
-
         $othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe'"
         $components = "--components 'main universe'"
         $image_file = "${pbuilder_root}/${file_prefix}${realdist}.${file_ext}"
@@ -146,6 +162,9 @@ class misc::package-builder {
     # [*defaultdist*]
     #  The default distribution to setup for the builder. Defaults to 'lucid'.
     #
+    # [*pbuilder_root*]
+    #  Base path for pbuilder images. Defaults to '/var/cache/pbuilder'
+    #
     # === Examples
     #
     # Instancing cowbuilder for 'precise':
@@ -160,7 +179,11 @@ class misc::package-builder {
     #   pbuilder { 'cowbuilder': }
     #   pbuilder { 'pbuilder': }
     #
-    define pbuilder( $dists=['lucid', 'precise'], $defaultdist='lucid') {
+    define pbuilder(
+        $dists=['lucid', 'precise'],
+        $defaultdist='lucid',
+        $pbuilder_root='/var/cache/pbuilder'
+    ) {
         $pbuilder = $title
         notify { "Calling package builder '${pbuilder}' on distributions '${dists}'": }
 
@@ -186,16 +209,20 @@ class misc::package-builder {
             }
         }
 
-        file { "/var/cache/pbuilder/base.${file_ext}":
+        file { "${pbuilder_root}/base.${file_ext}":
             ensure  => link,
-            target  => "/var/cache/pbuilder/${file_prefix}${defaultdist}.${file_ext}",
+            target  => "${pbuilder_root}/${file_prefix}${defaultdist}.${file_ext}",
             require => Image["${title}-${defaultdist}"],
         }
     }
 
     include packages, defaults
 
-    pbuilder { 'cowbuilder': }
-    pbuilder { 'pbuilder': }
+    pbuilder { 'cowbuilder':
+        pbuilder_root => $pbuilder_root,
+    }
+    pbuilder { 'pbuilder':
+        pbuilder_root => $pbuilder_root,
+    }
 
 }
