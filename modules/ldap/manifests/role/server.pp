@@ -18,7 +18,7 @@ class ldap::role::server::labs {
             $ca_name = 'wmf-labs.pem'
         }
         'production': {
-            $ca_name = 'RapidSSL_CA.pem'
+            $ca_name = 'Equifax_Secure_CA.pem'
                 case $::hostname {
                     'virt0': {
                         $certificate = 'virt0.wikimedia.org'
