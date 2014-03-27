@@ -27,5 +27,5 @@ class role::beta::natfix {
         description => 'Server has beta NAT fixup'
     }
 
-    include beta::natfix
+    include ::beta::natfix
 }
