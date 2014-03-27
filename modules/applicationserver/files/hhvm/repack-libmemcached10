@@ -19,6 +19,11 @@ if dpkg-deb -I /var/cache/apt/archives/libmemcached10_1.0.8-1~wmf+precise1_amd64
     exit 0
 fi
 
+if [ $1 = "--verify" ] ; then
+    echo "Patch not applied."
+    exit 1
+fi
+
 mkdir -p "$BASE"
 rm -rf "$DIR"
 dpkg-deb -x "$DEB" "$DIR"
