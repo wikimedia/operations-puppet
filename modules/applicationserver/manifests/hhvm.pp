@@ -63,7 +63,7 @@ class applicationserver::hhvm {
         require => Package['hhvm-fastcgi'],
     }
 
-    file { '/etc/init/hhvm':
+    file { '/etc/init/hhvm.conf':
         source  => 'puppet:///modules/applicationserver/hhvm/hhvm.upstart',
         require => File['/etc/init.d/hhvm-fastcgi', '/etc/init.d/hhvm', '/etc/hhvm/server.hdf'],
     }
@@ -71,6 +71,6 @@ class applicationserver::hhvm {
     service { 'hhvm':
         ensure   => running,
         provider => upstart,
-        require  => File['/etc/init/hhvm'],
+        require  => File['/etc/init/hhvm.conf'],
     }
 }
