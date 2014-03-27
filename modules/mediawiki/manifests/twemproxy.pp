@@ -1,6 +1,11 @@
+# == Class mediawiki::twemproxy
+#
+# Installs Twitter memcached proxy ensuring it is always the latest version
+# and always running.
+#
 class mediawiki::twemproxy {
   package { 'twemproxy':
-    ensure => latest;
+    ensure => latest,
   }
 
   generic::upstart_job { 'twemproxy':
@@ -8,9 +13,12 @@ class mediawiki::twemproxy {
       start   => true,
   }
 
-  service { twemproxy:
-    require => [ Package[twemproxy], Generic::Upstart_job[twemproxy] ],
+  service { 'twemproxy':
+    ensure   => running,
     provider => upstart,
-    ensure => running;
+    require  => [
+        Package['twemproxy'],
+        Generic::Upstart_job['twemproxy'],
+    ],
   }
 }
