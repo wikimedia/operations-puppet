@@ -211,8 +211,14 @@ node 'analytics1026.eqiad.wmnet' {
     # include analytics user accounts
     include role::analytics::users
     include role::analytics::kraken
+
     # Including kraken import and hive partition cron jobs.
+
+    # Imports pagecount files from dumps.wikimedia.org into Hadoop
     include role::analytics::kraken::jobs::import::pagecounts
+    # Imports webrequest logs from Kafka into Hadoop (via Camus)
+    include role::analytics::kraken::jobs::import::webrequest
+    # Creates hive partitions on all data in HDFS /wmf/data/external
     include role::analytics::kraken::jobs::hive::partitions::external
 }
 
