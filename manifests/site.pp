@@ -118,6 +118,8 @@ node 'analytics1004.eqiad.wmnet' {
 node 'analytics1009.eqiad.wmnet' {
     # analytics1009 is analytics Ganglia aggregator for Row A
     $ganglia_aggregator = true
+    include role::analytics
+
     include standard
     include admins::roots
 
@@ -133,6 +135,8 @@ node 'analytics1009.eqiad.wmnet' {
 node 'analytics1010.eqiad.wmnet' {
     # analytics1010 is analytics Ganglia aggregator for Row B
     $ganglia_aggregator = true
+    include role::analytics
+
     include standard
     include admins::roots
 
@@ -153,6 +157,8 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
     if $::hostname == 'analytics1014' {
         $ganglia_aggregator = true
     }
+    include role::analytics
+
     include standard
     include admins::roots
 
@@ -169,6 +175,9 @@ node /analytics102[12]\.eqiad\.wmnet/ {
     # other DCs can address without public IPv4
     # addresses.
     interface::add_ip6_mapped { 'main': }
+
+    include role::analytics
+
     include standard
     include admins::roots
 
@@ -178,6 +187,8 @@ node /analytics102[12]\.eqiad\.wmnet/ {
 
 # analytics1023-1025 are zookeeper server nodes
 node /analytics102[345].eqiad.wmnet/ {
+    include role::analytics
+
     include standard
     include admins::roots
 
@@ -187,6 +198,8 @@ node /analytics102[345].eqiad.wmnet/ {
 
 # analytics1026 is a Hadoop client and job submitter.
 node 'analytics1026.eqiad.wmnet' {
+    include role::analytics
+
     include standard
     include admins::roots
 
@@ -204,6 +217,8 @@ node 'analytics1026.eqiad.wmnet' {
 # (Hue, Oozie, Hive, etc.)
 
 node 'analytics1027.eqiad.wmnet' {
+    include role::analytics
+
     include standard
     include admins::roots
 
