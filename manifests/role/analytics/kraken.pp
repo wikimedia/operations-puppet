@@ -45,6 +45,23 @@ class role::analytics::kraken {
 
 }
 
+# == Class role::analytics::kraken::jobs::import::webrequest
+# Submits Camus MapReduce job hourly to import
+# webrequest logs from Kafka.
+class role::analytics::kraken::jobs::import::webrequest {
+    require role::analytics::kraken
+
+    $camus_jar        = "${::role::analytics::kraken::path}/lib/camus.jar"
+    $camus_properties = "${::role::analytics::kraken::path}/kraken-etl/conf/camus.webrequest.properties"
+    $camus_log_file   = "${::role::analytics::kraken::log_dir}/camus-webrequest-import.log"
+
+    cron { 'kraken-import-hourly-webrequests':
+        command => "${::role::analytics::kraken::path}/kraken-etl/camus --job-name camus-webrequest-import ${camus_properties} >> ${camus_log_file} 2>&1",
+        user    => 'hdfs',  # we might want to use a different user for this, not sure.
+        minute  => 8,
+    }
+}
+
 # == Class role::analytics::kraken::import::pagecounts
 # Handles importing of hourly pagecount statistics into
 # HDFS and creating Hive partition tables.
