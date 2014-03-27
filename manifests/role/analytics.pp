@@ -11,13 +11,6 @@ class role::analytics {
     # ganglia cluster name.
     $cluster = 'analytics'
 
-    include standard
-    include admins::roots
-    # Include stats system user to
-    # run automated jobs and for file
-    # ownership.
-    include misc::statistics::user
-
     if !defined(Package['openjdk-7-jdk']) {
         package { 'openjdk-7-jdk':
             ensure => 'installed',
