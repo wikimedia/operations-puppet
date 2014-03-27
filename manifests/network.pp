@@ -50,6 +50,7 @@ class network::constants {
                     '10.4.1.58',
                     '10.4.1.84',
                     '10.4.0.85',
+                    '10.68.16.5',  # bastion-eqiad.wmflabs.org
                     ],
             'monitoring_hosts' => [
                     '208.80.153.210',
