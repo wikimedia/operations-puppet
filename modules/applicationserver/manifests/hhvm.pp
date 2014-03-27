@@ -5,7 +5,6 @@
 # work-in-progress. It is designed to help test HHVM in Labs.
 #
 class applicationserver::hhvm {
-
     if $::realm != 'labs' {
         # The HHVM packages that are currently available do not meet the
         # standards of our production environment, so their use is currently
@@ -54,16 +53,24 @@ class applicationserver::hhvm {
 
     # FIXME: This should be a parametrized template.
     file { '/etc/hhvm/server.hdf':
-        ensure  => file,
         source  => 'puppet:///modules/applicationserver/hhvm/server.hdf',
         require => Package['hhvm-fastcgi'],
         notify  => Service['hhvm'],
     }
 
+    file { '/etc/init.d/hhvm-fastcgi':
+        ensure  => absent,
+        require => Package['hhvm-fastcgi'],
+    }
+
+    file { '/etc/init/hhvm':
+        source  => 'puppet:///modules/applicationserver/hhvm/hhvm.upstart',
+        require => File['/etc/init.d/hhvm-fastcgi', '/etc/hhvm/server.hdf'],
+    }
+
     service { 'hhvm':
         ensure   => running,
-        provider => debian,
-        enable   => true,
-        require  => File['/etc/hhvm/server.hdf'],
+        provider => upstart,
+        require  => File['/etc/init/hhvm'],
     }
 }
