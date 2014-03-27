@@ -57,6 +57,11 @@ accept
 
 begin routers
 
+postmaster_mail:
+  driver = redirect
+  condition = ${if forany{root:postmaster}{eq{$item}{$local_part}}}
+  data = <%= instanceproject %>.admin
+
 tool_fallback:
   driver = redirect
   local_part_prefix = <%= instanceproject %>.
