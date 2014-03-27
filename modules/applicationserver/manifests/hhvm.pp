@@ -50,11 +50,17 @@ class applicationserver::hhvm {
     apache_module { 'apache_mod_alias_for_hhvm': name => 'alias', }
     apache_module { 'apache_mod_fastcgi_for_hhvm': name => 'fastcgi', }
 
+    file { '/var/run/hhvm':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+    }
 
     # FIXME: This should be a parametrized template.
     file { '/etc/hhvm/server.hdf':
         source  => 'puppet:///modules/applicationserver/hhvm/server.hdf',
-        require => Package['hhvm-fastcgi'],
+        require => [ Package['hhvm-fastcgi'], File['/var/run/hhvm'] ],
         notify  => Service['hhvm'],
     }
 

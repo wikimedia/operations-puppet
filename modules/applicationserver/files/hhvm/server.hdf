@@ -30,7 +30,7 @@ Log {
 
 Repo {
   Central {
-    Path = /var/run/hhvm.hhbc.sq3
+    Path = /var/run/hhvm/hhvm.hhbc.sq3
   }
 }
 
