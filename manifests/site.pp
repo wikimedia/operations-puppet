@@ -621,7 +621,7 @@ node /^db10(43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|34|36|60|63)\.eqiad\.wmnet/ {
+node /^db10(02|09|18|36|60|63)\.eqiad\.wmnet/ {
     class { 'role::coredb::s2':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -661,7 +661,7 @@ node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(07|28|33|39|41)\.eqiad\.wmnet/ {
+node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
     class { 'role::coredb::s7':
         innodb_file_per_table => true,
         mariadb               => true,
