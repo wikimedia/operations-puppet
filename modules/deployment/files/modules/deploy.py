@@ -263,7 +263,15 @@ def _update_gitmodules(config, location, shadow=False):
     gitmodules_list = __salt__['file.find'](location, name='.gitmodules')
     for gitmodules in gitmodules_list:
         gitmodules_dir = os.path.dirname(gitmodules)
-        # First ensure we're working with an unmodified .gitmodules file
+        # Check to see if this is even a repo with submodules. Some repos
+        # have git repositories checked into the repository and kept the
+        # git configuration files when doing so. This will cause our submodule
+        # calls to fail.
+        cmd = '/usr/bin/git submodule status --quiet'
+        status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
+        if status != 0:
+            continue
+        # Ensure we're working with an unmodified .gitmodules file
         cmd = '/usr/bin/git checkout .gitmodules'
         status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
         if status != 0:
