@@ -242,6 +242,7 @@ class role::ci::slave::labs::common {
     # configured in labs LDAP.  Thus, we only need to install the dependencies
     # needed by the slave agent.
     include jenkins::slave::requisites
+
 }
 
 class role::ci::slave::browsertests {
@@ -323,6 +324,14 @@ class role::ci::slave::labs {
     if $::realm != 'labs' {
         fail("role::ci::slave::labs must only be applied in labs")
     }
+
+    class { 'role::ci::slave::browsertests':
+        require => [
+            Class['role::ci::slave::labs::common'],  # /mnt
+            Class['contint::packages::labs'],  # realize common packages first
+        ]
+    }
+
 
     include role::ci::slave::labs::common,
         role::package::builder::labs,

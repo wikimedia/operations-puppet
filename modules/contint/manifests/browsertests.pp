@@ -9,11 +9,13 @@ class contint::browsertests(
   $docroot = '/srv/localhost/browsertests',
 ){
 
+    # Ship several packages such as php5-sqlite or ruby1.9.3
+    include contint::packages
+
     # Dependencies for qa/browsertests.git
     package { [
         'ruby-bundler',  # installer for qa/browsertests.git
         'rubygems',      # dependency of ruby-bundler
-        'ruby1.9.3',     # state of the art ruby
         'phantomjs',     # headless browser
     ]:
         ensure => present
@@ -25,7 +27,6 @@ class contint::browsertests(
         'firefox',
         'xvfb',  # headless testing
         'wikimedia-task-appserver',
-        'php5-sqlite',  # MediaWiki DB backend
         'libsikuli-script-java',  # bug 54393
         ]: ensure => present
     }
