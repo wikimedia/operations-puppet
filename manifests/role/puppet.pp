@@ -76,4 +76,8 @@ class role::puppet::self {
 			server => $server,
 		}
 	}
+
+    if $::realm == 'labs' {
+        include puppet::self::geoip
+    }
 }
