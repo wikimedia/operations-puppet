@@ -52,6 +52,9 @@ class role::mariadb::tendril {
         datadir  => '/a/sqldata',
         tmpdir   => '/a/tmp',
     }
+
+    include mariadb::monitor_disk
+    include mariadb::monitor_process
 }
 
 # MariaDB 10 delayed slaves replicating all shards
@@ -75,4 +78,7 @@ class role::mariadb::dbstore {
         datadir  => '/a/sqldata',
         tmpdir   => '/a/tmp',
     }
+
+    include mariadb::monitor_disk
+    include mariadb::monitor_process
 }
