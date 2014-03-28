@@ -36,7 +36,7 @@ class role::package::builder::labs {
     $pbuilder_root_labs = '/mnt/pbuilder'
 
     file { $pbuilder_root_labs:
-        ensure  => present,
+        ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0775',
