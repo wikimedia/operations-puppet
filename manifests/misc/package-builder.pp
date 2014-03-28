@@ -122,6 +122,8 @@ class misc::package-builder(
 
         require packages
 
+        $apt_cache = "--aptcache '${pbuilder_root}/aptcache'"
+        $build_place = "--buildplace '${pbuilder_root}/build'"
         case $realpbuilder {
             'cowbuilder': {
                 $base_option = '--basepath'
@@ -130,6 +132,7 @@ class misc::package-builder(
                 $packages    = [ 'cowbuilder' ]
             }
             'pbuilder': {
+                $build_place = "--buildplace '${pbuilder_root}/build'"
                 $base_option = '--basetgz'
                 $file_prefix = ''
                 $file_ext    = 'tgz'
@@ -145,7 +148,7 @@ class misc::package-builder(
         $image_file = "${pbuilder_root}/${file_prefix}${realdist}.${file_ext}"
 
         exec { "imaging ${realdist} for ${realpbuilder}":
-            command   => "${realpbuilder} --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
+            command   => "${realpbuilder} ${apt_cache} ${build_place} --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
             creates   => $image_file,
             path      => '/bin:/sbin:/usr/bin:/usr/sbin',
             timeout   => 600,
