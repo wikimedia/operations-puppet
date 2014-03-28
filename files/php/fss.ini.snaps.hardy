@@ -1,4 +1,4 @@
 ; This file is managed by Puppet!
 
-# Enable FastStringSearch extension
+; Enable FastStringSearch extension
 extension=fss.so
