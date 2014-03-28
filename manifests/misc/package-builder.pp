@@ -122,7 +122,8 @@ class misc::package-builder(
 
         require packages
 
-        $apt_cache = "--aptcache '${pbuilder_root}/aptcache'"
+        $apt_cache_dir = "${pbuilder_root}"
+        $apt_cache = "--aptcache '${$apt_cache_dir}'"
         $build_place = "--buildplace '${pbuilder_root}/build'"
         case $realpbuilder {
             'cowbuilder': {
@@ -148,7 +149,7 @@ class misc::package-builder(
         $image_file = "${pbuilder_root}/${file_prefix}${realdist}.${file_ext}"
 
         exec { "imaging ${realdist} for ${realpbuilder}":
-            command   => "${realpbuilder} ${apt_cache} ${build_place} --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
+            command   => "/bin/mkdir -p ${apt_cache_dir}; ${realpbuilder} ${apt_cache} ${build_place} --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
             creates   => $image_file,
             path      => '/bin:/sbin:/usr/bin:/usr/sbin',
             timeout   => 600,
