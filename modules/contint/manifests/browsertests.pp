@@ -25,7 +25,6 @@ class contint::browsertests(
         'firefox',
         'xvfb',  # headless testing
         'wikimedia-task-appserver',
-        'php5-sqlite',  # MediaWiki DB backend
         'libsikuli-script-java',  # bug 54393
         ]: ensure => present
     }
