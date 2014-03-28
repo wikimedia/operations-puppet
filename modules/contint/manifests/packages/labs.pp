@@ -8,9 +8,6 @@ class contint::packages::labs {
 
     include contint::packages
 
-    # Let us create packages from Jenkins jobs
-    include misc::package-builder
-
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
     package { [
