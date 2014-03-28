@@ -43,7 +43,9 @@ class contint::packages::labs {
     }
 
     # Facebook Hiphop virtual machine
-    package { 'hhvm': ensure => present }
+    # Disabled 2014-03-28 -- hashar
+    # Cause too much of a mess because of conflicting libmemcached dependencies
+    #package { 'hhvm': ensure => present }
 
     # Bring tox/virtualenv... from pip  bug 44443
     # TODO: Reevaluate this once we switch to trusty. Maybe provider being apt
