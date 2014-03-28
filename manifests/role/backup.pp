@@ -103,6 +103,9 @@ class role::backup::director {
     bacula::director::fileset { 'svnroot-bak':
         includes => [ '/svnroot/bak' ]
     }
+    bacula::director::fileset { 'var-lib-archiva':
+        includes     => [ '/var/lib/archiva' ],
+    }
     bacula::director::fileset { 'var-lib-gerrit2-review_site-git':
         includes => [ '/var/lib/gerrit2/review_site/git' ]
     }
