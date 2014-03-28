@@ -25,9 +25,13 @@ class contint::browsertests(
         'firefox',
         'xvfb',  # headless testing
         'wikimedia-task-appserver',
-        'php5-sqlite',  # MediaWiki DB backend
         'libsikuli-script-java',  # bug 54393
         ]: ensure => present
+    }
+    if ! defined ( Package['php5-sqlite'] ) {
+        package { 'php5-sqlite':  # MediaWiki DB backend
+            ensure => present,
+        }
     }
 
     apache_module { 'browser_test_apache_mod_rewrite': name => 'rewrite' }

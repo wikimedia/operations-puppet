@@ -242,6 +242,11 @@ class role::ci::slave::labs::common {
     # configured in labs LDAP.  Thus, we only need to install the dependencies
     # needed by the slave agent.
     include jenkins::slave::requisites
+
+    class { 'role::ci::slave::browsertests':
+        require => $slash_mnt_require,
+    }
+
 }
 
 class role::ci::slave::browsertests {
