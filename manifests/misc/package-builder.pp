@@ -89,8 +89,9 @@ class misc::package-builder(
     # Creating an image for cowbuilder and the raring distribution:
     #
     #   image { 'raring image for cowbuilder':
-    #     pbuilder => 'cowbuilder',
-    #     dist    => 'raring',
+    #     pbuilder      => 'cowbuilder',
+    #     dist          => 'raring',
+    #     pbuilder_root => '/var/cache/pbuilder',
     #   }
     #
     # Using title interpolation to generate cowbuilder images for both
@@ -175,8 +176,9 @@ class misc::package-builder(
     # Instancing cowbuilder for 'precise':
     #
     #   pbuilder { 'cowbuilder':
-    #     dists => 'precise',
-    #     defaultdist => 'precise',
+    #     dists         => 'precise',
+    #     defaultdist   => 'precise',
+    #     pbuilder_root => '/var/cache/pbuilder',
     #   }
     #
     # Instancing both pbuilder and cowbuilder:
@@ -197,7 +199,8 @@ class misc::package-builder(
         # Craft unique image titles such as cowbuilder-precise
         $images = prefix($dists, "${pbuilder}-")
         image { $images:
-            pbuilder => $pbuilder,
+            pbuilder      => $pbuilder,
+            pbuilder_root => $pbuilder_root,
         }
 
         case $pbuilder {
