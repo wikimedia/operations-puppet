@@ -727,11 +727,6 @@ host db60 {
 	fixed-address db60.pmtpa.wmnet;
 }
 
-host db62 {
-	hardware ethernet D4:AE:52:7C:A6:FD;
-	fixed-address db62.pmtpa.wmnet;
-}
-
 host db63 {
 	hardware ethernet d4:ae:52:90:39:8c;
 	fixed-address db63.pmtpa.wmnet;
