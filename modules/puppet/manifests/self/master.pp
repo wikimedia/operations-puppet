@@ -20,6 +20,8 @@ class puppet::self::master($server) {
         }
     }
 
+    include puppet::self::geoip
+
     # If localhost, only bind to loopback.
     $bindaddress = $server ? {
         'localhost' => '127.0.0.1',
