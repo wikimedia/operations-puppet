@@ -148,7 +148,7 @@ class misc::package-builder(
         $image_file = "${pbuilder_root}/${file_prefix}${realdist}.${file_ext}"
 
         exec { "imaging ${realdist} for ${realpbuilder}":
-            command   => "/bin/mkdir -p ${apt_cache_dir}; ${realpbuilder} ${apt_cache} ${build_place} --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
+            command   => "/bin/mkdir -p ${apt_cache_dir}; ${realpbuilder} --create ${apt_cache} ${build_place} --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
             creates   => $image_file,
             path      => '/bin:/sbin:/usr/bin:/usr/sbin',
             timeout   => 600,
