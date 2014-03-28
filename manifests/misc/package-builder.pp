@@ -133,7 +133,6 @@ class misc::package-builder(
                 $packages    = [ 'cowbuilder' ]
             }
             'pbuilder': {
-                $build_place = "--buildplace '${pbuilder_root}/build'"
                 $base_option = '--basetgz'
                 $file_prefix = ''
                 $file_ext    = 'tgz'
