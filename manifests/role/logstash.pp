@@ -96,3 +96,31 @@ class role::logstash {
     }
 
 }
+
+# == Class: role::logstash::beta
+#
+# Provisions Logstash, Redis, and ElasticSearch for beta labs environment.
+#
+class role::logstash::beta {
+    require ::role::logstash
+
+    if $::realm != 'labs' {
+        fail('role::logstash::beta may only be deployed to Labs.')
+    }
+
+    $irc_name = $::logstash_irc_name ? {
+        undef => "logstash-${::instanceproject}",
+        default => $::logstash_irc_name,
+    }
+
+    logstash::input::irc { 'freenode':
+        user     => $irc_name,
+        nick     => $irc_name,
+        channels => ['#wikimedia-labs'],
+    }
+
+    logstash::conf { 'filter_irc_banglog':
+        source   => 'puppet:///files/logstash/filter-irc-banglog.conf',
+        priority => 50,
+    }
+}
