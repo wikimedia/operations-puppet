@@ -1,0 +1,15 @@
+input {
+  irc {
+    host      => "<%= @host %>"
+    port      => <%= @port %>
+    secure    => <%= @secure %>
+    user      => "<%= @user %>"
+<%- if @password -%>
+    password  => "<%= @password %>"
+<%- end -%>
+    nick      => "<%= @nick %>"
+    real      => "<%= @real %>"
+    channels  => [ "<%= @channels.join('", "') %>" ]
+    type      => "irc"
+  }
+}
