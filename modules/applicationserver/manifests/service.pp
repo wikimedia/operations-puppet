@@ -1,7 +1,6 @@
 # applicationserver::service
 
 class applicationserver::service {
-    Class['applicationserver::apache_packages'] -> Class['applicationserver::service']
     Class['applicationserver::config::base'] -> Class['applicationserver::service']
     include mediawiki::sync
 
@@ -26,8 +25,8 @@ class applicationserver::service {
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
         file { '/etc/init/ssh.override':
             ensure  => present,
-            owner   => root,
-            group   => root,
+            owner   => 'root',
+            group   => 'root',
             mode    => '0444',
             content => 'nice -10',
         }
