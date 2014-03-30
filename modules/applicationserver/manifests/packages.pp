@@ -10,7 +10,7 @@ class applicationserver::packages {
         'php5-xmlrpc',
         'php5',
         'php5-intl',
-        ]: ensure => latest;
+        ]: ensure => latest,
     }
     package { [
         'php-wikidiff2',
@@ -20,19 +20,24 @@ class applicationserver::packages {
         'php5-memcached',
         'libmemcached11',
         'php5-igbinary',
-        ]: ensure => latest;
+        ]: ensure => latest,
     }
     package { [
         'php-mail',
         'php-mail-mime',
-        ]: ensure => latest;
+        ]: ensure => latest,
+    }
+
+    package { 'libapache2-mod-php5':
+        ensure => present,
+        notify => Class['applicationserver::service'],
     }
 
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
         # On Precise, the 'php5' packages also provides the 'php5-fpm' which
         # install an unneeded fast CGI server.
-        package { [ 'php5-fpm' ]:
-            ensure => absent;
+        package { 'php5-fpm' :
+            ensure => absent,
         }
     }
 }
