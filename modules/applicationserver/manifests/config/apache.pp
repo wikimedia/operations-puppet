@@ -10,20 +10,20 @@ class applicationserver::config::apache(
     Class['applicationserver::config::apache'] -> Class['applicationserver::config::base']
 
     file { '/etc/apache2/apache2.conf':
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
         content => template('applicationserver/apache/apache2.conf.erb'),
     }
     file { '/etc/apache2/envvars':
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/applicationserver/apache/envvars.appserver',
     }
     file { '/etc/cluster':
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
         content => $::site,
     }
@@ -37,7 +37,7 @@ class applicationserver::config::apache(
             path    => '/bin:/sbin:/usr/bin:/usr/sbin',
             command => 'rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf',
             creates => '/usr/local/apache/conf',
-            notify  => Service[apache]
+            notify  => Service['apache']
         }
     } else {  # labs
         # bug 38996 - Apache service does not run on start, need a fake
@@ -46,7 +46,7 @@ class applicationserver::config::apache(
         exec { 'Fake sync apache wmf config on beta':
             command => '/bin/true',
             unless  => '/bin/ps -C apache2 > /dev/null',
-            notify  => Service[apache],
+            notify  => Service['apache'],
         }
     }
 
