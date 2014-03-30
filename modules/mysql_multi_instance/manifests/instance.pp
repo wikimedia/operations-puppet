@@ -99,6 +99,7 @@ define mysql_multi_instance::instance(
           'server_id'                      => $serverid,
           'read_only'                      => $read_only,
           'user'                           => 'mysql',
+          'userstat'                       => 1,
           'socket'                         => "/tmp/mysql.${port}.sock",
           'port'                           => $port,
           'datadir'                        => "/a/sqldata.${port}/",
