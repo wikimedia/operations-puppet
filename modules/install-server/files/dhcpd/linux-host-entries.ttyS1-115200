@@ -732,26 +732,6 @@ host db63 {
 	fixed-address db63.pmtpa.wmnet;
 }
 
-host db64 {
-	hardware ethernet d4:ae:52:95:4a:d7;
-	fixed-address db64.pmtpa.wmnet;
-}
-
-host db65 {
-	hardware ethernet d4:ae:52:8b:9f:b3;
-	fixed-address db65.pmtpa.wmnet;
-}
-
-host db66 {
-	hardware ethernet d4:ae:52:90:3b:53;
-	fixed-address db66.pmtpa.wmnet;
-}
-
-host db67 {
-	hardware ethernet d4:ae:52:95:4a:e0;
-	fixed-address db67.pmtpa.wmnet;
-}
-
 host db68 {
 	hardware ethernet d4:ae:52:8b:eb:2e;
 	fixed-address db68.pmtpa.wmnet;
@@ -760,11 +740,6 @@ host db68 {
 host db69 {
 	hardware ethernet d4:ae:52:90:3e:dc;
 	fixed-address db69.pmtpa.wmnet;
-}
-
-host db70 {
-	hardware ethernet d4:ae:52:90:39:98;
-	fixed-address db70.pmtpa.wmnet;
 }
 
 host db71 {
