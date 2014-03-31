@@ -174,4 +174,8 @@ class role::wikimetrics {
         mode    => $web_mode,
         require => Exec['install_wikimetrics_dependencies'],
     }
+
+    class { '::wikimetrics::scheduler':
+        require => Exec['install_wikimetrics_dependencies'],
+    }
 }
