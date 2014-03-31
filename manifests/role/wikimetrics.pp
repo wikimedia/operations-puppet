@@ -66,6 +66,13 @@ class role::wikimetrics {
         undef   => 'apache',
         default => $::wikimetrics_web_mode,
     }
+    # Make wikimetrics group 'www-data' if running in apache mode.
+    # This allows for apache to write files to wikimetrics var directories.
+    $wikimetrics_group = $web_mode ? {
+        'apache' => 'www-data',
+        default  => 'wikimetrics',
+    }
+
 
     # if the global variable $::wikimetrics_server_name is set,
     # use it as the server_name.  This allows
@@ -107,6 +114,7 @@ class role::wikimetrics {
     }
     class { '::wikimetrics':
         path                  => $wikimetrics_path,
+        group                 => $wikimetrics_group,
 
         # clone wikimetrics as root user so it can write to /srv
         repository_owner      => 'root',
@@ -172,6 +180,10 @@ class role::wikimetrics {
 
     class { '::wikimetrics::web':
         mode    => $web_mode,
+        require => Exec['install_wikimetrics_dependencies'],
+    }
+
+    class { '::wikimetrics::scheduler': 
         require => Exec['install_wikimetrics_dependencies'],
     }
 }
