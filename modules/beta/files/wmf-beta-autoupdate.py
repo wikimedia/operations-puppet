@@ -15,8 +15,8 @@ import logging
 import subprocess
 import sys
 
-PATH_MWCORE = '/home/wikipedia/common/php-master'
-PATH_MWEXT = '/home/wikipedia/common/php-master/extensions'
+PATH_MWCORE = '/data/project/apache/common-local/php-master'
+PATH_MWEXT = '/data/project/apache/common-local/php-master/extensions'
 
 
 def main():
