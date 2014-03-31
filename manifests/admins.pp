@@ -3660,6 +3660,7 @@ class admins::roots {
     include accounts::otto
     include accounts::preilly # disabled
     include accounts::py # disabled
+    include accounts::reedy
     include accounts::rush # RT 7004
     include accounts::robh
     include accounts::sara # disabled
