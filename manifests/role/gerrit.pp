@@ -58,7 +58,7 @@ class role::gerrit {
 				# FIXME remove it when all Jenkins jobs have been migrated to the new
 				# directory /srv/ssd/gerrit defined in 'jenkins-gallium'
 				'inside-wmf'              => {
-					'url'                  => "gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git",
+					'url'                  => 'gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git',
 					'threads'              => '4',
 					'mirror'               => 'true',
 				},
@@ -66,21 +66,21 @@ class role::gerrit {
 				# since it is referenced in Jenkins jobs.
 				'jenkins-slaves' => {
 					'url'     => [
-						"gerritslave@gallium.wikimedia.org:/srv/ssd/gerrit/${name}.git",
-						"gerritslave@lanthanum.eqiad.wmnet:/srv/ssd/gerrit/${name}.git",
+						'gerritslave@gallium.wikimedia.org:/srv/ssd/gerrit/${name}.git',
+						'gerritslave@lanthanum.eqiad.wmnet:/srv/ssd/gerrit/${name}.git',
 					],
 					'threads' => '4',
 					'mirror'  => 'true',
 				},
 				'gitblit'                 => {
-					'url'                   => "gerritslave@antimony.wikimedia.org:/var/lib/git/${name}.git",
+					'url'                   => 'gerritslave@antimony.wikimedia.org:/var/lib/git/${name}.git',
 					'threads'               => '4',
 					'authGroup'             => 'mediawiki-replication',
 					'push'                  => '+refs/*:refs/*',
 					'mirror'                => 'true',
 				},
 				'github'                  => {
-					'url'                  => "git@github.com:wikimedia/${name}",
+					'url'                  => 'git@github.com:wikimedia/${name}',
 					'threads'              => '4',
 					'authGroup'            => 'mediawiki-replication',
 					'push'                 => $replication_basic_push_refs,
