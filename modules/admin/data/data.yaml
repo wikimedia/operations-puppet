@@ -10,7 +10,7 @@ groups:
     gid: 700
     description: include everywhere ops folks
     members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, catrope,
-              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling, ori]
+              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling, ori, reedy]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
