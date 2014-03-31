@@ -15,6 +15,7 @@ class contint::browsertests(
     # Dependencies for qa/browsertests.git
     package { [
         'ruby-bundler',  # installer for qa/browsertests.git
+        'ruby1.9.1-dev', # Bundler compiles gems
         'rubygems',      # dependency of ruby-bundler
         'phantomjs',     # headless browser
     ]:
