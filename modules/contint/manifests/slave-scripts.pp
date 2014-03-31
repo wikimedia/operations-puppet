@@ -5,25 +5,29 @@ class contint::slave-scripts {
     }
 
     git::clone { 'jenkins CI slave scripts':
-        ensure    => 'latest',
-        directory => '/srv/deployment/integration/slave-scripts',
-        origin    => 'https://gerrit.wikimedia.org/r/p/integration/jenkins.git',
+        ensure             => 'latest',
+        directory          => '/srv/deployment/integration/slave-scripts',
+        origin             => 'https://gerrit.wikimedia.org/r/p/integration/jenkins.git',
+        recurse_submodules => true,
     }
 
     # We can not git-deploy on labs, so use the good old git::clone
     git::clone { 'jenkins CI kss':
-        ensure    => 'latest',
-        directory => '/srv/deployment/integration/kss',
-        origin    => 'https://gerrit.wikimedia.org/r/p/integration/kss.git',
+        ensure             => 'latest',
+        directory          => '/srv/deployment/integration/kss',
+        origin             => 'https://gerrit.wikimedia.org/r/p/integration/kss.git',
+        recurse_submodules => true,
     }
     git::clone { 'jenkins CI phpcs':
-        ensure    => 'latest',
-        directory => '/srv/deployment/integration/phpcs',
-        origin    => 'https://gerrit.wikimedia.org/r/p/integration/phpcs.git',
+        ensure             => 'latest',
+        directory          => '/srv/deployment/integration/phpcs',
+        origin             => 'https://gerrit.wikimedia.org/r/p/integration/phpcs.git',
+        recurse_submodules => true,
     }
     git::clone { 'jenkins CI phpunit':
-        ensure    => 'latest',
-        directory => '/srv/deployment/integration/phpunit',
-        origin    => 'https://gerrit.wikimedia.org/r/p/integration/phpunit.git',
+        ensure             => 'latest',
+        directory          => '/srv/deployment/integration/phpunit',
+        origin             => 'https://gerrit.wikimedia.org/r/p/integration/phpunit.git',
+        recurse_submodules => true,
     }
 }
