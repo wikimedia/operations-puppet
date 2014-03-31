@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script for CheckUser cron job, hume:/etc/cron.d/mw-purge-checkuser
+# Script for CheckUser cron job, terbium :/etc/cron.d/mw-purge-checkuser
 
 . /usr/local/lib/mw-deployment-vars.sh
 
