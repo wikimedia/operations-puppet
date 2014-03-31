@@ -33,8 +33,8 @@ class beta::natfix {
         # eqiad
         'deployment-cache-text02'   => {public_ip  => '208.80.155.135',
                                         private_ip => '10.68.16.16' },
-        'deployment-cache-upload01' => {public_ip  => '208.80.155.136',
-                                        private_ip => '10.68.16.53' },
+        'deployment-cache-upload02' => {public_ip  => '208.80.155.136',
+                                        private_ip => '10.68.17.51' },
         'deployment-cache-bits01'   => {public_ip  => '208.80.155.137',
                                         private_ip => '10.68.16.12' },
         'deployment-eventlogging02' => {public_ip  => '208.80.155.138',
