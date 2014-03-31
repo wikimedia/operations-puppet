@@ -89,6 +89,16 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     class { 'cdh4::hadoop::jmxtrans::master':
         ganglia => "${ganglia_host}:${ganglia_port}",
     }
+
+    # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
+    # It rotates them but does not delete old ones.  Set up cronjob to
+    # delete old files in this directory.
+    cron { 'hadoop-clean-fairscheduler-event-logs':
+        command => 'test -d /var/log/hadoop-yarn/fairscheduler && /usr/bin/find /var/log/hadoop-yarn/fairscheduler -type f -mtime +14 -exec rm {} >/dev/null \;',
+        minute  => 5,
+        hour    => 0,
+        require => Class['::cdh4::hadoop::master'],
+    }
 }
 
 # == Class role::analytics::hadoop::worker
