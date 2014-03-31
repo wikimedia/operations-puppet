@@ -98,7 +98,8 @@ $private_wikis = [ 'arbcom_dewiki',
 		'stewardwiki',
 		'transitionteamwiki',
 		'wg_enwiki',
-		'wikimaniateamwiki', ]
+		'wikimaniateamwiki',
+		'zerowiki' ]
 
 $private_tables = [ 'accountaudit_login',
 		'arbcom1_vote',
