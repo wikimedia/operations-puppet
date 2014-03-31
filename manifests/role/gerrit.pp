@@ -58,6 +58,8 @@ class role::gerrit {
 				# FIXME remove it when all Jenkins jobs have been migrated to the new
 				# directory /srv/ssd/gerrit defined in 'jenkins-gallium'
 				'inside-wmf'              => {
+					# Note: This is in single quotes on purpose. ${name} is not
+					# expected to be expanded by puppet but rather by gerrit
 					'url'                  => 'gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git',
 					'threads'              => '4',
 					'mirror'               => 'true',
@@ -66,6 +68,8 @@ class role::gerrit {
 				# since it is referenced in Jenkins jobs.
 				'jenkins-slaves' => {
 					'url'     => [
+						# Note: This is in single quotes on purpose. ${name} is not
+						# expected to be expanded by puppet but rather by gerrit
 						'gerritslave@gallium.wikimedia.org:/srv/ssd/gerrit/${name}.git',
 						'gerritslave@lanthanum.eqiad.wmnet:/srv/ssd/gerrit/${name}.git',
 					],
@@ -73,6 +77,8 @@ class role::gerrit {
 					'mirror'  => 'true',
 				},
 				'gitblit'                 => {
+					# Note: This is in single quotes on purpose. ${name} is not
+					# expected to be expanded by puppet but rather by gerrit
 					'url'                   => 'gerritslave@antimony.wikimedia.org:/var/lib/git/${name}.git',
 					'threads'               => '4',
 					'authGroup'             => 'mediawiki-replication',
@@ -80,6 +86,8 @@ class role::gerrit {
 					'mirror'                => 'true',
 				},
 				'github'                  => {
+					# Note: This is in single quotes on purpose. ${name} is not
+					# expected to be expanded by puppet but rather by gerrit
 					'url'                  => 'git@github.com:wikimedia/${name}',
 					'threads'              => '4',
 					'authGroup'            => 'mediawiki-replication',
