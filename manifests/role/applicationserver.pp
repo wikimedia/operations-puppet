@@ -269,11 +269,20 @@ class role::applicationserver {
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { 'mediawiki::jobrunner':
-			dprioprocs             => 17,
-			iprioprocs             => 6,
-			procs_per_iobound_type => 5,
-			run_jobs_enabled       => $run_jobs_enabled,
+		if $::realm == 'production' {
+			class { 'mediawiki::jobrunner':
+				dprioprocs             => 17,
+				iprioprocs             => 6,
+				procs_per_iobound_type => 5,
+				run_jobs_enabled       => $run_jobs_enabled,
+			}
+		} else {
+			class { 'mediawiki::jobrunner':
+				dprioprocs             => 5,
+				iprioprocs             => 3,
+				procs_per_iobound_type => 2,
+				run_jobs_enabled       => $run_jobs_enabled,
+			}
 		}
 
 		include applicationserver::config::base,
