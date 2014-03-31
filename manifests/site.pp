@@ -1243,36 +1243,6 @@ node 'manutius.wikimedia.org' {
     }
 }
 
-node 'hume.wikimedia.org' {
-    $cluster = 'misc'
-
-    include role::applicationserver::maintenance
-    include mysql
-    include nfs::netapp::home
-    include nfs::upload
-    include misc::deployment::scap_scripts
-    include admins::roots
-    include admins::mortals
-    include admins::restricted
-    include nrpe
-
-    class { 'misc::maintenance::updatequerypages':
-        enabled => false,
-    }
-    class { 'misc::maintenance::geodata':
-        enabled => false,
-    }
-    class { 'misc::maintenance::update_flaggedrev_stats':
-        enabled => false,
-    }
-    class { 'misc::maintenance::refreshlinks':
-        enabled => false,
-    }
-    class { 'misc::maintenance::update_special_pages':
-        enabled => false,
-    }
-}
-
 node 'iron.wikimedia.org' {
     system::role { 'misc':
         description => 'Operations Bastion',

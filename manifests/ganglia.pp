@@ -702,7 +702,7 @@ define ganglia::plugin::python( $plugin = $title, $opts = {} ) {
 }
 
 # Copied from nagios::ganglia::monitor::enwiki
-# Will run on hume to use the local MediaWiki install so that we can use
+# Will run on terbium to use the local MediaWiki install so that we can use
 # maintenance scripts recycling DB connections and taking a few secs, not mins
 class misc::monitoring::jobqueue {
 
