@@ -236,6 +236,8 @@ class role::parsoid::beta {
     # Instance got to be a Jenkins slave so we can update Parsoid whenever a
     # change is made on mediawiki/services/parsoid repository
     include role::ci::slave::labs::common
+    # Also need the slave scripts for multi-git.sh
+    include contint::slave-scripts
 
     # And thus allow ssh access from the Jenkins master (gallium)
     ferm::rule { 'ssh-from-gallium':
