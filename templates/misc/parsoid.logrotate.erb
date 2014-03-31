@@ -3,7 +3,7 @@
 ### puppet:///files/logrotate/parsoid
 #####################################################################
 
-/var/log/parsoid/parsoid.log {
+<%= @parsoid_log_file %> {
     daily
     copytruncate
     missingok
