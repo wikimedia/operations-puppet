@@ -24,7 +24,7 @@ cluster (ie: deployment-bastion).
 
 You can also look at logstash:
 
-https://logstash.wmflabs.org/#/dashboard/elasticsearch/fatalmonitor
+https://logstash-beta.wmflabs.org/#/dashboard/elasticsearch/fatalmonitor
 
 MESSAGE_END
 
