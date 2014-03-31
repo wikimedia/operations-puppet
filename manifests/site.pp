@@ -637,13 +637,6 @@ node /^db(48)\.pmtpa\.wmnet/ {
     include role::coredb::m2
 }
 
-## researchdb
-node 'db67.pmtpa.wmnet' {
-    class { 'role::coredb::researchdb':
-        mariadb => true,
-    }
-}
-
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
 node /^db(6[012456]|7[5-7])\.pmtpa\.wmnet/{
     include standard
