@@ -8,7 +8,7 @@ LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" c
 
 # Due to Jetty's connection limiting flooding logs with "Dispatched
 # Failed" Error messages, we limit connections already here.
-MaxClients 25
+MaxClients 50
 
 NameVirtualHost *:80
 <VirtualHost *:80>
