@@ -10,6 +10,17 @@ class contint::packages::labs {
 
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
+
+    file { '/mnt/pbuilder':
+        ensure  => directory,
+        require => Mount['/mnt'],
+    }
+
+    file { '/var/cache/pbuilder':
+        ensure => link,
+        target => '/mnt/pbuilder',
+    }
+
     package { [
         'jenkins-debian-glue',
         'jenkins-debian-glue-buildenv',
@@ -19,7 +30,8 @@ class contint::packages::labs {
         'jenkins-debian-glue-buildenv-taptools',
         ]:
             ensure  => latest,
-            require => Class['misc::package-builder'],
+            # Make sure cowbuilder images will be on /mnt
+            require => File['/mnt/pbuilder'],
     }
 
     package { [

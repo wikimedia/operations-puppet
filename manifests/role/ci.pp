@@ -334,7 +334,6 @@ class role::ci::slave::labs {
 
 
     include role::ci::slave::labs::common,
-        role::package::builder::labs,
         # git-deploy replacement on labs
         contint::slave-scripts,
         # Include package unsafe for production
