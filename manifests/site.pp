@@ -2562,6 +2562,9 @@ node 'terbium.eqiad.wmnet' {
     class { 'misc::maintenance::purge_abusefilter':
         enabled => true,
     }
+    class { 'misc::maintenance::purge_checkuser':
+        enabled => true,
+    }
 
     # (bug 15434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
