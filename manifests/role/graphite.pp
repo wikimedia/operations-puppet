@@ -105,9 +105,54 @@ class role::graphite {
 
     include ::apache
     include ::apache::mod::uwsgi
-    include ::passwords::ldap::production
 
-    apache::mod { 'authnz_ldap': }
+    if ($::realm == 'labs') {
+        apache::mod { [
+            'auth_basic',
+            'authn_file',
+            'authz_user',
+            ]: }
+
+        if ($::hostname =~ /^deployment-/) {
+            # Beta
+            $hostname    = 'graphite-beta.wmflabs.org'
+            $auth_realm  = 'Graphite (see [[office:User:BDavis_(WMF)/graphite]])'
+            $auth_file   = '/data/project/graphite/.htpasswd'
+        } else {
+            # Regular labs instance
+            $hostname = $::graphite_hostname ? {
+                undef   => $::hostname,
+                default => $::graphite_hostname,
+            }
+            $auth_realm = $::graphite_authrealm ? {
+                undef   => 'Graphite',
+                default => $::graphite_authrealm,
+            }
+            $auth_file = $::graphite_authfile ? {
+                undef   => '/data/project/graphite/.htpasswd',
+                default => $::graphite_authfile,
+            }
+        }
+        $apache_auth   = template('graphite/apache-auth-local.erb')
+    } else {
+        # Production
+        include ::passwords::ldap::production
+
+        apache::mod { 'authnz_ldap': }
+
+        $hostname      = 'graphite.wikimedia.org'
+        $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
+        $ldap_bindpass = $passwords::ldap::production::proxypass
+        $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
+        $ldap_group    = 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+        $auth_realm    = 'WMF Labs (use wiki login name not shell)'
+        $apache_auth   = template('graphite/apache-auth-ldap.erb')
+
+        monitor_service { 'reqstats_5xx':
+            description   => 'HTTP 5xx req/min',
+            check_command => 'check_reqstats_5xx!http://graphite.wikimedia.org!-1hours!250!500',
+        }
+    }
 
     file { '/etc/apache2/sites-available/graphite':
         content => template('graphite/graphite.apache.erb'),
@@ -125,8 +170,4 @@ class role::graphite {
         nrpe_command => '/sbin/carbonctl check',
     }
 
-    monitor_service { 'reqstats_5xx':
-        description   => 'HTTP 5xx req/min',
-        check_command => 'check_reqstats_5xx!http://graphite.wikimedia.org!-1hours!250!500',
-    }
 }
