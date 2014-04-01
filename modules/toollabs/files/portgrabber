@@ -21,11 +21,15 @@ my $tool = shift;
 my $line;
 
 $^F = 8;
-socket(SOCK, PF_UNIX, SOCK_STREAM, 0)     || die "socket: $!";
-connect(SOCK, sockaddr_un("/tmp/sock.portgranter"))   || die "connect: $!";
+socket(SOCK, PF_UNIX, SOCK_STREAM, 0)     || die "portgranter socket: $!\n";
+connect(SOCK, sockaddr_un("/tmp/sock.portgranter"))   || die "connect to portgranter: $!\n";
 $| = 1;
 syswrite SOCK, "$tool\n";
 my $port = 0+<SOCK>;
+
+socket(PROXY, PF_UNIX, SOCK_STREAM, 0) || die "proxylistener socket: $!\n";
+connect(PROXY, sockaddr_in(inet_aton('tools-proxy-test'), 8282)) || die "proxylistener connect: $!\n";
+syswrite PROXY, "/.*\n`hostname`:$port\n";
 
 exec @ARGV, $port;
 
