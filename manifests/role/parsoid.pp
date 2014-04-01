@@ -179,14 +179,16 @@ class role::parsoid::beta {
         mode    => '0444',
         source => 'puppet:///files/misc/parsoid.upstart',
     }
-    file { '/var/log/parsoid':
+
+    $parsoid_log_file = '/data/project/parsoid/parsoid.log'
+    # Make sure the directory exists on beta
+    file { '/data/project/parsoid':
         ensure => directory,
         owner  => parsoid,
         group  => parsoid,
         mode   => '0775',
     }
 
-    $parsoid_log_file = '/var/log/parsoid/parsoid.log'
     # For beta, override NODE_PATH:
     $parsoid_node_path = '/srv/deployment/parsoid/deploy/node_modules'
     # Also override PARSOID_SETTINGS_FILE
@@ -201,7 +203,7 @@ class role::parsoid::beta {
         group   => root,
         mode    => '0444',
         content => template('misc/parsoid.default.erb'),
-        require => File['/var/log/parsoid'],
+        require => File['/data/project/parsoid'],
     }
 
     file { '/etc/logrotate.d/parsoid':
