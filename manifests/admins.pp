@@ -3605,7 +3605,7 @@ class accounts {
     # RT 7169
     class oblivian inherits baseaccount {
         $username = 'oblivian'
-        $realname = 'Giuseppe Lavagetto (fixme)'
+        $realname = 'Giuseppe Lavagetto'
         $uid      = '4816'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -3678,6 +3678,7 @@ class admins::roots {
     include accounts::marc
     include accounts::mark
     include accounts::midom
+    include accounts::oblivian # RT 7169
     include accounts::ori # RT 5936
     include accounts::otto
     include accounts::preilly # disabled
