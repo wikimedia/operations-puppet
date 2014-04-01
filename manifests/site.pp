@@ -1793,7 +1793,7 @@ node 'ms6.esams.wikimedia.org' {
     include standard
 }
 
-node /^ms(10|1001)\.wikimedia\.org$/ {
+node 'ms1001.wikimedia.org' {
     include standard
     include role::mirror::media
 }
