@@ -483,7 +483,11 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     }
 
 
-    apache_site { controller: name => "${controller_hostname}" }
+    if ( $::realm == "production" ) {
+        apache_site { controller: name => "wikitech.wikimedia.org" }
+    } else {
+        apache_site { controller: name => "${controller_hostname}" }
+    }
     apache_module { rewrite: name => "rewrite" }
 
     include backup::host
