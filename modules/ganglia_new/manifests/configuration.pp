@@ -131,17 +131,17 @@ class ganglia_new::configuration {
         }
         'labs': {
             $url = 'http://ganglia.wmflabs.org'
-            $gmetad_hosts = [ '10.4.0.79']
+            $gmetad_hosts = [ '10.68.16.101']   # aggregator.eqiad.wmflabs
             $aggregator_hosts = {
-                'pmtpa' => [ '10.4.0.79' ],
-                'eqiad' => [ '10.4.0.79' ],
+                'pmtpa' => [ '10.4.0.79' ],     # aggregator1.pmtpa.wmflabs
+                'eqiad' => [ '10.68.16.101' ],  # aggregator.eqiad.wmflabs
             }
             $base_port = 8649
             $id_prefix = {
                 pmtpa => 0,
                 eqiad => 0,
             }
-            $default_sites = ['pmtpa']
+            $default_sites = ['pmtpa', 'eqiad']
         }
     }
 }
