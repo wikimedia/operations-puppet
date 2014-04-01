@@ -57,7 +57,7 @@ $conf['rrdtool_slope_mode'] = true;
 $conf['rrdcached_socket'] = "";
 
 # Location for modular-graph files.
-$conf['graphdir']='./graph.d';
+$conf['graphdir']='/usr/share/ganglia-webfrontend/graph.d';
 
 # Display statistical values on RRD graphs; i.e.: average, min, max
 $conf['graphreport_stats'] = true;
