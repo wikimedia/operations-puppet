@@ -14,4 +14,6 @@
         Order allow,deny
         allow from all
     </Directory>
+
+    ScriptAliasMatch ^/profiler(.*) /srv/deployment/reporter/reporter/$1.py
 </VirtualHost>
