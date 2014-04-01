@@ -6,7 +6,7 @@ class mariadb::packages_wmf(
     ) {
 
     package { [
-        'labaio1',
+        'libaio1',
         'libmysqlclient18',
         'mysql-client-5.5',
         'percona-toolkit',
