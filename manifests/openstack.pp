@@ -421,6 +421,11 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             owner => root,
             group => root,
             ensure => directory;
+        "/a/backup/public":
+            mode => 755,
+            owner => root,
+            group => root,
+            ensure => directory;
         "/usr/local/sbin/db-bak.sh":
             mode => 555,
             owner => root,
