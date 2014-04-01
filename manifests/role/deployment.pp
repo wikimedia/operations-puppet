@@ -101,6 +101,10 @@ class role::deployment::config {
         'grain'    => 'mwprof',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof',
     },
+    'reporter/reporter'              => {
+        'grain'    => 'reporter',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof/reporter',
+    },
     'test/testrepo'                  => {
         'grain'        => 'testrepo',
         'service_name' => 'puppet',

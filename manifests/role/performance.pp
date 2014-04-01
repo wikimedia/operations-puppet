@@ -6,6 +6,8 @@
 class role::performance {
     include ::apache
 
+    deployment::target { 'reporter': }
+
     file { '/var/www/performance':
         ensure  => directory,
         owner   => 'www-data',
