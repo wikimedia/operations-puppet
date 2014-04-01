@@ -47,8 +47,8 @@ ap.add_argument(
 ap.add_argument(
     '--timeout',
     metavar='N',
-    type=int,
-    default=30,
+    type='{0}s'.format,
+    default='30',
     help='abort search after this many seconds (default: 30)'
 )
 
@@ -71,7 +71,7 @@ filters = [
 
 search = {
     'size': args.max_results,
-    'fields': ['namespace', 'title'],
+    '_source': ['namespace', 'title'],
     'query': {'filtered': {'filter': {'bool': {'must': filters}}}},
 }
 
@@ -85,7 +85,7 @@ result = json.load(req)['hits']
 
 for hit in result['hits']:
     db = hit['_index'].split('_', 1)[0]
-    title = hit['fields']['title'][0]
+    title = hit['_source']['title']
     print('{:<20}{}'.format(db, title))
 
 print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
