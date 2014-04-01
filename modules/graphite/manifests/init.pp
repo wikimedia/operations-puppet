@@ -12,6 +12,7 @@ class graphite(
     $carbon_settings,
     $storage_schemas,
     $storage_aggregation = {},
+    $storage_dir = '/var/lib/carbon',
 ) {
     package { 'graphite-carbon': }
     package { 'python-whisper': }
@@ -22,9 +23,9 @@ class graphite(
         conf_dir       => '/etc/carbon',
         log_dir        => '/var/log/carbon',
         pid_dir        => '/var/run/carbon',
-        storage_dir    => '/var/lib/carbon',
-        whitelists_dir => '/var/lib/carbon/lists',
-        local_data_dir => '/var/lib/carbon/whisper',
+        storage_dir    => $storage_dir,
+        whitelists_dir => "${storage_dir}/lists",
+        local_data_dir => "${storage_dir}/whisper",
     }
 
     $carbon_defaults = {
@@ -36,7 +37,7 @@ class graphite(
         source => 'puppet:///modules/graphite/graphite.limits.conf',
     }
 
-    file { '/var/lib/carbon':
+    file { $storage_dir:
         ensure  => directory,
         owner   => '_graphite',
         group   => '_graphite',

@@ -21,6 +21,10 @@
 #   This is used to provide cryptographic signing, and should be set to a
 #   unique, unpredictable value.
 #
+# [*storage_dir*]
+#   Carbon storage directory. This is where the app will look for whisper
+#   databases.
+#
 # [*documentation_url*]
 #   Overrides the Documentation link used in the header of the Graphite
 #   Composer (default: 'http://graphite.readthedocs.org/').
@@ -28,6 +32,7 @@
 class graphite::web(
     $admin_pass,
     $secret_key,
+    $storage_dir,
     $uwsgi_processes   = 4,
     $memcached_size    = 200,
     $admin_user        = 'admin',
