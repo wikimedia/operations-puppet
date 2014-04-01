@@ -35,4 +35,12 @@ class role::archiva {
         content => template('nginx/sites/simple-proxy.erb'),
         require => Class['::nginx'],
     }
+
+    # Bacula backups for /var/lib/archiva.
+    if $::realm == 'production' {
+        include backup::host
+        backup::set { 'var-lib-archiva':
+            require => Class['::archiva']
+        }
+    }
 }
