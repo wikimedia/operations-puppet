@@ -23,7 +23,7 @@ NameVirtualHost *:443
 
 	CustomLog /var/log/apache2/access.log combined
 
-	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+	Redirect permanent /cgi-bin/report.py https://performance.wikimedia.org/profiler/report
 
 	<Directory />
 		Order Deny,Allow
@@ -32,11 +32,6 @@ NameVirtualHost *:443
 
 	<Directory /usr/local/apache/common/docroot/noc/conf>
 		AddDefaultCharset utf-8
-	</Directory>
-
-	<Directory /usr/local/apache/common/docroot/noc/cgi-bin>
-		Order Deny,Allow
-		Options ExecCGI
 	</Directory>
 </VirtualHost>
 <VirtualHost *:443>
@@ -60,8 +55,6 @@ NameVirtualHost *:443
 
 	CustomLog /var/log/apache2/access.log combined
 
-	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-
 	<Directory />
 		Order Deny,Allow
 		AllowOverride All
@@ -71,9 +64,5 @@ NameVirtualHost *:443
 		AddDefaultCharset utf-8
 	</Directory>
 
-	<Directory /usr/local/apache/common/docroot/noc/cgi-bin>
-		Order Deny,Allow
-		Options ExecCGI
-	</Directory>
-
+	Redirect permanent /cgi-bin/report.py https://performance.wikimedia.org/profiler/report
 </VirtualHost>
