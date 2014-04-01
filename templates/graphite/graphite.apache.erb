@@ -7,18 +7,9 @@
         Order allow,deny
         Allow from all
 
-        # LDAP authentication
-
-        AuthName 'WMF Labs (use wiki login name not shell)'
-        AuthType Basic
-        AuthBasicProvider ldap
-        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-        AuthLDAPBindPassword <%= scope.lookupvar('::passwords::ldap::production::proxypass') %>
-        AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
-        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+<%= @apache_auth -%>
 
         # uWSGI reverse-proxy
-
         uWSGIsocket /var/run/graphite-web/graphite-web.sock
         SetHandler uwsgi-handler
     </Location>
