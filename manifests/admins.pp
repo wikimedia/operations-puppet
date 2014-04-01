@@ -3678,6 +3678,7 @@ class admins::roots {
     include accounts::marc
     include accounts::mark
     include accounts::midom
+    include accounts::oblivian # RT 7169
     include accounts::ori # RT 5936
     include accounts::otto
     include accounts::preilly # disabled
