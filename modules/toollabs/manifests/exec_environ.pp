@@ -176,6 +176,7 @@ class toollabs::exec_environ {
         'php5-intl',                   # Bug 55652
         'php5-mcrypt',
         'php5-mysql',
+        'php5-pgsql',                  # For access to OSM db
         'php5-redis',
         'php5-sqlite',
         'php5-xsl',
