@@ -339,11 +339,18 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
     }
 
     misc::udp2log::instance { 'erbium':
-        multicast       => true,
-        packet_loss_log => '/var/log/udp2log/packet-loss.log',
-        log_directory   => $webrequest_log_directory,
-        require         => [File["${fundraising_log_directory}/logs"], Package['webstatscollector']],
+        multicast          => true,
+        packet_loss_log    => '/var/log/udp2log/packet-loss.log',
+        log_directory      => $webrequest_log_directory,
+        template_variables => {
+            'fundraising_log_directory' => $fundraising_log_directory
+        },
+        require            => [
+            File["${fundraising_log_directory}/logs"],
+            Package['webstatscollector']
+        ],
     }
+
 
     # install a nrpe check for the webstatscollector filter process
     nrpe::monitor_service { 'webstats-filter':
