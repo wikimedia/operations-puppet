@@ -15,11 +15,6 @@ class misc::noc-wikimedia {
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/noc.wikimedia.org";
-		"/usr/lib/cgi-bin":
-			source => "puppet:///files/cgi-bin/noc/",
-			recurse => true,
-			ignore => ".svn",
-			ensure => present;
 	}
 
 	# ensure default site is removed
