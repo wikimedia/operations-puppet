@@ -2489,6 +2489,10 @@ node 'stat1002.eqiad.wmnet' {
     include role::analytics::clients
 }
 
+node 'stat1003.wikimedia.org' {
+    include standard
+}
+
 node 'snapshot1001.eqiad.wmnet' {
     $gid= '500'
     include snapshot
