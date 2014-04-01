@@ -558,3 +558,27 @@ class misc::maintenance::purge_abusefilter( $enabled = false ) {
             ensure  => $status,
         }
 }
+
+class misc::maintenance::purge_checkuser( $enabled = false ) {
+    $status = $enabled ? {
+        true    => 'present',
+        false   => 'absent',
+        default => 'absent',
+    }
+
+    file { '/usr/local/bin/purge-checkuser':
+        owner  => 'apache',
+        group  => 'apache',
+        mode   => '0555',
+        source => 'puppet:///files/misc/scripts/purge-checkuser',
+    }
+
+    cron { 'purge-checkuser':
+        ensure  => $status,
+        user    => 'apache',
+        minute  => 0,
+        hour    => 0,
+        weekday => 0,
+        command => '/usr/local/bin/purge-checkuser',
+    }
+}
