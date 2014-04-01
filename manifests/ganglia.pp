@@ -435,6 +435,21 @@ class ganglia::web {
         $ganglia_serveralias = "aggregator.eqiad.wmflabs"
         $ganglia_webdir = "/usr/share/ganglia-webfrontend"
         $ganglia_confdir = "/var/lib/ganglia/conf"
+        $ganglia_dwoo = '/var/lib/ganglia/dwoo'
+        $ganglia_dwoo_cache = "${ganglia_dwoo}/cache"
+        $ganglia_dwoo_compiled = "${ganglia_dwoo}/compiled"
+
+        file { [
+            $ganglia_confdir,
+            $ganglia_dwoo,
+            $ganglia_dwoo_cache,
+            $ganglia_dwoo_compiled,
+        ]:
+            ensure => directory,
+            owner  => 'www-data',
+            group  => 'root',
+            mode   => '0775',
+        }
 
         include ganglia::aggregator
     } else {
@@ -550,6 +565,13 @@ class ganglia::web {
             source => "puppet:///files/ganglia/conf.php",
             require => Package[ganglia-webfrontend],
             ensure => present;
+        }
+        file { '/usr/share/ganglia-webfrontend/conf_default.php':
+            ensure => link,
+            target => '/usr/share/ganglia-webfrontend/conf.php',
+        }
+        file { '/usr/share/ganglia-webfrontend/version.php':
+            content => '<?php $GLOBALS["ganglia_version"] = "wmflabs";';
         }
     }
 }
