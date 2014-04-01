@@ -15,5 +15,5 @@
         allow from all
     </Directory>
 
-    ScriptAliasMatch ^/profiler(.*) /srv/deployment/reporter/reporter/$1.py
+    ScriptAlias /profiler/report /srv/deployment/reporter/reporter/report.py
 </VirtualHost>
