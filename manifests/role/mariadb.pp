@@ -42,7 +42,7 @@ class role::mariadb::tendril {
         description => 'tendril database server',
     }
 
-    include mariadb::packages
+    include mariadb::packages_wmf
     include passwords::misc::scripts
 
     class { 'mariadb::config':

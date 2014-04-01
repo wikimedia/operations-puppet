@@ -1,5 +1,5 @@
-# MariaDB 5.5 debs
-# Keep this independent and modular. It should be includable without the mariadb class.
+# MariaDB 5.5 debs -- slightly modified .debs from MariaDB.org.
+# Eventually these should probably just be upstream Debian packages by default.
 
 class mariadb::packages {
 
