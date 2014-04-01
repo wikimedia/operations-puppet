@@ -11,9 +11,14 @@ class contint::packages::labs {
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
 
+    # jenkins-debian glue puppetization:
     file { '/mnt/pbuilder':
         ensure  => directory,
         require => Mount['/mnt'],
+    }
+
+    file { '/data/project/debianrepo':
+        ensure => directory,
     }
 
     file { '/var/cache/pbuilder':
@@ -33,6 +38,7 @@ class contint::packages::labs {
             # Make sure cowbuilder images will be on /mnt
             require => File['/mnt/pbuilder'],
     }
+    # end of jenkins-debian glue puppetization
 
     package { [
         'npm',
