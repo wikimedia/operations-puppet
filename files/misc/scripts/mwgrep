@@ -71,12 +71,12 @@ filters = [
 
 search = {
     'size': args.max_results,
-    'fields': ['namespace', 'title'],
+    '_source': ['namespace', 'title'],
     'query': {'filtered': {'filter': {'bool': {'must': filters}}}},
 }
 
 query = {
-    'timeout': args.timeout,
+    'timeout': str(args.timeout) + "s",
 }
 
 uri = BASE_URI + '?' + urllib.urlencode(query)
@@ -85,7 +85,7 @@ result = json.load(req)['hits']
 
 for hit in result['hits']:
     db = hit['_index'].split('_', 1)[0]
-    title = hit['fields']['title'][0]
+    title = hit['_source']['title']
     print('{:<20}{}'.format(db, title))
 
 print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
