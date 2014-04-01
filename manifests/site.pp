@@ -335,15 +335,6 @@ node 'calcium.wikimedia.org' {
 
 }
 
-node /^(capella|nitrogen)\.wikimedia\.org$/ {
-
-    include standard
-    include role::ipv6relay
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
 node 'carbon.wikimedia.org' {
     $cluster = 'misc'
     $ganglia_aggregator = true
@@ -2061,6 +2052,16 @@ node 'nickel.wikimedia.org' {
     include misc::monitoring::views
 
     install_certificate{ 'ganglia.wikimedia.org': }
+}
+
+node 'nitrogen.wikimedia.org' {
+
+    include standard
+    include role::ipv6relay
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
