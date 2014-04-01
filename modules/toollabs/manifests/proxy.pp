@@ -3,6 +3,7 @@ class toollabs::proxy inherits toollabs {
     include toollabs::infrastructure
 
     class { '::dynamicproxy':
-        luahandler       => 'urlproxy.lua'
+        luahandler => 'urlproxy.lua',
+        resolver   => '10.68.16.1' # eqiad DNS resolver
     }
 }
