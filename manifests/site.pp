@@ -314,9 +314,6 @@ node 'boron.wikimedia.org' {
 }
 
 node 'brewster.wikimedia.org' {
-
-    $tftpboot_server_type = 'master'
-
     include standard
     include role::installserver
     include backup::client

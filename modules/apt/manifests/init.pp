@@ -51,22 +51,22 @@ class apt {
             ensure   => absent,
             priority => '80',
             key      => 'Acquire::http::Proxy',
-            value    => 'http://brewster.wikimedia.org:8080';
+            value    => 'http://carbon.wikimedia.org:8080';
         'security-ubuntu-proxy':
             ensure   => $enable_proxy,
             priority => '80',
             key      => 'Acquire::http::Proxy::security.ubuntu.com',
-            value    => 'http://brewster.wikimedia.org:8080';
+            value    => 'http://carbon.wikimedia.org:8080';
         'ubuntu-cloud-archive-proxy':
             ensure   => $enable_proxy,
             priority => '80',
             key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
-            value    => 'http://brewster.wikimedia.org:8080';
+            value    => 'http://carbon.wikimedia.org:8080';
         'old-releases-proxy':
             ensure   => $enable_proxy,
             priority => '80',
             key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
-            value    => 'http://brewster.wikimedia.org:8080';
+            value    => 'http://carbon.wikimedia.org:8080';
     }
 
     # apt-get should not install recommended packages
