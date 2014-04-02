@@ -242,13 +242,15 @@ class role::applicationserver {
 			imagescaler::files
 
 		class {"mediawiki::jobrunner":
-			run_jobs_enabled => $run_jobs_enabled,
-			dprioprocs => 5,
-			iprioprocs => 0,
+			run_jobs_enabled       => $run_jobs_enabled,
+			dprioprocs             => 5,
+			iprioprocs             => 0,
 			procs_per_iobound_type => 0,
-			type => "webVideoTranscode",
-			timeout => 14400,
-			extra_args => "-v 0"
+			type                   => "webVideoTranscode",
+			timeout                => 14400,
+			extra_args             => "-v 0",
+			pipeline_wait          => 1,  # seconds
+			polling_wait           => 5,  # seconds
 		}
 
 		include applicationserver::config::base,
@@ -275,6 +277,8 @@ class role::applicationserver {
 				iprioprocs             => 6,
 				procs_per_iobound_type => 5,
 				run_jobs_enabled       => $run_jobs_enabled,
+				pipeline_wait          => 1,  # seconds
+				polling_wait           => 5,  # seconds
 			}
 		} else {
 			class { 'mediawiki::jobrunner':
@@ -282,6 +286,8 @@ class role::applicationserver {
 				iprioprocs             => 3,
 				procs_per_iobound_type => 2,
 				run_jobs_enabled       => $run_jobs_enabled,
+				pipeline_wait          => 5,   # seconds
+				polling_wait           => 60,  # seconds
 			}
 		}
 

@@ -15,6 +15,8 @@ JR_PID_FILE=/var/run/mw-jobs.pid
 JR_TYPE=""
 JR_TIMEOUT=300
 JR_EXTRA_ARGS=""
+JR_PIPELINE_WAIT=1
+JR_POLLING_WAIT=5
 
 # PHP must exist
 test -x /usr/bin/php || exit 0

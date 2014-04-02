@@ -1,3 +1,13 @@
+# == Class mediawiki::jobrunner
+#
+# === Parameters
+#
+# [*pipeline_wait*]
+# Time to wait in seconds when a pipeline is full. Default: 1
+#
+# [*polling_wait*]
+# Time to wait in seconds when there is no job to run. Default: 5
+#
 class mediawiki::jobrunner (
 	$run_jobs_enabled,
 	$user = "apache",
@@ -9,7 +19,9 @@ class mediawiki::jobrunner (
 	$extra_args = "",
 	$dprioprocs = 5,
 	$iprioprocs = 5,
-	$procs_per_iobound_type = 1
+	$procs_per_iobound_type = 1,
+	$pipeline_wait = 1,
+	$polling_wait = 5,
 ) {
 
 	include mediawiki
