@@ -69,8 +69,8 @@ class RouteRequestHandler(SocketServer.BaseRequestHandler):
     Handles incoming connections from clients asking for routes.
     """
     def handle(self):
-        route = self.request.recv(1024).strip()
-        destination = self.request.recv(1024).strip()
+        route = self.request.readline().strip()
+        destination = self.request.readline().strip()
         user = get_remote_user(self.client_address[0], self.client_address[1], PORT)
 
         # For some reason the identd response gave us an error, or failed otherwise
