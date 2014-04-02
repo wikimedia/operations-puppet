@@ -10,4 +10,20 @@ class toollabs::proxy inherits toollabs {
     package { 'python-redis':
         ensure => latest
     }
+
+    file { '/usr/local/sbin/proxylistener':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/proxylistener.py'
+    }
+
+    file { '/etc/init/proxylistener.conf':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/toollabs/proxylistener.conf',
+    }
 }
