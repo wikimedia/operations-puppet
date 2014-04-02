@@ -7,8 +7,6 @@ class mariadb::packages_wmf(
 
     package { [
         'libaio1',
-        'libmysqlclient18',
-        'mysql-client-5.5',
         'percona-toolkit',
         'percona-xtrabackup',
     ]:
