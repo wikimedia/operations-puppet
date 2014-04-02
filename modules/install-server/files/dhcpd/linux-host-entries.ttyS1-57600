@@ -3,11 +3,6 @@
 #### puppet:///files/dhcpd/linux-host-entries.ttyS1-57600
 ######################################################################
 
-host brewster {
-	hardware ethernet 00:1e:c9:ea:ab:7d;
-	fixed-address brewster.wikimedia.org;
-}
-
 host db10 {
 	hardware ethernet 00:18:8B:42:06:00;
 	fixed-address db10.pmtpa.wmnet;
