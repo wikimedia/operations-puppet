@@ -63,21 +63,43 @@ class misc::statistics::base {
 
     include misc::statistics::packages
 
-    file {
-        "/a":
-            owner => root,
-            group => wikidev,
-            mode => '0775',
-            ensure => directory,
-            recurse => "false";
+    # we are attempting to stop using /a and to start using
+    # /srv instead.  stat1001 and stat1002 still use
+    # /a by default.  # stat1003 uses /srv.
+    $working_path = $::hostname ? {
+        'stat1003' => '/srv',
+        default    => '/a',
+    }
+    file { $working_path:
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'wikidev',
+        mode    => '0775',
+    }
+
+    if $working_path == '/srv' {
+        # symlink /a to /srv for backwards compatibility
+        file { '/a':
+            ensure => 'link',
+            target => '/srv',
+        }
     }
 
     # Manually set a list of statistics servers.
-    $servers = ["stat1.wikimedia.org", "stat1001.wikimedia.org", "stat1002.eqiad.wmnet", "analytics1027.eqiad.wmnet"]
+    $servers = [
+        'stat1.wikimedia.org',
+        'stat1001.wikimedia.org',
+        'stat1002.eqiad.wmnet',
+        'stat1003.wikimedia.org',
+        'analytics1027.eqiad.wmnet',
+    ]
 
     # set up rsync modules for copying files
-    # on statistic servers in /a
-    class { "misc::statistics::rsyncd": hosts_allow => $servers }
+    # on statistic servers in $working_path
+    class { 'misc::statistics::rsyncd':
+        hosts_allow => $servers,
+        path        => $working_path,
+    }
 }
 
 
@@ -149,13 +171,14 @@ class misc::statistics::dataset_mount {
 }
 
 
-# clones mediawiki core at /a/mediawiki/core
+# clones mediawiki core at $working_path/mediawiki/core
 # and ensures that it is at the latest revision.
 # RT 2162
 class misc::statistics::mediawiki {
+    include misc::statistics::base
     require mediawiki::users::mwdeploy
 
-    $statistics_mediawiki_directory = "/a/mediawiki/core"
+    $statistics_mediawiki_directory = "${misc::statistics::base::working_path}/mediawiki/core"
 
     git::clone { "statistics_mediawiki":
         directory => $statistics_mediawiki_directory,
@@ -171,6 +194,8 @@ class misc::statistics::mediawiki {
 #
 # TODO: puppetize clone of wikistats?
 class misc::statistics::wikistats {
+    include misc::statistics::base
+
     # Perl packages needed for wikistats
     package { [
         'libjson-xs-perl',
@@ -188,7 +213,7 @@ class misc::statistics::wikistats {
     # generates the new mobile pageviews report
     # and syncs the file PageViewsPerMonthAll.csv to stat1002
     cron { 'new mobile pageviews report':
-        command  => '/bin/bash /a/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh',
+        command  => "/bin/bash ${misc::statistics::base::working_path}/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh",
         user     => 'stats',
         monthday => 1,
         hour     => 7,
@@ -242,26 +267,29 @@ class misc::statistics::sites::reportcard {
 # rsync sanitized data that has been readied for public consumption to a
 # web server.
 class misc::statistics::public_datasets {
-    file { '/a/public-datasets':
+    include misc::statistics::base
+
+    $working_path = $misc::statistics::base::working_path
+    file { "${working_path}/public-datasets":
         ensure => 'directory',
         owner  => 'root',
         group  => 'www-data',
         mode   => '0640',
     }
 
-    # symlink /var/www/public-datasets to /a/public-datasets
+    # symlink /var/www/public-datasets to $working_path/public-datasets
     file { '/var/www/public-datasets':
         ensure => 'link',
-        target => '/a/public-datasets',
+        target => "${working_path}/public-datasets",
         owner  => 'root',
         group  => 'www-data',
         mode   => '0640',
     }
 
-    # rsync from stat1:/a/public-datasets to /a/public-datasets
+    # rsync from stat1003:/srv/public-datasets to $working_path/public-datasets
     cron { 'rsync public datasets':
-        command => '/usr/bin/rsync -rt --delete stat1.wikimedia.org::a/public-datasets/* /a/public-datasets/',
-        require => File['/a/public-datasets'],
+        command => "/usr/bin/rsync -rt --delete stat1003.wikimedia.org::srv/public-datasets/* ${working_path}/public-datasets/",
+        require => File["${working_path}/public-datasets"],
         user    => 'root',
         minute  => '*/30',
     }
@@ -269,6 +297,7 @@ class misc::statistics::public_datasets {
 
 # stats.wikimedia.org
 class misc::statistics::sites::stats {
+    include misc::statistics::base
     require misc::statistics::geowiki::data::private
 
     $site_name = "stats.wikimedia.org"
@@ -324,14 +353,17 @@ class misc::statistics::sites::stats {
 
 # community-analytics.wikimedia.org
 class misc::statistics::sites::community_analytics {
+    include misc::statistics::base
+
     $site_name = "community-analytics.wikimedia.org"
     $docroot = "/srv/org.wikimedia.community-analytics/community-analytics/web_interface"
 
     # org.wikimedia.community-analytics is kinda big,
-    # it really lives on /a.
+    # it really lives on $working_path.
     # Symlink /srv/a/org.wikimedia.community-analytics to it.
+    # Oof, this /srv | /a stuff is a mess... :(
     file { "/srv/org.wikimedia.community-analytics":
-        ensure => "/a/srv/org.wikimedia.community-analytics"
+        ensure => "${misc::statistics::base::working_path}/srv/org.wikimedia.community-analytics"
     }
 
     webserver::apache::site { $site_name:
@@ -365,10 +397,12 @@ class misc::statistics::sites::community_analytics {
     }
 }
 
-# installs MonogDB on stat1
+# installs MonogDB
 class misc::statistics::db::mongo {
+    include misc::statistics::base
+
     class { "mongodb":
-        dbpath    => "/a/mongodb",
+        dbpath    => "${misc::statistics::base::working_path}/mongodb",
     }
 }
 
@@ -386,21 +420,25 @@ class misc::statistics::dev {
 # Sets up rsyncd and common modules
 # for statistic servers.  Currently
 # this is read/write between statistic
-# servers in /a.
+# servers in /srv or /a.
 #
 # Parameters:
 #   hosts_allow - array.  Hosts to grant rsync access.
-class misc::statistics::rsyncd($hosts_allow = undef) {
+class misc::statistics::rsyncd(
+    $hosts_allow = undef,
+    $path = '/srv'
+)
+{
     # this uses modules/rsync to
     # set up an rsync daemon service
     include rsync::server
 
     # Set up an rsync module
-    # (in /etc/rsync.conf) for /a.
-    rsync::server::module { "a":
-        path        => "/a",
-        read_only   => "no",
-        list        => "yes",
+    # (in /etc/rsync.conf) for /srv.
+    rsync::server::module { 'srv':
+        path        => $path,
+        read_only   => 'no',
+        list        => 'yes',
         hosts_allow => $hosts_allow,
     }
 
@@ -408,10 +446,10 @@ class misc::statistics::rsyncd($hosts_allow = undef) {
     # (in /etc/rsync.conf) for /var/www.
     # This will allow $hosts_allow to host public data files
     # from the default Apache VirtualHost.
-    rsync::server::module { "www":
-        path        => "/var/www",
-        read_only   => "no",
-        list        => "yes",
+    rsync::server::module { 'www':
+        path        => '/var/www',
+        read_only   => 'no',
+        list        => 'yes',
         hosts_allow => $hosts_allow,
     }
 }
@@ -423,22 +461,24 @@ class misc::statistics::rsyncd($hosts_allow = undef) {
 # Sets up daily cron jobs to rsync log files from remote
 # logging hosts to a local destination for further processing.
 class misc::statistics::rsync::jobs::webrequest {
+    include misc::statistics::base
+    $working_path = $misc::statistics::base::working_path
 
     # Make sure destination directories exist.
     # Too bad I can't do this with recurse => true.
     # See: https://projects.puppetlabs.com/issues/86
     # for a much too long discussion on why I can't.
     file { [
-        '/a/squid',
-        '/a/squid/archive',
-        '/a/aft',
-        '/a/aft/archive',
-        '/a/public-datasets',
-        # Moving away from 'squid' nonmenclature for
+        "${working_path}/squid",
+        "${working_path}/squid/archive",
+        "${working_path}/aft",
+        "${working_path}/aft/archive",
+        "${working_path}/public-datasets",
+        # Moving away from "squid" nonmenclature for
         # webrequest logs.  Kafkatee generated log
         # files will be rsynced into /a/log.
-        '/a/log',
-        '/a/log/webrequest',
+        "${working_path}/log",
+        "${working_path}/log/webrequest",
     ]:
         ensure  => directory,
         owner   => "stats",
@@ -449,52 +489,54 @@ class misc::statistics::rsync::jobs::webrequest {
     # wikipedia zero logs from oxygen
     misc::statistics::rsync_job { "wikipedia_zero":
         source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/zero*.gz",
-        destination => "/a/squid/archive/zero",
+        destination => "${working_path}/squid/archive/zero",
     }
 
     # API logs from erbium
     misc::statistics::rsync_job { "api":
         source      => "erbium.eqiad.wmnet::udp2log/webrequest/archive/api-usage*.gz",
-        destination => "/a/squid/archive/api",
+        destination => "${working_path}/squid/archive/api",
     }
 
     # sampled-1000 logs from erbium
     misc::statistics::rsync_job { "sampled_1000":
         source      => "erbium.eqiad.wmnet::udp2log/webrequest/archive/sampled-1000*.gz",
-        destination => "/a/squid/archive/sampled",
+        destination => "${working_path}/squid/archive/sampled",
     }
 
     # edit logs from oxygen
     misc::statistics::rsync_job { "edits":
         source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz",
-        destination => "/a/squid/archive/edits",
+        destination => "${working_path}/squid/archive/edits",
     }
 
     # mobile logs from oxygen
     misc::statistics::rsync_job { "mobile":
         source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz",
-        destination => "/a/squid/archive/mobile",
+        destination => "${working_path}/squid/archive/mobile",
     }
 
     # rsync kafkatee generated webrequest logs
     misc::statistics::rsync_job { 'webrequest_mobile':
         source      => 'analytics1003.eqiad.wmnet::webrequest/archive/mobile*.gz',
-        destination => '/a/log/webrequest/mobile',
+        destination => "${working_path}/log/webrequest/mobile",
     }
     # rsync kafkatee generated webrequest logs
     misc::statistics::rsync_job { 'webrequest_zero':
         source      => 'analytics1003.eqiad.wmnet::webrequest/archive/zero*.gz',
-        destination => '/a/log/webrequest/zero',
+        destination => "${working_path}/log/webrequest/zero",
     }
 }
 
 # Class: misc::statistics::rsync::jobs::eventlogging
 #
-
 # Sets up daily cron jobs to rsync log files from remote
 # logging hosts to a local destination for further processing.
 class misc::statistics::rsync::jobs::eventlogging {
-    file { '/a/eventlogging':
+    include misc::statistics::base
+    $working_path = $misc::statistics::base::working_path
+
+    file { "${working_path}/eventlogging":
         ensure  => directory,
         owner   => "stats",
         group   => "wikidev",
@@ -504,7 +546,7 @@ class misc::statistics::rsync::jobs::eventlogging {
     # eventlogging logs from vanadium
     misc::statistics::rsync_job { "eventlogging":
         source      => "vanadium.eqiad.wmnet::eventlogging/archive/*.gz",
-        destination => "/a/eventlogging/archive",
+        destination => "${working_path}/eventlogging/archive",
     }
 
     $sets = [ 'a-eventlogging', 'home', ]
@@ -583,13 +625,16 @@ class misc::statistics::cron_blog_pageviews {
 # generates csv datafiles from mobile apps statistics
 # then rsyncs those files to stat1001 so they can be served publicly
 class misc::statistics::limn::mobile_data_sync {
+    include misc::statistics::base
     include passwords::mysql::research
 
-    $source_dir        = "/a/limn-mobile-data"
+    $working_path      = $misc::statistics::base::working_path
+
+    $source_dir        = "${working_path}/limn-mobile-data"
     $command           = "$source_dir/generate.py"
     $config            = "$source_dir/mobile/"
-    $mysql_credentials = "/a/.my.cnf.research"
-    $rsync_from        = "/a/limn-public-data"
+    $mysql_credentials = "${working_path}/.my.cnf.research"
+    $rsync_from        = "${working_path}/limn-public-data"
     $output            = "$rsync_from/mobile/datafiles"
     $gerrit_repo       = "https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git"
     $user              = $misc::statistics::user::username
@@ -629,7 +674,9 @@ class misc::statistics::limn::mobile_data_sync {
 # == Class misc::statistics::geowiki::params
 # Parameters for geowiki that get used outside this file
 class misc::statistics::geowiki::params {
-    $base_path = '/a/geowiki'
+    include misc::statistics::base
+
+    $base_path = "${misc::statistics::base::working_path}/geowiki"
     $private_data_bare_path = "${base_path}/data-private-bare"
 }
 
@@ -691,10 +738,10 @@ class misc::statistics::geowiki::data::private_bare::sync {
     require misc::statistics::geowiki,
         misc::statistics::geowiki::params
 
-    $geowiki_user = $misc::statistics::geowiki::geowiki_user
-    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
-    $geowiki_private_data_bare_path = $misc::statistics::geowiki::params::private_data_bare_path
-    $geowiki_private_data_bare_host = "stat1"
+    $geowiki_user                        = $misc::statistics::geowiki::geowiki_user
+    $geowiki_base_path                   = $misc::statistics::geowiki::geowiki_base_path
+    $geowiki_private_data_bare_path      = $misc::statistics::geowiki::params::private_data_bare_path
+    $geowiki_private_data_bare_host      = 'stat1003'
     $geowiki_private_data_bare_host_fqdn = "${geowiki_private_data_bare_host}.wikimedia.org"
 
     file { "$geowiki_private_data_bare_path":
