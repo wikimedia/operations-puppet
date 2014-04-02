@@ -558,3 +558,20 @@ class misc::maintenance::purge_abusefilter( $enabled = false ) {
             ensure  => $status,
         }
 }
+
+class misc::maintenance::purge_checkuser( $enabled = false ) {
+    $status = $enabled ? {
+        true    => 'present',
+        false   => 'absent',
+        default => 'absent',
+    }
+
+    cron { 'purge-checkuser':
+        ensure  => $status,
+        user    => 'apache',
+        minute  => 0,
+        hour    => 0,
+        weekday => 0,
+        command => '/usr/local/bin/foreachwiki extensions/CheckUser/maintenance/purgeOldData.php 2>&1 > /dev/null',
+    }
+}
