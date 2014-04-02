@@ -446,6 +446,19 @@ class base {
         mode   => '0755',
     }
 
+    $certname = ''
+
+    if ($::realm == 'labs') {
+        # For labs, use instanceid.domain rather than the fqdn
+        # to ensure we're always using a unique certname.
+        # $::ec2id is a fact that queries the instance metadata
+        if($::ec2id == '') {
+            err('Failed to fetch instance ID')
+            fail
+        }
+        $certname = "${::ec2id}.${::domain}"
+    }
+
     class { 'base::puppet':
         server => $::realm ? {
             'labs' => $::site ? {
@@ -454,13 +467,7 @@ class base {
             },
             default => 'puppet',
         },
-        certname => $::realm ? {
-            # For labs, use instanceid.domain rather than the fqdn
-            # to ensure we're always using a unique certname.
-            # $::ec2id is a fact that queries the instance metadata
-            'labs'  => "${::ec2id}.${::domain}",
-            default => undef,
-        },
+        certname => $certname,
     }
 
     include passwords::root,
