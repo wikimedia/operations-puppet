@@ -27,8 +27,8 @@ $| = 1;
 syswrite SOCK, "$tool\n";
 my $port = 0+<SOCK>;
 
-socket(PROXY, PF_UNIX, SOCK_STREAM, 0) and
-    connect(PROXY, sockaddr_in(inet_aton('tools-proxy-test'), 8282)) and
+socket(PROXY, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
+    connect(PROXY, sockaddr_in(8282, inet_aton('tools-proxy-test'))) and
     syswrite PROXY, "/.*\n`hostname`:$port\n";
 
 exec @ARGV, $port;
