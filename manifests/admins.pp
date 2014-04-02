@@ -3767,6 +3767,7 @@ class admins::restricted {
     include accounts::ezachte
     include accounts::hoo # RT 6731
     include accounts::jamesofur
+    include accounts::jdlrobson # RT 7186
     include accounts::khorn
     include accounts::qchris # RT 5403
     include accounts::rainman
