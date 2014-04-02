@@ -657,7 +657,7 @@ class misc::statistics::limn::mobile_data_sync {
         content => template("misc/mysql-config-research.erb"),
     }
 
-    file { $output:
+    file { [$source_dir, $rsync_from, $output]:
         owner  => $user,
         group  => wikidev,
         mode   => '0775',
