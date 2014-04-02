@@ -20,19 +20,8 @@ class applicationserver::hhvm {
         before     => Package['hhvm-fastcgi'],
     }
 
-    # Hack: modify libmemcached10 package to remove spurious conflict with libmemcached6,
-    # as has already been done upstream; see <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=700091>.
-    # Only needed while waiting for RT 7133.
     file { '/usr/local/sbin/repack-libmemcached10':
-        source => 'puppet:///modules/applicationserver/hhvm/repack-libmemcached10',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    exec { '/usr/local/sbin/repack-libmemcached10':
-        unless => '/usr/local/sbin/repack-libmemcached10 --verify',
-        before => Package['hhvm-fastcgi'],
+        ensure => absent,
     }
 
     package { 'hhvm-fastcgi':
