@@ -21,8 +21,8 @@
 class ganglia {
 
     # FIXME: remove after the ganglia module migration
-    if $::realm == "labs" or ($::hostname in ["manutius"] or $::site == "esams" or ($::site == "pmtpa" and $cluster in ["cache_bits"])) {
-        class { "ganglia_new::monitor":
+    if $::realm == 'labs' or ($::hostname in ['manutius'] or $::site == 'esams' or ($::site == 'pmtpa' and $cluster in ['cache_bits'])) {
+        class { 'ganglia_new::monitor':
             cluster => $::realm ? {
                 labs => $::instanceproject,
                 default => $cluster
@@ -30,31 +30,31 @@ class ganglia {
         }
     } else {
         if $::hostname in $::decommissioned_servers {
-            $cluster = "decommissioned"
-            $deaf = "no"
+            $cluster = 'decommissioned'
+            $deaf = 'no'
         } else {
             if ! $::cluster {
-                $cluster = "misc"
+                $cluster = 'misc'
             }
             # aggregator should not be deaf (they should listen)
             # ganglia_aggregator for production are defined in site.pp;
             # for labs, 'deaf = "no"' is defined in gmond.conf.labsstub
             if $ganglia_aggregator {
-                $deaf = "no"
+                $deaf = 'no'
             } else {
-                $deaf = "yes"
+                $deaf = 'yes'
             }
         }
 
-        $authority_url = "http://ganglia.wikimedia.org"
+        $authority_url = 'http://ganglia.wikimedia.org'
 
-        $location = "unspecified"
+        $location = 'unspecified'
 
         $ip_prefix = $::site ? {
-            "pmtpa" => "239.192.0",
-            "eqiad" => "239.192.1",
-            "esams" => "239.192.20",
-            "ulsfo" => "239.192.10"
+            'pmtpa' => '239.192.0',
+            'eqiad' => '239.192.1',
+            'esams' => '239.192.20',
+            'ulsfo' => '239.192.10'
         }
 
         $name_suffix = " ${::site}"
@@ -165,81 +165,80 @@ class ganglia {
         # and a different IP prefix will be used.
 
         # gmond.conf template variables
-        $ipoct = $ganglia_clusters[$cluster]["ip_oct"]
+        $ipoct = $ganglia_clusters[$cluster]['ip_oct']
         $mcast_address = "${ip_prefix}.${ipoct}"
         $clustername = $ganglia_clusters[$cluster][name]
         $cname = "${clustername}${name_suffix}"
 
-        if versioncmp($::lsbdistrelease, "9.10") >= 0 {
-            $gmond = "ganglia-monitor"
+        if versioncmp($::lsbdistrelease, '9.10') >= 0 {
+            $gmond = 'ganglia-monitor'
         }
         else {
-            $gmond = "gmond"
+            $gmond = 'gmond'
         }
 
         $gmondpath = $gmond ? {
-            "ganglia-monitor"       => "/etc/ganglia/gmond.conf",
-            default                 => "/etc/gmond.conf"
+            'ganglia-monitor'       => '/etc/ganglia/gmond.conf',
+            default                 => '/etc/gmond.conf'
         }
 
 
         # Resource definitions
-        file { "gmondconfig":
+        file { 'gmondconfig':
+            ensure  => present,
             require => Package[$gmond],
             name    => $gmondpath,
-            owner   => "root",
-            group   => "root",
-            mode    => 0444,
-            content => template("ganglia/gmond_template.erb"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('ganglia/gmond_template.erb'),
             notify  => Service['gmond'],
-            ensure  => present
         }
 
         case $gmond {
             gmond: {
-                package {
-                    "gmond":
-                        ensure => latest,
-                        alias => "gmond-package";
-                    "ganglia-monitor":
-                        before => Package['gmond'],
-                        ensure => purged;
+                package { 'gmond':
+                    ensure => latest,
+                    alias => 'gmond-package',
+                }
+                package { 'ganglia-monitor':
+                    ensure => purged,
+                    before => Package['gmond'],
                 }
             }
             ganglia-monitor: {
-                if !defined(Package["ganglia-monitor"]) {
-                    package {
-                        "gmond":
-                            before => Package[ganglia-monitor],
-                            ensure => purged;
-                        "ganglia-monitor":
-                            ensure => present,
-                            alias => "gmond-package";
+                if !defined(Package['ganglia-monitor']) {
+                    package { 'gmond':
+                        ensure => purged,
+                        before => Package['ganglia-monitor'],
+                    }
+                    package { 'ganglia-monitor':
+                        ensure => present,
+                        alias  => 'gmond-package',
                     }
                 }
 
-                file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
-                    require => Package[ganglia-monitor],
-                    ensure => directory;
+                file { [ '/etc/ganglia/conf.d', '/usr/lib/ganglia/python_modules' ]:
+                    ensure  => directory,
+                    require => Package['ganglia-monitor'],
                 }
 
-                file { "/etc/gmond.conf":
-                    ensure => absent;
+                file { '/etc/gmond.conf':
+                    ensure => absent,
                 }
             }
         }
 
-        service {
-            "gmond":
-                name        => $gmond,
-                require     => [ File[gmondconfig], Package["gmond-package"] ],
-                subscribe   => File[gmondconfig],
-                hasstatus   => false,
-                pattern     => "gmond",
-                ensure      => running;
+        service { 'gmond':
+            ensure    => running,
+            name      => $gmond,
+            require   => [ File['gmondconfig'], Package['gmond-package'] ],
+            subscribe => File['gmondconfig'],
+            hasstatus => false,
+            pattern   => 'gmond',
         }
 
-        generic::systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
+        generic::systemuser { 'gmetric': name => 'gmetric', home => '/home/gmetric', shell => '/bin/sh' }
     }
 
 }
@@ -248,103 +247,103 @@ class ganglia {
 # Ganglia gmetad config.  This class does not start
 # gmetad.  Include ganglia::collector instead if you want to do that.
 class ganglia::collector::config {
-    package { "gmetad":
-        ensure => present;
+    package { 'gmetad':
+        ensure => present,
     }
 
-    if $::realm == "labs" {
-        $gridname = "wmflabs"
+    if $::realm == 'labs' {
+        $gridname = 'wmflabs'
         # for labs, just generate a stub gmetad configuration without data_source lines
-        $gmetad_conf = "gmetad.conf.labsstub"
-        $authority_url = "http://ganglia.wmflabs.org"
+        $gmetad_conf = 'gmetad.conf.labsstub'
+        $authority_url = 'http://ganglia.wmflabs.org'
         $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
-        $rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+        $rrd_rootdir = '/mnt/ganglia_tmp/rrds.pmtpa'
     } else {
-        $gridname = "Wikimedia"
-        $gmetad_conf = "gmetad.conf"
-        $authority_url = "http://ganglia.wikimedia.org"
+        $gridname = 'Wikimedia'
+        $gmetad_conf = 'gmetad.conf'
+        $authority_url = 'http://ganglia.wikimedia.org'
         case $::hostname {
             # manutius runs gmetad to get varnish data into torrus
             # unlike other servers, manutius uses the default rrd_rootdir
             /^manutius$/: {
                 $data_sources = {
-                    "Upload caches eqiad" => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet"
+                    'Upload caches eqiad' => 'cp1048.eqiad.wmnet cp1061.eqiad.wmnet'
                 }
                 $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
             }
             # neon needs gmetad config for ganglios
             /^neon$/: {
                 $data_sources = {
-                    "Miscellaneous"                  => "tarin.pmtpa.wmnet",
-                    "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
-                    "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
-                    "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
-                    "Mobile caches esams"            => "hooft.esams.wikimedia.org:11677",
-                    "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
+                    'Miscellaneous'                  => 'tarin.pmtpa.wmnet',
+                    'Miscellaneous eqiad'            => 'carbon.wikimedia.org ms1004.eqiad.wmnet',
+                    'Analytics cluster eqiad'        => 'analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet',
+                    'Mobile caches eqiad'            => 'cp1046.eqiad.wmnet cp1047.eqiad.wmnet',
+                    'Mobile caches esams'            => 'hooft.esams.wikimedia.org:11677',
+                    'Mobile caches ulsfo'            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
                 }
                 $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:    0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
                 }
             default: {
                 $data_sources = {
-                    "Video scalers eqiad"            => "tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet",
-                    "Image scalers eqiad"            => "mw1153.eqiad.wmnet mw1154.eqiad.wmnet",
-                    "API application servers eqiad"  => "mw1114.eqiad.wmnet mw1115.eqiad.wmnet",
-                    "Application servers eqaid"      => "mw1017.eqiad.wmnet mw1018.eqiad.wmnet",
-                    "Jobrunners eqiad"              => "mw1001.eqiad.wmnet mw1002.eqiad.wmnet",
-                    "Bits application servers eqiad" => "mw1151.eqiad.wmnet mw1152.eqiad.wmnet",
-                    "MySQL"                          => "db1050.eqiad.wmnet",
-                    "PDF servers"                    => "pdf2.wikimedia.org pdf3.wikimedia.org",
-                    "Miscellaneous"                  => "tarin.pmtpa.wmnet",
-                    "Fundraising eqiad"              => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
-                    "SSL cluster esams"              => "hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
-                    "Swift pmtpa"                    => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",
-                    "Virtualization cluster eqiad"   => "labnet1001.eqiad.wmnet virt1000.wikimedia.org",
-                    "Virtualization cluster pmtpa"   => "virt5.pmtpa.wmnet virt0.wikimedia.org",
-                    "Glusterfs cluster pmtpa"        => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
-                    "MySQL eqiad"                    => "db1056.eqiad.wmnet db1021.eqiad.wmnet",
-                    "LVS loadbalancers eqiad"        => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
-                    "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
-                    "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
-                    "Mobile caches esams"            => "hooft.esams.wikimedia.org:11677",
-                    "Bits caches eqiad"              => "cp1056.eqiad.wmnet cp1057.eqiad.wmnet",
-                    "Upload caches eqiad"            => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet",
-                    "SSL cluster eqiad"              => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
-                    "Swift eqiad"                    => "ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet",
-                    "Search eqiad"                   => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
-                    "Bits caches esams"              => "hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org",
-                    "LVS loadbalancers esams"        => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
-                    "Miscellaneous esams"            => "hooft.esams.wikimedia.org:11657",
-                    "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
-                    "Memcached eqiad"                => "mc1001.eqiad.wmnet mc1002.eqiad.wmnet",
-                    "Text caches esams"              => "hooft.esams.wikimedia.org:11669",
-                    "Upload caches esams"            => "hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
-                    "Ceph cluster esams"             => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org",
-                    "Parsoid eqiad"                  => "wtp1001.eqiad.wmnet",
-                    "Parsoid Varnish eqiad"          => "cp1045.eqiad.wmnet cp1058.eqiad.wmnet",
-                    "Redis eqiad"                    => "rdb1001.eqiad.wmnet rdb1002.eqiad.wmnet",
-                    "Labs NFS cluster pmtpa"         => "labstore3.pmtpa.wmnet labstore4.pmtpa.wmnet",
-                    "Text caches eqiad"              => "cp1052.eqiad.wmnet cp1053.eqiad.wmnet",
+                    'Video scalers eqiad'            => 'tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet',
+                    'Image scalers eqiad'            => 'mw1153.eqiad.wmnet mw1154.eqiad.wmnet',
+                    'API application servers eqiad'  => 'mw1114.eqiad.wmnet mw1115.eqiad.wmnet',
+                    'Application servers eqaid'      => 'mw1017.eqiad.wmnet mw1018.eqiad.wmnet',
+                    'Jobrunners eqiad'              => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
+                    'Bits application servers eqiad' => 'mw1151.eqiad.wmnet mw1152.eqiad.wmnet',
+                    'MySQL'                          => 'db1050.eqiad.wmnet',
+                    'PDF servers'                    => 'pdf2.wikimedia.org pdf3.wikimedia.org',
+                    'Miscellaneous'                  => 'tarin.pmtpa.wmnet',
+                    'Fundraising eqiad'              => 'pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet',
+                    'SSL cluster esams'              => 'hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org',
+                    'Swift pmtpa'                    => 'ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet',
+                    'Virtualization cluster eqiad'   => 'labnet1001.eqiad.wmnet virt1000.wikimedia.org',
+                    'Virtualization cluster pmtpa'   => 'virt5.pmtpa.wmnet virt0.wikimedia.org',
+                    'Glusterfs cluster pmtpa'        => 'labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet',
+                    'MySQL eqiad'                    => 'db1056.eqiad.wmnet db1021.eqiad.wmnet',
+                    'LVS loadbalancers eqiad'        => 'lvs1001.wikimedia.org lvs1002.wikimedia.org',
+                    'Miscellaneous eqiad'            => 'carbon.wikimedia.org ms1004.eqiad.wmnet',
+                    'Mobile caches eqiad'            => 'cp1046.eqiad.wmnet cp1047.eqiad.wmnet',
+                    'Mobile caches esams'            => 'hooft.esams.wikimedia.org:11677',
+                    'Bits caches eqiad'              => 'cp1056.eqiad.wmnet cp1057.eqiad.wmnet',
+                    'Upload caches eqiad'            => 'cp1048.eqiad.wmnet cp1061.eqiad.wmnet',
+                    'SSL cluster eqiad'              => 'ssl1001.wikimedia.org ssl1002.wikimedia.org',
+                    'Swift eqiad'                    => 'ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet',
+                    'Search eqiad'                   => 'search1001.eqiad.wmnet search1002.eqiad.wmnet',
+                    'Bits caches esams'              => 'hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org',
+                    'LVS loadbalancers esams'        => 'hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org',
+                    'Miscellaneous esams'            => 'hooft.esams.wikimedia.org:11657',
+                    'Analytics cluster eqiad'        => 'analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet',
+                    'Memcached eqiad'                => 'mc1001.eqiad.wmnet mc1002.eqiad.wmnet',
+                    'Text caches esams'              => 'hooft.esams.wikimedia.org:11669',
+                    'Upload caches esams'            => 'hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org',
+                    'Ceph cluster esams'             => 'ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org',
+                    'Parsoid eqiad'                  => 'wtp1001.eqiad.wmnet',
+                    'Parsoid Varnish eqiad'          => 'cp1045.eqiad.wmnet cp1058.eqiad.wmnet',
+                    'Redis eqiad'                    => 'rdb1001.eqiad.wmnet rdb1002.eqiad.wmnet',
+                    'Labs NFS cluster pmtpa'         => 'labstore3.pmtpa.wmnet labstore4.pmtpa.wmnet',
+                    'Text caches eqiad'              => 'cp1052.eqiad.wmnet cp1053.eqiad.wmnet',
                     'Misc Web caches eqiad'          => 'cp1043.eqiad.wmnet cp1044.eqiad.wmnet',
-                    "LVS loadbalancers ulsfo"        => "lvs4001.ulsfo.wmnet lvs4003.ulsfo.wmnet",
-                    "Bits caches ulsfo"              => 'cp4001.ulsfo.wmnet cp4003.ulsfo.wmnet',
-                    "Upload caches ulsfo"            => 'cp4005.ulsfo.wmnet cp4013.ulsfo.wmnet',
-                    "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
-                    "Text caches ulsfo"              => 'cp4008.ulsfo.wmnet cp4016.ulsfo.wmnet',
-                    "Elasticsearch eqiad"            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet elastic1013.eqiad.wmnet',
-                    "Logstash eqiad"                 => 'logstash1001.eqiad.wmnet logstash1003.eqiad.wmnet',
+                    'LVS loadbalancers ulsfo'        => 'lvs4001.ulsfo.wmnet lvs4003.ulsfo.wmnet',
+                    'Bits caches ulsfo'              => 'cp4001.ulsfo.wmnet cp4003.ulsfo.wmnet',
+                    'Upload caches ulsfo'            => 'cp4005.ulsfo.wmnet cp4013.ulsfo.wmnet',
+                    'Mobile caches ulsfo'            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
+                    'Text caches ulsfo'              => 'cp4008.ulsfo.wmnet cp4016.ulsfo.wmnet',
+                    'Elasticsearch eqiad'            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet elastic1013.eqiad.wmnet',
+                    'Logstash eqiad'                 => 'logstash1001.eqiad.wmnet logstash1003.eqiad.wmnet',
 
                 }
                 $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
-                $rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+                $rrd_rootdir = '/mnt/ganglia_tmp/rrds.pmtpa'
             }
         }
     }
 
     file { "/etc/ganglia/${gmetad_conf}":
-        require => Package[gmetad],
-        content => template("ganglia/gmetad.conf.erb"),
-        mode => 0444,
-        ensure  => present
+        ensure  => present,
+        require => Package['gmetad'],
+        content => template('ganglia/gmetad.conf.erb'),
+        mode    => '0444',
     }
 }
 
@@ -353,52 +352,53 @@ class ganglia::collector::config {
 # to install gmetad.conf, and then ensures that
 # gmetad is running.
 class ganglia::collector inherits ganglia::collector::config {
-    system::role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
+    system::role { 'ganglia::collector': description => 'Ganglia gmetad aggregator' }
 
-    # for labs, gmond.conf and gmetad.conf are generated every 4 hours by a cron job
-    if $::realm == "labs" {
-        file { "/etc/ganglia/gmond.conf.labsstub":
-            source => "puppet:///files/ganglia/gmond.conf.labsstub",
-            mode => 0444,
-            ensure => present;
-        }
-
-        file { "/usr/local/sbin/generate-ganglia-conf.py":
-            source => "puppet:///files/ganglia/generate-ganglia-conf.py",
-            mode => 0755,
-            ensure => present;
-        }
-
-        cron { generate-ganglia-conf:
-            command => "/usr/local/sbin/generate-ganglia-conf.py",
-            require => Package[gmetad],
-            user => root,
-            hour => [0, 4, 8, 12, 16, 20],
-            minute => 30,
+    # for labs, gmond.conf and gmetad.conf are generated every 4 hours by a
+    # cron job
+    if $::realm == 'labs' {
+        file { '/etc/ganglia/gmond.conf.labsstub':
             ensure => present,
+            source => 'puppet:///files/ganglia/gmond.conf.labsstub',
+            mode   => '0444',
+        }
+
+        file { '/usr/local/sbin/generate-ganglia-conf.py':
+            ensure => present,
+            source => 'puppet:///files/ganglia/generate-ganglia-conf.py',
+            mode   => '0755',
+        }
+
+        cron { 'generate-ganglia-conf':
+            ensure      => present,
+            command     => '/usr/local/sbin/generate-ganglia-conf.py',
+            require     => Package['gmetad'],
+            user        => 'root',
+            hour        => [0, 4, 8, 12, 16, 20],
+            minute      => 30,
             environment => 'PATH=$PATH:/sbin',
         }
 
         # log gmetad messages to /var/log/ganglia.log
-        file { "/etc/rsyslog.d/30-ganglia.conf":
-            source => "puppet:///files/ganglia/rsyslog.d/30-ganglia.conf",
-            mode => 0444,
+        file { '/etc/rsyslog.d/30-ganglia.conf':
             ensure => present,
-            notify => Service["rsyslog"];
+            source => 'puppet:///files/ganglia/rsyslog.d/30-ganglia.conf',
+            mode   => '0444',
+            notify => Service['rsyslog'],
         }
 
-        file { "/etc/logrotate.d/ganglia":
-            source => "puppet:///files/logrotate/ganglia",
-            mode => 0444,
-            ensure => present;
+        file { '/etc/logrotate.d/ganglia':
+            ensure => present,
+            source => 'puppet:///files/logrotate/ganglia',
+            mode   => '0444',
         }
     }
 
-    service { "gmetad":
-        require => File["/etc/ganglia/${gmetad_conf}"],
+    service { 'gmetad':
+        ensure    => running,
+        require   => File["/etc/ganglia/${gmetad_conf}"],
         subscribe => File["/etc/ganglia/${gmetad_conf}"],
         hasstatus => false,
-        ensure => running;
     }
 }
 
@@ -408,16 +408,16 @@ class ganglia::collector inherits ganglia::collector::config {
 class ganglia::aggregator {
     # This overrides the default ganglia-monitor script
     # with one that starts up multiple instances of gmond
-    file { "/etc/init.d/ganglia-monitor-aggrs":
-        source => "puppet:///files/ganglia/ganglia-monitor",
-        mode   => 0555,
-        ensure => present,
-        require => Package["ganglia-monitor"];
+    file { '/etc/init.d/ganglia-monitor-aggrs':
+        ensure  => present,
+        source  => 'puppet:///files/ganglia/ganglia-monitor',
+        mode    => '0555',
+        require => Package['ganglia-monitor'],
     }
-    service { "ganglia-monitor-aggrs":
-        require => File["/etc/init.d/ganglia-monitor-aggrs"],
-        enable => true,
-        ensure => running;
+    service { 'ganglia-monitor-aggrs':
+        ensure  => running,
+        require => File['/etc/init.d/ganglia-monitor-aggrs'],
+        enable  => true,
     }
 }
 
@@ -431,11 +431,11 @@ class ganglia::web {
 
     class {'webserver::php5': ssl => true; }
 
-    if $::realm == "labs" {
-        $ganglia_servername = "ganglia.wmflabs.org"
-        $ganglia_serveralias = "aggregator.eqiad.wmflabs"
-        $ganglia_webdir = "/usr/share/ganglia-webfrontend"
-        $ganglia_confdir = "/var/lib/ganglia/conf"
+    if $::realm == 'labs' {
+        $ganglia_servername = 'ganglia.wmflabs.org'
+        $ganglia_serveralias = 'aggregator.eqiad.wmflabs'
+        $ganglia_webdir = '/usr/share/ganglia-webfrontend'
+        $ganglia_confdir = '/var/lib/ganglia/conf'
         $ganglia_dwoo = '/var/lib/ganglia/dwoo'
         $ganglia_dwoo_cache = "${ganglia_dwoo}/cache"
         $ganglia_dwoo_compiled = "${ganglia_dwoo}/compiled"
@@ -454,118 +454,122 @@ class ganglia::web {
 
         include ganglia::aggregator
     } else {
-        $ganglia_servername = "ganglia.wikimedia.org"
-        $ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
+        $ganglia_servername = 'ganglia.wikimedia.org'
+        $ganglia_serveralias = 'nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org'
         # TODO(ssmollett): when switching to ganglia-webfrontend
         # package, use /usr/share/ganglia-webfrontend
-        $ganglia_webdir = "/srv/org/wikimedia/ganglia-web-latest"
-        $ganglia_confdir = "/srv/org/wikimedia/ganglia-web-conf"
+        $ganglia_webdir = '/srv/org/wikimedia/ganglia-web-latest'
+        $ganglia_confdir = '/srv/org/wikimedia/ganglia-web-conf'
 
-        $ganglia_ssl_cert = "/etc/ssl/certs/ganglia.wikimedia.org.pem"
-        $ganglia_ssl_key = "/etc/ssl/private/ganglia.wikimedia.org.key"
+        $ganglia_ssl_cert = '/etc/ssl/certs/ganglia.wikimedia.org.pem'
+        $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
     }
 
-    file {
-        "/etc/apache2/sites-available/${ganglia_servername}":
-            mode => 0444,
-            owner => root,
-            group => root,
-            content => template("apache/sites/ganglia.wikimedia.org.erb"),
-            ensure => present;
-        "/usr/local/bin/restore-gmetad-rrds":
-            mode => 0555,
-            owner => root,
-            group => root,
-            source => "puppet:///files/ganglia/restore-gmetad-rrds",
-            ensure => present;
-        "/usr/local/bin/save-gmetad-rrds":
-            mode => 0555,
-            owner => root,
-            group => root,
-            source => "puppet:///files/ganglia/save-gmetad-rrds",
-            ensure => present;
-        "/etc/init.d/gmetad":
-            mode => 0555,
-            owner => root,
-            group => root,
-            source => "puppet:///files/ganglia/gmetad",
-            ensure => present;
-        "/var/lib/ganglia/rrds.pmtpa/":
-            mode => 0755,
-            owner => nobody,
-            group => root,
-            ensure => directory;
-        "/etc/rc.local":
-            mode => 0555,
-            owner => root,
-            group => root,
-            source => "puppet:///files/ganglia/rc.local",
-            ensure => present;
+    file { "/etc/apache2/sites-available/${ganglia_servername}":
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('apache/sites/ganglia.wikimedia.org.erb'),
+    }
+    file { '/usr/local/bin/restore-gmetad-rrds':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///files/ganglia/restore-gmetad-rrds',
+    }
+    file { '/usr/local/bin/save-gmetad-rrds':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///files/ganglia/save-gmetad-rrds',
+    }
+    file { '/etc/init.d/gmetad':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///files/ganglia/gmetad',
+    }
+    file { '/var/lib/ganglia/rrds.pmtpa/':
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'nobody',
+        group  => 'root',
+    }
+    file { '/etc/rc.local':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///files/ganglia/rc.local',
     }
 
-    apache_site { ganglia: name => $ganglia_servername }
-    apache_module { rewrite: name => "rewrite" }
+    apache_site { 'ganglia': name => $ganglia_servername }
+    apache_module { 'rewrite': name => 'rewrite' }
 
-    package {
-        "librrds-perl":
-            before => Package[rrdtool],
-            ensure => latest;
-        "rrdtool":
-            ensure => latest,
+    package { 'librrds-perl':
+        ensure => latest,
+        before => Package['rrdtool'],
+    }
+    package { 'rrdtool':
+        ensure => latest,
     }
 
     # back up rrds every half hour
-    cron { "save-rrds":
-        command => "/usr/local/bin/save-gmetad-rrds",
-        user => root,
-        minute => [ 7, 37 ],
-        ensure => present
+    cron { 'save-rrds':
+        ensure  => present,
+        command => '/usr/local/bin/save-gmetad-rrds',
+        user    => 'root',
+        minute  => [ 7, 37 ],
     }
 
     # Mount /mnt/ganglia_tmp as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk
-    $ganglia_tmp_mountpoint = "/mnt/ganglia_tmp"
+    $ganglia_tmp_mountpoint = '/mnt/ganglia_tmp'
 
-    file { "$ganglia_tmp_mountpoint":
-        mode => 0755,
-        owner => root,
-        group => root,
-        ensure => directory;
+    file { $ganglia_tmp_mountpoint:
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
     }
 
-    mount { "$ganglia_tmp_mountpoint":
+    mount { $ganglia_tmp_mountpoint:
+        ensure  => mounted,
         require => File["$ganglia_tmp_mountpoint"],
-        device => "tmpfs",
-        fstype => "tmpfs",
-        options => "noauto,noatime,defaults,size=4000m",
-        pass => 0,
-        dump => 0,
-        ensure => mounted;
+        device  => 'tmpfs',
+        fstype  => 'tmpfs',
+        options => 'noauto,noatime,defaults,size=4000m',
+        pass    => 0,
+        dump    => 0,
     }
 
     file { "${ganglia_tmp_mountpoint}/rrds.pmtpa":
-        require => Mount["$ganglia_tmp_mountpoint"],
-        mode => 0755,
-        owner => nobody,
-        group => root,
-        ensure => directory;
+        ensure  => directory,
+        require => Mount[$ganglia_tmp_mountpoint],
+        mode    => '0755',
+        owner   => 'nobody',
+        group   => 'root',
     }
 
 
     # TODO(ssmollett): install ganglia-webfrontend package in production,
     # using appropriate conf.php
-    if $::realm == "labs" {
-        package { "ganglia-webfrontend":
-            ensure => latest;
+    if $::realm == 'labs' {
+        package { 'ganglia-webfrontend':
+            ensure => latest,
         }
 
-        file { "/usr/share/ganglia-webfrontend/conf.php":
-            mode => 0444,
-            owner => root,
-            group => root,
-            source => "puppet:///files/ganglia/conf.php",
-            require => Package[ganglia-webfrontend],
-            ensure => present;
+        file { '/usr/share/ganglia-webfrontend/conf.php':
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            source  => 'puppet:///files/ganglia/conf.php',
+            require => Package['ganglia-webfrontend'],
         }
         file { '/usr/share/ganglia-webfrontend/conf_default.php':
             ensure => link,
@@ -577,11 +581,13 @@ class ganglia::web {
     }
 }
 
+# == Class ganglia::logtailer
+#
+# The class pulls in everything necessary to get a ganglia-logtailer instance
+# on a machine.
 class ganglia::logtailer {
-    # this class pulls in everything necessary to get a ganglia-logtailer instance on a machine
-
-    package { "ganglia-logtailer":
-        ensure => latest;
+    package { 'ganglia-logtailer':
+        ensure => latest,
     }
 }
 
@@ -660,8 +666,8 @@ define ganglia::view(
     # require ganglia::web
     $view_name = $name
     file { "${conf_dir}/view_${name}.json":
-        content => template($template),
         ensure  => $ensure,
+        content => template($template),
     }
 }
 
@@ -707,18 +713,17 @@ define ganglia::plugin::python( $plugin = $title, $opts = {} ) {
 # maintenance scripts recycling DB connections and taking a few secs, not mins
 class misc::monitoring::jobqueue {
 
-    cron {
-        all_jobqueue_length:
-            command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --value=$(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
-            user => mwdeploy,
-            ensure => present;
+    cron { 'all_jobqueue_length':
+        ensure  => present,
+        command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --value=$(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
+        user    => 'mwdeploy',
     }
-    # duplicating the above job to experiment with gmetric's host spoofing so as to
-    # gather these metrics in a fake host called "www.wikimedia.org"
-    cron {
-        all_jobqueue_length_spoofed:
-            command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'www.wikimedia.org:www.wikimedia.org' --value=$(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
-            user => mwdeploy,
-            ensure => present;
+
+    # duplicating the above job to experiment with gmetric's host spoofing so
+    # as to gather these metrics in a fake host called "www.wikimedia.org"
+    cron { 'all_jobqueue_length_spoofed':
+        ensure  => present,
+        command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'www.wikimedia.org:www.wikimedia.org' --value=$(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
+        user    => 'mwdeploy',
     }
 }
