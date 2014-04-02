@@ -4,7 +4,7 @@ class puppetmaster::geoip {
     # normal puppet File resource (see the geoip module for more)
 
     $geoip_destdir = "${puppetmaster::volatiledir}/GeoIP"
-    $environment = 'http_proxy=http://brewster.wikimedia.org:8080'
+    $environment = 'http_proxy=http://carbon.wikimedia.org:8080'
 
     # geoip::data classes depend on this
     file { $geoip_destdir:

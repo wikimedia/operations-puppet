@@ -1,7 +1,4 @@
 mchenry.wikimedia.org   /root default
-brewster.wikimedia.org	/srv/wikimedia	default
-brewster.wikimedia.org	/srv/autoinstall	default
-brewster.wikimedia.org	/srv/tftpboot	default
 sanger.wikimedia.org	/var/vmail	default
 nfs1.pmtpa.wmnet        /var/opendj/backups default
 nfs2.pmtpa.wmnet        /var/opendj/backups default
