@@ -2497,6 +2497,47 @@ node 'stat1002.eqiad.wmnet' {
 node 'stat1003.wikimedia.org' {
     include standard
     include admins::roots
+
+    include role::statistics::cruncher
+
+    include misc::statistics::cron_blog_pageviews
+    include misc::statistics::limn::mobile_data_sync
+
+    # special accounts
+    include admins::globaldev      # RT 3119
+    include accounts::ezachte
+    include accounts::milimetric   # RT 3540
+    include accounts::diederik
+    include accounts::dartar
+    include accounts::halfak
+    include accounts::howief       # RT 3576
+    include accounts::ironholds
+    include accounts::jdlrobson
+    include accounts::jgonera
+    include accounts::jmorgan
+    include accounts::kaldari      # RT 4959
+    include accounts::maryana      # RT 3517
+    include accounts::mflaschen    # RT 4796
+    include accounts::spetrea      # RT 3584
+    include accounts::swalling     # RT 3653
+    include accounts::yurik        # RT 4835
+    include accounts::awight       # RT 5048
+    include accounts::jforrester   # RT 5302
+    include accounts::qchris       # RT 5474
+    include accounts::tnegrin      # RT 5391
+    include accounts::mholmquist   # RT 6009
+    include accounts::msyed        # RT 6506
+    include accounts::nuria        # RT 6525
+    include accounts::csalvia      # RT 6664
+    include accounts::leila        # RT 6765
+    include accounts::gdubuc       # RT 7074
+
+    # Allow Christian to sudo -u stats
+    # to debug and test stats' automated cron jobs.
+    sudo_user { 'qchris':
+        privileges => ['ALL = (stats) NOPASSWD: ALL'],
+    }
+
 }
 
 node 'snapshot1001.eqiad.wmnet' {
