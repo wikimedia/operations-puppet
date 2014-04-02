@@ -21,8 +21,6 @@ class role::statistics::cruncher inherits role::statistics {
 		# oursql
 		misc::statistics::dev,
 		misc::udp2log::udp_filter,
-		# generate gerrit stats from stat1.
-		misc::statistics::gerrit_stats,
 		misc::statistics::rsync::jobs::eventlogging,
 		# geowiki: bringing data from production slave db to research db
 		misc::statistics::geowiki::jobs::data,
