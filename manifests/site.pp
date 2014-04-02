@@ -361,8 +361,12 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
     include standard
     include groups::wikidev
     include accounts::gwicke
+    include accounts::ssastry
 
     sudo_user { 'gwicke':
+        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+    }
+    sudo_user { 'ssastry':
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
     }
 
