@@ -88,10 +88,8 @@ tool_forward_specific:
   caseful_local_part
   local_parts = passwd;<%= instanceproject %>.$local_part
   require_files = <%= instanceproject %>.$local_part:$home/.forward$local_part_suffix
-  user = <%= instanceproject %>.$local_part
-  group = <%= instanceproject %>.$local_part
   router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
-  file = $home/.forward$local_part_suffix
+  file = /data/project/$local_part/.forward$local_part_suffix
   no_expn
   check_ancestor
   modemask = 002
@@ -111,10 +109,8 @@ tool_forward_general:
   caseful_local_part
   local_parts = passwd;<%= instanceproject %>.$local_part
   require_files = <%= instanceproject %>.$local_part:$home/.forward
-  user = <%= instanceproject %>.$local_part
-  group = <%= instanceproject %>.$local_part
   router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
-  file = $home/.forward
+  file = /data/project/$local_part/.forward
   no_expn
   check_ancestor
   modemask = 002
@@ -133,8 +129,6 @@ tool_default:
   not_local_part_suffix_optional
   caseful_local_part
   local_parts = passwd;<%= instanceproject %>.$local_part
-  user = <%= instanceproject %>.$local_part
-  group = <%= instanceproject %>.$local_part
   router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
   no_expn
   check_ancestor
