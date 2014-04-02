@@ -1,9 +1,7 @@
 # statistics servers (per ezachte - RT 2162)
 
 class role::statistics {
-	include standard,
-		admins::roots,
-		misc::statistics::user,
+	include misc::statistics::user,
 		backup::client,  # amanda backups
 		misc::statistics::base,
 		base::packages::emacs

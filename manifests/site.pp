@@ -2369,6 +2369,9 @@ node 'strontium.eqiad.wmnet' {
 }
 
 node 'stat1.wikimedia.org' {
+    include standard
+    include admins::roots
+
     include role::statistics::cruncher
 
     # special accounts
@@ -2435,6 +2438,9 @@ node 'stat1.wikimedia.org' {
 }
 
 node 'stat1001.wikimedia.org' {
+    include standard
+    include admins::roots
+
     include role::statistics::www
 
     # special accounts
@@ -2455,6 +2461,9 @@ node 'stat1001.wikimedia.org' {
 }
 
 node 'stat1002.eqiad.wmnet' {
+    include standard
+    include admins::roots
+
     # stat1002 is intended to be the private
     # webrequest access log storage host.
     # Users should not use it for app development.
@@ -2491,6 +2500,7 @@ node 'stat1002.eqiad.wmnet' {
 
 node 'stat1003.wikimedia.org' {
     include standard
+    include admins::roots
 }
 
 node 'snapshot1001.eqiad.wmnet' {
