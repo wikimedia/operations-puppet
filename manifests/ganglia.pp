@@ -22,11 +22,12 @@ class ganglia {
 
     # FIXME: remove after the ganglia module migration
     if $::realm == 'labs' or ($::hostname in ['manutius'] or $::site == 'esams' or ($::site == 'pmtpa' and $cluster in ['cache_bits'])) {
+        $ganglia_cluster = $::realm ? {
+            labs    => $::instanceproject,
+            default => $cluster
+        }
         class { 'ganglia_new::monitor':
-            cluster => $::realm ? {
-                labs => $::instanceproject,
-                default => $cluster
-            }
+            cluster => $ganglia_cluster,
         }
     } else {
         if $::hostname in $::decommissioned_servers {
