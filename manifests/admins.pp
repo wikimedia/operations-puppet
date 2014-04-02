@@ -3849,7 +3849,9 @@ class admins::privatedata {
         accounts::nuria,        # RT 6617
         accounts::csalvia,      # RT 6664
         accounts::leila,        # RT 6765
-        accounts::sahar        # RT 6767
+        accounts::sahar,        # RT 6767
+        accounts::manybubbles,  # RT 5886
+        accounts::ironholds     # RT 6452
 }
 
 class admins::fr-tech {

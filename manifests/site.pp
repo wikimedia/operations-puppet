@@ -2469,13 +2469,11 @@ node 'stat1002.eqiad.wmnet' {
     # Users should not use it for app development.
     # Data processing on this machine is fine.
 
-    # Accounts that were previously on stat1
-    # for the purposes of crunching private
-    # webrequest access logs have been ported
-    # over from there.
+    # Users in the admins::privatedata
+    # class have access to stat1002 so that
+    # they can do analysis on webrequest logs
+    # and other private data.
     include admins::privatedata
-    include accounts::manybubbles  # rt 5886
-    include accounts::ironholds    # rt 6452
 
     # add ezachte, spetrea, ironholds to stats group so they can
     # access files created by stats user cron jobs.
