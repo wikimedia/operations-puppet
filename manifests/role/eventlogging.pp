@@ -159,6 +159,10 @@ class role::eventlogging {
 
     ## Monitoring
 
+    eventlogging::service::reporter { 'statsd':
+        host => 'statsd.eqiad.wmnet',
+    }
+
     nrpe::monitor_service { 'eventlogging':
         ensure        => 'present',
         description   => 'Check status of defined EventLogging jobs',

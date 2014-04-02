@@ -19,6 +19,9 @@
 # [consumers]     Data sinks. Consumers subscribe to the parsed and
 #                 validated event stream and write it to some medium.
 #
+# [reporter]      Specialized StatsD clients which report counts of all
+#                 incoming events (valid and invalid) to a StatsD host.
+#
 # These services communicate with one another using a publisher /
 # subscriber model using ØMQ as the transport layer. Different
 # event-processing patterns can be implemented by freely composing
@@ -60,7 +63,8 @@ class eventlogging {
         '/etc/eventlogging.d/consumers',
         '/etc/eventlogging.d/forwarders',
         '/etc/eventlogging.d/multiplexers',
-        '/etc/eventlogging.d/processors'
+        '/etc/eventlogging.d/processors',
+        '/etc/eventlogging.d/reporters'
     ]:
         ensure  => directory,
         recurse => true,

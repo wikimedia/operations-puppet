@@ -9,7 +9,7 @@ if [ ! -d "/etc/eventlogging.d" ]; then
     exit 3
 fi
 
-roles="forwarder processor multiplexer consumer"
+roles="forwarder processor multiplexer consumer reporter"
 set -- $roles
 stopped=""
 
