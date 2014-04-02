@@ -99,6 +99,28 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         mode    => '0555',
         content => template('misc/exceptionmonitor.erb'),
     }
+
+
+    # Send CirrusSearch-slow.log entry rate to ganglia.
+    logster::job { 'CirrusSearch-slow.log':
+        parser          => 'LineCountLogster',
+        logfile         => "${log_directory}/CirrusSearch-slow.log",
+        logster_options => '--output ganglia --metric-prefix CirrusSearch-slow.log',
+    }
+    # Alert if CirrusSearch-slow.log shows more than
+    # 10 slow searches within an hour.
+    monitor_ganglia { 'CirrusSearch-slow-queries':
+        description => 'Slow CirrusSearch query rate',
+        # this metric is output to ganglia by logster
+        metric      => 'CirrusSearch-slow.log_line_rate',
+        # line_rate metric is per second, so we need to alert if this
+        # metric goes over 0.000046296 / second.  Let's round
+        # down to warning on 0.00004, or critical on 0.00008.
+        warning     => '0.00004',
+        critical    => '0.00008',
+        require     => Logster::Job['CirrusSearch-slow.log'],
+    }
+
 }
 
 class role::beta::logging::mediawiki {
