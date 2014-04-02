@@ -61,6 +61,12 @@ maxvirtualmemory=800000
 # default total memory limit for each runJobs.php process
 maxsubprocmemory=300M
 
+# Time to wait in seconds when a pipeline is full
+JR_PIPELINE_WAIT={JR_PIPELINE_WAIT:-1}
+
+# Time to wait in seconds when there is no job to run
+JR_POLLING_WAIT={JR_POLLING_WAIT:-5}
+
 while getopts "t:v:" flag
 do
 	case $flag in
@@ -102,7 +108,7 @@ function processPipelineWaitForSlot() {
 			break # another immediate child process can start
 		else
 			echo "Pipeline full ($subproccount immediate sub-processes)..."
-			sleep 1 # reduce polling load
+			sleep $JR_PIPELINE_WAIT  # reduce polling load
 		fi
 	done
 }
@@ -184,8 +190,8 @@ function runJobsLoopService() {
 		fi
 
 		if [[ "$foundjobs" == "n" ]]; then
-			echo "No jobs..."
-			sleep 5 # reduce polling load
+			echo "No jobs... Throttling $JR_POLLING_WAIT"
+			sleep $JR_POLLING_WAIT  # reduce polling load
 		fi
 	done
 }
