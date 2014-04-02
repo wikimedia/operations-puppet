@@ -184,6 +184,6 @@ class role::eventlogging::graphite {
 
     eventlogging::service::consumer { 'graphite':
         input  => 'tcp://vanadium.eqiad.wmnet:8600',
-        output => 'statsd://127.0.0.1:8125',
+        output => 'statsd://statsd.eqiad.wmnet:8125',
     }
 }
