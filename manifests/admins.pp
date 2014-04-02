@@ -3768,7 +3768,6 @@ class admins::restricted {
     include accounts::hoo # RT 6731
     include accounts::jamesofur
     include accounts::khorn
-    include accounts::mgrover #access revoked
     include accounts::qchris # RT 5403
     include accounts::rainman
     include accounts::ram # revoked
@@ -3819,8 +3818,7 @@ class admins::globaldev {
     $gid = '500'   # 'wikidev' by default
     include groups::wikidev
 
-    include accounts::erosen, # RT 3119
-        accounts::haithams,     # RT 3219
+    include accounts::haithams,     # RT 3219
         accounts::handrade      # RT 4726
 }
 
@@ -3829,8 +3827,7 @@ class admins::globaldev {
 # to private webrequests access logs.
 #
 class admins::privatedata {
-    include accounts::erosen, # RT 3119
-        accounts::haithams,     # RT 3219
+    include accounts::haithams,     # RT 3219
         accounts::handrade,     # RT 4726
         accounts::ezachte,
         accounts::milimetric,
@@ -3840,7 +3837,6 @@ class admins::privatedata {
         accounts::yurik,        # RT 4835
         accounts::howief,       # RT 3576
         accounts::olivneh,      # RT 3451
-        accounts::mgrover,      # access revoked
         accounts::mwalker,      # RT 5038
         accounts::awight,       # RT 5048
         accounts::abaso,        # RT 5446

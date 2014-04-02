@@ -989,7 +989,6 @@ node 'fenari.wikimedia.org' {
     include nrpe
     include drac
     include accounts::awjrichards
-    include accounts::erosen #revoked RT#6845
     include generic::wikidev-umask
     include misc::dsh
     include ssh::hostkeys-collect
@@ -2451,7 +2450,6 @@ node 'stat1001.wikimedia.org' {
     include accounts::milimetric
     include accounts::rfaulk   # RT 4258
     include accounts::ypanda   # RT 4687
-    include accounts::erosen   # RT 5161, revoked 6845
     include accounts::qchris   # RT 5474
     include accounts::tnegrin  # RT 5391
 
