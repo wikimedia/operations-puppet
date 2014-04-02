@@ -9,9 +9,10 @@ Facter.add(:ec2id) do
   setcode do
     domain = Facter::Util::Resolution.exec("hostname -d").chomp
     if domain.include? "wmflabs"
-      Facter::Util::Resolution.exec("curl http://169.254.169.254/1.0/meta-data/instance-id 2> /dev/null").chomp
+      Facter::Util::Resolution.exec("curl -f http://169.254.169.254/1.0/meta-data/instance-id 2> /dev/null").chomp
     else
       ""
     end
   end
 end
+
