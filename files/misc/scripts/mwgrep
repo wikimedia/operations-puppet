@@ -18,6 +18,10 @@
   --user to search the user namespace instead.
 
 """
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 import argparse
 import json
 import urllib
