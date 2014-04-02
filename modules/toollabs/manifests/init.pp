@@ -136,4 +136,22 @@ class toollabs {
         force  => true,
         target => "${store}/mail",
     }
+
+    # The (external) IP for tools.wmflabs.org is not accessible from
+    # within Labs.  To work around that, we create an alias that
+    # points to tools-webproxy.  Note that dig is called on the
+    # puppetmaster, not the individual instances.
+    $projectdomain = $::instanceproject ? {
+        'toolsbeta' => 'tools-beta.wmflabs.org',
+        default     => 'tools.wmflabs.org',
+    }
+    $webproxyip = chomp(generate('/usr/bin/dig',
+                                 '+short',
+                                 $projectdomain))
+    host { "${::instanceproject}-webproxy":
+        ensure       => present,
+        host_aliases => ["${::instanceproject}-webproxy.eqiad.wmflabs",
+                         $projectdomain],
+        ip           => $webproxyip,
+    }
 }
