@@ -154,6 +154,8 @@ gridqueue:
   driver = pipe
   batch_max = 1
   umask = 007
+  user = <%= instanceproject %>.$local_part
+  group = <%= instanceproject %>.$local_part
   path = /bin:/usr/bin:/usr/local/bin
   allow_commands = jmail
   return_fail_output
