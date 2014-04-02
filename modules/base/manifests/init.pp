@@ -446,8 +446,6 @@ class base {
         mode   => '0755',
     }
 
-    $certname = undef
-
     if ($::realm == 'labs') {
         # For labs, use instanceid.domain rather than the fqdn
         # to ensure we're always using a unique certname.
@@ -456,6 +454,8 @@ class base {
             fail('Failed to fetch instance ID')
         }
         $certname = "${::ec2id}.${::domain}"
+    } else {
+        $certname = undef
     }
 
     class { 'base::puppet':
