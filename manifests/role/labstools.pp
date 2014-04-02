@@ -1,15 +1,6 @@
-
 class role::labs::tools {
-
   class config {
-    if $::site != 'eqiad' {
-        include role::labsnfs::client # temporary measure
-    }
-
-    $grid_master = $::site? {
-        'eqiad' =>  "tools-master.eqiad.wmflabs",
-        default =>  "tools-master.pmtpa.wmflabs",
-    }
+    $grid_master = 'tools-master.eqiad.wmflabs'
   }
 
   class bastion inherits role::labs::tools::config {
