@@ -242,181 +242,182 @@ class ganglia {
         generic::systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
     }
 
-    # == Class ganglia::collector::config
-    # Ganglia gmetad config.  This class does not start
-    # gmetad.  Include ganglia::collector instead if you want to do that.
-    class collector::config {
-        package { "gmetad":
+}
+
+# == Class ganglia::collector::config
+# Ganglia gmetad config.  This class does not start
+# gmetad.  Include ganglia::collector instead if you want to do that.
+class ganglia::collector::config {
+    package { "gmetad":
+        ensure => present;
+    }
+
+    if $::realm == "labs" {
+        $gridname = "wmflabs"
+        # for labs, just generate a stub gmetad configuration without data_source lines
+        $gmetad_conf = "gmetad.conf.labsstub"
+        $authority_url = "http://ganglia.wmflabs.org"
+        $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+        $rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+    } else {
+        $gridname = "Wikimedia"
+        $gmetad_conf = "gmetad.conf"
+        $authority_url = "http://ganglia.wikimedia.org"
+        case $::hostname {
+            # manutius runs gmetad to get varnish data into torrus
+            # unlike other servers, manutius uses the default rrd_rootdir
+            /^manutius$/: {
+                $data_sources = {
+                    "Upload caches eqiad" => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet"
+                }
+                $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
+            }
+            # neon needs gmetad config for ganglios
+            /^neon$/: {
+                $data_sources = {
+                    "Miscellaneous"                  => "tarin.pmtpa.wmnet",
+                    "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
+                    "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
+                    "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
+                    "Mobile caches esams"            => "hooft.esams.wikimedia.org:11677",
+                    "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
+                }
+                $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:    0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+                }
+            default: {
+                $data_sources = {
+                    "Video scalers eqiad"            => "tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet",
+                    "Image scalers eqiad"            => "mw1153.eqiad.wmnet mw1154.eqiad.wmnet",
+                    "API application servers eqiad"  => "mw1114.eqiad.wmnet mw1115.eqiad.wmnet",
+                    "Application servers eqaid"      => "mw1017.eqiad.wmnet mw1018.eqiad.wmnet",
+                    "Jobrunners eqiad"              => "mw1001.eqiad.wmnet mw1002.eqiad.wmnet",
+                    "Bits application servers eqiad" => "mw1151.eqiad.wmnet mw1152.eqiad.wmnet",
+                    "MySQL"                          => "db1050.eqiad.wmnet",
+                    "PDF servers"                    => "pdf2.wikimedia.org pdf3.wikimedia.org",
+                    "Miscellaneous"                  => "tarin.pmtpa.wmnet",
+                    "Fundraising eqiad"              => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
+                    "SSL cluster esams"              => "hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
+                    "Swift pmtpa"                    => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",
+                    "Virtualization cluster eqiad"   => "labnet1001.eqiad.wmnet virt1000.wikimedia.org",
+                    "Virtualization cluster pmtpa"   => "virt5.pmtpa.wmnet virt0.wikimedia.org",
+                    "Glusterfs cluster pmtpa"        => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
+                    "MySQL eqiad"                    => "db1056.eqiad.wmnet db1021.eqiad.wmnet",
+                    "LVS loadbalancers eqiad"        => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
+                    "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
+                    "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
+                    "Mobile caches esams"            => "hooft.esams.wikimedia.org:11677",
+                    "Bits caches eqiad"              => "cp1056.eqiad.wmnet cp1057.eqiad.wmnet",
+                    "Upload caches eqiad"            => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet",
+                    "SSL cluster eqiad"              => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
+                    "Swift eqiad"                    => "ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet",
+                    "Search eqiad"                   => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
+                    "Bits caches esams"              => "hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org",
+                    "LVS loadbalancers esams"        => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
+                    "Miscellaneous esams"            => "hooft.esams.wikimedia.org:11657",
+                    "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
+                    "Memcached eqiad"                => "mc1001.eqiad.wmnet mc1002.eqiad.wmnet",
+                    "Text caches esams"              => "hooft.esams.wikimedia.org:11669",
+                    "Upload caches esams"            => "hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
+                    "Ceph cluster esams"             => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org",
+                    "Parsoid eqiad"                  => "wtp1001.eqiad.wmnet",
+                    "Parsoid Varnish eqiad"          => "cp1045.eqiad.wmnet cp1058.eqiad.wmnet",
+                    "Redis eqiad"                    => "rdb1001.eqiad.wmnet rdb1002.eqiad.wmnet",
+                    "Labs NFS cluster pmtpa"         => "labstore3.pmtpa.wmnet labstore4.pmtpa.wmnet",
+                    "Text caches eqiad"              => "cp1052.eqiad.wmnet cp1053.eqiad.wmnet",
+                    'Misc Web caches eqiad'          => 'cp1043.eqiad.wmnet cp1044.eqiad.wmnet',
+                    "LVS loadbalancers ulsfo"        => "lvs4001.ulsfo.wmnet lvs4003.ulsfo.wmnet",
+                    "Bits caches ulsfo"              => 'cp4001.ulsfo.wmnet cp4003.ulsfo.wmnet',
+                    "Upload caches ulsfo"            => 'cp4005.ulsfo.wmnet cp4013.ulsfo.wmnet',
+                    "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
+                    "Text caches ulsfo"              => 'cp4008.ulsfo.wmnet cp4016.ulsfo.wmnet',
+                    "Elasticsearch eqiad"            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet elastic1013.eqiad.wmnet',
+                    "Logstash eqiad"                 => 'logstash1001.eqiad.wmnet logstash1003.eqiad.wmnet',
+
+                }
+                $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+                $rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+            }
+        }
+    }
+
+    file { "/etc/ganglia/${gmetad_conf}":
+        require => Package[gmetad],
+        content => template("ganglia/gmetad.conf.erb"),
+        mode => 0444,
+        ensure  => present
+    }
+}
+
+# == Class ganglia::collector
+# This class inherits ganglia::collector::config
+# to install gmetad.conf, and then ensures that
+# gmetad is running.
+class ganglia::collector inherits ganglia::collector::config {
+    system::role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
+
+    # for labs, gmond.conf and gmetad.conf are generated every 4 hours by a cron job
+    if $::realm == "labs" {
+        file { "/etc/ganglia/gmond.conf.labsstub":
+            source => "puppet:///files/ganglia/gmond.conf.labsstub",
+            mode => 0444,
             ensure => present;
         }
 
-        if $::realm == "labs" {
-            $gridname = "wmflabs"
-            # for labs, just generate a stub gmetad configuration without data_source lines
-            $gmetad_conf = "gmetad.conf.labsstub"
-            $authority_url = "http://ganglia.wmflabs.org"
-            $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
-            $rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
-        } else {
-            $gridname = "Wikimedia"
-            $gmetad_conf = "gmetad.conf"
-            $authority_url = "http://ganglia.wikimedia.org"
-            case $::hostname {
-                # manutius runs gmetad to get varnish data into torrus
-                # unlike other servers, manutius uses the default rrd_rootdir
-                /^manutius$/: {
-                    $data_sources = {
-                        "Upload caches eqiad" => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet"
-                    }
-                    $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
-                }
-                # neon needs gmetad config for ganglios
-                /^neon$/: {
-                    $data_sources = {
-                        "Miscellaneous"                  => "tarin.pmtpa.wmnet",
-                        "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
-                        "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
-                        "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
-                        "Mobile caches esams"            => "hooft.esams.wikimedia.org:11677",
-                        "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
-                    }
-                    $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:    0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
-                    }
-                default: {
-                    $data_sources = {
-                        "Video scalers eqiad"            => "tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet",
-                        "Image scalers eqiad"            => "mw1153.eqiad.wmnet mw1154.eqiad.wmnet",
-                        "API application servers eqiad"  => "mw1114.eqiad.wmnet mw1115.eqiad.wmnet",
-                        "Application servers eqaid"      => "mw1017.eqiad.wmnet mw1018.eqiad.wmnet",
-                        "Jobrunners eqiad"              => "mw1001.eqiad.wmnet mw1002.eqiad.wmnet",
-                        "Bits application servers eqiad" => "mw1151.eqiad.wmnet mw1152.eqiad.wmnet",
-                        "MySQL"                          => "db1050.eqiad.wmnet",
-                        "PDF servers"                    => "pdf2.wikimedia.org pdf3.wikimedia.org",
-                        "Miscellaneous"                  => "tarin.pmtpa.wmnet",
-                        "Fundraising eqiad"              => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
-                        "SSL cluster esams"              => "hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
-                        "Swift pmtpa"                    => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",
-                        "Virtualization cluster eqiad"   => "labnet1001.eqiad.wmnet virt1000.wikimedia.org",
-                        "Virtualization cluster pmtpa"   => "virt5.pmtpa.wmnet virt0.wikimedia.org",
-                        "Glusterfs cluster pmtpa"        => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
-                        "MySQL eqiad"                    => "db1056.eqiad.wmnet db1021.eqiad.wmnet",
-                        "LVS loadbalancers eqiad"        => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
-                        "Miscellaneous eqiad"            => "carbon.wikimedia.org ms1004.eqiad.wmnet",
-                        "Mobile caches eqiad"            => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
-                        "Mobile caches esams"            => "hooft.esams.wikimedia.org:11677",
-                        "Bits caches eqiad"              => "cp1056.eqiad.wmnet cp1057.eqiad.wmnet",
-                        "Upload caches eqiad"            => "cp1048.eqiad.wmnet cp1061.eqiad.wmnet",
-                        "SSL cluster eqiad"              => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
-                        "Swift eqiad"                    => "ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet",
-                        "Search eqiad"                   => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
-                        "Bits caches esams"              => "hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org",
-                        "LVS loadbalancers esams"        => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
-                        "Miscellaneous esams"            => "hooft.esams.wikimedia.org:11657",
-                        "Analytics cluster eqiad"        => "analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet",
-                        "Memcached eqiad"                => "mc1001.eqiad.wmnet mc1002.eqiad.wmnet",
-                        "Text caches esams"              => "hooft.esams.wikimedia.org:11669",
-                        "Upload caches esams"            => "hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
-                        "Ceph cluster esams"             => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org",
-                        "Parsoid eqiad"                  => "wtp1001.eqiad.wmnet",
-                        "Parsoid Varnish eqiad"          => "cp1045.eqiad.wmnet cp1058.eqiad.wmnet",
-                        "Redis eqiad"                    => "rdb1001.eqiad.wmnet rdb1002.eqiad.wmnet",
-                        "Labs NFS cluster pmtpa"         => "labstore3.pmtpa.wmnet labstore4.pmtpa.wmnet",
-                        "Text caches eqiad"              => "cp1052.eqiad.wmnet cp1053.eqiad.wmnet",
-                        'Misc Web caches eqiad'          => 'cp1043.eqiad.wmnet cp1044.eqiad.wmnet',
-                        "LVS loadbalancers ulsfo"        => "lvs4001.ulsfo.wmnet lvs4003.ulsfo.wmnet",
-                        "Bits caches ulsfo"              => 'cp4001.ulsfo.wmnet cp4003.ulsfo.wmnet',
-                        "Upload caches ulsfo"            => 'cp4005.ulsfo.wmnet cp4013.ulsfo.wmnet',
-                        "Mobile caches ulsfo"            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
-                        "Text caches ulsfo"              => 'cp4008.ulsfo.wmnet cp4016.ulsfo.wmnet',
-                        "Elasticsearch eqiad"            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet elastic1013.eqiad.wmnet',
-                        "Logstash eqiad"                 => 'logstash1001.eqiad.wmnet logstash1003.eqiad.wmnet',
-
-                    }
-                    $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
-                    $rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
-                }
-            }
+        file { "/usr/local/sbin/generate-ganglia-conf.py":
+            source => "puppet:///files/ganglia/generate-ganglia-conf.py",
+            mode => 0755,
+            ensure => present;
         }
 
-        file { "/etc/ganglia/${gmetad_conf}":
+        cron { generate-ganglia-conf:
+            command => "/usr/local/sbin/generate-ganglia-conf.py",
             require => Package[gmetad],
-            content => template("ganglia/gmetad.conf.erb"),
-            mode => 0444,
-            ensure  => present
-        }
-    }
-
-    # == Class ganglia::collector
-    # This class inherits ganglia::collector::config
-    # to install gmetad.conf, and then ensures that
-    # gmetad is running.
-    class collector inherits ganglia::collector::config {
-        system::role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
-
-        # for labs, gmond.conf and gmetad.conf are generated every 4 hours by a cron job
-        if $::realm == "labs" {
-            file { "/etc/ganglia/gmond.conf.labsstub":
-                source => "puppet:///files/ganglia/gmond.conf.labsstub",
-                mode => 0444,
-                ensure => present;
-            }
-
-            file { "/usr/local/sbin/generate-ganglia-conf.py":
-                source => "puppet:///files/ganglia/generate-ganglia-conf.py",
-                mode => 0755,
-                ensure => present;
-            }
-
-            cron { generate-ganglia-conf:
-                command => "/usr/local/sbin/generate-ganglia-conf.py",
-                require => Package[gmetad],
-                user => root,
-                hour => [0, 4, 8, 12, 16, 20],
-                minute => 30,
-                ensure => present,
-                environment => 'PATH=$PATH:/sbin',
-            }
-
-            # log gmetad messages to /var/log/ganglia.log
-            file { "/etc/rsyslog.d/30-ganglia.conf":
-                source => "puppet:///files/ganglia/rsyslog.d/30-ganglia.conf",
-                mode => 0444,
-                ensure => present,
-                notify => Service["rsyslog"];
-            }
-
-            file { "/etc/logrotate.d/ganglia":
-                source => "puppet:///files/logrotate/ganglia",
-                mode => 0444,
-                ensure => present;
-            }
-        }
-
-        service { "gmetad":
-            require => File["/etc/ganglia/${gmetad_conf}"],
-            subscribe => File["/etc/ganglia/${gmetad_conf}"],
-            hasstatus => false,
-            ensure => running;
-        }
-    }
-
-    # Class: ganglia::aggregator
-    # for the machine class which listens on multicast and
-    # collects all the ganglia information from other sources
-    class aggregator {
-        # This overrides the default ganglia-monitor script
-        # with one that starts up multiple instances of gmond
-        file { "/etc/init.d/ganglia-monitor-aggrs":
-            source => "puppet:///files/ganglia/ganglia-monitor",
-            mode   => 0555,
+            user => root,
+            hour => [0, 4, 8, 12, 16, 20],
+            minute => 30,
             ensure => present,
-            require => Package["ganglia-monitor"];
+            environment => 'PATH=$PATH:/sbin',
         }
-        service { "ganglia-monitor-aggrs":
-            require => File["/etc/init.d/ganglia-monitor-aggrs"],
-            enable => true,
-            ensure => running;
+
+        # log gmetad messages to /var/log/ganglia.log
+        file { "/etc/rsyslog.d/30-ganglia.conf":
+            source => "puppet:///files/ganglia/rsyslog.d/30-ganglia.conf",
+            mode => 0444,
+            ensure => present,
+            notify => Service["rsyslog"];
         }
+
+        file { "/etc/logrotate.d/ganglia":
+            source => "puppet:///files/logrotate/ganglia",
+            mode => 0444,
+            ensure => present;
+        }
+    }
+
+    service { "gmetad":
+        require => File["/etc/ganglia/${gmetad_conf}"],
+        subscribe => File["/etc/ganglia/${gmetad_conf}"],
+        hasstatus => false,
+        ensure => running;
+    }
+}
+
+# == Class: ganglia::aggregator
+# for the machine class which listens on multicast and
+# collects all the ganglia information from other sources
+class ganglia::aggregator {
+    # This overrides the default ganglia-monitor script
+    # with one that starts up multiple instances of gmond
+    file { "/etc/init.d/ganglia-monitor-aggrs":
+        source => "puppet:///files/ganglia/ganglia-monitor",
+        mode   => 0555,
+        ensure => present,
+        require => Package["ganglia-monitor"];
+    }
+    service { "ganglia-monitor-aggrs":
+        require => File["/etc/init.d/ganglia-monitor-aggrs"],
+        enable => true,
+        ensure => running;
     }
 }
 
