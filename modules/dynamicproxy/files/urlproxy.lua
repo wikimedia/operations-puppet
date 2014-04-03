@@ -46,16 +46,6 @@ if routes_arr then
    end
 end
 
-if route and not rest then
-   return ngx.redirect('/' .. prefix .. '/', 302)
-end
-
-if rest then
-   -- the URI had a slash, so the user clearly expected /something/
-   -- there.  Fail because there is no registered webservice.
-   ngx.exit(503)
-end
-
 if not route then
    -- No routes defined for this uri, try the default (admin) prefix instead
    rest = ngx.var.uri
@@ -74,6 +64,12 @@ end
 if route then
    ngx.var.backend = route
    ngx.exit(ngx.OK)
+end
+
+if rest then
+   -- the URI had a slash, so the user clearly expected /something/
+   -- there.  Fail because there is no registered webservice.
+   ngx.exit(503)
 end
 
 -- Oh noes!  Even the admin prefix is dead!
