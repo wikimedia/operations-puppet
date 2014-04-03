@@ -189,78 +189,9 @@ class misc::statistics::mediawiki {
     }
 }
 
-# wikistats configuration for generating
-# stats.wikimedia.org data.
-#
-# TODO: puppetize clone of wikistats?
-class misc::statistics::wikistats {
-    include misc::statistics::base
-
-    # Perl packages needed for wikistats
-    package { [
-        'libjson-xs-perl',
-        'libtemplate-perl',
-        'libnet-patricia-perl',
-        'libregexp-assemble-perl',
-    ]:
-        ensure => 'installed',
-    }
-    # this cron uses pigz to unzip squid archive files in parallel
-    package { 'pigz':
-        ensure => 'installed'
-    }
-
-    # generates the new mobile pageviews report
-    # and syncs the file PageViewsPerMonthAll.csv to stat1002
-    cron { 'new mobile pageviews report':
-        command  => "/bin/bash ${misc::statistics::base::working_path}/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh",
-        user     => 'stats',
-        monthday => 1,
-        hour     => 7,
-        minute   => 20,
-    }
-}
-
-# RT-2163
-class misc::statistics::plotting {
-
-    package { [
-            "ploticus",
-            "libploticus0",
-            "r-base",
-            "r-cran-rmysql",
-            "libcairo2",
-            "libcairo2-dev",
-            "libxt-dev"
-        ]:
-        ensure => installed;
-    }
-}
-
-
-class misc::statistics::webserver {
-    include webserver::apache
-
-    # make sure /var/log/apache2 is readable by wikidevs for debugging.
-    # This won't make the actual log files readable, only the directory.
-    # Individual log files can be created and made readable by
-    # classes that manage individual sites.
-    file { '/var/log/apache2':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'wikidev',
-        mode    => '0750',
-        require => Class['webserver::apache'],
-    }
-
-    webserver::apache::module { ['rewrite', 'proxy', 'proxy_http']:
-        require => Class['webserver::apache']
-    }
-}
-
 # reportcard.wikimedia.org
 class misc::statistics::sites::reportcard {
-    require misc::statistics::webserver
+    require statistics::webserver
     misc::limn::instance { 'reportcard': }
 }
 
@@ -293,62 +224,6 @@ class misc::statistics::public_datasets {
         user    => 'root',
         minute  => '*/30',
     }
-}
-
-# stats.wikimedia.org
-class misc::statistics::sites::stats {
-    include misc::statistics::base
-    require misc::statistics::geowiki::data::private
-
-    $site_name = "stats.wikimedia.org"
-    $docroot = "/srv/$site_name/htdocs"
-    $geowiki_private_directory = "$docroot/geowiki-private"
-    $geowiki_private_htpasswd_file = "/etc/apache2/htpasswd.stats-geowiki"
-
-    # add htpasswd file for stats.wikimedia.org
-    file { "/etc/apache2/htpasswd.stats":
-        owner   => "root",
-        group   => "root",
-        mode    => '0644',
-        source  => "puppet:///private/apache/htpasswd.stats",
-    }
-
-    # add htpasswd file for private geowiki data
-    file { $geowiki_private_htpasswd_file:
-        owner   => "root",
-        group   => "www-data",
-        mode    => '0640',
-        source  => "puppet:///private/apache/htpasswd.stats-geowiki",
-    }
-
-    # link geowiki checkout from docroot
-    file { $geowiki_private_directory:
-        ensure  => "link",
-        target  => "${misc::statistics::geowiki::data::private::geowiki_private_data_path}/datafiles",
-        owner   => "root",
-        group   => "www-data",
-        mode    => '0750',
-    }
-
-    install_certificate{ $site_name: }
-
-    file {
-        '/etc/apache2/sites-available/stats.wikimedia.org':
-            ensure => present,
-            mode => '0444',
-            owner => root,
-            group => root,
-            content => template('apache/sites/stats.wikimedia.org.erb');
-        '/etc/apache2/ports.conf':
-            ensure  => present,
-            mode    => '0644',
-            owner   => root,
-            group   => root,
-            source  => 'puppet:///files/apache/ports.conf.ssl';
-    }
-
-    apache_site { 'statswikimedia': name => 'stats.wikimedia.org' }
-
 }
 
 # community-analytics.wikimedia.org
