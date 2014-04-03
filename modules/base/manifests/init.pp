@@ -396,7 +396,7 @@ class base::tcptweaks {
 
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
-class base::firewall {
+class base::firewall($ensure = 'present') {
     include network::constants
     include ferm
 
@@ -404,6 +404,7 @@ class base::firewall {
         ensure  => present,
         prio    => '00',
         source  => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
+        ensure  => $ensure,
     }
 
     $defscontent = $::realm ? {
@@ -415,16 +416,19 @@ class base::firewall {
         ensure  => present,
         prio    => '00',
         content => $defscontent,
+        ensure  => $ensure,
     }
 
     ferm::rule { 'bastion-ssh':
         ensure => present,
         rule   => 'proto tcp dport ssh saddr $BASTION_HOSTS ACCEPT;',
+        ensure  => $ensure,
     }
 
     ferm::rule { 'icinga-all':
         ensure => present,
         rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
+        ensure  => $ensure,
     }
 }
 
