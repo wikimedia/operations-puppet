@@ -46,6 +46,18 @@ class apt {
         ulsfo   => present,
         default => absent
     }
+    # This will munge /etc/apt/apt.conf that get's created during installation
+    # process (either labs vmbuilder or d-i). Given the ones below exist, it is
+    # no longer needed after the installation is over
+    file { '/etc/apt/apt.conf':
+        ensure  => absent,
+        require => [
+                Apt::Conf['wikimedia-proxy'],
+                Apt::Conf['security-ubuntu-proxy'],
+                Apt::Conf['ubuntu-cloud-archive-proxy'],
+                Apt::Conf['old-releases-proxy'],
+                ]
+    }
     apt::conf {
         'wikimedia-proxy':
             ensure   => absent,
