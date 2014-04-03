@@ -12,7 +12,7 @@ class role::beta::bastion {
     include beta::syncsiteresources
 
     # Bring scap related scripts such as mw-update-l10n
-    include misc::deployment::scap_scripts
+    include ::beta::scap::master
 
 }
 
@@ -27,4 +27,24 @@ class role::beta::natfix {
     }
 
     include ::beta::natfix
+}
+
+# Class: role::beta::rsync_slave
+#
+# Provision an rsync slave server for scap in beta
+#
+class role::beta::rsync_slave {
+    include labs_lvm
+
+    labs_lvm::volume { 'second-local-disk':
+        mountat => '/srv',
+    }
+
+    # FIXME: Each host that has this role applied must also be
+    # manually added to the dsh group file found in
+    # modules/beta/files/dsh/group/mediawiki-installation or scap will
+    # not communicate with that host.
+    class { '::beta::scap::rsync_slave':
+        require => Labs_lvm::Volume['second-local-disk'],
+    }
 }
