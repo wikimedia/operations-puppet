@@ -1,9 +1,17 @@
+# == Define ferm::service
+# Uses ferm def &SERVICE or &R_SERVICE to allow incoming
+# connections on the specific protocol and port.
+#
+# If $srange is not provided, all source addresses will be allowed.
+# otherwise only traffic coming from $srange will be allowed.
+#
 define ferm::service(
     $proto,
     $port,
-    $ensure='present',
-    $desc='',
-    $prio='10',
+    $ensure = 'present',
+    $desc   = '',
+    $prio   = '10',
+    $srange = undef,
 ) {
     @file { "/etc/ferm/conf.d/${prio}_${name}":
         ensure  => $ensure,
