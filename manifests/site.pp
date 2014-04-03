@@ -2526,6 +2526,11 @@ node 'stat1002.eqiad.wmnet' {
 node 'stat1003.wikimedia.org' {
     include standard
     include admins::roots
+    # stat1003 has a public IP and should be pretty
+    # well firewalled off.  If it needs a specific
+    # service opened up, this will be done in
+    # statistics classes.
+    include base::firewall
 
     include role::statistics::cruncher
 
