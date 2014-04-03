@@ -32,17 +32,22 @@ end
 local prefix = captures[1]
 local rest = captures[2]
 local routes_arr = nil
+local route = nil
 
 routes_arr = red:hgetall('prefix:' .. prefix)
 
-if routes_arr and rest then
+if routes_arr then
    local routes = red:array_to_hash(routes_arr)
    for pattern, backend in pairs(routes) do
       if ngx.re.match(rest, pattern) ~= nil then
-         ngx.var.backend = 'http://' .. backend
-         ngx.exit(ngx.OK)
+         route = 'http://' .. backend
+         break
       end
    end
+end
+
+if route and not rest then
+   return ngx.redirect('/' .. prefix .. '/', 302)
 end
 
 if rest then
@@ -51,17 +56,24 @@ if rest then
    ngx.exit(503)
 end
 
--- No routes defined for this uri, try the default (admin) prefix instead
-rest = '/' .. prefix
-routes_arr = red:hgetall('prefix:admin')
-if routes_arr then
-   local routes = red:array_to_hash(routes_arr)
-   for pattern, backend in pairs(routes) do
-      if ngx.re.match(rest, pattern) then
-         ngx.var.backend = 'http://' .. backend
-         ngx.exit(ngx.OK)
+if not route then
+   -- No routes defined for this uri, try the default (admin) prefix instead
+   rest = ngx.var.uri
+   routes_arr = red:hgetall('prefix:admin')
+   if routes_arr then
+      local routes = red:array_to_hash(routes_arr)
+      for pattern, backend in pairs(routes) do
+         if ngx.re.match(rest, pattern) then
+            route = 'http://' .. backend
+            break
+         end
       end
    end
+end
+
+if route then
+   ngx.var.backend = route
+   ngx.exit(ngx.OK)
 end
 
 -- Oh noes!  Even the admin prefix is dead!
