@@ -37,8 +37,10 @@ class role::osm::master {
 
     postgresql::spatialdb { 'gis': }
     osm::populatedb { 'gis':
-        input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
-        require => Postgresql::Spatialdb['gis']
+        input_pbf_file   => '/srv/labsdb/planet-latest-osm.pbf',
+        input_shape_file => '/srv/labsdb/coastlines-split-4326/lines',
+        shape_table      => 'coastlines',
+        require          => Postgresql::Spatialdb['gis']
     }
 
     if $osm_slave_v4 {
