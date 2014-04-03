@@ -44,4 +44,11 @@ class beta::natfix {
 
     }
     create_resources( 'beta::natdestrewrite', $nat_mappings )
+
+    # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for scap
+    ferm::rule { 'deployment-bastion-scap-ssh':
+        ensure  => present,
+        rule    => 'proto tcp dport ssh saddr 10.68.16.58 ACCEPT;',
+        require => Ferm::Rule['bastion-ssh'],
+    }
 }

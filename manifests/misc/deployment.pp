@@ -435,3 +435,52 @@ class misc::deployment::scap_proxy {
 			hosts_allow => $::network::constants::mw_appserver_networks;
 	}
 }
+
+# == Class: misc::deployment::scap::beta
+#
+# Provisions scap components specfic to the beta environment
+#
+class misc::deployment::scap::beta {
+	if ($::realm != 'labs') {
+		fail('misc::deployment::scap::beta is only for use in labs')
+	}
+
+	file {
+		'/etc/ssh/userkeys/mwdeploy':
+			ensure  => directory,
+			owner   => 'mwdeploy',
+			group   => 'mwdeploy',
+			mode    => '0700';
+
+		'/etc/ssh/userkeys/mwdeploy/.ssh':
+			ensure  => directory,
+			owner   => 'mwdeploy',
+			group   => 'mwdeploy',
+			mode    => '0700',
+			require => File['/etc/ssh/userkeys/mwdeploy'];
+
+		'/etc/ssh/userkeys/mwdeploy/.ssh/authorized_keys':
+			owner   => 'mwdeploy',
+			group   => 'mwdeploy',
+			mode    => '0600',
+			source  => 'puppet:///private/scap/id_rsa.pub',
+			require => File['/etc/ssh/userkeys/mwdeploy/.ssh'];
+	}
+
+	if ($::instancename == 'deployment-bastion') {
+		file {
+			'/var/lib/mwdeploy/.ssh':
+				ensure  => directory,
+				owner   => 'mwdeploy',
+				group   => 'mwdeploy',
+				mode    => '0700';
+
+			'/var/lib/mwdeploy/.ssh/id_rsa':
+				owner   => 'mwdeploy',
+				group   => 'mwdeploy',
+				mode    => '0600',
+				source  => 'puppet:///private/scap/id_rsa',
+				require => File['/var/lib/mwdeploy/.ssh'];
+		}
+	}
+}

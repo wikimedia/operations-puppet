@@ -190,6 +190,7 @@ class role::applicationserver {
 		class { "role::applicationserver::common": group => "beta_appserver", hhvm => true }
 
 		include role::applicationserver::webserver
+		include misc::deployment::scap::beta
 
 		# Load the class just like the role::applicationserver::imagescaler
 		# role.

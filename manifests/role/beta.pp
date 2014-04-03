@@ -12,6 +12,7 @@ class role::beta::bastion {
 
     # Bring scap related scripts such as mw-update-l10n
     include misc::deployment::scap_scripts
+    include misc::deployment::scap::beta
 
     # Disable fatalmonitor on eqiad beta cluster to avoid duplicate emails.
     # FIXME remove condition once beta cluster has been migrated.
