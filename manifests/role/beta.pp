@@ -12,7 +12,7 @@ class role::beta::bastion {
     include beta::syncsiteresources
 
     # Bring scap related scripts such as mw-update-l10n
-    include misc::deployment::scap_scripts
+    include ::beta::scap::master
 
 }
 

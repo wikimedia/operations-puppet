@@ -1,0 +1,4 @@
+deployment-apache01.eqiad.wmflabs
+deployment-apache02.eqiad.wmflabs
+deployment-bastion.eqiad.wmflabs
+deployment-rsync01.eqiad.wmflabs
