@@ -1,7 +1,11 @@
 require 'spec_helper'
 
-describe 'osm::populatedb', :type => :define do
+describe 'osm::planet_import', :type => :define do
     let(:title) { 'somedb' }
+    let(:facts) { {
+        :memoryfree => '1000 MB',
+        }
+    }
     let(:params) { {
         :input_pbf_file => '/nonexistent',
         }
