@@ -20,10 +20,6 @@ class applicationserver::hhvm {
         before     => Package['hhvm-fastcgi'],
     }
 
-    file { '/usr/local/sbin/repack-libmemcached10':
-        ensure => absent,
-    }
-
     package { 'hhvm-fastcgi':
         ensure  => present,
         require => Apache_module['apache_mod_fastcgi_for_hhvm'],
