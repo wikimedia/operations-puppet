@@ -1650,6 +1650,32 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
 }
 
+# ESAMS lvs servers
+node /^lvs300[1-4]\.esams\.wikimedia\.org$/ {
+    if $::hostname =~ /^lvs300[13]$/ {
+        $ganglia_aggregator = true
+    }
+
+    include role::lvs::balancer
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
+    # Make sure GRO is off
+    interface::offload { 'eth0 gro':
+        interface => 'eth0',
+        setting   => 'gro',
+        value     => 'off',
+    }
+
+    # bnx2x is buggy with TPA (LRO) + LVS
+    interface::offload { 'eth0 lro':
+        interface => 'eth0',
+        setting   => 'lro',
+        value     => 'off',
+    }
+}
 
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
