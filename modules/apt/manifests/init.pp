@@ -44,6 +44,7 @@ class apt {
         pmtpa   => present,
         eqiad   => present,
         ulsfo   => present,
+        esams   => present,
         default => absent
     }
     apt::conf {
