@@ -2527,6 +2527,14 @@ node 'stat1003.wikimedia.org' {
     include standard
     include admins::roots
 
+    include base::firewall
+    # Allow direct ssh, it is nice to be able to copy
+    # files directly to and from user machines.
+    ferm::service { 'ssh':
+        proto   => 'tcp',
+        port    => 'ssh',
+    }
+
     include role::statistics::cruncher
 
     include misc::statistics::cron_blog_pageviews
