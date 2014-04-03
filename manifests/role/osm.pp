@@ -67,14 +67,36 @@ class role::osm::master {
     }
 
     # OSM user
-    postgresql::user { "osm@labs":
+    postgresql::user { 'osm@labs':
             ensure   => 'present',
             user     => 'osm',
             password => $passwords::osm::osm_password,
-            cidr     => "10.68.16.0/21",
+            cidr     => '10.68.16.0/21',
             type     => 'host',
             method   => 'trust',
             database => 'gis',
+    }
+
+    # Specific users and databases
+    postgresql::spatialdb { 'u_kolossos': }
+    postgresql::user { 'kolossos@labs':
+            ensure   => 'present',
+            user     => 'kolossos',
+            password => $passwords::osm::kolossos_password,
+            cidr     => '10.68.16.0/21',
+            type     => 'host',
+            method   => 'md5',
+            database => 'u_kolossos',
+    }
+    postgresql::spatialdb { 'u_aude': }
+    postgresql::user { 'aude@labs':
+            ensure   => 'present',
+            user     => 'aude',
+            password => $passwords::osm::aude_password,
+            cidr     => '10.68.16.0/21',
+            type     => 'host',
+            method   => 'md5',
+            database => 'u_aude',
     }
 }
 
