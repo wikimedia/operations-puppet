@@ -10,6 +10,7 @@
 # RT #4824   - https://rt.wikimedia.org/Ticket/Display.html?id=4824
 # bug #45868 - https://bugzilla.wikimedia.org/show_bug.cgi?id=45868
 class beta::natfix {
+    include beta::config
 
     # List out the instance public IP and private IP as described in OpenStack
     # manager interface
@@ -44,4 +45,11 @@ class beta::natfix {
 
     }
     create_resources( 'beta::natdestrewrite', $nat_mappings )
+
+    # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for scap
+    ferm::rule { 'deployment-bastion-scap-ssh':
+        ensure  => present,
+        rule    => "proto tcp dport ssh saddr ${::beta::config::bastion_ip} ACCEPT;",
+        require => Ferm::Rule['bastion-ssh'],
+    }
 }
