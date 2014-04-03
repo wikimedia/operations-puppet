@@ -20,7 +20,9 @@ red:set_timeout(1000)
 
 red:connect('127.0.0.1', 6379)
 
-local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?")
+local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
+
+ngx.log(ngx.ERR, 'dafu: uri="'..ngx.var.uri..'"')
 
 if captures == ngx.null then
    -- This would actually never happen, I'd think.
@@ -29,29 +31,21 @@ end
 
 local prefix = captures[1]
 local rest = captures[2]
-local routes_arr = red:hgetall('prefix:' .. prefix)
+local routes_arr = nil
 
-if routes_arr ~= ngx.null then
-   if rest == nil then
-      -- Handle cases when there is nothing at all after the prefix
-      -- if we get /example, we will redirect to /example/
-      return ngx.redirect('/'..prefix..'/', ngx.HTTP_MOVED_PERMANENTLY)
-   end
+routes_arr = red:hgetall('prefix:' .. prefix)
 
-   -- there is a registered prefix, try to find a matching
-   -- pattern and send the client there if there is.
-
+if routes_arr and rest then
    local routes = red:array_to_hash(routes_arr)
    for pattern, backend in pairs(routes) do
       if ngx.re.match(rest, pattern) ~= nil then
-         ngx.var.backend = backend
+         ngx.var.backend = 'http://' .. backend
          ngx.exit(ngx.OK)
       end
    end
-
 end
 
-if rest ~= nil then
+if rest then
    -- the URI had a slash, so the user clearly expected /something/
    -- there.  Fail because there is no registered webservice.
    ngx.exit(503)
@@ -60,11 +54,11 @@ end
 -- No routes defined for this uri, try the default (admin) prefix instead
 rest = '/' .. prefix
 routes_arr = red:hgetall('prefix:admin')
-if routes_arr ~= ngx.null then
+if routes_arr then
    local routes = red:array_to_hash(routes_arr)
    for pattern, backend in pairs(routes) do
-      if ngx.re.match(rest, pattern) ~= nil then
-         ngx.var.backend = backend
+      if ngx.re.match(rest, pattern) then
+         ngx.var.backend = 'http://' .. backend
          ngx.exit(ngx.OK)
       end
    end
