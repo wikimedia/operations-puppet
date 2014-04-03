@@ -26,10 +26,12 @@ connect(SOCK, sockaddr_un("/tmp/sock.portgranter"))   || die "connect to portgra
 $| = 1;
 syswrite SOCK, "$tool\n";
 my $port = 0+<SOCK>;
+my $host = `hostname`;
+chomp $host;
 
 socket(PROXY, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
     connect(PROXY, sockaddr_in(8282, inet_aton('tools-proxy-test'))) and
-    syswrite PROXY, ".*\n`hostname`:$port\n";
+    syswrite PROXY, ".*\n$host:$port\n";
 
 exec @ARGV, $port;
 
