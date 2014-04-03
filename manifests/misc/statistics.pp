@@ -1,4 +1,4 @@
-# this file is for stat[0-9] statistics servers (per ezachte - RT 2162)
+# This file is for stat100[1-9] statistics servers (per ezachte - RT 2162)
 
 class misc::statistics::iptables-purges {
     require "iptables::tables"
@@ -101,7 +101,6 @@ class misc::statistics::base {
         path        => $working_path,
     }
 }
-
 
 class misc::statistics::packages {
     package { [
@@ -451,6 +450,13 @@ class misc::statistics::rsyncd(
         read_only   => 'no',
         list        => 'yes',
         hosts_allow => $hosts_allow,
+    }
+
+    # Allow rsyncd traffic from internal networks.
+    ferm::service { 'rsync':
+        proto  => 'tcp',
+        port   => '873',
+        srange => '$INTERNAL',
     }
 }
 
