@@ -36,6 +36,10 @@ import redis
 
 
 HOST, PORT = "0.0.0.0", 8282
+LOG_FILE = "/var/log/proxylistener"
+LOG_FORMAT = "%(asctime)s %(message)s"
+
+logging.basicConfig(filename=LOG_FILE, format=LOG_FORMAT, level=logging.DEBUG)
 
 
 def get_remote_user(remote_host, remote_port, local_port):
@@ -49,7 +53,7 @@ def get_remote_user(remote_host, remote_port, local_port):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((remote_host, 113))
 
-    request = u"%s, %s\n" % (remote_port, local_port)
+    request = u"%s,%s\n" % (remote_port, local_port)
 
     s.send(request.encode("ascii"))
     resp = s.recv(256)
