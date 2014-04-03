@@ -22,8 +22,6 @@ red:connect('127.0.0.1', 6379)
 
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
 
-ngx.log(ngx.ERR, 'dafu: uri="'..ngx.var.uri..'"')
-
 if captures == ngx.null then
    -- This would actually never happen, I'd think.
    ngx.exit(500)

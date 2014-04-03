@@ -100,7 +100,8 @@ fastcgi.server += ( ".php" =>
                 "bin-copy-environment" => (
                         "PATH", "SHELL", "USER"
                 ),
-                "broken-scriptfilename" => "enable"
+                "broken-scriptfilename" => "enable",
+                "allow-x-send-file" => "enable"
         ))
 )
 
