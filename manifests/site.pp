@@ -313,16 +313,6 @@ node 'boron.wikimedia.org' {
     include standard-noexim
 }
 
-node 'brewster.wikimedia.org' {
-    include standard
-    include role::installserver
-    include backup::client
-
-    # set up brewster to use haproxy to proxy puppet
-    # to palladium.
-    include role::puppetproxy
-}
-
 node 'calcium.wikimedia.org' {
     $cluster = 'misc'
 
