@@ -43,6 +43,9 @@ class dynamicproxy::api {
 
     file { '/data/project/backup/README':
             source  => 'puppet:///modules/dynamicproxy/BackupReadme',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
             require => File['/data/project/backup'],
     }
 
