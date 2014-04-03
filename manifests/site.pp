@@ -2141,6 +2141,7 @@ node 'palladium.eqiad.wmnet' {
             '*.pmtpa.wmnet',
             '*.eqiad.wmnet',
             '*.ulsfo.wmnet',
+            '*.esams.wmnet',
         ],
         server_type => 'frontend',
         workers     => ['palladium.eqiad.wmnet',
