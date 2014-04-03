@@ -64,16 +64,16 @@ end
 if route then
    ngx.var.backend = route
    ngx.exit(ngx.OK)
+else
+   -- Oh noes!  Even the admin prefix is dead!
+   -- Fall back to the static site
+   if rest then
+      -- the URI had a slash, so the user clearly expected /something/
+      -- there.  Fail because there is no registered webservice.
+      ngx.exit(503)
+   else
+      ngx.var.backend = ''
+      ngx.exit(ngx.OK)
+   end
 end
-
-if rest then
-   -- the URI had a slash, so the user clearly expected /something/
-   -- there.  Fail because there is no registered webservice.
-   ngx.exit(503)
-end
-
--- Oh noes!  Even the admin prefix is dead!
--- Fall back to the static site
-ngx.var.backend = ''
-ngx.exit(ngx.OK)
 
