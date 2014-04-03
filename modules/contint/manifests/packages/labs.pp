@@ -45,7 +45,7 @@ class contint::packages::labs {
     }
 
     # Facebook Hiphop virtual machine
-    package { 'hhvm': ensure => present }
+    include ::hhvm
 
     # Bring tox/virtualenv... from pip  bug 44443
     # TODO: Reevaluate this once we switch to trusty. Maybe provider being apt

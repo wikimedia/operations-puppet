@@ -12,16 +12,7 @@ class applicationserver::hhvm {
         fail('applicationserver::hhvm may only be deployed to Labs.')
     }
 
-    apt::repository { 'boost_backports':
-        uri        => 'http://ppa.launchpad.net/mapnik/boost/ubuntu',
-        dist       => 'precise',
-        components => 'main',
-        keyfile    => 'puppet:///files/misc/boost-backports.key',
-        before     => Package['hhvm'],
-    }
-
-    package { 'hhvm':
-        ensure  => present,
+    class { 'hhvm':
         require => Apache_module['apache_mod_fastcgi_for_hhvm'],
     }
 
