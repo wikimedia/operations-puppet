@@ -34,7 +34,6 @@ Repo {
   }
 }
 
-#include "/usr/share/hhvm/hdf/static.mime-types.hdf"
 StaticFile {
   FilesMatch {
     * {

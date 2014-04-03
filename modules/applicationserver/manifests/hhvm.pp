@@ -17,10 +17,10 @@ class applicationserver::hhvm {
         dist       => 'precise',
         components => 'main',
         keyfile    => 'puppet:///files/misc/boost-backports.key',
-        before     => Package['hhvm-fastcgi'],
+        before     => Package['hhvm'],
     }
 
-    package { 'hhvm-fastcgi':
+    package { 'hhvm':
         ensure  => present,
         require => Apache_module['apache_mod_fastcgi_for_hhvm'],
     }
@@ -45,13 +45,13 @@ class applicationserver::hhvm {
     # FIXME: This should be a parametrized template.
     file { '/etc/hhvm/server.hdf':
         source  => 'puppet:///modules/applicationserver/hhvm/server.hdf',
-        require => [ Package['hhvm-fastcgi'], File['/var/run/hhvm'] ],
+        require => [ Package['hhvm'], File['/var/run/hhvm'] ],
         notify  => Service['hhvm'],
     }
 
     file { [ '/etc/init.d/hhvm-fastcgi', '/etc/init.d/hhvm' ]:
         ensure  => absent,
-        require => Package['hhvm-fastcgi'],
+        require => Package['hhvm'],
     }
 
     file { '/etc/init/hhvm.conf':
