@@ -46,6 +46,7 @@ class role::lvs::balancer {
             $sip['parsoid'][$::site],
             $sip['search'][$::site]
             ],
+        /^(lvs300[1234])$/ => [], # temporary!
     }
 
     include base,
