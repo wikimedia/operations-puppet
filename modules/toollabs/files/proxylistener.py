@@ -64,13 +64,13 @@ def get_remote_user(remote_host, remote_port, local_port):
     return resp_parts[-1]
 
 
-class RouteRequestHandler(SocketServer.BaseRequestHandler):
+class RouteRequestHandler(SocketServer.StreamRequestHandler):
     """
     Handles incoming connections from clients asking for routes.
     """
     def handle(self):
-        route = self.request.readline().strip()
-        destination = self.request.readline().strip()
+        route = self.rfile.readline().strip()
+        destination = self.rfile.readline().strip()
         user = get_remote_user(self.client_address[0], self.client_address[1], PORT)
 
         # For some reason the identd response gave us an error, or failed otherwise

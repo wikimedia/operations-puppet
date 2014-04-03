@@ -29,7 +29,7 @@ my $port = 0+<SOCK>;
 
 socket(PROXY, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
     connect(PROXY, sockaddr_in(8282, inet_aton('tools-proxy-test'))) and
-    syswrite PROXY, "/.*\n`hostname`:$port\n";
+    syswrite PROXY, ".*\n`hostname`:$port\n";
 
 exec @ARGV, $port;
 

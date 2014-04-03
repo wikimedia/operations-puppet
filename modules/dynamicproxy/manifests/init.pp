@@ -16,7 +16,7 @@ class dynamicproxy (
     $redis_maxmemory='512MB',
     $ssl_certificate_name=false,
     $notfound_servers=[],
-    $luahandler='domainproxy.lua',
+    $luahandler='domainproxy',
     $set_xff=false,
     $resolver,
 ) {
@@ -40,7 +40,7 @@ class dynamicproxy (
 
     file { '/etc/nginx/sites-available/default':
         ensure  => 'file',
-        content => template('dynamicproxy/proxy.conf'),
+        content => template("dynamicproxy/${luahandler}.conf"),
         require => Package['nginx-extras'],
         notify  => Service['nginx'],
     }
@@ -56,9 +56,9 @@ class dynamicproxy (
         require => Package['nginx-extras'],
     }
 
-    file { '/etc/nginx/lua/proxy.lua':
+    file { "/etc/nginx/lua/${luahandler}.lua":
         ensure  => 'file',
-        source  => "puppet:///modules/dynamicproxy/${luahandler}",
+        source  => "puppet:///modules/dynamicproxy/${luahandler}.lua",
         require => File['/etc/nginx/lua'],
         notify  => Service['nginx'],
     }

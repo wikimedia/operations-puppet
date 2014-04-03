@@ -24,33 +24,54 @@ local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?")
 
 if captures == ngx.null then
    -- This would actually never happen, I'd think.
-   ngx.exit(404)
+   ngx.exit(500)
 end
 
 local prefix = captures[1]
 local rest = captures[2]
-
-if rest == nil then
-   -- Handle cases when there is nothing at all after the prefix
-   -- if we get /example, we will treat it as /example/
-   -- Ideally wer redirect here, to prevent fragmentation
-   rest = '/'
-end
-
 local routes_arr = red:hgetall('prefix:' .. prefix)
 
-if routes_arr == ngx.null then
-   -- No routes defined for this
-    ngx.exit(404)
+if routes_arr ~= ngx.null then
+   if rest == nil then
+      -- Handle cases when there is nothing at all after the prefix
+      -- if we get /example, we will redirect to /example/
+      return ngx.redirect('/'..prefix..'/', ngx.HTTP_MOVED_PERMANENTLY)
+   end
+
+   -- there is a registered prefix, try to find a matching
+   -- pattern and send the client there if there is.
+
+   local routes = red:array_to_hash(routes_arr)
+   for pattern, backend in pairs(routes) do
+      if ngx.re.match(rest, pattern) ~= nil then
+         ngx.var.backend = backend
+         ngx.exit(ngx.OK)
+      end
+   end
+
 end
 
-local routes = red:array_to_hash(routes_arr)
+if rest ~= nil then
+   -- the URI had a slash, so the user clearly expected /something/
+   -- there.  Fail because there is no registered webservice.
+   ngx.exit(503)
+end
 
-for pattern, backend in pairs(routes) do
-   if ngx.re.match(rest, pattern) ~= nil then
-      ngx.var.backend = backend
-      ngx.exit(ngx.OK)
+-- No routes defined for this uri, try the default (admin) prefix instead
+rest = '/' .. prefix
+routes_arr = red:hgetall('prefix:admin')
+if routes_arr ~= ngx.null then
+   local routes = red:array_to_hash(routes_arr)
+   for pattern, backend in pairs(routes) do
+      if ngx.re.match(rest, pattern) ~= nil then
+         ngx.var.backend = backend
+         ngx.exit(ngx.OK)
+      end
    end
 end
 
-ngx.exit(404) -- We didn't find any matches!
+-- Oh noes!  Even the admin prefix is dead!
+-- Fall back to the static site
+ngx.var.backend = ''
+ngx.exit(ngx.OK)
+
