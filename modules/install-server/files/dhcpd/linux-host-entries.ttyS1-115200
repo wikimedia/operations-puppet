@@ -3628,11 +3628,9 @@ host rdb1004 {
 	fixed-address rdb1004.eqiad.wmnet;
 }
 
-host tantalum {
-	hardware ethernet 78:2B:CB:2D:F3:D9;
-	fixed-address tantalum.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+host rhenium {
+	hardware ethernet 78:2b:cb:2f:df:2f;
+	fixed-address rhenium.wikimedia.org;
 }
 
 host rubidium {
@@ -4113,6 +4111,13 @@ host stat1003 {
 host strontium {
 	hardware ethernet 18:03:73:f4:ef:51;
 	fixed-address strontium.eqiad.wmnet;
+}
+
+host tantalum {
+	hardware ethernet 78:2B:CB:2D:F3:D9;
+	fixed-address tantalum.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host tellurium {
