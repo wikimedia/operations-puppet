@@ -77,15 +77,15 @@ class toollabs::dev_environ {
 
     # pastebinit configuration for http://tools.wmflabs.org/paste/.
     file { '/etc/pastebin.d':
-        require => Package['pastebinit'],
         ensure  => 'directory',
+        require => Package['pastebinit'],
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
     }
     file { '/etc/pastebin.d/tools.conf':
-        require => File['/etc/pastebin.d'],
         ensure  => 'file',
+        require => File['/etc/pastebin.d'],
         source  => 'puppet:///modules/toollabs/pastebinit.conf',
         owner   => 'root',
         group   => 'root',

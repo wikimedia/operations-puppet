@@ -10,7 +10,8 @@
 #
 # Sample Usage:
 #
-class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
+class toollabs::mailrelay($maildomain,
+                          $gridmaster) inherits toollabs {
     include toollabs::infrastructure,
         toollabs::gridnode
 
@@ -18,12 +19,12 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
         gridmaster => $gridmaster,
     }
 
-    file { "${store}/mail-relay":
+    file { "${toollabs::store}/mail-relay":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => File[$store],
+        require => File[$toollabs::store],
         content => template('toollabs/mail-relay.erb'),
     }
 
@@ -47,7 +48,8 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
         source  => undef,
         content => template('toollabs/exim4.conf.erb'),
         notify  => Service['exim4'],
-        require => File['/usr/local/sbin/localuser', '/usr/local/sbin/maintainers'],
+        require => File['/usr/local/sbin/localuser',
+                        '/usr/local/sbin/maintainers'],
     }
 
     File <| title == '/etc/default/exim4' |> {
