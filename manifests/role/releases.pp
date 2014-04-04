@@ -18,6 +18,8 @@ class role::releases {
     role::releases::access { 'mah': group => 'mwupld' } # RT 6861
     role::releases::access { 'mglaser': group => 'mwupld' } # RT 6861
     role::releases::access { 'reedy': group => 'mwupld' } # RT 6861
+    role::releases::access { 'csteipp': group => 'mwupld' } # RT 7188
+
 }
 
 class role::releases::groups {
