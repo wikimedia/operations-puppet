@@ -2502,7 +2502,13 @@ node 'stat1003.wikimedia.org' {
     # statistics classes.
     # NOTE: This will be moved to another class
     # someday, probably standard.
-    include base::firewall
+
+    # This firewall is absent until we work out
+    # bastion access for all users of stat1003.
+    # This should be done within a couple of weeks.
+    # I'll be generous and say that this will be
+    # turned back on by 2014-04-18. -otto
+    class { 'base::firewall': ensure => 'absent' }
 
     include role::statistics::cruncher
 
