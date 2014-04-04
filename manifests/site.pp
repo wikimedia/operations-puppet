@@ -279,21 +279,6 @@ node 'bast1001.wikimedia.org' {
     include nfs::netapp::home::othersite
     include misc::dsh
     include ssh::hostkeys-collect
-
-    # stat1003 users who are don't already have bast1001 access.
-    # ALL shell accounts should also have bastion access, but there
-    # is currently no admins:: grouping that is just for bastion
-    # access.  I will send email to ops@ list to discuss this.
-    # When a solution is found, these users will be removed
-    # from this node and into a admins:: class.
-    include accounts::howief
-    include accounts::jdlrobson
-    include accounts::jforrester
-    include accounts::jmorgan
-    include accounts::maryana
-    include accounts::msyed
-    include accounts::swalling
-
 }
 
 node 'bast4001.wikimedia.org' {
