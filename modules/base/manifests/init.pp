@@ -401,7 +401,7 @@ class base::firewall($ensure = 'present') {
     include ferm
 
     ferm::conf { 'main':
-        ensure  => $ensure,
+        ensure  => 'present',
         prio    => '00',
         source  => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
@@ -412,7 +412,7 @@ class base::firewall($ensure = 'present') {
     }
 
     ferm::conf { 'defs':
-        ensure  => $ensure,
+        ensure  => 'present',
         prio    => '00',
         content => $defscontent,
     }
