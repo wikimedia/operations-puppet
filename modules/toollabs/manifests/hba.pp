@@ -54,4 +54,3 @@ class toollabs::hba($store) {
     }
 
 }
-

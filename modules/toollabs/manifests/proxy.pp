@@ -19,7 +19,8 @@ class toollabs::proxy inherits toollabs {
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/toollabs/proxylistener.py',
-        require => Package['python-redis'] # Is provided by the dynamicproxy class
+        # Is provided by the dynamicproxy class.
+        require => Package['python-redis']
     }
 
     file { '/etc/init/proxylistener.conf':
