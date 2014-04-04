@@ -78,8 +78,20 @@ class toollabs::webnode($gridmaster) inherits toollabs {
         require => Exec['make-access'],
     }
 
+    package { 'php5-cgi':
+        ensure => latest,
+    }
+
     package { 'lighttpd': 
         ensure => latest,
+        require => File['/var/run/lighttpd'],
+    }
+
+    file { '/var/run/lighttpd':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '01777',
     }
 
     file { '/usr/local/bin/tool-lighttpd':
