@@ -469,11 +469,23 @@ class misc::statistics::rsync::jobs::webrequest {
     # See: https://projects.puppetlabs.com/issues/86
     # for a much too long discussion on why I can't.
     file { [
-        "${working_path}/squid",
-        "${working_path}/squid/archive",
         "${working_path}/aft",
         "${working_path}/aft/archive",
         "${working_path}/public-datasets",
+    ]:
+        ensure  => directory,
+        owner   => "stats",
+        group   => "wikidev",
+        mode    => '0775',
+    }
+
+    # Make sure destination directories exist.
+    # Too bad I can't do this with recurse => true.
+    # See: https://projects.puppetlabs.com/issues/86
+    # for a much too long discussion on why I can't.
+    file { [
+        "${working_path}/squid",
+        "${working_path}/squid/archive",
         # Moving away from "squid" nonmenclature for
         # webrequest logs.  Kafkatee generated log
         # files will be rsynced into /a/log.
@@ -483,7 +495,7 @@ class misc::statistics::rsync::jobs::webrequest {
         ensure  => directory,
         owner   => "stats",
         group   => "wikidev",
-        mode    => '0775',
+        mode    => '0755',
     }
 
     # wikipedia zero logs from oxygen
@@ -573,14 +585,14 @@ define misc::statistics::rsync_job($source, $destination) {
         ensure  => "directory",
         owner   => $misc::statistics::user::username,
         group   => "wikidev",
-        mode    => '0775',
+        mode    => '0755',
     }
 
     # Create a daily cron job to rsync $source to $destination.
     # This requires that the $misc::statistics::user::username
     # user is installed on the source host.
     cron { "rsync_${name}_logs":
-        command => "/usr/bin/rsync -rt $source $destination/",
+        command => "/usr/bin/rsync -rt --perms --chmod=g-w $source $destination/",
         user    => $misc::statistics::user::username,
         hour    => 8,
         minute  => 0,
