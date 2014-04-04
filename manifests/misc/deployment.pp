@@ -135,6 +135,11 @@ class misc::deployment::common_scripts {
 			mode => 0555,
 			ensure => link,
 			target => "${scriptpath}/sync-apache";
+		"${scriptpath}/apache-graceful-all":
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0554',
+			source => 'puppet:///files/misc/scripts/apache-graceful-all';
 		"${scriptpath}/udprec":
 			owner => root,
 			group => root,
