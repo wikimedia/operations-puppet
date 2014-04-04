@@ -110,19 +110,15 @@ class toollabs {
     }
 
     # Trustworthy enough
-    file { '/etc/apt/sources.list.d/mariadb.list':
-        ensure  => file,
-        content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu precise main\n",
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+    apt::repository { 'mariadb':
+        uri        => 'http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu',
+        dist       => 'precise',
+        components => 'main',
+        source     => false,
+        keyfile    => 'puppet:///modules/toollabs/mariadb.gpg',
     }
     file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
-        ensure => file,
-        source => 'puppet:///modules/toollabs/mariadb.gpg',
-        mode => '0444',
-        owner => 'root',
-        group => 'root',
+        ensure => absent,
     }
 
     File <| title == '/etc/exim4/exim4.conf' |> {
