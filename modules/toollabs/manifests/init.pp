@@ -16,8 +16,8 @@ class toollabs {
     include labs_lvm
 
     $sysdir = '/data/project/.system'
-    $store  = "$sysdir/store"
-    $repo   = "$sysdir/deb"
+    $store  = "${sysdir}/store"
+    $repo   = "${sysdir}/deb"
 
     #
     # The $store is an incredibly horrid workaround the fact that we cannot
@@ -33,7 +33,7 @@ class toollabs {
         ensure  => directory,
         owner   => 'root',
         group   => 'tools.admin',
-        mode    => '02775',
+        mode    => '2775',
         require => Mount['/data/project'],
     }
 
@@ -55,7 +55,7 @@ class toollabs {
     }
 
     exec { 'make_known_hosts':
-        command => "/bin/cat $store/hostkey-* >/etc/ssh/ssh_known_hosts~",
+        command => "/bin/cat ${store}/hostkey-* >/etc/ssh/ssh_known_hosts~",
         require => File[$store],
     }
 
@@ -103,7 +103,7 @@ class toollabs {
 
     file { '/etc/apt/sources.list.d/local.list':
         ensure  => file,
-        content => "deb [ arch=amd64 trusted=yes ] file:${repo}/ amd64/\ndeb [arch=all trusted=yes ] file:${repo}/ all/\n",
+        content => "deb [arch=amd64 trusted=yes] file:${repo}/ amd64/\ndeb [arch=all trusted=yes] file:${repo}/ all/\n",
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -114,7 +114,7 @@ class toollabs {
     if $::lsbdistcodename == 'precise' {
         file { '/etc/apt/sources.list.d/mariadb.list':
             ensure  => file,
-            content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu $::lsbdistcodename main\n",
+            content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu ${::lsbdistcodename} main\n",
             mode    => '0444',
             owner   => 'root',
             group   => 'root',
@@ -122,15 +122,15 @@ class toollabs {
         file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
             ensure => file,
             source => 'puppet:///modules/toollabs/mariadb.gpg',
-            mode => '0444',
-            owner => 'root',
-            group => 'root',
+            mode   => '0444',
+            owner  => 'root',
+            group  => 'root',
         }
     }
 
     File <| title == '/etc/exim4/exim4.conf' |> {
         content => undef,
-        source  => [ "${store}/mail-relay", 'puppet:///modules/toollabs/exim4-norelay.conf' ],
+        source  => ["${store}/mail-relay", 'puppet:///modules/toollabs/exim4-norelay.conf'],
         notify  => Service['exim4'],
     }
 
@@ -143,6 +143,6 @@ class toollabs {
     # Don't collect MountStats, because we have no clear use for it atm.
     # Should be removed in a day or two
     diamond::collector { 'MountStats':
-        ensure => absent
+        ensure => absent,
     }
 }

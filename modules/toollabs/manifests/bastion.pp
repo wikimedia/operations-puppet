@@ -33,15 +33,15 @@ class toollabs::bastion($gridmaster) inherits toollabs {
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-        source => "puppet:///modules/toollabs/40-${instanceproject}-bastion-banner",
+        source => "puppet:///modules/toollabs/40-${::instanceproject}-bastion-banner",
     }
 
-    file { "${store}/submithost-${::fqdn}":
+    file { "${toollabs::store}/submithost-${::fqdn}":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => File[$store],
+        require => File[$toollabs::store],
         content => "${::ipaddress}\n",
     }
 

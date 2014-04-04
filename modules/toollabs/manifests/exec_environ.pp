@@ -184,10 +184,10 @@ class toollabs::exec_environ {
         'php5-sqlite',
         'php5-xsl',
 
-        # Fonts
-        'fonts-ipafont-gothic',        # for vCat tool (Japanese fonts)
-        'fonts-unfonts-core',          # for vCat tool (Korean fonts)
-        'ttf-indic-fonts',             # for vCat tool (fonts for many Indic languages)
+        # Fonts for vCat tool.
+        'fonts-ipafont-gothic',        # Japanese fonts.
+        'fonts-unfonts-core',          # Korean fonts.
+        'ttf-indic-fonts',             # Many Indic languages.
 
         # tcl packages
         'mysqltcl',
