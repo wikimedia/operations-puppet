@@ -7,7 +7,9 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 
     $rolename = regsubst($title, ':', '-', 'G')
     $motd_filename = "/etc/update-motd.d/05-role-${rolename}"
-    salt::grain { $rolename: grain => 'rolename', value => $name }
+    # deactivated for now because it blocks new installs
+    # dependency on minion config and having a signed salt key
+    # salt::grain { $rolename: grain => 'rolename', value => $name }
 
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '9.10') >= 0 {
         file { $motd_filename:
