@@ -3756,6 +3756,7 @@ class admins::restricted {
     include accounts::ashields # access revoked
     include accounts::austin # access revoked
     include accounts::avar
+    include accounts::awight
     include accounts::bastique # access revoked
     include accounts::cscott # RT 6655
     include accounts::daniel
@@ -3765,9 +3766,25 @@ class admins::restricted {
     include accounts::dsc # access revoked
     include accounts::erik
     include accounts::ezachte
+    include accounts::halfak
     include accounts::hoo # RT 6731
+    include accounts::howief
+    include accounts::gdubuc
+    include accounts::ironholds
     include accounts::jamesofur
+    include accounts::jdlrobson
+    include accounts::jforrester
+    include accounts::jgonera
+    include accounts::jmorgan
+    include accounts::kaldari
     include accounts::khorn
+    include accounts::maryana
+    include accounts::mflaschen
+    include accounts::mholmquist
+    include accounts::milimetric
+    include accounts::msyed
+    include accounts::swalling
+    include accounts::tnegrin
     include accounts::qchris # RT 5403
     include accounts::rainman
     include accounts::ram # revoked
@@ -3786,6 +3803,7 @@ class admins::restricted {
     include accounts::mglaser # RT 6861->6929
     include accounts::mah # RT 6861->6930
     include accounts::legoktm # RT 6895
+    include accounts::yurik
 }
 
 class admins::labs {
