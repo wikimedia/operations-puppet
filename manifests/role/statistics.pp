@@ -41,7 +41,7 @@ class role::statistics::www inherits role::statistics {
 		misc::statistics::sites::community_analytics,
 		# reportcard.wikimedia.org
 		misc::statistics::sites::reportcard,
-		# rsync public datasets from stat1 hourly
+		# rsync public datasets from stat1003 hourly
 		misc::statistics::public_datasets
 }
 
