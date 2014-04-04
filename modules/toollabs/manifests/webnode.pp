@@ -11,7 +11,7 @@
 #
 # Sample Usage:
 #
-class toollabs::webnode($gridmaster) inherits toollabs {
+class toollabs::webnode($gridmaster = undef) inherits toollabs {
     include toollabs::exec_environ,
         toollabs::infrastructure,
         toollabs::gridnode
@@ -22,12 +22,12 @@ class toollabs::webnode($gridmaster) inherits toollabs {
         gridmaster => $gridmaster,
     }
 
-    file { "${store}/execnode-${::fqdn}":
+    file { "${toollabs::store}/execnode-${::fqdn}":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => File[$store],
+        require => File[$toollabs::store],
         content => "${::ipaddress}\n",
     }
 
@@ -47,7 +47,8 @@ class toollabs::webnode($gridmaster) inherits toollabs {
 
     exec { 'make-shosts':
         command => '/usr/local/sbin/project-make-shosts >/etc/ssh/shosts.equiv~',
-        require => File['/usr/local/sbin/project-make-shosts', $store],
+        require => File['/usr/local/sbin/project-make-shosts',
+                        $toollabs::store],
     }
 
     file { '/etc/ssh/shosts.equiv':
@@ -69,7 +70,8 @@ class toollabs::webnode($gridmaster) inherits toollabs {
 
     exec { 'make-access':
         command => '/usr/local/sbin/project-make-access >/etc/security/access.conf~',
-        require => File['/usr/local/sbin/project-make-access', $store],
+        require => File['/usr/local/sbin/project-make-access',
+                        $toollabs::store],
     }
 
     File <| title == '/etc/security/access.conf' |> {
@@ -82,7 +84,7 @@ class toollabs::webnode($gridmaster) inherits toollabs {
         ensure => latest,
     }
 
-    package { 'lighttpd': 
+    package { 'lighttpd':
         ensure => latest,
         require => File['/var/run/lighttpd'],
     }
@@ -134,4 +136,3 @@ class toollabs::webnode($gridmaster) inherits toollabs {
         source => 'puppet:///modules/toollabs/portgranter.conf',
     }
 }
-

@@ -11,7 +11,7 @@
 #
 # Sample Usage:
 #
-class toollabs::submit($gridmaster) inherits toollabs {
+class toollabs::submit($gridmaster = undef) inherits toollabs {
     include toollabs::exec_environ,
         toollabs::gridnode
 
@@ -28,7 +28,7 @@ class toollabs::submit($gridmaster) inherits toollabs {
     }
 
     class { 'toollabs::hba':
-        store => $store,
+        store => $toollabs::store,
     }
 
     file { '/etc/update-motd.d/40-bastion-banner':
@@ -36,15 +36,15 @@ class toollabs::submit($gridmaster) inherits toollabs {
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-        source => "puppet:///modules/toollabs/40-${instanceproject}-submithost-banner",
+        source => "puppet:///modules/toollabs/40-${::instanceproject}-submithost-banner",
     }
 
-    file { "${store}/submithost-${::fqdn}":
+    file { "${toollabs::store}/submithost-${::fqdn}":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => File[$store],
+        require => File[$toollabs::store],
         content => "${::ipaddress}\n",
     }
 
@@ -52,4 +52,3 @@ class toollabs::submit($gridmaster) inherits toollabs {
         ensure => latest,
     }
 }
-

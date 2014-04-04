@@ -16,8 +16,8 @@ class toollabs {
     include labs_lvm
 
     $sysdir = '/data/project/.system'
-    $store  = "$sysdir/store"
-    $repo   = "$sysdir/deb"
+    $store  = "${sysdir}/store"
+    $repo   = "${sysdir}/deb"
 
     #
     # The $store is an incredibly horrid workaround the fact that we cannot
@@ -33,7 +33,7 @@ class toollabs {
         ensure  => directory,
         owner   => 'root',
         group   => 'tools.admin',
-        mode    => '02775',
+        mode    => '2775',
         require => Mount['/data/project'],
     }
 
@@ -51,11 +51,11 @@ class toollabs {
         group   => 'root',
         mode    => '0444',
         require => File[$store],
-        content => "[${::fqdn}]:*,[${::ipaddress}]:* ssh-rsa ${::sshrsakey}\n${::fqdn} ssh-rsa ${::sshrsakey}\n",
+        content => "[${::fqdn}]:*,[${::ipaddress}]:* ssh-rsa ${::sshrsakey}${::fqdn} ssh-rsa ${::sshrsakey}\n",
     }
 
     exec { 'make_known_hosts':
-        command => "/bin/cat $store/hostkey-* >/etc/ssh/ssh_known_hosts~",
+        command => "/bin/cat ${store}/hostkey-* >/etc/ssh/ssh_known_hosts~",
         require => File[$store],
     }
 
@@ -120,9 +120,9 @@ class toollabs {
     file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
         ensure => file,
         source => 'puppet:///modules/toollabs/mariadb.gpg',
-        mode => '0444',
-        owner => 'root',
-        group => 'root',
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
     }
 
     File <| title == '/etc/exim4/exim4.conf' |> {

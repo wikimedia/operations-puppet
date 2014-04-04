@@ -24,22 +24,21 @@ class toollabs::master inherits toollabs {
     # any singleton instance.
     #
 
-    file { $repo:
+    file { $toollabs::repo:
         ensure  => directory,
         owner   => 'tools.admin',
         group   => 'tools.admin',
         mode    => '0755',
-        require => File[$sysdir],
+        require => File[$toollabs::sysdir],
     }
 
-    file { "${repo}/update-repo.sh":
+    file { "${toollabs::repo}/update-repo.sh":
         ensure  => file,
         owner   => 'tools.admin',
         group   => 'tools.admin',
         mode    => '0550',
-        require => File[$repo],
+        require => File[$toollabs::repo],
         source  => 'puppet:///modules/toollabs/update-repo.sh',
     }
 
 }
-
