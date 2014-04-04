@@ -2,17 +2,10 @@
 class coredb_mysql::packages {
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
         if $mariadb == true {
-            file { '/etc/apt/sources.list.d/wikimedia-mariadb.list':
-                group  => 'root',
-                mode   => '0444',
-                owner  => 'root',
-                source => 'puppet:///modules/coredb_mysql/wikimedia-mariadb.list',
-            }
-
-            exec { 'update_mysql_apt':
-                subscribe   => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
-                command     => '/usr/bin/apt-get update',
-                refreshonly => true,
+            apt::repository { 'wikimedia-mariadb':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => 'precise-wikimedia',
+                components => 'mariadb',
             }
 
             package { [
@@ -22,7 +15,7 @@ class coredb_mysql::packages {
                 'mariadb-server-core-5.5',
             ]:
                 ensure  => present,
-                require => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
+                require => Apt::Repository['wikimedia-mariadb'],
             }
 
         } else {

@@ -81,16 +81,10 @@ class mysql::server::package (
   $package_name     = $mysql::params::server_package_name,
 ) {
   if $package_name =~ /mariadb/ {
-    file { "/etc/apt/sources.list.d/wikimedia-mariadb.list":
-      owner => root,
-      group => root,
-      mode => 0444,
-      source => "puppet:///modules/coredb_mysql/wikimedia-mariadb.list"
-    }
-    exec { "update_mysql_apt":
-      subscribe => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
-      command => "/usr/bin/apt-get update",
-      refreshonly => true;
+    apt::repository { 'wikimedia-mariadb':
+      uri        => 'http://apt.wikimedia.org/wikimedia',
+      dist       => 'precise-wikimedia',
+      components => 'mariadb',
     }
   }
 
@@ -98,7 +92,7 @@ class mysql::server::package (
     ensure   => $package_ensure,
     name     => $package_name,
     require  => $package_name ? {
-      "mariadb-server-5.5" => File["/etc/apt/sources.list.d/wikimedia-mariadb.list"],
+      "mariadb-server-5.5" => Apt::Repository['wikimedia-mariadb'],
       default => undef
     }
   }

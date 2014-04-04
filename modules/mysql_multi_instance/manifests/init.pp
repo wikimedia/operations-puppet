@@ -1,22 +1,16 @@
 
 class mysql_multi_instance {
 
-    file { '/etc/apt/sources.list.d/wikimedia-mariadb.list':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/coredb_mysql/wikimedia-mariadb.list',
-    }
-    exec { 'update_mysql_apt':
-        subscribe   => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true,
+    apt::repository { 'wikimedia-mariadb':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => 'precise-wikimedia',
+        components => 'mariadb',
     }
 
     package { 'mysql-server':
         ensure   => present,
         name     => 'mariadb-server-5.5',
-        require  => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
+        require  => Apt::Repository['wikimedia-mariadb'],
     }
 
     package { ['percona-xtrabackup', 
