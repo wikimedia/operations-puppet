@@ -15,4 +15,3 @@ class toollabs::webproxy inherits toollabs {
 
     #TODO: apache config
 }
-

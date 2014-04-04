@@ -19,7 +19,7 @@ class toollabs::infrastructure {
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-        source => "puppet:///modules/toollabs/40-${instanceproject}-infrastructure-banner",
+        source => "puppet:///modules/toollabs/40-${::instanceproject}-infrastructure-banner",
     }
 
     # Infrastructure instances are limited to an (arbitrarily picked) local
@@ -29,4 +29,3 @@ class toollabs::infrastructure {
         content => "-:ALL EXCEPT (tools.admin) root:ALL\n",
     }
 }
-

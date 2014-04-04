@@ -10,9 +10,9 @@
 #
 class toollabs::gridnode inherits toollabs {
 
-    file { "${sysdir}/gridengine":
+    file { "${toollabs::sysdir}/gridengine":
         ensure  => directory,
-        require => File[$sysdir],
+        require => File[$toollabs::sysdir],
     }
 
     file { '/var/lib/gridengine':
@@ -22,12 +22,12 @@ class toollabs::gridnode inherits toollabs {
     mount { '/var/lib/gridengine':
         ensure  => mounted,
         atboot  => False,
-        device  => "${sysdir}/gridengine",
+        device  => "${toollabs::sysdir}/gridengine",
         fstype  => none,
         options => 'rw,bind',
-        require => File["${sysdir}/gridengine", '/var/lib/gridengine'],
+        require => File["${toollabs::sysdir}/gridengine",
+                        '/var/lib/gridengine'],
         before  => Package['gridengine-common'],
     }
 
 }
-

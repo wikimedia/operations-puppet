@@ -25,16 +25,16 @@ class toollabs::redis (
         # Disable the following commands, to try to limit people from
         # Trampling on each others' keys
         rename_commands => {
-            "CONFIG"    => "",
-            "FLUSHALL"  => "",
-            "FLUSHDB"   => "",
-            "KEYS"      => "",
-            "SHUTDOWN"  => "",
-            "SLAVEOF"   => "",
-            "CLIENT"    => "",
-            "RANDOMKEY" => "",
-            "DEBUG"     => "",
-            "MONITOR"   => ""
+            'CONFIG'    => '',
+            'FLUSHALL'  => '',
+            'FLUSHDB'   => '',
+            'KEYS'      => '',
+            'SHUTDOWN'  => '',
+            'SLAVEOF'   => '',
+            'CLIENT'    => '',
+            'RANDOMKEY' => '',
+            'DEBUG'     => '',
+            'MONITOR'   => ''
         },
         monitor         => true
     }

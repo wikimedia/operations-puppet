@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::hba($store) {
+class toollabs::hba($store = undef) {
 
     file { '/usr/local/sbin/project-make-shosts':
         ensure => file,
@@ -54,4 +54,3 @@ class toollabs::hba($store) {
     }
 
 }
-

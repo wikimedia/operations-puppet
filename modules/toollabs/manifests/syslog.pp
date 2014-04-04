@@ -15,4 +15,3 @@ class toollabs::syslog inherits toollabs {
 
     #TODO:  config
 }
-
