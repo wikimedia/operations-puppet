@@ -333,7 +333,7 @@ class role::protoproxy::ssl::beta {
         proxy_server_cert_name => 'star.wmflabs.org',
         proxy_backend => {
             # send all traffic to the local cache
-            'pmtpa' => { 'primary' => '127.0.0.1' }
+            'eqiad' => { 'primary' => '127.0.0.1' }
         },
         ipv6_enabled => false,
         enabled => true,
