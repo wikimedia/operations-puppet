@@ -2551,7 +2551,7 @@ class accounts {
             }
             ssh_authorized_key {
                 'stefan.petrea@gmail.com-new':
-                    ensure => 'present',
+                    ensure => 'absent', # removed pending post-contract NDA, see RT 7203
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQDFVkcUBti1RKTP4stJzfOVsDAv8xYInFXZeue3cwVCgvh0s0dWcg1tmLiCGpQvtO9XuFw/I6UpIfrUCE3iwem/VhXbCrHyF4ZQ+WSb30qIo2mEaK2+mVwd6fIBmLx9ZCWB9Fer5/aEp6fpLgKp+dHA8W+zOEqsWXnDdssfI/fb0Rjmf3UIYuaSeSrltgfluJCTZBtIG9cSrl4uUdJUsiDGPsFMgdXS2UD4HjSD2YqRZp5NTxCCwwf1jG5r5jGjequagyKAM/01iL+TPAX4kTx+i0fX4e8W8Kpy/Dv23t9bF3RX9K1RjfzqXyHom3uQuR1IXlnt6KkmTHzMKmXqj3aHMIOypn7M0X0TTO80WeoJ7oW3kCX3P2f9L2lIvPi2hbuAdd0f77LFTERgFW8JNoc9y7lJDPF06CnU8a3BRRbL/9pNj/NdiW1Z8SXUOTEJstsI3tXf83q6mZ32ZlDfm3yn+INexOCMTG0n28wlovFpGYRoAQECqhw3y8P9FU6LpdcmJzgfdw8V4WXIQ6fCk9UzRCh+h3cey3W5wJz8upNWXP9ZSFtffjR6l8Q+gMJ6Acf9uYQkYMn8W3NdpLEJwcQAN28ODYb5p6iqw6T/Q+4FTl1TQR8pJofDYLnQ7fwlrTXD4o8oKqqnzAs0Xp2vo0XXujw6pgtUWUvN8q6VSRcn/w==',
