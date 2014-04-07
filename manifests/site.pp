@@ -285,6 +285,12 @@ node 'bast1001.wikimedia.org' {
     include nfs::netapp::home::othersite
     include misc::dsh
     include ssh::hostkeys-collect
+
+    # Users that should be on bast1001 but aren't
+    # in any other admins::* grouping
+    include accounts::swalling
+    include accounts::maryana
+    include accounts::jforrester
 }
 
 node 'bast4001.wikimedia.org' {
