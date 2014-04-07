@@ -33,6 +33,14 @@ done
 
 echo "Starting l10nupdate at $(date -ud @$BEGAN)."
 
+# XXX: temporary capture of files for debugging 1.23wmf21 failures
+SNAPSHOT_DIR=/var/log/l10nupdatelog/snapshot-$(date +%Y%m%dT%H%M)
+mkdir $SNAPSHOT_DIR
+SNAPSHOT_BEFORE=${SNAPSHOT_DIR}/before
+mkdir $SNAPSHOT_BEFORE
+SNAPSHOT_AFTER=${SNAPSHOT_DIR}/after
+mkdir $SNAPSHOT_AFTER
+
 # Update i18n messages from git to the HEAD of master, or create the clone if it doesn't exist yet
 echo "Updating git clone ..."
 for path in $GITREPOS
@@ -79,6 +87,13 @@ do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
 
+	# XXX: temporary capture of files for debugging 1.23wmf21 failures
+	cp /a/common/wmf-config/ExtensionMessages-${mwVerNum}.php $SNAPSHOT_BEFORE
+	cp /a/common/php-${mwVerNum}/cache/l10n/l10n_cache-en.cdb $SNAPSHOT_BEFORE
+	cp /a/common/php-${mwVerNum}/cache/l10n/upstream/l10n_cache-en.cdb.* $SNAPSHOT_BEFORE
+	cp /usr/local/apache/common-local/wikiversions.json $SNAPSHOT_BEFORE
+	echo "Saved ExtensionMessages-${mwVerNum} and l10n_cache-en to $SNAPSHOT_BEFORE"
+
 	if [ ! -d /var/lib/l10nupdate/cache-"$mwVerNum" ]; then
 		mkdir /var/lib/l10nupdate/cache-"$mwVerNum"
 	fi
@@ -108,6 +123,13 @@ do
 		$BINDIR/dologmsg "!log LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
 		echo "FAILED"
 	fi
+
+	# XXX: temporary capture of files for debugging 1.23wmf21 failures
+	cp /a/common/wmf-config/ExtensionMessages-${mwVerNum}.php $SNAPSHOT_AFTER
+	cp /a/common/php-${mwVerNum}/cache/l10n/l10n_cache-en.cdb $SNAPSHOT_AFTER
+	cp /a/common/php-${mwVerNum}/cache/l10n/upstream/l10n_cache-en.cdb.* $SNAPSHOT_AFTER
+	cp /usr/local/apache/common-local/wikiversions.json $SNAPSHOT_AFTER
+	echo "Saved ExtensionMessages-${mwVerNum} and l10n_cache-en to $SNAPSHOT_AFTER"
 done
 
 # Clear the ResourceLoader cached messages
