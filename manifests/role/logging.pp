@@ -370,5 +370,6 @@ class role::logging::udp2log::misc {
     misc::udp2log::instance { 'misc':
         multicast          => true,
         packet_loss_log    => '/var/log/udp2log/packet-loss.log',
+        monitor_log_age    => false,
     }
 }
