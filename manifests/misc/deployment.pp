@@ -273,7 +273,7 @@ class misc::deployment::l10nupdate {
 	$scriptpath = "/usr/local/bin"
 
 	cron { 'l10nupdate':
-		command => "${scriptpath}/l10nupdate-1 >> /var/log/l10nupdatelog/l10nupdate.log 2>&1",
+		command => "${scriptpath}/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1",
 		user => 'l10nupdate',
 		hour => 2,
 		minute => 0,
