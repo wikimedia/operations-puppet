@@ -176,7 +176,8 @@ class role::analytics::hadoop::production {
         'analytics1011.eqiad.wmnet',  # Row A2
         'analytics1013.eqiad.wmnet',  # Row A2
         'analytics1014.eqiad.wmnet',  # Row C7
-        # TODO: Add a Row D journalnode once Row D is available.
+        'analytics1019.eqiad.wmnet',  # Row D2
+        'analytics1020.eqiad.wmnet',  # Row D2
     ]
 
     $hadoop_name_directory    = '/var/lib/hadoop/name'
