@@ -103,6 +103,9 @@ node /^amssq(4[8-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org$/ {
 node 'analytics1003.eqiad.wmnet' {
     include role::analytics
     include role::analytics::kafkatee::webrequest::mobile
+
+    # run misc udp2log here for sqstat
+    include role::logging::udp2log::misc
 }
 
 node 'analytics1004.eqiad.wmnet' {
