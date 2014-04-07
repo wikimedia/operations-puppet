@@ -43,7 +43,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 def dispatch_stat(*args):
     if len(args) < 2:
-        raise ArgumentError
+        raise argparse.ArgumentError
     args = list(args)
     value = args.pop()
     name = '.'.join([prefix] + args)

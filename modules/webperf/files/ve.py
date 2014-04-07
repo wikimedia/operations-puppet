@@ -6,7 +6,6 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 
 import argparse
-import logging
 import socket
 
 import zmq
