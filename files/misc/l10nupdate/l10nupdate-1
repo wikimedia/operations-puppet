@@ -9,9 +9,28 @@ MWMULTIDIR=$MW_COMMON_SOURCE/multiversion
 GITDIR=/var/lib/l10nupdate/mediawiki
 GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
 GITREPOS="core extensions"
+QUIET=--quiet
 
 umask 0002
 BEGAN=$(date +"%s")
+
+TEMP=`getopt -o '' -l verbose -- "$@"`
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+eval set -- "$TEMP"
+while true; do
+    case "$1" in
+        --verbose)
+            QUIET=
+            shift
+            ;;
+        --)
+            shift
+            break
+    esac
+done
+
 echo "Starting l10nupdate at $(date -ud @$BEGAN)."
 
 # Update i18n messages from git to the HEAD of master, or create the clone if it doesn't exist yet
@@ -66,12 +85,12 @@ do
 
 	echo "Running updates for $mwVerNum (on $mwDbName)"
 	if /usr/local/bin/mwscript extensions/LocalisationUpdate/update.php \
-		  --wiki="$mwDbName" \
-		  --quiet
+		  --wiki="$mwDbName" $QUIET
 	then
 		echo "Rebuilding localization cache at `date --rfc-3339=seconds`"
-		/usr/local/bin/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
-		                  --quiet --outdir=/var/lib/l10nupdate/cache-"$mwVerNum"
+		/usr/local/bin/mwscript rebuildLocalisationCache.php \
+			--wiki="$mwDbName" \
+			--outdir=/var/lib/l10nupdate/cache-${mwVerNum} $QUIET
 		# Copy the LC files
 		echo "Completed at `date --rfc-3339=seconds`. Copying LC files to $MW_COMMON_SOURCE"
 		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MW_COMMON_SOURCE/php-"$mwVerNum"/cache/l10n
