@@ -101,6 +101,9 @@ node /^amssq(4[8-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org$/ {
 # analytics1003 is being used for testing kafkatee
 # in preperation for replacing udp2log
 node 'analytics1003.eqiad.wmnet' {
+    include standard
+    include admins::roots
+
     include role::analytics
     include role::analytics::kafkatee::webrequest::mobile
 
