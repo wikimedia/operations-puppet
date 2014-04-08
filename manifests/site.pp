@@ -281,7 +281,6 @@ node 'bast1001.wikimedia.org' {
     include admins::mortals
     include admins::restricted
     include bastionhost
-    include nrpe
     include nfs::netapp::home::othersite
     include misc::dsh
     include ssh::hostkeys-collect
@@ -982,6 +981,7 @@ node 'fenari.wikimedia.org' {
         interface => 'eth0',
     }
 
+    include base
     include role::applicationserver::maintenance
     include subversion::client
     include nfs::netapp::home
@@ -990,7 +990,6 @@ node 'fenari.wikimedia.org' {
     include admins::restricted
     include bastionhost
     include misc::noc-wikimedia
-    include nrpe
     include drac
     include accounts::awjrichards
     include generic::wikidev-umask
@@ -1007,7 +1006,6 @@ node 'fluorine.eqiad.wmnet' {
     include admins::roots
     include admins::mortals
     include admins::restricted
-    include nrpe
 
     class { 'role::logging::mediawiki':
         monitor       => false,
@@ -1093,7 +1091,6 @@ node 'gallium.wikimedia.org' {
     }
 
     include standard
-    include nrpe
     include contint::firewall
     include contint::android-sdk
     include role::ci::master
@@ -1742,7 +1739,6 @@ node 'mchenry.wikimedia.org' {
     include ganglia
     include ntp::client
     include dns::recursor::statistics
-    include nrpe
     include ldap::role::client::corp
     include backup::client
     include privateexim::aliases::private
@@ -2191,7 +2187,6 @@ node 'sanger.wikimedia.org' {
     include base
     include ganglia
     include ntp::client
-    include nrpe
     include ldap::role::server::corp
     include ldap::role::client::corp
     include groups::wikidev
@@ -2265,7 +2260,6 @@ node 'sodium.wikimedia.org' {
     include base
     include ganglia
     include ntp::client
-    include nrpe
     include mailman
     include dns::recursor
     include backup::client
@@ -2586,7 +2580,6 @@ node 'terbium.eqiad.wmnet' {
     include admins::mortals
     include admins::restricted
     include generic::wikidev-umask
-    include nrpe
 
 
     class { 'misc::maintenance::pagetriage':
@@ -2940,7 +2933,6 @@ node 'zinc.eqiad.wmnet' {
 node 'zirconium.wikimedia.org' {
     include standard
     include admins::roots
-    include nrpe
     include role::planet
     include misc::outreach::civicrm # contacts.wikimedia.org
     include misc::etherpad_lite
