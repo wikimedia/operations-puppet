@@ -61,7 +61,13 @@ class base::monitoring::host($contact_group = 'admins') {
             mode   => '0555',
             source => 'puppet:///modules/nrpe/plugins/check_eth';
         }
-
+       file { '/usr/local/lib/nagios/plugins/check_ifspeed':
+          ensure => present,
+          owner  => 'root',
+          group  => 'root'
+          mode   => '0555',
+          source => 'puppet:///mdoules/nrpe/plugins/ifspeed':
+        }
         sudo_user { 'nagios':
             privileges   => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'],
         }
