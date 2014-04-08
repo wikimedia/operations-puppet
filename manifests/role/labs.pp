@@ -23,6 +23,10 @@ class role::labs::instance {
         mode   => '0755',
     }
 
+    package { 'libssl1.0.0':
+        ensure => latest,
+    }
+
     $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc'
     $nfs_server = 'labstore.svc.eqiad.wmnet'
 
