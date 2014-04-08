@@ -19,9 +19,7 @@ class lvs::balancer(
 
     system::role { "lvs::balancer": description => "LVS balancer", ensure => absent }
 
-    package { ethtool:
-        ensure => installed;
-    }
+    # ethtool is also a package needed but it is included from base
 
     class { 'pybal::configuration':
         global_options => $pybal_global_options,
