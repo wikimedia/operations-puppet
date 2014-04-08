@@ -19,6 +19,7 @@ class base::standard-packages {
         'ack-grep',
         'tree',
         'debian-goodies',
+        'ethtool',
     ]
 
     if $::lsbdistid == 'Ubuntu' {
