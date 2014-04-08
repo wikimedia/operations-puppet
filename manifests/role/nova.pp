@@ -436,6 +436,11 @@ class role::nova::compute {
 		}
 	}
 
+	nrpe::monitor_service {'check_eth':
+		description => 'eth1, eth2, eth3',
+		nrpe_command => '/usr/local/lib/nagios/plugins/check_eth "eth1"'
+	}
+
 	class { "openstack::compute-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 
 	if $realm == "labs" {
