@@ -1,0 +1,238 @@
+2014-02-28  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* Makefile: added a target to build an rpm
+
+2013-12-23  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added the --tls1 option to force TLS 1
+
+2013-10-09  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: whole script reviewed with shellcheck
+
+2013-10-01  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: fixes with shellcheck (quoting)
+
+2013-07-29  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: Added an option to force a given SSL version
+
+2013-03-02  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: Fixed a bug occuring with TLS and multiple names in
+                          the certificate
+
+2012-12-07  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: removed "test -a/-o" (test has an undefined
+                          behavior with more than 4 elements)
+
+	* check_ssl_cert: fixed	#122 (-N was always comparing the CN with 'localhost')
+
+2012-11-16  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* simplified the sourcing of the script file for testing
+
+2012-10-11  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* added some unit tests with shUnit2
+
+2012-09-19  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: improved the "No certificate returned" error message
+
+2012-07-13  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added the number of days from or to expiration in the
+			  plugin output
+
+2012-07-11  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: fixed a bug with Perl date computation on some systems
+
+2012-07-06  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: performance data in days
+	* check_ssl_cert: long output (certificate attributes)
+
+2012-04-05  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: handle broken OpenSSL clients (-servername not working)
+
+2012-04-04  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: removed an hard coded reference to the error number by the
+	                  SSL chain verification
+
+2011-10-22  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added a --altnames option to match the CN to alternative
+                          names			  
+
+2011-09-01  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: applied a patch from Sven Nierlein
+			  (certificate authentication)
+
+2011-03-10  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: allows http to specified as protocol
+	                  (thanks to Raphael Thoma)
+	* check_ssl_cert: fixes the -N check for certs with wildcards
+	                  (thanks to Raphael Thoma)
+
+2011-01-24  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added an option to specify the openssl executable
+
+2010-12-16  Dan Wallis
+
+	* check_ssl_cert: Sets $VERBOSE to avoid using value supplied by Nagios
+	* check_ssl_cert: Quotes regular expression for grep to avoid shell globbing
+
+2010-12-09  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert.spec: standardized the RPM package name
+
+	* check_ssl_cert: added support for the TLS servername extension
+                          (thanks to Matthias Fuhrmeister)
+
+2010-11-02  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* INSTALL: specifies that expect is needed for timeouts
+
+2010-10-29  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* README: specifies that expect is needed for timeouts
+
+2010-10-28  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: trap on more signals (thanks to Lawren Quigley-Jones)
+
+2010-10-14  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added a patch from Yannick Gravel putting the
+                          chain verification at the end of the tests
+
+2010-10-01  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added a patch from Lawren Quigley-Jones which
+                          implements a new command line argument (-A) to disable the
+                          certificate chain check
+
+2010-09-15  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: fixed option processing (bug #78)
+
+2010-08-26  Dan Wallis
+
+	* check_ssl_cert: overloads --rootcert for use with directories as
+                          well as files (-CApath versus -CAfile)
+
+2010-07-21  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added a patch from Marc Fournier to check the creation of the temporary files
+	* check_ssl_cert: added the --temp option to specify where to store the temporary files
+
+2010-07-10  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: improved the error messages
+	* check_ssl_cert: checks for certificates without email addresses (if -e is specified)
+
+2010-07-09  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added a "long" version for all the command line options
+	* check_ssl_cert: added a critical and warning option for the certificate validity (in days)
+	* check_ssl_cert: the plugin always issues a critical warning if the certificate is expired
+	* check_ssl_cert: added a man page
+
+2010-07-07  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: [Wolfgang Schricker patch] Add -f to check local files
+
+2010-07-01  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: [Yannick Gravel patch] Restore displaying the CN in every messages:
+	                                         a previous patch changed something and only
+	                                         critical were adjusted.
+	* check_ssl_cert: [Yannick Gravel patch] Adjust what is displayed after the from in
+	                                         the OK message to display the matched ISSUER
+	                                         (CN or O).
+
+2010-06-08  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: added the -s option to allow self signed certificates
+
+2010-03-11  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: fixed the == bashism
+
+2010-03-08  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: applied patch from Marcus Rejås with the -n and -N options
+
+2009-12-02  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: check if the issuer matches the O= or the CN= field of the Root Cert
+
+2009-11-30  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: cleaned up error messages if the CN is not yet known	
+	* check_ssl_cert: added certificate chain verification
+	* check_ssl_cert: allow backslashes escaped in the error messages (e.g., for \n used by Nagios 3)
+	* check_ssl_cert: -r can be used to specify a root certificate to be used for the verification
+
+2009-03-31  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: standard timeout of 15 seconds (can be set with the -t option)
+
+2009-03-30  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: -P option to specify the protocol
+
+2008-05-13  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: applied a patch from Dan Wallis to output the CN
+                          in all the messages
+
+2008-02-28  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: shortened the error message in case of no connection
+	                  (only the first line is reported)
+
+2008-02-25  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: [Dan Wallis patch] removed nmap dependency
+	* check_ssl_cert: [Dan Wallis patch] mktemp for the temporaries
+	* check_ssl_cert: [Dan Wallis patch] using trap to cleanup temporaries
+	* check_ssl_cert: [Dan Wallis patch] POSIX compliance and cleanup
+	* check_ssl_cert: [Dan Wallis patch] POSIX compliance and cleanup
+	* check_ssl_cert: [Dan Wallis patch] better handling of missing
+	                                     certificate and non resolvable host
+	* check_ssl_cert: [Dan Wallis patch] stricter check for "notAfter" in the
+	                                     certificate analysis
+
+2007-09-04  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: better error messages (both the actual and the
+	expected values are displayed)
+
+2007-08-31  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: new options to enforce email and
+	organization. Temporary files are now removed before termination
+
+2007-08-15  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: openssl s_client closes the connection cleanly
+
+2007-08-10  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_ssl_cert: initial release
+
+# File version information:
+# $Id: AUTHORS 1103 2009-12-07 07:49:19Z corti $
+# $Revision: 1103 $
+# $HeadURL: https://svn.id.ethz.ch/nagios_plugins/check_updates/AUTHORS $
+# $Date: 2009-12-07 08:49:19 +0100 (Mon, 07 Dec 2009) $
