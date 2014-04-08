@@ -1,0 +1,105 @@
+
+ (c) Matteo Corti, ETH Zurich, 2007-2012
+
+  see AUTHORS for the complete list of contributors
+
+check_ssl_cert
+
+A Nagios plugin to check an X.509 certificate:
+ - checks if the server is running and delivers a valid certificate
+ - checks if the CA matches a given pattern
+ - checks the validity
+
+Usage:
+======
+
+check_ssl_cert -H host [OPTIONS]
+
+Arguments:
+   -H,--host host         server
+
+Options:
+   -A,--noauth            ignore authority warnings (expiration only)
+   -C,--clientcert path   use client certificate to authenticate
+      --clientpass phrase set passphrase for client certificate.
+   -c,--critical days     minimum number of days a certificate has to be valid
+                          to issue a critical status
+   -e,--email address     pattern to match the email address contained in the
+                          certificate
+   -f,--file file         local file path (works with -H localhost only)
+   -h,--help,-?           this help message
+   -i,--issuer issuer     pattern to match the issuer of the certificate
+   -n,---cn name          pattern to match the CN of the certificate
+   -N,--host-cn           match CN with the host name
+   -o,--org org           pattern to match the organization of the certificate
+      --openssl path      path of the openssl binary to be used
+   -p,--port port         TCP port
+   -P,--protocol protocol use the specific protocol {http|smtp|pop3|imap|ftp}
+                          http:               default
+                          smtp,pop3,imap,ftp: switch to TLS
+   -s,--selfsigned        allows self-signed certificates
+   -r,--rootcert path     root certificate or directory to be used for
+                          certficate validation
+   -t,--timeout           seconds timeout after the specified time
+                          (defaults to 15 seconds)
+      --temp dir          directory where to store the temporary files
+   -v,--verbose           verbose output
+   -V,--version           version
+   -w,--warning days      minimum number of days a certificate has to be valid
+                          to issue a warning status
+
+Deprecated options:
+   -d,--days days         minimum number of days a certificate has to be valid
+                          (see --critical and --warning)
+
+Expect:
+=======
+
+check_ssl_cert requires 'expect' to enable timouts. If expect is not
+present on your system timeouts will be disabled.
+
+See: http://en.wikipedia.org/wiki/Expect
+
+Perl and Date::Parse:
+=====================
+
+If perl and Date::Parse are available the plugin will also compute for
+how many days the certificate will be valid and put the information in
+the performance data. If perl or Date::Parse are not available the
+information will not be available.
+
+Virtual servers:
+================
+
+check_ssl_client supports the servername TLS extension in ClientHello
+if the installed openssl version provides it. This is needed if you
+are checking a machine with virtual hosts.
+
+Notes:
+======
+
+the root certificate corresponding to the checked certificate must be
+available to openssl or specified with the '-r cabundle' or
+'--rootcert cabundle' option, where cabundle is either a file for -CAfile
+or a directory for -CApath.
+
+On Mac OS X the root certificates bundle is stored in the Keychain and
+openssl will complain with:
+
+   verification error: unable to get local issuer certificate
+
+The bundle can be extracted with:
+
+$ sudo security find-certificate -a \
+  -p /System/Library/Keychains/SystemRootCertificates.keychain > cabundle.crt
+
+Bugs:
+=====
+
+Report bugs to: Matteo Corti <matteo.corti@id.ethz.ch>
+
+# File version information:
+# $Id: AUTHORS 1103 2009-12-07 07:49:19Z corti $
+# $Revision: 1103 $
+# $HeadURL: https://svn.id.ethz.ch/nagios_plugins/check_updates/AUTHORS $
+# $Date: 2009-12-07 08:49:19 +0100 (Mon, 07 Dec 2009) $
