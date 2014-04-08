@@ -1,0 +1,16 @@
+#!/bin/sh
+for INTERFACE in $1; do
+	STATUS=`ip link show ${INTERFACE}`
+	if [ "$?" != "0" ]
+	then
+		echo "${INTERFACE} not found"
+		exit 2
+	fi
+	if echo ${STATUS} | grep "NO-CARRIER"
+	then
+		echo "${INTERFACE} reporting no carrier."
+		exit 2
+	fi
+done
+
+exit 0

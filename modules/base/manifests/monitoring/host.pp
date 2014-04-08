@@ -54,6 +54,13 @@ class base::monitoring::host($contact_group = 'admins') {
             mode   => '0555',
             source => 'puppet:///modules/base/monitoring/check_puppet_disabled';
         }
+        file { '/usr/local/lib/nagios/plugins/check_eth':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/nrpe/plugins/check_eth';
+        }
 
         sudo_user { 'nagios':
             privileges   => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'],
