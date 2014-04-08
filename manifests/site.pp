@@ -2363,7 +2363,13 @@ node 'stat1.wikimedia.org' {
     include standard
     include admins::roots
 
-    include role::statistics::cruncher
+
+    # Commenting out statistics* roles on
+    # stat1.  stat1 will be decommed soon,
+    # and statistics classes have been modified
+    # to work with stat1003.
+
+    # include role::statistics::cruncher
 
     # special accounts
     include admins::globaldev  # RT 3119
@@ -2423,9 +2429,9 @@ node 'stat1.wikimedia.org' {
         privileges => ['ALL = (stats) NOPASSWD: ALL'],
     }
 
-    include misc::statistics::cron_blog_pageviews
-    include misc::statistics::limn::mobile_data_sync
-    include misc::statistics::iptables
+    # include misc::statistics::cron_blog_pageviews
+    # include misc::statistics::limn::mobile_data_sync
+    # include misc::statistics::iptables
 }
 
 node 'stat1001.wikimedia.org' {
