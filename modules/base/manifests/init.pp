@@ -485,7 +485,8 @@ class base {
         base::screenconfig,
         ssh::client,
         ssh::server,
-        role::salt::minions
+        role::salt::minions,
+        nrpe
 
 
     # include base::monitor::host.
