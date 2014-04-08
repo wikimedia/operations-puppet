@@ -835,12 +835,6 @@ node 'db1057.eqiad.wmnet' {
     }
 }
 
-node 'db1014.eqiad.wmnet' {
-    $cluster = 'misc'
-    include standard
-    include udpprofile::collector
-}
-
 node 'db1044.eqiad.wmnet' {
     include standard
     include role::mariadb::tendril
