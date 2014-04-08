@@ -102,7 +102,7 @@ define command{
 # Example usage:  check_ssl_cert!secure.wikimedia.org
 define command{
 	command_name	check_ssl_cert
-	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ --ssl --certificate=90
+	command_line	$USER1$/check_ssl_cert --rootcert /etc/ssl/certs/ --critical 90 -H $ARG1$ 
 	}
 
 # 'check_local_disk' command definition

@@ -593,8 +593,8 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check-ssl-cert':
-        source => 'puppet:///files/icinga/check-ssl-cert',
+    file { '/usr/lib/nagios/plugins/check_ssl_cert':
+        source => 'puppet:///files/icinga/check_ssl_cert/check_ssl_cert',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
