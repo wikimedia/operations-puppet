@@ -13,6 +13,7 @@
 import os
 import fnmatch
 import tempfile
+import shutil
 
 from graphite import settings
 
@@ -32,4 +33,4 @@ with tempfile.NamedTemporaryFile('wt', delete=False) as tmp:
     for whisper in iter_glob(settings.WHISPER_DIR, '*.wsp'):
         tmp.write(format_entry(whisper) + '\n')
     os.chmod(tmp.name, 0644)
-    os.rename(tmp.name, settings.INDEX_FILE)
+    shutil.move(tmp.name, settings.INDEX_FILE)
