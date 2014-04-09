@@ -46,7 +46,7 @@ class role::graphite {
         },
 
         # All metric data goes through a single carbon-relay instance, which
-        # forwards each data point to one of six carbon-cache instances, using
+        # forwards each data point to one of eight carbon-cache instances, using
         # a consistent hash ring to distribute the load.
         #
         # Why is this necessary? Because carbon-cache is CPU-bound, and the Python
@@ -96,6 +96,16 @@ class role::graphite {
                 pickle_receiver_port => 2604,
                 cache_query_port     => 7602,
             },
+            'cache:g' => {
+                line_receiver_port   => 2703,
+                pickle_receiver_port => 2704,
+                cache_query_port     => 7702,
+            },
+            'cache:h' => {
+                line_receiver_port   => 2803,
+                pickle_receiver_port => 2804,
+                cache_query_port     => 7802,
+            },
 
             ## Carbon relay ##
 
@@ -112,6 +122,8 @@ class role::graphite {
                     '127.0.0.1:2404:d',
                     '127.0.0.1:2504:e',
                     '127.0.0.1:2604:f',
+                    '127.0.0.1:2604:g',
+                    '127.0.0.1:2604:h',
                 ],
             },
         },
