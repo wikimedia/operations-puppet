@@ -42,11 +42,12 @@
 #       to undef meaning don't set it.
 # - $rack: rack this node is on.  Can be used for allocation awareness.
 #       Defaults to undef meaning don't set it.
+# - $data_dir: string or array of paths to uset for path.data.  Default: undef
 #
 # == Sample usage:
 #
 #   class { "elasticsearch":
-#       cluster_name = 'labs-search'
+#       cluster_name = 'labs-search',
 #   }
 #
 class elasticsearch($cluster_name,
@@ -62,7 +63,8 @@ class elasticsearch($cluster_name,
                     $recover_after_time = '1s',
                     $awareness_attributes = undef,
                     $row = undef,
-                    $rack = undef) {
+                    $rack = undef,
+                    $data_dir = undef) {
 
     include ::elasticsearch::packages
 

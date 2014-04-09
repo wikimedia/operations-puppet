@@ -151,6 +151,10 @@ node.data: <%= @holds_data %>
 # space on creation. For example:
 #
 # path.data: /path/to/data1,/path/to/data2
+<% if @data_dir -%>
+path.data: <%= Array(@data_dir).sort.join(',') %>
+<% end -%>
+
 
 # Path to temporary files:
 #
