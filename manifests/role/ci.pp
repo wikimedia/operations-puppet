@@ -136,8 +136,12 @@ class role::ci::slave {
         require => User['jenkins-slave'],
     }
 
-    # Maven require a webproxy on production slaves
-    include contint::maven_webproxy
+    # Maven requires a webproxy on production slaves
+    class { 'contint::maven_webproxy':
+        homedir => '/var/lib/jenkins-slave',
+        owner   => 'jenkins-slave',
+        group   => 'jenkins-slave',
+    }
 
     contint::tmpfs { 'tmpfs for jenkins CI slave':
         user        => 'jenkins-slave',
@@ -211,6 +215,14 @@ class role::ci::slave::labs::common {
         owner  => 'jenkins-deploy',
         group  => 'wikidev',
         mode   => '0775',
+    }
+
+    # Maven requires a webproxy on production slaves
+    class { 'contint::maven_webproxy':
+        homedir => '/mnt/home/jenkins-deploy',
+        owner   => 'jenkins-deploy',
+        group   => 'jenkins-deploy',
+        require => File['/mnt/home/jenkins-deploy'],
     }
 
     file { '/mnt/home/jenkins-deploy/.pip':
