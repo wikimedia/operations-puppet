@@ -25,7 +25,7 @@ class uwsgi {
         purge   => true,
         force   => true,
         require => Package['uwsgi', $plugins],
-        notify  => Service['uwsgi/init'],
+        notify  => Service['uwsgi'],
     }
 
     file { '/etc/init/uwsgi':
@@ -33,12 +33,24 @@ class uwsgi {
         recurse => true,
         purge   => true,
         force   => true,
+        require => Package['uwsgi'],
     }
 
-    service { 'uwsgi/init':
-        provider => 'upstart',
-        ensure   => running,
-        require  => File['/etc/init/uwsgi'],
+    file { '/sbin/mwprofctl':
+        source  => 'puppet:///modules/mwprof/mwprofctl';
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => File['/etc/init/uwsgi'],
     }
 
+    service { 'uwsgi':
+        ensure   => 'running',
+        provider => 'base',
+        restart  => '/sbin/uwsgictl restart',
+        start    => '/sbin/uwsgictl start',
+        status   => '/sbin/uwsgictl status',
+        stop     => '/sbin/uwsgictl stop',
+        require  => File['/sbin/uwsgictl'],
+    }
 }

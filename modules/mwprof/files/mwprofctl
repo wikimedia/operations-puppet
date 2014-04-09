@@ -1,6 +1,6 @@
 #!/bin/bash
 # mwprofctl -- Manage MediaWiki profiler service
-# Usage: mwprofctl {status|check|start|stop|restart|tail}
+# Usage: mwprofctl {status|check|start|stop|restart|tail|top}
 #
 command=$1
 shift
@@ -10,10 +10,10 @@ case "$command" in
         ;;
     check)
         $0 status 2>&1 >/dev/null || {
-            echo "CRITICAL: Not all configured Carbon instances are running."
+            echo "CRITICAL: Not all configured mwprof instances are running."
             exit 2
         }
-        echo "OK: All defined Carbon jobs are runnning."
+        echo "OK: All defined mwprof jobs are runnning."
         exit 0
         ;;
     start)
@@ -27,12 +27,12 @@ case "$command" in
         /sbin/initctl emit mwprof.start
         ;;
     tail)
-        tail "$@" /var/log/upstart/mwprof_init.log
+        test -r /var/log/upstart/mwprof_init.log && tail "$@" /var/log/upstart/mwprof_init.log
         ;;
     top)
         top -u mwprof
         ;;
     *)
-        echo >&2 "Usage: ${0##*/} {status|check|start|stop|restart|tail}"
+        echo >&2 "Usage: ${0##*/} {status|check|start|stop|restart|tail|top}"
         ;;
 esac

@@ -40,7 +40,7 @@ define uwsgi::app(
             file { "/etc/uwsgi/apps-enabled/${basename}.ini":
                 ensure => link,
                 target => "/etc/uwsgi/apps-available/${basename}.ini",
-                notify => Service['uwsgi/init'],
+                notify => Service['uwsgi'],
             }
         }
     }
