@@ -22,6 +22,15 @@ class network::constants {
             ]
 
     # Networks hosting MediaWiki application servers
+    # TODO: This variable is being used to limit the number of
+    # hosts that are allowed to be deployed to, via
+    #     docroot_dir_allows  => $::network::constants::mw_appserver_networks,
+    # in role::deployment::deployment_servers::production.
+    # Either the name of this variable should be changed
+    # (to something like '$deployable_networks'), or a differnt
+    # variable should be used.  There are networks that have
+    # nothing to do with MediaWiki app servers that should be
+    # deployable to.
     $mw_appserver_networks = [
             '10.0.0.0/16',        # private-pmtpa
             '10.64.0.0/22',       # private1-a-eqiad
@@ -29,6 +38,11 @@ class network::constants {
             '10.64.32.0/22',      # private1-c-eqiad
             '10.64.48.0/22',      # private1-d-eqiad
             '208.80.152.0/22',    # external
+            # analytics subnets, these need to be deployable too!
+            '10.64.5.0/24',
+            '10.64.21.0/24',
+            '10.64.36.0/24',
+            '10.64.53.0/24',
             ]
 
     $special_hosts = {
