@@ -1776,15 +1776,6 @@ node /mobile100[1-4]\.wikimedia\.org/ {
     include standard-noexim
 }
 
-node 'ms6.esams.wikimedia.org' {
-    interface::aggregate { 'bond0':
-        orig_interface => 'eth0',
-        members        => [ 'eth0', 'eth1', 'eth2', 'eth3' ],
-    }
-
-    include standard
-}
-
 node 'ms1001.wikimedia.org' {
     include standard
     include role::mirror::media
