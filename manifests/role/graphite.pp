@@ -86,6 +86,16 @@ class role::graphite {
                 pickle_receiver_port => 2404,
                 cache_query_port     => 7402,
             },
+            'cache:e' => {
+                line_receiver_port   => 2503,
+                pickle_receiver_port => 2504,
+                cache_query_port     => 7502,
+            },
+            'cache:f' => {
+                line_receiver_port   => 2603,
+                pickle_receiver_port => 2604,
+                cache_query_port     => 7602,
+            },
 
             ## Carbon relay ##
 
@@ -96,10 +106,13 @@ class role::graphite {
                 enable_udp_listener       => 'true',
                 relay_method              => 'consistent-hashing',
                 destinations              => [
+                    #TODO: fetch the destinations list from carbon_settings
                     '127.0.0.1:2104:a',
                     '127.0.0.1:2204:b',
                     '127.0.0.1:2304:c',
                     '127.0.0.1:2404:d',
+                    '127.0.0.1:2504:e',
+                    '127.0.0.1:2604:f',
                 ],
             },
         },
