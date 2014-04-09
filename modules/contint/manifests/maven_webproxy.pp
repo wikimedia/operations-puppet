@@ -1,11 +1,18 @@
+# == Class contint::maven_webproxy
+#
 # Maintains maven settings for the jenkins-slave user
-class contint::maven_webproxy {
+#
+# == Parameters:
+#
+# [*homedir*] Base path where to write the maven configuration file
+#
+class contint::maven_webproxy( $homedir ) {
 
-  file { '/var/lib/jenkins-slave/.m2':
+  file { "${homedir}/.m2":
     ensure => 'directory',
   }
 
-  file { '/var/lib/jenkins-slave/.m2/settings.xml':
+  file { "${homedir}/.m2/settings.xml":
     mode    => '0444',
     content => template('contint/maven-webproxy.xml.erb'),
   }
