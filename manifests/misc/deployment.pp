@@ -171,6 +171,9 @@ class misc::deployment::scap_scripts {
 	$scriptpath = "/usr/local/bin"
 
 	file {
+		"${scriptpath}/compile-wikiversions":
+			ensure => link,
+			target => "/srv/scap/bin/compile-wikiversions";
 		"${scriptpath}/mw-update-l10n":
 			ensure => link,
 			target => "/srv/scap/bin/mw-update-l10n";
