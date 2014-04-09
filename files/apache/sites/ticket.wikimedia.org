@@ -23,7 +23,7 @@
 	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
 	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/certs/ticket.wikimedia.org.chained.pem
-	SSLCertificateKeyFile /etc/ssl/private/ticket.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/ticket.wikimedia.org.key
 	SSLCACertificatePath /etc/ssl/certs/
 
 
