@@ -74,8 +74,3 @@ host db38 {
 	fixed-address db38.pmtpa.wmnet;
 }
 
-host ms6 {
-	hardware ethernet 0:14:4f:f2:a3:10;
-	fixed-address ms6.esams.wikimedia.org;
-}
-
