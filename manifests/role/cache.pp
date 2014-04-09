@@ -505,7 +505,7 @@ class role::cache {
         # Nagios monitoring
         monitor_service { "https":
             description => "HTTPS",
-            check_command => "check_ssl_cert!*.wikimedia.org",
+            check_command => "check_ssl_cert!*.wikipedia.org",
         }
 
         install_certificate { $certname:
