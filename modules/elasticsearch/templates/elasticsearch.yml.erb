@@ -407,3 +407,14 @@ gateway:
 <% if @awareness_attributes %>cluster.routing.allocation.awareness.attributes: <%= @awareness_attributes %><% end %>
 <% if @row  %>node.row: <%=  @row  %><% end %>
 <% if @rack %>node.rack: <%= @rack %><% end %>
+
+
+##
+# Elasticsearch cluster balance configuration
+##
+# This puts much more weight on distributing the shards per index then the defaults.  This will make sure that,
+# for example, each live node gets a copy of enwiki.
+cluster.routing.allocation.balance:
+    shard: 0.195
+    index: 0.8
+    primary: 0.005
