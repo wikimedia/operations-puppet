@@ -3688,6 +3688,7 @@ class admins::roots {
     include accounts::cmjohnson
     include accounts::dzahn
     include accounts::faidon
+    include accounts::filippo # RT 7243
     include accounts::fvassard # disabled
     include accounts::gage
     include accounts::jeluf # disabled
