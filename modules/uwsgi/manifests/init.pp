@@ -53,4 +53,10 @@ class uwsgi {
         stop     => '/sbin/uwsgictl stop',
         require  => File['/sbin/uwsgictl'],
     }
+
+    nrpe::monitor_service { 'uwsgi':
+        description  => 'uWSGI web apps',
+        nrpe_command => '/sbin/uwsgictl check',
+        require      => Service['uwsgi'],
+    }
 }

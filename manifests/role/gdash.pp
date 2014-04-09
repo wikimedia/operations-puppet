@@ -30,4 +30,9 @@ class role::gdash {
         target => '/etc/apache2/sites-available/gdash',
         notify => Service['httpd'],
     }
+
+    monitor_service { 'gdash':
+        description   => 'gdash.wikimedia.org',
+        check_command => 'check_https_url!gdash.wikimedia.org!/',
+    }
 }

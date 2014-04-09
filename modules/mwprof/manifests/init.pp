@@ -54,4 +54,10 @@ class mwprof(
         stop     => '/sbin/mwprofctl stop',
         require  => File['/sbin/mwprofctl'],
     }
+
+    nrpe::monitor_service { 'mwprof':
+        description  => 'MediaWiki profile collector',
+        nrpe_command => '/sbin/mwprofctl check',
+        require      => Service['mwprof'],
+    }
 }
