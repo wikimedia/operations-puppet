@@ -1,6 +1,6 @@
 #!/bin/sh
 EXIT_CODE=0
-for INTERFACE in <%= @interfaces.split(',', ' ') %> ; do
+for INTERFACE in <%= @interfaces.gsub(',', ' ') %> ; do
 	IFACE=${INTERFACE%:*}
 	REQ_SPEED=${INTERFACE#*:}
 	if [ $IFACE = $REQ_SPEED ]; then
