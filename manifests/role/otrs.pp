@@ -106,7 +106,7 @@ class role::otrs {
 
     monitor_service { "https":
         description => "HTTPS",
-        check_command => "check_ssl_cert!*.wikipedia.org",
+        check_command => "check_ssl_cert!ticket.wikimedia.org",
     }
 
 }

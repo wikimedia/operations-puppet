@@ -408,7 +408,7 @@ class mailman {
         if ( $::realm == 'production' ) {
             monitor_service { 'https':
                 description   => 'HTTPS',
-                check_command => 'check_ssl_cert!*.wikipedia.org',
+                check_command => 'check_ssl_cert!lists.wikipedia.org',
             }
         }
     }
