@@ -114,6 +114,8 @@ class misc::statistics::packages {
         'tofrodos',
         'git-review',
         'imagemagick',
+        # halfak wants make to manage dependencies
+        'make',
     ]:
         ensure => latest;
     }
