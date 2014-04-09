@@ -23,11 +23,11 @@ class role::analytics::kraken {
         ensure  => 'installed',
     }
 
-    # Include Kraken repository deployment target.
-    deployment::target { 'analytics-kraken': }
-    # kraken repository is deployed via git deploy into here.
+    # Include kraken/deploy repository target.
+    deployment::target { 'analytics-kraken-deploy': }
+    # kraken/deploy repository is deployed via git deploy into here.
     # You must deploy this yourself, puppet will not do it for you.
-    $path = '/srv/deployment/analytics/kraken'
+    $path = '/srv/deployment/analytics/kraken/deploy/kraken'
 
     # Path in HDFS in which external data should be imported.
     $external_data_hdfs_dir = '/wmf/data/external'
