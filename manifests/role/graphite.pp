@@ -183,9 +183,9 @@ class role::graphite {
         nrpe_command => '/sbin/carbonctl check',
     }
 
-    monitor_service { 'graphite.wikimedia.org':
-        host          => 'graphite.wikimedia.org',
+    monitor_service { 'graphite':
         description   => 'graphite.wikimedia.org',
-        check_command => 'check_https_url!graphite.wikimedia.org!/render/',
+        check_command => 'check_https_url!graphite.wikimedia.org!/',
     }
+
 }

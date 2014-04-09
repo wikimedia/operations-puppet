@@ -31,8 +31,7 @@ class role::gdash {
         notify => Service['httpd'],
     }
 
-    monitor_service { 'gdash.wikimedia.org':
-        host          => 'gdash.wikimedia.org',
+    monitor_service { 'gdash':
         description   => 'gdash.wikimedia.org',
         check_command => 'check_https_url!gdash.wikimedia.org!/',
     }
