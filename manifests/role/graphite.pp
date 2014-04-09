@@ -162,7 +162,6 @@ class role::graphite {
         $apache_auth   = template('graphite/apache-auth-ldap.erb')
 
         monitor_service { 'reqstats_5xx':
-            host          => $::realm,
             description   => 'HTTP 5xx req/min',
             check_command => 'check_reqstats_5xx!http://graphite.wikimedia.org!-1hours!250!500',
         }
