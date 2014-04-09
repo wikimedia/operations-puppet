@@ -12,7 +12,7 @@ class applicationserver::hhvm {
         fail('applicationserver::hhvm may only be deployed to Labs.')
     }
 
-    class { 'hhvm':
+    class { '::hhvm':
         require => Apache_module['apache_mod_fastcgi_for_hhvm'],
     }
 
