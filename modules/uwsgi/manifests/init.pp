@@ -13,12 +13,10 @@ class uwsgi {
     package { [ 'uwsgi', 'uwsgi-dbg' ]: }
     package { $plugins: }
 
-    service { 'uwsgi':
-        ensure     => running,
-        enable     => true,
-        provider   => 'debian',
-        hasrestart => true,
-        require    => Package['uwsgi'],
+    exec { 'remove_uwsgi_initd':
+        command => '/usr/sbin/update-rc.d -f uwsgi remove',
+        onlyif  => '/usr/sbin/update-rc.d -n -f uwsgi remove | /bin/grep -Pq rc..d',
+        require => Package['uwsgi'],
     }
 
     file { [ '/etc/uwsgi/apps-available', '/etc/uwsgi/apps-enabled' ]:
@@ -27,6 +25,20 @@ class uwsgi {
         purge   => true,
         force   => true,
         require => Package['uwsgi', $plugins],
-        notify  => Service['uwsgi'],
+        notify  => Service['uwsgi/init'],
     }
+
+    file { '/etc/init/uwsgi':
+        source  => 'puppet:///modules/uwsgi/init',
+        recurse => true,
+        purge   => true,
+        force   => true,
+    }
+
+    service { 'uwsgi/init':
+        provider => 'upstart',
+        ensure   => running,
+        require  => File['/etc/init/uwsgi'],
+    }
+
 }
