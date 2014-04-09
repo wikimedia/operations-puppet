@@ -4,6 +4,6 @@
 #
 class role::mwprof {
     class { '::mwprof':
-        collector_port => 3812,
+        collector_port => 3811,
     }
 }
