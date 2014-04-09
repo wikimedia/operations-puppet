@@ -216,6 +216,10 @@ sub tag_carrier {
 			if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
 				set req.http.X-CS = req.http.X-CS2;
 			}
+		} else if (req.http.X-CS2 == "437-01") {
+			if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+				set req.http.X-CS = req.http.X-CS2;
+			}
 		} else if (req.http.X-CS2 == "TEST") {
 			// Test carrier allows all proxies and SSL
 			set req.http.X-ZeroTLS = "1";
