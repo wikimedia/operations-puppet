@@ -46,8 +46,8 @@ class role::graphite {
         },
 
         # All metric data goes through a single carbon-relay instance, which
-        # forwards each data point to one of four carbon-cache instances, using a
-        # consistent hash ring to distribute the load.
+        # forwards each data point to one of six carbon-cache instances, using
+        # a consistent hash ring to distribute the load.
         #
         # Why is this necessary? Because carbon-cache is CPU-bound, and the Python
         # GIL prevents it from utilizing multiple processor cores efficiently.
@@ -106,7 +106,6 @@ class role::graphite {
                 enable_udp_listener       => 'true',
                 relay_method              => 'consistent-hashing',
                 destinations              => [
-                    #TODO: fetch the destinations list from carbon_settings
                     '127.0.0.1:2104:a',
                     '127.0.0.1:2204:b',
                     '127.0.0.1:2304:c',
