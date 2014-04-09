@@ -1,0 +1,29 @@
+#!/bin/sh
+EXIT_CODE=0
+for INTERFACE in <%= @interfaces.split(',', ' ') %> ; do
+	IFACE=${INTERFACE%:*}
+	REQ_SPEED=${INTERFACE#*:}
+	if [ $IFACE = $REQ_SPEED ]; then
+	REQ_SPEED=1000 # The default for now
+	fi
+	STATUS=`ip link show ${IFACE}`
+	if [ "$?" != "0" ]; then
+		echo "${IFACE} not found. This should never happen. Bailing out"
+		exit 1
+	fi
+	if echo ${STATUS} | grep -q "NO-CARRIER"
+	then
+		echo "${IFACE} reporting no carrier."
+		EXIT_CODE=2
+	fi
+	if echo ${STATUS} | grep -q "DOWN"
+	then
+		continue
+	fi
+	CONF_SPEED=$(/sbin/ethtool $IFACE | awk '/Speed:/ {gsub("Mb/s","",$2);print $2}')
+	if [ $REQ_SPEED -ne $CONF_SPEED ]; then
+		echo "${IFACE} has different negotiated speed than requested"
+		EXIT_CODE=1
+	fi
+done
+exit $EXIT_CODE

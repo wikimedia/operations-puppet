@@ -54,11 +54,11 @@ class base::monitoring::host($contact_group = 'admins') {
         source => 'puppet:///modules/base/monitoring/check_puppet_disabled';
     }
     file { '/usr/local/lib/nagios/plugins/check_eth':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/nrpe/plugins/check_eth';
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('nrpe/check_eth.erb'),
     }
 
     sudo_user { 'nagios':
@@ -94,5 +94,9 @@ class base::monitoring::host($contact_group = 'admins') {
     nrpe::monitor_service { 'puppet_disabled':
         description  => 'puppet disabled',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_puppet_disabled',
+    }
+    nrpe::monitor_service {'check_eth':
+        description  => 'check configured eth',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_eth',
     }
 }
