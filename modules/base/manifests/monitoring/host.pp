@@ -58,7 +58,7 @@ class base::monitoring::host($contact_group = 'admins') {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('nrpe/check_eth.erb'),
+        content => template('base/check_eth.erb'),
     }
 
     sudo_user { 'nagios':
