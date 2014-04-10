@@ -65,7 +65,7 @@ class base::monitoring::host($contact_group = 'admins') {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/check_sysctl',
+        source => 'puppet:///modules/base/check_sysctl',
     }
 
     sudo_user { 'nagios':
