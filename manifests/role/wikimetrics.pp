@@ -101,6 +101,13 @@ class role::wikimetrics {
         default => $::wikimetrics_ssl_redirect,
     }
 
+    # If the global variable $::wikimetrics_debug is set, then
+    # use it.  Otherwise, default to true.
+    $debug = $::wikimetrics_debug ? {
+        undef   => true,
+        default => $::wikimetrics_debug,
+    }
+
     # need pip :/
     if !defined(Package['python-pip']) {
         package { 'python-pip':
@@ -118,6 +125,8 @@ class role::wikimetrics {
 
         # clone wikimetrics as root user so it can write to /srv
         repository_owner      => 'root',
+
+        debug                 => $debug,
 
         server_name           => $server_name,
         server_aliases        => $server_aliases,
