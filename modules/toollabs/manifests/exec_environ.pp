@@ -344,6 +344,10 @@ class toollabs::exec_environ {
         ensure => latest,
     }
 
+    class { 'androidsdk::dependencies':
+        ensure => 'latest'
+    }
+
     file { '/etc/mysql/conf.d/override.my.cnf':
         ensure => file,
         mode   => '0444',
