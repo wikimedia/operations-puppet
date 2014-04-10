@@ -65,6 +65,13 @@ class jenkins {
 # additionally kill -s ALRM kills jenkins instead of making it reopen
 # its files.
 
+  file { '/etc/logrotate.d/jenkins':
+    require => Package['jenkins'],
+    owner   => 'root',
+    group   => 'root',
+    source  => 'puppet:///modules/jenkins/jenkins_log.logrotate',
+  }
+
   file { '/etc/default/jenkins':
     owner  => 'root',
     group  => 'root',

@@ -1,0 +1,11 @@
+# vim: set et:
+# Override logrotate files deployed by Jenkins
+/var/log/jenkins/jenkins.log {
+    daily
+    copytruncate
+    missingok
+    rotate 180
+    compress
+    delaycompress
+    notifempty
+}
