@@ -60,6 +60,13 @@ class base::monitoring::host($contact_group = 'admins') {
         mode    => '0555',
         content => template('base/check_eth.erb'),
     }
+    file { '/usr/lib/nagios/plugins/check_sysctl':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/check_sysctl',
+    }
 
     sudo_user { 'nagios':
         privileges   => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'],
