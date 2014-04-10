@@ -2335,6 +2335,7 @@ node 'strontium.eqiad.wmnet' {
             '*.pmtpa.wmnet',
             '*.eqiad.wmnet',
             '*.ulsfo.wmnet',
+            '*.esams.wmnet',
         ],
         server_type => 'backend',
         config      => {
