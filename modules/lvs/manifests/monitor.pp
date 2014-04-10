@@ -139,9 +139,4 @@ class lvs::monitor {
             ip_address => $ip['mobile']['ulsfo']['mobilelb6'],
             uri => "en.m.wikipedia.org!/wiki/Main_Page";
     }
-    $rp_args = inline_template('<%= @interfaces.split(",").map{|x| "net.conf.ipv4.#{x}.rp_filter=0"}.join(",") %>')
-    nrpe::monitor_service { 'check_rp_filter_disabled':
-        description  => 'Check rp_filter disabled',
-        nrpe_command => "/usr/lib/nagios/plugins/check_sysctl ${rp_args}",
-    }
 }
