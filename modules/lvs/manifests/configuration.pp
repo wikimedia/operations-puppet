@@ -6,7 +6,7 @@ class lvs::configuration {
         'high-traffic1' => $::realm ? {
             'production' => $::site ? {
                 'eqiad' => [ "lvs1001", "lvs1004" ],
-                'esams' => [ "amslvs1", "amslvs3" ],
+                'esams' => [ "amslvs1", "amslvs3", "lvs3001", "lvs3003" ],
                 'ulsfo' => [ "lvs4001", "lvs4003" ],
                 default => undef,
             },
@@ -19,7 +19,7 @@ class lvs::configuration {
         'high-traffic2' => $::realm ? {
             'production' => $::site ? {
                 'eqiad' => [ "lvs1002", "lvs1005" ],
-                'esams' => [ "amslvs2", "amslvs4" ],
+                'esams' => [ "amslvs2", "amslvs4", "lvs3002", "lvs3004" ],
                 'ulsfo' => [ "lvs4002", "lvs4004" ],
                 default => undef,
             },
@@ -34,7 +34,7 @@ class lvs::configuration {
         'https' => $::realm ? {
             'production' => $::site ? {
                 'eqiad' => [ 'lvs1001', 'lvs1002', 'lvs1004', 'lvs1005' ],
-                'esams' => [ 'amslvs1', 'amslvs2', 'amslvs3', 'amslvs4' ],
+                'esams' => [ 'amslvs1', 'amslvs2', 'amslvs3', 'amslvs4', 'lvs3001', 'lvs3002', 'lvs3003', 'lvs3004' ],
                 default => undef,
             },
             'labs' => $::site ? {
@@ -73,8 +73,8 @@ class lvs::configuration {
             /^lvs100[4-6]$/ => "208.80.154.197",
             /^lvs400[12]$/ => "198.35.26.192",
             /^lvs400[34]$/ => "198.35.26.193",
-            /^amslvs[12]$/ => "91.198.174.245",
-            /^amslvs[34]$/ => "91.198.174.246",
+            /^(amslvs|lvs300)[12]$/ => "91.198.174.245",
+            /^(amslvs|lvs300)[34]$/ => "91.198.174.246",
             default => "(unspecified)"
             },
         'bgp-nexthop-ipv4' => $::ipaddress_eth0,
