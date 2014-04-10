@@ -19,17 +19,6 @@ class beta::natfix {
     # the web interface :-D
     #
     $nat_mappings = {
-        # pmtpa
-        'deployment-cache-text1'    => {public_ip  => '208.80.153.219',
-                                        private_ip => '10.4.1.133' },
-        'deployment-cache-upload04' => {public_ip  => '208.80.153.242',
-                                        private_ip => '10.4.0.211' },
-        'deployment-cache-bits03'   => {public_ip  => '208.80.153.243',
-                                        private_ip => '10.4.0.51' },
-        'deployment-eventlogging'   => {public_ip  => '208.80.153.244',
-                                        private_ip => '10.4.0.48' },
-        'deployment-cache-mobile01' => {public_ip  => '208.80.153.143',
-                                        private_ip => '10.4.1.82' },
         # eqiad
         'deployment-cache-text02'   => {public_ip  => '208.80.155.135',
                                         private_ip => '10.68.16.16' },
