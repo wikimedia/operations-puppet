@@ -340,6 +340,13 @@ class toollabs::exec_environ {
         'xsltproc',                    # Bug #66962.
         'zbar-tools',                  # Bug 56996
         'zsh',                         # Bug 56995
+
+        # i386 compatibility packages for Android SDK.
+        'libc6:i386',
+        'libncurses5:i386',
+        'libsdl1.2debian:i386',
+        'libstdc++6:i386',
+        'zlib1g:i386',
         ]:
         ensure => latest,
     }
