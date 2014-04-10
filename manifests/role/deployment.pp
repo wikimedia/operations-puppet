@@ -167,7 +167,7 @@ class role::deployment::deployment_servers::production {
     docroot              => '/srv/deployment',
     docroot_owner        => 'trebuchet',
     docroot_group        => 'wikidev',
-    docroot_dir_allows   => $::network::constants::mw_appserver_networks,
+    docroot_dir_allows   => $::network::constants::deployable_networks,
     serveradmin          => 'noc@wikimedia.org',
   }
   class { 'redis':
