@@ -21,6 +21,8 @@ class role::elasticsearch::config {
             # The cluster can limp along just fine with three nodes so we'll
             # let it
             $recover_after_nodes  = 3
+            $unicast_hosts        = ['deployment-es01', 'deployment-es02',
+                'deployment-es03', 'deployment-es04']
         } else {
             # Regular labs instance
             # We don't know how many instances will be in each labs project so
@@ -34,6 +36,9 @@ class role::elasticsearch::config {
                 fail("\$::elasticsearch_cluster_name $message")
             }
             $cluster_name         = $::elasticsearch_cluster_name
+            # This can be configured per project
+            $unicast_hosts        = $::elasticsearch_unicast_hosts
+
             $heap_memory          = '2G'
             # Leave recovery settings and let labs users deal with inefficient
             # full cluster restarts rather than make them configure more stuff
@@ -72,6 +77,7 @@ class role::elasticsearch::config {
         # with the setting update API after things settle down with the 1.0
         # release then we'll update puppet.
         $awareness_attributes = undef
+        $unicast_hosts        = undef
     }
 }
 
@@ -100,6 +106,7 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         awareness_attributes => $awareness_attributes,
         row                  => $row,
         rack                 => $rack,
+        unicast_hosts        => $unicast_hosts
     }
     deployment::target { 'elasticsearchplugins': }
 
