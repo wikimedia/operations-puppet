@@ -18,4 +18,14 @@ class diamond(
         hasstatus  => true,
         subscribe  => File['/etc/diamond/diamond.conf'],
     }
+
+    diamond::collector {
+        'CPUCollector':
+            config => "enabled = True\npercore = False\nnormalize = True",
+    }
+
+    diamond::collector {
+        'NetworkCollector':
+            config => "enabled = True",
+    }
 }
