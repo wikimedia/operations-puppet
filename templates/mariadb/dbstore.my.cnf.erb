@@ -50,7 +50,8 @@ innodb_stats_method            = nulls_unequal
 innodb_locks_unsafe_for_binlog = 1
 aria_pagecache_buffer_size     = 32G
 
-optimizer_switch='engine_condition_pushdown=on'
+optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
+join_cache_level = 8
 
 [mysqldump]
 
