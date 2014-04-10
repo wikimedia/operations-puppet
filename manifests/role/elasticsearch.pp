@@ -106,4 +106,10 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
     include ::elasticsearch::ganglia
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check
+
+    # jq is really useful, especially for parsing
+    # elasticsearch REST command JSON output.
+    package { 'jq':
+        ensure => 'installed',
+    }
 }
