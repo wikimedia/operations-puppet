@@ -11,6 +11,7 @@ class role::elasticsearch::config {
         $awareness_attributes = undef
         $row                  = undef
         $rack                 = undef
+        $unicast_hosts        = undef
         if ($::hostname =~ /^deployment-/) {
             # Beta
             # Has four nodes all of which can be master
@@ -21,6 +22,8 @@ class role::elasticsearch::config {
             # The cluster can limp along just fine with three nodes so we'll
             # let it
             $recover_after_nodes  = 3
+            $unicast_hosts        = ['deployment-es01', 'deployment-es02',
+                'deployment-es03', 'deployment-es04']
         } else {
             # Regular labs instance
             # We don't know how many instances will be in each labs project so
@@ -100,6 +103,7 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         awareness_attributes => $awareness_attributes,
         row                  => $row,
         rack                 => $rack,
+        unicast_hosts        => $unicast_hosts
     }
     deployment::target { 'elasticsearchplugins': }
 
