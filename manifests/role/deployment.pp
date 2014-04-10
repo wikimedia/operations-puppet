@@ -106,8 +106,10 @@ class role::deployment::config {
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof/reporter',
     },
     'test/testrepo'                  => {
-        'grain'        => 'testrepo',
-        'service_name' => 'puppet',
+        'grain'               => 'testrepo',
+        'service_name'        => 'puppet',
+        'checkout_submodules' => true,
+        'gitfat_enabled'      => true,
     },
     'elasticsearch/plugins'          => {
         'grain'          => 'elasticsearchplugins',
