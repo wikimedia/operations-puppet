@@ -288,10 +288,13 @@ node 'bast1001.wikimedia.org' {
     include ssh::hostkeys-collect
 
     # Users that should be on bast1001 but aren't
-    # in any other admins::* grouping
-    include accounts::swalling
-    include accounts::maryana
+    # in any other admins::* grouping.
+    include accounts::howief
     include accounts::jforrester
+    include accounts::jmorgan
+    include accounts::maryana
+    include accounts::msyed
+    include accounts::swalling
 }
 
 node 'bast4001.wikimedia.org' {
