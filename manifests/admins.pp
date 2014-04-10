@@ -2274,7 +2274,7 @@ class accounts {
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEApYlzRyFB5UNUnmCbN6sKPe53ZRd+P3NW64KmCj8MdcTsdBsOxhd00DBL7h1r3VUCYfkqnJuBgBfbqF0xFyv/Wx2fEUtZvneQEZUGIPciSkEwkh12VvNYeuTxWqW05B3eZYSnYzKwcziecf6/uFwRfMv4E5eTT91U22YYUzsgzVLVCDqtZWAESHqcZgfq5zxKoeO+PHIBUYYXNLz64Cs9UJNki8sbDX3sJMnRCebztEUjckUssN9K63KNXaQcXJ2GQJmqMG522+VkGMzbUV5yT4tjY8SCPNsPa3ij8af52HJNAz8IMfOvLak9ILxeDDugZJmSdBTEK2R6uCV2fo+vCw==';
                 'maxsem-new':
-                    ensure => 'present',
+                    ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA1G/hUlOQ7CwPRGYyTWSW9tK/jR0axw64JrRvdJnIZ+JTIpat3TyNPiPNIp5Ak+NfogruPJIwp//+f/Iu+DJW2iAcQhASl5WJPpSqdUUhX/LfaHB3Xr0f75Irn/7C2twvxKojyS4MkiBTo9HWSdh0zP3zgnwOlycwaUHujMVt6G35lkUzPgBx+QVKExK2A6c+CILjIG4GmeWPsqGJRJXbvrJjVK1og+i/x16boMdrO8UInNqH/iLroKT6tzLzJsWhk4NOqK2CX+MmcKJLbc2I0IQ8fJe9J2eaPiaE+CmdX0dc1+GP7IlI/CStk6LldVOgDBP/7Vr8DVd0OQuadhJJhw==';
