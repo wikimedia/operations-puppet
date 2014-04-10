@@ -251,6 +251,13 @@ class toollabs::exec_environ {
         'texinfo',                     # Bug #56994
         'zbar-tools',                  # Bug 56996
         'zsh',                         # Bug 56995
+
+        # i386 compatibility packages
+        'libc6:i386',
+        'libncurses5:i386',
+        'libsdl1.2debian:i386',
+        'libstdc++6:i386',
+        'libz1:i386',
         ]:
         ensure => latest,
     }
