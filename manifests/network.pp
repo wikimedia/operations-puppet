@@ -21,29 +21,6 @@ class network::constants {
             '10.0.0.0/8',
             ]
 
-    # Networks hosting MediaWiki application servers
-    # TODO: This variable is being used to limit the number of
-    # hosts that are allowed to be deployed to, via
-    #     docroot_dir_allows  => $::network::constants::mw_appserver_networks,
-    # in role::deployment::deployment_servers::production.
-    # Either the name of this variable should be changed
-    # (to something like '$deployable_networks'), or a differnt
-    # variable should be used.  There are networks that have
-    # nothing to do with MediaWiki app servers that should be
-    # deployable to.
-    $mw_appserver_networks = [
-            '10.0.0.0/16',        # private-pmtpa
-            '10.64.0.0/22',       # private1-a-eqiad
-            '10.64.16.0/22',      # private1-b-eqiad
-            '10.64.32.0/22',      # private1-c-eqiad
-            '10.64.48.0/22',      # private1-d-eqiad
-            '208.80.152.0/22',    # external
-            # analytics subnets, these need to be deployable too!
-            '10.64.5.0/24',
-            '10.64.21.0/24',
-            '10.64.36.0/24',
-            '10.64.53.0/24',
-            ]
 
     $special_hosts = {
         'production' => {
@@ -237,6 +214,36 @@ class network::constants {
             },
         },
     }
+
+
+    # Networks hosting MediaWiki application servers
+    $mw_appserver_networks = [
+        '208.80.152.0/22',    # external
+        $all_network_subnets['production']['pmtpa']['private']['private']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv4'],
+    ]
+
+    # Analytics subnets
+    $analytics_networks = [
+        $all_network_subnets['production']['eqiad']['private']['analytics1-a-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['analytics1-b-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['analytics1-c-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['analytics1-d-eqiad']['ipv4'],
+    ]
+
+    # Networks that trebuchet/git-deploy
+    # will be able to deploy to.
+    # (Puppet does array concatenation
+    # by declaring array of other arrays! (?!)
+    # See: http://weblog.etherized.com/posts/175)
+    $deployable_networks = [
+        $mw_appserver_networks,
+        $analytics_networks,
+    ]
+
 }
 
 class network::checks {
