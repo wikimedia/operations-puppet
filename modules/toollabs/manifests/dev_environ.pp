@@ -55,6 +55,7 @@ class toollabs::dev_environ {
         'lintian',
         'links',
         'lynx',
+        'maven',
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
         'openjdk-7-jdk',
