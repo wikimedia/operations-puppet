@@ -103,7 +103,7 @@ class role::analytics::users {
         # and it is not already in the stats group
         # This command returns true if hdfs user does not exist,
         # or if hdfs user does exist and is in the stats group.
-        unless  => '(/usr/bin/getent passwd hdfs > /dev/null; if [ $? != 0 ]; then true; else /usr/bin/groups hdfs | /bin/grep -q stats; fi)',
+        unless  => '(/usr/bin/getent passwd hdfs > /dev/null; if [ $? != 0 ]; then /bin/true; else /usr/bin/groups hdfs | /bin/grep -q stats; fi)',
         require => Group['stats'],
     }
 
