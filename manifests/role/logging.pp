@@ -106,7 +106,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         parser          => 'LineCountLogster',
         logfile         => "${log_directory}/CirrusSearch-slow.log",
         logster_options => '--output ganglia --metric-prefix CirrusSearch-slow.log',
-        minute          => 60,
+        minute          => 0,
     }
     # Alert if CirrusSearch-slow.log shows more than
     # 10 slow searches within an hour.  The logster
