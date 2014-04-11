@@ -94,6 +94,19 @@ class role::analytics::users {
     User<|title == csalvia|>     { groups +> [ 'stats' ] }
     User<|title == nuria|>       { groups +> [ 'stats' ] }
 
+    # If hdfs user exists, then add it to the stats group.
+    # I don't want to use puppet types to manage the hdfs
+    # user, since it is installed by the cdh4 packages.
+    exec { 'hdfs_user_in_stats_group':
+        command => '/usr/sbin/usermod hdfs -a -G stats',
+        # only run this command if the hdfs user exists
+        # and it is not already in the stats group
+        # This command returns true if hdfs user does not exist,
+        # or if hdfs user does exist and is in the stats group.
+        unless  => '(/usr/bin/getent passwd hdfs > /dev/null; if [ $? != 0 ]; then true; else /usr/bin/groups hdfs | /bin/grep -q stats; fi)',
+        require => Group['stats'],
+    }
+
     # Diederik and Otto have sudo privileges on Analytics nodes.
     sudo_user { [ 'diederik', 'otto' ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 }
