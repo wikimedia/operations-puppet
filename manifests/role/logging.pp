@@ -106,9 +106,14 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         parser          => 'LineCountLogster',
         logfile         => "${log_directory}/CirrusSearch-slow.log",
         logster_options => '--output ganglia --metric-prefix CirrusSearch-slow.log',
+        minute          => 60,
     }
     # Alert if CirrusSearch-slow.log shows more than
-    # 10 slow searches within an hour.
+    # 10 slow searches within an hour.  The logster
+    # job only runs every hour so that the average
+    # rate will be calculated over an hour period.
+    # this also means it will take an hour to
+    # recover whenever it goes off.
     monitor_ganglia { 'CirrusSearch-slow-queries':
         description => 'Slow CirrusSearch query rate',
         # this metric is output to ganglia by logster
