@@ -98,12 +98,13 @@ class role::analytics::users {
     # I don't want to use puppet types to manage the hdfs
     # user, since it is installed by the cdh4 packages.
     exec { 'hdfs_user_in_stats_group':
-        command => '/usr/sbin/usermod hdfs -a -G stats',
+        command => 'usermod hdfs -a -G stats',
         # only run this command if the hdfs user exists
         # and it is not already in the stats group
         # This command returns true if hdfs user does not exist,
         # or if hdfs user does exist and is in the stats group.
-        unless  => '(/usr/bin/getent passwd hdfs > /dev/null; if [ $? != 0 ]; then /bin/true; else /usr/bin/groups hdfs | /bin/grep -q stats; fi)',
+        unless  => 'getent passwd hdfs > /dev/null; if [ $? != 0 ]; then true; else groups hdfs | grep -q stats; fi',
+        path    => '/usr/sbin:/usr/bin:/bin',
         require => Group['stats'],
     }
 
