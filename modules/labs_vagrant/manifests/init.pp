@@ -1,3 +1,7 @@
+# == labs_vagrant
+#
+# Configure a labs host to use MediaWiki-Vagrant to manage local wikis
+#
 class labs_vagrant {
     user { 'vagrant':
         ensure     => 'present',
@@ -5,11 +9,29 @@ class labs_vagrant {
         managehome => true,
     }
 
-    file { '/etc/sudoers.d/vagrant':
-        source  => 'puppet:///modules/labs_vagrant/vagrant-sudoers',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0440',
+    sudo_user { 'vagrant' :
+        privileges => [
+            'ALL=(ALL) NOPASSWD:ALL',
+        ],
+        require => User['vagrant'],
+    }
+
+    # Primary group for modern wikitech accounts
+    sudo_group { 'wikidev_vagrant':
+        privileges => [
+            'ALL = (vagrant) NOPASSWD: ALL',
+        ],
+        group => 'wikidev',
+        require => User['vagrant'],
+    }
+
+    # Primary group for users imported from old svn credentials
+    # Bug: 63028
+    sudo_group { 'svn_vagrant':
+        privileges => [
+            'ALL = (vagrant) NOPASSWD: ALL',
+        ],
+        group => 'svn',
         require => User['vagrant'],
     }
 
