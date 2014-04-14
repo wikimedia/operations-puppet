@@ -1,5 +1,5 @@
 #
-# Definition: osm::populatedb
+# Definition: osm::planet_import
 #
 # This definition provides a way to load planet_osm in a gis enabled db
 # You must have downloaded the pbf first and placed it in a configurable place
@@ -14,12 +14,10 @@
 #   define['postgresql::spatialdb']
 #
 # Sample Usage:
-#  osm::populatedb { 'mydb': input_pbf_file => '/myfile.pbf' }
+#  osm::planet_import { 'mydb': input_pbf_file => '/myfile.pbf' }
 #
-define osm::populatedb(
+define osm::planet_import(
     $input_pbf_file,
-    $input_shape_file,
-    $shape_table,
     ) {
 
     # Check if our db tables exist
@@ -39,23 +37,5 @@ define osm::populatedb(
         user        => 'postgres',
         refreshonly => true,
         subscribe   => Exec["load_900913-${name}"],
-    }
-
-    exec { "create_shapelines-${name}":
-        command     => "/usr/bin/shp2pgsql -D -I ${input_shape_file} ${shape_table} > /tmp/${shape_table}.dump",
-        user        => 'postgres',
-        unless      => $shapelines_exist,
-    }
-    exec { "load_shapefiles-${name}":
-        command     => "/usr/bin/psql -d ${name} -f /tmp/${shape_table}.dump",
-        user        => 'postgres',
-        refreshonly => true,
-        subscribe   => Exec["create_shapelines-${name}"],
-    }
-    exec { "delete_shapefiles-${name}":
-        command     => "/bin/rm /tmp/${shape_table}.dump",
-        user        => 'postgres',
-        refreshonly => true,
-        subscribe   => Exec["load_shapefiles-${name}"],
     }
 }

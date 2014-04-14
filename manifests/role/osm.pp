@@ -17,7 +17,7 @@ class role::osm::common {
             # not the safest idea yet.
             'kernel.shmmax' => 8388608000,
         },
-        priority => 50,
+        priority => 60,
     }
 }
 
@@ -35,10 +35,26 @@ class role::osm::master {
         description => 'openstreetmaps db master',
     }
 
+    # Create the spatialdb
     postgresql::spatialdb { 'gis': }
-    osm::populatedb { 'gis':
-        input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
-        require => Postgresql::Spatialdb['gis']
+    # Import planet.osm
+    osm::planet_import { 'gis':
+        input_pbf_file   => '/srv/labsdb/planet-latest-osm.pbf',
+        require          => Postgresql::Spatialdb['gis']
+    }
+    # Add coastlines
+    osm::shapefile_import { 'gis-coastlines':
+        database         => 'gis',
+        input_shape_file => '/srv/labsdb/coastlines-split-4326/lines',
+        shape_table      => 'coastlines',
+        require          => Postgresql::Spatialdb['gis']
+    }
+    # Add split land polygons
+    osm::shapefile_import { 'gis-land_polygons':
+        database         => 'gis',
+        input_shape_file => '/srv/labsdb/land-polygons-split-4326/lines',
+        shape_table      => 'land_polygons',
+        require          => Postgresql::Spatialdb['gis']
     }
 
     if $osm_slave_v4 {
