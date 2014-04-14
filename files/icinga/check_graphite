@@ -3,284 +3,313 @@
 check_graphite.py
 ~~~~~~~
 
-:copyright: (c) 2012 DISQUS.
+Based on the original plugin from disquis:
+    https://github.com/disqus/nagios-plugins
+
+:copyright: (c) 2014 Wikimedia Foundation
 :license: Apache License 2.0, see LICENSE for more details.
 """
 
+import os
 import json
-import optparse
-import urllib
-import urllib2
-import sys
-
+import urllib3
 from numbers import Real
+import argparse
+import ssl
+import sys
+from collections import defaultdict
 
-NAGIOS_STATUSES = {
-    'OK': 0,
-    'WARNING': 1,
-    'CRITICAL': 2,
-    'UNKNOWN': 3
+try:
+    #python 3.x compat
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
+
+
+class NagiosException(Exception):
+    NAGIOS_STATUSES = {
+        'OK': 0,
+        'WARNING': 1,
+        'CRITICAL': 2,
+        'UNKNOWN': 3
 }
 
-class Graphite(object):
+    def __init__(self, exitcode, msg):
+        self.exitcode = self.NAGIOS_STATUSES.get(exitcode, 3)
+        self.msg = "%s: %s" % (exitcode, msg)
 
-    def __init__(self, url, targets, _from, _until):
-        self.url = url.rstrip('/')
-        self.targets = targets
-        self._from = _from
-        self._until = _until
-        params = [('target', t) for t in self.targets] +\
-            [('from', self._from)] +\
-            [('until', self._until)] +\
-            [('format', 'json')]
-        self.full_url = self.url + '/render?' +\
-            urllib.urlencode(params)
 
-    def check_datapoints(self, datapoints, check_func, **kwargs):
-        """Find alerting datapoints
+    def exit(self):
+        sys.exit(self.exitcode)
 
-        Args:
-            datapoints (list): The list of datapoints to check
-
-        Kwargs:
-            check_func (function): The function to find out of bounds datapoints
-            bounds (list): Compare against `datapoints` to find out of bounds list
-            compare (list): Used for comparison if `datapoints` is out of bounds
-            threshold (float): `check_func` is called for each datapoint against `threshold`
-            beyond (float): Return datapoint if `beyond` value in bounds list (percentage).
-
-        Returns:
-            The list of out of bounds datapoints
-        """
-        if 'threshold' in kwargs:
-            return [x for x in datapoints if isinstance(x, Real) and check_func(x, kwargs['threshold'])]
-        elif 'bounds' in kwargs:
-            if 'compare' in kwargs:
-              return [datapoints[x] for x in xrange(len(datapoints)) if all([datapoints[x], kwargs['bounds'][x], kwargs['compare'][x]]) and check_func(datapoints[x] / kwargs['bounds'][x], kwargs['beyond']) and check_func(datapoints[x], kwargs['compare'][x])]
-            else:
-                return [datapoints[x] for x in xrange(len(datapoints)) if all([datapoints[x], kwargs['bounds'][x]]) and check_func(datapoints[x], kwargs['bounds'][x])]
-
-    def fetch_metrics(self):
-        try:
-            response = urllib2.urlopen(self.full_url)
-
-            if response.code != 200:
-                return None
-            else:
-                return json.loads(response.read())
-        except urllib2.URLError, TypeError:
-            return None
-
-    def generate_output(self, datapoints, *args, **kwargs):
-        """Generate check output
-
-        Args:
-            datapoints (list): The list of datapoints to check
-            warn_oob (list): Optional list of datapoints considered in warning state
-            crit_oob (list): Mandatory list of datapoints considered in warning state
-
-        Kwargs:
-            count (int): Number of metrics that would generate an alert
-            warning (float): The check's warning threshold
-            critical (float): The check's critical threshold
-            target (str): The target for `datapoints`
-
-        Returns:
-            A dictionary of datapoints grouped by their status ('CRITICAL', 'WARNING', 'OK')
-        """
-        check_output = dict(OK=[], WARNING=[], CRITICAL=[])
-        count = kwargs['count']
-        warning = kwargs.get('warning', 0)
-        critical = kwargs.get('critical', 0)
-        target = kwargs.get('target', 'timeseries')
-
-        if len(args) > 1:
-            (warn_oob, crit_oob) = args
+class GraphiteCheck(object):
+    parser_name='check_generic'
+    """
+    Nothing to see here
+    """
+    def __init__(self, args):
+        self.targets = args.metric.split(',')
+        parsed_url = urlparse(args.url)
+        if parsed_url.netloc.find('@') > 0:
+            (self.credentials, host) = parsed_url.netloc.split('@')
         else:
-            crit_oob = [x for x in args[0] if isinstance(x, Real)]
-            warn_oob = []
+            host = parsed_url.netloc
+            self.credentials = None
+        self.base_url= "%s://%s" % (parsed_url.scheme, host)
+        #subclasses should just implement get_all here.
+        self.get_all(args)
 
-        if self.has_numbers(crit_oob) and len(crit_oob) >= count:
-            check_output['CRITICAL'].append('%s [crit=%f|datapoints=%s]' %\
-                (target, critical, ','.join(['%s' % str(x) for x in crit_oob])))
-        elif self.has_numbers(warn_oob) and len(warn_oob) >= count:
-            check_output['WARNING'].append('%s [warn=%f|datapoints=%s]' %\
-                (target, warning, ','.join(['%s' % str(x) for x in warn_oob])))
-        else:
-            check_output['OK'].append('%s [warn=%0.3f|crit=%f|datapoints=%s]' %\
-                (target, warning, critical, ','.join(['%s' % str(x) for x in datapoints])))
+        #Set up the http connectionpool
+        http_opts = {}
+        if args.timeout:
+            http_opts['timeout'] = args.timeout
+        if parsed_url.scheme == 'https':
+            http_opts['ssl_version'] = ssl.PROTOCOL_TLSv1
+            if args.ssl_certs:
+                # We expect a combined cert
+                http_opts['cert_file'] = args.ssl_certs
+            #TODO: verify SSL by default
 
-        return check_output
+        self.http = urllib3.PoolManager(num_pools=10, **http_opts)
 
-    def has_numbers(self, lst):
+
+    def get_all(self,args):
+        #This should be implemented in subclasses
+        raise NotImplementedError
+
+    def fetch(self):
+        h = {'user_agent': 'check_graphite/1.0'}
+
+        if self.credentials:
+            h['basic_auth'] = self.credentials
+
+        full_url = "%s/render" % self.base_url
         try:
-            return any([isinstance(x, Real) for x in lst])
-        except TypeError:
-            return False
+            response = self.http.request(
+                'GET',
+                full_url,
+                fields=self.params,
+                redirect=True,
+                headers=urllib3.util.make_headers(**h)
+            )
+        except urllib3.exceptions.MaxRetryError:
+            raise NagiosException('UNKNOWN', 'Could not reach the graphite server at %s' % full_url)
+
+        if response.status != 200:
+            raise NagiosException('UNKNOWN', 'Got status %d from the graphite server at %s' % (response.status, full_url))
+
+        return json.loads(response.data)
+
+    @classmethod
+    def create_parser(cls, parser):
+        p = parser.add_parser(cls.parser_name, help=cls.__doc__)
+        p.add_argument('metric', metavar='METRIC', help='the metric to fetch from graphite')
+        p.add_argument('-C', '--critical', dest='crit', type=int, help='Threshold for critical alert (integer)')
+        p.add_argument('-W', '--warning', dest='warn', type=int, help='Threshold for warning (integer)')
+        p.set_defaults(check_class=cls)
+        return p
+
+    def parse_result(self, result):
+        raise NotImplementedError
+
+    def check_data(self, datapoints):
+        raise NotImplementedError
+
+    def run(self):
+        res = self.fetch()
+        dp = self.parse_result(res)
+        self.check_data(dp)
+
+class Threshold(GraphiteCheck):
+    """
+    Checks if the metric exceeds the desired threshold
+    """
+    parser_name='check_threshold'
+
+    @classmethod
+    def create_parser(cls,parser):
+        p = super(Threshold,cls).create_parser(parser)
+        p.add_argument('--from', dest='_from', help='When to fetch the metric from (date or "-1d")', default='-1h')
+        p.add_argument('--over', dest="over", action='store_true', default=True, help='If alarms should happen when we exceed the threshold')
+        p.add_argument('--under', dest="under", action='store_true', default=False, help='If alarms should happen when we are below the threshold')
+        p.add_argument('--perc', dest="percentage", default=1, help='Number of datapoints above threshold that will raise the alarm')
+        return p
+
+    def get_all(self,args):
+        self.params = [('format', 'json'), ('from', args._from)]
+        for target in self.targets:
+            self.params.append(('target', target))
+        if args.under:
+            self.check_func = lambda x, y: x < y
+        else:
+            self.check_func = lambda x, y: x > y
+        self.limits ={}
+        self.limits['WARNING'] = args.warn
+        self.limits['CRITICAL'] = args.crit
+        self.perc = args.percentage
+
+
+    def parse_result(self, result):
+        #TODO: make this work for lists of results
+        datapoints = defaultdict(list)
+        datapoints['_total'] = 0
+        for (data,time) in result[0]['datapoints']:
+            if not isinstance(data, Real):
+                datapoints['UNKOWN'].append((time, data))
+                continue
+            elif self.check_func(data, self.limits['CRITICAL']):
+                datapoints['CRITICAL'].append((time, data))
+
+            elif self.check_func(data, self.limits['WARNING']):
+                datapoints['WARNING'].append((time,data))
+            else:
+                datapoints['OK'].append((time,data))
+            datapoints['_total'] += 1
+        return datapoints
+
+    def check_data(self,datapoints):
+        #TODO: make this work for lists of results
+        if not datapoints['_total']:
+            raise NagiosException('UNKNOWN', 'No valid datapoints found')
+
+        lengths = {}
+        t = datapoints['_total']
+        for key in NagiosException.NAGIOS_STATUSES.keys():
+            lengths[key] = len(datapoints[key])
+        #Very simple count, no timeseries evaluation, no flap detection.
+        if t < lengths['UNKNOWN']:
+            raise NagiosException('UNKNOWN', 'More than half of the datapoints are undefined')
+        for key in ['CRITICAL', 'WARNING']:
+            if lengths[key] >= t*self.perc/100.0:
+                perc = lengths[key]*100.0/t
+                raise NagiosException(key,
+                                      '%s%% of data exceeded the %s threshold [%s]' %
+                                      (perc, key.lower(), self.limits[key]))
+        raise NagiosException('OK', 'Less than %s%% data above the threshold [%s]' % (self.perc, self.limits['WARNING']))
+
+class Anomaly(GraphiteCheck):
+    """
+    Checks if the metric is out of the forecasted bounds for a number of times in the last iterations
+    """
+    parser_name='check_anomaly'
+
+    @classmethod
+    def create_parser(cls,parser):
+        p = super(Anomaly,cls).create_parser(parser)
+        p.add_argument('--check_window', dest="check_window", type=int, help='How many datapoints to consider in the anomaly detection sampling', default=20)
+        return p
+
+    def get_all(self,args):
+        self.params = [('format', 'json')]
+        for target in self.targets:
+            self.params.append(('target', target))
+            self.params.append(('target', 'holtWintersConfidenceBands(%s)' % target))
+        self.check_window = args.check_window
+        self.warn = args.warn
+        self.crit = args.crit
+
+
+    def parse_result(self, result):
+        #TODO: make this work for lists of results
+        datapoints = defaultdict(list)
+        my_slice = self.check_window * -1
+        measures = result[0]['datapoints'][my_slice:]
+        lowerbound = result[1]['datapoints'][my_slice:]
+        upperbound = result[2]['datapoints'][my_slice:]
+        for i in xrange(self.check_window):
+            data, time = measures[i]
+            l = lowerbound[i][0]
+            u = upperbound[i][0]
+            if not isinstance(data, Real):
+                datapoints['unknown'].append((time, data))
+            elif data >= u:
+                datapoints['higher'].append((time,data))
+            elif data <= l:
+                datapoints['lower'].append((time,data))
+            else:
+                datapoints['ok'].append((time,data))
+        return datapoints
+
+    def check_data(self, datapoints):
+        u = len(datapoints['unknown'])
+        h = len(datapoints['higher'])
+        l = len(datapoints['lower'])
+        ok = len(datapoints['ok'])
+        t = h + l + ok
+        if not t:
+            raise NagiosException('UNKNOWN', 'No valid datapoints found')
+
+        if t < u:
+            raise NagiosException('UNKNOWN', 'More than half of the datapoints are undefined')
+
+        #Simple check, with basic flap detection
+        crit = (h >= self.crit) or (l >= self.crit)
+        crit_flap = (h >= self.crit) and (l >= self.crit)
+        if (h >= self.crit) or (l >= self.crit):
+            if (h >= self.crit) and (l >= self.crit):
+                raise NagiosException('UNKNOWN', 'Service is critically flapping below and above the confidence bounds')
+            raise NagiosException('CRITICAL', 'Anomaly detected: %s data above and %s below the confidence bounds' % (h, l))
+
+        if (h >= self.warn) or (l >= self.warn):
+            if (h >= self.warn) and (l >= self.warn):
+                raise NagiosException('UNKNOWN', 'Service is flapping below and above the confidence bounds')
+            raise NagiosException('WARNING', 'Anomaly detected: %s data above and %s below the confidence bounds' % (h, l))
+
+        raise NagiosException('OK', 'No anomaly detected')
+
+
+def main():
+    """
+    Controller for the graphite fetching plugin.
+
+    You can build a few different type of checks, both traditional nagios checks
+    and anomaly detection ones.
+
+    Examples:
+
+    Check if a metric exceeds a certain value 10 times in the last 20 minutes:
+
+    ./check_graphyte.py --url http://some-graphite-host \
+           check_threshold my.beloved.metric  --from -20m \
+           --threshold 100 --over -C 10 -W 5
+
+    Check if a metric has exceeded its holter-winters confidence bands 5% of the
+    times over the last 500 checks
+
+    ./check_graphyte.py --url http://some-graphite-host  \
+          check_anomaly my.beloved.metric --check_window 500 -C 5 -W 1
+
+    """
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(
+        title='check_type',
+        help='use with --help for additional help',
+        dest='check_type')
+
+    threshold = Threshold.create_parser(subparsers)
+
+    anomaly = Anomaly.create_parser(subparsers)
+
+
+    parser.add_argument('-U', '--url', dest='url',
+                        default=os.environ.get('GRAPHITE_URL', 'http://localhost'),
+                        help='Url of the graphite server'
+                        )
+    parser.add_argument('-T', '--timeout', dest='timeout', default=10, help='Timeout on the graphite call (defaults to 10)')
+    parser.add_argument('-S', '--client-ssl-cert', dest='ssl_certs', default=None, help='SSL client certificate to use in connection (filename)')
+
+
+    args = parser.parse_args()
+
+    try:
+        checker = args.check_class(args)
+        checker.run()
+    except NagiosException as e:
+        print(e.msg)
+        e.exit()
 
 
 if __name__ == '__main__':
-    parser = optparse.OptionParser()
-    parser.add_option('-U', '--graphite-url', dest='graphite_url',
-                      default='http://localhost/',
-                      metavar='URL',
-                      help='Graphite URL [%default]')
-    parser.add_option('-t', '--target', dest='target',
-                      action='append',
-                      help='Target to check')
-    parser.add_option('--compare', dest='compare',
-                      metavar='SERIES',
-                      help='Compare TARGET against SERIES')
-    parser.add_option('--from', dest='_from',
-                      help='From timestamp/date')
-    parser.add_option('--until', dest='_until',
-                      default='now',
-                      help='Until timestamp/date [%default]')
-    parser.add_option('-c', '--count', dest='count',
-                      default=0,
-                      type='int',
-                      help='Alert on at least COUNT metrics [%default]')
-    parser.add_option('--beyond', dest='beyond',
-                      default=0.7,
-                      type='float',
-                      help='Alert if metric is PERCENTAGE beyond comparison value [%default]')
-    parser.add_option('--percentile', dest='percentile',
-                      default=0,
-                      type='int',
-                      metavar='PERCENT',
-                      help='Use nPercentile Graphite function on the target (returns one datapoint)')
-    parser.add_option('--empty-ok', dest='empty_ok',
-                      default=False,
-                      action='store_true',
-                      help='Empty data from Graphite is OK')
-    parser.add_option('--confidence', dest='confidence_bands',
-                      default=False,
-                      action='store_true',
-                      help='Use holtWintersConfidenceBands Graphite function on the target')
-    parser.add_option('--over', dest='over',
-                      default=True,
-                      action='store_true',
-                      help='Over specified WARNING or CRITICAL threshold [%default]')
-    parser.add_option('--under', dest='under',
-                      default=False,
-                      action='store_true',
-                      help='Under specified WARNING or CRITICAL threshold [%default]')
-    parser.add_option('-W', dest='warning',
-                      type='float',
-                      metavar='VALUE',
-                      help='Warning if datapoints beyond VALUE')
-    parser.add_option('-C', dest='critical',
-                      type='float',
-                      metavar='VALUE',
-                      help='Critical if datapoints beyond VALUE')
-
-    (options, args) = parser.parse_args()
-
-    if not all([getattr(options, option) for option in ('_from', 'target')]):
-        parser.print_help()
-        sys.exit(NAGIOS_STATUSES['UNKNOWN'])
-
-    real_from = options._from
-
-    if options.under:
-        check_func = lambda x, y: x < y
-        options.over = False
-    else:
-        check_func = lambda x, y: x > y
-
-    if options.confidence_bands:
-        targets = [options.target[0], 'holtWintersConfidenceBands(%s)' % options.target[0]]
-        check_threshold = None
-        from_slice = int(options._from) * -1
-        real_from = '-2w'
-
-        if options.compare:
-            targets.append(options.compare)
-    else:
-        if not all([getattr(options, option) for option in ('critical', 'warning')]):
-            parser.print_help()
-            sys.exit(NAGIOS_STATUSES['UNKNOWN'])
-
-        if options.percentile:
-            targets = ['nPercentile(%s, %d)' % (options.target[0], options.percentile)]
-        else:
-            targets = options.target
-
-        try:
-            warn = float(options.warning)
-            crit = float(options.critical)
-        except ValueError:
-            print 'ERROR: WARNING or CRITICAL threshold is not a number\n'
-            parser.print_help()
-            sys.exit(NAGIOS_STATUSES['UNKNOWN'])
-
-    check_output = {}
-    graphite = Graphite(options.graphite_url, targets, real_from, options._until)
-    metric_data = graphite.fetch_metrics()
-
-    if metric_data:
-        if options.confidence_bands:
-            actual = [x[0] for x in metric_data[0].get('datapoints', [])][from_slice:]
-            target_name = metric_data[0]['target']
-            kwargs = {}
-            kwargs['beyond'] = options.beyond
-
-            if options.over:
-                kwargs['bounds'] = [x[0] for x in metric_data[1].get('datapoints', [])][from_slice:]
-            elif options.under:
-                kwargs['bounds'] = [x[0] for x in metric_data[2].get('datapoints', [])][from_slice:]
-
-            if options.compare:
-                kwargs['compare'] = [x[0] for x in metric_data[3].get('datapoints', [])][from_slice:]
-
-                if not graphite.has_numbers(kwargs['compare']):
-                    print 'CRITICAL: No compare target output from Graphite!'
-                    sys.exit(NAGIOS_STATUSES['CRITICAL'])
-
-            if graphite.has_numbers(actual) and graphite.has_numbers(kwargs['bounds']):
-                points_oob = graphite.check_datapoints(actual, check_func, **kwargs)
-                check_output[target_name] = graphite.generate_output(actual,
-                                                                     points_oob,
-                                                                     count=options.count,
-                                                                     target=target_name)
-
-            else:
-                print 'CRITICAL: No output from Graphite for target(s): %s' % ', '.join(targets)
-                sys.exit(NAGIOS_STATUSES['CRITICAL'])
-        else:
-            for target in metric_data:
-                datapoints = [x[0] for x in target.get('datapoints', []) if isinstance(x[0], Real)]
-                if not graphite.has_numbers(datapoints) and not options.empty_ok:
-                    print 'CRITICAL: No output from Graphite for target(s): %s' % ', '.join(targets)
-                    sys.exit(NAGIOS_STATUSES['CRITICAL'])
-
-                crit_oob = graphite.check_datapoints(datapoints, check_func, threshold=crit)
-                warn_oob = graphite.check_datapoints(datapoints, check_func, threshold=warn)
-                check_output[target['target']] = graphite.generate_output(datapoints,
-                                                                          warn_oob,
-                                                                          crit_oob,
-                                                                          count=options.count,
-                                                                          target=target['target'],
-                                                                          warning=warn,
-                                                                          critical=crit)
-    else:
-        if options.empty_ok and isinstance(metric_data, list):
-            print 'OK: No output from Graphite for target(s): %s' % ', '.join(targets)
-            sys.exit(NAGIOS_STATUSES['OK'])
-
-        print 'CRITICAL: No output from Graphite for target(s): %s' % ', '.join(targets)
-        sys.exit(NAGIOS_STATUSES['CRITICAL'])
-
-    for target, messages in check_output.iteritems():
-        if messages['CRITICAL']:
-            exit_code = NAGIOS_STATUSES['CRITICAL']
-        elif messages['WARNING']:
-            exit_code = NAGIOS_STATUSES['WARNING']
-        else:
-            exit_code = NAGIOS_STATUSES['OK']
-
-        for status_code in ['CRITICAL', 'WARNING', 'OK']:
-            if messages[status_code]:
-                print '\n'.join(['%s: %s' % (status_code, status) for status in messages[status_code]])
-
-    sys.exit(exit_code)
+    #TODO - fix the docs
+    __doc__ = main.__doc__
+    main()

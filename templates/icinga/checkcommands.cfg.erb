@@ -511,7 +511,7 @@ define command{
 
 define command{
 	command_name	check_reqstats_5xx
-	command_line	$USER1$/check_graphite -U $ARG1$ --from $ARG2$  -t reqstats.5xx -W $ARG3$ -C $ARG4$
+	command_line	$USER1$/check_graphite -U $ARG1$ check_threshold reqstats.5xx -W $ARG3$ -C $ARG4$ --from $ARG2$  
 }
 
 # Checks whether a host belongs to given dsh group(s)
