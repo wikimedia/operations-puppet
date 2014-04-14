@@ -375,3 +375,196 @@ define monitor_ganglia(
         contact_group         => $contact_group,
     }
 }
+
+
+
+
+# == Define monitor_graphite_threshold
+# Wrapper for monitor_service using check_graphite command.
+# This allows you to monitor arbitrary metrics in graphite
+# with icinga without having to add entries to checkcommands.cfg.erb
+#
+# Check type
+# =====================
+# A simple threshold checking is supported -this simply checks if a
+# given percentage of the data points in the interested interval
+# exceeds a threshold.
+#
+#
+# == Usage
+#   # Alert if the same metric exceeds an absolute threshold 5% of
+#   # times.
+#   monitor_graphite_threshold { 'reqstats-5xx':
+#       description          => 'Number of 5xx responses',
+#       metric               => 'reqstats.5xx',
+#       warning              => 250,
+#       critical             => 500,
+#       from                 => '-1hours',
+#       percentage           => 5,
+#   }
+# == Parameters
+# $description          - Description of icinga alert
+# $metric               - graphite metric name
+# $warning              - alert warning threshold
+# $critical             - alert critical threshold
+# $from                 - Date from which to fetch data.
+#                         Examples: '-1d','-10m' (default), '-2hours'
+# $percentage           - Number of datapoints exceeding the
+#                         threshold. Defaults to 1%.
+# $under                - If true, the threshold is a lower limit.
+#                         Defaults to false.
+# $graphite_url         - URL of the graphite server.
+# $timeout              - Timeout for the http query to
+#                         graphite. Defaults to 10 seconds
+# $host
+# $retries
+# $group
+# $ensure
+# $passive
+# $normal
+# $retry
+# $contact
+# $nagios_critical
+
+define monitor_graphite_threshold(
+    $description,
+    $metric,
+    $warning,
+    $critical,
+    $from,
+    $percentage            = 1,
+    $under                 = false,
+    $graphite_url          = 'http://graphite.wikimedia.org',
+    $timeout               = 10,
+    $host                  = $::hostname,
+    $retries               = 3,
+    $group                 = $nagios_group,
+    $ensure                = present,
+    $nagios_critical       = 'false'
+    $passive               = 'false',
+    $freshness             = 36000,
+    $normal_check_interval = 1,
+    $retry_check_interval  = 1,
+    $contact_group         = 'admins'
+)
+{
+
+
+    # checkcommands.cfg's check_graphite_threshold command has
+    # many positional arguments that
+    # are passed to the check_graphite script:
+    #   $ARG1$  -U url
+    #   $ARG2$  -T timeout
+    #   $ARG3$  the metric to monitor
+    #   $ARG4$  -W warning threshold
+    #   $ARG5$  -C critical threshold
+    #   $ARG6$  --from start sampling date
+    #   $ARG7$  --perc percentage of exceeding datapoints
+    #   $ARG8$  --over or --under
+    $modifier = $under ? {
+        true  => '--under',
+        default => '--over'
+    }
+    monitor_service { $title:
+        ensure                => $ensure,
+        description           => $description,
+        check_command         => "check_graphite_threshold!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${perc}!${modifier}",
+        retries               => $retries,
+        group                 => $group,
+        critical              => $nagios_critical,
+        passive               => $passive,
+        freshness             => $freshness,
+        normal_check_interval => $normal_check_interval,
+        retry_check_interval  => $retry_check_interval,
+        contact_group         => $contact_group,
+    }
+}
+
+
+# == Define monitor_graphite_anomaly
+# Wrapper for monitor_service using check_graphite command.
+# This allows you to monitor arbitrary metrics in graphite
+# with icinga without having to add entries to checkcommands.cfg.erb
+#
+# Check type
+# =====================
+# A very simple predictive checking is also
+# supported - it will check if more than N points in a given
+# range of datapoints are outside of the Holt-Winters confidence
+# bands, as calculated by graphite (see
+# http://bit.ly/graphiteHoltWinters).
+#
+#
+# == Usage
+#   # Alert if an anomaly is found in the number of 5xx responses
+#   monitor_graphite_anomaly { 'reqstats-5xx-anomaly':
+#       description          => 'Anomaly in number of 5xx responses',
+#       metric               => 'reqstats.5xx',
+#       warning              => 5,
+#       critical             => 10,
+#   }
+#
+# == Parameters
+# $description          - Description of icinga alert
+# $metric               - graphite metric name
+# $warning              - alert warning datapoints
+# $critical             - alert critical datapoints
+# $check_window         - the number of datapoints on which the check
+#                         is performed. Defaults to 100.
+# $graphite_url         - URL of the graphite server.
+# $timeout              - Timeout for the http query to
+#                         graphite. Defaults to 10 seconds
+# $host
+# $retries
+# $group
+# $ensure
+# $passive
+# $normal
+# $retry
+# $contact
+# $nagios_critical
+
+define monitor_graphite_anomaly(
+    $description,
+    $metric,
+    $warning,
+    $critical,
+    $check_window          = 100,
+    $graphite_url          = 'http://graphite.wikimedia.org',
+    $timeout               = 10,
+    $host                  = $::hostname,
+    $retries               = 3,
+    $group                 = $nagios_group,
+    $ensure                = present,
+    $nagios_critical       = 'false'
+    $passive               = 'false',
+    $freshness             = 36000,
+    $normal_check_interval = 1,
+    $retry_check_interval  = 1,
+    $contact_group         = 'admins'
+)
+{
+
+    # checkcommands.cfg's check_graphite_anomaly command has
+    # many positional arguments that
+    # are passed to the check_graphite script:
+    #   $ARG1$  -U url
+    #   $ARG2$  -T timeout
+    #   $ARG3$  the metric to monitor
+    #   $ARG4$  -W warning threshold
+    #   $ARG5$  -C critical threshold
+    #   $ARG6$  --check_window sampling size
+    monitor_service { $title:
+        ensure                => $ensure,
+        description           => $description,
+        check_command         => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}",
+        retries               => $retries,
+        group                 => $group,
+        critical              => $nagios_critical,
+        passive               => $passive,
+        freshness             => $freshness,
+        normal_check_interval => $normal_check_interval,
+        retry_check_interval  => $retry_check_interval,
+        contact_group         => $contact_group,
+    }
+}
