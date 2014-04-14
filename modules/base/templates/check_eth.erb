@@ -5,7 +5,7 @@ for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+/,'').gsub(/vnet\
 	STATUS=`ip link show ${INTERFACE}`
 	if [ "$?" != "0" ]; then
 		echo "${INTERFACE} not found. This should never happen. Bailing out"
-		EDIT_CODE=1
+		EXIT_CODE=3
 		continue
 	fi
 	if echo ${STATUS} | grep -q "NO-CARRIER"
