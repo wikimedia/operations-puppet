@@ -366,7 +366,7 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
     }
 
     misc::udp2log::instance { 'erbium':
-        multicast          => true,
+        port               => '8419',
         packet_loss_log    => '/var/log/udp2log/packet-loss.log',
         log_directory      => $webrequest_log_directory,
         template_variables => {
