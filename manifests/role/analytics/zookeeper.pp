@@ -59,4 +59,18 @@ class role::analytics::zookeeper::client {
 #
 class role::analytics::zookeeper::server inherits role::analytics::zookeeper::client {
     class { '::zookeeper::server': }
+
+    if ($::realm == 'labs') {
+        $ganglia_host = 'aggregator.eqiad.wmflabs'
+        $ganglia_port = 50090
+    }
+    else {
+        # TODO: use variables from new ganglia module once it is finished.
+        $ganglia_host = '239.192.1.32'
+        $ganglia_port = 8649
+    }
+    # Use jmxtrans for sending metrics to ganglia
+    class { 'zookeeper::jmxtrans':
+        ganglia => "${ganglia_host}:${ganglia_port}",
+    }
 }
