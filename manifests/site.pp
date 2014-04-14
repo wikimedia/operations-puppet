@@ -1028,7 +1028,6 @@ node 'formey.wikimedia.org' {
     $ssh_x11_forwarding = 'no'
     include standard
     include webserver::php5
-    include role::subversion
     include backup::client
     include role::deployment::test
 
