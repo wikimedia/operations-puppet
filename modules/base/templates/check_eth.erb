@@ -1,11 +1,11 @@
 #!/bin/sh
 EXIT_CODE=0
-for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+/,'').gsub(/vnet\d+/,'').gsub(/virbr0/,'') %> ; do
+for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+/,'').gsub(/vnet\d+/,'').gsub(/virbr0/,'').gsub(/lo/,'') %> ; do
 	REQ_SPEED=1000 # The default for now
 	STATUS=`ip link show ${INTERFACE}`
 	if [ "$?" != "0" ]; then
 		echo "${INTERFACE} not found. This should never happen. Bailing out"
-		EDIT_CODE=1
+		EXIT_CODE=1
 		continue
 	fi
 	if echo ${STATUS} | grep -q "NO-CARRIER"
@@ -15,6 +15,11 @@ for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+/,'').gsub(/vnet\
 	fi
 	if echo ${STATUS} | grep -q "DOWN"
 	then
+		continue
+	fi
+	if echo ${INTERFACE} | grep -q "br"
+	then
+		# Don't check speed of bridge interfaces
 		continue
 	fi
 	CONF_SPEED=$(/sbin/ethtool $INTERFACE | awk '/Speed:/ {gsub("Mb/s","",$2);print $2}')
