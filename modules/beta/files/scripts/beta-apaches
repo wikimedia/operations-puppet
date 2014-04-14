@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Send commands to the beta apache servers via salt
+#
+#/ Usage: beta-apaches start|stop|restart|graceful|graceful-stop|configtest
+#/ Send commands to the beta apache servers via salt
+
+set -e
+
+APACHE_ROLE=role::applicationserver::appserver::beta
+
+function usage() {
+    local status=${1-0}
+    grep '^#/' <"$0" | cut -c4-
+    exit $status
+}
+
+expr -- "$*" : ".*--help" >/dev/null && {
+  usage
+}
+
+[[ -n $1 ]] || usage 1
+
+exec /usr/bin/sudo /usr/bin/salt -G "rolename:${APACHE_ROLE}" apache.signal $1
