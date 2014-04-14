@@ -3908,3 +3908,20 @@ class admins::parsoid {
     }
 
 }
+
+# permissions and users for LDAP operations
+# (formerly in site.pp directly in node formey)
+class admins::ldap {
+
+    $sudo_privs = [
+            'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
+            'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
+            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
+            'ALL = NOPASSWD: /usr/local/bin/svn-group',
+            'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
+    ]
+
+    sudo_user { [ 'robla', 'sumanah', 'reedy' ]: privileges => $sudo_privs }
+
+}
+
