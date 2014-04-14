@@ -33,10 +33,6 @@ class graphite(
         relay => $carbon_service_defaults,
     }
 
-    file { '/etc/security/limits.d/graphite.conf':
-        source => 'puppet:///modules/graphite/graphite.limits.conf',
-    }
-
     file { $storage_dir:
         ensure  => directory,
         owner   => '_graphite',
