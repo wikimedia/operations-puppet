@@ -113,7 +113,7 @@ class role::graphite {
                 line_receiver_interface   => '0.0.0.0',
                 pickle_receiver_interface => '0.0.0.0',
                 udp_receiver_interface    => '0.0.0.0',
-                enable_udp_listener       => 'true',
+                enable_udp_listener       => true,
                 relay_method              => 'consistent-hashing',
                 destinations              => [
                     '127.0.0.1:2104:a',

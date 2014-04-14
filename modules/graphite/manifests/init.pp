@@ -18,14 +18,17 @@ class graphite(
     package { 'python-whisper': }
 
     $carbon_service_defaults = {
-        log_updates    => false,  # Don't log Whisper updates.
-        user           => undef,  # Don't suid; Upstart will do it for us.
-        conf_dir       => '/etc/carbon',
-        log_dir        => '/var/log/carbon',
-        pid_dir        => '/var/run/carbon',
-        storage_dir    => $storage_dir,
-        whitelists_dir => "${storage_dir}/lists",
-        local_data_dir => "${storage_dir}/whisper",
+        log_updates              => false,
+        log_cache_hits           => false,
+        log_cache_queue_sorts    => false,
+        log_listener_connections => false,
+        user                     => undef,  # Don't suid; Upstart will do it for us.
+        conf_dir                 => '/etc/carbon',
+        log_dir                  => '/var/log/carbon',
+        pid_dir                  => '/var/run/carbon',
+        storage_dir              => $storage_dir,
+        whitelists_dir           => "${storage_dir}/lists",
+        local_data_dir           => "${storage_dir}/whisper",
     }
 
     $carbon_defaults = {
