@@ -4,7 +4,8 @@ define varnish::logging(
     $cli_args='',
     $log_fmt=false,
     $instance_name='frontend',
-    $monitor=true
+    $monitor=true,
+    $ensure='running',
 ) {
     require varnish::packages
     require varnish::logging::config
@@ -32,7 +33,7 @@ define varnish::logging(
     }
 
     service { "varnishncsa-${name}":
-        ensure    => running,
+        ensure    => $ensure,
         require   => [
                 File["/etc/init.d/varnishncsa-${name}"],
                 Service[$varnishservice]
