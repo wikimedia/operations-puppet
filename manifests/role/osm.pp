@@ -52,7 +52,7 @@ class role::osm::master {
     # Add split land polygons
     osm::shapefile_import { 'gis-land_polygons':
         database         => 'gis',
-        input_shape_file => '/srv/labsdb/land-polygons-split-4326/lines',
+        input_shape_file => '/srv/labsdb/land-polygons-split-4326/land_polygons',
         shape_table      => 'land_polygons',
         require          => Postgresql::Spatialdb['gis']
     }
