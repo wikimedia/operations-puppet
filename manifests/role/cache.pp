@@ -414,11 +414,16 @@ class role::cache {
             varnish::logging {
                 'emery':
                     listener_address => '208.80.152.184',
-                    cli_args => $cliargs;
+                    cli_args => $cliargs,
+                    ensure => 'stopped';
                 'multicast_relay':
                     listener_address => '208.80.154.73',
                     port => '8419',
                     cli_args => $cliargs;
+                'erbium':
+                    listener_address => '10.64.32.135',
+                    port             => '8419',
+                    cli_args         => $cliargs;
             }
         }
     }
