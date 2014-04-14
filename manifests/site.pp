@@ -1011,30 +1011,13 @@ node 'fluorine.eqiad.wmnet' {
 
 node 'formey.wikimedia.org' {
 
-    $sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
-            'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
-            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
-            'ALL = NOPASSWD: /usr/local/bin/svn-group',
-            'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
-            'ALL = NOPASSWD: /var/lib/gerrit2/review_site/bin/gerrit.sh' ]
-    sudo_user { [ 'robla', 'sumanah', 'reedy' ]: privileges => $sudo_privs }
-
-    # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon': privileges => ['ALL = NOPASSWD: ALL'] }
-
-    $gid = '550'
-    $ldapincludes = ['openldap', 'nss', 'utils']
-    $ssh_tcp_forwarding = 'no'
-    $ssh_x11_forwarding = 'no'
     include standard
     include webserver::php5
     include role::subversion
     include backup::client
     include role::deployment::test
+    include role::ldap::operations
 
-    class { 'ldap::role::client::labs':
-        ldapincludes => $ldapincludes,
-    }
 }
 
 # gadolinium is the webrequest socat multicast relay.
