@@ -185,9 +185,12 @@ class role::graphite {
         $auth_realm    = 'WMF Labs (use wiki login name not shell)'
         $apache_auth   = template('graphite/apache-auth-ldap.erb')
 
-        monitor_service { 'reqstats_5xx':
-            description   => 'HTTP 5xx req/min',
-            check_command => 'check_reqstats_5xx!http://graphite.wikimedia.org!-1hours!250!500',
+        monitor_graphite_threshold {'reqstats_5xx':
+            description  => 'HTTP 5xx req/min',
+            metric       => 'reqstats.5xx',
+            warning      => 250,
+            critical     => 500,
+            from         => '-1hours'
         }
     }
 
