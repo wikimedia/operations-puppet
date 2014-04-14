@@ -455,11 +455,11 @@ class misc::statistics::rsyncd(
     }
 
     # Allow rsyncd traffic from internal networks.
-    # and stat1003.wikimedia.org
+    # and stat* public IPs.
     ferm::service { 'rsync':
         proto  => 'tcp',
         port   => '873',
-        srange => '($INTERNAL stat1003.wikimedia.org stat1001.wikimedia.org)',
+        srange => '($INTERNAL 208.80.154.155/32 208.80.154.82/32)',
     }
 }
 
