@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Send commands to the beta apache servers via salt
+#
+#/ Usage: beta-apaches start|stop|restart|graceful|graceful-stop|configtest
+#/ Send commands to the beta apache servers via salt
+
+set -e
+
+APACHE_ROLE=role::applicationserver::appserver::beta
+
+function usage() {
+    local status=${1-0}
+    # Generate help message by reading lines that start with "#/" in this file
+    grep '^#/' <"$0" | cut -c4-
+    exit $status
+}
+
+# Show usage if "--help" appears anywhere in the argument list
+expr -- "$*" : ".*--help" >/dev/null && {
+  usage
+}
+
+# If required argument isn't present, show usage
+[[ -n $1 ]] || usage 1
+
+# Run apache.signal via salt targeting nodes with the desired grain
+exec /usr/bin/sudo /usr/bin/salt -G "rolename:${APACHE_ROLE}" apache.signal "$1"
