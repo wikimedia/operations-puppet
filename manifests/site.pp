@@ -1777,7 +1777,7 @@ node /mobile100[1-4]\.wikimedia\.org/ {
 
 node 'ms1001.wikimedia.org' {
     include standard
-    include role::mirror::media
+#    include role::mirror::media
 }
 
 node 'ms1002.eqiad.wmnet' {
