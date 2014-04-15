@@ -21,8 +21,9 @@ class role::elasticsearch::config {
             # The cluster can limp along just fine with three nodes so we'll
             # let it
             $recover_after_nodes  = 3
-            $unicast_hosts        = ['deployment-es01', 'deployment-es02',
-                'deployment-es03', 'deployment-es04']
+            $unicast_hosts        = ['deployment-elastic01',
+                'deployment-elastic02', 'deployment-elastic03',
+                'deployment-elastic04']
         } else {
             # Regular labs instance
             # We don't know how many instances will be in each labs project so
