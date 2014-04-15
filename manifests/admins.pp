@@ -3822,14 +3822,14 @@ class admins::jenkins {
     include groups::wikidev
     include jenkins::group
 
+    include accounts::aaron
+    include accounts::csteipp
     include accounts::demon
     include accounts::dsc #account disabled
     include accounts::hashar
     include accounts::krinkle
-    include accounts::reedy
     include accounts::mholmquist
-    include accounts::csteipp
-    include accounts::aaron
+    include accounts::reedy
 }
 
 class admins::dctech {
