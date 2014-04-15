@@ -110,4 +110,54 @@ class role::swift {
 			include ::swift::storage::monitoring
 		}
 	}
+	class esams-prod inherits role::swift::base {
+		system::role { "role::swift::esams-prod": description => "Swift esams production cluster" }
+		include passwords::swift::esams-prod
+		class { "::swift::base": hash_path_suffix => "a0af6563d361f968", cluster_name => "esams-prod" }
+		class ganglia_reporter inherits role::swift::esams-prod {
+			# one host per cluster should report global stats
+			file { "/usr/local/bin/swift-ganglia-report-global-stats":
+				ensure => present,
+				owner  => 'root',
+				group  => 'root',
+				mode   => '0555',
+				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
+			}
+			# config file to hold the password
+			$password = $passwords::swift::esams-prod::rewrite_password
+			file { "/etc/swift-ganglia-report-global-stats.conf":
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0440',
+				content => template("swift/swift-ganglia-report-global-stats.conf.erb"),
+			}
+			cron { "swift-ganglia-report-global-stats":
+				ensure  => present,
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:media' -c esams-prod",
+				user    => root,
+			}
+		}
+		class proxy inherits role::swift::esams-prod {
+			class { "::swift::proxy":
+				bind_port => "80",
+				proxy_address => "http://ms-fe.esams.wmnet",
+				num_workers => $::processorcount,
+				memcached_servers => [ "ms-fe3001.esams.wmnet:11211", "ms-fe3002.esams.wmnet:11211" ],
+				auth_backend => 'tempauth',
+				super_admin_key => $passwords::swift::esams-prod::super_admin_key,
+				rewrite_account => 'AUTH_mw',
+				rewrite_password => $passwords::swift::esams-prod::rewrite_password,
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_container_list => "",
+				backend_url_format => "asis"
+			}
+			class { '::swift::proxy::monitoring':
+				host => 'ms-fe.esams.wmnet',
+			}
+		}
+		class storage inherits role::swift::esams-prod {
+			include ::swift::storage
+			include ::swift::storage::monitoring
+		}
+	}
 }

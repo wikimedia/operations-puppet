@@ -1863,11 +1863,26 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
-    include standard
+    include role::swift::esams-prod::proxy
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
-    include standard
+    # 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
+    $all_drives = [
+        '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
+        '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
+        '/dev/sdk', '/dev/sdl'
+    ]
+
+    include role::swift::esams-prod::storage
+
+    swift::create_filesystem{ $all_drives: partition_nr => '1' }
+
+    # these are already partitioned and xfs formatted by the installer
+    swift::label_filesystem{ '/dev/sda3': }
+    swift::label_filesystem{ '/dev/sdb3': }
+    swift::mount_filesystem{ '/dev/sda3': }
+    swift::mount_filesystem{ '/dev/sdb3': }
 }
 
 # mw1001-1016 are jobrunners (precise)
