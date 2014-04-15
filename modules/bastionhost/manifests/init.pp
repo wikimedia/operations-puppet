@@ -2,8 +2,6 @@
 class bastionhost {
     system::role { "bastionhost": description => "Bastion" }
 
-    require mysql_wmf::client
-
     include sudo::appserver
 
     package { "irssi":
