@@ -39,6 +39,11 @@ class apt {
         pin      => 'release o=Wikimedia',
         priority => 1001,
     }
+    apt::pin { 'openjdk-7':
+        package  => 'openjdk-7*',
+        pin      => 'release o=Ubuntu',
+        priority => 1002,
+    }
 
     $http_proxy = "http://webproxy.${::site}.wmnet:8080"
 
