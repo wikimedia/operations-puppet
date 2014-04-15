@@ -106,4 +106,7 @@ class base::monitoring::host($contact_group = 'admins') {
         description  => 'check configured eth',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_eth',
     }
+    nrpe::monitor_service { 'check_dhclient',
+        description  => 'check if dhclient is running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
 }
