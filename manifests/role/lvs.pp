@@ -5,7 +5,7 @@
 class role::lvs::balancer {
     system::role { "role::lvs::balancer": description => "LVS balancer" }
 
-    $rp_args = inline_template('<%= @interfaces.split(",").map{|x| "net.ipv4.conf.#{x}.rp_filter=0"}.join(",") %>')
+    $rp_args = inline_template('<%= @interfaces.split(",").map{|x| "net.ipv4.conf.#{x.gsub("_","/")}.rp_filter=0" if !x.start_with?("lo") }.compact.join(",") %>')
     nrpe::monitor_service { 'check_rp_filter_disabled':
         description  => 'Check rp_filter disabled',
         nrpe_command => "/usr/lib/nagios/plugins/check_sysctl ${rp_args}",
