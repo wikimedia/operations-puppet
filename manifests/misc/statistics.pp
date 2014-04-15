@@ -87,7 +87,6 @@ class misc::statistics::base {
 
     # Manually set a list of statistics servers.
     $servers = [
-        'stat1.wikimedia.org',
         'stat1001.wikimedia.org',
         'stat1002.eqiad.wmnet',
         'stat1003.wikimedia.org',

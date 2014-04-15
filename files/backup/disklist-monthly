@@ -1,5 +1,4 @@
 mchenry.wikimedia.org   /root default
-stat1.wikimedia.org     /home default
-stat1.wikimedia.org     /a/eventlogging default
 stat1002.eqiad.wmnet    /home default
 stat1002.eqiad.wmnet    /a/eventlogging default
+stat1003.wikimedia.org  /home default
