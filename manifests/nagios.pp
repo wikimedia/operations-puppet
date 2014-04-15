@@ -1,7 +1,6 @@
 # nagios.pp
 
 import "generic-definitions.pp"
-import "decommissioning.pp"
 
 $nagios_config_dir = '/etc/nagios'
 
