@@ -1079,7 +1079,6 @@ node 'gallium.wikimedia.org' {
 
     include standard
     include contint::firewall
-    include contint::android-sdk
     include role::ci::master
     include role::ci::slave
     include role::ci::testswarm
