@@ -309,10 +309,10 @@ node 'bast4001.wikimedia.org' {
     include standard
     include admins::roots
     include misc::management::ipmi
-    include role::installserver::tftp-server
+    include role::installserver::secondary
 
     # TODO: should have bastionhost class and it should open ssh access
-    # but it is ready yet. Fix and remove this. tftp-server includes
+    # but it is ready yet. Fix and remove this. installserver includes
     # base::firewall and policy is set to DROP
     ferm::service { 'ssh':
         proto   => 'tcp',
@@ -1125,13 +1125,13 @@ node 'hooft.esams.wikimedia.org' {
     }
 
     include standard
-    include role::installserver::tftp-server
+    include role::installserver::secondary
     include admins::roots
     include admins::mortals
     include admins::restricted
 
     # TODO: 2013-12-13. rsync is an unpuppetized service on hooft. Ferms is
-    # applied through role::installserver::tftp-server and policy is DROP.
+    # applied through role::installserver::secondary and policy is DROP.
     # Temporarily opening access. Must puppetize properly
     ferm::service { 'rsync':
         proto => 'tcp',

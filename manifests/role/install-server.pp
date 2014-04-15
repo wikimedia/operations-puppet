@@ -1,6 +1,6 @@
 # Class: role::installserver
 #
-# A WMF role class used to install all the install-server stuff
+# A role class used to install all the install-server stuff
 #
 # Parameters:
 #
@@ -27,7 +27,7 @@
 
 class role::installserver {
     system::role { 'role::install-server':
-        description => 'WMF Install server. APT repo, Forward Caching, TFTP, \
+        description => 'Install server. APT repo, Forward Caching, TFTP, \
                         DHCP and Web server',
     }
 
@@ -77,6 +77,8 @@ class role::installserver {
             ]
     backup::set { $sets : }
 
+    # FIXME: temporary, until url-downloader gets migrated to Squid 3.x (RT #7284)
+    # and thus we can remove our custom squid 2.x package.
     # pin package to the default, Ubuntu version, instead of our own
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
         $pinned_packages = [
@@ -110,28 +112,30 @@ class role::installserver {
     }
 }
 
-# Class: role::install-server::tftp-server
+# Class: role::install-server::secondary
 #
-# A WMF role class used to install all the install-server TFTP stuff
+# A role class used to install a secondary install-server, used for example at
+# caching PoPs. Includes a TFTP server and a forward caching proxy.
 #
 # Parameters:
 #
 # Actions:
-#       Install and configure all needed software to have an installation server
-#       TFTP server ready
+#       Install and configure all needed software to have a secondary
+#       installation server ready
 #
 # Requires:
 #
 #   Class['install-server::tftp-server']
+#   Class['install-server::caching-proxy']
 #   Class['base::firewall']
 #   Define['ferm::rule']
 #
 # Sample Usage:
-#       include role::installserver::tftp-server
+#       include role::installserver::secondary
 
-class role::installserver::tftp-server {
-    system::role { 'role::install-server::tftp-server':
-        description => 'WMF TFTP server',
+class role::installserver::secondary {
+    system::role { 'role::install-server::secondary':
+        description => 'Secondary install server (TFTP, Caching proxy)',
     }
 
     include base::firewall
@@ -139,5 +143,39 @@ class role::installserver::tftp-server {
 
     ferm::rule { 'tftp':
         rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
+    }
+
+    include install-server::caching-proxy
+    ferm::rule { 'proxy':
+        rule => 'proto tcp dport 8080 { saddr $ALL_NETWORKS ACCEPT; }'
+    }
+
+    # Monitoring
+    monitor_service { 'squid':
+        description   => 'Squid',
+        check_command => 'check_tcp!8080',
+    }
+
+    # FIXME: not DRY at all but temporary, see above
+    # pin package to the default, Ubuntu version, instead of our own
+    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
+        $pinned_packages = [
+                            'squid3',
+                            'squid-common3',
+                            'squid-langpack',
+                        ]
+        $before_package = 'squid3'
+    } else {
+        $pinned_packages = [
+                            'squid',
+                            'squid-common',
+                            'squid-langpack',
+                        ]
+        $before_package = 'squid'
+    }
+    apt::pin { $pinned_packages:
+        pin      => 'release o=Ubuntu',
+        priority => '1001',
+        before   => Package[$before_package],
     }
 }
