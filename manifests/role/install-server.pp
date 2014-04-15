@@ -33,9 +33,14 @@ class role::installserver {
 
     include base::firewall
     include backup::host
-    include install-server::ubuntu-mirror
     include install-server::apt-repository
     include install-server::preseed-server
+
+    include install-server::ubuntu-mirror
+    nrpe::monitor_service {'check_apt_mirror':
+        description  => 'Ubuntu mirror in sync with upstream',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror'
+    }
 
     include install-server::tftp-server
     ferm::rule { 'tftp':
