@@ -3823,6 +3823,7 @@ class admins::jenkins {
     include jenkins::group
 
     include accounts::aaron
+    include accounts::bd808
     include accounts::csteipp
     include accounts::demon
     include accounts::dsc #account disabled
