@@ -144,6 +144,7 @@ class toollabs::exec_environ {
         'python-launchpadlib',
         'python-lxml',                 # Bug #59083.
         'python-magic',                # Bug #60211.
+        'python-mwparserfromhell',     # Bug #63539
         'python-mysql.connector',
         'python-mysqldb',
         'python-newt',
