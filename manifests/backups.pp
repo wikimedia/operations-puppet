@@ -10,6 +10,16 @@ define backup::set {
             fileset     => $name,
             jobdefaults => $jobdefaults,
         }
+
+        $motd_content = "Backed up on this host: $name\n"
+        @file { "/etc/update-motd.d/06-backups-${name}":
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => $motd_content,
+            tag     => 'backup-motd',
+        }
     }
 }
 
@@ -33,6 +43,7 @@ class backup::host($pool='production') {
     Bacula::Client::Job <| |> {
         require => Class['bacula::client'],
     }
+    File <| tag == 'backup-motd' |>
 
     # If the machine includes base::firewall then let internal servers
     # connect to us
