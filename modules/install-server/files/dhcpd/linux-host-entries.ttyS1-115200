@@ -782,11 +782,6 @@ host db77 {
 	fixed-address db77.pmtpa.wmnet;
 }
 
-host db78 {
-	hardware ethernet d4:ae:52:88:cf:16;
-	fixed-address db78.pmtpa.wmnet;
-}
-
 host db1001 {
 	hardware ethernet 78:2b:cb:03:68:61;
 	fixed-address db1001.eqiad.wmnet;

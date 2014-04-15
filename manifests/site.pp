@@ -2934,7 +2934,6 @@ node default {
 #
 # barium.frack.eqiad.wmnet
 # boron.frack.eqiad.wmnet
-# db78.pmtpa.wmnet
 # db1008.frack.eqiad.wmnet
 # db1025.frack.eqiad.wmnet
 # indium.frack.eqiad.wmnet
