@@ -971,6 +971,7 @@ node 'fenari.wikimedia.org' {
 
     include base
     include role::applicationserver::maintenance
+    include sudo::appserver
     include subversion::client
     include nfs::netapp::home
     include admins::roots
