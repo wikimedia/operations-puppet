@@ -42,6 +42,11 @@
 #       to undef meaning don't set it.
 # - $rack: rack this node is on.  Can be used for allocation awareness.
 #       Defaults to undef meaning don't set it.
+# - $unicast_hosts: hosts to seed Elasticsearch's unicast discovery mechanism.
+#       In an environment without reliable multicast (OpenStack) add all the
+#       hosts in the cluster to this list.  Elasticsearch will still use
+#       multicast discovery but this will keep it from getting lost if none of
+#       its pings reach other servers.
 #
 # == Sample usage:
 #
@@ -62,7 +67,8 @@ class elasticsearch($cluster_name,
                     $recover_after_time = '1s',
                     $awareness_attributes = undef,
                     $row = undef,
-                    $rack = undef) {
+                    $rack = undef,
+                    $unicast_hosts = undef) {
 
     include ::elasticsearch::packages
 
