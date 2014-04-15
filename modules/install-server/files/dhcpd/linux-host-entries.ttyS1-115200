@@ -717,11 +717,6 @@ host dataset1001 {
 	fixed-address dataset1001.wikimedia.org;
 }
 
-host deleteme {
-	hardware ethernet 78:2b:cb:2d:fa:e6;
-	fixed-address deleteme.wikimedia.org;
-}
-
 host db48 {
 	hardware ethernet 78:2b:cb:6b:dd:4c;
 	fixed-address db48.pmtpa.wmnet;
