@@ -858,7 +858,9 @@ node 'dobson.wikimedia.org' {
                     '69.31.13.207',
                     '72.167.54.201'
         ],
-        peers   => [ 'linne.wikimedia.org' ],
+        peers   => [ 'linne.wikimedia.org',
+                     'eeden.esams.wikimedia.org',
+                     'rubidium.wikimedia.org' ],
     }
 
     class { 'dns::recursor':
@@ -881,6 +883,17 @@ node 'eeden.esams.wikimedia.org' {
         interface => 'eth0',
     }
     include role::authdns::ns2
+    class { 'ntp::server':
+        servers => [ '173.9.142.98',
+                    '66.250.45.2',
+                    '169.229.70.201',
+                    '69.31.13.207',
+                    '72.167.54.201'
+        ],
+        peers   => [ 'dobson.wikimedia.org'.
+                     'rubidium.wikimedia.org',
+                     'linne.wikimedia.org' ],
+    }
 }
 
 node 'ekrem.wikimedia.org' {
@@ -1490,7 +1503,9 @@ node 'linne.wikimedia.org' {
                     '208.75.88.4',
                     '75.144.70.35',
         ],
-        peers   => [ 'dobson.wikimedia.org' ],
+        peers   => [ 'dobson.wikimedia.org',
+                     'rubidium.wikimedia.org',
+                     'eeden.esams.wikimedia.org' ],
     }
 }
 
@@ -1724,6 +1739,17 @@ node 'rubidium.wikimedia.org' {
         interface => 'eth0',
     }
     include role::authdns::ns0
+    class { 'ntp::server':
+        servers => [ '173.9.142.98',
+                    '66.250.45.2',
+                    '169.229.70.201',
+                    '69.31.13.207',
+                    '72.167.54.201'
+        ],
+        peers   => [ 'dobson.wikimedia.org',
+                     'eeden.esams.wikimedia.org',
+                     'linne.wikimedia.org' ],
+    }
 }
 
 node 'mchenry.wikimedia.org' {
