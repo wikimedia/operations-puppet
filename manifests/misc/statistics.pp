@@ -87,7 +87,6 @@ class misc::statistics::base {
 
     # Manually set a list of statistics servers.
     $servers = [
-        'stat1.wikimedia.org',
         'stat1001.wikimedia.org',
         'stat1002.eqiad.wmnet',
         'stat1003.wikimedia.org',
@@ -569,10 +568,6 @@ class misc::statistics::rsync::jobs::eventlogging {
         source      => "vanadium.eqiad.wmnet::eventlogging/archive/*.gz",
         destination => "${working_path}/eventlogging/archive",
     }
-
-    $sets = [ 'a-eventlogging', 'home', ]
-    include backup::host
-    backup::set { $sets : }
 }
 
 # Define: misc::statistics::rsync_job

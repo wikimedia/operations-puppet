@@ -5,6 +5,9 @@ class role::statistics {
 		backup::client,  # amanda backups
 		misc::statistics::base,
 		base::packages::emacs
+
+		include backup::host
+		backup::set { 'home' : }
 }
 
 class role::statistics::cruncher inherits role::statistics {
@@ -61,4 +64,7 @@ class role::statistics::private inherits role::statistics {
 		misc::statistics::packages::java,
 		misc::statistics::rsync::jobs::webrequest,
 		misc::statistics::rsync::jobs::eventlogging
+
+		# backup eventlogging logs
+		backup::set { 'a-eventlogging' : }
 }

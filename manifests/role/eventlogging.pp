@@ -140,7 +140,7 @@ class role::eventlogging {
     }
 
     $backup_destinations = $::realm ? {
-        production => [ 'stat1.wikimedia.org', 'stat1002.eqiad.wmnet' ],
+        production => [  'stat1002.eqiad.wmnet', 'stat1003.wikimedia.org' ],
         labs       => false,
     }
 
