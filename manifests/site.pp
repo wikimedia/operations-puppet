@@ -1066,7 +1066,7 @@ node 'fenari.wikimedia.org' {
     include generic::wikidev-umask
     include misc::dsh
     include ssh::hostkeys-collect
-
+    include mysql_wmf::client
     install_certificate{ 'noc.wikimedia.org': }
 }
 
