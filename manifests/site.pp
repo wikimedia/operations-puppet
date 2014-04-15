@@ -1862,13 +1862,11 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
     swift::mount_filesystem{ '/dev/sdn3': }
 }
 
-node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
-    $cluster = 'ceph'
+node /^ms-fe300[1-2]\.esams\.wmnet$/ {
+    include standard
+}
 
-    if $::hostname =~ /^ms-be300[12]$/ {
-        $ganglia_aggregator = true
-    }
-
+node /^ms-be300[1-4]\.esams\.wmnet$/ {
     include standard
 }
 
