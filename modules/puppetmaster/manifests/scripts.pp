@@ -19,11 +19,6 @@ class puppetmaster::scripts {
             group   => 'root',
             mode    => '0555',
             source  => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb';
-        '/usr/local/bin/decom_servers.sh':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            content => template('puppetmaster/decom_servers.sh.erb');
         '/usr/local/bin/puppet-merge':
             owner   => 'root',
             group   => 'root',
@@ -40,19 +35,4 @@ class puppetmaster::scripts {
         minute  => 27,
     }
 
-    # Disable the decomserver cron if not running in production
-    # or if running on the production puppetmaster.
-    if (($::realm != 'production') or ($puppetmaster::config['thin_storeconfigs'] != true)) {
-      $decomservercron = absent
-    }
-    else {
-      $decomservercron = present
-    }
-
-    cron { 'decomservers':
-        ensure  => $decomservercron,
-        command => '/usr/local/bin/decom_servers.sh',
-        user    => root,
-        minute  => 17,
-    }
 }
