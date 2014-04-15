@@ -1,0 +1,37 @@
+#!/bin/sh
+# from https://wiki.ubuntu.com/Mirrors/Monitoring%20Scripts
+
+. /usr/lib/nagios/plugins/utils.sh
+
+# Where the archive is.
+TO=/srv/ubuntu
+HOSTNAME=$(hostname -f)
+STAMP=${TO}/project/trace/${HOSTNAME}
+WARN=6
+CRITICAL=12
+
+while [ $# -gt 0 ]
+do
+        case "$1" in
+                -c|--critical)  CRITICAL=$2; shift; shift;;
+                -w|--warn)      WARN=$2; shift; shift;;
+                --)     shift; break;;
+                -*)     echo "You lost me at '$1'"; exit 1;;
+                *)      STAMP=$1; shift; break;;
+        esac
+done
+
+HOUR=3600 #seconds
+NOW=$(date +%s) # Unix time
+STAMPAGE=$(( $NOW - $(stat -c %Y ${STAMP}) ))
+STAMPHOURS=$(( $STAMPAGE / $HOUR ))
+
+echo "$STAMP is over $STAMPHOURS hours old."
+
+if [ $STAMPHOURS -lt $WARN ]; then
+        exit $STATE_OK
+elif [ $STAMPHOURS -lt $CRITICAL ]; then
+        exit $STATE_WARNING
+else
+        exit $STATE_CRITICAL
+fi
