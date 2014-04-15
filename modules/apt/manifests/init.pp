@@ -40,13 +40,8 @@ class apt {
         priority => 1001,
     }
 
-    $enable_proxy = $::site ? {
-        pmtpa   => present,
-        eqiad   => present,
-        ulsfo   => present,
-        esams   => present,
-        default => absent
-    }
+    $http_proxy = "http://webproxy.${::site}.wmnet:8080"
+
     # This will munge /etc/apt/apt.conf that get's created during installation
     # process (either labs vmbuilder or d-i). Given the ones below exist, it is
     # no longer needed after the installation is over
@@ -64,22 +59,22 @@ class apt {
             ensure   => absent,
             priority => '80',
             key      => 'Acquire::http::Proxy',
-            value    => 'http://carbon.wikimedia.org:8080';
+            value    => $http_proxy;
         'security-ubuntu-proxy':
-            ensure   => $enable_proxy,
+            ensure   => present,
             priority => '80',
             key      => 'Acquire::http::Proxy::security.ubuntu.com',
-            value    => 'http://carbon.wikimedia.org:8080';
+            value    => $http_proxy;
         'ubuntu-cloud-archive-proxy':
-            ensure   => $enable_proxy,
+            ensure   => present,
             priority => '80',
             key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
-            value    => 'http://carbon.wikimedia.org:8080';
+            value    => $http_proxy;
         'old-releases-proxy':
-            ensure   => $enable_proxy,
+            ensure   => present,
             priority => '80',
             key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
-            value    => 'http://carbon.wikimedia.org:8080';
+            value    => $http_proxy;
     }
 
     # apt-get should not install recommended packages
