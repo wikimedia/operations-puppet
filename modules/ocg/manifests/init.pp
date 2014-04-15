@@ -33,11 +33,10 @@ class ocg (
         system     => true,
     }
 
-    # Can't use Node installed from Apt until we have 0.10 in the repo
-    #package { 'nodejs':
-    #    ensure => present,
-    #    notify => Service['ocg'],
-    #}
+    package { 'nodejs':
+        ensure => present,
+        notify => Service['ocg'],
+    }
 
     package {
         [
