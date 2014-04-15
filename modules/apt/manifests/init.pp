@@ -39,6 +39,15 @@ class apt {
         pin      => 'release o=Wikimedia',
         priority => 1001,
     }
+    # Prefer Ubuntu's openjdk-7 packages by default.
+    # This allows us to keep custom versions of this
+    # package in Wikimedia apt without forcing those
+    # versions to be installed by default.
+    apt::pin { 'openjdk-7':
+        package  => 'openjdk-7*',
+        pin      => 'release o=Ubuntu',
+        priority => 1002,
+    }
 
     $enable_proxy = $::site ? {
         pmtpa   => present,
