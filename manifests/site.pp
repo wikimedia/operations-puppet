@@ -2800,22 +2800,6 @@ node 'virt2.pmtpa.wmnet' {
     include role::nova::api
 }
 
-node /virt([5-9]|1[0-5]).pmtpa.wmnet/ {
-    $cluster = 'virt'
-    if $::hostname =~ /^virt5$/ {
-
-        $ganglia_aggregator = true
-    }
-
-    $openstack_version = 'folsom'
-    $use_neutron = false
-
-    include admins::labs
-
-    include standard
-    include role::nova::compute
-}
-
 node 'labnet1001.eqiad.wmnet' {
     $cluster = 'virt'
     $openstack_version = 'havana'
