@@ -19,6 +19,11 @@ class role::ci::master {
     include ::jenkins,
         contint::proxy_jenkins
 
+    # Compress old console log (bug 63939)
+    class { 'jenkins::maintenance::compressconsolelogs':
+        require => Class['jenkins']
+    }
+
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins user':
         homedir => '/var/lib/jenkins',
