@@ -1697,22 +1697,22 @@ host ms-be1015 {
 
 host ms-be3001 {
 	hardware ethernet 24:B6:FD:F6:13:AC;
-	fixed-address ms-be3001.esams.wikimedia.org;
+	fixed-address ms-be3001.esams.wmnet;
 }
 
 host ms-be3002 {
 	hardware ethernet 24:B6:FD:F6:17:3C;
-	fixed-address ms-be3002.esams.wikimedia.org;
+	fixed-address ms-be3002.esams.wmnet;
 }
 
 host ms-be3003 {
 	hardware ethernet 24:B6:FD:F6:17:38;
-	fixed-address ms-be3003.esams.wikimedia.org;
+	fixed-address ms-be3003.esams.wmnet;
 }
 
 host ms-be3004 {
 	hardware ethernet 24:B6:FD:F6:1C:3C;
-	fixed-address ms-be3004.esams.wikimedia.org;
+	fixed-address ms-be3004.esams.wmnet;
 }
 
 # ms-be3004's primary NIC is broken and can't PXE(?). The secondary NIC works
@@ -1720,7 +1720,7 @@ host ms-be3004 {
 # allow for this strange mode of booting the installer.
 host ms-be3004-B {
 	hardware ethernet 24:B6:FD:F6:1C:3D;
-	fixed-address ms-be3004.esams.wikimedia.org;
+	fixed-address ms-be3004.esams.wmnet;
 }
 
 host ms-fe1 {
@@ -1765,12 +1765,12 @@ host ms-fe1004 {
 
 host ms-fe3001 {
 	hardware ethernet 24:B6:FD:F5:B2:84;
-	fixed-address ms-fe3001.esams.wikimedia.org;
+	fixed-address ms-fe3001.esams.wmnet;
 }
 
 host ms-fe3002 {
 	hardware ethernet 24:B6:FD:F5:B3:E4;
-	fixed-address ms-fe3002.esams.wikimedia.org;
+	fixed-address ms-fe3002.esams.wmnet;
 }
 
 host mexia {
