@@ -618,11 +618,6 @@ node /^db(68)\.pmtpa\.wmnet/ {
     }
 }
 
-## x1 shard
-node /^db(38)\.pmtpa\.wmnet/ {
-    include role::coredb::x1
-}
-
 ## m1 shard (new)
 node /^db(35)\.pmtpa\.wmnet/ {
     class { 'role::coredb::m1':

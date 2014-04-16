@@ -65,10 +65,10 @@ class role::coredb::config {
 			'no_master' => [ 'db1007', 'db1041' ]
 		},
 		'x1' => {
-			'hosts' => { 'pmtpa' => [ 'db38' ],
+			'hosts' => {
 				'eqiad' => [ 'db1029', 'db1030', 'db1031' ] },
 			'primary_site' => $::mw_primary,
-			'masters' => { 'pmtpa' => 'db38', 'eqiad' => 'db1029' },
+			'masters' => { 'eqiad' => 'db1029' },
 			'snapshot' => [ 'db1031' ],
 			'no_master' => []
 		},
