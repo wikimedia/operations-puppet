@@ -711,7 +711,6 @@ class openstack::neutron-nethost(
             # Disable RA
             'net.ipv6.conf.all.accept_ra'     => 0,
         },
-        priority => 50,
     }
 }
 

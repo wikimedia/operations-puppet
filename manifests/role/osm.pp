@@ -17,7 +17,6 @@ class role::osm::common {
             # not the safest idea yet.
             'kernel.shmmax' => 8388608000,
         },
-        priority => 60,
     }
 }
 
