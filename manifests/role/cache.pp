@@ -1029,12 +1029,10 @@ class role::cache {
             production => 'zero',
             labs       => 'zero-beta',
         }
-        varnish::netmapper_update {
-            'zero.json': url => "http://noc.wikimedia.org/~bblack/${zero_realm}/zero.json";
-        }
 
-        varnish::netmapper_update {
-            'proxies.json': url => "http://noc.wikimedia.org/~bblack/${zero_realm}/proxies.json";
+        class { "varnish::zero_update":
+            site => 'https://zero.wikimedia.org',
+            authfile => '/private/zero.auth', # XXX update this to something sourced from private...
         }
 
         varnish::instance { "mobile-backend":
