@@ -8,6 +8,7 @@ import re
 import urllib
 import os
 import json
+import pwd
 import salt
 
 
@@ -189,6 +190,38 @@ def deployment_server_init():
                 status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
                                                  umask=002,
                                                  cwd=config['location'])
+
+                # http will likely be used as deploy targets' remote transport.
+                # submodules don't know how to work properly via http
+                # remotes unless info/refs and other files are up to date.
+                # This will call git update-server-info for each of the
+                # checkouts inside of the .git/modules/<modulename> directory.
+                cmd = ("""git submodule foreach --recursive """
+                        """'cd $(sed "s/^gitdir: //" .git) && """
+                        """git update-server-info'""")
+
+                status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
+                                                 umask=002,
+                                                 cwd=config['location'])
+
+                # Install a post-checkout hook to run update-server-info
+                # for each submodule.  This command needs to be run
+                # every time the repository is changed.
+                hook_directory = os.path.join(config['location'], '.git', 'hooks')
+                post_checkout_path = os.path.join(hook_directory, 'post-checkout')
+                post_checkout = open(post_checkout_path, 'w')
+                post_checkout.write(cmd + "\n")
+                post_checkout.close()
+                os.chmod(post_checkout_path, 775)
+
+                # we should run this on post-commit too, so just symlink
+                # post-commit to post-checkout
+                post_commit_path = os.path.join(hook_directory, 'post-commit')
+                os.symlink(post_checkout_path, post_commit_path)
+                # chown the hooks to the deploy_user
+                deploy_uid = pwd.getpwnam(deploy_user).pw_uid
+                os.chown(post_checkout_path, deploy_uid, -1)
+                os.lchown(post_commit_path, deploy_uid, -1)
             else:
                 cmd = '/usr/bin/git init %s' % (config['location'])
                 status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
