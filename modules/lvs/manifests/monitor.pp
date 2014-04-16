@@ -22,16 +22,6 @@ class lvs::monitor {
     lvs::monitor_service_custom { "search-pool5.svc.eqiad.wmnet": ip_address => "10.2.2.16", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
     lvs::monitor_service_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 
-    # PMTPA
-
-    # FIXME: remove after pmtpa decommissioning
-    lvs::monitor_service_custom { "payments.wikimedia.org":
-        ip_address => "208.80.155.5",
-        port => 443,
-        check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus",
-        retries => 20
-    }
-
     # EQIAD
     lvs::monitor_service_http_https {
         'text-lb.eqiad.wikimedia.org':
