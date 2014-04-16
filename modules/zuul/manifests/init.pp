@@ -59,11 +59,8 @@ class zuul (
     ensure => present,
   }
 
-  # We have packaged the python voluptuous module under
-  # operations/debs/python-voluptuous. Zuul does not work
-  # AT ALL with version 0.7 so make sure we have 0.6.x
   package { 'python-voluptuous':
-    ensure => '0.6.1-1~wmf1',
+    ensure => present,
   }
 
   # Used to be in /var/lib/git/zuul but /var/lib/git can be used
