@@ -1,4 +1,8 @@
 define deployment::target($ensure=present) {
+    # Need packages before deploy.sync_all
+    # is run.  (git, git-fat, etc.)
+    require deployment::packages
+
     salt::grain { "deployment_target_${name}":
         ensure => $ensure,
         grain  => 'deployment_target',
@@ -34,5 +38,4 @@ define deployment::target($ensure=present) {
             ];
         }
     }
-    include deployment::packages
 }
