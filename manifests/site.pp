@@ -2779,18 +2779,6 @@ node 'virt0.wikimedia.org' {
     include backup::client
 }
 
-node 'virt2.pmtpa.wmnet' {
-    $cluster           = 'virt'
-    $openstack_version = 'folsom'
-    $use_neutron = false
-
-    include admins::labs
-
-    include standard
-    include role::nova::network
-    include role::nova::api
-}
-
 node 'labnet1001.eqiad.wmnet' {
     $cluster = 'virt'
     $openstack_version = 'havana'

@@ -3320,11 +3320,6 @@ host virt0 {
 	fixed-address virt0.wikimedia.org;
 }
 
-host virt2 {
-	hardware ethernet f0:4d:a2:0b:3e:2d;
-	fixed-address virt2.pmtpa.wmnet;
-}
-
 host labsudb1 {
 	hardware ethernet f0:4d:a2:0b:33:f2;
 	fixed-address labsudb1.pmtpa.wmnet;
