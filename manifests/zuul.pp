@@ -17,7 +17,6 @@ class zuulwikimedia {
         $config_git_branch='master',
         $git_branch='master',
         $git_dir='/var/lib/zuul/git',
-        $push_change_refs = false,
         $statsd_host = ''
     ) {
 
@@ -40,7 +39,6 @@ class zuulwikimedia {
             zuul_url             => $zuul_url,
             git_branch           => $git_branch,
             git_dir              => $git_dir,
-            push_change_refs     => $push_change_refs,
             statsd_host          => $statsd_host,
         }
 
