@@ -1,5 +1,5 @@
 # manifests/role/bugzilla.pp
-
+# role for a Bugzilla server
 class role::bugzilla {
 
     system::role { 'role::bugzilla': description => 'Bugzilla server' }
