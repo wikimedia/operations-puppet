@@ -87,7 +87,8 @@ class imagescaler::packages::fonts {
             'ttf-telugu-fonts',
             'ttf-ubuntu-font-family',
             'ttf-wqy-zenhei',
-
+            'ttf-dejavu-core', # bug 63206
+            'ttf-dejavu-extra', # bug 63206
             'xfonts-100dpi',
             'xfonts-75dpi',
             'xfonts-base',
