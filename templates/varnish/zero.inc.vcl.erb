@@ -5,6 +5,7 @@ import header;
 
 sub vcl_init {
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
+	// XXX rename "zero" to "carriers" to match upstream source, after fetcher is updated everywhere
 	netmapper.init("zero", "/var/netmapper/zero.json", 89);
 	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
 }
