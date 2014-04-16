@@ -39,7 +39,6 @@ class role::zuul::labs {
         config_git_branch    => 'labs',
         git_branch           => 'labs',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
-        push_change_refs     => false,
         statsd_host          => '',
     }
 
@@ -83,7 +82,6 @@ class role::zuul::production {
         config_git_branch    => 'master',
         git_branch           => 'master',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
-        push_change_refs     => false,
         statsd_host          => 'statsd.eqiad.wmnet',
     }
 
