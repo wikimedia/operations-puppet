@@ -115,6 +115,8 @@ class misc::statistics::packages {
         'imagemagick',
         # halfak wants make to manage dependencies
         'make',
+        # for checking up on eventlogging
+        'zpubsub',
     ]:
         ensure => latest;
     }
