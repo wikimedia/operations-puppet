@@ -189,6 +189,17 @@ def deployment_server_init():
                 status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
                                                  umask=002,
                                                  cwd=config['location'])
+
+                # http will likely be used as deploy targets' remote transport.
+                # submodules don't know how to work properly via http
+                # remotes unless info/refs and other files are up to date.
+                # This will call git update-server-info for each of the
+                # checkouts inside of the .git/modules/<modulename> directory.
+                cmd = 'git submodule foreach --recursive \'cd ' + \
+                    '$(sed "s/^gitdir: //" .git) && git update-server-info\''
+                status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
+                                                 umask=002,
+                                                 cwd=config['location'])
             else:
                 cmd = '/usr/bin/git init %s' % (config['location'])
                 status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
