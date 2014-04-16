@@ -2933,6 +2933,11 @@ host osm-db1002 {
 	fixed-address osm-db1002.eqiad.wmnet;
 }
 
+host osmium {
+	hardware ethernet F0:1F:AF:E6:72:40;
+	fixed-address osmium.eqiad.wmnet;
+}
+
 host oxygen {
 	hardware ethernet 78:2b:cb:08:a0:e7;
 	fixed-address oxygen.wikimedia.org;
