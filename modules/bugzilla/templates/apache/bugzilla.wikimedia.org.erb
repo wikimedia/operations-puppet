@@ -52,6 +52,7 @@
 	SSLProtocol -ALL +SSLv3 +TLSv1
 	SSLCipherSuite <%= scope.lookupvar('bugzilla::apache::cipher_suite') %>
 	SSLHonorCipherOrder on
+	SSLCompression Off
 	SSLCertificateFile /etc/ssl/certs/<%= scope.lookupvar('bugzilla::apache::svc_name') %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= scope.lookupvar('bugzilla::apache::svc_name') %>.key
 	SSLCACertificatePath /etc/ssl/certs/
