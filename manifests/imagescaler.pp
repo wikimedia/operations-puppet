@@ -79,6 +79,8 @@ class imagescaler::packages::fonts {
             'ttf-devanagari-fonts',
             'ttf-gujarati-fonts',
             'ttf-kannada-fonts',
+            'ttf-kochi-gothic', # bug 64002
+            'ttf-kochi-mincho', # bug 64002
             'ttf-lyx', # 'Computer Modern' - bug 38299
             'ttf-malayalam-fonts',
             'ttf-oriya-fonts',
