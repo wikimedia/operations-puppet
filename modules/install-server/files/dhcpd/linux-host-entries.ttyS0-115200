@@ -115,41 +115,6 @@ host virt1009 {
 	fixed-address virt1009.eqiad.wmnet;
 }
 
-host virt5 {
-	hardware ethernet 88:43:e1:c2:86:40;
-	fixed-address virt5.pmtpa.wmnet;
-}
-
-host virt6 {
-	hardware ethernet 88:43:E1:C2:57:EE;
-	fixed-address virt6.pmtpa.wmnet;
-}
-
-host virt7 {
-	hardware ethernet 88:43:E1:C2:77:DE;
-	fixed-address virt7.pmtpa.wmnet;
-}
-
-host virt8 {
-	hardware ethernet 00:22:BD:D3:61:7E;
-	fixed-address virt8.pmtpa.wmnet;
-}
-
-host virt9 {
-	hardware ethernet 00:22:BD:D3:37:E4;
-	fixed-address virt9.pmtpa.wmnet;
-}
-
-host virt10 {
-	hardware ethernet 88:43:E1:C2:5D:AC;
-	fixed-address virt10.pmtpa.wmnet;
-}
-
-host virt11 {
-	hardware ethernet 88:43:E1:C2:4C:56;
-	fixed-address virt11.pmtpa.wmnet;
-}
-
 host virt15 {
 	hardware ethernet 88:43:E1:C2:7B:6C;
 	fixed-address virt15.pmtpa.wmnet;
