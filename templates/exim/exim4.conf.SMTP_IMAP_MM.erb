@@ -1,5 +1,5 @@
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///templates/exim/exim4.conf.SMTP_IMAP_MM.erb
 #####################################################################
 
@@ -9,7 +9,7 @@
 
 # (Not all will be used)
 CONFDIR=/etc/exim4
-WIKI_INTERFACE=<; 208.80.152.133 ; 91.198.174.5 ; 2620:0:862:1::25:1 
+WIKI_INTERFACE=<; 208.80.152.133 ; 91.198.174.5 ; 2620:0:862:1::25:1
 USERDB=/var/vmaildb/user.db
 VMAIL=/var/vmail
 DELIVER=/usr/lib/dovecot/deliver
@@ -34,11 +34,7 @@ OTRS_GROUP=www-data
 
 <% if enable_mail_relay == "primary" or enable_otrs_server == "true" then -%>
 # MySQL lookups (OTRS)
-<% if site == "eqiad" -%>
 hide mysql_servers =  db1048.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db1046.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
-<% else -%>
-hide mysql_servers =  db48.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db49.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
-<% end -%>
 <% end -%>
 
 <% if enable_mail_relay == "primary" then -%>
