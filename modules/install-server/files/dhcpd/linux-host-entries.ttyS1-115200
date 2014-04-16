@@ -2936,6 +2936,8 @@ host osm-db1002 {
 host osmium {
 	hardware ethernet F0:1F:AF:E6:72:40;
 	fixed-address osmium.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host oxygen {
