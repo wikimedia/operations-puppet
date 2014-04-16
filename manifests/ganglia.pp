@@ -299,7 +299,6 @@ class ganglia::collector::config {
                     'SSL cluster esams'              => 'hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org',
                     'Swift pmtpa'                    => 'ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet',
                     'Virtualization cluster eqiad'   => 'labnet1001.eqiad.wmnet virt1000.wikimedia.org',
-                    'Virtualization cluster pmtpa'   => 'virt5.pmtpa.wmnet virt0.wikimedia.org',
                     'Glusterfs cluster pmtpa'        => 'labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet',
                     'MySQL eqiad'                    => 'db1056.eqiad.wmnet db1021.eqiad.wmnet',
                     'LVS loadbalancers eqiad'        => 'lvs1001.wikimedia.org lvs1002.wikimedia.org',
