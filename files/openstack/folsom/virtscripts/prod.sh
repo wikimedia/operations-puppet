@@ -11,7 +11,7 @@ SERVICE_ENDPOINT=http://virt0.wikimedia.org:35357/v2.0/
 SERVICE_TOKEN=<redacted>
 
 # ENDPOINT URLS
-NOVA_PUBLIC_URL="http://virt2.pmtpa.wmnet:8774/v2/\$(tenant_id)s"
+NOVA_PUBLIC_URL="http://labnet1001.eqiad.wmnet:8774/v2/\$(tenant_id)s"
 NOVA_ADMIN_URL=$NOVA_PUBLIC_URL
 NOVA_INTERNAL_URL=$NOVA_PUBLIC_URL
 

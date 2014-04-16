@@ -79,7 +79,7 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
 			"labs" => $::ipaddress_eth0,
 		},
 		api_host => $realm ? {
-			"production" => "virt2.pmtpa.wmnet",
+			"production" => "labnet1001.eqiad.wmnet",
 			"labs" => $::ipaddress_eth0,
 		},
 		api_ip => $realm ? {
@@ -120,7 +120,7 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
 		keystone_auth_protocol => $keystoneconfig["auth_protocol"],
 		keystone_auth_port => $keystoneconfig["auth_port"],
 	}
-	if ( $::hostname == "virt2" ) {
+	if ( $::hostname == "labnet1001" ) {
 		$networkconfig = {
 			network_flat_interface => $realm ? {
 				"production" => "bond1.103",
