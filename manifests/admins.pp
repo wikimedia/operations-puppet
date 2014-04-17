@@ -3921,7 +3921,7 @@ class admins::ldap {
             'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
     ]
 
-    sudo_user { [ 'robla', 'sumanah', 'reedy' ]: privileges => $sudo_privs }
+    sudo_user { [ 'robla', 'reedy' ]: privileges => $sudo_privs }
 
 }
 
