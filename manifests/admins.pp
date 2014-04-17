@@ -908,6 +908,26 @@ class accounts {
         }
     }
 
+    class jkrauska inherits baseaccount {
+        $username = 'jkrauska'
+        $realname = 'Joel Krauska'
+        $uid      = '3874'
+        $enabled  = true
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'jkrauska@wmf-2013-10':
+                ensure  => present,
+                user    => $username,
+                type    => 'ssh-rsa',
+                key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDqrv9BOJmXXCVP3QZfTJ9Nx6H0BVSxk8EM64g9p5/r1j365Doe/gZX5BATskGpV3LVUkzy91ZTSVP7j0TfPplj0iF025BFgDuHUVIy/Jac+qXryIHuH5BdeI9Gz10l+k0tVUFL/MzuOPR9M/jU/40KbdX1m4ezAfNXFmBXoXSpDwy8ft8xxYjFTFSuxvQMprC+je4N+0mtolb3PpmhQCQLB9Ekhjw9jZm1J5uPDqJyplOmFxC0i2dk7MNzQ5OT8Qmw7D50Jg500rQHLzzHeBhgxDQ6ZGpDWnRD93fdFaBCU+8VZIkOIumme6VGyhFWgj1UF30t9gV44qo5+SYff63ni';
+            }
+        }
+    }
+
     class kate inherits baseaccount {
         $username = 'kate'
         $realname = 'River Tarnell'
