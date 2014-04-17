@@ -53,7 +53,7 @@ class role::elasticsearch::config {
             'pmtpa' => '224.2.2.6',
         }
         $master_eligible = $::hostname ? {
-            'elastic1001' => true,
+            'elastic1002' => true,
             'elastic1008' => true,
             'elastic1013' => true,
             default       => false,
