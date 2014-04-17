@@ -101,7 +101,7 @@ class misc::monitoring::views {
     require ganglia::web
 
     misc::monitoring::view::udp2log { 'udp2log':
-        host_regex => 'emery|oxygen|erbium',
+        host_regex => 'oxygen|erbium|gadolinium',
     }
 
     misc::monitoring::view::kafka { 'kafka':

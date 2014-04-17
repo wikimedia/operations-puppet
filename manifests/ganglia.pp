@@ -634,7 +634,7 @@ class ganglia::logtailer {
 # # You can describe the same graphs to add with $items.
 # # $graphs is just a shortcut.  aggregate_graphs in $items
 # # are a bit overly verbose.
-# $host_regex = 'emery|oxygen|gadolinium'
+# $host_regex = 'erbium|oxygen|gadolinium'
 # ganglia::view { 'udp2log':
 #   graphs => [
 #     {

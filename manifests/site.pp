@@ -870,13 +870,11 @@ node 'ekrem.wikimedia.org' {
     include role::ircd
 }
 
-# base_analytics_logging_node is defined in role/logging.pp
-node 'emery.wikimedia.org' inherits 'base_analytics_logging_node' {
-    include generic::higher_min_free_kbytes
+# preparing for decom of emery.
+node 'emery.wikimedia.org' {
     include admins::mortals
     include accounts::milimetric # RT 4312
     include accounts::tnegrin    # RT 5391
-    include role::logging::udp2log::emery
 }
 
 node 'tarin.pmtpa.wmnet' {

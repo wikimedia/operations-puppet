@@ -73,7 +73,7 @@ class misc::blogs::wikimedia {
         monitor       => false,
     }
     # send blog access logs to udp2log instances.
-    varnish::logging { 'emery' :           listener_address => '208.80.152.184' }
+    varnish::logging { 'erbium' :          listener_address => '10.64.32.135',  port => '8419' }
     varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73', port => '8419' }
 
     include backup::host

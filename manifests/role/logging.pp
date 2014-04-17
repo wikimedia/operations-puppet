@@ -1,6 +1,6 @@
 # logging (udp2log) servers
 
-# base node definition from which logging nodes (emery, oxygen, etc)
+# base node definition from which logging nodes (erbium, oxygen, etc)
 # inherit. Note that there is no real node named "base_analytics_logging_node".
 # This is done as a base node primarily so that we can override the
 # $nagios_contact_group variable.
@@ -268,17 +268,6 @@ class role::logging::webstatscollector {
         hour    => 1,
         user    => 'nobody',
         require => Service['webstats-collector'],
-    }
-}
-
-
-# emery is a generic webrequests udp2log host.
-class role::logging::udp2log::emery inherits role::logging::udp2log {
-    # udp2log::instance will ensure this is created
-    $webrequest_log_directory    = "$log_directory/webrequest"
-
-    misc::udp2log::instance { 'emery': 
-        log_directory => $webrequest_log_directory,
     }
 }
 
