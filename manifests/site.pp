@@ -2210,6 +2210,7 @@ node 'silver.wikimedia.org' {
     include groups::wikidev
     include mobile::vumi
     include mobile::vumi::udp2log
+    include role::ldap::operations
 }
 
 node 'sodium.wikimedia.org' {
