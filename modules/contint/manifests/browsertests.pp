@@ -14,12 +14,23 @@ class contint::browsertests(
 
     # Dependencies for qa/browsertests.git
     package { [
-        'ruby-bundler',  # installer for qa/browsertests.git
         'ruby1.9.1-dev', # Bundler compiles gems
-        'rubygems',      # dependency of ruby-bundler
+        'rubygems',
         'phantomjs',     # headless browser
     ]:
         ensure => present
+    }
+
+    # Ubuntu Precise version is too old.  Instead use either:
+    # /srv/deployment/integration/slave-scripts/tools/bundler/bundle
+    # or:
+    # gem1.9.3 install bundle
+    #
+    # See JJB configuration files.
+    package { [
+        'ruby-bundler',
+    ]:
+        ensure => absent
     }
 
     # Set up all packages required for MediaWiki (includes Apache)
