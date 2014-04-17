@@ -1322,26 +1322,6 @@ node 'labsdb1005.eqiad.wmnet' {
     #include role::labs::db::master
 }
 
-node /labstore[12]\.pmtpa\.wmnet/ {
-
-    $site = 'pmtpa'
-    $cluster = 'gluster'
-    $ldapincludes = ['openldap', 'nss', 'utils']
-
-    $ganglia_aggregator = true
-
-    include standard
-    include openstack::project-storage
-
-    class { 'ldap::role::client::labs':
-        ldapincludes => $ldapincludes,
-    }
-
-    if $::hostname =~ /^labstore2$/ {
-        include openstack::project-storage-service
-    }
-
-}
 
 node /labstore[34]\.pmtpa\.wmnet/ {
 

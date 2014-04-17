@@ -1326,16 +1326,6 @@ host iron {
 	fixed-address iron.wikimedia.org;
 }
 
-host labstore1 {
-	hardware ethernet 78:2b:cb:76:1c:d2;
-	fixed-address labstore1.pmtpa.wmnet;
-}
-
-host labstore2 {
-	hardware ethernet 78:2b:cb:75:8e:43;
-	fixed-address labstore2.pmtpa.wmnet;
-}
-
 host labstore3 {
 	hardware ethernet 78:2b:cb:76:1b:45;
 	fixed-address labstore3.pmtpa.wmnet;

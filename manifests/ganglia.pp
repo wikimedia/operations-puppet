@@ -300,7 +300,6 @@ class ganglia::collector::config {
                     'Swift pmtpa'                    => 'ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet',
                     'Virtualization cluster eqiad'   => 'labnet1001.eqiad.wmnet virt1000.wikimedia.org',
                     'Virtualization cluster pmtpa'   => 'virt0.wikimedia.org',
-                    'Glusterfs cluster pmtpa'        => 'labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet',
                     'MySQL eqiad'                    => 'db1056.eqiad.wmnet db1021.eqiad.wmnet',
                     'LVS loadbalancers eqiad'        => 'lvs1001.wikimedia.org lvs1002.wikimedia.org',
                     'Miscellaneous eqiad'            => 'carbon.wikimedia.org ms1004.eqiad.wmnet',
