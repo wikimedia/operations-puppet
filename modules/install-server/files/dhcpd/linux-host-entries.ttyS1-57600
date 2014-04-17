@@ -18,11 +18,6 @@ host fenari {
 	fixed-address fenari.wikimedia.org;
 }
 
-host formey {
-	hardware ethernet A4:BA:DB:0A:44:E4;
-	fixed-address formey.wikimedia.org;
-}
-
 host linne {
 	hardware ethernet 00:1e:c9:ea:ab:a7;
 	fixed-address linne.wikimedia.org;

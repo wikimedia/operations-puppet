@@ -6,7 +6,7 @@
 
 # NOTE: To choose the UID for a new user please lookup
 # the existing UID in (labs) LDAP and use that.
-# currently you do this on formey, example:
+# currently you do this on silver, example:
 #
 # ldaplist -l passwd someuser
 # ...
@@ -3910,7 +3910,7 @@ class admins::parsoid {
 }
 
 # permissions and users for LDAP operations
-# (formerly in site.pp directly in node formey)
+# (silver in site.pp directly in node silver)
 class admins::ldap {
 
     $sudo_privs = [

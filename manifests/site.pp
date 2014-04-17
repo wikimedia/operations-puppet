@@ -991,16 +991,6 @@ node 'fluorine.eqiad.wmnet' {
 
 }
 
-node 'formey.wikimedia.org' {
-
-    include standard
-    include webserver::php5
-    include backup::client
-    include role::deployment::test
-    include role::ldap::operations
-
-}
-
 # gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
 node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
