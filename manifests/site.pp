@@ -1455,17 +1455,17 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         $ganglia_aggregator = true
     }
 
-    include role::lvs::balancer
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
     # lvs100[25] are LVS balancers for the eqiad recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
     #   (chromium and hydrogen)
     if $::hostname =~ /^lvs100[25]$/ {
         $nameservers_prefix = [ '208.80.154.157', '208.80.154.50' ]
+    }
+
+    include role::lvs::balancer
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
     }
 
     include lvs::configuration
