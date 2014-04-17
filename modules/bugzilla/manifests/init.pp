@@ -53,6 +53,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
         svc_name        => 'bugzilla.wikimedia.org',
         attach_svc_name => 'bug-attachment.wikimedia.org',
         docroot         => '/srv/org/wikimedia/bugzilla/',
+        cipher_suite    => 'AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA',
     }
 
     # Perl modules needed by Bugzilla
