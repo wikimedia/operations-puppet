@@ -3763,7 +3763,7 @@ class admins::mortals {
     include accounts::robla
     include accounts::spage
     include accounts::ssastry # RT 5512
-    include accounts::sumanah # RT 3752
+    include accounts::sumanah # RT 3752, revoked
     include accounts::tfinc # move from roots RT 5485
     include accounts::yurik # RT 4835, RT 5069
     include accounts::zak # access revoked
@@ -3921,7 +3921,7 @@ class admins::ldap {
             'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
     ]
 
-    sudo_user { [ 'robla', 'sumanah', 'reedy' ]: privileges => $sudo_privs }
+    sudo_user { [ 'robla', 'reedy' ]: privileges => $sudo_privs }
 
 }
 
