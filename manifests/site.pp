@@ -619,13 +619,6 @@ node /^db(68)\.pmtpa\.wmnet/ {
     }
 }
 
-## m1 shard (new)
-node /^db(35)\.pmtpa\.wmnet/ {
-    class { 'role::coredb::m1':
-        mariadb => true,
-    }
-}
-
 ## m2 shard
 node /^db(48)\.pmtpa\.wmnet/ {
     include role::coredb::m2
