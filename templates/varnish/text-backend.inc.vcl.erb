@@ -61,7 +61,9 @@ sub vcl_miss {
 
 sub vcl_fetch {
 	/* Make sure Set-Cookie responses are not cacheable, and log violations */
-	if (beresp.ttl > 0s && beresp.http.Set-Cookie) {
+	/* FIXME: exceptions are ugly; maybe get rid of the whole thing? */
+	if (beresp.ttl > 0s && beresp.http.Set-Cookie &&
+	    req.url !~ "^/wiki/Special:HideBanners") {
 		std.log("Cacheable object with Set-Cookie found. req.url: " + req.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
 		set beresp.http.Cache-Control = "private, max-age=0, s-maxage=0";
 		set beresp.ttl = 0s;
