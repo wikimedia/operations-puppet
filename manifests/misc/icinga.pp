@@ -647,7 +647,7 @@ class icinga::monitor::firewall {
         iptables_add_service{ 'lo_all': interface            => 'lo', service                => 'all', jump => 'ACCEPT' }
         iptables_add_service{ 'localhost_all': source        => '127.0.0.1', service         => 'all', jump => 'ACCEPT' }
         iptables_add_service{ 'private_pmtpa_nolabs': source => '10.0.0.0/14', service       => 'all', jump => 'ACCEPT' }
-        iptables_add_service{ 'private_esams': source        => '10.21.0.0/24', service      => 'all', jump => 'ACCEPT' }
+        iptables_add_service{ 'private_esams': source        => '10.20.0.0/15', service      => 'all', jump => 'ACCEPT' }
         iptables_add_service{ 'private_eqiad1': source       => '10.64.0.0/17', service      => 'all', jump => 'ACCEPT' }
         iptables_add_service{ 'private_eqiad2': source       => '10.65.0.0/20', service      => 'all', jump => 'ACCEPT' }
         iptables_add_service{ 'private_ulsfo': source        => '10.128.0.0/17', service     => 'all', jump => 'ACCEPT' }
