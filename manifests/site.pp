@@ -870,13 +870,6 @@ node 'ekrem.wikimedia.org' {
     include role::ircd
 }
 
-# preparing for decom of emery.
-node 'emery.wikimedia.org' {
-    include admins::mortals
-    include accounts::milimetric # RT 4312
-    include accounts::tnegrin    # RT 5391
-}
-
 node 'tarin.pmtpa.wmnet' {
     $ganglia_aggregator = true
     include standard

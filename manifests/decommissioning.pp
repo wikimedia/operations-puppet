@@ -56,6 +56,7 @@ $decommissioned_servers = [
 'db57',
 'db58',
 'db59',
+'emery',
 #dysprosium -- add this back later when it is reclaimed
 'loudon',      #6633 decomed
 'ms1',
