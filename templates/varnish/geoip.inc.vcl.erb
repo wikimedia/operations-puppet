@@ -22,6 +22,7 @@ C{
 	char * geo_get_xff_ip (const struct sess *sp);
 	char * geo_sanitize_for_cookie (char *string);
 	void geo_set_cache_control (const struct sess *sp);
+	const char * geo_get_top_cookie_domain (const char *host);
 
 	void
 	geo_init() {
@@ -93,6 +94,42 @@ C{
 		VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:", now, vrt_magic_string_end);
 		VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:", "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
 	}
+
+
+	/*
+	 * Extract the top-level domain from a hostname.
+	 */
+	const char *
+	geo_get_top_cookie_domain(const char *host) {
+		const char *last, *second_last, *third_last, *pos, *tld;
+
+		if (host == NULL) {
+			return NULL;
+		}
+
+		last = second_last = third_last = host;
+		for (pos = host; *pos != '\0'; pos++) {
+			if (*pos == '.') {
+				third_last = second_last;
+				second_last = last;
+				last = pos;
+			}
+		}
+
+		/* If either the second- or top-level domain is less than three characters long, */
+		/* assume it is a ccTLD and include it in the domain.							*/
+		if ((pos - last) <= 3 || (last - second_last) <= 3) {
+			tld = third_last;
+		} else {
+			tld = second_last;
+		}
+
+		if (*tld == '.') {
+			tld++;
+		}
+
+		return tld;
+	}
 }C
 
 sub geoip_lookup {
@@ -141,7 +178,8 @@ sub geoip_cookie {
 		const char *cookie_out = NULL;
 		char cookie_buf[255];
 
-		char *ip = geo_get_xff_ip(sp);
+		const char *host = VRT_GetHdr(sp, HDR_REQ, "\005host:");
+		const char *ip = geo_get_xff_ip(sp);
 		int af = geo_get_addr_family(ip);
 		if (af == -1) {
 			ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
@@ -151,21 +189,26 @@ sub geoip_cookie {
 		geo_init();
 		record = GeoIP_record_by_addr(gi, ip);
 
+		int snp_len;
 		if (record) {
 			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/ */
-			int snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%.4f:%.4f:%s; path=/",
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%.4f:%.4f:%s; Path=/; Domain=.%s",
 				record->country_code ? geo_sanitize_for_cookie(record->country_code) : "",
 				record->city ? geo_sanitize_for_cookie(record->city) : "",
 				record->latitude,
 				record->longitude,
-				(af == AF_INET6) ? "v6" : "v4"
+				(af == AF_INET6) ? "v6" : "v4",
+				geo_get_top_cookie_domain(host)
 			);
-			if (snp_len < sizeof(cookie_buf)) /* don't use truncated output */
-				cookie_out = cookie_buf;
 			GeoIPRecord_delete(record);
 		} else {
-			cookie_out = (af == AF_INET6) ? "GeoIP=::::v6; path=/" : "GeoIP=::::v4; path=/";
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=::::%s; Path=/; Domain=.%s",
+				(af == AF_INET6) ? "v6" : "v4",
+				geo_get_top_cookie_domain(host)
+			);
 		}
+		if (snp_len < sizeof(cookie_buf)) /* don't use truncated output */
+			cookie_out = cookie_buf;
 
 		if (cookie_out) {
                         /* Use libvmod-header to ensure the Set-Cookie header we are adding does not
