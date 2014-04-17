@@ -982,7 +982,6 @@ node 'fluorine.eqiad.wmnet' {
     include standard
     include admins::roots
     include admins::mortals
-    include admins::restricted
 
     class { 'role::logging::mediawiki':
         monitor       => false,
@@ -2544,7 +2543,6 @@ node 'terbium.eqiad.wmnet' {
     include misc::monitoring::jobqueue
     include admins::roots
     include admins::mortals
-    include admins::restricted
     include generic::wikidev-umask
 
 
