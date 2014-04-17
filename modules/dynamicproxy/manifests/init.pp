@@ -38,6 +38,14 @@ class dynamicproxy (
         require => Package['nginx-extras'],
     }
 
+    file { '/etc/logrotate.d/nginx':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        source  => 'puppet:///modules/dynamicproxy/logrotate',
+    }
+
     file { '/etc/nginx/sites-available/default':
         ensure  => 'file',
         content => template("dynamicproxy/${luahandler}.conf"),
