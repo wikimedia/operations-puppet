@@ -1658,26 +1658,6 @@ host ms-be3004-B {
 	fixed-address ms-be3004.esams.wmnet;
 }
 
-host ms-fe1 {
-	hardware ethernet d4:be:d9:af:84:27;
-	fixed-address ms-fe1.pmtpa.wmnet;
-}
-
-host ms-fe2 {
-	hardware ethernet d4:be:d9:af:67:0b;
-	fixed-address ms-fe2.pmtpa.wmnet;
-}
-
-host ms-fe3 {
-	hardware ethernet d4:be:d9:ed:09:23;
-	fixed-address ms-fe3.pmtpa.wmnet;
-}
-
-host ms-fe4 {
-	hardware ethernet d4:be:d9:ed:0c:44;
-	fixed-address ms-fe4.pmtpa.wmnet;
-}
-
 host ms-fe1001 {
 	hardware ethernet d4:be:d9:ec:df:a7;
 	fixed-address ms-fe1001.eqiad.wmnet;
