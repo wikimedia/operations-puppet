@@ -115,29 +115,7 @@ class base::puppet($server='puppet', $certname=undef) {
         retries         => 1,
     }
 
-    case $::realm {
-        'production': {
-            exec {  'neon puppet snmp trap':
-                command => "snmptrap -v 1 -c public neon.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
-                path    => '/bin:/usr/bin',
-                require => Package['snmp'],
-            }
-        }
-        'labs': {
-            # The next two notifications are read in by the labsstatus.rb puppet report handler.
-            #  It needs to know project/hostname for nova access.
-            notify{"instanceproject: ${::instanceproject}":}
-            notify{"hostname: ${::instancename}":}
-            exec { 'puppet snmp trap':
-                command => "snmptrap -v 1 -c public icinga.eqiad.wmflabs .1.3.6.1.4.1.33298 ${::instancename}.${::site}.wmflabs 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
-                path    => '/bin:/usr/bin',
-                require => Package['snmp'],
-            }
-        }
-        default: {
-            err('realm must be either "labs" or "production".')
-        }
-    }
+    include base::puppet::snmpnotify
 
     file { '/etc/default/puppet':
         owner  => 'root',
@@ -250,6 +228,32 @@ class base::puppet($server='puppet', $certname=undef) {
             group   => 'root',
             mode    => '0555',
             source  => 'puppet:///modules/base/puppet/97-last-puppet-run',
+        }
+    }
+}
+
+class base::puppet::snmpnotify {
+    case $::realm {
+        'production': {
+            exec {  'neon puppet snmp trap':
+                command => "snmptrap -v 1 -c public neon.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
+                path    => '/bin:/usr/bin',
+                require => Package['snmp'],
+            }
+        }
+        'labs': {
+            # The next two notifications are read in by the labsstatus.rb puppet report handler.
+            #  It needs to know project/hostname for nova access.
+            notify{"instanceproject: ${::instanceproject}":}
+            notify{"hostname: ${::instancename}":}
+            exec { 'puppet snmp trap':
+                command => "snmptrap -v 1 -c public icinga.eqiad.wmflabs .1.3.6.1.4.1.33298 ${::instancename}.${::site}.wmflabs 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
+                path    => '/bin:/usr/bin',
+                require => Package['snmp'],
+            }
+        }
+        default: {
+            err('realm must be either "labs" or "production".')
         }
     }
 }
