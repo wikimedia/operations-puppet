@@ -73,6 +73,8 @@
 	SSLCertificateKeyFile /etc/ssl/private/<%= scope.lookupvar('bugzilla::apache::svc_name') %>.key
 	SSLCACertificatePath /etc/ssl/certs/
 
+	Header add Strict-Transport-Security "max-age=604800"
+
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
@@ -185,6 +187,8 @@ RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/Bugzilla/Fields? [R=303]
 	SSLCertificateFile /etc/ssl/certs/<%= scope.lookupvar('bugzilla::apache::attach_svc_name') %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= scope.lookupvar('bugzilla::apache::attach_svc_name') %>.key
 	SSLCACertificatePath /etc/ssl/certs/
+
+	Header add Strict-Transport-Security "max-age=604800"
 
 	<Directory />
 		Order Allow,Deny
