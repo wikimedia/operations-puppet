@@ -1326,16 +1326,6 @@ host iron {
 	fixed-address iron.wikimedia.org;
 }
 
-host labstore3 {
-	hardware ethernet 78:2b:cb:76:1b:45;
-	fixed-address labstore3.pmtpa.wmnet;
-}
-
-host labstore4 {
-	hardware ethernet 78:2b:cb:76:24:6b;
-	fixed-address labstore4.pmtpa.wmnet;
-}
-
 host labnet1001 {
 	hardware ethernet d4:be:d9:af:66:ba;
 	fixed-address labnet1001.eqiad.wmnet;

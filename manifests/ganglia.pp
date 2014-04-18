@@ -321,7 +321,6 @@ class ganglia::collector::config {
                     'Parsoid eqiad'                  => 'wtp1001.eqiad.wmnet',
                     'Parsoid Varnish eqiad'          => 'cp1045.eqiad.wmnet cp1058.eqiad.wmnet',
                     'Redis eqiad'                    => 'rdb1001.eqiad.wmnet rdb1002.eqiad.wmnet',
-                    'Labs NFS cluster pmtpa'         => 'labstore3.pmtpa.wmnet labstore4.pmtpa.wmnet',
                     'Text caches eqiad'              => 'cp1052.eqiad.wmnet cp1053.eqiad.wmnet',
                     'Misc Web caches eqiad'          => 'cp1043.eqiad.wmnet cp1044.eqiad.wmnet',
                     'LVS loadbalancers ulsfo'        => 'lvs4001.ulsfo.wmnet lvs4003.ulsfo.wmnet',
