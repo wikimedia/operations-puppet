@@ -297,7 +297,6 @@ class ganglia::collector::config {
                     'Miscellaneous'                  => 'tarin.pmtpa.wmnet',
                     'Fundraising eqiad'              => 'pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet',
                     'SSL cluster esams'              => 'hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org',
-                    'Swift pmtpa'                    => 'ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet',
                     'Virtualization cluster eqiad'   => 'labnet1001.eqiad.wmnet virt1000.wikimedia.org',
                     'Virtualization cluster pmtpa'   => 'virt0.wikimedia.org',
                     'MySQL eqiad'                    => 'db1056.eqiad.wmnet db1021.eqiad.wmnet',
