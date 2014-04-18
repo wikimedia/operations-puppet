@@ -19,7 +19,7 @@ class role::gitblit {
 
     monitor_service { 'gitblit':
         description   => 'gitblit.wikimedia.org',
-        check_command => 'check_https_url!git.wikimedia.org!/',
+        check_command => 'check_https_url!git.wikimedia.org!/tree/mediawiki%2Fcore.git',
     }
 
     # Add ytterbium to ssh exceptions for git replication
