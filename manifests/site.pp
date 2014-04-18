@@ -569,7 +569,7 @@ node 'dataset1001.wikimedia.org' {
 }
 
 # pmtpa dbs
-node /^db(63)\.pmtpa\.wmnet/ {
+node /^db(60)\.pmtpa\.wmnet/ {
     $ganglia_aggregator = true
     class { 'role::coredb::s1':
         mariadb               => true,

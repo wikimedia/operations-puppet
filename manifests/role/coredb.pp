@@ -9,10 +9,10 @@
 class role::coredb::config {
 	$topology = {
 		's1' => {
-			'hosts' => { 'pmtpa' => [ 'db63' ],
+			'hosts' => { 'pmtpa' => [ 'db60' ],
 				'eqiad' => [ 'db1037', 'db1043', 'db1049', 'db1050', 'db1051', 'db1052', 'db1055', 'db1056', 'db1061', 'db1062' ] },
 			'primary_site' => $::mw_primary,
-			'masters' => { 'pmtpa' => "db63", 'eqiad' => 'db1052' },
+			'masters' => { 'pmtpa' => "db60", 'eqiad' => 'db1052' },
 			'snapshot' => [ 'db1050' ],
 			'no_master' => [ 'db1047', 'db1050', 'db1055' ]
 		},
