@@ -1555,66 +1555,6 @@ host ms1004 {
 	fixed-address ms1004.eqiad.wmnet;
 }
 
-host ms-be1 {
-	hardware ethernet 90:B1:1C:18:A7:74;
-	fixed-address ms-be1.pmtpa.wmnet;
-}
-
-host ms-be2 {
-	hardware ethernet 90:B1:1C:18:A6:32;
-	fixed-address ms-be2.pmtpa.wmnet;
-}
-
-host ms-be3 {
-	hardware ethernet 90:B1:1C:18:EE:F1;
-	fixed-address ms-be3.pmtpa.wmnet;
-}
-
-host ms-be4 {
-	hardware ethernet 90:B1:1C:18:A6:3A;
-	fixed-address ms-be4.pmtpa.wmnet;
-}
-
-host ms-be5 {
-	hardware ethernet 90:B1:1C:18:AC:40;
-	fixed-address ms-be5.pmtpa.wmnet;
-}
-
-host ms-be6 {
-	hardware ethernet 90:B1:1C:12:94:83;
-	fixed-address ms-be6.pmtpa.wmnet;
-}
-
-host ms-be7 {
-	hardware ethernet 90:B1:1C:18:BC:65;
-	fixed-address ms-be7.pmtpa.wmnet;
-}
-
-host ms-be8 {
-	hardware ethernet 90:B1:1C:18:AD:2C;
-	fixed-address ms-be8.pmtpa.wmnet;
-}
-
-host ms-be9 {
-	hardware ethernet 90:B1:1C:18:A7:68;
-	fixed-address ms-be9.pmtpa.wmnet;
-}
-
-host ms-be10 {
-	hardware ethernet 90:B1:1C:18:BC:7D;
-	fixed-address ms-be10.pmtpa.wmnet;
-}
-
-host ms-be11 {
-	hardware ethernet 90:B1:1C:14:E1:63;
-	fixed-address ms-be11.pmtpa.wmnet;
-}
-
-host ms-be12 {
-	hardware ethernet 90:B1:1C:18:AA:93;
-	fixed-address ms-be12.pmtpa.wmnet;
-}
-
 host ms-be1001 {
 	hardware ethernet 90:B1:1C:14:C9:FF;
 	fixed-address ms-be1001.eqiad.wmnet;
