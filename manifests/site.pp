@@ -631,10 +631,6 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 
 # eqiad dbs
 node /^db10(43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
-    if $::hostname =~ /^db10(56)/ {
-        $ganglia_aggregator = true
-        include mha::manager
-    }
     class { 'role::coredb::s1':
         innodb_file_per_table => true,
         mariadb               => true,
