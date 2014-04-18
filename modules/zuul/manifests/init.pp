@@ -128,6 +128,14 @@ class zuul (
     refreshonly => true,
   }
 
+  # Compress log files since python logging does not support it
+  cron { 'compress zuul log files':
+      ensure  => present,
+      command => '/bin/gzip --best /var/log/zuul/*.log.????-??-?? >/dev/null',
+      user    => 'jenkins',
+      hour    => 1,  # after python logging rotated at midnight
+  }
+
   file { '/var/log/zuul':
     ensure  => directory,
     owner   => 'jenkins',
