@@ -81,10 +81,10 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		'm2' => {
-			'hosts' => { 'pmtpa' => [ 'db48' ],
+			'hosts' => {
 				'eqiad' => [ 'db1046', 'db1048' ] },
 			'primary_site' => 'both',
-			'masters' => { 'pmtpa' => 'db48', 'eqiad' => 'db1048' },
+			'masters' => { 'eqiad' => 'db1048' },
 			'snapshot' => [ 'db1046' ],
 			'no_master' => []
 		},
