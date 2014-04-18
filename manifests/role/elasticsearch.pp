@@ -54,7 +54,7 @@ class role::elasticsearch::config {
         }
         $master_eligible = $::hostname ? {
             'elastic1002' => true,
-            'elastic1008' => true,
+            'elastic1007' => true,
             'elastic1013' => true,
             default       => false,
         }
