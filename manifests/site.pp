@@ -1794,40 +1794,6 @@ node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
     include role::swift::pmtpa-prod::proxy
 }
 
-node /^ms-be(3|[6-8]|10)\.pmtpa\.wmnet$/ {
-    # the ms-be hosts that are 720xds with ssds have two more disks
-    # but with the h310s they show up as m and n, those get the OS
-    $all_drives = [ '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
-        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
-        '/dev/sdk', '/dev/sdl' ]
-
-    include role::swift::pmtpa-prod::storage
-
-    swift::create_filesystem{ $all_drives: partition_nr => '1' }
-    # these are already partitioned and xfs formatted by the installer
-    swift::label_filesystem{ '/dev/sdm3': }
-    swift::label_filesystem{ '/dev/sdn3': }
-    swift::mount_filesystem{ '/dev/sdm3': }
-    swift::mount_filesystem{ '/dev/sdn3': }
-}
-
-node /^ms-be(1|2|4|5|9|11|12)\.pmtpa\.wmnet$/ {
-    # the ms-be hosts with ssds have two more disks
-    # this is the 720xds with h710 layout
-    $all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
-        '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
-        '/dev/sdl', '/dev/sdm', '/dev/sdn' ]
-
-    include role::swift::pmtpa-prod::storage
-
-    swift::create_filesystem{ $all_drives: partition_nr => '1' }
-    # these are already partitioned and xfs formatted by the installer
-    swift::label_filesystem{ '/dev/sda3': }
-    swift::label_filesystem{ '/dev/sdb3': }
-    swift::mount_filesystem{ '/dev/sda3': }
-    swift::mount_filesystem{ '/dev/sdb3': }
-}
-
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
