@@ -1749,21 +1749,6 @@ node /ms100[4]\.eqiad\.wmnet/ {
     include standard
 }
 
-node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
-    if $::hostname =~ /^ms-fe[12]$/ {
-        $ganglia_aggregator = true
-    }
-    if $::hostname =~ /^ms-fe1$/ {
-        include role::swift::pmtpa-prod::ganglia_reporter
-    }
-
-    class { 'lvs::realserver':
-        realserver_ips => '10.2.1.27',
-    }
-
-    include role::swift::pmtpa-prod::proxy
-}
-
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
