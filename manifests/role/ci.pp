@@ -176,6 +176,10 @@ class role::ci::slave {
 # Common configuration to be applied on any labs Jenkins slave
 class role::ci::slave::labs::common {
 
+    # Jenkins slaves need to access beta cluster for the browsertests
+    include role::beta::natfix
+    include contint::firewall::labs
+
     if $::site == 'eqiad' {
         # Does not come with /dev/vdb, we need to mount it using lvm
         require role::labs::lvm::mnt
