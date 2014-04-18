@@ -619,11 +619,6 @@ node /^db(68)\.pmtpa\.wmnet/ {
     }
 }
 
-## m2 shard
-node /^db(48)\.pmtpa\.wmnet/ {
-    include role::coredb::m2
-}
-
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
 node /^db(60|7[5-7])\.pmtpa\.wmnet/{
     include standard
