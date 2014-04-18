@@ -1124,7 +1124,7 @@ host elastic1006 {
 }
 
 host elastic1007 {
-	hardware ethernet a4:ba:db:19:cd:29;
+	hardware ethernet 84:2b:2b:57:f9:08;
 	fixed-address elastic1007.eqiad.wmnet;
 }
 
