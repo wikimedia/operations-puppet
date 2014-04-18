@@ -1,0 +1,11 @@
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: CSteipp <csteipp@wikimedia.org>
+Code-Review+1: Aklapper <aklapper@wikimedia.org>
+Code-Review+1: JanZerebecki <jan.wikimedia@zerebecki.de>
+Code-Review+1: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Fri, 18 Apr 2014 12:31:17 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/126205
+Project: operations/puppet
+Branch: refs/heads/production
