@@ -84,6 +84,7 @@ $decommissioned_servers = [
 'search34',
 'search35',
 'search36',
+'stat1',
 'sq31',  #1706 decommed
 'sq32',  #2472 decommed
 'sq33',  #4992 decommed

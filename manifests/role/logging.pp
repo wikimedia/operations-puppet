@@ -206,7 +206,7 @@ class role::logging::udp2log {
     }
 
     # Set up an rsync daemon module for udp2log logrotated
-    # archives.  This allows stat1 to copy logs from the
+    # archives.  This allows stat1003 to copy logs from the
     # logrotated archive directory
     class { 'misc::udp2log::rsyncd':
         path    => $log_directory,

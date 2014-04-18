@@ -125,7 +125,7 @@ class role::eventlogging {
 
     # Log all raw log records and decoded events to flat files in
     # /var/log/eventlogging as a medium of last resort. These files
-    # are rotated and rsynced to stat1 & stat1002 for backup.
+    # are rotated and rsynced to stat1003 & stat1002 for backup.
 
     eventlogging::service::consumer {
         'server-side-events.log':

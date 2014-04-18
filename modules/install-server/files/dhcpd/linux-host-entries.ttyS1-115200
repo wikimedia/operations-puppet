@@ -3160,11 +3160,6 @@ host stafford {
 	fixed-address stafford.pmtpa.wmnet;
 }
 
-host stat1 {
-	hardware ethernet 78:2b:cb:1e:87:bc;
-	fixed-address stat1.wikimedia.org;
-}
-
 host stat1001 {
 	hardware ethernet 78:2b:cb:35:c4:f7;
 	fixed-address stat1001.wikimedia.org;
