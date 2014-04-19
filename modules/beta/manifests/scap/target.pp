@@ -46,7 +46,7 @@ class beta::scap::target {
     }
 
     # Target directory for scap
-    file { '/srv/common-local':
+    file { $::beta::config::scap_deploy_dir:
         ensure  => directory,
         owner   => 'mwdeploy',
         group   => 'mwdeploy',
