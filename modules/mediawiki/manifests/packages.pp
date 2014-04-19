@@ -2,6 +2,8 @@
 class mediawiki::packages {
 
   if $::realm == 'labs' {
+    include ::beta::config
+
     file { '/usr/local/apache':
       ensure  => directory,
       owner   => 'root',
@@ -11,7 +13,7 @@ class mediawiki::packages {
     file { '/usr/local/apache/common-local':
       ensure  => link,
       # Link to files managed by scap
-      target  => '/srv/common-local',
+      target  => $::beta::config::scap_deploy_dir,
       # Create before wikimedia-task-appserver attempts
       # to create /usr/local/apache/common.
       before  => Package['wikimedia-task-appserver'],

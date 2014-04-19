@@ -15,8 +15,8 @@ import logging
 import subprocess
 import sys
 
-PATH_MWCORE = '/data/project/apache/common-local/php-master'
-PATH_MWEXT = '/data/project/apache/common-local/php-master/extensions'
+PATH_MWCORE = '<%= @stage_dir %>/php-master'
+PATH_MWEXT = '<%= @stage_dir %>/php-master/extensions'
 
 
 def main():
@@ -53,7 +53,6 @@ def main():
         pull_mediawiki(),
         pull_extensions(),
         update_extensions(),
-        update_l10n(),
     ]
 
     logger.info("Executions completed %s", exit_codes)
@@ -112,11 +111,6 @@ def update_extensions():
     """Registers and updates MediaWiki extensions submodules"""
     return runner(name='mwext', path=PATH_MWEXT, cmd=[
         'git', 'submodule', 'update', '--init', '--recursive'])
-
-
-def update_l10n():
-    """Localisation cache update"""
-    return runner(name='mw-update-l10n', cmd=['mw-update-l10n', '--verbose'])
 
 
 def runner(cmd, path=None, name=None):

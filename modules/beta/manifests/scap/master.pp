@@ -24,7 +24,7 @@ class beta::scap::master {
 
     # Run an rsync server
     rsync::server::module { 'common':
-        path        => '/data/project/apache/common-local',
+        path        => $::beta::config::scap_stage_dir,
         read_only   => 'yes',
         hosts_allow => $::beta::config::rsync_networks,
     }

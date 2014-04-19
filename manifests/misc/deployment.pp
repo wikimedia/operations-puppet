@@ -350,10 +350,7 @@ class misc::deployment::vars ($system = 'scap') {
 		$dblist_common = "/srv/deployment/mediawiki/common/dblists"
 		$dblist_common_source = $dblist_common
 	} elsif $system == "scap" {
-		$mw_common = $::realm ? {
-			'labs'  => '/srv/common-local',
-			default => '/usr/local/apache/common-local',
-		}
+		$mw_common = '/usr/local/apache/common-local'
 		$mw_common_source = "/a/common"
 		$dblist_common = $mw_common
 		$dblist_common_source = $mw_common_source
@@ -373,6 +370,7 @@ class misc::deployment::vars ($system = 'scap') {
 			mode    => '0775',
 		}
 	} else {
+		include ::beta::config
 		$mw_rsync_host = "deployment-bastion.${::site}.wmflabs"
 
 		$mw_statsd_host = "deployment-graphite.${::site}.wmflabs"
@@ -409,7 +407,7 @@ class misc::deployment::vars ($system = 'scap') {
 
             file { $mw_common_source:
                 ensure => link,
-                target => '/data/project/apache/common-local',
+                target => $::beta::config::scap_stage_dir,
             }
         }
 	}
