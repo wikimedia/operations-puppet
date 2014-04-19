@@ -9,7 +9,7 @@ class beta::scap::rsync_slave {
 
     # Run an rsync server
     rsync::server::module { 'common':
-        path        => '/srv/common-local',
+        path        => $::beta::config::scap_deploy_dir,
         read_only   => 'yes',
         hosts_allow => $::beta::config::rsync_networks,
     }
