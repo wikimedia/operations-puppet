@@ -15,8 +15,8 @@ import logging
 import subprocess
 import sys
 
-PATH_MWCORE = '/data/project/apache/common-local/php-master'
-PATH_MWEXT = '/data/project/apache/common-local/php-master/extensions'
+PATH_MWCORE = '<%= @stage_dir %>/php-master'
+PATH_MWEXT = '<%= @stage_dir %>/php-master/extensions'
 
 
 def main():
@@ -53,7 +53,7 @@ def main():
         pull_mediawiki(),
         pull_extensions(),
         update_extensions(),
-        update_l10n(),
+        #update_l10n(),
     ]
 
     logger.info("Executions completed %s", exit_codes)
