@@ -88,6 +88,7 @@ class imagescaler::packages::fonts {
             'ttf-tamil-fonts',
             'ttf-telugu-fonts',
             'ttf-ubuntu-font-family',
+            'ttf-vlgothic', # bug 64002
             'ttf-wqy-zenhei',
             'ttf-dejavu-core', # bug 63206
             'ttf-dejavu-extra', # bug 63206
