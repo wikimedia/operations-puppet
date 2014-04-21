@@ -55,7 +55,7 @@ class role::elasticsearch::config {
         $master_eligible = $::hostname ? {
             'elastic1002' => true,
             'elastic1007' => true,
-            'elastic1013' => true,
+            'elastic1014' => true,
             default       => false,
         }
         $minimum_master_nodes = 2
