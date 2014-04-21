@@ -28,9 +28,8 @@ class lvs::balancer(
         site => $site
     }
 
-    # Tune the ip_vs conn_tab_bits parameter
     file { "/etc/modprobe.d/lvs.conf":
-        content => "# This file is managed by Puppet!\noptions ip_vs conn_tab_bits=20\n";
+        content => template("${module_name}/lvs.conf.erb");
     }
 
     # Bind balancer IPs to the loopback interface
