@@ -49,7 +49,7 @@ MaxClients 5
 </IfDefine>
 
 <IfDefine SCALER>
-MaxClients 18
+MaxClients 23
 # Reduce TimeOut to limit the impact of LVS flapping -- TS 2008-08-19
 TimeOut 10 
 </IfDefine>
