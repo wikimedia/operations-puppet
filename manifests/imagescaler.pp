@@ -52,6 +52,7 @@ class imagescaler::packages::fonts {
             'fonts-arphic-ukai',
             'fonts-arphic-uming',
             'fonts-farsiweb',
+            'fonts-japanese-gothic', # bug 127623
             'fonts-kacst',
             'fonts-khmeros',
             'fonts-lao',
