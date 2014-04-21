@@ -70,6 +70,7 @@ class imagescaler::packages::fonts {
             'fonts-thai-tlwg',
             'fonts-tibetan-machine',
             'fonts-unfonts-extra',
+            'fonts-vlgothic', # bug 64002
 
             'gsfonts',
             'texlive-fonts-recommended',
