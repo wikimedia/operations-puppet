@@ -2180,18 +2180,6 @@ class accounts {
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw==';
             }
-
-            # Remove werdna's old keys -- he used to have this username
-            ssh_authorized_key {
-                'andrew@voltaire':
-                    user   => 'werdna',
-                    ensure => absent,
-            }
-            ssh_authorized_key {
-                'andrew@zwinger':
-                    user   => 'werdna',
-                    ensure => absent,
-            }
         }
     }
 
