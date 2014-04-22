@@ -122,6 +122,7 @@ class role::labsdb::manager {
 
 class role::db::maintenance {
     include mysql
+    include coredb_mysql::purge_slow_digest
 
     package { 'percona-toolkit':
         ensure => latest,
