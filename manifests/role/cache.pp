@@ -734,6 +734,12 @@ class role::cache {
         if $ganglia_aggregator and $::site != "esams" {
             include misc::monitoring::htcp-loss
         }
+
+        # Install a varnishkafka producer to send
+        # varnish webrequest logs to Kafka.
+        class { 'role::cache::varnish::kafka':
+            topic => 'webrequest_text',
+        }
     }
 
     class upload inherits role::cache::varnish::2layer {
