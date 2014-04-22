@@ -159,10 +159,10 @@ class role::eventlogging {
 
     ## Kafka / Hadoop
 
-    include role::analytics::kafka::client
+    include role::analytics::kafka::config
 
-    $kafka_brokers = inline_template('<%= scope.lookupvar("role::analytics::kafka::client::brokers_array").join(",") %>')
-    $kafka_cluster = $::role::analytics::kafka::client::kafka_cluster_name
+    $kafka_brokers = inline_template('<%= scope.lookupvar("role::analytics::kafka::config::brokers_array").join(",") %>')
+    $kafka_cluster = $::role::analytics::kafka::config::kafka_cluster_name
 
     $kafka_topic_base_name = 'eventlogging'
     $kafka_topic_version = 0
