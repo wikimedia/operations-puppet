@@ -284,9 +284,9 @@ class accounts {
     }
 
     class andrew inherits baseaccount {
-        $username = 'andrew'
+        $username = 'werdna'
         $realname = 'Andrew Garrett'
-        $uid      = '540'
+        $uid      = '1039'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2156,9 +2156,9 @@ class accounts {
     }
 
     class andrewb inherits baseaccount {
-        $username = 'andrewb'
+        $username = 'andrew'
         $realname = 'Andrew Bogott'
-        $uid      = '590'
+        $uid      = '2093'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2179,6 +2179,16 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw==';
+            }
+
+            # Remove werdna's old keys -- he used to have this username
+            ssh_authorized_key {
+                'andrew@voltaire':
+                    ensure => absent,
+            }
+            ssh_authorized_key {
+                'andrew@zwinger':
+                    ensure => absent,
             }
         }
     }
