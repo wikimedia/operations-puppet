@@ -110,5 +110,6 @@ class role::analytics::kafkatee::input::webrequest::mobile {
         topic       => 'webrequest_mobile',
         partitions  => '0-9',
         options     => { 'encoding' => 'json' },
+        offset      => 'stored',
     }
 }
