@@ -116,38 +116,12 @@ class facilities::pdu_monitoring {
     monitor_pdu_3phase { 'ps1-a1-sdtpa':
         ip => '10.1.5.1',
     }
-    monitor_pdu_3phase { 'ps1-a2-sdtpa':
-        ip => '10.1.5.2',
-    }
-    monitor_pdu_3phase { 'ps1-a3-sdtpa':
-        ip        => '10.1.5.3',
-        redundant => false,
-    }
-    monitor_pdu_3phase { 'ps1-a4-sdtpa':
-        ip        => '10.1.5.4',
-        redundant => false,
-    }
-    monitor_pdu_3phase { 'ps1-a5-sdtpa':
-        ip        => '10.1.5.5',
-        redundant => false,
-    }
     # B
     monitor_pdu_3phase { 'ps1-b1-sdtpa':
         ip => '10.1.5.6',
     }
-    monitor_pdu_3phase { 'ps1-b2-sdtpa':
-        ip => '10.1.5.7',
-    }
-    monitor_pdu_3phase { 'ps1-b3-sdtpa':
-        ip        => '10.1.5.8',
-        redundant => false,
-    }
     monitor_pdu_3phase { 'ps1-b4-sdtpa':
         ip        => '10.1.5.9',
-        redundant => false,
-    }
-    monitor_pdu_3phase { 'ps1-b5-sdtpa':
-        ip        => '10.1.5.10',
         redundant => false,
     }
     # C
@@ -157,24 +131,6 @@ class facilities::pdu_monitoring {
     monitor_pdu_3phase { 'ps1-c2-sdtpa':
         ip => '10.1.5.12',
     }
-    monitor_pdu_3phase { 'ps1-c3-sdtpa':
-        ip        => '10.1.5.13',
-        redundant => false,
-    }
-    # D
-    monitor_pdu_3phase { 'ps1-d1-sdtpa':
-        ip        => '10.1.5.14',
-        redundant => false,
-    }
-    monitor_pdu_3phase { 'ps1-d2-sdtpa':
-        ip        => '10.1.5.15',
-        redundant => false,
-    }
-    monitor_pdu_3phase { 'ps1-d3-sdtpa':
-        ip        => '10.1.5.16',
-        redundant => false,
-    }
-
     # pmtpa
     # C
     monitor_pdu_3phase { 'ps1-c1-pmtpa':
@@ -290,4 +246,3 @@ class facilities::dc-cam-transcoder {
         ensure => 'latest',
     }
 }
-
