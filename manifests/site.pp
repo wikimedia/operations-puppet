@@ -343,6 +343,10 @@ node 'carbon.wikimedia.org' {
     $cluster = 'misc'
     $ganglia_aggregator = true
 
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
     include standard
     include backup::client
     include role::installserver
