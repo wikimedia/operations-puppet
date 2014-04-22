@@ -23,8 +23,8 @@ red:connect('127.0.0.1', 6379)
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
 
 if captures == ngx.null then
-   -- This would actually never happen, I'd think.
-   ngx.exit(500)
+    -- This would actually never happen, I'd think.
+    ngx.exit(500)
 end
 
 local prefix = captures[1]
@@ -35,43 +35,43 @@ local route = nil
 routes_arr = red:hgetall('prefix:' .. prefix)
 
 if routes_arr then
-   local routes = red:array_to_hash(routes_arr)
-   for pattern, backend in pairs(routes) do
-      if ngx.re.match(rest, pattern) ~= nil then
-         route = 'http://' .. backend
-         break
-      end
-   end
+    local routes = red:array_to_hash(routes_arr)
+    for pattern, backend in pairs(routes) do
+        if ngx.re.match(rest, pattern) ~= nil then
+            route = 'http://' .. backend
+            break
+        end
+    end
 end
 
 if not route then
-   -- No routes defined for this uri, try the default (admin) prefix instead
-   rest = ngx.var.uri
-   routes_arr = red:hgetall('prefix:admin')
-   if routes_arr then
-      local routes = red:array_to_hash(routes_arr)
-      for pattern, backend in pairs(routes) do
-         if ngx.re.match(rest, pattern) then
-            route = 'http://' .. backend
-            break
-         end
-      end
-   end
+    -- No routes defined for this uri, try the default (admin) prefix instead
+    rest = ngx.var.uri
+    routes_arr = red:hgetall('prefix:admin')
+    if routes_arr then
+        local routes = red:array_to_hash(routes_arr)
+        for pattern, backend in pairs(routes) do
+            if ngx.re.match(rest, pattern) then
+                route = 'http://' .. backend
+                break
+            end
+        end
+    end
 end
 
 if route then
-   ngx.var.backend = route
-   ngx.exit(ngx.OK)
+    ngx.var.backend = route
+    ngx.exit(ngx.OK)
 else
-   -- Oh noes!  Even the admin prefix is dead!
-   -- Fall back to the static site
-   if rest then
-      -- the URI had a slash, so the user clearly expected /something/
-      -- there.  Fail because there is no registered webservice.
-      ngx.exit(503)
-   else
-      ngx.var.backend = ''
-      ngx.exit(ngx.OK)
-   end
+    -- Oh noes!  Even the admin prefix is dead!
+    -- Fall back to the static site
+    if rest then
+        -- the URI had a slash, so the user clearly expected /something/
+        -- there.  Fail because there is no registered webservice.
+        ngx.exit(503)
+    else
+        ngx.var.backend = ''
+        ngx.exit(ngx.OK)
+    end
 end
 
