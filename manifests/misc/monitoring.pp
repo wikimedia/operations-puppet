@@ -110,6 +110,9 @@ class misc::monitoring::views {
     misc::monitoring::view::varnishkafka { 'webrequest':
         topic_regex => 'webrequest_.+',
     }
+    class { 'misc::monitoring::view::kafkatee':
+        kafkatee_host_regex => 'analytics1003.eqiad.wmnet',
+    }
 
     class { 'misc::monitoring::view::hadoop':
         master       => 'analytics1010.eqiad.wmnet',
@@ -258,9 +261,10 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
     }
 }
 
+
 # == Define misc::monitoring::view::varnishkafka
 #
-define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $topic_regex = '.+', $ensure = 'present') {
+class misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $topic_regex = '.+', $ensure = 'present') {
     ganglia::view { "varnishkafka-${title}":
         ensure => $ensure,
         graphs => [
@@ -342,6 +346,46 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $
 }
 
 
+# == Class misc::monitoring::view::kafkatee
+#
+class misc::monitoring::view::kafkatee($kafkatee_host_regex, $topic_regex = '.+', $ensure = 'present') {
+    ganglia::view { 'kafkatee':
+        ensure => $ensure,
+        graphs => [
+            # receive transctions per second rate
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.rx.per_second",
+                'type'         => 'stack',
+            },
+            # receive bytes per second rate
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.rxbytes.per_second",
+                'type'         => 'stack',
+            },
+            # round trip time average
+            {
+                'host_regex'   => $kafkatee_host_regex,
+                'metric_regex' => 'kafka.rdkafka.brokers..+\.rtt\.avg',
+                'type'         => 'line',
+            },
+            # receive errors per second rate
+            {
+                'host_regex'   => $varnishkafka_host_regex,
+                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.rxerrs.per_second",
+                'type'         => 'stack',
+            },
+            # next_offset.per_second - rate at which offset is updated,
+            # meaning how many offsets per second are read
+            {
+                'host_regex'   => $kafkatee_host_regex,
+                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.next_offset.per_second",
+                'type'         => 'stack',
+            },
+        ],
+    }
+}
 
 
 # == Class misc::monitoring::view::hadoop
