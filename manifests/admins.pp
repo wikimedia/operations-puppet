@@ -283,7 +283,7 @@ class accounts {
         }
     }
 
-    class andrew inherits baseaccount {
+    class werdna inherits baseaccount {
         $username = 'werdna'
         $realname = 'Andrew Garrett'
         $uid      = '1039'
@@ -2155,7 +2155,7 @@ class accounts {
         }
     }
 
-    class andrewb inherits baseaccount {
+    class andrew inherits baseaccount {
         $username = 'andrew'
         $realname = 'Andrew Bogott'
         $uid      = '2093'
@@ -3691,7 +3691,7 @@ class admins::roots {
     # actually get them root; that file is not in the public repo.
 
     include accounts::akosiaris
-    include accounts::andrewb
+    include accounts::andrew
     include accounts::ariel
     include accounts::asher # disabled
     include accounts::bblack
@@ -3731,7 +3731,7 @@ class admins::mortals {
 
     include accounts::aaron
     include accounts::abaso
-    include accounts::andrew
+    include accounts::werdna
     include accounts::anomie
     include accounts::aude # RT 6460
     include accounts::awight
