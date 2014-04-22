@@ -2184,10 +2184,12 @@ class accounts {
             # Remove werdna's old keys -- he used to have this username
             ssh_authorized_key {
                 'andrew@voltaire':
+                    user   => 'werdna',
                     ensure => absent,
             }
             ssh_authorized_key {
                 'andrew@zwinger':
+                    user   => 'werdna',
                     ensure => absent,
             }
         }
