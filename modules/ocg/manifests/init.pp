@@ -41,6 +41,14 @@ class ocg (
             notify => Service['ocg'],
         }
     }
+    
+    if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, "12.04") >= 0 ) {
+        # On ubuntu versions greater than 12.04 node is known as nodejs
+        # This is exposed as a variable in the upstart configuration template
+        $nodebin = 'nodejs'
+    } else {
+		$nodebin = 'node'
+	}
 
     package {
         [
@@ -94,7 +102,7 @@ class ocg (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/ocg/ocg.upstart.conf',
+        source  => template('ocg/ocg.upstart.conf.erb'),
         require => User['ocg'],
         notify  => Service['ocg'],
     }
