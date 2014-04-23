@@ -116,21 +116,6 @@ class facilities::pdu_monitoring {
     monitor_pdu_3phase { 'ps1-a1-sdtpa':
         ip => '10.1.5.1',
     }
-    # B
-    monitor_pdu_3phase { 'ps1-b1-sdtpa':
-        ip => '10.1.5.6',
-    }
-    monitor_pdu_3phase { 'ps1-b4-sdtpa':
-        ip        => '10.1.5.9',
-        redundant => false,
-    }
-    # C
-    monitor_pdu_3phase { 'ps1-c1-sdtpa':
-        ip => '10.1.5.11',
-    }
-    monitor_pdu_3phase { 'ps1-c2-sdtpa':
-        ip => '10.1.5.12',
-    }
     # pmtpa
     # C
     monitor_pdu_3phase { 'ps1-c1-pmtpa':
