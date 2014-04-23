@@ -212,4 +212,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         critical    => '5000000',
         require     => Class['::kafka::server::jmxtrans'],
     }
+
+    # monitor disk statistics
+    ganglia::plugin::python { 'diskstat': }
 }
