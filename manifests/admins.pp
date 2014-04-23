@@ -650,6 +650,7 @@ class accounts {
         $username = 'jpostlethwaite'
         $realname = 'Jeremy Postlethwaite'
         $uid      = '577'
+        $enabled  = false
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -657,7 +658,7 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'jpostlethwaite@WMF299s-MacBook-Pro.local':
-                ensure => 'present',
+                ensure => absent,
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDnBJKG5HDdWCOK9Ow8xPZpjQCeFlkIY6nPKMIpcM47uJPfZC6V1OmRgbTpmcaC1QeMzkZEeP/JSInkgHcuGShaZRiGKd5dYVWVEl+SLuS1kru9VVbX1F8MTn9OFSuQRYVq8r9spvUDVWIJvkAsdq5WR2gJgrhhspGEXCIzP+Orcqboj71oNaq9TUUhhZS+ueY39Sx6h9nH6k180/BxIudmGS8TmUQXyI+x3NoGDXUoxWpug00vTZNdssKU0943c/8CsVtNNEbvCzGQ9+Hh8XlHrp70FJIfy3wQLNVIKF0EpZzhHLUTiul7zrmTc9nBMiN07gzWHVQlAeSjsZcvTD6z'
