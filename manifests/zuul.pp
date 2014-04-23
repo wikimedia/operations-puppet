@@ -17,7 +17,9 @@ class zuulwikimedia {
         $config_git_branch='master',
         $git_branch='master',
         $git_dir='/var/lib/zuul/git',
-        $statsd_host = ''
+        $statsd_host = '',
+        $git_email = "zuul-merger@${::hostname}",
+        $git_name = 'Wikimedia Zuul Merger'
     ) {
 
         # Zuul needs an API key to interact with Jenkins:
@@ -25,7 +27,7 @@ class zuulwikimedia {
         $jenkins_apikey = $::passwords::misc::contint::jenkins::zuul_user_apikey
 
         # Load class from the Zuul module:
-        class { 'zuul':
+        class { '::zuul':
             name                 => $name,
             gearman_server       => $gearman_server,
             gearman_server_start => $gearman_server_start,
@@ -40,7 +42,11 @@ class zuulwikimedia {
             git_branch           => $git_branch,
             git_dir              => $git_dir,
             statsd_host          => $statsd_host,
+            git_email            => "zuul-merger@${::hostname}",
+            git_name             => 'Wikimedia Zuul Merger',
         }
+        class { '::zuul::server': }
+        class { '::zuul::merger': }
 
         # nagios/icinga monitoring
         nrpe::monitor_service { 'zuul':

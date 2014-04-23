@@ -40,6 +40,8 @@ class role::zuul::labs {
         git_branch           => 'labs',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
         statsd_host          => '',
+        git_email            => "zuul-merger@${::instancename}",
+        git_name             => 'Wikimedia Zuul Merger',
     }
 
 } # /role::zuul::labs
@@ -83,6 +85,8 @@ class role::zuul::production {
         git_branch           => 'master',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
         statsd_host          => 'statsd.eqiad.wmnet',
+        git_email            => "zuul-merger@${::hostname}",
+        git_name             => 'Wikimedia Zuul Merger',
     }
 
     # Serves Zuul git repositories on git://zuul.eqiad.wmnet/...
