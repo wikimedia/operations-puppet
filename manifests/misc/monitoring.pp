@@ -99,13 +99,16 @@ class misc::monitoring::kraken::loss {
 # avaliable on ganglia.wikimedia.org
 class misc::monitoring::views {
     require ganglia::web
+    include role::analytics::kafka::config
 
     misc::monitoring::view::udp2log { 'udp2log':
         host_regex => 'oxygen|erbium|gadolinium',
     }
 
+    $kafka_log_disks_regex = join($::role::analytics::kafka::config::log_disks, '|')
     misc::monitoring::view::kafka { 'kafka':
         kafka_broker_host_regex   => 'analytics102[12].*',
+        kafka_log_disks_regex     => $kafka_log_disks_regex,
     }
     misc::monitoring::view::varnishkafka { 'webrequest':
         topic_regex => 'webrequest_.+',
@@ -192,8 +195,9 @@ define misc::monitoring::view::udp2log($host_regex, $ensure = 'present') {
 #
 # == Parameters:
 # $kafka_broker_host_regex   - regex matching kafka broker hosts
+# $log_disk_regex            - regex matching disks that have Kafka log directories
 #
-define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'present') {
+define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_log_disks_regex = '.+', $ensure = 'present') {
     ganglia::view { $name:
         ensure => $ensure,
         graphs => [
@@ -256,6 +260,18 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
                 'host_regex'   => $kafka_broker_host_regex,
                 'metric_regex' => 'kafka.server.ReplicaManager.ISRExpands.FiveMinuteRate',
                 'type'         => 'line',
+            },
+            # /proc/diskstat bytes written per second
+            {
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_write_bytes_per_sec",
+                'type'         => 'stack',
+            },
+            # /proc/diskstat bytes read per second
+            {
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_read_bytes_per_sec",
+                'type'         => 'stack',
             },
         ],
     }
