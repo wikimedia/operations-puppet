@@ -218,6 +218,9 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 
     # monitor disk statistics
     ganglia::plugin::python { 'diskstat':
-        opts => { 'devices' => $log_disks },
+        # oof, this did not do what I thought it would:
+        # +	  value = 'sdcsddsdesdfsdgsdhsdisdjsdksdl'
+        # TODO: FIX THIS!
+        # opts => { 'devices' => $log_disks },
     }
 }
