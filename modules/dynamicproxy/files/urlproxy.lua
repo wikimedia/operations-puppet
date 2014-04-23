@@ -28,7 +28,7 @@ if captures == ngx.null then
 end
 
 local prefix = captures[1]
-local rest = captures[2]
+local rest = captures[2] or "/"
 local routes_arr = nil
 local route = nil
 
