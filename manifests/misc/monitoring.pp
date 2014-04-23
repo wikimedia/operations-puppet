@@ -264,7 +264,7 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $ensure = 'presen
 
 # == Define misc::monitoring::view::varnishkafka
 #
-define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $topic_regex = '.+', $ensure = 'present') {
+define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = '(amssq|cp).+', $topic_regex = '.+', $ensure = 'present') {
     ganglia::view { "varnishkafka-${title}":
         ensure => $ensure,
         graphs => [
@@ -333,12 +333,6 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $
             {
                 'host_regex'   => $varnishkafka_host_regex,
                 'metric_regex' => "kafka.rdkafka.topics.${topic_regex}\\.txmsgs.per_second",
-                'type'         => 'stack',
-            },
-            # varnish client_reqs, show this just for comparision
-            {
-                'host_regex'   => $varnishkafka_host_regex,
-                'metric_regex' => 'varnish.client_req',
                 'type'         => 'stack',
             },
         ],
