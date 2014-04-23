@@ -355,13 +355,13 @@ class misc::monitoring::view::kafkatee($kafkatee_host_regex, $topic_regex = '.+'
             # receive transctions per second rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.rx.per_second",
+                'metric_regex' => 'kafka.rdkafka.brokers..+\.rx\.per_second',
                 'type'         => 'stack',
             },
             # receive bytes per second rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.rxbytes.per_second",
+                "metric_regex" => 'kafka.rdkafka.brokers..+\.rxbytes\.per_second',
                 'type'         => 'stack',
             },
             # round trip time average
@@ -370,17 +370,11 @@ class misc::monitoring::view::kafkatee($kafkatee_host_regex, $topic_regex = '.+'
                 'metric_regex' => 'kafka.rdkafka.brokers..+\.rtt\.avg',
                 'type'         => 'line',
             },
-            # receive errors per second rate
-            {
-                'host_regex'   => $varnishkafka_host_regex,
-                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.rxerrs.per_second",
-                'type'         => 'stack',
-            },
             # next_offset.per_second - rate at which offset is updated,
             # meaning how many offsets per second are read
             {
                 'host_regex'   => $kafkatee_host_regex,
-                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.next_offset.per_second",
+                'metric_regex' => "kafka.rdkafka.topics.${topic_regex}\\.next_offset.per_second",
                 'type'         => 'stack',
             },
         ],
