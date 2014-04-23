@@ -2179,16 +2179,6 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
     include role::protoproxy::ssl
 }
 
-node 'stafford.pmtpa.wmnet' {
-    include standard
-
-    # Display notice that this is no longer an active puppetmaster.
-    file { '/etc/update-motd.d/99-obsolete-puppetmaster':
-        ensure => 'present',
-        source => 'puppet:///modules/puppetmaster/motd/99-obsolete',
-    }
-}
-
 node 'strontium.eqiad.wmnet' {
     include standard
     include passwords::puppet::database

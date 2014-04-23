@@ -3076,11 +3076,6 @@ host ssl3004 {
 	fixed-address ssl3004.esams.wikimedia.org;
 }
 
-host stafford {
-	hardware ethernet 00:21:9b:97:c9:1b;
-	fixed-address stafford.pmtpa.wmnet;
-}
-
 host stat1001 {
 	hardware ethernet 78:2b:cb:35:c4:f7;
 	fixed-address stat1001.wikimedia.org;
