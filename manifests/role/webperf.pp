@@ -21,6 +21,12 @@ class role::webperf {
         statsd_host => $statsd_host,
     }
 
+    # See <https://meta.wikimedia.org/wiki/Schema:DeprecatedUsage>
+    class { '::webperf::deprecate':
+        endpoint    => 'tcp://vanadium.eqiad.wmnet:8600',
+        statsd_host => $statsd_host,
+    }
+
     # Provisions a service which gather stats about static assets count
     # and size using a headless browser instance. Stats are forwarded to
     # Ganglia using gmetric.
