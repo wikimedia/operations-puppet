@@ -589,6 +589,7 @@ class accounts {
     class dsc inherits baseaccount {
         $username = 'dsc'
         $realname = 'David Schoonover'
+        $enabled  = false
         $uid      = '588'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -1569,6 +1570,7 @@ class accounts {
         $username = 'rfaulk'
         $realname = 'Ryan Faulkner'
         $uid      = '555'
+        $enabled  = false
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1582,7 +1584,7 @@ class accounts {
                 key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA1WerRcJULxj26JimklCkoFUO6XKBjwTbPH54/hUv5c3lvyuUol6AF86rWziHgwIAy4+jPlm9mTS3IzWoRf0sSMgSrjkmykVaD4Zc+7QnXXGtnehHfryKTyB30TI39/JB5CoS1pGQQoMg67kF0nl2RKP47r0HY07m3rl1m5MWMTKByZ9p6/oVAuJ7XNxLjfN1N+Li7HhyueQonkw8Na4CxSz/Uj6zDgxB1Odw9LgHErgOe99Nza4yOsvpa9iq30eLJjXYKJ+9s8aPI68H+nBh8/CaBaPJkuTcYfwXhE6EG9JTtUrf43y88J+SDeN0lRF8w0SMluheIzkv/3TNyDdr1w=='
             }
             ssh_authorized_key { 'rfaulk2':
-                ensure => 'present',
+                ensure => absent,
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDFlxYVmNcVsP33eEHhNc+nHZ1HJcuAZNGNfoNhiHRTisyqPm1jFvt0WQ3r+AS1rErCD3594rkApGAzO20if86OAChUwq2C3k7xB28eOXOGB/EMNswpdoDXraSxgshptbFloy1ekLX/lxWUVKU3omc3jaA4anF9FQD4EGpNbL6lJaO0oloOHdKwyjUlvp8gvWOX2/LH10ALh5/KcA1nC3zlyrLyDfHTwnkDCsvVKe8rQB3pM4b7mVOLstj+dcCqxaVbjyZap8dV4W4QbhqUFVhe9ZL1Crop0TemhWBSw9oh2vQhGj6LWQIwIAfSe6zHIJ2exfq/53nVsHeC98gWr4QZ'
@@ -2526,6 +2528,7 @@ class accounts {
         $username = 'spetrea'
         $realname = 'Stefan Petrea'
         $uid      = '612'
+        $enabled  = false
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
@@ -2799,6 +2802,7 @@ class accounts {
     class sahar inherits baseaccount {
         $username = 'sahar'
         $realname = 'Sahar Massachi'
+        $enabled  = false
         $uid      = '632'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -2808,7 +2812,7 @@ class accounts {
 
             ssh_authorized_key {
                 'work@Sahars-MacBook-Pro-2.local':
-                ensure => 'present',
+                ensure => absent,
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDXuzDLw04SadzPLoGx5jLK5+iRgq9T2TsCIQ/A81N7yhCDYOaD2tgtBSyOj1vwLy8YXY2R77z9ENKQwCuXXwfKgV7W9XPK+MFupwe9ZzOvy23J1Wp8ekyzok//oiF1R8Ofdopw+OgoaXbnNzr21OaaySAJT9MucAmG9NVQzJtO0IrGwGAJVTG77oEJKpmWSHV65lpsqZ8VjCfu3Ic9GSKFaNTQJNa5tKFQWn4eeOOlsGIb4BfLncdl/0rSv3PO07e0ddZkKfibHqeqKM+FojkQLNE10Zc3zNGqrryVPRqrdKOPmxrrCd8wLQg5V3ZeRm0/MIBeuYrX754+cPwzLegV',
