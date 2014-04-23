@@ -354,13 +354,13 @@ class misc::monitoring::view::kafkatee($kafkatee_host_regex, $topic_regex = '.+'
         graphs => [
             # receive transctions per second rate
             {
-                'host_regex'   => $varnishkafka_host_regex,
+                'host_regex'   => $kafkatee_host_regex,
                 'metric_regex' => 'kafka.rdkafka.brokers..+\.rx\.per_second',
                 'type'         => 'stack',
             },
             # receive bytes per second rate
             {
-                'host_regex'   => $varnishkafka_host_regex,
+                'host_regex'   => $kafkatee_host_regex,
                 "metric_regex" => 'kafka.rdkafka.brokers..+\.rxbytes\.per_second',
                 'type'         => 'stack',
             },
