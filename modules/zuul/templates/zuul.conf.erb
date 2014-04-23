@@ -24,3 +24,14 @@ git_dir=<%= @git_dir %>
 url_pattern=<%= @url_pattern %>
 status_url=<%= @status_url %>
 zuul_url=<%= @zuul_url %>
+
+[merger]
+git_dir=<%= @git_dir %>
+zuul_url=<%= @zuul_url %>
+log_config=/etc/zuul/merger-logging.conf
+<% if @git_email != "" -%>
+git_user_email=<%= @git_email %>
+<% end -%>
+<% if @git_name != "" -%>
+git_user_name=<%= @git_name %>
+<% end -%>

@@ -24,6 +24,8 @@ class zuul (
     $git_branch = 'master',
     $git_dir = '/var/lib/zuul/git',
     $statsd_host = '',
+    $git_email = "zuul-merger@${::hostname}",
+    $git_name = 'Wikimedia Zuul Merger',
 ) {
 
   # Dependencies as mentionned in zuul:tools/pip-requires
@@ -140,6 +142,12 @@ class zuul (
     require => Package['jenkins'],
   }
 
+  file { '/var/run/zuul-merger':
+    ensure  => directory,
+    owner   => 'jenkins',
+    require => Package['jenkins'],
+  }
+
   file { '/var/lib/zuul':
     ensure  => directory,
     owner   => 'jenkins',
@@ -160,6 +168,14 @@ class zuul (
     source => 'puppet:///modules/zuul/zuul.init',
   }
 
+  file { '/etc/init.d/zuul-merger':
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0555',
+    source => 'puppet:///modules/zuul/zuul-merger.init',
+  }
+
   file { '/etc/default/zuul':
     ensure  => present,
     owner   => 'root',
@@ -168,16 +184,4 @@ class zuul (
     content => template('zuul/default.erb'),
   }
 
-  exec { 'zuul-reload':
-    command     => '/etc/init.d/zuul reload',
-    require     => File['/etc/init.d/zuul'],
-    refreshonly => true,
-  }
-
-  service { 'zuul':
-    name       => 'zuul',
-    enable     => true,
-    hasrestart => true,
-    require    => File['/etc/init.d/zuul'],
-  }
 }
