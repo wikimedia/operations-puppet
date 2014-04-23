@@ -39,8 +39,8 @@ class ldap::role::config::production {
 
     $basedn = 'dc=wikimedia,dc=org'
     $servernames = $site ? {
-        'pmtpa' => [ 'nfs1.pmtpa.wmnet', 'nfs2.pmtpa.wmnet' ],
-        'eqiad' => [ 'nfs2.pmtpa.wmnet', 'nfs1.pmtpa.wmnet' ],
+        'pmtpa' => [ 'nfs1.pmtpa.wmnet' ],
+        'eqiad' => [ 'nfs1.pmtpa.wmnet' ],
     }
     $sudobasedn = "ou=sudoers,${basedn}"
     $ldapconfig = {
