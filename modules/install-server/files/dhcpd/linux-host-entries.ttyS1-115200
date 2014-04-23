@@ -723,7 +723,7 @@ host db60 {
 }
 
 host db68 {
-	hardware ethernet d4:ae:52:8b:eb:2e;;
+	hardware ethernet d4:ae:52:8b:eb:2e;
 	fixed-address db68.pmtpa.wmnet;
 }
 
