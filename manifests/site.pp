@@ -478,7 +478,7 @@ node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
     include role::cache::upload
 }
 
-node /^cp301[1-4]\.esams\.wikimedia\.org$/ {
+node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
     interface::add_ip6_mapped { 'main': }
 
     include role::cache::mobile

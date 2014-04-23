@@ -559,12 +559,12 @@ host cp3012 {
 
 host cp3013 {
 	hardware ethernet 24:B6:FD:F5:AD:9C;
-	fixed-address cp3013.esams.wikimedia.org;
+	fixed-address cp3013.esams.wmnet;
 }
 
 host cp3014 {
 	hardware ethernet 24:B6:FD:F5:7C:38;
-	fixed-address cp3014.esams.wikimedia.org;
+	fixed-address cp3014.esams.wmnet;
 }
 
 host cp3015 {
