@@ -37,11 +37,18 @@ class role::zuul::labs {
         gerrit_user          => 'jenkins',
         url_pattern          => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
         status_url           => 'http://integration.wmflabs.org/zuul/status',
-        zuul_url             => '',  # FIXME
+        zuul_url             => 'git://localhost',
         config_git_branch    => 'labs',
         git_branch           => 'labs',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
         statsd_host          => '',
+        git_email            => "zuul-merger@${::instancename}",
+        git_name             => 'Wikimedia Zuul Merger',
+    }
+
+    # Serves Zuul git repositories
+    class { 'contint::zuul::git-daemon':
+      zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
     }
 
 } # /role::zuul::labs
@@ -85,6 +92,8 @@ class role::zuul::production {
         git_branch           => 'master',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
         statsd_host          => 'statsd.eqiad.wmnet',
+        git_email            => "zuul-merger@${::hostname}",
+        git_name             => 'Wikimedia Zuul Merger',
     }
 
     # Serves Zuul git repositories on git://zuul.eqiad.wmnet/...
