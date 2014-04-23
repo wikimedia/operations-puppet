@@ -1888,7 +1888,7 @@ node 'netmon1001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^nfs[12].pmtpa.wmnet/ {
+node 'nfs1.pmtpa.wmnet' {
 
     $server_bind_ips = "127.0.0.1 ${ipaddress_eth0}"
     $cluster = 'misc'
