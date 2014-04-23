@@ -102,7 +102,7 @@ class ocg (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => template('ocg/ocg.upstart.conf.erb'),
+        content => template('ocg/ocg.upstart.conf.erb'),
         require => User['ocg'],
         notify  => Service['ocg'],
     }
