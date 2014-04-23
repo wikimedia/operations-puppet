@@ -35,6 +35,16 @@ class role::ci::master {
         require => User['jenkins'],
     }
 
+    # Templates for Jenkins plugin Email-ext.  The templates are hosted in
+    # the repository integration/jenkins.git, so link to there.
+    file { '/var/lib/jenkins/email-templates':
+        ensure => link,
+        target => '/srv/deployment/integration/slave-scripts/tools/email-templates',
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     # As of October 2013, the slave scripts are installed with
     # contint::slave-scripts and land under /srv/jenkins.
     # FIXME: clean up Jenkins jobs to no more refer to the paths below:
