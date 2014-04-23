@@ -29,7 +29,13 @@ class lvs::balancer(
     }
 
     file { "/etc/modprobe.d/lvs.conf":
-        content => template("${module_name}/lvs.conf.erb");
+        content => template("${module_name}/lvs.conf.erb"),
+        notify => Exec["update-initramfs"]
+    }
+
+    exec { "update-initramfs":
+        command => "/usr/sbin/update-initramfs -u",
+        refreshonly => true
     }
 
     # Bind balancer IPs to the loopback interface
