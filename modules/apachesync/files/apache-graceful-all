@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ `cat /etc/cluster` == pmtpa ]; then
+	/home/wikipedia/bin/dologmsg "$USER is doing a graceful restart of all apaches"
+fi
+ddsh -F20 -g apaches -cM 'if [ -x /home/wikipedia/bin/apache-graceful ]; then echo "/home-mounted apache $(hostname)"; /home/wikipedia/bin/apache-graceful; else /usr/bin/apache-sanity-check && sudo /usr/sbin/apache2ctl graceful; fi'
+if [ `cat /etc/cluster` == pmtpa ]; then
+	/home/wikipedia/bin/dologmsg "!log $USER gracefulled all apaches"
+fi
