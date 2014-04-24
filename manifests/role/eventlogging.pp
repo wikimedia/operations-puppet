@@ -101,28 +101,30 @@ class role::eventlogging {
     #     output => "mongodb://${mongo_user}:${mongo_pass}@${mongo_host}:27017",
     # }
 
+    # Disabled -- dan, 24-Apr-2014
+    # eventlogging::service::consumer { 'mysql-db1047':
+    #     input  => "tcp://${processor}:8600",
+    #     output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
+    # }
+
 
     ## MySQL / MariaDB
 
     # Log strictly valid events to the 'log' database on db1047. This is the
     # primary medium for data analysis as of July 2013.
+    # As of April 2014, events are logged to db1048.
 
     include passwords::mysql::eventlogging    # RT 4752
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
     $mysql_db = $::realm ? {
-        production => 'db1047.eqiad.wmnet/log',
+        production => 'db1048.eqiad.wmnet/log',
         labs       => '127.0.0.1/log',
-    }
-
-    eventlogging::service::consumer { 'mysql-db1047':
-        input  => "tcp://${processor}:8600",
-        output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
     }
 
     eventlogging::service::consumer { 'mysql-db1048':
         input  => "tcp://${processor}:8600",
-        output => "mysql://${mysql_user}:${mysql_pass}@db1048.eqiad.wmnet/log?charset=utf8",
+        output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
     }
 
 
