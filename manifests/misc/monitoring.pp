@@ -273,6 +273,24 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_log_disks_
                 'metric_regex' => "diskstat_(${kafka_log_disks_regex})_read_bytes_per_sec",
                 'type'         => 'stack',
             },
+            # /proc/diskstat bytes read per second
+            {
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_read_bytes_per_sec",
+                'type'         => 'stack',
+            },
+            # 15 minute load average
+            {
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => 'load_fifteen',
+                'type'         => 'line',
+            },
+            # IO wait
+            {
+                'host_regex'   => $kafka_broker_host_regex,
+                'metric_regex' => 'cpu_wio',
+                'type'         => 'line',
+            },
         ],
     }
 }
