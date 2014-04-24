@@ -28,6 +28,9 @@ class role::gerrit {
 
 	class production {
 		system::role { 'role::gerrit::production': description => 'Gerrit master' }
+		include backup::host
+
+		backup::set { 'var-lib-gerrit2-review_site-git': }
 
 		interface::ip { 'role::gerrit::production_ipv4':
 			interface => 'eth0',
