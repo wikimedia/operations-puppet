@@ -3153,16 +3153,6 @@ host virt0 {
 	fixed-address virt0.wikimedia.org;
 }
 
-host labsudb1 {
-	hardware ethernet f0:4d:a2:0b:33:f2;
-	fixed-address labsudb1.pmtpa.wmnet;
-}
-
-host labsudb2 {
-	hardware ethernet f0:4d:a2:0b:3e:5a;
-	fixed-address labsudb2.pmtpa.wmnet;
-}
-
 host wtp1001 {
 	hardware ethernet 90:B1:1C:2D:85:30;
 	fixed-address wtp1001.eqiad.wmnet;
