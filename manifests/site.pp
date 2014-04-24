@@ -35,6 +35,7 @@ import 'stages.pp'
 
 # Base nodes
 
+
 # Class for *most* servers, standard includes
 class standard {
     include base
