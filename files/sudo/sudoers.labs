@@ -5,7 +5,7 @@
 # See the man page for details on how to write a sudoers file.
 #
 
-Defaults	env_reset
+Defaults        env_reset
 
 # Host alias specification
 
@@ -14,7 +14,7 @@ Defaults	env_reset
 # Cmnd alias specification
 
 # User privilege specification
-root	ALL=(ALL) ALL
+root    ALL=(ALL) ALL
 
 # Allow members of group sudo to execute any command after they have
 # provided their password
