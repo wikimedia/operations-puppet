@@ -120,6 +120,11 @@ class role::eventlogging {
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
     }
 
+    eventlogging::service::consumer { 'mysql-db1048':
+        input  => "tcp://${processor}:8600",
+        output => "mysql://${mysql_user}:${mysql_pass}@db1048.eqiad.wmnet/log?charset=utf8",
+    }
+
 
     ## Flat files
 
