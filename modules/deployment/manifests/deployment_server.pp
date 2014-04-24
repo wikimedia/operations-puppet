@@ -1,3 +1,10 @@
+# = Class: deployment::deployment_server
+#
+# Provision a trebuchet deployment server.
+#
+# == Parameters:
+# - $deployer_groups: Array of unix groups to add to the trebuchet user
+#
 class deployment::deployment_server($deployer_groups=[]) {
     if ! defined(Package['git-core']){
         package { 'git-core':
@@ -9,20 +16,6 @@ class deployment::deployment_server($deployer_groups=[]) {
             ensure => present;
         }
     }
-
-    exec { 'eventual_consistency_deployment_server_init':
-        path    => ['/usr/bin'],
-        command => 'salt-call deploy.deployment_server_init',
-        require => Package['salt-minion'];
-    }
-
-    file { '/etc/gitconfig':
-        content => template('deployment/gitconfig.erb'),
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        require => [Package['git-core']],
-    }
     if ! defined(Package['python-git']){
         package { 'python-git':
             ensure => present;
@@ -33,6 +26,23 @@ class deployment::deployment_server($deployer_groups=[]) {
     }
     package { 'trebuchet-trigger':
         ensure => present;
+    }
+
+    file { '/etc/gitconfig':
+        content => template('deployment/gitconfig.erb'),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        require => [Package['git-core']],
+    }
+
+    if $::realm != 'labs' {
+      generic::systemuser { 'trebuchet':
+          name   => 'trebuchet',
+          shell  => '/bin/false',
+          home   => '/nonexistent',
+          groups => $deployer_groups,
+      }
     }
 
     salt::grain { 'deployment_server':
@@ -47,12 +57,20 @@ class deployment::deployment_server($deployer_groups=[]) {
         replace => true,
     }
 
-    if $::realm != 'labs' {
-      generic::systemuser { 'trebuchet':
-          name   => 'trebuchet',
-          shell  => '/bin/false',
-          home   => '/nonexistent',
-          groups => $deployer_groups,
-      }
+    exec { 'deployment_server_sync_all':
+        refreshonly => true,
+        path        => ['/usr/bin'],
+        command     => 'salt-call saltutil.sync_all',
+        subscribe   => Salt::Grain['deployment_server'],
+    }
+
+    exec { 'eventual_consistency_deployment_server_init':
+        path    => ['/usr/bin'],
+        command => 'salt-call deploy.deployment_server_init',
+        require => [
+            Package['salt-minion'],
+            Salt::Grain['deployment_server'],
+            Salt::Grain['deployment_repo_user'],
+        ];
     }
 }
