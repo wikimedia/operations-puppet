@@ -162,6 +162,7 @@ class accounts {
         $username = 'aengels'
         $realname = 'Andre Engels'
         $uid      = '587'
+        $enabled  = false
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -170,7 +171,7 @@ class accounts {
 
                 ssh_authorized_key {
                 'aengels-rsa-key-20120215':
-                    ensure => 'present',
+                    ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIEA0kG/cHOrVwI14kI+xGgCZuidimqeXyh9vqoI2+EwGFu8o8bq3LmmqElEH7eHwpsOcaJlSMHC2ErbpXSPMiZoulgK6y/Ko9LKl4+0iRhPsQoyiOE/GHgbj025YTkjswNrYmQKwMTGaU+rnGFr82IFDMUoSFilUfcLMNPNo6ZATXs=';
