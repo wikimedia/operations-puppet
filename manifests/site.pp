@@ -1838,6 +1838,7 @@ node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
 }
 
 node 'neon.wikimedia.org' {
+    class { 'base::firewall': }
     $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org'
 
     $ircecho_logs = { '/var/log/icinga/irc.log' => '#wikimedia-operations' }
