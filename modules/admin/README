@@ -1,0 +1,190 @@
+This module is meant to manage all users, groups, and permissions (sudo).
+
+All managed resources should be defined in yaml.
+
+see: admin/data/data.yaml
+
+-- Examples --
+
+Adding a group:
+
+    groups:
+      mygroup:
+        ensure: present
+        gid: 551
+        members: [foo, bar]
+
+Managing members for a default system group:
+
+-> For groups without a set GID we do not attempt creation
+
+    groups:
+      adm:
+        members: [foo, bar]
+
+Removing a member from a group:
+
+-> Removing 'bar' user from mygroup means removal from members array
+
+    groups:
+      mygroup:
+        ensure: present
+        gid: 551
+        members: [foo, bar] -> members: [foo]
+
+Removing a group:
+
+-> absenting a group will remove it where it was applied
+
+    groups:
+      mygroup:
+        foo:
+          ensure: absent
+          gid: 679
+          members: []
+
+Adding user 'foo':
+
+-> Since assignment is group centric this user won't be created anywhere yet
+
+    users:
+        foo:
+          uid: 1146
+          gid: 500
+          realname: Foo Bar
+          ssh_keys: [ssh-rsa mykeyhash foobar@mac]
+
+Adding user 'foo' to adm:
+
+    groups:
+        adm:
+            members: [foo]
+
+Removing user foo:
+
+-> absented users cannot be members of a group -- other than absent --
+-> users who are not a member of a supplementary group are removed
+-> Therefore, removing a user from all groups means they will be removed
+   everywhere they existed because of those groups.
+
+    groups:
+        adm:
+          members: [foo, bar] -> members: [bar]
+
+-> User garbage collection logs to syslog and console:
+
+    #manual ensure absent example output
+    notice: /Stage[main]/Admin/Admin::Yamluser[foo]/Admin::User[foo]/User[foo]/ensure: removed
+
+    #straggling user cleanup puppet output
+    notice: /Stage[main]/Admin/Exec[enforce-users-groups-cleanup]/returns: \
+        /usr/local/bin/enforce-users-groups removing user/id: foo/1001
+
+    #straggling user cleanup syslog output
+    May  6 10:54:43 uone logger: /usr/local/bin/enforce-users-groups removing user/id: foo/1001
+
+-> However, if you want to ensure a user is especially missing globally
+-> Mark the user as 'ensure: absent'
+-> Add the user to the meta 'absent' group
+
+    groups:
+      absent:
+        members: [foo]
+
+    users:
+        foo:
+        ensure: absent
+        uid: 510
+        gid: 500
+        realname: Foo Bar
+        ssh_keys: [ssh-rsa mykeyhash foobar@mac]
+
+-> absent group users:
+-> * are _always_ included in every batch of assignments
+-> * should never have 'ensure: present'
+-> * cannot be a member of any other group
+
+Assigning groups/users:
+
+-> one 'class admin' assignment per node must be done since we need state information on all assigned users
+-> 'ops' and 'absent' groups are always included
+
+        #create group and assign users
+        node /myhost/ {
+            class { 'admin': groups => ['mygroup'], }
+        }
+
+    or (including managed members of a system group):
+
+        #this creates both groups, and all relevant users of both groups even with overlap
+        node /myhost/ {
+            class { 'admin': groups => ['mygroup', 'adm'], }
+        }
+
+        #creates three groups and all relevants users and permissions details
+        node /myhost/ {
+            class { 'admin': groups => ['mygroup',
+                                        'adm',
+                                        'foo'], }
+        }
+
+Assigning sudo permissions to a group:
+
+    groups:
+        adm:
+        members: [foo, bar]
+        privs: [ALL=(ALL:ALL) ALL]
+
+    Creates: '/etc/sudoers.d/adm'
+
+        # This file is managed by Puppet!
+        %adm ALL=(ALL:ALL) ALL
+
+Removing sudo permissions from a group:
+
+-> if you remove a group the permissions are removed as well
+-> the 'absent' keyword will also remove all sudo permissions while
+-> retaining the group and members
+
+    bar:
+      gid: 680
+      privs: [absent]
+      members: [a, b, c]
+
+Users can be given sudo permissions in the same way:
+
+-> this is a limited use approach.  these permissions would apply across the entire env.
+
+  foo:
+    ensure: present
+    privs: [ALL=(ALL:ALL) ALL]
+
+Assigning one-off (single user, single case) sudo permissions:
+
+    admin::sudo { "foo_user_only_should_do_x":
+        user=>'bob',
+        comment=>'this is good karma',
+        privs=>['ALL = NOPASSWD: X'],
+    }
+
+    Creates '/etc/sudoers.d/foo_user_only_should_do_x':
+
+    # This file is managed by Puppet!
+    #this is good karma
+    bob ALL = NOPASSWD: X
+
+Getting your /home/ stuff wherever you are:
+
+-> if you define a dir for your username in '${module}/files/home' all contents are managed
+
+    ├── files
+    │   ├── home
+    │   │   ├── foo
+    │   │   │   └── .vimrc
+
+
+#Notes:
+#* Individual /home data is intended to live somewhere other than our Puppet repo once
+   figure out where it should live permanently
+#* Groups with no members get root by default
+#* admin::user and admin::group are not dependent on yaml
