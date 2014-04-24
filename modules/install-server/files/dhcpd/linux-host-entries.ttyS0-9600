@@ -37,29 +37,3 @@ host cam2-b-c-eqiad {
 	hardware ethernet 00:40:8c:a2:61:25;
 	fixed-address cam2-b-c-eqiad.eqiad.wmnet;
 }
-
-host cam1-a-sdtpa {
-	hardware ethernet 00:40:8c:b1:a6:6e;
-	fixed-address cam1-a-sdtpa.wikimedia.org;
-}
-
-host cam1-a-b-sdtpa {
-	hardware ethernet 00:40:8c:af:a4:3e;
-	fixed-address cam1-a-b-sdtpa.wikimedia.org;
-}
-
-host cam1-b-c-sdtpa {
-	hardware ethernet 00:40:8c:af:a3:5b;
-	fixed-address cam1-b-c-sdtpa.wikimedia.org;
-}
-
-host cam1-c-d-sdtpa {
-	hardware ethernet 00:40:8c:af:a4:1c;
-	fixed-address cam1-c-d-sdtpa.wikimedia.org;
-}
-
-host cam1-d-sdtpa {
-	hardware ethernet 00:40:8c:af:94:28;
-	fixed-address cam1-d-sdtpa.wikimedia.org;
-}
-
