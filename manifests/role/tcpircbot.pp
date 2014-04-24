@@ -8,7 +8,7 @@ class role::tcpircbot {
 
     nrpe::monitor_service { 'tcpircbot':
         description  => 'tcpircbot_service_running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -a tcpircbot',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:3 -a tcpircbot',
     }
 
     tcpircbot::instance { 'logmsgbot':
