@@ -25,7 +25,7 @@ class role::dataset::pagecountsraw($enable=true) {
 class role::dataset::primary {
     $rsync = {
         'public' => true,
-        'peers'  => false,
+        'peers'  => true,
         'labs'   => true,
     }
     $grabs = {
@@ -49,7 +49,7 @@ class role::dataset::primary {
 class role::dataset::secondary {
     $rsync = {
         'public' => true,
-        'peers'  => false,
+        'peers'  => true,
     }
     $uploads = {
 #        'pagecounts' => true,
