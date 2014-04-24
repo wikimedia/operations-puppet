@@ -545,9 +545,10 @@ class accounts {
         $realname = 'Daniel Bauer'
         $uid      = '536'
         $gid      = '536'  # group 'dab'
+        $enabled  = false
 
         group { 'dab':
-            ensure    => present,
+            ensure    => absent,
             name      => $username,
             gid       => $gid,
             alias     => $gid,
@@ -560,7 +561,7 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'knoppix@DanielXX':
-                ensure => 'present',
+                ensure => absent,
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAABIwAAAIEA4Xz2/yn/LREJbem/0IFF8wdAhn8n/dahlqB94K5hLXDXqFyiSHI3UBqnGlO2vTiwP/zU0/6cqVFQb1dqhftYn/Fet0MuekZRog2wHTrOkPy63Ph6dqVl5IeIqkHu0tEGXehd/3cktJs0ZiDjR6HrThJxLfRXsSsFQgxrHcSXLeM=';
