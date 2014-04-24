@@ -181,7 +181,7 @@ class accounts {
     class akosiaris inherits baseaccount {
         $username = 'akosiaris'
         $realname = 'Alexandros Kosiaris'
-        $uid      = '642'
+        $uid      = '3194'
         $enabled  = true
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -2165,7 +2165,7 @@ class accounts {
     class faidon inherits baseaccount {
         $username = 'faidon'
         $realname = 'Faidon Liambotis'
-        $uid      = '592'
+        $uid      = '2186'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
