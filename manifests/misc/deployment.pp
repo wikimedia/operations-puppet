@@ -119,22 +119,6 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sqldump";
-		"${scriptpath}/sync-apache":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-apache";
-		"${scriptpath}/sync-apache-simulated":
-			owner => root,
-			group => root,
-			mode => 0555,
-			ensure => link,
-			target => "${scriptpath}/sync-apache";
-		"${scriptpath}/apache-graceful-all":
-			owner  => 'root',
-			group  => 'root',
-			mode   => '0554',
-			source => 'puppet:///files/misc/scripts/apache-graceful-all';
 		"${scriptpath}/udprec":
 			owner => root,
 			group => root,
@@ -145,11 +129,6 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/set-group-write2";
-		"${scriptpath}/apache-fast-test":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/apache-fast-test";
 		"${scriptpath}/updateinterwikicache":
 			owner => root,
 			group => root,
