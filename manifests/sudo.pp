@@ -39,17 +39,6 @@ class sudo::labs_project {
 
 }
 
-class sudo::default {
-
-	file { "/etc/sudoers":
-		owner => root,
-		group => root,
-		mode => 0440,
-		source => "puppet:///files/sudo/sudoers.default";
-	}
-
-}
-
 class sudo::appserver {
 
 	file { "/etc/sudoers.d/appserver":
