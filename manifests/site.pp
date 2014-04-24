@@ -2467,6 +2467,7 @@ node 'tin.eqiad.wmnet' {
     include mysql
     include role::labsdb::manager
     include ssh::hostkeys-collect
+    include role::apachesync
 
     # for reedy RT #6322
     package { 'unzip':
