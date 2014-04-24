@@ -141,7 +141,7 @@ class accounts {
     class abaso inherits baseaccount {
         $username = 'abaso'
         $realname = 'Adam Baso'
-        $uid      = '639'
+        $uid      = '2962'
         $enabled  = true
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -200,7 +200,7 @@ class accounts {
     class anomie inherits baseaccount {
         $username = 'anomie'
         $realname = 'Brad Jorsch'
-        $uid      = '617'
+        $uid      = '2248'
         $enabled  = true
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -359,7 +359,7 @@ class accounts {
     class bd808 inherits baseaccount {
         $username = 'bd808'
         $realname = 'Bryan Davis'
-        $uid      = '652'
+        $uid      = '3518'
         $enabled    = true
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -469,7 +469,7 @@ class accounts {
     class csteipp inherits baseaccount {
         $username = 'csteipp'
         $realname = 'Chris Steipp'
-        $uid      = '609'
+        $uid      = '2246'
         $enabled  = true
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
@@ -2234,7 +2234,7 @@ class accounts {
     class bsitu inherits baseaccount {
         $username = 'bsitu'
         $realname = 'Benny Situ'
-        $uid      = '595'
+        $uid      = '2100'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2636,7 +2636,7 @@ class accounts {
     class abartov inherits baseaccount {
         $username = 'abartov'
         $realname = 'Asaf Bartov'
-        $uid      = '618'
+        $uid      = '2176'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
