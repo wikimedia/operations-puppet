@@ -24,21 +24,6 @@ host analytics1010 {
 	fixed-address analytics1010.eqiad.wmnet;
 }
 
-host labsdb1 {
-	hardware ethernet 88:43:E1:C2:5D:90;
-	fixed-address labsdb1.pmtpa.wmnet;
-}
-
-host labsdb2 {
-	hardware ethernet 88:43:E1:C2:56:C8;
-	fixed-address labsdb2.pmtpa.wmnet;
-}
-
-host labsdb3 {
-	hardware ethernet 88:43:E1:C2:5A:C6;
-	fixed-address labsdb3.pmtpa.wmnet;
-}
-
 host labsdb1001 {
 	hardware ethernet 00:22:BD:D3:61:8C;
 	fixed-address labsdb1001.eqiad.wmnet;
