@@ -43,3 +43,11 @@ define decom-user($username=$title, $uid) {
         }
     }
 }
+
+decom-user {'dsc':
+    uid => '588'
+}
+decom-user {'preilly':
+    uid => '570'
+}
+
