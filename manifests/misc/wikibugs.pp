@@ -13,23 +13,20 @@ class misc::irc::wikibugs::packages {
   }
 }
 
+# IRC bot reporting Bugzilla bugs
 class misc::irc::wikibugs {
 
-  # We are an IRC bot!
-
-  # Some Bugzilla product have been blessed with their own log files out of the
-  # default one. Values are hardcoded in the Wikibugs perl script
-  $ircecho_logbase = '/var/wikibugs'
-  $ircecho_logs = {
-    "${ircecho_logbase}/wikibugs.log"         => '#wikimedia-labs',
-    "${ircecho_logbase}/wikimedia-mobile.log" => '#wikimedia-mobile',
-    "${ircecho_logbase}/wikibugs.log"         => '#wikimedia-dev',
+  # Some Bugzilla product have been blessed with their own
+  # log files out of the default one.
+  class { '::ircecho':
+     ircecho_logs   => {
+        '/var/wikibugs/wikibugs.log'         => 'wikimedia-labs',
+        '/var/wikibugs/wikimedia-mobile.log' => 'wikimedia-mobile',
+        '/var/wikibugs/wikibugs.log'         => 'wikimedia-dev',
+    },
+     ircecho_nick => 'wikibugs',
   }
 
-  $ircecho_nick = 'wikibugs'
-  $ircecho_server = 'chat.freenode.net'
-
-  include role::echoirc
   include misc::irc::wikibugs::packages
 
   generic::systemuser { 'wikibugs': name => 'wikibugs' }
