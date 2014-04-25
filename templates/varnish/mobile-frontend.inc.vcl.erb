@@ -7,6 +7,10 @@ sub filter_noise {
 	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
 		error 403 "Noise";
 	}
+
+	if (req.http.referer && req.http.referer ~ "^http://www\.keeprefreshing\.com/") {
+		error 403 "Noise";
+	}
 }
 
 sub vcl_recv {
