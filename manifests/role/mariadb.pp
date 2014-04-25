@@ -82,3 +82,30 @@ class role::mariadb::dbstore {
     include mariadb::monitor_disk
     include mariadb::monitor_process
 }
+
+# MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB
+class role::mariadb::analytics {
+
+    $cluster = 'mysql'
+
+    system::role { 'role::mariadb::analytics':
+        description => 'Analytics All-Shards Slave',
+    }
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
+    include passwords::misc::scripts
+
+    class { 'mariadb::config':
+        prompt   => 'ANALYTICS',
+        config   => 'mariadb/analytics.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/a/sqldata',
+        tmpdir   => '/a/tmp',
+    }
+
+    include mariadb::monitor_disk
+    include mariadb::monitor_process
+}

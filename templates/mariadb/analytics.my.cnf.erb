@@ -1,0 +1,60 @@
+# analytics all-shards slave, with scratch space
+
+# Please use separate .cnf templates for each type of server.
+
+[client]
+port   = 3306
+socket = /tmp/mysql.sock
+
+[mysqld]
+
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+user      = mysql
+socket    = /tmp/mysql.sock
+port      = 3306
+datadir   = <%= @datadir %>
+tmpdir    = <%= @tmpdir %>
+server_id = <%= @server_id %>
+read_only = 0
+
+max_connections    = 256
+max_allowed_packet = 16M
+connect_timeout    = 3
+query_cache_size   = 0
+query_cache_type   = 0
+event_scheduler    = 1
+userstat           = 1
+
+table_open_cache       = 50000
+table_definition_cache = 50000
+
+character_set_server     = binary
+character_set_filesystem = binary
+collation_server         = binary
+
+transaction-isolation          = READ-COMMITTED
+innodb_file_per_table          = 1
+innodb_buffer_pool_size        = 4G
+innodb_log_file_size           = 2G
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method            = O_DIRECT
+innodb_locks_unsafe_for_binlog = 1
+aria_pagecache_buffer_size     = 1G
+
+optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
+join_cache_level = 8
+
+plugin_load = ha_tokudb.so
+tokudb_cache_size = <%= (Float(@memorysize.split[0]) * 0.50).round %>G
+
+slave_transaction_retries = 4294967295
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/
