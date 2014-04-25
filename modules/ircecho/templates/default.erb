@@ -50,6 +50,6 @@ end
 # This is a POSIX shell fragment
 #
 INFILE="<%= infile(@ircecho_logs) %>"
-NICK="<%= @ircecho_nick %>"
+NICK="<%= scope.lookupvar('ircecho::ircecho_nick') %>"
 CHANS="<%= chans(@ircecho_logs) %>"
-SERVER="<%= @ircecho_server %>"
+SERVER="<%= scope.lookupvar('ircecho::ircecho_server') %>"
