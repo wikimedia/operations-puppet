@@ -588,27 +588,6 @@ class accounts {
         }
     }
 
-    class dsc inherits baseaccount {
-        $username = 'dsc'
-        $realname = 'David Schoonover'
-        $enabled  = false
-        $uid      = '588'
-
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
-                if $manage_home {
-                        Ssh_authorized_key { require => Unixaccount[$realname]}
-
-                        ssh_authorized_key {
-                'dschoonover@wikimedia.org':
-                    ensure => 'absent',
-                    user   => $username,
-                    type   => 'ssh-rsa',
-                    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA90Dj4DCHCIIRQv4K3+s+HAZUWZXmmY6rEhgaClq7tWZ2cnwQrGZJbRlhgTjfykPkyI6l+hx1xqMDz4ORGzMf1y/Ee5tEa+Btca1kfvY/N8bma1c3xO40M06/AC+1jyRsvng6byoCpDzbN+TrLWhwkKZglACR9i0eqoa8eJ6Sv9L1hz6bqjDoS8DXEx1xJNT/It60wyB08OVN2s2WiM/Cr340j6AdkyoTx9O2oigiOdOqfTUVXpK87zU6Ph4PxbkDtpfmyPEwX1LPmuwAie6b3MW0/G48sIZpJG0847m4qEDE4k04/E6jDYFssGB1vWDTAA1O0L2rIcQ5K6d4bFkzgQ==';
-            }
-        }
-    }
-
     class dzahn inherits baseaccount {
         $username = 'dzahn'
         $realname = 'Daniel Zahn'
@@ -1795,27 +1774,6 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-dss',
                     key    => 'AAAAB3NzaC1kc3MAAACBAP3J4fO4aWz5PA+fHzGKU/ZsqwItFRyH3hU3ahRtGWdAxWvwn/yyOyNs56VsPpmibLmugHqfrHIQFhv6wIiX6/U7Q03VV4WUd8fuXTYBrVPRAnIhQruQT8pGIljhWKSstYAdk2XvCzkIXrhrkzzxCQhdoPcqwPMvWpTWQvlQw7EVAAAAFQDrqUv2zfyMmx0KUy+kRphPx4JD+QAAAIAYeDr+bVOhJgrr7zcUpVdMMln+fZPwZZ+SIySzI2LbAcIchjJsvT5d9HMlFgFDJ5mYkydRosWdBQRSgJ6GcEeLjrhkNtG7HOTR/bR7zZuwQkr3qUqW+hi5Rm37ZB5S3uLUNl3OLNtdn4FT1lAkQWSuVBsPeTpDs90QNxSVfH1zzQAAAIAcRLEllDpoHzfTbeYbWsiQnb9CX2XNuhyilyqOo56lrEAca1sjXfgef4vECZpleznRU5OCMyrJvJiJyYr9K8AZ7q2x0NDdXImYaZ62luYHgqMccWHG9HIGiM0iDiyl1p9S5ceOk0wBLt2vHm/MzAFoUsH+OzjZ+vb6bMcbn831uQ==';
-            }
-        }
-    }
-
-    class preilly inherits baseaccount {
-        $username = 'preilly'
-        $realname = 'Patrick Reilly'
-        $uid      = '570'
-        $enabled  = false
-
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
-                if $manage_home {
-                        Ssh_authorized_key { require => Unixaccount[$realname]}
-
-                        ssh_authorized_key {
-                'preilly@wikimedia.org':
-                    ensure => 'absent',
-                    user   => $username,
-                    type   => 'ssh-dss',
-                    key    => 'AAAAB3NzaC1kc3MAAACBANqUhyPERX9/5QZhAfj+4m8DqHGbnk56qMHGqTwKTfP1EoYq7tATVHx93CI2LkURbq8bVUcFFdfZfBwpKVGoFBiZBCW1lppDQFO+MD6lWABCjeWg5foC2X9yNoTMc7BEBgOWZcPSwj2EyYS9VeWko+GxvM1JAG3C5U5paWAGj0mrAAAAFQDt4i/pu61OEdyg685hHBqWkpvvYwAAAIBkUqw656A3EOSf4qjv6Ph9AlTzpLhglqzdwYbOZ0CdITnfSuZ0/lBmJjMg1Kyb28eGXCA8FSF/liz3dG0eDFKVPxsNFr2CiZs3IjVPVaZPwjnxvEMPRECj8bb8w2GqX+q3fXyPt9h+Y2Q+I/4ZjeGTnta+PIeSp8Vy58Xw+hN+6gAAAIB7hoyYs0F9vhMmydoXIFjxo8edMe33Sdx9uKWcycDvNiDuk5oQb1K0v8UNVvwNIV6jH2F4yXFVkV79Jk8FUqhzRs1gPGJQeR8Ve/qWFtJJqUyDYPWyRJTLG6ZY+KrIbSFec2T1V5NTy/jWz3TZobhd9PdxhWN3QIKFqX0kpxvnvQ==';
             }
         }
     }
