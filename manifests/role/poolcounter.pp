@@ -1,6 +1,5 @@
 class role::poolcounter{
     include ::poolcounter
-    include nrpe
 
     system::role { 'role::poolcounter':
         description => 'PoolCounter server',
