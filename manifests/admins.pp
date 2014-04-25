@@ -1050,10 +1050,10 @@ class accounts {
         }
     }
 
-    class mholmquist inherits baseaccount {
-        $username = 'mholmquist'
+    class marktraceur  inherits baseaccount {
+        $username = 'marktraceur'
         $realname = 'Mark Holmquist'
-        $uid      = '626'
+        $uid      = '2165'
         $gid      = '500'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
@@ -3788,7 +3788,7 @@ class admins::mortals {
     include accounts::manybubbles # promoted per RT 5691
     include accounts::maxsem
     include accounts::mflaschen
-    include accounts::mholmquist
+    include accounts::marktraceur
     include accounts::mhoover # access revoked
     include accounts::milimetric # promoted per RT 5982
     include accounts::mlitn
@@ -3872,7 +3872,7 @@ class admins::jenkins {
     include accounts::dsc #account disabled
     include accounts::hashar
     include accounts::krinkle
-    include accounts::mholmquist
+    include accounts::marktraceur
     include accounts::reedy
 }
 

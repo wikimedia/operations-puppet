@@ -997,7 +997,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 node 'gallium.wikimedia.org' {
     $cluster = 'misc'
     $gid= '500'
-    sudo_user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
+    sudo_user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'marktraceur' ]:
         privileges => [
             'ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
@@ -1328,7 +1328,7 @@ node 'lanthanum.eqiad.wmnet' {
 
     # Used as a Jenkins slave so some folks need escalated privileges
     $gid= '500'
-    sudo_user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'mholmquist' ]:
+    sudo_user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'marktraceur' ]:
         privileges => [
         'ALL = (jenkins-slave) NOPASSWD: ALL',
         'ALL = (gerritslave) NOPASSWD: ALL',
@@ -2309,7 +2309,7 @@ node 'stat1003.wikimedia.org' {
     include accounts::jforrester   # RT 5302
     include accounts::qchris       # RT 5474
     include accounts::tnegrin      # RT 5391
-    include accounts::mholmquist   # RT 6009
+    include accounts::marktraceur   # RT 6009
     include accounts::msyed        # RT 6506
     include accounts::nuria        # RT 6525
     include accounts::csalvia      # RT 6664
