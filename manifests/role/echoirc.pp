@@ -14,7 +14,7 @@ class role::echoirc {
             $ircecho_nick   = 'icinga-wm-labs'
             $ircecho_server = 'chat.freenode.net'
         }
-        'default': {
+        default: {
             fail('unknown realm, please use labs or production')
         }
     }

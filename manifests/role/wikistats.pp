@@ -14,7 +14,7 @@ class role::wikistats {
         'production': {
             $wikistats_host = 'wikistats.wikimedia.org'
         }
-        'default': {
+        default: {
             fail('unknown realm, should be labs or production')
         }
     }
