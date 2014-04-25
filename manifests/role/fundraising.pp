@@ -29,7 +29,6 @@ class role::fundraising::civicrm {
     include misc::fundraising
     include misc::fundraising::backup::backupmover_user
     include misc::fundraising::mail
-    include nrpe
 
     monitor_service { 'smtp':
         description   => 'Exim SMTP',
