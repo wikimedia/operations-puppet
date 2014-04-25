@@ -57,7 +57,7 @@ class role::analytics::kraken::jobs::import::webrequest {
     cron { 'kraken-import-hourly-webrequests':
         command => "${::role::analytics::kraken::path}/kraken-etl/camus --job-name camus-webrequest-import ${camus_properties} >> ${camus_log_file} 2>&1",
         user    => 'hdfs',  # we might want to use a different user for this, not sure.
-        minute  => 8,
+        minute  => '*/10',
     }
 }
 
@@ -128,7 +128,7 @@ class role::analytics::kraken::jobs::hive::partitions::external {
     cron { 'kraken-create-external-hive-partitions':
         command => "${script} --database ${database} --hive-options='${hive_options}' ${datadir} >> ${log_file} 2>&1",
         user    => 'hdfs',
-        minute  => 15,
+        minute  => 21,
         require => Exec["${script}-exists"],
     }
 }
