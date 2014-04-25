@@ -1,16 +1,18 @@
 # IRC echo class
-
-class ircecho {
-
-    # To use this class, you must define some variables; here's an example
-    # (leading hashes on channel names are added for you if missing):
-    #  $ircecho_logs = {
-    #    "/var/log/nagios/irc.log" =>
-    #    ["wikimedia-operations","#wikimedia-tech"],
-    #    "/var/log/nagios/irc2.log" => "#irc2",
-    #  }
-    #  $ircecho_nick = "nagios-wm"
-    #  $ircecho_server = "chat.freenode.net"
+# To use this class, you must define some parameters; here's an example
+# (leading hashes on channel names are added for you if missing):
+# $ircecho_logs = {
+#  "/var/log/nagios/irc.log" =>
+#  ["wikimedia-operations","#wikimedia-tech"],
+#  "/var/log/nagios/irc2.log" => "#irc2",
+# }
+# $ircecho_nick = "icinga-wm"
+# $ircecho_server = "chat.freenode.net"
+class ircecho (
+    $ircecho_logs,
+    $ircecho_nick,
+    $ircecho_server = 'chat.freenode.net',
+) {
 
     package { 'ircecho':
         ensure => present,
