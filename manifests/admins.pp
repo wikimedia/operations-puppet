@@ -548,7 +548,7 @@ class accounts {
         $enabled  = false
 
         group { 'dab':
-            ensure    => absent,
+            ensure    => present,
             name      => $username,
             gid       => $gid,
             alias     => $gid,
