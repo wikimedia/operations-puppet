@@ -1840,9 +1840,6 @@ node 'neon.wikimedia.org' {
     class { 'base::firewall': }
     $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org'
 
-    $ircecho_logs = { '/var/log/icinga/irc.log' => '#wikimedia-operations' }
-    $ircecho_nick = 'icinga-wm'
-    $ircecho_server = 'chat.freenode.net'
     include standard
     include icinga::monitor
     include role::ishmael
