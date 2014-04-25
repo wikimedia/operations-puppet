@@ -32,6 +32,10 @@ class beta::natfix {
         'deployment-cache-mobile03' => {public_ip  => '208.80.155.139',
                                         private_ip => '10.68.16.13' },
 
+        # A wide variety of hosts are reachable via a public web proxy.
+        'labs_shared_proxy' => {public_ip  => '208.80.155.156',
+                                private_ip => '10.68.16.65'},
+
     }
     create_resources( 'beta::natdestrewrite', $nat_mappings )
 
