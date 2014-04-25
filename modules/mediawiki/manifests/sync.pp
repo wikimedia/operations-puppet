@@ -59,4 +59,17 @@ class mediawiki::sync {
 		timeout     => 600,
 		logoutput   => on_failure;
 	}
+
+	exec { 'mw-sync-rebuild-cdbs':
+		command     => "${scriptpath}/scap-rebuild-cdbs",
+		cwd         => '/tmp',
+		user        => 'mwdeploy',
+		group       => 'mwdeploy',
+		path        => "${scriptpath}:/usr/bin:/usr/sbin",
+		refreshonly => true,
+		timeout     => 600,
+		logoutput   => on_failure;
+		require     => File["${scriptpath}/scap-rebuild-cdbs"],
+		subscribe   => Exec['mw-sync'],
+	}
 }
