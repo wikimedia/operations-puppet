@@ -138,10 +138,10 @@ class baseaccount {
 }
 
 class accounts {
-    class abaso inherits baseaccount {
-        $username = 'abaso'
+    class dr0ptp4kt inherits baseaccount {
+        $username = 'dr0ptp4kt'
         $realname = 'Adam Baso'
-        $uid      = '639'
+        $uid      = '2962'
         $enabled  = true
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -3749,7 +3749,7 @@ class admins::mortals {
     include groups::wikidev
 
     include accounts::aaron
-    include accounts::abaso
+    include accounts::dr0ptp4kt
     include accounts::werdna
     include accounts::anomie
     include accounts::aude # RT 6460
@@ -3893,7 +3893,7 @@ class admins::privatedata {
         accounts::olivneh,      # RT 3451
         accounts::mwalker,      # RT 5038
         accounts::awight,       # RT 5048
-        accounts::abaso,        # RT 5446
+        accounts::dr0ptp4kt,        # RT 5446
         accounts::qchris,       # RT 5474
         accounts::tnegrin,      # RT 5391
         accounts::nuria,        # RT 6617
