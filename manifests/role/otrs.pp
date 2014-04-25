@@ -8,7 +8,6 @@ class role::otrs {
 
     include standard-noexim
     include webserver::apache
-    include nrpe
     include network::constants
 
     generic::systemuser { 'otrs':
