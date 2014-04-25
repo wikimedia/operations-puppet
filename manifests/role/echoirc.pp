@@ -1,13 +1,25 @@
 # role class for Icinga IRC bot
 class role::echoirc {
 
-    $ircecho_logs   = { '/var/log/icinga/irc.log' => '#wikimedia-operations' }
-    $ircecho_nick   = 'icinga-wm'
-    $ircecho_server = 'chat.freenode.net'
+    system::role { 'echoirc': description => 'server running icinga irc bot' }
+
+    case $::realm {
+        'production': {
+            $ircecho_logs   = { '/var/log/icinga/irc.log' => '#wikimedia-operations' }
+            $ircecho_nick   = 'icinga-wm'
+            $ircecho_server = 'chat.freenode.net'
+        }
+        'labs': {
+            $ircecho_logs   = { '/var/log/icinga/irc.log' => '#wikimedia-labs' }
+            $ircecho_nick   = 'icinga-wm-labs'
+            $ircecho_server = 'chat.freenode.net'
+        }
+        'default': {
+            fail('unknown realm, please use labs or production')
+        }
+    }
 
     include ircecho
-
-    system::role { 'ircecho': description => 'ircecho server' }
 
     # bug 26784 - IRC bots process need nagios monitoring
     nrpe::monitor_service { 'ircecho':
