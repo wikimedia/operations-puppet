@@ -710,10 +710,7 @@ node /^db104[68]\.eqiad\.wmnet/ {
 
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
-    class { 'role::coredb::researchdb':
-        mariadb               => true,
-        innodb_file_per_table => true,
-    }
+    include role::mariadb::analytics
 }
 
 ## researchdb s5
