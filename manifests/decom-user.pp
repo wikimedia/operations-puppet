@@ -4,10 +4,6 @@
 #
 define decom-user($username=$title, $uid) {
 
-    if $realm == labs {
-        fail("You probably don't want to include this on labs.")
-    }
-
     if defined(user[$username]) {
         # A user really needs to be removed from admins.pp before
         #  being added to the decom list.
@@ -41,5 +37,14 @@ define decom-user($username=$title, $uid) {
             require => exec["disown ${username}"],
             returns => ['123','0'],
         }
+    }
+}
+
+if $realm != labs {
+    decom-user {'dsc':
+        uid => '588'
+    }
+    decom-user {'preilly':
+        uid => '570'
     }
 }
