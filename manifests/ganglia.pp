@@ -30,10 +30,6 @@ class ganglia {
             cluster => $ganglia_cluster,
         }
     } else {
-        if $::hostname in $::decommissioned_servers {
-            $cluster = 'decommissioned'
-            $deaf = 'no'
-        } else {
             if ! $::cluster {
                 $cluster = 'misc'
             }
@@ -45,7 +41,6 @@ class ganglia {
             } else {
                 $deaf = 'yes'
             }
-        }
 
         $authority_url = 'http://ganglia.wikimedia.org'
 
