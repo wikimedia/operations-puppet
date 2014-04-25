@@ -8,6 +8,7 @@ class role::otrs {
 
     include standard-noexim
     include webserver::apache
+    include nrpe
     include network::constants
 
     generic::systemuser { 'otrs':
@@ -75,7 +76,9 @@ class role::otrs {
     class { 'spamassassin':
         required_score => '3.5',
         use_bayes => '1',
-        bayes_auto_learn => '0',
+        # 20140425 jgreen enabled bayes_auto_learn to populate the bayes db
+        # after a bug(?) corrupted it 
+        bayes_auto_learn => '1',
         short_report_template => 'true',
         spamd_user => 'otrs',
         spamd_group => 'otrs',
