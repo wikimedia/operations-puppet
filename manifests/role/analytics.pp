@@ -56,7 +56,7 @@ class role::analytics::users {
         accounts::ram,       # RT 5059
         accounts::maryana,   # RT 5017
         accounts::halfak,    # RT 5233
-        accounts::abaso,     # RT 5273
+        accounts::dr0ptp4kt, # RT 5273
         accounts::qchris,    # RT 5403
         accounts::tnegrin,   # RT 5391
         accounts::ironholds, # RT 5831
@@ -89,7 +89,7 @@ class role::analytics::users {
     User<|title == olivneh|>     { groups +> [ 'stats' ] }
     User<|title == otto|>        { groups +> [ 'stats' ] }
     User<|title == spetrea|>     { groups +> [ 'stats' ] }
-    User<|title == abaso|>       { groups +> [ 'stats' ] }
+    User<|title == dr0ptp4kt|>       { groups +> [ 'stats' ] }
     User<|title == qchris|>      { groups +> [ 'stats' ] }
     User<|title == csalvia|>     { groups +> [ 'stats' ] }
     User<|title == nuria|>       { groups +> [ 'stats' ] }
