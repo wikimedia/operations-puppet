@@ -22,9 +22,6 @@ class contint::packages {
         ensure => present,
     }
 
-    # Get perl dependencies so we can lint the wikibugs perl script
-    include misc::irc::wikibugs::packages
-
     # Lint authdns templates & config
     include authdns::lint
 
