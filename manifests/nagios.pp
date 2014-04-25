@@ -78,32 +78,6 @@ define monitor_service(
         fail("Parameter $host not defined!")
     }
 
-    if $::hostname in $::decommissioned_servers {
-        # Export the nagios service instance
-        @@nagios_service { "$::hostname $title":
-            ensure                        => 'absent',
-            target                        => "${::nagios_config_dir}/puppet_checks.d/${host}.cfg",
-            host_name                     => $host,
-            servicegroups                 => $group ? {
-                /.+/    => $group,
-                default => undef,
-            },
-            service_description           => $description,
-            check_command                 => $check_command,
-            max_check_attempts            => $retries,
-            normal_check_interval         => $normal_check_interval,
-            retry_check_interval          => $retry_check_interval,
-            check_period                  => '24x7',
-            notification_interval         => 0,
-            notification_period           => '24x7',
-            notification_options          => 'c,r,f',
-            contact_groups                => $critical ? {
-                'true'  => 'admins,sms',
-                default => $contact_group,
-            },
-        }
-    }
-    else {
         # Export the nagios service instance
         @@nagios_service { "$::hostname $title":
             ensure                  => $ensure,
@@ -146,7 +120,6 @@ define monitor_service(
                 'true'  => $freshness,
                 default => undef,
             },
-        }
     }
 }
 

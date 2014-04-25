@@ -321,12 +321,6 @@ class base::packages::emacs {
     }
 }
 
-class base::decommissioned {
-    if $::hostname in $::decommissioned_servers {
-        system::role { 'base::decommissioned': description => 'DECOMMISSIONED server' }
-    }
-}
-
 class base::instance-upstarts {
 
     file { '/etc/init/ttyS0.conf':
@@ -470,7 +464,6 @@ class base {
     }
 
     include passwords::root,
-        base::decommissioned,
         base::grub,
         base::resolving,
         base::remote-syslog,
