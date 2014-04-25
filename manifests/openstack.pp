@@ -150,11 +150,6 @@ class openstack::queue-server($openstack_version, $novaconfig) {
 }
 
 class openstack::project-storage-service {
-    $ircecho_logs = { "/var/lib/glustermanager/manage-volumes.log" => "wikimedia-labs" }
-    $ircecho_nick = "labs-storage-wm"
-    $ircecho_server = "chat.freenode.net"
-
-    include role::echoirc
 
     generic::upstart_job{ "manage-volumes":
         require => Package["glusterfs-server"],
