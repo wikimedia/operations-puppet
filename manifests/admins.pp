@@ -2470,10 +2470,17 @@ class accounts {
 
             ssh_authorized_key  {
                 'haitham':
-                    ensure => 'absent',
+                    ensure => absent,
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIEAzIL4+oaq/jC6cUsF/Pd9xwOJQLOXLrhPs825Z5sdlK8jM3rfkKNGiVhvDu8sv2FEjDnOFcaTUrPnsA7QFUM+QkO9U3XfIxnn/CHgXUwUCAvX1/GOuM2bMGKNrzNa+R5qOYYAYE1I0MalQCH2jfdsbe9hEKxS3IygzzmQEsbvMvE=';
+            }
+            ssh_authorized_key  {
+                'hshammaa@wikimedia.org':
+                    ensure => present,
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCxKhgMrYubz2ciXFpB6F8jRVl9ChDPjXF0kISApj9DGvISJHPSm9vKTNxylGGf22dTPjBoBn9l9UzetJagP0qHcG3BbdjIl3xSpnq6grQ/HOqqHUqrqSJDD+aYHLlgMy3P6GeoOlW2oclRBaLpwONNzW+yDL6lnBA1LkyZ1+tq/Y9PEhrRQTdgZvQ0U+oz2M0me0UIfOJa+R2xTnlwFr8qez4ZCSWJtLyPKcZhRDZLTayRta5nh13bJaeCClf1ssXK9duAVSIMZ4+AF4/zt8OD0EpQikzOed3sXBlN0bV7ZcxAyCxcSSmFJ5zmROCZ7eazNZd5jUw45y5gcSWWpdEL';
             }
         }
     }
