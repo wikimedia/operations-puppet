@@ -358,6 +358,41 @@ class misc::statistics::sites::community_analytics {
     }
 }
 
+# mertics.wikimedia.org and metrics-api.wikimedia.org
+# They should just redirect to Wikimetrics
+#
+class misc::statistics::sites::metrics {
+    require misc::statistics::user
+
+    $site_name       = "metrics.wikimedia.org"
+    $redirect_target = "https://metrics.wmflabs.org/"
+
+    include webserver::apache
+    webserver::apache::module { "alias": }
+
+    # install metrics.wikimedia.org SSL certificate
+    install_certificate{ $site_name: }
+
+    # Set up the VirtualHost
+    file { "/etc/apache2/sites-available/$site_name":
+        content => template("apache/sites/${site_name}.erb"),
+        require =>  [Class["webserver::apache"], Webserver::Apache::Module['alias']],
+        notify  => Class['webserver::apache::service'],
+    }
+    file { "/etc/apache2/sites-enabled/$site_name":
+        ensure  => link,
+        target  => "/etc/apache2/sites-available/${site_name}",
+        require => File["/etc/apache2/sites-available/${site_name}"],
+        notify  => Class['webserver::apache::service'],
+    }
+
+    # make access and error log for metrics-api readable by wikidev group
+    file { ["/var/log/apache2/access.metrics.log", "/var/log/apache2/error.metrics.log"]:
+        group   => "wikidev",
+        require => File["/etc/apache2/sites-enabled/$site_name"],
+    }
+}
+
 # installs MonogDB
 class misc::statistics::db::mongo {
     include misc::statistics::base
