@@ -421,7 +421,7 @@ class accounts {
     class cmjohnson inherits baseaccount {
         $username = 'cmjohnson'
         $realname = 'Chris Johnson'
-        $uid      = '579'
+        $uid      = '2399'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -692,7 +692,7 @@ class accounts {
     class ebernhardson inherits baseaccount {
         $username = 'ebernhardson'
         $realname = 'Erik Bernhardson'
-        $uid      = '641'
+        $uid      = '3088'
         $enabled  = true
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -781,7 +781,7 @@ class accounts {
     class gwicke inherits baseaccount {
         $username = 'gwicke'
         $realname = 'Gabriel Wicke'
-        $uid      = '622'
+        $uid      = '1239'
         $gid      = '500'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
@@ -962,7 +962,7 @@ class accounts {
     class krinkle inherits baseaccount {
         $username = 'krinkle'
         $realname = 'Timo Tijhof'
-        $uid      = '607'
+        $uid      = '2008'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1812,7 +1812,7 @@ class accounts {
     class gmaxwell inherits baseaccount {
         $username = 'gmaxwell'
         $realname = 'Gregory Maxwell'
-        $uid      = '562'
+        $uid      = '1109'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1876,7 +1876,7 @@ class accounts {
     class halfak inherits baseaccount {
         $username = 'halfak'
         $realname = 'Aaron Halfaker'
-        $uid      = '564'
+        $uid      = '2041'
         $enabled  = true
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -1942,7 +1942,7 @@ class accounts {
     class diederik inherits baseaccount {
         $username = 'diederik'
         $realname = 'Diederik van Liere'
-        $uid      = '565'
+        $uid      = '1293'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2049,7 +2049,7 @@ class accounts {
     class jgreen inherits baseaccount {
         $username = 'jgreen'
         $realname = 'Jeff Green'
-        $uid      = '571'
+        $uid      = '2074'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2075,7 +2075,7 @@ class accounts {
     class khorn inherits baseaccount {
         $username = 'khorn'
         $realname = 'Katie Horn'
-        $uid = '572'
+        $uid = '2049'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2094,7 +2094,7 @@ class accounts {
     class kaldari inherits baseaccount {
         $username = 'kaldari'
         $realname = 'Ryan Kaldari'
-        $uid      = '573'
+        $uid      = '1271'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2274,7 +2274,7 @@ class accounts {
     class mlitn inherits baseaccount {
         $username = 'mlitn'
         $realname = 'Matthias Mullie'
-        $uid      = '596'
+        $uid      = '2269'
 
         # purge mmullie account so we can recreate as mlitn at same uid
         require accounts::mmullie
@@ -2297,7 +2297,7 @@ class accounts {
     class maxsem inherits baseaccount {
         $username = 'maxsem'
         $realname = 'Max Semenik'
-        $uid      = '597'
+        $uid      = '1220'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2514,7 +2514,7 @@ class accounts {
     class maryana inherits baseaccount {
         $username = 'maryana'
         $realname = 'Maryana Pinchuk'
-        $uid      = '624'
+        $uid      = '2515'
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
@@ -2632,7 +2632,7 @@ class accounts {
     class awight inherits baseaccount {
         $username = 'awight'
         $realname = 'Adam Wight'
-        $uid      = '616'
+        $uid      = '4974'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2705,7 +2705,7 @@ class accounts {
     class jdlrobson inherits baseaccount {
         $username = 'jdlrobson'
         $realname = 'Jon Robson'
-        $uid      = '620'
+        $uid      = '2155'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2754,7 +2754,7 @@ class accounts {
     class cmcmahon inherits baseaccount {
         $username = 'cmcmahon'
         $realname = 'Chris McMahon'
-        $uid      = '627'
+        $uid      = '2152'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2890,7 +2890,7 @@ class accounts {
     class marc inherits baseaccount {
         $username = 'marc'
         $realname = 'Marc-Andre Pelletier'
-        $uid      = '634'
+        $uid      = '2138'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2972,7 +2972,7 @@ class accounts {
     class jforrester inherits baseaccount {
         $username = 'jforrester'
         $realname = 'James D. Forrester'
-        $uid      = '643'
+        $uid      = '2417'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -3022,7 +3022,7 @@ class accounts {
 
         $username = 'milimetric'
         $realname = 'Dan Andreescu'
-        $uid      = '640'
+        $uid      = '2543'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
         if $manage_home {
@@ -3151,7 +3151,7 @@ class accounts {
     class kwang inherits baseaccount {
         $username = 'kwang'
         $realname = 'Kenan Wang'
-        $uid      = '649'
+        $uid      = '3468'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -3212,7 +3212,7 @@ class accounts {
     class gjg inherits baseaccount {
         $username = 'gjg'
         $realname = 'Greg Grossmeier'
-        $uid      = '655'
+        $uid      = '2890'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
