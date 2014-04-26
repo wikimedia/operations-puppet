@@ -1332,10 +1332,10 @@ class accounts {
         }
     }
 
-    class tfinc inherits baseaccount {
-        $username = 'tfinc'
+    class tomasz inherits baseaccount {
+        $username = 'tomasz'
         $realname = 'Tomasz Finc'
-        $uid      = '2006'
+        $uid      = '1155'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -3807,7 +3807,7 @@ class admins::mortals {
     include accounts::spage
     include accounts::ssastry # RT 5512
     include accounts::sumanah # RT 3752, revoked
-    include accounts::tfinc # move from roots RT 5485
+    include accounts::tomasz # move from roots RT 5485
     include accounts::yurik # RT 4835, RT 5069
     include accounts::zak # access revoked
     include accounts::jgonera # RT 6716
