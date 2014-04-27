@@ -2134,7 +2134,7 @@ class accounts {
     class mhernandez inherits baseaccount {
         $username = 'mhernandez'
         $realname = 'Megan Hernandez'
-        $uid      = '591'
+        $uid      = '4990'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
