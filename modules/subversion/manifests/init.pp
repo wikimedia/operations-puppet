@@ -56,13 +56,6 @@ class subversion ($host){
 
     apache_module { 'authz_svn': name => 'authz_svn' }
 
-    ferm::rule { 'svn_80':
-        rule => 'proto tcp dport 80 ACCEPT;'
-    }
-    ferm::rule { 'svn_443':
-        rule => 'proto tcp dport 443 ACCEPT;'
-    }
-
     exec { '/usr/bin/svn co file:///svnroot/mediawiki/USERINFO svnusers':
         creates => '/var/cache/svnusers/.svn',
         cwd     => '/var/cache',
