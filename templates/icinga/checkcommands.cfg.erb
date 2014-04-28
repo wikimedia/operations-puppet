@@ -325,11 +325,6 @@ define command{
 	}
 
 define command{
-	command_name	check_job_queue
-	command_line	$USER1$/check_job_queue
-	}
-
-define command{
 	command_name	nrpe_check_raid
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_raid
 	}

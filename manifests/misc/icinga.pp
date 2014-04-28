@@ -647,23 +647,6 @@ class icinga::monitor::firewall {
     }
 }
 
-class icinga::monitor::jobqueue {
-    include applicationserver::packages
-
-    file {'/usr/lib/nagios/plugins/check_job_queue':
-        source => 'puppet:///files/icinga/check_job_queue',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    nrpe::monitor_service { 'check_job_queue':
-        description  => 'check_job_queue',
-        nrpe_command => '/usr/lib/nagios/plugins/check_job_queue',
-        timeout      => 30,
-    }
-}
-
 class icinga::monitor::naggen {
 
     # Naggen takes exported resources from hosts and creates nagios
