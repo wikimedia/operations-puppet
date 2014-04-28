@@ -1874,13 +1874,6 @@ node 'nfs1.pmtpa.wmnet' {
     include backup::host
     include role::syslog::centralserver
     backup::set { 'var-opendj-backups': }
-
-    # don't need udp2log monitoring on nfs hosts
-    class { 'role::logging::mediawiki':
-        monitor       => false,
-        log_directory => '/home/wikipedia/logs',
-    }
-
 }
 
 node 'nickel.wikimedia.org' {
