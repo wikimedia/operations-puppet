@@ -43,4 +43,10 @@ class role::archiva {
             require => Class['::archiva']
         }
     }
+
+    include base::firewall
+    ferm::rule { 'archiva':
+        rule => 'proto tcp dport (80 8080) ACCEPT;'
+    } 
+
 }
