@@ -1990,6 +1990,7 @@ node 'potassium.eqiad.wmnet' {
 node 'rhenium.wikimedia.org' {
     include standard
     include role::pmacct
+    include admins::pmacct
 }
 
 # QA box for the new PDF system
