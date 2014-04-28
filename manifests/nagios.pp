@@ -371,7 +371,7 @@ define monitor_ganglia(
 #       metric               => 'reqstats.5xx',
 #       warning              => 250,
 #       critical             => 500,
-#       from                 => '-1hours',
+#       from                 => '1hours',
 #       percentage           => 5,
 #   }
 # == Parameters
@@ -440,7 +440,7 @@ define monitor_graphite_threshold(
     monitor_service { $title:
         ensure                => $ensure,
         description           => $description,
-        check_command         => "check_graphite_threshold!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${perc}!${modifier}",
+        check_command         => "check_graphite_threshold!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${percentage}!${modifier}",
         retries               => $retries,
         group                 => $group,
         critical              => $nagios_critical,

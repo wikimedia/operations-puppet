@@ -190,7 +190,7 @@ class role::graphite {
             metric       => 'reqstats.5xx',
             warning      => 250,
             critical     => 500,
-            from         => '-1hours'
+            from         => '1hours'
         }
     }
 
