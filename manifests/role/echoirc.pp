@@ -19,7 +19,11 @@ class role::echoirc {
         }
     }
 
-    include ircecho
+    class { '::ircecho':
+        ircecho_logs    => $ircecho_logs,
+        ircecho_nick    => $ircecho_nick,
+        ircecho_server  => $ircecho_server,
+   }
 
     # bug 26784 - IRC bots process need nagios monitoring
     nrpe::monitor_service { 'ircecho':
