@@ -295,6 +295,7 @@ node 'bast1001.wikimedia.org' {
     include accounts::msyed
     include accounts::swalling
     include accounts::ypanda
+    include accounts::haithams
 }
 
 node 'bast4001.wikimedia.org' {
