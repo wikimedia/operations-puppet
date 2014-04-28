@@ -6,18 +6,16 @@
 		<subtree name="Power_usage">
 			<subtree name="Total_power_usage">
 				<param name="expr-Power_Measured_pmtpa" value="{/Power_strips/pmtpa/ps1-c1-pmtpa/System/Total_power},{/Power_strips/pmtpa/ps1-c2-pmtpa/System/Total_power},{/Power_strips/pmtpa/ps1-c3-pmtpa/System/Total_power},{/Power_strips/pmtpa/ps1-d1-pmtpa/System/Total_power},{/Power_strips/pmtpa/ps1-d2-pmtpa/System/Total_power},{/Power_strips/pmtpa/ps1-d3-pmtpa/System/Total_power},ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN"/>
-				<param name="expr-Power_Measured_sdtpa" value="{/Power_strips/sdtpa/ps1-a1-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-a2-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-a3-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-a4-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-a5-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-b1-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-b2-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-b3-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-b4-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-b5-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-c1-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-c2-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-c3-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-d1-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-d2-sdtpa/System/Total_power},{/Power_strips/sdtpa/ps1-d3-sdtpa/System/Total_power},ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN"/>
 				<param name="expr-Power_Measured_eqiad" value="{/Power_strips/eqiad/ps1-a1-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-a2-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-a3-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-a4-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-a5-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-a6-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-a7-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-a8-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-b1-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-b2-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-b3-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-b4-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-b5-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-b6-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-b7-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-b8-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-c1-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-c2-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-c3-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-c4-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-c5-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-c6-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-c7-eqiad/System/Total_power},{/Power_strips/eqiad/ps1-c8-eqiad/System/Total_power},ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN"/>
 
-				<param name="expr-Power_Measured" value="%expr-Power_Measured_pmtpa%,%expr-Power_Measured_sdtpa%,%expr-Power_Measured_eqiad%,ADDNAN,ADDNAN"/>
+				<param name="expr-Power_Measured" value="%expr-Power_Measured_pmtpa%,%expr-Power_Measured_eqiad%,ADDNAN,ADDNAN"/>
 
 				<param name="expr-Power_Estimated_pmtpa" value="%expr-Power_Measured_pmtpa%,16000,ADDNAN"/>
-				<param name="expr-Power_Estimated_sdtpa" value="%expr-Power_Measured_sdtpa%,0,ADDNAN"/>
 				<param name="expr-Power_Estimated_eqiad" value="%expr-Power_Measured_eqiad%,0,ADDNAN"/>
 				<param name="expr-Power_Estimated_esams" value="32200"/>
 				<param name="expr-Power_Estimated_knams" value="3680"/>
 
-				<param name="expr-Power_Estimated" value="%expr-Power_Estimated_pmtpa%,%expr-Power_Estimated_sdtpa%,%expr-Power_Estimated_eqiad%,%expr-Power_Estimated_esams%,%expr-Power_Estimated_knams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN"/>
+				<param name="expr-Power_Estimated" value="%expr-Power_Estimated_pmtpa%,%expr-Power_Estimated_eqiad%,%expr-Power_Estimated_esams%,%expr-Power_Estimated_knams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN"/>
 
 				<leaf name="Total_measured_power">
 					<param name="ds-type" value="rrd-file"/>
@@ -77,16 +75,10 @@
 				
 				<leaf name="Power_per_site">
 					<param name="ds-type" value="rrd-multigraph"/>
-					<param name="ds-names" value="sdtpa,eqiad"/>
+					<param name="ds-names" value="eqiad"/>
 					<param name="comment" value="Power consumption"/>
 					<param name="vertical-label" value="Watt"/>
 					<param name="graph-lower-limit" value="0"/>
-
-					<param name="ds-expr-sdtpa" value="%expr-Power_Measured_sdtpa%"/>
-					<param name="graph-legend-sdtpa" value="sdtpa"/>
-					<param name="line-style-sdtpa" value="AREA"/>
-					<param name="line-color-sdtpa" value="##green"/>
-					<param name="line-order-sdtpa" value="1"/>
 
 					<param name="ds-expr-eqiad" value="%expr-Power_Measured_eqiad%"/>
 					<param name="graph-legend-eqiad" value="eqiad"/>

@@ -111,11 +111,6 @@ define monitor_pdu_3phase(
 
 
 class facilities::pdu_monitoring {
-    # sdtpa
-    # A
-    monitor_pdu_3phase { 'ps1-a1-sdtpa':
-        ip => '10.1.5.1',
-    }
     # pmtpa
     # C
     monitor_pdu_3phase { 'ps1-c1-pmtpa':

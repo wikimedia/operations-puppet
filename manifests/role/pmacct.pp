@@ -19,11 +19,6 @@ class role::pmacct {
             # Agent definitions
             $pmacct_agents = {
                 # tpa - as65001
-                cr1-sdtpa => {
-                    port       => '6001',
-                    ip         => '208.80.152.196',
-                    samplerate => '200',
-                    },
                 testing  => {
                     port       => '12333',
                     ip         => '123.123.123.123',
@@ -43,11 +38,6 @@ class role::pmacct {
             # Agent definitions
             $pmacct_agents = {
                 # tpa - as65001
-                cr1-sdtpa => {
-                    port       => '6511',
-                    ip         => '208.80.152.196',
-                    samplerate => '200',
-                },
                 # Currently running old JunOS and will not sample correctly
                 #cr2-pmtpa => {
                     #port       => '6512',

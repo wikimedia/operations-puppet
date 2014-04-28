@@ -323,25 +323,6 @@ class network::checks {
         check_command => "check_bgpstate!${snmp_ro_community}",
     }
 
-    @monitor_host { 'cr1-sdtpa':
-        ip_address => '208.80.152.196',
-        group      => 'routers',
-    }
-
-    @monitor_service { 'cr1-sdtpa interfaces':
-        host          => 'cr1-sdtpa',
-        group         => 'routers',
-        description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
-    }
-
-    @monitor_service { 'cr1-sdtpa bgp status':
-        host          => 'cr1-sdtpa',
-        group         => 'routers',
-        description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
-    }
-
     @monitor_host { 'cr2-pmtpa':
         ip_address => '208.80.152.197',
         group      => 'routers',

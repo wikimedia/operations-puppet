@@ -1098,9 +1098,7 @@ node 'hooft.esams.wikimedia.org' {
 
 node 'manutius.wikimedia.org' {
     $corerouters = [
-        'cr1-sdtpa.wikimedia.org',
         'cr2-pmtpa.wikimedia.org',
-        'csw1-sdtpa.wikimedia.org',
         'cr1-esams.wikimedia.org',
         'cr2-knams.wikimedia.org',
         'csw2-esams.wikimedia.org',
@@ -1113,14 +1111,7 @@ node 'manutius.wikimedia.org' {
     ]
 
     $accessswitches = [
-        'asw-a4-sdtpa.mgmt.pmtpa.wmnet',
-        'asw-a5-sdtpa.mgmt.pmtpa.wmnet',
-        'asw-b-sdtpa.mgmt.pmtpa.wmnet',
         'asw-d-pmtpa.mgmt.pmtpa.wmnet',
-        'asw-d1-sdtpa.mgmt.pmtpa.wmnet',
-        'asw-d2-sdtpa.mgmt.pmtpa.wmnet',
-        'asw-d3-sdtpa.mgmt.pmtpa.wmnet',
-        'asw2-d3-sdtpa.mgmt.pmtpa.wmnet',
         'asw-a-eqiad.mgmt.eqiad.wmnet',
         'asw-b-eqiad.mgmt.eqiad.wmnet',
         'asw-c-eqiad.mgmt.eqiad.wmnet',
@@ -1129,7 +1120,6 @@ node 'manutius.wikimedia.org' {
         'psw1-eqiad.mgmt.eqiad.wmnet',
         'msw1-eqiad.mgmt.eqiad.wmnet',
         'msw2-pmtpa.mgmt.pmtpa.wmnet',
-        'msw2-sdtpa.mgmt.pmtpa.wmnet'
     ]
 
     $storagehosts = [
