@@ -988,6 +988,9 @@ class role::cache {
         include standard,
             nrpe
 
+        require geoip
+        require geoip::dev # for VCL compilation using libGeoIP
+
         $varnish_be_directors = {
             1 => {
                 "backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
@@ -1018,11 +1021,13 @@ class role::cache {
         case $::realm {
             'production': {
                 $cluster_options = {
+                    'enable_geoiplookup' => true,
                 }
             }
             'labs': {
                 $cluster_options = {
-                    'enable_esi'    => true,
+                    'enable_geoiplookup' => true,
+                    'enable_esi'         => true,
                 }
             }
         }
