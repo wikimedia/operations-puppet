@@ -145,7 +145,7 @@ if __name__ == '__main__':
                         (mount_point))
                     comment_fstab(mount_point)
                     unmounts += 1
-                    exitcode = exitcode | ERROR_UNMOUNT
+                    exitcode = exitcode | ERROR_UNMOUNTED
             else:
                 exitcode = exitcode | ERROR_NO_UNMOUNTING
                 logger.info("Errors found but device unavailable: %s:%s" %
