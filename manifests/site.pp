@@ -2005,6 +2005,7 @@ node 'potassium.eqiad.wmnet' {
 # netflow machine (jkrauska)
 node 'rhenium.wikimedia.org' {
     include standard
+    include role::pmacct
 }
 
 # QA box for the new PDF system
