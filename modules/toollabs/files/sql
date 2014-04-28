@@ -80,6 +80,12 @@ case "$1" in
         server="wikidatawiki.labsdb"
         db="wikidatawiki_p"
     ;;
+    "metat" | "meta_p")
+        # Not to confuse with metawiki[_p]
+        # https://wikitech.wikimedia.org/wiki/Nova_Resource:Tools/Help#Metadata_database
+        server="s7.labsdb"
+        db="meta_p"
+    ;;
     "local")
         server=tools-db
         db=""
