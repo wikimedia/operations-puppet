@@ -153,41 +153,42 @@ class misc::deployment::scap_scripts {
 	include misc::deployment::vars
 
 	$scriptpath = "/usr/local/bin"
+	$scap_install_dir = '/srv/deployment/scap/scap/bin'
 
 	file {
 		"${scriptpath}/compile-wikiversions":
 			ensure => link,
-			target => "/srv/scap/bin/compile-wikiversions";
+			target => "${scap_install_dir}/compile-wikiversions";
 		"${scriptpath}/mw-update-l10n":
 			ensure => link,
-			target => "/srv/scap/bin/mw-update-l10n";
+			target => "${scap_install_dir}/mw-update-l10n";
 		"${scriptpath}/restart-twemproxy":
 			ensure => link,
-			target => "/srv/scap/bin/restart-twemproxy";
+			target => "${scap_install_dir}/restart-twemproxy";
 		"${scriptpath}/scap":
 			ensure => link,
-			target => "/srv/scap/bin/scap";
+			target => "${scap_install_dir}/scap";
 		"${scriptpath}/scap-purge-l10n-cache":
 			ensure => link,
-			target => "/srv/scap/bin/scap-purge-l10n-cache";
+			target => "${scap_install_dir}/scap-purge-l10n-cache";
 		"${scriptpath}/sync-common-file":
 			ensure => link,
-			target => "/srv/scap/bin/sync-common-file";
+			target => "${scap_install_dir}/sync-common-file";
 		"${scriptpath}/sync-dblist":
 			ensure => link,
-			target => "/srv/scap/bin/sync-dblist";
+			target => "${scap_install_dir}/sync-dblist";
 		"${scriptpath}/sync-dir":
 			ensure => link,
-			target => "/srv/scap/bin/sync-dir";
+			target => "${scap_install_dir}/sync-dir";
 		"${scriptpath}/sync-docroot":
 			ensure => link,
-			target => "/srv/scap/bin/sync-docroot";
+			target => "${scap_install_dir}/sync-docroot";
 		"${scriptpath}/sync-file":
 			ensure => link,
-			target => "/srv/scap/bin/sync-file";
+			target => "${scap_install_dir}/sync-file";
 		"${scriptpath}/sync-wikiversions":
 			ensure => link,
-			target => "/srv/scap/bin/sync-wikiversions";
+			target => "${scap_install_dir}/sync-wikiversions";
 	}
 }
 
