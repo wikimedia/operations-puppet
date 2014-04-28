@@ -146,37 +146,37 @@ class misc::deployment::scap_scripts {
 	file {
 		'/usr/local/bin/compile-wikiversions':
 			ensure => link,
-			target => '/srv/scap/bin/compile-wikiversions';
+			target => '/srv/deployment/scap/scap/bin/compile-wikiversions';
 		'/usr/local/bin/mw-update-l10n':
 			ensure => link,
-			target => '/srv/scap/bin/mw-update-l10n';
+			target => '/srv/deployment/scap/scap/bin/mw-update-l10n';
 		'/usr/local/bin/restart-twemproxy':
 			ensure => link,
-			target => '/srv/scap/bin/restart-twemproxy';
+			target => '/srv/deployment/scap/scap/bin/restart-twemproxy';
 		'/usr/local/bin/scap':
 			ensure => link,
-			target => '/srv/scap/bin/scap';
+			target => '/srv/deployment/scap/scap/bin/scap';
 		'/usr/local/bin/scap-purge-l10n-cache':
 			ensure => link,
-			target => '/srv/scap/bin/scap-purge-l10n-cache';
+			target => '/srv/deployment/scap/scap/bin/scap-purge-l10n-cache';
 		'/usr/local/bin/sync-common-file':
 			ensure => link,
-			target => '/srv/scap/bin/sync-common-file';
+			target => '/srv/deployment/scap/scap/bin/sync-common-file';
 		'/usr/local/bin/sync-dblist':
 			ensure => link,
-			target => '/srv/scap/bin/sync-dblist';
+			target => '/srv/deployment/scap/scap/bin/sync-dblist';
 		'/usr/local/bin/sync-dir':
 			ensure => link,
-			target => '/srv/scap/bin/sync-dir';
+			target => '/srv/deployment/scap/scap/bin/sync-dir';
 		'/usr/local/bin/sync-docroot':
 			ensure => link,
-			target => '/srv/scap/bin/sync-docroot';
+			target => '/srv/deployment/scap/scap/bin/sync-docroot';
 		'/usr/local/bin/sync-file':
 			ensure => link,
-			target => '/srv/scap/bin/sync-file';
+			target => '/srv/deployment/scap/scap/bin/sync-file';
 		'/usr/local/bin/sync-wikiversions':
 			ensure => link,
-			target => '/srv/scap/bin/sync-wikiversions';
+			target => '/srv/deployment/scap/scap/bin/sync-wikiversions';
 	}
 }
 
