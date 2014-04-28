@@ -8,6 +8,7 @@ class role::mariadb {
         description => 'database server',
     }
 
+    include standard
     include mariadb
 }
 
@@ -21,6 +22,7 @@ class role::mariadb::beta {
         description => 'beta cluster database server',
     }
 
+    include standard
     include mariadb::packages
     include passwords::misc::scripts
 
@@ -42,6 +44,7 @@ class role::mariadb::tendril {
         description => 'tendril database server',
     }
 
+    include standard
     include mariadb::packages_wmf
     include passwords::misc::scripts
 
@@ -69,6 +72,7 @@ class role::mariadb::dbstore {
     # No packages yet! MariaDB 10 beta tarball in /opt
     #include mariadb::packages
 
+    include standard
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -96,6 +100,7 @@ class role::mariadb::analytics {
         mariadb10 => true,
     }
 
+    include standard
     include passwords::misc::scripts
 
     class { 'mariadb::config':
