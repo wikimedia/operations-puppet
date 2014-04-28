@@ -25,7 +25,7 @@ define logster::job(
     require ::logster
 
     cron { "logster-${title}":
-        command  => "/usr/bin/logster ${logster_options} ${parser} ${logfile} 2>&1 > /dev/null",
+        command  => "/usr/bin/logster ${logster_options} ${parser} ${logfile} 2&>1 > /dev/null",
         user     => 'root',
         minute   => $minute,
         hour     => $hour,
