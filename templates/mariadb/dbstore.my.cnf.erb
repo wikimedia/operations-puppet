@@ -53,6 +53,9 @@ aria_pagecache_buffer_size     = 32G
 optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8
 
+plugin-load = ha_tokudb
+tokudb_cache_size = 48G
+
 [mysqldump]
 
 quick
