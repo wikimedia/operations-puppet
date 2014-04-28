@@ -1986,6 +1986,11 @@ node 'potassium.eqiad.wmnet' {
     include role::poolcounter
 }
 
+# netflow machine (jkrauska)
+node 'rhenium.wikimedia.org' {
+    include standard
+}
+
 # QA box for the new PDF system
 node 'tantalum.eqiad.wmnet' {
     $gid = '500'
