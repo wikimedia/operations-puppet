@@ -54,7 +54,7 @@ class role::analytics::kraken::jobs::import::kafka {
     $camus_log_file   = "${::role::analytics::kraken::log_dir}/camus.log"
 
     cron { 'kraken-import-hourly-kafka':
-        command => "${::role::analytics::kraken::path}/kraken-etl/camus --job-name camus-webrequest-import ${camus_properties} >> ${camus_log_file} 2>&1",
+        command => "${::role::analytics::kraken::path}/kraken-etl/camus --job-name camus-import ${camus_properties} >> ${camus_log_file} 2>&1",
         user    => 'hdfs',  # we might want to use a different user for this, not sure.
         minute  => '*/10',
     }
