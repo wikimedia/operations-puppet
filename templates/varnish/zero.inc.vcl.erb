@@ -213,7 +213,7 @@ sub tag_carrier {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		} else if (req.http.X-CS2 == "635-10") {
-			if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+			if (!req.http.X-Forwarded-By) {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		} else if (req.http.X-CS2 == "437-01") {
