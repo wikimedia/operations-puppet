@@ -43,4 +43,11 @@ class role::archiva {
             require => Class['::archiva']
         }
     }
+
+    include base::firewall
+    ferm::service { 'http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
 }
