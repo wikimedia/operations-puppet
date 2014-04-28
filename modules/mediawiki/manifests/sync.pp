@@ -6,48 +6,30 @@ class mediawiki::sync {
 	require mediawiki::packages
 	require mediawiki::users::l10nupdate
 
-	git::clone { 'mediawiki/tools/scap':
-		ensure    => 'latest',
-		directory => '/srv/scap',
-		owner     => 'root',
-		group     => 'wikidev',
-		shared    => true,
-		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/tools/scap.git',
-	}
-
 	deployment::target { 'scap': }
 
-	$scriptpath = "/usr/local/bin"
+	$scriptpath = '/usr/local/bin'
+	$binpath = '/srv/deployment/scap/scap/bin'
 
 	file { "${scriptpath}/mwversionsinuse":
 		ensure  => link,
-		target  => '/srv/scap/bin/mwversionsinuse',
-		require => Git::Clone['mediawiki/tools/scap'],
+		target  => "${binpath}/mwversionsinuse",
 	}
 	file { "${scriptpath}/scap-rebuild-cdbs":
 		ensure  => link,
-		target  => '/srv/scap/bin/scap-rebuild-cdbs',
-		require => Git::Clone['mediawiki/tools/scap'],
+		target  => "${binpath}/scap-rebuild-cdbs",
 	}
 	file { "${scriptpath}/scap-recompile":
 		ensure  => link,
-		target  => '/srv/scap/bin/scap-recompile',
-		require => Git::Clone['mediawiki/tools/scap'],
+		target  => "${binpath}/scap-recompile",
 	}
 	file { "${scriptpath}/sync-common":
 		ensure  => link,
-		target  => '/srv/scap/bin/sync-common',
-		require => Git::Clone['mediawiki/tools/scap'],
-	}
-	file { "${scriptpath}/mergeCdbFileUpdates":
-		ensure  => link,
-		target  => '/srv/scap/bin/mergeCdbFileUpdates',
-		require => Git::Clone['mediawiki/tools/scap'],
+		target  => "${binpath}/sync-common",
 	}
 	file { "${scriptpath}/refreshCdbJsonFiles":
 		ensure  => link,
-		target  => '/srv/scap/bin/refreshCdbJsonFiles',
-		require => Git::Clone['mediawiki/tools/scap'],
+		target  => "${binpath}/refreshCdbJsonFiles",
 	}
 
 	exec { 'mw-sync':
