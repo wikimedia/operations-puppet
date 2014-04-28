@@ -37,9 +37,6 @@ class mediawiki::sync {
 		target  => '/srv/scap/bin/sync-common',
 		require => Git::Clone['mediawiki/tools/scap'],
 	}
-	file { "${scriptpath}/mergeCdbFileUpdates":
-		ensure  => absent,
-	}
 	file { "${scriptpath}/refreshCdbJsonFiles":
 		ensure  => link,
 		target  => '/srv/scap/bin/refreshCdbJsonFiles',
