@@ -134,6 +134,10 @@ class role::deployment::config {
         'grain'    => 'kibana',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/kibana',
     },
+    'scap/scap' => {
+        'grain'    => 'scap',
+        'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/scap',
+    },
   }
 }
 

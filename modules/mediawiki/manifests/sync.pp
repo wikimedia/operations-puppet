@@ -15,6 +15,8 @@ class mediawiki::sync {
 		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/tools/scap.git',
 	}
 
+	deployment::target { 'scap': }
+
 	$scriptpath = "/usr/local/bin"
 
 	file { "${scriptpath}/mwversionsinuse":
