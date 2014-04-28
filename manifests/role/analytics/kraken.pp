@@ -45,16 +45,15 @@ class role::analytics::kraken {
 
 }
 
-# == Class role::analytics::kraken::jobs::import::webrequest
-# Submits Camus MapReduce job hourly to import
-# webrequest logs from Kafka.
-class role::analytics::kraken::jobs::import::webrequest {
+# == Class role::analytics::kraken::jobs::import::kafka
+# Submits Camus MapReduce job hourly to import data from Kafka.
+class role::analytics::kraken::jobs::import::kafka {
     require role::analytics::kraken
 
-    $camus_properties = "${::role::analytics::kraken::path}/kraken-etl/conf/camus.webrequest.properties"
-    $camus_log_file   = "${::role::analytics::kraken::log_dir}/camus-webrequest-import.log"
+    $camus_properties = "${::role::analytics::kraken::path}/kraken-etl/conf/camus.properties"
+    $camus_log_file   = "${::role::analytics::kraken::log_dir}/camus.log"
 
-    cron { 'kraken-import-hourly-webrequests':
+    cron { 'kraken-import-hourly-kafka':
         command => "${::role::analytics::kraken::path}/kraken-etl/camus --job-name camus-webrequest-import ${camus_properties} >> ${camus_log_file} 2>&1",
         user    => 'hdfs',  # we might want to use a different user for this, not sure.
         minute  => '*/10',
