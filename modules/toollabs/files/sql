@@ -42,8 +42,6 @@ then
 	Log "WARNING: There is no configuration file for mysql to use, you will probably be unable to access the database"
 fi
 
-list=/usr/share/dblist
-
 param=""
 # check if the user has a replica file
 if [ -f ~/replica.my.cnf ];then
@@ -58,27 +56,27 @@ server="enwiki.labsdb"
 db="enwiki_p"
 
 case "$1" in
-    "en" | "enwiki_p")
+    "en" | "enwiki" | "enwiki_p")
         server="enwiki.labsdb"
         db="enwiki_p"
     ;;
-    "de" | "dewiki_p")
+    "de" | "dewiki" | "dewiki_p")
         server="dewiki.labsdb"
         db="dewiki_p"
     ;;
-    "fr" | "frwiki_p")
+    "fr" | "frwiki" | "frwiki_p")
         server="frwiki.labsdb"
         db="frwiki_p"
     ;;
-    "cs" | "cswiki_p")
+    "cs" | "cswiki" | "cswiki_p")
         server="cswiki.labsdb"
         db="cswiki_p"
     ;;
-    "commons")
+    "commons" | "commonswiki" | "commonswiki_p")
         server="commonswiki.labsdb"
         db="commonswiki_p"
     ;;
-    "wikidata")
+    "wikidata" | "wikidatawiki" | "wikidatawiki_p")
         server="wikidatawiki.labsdb"
         db="wikidatawiki_p"
     ;;
@@ -88,10 +86,6 @@ case "$1" in
         if [ -f ~/.my.cnf ];then
 	    param=""
         fi
-   ;;
-   "commonswiki_p" | "commons")
-       server=commonswiki.labsdb
-       db="commonswiki_p"
    ;;
    *)
 	# we don't know what the database is so we check if it exist first
