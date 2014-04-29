@@ -4,6 +4,7 @@
 #
 # Parameters:
 #       gridmaster => FQDN of the gridengine master
+#       type => What kind of web server to set up
 #
 # Actions:
 #
@@ -11,7 +12,7 @@
 #
 # Sample Usage:
 #
-class toollabs::webnode($gridmaster) inherits toollabs {
+class toollabs::webnode($gridmaster, $type) inherits toollabs {
     include toollabs::exec_environ,
         toollabs::infrastructure,
         toollabs::gridnode
@@ -78,36 +79,49 @@ class toollabs::webnode($gridmaster) inherits toollabs {
         require => Exec['make-access'],
     }
 
-    package { 'php5-cgi':
-        ensure => latest,
+    case $type {
+        lighttpd: {
+            package { 'php5-cgi':
+                ensure => latest,
+            }
+
+            package { 'lighttpd': 
+                ensure => latest,
+                require => File['/var/run/lighttpd'],
+            }
+
+            file { '/var/run/lighttpd':
+                ensure => directory,
+                owner  => 'www-data',
+                group  => 'www-data',
+                mode   => '01777',
+            }
+        }
+        tomcat: {
+            package { 'tomcat7-user':
+                ensure => latest,
+            }
+            package { 'xmlstarlet':
+                ensure => latest,
+                before => "/usr/local/bin/tomcat-starter",
+            }
+        }
     }
 
-    package { 'lighttpd': 
-        ensure => latest,
-        require => File['/var/run/lighttpd'],
-    }
-
-    file { '/var/run/lighttpd':
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '01777',
-    }
-
-    file { '/usr/local/bin/tool-lighttpd':
+    file { "/usr/local/bin/tool-${type}":
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/toollabs/tool-lighttpd',
+        source => "puppet:///modules/toollabs/tool-${type}",
     }
 
-    file { '/usr/local/bin/lighttpd-starter':
+    file { "/usr/local/bin/${type}-starter":
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/toollabs/lighttpd-starter',
+        source => "puppet:///modules/toollabs/${type}-starter",
     }
 
     file { '/usr/local/bin/portgrabber':

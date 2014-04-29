@@ -31,6 +31,15 @@ class role::labs::tools {
     system::role { "role::labs::tools::webnode": description => "Tool Labs clustered web host" }
     class { 'toollabs::webnode':
       gridmaster => $grid_master,
+      type => 'lighttpd',
+    }
+  }
+
+  class tomcatnode inherits role::labs::tools::config {
+    system::role { "role::labs::tools::tomcatnode": description => "Tool Labs clustered tomcat host" }
+    class { 'toollabs::webnode':
+      gridmaster => $grid_master,
+      type => 'tomcat',
     }
   }
 

@@ -1,0 +1,136 @@
+#! /bin/bash
+#
+#  Copyright © 2013 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+# Part of this code is derived from catalina.sh distributed with Tomcat:
+#
+#  Licensed to the Apache Software Foundation (ASF) under one or more
+#  contributor license agreements.  See the NOTICE file distributed with
+#  this work for additional information regarding copyright ownership.
+#  The ASF licenses this file to You under the Apache License, Version 2.0
+#  (the "License"); you may not use this file except in compliance with
+#  the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+##
+## THIS FILE IS MANAGED BY PUPPET
+##
+## Source: modules/toollabs/files/tomcat-starter
+## From:   modules/toollabs/manifests/webnode.pp
+##
+
+tool="$1"
+port="$2"
+prefix=$(/bin/cat /etc/wmflabs-project)
+user="$prefix.$tool"
+home=$(getent passwd $user | cut -d : -f 6 | sed -e 's/\/$//')
+tomcat="$home/public_tomcat"
+if [ "$(getent group $user | cut -d : -f 1)" != "$user" ]; then
+  echo "$0: $1 does not appear to be a tool" >&2
+  exit 1
+fi
+
+if [ "$home" = "" -o ! -d "$tomcat" ]; then
+  echo "$1 does not have a public_tomcat" >&2
+  exit 1
+fi
+
+conf="$tomcat/conf/server.xml"
+if [ ! -r "$conf" ]; then
+  echo "Unable to read $conf" >&2
+  exit 1
+fi
+
+if [ $(/usr/bin/xmlstarlet sel -t -v "count(/Server/Service/Connector)" "$conf") != "1" ]; then
+  echo "$conf must declare exactly one <Connrector> element" >&2
+  exit 1
+fi
+
+/usr/bin/xmlstarlet ed -u "/Server/@port" -v "-1" "$conf" |
+  /usr/bin/xmlstarlet ed -u "/Server/Service/Connector/@port" -v "$port" >"$conf.run"
+
+export CATALINA_BASE=/data/project/javatest/public_tomcat
+export CATALINA_HOME=/usr/share/tomcat7
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+
+if [ -r "$CATALINA_BASE/bin/setenv.sh" ]; then
+  . "$CATALINA_BASE/bin/setenv.sh"
+elif [ -r "$CATALINA_HOME/bin/setenv.sh" ]; then
+  . "$CATALINA_HOME/bin/setenv.sh"
+fi
+
+if [ -r "$CATALINA_HOME"/bin/setclasspath.sh ]; then
+  . "$CATALINA_HOME"/bin/setclasspath.sh
+else
+  echo "Cannot find $CATALINA_HOME/bin/setclasspath.sh"
+  echo "This file is needed to run this program"
+  exit 1
+fi
+
+# Add on extra jar files to CLASSPATH
+if [ ! -z "$CLASSPATH" ] ; then
+  CLASSPATH="$CLASSPATH":
+fi
+CLASSPATH="$CLASSPATH""$CATALINA_HOME"/bin/bootstrap.jar
+
+if [ -z "$CATALINA_OUT" ] ; then
+  CATALINA_OUT="$CATALINA_BASE"/logs/catalina.out
+fi
+
+if [ -z "$CATALINA_TMPDIR" ] ; then
+  # Define the java.io.tmpdir to use for Catalina
+  CATALINA_TMPDIR=/tmp
+fi
+
+# Add tomcat-juli.jar to classpath
+# tomcat-juli.jar can be over-ridden per instance
+if [ -r "$CATALINA_BASE/bin/tomcat-juli.jar" ] ; then
+  CLASSPATH=$CLASSPATH:$CATALINA_BASE/bin/tomcat-juli.jar
+else
+  CLASSPATH=$CLASSPATH:$CATALINA_HOME/bin/tomcat-juli.jar
+fi
+
+# Set juli LogManager config file if it is present and an override has not been issued
+if [ -z "$LOGGING_CONFIG" ]; then
+  if [ -r "$CATALINA_BASE"/conf/logging.properties ]; then
+    LOGGING_CONFIG="-Djava.util.logging.config.file=$CATALINA_BASE/conf/logging.properties"
+  else
+    # Bugzilla 45585
+    LOGGING_CONFIG="-Dnop"
+  fi
+fi
+
+if [ -z "$LOGGING_MANAGER" ]; then
+  JAVA_OPTS="$JAVA_OPTS -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager"
+else
+  JAVA_OPTS="$JAVA_OPTS $LOGGING_MANAGER"
+fi
+
+JAVA_OPTS="$JAVA_OPTS -Dorg.apache.catalina.security.SecurityListener.UMASK=002"
+
+eval exec /usr/bin/java \"$LOGGING_CONFIG\" $JAVA_OPTS $CATALINA_OPTS \
+  -Djava.endorsed.dirs=\"$JAVA_ENDORSED_DIRS\" -classpath \"$CLASSPATH\" \
+  -Dcatalina.base=\"$CATALINA_BASE\" \
+  -Dcatalina.home=\"$CATALINA_HOME\" \
+  -Djava.io.tmpdir=\"$CATALINA_TMPDIR\" \
+  org.apache.catalina.startup.Bootstrap -config "$conf.run" start
+
