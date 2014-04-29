@@ -60,6 +60,7 @@ GetOptions(
 	'mbox=s'              => \$Mbox,
 	'TicketNumber=s{,}'   => \@TicketNumbers,
 	'TicketID=s{,}'       => \@TicketIDs,
+	'rebuild'             => \$Rebuild,
 );
 
 # when called from Generic Agent, ARG[0] is TicketNumber and ARG[1] is TicketID
@@ -100,7 +101,7 @@ for my $TicketID (@TicketIDs) {
 	);
 	if (($HistoryData{'Queue'} eq 'Junk') and ($HistoryData{'CreateQueue'} eq 'Junk')) {
 		printlog("Skip TicketID $TicketID, it was already autoqueued to Junk.",'debug');
-	} elsif ($HistoryData{'State'} =~ /^closed successful$/) {
+	} elsif (($HistoryData{'State'} =~ /^closed successful$/) and (! defined $Rebuild)) {
 		printlog("Skip TicketID $TicketID, it is already 'Closed successful'.",'debug');
 	} else {
 		my @TicketArticleIds = $CommonObject{TicketObject}->ArticleIndex(
@@ -166,6 +167,7 @@ sub usage {
 		"  --help                          display this option help\n" .
 		"  --mbox /path/to/mbox            mbox output file (default $Mbox)\n" .
 		"  --close                         change ticket status to 'closed successful'\n" .
+		"  --rebuild                       run all messages for Bayes rebuild (don't skip already-closed messages)\n" .
 		"  --TicketID no1 no2 no3          export messages by TicketID\n" .
 		"  --TicketNumber no1 no2 no3      export messages by TicketNumber\n\n";
     exit;
