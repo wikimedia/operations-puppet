@@ -464,6 +464,42 @@ class misc::monitoring::view::hadoop($master, $worker_regex, $ensure = 'present'
                 'metric_regex' => 'Hadoop.NameNode.NameNodeActivity.Files(Created|Deleted|Renamed|Appended)',
                 'type'         => 'line',
             },
+            # Worker Node /proc/diskstat bytes written per second
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_write_bytes_per_sec",
+                'type'         => 'stack',
+            },
+            # /proc/diskstat bytes read per second
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_read_bytes_per_sec",
+                'type'         => 'stack',
+            },
+            # Worker Node /proc/diskstat disk utilization %
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_percent_io_time",
+                'type'         => 'line',
+            },
+            # Worker Node /proc/diskstat IO time
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_io_time",
+                'type'         => 'line',
+            },
+            # Worker Node 15 minute load average
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => 'load_fifteen',
+                'type'         => 'line',
+            },
+            # Worker Node IO wait
+            {
+                'host_regex'   => $worker_regex,
+                'metric_regex' => 'cpu_wio',
+                'type'         => 'line',
+            },
         ],
     }
 }
