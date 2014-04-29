@@ -1,0 +1,14 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### modules/applicationserver/files/apache/logrotate-apache
+#####################################################################
+
+# Rotate apache logs without restart
+/var/log/apache2.log {
+        missingok
+        rotate 14
+        daily
+        compress
+        copytruncate
+}
+

@@ -8,5 +8,5 @@ class applicationserver {
         }
     }
 
-    include apache_packages, service, cron, sudo, config::base
+    include apache_packages, service, cron, sudo, log, config::base
 }
