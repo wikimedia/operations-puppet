@@ -16,6 +16,10 @@
 #    - $config:
 #        Hash containing all config settings for the [master] section of
 #        puppet.conf (ini-style)
+#    - $workers:
+#        Array of hashes in the form. If loadfactor is omitted, it is assumed to
+#        be equal to 1
+#         [{ 'worker' => 'worker1.example.com', loadfactor => '1' }]
 class puppetmaster(
             $server_name='puppet',
             $bind_address='*',
