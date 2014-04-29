@@ -39,7 +39,7 @@ sub evaluate_cookie {
 	/* gettingStarted exclusion is to work around e.g. enwikigettingStartedUserToken=
 	 * which probably shouldn't end in Token= ...
 	 */
-	if (req.http.Cookie ~ "(?!gettingStartedUser)([sS]ession|Token)=") {
+	if (req.http.Cookie ~ "([sS]ession|(?<!gettingStartedUser)Token)=") {
 		set req.hash_ignore_busy = true;
 	} else {
 		call cookie_munging;
