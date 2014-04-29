@@ -54,7 +54,14 @@ class role::racktables {
     apache_confd {'namevirtualhost': install => true, name => 'namevirtualhost'}
     apache_module { 'rewrite': name => 'rewrite' }
 
+    ferm::service { 'racktables-http':
+        proto => 'tcp',
+        port  => '80',
+    }
 
-
+    ferm::service { 'racktables-https':
+        proto => 'tcp',
+        port  => '443',
+    }
 
 }
