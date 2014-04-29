@@ -46,15 +46,22 @@ class role::analytics::kraken {
 }
 
 # == Class role::analytics::kraken::jobs::import::kafka
-# Submits Camus MapReduce job hourly to import data from Kafka.
+# Submits Camus MapReduce jobs to import data from Kafka.
 class role::analytics::kraken::jobs::import::kafka {
     require role::analytics::kraken
 
-    $camus_properties = "${::role::analytics::kraken::path}/kraken-etl/conf/camus.properties"
-    $camus_log_file   = "${::role::analytics::kraken::log_dir}/camus.log"
+    $camus_webrequest_properties = "${::role::analytics::kraken::path}/kraken-etl/conf/camus.webrequest.properties"
+    $camus_webrequest_log_file   = "${::role::analytics::kraken::log_dir}/camus-webrequest.log"
+    cron { 'kraken-import-hourly-webrequest':
+        command => "${::role::analytics::kraken::path}/kraken-etl/camus --job-name camus-webrequest-import ${camus_webrequest_properties} >> ${camus_webrequest_log_file} 2>&1",
+        user    => 'hdfs',  # we might want to use a different user for this, not sure.
+        minute  => '*/10',
+    }
 
-    cron { 'kraken-import-hourly-kafka':
-        command => "${::role::analytics::kraken::path}/kraken-etl/camus --job-name camus-import ${camus_properties} >> ${camus_log_file} 2>&1",
+    $camus_eventlogging_properties = "${::role::analytics::kraken::path}/kraken-etl/conf/camus.eventlogging.properties"
+    $camus_eventlogging_log_file   = "${::role::analytics::kraken::log_dir}/camus-eventlogging.log"
+    cron { 'kraken-import-hourly-eventlogging':
+        command => "${::role::analytics::kraken::path}/kraken-etl/camus --job-name camus-eventlogging-import ${camus_eventlogging_properties} >> ${camus_eventlogging_log_file} 2>&1",
         user    => 'hdfs',  # we might want to use a different user for this, not sure.
         minute  => '*/10',
     }
