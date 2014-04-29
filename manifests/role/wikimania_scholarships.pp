@@ -21,5 +21,15 @@ class role::wikimania_scholarships {
         smtp_host    => 'smtp.pmtpa.wmnet'
     }
 
+    ferm::service { 'http':
+        proto   => 'tcp',
+        port    => '80',
+    }
+
+    ferm::service { 'https':
+        proto   => 'tcp',
+        port    => '443',
+    }
+
 }
 # vim:sw=4 ts=4 sts=4 et:
