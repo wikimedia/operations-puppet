@@ -16,7 +16,7 @@ class pmacct (
     # FIXME: Review daniel's different method for iterating over a hash..
     create_resources(pmacct::configs, $pmacct_agents)
 
-    service {'pmacctd':
+    service {'pmacct':
         ensure => running;
     }
 }
