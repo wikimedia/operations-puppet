@@ -1900,6 +1900,13 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
     include standard-noexim
 }
 
+# Trusty app server / HHVM staging
+node 'osmium.eqiad.wmnet' {
+    include standard
+    include groups::wikidev
+    include admins::mortals
+}
+
 # base_analytics_logging_node is defined in role/logging.pp
 node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
     include accounts::awjrichards
