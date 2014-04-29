@@ -11,7 +11,7 @@ define backup::set {
             jobdefaults => $jobdefaults,
         }
 
-        $motd_content = "Backed up on this host: $name\n"
+        $motd_content = "#!/bin/sh\necho \"Backed up on this host: $name\""
         @file { "/etc/update-motd.d/06-backups-${name}":
             ensure  => 'present',
             owner   => 'root',
