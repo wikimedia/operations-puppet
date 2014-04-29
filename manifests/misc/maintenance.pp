@@ -551,7 +551,12 @@ class misc::maintenance::purge_abusefilter( $enabled = false ) {
             default => 'absent',
         }
 
+        # Erroneously named version
         cron { 'purge_securepoll':
+            ensure  => 'absent',
+        }
+
+        cron { 'purge_abusefilteripdata':
             command => '/usr/local/bin/foreachwiki extensions/AbuseFilter/maintenance/purgeOldLogIPData.php >/dev/null 2>&1',
             user    => 'apache',
             hour    => '1',
