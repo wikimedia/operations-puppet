@@ -2310,7 +2310,7 @@ class accounts {
                     ensure => 'present',
                     user   => $username,
                     type   => 'ssh-rsa',
-                    key    => 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSDnaVfOv5P06dwt53avUjqt1qN6XNZWkmCmEdOxnmE/l2HgsGe2r8SMZ0e6145/Ypqq7eUkAvoL0TvBS6Z0pXEdeOn7UC2X3EVaUnrcOMt9+J6HwnRnNaSLSSaxFAsmDoQiNwnkgtiXqgpvD6BBZ1C+0gSFwQii4hlL6TXLUmc4kMGjvM/BPiugzGuUA0oAxpJGB+GDj2qgtRePrtK4kpiBWOZNVuzGQUPFu4u9y3/P2twN4Kacvd2HlbHIiccUC/s+Ym5QhXErfZKFFNRmx/8H6maWpriImPbyKAm3rcKdLK3pZoGE4NzLSmOVtXJTSA74w3qR8m3l5XPDq8+0Hn msemenik@MaxSem.local';
+                    key    => 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSDnaVfOv5P06dwt53avUjqt1qN6XNZWkmCmEdOxnmE/l2HgsGe2r8SMZ0e6145/Ypqq7eUkAvoL0TvBS6Z0pXEdeOn7UC2X3EVaUnrcOMt9+J6HwnRnNaSLSSaxFAsmDoQiNwnkgtiXqgpvD6BBZ1C+0gSFwQii4hlL6TXLUmc4kMGjvM/BPiugzGuUA0oAxpJGB+GDj2qgtRePrtK4kpiBWOZNVuzGQUPFu4u9y3/P2twN4Kacvd2HlbHIiccUC/s+Ym5QhXErfZKFFNRmx/8H6maWpriImPbyKAm3rcKdLK3pZoGE4NzLSmOVtXJTSA74w3qR8m3l5XPDq8+0Hn';
             }
         }
     }
