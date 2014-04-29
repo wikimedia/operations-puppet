@@ -2306,6 +2306,11 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA1G/hUlOQ7CwPRGYyTWSW9tK/jR0axw64JrRvdJnIZ+JTIpat3TyNPiPNIp5Ak+NfogruPJIwp//+f/Iu+DJW2iAcQhASl5WJPpSqdUUhX/LfaHB3Xr0f75Irn/7C2twvxKojyS4MkiBTo9HWSdh0zP3zgnwOlycwaUHujMVt6G35lkUzPgBx+QVKExK2A6c+CILjIG4GmeWPsqGJRJXbvrJjVK1og+i/x16boMdrO8UInNqH/iLroKT6tzLzJsWhk4NOqK2CX+MmcKJLbc2I0IQ8fJe9J2eaPiaE+CmdX0dc1+GP7IlI/CStk6LldVOgDBP/7Vr8DVd0OQuadhJJhw==';
+                'maxsem@MacBook':
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSDnaVfOv5P06dwt53avUjqt1qN6XNZWkmCmEdOxnmE/l2HgsGe2r8SMZ0e6145/Ypqq7eUkAvoL0TvBS6Z0pXEdeOn7UC2X3EVaUnrcOMt9+J6HwnRnNaSLSSaxFAsmDoQiNwnkgtiXqgpvD6BBZ1C+0gSFwQii4hlL6TXLUmc4kMGjvM/BPiugzGuUA0oAxpJGB+GDj2qgtRePrtK4kpiBWOZNVuzGQUPFu4u9y3/P2twN4Kacvd2HlbHIiccUC/s+Ym5QhXErfZKFFNRmx/8H6maWpriImPbyKAm3rcKdLK3pZoGE4NzLSmOVtXJTSA74w3qR8m3l5XPDq8+0Hn msemenik@MaxSem.local';
             }
         }
     }
