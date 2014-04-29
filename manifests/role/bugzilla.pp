@@ -10,5 +10,15 @@ class role::bugzilla {
         db_user => 'bugs',
     }
 
+    ferm::service { 'bugzilla_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'bugzilla_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
 }
 
