@@ -9,9 +9,9 @@ if [ "$USER" = "gitpuppet" ]; then
 	<%- if @server_type == 'frontend' -%>
 	# If no key is forwarded then this will use the ready-made equivalent command
 	#  on worker and ignore our command.
-		<%- @workers.each do |worker| -%>
-		<%- if worker == @fqdn then next end -%>
-	ssh -t -t <%= worker -%> 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
+		<%- @workers.each do |workerhash| -%>
+		<%- if workerhash['worker'] == @fqdn then next end -%>
+	ssh -t -t <%= worker['worker'] -%> 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
 		<%- end -%>
 	<%- end -%>
 fi

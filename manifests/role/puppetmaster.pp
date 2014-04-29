@@ -17,8 +17,9 @@ class role::puppetmaster::frontend {
     class { '::puppetmaster':
         allow_from  => $role::puppetmaster::config::allow_from,
         server_type => 'frontend',
-        workers     => ['palladium.eqiad.wmnet',
-                        'strontium.eqiad.wmnet'
+        workers     =>  [
+                        { 'worker' => 'palladium.eqiad.wmnet', 'loadfactor' => 10, },
+                        { 'worker' => 'strontium.eqiad.wmnet', 'loadfactor' => 10, },
         ],
         config      => {
             'thin_storeconfigs' => true,
