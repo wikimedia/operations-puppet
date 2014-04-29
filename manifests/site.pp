@@ -2764,6 +2764,8 @@ node 'zinc.eqiad.wmnet' {
 }
 
 node 'zirconium.wikimedia.org' {
+    class { 'base::firewall': }
+
     include standard
     include admins::roots
     include role::planet
