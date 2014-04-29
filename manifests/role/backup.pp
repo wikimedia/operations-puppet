@@ -2,7 +2,11 @@
 # configured in WMF
 
 class role::backup::config {
-    $director = 'helium.eqiad.wmnet'
+    # if you change the director host name
+    # you (likely) also need to change the IP,
+    # we don't want to rely on DNS in firewall rules
+    $director    = 'helium.eqiad.wmnet'
+    $director_ip = '10.64.0.179'
     $database = 'db1001.eqiad.wmnet'
     $days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
 }
