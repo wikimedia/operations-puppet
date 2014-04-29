@@ -84,9 +84,13 @@ class contint::packages {
 
         'doxygen',
         'python-sphinx',  # python documentation
-        'ruby-jsduck',
         ]:
         ensure => present,
+    }
+    #in order to upgrade from 4.x to 5.x. the packge go back to it's place
+    #after a merge.
+    package {'ruby-jsduck':
+        ensure => latest,
     }
 
     # Includes packages needed for building
