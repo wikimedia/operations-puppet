@@ -255,6 +255,8 @@ node 'antimony.wikimedia.org' {
         ca => 'RapidSSL_CA.pem',
     }
 
+    class { 'base::firewall': }
+
     include standard
     include groups::wikidev
     include accounts::demon
