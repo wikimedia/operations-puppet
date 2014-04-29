@@ -3957,3 +3957,7 @@ class admins::ldap {
 
 }
 
+# access to pmacct tools
+class admins::pmacct {
+    include accounts::jkrauska
+}
