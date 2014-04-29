@@ -27,6 +27,17 @@ class role::rt {
 		enable_mail_submission => 'false',
 		enable_spamassassin    => 'false',
 	}
+
+    ferm::service { 'http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
 }
 
 #  Labs/testing RT
