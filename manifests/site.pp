@@ -1572,6 +1572,18 @@ node 'magnesium.wikimedia.org' {
 
     $cluster = 'misc'
 
+    class { 'base::firewall':
+        ferm::service { 'http':
+            proto   => 'tcp',
+            port    => '80',
+        }
+
+        ferm::service { 'https':
+            proto   => 'tcp',
+            port    => '443',
+        }
+    } 
+
     include role::racktables
     include role::rt
 }
