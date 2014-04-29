@@ -1917,35 +1917,13 @@ node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 }
 
 node 'palladium.eqiad.wmnet' {
-    include passwords::puppet::database
-
     include standard
     include backup::client
     include misc::management::ipmi
     include role::salt::masters::production
     include role::deployment::salt_masters::production
     include role::access_new_install
-
-    class { 'puppetmaster':
-        allow_from  => [
-            '*.wikimedia.org',
-            '*.pmtpa.wmnet',
-            '*.eqiad.wmnet',
-            '*.ulsfo.wmnet',
-            '*.esams.wmnet',
-        ],
-        server_type => 'frontend',
-        workers     => ['palladium.eqiad.wmnet',
-                        'strontium.eqiad.wmnet'
-        ],
-        config      => {
-            'thin_storeconfigs' => true,
-            'dbadapter'         => 'mysql',
-            'dbuser'            => 'puppet',
-            'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver'          => 'db1001.eqiad.wmnet',
-        }
-    }
+    include role::puppetmaster::frontend
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
@@ -2156,28 +2134,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 
 node 'strontium.eqiad.wmnet' {
     include standard
-    include passwords::puppet::database
-
-    class { 'puppetmaster':
-        allow_from  => [
-            '*.wikimedia.org',
-            '*.pmtpa.wmnet',
-            '*.eqiad.wmnet',
-            '*.ulsfo.wmnet',
-            '*.esams.wmnet',
-        ],
-        server_type => 'backend',
-        config      => {
-            'thin_storeconfigs' => true,
-            'ca'                => 'false',
-            'ca_server'         => 'palladium.eqiad.wmnet',
-            'dbadapter'         => 'mysql',
-            'dbuser'            => 'puppet',
-            'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver'          => 'db1001.eqiad.wmnet',
-            'dbconnections'     => '256',
-        }
-    }
+    include role::puppetmaster::backend
 }
 
 node 'stat1001.wikimedia.org' {
