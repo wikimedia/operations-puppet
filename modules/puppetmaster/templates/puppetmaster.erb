@@ -48,8 +48,8 @@ RailsAutoDetect Off
 	# The rest gets balanced
 	ProxyPass / balancer://mycluster/
 	<Proxy balancer://mycluster>
-	  <%- @workers.each do |worker| -%>
-		BalancerMember https://<%= worker %>:8141 connectiontimeout=1 retry=500 timeout=900
+	  <%- @workers.each do |workerhash| -%>
+		BalancerMember https://<%= workerhash['worker'] %>:8141 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %>
 	  <%- end -%>
 		Order allow,deny
 		Allow from all
