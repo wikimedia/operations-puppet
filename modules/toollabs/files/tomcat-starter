@@ -68,7 +68,7 @@ fi
 /usr/bin/xmlstarlet ed -u "/Server/@port" -v "-1" "$conf" |
   /usr/bin/xmlstarlet ed -u "/Server/Service/Connector/@port" -v "$port" >"$conf.run"
 
-export CATALINA_BASE=/data/project/javatest/public_tomcat
+export CATALINA_BASE="/data/project/$tool/public_tomcat"
 export CATALINA_HOME=/usr/share/tomcat7
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 
