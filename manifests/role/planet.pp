@@ -197,5 +197,16 @@ class role::planet {
         planet_languages   => $planet_languages,
         planet_meta_link   => $planet_meta_link
     }
+
+    ferm::service { 'planet-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'planet-https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
 }
 
