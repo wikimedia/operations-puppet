@@ -85,7 +85,7 @@ class toollabs::webnode($gridmaster, $type) inherits toollabs {
                 ensure => latest,
             }
 
-            package { 'lighttpd': 
+            package { 'lighttpd':
                 ensure => latest,
                 require => File['/var/run/lighttpd'],
             }
@@ -103,7 +103,7 @@ class toollabs::webnode($gridmaster, $type) inherits toollabs {
             }
             package { 'xmlstarlet':
                 ensure => latest,
-                before => "/usr/local/bin/tomcat-starter",
+                before => File['/usr/local/bin/tomcat-starter'],
             }
         }
     }
