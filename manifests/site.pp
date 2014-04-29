@@ -2301,11 +2301,13 @@ node 'snapshot1001.eqiad.wmnet' {
     $gid= '500'
     include snapshot
     class { 'snapshot::dumps': hugewikis => true }
+    include role::snapshot::common
 }
 node /^snapshot100[24]\.eqiad\.wmnet/ {
     $gid= '500'
     include snapshot
     include snapshot::dumps
+    include role::snapshot::common
 }
 node 'snapshot1003.eqiad.wmnet' {
     $gid= '500'
