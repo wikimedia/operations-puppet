@@ -1572,6 +1572,8 @@ node 'magnesium.wikimedia.org' {
 
     $cluster = 'misc'
 
+    class { 'base::firewall': }
+
     include role::racktables
     include role::rt
 }
