@@ -3964,5 +3964,9 @@ class admins::ldap {
 
 # access to pmacct tools
 class admins::pmacct {
+
+    $gid = '500'   # 'wikidev' by default
+    include groups::wikidev
+
     include accounts::jkrauska
 }
