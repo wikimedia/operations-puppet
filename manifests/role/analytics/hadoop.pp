@@ -90,6 +90,9 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         ganglia => "${ganglia_host}:${ganglia_port}",
     }
 
+    # monitor disk statistics
+    ganglia::plugin::python { 'diskstat': }
+
     # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
     # It rotates them but does not delete old ones.  Set up cronjob to
     # delete old files in this directory.
@@ -130,6 +133,9 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     class { 'cdh4::hadoop::jmxtrans::worker':
         ganglia => "${ganglia_host}:${ganglia_port}",
     }
+
+    # monitor disk statistics
+    ganglia::plugin::python { 'diskstat': }
 }
 
 # == Class role::analytics::hadoop::standby
@@ -149,6 +155,9 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
     class { 'cdh4::hadoop::jmxtrans::namenode':
         ganglia => "${ganglia_host}:${ganglia_port}",
     }
+
+    # monitor disk statistics
+    ganglia::plugin::python { 'diskstat': }
 }
 
 
