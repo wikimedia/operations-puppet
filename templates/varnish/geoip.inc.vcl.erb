@@ -22,6 +22,7 @@ C{
 	char * geo_get_xff_ip (const struct sess *sp);
 	char * geo_sanitize_for_cookie (char *string);
 	void geo_set_cache_control (const struct sess *sp);
+	const char * geo_get_top_cookie_domain (const char *host);
 
 	void
 	geo_init() {
@@ -93,6 +94,51 @@ C{
 		VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:", now, vrt_magic_string_end);
 		VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:", "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
 	}
+
+
+	/*
+	 * Extract the topmost part of the domain name for which a cookie may be set.
+	 * This consists of the public suffix (e.g., 'org') plus one more level.
+	 *
+	 * In Wikimedia's case, this is always the top two parts of the name (for example,
+	 * 'wikipedia.org' for 'en.m.wikipedia.org'. But we handle other common cases correctly too,
+	 * like 'news.bbc.co.uk' (which may set cookies for bbc.co.uk, but not the entire co.uk public
+	 * suffix), by assuming that if either of the top two levels is less than three characters
+	 * long, then the public suffix contains two parts. A fully comprehensive and correct solution
+	 * would require checking against a public suffix database like <https://publicsuffix.org/>.
+	 */
+	const char *
+	geo_get_top_cookie_domain(const char *host) {
+		const char *last, *second_last, *third_last, *pos, *top_cookie_domain;
+
+		if (host == NULL) {
+			return NULL;
+		}
+
+		last = second_last = third_last = host;
+		for (pos = host; *pos != '\0'; pos++) {
+			if (*pos == '.') {
+				third_last = second_last;
+				second_last = last;
+				last = pos;
+			}
+		}
+
+		/* If either the second- or top-level domain is less than three characters long,    */
+		/* assume that the domain uses a two-part public suffix (like '.co.uk') and include */
+		/* one additional level in the result.                                              */
+		if ((pos - last) <= 3 || (last - second_last) <= 3) {
+			top_cookie_domain = third_last;
+		} else {
+			top_cookie_domain = second_last;
+		}
+
+		if (*top_cookie_domain == '.') {
+			top_cookie_domain++;
+		}
+
+		return top_cookie_domain;
+	}
 }C
 
 sub geoip_lookup {
@@ -141,7 +187,8 @@ sub geoip_cookie {
 		const char *cookie_out = NULL;
 		char cookie_buf[255];
 
-		char *ip = geo_get_xff_ip(sp);
+		const char *host = VRT_GetHdr(sp, HDR_REQ, "\005host:");
+		const char *ip = geo_get_xff_ip(sp);
 		int af = geo_get_addr_family(ip);
 		if (af == -1) {
 			ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
@@ -151,21 +198,26 @@ sub geoip_cookie {
 		geo_init();
 		record = GeoIP_record_by_addr(gi, ip);
 
+		int snp_len;
 		if (record) {
 			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/ */
-			int snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%.4f:%.4f:%s; path=/",
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%.4f:%.4f:%s; Path=/; Domain=.%s",
 				record->country_code ? geo_sanitize_for_cookie(record->country_code) : "",
 				record->city ? geo_sanitize_for_cookie(record->city) : "",
 				record->latitude,
 				record->longitude,
-				(af == AF_INET6) ? "v6" : "v4"
+				(af == AF_INET6) ? "v6" : "v4",
+				geo_get_top_cookie_domain(host)
 			);
-			if (snp_len < sizeof(cookie_buf)) /* don't use truncated output */
-				cookie_out = cookie_buf;
 			GeoIPRecord_delete(record);
 		} else {
-			cookie_out = (af == AF_INET6) ? "GeoIP=::::v6; path=/" : "GeoIP=::::v4; path=/";
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=::::%s; Path=/; Domain=.%s",
+				(af == AF_INET6) ? "v6" : "v4",
+				geo_get_top_cookie_domain(host)
+			);
 		}
+		if (snp_len < sizeof(cookie_buf)) /* don't use truncated output */
+			cookie_out = cookie_buf;
 
 		if (cookie_out) {
                         /* Use libvmod-header to ensure the Set-Cookie header we are adding does not
