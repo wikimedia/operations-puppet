@@ -267,9 +267,9 @@ class Threshold(GraphiteCheck):
             if lengths[key] >= t * self.perc / 100.0:
                 perc = lengths[key] * 100.0 / t
                 raise NagiosException(
-                    key, '%s%% of data exceeded the %s threshold [%s]' %
+                    key, '%3.2f%% of data exceeded the %s threshold [%s]' %
                     (perc, key.lower(), self.limits[key]))
-        return 'Less than %s%% data above the threshold [%s]' % \
+        return 'Less than %3.2f%% data above the threshold [%s]' % \
             (self.perc, self.limits['WARNING'])
 
 
@@ -290,6 +290,19 @@ class Anomaly(GraphiteCheck):
             help='''How many datapoints to consider in the anomaly detection
 sampling (we will still require 1w of data)''',
             default=20)
+        p.add_argument(
+            '--over',
+            dest="over",
+            action='store_true',
+            default=False,
+            help='If alarms should happen when we are above normal values')
+        p.add_argument(
+            '--under',
+            dest="under",
+            action='store_true',
+            default=False,
+            help='If alarms should happen when we are below normal values')
+
         return p
 
     def get_all(self, args):
@@ -307,6 +320,8 @@ sampling (we will still require 1w of data)''',
         self.check_window = args.check_window
         self.warn = args.warn
         self.crit = args.crit
+        self.over = args.over
+        self.under = args.under
 
     def parse_result(self, result):
         """
@@ -363,6 +378,14 @@ sampling (we will still require 1w of data)''',
                 raise NagiosException(
                     'UNKNOWN',
                     'Service is critically flapping: %s data below and %s above the confidence bounds' % (h, l))
+
+            if self.over and h < self.crit:
+                return 'No anomaly detected'
+
+            if self.under and l < self.crit:
+                return 'No anomaly detected'
+
+
             raise NagiosException(
                 'CRITICAL', 'Anomaly detected: %s data above and %s below the confidence bounds' %
                 (h, l))
@@ -372,6 +395,12 @@ sampling (we will still require 1w of data)''',
                 raise NagiosException(
                     'UNKNOWN',
                     'Service is flapping: %s data below and %s above the confidence bounds' % (h, l))
+            if self.over and h < self.warn:
+                return 'No anomaly detected'
+
+            if self.under and l < self.warn:
+                return 'No anomaly detected'
+
             raise NagiosException(
                 'WARNING', 'Anomaly detected: %s data above and %s below the confidence bounds' %
                 (h, l))
