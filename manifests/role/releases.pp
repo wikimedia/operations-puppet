@@ -20,6 +20,11 @@ class role::releases {
     role::releases::access { 'reedy': group => 'mwupld' } # RT 6861
 }
 
+    ferm::service { 'releases_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
 class role::releases::groups {
     group { 'mwupld':
             ensure => 'present',
