@@ -127,9 +127,9 @@ def main():
     #  not to trip the mtime-watching reload code in vmod_netmapper
     #  unnecessarily)
     for temp in renames:
-        if not os.path.exists(renames[temp])
-        or not filecmp.cmp(temp, renames[temp]):
-                os.rename(temp, renames[temp])
+        if (not os.path.exists(renames[temp])
+                or not filecmp.cmp(temp, renames[temp])):
+            os.rename(temp, renames[temp])
         else:
             os.remove(temp)
 
