@@ -1905,6 +1905,8 @@ node 'osmium.eqiad.wmnet' {
     include standard
     include groups::wikidev
     include admins::mortals
+
+    include hhvm::dev
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
