@@ -294,7 +294,7 @@ node 'bast1001.wikimedia.org' {
     include accounts::maryana
     include accounts::msyed
     include accounts::swalling
-    include accounts::ypanda
+    include accounts::yuvipanda
     include accounts::haithams
 }
 
@@ -2202,7 +2202,7 @@ node 'stat1001.wikimedia.org' {
     include accounts::dsc
     include accounts::milimetric
     include accounts::rfaulk   # RT 4258
-    include accounts::ypanda   # RT 4687
+    include accounts::yuvipanda   # RT 4687
     include accounts::qchris   # RT 5474
     include accounts::tnegrin  # RT 5391
 
@@ -2297,7 +2297,7 @@ node 'stat1003.wikimedia.org' {
     include accounts::leila        # RT 6765
     include accounts::gdubuc       # RT 7074
     include accounts::haithams     # RT 7387
-    include accounts::ypanda
+    include accounts::yuvipanda
 
     # Allow Christian to sudo -u stats
     # to debug and test stats' automated cron jobs.

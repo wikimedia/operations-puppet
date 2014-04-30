@@ -62,7 +62,7 @@ class role::analytics::users {
         accounts::ironholds, # RT 5831
         accounts::dartar,    # RT 5835
         accounts::halfak,    # RT 5836
-        accounts::ypanda,    # RT 6103
+        accounts::yuvipanda, # RT 6103
         accounts::csalvia,   # RT 6664
         accounts::nuria,     # RT 6683
         accounts::sahar      # RT 6767
