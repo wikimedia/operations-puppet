@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "Synchronizing /home/wikipedia/conf/httpd to /usr/local/apache/conf..."
+
+# Options to pass to the rsync command
+RSYNC_OPTIONS="-a"
+
+# Add dry-run option to rsync when this script is called
+# as `apache-sync-simulated`. Hacky but avoid code duplication.
+if [ `basename $0` = "sync-apache-simulated" ]; then
+	echo "Simulating rsync with --dry-run..."
+	RSYNC_OPTIONS="$RSYNC_OPTIONS -n"
+fi;
+
+#This sync works with both puppet and non-puppet hosts
+dsh -cM -g apaches -o-lroot -o-oSetupTimeout=30 -F30 -- "
+	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
+"
+# dont forget the image rending cluster
+dsh -cM -g image_scalers -o-lroot -o-oSetupTimeout=30 -F30 -- "
+	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
+"
+# while we are at it, might as well do the snapshot boxen
+dsh -cM -g snapshot -o-lroot -o-oSetupTimeout=30 -F30 -- "
+	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
+"
+
+# decided we want search indexers too
+dsh -cM -g searchidx -o-lroot -o-oSetupTimeout=30 -F30 -- "
+	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
+"
