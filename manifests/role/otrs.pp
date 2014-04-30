@@ -23,7 +23,7 @@ class role::otrs {
     ferm::service { 'otrs_smtp':
         proto  => 'tcp',
         port   => '25',
-        srange => '($INTERNAL)',
+        srange => '($EXTERNAL_NETWORKS)',
     }
 
     generic::systemuser { 'otrs':
