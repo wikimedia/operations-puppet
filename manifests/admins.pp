@@ -2807,7 +2807,7 @@ class accounts {
     }
 
     # RT 4519
-    class ypanda inherits baseaccount {
+    class yuvipanda inherits baseaccount {
         $username = 'yuvipanda'
         $realname = 'Yuvi Panda'
         $uid      = '630'
