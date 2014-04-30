@@ -5,8 +5,7 @@ import header;
 
 sub vcl_init {
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-	// XXX rename "zero" to "carriers" to match upstream source, after fetcher is updated everywhere
-	netmapper.init("zero", "/var/netmapper/zero.json", 89);
+	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
 	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
 }
 
@@ -56,12 +55,12 @@ sub tag_carrier {
 	unset req.http.XFF-NoSSL; // clean up temp var
 
 	/****************************************************************
-	*    v>  | XFF-CE         | map("zero") input from regsub below
+	*    v>  | XFF-CE         | map("carriers") input from regsub below
 	*   all  | (...,)? client | client
 	*****************************************************************/
 
 	// Grab client IP from the end of the XFF-CE list and feed to map("zero") 
-	set req.http.X-CS2 = netmapper.map("zero", regsub(req.http.XFF-ClientEnd, "^([^,]+, ?)+", ""));
+	set req.http.X-CS2 = netmapper.map("carriers", regsub(req.http.XFF-ClientEnd, "^([^,]+, ?)+", ""));
 
 	// normalize to boolean (varnish-3.0.4...)
 	if (req.http.X-CS2 == "") {
