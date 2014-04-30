@@ -60,6 +60,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
         $ganglia_aggregator = true
     }
 
+    $cluster = 'lvs'
     include role::lvs::balancer
 
     interface::add_ip6_mapped { 'main':
@@ -76,6 +77,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
 # amssq47 is a text varnish
 node /^amssq47\.esams\.wikimedia\.org$/ {
+    $cluster = 'cache_text'
     include role::cache::text
     include role::cache::ssl::unified
 
@@ -91,6 +93,7 @@ node /^amssq(4[8-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org$/ {
         }
     }
 
+    $cluster = 'cache_text'
     include role::cache::text
 
     interface::add_ip6_mapped { 'main': }
@@ -398,7 +401,7 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
     }
 
     interface::add_ip6_mapped { 'main': }
-
+    $cluster = 'cache_text'
     include role::cache::text
 }
 
@@ -407,6 +410,7 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_misc"
     include role::cache::misc
 }
 
@@ -415,6 +419,7 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_parsoid"
     include role::cache::parsoid
     include admins::parsoid
 }
@@ -426,6 +431,7 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_parsoid"
     include role::cache::mobile
 }
 
@@ -436,6 +442,7 @@ node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_upload"
     include role::cache::upload
 }
 
@@ -446,6 +453,7 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_text"
     include role::cache::text
 }
 
@@ -456,6 +464,7 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = 'cache_bits'
     include role::cache::bits
 }
 
@@ -485,6 +494,7 @@ node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
 node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_mobile"
     include role::cache::mobile
 }
 
@@ -495,6 +505,7 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_bits"
     include role::cache::bits
 }
 
@@ -511,6 +522,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_bits"
     include role::cache::bits
     include role::cache::ssl::unified
 }
@@ -522,6 +534,7 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_upload"
     include role::cache::upload
     include role::cache::ssl::unified
 }
@@ -533,6 +546,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_text"
     include role::cache::text
     include role::cache::ssl::unified
 }
@@ -544,6 +558,7 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 
+    $cluster = "cache_mobile"
     include role::cache::mobile
     include role::cache::ssl::unified
 }
@@ -574,6 +589,7 @@ node 'dataset1001.wikimedia.org' {
 
 # pmtpa dbs
 node /^db(60)\.pmtpa\.wmnet/ {
+    $cluster = 'mysql'
     $ganglia_aggregator = true
     class { 'role::coredb::s1':
         mariadb               => true,
@@ -582,6 +598,7 @@ node /^db(60)\.pmtpa\.wmnet/ {
 }
 
 node /^db(69)\.pmtpa\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s2':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -589,6 +606,7 @@ node /^db(69)\.pmtpa\.wmnet/ {
 }
 
 node /^db(71)\.pmtpa\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s3':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -596,6 +614,7 @@ node /^db(71)\.pmtpa\.wmnet/ {
 }
 
 node /^db(72)\.pmtpa\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s4':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -603,6 +622,7 @@ node /^db(72)\.pmtpa\.wmnet/ {
 }
 
 node /^db(73)\.pmtpa\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s5':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -610,6 +630,7 @@ node /^db(73)\.pmtpa\.wmnet/ {
 }
 
 node /^db(74)\.pmtpa\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s6':
         mariadb               => true,
         innodb_file_per_table => true,
@@ -623,6 +644,7 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 
 # eqiad dbs
 node /^db10(43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s1':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -630,6 +652,7 @@ node /^db10(43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
 }
 
 node /^db10(02|09|18|36|60|63)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s2':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -637,6 +660,7 @@ node /^db10(02|09|18|36|60|63)\.eqiad\.wmnet/ {
 }
 
 node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s3':
         # Many more tables than other shards.
         # innodb_file_per_table=off to reduce file handles.
@@ -646,6 +670,7 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
 }
 
 node /^db10(04|11|20|40|42|59)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s4':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -656,6 +681,7 @@ node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
     if $::hostname =~ /^db1021/ {
         $ganglia_aggregator = true
     }
+    $cluster = 'mysql'
     class { 'role::coredb::s5':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -663,6 +689,7 @@ node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
 }
 
 node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s6':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -670,6 +697,7 @@ node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
 }
 
 node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::s7':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -678,11 +706,13 @@ node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
 
 ## x1 shard
 node /^db10(29|31)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     include role::coredb::x1
 }
 
 ## m1 shard
 node /^db10(01|16)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::m1':
         mariadb => true,
     }
@@ -690,6 +720,7 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 
 ## m2 shard
 node /^db104[68]\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     if $::hostname =~ /^db1048/ {
         $ganglia_aggregator = true
     }
@@ -704,11 +735,13 @@ node /^db104[68]\.eqiad\.wmnet/ {
 
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
+    $cluster = 'mysql'
     include role::mariadb::analytics
 }
 
 ## researchdb s5
 node 'db1017.eqiad.wmnet' {
+    $cluster = 'mysql'
     class { 'role::coredb::researchdb':
         shard                 => 's5',
         mariadb               => true,
@@ -719,6 +752,7 @@ node 'db1017.eqiad.wmnet' {
 
 ## SANITARIUM
 node 'db1053.eqiad.wmnet' {
+    $cluster = 'mysql'
     class { 'role::db::sanitarium':
         instances => {
             's1' => {
@@ -734,6 +768,7 @@ node 'db1053.eqiad.wmnet' {
 }
 
 node 'db1054.eqiad.wmnet' {
+    $cluster = 'mysql'
     class { 'role::db::sanitarium':
         instances => {
             's2' => {
@@ -765,6 +800,7 @@ node 'db1054.eqiad.wmnet' {
 }
 
 node 'db1057.eqiad.wmnet' {
+    $cluster = 'mysql'
     class { 'role::db::sanitarium':
         instances => {
             's3' => {
@@ -797,10 +833,12 @@ node 'db1057.eqiad.wmnet' {
 }
 
 node 'db1044.eqiad.wmnet' {
+    $cluster = 'mysql'
     include role::mariadb::tendril
 }
 
 node /^dbstore100(1|2)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     include role::mariadb::dbstore
 }
 
@@ -860,6 +898,7 @@ node 'tarin.pmtpa.wmnet' {
 }
 
 node 'aluminium.wikimedia.org' {
+    $cluster = 'fundraising'
     include role::fundraising::civicrm
     include accounts::file_mover
 
@@ -878,22 +917,26 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
 
 # es1 equad
 node /es100[1-4]\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     class { 'role::coredb::es1':
         mariadb => true,
     }
 }
 
 node /es4\.pmtpa\.wmnet/ {
+    $cluster = 'mysql'
     include role::coredb::es1
 }
 
 # es2-3
 node /es7\.pmtpa\.wmnet/ {
-  include role::coredb::es2
+    $cluster = 'mysql'
+    include role::coredb::es2
 }
 
 node /es8\.pmtpa\.wmnet/ {
-  include role::coredb::es3
+    $cluster = 'mysql'
+    include role::coredb::es3
 }
 
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
@@ -902,6 +945,7 @@ node /^es([569]|10)\.pmtpa\.wmnet/{
 }
 
 node /es100[5-7]\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     if $::hostname =~ /^es100[67]/ {
         class { 'role::coredb::es2':
             mariadb => true,
@@ -912,6 +956,7 @@ node /es100[5-7]\.eqiad\.wmnet/ {
 }
 
 node /es10(0[89]|10)\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
     if $::hostname =~ /^es10(09|10)/ {
         class { 'role::coredb::es3':
             mariadb => true,
@@ -1179,6 +1224,7 @@ node 'iron.wikimedia.org' {
 
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
+    $cluster = 'mysql'
     class { 'role::db::labsdb':
         instances => {
             's1' => {
@@ -1196,6 +1242,7 @@ node 'labsdb1001.eqiad.wmnet' {
 }
 
 node 'labsdb1002.eqiad.wmnet' {
+    $cluster = 'mysql'
     class { 'role::db::labsdb':
         instances => {
             's2' => {
@@ -1239,6 +1286,7 @@ node 'labsdb1002.eqiad.wmnet' {
 }
 
 node 'labsdb1003.eqiad.wmnet' {
+    $cluster = 'mysql'
     class { 'role::db::labsdb':
         instances => {
             's3' => {
@@ -1382,7 +1430,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     if $::hostname =~ /^lvs100[25]$/ {
         $nameservers_prefix = [ '208.80.154.157', '208.80.154.50' ]
     }
-
+    $cluster = 'lvs'
     include role::lvs::balancer
 
     interface::add_ip6_mapped { 'main':
@@ -1508,7 +1556,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 #    if $::hostname =~ /^lvs300[13]$/ {
 #        $ganglia_aggregator = true
 #    }
-
+    $cluster = 'lvs'
     include role::lvs::balancer
 
     interface::add_ip6_mapped { 'main':
@@ -1542,6 +1590,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
+    $cluster = 'lvs'
     # lvs4001 and lvs4003 are in different racks
     if $::hostname =~ /^lvs400[13]$/ {
         $ganglia_aggregator = true
@@ -1601,6 +1650,7 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 }
 
 node /^rdb100[1-4]\.eqiad\.wmnet/ {
+    $cluster = 'redis'
     $ganglia_aggregator = true
 
     $redis_replication = {
@@ -1685,6 +1735,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 }
 
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
+    $cluster = 'swift'
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1698,6 +1749,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
+    $cluster = 'swift'
     $all_drives = [
         '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
@@ -1719,6 +1771,7 @@ node /^ms-fe300[1-2]\.esams\.wmnet$/ {
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
+    $cluster = 'swift'
     # 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
     $all_drives = [
         '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
@@ -1739,6 +1792,7 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
+    $cluster = 'jobrunner'
     if $::hostname =~ /^mw100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1755,6 +1809,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 
 # mw1017-1113 are apaches (precise)
 node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+    $cluster = 'appserver'
     if $::hostname =~ /^mw101[78]$/ {
         $ganglia_aggregator = true
     }
@@ -1774,6 +1829,7 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
 # mw1114-1148 are api apaches (precise)
 node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
+    $cluster = 'api_appserver'
     if $::hostname =~ /^mw111[45]$/ {
         $ganglia_aggregator = true
     }
@@ -1783,6 +1839,7 @@ node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
 
 # mw1149-1152 are bits apaches (precise)
 node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
+    $cluster = 'bits_appserver'
     if $::hostname =~ /^mw115[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1792,6 +1849,7 @@ node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
+    $cluster = 'imagescaler'
     if $::hostname =~ /^mw115[34]$/ {
         $ganglia_aggregator = true
     }
@@ -1801,7 +1859,7 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 
 # mw1161-1188 are apaches (precise)
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
-
+    $cluster = 'appserver'
     if $::hostname == 'mw1161' {
         include misc::deployment::scap_proxy
     }
@@ -1811,7 +1869,7 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 
 # mw1189-1208 are api apaches (precise)
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
-
+    $cluster = 'api_appserver'
     if $::hostname == 'mw1201' {
         include misc::deployment::scap_proxy
     }
@@ -1821,7 +1879,7 @@ node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
 
 # mw1209-1220 are apaches (precise)
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
-
+    $cluster = 'appserver'
     include role::applicationserver::appserver
 }
 
@@ -1996,7 +2054,7 @@ node 'palladium.eqiad.wmnet' {
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
-
+    $cluster = 'mysql'
     include role::db::core
     include mysql_wmf::mysqluser
     include mysql_wmf::datadirs
@@ -2067,6 +2125,7 @@ node 'sanger.wikimedia.org' {
 }
 
 node /^search100[0-6]\.eqiad\.wmnet/ {
+    $cluster = 'search'
     if $::hostname =~ /^search100(1|2)$/ {
         $ganglia_aggregator = true
     }
@@ -2075,42 +2134,42 @@ node /^search100[0-6]\.eqiad\.wmnet/ {
 }
 
 node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
-
+    $cluster = 'search'
     include role::lucene::front_end::pool2
 }
 
 node /^search101[1-4]\.eqiad\.wmnet/ {
-
+    $cluster = 'search'
     include role::lucene::front_end::pool3
 }
 
 node /^search101[56]\.eqiad\.wmnet/ {
-
+    $cluster = 'search'
     include role::lucene::front_end::pool4
 }
 
 node /^search10(19|20)\.eqiad\.wmnet/ {
-
+    $cluster = 'search'
     include role::lucene::front_end::pool5
 }
 
 node /^search101[78]\.eqiad\.wmnet/ {
-
+    $cluster = 'search'
     include role::lucene::front_end::prefix
 }
 
 node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
-
+    $cluster = 'search'
     include role::lucene::front_end::pool4
 }
 
 node /^search102[3-4]\.eqiad\.wmnet/ {
-
+    $cluster = 'search'
     include role::lucene::front_end::pool3
 }
 
 node /^searchidx100[0-2]\.eqiad\.wmnet/ {
-
+    $cluster = 'search'
     include role::lucene::indexer
 }
 
@@ -2178,6 +2237,7 @@ node 'sodium.wikimedia.org' {
 }
 
 node /ssl100[1-9]\.wikimedia\.org/ {
+    $cluster = 'ssl'
     if $::hostname =~ /^ssl100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -2190,6 +2250,7 @@ node /ssl100[1-9]\.wikimedia\.org/ {
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
+    $cluster = 'ssl'
     if $::hostname =~ /^ssl300[12]$/ {
         $ganglia_aggregator = true
     }
@@ -2498,6 +2559,7 @@ node 'tridge.wikimedia.org' {
 
 # tmh1001/tmh1002 video encoding server (precise only)
 node /^tmh100[1-2]\.eqiad\.wmnet/ {
+    $cluster = 'videoscaler'
     if $::hostname =~ /^tmh100[12]$/ {
         $ganglia_aggregator = true
     }
