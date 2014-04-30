@@ -10,6 +10,22 @@ class role::otrs {
     include webserver::apache
     include network::constants
 
+    ferm::service { 'otrs_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'otrs_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
+    ferm::service { 'otrs_smtp':
+        proto  => 'tcp',
+        port   => '25',
+        srange => '($INTERNAL)',
+    }
+
     generic::systemuser { 'otrs':
         name => 'otrs',
         home => '/var/lib/otrs',
