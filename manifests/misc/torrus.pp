@@ -14,7 +14,13 @@ class misc::torrus {
 			ensure => latest
 		}
 
-		@webserver::apache::module { ["perl", "rewrite"]: }
+		@webserver::apache::module { "perl": }
+		# This is an ugly ugly workaround to other classes also
+		# declaring a use of the rewrite module. Case in hand is librenms on
+		# netmon1001
+		if !defined(Webserver::Apache::Module['rewrite']) {
+			@webserver::apache::module { "rewrite": }
+		}
 		@webserver::apache::site { "torrus.wikimedia.org":
 			require => Webserver::Apache::Module[["perl", "rewrite"]],
 			docroot => "/var/www",
