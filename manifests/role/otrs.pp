@@ -6,9 +6,29 @@ class role::otrs {
 
     $nagios_group = "${cluster}_${::site}"
 
+    include base::firewall
     include standard-noexim
     include webserver::apache
     include network::constants
+
+    ferm::rule { 'ssh-private':
+        rule => 'proto tcp dport 22 { saddr $ALL_NETWORKS ACCEPT; }'
+    }
+    ferm::service { 'smtp-private':
+        proto => 'tcp',
+        rule => 'proto tcp dport 25 { saddr $ALL_NETWORKS ACCEPT; }'
+    }
+    ferm::service { 'http':
+        proto => 'tcp',
+        port  => '80',
+    }
+    ferm::service { 'https':
+        proto => 'tcp',
+        port  => '443',
+    }
+    ferm::rule { 'bacula_director':
+        rule => "proto tcp dport 9102 { saddr ${role::backup::config::director_ip} ACCEPT; }"
+    }
 
     generic::systemuser { 'otrs':
         name => 'otrs',
