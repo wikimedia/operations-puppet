@@ -1005,7 +1005,7 @@ class role::cache {
         }
 
         $storage_size_main = $::realm ? { 'labs' => 5, default => 300 }
-        
+
         if $cluster_tier == 1 {
             $director_retries = 2
         } else {
