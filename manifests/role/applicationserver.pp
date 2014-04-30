@@ -37,7 +37,7 @@ class role::applicationserver {
 #   - $group:
 #       Determines what logical group the host will be a
 #       part of. Used for ganglia. Possibilities are:
-#       appserver, api_appserver, bits_appserver, imagescaler, jobrunner
+#       appserver, api_appserver, bits_appserver, imagescaler, jobrunner, videoscaler
 #   - $lvs_pool:
 #       Determines lvsrealserver IP(s) that the host will receive.
 #       From lvs::configuration::$lvs_service_ips
