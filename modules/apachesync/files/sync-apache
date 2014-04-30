@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Synchronizing /home/wikipedia/conf/httpd to /usr/local/apache/conf..."
+echo "Synchronizing /srv/httpd to /usr/local/apache/conf..."
 
 # Options to pass to the rsync command
 RSYNC_OPTIONS="-a"
@@ -14,18 +14,18 @@ fi;
 
 #This sync works with both puppet and non-puppet hosts
 dsh -cM -g apaches -o-lroot -o-oSetupTimeout=30 -F30 -- "
-	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
+	rsync $RSYNC_OPTIONS 10.64.0.196::httpdconf /usr/local/apache/conf
 "
-# dont forget the image rending cluster
+# dont forget the image rendering cluster
 dsh -cM -g image_scalers -o-lroot -o-oSetupTimeout=30 -F30 -- "
-	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
+	rsync $RSYNC_OPTIONS 10.64.0.196::httpdconf /usr/local/apache/conf
 "
 # while we are at it, might as well do the snapshot boxen
 dsh -cM -g snapshot -o-lroot -o-oSetupTimeout=30 -F30 -- "
-	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
+	rsync $RSYNC_OPTIONS 10.64.0.196::httpdconf /usr/local/apache/conf
 "
 
 # decided we want search indexers too
 dsh -cM -g searchidx -o-lroot -o-oSetupTimeout=30 -F30 -- "
-	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
+	rsync $RSYNC_OPTIONS 10.64.0.196::httpdconf /usr/local/apache/conf
 "
