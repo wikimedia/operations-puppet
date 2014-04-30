@@ -57,7 +57,7 @@ class varnish::zero_update($site, $auth_src, $hour = '*', $minute = '*/5') {
         user    => 'netmap',
         command => $cmd,
         creates => "/var/netmapper/proxies.json",
-        require => File["/etc/netmapper/zerofetcher.auth"],
+        require => File["/etc/zerofetcher/zerofetcher.auth"],
     }
 
     cron { "zero_update":
@@ -65,6 +65,6 @@ class varnish::zero_update($site, $auth_src, $hour = '*', $minute = '*/5') {
         command => $cmd,
         hour    => $hour,
         minute  => $minute,
-        require => File["/etc/netmapper/zerofetcher.auth"],
+        require => File["/etc/zerofetcher/zerofetcher.auth"],
     }
 }
