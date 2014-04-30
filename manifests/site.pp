@@ -355,6 +355,8 @@ node 'carbon.wikimedia.org' {
 node 'caesium.eqiad.wmnet' {
     $cluster = 'misc'
 
+    class { 'base::firewall': }
+
     include standard
     include role::releases
 }
