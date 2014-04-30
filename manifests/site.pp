@@ -2626,6 +2626,8 @@ node /virt100[8-9].eqiad.wmnet/ {
 }
 
 node 'iodine.wikimedia.org' {
+    class { 'base::firewall': }
+
     include role::otrs
 
     interface::add_ip6_mapped { 'main':
