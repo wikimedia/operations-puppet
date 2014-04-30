@@ -1231,67 +1231,10 @@ node 'iridium.wikimedia.org' {
 }
 
 node 'manutius.wikimedia.org' {
-
-    $corerouters = [
-        'cr2-pmtpa.wikimedia.org',
-        'cr1-esams.wikimedia.org',
-        'cr2-knams.wikimedia.org',
-        'cr1-eqiad.wikimedia.org',
-        'cr2-eqiad.wikimedia.org',
-        'cr1-ulsfo.wikimedia.org',
-        'cr2-ulsfo.wikimedia.org',
-        'mr1-pmtpa.mgmt.pmtpa.wmnet',
-        'pfw1-eqiad.wikimedia.org'
-    ]
-
-    $accessswitches = [
-        'asw-d-pmtpa.mgmt.pmtpa.wmnet',
-        'asw-a-eqiad.mgmt.eqiad.wmnet',
-        'asw-b-eqiad.mgmt.eqiad.wmnet',
-        'asw-c-eqiad.mgmt.eqiad.wmnet',
-        'asw-d-eqiad.mgmt.eqiad.wmnet',
-        'asw2-a5-eqiad.mgmt.eqiad.wmnet',
-        'csw2-esams.wikimedia.org',
-        'psw1-eqiad.mgmt.eqiad.wmnet',
-        'msw1-eqiad.mgmt.eqiad.wmnet',
-        'msw2-pmtpa.mgmt.pmtpa.wmnet',
-    ]
-
-    $storagehosts = [
-        'nas1-a.pmtpa.wmnet',
-        'nas1-b.pmtpa.wmnet',
-        'nas1001-a.eqiad.wmnet',
-        'nas1001-b.eqiad.wmnet'
-    ]
-
     include admin
     include standard
     include webserver::apache
-    include misc::torrus
-    include misc::torrus::web
-    include misc::torrus::xml-generation::cdn
     include ganglia::collector
-    include passwords::network
-
-    $snmp_ro_community = $passwords::network::snmp_ro_community
-
-    misc::torrus::discovery::ddxfile { 'corerouters':
-        subtree        => '/Core_routers',
-        snmp_community => $snmp_ro_community,
-        hosts          => $corerouters,
-    }
-
-    misc::torrus::discovery::ddxfile { 'accessswitches':
-        subtree        => '/Access_switches',
-        snmp_community => $snmp_ro_community,
-        hosts          => $accessswitches,
-    }
-
-    misc::torrus::discovery::ddxfile { 'storage':
-        subtree        => '/Storage',
-        snmp_community => $snmp_ro_community,
-        hosts          => $storagehosts,
-    }
 
     class { 'ganglia_new::monitor::aggregator':
         sites => ['pmtpa', 'eqiad'],
