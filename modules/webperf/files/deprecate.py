@@ -32,5 +32,5 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 for meta in iter(zsock.recv_json, ''):
     if meta['schema'] == 'DeprecatedUsage':
         key = re.sub(r'\W+', '_', meta['event']['method'])
-        stat = 'mw.js.deprecate.%s:1|c' % key
+        stat = 'mw.js.deprecate.%s:1|m' % key
         sock.sendto(stat.encode('utf-8'), addr)
