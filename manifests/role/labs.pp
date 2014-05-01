@@ -23,8 +23,13 @@ class role::labs::instance {
         mode   => '0755',
     }
 
+    #is this heartbleed leftovers?
     package { 'libssl1.0.0':
         ensure => latest,
+    }
+
+    package { 'puppet-lint':
+        ensure => present,
     }
 
     $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc'
