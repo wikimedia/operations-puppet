@@ -53,7 +53,7 @@ join_cache_level = 8
 plugin-load = ha_tokudb
 tokudb_cache_size = <%= (Float(@memorysize.split[0]) * 0.50).round %>G
 
-slave-skip-start
+skip-slave-start
 slave_transaction_retries = 4294967295
 
 # Eventlogging from m2 master
