@@ -1522,6 +1522,16 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
         interface => 'eth0',
     }
 
+    include lvs::configuration
+    $ips = $lvs::configuration::subnet_ips
+
+    interface::tagged { 'eth0.100':
+        base_interface => 'eth0',
+        vlan_id        => '100',
+        address        => $ips['public1-esams'][$::hostname],
+        netmask        => '255.255.255.128',
+    }
+
     # Make sure GRO is off
     interface::offload { 'eth0 gro':
         interface => 'eth0',
