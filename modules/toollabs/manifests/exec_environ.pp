@@ -244,6 +244,7 @@ class toollabs::exec_environ {
         'phpunit',
         'poppler-utils',               # Bug #53869.
         'postgresql-client-9.1',
+        'puppet-lint',
         'pstoedit',                    # Bug 57000
         'pv',                          # Bug 57001
         'rrdtool',                     # Bug 57004
