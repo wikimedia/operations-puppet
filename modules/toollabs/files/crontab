@@ -144,19 +144,18 @@ my $crlino = 0;
 my $modified = 0;
 if(open NEW, "| /usr/bin/ssh tools-submit /usr/bin/crontab$dashu -") {
     foreach my $line (@crontab) {
-        if($line =~ m/^([^#]\S*\s+\S+\s+\S+\s+\S+\s+\S+\s+|\@\S+\s+)(\S+)([^#\n]*)(#.*)?\n?$/) {
+        if($line =~ m/^([^#]\S*\s+\S+\s+\S+\s+\S+\s+\S+\s+|\@\S+\s+)([^#\n]*)(#.*)?\n?$/) {
             $crlino++;
+            my($sched, $cmd, $cmt) = ($1, $2, $3);
             my $prefix = '';
-            if($cmd =~ m/^\s*(cd\s+\S+|\[[^]]*\])\s*\&\&\s*(.*)/) {
-                $prefix = "$1 && ";
-                $cmd = $2;
+            if($cmd =~ m/^\s*(cd\s+\S+|\[[^]]*\])\s*(\&\&|;)\s*(.*)/) {
+                $prefix = "$1 $2 ";
+                $cmd = $3;
             }
-            my($sched, $cmd, $args, $cmt) = ($1, $2, $3, $4);
-            unless($cmd =~ m[^(/usr/(local/)?bin/)?(jsub|jstart|jmail|qsub|jlocal)$]) {
-                $args = "$prefix$cmd $args";
-                $cmd = "/usr/bin/jsub -N cron-$uname-$crlino -once -quiet";
+            unless($cmd =~ m[^\s*(/usr/(local/)?bin/)?(jsub|jstart|jmail|qsub|jlocal)\s+]) {
+                $cmd = "$prefix/usr/bin/jsub -N cron-$uname-$crlino -once -quiet $cmd";
                 $modified = 1;
-                $line = "$sched $cmd $args";
+                $line = "$sched $cmd ";
                 $line .= $cmt if defined $cmt;
                 $line .= "\n";
             }
