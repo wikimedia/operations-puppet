@@ -61,7 +61,10 @@ class role::mariadb::tendril {
 }
 
 # MariaDB 10 delayed slaves replicating all shards
-class role::mariadb::dbstore {
+class role::mariadb::dbstore(
+    $lag_warn = 90000,
+    $lag_crit = 180000,
+    ) {
 
     $cluster = 'mysql'
 
@@ -85,6 +88,15 @@ class role::mariadb::dbstore {
 
     include mariadb::monitor_disk
     include mariadb::monitor_process
+
+    class { 'mariadb::monitor_replication': channel => 's1', lag_warn => $lag_warn, lag_crit => $lag_crit }
+    class { 'mariadb::monitor_replication': channel => 's2', lag_warn => $lag_warn, lag_crit => $lag_crit }
+    class { 'mariadb::monitor_replication': channel => 's3', lag_warn => $lag_warn, lag_crit => $lag_crit }
+    class { 'mariadb::monitor_replication': channel => 's4', lag_warn => $lag_warn, lag_crit => $lag_crit }
+    class { 'mariadb::monitor_replication': channel => 's5', lag_warn => $lag_warn, lag_crit => $lag_crit }
+    class { 'mariadb::monitor_replication': channel => 's6', lag_warn => $lag_warn, lag_crit => $lag_crit }
+    class { 'mariadb::monitor_replication': channel => 's7', lag_warn => $lag_warn, lag_crit => $lag_crit }
+    class { 'mariadb::monitor_replication': channel => 'm1', lag_warn => $lag_warn, lag_crit => $lag_crit }
 }
 
 # MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB
@@ -113,4 +125,7 @@ class role::mariadb::analytics {
 
     include mariadb::monitor_disk
     include mariadb::monitor_process
+
+    class { 'mariadb::monitor_replication': channel => 's1' }
+    class { 'mariadb::monitor_replication': channel => 'm1' }
 }
