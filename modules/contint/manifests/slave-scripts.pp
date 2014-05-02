@@ -1,7 +1,7 @@
 class contint::slave-scripts {
 
     if $::realm == 'production' {
-        fail("contint::slave-scripts must not be used in production. Slaves are already git-deploy deployment targets.")
+        fail("contint::slave-scripts must not be used in production. Slaves are already Trebuchet deployment targets.")
     }
 
     git::clone { 'jenkins CI slave scripts':
@@ -11,7 +11,7 @@ class contint::slave-scripts {
         recurse_submodules => true,
     }
 
-    # We can not git-deploy on labs, so use the good old git::clone
+    # We can not Trebuchet on labs, so use the good old git::clone
     git::clone { 'jenkins CI kss':
         ensure             => 'latest',
         directory          => '/srv/deployment/integration/kss',

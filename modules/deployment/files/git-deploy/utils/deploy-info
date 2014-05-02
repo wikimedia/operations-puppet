@@ -29,7 +29,7 @@ def main():
         if 'local' in pillar:
             pillar = pillar['local']
     except ValueError:
-        print "JSON data wasn't loaded from the pillar call. git-deploy can't configure itself. Exiting."
+        print "JSON data wasn't loaded from the pillar call. Trebuchet can't configure itself. Exiting."
         return None
     repos = serv.smembers('deploy:repos')
     if options.repo:

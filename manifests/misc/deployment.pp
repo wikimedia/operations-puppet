@@ -8,7 +8,6 @@ class misc::deployment {
 		misc::dsh
 }
 
-# Scripts common to both git-deploy and scap
 class misc::deployment::common_scripts {
 	require passwordscripts
 
@@ -307,18 +306,11 @@ class misc::deployment::l10nupdate {
 	}
 }
 
-class misc::deployment::vars ($system = 'scap') {
-	if $system == 'git-deploy' {
-		$mw_common = '/srv/deployment/mediawiki/common'
-		$mw_common_source = $mw_common
-		$dblist_common = '/srv/deployment/mediawiki/common/dblists'
-		$dblist_common_source = $dblist_common
-	} elsif $system == 'scap' {
-		$mw_common = '/usr/local/apache/common-local'
-		$mw_common_source = '/a/common'
-		$dblist_common = $mw_common
-		$dblist_common_source = $mw_common_source
-	}
+class misc::deployment::vars {
+	$mw_common = '/usr/local/apache/common-local'
+	$mw_common_source = '/a/common'
+	$dblist_common = $mw_common
+	$dblist_common_source = $mw_common_source
 
 	if $::realm == 'production' {
 		$mw_rsync_host = 'tin.eqiad.wmnet'
