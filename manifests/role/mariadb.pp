@@ -85,6 +85,15 @@ class role::mariadb::dbstore {
 
     include mariadb::monitor_disk
     include mariadb::monitor_process
+
+    include { 'mariadb::monitor_replication': channel => 's1' }
+    include { 'mariadb::monitor_replication': channel => 's2' }
+    include { 'mariadb::monitor_replication': channel => 's3' }
+    include { 'mariadb::monitor_replication': channel => 's4' }
+    include { 'mariadb::monitor_replication': channel => 's5' }
+    include { 'mariadb::monitor_replication': channel => 's6' }
+    include { 'mariadb::monitor_replication': channel => 's7' }
+    include { 'mariadb::monitor_replication': channel => 'm1' }
 }
 
 # MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB
@@ -113,4 +122,7 @@ class role::mariadb::analytics {
 
     include mariadb::monitor_disk
     include mariadb::monitor_process
+
+    include { 'mariadb::monitor_replication': channel => 's1' }
+    include { 'mariadb::monitor_replication': channel => 'm1' }
 }
