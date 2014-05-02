@@ -19,3 +19,6 @@
 [submodule "modules/kafkatee"]
 	path = modules/kafkatee
 	url = https://gerrit.wikimedia.org/r/operations/puppet/kafkatee
+[submodule "modules/varnish"]
+	path = modules/varnish
+	url = https://gerrit.wikimedia.org/r/operations/puppet/varnish
