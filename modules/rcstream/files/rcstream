@@ -1,0 +1,111 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  RCStream: Broadcast MediaWiki recent changes over WebSockets
+
+  Usage: rcstream SERVER_ADDRESS REDIS_URL
+
+    SERVER_ADDRESS  Server address (as host:port)
+    REDIS_URL       URL of Redis server.
+
+  See <https://wikitech.wikimedia.org/wiki/rcstream> for more.
+
+"""
+from gevent import monkey; monkey.patch_all()
+
+import argparse
+import json
+import sys
+
+import gevent
+import redis
+import socketio
+import socketio.namespace
+import socketio.server
+
+
+queue = gevent.queue.Channel()
+
+
+class WikiNamespace(socketio.namespace.BaseNamespace):
+
+    MAX_SUBSCRIPTIONS = 10
+
+    def __init__(self, *args, **kwargs):
+        super(WikiNamespace, self).__init__(*args, **kwargs)
+        self.session['wikis'] = set()
+
+    def on_subscribe(self, wikis):
+        if not isinstance(wikis, list):
+           wikis = [wikis]
+        subscriptions = self.session['wikis']
+        for wiki in wikis:
+            if not isinstance(wiki, basestring):
+                continue
+            if wiki in subscriptions:
+                continue
+            if len(subscriptions) >= self.MAX_SUBSCRIPTIONS:
+                return self.error('subscribe_error', 'Too many subscriptions')
+            subscriptions.add(wiki)
+
+    def on_unsubscribe(self, wikis):
+        if not isinstance(wikis, list):
+           wikis = [wikis]
+        subscriptions = self.session['wikis']
+        for wiki in wikis:
+            if not isinstance(wiki, basestring):
+                continue
+            subscriptions.discard(wiki)
+
+
+def parse_address(addr):
+    host, port = addr.split(':')
+    return host, int(port)
+
+
+def app(environ, start_response):
+    namespaces = {'/rc': WikiNamespace}
+    socketio.socketio_manage(environ, namespaces)
+
+
+def subscribe_changes(conn):
+    pubsub = conn.pubsub()
+    pubsub.psubscribe('rc.*')
+    for message in pubsub.listen():
+        if message['type'] == 'pmessage':
+            data = json.loads(message['data'])
+            queue.put(data)
+
+
+def broadcast_changes(server):
+    for change in queue:
+        wiki = change['wiki']
+        event = dict(type='event', name='change', args=change, endpoint='/rc')
+        for client in server.sockets.values():
+            if wiki in client.session.get('wikis', ()):
+                client.send_packet(event)
+
+
+arg_parser = argparse.ArgumentParser(
+    description='Broadcast MediaWiki recent changes over WebSockets',
+    epilog='See <https://wikitech.wikimedia.org/wiki/rcstream> for more.',
+    fromfile_prefix_chars='@',
+)
+arg_parser.add_argument('server', help='Server address (host:port)',
+                        type=parse_address)
+arg_parser.add_argument('redis', help='URL of Redis instance')
+args = arg_parser.parse_args()
+
+conn = redis.StrictRedis.from_url(args.redis)
+server = socketio.server.SocketIOServer(args.server, app, policy_server=False)
+
+greenlets = (
+    gevent.Greenlet(subscribe_changes, conn),
+    gevent.Greenlet(broadcast_changes, server),
+)
+
+for greenlet in greenlets:
+    greenlet.link_exception(sys.exit)
+    greenlet.start()
+
+server.serve_forever()
