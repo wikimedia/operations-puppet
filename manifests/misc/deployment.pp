@@ -3,7 +3,7 @@
 # deployment hosts
 
 class misc::deployment {
-	system::role { "misc::deployment": description => "Deployment host" }
+	system::role { 'misc::deployment': description => 'Deployment host' }
 	include misc::deployment::scap_primary,
 		misc::dsh
 }
@@ -12,138 +12,130 @@ class misc::deployment {
 class misc::deployment::common_scripts {
 	require passwordscripts
 
-	# scap requires sync-common, which is in the wikimedia-task-appserver package
-	require mediawiki
-
-	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
-	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?
-
-	package { ["php5-parsekit", "libwww-perl", "libnet-dns-perl"]:
+	package { ['php5-parsekit', 'libwww-perl', 'libnet-dns-perl']:
 		 ensure => present;
 	}
 
-	$scriptpath = "/usr/local/bin"
-
 	file {
-		"${scriptpath}/clear-profile":
+		'/usr/local/bin/clear-profile':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/clear-profile";
-		"${scriptpath}/configchange":
+			source => 'puppet:///files/misc/scripts/clear-profile';
+		'/usr/local/bin/configchange':
 			ensure => absent;
-		"${scriptpath}/dologmsg":
+		'/usr/local/bin/dologmsg':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/dologmsg";
-		"${scriptpath}/mwgrep":
+			source => 'puppet:///files/misc/scripts/dologmsg';
+		'/usr/local/bin/mwgrep':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/mwgrep";
-		"${scriptpath}/deploy2graphite":
+			source => 'puppet:///files/misc/scripts/mwgrep';
+		'/usr/local/bin/deploy2graphite':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/deploy2graphite";
-		"${scriptpath}/fatalmonitor":
+			source => 'puppet:///files/misc/scripts/deploy2graphite';
+		'/usr/local/bin/fatalmonitor':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/fatalmonitor";
-		"${scriptpath}/foreachwiki":
+			source => 'puppet:///files/misc/scripts/fatalmonitor';
+		'/usr/local/bin/foreachwiki':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/foreachwiki";
-		"${scriptpath}/foreachwikiindblist":
+			source => 'puppet:///files/misc/scripts/foreachwiki';
+		'/usr/local/bin/foreachwikiindblist':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/foreachwikiindblist";
-		"${scriptpath}/lint":
-			owner => root,
-			group => root,
-			mode => 0555,
-			require => Package[ 'php5-parsekit' ], # bug 37076
-			source => "puppet:///files/misc/scripts/lint";
-		"${scriptpath}/lint.php":
+			source => 'puppet:///files/misc/scripts/foreachwikiindblist';
+		'/usr/local/bin/lint':
 			owner => root,
 			group => root,
 			mode => 0555,
 			require => Package[ 'php5-parsekit' ], # bug 37076
-			source => "puppet:///files/misc/scripts/lint.php";
-		"${scriptpath}/mwscript":
+			source => 'puppet:///files/misc/scripts/lint';
+		'/usr/local/bin/lint.php':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/mwscript";
-		"${scriptpath}/mwscriptwikiset":
+			require => Package[ 'php5-parsekit' ], # bug 37076
+			source => 'puppet:///files/misc/scripts/lint.php';
+		'/usr/local/bin/mwscript':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/mwscriptwikiset";
-		"${scriptpath}/notifyNewProjects":
+			source => 'puppet:///files/misc/scripts/mwscript';
+		'/usr/local/bin/mwscriptwikiset':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/notifyNewProjects";
-		"${scriptpath}/purge-varnish":
+			source => 'puppet:///files/misc/scripts/mwscriptwikiset';
+		'/usr/local/bin/notifyNewProjects':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/purge-varnish";
-		"${scriptpath}/refreshWikiversionsCDB":
+			source => 'puppet:///files/misc/scripts/notifyNewProjects';
+		'/usr/local/bin/purge-varnish':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/refreshWikiversionsCDB";
-		"${scriptpath}/reset-mysql-slave":
+			source => 'puppet:///files/misc/scripts/purge-varnish';
+		'/usr/local/bin/refreshWikiversionsCDB':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/reset-mysql-slave";
-		"${scriptpath}/set-group-write":
+			source => 'puppet:///files/misc/scripts/refreshWikiversionsCDB';
+		'/usr/local/bin/reset-mysql-slave':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/set-group-write";
-		"${scriptpath}/sql":
+			source => 'puppet:///files/misc/scripts/reset-mysql-slave';
+		'/usr/local/bin/set-group-write':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sql";
-		"${scriptpath}/sqldump":
+			source => 'puppet:///files/misc/scripts/set-group-write';
+		'/usr/local/bin/sql':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sqldump";
-		"${scriptpath}/udprec":
+			source => 'puppet:///files/misc/scripts/sql';
+		'/usr/local/bin/sqldump':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/udprec";
-		"/usr/local/sbin/set-group-write2":
+			source => 'puppet:///files/misc/scripts/sqldump';
+		'/usr/local/bin/udprec':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/set-group-write2";
-		"${scriptpath}/updateinterwikicache":
+			source => 'puppet:///files/misc/scripts/udprec';
+		'/usr/local/sbin/set-group-write2':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/updateinterwikicache";
+			source => 'puppet:///files/misc/scripts/set-group-write2';
+		'/usr/local/bin/updateinterwikicache':
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => 'puppet:///files/misc/scripts/updateinterwikicache';
 
 		# Manpages
 		# Need to be generated manually using make in files/misc/scripts
-		"/usr/local/share/man/man1":
+		'/usr/local/share/man/man1':
 			ensure => 'directory',
 			recurse => true,
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/misc/scripts/man";
+			source => 'puppet:///files/misc/scripts/man';
 	}
 }
 
@@ -152,42 +144,40 @@ class misc::deployment::scap_scripts {
 	include misc::deployment::common_scripts
 	include misc::deployment::vars
 
-	$scriptpath = "/usr/local/bin"
-
 	file {
-		"${scriptpath}/compile-wikiversions":
+		'/usr/local/bin/compile-wikiversions':
 			ensure => link,
-			target => "/srv/scap/bin/compile-wikiversions";
-		"${scriptpath}/mw-update-l10n":
+			target => '/srv/scap/bin/compile-wikiversions';
+		'/usr/local/bin/mw-update-l10n':
 			ensure => link,
-			target => "/srv/scap/bin/mw-update-l10n";
-		"${scriptpath}/restart-twemproxy":
+			target => '/srv/scap/bin/mw-update-l10n';
+		'/usr/local/bin/restart-twemproxy':
 			ensure => link,
-			target => "/srv/scap/bin/restart-twemproxy";
-		"${scriptpath}/scap":
+			target => '/srv/scap/bin/restart-twemproxy';
+		'/usr/local/bin/scap':
 			ensure => link,
-			target => "/srv/scap/bin/scap";
-		"${scriptpath}/scap-purge-l10n-cache":
+			target => '/srv/scap/bin/scap';
+		'/usr/local/bin/scap-purge-l10n-cache':
 			ensure => link,
-			target => "/srv/scap/bin/scap-purge-l10n-cache";
-		"${scriptpath}/sync-common-file":
+			target => '/srv/scap/bin/scap-purge-l10n-cache';
+		'/usr/local/bin/sync-common-file':
 			ensure => link,
-			target => "/srv/scap/bin/sync-common-file";
-		"${scriptpath}/sync-dblist":
+			target => '/srv/scap/bin/sync-common-file';
+		'/usr/local/bin/sync-dblist':
 			ensure => link,
-			target => "/srv/scap/bin/sync-dblist";
-		"${scriptpath}/sync-dir":
+			target => '/srv/scap/bin/sync-dblist';
+		'/usr/local/bin/sync-dir':
 			ensure => link,
-			target => "/srv/scap/bin/sync-dir";
-		"${scriptpath}/sync-docroot":
+			target => '/srv/scap/bin/sync-dir';
+		'/usr/local/bin/sync-docroot':
 			ensure => link,
-			target => "/srv/scap/bin/sync-docroot";
-		"${scriptpath}/sync-file":
+			target => '/srv/scap/bin/sync-docroot';
+		'/usr/local/bin/sync-file':
 			ensure => link,
-			target => "/srv/scap/bin/sync-file";
-		"${scriptpath}/sync-wikiversions":
+			target => '/srv/scap/bin/sync-file';
+		'/usr/local/bin/sync-wikiversions':
 			ensure => link,
-			target => "/srv/scap/bin/sync-wikiversions";
+			target => '/srv/scap/bin/sync-wikiversions';
 	}
 }
 
@@ -203,50 +193,48 @@ class misc::deployment::passwordscripts {
 	$wikiuser_pass_nagios = $passwords::misc::scripts::wikiuser_pass_nagios
 	$wikiuser_pass_real = $passwords::misc::scripts::wikiuser_pass_real
 
-	$scriptpath = "/usr/local/bin"
-
 	file {
-		"${scriptpath}/cachemgr_pass":
+		'/usr/local/bin/cachemgr_pass':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("misc/passwordScripts/cachemgr_pass.erb");
-		"${scriptpath}/mysql_root_pass":
+			content => template('misc/passwordScripts/cachemgr_pass.erb');
+		'/usr/local/bin/mysql_root_pass':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/mysql_root_pass.erb");
-		"${scriptpath}/nagios_sql_pass":
+		'/usr/local/bin/nagios_sql_pass':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/nagios_sql_pass.erb");
-		"${scriptpath}/webshop_pass":
+		'/usr/local/bin/webshop_pass':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/webshop_pass.erb");
-		"${scriptpath}/wikiadmin_pass":
+		'/usr/local/bin/wikiadmin_pass':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/wikiadmin_pass.erb");
-		"${scriptpath}/wikiuser2_pass":
+		'/usr/local/bin/wikiuser2_pass':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/wikiuser2_pass.erb");
-		"${scriptpath}/wikiuser_pass":
+		'/usr/local/bin/wikiuser_pass':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("misc/passwordScripts/wikiuser_pass.erb");
-		"${scriptpath}/wikiuser_pass_nagios":
+			content => template('misc/passwordScripts/wikiuser_pass.erb');
+		'/usr/local/bin/wikiuser_pass_nagios':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/wikiuser_pass_nagios.erb");
-		"${scriptpath}/wikiuser_pass_real":
+		'/usr/local/bin/wikiuser_pass_real':
 			owner => root,
 			group => wikidev,
 			mode => 0550,
@@ -257,10 +245,8 @@ class misc::deployment::passwordscripts {
 class misc::deployment::l10nupdate {
 	require misc::deployment::scap_scripts
 
-	$scriptpath = "/usr/local/bin"
-
 	cron { 'l10nupdate':
-		command => "${scriptpath}/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1",
+		command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
 		user => 'l10nupdate',
 		hour => 2,
 		minute => 0,
@@ -268,69 +254,68 @@ class misc::deployment::l10nupdate {
 	}
 
 	file {
-		"${scriptpath}/l10nupdate":
+		'/usr/local/bin/l10nupdate':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/l10nupdate";
-		"${scriptpath}/l10nupdate-1":
+			source => 'puppet:///files/misc/l10nupdate/l10nupdate';
+		'/usr/local/bin/l10nupdate-1':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/l10nupdate-1";
-		"${scriptpath}/sync-l10nupdate":
+			source => 'puppet:///files/misc/l10nupdate/l10nupdate-1';
+		'/usr/local/bin/sync-l10nupdate':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate";
-		"${scriptpath}/sync-l10nupdate-1":
+			source => 'puppet:///files/misc/l10nupdate/sync-l10nupdate';
+		'/usr/local/bin/sync-l10nupdate-1':
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate-1";
+			source => 'puppet:///files/misc/l10nupdate/sync-l10nupdate-1';
 		# add ssh keypair for l10nupdate user from fenari for RT-5187
-		"/home/l10nupdate/.ssh/id_rsa":
+		'/home/l10nupdate/.ssh/id_rsa':
 			owner => l10nupdate,
 			group => l10nupdate,
 			mode => 0400,
-			source => "puppet:///private/ssh/tin/l10nupdate/id_rsa";
-		"/home/l10nupdate/.ssh/id_rsa.pub":
+			source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa';
+		'/home/l10nupdate/.ssh/id_rsa.pub':
 			owner => l10nupdate,
 			group => l10nupdate,
 			mode => 0444,
-			source => "puppet:///private/ssh/tin/l10nupdate/id_rsa.pub";
+			source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa.pub';
 	}
 
 	# Make sure the log directory exists and has adequate permissions.
 	# It's called l10nupdatelog because /var/log/l10nupdate was used
 	# previously so it'll be an existing file on some systems.
 	# Also create the dir for the SVN checkouts, and set up log rotation
-	file {
-		"/var/log/l10nupdatelog":
+	file { '/var/log/l10nupdatelog':
 			owner => 'l10nupdate',
 			group => 'wikidev',
 			mode => 0664,
 			ensure => directory;
-		"/var/lib/l10nupdate":
+		'/var/lib/l10nupdate':
 			owner => 'l10nupdate',
 			group => 'wikidev',
 			mode => 0755,
 			ensure => directory;
-		"/etc/logrotate.d/l10nupdate":
-			source => "puppet:///files/logrotate/l10nupdate",
+		'/etc/logrotate.d/l10nupdate':
+			source => 'puppet:///files/logrotate/l10nupdate',
 			mode => 0444;
 	}
 }
 
 class misc::deployment::vars ($system = 'scap') {
-	if $system == "git-deploy" {
-		$mw_common = "/srv/deployment/mediawiki/common"
+	if $system == 'git-deploy' {
+		$mw_common = '/srv/deployment/mediawiki/common'
 		$mw_common_source = $mw_common
-		$dblist_common = "/srv/deployment/mediawiki/common/dblists"
+		$dblist_common = '/srv/deployment/mediawiki/common/dblists'
 		$dblist_common_source = $dblist_common
-	} elsif $system == "scap" {
+	} elsif $system == 'scap' {
 		$mw_common = '/usr/local/apache/common-local'
-		$mw_common_source = "/a/common"
+		$mw_common_source = '/a/common'
 		$dblist_common = $mw_common
 		$dblist_common_source = $mw_common_source
 	}
@@ -355,48 +340,47 @@ class misc::deployment::vars ($system = 'scap') {
 		$mw_statsd_host = "deployment-graphite.${::site}.wmflabs"
 		$mw_statsd_port = 8125
 
-        # The Apache directories must belong to the mwdeploy user known on
-        # deployment-bastion.{eqiad,pmtpa}.wmflabs. They are the instances used
-        # by Jenkins to deploy and updte the code.
-        # Since /data/project is shared and 'mwdeploy' can have a different uid
-        # on each instance, running owner => mwdeploy would change the UID and
-        # break Jenkins job with some permission denied.
-        # See also bug 58325
-        if ( $::instancename == 'deployment-bastion' ) {
-            file { '/data/project/apache':
-                ensure => directory,
-                owner  => mwdeploy,
-                group  => mwdeploy,
-                mode   => '0775',
-            }
+		# The Apache directories must belong to the mwdeploy user known on
+		# deployment-bastion.{eqiad,pmtpa}.wmflabs. They are the instances used
+		# by Jenkins to deploy and updte the code.
+		# Since /data/project is shared and 'mwdeploy' can have a different uid
+		# on each instance, running owner => mwdeploy would change the UID and
+		# break Jenkins job with some permission denied.
+		# See also bug 58325
+		if ( $::instancename == 'deployment-bastion' ) {
+			file { '/data/project/apache':
+				ensure => directory,
+				owner  => mwdeploy,
+				group  => mwdeploy,
+				mode   => '0775',
+			}
 
-            file { '/data/project/apache/common-local':
-                ensure => directory,
-                owner  => mwdeploy,
-                group  => mwdeploy,
-                mode   => '0775',
-            }
+			file { '/data/project/apache/common-local':
+				ensure => directory,
+				owner  => mwdeploy,
+				group  => mwdeploy,
+				mode   => '0775',
+			}
 
-            file { '/a':
-                ensure => directory,
-                owner  => root,
-                group  => root,
-                mode   => '0775',
-            }
+			file { '/a':
+				ensure => directory,
+				owner  => root,
+				group  => root,
+				mode   => '0775',
+			}
 
-            file { $mw_common_source:
-                ensure => link,
-                target => $::beta::config::scap_stage_dir,
-            }
-        }
+			file { $mw_common_source:
+				ensure => link,
+				target => $::beta::config::scap_stage_dir,
+			}
+		}
 	}
 
-	file {
-		"/usr/local/lib/mw-deployment-vars.sh":
+	file { '/usr/local/lib/mw-deployment-vars.sh':
 			owner => root,
 			group => root,
 			mode => 0444,
-			content => template("misc/mw-deployment-vars.erb");
+			content => template('misc/mw-deployment-vars.erb');
 	}
 }
 
@@ -404,22 +388,20 @@ class misc::deployment::scap_primary {
 	include rsync::server
 	include network::constants
 
-	rsync::server::module {
-		'common':
-			path        => '/a/common',
-			read_only   => 'true',
-			hosts_allow => $::network::constants::mw_appserver_networks;
-    }
+	rsync::server::module { 'common':
+		path        => '/a/common',
+		read_only   => 'true',
+		hosts_allow => $::network::constants::mw_appserver_networks;
+	}
 }
 
 class misc::deployment::scap_proxy {
 	include rsync::server
 	include network::constants
 
-	rsync::server::module {
-		'common':
-			path        => '/usr/local/apache/common-local',
-			read_only   => 'true',
-			hosts_allow => $::network::constants::mw_appserver_networks;
+	rsync::server::module { 'common':
+		path        => '/usr/local/apache/common-local',
+		read_only   => 'true',
+		hosts_allow => $::network::constants::mw_appserver_networks;
 	}
 }
