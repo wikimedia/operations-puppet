@@ -65,6 +65,7 @@ define create_chained_cert(
         owner   => $user,
         group   => $group,
         require => Exec["${name}_create_chained_cert"],
+        subscribe => File["/etc/ssl/cert/${certname}"],
     }
 }
 
