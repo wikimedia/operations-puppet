@@ -346,7 +346,7 @@ class role::ci::slave::labs {
 
 
     include role::ci::slave::labs::common,
-        # git-deploy replacement on labs
+        # Trebuchet replacement on labs
         contint::slave-scripts,
         # Include package unsafe for production
         contint::packages::labs
