@@ -61,7 +61,7 @@ class misc::blogs::wikimedia {
             'connect_timeout' => '5s',
             'first_byte_timeout' => '35s',
             'between_bytes_timeout' => '4s',
-            'max_connections' => 100,
+            'max_connections' => 256,
             'probe' => 'blog',
         },
     }

@@ -41,7 +41,6 @@ acl wikimedia_nets {
 }
 <% end -%>
 
-<% if ! @vcl_config.fetch("ssl_proxies", []).empty? -%>
 acl ssl_proxies {
 <% @vcl_config.fetch("ssl_proxies", []).each do |entry|
 	subnet, mask = entry.split("/", 2)
@@ -49,7 +48,6 @@ acl ssl_proxies {
 	"<%= subnet %>"/<%= mask %>;
 <% end -%>
 }
-<% end -%>
 
 # Backend probes
 
