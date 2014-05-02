@@ -1,0 +1,57 @@
+Changes
+-------
+
+This module contains a simple and self-contained software stack for streaming
+recent changes from a MediaWiki instance. It subscribe to the 'changes' topic
+of a Redis server and forwards incoming messages to web clients via socket.io,
+a convenience layer over the WebSockets protocol. Each server instance is
+implemented in Python. Nginx serves as a load-balancer and reverse proxy.
+
+To use this module, you must first configure MediaWiki to publish recent
+changes to a Redis instance:
+
+    $wgRCFeeds['redis'] = array(
+         'formatter' => 'JSONRCFeedFormatter',
+         'uri'       => 'redis://127.0.0.1:6379/changes',
+    );
+
+The following example shows how to configure Nginx to reverse-proxy three
+Changes server instances, running locally on ports 10080-10082:
+
+    $backends = [ 10080, 10081, 10082 ]
+
+    class { '::changes':
+      iface => '127.0.0.1',
+      ports => $backends,
+    }
+
+    class { '::changes::proxy':
+      backends => $backends,
+    }
+
+
+To utilize the edit stream in the context of a web application, you will need
+to load socket.io's JavaScript library and subscribe to the stream. For example:
+
+  <html>
+    <meta charset="utf-8">
+    <script src="static/socket.io.js"></script>
+    <script>
+      var socket = io.connect( 'live.wikimedia.org/changes' );
+
+      socket.on( 'connect', function () {
+          // Subscribe to changes on the Bulgarian Wikipedia and Meta-Wiki
+          socket.emit( 'subscribe', [ 'bgwiki', 'metawiki' ] );
+      } );
+
+      socket.on( 'change', function ( change ) {
+         console.log( 'title: ' + change.title );
+      } );
+    </script>
+  </html>
+
+socket.io may be obtained from <http://socket.io/>.
+
+TODOs:
+* SSL support (see <http://siriux.net/2013/06/nginx-and-websockets/>).
+* Configure Nginx to serve static assets.

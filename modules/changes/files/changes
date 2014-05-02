@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  Changes
+
+  Subscribes to 'changes' events in Redis and serves them via WebSockets.
+
+  Usage: changestream SERVER_ADDRESS REDIS_ADDRESS
+
+    SERVER_ADDRESS  interface:port to listen on.
+    REDIS_ADDRESS   host:port of Redis server.
+
+"""
+from gevent import monkey; monkey.patch_all()
+
+import argparse
+import json
+import socket
+import sys
+
+import gevent
+import redis
+import socketio
+import socketio.namespace
+import socketio.server
+
+
+queue = gevent.queue.Channel()
+base_event = dict(type='event', name='change', endpoint='/changes')
+
+
+class WikiNamespace(socketio.namespace.BaseNamespace):
+    def __init__(self, *args, **kwargs):
+        super(WikiNamespace, self).__init__(*args, **kwargs)
+        self.session['wikis'] = set()
+
+    def on_subscribe(self, wikis):
+        if not isinstance(wikis, list):
+            wikis = [wikis]
+        self.session['wikis'].update(wikis)
+
+    def on_unsubscribe(self, wikis):
+        if not isinstance(wikis, list):
+            wikis = [wikis]
+        self.session['wikis'].difference_update(wikis)
+
+
+def parse_address(addr):
+    host, port = addr.split(':')
+    return host, int(port)
+
+
+def app(environ, start_response):
+    namespaces = {'/changes': WikiNamespace}
+    socketio.socketio_manage(environ, namespaces)
+
+
+def subscribe_changes(conn):
+    pubsub = conn.pubsub()
+    pubsub.psubscribe('changes.*')
+    for message in pubsub.listen():
+        if message['type'] == 'pmessage':
+            change = json.loads(message['data'])
+            queue.put(change)
+
+
+def broadcast_changes(server):
+    for change in queue:
+        wiki = change['wiki']
+        event = dict(base_event, args=change)
+        for client in server.sockets.values():
+            if wiki in client.session.get('wikis', ()):
+                client.send_packet(event)
+
+
+arg_parser = argparse.ArgumentParser()
+arg_parser.add_argument('server', type=parse_address)
+arg_parser.add_argument('redis', type=parse_address)
+args = arg_parser.parse_args()
+
+conn = redis.StrictRedis(*args.redis)
+server = socketio.server.SocketIOServer(args.server, app, policy_server=False)
+
+greenlets = (
+    gevent.Greenlet(subscribe_changes, conn),
+    gevent.Greenlet(broadcast_changes, server),
+)
+
+for greenlet in greenlets:
+    greenlet.link_exception(sys.exit)
+    greenlet.start()
+
+server.serve_forever()
