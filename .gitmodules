@@ -19,3 +19,6 @@
 [submodule "modules/kafkatee"]
 	path = modules/kafkatee
 	url = https://gerrit.wikimedia.org/r/operations/puppet/kafkatee
+[submodule "modules/mariadb"]
+	path = modules/mariadb
+	url = https://gerrit.wikimedia.org/r/operations/puppet/mariadb
