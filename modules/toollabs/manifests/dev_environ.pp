@@ -30,7 +30,6 @@ class toollabs::dev_environ {
         'emacs',
         'fakeroot', # for dpkg
         'gcj-jdk',                     # Bug 56995
-        'git-review',                  # Bug 62871.
         'ipython',                     # Bug 56995
         'joe',                         # Bug 62236.
         'libboost-python1.48-dev',

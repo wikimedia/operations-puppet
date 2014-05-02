@@ -207,6 +207,7 @@ class toollabs::exec_environ {
         'doxygen-latex',               # Bug 56326
         'fabric',                      # Bug #54135.
         'git',
+        'git-review',                  # Bug 62871.
         'gnuplot-nox',
         'graphicsmagick',              # Bug 56995
         'graphviz',
