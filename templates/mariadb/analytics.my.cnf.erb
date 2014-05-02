@@ -38,6 +38,10 @@ character_set_server     = binary
 character_set_filesystem = binary
 collation_server         = binary
 
+# Analysts love creating temporary tables
+default_storage_engine = Aria
+aria_pagecache_buffer_size = 1G
+
 transaction-isolation          = READ-COMMITTED
 innodb_file_per_table          = 1
 innodb_buffer_pool_size        = 4G
@@ -45,7 +49,6 @@ innodb_log_file_size           = 2G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
 innodb_locks_unsafe_for_binlog = 1
-aria_pagecache_buffer_size     = 1G
 
 optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8
