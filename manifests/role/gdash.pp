@@ -31,8 +31,9 @@ class role::gdash {
         notify => Service['httpd'],
     }
 
+    # We're on the backend, no https here.
     monitor_service { 'gdash':
         description   => 'gdash.wikimedia.org',
-        check_command => 'check_https_url!gdash.wikimedia.org!/',
+        check_command => 'check_http_url!gdash.wikimedia.org!/',
     }
 }

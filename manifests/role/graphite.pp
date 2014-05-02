@@ -222,9 +222,10 @@ class role::graphite {
         nrpe_command => '/sbin/carbonctl check',
     }
 
+    # This check goes to the backend, which is http.
     monitor_service { 'graphite':
         description   => 'graphite.wikimedia.org',
-        check_command => 'check_https_url!graphite.wikimedia.org!/',
+        check_command => 'check_http_url!graphite.wikimedia.org!/',
     }
 
 }
