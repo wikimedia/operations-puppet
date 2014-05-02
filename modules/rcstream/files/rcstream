@@ -1,0 +1,143 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  RCStream: Broadcast MediaWiki recent changes over WebSockets
+
+  Usage: rcstream SERVER_ADDRESS REDIS_URL
+
+    SERVER_ADDRESS  Server address (as host:port)
+    REDIS_URL       URL of Redis server.
+
+  See <https://wikitech.wikimedia.org/wiki/rcstream> for more.
+
+"""
+from gevent import monkey
+monkey.patch_all()
+
+import argparse
+import json
+import sys
+import logging
+
+import gevent
+import redis
+import socketio
+import socketio.namespace
+import socketio.server
+
+log = logging.getLogger('rcstream')
+
+queue = gevent.queue.Channel()
+base_event = dict(type='event', name='change', endpoint='/rc')
+
+
+class WikiNamespace(socketio.namespace.BaseNamespace):
+
+    MAX_SUBSCRIPTIONS = 100
+
+    def __init__(self, *args, **kwargs):
+        super(WikiNamespace, self).__init__(*args, **kwargs)
+        self.session['wikis'] = set()
+
+    def on_subscribe(self, wikis):
+        if not isinstance(wikis, list):
+            wikis = [wikis]
+        subscriptions = self.session['wikis']
+        for wiki in wikis:
+            if not isinstance(wiki, basestring):
+                continue
+            if wiki in subscriptions:
+                continue
+            if len(subscriptions) >= self.MAX_SUBSCRIPTIONS:
+                log.warn('Client with IP %s has reached the connections limit', self.environ.get('REMOTE_ADDR'))
+                return self.error('subscribe_error', 'Too many subscriptions')
+            subscriptions.add(wiki)
+
+    def on_unsubscribe(self, wikis):
+        if not isinstance(wikis, list):
+            wikis = [wikis]
+        subscriptions = self.session['wikis']
+        for wiki in wikis:
+            if not isinstance(wiki, basestring):
+                continue
+            subscriptions.discard(wiki)
+
+
+def parse_address(addr):
+    host, port = addr.split(':')
+    return host, int(port)
+
+
+def app(environ, start_response):
+    namespaces = {'/rc': WikiNamespace}
+    socketio.socketio_manage(environ, namespaces)
+
+
+def subscribe_changes(conn):
+    pubsub = conn.pubsub()
+    pubsub.psubscribe('rc.*')
+    for message in pubsub.listen():
+        if message['type'] == 'pmessage':
+            log.debug('Message received')
+            data = json.loads(message['data'])
+            queue.put(data)
+
+
+def broadcast_changes(server):
+    for change in queue:
+        wiki = change['wiki']
+        log.debug('Received change for wiki %s' % wiki)
+        event = dict(base_event, args=(change,))
+        for client in server.sockets.values():
+            subscriptions = client.session.get('wikis', ())
+            if '*' in subscriptions or wiki in subscriptions:
+                client.send_packet(event)
+
+def handle_exit(arg):
+    for greenlet in greenlets:
+        if greenlet.exception is not None:
+            log.error(
+                'rcstream is exiting because of an exception in greenlet %s',
+                str(greenlet)
+            )
+            log.error(str(greenlet.exception))
+            break
+    sys.exit(1)
+
+arg_parser = argparse.ArgumentParser(
+    description='Broadcast MediaWiki recent changes over WebSockets',
+    epilog='See <https://wikitech.wikimedia.org/wiki/rcstream> for more.',
+    fromfile_prefix_chars='@',
+)
+arg_parser.add_argument('server', help='Server address (host:port)',
+                        type=parse_address)
+arg_parser.add_argument('redis', help='URL of Redis instance')
+arg_parser.add_argument('--debug',
+                        default=False,
+                        action='store_true',
+                        help="Print debugging output")
+args = arg_parser.parse_args()
+
+# setup logging
+log_level = args.debug and logging.DEBUG or logging.INFO
+logging.basicConfig(
+    format='%(asctime)s %(levelname)s: %(message)s',
+    level=log_level,
+    datefmt='[ %m/%d/%Y %H:%M:%S ]')
+
+
+conn = redis.StrictRedis.from_url(args.redis)
+server = socketio.server.SocketIOServer(args.server, app, policy_server=False)
+
+greenlets = (
+    gevent.Greenlet(subscribe_changes, conn),
+    gevent.Greenlet(broadcast_changes, server),
+)
+
+
+for greenlet in greenlets:
+    greenlet.link_exception(handle_exit)
+    greenlet.start()
+
+log.info('Starting server listening at %s:%s',args.server[0], args.server[1])
+server.serve_forever()
