@@ -17,56 +17,54 @@ class mediawiki::sync {
 
 	deployment::target { 'scap': }
 
-	$scriptpath = "/usr/local/bin"
-
-	file { "${scriptpath}/mwversionsinuse":
+	file { '/usr/local/bin/mwversionsinuse':
 		ensure  => link,
 		target  => '/srv/scap/bin/mwversionsinuse',
 		require => Git::Clone['mediawiki/tools/scap'],
 	}
-	file { "${scriptpath}/scap-rebuild-cdbs":
+	file { '/usr/local/bin/scap-rebuild-cdbs':
 		ensure  => link,
 		target  => '/srv/scap/bin/scap-rebuild-cdbs',
 		require => Git::Clone['mediawiki/tools/scap'],
 	}
-	file { "${scriptpath}/scap-recompile":
+	file { '/usr/local/bin/scap-recompile':
 		ensure  => link,
 		target  => '/srv/scap/bin/scap-recompile',
 		require => Git::Clone['mediawiki/tools/scap'],
 	}
-	file { "${scriptpath}/sync-common":
+	file { '/usr/local/bin/sync-common':
 		ensure  => link,
 		target  => '/srv/scap/bin/sync-common',
 		require => Git::Clone['mediawiki/tools/scap'],
 	}
-	file { "${scriptpath}/refreshCdbJsonFiles":
+	file { '/usr/local/bin/refreshCdbJsonFiles':
 		ensure  => link,
 		target  => '/srv/scap/bin/refreshCdbJsonFiles',
 		require => Git::Clone['mediawiki/tools/scap'],
 	}
 
 	exec { 'mw-sync':
-		command     => "${scriptpath}/sync-common",
-		require     => File["${scriptpath}/sync-common"],
+		command     => '/usr/local/bin/sync-common',
+		require     => File['/usr/local/bin/sync-common'],
 		cwd         => '/tmp',
 		user        => root,
 		group       => root,
-		path        => "${scriptpath}:/usr/bin:/usr/sbin",
+		path        => '/usr/local/bin:/usr/bin:/usr/sbin',
 		refreshonly => true,
 		timeout     => 600,
 		logoutput   => on_failure;
 	}
 
 	exec { 'mw-sync-rebuild-cdbs':
-		command     => "${scriptpath}/scap-rebuild-cdbs",
+		command     => '/usr/local/bin/scap-rebuild-cdbs',
 		cwd         => '/tmp',
 		user        => 'mwdeploy',
 		group       => 'mwdeploy',
-		path        => "${scriptpath}:/usr/bin:/usr/sbin",
+		path        => '/usr/local/bin:/usr/bin:/usr/sbin',
 		refreshonly => true,
 		timeout     => 600,
 		logoutput   => on_failure,
-		require     => File["${scriptpath}/scap-rebuild-cdbs"],
+		require     => File['/usr/local/bin/scap-rebuild-cdbs'],
 		subscribe   => Exec['mw-sync'],
 	}
 }
