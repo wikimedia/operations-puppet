@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  EditStream
+
+  Subscribes to 'edits' events in Redis and serves them via WebSockets.
+
+  Usage: editstream SERVER_ADDRESS REDIS_ADDRESS
+
+    SERVER_ADDRESS  interface:port to listen on.
+    REDIS_ADDRESS   host:port of Redis server.
+
+"""
+from gevent import monkey
+monkey.patch_all()
+
+import argparse
+import json
+import socket
+import sys
+
+import gevent
+import redis
+import socketio
+import socketio.namespace
+import socketio.server
+
+
+channel = gevent.queue.Channel()
+namespaces = {
+    '/edits': socketio.namespace.BaseNamespace,
+}
+
+
+def parse_address(addr):
+    host, port = addr.split(':')
+    return host, int(port)
+
+
+def app(environ, start_response):
+    socketio.socketio_manage(environ, namespaces)
+
+
+def subscribe_edits(conn):
+    pubsub = conn.pubsub()
+    pubsub.subscribe('edits')
+    for message in pubsub.listen():
+        if message['type'] == 'message':
+            channel.put(message['data'])
+
+
+def broadcast_edits(server):
+    for edit in channel:
+        event = dict(type='event', name='edit', args=edit, endpoint='/edits')
+        for client in server.sockets.values():
+            client.send_packet(event)
+
+
+arg_parser = argparse.ArgumentParser()
+arg_parser.add_argument('server', type=parse_address)
+arg_parser.add_argument('redis', type=parse_address)
+args = arg_parser.parse_args()
+
+conn = redis.StrictRedis(*args.redis)
+server = socketio.server.SocketIOServer(args.server, app, policy_server=False)
+
+greenlets = (
+    gevent.Greenlet(subscribe_edits, conn),
+    gevent.Greenlet(broadcast_edits, server),
+)
+
+for greenlet in greenlets:
+    greenlet.link_exception(sys.exit)
+    greenlet.start()
+
+server.serve_forever()
