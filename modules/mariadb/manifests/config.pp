@@ -60,4 +60,11 @@ class mariadb::config(
         group   => 'mysql',
         mode    => '0755',
     }
+
+    file { '/usr/lib/nagios/plugins/check_mariadb.pl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///files/icinga/check_mariadb.pl',
+    }
 }
