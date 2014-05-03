@@ -61,6 +61,10 @@ maxvirtualmemory=800000
 # default total memory limit for each runJobs.php process
 maxsubprocmemory=300M
 
+# Max time before killing a PHP runner via timeout.
+# This should be much higher than hpmaxtime and lpmaxtime.
+maxrealtime=3600
+
 while getopts "t:v:" flag
 do
 	case $flag in
@@ -144,7 +148,7 @@ function runJobsLoopService() {
 				elif [ -n "$db" -a -n "$type" ]; then
 					foundjobs=y
 					echo "$db $type"
-					nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --type="$type" --maxtime=$hpmaxtime --memory-limit=$maxsubprocmemory &
+					nice -n 20 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --type="$type" --maxtime=$hpmaxtime --memory-limit=$maxsubprocmemory &
 					# Do not spend too much time on prioritized jobs
 					local timestamp=`date +%s` # UNIX timestamp
 					if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$lpmaxdelay" ]; then
@@ -171,7 +175,7 @@ function runJobsLoopService() {
 				elif [ -n "$db" ]; then
 					foundjobs=y
 					echo "$db"
-					nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --maxtime=$lpmaxtime --memory-limit=$maxsubprocmemory &
+					nice -n 20 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --maxtime=$lpmaxtime --memory-limit=$maxsubprocmemory &
 					# Do not spend too much time on unprioritized jobs
 					local timestamp=`date +%s` # UNIX timestamp
 					if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$hpmaxdelay" ]; then
