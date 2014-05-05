@@ -89,7 +89,7 @@ class role::mariadb::dbstore(
     include mariadb::monitor_disk
     include mariadb::monitor_process
 
-    mariadb::monitor_replication { ['s1','s2','s3','s4','s5','s6','s7','m1']:
+    mariadb::monitor_replication { ['s1','s2','s3','s4','s5','s6','s7','m2']:
         lag_warn => $lag_warn,
         lag_crit => $lag_crit,
     }
@@ -122,5 +122,5 @@ class role::mariadb::analytics {
     include mariadb::monitor_disk
     include mariadb::monitor_process
 
-    mariadb::monitor_replication { ['s1', 'm1' ]: }
+    mariadb::monitor_replication { ['s1', 'm2' ]: }
 }
