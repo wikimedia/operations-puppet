@@ -3048,7 +3048,7 @@ class accounts {
     class manybubbles inherits baseaccount {
         $username = 'manybubbles'
         $realname = 'Nik Everett'
-        $uid      = '644'
+        $uid      = '3304'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
