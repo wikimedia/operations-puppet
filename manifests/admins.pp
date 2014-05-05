@@ -3714,6 +3714,27 @@ class accounts {
         }
     }
 
+
+    # RT 7345
+    class mhurd inherits baseaccount {
+        $username = 'mhurd'
+        $realname = 'Monte Hurd'
+        $uid      = '3010'
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'mhurd@Monte-Hurds-WMF-MacBook-Air.local':
+                ensure => 'present',
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDQBxj8NTkCNQZse19j6fqa7zFF3kETfX/59zjBeAu2sfbP4xOSzSlJjcIEmqDbruX2HGbX51amWOW5WGFtWw1T+zBnbaMXtTEm1U7EtEwGPF7wq5FAxCO8X1qtAXM0Rsz4+5ka6bcKBxD9mAqPeIDirfPjJR1L4BDY9H5aPOuVYj9lna8Ln6tmFdqk5W+czMfIZVR7fn71nL+3xllNpQY/8utviYo5+J5sihHZ9h4DeAGYOrZoAgf4LVBeKcmqtyaOTZar8ZOTCF9ttV7pZ2bNw5vCtQbN7WqyDgpYjXAPW+7T/JUMXdxRxGlpS9XyBzIqqBxytu3Kto45lhJgNTxp',
+            }
+        }
+    }
+
 # / end regular (human) users
 
     # FIXME: not an admin. This is more like a system account.
@@ -3983,7 +4004,7 @@ class admins::parsoid {
 }
 
 # permissions and users for LDAP operations
-# (silver in site.pp directly in node silver)
+# (formerly directly in site.pp and on formey, now on node silver)
 class admins::ldap {
 
     $sudo_privs = [
