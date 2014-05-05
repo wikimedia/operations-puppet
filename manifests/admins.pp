@@ -3373,11 +3373,21 @@ class accounts {
         }
     }
 
-    # RT 6619
+    # Disabled in favor of 'gilles'
     class gdubuc inherits baseaccount {
         $username = 'gdubuc'
         $realname = 'Gilles Dubuc'
         $uid      = '659'
+        $enabled  = false
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+    }
+
+    # RT 6619
+    class gilles inherits baseaccount {
+        $username = 'gilles'
+        $realname = 'Gilles Dubuc'
+        $uid      = '4319'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
