@@ -2300,6 +2300,7 @@ node 'stat1003.wikimedia.org' {
     include accounts::kaldari      # RT 4959
     include accounts::maryana      # RT 3517
     include accounts::mflaschen    # RT 4796
+    include accounts::mhurd        # RT 7345
     include accounts::spetrea      # RT 3584
     include accounts::swalling     # RT 3653
     include accounts::yurik        # RT 4835
