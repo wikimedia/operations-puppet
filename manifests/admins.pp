@@ -4018,6 +4018,13 @@ class admins::parsoid {
 # (formerly directly in site.pp and on formey, now on node silver)
 class admins::ldap {
 
+    $gid = '500'   # 'wikidev' by default
+    include groups::wikidev
+
+    include accounts::robla
+    include accounts::reedy
+    include accounts::demon
+
     $sudo_privs = [
             'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
             'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
@@ -4026,7 +4033,7 @@ class admins::ldap {
             'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
     ]
 
-    sudo_user { [ 'robla', 'reedy' ]: privileges => $sudo_privs }
+    sudo_user { [ 'robla', 'reedy', 'demon' ]: privileges => $sudo_privs }
 
 }
 
