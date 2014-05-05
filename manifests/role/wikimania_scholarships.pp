@@ -16,7 +16,7 @@ class role::wikimania_scholarships {
         udp2log_dest => '10.64.0.21:8420',
         serveradmin  => 'root@wikimedia.org',
         # Misc MySQL shard
-        mysql_host   => 'db1048.eqiad.wmnet',
+        mysql_host   => 'm2-master.eqiad.wmnet',
         mysql_db     => 'scholarships',
         smtp_host    => 'smtp.pmtpa.wmnet'
     }
