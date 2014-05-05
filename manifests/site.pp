@@ -296,6 +296,7 @@ node 'bast1001.wikimedia.org' {
     include accounts::swalling
     include accounts::yuvipanda
     include accounts::haithams
+    include accounts::mhurd
 }
 
 node 'bast4001.wikimedia.org' {
