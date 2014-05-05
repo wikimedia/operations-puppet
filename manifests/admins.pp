@@ -3538,6 +3538,16 @@ class accounts {
     class aaharoni inherits baseaccount {
         $username = 'aaharoni'
         $realname = 'Amir Aharoni'
+        $uid      = '571'
+        $enabled  = false
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+    }
+
+    # RT 6760
+    class amire80 inherits baseaccount {
+        $username = 'amire80'
+        $realname = 'Amir Aharoni'
         $uid      = '2076'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
