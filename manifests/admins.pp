@@ -1030,10 +1030,21 @@ class accounts {
         }
     }
 
+    # disabled in favor of mattflaschen
     class mflaschen inherits baseaccount {
         $username = 'mflaschen'
         $realname = 'Matthew Flaschen'
         $uid      = '625'
+        $gid      = '500'
+        $enabled  = false
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
+    }
+
+    class mattflaschen inherits baseaccount {
+        $username = 'mattflaschen'
+        $realname = 'Matthew Flaschen'
+        $uid      = '2662'
         $gid      = '500'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
