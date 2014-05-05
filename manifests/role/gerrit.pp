@@ -12,6 +12,24 @@ class role::gerrit::labs {
     }
 }
 
+# == Class role::gerrit::labs::ci
+#
+# Role class meant to install Gerrit on the Continuous Integration development
+# box integration-dev.eqiad.wmflabs.  It has Gerrit, Jenkins and Zuul.
+#
+class role::gerrit::labs::ci {
+    system::role { 'role::gerrit::labs::ci': description => 'Gerrit in CI labs!' }
+
+    class { 'gerrit::instance':
+        db_host      => '127.0.0.1',
+        host         => 'integration.wmflabs.org',
+        ssh_key      => '',
+        apache_ssl   => false,
+        ssl_cert     => 'star.wmflabs',
+        ssl_cert_key => 'star.wmflabs',
+    }
+}
+
 class role::gerrit::production::old {
     system::role { 'role::gerrit::production': description => 'Old gerrit master' }
 
