@@ -616,13 +616,6 @@ node /^db(74)\.pmtpa\.wmnet/ {
     }
 }
 
-node /^db(68)\.pmtpa\.wmnet/ {
-    class { 'role::coredb::s7':
-        # Sole mysql 5.1 pmtpa slave
-        innodb_file_per_table => true,
-    }
-}
-
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
 node /^db(60|7[5-7])\.pmtpa\.wmnet/{
     include standard
