@@ -8,8 +8,6 @@ socket = /tmp/mysql.sock
 
 [mysqld]
 
-#log_bin
-#log_slave_updates
 skip-external-locking
 skip-name-resolve
 temp-pool
@@ -24,31 +22,28 @@ read_only = 0
 
 max_connections    = 250
 max_allowed_packet = 16M
-sync_binlog        = 0
-binlog_format      = statement
-expire_logs_days   = 30
 connect_timeout    = 3
 max_connect_errors = 1000000000
 query_cache_size   = 0
 query_cache_type   = 0
 event_scheduler    = 1
+plugin-load        = ha_tokudb
+open-files-limit   = 100000
 
 table_open_cache       = 5000
 table_definition_cache = 5000
 
 transaction-isolation          = READ-COMMITTED
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.85).round %>G
-innodb_log_file_size           = 5G
+innodb_buffer_pool_size        = 4G
+innodb_log_file_size           = 1G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
-innodb_thread_concurrency      = 0
-innodb_io_capacity             = 1000
-innodb_read_io_threads         = 16
-innodb_write_io_threads        = 8
-innodb_old_blocks_pct          = 80
-innodb_old_blocks_time         = 1000
 aria_pagecache_buffer_size     = 1G
+tokudb_cache_size              = 32G
+
+optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
+join_cache_level = 8
 
 [mysqldump]
 
