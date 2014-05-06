@@ -2066,6 +2066,7 @@ node 'sanger.wikimedia.org' {
     include ldap::role::server::corp
     include ldap::role::client::corp
     include groups::wikidev
+    include admins::oit
     include accounts::jdavis
     include backup::client
 }
