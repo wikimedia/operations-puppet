@@ -58,6 +58,7 @@ tokudb_cache_size = <%= (Float(@memorysize.split[0]) * 0.50).round %>G
 
 skip-slave-start
 slave_transaction_retries = 4294967295
+slave_parallel_threads = 4
 
 # Eventlogging from m2 master
 m2.replicate-wild-do-table = log.%
