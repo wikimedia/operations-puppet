@@ -3910,7 +3910,8 @@ class admins::restricted {
     include accounts::leila # RT 6765
     include accounts::sahar # RT 6767
     include accounts::santhosh # RT 6760
-    include accounts::aaharoni # RT 6760
+    include accounts::aaharoni # renamed to amire80
+    include accounts::amire80 # RT 6760
     include accounts::mglaser # RT 6861->6929
     include accounts::mah # RT 6861->6930
     include accounts::legoktm # RT 6895
