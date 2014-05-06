@@ -3848,7 +3848,8 @@ class admins::mortals {
     include accounts::krinkle
     include accounts::manybubbles # promoted per RT 5691
     include accounts::maxsem
-    include accounts::mflaschen
+    include accounts::mflaschen # renamed to 'mattflaschen'
+    include accounts::mattflaschen
     include accounts::marktraceur
     include accounts::mhoover # access revoked
     include accounts::milimetric # promoted per RT 5982
