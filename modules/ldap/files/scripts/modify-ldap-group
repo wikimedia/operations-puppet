@@ -6,7 +6,6 @@
 #####################################################################
 
 import sys
-import pwd
 import grp
 import traceback
 import ldapsupportlib
@@ -74,21 +73,25 @@ def main():
                 raw_members = options.addMembers.split(',')
                 for raw_member in raw_members:
                     try:
-                        # Ensure the user exists
-                        # TODO: make this use LDAP calls instead of getent
-                        checkuid = pwd.getpwnam(raw_member)
-
-                        membertoadd = 'uid=' + raw_member + ',ou=people,' + base
-                        # member expects DNs
-                        if 'member' in NewPosixData.keys():
-                            if membertoadd in NewPosixData['member']:
-                                sys.stderr.write(raw_member + " is already a member of the group, skipping.\n")
-                            else:
-                                NewPosixData['member'].append(membertoadd)
+                        user=ds.search_s("ou=people," + base, ldap.SCOPE_SUBTREE, "uid=%s" % raw_member, ("dn",))
+                        if len(user) == 0:
+                            sys.stderr.write(raw_member + " doesn't exist, and won't be added to the group.\n")
+                            return
+                        if len(user) > 1:
+                            sys.stderr.write(raw_member + " exist multiple times, this is so wrong, abandon all hope\n")
+                            return
+                    except Exception as e:
+                        sys.stderr.write("Failed to search user in LDAP. Error: %s\n" % str(e))
+                        raise e
+                    membertoadd = user[0][0]
+                    # member expects DNs
+                    if 'member' in NewPosixData.keys():
+                        if membertoadd in NewPosixData['member']:
+                            sys.stderr.write(raw_member + " is already a member of the group, skipping.\n")
                         else:
-                            NewPosixData['member'] = [membertoadd]
-                    except KeyError:
-                        sys.stderr.write(raw_member + " doesn't exist, and won't be added to the group.\n")
+                            NewPosixData['member'].append(membertoadd)
+                    else:
+                        NewPosixData['member'] = [membertoadd]
             elif options.deleteMembers:
                 raw_members = options.deleteMembers.split(',')
                 for raw_member in raw_members:
