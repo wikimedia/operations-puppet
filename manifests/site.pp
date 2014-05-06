@@ -292,7 +292,6 @@ node 'bast1001.wikimedia.org' {
     include nfs::netapp::home::othersite
     include misc::dsh
     include ssh::hostkeys-collect
-
 }
 
 node 'bast4001.wikimedia.org' {

@@ -3760,6 +3760,27 @@ class accounts {
         }
     }
 
+    # RT 7425
+    class kleduc inherits baseaccount {
+        $username = 'kleduc'
+        $realname = 'Kevin Leduc'
+        $uid      = '4906'
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'kleduc@wikimedia.org':
+                ensure => 'present',
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDEN1wN2xn6tRzHBb0VrVMBE+ZQRvDFLyj2fPQpN2KQucMnXj8GlLzFJzXmW5Dwh0bAfhXUxAKudfAPLuRtnBz+gl/d17vmDRwgtqHIaMWWW8s9RFW3NmVj6wEA+KKV2A8MlHLaFUTL5egS7cAicK2EbEC4ej6+o4ONj/+Qo9h6niX8U0tMohTB/Ml6H08Oe9NJ6e3L8d/e9Acxmspc1id9bN8ek/MGwFGMYTC7WQHq8TVUgq5xpA6vbkct3sNON8ebHmaTR3ryPpr2Vpxz6h088eifDwRJMD5eSqFvLzt6iEdZEwNfqlbigGTwbbAUNBDNPNhzTZStDpa+T3OgIiOH',
+            }
+        }
+    }
+
+
 # / end regular (human) users
 
     # FIXME: not an admin. This is more like a system account.
@@ -3949,6 +3970,7 @@ class admins::bastion {
     include accounts::dbrant # RT 7399
     include accounts::mglaser # RT 6861->6929
     include accounts::mah # RT 6861->6930
+    include accounts::kleduc
 }
 
 class admins::labs {
@@ -4011,7 +4033,8 @@ class admins::privatedata {
         accounts::leila,        # RT 6765
         accounts::sahar,        # RT 6767
         accounts::manybubbles,  # RT 5886
-        accounts::ironholds     # RT 6452
+        accounts::ironholds,    # RT 6452
+        accounts::kleduc        # RT 7245
 }
 
 class admins::fr-tech {
