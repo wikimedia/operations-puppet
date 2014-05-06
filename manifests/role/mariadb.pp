@@ -44,8 +44,11 @@ class role::mariadb::tendril {
         description => 'tendril database server',
     }
 
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
     include standard
-    include mariadb::packages_wmf
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -72,8 +75,9 @@ class role::mariadb::dbstore(
         description => 'Delayed Slave',
     }
 
-    # No packages yet! MariaDB 10 beta tarball in /opt
-    #include mariadb::packages
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
 
     include standard
     include passwords::misc::scripts
