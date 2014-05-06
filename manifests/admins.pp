@@ -3917,6 +3917,23 @@ class admins::restricted {
     include accounts::legoktm # RT 6895
 }
 
+# access to bastion hosts (but not more)
+class admins::bastion {
+
+    $gid = '500'  # 'wikidev' by default
+    include groups::wikidev
+
+    include accounts::howief
+    include accounts::jforrester
+    include accounts::jmorgan
+    include accounts::maryana
+    include accounts::msyed
+    include accounts::swalling
+    include accounts::yuvipanda
+    include accounts::haithams
+    include accounts::mhurd
+}
+
 class admins::labs {
     $gid = '500'  # 'wikidev' by default
     include groups::wikidev
