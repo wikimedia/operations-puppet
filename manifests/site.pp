@@ -277,6 +277,7 @@ node 'bast1001.wikimedia.org' {
     }
 
     include standard
+    include diamond::generic
     include subversion::client
     include admins::roots
     include admins::mortals
@@ -349,6 +350,7 @@ node 'carbon.wikimedia.org' {
     }
 
     include standard
+    include diamond::generic
     include backup::client
     include role::installserver
 }
@@ -813,6 +815,7 @@ node 'dobson.wikimedia.org' {
 
     include base
     include ganglia
+    include diamond::generic
     include exim::simple-mail-sender
     include dns::recursor::statistics
     include network::constants
@@ -851,6 +854,7 @@ node 'eeden.esams.wikimedia.org' {
 
 node 'ekrem.wikimedia.org' {
     include standard
+    include diamond::generic
     include role::ircd
 }
 
@@ -2542,6 +2546,7 @@ node 'hafnium.wikimedia.org' {
 # Primary Graphite, StatsD, and profiling data aggregation host.
 node 'tungsten.eqiad.wmnet' {
     include standard
+    include diamond::generic
     include role::graphite
     include role::txstatsd
     include role::gdash
