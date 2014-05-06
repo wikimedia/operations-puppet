@@ -4088,3 +4088,18 @@ class admins::pmacct {
         privileges => ['ALL = NOPASSWD: ALL'],
     }
 }
+
+# access to LDAP servers by Office IT sysadmin
+class admins::oit {
+
+    $gid = '500'   # 'wikidev' by default
+    include groups::wikidev
+
+    # RT #7428
+    include accounts::jkrauska
+
+    # RT #7428
+    sudo_user { ['jkrauska']:
+        privileges => ['ALL = NOPASSWD: ALL'],
+    }
+}
