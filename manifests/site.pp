@@ -2318,7 +2318,8 @@ node 'stat1003.wikimedia.org' {
     include accounts::nuria        # RT 6525
     include accounts::csalvia      # RT 6664
     include accounts::leila        # RT 6765
-    include accounts::gdubuc       # RT 7074
+    include accounts::gdubuc       # renamed to 'gilles'
+    include accounts::gilles       # RT 7074
     include accounts::haithams     # RT 7387
     include accounts::yuvipanda
 

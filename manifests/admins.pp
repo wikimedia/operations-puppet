@@ -3836,7 +3836,8 @@ class admins::mortals {
     include accounts::demon
     include accounts::ebernhardson # RT 5717
     include accounts::esanders # RT 7120
-    include accounts::gdubuc # RT 6619
+    include accounts::gdubuc # renamed to 'gilles'
+    include accounts::gilles # RT 6619
     include accounts::gjg
     include accounts::gwicke
     include accounts::halfak
