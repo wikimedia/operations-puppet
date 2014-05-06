@@ -65,8 +65,8 @@ class role::analytics::users {
         accounts::yuvipanda, # RT 6103
         accounts::csalvia,   # RT 6664
         accounts::nuria,     # RT 6683
-        accounts::sahar      # RT 6767
-
+        accounts::sahar,     # RT 6767
+        accounts::kleduc     # RT 7425
 
     # NOTE:  If you are filling an RT request for Hadoop access,
     # you will need to add the user to the list of accounts above,
@@ -89,10 +89,11 @@ class role::analytics::users {
     User<|title == olivneh|>     { groups +> [ 'stats' ] }
     User<|title == otto|>        { groups +> [ 'stats' ] }
     User<|title == spetrea|>     { groups +> [ 'stats' ] }
-    User<|title == dr0ptp4kt|>       { groups +> [ 'stats' ] }
+    User<|title == dr0ptp4kt|>   { groups +> [ 'stats' ] }
     User<|title == qchris|>      { groups +> [ 'stats' ] }
     User<|title == csalvia|>     { groups +> [ 'stats' ] }
     User<|title == nuria|>       { groups +> [ 'stats' ] }
+    User<|title == kleduc|>      { groups +> [ 'stats' ] }
 
     # If hdfs user exists, then add it to the stats group.
     # I don't want to use puppet types to manage the hdfs
