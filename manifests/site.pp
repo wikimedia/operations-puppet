@@ -815,7 +815,6 @@ node 'dobson.wikimedia.org' {
 
     include base
     include ganglia
-    include diamond::generic
     include exim::simple-mail-sender
     include dns::recursor::statistics
     include network::constants
@@ -854,7 +853,6 @@ node 'eeden.esams.wikimedia.org' {
 
 node 'ekrem.wikimedia.org' {
     include standard
-    include diamond::generic
     include role::ircd
 }
 
@@ -960,6 +958,7 @@ node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
     include standard
+    include diamond::generic
     include admins::roots
     include admins::mortals
     include admins::restricted
@@ -1020,6 +1019,7 @@ node 'gallium.wikimedia.org' {
     }
 
     include standard
+    include diamond::generic
     include contint::firewall
     include role::ci::master
     include role::ci::slave
@@ -1174,6 +1174,7 @@ node 'iron.wikimedia.org' {
     }
 
     include standard
+    include diamond::generic
     include admins::roots
     include misc::management::ipmi
     include role::access_new_install
@@ -1320,6 +1321,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
 node 'lanthanum.eqiad.wmnet' {
     include standard
+    include diamond::generic
     include admins::roots
     include admins::jenkins
     include role::ci::slave  # RT #5074
