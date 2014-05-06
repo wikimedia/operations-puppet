@@ -3746,6 +3746,26 @@ class accounts {
         }
     }
 
+    # RT 7425
+    class kleduc inherits baseaccount {
+        $username = 'kleduc'
+        $realname = 'Kevin Leduc'
+        $uid      = '4906'
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'kevin@wmf':
+                ensure => 'present',
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'FIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXMEFIXME',
+            }
+        }
+    }
+
 # / end regular (human) users
 
     # FIXME: not an admin. This is more like a system account.
@@ -3977,7 +3997,8 @@ class admins::privatedata {
         accounts::leila,        # RT 6765
         accounts::sahar,        # RT 6767
         accounts::manybubbles,  # RT 5886
-        accounts::ironholds     # RT 6452
+        accounts::ironholds,    # RT 6452
+        accounts::kleduc        # RT 7245
 }
 
 class admins::fr-tech {

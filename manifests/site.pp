@@ -298,6 +298,7 @@ node 'bast1001.wikimedia.org' {
     include accounts::yuvipanda
     include accounts::haithams
     include accounts::mhurd
+    include accounts::kleduc
 }
 
 node 'bast4001.wikimedia.org' {
