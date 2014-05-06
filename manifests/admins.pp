@@ -4034,6 +4034,7 @@ class admins::ldap {
             'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
             'ALL = NOPASSWD: /usr/local/bin/svn-group',
             'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
+            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group',
     ]
 
     sudo_user { [ 'robla', 'reedy', 'demon' ]: privileges => $sudo_privs }
