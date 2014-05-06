@@ -39,10 +39,9 @@
 # EventLogging tasks.
 #
 class eventlogging {
-    include eventlogging::package
-    include eventlogging::monitor
+    include ::eventlogging::package
+    include ::eventlogging::monitor
 
-    # EventLogging jobs set 'eventlogging' gid & uid.
     group { 'eventlogging':
         ensure => present,
     }
@@ -51,13 +50,12 @@ class eventlogging {
         ensure     => present,
         gid        => 'eventlogging',
         shell      => '/bin/false',
-        home       => '/srv/eventlogging',
-        managehome => true,
+        home       => '/nonexistent',
         system     => true,
+        managehome => false,
     }
 
-    # The /etc/eventlogging.d file hierarchy contains instance
-    # definition files.
+    # Instance definition files.
     file { [
         '/etc/eventlogging.d',
         '/etc/eventlogging.d/consumers',

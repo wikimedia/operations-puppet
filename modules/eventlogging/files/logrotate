@@ -1,13 +1,11 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/eventlogging/logrotate
-#####################################################################
+# This file is managed by Puppet.
+# puppet:///modules/eventlogging/logrotate
 
 /var/log/eventlogging/*.log {
        daily
        olddir /var/log/eventlogging/archive
        notifempty
-       maxage 180
+       maxage 90
        rotate 1000
        dateext
        compress
