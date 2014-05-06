@@ -3391,7 +3391,7 @@ class accounts {
         $uid      = '659'
         $enabled  = false
 
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+        unixaccount { "${realname}/${username}": username => $username, uid => $uid, gid => $gid }
     }
 
     # RT 6619
@@ -3400,7 +3400,7 @@ class accounts {
         $realname = 'Gilles Dubuc'
         $uid      = '4319'
 
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+        unixaccount { "${realname}/${username}"): username => $username, uid => $uid, gid => $gid }
 
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
