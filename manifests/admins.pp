@@ -1033,7 +1033,7 @@ class accounts {
     # disabled in favor of mattflaschen
     class mflaschen inherits baseaccount {
         $username = 'mflaschen'
-        $realname = 'Matthew Flaschen'
+        $realname = 'Matthew Flaschen (disabled)'
         $uid      = '625'
         $gid      = '500'
         $enabled  = false
@@ -1345,7 +1345,7 @@ class accounts {
 
     class tfinc inherits baseaccount {
         $username = 'tfinc'
-        $realname = 'Tomasz Finc'
+        $realname = 'Tomasz Finc (disabled)'
         $uid      = '2006'
         $enabled  = false
 
@@ -3387,11 +3387,11 @@ class accounts {
     # Disabled in favor of 'gilles'
     class gdubuc inherits baseaccount {
         $username = 'gdubuc'
-        $realname = 'Gilles Dubuc'
+        $realname = 'Gilles Dubuc (disabled)'
         $uid      = '659'
         $enabled  = false
 
-        unixaccount { "${realname}/${username}": username => $username, uid => $uid, gid => $gid }
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
     }
 
     # RT 6619
@@ -3400,7 +3400,7 @@ class accounts {
         $realname = 'Gilles Dubuc'
         $uid      = '4319'
 
-        unixaccount { "${realname}/${username}": username => $username, uid => $uid, gid => $gid }
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
@@ -3558,7 +3558,7 @@ class accounts {
     # RT 6760
     class aaharoni inherits baseaccount {
         $username = 'aaharoni'
-        $realname = 'Amir Aharoni'
+        $realname = 'Amir Aharoni (disabled)'
         $uid      = '571'
         $enabled  = false
 
