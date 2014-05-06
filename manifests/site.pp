@@ -623,7 +623,7 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(43|49|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
+node /^db10(43|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
     class { 'role::coredb::s1':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -646,7 +646,7 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(04|11|20|40|42|59)\.eqiad\.wmnet/ {
+node /^db10(04|11|40|42|49|59)\.eqiad\.wmnet/ {
     class { 'role::coredb::s4':
         innodb_file_per_table => true,
         mariadb               => true,
