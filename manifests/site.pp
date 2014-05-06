@@ -1685,6 +1685,9 @@ node /ms100[4]\.eqiad\.wmnet/ {
     include standard
 }
 
+# Whenever adding a new node there, you have to ask MediaWiki to recognize the
+# new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
+# rate limiting purposes (bug 64622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
