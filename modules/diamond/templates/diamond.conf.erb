@@ -1,12 +1,49 @@
 [server]
-handlers = <%= @handler %>
+handlers = <%= @handler %>, diamond.handler.archive.ArchiveHandler
 collectors_path = /usr/share/diamond/collectors/
 collectors_config_path = /etc/diamond/collectors/
 handlers_config_path = /etc/diamond/handlers/
-collectors_reload_interval = 10
+
+#note: this is not collection poller interval
+collectors_reload_interval = 3600
+
+user =
+group =
+pid_file = /var/run/diamond.pid
 
 [handlers]
+keys = rotated_file
+
+### Defaults options for all Handlers
 [[default]]
+
+[[ArchiveHandler]]
+log_file = /var/log/diamond/archive.log
+days = 5
 
 [collectors]
 [[default]]
+### Defaults options for all Collectors
+path_prefix = servers
+interval = 10
+
+[loggers]
+
+keys = root
+[formatters]
+keys = default
+[logger_root]
+# to increase verbosity, set DEBUG
+level = INFO
+handlers = rotated_file
+propagate = 1
+
+[handler_rotated_file]
+class = FileHandler
+level = DEBUG
+formatter = default
+args = ('/var/log/diamond/diamond.log',)
+
+[formatter_default]
+format = [%(asctime)s] [%(threadName)s] %(message)s
+datefmt =

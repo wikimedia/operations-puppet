@@ -36,9 +36,11 @@
 #
 class diamond(
     $handler  = 'diamond.handler.dastatsd.StatsHandler',
-    $settings = {},
+    $settings = { host => 'localhost',
+                  port => '8125',
+    },
 ) {
-    package { 'python-diamond':
+    package { ['python-diamond', 'python-configobj']:
         ensure => present,
     }
 
