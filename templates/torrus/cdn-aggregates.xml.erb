@@ -390,7 +390,7 @@ end
 				<param name="varnishmetric" value="Backends/backend_req"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-eqiad,bits-eqiad,upload-eqiad,mobile-eqiad,api-eqiad"/>
+				<param name="ds-names" value="text-eqiad,bits-eqiad,upload-eqiad,mobile-eqiad"/>
 				<param name="comment" value="All backend requests"/>
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
@@ -419,43 +419,7 @@ end
 				<param name="line-color-mobile-eqiad" value="##mobile-eqiad"/>
 				<param name="line-order-mobile-eqiad" value="8"/>
 
-				<param name="ds-expr-api-eqiad" value="%expr-Varnish_api_eqiad%"/>
-				<param name="graph-legend-api-eqiad" value="api.eqiad"/>
-				<param name="line-style-api-eqiad" value="LINE2"/>
-				<param name="line-color-api-eqiad" value="##api-eqiad"/>
-				<param name="line-order-api-eqiad" value="9"/>
-				
 				<param name="precedence" value="999"/>	
-			</leaf>
-			
-			<leaf name="Service_times">
-				<!-- count values -->
-				<param name="sumsep" value = "1,"/>
-				<param name="sumfunc" value="1,+"/>
-				
-				<param name="varnishmetric" value="Service_times/Miss_HTTP_requests_service_time"/>
-				<param name="layer" value="backend"/>
-				
-				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-eqiad,api-eqiad"/>
-				<param name="comment" value="Service times"/>
-				<param name="vertical-label" value="seconds"/>
-				<param name="graph-lower-limit" value="0"/>
-				<param name="graph-upper-limit" value="0.3"/>
-				
-				<param name="ds-expr-text-eqiad" value="%expr-Varnish_text_eqiad%,AVG"/>
-				<param name="graph-legend-text-eqiad" value="text.eqiad"/>
-				<param name="line-style-text-eqiad" value="LINE1"/>
-				<param name="line-color-text-eqiad" value="##text-eqiad"/>
-				<param name="line-order-text-eqiad" value="4"/>
-				
-				<param name="ds-expr-api-eqiad" value="%expr-Varnish_api_eqiad%,AVG"/>
-				<param name="graph-legend-api-eqiad" value="api.eqiad"/>
-				<param name="line-style-api-eqiad" value="LINE1"/>
-				<param name="line-color-api-eqiad" value="##api-eqiad"/>
-				<param name="line-order-api-eqiad" value="5"/>
-
-				<param name="precedence" value="998"/>
 			</leaf>
 		</subtree>
 	</datasources>
