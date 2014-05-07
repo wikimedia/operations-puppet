@@ -1976,6 +1976,11 @@ node 'osmium.eqiad.wmnet' {
     include admins::mortals
 
     include hhvm::dev
+
+    class { '::mediawiki::jobrunner':
+        run_jobs_enabled => false,
+        user             => 'mwdeploy',
+    }
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
