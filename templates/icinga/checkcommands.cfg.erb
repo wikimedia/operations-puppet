@@ -446,7 +446,7 @@ define command{
 # check arbitrary ganglia metric values
 define command{
 	command_name	check_ganglia
-	command_line	$USER1$/check_ganglia -q -g $ARG1$ -p $ARG2$ -H $ARG3$ -m '$ARG4$' -w '$ARG5$' -c '$ARG6$'
+	command_line	$USER1$/check_ganglia -q -g $ARG1$ -p $ARG2$ -H $ARG3$ -m '$ARG4$' -w '$ARG5$' -c '$ARG6$' -C '$ARG7$'
 }
 
 # percona mysql checks

@@ -332,11 +332,12 @@ define monitor_ganglia(
     #   $ARG4$  -m ganglia metric name
     #   $ARG5$  -w warning threshold
     #   $ARG6$  -c critical threshold
+    #   $ARG7$  -C ganglia cluster name
 
     monitor_service { $title:
         ensure                => $ensure,
         description           => $description,
-        check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}",
+        check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}!{$::ganglia::cname}",
         retries               => $retries,
         group                 => $group,
         critical              => $critical,
