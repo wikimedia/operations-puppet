@@ -1975,6 +1975,7 @@ node 'osmium.eqiad.wmnet' {
     include groups::wikidev
     include admins::mortals
 
+    include admins::mortals
     include hhvm::dev
     include mediawiki::sync
 
