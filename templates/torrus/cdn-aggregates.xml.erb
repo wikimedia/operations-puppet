@@ -315,7 +315,7 @@ end
 	        </param>
 		
 			<leaf name="All_client_requests">
-				<param name="squidmetric" value="Usage/HTTP_requests"/>
+				<param name="varnishmetric" value="Usage/HTTP_requests"/>
 				<param name="layer" value="frontend"/>
 				<param name="varnishmetric" value="Clients/client_req"/>
 				
@@ -385,7 +385,7 @@ end
 			</leaf>
 
 			<leaf name="All_backend_requests">
-				<param name="squidmetric" value="Usage/Server_side_HTTP_requests"/>
+				<param name="varnishmetric" value="Usage/Server_side_HTTP_requests"/>
 				<param name="layer" value="backend"/>
 				<param name="varnishmetric" value="Backends/backend_req"/>
 				
@@ -433,7 +433,7 @@ end
 				<param name="sumsep" value = "1,"/>
 				<param name="sumfunc" value="1,+"/>
 				
-				<param name="squidmetric" value="Service_times/Miss_HTTP_requests_service_time"/>
+				<param name="varnishmetric" value="Service_times/Miss_HTTP_requests_service_time"/>
 				<param name="layer" value="backend"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
