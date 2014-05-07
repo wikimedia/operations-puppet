@@ -1875,6 +1875,7 @@ node 'netmon1001.wikimedia.org' {
     include misc::torrus::web
     include misc::torrus::xml-generation::cdn
     include passwords::network
+    include ganglia::collector
 
     $snmp_ro_community = $passwords::network::snmp_ro_community
 
