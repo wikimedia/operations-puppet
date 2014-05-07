@@ -1,7 +1,10 @@
 # mediawiki syncing class
 class mediawiki::sync {
 	include misc::deployment::vars
+
 	include mediawiki::users::l10nupdate
+	include mediawiki::users::mwdeploy
+	include mediawiki::users::sudo
 
 	deployment::target { 'scap': }
 
