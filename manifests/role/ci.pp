@@ -353,15 +353,6 @@ class role::ci::slave::labs {
 
 }
 
-# The testswarm installation
-# Although not used as of July 2013, we will resurect this one day.
-class role::ci::testswarm {
-
-    system::role { 'role::ci::testswarm': description => 'CI Testswarm' }
-
-    include contint::testswarm
-}
-
 # Website for Continuous integration
 #
 # http://doc.mediawiki.org/

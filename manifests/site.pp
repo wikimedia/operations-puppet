@@ -1000,7 +1000,6 @@ node 'gallium.wikimedia.org' {
             'ALL = (jenkins-slave) NOPASSWD: ALL',
             'ALL = (gerritslave) NOPASSWD: ALL',
             'ALL = NOPASSWD: /etc/init.d/jenkins',
-            'ALL = (testswarm) NOPASSWD: ALL',
             'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
             'ALL = (postgres) NOPASSWD: /usr/bin/psql',
         ]
@@ -1023,7 +1022,6 @@ node 'gallium.wikimedia.org' {
     include contint::firewall
     include role::ci::master
     include role::ci::slave
-    include role::ci::testswarm
     include role::ci::website
     include role::zuul::production
     include admins::roots
