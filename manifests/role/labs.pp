@@ -87,9 +87,12 @@ class role::labs::instance {
         notify => Service['ssh'],
     }
 
+    generic::upstart_job { 'idmapd': }
+
     service { 'idmapd':
         ensure => running,
         subscribe => File['/etc/idmapd.conf'],
+        provider => upstart,
     }
 
     file { '/etc/idmapd.conf':
