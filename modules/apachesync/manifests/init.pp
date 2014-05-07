@@ -9,7 +9,10 @@ class apachesync {
     }
 
     file { '/usr/local/bin/apache-graceful-all':
-        ensure => absent,
+        owner => 'root',
+        group => 'root',
+        mode => '0555',
+        source => 'puppet:///modules/apachesync/apache-graceful-all',
     }
 
     file { '/usr/local/bin/sync-apache-simulated':
