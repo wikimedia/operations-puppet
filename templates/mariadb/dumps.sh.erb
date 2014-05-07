@@ -1,0 +1,23 @@
+#!/bin/bash
+
+user="<%= @user %>"
+pass="<%= @pass %>"
+folder="<%= @folder ?>"
+threads=<%= @threads ?>
+
+my="mysql -u ${user} -p${pass} --skip-column-names -e"
+where="where schema_name not like '%schema'"
+
+for db in $($my "select schema_name from information_schema.schemata $where");
+do
+    while [ $(pgrep mysqldump | wc -l) -gt $threads ];
+    do
+        echo 'waiting...'
+        sleep 1m
+    done
+
+    echo $db
+
+    mysqldump -u ${user} -p${pass} --single-transaction --quick $db | \
+        pigz > $folder/$db-$(date +%Y%m%d).sql.gz &
+done
