@@ -258,6 +258,8 @@ class role::applicationserver {
     class jobrunner( $run_jobs_enabled = true ){
         system::role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
 
+        include ::mediawiki
+
         class { "role::applicationserver::common": group => "jobrunner" }
 
         if $::realm == 'production' {

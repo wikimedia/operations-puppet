@@ -11,12 +11,6 @@ class mediawiki::jobrunner (
 	$iprioprocs = 5,
 	$procs_per_iobound_type = 1
 ) {
-
-	include mediawiki
-
-	package { [ 'wikimedia-job-runner' ]:
-		ensure => absent;
-	}
 	file {
 		"/etc/init.d/mw-job-runner":
 			owner => root,
@@ -43,9 +37,6 @@ class mediawiki::jobrunner (
 						"/etc/default/mw-job-runner",
 						"/etc/init.d/mw-job-runner",
 						"/usr/local/bin/jobs-loop.sh"
-					],
-					Package[
-						"wikimedia-task-appserver"
 					],
 				],
 				subscribe => File[
