@@ -1,10 +1,7 @@
 # mediawiki syncing class
 class mediawiki::sync {
-
 	include misc::deployment::vars
-
-	require mediawiki::packages
-	require mediawiki::users::l10nupdate
+	include mediawiki::users::l10nupdate
 
 	deployment::target { 'scap': }
 
