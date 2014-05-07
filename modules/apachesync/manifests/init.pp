@@ -1,6 +1,14 @@
 # scripts for syncing apache changes
 class apachesync {
 
+
+    file { '/etc/cluster':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => $::site,
+    }
+
     file { '/usr/local/bin/sync-apache':
         owner  => 'root',
         group  => 'root',
@@ -9,7 +17,10 @@ class apachesync {
     }
 
     file { '/usr/local/bin/apache-graceful-all':
-        ensure => absent,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/apachesync/apache-graceful-all',
     }
 
     file { '/usr/local/bin/sync-apache-simulated':
