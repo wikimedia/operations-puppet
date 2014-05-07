@@ -1311,6 +1311,11 @@ host iodine {
 	fixed-address iodine.wikimedia.org;
 }
 
+host iridium {
+	hardware ethernet F0:1F:AF:E8:C5:29;
+	fixed-address iron.wikimedia.org;
+}
+
 host iron {
 	hardware ethernet 78:2b:cb:09:0d:5c;
 	fixed-address iron.wikimedia.org;
