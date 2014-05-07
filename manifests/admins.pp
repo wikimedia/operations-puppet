@@ -3924,7 +3924,9 @@ class admins::bastion {
     include accounts::swalling
     include accounts::yuvipanda
     include accounts::haithams
-    include accounts::mhurd
+    include accounts::mhurd  # RT 7345
+    include accounts::dbrant # RT 7399
+
 }
 
 class admins::labs {
