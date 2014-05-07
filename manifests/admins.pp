@@ -3739,6 +3739,26 @@ class accounts {
         }
     }
 
+    # RT 7399
+    class dbrant inherits baseaccount {
+        $username = 'dbrant'
+        $realname = 'Dmitry Brant'
+        $uid      = '4910'
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'dbrant@wikimedia.org':
+                ensure => 'present',
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA4PobkGWos52aZE41QWS7nrTam3UQ1Fbyt3PoNoUKHneK1wNpBL0EfRtKW4lAX61ntxOIPCFVRxMok8TXnDb3ZbVa++Fqn89ts6iqfWlH34MxGYS5pxvdrdjExeREQ7d70gsEOv9RZlb/qchuamxHqLsptQSpiy2miPWTkRuNsbAJrFw8K5GiLqr60sBrsLlVbsEdbbtaz4itvWYLN3qAKgk5O24AT8lGeTsTAVpfMDcLR+omRoLs/eRNGifVfDslwp9F/rpNCvpSan4wfvF5Tsuc/lw3Wgc36LOiyw5o7C0NSWZzwmYCNj5vkPPF7IwoK3DhYYjPOf5WNCtPvN9utQ==',
+            }
+        }
+    }
+
 # / end regular (human) users
 
     # FIXME: not an admin. This is more like a system account.
