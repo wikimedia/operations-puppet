@@ -71,6 +71,7 @@ class role::cache {
                     "pmtpa" => [],
                     "eqiad" => [],
                     "esams" => [],
+                    "ulsfo" => [],
                 },
                 "bits" => {
                     "pmtpa" => [],
@@ -118,10 +119,14 @@ class role::cache {
                 "parsoid" => {
                     "pmtpa" => [],
                     "eqiad" => ['cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet'],
-                    "esams" => []
+                    "esams" => [],
+                    "ulsfo" => []
                 },
                 'misc' => {
+                    "pmtpa" => [],
                     'eqiad' => ['cp1043.wikimedia.org', 'cp1044.wikimedia.org'],
+                    "esams" => [],
+                    "ulsfo" => [],
                 }
             },
             'labs' => {
