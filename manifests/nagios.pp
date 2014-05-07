@@ -337,7 +337,7 @@ define monitor_ganglia(
     monitor_service { $title:
         ensure                => $ensure,
         description           => $description,
-        check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}!{$::ganglia::cname}",
+        check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}!${::ganglia::cname}",
         retries               => $retries,
         group                 => $group,
         critical              => $critical,
