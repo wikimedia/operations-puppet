@@ -45,7 +45,6 @@ class mediawiki::jobrunner (
 						"/usr/local/bin/jobs-loop.sh"
 					],
 					Package[
-						"wikimedia-job-runner",
 						"wikimedia-task-appserver"
 					],
 				],
