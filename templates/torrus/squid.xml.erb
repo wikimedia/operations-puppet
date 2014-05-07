@@ -81,6 +81,10 @@ end
 			<param name="snmp-check-sysuptime" value="no"/>
 			<param name="snmp-community" value="public"/>
 			<param name="snmp-version" value="2c"/>
+			<!-- This is just a placeholder so tha compile does not whine about
+			Cannot expand parameter reference %snmp-host% in /Squids/
+			-->
+			<param name="snmp-host" value="placeholder"/>
 		
 			<subtree name="pmtpa">
 				<subtree name="text">
