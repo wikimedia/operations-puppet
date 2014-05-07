@@ -31,17 +31,11 @@
 # 1) set variable $enabled = false
 # 2) set all ssh authorized keys to ensure => 'absent'
 
-define unixaccount($username, $uid, $gid, $enabled=true) {
+define unixaccount($username, $uid, $gid, $enabled=true, $shell='/bin/bash') {
     if defined(Class['nfs::home']) {
         $manage_home = false
     } else {
         $manage_home = true
-    }
-
-    if ($myshell) {
-        $shell = $myshell
-    } else {
-        $shell = '/bin/bash'
     }
 
     user { $username:
@@ -762,11 +756,10 @@ class accounts {
     class fvassard inherits baseaccount {
         $username = 'fvassard'
         $realname = 'Fred Vassard'
-        $myshell  = '/usr/bin/zsh'
         $enabled  = false
         $uid      = '542'
 
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled, shell => '/usr/bin/zsh' }
 
         if $enabled == true and $manage_home {
             ssh_authorized_key { 'fred@depthstar.polanet.net':
