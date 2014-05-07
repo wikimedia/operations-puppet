@@ -97,6 +97,15 @@ class role::mariadb::dbstore(
         lag_warn => $lag_warn,
         lag_crit => $lag_crit,
     }
+
+    include passwords::mysql::dump
+
+    include { 'mariadb::dump':
+        user    => $passwords::mysql::dump::user,
+        pass    => $passwords::mysql::dump::pass,
+        folder  => '/a/backup',
+        threads => 10,
+    }
 }
 
 # MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB
