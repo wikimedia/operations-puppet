@@ -96,19 +96,27 @@ end
 			<param name="data-dir" value="/var/lib/ganglia/rrds"/>
 			<param name="data-file" value="%varnishcluster%/%hostname%/%prefix%%metric%.rrd"/>
 
-			<subtree name="pmtpa">
-				<subtree name="bits">
+			<subtree name="eqiad">
+				<subtree name="text">
 					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="Bits caches pmtpa"/>
-					<param name="site" value="pmtpa"/>
+					<param name="varnishcluster" value="Text caches eqiad"/>
+					<param name="site" value="eqiad"/>
 
-<% varnish_nodes('bits', 'pmtpa').each do |line| -%>
+<% varnish_nodes('text', 'eqiad', 'dual-layer-varnish-server').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
-			</subtree>
+			
+				<subtree name="api">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="API caches eqiad"/>
+					<param name="site" value="eqiad"/>
 
-			<subtree name="eqiad">
+<% varnish_nodes('api', 'eqiad').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+			
 				<subtree name="bits">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Bits caches eqiad"/>
@@ -138,9 +146,49 @@ end
 					<%= line %>
 <% end -%>
 				</subtree>
+
+				<subtree name="parsoid">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Parsoid caches eqiad"/>
+					<param name="site" value="eqiad"/>
+
+<% varnish_nodes('parsoid', 'eqiad', 'dual-layer-varnish-server').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+
+				<subtree name="misc">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Misc caches eqiad"/>
+					<param name="site" value="eqiad"/>
+
+<% varnish_nodes('misc', 'eqiad').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
 			</subtree>
 			
 			<subtree name="esams">
+				<subtree name="text">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Text caches esams"/>
+					<param name="site" value="esams"/>
+
+<% varnish_nodes('text', 'esams', 'dual-layer-varnish-server').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+			
+				<subtree name="api">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="API caches esams"/>
+					<param name="site" value="esams"/>
+
+<% varnish_nodes('api', 'esams').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+			
 				<subtree name="bits">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Bits caches esams"/>
@@ -150,6 +198,45 @@ end
 					<%= line %>
 <% end -%>
 				</subtree>
+			
+				<subtree name="upload">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Upload caches esams"/>
+					<param name="site" value="esams"/>
+					
+<% varnish_nodes('upload', 'esams', 'dual-layer-varnish-server').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+				
+				<subtree name="mobile">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Mobile caches esams"/>
+					<param name="site" value="esams"/>
+
+<% varnish_nodes('mobile', 'esams', 'dual-layer-varnish-server').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+
+				<subtree name="parsoid">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Parsoid caches esams"/>
+					<param name="site" value="esams"/>
+
+<% varnish_nodes('parsoid', 'esams', 'dual-layer-varnish-server').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+
+				<subtree name="misc">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Misc caches esams"/>
+					<param name="site" value="esams"/>
+
+<% varnish_nodes('misc', 'esams').each do |line| -%>
+					<%= line %>
+<% end -%>
 			</subtree>
 		</subtree>
 	</datasources>
