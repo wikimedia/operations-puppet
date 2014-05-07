@@ -1976,6 +1976,7 @@ node 'osmium.eqiad.wmnet' {
     include admins::mortals
 
     include hhvm::dev
+    include mediawiki::sync
 
     class { '::mediawiki::jobrunner':
         run_jobs_enabled => false,
