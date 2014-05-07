@@ -334,7 +334,14 @@ class role::cache {
             "parsoid" => {
                 "pmtpa" => [],
                 "eqiad" => [],
-                "esams" => []
+                "esams" => [],
+                "ulsfo" => [],
+            }
+            "misc" => {
+                "pmtpa" => [],
+                "eqiad" => [],
+                "esams" => [],
+                "ulsfo" => [],
             }
         }
 
