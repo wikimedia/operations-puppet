@@ -30,6 +30,13 @@ class role::protoproxy::ssl::common {
         require => Class['nginx'],
     }
 
+    file { '/etc/ssl/private/dhparam.pem':
+        owner  => 'root',
+        group  => 'ssl-cert',
+        mode   => '0440',
+        source => 'puppet:///private/ssl/dhparam.pem',
+    }
+
     file { '/etc/logrotate.d/nginx':
         content => template('nginx/logrotate'),
     }
