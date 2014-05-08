@@ -131,6 +131,42 @@ class role::backup::director {
     bacula::director::fileset { 'var-vmail':
         includes => [ '/var/vmail' ]
     }
+    bacula::director::fileset { 'mysql-bpipe-xfalse-pfalse-ifalse':
+        includes => [],
+        plugins  => [ 'mysql-bpipe-xfalse-pfalse-ifalse',]
+    }
+    bacula::director::fileset { 'mysql-bpipe-xfalse-pfalse-itrue':
+        includes => [],
+        plugins  => [ 'mysql-bpipe-xfalse-pfalse-itrue',]
+    }
+    bacula::director::fileset { 'mysql-bpipe-xfalse-ptrue-ifalse':
+        includes => [],
+        plugins  => [ 'mysql-bpipe-xfalse-ptrue-ifalse',]
+    }
+    bacula::director::fileset { 'mysql-bpipe-xfalse-ptrue-itrue':
+        includes => [],
+        plugins  => [ 'mysql-bpipe-xfalse-ptrue-itrue',]
+    }
+    bacula::director::fileset { 'mysql-bpipe-xtrue-pfalse-ifalse':
+        includes => [],
+        plugins  => [ 'mysql-bpipe-xtrue-pfalse-ifalse',]
+    }
+    bacula::director::fileset { 'mysql-bpipe-xtrue-pfalse-itrue':
+        includes => [],
+        plugins  => [ 'mysql-bpipe-xtrue-pfalse-itrue',]
+    }
+    bacula::director::fileset { 'mysql-bpipe-xtrue-ptrue-ifalse':
+        includes => [],
+        plugins  => [ 'mysql-bpipe-xtrue-ptrue-ifalse',]
+    }
+    bacula::director::fileset { 'mysql-bpipe-xtrue-ptrue-itrue':
+        includes => [],
+        plugins  => [ 'mysql-bpipe-xtrue-ptrue-itrue',]
+    }
+    bacula::director::fileset { 'bpipe-mysql-xfalse-ptrue-itrue':
+        includes => [],
+        plugins  => [ 'bpipe-mysql-xfalse-ptrue-itrue'],
+    }
 
     # The console should be on the director
     class { 'bacula::console':

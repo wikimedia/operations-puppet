@@ -6,4 +6,9 @@ Job {
     JobDefs = "<%= @jobdefaults %>"
     FileSet = "<%= @fileset %>"
     Write Bootstrap = "/var/lib/bacula/<%= @fqdn %>-<%= @jobdefaults %>-<%= @fileset %>.bsr"
+    <%- if @extras -%>
+           <%- @extras.sort.map do |conf, value| -%>
+    <%= conf %> = <%= value %>
+           <%- end -%>
+    <%- end -%>
 }
