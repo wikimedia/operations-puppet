@@ -97,6 +97,41 @@ class role::mariadb::dbstore(
         lag_warn => $lag_warn,
         lag_crit => $lag_crit,
     }
+
+    include backup::host
+    include passwords::mysql::dump
+
+    file { '/srv/backup':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0600', # 0700 for dirs
+    }
+
+    cron { 'mariadb_backups_purge':
+        ensure  => present,
+        user    => 'root',
+        minute  => 0,
+        hour    => 0,
+        weekday => 0,
+        command => "find /srv/backup -mtime +15 -exec rm {} \\;",
+    }
+
+    file { '/etc/mysql/conf.d/dumps.cnf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => "[mysql]\nuser=${passwords::mysql::dump::user}\npassword=${passwords::mysql::dump::pass}\n",
+    }
+
+    class { 'backup::mysqlhost':
+        $xtrabackup     => false,
+        $per_db         => true,
+        $innodb_only    => true,
+        $local_dump_dir => '/srv/backup',
+        $password_file  => '/etc/mysql/conf.d/dumps.cnf',
+    }
 }
 
 # MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB
