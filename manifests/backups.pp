@@ -51,11 +51,24 @@ class backup::host($pool='production') {
     }
 }
 
-class backup::mysqlhost($xtrabackup=true, $per_db=false, $innodb_only=false) {
+class backup::mysqlhost($xtrabackup=true,
+                        $per_db=false,
+                        $innodb_only=false,
+                        $local_dump_dir=undef,
+                        $password_file=undef,
+) {
+
+    if !defined(Package['pigz']) {
+        package { 'pigz':
+            ensure => present,
+        }
+    }
     bacula::client::mysql-bpipe { "x${xtrabackup}-p${per_db}-i${innodb_only}":
         per_database           => $per_db,
         xtrabackup             => $xtrabackup,
         mysqldump_innodb_only  => $innodb_only,
+        local_dump_dir        => $local_dump_dir,
+        password_file         => $password_file,
     }
 }
 
