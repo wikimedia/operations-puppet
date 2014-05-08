@@ -24,6 +24,9 @@
 #   $password_file
 #       A simple my.cnf style file containing the credentials for a valid
 #       account to the database that can be used by mysql and mysqldump
+#   $local_dump_dir
+#       A simple my.cnf style file containing the credentials for a valid
+#       account to the database that can be used by mysql and mysqldump
 #
 # Actions:
 #       Will create a bpipe plugin for bacula
@@ -43,10 +46,11 @@ define bacula::client::mysql-bpipe(
                 $per_database,
                 $xtrabackup,
                 $xbstream_dir='/var/tmp/xbstream',
-                $pigz_level=fast,
+                $pigz_level='fast',
                 $is_slave=false,
                 $mysqldump_innodb_only=false,
                 $password_file=undef,
+                $local_dump_dir=undef,
                 ) {
     file { "/etc/bacula/scripts/bpipe-mysql-${name}":
         ensure  => present,
