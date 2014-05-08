@@ -83,6 +83,7 @@ class role::mariadb::tendril {
 class role::mariadb::dbstore(
     $lag_warn = 90000,
     $lag_crit = 180000,
+    $backups_folder = '/srv/backups',
     ) {
 
     system::role { 'role::mariadb::dbstore':
@@ -110,6 +111,34 @@ class role::mariadb::dbstore(
     mariadb::monitor_replication { ['s1','s2','s3','s4','s5','s6','s7','m2']:
         lag_warn => $lag_warn,
         lag_crit => $lag_crit,
+    }
+
+    include backup::host
+    include passwords::mysql::dump
+
+
+    file { $backups_folder:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0600', # 0700 for dirs
+    }
+
+    file { '/etc/mysql/conf.d/dumps.cnf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => "[client]\nuser=${passwords::mysql::dump::user}\npassword=${passwords::mysql::dump::pass}\n",
+    }
+
+    backup::mysqlset {'dbstore':
+        xtrabackup     => false,
+        per_db         => true,
+        innodb_only    => true,
+        local_dump_dir => $backups_folder,
+        password_file  => '/etc/mysql/conf.d/dumps.cnf',
+        method         => 'predump',
     }
 }
 
