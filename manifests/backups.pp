@@ -51,11 +51,54 @@ class backup::host($pool='production') {
     }
 }
 
-class backup::mysqlhost($xtrabackup=true, $per_db=false, $innodb_only=false) {
-    bacula::client::mysql-bpipe { "x${xtrabackup}-p${per_db}-i${innodb_only}":
-        per_database           => $per_db,
-        xtrabackup             => $xtrabackup,
-        mysqldump_innodb_only  => $innodb_only,
+define backup::mysqlset($method='bpipe',
+                        $xtrabackup=true,
+                        $per_db=false,
+                        $innodb_only=false,
+                        $local_dump_dir=undef,
+                        $password_file=undef,
+                        $mysql_binary=undef,
+                        $mysqldump_binary=undef,
+) {
+
+    $allowed_methods = [ 'bpipe', 'predump' ]
+    if !($method in $allowed_methods) {
+        fail("$method is not allowed")
+    }
+
+    if !defined(Package['pigz']) {
+        package { 'pigz':
+            ensure => present,
+        }
+    }
+    $jobdefaults = $backup::host::jobdefaults
+    if $method == 'predump' {
+        $extras = {
+             'ClientRunBeforeJob' =>  '/etc/bacula/scripts/predump',
+        }
+        $basefileset = regsubst(regsubst($local_dump_dir,'/',''),'/','-','G')
+        $fileset = "mysql-${basefileset}"
+
+    } elsif $method == 'bpipe' {
+        bacula::client::mysql-bpipe { "mysql-bpipe-x${xtrabackup}-p${per_db}-i${innodb_only}":
+            per_database          => $per_db,
+            xtrabackup            => $xtrabackup,
+            mysqldump_innodb_only => $innodb_only,
+            local_dump_dir        => $local_dump_dir,
+            password_file         => $password_file,
+            mysql_binary          => $mysql_binary,
+            mysqldump_binary      => $mysqldump_binary,
+        }
+        $extras = undef
+        $fileset = "mysql-${method}-x${xtrabackup}-p${per_db}-i${innodb_only}"
+    }
+
+    if $jobdefaults != undef {
+        @bacula::client::job { "mysql-${method}-${name}-${jobdefaults}":
+            fileset     => $fileset,
+            jobdefaults => $jobdefaults,
+            extras      => $extras,
+        }
     }
 }
 
