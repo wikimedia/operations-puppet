@@ -8,7 +8,7 @@ $ganglia_url = 'http://ganglia.wikimedia.org'
 
 define monitor_host(
     $ip_address    = $::ipaddress,
-    $group         = $::nagios_group,
+    $group         = $nagios_group,
     $ensure        = present,
     $critical      = 'false',
     $contact_group = 'admins'
@@ -18,16 +18,25 @@ define monitor_host(
         fail("Parameter $ip_address not defined!")
     }
 
+    # Determine the hostgroup:
+    # If defined in the declaration of resource, we use it;
+    # If not, 'misc' servers have no hostgroup, the others adopt the
+    # standard format
+    $hostgroup = $group ? {
+        /.+/    => $group,
+        default => $cluster ? {
+            'misc'  => undef,
+            default => "${cluster}_${::site}"
+        }
+    }
+
     # Export the nagios host instance
     @@nagios_host { $title:
         ensure               => $ensure,
         target               => "${::nagios_config_dir}/puppet_hosts.cfg",
         host_name            => $title,
         address              => $ip_address,
-        hostgroups           => $group ? {
-            /.+/    => $group,
-            default => undef,
-        },
+        hostgroups           => $hostgroup,
         check_command        => 'check_ping!500,20%!2000,100%',
         check_period         => '24x7',
         max_check_attempts   => 2,
@@ -64,7 +73,7 @@ define monitor_service(
     $check_command,
     $host                  = $::hostname,
     $retries               = 3,
-    $group                 = $::nagios_group,
+    $group                 = $nagios_group,
     $ensure                = present,
     $critical              = 'false',
     $passive               = 'false',
@@ -78,15 +87,25 @@ define monitor_service(
         fail("Parameter $host not defined!")
     }
 
+    # Determine the servicegroup:
+    # If defined in the declaration of resource, we use it;
+    # If not, 'misc' servers have no hostgroup, the others adopt the
+    # standard format
+    $servicegroup = $group ? {
+        /.+/    => $group,
+        default => $cluster ? {
+            'misc'  => undef,
+            default => "${cluster}_${::site}"
+        }
+    }
+
+
         # Export the nagios service instance
         @@nagios_service { "$::hostname $title":
             ensure                  => $ensure,
             target                  => "${::nagios_config_dir}/puppet_checks.d/${host}.cfg",
             host_name               => $host,
-            servicegroups           => $group ? {
-                /.+/    => $group,
-                default => undef
-            },
+            servicegroups           => $servicegroup,
             service_description     => $description,
             check_command           => $check_command,
             max_check_attempts      => $retries,
@@ -313,7 +332,7 @@ define monitor_ganglia(
     $gmetad_query_port     = 8654,
     $host                  = $::hostname,
     $retries               = 3,
-    $group                 = $nagios_group,
+    $group                 = undef,
     $ensure                = present,
     $critical              = 'false',
     $passive               = 'false',
@@ -411,7 +430,7 @@ define monitor_graphite_threshold(
     $timeout               = 10,
     $host                  = $::hostname,
     $retries               = 3,
-    $group                 = $nagios_group,
+    $group                 = undef,
     $ensure                = present,
     $nagios_critical       = 'false',
     $passive               = 'false',
@@ -512,7 +531,7 @@ define monitor_graphite_anomaly(
     $under                 = false,
     $host                  = $::hostname,
     $retries               = 3,
-    $group                 = $nagios_group,
+    $group                 = undef,
     $ensure                = present,
     $nagios_critical       = 'false',
     $passive               = 'false',
