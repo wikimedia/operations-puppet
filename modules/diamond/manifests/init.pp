@@ -74,4 +74,19 @@ class diamond(
         require    => Package['python-diamond'],
         subscribe  => File['/etc/diamond/diamond.conf'],
     }
+
+
+    diamond::collector { 'CPU':
+        settings => {
+            enabled   => 'true',
+            percore   => 'false',
+            normalize => 'true',
+        },
+    }
+
+    diamond::collector { 'Network':
+        settings => {
+            enabled => 'true',
+        },
+    }
 }

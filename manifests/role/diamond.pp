@@ -1,4 +1,5 @@
-class diamond::generic() {
+# role class for diamond
+class role::diamond {
 
     #these are notes just for initial rollout and testing:
     #tungsten: 10.64.0.18
@@ -6,25 +7,12 @@ class diamond::generic() {
     #Once https://gerrit.wikimedia.org/r/#/c/131449/ merges
     #start batching in groups of 10 to start, for now current statsd can't
     #accept multiple metrics
-    class { 'diamond':
+    class { '::diamond':
         settings => {
             enabled => 'true',
-            host    => '10.64.0.18',
+            host    => '10.64.0.18', # tungsten
             port    => '8125',
         },
     }
 
-    diamond::collector { 'CPU':
-        settings => {
-            enabled   => 'true',
-            percore   => 'false',
-            normalize => 'true',
-        },
-    }
-
-    diamond::collector { 'Network':
-        settings => {
-            enabled => 'true',
-        },
-    }
 }
