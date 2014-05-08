@@ -1,4 +1,9 @@
-class diamond::generic() {
+# == Class: diamond::generic
+#
+# Provisions Diamond and generic metric modules for monitoring CPU load
+# and network utilization.
+#
+class diamond::generic {
 
     #these are notes just for initial rollout and testing:
     #tungsten: 10.64.0.18
@@ -6,25 +11,26 @@ class diamond::generic() {
     #Once https://gerrit.wikimedia.org/r/#/c/131449/ merges
     #start batching in groups of 10 to start, for now current statsd can't
     #accept multiple metrics
+
     class { 'diamond':
         settings => {
-            enabled => 'true',
-            host    => '10.64.0.18',
-            port    => '8125',
+            enabled => true,
+            host    => 'statsd.eqiad.wmnet',
+            port    => 8125,
         },
     }
 
     diamond::collector { 'CPU':
         settings => {
-            enabled   => 'true',
-            percore   => 'false',
-            normalize => 'true',
+            enabled   => true,
+            percore   => false,
+            normalize => true,
         },
     }
 
     diamond::collector { 'Network':
         settings => {
-            enabled => 'true',
+            enabled => true,
         },
     }
 }
