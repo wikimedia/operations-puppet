@@ -7,6 +7,8 @@
 #       An array of files, dirs to be included in backups.
 #   $excludes
 #       An array of files, dirs to be excluded from backups.
+#   $plugins
+#       An array of plugins, who will be used in backups
 #
 # Actions:
 #       Will create a fileset definition to be used by the director
@@ -20,7 +22,11 @@
 #           excludes     => [ '/tmp', ],
 #       }
 #
-define bacula::director::fileset($includes, $excludes=undef) {
+define bacula::director::fileset(
+                                $includes,
+                                $excludes=undef,
+                                $plugins=undef,
+) {
     file { "/etc/bacula/conf.d/fileset-${name}.conf":
         ensure  => present,
         owner   => root,
