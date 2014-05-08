@@ -280,7 +280,7 @@ node 'bast1001.wikimedia.org' {
     }
 
     include standard
-    include diamond::generic
+    include role::diamond
     include subversion::client
     include admins::roots
     include admins::mortals
@@ -353,7 +353,7 @@ node 'carbon.wikimedia.org' {
     }
 
     include standard
-    include diamond::generic
+    include role::diamond
     include backup::client
     include role::installserver
 }
@@ -1003,7 +1003,7 @@ node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
     include standard
-    include diamond::generic
+    include role::diamond
     include admins::roots
     include admins::mortals
     include admins::restricted
@@ -1063,7 +1063,7 @@ node 'gallium.wikimedia.org' {
     }
 
     include standard
-    include diamond::generic
+    include role::diamond
     include contint::firewall
     include role::ci::master
     include role::ci::slave
@@ -1217,7 +1217,7 @@ node 'iron.wikimedia.org' {
     }
 
     include standard
-    include diamond::generic
+    include role::diamond
     include admins::roots
     include misc::management::ipmi
     include role::access_new_install
@@ -1367,7 +1367,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
 node 'lanthanum.eqiad.wmnet' {
     include standard
-    include diamond::generic
+    include role::diamond
     include admins::roots
     include admins::jenkins
     include role::ci::slave  # RT #5074
@@ -2615,7 +2615,7 @@ node 'hafnium.wikimedia.org' {
 # Primary Graphite, StatsD, and profiling data aggregation host.
 node 'tungsten.eqiad.wmnet' {
     include standard
-    include diamond::generic
+    include role::diamond
     include role::graphite
     include role::txstatsd
     include role::gdash
