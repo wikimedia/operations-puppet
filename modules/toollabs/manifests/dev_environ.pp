@@ -58,6 +58,7 @@ class toollabs::dev_environ {
         'maven',
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
+        'npm',
         'openjdk-7-jdk',
         'pastebinit',
         'pep8',                        # Bug 57863
