@@ -18,6 +18,17 @@ class role::releases {
     role::releases::access { 'mah': group => 'mwupld' } # RT 6861
     role::releases::access { 'mglaser': group => 'mwupld' } # RT 6861
     role::releases::access { 'reedy': group => 'mwupld' } # RT 6861
+
+    ferm::service { 'releases_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'releases_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
 }
 
 class role::releases::groups {
