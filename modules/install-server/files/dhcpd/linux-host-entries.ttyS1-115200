@@ -279,6 +279,11 @@ host antimony {
 	fixed-address antimony.wikimedia.org;
 }
 
+host argon {
+	hardware ethernet 78:2b:cb:09:11:f0;
+	fixed-address argon.wikimedia.org;
+}
+
 host backup4001 {
 	hardware ethernet F0:1F:AF:D8:72:9A;
 	fixed-address backup4001.ulsfo.wmnet;
