@@ -646,7 +646,7 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(43|50|51|52|55|56|61|62)\.eqiad\.wmnet/ {
+node /^db10(43|50|51|52|55|56|61|62|65)\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     class { 'role::coredb::s1':
         innodb_file_per_table => true,
@@ -672,7 +672,7 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(04|11|40|42|49|59)\.eqiad\.wmnet/ {
+node /^db10(04|11|40|42|49|59|64)\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     class { 'role::coredb::s4':
         innodb_file_per_table => true,
