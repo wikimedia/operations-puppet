@@ -847,7 +847,14 @@ node 'db1044.eqiad.wmnet' {
     include role::mariadb::tendril
 }
 
-node /^dbstore100(1|2)\.eqiad\.wmnet/ {
+node /^dbstore1001\.eqiad\.wmnet/ {
+    $cluster = 'mysql'
+    $mariadb_backups_folder = '/a/backups'
+    include role::mariadb::dbstore
+    include role::mariadb::backup
+}
+
+node /^dbstore1002\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     include role::mariadb::dbstore
 }
