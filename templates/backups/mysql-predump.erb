@@ -1,0 +1,41 @@
+#!/bin/sh
+# This file is managed by puppet. DO NOT EDIT
+
+<%- if @mysql_binary -%>
+MYSQL=<%= @mysql_binary %>
+<%- else -%>
+MYSQL=/usr/bin/mysql
+<%- end -%>
+<%- if @mysqldump_binary -%>
+MYSQLDUMP=<%= @mysqldump_binary %>
+<%- else %>
+MYSQLDUMP=/usr/bin/mysqldump
+<%- end -%>
+DATE=$(date "+%Y%m%d%H%M")
+
+# Let's be polite and not use all available processors
+PIGZ="/usr/bin/pigz -p <%= Integer(@processorcount)/8 > 1 ? Integer(@processorcount/8) : 1 %> "
+PIGZD="/usr/bin/pigz -d"
+<% if @pigz_level -%>
+PIGZ="$PIGZ --<%= @pigz_level -%>"
+<% end -%>
+<% if @password_file -%>
+# This is just for a user with credentials to connect to the database
+MYSQL="$MYSQL --defaults-file=<%= @password_file -%> "
+MYSQLDUMP="$MYSQLDUMP --defaults-file=<%= @password_file -%> "
+<% end -%>
+<% if @innodb_only -%>
+# Provided we only have innodb tables --single-transcation works wonders
+MYSQLDUMP="$MYSQLDUMP --single-transaction "
+<% end -%>
+
+find <%= @local_dump_dir %> -name "*sql.gz" -mtime +15 -exec rm {} \;
+for database in `$MYSQL -B -N -e "show databases"`
+do
+	NP=$((<%= @processorcount%> * 3 / 4)) # This is guaranteed to return an integer
+	JOBS=$(jobs -p | wc -l)
+	if [ $JOBS -ge $NP ]; then
+		wait $(jobs -p | head -1)
+	fi
+	$MYSQLDUMP --create-options -c $database | $PIGZ > <%= @local_dump_dir %>/$database-$DATE.sql.gz &
+done
