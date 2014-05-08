@@ -4,8 +4,6 @@
 class role::otrs {
     system::role { 'role::otrs::webserver': description => 'OTRS Web Application Server' }
 
-    $nagios_group = "${cluster}_${::site}"
-
     include standard-noexim
     include webserver::apache
     include network::constants

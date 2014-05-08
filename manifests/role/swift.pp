@@ -4,11 +4,10 @@
 class role::swift {
 	class base {
 		$cluster = "swift"
-		$nagios_group = "swift"
 
 		include standard
 	}
-	
+
 	class eqiad-prod inherits role::swift::base {
 		system::role { "role::swift::eqiad-prod": description => "Swift eqiad production cluster" }
 		include passwords::swift::eqiad-prod

@@ -285,7 +285,6 @@ class swift::storage {
             }
         }
         include nrpe
-        $nagios_group = 'swift'
 
         # RT-2593. Moved here from nrpe_local.cfg
         monitor_swift_daemon { [

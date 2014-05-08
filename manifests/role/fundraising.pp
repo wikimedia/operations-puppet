@@ -12,7 +12,6 @@ class role::fundraising::civicrm {
     $exim_bounce_collector = true
 
     $cluster = 'fundraising'
-    $nagios_group = "${cluster}_${::site}"
 
     sudo_user { 'khorn':
         privileges => ['ALL = NOPASSWD: ALL'],

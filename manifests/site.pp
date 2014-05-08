@@ -1740,6 +1740,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 # rate limiting purposes (bug 64622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     $cluster = 'swift'
+    $nagios_group = 'swift'
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1754,6 +1755,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 
 node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
     $cluster = 'swift'
+    $nagios_group = 'swift'
     $all_drives = [
         '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
@@ -1771,11 +1773,14 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
+    $cluster = 'swift'
+    $nagios_group = 'swift'
     include role::swift::esams-prod::proxy
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
     $cluster = 'swift'
+    $nagios_group = 'swift'
     # 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
     $all_drives = [
         '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
@@ -2138,6 +2143,7 @@ node 'sanger.wikimedia.org' {
 
 node /^search100[0-6]\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     if $::hostname =~ /^search100(1|2)$/ {
         $ganglia_aggregator = true
     }
@@ -2147,41 +2153,49 @@ node /^search100[0-6]\.eqiad\.wmnet/ {
 
 node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     include role::lucene::front_end::pool2
 }
 
 node /^search101[1-4]\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     include role::lucene::front_end::pool3
 }
 
 node /^search101[56]\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     include role::lucene::front_end::pool4
 }
 
 node /^search10(19|20)\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     include role::lucene::front_end::pool5
 }
 
 node /^search101[78]\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     include role::lucene::front_end::prefix
 }
 
 node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     include role::lucene::front_end::pool4
 }
 
 node /^search102[3-4]\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     include role::lucene::front_end::pool3
 }
 
 node /^searchidx100[0-2]\.eqiad\.wmnet/ {
     $cluster = 'search'
+    $nagios_group = 'lucene'
     include role::lucene::indexer
 }
 
@@ -2714,7 +2728,6 @@ node 'iodine.wikimedia.org' {
 
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     $cluster = 'parsoid'
-    $nagios_group = "${cluster}_${::site}"
 
     if $::hostname == 'wtp1001' {
         $ganglia_aggregator = true
