@@ -82,5 +82,17 @@ class misc::etherpad_lite {
             mode    => '0444',
             content => template('etherpad_lite/settings.json.erb');
     }
+
+    ferm::service { 'etherpad_http':
+        proto   => 'tcp',
+        port    => '80',
+    }
+
+    ferm::service { 'etherpad_https':
+        proto   => 'tcp',
+        port    => '443',
+    }
+
+
 }
 
