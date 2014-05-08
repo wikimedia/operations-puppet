@@ -82,15 +82,15 @@ class diamond(
 
     diamond::collector { 'CPU':
         settings => {
-            enabled   => 'true',
-            percore   => 'false',
-            normalize => 'true',
+            enabled   => true,
+            percore   => false,
+            normalize => true,
         },
     }
 
     diamond::collector { 'Network':
         settings => {
-            enabled => 'true',
+            enabled => true,
         },
     }
 }
