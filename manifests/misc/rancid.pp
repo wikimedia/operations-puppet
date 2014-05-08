@@ -8,7 +8,8 @@ class misc::rancid {
 	package { "rancid": ensure => present }
 
 	generic::systemuser { 'rancid':
-		name => 'rancid'
+		name => 'rancid',
+		shell => '/bin/sh'
 	}
 
 	include passwords::rancid
