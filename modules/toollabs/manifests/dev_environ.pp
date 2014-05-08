@@ -56,6 +56,7 @@ class toollabs::dev_environ {
         'lynx',
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
+        'npm',
         'openjdk-7-jdk',
         'pep8',                        # Bug 57863
         'pyflakes',                    # Bug 57863
