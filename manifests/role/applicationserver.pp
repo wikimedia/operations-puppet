@@ -55,7 +55,6 @@ class role::applicationserver {
             fail( 'hhvm is not ready for production usage yet' )
         }
 
-        $nagios_group = "${group}_${::site}"
         $cluster = "${group}"
 
         include standard

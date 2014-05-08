@@ -151,7 +151,6 @@ class role::lucene {
 	class indexer {
 		system::role { "role::lucene::indexer": description => "Lucene search indexer" }
 		$cluster = "search"
-		$nagios_group = "lucene"
 
 		if $::realm == 'labs' {
 			require role::lucene::beta
@@ -183,7 +182,6 @@ class role::lucene {
 		class common($search_pool) {
 			system::role { "role::lucene::front-end": description => "Front end lucene search server" }
 			$cluster = "search"
-			$nagios_group = "lucene"
 
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] ] }

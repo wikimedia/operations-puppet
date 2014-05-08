@@ -17,7 +17,7 @@
 #                  contact groups are defined in contactgroups.cfg.  Default: "admins"
 #
 class base::monitoring::host($contact_group = 'admins') {
-    monitor_host { $::hostname: group => $::nagios_group, contact_group => $contact_group }
+    monitor_host { $::hostname: contact_group => $contact_group }
     monitor_service { 'ssh': description => 'SSH', check_command => 'check_ssh', contact_group => $contact_group }
 
     package { [ 'megacli', 'arcconf', 'mpt-status' ]:
