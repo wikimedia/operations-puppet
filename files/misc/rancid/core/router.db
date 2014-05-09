@@ -17,9 +17,11 @@ asw2-a5-eqiad.mgmt.eqiad.wmnet:juniper:up:
 psw1-eqiad.mgmt.eqiad.wmnet:juniper:up:
 msw1-eqiad.mgmt.eqiad.wmnet:juniper:up:
 mr1-eqiad.mgmt.eqiad.wmnet:juniper:up:
-lab-ex4200-1.mgmt.eqiad.wmnet:juniper:up:
+lab-ex4200-1.mgmt.eqiad.wmnet:juniper:down:
 lab-ex4500-1.mgmt.eqiad.wmnet:juniper:down:
 msw2-pmtpa.mgmt.pmtpa.wmnet:juniper:up:
 pfw1-eqiad.wikimedia.org:juniper:up:
 cr1-ulsfo.wikimedia.org:juniper:up:
 cr2-ulsfo.wikimedia.org:juniper:up:
+cr1-codfw.wikimedia.org:juniper:up:
+cr2-codfw.wikimedia.org:juniper:up:
