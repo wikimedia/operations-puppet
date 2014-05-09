@@ -212,6 +212,7 @@ class toollabs::exec_environ {
         'graphicsmagick',              # Bug 56995
         'graphviz',
         'imagemagick',                 # Bug 63000
+        'jq',                          # Bug #65049.
         'ksh',
         'libav-tools',                 # Bug #53870.
         'libdmtx0a',                   # Bug #53867.
@@ -242,6 +243,7 @@ class toollabs::exec_environ {
         'socat',                       # Bug 57005
         'supybot',                     # Bug 61088.
         'p7zip',
+        'pdftk',                       # Bug #65048.
         'phpunit',
         'poppler-utils',               # Bug #53869.
         'postgresql-client-9.1',
