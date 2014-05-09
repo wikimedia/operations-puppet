@@ -648,7 +648,7 @@ node /^db10(43|50|51|52|55|56|61|62|65|66)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|36|60|63)\.eqiad\.wmnet/ {
+node /^db10(02|09|18|36|60|63|67)\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     class { 'role::coredb::s2':
         innodb_file_per_table => true,
