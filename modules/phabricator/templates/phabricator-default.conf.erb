@@ -1,0 +1,38 @@
+# ************************************
+# Phabricator template in module <%= @modulename %>
+# Managed by Puppet
+# ************************************
+
+NameVirtualHost <%= vhost_name %>:<%= port %>
+<VirtualHost <%= vhost_name %>:<%= port %>>
+  ServerName <%= srvname %>
+<% if serveradmin %>
+  ServerAdmin <%= serveradmin %>
+<% end %>
+<% if serveraliases.is_a? Array -%>
+<% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
+<% elsif serveraliases != '' -%>
+<%= "  ServerAlias #{serveraliases}" %>
+<% end -%>
+  DocumentRoot <%= docroot %>
+  <Directory <%= docroot %>>
+    Options <%= options %>
+    AllowOverride <%= Array(override).join(' ') %>
+    Order <%= docroot_dir_order %>
+    <% if docroot_dir_allows.is_a? Array %>
+    allow from <%= docroot_dir_allows.join(' ') %>
+    <% end %>
+    <% if docroot_dir_denies.is_a? Array %>
+    deny from <%= docroot_dir_denies.join(' ') %>
+    <% end %>
+  </Directory>
+  ErrorLog /var/log/apache2/<%= name %>_error.log
+  LogLevel warn
+  CustomLog /var/log/apache2/<%= name %>_access.log combined
+  ServerSignature Off
+
+  RewriteEngine on
+  RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
+  RewriteRule ^/favicon.ico   -                       [L,QSA]
+  RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
+</VirtualHost>
