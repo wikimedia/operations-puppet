@@ -10,6 +10,6 @@
 #
 max connections = 10
 dont compress = *
-uid = backup
-gid = backup
+uid = datasets
+gid = datasets
 read only = true

@@ -24,7 +24,7 @@ class role::snapshot::cron::primary {
     }
     class { 'snapshot::dumps::dumplists':
         enable => true,
-        user   => 'backup',
+        user   => 'datasets',
     }
     class { 'snapshot::dumps::mediadirlists':
         enable => true,
@@ -53,7 +53,7 @@ class role::snapshot::cron::secondary {
     }
     class { 'snapshot::dumps::dumplists':
         enable => false,
-        user   => 'backup',
+        user   => 'datasets',
     }
     class { 'snapshot::dumps::mediadirlists':
         enable => false,
