@@ -517,6 +517,12 @@ class misc::statistics::rsync::jobs::webrequest {
         destination => "${working_path}/squid/archive/sampled",
     }
 
+    # glam_nara logs from erbium
+    misc::statistics::rsync_job { 'glam_nara':
+        source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/glam_nara*.gz',
+        destination => "${working_path}/squid/archive/glam_nara",
+    }
+
     # edit logs from oxygen
     misc::statistics::rsync_job { "edits":
         source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz",
