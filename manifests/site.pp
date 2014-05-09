@@ -270,6 +270,12 @@ node 'antimony.wikimedia.org' {
     }
 }
 
+node 'argon.wikimedia.org' {
+    include standard
+    include role::irc::ircd-ratbox
+    include role::irc::mediawiki-echo
+}
+
 node 'bast1001.wikimedia.org' {
     system::role { 'misc':
         description => 'Bastion Server',
