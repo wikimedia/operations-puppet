@@ -42,8 +42,18 @@ to load socket.io's JavaScript library and subscribe to the stream. For example:
       var socket = io.connect( 'stream.wikimedia.org/rc' );
 
       socket.on( 'connect', function () {
-          // Subscribe to recent changes from the bg.wikipedia.org and meta.wikimedia.org
-          socket.emit( 'subscribe', [ 'bgwiki', 'metawiki' ] );
+          // Subscribe to recent changes from all wikis.
+          socket.emit( 'subscribe', '*' );
+
+          // Subscribe to recent changes from the Dutch Wikipedia.
+          socket.emit( 'subscribe', 'nl.wikipedia.org' );
+
+          // Subscribe to multiple wikis, specified as an array.
+          socket.emit( 'subscribe', [
+              'bg.wikipedia.org',
+              'commons.wikimedia.org',
+              'meta.wikimedia.org'
+          ] );
       } );
 
       socket.on( 'change', function ( data ) {
