@@ -10,7 +10,7 @@ usage() {
     exit 1
 }
 
-configfile="/backups/dumps/production/confs/wikidump.conf"
+configfile="/srv/dumps/confs/wikidump.conf"
 dryrun="false"
 site=""
 
