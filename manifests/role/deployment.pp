@@ -93,6 +93,11 @@ class role::deployment::config {
         'service_name'          => 'ocg',
         'checkout_submodules'   => true,
     },
+    'rcstream/rcstream' => {
+        'grain'                 => 'rcstream',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/rcstream',
+        'service_name'          => 'rcstream',
+    },
     'fluoride/fluoride'              => {
         'grain'    => 'eventlogging',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',

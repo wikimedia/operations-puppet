@@ -48,17 +48,12 @@ class rcstream(
         system => true,
     }
 
-    package { [ 'python-socketio', 'python-redis' ]:
-        ensure => $ensure,
+    deployment::target { 'rcstream':
         before => Service['rcstream'],
     }
 
-    file { '/usr/local/sbin/rcstream':
+    package { [ 'python-socketio', 'python-redis' ]:
         ensure => $ensure,
-        source => 'puppet:///modules/rcstream/rcstream',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
         before => Service['rcstream'],
     }
 
