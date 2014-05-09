@@ -2,38 +2,27 @@
 
 class ircd::server {
 
-$motd = '
-*******************************************************
-This is the Wikimedia RC->IRC gateway
-*******************************************************
-Sending messages to channels is not allowed.
-
-A channel exists for all Wikimedia wikis which have been
-changed since the last time the server was restarted. In
-general, the name is just the domain name with the .org
-left off. For example, the changes on the English Wikipedia
-are available at #en.wikipedia
-
-If you want to talk, please join one of the many
-Wikimedia-related channels on irc.freenode.net.
-'
-
     file {
-        '/usr/local/ircd-ratbox/etc/ircd.conf':
+        '/usr/etc/ircd.conf':
             mode   => '0444',
             owner  => 'irc',
             group  => 'irc',
             source => 'puppet:///private/misc/ircd.conf';
-        '/usr/local/ircd-ratbox/etc/ircd.motd':
+        '/usr/etc/ircd.motd':
             mode    => '0444',
             owner   => 'irc',
             group   => 'irc',
-            content => $motd;
+            content => template('ircd/motd.erb');
         '/etc/apache2/sites-available/irc.wikimedia.org':
             mode   => '0444',
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/ircd/apache/irc.wikimedia.org';
+    }
+
+    class { 'apache':
+      serveradmin  => 'noc@wikimedia.org',
+      before      => Apache_site[irc],
     }
 
     # redirect http://irc.wikimedia.org to http://meta.wikimedia.org/wiki/IRC
@@ -43,7 +32,7 @@ Wikimedia-related channels on irc.freenode.net.
     service { 'ircd':
         ensure   => running,
         provider => base,
-        binary   => '/usr/local/ircd-ratbox/bin/ircd';
+        binary   => '/usr/bin/ircd';
     }
 
     # Monitoring

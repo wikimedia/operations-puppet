@@ -12,17 +12,21 @@ class ircd::mediawiki-irc-relay {
     package { 'python-irclib': ensure => latest; }
 
     file { '/usr/local/bin/udpmxircecho.py':
-        content => template('misc/udpmxircecho.py.erb'),
+        content => template('ircd/udpmxircecho.py.erb'),
         mode    => '0555',
         owner   => 'irc',
         group   => 'irc';
     }
 
-    service { 'udpmxircecho':
-        ensure   => running,
-        provider => base,
-        binary   => '/usr/local/bin/udpmxircecho.py',
-        start    => '/usr/local/bin/udpmxircecho.py rc-pmtpa ekrem.wikimedia.org';
+    file { '/etc/init/ircecho.conf':
+        source  => 'puppet:///modules/ircd/upstart/ircecho.conf',
+        require => File['/usr/local/bin/udpmxircecho.py'],
+    }
+
+    # Ensure that the service is running.
+    service { 'ircecho':
+        ensure => running,
+        provider => 'upstart',
+        require => File['/etc/init/ircecho.conf'],
     }
 }
-

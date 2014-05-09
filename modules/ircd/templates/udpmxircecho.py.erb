@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 #
-# usage: mxircecho.py nickname server
+# usage: udpmxircecho.py nickname server
 import sys
-
 from ircbot import SingleServerIRCBot
 import threading, socket
+
 
 class EchoReader(threading.Thread):
 	def __init__(self, bot):
@@ -57,8 +57,11 @@ class EchoBot(SingleServerIRCBot):
 
 		for chan in self.chans:
 			c.join(chan)
-	
-bot = EchoBot([], sys.argv[1], sys.argv[2]);
-sthr = EchoReader(bot)
-sthr.start()
-bot.start()
+
+def main():
+    bot = EchoBot([], sys.argv[1], sys.argv[2]);
+    sthr = EchoReader(bot)
+    sthr.start()
+    bot.start()
+
+main()
