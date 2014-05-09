@@ -3,17 +3,15 @@
 # Configure a labs host to use MediaWiki-Vagrant to manage local wikis
 #
 class labs_vagrant {
-    user { 'vagrant':
-        ensure     => 'present',
-        home       => '/home/vagrant',
-        managehome => true,
+
+    file { '/home/vagrant':
+        ensure     => 'directory',
     }
 
     sudo_user { 'vagrant' :
         privileges => [
             'ALL=(ALL) NOPASSWD:ALL',
         ],
-        require => User['vagrant'],
     }
 
     # Primary group for modern wikitech accounts
@@ -22,7 +20,6 @@ class labs_vagrant {
             'ALL = (vagrant) NOPASSWD: ALL',
         ],
         group => 'wikidev',
-        require => User['vagrant'],
     }
 
     # Primary group for users imported from old svn credentials
@@ -32,7 +29,6 @@ class labs_vagrant {
             'ALL = (vagrant) NOPASSWD: ALL',
         ],
         group => 'svn',
-        require => User['vagrant'],
     }
 
     git::clone { 'vagrant':
@@ -45,7 +41,7 @@ class labs_vagrant {
         recurse => true,
         owner   => 'vagrant',
         group   => 'www-data',
-        require => [ User['vagrant'], Exec['git_clone_vagrant'] ],
+        require => Exec['git_clone_vagrant'],
     }
 
     file { '/vagrant':
