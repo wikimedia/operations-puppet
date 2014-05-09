@@ -1,0 +1,79 @@
+Phabricator
+http://phabricator.org/
+
+Phabricator is a collection of open source web applications
+that help software companies build better software.
+
+=== Administration Notes
+
+Recovering a password (including for the master admin account):
+
+<phabricator_root>/bin/auth recover <username>
+
+To see the local json values on disk:
+
+cat <phabricator_root>phabricator/conf/local/local.json | python -m json.tool
+
+  Or
+
+<phabricator_root>phabricator/bin/config list
+
+=== Upgrading
+
+Phabricator is on a rolling release.  Because of this we tag and vett our own releases.
+
+Repositories in Gerrit:
+
+    phabricator/libphutil
+    phabricator/arcanist
+    phabricator/phabricator
+
+We track a tag that should be named for the ticket associated with vetting and upgrading.
+
+The tag needs to specified in puppet as "git_tag => 'demo'" for the Phabricator
+class itself.  The same tag has to exist across all three repositories.
+
+Adding a new tag to rollover the Production phabricator:
+
+1.  Tag a commit id using the same tag name in all three repositories:
+
+    git tag demo hashid
+
+2.  Pushing tags to the gerrit server (this requires special permissions):
+
+   git push gerrit --tags
+
+Example output:
+
+    * [new tag]         demo -> demo
+
+3.  Run the upgrade script on the Phabricator host
+
+    phab_update_tag
+
+
+This script will manage setting up the migration state, upgrading the DB schema,
+rolling the git repositories to the appropriate tag defined in puppet, and 
+returning the host to the baseline.
+
+The upgrade process is invasive so an outage needs to be planned.
+
+== Upgrading and versioning notes for Phabricator:
+
+Typically, a tag will exist in the repository prior to upgrading as this same process
+can be used to upgrade a host in labs for testing and validation.  
+
+=== Related Projects
+
+https://github.com/bloomberg/phabricator-tools
+https://github.com/disqus/python-phabricator
+
+=== Upstream Issues to be Aware of
+
+Strict all tables requirement: https://secure.phabricator.com/D8309
+
+=== Wikimedia Specific Usage
+
+https://secure.phabricator.com/book/phabricator/article/custom_fields/
+
+See: data/fixed_settings.yaml

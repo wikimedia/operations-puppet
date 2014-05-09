@@ -1,0 +1,38 @@
+#These custom values are hardcoded here to persist across Phabriactor Mediawiki installs
+
+user.custom-field-definitions:
+  bugzilla_email:
+    name: bugzilla_email
+    type: text
+    caption: email registered to bugzilla.wikimedia.org
+    instructions: This field should contain the email that was registered to the old bugzilla.wikimedia.org
+    search: true
+  rt_email:
+    name: rt_email
+    type: text
+    caption: email registered to rt.wikimedia.org
+    instructions: This field should contain the email that was registered to the old rt.wikimedia.org
+    search: true
+  rt_id:
+    name: rt_id
+    type: text
+    caption: login name for rt
+    instructions: This field should contain the login name for the old rt.bugzilla.org
+    search: true
+
+maniphest.custom-field-definitions:
+  external_id:
+    name: ext_id
+    type: text
+    caption: external identifier
+    search: true
+
+phabricator.serious-business: true
+
+repository.default-local-path: '/var/repo/'
+
+phabricator.env: 'default'
+
+#will be overridden by production values if present
+mysql.host: 'localhost'
+mysql.pass: 'foo'

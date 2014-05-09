@@ -1,0 +1,124 @@
+#!/bin/bash
+
+HELP="\nhelp
+
+     ${0} [-y will skip verification]
+
+     Phabricator tag migration.
+
+     This script is solely for safely moving all repos and storage to the configured tag.
+
+     The current tracked tag is configured via the <%= @module_name %> puppet module.
+"
+
+if [ "$1" == '-h' ]
+  then
+    echo -e "${HELP}"
+    exit
+fi
+
+red='\e[0;31m'
+green='\e[0;32m'
+CLEAR='\e[0m'
+
+ps=$(which ps)
+git=$(which git)
+logger=$(which logger)
+puppet=$(which puppet)
+rm=$(which rm)
+
+function log() {
+  echo -e "\n${green}	->${1}${CLEAR}"
+  $logger "${1}"
+}
+
+function error() {
+  echo ""
+  $logger --stderr "${1}"
+}
+
+function ensure_stopped() {
+  $ps -ef | grep $1 > /dev/null
+  retcode=$?
+  if [ "$retcode" == "0" ]; then
+    error ">>>ERROR: ${1} processes still running!"
+    exit 1
+  else
+    log "${1} is stopped."
+  fi
+}
+
+function gitcmd() {
+  log "${1} for repo ${2}"
+  $git --git-dir=$2.git $1
+}
+
+function log_repo_head() {
+  gitcmd "rev-parse HEAD" <%= @phabdir %>/phabricator/
+  gitcmd "rev-parse HEAD" <%= @phabdir %>/arcanist/
+  gitcmd "rev-parse HEAD" <%= @phabdir %>/libphutil/
+}
+
+if [ "$1" != '-y' ]
+  then
+  while true; do
+    echo ""
+    echo "This script invasively updates Phabricator to the configured tag."
+    read -p "Are you sure? [y/n]" yn
+    case $yn in
+        [Yy]* ) echo 'OK'; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+  done
+fi
+
+#if lock_file is '' don't deal with status
+<% if @lock_file  != ''-%>
+
+if [ -e <%= @lock_file %> ]
+  then
+    $rm -v <%= @lock_file %>
+  else
+    log "<%= @lock_file %> not found"
+fi
+<% end -%>
+
+/etc/init.d/puppet stop
+/etc/init.d/apache2 stop
+<%= @phabdir %>/phabricator/bin/phd stop
+
+ensure_stopped '[P]habricator'
+ensure_stopped '[a]pache2'
+ensure_stopped '[p]uppet'
+
+log "HEAD pre move:"
+log_repo_head
+echo ""
+
+#Have puppet update and checkout tag specified in puppet
+log "Running puppet with tags 'git' to manage repo tags"
+$puppet agent --test --tags git
+
+log "HEAD post move:"
+log_repo_head
+echo ""
+
+#upgrades are idempotent so there is no concern for multiple passes
+#--force silences the 'please stop apache' warnings, etc
+<%= @phabdir %>/phabricator/bin/storage upgrade --force
+
+<%= @phabdir %>/phabricator/bin/storage status &>/dev/null
+retcode=$?
+if [ "$retcode" != "0" ]; then
+    error ">>>ERROR: Phabricator storage is in a bad state."
+    exit 1
+fi
+
+log "Puppet should restore the lock file and associated services to normal state."
+
+$puppet agent --test
+
+log "Starting puppet for a full reset to baseline"
+/etc/init.d/puppet start
+exit
