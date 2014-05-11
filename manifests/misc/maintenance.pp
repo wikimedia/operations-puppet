@@ -223,7 +223,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
     cron { 'wikibase-repo-prune2':
         # prunes the wb_changes table in wikidatawiki db
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune2.log',
-        user    => 'mwdeploy',
+        user    => 'apache',
         minute  => [0,15,30,45],
         ensure  => $wbenabled,
     }
@@ -234,7 +234,7 @@ class misc::maintenance::wikidata( $enabled = false ) {
     cron { 'wikibase-dispatch-changes3':
         # dispatches changes data to wikibase clients (e.g. wikipedia) to be processed as jobs there
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher3.log',
-        user    => 'mwdeploy',
+        user    => 'apache',
         minute  => '*/5',
         ensure  => $wbenabled,
     }
@@ -242,15 +242,15 @@ class misc::maintenance::wikidata( $enabled = false ) {
     cron { 'wikibase-dispatch-changes4':
         # second dispatcher to inject wikidata changes  wikibase clients (e.g. wikipedia) to be processed as jobs there
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher4.log',
-        user    => 'mwdeploy',
+        user    => 'apache',
         minute  => '*/5',
         ensure  => $wbenabled,
     }
 
     file {
         '/var/log/wikidata':
-            owner  => mwdeploy,
-            group  => mwdeploy,
+            owner  => 'apache',
+            group  => 'apache',
             mode   => '0664',
             ensure => directory;
         '/etc/logrotate.d/wikidata':
