@@ -113,6 +113,16 @@ class role::osm::master {
             method   => 'md5',
             database => 'u_aude',
     }
+    postgresql::spatialdb { 'wikimaps_atlas': }
+    postgresql::user { 'planemad@labs':
+            ensure   => 'present',
+            user     => 'planembad',
+            password => $passwords::osm::planemad_password,
+            cidr     => '10.68.16.0/21',
+            type     => 'host',
+            method   => 'md5',
+            database => 'wikimaps_atlas',
+    }
 }
 
 class role::osm::slave {
