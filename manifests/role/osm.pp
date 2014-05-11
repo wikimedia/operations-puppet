@@ -116,7 +116,7 @@ class role::osm::master {
     postgresql::spatialdb { 'wikimaps_atlas': }
     postgresql::user { 'planemad@labs':
             ensure   => 'present',
-            user     => 'planembad',
+            user     => 'planemad',
             password => $passwords::osm::planemad_password,
             cidr     => '10.68.16.0/21',
             type     => 'host',
