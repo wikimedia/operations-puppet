@@ -2,7 +2,11 @@
 #
 # Configure a labs host to use MediaWiki-Vagrant to manage local wikis
 #
-class labs_vagrant {
+# $inital_roles:  list of roles to include in labs vagrant before its first provision.
+#
+class labs_vagrant(
+    $initial_roles = ['labs_initial_content']
+) {
 
     file { '/home/vagrant':
         ensure     => 'directory',
@@ -55,5 +59,13 @@ class labs_vagrant {
         target  => '/vagrant/lib/labs-vagrant.rb',
         mode    => '0555',
         require => File['/vagrant'],
+    }
+
+    file { '/vagrant/puppet/manifests/manifests.d/vagrant-managed.pp':
+        ensure  => present,
+        replace => false,
+        content => template('labs_vagrant/vagrant-managed.pp.erb'),
+        owner   => 'vagrant',
+        require => Exec['git_clone_vagrant'],
     }
 }
