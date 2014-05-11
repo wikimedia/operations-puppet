@@ -207,6 +207,7 @@ class toollabs::exec_environ {
         'doxygen-latex',               # Bug 56326
         'expect',
         'fabric',                      # Bug #54135.
+        'gdal-bin',
         'git',
         'git-review',                  # Bug 62871.
         'gnuplot-nox',
