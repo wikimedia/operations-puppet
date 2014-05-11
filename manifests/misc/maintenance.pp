@@ -228,10 +228,6 @@ class misc::maintenance::wikidata( $enabled = false ) {
         ensure  => $wbenabled,
     }
 
-    cron { 'wikibase-repo-prune':
-        ensure => 'absent',
-    }
-
     # Run the dispatcher script every 5 minutes
     # This handles inserting jobs into client job queue, which then process the changes
     # not enabled yet until wikidata gets switched to new build of Wikibase
@@ -249,24 +245,6 @@ class misc::maintenance::wikidata( $enabled = false ) {
         user    => 'mwdeploy',
         minute  => '*/5',
         ensure  => $wbenabled,
-    }
-
-    cron { 'wikibase-dispatch-changes':
-        ensure => 'absent',
-    }
-
-    cron { 'wikibase-dispatch-changes2':
-        ensure => 'absent',
-    }
-
-    cron {
-        'wikibase-poll-test2':
-            ensure => absent;
-    }
-
-    cron {
-        'wikibase-poll-huwiki':
-            ensure => absent;
     }
 
     file {
