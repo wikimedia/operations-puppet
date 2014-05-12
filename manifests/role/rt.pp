@@ -28,11 +28,17 @@ class role::rt {
 		enable_spamassassin    => 'false',
 	}
 
+    # allow RT to receive mail from mchenry and sodium
+    ferm::service { 'rt-smtp':
+        proto  => 'smtp',
+        port   => '25',
+        srange => '(208.80.152.186/32 208.80.154.61/32)',
+    }
+
     ferm::service { 'rt-http':
         proto => 'tcp',
         port  => '80',
     }
-
     ferm::service { 'rt-https':
         proto => 'tcp',
         port  => '443',
