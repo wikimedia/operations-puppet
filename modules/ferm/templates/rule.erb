@@ -2,10 +2,10 @@
 #
 # <%= prio %>_<%= name %>: <%= desc %>
 
-domain <%= domain %> {
-	table <%= table %> {
-		chain <%= chain %> {
-			<%= rule %>
+domain <%= @domain %> {
+	table <%= @table %> {
+		chain <%= @chain %> {
+			<%= @rule %>
 		}
 	}
 }
