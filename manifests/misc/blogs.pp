@@ -30,7 +30,6 @@ class misc::blogs::wikimedia {
             source => 'puppet:///files/apache/blog_ports.conf';
     }
 
-    include nrpe
     class { 'memcached': memcached_ip => '127.0.0.1' }
     install_certificate{ 'blog.wikimedia.org': }
     install_certificate{ 'techblog.wikimedia.org': }
