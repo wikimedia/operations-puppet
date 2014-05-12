@@ -1,8 +1,5 @@
-
 # Generic Server
 class role::mariadb {
-
-    $cluster = 'misc'
 
     system::role { 'role::mariadb':
         description => 'database server',
@@ -15,8 +12,6 @@ class role::mariadb {
 # Beta Cluster Master
 # Should add separate role for slaves
 class role::mariadb::beta {
-
-    $cluster = 'beta'
 
     system::role { 'role::mariadb::beta':
         description => 'beta cluster database server',
@@ -37,8 +32,6 @@ class role::mariadb::beta {
 
 # What db1044 presently does...
 class role::mariadb::tendril {
-
-    $cluster = 'mysql'
 
     system::role { 'role::mariadb::tendril':
         description => 'tendril database server',
@@ -68,8 +61,6 @@ class role::mariadb::dbstore(
     $lag_warn = 90000,
     $lag_crit = 180000,
     ) {
-
-    $cluster = 'mysql'
 
     system::role { 'role::mariadb::dbstore':
         description => 'Delayed Slave',
@@ -101,8 +92,6 @@ class role::mariadb::dbstore(
 
 # MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB
 class role::mariadb::analytics {
-
-    $cluster = 'mysql'
 
     system::role { 'role::mariadb::analytics':
         description => 'Analytics All-Shards Slave',
