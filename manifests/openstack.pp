@@ -252,8 +252,8 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
     require mysql::server::package
 
     if !defined(Service['mysql']) {
-        service { "mysql":      
-            enable => true,     
+        service { "mysql":
+            enable => true,
             require => Class['mysql::server::package'],
             ensure => running;
         }
@@ -957,7 +957,7 @@ class openstack::neutron-compute($neutronconfig, $data_interface_ip) {
     }
 }
 
-class openstack::keystone-service($openstack_version="folsom", $keystoneconfig) {
+class openstack::keystone-service($openstack_version="folsom", $keystoneconfig, $glanceconfig) {
     if ! defined(Class["openstack::repo"]) {
         class { "openstack::repo": openstack_version => $openstack_version }
     }

@@ -64,7 +64,7 @@ class role::keystone::config::eqiad inherits role::keystone::config {
     $keystoneconfig = merge($eqiadkeystoneconfig, $commonkeystoneconfig)
 }
 
-class role::keystone::server {
+class role::keystone::server ($glanceconfig) {
     include role::keystone::config::pmtpa,
             role::keystone::config::eqiad
 
@@ -80,7 +80,7 @@ class role::keystone::server {
         }
     }
 
-    class { 'openstack::keystone-service': openstack_version => $openstack_version, keystoneconfig => $keystoneconfig }
+    class { 'openstack::keystone-service': openstack_version => $openstack_version, keystoneconfig => $keystoneconfig, glanceconfig => $glanceconfig }
 
     include role::keystone::redis
 }
