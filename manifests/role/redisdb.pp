@@ -9,7 +9,6 @@ class role::db::redis (
 	$maxmemory = inline_template("<%= (Float(memorysize.split[0]) * 0.82).round %>Gb"),
 	$redis_replication = undef
 ) {
-	$cluster = "redis"
 
 	system::role { "db::redis": description => "Redis server" }
 

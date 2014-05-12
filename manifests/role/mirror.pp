@@ -3,8 +3,6 @@
 
 class role::mirror::common {
 
-	$cluster = "misc"
-
 	package { rsync:
 		ensure => latest;
 	}
