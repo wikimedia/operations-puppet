@@ -32,13 +32,12 @@ table_open_cache       = 50000
 table_definition_cache = 50000
 
 # InnoDB file-per-table + TokuDB love those file descriptors
-open-files-limit = 200000
+open-files-limit = 400000
 
 character_set_server     = binary
 character_set_filesystem = binary
 collation_server         = binary
 
-transaction-isolation          = READ-COMMITTED
 innodb_file_per_table          = 1
 innodb_buffer_pool_size        = 48G
 innodb_log_file_size           = 4G
