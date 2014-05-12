@@ -1092,6 +1092,9 @@ node 'helium.eqiad.wmnet' {
 }
 
 node 'holmium.wikimedia.org' {
+
+    include base::firewall
+
     include standard
     include admins::roots
     include misc::blogs::wikimedia
