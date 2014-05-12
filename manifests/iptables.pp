@@ -169,7 +169,7 @@ define iptables_add_exec( $service ) {
 define iptables_add_service( $service, $source="", $destination="", $interface="", $jump="ACCEPT" ) {
     $service_title = "${title}_${service}"
 
-    iptables_add_rule{ $service_title: table => "filter", chain => "INPUT", source => $source, destination => $destination, protocol => $iptables_protocols["$service"], destination_port => $iptables_ports["$service"], interface => $interface, jump => $jump }
+    iptables_add_rule{ $service_title: table => "filter", chain => "INPUT", source => $source, destination => $destination, protocol => $::iptables_protocols["$service"], destination_port => $::iptables_ports["$service"], interface => $interface, jump => $jump }
 
 }
 
