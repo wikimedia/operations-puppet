@@ -3,8 +3,6 @@
 
 class role::swift {
 	class base {
-		$cluster = "swift"
-
 		include standard
 	}
 

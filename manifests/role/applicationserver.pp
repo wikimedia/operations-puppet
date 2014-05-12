@@ -35,9 +35,7 @@ class role::applicationserver {
 #
 # Parameters:
 #   - $group:
-#       Determines what logical group the host will be a
-#       part of. Used for ganglia. Possibilities are:
-#       appserver, api_appserver, bits_appserver, imagescaler, jobrunner, videoscaler
+#     Unused at the moment, should be removed
 #   - $lvs_pool:
 #       Determines lvsrealserver IP(s) that the host will receive.
 #       From lvs::configuration::$lvs_service_ips
@@ -46,7 +44,7 @@ class role::applicationserver {
 #       Will FAIL the run if enabled on production.
 #       (default: false)
     class common(
-        $group,
+        $group, # TODO - remove this parameter as it's unused
         $lvs_pool = undef,
         $hhvm = false
         ) {
@@ -54,8 +52,6 @@ class role::applicationserver {
         if $hhvm == true and $::realm == 'production' {
             fail( 'hhvm is not ready for production usage yet' )
         }
-
-        $cluster = "${group}"
 
         include standard
 

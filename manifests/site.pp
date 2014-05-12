@@ -427,7 +427,7 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 
     interface::add_ip6_mapped { 'main': }
 
-    $cluster = 'cache_parsoid'
+    $cluster = 'cache_mobile'
     include role::cache::mobile
 }
 

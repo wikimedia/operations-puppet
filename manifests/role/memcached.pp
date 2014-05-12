@@ -6,8 +6,6 @@
 
 class role::memcached {
 
-	$cluster = "memcached"
-
 	system::role { "role::memcached": description => "memcached server" }
 
 	include standard,
