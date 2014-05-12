@@ -614,8 +614,6 @@ class role::cache {
     }
 
     class text inherits role::cache::varnish::2layer {
-        $cluster = "cache_text"
-        $nagios_group = "cache_text_${::site}"
 
         system::role { "role::cache::text": description => "text Varnish cache server" }
 
@@ -755,8 +753,6 @@ class role::cache {
     }
 
     class upload inherits role::cache::varnish::2layer {
-        $cluster = "cache_upload"
-        $nagios_group = "cache_upload_${::site}"
 
         system::role { "role::cache::upload": description => "upload Varnish cache server" }
 
@@ -903,8 +899,6 @@ class role::cache {
     }
 
     class bits inherits role::cache::varnish::1layer {
-        $cluster = "cache_bits"
-        $nagios_group = "cache_bits_${::site}"
 
         class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
@@ -990,8 +984,6 @@ class role::cache {
     }
 
     class mobile inherits role::cache::varnish::2layer {
-        $cluster = "cache_mobile"
-        $nagios_group = "cache_mobile_${::site}"
 
         class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
@@ -1152,8 +1144,6 @@ class role::cache {
     }
 
     class parsoid inherits role::cache::varnish::2layer {
-        $cluster = "cache_parsoid"
-        $nagios_group = "cache_parsoid_${::site}"
 
         if ( $::realm == 'production' ) {
             class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site] }
@@ -1236,8 +1226,6 @@ class role::cache {
     }
 
     class misc inherits role::cache::varnish::1layer {
-        $cluster = "cache_misc"
-        $nagios_group = "cache_misc_${::site}"
 
         class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site] }
 

@@ -41,7 +41,6 @@ class role::protoproxy::ssl {
 
     include lvs::configuration
 
-    $cluster = "ssl"
     $enable_ipv6_proxy = true
 
     if $enable_ipv6_proxy {
@@ -307,7 +306,7 @@ class role::protoproxy::ssl {
 }
 
 class role::protoproxy::ssl::beta::common {
-    $cluster = 'ssl'
+
     $enable_ipv6_proxy = false
 
     include standard,
