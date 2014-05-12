@@ -32,6 +32,7 @@ class role::rt {
     ferm::service { 'rt-smtp':
         proto  => 'smtp',
         port   => '25',
+        proto  => 'tcp',
         srange => '(208.80.152.186/32 208.80.154.61/32)',
     }
 
