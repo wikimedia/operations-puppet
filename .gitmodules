@@ -26,5 +26,5 @@
 	path = modules/varnish
 	url = https://gerrit.wikimedia.org/r/operations/puppet/varnish
 [submodule "modules/mariadb"]
-	path = modules/mariadb
-	url = https://gerrit.wikimedia.org/r/operations/puppet/mariadb
+       path = modules/mariadb
+       url = https://gerrit.wikimedia.org/r/operations/puppet/mariadb

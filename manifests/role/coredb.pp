@@ -288,7 +288,6 @@ class role::coredb::common(
     $contact_group = 'admins',
     ) inherits role::coredb::config {
 
-    $cluster = $logical_cluster
     $primary_site = $topology[$shard]['primary_site']
     $masters = $topology[$shard]['masters']
     $snapshots = $topology[$shard]['snapshot']

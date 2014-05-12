@@ -10,7 +10,6 @@ class role::lvs::balancer {
         description  => 'Check rp_filter disabled',
         nrpe_command => "/usr/lib/nagios/plugins/check_sysctl ${rp_args}",
     }
-    $cluster = "lvs"
 
     include lvs::configuration
     $sip = $lvs::configuration::lvs_service_ips[$::realm]

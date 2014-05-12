@@ -49,6 +49,8 @@ class role::analytics::kafka::config {
 
     # else Kafka cluster is based on $::site.
     else {
+        # Please note that, as of now, this tampers with the node-level cluster variable.
+        # This is bad, and should be corrected by puppet 3
         $cluster = {
             'eqiad'   => {
                 'analytics1021.eqiad.wmnet' => { 'id' => 21 },
@@ -182,12 +184,15 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     # If this drops too low, trigger an alert.
     # These thresholds have to be manually set.
     # adjust them if you add or remove data from Kafka topics.
+    $nagios_servicegroup = '​analytics_eqiad'
+
     monitor_ganglia { 'kafka-broker-MessagesIn':
         description => 'Kafka Broker Messages In',
         metric      => 'kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate',
         warning     => ':1500.0',
         critical    => ':1000.0',
         require     => Class['::kafka::server::jmxtrans'],
+        group       => $nagios_servicegroup,
     }
 
     # Alert if any Kafka has under replicated partitions.
@@ -202,6 +207,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         warning     => '1',
         critical    => '10',
         require     => Class['::kafka::server::jmxtrans'],
+        group       => $nagios_servicegroup,
     }
 
     # Alert if any Kafka Broker replica lag is too high
@@ -214,6 +220,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         warning     => '1000000',
         critical    => '5000000',
         require     => Class['::kafka::server::jmxtrans'],
+        group       => $nagios_servicegroup,
     }
 
     # monitor disk statistics
