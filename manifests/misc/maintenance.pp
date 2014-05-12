@@ -17,7 +17,7 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
         }
     }
 
-    define cronjob( $cronenabled = $enabled ) {
+    define cronjob( $cronenabled = $misc::maintenance::refreshlinks::enabled ) {
 
         $cluster = regsubst($name, '@.*', '\1')
         $monthday = regsubst($name, '.*@', '\1')
@@ -366,9 +366,16 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 group  => mwdeploy,
                 mode   => '0664',
         }
+        $status = $enabled ?{
+            true    => present,
+            false   => absent,
+            default => absent
+        }
 
-        define updatequerypages::cronjob() {
 
+        define updatequerypages::cronjob(
+            $status = $misc::maintenance::updatequerypages::status
+            ) {
                 $cluster = regsubst($name, '@.*', '\1')
                 # Currently they're all monthly, this part is kept for BC and in case we change mind
                 # $monthday = regsubst($name, '.*@', '\1')
@@ -383,66 +390,42 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 cron { "cron-updatequerypages-ancientpages-${name}":
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Ancientpages > /home/mwdeploy/updateSpecialPages/${name}-AncientPages.log 2>&1",
                         monthday => 11,
-                        ensure   => $enabled ?{
-                          true => present,
-                          false => absent,
-                          default => absent
-                        };
+                        ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-deadendpages-${name}":
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Deadendpages > /home/mwdeploy/updateSpecialPages/${name}-DeadendPages.log 2>&1",
                         monthday => 12,
-                        ensure   => $enabled ?{
-                          true => present,
-                          false => absent,
-                          default => absent
-                        };
+                    ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-mostlinked-${name}":
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostlinked > /home/mwdeploy/updateSpecialPages/${name}-MostLinked.log 2>&1",
                         monthday => 13,
-                        ensure   => $enabled ?{
-                          true => present,
-                          false => absent,
-                          default => absent
-                        };
+                    ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-mostrevisions-${name}":
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostrevisions > /home/mwdeploy/updateSpecialPages/${name}-MostRevisions.log 2>&1",
                         monthday => 14,
-                        ensure   => $enabled ?{
-                          true => present,
-                          false => absent,
-                          default => absent
-                        };
+                        ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-wantedpages-${name}":
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Wantedpages > /home/mwdeploy/updateSpecialPages/${name}-WantedPages.log 2>&1",
                         monthday => 15,
-                        ensure   => $enabled ?{
-                          true => present,
-                          false => absent,
-                          default => absent
-                        };
+                        ensure   => $status
                 }
 
                 cron { "cron-updatequerypages-fewestrevisions-${name}":
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Fewestrevisions > /home/mwdeploy/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
                         monthday => 16,
-                        ensure   => $enabled ?{
-                          true => present,
-                          false => absent,
-                          default => absent
-                        };
+                        ensure   => $status
                 }
         }
 
         define updatequerypages::enwiki::cronjob() {
-
+            $status = $misc::maintenance::updatequerypages::status
                 Cron {
                         user   => mwdeploy,
                         hour   => 1,
@@ -453,66 +436,42 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                         command   => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages > /home/mwdeploy/updateSpecialPages/${name}-LonelyPages.log 2>&1",
                         month     => [1, 7],
                         monthday  => 18,
-                        ensure    => $enabled ?{
-                          true    => present,
-                          false   => absent,
-                          default => absent
-                        };
+                        ensure    => $status
                 }
 
                 cron { 'cron-updatequerypages-mostcategories-s1':
                         command   => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories > /home/mwdeploy/updateSpecialPages/${name}-MostCategories.log 2>&1",
                         month     => [2, 8],
                         monthday  => 19,
-                        ensure    => $enabled ?{
-                          true    => present,
-                          false   => absent,
-                          default => absent
-                        };
+                        ensure    => $status
                 }
 
                 cron { 'cron-updatequerypages-mostlinkedcategories-s1':
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedcategories > /home/mwdeploy/updateSpecialPages/${name}-MostLinkedCategories.log 2>&1",
                         month    => [3, 9],
                         monthday => 20,
-                        ensure   => $enabled ?{
-                          true    => present,
-                          false   => absent,
-                          default => absent
-                        };
+                        ensure   => $status
                 }
 
                 cron { 'cron-updatequerypages-mostlinkedtemplates-s1':
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates > /home/mwdeploy/updateSpecialPages/${name}-MostLinkedTemplates.log 2>&1",
                         month    => [4, 10],
                         monthday => 21,
-                        ensure   => $enabled ?{
-                          true    => present,
-                          false   => absent,
-                          default => absent
-                        };
+                        ensure   => $status
                 }
 
                 cron { 'cron-updatequerypages-uncategorizedcategories-s1':
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Uncategorizedcategories > /home/mwdeploy/updateSpecialPages/${name}-UncategorizedCategories.log 2>&1",
                         month    => [5, 11],
                         monthday => 22,
-                        ensure   => $enabled ?{
-                          true    => present,
-                          false   => absent,
-                          default => absent
-                        };
+                        ensure   => $status
                 }
 
                 cron { 'cron-updatequerypages-wantedtemplates-s1':
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Wantedtemplates > /home/mwdeploy/updateSpecialPages/${name}-WantedTemplates.log 2>&1",
                         month    => [6, 12],
                         monthday => 23,
-                        ensure   => $enabled ?{
-                          true    => present,
-                          false   => absent,
-                          default => absent
-                        };
+                        ensure   => $status
                 }
         }
 
