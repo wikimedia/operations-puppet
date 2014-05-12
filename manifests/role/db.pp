@@ -4,7 +4,6 @@
 # or db::sanitarium or db::labsdb for the labsdb project
 
 class role::db::core {
-    $cluster = 'mysql'
 
     system::role { 'db::core':
         description => 'Core Database server',
@@ -19,7 +18,6 @@ class role::db::sanitarium( $instances = {} ) {
 ## $instances must be a 2-level hash of the form:
 ## 'shard9001' => { port => NUMBER, innodb_log_file_size => "CORRECT_M", ram => "HELLA_G" },
 ## 'shard9002' => { port => NUMBER+1, innodb_log_file_size => "CORRECT_M", ram => "HELLA_G" },
-    $cluster = 'mysql'
 
     system::role { 'role::db::sanitarium':
         description => 'pre-labsdb dbs for Data Sanitization',
@@ -62,7 +60,6 @@ class role::db::labsdb( $instances = {} ) {
 ## $instances must be a 2-level hash of the form:
 ## 'shard9001' => { port => NUMBER, innodb_log_file_size => "CORRECT_M", ram => "HELLA_G" },
 ## 'shard9002' => { port => NUMBER+1, innodb_log_file_size => "CORRECT_M", ram => "HELLA_G" },
-    $cluster = 'mysql'
 
     system::role { 'role::db::labsdb':
         description => 'labsdb dbs for labs use',
