@@ -17,6 +17,9 @@
 #   See <https://github.com/BrightcoveOS/Diamond/wiki/Handlers>
 #   for a full list of available metric handlers.
 #
+# [*interval*]
+#   Default interval in seconds at which statistics will be collected
+#
 # [*settings*]
 #   A hash of configuration options for the desired handler.
 #   See <https://github.com/BrightcoveOS/Diamond/wiki/Handlers>
@@ -36,6 +39,7 @@
 #
 class diamond(
     $handler  = 'diamond.handler.dastatsd.StatsHandler',
+    $interval = '60',
     $settings = { host => 'localhost',
                   port => '8125',
     },
