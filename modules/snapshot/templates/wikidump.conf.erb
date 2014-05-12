@@ -4,11 +4,11 @@
 #############################################################
 
 [wiki]
-dblist=<%= @config[configtype]['dblist'] %>
+dblist=<%= @config[@configtype]['dblist'] %>
 privatelist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/private.dblist
 flaggedrevslist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/flaggedrevs.dblist
 biglist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/big.dblist
-skipdblist=<%= @config[configtype]['skipdblist'] %>
+skipdblist=<%= @config[@configtype]['skipdblist'] %>
 wikidatalist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/wikidata.dblist
 dir=<%= scope.lookupvar('snapshot::dirs::apachedir') %>
 adminsettings=wmf-config/AdminSettings.php
@@ -46,17 +46,17 @@ writeuptopageid=/usr/local/bin/writeuptopageid
 recompressxml=/usr/local/bin/recompressxml
 
 [cleanup]
-keep=<%= @config[configtype]['keep'] %>
+keep=<%= @config[@configtype]['keep'] %>
 
 [chunks]
-<% if @config[configtype].has_key?('chunksEnabled') -%>
-chunksEnabled=<%= @config[configtype]['chunksEnabled'] %>
+<% if @config[@configtype].has_key?('chunksEnabled') -%>
+chunksEnabled=<%= @config[@configtype]['chunksEnabled'] %>
 <% end -%>
-<% if @config[configtype].has_key?('recombineHistory') -%>
-recombineHistory=<%= @config[configtype]['recombineHistory'] %>
+<% if @config[@configtype].has_key?('recombineHistory') -%>
+recombineHistory=<%= @config[@configtype]['recombineHistory'] %>
 <% end -%>
-<% if @config[configtype].has_key?('checkpointTime') -%>
-checkpointTime=<%= @config[configtype]['checkpointTime'] %>
+<% if @config[@configtype].has_key?('checkpointTime') -%>
+checkpointTime=<%= @config[@configtype]['checkpointTime'] %>
 <% end -%>
 
 [otherformats]
@@ -65,11 +65,11 @@ multistream=1
 [pageslogging]
 batchsize=1000000
 
-<% if @config[configtype].has_key?('wikis') %>
-<% @config[configtype]['wikis'].keys.sort.each do |w| -%>
+<% if @config[@configtype].has_key?('wikis') %>
+<% @config[@configtype]['wikis'].keys.sort.each do |w| -%>
 [<%= [w] %>]
-pagesPerChunkHistory=<%= @config[configtype]['wikis'][w]['pagesPerChunkHistory'] %>
-pagesPerChunkAbstract=<%= @config[configtype]['wikis'][w]['pagesPerChunkAbstract'] %>
+pagesPerChunkHistory=<%= @config[@configtype]['wikis'][w]['pagesPerChunkHistory'] %>
+pagesPerChunkAbstract=<%= @config[@configtype]['wikis'][w]['pagesPerChunkAbstract'] %>
 
 <% end -%>
 <% end -%>
