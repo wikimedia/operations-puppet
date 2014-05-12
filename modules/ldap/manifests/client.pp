@@ -246,7 +246,7 @@ class ldap::client::sudo($ldapconfig) {
     }
 }
 
-class ldap::client::openldap($ldapconfig) {
+class ldap::client::openldap($ldapconfig, $ldapincludes) {
     package { 'ldap-utils':
         ensure => latest,
     }
@@ -310,7 +310,8 @@ class ldap::client::autofs($ldapconfig) {
 class ldap::client::includes($ldapincludes, $ldapconfig) {
     if 'openldap' in $ldapincludes {
         class { 'ldap::client::openldap':
-            ldapconfig => $ldapconfig
+            ldapconfig   => $ldapconfig,
+            ldapincludes => $ldapincludes,
         }
     }
 
