@@ -75,19 +75,12 @@ class gdash(
         source  => $template_source,
     }
 
-    file { '/var/run/gdash':
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0755',
-    }
-
     uwsgi::app { 'gdash':
-        require  => File['/etc/gdash/gdash.yaml', '/etc/gdash/config.ru', '/var/run/gdash'],
+        require  => File['/etc/gdash/gdash.yaml', '/etc/gdash/config.ru'],
         settings => {
             uwsgi => {
-                'socket'         => '/var/run/gdash/gdash.sock',
-                'stats'          => '/var/run/gdash/gdash-stats.sock',
+                'socket'         => '/run/uwsgi/gdash.sock',
+                'stats'          => '/run/uwsgi/gdash-stats.sock',
                 'rack'           => '/etc/gdash/config.ru',
                 'post-buffering' => 4096,  # required by the Rack specification.
                 'master'         => true,
