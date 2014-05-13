@@ -25,6 +25,10 @@ local frontend = ngx.re.match(ngx.var.http_host, "^([^:]*)")[1]
 
 local backend = red:srandmember('frontend:' .. frontend)
 
+-- Use a connection pool of 256 connections with a 32s idle timeout
+-- This also closes the current redis connection.
+red:set_keepalive(1000 * 32, 256)
+
 if backend == ngx.null then
     -- Handle frontends wihout any configuration in them
     ngx.exit(404)

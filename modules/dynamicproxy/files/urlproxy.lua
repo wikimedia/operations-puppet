@@ -54,6 +54,10 @@ if not route then
     end
 end
 
+-- Use a connection pool of 256 connections with a 32s idle timeout
+-- This also closes the current redis connection.
+red:set_keepalive(1000 * 32, 256)
+
 if route then
     ngx.var.backend = route
     ngx.exit(ngx.OK)
