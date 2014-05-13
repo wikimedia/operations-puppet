@@ -64,11 +64,6 @@ class openstack::firewall {
     ferm::rule { 'salt':
         rule => "saddr $labs_private_net proto tcp dport (4505 4506) ACCEPT;",
     }
-
-    # allow amanda from tridge; will be dropped soon
-    ferm::rule { 'amanda':
-        rule => 'saddr 208.80.152.170 proto tcp dport 10080 ACCEPT;',
-    }
 }
 
 class openstack::repo($openstack_version="folsom") {
