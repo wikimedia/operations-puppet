@@ -58,7 +58,7 @@ class role::swift {
 	}
 	class esams-prod inherits role::swift::base {
 		system::role { "role::swift::esams-prod": description => "Swift esams production cluster" }
-		include passwords::swift::esams-prod
+		include passwords::swift::esams_prod
 		class { "::swift::base": hash_path_suffix => "a0af6563d361f968", cluster_name => "esams-prod" }
 		class ganglia_reporter inherits role::swift::esams-prod {
 			# one host per cluster should report global stats
