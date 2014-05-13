@@ -90,9 +90,9 @@ class role::swift {
 				num_workers => $::processorcount,
 				memcached_servers => [ "ms-fe3001.esams.wmnet:11211", "ms-fe3002.esams.wmnet:11211" ],
 				auth_backend => 'tempauth',
-				super_admin_key => $passwords::swift::esams-prod::super_admin_key,
+				super_admin_key => ${passwords::swift::esams-prod::super_admin_key},
 				rewrite_account => 'AUTH_mw',
-				rewrite_password => $passwords::swift::esams-prod::rewrite_password,
+				rewrite_password => ${passwords::swift::esams-prod::rewrite_password},
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_container_list => "",
 				backend_url_format => "asis"
