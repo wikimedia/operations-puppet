@@ -31,6 +31,7 @@ end
 module Puppet::Parser::Functions
   newfunction(:phpdump, :type => :rvalue) do |args|
     fail 'phpdump() requires an argument' if args.empty?
-    phpdump(args)
+    fail 'phpdump() cannot handle multiple values' if args.length > 1
+    phpdump(args.first)
   end
 end
