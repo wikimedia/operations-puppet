@@ -370,11 +370,15 @@ class misc::statistics::sites::metrics {
 
     include webserver::apache
     webserver::apache::module { "alias": }
+    webserver::apache::module { "ssl": }
+
+    # install metrics.wikimedia.org SSL certificate
+    install_certificate{ $site_name: }
 
     # Set up the VirtualHost
     file { "/etc/apache2/sites-available/$site_name":
         content => template("apache/sites/${site_name}.erb"),
-        require =>  [Class["webserver::apache"], Webserver::Apache::Module['alias']],
+        require =>  [Class["webserver::apache"], Webserver::Apache::Module['alias'], Webserver::Apache::Module['ssl']],
         notify  => Class['webserver::apache::service'],
     }
     file { "/etc/apache2/sites-enabled/$site_name":
