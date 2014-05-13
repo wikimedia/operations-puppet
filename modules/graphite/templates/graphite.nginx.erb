@@ -2,7 +2,7 @@
 # This file is managed by Puppet
 
 upstream graphite_web {
-    server unix:/var/run/graphite-web/graphite-web.sock;
+    server unix:/run/uwsgi/graphite-web.sock;
 }
 
 server {

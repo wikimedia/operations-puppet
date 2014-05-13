@@ -7,6 +7,6 @@
         SetHandler uwsgi-handler
         uWSGIForceScriptName /
         uWSGImodifier1 7
-        uWSGIsocket /var/run/gdash/gdash.sock
+        uWSGIsocket /run/uwsgi/gdash.sock
     </Location>
 </VirtualHost>

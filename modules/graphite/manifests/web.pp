@@ -53,7 +53,6 @@ class graphite::web(
     file { [
         '/var/lib/graphite-web',
         '/var/log/graphite-web',
-        '/var/run/graphite-web',
     ]:
         ensure  => directory,
         owner   => 'www-data',
@@ -90,15 +89,15 @@ class graphite::web(
         settings => {
             uwsgi => {
                 'plugins'     => 'python',
-                'socket'      => '/var/run/graphite-web/graphite-web.sock',
-                'stats'       => '/var/run/graphite-web/graphite-web-stats.sock',
+                'socket'      => '/run/uwsgi/graphite-web.sock',
+                'stats'       => '/run/uwsgi/graphite-web-stats.sock',
                 'wsgi-file'   => '/usr/share/graphite-web/graphite.wsgi',
                 'die-on-term' => true,
                 'master'      => true,
                 'processes'   => $uwsgi_processes,
             },
         },
-        require  => File['/var/run/graphite-web', '/var/log/graphite-web'],
+        require  => File['/var/log/graphite-web'],
     }
 
     file { '/usr/local/sbin/graphite-index':

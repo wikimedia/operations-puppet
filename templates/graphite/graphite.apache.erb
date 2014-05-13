@@ -10,7 +10,7 @@
 <%= @apache_auth -%>
 
         # uWSGI reverse-proxy
-        uWSGIsocket /var/run/graphite-web/graphite-web.sock
+        uWSGIsocket /run/uwsgi/graphite-web.sock
         SetHandler uwsgi-handler
     </Location>
 
