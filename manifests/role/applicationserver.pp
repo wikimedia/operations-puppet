@@ -208,6 +208,13 @@ class role::applicationserver {
         class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
 
         class { "role::applicationserver::webserver": maxclients => "100" }
+        #RT 7451, static asset checks
+        if $::realm == 'production' {
+            monitor_service { 'bits http':
+                description   => 'bits HTTP',
+                check_command => 'check_http_bits',
+            }
+        }
     }
     class imagescaler{
         system::role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
