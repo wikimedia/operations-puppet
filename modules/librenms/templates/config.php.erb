@@ -7,7 +7,7 @@ $config['html_dir']    = "<%= @install_dir %>/html";
 $config['rrd_dir']     = "<%= @rrd_dir %>";
 $config['log_file']    = "/var/log/librenms.log";
 
-$puppet_config = <%= scope.function_phpdump(@config) %>;
+$puppet_config = <%= scope.function_phpdump([@config]) %>;
 
 $config = array_merge($config, $puppet_config);
 
