@@ -28,7 +28,7 @@ class lvs::monitor {
             uri => 'en.wikipedia.org!/wiki/Main_Page';
         'bits-lb.eqiad.wikimedia.org':
             ip_address => $ip['bits']['eqiad']['bitslb'],
-            uri => 'bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png';
+            uri => 'bits.wikimedia.org!/skins/common/images/poweredby_mediawiki_88x31.png';
         'upload-lb.eqiad.wikimedia.org':
             ip_address => $ip['upload']['eqiad']['uploadlb'],
             uri => 'upload.wikimedia.org!/monitoring/backend';
