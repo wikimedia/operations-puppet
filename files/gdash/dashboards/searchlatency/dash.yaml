@@ -1,2 +1,2 @@
 :name: "MediaWiki: Search Latency"
-:description: "Lucene Search Latency"
+:description: "Elasticsearch Search Latency"
