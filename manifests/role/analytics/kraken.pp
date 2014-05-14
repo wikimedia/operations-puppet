@@ -1,4 +1,6 @@
 # kraken.pp - role classes dealing with Kraken data analysis.
+#
+# NOTE!  'kraken' will be renamed soon.
 
 # == Class role::analytics::kraken
 # Kraken refers to the Analytics codebase used to generate
@@ -99,42 +101,6 @@ class role::analytics::kraken::jobs::import::pagecounts {
         command => "${script} --start ${start_date} ${datadir} >> ${log_file} 2>&1",
         user    => 'hdfs',
         minute  => 5,
-        require => Exec["${script}-exists"],
-    }
-}
-
-# == Class role::analytics::kraken::hive::partitions::external
-# Installs cron job that creates external Hive partitions for imported
-# datasets in $external_data_hdfs_dir.
-class role::analytics::kraken::jobs::hive::partitions::external {
-    include role::analytics::kraken
-
-    $script      = "${role::analytics::kraken::path}/kraken-etl/hive-partitioner"
-    $datadir     = $role::analytics::kraken::external_data_hdfs_dir
-    $database    = 'wmf'
-
-    # Note:  I'm not worried about logrotate yet.
-    # This generates just a few lines per hour.
-    $log_file    = "${role::analytics::kraken::log_dir}/hive-partitioner.log"
-
-    # make sure the script has been deployed.
-    exec { "${script}-exists":
-        command => "/usr/bin/test -x ${script}",
-        # This exec doesn't actually create $script, but
-        # we don't need to run test it puppet can already
-        # tell that the file exists.
-        creates => $script,
-    }
-
-
-    # Use hcatalog jar for JsonSerDe
-    $hive_options = '--auxpath /usr/lib/hcatalog/share/hcatalog/hcatalog-core-0.5.0-cdh4.3.1.jar'
-    # cron job to automatically create hive partitions for any
-    # newly imported data.
-    cron { 'kraken-create-external-hive-partitions':
-        command => "${script} --database ${database} --hive-options='${hive_options}' ${datadir} >> ${log_file} 2>&1",
-        user    => 'hdfs',
-        minute  => 21,
         require => Exec["${script}-exists"],
     }
 }

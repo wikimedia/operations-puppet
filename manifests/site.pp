@@ -230,8 +230,6 @@ node 'analytics1026.eqiad.wmnet' {
     include role::analytics::kraken::jobs::import::pagecounts
     # Imports logs from Kafka into Hadoop (via Camus)
     include role::analytics::kraken::jobs::import::kafka
-    # Creates hive partitions on all data in HDFS /wmf/data/external
-    include role::analytics::kraken::jobs::hive::partitions::external
 }
 
 # analytics1027 hosts the frontend
