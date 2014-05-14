@@ -184,7 +184,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     # If this drops too low, trigger an alert.
     # These thresholds have to be manually set.
     # adjust them if you add or remove data from Kafka topics.
-    $nagios_servicegroup = '​analytics_eqiad'
+    $nagios_servicegroup = 'analytics_eqiad'
 
     monitor_ganglia { 'kafka-broker-MessagesIn':
         description => 'Kafka Broker Messages In',
