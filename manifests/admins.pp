@@ -3506,6 +3506,12 @@ class accounts {
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCyDhTiTa+lUt+lM++HXAYchRyKX4GVMwb4zAAovcHbG9R7NHAP1vT7px+vwFG69TZay/MsuZ7oo5NyRUWNF00CXSSx0KMZz5FirW/dncrRG9/N+fxat8jyjVVrFiY1sngSUhmILQrLGV0Wa7EC8ZHv0qywO4UqbfgGxZMY5n2nu3hFvLn6LoKKoNDjaFTfEwio8QNjdMC0NZLYqUk1HMj5Zm4mrTFD+UcOXSbbOe4MytQKDYzZdEYd4XOE1ki/dRvAmPhAj0gAkezPCRseCCamaDmokd+PS8db3EHJ390+48FTkXLIO1uUhJJmF9MsWL2dj2gDk1RZjkOlfcAapypl',
             }
+            ssh_authorized_key { 'leila@starfruit-2':
+                ensure => 'present',
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDDrQIRAiH2afKoaaIW2K6loEk1CoOD1IKCLMWcfAky+CwqsCQWepiQxlQOZKez+Y3D0hE/jVA8Rv4jktx5SIqOZbkYQXF1s54jp2ULqVujofqjRH8qnUa+b3s7ywCQILGR8gV1X5cHcXztonwKhrEGqjlw3kk1NeOkI0/akRbTdxGjL5QbhJKg9T3bkkBkfwBupVvH8nxzS1twa/1lGLv0GUF220gEo4c8yUhT9EFWwzJlpcmKBo7m6cXrhXeCVoipKlfq3NMupTT1AiYh4Dcdnk+VxWNkmkbOU7CN9dvwXT0gK0OjznntqNC2nadikJXe8tAOPL953S/9br2Q/OGN',
+            }
         }
     }
 
