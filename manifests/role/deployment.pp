@@ -37,6 +37,9 @@ class role::deployment::config {
         'grain'        => 'jobrunner',
         'upstream'     => 'https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner',
         'service_name' => 'jobrunner',
+    'grafana/grafana'                => {
+        'grain'    => 'grafana',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/grafana',
     },
     'parsoid/deploy'                => {
         'grain'                 => 'parsoid',
