@@ -31,4 +31,20 @@ class hhvm::dev {
         group              => 'mwdeploy',
         recurse_submodules => true,
     }
+
+    git::clone { 'mediawiki/php/luasandbox':
+        directory          => '/srv/luasandbox',
+        branch             => 'master',
+        owner              => 'mwdeploy',
+        group              => 'mwdeploy',
+        recurse_submodules => true,
+    }
+
+    git clone:: { 'mediawiki/php/FastStringSearch':
+        directory          => '/srv/luasandbox',
+        branch             => 'master',
+        owner              => 'mwdeploy',
+        group              => 'mwdeploy',
+        recurse_submodules => true,
+    }
 }
