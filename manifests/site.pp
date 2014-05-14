@@ -2872,6 +2872,9 @@ node 'zirconium.wikimedia.org' {
     include misc::etherpad_lite
     include role::wikimania_scholarships
     include role::bugzilla
+    include role::grafana
+    include groups::wikidev
+    include accounts::bd808 # rt 6448
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',

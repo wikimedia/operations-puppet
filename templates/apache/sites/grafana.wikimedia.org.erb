@@ -1,0 +1,22 @@
+# Apache configuration for grafana.wikimedia.org
+# This file is managed by Puppet.
+<VirtualHost *:80>
+  ServerName grafana.wikimedia.org
+  DocumentRoot /srv/deploy/grafana/grafana/src
+
+  <Directory />
+    AllowOverride None
+  </Directory>
+
+  <Directory /srv/deploy/grafana/grafana/src>
+    AllowOverride None
+    Order allow,deny
+    allow from all
+  </Directory>
+
+  <Directory /etc/grafana>
+    Allow from all
+  </Directory>
+
+  Alias /config.js /etc/grafana/config.js
+</VirtualHost>
