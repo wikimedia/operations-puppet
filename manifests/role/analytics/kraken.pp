@@ -1,4 +1,6 @@
 # kraken.pp - role classes dealing with Kraken data analysis.
+#
+# NOTE!  'kraken' will be renamed soon.
 
 # == Class role::analytics::kraken
 # Kraken refers to the Analytics codebase used to generate
@@ -113,6 +115,10 @@ class role::analytics::kraken::jobs::hive::partitions::external {
     $datadir     = $role::analytics::kraken::external_data_hdfs_dir
     $database    = 'wmf'
 
+    # We are only using hive-partition to add partitions to the pagecounts table.
+    # The webrequest table is using Oozie.
+    $tables      = 'pagecounts'
+
     # Note:  I'm not worried about logrotate yet.
     # This generates just a few lines per hour.
     $log_file    = "${role::analytics::kraken::log_dir}/hive-partitioner.log"
@@ -132,7 +138,7 @@ class role::analytics::kraken::jobs::hive::partitions::external {
     # cron job to automatically create hive partitions for any
     # newly imported data.
     cron { 'kraken-create-external-hive-partitions':
-        command => "${script} --database ${database} --hive-options='${hive_options}' ${datadir} >> ${log_file} 2>&1",
+        command => "${script} --database ${database} --tables ${tables} --hive-options='${hive_options}' ${datadir} >> ${log_file} 2>&1",
         user    => 'hdfs',
         minute  => 21,
         require => Exec["${script}-exists"],
