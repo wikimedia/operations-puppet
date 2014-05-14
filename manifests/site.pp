@@ -2045,6 +2045,7 @@ node 'osmium.eqiad.wmnet' {
     include admins::mortals
 
     include hhvm::dev
+    include mediawiki::cgroup
     include mediawiki::sync
 
     class { '::mediawiki::jobrunner':
