@@ -9,6 +9,29 @@ class role::mariadb {
     include mariadb
 }
 
+# miscellaneous services clusters m[123], but currently only m3
+class role::mariadb::misc {
+
+    system::role { 'role::mariadb::misc':
+        description => 'miscellaneous services database',
+    }
+
+    include standard
+    include mariadb::packages_wmf
+    include passwords::misc::scripts
+
+    class { 'mariadb::config':
+        prompt   => 'MISC',
+        config   => 'mariadb/misc.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/a/sqldata',
+        tmpdir   => '/a/tmp',
+    }
+
+    include mariadb::monitor_disk
+    include mariadb::monitor_process
+}
+
 # Beta Cluster Master
 # Should add separate role for slaves
 class role::mariadb::beta {
