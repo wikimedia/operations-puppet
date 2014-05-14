@@ -645,7 +645,7 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(43|50|51|52|55|56|61|62|65|66)\.eqiad\.wmnet/ {
+node /^db10(50|51|52|55|56|61|62|65|66)\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     class { 'role::coredb::s1':
         innodb_file_per_table => true,
@@ -733,6 +733,12 @@ node /^db104[68]\.eqiad\.wmnet/ {
     } else {
         include role::coredb::m2
     }
+}
+
+## m3 shard
+node 'db1043.eqiad.wmnet' {
+    $cluster = 'mysql'
+    include role::mariadb::misc
 }
 
 ## researchdb s1

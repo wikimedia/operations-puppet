@@ -1,0 +1,53 @@
+# Misc cluster (shards m1, m2, m3)
+
+[client]
+port   = 3306
+socket = /tmp/mysql.sock
+
+[mysqld]
+
+log_bin
+log_slave_updates
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+user      = mysql
+socket    = /tmp/mysql.sock
+port      = 3306
+datadir   = <%= @datadir %>
+tmpdir    = <%= @tmpdir %>
+server_id = <%= @server_id %>
+read_only = 0
+
+max_connections    = 500
+max_allowed_packet = 16M
+sync_binlog        = 1
+binlog_format      = mixed
+expire_logs_days   = 14
+connect_timeout    = 3
+query_cache_size   = 0
+query_cache_type   = 0
+event_scheduler    = 1
+
+wait_timeout        = 3600
+interactive_timeout = 28800
+
+table_open_cache       = 5000
+table_definition_cache = 5000
+
+character_set_server     = binary
+character_set_filesystem = binary
+collation_server         = binary
+
+innodb_file_per_table
+innodb_buffer_pool_size = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
+innodb_log_file_size    = 1G
+innodb_flush_method     = O_DIRECT
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/
