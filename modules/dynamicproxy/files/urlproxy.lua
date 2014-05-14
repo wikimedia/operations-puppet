@@ -22,11 +22,6 @@ red:connect('127.0.0.1', 6379)
 
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
 
-if captures == ngx.null then
-    -- This would actually never happen, I'd think.
-    ngx.exit(500)
-end
-
 local prefix = captures[1]
 local rest = captures[2] or "/"
 local routes_arr = nil
@@ -58,6 +53,10 @@ if not route then
         end
     end
 end
+
+-- Use a connection pool of 256 connections with a 32s idle timeout
+-- This also closes the current redis connection.
+red:set_keepalive(1000 * 32, 256)
 
 if route then
     ngx.var.backend = route
