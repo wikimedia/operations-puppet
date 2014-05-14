@@ -3213,6 +3213,7 @@ node 'zirconium.wikimedia.org' {
     include role::wikimania_scholarships
     include role::bugzilla
     include role::transparency
+    include role::grafana
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',

@@ -1,0 +1,16 @@
+# Nginx configuration for Grafana
+# This file is managed by Puppet
+
+server {
+    listen <%= @listen %>;
+    server_name <%= @server_name %>;
+    root /srv/deployment/grafana/grafana/src;
+
+    location / {
+        expires 30d;
+    }
+
+    location /config.js {
+        alias /etc/grafana/config.js;
+    }
+}
