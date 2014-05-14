@@ -33,6 +33,10 @@ class role::deployment::config {
         'grain'    => 'gdash',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/gdash',
     },
+    'grafana/grafana'                => {
+        'grain'    => 'grafana',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/grafana',
+    },
     'parsoid/deploy'                => {
         'grain'                 => 'parsoid',
         'upstream'              => 'https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy',
