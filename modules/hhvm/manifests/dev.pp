@@ -48,6 +48,8 @@ class hhvm::dev {
         recurse_submodules => true,
     }
 
+    package { 'libthai-dev': }  # dependency for building wikidiff2
+
     git::clone { 'mediawiki/php/wikidiff2':
         directory          => '/srv/wikidiff2',
         branch             => 'master',
