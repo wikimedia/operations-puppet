@@ -1,0 +1,22 @@
+# Apache configuration for Grafana.
+# This file is managed by Puppet.
+<VirtualHost <%= @listen %>>
+  ServerName <%= @server_name %>
+  DocumentRoot /srv/deploy/grafana/grafana/src
+
+  <Directory />
+    AllowOverride None
+  </Directory>
+
+  <Directory /srv/deploy/grafana/grafana/src>
+    AllowOverride None
+    Order allow,deny
+    allow from all
+  </Directory>
+
+  <Directory /etc/grafana>
+    Allow from all
+  </Directory>
+
+  Alias /config.js /etc/grafana/config.js
+</VirtualHost>
