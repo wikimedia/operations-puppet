@@ -47,4 +47,12 @@ class hhvm::dev {
         group              => 'mwdeploy',
         recurse_submodules => true,
     }
+
+    git::clone { 'mediawiki/php/wikidiff2':
+        directory          => '/srv/wikidiff2',
+        branch             => 'master',
+        owner              => 'mwdeploy',
+        group              => 'mwdeploy',
+        recurse_submodules => true,
+    }
 }
