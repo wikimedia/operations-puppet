@@ -1,0 +1,11 @@
+/**
+ * Settings for Grafana
+ *
+ * For an annotated example of possible configuration values, see:
+ * <https://github.com/grafana/grafana/blob/master/src/config.sample.js>
+ * This file is managed by Puppet.
+ */
+define( [ 'settings' ], function ( Settings ) {
+  'use strict';
+  return new Settings( <%= scope.function_ordered_json([@defaults.merge(@config)]) %> );
+} );
