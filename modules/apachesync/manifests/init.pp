@@ -45,4 +45,11 @@ class apachesync {
         source => 'puppet:///modules/apachesync/apache-fast-test',
     }
 
+    # rsyncd setup for httpd configs
+    rsync::server::module { 'httpdconf':
+        path        => '/srv/httpdconf',
+        read_only   => 'yes',
+        hosts_allow => $::network::constants::mw_appserver_networks;
+    }
+
 }
