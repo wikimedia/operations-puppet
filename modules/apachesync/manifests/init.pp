@@ -9,6 +9,13 @@ class apachesync {
         content => $::site,
     }
 
+    file { '/srv/httpdconf':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     file { '/usr/local/bin/sync-apache':
         owner  => 'root',
         group  => 'root',
