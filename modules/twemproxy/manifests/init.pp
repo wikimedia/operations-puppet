@@ -6,18 +6,19 @@
 #
 # === Parameters
 #
-# [*config_file*]
-#   Path to twemproxy YAML configuration file. The file itself is not
-#   provisioned by the module, since it is assumed that it will
-#   accompany the application that is using twemproxy.
+# [*default*]
+#   Puppet file URI or local filesystem path to file that should be
+#   used as /etc/default/twemproxy. The file should set a CONFIG var
+#   in the environment that points to the twemproxy YAML config file.
+#   Defaults to 'puppet:///modules/twemproxy/default'.
 #
 # === Examples
 #
 #  class { 'twemproxy':
-#    config_file => '/a/common/wmf-config/twemproxy-eqiad.yaml',
+#    default => 'puppet:///modules/mediawiki/twemproxy.default',
 #  }
 #
-class twemproxy( $config_file ) {
+class twemproxy( $default = 'puppet:///modules/twemproxy/default' ) {
     package { 'twemproxy': }
 
     file { '/etc/init/twemproxy.conf':
@@ -26,7 +27,7 @@ class twemproxy( $config_file ) {
     }
 
     file { '/etc/default/twemproxy':
-        content => template('twemproxy/twemproxy.default.erb'),
+        source  => $default,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
