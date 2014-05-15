@@ -1081,7 +1081,7 @@ host db1071 {
 }
 
 host db1072 {
-	hardware ethernet ;
+	hardware ethernet C8:1F:66:E5:56:0F;
 	fixed-address db1072.eqiad.wmnet;
 }
 
