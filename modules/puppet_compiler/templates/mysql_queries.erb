@@ -1,0 +1,1 @@
+"CREATE DATABASE `puppet`;  GRANT ALL PRIVILEGES ON puppet.* TO 'puppet'@'localhost' IDENTIFIED BY <%= scope.lookupvar('passwords::puppet_compiler::mysql_password') -%>;"
