@@ -5,8 +5,8 @@
 class applicationserver::config::apache(
     $maxclients='40'
 ) {
+    require applicationserver::packages
 
-    Class['applicationserver::apache_packages'] -> Class['applicationserver::config::apache']
     Class['applicationserver::config::apache'] -> Class['applicationserver::config::base']
 
     file { '/etc/apache2/apache2.conf':
