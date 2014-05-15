@@ -2749,6 +2749,8 @@ node /^solr100[1-3]\.eqiad\.wmnet/ {
 
 node 'ytterbium.wikimedia.org' {
 
+    class { 'base::firewall': }
+
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
     include role::gerrit::production
