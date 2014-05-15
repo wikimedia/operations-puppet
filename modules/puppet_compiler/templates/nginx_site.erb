@@ -1,0 +1,12 @@
+server {
+       listen 80;
+       server_name localhost puppet-compiler.wmflabs.org <%= @fqdn -%>;
+
+       root <%= scope.lookupvar('puppet_compiler::program_dir') -%>/output;
+       index index.html index.htm;
+
+       location / {
+                autoindex on;
+                try_files $uri $uri/ 404;
+       }
+}
