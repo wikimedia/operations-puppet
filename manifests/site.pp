@@ -1639,6 +1639,7 @@ node 'magnesium.wikimedia.org' {
 
     class { 'base::firewall': }
 
+    include role::diamond
     include role::racktables
     include role::rt
 }
@@ -1764,6 +1765,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     class { 'lvs::realserver': realserver_ips => [ '10.2.2.27' ] }
 
     include role::swift::eqiad-prod::proxy
+    include role::diamond
 }
 
 node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
@@ -2731,6 +2733,7 @@ node /virt100[8-9].eqiad.wmnet/ {
 node 'iodine.wikimedia.org' {
     class { 'base::firewall': }
 
+    include role::diamond
     include role::otrs
 
     interface::add_ip6_mapped { 'main':
