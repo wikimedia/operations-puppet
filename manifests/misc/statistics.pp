@@ -76,6 +76,8 @@ class misc::statistics::packages {
         'make',
         # for checking up on eventlogging
         'zpubsub',
+        # libwww-perl for wikistats stuff
+        'libwww-perl',
     ]:
         ensure => latest;
     }
