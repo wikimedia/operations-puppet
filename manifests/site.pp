@@ -583,6 +583,7 @@ node 'dataset1001.wikimedia.org' {
         members        => [ 'eth0', 'eth1' ],
     }
 
+    include role::diamond
     include accounts::brion
 #    include role::download::secondary
     include role::dataset::primary
@@ -1441,6 +1442,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
     $cluster = 'lvs'
     include role::lvs::balancer
+    include role::diamond
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
