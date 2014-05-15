@@ -1,5 +1,5 @@
 class mediawiki::twemproxy {
-  if $hostname =~ /^mw1063/ {
+  if $hostname =~ /^mw106/ {
     class { '::twemproxy':
         default_file => 'puppet:///modules/mediawiki/twemproxy.default',
     }
