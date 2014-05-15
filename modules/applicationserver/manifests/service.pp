@@ -1,8 +1,9 @@
 # applicationserver::service
 
 class applicationserver::service {
-    Class['applicationserver::apache_packages'] -> Class['applicationserver::service']
-    Class['applicationserver::config::base'] -> Class['applicationserver::service']
+    require applicationserver::config::base
+    require applicationserver::packages
+
     include mediawiki::sync
     include mediawiki::packages
 
