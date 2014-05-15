@@ -28,7 +28,7 @@ Running the command with no message does not have any effect.
 
 OPTIONS
 -------
-This script has no options.
+This script has no options. boring
 
 EXAMPLE
 -------
