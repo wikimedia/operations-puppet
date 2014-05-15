@@ -390,6 +390,8 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
+
+    include base::firewall
     include standard
     include role::dns::recursor
 
