@@ -1,0 +1,6 @@
+#!/bin/bash
+PUPPET_COMPILER_BASEDIR="<%= @program_dir -%>"
+PUPPET_COMPILER_MYSQL_PASSWORD="<%= scope.lookupvar('passwords::puppet_compiler::mysql_password') -%>"
+export PUPPET_DIFFER_BASEDIR PUPPET_DIFFER_MYSQL_PASSWORD
+
+${PUPPET_COMPILER_BASEDIR}/comparator $@
