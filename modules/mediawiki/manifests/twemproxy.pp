@@ -1,5 +1,5 @@
 class mediawiki::twemproxy {
-  if $hostname =~ /^mw1053/ {
+  if $hostname =~ /^mw1063/ {
     class { 'twemproxy':
       config_file => '/a/common/wmf-config/twemproxy-eqiad.yaml',
     }
