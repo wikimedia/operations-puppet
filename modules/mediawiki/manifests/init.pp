@@ -1,24 +1,12 @@
-# mediawiki installation base class
-class mediawiki($twemproxy = true) {
+class mediawiki {
+    include ::mediawiki::users::mwdeploy
+    include ::mediawiki::users::l10nupdate
+    include ::mediawiki::users::sudo
+    include ::mediawiki::sync
+    include ::mediawiki::cgroup
+    include ::mediawiki::packages
 
-	# Disable timidity-daemon
-	#
-	# Timidity is a dependency for the MediaWiki extension Score and is
-	# installed via wikimedia-task-appserver.
-	#
-	# The 'timidity' package used to install the daemon, but it is recommended
-	# to disable it anyway. In Precise, the daemon is provided by a package
-	# 'timidity-daemon', so we just need to ensure it is not installed to
-	# disable it properly.
-	package { 'timidity-daemon':
-		ensure => absent,
-	}
-
-	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup, packages
-
-	if $twemproxy {
-        class { '::twemproxy':
-            default_file => 'puppet:///modules/mediawiki/twemproxy.default',
-        }
-	}
+    class { '::twemproxy':
+        default_file => 'puppet:///modules/mediawiki/twemproxy.default',
+    }
 }
