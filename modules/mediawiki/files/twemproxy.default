@@ -1,0 +1,4 @@
+# Configuration file for twemproxy
+MW_COMMON=`bash -c 'source /usr/local/lib/mw-deployment-vars.sh && echo $MW_COMMON'`
+. $MW_COMMON/multiversion/MWRealm.sh
+CONFIG=`getRealmSpecificFilename "$MW_COMMON/wmf-config/twemproxy.yaml"`

@@ -1,7 +1,7 @@
 class mediawiki::twemproxy {
   if $hostname =~ /^mw1063/ {
     class { '::twemproxy':
-      config_file => '/usr/local/apache/common/wmf-config/twemproxy-eqiad.yaml',
+        default_file => 'puppet:///modules/mediawiki/twemproxy.default',
     }
   } else {
     package { 'twemproxy':
