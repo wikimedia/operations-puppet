@@ -382,7 +382,7 @@ class misc::deployment::scap_primary {
 
     rsync::server::module { 'common':
         path        => '/a/common',
-        read_only   => 'true',
+        read_only   => true,
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
 }
@@ -393,7 +393,7 @@ class misc::deployment::scap_proxy {
 
     rsync::server::module { 'common':
         path        => '/usr/local/apache/common-local',
-        read_only   => 'true',
+        read_only   => true,
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
 }
