@@ -63,6 +63,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
     $cluster = 'lvs'
     include role::lvs::balancer
+    include role::diamond
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
