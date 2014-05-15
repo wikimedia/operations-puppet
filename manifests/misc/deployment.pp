@@ -12,129 +12,129 @@ class misc::deployment::common_scripts {
     require passwordscripts
 
     package { ['php5-parsekit', 'libwww-perl', 'libnet-dns-perl']:
-         ensure => present;
+        ensure => present;
     }
 
     file {
         '/usr/local/bin/clear-profile':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/scripts/clear-profile';
         '/usr/local/bin/configchange':
             ensure => absent;
         '/usr/local/bin/dologmsg':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/scripts/dologmsg';
         '/usr/local/bin/mwgrep':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/scripts/mwgrep';
         '/usr/local/bin/deploy2graphite':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/scripts/deploy2graphite';
         '/usr/local/bin/fatalmonitor':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/scripts/fatalmonitor';
         '/usr/local/bin/foreachwiki':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/scripts/foreachwiki';
         '/usr/local/bin/foreachwikiindblist':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/scripts/foreachwikiindblist';
         '/usr/local/bin/lint':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner   => 'root',
+            group   => 'root',
+            mode    =>  '0555',
             require => Package[ 'php5-parsekit' ], # bug 37076
-            source => 'puppet:///files/misc/scripts/lint';
+            source  => 'puppet:///files/misc/scripts/lint';
         '/usr/local/bin/lint.php':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
             require => Package[ 'php5-parsekit' ], # bug 37076
-            source => 'puppet:///files/misc/scripts/lint.php';
+            source  => 'puppet:///files/misc/scripts/lint.php';
         '/usr/local/bin/mwscript':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/mwscript';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/mwscript';
         '/usr/local/bin/mwscriptwikiset':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/mwscriptwikiset';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/mwscriptwikiset';
         '/usr/local/bin/notifyNewProjects':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/notifyNewProjects';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/notifyNewProjects';
         '/usr/local/bin/purge-varnish':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/purge-varnish';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/purge-varnish';
         '/usr/local/bin/refreshWikiversionsCDB':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/refreshWikiversionsCDB';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/refreshWikiversionsCDB';
         '/usr/local/bin/reset-mysql-slave':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/reset-mysql-slave';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/reset-mysql-slave';
         '/usr/local/bin/set-group-write':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/set-group-write';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/set-group-write';
         '/usr/local/bin/sql':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/sql';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/sql';
         '/usr/local/bin/sqldump':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/sqldump';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/sqldump';
         '/usr/local/bin/udprec':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/udprec';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/udprec';
         '/usr/local/sbin/set-group-write2':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/set-group-write2';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/set-group-write2';
         '/usr/local/bin/updateinterwikicache':
-            owner => root,
-            group => root,
-            mode => 0555,
-            source => 'puppet:///files/misc/scripts/updateinterwikicache';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/updateinterwikicache';
 
         # Manpages
         # Need to be generated manually using make in files/misc/scripts
         '/usr/local/share/man/man1':
-            ensure => 'directory',
+            ensure  => 'directory',
             recurse => true,
-            owner => root,
-            group => root,
-            mode => 0444,
-            source => 'puppet:///files/misc/scripts/man';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => 'puppet:///files/misc/scripts/man';
     }
 }
 
@@ -194,50 +194,50 @@ class misc::deployment::passwordscripts {
 
     file {
         '/usr/local/bin/cachemgr_pass':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
             content => template('misc/passwordScripts/cachemgr_pass.erb');
         '/usr/local/bin/mysql_root_pass':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
-            content => template("misc/passwordScripts/mysql_root_pass.erb");
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
+            content => template('misc/passwordScripts/mysql_root_pass.erb');
         '/usr/local/bin/nagios_sql_pass':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
-            content => template("misc/passwordScripts/nagios_sql_pass.erb");
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
+            content => template('misc/passwordScripts/nagios_sql_pass.erb');
         '/usr/local/bin/webshop_pass':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
-            content => template("misc/passwordScripts/webshop_pass.erb");
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
+            content => template('misc/passwordScripts/webshop_pass.erb');
         '/usr/local/bin/wikiadmin_pass':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
-            content => template("misc/passwordScripts/wikiadmin_pass.erb");
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
+            content => template('misc/passwordScripts/wikiadmin_pass.erb');
         '/usr/local/bin/wikiuser2_pass':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
-            content => template("misc/passwordScripts/wikiuser2_pass.erb");
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
+            content => template('misc/passwordScripts/wikiuser2_pass.erb');
         '/usr/local/bin/wikiuser_pass':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
             content => template('misc/passwordScripts/wikiuser_pass.erb');
         '/usr/local/bin/wikiuser_pass_nagios':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
-            content => template("misc/passwordScripts/wikiuser_pass_nagios.erb");
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
+            content => template('misc/passwordScripts/wikiuser_pass_nagios.erb');
         '/usr/local/bin/wikiuser_pass_real':
-            owner => root,
-            group => wikidev,
-            mode => 0550,
-            content => template("misc/passwordScripts/wikiuser_pass_real.erb");
+            owner   => 'root',
+            group   => 'wikidev',
+            mode    => '0550',
+            content => template('misc/passwordScripts/wikiuser_pass_real.erb');
     }
 }
 
@@ -245,44 +245,44 @@ class misc::deployment::l10nupdate {
     require misc::deployment::scap_scripts
 
     cron { 'l10nupdate':
+        ensure  => present,
         command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
-        user => 'l10nupdate',
-        hour => 2,
-        minute => 0,
-        ensure => present;
+        user    => 'l10nupdate',
+        hour    => 2,
+        minute  => 0;
     }
 
     file {
         '/usr/local/bin/l10nupdate':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/l10nupdate/l10nupdate';
         '/usr/local/bin/l10nupdate-1':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/l10nupdate/l10nupdate-1';
         '/usr/local/bin/sync-l10nupdate':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/l10nupdate/sync-l10nupdate';
         '/usr/local/bin/sync-l10nupdate-1':
-            owner => root,
-            group => root,
-            mode => 0555,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
             source => 'puppet:///files/misc/l10nupdate/sync-l10nupdate-1';
         # add ssh keypair for l10nupdate user from fenari for RT-5187
         '/home/l10nupdate/.ssh/id_rsa':
-            owner => l10nupdate,
-            group => l10nupdate,
-            mode => 0400,
+            owner  => 'l10nupdate',
+            group  => 'l10nupdate',
+            mode   => '0400',
             source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa';
         '/home/l10nupdate/.ssh/id_rsa.pub':
-            owner => l10nupdate,
-            group => l10nupdate,
-            mode => 0444,
+            owner  => 'l10nupdate',
+            group  => 'l10nupdate',
+            mode   => '0444',
             source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa.pub';
     }
 
@@ -291,18 +291,18 @@ class misc::deployment::l10nupdate {
     # previously so it'll be an existing file on some systems.
     # Also create the dir for the SVN checkouts, and set up log rotation
     file { '/var/log/l10nupdatelog':
-            owner => 'l10nupdate',
-            group => 'wikidev',
-            mode => 0664,
-            ensure => directory;
+            ensure => directory,
+            owner  => 'l10nupdate',
+            group  => 'wikidev',
+            mode   => '0664';
         '/var/lib/l10nupdate':
-            owner => 'l10nupdate',
-            group => 'wikidev',
-            mode => 0755,
-            ensure => directory;
+            ensure => directory,
+            owner  => 'l10nupdate',
+            group  => 'wikidev',
+            mode   => '0755';
         '/etc/logrotate.d/l10nupdate':
             source => 'puppet:///files/logrotate/l10nupdate',
-            mode => 0444;
+            mode   => '0444';
     }
 }
 
@@ -321,8 +321,8 @@ class misc::deployment::vars {
         file { $mw_common_source:
             ensure  => directory,
             replace => false,  # FIXME: /a/common is a symlink on some systems
-            owner   => root,
-            group   => wikidev,
+            owner   => 'root',
+            group   => 'wikidev',
             mode    => '0775',
         }
     } else {
@@ -342,22 +342,22 @@ class misc::deployment::vars {
         if ( $::instancename == 'deployment-bastion' ) {
             file { '/data/project/apache':
                 ensure => directory,
-                owner  => mwdeploy,
-                group  => mwdeploy,
+                owner  => 'mwdeploy',
+                group  => 'mwdeploy',
                 mode   => '0775',
             }
 
             file { '/data/project/apache/common-local':
                 ensure => directory,
-                owner  => mwdeploy,
-                group  => mwdeploy,
+                owner  => 'mwdeploy',
+                group  => 'mwdeploy',
                 mode   => '0775',
             }
 
             file { '/a':
                 ensure => directory,
-                owner  => root,
-                group  => root,
+                owner  => 'root',
+                group  => 'root',
                 mode   => '0775',
             }
 
@@ -369,9 +369,9 @@ class misc::deployment::vars {
     }
 
     file { '/usr/local/lib/mw-deployment-vars.sh':
-            owner => root,
-            group => root,
-            mode => 0444,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
             content => template('misc/mw-deployment-vars.erb');
     }
 }
