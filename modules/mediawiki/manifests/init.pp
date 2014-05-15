@@ -1,12 +1,5 @@
 # mediawiki installation base class
 class mediawiki($twemproxy = true) {
-	case $::operatingsystem {
-		debian, ubuntu: {
-		}
-		default: {
-			fail("Module ${module_name} is not supported on ${::operatingsystem}")
-		}
-	}
 
 	# Disable timidity-daemon
 	#
@@ -24,6 +17,8 @@ class mediawiki($twemproxy = true) {
 	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup, packages
 
 	if $twemproxy {
-		include twemproxy
+        class { '::twemproxy':
+            default_file => 'puppet:///modules/mediawiki/twemproxy.default',
+        }
 	}
 }
