@@ -28,8 +28,8 @@ FileDaemon {
     PKI Signatures = Yes
     PKI Keypair = "/var/lib/puppet/ssl/private_keys/bacula-keypair-<%= @fqdn %>.pem"
     PKI Master Key = "/var/lib/puppet/ssl/certs/ca.pem"
-    # Do NOT enable Data channel encryption.
-    TLS Enable = no
+    # Do enable Data channel encryption.
+    TLS Enable = yes
     TLS Require = yes
     TLS Certificate = "/var/lib/puppet/ssl/certs/<%= @fqdn %>.pem"
     TLS Key = "/var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem"

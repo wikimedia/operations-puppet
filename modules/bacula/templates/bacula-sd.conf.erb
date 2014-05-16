@@ -20,8 +20,8 @@ Storage {
     Pid Directory = "/var/run/bacula"
     Maximum Concurrent Jobs = <%= @sd_max_concur_jobs %>
     Plugin Directory = "/usr/lib/bacula"
-    # Do NOT Have the data channel encrypted.
-    TLS Enable = no
+    # Do Have the data channel encrypted.
+    TLS Enable = yes
     TLS Require = yes
     TLS CA Certificate File = "/var/lib/puppet/ssl/certs/ca.pem"
     TLS Verify Peer = yes
