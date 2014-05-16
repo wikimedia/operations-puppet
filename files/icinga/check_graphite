@@ -316,7 +316,7 @@ sampling (we will still require 1w of data)''',
         for target in self.targets:
             self.params.append(('target', target))
             self.params.append(
-                ('target', 'holtWintersConfidenceBands(%s)' % target))
+                ('target', 'holtWintersConfidenceBands(%s, 5)' % target))
         self.check_window = args.check_window
         self.warn = args.warn
         self.crit = args.crit
@@ -423,7 +423,7 @@ def main():
            check_threshold my.beloved.metric  --from -20m \
            --threshold 100 --over -C 10 -W 5
 
-    Check if a metric has exceeded its holter-winters confidence bands 5% of the
+    Check if a metric has exceeded its holt-winters confidence bands 5% of the
     times over the last 500 checks
 
     ./check_graphyte.py --url http://some-graphite-host  \
