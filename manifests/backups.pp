@@ -79,6 +79,14 @@ define backup::mysqlset($method='bpipe',
         $basefileset = regsubst(regsubst($local_dump_dir,'/',''),'/','-','G')
         $fileset = "mysql-${basefileset}"
 
+        file { '/etc/bacula/scripts/predump':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0500',
+            content => template('backups/mysql-predump.erb'),
+        }
+
     } elsif $method == 'bpipe' {
         bacula::client::mysql-bpipe { "mysql-bpipe-x${xtrabackup}-p${per_db}-i${innodb_only}":
             per_database          => $per_db,
