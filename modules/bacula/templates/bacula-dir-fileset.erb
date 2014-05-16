@@ -4,16 +4,21 @@ FileSet {
     Name = <%= @name %>
     Include {
         Options { signature = MD5 }
-        <% @includes.each do |include| -%>
-		File = <%= include %>
-        <% end -%>
+        <%- @includes.each do |include| -%>
+        File = <%= include %>
+        <%- end -%>
+        <%- if @plugins -%>
+        <% @plugins.each do |plugin| -%>
+        Plugin = "\\|/etc/bacula/scripts/<%= plugin %>"
+        <%- end -%>
+        <%- end -%>
     }
     <% if @excludes -%>
     Exclude {
-        <% @excludes.each do |exclude| -%>
-		File = <%= exclude %>
-        <% end -%>
+        <%- @excludes.each do |exclude| -%>
+        File = <%= exclude %>
+        <%- end -%>
     }
-    <% end -%>
+    <%- end -%>
     # Ignore FileSet Changes = no
 }

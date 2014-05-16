@@ -4,8 +4,12 @@
 # fileset
 #
 # Parameters:
-#   $device_type
-#       The type of the device. Valid values are File, Tape, Fifo
+#   $fileset
+#       The fileset to backup
+#   $jodefaults
+#       The jobdefaults to inherit
+#   $extras
+#       A Hash of configuration lines to add to the config file
 #
 # Actions:
 #       Will create a job definition using the given defaults for the director
@@ -20,7 +24,11 @@
 #           jobdefaults => 'ourdefaults',
 #       }
 #
-define bacula::client::job($fileset, $jobdefaults) {
+define bacula::client::job(
+                       $fileset,
+                       $jobdefaults,
+                       $extras=undef) {
+
 
     $director = $::bacula::client::director
 
