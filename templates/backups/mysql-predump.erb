@@ -21,8 +21,8 @@ PIGZ="$PIGZ --<%= @pigz_level -%>"
 <% end -%>
 <% if @password_file -%>
 # This is just for a user with credentials to connect to the database
-MYSQL="$MYSQL --defaults-file=<%= @password_file -%> "
-MYSQLDUMP="$MYSQLDUMP --defaults-file=<%= @password_file -%> "
+MYSQL="$MYSQL --defaults-extra-file=<%= @password_file -%> "
+MYSQLDUMP="$MYSQLDUMP --defaults-extra-file=<%= @password_file -%> "
 <% end -%>
 <% if @innodb_only -%>
 # Provided we only have innodb tables --single-transcation works wonders
