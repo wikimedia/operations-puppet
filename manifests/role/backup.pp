@@ -131,7 +131,12 @@ class role::backup::director {
     bacula::director::fileset { 'var-vmail':
         includes => [ '/var/vmail' ]
     }
-    bacula::director::fileset { 'a-backups':
+    bacula::director::fileset { 'mysql-srv-backups':
+        includes => [ '/srv/backups' ]
+    }
+    # As all /a this will hopefully no longer be needed at some point and will
+    # be killed with fire
+    bacula::director::fileset { 'mysql-a-backups':
         includes => [ '/a/backups' ]
     }
     bacula::director::fileset { 'mysql-bpipe-xfalse-pfalse-ifalse':
