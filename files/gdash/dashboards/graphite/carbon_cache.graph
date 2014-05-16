@@ -1,0 +1,25 @@
+title   "carbon cache"
+
+field :updates,
+               :alias => "updates",
+               :data  => "sumSeries(carbon.agents.tungsten-*.updateOperations)"
+
+field :received,
+               :alias => "received",
+               :data  => "sumSeries(carbon.agents.tungsten-*.metricsReceived)"
+
+field :committed,
+               :alias => "committed",
+               :data  => "sumSeries(carbon.agents.tungsten-*.committedPoints)"
+
+field :ppu,
+               :alias => "points per update",
+               :data  => "secondYAxis(sumSeries(carbon.agents.tungsten-*.pointsPerUpdate))"
+
+field :creates,
+               :alias => "creates",
+               :data  => "secondYAxis(sumSeries(carbon.agents.tungsten-*.creates))"
+
+field :cpu,
+               :alias => "avg cpu",
+               :data  => "secondYAxis(averageSeries(carbon.agents.tungsten-*.cpuUsage))"
