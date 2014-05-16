@@ -86,7 +86,11 @@ class role::analytics::kafka::config {
     }
 
     $brokers          = $cluster[$kafka_cluster_name]
-    $brokers_array    = keys($brokers)
+    if is_hash($brokers) {
+        $brokers_array = keys($brokers)
+    } else {
+        $brokers_array = []
+    }
     $zookeeper_hosts  = $role::analytics::zookeeper::config::hosts_array
     $zookeeper_chroot = "/kafka/${kafka_cluster_name}"
     $zookeeper_url    = inline_template("<%= zookeeper_hosts.sort.join(',') %><%= zookeeper_chroot %>")
