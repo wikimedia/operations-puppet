@@ -1,3 +1,10 @@
+# roots be everywhere
+class base::access::roots {
+
+    include admins::roots
+
+}
+
 class base::access::dc-techs {
     # add account and sudoers rules for data center techs
     #include accounts::cmjohnson
@@ -473,6 +480,7 @@ class base {
         base::standard-packages,
         base::environment,
         base::platform,
+        base::access:roots,
         base::access::dc-techs,
         base::screenconfig,
         ssh::client,
