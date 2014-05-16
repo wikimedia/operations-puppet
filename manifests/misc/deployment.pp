@@ -381,7 +381,7 @@ class misc::deployment::scap_primary {
 
     rsync::server::module { 'common':
         path        => '/a/common',
-        read_only   => 'true',
+        read_only   => 'yes',
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
 }

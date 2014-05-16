@@ -72,7 +72,7 @@ ${webrequest_log_directory}/*.log {
     rsync::server::module { 'webrequest':
         comment => 'kafkatee generated webrequest log files',
         path        => $webrequest_log_directory,
-        read_only   => 'true',
+        read_only   => 'yes',
         hosts_allow => $hosts_allow,
     }
 }
