@@ -200,7 +200,7 @@ class role::graphite {
         # if 10% of the last 100 checks is out of forecasted bounds
         monitor_graphite_anomaly {'requests_error_ratio':
             description  => 'HTTP error ratio anomaly detection',
-            metric       => 'divideSeries(reqstats.5xx,reqstats.requests)',
+            metric       => 'reqstats.5xx',
             warning      => 5,
             critical     => 10,
             check_window => 100,
