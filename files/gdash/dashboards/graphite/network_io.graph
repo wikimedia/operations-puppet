@@ -1,0 +1,11 @@
+title   "network IO, all interfaces"
+vtitle  "bytes/s"
+area    :first
+
+field :tx, :color => "green",
+               :alias => "tx",
+               :data  => "sumSeries(servers.tungsten.network.*.tx_byte.value)"
+
+field :rx, :color => "blue",
+               :alias => "rx",
+               :data  => "sumSeries(servers.tungsten.network.*.rx_byte.value)"

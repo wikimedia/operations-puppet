@@ -1,0 +1,14 @@
+title   "Disk scheduling, sda"
+
+field :svctm, :color => "blue",
+               :alias => "service time, ms",
+               :data  => "secondYAxis(servers.tungsten.iostat.sda.service_time.value)"
+
+field :await, :color => "green",
+               :alias => "wait, ms",
+               :data  => "servers.tungsten.iostat.sda.await.value"
+
+field :queue, :color => "red",
+               :alias => "queue length",
+               :data  => "servers.tungsten.iostat.sda.average_queue_length.value"
+

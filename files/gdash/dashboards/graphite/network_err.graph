@@ -1,0 +1,11 @@
+title   "network errors/drops, all interfaces"
+vtitle  "packets/s"
+area    :first
+
+field :tx, :color => "green",
+               :alias => "tx",
+               :data  => "sumSeries(servers.tungsten.network.*.tx_errors.value, servers.tungsten.network.*.tx_drop.value)"
+
+field :rx, :color => "blue",
+               :alias => "rx",
+               :data  => "sumSeries(servers.tungsten.network.*.rx_errors.value, servers.tungsten.network.*.rx_drop.value)"

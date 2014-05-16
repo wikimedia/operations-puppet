@@ -1,0 +1,13 @@
+title   "CPU"
+
+field :user,
+               :alias => "user",
+               :data  => "servers.tungsten.cpu.total.user.value"
+
+field :iowait,
+               :alias => "iowait",
+               :data  => "servers.tungsten.cpu.total.iowait.value"
+
+field :system,
+               :alias => "system",
+               :data  => "servers.tungsten.cpu.total.system.value"

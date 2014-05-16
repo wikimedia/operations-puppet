@@ -1,0 +1,17 @@
+title   "Disk IO, sda"
+
+field :write_s,
+               :alias => "write/s",
+               :data  => "servers.tungsten.iostat.sda.writes_per_second.value"
+
+field :read_s,
+               :alias => "read/s",
+               :data  => "servers.tungsten.iostat.sda.reads_per_second.value"
+
+field :read,
+               :alias => "read B/s",
+               :data  => "secondYAxis(servers.tungsten.iostat.sda.read_byte_per_second.value)"
+
+field :write,
+               :alias => "write B/s",
+               :data  => "secondYAxis(servers.tungsten.iostat.sda.write_byte_per_second.value)"
