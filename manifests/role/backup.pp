@@ -131,6 +131,9 @@ class role::backup::director {
     bacula::director::fileset { 'var-vmail':
         includes => [ '/var/vmail' ]
     }
+    bacula::director::fileset { 'a-backups':
+        includes => [ '/a/backups' ]
+    }
     bacula::director::fileset { 'mysql-bpipe-xfalse-pfalse-ifalse':
         includes => [],
         plugins  => [ 'mysql-bpipe-xfalse-pfalse-ifalse',]
