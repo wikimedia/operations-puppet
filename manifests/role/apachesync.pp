@@ -7,5 +7,8 @@ class role::apachesync {
 
     include ::apachesync
     include misc::dsh
+    include rsync::server
+    include network::constants
+
 }
 
