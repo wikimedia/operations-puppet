@@ -12,7 +12,7 @@ import socket
 import zmq
 
 
-schema_revs = (5832704, 6703470, 7494934)
+schema_revs = (5832704, 6703470, 7494934, 8477778)
 metrics = ('connecting', 'sending', 'waiting', 'redirecting', 'receiving',
            'rendering', 'loading', 'dnsLookup', 'pageSpeed',
            'totalPageLoadTime', 'mediaWikiLoadComplete')
