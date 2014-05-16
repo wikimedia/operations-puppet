@@ -1365,7 +1365,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     rsync::server::module {
         'pagecounts':
             path        => '/srv/dumps/pagecounts',
-            read_only   => 'false',
+            read_only   => 'no',
             hosts_allow => ['208.80.154.11', '208.80.152.185'];
     }
 
