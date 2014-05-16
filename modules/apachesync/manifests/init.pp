@@ -47,7 +47,7 @@ class apachesync {
 
     # rsyncd setup for httpd configs
     rsync::server::module { 'httpdconf':
-        path        => '/srv/httpdconf',
+        path        => '/srv/httpdconf/apache-config',
         read_only   => 'yes',
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
