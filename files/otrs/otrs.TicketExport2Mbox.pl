@@ -42,7 +42,7 @@ use Kernel::System::Ticket;
 use Kernel::System::Time;
 
 # create common objects
-my (%CommonObject,$Close,$Help,@TicketIDs,@TicketNumbers,@ArticleIDs);
+my (%CommonObject,$Close,$Help,@TicketIDs,@TicketNumbers,@ArticleIDs,$Rebuild);
 $CommonObject{ConfigObject} = Kernel::Config->new();
 $CommonObject{EncodeObject} = Kernel::System::Encode->new(%CommonObject);
 $CommonObject{LogObject}    = Kernel::System::Log->new(
