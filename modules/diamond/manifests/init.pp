@@ -39,9 +39,9 @@
 #
 class diamond(
     $handler  = 'diamond.handler.dastatsd.StatsHandler',
-    $interval = 60,
+    $interval = '60',
     $settings = { host => 'localhost',
-                  port => 8125,
+                  port => '8125',
     },
 ) {
     package { ['python-diamond', 'python-configobj']:
@@ -82,15 +82,15 @@ class diamond(
 
     diamond::collector { 'CPU':
         settings => {
-            enabled   => true,
-            percore   => false,
-            normalize => true,
+            enabled   => 'true',
+            percore   => 'false',
+            normalize => 'true',
         },
     }
 
     diamond::collector { 'Network':
         settings => {
-            enabled => true,
+            enabled => 'true',
         },
     }
 }
