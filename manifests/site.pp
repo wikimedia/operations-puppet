@@ -2048,6 +2048,7 @@ node 'osmium.eqiad.wmnet' {
     include standard
     include groups::wikidev
     include admins::mortals
+    include admins::roots
 
     include hhvm::dev
     include mediawiki::cgroup
