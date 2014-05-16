@@ -62,7 +62,7 @@ class misc::udp2log::rsyncd(
 		'udp2log':
 			comment => 'udp2log log files',
 			path        => $path,
-			read_only   => 'true',
+			read_only   => 'yes',
 			hosts_allow => $hosts_allow;
     }
 }

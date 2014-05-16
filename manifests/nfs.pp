@@ -323,7 +323,7 @@ class misc::nfs-server::home::rsyncd {
 
     rsync::server::module { 'httpdconf':
         path        => '/home/wikipedia/conf/httpd',
-        read_only   => 'true',
+        read_only   => 'yes',
         hosts_allow => $::network::constants::mw_appserver_networks,
     }
 }

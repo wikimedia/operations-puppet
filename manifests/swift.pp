@@ -194,21 +194,21 @@ class swift::storage {
                 gid             => 'swift',
                 max_connections => '5',
                 path            => '/srv/swift-storage/',
-                read_only       => 'false',
+                read_only       => 'no',
                 lock_file       => '/var/lock/account.lock';
             'container':
                 uid             => 'swift',
                 gid             => 'swift',
                 max_connections => '5',
                 path            => '/srv/swift-storage/',
-                read_only       => 'false',
+                read_only       => 'no',
                 lock_file       => '/var/lock/container.lock';
             'object':
                 uid             => 'swift',
                 gid             => 'swift',
                 max_connections => '10',
                 path            => '/srv/swift-storage/',
-                read_only       => 'false',
+                read_only       => 'no',
                 lock_file       => '/var/lock/object.lock';
         }
 
