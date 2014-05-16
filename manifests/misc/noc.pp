@@ -3,7 +3,7 @@
 class misc::noc-wikimedia {
 	system::role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
 
-	package { [ 'apache2', 'libapache2-mod-php5' ]:
+	package { 'apache2':
 		ensure => latest;
 	}
 
