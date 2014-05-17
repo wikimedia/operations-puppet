@@ -83,7 +83,7 @@ class applicationserver::packages {
     }
 
     # Score
-    package { 'lilipond':
+    package { 'lilypond':
         ensure => present,
     }
 
