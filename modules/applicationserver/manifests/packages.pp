@@ -2,7 +2,9 @@
 class applicationserver::packages {
     package { [
         'apache2-mpm-prefork',
+        'imagemagick',
         'libapache2-mod-php5',
+        'libmemcached10',       # XXX still needed?
         'libmemcached11',
         'php-apc',
         'php-pear',
@@ -75,8 +77,13 @@ class applicationserver::packages {
         'djvulibre-bin',
         'librsvg2-bin',
         'libtiff-tools',
-        'xpdf-utils',
+        'poppler-utils',
     ]:
+        ensure => present,
+    }
+
+    # Score
+    package { 'lilipond':
         ensure => present,
     }
 
