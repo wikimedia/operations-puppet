@@ -45,22 +45,3 @@ class role::solr::ttm {
 		max_heap => "1G",
 	}
 }
-
-class role::solr::geodata($replication_master = 'solr1001.eqiad.wmnet', $max_heap = undef) {
-	system::role { "solr-geodata": description => "Solr server for GeoData" }
-
-	include standard
-
-	class { "role::solr":
-		schema => "puppet:///modules/solr/schema-geodata.xml",
-		replication_master => $replication_master,
-		max_heap => $max_heap,
-	}
-}
-
-class role::solr::geodata::labs {
-	class { "role::solr::geodata":
-		replication_master => undef,
-		max_heap => "256M",
-	}
-}
