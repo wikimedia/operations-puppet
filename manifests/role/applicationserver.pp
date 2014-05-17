@@ -239,7 +239,6 @@ class role::applicationserver {
 
         include applicationserver::config::base,
             applicationserver::packages,
-            applicationserver::cron,
             applicationserver::sudo,
             role::applicationserver::configuration::php
 
@@ -275,7 +274,6 @@ class role::applicationserver {
 
         include applicationserver::config::base,
             applicationserver::packages,
-            applicationserver::cron,
             applicationserver::sudo,
             role::applicationserver::configuration::php
 
@@ -295,7 +293,6 @@ class role::applicationserver {
 
         include applicationserver::config::base,
             applicationserver::packages,
-            applicationserver::cron,
             applicationserver::sudo,
             role::applicationserver::configuration::php
     }

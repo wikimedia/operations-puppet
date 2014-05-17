@@ -21,12 +21,9 @@ class imagescaler::packages {
 
     package {
         [
-            'imagemagick',
             'ghostscript',
             'ffmpeg',
             'ffmpeg2theora',
-            'librsvg2-bin',
-            'djvulibre-bin',
             'netpbm',
             'libogg0',
             'libvorbisenc2',
@@ -72,7 +69,6 @@ class imagescaler::packages::fonts {
             'fonts-unfonts-extra',
             'fonts-vlgothic', # bug 64002
 
-            'gsfonts',
             'texlive-fonts-recommended',
 
             'ttf-alee',
