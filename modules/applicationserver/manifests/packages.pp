@@ -1,20 +1,28 @@
 # application server required packages
 class applicationserver::packages {
-
-    package { [ 'libapache2-mod-php5', 'php5-common', 'php5-cli', 'libmemcached11' ]:
-        ensure => latest,
+    package { [
+        'apache2-mpm-prefork',
+        'libapache2-mod-php5',
+        'libmemcached11',
+        'php-apc',
+        'php-pear',
+        'php5-cli',
+        'php5-common',
+    ]:
+        ensure => present,
     }
 
     # Standard PHP extensions
     package { [
         'php5-curl',
+        'php5-geoip',
         'php5-intl',
         'php5-memcached',
         'php5-mysql',
         'php5-redis',
         'php5-xmlrpc',
     ]:
-        ensure => latest,
+        ensure => present,
     }
 
     # Wikimedia-specific PHP extensions
@@ -24,7 +32,7 @@ class applicationserver::packages {
         'php5-wmerrors',
         'php5-fss',
     ]:
-        ensure => latest,
+        ensure => present,
     }
 
     # Pear modules
@@ -32,6 +40,51 @@ class applicationserver::packages {
         'php-mail',
         'php-mail-mime',
     ]:
-        ensure => latest,
+        ensure => present,
+    }
+
+    # TeX packages
+    package { [
+        'texlive',
+        'texlive-bibtex-extra',
+        'texlive-font-utils',
+        'texlive-fonts-extra',
+        'texlive-lang-all',
+        'texlive-latex-extra',
+        'texlive-math-extra',
+        'texlive-pictures',
+        'texlive-pstricks',
+        'texlive-publishers',
+    ]:
+        ensure => present,
+    }
+
+    # Math
+    package { [
+        'dvipng',
+        'gsfonts',
+        'make',
+        'ocaml',
+        'ploticus',
+    ]:
+        ensure => present,
+    }
+
+    # PDF and DjVu
+    package { [
+        'djvulibre-bin',
+        'librsvg2-bin',
+        'libtiff-tools',
+        'xpdf-utils',
+    ]:
+        ensure => present,
+    }
+
+    # Tidy
+    package { [
+        'libtidy-0.99-0',
+        'tidy',
+    ]:
+        ensure => present,
     }
 }
