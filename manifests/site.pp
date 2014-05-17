@@ -2600,7 +2600,7 @@ node 'terbium.eqiad.wmnet' {
         enabled => true,
     }
     class { 'misc::maintenance::geodata':
-        enabled => true,
+        enabled => false,
     }
     class { 'misc::maintenance::update_flaggedrev_stats':
         enabled => true,
@@ -2858,12 +2858,6 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     class { 'lvs::realserver':
         realserver_ips => ['10.2.2.28'],
     }
-}
-
-node /^solr100[1-3]\.eqiad\.wmnet/ {
-    include admin
-    include standard
-    include role::solr::geodata
 }
 
 node 'ytterbium.wikimedia.org' {

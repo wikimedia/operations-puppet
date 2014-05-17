@@ -300,11 +300,19 @@ class misc::maintenance::parsercachepurging( $enabled = false ) {
 class misc::maintenance::geodata( $enabled = false ) {
     file {
         '/usr/local/bin/update-geodata':
-            ensure  => present,
+            ensure  => $enabled ?{
+                true    => present,
+                false   => absent,
+                default => absent
+            },
             content => template( 'misc/update-geodata.erb' ),
             mode    => '0555';
         '/usr/local/bin/clear-killlist':
-            ensure  => present,
+            ensure  => $enabled ?{
+                true    => present,
+                false   => absent,
+                default => absent
+            },
             content => template( 'misc/clear-killlist.erb' ),
             mode    => '0555';
     }
