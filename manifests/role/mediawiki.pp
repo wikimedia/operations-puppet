@@ -208,7 +208,7 @@ class role::mediawiki {
     class videoscaler( $run_jobs_enabled = true ){
         system::role { "role::mediawiki::videoscaler": description => "TMH Jobrunner Server" }
 
-        class { "role::mediawiki::common": }
+        include role::mediawiki::common
 
         include imagescaler::cron,
             imagescaler::packages,
@@ -240,17 +240,17 @@ class role::mediawiki {
 
         include ::mediawiki
 
-        class { "role::mediawiki::common": }
+        include role::mediawiki::common
 
         if $::realm == 'production' {
-            class { 'mediawiki::jobrunner':
+            class { '::mediawiki::jobrunner':
                 dprioprocs             => 17,
                 iprioprocs             => 6,
                 procs_per_iobound_type => 5,
                 run_jobs_enabled       => $run_jobs_enabled,
             }
         } else {
-            class { 'mediawiki::jobrunner':
+            class { '::mediawiki::jobrunner':
                 dprioprocs             => 5,
                 iprioprocs             => 3,
                 procs_per_iobound_type => 2,
@@ -274,7 +274,7 @@ class role::mediawiki {
     # Maintenance servers are sometimes dual-purpose with misc apache, so the
     # apache service installed by wikimedia-task-appserver is not disabled here.
     class maintenance {
-        class { "role::mediawiki::common": }
+        include role::mediawiki::common
 
         include ::mediawiki::config::base,
             ::mediawiki::packages,
