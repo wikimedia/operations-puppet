@@ -1,7 +1,7 @@
-# applicationserver::service
+# mediawiki::service
 
-class applicationserver::service {
-    require applicationserver::config::base
+class mediawiki::service {
+    require mediawiki::config::base
     require mediawiki::packages
 
     include mediawiki::sync

@@ -14,7 +14,7 @@
 @monitor_group { "videoscaler_pmtpa": description => "pmtpa video scaler" }
 @monitor_group { "videoscaler_eqiad": description => "eqiad video scaler" }
 
-class role::applicationserver {
+class role::mediawiki {
 
     $mediawiki_log_aggregator = $::realm ? {
         'production' => 'fluorine.eqiad.wmnet:8420',
@@ -22,25 +22,22 @@ class role::applicationserver {
     }
 
     class configuration::php {
-        include role::applicationserver
+        include role::mediawiki
 
-        class { 'applicationserver::config::php':
-            fatal_log_file => "udp://${role::applicationserver::mediawiki_log_aggregator}",
+        class { '::mediawiki::config::php':
+            fatal_log_file => "udp://${role::mediawiki::mediawiki_log_aggregator}",
         }
     }
 
-# Class: role::applicationserver
+# Class: role::mediawiki
 #
 # This class installs a mediawiki application server
 #
 # Parameters:
-#   - $group:
-#     Unused at the moment, should be removed
 #   - $lvs_pool:
 #       Determines lvsrealserver IP(s) that the host will receive.
 #       From lvs::configuration::$lvs_service_ips
     class common(
-        $group, # TODO - remove this parameter as it's unused
         $lvs_pool = undef,
         ) {
 
@@ -93,15 +90,15 @@ class role::applicationserver {
 
     # This class installs everything necessary for an apache webserver
     class webserver($maxclients="40") {
-        include ::applicationserver,
-            applicationserver::pybal_check,
-            role::applicationserver,
-            role::applicationserver::configuration::php
+        include ::mediawiki,
+            ::mediawiki::pybal_check,
+            role::mediawiki,
+            role::mediawiki::configuration::php
 
-        class { "applicationserver::config::apache": maxclients => $maxclients }
+        class { "::mediawiki::config::apache": maxclients => $maxclients }
 
-        class { '::applicationserver::syslog':
-            apache_log_aggregator => $role::applicationserver::mediawiki_log_aggregator,
+        class { '::mediawiki::syslog':
+            apache_log_aggregator => $role::mediawiki::mediawiki_log_aggregator,
         }
 
         monitor_service { "appserver http":
@@ -131,9 +128,9 @@ class role::applicationserver {
 
     ## prod role classes
     class appserver{
-        system::role { "role::applicationserver::appserver": description => "Standard Apache Application server" }
+        system::role { "role::mediawiki::appserver": description => "Standard Apache Application server" }
 
-        class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
+        class { "role::mediawiki::common": lvs_pool => "apaches" }
 
         if $::site == "eqiad" and $::processorcount == "16" {
             $maxclients = "60"
@@ -144,30 +141,30 @@ class role::applicationserver {
         else {
             $maxclients = "40"
         }
-        class { "role::applicationserver::webserver": maxclients => $maxclients }
+        class { "role::mediawiki::webserver": maxclients => $maxclients }
     }
     # role class specifically for test.w.o apache(s)
     class appserver::test{
-        system::role { "role::applicationserver::appserver::test": description => "Test Apache Application server" }
+        system::role { "role::mediawiki::appserver::test": description => "Test Apache Application server" }
 
-        class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
+        class { "role::mediawiki::common": lvs_pool => "apaches" }
 
-        class { "role::applicationserver::webserver": maxclients => "100" }
+        class { "role::mediawiki::webserver": maxclients => "100" }
     }
     # Class for the beta project
     # The Apaches instances act as webserver AND imagescalers. We cannot
     # apply both roles cause puppet will complains about a duplicate class
-    # definition for role::applicationserver::common
+    # definition for role::mediawiki::common
     class appserver::beta{
-        system::role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
+        system::role { "role::mediawiki::appserver::beta": description => "Beta Apache Application server" }
 
-        class { "role::applicationserver::common": group => "beta_appserver" }
+        class { "role::mediawiki::common": }
 
         include ::beta::hhvm
 
-        include role::applicationserver::webserver
+        include role::mediawiki::webserver
 
-        # Load the class just like the role::applicationserver::imagescaler
+        # Load the class just like the role::mediawiki::imagescaler
         # role.
         include imagescaler::cron,
             imagescaler::packages,
@@ -182,25 +179,25 @@ class role::applicationserver {
 
     }
     class appserver::api{
-        system::role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
+        system::role { "role::mediawiki::appserver::api": description => "Api Apache Application server" }
 
-        class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
+        class { "role::mediawiki::common": lvs_pool => "api" }
 
-        class { "role::applicationserver::webserver": maxclients => "100" }
+        class { "role::mediawiki::webserver": maxclients => "100" }
     }
     class appserver::bits{
-        system::role { "role::applicationserver::appserver::bits": description => "Bits Apache Application server" }
+        system::role { "role::mediawiki::appserver::bits": description => "Bits Apache Application server" }
 
-        class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
+        class { "role::mediawiki::common": lvs_pool => "apaches" }
 
-        class { "role::applicationserver::webserver": maxclients => "100" }
+        class { "role::mediawiki::webserver": maxclients => "100" }
     }
     class imagescaler{
-        system::role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
+        system::role { "role::mediawiki::imagescaler": description => "Imagescaler Application server" }
 
-        class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
+        class { "role::mediawiki::common": lvs_pool => "rendering" }
 
-        class { "role::applicationserver::webserver": maxclients => "18" }
+        class { "role::mediawiki::webserver": maxclients => "18" }
 
         # When adding class there, please also update the appserver::beta
         # class which mix both webserver and imagescaler roles.
@@ -209,9 +206,9 @@ class role::applicationserver {
             imagescaler::files
     }
     class videoscaler( $run_jobs_enabled = true ){
-        system::role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
+        system::role { "role::mediawiki::videoscaler": description => "TMH Jobrunner Server" }
 
-        class { "role::applicationserver::common": group => "videoscaler" }
+        class { "role::mediawiki::common": }
 
         include imagescaler::cron,
             imagescaler::packages,
@@ -227,9 +224,9 @@ class role::applicationserver {
             extra_args => "-v 0"
         }
 
-        include applicationserver::config::base,
-            mediawiki::packages,
-            role::applicationserver::configuration::php
+        include ::mediawiki::config::base,
+            ::mediawiki::packages,
+            role::mediawiki::configuration::php
 
         # dependency for wikimedia-task-appserver
         service { 'apache':
@@ -239,11 +236,11 @@ class role::applicationserver {
         }
     }
     class jobrunner( $run_jobs_enabled = true ){
-        system::role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
+        system::role { "role::mediawiki::jobrunner": description => "Standard Jobrunner Server" }
 
         include ::mediawiki
 
-        class { "role::applicationserver::common": group => "jobrunner" }
+        class { "role::mediawiki::common": }
 
         if $::realm == 'production' {
             class { 'mediawiki::jobrunner':
@@ -261,9 +258,9 @@ class role::applicationserver {
             }
         }
 
-        include applicationserver::config::base,
-            mediawiki::packages,
-            role::applicationserver::configuration::php
+        include ::mediawiki::config::base,
+            ::mediawiki::packages,
+            role::mediawiki::configuration::php
 
         # dependency for wikimedia-task-appserver
             service { 'apache':
@@ -277,10 +274,10 @@ class role::applicationserver {
     # Maintenance servers are sometimes dual-purpose with misc apache, so the
     # apache service installed by wikimedia-task-appserver is not disabled here.
     class maintenance {
-        class { "role::applicationserver::common": group => "misc" }
+        class { "role::mediawiki::common": }
 
-        include applicationserver::config::base,
-            mediawiki::packages,
-            role::applicationserver::configuration::php
+        include ::mediawiki::config::base,
+            ::mediawiki::packages,
+            role::mediawiki::configuration::php
     }
 }

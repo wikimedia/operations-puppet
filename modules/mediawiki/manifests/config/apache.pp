@@ -2,24 +2,24 @@
 # note: it uses $cluster for the apache2.conf
 #
 # requires mediawiki::packages to be in place
-class applicationserver::config::apache(
+class mediawiki::config::apache(
     $maxclients='40'
 ) {
     require mediawiki::packages
 
-    Class['applicationserver::config::apache'] -> Class['applicationserver::config::base']
+    Class['mediawiki::config::apache'] -> Class['mediawiki::config::base']
 
     file { '/etc/apache2/apache2.conf':
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => template('applicationserver/apache/apache2.conf.erb'),
+        content => template('mediawiki/apache/apache2.conf.erb'),
     }
     file { '/etc/apache2/envvars':
         owner  => root,
         group  => root,
         mode   => '0444',
-        source => 'puppet:///modules/applicationserver/apache/envvars.appserver',
+        source => 'puppet:///modules/mediawiki/apache/envvars.appserver',
     }
     file { '/etc/cluster':
         owner   => root,

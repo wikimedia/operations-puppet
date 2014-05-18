@@ -1,5 +1,5 @@
 # syslog instance and configuration for applicationservers
-class applicationserver::syslog( $apache_log_aggregator ) {
+class mediawiki::syslog( $apache_log_aggregator ) {
     require base::remote-syslog
 
     file { '/etc/rsyslog.d/40-appserver.conf':

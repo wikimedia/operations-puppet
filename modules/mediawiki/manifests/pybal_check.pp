@@ -1,4 +1,4 @@
-class applicationserver::pybal_check {
+class mediawiki::pybal_check {
     group { 'pybal-check':
         ensure => present,
     }
@@ -23,6 +23,6 @@ class applicationserver::pybal_check {
         owner   => 'pybal-check',
         group   => 'pybal-check',
         mode    => '0440',
-        source  => 'puppet:///modules/applicationserver/pybal_key',
+        source  => 'puppet:///modules/mediawiki/pybal_key',
     }
 }
