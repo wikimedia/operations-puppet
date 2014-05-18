@@ -34,13 +34,10 @@ class role::applicationserver {
 # This class installs a mediawiki application server
 #
 # Parameters:
-#   - $group:
-#     Unused at the moment, should be removed
 #   - $lvs_pool:
 #       Determines lvsrealserver IP(s) that the host will receive.
 #       From lvs::configuration::$lvs_service_ips
     class common(
-        $group, # TODO - remove this parameter as it's unused
         $lvs_pool = undef,
         ) {
 
@@ -133,7 +130,7 @@ class role::applicationserver {
     class appserver{
         system::role { "role::applicationserver::appserver": description => "Standard Apache Application server" }
 
-        class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
+        class { "role::applicationserver::common": lvs_pool => "apaches" }
 
         if $::site == "eqiad" and $::processorcount == "16" {
             $maxclients = "60"
@@ -150,7 +147,7 @@ class role::applicationserver {
     class appserver::test{
         system::role { "role::applicationserver::appserver::test": description => "Test Apache Application server" }
 
-        class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
+        class { "role::applicationserver::common": lvs_pool => "apaches" }
 
         class { "role::applicationserver::webserver": maxclients => "100" }
     }
@@ -161,7 +158,7 @@ class role::applicationserver {
     class appserver::beta{
         system::role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
 
-        class { "role::applicationserver::common": group => "beta_appserver" }
+        class { "role::applicationserver::common": }
 
         include ::beta::hhvm
 
@@ -184,21 +181,21 @@ class role::applicationserver {
     class appserver::api{
         system::role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
 
-        class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
+        class { "role::applicationserver::common": lvs_pool => "api" }
 
         class { "role::applicationserver::webserver": maxclients => "100" }
     }
     class appserver::bits{
         system::role { "role::applicationserver::appserver::bits": description => "Bits Apache Application server" }
 
-        class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
+        class { "role::applicationserver::common": lvs_pool => "apaches" }
 
         class { "role::applicationserver::webserver": maxclients => "100" }
     }
     class imagescaler{
         system::role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
 
-        class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
+        class { "role::applicationserver::common": lvs_pool => "rendering" }
 
         class { "role::applicationserver::webserver": maxclients => "18" }
 
@@ -211,7 +208,7 @@ class role::applicationserver {
     class videoscaler( $run_jobs_enabled = true ){
         system::role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
 
-        class { "role::applicationserver::common": group => "videoscaler" }
+        class { "role::applicationserver::common": }
 
         include imagescaler::cron,
             imagescaler::packages,
@@ -243,7 +240,7 @@ class role::applicationserver {
 
         include ::mediawiki
 
-        class { "role::applicationserver::common": group => "jobrunner" }
+        class { "role::applicationserver::common": }
 
         if $::realm == 'production' {
             class { 'mediawiki::jobrunner':
@@ -277,7 +274,7 @@ class role::applicationserver {
     # Maintenance servers are sometimes dual-purpose with misc apache, so the
     # apache service installed by wikimedia-task-appserver is not disabled here.
     class maintenance {
-        class { "role::applicationserver::common": group => "misc" }
+        class { "role::applicationserver::common": }
 
         include applicationserver::config::base,
             mediawiki::packages,
