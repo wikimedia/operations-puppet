@@ -1,15 +1,15 @@
-# == Class: applicationserver::hhvm
+# == Class: beta::hhvm
 #
 # Configures the HipHop Virtual Machine for PHP, a fast PHP interpreter
 # that is mostly compatible with the Zend interpreter. This module is a
 # work-in-progress. It is designed to help test HHVM in Labs.
 #
-class applicationserver::hhvm {
+class beta::hhvm {
     if $::realm != 'labs' {
         # The HHVM packages that are currently available do not meet the
         # standards of our production environment, so their use is currently
         # restricted to Labs.
-        fail('applicationserver::hhvm may only be deployed to Labs.')
+        fail('beta::hhvm may only be deployed to Labs.')
     }
 
     class { '::hhvm':
@@ -35,7 +35,7 @@ class applicationserver::hhvm {
 
     # FIXME: This should be a parametrized template.
     file { '/etc/hhvm/server.hdf':
-        source  => 'puppet:///modules/applicationserver/hhvm/server.hdf',
+        source  => 'puppet:///modules/beta/hhvm/server.hdf',
         require => [ Package['hhvm'], File['/var/run/hhvm'] ],
         notify  => Service['hhvm'],
     }
@@ -46,7 +46,7 @@ class applicationserver::hhvm {
     }
 
     file { '/etc/init/hhvm.conf':
-        source  => 'puppet:///modules/applicationserver/hhvm/hhvm.upstart',
+        source  => 'puppet:///modules/beta/hhvm/hhvm.upstart',
         require => File['/etc/init.d/hhvm-fastcgi', '/etc/init.d/hhvm', '/etc/hhvm/server.hdf'],
     }
 

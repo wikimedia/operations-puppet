@@ -39,19 +39,10 @@ class role::applicationserver {
 #   - $lvs_pool:
 #       Determines lvsrealserver IP(s) that the host will receive.
 #       From lvs::configuration::$lvs_service_ips
-#   - $hhvm:
-#       Whether to install Facebook HipHop Virtual Machine
-#       Will FAIL the run if enabled on production.
-#       (default: false)
     class common(
         $group, # TODO - remove this parameter as it's unused
         $lvs_pool = undef,
-        $hhvm = false
         ) {
-
-        if $hhvm == true and $::realm == 'production' {
-            fail( 'hhvm is not ready for production usage yet' )
-        }
 
         include standard
 
@@ -87,10 +78,6 @@ class role::applicationserver {
               require => Labs_lvm::Volume['second-local-disk'],
             }
 
-            if $hhvm == true {
-                notify { 'installing_hhvm': message => "Installing HHVM" }
-                include ::applicationserver::hhvm
-            }
         }
 
         if $lvs_pool != undef {
@@ -173,7 +160,9 @@ class role::applicationserver {
     class appserver::beta{
         system::role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
 
-        class { "role::applicationserver::common": group => "beta_appserver", hhvm => true }
+        class { "role::applicationserver::common": group => "beta_appserver" }
+
+        include ::beta::hhvm
 
         include role::applicationserver::webserver
 
