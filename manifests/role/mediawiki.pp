@@ -166,9 +166,9 @@ class role::mediawiki {
 
         # Load the class just like the role::mediawiki::imagescaler
         # role.
-        include imagescaler::cron,
-            imagescaler::packages,
-            imagescaler::files
+        include ::imagescaler::cron,
+            ::imagescaler::packages,
+            ::imagescaler::files
 
         # Beta application servers have some ferm DNAT rewriting rules (bug
         # 45868) so we have to explicitly allow http (port 80)
@@ -201,18 +201,18 @@ class role::mediawiki {
 
         # When adding class there, please also update the appserver::beta
         # class which mix both webserver and imagescaler roles.
-        include imagescaler::cron,
-            imagescaler::packages,
-            imagescaler::files
+        include ::imagescaler::cron,
+            ::imagescaler::packages,
+            ::imagescaler::files
     }
     class videoscaler( $run_jobs_enabled = true ){
         system::role { "role::mediawiki::videoscaler": description => "TMH Jobrunner Server" }
 
         include role::mediawiki::common
 
-        include imagescaler::cron,
-            imagescaler::packages,
-            imagescaler::files
+        include ::imagescaler::cron,
+            ::imagescaler::packages,
+            ::imagescaler::files
 
         class {"::mediawiki::jobrunner":
             run_jobs_enabled => $run_jobs_enabled,
@@ -229,10 +229,9 @@ class role::mediawiki {
             role::mediawiki::configuration::php
 
         # dependency for wikimedia-task-appserver
-        service { 'apache':
-            name => "apache2",
-            enable => false,
-            ensure => stopped;
+        exec { 'videoscaler-apache-service-stopped':
+            command => '/etc/init.d/apache2 stop',
+            onlyif  => '/etc/init.d/apache2 status',
         }
     }
     class jobrunner( $run_jobs_enabled = true ){
@@ -263,10 +262,9 @@ class role::mediawiki {
             role::mediawiki::configuration::php
 
         # dependency for wikimedia-task-appserver
-            service { 'apache':
-                name => "apache2",
-                enable => false,
-                ensure => stopped;
+        exec { 'jobrunner-apache-service-stopped':
+            command => '/etc/init.d/apache2 stop',
+            onlyif  => '/etc/init.d/apache2 status',
         }
     }
 
