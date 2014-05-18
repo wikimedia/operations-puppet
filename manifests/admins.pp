@@ -482,8 +482,15 @@ class accounts {
 
     class jamesofur inherits baseaccount {
         $username = 'jamesofur'
-        $realname = 'James Alexander'
+        $realname = 'James Alexander (former)'
         $uid      = '580'
+        $enabled  = false
+    }
+
+    class jamesur inherits baseaccount {
+        $username = 'jamesur'
+        $realname = 'James Alexander'
+        $uid      = '2054'
 
         unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -3935,7 +3942,7 @@ class admins::restricted {
     include accounts::erik
     include accounts::ezachte
     include accounts::hoo # RT 6731
-    include accounts::jamesofur
+    include accounts::jamesur
     include accounts::jdlrobson # RT 7186
     include accounts::khorn
     include accounts::qchris # RT 5403
