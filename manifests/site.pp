@@ -995,7 +995,7 @@ node 'fenari.wikimedia.org' {
     }
 
     include base
-    include role::applicationserver::maintenance
+    include role::mediawiki::maintenance
     include sudo::appserver
     include subversion::client
     include nfs::netapp::home
@@ -1832,7 +1832,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
         include misc::deployment::scap_proxy
     }
 
-    class { 'role::applicationserver::jobrunner':
+    class { 'role::mediawiki::jobrunner':
         run_jobs_enabled => true,
     }
 
@@ -1852,9 +1852,9 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
     # mw1017 is test.wikipedia.org (precise)
     if $::hostname == 'mw1017' {
-        include role::applicationserver::appserver::test
+        include role::mediawiki::appserver::test
     } else {
-        include role::applicationserver::appserver
+        include role::mediawiki::appserver
     }
 }
 
@@ -1865,7 +1865,7 @@ node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    include role::applicationserver::appserver::api
+    include role::mediawiki::appserver::api
 }
 
 # mw1149-1152 are bits apaches (precise)
@@ -1875,7 +1875,7 @@ node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    include role::applicationserver::appserver::bits
+    include role::mediawiki::appserver::bits
 }
 
 # mw1153-1160 are imagescalers (precise)
@@ -1885,7 +1885,7 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    include role::applicationserver::imagescaler
+    include role::mediawiki::imagescaler
 }
 
 # mw1161-1188 are apaches (precise)
@@ -1895,7 +1895,7 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
         include misc::deployment::scap_proxy
     }
 
-    include role::applicationserver::appserver
+    include role::mediawiki::appserver
 }
 
 # mw1189-1208 are api apaches (precise)
@@ -1905,13 +1905,13 @@ node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
         include misc::deployment::scap_proxy
     }
 
-    include role::applicationserver::appserver::api
+    include role::mediawiki::appserver::api
 }
 
 # mw1209-1220 are apaches (precise)
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
     $cluster = 'appserver'
-    include role::applicationserver::appserver
+    include role::mediawiki::appserver
 }
 
 node 'neon.wikimedia.org' {
@@ -2459,7 +2459,7 @@ node 'snapshot1003.eqiad.wmnet' {
 }
 
 node 'terbium.eqiad.wmnet' {
-    include role::applicationserver::maintenance
+    include role::mediawiki::maintenance
     include role::db::maintenance
     include misc::deployment::scap_scripts
     include misc::monitoring::jobqueue
@@ -2617,7 +2617,7 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
     if $::hostname =~ /^tmh100[12]$/ {
         $ganglia_aggregator = true
     }
-    class { 'role::applicationserver::videoscaler':
+    class { 'role::mediawiki::videoscaler':
         run_jobs_enabled => true,
     }
 
