@@ -242,11 +242,13 @@ class role::mediawiki {
         include role::mediawiki::common
 
         if $::realm == 'production' {
-            class { '::mediawiki::jobrunner':
-                dprioprocs             => 17,
-                iprioprocs             => 6,
-                procs_per_iobound_type => 5,
-                run_jobs_enabled       => $run_jobs_enabled,
+            if $::hostname !~ /^tmh/ {
+                class { '::mediawiki::jobrunner':
+                    dprioprocs             => 17,
+                    iprioprocs             => 6,
+                    procs_per_iobound_type => 5,
+                    run_jobs_enabled       => $run_jobs_enabled,
+                }
             }
         } else {
             class { '::mediawiki::jobrunner':
