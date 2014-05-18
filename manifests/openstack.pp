@@ -373,7 +373,7 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
 }
 
 class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $certificate) {
-    require mediawiki::users::mwdeploy
+    # require mediawiki::users::mwdeploy  -- temp. removed for ::mediawiki refactor -- OL
 
     if !defined(Class["webserver::php5"]) {
         class {'webserver::php5': ssl => true; }
