@@ -159,7 +159,7 @@ class role::lucene {
 		include standard,
 			mediawiki,
 			applicationserver::config::base,
-			applicationserver::packages,
+			mediawiki::packages,
 			role::applicationserver::configuration::php,
 			role::lucene::admins,
 			lucene::users
