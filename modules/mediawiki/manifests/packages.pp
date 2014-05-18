@@ -1,55 +1,107 @@
-# mediawiki package class
 class mediawiki::packages {
 
-  if $::realm == 'labs' {
-    include ::beta::config
+    package { 'wikimedia-task-appserver':
+      ensure => latest,
+    }
 
-    file { '/usr/local/apache':
-      ensure  => directory,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
+    # wikimedia-task-appserver depends on timidity, which recommends
+    # timidity-daemon.
+    package { 'timidity-daemon':
+      ensure => absent,
     }
-    file { '/usr/local/apache/common-local':
-      ensure  => link,
-      # Link to files managed by scap
-      target  => $::beta::config::scap_deploy_dir,
-      # Create before wikimedia-task-appserver attempts
-      # to create /usr/local/apache/common.
-      before  => Package['wikimedia-task-appserver'],
-      require => File['/usr/local/apache'],
-    }
-    file { '/usr/local/apache/common':
-      ensure  => link,
-      target  => '/usr/local/apache/common-local',
-      require => File['/usr/local/apache/common-local'],
-    }
-    file { '/usr/local/apache/conf':
-      ensure  => link,
-      target  => '/data/project/apache/conf',
-      require => File['/usr/local/apache'],
-    }
-    file { '/usr/local/apache/uncommon':
-      ensure  => link,
-      target  => '/data/project/apache/uncommon',
-      require => File['/usr/local/apache'],
-    }
-  }
 
-  package { 'wikimedia-task-appserver':
-    ensure => latest;
-  }
+    package { [
+        'apache2-mpm-prefork',
+        'imagemagick',
+        'libapache2-mod-php5',
+        'libmemcached10',       # XXX still needed?
+        'libmemcached11',
+        'php-apc',
+        'php-pear',
+        'php5-cli',
+        'php5-common',
+    ]:
+        ensure => present,
+    }
 
-  # Disable timidity-daemon
-  #
-  # Timidity is a dependency for the MediaWiki extension Score and is
-  # installed via wikimedia-task-appserver.
-  #
-  # The 'timidity' package used to install the daemon, but it is recommended
-  # to disable it anyway. In Precise, the daemon is provided by a package
-  # 'timidity-daemon', so we just need to ensure it is not installed to
-  # disable it properly.
-  package { 'timidity-daemon':
-    ensure => absent,
-  }
+    # Standard PHP extensions
+    package { [
+        'php5-curl',
+        'php5-geoip',
+        'php5-intl',
+        'php5-memcached',
+        'php5-mysql',
+        'php5-redis',
+        'php5-xmlrpc',
+    ]:
+        ensure => present,
+    }
+
+    # Wikimedia-specific PHP extensions
+    package { [
+        'php-luasandbox',
+        'php-wikidiff2',
+        'php5-wmerrors',
+        'php5-fss',
+    ]:
+        ensure => present,
+    }
+
+    # Pear modules
+    package { [
+        'php-mail',
+        'php-mail-mime',
+    ]:
+        ensure => present,
+    }
+
+    # TeX packages
+    package { [
+        'texlive',
+        'texlive-bibtex-extra',
+        'texlive-font-utils',
+        'texlive-fonts-extra',
+        'texlive-lang-all',
+        'texlive-latex-extra',
+        'texlive-math-extra',
+        'texlive-pictures',
+        'texlive-pstricks',
+        'texlive-publishers',
+    ]:
+        ensure => present,
+    }
+
+    # Math
+    package { [
+        'dvipng',
+        'gsfonts',
+        'make',
+        'ocaml',
+        'ploticus',
+    ]:
+        ensure => present,
+    }
+
+    # PDF and DjVu
+    package { [
+        'djvulibre-bin',
+        'librsvg2-bin',
+        'libtiff-tools',
+        'poppler-utils',
+    ]:
+        ensure => present,
+    }
+
+    # Score
+    package { 'lilypond':
+        ensure => present,
+    }
+
+    # Tidy
+    package { [
+        'libtidy-0.99-0',
+        'tidy',
+    ]:
+        ensure => present,
+    }
 }
