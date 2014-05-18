@@ -73,6 +73,7 @@ class role::applicationserver {
 
         if $::realm == 'labs' {
             # MediaWiki configuration specific to labs instances ('beta' project)
+            include ::beta::common
             include mediawiki
 
             # Eqiad instances do not mount additional disk space
@@ -238,7 +239,7 @@ class role::applicationserver {
         }
 
         include applicationserver::config::base,
-            applicationserver::packages,
+            mediawiki::packages,
             role::applicationserver::configuration::php
 
         # dependency for wikimedia-task-appserver
@@ -272,7 +273,7 @@ class role::applicationserver {
         }
 
         include applicationserver::config::base,
-            applicationserver::packages,
+            mediawiki::packages,
             role::applicationserver::configuration::php
 
         # dependency for wikimedia-task-appserver
@@ -290,7 +291,7 @@ class role::applicationserver {
         class { "role::applicationserver::common": group => "misc" }
 
         include applicationserver::config::base,
-            applicationserver::packages,
+            mediawiki::packages,
             role::applicationserver::configuration::php
     }
 }

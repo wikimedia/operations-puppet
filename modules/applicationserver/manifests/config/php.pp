@@ -3,12 +3,12 @@
 # **fatal_log_file**
 # Where to send PHP fatal traces.
 #
-# requires applicationserver::packages to be in place
+# requires mediawiki::packages to be in place
 class applicationserver::config::php(
     $fatal_log_file='udp://10.64.0.21:8420'
 ) {
 
-    Class['applicationserver::packages'] -> Class['applicationserver::config::php']
+    Class['mediawiki::packages'] -> Class['applicationserver::config::php']
     Class['applicationserver::config::php'] -> Class['applicationserver::config::base']
 
     file { '/etc/php5/apache2/php.ini':

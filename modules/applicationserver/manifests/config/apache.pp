@@ -1,11 +1,11 @@
 # Configuration files for apache running on application servers
 # note: it uses $cluster for the apache2.conf
 #
-# requires applicationserver::packages to be in place
+# requires mediawiki::packages to be in place
 class applicationserver::config::apache(
     $maxclients='40'
 ) {
-    require applicationserver::packages
+    require mediawiki::packages
 
     Class['applicationserver::config::apache'] -> Class['applicationserver::config::base']
 

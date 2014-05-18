@@ -2,10 +2,9 @@
 
 class applicationserver::service {
     require applicationserver::config::base
-    require applicationserver::packages
+    require mediawiki::packages
 
     include mediawiki::sync
-    include mediawiki::packages
 
     # Start apache but not at boot
     service { 'apache':

@@ -173,7 +173,7 @@ class role::deployment::deployment_servers::common {
   class { 'apache::mod::dav': }
   class { 'apache::mod::dav_fs': }
 
-  class { 'applicationserver::packages': }
+  class { 'mediawiki::packages': }
 
   apache::vhost { 'default':
     ensure              => absent,
