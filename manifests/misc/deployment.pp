@@ -21,8 +21,6 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => 'puppet:///files/misc/scripts/clear-profile';
-		'/usr/local/bin/configchange':
-			ensure => absent;
 		'/usr/local/bin/dologmsg':
 			owner => root,
 			group => root,
