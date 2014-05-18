@@ -239,7 +239,6 @@ class role::applicationserver {
 
         include applicationserver::config::base,
             applicationserver::packages,
-            applicationserver::sudo,
             role::applicationserver::configuration::php
 
         # dependency for wikimedia-task-appserver
@@ -274,7 +273,6 @@ class role::applicationserver {
 
         include applicationserver::config::base,
             applicationserver::packages,
-            applicationserver::sudo,
             role::applicationserver::configuration::php
 
         # dependency for wikimedia-task-appserver
@@ -293,7 +291,6 @@ class role::applicationserver {
 
         include applicationserver::config::base,
             applicationserver::packages,
-            applicationserver::sudo,
             role::applicationserver::configuration::php
     }
 }

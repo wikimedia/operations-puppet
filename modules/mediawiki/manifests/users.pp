@@ -4,6 +4,8 @@
 # MediaWiki.
 #
 class mediawiki::users {
+    include groups::wikidev
+
     # For legacy reasons, we run Apache / MediaWiki using an 'apache' user
     # rather than use the Debian default 'www-data'. The name, gid, home,
     # and shell of the apache user are set to conform with the postinst
@@ -72,19 +74,19 @@ class mediawiki::users {
         source  => 'puppet:///modules/mediawiki/authorized_keys.l10nupdate',
     }
 
-    sudo_group { 'wikidev_deploy':
-        group      => 'wikidev',
+    sudo_group { 'wikidev':
         privileges => [
             'ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
             'ALL = (root) NOPASSWD: /sbin/restart twemproxy',
-            'ALL = (root) NOPASSWD: /sbin/start twemproxy'
+            'ALL = (root) NOPASSWD: /sbin/start twemproxy',
+            'ALL = NOPASSWD: /usr/sbin/apache2ctl',
+            'ALL = NOPASSWD: /etc/init.d/apache2',
+            'ALL = NOPASSWD: /usr/bin/renice',
         ],
     }
 
     sudo_user { 'l10nupdate':
         require    => User['l10nupdate', 'mwdeploy'],
-        privileges => [
-            'ALL = (mwdeploy) NOPASSWD: ALL',
-        ],
+        privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'],
     }
 }

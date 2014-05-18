@@ -160,7 +160,6 @@ class role::lucene {
 			mediawiki,
 			applicationserver::config::base,
 			applicationserver::packages,
-			applicationserver::sudo,
 			role::applicationserver::configuration::php,
 			role::lucene::admins,
 			lucene::users

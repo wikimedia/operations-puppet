@@ -4069,15 +4069,15 @@ class admins::parsoid {
         privileges => ['ALL = (parsoid) NOPASSWD: ALL'],
     }
     # RT 6961
-    sudo_group { 'wikidev':
+    sudo_group { 'wikidev_parsoid':
+        group      => 'wikidev',
         privileges => [
-                        'ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
-                        'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
-                        'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
-                        'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload',
-                      ],
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload',
+        ],
     }
-
 }
 
 # permissions and users for LDAP operations
