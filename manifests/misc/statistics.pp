@@ -139,7 +139,6 @@ class misc::statistics::dataset_mount {
 # RT 2162
 class misc::statistics::mediawiki {
     include misc::statistics::base
-    require mediawiki::users::mwdeploy
 
     $statistics_mediawiki_directory = "${misc::statistics::base::working_path}/mediawiki/core"
 
