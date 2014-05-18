@@ -214,7 +214,7 @@ class role::mediawiki {
             imagescaler::packages,
             imagescaler::files
 
-        class {"mediawiki::jobrunner":
+        class {"::mediawiki::jobrunner":
             run_jobs_enabled => $run_jobs_enabled,
             dprioprocs => 5,
             iprioprocs => 0,

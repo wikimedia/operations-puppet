@@ -26,9 +26,8 @@ class snapshot::packages {
     }
 
     # want mediawiki but no running webserver
-    service { 'noapache':
-        ensure => 'stopped',
-        name   => 'apache2',
-        enable => false,
+    exec { 'stop-apache-service':
+        command => '/etc/init.d/apache2 stop',
+        onlyif  => '/etc/init.d/apache2 status',
     }
 }
