@@ -1,6 +1,18 @@
 class beta::common {
     include ::beta::config
 
+    # Eqiad instances do not mount additional disk space
+    include labs_lvm
+    labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
+
+    # FIXME: Each host that has this role applied must also be
+    # manually added to the dsh group file found in
+    # modules/beta/files/dsh/group/mediawiki-installation or scap will
+    # not communicate with that host.
+
+    class { '::beta::scap::target':
+      require => Labs_lvm::Volume['second-local-disk'],
+    }
     file { '/usr/local/apache':
         ensure  => directory,
         owner   => 'root',
