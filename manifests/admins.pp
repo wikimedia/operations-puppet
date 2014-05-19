@@ -208,8 +208,6 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDN9+TME+RHccrQypKmHUXdRdlr1TVQkhCEL6DJ4dMA2CaWIsqwIkfqIjzBzVoqLUxNVjVPh+AF8ahrtSnx5qQKrPn3icv1G1J1J9d4pagHuFcNQiYWS+7xk5P/rz8GETOcNkKOl4ZaCJf1KGvSiFv67mC8ERqY3238UIougv74uTm8u6KHfJQoNMMgtQ0YlGD5pD5HjKMMkzSG2Li6a9gR7nXQ4WKHDKyZW1lt8v4U4v79ZcTTIDk8jie6DNOgJLq6NHpurosfMjZI7d7wWi84mqQTazTpgNvRtaAyO3dg+iZYGrc0d642e+kBA6izMlz8QpWOiem5tR1PGN2itTrL';
-            }
-                ssh_authorized_key {
                 'bjorsch@wikimedia.org-2':
                     ensure => 'present',
                     user   => $username,
@@ -290,12 +288,12 @@ class accounts {
 
             ssh_authorized_key {
                 'andrew@voltaire':
-                    ensure => present,
+                    ensure => 'present',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA2Di7q/bc8OJ5HP4X2U19r8w/mIH6CDbZHkOv//5cNvE50udM7McwxRWSz5idIF2P2JyIU2tQhixM3vkWO2chcifIom60F2/vhKA+TuUr9l/IbnBv6CoCjeAxre0g3gVhcazHKKtjbpRMYRxMSrLs+SBzsQpTuB/MqJB/jy1rUDTLCwN8Dtz3nAR5vRtgM673kivDLvDsHrfgR1uScESawPe6c9iFLbnzptH4z86r98tj3s4U+3yVFaH9AG7YuovulyA6UEgXFL8swsrpp58s1+XIausfYAqjetIL0YS3vOwEeBw3Hg57c+bZ+dVODEV6wc+uOgtJFZs6zVHTFq5QoQ==';
                 'andrew@zwinger':
-                    ensure => absent,
+                    ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAub5dQVlS7jvr0e3Df+5xDYXqEmROgb0vpEkjBlJwl7Ak+J7k5bfQL+YcHs0oPyjLEJ4ZxwN4JQw+AsB9Ifw2eFIFB+tlKmXj++d9I9PS/IY9hSKJHJ8Og8uqK4X08tqURnyfL8QvH3g+VuSuCTwQcyfIm0MVKpJ5/grpK+Zg3OYSU4JQJpa4TDcJpJrx+V6GCC5yNJshs2VSsXyUZYWHaa3r+MXHE+KRZDlVP1tkQhzdK1g+/vcp7s13+QaWioiUDbxkCN63pKxY5qQwOugT31EEacBOCgXsS2jY00mJ5KpVt0zJychsX7WTtNfk6Rt9u9xt/imghT80rCd97P63Hw==';
@@ -315,12 +313,12 @@ class accounts {
 
             ssh_authorized_key {
                 'ariel@ariel-desktop':
-                    ensure => present,
+                    ensure => 'present',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAwaTYlLZ90/oQ5tDYDkhI2mHa1L6Vh+zcekCt8D08N7/CrFI5sUVteTwMWw2ytQlWnyT3HVgHb4IS1EPjpjyuqseRcNW0HYsqBk3E36PCBQIqjLZ0nDAeHQtm6T6pXiKC5qUppghwrvDxVYFpF3lFzAzfYMrF7iugk0xRPTHZWm8df7dqIB/6FfbxSD95yQVAlJefxoFWbo3Yn+exEZQvWv6lQYXnjV5DSwMf8tPGDkc2DRjrnR52ZrXPRZFCqc9JGkA/l8QsYtjmqJdnOgq5raOb56aRulJYdP2j//B4lRJJlglMuj8dSZE/j04zub+P2QhfdqeEHmeaTUqbwcnZZw==';
                 'ariel@zwinger.wikimedia.org':
-                    ensure => absent,
+                    ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-dss',
                     key    => 'AAAAB3NzaC1kc3MAAAEBALcKsz9HL20xCAB/hWLUxE/26tdeZBQqLWlNiWUC1ilKlqYtHL99ffkrJIlwst+IN/1SOfBhs+5pZxfUyfIT/DaeVNVQXTBfyAXM8iImtY/RsQ9M+v0xhwTLVGs6jTXQX8bkOYAEIZd+x5eGFhSTyIVZmxkz38XpLsTuNyUjs2gFUWZtPGZIgOTToxnYK9mpvpM1gRsHuhLMYg9ZpgFpul41Im+znRcWnrmW6uPAYebvO4V3uNwqdPBh50mrrqyakRj7QlCiFs88zufyj3BmC5mwTNlHClAbVyLyOBY6GCgfof5wFkbvAnYA0iglGZBnk5qIIuPdO+6vxRztUIY3gI8AAAAVAODnUYfx53vWxQVx1GHkzuwSP5JJAAABAEUZuasCiK2tMhQyDIJuad0F8H3aW1CrVtG3ZJuZXjLxpsXQsaOrG/DcFLxKxV4YheQSAVYc098IoQmAiTBc4W++b5lqgu1lmEMwMxQd+o+V8/1ywla61DA7feAAc1H5+eiKUWJDGs9J4HnUiAJc//B//rflE32po1S4Al+8q5GnngOqGEc66u203V/CCtkEbFCOqBXcj36nlTEtxbkbHe633z/TMM/bAwH3vNDo/9Ia/SdTTnQ3XaOD+y2PYF2ley6ImedGrGM71RU2zUv8tmQW8s7/5SygoAWGkljjk3IZy+nYRH232fcWumwORmGvpiq9pPPHhC6zYXjF/5thXRcAAAEAC4uOPvwmzpdwWjJ0QzbcPknWtdc9pvjWC2OWGoJP3VxQckZnWwBEIi9TjxeneX1xU1ZZKQ7s5xcIBWE1qn8P8gNgpqGLVK7rmErN9EYHGcxPR/n0SfujHVo7qEHB0tRhCtABFEpYczl/K/xIfZ7+bCQmvWKuyYETP5QTwbAD5efJh88/kfFKqtI1qhhAenfG3afATU0SHya31HYjrghXZBbA8YvAmX2DfBkP+WYllFaeUmUlvMpnW6wx2+SW0cbMik8CFJIjcMO3NAWppsR3mgSwSGvWorlH6Tskei7MaEUBaYJH01aZbkJOkigGVQhna3tQ2JeKhe37GjednwoBGQ==';
@@ -401,14 +399,12 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDPe5ARdfajt7cDlcK6Fn3uFf5d5hvFdefqdr3L4Q2qeojQYioEvgcbZfVXRzpoSuPPx1cl/tDZCdfYityJiZWaE3T+gDZqYh/zO4M/JkiRp0vfnHKQeRbW7ledlitPKi9ZoEGE0e8FX17V9DNxnSolI3wBrEOOHxmBnnqS2Q04bM1/MRuMH/jxkcOWEp/SG5TOJtlSqKMAOrui7vU0gycQ9Kn6bwB0csuRA2IUwAnn07oVlCoBLR4nDTzj+iXF9j3aB2nyuZE0huXJM4ys3oL5CSDVTDow42vLyH4jwMlugxsgC2QBwUuCPLGz0uTVOvdFG5PstXBEWJnr6lL/0D13';
+                'brion@stormcloud':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAmi7DfRt6vSuT7oQLE8kBjXN6tZvskked8ZHkAhwB80d6yuSa317XqMzYrxzU2SqDnprNqZZTdK0i2l7G+X8jLodTADrTvxX3oANQy9ConVkXFrd6+qfZxUs6y8rTMX/FPNxCCK/G7iQSg1GjMGzyIwdOwHPOaxx/ASJFKNbCbAhxaf/lRUdz/rirPm11KcS/h5qplA/G/Kbcgd7oopBBXnmmEPLEyVI0agIBNb8E4r7GNXikycJqPON2Wxp3id1Fs84ALacStTs49ZPtynUuRhprslhN3z6G6uliighcc0PzHMRSR/H8zjBREfqcfvAgdqSgn8DSqIv2bzWDjcNtOw==';
             }
-        }
-
-        ssh_authorized_key { 'brion@stormcloud':
-            ensure => 'absent',
-            user   => $username,
-            type   => 'ssh-rsa',
-            key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAmi7DfRt6vSuT7oQLE8kBjXN6tZvskked8ZHkAhwB80d6yuSa317XqMzYrxzU2SqDnprNqZZTdK0i2l7G+X8jLodTADrTvxX3oANQy9ConVkXFrd6+qfZxUs6y8rTMX/FPNxCCK/G7iQSg1GjMGzyIwdOwHPOaxx/ASJFKNbCbAhxaf/lRUdz/rirPm11KcS/h5qplA/G/Kbcgd7oopBBXnmmEPLEyVI0agIBNb8E4r7GNXikycJqPON2Wxp3id1Fs84ALacStTs49ZPtynUuRhprslhN3z6G6uliighcc0PzHMRSR/H8zjBREfqcfvAgdqSgn8DSqIv2bzWDjcNtOw==';
         }
     }
 
@@ -428,29 +424,21 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDnDmdyh5Stw9bMTm7qL1kWuNpazc1m6HiaN0ZlaqwbUIhvtADWobHZcHvTHMwyauU/X6joE+a6pyvYgM2hr6+wRawjmgOuK8cak90weyp+i20HCiPb5GqOLE0uDmDizI8Hb50kxjiXLF6k+7cT7i0Lksa9EKhsYEwCjgnOiGor6wEvN1RlwRuwNBOZcI6OUvV39G/VP/pjpZBeUNoUZHWgpr9nbX+rlctjzK0s8sRbUamvCG3lyeB1pNIVCkY9YOwvf1D2UpRnhIm3XQspojphCFzC6HqRqZOyygweKc98fmvxkbkiyzh9XPtKyV5CtRS+9ECUmZjfmcWZpomCN2tp';
-            }
-            ssh_authorized_key {
                 'chrisj@chrisj-VPCEB23FM':
                     ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDP7wD7CRHLh4V9Sjn72a/eh3hTQhprQ3fPxUX+G7oCGuRXmWAwHcoB2Rm7vZxiAEa6hA151YOEorYN8e6bYP0eqcpEu9G9cbDirnaAhKHf+r+n9OgJmpA8hDQQ0H4MuWH9W6uQLEi1Xl9Z41/u/LlfrmD9F77ed2jXCYAYgVwuNuO5lnOevMxLWH+aCtfYdp/QtEA9a+o2j0Dc0JveqXNFlCdcacLAME2q7ZHnyRwFndMgTiljnOSb3SjV/1tkNtq3Dkhnp1T3LXgSIX7gtxbfVd2u5b8HoaQYmpXSlRhyL+ulVJDJAEFVA+tp5lbcGK4kglNnBNKrQO9Bng+FlKwR';
-            }
-            ssh_authorized_key {
                 'chrisj@chrisjohnson':
                     ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDRLeXOUkI5OZkubtTv8jVVq7itOUQ38usJdMap8zjSQw9g7kbLj66369NQrp4g8MRiD1WhDGkxL5IeU8leQcAhTYB0SmAr/JAK363a/bgcR3OJL3LZcoji6iIhhDukanXNwo19uotoqJVj+J/CdSWzIbYefihN/FGf6CW9bqHhrBKY0t8k2HaT7EXxvxx7NXlCUQCSKHlkfNyd+BT+nYQ+oQQxyxFHrvKPhs9TPy8U7eVKpU1d0DfVVlKKB65l0O2Ldny0K4i8NPv+CmwX1zJqRzqc0inqfT3Eatc6a47pqJq2tL8ah4hYyrtYh2swicY3JbOP8lVWvnV3PZ2/iRMN';
-                        }
-            ssh_authorized_key {
                 'chrisj@chrisjohnson2':
                     ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDjVPy2od8cEq1waL62yVzYmppKJSg95xFecXKVUutsE8P9VcHEdGFIg+pZoOv9X9u1rV4zrjxFomLka4RD9fhV4be3r4aXIswQ08Y9fQhQ6ixs0Y0rNmfF0P/C1vxZgZ9gPp5nSIAfng+W+CU6Ecsf/0TUc136KnpliYBIOWUD0kcgTRd3cu24w+6JYHXelZXvMB7dImlb9ilkk3OehXfNuABZpBN0PHM4CDDiZeSO1G6OD38evfuigFBo1U5zezRuOdDh5tTWug3fkmGf9bBH5MKnnIEfrzsbzQomeB0fJs1LEweFlwPZAsjQ4o0riJEhLwWFUlE88ABGbPhwJ9/X';
-            }
-            ssh_authorized_key {
                 'cmjohnson@wmf-production':
                     ensure => 'present',
                     user   => $username,
@@ -503,9 +491,6 @@ class accounts {
                                         user   => $username,
                                         type   => 'ssh-rsa',
                                         key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIBt7ePL3ps6MVHEAMGdNHVd/lO2L3Yc0szq/M5gSino+bNmn7yOmNMk7QxVHHwsPOBPbEuBhKEUj5LC/K5oxMT4jOW5lH/PTGntsHNK+42nLsrbkTV20MVZerf5JUw7y/IL12RYzrzk6/uvA5LqBLGucha2yi2llcrWCzbvlnxTUw==';
-                        }
-
-                        ssh_authorized_key {
                                 'jalexander@wikimedia.org2':
                                         ensure => 'present',
                                         user   => $username,
@@ -529,9 +514,9 @@ class accounts {
 
                         ssh_authorized_key {
                                 'pgehres@wikimedia.org':
+                                        ensure => 'absent',
                                         user => $username,
                                         type => 'ssh-rsa',
-                                        ensure => absent,
                                         key  => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC8+5CuJlnFqzlYcs8QRu42ur5Y+9yM5g+uQIDYX+3SRA1UzOOOmj/Tqv0pzGhmvK15/y+Vz5LwE927fcI9VwAxBpCgfcV97r68aDF3YD4Zqo8ksV51GhRwk2QPNlwvCtf7+BMCLFt+ymLpAIsq3L1YReovJgfkDHvOQrujXH7LGd6tEXaUksqyn9L7TTbFEyHUZxTkrV33OOlaSxIJM1EZu1fsVSL0LppmXaLH1bi4/gPSbw3A4l8EAttWAqkvK0zrty022wn/1JRa868/OD3WWCoDNp4SSH0DisURdPlT4Jc+q+P6+P/RqeWJAx5IqEQhVg2GxW6BMIKQP5VigS5j';
                         }
                 }
@@ -549,7 +534,7 @@ class accounts {
         $enabled  = false
 
         group { 'dab':
-            ensure    => present,
+            ensure    => 'present',
             name      => $username,
             gid       => $gid,
             alias     => $gid,
@@ -562,7 +547,7 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'knoppix@DanielXX':
-                ensure => absent,
+                ensure => 'absent',
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAABIwAAAIEA4Xz2/yn/LREJbem/0IFF8wdAhn8n/dahlqB94K5hLXDXqFyiSHI3UBqnGlO2vTiwP/zU0/6cqVFQb1dqhftYn/Fet0MuekZRog2wHTrOkPy63Ph6dqVl5IeIqkHu0tEGXehd/3cktJs0ZiDjR6HrThJxLfRXsSsFQgxrHcSXLeM=';
@@ -662,7 +647,7 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'jpostlethwaite@WMF299s-MacBook-Pro.local':
-                ensure => absent,
+                ensure => 'absent',
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDnBJKG5HDdWCOK9Ow8xPZpjQCeFlkIY6nPKMIpcM47uJPfZC6V1OmRgbTpmcaC1QeMzkZEeP/JSInkgHcuGShaZRiGKd5dYVWVEl+SLuS1kru9VVbX1F8MTn9OFSuQRYVq8r9spvUDVWIJvkAsdq5WR2gJgrhhspGEXCIzP+Orcqboj71oNaq9TUUhhZS+ueY39Sx6h9nH6k180/BxIudmGS8TmUQXyI+x3NoGDXUoxWpug00vTZNdssKU0943c/8CsVtNNEbvCzGQ9+Hh8XlHrp70FJIfy3wQLNVIKF0EpZzhHLUTiul7zrmTc9nBMiN07gzWHVQlAeSjsZcvTD6z'
@@ -815,9 +800,6 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAIEAvt7LIRTvsztelZFaFB+3eovqapFo5Lur/SJoxcV+O5YxPAA6+BBXuhaORJIPgq022VcJAZagZ4CaOEDRVIMJnu3olP5DRwgjGbiLxtFaMglahp9aFUFDXQ8z7ChY3HE1YYPJVkSwchWBcELZEOoIm4423AleQb0ZOie24xH/l4M=';
-            }
-
-            ssh_authorized_key {
                 'hashar@zwinger.wikimedia.org':
                     ensure => 'present',
                     user   => $username,
@@ -926,7 +908,7 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'jkrauska@wmf-2013-10':
-                ensure  => present,
+                ensure  => 'present',
                 user    => $username,
                 type    => 'ssh-rsa',
                 key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDqrv9BOJmXXCVP3QZfTJ9Nx6H0BVSxk8EM64g9p5/r1j365Doe/gZX5BATskGpV3LVUkzy91ZTSVP7j0TfPplj0iF025BFgDuHUVIy/Jac+qXryIHuH5BdeI9Gz10l+k0tVUFL/MzuOPR9M/jU/40KbdX1m4ezAfNXFmBXoXSpDwy8ft8xxYjFTFSuxvQMprC+je4N+0mtolb3PpmhQCQLB9Ekhjw9jZm1J5uPDqJyplOmFxC0i2dk7MNzQ5OT8Qmw7D50Jg500rQHLzzHeBhgxDQ6ZGpDWnRD93fdFaBCU+8VZIkOIumme6VGyhFWgj1UF30t9gV44qo5+SYff63n';
@@ -970,24 +952,22 @@ class accounts {
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
-            ssh_authorized_key { 'krinkle @ MacBook Pro, Mid-2011':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCm44jLSJBG8Qul5VNqrgvfUCjOACM0v1RzehkF7XMYRr+yBzBGJlRSHOs6/aUoBauJDPdM2VSb1LR3PCALwczYmA4Slnm/9rTfq0U/CAeFjHKBiQey4cntKFrYIUM0Qf+XsaDBQ2uK9C2GOw3Lo9RIYfq8Kz7keS+xtkk/6t1oypAcdG6Yt4Wi9z8Mgwmtd08mmT17yszxCf9emq5fo8otUC5nxWmXhAtnL5baaPDbi/0CpX6jm4BIAMm2jhGN6raYHLPIBhqk/uUa3k2EqkQ2gncY1judpyiUHmNB7dg9rDpbHF9pR+EvdE+tGRq8iirJzEbP4ErF0Vw461swIOB5'
-            }
-
-            ssh_authorized_key { 'krinkle @ MacBook Pro, Early-2013':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCrF4bY2ygHf70rOL3GGIWGurAXo2d5X07g+tzV5189kgKZs7Bz7l8R3NwzcCwuSIQqEWryjZN/lGa6lUhXaln16Ks/tn21eSfuI7TFjWZbLbQHJtf+QYhLA6dRBk87qfGW2z05w526OxRt7vPYo6uutdV+jt1wbpbMhA40cttsyDzWVqZ63TwielxaAZFABA1Tr5cWZbS0tz0Bmoiri8PPPDjeV9GCS6ApRZAeOJjtAeChu4RwEgTgHLkdACGJSg96G0BCT0Zd0RE7q357j8DlMbvw6a93DIrlhSrma0snHRHsi/fS7g8ULa/HmhweJocM+Rzd+URAaBSegNnlK/Hr'
-            }
-            ssh_authorized_key { 'krinkle @ krinkle-mbp003':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDftk5lndsGU70RXMNRlwGOT2qr/SSBQZog07fs4F5wBL5Uevf0bZkwFokissYOO02cgYy2q6SyN64SppfnWXjOJtX7uv1gasfxmufNMx1c/JIl3m+DUodkGzXsECM66ykHSmaIjLvdpsqS5FJ7FzmkAOQsQVvnzK+Ltb7XyOd1zf6y90SB6wo03RHalLoAXEP0GmKPyv0Tzvad3wjSxS6FxTAFji7wtdSdwOxd4xOQ606h4H7J/JRHWJrmGX9yn8BLPDXXB/3a1lBasaZXEyhd+a2RXvnMgPdqfRSpQRD6gRsaMoj6UiKG1+RoUlttXaKb4COI8llG+Q3tVzWm6IJr'
+            ssh_authorized_key {
+                'krinkle @ MacBook Pro, Mid-2011':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCm44jLSJBG8Qul5VNqrgvfUCjOACM0v1RzehkF7XMYRr+yBzBGJlRSHOs6/aUoBauJDPdM2VSb1LR3PCALwczYmA4Slnm/9rTfq0U/CAeFjHKBiQey4cntKFrYIUM0Qf+XsaDBQ2uK9C2GOw3Lo9RIYfq8Kz7keS+xtkk/6t1oypAcdG6Yt4Wi9z8Mgwmtd08mmT17yszxCf9emq5fo8otUC5nxWmXhAtnL5baaPDbi/0CpX6jm4BIAMm2jhGN6raYHLPIBhqk/uUa3k2EqkQ2gncY1judpyiUHmNB7dg9rDpbHF9pR+EvdE+tGRq8iirJzEbP4ErF0Vw461swIOB5';
+                'krinkle @ MacBook Pro, Early-2013':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCrF4bY2ygHf70rOL3GGIWGurAXo2d5X07g+tzV5189kgKZs7Bz7l8R3NwzcCwuSIQqEWryjZN/lGa6lUhXaln16Ks/tn21eSfuI7TFjWZbLbQHJtf+QYhLA6dRBk87qfGW2z05w526OxRt7vPYo6uutdV+jt1wbpbMhA40cttsyDzWVqZ63TwielxaAZFABA1Tr5cWZbS0tz0Bmoiri8PPPDjeV9GCS6ApRZAeOJjtAeChu4RwEgTgHLkdACGJSg96G0BCT0Zd0RE7q357j8DlMbvw6a93DIrlhSrma0snHRHsi/fS7g8ULa/HmhweJocM+Rzd+URAaBSegNnlK/Hr';
+                'krinkle @ krinkle-mbp003':
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDftk5lndsGU70RXMNRlwGOT2qr/SSBQZog07fs4F5wBL5Uevf0bZkwFokissYOO02cgYy2q6SyN64SppfnWXjOJtX7uv1gasfxmufNMx1c/JIl3m+DUodkGzXsECM66ykHSmaIjLvdpsqS5FJ7FzmkAOQsQVvnzK+Ltb7XyOd1zf6y90SB6wo03RHalLoAXEP0GmKPyv0Tzvad3wjSxS6FxTAFji7wtdSdwOxd4xOQ606h4H7J/JRHWJrmGX9yn8BLPDXXB/3a1lBasaZXEyhd+a2RXvnMgPdqfRSpQRD6gRsaMoj6UiKG1+RoUlttXaKb4COI8llG+Q3tVzWm6IJr';
             }
         }
     }
@@ -1177,21 +1157,20 @@ class accounts {
                 if $manage_home {
                     Ssh_authorized_key { require => Unixaccount[$realname]}
 
-                    ssh_authorized_key { 'otto@hundchen.local':
+                    ssh_authorized_key {
+                      'otto@hundchen.local':
                         ensure => 'absent',
                         user   => $username,
                         type   => 'ssh-rsa',
                         key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAw+oSU5aOOAxlmjTZvJnOEPbOAOchKKeTi5RO6KIVddIVXspHbBZKhuBmDLbppsB2x/kA5XYC0otA/FD1Ldr7v+OQp3XRTUlxchjGKci91ztPL4WbedCR33DUjjZW4ro2XlvoSLgH0vIZU8B3a7a49BgtXIPxtXw/evmzRmRfguNam/pvVfv6AE+1NGNQGadLNP2nHTjd8B2WEC1aVIblk3ZOsLsGvvFQQvuwLdMsDcK9/6Khy6rE4fYXJGd9ucVYIH0V/487Syg9tvk9xMEX46z4O38EV42CVhBm4ebpQ8roJJwwuD7MGIUeRicylvmVHHd+KxMqB6VkvGYIUXcasQ==';
-            }
-                        ssh_authorized_key { 'otto@klein.local':
+                      'otto@klein.local':
                         ensure => 'present',
                         user   => $username,
                         type   => 'ssh-rsa',
                         key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCyYwXitC3hSK+Gwfq3y0PlGlQMRHaqsTtJcDbgoxuE0kzEEKwSVpyXIxoUdUK0Luh2eVkR+CZ8+5lLVDJOhrGpBT6r/Z9p+o+9rVopNEkHM8QxqbhDoS5gbSEngISM+Zcyo1wTK+bB4tbzCcX7eJEVlxmPv4Tb85zDcMWSR2ZWV+jPMai9/3uO61Q3n9GOX94+3qIWmZE55AIjLT/lw3iGffwSMffO9/8UC9U2sVW3v3daXuvDgmjKkAiGaJp+Evq82ahQEOgOWPDuLXYo1DyFuqsL67CDA1hYZfA9FJRfUhOW9I32mGmFpjdJsFeWSU4VIOHO//Blpy0j6h4IPacJ';
-            }
-        }
+                    }
+                }
     }
-
 
     class rainman inherits baseaccount {
         require groups::search
@@ -1364,23 +1343,22 @@ class accounts {
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
-            ssh_authorized_key { 'tomasz@scratch':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-dss',
-                key    => 'AAAAB3NzaC1kc3MAAACBAME+XGr43e1N0iWu7qmC2Do/mGBoWEGrSObLXk6Fll9+WJ9nRNHvmQAkEUexWEQaolI+ItWFEAVU/j9pO10MvF4YcGQSGcUEbsQD50W91P3+T/ojnP6bhjI2/aX4HAg6bk0Sq2ckYNpu4owJdhDnTHNk3luptOSwVLnJ92Nm9S7JAAAAFQD7L3zwmi9owkB+HhHxzqgwWAB7LQAAAIAOTsZLkm8nfbqMF0QRWKCb4NU7spftTiFLgVNiq1nQcSA69krEzZPi17vOfJ1a1iMWJL1zKHZhIxbXimDxMAwKS45WU2RxfMbtZw70dAK4AW635yb5riIyuc94NwmhquRypPcGUQKN+/mhxB+NDs8AG32iQjVD5e7M+fczfLsRfAAAAIBoRL51kK9c36OMcrzOJVR8J9b6bkV/AclSQmlNzm2b3armXf9w2OlifqobOpoJL2PG8HWKd7QAqv7PvON20HErNDBMCYhfRmX/Bn4WcWgZzq5y5I66rGs86nqyycbWAFbz/Yd+zq6P1z/LpzXnGsy8j8CAJGQ8c2tXvNGhHToHtA=='
-            }
-            ssh_authorized_key { 'tomasz@wmf-barry':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAxk8Zks1Z1qsFhu7CmcYC8474ikLmDVXXLqeC2ekBznIsdX2/1IPaYIZp8w4G8M2X1InMOqQswCqTfvQFuMOFWxJvTQXxZOJUC8L2El1xB7t4O7mvDXw8uq1h20L7ODsLkFga3M7W7IIg3pU12HS1UAInYDQt0SCXtLaTbPQpgP8H0XNZhn/I3P/NVQnaUx00YzrS9ZojNbwEHB8cUpwp2N/gfv/byTTe48Xaq3wlAxw/QTow5G+r3atEOVJ0QKGztl+uScF/ZzP8QYficdMP7aNffg9aQhf/uER10hXu2F16UZQyoMx/sFkS2U8ZNVkCKLhI7MKti7+ZGz4/+fcCOw=='
-            }
-            ssh_authorized_key { 'tfinc@kumo':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDOXgblcBarO8An5LNYfIBOjl+//EK6XhJu3agV8nQvmuaT2qnPtIiLl3W/X34bKHcRJbWsJRe7C3MqJqFWF6BWWtU9MZWj/s1TRtyA8Olgx4y7cXGXSUY/0woJnM6yIh6WitQEPX35iZyKaVapX5FCYlkkSbTEAbJwm/bFV5j2hOTyews7Cff1E0Zp0+E4hli39MvflkMOtllcZvFoLjve5AjETeabZEppvvSR8VPAK5bNMl7zo7fWcoExaNNlglLLRxP8y8Ne2PQlks5gTMrsh5e55BGVr/Nd6kD5OIB7s63InMbudYViWX66MjPgKMXXg8m7RKqkLB33nBifQrY5';
+            ssh_authorized_key {
+                'tomasz@scratch':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-dss',
+                    key    => 'AAAAB3NzaC1kc3MAAACBAME+XGr43e1N0iWu7qmC2Do/mGBoWEGrSObLXk6Fll9+WJ9nRNHvmQAkEUexWEQaolI+ItWFEAVU/j9pO10MvF4YcGQSGcUEbsQD50W91P3+T/ojnP6bhjI2/aX4HAg6bk0Sq2ckYNpu4owJdhDnTHNk3luptOSwVLnJ92Nm9S7JAAAAFQD7L3zwmi9owkB+HhHxzqgwWAB7LQAAAIAOTsZLkm8nfbqMF0QRWKCb4NU7spftTiFLgVNiq1nQcSA69krEzZPi17vOfJ1a1iMWJL1zKHZhIxbXimDxMAwKS45WU2RxfMbtZw70dAK4AW635yb5riIyuc94NwmhquRypPcGUQKN+/mhxB+NDs8AG32iQjVD5e7M+fczfLsRfAAAAIBoRL51kK9c36OMcrzOJVR8J9b6bkV/AclSQmlNzm2b3armXf9w2OlifqobOpoJL2PG8HWKd7QAqv7PvON20HErNDBMCYhfRmX/Bn4WcWgZzq5y5I66rGs86nqyycbWAFbz/Yd+zq6P1z/LpzXnGsy8j8CAJGQ8c2tXvNGhHToHtA==';
+                'tomasz@wmf-barry':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAxk8Zks1Z1qsFhu7CmcYC8474ikLmDVXXLqeC2ekBznIsdX2/1IPaYIZp8w4G8M2X1InMOqQswCqTfvQFuMOFWxJvTQXxZOJUC8L2El1xB7t4O7mvDXw8uq1h20L7ODsLkFga3M7W7IIg3pU12HS1UAInYDQt0SCXtLaTbPQpgP8H0XNZhn/I3P/NVQnaUx00YzrS9ZojNbwEHB8cUpwp2N/gfv/byTTe48Xaq3wlAxw/QTow5G+r3atEOVJ0QKGztl+uScF/ZzP8QYficdMP7aNffg9aQhf/uER10hXu2F16UZQyoMx/sFkS2U8ZNVkCKLhI7MKti7+ZGz4/+fcCOw==';
+                'tfinc@kumo':
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDOXgblcBarO8An5LNYfIBOjl+//EK6XhJu3agV8nQvmuaT2qnPtIiLl3W/X34bKHcRJbWsJRe7C3MqJqFWF6BWWtU9MZWj/s1TRtyA8Olgx4y7cXGXSUY/0woJnM6yIh6WitQEPX35iZyKaVapX5FCYlkkSbTEAbJwm/bFV5j2hOTyews7Cff1E0Zp0+E4hli39MvflkMOtllcZvFoLjve5AjETeabZEppvvSR8VPAK5bNMl7zo7fWcoExaNNlglLLRxP8y8Ne2PQlks5gTMrsh5e55BGVr/Nd6kD5OIB7s63InMbudYViWX66MjPgKMXXg8m7RKqkLB33nBifQrY5';
             }
         }
     }
@@ -1413,32 +1391,27 @@ class accounts {
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
-            ssh_authorized_key { 'rsa-key-20130812':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABJQAAAQEAljtlNa6pQX9gEyjrpCUqqQyO1HtYtHFSDuWBiWX5oiLnTSXRr0e7pECiuy9ISEI6oIt7KkaU68+cxSkqK6gwr9YwZ5Pmj3kkopT9LjguzBYxN3jEOj5+oGwdyK6ivQQA/PwPEtVgk8LgJ0EKf+74lQ4cQVsZXyu25HTq3cjfLgQRpwoYc9OBuuwIj//3uhLvIBKS3JvO3BGFsjZBPJmxoZr6+HJI7lXNfy6wWbbinXMS0gzVYhHvPwU5lFYSN0/njh3gCV8EwBYdzV6PmF0q6HXM0R1gLH2FfrhwJY3mnveWu30B7VXENYUHqc6H3wUt3rS2koTHOMvBgy3PbNCyXw=='
-            }
-
-            ssh_authorized_key { 'rsa-key-20101031':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIBv9rklx9iBwtRUh9JB9ZwRGPX60KrS22X48XR4VjMIa56+IG2/yfQ9Z2nUl8Jt2gNHg/SG6JXelctU6kvmg5J9nU+fTYz88Yq4+DOkMwl88Q431IMXW8WKODKkj3dC4I5xHPZP4YH+eWuLoFphJtifiLNm4lbhKG7cxtNtowWj6Q=='
-            }
-
-            ssh_authorized_key { 'aaron@scratch':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIBwXVG0SwhtFVCJGfsOi+P5suGzST9RjFeyXIXMQJX6JrpcyCjwmA11eISlnwuOIpd4vyjJ+uJ4IVyizj9xWjLQH0Gl2+ptkyR5IvIyi8EosSpTLlYyZxVXqod4q0vnEGmFPcOMN6eQKOEX8VX4JpplodBlEVl+p1lyr+YAO3S3hw=='
-            }
-
-            ssh_authorized_key { 'rsa-key-20061225':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABJQAAAQEApNzNTrx3FjBamdXUIXzaI34JNbhaz0cYmU9UZiOsgRulBuDLV3V9tefWdg8AS4sH+Zl4nMXHqwQHt4+95u9j2LwoBGbfSRqowo/T0Y1WGuU+vRBFIzRPRwardRdkqw/dGaVFGTRkWG5sAS+tNmjgwPLp4gKEho35mw5J9pljwI9KS0+BUgTOGcbApjIWJLS+XYLb4zPKsb5SMl4ZDfEa1ULSQp24xrjOk8vSfgsxxplSOMsfeETmkIv9CD/OpRQWWpAOakMS2KrLSf8IRn/Wm3dbky5RKCW8Y6RRA7pV0Mi1/1JoFMTRAUrTrjxqqVid/qXGZo7GjKz6UbXmai6XOQ==';
+            ssh_authorized_key {
+                'rsa-key-20130812':
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABJQAAAQEAljtlNa6pQX9gEyjrpCUqqQyO1HtYtHFSDuWBiWX5oiLnTSXRr0e7pECiuy9ISEI6oIt7KkaU68+cxSkqK6gwr9YwZ5Pmj3kkopT9LjguzBYxN3jEOj5+oGwdyK6ivQQA/PwPEtVgk8LgJ0EKf+74lQ4cQVsZXyu25HTq3cjfLgQRpwoYc9OBuuwIj//3uhLvIBKS3JvO3BGFsjZBPJmxoZr6+HJI7lXNfy6wWbbinXMS0gzVYhHvPwU5lFYSN0/njh3gCV8EwBYdzV6PmF0q6HXM0R1gLH2FfrhwJY3mnveWu30B7VXENYUHqc6H3wUt3rS2koTHOMvBgy3PbNCyXw==';
+                'rsa-key-20101031':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIBv9rklx9iBwtRUh9JB9ZwRGPX60KrS22X48XR4VjMIa56+IG2/yfQ9Z2nUl8Jt2gNHg/SG6JXelctU6kvmg5J9nU+fTYz88Yq4+DOkMwl88Q431IMXW8WKODKkj3dC4I5xHPZP4YH+eWuLoFphJtifiLNm4lbhKG7cxtNtowWj6Q==';
+                'aaron@scratch':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIBwXVG0SwhtFVCJGfsOi+P5suGzST9RjFeyXIXMQJX6JrpcyCjwmA11eISlnwuOIpd4vyjJ+uJ4IVyizj9xWjLQH0Gl2+ptkyR5IvIyi8EosSpTLlYyZxVXqod4q0vnEGmFPcOMN6eQKOEX8VX4JpplodBlEVl+p1lyr+YAO3S3hw==';
+                'rsa-key-20061225':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABJQAAAQEApNzNTrx3FjBamdXUIXzaI34JNbhaz0cYmU9UZiOsgRulBuDLV3V9tefWdg8AS4sH+Zl4nMXHqwQHt4+95u9j2LwoBGbfSRqowo/T0Y1WGuU+vRBFIzRPRwardRdkqw/dGaVFGTRkWG5sAS+tNmjgwPLp4gKEho35mw5J9pljwI9KS0+BUgTOGcbApjIWJLS+XYLb4zPKsb5SMl4ZDfEa1ULSQp24xrjOk8vSfgsxxplSOMsfeETmkIv9CD/OpRQWWpAOakMS2KrLSf8IRn/Wm3dbky5RKCW8Y6RRA7pV0Mi1/1JoFMTRAUrTrjxqqVid/qXGZo7GjKz6UbXmai6XOQ==';
             }
         }
     }
@@ -1461,12 +1434,12 @@ class accounts {
                     type   => 'ssh-dss',
                     key    => 'AAAAB3NzaC1kc3MAAAIBAIjSwE2k6G3cE1QPq9/6S027XqAdKDOCw3nEKxaGnPdoLCxaLic54URUyvrpqsZ24fp3iC7dlTXegvdVx3cLpHIopoyDvqVgU/gf5ZxivpfjVkygtygg721IG0YC3wtgIPey3ipQ0KbDUfSAOBmMEJ8+g47U5TOzeOsP7kNCKEbRLf1+e1uiz9D971o50haYjcNzDUZHQbuAwFo/tk4sPS0RKmI+FPupT5wXAqGy0CAV+MxDBIj98wvIXXu3qPOFocLXXFSCmjD9zjrKWrs8hvB64I9tGuErIEKn9sX7ZKugyA+tZ0eCUtOvKkCv9g6+gQ94CpyMIVHzosT0yE39qxnSBW7OeRLguoiX9w7AkhgRuWc6rHKj4IZ+lT15GW/oj4ZXcl4o+NlwgXAr1LT+S1jR/fJdCcCPp/+cDhfpfWSlns2+jnCmL4QxaHZjgqhUJIao74XxceCH0wKk9c3ZLb/6xQ2md4boL8nNcomik1Gi+iOF/nkx1Zw74r7MOXFil2oHvTPwUWym1gwBJhUONtcvb6y96JztP0gWLGAnG/EitQ7JidHYWXbR8Zg5Vo7bCYyVcPgTzbEHOoHXrLJqIq3nRf/aV6tktU5fUcMwhhzpfio8yhvya0zwC1lsc9SN/jWXQYOkqXPfwSxcdpS9DNAL7CiRT3/eM+VCovqXld5HAAAAFQDvsFdTtuyeTEj800ToW79X4qb+oQAAAgAWhCcL41TnRZuR10VpaWWZBFAn5STbSJ6/d4TOK2iwDj1SzNPCtLlqYyOTOD8pNKrJnoaLsMpBq7JxdcusF+u6Vuc0wQsoQYSJP9MjUrSj+XV08Yr0Hf1iKt1SpAZak6STPtLR3EcB4HQxSj6/8U/bwfvxDullMTPJpazaSXTuwaYNiRE2f3D06YoFWs6dmvxMPSJGt0a/IBuCKsaeG0YB7QKXckZ7geNKA3AMPBgLPnZq0tw8I+vMLI0nDN5amh81xA35VDKihUNvp3cd2STJ9PJswR7EYHG/dMd8jXABhWY5UEbb9qQkGg5Y1MgLOjBkNT5eTwzgtW+m9lMEbu7hUh4B9gbhbMAlOxnda8Y1CNVrAdCJD/eUkmtq7jblJFNFa8IYNpGPIouHTwH6NOQc7olszsGi24xXf0X7uG03Z2xnEy/I5IYw5cW6uL1X0z5mWEEIMYNZYLCn6cGyCkH+KHTQIg3vST308AJtA7VE+WbxW0iy3gbTSnfsWTOE0SduITZ94r8FjFePKkCWn5P5VvlhXRf1yauurjQN1vSKwQPX7QRlkVP99RQLCx6R3COXvFS0CdXAj1x579wCpy9b+4MmY4UcVP5uODQM/yHnHxAc/QUpWQ8AC7570EVesWvvaFdgNqnC5rhi2JnCWKtnW1+8gHuddRyO862Ds/Jp2QAAAgAYVo8RyjvlHo/StZZ+vmXemtk1gzXhGR6HW57mVx8cxk0opa3c4SIvjmLBVGO0Yk/W/Ypsy8ikJivuRqebMokKLSecX/SAH6NjAYSafDzUIaublbMT+tctayY0drlWPrx7vaeR717z+VNw5kUeBlrDtUOfHHCJR1CYodUgR0OPz8uLq9A6aXK/PxE0QVvSFQDdCj6AwWswtkKhkT3u7lTaLAQeUUv9Z9Nl2JhMtOyEwYbpd9vqK9/1DKn3s8HfbwJcNr4/jSAjuXTIbKb02QVFrMZYw8PFfShFKVnFvqfmZd1I4J8HwUhcDVXeYzslLJZJP8iEzo8K1u8Jfnpt7xDJPN1km1d/a+iBlLhnJpMxofxR++kPcRSuKxOvueMIrmPZkEW2rYUUTAStU70bNIO7LHq8MorfcN4TplztDjJMRUbzbYlrxxpPmQojiyMto2k+qgvfqZKtlFqIDPXCWThMSIyDd8JeMOVBTgKWiYehk1wBLtgEQmRrKJTEg29EoXYRASHfeTCWAJTh5V0lU8GfoOMVoV+B2/KtcHx7pDc0S6O8weFjpNb+4wXfQ5LnVBilOgIlzqJmz+Q36WzjfWz1nF3jwNM88/pEcEbUW7v4kHxLfSNcYs0r1OXiC4D6nklfcpwXjwjGkdK+mCfPIwXJ3s4VNBSXiU+9j+I/m1VgLg==';
                 'tstarling@fenari':
-                    ensure => present,
+                    ensure => 'present',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQDTDmIgbftdeyF3wvKYbqbo9ktgS134XNt9LCfryDohCClsujY83seA0BE9FyO3cJDYwt75frBf3m0JZcI0x9NXwuK73pVp3PJuzUk7nQ77BP4hbSWGbDYNDjYdZp0IZSRBYs/A+y8NKhYiDoyAep+JrM9FvVVGEh+gB/BPizYNv1ru+IXXL7FcVRMc1AUTDf30zZhEyj+/MoYs4m5YMMOW7Qg5FEyVFAOeTg95HZHAtAOwMeycbrueqf9qlIm0kNC5NWHMthWklCY7R2gVRcbYdoYuTJYLSVBs3Vbhygk+M+KqeNEx5+GJX45PAWb+qfRHE5GbsNuo4RjhyTcSBOWt6mx8VyOiSHhHRA/AFDOHzR6VqlM4buHXGARFgbTM7ypv5eiXyIWhYhohyQHJg9IuyPvL3LtHcixgay+0aytot+/9Dp8JQ5OtuzRzYo8AwwfnihF4uQ96u2TKAkkINsVQpc1haERbR3JmQHEwujg/iAj8q9CoUYtvdINfMTg7n1IjzdPFXS6lCv8WeDnQPhcmivz9Psjyrs3nCGlHmox45bAD4Snonp0xQ0Nbd6Qw2DDQh7YTt5sutay00V0FYGVyGLJdlY/CEFHsauQJIILwzxw3PTEYWHEakFnGEaJWdWPMSlNJ1i1OGA1ulg1FJj4RAQyK/mlHMMFTiEE29of6HQ==';
                 'home':
-                    ensure => present,
+                    ensure => 'present',
                     user   => $username,
                     type   => 'ssh-dss',
                     key    => 'AAAAB3NzaC1kc3MAAACBAMa+T44Jat4ZubaZtanOlvq+7vj2Vn2vdOoAeafH3EBiXRc3FWxbL7MUInttfVMAQ+kKpMFrMfyZLCr+xfe2266zL9NuRN+0NK0unHnUJxKFg1xhlwM/miLuVIRPNYjx0hb5bnEqEdaHWhzDAac2Th8t4l3Bkx6irtLkEbG5X7rbAAAAFQDPx0nvVb7kjyGUtRpUSQgWqwO8BwAAAIB6ywz35DCRnX1wb6d+rjxR2bzzpI0EBe0XFs+EhWGcphAmc01gVOQj/cgM8X9lWzbzcepN/VLJLNYZDmhT7BCQx1bI+3mYMdHin5aTA1yLo0sNbTu5ECbe4cPywdWkRbUVXFFtxG9+xXd6l7TLUV0ZweFiV3hmeB+hKoisV0L/GQAAAIAF76e/8Nf7K67DM2DlYmjrfJYG0fC8WwbARKIldylkiVrADY8DFdc+dEXbUFlqvSMX0wyWS19zlC0XbkA+6EwIMfbEfukJoo84ygOhcdiqySn3JGxyQpuBQfiHK06oLxqNxpxs2R26/beqzkIzzIx8wXDN+UmjZUDuIVvYlWUWsA==';
@@ -1500,35 +1473,27 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             # older key
-            ssh_authorized_key { 'catrope@scratch':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIEAg8ogPqDDyhMBfXdV6Z8UKv3esRE4I0EAkrxnCCXuBfBnJ1A0dNsV8hKBsdRs4UCEitIA1a6bSCbq+kV7Xvq0yMihAFe3AG+26OISi5NZP+gNtx/aIBLGAgDXoC3M4Nb27F+pEDSfhT5OC6N/uO3o1UK4RSfgWNsmNW/lk5Ir57U='
-            }
-
-            # old key
-            ssh_authorized_key { 'catrope@fenari':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDt0lR5k9MsCt1TnefSX/AiNsVAurjqgl5w0l6xgRmZWeuJUJ0X+0svKjgJPnTVFLjfBzMy7ACkk3R5U9UnW4JNY4R3PlgaSKUe+u4/iFP9MVC0UsS6My6uVW3xgEFTksEQucmWsj0SJVjLcS5hGIu0Tl9SLkSBT5gQLwXRhrXopCK+Aco7ACSuMNjKe7Vtslmh6l3qYT8L9nfYJ/dZ/2Oryzw7rMb1SgQQhXqUIUzTu0lSBaTSjPbe5fre2RvGLnIUQbrt0PQd3AKGBI65LaW53fEMhWHXTdw/p46PkJLfQ1X3i+N8o4ZGRr4aVP/6Cn5ANOyu3JnSoxmI6Pjoyurj'
-            }
-
-            # new key
-            ssh_authorized_key{ 'catrope@fenari-2':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDAZea7fnmc4gDHyupnZA+Cx8SFG59oJnKMFNi/fKLyqJyBI/kfWnqDaCJ2bCFEwMZ883zPOZegb4VF/D6aO5LM0eo8KVvCZHWssC9Le8Og31L/Njg03fAh7P5mLY+vKYC7WtY0IZQNLb5BuW48C+lnjwZ+Q9t0up36vn5U4aqgvo+OosAd4qcYcYsYF20KeeQCtuYMv/rhJw1tD7HuPIrXjBevPEDW9n0DyZDTKjfGxuYkfnO+qpiFuKba+/ns7pSgRgSwrAfVzyM2eo4sP9b1/1KoEL0E5mhGn/BGV/yIWVz/S8oBb8mMjr3OOTfSu97//6fJw/TDKguRzhqU6P4l'
-            }
-
-            # newer key
-            ssh_authorized_key{ 'catrope@catrope-Lenovo-IdeaPad-U300s':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDNnm5p7ShbI9suKmhOzmYfYScifGDJ3oS9KtwlEtuuVXThsdms0pF5KrLsVnnZWGyLsOjAARYdvNmwipelXebpQm9nMNvBreHCGAmqKFW2UFi2yMnezhANUhvdtJL0j1jjkhh5liRsesvw1Xrv2GvgKnfCwGvUcYvrwcLNTTGSka2hAGfQRalgomSdrb0diTzqA6Ijm33BeiZlpmbgiQ6LzeZRMLrs+Nm+EtZIRLgb08DCZfebIoPH6hh1Hz38ljpkQm6menjpxbcrVvjBmXClwANPssSaTxNEprrZpeS9/2eB0un3G8aLmORohgJ15w1w2KZaFXokYxQ7/ky5kYID'
+            ssh_authorized_key {
+                'catrope@scratch':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIEAg8ogPqDDyhMBfXdV6Z8UKv3esRE4I0EAkrxnCCXuBfBnJ1A0dNsV8hKBsdRs4UCEitIA1a6bSCbq+kV7Xvq0yMihAFe3AG+26OISi5NZP+gNtx/aIBLGAgDXoC3M4Nb27F+pEDSfhT5OC6N/uO3o1UK4RSfgWNsmNW/lk5Ir57U=';
+                'catrope@fenari':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDt0lR5k9MsCt1TnefSX/AiNsVAurjqgl5w0l6xgRmZWeuJUJ0X+0svKjgJPnTVFLjfBzMy7ACkk3R5U9UnW4JNY4R3PlgaSKUe+u4/iFP9MVC0UsS6My6uVW3xgEFTksEQucmWsj0SJVjLcS5hGIu0Tl9SLkSBT5gQLwXRhrXopCK+Aco7ACSuMNjKe7Vtslmh6l3qYT8L9nfYJ/dZ/2Oryzw7rMb1SgQQhXqUIUzTu0lSBaTSjPbe5fre2RvGLnIUQbrt0PQd3AKGBI65LaW53fEMhWHXTdw/p46PkJLfQ1X3i+N8o4ZGRr4aVP/6Cn5ANOyu3JnSoxmI6Pjoyurj';
+                'catrope@fenari-2':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDAZea7fnmc4gDHyupnZA+Cx8SFG59oJnKMFNi/fKLyqJyBI/kfWnqDaCJ2bCFEwMZ883zPOZegb4VF/D6aO5LM0eo8KVvCZHWssC9Le8Og31L/Njg03fAh7P5mLY+vKYC7WtY0IZQNLb5BuW48C+lnjwZ+Q9t0up36vn5U4aqgvo+OosAd4qcYcYsYF20KeeQCtuYMv/rhJw1tD7HuPIrXjBevPEDW9n0DyZDTKjfGxuYkfnO+qpiFuKba+/ns7pSgRgSwrAfVzyM2eo4sP9b1/1KoEL0E5mhGn/BGV/yIWVz/S8oBb8mMjr3OOTfSu97//6fJw/TDKguRzhqU6P4l';
+                'catrope@catrope-Lenovo-IdeaPad-U300s':
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDNnm5p7ShbI9suKmhOzmYfYScifGDJ3oS9KtwlEtuuVXThsdms0pF5KrLsVnnZWGyLsOjAARYdvNmwipelXebpQm9nMNvBreHCGAmqKFW2UFi2yMnezhANUhvdtJL0j1jjkhh5liRsesvw1Xrv2GvgKnfCwGvUcYvrwcLNTTGSka2hAGfQRalgomSdrb0diTzqA6Ijm33BeiZlpmbgiQ6LzeZRMLrs+Nm+EtZIRLgb08DCZfebIoPH6hh1Hz38ljpkQm6menjpxbcrVvjBmXClwANPssSaTxNEprrZpeS9/2eB0un3G8aLmORohgJ15w1w2KZaFXokYxQ7/ky5kYID';
             }
         }
     }
@@ -1623,17 +1588,17 @@ class accounts {
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname]}
 
-            ssh_authorized_key { 'rfaulk':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA1WerRcJULxj26JimklCkoFUO6XKBjwTbPH54/hUv5c3lvyuUol6AF86rWziHgwIAy4+jPlm9mTS3IzWoRf0sSMgSrjkmykVaD4Zc+7QnXXGtnehHfryKTyB30TI39/JB5CoS1pGQQoMg67kF0nl2RKP47r0HY07m3rl1m5MWMTKByZ9p6/oVAuJ7XNxLjfN1N+Li7HhyueQonkw8Na4CxSz/Uj6zDgxB1Odw9LgHErgOe99Nza4yOsvpa9iq30eLJjXYKJ+9s8aPI68H+nBh8/CaBaPJkuTcYfwXhE6EG9JTtUrf43y88J+SDeN0lRF8w0SMluheIzkv/3TNyDdr1w=='
-            }
-            ssh_authorized_key { 'rfaulk2':
-                ensure => absent,
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDFlxYVmNcVsP33eEHhNc+nHZ1HJcuAZNGNfoNhiHRTisyqPm1jFvt0WQ3r+AS1rErCD3594rkApGAzO20if86OAChUwq2C3k7xB28eOXOGB/EMNswpdoDXraSxgshptbFloy1ekLX/lxWUVKU3omc3jaA4anF9FQD4EGpNbL6lJaO0oloOHdKwyjUlvp8gvWOX2/LH10ALh5/KcA1nC3zlyrLyDfHTwnkDCsvVKe8rQB3pM4b7mVOLstj+dcCqxaVbjyZap8dV4W4QbhqUFVhe9ZL1Crop0TemhWBSw9oh2vQhGj6LWQIwIAfSe6zHIJ2exfq/53nVsHeC98gWr4QZ'
+            ssh_authorized_key {
+                'rfaulk':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA1WerRcJULxj26JimklCkoFUO6XKBjwTbPH54/hUv5c3lvyuUol6AF86rWziHgwIAy4+jPlm9mTS3IzWoRf0sSMgSrjkmykVaD4Zc+7QnXXGtnehHfryKTyB30TI39/JB5CoS1pGQQoMg67kF0nl2RKP47r0HY07m3rl1m5MWMTKByZ9p6/oVAuJ7XNxLjfN1N+Li7HhyueQonkw8Na4CxSz/Uj6zDgxB1Odw9LgHErgOe99Nza4yOsvpa9iq30eLJjXYKJ+9s8aPI68H+nBh8/CaBaPJkuTcYfwXhE6EG9JTtUrf43y88J+SDeN0lRF8w0SMluheIzkv/3TNyDdr1w==';
+                'rfaulk2':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDFlxYVmNcVsP33eEHhNc+nHZ1HJcuAZNGNfoNhiHRTisyqPm1jFvt0WQ3r+AS1rErCD3594rkApGAzO20if86OAChUwq2C3k7xB28eOXOGB/EMNswpdoDXraSxgshptbFloy1ekLX/lxWUVKU3omc3jaA4anF9FQD4EGpNbL6lJaO0oloOHdKwyjUlvp8gvWOX2/LH10ALh5/KcA1nC3zlyrLyDfHTwnkDCsvVKe8rQB3pM4b7mVOLstj+dcCqxaVbjyZap8dV4W4QbhqUFVhe9ZL1Crop0TemhWBSw9oh2vQhGj6LWQIwIAfSe6zHIJ2exfq/53nVsHeC98gWr4QZ';
             }
         }
     }
@@ -1648,17 +1613,17 @@ class accounts {
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname]}
 
-            ssh_authorized_key { 'laner':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA5i6EW2Qwvv8bEEVOM9UQnSU9i+83pz0tmJ9zU37jimdMNmuxUb/2hi1mzmJlDRYDiZ08dIIO02MhkkQROQ629kWU+Dyx2RkxAtHF+vDmShpsp/PNSsPs6+3qDJs89Af7SRvAQJ3jVmQqJ1TzqniiLu1Ab87TDJoFNE2WjqlPlUWDLZa88023CO65dL8e907QR7OHYPLxbpiJMLYFvdJ1nByquo9t+iV3Iu8/WQS1JOPsGriN282qyc3EErir03et75kS7h+1Zhr+Z6BB0MO2cd6SJDl1cChcIrlHzs4zpufUzWXq9ELBmIaxYBH5iUYYM4ezSyA+qEbDnEpweJiW5w=='
-            }
-            ssh_authorized_key { 'laner@Free-Public-Wifi.local':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDRsK78adkRJfbYrsZznpbwldoSpQyyQXrXG6WzrJEBAVIAKz5gPSM8zmJ/kj89QygYRaKRPWAcuF5GZhSho15dwDXm5M0ZTva4/m/Hu4H3j7oxx3PKjZKBiygP7mSu/32TJs7FynPGAFVl/B766Snn9Ll/xwrx4lg3v9ZNEpNMJZ0DQTFZ1xXD2Ns08JvxW1csAEoNrpqH6tTdXdHmhurXdKQq1G/JmKR3/KVWbB1MNvUwCY0mQbN1icuy+JsOXbvXEftumigXRV16reLvX3q4sNmYSFfOGOMMW7K9d+nDc4TRNrUjm8R0AEZ6BxTJsvpahDi1gCOfZnGmpGKUEWgZ'
+            ssh_authorized_key {
+                'laner':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA5i6EW2Qwvv8bEEVOM9UQnSU9i+83pz0tmJ9zU37jimdMNmuxUb/2hi1mzmJlDRYDiZ08dIIO02MhkkQROQ629kWU+Dyx2RkxAtHF+vDmShpsp/PNSsPs6+3qDJs89Af7SRvAQJ3jVmQqJ1TzqniiLu1Ab87TDJoFNE2WjqlPlUWDLZa88023CO65dL8e907QR7OHYPLxbpiJMLYFvdJ1nByquo9t+iV3Iu8/WQS1JOPsGriN282qyc3EErir03et75kS7h+1Zhr+Z6BB0MO2cd6SJDl1cChcIrlHzs4zpufUzWXq9ELBmIaxYBH5iUYYM4ezSyA+qEbDnEpweJiW5w==';
+                'laner@Free-Public-Wifi.local':
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDRsK78adkRJfbYrsZznpbwldoSpQyyQXrXG6WzrJEBAVIAKz5gPSM8zmJ/kj89QygYRaKRPWAcuF5GZhSho15dwDXm5M0ZTva4/m/Hu4H3j7oxx3PKjZKBiygP7mSu/32TJs7FynPGAFVl/B766Snn9Ll/xwrx4lg3v9ZNEpNMJZ0DQTFZ1xXD2Ns08JvxW1csAEoNrpqH6tTdXdHmhurXdKQq1G/JmKR3/KVWbB1MNvUwCY0mQbN1icuy+JsOXbvXEftumigXRV16reLvX3q4sNmYSFfOGOMMW7K9d+nDc4TRNrUjm8R0AEZ6BxTJsvpahDi1gCOfZnGmpGKUEWgZ';
             }
         }
     }
@@ -1811,8 +1776,6 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDM17PSNhtrXqE8fBSBmv1I79kyBiwy4gNS1WjVqHraDDJ75TJGD9J673LkGgjHAerrG+u5nSjD0X+eJQXaWsZeh2ZZjnTcSyoFxge9t0n88F568h6OdYFMc0Obl9OHFANX4x5p1jsPqM/DBW7McW7QmG699eYdi0na8ubN97DSCSBw++V49x7QMx/2qYjAhJVJt9aCreBInGPa9FMGfXQKHdkS25Xh7PxIhk4XPYstey8FqUtOyIacdEGpQnAuMvKGxyTsvf/SQiMXMSvSvAOk9x83aj9cwcJgfrAJFbsraQ57oaP8/rpvWWW2PZ6xokgTtbdZ6lEK3bp2LVX0Pugd';
-            }
-                        ssh_authorized_key {
                 'ben@JDoe-LinuxBookAir-3.local':
                     ensure => 'absent',
                     user   => $username,
@@ -2074,14 +2037,12 @@ class accounts {
                     ensure => 'present',
                     user   => $username,
                     type   => 'ssh-rsa',
-                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCjkTnfRGIhs0of/3Z9GhOEEavkzFFg87n9D5BqNJAKtRSy5uh87p3DEHWnYcA5Ak7TD66hWae/V2tyQTHVBcDfZhoSFKsIMmhC/ooDtN8iewl37Dbss+a7m4GT0BmILkgUC2IJnFDFz2Eb6RVsnD11ajfbO4buNfokJC7jMjxQ2btpR5FojWNX7xffw5yg4aGg+k9x+32bM8ZTEzyYUGpxUZxV9jmbK1uzTBfZSlgmfok3Hn+scki52DM7EPIU0pxf8cyPHPIc7WX/wR56GsILoFNMBkePP86O/ZDuhOSdsFMJaBmOHM+9qCMW6JPKOtogvEaglbgCRrTZ0VkJx2HX'
-            }
-            ssh_authorized_key {
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCjkTnfRGIhs0of/3Z9GhOEEavkzFFg87n9D5BqNJAKtRSy5uh87p3DEHWnYcA5Ak7TD66hWae/V2tyQTHVBcDfZhoSFKsIMmhC/ooDtN8iewl37Dbss+a7m4GT0BmILkgUC2IJnFDFz2Eb6RVsnD11ajfbO4buNfokJC7jMjxQ2btpR5FojWNX7xffw5yg4aGg+k9x+32bM8ZTEzyYUGpxUZxV9jmbK1uzTBfZSlgmfok3Hn+scki52DM7EPIU0pxf8cyPHPIc7WX/wR56GsILoFNMBkePP86O/ZDuhOSdsFMJaBmOHM+9qCMW6JPKOtogvEaglbgCRrTZ0VkJx2HX';
                 'jgreen@spork':
                     ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
-                    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAIEA0065bEe76amow8pXj+cS7rMHajCMfBCrUxOlijTgUv5o6e1v04hm7iEwxadcUbPrauGgsZOoeuoLzz3J/oS7qb1pliNKgdvcMw/sA+sqZoh2iIKjwLkEu49CJJ6Wxiolg+p3Y8yQHOUTc7sozkREkXsDyZZsNbmOcwtDlCe5SJc='
+                    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAIEA0065bEe76amow8pXj+cS7rMHajCMfBCrUxOlijTgUv5o6e1v04hm7iEwxadcUbPrauGgsZOoeuoLzz3J/oS7qb1pliNKgdvcMw/sA+sqZoh2iIKjwLkEu49CJJ6Wxiolg+p3Y8yQHOUTc7sozkREkXsDyZZsNbmOcwtDlCe5SJc=';
             }
         }
     }
@@ -2104,6 +2065,7 @@ class accounts {
             }
         }
     }
+
     class kaldari inherits baseaccount {
         $username = 'kaldari'
         $realname = 'Ryan Kaldari'
@@ -2221,9 +2183,6 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAvx17BMqWpcnI5aAl3tVAJ3WI8+geWfF0jTh+/U+kr8ls91tBk94sEJ7xI1T73JepuRlqsNRzzpZxxn0kipVnj7jxW3nbqIGmpXAfb/2W9Fnp65P2u+CKWd5tMwYU7Q/z9zEk4FLoLEVK7Ce1ia0xkbG7oeM7La7sATNl4mx3BZNPUiDCQvEOrePYFUdxP+wS4wsJbZ38RGil01lPFeLuF/3aG+j3xgttwO+WjJYGEAyddUSuK9aw6rBpLOFaMBZqU2U2hK2iIDN6EfiSOpdk7zeNNKOqHfcH5N/rRGBx1niHV3K71WsiAhYApZ8MBiK7iU56+/lahsarstDJ3GKZAQ==';
-            }
-
-            ssh_authorized_key {
                 'andrew@AndrewMacbook-6.local':
                     ensure => 'present',
                     user   => $username,
@@ -2492,14 +2451,12 @@ class accounts {
 
             ssh_authorized_key  {
                 'haitham':
-                    ensure => absent,
+                    ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABJQAAAIEAzIL4+oaq/jC6cUsF/Pd9xwOJQLOXLrhPs825Z5sdlK8jM3rfkKNGiVhvDu8sv2FEjDnOFcaTUrPnsA7QFUM+QkO9U3XfIxnn/CHgXUwUCAvX1/GOuM2bMGKNrzNa+R5qOYYAYE1I0MalQCH2jfdsbe9hEKxS3IygzzmQEsbvMvE=';
-            }
-            ssh_authorized_key  {
                 'hshammaa@wikimedia.org':
-                    ensure => present,
+                    ensure => 'present',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCxKhgMrYubz2ciXFpB6F8jRVl9ChDPjXF0kISApj9DGvISJHPSm9vKTNxylGGf22dTPjBoBn9l9UzetJagP0qHcG3BbdjIl3xSpnq6grQ/HOqqHUqrqSJDD+aYHLlgMy3P6GeoOlW2oclRBaLpwONNzW+yDL6lnBA1LkyZ1+tq/Y9PEhrRQTdgZvQ0U+oz2M0me0UIfOJa+R2xTnlwFr8qez4ZCSWJtLyPKcZhRDZLTayRta5nh13bJaeCClf1ssXK9duAVSIMZ4+AF4/zt8OD0EpQikzOed3sXBlN0bV7ZcxAyCxcSSmFJ5zmROCZ7eazNZd5jUw45y5gcSWWpdEL';
@@ -2597,27 +2554,21 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCle8Z4m/zR8MFkJ+4agjsWp/gFGXcvsweraTxrZwUxqU2q6NPcP3PzPUgUnOG6hF/KqfLt0eFor8DEHhoiaxrylKBQNx4cQkHRoCj2V9X5IOsLWV3jEIaaN+C4a9xT5WH10wiGSxDq8BvNWBEPESkC68TSjdfGtsdrvrtignbDM/GWhYFPYYYNbNJg3xAKWq/kdQuIvjDVBe9LVmPPl5VoeyahhEGdRzP46d7fpVXwXOCUlObxGW5lLqhS95acBVfIF5sIvHJms3rn8IQRnOm++l65EY+qMmpSqCzwUQDOoZ5pmpMU9O38sGz6Hw4+2p74cP0Vd9EJ6MmX8EA+yNxj';
-            }
-            ssh_authorized_key {
                 'user@user-Inspiron-3520':
                     ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCrncifKm+V2aAJz01GND6wJJ2nUaGy7Z+uV6yVT+QNqf2KaoANs93RL/e9YQce3WuMakOiJNBtV55bgZg96hdtLvnEtiNB/fpF2Ft8pspwozL0nNVG6GT/S461Xh1Uwbe8Q+6yBW2zdaG17rj0AvHB07AmLe/od8wd1qA1wlTU44400e6wgQ2W9BqVl70VI5n03xKZstsy1IlPEP/uxQQos7bhaU+VQKNrkO5oRWTSu7WX8d2L7dbL2SWmzIMOYbhLux55Cf70uwR4fvlGlDi9QenqiDce2Fzq2nklo5L8Maz7kCWHqGF4ux1XMlenIyVdDzS+hXvISMTHDvChqVLJ';
-            }
-            ssh_authorized_key {
                 'stefan.petrea@gmail.com':
                     ensure => 'absent',
                     user   => $username,
                     type   => 'ssh-rsa',
-                    key    => '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',
-            }
-            ssh_authorized_key {
+                    key    => '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';
                 'stefan.petrea@gmail.com-new':
                     ensure => 'absent', # removed pending post-contract NDA, see RT 7203
                     user   => $username,
                     type   => 'ssh-rsa',
-                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQDFVkcUBti1RKTP4stJzfOVsDAv8xYInFXZeue3cwVCgvh0s0dWcg1tmLiCGpQvtO9XuFw/I6UpIfrUCE3iwem/VhXbCrHyF4ZQ+WSb30qIo2mEaK2+mVwd6fIBmLx9ZCWB9Fer5/aEp6fpLgKp+dHA8W+zOEqsWXnDdssfI/fb0Rjmf3UIYuaSeSrltgfluJCTZBtIG9cSrl4uUdJUsiDGPsFMgdXS2UD4HjSD2YqRZp5NTxCCwwf1jG5r5jGjequagyKAM/01iL+TPAX4kTx+i0fX4e8W8Kpy/Dv23t9bF3RX9K1RjfzqXyHom3uQuR1IXlnt6KkmTHzMKmXqj3aHMIOypn7M0X0TTO80WeoJ7oW3kCX3P2f9L2lIvPi2hbuAdd0f77LFTERgFW8JNoc9y7lJDPF06CnU8a3BRRbL/9pNj/NdiW1Z8SXUOTEJstsI3tXf83q6mZ32ZlDfm3yn+INexOCMTG0n28wlovFpGYRoAQECqhw3y8P9FU6LpdcmJzgfdw8V4WXIQ6fCk9UzRCh+h3cey3W5wJz8upNWXP9ZSFtffjR6l8Q+gMJ6Acf9uYQkYMn8W3NdpLEJwcQAN28ODYb5p6iqw6T/Q+4FTl1TQR8pJofDYLnQ7fwlrTXD4o8oKqqnzAs0Xp2vo0XXujw6pgtUWUvN8q6VSRcn/w==',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQDFVkcUBti1RKTP4stJzfOVsDAv8xYInFXZeue3cwVCgvh0s0dWcg1tmLiCGpQvtO9XuFw/I6UpIfrUCE3iwem/VhXbCrHyF4ZQ+WSb30qIo2mEaK2+mVwd6fIBmLx9ZCWB9Fer5/aEp6fpLgKp+dHA8W+zOEqsWXnDdssfI/fb0Rjmf3UIYuaSeSrltgfluJCTZBtIG9cSrl4uUdJUsiDGPsFMgdXS2UD4HjSD2YqRZp5NTxCCwwf1jG5r5jGjequagyKAM/01iL+TPAX4kTx+i0fX4e8W8Kpy/Dv23t9bF3RX9K1RjfzqXyHom3uQuR1IXlnt6KkmTHzMKmXqj3aHMIOypn7M0X0TTO80WeoJ7oW3kCX3P2f9L2lIvPi2hbuAdd0f77LFTERgFW8JNoc9y7lJDPF06CnU8a3BRRbL/9pNj/NdiW1Z8SXUOTEJstsI3tXf83q6mZ32ZlDfm3yn+INexOCMTG0n28wlovFpGYRoAQECqhw3y8P9FU6LpdcmJzgfdw8V4WXIQ6fCk9UzRCh+h3cey3W5wJz8upNWXP9ZSFtffjR6l8Q+gMJ6Acf9uYQkYMn8W3NdpLEJwcQAN28ODYb5p6iqw6T/Q+4FTl1TQR8pJofDYLnQ7fwlrTXD4o8oKqqnzAs0Xp2vo0XXujw6pgtUWUvN8q6VSRcn/w==';
             }
         }
     }
@@ -2748,17 +2699,15 @@ class accounts {
 
             ssh_authorized_key {
                 'jgonera@wikimedia.org':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC/W+LDuE1zEbrLhkADukE2jILZuecapTqBDBzcohlU9z01z8mFmc9bYck0prBL7I/cLdM65QVcDZIXekNV9A6h746DeYfNhgSNfIVlwauKpvr83gRLuFGfZsIuORGzD19NKbMYxuMJobCP5KP0Xzqvk//8IcersJTooYXXg/bbfOKHi6mpr+YKqJgyXuhF4weQu23ty4HBhOFpg9gZ5oXvAShdudWsB7aFGMPqg+B61n8+j33HxRV4Q4d/JdGNnaYt/G6klhhTHzX1vnGpGCWvDWXJXAM+Q9zdWxH1lAKL3sSR9fMKQ7z5yUK9Nc3QUb7yJuHkeUhuMIysL2HNWvFV',
-            }
-            ssh_authorized_key {
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC/W+LDuE1zEbrLhkADukE2jILZuecapTqBDBzcohlU9z01z8mFmc9bYck0prBL7I/cLdM65QVcDZIXekNV9A6h746DeYfNhgSNfIVlwauKpvr83gRLuFGfZsIuORGzD19NKbMYxuMJobCP5KP0Xzqvk//8IcersJTooYXXg/bbfOKHi6mpr+YKqJgyXuhF4weQu23ty4HBhOFpg9gZ5oXvAShdudWsB7aFGMPqg+B61n8+j33HxRV4Q4d/JdGNnaYt/G6klhhTHzX1vnGpGCWvDWXJXAM+Q9zdWxH1lAKL3sSR9fMKQ7z5yUK9Nc3QUb7yJuHkeUhuMIysL2HNWvFV';
                 'WMF-work':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDT6QY2PcibrrwSCyrBI2TRSN9rwDCLt2uSVlpCRCAUVrHNdXEpLt1WgUotZx3HIWQdPrmpakg4+R8ltsrY01oe5jcjP44aAgj8isIjujjsqKwElKdAl4UxXUQ2udjaqzqr8Qe3sl13bkt/Kkt1yRTzenVek71k878f0TUBQtcTpPUOeRpcNAvHxs/sJMdylGBM3KfjDzD0Cps6NluWXbsrQJCHiMSIaAAYyYaLXBsGRvTYG+vL9nC7gvik+VFh+kyGAindGaCnjx7q+L67837UQloXGrJ/lKDRbaXW8xpepDewSBQ3ItVkXz+TNBWNVcIRo7SL3ZgREpW/WG4DyThj',
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDT6QY2PcibrrwSCyrBI2TRSN9rwDCLt2uSVlpCRCAUVrHNdXEpLt1WgUotZx3HIWQdPrmpakg4+R8ltsrY01oe5jcjP44aAgj8isIjujjsqKwElKdAl4UxXUQ2udjaqzqr8Qe3sl13bkt/Kkt1yRTzenVek71k878f0TUBQtcTpPUOeRpcNAvHxs/sJMdylGBM3KfjDzD0Cps6NluWXbsrQJCHiMSIaAAYyYaLXBsGRvTYG+vL9nC7gvik+VFh+kyGAindGaCnjx7q+L67837UQloXGrJ/lKDRbaXW8xpepDewSBQ3ItVkXz+TNBWNVcIRo7SL3ZgREpW/WG4DyThj';
             }
         }
     }
@@ -2841,18 +2790,15 @@ class accounts {
 
             ssh_authorized_key {
                 'yuvipanda@wikimedia.org':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCV5f/HfkCTtWhZnZVwYs+jN6yy+Ru/eBGih+K6HvCI2DDXM0OOZVfVOVCDLPCvYIZD1m//ghibiM3jl5DFrLlAUkuyzuQsjv5AOfo28/kOcsN+o6T8wmQ27oJBbCy2YWqi5r8eypTvh/VTSt1BfEKwyg5KEtPqSKOy3G6dtjYOebSCM2EEGqfDcU/+9KKCsXTeTRgBU3pOHgymQ1zXbxrLazQGGAAUyp1e1T4chg3RtOU0cXe5i9+yQuP8ZlPApLG9/7xN/OIKX7EBrSQn6J2BZMSOw2Uwe38ROjCbFljt+mQF01p4QLZQ2Vm4UjdZiY+ZsMULeDntkqgjalmOvWCj',
-            }
-
-            ssh_authorized_key {
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCV5f/HfkCTtWhZnZVwYs+jN6yy+Ru/eBGih+K6HvCI2DDXM0OOZVfVOVCDLPCvYIZD1m//ghibiM3jl5DFrLlAUkuyzuQsjv5AOfo28/kOcsN+o6T8wmQ27oJBbCy2YWqi5r8eypTvh/VTSt1BfEKwyg5KEtPqSKOy3G6dtjYOebSCM2EEGqfDcU/+9KKCsXTeTRgBU3pOHgymQ1zXbxrLazQGGAAUyp1e1T4chg3RtOU0cXe5i9+yQuP8ZlPApLG9/7xN/OIKX7EBrSQn6J2BZMSOw2Uwe38ROjCbFljt+mQF01p4QLZQ2Vm4UjdZiY+ZsMULeDntkqgjalmOvWCj';
                 'ypanda@Yuvi-Panda.local':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDrR80D68OpttnWGCY49ImSHPvzdCah1NckZv2U/y3Trmjp2EEeIohL8IG3iSjEnB1JirkPe1/0mHkbm0bfxqp17fHWy1g94Teb118woWt69A6pDJvnzp20faFRxOIl7UJjZ+n/Q4HSg7YToYW4hIM/I5KRKnEzi102aFHgV0cGGbxONPn0MiiEXkovlQ59gcNPWO/Wqe7gAcMIjoMvAcaumemUC5nXz8CIiFJLEfVVJ251c4q6C8TUJsxfbxkeN69AT/YqOiAO10eCbXgh0BNDactXy9oVx6u38E271KshW+ScJ671VuBQdTvv2DhrdFj2GsdzqlVYHQI9ny2JgtMX',
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDrR80D68OpttnWGCY49ImSHPvzdCah1NckZv2U/y3Trmjp2EEeIohL8IG3iSjEnB1JirkPe1/0mHkbm0bfxqp17fHWy1g94Teb118woWt69A6pDJvnzp20faFRxOIl7UJjZ+n/Q4HSg7YToYW4hIM/I5KRKnEzi102aFHgV0cGGbxONPn0MiiEXkovlQ59gcNPWO/Wqe7gAcMIjoMvAcaumemUC5nXz8CIiFJLEfVVJ251c4q6C8TUJsxfbxkeN69AT/YqOiAO10eCbXgh0BNDactXy9oVx6u38E271KshW+ScJ671VuBQdTvv2DhrdFj2GsdzqlVYHQI9ny2JgtMX';
             }
 
         }
@@ -2871,7 +2817,7 @@ class accounts {
 
             ssh_authorized_key {
                 'work@Sahars-MacBook-Pro-2.local':
-                ensure => absent,
+                ensure => 'absent',
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDXuzDLw04SadzPLoGx5jLK5+iRgq9T2TsCIQ/A81N7yhCDYOaD2tgtBSyOj1vwLy8YXY2R77z9ENKQwCuXXwfKgV7W9XPK+MFupwe9ZzOvy23J1Wp8ekyzok//oiF1R8Ofdopw+OgoaXbnNzr21OaaySAJT9MucAmG9NVQzJtO0IrGwGAJVTG77oEJKpmWSHV65lpsqZ8VjCfu3Ic9GSKFaNTQJNa5tKFQWn4eeOOlsGIb4BfLncdl/0rSv3PO07e0ddZkKfibHqeqKM+FojkQLNE10Zc3zNGqrryVPRqrdKOPmxrrCd8wLQg5V3ZeRm0/MIBeuYrX754+cPwzLegV',
@@ -3046,8 +2992,6 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDAOgZWjHAoVJF6hJCrDUjVuiZiNeW1GudEfkFJS4ORo+WpVaMjwrILGThrriIYZNEIQNEf4l+7ht2l7/9g7e0j56NxXX3NJftJWRKOk1d7s57CKZAdvcbQ4G+L/Tyed+qZj9JurHdMstcVo50nd6S/UvbvDAdieXHemhZLtFcqPBQj66XDJkGzm0U9eW49lB1qCzcQnsNQbxRbV39RsSgIU9YHeGWMsglI227nZX6Lvd6/Vvz2VsFR5xtdPBHQ170XqbRylZQaBaR1lmRz9Aa7dSKSbNgGYAUNkzijILhBccJK1Iulmh/yDFPm6ZVWFaezinbCspXnvCIdJfG9EoLx';
-            }
-            ssh_authorized_key {
                 'dandreescu@wikimedia.org':
                     ensure => 'present',
                     user   => $username,
@@ -3332,17 +3276,17 @@ class accounts {
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
-            ssh_authorized_key { 'nuria@wikimedia.org':
+            ssh_authorized_key {
+            'nuria@wikimedia.org':
                 ensure => 'absent',
                 user   => $username,
                 type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC5UHmmvoplLSsc7WH0xijDJiWzs5LaVkIoi+yWBfHta17lGUfRCsE8DTQCe30k959gKGDBP2sI1srmKtgSMNIfQTOG7rt2/qZCYkrU6xA3XSFVi73zUHOyIzG41XO5F36uF7HVNKnxhkoxWkUpZ1tv5f2PEUUhBznH0JQw9BRrWbBqah9m8o8MTFDkeJuK3HgMhUzwg25t0LZAajaK4Mc3Bocdv1uzs+RxswyOWgJqPxQY+75bG+/rZ+n0bETKkDoy6ZmCiVw4PSBCX0zGWHrZQ89FzoUdM59hKSu/xnkOV/PO92iT22Pzd6NKgbAxrwXDteuUh0+6cL5du4pwH5cr',
-            }
-            ssh_authorized_key { 'nuria@wikimedia.org-production':
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC5UHmmvoplLSsc7WH0xijDJiWzs5LaVkIoi+yWBfHta17lGUfRCsE8DTQCe30k959gKGDBP2sI1srmKtgSMNIfQTOG7rt2/qZCYkrU6xA3XSFVi73zUHOyIzG41XO5F36uF7HVNKnxhkoxWkUpZ1tv5f2PEUUhBznH0JQw9BRrWbBqah9m8o8MTFDkeJuK3HgMhUzwg25t0LZAajaK4Mc3Bocdv1uzs+RxswyOWgJqPxQY+75bG+/rZ+n0bETKkDoy6ZmCiVw4PSBCX0zGWHrZQ89FzoUdM59hKSu/xnkOV/PO92iT22Pzd6NKgbAxrwXDteuUh0+6cL5du4pwH5cr';
+            'nuria@wikimedia.org-production':
                 ensure => 'present',
                 user   => $username,
                 type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDIUCvA8K9rgp4n0hCJxbFt66CSbo9JhkSvQwlMj4+mxj9Mypf5/TLoRVPNVEwF4htjKmMdtaXDzGDTJUJPh9SPWqi1wP0YGydxv7z8BAIgaRliCHycviGE3nHjcxkiG+U2zxBL7Bc/Jy7d5Ky2qC/5Nu7jhBRF+kq3haZ0zx0T0cSmTvvUDfKt27uuLWxBA8Z4z2kNYVCpVL4pvlGPkqhZO75wPIUsCAlPH3Tq+Cq8FIc7BoZgjFQ+g6okpUF2PZY4eVoMR2MS8WIwQlOXwe+AMh+JEgq7oH//LN03IDX7YJQCNbmJ6MR0YdB1TOQHF/RKFImGBdDEC0vx6/QeIVOr',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDIUCvA8K9rgp4n0hCJxbFt66CSbo9JhkSvQwlMj4+mxj9Mypf5/TLoRVPNVEwF4htjKmMdtaXDzGDTJUJPh9SPWqi1wP0YGydxv7z8BAIgaRliCHycviGE3nHjcxkiG+U2zxBL7Bc/Jy7d5Ky2qC/5Nu7jhBRF+kq3haZ0zx0T0cSmTvvUDfKt27uuLWxBA8Z4z2kNYVCpVL4pvlGPkqhZO75wPIUsCAlPH3Tq+Cq8FIc7BoZgjFQ+g6okpUF2PZY4eVoMR2MS8WIwQlOXwe+AMh+JEgq7oH//LN03IDX7YJQCNbmJ6MR0YdB1TOQHF/RKFImGBdDEC0vx6/QeIVOr';
             }
         }
     }
@@ -3508,17 +3452,17 @@ class accounts {
         if $manage_home {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
-            ssh_authorized_key { 'leila@starfruit':
-                ensure => 'absent',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCyDhTiTa+lUt+lM++HXAYchRyKX4GVMwb4zAAovcHbG9R7NHAP1vT7px+vwFG69TZay/MsuZ7oo5NyRUWNF00CXSSx0KMZz5FirW/dncrRG9/N+fxat8jyjVVrFiY1sngSUhmILQrLGV0Wa7EC8ZHv0qywO4UqbfgGxZMY5n2nu3hFvLn6LoKKoNDjaFTfEwio8QNjdMC0NZLYqUk1HMj5Zm4mrTFD+UcOXSbbOe4MytQKDYzZdEYd4XOE1ki/dRvAmPhAj0gAkezPCRseCCamaDmokd+PS8db3EHJ390+48FTkXLIO1uUhJJmF9MsWL2dj2gDk1RZjkOlfcAapypl',
-            }
-            ssh_authorized_key { 'leila@starfruit-2':
-                ensure => 'present',
-                user   => $username,
-                type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDDrQIRAiH2afKoaaIW2K6loEk1CoOD1IKCLMWcfAky+CwqsCQWepiQxlQOZKez+Y3D0hE/jVA8Rv4jktx5SIqOZbkYQXF1s54jp2ULqVujofqjRH8qnUa+b3s7ywCQILGR8gV1X5cHcXztonwKhrEGqjlw3kk1NeOkI0/akRbTdxGjL5QbhJKg9T3bkkBkfwBupVvH8nxzS1twa/1lGLv0GUF220gEo4c8yUhT9EFWwzJlpcmKBo7m6cXrhXeCVoipKlfq3NMupTT1AiYh4Dcdnk+VxWNkmkbOU7CN9dvwXT0gK0OjznntqNC2nadikJXe8tAOPL953S/9br2Q/OGN',
+            ssh_authorized_key {
+                'leila@starfruit':
+                    ensure => 'absent',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCyDhTiTa+lUt+lM++HXAYchRyKX4GVMwb4zAAovcHbG9R7NHAP1vT7px+vwFG69TZay/MsuZ7oo5NyRUWNF00CXSSx0KMZz5FirW/dncrRG9/N+fxat8jyjVVrFiY1sngSUhmILQrLGV0Wa7EC8ZHv0qywO4UqbfgGxZMY5n2nu3hFvLn6LoKKoNDjaFTfEwio8QNjdMC0NZLYqUk1HMj5Zm4mrTFD+UcOXSbbOe4MytQKDYzZdEYd4XOE1ki/dRvAmPhAj0gAkezPCRseCCamaDmokd+PS8db3EHJ390+48FTkXLIO1uUhJJmF9MsWL2dj2gDk1RZjkOlfcAapypl';
+                'leila@starfruit-2':
+                    ensure => 'present',
+                    user   => $username,
+                    type   => 'ssh-rsa',
+                    key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDDrQIRAiH2afKoaaIW2K6loEk1CoOD1IKCLMWcfAky+CwqsCQWepiQxlQOZKez+Y3D0hE/jVA8Rv4jktx5SIqOZbkYQXF1s54jp2ULqVujofqjRH8qnUa+b3s7ywCQILGR8gV1X5cHcXztonwKhrEGqjlw3kk1NeOkI0/akRbTdxGjL5QbhJKg9T3bkkBkfwBupVvH8nxzS1twa/1lGLv0GUF220gEo4c8yUhT9EFWwzJlpcmKBo7m6cXrhXeCVoipKlfq3NMupTT1AiYh4Dcdnk+VxWNkmkbOU7CN9dvwXT0gK0OjznntqNC2nadikJXe8tAOPL953S/9br2Q/OGN';
             }
         }
     }
