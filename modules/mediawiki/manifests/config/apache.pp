@@ -7,8 +7,6 @@ class mediawiki::config::apache(
 ) {
     require mediawiki::packages
 
-    Class['mediawiki::config::apache'] -> Class['mediawiki::config::base']
-
     file { '/etc/apache2/apache2.conf':
         owner   => root,
         group   => root,

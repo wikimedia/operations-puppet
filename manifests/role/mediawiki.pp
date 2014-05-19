@@ -92,6 +92,7 @@ class role::mediawiki {
     class webserver($maxclients="40") {
         include ::mediawiki,
             ::mediawiki::pybal_check,
+            ::mediawiki::service,
             role::mediawiki,
             role::mediawiki::configuration::php
 

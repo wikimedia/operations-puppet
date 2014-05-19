@@ -2,6 +2,7 @@
 
 class mediawiki::service {
     require mediawiki::config::base
+    require mediawiki::config::apache
     require mediawiki::packages
 
     include mediawiki::sync
