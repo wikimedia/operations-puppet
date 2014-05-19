@@ -89,6 +89,13 @@ class contint::packages {
         ensure => present,
     }
 
+    if ! defined ( Package['python-requests'] ) {
+        package { 'python-requests':
+            ensure => present,
+        }
+    }
+
+
     # Includes packages needed for building
     # analytics and statistics related packages.
 
