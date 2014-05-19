@@ -4,7 +4,13 @@ class mediawiki {
     include ::mediawiki::cgroup
     include ::mediawiki::packages
     include ::mediawiki::config::base
-    include ::mediawiki::service
+
+    file { '/etc/cluster':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => $::site,
+    }
 
     class { '::twemproxy':
         default_file => 'puppet:///modules/mediawiki/twemproxy.default',

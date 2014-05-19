@@ -95,7 +95,9 @@ class role::mediawiki {
             role::mediawiki,
             role::mediawiki::configuration::php
 
-        class { "::mediawiki::config::apache": maxclients => $maxclients }
+        class { '::mediawiki::web':
+            maxclients => $maxclients,
+        }
 
         class { '::mediawiki::syslog':
             apache_log_aggregator => $role::mediawiki::mediawiki_log_aggregator,
