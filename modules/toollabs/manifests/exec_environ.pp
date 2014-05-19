@@ -210,6 +210,7 @@ class toollabs::exec_environ {
         'gdal-bin',
         'git',
         'git-review',                  # Bug 62871.
+        'git-svn',
         'gnuplot-nox',
         'graphicsmagick',              # Bug 56995
         'graphviz',
