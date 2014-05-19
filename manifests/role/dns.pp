@@ -59,4 +59,15 @@ class role::dns::recursor {
     }
 
     ::dns::recursor::monitor { [ $::ipaddress, $::ipaddress6_eth0 ]: }
+
+    ferm::service { 'udp_dns_rec':
+        proto => 'udp',
+        port  => '53',
+    }
+
+    ferm::service { 'tcp_dns_rec':
+        proto => 'tcp',
+        port  => '53',
+    }
+
 }
