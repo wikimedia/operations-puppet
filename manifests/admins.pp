@@ -3942,6 +3942,7 @@ class admins::mortals {
     include accounts::yurik # RT 4835, RT 5069
     include accounts::zak # access revoked
     include accounts::jgonera # RT 6716
+    include accounts::tgr # RT 7527
 }
 
 # access to terbium, fluorine (private data) and bastion hosts
