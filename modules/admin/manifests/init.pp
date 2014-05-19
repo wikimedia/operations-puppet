@@ -30,7 +30,6 @@ class admin(
         ensure => file,
         mode   => '0555',
         source => 'puppet:///modules/admin/enforce-users-groups.sh',
-        before => Exec['enforce-users-groups-cleanup'],
     }
 
     file { '/etc/sudoers':
@@ -52,14 +51,5 @@ class admin(
 
     admin::groupmembers { $all_groups:
         phash  => $data,
-        before => Exec['enforce-users-groups-cleanup'],
-    }
-
-    #declarative gotcha: non-defined users can get left behind
-    #here we cleanup anyone not in a supplementary group above a certain UID
-    exec { 'enforce-users-groups-cleanup':
-        command   => '/usr/local/sbin/enforce-users-groups',
-        unless    => '/usr/local/sbin/enforce-users-groups dryrun',
-        logoutput => true,
     }
 }
