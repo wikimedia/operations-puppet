@@ -58,7 +58,7 @@ define tcpircbot::instance(
     $nickname    = $title,
     $server_host = 'chat.freenode.net',
     $server_port = 7000,
-    $cidr        = undef,
+    $cidr        = ['2620:0:861:101:92b1:1cff:fe00:a41d/64','2620:0:861:103:92b1:1cff:fe25:9d72/64'],
     $ssl         = true,
     $max_clients = 5,
     $listen_port = 9200,
