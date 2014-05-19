@@ -355,7 +355,7 @@ class role::cache {
                 },
                 'bits_appservers' => {
                     'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
-                    'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
+                    'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
                 },
                 'test_appservers' => {
                     'pmtpa' => [ "mw1017.eqiad.wmnet" ],
