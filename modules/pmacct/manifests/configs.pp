@@ -1,9 +1,9 @@
 # pmacct::makeconfig
 # Generates a unique config file per device and pretag file.
 
-define pmacct::configs ($name, $port, $ip, $samplerate) {
+define pmacct::configs ($port, $ip, $samplerate) {
     # Single confile file per device
-    file { "/etc/pmacct/config-${name}.cfg":
+    file { "/etc/pmacct/config-${title}.cfg":
         ensure  => 'file',
         owner   => 'pmacct',
         group   => 'pmacct',
@@ -20,7 +20,7 @@ define pmacct::configs ($name, $port, $ip, $samplerate) {
     }
 
     # Corresponding ferm rule for bgp redirects
-    ferm::rule {"pmacct_${name}_bgp_redirect":
+    ferm::rule {"pmacct_${title}_bgp_redirect":
         domain => '(ip)',  # ipv6 doesn't have a 'nat' table
         prio   => '20',
         rule   => "proto tcp dport 179 source ${ip} REDIRECT to-ports ${port};",
