@@ -3996,6 +3996,7 @@ class admins::bastion {
     include accounts::mglaser # RT 6861->6929
     include accounts::mah # RT 6861->6930
     include accounts::kleduc
+    include accounts::tgr # RT 7506
 }
 
 class admins::labs {
