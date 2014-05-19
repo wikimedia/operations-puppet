@@ -279,6 +279,11 @@ node 'antimony.wikimedia.org' {
     }
 }
 
+#eventual ircd for change broadcast
+node 'argon.wikimedia.org' {
+    include admin
+}
+
 node 'bast1001.wikimedia.org' {
     system::role { 'misc':
         description => 'Bastion Server',
@@ -1151,6 +1156,11 @@ node 'hooft.esams.wikimedia.org' {
     class { 'ganglia_new::monitor::aggregator':
         sites =>  'esams',
     }
+}
+
+#eventual phabricator alpha
+node 'iridium.wikimedia.org' {
+    include admin
 }
 
 node 'manutius.wikimedia.org' {

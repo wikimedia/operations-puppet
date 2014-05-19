@@ -1,0 +1,136 @@
+groups:
+  absent:
+    description: meta group for absented users
+    members: []
+  ops:
+    gid: 700
+    description: include everywhere ops folks
+    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh]
+
+users:
+  rush:
+    ensure: present
+    gid: 500
+    name: rush
+    realname: Chase Pettet
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+IUUkFX0t/8UqTZJFRJ6JaDPvwIOTsGu2mIg7OGA0lDhJH8eRz2dCPSM7Z4IwKPh92mtct3+aZy8ziT6bb88TNESU9n92m4HdHogOLMz/ksJW07oY2fTjXs9DeaPZUP5Sf8uSrU0ip40wPn8fDuXIjEX2MhUgzafNk2nm0+VFqdU+p4vMf8PvTjtjDMqhq0r9mml0YH4T4kknibwAWlcJaM7O29FlRWoRsI2nIzde5fYASdvrstPN620EScBQo3vAlfbkQCvxvWpr/xO1DfkFDUcIOmrC5uWbOKrGCZRLfnOQTBaMCjHcKmEPJ5YzII692G3BTvbIZ+6AqnLSoA81
+        cpettet@wikimedia.org]
+    uid: 4610
+  dzahn:
+    ensure: present
+    gid: 500
+    name: dzahn
+    realname: Daniel Zahn
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDY3GzbCE2eOM7IxQClHag9FRVg0eryA6PVa7p80Yp4suPzW73KVv9BgbSDvkdGNv9NOsVqkZkp01oZe7+XVxh1jaxM60nkF02DGKI0jn2lbzzWR5YS6gabjjn9SaOnh0MAwC8Jpvdz/YKOyE9/PAIFXajNwTuE6alHU/nWnLHaR1FJQRlfZLDlP9deNRAPaXOyn/jbO+ODNQIFeKSV0TmvZAh994wUlLoDYa1UcuqTRc9tJBmpLALVPZs1U2FZvLr7fkuOnUhcOC/uqE/pDdalSy0k6bAh/pkILOMFzhCHtrsbUV0AT7cVBogE7qYRuTo3eBrpzj9Bbsi41Q4y29lridBoyBgEMH/fnEIMDivNLzec5nYLPJ/XIDSc0G2iFoWY/u7SaVT7A6rjlSuzS7owunNXEj1mhmNW7v/FIOqG2Zl3K7INBj8Y0rFL9GuwP5LIkZxlNZT7NEdUOA3i8L4sT3YJJgiaup4Ss66TpWCDQ/znZoz5Vi5ODhXjqMVVFbrHI/7eIYMChoR5HkcRdjaIShvFgSfWcKXlwHouIVUiXprnoZZGmAa9CTAx9GFrjgC7DixK654yx4Gb47q4dttSE2nZKY1njfDRHcbLRuZ1ESEpAcoxkos1agvShw5B4ysSYRcMHkF2yqi2srq7Us19JWCmLm2RW5z+4xPBAfEMcw==
+        dz@ubuntu]
+    uid: 2075
+  faidon:
+    ensure: present
+    gid: 500
+    name: faidon
+    realname: Faidon Liambotis
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/m5mZhy2bpvmBNzaLLhlqhjLuuGd5vNGgAtRKmvfa+nbHi7upm8d/e1RoSGVueXSVdjcVYfqqfNnJQ9GIC9flhgVhTwz1zezCEWREqMQ3XuauqAr+Tb/031BtgLCHfTmUjdsDKTigwTMPOnRG+DNo+ZHyxfpTCP5Oy6TChcK6+Om247eiXEhHZNL8Sk0idSy2mSJxavzs25F/lsGjsl4YyVV3jNqgVqoz3Evl1VO0E3xlbOOeWeJnROq+g2JJqZfoCtdAYidtg8oJ6yBKJHoxynqI6EhBJtnwulIXGTZmdY2cMJwT2YpkqljQFBwtWIy/T+WNkZnLuJXT4DRlBb1F
+        faidon@wmf]
+    uid: 2186
+  springle:
+    ensure: present
+    gid: 500
+    name: springle
+    realname: Sean Pringle
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZ632eqrXOJ2vVKmxwode44lGL6UGEXUWG8muUP1ItqSCdYqmG11zaeH3uJNfsbqUu0jJbKpO7uiKSwolaYrHDPLDl5v5jNyRx7aQDzMgCjtVGAZIN3zQGGybl7v8ZQ635L9SAaATuYd7nOdDGa5TZ46YiAv1BA/+RGnUSz5h/ycb09V7o+RlQbHRTsTCIxjIMg45Rqnn3ukBeGNEZAU4IgaTRkg19PfPeSH9q6Ni6Wa1jz32ygmotT38vKuCvOXZxigrHJKwovS6xdfdxC67UBMV5J+KICpRPVAn1iIQMyiatdG4tBlPOUEecZcL6f7QaZufZwI/gU3wkC2zlVchF
+        sean@mintaka]
+    uid: 3391
+  robh:
+    ensure: present
+    gid: 500
+    name: robh
+    realname: Rob Halsell
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAoDAuzkYEIeGVC10zh3i6WnyJjhWK/JpQbSFlWfb5t02kGPvmi8m+fdCPhvqiOpOCcQqTL1Knia6AeRNMx+dj3qxctsas/RnJtIUbACK5gH6aKg0OMmcG9LNiVLN5knx1UMHhQ7Ma6KSiDLeqsID009j7+Fj8qgGup7lKOQs7WYRpaXlAyR0hdKeyxcXWh+GPQEZAhl0DHrjFgdDcc5n2K8GBRESfdfCKm0SomHYGWPsTIpWrY13se0kUJzWXIafzr0U/czEdVDuSuil6P65d9cU7vypcUC3i5d2L4QiO4MBVNcXluFuFNZ8UY/QAlixz/5x/ARbgjcMvXwJQWjhh+w==
+        rob@laptop]
+    uid: 2007
+  otto:
+    ensure: present
+    gid: 500
+    name: otto
+    realname: Andrew Otto
+    ssh_keys: []
+    uid: 2129
+  marc:
+    ensure: present
+    gid: 500
+    name: marc
+    realname: Marc-Andre Pelletier
+    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBAIhfgD+1iRANjpwfBQbWD383oiDHcrzj2urFBKC62o1h7cgK2NplOfxCU5eHtGh5ftzp6JU4deNWw2s3/IRJFVfQnNiHV89/Rl1uqMjLhhvLb07GDonbs+KExCsYsZFHKUH+t2dkVg0NlR1Tpz+h6huYEkaCKWxg/ozvUswHroRtAAAAFQCPGGHMiPuztPl4yFm3cHp+QSZODwAAAIAc9/psvWDUBTSnsIzTwe801NHz/1mqBZHGTmk6IhFb2KTwdu6Sf70JkWQH47h5MmTsld2rzvBopbBMubRfBu6KCWXJM03pfxRdgUuhwovAKgU1hddYdonhkiq24qn+U7tnYHjHfu5jB7dnjEEqoOggUXmVUwS7QaGJqKUnA4B0+gAAAIEAhoDEpBOFA5NsgurAjntLMZiTpkQFyE+c39lBqgd6B5bX7GEB5JkMPVSTjmzogd88+SwImCWgvb1I0PgY/rx8nd9wMkE3W5gBGUiDTNJa2v78nTK9wS+imFDRMbuwdYuN1wmKGrnvskvQ5oi1juLA8jn0At3L2/SYiC7i5z/z//8=
+        marc@mordor_prod]
+    uid: 2138
+  mark:
+    ensure: present
+    gid: 500
+    name: mark
+    realname: Mark Bergsma
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAorTmQ0qlrxB3RL+GULLzex3k1Pg/c6tgLbKsl1A7Qo0B5XI4eNgfWwaAXUrKyQW3/9gwDH3YJ2eoOue0/BGhKX6voOTnNPeGE9ZbrufpPLT6DXDEbvpmXQd/qw8s0GxdftleHYl28av0nTZgKY+1/Oc+ZHNUN5YxmdGehWBvTXs=
+        Mark\s main public key]
+    uid: 531
+  jgreen:
+    ensure: present
+    gid: 500
+    name: jgreen
+    realname: Jeff Green
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjkTnfRGIhs0of/3Z9GhOEEavkzFFg87n9D5BqNJAKtRSy5uh87p3DEHWnYcA5Ak7TD66hWae/V2tyQTHVBcDfZhoSFKsIMmhC/ooDtN8iewl37Dbss+a7m4GT0BmILkgUC2IJnFDFz2Eb6RVsnD11ajfbO4buNfokJC7jMjxQ2btpR5FojWNX7xffw5yg4aGg+k9x+32bM8ZTEzyYUGpxUZxV9jmbK1uzTBfZSlgmfok3Hn+scki52DM7EPIU0pxf8cyPHPIc7WX/wR56GsILoFNMBkePP86O/ZDuhOSdsFMJaBmOHM+9qCMW6JPKOtogvEaglbgCRrTZ0VkJx2HX
+        jgreen@thwibbith]
+    uid: 2074
+  gage:
+    ensure: present
+    gid: 500
+    name: gage
+    realname: Jeff Gage
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCs/SColtnog9MyumWcau/7bfSvJhot5bSZWGnTPI9QjMupTQH0WCr1IWdD6NMvGsiDd81RzpfdNO0qCvyXQgAXFBs2O8ORea9kNOi/VElyGh9HJkqUERsMScrLFrhhmUyNVTw1gnk3sanRXASTC7zSXiZS5a5mqr9LfzPYhw04K57XCspFwERsg7kkIMYbl/yPMFmmPTUsLWTPMyF7xyn0TnrOTUx32RGIj4G/Kcsc8kcvSDGpiZSLvoC1QxuXEWOK0N7fd8PcL0YEYArLTPTdzM2CTvP7jEB0totPtxgWLFy+03aohdtX/cnWe1i1Udfh4dr5Z8/1x7BBSW1NX0JJ
+        jgerard@wikimedia.org]
+    uid: 4177
+  filippo:
+    ensure: present
+    gid: 500
+    name: filippo
+    realname: Filippo Giunchedi
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDt7HkyaZeIe7L8CuWE1+N47+wDT/4cUmEcrPA1xgdA4By/jesf+1oOTvusbIyXFuCssvspgGmwwNMD+PzNF3xAEo+Yn2aqH4OBhRiF0U8jeaJL1EhzKnT8KKG4fOzzerbKFlE5K9LnYhMXp2i6MoAN9xB3Z350dBwqhspf0OKqZ8AGbsc9RdcEr2pBT7RPRlcKXRTrd47keV+PUazpDVSr2MCdmErknROpcBh5IS27DrKHpma3UcNUGIeMsvsV6nyt8Tz2+EMGkd+P+whij0YzlKDkqB2ppoD+gCPAki277wobiocea79fvPm1/Na+tpXJT7gU+YErld4VRvUclyR/
+        fgiunchedi@wikimedia.org]
+    uid: 4849
+  cmjohnson:
+    ensure: present
+    gid: 500
+    name: cmjohnson
+    realname: Chris Johnson
+    ssh_keys: []
+    uid: 2399
+  bblack:
+    ensure: present
+    gid: 500
+    name: bblack
+    realname: Brandon Black
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxNcPFGwSUYB24njYY0BX/vHm2AFXZSQtPcPGyJxP+fkkaTQOKX4pGST2oCudlV4hBnskTTDyd4r4YF1+HPAzxX7myCcCFh+9L8AOuVcdcH3g9dSiV3csAemlOsfPivrJEx2RG5sFiYqaLSfSMF65QjJUaX7thWIHRFH+sDoPfVBEJABbvO3yeA9uPBzqWPs+kII7n3WMEsiZPvbPRypsfFwa0yoZotnoOC0ZoiQOFZCm3v+Xnoxv5gRxGIZCrR86dstKoISJU0PmPaVZkYElAhtbLUxlBCsE/lSQi/phQduuI9u+pApaW+4FxpUOPD+i6NfdjchJRfNG5Lh/7PPgUo3LWXfQr3qKm5dOT0PbgY7Mif3fvkoI7CT5RG+TVau5YjU6zL8TWAx8nv7U2hgU/VuJT96FvBYbnvbySJwk7LMEl85UzZ4M3o9D74csj9lRGIc3VXoOL7T9peYzTxr6+0Uuo6mBWOdgnp5tn/ew145SXJmwL2Ly3k/KVn5lehL6F11QaUI74Yw/MuZ6eXmiR/ZBcbBHD2WnRyJOPjw/IOwUO848A4NoAcie0ESKSRk5RdmksMns5wYniUEYOCjuErk8NK3ClquQ0Wd6yOz0TTRUkPrUR4fIuEGraYlIARUvnidxK9kFj6q5KYc2MKPGw0m9scPGLGokEAnllrs+nEQ==
+        bblack@wikimedia.org]
+    uid: 3015
+  andrew:
+    ensure: present
+    gid: 500
+    name: andrew
+    realname: Andrew Bogott
+    ssh_keys: []
+    uid: 2093
+  akosiaris:
+    ensure: present
+    gid: 500
+    name: akosiaris
+    realname: Alexandros Kosiaris
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5IbCL8F2mKMLVL2yp3RP+1rs5v6R4iveIctHQA6kccymfoUa5y9FLT9+hx9ljXZDjrUN3rPeagbZDrGQj6UlI32YZVKRwAeaLkp85HpbzaL/2GKM9UlSq6Qztnuxp/cQGQtDrSK9rwPHk1kqxhXQDeu0+mzqgKMsTqZshG2pH+T27rpZMcUyyF0nX14yoqPHdxvetYfjhAo0WIuwmMcyDcv/Au4AaDgOoKqbYVNY/I5gRYxEotRuJeNg9NLFlUDmntA5mXthotK4uWimfDV8rI1695n2Idvf/iNtZiO6tnIFfs7nrv3C0vFZO+MMbrU0cz/Abbhq4zaQH7zqrP0GfaR4AJu+0SgOjDbmAhOgwgYOxpdhChIABjVJTP3chKgJ1y1JeUxyUaIayddp/Kyye7z0kFJw0+D8YROAPWkkJvpV6c0/U88LMjupG2kcVlxqPrUCJiL4e8viyZQxxJOJhS/Zdf56AO8Xh8WAxX0RZGLbA2GYln1euu+8zZuvfYuZa+IRPihlY9b1fkyYP4Y7WtVNkvtFuwqKzwI2qyRGPH9W6PI0yva1BYNf/jg2qdFiboH44cBzc0MoFoqjzD7RHJpPQJQFeEiZsrQjDvm18MMCONJTPHYJaA5YwxClRXH8scWx+H0MjDwC9KmhMPm+Rb0iXPh7KePhP1jAxN+Ldew==
+        akosiaris]
+    uid: 3194
+  ariel:
+    ensure: present
+    gid: 500
+    name: ariel
+    realname: Ariel T. Glenn
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwaTYlLZ90/oQ5tDYDkhI2mHa1L6Vh+zcekCt8D08N7/CrFI5sUVteTwMWw2ytQlWnyT3HVgHb4IS1EPjpjyuqseRcNW0HYsqBk3E36PCBQIqjLZ0nDAeHQtm6T6pXiKC5qUppghwrvDxVYFpF3lFzAzfYMrF7iugk0xRPTHZWm8df7dqIB/6FfbxSD95yQVAlJefxoFWbo3Yn+exEZQvWv6lQYXnjV5DSwMf8tPGDkc2DRjrnR52ZrXPRZFCqc9JGkA/l8QsYtjmqJdnOgq5raOb56aRulJYdP2j//B4lRJJlglMuj8dSZE/j04zub+P2QhfdqeEHmeaTUqbwcnZZw==
+        ariel@ariel-desktop, ssh-dss AAAAB3NzaC1kc3MAAAEBALcKsz9HL20xCAB/hWLUxE/26tdeZBQqLWlNiWUC1ilKlqYtHL99ffkrJIlwst+IN/1SOfBhs+5pZxfUyfIT/DaeVNVQXTBfyAXM8iImtY/RsQ9M+v0xhwTLVGs6jTXQX8bkOYAEIZd+x5eGFhSTyIVZmxkz38XpLsTuNyUjs2gFUWZtPGZIgOTToxnYK9mpvpM1gRsHuhLMYg9ZpgFpul41Im+znRcWnrmW6uPAYebvO4V3uNwqdPBh50mrrqyakRj7QlCiFs88zufyj3BmC5mwTNlHClAbVyLyOBY6GCgfof5wFkbvAnYA0iglGZBnk5qIIuPdO+6vxRztUIY3gI8AAAAVAODnUYfx53vWxQVx1GHkzuwSP5JJAAABAEUZuasCiK2tMhQyDIJuad0F8H3aW1CrVtG3ZJuZXjLxpsXQsaOrG/DcFLxKxV4YheQSAVYc098IoQmAiTBc4W++b5lqgu1lmEMwMxQd+o+V8/1ywla61DA7feAAc1H5+eiKUWJDGs9J4HnUiAJc//B//rflE32po1S4Al+8q5GnngOqGEc66u203V/CCtkEbFCOqBXcj36nlTEtxbkbHe633z/TMM/bAwH3vNDo/9Ia/SdTTnQ3XaOD+y2PYF2ley6ImedGrGM71RU2zUv8tmQW8s7/5SygoAWGkljjk3IZy+nYRH232fcWumwORmGvpiq9pPPHhC6zYXjF/5thXRcAAAEAC4uOPvwmzpdwWjJ0QzbcPknWtdc9pvjWC2OWGoJP3VxQckZnWwBEIi9TjxeneX1xU1ZZKQ7s5xcIBWE1qn8P8gNgpqGLVK7rmErN9EYHGcxPR/n0SfujHVo7qEHB0tRhCtABFEpYczl/K/xIfZ7+bCQmvWKuyYETP5QTwbAD5efJh88/kfFKqtI1qhhAenfG3afATU0SHya31HYjrghXZBbA8YvAmX2DfBkP+WYllFaeUmUlvMpnW6wx2+SW0cbMik8CFJIjcMO3NAWppsR3mgSwSGvWorlH6Tskei7MaEUBaYJH01aZbkJOkigGVQhna3tQ2JeKhe37GjednwoBGQ==
+        ariel@zwinger.wikimedia.org]
+    uid: 543
