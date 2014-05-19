@@ -280,6 +280,7 @@ node 'antimony.wikimedia.org' {
 }
 
 node 'argon.wikimedia.org' {
+    include admin
     include standard
     include role::mw-rc-irc
 }
@@ -1156,6 +1157,11 @@ node 'hooft.esams.wikimedia.org' {
     class { 'ganglia_new::monitor::aggregator':
         sites =>  'esams',
     }
+}
+
+#eventual phabricator alpha
+node 'iridium.wikimedia.org' {
+    include admin
 }
 
 node 'manutius.wikimedia.org' {
