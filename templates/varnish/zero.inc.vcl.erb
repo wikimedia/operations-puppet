@@ -302,6 +302,13 @@ sub vcl_deliver {
 	   Note that vcl_deliver in other files may also modify X-Analytics
 	*/
 	if (req.http.X-CS && resp.http.X-Analytics !~ "zero=") {
+
+		// Until we implement support for multiple ip ranges per carrier with different rules,
+		// we allow several json configurations to refer to the same carrier.
+		// Their X-CS ID will only differ by an extra letter appended to their ID, e.g. "250-99a"
+		// In order for analytics to report correct stats, remove it before modifying X-Analytics.
+		set req.http.X-CS = regsub(req.http.X-CS, "[a-z]$", "");
+
 		// "zero=" might have been cached by previous version, avoid duplicates per bug 62922
 		// Assuming 3 month caching, the !~ "zero=" check can be removed after 6/20/2014.
 		if (resp.http.X-Analytics) {
