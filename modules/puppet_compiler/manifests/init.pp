@@ -8,15 +8,14 @@ class puppet_compiler(
 
     include puppet_compiler::packages
 
-    nginx::site {'puppet-compiler':
-        ensure  => $ensure,
-        content => template('puppet_compiler/nginx_site.erb'),
-    }
-
     $install_dir = "${rootdir}/software"
     $program_dir = "${install_dir}/compare-puppet-catalogs"
     $puppetdir = "${program_dir}/external/puppet"
 
+    nginx::site {'puppet-compiler':
+        ensure  => $ensure,
+        content => template('puppet_compiler/nginx_site.erb'),
+    }
 
     # This wrapper defines the env variables for running.
     file {'run_wrapper':
@@ -69,8 +68,15 @@ class puppet_compiler(
             notify  => Class['puppet_compiler::differ']
         }
 
-        class {'puppet_compiler::differ':
+        exec {'install_naggen':
+            command => "/bin/cp ${program_dir}/external/puppet/modules/puppetmaster/files/naggen /usr/local/bin/naggen",
+            creates => '/usr/local/bin/naggen',
             require => Exec['install_puppet_repositories']
+        }
+
+
+        class {'puppet_compiler::differ':
+            require => [Exec['install_puppet_repositories'],Exec['install_naggen']]
         }
 
         file {["${program_dir}/output", "${program_dir}/output/html","${program_dir}/output/diff", "${program_dir}/output/compiled",]:
