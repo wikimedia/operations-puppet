@@ -1,7 +1,6 @@
 class puppet_compiler::packages($ensure = $puppet_compiler::ensure) {
     $list = [
              'curl',
-             'git-core',
              'python-pip',
              'python-dev',
              'rubygems',
