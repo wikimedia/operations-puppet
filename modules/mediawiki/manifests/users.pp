@@ -35,26 +35,39 @@ class mediawiki::users {
         system => true,
     }
 
+    # FIXME: Labs LDAP doesn't agree with Puppet on the details of the
+    # mwdeploy user
+    $mwdeploy_shell = $::realm ? {
+        'labs'  => '/bin/bash',
+        default => '/bin/false',
+    }
+
     user { 'mwdeploy':
         ensure     => present,
-        shell      => '/bin/false',
+        shell      => $mwdeploy_shell,
         home       => '/var/lib/mwdeploy',
         system     => true,
         managehome => true,
     }
 
-
     # The l10nupdate account is used for updating the localisation files
     # with new interface message translations.
 
+    # FIXME: Labs LDAP doesn't agree with Puppet on the details of the
+    # l10nupdate group.
+    $l10nupdate_gid = $::realm ? {
+        'labs'  => 602,
+        default => 10002,
+    }
+
     group { 'l10nupdate':
         ensure => present,
-        gid    => 10002,
+        gid    => $l10nupdate_gid,
     }
 
     user { 'l10nupdate':
         ensure     => present,
-        gid        => 10002,
+        gid        => $l10nupdate_gid,
         shell      => '/bin/bash',
         home       => '/home/l10nupdate',
         managehome => true,
