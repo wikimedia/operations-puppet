@@ -1,4 +1,4 @@
-class ssh::hostkeys-collect {
+class ssh::hostkeys_collect {
     # Do this about twice a day
     $potm = inline_template('<%= srand ; (rand(25) == 5).to_s.capitalize -%>')
     if $hostname == "fenari" or $hostname == "tin" or $hostname == "bast1001" or $potm == "True" {
