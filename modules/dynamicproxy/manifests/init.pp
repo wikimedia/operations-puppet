@@ -46,6 +46,13 @@ class dynamicproxy (
         source  => 'puppet:///modules/dynamicproxy/logrotate',
     }
 
+    file { '/etc/nginx/nginx.conf':
+        ensure => 'file',
+        content => template("dynamicproxy/nginx.conf"),
+        require => Package['nginx-extras'],
+        notify => Service['nginx']
+    }
+
     file { '/etc/nginx/sites-available/default':
         ensure  => 'file',
         content => template("dynamicproxy/${luahandler}.conf"),
