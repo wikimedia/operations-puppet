@@ -5,7 +5,7 @@ class role::mw-rc-irc {
     include passwords::udpmxircecho
     $udpmxircecho_pass = $passwords::udpmxircecho::udpmxircecho_pass
 
-    class { '::mw-rc-irc::irc-relay':
+    class { '::mw-rc-irc::irc-echo':
         ircpassword => $udpmxircecho_pass,
     }
 
