@@ -22,7 +22,8 @@ class puppet_compiler(
     file {'run_wrapper':
         ensure   => $ensure,
         path     => '/usr/local/bin/puppet-compiler',
-        content  => template('puppet_compiler/run_wrapper.erb')
+        content  => template('puppet_compiler/run_wrapper.erb'),
+        mode     => '0555'
     }
 
 
