@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2012 Jeff Green <jgreen@wikimedia.org>
+# Copyright (c) 2014 Jeff Green <jgreen@wikimedia.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -41,10 +41,10 @@ if (@ARGV[1]) {
 	for (@ARGV[1..$#ARGV]) {
 		chomp;
 		if (/^pybal$/) {
-			# list of production servers from pybal config
+			# list of production servers from pybal config (URL or local file)
 			$servers = get_server_list_from_pybal_config(qw(
-				/srv/pybal/eqiad/apaches
-				/srv/pybal/eqiad/api
+				http://noc.wikimedia.org/pybal/eqiad/apaches
+				http://noc.wikimedia.org/pybal/eqiad/api
 			));
 		} elsif (/^([\w\.]+)$/) {
 			$servers->{$1} = 1;
@@ -61,17 +61,8 @@ my %timeouts :shared; # server timeout counter
 
 # read in the list of urls
 my $urls;
-open URL, $ARGV[0];
-while (<URL>) {
-	chomp;
-	if (/^\s*(http\S+)/) {
-		$urls->{$1}++;
-	}
-}
-close URL;
-
-unless (keys %{$urls}) {
-	print "[31mno urls found in file $ARGV[0][0m\n";
+if (defined $ARGV[0]) {
+	$urls = get_url_list($ARGV[0]);
 }
 
 # do the server DNS lookups in advance, threading DNS lookups is fraught with peril
@@ -103,10 +94,12 @@ if (scalar @queue) {
 		((keys %{$urls}) * (keys %{$servers}))  . " requests\n";
 } else {
 	print "\n  usage: $0 url_file [server spec]\n\n" .
-		"   url_file format is one URL per line, http/https schemes supported\n\n" .
+		"   url_file: (web or local file containing one http/https URL per line\n" .
+		"     ./urls.txt\n".
+		"     http://somehost.eqiad.wmnet/test_urls.txt\n\n" .
 		"   server spec:\n" .
-		"     (none)   use default $default_staging_server\n" .
-		"     pybal    fetch webserver list from local pybal conf\n" .
+		"     (none)      use staging server $default_staging_server\n" .
+		"     pybal       fetch full webserver list from live pybal configuration\n" .
 		"     host1 host2 host3\n\n";
 	exit;
 }
@@ -183,18 +176,63 @@ sub process_queue_task {
 	}
 }
 
-
 sub get_server_list_from_pybal_config {
 	my $servers;
-	for my $pyfile (@_) {
-		open PYFILE, $pyfile;
-		while (<PYFILE>) {
-			next if /^\s*#/;
-			if ( (/'enabled':\s+True/i) and (/'host':\s+'([\.\w]+)'/) ) {
+	for my $source (@_) {
+		my $content;
+		if ($source =~ /^http/) {
+			$content = slurp_http_doc($source);
+		} else {
+			$content = slurp_local_file($source);
+		}
+		for my $line (split /^/, $content) {
+			next if $line =~ /^\s*#/;
+			if ( ($line =~ /'enabled':\s+True/i) and ($line =~ /'host':\s+'([\.\w]+)'/) ) {
 				$servers->{$1} = 1;
 			}
 		}
-		close PYFILE;
 	}
 	return $servers;
+}
+
+sub get_url_list {
+	my ($content,$urls);
+	my $source = shift;
+	if ($source =~ /^http/) {
+		$content = slurp_http_doc($source);
+	} else {
+		$content = slurp_local_file($source);
+	}
+	for my $line (split /^/, $content) {
+		chomp $line;
+		if ($line =~ /^\s*(http\S+)/) {
+			$urls->{$1}++;
+		}
+	}
+	unless (keys %{$urls}) {
+		die "[31mno urls found in $source[0m\n";
+	}
+	return $urls;
+}
+
+sub slurp_http_doc {
+	my $url = shift;
+	my $ua = LWP::UserAgent->new(timeout => $timeout);
+	my $request = HTTP::Request->new(GET => $url);
+	my $r = $ua->simple_request($request);
+	if ($r->is_success) {
+		return $r->content;
+	} else {
+		print "[31merror fetching '$url'\n " . $r->status_line . "[0m\n";
+	}
+}
+
+sub slurp_local_file {
+	my $file = shift;
+	local $/ = undef;
+	open FILE, $file or die "can't open file '$file': $!";
+	binmode FILE;
+	my $content = <FILE>;
+	close FILE;
+	return $content;
 }
