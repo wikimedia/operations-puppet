@@ -2656,6 +2656,10 @@ node 'tin.eqiad.wmnet' {
     package { 'unzip':
         ensure => 'present',
     }
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 # titinium hosts archiva.wikimedia.org
