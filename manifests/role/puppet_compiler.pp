@@ -8,7 +8,7 @@ class role::puppet_compiler {
         default     : { fail("Realm ${::realm} NOT supported by this role.") }
     }
 
-    class {'puppet_compiler':
+    class {'::puppet_compiler':
         ensure  => 'present',
         version => '0.2.1',
         user    => 'jenkins-deploy',
