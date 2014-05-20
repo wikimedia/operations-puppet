@@ -60,8 +60,8 @@ class puppet::self::master($server) {
         'vim-puppet',
         'puppet-el',
         'rails',
-        'libsqlite3-ruby',
-        'libldap-ruby1.8',
+        'ruby-sqlite3',
+        'ruby-ldap',
     ]:
         ensure => present,
     }
@@ -72,8 +72,8 @@ class puppet::self::master($server) {
         ensure  => latest,
         require => [
             Package['rails'],
-            Package['libsqlite3-ruby'],
-            Package['libldap-ruby1.8'],
+            Package['ruby-sqlite3'],
+            Package['ruby-ldap'],
             Class['puppet::self::config'],
             Class['puppet::self::gitclone'],
         ],
