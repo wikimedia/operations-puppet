@@ -35,14 +35,19 @@ class mediawiki::users {
         system => true,
     }
 
+    # FIXME: Bug 65591
+    $mwdeploy_shell = $::realm ? {
+        'labs'  => '/bin/bash',
+        default => '/bin/false',
+    }
+
     user { 'mwdeploy':
         ensure     => present,
-        shell      => '/bin/false',
+        shell      => $mwdeploy_shell,
         home       => '/var/lib/mwdeploy',
         system     => true,
         managehome => true,
     }
-
 
     # The l10nupdate account is used for updating the localisation files
     # with new interface message translations.

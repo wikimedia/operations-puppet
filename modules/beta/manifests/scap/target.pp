@@ -6,6 +6,7 @@ class beta::scap::target {
     include ::beta::config
     include ::misc::deployment::scap_scripts
     include ::beta::mwdeploy_sudo
+    include ::mediawiki::users
 
     # Install authorized_keys for mwdeploy user
     file { '/etc/ssh/userkeys/mwdeploy':
@@ -53,4 +54,3 @@ class beta::scap::target {
         mode    => '0755',
     }
 }
-
