@@ -1,7 +1,7 @@
 class puppet_compiler::differ(
     $envdir = "${::puppet_compiler::program_dir}/shell/env_puppet_3",
     $modulepath = "${::puppet_compiler::puppetdir}/modules",
-    $user = 'www-data'
+    $user = $::puppet_compiler::user
     ) {
 
     exec {'Install catalog diff module':
