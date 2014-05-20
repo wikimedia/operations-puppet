@@ -10,6 +10,7 @@ groups:
     gid: 700
     description: include everywhere ops folks
     members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh]
+    privs: [ALL=(ALL:ALL) ALL]
 
 users:
   rush:
