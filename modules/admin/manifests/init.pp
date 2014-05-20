@@ -35,6 +35,8 @@ class admin(
     file { '/etc/sudoers':
         ensure => file,
         mode   => '0440',
+        owner  => 'root',
+        group  => 'root',
         source => 'puppet:///modules/admin/sudoers',
         tag    => 'sudoers',
     }
