@@ -2722,6 +2722,7 @@ node 'vanadium.eqiad.wmnet' {
 node 'hafnium.wikimedia.org' {
     include standard
     include admin
+    include base::firewall
     include role::eventlogging::graphite
     include role::webperf
 }
