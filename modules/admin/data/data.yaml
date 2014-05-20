@@ -2,6 +2,9 @@ groups:
   absent:
     description: meta group for absented users
     members: []
+  wikidev:
+    gid: 500
+    members: []
   ops:
     gid: 700
     description: include everywhere ops folks
