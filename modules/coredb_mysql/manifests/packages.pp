@@ -1,5 +1,5 @@
 # coredb_mysql required packages
-class coredb_mysql::packages {
+class coredb_mysql::packages ( $mariadb = $::coredb_mysql::mariadb ) {
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
         if $mariadb == true {
             file { '/etc/apt/sources.list.d/wikimedia-mariadb.list':
