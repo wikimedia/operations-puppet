@@ -2564,13 +2564,12 @@ node 'snapshot1003.eqiad.wmnet' {
 node 'terbium.eqiad.wmnet' {
     include role::mediawiki::maintenance
     include role::db::maintenance
-    include misc::deployment::scap_scripts
     include misc::monitoring::jobqueue
     include admins::roots
     include admins::mortals
     include admins::restricted
     include generic::wikidev-umask
-
+    include misc::deployment::common_scripts
 
     class { 'misc::maintenance::pagetriage':
         enabled => true,
