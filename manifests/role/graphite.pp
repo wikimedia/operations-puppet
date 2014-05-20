@@ -193,7 +193,7 @@ class role::graphite {
             warning         => 250,
             critical        => 500,
             from            => '15min',
-            nagios_critical => 'true'
+            nagios_critical => 'false'
         }
 
         # Will try to detect anomalies in the requests error ratio;
