@@ -29,35 +29,53 @@ class mediawiki::users {
 
     # The mwdeploy account is used by various scripts in the MediaWiki
     # deployment process to run rsync.
+    if $::realm != 'labs' {
+        group { 'mwdeploy':
+            ensure => present,
+            system => true,
+        }
 
-    group { 'mwdeploy':
-        ensure => present,
-        system => true,
+        user { 'mwdeploy':
+            ensure     => present,
+            shell      => '/bin/false',
+            home       => '/var/lib/mwdeploy',
+            system     => true,
+            managehome => true,
+            before     => Sudo_user['l10nupdate'],
+        }
+    } else {
+        file { '/var/lib/mwdeploy':
+            ensure => directory,
+            owner  => 'mwdeploy',
+            group  => 'mwdeploy',
+            mode   => '0755',
+        }
     }
-
-    user { 'mwdeploy':
-        ensure     => present,
-        shell      => '/bin/false',
-        home       => '/var/lib/mwdeploy',
-        system     => true,
-        managehome => true,
-    }
-
 
     # The l10nupdate account is used for updating the localisation files
     # with new interface message translations.
+    if $::realm != 'labs' {
+        group { 'l10nupdate':
+            ensure => present,
+            gid    => 10002,
+        }
 
-    group { 'l10nupdate':
-        ensure => present,
-        gid    => 10002,
-    }
-
-    user { 'l10nupdate':
-        ensure     => present,
-        gid        => 10002,
-        shell      => '/bin/bash',
-        home       => '/home/l10nupdate',
-        managehome => true,
+        user { 'l10nupdate':
+            ensure     => present,
+            gid        => 10002,
+            shell      => '/bin/bash',
+            home       => '/home/l10nupdate',
+            managehome => true,
+            before     => Sudo_user['l10nupdate'],
+        }
+    } else {
+        file { '/home/l10nupdate':
+            owner  => 'l10nupdate',
+            group  => 'l10nupdate',
+            mode   => '0750',
+            ensure => directory,
+            before => File['/home/l10nupdate/.ssh'],
+        }
     }
 
     file { '/home/l10nupdate/.ssh':
@@ -86,7 +104,6 @@ class mediawiki::users {
     }
 
     sudo_user { 'l10nupdate':
-        require    => User['l10nupdate', 'mwdeploy'],
         privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'],
     }
 }
