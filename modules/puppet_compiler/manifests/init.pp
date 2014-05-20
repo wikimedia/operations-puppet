@@ -14,7 +14,7 @@ class puppet_compiler(
     }
 
     $install_dir = "${rootdir}/software"
-    $program_dir = "${install_dir}/compare_puppet-catalogs"
+    $program_dir = "${install_dir}/compare-puppet-catalogs"
     $puppetdir = "${program_dir}/external/puppet"
 
 

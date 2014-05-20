@@ -3,4 +3,23 @@ PUPPET_COMPILER_BASEDIR="<%= @program_dir -%>"
 PUPPET_COMPILER_MYSQL_PWD="<%= scope.lookupvar('passwords::puppet_compiler::mysql_password') -%>"
 export PUPPET_COMPILER_BASEDIR PUPPET_COMPILER_MYSQL_PWD
 
-${PUPPET_COMPILER_BASEDIR}/comparator $@
+# Now support jenkins. Jenkins is not very flexible so we need to support it :)
+if [ $1 == "--run-with-envvars" ]; then
+    OPTS=""
+    if [  "x${CHANGE}" != "x" ]; then
+        OPTS="${OPTS} --change ${CHANGE}"
+        if [ "x${TRANSITION}" != "x" ]; then
+            OPTS="${OPTS} --transition"
+        fi;
+    fi;
+    if [ "x${NODES}" != "x" ]; then
+        OPTS="${OPTS} --nodes ${NODES}"
+    fi;
+    if [ "x${NUM_THREADS}" != "x" ]; then
+        OPTS="${OPTS} --numthreads ${NUM_THREADS}"
+    fi;
+else
+    OPTS=$@
+fi;
+
+${PUPPET_COMPILER_BASEDIR}/comparator $OPTS
