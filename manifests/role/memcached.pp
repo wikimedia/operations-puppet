@@ -26,4 +26,7 @@ class role::memcached {
 		}
 	}
 
+	package { 'memkeys':
+		ensure => present,
+	}
 }
