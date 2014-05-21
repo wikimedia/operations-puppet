@@ -26,12 +26,6 @@ class role::parsoid::common {
         source => 'puppet:///files/misc/parsoid',
     }
 
-    generic::systemuser { 'parsoid':
-        name          => 'parsoid',
-        default_group => 'parsoid',
-        home          => '/var/lib/parsoid',
-    }
-
 }
 
 class role::parsoid::production {
@@ -42,6 +36,12 @@ class role::parsoid::production {
     include role::parsoid::common
 
     deployment::target { 'parsoid': }
+
+    generic::systemuser { 'parsoid':
+        name          => 'parsoid',
+        default_group => 'parsoid',
+        home          => '/var/lib/parsoid',
+    }
 
     file { '/var/lib/parsoid/Parsoid':
         ensure => link,
