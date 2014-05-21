@@ -1912,7 +1912,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
         include misc::deployment::scap_proxy
     }
 
-    class { 'role::mediawiki::jobrunner':
+    class { 'role::mediawiki::job_runner':
         run_jobs_enabled => true,
     }
 
