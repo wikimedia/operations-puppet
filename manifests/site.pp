@@ -405,6 +405,10 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
+    if $::hostname =~ /^cp1037$/ {
+        include admin
+    }
+
     if $::hostname =~ /^cp103[78]$/ {
         $ganglia_aggregator = true
     }
@@ -944,6 +948,11 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
 
 # es1 equad
 node /es100[1-4]\.eqiad\.wmnet/ {
+
+    if $::hostname =~ /^es1004$/ {
+        include admin
+    }
+
     $cluster = 'mysql'
     class { 'role::coredb::es1':
         mariadb => true,
