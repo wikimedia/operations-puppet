@@ -4030,8 +4030,8 @@ class admins::fr-tech {
 
 class admins::parsoid {
 
-    #$gid = '500'   # 'wikidev' by default
-    #include groups::wikidev
+    $gid = '500'   # 'wikidev' by default
+    include groups::wikidev
 
     include accounts::gwicke
     include accounts::catrope

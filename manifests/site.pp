@@ -430,14 +430,16 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
-    include admin
+
+    class { 'admin': groups => ['parsoid-roots',
+                                'parsoid-admin'] }
+
     $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main': }
 
     $cluster = 'cache_parsoid'
     include role::cache::parsoid
-    include admins::parsoid
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
