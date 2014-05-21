@@ -57,6 +57,11 @@ $cluster = 'misc'
 # Node definitions (alphabetic order)
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
+
+    if $::hostname =~ /^amvslvs1/ {
+        include admin
+    }
+
     if $::hostname =~ /^amslvs[12]$/ {
         $ganglia_aggregator = true
     }
@@ -639,6 +644,7 @@ node /^db(71)\.pmtpa\.wmnet/ {
 }
 
 node /^db(72)\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s4':
         mariadb               => true,
@@ -1279,6 +1285,7 @@ node 'iron.wikimedia.org' {
 
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     class { 'role::db::labsdb':
         instances => {
