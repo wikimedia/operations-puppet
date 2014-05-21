@@ -405,10 +405,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
-    if $::hostname =~ /^cp1037$/ {
-        include admin
-    }
-
+    include admin
     if $::hostname =~ /^cp103[78]$/ {
         $ganglia_aggregator = true
     }
@@ -419,6 +416,7 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
 }
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
+    include admin
     $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main': }
@@ -428,6 +426,7 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
+    include admin
     $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main': }
@@ -438,6 +437,7 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
+    include admin
     if $::hostname =~ /^cp104[67]$/ {
         $ganglia_aggregator = true
     }
@@ -449,6 +449,7 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 }
 
 node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
+    include admin
     if $::hostname =~ /^(cp1048|cp1061)$/ {
         $ganglia_aggregator = true
     }
@@ -460,6 +461,7 @@ node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
+    include admin
     if $::hostname =~ /^cp105[23]$/ {
         $ganglia_aggregator = true
     }
@@ -471,6 +473,7 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 }
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
+    include admin
     if $::hostname =~ /^cp105[67]$/ {
         $ganglia_aggregator = true
     }
@@ -482,6 +485,7 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
+    include admin
     interface::aggregate { 'bond0':
         orig_interface => 'eth0',
         members        => [ 'eth0', 'eth1' ],
@@ -495,6 +499,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 }
 
 node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
+    include admin
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
     }
@@ -505,6 +510,7 @@ node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
 }
 
 node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
+    include admin
     interface::add_ip6_mapped { 'main': }
 
     $cluster = 'cache_mobile'
@@ -512,6 +518,7 @@ node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
+    include admin
     if $::hostname =~ /^cp(3019|3020)$/ {
         $ganglia_aggregator = true
     }
@@ -527,6 +534,7 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
+    include admin
     # cp4001 and cp4003 are in different racks,
     # make them each ganglia aggregators.
     if $::hostname =~ /^cp(4001|4003)$/ {
@@ -541,6 +549,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
+    include admin
     if $::hostname =~ /^cp(4005|4013)$/ {
         $ganglia_aggregator = true
     }
@@ -553,6 +562,7 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
+    include admin
     if $::hostname =~ /^cp(4008|4016)$/ {
         $ganglia_aggregator = true
     }
@@ -565,6 +575,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
+    include admin
     if $::hostname =~ /^cp401[19]$/ {
         $ganglia_aggregator = true
     }
@@ -944,10 +955,7 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
 
 # es1 equad
 node /es100[1-4]\.eqiad\.wmnet/ {
-
-    if $::hostname =~ /^es1004$/ {
-        include admin
-    }
+    include admin
 
     $cluster = 'mysql'
     class { 'role::coredb::es1':
@@ -956,17 +964,20 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 }
 
 node /es4\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     include role::coredb::es1
 }
 
 # es2-3
 node /es7\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     include role::coredb::es2
 }
 
 node /es8\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     include role::coredb::es3
 }
@@ -977,6 +988,7 @@ node /^es([569]|10)\.pmtpa\.wmnet/{
 }
 
 node /es100[5-7]\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     if $::hostname =~ /^es100[67]/ {
         class { 'role::coredb::es2':
@@ -988,6 +1000,7 @@ node /es100[5-7]\.eqiad\.wmnet/ {
 }
 
 node /es10(0[89]|10)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     if $::hostname =~ /^es10(09|10)/ {
         class { 'role::coredb::es3':
