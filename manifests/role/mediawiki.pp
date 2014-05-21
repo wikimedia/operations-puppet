@@ -44,10 +44,10 @@ class role::mediawiki {
         include standard
 
         if $::realm == 'production' {
-            include admins::roots,
-                admins::mortals,
-                geoip,
-                mediawiki
+            include admins::roots
+            include admins::mortals
+            include geoip
+            include ::mediawiki
 
             nrpe::monitor_service { "twemproxy":
                 description => "twemproxy process",
@@ -62,7 +62,7 @@ class role::mediawiki {
         if $::realm == 'labs' {
             # MediaWiki configuration specific to labs instances ('beta' project)
             include ::beta::common
-            include mediawiki
+            include ::mediawiki
 
             # Eqiad instances do not mount additional disk space
             include labs_lvm
@@ -212,9 +212,9 @@ class role::mediawiki {
 
         include role::mediawiki::common
 
-        include ::imagescaler::cron,
-            ::imagescaler::packages,
-            ::imagescaler::files
+        include ::imagescaler::cron
+        include ::imagescaler::packages,
+        include ::imagescaler::files
 
         class {"::mediawiki::jobrunner":
             run_jobs_enabled => $run_jobs_enabled,
