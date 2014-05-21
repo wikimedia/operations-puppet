@@ -2844,22 +2844,18 @@ node /^solr100[1-3]\.eqiad\.wmnet/ {
 
 node 'ytterbium.wikimedia.org' {
 
+    class { 'admin': groups => ['gerrit-root', 'gerrit-admin'] }
+
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
     include role::gerrit::production
     include backup::client
     include groups::wikidev
-    include accounts::demon
-    include accounts::qchris # RT 6720
 
     install_certificate{ 'gerrit.wikimedia.org':
         ca => 'RapidSSL_CA.pem',
     }
 
-    # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon':
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
 }
 
 node 'zinc.eqiad.wmnet' {
