@@ -19,6 +19,11 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload']
+  cassandra-root:
+    gid: 703
+    description: users with root on cassandra hosts
+    members: [gwicke, ssastry]
+    privs: ['ALL = (ALL) NOPASSWD: ALL']
   ops:
     gid: 700
     description: include everywhere ops folks
