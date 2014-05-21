@@ -9,7 +9,9 @@ class role::zuul::configuration {
 
     $zuul_git_dir = $::realm ? {
         'production' => '/srv/ssd/zuul/git',
-        'labs'       => '/var/lib/zuul/git',
+        'labs'       => '/srv/zuul/git',
+# FIXME migrate under /data/project whenever bug 64868 is solved
+#        'labs'       => '/data/project/zuul/git',
     }
 
 } # /role::zuul::configuration
@@ -29,9 +31,9 @@ class role::zuul::labs {
     zuulwikimedia::instance { 'zuul-labs':
         gearman_server       => '127.0.0.1',
         gearman_server_start => true,
-        jenkins_server       => 'http://10.4.0.172:8080/ci',
+        jenkins_server       => 'http://127.0.0.1:8080/ci',
         jenkins_user         => 'zuul',
-        gerrit_server        => '10.4.0.172',
+        gerrit_server        => '127.0.0.1',
         gerrit_user          => 'jenkins',
         url_pattern          => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
         status_url           => 'http://integration.wmflabs.org/zuul/status',
