@@ -381,18 +381,13 @@ node 'caesium.eqiad.wmnet' {
 # cerium,praseodymium, ruthenium and xenon are cassandra test host
 node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
 
+    class { 'admin': groups => ['cassandra-root'] }
+
     system::role { 'role::cassandra-test':
         description => 'Cassandra test server',
     }
 
     include standard
-    include groups::wikidev
-    include accounts::gwicke
-    include accounts::ssastry
-
-    sudo_user { ['gwicke', 'ssastry']:
-        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
-    }
 
     # XXX: to be moved into the puppet class
     sysctl::parameters { 'cassandra':
