@@ -9,7 +9,7 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
     # Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
 
     if $enabled == true {
-        file { [ '/home/mwdeploy', '/home/mwdeploy/refreshLinks' ]:
+        file { [ '/var/log/mediawiki', '/var/log/mediawiki/refreshLinks' ]:
             ensure => directory,
             owner  => mwdeploy,
             group  => mwdeploy,
@@ -23,7 +23,7 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
         $monthday = regsubst($name, '.*@', '\1')
 
         cron { "cron-refreshlinks-${name}":
-            command  => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only > /home/mwdeploy/refreshLinks/${name}.log 2>&1",
+            command  => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only > /var/log/mediawiki/refreshLinks/${name}.log 2>&1",
             user     => mwdeploy,
             hour     => 0,
             minute   => 0,
