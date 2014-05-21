@@ -17,6 +17,12 @@ class puppet_compiler(
         content => template('puppet_compiler/nginx_site.erb'),
     }
 
+    file_line {'modify_nginx_magic_types':
+        path  => '/etc/nginx/mime.types',
+        line  => '	text/plain				txt pson warnings.out;',
+        match => '	text/plain				txt;'
+    }
+
     # This wrapper defines the env variables for running.
     file {'run_wrapper':
         ensure   => $ensure,

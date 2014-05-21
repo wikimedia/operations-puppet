@@ -10,7 +10,7 @@ class role::puppet_compiler {
 
     class {'::puppet_compiler':
         ensure  => 'present',
-        version => '0.2.1',
+        version => '0.2.2',
         user    => 'jenkins-deploy',
     }
 
