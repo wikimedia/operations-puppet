@@ -1,6 +1,13 @@
 # misc/maintenance.pp
 
-# mw maintenance/batch hosts
+########################################################################
+#
+# Maintenance scripts should always run as apache and never as mwdeploy.
+#
+# This is 1) for security reasons and 2) for consistent file ownership
+# (if MediaWiki creates (temporary) files, they must be owned by apache)
+#
+########################################################################
 
 class misc::maintenance::refreshlinks( $enabled = false ) {
 
