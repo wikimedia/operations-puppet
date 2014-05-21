@@ -1137,28 +1137,14 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 
 node 'gallium.wikimedia.org' {
     $cluster = 'misc'
-    $gid= '500'
-    sudo_user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'marktraceur' ]:
-        privileges => [
-            'ALL = (jenkins) NOPASSWD: ALL',
-            'ALL = (jenkins-slave) NOPASSWD: ALL',
-            'ALL = (gerritslave) NOPASSWD: ALL',
-            'ALL = NOPASSWD: /etc/init.d/jenkins',
-            'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
-            'ALL = (postgres) NOPASSWD: /usr/bin/psql',
-        ]
-    }
+
+    class { 'admin': groups => ['contint-users','contint-admins','contint-roots'] }
 
     # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
     sudo_user { 'jenkins-slave':
         privileges => [
             'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
         ]
-    }
-
-    # full root for Jenkins admin (RT-4101)
-    sudo_user { 'hashar':
-        privileges => ['ALL = NOPASSWD: ALL'],
     }
 
     include standard
@@ -1168,7 +1154,6 @@ node 'gallium.wikimedia.org' {
     include role::ci::website
     include role::zuul::production
     include admins::roots
-    include admins::jenkins
 
     # gallium received a SSD drive (RT #4916) mount it
     file { '/srv/ssd':
@@ -1483,24 +1468,12 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'lanthanum.eqiad.wmnet' {
+
+    class { 'admin': groups => ['contint-users','contint-admins','contint-roots'] }
+
     include standard
     include admins::roots
-    include admins::jenkins
     include role::ci::slave  # RT #5074
-
-    # Used as a Jenkins slave so some folks need escalated privileges
-    $gid= '500'
-    sudo_user { [ 'bd808', 'demon', 'krinkle', 'reedy', 'marktraceur' ]:
-        privileges => [
-        'ALL = (jenkins-slave) NOPASSWD: ALL',
-        'ALL = (gerritslave) NOPASSWD: ALL',
-        ]
-    }
-
-    # full root for Jenkins admin (RT-5677)
-    sudo_user { 'hashar':
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
 
     # lanthanum received a SSD drive just like gallium (RT #5178) mount it
     file { '/srv/ssd':
