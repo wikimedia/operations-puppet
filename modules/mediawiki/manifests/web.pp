@@ -1,16 +1,14 @@
 # mediawiki::web
 
 class mediawiki::web ( $maxclients = '40' ) {
-    require mediawiki::config::base
-    require mediawiki::packages
-
-    include mediawiki::sync
+    include ::mediawiki
 
     file { '/etc/apache2/apache2.conf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('mediawiki/apache/apache2.conf.erb'),
+        require => Package['libapache2-mod-php5'],
         before  => Service['apache'],
     }
 

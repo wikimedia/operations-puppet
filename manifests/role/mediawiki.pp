@@ -24,7 +24,7 @@ class role::mediawiki {
     class configuration::php {
         include role::mediawiki
 
-        class { '::mediawiki::config::php':
+        class { '::mediawiki::php':
             fatal_log_file => "udp://${role::mediawiki::mediawiki_log_aggregator}",
         }
     }
