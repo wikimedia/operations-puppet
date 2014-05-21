@@ -57,10 +57,7 @@ $cluster = 'misc'
 # Node definitions (alphabetic order)
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
-
-    if $::hostname =~ /^amslvs[1]$/ {
-        include admin
-    }
+    include admin
 
     if $::hostname =~ /^amslvs[12]$/ {
         $ganglia_aggregator = true
@@ -619,6 +616,7 @@ node 'dataset1001.wikimedia.org' {
 
 # pmtpa dbs
 node /^db(60)\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
     class { 'role::coredb::s1':
@@ -628,6 +626,7 @@ node /^db(60)\.pmtpa\.wmnet/ {
 }
 
 node /^db(69)\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s2':
         mariadb               => true,
@@ -636,6 +635,7 @@ node /^db(69)\.pmtpa\.wmnet/ {
 }
 
 node /^db(71)\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s3':
         mariadb               => true,
@@ -653,6 +653,7 @@ node /^db(72)\.pmtpa\.wmnet/ {
 }
 
 node /^db(73)\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s5':
         mariadb               => true,
@@ -661,6 +662,7 @@ node /^db(73)\.pmtpa\.wmnet/ {
 }
 
 node /^db(74)\.pmtpa\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s6':
         mariadb               => true,
@@ -670,11 +672,13 @@ node /^db(74)\.pmtpa\.wmnet/ {
 
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
 node /^db(60|7[5-7])\.pmtpa\.wmnet/{
+    include admin
     include standard
 }
 
 # eqiad dbs
 node /^db10(50|51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s1':
         innodb_file_per_table => true,
@@ -683,6 +687,7 @@ node /^db10(50|51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
 }
 
 node /^db10(02|09|18|36|60|63|67)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s2':
         innodb_file_per_table => true,
@@ -691,6 +696,7 @@ node /^db10(02|09|18|36|60|63|67)\.eqiad\.wmnet/ {
 }
 
 node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s3':
         # Many more tables than other shards.
@@ -701,6 +707,7 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
 }
 
 node /^db10(04|40|42|49|56|59|64|68)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s4':
         innodb_file_per_table => true,
@@ -709,6 +716,7 @@ node /^db10(04|40|42|49|56|59|64|68)\.eqiad\.wmnet/ {
 }
 
 node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
+    include admin
     if $::hostname =~ /^db1021/ {
         $ganglia_aggregator = true
     }
@@ -720,6 +728,7 @@ node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
 }
 
 node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s6':
         innodb_file_per_table => true,
@@ -728,6 +737,7 @@ node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
 }
 
 node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s7':
         innodb_file_per_table => true,
@@ -737,12 +747,14 @@ node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
 
 ## x1 shard
 node /^db10(29|31)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     include role::coredb::x1
 }
 
 ## m1 shard
 node /^db10(01|16)\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::m1':
         mariadb => true,
@@ -751,6 +763,7 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 
 ## m2 shard
 node /^db104[68]\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     if $::hostname =~ /^db1048/ {
         $ganglia_aggregator = true
@@ -766,18 +779,21 @@ node /^db104[68]\.eqiad\.wmnet/ {
 
 ## m3 shard
 node 'db1043.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     include role::mariadb::misc
 }
 
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     include role::mariadb::analytics
 }
 
 ## researchdb s5
 node 'db1017.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     class { 'role::coredb::researchdb':
         shard                 => 's5',
@@ -789,6 +805,7 @@ node 'db1017.eqiad.wmnet' {
 
 ## SANITARIUM
 node 'db1053.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     class { 'role::db::sanitarium':
         instances => {
@@ -805,6 +822,7 @@ node 'db1053.eqiad.wmnet' {
 }
 
 node 'db1054.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     class { 'role::db::sanitarium':
         instances => {
@@ -837,6 +855,7 @@ node 'db1054.eqiad.wmnet' {
 }
 
 node 'db1057.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     class { 'role::db::sanitarium':
         instances => {
@@ -870,6 +889,7 @@ node 'db1057.eqiad.wmnet' {
 }
 
 node 'db1044.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     include role::mariadb::tendril
 }
@@ -1304,6 +1324,7 @@ node 'labsdb1001.eqiad.wmnet' {
 }
 
 node 'labsdb1002.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     class { 'role::db::labsdb':
         instances => {
@@ -1348,6 +1369,7 @@ node 'labsdb1002.eqiad.wmnet' {
 }
 
 node 'labsdb1003.eqiad.wmnet' {
+    include admin
     $cluster = 'mysql'
     class { 'role::db::labsdb':
         instances => {
@@ -1386,6 +1408,7 @@ node 'labsdb1003.eqiad.wmnet' {
 }
 
 node 'labsdb1004.eqiad.wmnet' {
+    include admin
     $osm_slave = 'labsdb1005.eqiad.wmnet'
     $osm_slave_v4 = '10.64.37.9'
 
@@ -1394,6 +1417,7 @@ node 'labsdb1004.eqiad.wmnet' {
 }
 
 node 'labsdb1005.eqiad.wmnet' {
+    include admin
     $osm_master = 'labsdb1004.eqiad.wmnet'
 
     include role::osm::slave
