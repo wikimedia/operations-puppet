@@ -20,6 +20,7 @@ exports.setup = function( parsoidConfig ) {
 	parsoidConfig.setInterwiki( 'simplewiki', 'http://simple.wikipedia.beta.wmflabs.org/w/api.php' );
 	parsoidConfig.setInterwiki( 'trwiki', 'http://tr.wikipedia.beta.wmflabs.org/w/api.php' );
 	parsoidConfig.setInterwiki( 'diqwiki', 'http://diq.wikipedia.beta.wmflabs.org/w/api.php' );
+	parsoidConfig.setInterwiki( 'hewiki', 'http://he.wikipedia.beta.wmflabs.org/w/api.php' );
 
 	// Use the PHP preprocessor to expand templates via the MW API (default true)
 	parsoidConfig.usePHPPreProcessor = true;
