@@ -59,6 +59,11 @@ groups:
     gid: 708
     description: users with root on cassandra hosts
     members: [gwicke, ssastry]
+  ops:
+    gid: 700
+    description: include everywhere ops folks
+    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc,
+              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
@@ -100,6 +105,24 @@ groups:
     gid: 716
     description: non-ops admins for search
     members: [manybubbles, demon]
+  contint-users:
+    gid: 717
+    description: users with accounts on jenkins hosts
+    members: [aaron,csteipp]
+  contint-admins:
+    gid: 718
+    description: users with some sudo permissions on jenkins hosts
+    members: [bd808, demon, krinkle, reedy, marktraceur]
+    privs: ['ALL = (jenkins) NOPASSWD: ALL',
+            'ALL = (jenkins-slave) NOPASSWD: ALL',
+            'ALL = (gerritslave) NOPASSWD: ALL',
+            'ALL = NOPASSWD: /etc/init.d/jenkins',
+            'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
+            'ALL = (postgres) NOPASSWD: /usr/bin/psql']
+  contint-roots:
+    gid: 719
+    description: users who have full root on jenkins servers
+    members: [hashar]
     privs: ['ALL = NOPASSWD: ALL']
 
 users:
