@@ -353,6 +353,43 @@ class role::ci::slave::labs {
 
 }
 
+
+# == Class role::ci::publisher::labs
+#
+# Intermediary rsync hosts in labs to let Jenkins slave publish their results
+# safely.  The production machine hosting doc.wikimedia.org can then fetch the
+# doc from there.
+class role::ci::publisher::labs {
+
+    include role::labs::lvm::srv
+    include rsync::server
+
+    file { '/srv/doc':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0775',
+        require => Class['role::labs::lvm::srv'],
+    }
+
+    rsync::server::module { 'srv_doc':
+        path        => '/srv/doc',
+        read_only   => 'no',
+        # FIXME figure out how to automatically list instances IP of the
+        # 'integration' labs project
+        hosts_allow => [
+            '208.80.154.135',  # gallium.wikimedia.org
+            '10.68.16.171',  # integration-slave1001.eqiad.wmflabs
+            '10.68.16.175',  # integration-slave1002.eqiad.wmflabs
+        ],
+        require => [
+            File['/srv/doc'],
+            Class['role::labs::lvm::srv'],
+        ],
+    }
+
+}
+
 # Website for Continuous integration
 #
 # http://doc.mediawiki.org/
