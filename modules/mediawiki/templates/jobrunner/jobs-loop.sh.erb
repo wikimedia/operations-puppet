@@ -148,7 +148,7 @@ function runJobsLoopService() {
 				elif [ -n "$db" -a -n "$type" ]; then
 					foundjobs=y
 					echo "$db $type"
-					nice -n 20 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --type="$type" --maxtime=$hpmaxtime --memory-limit=$maxsubprocmemory &
+					nice -n 19 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --type="$type" --maxtime=$hpmaxtime --memory-limit=$maxsubprocmemory &
 					# Do not spend too much time on prioritized jobs
 					local timestamp=`date +%s` # UNIX timestamp
 					if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$lpmaxdelay" ]; then
@@ -175,7 +175,7 @@ function runJobsLoopService() {
 				elif [ -n "$db" ]; then
 					foundjobs=y
 					echo "$db"
-					nice -n 20 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --maxtime=$lpmaxtime --memory-limit=$maxsubprocmemory &
+					nice -n 19 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --maxtime=$lpmaxtime --memory-limit=$maxsubprocmemory &
 					# Do not spend too much time on unprioritized jobs
 					local timestamp=`date +%s` # UNIX timestamp
 					if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$hpmaxdelay" ]; then
