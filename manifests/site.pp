@@ -2850,7 +2850,6 @@ node 'ytterbium.wikimedia.org' {
     # to update the role::zuul::production
     include role::gerrit::production
     include backup::client
-    include groups::wikidev
 
     install_certificate{ 'gerrit.wikimedia.org':
         ca => 'RapidSSL_CA.pem',
