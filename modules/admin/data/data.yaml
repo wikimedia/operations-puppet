@@ -19,6 +19,25 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload']
+  jenkins-user:
+    gid: 704
+    description: users with accounts on jenkins hosts
+    members: [aaron,csteipp]
+  jenkins-admin:
+    gid: 705
+    description: users with some sudo permissions on jenkins hosts
+    members: [bd808, demon, krinkle, reedy, marktraceur]
+    privs: ['ALL = (jenkins) NOPASSWD: ALL',
+            'ALL = (jenkins-slave) NOPASSWD: ALL',
+            'ALL = (gerritslave) NOPASSWD: ALL',
+            'ALL = NOPASSWD: /etc/init.d/jenkins',
+            'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
+            'ALL = (postgres) NOPASSWD: /usr/bin/psql']
+  jenkins-root:
+    gid: 706
+    description: users who have full root on jenkins servers
+    members: [hashar]
+    privs: ['ALL = NOPASSWD: ALL']
   ops:
     gid: 700
     description: include everywhere ops folks
