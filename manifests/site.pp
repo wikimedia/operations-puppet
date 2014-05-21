@@ -81,6 +81,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
 # amssq47 is a text varnish
 node /^amssq47\.esams\.wikimedia\.org$/ {
+    include admin
     $cluster = 'cache_text'
     include role::cache::text
     include role::cache::ssl::unified
@@ -90,6 +91,7 @@ node /^amssq47\.esams\.wikimedia\.org$/ {
 
 # amssq48-62 are text varnish
 node /^amssq(4[8-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org$/ {
+    include admin
 
     sysctl::parameters { 'vm dirty page flushes':
         values => {
