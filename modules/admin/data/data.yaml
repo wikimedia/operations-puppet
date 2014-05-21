@@ -164,7 +164,6 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw==
         andrew@AndrewMacbook-6.local]
     uid: 2093
-<<<<<<< HEAD
   gwicke:
     ensure: present
     gid: 500
@@ -189,7 +188,6 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpsA8yuweHpvf1MqoURe7npQV5PlqwVjIGSshN2BWUrqO4tzC9mvy4vfGyvKdfPMFUlsk8hs6BQgMbIY3Qr3cF1+62CH7jx6FWzRWTZpFfyckUhdJu22vaxwYxzZu0au2zIkeVaHqnV+QYPrhjnvcOrwosF4ArfW3guXH5gjBF9RsJWqlC0xejiaVVefsaEKan6cOLslLG+caQalJdNfJ7mBs4hPKLQWF6d8tbWld5/jJUL/hFe188/hkyLyfD/TSmRyWtoN0q4Ubcqx3LMDoX3EKYAl95i42a7TT+zg2GOOZXLk9rruFKk55hNfg4R3T+JxAffkJygKykyPvlfhp
         subbu@earth]
     uid: 2316
-=======
   demon:
     ensure: present
     gid: 500
@@ -206,4 +204,3 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/FKzYz14zzwGZBltEn/PKw90dTxGvvmMUK2no5qE9gHd+zGlYNoriQK0dRsiGyWEf0O0V0dEMhkM/LjSVMqxBK0nOoAY01sgJrAH2VTYgB6RnTqAG2gUWuPEfPMZ+5tJMVgr0hRkbrZQoEvBRAv45xfywXI9if0pBtbG710JrEbAryyLfU4tt6gRAPgaAZ5ch9ISnMXden2c+N+KmjC0IXwtN7DteaCbvsL4vQHZ1JyC2OjPbHaH/6gJwE/IRbZSxTUzkH9UL/+v9N/b4yFYFGKP/2yZgHtWQfOsDpClOUiooik0pK/w9oQA+kOcKdjm2oumss4FQwRswDYJhaKI/
         christian@quelltextlich.at]
     uid: 2153
->>>>>>> migrate antimony to admin yaml
