@@ -58,7 +58,7 @@ $cluster = 'misc'
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
-    if $::hostname =~ /^amvslvs1/ {
+    if $::hostname =~ /^amslvs1\.esams\.wikimedia\.org$/ {
         include admin
     }
 
