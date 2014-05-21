@@ -21,12 +21,8 @@ class role::mediawiki {
         'labs'       => "deployment-bastion.${::site}.wmflabs:8420",
     }
 
-    class configuration::php {
-        include role::mediawiki
-
-        class { '::mediawiki::config::php':
-            fatal_log_file => "udp://${role::mediawiki::mediawiki_log_aggregator}",
-        }
+    class { '::mediawiki::php':
+        fatal_log_file => "udp://${mediawiki_log_aggregator}",
     }
 
 # Class: role::mediawiki
@@ -92,8 +88,7 @@ class role::mediawiki {
     class webserver($maxclients="40") {
         include ::mediawiki,
             ::mediawiki::pybal_check,
-            role::mediawiki,
-            role::mediawiki::configuration::php
+            role::mediawiki
 
         class { '::mediawiki::web':
             maxclients => $maxclients,
@@ -226,31 +221,25 @@ class role::mediawiki {
             extra_args => "-v 0"
         }
 
-        include ::mediawiki::config::base,
-            ::mediawiki::packages,
-            role::mediawiki::configuration::php
-
         # dependency for wikimedia-task-appserver
         exec { 'videoscaler-apache-service-stopped':
             command => '/etc/init.d/apache2 stop',
             onlyif  => '/etc/init.d/apache2 status',
         }
     }
-    class jobrunner( $run_jobs_enabled = true ){
-        system::role { "role::mediawiki::jobrunner": description => "Standard Jobrunner Server" }
+    class job_runner( $run_jobs_enabled = true ){
+        system::role { "role::mediawiki::job_runner": description => "Standard Jobrunner Server" }
 
         include ::mediawiki
 
         include role::mediawiki::common
 
         if $::realm == 'production' {
-            if $::hostname !~ /^tmh/ {
-                class { '::mediawiki::jobrunner':
-                    dprioprocs             => 17,
-                    iprioprocs             => 6,
-                    procs_per_iobound_type => 5,
-                    run_jobs_enabled       => $run_jobs_enabled,
-                }
+            class { '::mediawiki::jobrunner':
+                dprioprocs             => 17,
+                iprioprocs             => 6,
+                procs_per_iobound_type => 5,
+                run_jobs_enabled       => $run_jobs_enabled,
             }
         } else {
             class { '::mediawiki::jobrunner':
@@ -260,10 +249,6 @@ class role::mediawiki {
                 run_jobs_enabled       => $run_jobs_enabled,
             }
         }
-
-        include ::mediawiki::config::base,
-            ::mediawiki::packages,
-            role::mediawiki::configuration::php
 
         # dependency for wikimedia-task-appserver
         exec { 'jobrunner-apache-service-stopped':
@@ -277,9 +262,5 @@ class role::mediawiki {
     # apache service installed by wikimedia-task-appserver is not disabled here.
     class maintenance {
         include role::mediawiki::common
-
-        include ::mediawiki::config::base,
-            ::mediawiki::packages,
-            role::mediawiki::configuration::php
     }
 }
