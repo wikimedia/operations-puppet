@@ -261,6 +261,9 @@ node 'analytics1027.eqiad.wmnet' {
 
 # git.wikimedia.org
 node 'antimony.wikimedia.org' {
+
+    class { 'admin': groups => ['gerrit-root', 'gerrit-admin'] }
+
     install_certificate{ 'git.wikimedia.org':
         ca => 'RapidSSL_CA.pem',
     }
@@ -271,16 +274,8 @@ node 'antimony.wikimedia.org' {
     class { 'base::firewall': }
 
     include standard
-    include groups::wikidev
-    include accounts::demon
-    include accounts::qchris # RT 6720
     include role::gitblit
     include role::subversion
-
-    # full root for gerrit admin (RT-3698)
-    sudo_user { 'demon':
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
 }
 
 node 'argon.wikimedia.org' {

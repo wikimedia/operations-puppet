@@ -6,6 +6,12 @@ groups:
     gid: 500
     description: container group for primary user groups.
     members: []
+  ops:
+    gid: 700
+    description: include everywhere ops folks
+    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc,
+              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh]
+    privs: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -19,12 +25,15 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload']
-  ops:
-    gid: 700
-    description: include everywhere ops folks
-    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc,
-              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh]
-    privs: ['ALL = (ALL) NOPASSWD: ALL']
+  gerrit-root:
+    gid: 703
+    description: manage gerrit server
+    members: [demon]
+    privs: ['ALL = NOPASSWD: ALL']
+  gerrit-admin:
+    gid: 704
+    description: RT 6720 - assist in managing gerrit server
+    members: [qchris]
 
 users:
   rush:
@@ -155,6 +164,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw==
         andrew@AndrewMacbook-6.local]
     uid: 2093
+<<<<<<< HEAD
   gwicke:
     ensure: present
     gid: 500
@@ -179,3 +189,21 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpsA8yuweHpvf1MqoURe7npQV5PlqwVjIGSshN2BWUrqO4tzC9mvy4vfGyvKdfPMFUlsk8hs6BQgMbIY3Qr3cF1+62CH7jx6FWzRWTZpFfyckUhdJu22vaxwYxzZu0au2zIkeVaHqnV+QYPrhjnvcOrwosF4ArfW3guXH5gjBF9RsJWqlC0xejiaVVefsaEKan6cOLslLG+caQalJdNfJ7mBs4hPKLQWF6d8tbWld5/jJUL/hFe188/hkyLyfD/TSmRyWtoN0q4Ubcqx3LMDoX3EKYAl95i42a7TT+zg2GOOZXLk9rruFKk55hNfg4R3T+JxAffkJygKykyPvlfhp
         subbu@earth]
     uid: 2316
+=======
+  demon:
+    ensure: present
+    gid: 500
+    name: demon
+    realname: Chad Horohoe
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD74a9VKRGqzCmiWZZUkZoy1XnPgd9nlFTsPrBn8Nnf9mMBbzEArMupuolHOSFhczk5lC9y7KSRKiWJ6sypvVjfGZypr98SA1SEe5AxvBN+8DbWEpxxwbOGCMhHo+GPVucILa5cjzZn2iKlCli39oMa0Dxwzd7v+SuswNtfqjp47RlrJoG5hTZMYcbICjEVGNDvSxSXBX2E17Kxdw3CiPnvZun+twTRYEuTo0GshGjO/2fQaTnyYHfPKOyFYC8HDsaaSaOWzXPXb7ey8s4lY+vEt5Imj5OqHhNOuG+thH/5dxuSv6Jkfi1Ygl2t3j1aYdo5g/0IRQ1lIqhRQuFqxe7j
+        chad@wmf]
+    uid: 1145
+  qchris:
+    ensure: present
+    gid: 500
+    name: qchris
+    realname: Christian Aistleitner
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/FKzYz14zzwGZBltEn/PKw90dTxGvvmMUK2no5qE9gHd+zGlYNoriQK0dRsiGyWEf0O0V0dEMhkM/LjSVMqxBK0nOoAY01sgJrAH2VTYgB6RnTqAG2gUWuPEfPMZ+5tJMVgr0hRkbrZQoEvBRAv45xfywXI9if0pBtbG710JrEbAryyLfU4tt6gRAPgaAZ5ch9ISnMXden2c+N+KmjC0IXwtN7DteaCbvsL4vQHZ1JyC2OjPbHaH/6gJwE/IRbZSxTUzkH9UL/+v9N/b4yFYFGKP/2yZgHtWQfOsDpClOUiooik0pK/w9oQA+kOcKdjm2oumss4FQwRswDYJhaKI/
+        christian@quelltextlich.at]
+    uid: 2153
+>>>>>>> migrate antimony to admin yaml
