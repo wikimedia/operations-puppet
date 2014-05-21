@@ -3,7 +3,6 @@ class mediawiki {
     include ::mediawiki::sync
     include ::mediawiki::cgroup
     include ::mediawiki::packages
-    include ::mediawiki::config::base
 
     file { '/etc/cluster':
         owner   => 'root',
