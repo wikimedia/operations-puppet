@@ -6,6 +6,24 @@ groups:
     gid: 500
     description: container group for primary user groups.
     members: []
+  parsoid-roots:
+    gid: 701
+    description: RT 5934
+    members: [gwicke, catrope]
+    privs: ['ALL = (parsoid) NOPASSWD: ALL']
+  parsoid-admin:
+    gid: 702
+    description: RT 5934
+    members: [ssastry]
+    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload']
+  cassandra-root:
+    gid: 703
+    description: users with root on cassandra hosts
+    members: [gwicke, ssastry]
+    privs: ['ALL = (ALL) NOPASSWD: ALL']
   ops:
     gid: 700
     description: include everywhere ops folks
