@@ -51,10 +51,7 @@ class mediawiki::config::php(
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => "
-// Force the envelope sender address to empty, since we don't want to receive bounces
-mail.force_extra_parameters=\"-f <>\"
-";
+        source => 'puppet:///modules/mediawiki/php/mail.ini',
     }
 
 }
