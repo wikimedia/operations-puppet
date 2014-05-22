@@ -46,7 +46,7 @@ class role::keystone::config::eqiad inherits role::keystone::config {
     $eqiadkeystoneconfig = {
         db_host      => $::realm ? {
             'production' => 'virt1000.wikimedia.org',
-            'labs'       => $::ipaddress_eth0,
+            'labs'       => 'localhost',
         },
         ldap_host    => $::realm ? {
             'production' => 'virt1000.wikimedia.org',

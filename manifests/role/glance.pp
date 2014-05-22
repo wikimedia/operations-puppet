@@ -15,7 +15,7 @@ class role::glance::config::pmtpa inherits role::glance::config {
 
     $db_host = $::realm ? {
         'production' => 'virt0.wikimedia.org',
-        'labs'       => $::ipaddress_eth0,
+        'labs'       => 'localhost',
     }
 
     $bind_ip = $::realm ? {
