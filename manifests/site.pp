@@ -2403,9 +2403,10 @@ node 'stat1001.wikimedia.org' {
     include accounts::qchris   # RT 5474
     include accounts::tnegrin  # RT 5391
 
-    sudo_user { 'otto':
-        privileges => ['ALL = NOPASSWD: ALL'],
+    class { 'admin':
+        groups => 'analytics-root'
     }
+
 }
 
 node 'stat1002.eqiad.wmnet' {
@@ -2429,8 +2430,8 @@ node 'stat1002.eqiad.wmnet' {
     User<|title == spetrea|>     { groups +> [ 'stats' ] }
     User<|title == ironholds|>   { groups +> [ 'stats' ] }
 
-    sudo_user { 'otto':
-        privileges => ['ALL = NOPASSWD: ALL'],
+    class { 'admin':
+        groups => 'analytics-root'
     }
 
     # include classes needed for storing and crunching
