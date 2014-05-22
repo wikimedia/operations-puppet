@@ -60,6 +60,11 @@ groups:
     description: users with root on cassandra hosts
     members: [gwicke, ssastry]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
+  elasticsearch-roots:
+    gid: 709
+    description: manage elasticsearch nodes
+    members: [manybubbles, demon]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
