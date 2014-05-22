@@ -25,11 +25,11 @@ class postgresql::ganglia(
     }
 
     file { '/etc/ganglia/conf.d/postgresql.pyconf':
-        ensure => $ensure,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => "puppet:///modules/${module_name}/ganglia/postgresql.pyconf",
-        notify => Service['gmond'],
+        ensure  => $ensure,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('postgresql/ganglia/postgresql.pyconf.erb'),
+        notify  => Service['gmond'],
     }
 }
