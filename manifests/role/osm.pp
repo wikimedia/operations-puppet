@@ -25,8 +25,14 @@ class role::osm::master {
     include postgresql::postgis
     include osm::packages
     include passwords::osm
+
     class { 'postgresql::master':
         includes => 'tuning.conf'
+    }
+
+    class { 'postgresql::ganglia':
+        pgstats_user => $passwords::osm::ganglia_user,
+        pgstats_pass => $passwords::osm::ganglia_pass,
     }
 
     system::role { 'role::osm::master':
@@ -142,5 +148,10 @@ class role::osm::slave {
         master_server    => $osm_master,
         replication_pass => $passwords::osm::replication_pass,
         includes         => 'tuning.conf',
+    }
+
+    class { 'postgresql::ganglia':
+        pgstats_user => $passwords::osm::ganglia_user,
+        pgstats_pass => $passwords::osm::ganglia_pass,
     }
 }
