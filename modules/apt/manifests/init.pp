@@ -40,6 +40,9 @@ class apt {
         priority => 1001,
     }
 
+    # Pin puppet base packages.
+    apt::puppet{'base':}
+
     $http_proxy = "http://webproxy.${::site}.wmnet:8080"
 
     # This will munge /etc/apt/apt.conf that get's created during installation

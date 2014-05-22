@@ -28,8 +28,14 @@ class puppetmaster(
             $deny_from=[],
             $server_type='standalone',
             $workers=undef,
-            $config={})
-    {
+            $config={},
+            $puppet_version = $puppet_version
+            ){
+
+    if !defined($puppet_version) {
+        $puppet_version = "2.7"
+    }
+
     system::role { 'puppetmaster': description => 'Puppetmaster' }
 
     $gitdir = '/var/lib/git'
@@ -38,6 +44,10 @@ class puppetmaster(
     # Require /etc/puppet.conf to be in place,
     # so the postinst scripts do the right things.
     require puppetmaster::config
+
+    apt::puppet {'puppetmaster':
+        packages => 'puppetmaster puppetmaster-common vim-puppet puppet-el'
+    }
 
     package { [
         'puppetmaster',
@@ -48,7 +58,8 @@ class puppetmaster(
         'libmysql-ruby',
         'ruby-json'
         ]:
-        ensure => latest;
+        ensure  => latest,
+        require => Apt::Puppet['puppetmaster']
     }
 
     if $server_type == 'frontend' {
