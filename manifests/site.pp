@@ -2599,12 +2599,8 @@ node /^elastic10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
         $ganglia_aggregator = true
     }
 
-    include accounts::manybubbles
-    include accounts::demon
-    include groups::wikidev
-
-    sudo_user { ['manybubbles', 'demon'] :
-        privileges => ['ALL = NOPASSWD: ALL'],
+    class { 'admin':
+        groups => 'elasticsearch-roots',
     }
 
     include standard
