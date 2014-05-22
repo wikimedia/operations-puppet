@@ -53,6 +53,7 @@ class standard-noexim {
 
 # Default variables
 $cluster = 'misc'
+$puppet_version = '2.7'
 
 # Node definitions (alphabetic order)
 
