@@ -34,6 +34,11 @@ groups:
     gid: 704
     description: RT 6720 - assist in managing gerrit server
     members: [qchris]
+  elasticsearch-roots:
+    gid: 707
+    description: manage elasticsearch nodes
+    members: [manybubbles,demon]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
@@ -204,3 +209,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/FKzYz14zzwGZBltEn/PKw90dTxGvvmMUK2no5qE9gHd+zGlYNoriQK0dRsiGyWEf0O0V0dEMhkM/LjSVMqxBK0nOoAY01sgJrAH2VTYgB6RnTqAG2gUWuPEfPMZ+5tJMVgr0hRkbrZQoEvBRAv45xfywXI9if0pBtbG710JrEbAryyLfU4tt6gRAPgaAZ5ch9ISnMXden2c+N+KmjC0IXwtN7DteaCbvsL4vQHZ1JyC2OjPbHaH/6gJwE/IRbZSxTUzkH9UL/+v9N/b4yFYFGKP/2yZgHtWQfOsDpClOUiooik0pK/w9oQA+kOcKdjm2oumss4FQwRswDYJhaKI/
         christian@quelltextlich.at]
     uid: 2153
+  manybubbles:
+    ensure: present
+    gid: 500
+    name: manybubbles
+    realname:  Nik Everett
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvG6VYTnUwHQyLYFUv0g1EUfp+OByn2agzc6Y3oSj9JhjYT2zbzpfquCB5aL8mLv4A1J8iKVwWHGeib44QY8uggX/66xdRrvEZ6QaM3GkVehDS4MpKl8m61rnVfITSxmPg0n83pBDhKfXPzE6vzchBA7ZhonccObwpcr4jvpUrvFcgWDrhjbC+YeJ1YKz5lm6IPW0yeY6Ni/0LRNbIUkv0Bj1epsFqBPORO9GoWc9ydV3rDLJJGJJ5YhOlbFSjc6nblUDMwBToxov+5icnT22wNdlHizGPUafluw6Wf790Bls3Znoje0qY5KgC7zOoQWWR+3k1kZVpuOIVQU6U3/uP
+        manybubbles@manybubbles-laptop]
+    uid: 3304
