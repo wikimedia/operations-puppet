@@ -19,6 +19,10 @@ class puppetmaster::passenger(
                                 $allow_from=[],
                                 $deny_from=[]
                             ) {
+    apt::puppet{'passenger':
+        packages => 'puppetmaster-passenger',
+        before   => Package['puppetmaster-passenger']
+    }
     package { [
                 'puppetmaster-passenger',
                 'libapache2-mod-passenger',
