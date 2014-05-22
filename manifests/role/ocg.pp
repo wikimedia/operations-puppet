@@ -15,7 +15,7 @@ class role::ocg::production {
     } else {
         # Default host in the WMF production env... this needs a variable or something
         $redis_host = 'rdb1002.eqiad.wmnet'
-	}
+    }
 
     class { '::ocg':
         redis_host      => $redis_host,
@@ -25,7 +25,7 @@ class role::ocg::production {
 
     monitor_service { 'ocg':
         description   => 'Offline Content Generation - Collection',
-        check_command => "check_http_on_port!80",
+        check_command => 'check_http_on_port!80',
     }
 }
 

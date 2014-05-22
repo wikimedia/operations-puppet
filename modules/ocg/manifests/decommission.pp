@@ -10,8 +10,8 @@ class ocg::decommission (
     service { 'ocg':
         ensure   => stopped,
         provider => upstart,
-        before => File['/etc/init/ocg.conf'],
-        before => File[$temp_dir],
+        before   => File['/etc/init/ocg.conf'],
+        before   => File[$temp_dir],
     }
 
     file { [
@@ -30,7 +30,7 @@ class ocg::decommission (
     }
 
     deployment::target { 'ocg':
-        require => Service['ocg'],
         ensure  => absent,
+        require => Service['ocg'],
     }
 }

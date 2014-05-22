@@ -33,7 +33,7 @@ class ocg (
         system     => true,
     }
 
-    if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, "14.04") >= 0 ) {
+    if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '14.04') >= 0 ) {
         # Although we need NodeJS on the server, only ubuntu 14.04 currently
         # comes with it. On labs or 12.04 boxes it has to be installed by hand :(
         package { 'nodejs':
@@ -42,7 +42,7 @@ class ocg (
         }
     }
 
-    if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, "12.04") >= 0 ) {
+    if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 ) {
         # On ubuntu versions greater than 12.04 node is known as nodejs
         # This is exposed as a variable in the upstart configuration template
         $nodebin = 'nodejs'
@@ -80,8 +80,8 @@ class ocg (
     }
 
     service { 'ocg':
-        provider   => upstart,
         ensure     => running,
+        provider   => upstart,
         hasstatus  => false,
         hasrestart => false,
         require    => File['/etc/init/ocg.conf'],
