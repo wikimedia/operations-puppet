@@ -199,29 +199,6 @@ class base::puppet($server='puppet', $certname=undef) {
         refreshonly => true,
     }
 
-    # Keep puppet running -- no longer. now via cron
-    cron { 'restartpuppet':
-        ensure  => absent,
-        require => File['/etc/default/puppet'],
-        command => '/etc/init.d/puppet restart > /dev/null',
-        user    => 'root',
-        # Restart every 4 hours to avoid the runs bunching up and causing an
-        # overload of the master every 40 mins. This can be reverted back to a
-        # daily restart after we switch to puppet 2.7.14+ since that version
-        # uses a scheduling algorithm which should be more resistant to
-        # bunching.
-        hour    => [0, 4, 8, 12, 16, 20],
-        minute  => '37',
-    }
-
-    cron { 'remove-old-lockfile':
-        ensure  => absent,
-        require => Package['puppet'],
-        command => "[ -f /var/lib/puppet/state/puppetdlock ] && find /var/lib/puppet/state/puppetdlock -ctime +1 -delete",
-        user    => 'root',
-        minute  => '43',
-    }
-
     ## do not use puppet agent
     service {'puppet':
         ensure => stopped,
