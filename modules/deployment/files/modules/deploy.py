@@ -197,8 +197,8 @@ def deployment_server_init():
                 # This will call git update-server-info for each of the
                 # checkouts inside of the .git/modules/<modulename> directory.
                 cmd = ("""git submodule foreach --recursive """
-                    """'cd $(sed "s/^gitdir: //" .git) && """
-                    """git update-server-info'""")
+                       """'cd $(sed "s/^gitdir: //" .git) && """
+                       """git update-server-info'""")
 
                 status = __salt__['cmd.retcode'](cmd, runas=deploy_user,
                                                  umask=002,
