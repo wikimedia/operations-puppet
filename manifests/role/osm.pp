@@ -25,6 +25,8 @@ class role::osm::master {
     include postgresql::postgis
     include osm::packages
     include passwords::osm
+    include postgresql::ganglia
+
     class { 'postgresql::master':
         includes => 'tuning.conf'
     }
@@ -129,6 +131,8 @@ class role::osm::slave {
     include role::osm::common
     include postgresql::postgis
     include passwords::osm
+    include postgresql::ganglia
+
     # Note: This is here to illustrate the fact that the slave is expected to
     # have the same dbs as the master.
     #postgresql::spatialdb { 'gis': }
