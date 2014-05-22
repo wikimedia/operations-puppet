@@ -297,10 +297,14 @@ node 'bast1001.wikimedia.org' {
 
     include standard
     include subversion::client
-    include admins::roots
-    include admins::mortals
-    include admins::restricted
-    include admins::bastion
+
+    class { 'admin':
+        groups => ['deployment',
+                   'restricted',
+                   'bastiononly'],
+    }
+
+
     include bastionhost
     include nfs::netapp::home::othersite
     include misc::dsh
