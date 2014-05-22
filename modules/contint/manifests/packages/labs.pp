@@ -47,8 +47,6 @@ class contint::packages::labs {
         'npm',
         'python-pip',
 
-        'puppet-lint',
-
         # Let us compile python modules:
         'python-dev',
 
