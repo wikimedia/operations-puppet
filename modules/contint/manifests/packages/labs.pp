@@ -6,6 +6,8 @@ class contint::packages::labs {
         fail( 'contint::packages::labs must not be used in production' )
     }
 
+    Package['puppet-lint'] -> Class['contint::packages::labs']
+
     include contint::packages
 
     # Shell script wrappers to ease package building
@@ -46,8 +48,6 @@ class contint::packages::labs {
     package { [
         'npm',
         'python-pip',
-
-        'puppet-lint',
 
         # Let us compile python modules:
         'python-dev',
