@@ -10,8 +10,15 @@ class role::ocg::production {
 
     include passwords::redis
 
+    if ( $::ocg_redis_server_override != undef ) {
+        $redis_host = $::ocg_redis_server_override
+    } else {
+        # Default host in the WMF production env... this needs a variable or something
+        $redis_host = 'rdb1002.eqiad.wmnet'
+	}
+
     class { '::ocg':
-        redis_host      => 'rdb1002.eqiad.wmnet',
+        redis_host      => $redis_host,
         redis_password  => $passwords::redis::main_password,
         temp_dir        => '/srv/deployment/ocg/tmp',
     }
@@ -23,7 +30,7 @@ class role::ocg::production {
 }
 
 class role::ocg::test {
-    system::role { 'ocg-test': description => 'offline content generator for MediaWiki Collection extension (testing)' }
+    system::role { 'ocg-test': description => 'offline content generator for MediaWiki Collection extension (single host testing)' }
 
     include passwords::redis
 
