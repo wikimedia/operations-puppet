@@ -30,7 +30,7 @@ exports.setup = function( parsoidConfig ) {
 	// allow cross-domain requests to the API (default disallowed)
 	//parsoidConfig.allowCORS = '*';
 	//
-	parsoidConfig.parsoidCacheURI = 'http://10.4.0.61/'; // deployment-parsoidcache3
+	parsoidConfig.parsoidCacheURI = 'http://10.68.16.145/'; // deployment-parsoidcache01.eqiad.wmflabs
 
 	// parsoidConfig.apiProxyURI = 'http://en.wikipedia.org';
 };
