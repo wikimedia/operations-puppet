@@ -51,9 +51,13 @@ class standard-noexim {
 }
 
 
-# Default variables
-$cluster = 'misc'
-
+# Default variables. this way, they work with an ENC (as in labs) as well.
+if $cluster == undef {
+    $cluster = 'misc'
+}
+if $puppet_version == undef {
+    $puppet_version = '2.7'
+}
 # Node definitions (alphabetic order)
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
