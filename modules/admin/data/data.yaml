@@ -34,6 +34,27 @@ groups:
     gid: 704
     description: RT 6720 - assist in managing gerrit server
     members: [qchris]
+  deployment:
+    gid: 705
+    description: replaces 'mortals' for software deployment
+    members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808,
+      brion, bsitu, cmcmahon, csteipp, demon, ebernhardson, esanders, gilles,
+      gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
+      maxsem, mattflaschen, marktraceur, mhoover, milimetric, mlitn, mwalker,
+      neilk, nikerabbit, nimishg, phuedx, reedy,
+      rmoen, robla, spage, ssastry, sumanah, tomasz, yurik, jgonera, tgr]
+  restricted:
+    gid: 706
+    description: access to terbium, fluorine (private data) and bastion hosts
+    members: [avar, cscott, daniel, dartar, diederik,
+      erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris, rainman,
+      tparscal, tnegrin, ssastry, ironholds, nuria, csalvia, leila, sahar,
+      santhosh, amire80, legoktm]
+  bastiononly:
+    gid: 707
+    description: these folks are allowed bastion _only_ access
+    members: [howief, jforrester, jmorgan, maryana, msyed, swalling, yuvipanda,
+      haithams, mhurd, dbrant, mglaser, mah, kleduc]
 
 users:
   rush:
@@ -172,6 +193,94 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSPEnznabK4A8LBxTt/z18gW9THN2QVmGuY+y6uvSsqM2cXrj0PCvN3+sDKqNrp7jvuu/3JRGl2UcYTT3uU2L+r4nYud7axhodwlCepEUZlVABu4n2BXaBAKb1vlAdOnGLZm88rviT08aJkmiQGlm4dV/u+kPVJIcN/1ewjynWVcH7suZtVD0I6GIvZUU8PthbktBFZ6lpC5b3TFv7IShY2/qmbVFXjrFrfDZ6fMecabx5OvpQK36teM3LD0DYfpE/o8JCsjEYmBNQAXvK4MBvyKnqPT9QL2lkVd7vLpfjtVPOFlaRRc6ku7nS2gRZSpGgE70pAmu4KxGrzQvhi7txECmVIcfvKG2474xwwTVLdqhqdEkhvdPPLRGCp5Ic3YY0w9DLx91rwLKh/7OdbxC5EKF+ZNaB4pnuq9vYuC6Vl89/g+Dw28OQyE6pEjltqybEA5T0sQPrNd5U9mEabRWhjX7hkXXDSmfRs0XZ6Yi6u7QZUO+0aqaoiHCaAygmyi94aiAXqxFaRu+2JceiTpRDOxeHU1KupbuIDPXK49zyi+QkfKNJ37GPqe5hRsw5cq0AA6+GchzpJr8p8XIstFv87eNB467NdQft8uVvMjL0fT6HZ9Gzkr/ThCZs34OnGDPLybkK3pwSuv8zRkggDK7yRB6bvDDYX4s7qoHOb1naLQ==
         gabriel@tosh]
     uid: 1239
+  aaron:
+    ensure: present
+    gid: 500
+    name: aaron
+    realname: Aaron Schulz
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAljtlNa6pQX9gEyjrpCUqqQyO1HtYtHFSDuWBiWX5oiLnTSXRr0e7pECiuy9ISEI6oIt7KkaU68+cxSkqK6gwr9YwZ5Pmj3kkopT9LjguzBYxN3jEOj5+oGwdyK6ivQQA/PwPEtVgk8LgJ0EKf+74lQ4cQVsZXyu25HTq3cjfLgQRpwoYc9OBuuwIj//3uhLvIBKS3JvO3BGFsjZBPJmxoZr6+HJI7lXNfy6wWbbinXMS0gzVYhHvPwU5lFYSN0/njh3gCV8EwBYdzV6PmF0q6HXM0R1gLH2FfrhwJY3mnveWu30B7VXENYUHqc6H3wUt3rS2koTHOMvBgy3PbNCyXw==
+        rsa-key-20130812]
+    uid: 544
+  dr0ptp4kt:
+    ensure: present
+    gid: 500
+    name: dr0ptp4kt
+    realname: Adam Baso
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDoKHi5isY9FixH31qz/81V7fOHsorLZI/NLKr9Z6Xawl2a2Ih0ZV/pJtD+BTu1ufK2QOdgobeRSrnybzf2/1aCqi3Z9H2XxJhMCfnLb/9AIcKJ9tN63T4nRnjLoPsmRgDQrOSIqY5NfLKzXBsQOqc3chZ5SaDf8f09OdBk+Obn5vhr6yWh4GhrfTzoZUfp6+JRiueZZYuGMIKdBAH82s9TyuhuGWvHJmO9WC1MJOV/3hIcim+X0xR+BNLEU/Uj4OPEXC0/EiXh2CJDLugBpLU28RF+Y16TRj/WmO2H0H6qVdmkiK7Ez9PCbsy4RFPq4hdART9QiQbQJzZzaYSAkSFV
+        abaso@wikimedia.org]
+    uid: 2962
+  werdna:
+    ensure: present
+    gid: 500
+    name: werdna
+    realname: Andrew Garrett
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA2Di7q/bc8OJ5HP4X2U19r8w/mIH6CDbZHkOv//5cNvE50udM7McwxRWSz5idIF2P2JyIU2tQhixM3vkWO2chcifIom60F2/vhKA+TuUr9l/IbnBv6CoCjeAxre0g3gVhcazHKKtjbpRMYRxMSrLs+SBzsQpTuB/MqJB/jy1rUDTLCwN8Dtz3nAR5vRtgM673kivDLvDsHrfgR1uScESawPe6c9iFLbnzptH4z86r98tj3s4U+3yVFaH9AG7YuovulyA6UEgXFL8swsrpp58s1+XIausfYAqjetIL0YS3vOwEeBw3Hg57c+bZ+dVODEV6wc+uOgtJFZs6zVHTFq5QoQ==
+        andrew@voltaire]
+    uid: 1039
+  anomie:
+    ensure: present
+    gid: 500
+    name: anomie
+    realname: Brad Jorsch
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGhaxbWveDEQ8giBB9YMMDJrNIYGS8Mlz03EYp74ZlQIzxyIaRpJiGjWPthDMioWINFrKbZSQVkYeDuiVNpvC1r14iry/LukVaCBSG/M8VCX1lEAGKTU6CwGiBWuoKrTeMkuPMnciasuSVsllHwluAUxiMw5Y3VcyFUcqI8FIKWZ8p2ovsTa/H1ADaGEGDD6FHp34Mu3k/xMbBZ+xZwOm8igLmEPbpOxJp6CcdBDK2Wqwp4mpMutgC5FxLBHCbmnXoMopnNc02xhDEi6IUqaV36nwxp7HaqqTYdSNJvLK1v4aIZCjlYGDQnVNiLK4lhkVWEzt35XwtBx13JBVgRAPv6EM+E2kiZviV6mPoRhPh6NJNPITLhC9lE4HBVrR25Cxe6l74w53enARfRythtDobD5EZE0CtvSZO/lRwYxwGqJd2EEE+JV+oAPhG8OxD8/IBTRAa7RsZcazluzs+M6h0iSSn5yz1D1H9J6IvXn+cRKg/6KWRCBehCKBGDtVhZMKpnvHMjDnK/GmXuD/V5mSqpZBoJjEYyuQi6pDj+9RRV2UeDcjSvU8bqYSZA3iiMUe7i9xMlN9st6NnKhqgZE5nAAF2MxFVdVzk5qk5e/VPBGM8Gw9PUT73m8RLBcRrmz32keLodrNtReo5768SIxS6GwVFWKtZRj9OTGCAJtN0yQ==
+        bjorsch@wikimedia.org-2]
+    uid: 2248
+  aude:
+    ensure: present
+    gid: 500
+    name: aude
+    realname: Katie Filbert
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+OiQ1ptiP6VqmiP8IOp0sKET9pQHOJxscK6bAvAmAP72DL9MgLIBaWpaL9iWsb/DMXI2CQpEnu88VMVXCSgiqw+Gy6Q93pAquAQWAzkMnDD+QvxTm23oFCxP795IEP3JMHuONNg2x3NU3jYaOADOGZX41nRhbkO4yl32jQCTF9i670KS+CFDHxRzmOMzNhlytWJYyVPS6iqUGykaFcebFNThMtRtQF+pWJNreCFxZoXp1TyzkiJE1rX98tj2yhVQmET6mENuGXuAES/Atzpxp8zvsckHn06Mm1RZZmIExEqn/JdK6nHs1UoSNpsI195ltzkKSEWdFdYKRLZNFuRBL
+        aude.wiki@gmail.com]
+    uid: 1185
+  awight:
+    ensure: present
+    gid: 500
+    name: awight
+    realname: Adam Wight
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCVYUIFsCWN5odLFNGGMUJ/dgC2BB/EJ14srHC61BIWouLlahZdCOT5F2Zeuhs+aTigaTWtaFrYAOIfiChcPNSffVEMI+RTbMSZ9gXJxY294aDVe3xdd+XAZUVY0VKyPwIQbrNgTHDyKRbi5w+YmA26H02FjtcPrbYYojYI3uxNoLc/6cVJRBaKu1L+ZHqbZn4JesNlFUeEDo5Urv5TEI9K7qlfXbCdT/CMg6j9GyKlolJbAReay8+nUL4WwUMDmocy+mT1rWc+O2E7VfJw41A6GxM+TUVK+WP7dvzlHXDlatXy4PR7RvoUlxtZKjb7phSPOXvJjv5Gt6mrl6/qrwH
+        adamw@lytho]
+    uid: 4974
+  awjrichards:
+    ensure: present
+    gid: 500
+    name: awjrichards
+    realname: Richards
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAqlaOugpX6Kz8NC2/5FdwvYlBE4ve9eTRHjD3/myj4cKzCkeKlDZT3DLxU+T4Eb7jmT/g+BeTohmafLoadg8d2YPu76HU5or7Ix6Pr2ZprDgNrLEnxdzhKeRZXT0IbXekKXWflmiRaB8LUH1MO9kTtm/QxlsqXRV90dExoJGNTlRiL3tEFro5zeiZ74qXFYXSAvofOAxueS/ZjIYmO6qHKuUUybo0/G/rN90wfG0tzzclhHv9dkUUgDqxj/DzXx37u9HxkaVFEDX9yQxVwQ1odq9oaIQvZslOMZZhaXoNkBlWjnT2+a99up60TOYbjy5tUNP5UJVzvtfyO/UPe6iZPQ==
+        awjrichards]
+    uid: 552
+  bd808:
+    ensure: present
+    gid: 500
+    name: bd808
+    realname: Bryan Davis
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCdtHX29Vcd5n950X3H11kAbQdmKTCJvOOclRKkaXGofp6UuCzgbbdK4Lfvz3cZ2dH9Kvv6M+Yf2uzh6XN470XxXIP91IzA7lVcaMV0sjOuhZKSvqe0NlA4kN/uytHGcfmBxlYAM+b1RxtveXTle3vVWefo1SkQ4fHteA8U/WWXhQ11HnCGd/ZAuiPTf4Fyfe5HFY6y4ECj7zTBEX6I6m2vDyJB7vsthfsmjWbll5Nr+wpcEp2ILVYdp+N+BUhHLkH4C6pivdxpAZQMSpACPPI7Bs+2Fmr08aVnaYKSFC6eZAFogf2lQ3l1oUVBhJRO4OX++E3TNEHNmJ6FeHD4acFv
+        bd808+cluster8@wmf-bd808-mbp01.local]
+    uid: 3518
+  brion:
+    ensure: present
+    gid: 500
+    name: brion
+    realname: Brion Vibber
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPe5ARdfajt7cDlcK6Fn3uFf5d5hvFdefqdr3L4Q2qeojQYioEvgcbZfVXRzpoSuPPx1cl/tDZCdfYityJiZWaE3T+gDZqYh/zO4M/JkiRp0vfnHKQeRbW7ledlitPKi9ZoEGE0e8FX17V9DNxnSolI3wBrEOOHxmBnnqS2Q04bM1/MRuMH/jxkcOWEp/SG5TOJtlSqKMAOrui7vU0gycQ9Kn6bwB0csuRA2IUwAnn07oVlCoBLR4nDTzj+iXF9j3aB2nyuZE0huXJM4ys3oL5CSDVTDow42vLyH4jwMlugxsgC2QBwUuCPLGz0uTVOvdFG5PstXBEWJnr6lL/0D13
+        brion@Hawkeye.local]
+    uid: 500
+  bsitu:
+    ensure: present
+    gid: 500
+    name: bsitu
+    realname: Benny Situ
+    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBAPwC55vAiGT1i/GtaqbDjrDv7eBRL85Zzl08k1ywpxwaJrmgfWuZvm7yjfP77jnMFETlo3FNzVPXklX/W7XZOay4wGEmoJxGZ3Xuz4PLDf9MOCxPb7WbkfDaBn11H6llT+nIGER9cmR4GUElFC/omTs5OQXxm2f0pbk1USFYBkD/AAAAFQC+VpAVk5vUqjcjkur5OzNjkMPRAQAAAIBTx1epSxl9tg94Gu4UGeTrzzPOr8ga+CJX+KGi0AjPzpnhUhKuW4hJYhABwItltAvLAT8JL1+jq27++1XggLgAm9uX71zgrv3AUbxIMAMqnBNyub2mNidWzRWtjQ3S/HPeYjIViswGIudxxnA4rvZ/gJjfGdCAjjB1IW5rZuF0HgAAAIBiZffGKUU/TE04J0QjYuCrPQojyvHniicVFVUgRmZedL8b76lkTPgLwQr2hOH6+CqXF5/lvAtuF45+MLVPIKxCax7n6UzeOecIaFHBvfHWXb3ghIL+jf+csDp3rsrD12VxCyK/K5eNr/6xlQPlWoB41z465doAYqkY37K+2We23w==
+        bsitu@wikimedia.org]
+    uid: 2100
+  bsitu:
+    ensure: present
+    gid: 500
+    name: bsitu
+    realname: Benny Situ
+    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBAPwC55vAiGT1i/GtaqbDjrDv7eBRL85Zzl08k1ywpxwaJrmgfWuZvm7yjfP77jnMFETlo3FNzVPXklX/W7XZOay4wGEmoJxGZ3Xuz4PLDf9MOCxPb7WbkfDaBn11H6llT+nIGER9cmR4GUElFC/omTs5OQXxm2f0pbk1USFYBkD/AAAAFQC+VpAVk5vUqjcjkur5OzNjkMPRAQAAAIBTx1epSxl9tg94Gu4UGeTrzzPOr8ga+CJX+KGi0AjPzpnhUhKuW4hJYhABwItltAvLAT8JL1+jq27++1XggLgAm9uX71zgrv3AUbxIMAMqnBNyub2mNidWzRWtjQ3S/HPeYjIViswGIudxxnA4rvZ/gJjfGdCAjjB1IW5rZuF0HgAAAIBiZffGKUU/TE04J0QjYuCrPQojyvHniicVFVUgRmZedL8b76lkTPgLwQr2hOH6+CqXF5/lvAtuF45+MLVPIKxCax7n6UzeOecIaFHBvfHWXb3ghIL+jf+csDp3rsrD12VxCyK/K5eNr/6xlQPlWoB41z465doAYqkY37K+2We23w==
+        bsitu@wikimedia.org]
+    uid: 2100
   catrope:
     ensure: present
     gid: 500
@@ -180,6 +289,246 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNnm5p7ShbI9suKmhOzmYfYScifGDJ3oS9KtwlEtuuVXThsdms0pF5KrLsVnnZWGyLsOjAARYdvNmwipelXebpQm9nMNvBreHCGAmqKFW2UFi2yMnezhANUhvdtJL0j1jjkhh5liRsesvw1Xrv2GvgKnfCwGvUcYvrwcLNTTGSka2hAGfQRalgomSdrb0diTzqA6Ijm33BeiZlpmbgiQ6LzeZRMLrs+Nm+EtZIRLgb08DCZfebIoPH6hh1Hz38ljpkQm6menjpxbcrVvjBmXClwANPssSaTxNEprrZpeS9/2eB0un3G8aLmORohgJ15w1w2KZaFXokYxQ7/ky5kYID
         catrope@catrope-Lenovo-IdeaPad-U300s]
     uid: 546
+  cmcmahon:
+    ensure: present
+    gid: 500
+    name: cmcmahon
+    realname: Chris McMahon
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxI9s+xp5hVPgYCFoiA7fVZWHp+tpsk8zO+iv0xpoeC1HKu5plsyQ+IrJyZQ3AlXU8TdAregeCZ160scrVJcCLwaU+3JC9dgRKOVnvrOMieK3HFsNBAXgOpLTRqXwXi37OQElEw/+WmnUW6BPtE5laQXwiNZ9HmdKUnuSB7k469gtX8Zp67/NyypOJR4gEoBC5OU9xD99lkKhJMW2o/eDIX//vzjtInQVgVBpfSSp4iNjeB9Z1gx5E28Xc8y7DRe8ShyRL/wQkagZ+cexmo33JkoJ6+vwV3Md9JkKYFkj0WCUrLBfXRAM7zagcnY7vJyW3xu81+HVQxcQAONUxAAKB
+        cmcmahon@ubuntu]
+    uid: 2152
+  csteipp:
+    ensure: present
+    gid: 500
+    name: csteipp
+    realname: Chris Steipp
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDsUn5XTWrJ8ojk6O7kF7kdQS1RrKtjkaMk2QtsdYOOCPo3YbK+70Q3Dy6gVBNOhsRWHeCimzfH2Uv/pVb0wNkrwenmBeD7nQyNICudewEANcnt5YF2znlke3lsW6TGzKUzrXIncdhDh4LWjmpJR/+hnKyGz7uQKXm8xWw9LGk1PEpeHpt+0TH/bUWzWjpYXfbt5W4GbYPwnHo1Pn27pcGwqgsgb8whX9ufDjw5qyLPTVW3AqP4XPRXYDB5Ui7udQeuCk4Omou9CirtC36o4ih2NrZ4CsacHyIMJf09HZo6yLE9EeGM06SO7qYqjYwapKGv6csZGney84udKaCHcdm/
+        Chris Steipp]
+    uid: 2246
+  ebernhardson:
+    ensure: present
+    gid: 500
+    name: ebernhardson
+    realname: Erik Bernhardson
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDnafs6VPTCwrVEEqllEMpH6zhLreme1qGFuLxKD5uYQu2OJ01fhxICnswF7uuDrOSs5X9kTyj4zYjoGLHkEbucv3tBunEwYvzbrtRh+WxWkNjBNqhnUkM6T3IxOIpGlXwFxs6rD57i5ZtG2RPdRbOd+NYMjjkR/tELNSwuOfwi0vFeaumqhrbs5Q4XRqcdjPpMxE/BwqqAFA0SU/WeU5ewifF+FedAwYp5LRaeGmgWt0wuRnTjib8xxyyoH8ZJa79bYHK1CSWo4HU/EPsFdAgTWhrX59UQwOWTFOztQKU6zUc50bfh3cpv3wQ/4+VXFWG4J6XMdL4jLVxZwhCebYnf
+        ebernhardson@wikimedia.org]
+    uid: 3088
+  esanders:
+    ensure: present
+    gid: 500
+    name: esanders
+    realname: Ed Sanders
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPnesJV7Wrq1QxdtBPJbPturV/sVX5rUE3kL3n+hhYyxLcId95Abkvf/p1WC8Fulv99wS+lq7b+9Pw64mA/mnuE0xljoBvS/JXQEM9Gls/BTBffmomm84kidrmUxCeMHcRuFbL2aPc3lIm/6N7unB1VvOyAM5oY1I3Zk3XHHTOHmpqMFS4R7bWWrkTJZZ4dNZffhYqMQRQgiey1b+JD0/pIPy2PQwyECvAC/3Ms9QY1wc4O5k6cQMYhqHEJQ9/qruIRB7sTEhpXREwcJYTdXkhFU3yrmPw1KxpQqe5+44u4asR70AE7FevR7y1rR6W+kg7ityfXd/dzrpIYwsFhjKJ
+        ed@ESanders-LinuxBookPro]
+    uid: 2875
+  gilles:
+    ensure: present
+    gid: 500
+    name: gilles
+    realname: Gilles Dubuc
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMDCMiDMjp3hY+P3DBJ1D2/IxS0xMHpS5MpKgxd1rU7aOHByncrRWL4tJ2isyi8/Q5H6XH81eWBat295U+3hqTq7YDuRiNoyPQPvwgT7guJPS3z8AbrlosUSIBc0B4YnrJXKeSTYEvHqQTGeozGDn1XaP2/xjeQR9wpKPpa0Mq7S3CMv8BEhvJLDVmwEP46AvGMeeZ2IgxlbH2GAAcZrGi8bvlq0eFcB0I/q51k/kITAMiBrTXo9sJ7FyXXvPnwmScfzIZFqO33lktMaYs5q2w7sad2Wtpz2tR+hMNm9Xoj0znPgKiZ1yFfGoKN7U62FDIJq23IrIRRUbinI/F220p
+        kouiskas@Ta-Mere.local]
+    uid: 4319
+  gjg:
+    ensure: present
+    gid: 500
+    name: gjg
+    realname: Greg Grossmeier
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcwwxwZqCRMBQsMIutloeVS5Nx+nljUr914Yradb8YLeo2PbqLEjVKgC6+yKHe7binFNk3rlgiXhXOm2issytl7sWUZz8YpFqxp7fDqnfVVOTGTwMtAjBoZHugz9RaR1SVlz2dRk0N5qrovffz/Av3QQIS12jX3C/GCdqCMixgwi+ecYo2xA7WJyEGFnp+0Ah8hBIn2xabZAfHhZ8dF6VifEHsgp08Ot52sOZwb99+H0SjEWRwc9decwuPGNWX94BPvWcP6dQ2bzjqR3iRkwEIvKcgMvanYUXAvPb32382QCsW0r22HtvsUvA340ISlvcauRS1GGpyYmZYGSSfgHVH
+        greg@x200s]
+    uid: 2890
+  gwicke:
+    ensure: present
+    gid: 500
+    name: gwicke
+    realname: Gabriel Wicke
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSPEnznabK4A8LBxTt/z18gW9THN2QVmGuY+y6uvSsqM2cXrj0PCvN3+sDKqNrp7jvuu/3JRGl2UcYTT3uU2L+r4nYud7axhodwlCepEUZlVABu4n2BXaBAKb1vlAdOnGLZm88rviT08aJkmiQGlm4dV/u+kPVJIcN/1ewjynWVcH7suZtVD0I6GIvZUU8PthbktBFZ6lpC5b3TFv7IShY2/qmbVFXjrFrfDZ6fMecabx5OvpQK36teM3LD0DYfpE/o8JCsjEYmBNQAXvK4MBvyKnqPT9QL2lkVd7vLpfjtVPOFlaRRc6ku7nS2gRZSpGgE70pAmu4KxGrzQvhi7txECmVIcfvKG2474xwwTVLdqhqdEkhvdPPLRGCp5Ic3YY0w9DLx91rwLKh/7OdbxC5EKF+ZNaB4pnuq9vYuC6Vl89/g+Dw28OQyE6pEjltqybEA5T0sQPrNd5U9mEabRWhjX7hkXXDSmfRs0XZ6Yi6u7QZUO+0aqaoiHCaAygmyi94aiAXqxFaRu+2JceiTpRDOxeHU1KupbuIDPXK49zyi+QkfKNJ37GPqe5hRsw5cq0AA6+GchzpJr8p8XIstFv87eNB467NdQft8uVvMjL0fT6HZ9Gzkr/ThCZs34OnGDPLybkK3pwSuv8zRkggDK7yRB6bvDDYX4s7qoHOb1naLQ==
+        gabriel@tosh]
+    uid: 1239
+  halfak:
+    ensure: present
+    gid: 500
+    name: halfak
+    realname: Aaron Halfaker
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDI6xBPpUqjfZl0AkSgS4sMLqaLdaVIUzZdCmNvzw+TbITw6PWOtMAOnP5A8HOn7aqnSH0ZYYWN/AzMz+9zT6+5JvxOfY43pCmT6qJv3e6mtCkkdy79kCH+b8S9NtrhttxMt9iem2RP1sbJiXLfcinOHuezd2Q05BoY97Aoo8z2/tRRvkPnHA2QU3fxAMS/PBle1ZytN2XJtz565AS7vzrts0su/jTej1ikLNZtMITZIrgB4o9KVcF5FHsmTIBehVwOEQRNYc6AwK+GWDQ1ZDS9m07/VmSIAO8krFPJ8y1M/EvMSP/VR78ABXOYTNlgzTCSuLFjocFMARBOnpA5Nfg5
+        halfak@graphite2, ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUTJ/rlBnGfXU0Ybp1gjJNizb66gaRFPzq33ptdnCLSP8hWymFgpzmuNyUaBClWJwl9qxXIw0xZjHXyTcK7Dv8ajqatgeiY0ow1LoVfzFDtN3Y0dxFNKC5/bC6lk+VmBl7fmNk8+fx5Y2FF8LMPy+QceZU2CJOvJzEkjd1lJJTFnSSonRrMBzK2xhT1qG2PhlThWWhVklrEvO+wIdi9M2B+m4cjgzaLaK/UgeqhFWsTQd655tLb2trhNHj3I6Nn38l/b+TFKsYT1+x1QWt9IxrSgKcDc2oAj+HSrcHIaKIXLbMMDaFIzRpHGMxnSXpJvCDvSq9aKyfw9dsoqxuFLF9
+        halfak@halfak@tako-umh, ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjS8cth/18dmTr37h0A+K1g82iVqfrQ5c98iLrtl/ejvkMNDvVSo1Kyho6sXhwCx7HsF5hF6Y+fVB5FaxugI6o3CeAt8PQBeOjOWOdCZCUudywwnNWQgLH1XejaAxV95VRZTeuzhTLMymZRojOm2Kbb2f89C3CDCPohlOqVKMRsa7vMA6mgHgJtOXjqdrn+Toj/oe3+ZLvTpFsD8ROTsppKo+ie8AvRRzaCobgHF31OrihlAxQlovAPH/3eH67NRlmwwJhkuGAIra7+ZCfJzNR/9RVoc6mZgRANDXASTsBuI7ZdUQjgRIHbdd+VkXlzR+jLQy940ukLT1IK5hH9IZd
+        halfak@carbon]
+    uid: 2041
+  hashar:
+    ensure: present
+    gid: 500
+    name: hashar
+    realname: Antoine Musso
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAvt7LIRTvsztelZFaFB+3eovqapFo5Lur/SJoxcV+O5YxPAA6+BBXuhaORJIPgq022VcJAZagZ4CaOEDRVIMJnu3olP5DRwgjGbiLxtFaMglahp9aFUFDXQ8z7ChY3HE1YYPJVkSwchWBcELZEOoIm4423AleQb0ZOie24xH/l4M=
+        hashar@bihash, ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAzNhpIeuPMLolSk17uv9edHPmPHrxSNEAT/TofxgFyDrebbiExixcT0+riF5kB1BKlpyIIpiIHA5FNgQI6v40QOJ8YA94n1KIxp9hXGNPBgEaoTs212LljrfH3Yx4/6FPGhiFCC29N5oHwwav1RGi6+YwaoW4lSDH+x6YVI21xQE=
+        hashar@zwinger.wikimedia.org]
+    uid: 1010
+  hoo:
+    ensure: present
+    gid: 500
+    name: hoo
+    realname: Marius Hoch
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCcNLT7ND174wiCEzvGm3xVNyhn/PiBURvMD5SofUN2sY505IY2+X2tayZl+ASp3fqRxMXRJS3UcT3Pi3bI2i3RNjCJCryx4YL09w/KcuhsJjGgRIdV9o+ZLjD3V0+B0xt/igTQwxq3UepQzzZIbGGkRf3iJVRFqjmdW8iwg49MMG0hsmu6dTvf3lGLgm2pihbXYIDDTCOAFhpDjGkLGeygp9tymAnxByUDyRW5sclu0Q9ftkCKlRwj79gFP4f9UeroOXG2UOqB+E0nc/9HyX5lGbGU54Q35iwAczWf0taw4lGXwxZfBWwsai9eGzt+4JlPwf/s/8gA7KWcz3LS/qKja8/xhcOcUgr+B/Lv3LgwutgCMYmORDtEQgzXhc8IDABZp6kb7wSYzxEQ/c2JhzPub257+l3r1WPIZKvi6DKHznHE+4lHsD8G0zzW9ZRyrchn4KXFiUzSSaqdvoT6rb1zV5UANIrlz6ndPSgLkra/dwinru1WzwJDZtBWMaP9GVCOSWxWWFwS0PEqo9FOj/exVgEU2NiqzhKZ3Zi4dbJOB5S6h/oTXf0zHtULclXgnd+S8Z86oXjcJmh61LmOVkETEc/ydZnw5P9AOs1Xq7FTDQtCzZziahjRgZcsPaJz0m026tR3qEI3AVulQ2kcuj5QVx1ZO5ogAjeCxvHLV4FQWw==
+        hoch_m@marius-notebook]
+    uid: 2133
+  kaldari:
+    ensure: present
+    gid: 500
+    name: kaldari
+    realname: Ryan Kaldari
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAnmxqe0czLnD+blnxcDNRsOF2MDhydEMtUqWwHytxJeU84YmUDRuqxsEhKCNRSxiZvSf8RrPfiO+OiF/nF7ECdFTvtihDEfV89J7oemACClmrjOD+r41CNYCFhpI+fZIUzNuenf2h5cMx2Oqg57i+uV5PPSNX0U2VOU4HUgKl4ymjRW2QGpvtNmtQflwhXPD/9ih7VqlcO1DEbEPj5+jN1LvY86roaW8JDz9dvV+zmoe6yNcHn68W5bG13qOkfW5BCnVxuofIwN0REvINFAOliHF7gErXjgBqJiDr8O1xopc67+9bHLaqBKa7ji3aJSmrOcVvRlr2o73M1hC+NoJ2MQ==
+        kaldari@Kaldaris-MacBook-Pro.local]
+    uid: 1271
+  kartik:
+    ensure: present
+    gid: 500
+    name: kartik
+    realname: Kartik Mistry
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwavUwjlUmLv0CJGAvtUfjuLkuukC1tNUi0BmMzOnmbtqJ1oY/RJ40HySJuV3RxFNCvFuMztqatX6icE82G+nBNUa5dzPKThWjsq9+rEyaT2KeEkJTXxBqzrWikV6GaIDCOYMVcw+0DMVfdhd/OxgcetYDgMADKolkcJ1YjPRI/HLKBtWDOS3X/tkl4xjYTKuARGH3lBTrmDZQm3XXKmlvnL5GXAcFu9C+rWhAGYefrIgWCGcQeNZa20A9dcIYRzERJ93szFdeEpJqGvQ2niCOmJfa4eyuc9jAvY9Xjp9XMXkCzRBfmhq9h1qRS4EpfRlm5cDs/RL+VRD2lVMLApE9Q==
+        kartikm@olive]
+    uid: 3033
+  khorn:
+    ensure: present
+    gid: 500
+    name: khorn
+    realname: Katie Horn
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCo0sPfXSU/XsJzevSa8p9rODZabOwVbv2zx0htASdEB++TaMk5k7s3rTznNjTzD8mgia9h9+Dl/9lUBnLeiWeEPDLYO+KiITs4pZ+akL/4ilWl+CJ+59C8Wm0apsezQwaMEuPGzdx+3MVrqwhRdl7Fg9DOMYIz1n5O2Jrr2QnD9TamWFw+yYhmZBkl/Ci9rbU/T72A1cL+D2UVFk08B+FH1d48XDMoaUppLbV29/fc0Fz4f0gZkLYBKmOo+xpZ8SXkVieP443a0uGyfy2FSljnqF42dP21XO2tqaAtf9q2i2sq8fnB072C7oIYleVKLfLvxk6C7mYvzTN8A3m4RCLJ
+        khorn@wikimedia.org]
+    uid: 2049
+  krinkle:
+    ensure: present
+    gid: 500
+    name: krinkle
+    realname: Timo Tijhof
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDftk5lndsGU70RXMNRlwGOT2qr/SSBQZog07fs4F5wBL5Uevf0bZkwFokissYOO02cgYy2q6SyN64SppfnWXjOJtX7uv1gasfxmufNMx1c/JIl3m+DUodkGzXsECM66ykHSmaIjLvdpsqS5FJ7FzmkAOQsQVvnzK+Ltb7XyOd1zf6y90SB6wo03RHalLoAXEP0GmKPyv0Tzvad3wjSxS6FxTAFji7wtdSdwOxd4xOQ606h4H7J/JRHWJrmGX9yn8BLPDXXB/3a1lBasaZXEyhd+a2RXvnMgPdqfRSpQRD6gRsaMoj6UiKG1+RoUlttXaKb4COI8llG+Q3tVzWm6IJr
+        krinkle @ krinkle-mbp003]
+    uid: 2008
+  manybubbles:
+    ensure: present
+    gid: 500
+    name: manybubbles
+    realname: Nik Everett
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvG6VYTnUwHQyLYFUv0g1EUfp+OByn2agzc6Y3oSj9JhjYT2zbzpfquCB5aL8mLv4A1J8iKVwWHGeib44QY8uggX/66xdRrvEZ6QaM3GkVehDS4MpKl8m61rnVfITSxmPg0n83pBDhKfXPzE6vzchBA7ZhonccObwpcr4jvpUrvFcgWDrhjbC+YeJ1YKz5lm6IPW0yeY6Ni/0LRNbIUkv0Bj1epsFqBPORO9GoWc9ydV3rDLJJGJJ5YhOlbFSjc6nblUDMwBToxov+5icnT22wNdlHizGPUafluw6Wf790Bls3Znoje0qY5KgC7zOoQWWR+3k1kZVpuOIVQU6U3/uP
+        manybubbles@manybubbles-laptop]
+    uid: 3304
+  maxsem:
+    ensure: present
+    gid: 500
+    name: maxsem
+    realname: Max Semenik
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSDnaVfOv5P06dwt53avUjqt1qN6XNZWkmCmEdOxnmE/l2HgsGe2r8SMZ0e6145/Ypqq7eUkAvoL0TvBS6Z0pXEdeOn7UC2X3EVaUnrcOMt9+J6HwnRnNaSLSSaxFAsmDoQiNwnkgtiXqgpvD6BBZ1C+0gSFwQii4hlL6TXLUmc4kMGjvM/BPiugzGuUA0oAxpJGB+GDj2qgtRePrtK4kpiBWOZNVuzGQUPFu4u9y3/P2twN4Kacvd2HlbHIiccUC/s+Ym5QhXErfZKFFNRmx/8H6maWpriImPbyKAm3rcKdLK3pZoGE4NzLSmOVtXJTSA74w3qR8m3l5XPDq8+0Hn
+        maxsem@MacBook]
+    uid: 1220
+  mattflaschen:
+    ensure: present
+    gid: 500
+    name: mattflaschen
+    realname: Matthew Flaschen
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCermpz3BWUs5f0Cw4kD5+ngYPoE2/L+5Semq+6/LTboD2+mmXVF6vF0ODSt/Q9VVipzuiYVF0C+MQxMeSZDLKe/scBE3eIftLEQouHSiYq/YS19+ym4Q11rio3gmdqF4yS8Go4cg09FeSXmWy2F1H1apnWqZ9ISfZkeO/ScWQgcW9mY5GzbgZDEK+suXq8CjA3xU6HpPKcnWfRc+nG0ryLkO932Lh4L5Foev0buVEIIbVHcBZijsH2phdYkxAAytP4arRDdMxhpIHfaHdDYTu9OfJq8v+pAFigEj2jAnxCO2gtZRloEanzbTfgUgIhg9/vXcokaaDKtYZ3ezoMu5kJ
+        matthew@matthew-t520]
+    uid: 2662
+  marktraceur:
+    ensure: present
+    gid: 500
+    name: marktraceur
+    realname: Mark Holmquist
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIAim5ZuEvBLdg2XabmNI5OHHQgBzi7HJ/AHZj0AeZCdfFg/wwB1TiarcDXRITf2ZVVn2caTuayKeA5dzDWOz1ouZycJ9L4rr2cgs3pz0TJfyP63usqevnwYpHFiFlYHqyR37+JaUrWknHTcslAxeiL3zAHrRLjqI2H8zyajWJ7AWdBLMSKKan9EoFpZ4oKzTYr7A4fGqj70yXw2c4R2qJNuXxmG4CbeVL1bjyTd+a8OT1Ixx3zuMtVCHL1QZDeCtBaMpF62cKKkUM88btoKh1ESSmzQTWu7ZJP/LA1nnTukRt4l4kWv33zt+iAa5KffxCppx77fRSbOlkyk0dqjrj
+        administrator@WMF-ThinkPad-T420s]
+    uid: 2165
+  mhoover:
+    ensure: absent
+    gid: 500
+    name: mhoover
+    realname: Mike Hoover
+    ssh_keys: []
+    uid: 656
+  milimetric:
+    ensure: present
+    gid: 500
+    name: milimetric
+    realname: Dan Andreescu
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5BDWG/6bvsz87yKBkFf1ryKSbF2/CNzxTJn1Ux135/ALq6xcr5/+zS4KA6g7D/P80hfvTq9+oaPVVLVX+ANGomCv/kqvyClDvEnU8r4TEAPkZBrOWHAaexn/6oJkY7xoWbm+ElTPTDJfedWFYPKJx82dWt5CBtij5jpZ5CE2/Lt+i4gTH1G8n3Mo9gCnA8AlhMDTr18XssfqAS0aylmCwd24TJQJE3d/2NYdoytKfTebg87lJ0hbFJcxHVsS1/ivT5+in2wSfLXOIQiJPI/ykagoD9z2FSVOiMcdnrL44Xb373QaS7bEAxpjBJrCUQzeJfEvS4nbPpOpJfSN1+7Kp
+        dandreescu@wikimedia.org]
+    uid: 2543
+  mlitn:
+    ensure: present
+    gid: 500
+    name: mlitn
+    realname: Matthias Mullie
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDEq/VIh0GiXv6PIUq45Lbk9jgOmkH9FRN53VGMJmaxyJV8fRpUpdB1rmdqqe9gs5heSyObP9Ci5fEL+8PbXsEygK7g+ZhoRP+XDJDMe1yjMOMgjNaN4pM5FJnqkFgXFPmhOvRizrT3SWenUDlGBhxufekTUVsl/zOF0R2g5jTWbFWPoa4P0c2aXeJgJH3s65Zd+NoWolVrPG8Q1LT2l7xwJdRaS3t4Mt8iusPx1e+Fvdvd5LuO56/zDPQl37ocMeax0lVMbKPbKymhezxotD29sez3sljrHiB8W4Q/oNC9d5jEyCegMYV5Wh+eUkqMIAZ21knjGmWrkB5xGRhsrOVl
+        matthias@mullie.eu]
+    uid: 2269
+  mwalker:
+    ensure: present
+    gid: 500
+    name: mwalker
+    realname: Matt Walker
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDs1a/cRZMNw1DerltODiEFOWoCM1YJpPcdYDFnEIEvl9dz3X68nBnfHMfAWbQcOxD3f8tCTjrQ4i4M079kawGkm+jEc7priWm5Ww6TFeyA7B2jTuPqRHWfJ6AsPvXnrvJF/RMuG6NwdOluunipbb0sbHpPreBMYwu6KifvEnQNLYDp6Y0c31PYC22Nr7jZTcCkr7P72t0yhxpuDUV4p7vhEsTKAI59wHSdM17ViJRU4DwDIs43ZBKulCwjuiwJ47oc903c4iVeA37D2jV6nrNbao4huJRyrApfpTYm6RwCnKkOOCBNSB4MndZikSpYXGjNgUHWJxj7vquumje4AsGb
+        mwalker@mwalker-t420s]
+    uid: 2454
+  neilk:
+    ensure: absent
+    gid: 500
+    name: neilk
+    realname: Neil Kandalgaonkar
+    ssh_keys: []
+    uid: 560
+  nikerabbit:
+    ensure: present
+    gid: 500
+    name: nikerabbit
+    realname: "Niklas Laxstr\xF6m"
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEAz5I9ctvMwZwehidz3oen7Teoj3pWi6M7+q0PnjXCWy6JuqkIv5vFtmi8NvCDSTCEaAdNdr7WPQHpGTSqUkbWsz0sswPlODZLDM97x9fzC8z4YhckJt9nlhGCYYqUi9hbchxTOGX2LL18/9IeU7yA5nb8qd3PPzhzjzgJkSjTgMnU5Ni+OBY3WiNJ4FFwYyitokYPVIF9ZFKkUWwuM0bSiNUjbNIUb4834i/tJ3g2plxX+9+7d5b6wFSWu7+e8wgN4avaTC46B3zKcYmfDUA2ebiZuhwUU2NdsP/z0Q3rOZ3LxRmVkOJFbK9vgmkQtTzSkhG3ZEgUiHc2QCjgccjkv+KFayn26WujtbmZZoIELC7/46lgwWGEZtb0QUbo2rY8yHaeetoVuVzZGtCrr0tEBx0w2AH9BfOYsQOnM7eOVzM/VSdW+3sTrQMCvfpd8HZsWT7d2dSyM4hsvRaETwxxoXQEiZZfik0oH/EJSH/AogfvXu4MTUiCekNtPRazJPa9nI5M8CVtMiSUb3mY7OJ1OLfn4nWBvVTxp2sP3nTSwLEYpop2lMUwEwy/O4POXUuKDZQOEqKb5yRxuW7bOSGSDKZKHaZn5X25BwVOT/oNX/vqSRGxf8OWGVj6Ic2RNuGnYWDmEf1Rp4BVn8xATzOO8/o3yDnElw3M2gBkQ3hDWFM=
+        jadekukka]
+    uid: 1008
+  nimishg:
+    ensure: absent
+    gid: 500
+    name: nimishg
+    realname: Nimish Gautam
+    ssh_keys: []
+    uid: 549
+  phuedx:
+    ensure: present
+    gid: 500
+    name: phuedx
+    realname: Sam Smith
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9+TJfrksUVwMxt5Oj6NZxacj3UyKQNN+J48r7nF2SSVoH3hOLpXLB5Vep09X2bxyH+1AsqGQKGLW8a5DSTcEhLQ5Rc01GmaV461e51lxJoRRlDtCI6+sqBJRstZVWUrxYeAjAhaif0CWmepySMWytrFrLJuTQ08L+R4XH9uXxWfE+qY6KBjrrOGKS+98E13vYlxegxpctz729ZC0jDrikSNX47lu5us5OTMotaYPOu/lFYO8RUmqQnGNMjoKJjKQJclDZUp9fV3YWPW9XtJR6z1CACJIqng0501bWulMsjw/nWySoJLrh4H99KeLUVSiEWibupoTI6FKO2PC0vrzF
+        samsmith@wikimedia.org]
+    uid: 3926
+  reedy:
+    ensure: present
+    gid: 500
+    name: reedy
+    realname: Sam Reed
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3k6XjeMEmIHonzsmRBbHCkeVhxS6oObibs3PPP4DAO3WYXPIGBye+OpPtCpSZUuVp4t/GwnqIHCM0MrlVoFKeFcC3tHtVwmxhIsTp/RQRPjjKNdH60Iz6RlDTZ3TJDaYkYOiW7spdCONLzkYpOgkiph973aMNQ3D0vS87jht1apUl06bkxYeC+Bziq4DSBVNqpGKa+NqSYOvtS1kapwCYTtRm6YASb0YeMXzTUyfClgvq86h9XLsbx7klWgjHfKbfi/yheAm5EY6jxicnYaVAmy2gq2ERO9e2dVbpJihHmhPTpdRba5Eln0CoPkWrLVX0jyiAVB4biRtYoTtxGDPww==
+        reedy]
+    uid: 1226
+  rmoen:
+    ensure: present
+    gid: 500
+    name: rmoen
+    realname: Rob Moen
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDG/0pPRUoAhvHvgodmPYnqh6JZH3+QFlECg1rCbetr2sVx/0cpEPkqciEC3UlYm8iIRHLr1AyxXS2fq9ruB1oNnzzCzSHitzCP1XkjqqofkKVWSAUhnjhZyJ6VN61XDj7PvMJW1dPY6ueqKfjFR5/1icbG1yIqeUeJ89frPsOQiXxUAnebOojRK5dNkhVuX41jJfUBI5y0CaxxE2EqEQn+LlI6ZYDpORj5q8vP6YyvrDYS/708pJltUN+4rM/BKTSbJ2TTqc89klkY9AcLgGW/i6QMw+Qaxc22cx9TmpAAhUmvh8GX+yX1jylh6Nt4mky8L2cf6wW4ShAuDKLZoRFF
+        rmoen@WMF317]
+    uid: 2099
+  robla:
+    ensure: present
+    gid: 500
+    name: robla
+    realname: Rob Lanphier
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAu53QXIYXig1FTP4ve0MOMSXZXtMORld4y+f9cqmKA7OAStnT1VYw6F0eBSPJH0WUo541iMKcsigENytdn/kuSu8zmh1+nyHvhndB3LvP467IBo82LRBaZ6X0+0y5X+w1w56oX5H+t2zixWPHTQu0f9XQBPCsZzfV8DkVbJjwoHk9wcHI/lJSa7r5dI0xWPWYXXHM6BeAHbET1kcUAe3km1jWDsh2gBgKfwis7iIZx6ROSBOfHdYs9MU6miFq/9kk2/Z1vKOY6bj3adVe+wbd6JFF0UZdQzstIW3/15NfWJjJ8X6gx5U7wchtuPjnIyydUTU5u4UiS6uUS4e+MFsoOw==
+        robla@wikimedia.org]
+    uid: 1233
+  spage:
+    ensure: present
+    gid: 500
+    name: spage
+    realname: S Page
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQColhx7+65SMkm4j4iPu2WmHoeO3TpC5Iabvr5neBmqQbSQB0PE7AImy1p3+Sd5e8Seqdi0QIPyu2Jw3NqlOibn81snUExcRBaV8cKvN+c6oBJWVL/OILopKNS1MZynNPVOSjVzmpLNID5U3slEpopyS3aNMhI0BD93QAq0xE3/5kaFf19mkOEjJbaUcEevWTwI95NQKVovJ3y1R5v8e+GaFk86F+EJ4i99GZ+TzmN3VFMy5HfnjMOVGcR+WYyZ87Oa2CTdF1lbV6W9EwZD3eTbuDPZH1VW215Spw8MpFPQznJSkDLhwrg6GH14XuDOA9edf+npYsnYgnWUWF/k1syDlZgQvK3xp9or9Ld4fumAw7a2lQijbrP1SBn14H6tSBK4XGN5ciKPbfj9c9z3C0WVjXZsaQn1hmF1kWu4Kdnx7uYh3RlFnImpvGSRESHN/xuqhdF6o8/KiF7ByDion6ac5VKX40PplUFindsDiJ5GPnsbQWZ+0FbRcMCjE37t5P5NRR/Vfhr0X6fJHqlw1DXGciURVsCXF1E645ZqGZ2jC3PjgxgEVnGgSoaYWoWcX3vpwBIz5syglOgq7k1VDA3F0zitcIkem5uRFlwWgDo/y9DdIW4HNb9cVgMN2dZYQRlNnvKudLni3mjk+R8nie5C13lNHfgz7HMFwufrcxaMkQ==
+        spage@wikimedia.org]
+    uid: 2479
   ssastry:
     ensure: present
     gid: 500
@@ -204,3 +553,312 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/FKzYz14zzwGZBltEn/PKw90dTxGvvmMUK2no5qE9gHd+zGlYNoriQK0dRsiGyWEf0O0V0dEMhkM/LjSVMqxBK0nOoAY01sgJrAH2VTYgB6RnTqAG2gUWuPEfPMZ+5tJMVgr0hRkbrZQoEvBRAv45xfywXI9if0pBtbG710JrEbAryyLfU4tt6gRAPgaAZ5ch9ISnMXden2c+N+KmjC0IXwtN7DteaCbvsL4vQHZ1JyC2OjPbHaH/6gJwE/IRbZSxTUzkH9UL/+v9N/b4yFYFGKP/2yZgHtWQfOsDpClOUiooik0pK/w9oQA+kOcKdjm2oumss4FQwRswDYJhaKI/
         christian@quelltextlich.at]
     uid: 2153
+  tomasz:
+    ensure: present
+    gid: 500
+    name: tomasz
+    realname: Tomasz Finc
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOXgblcBarO8An5LNYfIBOjl+//EK6XhJu3agV8nQvmuaT2qnPtIiLl3W/X34bKHcRJbWsJRe7C3MqJqFWF6BWWtU9MZWj/s1TRtyA8Olgx4y7cXGXSUY/0woJnM6yIh6WitQEPX35iZyKaVapX5FCYlkkSbTEAbJwm/bFV5j2hOTyews7Cff1E0Zp0+E4hli39MvflkMOtllcZvFoLjve5AjETeabZEppvvSR8VPAK5bNMl7zo7fWcoExaNNlglLLRxP8y8Ne2PQlks5gTMrsh5e55BGVr/Nd6kD5OIB7s63InMbudYViWX66MjPgKMXXg8m7RKqkLB33nBifQrY5
+        tfinc@kumo]
+    uid: 1155
+  yurik:
+    ensure: present
+    gid: 500
+    name: yurik
+    realname: Yuri Astrakhan
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEA4nAjWgQOlzel8gYe/Hsl3DpT7KF7ygNVl7mZBG7285YUakrr2Hj8fSn0YfYX8b4u+FTywah7adefxTCuG6x9PkEzKAYSnaWXRxz3C2bZclkxXaKcVR+IJUG/9WyqwLxVj/UeATsuydSEljcwoMkTkV0m1p5hFNShTwslOiKA6VIwVQPufMjFaduUMXl3H1MzA0ymO/xzkMsOmsqXLgOIE6GOE1r3kzQHSD7tvb0o9dwtApUEhRiwGPnWxlDaGpWhzNQ9hHXGZG2XvfDvhVZ6HNJ/wR+x0WI1xX6b27fPbDPYkQDxOrts6G3F4WjDqmPLMYJGcsBXwueh99X2LaaDX6rWU1vq37Hj8Q8ROEdsL/RX30t8WdOj7YRGBEMbZliaGJNhTyOK2nFOBLKRcLSYVXtCvjFa9iTSqG8ZHdwho+vYRcs26hxMa1bWdS+Sg/YUJlfCxZk+zi5xryF/pog0IJdyqgNDqPau0w6DZKphlo8/eXcLJB6KkuaJ2xE52iqLokGGHu+EyYyOSrBSCOLsvbHvOwe9ESqDiJs1TAxjXqoOzNfWZKrfeoZb0AqycDwwbvM3oQB4/N590Jsb6frozsDCo+y08AYfjhM+lIFY2SdZHOmEzmNTDwJYf2MQOc7Mi/5wl+tMMnkXU0OPz9Y5ItDyfTwIsyESumVa3FYSE2s=
+        yastrakhan@wikimedia.org]
+    uid: 1011
+  jgonera:
+    ensure: present
+    gid: 500
+    name: jgonera
+    realname: Juliusz Gonera
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDT6QY2PcibrrwSCyrBI2TRSN9rwDCLt2uSVlpCRCAUVrHNdXEpLt1WgUotZx3HIWQdPrmpakg4+R8ltsrY01oe5jcjP44aAgj8isIjujjsqKwElKdAl4UxXUQ2udjaqzqr8Qe3sl13bkt/Kkt1yRTzenVek71k878f0TUBQtcTpPUOeRpcNAvHxs/sJMdylGBM3KfjDzD0Cps6NluWXbsrQJCHiMSIaAAYyYaLXBsGRvTYG+vL9nC7gvik+VFh+kyGAindGaCnjx7q+L67837UQloXGrJ/lKDRbaXW8xpepDewSBQ3ItVkXz+TNBWNVcIRo7SL3ZgREpW/WG4DyThj
+        WMF-work]
+    uid: 2688
+  tgr:
+    ensure: present
+    gid: 500
+    name: tgr
+    realname: Gergo Tisza
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpZLnfaAbbxvapFDFwIg2kYLn+6Xk8IvB9WXfY5TU+tgakaTynli0WgZYwNVY/cFYnXuBL+QoQZEgj3RUQ6an2URygck4Y88WcHT+9WzjZXhPWBxysfeClbjyjhNFnb8qfWep9xWfIDZp0r+K/hgKF9rAUSRcCUVzF6GRVZ0F52W9fTNxW5kT5L8mrSG+t8vV0IQT1P8IL43I3yiXJJhaAm4nnZJOALBl9rKLJD4wFPKp0P0yJ9tZgTEIzubDusW9cjfP/2niiCVItUyAqlU815AoFiyx7GkT0hWB6FxLHVA4ch06+zI2f2vUJR2w9P9jjYjbophu/fT/r7ov0PKnH
+        gtisza@wikimedia.org]
+    uid: 2355
+  avar:
+    ensure: present
+    gid: 500
+    name: avar
+    realname: Avar
+    ssh_keys: []
+    uid: 534
+  cscott:
+    ensure: present
+    gid: 500
+    name: cscott
+    realname: C. Scott Ananian
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwkZUO+LKFVZwpsBS32b9AxTxW3N8kxbIc7Fo526Eorz+x85KmoivftU48OiC7+3SzLH7Vwxvu/VSu4i6eEKZps3WeC9ixhHexuqoTsqJ0FajaAf1LVKUbkSR+tpfq3+eFYqw10AoKO2m0NC4U2DPFtDsGgyWgDZI/of7HDdVB/CCcuvPyQY1Jv1vjOcpxZszWWVvrCeXIhu91wfEJ2LxcgfIIPCFIZQBJpcW51qBMbB/WDqwO4ormFvphfNiShNvB27g1UufWivXlgePXZf9kEHM05wqTlMjyUMM7ZG+roH2240ViwF8TwzK2uHanp5Vgi1U+kqk0Kx3Dxw2bxPvV
+        cananian@skiffserv]
+    uid: 2880
+  daniel:
+    ensure: present
+    gid: 500
+    name: daniel
+    realname: Daniel Kinzler
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAuH1eNAxPgzMG0GoCZBtNx/eTnneQRT0Z/IZvbj0uQusaNlSG7MlFrUEI/HWCwIcWZlAdMBCvp2Ywc7+flvgH+JuBzbjvXDhhkC9o0/9wxKEwGRnP8RDnNBlaouzk/ROP4m8L2FZahAahFzoqDqYxzBl7bQ/iw+N811rAo+R0AGU=
+        daniel.kinzler@wikimedia.de]
+    uid: 545
+  dartar:
+    ensure: present
+    gid: 500
+    name: dartar
+    realname: Dario Tarborelli
+    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBALJJr2K8ifFwcRrJglPqJLClim5DL6zuGFST2rE4+PAEq5AuONZVznVgmBj9ve06h+86NjFy4WBaa6ncVXMblbAwlfEEIl1NxrNFXA9s5+Y/qtlnTqH4VylLiz1Fafqjt+YsTi5oUXJ9mR413PvANQ6hykwPEaAiUzHleTcsXXJZAAAAFQCbAsJaAgW2tf36oCgp4ysZ4FWHIQAAAIAQ0v4ATMrm9mfCe06tyQW/JJKiEVAjrpA9LujBx9HJIR+z55Ofa7ogmaFqRJcPZw6u9U4CnO6ch0iKJvhKo84TVIZnQ7wj+H6AfrXOYAKWUDqCpqswhMt8qOKekkTzZ2TPDoGdOuERzOXHqhcN2b2MUw3RyIKmvwP/h92SBWrVywAAAIAKN7Oyuu9a9cADbY1u62f1Lefxjbi7HJdxUrduI/ewUWjW9KIjQCPOuWBYLF7VtES+agvuo3A+OCHAJFluZp46L2Uv0UsdBxrOUeVu1xVP9iziUBjKqU8Sw3gWWu1Nl1qEQBCP9gTTrdMekgrmPCm4NHMYIItsbVZ/jrsret234w==
+        dartar]
+    uid: 2117
+  diederik:
+    ensure: present
+    gid: 500
+    name: diederik
+    realname: Diederik van Liere
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEAtpE5YKnKPgHmFG5a8x/1lfgRUIFhv8Vug/57XCMeuQMG8NNUuQAno1OWYT1ukla7DO/3KF+iWAkyLlUq3z+rO9WB8/BuxLOsNBd0dBF44yoVsjKkTCdkuhh/3a47uIGAKhGG5Cj+c1ggAnKGLMgfoaF2H5vifhSp0hJbRGMXxzC+OoVq0X34GnkEZK7YZAg2oYVOyLRbOYNDlXLdIUoQ0579/T8/ey8mZzbxuONZy7UuRiFxwOB3O88s5SBhGwKHR/3iJ63PE5KZ+OCBg6nTPM+4rYfQHIy8lwvna2OAgweoqQRmn1NFpZisqhWcAAABKTyJ6MYQu1J/6SdGI4QehWEinsPud/ZJ7EbrAWotLTnDaeQnPwdQnSNVTTm6FWKjkKAbzcIRpWqw32L5fMU/hwmJ9K2GQSYHxdiGIdlgXsI+Pel4dyhtbl/UT3Zj+BWg71rGF4SY7lHCfAm+3FbbBa4wHSQExa6k6cFUAv2mPnUuBeLKBPZnZc4kRBehiVV16ddiyYgDwhjO3s1CLcPLz4napVDviMj4QSC1Em1NsqKPNIwITC9rqFuxhjoT9Gz7FpA4OWkQaqECkO/L2NjP6vTlxfpof3tD9+aagCfI11JNNG06oFMjc+GhvObQmUA1ZtV4xNhYhFJDhvSmxNwF8Bux2dpPwaaemBZtgfUEszs=
+        diederik@Diederik-Van-Lieres-MacBook-Pro.local]
+    uid: 1293
+  erik:
+    ensure: present
+    gid: 500
+    name: erik
+    realname: Erik Moeller
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYiVifze8jetMrDIeZd8NRMKYofzT8fval1kdjAE2/3lAPpewZw8UxCM8Voz7jlJ2/NnGntNt99uGEp+6Z6VmUu15NUyeWSTdfe6BEQtLqtWaZ2qqdhoIS1bwdOEwZhSPGrP2Hp5LE0WRhAaCtVXQsCsKEFLwBjyXHQi3d1tR+qxFouKm2Yhq4atFksGfaJGCcUZ9k3qHJPheOM/0lIaOMm8cBkfacDFb7cZPHoNx8JrUcmKTHeqV8mYeIQQ4lfbwFSYnVy6F43psXWLIOYoHXmneu1840Of8Nxqd02ExEqZKBpwTZa/qPiLnVbexuPYzD3RcUE3g0NtL1smYZo6pr
+        erik@deep_thought]
+    uid: 503
+  ezachte:
+    ensure: present
+    gid: 500
+    name: ezachte
+    realname: Erik Zachte
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEA30NTewvOFOErJeFtgi+Bpf52+aGI3fmQtOgmsmBIIdnMXdJAdduKZU95OIvsCVCpGKdtT602Twp3R4tOoe001ObTDpF14i28zwYcXgk1VD+ErPpOqcO1S2Ojs1qAaOOGEMCo/yDYkfgT7qLiplX3q9JdVDLkSlVvm+NiWSmzqnU=
+        rsa-key-20040727]
+    uid: 523
+  jamesur:
+    ensure: present
+    gid: 500
+    name: jamesur
+    realname: James Alexander
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+bZ1KKVo3jL93NYN/9++YVvbJobz5onNLMhQz37Ec8UZnb+m22R16JN0Fl++HfHy19RkI2H9Ex1vg5mqQHD+8BGpbRfl5VEJSmXB1zcbr+yJgk/b3G51EDCulJuuqQpcieI2Z4D8ds4q8NVl3cI3kH3hbjrIT4bojWz+GB0WzG2aNdkgwMUZynvLjQb+VrxcTd6fnWQsjEIVdtXXsp1croF3+lDPwrC3DFq0svPsDLu8jaFPM45VQ5VdxVZNYBGBAy+IzMeLCnLph/lBW0vS9jhAR+r0QYzzNHOiEnOISnoiw8ECtwOTAQjTaGdkv3enFme9/KXbdk6YWByapygrL
+        jalexander@wikimedia.org2]
+    uid: 2054
+  jdlrobson:
+    ensure: present
+    gid: 500
+    name: jdlrobson
+    realname: Jon Robson
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD0Dxmydx5Ep7f892alwpB7YZ2684vWPBfRFubxwGjaG9gazYImKpAm2yeuCmB5lUcFqhLoVzqJfp3yx1GMK6XHPqCqYZ4FaJ2huAURDLYen/9/o1D+uZh4/033nbWBKbUoMPPLR/5dkCw1z1RKAecais0AtAcxhX9sZvoPf9Pu7DfAVgub/4AdpBYzKO3uwIwIdrxI2QyBKCHTG6yGG6D3lh5AGSrga3rmss2JhIp/TpdYrrzsAAaDsnaeu3q6OzE5OwGJzkdoZAcDT5rDsCXUUAwx3WyZtPNJzXaFpX6tvw6IK9cNCcy+oaIFRsz9XNHLvbke0MN0ctyZo2QQ4wh
+        jdlrobson@gmail.com]
+    uid: 2155
+  khorn:
+    ensure: present
+    gid: 500
+    name: khorn
+    realname: Katie Horn
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCo0sPfXSU/XsJzevSa8p9rODZabOwVbv2zx0htASdEB++TaMk5k7s3rTznNjTzD8mgia9h9+Dl/9lUBnLeiWeEPDLYO+KiITs4pZ+akL/4ilWl+CJ+59C8Wm0apsezQwaMEuPGzdx+3MVrqwhRdl7Fg9DOMYIz1n5O2Jrr2QnD9TamWFw+yYhmZBkl/Ci9rbU/T72A1cL+D2UVFk08B+FH1d48XDMoaUppLbV29/fc0Fz4f0gZkLYBKmOo+xpZ8SXkVieP443a0uGyfy2FSljnqF42dP21XO2tqaAtf9q2i2sq8fnB072C7oIYleVKLfLvxk6C7mYvzTN8A3m4RCLJ
+        khorn@wikimedia.org]
+    uid: 2049
+  rainman:
+    ensure: present
+    gid: 500
+    name: rainman
+    realname: Robert Stojnic
+    ssh_keys: []
+    uid: 538
+  tparscal:
+    ensure: present
+    gid: 500
+    name: tparscal
+    realname: Trevor Parscal
+    ssh_keys: []
+    uid: 541
+  tnegrin:
+    ensure: present
+    gid: 500
+    name: tnegrin
+    realname: Toby Negrin
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDzsPbsUjMIWw5KMJQMlkjEHnlrknUJju/74vs47iVb1lW3oAgULPxww+MX3cswFx3zYY8vw6K6fLbTaUKnEGAnW7JX2+Lo5nDfov3D+Lbb4jn6HfutvFWWrvMblUmd4FCiCsYsCXFj7E5WSzNmIgIWHzbxSSeCUPiUiG9enyEEpJJj5GvtrBZbdcoTpfhJuwGpAb2PrSQOCfuqE4izwN9ZfWruVhFbv8JvKu1shrG2DtXro2HmIVUwwHVZ8YMoMOjBtQo7Ioe2bjNWM1Ev9lvamcToJHe5FsauMcxiNmf2NXolDO+9VaoCQak1w06lvEUMegsFb8XbssFbA3uF/pfT
+        tnegrin@Administrators-MacBook-Air.local]
+    uid: 3558
+  ironholds:
+    ensure: present
+    gid: 500
+    name: ironholds
+    realname: Oliver Keyes
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIBqzD79g6nyNeJwvBGQdhC2mILwhaoJ9yaf/ysk9LOzrfjIvo3zSpWwr3JT/qLh9/5cDGNOFqXPlbUL4V0lyMlKhDRTrHtsJJLoMUrmvsUo5aLG0Aum5TJ25jJ3v/av5wSGX5tOtQJgemPh0K4pD5iR3PSGUcFEHUOdhFwdrWT38Q==
+        okeyes@wikimedia.org, ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0D2VQbDTHgWoH5NM/QpLjpm0JfxXobf1CjRJemla/Vik/SPwbaJntnL28C0yFiATX62tea3vnuOQk5ZHTK40199qMZhvEU2rGgONZFKTdPzk1uDMyuXgV6j8z22Xkxacr9kGozgQgb+ibGYuaho+KGW/Ed926PNWHDAsYBLzgS4gqNKLW+Jyt5Rh5ZgxsKvjHfopa37RifPznW0m92evRmsG5j++tYZublWcLs18ZGeqelsP3iyy6PS5K0zAlfsiTH+Q8htotUAr33tpmKH+DGw5fNXTKFvbZ9YIKOH2l///3hIVhVRvg1I4BhO1IHAHKr0RISuxEdQ3QiujrXvI3Ss8OvhBn1eKervysObbJuuUyFYel7IGIu75vVpYbzlwlQSfd4p42PWR5a5lFC72BI65k1VN2dDdXanJor6keU7562smwh2/9yAL12igmRLgTZ9DOvuHNc9qNezJXP0JY7Cye5ByLgopiD7cqYg9Rw1avcEbH9uEJgD3d/lT4KG/QpE+ejUMm8N5LH9PSxc6h9ywtliNXrnqWwej/9CBp4KoXQDV9hB0F2pYppn9p1oqhjQPzb+w8G3F0Liaikvw30+cWCknQXpfPQNvKg3Ejb66crkLc5br6GfDhnFl4CagMRIsaxxyKLQFko3egYPszu7dgdTfJcDFJkd1j20z+KQ==
+        ironholds@spektor]
+    uid: 5004
+  nuria:
+    ensure: present
+    gid: 500
+    name: nuria
+    realname: Nuria Ruiz
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIUCvA8K9rgp4n0hCJxbFt66CSbo9JhkSvQwlMj4+mxj9Mypf5/TLoRVPNVEwF4htjKmMdtaXDzGDTJUJPh9SPWqi1wP0YGydxv7z8BAIgaRliCHycviGE3nHjcxkiG+U2zxBL7Bc/Jy7d5Ky2qC/5Nu7jhBRF+kq3haZ0zx0T0cSmTvvUDfKt27uuLWxBA8Z4z2kNYVCpVL4pvlGPkqhZO75wPIUsCAlPH3Tq+Cq8FIc7BoZgjFQ+g6okpUF2PZY4eVoMR2MS8WIwQlOXwe+AMh+JEgq7oH//LN03IDX7YJQCNbmJ6MR0YdB1TOQHF/RKFImGBdDEC0vx6/QeIVOr
+        nuria@wikimedia.org-production]
+    uid: 4193
+  csalvia:
+    ensure: present
+    gid: 500
+    name: csalvia
+    realname: Charles Salvia
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjGSS/3k++mudvR5wrGYhLPYa/RQbtURNRhgjYA7lx9dPg6lKilQliaOMhKOxlwKDRCzNZNSz5CGG9Ype6dFrZf/c1nxF6D3YwD07eOITIy85qD7nGmFKTG2+olbwbvl0liC85AQv1Xi6C4QxL2za/t3iXb10XA7EJ0GXYKLp2nfFQ4FkR5+teFqgKpH+gd9SswiefW97HcTvuURc4n4YIC+WZJhD5majNV9Ben5QJe/qz+GnAfGSsKxMWlRRnevx7VP3KfFy9+6Lzj4Gspq+V+34UTlvY6VK4cL37UG/53dfBLgpMVgWQ0G7sooHw2xj//7fVMpAd+ipMQzDabEJ/
+        charles@hailoo.com]
+    uid: 4415
+  leila:
+    ensure: present
+    gid: 500
+    name: leila
+    realname: Leila Zia
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDrQIRAiH2afKoaaIW2K6loEk1CoOD1IKCLMWcfAky+CwqsCQWepiQxlQOZKez+Y3D0hE/jVA8Rv4jktx5SIqOZbkYQXF1s54jp2ULqVujofqjRH8qnUa+b3s7ywCQILGR8gV1X5cHcXztonwKhrEGqjlw3kk1NeOkI0/akRbTdxGjL5QbhJKg9T3bkkBkfwBupVvH8nxzS1twa/1lGLv0GUF220gEo4c8yUhT9EFWwzJlpcmKBo7m6cXrhXeCVoipKlfq3NMupTT1AiYh4Dcdnk+VxWNkmkbOU7CN9dvwXT0gK0OjznntqNC2nadikJXe8tAOPL953S/9br2Q/OGN
+        leila@starfruit-2]
+    uid: 3963
+  sahar:
+    ensure: absent
+    gid: 500
+    name: sahar
+    realname: Sahar Massachi
+    ssh_keys: []
+    uid: 632
+  santhosh:
+    ensure: present
+    gid: 500
+    name: santhosh
+    realname: Santhosh Thottingal
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArK3LPgIbkKgXNG0l5g6vRND236f3Bm6h9kiweycy4l+J14B1hY0o1baG8FNxgSpRxhZ1xeqdZceSii5fDfNEx4SnUEImCruH3PedumYb5pn5FIlZHEHvMOmjVobkSqES+ZZ5JrYLk8Xc4+elDULF80ERAx/8k6hwMHPJiYJwv26652GyE1nqmBj5KRMxmrpnGenirjLl8fnfRgFX3EqTliGTKqZ0B7vBVLNC3kM++EwFhLpwfQaB6/Jt6fdgksyIx6vB2f3mPQOWKetHw8Iu4VeAYNgt/KzXzvWNnS9Z9Uw8Ushn21BX2Oe7h4iICly8RDsQbVoT2PKmqLpNVAcOZQ==
+        santhosh@thottingal]
+    uid: 2024
+  amire80:
+    ensure: present
+    gid: 500
+    name: amire80
+    realname: Amir Aharoni
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7njjWSs4MH87cSwBb7IreKEaftiWemChkpeI4bPODhFmziTwvv1PPpsdGHbew5OM/8Oj9YlKSpiHG2tRaOK3kObolwKXX9vC7cFa9wQ6UU2ZN9RZNb73H8ZmFNwEzIqAKoFuF2V7d1x68Oxf2fQXzCHzhG3Zx3qEowRkQY+8MFpSHlDfO7ZcYr01W2pD92xyH6HVt4fr1mFOpqRSp0aMR5mifgC2ugf6kFkWkNEoYHuTsyK3qWaLjnd9FfegEX6wEhS4RwPWg1gqUY+1wJcKnSqUBV04swqhGOz6YzM/HTekboC0kJtMj8D35lepak9Z9I4MHTQpeBxnqaUq9c2cB
+        amire80@theodor]
+    uid: 2076
+  legoktm:
+    ensure: present
+    gid: 500
+    name: legoktm
+    realname: Kunal Mehta
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC17bogEBqaICwvnLi3RHl89/qqmliaQLkKMsMEubghU7Y0ntnRA5C1edkzzXT6fdGCRsubhflfSogSZLErSp0x9gR6YmPGYKn1OGbLK/FIpEdcbNd/zGBBF1U/9KSkJLgNKACXDRfMcqyMpnAaGDcUDdUZaRJ7nOJ703VH5pp1ommdv3acRWTPQ9hF1WUwlXPAD2VjIqJKrVPVMqVafcbPNO9FVyV94dOKURUPRmIPVxGWruLB2Dp+a2sZqh5KBR1PkV5wpBRev0IBOAFGE3aG9fAB+Xbj7bppTd5ov8EILU8xw0Xj9eFxiSuBWZ4b+rWGzKBj6OPm9TNg+pSGZr55
+        legoktm@wikimedia.org]
+    uid: 2552
+  howief:
+    ensure: present
+    gid: 500
+    name: howief
+    realname: Howie Fung
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6xDAibCed4gMnNdknhU3v+f/82vyi+UcUL8fgsLqs9ADyVP5tjB86kKS5HV1RbA7A7RbE+DBJY/Y/hpjmtrnoYjxAXG1u75PMYiiEO5cNoXu45HBqKKnlEeqOTDhKkN65WtSeBzBQu092vXpMyTMMfKrtp0cnLxZz3Z9nNCmYv8pETaDEVVnJqAgfxn3XORowtiYgBCjskDV0oqUbqXwnxHeua1a2OLQk78QySWxJhFN+lvbqtnH8RWIH/YZJolrGHaLS1PEAhsc8rS1giJVcXsSccGbrMNAoCHNDJOXWNjjLAeHomX55vqkxxjmoiuEy3B0ykUmFO4objzNibUa9
+        howiefung@Macintosh.local]
+    uid: 611
+  jforrester:
+    ensure: present
+    gid: 500
+    name: jforrester
+    realname: James D. Forrester
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsgEkgi7ceiRLCeBABExyA1qiFS7t0Lxs+vQndqRTukAooT16araiKSudavjr78qUAXeerSvuNm2dlQR2Bv6DZLumwPi2mFZA52LhlCm5Bj8GKSpwc9lVVWrrtjwCb8Qv+cZXquhvxMj3L0prfeMbXzkpbOBVK8J5bVIRSewVBsammz5nzd6myqeL0Z1BXiX6ihKeIjSyyiy6REWuIO5cBt3IJn6o/9IKei+Fm2UbXKegRFyOPPjXOiTItLG7iR0DI3PNT+FFAqjMXQKzQMbm8Lj0/hQIq8ViyA6xai6VDPtnFsmvKi+z8q6jZP/Omvf+5TKF5evttguYF9SrbmUrb
+        jforrester@wikimedia.org]
+    uid: 2417
+  jmorgan:
+    ensure: present
+    gid: 500
+    name: jmorgan
+    realname: Jonathan Morgan
+    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBANmrKxA/ZR4cjUHMn5FAHjN7cwq6fofqiDt4rgkJjORxYlTt2oBUKojbIMtJJsqzekzZMjU3tkvSOOZ/RUUH5zyZDf/pEprnqiHrrfA5qOl/+1xGSTDkHuGNgvVNdqe1NxyEimxc6eZHBuzmUiF7GX2pOUkgUlTeEhsWnhlv/6qLAAAAFQD7pdZrxClfQt0pV/qgmuHPepZf6wAAAIEAhQDoc0cOqXqwNuvkvOO4FnwlLdiAntMqfP7+GuBaTmXphLmMnynBHGu2+iTAMVs9QyejlBVZX7YshD6HY6c+HErOol36oa4e6y/RZpYDaBeHWq+8y0Wob6czYoY22ycDPEgLFZrYpKJlqiG69t4LuuB3SrKr9n7L+m/ktcJ8+pgAAACABI/xfnabsoHbsIwuynu7VwU4PGcMR6SqCYrQma9F9oJtA89P487HDPM42cAzff0xPzjN5NhBNAF4mibDz1KI+elW5ruYU2nEvtEmrL9xl5vGOjjeXM6ecOo4BbIxa1rUU64LCYUS+UvoNNxGu6Xs4oWIltti9+IXLTNHj4hSztI=
+        jmorgan@wikimedia.org]
+    uid: 2402
+  maryana:
+    ensure: present
+    gid: 500
+    name: maryana
+    realname: Maryana Pinchuk
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzAIOjRumh6RQKFOkab+4Yjw7Vr4fFyKoufw1h5grtjsq0ruuqgf7IiBlFA1eJ/DXVYax1YVGGJw5LhyZ1XABxXU9LaBfTb7zYC/XUM8rrAyu3N6MoycjY011yhesNa7s8PF0EkN+tOVBSG27cFoOATv6qM/vPEdc69gLb8HlVZyPB6TQuzJLJzRNBNe7UscIIw8eTwd9DDUuaTsColByNPzUaDdd8BS4Lr+vQlg0CzNGeTShkgcK3iRLYfKD0Cd+k3PN25pI3tYzybfrwDCi4WEQHHOO7TvWudkdywMu9GN3QylRT/E5JpYl37r9gS7mC5p5Hzi7II0ujDHFyfmIl
+        mpinchuk@wikimedia.org]
+    uid: 2515
+  msyed:
+    ensure: present
+    gid: 500
+    name: msyed
+    realname: Moiz Syed
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDKH+F3be/hR2mp2CxoUGRo+MvdP/hsEqRZc7R/cUOJM6/kWJubxT5upjLiSt6JU8sIsAzqD5qprhYjdWl+y9HwZLpN7Jb1iUwStsCpFH3fq2/fKFoDpMF/10Hn24VUtaoE5NJoUThshJPF8zfysmbZElaCT58FvJt3KHKcIeAjeg6y5IvoDZtgVpbTYn0BxD0UyQ+qy6UmlPja6/oh5h4gTZNpZoP3SSMf99MO1jDC05EBqSYT/FeeylRqMUGYL9lyJxGkRyc7RQ654y6kFb3YmYgYxzYPghE3fvHToOByxoygsyJWWB3lXO7Lw0CLW68OrU94t4qR9IXjNt8Xv3d
+        msyed@wikimedia.org]
+    uid: 4206
+  swalling:
+    ensure: present
+    gid: 500
+    name: swalling
+    realname: Steven Walling
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDmsa2kRWHxgjNbw51CafupOENyZF6aTC7uuWeaPQZpVAK7epFoyjdajAnIBq9q81rJ6JUWwVNyiwsC4VuNlpk29v5y7PmsbLvQU0nXHQ0VEDeorGfSdbYrv5I1/JhHQCFIPIGdsoiamTlnM6jqlRFSnUaTVtpLnQVJAkjnh6xZxZNBPhkplHgj31/XOTw0KUVnrVhWLdkyYzgT4452/EF1arPaPWgh6SczGTOkNkK0kUlzXYTST/jdTX7NiYJ+N6via64Ccro1hu6w+gTc0WdA9gg1TaaASzKpQtutddo0xMInzp3EIs6gsfoICRgbYiO5NuHluFd73UBQ2FTmaw6T
+        swalling@wikimedia.org]
+    uid: 2516
+  yuvipanda:
+    ensure: present
+    gid: 500
+    name: yuvipanda
+    realname: Yuvi Panda
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCV5f/HfkCTtWhZnZVwYs+jN6yy+Ru/eBGih+K6HvCI2DDXM0OOZVfVOVCDLPCvYIZD1m//ghibiM3jl5DFrLlAUkuyzuQsjv5AOfo28/kOcsN+o6T8wmQ27oJBbCy2YWqi5r8eypTvh/VTSt1BfEKwyg5KEtPqSKOy3G6dtjYOebSCM2EEGqfDcU/+9KKCsXTeTRgBU3pOHgymQ1zXbxrLazQGGAAUyp1e1T4chg3RtOU0cXe5i9+yQuP8ZlPApLG9/7xN/OIKX7EBrSQn6J2BZMSOw2Uwe38ROjCbFljt+mQF01p4QLZQ2Vm4UjdZiY+ZsMULeDntkqgjalmOvWCj
+        yuvipanda@wikimedia.org, ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrR80D68OpttnWGCY49ImSHPvzdCah1NckZv2U/y3Trmjp2EEeIohL8IG3iSjEnB1JirkPe1/0mHkbm0bfxqp17fHWy1g94Teb118woWt69A6pDJvnzp20faFRxOIl7UJjZ+n/Q4HSg7YToYW4hIM/I5KRKnEzi102aFHgV0cGGbxONPn0MiiEXkovlQ59gcNPWO/Wqe7gAcMIjoMvAcaumemUC5nXz8CIiFJLEfVVJ251c4q6C8TUJsxfbxkeN69AT/YqOiAO10eCbXgh0BNDactXy9oVx6u38E271KshW+ScJ671VuBQdTvv2DhrdFj2GsdzqlVYHQI9ny2JgtMX
+        ypanda@Yuvi-Panda.local]
+    uid: 2029
+  haithams:
+    ensure: present
+    gid: 500
+    name: haithams
+    realname: Haitham Shammaa
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxKhgMrYubz2ciXFpB6F8jRVl9ChDPjXF0kISApj9DGvISJHPSm9vKTNxylGGf22dTPjBoBn9l9UzetJagP0qHcG3BbdjIl3xSpnq6grQ/HOqqHUqrqSJDD+aYHLlgMy3P6GeoOlW2oclRBaLpwONNzW+yDL6lnBA1LkyZ1+tq/Y9PEhrRQTdgZvQ0U+oz2M0me0UIfOJa+R2xTnlwFr8qez4ZCSWJtLyPKcZhRDZLTayRta5nh13bJaeCClf1ssXK9duAVSIMZ4+AF4/zt8OD0EpQikzOed3sXBlN0bV7ZcxAyCxcSSmFJ5zmROCZ7eazNZd5jUw45y5gcSWWpdEL
+        hshammaa@wikimedia.org]
+    uid: 5001
+  mhurd:
+    ensure: present
+    gid: 500
+    name: mhurd
+    realname: Monte Hurd
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQBxj8NTkCNQZse19j6fqa7zFF3kETfX/59zjBeAu2sfbP4xOSzSlJjcIEmqDbruX2HGbX51amWOW5WGFtWw1T+zBnbaMXtTEm1U7EtEwGPF7wq5FAxCO8X1qtAXM0Rsz4+5ka6bcKBxD9mAqPeIDirfPjJR1L4BDY9H5aPOuVYj9lna8Ln6tmFdqk5W+czMfIZVR7fn71nL+3xllNpQY/8utviYo5+J5sihHZ9h4DeAGYOrZoAgf4LVBeKcmqtyaOTZar8ZOTCF9ttV7pZ2bNw5vCtQbN7WqyDgpYjXAPW+7T/JUMXdxRxGlpS9XyBzIqqBxytu3Kto45lhJgNTxp
+        mhurd@Monte-Hurds-WMF-MacBook-Air.local]
+    uid: 3010
+  dbrant:
+    ensure: present
+    gid: 500
+    name: dbrant
+    realname: Dmitry Brant
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA4PobkGWos52aZE41QWS7nrTam3UQ1Fbyt3PoNoUKHneK1wNpBL0EfRtKW4lAX61ntxOIPCFVRxMok8TXnDb3ZbVa++Fqn89ts6iqfWlH34MxGYS5pxvdrdjExeREQ7d70gsEOv9RZlb/qchuamxHqLsptQSpiy2miPWTkRuNsbAJrFw8K5GiLqr60sBrsLlVbsEdbbtaz4itvWYLN3qAKgk5O24AT8lGeTsTAVpfMDcLR+omRoLs/eRNGifVfDslwp9F/rpNCvpSan4wfvF5Tsuc/lw3Wgc36LOiyw5o7C0NSWZzwmYCNj5vkPPF7IwoK3DhYYjPOf5WNCtPvN9utQ==
+        dbrant@wikimedia.org]
+    uid: 4910
+  mglaser:
+    ensure: present
+    gid: 500
+    name: mglaser
+    realname: Markus Glaser
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAlpNpOKH1JJu3qBsBwYJFO2DVnE9tzkPuMTe7qZLTpnSDo5AtlzByJ9t+g82PA/NKp6XivRCaEeVxxDQkUOKKl3rg5DVFUkka5BwoymTIiXEpw8abnaiYrCNTN2SDCUKcS8wdbK9nCMvaueYEEvi3HZ3jZZRV9TunSXpJAlb6Y4U/EMmlxTb6xSvFr6AWWt8OgtVISZZuJh4CPTQEQwW0j71vOtAEzBAtSrRVZJS29KXiue19D5mtYpdjWnORtfarowPwkO3UmE1NiBPg4jCClSOcJ/yvr4GM9dTdeXVt4fTrojI9uW/YkHDwZ+2DLpGWj22TO8nvj8KiJMCFwoi4+Q==
+        hwsvn@84-16-252-165.local]
+    uid: 1229
+  mah:
+    ensure: present
+    gid: 500
+    name: mah
+    realname: Mark Hershberger
+    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAAEBAN3UPFafraObEOzTDiqAIfwETAlVNaZser+uksj62kO5Z7iz05h2MbWCM74UWQ8kvJGFTaSaqQQMDwBu6xfGiZyYaY9o7mr4OqwM2KrfDqPDbNqdItjawLmOHP3JH6C8CC9V2C8EZ1aky/oMmWB8fcWxo/JtCkl+XKFn4EFXi+Rs7vBn+OxNj0MTtRM+kW+zcJbfyx2Gy3G83nRtiX7s4m4KH9o8lvJdTHALGbGwNiXx3/3zVW88Fr3lCufExiD0j7UkNOdyl0ZQcNOdv28qgS0vnflBndfNjK5eEFHG/qOaXncoXVJHiUMaO+LlYDEpwxx9QQvszmMBxPHIXro2jEMAAAAVAN34B6rWiOhdtHLzHTngjemp+EONAAABAQC7qPUEL5GreTTmOvKwZRoZPUhU/NOO6vUPJB7bGNnqE/nchk00lKH4iRRarLiv3fFG+pOv++Xs9Teh2FQGcEHalGtbpPkS2hbV54i9GvQyIFnGXIDyjHPaKnnsMsUad4JyJ/E43OLZT7RNHRX9kuoL0P25qJGMGeCLX9ngl+gvj6g3322heV4B5bXCKUUVndhb8WBqNo6ym1GTgouWQNddANTeGxDIiM0PYYjIJwtXy+ITXLxsuvAB7Lha00NYuWJZZYovIS2L7PeBhH47x30giRe6LYQBpiw4W9H+7WpOLM/kVifP12smuxy9cItcKkhQ3oKe8zxDbPDV9XKhscibAAABAEI5U/xp3WPp7AwP+slys3HTvzRTcpKjKXDyMcW9dH6NjJg50DyJfne0PZX27mQNEyN2BQxuTfMLMa+aNN9OAMEfr7wZm18kTpMbMj2u1+YxPVxmUTwS540w4Rp/LV4RF4MuABdjjx9Qfja3MzbSyz4QUAztWu49kBQ1G0ksLEtceTnX9IvMldEuyp9KkHu4VJiwgpZgTKTht59PSVda+H7870U1PttDMvvkoVNBzIH6BDh7CPqrgj5R3jndv1N8H9rmX/jcQ1Y/7omzBLfDTNVQsRDNAsTu2w6PFgYRYylorzJEJZPubFpKPjALYqLjMsV58rR1uPrax69glVKtQiM=
+        mah@local]
+    uid: 1232
+  kleduc:
+    ensure: present
+    gid: 500
+    name: kleduc
+    realname: Kevin Leduc
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDEN1wN2xn6tRzHBb0VrVMBE+ZQRvDFLyj2fPQpN2KQucMnXj8GlLzFJzXmW5Dwh0bAfhXUxAKudfAPLuRtnBz+gl/d17vmDRwgtqHIaMWWW8s9RFW3NmVj6wEA+KKV2A8MlHLaFUTL5egS7cAicK2EbEC4ej6+o4ONj/+Qo9h6niX8U0tMohTB/Ml6H08Oe9NJ6e3L8d/e9Acxmspc1id9bN8ek/MGwFGMYTC7WQHq8TVUgq5xpA6vbkct3sNON8ebHmaTR3ryPpr2Vpxz6h088eifDwRJMD5eSqFvLzt6iEdZEwNfqlbigGTwbbAUNBDNPNhzTZStDpa+T3OgIiOH
+        kleduc@wikimedia.org]
+    uid: 4906
+  sumanah:
+    ensure: present
+    gid: 500
+    name: sumanah
+    realname: Sumana Harihareswara
+    ssh_keys: []
+    uid: 578
