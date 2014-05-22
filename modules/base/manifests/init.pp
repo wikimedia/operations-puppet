@@ -76,7 +76,8 @@ class base::puppet($server='puppet', $certname=undef) {
     $freshnessinterval = $interval * 60 * 6
 
     package { [ 'puppet', 'facter', 'coreutils' ]:
-        ensure => latest,
+        ensure  => latest,
+        require => Apt::Puppet['base']
     }
 
     if $::lsbdistid == 'Ubuntu' and (versioncmp($::lsbdistrelease, '10.04') == 0 or versioncmp($::lsbdistrelease, '8.04') == 0) {
