@@ -60,6 +60,11 @@ groups:
     description: users with root on cassandra hosts
     members: [gwicke, ssastry]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
+  elasticsearch-roots:
+    gid: 709
+    description: manage elasticsearch nodes
+    members: [manybubbles, demon]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
@@ -544,6 +549,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/FKzYz14zzwGZBltEn/PKw90dTxGvvmMUK2no5qE9gHd+zGlYNoriQK0dRsiGyWEf0O0V0dEMhkM/LjSVMqxBK0nOoAY01sgJrAH2VTYgB6RnTqAG2gUWuPEfPMZ+5tJMVgr0hRkbrZQoEvBRAv45xfywXI9if0pBtbG710JrEbAryyLfU4tt6gRAPgaAZ5ch9ISnMXden2c+N+KmjC0IXwtN7DteaCbvsL4vQHZ1JyC2OjPbHaH/6gJwE/IRbZSxTUzkH9UL/+v9N/b4yFYFGKP/2yZgHtWQfOsDpClOUiooik0pK/w9oQA+kOcKdjm2oumss4FQwRswDYJhaKI/
         christian@quelltextlich.at]
     uid: 2153
+<<<<<<< HEAD
   tomasz:
     ensure: present
     gid: 500
@@ -880,3 +886,13 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDTDmIgbftdeyF3wvKYbqbo9ktgS134XNt9LCfryDohCClsujY83seA0BE9FyO3cJDYwt75frBf3m0JZcI0x9NXwuK73pVp3PJuzUk7nQ77BP4hbSWGbDYNDjYdZp0IZSRBYs/A+y8NKhYiDoyAep+JrM9FvVVGEh+gB/BPizYNv1ru+IXXL7FcVRMc1AUTDf30zZhEyj+/MoYs4m5YMMOW7Qg5FEyVFAOeTg95HZHAtAOwMeycbrueqf9qlIm0kNC5NWHMthWklCY7R2gVRcbYdoYuTJYLSVBs3Vbhygk+M+KqeNEx5+GJX45PAWb+qfRHE5GbsNuo4RjhyTcSBOWt6mx8VyOiSHhHRA/AFDOHzR6VqlM4buHXGARFgbTM7ypv5eiXyIWhYhohyQHJg9IuyPvL3LtHcixgay+0aytot+/9Dp8JQ5OtuzRzYo8AwwfnihF4uQ96u2TKAkkINsVQpc1haERbR3JmQHEwujg/iAj8q9CoUYtvdINfMTg7n1IjzdPFXS6lCv8WeDnQPhcmivz9Psjyrs3nCGlHmox45bAD4Snonp0xQ0Nbd6Qw2DDQh7YTt5sutay00V0FYGVyGLJdlY/CEFHsauQJIILwzxw3PTEYWHEakFnGEaJWdWPMSlNJ1i1OGA1ulg1FJj4RAQyK/mlHMMFTiEE29of6HQ== tstarling@fenari
       - ssh-dss AAAAB3NzaC1kc3MAAACBAMa+T44Jat4ZubaZtanOlvq+7vj2Vn2vdOoAeafH3EBiXRc3FWxbL7MUInttfVMAQ+kKpMFrMfyZLCr+xfe2266zL9NuRN+0NK0unHnUJxKFg1xhlwM/miLuVIRPNYjx0hb5bnEqEdaHWhzDAac2Th8t4l3Bkx6irtLkEbG5X7rbAAAAFQDPx0nvVb7kjyGUtRpUSQgWqwO8BwAAAIB6ywz35DCRnX1wb6d+rjxR2bzzpI0EBe0XFs+EhWGcphAmc01gVOQj/cgM8X9lWzbzcepN/VLJLNYZDmhT7BCQx1bI+3mYMdHin5aTA1yLo0sNbTu5ECbe4cPywdWkRbUVXFFtxG9+xXd6l7TLUV0ZweFiV3hmeB+hKoisV0L/GQAAAIAF76e/8Nf7K67DM2DlYmjrfJYG0fC8WwbARKIldylkiVrADY8DFdc+dEXbUFlqvSMX0wyWS19zlC0XbkA+6EwIMfbEfukJoo84ygOhcdiqySn3JGxyQpuBQfiHK06oLxqNxpxs2R26/beqzkIzzIx8wXDN+UmjZUDuIVvYlWUWsA== home
     uid: 501
+=======
+  manybubbles:
+    ensure: present
+    gid: 500
+    name: manybubbles
+    realname:  Nik Everett
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvG6VYTnUwHQyLYFUv0g1EUfp+OByn2agzc6Y3oSj9JhjYT2zbzpfquCB5aL8mLv4A1J8iKVwWHGeib44QY8uggX/66xdRrvEZ6QaM3GkVehDS4MpKl8m61rnVfITSxmPg0n83pBDhKfXPzE6vzchBA7ZhonccObwpcr4jvpUrvFcgWDrhjbC+YeJ1YKz5lm6IPW0yeY6Ni/0LRNbIUkv0Bj1epsFqBPORO9GoWc9ydV3rDLJJGJJ5YhOlbFSjc6nblUDMwBToxov+5icnT22wNdlHizGPUafluw6Wf790Bls3Znoje0qY5KgC7zOoQWWR+3k1kZVpuOIVQU6U3/uP
+        manybubbles@manybubbles-laptop]
+    uid: 3304
+>>>>>>> 22a6892... admins: add manybubbels and elasticsearch group
