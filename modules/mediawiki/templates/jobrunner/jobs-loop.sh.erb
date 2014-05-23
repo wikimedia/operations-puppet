@@ -6,7 +6,7 @@
 # jobs-loop.sh -- Continuously process a MediaWiki jobqueue
 #
 # SYNOPSIS
-# jobs-loop.sh [-t timeout] [-v virtualmemory] [job_type]
+# jobs-loop.sh [-t timeout] [job_type]
 #
 # DESCRIPTION
 # jobs-loop.sh is an infinite "while loop" used to call MediaWiki runJobs.php
@@ -55,9 +55,6 @@ hpmaxtime=30
 # even picking of jobs from wikis, though more overhead is incurred.
 forkcount=1
 
-# default total memory limit (in kb) for this process and its sub-processes
-maxvirtualmemory=800000
-
 # default total memory limit for each runJobs.php process
 maxsubprocmemory=300M
 
@@ -71,17 +68,9 @@ do
 		t)
 			hpmaxtime=$OPTARG
 			;;
-		v)
-			maxvirtualmemory=$OPTARG
-			;;
 	esac
 done
 shift $(($OPTIND - 1))
-
-# Limit virtual memory
-if [ "$maxvirtualmemory" -gt 0 ]; then
-	ulimit -v $maxvirtualmemory
-fi
 
 # Function to also get rid of the child processes.
 # This function can be used as a SIGINT trap callback.
