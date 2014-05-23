@@ -1083,9 +1083,11 @@ node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
     include standard
-    include admins::roots
-    include admins::mortals
-    include admins::restricted
+
+     class { 'admin':
+        groups => ['deployment',
+                   'restricted'],
+    }
 
     class { 'role::logging::mediawiki':
         monitor       => false,
