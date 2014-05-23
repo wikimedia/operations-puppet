@@ -1168,6 +1168,7 @@ node 'gallium.wikimedia.org' {
 }
 
 node 'helium.eqiad.wmnet' {
+    include admin
     include standard
     include role::poolcounter
     include role::backup::director
@@ -1176,10 +1177,10 @@ node 'helium.eqiad.wmnet' {
 
 node 'holmium.wikimedia.org' {
 
+    include admin
     include base::firewall
 
     include standard
-    include admins::roots
     include misc::blogs::wikimedia
 }
 
@@ -1191,11 +1192,13 @@ node 'hooft.esams.wikimedia.org' {
         interface => 'eth0',
     }
 
+     class { 'admin':
+        groups => ['deployment',
+                   'restricted'],
+    }
+
     include standard
     include role::installserver::tftp-server
-    include admins::roots
-    include admins::mortals
-    include admins::restricted
 
     # TODO: 2013-12-13. rsync is an unpuppetized service on hooft. Ferms is
     # applied through role::installserver::tftp-server and policy is DROP.
@@ -1260,6 +1263,7 @@ node 'manutius.wikimedia.org' {
         'nas1001-b.eqiad.wmnet'
     ]
 
+    include admin
     include standard
     include webserver::apache
     include misc::torrus
@@ -1304,8 +1308,8 @@ node 'iron.wikimedia.org' {
         interface => 'eth0',
     }
 
+    include admin
     include standard
-    include admins::roots
     include misc::management::ipmi
     include role::access_new_install
 
