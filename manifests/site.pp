@@ -320,8 +320,8 @@ node 'bast4001.wikimedia.org' {
         interface => 'eth0',
     }
 
+    include admin
     include standard
-    include admins::roots
     include misc::management::ipmi
     include role::installserver::tftp-server
 
@@ -336,20 +336,20 @@ node 'bast4001.wikimedia.org' {
 }
 
 node 'beryllium.wikimedia.org' {
+    include admin
     include standard-noexim
 }
 
 node 'boron.wikimedia.org' {
+    include admin
     include standard-noexim
 }
 
 node 'calcium.wikimedia.org' {
     $cluster = 'misc'
 
+    include admin
     include standard
-    include groups::wikidev
-    include accounts::robh
-
 }
 
 node 'carbon.wikimedia.org' {
@@ -360,6 +360,7 @@ node 'carbon.wikimedia.org' {
         interface => 'eth0',
     }
 
+    include admin
     include standard
     include backup::client
     include role::installserver
@@ -370,6 +371,7 @@ node 'caesium.eqiad.wmnet' {
 
     class { 'base::firewall': }
 
+    include admin
     include standard
     include role::releases
 }
@@ -399,6 +401,7 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
+    include admin
     include standard
     include role::dns::recursor
 
