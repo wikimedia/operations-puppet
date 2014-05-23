@@ -1063,9 +1063,13 @@ node 'fenari.wikimedia.org' {
     include sudo::appserver
     include subversion::client
     include nfs::netapp::home
-    include admins::roots
-    include admins::mortals
-    include admins::restricted
+
+    class { 'admin':
+        groups => ['deployment',
+                   'restricted',
+                   'bastiononly'],
+    }
+
     include bastionhost
     include misc::noc-wikimedia
     include drac
