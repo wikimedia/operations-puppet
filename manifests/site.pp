@@ -2610,9 +2610,7 @@ node /^elastic10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
         $ganglia_aggregator = true
     }
 
-    class { 'admin':
-        groups => 'elasticsearch-roots',
-    }
+    class { 'admin': groups => ['elasticsearch-roots'] }
 
     include standard
     include role::elasticsearch::server
