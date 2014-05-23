@@ -139,7 +139,7 @@ function runJobsLoopService() {
 				processPipelineWaitForSlot "$pipelinesize"
 
 				morehpjobs=n
-				local res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$hptypes"`)
+				local res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$hptypes" 2>/dev/null`)
 				local db=${res[0]}
 				local type=${res[1]}
 
@@ -168,7 +168,7 @@ function runJobsLoopService() {
 				processPipelineWaitForSlot "$pipelinesize"
 
 				morelpjobs=n
-				local db=`php MWScript.php nextJobDB.php --wiki=aawiki`
+				local db=`php MWScript.php nextJobDB.php --wiki=aawiki 2>/dev/null`
 
 				if [ "$?" -ne "0" ]; then
 					echo "Could not determine the next wiki."
