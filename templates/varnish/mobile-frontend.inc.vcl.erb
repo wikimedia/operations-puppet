@@ -8,7 +8,43 @@ sub filter_noise {
 		error 403 "Noise";
 	}
 
+	/* The following are roughly in highest to lower order */
+
 	if (req.http.referer && req.http.referer ~ "^http://www\.keeprefreshing\.com/") {
+		error 403 "Noise";
+	}
+
+	if (req.http.referer && req.http.referer ~ "^http://tuneshub\.blogspot\.com/") {
+		error 403 "Noise";
+	}
+
+	if (req.http.referer && req.http.referer ~ "^http://itunes24x7\.blogspot\.com/") {
+		error 403 "Noise";
+	}
+
+	if (req.http.referer && req.http.referer ~ "^http://autoreload\.net/") {
+		error 403 "Noise";
+	}
+
+	/* Forged UAs on zerodot */
+	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
+		error 403 "Noise";
+	}
+
+	if (req.http.referer && req.http.referer ~ "^http://www\.refreshthis\.com") {
+		error 403 "Noise";
+	}
+
+	if (req.http.referer && req.http.referer ~ "^http://www\.refresh-page\.com") {
+		error 403 "Noise";
+	}
+
+	if (req.http.referer && req.http.referer ~ "^http://www\.urlreload\.com/") {
+		error 403 "Noise";
+	}
+
+	/* this one is mostly covered with forged Facebookbot and forged Googlebot above */
+	if (req.http.referer && req.http.referer ~ "^http://www\.lazywebtools\.co\.uk/") {
 		error 403 "Noise";
 	}
 }
