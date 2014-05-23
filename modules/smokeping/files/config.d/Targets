@@ -91,6 +91,36 @@ menu = ssl1009
 title = ssl1009.wikimedia.org [C4-EQIAD]
 host = ssl1009.wikimedia.org
 
++ ULSFO
+
+menu = ULSFO
+title = Wikimedia San Francisco, California network
+alerts = bigloss,someloss,startloss
+
+++ Core
+menu = Core
+title = Core Network Infrastructure
+
++++ cr1-ulsfo
+menu = cr1-ulsfo
+title = cr1-ulsfo.wikimedia.org
+host = cr1-ulsfo.wikimedia.org
+
++++ cr2-ulsfo
+menu = cr2-ulsfo
+title = cr2-ulsfo.wikimedia.org
+host = cr2-ulsfo.wikimedia.org
+
++++ asw-ulsfo
+menu = asw-ulsfo
+title = asw-ulsfo.mgmt.ulsfo.wmnet
+host = asw-ulsfo.mgmt.ulsfo.wmnet
+
++++ bast4001
+menu = bast4001
+title = bast4001.wikimedia.org
+host = bast4001.wikimedia.org
+
 + DNS
 probe = DNS
 menu = DNS latency
