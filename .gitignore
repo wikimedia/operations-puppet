@@ -21,3 +21,6 @@
 
 # local ruby configuration
 /.rbenv-version
+
+# python venv wrapper
+/.tox
