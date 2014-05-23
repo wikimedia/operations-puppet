@@ -116,6 +116,10 @@ menu = asw-ulsfo
 title = asw-ulsfo.mgmt.ulsfo.wmnet
 host = asw-ulsfo.mgmt.ulsfo.wmnet
 
+++ Hosts
+menu = Hosts
+title = Sampled Hosts
+
 +++ bast4001
 menu = bast4001
 title = bast4001.wikimedia.org
