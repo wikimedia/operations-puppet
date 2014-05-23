@@ -8,7 +8,7 @@ define apt::puppet (
         # with an higher priority than the general rule preferring wikimedia
         # packages
         if $::lsbdistcodename == 'precise' {
-                apt::pin {"puppet_${title}_${version}":
+                apt::pin {"puppet_${title}_${version}.pref":
                     package  => $packages,
                     pin      => 'release o=Ubuntu',
                     priority => 1002
