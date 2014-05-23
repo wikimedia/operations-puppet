@@ -9,21 +9,25 @@ import itertools
 from collections import Counter
 import collections
 
+
 def flatten(lists):
     """flattens nested arrays"""
     return list(itertools.chain.from_iterable(lists))
 
+
 def all_assigned_users(admins):
-    """unique assigned users 
+    """unique assigned users
     :param admins: hash from valid data.yaml
     :returns: list
     """
     nested_users_list = map(lambda u: u['members'], admins['groups'].values())
     return list(set(flatten(nested_users_list)))
 
+
 def dict_sort(dictionary):
     #dumping ordered dict to yaml causes issues, return normal dict
     return dict(collections.OrderedDict(sorted(dictionary.items())))
+
 
 def main():
 
@@ -41,11 +45,13 @@ def main():
         #ensure all assigned users exist
         non_existent_users = [u for u in grouped_users if u not in all_users]
         if non_existent_users:
-            print "Users assigned that do not exist: %s" % (non_existent_users,)
+            print "Users assigned that do not exist: %s" % (
+                non_existent_users,)
 
         #ensure no two groups uses the same gid
-        gids = filter(None, [v.get('gid', None) for k, v in admins['groups'].iteritems()])
-        dupes =  [k for k,v in Counter(gids).items() if v>1]
+        gids = filter(None, [
+            v.get('gid', None) for k, v in admins['groups'].iteritems()])
+        dupes = [k for k, v in Counter(gids).items() if v > 1]
         if dupes:
             print "Duplicate group GIDs: %s" % (dupes,)
 
