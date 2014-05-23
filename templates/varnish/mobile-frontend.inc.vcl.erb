@@ -8,7 +8,13 @@ sub filter_noise {
 		error 403 "Noise";
 	}
 
-	if (req.http.referer && req.http.referer ~ "^http://www\.keeprefreshing\.com/") {
+	/* Forged UAs on zerodot. This largely handles lazywebtools below, incidentally. */
+	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
+		error 403 "Noise";
+	}
+
+	/* These are roughly in highest to lower order */
+	if (req.http.referer && req.http.referer ~ "^http://(www\.keeprefreshing\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.refreshthis\.com|www\.refresh-page\.com|www\.urlreload\.com|www\.lazywebtools\.co\.uk)/") {
 		error 403 "Noise";
 	}
 }
