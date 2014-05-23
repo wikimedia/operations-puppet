@@ -91,6 +91,40 @@ menu = ssl1009
 title = ssl1009.wikimedia.org [C4-EQIAD]
 host = ssl1009.wikimedia.org
 
++ ESAMS
+
+menu = ESAMS
+title = Wikimedia Amsterdam, The Netherlands network
+alerts = bigloss,someloss,startloss
+
+++ Core
+menu = Core
+title = Core Network Infrastructure
+
++++ cr1-esams
+menu = cr1-esams
+title = cr1-esams.wikimedia.org
+host = cr1-esams.wikimedia.org
+
++++ cr2-knams
+menu = cr2-knams
+title = cr2-knams.wikimedia.org
+host = cr2-knams.wikimedia.org
+
++++ csw2-esams
+menu = csw2-esams
+title = csw2-esams.wikimedia.org
+host = csw2-esams.wikimedia.org
+
+++ Hosts
+menu = Hosts
+title = Sampled Hosts
+
++++ hooft
+menu = hooft
+title = hooft.esams.wikimedia.org
+host = hooft.esams.wikimedia.org
+
 + ULSFO
 
 menu = ULSFO
