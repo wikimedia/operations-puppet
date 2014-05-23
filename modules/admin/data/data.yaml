@@ -9,13 +9,13 @@ groups:
   ops:
     gid: 700
     description: include everywhere ops folks
-    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc,
-              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh]
+    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, catrope,
+              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
     description: RT 5934
-    members: [gwicke, catrope]
+    members: [gwicke]
     privs: ['ALL = (parsoid) NOPASSWD: ALL']
   parsoid-admin:
     gid: 702
@@ -846,3 +846,37 @@ users:
     realname: Sumana Harihareswara
     ssh_keys: []
     uid: 578
+  oblivian:
+    ensure: present
+    gid: 500
+    name: oblivian
+    realname: Giuseppe Lavagetto
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgvoqNH9PeT3G40RWDnlka98d5HYzkDqTTWkxRhkX5TtCgo3ZgNMmTWigMteXhXBZWjhTFctIhqOdkyGQrGoXeLs0TlNFlZ+w6Zr0kbkeQ74pkqKF7J+v0qDMtlSVfLcoiWqYBGrBuzm6CxIbBHbaOBUxvOPq+XQBHGRdsCP5Y129h0/3+eIo2fLZ5n6C/s5vr6l9tl0TgolEn9g2RVp59UsqBTffK4Rg+CECGsc7qmeIfZKmOZZ3lL1c5sS7hV1hbRV5lC8H04nxR1Jw1Y/WRWQ0hGvr6WHXrLUUgSR+/GuSihlAB5T4+PWnWlJ6LPsucK4WSuGaK9legJi1O4KncI5bjSw60KrVNulvK1fLOuUb6qz/CRFMMhX/NYDoS5Yc0ducZbFC//NMxtD+UsSFlL1VKQ1oEeDM+/4VqM2KK6mEr2X1MmBf9LNG1G1k+e5uEHOR3powwGUmp44tHrSilcGt1o8KAFb+Vy1fbVqngFaAm5SYwKvAJcujqUDyxARb8e/06XPCQ0V+wx3xBf/Dd3mWHU3OqN5itmEUqDtU/Y/P2/O6eI6rCMh/+4gclJM9QqPEGHhQPGrLb2g+KNolrsZ/7PyYbMtEf6Pzsohcsoz+nf3/LN1cyf3AzSKRPNy6pD5C6ZpVU2AZwqGwx8zemXhoyLWa0pINOaCP/FgVDpw==
+        glavagetto@wikimedia.org]
+    uid: 4816
+  laner:
+    ensure: present
+    gid: 500
+    name: laner
+    realname: Ryan Lane
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRsK78adkRJfbYrsZznpbwldoSpQyyQXrXG6WzrJEBAVIAKz5gPSM8zmJ/kj89QygYRaKRPWAcuF5GZhSho15dwDXm5M0ZTva4/m/Hu4H3j7oxx3PKjZKBiygP7mSu/32TJs7FynPGAFVl/B766Snn9Ll/xwrx4lg3v9ZNEpNMJZ0DQTFZ1xXD2Ns08JvxW1csAEoNrpqH6tTdXdHmhurXdKQq1G/JmKR3/KVWbB1MNvUwCY0mQbN1icuy+JsOXbvXEftumigXRV16reLvX3q4sNmYSFfOGOMMW7K9d+nDc4TRNrUjm8R0AEZ6BxTJsvpahDi1gCOfZnGmpGKUEWgZ
+        laner@Free-Public-Wifi.local]
+    uid: 553
+  midom:
+    ensure: present
+    gid: 500
+    name: midom
+    realname: Domas Mituzas
+    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBAMOWDta08PH5U6hxvnHq7xT7lqIxWxMzP8wr20np4thUtlOqLsxmpJzHzdWJMlaEu0cLrJXxYq2Bm5jBpDb8Tmfo2TeIPgmFWmLgLpF9A4biXmMA6V9Dp5W/eyZgmlHjWlTLu6Y5WaK+Dr42rKzCMHeSxY8T/gvVIXvjZliNb7cvAAAAFQCLTv4hEekK6nLpqX2j/ac7Wj4eHQAAAIA3D0eTxabhSGD8a1IL/2i+Fb8YBLm6uJOXHmeIZNrpl78ml7lOcXxlQSlrQ8Gixc9eKz1a4vzuqKhxqdSFMFcA3wK0cGtXQuCtbiKGgFdKDsK1uBk/5d5mowqYNwZ62taA41NO4VGB7rYHga8Wg2ph5NZ5yuQgmOI8JqlbALH9oQAAAIAwDc1SQBOYJacBv/NeXhQIuDUO2x7gnqyr9Ud8hlnzy34GQldo+03AvL9vq2RSemCQBjnEqxXYUGhHqDshUvnHq5JxpeWjKRP+p5e0Xy7aepss3g9/IzUUrZ5m9HskczSfrlNBwDG5ybgaCJfyRX0MXnV1GCjaGlI2k0iymqGT+w==
+        domas-wikimedia-200904, ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAomwyIAuPEDxmRFl3O11IH1yH+n7th+meS4dmB9OzKxh5Sg/aURrfFPUV/rSh+2QqfR7M7kB59ganKpc/7tCXW9mxoIr/c1kQ9jBzpyc7VUox/VTlSTZOFJA9sH9PUVIDINVNPyPFLNy9RtvWkSfHwffo6LHNju+us9PaUlmAaE0=
+        root@zwinger.wikimedia.org]
+    uid: 527
+  tstarling:
+    ensure: present
+    gid: 500
+    name: tstarling
+    realname: Tim Starling
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDTDmIgbftdeyF3wvKYbqbo9ktgS134XNt9LCfryDohCClsujY83seA0BE9FyO3cJDYwt75frBf3m0JZcI0x9NXwuK73pVp3PJuzUk7nQ77BP4hbSWGbDYNDjYdZp0IZSRBYs/A+y8NKhYiDoyAep+JrM9FvVVGEh+gB/BPizYNv1ru+IXXL7FcVRMc1AUTDf30zZhEyj+/MoYs4m5YMMOW7Qg5FEyVFAOeTg95HZHAtAOwMeycbrueqf9qlIm0kNC5NWHMthWklCY7R2gVRcbYdoYuTJYLSVBs3Vbhygk+M+KqeNEx5+GJX45PAWb+qfRHE5GbsNuo4RjhyTcSBOWt6mx8VyOiSHhHRA/AFDOHzR6VqlM4buHXGARFgbTM7ypv5eiXyIWhYhohyQHJg9IuyPvL3LtHcixgay+0aytot+/9Dp8JQ5OtuzRzYo8AwwfnihF4uQ96u2TKAkkINsVQpc1haERbR3JmQHEwujg/iAj8q9CoUYtvdINfMTg7n1IjzdPFXS6lCv8WeDnQPhcmivz9Psjyrs3nCGlHmox45bAD4Snonp0xQ0Nbd6Qw2DDQh7YTt5sutay00V0FYGVyGLJdlY/CEFHsauQJIILwzxw3PTEYWHEakFnGEaJWdWPMSlNJ1i1OGA1ulg1FJj4RAQyK/mlHMMFTiEE29of6HQ==
+        tstarling@fenari, ssh-dss AAAAB3NzaC1kc3MAAACBAMa+T44Jat4ZubaZtanOlvq+7vj2Vn2vdOoAeafH3EBiXRc3FWxbL7MUInttfVMAQ+kKpMFrMfyZLCr+xfe2266zL9NuRN+0NK0unHnUJxKFg1xhlwM/miLuVIRPNYjx0hb5bnEqEdaHWhzDAac2Th8t4l3Bkx6irtLkEbG5X7rbAAAAFQDPx0nvVb7kjyGUtRpUSQgWqwO8BwAAAIB6ywz35DCRnX1wb6d+rjxR2bzzpI0EBe0XFs+EhWGcphAmc01gVOQj/cgM8X9lWzbzcepN/VLJLNYZDmhT7BCQx1bI+3mYMdHin5aTA1yLo0sNbTu5ECbe4cPywdWkRbUVXFFtxG9+xXd6l7TLUV0ZweFiV3hmeB+hKoisV0L/GQAAAIAF76e/8Nf7K67DM2DlYmjrfJYG0fC8WwbARKIldylkiVrADY8DFdc+dEXbUFlqvSMX0wyWS19zlC0XbkA+6EwIMfbEfukJoo84ygOhcdiqySn3JGxyQpuBQfiHK06oLxqNxpxs2R26/beqzkIzzIx8wXDN+UmjZUDuIVvYlWUWsA==
+        home]
+    uid: 501
