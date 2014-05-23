@@ -41,7 +41,7 @@ groups:
       brion, bsitu, cmcmahon, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, mwalker,
-      nikerabbit, nimishg, phuedx, reedy,
+      nikerabbit, phuedx, reedy,
       rmoen, robla, spage, ssastry, tomasz, yurik, jgonera, tgr]
   restricted:
     gid: 706
