@@ -60,7 +60,11 @@ groups:
     description: users with root on cassandra hosts
     members: [gwicke, ssastry]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
-
+  researchers:
+    gid: 709
+    description: users with access to research db
+    members: [dartar]
+    privs: ['ALL = NOPASSWD: cat /srv/passwords/researchdb']
 users:
   rush:
     ensure: present
