@@ -39,12 +39,15 @@ def main():
         print yaml.dump({'users': dict_sort(admins['users'])})
 
     if 'lint' in sys.argv:
+        lint_error = False
+
         all_users = admins['users'].keys()
         grouped_users = all_assigned_users(admins)
 
         #ensure all assigned users exist
         non_existent_users = [u for u in grouped_users if u not in all_users]
         if non_existent_users:
+            lint_error = True
             print "Users assigned that do not exist: %s" % (
                 non_existent_users,)
 
@@ -53,7 +56,11 @@ def main():
             v.get('gid', None) for k, v in admins['groups'].iteritems()])
         dupes = [k for k, v in Counter(gids).items() if v > 1]
         if dupes:
+            lint_error = True
             print "Duplicate group GIDs: %s" % (dupes,)
+
+        if lint_error:
+            sys.exit(1)
 
 if __name__ == '__main__':
     main()
