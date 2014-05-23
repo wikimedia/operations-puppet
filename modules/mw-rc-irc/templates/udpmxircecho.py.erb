@@ -7,61 +7,57 @@ import threading, socket
 
 
 class EchoReader(threading.Thread):
-	def __init__(self, bot):
-		threading.Thread.__init__(self)
-		self.abot = bot
+        def __init__(self, bot):
+                threading.Thread.__init__(self)
+                self.bot = bot
 
-	def run(self):
-		udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        def run(self):
+                udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-		udpsock.bind(('', 9390))
+                udpsock.bind(('', 9390))
 
-		while True:
-			try:
-				s = udpsock.recv(65535)
-				sp = s.split("\t")
-				if len(sp) == 2:
-					channel = sp[0]
-					text = sp[1]
-					text = text.lstrip()
+                while True:
+                        try:
+                                s = udpsock.recv(65535)
+                                sp = s.split("\t")
+                                if len(sp) == 2:
+                                        channel = sp[0]
+                                        text = sp[1]
+                                        text = text.lstrip()
 
-					if channel not in bot.chans:
-						bot.chans.append(channel)
-						bot.connection.join(channel)
+                                        if channel not in self.bot.chans:
+                                                self.bot.chans.append(channel)
+                                                self.bot.connection.join(channel)
+                                        # this throws an exception if not connected.
+                                        self.bot.connection.privmsg(channel, text)
 
-
-					# this throws an exception if not connected.
-					bot.connection.privmsg(channel, text)
-			except EOFError:
-				# Once the input is finished, the bot should exit
-				sys.exit()
-			except:
-				pass
+                        except EOFError:
+                                # Once the input is finished, the bot should exit
+                                sys.exit()
+                        except Exception as e:
+                                print e
 
 class EchoBot(SingleServerIRCBot):
-	def __init__(self, chans, nickname, server):
-		print "*** Connecting to IRC server %s..." % server
-		SingleServerIRCBot.__init__(self, [(server, 6667)], nickname, "IRC echo bot")
-		self.chans = chans
+        def __init__(self, chans, nickname, server):
+                port = 6667
+                print "connecting to %s as %s on port %s" % (server, nickname, port)
+                SingleServerIRCBot.__init__(self, [(server, port)], nickname, "IRC echo bot")
+                self.chans = chans
 
-	def on_nicknameinuse(self, c, e):
-		c.nick(c.get_nickname() + "_")
+        def on_nicknameinuse(self, c, e):
+                print '%s nickname in use!' % (c.get_nickname(),)
+                c.nick(c.get_nickname() + "_")
 
-	def on_welcome(self, c, e):
-		print "*** Connected"
+        def on_welcome(self, c, e):
+                print "got welcome"
+                c.oper("rc", "<%= ircpassword %>")
 
-		# Get oper mode if we are connecting to browne
-		if c.get_server_name().endswith(".wikimedia.org"):
-			c.oper("rc", "<%= ircpassword %>")
-
-
-		for chan in self.chans:
-			c.join(chan)
+                for chan in self.chans:
+                        c.join(chan)
 
 def main():
     bot = EchoBot([], sys.argv[1], sys.argv[2]);
     sthr = EchoReader(bot)
     sthr.start()
     bot.start()
-
 main()
