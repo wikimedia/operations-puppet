@@ -217,6 +217,7 @@ class toollabs::exec_environ {
         'imagemagick',                 # Bug 63000
         'jq',                          # Bug #65049.
         'ksh',
+        'iotop',                       # useful for labs admins to monitor tools
         'libav-tools',                 # Bug #53870.
         'libdmtx0a',                   # Bug #53867.
         'libfreetype6',
