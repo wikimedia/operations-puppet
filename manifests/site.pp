@@ -1071,7 +1071,6 @@ node 'fenari.wikimedia.org' {
     include bastionhost
     include misc::noc-wikimedia
     include drac
-    include accounts::awjrichards
     include generic::wikidev-umask
     include misc::dsh
     include ssh::hostkeys-collect
