@@ -23,6 +23,7 @@ class toollabs::dev_environ {
         'apt-file',
         'autoconf',
         'build-essential', # for dpkg
+        'cmake',
         'cvs',
         'cython',
         'dh-make-perl',
