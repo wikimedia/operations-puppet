@@ -73,35 +73,6 @@ class role::eventlogging {
         output => 'tcp://*:8600',
     }
 
-
-    ## MongoDB
-
-    # Log events to a local MongoDB instance.
-
-    include passwords::mongodb::eventlogging  # RT 5101
-    $mongo_user = $passwords::mongodb::eventlogging::user
-    $mongo_pass = $passwords::mongodb::eventlogging::password
-    $mongo_host = $::realm ? {
-        production => '127.0.0.1',
-        labs       => '127.0.0.1',
-    }
-
-    if $mongo_host == '127.0.0.1' {
-        class { 'mongodb':
-            dbpath   => '/srv/mongodb',
-            settings => {
-                auth => true,
-            },
-        }
-    }
-
-    # Disabled -- ori, 13-Feb-2014
-    # eventlogging::service::consumer { 'vanadium':
-    #     input  => "tcp://${processor}:8600",
-    #     output => "mongodb://${mongo_user}:${mongo_pass}@${mongo_host}:27017",
-    # }
-
-
     ## MySQL / MariaDB
 
     # Log strictly valid events to the 'log' database on m2-master.
