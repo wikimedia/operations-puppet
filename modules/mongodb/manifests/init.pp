@@ -3,6 +3,10 @@
 # Provisions MongoDB, an open-source document database.
 # See <http://www.mongodb.org/> for details.
 #
+# Requires at least Mongo 2.6. Uses mongodb-org package,
+# which are provided by MongoDB themselves, rather than
+# by Ubuntu.
+#
 # === Parameters
 #
 # [*dbpath*]
@@ -28,13 +32,16 @@ class mongodb (
 ) {
     # Base settings required by this Puppet module.
     $required_settings = {
-        dbpath      => $dbpath,
-        fork        => false,
-        logappend   => true,
-        logpath     => '/var/log/mongodb/mongodb.log',
+        storage    => {
+            dbPath => $dbpath,
+        },
+        systemLog     => {
+            logAppend => true,
+            path   => '/var/log/mongodb/mongodb.log',
+        },
     }
 
-    package { 'mongodb':
+    package { 'mongodb-org':
         ensure => present,
     }
 
@@ -43,15 +50,15 @@ class mongodb (
         owner   => 'mongodb',
         group   => 'mongodb',
         mode    => '0755',
-        require => Package['mongodb'],
+        require => Package['mongodb-org'],
     }
 
     file { '/etc/mongodb.conf':
-        content => template('mongodb/mongod.conf.erb'),
+        content => ordered_json(merge($required_settings, $settings)),
         owner   => root,
         group   => root,
         mode    => '0644',
-        require => Package['mongodb'],
+        require => Package['mongodb-org'],
     }
 
     service { 'mongodb':
