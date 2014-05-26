@@ -19,7 +19,8 @@ class role::dynamicproxy::eqiad {
     class { '::dynamicproxy':
         ssl_certificate_name => 'star.wmflabs.org',
         set_xff              => true,
-        resolver             => '10.68.16.1'
+        resolver             => '10.68.16.1',
+        require              => Install_certificate['star.wmflabs.org']
     }
     include dynamicproxy::api
 }

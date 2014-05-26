@@ -2,14 +2,15 @@
 class toollabs::proxy inherits toollabs {
     include toollabs::infrastructure
 
+    install_certificate { 'star.wmflabs.org':
+        privatekey => false
+    }
+
     class { '::dynamicproxy':
         luahandler           => 'urlproxy',
         resolver             => '10.68.16.1', # eqiad DNS resolver
-        ssl_certificate_name => 'star.wmflabs.org'
-    }
-
-    install_certificate { 'star.wmflabs.org':
-        privatekey => false
+        ssl_certificate_name => 'star.wmflabs.org',
+        require              => Install_certificate['star.wmflabs.org']
     }
 
     package { 'python-redis':
