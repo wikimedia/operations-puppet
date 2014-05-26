@@ -1,0 +1,4 @@
+# rsyslog configuration for <%= @daemon %>
+# This file is managed by Puppet
+if $programname == <%= @daemon.inspect %> then -<%= @logfile %>
+& ~
