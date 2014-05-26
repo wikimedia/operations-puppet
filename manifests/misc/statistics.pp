@@ -396,7 +396,14 @@ class misc::statistics::db::mongo {
     include misc::statistics::base
 
     class { "mongodb":
-        dbpath    => "${misc::statistics::base::working_path}/mongodb",
+        storage    => {
+            dbPath      => "${misc::statistics::base::working_path}/mongodb",
+        },
+        systemLog       => {
+            destination => 'file',
+            logAppend   => true,
+            path        => '/var/log/mongodb/mongodb.log',
+        }
     }
 }
 
