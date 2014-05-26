@@ -75,14 +75,21 @@ class toollabs::dev_environ {
         ensure => latest,
     }
 
-    # pastebinit config to point to tools paste, since pastes
-    # might contain PII and sending them by default out of tools
-    # might not be the best of ideas
-
+    # pastebinit configuration for http://tools.wmflabs.org/paste/.
+    file { '/etc/pastebin.d':
+        require => Package['pastebinit'],
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+    }
     file { '/etc/pastebin.d/tools.conf':
-        ensure => 'file',
-        source => 'puppet:///modules/toollabss/pastebinit.conf',
-        mode   => '0644'
+        require => File['/etc/pastebin.d'],
+        ensure  => 'file',
+        source  => 'puppet:///modules/toollabs/pastebinit.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     # TODO: deploy scripts
