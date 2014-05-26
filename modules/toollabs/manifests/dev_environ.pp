@@ -58,6 +58,7 @@ class toollabs::dev_environ {
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
         'openjdk-7-jdk',
+        'pastebinit',
         'pep8',                        # Bug 57863
         'pyflakes',                    # Bug 57863
         'p7zip-full', # requested by Betacommand to extract files using 7zip
@@ -69,6 +70,16 @@ class toollabs::dev_environ {
         'subversion',
         'tig' ]:
         ensure => latest,
+    }
+
+    # pastebinit config to point to tools paste, since pastes
+    # might contain PII and sending them by default out of tools
+    # might not be the best of ideas
+
+    file { '/etc/pastebin.d/tools.conf':
+        ensure => 'file',
+        source => 'puppet:///modules/tools/pastebinit.conf',
+        mode   => '0644'
     }
 
     # TODO: deploy scripts
