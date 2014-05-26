@@ -1,13 +1,11 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///rsyslog/40-appserver.conf.erb
-#####################################################################
+# rsyslog configuration for MediaWiki on Apache
+# This file is managed by Puppet
 
 # Emulate MediaWiki's wfDebugLog / wfErrorLog format
 $template MediaWiki,"%programname% %timegenerated% %HOSTNAME%: %msg%\n"
 
 # Maximum 100MB log file size
-$outchannel apache2,/var/log/apache2.log,100000000,/usr/local/bin/apache-syslog-rotate
+$outchannel apache2,/var/log/apache2.log,100000000,/usr/sbin/logrotate -f /etc/logrotate.d/rsyslog-apache2
 
 # Send apache2 messages to the apache output channel
 :programname,isequal,"apache2" $apache2

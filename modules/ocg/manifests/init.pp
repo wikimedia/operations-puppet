@@ -137,12 +137,8 @@ class ocg (
         group   => 'root',
     }
 
-    file { '/etc/rsyslog.d/20-ocg.conf':
-        ensure => present,
-        source => 'puppet:///modules/ocg/ocg.rsyslog.conf',
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        notify => Service['rsyslog'],
+    rsyslog::conf { 'ocg':
+        source   => 'puppet:///modules/ocg/ocg.rsyslog.conf',
+        priority => 20,
     }
 }

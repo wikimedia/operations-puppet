@@ -15,6 +15,12 @@ class role::analytics::kafkatee {
         log_statistics_interval => 15,
     }
 
+    # Declare packaged rsyslog config to ensure it isn't purged.
+    file { '/etc/rsyslog.d/75-kafkatee.conf':
+        ensure  => file,
+        require => Class['::kafkatee'],
+    }
+
     $log_directory            = '/srv/log'
     file { $log_directory:
         ensure      => 'directory',

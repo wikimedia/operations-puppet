@@ -473,6 +473,13 @@ class role::cache {
                 log_statistics_interval      => 15,
             }
 
+            # Persist the rsyslog conf bundled with the varnishkafka .deb
+            # by declaring it to Puppet.
+            file { '/etc/rsyslog.d/75-kafkatee.conf':
+                ensure  => file,
+                require => Class['::varnishkafka'],
+            }
+
             class { '::varnishkafka::monitoring': }
 
             # Generate icinga alert if varnishkafka is not running.
