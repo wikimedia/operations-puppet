@@ -1350,6 +1350,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     # include admin
     include standard
     include openstack::project-nfs-storage-service
+    include openstack::replica-management-service
     include rsync::server
 
     rsync::server::module {
