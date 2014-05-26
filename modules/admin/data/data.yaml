@@ -38,7 +38,7 @@ groups:
     gid: 705
     description: replaces 'mortals' for software deployment
     members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808,
-      brion, bsitu, cmcmahon, csteipp, demon, ebernhardson, esanders, gilles,
+      brion, bsitu, cmcmahon, cscott, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, mwalker,
       nikerabbit, phuedx, reedy,
@@ -46,7 +46,7 @@ groups:
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
-    members: [avar, cscott, daniel, dartar, diederik,
+    members: [avar, daniel, dartar, diederik,
       erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris, rainman,
       tparscal, tnegrin, ssastry, ironholds, nuria, csalvia, leila,
       santhosh, amire80, legoktm]
