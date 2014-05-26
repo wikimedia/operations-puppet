@@ -28,10 +28,13 @@ class mongodb (
 ) {
     # Base settings required by this Puppet module.
     $required_settings = {
-        dbpath      => $dbpath,
-        fork        => false,
-        logappend   => true,
-        logpath     => '/var/log/mongodb/mongodb.log',
+        storage    => {
+            dbPath => $dbPath,
+        },
+        systemLog     => {
+            logAppend => true,
+            path   => '/var/log/mongodb/mongodb.log',
+        },
     }
 
     package { 'mongodb':
@@ -47,7 +50,7 @@ class mongodb (
     }
 
     file { '/etc/mongodb.conf':
-        content => template('mongodb/mongod.conf.erb'),
+        content => ordered_json(merge($required_settings, $settings)),
         owner   => root,
         group   => root,
         mode    => '0644',
