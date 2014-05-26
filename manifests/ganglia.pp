@@ -388,11 +388,9 @@ class ganglia::collector inherits ganglia::collector::config {
         }
 
         # log gmetad messages to /var/log/ganglia.log
-        file { '/etc/rsyslog.d/30-ganglia.conf':
-            ensure => present,
-            source => 'puppet:///files/ganglia/rsyslog.d/30-ganglia.conf',
-            mode   => '0444',
-            notify => Service['rsyslog'],
+        rsyslog::conf { 'ganglia':
+            source   => 'puppet:///files/ganglia/rsyslog.d/30-ganglia.conf',
+            priority => 30,
         }
 
         file { '/etc/logrotate.d/ganglia':
