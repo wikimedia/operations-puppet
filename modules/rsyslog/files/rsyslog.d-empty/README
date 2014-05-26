@@ -1,0 +1,2 @@
+This directory is managed by Puppet. Any configuration file in this directory
+that is not explicitly managed by Puppet will be purged.

@@ -238,53 +238,14 @@ class base::remote-syslog {
             ($::hostname != 'aluminium') and
             ($::instancename != 'deployment-bastion') {
 
-        package { 'rsyslog':
-            ensure => present,
+        $syslog_host = $::realm ? {
+            'production' => 'syslog.eqiad.wmnet',
+            'labs'       => 'deployment-bastion.eqiad.wmflabs',
         }
 
-        # remote syslog destination
-        case $::realm {
-            'production': {
-                if( $::site != '(undefined)' ) {
-                    $syslog_remote_real = "syslog.${::site}.wmnet"
-                }
-            }
-            'labs': {
-                # Per labs project syslog:
-                case $::instanceproject {
-                    'deployment-prep': {
-                        $syslog_remote_real = "deployment-bastion.${::site}.wmflabs"
-                    }
-                    default: {
-                        $syslog_remote_real = 'i-000003a9.pmtpa.wmflabs:5544'
-                    }
-                }
-            }
-        }
-
-        $ensure_remote = $syslog_remote_real ? {
-            ''  => absent,
-            default => present,
-        }
-
-        file { '/etc/rsyslog.d/90-remote-syslog.conf':
-            ensure => absent,
-        }
-
-        file { '/etc/rsyslog.d/30-remote-syslog.conf':
-            ensure  => $ensure_remote,
-            require => Package['rsyslog'],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => "*.info;mail.none;authpriv.none;cron.none    @${syslog_remote_real}\n",
-        }
-
-        service { 'rsyslog':
-            ensure    => running,
-            require   => Package['rsyslog'],
-            subscribe => File['/etc/rsyslog.d/30-remote-syslog.conf'],
-            provider  => 'upstart',
+        rsyslog::conf { 'remote_syslog':
+            content  => "*.info;mail.none;authpriv.none;cron.none @${syslog_host}",
+            priority => 30,
         }
     }
 }

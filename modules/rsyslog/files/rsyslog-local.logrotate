@@ -1,0 +1,23 @@
+# /var/log/local serves a destination for any custom local rsyslog log
+# files. This allows logrotate to be invoked as the rotation command an
+# rsyslog outchannel. For example:
+#
+#   $outchannel apache2,/var/log/local/apache2.log,100000000,
+#     /usr/sbin/logrotate -f /etc/logrotate.d/rsyslog-local
+#
+# See rsyslog.conf(5) for details.
+#
+# This file is managed by Puppet
+/var/log/local/*.log
+{
+    rotate 4
+    size 100M
+    start 1
+    missingok
+    notifempty
+    nocompress
+    sharedscripts
+    postrotate
+        reload rsyslog >/dev/null 2>&1 || true
+    endscript
+}
