@@ -1,0 +1,15 @@
+# logrotate config for <%= @basename %>
+# This file is managed by Puppet
+<%= @path %>
+{
+    rotate <%= @rotate %>
+    <%= @period %>
+    missingok
+    notifempty
+    compress
+    delaycompress
+    sharedscripts
+    postrotate
+        reload rsyslog >/dev/null 2>&1 || true
+    endscript
+}
