@@ -1441,6 +1441,10 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     $ldapincludes = ['openldap', 'nss', 'utils']
 
     $ganglia_aggregator = true
+    interface::aggregate { 'bond0':
+        orig_interface => 'eth0',
+        members        => [ 'eth0', 'eth1' ],
+    }
 
     include standard
     include openstack::project-nfs-storage-service
