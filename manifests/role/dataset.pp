@@ -1,16 +1,5 @@
 # role classes for dataset servers
 
-# common classes included by all dataset servers
-class role::dataset::common {
-
-    include standard
-    include admins::roots
-
-    include groups::wikidev
-    include accounts::catrope
-
-}
-
 class role::dataset::pagecountsraw($enable=true) {
     class { '::dataset::cron::pagecountsraw':
         enable => $enable,
@@ -40,7 +29,6 @@ class role::dataset::primary {
         uploads      => $uploads,
     }
     class { 'role::dataset::pagecountsraw': enable => true }
-    include role::dataset::common
 }
 
 # a dumps secondary server may be a primary source of content for a small
@@ -63,5 +51,4 @@ class role::dataset::secondary {
         uploads      => $uploads,
     }
     class { 'role::dataset::pagecountsraw': enable => false }
-    include role::dataset::common
 }
