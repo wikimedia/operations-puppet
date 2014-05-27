@@ -1038,6 +1038,7 @@ node /es8\.pmtpa\.wmnet/ {
 
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
 node /^es([569]|10)\.pmtpa\.wmnet/{
+    include admin
     include standard
 }
 
