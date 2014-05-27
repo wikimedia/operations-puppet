@@ -77,6 +77,10 @@ groups:
     gid: 712
     description: people who upload mobile app releases
     members: [brion, yuvipanda, dbrant]
+  udp2log-users:
+    gid: 713
+    description: general user tasks for udp2log (RT 5391)
+    members: [tnegrin]
 
 users:
   rush:
