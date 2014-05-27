@@ -900,6 +900,7 @@ node 'db1044.eqiad.wmnet' {
 }
 
 node /^dbstore1001\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     $mariadb_backups_folder = '/a/backups'
     include role::mariadb::dbstore
@@ -907,6 +908,7 @@ node /^dbstore1001\.eqiad\.wmnet/ {
 }
 
 node /^dbstore1002\.eqiad\.wmnet/ {
+    include admin
     $cluster = 'mysql'
     include role::mariadb::dbstore
 }
