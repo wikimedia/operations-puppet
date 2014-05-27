@@ -598,6 +598,7 @@ node 'dataset2.wikimedia.org' {
     $cluster = 'misc'
 
     class { 'admin': groups => [dataset-admins] }
+    include standard
 #    include role::download::primary
     include role::dataset::secondary
     include role::download::wikimedia
@@ -613,6 +614,7 @@ node 'dataset1001.wikimedia.org' {
 
     class { 'admin': groups => [dataset-admins] }
 
+    include standard
     include role::diamond
     include role::dataset::primary
 #    include role::download::secondary
