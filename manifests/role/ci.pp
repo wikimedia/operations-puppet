@@ -358,6 +358,24 @@ class role::ci::slave::labs {
         ]
     }
 
+    file { '/srv/localhost':
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'jenkins-deploy',
+        group  => 'root',  # no jenkins-deploy group in labs
+    }
+    file { '/srv/localhost/mediawiki':
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'jenkins-deploy',
+        group  => 'root',  # no jenkins-deploy group in labs
+    }
+    contint::localvhost { 'mediawiki':
+        port       => 9414,
+        docroot    => '/srv/localhost/mediawiki',
+        log_prefix => 'mediawiki',
+        require    => File['/srv/localhost/mediawiki'],
+    }
 
     include role::ci::slave::labs::common,
         # Trebuchet replacement on labs
