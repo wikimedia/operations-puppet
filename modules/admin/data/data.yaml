@@ -65,7 +65,14 @@ groups:
     description: manage elasticsearch nodes
     members: [manybubbles, demon]
     privs: ['ALL = NOPASSWD: ALL']
-
+  releasers-mediawiki:
+    gid: 710
+    description: people who upload mediawiki releases
+    members: [csteipp, hashar, mah, mglaser, reedy]
+  releasers-mobile:
+    gid: 711
+    description: people who upload mobile app releases
+    members: [brion, yuvipanda, dbrant]
 users:
   rush:
     ensure: present
