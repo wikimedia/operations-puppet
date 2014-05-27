@@ -76,15 +76,12 @@ class puppet_compiler(
             notify  => Class['puppet_compiler::differ']
         }
 
-        exec {'install_naggen':
-            command => "/bin/cp ${program_dir}/external/puppet/modules/puppetmaster/files/naggen /usr/local/bin/naggen",
-            creates => '/usr/local/bin/naggen',
+        class {'::puppetmaster::scripts':
             require => Exec['install_puppet_repositories']
         }
 
-
         class {'puppet_compiler::differ':
-            require => [Exec['install_puppet_repositories'],Exec['install_naggen']]
+            require => [Exec['install_puppet_repositories'],Class['::puppetmaster::scripts']]
         }
 
         file {["${program_dir}/output", "${program_dir}/output/html","${program_dir}/output/diff", "${program_dir}/output/compiled",]:
