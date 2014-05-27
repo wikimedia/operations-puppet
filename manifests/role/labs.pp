@@ -2,6 +2,7 @@ class role::labs::instance {
 
     include ldap::role::client::labs
     include base::instance-upstarts
+    include role::mail::sender
 
     # make common logs readable
     class { 'base::syslogs':
