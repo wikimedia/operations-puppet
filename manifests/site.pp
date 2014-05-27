@@ -1056,14 +1056,16 @@ node 'fenari.wikimedia.org' {
         interface => 'eth0',
     }
 
+    class { 'admin':
+        groups => ['deployment',
+                   'restricted'],
+     }
+
     include base
     include role::mediawiki::maintenance
     include sudo::appserver
     include subversion::client
     include nfs::netapp::home
-    include admins::roots
-    include admins::mortals
-    include admins::restricted
     include bastionhost
     include misc::noc-wikimedia
     include drac
