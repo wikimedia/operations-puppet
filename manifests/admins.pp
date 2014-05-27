@@ -3844,6 +3844,7 @@ class admins::mortals {
     include accounts::brion # per user request, rt 4798
     include accounts::bsitu
     include accounts::cmcmahon
+    include accounts::cscott # RT 7542
     include accounts::csteipp
     include accounts::demon
     include accounts::ebernhardson # RT 5717
@@ -3898,7 +3899,6 @@ class admins::restricted {
     include accounts::austin # access revoked
     include accounts::avar
     include accounts::bastique # access revoked
-    include accounts::cscott # RT 6655
     include accounts::daniel
     include accounts::dab
     include accounts::dartar
