@@ -999,7 +999,11 @@ node 'aluminium.wikimedia.org' {
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
 
-    class { 'admin': groups => [udp2log-users] }
+    class { 'admin':
+        groups => ['udp2log-users',
+                   'restricted'],
+     }
+
     include role::logging::udp2log::erbium
 }
 

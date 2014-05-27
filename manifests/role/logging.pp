@@ -27,14 +27,8 @@ class role::logging
 {
     system::role { "role::logging": description => "log collector" }
 
-    # default gid
-    $gid=500
-
-    include
-        groups::wikidev,
-        admins::restricted,
-        nrpe,
-        geoip
+    include nrpe
+    include geoip
 }
 
 # mediawiki udp2log instance.  Does not use monitoring.
