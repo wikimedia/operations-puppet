@@ -68,7 +68,8 @@ class toollabs::dev_environ {
         'sbt',
         'sqlite3',
         'subversion',
-        'tig' ]:
+        'tig',
+        'tmux' ]:                      # Bug #65426.
         ensure => latest,
     }
 
