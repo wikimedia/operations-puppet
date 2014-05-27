@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+import os
+import sys
+# python 3 compatibility
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser
+
+import sqlalchemy as sql
+import jinja2
+import argparse
+
+class NagiosGenerator(object):
+    base_query = """SELECT resources.title as title, GROUP_CONCAT(CONCAT(param_names.name, "|||", param_values.value) SEPARATOR "@@@") AS service_content FROM param_values JOIN param_names ON param_names.id = param_values.param_name_id JOIN resources ON param_values.resource_id = resources.id WHERE param_names.name != 'ensure' AND resource_id IN (SELECT resource_id FROM param_values JOIN resources ON resource_id = resources.id JOIN param_names ON param_names.id = param_name_id AND restype = '%s' AND param_names.name = 'ensure' AND value = 'present') GROUP BY resources.id"""
+
+    restype = {
+        'services': 'Nagios_service',
+        'hosts': 'Nagios_host',
+        'hostextinfo': 'Nagios_hostextinfo'
+        }
+
+    restpl = {
+        'services': """
+define service {
+# --PUPPET_NAME-- {{ name }}
+{% for line in data -%}
+{{ "\t%-30s %s" % line }}
+{% endfor %}
+}
+""",
+        'hosts': """
+define host {
+{% for line in data -%}
+{{ "\t%-30s %s" % line }}
+{%- endfor %}
+}
+""",
+        'hostextinfo': """
+define hostextinfo {
+{% for line in data -%}
+{{ "\t%-30s %s" % line }}
+{% endfor %}
+}
+"""
+        }
+
+    @staticmethod
+    def load_config(configfile):
+        config = configparser.SafeConfigParser()
+        config.read(configfile)
+        return config
+
+    def __init__(self, configfile, debug):
+        self.conf = self.load_config(configfile)
+        self.db_engine = sql.create_engine(
+            self.conf.get('db', 'dsn'),
+            echo=debug
+            )
+        self.env = jinja2.Environment(
+            loader=jinja2.DictLoader(self.restpl)
+            )
+
+
+
+    def _query(self, what):
+        connection = self.db_engine.connect()
+        res = connection.execute( self.base_query % self.restype[what] )
+        connection.close()
+        return res
+
+    def render(self, what):
+        if not what in self.restype:
+            sys.exit(1, "Unsupported resource type %s")
+        try:
+            for entity in self._query(what):
+                content = [
+                    tuple(i.split('|||'))
+                    for i in entity['service_content'].split('@@@')
+                    if i]
+                tpl = self.env.get_template(what)
+                yield tpl.render(name=entity['title'], data=content)
+        except:
+            sys.exit(30)
+
+
+def main():
+    configfile = os.environ.get('NAGGEN_CONFIG_FILE', '/etc/puppet/naggen.conf')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--type', '-t',
+                        dest='type',
+                        help="type of file to generate",
+                        choices=['services', 'hosts', 'hostextinfo'])
+    parser.add_argument('--configfile', '-c', dest='configfile', default=configfile)
+    parser.add_argument('--debug', action='store_true', default=False)
+    args = parser.parse_args()
+    n = NagiosGenerator(args.configfile, args.debug)
+    for entity in n.render(args.type):
+        print entity
+
+if __name__ == '__main__':
+    main()
