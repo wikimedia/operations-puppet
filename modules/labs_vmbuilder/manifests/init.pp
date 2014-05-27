@@ -13,19 +13,19 @@ class labs_vmbuilder($vmbuilder_version) {
 
     file { '/etc/vmbuilder/postinst/postinst.copy':
         mode    => '0444',
-        source  => 'puppet:///labs_vmbuilder/postinst.copy',
+        source  => 'puppet:///modules/labs_vmbuilder/postinst.copy',
         require => Package['python-vm-builder'],
     }
 
     file { '/etc/vmbuilder/postinst/postinst.sh':
         mode    => '0555',
-        source  => 'puppet:///labs_vmbuilder/postinst.sh',
+        source  => 'puppet:///modules/labs_vmbuilder/postinst.sh',
         require => Package['python-vm-builder'],
     }
 
     file { '/etc/vmbuilder/firstscripts/firstboot.sh':
         mode    => '0555',
-        source  => 'puppet:///labs_vmbuilder/firstboot.sh',
+        source  => 'puppet:///modules/labs_vmbuilder/firstboot.sh',
         require => Package['python-vm-builder'],
     }
 
@@ -36,7 +36,7 @@ class labs_vmbuilder($vmbuilder_version) {
 
     file { "${vmbuilder_filepath}/install_sudo.sh":
         mode    => '0555',
-        source  => 'puppet:///labs_vmbuilder/install_sudo.sh',
+        source  => 'puppet:///modules/labs_vmbuilder/install_sudo.sh',
         require => [Package['python-vm-builder'],
                     File["${vmbuilder_filepath}"],
                     ],
@@ -44,7 +44,7 @@ class labs_vmbuilder($vmbuilder_version) {
 
     file { "${vmbuilder_filepath}/vmbuilder.partition":
         mode    => '0555',
-        source  => 'puppet:///labs_vmbuilder/vmbuilder.partition',
+        source  => 'puppet:///modules/labs_vmbuilder/vmbuilder.partition',
         require => [Package['python-vm-builder'],
                     File["${vmbuilder_filepath}"],
                     ],
