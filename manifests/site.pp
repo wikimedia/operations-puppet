@@ -1459,6 +1459,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
     $ganglia_aggregator = true
 
+    include admin
     include standard
     include openstack::project-nfs-storage-service
     include rsync::server
