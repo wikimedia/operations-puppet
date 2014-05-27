@@ -74,13 +74,7 @@ class mediawiki::users {
         source  => 'puppet:///modules/mediawiki/authorized_keys.l10nupdate',
     }
 
-    $deployers_group = $::realm ? {
-      # Bug 65548: Older ldap accounts in labs have 'svn' as the default
-      # group rather than the 'wikidev' group.
-      'labs' => ['wikidev', 'svn'],
-      default => 'wikidev',
-    }
-    sudo_group { $deployers_group:
+    sudo_group { 'wikidev':
         privileges => [
             'ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
             'ALL = (root) NOPASSWD: /sbin/restart twemproxy',
