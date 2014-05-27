@@ -2484,8 +2484,6 @@ node 'stat1003.wikimedia.org' {
     include standard
     include admins::roots
 
-    class { 'admin': groups => ['researchers'] }
-
     # stat1003 has a public IP and should be pretty
     # well firewalled off.  If it needs a specific
     # service opened up, this will be done in
@@ -2504,6 +2502,7 @@ node 'stat1003.wikimedia.org' {
     include accounts::ezachte
     include accounts::milimetric   # RT 3540
     include accounts::diederik
+    include accounts::dartar
     include accounts::halfak
     include accounts::howief       # RT 3576
     include accounts::ironholds
