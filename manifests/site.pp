@@ -951,6 +951,7 @@ node 'dysprosium.eqiad.wmnet' {
         interface => 'eth0',
     }
 
+    include admin
     include standard
 }
 
