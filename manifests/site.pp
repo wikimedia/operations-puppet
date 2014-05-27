@@ -373,6 +373,8 @@ node 'carbon.wikimedia.org' {
 node 'caesium.eqiad.wmnet' {
     $cluster = 'misc'
 
+    class { 'admin': groups => ['releasers-mediawiki',
+                                'releasers-mobile'] }
     class { 'base::firewall': }
 
     include admin
