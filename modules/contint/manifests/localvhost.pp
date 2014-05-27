@@ -35,6 +35,8 @@ define contint::localvhost(
         default      => true,
     }
 
+    apache_module { "${name}_apache_mod_rewrite": name => 'rewrite' }
+
     file { "/etc/apache2/conf.d/listen-localhost-${port}":
         content => template('contint/apache/listen.erb'),
     }
