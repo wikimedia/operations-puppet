@@ -1,4 +1,4 @@
-# == Class: spamasssassin
+# == Class: spamassassin
 #
 # This class installs & manages SpamAssassin, http://spamassassin.apache.org/
 #
