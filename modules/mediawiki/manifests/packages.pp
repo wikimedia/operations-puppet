@@ -42,6 +42,7 @@ class mediawiki::packages {
         'make',
         'ocaml',
         'ploticus',
+        'mediawiki-math-texvc',
     ]:
         ensure => present,
     }
