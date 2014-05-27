@@ -975,6 +975,7 @@ node 'ekrem.wikimedia.org' {
 
 node 'tarin.pmtpa.wmnet' {
     $ganglia_aggregator = true
+    include admin
     include standard
     include role::poolcounter
 }
