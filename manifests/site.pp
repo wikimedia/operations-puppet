@@ -375,6 +375,7 @@ node 'caesium.eqiad.wmnet' {
 
     class { 'base::firewall': }
 
+    include admin
     include standard
     include role::releases
 }
