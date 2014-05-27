@@ -956,9 +956,12 @@ node 'dysprosium.eqiad.wmnet' {
 }
 
 node 'eeden.esams.wikimedia.org' {
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+
+    include admin
     include role::authdns::ns2
 }
 
