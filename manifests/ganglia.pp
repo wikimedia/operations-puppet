@@ -294,7 +294,7 @@ class ganglia::collector::config {
                     'API application servers eqiad'  => 'mw1114.eqiad.wmnet mw1115.eqiad.wmnet',
                     'Application servers eqaid'      => 'mw1017.eqiad.wmnet mw1018.eqiad.wmnet',
                     'Jobrunners eqiad'              => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
-                    'Bits application servers eqiad' => 'mw1151.eqiad.wmnet mw1152.eqiad.wmnet',
+                    'Bits application servers eqiad' => 'mw1152.eqiad.wmnet',
                     'MySQL'                          => 'db1050.eqiad.wmnet',
                     'PDF servers'                    => 'pdf2.wikimedia.org pdf3.wikimedia.org',
                     'Miscellaneous'                  => 'tarin.pmtpa.wmnet',
