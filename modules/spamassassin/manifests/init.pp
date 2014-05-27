@@ -36,6 +36,10 @@
 # [*custom_scores*]
 #  Provide custom scores to existing tests. Hash of score => value, defaults
 #  to an empty hash.
+#
+# [*debug_logging*]
+#  Enable debug logging. Defaults to none. Example: "--debug spf"
+#  See: http://wiki.apache.org/spamassassin/DebugChannels
 
 class spamassassin(
     $required_score = '5.0',
@@ -48,6 +52,7 @@ class spamassassin(
     $spamd_user  = 'spamd',
     $spamd_group = 'spamd',
     $custom_scores = {},
+    $debug_logging = '',
 ) {
     package { 'spamassassin':
         ensure => present,

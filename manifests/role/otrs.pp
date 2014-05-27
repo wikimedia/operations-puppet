@@ -100,6 +100,7 @@ class role::otrs {
             'SUSPICIOUS_RECIPS' => '2.000',
             'DEAR_SOMETHING'    => '1.500',
         },
+        debug_logging => '--debug spf',
     }
 
     class { 'exim::roled':
