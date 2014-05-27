@@ -1516,6 +1516,7 @@ node 'linne.wikimedia.org' {
         address   => '208.80.152.143',
     }
 
+    include admin
     include base
     include ganglia
     include exim::simple-mail-sender
