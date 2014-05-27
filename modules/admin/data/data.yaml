@@ -69,6 +69,10 @@ groups:
     gid: 710
     description: does work on dataset hosts
     members: [brion]
+  udp2log-users:
+    gid: 710
+    description: general user tasks for udp2log (RT 5391)
+    members: [tnegrin]
 
 users:
   rush:
