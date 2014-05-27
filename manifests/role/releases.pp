@@ -47,6 +47,6 @@ class role::releases::groups {
 define role::releases::access ( $user=$title, $group='wikidev' ) {
     require 'role::releases::groups'
     require "accounts::${user}"
-    Class['role::releases::groups'] -> Class["accounts::${user}"]
+    Class['groups::wikidev'] -> Class['role::releases::groups'] -> Class["accounts::${user}"]
     User<|title == $user|>       { groups +> [ $group ] }
 }
