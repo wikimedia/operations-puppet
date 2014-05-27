@@ -44,8 +44,6 @@ class role::mediawiki {
         include standard
 
         if $::realm == 'production' {
-            include admins::roots
-            include admins::mortals
             include geoip
             include ::mediawiki
 

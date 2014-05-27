@@ -4,7 +4,6 @@
 # MediaWiki.
 #
 class mediawiki::users {
-    include groups::wikidev
 
     # For legacy reasons, we run Apache / MediaWiki using an 'apache' user
     # rather than use the Debian default 'www-data'. The name, gid, home,
