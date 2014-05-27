@@ -159,8 +159,7 @@ class misc::deployment::scap_scripts {
             ensure => link,
             target => '/srv/deployment/scap/scap/bin/scap-purge-l10n-cache';
         '/usr/local/bin/sync-common-file':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/sync-common-file';
+            ensure => absent;
         '/usr/local/bin/sync-dblist':
             ensure => link,
             target => '/srv/deployment/scap/scap/bin/sync-dblist';
