@@ -916,6 +916,8 @@ node /^dbstore1002\.eqiad\.wmnet/ {
 }
 
 node 'dobson.wikimedia.org' {
+    include admin
+
     interface::ip { 'dns::recursor':
         interface => 'eth0',
         address   => '208.80.152.131',
