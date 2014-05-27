@@ -2484,7 +2484,7 @@ host mw1162 {
 }
 
 host mw1163 {
-	hardware ethernet 90:B1:1C:27:A3:C2;
+	hardware ethernet F0:1F:AF:CF:4A:27;
 	fixed-address mw1163.eqiad.wmnet;
 }
 
