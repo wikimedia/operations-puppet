@@ -1439,6 +1439,10 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     $ldapincludes = ['openldap', 'nss', 'utils']
 
     $ganglia_aggregator = true
+    interface::aggregate { 'bond0':
+        orig_interface => 'eth0',
+        members        => [ 'eth0', 'eth1' ],
+    }
 
     #ops group gid is wrong and I don't know why - Chase
     #include admin
