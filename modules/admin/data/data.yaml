@@ -65,6 +65,10 @@ groups:
     description: manage elasticsearch nodes
     members: [manybubbles, demon]
     privs: ['ALL = NOPASSWD: ALL']
+  dataset-admins:
+    gid: 709
+    description: does work on dataset hosts
+    members: [brion]
 
 users:
   rush:

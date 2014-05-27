@@ -596,9 +596,8 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
 node 'dataset2.wikimedia.org' {
     $cluster = 'misc'
-    $gid= '500'
 
-    include accounts::brion
+    class { 'admin': groups => [dataset-admins] }
 #    include role::download::primary
     include role::dataset::secondary
     include role::download::wikimedia
@@ -606,16 +605,17 @@ node 'dataset2.wikimedia.org' {
 
 node 'dataset1001.wikimedia.org' {
     $cluster = 'misc'
-    $gid= '500'
+
     interface::aggregate { 'bond0':
         orig_interface => 'eth0',
         members        => [ 'eth0', 'eth1' ],
     }
 
+    class { 'admin': groups => [dataset-admins] }
+
     include role::diamond
-    include accounts::brion
-#    include role::download::secondary
     include role::dataset::primary
+#    include role::download::secondary
     include role::download::wikimedia
 }
 
