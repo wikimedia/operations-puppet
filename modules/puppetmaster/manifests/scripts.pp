@@ -3,27 +3,32 @@
 # This class installs some puppetmaster server side scripts required for the
 # manifests
 class puppetmaster::scripts {
-    file {
-        '/usr/local/bin/uuid-generator':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            source  => 'puppet:///modules/puppetmaster/uuid-generator';
-        '/usr/local/bin/naggen':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            source  => 'puppet:///modules/puppetmaster/naggen';
-        '/usr/local/sbin/puppetstoredconfigclean.rb':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            source  => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb';
-        '/usr/local/bin/puppet-merge':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            source  => 'puppet:///modules/puppetmaster/puppet-merge';
+
+    require puppetmaster::naggen2
+
+    file {'/usr/local/bin/uuid-generator':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/puppetmaster/uuid-generator',
+    }
+    file {'/usr/local/bin/naggen':
+        ensure  => 'absent',
+    }
+    file {'/usr/local/sbin/puppetstoredconfigclean.rb':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb'
+    }
+    file{'/usr/local/bin/puppet-merge':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/puppetmaster/puppet-merge'
     }
 
     # Clear out reports older than 36 hours.
@@ -34,5 +39,4 @@ class puppetmaster::scripts {
         hour    => [4,16],
         minute  => 27,
     }
-
 }
