@@ -2878,6 +2878,7 @@ node /virt100[8-9].eqiad.wmnet/ {
 node 'iodine.wikimedia.org' {
     class { 'base::firewall': }
 
+    include admin
     include role::diamond
     include role::otrs
 
