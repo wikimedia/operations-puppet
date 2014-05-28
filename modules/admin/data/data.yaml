@@ -105,6 +105,25 @@ groups:
     gid: 717
     description: various search testing
     members: [manybubbles]
+  contint-users:
+    gid: 718
+    description: users with accounts on jenkins hosts
+    members: [aaron,csteipp]
+  contint-admins:
+    gid: 719
+    description: users with some sudo permissions on jenkins hosts
+    members: [bd808, demon, krinkle, reedy, marktraceur]
+    privs: ['ALL = (jenkins) NOPASSWD: ALL',
+            'ALL = (jenkins-slave) NOPASSWD: ALL',
+            'ALL = (gerritslave) NOPASSWD: ALL',
+            'ALL = NOPASSWD: /etc/init.d/jenkins',
+            'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
+            'ALL = (postgres) NOPASSWD: /usr/bin/psql']
+  contint-roots:
+    gid: 720
+    description: users who have full root on jenkins servers
+    members: [hashar]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
