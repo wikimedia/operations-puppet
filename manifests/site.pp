@@ -1553,6 +1553,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         $nameservers_prefix = [ '208.80.154.157', '208.80.154.50' ]
     }
     $cluster = 'lvs'
+    include admin
     include role::lvs::balancer
     include role::diamond
 
@@ -1680,6 +1681,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 #        $ganglia_aggregator = true
 #    }
     $cluster = 'lvs'
+    include admin
     include role::lvs::balancer
     include role::diamond
 
@@ -1720,6 +1722,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
+    include admin
     include role::lvs::balancer
     include role::diamond
 
