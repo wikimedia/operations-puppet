@@ -1802,7 +1802,10 @@ node 'rubidium.wikimedia.org' {
 node 'mchenry.wikimedia.org' {
 
     include base
-    include admin
+
+    #admin will complete with benign errors
+    #commenting to keep puppet noise to a minimum for now
+    #include admin
     include ganglia
     include ntp::client
     include dns::recursor::statistics
