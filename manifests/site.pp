@@ -143,12 +143,13 @@ node 'analytics1009.eqiad.wmnet' {
     $cluster = 'analytics'
     # analytics1009 is analytics Ganglia aggregator for Row A
     $ganglia_aggregator = true
+
+    class { 'admin':
+        groups => ['stats',
+                   'analytics-roots'],
+    }
+
     include standard
-    include admins::roots
-
-    # include analytics user accounts
-    include role::analytics::users
-
     include role::analytics::kraken
     include role::analytics::hadoop::standby
 }

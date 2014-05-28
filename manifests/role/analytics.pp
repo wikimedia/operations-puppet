@@ -39,34 +39,10 @@ class role::analytics::clients {
 # have accounts.  I.e. hadoop related nodes.
 # Users do not need accounts on Kafka or Zookeeper nodes.
 class role::analytics::users {
+
     # Analytics user accounts will be added to the
     # 'stats' group which gets created by this class.
     require misc::statistics::user
-
-    include accounts::diederik,
-        accounts::dsc,
-        accounts::otto,
-        accounts::dartar,
-        accounts::erosen,
-        accounts::olivneh,
-        accounts::erik,
-        accounts::milimetric,
-        accounts::yurik,     # RT 5158
-        accounts::spetrea,   # RT 4402
-        accounts::ram,       # RT 5059
-        accounts::maryana,   # RT 5017
-        accounts::halfak,    # RT 5233
-        accounts::dr0ptp4kt, # RT 5273
-        accounts::qchris,    # RT 5403
-        accounts::tnegrin,   # RT 5391
-        accounts::ironholds, # RT 5831
-        accounts::dartar,    # RT 5835
-        accounts::halfak,    # RT 5836
-        accounts::yuvipanda, # RT 6103
-        accounts::csalvia,   # RT 6664
-        accounts::nuria,     # RT 6683
-        accounts::sahar,     # RT 6767
-        accounts::kleduc     # RT 7425
 
     # NOTE:  If you are filling an RT request for Hadoop access,
     # you will need to add the user to the list of accounts above,
@@ -77,23 +53,6 @@ class role::analytics::users {
     #   sudo -u hdfs hadoop fs -mkdir /user/<username>
     #   sudo -u hdfs hadoop fs -chown <username>:stats /user/<username>
     #
-
-    # Users in the stats group will be able to read private data in HDFS.
-    User<|title == milimetric|>  { groups +> [ 'stats' ] }
-    User<|title == yurik|>       { groups +> [ 'stats' ] }
-    User<|title == dartar|>      { groups +> [ 'stats' ] }
-    User<|title == dsc|>         { groups +> [ 'stats' ] }
-    User<|title == diederik|>    { groups +> [ 'stats' ] }
-    User<|title == erik|>        { groups +> [ 'stats' ] }
-    User<|title == erosen|>      { groups +> [ 'stats' ] }
-    User<|title == olivneh|>     { groups +> [ 'stats' ] }
-    User<|title == otto|>        { groups +> [ 'stats' ] }
-    User<|title == spetrea|>     { groups +> [ 'stats' ] }
-    User<|title == dr0ptp4kt|>   { groups +> [ 'stats' ] }
-    User<|title == qchris|>      { groups +> [ 'stats' ] }
-    User<|title == csalvia|>     { groups +> [ 'stats' ] }
-    User<|title == nuria|>       { groups +> [ 'stats' ] }
-    User<|title == kleduc|>      { groups +> [ 'stats' ] }
 
     # If hdfs user exists, then add it to the stats group.
     # I don't want to use puppet types to manage the hdfs
@@ -108,7 +67,4 @@ class role::analytics::users {
         path    => '/usr/sbin:/usr/bin:/bin',
         require => Group['stats'],
     }
-
-    # Diederik and Otto have sudo privileges on Analytics nodes.
-    sudo_user { [ 'diederik', 'otto' ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 }
