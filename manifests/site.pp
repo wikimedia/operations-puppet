@@ -2133,6 +2133,7 @@ node 'nickel.wikimedia.org' {
     $ganglia_aggregator = true
 
     include standard
+    include admin
     include ganglia::web
     include misc::monitoring::views
 
