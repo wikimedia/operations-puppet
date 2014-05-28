@@ -2685,6 +2685,7 @@ node 'tin.eqiad.wmnet' {
     include admins::mortals
     include generic::wikidev-umask
     include role::deployment::deployment_servers::production
+    include mediawiki::sync
     include misc::deployment
     include misc::deployment::scap_scripts
     include misc::deployment::l10nupdate
