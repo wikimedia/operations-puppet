@@ -1154,7 +1154,6 @@ node 'gallium.wikimedia.org' {
     include role::ci::slave
     include role::ci::website
     include role::zuul::production
-    include admins::roots
 
     # gallium received a SSD drive (RT #4916) mount it
     file { '/srv/ssd':
@@ -1473,7 +1472,6 @@ node 'lanthanum.eqiad.wmnet' {
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
     include standard
-    include admins::roots
     include role::ci::slave  # RT #5074
 
     # lanthanum received a SSD drive just like gallium (RT #5178) mount it
