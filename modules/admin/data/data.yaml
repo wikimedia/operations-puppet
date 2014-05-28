@@ -103,7 +103,7 @@ groups:
     privs: ['ALL = NOPASSWD: ALL']
   search-users:
     gid: 717
-    description: various search testing
+    description: elastic search testing
     members: [manybubbles]
   contint-users:
     gid: 718
@@ -124,6 +124,13 @@ groups:
     description: users who have full root on jenkins servers
     members: [hashar]
     privs: ['ALL = NOPASSWD: ALL']
+  stats:
+    gid: 1001
+    description: temp -- should become analytics-users.  provides
+                 access to sensitive analytics data.
+    members: [dartar, erik, milimetric, yurik, maryana,
+              halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
+              kleduc, nuria]
 
 users:
   rush:
