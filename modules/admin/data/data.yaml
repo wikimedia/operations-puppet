@@ -86,6 +86,16 @@ groups:
     description: users with access to research db
     members: [dartar]
     privs: ['ALL = NOPASSWD: cat /srv/passwords/researchdb']
+  ldap-admins:
+    gid: 715
+    description: ldap admins
+    members: [robla, reedy, demon]
+    privs: ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
+            'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
+            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
+            'ALL = NOPASSWD: /usr/local/bin/svn-group',
+            'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
+            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group']
 
 users:
   rush:
