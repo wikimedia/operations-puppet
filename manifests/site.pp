@@ -1851,11 +1851,13 @@ node /mobile100[1-4]\.wikimedia\.org/ {
 }
 
 node 'ms1001.wikimedia.org' {
+    include admin
     include standard
 #    include role::mirror::media
 }
 
 node 'ms1002.eqiad.wmnet' {
+    include admin
     include standard
 }
 
@@ -1863,6 +1865,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
     $cluster = 'misc'
     $ganglia_aggregator = true
 
+    include admin
     include standard
 }
 
