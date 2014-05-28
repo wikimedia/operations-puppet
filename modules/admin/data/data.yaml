@@ -103,7 +103,7 @@ groups:
     privs: ['ALL = NOPASSWD: ALL']
   search-users:
     gid: 717
-    description: various search testing
+    description: elastic search testing
     members: [manybubbles]
   contint-users:
     gid: 718
@@ -124,6 +124,13 @@ groups:
     description: users who have full root on jenkins servers
     members: [hashar]
     privs: ['ALL = NOPASSWD: ALL']
+  stats:
+    gid: 1001
+    description: temp -- should become analytics-users.  provides
+                 access to sensitive analytics data.
+    members: [dartar, erik, milimetric, yurik, maryana,
+              halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
+              csaliva, kleduc, nuria]
 
 users:
   rush:
@@ -708,7 +715,7 @@ users:
     gid: 500
     name: jdlrobson
     realname: Jon Robson
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD0Dxmydx5Ep7f892alwpB7YZ2684vWPBfRFubxwGjaG9gazYImKpAm2yeuCmB5lUcFqhLoVzqJfp3yx1GMK6XHPqCqYZ4FaJ2huAURDLYen/9/o1D+uZh4/033nbWBKbUoMPPLR/5dkCw1z1RKAecais0AtAcxhX9sZvoPf9Pu7DfAVgub/4AdpBYzKO3uwIwIdrxI2QyBKCHTG6yGG6D3lh5AGSrga3rmss2JhIp/TpdYrrzsAAaDsnaeu3q6OzE5OwGJzkdoZAcDT5rDsCXUUAwx3WyZtPNJzXaFpX6tvw6IK9cNCcy+oaIFRsz9XNHLvbke0MN0ctyZo2QQ4wh
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD0Dxmydx5Ep7f892alwpB7YZ2684vWPBfRFubxwGjaG9gazYImKpAm2yeuCmB5lUcFqhLoVzqJfp3yx1GMK6XHPqCqYZ4FaJ2huAURDLYen/9/o1D+uZh4/033nbWBKbUoMPPLR/5dkCw1z1RKAecais0AtAcxhX9sZvoPf9Pu7DfAVgub/4AdpBYzKO3uwIwIdrxI2QyBKCHTG6yGG6D3lh5AGSrga3rmss2JhIp/TpdYrrzsAAaDsnaeu3q6OzE5OwGJzkdoZAcDT5r\DsCXUUAwx3WyZtPNJzXaFpX6tvw6IK9cNCcy+oaIFRsz9XNHLvbke0MN0ctyZo2QQ4wh
         jdlrobson@gmail.com]
     uid: 2155
   khorn:
