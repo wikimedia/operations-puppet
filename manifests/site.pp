@@ -2184,6 +2184,7 @@ node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 
 node 'palladium.eqiad.wmnet' {
     include standard
+    include admin
     include backup::client
     include misc::management::ipmi
     include role::salt::masters::production
