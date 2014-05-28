@@ -81,6 +81,9 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
         setting   => 'gro',
         value     => 'off',
     }
+
+    # RPS/RSS config for interface performance
+    interface::rps { 'eth0': }
 }
 
 # amssq47 is a text varnish
@@ -1643,6 +1646,12 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         setting   => 'gro',
         value     => 'off',
     }
+
+    # RPS/RSS config for interface performance
+    interface::rps { 'eth0': }
+    interface::rps { 'eth1': }
+    interface::rps { 'eth2': }
+    interface::rps { 'eth3': }
 }
 
 # ESAMS lvs servers
@@ -1683,6 +1692,9 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
         setting   => 'lro',
         value     => 'off',
     }
+
+    # RPS/RSS config for interface performance
+    interface::rps { 'eth0': }
 }
 
 # ULSFO lvs servers
@@ -1714,6 +1726,9 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
         setting   => 'lro',
         value     => 'off',
     }
+
+    # RPS/RSS config for interface performance
+    interface::rps { 'eth0': }
 }
 
 node 'magnesium.wikimedia.org' {
