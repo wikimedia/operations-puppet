@@ -2353,11 +2353,11 @@ node /^searchidx100[0-2]\.eqiad\.wmnet/ {
 }
 
 node 'silver.wikimedia.org' {
+    class { 'admin': groups => ['ldap-admins'] }
     include standard
-    include groups::wikidev
     include mobile::vumi
     include mobile::vumi::udp2log
-    include role::ldap::operations
+    include ldap::role::client::labs
 }
 
 node 'sodium.wikimedia.org' {
