@@ -1846,6 +1846,7 @@ node 'mexia.wikimedia.org' {
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
+    include admin
     include standard-noexim
 }
 
