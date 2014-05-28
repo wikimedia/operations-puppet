@@ -2143,6 +2143,7 @@ node 'nickel.wikimedia.org' {
 node 'nitrogen.wikimedia.org' {
 
     include standard
+    include admin
     include role::ipv6relay
 
     interface::add_ip6_mapped { 'main':
