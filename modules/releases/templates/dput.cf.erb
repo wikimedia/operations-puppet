@@ -1,0 +1,6 @@
+[releases.wikimedia.org]
+fqdn = releases.wikimedia.org
+method = scp
+login = *
+incoming = <%= "#{@archive_dir}/mini-dinstall/incoming" %>
+post_upload_command = ssh releases.wikimedia.org "sudo -u mini-dinstall mini-dinstall -b -c <%= "#{@root_dir}/mini-dinstall.conf" %>"
