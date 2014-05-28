@@ -1795,13 +1795,14 @@ node 'rubidium.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    include admin
     include role::authdns::ns0
 }
 
 node 'mchenry.wikimedia.org' {
-    $gid = '500'
 
     include base
+    include admin
     include ganglia
     include ntp::client
     include dns::recursor::statistics
@@ -1809,8 +1810,6 @@ node 'mchenry.wikimedia.org' {
     include backup::client
     include privateexim::aliases::private
     include exim::stats
-    include groups::wikidev
-    include accounts::jdavis
     include network::constants
 
     interface::ip { 'dns::recursor':
@@ -1839,6 +1838,7 @@ node 'mexia.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    include admin
     include role::authdns::ns1
 }
 
