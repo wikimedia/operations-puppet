@@ -1884,6 +1884,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 
     class { 'lvs::realserver': realserver_ips => [ '10.2.2.27' ] }
 
+    include admin
     include role::swift::eqiad-prod::proxy
     include role::diamond
 }
@@ -1897,6 +1898,7 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
     ]
 
+    include admin
     include role::swift::eqiad-prod::storage
 
     swift::create_filesystem{ $all_drives: partition_nr => '1' }
@@ -1910,6 +1912,7 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     $cluster = 'swift'
     $nagios_group = 'swift'
+    include admin
     include role::swift::esams-prod::proxy
 }
 
@@ -1923,6 +1926,7 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
         '/dev/sdk', '/dev/sdl'
     ]
 
+    include admin
     include role::swift::esams-prod::storage
 
     swift::create_filesystem{ $all_drives: partition_nr => '1' }
