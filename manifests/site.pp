@@ -1136,7 +1136,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 node 'gallium.wikimedia.org' {
     $cluster = 'misc'
 
-    class { 'admin': groups => ['contint-users','contint-admins','contint-roots'] }
+    class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
     # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
     sudo_user { 'jenkins-slave':
@@ -1467,7 +1467,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
 node 'lanthanum.eqiad.wmnet' {
 
-    class { 'admin': groups => ['contint-users','contint-admins','contint-roots'] }
+    class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
     include standard
     include admins::roots
