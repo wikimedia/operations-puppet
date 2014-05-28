@@ -2752,6 +2752,7 @@ node 'vanadium.eqiad.wmnet' {
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
     include standard
+    include admin
     include role::eventlogging::graphite
     include role::webperf
 }
