@@ -1,0 +1,18 @@
+[DEFAULT]
+mail_to = root
+verify_sigs = 0
+incoming_permissions = 0000
+architectures = all, i386, amd64
+archive_style = simple-subdir
+dynamic_reindex = 0
+archivedir = <%= @archive_dir %>
+keep_old = 1
+generate_release = 1
+release_origin = wmf
+release_label = wmf
+release_description = MediaWiki software packages from Wikimedia Foundation
+release_signscript = <%= @sign_release_path %>
+
+[wmf-production]
+release_suite = wmf-production
+release_codename = wmf-production
