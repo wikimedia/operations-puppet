@@ -1,0 +1,13 @@
+#!/bin/bash -eu
+
+[ -d "$GNUPGHOME" ] || { echo "no \$GNUPGHOME found"; exit 1; }
+[ -z "$KEYID" ] || { echo "\$KEYID not set"; exit 1; }
+
+# init gpg
+gpg --help 1>/dev/null 2>&1 || true
+
+rm -f Release.gpg.tmp InRelease.tmp
+gpg --no-tty --batch --default-key "$KEYID" --detach-sign -o Release.gpg.tmp "$1"
+mv Release.gpg.tmp Release.gpg
+gpg --no-tty --batch --default-key "$KEYID" --clearsign -o InRelease.tmp "$1"
+mv InRelease.tmp InRelease

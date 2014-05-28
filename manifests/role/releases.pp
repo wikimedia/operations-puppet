@@ -11,6 +11,10 @@ class role::releases {
         docroot      => 'releases',
     }
 
+    class { '::releases::mini_dinstall':
+        keyid     => '1234567',
+    }
+
     ferm::service { 'releases_http':
         proto => 'tcp',
         port  => '80',
