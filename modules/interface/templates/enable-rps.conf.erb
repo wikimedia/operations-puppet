@@ -1,9 +1,9 @@
 # enable-rps
 
-description "Enable RPS on <%= @interface %> RX queues"
+description "Enable RPS/RSS on <%= @interface %> RX queues"
 
 start on filesystem
 task
 script
-	interface-rps <%= @interface %>
+	interface-rps <%= @interface %> <%= @rss_pattern %>
 end script
