@@ -1845,11 +1845,6 @@ node 'mexia.wikimedia.org' {
     include role::authdns::ns1
 }
 
-node /mobile100[1-4]\.wikimedia\.org/ {
-    include admin
-    include standard-noexim
-}
-
 node 'ms1001.wikimedia.org' {
     include admin
     include standard
