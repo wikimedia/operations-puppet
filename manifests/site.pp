@@ -2743,6 +2743,7 @@ node 'tridge.wikimedia.org' {
     }
 
     include base
+    include admin
     include backup::server
 }
 
