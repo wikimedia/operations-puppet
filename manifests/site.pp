@@ -2425,6 +2425,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 
 node 'strontium.eqiad.wmnet' {
     include standard
+    include admin
     include role::puppetmaster::backend
 }
 
