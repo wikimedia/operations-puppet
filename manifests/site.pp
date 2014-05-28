@@ -2902,6 +2902,7 @@ node 'ytterbium.wikimedia.org' {
 node 'zinc.eqiad.wmnet' {
 
     include standard
+    include admin
     include role::solr::ttm
 }
 
