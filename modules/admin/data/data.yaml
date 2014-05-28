@@ -10,7 +10,7 @@ groups:
     gid: 700
     description: include everywhere ops folks
     members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, catrope,
-              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling]
+              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling, ori]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
@@ -944,3 +944,11 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDTDmIgbftdeyF3wvKYbqbo9ktgS134XNt9LCfryDohCClsujY83seA0BE9FyO3cJDYwt75frBf3m0JZcI0x9NXwuK73pVp3PJuzUk7nQ77BP4hbSWGbDYNDjYdZp0IZSRBYs/A+y8NKhYiDoyAep+JrM9FvVVGEh+gB/BPizYNv1ru+IXXL7FcVRMc1AUTDf30zZhEyj+/MoYs4m5YMMOW7Qg5FEyVFAOeTg95HZHAtAOwMeycbrueqf9qlIm0kNC5NWHMthWklCY7R2gVRcbYdoYuTJYLSVBs3Vbhygk+M+KqeNEx5+GJX45PAWb+qfRHE5GbsNuo4RjhyTcSBOWt6mx8VyOiSHhHRA/AFDOHzR6VqlM4buHXGARFgbTM7ypv5eiXyIWhYhohyQHJg9IuyPvL3LtHcixgay+0aytot+/9Dp8JQ5OtuzRzYo8AwwfnihF4uQ96u2TKAkkINsVQpc1haERbR3JmQHEwujg/iAj8q9CoUYtvdINfMTg7n1IjzdPFXS6lCv8WeDnQPhcmivz9Psjyrs3nCGlHmox45bAD4Snonp0xQ0Nbd6Qw2DDQh7YTt5sutay00V0FYGVyGLJdlY/CEFHsauQJIILwzxw3PTEYWHEakFnGEaJWdWPMSlNJ1i1OGA1ulg1FJj4RAQyK/mlHMMFTiEE29of6HQ== tstarling@fenari
       - ssh-dss AAAAB3NzaC1kc3MAAACBAMa+T44Jat4ZubaZtanOlvq+7vj2Vn2vdOoAeafH3EBiXRc3FWxbL7MUInttfVMAQ+kKpMFrMfyZLCr+xfe2266zL9NuRN+0NK0unHnUJxKFg1xhlwM/miLuVIRPNYjx0hb5bnEqEdaHWhzDAac2Th8t4l3Bkx6irtLkEbG5X7rbAAAAFQDPx0nvVb7kjyGUtRpUSQgWqwO8BwAAAIB6ywz35DCRnX1wb6d+rjxR2bzzpI0EBe0XFs+EhWGcphAmc01gVOQj/cgM8X9lWzbzcepN/VLJLNYZDmhT7BCQx1bI+3mYMdHin5aTA1yLo0sNbTu5ECbe4cPywdWkRbUVXFFtxG9+xXd6l7TLUV0ZweFiV3hmeB+hKoisV0L/GQAAAIAF76e/8Nf7K67DM2DlYmjrfJYG0fC8WwbARKIldylkiVrADY8DFdc+dEXbUFlqvSMX0wyWS19zlC0XbkA+6EwIMfbEfukJoo84ygOhcdiqySn3JGxyQpuBQfiHK06oLxqNxpxs2R26/beqzkIzzIx8wXDN+UmjZUDuIVvYlWUWsA== home
     uid: 501
+  ori:
+    ensure: present
+    gid: 500
+    name: ori
+    realname: Ori Livneh
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDU6nsR19aZ2Ck2HSkdJPdx9rmw8H6UrPlHIBvt1loL8Kku+5tggcE4uTlk/rc5+Fch6EF8un0kPKz55RQCDOhV/kFHrxstBCWf+PJQC1gL9vbqyzia0OyGpCsLzYO81v7NMxkg6gELtxLBtbqE8u7m4X+YkzMxNrlqPfHjIHrVqr4RbLkJiuPvI0VsesAoPCh2MEl0Gkzl+08GDpYplhsxFwPzo9xoFMUi/YCIMKTczOhdg6nPaBMxjUkz7EKPFI3MWZcfP/as3xNL1me7M5N1iJjveGz+rXDqMglub9gN1aDllytzhE0+6h8jEDzC9DtuxGXVB8M/9eCEWsOJlIur wmf
+    uid: 2220
