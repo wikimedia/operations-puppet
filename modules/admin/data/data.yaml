@@ -96,6 +96,11 @@ groups:
             'ALL = NOPASSWD: /usr/local/bin/svn-group',
             'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
             'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group']
+  search-roots:
+    gid: 716
+    description: non-ops admins for search
+    members: [manybubbles, demon]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
