@@ -2287,54 +2287,63 @@ node /^search100[0-6]\.eqiad\.wmnet/ {
         $ganglia_aggregator = true
     }
 
+    include admin
     include role::lucene::front_end::pool1
 }
 
 node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
+    include admin
     include role::lucene::front_end::pool2
 }
 
 node /^search101[1-4]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
+    include admin
     include role::lucene::front_end::pool3
 }
 
 node /^search101[56]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
+    include admin
     include role::lucene::front_end::pool4
 }
 
 node /^search10(19|20)\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
+    include admin
     include role::lucene::front_end::pool5
 }
 
 node /^search101[78]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
+    include admin
     include role::lucene::front_end::prefix
 }
 
 node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
+    include admin
     include role::lucene::front_end::pool4
 }
 
 node /^search102[3-4]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
+    include admin
     include role::lucene::front_end::pool3
 }
 
 node /^searchidx100[0-2]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
+    include admin
     include role::lucene::indexer
 }
 
