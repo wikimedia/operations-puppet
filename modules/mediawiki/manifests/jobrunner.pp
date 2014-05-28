@@ -40,4 +40,11 @@ class mediawiki::jobrunner (
             default => stopped,
         },
     }
+
+	# Manage gradual runner pipeline shrink bug
+	cron { 'mw-job-restarter':
+		command => "/etc/init.d/mw-job-runner restart",
+		user    => 'root',
+		hour    => '*/1'
+	}
 }
