@@ -50,7 +50,10 @@ class mediawiki::php(
     }
 
     file { '/etc/php5/conf.d/igbinary.ini':
-        ensure => absent,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///files/php/igbinary.ini',
     }
 
     file { '/etc/php5/conf.d/mail.ini':
