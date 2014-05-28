@@ -101,6 +101,10 @@ groups:
     description: non-ops admins for search
     members: [manybubbles, demon]
     privs: ['ALL = NOPASSWD: ALL']
+  search-users:
+    gid: 717
+    description: various search testing
+    members: [manybubbles]
 
 users:
   rush:

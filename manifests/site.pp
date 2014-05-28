@@ -125,13 +125,11 @@ node 'analytics1003.eqiad.wmnet' {
 
 node 'analytics1004.eqiad.wmnet' {
     include standard
-    include admins::roots
 
-    include role::analytics
-
-    # Nik is using this node while it is idle
+    # search-users using this node while it is idle
     # to do some elasticsearch testing.
-    include accounts::manybubbles
+    class { 'admin': groups => ['search-users'] }
+    include role::analytics
 }
 
 
