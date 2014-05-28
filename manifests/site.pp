@@ -2021,6 +2021,7 @@ node 'neon.wikimedia.org' {
     $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org'
 
     include standard
+    include admin
     include icinga::monitor
     include role::ishmael
     include role::echoirc
