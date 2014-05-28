@@ -1751,6 +1751,7 @@ node 'magnesium.wikimedia.org' {
 
     class { 'base::firewall': }
 
+    include admin
     include role::diamond
     include role::racktables
     include role::rt
