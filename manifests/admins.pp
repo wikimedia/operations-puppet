@@ -3959,22 +3959,6 @@ class admins::labs {
     include accounts::mhoover # access revoked
 }
 
-class admins::jenkins {
-    $gid = '500'  # 'wikidev' by default
-    include groups::wikidev
-    include jenkins::group
-
-    include accounts::aaron
-    include accounts::bd808
-    include accounts::csteipp
-    include accounts::demon
-    include accounts::dsc #account disabled
-    include accounts::hashar
-    include accounts::krinkle
-    include accounts::marktraceur
-    include accounts::reedy
-}
-
 class admins::dctech {
     include accounts::sbernardin
 }
