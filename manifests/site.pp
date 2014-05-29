@@ -2853,6 +2853,7 @@ node /virt100[1-7].eqiad.wmnet/ {
     $openstack_version = 'havana'
     $use_neutron = false
 
+    include admin
     include standard
     include role::nova::compute
     if $use_neutron == true {
