@@ -28,3 +28,9 @@
 [submodule "modules/mariadb"]
        path = modules/mariadb
        url = https://gerrit.wikimedia.org/r/operations/puppet/mariadb
+[submodule "modules/perl"]
+	path = modules/perl
+	url = https://gerrit.wikimedia.org/r/p/operations/puppet/perl
+[submodule "modules/puppi"]
+	path = modules/puppi
+	url = https://gerrit.wikimedia.org/r/p/operations/puppet/puppi
