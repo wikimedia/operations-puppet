@@ -11,9 +11,6 @@ class beta::common {
         ensure  => link,
         # Link to files managed by scap
         target  => $::beta::config::scap_deploy_dir,
-        # Create before wikimedia-task-appserver attempts
-        # to create /usr/local/apache/common.
-        before  => Package['wikimedia-task-appserver'],
         require => File['/usr/local/apache'],
     }
     file { '/usr/local/apache/common':

@@ -1,9 +1,4 @@
 class mediawiki::packages {
-
-    package { 'wikimedia-task-appserver':
-      ensure => absent,
-    }
-
     package { [
         'apache2-mpm-prefork',
         'imagemagick',
