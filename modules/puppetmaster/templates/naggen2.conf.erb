@@ -1,2 +1,2 @@
 [db]
-dsn = <%= scope.lookupvar('::puppet::config')['dbadapter'] %>://<%= scope.lookupvar('::puppet::config')['dbuser'] %>:<%= scope.lookupvar('::puppet::config')['dbpassword'] %>@<%= scope.lookupvar('::puppet::config')['dbserver']:3306/puppet
+dsn = <%= scope.lookupvar('::puppet::config')['dbadapter'] %>://<%= scope.lookupvar('::puppet::config')['dbuser'] %>:<%= scope.lookupvar('::puppet::config')['dbpassword'] %>@<%= scope.lookupvar('::puppet::config')['dbserver'] %>:3306/puppet
