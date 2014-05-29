@@ -1,7 +1,7 @@
 class mediawiki::packages {
 
     package { 'wikimedia-task-appserver':
-      ensure => latest,
+      ensure => absent,
     }
 
     # wikimedia-task-appserver depends on timidity, which recommends
