@@ -1,7 +1,7 @@
 class puppetmaster::naggen2($ensure = 'present'){
 
     $packages = ['python-jinja2', 'python-mysql', 'python-sqlalchemy']
-    ensure_packages($packages)
+    ensure_resource('package', $packages)
 
     file {'/usr/local/bin/naggen2':
         ensure  => 'present',
