@@ -2433,6 +2433,7 @@ node /ssl100[1-9]\.wikimedia\.org/ {
         interface => 'eth0',
     }
 
+    include admin
     include role::protoproxy::ssl
 }
 
@@ -2446,6 +2447,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
         interface => 'eth0'
     }
 
+    include admin
     include role::protoproxy::ssl
 }
 
