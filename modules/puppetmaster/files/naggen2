@@ -58,18 +58,22 @@ GROUP BY resources.id ORDER BY resources.title ASC"""
 """
     }
 
-    @staticmethod
-    def load_config(configfile):
-        config = configparser.SafeConfigParser()
-        config.read(configfile)
-        return config
+    def load_config(self, configfile):
+        self.config = configparser.SafeConfigParser()
+        self.config.read(configfile)
+        self.dsn = "{}://{}:{}@{}:3306/puppet".format(
+            self.config.get('master', 'dbadapter'),
+            self.config.get('master', 'dbuser'),
+            self.config.get('master', 'dbpassword'),
+            self.config.get('master', 'dbserver')
+        )
 
     def __init__(self, configfile, debug):
         self.log = logging.getLogger()
         self.log.debug('Loading configfile %s', configfile)
-        self.conf = self.load_config(configfile)
+        self.load_config(configfile)
         self.db_engine = sqlalchemy.create_engine(
-            self.conf.get('db', 'dsn'),
+            self.dsn,
             echo=debug
         )
         self.env = jinja2.Environment(
@@ -109,7 +113,7 @@ def main():
                         help="type of file to generate",
                         choices=['services', 'hosts', 'hostextinfo'])
     parser.add_argument(
-        '--configfile', '-c', dest='configfile', default='/etc/puppet/naggen.conf')
+        '--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
     parser.add_argument('--debug', action='store_true', default=False)
     args = parser.parse_args()
     loglevel = logging.DEBUG if args.debug else logging.INFO
