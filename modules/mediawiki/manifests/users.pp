@@ -26,6 +26,7 @@ class mediawiki::users {
         managehome => false,
     }
 
+
     # The mwdeploy account is used by various scripts in the MediaWiki
     # deployment process to run rsync.
 
@@ -87,5 +88,36 @@ class mediawiki::users {
     sudo_user { 'l10nupdate':
         require    => User['l10nupdate', 'mwdeploy'],
         privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'],
+    }
+
+
+    # The pybal-check account is used by PyBal to monitor server health
+    # See <https://wikitech.wikimedia.org/wiki/LVS#SSH_checking>
+
+    group { 'pybal-check':
+        ensure => present,
+    }
+
+    user { 'pybal-check':
+        ensure     => present,
+        gid        => 'pybal-check',
+        shell      => '/bin/sh',
+        home       => '/var/lib/pybal-check',
+        system     => true,
+        managehome => true,
+    }
+
+    file { '/var/lib/pybal-check/.ssh':
+        ensure  => directory,
+        owner   => 'pybal-check',
+        group   => 'pybal-check',
+        mode    => '0550',
+    }
+
+    file { '/var/lib/pybal-check/.ssh/authorized_keys':
+        owner   => 'pybal-check',
+        group   => 'pybal-check',
+        mode    => '0440',
+        source  => 'puppet:///modules/mediawiki/pybal_key',
     }
 }

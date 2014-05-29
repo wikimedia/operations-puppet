@@ -87,7 +87,6 @@ class role::mediawiki {
     # This class installs everything necessary for an apache webserver
     class webserver($maxclients="40") {
         include ::mediawiki,
-            ::mediawiki::pybal_check,
             role::mediawiki::common
 
         class { '::mediawiki::web':
