@@ -2136,6 +2136,7 @@ node 'nitrogen.wikimedia.org' {
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
+    include admin
     include standard-noexim
 }
 
