@@ -1072,7 +1072,7 @@ node 'fenari.wikimedia.org' {
      }
 
     include base
-    include role::mediawiki::maintenance
+    include role::mediawiki::common
     include sudo::appserver
     include subversion::client
     include nfs::netapp::home
@@ -2585,7 +2585,7 @@ node 'snapshot1003.eqiad.wmnet' {
 }
 
 node 'terbium.eqiad.wmnet' {
-    include role::mediawiki::maintenance
+    include role::mediawiki::common
     include role::db::maintenance
     include misc::monitoring::jobqueue
     include admins::roots
