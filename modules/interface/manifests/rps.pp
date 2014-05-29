@@ -6,14 +6,9 @@
 # - $interface:
 #   The network interface to operate on
 define interface::rps {
-    $interface = $title
+    require interface::rpstools
 
-    file { '/usr/local/sbin/interface-rps':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/interface/interface-rps.py',
-    }
+    $interface = $title
 
     file { "/etc/init/enable-rps-$interface.conf":
         owner   => 'root',
