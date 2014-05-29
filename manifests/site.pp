@@ -2683,18 +2683,11 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
+    class { 'admin': groups => ['logstash-roots'] }
+
     include standard
     include role::logstash
     include role::kibana
-    include groups::wikidev
-    include accounts::aaron
-    include accounts::bd808
-    include accounts::manybubbles
-    include accounts::demon
-
-    sudo_user { ['aaron', 'bd808', 'manybubbles', 'demon']:  # RT 6366, 6896
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
 }
 
 node 'tin.eqiad.wmnet' {

@@ -135,7 +135,11 @@ groups:
     gid: 721
     description: admins for pdf render (rt 6468)
     members: [mwalker]
-
+  logstash-roots:
+    gid: 722
+    description: users with root access on logstash nodes (rt 6366, 6896)
+    members: [aaron, bd808, manybubbles, demon]
+    privs: ['ALL = NOPASSWD: ALL']
 users:
   rush:
     ensure: present
