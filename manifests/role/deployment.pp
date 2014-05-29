@@ -138,6 +138,10 @@ class role::deployment::config {
         'grain'    => 'scap',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/scap',
     },
+    'apache-config/apache-config' => {
+        'grain'    => 'apache-config',
+        'upstream' => 'https://gerrit.wikimedia.org/r/operations/apache-config',
+    },
   }
 }
 

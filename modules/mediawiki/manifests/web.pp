@@ -3,6 +3,8 @@
 class mediawiki::web ( $maxclients = '40' ) {
     include ::mediawiki
 
+    deployment::target { 'apache-config': }
+
     file { '/etc/apache2/apache2.conf':
         owner   => 'root',
         group   => 'root',
