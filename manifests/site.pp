@@ -1907,6 +1907,7 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
+    include admin
     $cluster = 'jobrunner'
     if $::hostname =~ /^mw100[12]$/ {
         $ganglia_aggregator = true
