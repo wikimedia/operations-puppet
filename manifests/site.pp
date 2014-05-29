@@ -1750,6 +1750,9 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 }
 
 node /^rdb100[1-4]\.eqiad\.wmnet/ {
+
+    include admin
+
     $cluster = 'redis'
     $ganglia_aggregator = true
 
