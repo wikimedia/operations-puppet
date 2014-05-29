@@ -2898,6 +2898,7 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
 }
 
 node /^solr100[1-3]\.eqiad\.wmnet/ {
+    include admin
     include standard
     include role::solr::geodata
 }
