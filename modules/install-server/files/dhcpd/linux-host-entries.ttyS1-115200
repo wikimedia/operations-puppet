@@ -1436,6 +1436,11 @@ host manutius {
 	fixed-address manutius.wikimedia.org;
 }
 
+host mercury {
+	hardware ethernet f0:1f:af:e8:ab:4a;
+	fixed-address mercury.wikimedia.org;
+}
+
 host mc1001 {
 	hardware ethernet 00:1b:21:7a:88:0b;
 	fixed-address mc1001.eqiad.wmnet;
@@ -3171,6 +3176,11 @@ host terbium {
 	hardware ethernet 90:B1:1C:25:9D:72;
 	fixed-address terbium.eqiad.wmnet;
 	}
+
+host thallium {
+	hardware ethernet f0:1f:af:e6:68:c7;
+	fixed-address thallium.wikimedia.org;
+}
 
 host tin {
 	hardware ethernet 90:b1:1c:00:a4:1d;
