@@ -2216,6 +2216,7 @@ node 'pdf3.wikimedia.org' {
 
 node 'potassium.eqiad.wmnet' {
     include standard
+    include admin
     include role::poolcounter
 }
 
