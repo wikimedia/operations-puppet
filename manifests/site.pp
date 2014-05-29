@@ -2168,7 +2168,7 @@ node 'osmium.eqiad.wmnet' {
 # base_analytics_logging_node is defined in role/logging.pp
 node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
     include accounts::awjrichards
-    include accounts::datasets
+    include role::dataset::systemusers
     include accounts::dsc
     include accounts::diederik
     include accounts::manybubbles #RT 4312

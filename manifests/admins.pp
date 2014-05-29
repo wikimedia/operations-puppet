@@ -93,16 +93,6 @@ class groups {
         }
     }
 
-    class datasets {
-        group { 'datasets':
-            name      => 'datasets',
-            gid       => '10003',
-            alias     => '10003',
-            ensure    => 'present',
-            allowdupe => false,
-        }
-    }
-
     # group file_mover is used by fundraising
     # to move udp2log fundraising logs around.
     class file_mover {
@@ -1665,29 +1655,6 @@ class accounts {
                     user   => $username,
                     type   => 'ssh-rsa',
                     key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==';
-            }
-        }
-    }
-
-    class datasets inherits baseaccount {
-        $username = 'datasets'
-        $realname = 'datasets'
-        $uid      = '10003'
-        $gid      = '10003'
-
-        include groups::datasets
-
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
-        if $manage_home {
-            Ssh_authorized_key { require => Unixaccount[$realname]}
-
-            ssh_authorized_key {
-                'datasets@snapshot':
-                    ensure => 'present',
-                    user   => $username,
-                    type   => 'ssh-rsa',
-                    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAuLqmSdltCJzltgEin2j/72k/g7RroS1SE+Tvfh2JRPs2PhWweOJ+omtVp4x+YFNCGBg5wW2GaUnyZkUY0ARzv59aNLsGg87aCCY3J1oAudQ7b+yjrEaE8QebYDPmGTXRDV2osPbXf5UFTzl/O350vRy4q6UHRH+StflSOKhvundwf9QAs2RXNd+96kRe+r8YRcMBGmaJFX3OD9U+Z+gZID8knTvBceVGibEsnYKhHLXLYvMkQF3RfBuZHSsWZiiiXajlcutrLTo8eoG1nCj/FLK1slEXzgopcXEBiX1/LQAGXjgUVF7WmnKZELVCabqY6Qbk+qcmpaM8dL50P4WNdw==';
             }
         }
     }

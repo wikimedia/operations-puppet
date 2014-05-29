@@ -3,7 +3,7 @@ class role::snapshot::common {
 
     include admins::roots
     include admins::mortals
-    include accounts::datasets
+    include role::dataset::systemusers
     include sudo::appserver
 }
 
