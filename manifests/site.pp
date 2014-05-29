@@ -2776,6 +2776,7 @@ node 'hafnium.wikimedia.org' {
 
 # Primary Graphite, StatsD, and profiling data aggregation host.
 node 'tungsten.eqiad.wmnet' {
+    include admin
     include standard
     include role::graphite
     include role::txstatsd
