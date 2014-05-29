@@ -21,13 +21,20 @@ class role::analytics::hive::client {
     require role::analytics::zookeeper::config
     Class['role::analytics::hadoop::client'] -> Class['role::analytics::hive::client']
 
+    # HCatalog is used for it's SerDe, which powers webrequest table
+    $hive_auxpath = '/usr/lib/hcatalog/share/hcatalog/hcatalog-core-0.5.0-cdh4.3.1.jar'
+
     # include common labs or production hadoop configs
     # based on $::realm
     if ($::realm == 'labs') {
-        include role::analytics::hive::labs
+        class { 'role::analytics::hive::labs':
+            hive_auxpath => $hive_auxpath,
+        }
     }
     else {
-        include role::analytics::hive::production
+        class { 'role::analytics::hive::production':
+            hive_auxpath => $hive_auxpath,
+        }
     }
 
     # Include hcatalog class so that Hive client's can use
@@ -65,22 +72,24 @@ class role::analytics::hive::server inherits role::analytics::hive::client {
 # == Class role::analytics::hive::production
 # Installs and configures hive for WMF production environment.
 #
-class role::analytics::hive::production {
+class role::analytics::hive::production($hive_auxpath) {
     include passwords::analytics
 
     class { '::cdh4::hive':
         metastore_host  => 'analytics1027.eqiad.wmnet',
         jdbc_password   => $passwords::analytics::hive_jdbc_password,
         zookeeper_hosts => $role::analytics::zookeeper::config::hosts_array,
+        hive_auxpath    => $hive_auxpath,
     }
 }
 
 # == Class role::analytics::hive::labs
 # Installs and configures hive for WMF Labs environment.
 #
-class role::analytics::hive::labs {
+class role::analytics::hive::labs($hive_auxpath) {
     class { '::cdh4::hive':
         metastore_host  => $role::analytics::hadoop::labs::namenode_hosts[0],
         zookeeper_hosts => $role::analytics::zookeeper::config::hosts_array,
+        hive_auxpath    => $hive_auxpath,
     }
 }
