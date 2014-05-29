@@ -2865,6 +2865,20 @@ host praseodymium {
 	fixed-address praseodymium.eqiad.wmnet;
 }
 
+host rcs1001 {
+	hardware ethernet 78:2B:CB:1F:18:B0;
+	fixed-address rcs1001.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host rcs1002 {
+	hardware ethernet 78:2B:CB:2D:FA:E6;
+	fixed-address rcs1002.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host rdb1001 {
 	hardware ethernet 90:B1:1C:2D:7B:74;
 	fixed-address rdb1001.eqiad.wmnet;
