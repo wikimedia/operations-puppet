@@ -9,6 +9,6 @@ class puppetmaster::naggen2($ensure = 'present'){
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/puppetmaster/naggen2',
-        require => [File['/etc/puppet/naggen.conf'], Package[$packages]]
+        require => Package[$packages]
     }
 }
