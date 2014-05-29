@@ -2182,6 +2182,7 @@ node 'palladium.eqiad.wmnet' {
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
     $cluster = 'mysql'
+    include admin
     include role::db::core
     include mysql_wmf::mysqluser
     include mysql_wmf::datadirs
@@ -2198,19 +2199,17 @@ node 'pdf2.wikimedia.org' {
     $ganglia_aggregator = true
     $cluster = 'pdf'
 
+    class { 'admin': groups => ['pdf-render-admins'] }
     include role::pdf
-    include groups::wikidev
     include accounts::file_mover
-    include accounts::mwalker     #rt 6468
 }
 
 node 'pdf3.wikimedia.org' {
     $cluster = 'pdf'
 
+    class { 'admin': groups => ['pdf-render-admins'] }
     include role::pdf
-    include groups::wikidev
     include accounts::file_mover
-    include accounts::mwalker     #rt 6468
 }
 
 node 'potassium.eqiad.wmnet' {
