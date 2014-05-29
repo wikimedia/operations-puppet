@@ -1,5 +1,5 @@
 # Creates a system username with associated group, random uid/gid, and /bin/false as shell
-define generic::systemuser($name, $home=undef, $managehome=true, sshkey=undef, $shell='/bin/false', $groups=undef, $default_group=$name, $ensure=present) {
+define generic::systemuser($name, $home=undef, $managehome=true, $ssh_key=undef, $shell='/bin/false', $groups=undef, $default_group=$name, $ensure=present) {
     # FIXME: deprecate $name parameter in favor of just using $title
 
     if $default_group == $name {
@@ -30,7 +30,7 @@ define generic::systemuser($name, $home=undef, $managehome=true, sshkey=undef, $
         ssh_authorized_key {
             "${name}@systemuser":
                 ensure => $ensure,
-                user   => $username,
+                user   => $name,
                 type   => 'ssh-rsa',
                 key    => $ssh_key,
         }
