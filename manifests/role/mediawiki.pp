@@ -253,11 +253,4 @@ class role::mediawiki {
             onlyif  => '/etc/init.d/apache2 status',
         }
     }
-
-    # Class for servers which run MW maintenance scripts.
-    # Maintenance servers are sometimes dual-purpose with misc apache, so the
-    # apache service installed by wikimedia-task-appserver is not disabled here.
-    class maintenance {
-        include role::mediawiki::common
-    }
 }
