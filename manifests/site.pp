@@ -159,12 +159,9 @@ node 'analytics1010.eqiad.wmnet' {
     $cluster = 'analytics'
     # analytics1010 is analytics Ganglia aggregator for Row B
     $ganglia_aggregator = true
+
     include standard
-    include admins::roots
-
-    # include analytics user accounts
-    include role::analytics::users
-
+    class { 'admin': groups => ['stats'] }
     include role::analytics::kraken
     include role::analytics::hadoop::master
 }
@@ -183,11 +180,7 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
         $ganglia_aggregator = true
     }
     include standard
-    include admins::roots
-
-    # include analytics user accounts
-    include role::analytics::users
-
+    class { 'admin': groups => ['stats'] }
     include role::analytics::kraken
     include role::analytics::hadoop::worker
 }
@@ -201,9 +194,9 @@ node /analytics102[12]\.eqiad\.wmnet/ {
     # other DCs can address without public IPv4
     # addresses.
     interface::add_ip6_mapped { 'main': }
-    include standard
-    include admins::roots
 
+    include admin
+    include standard
     include role::analytics
     include role::analytics::kafka::server
 }
@@ -213,9 +206,9 @@ node /analytics102[345].eqiad.wmnet/ {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics'
-    include standard
-    include admins::roots
 
+    include admin
+    include standard
     include role::analytics
     include role::analytics::zookeeper::server
 }
@@ -225,11 +218,9 @@ node 'analytics1026.eqiad.wmnet' {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics'
-    include standard
-    include admins::roots
 
-    # include analytics user accounts
-    include role::analytics::users
+    include standard
+    class { 'admin': groups => ['stats'] }
     include role::analytics::kraken
 
     # Including kraken import and hive partition cron jobs.
@@ -250,10 +241,9 @@ node 'analytics1027.eqiad.wmnet' {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics'
-    include standard
-    include admins::roots
 
-    include role::analytics::users
+    include standard
+    class { 'admin': groups => ['stats'] }
     include role::analytics::clients
     include role::analytics::hive::server
     include role::analytics::oozie::server
