@@ -1,9 +1,5 @@
 class mediawiki::packages {
 
-    package { 'wikimedia-task-appserver':
-      ensure => latest,
-    }
-
     # wikimedia-task-appserver depends on timidity, which recommends
     # timidity-daemon.
     package { 'timidity-daemon':
