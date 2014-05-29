@@ -2017,6 +2017,7 @@ node 'nescio.esams.wikimedia.org' {
         address   => '91.198.174.6',
     }
 
+    include admin
     include standard
     include dns::recursor::statistics
     include network::constants
@@ -2027,10 +2028,10 @@ node 'nescio.esams.wikimedia.org' {
     }
 
     dns::recursor::monitor { '91.198.174.6': }
-
 }
 
 node 'netmon1001.wikimedia.org' {
+    include admin
     include standard
     include webserver::apache
     include misc::rancid
@@ -2103,6 +2104,7 @@ node 'nfs1.pmtpa.wmnet' {
     $server_bind_ips = "127.0.0.1 ${ipaddress_eth0}"
     $cluster = 'misc'
 
+    include admin
     include standard
     include misc::nfs-server::home::rsyncd
     include backup::client
