@@ -69,7 +69,7 @@ GROUP BY resources.id ORDER BY resources.title ASC"""
         )
 
     def __init__(self, configfile, debug):
-        self.log = logging.getLogger()
+        self.log = logging.getLogger('naggen2')
         self.log.debug('Loading configfile %s', configfile)
         self.load_config(configfile)
         self.db_engine = sqlalchemy.create_engine(
@@ -116,15 +116,23 @@ def main():
         '--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
     parser.add_argument('--debug', action='store_true', default=False)
     args = parser.parse_args()
-    loglevel = logging.DEBUG if args.debug else logging.INFO
-    logging.basicConfig(
-        format='%(name)s: %(levelname)s - %(message)s', level=loglevel)
+
+    log_format='%(name)s: %(levelname)s - %(message)s'
     log = logging.getLogger('naggen2')
+
     if not args.debug:
-        log.addHandler(
-            SysLogHandler(
+        #if normal mode, log to syslog
+        log.setLevel(logging.INFO)
+        log.propagate = False
+        handler = SysLogHandler(
                 address='/dev/log',
-                facility=SysLogHandler.LOG_LOCAL3))
+                facility=SysLogHandler.LOG_LOCAL3)
+        formatter = logging.Formatter(fmt=log_format)
+        handler.setFormatter(formatter)
+        log.addHandler(handler)
+    else:
+        #if debug mode, print to stderr
+        logging.basicConfig(level=logging.DEBUG, format=log_format)
 
     log.info('Generating output for resource %s', args.type)
     n = NagiosGenerator(args.configfile, args.debug)
