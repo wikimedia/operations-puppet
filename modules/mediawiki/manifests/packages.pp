@@ -1,12 +1,6 @@
 class mediawiki::packages {
 
     package { 'wikimedia-task-appserver':
-      ensure => latest,
-    }
-
-    # wikimedia-task-appserver depends on timidity, which recommends
-    # timidity-daemon.
-    package { 'timidity-daemon':
       ensure => absent,
     }
 
@@ -93,8 +87,15 @@ class mediawiki::packages {
     }
 
     # Score
-    package { 'lilypond':
+    package { [
+        'lilypond',
+        'timidity',
+    ]:
         ensure => present,
+    }
+    # timidity recommends timidity-daemon, but we don't need it.
+    package { 'timidity-daemon':
+      ensure => absent,
     }
 
     # Tidy
