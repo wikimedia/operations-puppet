@@ -25,6 +25,18 @@ class mediawiki::sync {
         ensure  => link,
         target  => '/srv/deployment/scap/scap/bin/refreshCdbJsonFiles',
     }
+    file { '/etc/apache2/wmf':
+        ensure => link,
+        target => '/usr/local/apache/conf',
+    }
+    file { '/usr/local/apache/common':
+        ensure => link,
+        target => '/usr/local/apache/common-local',
+    }
+    file { '/apache':
+        ensure => link,
+        target => '/usr/local/apache',
+    }
 
     exec { 'mw-sync':
         command     => '/usr/local/bin/sync-common',

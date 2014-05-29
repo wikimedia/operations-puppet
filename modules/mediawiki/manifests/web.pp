@@ -12,16 +12,6 @@ class mediawiki::web ( $maxclients = '40' ) {
         before  => Service['apache'],
     }
 
-    file { '/etc/apache2/wmf':
-        ensure => link,
-        target => '/usr/local/apache/conf',
-    }
-
-    file { '/usr/local/apache/common':
-        ensure => link,
-        target => '/usr/local/apache/common-local',
-    }
-
     file { '/etc/apache2/envvars':
         owner  => root,
         group  => root,
