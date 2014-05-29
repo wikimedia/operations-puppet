@@ -28,8 +28,7 @@ Cmnd_Alias	ADMIN_COMMANDS = \
         /usr/sbin/scap-2, \
 	/usr/local/sbin/set-group-write2, \
 	/usr/sbin/install-common, \
-	/usr/bin/renice, \
-	/usr/bin/find-nearest-rsync
+	/usr/bin/renice
 	
 # User privilege specification
 root	ALL=(ALL) ALL
