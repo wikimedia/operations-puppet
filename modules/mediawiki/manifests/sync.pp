@@ -37,10 +37,28 @@ class mediawiki::sync {
         ensure => link,
         target => '/usr/local/apache',
     }
+    file { '/a':
+        ensure => directory,
+        user   => 'root',
+        group  => 'root',
+    }
+    file { '/a':
+        ensure => directory,
+        user   => 'root',
+        group  => 'root',
+        mode   => '0775',
+    }
+    file { '/a/common':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0775',
+    }
+
 
     exec { 'mw-sync':
         command     => '/usr/local/bin/sync-common',
-        require     => File['/usr/local/bin/sync-common'],
+        require     => File['/usr/local/bin/sync-common','/a/common'],
         cwd         => '/tmp',
         user        => root,
         group       => root,
