@@ -2214,6 +2214,7 @@ node 'pdf3.wikimedia.org' {
 }
 
 node 'potassium.eqiad.wmnet' {
+    include admin
     include standard
     include admin
     include role::poolcounter
@@ -2363,6 +2364,7 @@ node 'sodium.wikimedia.org' {
 
     $nameservers_prefix = [ $ipaddress ]
 
+    include admin
     include base
     include ganglia
     include ntp::client
