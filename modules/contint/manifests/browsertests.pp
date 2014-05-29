@@ -33,7 +33,7 @@ class contint::browsertests(
         ensure => absent
     }
 
-    include mediawiki::packages
+    include ::mediawiki::packages
 
     # Set up all packages required for MediaWiki (includes Apache)
     package { [
@@ -51,7 +51,6 @@ class contint::browsertests(
         port       => 9413,
         docroot    => $docroot,
         log_prefix => 'browsertests',
-        require    => Package['wikimedia-task-appserver'],
     }
 
 }
