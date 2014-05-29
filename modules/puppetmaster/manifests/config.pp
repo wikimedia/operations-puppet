@@ -18,9 +18,5 @@ class puppetmaster::config {
             group   => 'root',
             mode    => '0444',
             content => template('puppetmaster/fileserver.conf.erb');
-        '/etc/puppet/naggen.conf':
-            ensure  => 'present',
-            mode    => '0440',
-            content => template('puppetmaster/naggen2.conf.erb');
     }
 }
