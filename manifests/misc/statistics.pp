@@ -943,6 +943,13 @@ class misc::statistics::researchdb_password {
 
     include passwords::mysql::research
 
+    file { '/srv/passwords':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'researchers',
+        mode   => '0555',
+    }
+
     file { '/srv/passwords/researchdb':
         owner   => 'root',
         group   => 'researchers',
