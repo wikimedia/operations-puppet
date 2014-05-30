@@ -2631,7 +2631,7 @@ node 'terbium.eqiad.wmnet' {
     include misc::deployment::common_scripts
 
     class { 'admin':
-        groups => ['restricted'
+        groups => ['restricted',
                    'deployment'],
     }
 
