@@ -27,8 +27,9 @@ class contint::packages::labs {
     }
 
     file { '/var/cache/pbuilder':
-        ensure => link,
-        target => '/mnt/pbuilder',
+        ensure  => link,
+        target  => '/mnt/pbuilder',
+        require => File['/mnt/pbuilder'],
     }
 
     package { [
@@ -41,7 +42,7 @@ class contint::packages::labs {
         ]:
             ensure  => latest,
             # Make sure cowbuilder images will be on /mnt
-            require => File['/mnt/pbuilder'],
+            require => File['/var/cache/pbuilder'],
     }
     # end of jenkins-debian glue puppetization
 
