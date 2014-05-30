@@ -1950,13 +1950,7 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
         include misc::deployment::scap_proxy
     }
 
-
-    # mw1017 is test.wikipedia.org (precise)
-    if $::hostname == 'mw1017' {
-        include role::mediawiki::appserver::test
-    } else {
-        include role::mediawiki::appserver
-    }
+    include role::mediawiki::appserver
 }
 
 # mw1114-1148 are api apaches (precise)
