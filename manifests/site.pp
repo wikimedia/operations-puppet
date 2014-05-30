@@ -2160,9 +2160,7 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
 # Trusty app server / HHVM staging
 node 'osmium.eqiad.wmnet' {
     include standard
-    include groups::wikidev
-    include admins::mortals
-    include admins::roots
+    include admin
 
     include hhvm::dev
     include mediawiki::cgroup
