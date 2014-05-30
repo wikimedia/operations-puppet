@@ -625,6 +625,12 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
+    file { '/usr/lib/nagios/plugins/check_dispatch':
+            source => 'puppet:///files/icinga/check_dispatch',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
 
@@ -733,6 +739,18 @@ class icinga::monitor::packages {
         ensure => latest,
     }
 
+   # Perl modules needed by plugin check_dispatch
+    package { [
+         'libdatetime-perl', # manipulating dates, times and timestamps
+         'libdatetime-format-duration-perl', #Format and parse DateTime::Durations objects in perl
+         'libdatetime-format-strptime-perl',  #Perl module to parse and format strp and strf time patterns
+         'libjson-perl', # module for manipulating JSON-formatted data
+   # local repo debian packages
+         'libjson-path-perl_0.205-1_all' , # search nested hashref/arrayref structures using JSONPath
+         'libexporter-tiny-perl_0.038-1_all' ,# an exporter with the features of Sub::Exporter but only core dependencies
+         'liblv-perl_0.006-1_all' ,  # makes lvalue subroutines easy
+       ]: ensure => present,
+    }
 }
 
 class icinga::monitor::service {
