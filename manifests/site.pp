@@ -2244,7 +2244,7 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
 node 'rhenium.wikimedia.org' {
     include standard
     include role::pmacct
-    include admins::pmacct
+    class { 'admin': groups => ['pmacct-roots'] }
 }
 
 # QA box for the new PDF system

@@ -139,6 +139,11 @@ groups:
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [aaron, bd808, manybubbles, demon]
     privs: ['ALL = NOPASSWD: ALL']
+  pmacct-roots:
+    gid: 723
+    description: root on netflow machines
+    members: [jkrauska]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
