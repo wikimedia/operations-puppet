@@ -5,7 +5,7 @@
 upstream websockets {
     ip_hash;
     <% @backends.each do |backend| -%>
-    server <%= if backend.include?(':') then backend else "127.0.0.1:#{backend}" end %>;
+    server <%= if backend.to_s.include?(':') then backend else "127.0.0.1:#{backend}" end %>;
     <% end %>
 }
 
