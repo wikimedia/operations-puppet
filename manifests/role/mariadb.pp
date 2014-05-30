@@ -180,6 +180,6 @@ class role::mariadb::backup {
         method           => 'predump',
         mysql_binary     => '/usr/local/bin/mysql',
         mysqldump_binary => '/usr/local/bin/mysqldump',
-        jobdefaults      => "Weekly-${backup::host::day}",
+        jobdefaults      => "Weekly-${backup::host::day}-${backup::host::pool}",
     }
 }
