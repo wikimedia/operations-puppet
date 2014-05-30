@@ -71,7 +71,6 @@ define backup::mysqlset($method='bpipe',
             ensure => present,
         }
     }
-    $jobdefaults = $backup::host::jobdefaults
     if $method == 'predump' {
         $extras = {
              'ClientRunBeforeJob' =>  '/etc/bacula/scripts/predump',
