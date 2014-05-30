@@ -3973,31 +3973,6 @@ class admins::fr-tech {
 
 }
 
-class admins::parsoid {
-
-    $gid = '500'   # 'wikidev' by default
-    include groups::wikidev
-
-    include accounts::gwicke
-    include accounts::catrope
-    include accounts::ssastry # RT 5512
-
-    # RT 5934
-    sudo_user { ['catrope', 'gwicke']:
-        privileges => ['ALL = (parsoid) NOPASSWD: ALL'],
-    }
-    # RT 6961
-    sudo_group { 'wikidev_parsoid':
-        group      => 'wikidev',
-        privileges => [
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload',
-        ],
-    }
-}
-
 # access to pmacct tools
 class admins::pmacct {
 
