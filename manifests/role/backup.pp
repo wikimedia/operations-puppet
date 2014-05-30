@@ -55,6 +55,9 @@ class role::backup::director {
     backup::schedule { $role::backup::config::days:
         pool    => 'production',
     }
+    backup::weeklyschedule { $role::backup::config::days:
+        pool    => 'production',
+    }
 
     bacula::director::catalog { 'production':
         dbname      => 'bacula',

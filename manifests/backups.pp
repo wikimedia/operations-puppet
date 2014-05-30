@@ -3,8 +3,7 @@
 
 # Transitioning to bacula stanzas
 
-define backup::set {
-    $jobdefaults = $backup::host::jobdefaults
+define backup::set($jobdefaults=$backup::host::jobdefaults) {
     if $jobdefaults != undef {
         @bacula::client::job { "${name}-${jobdefaults}":
             fileset     => $name,
@@ -59,6 +58,7 @@ define backup::mysqlset($method='bpipe',
                         $password_file=undef,
                         $mysql_binary=undef,
                         $mysqldump_binary=undef,
+                        $jobdefaults=$backup::host::jobdefaults,
 ) {
 
     $allowed_methods = [ 'bpipe', 'predump' ]
@@ -125,6 +125,19 @@ define backup::schedule($pool) {
         pool        => "${pool}",
     }
 
+}
+# Same for weekly backups
+define backup::weeklyschedule($pool) {
+    bacula::director::schedule { "Weekly-${name}":
+        runs => [
+                    { 'level' => 'Full', 'at' => "${name} at 02:05", },
+                ],
+    }
+
+    bacula::director::jobdefaults { "Weekly-${name}-${pool}":
+        when        => "Weekly-${name}",
+        pool        => "${pool}",
+    }
 }
 
 # TODO: Deprecate all of this before 2013-01-01
