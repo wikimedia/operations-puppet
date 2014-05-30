@@ -144,6 +144,10 @@ groups:
     description: root on netflow machines
     members: [jkrauska]
     privs: ['ALL = NOPASSWD: ALL']
+  oit:
+    gid: 724
+    description: office it folk
+    members: [jkrauska]
 
 users:
   rush:

@@ -2268,10 +2268,8 @@ node 'sanger.wikimedia.org' {
     include ntp::client
     include ldap::role::server::corp
     include ldap::role::client::corp
-    include groups::wikidev
-    include admins::oit
-    include accounts::jdavis
-    include backup::client
+
+    class { 'admin': groups => ['oit'] }
 }
 
 node /^search100[0-6]\.eqiad\.wmnet/ {
