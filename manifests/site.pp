@@ -2818,8 +2818,6 @@ node 'virt1000.wikimedia.org' {
     $openstack_version     = 'havana'
     $use_neutron = false
 
-    include admins::labs
-
     include standard
     include role::dns::ldap
     include ldap::role::server::labs
@@ -2841,8 +2839,6 @@ node 'virt0.wikimedia.org' {
     $openstack_version     = 'folsom'
     $use_neutron = false
 
-    include admins::labs
-
     include standard
     include role::dns::ldap
     include ldap::role::server::labs
@@ -2863,7 +2859,6 @@ node 'labnet1001.eqiad.wmnet' {
 
     include standard
     include role::nova::api
-    include admins::labs
 
     if $use_neutron == true {
         include role::neutron::nethost
@@ -2887,7 +2882,6 @@ node /virt100[1-7].eqiad.wmnet/ {
 
 node /virt100[8-9].eqiad.wmnet/ {
     $cluster = 'virt'
-    include admins::labs
 
     include standard
 }
