@@ -63,13 +63,11 @@ class mediawiki::web ( $maxclients = '40' ) {
 
     # Has to be less than apache, and apache has to be nice 0 or less to be
     # blue in ganglia.
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        file { '/etc/init/ssh.override':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => 'nice -10',
-        }
+    file { '/etc/init/ssh.override':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "nice -10\n",
     }
 }
