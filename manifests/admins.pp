@@ -3919,12 +3919,6 @@ class admins::bastion {
     include accounts::tgr # RT 7506
 }
 
-class admins::labs {
-    $gid = '500'  # 'wikidev' by default
-    include groups::wikidev
-
-    include accounts::mhoover # access revoked
-}
 
 class admins::dctech {
     include accounts::sbernardin
