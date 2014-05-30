@@ -2811,6 +2811,7 @@ node 'virt1000.wikimedia.org' {
     $use_neutron = false
 
     include standard
+    include admin
     include role::dns::ldap
     include ldap::role::server::labs
     include ldap::role::client::labs
