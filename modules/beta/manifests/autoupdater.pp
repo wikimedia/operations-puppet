@@ -88,4 +88,34 @@ class beta::autoupdater {
         timeout            => 1800,
         require            => Git::Clone['mediawiki/core'],
     }
+
+    # MediaWiki core has a /skins/ directory causing git clone to refuse
+    # cloning mediawiki/skins.git in the existing repository. Instead use git
+    # init.
+    exec { 'beta_mediawiki_skins_git_init':
+        command => "/usr/bin/git init ${stage_dir}/skins",
+        owner   => 'mwdeploy',
+        group   => 'mwdeploy',
+        creates => "${stage_dir}/skins/.git",
+        require => Git::Clone['mediawiki/core'],
+        notify  => Exec['beta_mediawiki_skins_git_remote_add'],
+    }
+
+    $mw_skins_git_url = 'https://gerrit.wikimedia.org/r/p/mediawiki/skins.git'
+    exec { 'beta_mediawiki_skins_git_remote_add':
+        command     => "/usr/bin/git remote add origin ${mw_skins_git_url}",
+        cwd         => "${stage_dir}/skins",
+        refreshonly => true,
+    }
+
+    git::clone { 'mediawiki/skins':
+        directory => "${stage_dir}/skins",
+        branch             => 'master',
+        owner              => 'mwdeploy',
+        group              => 'mwdeploy',
+        recurse_submodules => true,
+        # Needs to be initialized manually since skins dir exists
+        require            => Exec['beta_mediawiki_skins_git_init'],
+    }
+
 }
