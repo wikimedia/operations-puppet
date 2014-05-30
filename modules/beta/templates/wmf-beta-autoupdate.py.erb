@@ -17,6 +17,7 @@ import sys
 
 PATH_MWCORE = '<%= @stage_dir %>/php-master'
 PATH_MWEXT = '<%= @stage_dir %>/php-master/extensions'
+PATH_MWSKIN = '<%= @stage_dir %>/php-master/skins'
 
 
 def main():
@@ -49,10 +50,13 @@ def main():
     logger = logging.getLogger('main')
 
     logger.info("Starting updating tasks...")
+    # TODO refactor to use a dict with 'name' as keys and function value
     exit_codes = [
-        pull_mediawiki(),
-        pull_extensions(),
-        update_extensions(),
+        pull_repo(name='mwcore', path=PATH_MWCORE),
+        pull_repo(name='mwextpull', path=PATH_MWEXT),
+        update_repo(name='mwextupdate', path=PATH_MWEXT),
+        pull_repo(name='mwskinpull', path=PATH_MWSKIN),
+        update_repo(name='mwskinupdate', path=PATH_MWSKIN),
     ]
 
     logger.info("Executions completed %s", exit_codes)
@@ -97,19 +101,14 @@ def git_head_ts(git_dir):
     return proc.rstrip('\n')
 
 
-def pull_mediawiki():
-    """Updates MediaWiki core"""
-    return runner(name='mwcore', path=PATH_MWCORE, cmd=['git', 'pull'])
+def pull_repo(name, path):
+    """Pull repository at path"""
+    return runner(name=name, path=path, cmd=['git', 'pull'])
 
 
-def pull_extensions():
-    """Pull MediaWiki extensions repository"""
-    return runner(name='mwextpull', path=PATH_MWEXT, cmd=['git', 'pull'])
-
-
-def update_extensions():
-    """Registers and updates MediaWiki extensions submodules"""
-    return runner(name='mwext', path=PATH_MWEXT, cmd=[
+def update_repo(name, path):
+    """Registers and updates submodules in path"""
+    return runner(name=name, path=path, cmd=[
         'git', 'submodule', 'update', '--init', '--recursive'])
 
 
