@@ -217,12 +217,6 @@ class role::mediawiki::videoscaler( $run_jobs_enabled = true ) {
         timeout                => 14400,
         extra_args             => '-v 0',
     }
-
-    # dependency for wikimedia-task-appserver
-    exec { 'videoscaler-apache-service-stopped':
-        command => '/etc/init.d/apache2 stop',
-        onlyif  => '/etc/init.d/apache2 status',
-    }
 }
 
 class role::mediawiki::job_runner( $run_jobs_enabled = true ) {
@@ -235,11 +229,5 @@ class role::mediawiki::job_runner( $run_jobs_enabled = true ) {
         iprioprocs             => 6,
         procs_per_iobound_type => 5,
         run_jobs_enabled       => $run_jobs_enabled,
-    }
-
-    # dependency for wikimedia-task-appserver
-    exec { 'jobrunner-apache-service-stopped':
-        command => '/etc/init.d/apache2 stop',
-        onlyif  => '/etc/init.d/apache2 status',
     }
 }
