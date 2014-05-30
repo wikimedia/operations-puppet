@@ -2170,13 +2170,9 @@ node 'osmium.eqiad.wmnet' {
 
 # base_analytics_logging_node is defined in role/logging.pp
 node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
-    include accounts::awjrichards
+
+    class { 'admin': groups => ['udp2log-users'] }
     include role::dataset::systemusers
-    include accounts::dsc
-    include accounts::diederik
-    include accounts::manybubbles #RT 4312
-    include accounts::milimetric  #RT 4312
-    include accounts::tnegrin     # RT 5391
 
     # main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
         include role::logging::udp2log::oxygen
@@ -2584,22 +2580,36 @@ node 'stat1003.wikimedia.org' {
 }
 
 node 'snapshot1001.eqiad.wmnet' {
-    $gid= '500'
     include snapshot
+
+    class { 'admin':
+        groups => ['udp2log-users',
+                   'deployment'],
+    }
+
     class { 'snapshot::dumps': hugewikis => true }
     include role::snapshot::common
 }
 node /^snapshot100[24]\.eqiad\.wmnet/ {
-    $gid= '500'
     include snapshot
     include snapshot::dumps
+
+    class { 'admin':
+        groups => ['udp2log-users',
+                   'deployment'],
+    }
+
     include role::snapshot::common
 }
 node 'snapshot1003.eqiad.wmnet' {
-    $gid= '500'
     include snapshot
     include snapshot::dumps
     include role::snapshot::cron::primary
+
+    class { 'admin':
+        groups => ['udp2log-users',
+                   'deployment'],
+    }
 }
 
 node 'terbium.eqiad.wmnet' {
