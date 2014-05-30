@@ -17,7 +17,8 @@ class role::rcstream {
         redis_replication => false,
     }
 
-    $backends = [ 10080, 10081, 10082 ]
+    # Spawn as many instances as there are CPU cores, less two.
+    $backends = range(10080, 10080 + $::processorcount - 2)
 
     class { '::rcstream':
         redis        => 'redis://127.0.0.1:6379',
