@@ -27,8 +27,9 @@ class contint::packages::labs {
     }
 
     file { '/var/cache/pbuilder':
-        ensure => link,
-        target => '/mnt/pbuilder',
+        ensure  => link,
+        target  => '/mnt/pbuilder',
+        require => File['/mnt/pbuilder'],
     }
 
     package { [
@@ -40,8 +41,9 @@ class contint::packages::labs {
         'jenkins-debian-glue-buildenv-taptools',
         ]:
             ensure  => latest,
-            # Make sure cowbuilder images will be on /mnt
-            require => File['/mnt/pbuilder'],
+            # cowbuilder file hierarchy needs to be created after the symlink
+            # points to the mounted disk.
+            require => File['/var/cache/pbuilder'],
     }
     # end of jenkins-debian glue puppetization
 
