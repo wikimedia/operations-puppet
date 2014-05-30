@@ -167,6 +167,10 @@ groups:
     description: access files created by stats user cron jobs
     members: [ezachte, ironholds, qchris]
     privs: ['ALL = (stats) NOPASSWD: ALL']
+  oit:
+    gid: 727
+    description: office it folk
+    members: [jkrauska]
 
 users:
   rush:
