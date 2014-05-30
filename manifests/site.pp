@@ -2536,6 +2536,7 @@ node 'stat1003.wikimedia.org' {
 
     include misc::statistics::cron_blog_pageviews
     include misc::statistics::limn::mobile_data_sync
+    include misc::statistics::researchdb_password
 
     # special accounts
     include admins::globaldev      # RT 3119
