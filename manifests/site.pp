@@ -2959,6 +2959,12 @@ node 'zirconium.wikimedia.org' {
     }
 }
 
+# live recent changes websocket stream
+node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
+    include standard
+    include role::rcstream
+}
+
 node default {
     include standard
 }
