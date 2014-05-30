@@ -1108,8 +1108,8 @@ node 'fluorine.eqiad.wmnet' {
 # gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
 node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
-    include accounts::milimetric
-    include accounts::tnegrin     # RT 5391
+
+    class { 'admin': groups => ['udp2log-users'] }
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
