@@ -2860,6 +2860,7 @@ node 'labnet1001.eqiad.wmnet' {
     $ganglia_aggregator = true
 
     include standard
+    include admin
     include role::nova::api
 
     if $use_neutron == true {
