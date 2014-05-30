@@ -41,8 +41,6 @@ class dataset::cron::pagecountsraw(
         source  => 'puppet:///modules/dataset/pagecounts/generate-pagecount-year-month-index.sh',
     }
 
-    include "accounts::$user"
-
     file { "/home/${user}/.ssh/pagecounts_rsync_key":
         mode    => '0400',
         owner   => $user,

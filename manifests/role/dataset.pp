@@ -2,9 +2,10 @@
 
 class role::dataset::pagecountsraw($enable=true) {
     class { '::dataset::cron::pagecountsraw':
-        enable => $enable,
-        user   => 'datasets',
-        from   => 'gadolinium.wikimedia.org',
+        enable  => $enable,
+        user    => 'datasets',
+        from    => 'gadolinium.wikimedia.org',
+        require =>  Generic::Systemuser['datasets'],
     }
 }
 

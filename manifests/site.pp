@@ -590,6 +590,7 @@ node 'dataset2.wikimedia.org' {
 
     class { 'admin': groups => [dataset-admins] }
     include standard
+    include role::dataset::systemusers
 #    include role::download::primary
     include role::dataset::secondary
     include role::download::wikimedia
@@ -607,6 +608,7 @@ node 'dataset1001.wikimedia.org' {
 
     include standard
     include role::diamond
+    include role::dataset::systemusers
     include role::dataset::primary
 #    include role::download::secondary
     include role::download::wikimedia
