@@ -1,8 +1,4 @@
 class role::snapshot::common {
-    include groups::wikidev
-
-    include admins::roots
-    include admins::mortals
     include role::dataset::systemusers
     include sudo::appserver
 }

@@ -80,7 +80,7 @@ groups:
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
-    members: [tnegrin]
+    members: [tnegrin, manybubbles, milimetric]
   researchers:
     gid: 714
     description: users with access to research db
@@ -140,6 +140,7 @@ groups:
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [aaron, bd808, manybubbles, demon]
     privs: ['ALL = NOPASSWD: ALL']
+
 users:
   rush:
     ensure: present
