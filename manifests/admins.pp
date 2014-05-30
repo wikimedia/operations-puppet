@@ -3998,30 +3998,6 @@ class admins::parsoid {
     }
 }
 
-# permissions and users for LDAP operations
-# (formerly directly in site.pp and on formey, now on node silver)
-class admins::ldap {
-
-    $gid = '500'   # 'wikidev' by default
-    include groups::wikidev
-
-    include accounts::robla
-    include accounts::reedy
-    include accounts::demon
-
-    $sudo_privs = [
-            'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
-            'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
-            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
-            'ALL = NOPASSWD: /usr/local/bin/svn-group',
-            'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
-            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group',
-    ]
-
-    sudo_user { [ 'robla', 'reedy', 'demon' ]: privileges => $sudo_privs }
-
-}
-
 # access to pmacct tools
 class admins::pmacct {
 
