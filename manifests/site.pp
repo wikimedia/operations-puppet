@@ -2230,8 +2230,14 @@ node 'pdf3.wikimedia.org' {
 node 'potassium.eqiad.wmnet' {
     include admin
     include standard
-    include admin
     include role::poolcounter
+}
+
+# Live Recent Changes WebSocket stream
+node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
+    include admin
+    include standard
+    include role::rcstream
 }
 
 # netflow machine (jkrauska)
