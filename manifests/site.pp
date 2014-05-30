@@ -2627,11 +2627,13 @@ node 'terbium.eqiad.wmnet' {
     include role::mediawiki::common
     include role::db::maintenance
     include misc::monitoring::jobqueue
-    include admins::roots
-    include admins::mortals
-    include admins::restricted
     include generic::wikidev-umask
     include misc::deployment::common_scripts
+
+    class { 'admin':
+        groups => ['restricted'
+                   'deployment'],
+    }
 
     class { 'misc::maintenance::pagetriage':
         enabled => true,
