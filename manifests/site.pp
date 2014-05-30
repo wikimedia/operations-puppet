@@ -2949,14 +2949,12 @@ node 'zirconium.wikimedia.org' {
     class { 'base::firewall': }
 
     include standard
-    include admins::roots
+    include admins
     include role::planet
     include misc::outreach::civicrm # contacts.wikimedia.org
     include misc::etherpad_lite
     include role::wikimania_scholarships
     include role::bugzilla
-    include groups::wikidev
-    include accounts::bd808 # rt 6448
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
