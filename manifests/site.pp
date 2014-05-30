@@ -2464,50 +2464,19 @@ node 'strontium.eqiad.wmnet' {
 
 node 'stat1001.wikimedia.org' {
     include standard
-    include admins::roots
-
     include role::statistics::www
-
-    # special accounts
-    include accounts::ezachte
-    include accounts::diederik
-    include accounts::otto
-    include accounts::dsc
-    include accounts::milimetric
-    include accounts::rfaulk   # RT 4258
-    include accounts::yuvipanda   # RT 4687
-    include accounts::qchris   # RT 5474
-    include accounts::tnegrin  # RT 5391
-
-    sudo_user { 'otto':
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
+    class { 'admin': groups => ['statistics-web-roots'] }
 }
 
 node 'stat1002.eqiad.wmnet' {
     include standard
-    include admins::roots
-
     # stat1002 is intended to be the private
     # webrequest access log storage host.
     # Users should not use it for app development.
     # Data processing on this machine is fine.
 
-    # Users in the admins::privatedata
-    # class have access to stat1002 so that
-    # they can do analysis on webrequest logs
-    # and other private data.
-    include admins::privatedata
-
-    # add ezachte, spetrea, ironholds to stats group so they can
-    # access files created by stats user cron jobs.
-    User<|title == ezachte|>     { groups +> [ 'stats' ] }
-    User<|title == spetrea|>     { groups +> [ 'stats' ] }
-    User<|title == ironholds|>   { groups +> [ 'stats' ] }
-
-    sudo_user { 'otto':
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
+    class { 'admin': groups => ['statistics-privatedata-users',
+                                'statistics-admins'] }
 
     # include classes needed for storing and crunching
     # private data on stat1002.
@@ -2526,7 +2495,6 @@ node 'stat1002.eqiad.wmnet' {
 # query results for further processing on this node.
 node 'stat1003.wikimedia.org' {
     include standard
-    include admins::roots
 
     # stat1003 has a public IP and should be pretty
     # well firewalled off.  If it needs a specific
@@ -2542,48 +2510,12 @@ node 'stat1003.wikimedia.org' {
     include misc::statistics::limn::mobile_data_sync
     include misc::statistics::researchdb_password
 
-    # special accounts
-    include admins::globaldev      # RT 3119
-    include accounts::ezachte
-    include accounts::milimetric   # RT 3540
-    include accounts::diederik
-    include accounts::dartar
-    include accounts::halfak
-    include accounts::howief       # RT 3576
-    include accounts::ironholds
-    include accounts::jdlrobson
-    include accounts::jgonera
-    include accounts::jmorgan
-    include accounts::kaldari      # RT 4959
-    include accounts::maryana      # RT 3517
-    include accounts::mflaschen    # renamed to 'mattflaschen'
-    include accounts::mattflaschen # RT 4796
-    include accounts::mhurd        # RT 7345
-    include accounts::spetrea      # RT 3584
-    include accounts::swalling     # RT 3653
-    include accounts::yurik        # RT 4835
-    include accounts::awight       # RT 5048
-    include accounts::jforrester   # RT 5302
-    include accounts::qchris       # RT 5474
-    include accounts::tnegrin      # RT 5391
-    include accounts::marktraceur   # RT 6009
-    include accounts::msyed        # RT 6506
-    include accounts::nuria        # RT 6525
-    include accounts::csalvia      # RT 6664
-    include accounts::leila        # RT 6765
-    include accounts::gdubuc       # renamed to 'gilles'
-    include accounts::gilles       # RT 7074
-    include accounts::haithams     # RT 7387
-    include accounts::yuvipanda
-    include accounts::dbrant       # RT 7399
-    include accounts::tgr          # RT 7506
-
-    # Allow Christian to sudo -u stats
-    # to debug and test stats' automated cron jobs.
-    sudo_user { 'qchris':
-        privileges => ['ALL = (stats) NOPASSWD: ALL'],
+    class { 'admin':
+        groups => ['statistics-admins',
+                   'statistics-privatedata-users',
+                   'statistics-users',
+                   'researchers'],
     }
-
 }
 
 node 'snapshot1001.eqiad.wmnet' {
