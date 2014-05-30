@@ -62,7 +62,7 @@ class role::mediawiki::common( $lvs_pool = undef ) {
 }
 
 # This class installs everything necessary for an apache webserver
-class role::mediawiki::webserver($maxclients="40") {
+class role::mediawiki::webserver( $maxclients = 40 ) {
     include ::mediawiki
     include role::mediawiki::common
 
@@ -108,18 +108,13 @@ class role::mediawiki::appserver {
         lvs_pool => 'apaches',
     }
 
-    if $::site == 'eqiad' and $::processorcount == '16' {
-        $maxclients = '60'
-    }
-    elsif $::processorcount == '12' or $::processorcount == '24' {
-        $maxclients = '50'
-    }
-    else {
-        $maxclients = '40'
-    }
-
     class { 'role::mediawiki::webserver':
-        maxclients => $maxclients,
+        maxclients => $::processorcount ? {
+            16      => 60,
+            12      => 50,
+            24      => 50,
+            default => 40,
+        }
     }
 }
 
@@ -168,7 +163,7 @@ class role::mediawiki::appserver::api {
 
     class { 'role::mediawiki::common': lvs_pool => 'api' }
 
-    class { 'role::mediawiki::webserver': maxclients => '100' }
+    class { 'role::mediawiki::webserver': maxclients => 100 }
 }
 
 class role::mediawiki::appserver::bits {
@@ -176,7 +171,7 @@ class role::mediawiki::appserver::bits {
 
     class { 'role::mediawiki::common': lvs_pool => 'apaches' }
 
-    class { 'role::mediawiki::webserver': maxclients => '100' }
+    class { 'role::mediawiki::webserver': maxclients => 100 }
 }
 
 class role::mediawiki::imagescaler {
@@ -184,7 +179,7 @@ class role::mediawiki::imagescaler {
 
     class { 'role::mediawiki::common': lvs_pool => 'rendering' }
 
-    class { 'role::mediawiki::webserver': maxclients => '18' }
+    class { 'role::mediawiki::webserver': maxclients => 18 }
 
     # When adding class there, please also update the appserver::beta
     # class which mix both webserver and imagescaler roles.
