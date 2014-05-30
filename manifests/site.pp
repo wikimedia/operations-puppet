@@ -2949,7 +2949,7 @@ node 'zirconium.wikimedia.org' {
     class { 'base::firewall': }
 
     include standard
-    include admins
+    include admin
     include role::planet
     include misc::outreach::civicrm # contacts.wikimedia.org
     include misc::etherpad_lite
