@@ -171,6 +171,10 @@ groups:
     gid: 727
     description: office it folk
     members: [jkrauska]
+  pdf-qa-users:
+    gid: 728
+    description: developers on the PDF QA system
+    members: [mwalker, maxsem, anomie, cscott]
 
 users:
   rush:

@@ -2252,14 +2252,11 @@ node 'rhenium.wikimedia.org' {
 # QA box for the new PDF system
 node 'tantalum.eqiad.wmnet' {
     $gid = '500'
+
+    class { 'admin': groups => ['pdf-qa-users'] }
+
     include standard
     include role::ocg::test
-    include groups::wikidev
-    include admins::roots
-    include accounts::mwalker
-    include accounts::maxsem
-    include accounts::anomie
-    include accounts::cscott
 }
 
 node 'sanger.wikimedia.org' {
