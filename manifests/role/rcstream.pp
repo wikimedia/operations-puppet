@@ -5,7 +5,6 @@
 # a convenience layer over the WebSockets protocol.
 #
 class role::rcstream {
-
     if versioncmp($::lsbdistrelease, '14.04') < 0 {
         fail('requires 14.04+')
     }
@@ -28,5 +27,11 @@ class role::rcstream {
 
     class { '::rcstream::proxy':
         backends => $backends,
+    }
+
+    nrpe::monitor_service { 'rcstream_backend':
+        description  => 'Recent Changes Stream Python backend',
+        nrpe_command => '/usr/local/sbin/rcstreamctl check',
+        require      => Service['rcstream'],
     }
 }
