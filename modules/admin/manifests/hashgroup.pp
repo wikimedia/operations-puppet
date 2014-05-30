@@ -20,7 +20,13 @@ define admin::hashgroup(
     }
 
     $gdata = $phash['groups'][$name]
-    admin::group { $name:
+    if !has_key($gdata, 'posix_name') {
+        $group_name = $gdata['posix_name']
+    } else {
+        $group_name = $name
+    }
+
+    admin::group { $group_name:
         ensure => $gdata['ensure'],
         gid    => $gdata['gid'],
         privs  => $gdata['privs'],

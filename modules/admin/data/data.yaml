@@ -123,10 +123,10 @@ groups:
     description: users who have full root on jenkins servers
     members: [hashar]
     privs: ['ALL = NOPASSWD: ALL']
-  stats:
+  analytics-users:
+    posix_name: stats
     gid: 1001
-    description: temp -- should become analytics-users.  provides
-                 access to sensitive analytics data.
+    description: XXX:TEMP -- should not need to use posix_name attribute
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria]
@@ -139,6 +139,38 @@ groups:
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [aaron, bd808, manybubbles, demon]
     privs: ['ALL = NOPASSWD: ALL']
+  statistics-web-roots:
+    gid: 723
+    description: admin for stat.wikmiedia.org
+    members: [ezachte, qchris, yuvipanda]
+    privs: ['ALL = NOPASSWD: ALL']
+  statistics-stat-admins:
+    gid: 724
+    description: perform actions as stat user
+    members: [qchris]
+    privs: ['ALL = (stats) NOPASSWD: ALL']
+  statistics-privatedata-users:
+    gid: 725
+    description: Have access to so that they can do analysis on webrequest logs
+                and other private data.
+    members: [handrade, haithams, ezachte, milimetric, dartar,
+      yurik, howief, mwalker, awight, dr0ptp4kt, qchris, tnegrin, nuria,
+      csalvia, leila, manybubbles, ironholds, kleduc]
+  statistics-users:
+    gid: 726
+    description: Access hosts with a mysql client for research. NO PRIVS.
+    members: [dartar, halfak, howief, ironholds, jdlrobson, jgonera, jmorgan,
+              maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
+              qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
+              yuvipanda, dbrant, tgr]
+  statistics-stat-users:
+    posix_name: stats
+    description: access files created by stats user cron jobs
+    members: [ezachte, ironholds]
+  globaldev:
+    gid: 727
+    description: tbd
+    members: [haithams, handrade]
 
 users:
   rush:
@@ -943,3 +975,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDU6nsR19aZ2Ck2HSkdJPdx9rmw8H6UrPlHIBvt1loL8Kku+5tggcE4uTlk/rc5+Fch6EF8un0kPKz55RQCDOhV/kFHrxstBCWf+PJQC1gL9vbqyzia0OyGpCsLzYO81v7NMxkg6gELtxLBtbqE8u7m4X+YkzMxNrlqPfHjIHrVqr4RbLkJiuPvI0VsesAoPCh2MEl0Gkzl+08GDpYplhsxFwPzo9xoFMUi/YCIMKTczOhdg6nPaBMxjUkz7EKPFI3MWZcfP/as3xNL1me7M5N1iJjveGz+rXDqMglub9gN1aDllytzhE0+6h8jEDzC9DtuxGXVB8M/9eCEWsOJlIur wmf
     uid: 2220
+  handrade:
+    ensure: present
+    gid: 500
+    name: handrade
+    realname: Henrique Andrade
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQChbQJJVbZV7Nh+wq0VKfMaWfrIhmpbpHe6xKbJDJtbz1QOcEJJJzz5mSBkf0yEVypvlQgRs0YPbY7TBaXQ0DK2qjJvRjYQz6AFEqAxhjjtB6YcCqGb1XrVqhmVpRW8E4zpYzdCrFAKhEZrShFvTh19tx2tqJyh2AWV/KqJOx2/VTXz4+fhqZYzuLEdnQIxw4dkUHfHmiJi1gPRatv+chFP5snAAjs0ArZZXkVVyWhCS6kv4hC2objC5vKNFYsAEvsv4QCIRnZHkvdNpa8nsVKCg4iq5bhVkt+98nybQAFVfsN9eOU1a8nYzuDrzdze2CcBOTy483KMyomUZepxBjjf
+        handrade@administrator-Dell-System-XPS-L322X]
+    uid: 633
