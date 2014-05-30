@@ -139,7 +139,10 @@ groups:
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [aaron, bd808, manybubbles, demon]
     privs: ['ALL = NOPASSWD: ALL']
-
+  pdf-qa-users:
+    gid: 723
+    description: developers on the PDF QA system
+    members: [mwalker, maxsem, anomie, cscott]
 users:
   rush:
     ensure: present
