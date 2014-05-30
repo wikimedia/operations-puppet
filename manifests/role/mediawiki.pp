@@ -145,19 +145,6 @@ class role::mediawiki::appserver {
     }
 }
 
-# role class specifically for test.w.o apache(s)
-class role::mediawiki::appserver::test {
-    system::role { 'role::mediawiki::appserver::test': description => 'Test Apache Application server' }
-
-    class { 'role::mediawiki::common':
-        lvs_pool => 'apaches',
-    }
-
-    class { 'role::mediawiki::webserver':
-        maxclients => '100',
-    }
-}
-
 # Class for the beta project
 # The Apaches instances act as webserver AND imagescalers. We cannot
 # apply both roles cause puppet will complains about a duplicate class
@@ -180,7 +167,6 @@ class role::mediawiki::appserver::beta {
         proto => 'tcp',
         port  => 'http'
     }
-
 }
 
 class role::mediawiki::appserver::api {
