@@ -85,7 +85,6 @@ groups:
     gid: 714
     description: users with access to research db
     members: [dartar]
-    privs: ['ALL = NOPASSWD: cat /srv/passwords/researchdb']
   ldap-admins:
     gid: 715
     description: ldap admins

@@ -936,3 +936,18 @@ class misc::statistics::geowiki::jobs::monitoring {
         command => "${geowiki_scripts_path}/scripts/check_web_page.sh --private-part-user ${geowiki_http_user} --private-part-password-file ${geowiki_http_password_file}",
     }
 }
+
+# password to access the research database
+# 'researchers' group has read access
+class misc::statistics::researchdb_password {
+
+    include passwords::mysql::research
+
+    file { '/srv/passwords/researchdb':
+        owner   => 'root',
+        group   => 'researchers',
+        mode    => '0440',
+        content => "user: $::passwords::mysql::research::user\npass: $::passwords::mysql::research::pass"
+    }
+}
+
