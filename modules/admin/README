@@ -188,3 +188,38 @@ Getting your /home/ stuff wherever you are:
    figure out where it should live permanently
 #* Groups with no members get root by default
 #* admin::user and admin::group are not dependent on yaml
+
+
+Rarely used feature (USE WITH CARE AND CAUTION):
+
+You can specify a name other than the group name in yaml to be the actual
+on server posix name.  This means you can have the same group name across
+different boxes with a unique description and grouping in yaml.  This can be
+useful for sharing sensitive data across servers, or for backups, etc.
+
+Such as:
+
+groups:
+  backup-files-foo:
+    gid: 1000
+    posix_name: stats
+    members: [people who need backups on foo]
+
+  backup-files-bar:
+    gid: 1000
+    posix_name: stats
+    members: [people who need backups on bar]
+
+Assignment:
+
+  node /foo/ {
+    class { 'admin': groups => ['backup-files-foo'] }
+  }
+
+  node /bar/ {
+    class { 'admin': groups => ['backup-files-bar'] }
+  }
+
+If you try to apply two groupings with the same posix names on a single node you see:
+
+    Duplicate definition: Admin::Group[$POSIX_NAME] is already defined
