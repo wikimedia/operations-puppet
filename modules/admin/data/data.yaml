@@ -948,3 +948,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDU6nsR19aZ2Ck2HSkdJPdx9rmw8H6UrPlHIBvt1loL8Kku+5tggcE4uTlk/rc5+Fch6EF8un0kPKz55RQCDOhV/kFHrxstBCWf+PJQC1gL9vbqyzia0OyGpCsLzYO81v7NMxkg6gELtxLBtbqE8u7m4X+YkzMxNrlqPfHjIHrVqr4RbLkJiuPvI0VsesAoPCh2MEl0Gkzl+08GDpYplhsxFwPzo9xoFMUi/YCIMKTczOhdg6nPaBMxjUkz7EKPFI3MWZcfP/as3xNL1me7M5N1iJjveGz+rXDqMglub9gN1aDllytzhE0+6h8jEDzC9DtuxGXVB8M/9eCEWsOJlIur wmf
     uid: 2220
+  jkrauska:
+    ensure: present
+    gid: 500
+    name: jkrauska
+    realname: Joel Krauska
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqrv9BOJmXXCVP3QZfTJ9Nx6H0BVSxk8EM64g9p5/r1j365Doe/gZX5BATskGpV3LVUkzy91ZTSVP7j0TfPplj0iF025BFgDuHUVIy/Jac+qXryIHuH5BdeI9Gz10l+k0tVUFL/MzuOPR9M/jU/40KbdX1m4ezAfNXFmBXoXSpDwy8ft8xxYjFTFSuxvQMprC+je4N+0mtolb3PpmhQCQLB9Ekhjw9jZm1J5uPDqJyplOmFxC0i2dk7MNzQ5OT8Qmw7D50Jg500rQHLzzHeBhgxDQ6ZGpDWnRD93fdFaBCU+8VZIkOIumme6VGyhFWgj1UF30t9gV44qo5+SYff63n
+        jkrauska@wmf-2013-10]
+    uid: 3874
