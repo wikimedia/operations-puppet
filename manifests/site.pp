@@ -2723,8 +2723,6 @@ node 'tin.eqiad.wmnet' {
     $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org'
 
     include standard
-    include admins::roots
-    include admins::mortals
     include generic::wikidev-umask
     include role::deployment::deployment_servers::production
     include mediawiki::sync
@@ -2735,6 +2733,8 @@ node 'tin.eqiad.wmnet' {
     include role::labsdb::manager
     include ssh::hostkeys-collect
     include role::apachesync
+
+    class { 'admin': groups => ['deployment'] }
 
     # for reedy RT #6322
     package { 'unzip':
