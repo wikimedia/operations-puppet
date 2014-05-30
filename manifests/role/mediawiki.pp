@@ -36,20 +36,17 @@ class role::mediawiki::php {
 class role::mediawiki::common( $lvs_pool = undef ) {
     include role::mediawiki::php
     include standard
+    include geoip
+    include ::mediawiki
 
-    if $::realm == 'production' {
-        include geoip
-        include ::mediawiki
+    nrpe::monitor_service { 'twemproxy':
+        description  => 'twemproxy process',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody -C nutcracker',
+    }
 
-        nrpe::monitor_service { 'twemproxy':
-            description  => 'twemproxy process',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody -C nutcracker',
-        }
-
-        nrpe::monitor_service { 'twemproxy port':
-            description  => 'twemproxy port',
-            nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11211 --timeout=2',
-        }
+    nrpe::monitor_service { 'twemproxy port':
+        description  => 'twemproxy port',
+        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11211 --timeout=2',
     }
 
     if $lvs_pool != undef {
