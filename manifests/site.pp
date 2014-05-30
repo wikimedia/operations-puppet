@@ -2910,9 +2910,8 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    include standard
-    include admins::roots
-    include admins::parsoid
+    class { 'admin': groups => ['parsoid-roots',
+                                'parsoid-admin'] }
     include role::parsoid::production
 
     class { 'lvs::realserver':
