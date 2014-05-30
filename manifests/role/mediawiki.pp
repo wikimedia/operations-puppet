@@ -14,9 +14,7 @@
 @monitor_group { "videoscaler_pmtpa": description => "pmtpa video scaler" }
 @monitor_group { "videoscaler_eqiad": description => "eqiad video scaler" }
 
-class role::mediawiki {
-
-    class php {
+class role::mediawiki::php {
         $mediawiki_log_aggregator = $::realm ? {
             'production' => 'fluorine.eqiad.wmnet:8420',
             'labs'       => "deployment-bastion.${::site}.wmflabs:8420",
@@ -25,7 +23,7 @@ class role::mediawiki {
         class { '::mediawiki::php':
             fatal_log_file => "udp://${mediawiki_log_aggregator}",
         }
-    }
+}
 
 # Class: role::mediawiki
 #
@@ -35,7 +33,7 @@ class role::mediawiki {
 #   - $lvs_pool:
 #       Determines lvsrealserver IP(s) that the host will receive.
 #       From lvs::configuration::$lvs_service_ips
-    class common(
+class role::mediawiki::common(
         $lvs_pool = undef,
         ) {
         include role::mediawiki::php
@@ -82,12 +80,12 @@ class role::mediawiki {
         if $::realm == 'production' {
             deployment::target { "mediawiki": }
         }
-    }
+}
 
-    # This class installs everything necessary for an apache webserver
-    class webserver($maxclients="40") {
-        include ::mediawiki,
-            role::mediawiki::common
+# This class installs everything necessary for an apache webserver
+class role::mediawiki::webserver($maxclients="40") {
+        include ::mediawiki
+        include role::mediawiki::common
 
         class { '::mediawiki::web':
             maxclients => $maxclients,
@@ -120,10 +118,10 @@ class role::mediawiki {
                 source => 'puppet:///files/ganglia/plugins/apache_status.pyconf',
                 notify => Service['gmond'];
         }
-    }
+}
 
-    ## prod role classes
-    class appserver{
+## prod role classes
+class role::mediawiki::appserver {
         system::role { "role::mediawiki::appserver": description => "Standard Apache Application server" }
 
         class { "role::mediawiki::common": lvs_pool => "apaches" }
@@ -138,20 +136,20 @@ class role::mediawiki {
             $maxclients = "40"
         }
         class { "role::mediawiki::webserver": maxclients => $maxclients }
-    }
-    # role class specifically for test.w.o apache(s)
-    class appserver::test{
+}
+# role class specifically for test.w.o apache(s)
+class role::mediawiki::appserver::test {
         system::role { "role::mediawiki::appserver::test": description => "Test Apache Application server" }
 
         class { "role::mediawiki::common": lvs_pool => "apaches" }
 
         class { "role::mediawiki::webserver": maxclients => "100" }
-    }
-    # Class for the beta project
-    # The Apaches instances act as webserver AND imagescalers. We cannot
-    # apply both roles cause puppet will complains about a duplicate class
-    # definition for role::mediawiki::common
-    class appserver::beta{
+}
+# Class for the beta project
+# The Apaches instances act as webserver AND imagescalers. We cannot
+# apply both roles cause puppet will complains about a duplicate class
+# definition for role::mediawiki::common
+class role::mediawiki::appserver::beta {
         system::role { "role::mediawiki::appserver::beta": description => "Beta Apache Application server" }
 
         class { "role::mediawiki::common": }
@@ -173,22 +171,22 @@ class role::mediawiki {
             port  => 'http'
         }
 
-    }
-    class appserver::api{
+}
+class role::mediawiki::appserver::api {
         system::role { "role::mediawiki::appserver::api": description => "Api Apache Application server" }
 
         class { "role::mediawiki::common": lvs_pool => "api" }
 
         class { "role::mediawiki::webserver": maxclients => "100" }
-    }
-    class appserver::bits{
+}
+class role::mediawiki::appserver::bits {
         system::role { "role::mediawiki::appserver::bits": description => "Bits Apache Application server" }
 
         class { "role::mediawiki::common": lvs_pool => "apaches" }
 
         class { "role::mediawiki::webserver": maxclients => "100" }
-    }
-    class imagescaler{
+}
+class role::mediawiki::imagescaler {
         system::role { "role::mediawiki::imagescaler": description => "Imagescaler Application server" }
 
         class { "role::mediawiki::common": lvs_pool => "rendering" }
@@ -200,8 +198,8 @@ class role::mediawiki {
         include ::imagescaler::cron,
             ::imagescaler::packages,
             ::imagescaler::files
-    }
-    class videoscaler( $run_jobs_enabled = true ){
+}
+class role::mediawiki::videoscaler( $run_jobs_enabled = true ) {
         system::role { "role::mediawiki::videoscaler": description => "TMH Jobrunner Server" }
 
         include role::mediawiki::common
@@ -225,8 +223,8 @@ class role::mediawiki {
             command => '/etc/init.d/apache2 stop',
             onlyif  => '/etc/init.d/apache2 status',
         }
-    }
-    class job_runner( $run_jobs_enabled = true ){
+}
+class role::mediawiki::job_runner( $run_jobs_enabled = true ) {
         system::role { "role::mediawiki::job_runner": description => "Standard Jobrunner Server" }
 
         include role::mediawiki::common
@@ -252,5 +250,4 @@ class role::mediawiki {
             command => '/etc/init.d/apache2 stop',
             onlyif  => '/etc/init.d/apache2 status',
         }
-    }
 }
