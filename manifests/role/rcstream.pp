@@ -1,3 +1,5 @@
+@monitor_group { 'rcstream_eqiad': description => 'eqiad rcstream' }
+
 # == Class: role::rcstream
 #
 # Provisions a recent changes -> redis -> socket.io -> Nginx setup
@@ -5,9 +7,12 @@
 # a convenience layer over the WebSockets protocol.
 #
 class role::rcstream {
-
     if versioncmp($::lsbdistrelease, '14.04') < 0 {
         fail('requires 14.04+')
+    }
+
+    system::role { 'role::rcstream':
+        description => 'MediaWiki Recent Changes stream',
     }
 
     class { '::redis':
