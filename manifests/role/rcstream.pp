@@ -40,4 +40,6 @@ class role::rcstream {
         nrpe_command => '/usr/local/sbin/rcstreamctl check',
         require      => Service['rcstream'],
     }
+
+    diamond::collector::nginx { 'rcstream': }
 }
