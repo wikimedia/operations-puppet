@@ -29,4 +29,6 @@ class role::rcstream {
     class { '::rcstream::proxy':
         backends => $backends,
     }
+
+    diamond::collector::nginx { 'rcstream': }
 }
