@@ -26,6 +26,10 @@ class role::rcstream {
         ports        => $backends,
     }
 
+    diamond::collector { 'RCStream':
+        source => 'puppet:///modules/rcstream/diamond_collector.py',
+    }
+
     class { '::rcstream::proxy':
         backends => $backends,
     }
