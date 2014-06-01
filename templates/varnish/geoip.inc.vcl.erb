@@ -17,56 +17,56 @@ C{
 
 	GeoIP *gi = NULL;
 
-	void geo_init();
-	int geo_get_addr_family (const char *addr);
-	char * geo_get_xff_ip (const struct sess *sp);
+	int geo_init();
+	int geo_get_relevant_ip (const struct sess *sp, char *ip, size_t maxlen);
 	char * geo_sanitize_for_cookie (char *string);
 	void geo_set_cache_control (const struct sess *sp);
 	const char * geo_get_top_cookie_domain (const char *host);
 
-	void
+	int
 	geo_init() {
 		if (gi == NULL) {
 			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MMAP_CACHE);
+			if (gi == NULL) {
+				return -1;
+			}
 		}
-	}
-
-	int
-	geo_get_addr_family(const char *addr) {
-		struct addrinfo hint;
-		struct addrinfo *info = NULL;
-		int ret, result;
-
-		if (addr == NULL) {
-			return -1;
-		}
-
-		memset(&hint, 0, sizeof(hint));
-		hint.ai_family = AF_UNSPEC;
-		hint.ai_flags = AI_NUMERICHOST;
-
-		ret = getaddrinfo(addr, 0, &hint, &info);
-		result = ret ? -1 : info->ai_family;
-		freeaddrinfo(info);
-		return result;
+		return 0;
 	}
 
 	/*
-	 * Return the first IP address from the X-Forwarded-For header of the
-	 * incoming request, or NULL if no such header was set.
+	 * Write the relevant client IP address to a character string.
+	 * The relevant IP is either the first IP address from the X-Forwarded-For header or the
+	 * client IP if no valid X-Forwarded-For header was present.
+	 *
+	 * This function will write at most maxlen-1 characters into the output string (the maxlen'th
+	 * character then gets the terminating '\0'). The output is always null-terminated. The return
+	 * value is the number of characters printed (not including the final '\0'), or -1 if no
+	 * relevant client IP is available or if its length exceeds the maximum.
 	 */
-	char *
-	geo_get_xff_ip(const struct sess *sp) {
-		char *xff = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
-		char *xff_list_item, *last;
+	int
+	geo_get_relevant_ip(const struct sess *sp, char *ip, size_t maxlen) {
+		char *client_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		size_t len = 0;
 
-		if (xff != NULL) {
-			xff_list_item = strtok_r(xff, ",", &last);
-			if (xff_list_item != NULL) {
-				return xff_list_item;
+		if (client_ip != NULL && strnlen(client_ip, maxlen) < maxlen) {
+			len = strspn(client_ip, "1234567890.:");
+		}
+
+		if (len == 0) {
+			client_ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
+			if (client_ip != NULL) {
+				len = strnlen(client_ip, maxlen);
 			}
 		}
-		return xff;
+
+		if (len == 0 || len >= maxlen) {
+			return -1;
+		}
+
+		memcpy(ip, client_ip, len);
+		ip[len] = '\0';
+		return len;
 	}
 
 	/*
@@ -145,18 +145,18 @@ sub geoip_lookup {
 	set obj.http.Content-Type = "text/javascript";
 
 	C{
-		char *ip = geo_get_xff_ip(sp);
-		int af = geo_get_addr_family(ip);
-		GeoIPRecord *record;
+		char ip[50];
+		GeoIPRecord *record = NULL;
 		char json[255];
 
-		if (af == -1) {
-			ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
-			af = geo_get_addr_family(ip);
+		if (geo_get_relevant_ip(sp, ip, sizeof(ip)) == -1) {
+			return;
 		}
 
-		geo_init();
-		record = GeoIP_record_by_addr(gi, ip);
+		if (!geo_init()) {
+			record = GeoIP_record_by_addr(gi, ip);
+		}
+
 		if (record) {
 			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\"}",
 				record->city,
@@ -168,7 +168,7 @@ sub geoip_lookup {
 			GeoIPRecord_delete(record);
 			VRT_synth_page(sp, 0, json,  vrt_magic_string_end);
 		} else {
-			if (af == AF_INET6) {
+			if (strchr(ip, ':') != NULL) {
 				VRT_synth_page(sp, 0, "Geo = {IPv6:true}", vrt_magic_string_end);
 			} else {
 				VRT_synth_page(sp, 0, "Geo = {}", vrt_magic_string_end);
@@ -182,47 +182,54 @@ sub geoip_lookup {
 
 sub geoip_cookie {
 	C{
-		GeoIPRecord *record;
+		GeoIPRecord *record = NULL;
 		char *geo_header;
 		const char *cookie_out = NULL;
 		char cookie_buf[255];
+		char ip[50];
+		char host_safe[50];
 
-		const char *host = VRT_GetHdr(sp, HDR_REQ, "\005host:");
-		const char *ip = geo_get_xff_ip(sp);
-		int af = geo_get_addr_family(ip);
-		if (af == -1) {
-			ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
-			af = geo_get_addr_family(ip);
+		char *host = VRT_GetHdr(sp, HDR_REQ, "\005host:");
+		if (host == NULL) {
+			return;
+		}
+		if (snprintf(host_safe, sizeof(host_safe), "%s", geo_get_top_cookie_domain(host)) >= sizeof(host_safe)) {
+			return;
+		}
+		geo_sanitize_for_cookie(host_safe);
+
+		if (geo_get_relevant_ip(sp, ip, sizeof(ip)) == -1) {
+			return;
 		}
 
-		geo_init();
-		record = GeoIP_record_by_addr(gi, ip);
+		if (!geo_init()) {
+			record = GeoIP_record_by_addr(gi, ip);
+		}
 
 		int snp_len;
 		if (record) {
 			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/ */
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%.4f:%.4f:%s; Path=/; Domain=.%s",
-				record->country_code ? geo_sanitize_for_cookie(record->country_code) : "",
-				record->city ? geo_sanitize_for_cookie(record->city) : "",
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%.4f:%.4f:%s",
+				record->country_code ? record->country_code : "",
+				record->city ? record->city : "",
 				record->latitude,
 				record->longitude,
-				(af == AF_INET6) ? "v6" : "v4",
-				geo_get_top_cookie_domain(host)
+				(strchr(ip, ':') != NULL) ? "v6" : "v4"
 			);
 			GeoIPRecord_delete(record);
 		} else {
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=::::%s; Path=/; Domain=.%s",
-				(af == AF_INET6) ? "v6" : "v4",
-				geo_get_top_cookie_domain(host)
-			);
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=::::%s", (strchr(ip, ':') != NULL) ? "v6" : "v4");
 		}
-		if (snp_len < sizeof(cookie_buf)) /* don't use truncated output */
-			cookie_out = cookie_buf;
+		if (snp_len < sizeof(cookie_buf)) {
+			/* don't use truncated output */
+			cookie_out = geo_sanitize_for_cookie(cookie_buf);
+		}
 
 		if (cookie_out) {
-                        /* Use libvmod-header to ensure the Set-Cookie header we are adding does not
-                           clobber or manipulate existing cookie headers (if any). */
-			Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:", cookie_out, vrt_magic_string_end);
+			/* Use libvmod-header to ensure the Set-Cookie header we are adding does not
+			   clobber or manipulate existing cookie headers (if any). */
+			Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:", cookie_out, "; Path=/; Domain=.",
+				host_safe, vrt_magic_string_end);
 		}
 	}C
 }
