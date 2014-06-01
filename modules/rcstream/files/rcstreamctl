@@ -1,6 +1,6 @@
 #!/bin/bash
 # rcstreamctl -- Manage RCStream jobs
-# Usage: rcstreamctl {status|check|start|stop|restart}
+# Usage: rcstreamctl {status|check|start|stop|restart|stream}
 #
 command=$1
 shift
@@ -34,7 +34,15 @@ case "$command" in
         initctl emit rcstream.stop
         initctl emit rcstream.start
         ;;
+    stream)
+        [ -r /etc/default/rcstream ] || { echo >&2 "Not configured."; exit 1; }
+        . /etc/default/rcstream
+        addr=$(basename $redis)
+        host=${addr%%:*}
+        port=${addr##*:}
+        /usr/bin/redis-cli -h "$host" -p "$port" PSUBSCRIBE 'rc.*'
+        ;;
     *)
-        echo >&2 "Usage: ${0##*/} {status|start|stop|restart}"
+        echo >&2 "Usage: ${0##*/} {status|check|start|stop|restart|stream}"
         ;;
 esac
