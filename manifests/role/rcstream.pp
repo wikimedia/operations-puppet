@@ -31,6 +31,7 @@ class role::rcstream {
         ports        => $backends,
     }
 
+
     class { '::rcstream::proxy':
         backends => $backends,
     }
@@ -43,4 +44,11 @@ class role::rcstream {
 
     # FIXME: Diamond hasn't been packaged for Trusty yet (ori, 2-Jun-2014)
     # diamond::collector::nginx { 'rcstream': }
+
+    # diamond::collector { 'RCStream':
+    #     source   => 'puppet:///modules/rcstream/diamond_collector.py',
+    #     settings => {
+    #         backends => $backends,
+    #     },
+    # }
 }
