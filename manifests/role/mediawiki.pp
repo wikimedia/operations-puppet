@@ -50,6 +50,7 @@ class role::mediawiki::common {
 # This class installs everything necessary for an apache webserver
 class role::mediawiki::webserver( $pool = undef, $maxclients = 40 ) {
     include ::mediawiki
+    include ::apache::monitoring
     include role::mediawiki::common
     include lvs::configuration
 
@@ -75,22 +76,6 @@ class role::mediawiki::webserver( $pool = undef, $maxclients = 40 ) {
         }
     }
 
-    ## ganglia module for apache webservers
-    file { '/usr/lib/ganglia/python_modules/apache_status.py':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///files/ganglia/plugins/apache_status.py',
-        notify => Service['gmond'],
-    }
-
-    file { '/etc/ganglia/conf.d/apache_status.pyconf':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///files/ganglia/plugins/apache_status.pyconf',
-        notify => Service['gmond'],
-    }
 }
 
 ## prod role classes
