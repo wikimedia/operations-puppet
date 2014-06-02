@@ -3794,69 +3794,6 @@ class admins::roots {
     include accounts::tstarling
 }
 
-# mortals are the software deployment group,
-# we should rename and rewrite this someday
-class admins::mortals {
-    $gid = '500'  # 'wikidev' by default
-    include groups::wikidev
-
-    include accounts::aaron
-    include accounts::dr0ptp4kt
-    include accounts::werdna
-    include accounts::anomie
-    include accounts::aude # RT 6460
-    include accounts::awight
-    include accounts::awjrichards
-    include accounts::bd808
-    include accounts::brion # per user request, rt 4798
-    include accounts::bsitu
-    include accounts::cmcmahon
-    include accounts::cscott # RT 7542
-    include accounts::csteipp
-    include accounts::demon
-    include accounts::ebernhardson # RT 5717
-    include accounts::esanders # RT 7120
-    include accounts::gdubuc # renamed to 'gilles'
-    include accounts::gilles # RT 6619
-    include accounts::gjg
-    include accounts::gwicke
-    include accounts::halfak
-    include accounts::hashar
-    include accounts::hoo    # RT 6731, RT 6939
-    include accounts::kaldari
-    include accounts::kartik # RT 6533
-    include accounts::khorn
-    include accounts::krinkle
-    include accounts::manybubbles # promoted per RT 5691
-    include accounts::maxsem
-    include accounts::mflaschen # renamed to 'mattflaschen'
-    include accounts::mattflaschen
-    include accounts::marktraceur
-    include accounts::mhoover # access revoked
-    include accounts::milimetric # promoted per RT 5982
-    include accounts::mlitn
-    include accounts::mwalker # promoted per RT 4747
-    include accounts::neilk # revoked access per RT 2345
-    include accounts::nikerabbit
-    include accounts::nimishg # revoked
-    include accounts::olivneh # renamed to 'ori'
-    include accounts::pdhanda # access revoked
-    include accounts::pgehres
-    include accounts::phuedx  # granted per RT 6785
-    include accounts::raindrift # access revoked per RT 3088
-    include accounts::reedy
-    include accounts::rmoen
-    include accounts::robla
-    include accounts::spage
-    include accounts::ssastry # RT 5512
-    include accounts::sumanah # RT 3752, revoked
-    include accounts::tomasz # move from roots RT 5485
-    include accounts::yurik # RT 4835, RT 5069
-    include accounts::zak # access revoked
-    include accounts::jgonera # RT 6716
-    include accounts::tgr # RT 7527
-}
-
 # access to terbium, fluorine (private data) and bastion hosts
 class admins::restricted {
     $gid = '500'  # 'wikidev' by default
