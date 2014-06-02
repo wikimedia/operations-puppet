@@ -29,50 +29,6 @@ class role::deployment::config {
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/jenkins',
         'checkout_submodules'   => true,
     },
-    'mediawiki/common'               => {
-        'grain'            => 'mediawiki',
-        'upstream'         => 'https://gerrit.wikimedia.org/r/operations/mediawiki-config',
-        'shadow_reference' => true,
-    },
-    'mediawiki/private'              => {
-        'grain' => 'mediawiki',
-    },
-    'mediawiki/slot0'                => {
-        'grain'                 => 'mediawiki',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/core',
-        'checkout_submodules'   => true,
-        'shadow_reference'      => true,
-        'fetch_module_calls' => {
-            'mediawiki.generate_localization_cache' => ['__REPO__'],
-        },
-        'checkout_module_calls' => {
-            'mediawiki.update_localization_cache' => ['__REPO__'],
-        },
-    },
-    'mediawiki/slot1'                => {
-        'grain'                 => 'mediawiki',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/core',
-        'checkout_submodules'   => true,
-        'shadow_reference'      => true,
-        'fetch_module_calls' => {
-            'mediawiki.generate_localization_cache' => ['__REPO__'],
-        },
-        'checkout_module_calls' => {
-            'mediawiki.update_localization_cache' => ['__REPO__'],
-        },
-    },
-    'mediawiki/beta0'                => {
-        'grain'                 => 'mediawiki',
-        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/core',
-        'checkout_submodules'   => true,
-        'shadow_reference'      => true,
-        'fetch_module_calls' => {
-            'mediawiki.generate_localization_cache' => ['__REPO__'],
-        },
-        'checkout_module_calls' => {
-            'mediawiki.update_localization_cache' => ['__REPO__'],
-        },
-    },
     'gdash/gdash'                    => {
         'grain'    => 'gdash',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/gdash',
