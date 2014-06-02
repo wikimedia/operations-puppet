@@ -3998,21 +3998,6 @@ class admins::parsoid {
     }
 }
 
-# access to pmacct tools
-class admins::pmacct {
-
-    $gid = '500'   # 'wikidev' by default
-    include groups::wikidev
-
-    # RT #7368
-    include accounts::jkrauska
-
-    # RT #7394
-    sudo_user { ['jkrauska']:
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
-}
-
 # access to LDAP servers by Office IT sysadmin
 class admins::oit {
 
