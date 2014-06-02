@@ -94,7 +94,7 @@ sub tag_carrier {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		} else if (req.http.X-CS2 == "520-18") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
+			if (!req.http.X-Forwarded-Proto && req.http.X-Subdomain == "ZERO" && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
 				set req.http.X-CS = req.http.X-CS2;
 			}
 		} else if (req.http.X-CS2 == "470-01") {
