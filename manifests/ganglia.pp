@@ -155,9 +155,6 @@ class ganglia {
             'logstash'      => {
                 'name'      => 'Logstash cluster',
                 'ip_oct'    => '43' },
-            'rcstream'      => {
-                'name'      => 'RCStream cluster',
-                'ip_oct'    => '44' },
         }
         # NOTE: Do *not* add new clusters *per site* anymore,
         # the site name will automatically be appended now,
@@ -335,7 +332,6 @@ class ganglia::collector::config {
                     'Text caches ulsfo'              => 'cp4008.ulsfo.wmnet cp4016.ulsfo.wmnet',
                     'Elasticsearch eqiad'            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet elastic1013.eqiad.wmnet',
                     'Logstash eqiad'                 => 'logstash1001.eqiad.wmnet logstash1003.eqiad.wmnet',
-                    'RCStream eqiad'                 => 'rcs1001.eqiad.wmnet',
 
                 }
                 $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
