@@ -52,6 +52,8 @@ define diamond::collector(
     $ensure  = present,
     $source  = undef,
 ) {
+    include ::diamond
+
     $collector = regsubst($name, '(Collector)?$', 'Collector')
 
     file { "/etc/diamond/collectors/${collector}.conf":
