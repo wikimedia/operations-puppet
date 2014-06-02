@@ -317,13 +317,6 @@ class misc::deployment::vars {
         $mw_statsd_host = 'statsd.eqiad.wmnet'
         $mw_statsd_port = 8125
 
-        file { $mw_common_source:
-            ensure  => directory,
-            replace => false,  # FIXME: /a/common is a symlink on some systems
-            owner   => 'root',
-            group   => 'wikidev',
-            mode    => '0775',
-        }
     } else {
         include ::beta::config
         $mw_rsync_host = "deployment-bastion.${::site}.wmflabs"
