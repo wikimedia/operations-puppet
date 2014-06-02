@@ -217,6 +217,41 @@ metric_defs = {
         "query": "SELECT sum(tidx_blks_hit) as tidx_blks_hit FROM " + \
             "pg_statio_all_tables;",
     },
+    "pg_tidx_blks_hit": {
+        "description": "Toast index blocks hit",
+        "slope": "positive",
+        "units": "blocks",
+        "query": "SELECT sum(tidx_blks_hit) as tidx_blks_hit FROM " + \
+            "pg_statio_all_tables;",
+    },
+    "pg_bgwriter_buffers_checkpoint": {
+        "description": "Buffers written at checkpoint",
+        "slope": "positive",
+        "units": "buffers",
+        "query": "SELECT buffers_checkpoint FROM " + \
+            "pg_stat_bgwriter;",
+    },
+    "pg_bgwriter_buffers_clean": {
+        "description": "Buffers cleaned by bgwriter",
+        "slope": "positive",
+        "units": "buffers",
+        "query": "SELECT buffers_clean FROM " + \
+            "pg_stat_bgwriter;",
+    },
+    "pg_bgwriter_buffers_backend": {
+        "description": "Buffers written by backends and not bgwriter",
+        "slope": "positive",
+        "units": "buffers",
+        "query": "SELECT buffers_backend FROM " + \
+            "pg_stat_bgwriter;",
+    },
+    "pg_bgwriter_buffers_alloc": {
+        "description": "Buffers allocated globally",
+        "slope": "positive",
+        "units": "buffers",
+        "query": "SELECT buffers_checkpoint FROM " + \
+            "pg_stat_bgwriter;",
+    },
 }
 
 def print_exception(custom_msg, exception):
