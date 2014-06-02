@@ -41,5 +41,6 @@ class role::rcstream {
         require      => Service['rcstream'],
     }
 
-    diamond::collector::nginx { 'rcstream': }
+    # FIXME: Diamond hasn't been packaged for Trusty yet (ori, 2-Jun-2014)
+    # diamond::collector::nginx { 'rcstream': }
 }
