@@ -61,4 +61,13 @@ class role::lvs::balancer {
     if $::site in ['pmtpa', 'eqiad'] {
         include ::lvs::balancer::runcommand
     }
+
+    # Bump min_free_kbytes a bit to ensure network buffers are available quickly
+    if $::realm == 'production' {
+        vm::min_free_kbytes { 'lvs':
+            pct => 3,
+            min => 131072,
+            max => 524288,
+        }
+    }
 }

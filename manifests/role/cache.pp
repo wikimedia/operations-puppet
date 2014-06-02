@@ -582,6 +582,15 @@ class role::cache {
         }
 
         #class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
+
+        # Bump min_free_kbytes a bit to ensure network buffers are available quickly
+        if $::realm == 'production' {
+            vm::min_free_kbytes { 'cache':
+                pct => 2,
+                min => 131072,
+                max => 262144,
+            }
+        }
     }
 
     # Ancestor class for common resources of 1-layer clusters

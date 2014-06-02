@@ -19,7 +19,7 @@ class download::wikimedia {
         ensure => running,
     }
 
-    include generic::higher_min_free_kbytes
+    include vm::higher_min_free_kbytes
 
     monitor_service { 'lighttpd http':
         description   => 'LighttpdHTTP',

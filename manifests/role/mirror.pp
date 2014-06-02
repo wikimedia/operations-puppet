@@ -7,7 +7,7 @@ class role::mirror::common {
 		ensure => latest;
 	}
 
-	include generic::higher_min_free_kbytes
+	include vm::higher_min_free_kbytes
 }
 
 class role::mirror::media {
