@@ -161,7 +161,7 @@ node 'analytics1010.eqiad.wmnet' {
     $ganglia_aggregator = true
 
     include standard
-    class { 'admin': groups => ['stats'] }
+    class { 'admin': groups => ['analytics-users'] }
     include role::analytics::kraken
     include role::analytics::hadoop::master
 }
