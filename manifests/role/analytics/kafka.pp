@@ -147,34 +147,10 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         require      => Class['::kafka::server'],
     }
 
-    $jmxtrans_outfile = '/var/log/kafka/kafka-jmx.log'
-    file { $jmxtrans_outfile:
-        ensure  => 'present',
-        owner   => 'jmxtrans',
-        group   => 'jmxtrans',
-        mode    => '0644',
-        require => [Package['jmxtrans'], Package['kafka']]
-    }
-
     # Include Kafka Server Jmxtrans class
     # to send Kafka Broker metrics to Ganglia.
-    # We also save metrics to an logfile for easy
-    # debugging.
     class { '::kafka::server::jmxtrans':
         ganglia => "${ganglia_host}:${ganglia_port}",
-        outfile => $jmxtrans_outfile
-    }
-
-    # Install a logrotate.d file for the jmx.log file
-    file { '/etc/logrotate.d/kafka-jmx':
-        content =>
-"${jmxtrans_outfile} {
-    size 100M
-    rotate 2
-    missingok
-    create 0644 jmxtrans jmxtrans
-}
-"
     }
 
     # Generate icinga alert if this jmxtrans instance is not running.
