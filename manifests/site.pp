@@ -1682,6 +1682,14 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
         value     => 'off',
     }
 
+    # Max for bnx2x/BCM57800, seems to eliminate the spurious
+    #  rx drops under heavy traffic
+    interface::ring { 'eth0 rxring':
+        interface => 'eth0',
+        ring => 'rx',
+        value => 4078,
+    }
+
     # RPS/RSS config for interface performance
     interface::rps { 'eth0': rss_pattern => 'eth0-fp-%d' }
 
@@ -1717,6 +1725,14 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
         interface => 'eth0',
         setting   => 'lro',
         value     => 'off',
+    }
+
+    # Max for bnx2x/BCM57800, seems to eliminate the spurious
+    #  rx drops under heavy traffic
+    interface::ring { 'eth0 rxring':
+        interface => 'eth0',
+        ring => 'rx',
+        value => 4078,
     }
 
     # RPS/RSS config for interface performance
