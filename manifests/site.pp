@@ -2818,6 +2818,7 @@ node /virt100[1-7].eqiad.wmnet/ {
 node /virt100[8-9].eqiad.wmnet/ {
     $cluster = 'virt'
 
+    include admin
     include standard
 }
 
