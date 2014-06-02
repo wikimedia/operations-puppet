@@ -27,7 +27,7 @@ class mw-rc-irc::ircserver {
     diamond::collector { 'IRCDStats':
         source => 'puppet:///modules/mw-rc-irc/monitor/ircd_stats.py',
         settings => {
-            enable => 'true',
+            enabled => 'true',
             method => 'Threaded',
          },
     }
