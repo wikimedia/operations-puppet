@@ -30,6 +30,6 @@ define interface::rps( $rss_pattern="" ) {
     exec { "interface-rps $interface":
         command   => "/usr/local/sbin/interface-rps $interface $rss_pattern",
         subscribe => File["/etc/init/enable-rps-$interface.conf"],
-        require   => File["/etc/init/enable-rps-$interface.conf"],
+        refreshonly => true,
     }
 }
