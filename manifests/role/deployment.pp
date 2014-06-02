@@ -130,7 +130,7 @@ class role::deployment::config {
     'analytics/refinery'        => {
         'grain'               => 'analytics-refinery',
         'gitfat_enabled'      => true,
-        'upstream'            => 'https://gerrit.wikimedia.org/r/p/analytics/kraken/deploy',
+        'upstream'            => 'https://gerrit.wikimedia.org/r/analytics/refinery',
     },
     'scholarships/scholarships'      => {
         'grain'    => 'scholarships',
