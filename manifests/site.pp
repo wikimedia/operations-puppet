@@ -2581,6 +2581,8 @@ node 'stat1003.wikimedia.org' {
     include accounts::yuvipanda
     include accounts::dbrant       # RT 7399
     include accounts::tgr          # RT 7506
+    include accounts::dr0ptp4kt    # RT 7569
+    include accounts::brion        # RT 7568
 
     # Allow Christian to sudo -u stats
     # to debug and test stats' automated cron jobs.
