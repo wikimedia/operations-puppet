@@ -15,8 +15,10 @@ class role::analytics::kraken {
     include misc::udp2log::udp_filter
 
     # many Kraken python scripts use docopt for CLI parsing.
-    package { 'python-docopt':
-        ensure => 'installed',
+    if !defined(Package['python-docopt']) {
+        package { 'python-docopt':
+            ensure => 'installed',
+        }
     }
 
     # Many kraken jobs use dclass for

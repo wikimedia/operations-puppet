@@ -231,6 +231,10 @@ node 'analytics1026.eqiad.wmnet' {
     include role::analytics::kraken::jobs::import::kafka
     # Creates hive partitions on all data in HDFS /wmf/data/external
     include role::analytics::kraken::jobs::hive::partitions::external
+
+    # Include analytics/refinery deployment target.
+    # NOTE: refinery roles will soon replace kraken classes.
+    include role::analytics::refinery
 }
 
 # analytics1027 hosts the frontend
