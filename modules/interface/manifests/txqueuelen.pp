@@ -19,6 +19,7 @@ define interface::txqueuelen($interface='eth0', $len) {
 
     # And make sure it's always active
     exec { "txqueuelen-$interface":
+        path    => '/usr/bin:/usr/sbin:/bin:/sbin',
         command => $setcmd,
         unless  => "test `cat $sysfs_txqlen` = $len",
     }
