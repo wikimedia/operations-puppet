@@ -50,6 +50,11 @@ class role::osm::master {
         input_pbf_file   => '/srv/labsdb/planet-latest-osm.pbf',
         require          => Postgresql::Spatialdb['gis']
     }
+    osm::planet_sync { 'gis':
+        period => 'day',
+        hour   => '1',
+        minute => '17',
+    }
     # Add coastlines
     osm::shapefile_import { 'gis-coastlines':
         database         => 'gis',
