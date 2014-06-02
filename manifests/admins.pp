@@ -3083,7 +3083,7 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'kwang@wikimedia.org':
-                ensure => 'present',
+                ensure => 'absent',
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDj299MZhsLjbagT8eu7QMrmMWu0ROj1nJpGrod7sU40QXqE3JSDthmvt4YBx8EkWmYM5t5akLF8vtX+KdjxFs1m1tdSy7v4irPfVaNiswQx+GuOfEiZeb6a4oKD6PhJJ9ymkTUP0CFC2rr75jQK26vvn4aFLbridm2mzbsvTJG+88HsTz4DktEbVBFz4cSHBuQ2ckFh5I1JDdrQ/Wb9g8t4LnIdoNhjqVffzr+pGz1Fo0HH12EWpagYIikjG4iYAgpn0GQZJ1LLT4hmmnP67rH2LEKCcD92kRGO2MO4VzlF9Ij0nLbNNy9t16hQ9DT+wRGIBU51d+L/pUhXYWxIF4N',
@@ -3360,7 +3360,7 @@ class accounts {
             Ssh_authorized_key { require => Unixaccount[$realname] }
 
             ssh_authorized_key { 'charles@hailoo.com':
-                ensure => 'present',
+                ensure => 'absent',
                 user   => $username,
                 type   => 'ssh-rsa',
                 key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCjGSS/3k++mudvR5wrGYhLPYa/RQbtURNRhgjYA7lx9dPg6lKilQliaOMhKOxlwKDRCzNZNSz5CGG9Ype6dFrZf/c1nxF6D3YwD07eOITIy85qD7nGmFKTG2+olbwbvl0liC85AQv1Xi6C4QxL2za/t3iXb10XA7EJ0GXYKLp2nfFQ4FkR5+teFqgKpH+gd9SswiefW97HcTvuURc4n4YIC+WZJhD5majNV9Ben5QJe/qz+GnAfGSsKxMWlRRnevx7VP3KfFy9+6Lzj4Gspq+V+34UTlvY6VK4cL37UG/53dfBLgpMVgWQ0G7sooHw2xj//7fVMpAd+ipMQzDabEJ/',

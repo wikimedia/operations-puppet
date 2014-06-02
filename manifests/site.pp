@@ -2573,7 +2573,6 @@ node 'stat1003.wikimedia.org' {
     include accounts::marktraceur   # RT 6009
     include accounts::msyed        # RT 6506
     include accounts::nuria        # RT 6525
-    include accounts::csalvia      # RT 6664
     include accounts::leila        # RT 6765
     include accounts::gdubuc       # renamed to 'gilles'
     include accounts::gilles       # RT 7074
