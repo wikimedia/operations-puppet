@@ -1,7 +1,7 @@
 groups:
   absent:
     description: meta group for absented users
-    members: []
+    members: [csalvia]
   wikidev:
     gid: 500
     description: container group for primary user groups.
