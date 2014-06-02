@@ -48,7 +48,7 @@ groups:
     description: access to terbium, fluorine (private data) and bastion hosts
     members: [avar, daniel, dartar, diederik,
       erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris, rainman,
-      tparscal, tnegrin, ssastry, ironholds, nuria, csalvia, leila,
+      tparscal, tnegrin, ssastry, ironholds, nuria, leila,
       santhosh, amire80, legoktm]
   bastiononly:
     gid: 707
@@ -755,7 +755,7 @@ users:
         nuria@wikimedia.org-production]
     uid: 4193
   csalvia:
-    ensure: present
+    ensure: absent
     gid: 500
     name: csalvia
     realname: Charles Salvia
