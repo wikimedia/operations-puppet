@@ -44,7 +44,7 @@ class diamond(
                   port => '8125',
     },
 ) {
-    package { ['python-diamond', 'python-configobj']:
+    package { [ 'python-diamond', 'python-configobj' ]:
         ensure => present,
     }
 
