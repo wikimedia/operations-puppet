@@ -1,7 +1,7 @@
 groups:
   absent:
     description: meta group for absented users
-    members: []
+    members: [csalvia]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -154,7 +154,7 @@ groups:
                 and other private data.
     members: [handrade, haithams, ezachte, milimetric, dartar,
       yurik, howief, mwalker, awight, dr0ptp4kt, qchris, tnegrin, nuria,
-      csalvia, leila, manybubbles, ironholds, kleduc]
+      leila, manybubbles, ironholds, kleduc]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
