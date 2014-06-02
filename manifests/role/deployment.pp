@@ -127,6 +127,11 @@ class role::deployment::config {
         'checkout_submodules' => true,
         'upstream'            => 'https://gerrit.wikimedia.org/r/p/analytics/kraken/deploy',
     },
+    'analytics/refinery'        => {
+        'grain'               => 'analytics-refinery',
+        'gitfat_enabled'      => true,
+        'upstream'            => 'https://gerrit.wikimedia.org/r/p/analytics/kraken/deploy',
+    },
     'scholarships/scholarships'      => {
         'grain'    => 'scholarships',
         'upstream' => 'https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships',
