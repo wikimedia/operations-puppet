@@ -31,13 +31,3 @@ define interface::offload($interface='eth0', $setting, $value) {
         unless  => "test $(ethtool -k ${interface} | awk '/${long_param}:/ { print \$2 }') = '${value}'"
     }
 }
-
-define interface::setting($interface, $setting, $value) {
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '10.04') >= 0 {
-        # Use augeas to add an 'up' command to the interface
-        augeas { "${interface}_${title}":
-            context => "/files/etc/network/interfaces/*[. = '${interface}' and family = 'inet']",
-            changes => "set ${setting} '${value}'",
-        }
-    }
-}
