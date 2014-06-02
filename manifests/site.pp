@@ -965,11 +965,6 @@ node 'eeden.esams.wikimedia.org' {
 node 'ekrem.wikimedia.org' {
     include admin
     include standard
-
-    #deprecated role and module should go too:
-    #* manifests/role/ircd.pp
-    #* modules/ircd
-    include role::ircd
 }
 
 node 'tarin.pmtpa.wmnet' {
