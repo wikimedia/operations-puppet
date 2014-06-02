@@ -220,7 +220,7 @@ node 'analytics1026.eqiad.wmnet' {
     $cluster = 'analytics'
 
     include standard
-    class { 'admin': groups => ['stats'] }
+    class { 'admin': groups => ['analytics-users'] }
     include role::analytics::kraken
 
     # Including kraken import and hive partition cron jobs.
