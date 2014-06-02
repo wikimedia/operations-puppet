@@ -103,14 +103,6 @@ class deployment::salt_master(
         require => [File[$module_dir]],
     }
 
-    file { "${module_dir}/mediawiki.py":
-        source  => 'puppet:///modules/deployment/modules/mediawiki.py',
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        require => [File[$module_dir]],
-    }
-
     # If pillars or modules change, we need to sync them with the minions
     exec { 'refresh_deployment_pillars':
         command     => "/usr/bin/salt -C 'G@deployment_server:true or G@deployment_target:*' saltutil.refresh_pillar",
@@ -131,8 +123,7 @@ class deployment::salt_master(
     exec { 'refresh_deployment_modules':
         command     => "/usr/bin/salt -C 'G@deployment_server:true or G@deployment_target:*' saltutil.sync_modules",
         subscribe   => [File["${module_dir}/deploy.py"],
-                        File["${module_dir}/mwprof.py"],
-                        File["${module_dir}/mediawiki.py"]],
+                        File["${module_dir}/mwprof.py"]],
         refreshonly => true,
         require     => [Package['salt-master']],
     }

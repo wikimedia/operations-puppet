@@ -25,10 +25,6 @@ class role::mediawiki::common {
     include geoip
     include ::mediawiki
     include ::twemproxy::monitoring
-
-    if $::realm == 'production' {
-        deployment::target { 'mediawiki': }
-    }
 }
 
 # This class installs everything necessary for an apache webserver
