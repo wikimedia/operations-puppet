@@ -118,19 +118,11 @@ class imagescaler::files {
         target => '/etc/fonts/conf.avail/70-no-bitmaps.conf',
     }
 
-    file { '/a':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
     file { '/a/magick-tmp':
         ensure  => 'directory',
         owner   => 'apache',
         group   => 'root',
         mode    => '0755',
-        require => File['/a'],
     }
 
     file { '/tmp/magick-tmp':
