@@ -1444,9 +1444,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
         members        => [ 'eth0', 'eth1' ],
     }
 
-    #ops group gid is wrong and I don't know why - Chase
-    #include admin
-
+    include admin
     include standard
     include openstack::project-nfs-storage-service
     include rsync::server
