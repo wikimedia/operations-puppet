@@ -1687,6 +1687,9 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 
     # RPS/RSS config for interface performance
     interface::rps { 'eth0': rss_pattern => 'eth0-fp-%d' }
+
+    # txqueuelen 10K for 10Gbps LVS
+    interface::txqueuelen { 'eth0': len => 10000 }
 }
 
 # ULSFO lvs servers
@@ -1721,6 +1724,9 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
     # RPS/RSS config for interface performance
     interface::rps { 'eth0': rss_pattern => 'eth0-fp-%d' }
+
+    # txqueuelen 10K for 10Gbps LVS
+    interface::txqueuelen { 'eth0': len => 10000 }
 }
 
 node 'magnesium.wikimedia.org' {
