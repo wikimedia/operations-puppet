@@ -87,17 +87,6 @@ define account_ssh_key($user, $type, $key, $enabled=true) {
     }
 }
 
-class groups {
-    class search {
-        group { 'search':
-            ensure    => 'present',
-            name      => 'search',
-            gid       => '538',
-            alias     => '538',
-            allowdupe => false;
-        }
-    }
-
     class wikidev {
         group { 'wikidevgroup':
             ensure    => 'present',
@@ -1185,29 +1174,6 @@ class accounts {
                         key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCyYwXitC3hSK+Gwfq3y0PlGlQMRHaqsTtJcDbgoxuE0kzEEKwSVpyXIxoUdUK0Luh2eVkR+CZ8+5lLVDJOhrGpBT6r/Z9p+o+9rVopNEkHM8QxqbhDoS5gbSEngISM+Zcyo1wTK+bB4tbzCcX7eJEVlxmPv4Tb85zDcMWSR2ZWV+jPMai9/3uO61Q3n9GOX94+3qIWmZE55AIjLT/lw3iGffwSMffO9/8UC9U2sVW3v3daXuvDgmjKkAiGaJp+Evq82ahQEOgOWPDuLXYo1DyFuqsL67CDA1hYZfA9FJRfUhOW9I32mGmFpjdJsFeWSU4VIOHO//Blpy0j6h4IPacJ';
                     }
                 }
-    }
-
-    class rainman inherits baseaccount {
-        require groups::search
-
-        $username = 'rainman'
-        $realname = 'Robert Stojnic'
-        $uid      = '538'
-        $gid      = '538'  # group 'search'
-
-        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
-        if $manage_home {
-            Ssh_authorized_key { require => Unixaccount[$realname] }
-
-            ssh_authorized_key {
-                'rainman@localhost.localdomain':
-                    ensure => 'absent',
-                    user   => $username,
-                    type   => 'ssh-dss',
-                    key    => 'AAAAB3NzaC1kc3MAAACBAPo8Dv0FDT2DYr+olg6k5iJFgBfaXn3wk+9vDv+DQe8Ys4WzVhQcQ++/kB155dlKczmCvzQWIT7r/af7tEjbB+C3I9qz6BN5htxvvrVCrzab9SQXL4fYy7TTg4mPprJm5GZScBgO1VLua403Kx6SXZ36HEgBHWK8tkblJq9cuazpAAAAFQCpS4v9SsjqXsDR1LALBw4BvfZQowAAAIEAiHxv/Wqj99FPYRcquxehZN6ZsBxBEqhtDiQPL6SQy4VyPZRNfj9sH/8BAbwOdNkaU/nXgH0xOTyW86k2CfDMNUf8etRBXy6MSGoPWIdugkY0mRKqorqkoVDMvZVPbTI03nWBpvb2CDb47/mJLqhn6s1xQ5OzuZ2u2R+cr+8yc7MAAACBAMenXuT9/kRpVcWHrkAxJNqf0FLpuRXAGwAfI3gGFntsa+PVNA/8tz4afEO1NnaWmGQ6MO7xXKMejU2WR7NpKkxbCEHeyy5yKdvK5tZ3xkt2r/QLtxdiTSvizB8Fl+25JP3oUR5o+laxrk0gbEfbMqI6rHj+LJ8ibrE5+EYe6dAH';
-            }
-        }
     }
 
     class robh inherits baseaccount {
@@ -3840,7 +3806,6 @@ class admins::restricted {
     include accounts::jdlrobson # RT 7186
     include accounts::khorn
     include accounts::qchris # RT 5403
-    include accounts::rainman
     include accounts::ram # revoked
     include accounts::rcole # access revoked
     include accounts::spetrea # RT 5406

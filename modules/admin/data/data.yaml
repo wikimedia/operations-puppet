@@ -1,7 +1,7 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [csalvia]
+    members: [csalvia, rainman]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -47,7 +47,7 @@ groups:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
     members: [avar, daniel, dartar, diederik,
-      erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris, rainman,
+      erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
       tparscal, tnegrin, ssastry, ironholds, nuria, leila,
       santhosh, amire80, legoktm]
   bastiononly:
@@ -747,7 +747,7 @@ users:
         jdlrobson@gmail.com]
     uid: 2155
   rainman:
-    ensure: present
+    ensure: absent
     gid: 500
     name: rainman
     realname: Robert Stojnic
