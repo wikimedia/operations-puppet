@@ -325,7 +325,7 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
 #
 class role::logging::udp2log::erbium inherits role::logging::udp2log {
     include misc::fundraising::udp2log_rotation,
-        accounts::file_mover
+        include role::logging::systemusers
 
     # udp2log::instance will ensure this is created
     $webrequest_log_directory    = "$log_directory/webrequest"
@@ -338,14 +338,14 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
         mode    => '0775',
         owner   => 'udp2log',
         group   => 'file_mover',
-        require => Class['accounts::file_mover'],
+        require =>  Generic::Systemuser['file_mover'],
     }
     file { "${fundraising_log_directory}/logs":
         ensure  => 'directory',
         mode    => '2775',  # make sure setgid bit is set.
         owner   => 'udp2log',
         group   => 'file_mover',
-        require => Class['accounts::file_mover'],
+        require =>  Generic::Systemuser['file_mover'],
     }
 
     # erbium run webstatscollector's filter process,
@@ -387,5 +387,16 @@ class role::logging::udp2log::misc {
         multicast          => true,
         packet_loss_log    => '/var/log/udp2log/packet-loss.log',
         monitor_log_age    => false,
+    }
+}
+
+class role::logging::systemusers {
+    generic::systemuser { 'file_mover':
+        name              => 'file_mover',
+        uid               => 3001,
+        shell             => '/bin/bash',
+        ssh_key           => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4Gv$
+        default_group     => 'file_mover',
+        default_group_gid => 3001,
     }
 }
