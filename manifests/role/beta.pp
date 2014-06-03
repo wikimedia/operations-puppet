@@ -5,8 +5,6 @@ class role::beta::bastion {
         description => 'Bastion and work machine for beta cluster'
     }
 
-    class { 'misc::maintenance::geodata': enabled => true }
-
     include beta::autoupdater
     include beta::fatalmonitor
     include beta::syncsiteresources

@@ -2599,9 +2599,6 @@ node 'terbium.eqiad.wmnet' {
     class { 'misc::maintenance::tor_exit_node':
         enabled => true,
     }
-    class { 'misc::maintenance::geodata':
-        enabled => false,
-    }
     class { 'misc::maintenance::update_flaggedrev_stats':
         enabled => true,
     }

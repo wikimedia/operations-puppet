@@ -297,37 +297,6 @@ class misc::maintenance::parsercachepurging( $enabled = false ) {
 
 }
 
-class misc::maintenance::geodata( $enabled = false ) {
-    file {
-        '/usr/local/bin/update-geodata':
-            ensure  =>  absent;
-        '/usr/local/bin/clear-killlist':
-            ensure  => absent;
-    }
-
-    cron {
-        'update-geodata':
-            command => '/usr/local/bin/update-geodata >/dev/null 2>&1',
-            user    => 'apache',
-            minute  => '*/30',
-            ensure  => $enabled ?{
-                true    => present,
-                false   => absent,
-                default => absent
-            };
-        'clear-killlist':
-            command => '/usr/local/bin/clear-killlist >/dev/null 2>&1',
-            user    => 'apache',
-            hour    => 8,
-            minute  => 45,
-            ensure  => $enabled ?{
-                true    => present,
-                false   => absent,
-                default => absent
-            };
-    }
-}
-
 class misc::maintenance::mail_exim_aliases( $enabled = false ) {
 
     $alias_file = '/etc/exim4/aliases/wikimedia.org'
