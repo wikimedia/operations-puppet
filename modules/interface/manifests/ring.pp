@@ -19,7 +19,7 @@ define interface::ring($interface='eth0', $setting, $value) {
     # Change setting manually if Augeas made a real change
     exec { "ethtool ${interface} -g ${setting} ${value}":
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-        command => "ethtool -g ${interface} ${setting} ${value}",
+        command => "ethtool -G ${interface} ${setting} ${value}",
         subscribe => Augeas["${interface}_${title}"],
         refreshonly => true,
     }
