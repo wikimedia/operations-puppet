@@ -40,11 +40,6 @@ class mediawiki::sync {
         target => '/usr/local/apache/common-local',
     }
 
-    file { '/apache':
-        ensure => link,
-        target => '/usr/local/apache',
-    }
-
     file { '/a':
         ensure => directory,
         owner  => 'root',
