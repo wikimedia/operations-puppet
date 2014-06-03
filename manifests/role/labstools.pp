@@ -92,5 +92,12 @@ class role::labs::tools {
     }
   }
 
+  class mongo inherits role::labs::tools::config {
+      system::role { "role::labs::tools::mongo":
+          description => "Server that hosts shared MongoDB instance"
+      }
+
+      class { 'toollabs::mongo::master':}
+  }
 } # class role::labs::tools
 
