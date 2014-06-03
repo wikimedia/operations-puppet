@@ -25,15 +25,7 @@ class role::mediawiki::php {
     }
 }
 
-# Class: role::mediawiki
-#
-# This class installs a mediawiki application server
-#
-# Parameters:
-#   - $lvs_pool:
-#       Determines lvsrealserver IP(s) that the host will receive.
-#       From lvs::configuration::$lvs_service_ips
-class role::mediawiki::common( $lvs_pool = undef ) {
+class role::mediawiki::common {
     include role::mediawiki::php
     include standard
     include geoip
@@ -49,25 +41,23 @@ class role::mediawiki::common( $lvs_pool = undef ) {
         nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11211 --timeout=2',
     }
 
-    if $lvs_pool != undef {
-        include lvs::configuration
-        class { 'lvs::realserver':
-            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site],
-        }
-    }
-
     if $::realm == 'production' {
         deployment::target { 'mediawiki': }
     }
 }
 
 # This class installs everything necessary for an apache webserver
-class role::mediawiki::webserver( $maxclients = 40 ) {
+class role::mediawiki::webserver( $pool, $maxclients = 40 ) {
     include ::mediawiki
     include role::mediawiki::common
+    include lvs::configuration
 
     class { '::mediawiki::web':
         maxclients => $maxclients,
+    }
+
+    class { 'lvs::realserver':
+        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site],
     }
 
     class { '::mediawiki::syslog':
@@ -104,11 +94,8 @@ class role::mediawiki::webserver( $maxclients = 40 ) {
 class role::mediawiki::appserver {
     system::role { 'role::mediawiki::appserver': description => 'Standard Apache Application server' }
 
-    class { 'role::mediawiki::common':
-        lvs_pool => 'apaches',
-    }
-
     class { 'role::mediawiki::webserver':
+        pool       => 'apaches',
         maxclients => $::processorcount ? {
             16      => 60,
             12      => 50,
@@ -125,10 +112,8 @@ class role::mediawiki::appserver {
 class role::mediawiki::appserver::beta {
     system::role { 'role::mediawiki::appserver::beta': description => 'Beta Apache Application server' }
 
-    class { 'role::mediawiki::common': }
-
     include ::beta::hhvm
-    include role::mediawiki::webserver
+    include role::mediawiki::common
 
     include ::imagescaler::cron
     include ::imagescaler::packages
@@ -139,6 +124,14 @@ class role::mediawiki::appserver::beta {
     ferm::service { 'http':
         proto => 'tcp',
         port  => 'http'
+    }
+
+    class { '::mediawiki::web':
+        maxclients => $maxclients,
+    }
+
+    class { '::mediawiki::syslog':
+        apache_log_aggregator => $role::mediawiki::php::mediawiki_log_aggregator,
     }
 
     # MediaWiki configuration specific to labs instances ('beta' project)
@@ -161,25 +154,28 @@ class role::mediawiki::appserver::beta {
 class role::mediawiki::appserver::api {
     system::role { 'role::mediawiki::appserver::api': description => 'Api Apache Application server' }
 
-    class { 'role::mediawiki::common': lvs_pool => 'api' }
-
-    class { 'role::mediawiki::webserver': maxclients => 100 }
+    class { 'role::mediawiki::webserver':
+        pool       => 'api',
+        maxclients => 100,
+    }
 }
 
 class role::mediawiki::appserver::bits {
     system::role { 'role::mediawiki::appserver::bits': description => 'Bits Apache Application server' }
 
-    class { 'role::mediawiki::common': lvs_pool => 'apaches' }
-
-    class { 'role::mediawiki::webserver': maxclients => 100 }
+    class { 'role::mediawiki::webserver':
+        pool       => 'apaches',
+        maxclients => 100,
+    }
 }
 
 class role::mediawiki::imagescaler {
     system::role { 'role::mediawiki::imagescaler': description => 'Imagescaler Application server' }
 
-    class { 'role::mediawiki::common': lvs_pool => 'rendering' }
-
-    class { 'role::mediawiki::webserver': maxclients => 18 }
+    class { 'role::mediawiki::webserver':
+        pool       => 'rendering',
+        maxclients => 18,
+    }
 
     # When adding class there, please also update the appserver::beta
     # class which mix both webserver and imagescaler roles.
