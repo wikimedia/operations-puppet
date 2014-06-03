@@ -44,8 +44,9 @@ class mediawiki::jobrunner (
     # Manage gradual runner pipeline shrink bug
     # we restart jobs every hour, trying to evenly randomize the restart time.
     cron { 'mw-job-restarter':
-        command => 'PATH="/sbin" /etc/init.d/mw-job-runner restart',
+        command => 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" /etc/init.d/mw-job-runner restart',
         user    => 'root',
-        minute    => inline_template('<%= [@uniqueid].pack("H*").unpack("L")[0] % 60 -%>')
+        minute  => inline_template('<%= [@uniqueid].pack("H*").unpack("L")[0] % 60 -%>'),
+        hour    => '*'
     }
 }
