@@ -394,10 +394,10 @@ class role::logging::udp2log::misc {
 class role::logging::systemusers {
     generic::systemuser { 'file_mover':
         name              => 'file_mover',
-        uid               => 3001,
+        uid               => 30001,
         shell             => '/bin/bash',
         ssh_key           => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==',
         default_group     => 'file_mover',
-        default_group_gid => 3001,
+        default_group_gid => 30001,
     }
 }
