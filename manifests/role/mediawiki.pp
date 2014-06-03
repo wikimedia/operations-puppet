@@ -38,6 +38,7 @@ class role::mediawiki::common( $lvs_pool = undef ) {
     include standard
     include geoip
     include ::mediawiki
+    include ::mediawiki::mwlogdir
 
     nrpe::monitor_service { 'twemproxy':
         description  => 'twemproxy process',
