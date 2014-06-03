@@ -11,17 +11,7 @@ class role::fundraising::civicrm {
     $exim_signs_dkim = true
     $exim_bounce_collector = true
 
-    sudo_user { 'khorn':
-        privileges => ['ALL = NOPASSWD: ALL'],
-    }
-
-    $gid = 500
     include standard-noexim
-    # include accounts::mhernandez # migrated to lutetium
-    # include accounts::zexley # migrated to lutetium
-    # include accounts::pcoombe # migrated to lutetium
-    include admins::fr-tech
-    include admins::roots
     include backup::client
     include misc::fundraising
     include misc::fundraising::backup::backupmover_user
