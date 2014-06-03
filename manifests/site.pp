@@ -976,10 +976,10 @@ node 'tarin.pmtpa.wmnet' {
 }
 
 node 'aluminium.wikimedia.org' {
-    $cluster = 'fundraising'
+    #$cluster = 'fundraising'
     include admin
-    include role::fundraising::civicrm
-    include accounts::file_mover
+    #include role::fundraising::civicrm
+    #include accounts::file_mover
 
     interface::ip { 'fundraising.wikimedia.org':
         interface => 'eth0',
