@@ -1947,10 +1947,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
         include misc::deployment::scap_proxy
     }
 
-    class { 'role::mediawiki::job_runner':
-        run_jobs_enabled => true,
-    }
-
+    include role::mediawiki::job_runner
 }
 
 # mw1017-1113 are apaches (precise)
@@ -2720,9 +2717,7 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
     if $::hostname =~ /^tmh100[12]$/ {
         $ganglia_aggregator = true
     }
-    class { 'role::mediawiki::videoscaler':
-        run_jobs_enabled => true,
-    }
+    include role::mediawiki::videoscaler
 }
 
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
