@@ -206,7 +206,7 @@ class role::graphite {
             check_window => 100,
             over         => true
         }
-        include ::mediawiki::monitoring::graphite
+        include ::mediawiki::monitor::graphite
     }
 
     file { '/etc/apache2/sites-available/graphite':
