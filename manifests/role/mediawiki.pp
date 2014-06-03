@@ -2,16 +2,10 @@
 
 # Virtual monitor group resources for the monitoring server
 @monitor_group { 'appserver_eqiad': description => 'eqiad application servers' }
-@monitor_group { 'appserver_pmtpa': description => 'pmtpa application servers' }
 @monitor_group { 'api_appserver_eqiad': description => 'eqiad API application servers' }
-@monitor_group { 'api_appserver_pmtpa': description => 'pmtpa API application servers' }
 @monitor_group { 'bits_appserver_eqiad': description => 'eqiad Bits application servers' }
-@monitor_group { 'bits_appserver_pmtpa': description => 'pmtpa Bits application servers' }
 @monitor_group { 'imagescaler_eqiad': description => 'eqiad image scalers' }
-@monitor_group { 'imagescaler_pmtpa': description => 'pmtpa image scalers' }
 @monitor_group { 'jobrunner_eqiad': description => 'eqiad jobrunner application servers' }
-@monitor_group { 'jobrunner_pmtpa': description => 'pmtpa jobrunner application servers' }
-@monitor_group { 'videoscaler_pmtpa': description => 'pmtpa video scaler' }
 @monitor_group { 'videoscaler_eqiad': description => 'eqiad video scaler' }
 
 class role::mediawiki::php {
