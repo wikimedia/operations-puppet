@@ -1,4 +1,29 @@
-# admins.pp
+#PLEASE DO NOT ADD NEW CONFIGURATION HERE
+
+#SEE: http://git.wikimedia.org/blob/operations%2Fpuppet.git/65d82b3f8d06bd8087e5f083e7ccf75612748591/modules%2Fadmin%2FREADME
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # NOTE: append new accounts to the bottom of the list
 
