@@ -25,7 +25,7 @@ class lucene {
             ensure  => 'present',
             require => File['/a/search/conf'],
             owner   => 'lsearch',
-            group   => 'search',
+            group   => 'lsearch',
             mode    => '0444',
             content => template('lucene/lsearch-global-2.1.conf.erb'),
         }
@@ -33,7 +33,7 @@ class lucene {
         file { '/etc/lsearch.conf':
             ensure  => 'present',
             owner   => 'lsearch',
-            group   => 'search',
+            group   => 'lsearch',
             mode    => '0444',
             content => template('lucene/lsearch.conf.erb'),
         }
@@ -42,7 +42,7 @@ class lucene {
             ensure  => 'present',
             require => File['/a/search/conf'],
             owner   => 'lsearch',
-            group   => 'search',
+            group   => 'lsearch',
             mode    => '0444',
             content => template('lucene/lsearch.log4j.erb'),
         }
@@ -55,7 +55,7 @@ class lucene {
                 ]:
             ensure => 'directory',
             owner  => 'lsearch',
-            group  => 'search',
+            group  => 'lsearch',
             mode   => '0775',
         }
         if $lucene::server::indexer == true {
@@ -154,7 +154,7 @@ class lucene {
     class users {
         generic::systemuser { 'lsearch':
             name          => 'lsearch',
-            default_group => 'search',
+            default_group => 'lsearch',
         }
     }
 
@@ -169,14 +169,14 @@ class lucene {
 
         file { '/a/search/conf/nooptimize.dblist':
             owner  => 'lsearch',
-            group  => 'search',
+            group  => 'lsearch',
             mode   => '0444',
             source => 'puppet:///files/lucene/nooptimize.dblist',
         }
 
         file { '/a/search/lucene.jobs.sh':
             owner  => 'lsearch',
-            group  => 'search',
+            group  => 'lsearch',
             mode   => '0755',
             source => 'puppet:///files/lucene/lucene.jobs.sh',
         }
