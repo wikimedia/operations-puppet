@@ -87,6 +87,11 @@ define account_ssh_key($user, $type, $key, $enabled=true) {
     }
 }
 
+<<<<<<< HEAD
+=======
+class groups {
+
+>>>>>>> 713b35a... syntax error in admins.pp
     class wikidev {
         group { 'wikidevgroup':
             ensure    => 'present',
