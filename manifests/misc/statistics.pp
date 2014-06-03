@@ -954,7 +954,7 @@ class misc::statistics::researchdb_password {
         owner   => 'root',
         group   => 'researchers',
         mode    => '0440',
-        content => "user: $::passwords::mysql::research::user\npass: $::passwords::mysql::research::pass"
+        content => "user: $::passwords::mysql::research::user\npass: $::passwords::mysql::research::pass\n"
     }
 }
 
