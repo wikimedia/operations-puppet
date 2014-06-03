@@ -979,7 +979,7 @@ node 'aluminium.wikimedia.org' {
     $cluster = 'fundraising'
     include admin
     include role::fundraising::civicrm
-    include accounts::file_mover
+    include role::logging::systemusers
 
     interface::ip { 'fundraising.wikimedia.org':
         interface => 'eth0',
@@ -2228,7 +2228,7 @@ node 'pdf2.wikimedia.org' {
 
     class { 'admin': groups => ['pdf-render-admins'] }
     include role::pdf
-    include accounts::file_mover
+    include role::logging::systemusers
 }
 
 node 'pdf3.wikimedia.org' {
@@ -2236,7 +2236,7 @@ node 'pdf3.wikimedia.org' {
 
     class { 'admin': groups => ['pdf-render-admins'] }
     include role::pdf
-    include accounts::file_mover
+    include role::logging::systemusers
 }
 
 node 'potassium.eqiad.wmnet' {
