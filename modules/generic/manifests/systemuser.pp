@@ -6,13 +6,28 @@ define generic::systemuser(
     $managehome=true,
     $ssh_key=undef,
     $shell='/bin/false',
-    $groups=undef,
+    $groups=[],
+    $always_groups=['systemusers'],
     $default_group=$name,
     $default_group_gid=undef,
     $ensure=present,
     )
 {
-     # FIXME: deprecate $name parameter in favor of just using $title
+    if !is_array($groups) {
+        fail("${name} systemuser must specify an array for groups")
+    }
+
+    #creating one list of supplementary groups
+    $all_groups = split(inline_template("<%= (always_groups+groups).join(',') %>"),',')
+
+    #ensure the generic systemusers group exists
+    #current account management logic expects valid users
+    #even service users to be a member of a supplementary group
+    group { 'systemusers':
+        ensure => present,
+    }
+
+    # FIXME: deprecate $name parameter in favor of just using $title
     #allowing the gid to be specified or not
     if ($default_group_gid) {
         if $default_group == $name {
@@ -47,7 +62,7 @@ define generic::systemuser(
             home       => $whereis_home,
             managehome => $managehome,
             shell      => $shell,
-            groups     => $groups,
+            groups     => $all_groups,
             system     => true,
         }
     } else {
@@ -59,7 +74,7 @@ define generic::systemuser(
             home       => $whereis_home,
             managehome => $managehome,
             shell      => $shell,
-            groups     => $groups,
+            groups     => $all_groups,
             system     => true,
         }
      }

@@ -27,7 +27,7 @@ class role::otrs {
     generic::systemuser { 'otrs':
         name => 'otrs',
         home => '/var/lib/otrs',
-        groups => 'www-data',
+        groups => ['www-data'],
         shell => "/bin/bash",
     }
 
