@@ -118,7 +118,6 @@ define account_ssh_key($user, $type, $key, $enabled=true) {
             allowdupe => false,
         }
     }
-}
 
 class baseaccount {
     $enabled = true
