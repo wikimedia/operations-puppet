@@ -3077,21 +3077,6 @@ host sodium {
 	fixed-address sodium.wikimedia.org;
 }
 
-host solr1001 {
-	hardware ethernet 90:B1:1C:23:23:BF;
-	fixed-address solr1001.eqiad.wmnet;
-}
-
-host solr1002 {
-	hardware ethernet 90:B1:1C:1D:E7:E5;
-	fixed-address solr1002.eqiad.wmnet;
-}
-
-host solr1003 {
-	hardware ethernet 90:B1:1C:23:36:1D;
-	fixed-address solr1003.eqiad.wmnet;
-}
-
 host ssl1001 {
 	hardware ethernet 78:2b:cb:09:10:91;
 	fixed-address ssl1001.wikimedia.org;
