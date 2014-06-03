@@ -280,6 +280,9 @@ class lvs::configuration {
             'search' => {
                 'eqiad' => "10.2.2.30",
             },
+            'stream' => {
+                'eqiad' => {'streamlb' => '208.80.154.248', 'streamlb6' => '2620:0:861:ed1a::3:14'}
+            },
         },
         'labs' => {
             'text' => {
@@ -330,6 +333,7 @@ class lvs::configuration {
             'parsoid' => {},
             'parsoidcache' => {},
             'search' => {},
+            'stream' => {},
         }
     }
 
@@ -799,5 +803,21 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
+        'stream' => {
+            'description' => "Websocket/streaming services",
+            'class' => "low-traffic",
+            'sites' => [ "eqiad" ],
+            'ip' => $service_ips['stream'][$::site],
+            'port' => 80,
+            'bgp' => "yes",
+            'depool-threshold' => ".5",
+            'monitors' => {
+                'ProxyFetch' => {
+                    'url' => [ 'http://localhost/rc/rcstream_status' ],
+                },
+                'IdleConnection' => $idleconnection_monitor_options,
+            },
+        },
+
     }
 }
