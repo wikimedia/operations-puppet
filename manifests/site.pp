@@ -1686,7 +1686,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     #  rx drops under heavy traffic
     interface::ring { 'eth0 rxring':
         interface => 'eth0',
-        ring => 'rx',
+        setting => 'rx',
         value => 4078,
     }
 
@@ -1731,7 +1731,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     #  rx drops under heavy traffic
     interface::ring { 'eth0 rxring':
         interface => 'eth0',
-        ring => 'rx',
+        setting => 'rx',
         value => 4078,
     }
 
