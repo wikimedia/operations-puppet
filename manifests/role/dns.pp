@@ -72,11 +72,11 @@ class role::dns::recursor {
 
     ferm::rule { 'skip_dns_conntrack-out':
         desc  => 'Skip DNS outgoing connection tracking',
-        rule  => 'proto udp sport 53 NOTRACK',
+        rule  => 'proto udp sport 53 NOTRACK;',
     }
 
     ferm::rule { 'skip_dns_conntrack-in':
         desc  => 'Skip DNS incoming connection tracking',
-        rule  => 'proto udp dport 53 NOTRACK',
+        rule  => 'proto udp dport 53 NOTRACK;',
     }
 }
