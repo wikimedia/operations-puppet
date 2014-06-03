@@ -13,11 +13,6 @@ class beta::common {
         target  => $::beta::config::scap_deploy_dir,
         require => File['/usr/local/apache'],
     }
-    file { '/usr/local/apache/common':
-        ensure  => link,
-        target  => '/usr/local/apache/common-local',
-        require => File['/usr/local/apache/common-local'],
-    }
     file { '/usr/local/apache/conf':
         ensure  => link,
         target  => '/data/project/apache/conf',
