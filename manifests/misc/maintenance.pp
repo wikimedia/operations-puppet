@@ -31,7 +31,7 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
 
         cron { "cron-refreshlinks-${name}":
             command  => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only > /var/log/mediawiki/refreshLinks/${name}.log 2>&1",
-            user     => mwdeploy,
+            user     => 'apache',
             hour     => 0,
             minute   => 0,
             monthday => $monthday,
@@ -85,7 +85,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
     cron {
         'translationnotifications-metawiki':
             command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log',
-            user    => l10nupdate,  # which user?
+            user    => 'apache',
             weekday => 1, # Monday
             hour    => 10,
             minute  => 0,
@@ -97,7 +97,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
 
         'translationnotifications-mediawikiwiki':
             command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log',
-            user    => l10nupdate, # which user?
+            user    => 'apache',
             weekday => 1, # Monday
             hour    => 10,
             minute  => 5,
@@ -110,8 +110,8 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
 
     file {
         '/var/log/translationnotifications':
-            owner  => l10nupdate, # user ?
-            group  => wikidev,
+            owner  => 'apache',
+            group  => 'wikidev',
             mode   => '0664',
             ensure => directory;
         '/etc/logrotate.d/l10nupdate':
@@ -126,7 +126,7 @@ class misc::maintenance::tor_exit_node( $enabled = false ) {
     cron {
         'tor_exit_node_update':
             command => '/usr/local/bin/mwscript extensions/TorBlock/loadExitNodes.php --wiki=aawiki --force > /dev/null',
-            user    => apache,
+            user    => 'apache',
             minute  => '*/20',
             ensure  => $enabled ?{
                 true    => present,
@@ -140,7 +140,7 @@ class misc::maintenance::echo_mail_batch( $enabled = false ) {
     cron {
         'echo_mail_batch':
             command => '/usr/local/bin/foreachwikiindblist /usr/local/apache/common/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php 2>/dev/null',
-            user    => apache,
+            user    => 'apache',
             minute  => 0,
             hour    => 0,
             ensure  => $enabled ?{
@@ -155,8 +155,8 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
     file {
         '/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh':
             source => 'puppet:///files/misc/scripts/wikimedia-periodic-update.sh',
-            owner  => apache,
-            group  => wikidev,
+            owner  => 'apache',
+            group  => 'wikidev',
             mode   => '0755',
             ensure => present;
     }
@@ -210,8 +210,8 @@ class misc::maintenance::update_special_pages( $enabled = false ) {
     file {
         '/usr/local/bin/update-special-pages':
             source => 'puppet:///files/misc/scripts/update-special-pages',
-            owner  => apache,
-            group  => wikidev,
+            owner  => 'apache',
+            group  => 'wikidev',
             mode   => '0755',
             ensure => present;
         '/usr/local/bin/update-special-pages-small':
@@ -281,7 +281,7 @@ class misc::maintenance::parsercachepurging( $enabled = false ) {
     system::role { 'misc::maintenance::parsercachepurging': description => 'Misc - Maintenance Server: parser cache purging' }
 
     cron { 'parser_cache_purging':
-        user    => apache,
+        user    => 'apache',
         minute  => 0,
         hour    => 1,
         weekday => 0,
@@ -311,7 +311,7 @@ class misc::maintenance::geodata( $enabled = false ) {
     cron {
         'update-geodata':
             command => '/usr/local/bin/update-geodata >/dev/null 2>&1',
-            user    => apache,
+            user    => 'apache',
             minute  => '*/30',
             ensure  => $enabled ?{
                 true    => present,
@@ -320,7 +320,7 @@ class misc::maintenance::geodata( $enabled = false ) {
             };
         'clear-killlist':
             command => '/usr/local/bin/clear-killlist >/dev/null 2>&1',
-            user    => apache,
+            user    => 'apache',
             hour    => 8,
             minute  => 45,
             ensure  => $enabled ?{
@@ -338,7 +338,7 @@ class misc::maintenance::mail_exim_aliases( $enabled = false ) {
     $subject    = "${hostname} mail aliases"
 
     cron { 'mail_exim_aliases':
-        user    => root,
+        user    => 'apache',
         minute  => 0,
         hour    => 0,
         weekday => 0,
@@ -363,7 +363,7 @@ class misc::maintenance::updatetranslationstats( $ensure = absent ) {
        source => 'puppet:///files/misc/scripts/characterEditStatsTranslate',
     }
     cron { 'updatetranslationstats':
-        user    => 'mwdeploy',
+        user    => 'apache',
         minute  => 0,
         hour    => 0,
         weekday => 1,
@@ -396,7 +396,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 # $monthday = regsubst($name, '.*@', '\1')
 
                 Cron {
-                        user   => mwdeploy,
+                        user   => 'apache',
                         hour   => 1,
                         minute => 0,
                         month  => absent,
@@ -442,7 +442,7 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
         define updatequerypages::enwiki::cronjob() {
             $status = $misc::maintenance::updatequerypages::status
                 Cron {
-                        user   => mwdeploy,
+                        user   => 'apache',
                         hour   => 1,
                         minute => 0,
                 }
