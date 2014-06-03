@@ -239,7 +239,7 @@ class misc::fundraising::backup::backupmover_user {
 
 class misc::fundraising::udp2log_rotation {
 
-    include accounts::file_mover
+    include role::logging::systemusers
 
     sudo_user { "file_mover": privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }
 
