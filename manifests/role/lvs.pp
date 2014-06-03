@@ -43,7 +43,8 @@ class role::lvs::balancer {
             $sip['search_prefix'][$::site],
             $sip['swift'][$::site],
             $sip['parsoid'][$::site],
-            $sip['search'][$::site]
+            $sip['search'][$::site],
+            $sip['stream'][$::site],
             ],
     }
 

@@ -34,6 +34,7 @@ class role::rcstream {
 
     class { '::rcstream::proxy':
         backends => $backends,
+        location => '/rc'
     }
 
     nrpe::monitor_service { 'rcstream_backend':
