@@ -34,7 +34,7 @@ OTRS_GROUP=www-data
 
 <% if enable_mail_relay == "primary" or enable_otrs_server == "true" then -%>
 # MySQL lookups (OTRS)
-hide mysql_servers =  db1048.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db1046.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
+hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : m2-slave.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 <% end -%>
 
 <% if enable_mail_relay == "primary" then -%>
