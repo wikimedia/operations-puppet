@@ -61,6 +61,13 @@ class mediawiki::sync {
         replace => false,
     }
 
+    file { '/var/log/mediawiki':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0555',
+    }
+
     exec { 'mw-sync':
         command     => '/usr/local/bin/sync-common',
         require     => File['/usr/local/bin/sync-common','/a/common'],
