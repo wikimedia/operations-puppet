@@ -34,9 +34,12 @@ define sysctl::parameters(
     $ensure   = present,
     $priority = 70
 ) {
+    include ::sysctl
+
     sysctl::conffile { $title:
         ensure   => $ensure,
         content  => template('sysctl/sysctl.conf.erb'),
+        notify   => Service['procps'],
         priority => $priority,
     }
 }

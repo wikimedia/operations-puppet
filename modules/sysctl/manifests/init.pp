@@ -21,7 +21,11 @@ class sysctl {
     # FIXME: Remove dummy service when the last Hardy box is retired.
     if versioncmp($::lsbdistrelease, '10') > 0 {
         service { 'procps':
-            provider => upstart,
+            ensure   => 'running',
+            provider => 'base',
+            restart  => '/sbin/start procps',
+            start    => '/sbin/start procps',
+            status   => '/bin/true',
         }
     } else {
         service { 'procps':
