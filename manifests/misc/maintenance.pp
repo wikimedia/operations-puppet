@@ -16,10 +16,10 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
     # Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
 
     if $enabled == true {
-        file { [ '/var/log/mediawiki', '/var/log/mediawiki/refreshLinks' ]:
+        file { [ '/var/log/mediawiki/refreshLinks' ]:
             ensure => directory,
-            owner  => mwdeploy,
-            group  => mwdeploy,
+            owner  => 'apache',
+            group  => 'mwdeploy',
             mode   => '0664',
         }
     }
@@ -82,6 +82,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
     # Should there be crontab entry for each wiki,
     # or just one which runs the scripts which iterates over
     # selected set of wikis?
+
     cron {
         'translationnotifications-metawiki':
             user    => 'apache',
@@ -375,10 +376,10 @@ class misc::maintenance::updatetranslationstats( $ensure = absent ) {
 class misc::maintenance::updatequerypages( $enabled = false ) {
         # Include this to add cron jobs calling updateSpecialPages.php on all clusters.
 
-        file { '/home/mwdeploy/updateSpecialPages':
+        file { '/var/log/mediawiki/updateSpecialPages':
                 ensure => directory,
-                owner  => mwdeploy,
-                group  => mwdeploy,
+                owner  => 'apache',
+                group  => 'mwdeploy',
                 mode   => '0664',
         }
         $status = $enabled ?{
