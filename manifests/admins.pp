@@ -87,6 +87,8 @@ define account_ssh_key($user, $type, $key, $enabled=true) {
     }
 }
 
+class groups {
+
     class wikidev {
         group { 'wikidevgroup':
             ensure    => 'present',
