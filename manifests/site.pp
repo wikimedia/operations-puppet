@@ -977,6 +977,7 @@ node 'tarin.pmtpa.wmnet' {
 
 node 'aluminium.wikimedia.org' {
     $cluster = 'fundraising'
+    include admin
     include role::fundraising::civicrm
     include accounts::file_mover
 
