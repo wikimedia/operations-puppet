@@ -189,7 +189,7 @@ class role::mediawiki::imagescaler {
     include ::imagescaler::files
 }
 
-class role::mediawiki::videoscaler( $run_jobs_enabled = true ) {
+class role::mediawiki::videoscaler {
     system::role { 'role::mediawiki::videoscaler': description => 'TMH Jobrunner Server' }
 
     include role::mediawiki::common
@@ -199,7 +199,7 @@ class role::mediawiki::videoscaler( $run_jobs_enabled = true ) {
     include ::imagescaler::files
 
     class { '::mediawiki::jobrunner':
-        run_jobs_enabled       => $run_jobs_enabled,
+        run_jobs_enabled       => true,
         dprioprocs             => 5,
         iprioprocs             => 0,
         procs_per_iobound_type => 0,
@@ -209,7 +209,7 @@ class role::mediawiki::videoscaler( $run_jobs_enabled = true ) {
     }
 }
 
-class role::mediawiki::job_runner( $run_jobs_enabled = true ) {
+class role::mediawiki::job_runner {
     system::role { 'role::mediawiki::job_runner': description => 'Standard Jobrunner Server' }
 
     include role::mediawiki::common
@@ -218,6 +218,6 @@ class role::mediawiki::job_runner( $run_jobs_enabled = true ) {
         dprioprocs             => 17,
         iprioprocs             => 6,
         procs_per_iobound_type => 5,
-        run_jobs_enabled       => $run_jobs_enabled,
+        run_jobs_enabled       => true,
     }
 }
