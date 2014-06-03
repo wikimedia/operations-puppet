@@ -70,7 +70,7 @@ class role::mediawiki::webserver( $pool = undef, $maxclients = 40 ) {
 
 ## prod role classes
 class role::mediawiki::appserver {
-    system::role { 'role::mediawiki::appserver': description => 'Standard Apache Application server' }
+    system::role { 'role::mediawiki::appserver': }
 
     class { 'role::mediawiki::webserver':
         pool       => 'apaches',
@@ -88,7 +88,7 @@ class role::mediawiki::appserver {
 # apply both roles cause puppet will complains about a duplicate class
 # definition for role::mediawiki::common
 class role::mediawiki::appserver::beta {
-    system::role { 'role::mediawiki::appserver::beta': description => 'Beta Apache Application server' }
+    system::role { 'role::mediawiki::appserver::beta': }
 
     include ::beta::hhvm
     include role::mediawiki::webserver
@@ -122,7 +122,7 @@ class role::mediawiki::appserver::beta {
 }
 
 class role::mediawiki::appserver::api {
-    system::role { 'role::mediawiki::appserver::api': description => 'Api Apache Application server' }
+    system::role { 'role::mediawiki::appserver::api': }
 
     class { 'role::mediawiki::webserver':
         pool       => 'api',
@@ -131,7 +131,7 @@ class role::mediawiki::appserver::api {
 }
 
 class role::mediawiki::appserver::bits {
-    system::role { 'role::mediawiki::appserver::bits': description => 'Bits Apache Application server' }
+    system::role { 'role::mediawiki::appserver::bits': }
 
     class { 'role::mediawiki::webserver':
         pool       => 'apaches',
@@ -140,7 +140,7 @@ class role::mediawiki::appserver::bits {
 }
 
 class role::mediawiki::imagescaler {
-    system::role { 'role::mediawiki::imagescaler': description => 'Imagescaler Application server' }
+    system::role { 'role::mediawiki::imagescaler': }
 
     class { 'role::mediawiki::webserver':
         pool       => 'rendering',
@@ -155,7 +155,7 @@ class role::mediawiki::imagescaler {
 }
 
 class role::mediawiki::videoscaler {
-    system::role { 'role::mediawiki::videoscaler': description => 'TMH Jobrunner Server' }
+    system::role { 'role::mediawiki::videoscaler': }
 
     include role::mediawiki::common
 
@@ -175,7 +175,7 @@ class role::mediawiki::videoscaler {
 }
 
 class role::mediawiki::job_runner {
-    system::role { 'role::mediawiki::job_runner': description => 'Standard Jobrunner Server' }
+    system::role { 'role::mediawiki::job_runner': }
 
     include role::mediawiki::common
 
