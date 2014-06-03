@@ -30,7 +30,6 @@ class role::mediawiki::common {
     include standard
     include geoip
     include ::mediawiki
-    include ::mediawiki::mwlogdir
     include ::twemproxy::monitoring
 
     if $::realm == 'production' {
