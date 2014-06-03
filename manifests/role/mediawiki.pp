@@ -121,8 +121,8 @@ class role::mediawiki::videoscaler {
     }
 }
 
-class role::mediawiki::job_runner {
-    system::role { 'role::mediawiki::job_runner': }
+class role::mediawiki::jobrunner {
+    system::role { 'role::mediawiki::jobrunner': }
 
     include role::mediawiki::common
 

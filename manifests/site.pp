@@ -1947,7 +1947,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
         include misc::deployment::scap_proxy
     }
 
-    include role::mediawiki::job_runner
+    include role::mediawiki::jobrunner
 }
 
 # mw1017-1113 are apaches (precise)
