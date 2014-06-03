@@ -1,0 +1,9 @@
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[user]
+	email = hashar@free.fr
+	name = Antoine Musso
+[alias]
+	lg  = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
