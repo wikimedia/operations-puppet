@@ -63,3 +63,56 @@ class role::beta::rsync_slave {
         require => Labs_lvm::Volume['second-local-disk'],
     }
 }
+
+
+class role::beta::appserver {
+    system::role { 'role::beta::appserver': }
+
+    include ::mediawiki
+    include standard
+    include geoip
+
+    include ::beta::hhvm
+
+    include ::imagescaler::cron
+    include ::imagescaler::packages
+    include ::imagescaler::files
+
+
+    class { '::mediawiki::syslog':
+        apache_log_aggregator => 'deployment-bastion.eqiad.wmflabs:8420',
+    }
+
+    class { '::mediawiki::php':
+        fatal_log_file => 'udp://deployment-bastion.eqiad.wmflabs:8420',
+    }
+
+    class { '::mediawiki::web':
+        maxclients => $maxclients,
+    }
+
+    monitor_service { 'appserver http':
+        description   => 'Apache HTTP',
+        check_command => 'check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page',
+    }
+
+    # Beta application servers have some ferm DNAT rewriting rules (bug
+    # 45868) so we have to explicitly allow http (port 80)
+    ferm::service { 'http':
+        proto => 'tcp',
+        port  => 'http'
+    }
+
+    # FIXME: Each host that has this role applied must also be
+    # manually added to the dsh group file found in
+    # modules/beta/files/dsh/group/mediawiki-installation or scap will
+    # not communicate with that host.
+    class { '::beta::scap::target':
+        require => Labs_lvm::Volume['second-local-disk'],
+    }
+
+    include labs_lvm
+
+    # Eqiad instances do not mount additional disk space
+    labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
+}

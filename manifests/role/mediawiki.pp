@@ -15,10 +15,7 @@
 @monitor_group { 'videoscaler_eqiad': description => 'eqiad video scaler' }
 
 class role::mediawiki::php {
-    $mediawiki_log_aggregator = $::realm ? {
-        'production' => 'fluorine.eqiad.wmnet:8420',
-        'labs'       => "deployment-bastion.${::site}.wmflabs:8420",
-    }
+    $mediawiki_log_aggregator = 'fluorine.eqiad.wmnet:8420'
 
     class { '::mediawiki::php':
         fatal_log_file => "udp://${mediawiki_log_aggregator}",
@@ -38,7 +35,7 @@ class role::mediawiki::common {
 }
 
 # This class installs everything necessary for an apache webserver
-class role::mediawiki::webserver( $pool = undef, $maxclients = 40 ) {
+class role::mediawiki::webserver( $pool, $maxclients = 40 ) {
     include ::mediawiki
     include ::apache::monitoring
     include role::mediawiki::common
@@ -48,10 +45,8 @@ class role::mediawiki::webserver( $pool = undef, $maxclients = 40 ) {
         maxclients => $maxclients,
     }
 
-    if $pool != undef {
-        class { 'lvs::realserver':
-            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site],
-        }
+    class { 'lvs::realserver':
+        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site],
     }
 
     class { '::mediawiki::syslog':
@@ -60,10 +55,7 @@ class role::mediawiki::webserver( $pool = undef, $maxclients = 40 ) {
 
     monitor_service { 'appserver http':
         description   => 'Apache HTTP',
-        check_command => $::realm ? {
-            'production' => 'check_http_wikipedia',
-            'labs'       => 'check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page',
-        }
+        check_command => 'check_http_wikipedia',
     }
 
 }
@@ -80,44 +72,6 @@ class role::mediawiki::appserver {
             24      => 50,
             default => 40,
         }
-    }
-}
-
-# Class for the beta project
-# The Apaches instances act as webserver AND imagescalers. We cannot
-# apply both roles cause puppet will complains about a duplicate class
-# definition for role::mediawiki::common
-class role::mediawiki::appserver::beta {
-    system::role { 'role::mediawiki::appserver::beta': }
-
-    include ::beta::hhvm
-    include role::mediawiki::webserver
-
-    include ::imagescaler::cron
-    include ::imagescaler::packages
-    include ::imagescaler::files
-
-    # Beta application servers have some ferm DNAT rewriting rules (bug
-    # 45868) so we have to explicitly allow http (port 80)
-    ferm::service { 'http':
-        proto => 'tcp',
-        port  => 'http'
-    }
-
-    # MediaWiki configuration specific to labs instances ('beta' project)
-    include ::beta::common
-    include ::mediawiki
-
-    # Eqiad instances do not mount additional disk space
-    include labs_lvm
-    labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
-
-    # FIXME: Each host that has this role applied must also be
-    # manually added to the dsh group file found in
-    # modules/beta/files/dsh/group/mediawiki-installation or scap will
-    # not communicate with that host.
-    class { '::beta::scap::target':
-        require => Labs_lvm::Volume['second-local-disk'],
     }
 }
 
@@ -147,8 +101,6 @@ class role::mediawiki::imagescaler {
         maxclients => 18,
     }
 
-    # When adding class there, please also update the appserver::beta
-    # class which mix both webserver and imagescaler roles.
     include ::imagescaler::cron
     include ::imagescaler::packages
     include ::imagescaler::files
