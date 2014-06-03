@@ -49,6 +49,6 @@ define sysctl::conffile(
         ensure  => $ensure,
         content => $content,
         source  => $source,
-        notify  => Service['procps'],
+        notify  => Exec['update_sysctl'],
     }
 }
