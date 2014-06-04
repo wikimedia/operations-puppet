@@ -1,7 +1,7 @@
 # Class defining all icinga checks on graphite that only run on aggregates.
 # If you want to define a check that runs on each appserver, just define it in
 # the corresponding class directly.
-class mediawiki::monitor::graphite {
+class mediawiki::monitoring::graphite {
 
     # check the incoming job queue length for anomalies
     monitor_graphite_anomaly { 'mediawiki_jobs_queued':
