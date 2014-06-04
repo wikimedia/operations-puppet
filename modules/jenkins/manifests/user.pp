@@ -1,5 +1,6 @@
 class jenkins::user {
 
+  include systemuser::groups
   include jenkins::group
 
   # We do not use generic::systemuser{} since we would like to keep
@@ -11,7 +12,7 @@ class jenkins::user {
     gid        => 'jenkins',
     system     => true,
     managehome => false,
+    groups     => ['systemuser'],
     require    => Group['jenkins'];
   }
-
 }
