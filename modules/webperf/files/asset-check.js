@@ -77,6 +77,7 @@ function checkAssets( url ) {
             bytes: 0,
             post: 0,
             redirects: 0,
+            uncompressed: 0,
             http200: 0,
             http304: 0,
             http4xx: 0,
@@ -114,6 +115,7 @@ function checkAssets( url ) {
             type = match[0],
             req = resourcesRequested[ res.id ] || {},
             resource = payload[ type ],
+            compressed = false,
             size = 0;
 
         if ( res.stage == 'end' && !req.isBase64 ) {
@@ -128,14 +130,25 @@ function checkAssets( url ) {
                 size = res.bodySize;
             } else {
                 res.headers.forEach( function ( header ) {
-                    if ( header.name.toLowerCase() === 'content-length' ) {
-                        size = parseInt( header.value, 10 );
+                    switch ( header.name.toLowerCase() ) {
+                        case 'content-length':
+                            size = parseInt( header.value, 10 );
+                            break;
+                        case 'content-encoding':
+                            if ( header.value === 'gzip' ) {
+                                compressed = true;
+                            }
+                            break;
                     }
                 } );
             }
 
             resource.bytes += size;
             payload.combined.bytes += size;
+
+            if ( !compressed ) {
+                payload.combined.uncompressed++;
+            }
 
             if ( req.method === 'POST' ) {
                 payload.combined.post++;
