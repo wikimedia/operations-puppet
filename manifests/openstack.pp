@@ -876,10 +876,10 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
 
     # nova-compute adds the user with /bin/false, but resize, live migration, etc.
     # need the nova use to have a real shell, as it uses ssh.
-    user { "nova":
-        ensure => present,
-        shell => "/bin/bash",
-        require => Package["nova-common"];
+    generic::systemuser { nova:
+        name          => nova,
+        shell         => '/bin/bash',
+        require       => Package["nova-common"];
     }
 
     service { "nova-compute":
