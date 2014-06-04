@@ -15,17 +15,13 @@ class mwprof(
 
     package { [ 'build-essential', 'libglib2.0-dev', 'glib-networking' ]: }
 
-    group { 'mwprof':
-        ensure => present,
-    }
-
-    user { 'mwprof':
-        ensure     => present,
-        gid        => 'mwprof',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
+    generic::systemuser { 'mwprof':
+        name          => 'mwprof',
+        gid           => 'mwprof',
+        shell         => '/bin/false',
+        home          => '/nonexistent',
+        managehome    => false,
+        default_group => 'mwprof',
     }
 
     file {
