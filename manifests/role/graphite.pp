@@ -207,6 +207,7 @@ class role::graphite {
             over         => true
         }
         include ::mediawiki::monitor::graphite
+        include ::eventlogging::monitor::graphite
     }
 
     file { '/etc/apache2/sites-available/graphite':
