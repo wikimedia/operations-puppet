@@ -4,17 +4,13 @@
 # monitoring scripts for Wikimedia sites.
 #
 class webperf {
-    group { 'webperf':
-        ensure => present,
-    }
 
-    user { 'webperf':
-        ensure     => present,
-        gid        => 'webperf',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
+    generic::systemuser { 'webperf':
+        name          => 'webperf',
+        home          => '/nonexistent',
+        managehome    => false,
+        shell         => '/bin/false',
+        default_group => 'webperf',
     }
 
     file { '/srv/webperf':
