@@ -42,17 +42,13 @@ class eventlogging {
     include ::eventlogging::package
     include ::eventlogging::monitor
 
-    group { 'eventlogging':
-        ensure => present,
-    }
-
-    user { 'eventlogging':
-        ensure     => present,
-        gid        => 'eventlogging',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
+    generic::systemuser { 'eventlogging':
+        name          => 'eventlogging',
+        gid           => 'eventlogging',
+        shell         => '/bin/false',
+        home          => '/nonexistent',
+        managehome    => false,
+        default_group => 'eventlogging',
     }
 
     # Instance definition files.
@@ -93,7 +89,7 @@ class eventlogging {
         provider => 'upstart',
         require  => [
             File['/etc/init/eventlogging'],
-            User['eventlogging']
+            Generic::Systemuser['eventlogging']
         ],
     }
 
