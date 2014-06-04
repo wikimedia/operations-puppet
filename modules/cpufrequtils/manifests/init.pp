@@ -19,6 +19,12 @@ class cpufrequtils (
         require => Package['cpufrequtils'],
     }
 
+    # Ubuntu's default initscripts package includes a service called "ondemand"
+    #   which is a one-shot action invoked at startup which sleeps 60 seconds
+    #   and then sets all CPUs to the ondemand governor, thus undoing the work
+    #   of cpufrequtils :P
+    service { 'ondemand': enable => false }
+
     file { '/etc/default/cpufrequtils':
         content => "GOVERNOR=${governor}\n",
         notify  => Exec['apply cpufrequtils'],
