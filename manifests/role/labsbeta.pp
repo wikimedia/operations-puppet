@@ -37,6 +37,11 @@ class role::labs::toolsbeta {
     }
   }
 
+  class webproxy inherits role::labs::toolsbeta::config {
+    system::role { "role::labs::toolsbeta::webproxy": description => "Tool Labs web proxy" }
+    class { 'toollabs::webproxy': }
+  }
+
   class mailrelay inherits role::labs::toolsbeta::config {
     system::role { "role::labs::toolsbeta::mailrelay": description => "Tool Labs mail relay" }
     class { 'toollabs::mailrelay':
