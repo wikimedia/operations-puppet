@@ -14,22 +14,26 @@ define interface::rps( $rss_pattern="" ) {
     require interface::rpstools
 
     $interface = $title
+    $cmd = "/usr/local/sbin/interface-rps $interface $rss_pattern"
 
     # Disable irqbalance if RSS in use
     if $rss_pattern != "" {
         require irqbalance::disable
     }
 
-    file { "/etc/init/enable-rps-$interface.conf":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('interface/enable-rps.conf.erb'),
+    # Add to ifup commands in /etc/network/interfaces
+    interface::up_command { "rps-$interface":
+        interface => $interface,
+        command => $cmd,
     }
 
-    exec { "interface-rps $interface":
-        command   => "/usr/local/sbin/interface-rps $interface $rss_pattern",
-        subscribe => File["/etc/init/enable-rps-$interface.conf"],
+    # Exec immediately if newly-added
+    exec { "rps-$interface":
+        command   => $cmd,
+        subscribe => Augeas["${interface}_rps-${interface}"],
         refreshonly => true,
     }
+
+    # Legacy "init" script for this class, to be removed after first run
+    file { "/etc/init/enable-rps-$interface.conf": ensure => absent }
 }
