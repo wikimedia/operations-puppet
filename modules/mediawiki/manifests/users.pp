@@ -11,53 +11,34 @@ class mediawiki::users {
     # script of the wikimedia-task-appserver package, which provisioned it
     # historically. These values can and should be modernized.
 
-    group { 'apache':
-        ensure => present,
-        gid    => 48,
-        system => true,
+    generic::systemuser { 'apache':
+        name          => 'apache',
+        home          => '/var/www',
+        managehome    => false,
+        shell         => '/sbin/nologin',
+        default_group => 'apache',
+        default_group_gid => 48,
     }
-
-    user { 'apache':
-        ensure     => present,
-        gid        => 48,
-        shell      => '/sbin/nologin',
-        home       => '/var/www',
-        system     => true,
-        managehome => false,
-    }
-
 
     # The mwdeploy account is used by various scripts in the MediaWiki
     # deployment process to run rsync.
 
-    group { 'mwdeploy':
-        ensure => present,
-        system => true,
+    generic::systemuser { 'mwdeploy':
+        name          => 'mwdeploy',
+        home          => '/var/lib/mwdeploy',
+        shell         => '/bin/false',
+        default_group => 'mwdeploy',
     }
-
-    user { 'mwdeploy':
-        ensure     => present,
-        shell      => '/bin/false',
-        home       => '/var/lib/mwdeploy',
-        system     => true,
-        managehome => true,
-    }
-
 
     # The l10nupdate account is used for updating the localisation files
     # with new interface message translations.
 
-    group { 'l10nupdate':
-        ensure => present,
-        gid    => 10002,
-    }
-
-    user { 'l10nupdate':
-        ensure     => present,
-        gid        => 10002,
-        shell      => '/bin/bash',
-        home       => '/home/l10nupdate',
-        managehome => true,
+    generic::systemuser { 'l10nupdate':
+        name              => 'l10nupdate',
+        home              => '/home/l10nupdate',
+        shell             => '/bin/bash',
+        default_group     => 'l10nupdate',
+        default_group_gid => 1002,
     }
 
     file { '/home/l10nupdate/.ssh':
@@ -94,17 +75,11 @@ class mediawiki::users {
     # The pybal-check account is used by PyBal to monitor server health
     # See <https://wikitech.wikimedia.org/wiki/LVS#SSH_checking>
 
-    group { 'pybal-check':
-        ensure => present,
-    }
-
-    user { 'pybal-check':
-        ensure     => present,
-        gid        => 'pybal-check',
-        shell      => '/bin/sh',
-        home       => '/var/lib/pybal-check',
-        system     => true,
-        managehome => true,
+    generic::systemuser { 'pybal-check':
+        name          => 'pybal-check',
+        home          => '/var/lib/pybal-check',
+        shell         => '/bin/sh',
+        default_group => 'pybal-check',
     }
 
     file { '/var/lib/pybal-check/.ssh':
