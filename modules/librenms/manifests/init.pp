@@ -19,17 +19,14 @@ class librenms(
     $install_dir='/srv/librenms',
     $rrd_dir="${install_dir}/rrd",
 ) {
-    group { 'librenms':
-        ensure => present,
-    }
 
-    user { 'librenms':
-        ensure     => present,
-        gid        => 'librenms',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
+    generic::systemuser { 'librenms':
+        name          => 'librenms',
+        gid           => 'librenms',
+        shell         => '/bin/false',
+        home          => '/nonexistent',
+        managehome    => false,
+        default_group => 'librenms',
     }
 
     file { $install_dir:
