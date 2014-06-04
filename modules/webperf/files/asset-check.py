@@ -21,15 +21,15 @@ import time
 interval = 300  # 5 minutes.
 
 urls = (
-    ('commons', 'http://commons.wikimedia.org/wiki/Main_Page'),
-    ('dewiki', 'http://de.wikipedia.org/wiki/Wikipedia:Hauptseite'),
-    ('enwiki', 'http://en.wikipedia.org/wiki/Main_Page'),
-    ('enwiki-mobile', 'http://en.m.wikipedia.org/wiki/Main_Page'),
-    ('eswiki', 'http://es.wikipedia.org/wiki/Wikipedia:Portada'),
-    ('frwiki', 'http://fr.wikipedia.org/wiki/Wikipédia:Accueil_principal'),
-    ('jawiki', 'http://ja.wikipedia.org/wiki/メインページ'),
-    ('ruwiki', 'http://ru.wikipedia.org/wiki/Заглавная_страница'),
-    ('zhwiki', 'http://zh.wikipedia.org/wiki/Wikipedia:首页'),
+    ('commons', 'http://commons.wikimedia.org/?mainpage'),
+    ('dewiki', 'http://de.wikipedia.org/?mainpage'),
+    ('enwiki', 'http://en.wikipedia.org/?mainpage'),
+    ('enwiki-mobile', 'http://en.m.wikipedia.org/?mainpage'),
+    ('eswiki', 'http://es.wikipedia.org/?mainpage'),
+    ('frwiki', 'http://fr.wikipedia.org/?mainpage'),
+    ('jawiki', 'http://ja.wikipedia.org/?mainpage'),
+    ('ruwiki', 'http://ru.wikipedia.org/?mainpage'),
+    ('zhwiki', 'http://zh.wikipedia.org/?mainpage'),
 )
 
 
