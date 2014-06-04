@@ -30,6 +30,7 @@ class role::lvs::balancer {
             $sip['osm'][$::site],
             $sip['misc_web'][$::site],
             $sip['parsoidcache'][$::site],
+            $sip['stream'][$::site],
             ],
         /^(lvs100[36])$/ => [
             $sip['apaches'][$::site],
@@ -44,7 +45,6 @@ class role::lvs::balancer {
             $sip['swift'][$::site],
             $sip['parsoid'][$::site],
             $sip['search'][$::site],
-            $sip['stream'][$::site],
             ],
     }
 
