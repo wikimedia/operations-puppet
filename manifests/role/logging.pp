@@ -148,7 +148,7 @@ class role::logging::mediawiki::errors {
         description => 'Report MediaWiki exceptions and fatals to Ganglia',
     }
 
-    class { 'mediawiki::monitor::errors':
+    class { 'mediawiki::monitoring::errors':
         port => 8423,
     }
 }

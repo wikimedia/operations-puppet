@@ -187,7 +187,7 @@ class role::graphite {
         $auth_realm    = 'WMF Labs (use wiki login name not shell)'
         $apache_auth   = template('graphite/apache-auth-ldap.erb')
 
-        monitor_graphite_threshold {'reqstats_5xx':
+        monitor_graphite_threshold { 'reqstats_5xx':
             description     => 'HTTP 5xx req/min',
             metric          => 'reqstats.5xx',
             warning         => 250,
@@ -198,7 +198,7 @@ class role::graphite {
 
         # Will try to detect anomalies in the requests error ratio;
         # if 10% of the last 100 checks is out of forecasted bounds
-        monitor_graphite_anomaly {'requests_error_ratio':
+        monitor_graphite_anomaly { 'requests_error_ratio':
             description  => 'HTTP error ratio anomaly detection',
             metric       => 'reqstats.5xx',
             warning      => 5,
@@ -206,8 +206,8 @@ class role::graphite {
             check_window => 100,
             over         => true
         }
-        include ::mediawiki::monitor::graphite
-        include ::eventlogging::monitor::graphite
+        include ::mediawiki::monitoring::graphite
+        include ::eventlogging::monitoring::graphite
     }
 
     file { '/etc/apache2/sites-available/graphite':

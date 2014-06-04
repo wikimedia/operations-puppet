@@ -1,4 +1,4 @@
-# == Class: mediawiki::monitor::errors
+# == Class: mediawiki::monitoring::errors
 #
 # Configures a metric module that listens on a UDP port for MediaWiki
 # fatal and exception log messages and reports them to Ganglia.
@@ -14,12 +14,12 @@
 #
 # === Examples
 #
-#  class { 'mediawiki::monitor::errors':
+#  class { 'mediawiki::monitoring::errors':
 #      ensure => present,
 #      port   => 9400,
 #  }
 #
-class mediawiki::monitor::errors(
+class mediawiki::monitoring::errors(
     $ensure = present,
     $port   = 8423,
 ) {

@@ -40,7 +40,7 @@
 #
 class eventlogging {
     include ::eventlogging::package
-    include ::eventlogging::monitor
+    include ::eventlogging::monitoring
 
     group { 'eventlogging':
         ensure => present,
