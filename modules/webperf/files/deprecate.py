@@ -34,3 +34,7 @@ for meta in iter(zsock.recv_json, ''):
         key = re.sub(r'\W+', '_', meta['event']['method'])
         stat = 'mw.js.deprecate.%s:1|m' % key
         sock.sendto(stat.encode('utf-8'), addr)
+    if meta['schema'] == 'JQMigrateUsage':
+        key = re.sub(r'\W+', '_', meta['event']['key'])
+        stat = 'mw.js.deprecate.jqmigrate.%s:1|m' % key
+        sock.sendto(stat.encode('utf-8'), addr)
