@@ -87,13 +87,27 @@ function checkAssets( url ) {
     page.onResourceReceived = function ( res ) {
         var match = /javascript|html|css|image/i.exec( res.contentType ) || [ 'other' ],
             type = match[0],
-            resource = payload[ type ];
+            resource = payload[ type ],
+            size = 0;
 
         if ( res.stage == 'end' && !/^data:/.test( res.url ) ) {
             resource.requests++;
+
+            // @todo bodySize is not reliable and often missing completely or inaccurate
+            // (e.g. does not take into account gzip compression, or does so when not expected)
+            // - https://github.com/ariya/phantomjs/issues/10156
+            // - https://github.com/ariya/phantomjs/issues/10169
             if ( res.bodySize ) {
-                resource.bytes += res.bodySize;
+                size = res.bodySize;
+            } else {
+                res.headers.forEach( function ( header ) {
+                    if ( header.name.toLowerCase() === 'content-length' ) {
+                        size = parseInt( header.value, 10 );
+                    }
+                } );
             }
+
+            resource.bytes += size;
         }
     };
 
