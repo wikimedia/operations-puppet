@@ -17,6 +17,7 @@ import sys
 
 PATH_MWCORE = '<%= @stage_dir %>/php-master'
 PATH_MWEXT = '<%= @stage_dir %>/php-master/extensions'
+PATH_VENDOR = '<%= @stage_dir %>/php-master/vendor'
 
 
 def main():
@@ -51,6 +52,7 @@ def main():
     logger.info("Starting updating tasks...")
     exit_codes = [
         pull_mediawiki(),
+        pull_vendor(),
         pull_extensions(),
         update_extensions(),
     ]
@@ -100,6 +102,11 @@ def git_head_ts(git_dir):
 def pull_mediawiki():
     """Updates MediaWiki core"""
     return runner(name='mwcore', path=PATH_MWCORE, cmd=['git', 'pull'])
+
+
+def pull_vendor():
+    """Updates MediaWiki vendor"""
+    return runner(name='vendor', path=PATH_VENDOR, cmd=['git', 'pull'])
 
 
 def pull_extensions():
