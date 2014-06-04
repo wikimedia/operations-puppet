@@ -36,16 +36,11 @@ class rcstream(
         fail('requires 14.04+')
     }
 
-    group { 'rcstream':
-        ensure => present,
-    }
-
-    user { 'rcstream':
-        ensure => present,
-        gid    => 'rcstream',
-        shell  => '/bin/false',
-        home   => '/nonexistent',
-        system => true,
+    generic::systemuser { 'rcstream':
+        name          => 'rcstream',
+        shell         => '/bin/false',
+        home          => '/nonexistent',
+        default_group => 'rcstream',
     }
 
     deployment::target { 'rcstream':
