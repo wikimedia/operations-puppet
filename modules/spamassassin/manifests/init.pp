@@ -59,17 +59,14 @@ class spamassassin(
     }
 
     if ($spamd_user == 'spamd') {
-        group { 'spamd':
-            ensure     => present,
-        }
-        user { 'spamd':
-            ensure     => present,
+
+        generic::systemuser { 'spamd':
+            name          => 'spamd',
             gid        => 'spamd',
             shell      => '/bin/false',
             home       => '/nonexistent',
             managehome => false,
-            system     => true,
-            require    => Group['spamd'],
+            default_group => 'spamd',
         }
     }
 
@@ -95,7 +92,7 @@ class spamassassin(
             File['/etc/default/spamassassin'],
             File['/etc/spamassassin/local.cf'],
             Package['spamassassin'],
-            User[$spamd_user],
+            Generic::Systemuser[$spamd_user],
         ],
         subscribe => [
             File['/etc/default/spamassassin'],
