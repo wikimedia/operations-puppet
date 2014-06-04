@@ -18,6 +18,7 @@ import sys
 PATH_MWCORE = '<%= @stage_dir %>/php-master'
 PATH_MWEXT = '<%= @stage_dir %>/php-master/extensions'
 PATH_MWSKIN = '<%= @stage_dir %>/php-master/skins'
+PATH_VENDOR = '<%= @stage_dir %>/php-master/vendor'
 
 
 def main():
@@ -53,6 +54,7 @@ def main():
     # TODO refactor to use a dict with 'name' as keys and function value
     exit_codes = [
         pull_repo(name='mwcore', path=PATH_MWCORE),
+        pull_repo(name='mwvendor', path=PATH_VENDOR),
         pull_repo(name='mwextpull', path=PATH_MWEXT),
         update_repo(name='mwextupdate', path=PATH_MWEXT),
         pull_repo(name='mwskinpull', path=PATH_MWSKIN),
