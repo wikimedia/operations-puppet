@@ -140,10 +140,12 @@ class misc::fundraising::mail {
         ensure => 'present',
     }
 
+    #not using generic::systemuser to allow password
+    include ::systemuser::groups
     user { civimail:
         name => 'civimail',
         gid => 'civimail',
-        groups => [ 'civimail' ],
+        groups => [ 'civimail', 'systemuser'],
         membership => 'minimum',
         password => $passwords::civi::civimail_pass,
         home => '/home/civimail',
