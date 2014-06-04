@@ -12,6 +12,7 @@
  * Optional arguments:
  *   --timeout=N       specifies timeout, in seconds.
  *   --ua=USER_AGENT   set this User-Agent header.
+ *   --debug           enable verbose output and avoid minification.
  *
  * Copyright (C) 2013, Ori Livneh <ori@wikimedia.org>
  * Licensed under the terms of the GPL, version 2 or later.
@@ -20,6 +21,7 @@
 var system = require( 'system' ),
     webpage = require( 'webpage' ),
     options = {
+        debug: false,
         timeout: 30,
         ua: null,
     };
@@ -27,6 +29,12 @@ var system = require( 'system' ),
 function parseArgument( arg ) {
     if ( arg === '-h' || arg === '--help' ) {
         usage();
+        return;
+    }
+
+    if ( arg === '--debug' ) {
+        options.debug = true;
+        return;
     }
 
     var match = /^--([^=]+)=(.*)/.exec( arg );
@@ -39,7 +47,7 @@ function parseArgument( arg ) {
 
 function usage() {
     console.error( 'Usage: phantomjs ' + system.args[ 0 ] +
-        ' URL [--timeout=N] [--ua=USER_AGENT_STRING]'
+        ' URL [--timeout=N] [--ua=USER_AGENT_STRING] [--debug]'
     );
     phantom.exit( 1 );
 }
@@ -82,7 +90,11 @@ function checkAssets( url ) {
     page.onLoadFinished = function () {
         payload.cookies.set = page.cookies.length;
         payload.css.rules = page.evaluate( countCssRules );
-        console.log( JSON.stringify( payload ) );
+        if ( options.debug ) {
+            console.log( JSON.stringify( payload, null, '\t' ) );
+        } else {
+            console.log( JSON.stringify( payload ) );
+        }
         phantom.exit( 0 );
     };
 
@@ -99,7 +111,7 @@ function checkAssets( url ) {
 }
 
 system.args.slice( 1 ).forEach( parseArgument );
-if ( Object.keys( options ).sort().join(' ') !== 'timeout ua url' ) {
+if ( Object.keys( options ).sort().join(' ') !== 'debug timeout ua url' ) {
     usage();
 } else {
     checkAssets( options.url );
