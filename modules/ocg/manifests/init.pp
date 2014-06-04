@@ -16,6 +16,9 @@ class ocg (
     $redis_host = 'localhost',
     $redis_port = 6379,
     $redis_password = '',
+    $statsd_host = 'localhost',
+    $statsd_port = 8125,
+    $statsd_is_txstatsd = 0,
     $temp_dir = '/srv/deployment/ocg/tmp'
 ) {
     deployment::target { 'ocg': }
