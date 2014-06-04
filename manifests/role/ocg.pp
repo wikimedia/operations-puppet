@@ -10,6 +10,8 @@ class role::ocg::production {
 
     include passwords::redis
 
+    $service_port = 8000
+
     if ( $::ocg_redis_server_override != undef ) {
         $redis_host = $::ocg_redis_server_override
     } else {
@@ -21,6 +23,14 @@ class role::ocg::production {
         redis_host      => $redis_host,
         redis_password  => $passwords::redis::main_password,
         temp_dir        => '/srv/deployment/ocg/tmp',
+        service_port    => $service_port
+    }
+
+    ferm::service { 'ocg-http':
+        proto => 'tcp',
+        port   => $service_port,
+        desc  => 'HTTP frontend to submit jobs and get status from pdf rendering',
+        srange => $INTERNAL
     }
 
     monitor_service { 'ocg':
@@ -34,10 +44,20 @@ class role::ocg::test {
 
     include passwords::redis
 
+    $service_port = 8000
+
     class { '::ocg':
         redis_host      => 'localhost',
         redis_password  => $passwords::redis::ocg_test_password,
         temp_dir        => '/srv/deployment/ocg/tmp',
+        service_port    => $service_port
+    }
+
+    ferm::service { 'ocg-http':
+        proto => 'tcp',
+        port   => $service_port,
+        desc  => 'HTTP frontend to submit jobs and get status from pdf rendering',
+        srange => $INTERNAL
     }
 
     class { 'redis':
