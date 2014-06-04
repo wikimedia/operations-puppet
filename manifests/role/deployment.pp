@@ -132,7 +132,7 @@ class role::deployment::deployment_servers::common {
   # include misc::deployment::scripts
 
   class { 'deployment::deployment_server':
-    deployer_groups => 'wikidev',
+    deployer_groups => ['wikidev'],
   }
 
   class { 'apache': }
