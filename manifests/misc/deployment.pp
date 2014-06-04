@@ -339,13 +339,6 @@ class misc::deployment::vars {
                 mode   => '0775',
             }
 
-            file { '/data/project/apache/common-local':
-                ensure => directory,
-                owner  => 'mwdeploy',
-                group  => 'mwdeploy',
-                mode   => '0775',
-            }
-
             file { '/a':
                 ensure => directory,
                 owner  => 'root',
