@@ -82,7 +82,8 @@ function checkAssets( url ) {
             http304: 0,
             http4xx: 0,
             http5xx: 0,
-            httpOther: 0
+            httpOther: 0,
+            uncaughtException: 0
         }
     };
     var resourcesRequested = {};
@@ -192,6 +193,14 @@ function checkAssets( url ) {
             console.log( JSON.stringify( payload ) );
         }
         phantom.exit( 0 );
+    };
+
+    page.onError = function (err) {
+        // For example:
+        // - Uncaught ReferenceError: jQuery not defined
+        // - TypeError: 'undefined' is not a function (evaluating '$(document)')
+        payload.combined.uncaughtException++;
+        console.log('page.onError> ' + err);
     };
 
     // Abort if 30 seconds elapsed and the page hasn't finished loading
