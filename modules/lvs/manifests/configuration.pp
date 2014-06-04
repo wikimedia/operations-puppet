@@ -805,7 +805,7 @@ class lvs::configuration {
         },
         'stream' => {
             'description' => "Websocket/streaming services",
-            'class' => "low-traffic",
+            'class' => "high-traffic2",
             'sites' => [ "eqiad" ],
             'ip' => $service_ips['stream'][$::site],
             'port' => 80,
