@@ -97,7 +97,7 @@ class role::mediawiki::videoscaler {
     include ::imagescaler::packages
     include ::imagescaler::files
 
-    class { '::mediawiki::jobrunner':
+    class { '::mediawiki::jobqueue':
         run_jobs_enabled       => true,
         dprioprocs             => 5,
         iprioprocs             => 0,
@@ -113,7 +113,7 @@ class role::mediawiki::jobrunner {
 
     include role::mediawiki::common
 
-    class { '::mediawiki::jobrunner':
+    class { '::mediawiki::jobqueue':
         dprioprocs             => 17,
         iprioprocs             => 6,
         procs_per_iobound_type => 5,
