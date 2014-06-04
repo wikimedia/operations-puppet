@@ -1,0 +1,294 @@
+#!/usr/bin/perl -w
+#===============================================================================
+#
+#         FILE: check_dispatch
+#
+#        USAGE: check_dispatch -H https://www.wikidata.org
+#
+#  DESCRIPTION: nagios plugin to check dispatch stats on Wikidata.
+#               Retrieves newest change timestamp and diffs against current time.
+#               Also, retrieves average lag and puts it in a performance label
+#               tag for Nagios.
+#
+#      OPTIONS: ---
+# REQUIREMENTS: JSON , JSON::Path ,
+#     OPTIONAL: DateTime, DateTime::Format::Duration,
+#               DateTime::Format::Strptime
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: Christopher Johnson, christopher.johnson@wikimedia.de
+#      COMPANY:
+#      VERSION: 0.3
+#      CREATED:
+#     REVISION: ---
+#===============================================================================
+
+use strict;
+use warnings;
+
+#time calculations
+use Time::Seconds;
+
+# load libwww module
+use LWP;
+
+# load JSON module
+use JSON;
+use JSON::Path;
+
+# load Getopt::Long module for cli arguments
+use Getopt::Long;
+
+# load Pod::Usage module for automatic documentation
+use Pod::Usage;
+
+#Data Dump for Response
+use Data::Dumper;
+
+#-------------------------------------------------------------------------------
+# GLOBAL VARIABLES
+#-------------------------------------------------------------------------------
+# this hash is provided by module utils if nagios is present
+my %ERRORS=('OK'=>0,'WARNING'=>1,'CRITICAL'=>2,'UNKNOWN'=>3,'DEPENDENT'=>4);
+
+# check user-agent
+my $agent = "nagios check_dispatch";
+
+# save content-type header to validate json
+my $header = undef;
+
+# mediawiki url
+my $siteurl = undef;    # this has to be a cli argument
+
+# url for api call to site statistics
+my $apiurl = "/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics";
+
+# static JSON paths to request metric keys
+my @paths = ('query.statistics.dispatch.stalest.lag', 'query.statistics.dispatch.median.lag');
+
+my $debug    = undef;
+my $response = undef;
+my $help     = undef;
+my $version  = "0.3";
+my $realm    = undef;
+my $netloc   = undef;
+my $user     = undef;
+my $passwd   = undef;
+my $revision = undef;
+my $content = undef;
+my $critical = 900;
+my $warning = 60;
+#-------------------------------------------------------------------------------
+# process cli arguments
+#-------------------------------------------------------------------------------
+Getopt::Long::Configure( "no_ignore_case", "bundling" );
+GetOptions(
+    'H|hostname=s' => \$siteurl,
+    'n|netloc=s'   => \$netloc,
+    'r|realm=s'    => \$realm,
+    'u|user=s'     => \$user,
+    'p|passwd=s'   => \$passwd,
+    'h|help|?'     => \$help,
+    'v|verbose'    => \$debug,
+    'V|version'    => \$revision,
+    'c|critical=s'   => \$critical,
+);
+
+# give version if asked and exit
+if ($revision) {
+    print "$0 version: $version\n";
+    exit $ERRORS{'OK'};
+}
+
+# if help chosen, display it
+pod2usage( -verbose => 2, -noperldoc => 1, ) if $help;
+
+# if no -H specified, show usage
+pod2usage() unless $siteurl;
+
+#-------------------------------------------------------------------------------
+# start the check
+#-------------------------------------------------------------------------------
+# create a user agent object to show in the webserver logs
+my $ua = LWP::UserAgent->new;
+$ua->agent($agent);
+
+# do not wait for ever, after 10 seconds give up
+$ua->timeout(10);
+
+if ( defined $debug ) {
+    $ua->show_progress("true");
+}
+
+# concatenate base url and api url
+my $fullurl = $siteurl . $apiurl;
+
+# if we need to enter login info, else just get the url
+if ( defined $user ) {
+    $ua->credentials( $netloc, $realm, $user, $passwd );
+    $response = $ua->get($fullurl);
+}
+else {
+    $response = $ua->get($fullurl);
+}
+
+# if the web request is successful, proceed with check. Else exit with warning.
+if ( $response->is_success ) {
+
+    $header = $response->header("Content-Type");
+
+    die "could not get header\n" unless defined $header;
+
+    # if the header does not return the json content type, then exit
+    if ( $header =~ m/json./i  ) {
+            print "API URL OK -";
+    }
+    else {
+        print "WARNING: This does not look like the correct site\n";
+        print "$header\n" if defined $header;
+        exit $ERRORS{'WARNING'};
+    }
+
+    my $content = $response->content or Dumper $response;
+
+    #traverse JSON path and return values
+    my @values;
+    foreach my $path (@paths) {
+       my $jpath = JSON::Path->new($path);
+       foreach my $i ($jpath) {
+          my @value = $jpath->values($content);
+          push @values, @value;
+       }
+    }
+
+    #convert seconds to minutes
+    my @minvalues;
+    foreach (@values) {
+       my $val = Time::Seconds->new($_);
+       push @minvalues, $val->minutes;
+    }
+
+    # output message to console
+    print "Median Dispatch Lag is now $minvalues[1] minutes , Stalest Dispatch Lag = $minvalues[0] minutes |median lag=  $values[1]s;3;", $critical, ";\n";
+
+    if ($values[1] > $critical) {
+        print "CRITICAL: Median Dispatch Lag is greater than" , $critical, " seconds \n";
+        exit $ERRORS{'CRITICAL'};
+    }
+    elsif ($values[1] > $warning){
+        print "WARNING: Median Dispatch Lag is greater than" , $warning, " seconds\n";
+        exit $ERRORS{'WARNING'};
+    }
+    else {
+        exit $ERRORS{'OK'};
+    }
+}
+else {
+    print "WARNING: webserver $siteurl returned ", $response->status_line, "\n";
+    exit $ERRORS{'WARNING'};
+}
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#  Application Documentation
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+=head1 NAME
+
+check_dispatch - check dispatch stats
+
+=head1 VERSION
+
+This documentation refers to <check_dispatch>
+
+=head1 USAGE
+
+check_dispatch -H https://www.wikidata.org [-v true] [-n netlocation -r
+realm -u username -p password -c critlaglimit
+
+=head1 REQUIRED ARGUMENTS
+
+-H|--hostname
+web address of site hosting the mediawiki site;
+
+=head1 OPTIONS
+
+-H|--hostname
+web address of site hosting the mediawiki site;
+
+-n|--netloc
+hostname:port combination for webserver dns hostname. *NO* protocol (no
+http:// in it), just a simple or fully qualified name plus the port number.
+
+-r|--realm
+authentication realm; this is case sensitive.
+
+-u|--username
+
+-p|--password
+
+-v|--verbose
+standard this setting is 'false'. If 'true', then one can see extra debugging
+info of the http request;
+
+-c|--critical
+max threshold for critical lag performance status
+
+-h|--help
+this text;
+
+=head1 DESCRIPTION
+
+Nagios check to monitor dispatch stats via the Wikidata API
+
+When using this check for password protected sites (those where the webserver
+sends a 401 answer code and a pop up browser window requests us to enter a
+username/password combination), we need to enter in fact four arguments: the
+netloc, username, password and realm.
+
+The netloc (this is the name the libwww gives it) is a string formed by a
+combination of the dns hostname followed by ':' and then by a number. The
+number represents the port used by the webserver, usually 80. So the netloc
+for the site http://www.example.com would be www.example.com:80, without the
+http:// part which refers to the web protocol.
+
+For the other 3 arguments (realm, username and password) please refer to
+http://en.wikipedia.org/wiki/Basic_access_authentication
+
+=head1 DIAGNOSTICS
+
+This check can fail because of network problems. Use the --verbose
+true parameter to get better information if it fails.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+Place the plugin in the plugin directory of the nagios server (usually,
+/usr/local/nagios/libexec/), make the nagios user its owner and change the
+permissions to 775.  Also, see the check_dispatch.cfg file.
+
+For Puppet, see the icinga.pp manifest.
+
+=head1 DEPENDENCIES
+
+This plugin requires JSON::Path and several DateTime modules
+
+=head1 INCOMPATIBILITIES
+
+None known yet.
+
+=head1 BUGS AND LIMITATIONS
+
+=head1 AUTHOR
+Christopher H. Johnson
+
+=head1 LICENCE AND COPYRIGHT
+
+You can redistribute and/or modify this software under the terms of the GNU General Public License as
+published by the Free Software Foundation; either version 3 of the License, or (at your option) any later
+version; with the additional exemption that compiling, linking, and/or using OpenSSL is allowed.
+
+This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the COPYING file for the complete text of the GNU General Public License, version 3.
+=cut
+
