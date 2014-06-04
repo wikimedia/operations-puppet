@@ -42,7 +42,6 @@ class role::mediawiki::webserver( $pool, $maxclients ) {
     }
 }
 
-## prod role classes
 class role::mediawiki::appserver {
     system::role { 'role::mediawiki::appserver': }
 
@@ -78,24 +77,19 @@ class role::mediawiki::appserver::bits {
 class role::mediawiki::imagescaler {
     system::role { 'role::mediawiki::imagescaler': }
 
+    include ::mediawiki::multimedia
+
     class { 'role::mediawiki::webserver':
         pool       => 'rendering',
         maxclients => 18,
     }
-
-    include ::imagescaler::cron
-    include ::imagescaler::packages
-    include ::imagescaler::files
 }
 
 class role::mediawiki::videoscaler {
     system::role { 'role::mediawiki::videoscaler': }
 
     include role::mediawiki::common
-
-    include ::imagescaler::cron
-    include ::imagescaler::packages
-    include ::imagescaler::files
+    include ::mediawiki::multimedia
 
     class { '::mediawiki::jobqueue':
         run_jobs_enabled       => true,

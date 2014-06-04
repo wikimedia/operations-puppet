@@ -11,7 +11,6 @@ import 'dns.pp'
 import 'facilities.pp'
 import 'ganglia.pp'
 import 'gerrit.pp'
-import 'imagescaler.pp'
 import 'iptables.pp'
 import 'mail.pp'
 import 'misc/*.pp'
@@ -2183,11 +2182,6 @@ node 'osmium.eqiad.wmnet' {
     include hhvm::dev
     include mediawiki::cgroup
     include mediawiki::sync
-
-    class { '::mediawiki::jobrunner':
-        run_jobs_enabled => false,
-        user             => 'mwdeploy',
-    }
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
