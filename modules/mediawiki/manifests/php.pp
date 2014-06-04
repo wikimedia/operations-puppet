@@ -9,36 +9,14 @@ class mediawiki::php(
 ) {
     include ::mediawiki::packages
 
-    file { '/etc/php5/apache2/php.ini':
+    file { '/etc/php5':
+        ensure  => directory,
+        source  => 'puppet:///modules/mediawiki/etc-php5',
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
-        require => Package['php5-common'],
-        source  => 'puppet:///modules/mediawiki/php/php.ini',
-    }
-
-    file { '/etc/php5/cli/php.ini':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['php5-cli'],
-        source  => 'puppet:///modules/mediawiki/php/php.ini.cli',
-    }
-
-    file { '/etc/php5/conf.d/fss.ini':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['php5-fss'],
-        source  => 'puppet:///modules/mediawiki/php/fss.ini',
-    }
-
-    file { '/etc/php5/conf.d/apc.ini':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['php-apc'],
-        source  => 'puppet:///modules/mediawiki/php/apc.ini',
+        mode    => '0755',
+        recurse => remote,
+        require => Package['php-apc', 'php-mail', 'php5-cli', 'php5-fss', 'php5-igbinary'],
     }
 
     file { '/etc/php5/conf.d/wmerrors.ini':
@@ -47,20 +25,5 @@ class mediawiki::php(
         mode    => '0444',
         require => Package['php5-wmerrors'],
         content => template('mediawiki/php/wmerrors.ini.erb'),
-    }
-
-    file { '/etc/php5/conf.d/igbinary.ini':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///files/php/igbinary.ini',
-    }
-
-    file { '/etc/php5/conf.d/mail.ini':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['php-mail'],
-        source  => 'puppet:///modules/mediawiki/php/mail.ini',
     }
 }
