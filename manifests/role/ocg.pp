@@ -18,12 +18,21 @@ class role::ocg::production {
         # Default host in the WMF production env... this needs a variable or something
         $redis_host = 'rdb1002.eqiad.wmnet'
     }
+    
+    if ( $::ocg_statsd_server_override != undef ) {
+        $statsd_host = $::ocg_statsd_server_override
+    } else {
+        # Default host in the WMF production env
+        $statsd_host = 'statsd.eqiad.wmnet'
+    }
 
     class { '::ocg':
-        redis_host      => $redis_host,
-        redis_password  => $passwords::redis::main_password,
-        temp_dir        => '/srv/deployment/ocg/tmp',
-        service_port    => $service_port
+        redis_host         => $redis_host,
+        redis_password     => $passwords::redis::main_password,
+        temp_dir           => '/srv/deployment/ocg/tmp',
+        service_port       => $service_port,
+        statsd_server      => $statsd_host,
+        statsd_is_txstatsd => 1
     }
 
     ferm::service { 'ocg-http':
@@ -47,10 +56,12 @@ class role::ocg::test {
     $service_port = 8000
 
     class { '::ocg':
-        redis_host      => 'localhost',
-        redis_password  => $passwords::redis::ocg_test_password,
-        temp_dir        => '/srv/deployment/ocg/tmp',
-        service_port    => $service_port
+        redis_host         => 'localhost',
+        redis_password     => $passwords::redis::ocg_test_password,
+        temp_dir           => '/srv/deployment/ocg/tmp',
+        service_port       => $service_port,
+        statsd_host        => 'statsd.eqiad.wmnet',
+        statsd_is_txstatsd => 1
     }
 
     ferm::service { 'ocg-http':
