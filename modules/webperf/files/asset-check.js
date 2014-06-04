@@ -74,15 +74,26 @@ function checkAssets( url ) {
         page.settings.userAgent = options.ua;
     }
 
-    // Analyze incoming resource
+    /**
+     * Analyze incoming resource
+     *
+     * Called two or more times for every requested resource (e.g. urls and
+     * resolved data uris). Once with stage="start", once with stage="end", and
+     * potentially zero or more times for individual chunks if the server
+     * sent data in multiple chunks.
+     *
+     * @param {Object} res
+     */
     page.onResourceReceived = function ( res ) {
         var match = /javascript|html|css|image/i.exec( res.contentType ) || [ 'other' ],
             type = match[0],
             resource = payload[ type ];
 
-        if ( res.bodySize && !/^data:/.test( res.url ) ) {
+        if ( res.stage == 'end' && !/^data:/.test( res.url ) ) {
             resource.requests++;
-            resource.bytes += res.bodySize;
+            if ( res.bodySize ) {
+                resource.bytes += res.bodySize;
+            }
         }
     };
 
