@@ -33,16 +33,13 @@ class tcpircbot(
         ensure => present,
     }
 
-    group { 'tcpircbot': }
-
-    user { 'tcpircbot':
-        ensure     => present,
-        gid        => 'tcpircbot',
-        shell      => '/bin/false',
-        home       => $dir,
-        managehome => true,
-        system     => true,
+    generic::systemuser { 'tcpircbot':
+        name          => 'tcpircbot',
+        shell         => '/bin/false',
+        home          => $dir,
+        default_group => 'tcpircbot',
     }
+
 
     file { "${dir}/tcpircbot.py":
         ensure => present,
