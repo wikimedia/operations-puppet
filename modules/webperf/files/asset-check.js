@@ -84,6 +84,15 @@ function checkAssets( url ) {
             http5xx: 0,
             httpOther: 0,
             uncaughtException: 0
+        },
+        modules: {
+            registered: 0,
+            loading: 0,
+            loaded: 0,
+            ready: 0,
+            error: 0,
+            missing: 0,
+            unregistered: 0
         }
     };
     var resourcesRequested = {};
@@ -187,6 +196,27 @@ function checkAssets( url ) {
     page.onLoadFinished = function () {
         payload.cookies.set = page.cookies.length;
         payload.css.rules = page.evaluate( countCssRules );
+
+        payload.modules = page.evaluate( function () {
+            /*global mw */
+            var states = {
+                registered: 0,
+                loading: 0,
+                loaded: 0,
+                ready: 0,
+                error: 0,
+                missing: 0,
+                unregistered: 0
+            };
+            mw.loader.getModuleNames().forEach( function ( name ) {
+              var state = mw.loader.getState( name );
+              if ( states[ state ] !== undefined ) {
+                states[ state ]++;
+              }
+            } );
+            return states;
+        } );
+
         if ( options.debug ) {
             console.log( JSON.stringify( payload, null, '\t' ) );
         } else {
