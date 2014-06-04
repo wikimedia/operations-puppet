@@ -281,7 +281,7 @@ class lvs::configuration {
                 'eqiad' => "10.2.2.30",
             },
             'stream' => {
-                'eqiad' => {'streamlb' => '208.80.154.248', 'streamlb6' => '2620:0:861:ed1a::3:14'}
+                'eqiad' => {'streamlb' => '208.80.154.249', 'streamlb6' => '2620:0:861:ed1a::3:15'}
             },
         },
         'labs' => {
