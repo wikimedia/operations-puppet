@@ -11,6 +11,8 @@ class role::rcstream {
         fail('requires 14.04+')
     }
 
+    include lvs::configuration
+
     system::role { 'role::rcstream':
         description => 'MediaWiki Recent Changes stream',
     }
@@ -35,6 +37,10 @@ class role::rcstream {
     class { '::rcstream::proxy':
         backends => $backends,
         location => '/rc'
+    }
+
+    class { 'lvs::realserver':
+        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['stream'][$::site],
     }
 
     nrpe::monitor_service { 'rcstream_backend':
