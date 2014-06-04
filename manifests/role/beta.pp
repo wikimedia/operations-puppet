@@ -67,15 +67,11 @@ class role::beta::appserver {
     system::role { 'role::beta::appserver': }
 
     include ::mediawiki
+    include ::mediawiki::multimedia
     include standard
     include geoip
 
     include ::beta::hhvm
-
-    include ::imagescaler::cron
-    include ::imagescaler::packages
-    include ::imagescaler::files
-
 
     class { '::mediawiki::syslog':
         apache_log_aggregator => 'deployment-bastion.eqiad.wmflabs:8420',
