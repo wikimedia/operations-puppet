@@ -16,17 +16,20 @@
  * Copyright (C) 2013, Ori Livneh <ori@wikimedia.org>
  * Licensed under the terms of the GPL, version 2 or later.
  */
+/*global phantom */
 var system = require( 'system' ),
     webpage = require( 'webpage' ),
-    options = { timeout: 30, ua: null };
+    options = {
+        timeout: 30,
+        ua: null,
+    };
 
 function parseArgument( arg ) {
-    var match = /^--([^=]+)=(.*)/.exec( arg );
-
     if ( arg === '-h' || arg === '--help' ) {
         usage();
     }
 
+    var match = /^--([^=]+)=(.*)/.exec( arg );
     if ( match ) {
         options[ match[1] ] = match[2];
     } else {
@@ -36,7 +39,8 @@ function parseArgument( arg ) {
 
 function usage() {
     console.error( 'Usage: phantomjs ' + system.args[ 0 ] +
-                   ' URL [--timeout=N] [--ua=USER_AGENT_STRING]' );
+        ' URL [--timeout=N] [--ua=USER_AGENT_STRING]'
+    );
     phantom.exit( 1 );
 }
 
@@ -48,12 +52,12 @@ function countCssRules() {
 
 function checkAssets( url ) {
     var payload = {
-        javascript : { requests : 0, bytes : 0 },
-        html       : { requests : 0, bytes : 0 },
-        css        : { requests : 0, bytes : 0, rules : 0 },
-        image      : { requests : 0, bytes : 0 },
-        other      : { requests : 0, bytes : 0 },
-        cookies    : { set: 0 },
+        javascript: { requests: 0, bytes: 0 },
+        html: { requests: 0, bytes: 0 },
+        css: { requests: 0, bytes: 0, rules: 0 },
+        image: { requests: 0, bytes: 0 },
+        other: { requests: 0, bytes: 0 },
+        cookies: { set: 0 },
     };
 
     var page = webpage.create();
@@ -64,8 +68,10 @@ function checkAssets( url ) {
 
     // Analyze incoming resource
     page.onResourceReceived = function ( res ) {
-        var type = /image|javascript|css|html/i.exec( res.contentType ) || 'other',
-            resource = payload[type];
+        var match = /javascript|html|css|image/i.exec( res.contentType ) || [ 'other' ],
+            type = match[0],
+            resource = payload[ type ];
+
         if ( res.bodySize && !/^data:/.test( res.url ) ) {
             resource.requests++;
             resource.bytes += res.bodySize;
@@ -80,7 +86,7 @@ function checkAssets( url ) {
         phantom.exit( 0 );
     };
 
-    // Abort if 30 seconds elapsed and the page hasn't finished loading.
+    // Abort if 30 seconds elapsed and the page hasn't finished loading
     setTimeout( function () {
         console.error( 'Timed out after ' + options.timeout + ' seconds.' );
         phantom.exit( 1 );
@@ -88,7 +94,7 @@ function checkAssets( url ) {
 
     page.open( url );
 
-    // Page is locked to the specified URL.
+    // Page is locked to the specified URL
     page.navigationLocked = true;
 }
 
