@@ -47,6 +47,10 @@ class mediawiki::jobrunner (
         command => 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" /etc/init.d/mw-job-runner restart > /dev/null',
         user    => 'root',
         minute  => inline_template('<%= [@uniqueid].pack("H*").unpack("L")[0] % 60 -%>'),
-        hour    => '*'
+        hour    => '*',
+        ensure  => $run_jobs_enabled ? {
+            true    => present,
+            default => absent,
+        }
     }
 }
