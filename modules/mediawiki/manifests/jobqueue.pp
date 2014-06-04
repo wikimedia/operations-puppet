@@ -1,4 +1,4 @@
-class mediawiki::jobrunner (
+class mediawiki::jobqueue (
     $run_jobs_enabled,
     $user                   = 'apache',
     $type                   = '',
@@ -15,12 +15,12 @@ class mediawiki::jobrunner (
         owner  => root,
         group  => root,
         mode   => 0755,
-        source => 'puppet:///modules/mediawiki/jobrunner/mw-job-runner.init',
+        source => 'puppet:///modules/mediawiki/jobqueue/mw-job-runner.init',
         notify => Service['mw-job-runner'],
     }
 
     file { '/etc/default/mw-job-runner':
-        content => template('mediawiki/jobrunner/mw-job-runner.default.erb'),
+        content => template('mediawiki/jobqueue/mw-job-runner.default.erb'),
         notify  => Service['mw-job-runner'],
     }
 
@@ -28,7 +28,7 @@ class mediawiki::jobrunner (
         owner   => root,
         group   => root,
         mode    => 0755,
-        content => template('mediawiki/jobrunner/jobs-loop.sh.erb'),
+        content => template('mediawiki/jobqueue/jobs-loop.sh.erb'),
         notify  => Service['mw-job-runner'],
     }
 
