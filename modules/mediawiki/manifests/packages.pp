@@ -18,6 +18,7 @@ class mediawiki::packages {
     package { [
         'php5-curl',
         'php5-geoip',
+        'php5-igbinary',
         'php5-intl',
         'php5-memcached',
         'php5-mysql',

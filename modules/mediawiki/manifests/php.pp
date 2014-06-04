@@ -10,57 +10,58 @@ class mediawiki::php(
     include ::mediawiki::packages
 
     file { '/etc/php5/apache2/php.ini':
+        source  => 'puppet:///modules/mediawiki/php/php.ini',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => Package['php5-common'],
-        source  => 'puppet:///modules/mediawiki/php/php.ini',
     }
 
     file { '/etc/php5/cli/php.ini':
+        source  => 'puppet:///modules/mediawiki/php/php.ini.cli',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => Package['php5-cli'],
-        source  => 'puppet:///modules/mediawiki/php/php.ini.cli',
     }
 
     file { '/etc/php5/conf.d/fss.ini':
+        source  => 'puppet:///modules/mediawiki/php/fss.ini',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => Package['php5-fss'],
-        source  => 'puppet:///modules/mediawiki/php/fss.ini',
     }
 
     file { '/etc/php5/conf.d/apc.ini':
+        source  => 'puppet:///modules/mediawiki/php/apc.ini',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => Package['php-apc'],
-        source  => 'puppet:///modules/mediawiki/php/apc.ini',
     }
 
     file { '/etc/php5/conf.d/wmerrors.ini':
+        content => template('mediawiki/php/wmerrors.ini.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => Package['php5-wmerrors'],
-        content => template('mediawiki/php/wmerrors.ini.erb'),
     }
 
     file { '/etc/php5/conf.d/igbinary.ini':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///files/php/igbinary.ini',
+        source  => 'puppet:///files/php/igbinary.ini',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['php5-igbinary'],
     }
 
     file { '/etc/php5/conf.d/mail.ini':
+        source  => 'puppet:///modules/mediawiki/php/mail.ini',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => Package['php-mail'],
-        source  => 'puppet:///modules/mediawiki/php/mail.ini',
     }
 }
