@@ -43,11 +43,6 @@ class role::parsoid::production {
         home          => '/var/lib/parsoid',
     }
 
-    file { '/var/lib/parsoid/Parsoid':
-        ensure => link,
-        target => '/srv/deployment/parsoid/Parsoid',
-    }
-
     file { '/var/lib/parsoid/deploy':
         ensure => link,
         target => '/srv/deployment/parsoid/deploy',
