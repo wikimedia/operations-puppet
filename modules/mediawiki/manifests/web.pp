@@ -17,7 +17,7 @@ class mediawiki::web ( $maxclients = 40 ) {
         group  => root,
         mode   => '0444',
         source => 'puppet:///modules/mediawiki/apache/envvars.appserver',
-        before  => Service['apache'],
+        before => Service['apache'],
     }
 
     if $::realm == 'production' {
