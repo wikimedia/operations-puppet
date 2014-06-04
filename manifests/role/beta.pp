@@ -62,15 +62,34 @@ class role::beta::rsync_slave {
     }
 }
 
+class role::beta::scap_target {
+    include ::beta::common
+
+    # FIXME: Each host that has this role applied must also be
+    # manually added to the dsh group file found in
+    # modules/beta/files/dsh/group/mediawiki-installation or scap will
+    # not communicate with that host.
+    class { '::beta::scap::target':
+        require => Labs_lvm::Volume['second-local-disk'],
+    }
+
+    include labs_lvm
+
+    # Eqiad instances do not mount additional disk space
+    labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
+}
 
 class role::beta::appserver {
     system::role { 'role::beta::appserver': }
+
+    include role::beta::scap_target
 
     include ::mediawiki
     include ::mediawiki::multimedia
     include standard
     include geoip
 
+    include ::beta::common
     include ::beta::hhvm
 
     class { '::mediawiki::syslog':
@@ -96,17 +115,9 @@ class role::beta::appserver {
         proto => 'tcp',
         port  => 'http'
     }
+}
 
-    # FIXME: Each host that has this role applied must also be
-    # manually added to the dsh group file found in
-    # modules/beta/files/dsh/group/mediawiki-installation or scap will
-    # not communicate with that host.
-    class { '::beta::scap::target':
-        require => Labs_lvm::Volume['second-local-disk'],
-    }
-
-    include labs_lvm
-
-    # Eqiad instances do not mount additional disk space
-    labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
+class role::beta::videoscaler {
+    include role::beta::scap_target
+    include role::mediawiki::videoscaler
 }
