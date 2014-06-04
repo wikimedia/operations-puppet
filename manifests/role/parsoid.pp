@@ -128,6 +128,8 @@ class role::parsoid::beta {
     }
 
     include role::parsoid::common
+    include ::beta::config
+    include ::beta::scap::target
 
     sudo_user { 'jenkins-deploy': privileges => [
         # Need to allow jenkins-deploy to reload parsoid
@@ -139,7 +141,7 @@ class role::parsoid::beta {
 
     file { '/var/lib/parsoid/Parsoid':
         ensure => link,
-        target => '/data/project/apache/common-local/php-master/extensions/Parsoid',
+        target => "${::beta::config::scap_deploy_dir}/php-master/extensions/Parsoid",
         owner  => parsoid,
         group  => wikidev,
         mode   => '2775',
