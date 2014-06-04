@@ -12,9 +12,9 @@ class mediawiki::jobqueue (
     $procs_per_iobound_type = 1
 ) {
     file { '/etc/init.d/mw-job-runner':
-        owner  => root,
-        group  => root,
-        mode   => 0755,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
         source => 'puppet:///modules/mediawiki/jobqueue/mw-job-runner.init',
         notify => Service['mw-job-runner'],
     }
@@ -25,20 +25,22 @@ class mediawiki::jobqueue (
     }
 
     file { '/usr/local/bin/jobs-loop.sh':
-        owner   => root,
-        group   => root,
-        mode    => 0755,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
         content => template('mediawiki/jobqueue/jobs-loop.sh.erb'),
         notify  => Service['mw-job-runner'],
     }
 
+    $jobrunnerstatus = $run_jobs_enabled ? {
+        true    => running,
+        default => stopped,
+    }
+
     service { 'mw-job-runner':
+        ensure    => $jobrunnerstatus,
         hasstatus => false,
         pattern   => $script,
-        ensure    => $run_jobs_enabled ? {
-            true    => running,
-            default => stopped,
-        },
     }
 
     # Manage gradual runner pipeline shrink bug

@@ -61,6 +61,6 @@ class mediawiki::php(
         group   => 'root',
         mode    => '0444',
         require => Package['php-mail'],
-        source => 'puppet:///modules/mediawiki/php/mail.ini',
+        source  => 'puppet:///modules/mediawiki/php/mail.ini',
     }
 }
