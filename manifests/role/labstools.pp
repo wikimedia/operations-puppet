@@ -24,7 +24,7 @@ class role::labs::tools {
     class { 'toollabs::execnode':
       gridmaster => $grid_master,
     }
-    class { 'imagescaler::packages::fonts': }
+    include ::mediawiki::multimedia::fonts
   }
 
   class webnode inherits role::labs::tools::config {
