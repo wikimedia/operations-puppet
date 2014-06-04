@@ -1,12 +1,13 @@
 # Service user to handle the post-merge hook on master
 class puppetmaster::gitpuppet {
-    user { 'gitpuppet':
-        ensure     => present,
-        shell      => '/bin/sh',
-        home       => '/home/gitpuppet',
-        managehome => true,
-        system     => true,
+
+    generic::systemuser { 'gitpuppet':
+        name          => 'gitpuppet',
+        shell         => '/bin/sh',
+        home          => '/home/gitpuppet',
+        default_group => 'gitpuppet',
     }
+
     file { [ '/home/gitpuppet', '/home/gitpuppet/.ssh' ]:
         ensure  => directory,
         owner   => 'gitpuppet',
@@ -14,6 +15,7 @@ class puppetmaster::gitpuppet {
         mode    => '0700',
         require => User['gitpuppet'];
     }
+
     file {
         '/home/gitpuppet/.ssh/id_rsa':
             owner   => 'gitpuppet',
