@@ -5,7 +5,7 @@ class misc::statistics::user {
     generic::systemuser { $username:
         name   => $username,
         home   => $homedir,
-        groups => "wikidev",
+        groups => ["wikidev"],
         shell  => "/bin/bash",
     }
 
