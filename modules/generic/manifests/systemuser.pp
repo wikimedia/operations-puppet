@@ -1,3 +1,12 @@
+class systemuser::groups {
+    #ensure the generic systemusers group exists
+    #current account management logic expects valid users
+    #even service users to be a member of a supplementary group
+    group { 'systemusers':
+        ensure => present,
+    }
+}
+
 # Creates a system username with associated group, fixed or random uid/gid, and /bin/false as shell
 define generic::systemuser(
     $name,
@@ -20,12 +29,7 @@ define generic::systemuser(
     #creating one list of supplementary groups
     $all_groups = split(inline_template("<%= (always_groups+groups).join(',') %>"),',')
 
-    #ensure the generic systemusers group exists
-    #current account management logic expects valid users
-    #even service users to be a member of a supplementary group
-    group { 'systemusers':
-        ensure => present,
-    }
+    include systemuser::groups
 
     # FIXME: deprecate $name parameter in favor of just using $title
     #allowing the gid to be specified or not
