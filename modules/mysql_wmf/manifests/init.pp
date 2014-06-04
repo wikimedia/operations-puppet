@@ -77,8 +77,9 @@ class mysql_wmf(
 }
 
 class mysql_wmf::mysqluser {
-    user {
-        'mysql': ensure => 'present',
+    generic::systemuser { 'mysql':
+        name          => 'mysql',
+        default_group => 'mysql',
     }
 }
 
