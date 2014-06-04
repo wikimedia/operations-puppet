@@ -1695,8 +1695,15 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     # RPS/RSS config for interface performance
     interface::rps { 'eth0': rss_pattern => 'eth0-fp-%d' }
 
-    # txqueuelen 10K for 10Gbps LVS
-    interface::txqueuelen { 'eth0': len => 10000 }
+    # txqueuelen 20K for 10Gbps LVS in esams
+    # (higher traffic than ulsfo. There is no perfect value based
+    #  on hardware alone, but this seems to get rid of common
+    #  spiky drops currently in esams.  The real answer is
+    #  probably a red or codel variant within each multiqueue
+    #  class, but we need a much newer kernel + driver to
+    #  be able to do that (both to get good schedulers
+    #  and driver updates for XPS).
+    interface::txqueuelen { 'eth0': len => 20000 }
 }
 
 # ULSFO lvs servers
