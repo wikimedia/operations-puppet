@@ -10,14 +10,14 @@ upstream websockets {
 }
 
 server {
-    listen <%= @listen %>;
+    <%= Array(@listen).map { |bind| "listen #{bind};" }.join("\n") %>
     server_name <%= @server_name %>;
 
     location <%= @location %> {
-        <% if @location != '/' -%>
+        <%- if @location != '/' -%>
         rewrite <%= @location %>(/.*)$ $1 break;
-        <% end %>
- 
+        <%- end -%>
+
         proxy_pass http://websockets;
         proxy_http_version 1.1;
 

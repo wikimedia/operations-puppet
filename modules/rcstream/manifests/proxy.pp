@@ -14,7 +14,8 @@
 #   Defaults to '_'.
 #
 # [*listen*]
-#   Interface / port to listen on (default: 80).
+#   Interface / port to listen on (default: 80, [::]:80),
+#   specified as a single value or an array.
 #   See <http://nginx.org/en/docs/http/ngx_http_core_module.html#listen>.
 #
 # [*location*]
@@ -37,10 +38,11 @@ class rcstream::proxy(
     $backends,
     $ensure      = present,
     $server_name = '_',
-    $listen      = 80,
+    $listen      = ['80', '[::]:80'],
     $location    = '/',
 ) {
     nginx::site { 'rcstream':
         content => template('rcstream/rcstream.nginx.erb'),
+        notify  => Service['nginx'],
     }
 }
