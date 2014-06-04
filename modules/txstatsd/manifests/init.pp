@@ -37,17 +37,12 @@ class txstatsd($settings) {
         content => template('txstatsd/txstatsd.cfg.erb'),
     }
 
-    group { 'txstatsd':
-        ensure => present,
-    }
-
-    user { 'txstatsd':
-        ensure     => present,
-        gid        => 'txstatsd',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
+    generic::systemuser { 'txstatsd':
+        name          => 'txstatsd',
+        shell         => '/bin/false',
+        home          => '/nonexistent',
+        managehome    => false,
+        default_group => 'txstatsd',
     }
 
     service { 'txstatsd':
@@ -57,7 +52,7 @@ class txstatsd($settings) {
         require   => [
             File['/etc/init/txstatsd.conf'],
             Package['python-txstatsd', 'python-twisted-web'],
-            User['txstatsd'],
+            Generic::Systemuser['txstatsd'],
         ],
     }
 }

@@ -21,14 +21,10 @@ class txstatsd::decommission {
         recurse => true,
     }
 
-    group { 'txstatsd':
-        ensure  => absent,
-        require => User['txstatsd'],
-    }
-
-    user { 'txstatsd':
-        ensure  => absent,
-        require => Service['txstatsd'],
+    generic::systemuser { 'txstatsd':
+        ensure        => absent,
+        name          => 'txstatsd',
+        require       => Service['txstatsd'],
     }
 
     package { 'python-txstatsd':
