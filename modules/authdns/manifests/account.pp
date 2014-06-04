@@ -6,16 +6,12 @@ class authdns::account {
     $group = 'authdns'
     $home  = '/srv/authdns'
 
-    user { $user:
-        ensure     => present,
-        gid        => $group,
-        home       => $home,
-        system     => true,
-        managehome => true,
-        shell      => '/usr/bin/git-shell',
-    }
-    group { $group:
-        ensure     => 'present',
+    generic::systemuser { $user:
+        name          => $user,
+        gid           => $group,
+        home          => $home,
+        shell         => '/usr/bin/git-shell',
+        default_group => $group,
     }
 
     sudo_user { $user:
@@ -27,7 +23,7 @@ class authdns::account {
         owner   => $user,
         group   => $group,
         mode    => '0700',
-        require => [ User[$user], Group[$group] ],
+        require => [ Generic::Systemuser[$user], Group[$group] ],
     }
     file { "${home}/.ssh/id_rsa":
         ensure  => 'present',
@@ -52,7 +48,7 @@ class authdns::account {
         ensure  => 'directory',
         owner   => $user,
         group   => $group,
-        require => [ User[$user], Group[$group] ],
+        require => [ Generic::Systemuser[$user], Group[$group] ],
     }
     file { "${home}/git-shell-commands/authdns-local-update":
         ensure  => 'present',
@@ -60,6 +56,6 @@ class authdns::account {
         group   => $group,
         mode    => '0550',
         content => "#!/bin/sh\nexec /usr/bin/sudo authdns-local-update \$@\n",
-        require => [ User[$user], Group[$group] ],
+        require => [ Generic::Systemuser[$user], Group[$group] ],
     }
 }
