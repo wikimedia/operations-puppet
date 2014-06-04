@@ -62,17 +62,42 @@ function checkAssets( url ) {
     var payload = {
         javascript: { requests: 0, bytes: 0 },
         html: { requests: 0, bytes: 0 },
-        css: { requests: 0, bytes: 0, rules: 0 },
+        css: {
+            requests: 0,
+            bytes: 0,
+            rules: 0
+        },
         image: { requests: 0, bytes: 0 },
         other: { requests: 0, bytes: 0 },
-        cookies: { set: 0 },
+        cookies: {
+            set: 0
+        },
+        combined: {
+            requests: 0,
+            bytes: 0,
+            post: 0,
+            redirects: 0,
+            http200: 0,
+            http304: 0,
+            http4xx: 0,
+            http5xx: 0,
+            httpOther: 0
+        }
     };
+    var resourcesRequested = {};
 
     var page = webpage.create();
 
     if ( options.ua ) {
         page.settings.userAgent = options.ua;
     }
+
+    page.onResourceRequested = function ( req ) {
+        resourcesRequested[ req.id ] = {
+            method: req.method,
+            isBase64: /^data:/.test( req.url )
+        };
+    };
 
     /**
      * Analyze incoming resource
@@ -87,11 +112,13 @@ function checkAssets( url ) {
     page.onResourceReceived = function ( res ) {
         var match = /javascript|html|css|image/i.exec( res.contentType ) || [ 'other' ],
             type = match[0],
+            req = resourcesRequested[ res.id ] || {},
             resource = payload[ type ],
             size = 0;
 
-        if ( res.stage == 'end' && !/^data:/.test( res.url ) ) {
+        if ( res.stage == 'end' && !req.isBase64 ) {
             resource.requests++;
+            payload.combined.requests++;
 
             // @todo bodySize is not reliable and often missing completely or inaccurate
             // (e.g. does not take into account gzip compression, or does so when not expected)
@@ -108,6 +135,37 @@ function checkAssets( url ) {
             }
 
             resource.bytes += size;
+            payload.combined.bytes += size;
+
+            if ( req.method === 'POST' ) {
+                payload.combined.post++;
+            }
+
+            switch ( res.status ) {
+                case 200: // OK
+                    payload.combined.http200++;
+                    break;
+                case 301: // Moved Permanently
+                case 302: // Found
+                case 303: // See Other
+                    payload.combined.redirects++;
+                    break;
+                case 304: // Not Modified
+                    payload.combined.http304++;
+                    break;
+                case 403: // Forbidden
+                case 403: // Not Found
+                    payload.combined.http4xx++;
+                    break;
+                case 500: // Internal Server Error
+                case 502: // Bad Gateway
+                case 503: // Service Unavailable
+                case 504: // Gateway Timeout
+                    payload.combined.http5xx++;
+                    break;
+                default:
+                    payload.combined.httpOther++;
+            }
         }
     };
 
