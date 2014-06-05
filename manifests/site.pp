@@ -519,6 +519,12 @@ node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
     include role::cache::mobile
 }
 
+# cp3018 has eth1 connected directly to a router in esams.
+# This node will temporarily be used for network tests.
+node 'cp3018.esams.wmnet' {
+    include admin
+}
+
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
     include admin
     if $::hostname =~ /^cp(3019|3020)$/ {
