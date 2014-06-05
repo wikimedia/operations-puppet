@@ -25,7 +25,6 @@ import 'role/analytics/*.pp'
 import 'search.pp'
 import 'sudo.pp'
 import 'swift.pp'
-import 'webserver.pp'
 import 'zuul.pp'
 
 # Include stages last
