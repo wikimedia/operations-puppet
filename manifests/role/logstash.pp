@@ -67,6 +67,11 @@ class role::logstash {
         key  => 'logstash',
     }
 
+    logstash::input::gelf {
+        port => 12201,
+    }
+
+
     logstash::conf { 'filter_strip_ansi_color':
         source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
         priority => 40,
@@ -79,6 +84,11 @@ class role::logstash {
 
     logstash::conf { 'filter_mw_via_udp2log':
         source   => 'puppet:///files/logstash/filter-mw-via-udp2log.conf',
+        priority => 50,
+    }
+    
+    logstash::conf { 'filter_gelf':
+        source   => 'puppet:///files/logstash/filter-gelf.conf',
         priority => 50,
     }
 
