@@ -54,6 +54,8 @@ class zuul (
     'python-pbr',
     'python-gear',
     'python-apscheduler',
+
+    'python-prettytable',
   ]
 
   package { $packages:
