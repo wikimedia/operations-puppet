@@ -36,7 +36,6 @@ class role::rcstream {
 
     class { '::rcstream::proxy':
         backends => $backends,
-        location => '/rc'
     }
 
     class { 'lvs::realserver':
