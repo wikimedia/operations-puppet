@@ -33,7 +33,4 @@ define interface::rps( $rss_pattern="" ) {
         subscribe => Augeas["${interface}_rps-${interface}"],
         refreshonly => true,
     }
-
-    # Legacy "init" script for this class, to be removed after first run
-    file { "/etc/init/enable-rps-$interface.conf": ensure => absent }
 }
