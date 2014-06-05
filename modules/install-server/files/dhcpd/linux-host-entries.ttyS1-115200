@@ -1201,6 +1201,21 @@ host elastic1016 {
 	fixed-address elastic1016.eqiad.wmnet;
 }
 
+host elastic1017 {
+	hardware ethernet 90:b1:1c:23:23:bf;
+	fixed-address elastic1017.eqiad.wmnet;
+}
+
+host elastic1018 {
+	hardware ethernet 90:b1:1c:1d:e7:e5;
+	fixed-address elastic1018.eqiad.wmnet;
+}
+
+host elastic1019 {
+	hardware ethernet 90:b1:1c:23:36:1d;
+	fixed-address elastic1019.eqiad.wmnet;
+}
+
 host es4 {
 	hardware ethernet 78:2b:cb:60:34:26;
 	fixed-address es4.pmtpa.wmnet;
