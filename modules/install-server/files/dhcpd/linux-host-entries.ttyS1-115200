@@ -2944,14 +2944,14 @@ host osm-cp1004 {
 	fixed-address osm-cp1004.eqiad.wmnet;
 }
 
-host osm-db1001 {
+host labsdb1006 {
 	hardware ethernet d4:be:d9:f0:21:31;
-	fixed-address osm-db1001.eqiad.wmnet;
+	fixed-address labsdb1006.eqiad.wmnet;
 }
 
-host osm-db1002 {
+host labsdb1007 {
 	hardware ethernet d4:be:d9:f0:0d:81;
-	fixed-address osm-db1002.eqiad.wmnet;
+	fixed-address labsdb1007.eqiad.wmnet;
 }
 
 host osmium {
