@@ -574,23 +574,23 @@ host cp3014 {
 
 host cp3015 {
 	hardware ethernet D4:AE:52:8C:7C:E9;
-	fixed-address cp3015.esams.wikimedia.org;
+	fixed-address cp3015.esams.wmnet;
 }
 
 host cp3016 {
 	hardware ethernet D4:AE:52:7A:C4:AB;
-	fixed-address cp3016.esams.wikimedia.org;
+	fixed-address cp3016.esams.wmnet;
 }
 
 host cp3017 {
 	hardware ethernet D4:AE:52:7A:C3:CE;
-	fixed-address cp3017.esams.wikimedia.org;
+	fixed-address cp3017.esams.wmnet;
 }
 
-#host cp3018 {
-#	hardware ethernet ;
-#	fixed-address cp3018.esams.wikimedia.org;
-#}
+host cp3018 {
+  hardware ethernet D4:AE:52:8C:86:31;
+  fixed-address cp3018.esams.wmnet;
+}
 
 host cp3019 {
 	hardware ethernet D4:AE:52:8A:73:9A;
