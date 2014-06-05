@@ -95,7 +95,7 @@ function processPipelineWaitForSlot() {
 			break # another immediate child process can start
 		else
 			echo "Pipeline full ($subproccount immediate sub-processes)..."
-			sleep 1 # reduce polling load
+			sleep 0.25 # reduce polling load
 		fi
 	done
 }
