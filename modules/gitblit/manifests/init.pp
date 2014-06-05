@@ -14,7 +14,6 @@ class gitblit(
 
     generic::systemuser { 'gitblit':
         name          => 'gitblit',
-        gid           => 'gitblit',
         shell         => '/bin/false',
         home          => '/var/lib/gitblit',
         managehome    => false,
