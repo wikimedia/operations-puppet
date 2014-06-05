@@ -31,7 +31,7 @@ class role::ocg::production {
         redis_password     => $passwords::redis::main_password,
         temp_dir           => '/srv/deployment/ocg/tmp',
         service_port       => $service_port,
-        statsd_server      => $statsd_host,
+        statsd_host        => $statsd_host,
         statsd_is_txstatsd => 1
     }
 
