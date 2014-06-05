@@ -813,7 +813,7 @@ class lvs::configuration {
             'depool-threshold' => ".5",
             'monitors' => {
                 'ProxyFetch' => {
-                    'url' => [ 'http://localhost/rc/rcstream_status' ],
+                    'url' => [ 'http://localhost/rcstream_status' ],
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
