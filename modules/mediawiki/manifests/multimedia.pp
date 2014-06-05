@@ -10,7 +10,7 @@ class mediawiki::multimedia {
 
     cron { 'clear_imagemagick_temp_files':
         ensure  => present,
-        command => template('mediawiki/clear_imagemagick_tmp.erb'),
+        command => template('mediawiki/clear_magick_tmp.erb'),
         user    => 'root',
         minute  => '*/5',
     }
