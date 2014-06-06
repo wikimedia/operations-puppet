@@ -152,9 +152,19 @@ class lucene {
     }
 
     class users {
-        generic::systemuser { 'lsearch':
+
+        group { 'lsearch':
+            ensure => present,
+            name   => 'lsearch',
+            system => true,
+        }
+
+        user { 'lsearch':
             name          => 'lsearch',
-            default_group => 'lsearch',
+            gid           => 'lsearch',
+            managehome    => true,
+            system        => true,
+            home          => '/var/lib/search',
         }
     }
 
