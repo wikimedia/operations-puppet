@@ -1153,6 +1153,11 @@ node 'gallium.wikimedia.org' {
     include role::ci::website
     include role::zuul::production
 
+    # Both classes ends up invoking apache2-mpm-prefor and libapache2-mod-php5.
+    # role::ci::website calls webserver::php5 which has the packages wrapped in
+    # if !Defined, so load it last
+    Class['role::ci::slave'] -> Class['role::ci::website']
+
     # gallium received a SSD drive (RT #4916) mount it
     file { '/srv/ssd':
         ensure => 'directory',
