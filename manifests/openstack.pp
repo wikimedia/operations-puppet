@@ -177,8 +177,20 @@ class openstack::project-nfs-storage-service {
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
             'ALL = NOPASSWD: /bin/rmdir /srv/*',
             'ALL = NOPASSWD: /usr/local/sbin/sync-exports' ]
-    sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["nfsmanager"] }
-    generic::systemuser { "nfsmanager": name => "nfsmanager", home => "/var/lib/nfsmanager", shell => "/bin/bash" }
+    sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => User["nfsmanager"] }
+
+    group { 'nfsmanager':
+        ensure => present,
+        name   => 'nfsmanager,
+        system => true,
+    }
+
+    user { "nfsmanager":
+        home       => "/var/lib/nfsmanager",
+        shell      => "/bin/bash",
+        managehome => true,
+        system     => true,
+    }
 
     file { '/etc/exports.d':
         ensure => directory,
@@ -204,13 +216,25 @@ class openstack::project-storage {
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /a/*',
             'ALL = NOPASSWD: /bin/rmdir /a/*',
             'ALL = NOPASSWD: /usr/sbin/gluster *' ]
-    sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Generic::Systemuser["glustermanager"] }
+    sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => User["glustermanager"] }
 
     package { "python-paramiko":
         ensure => present;
     }
 
-    generic::systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
+    group { 'glustermanager':
+        ensure => present,
+        name   => 'glustermanager',
+        system => true,
+    }
+
+    user { "glustermanager":
+        home       => "/var/lib/glustermanager",
+        shell      => "/bin/bash",
+        managehome => true,
+        system     => true,
+    }
+
     ssh_authorized_key {
         "glustermanager":
             ensure  => present,
@@ -219,6 +243,7 @@ class openstack::project-storage {
             key     => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==',
             require => Generic::Systemuser['glustermanager'];
     }
+
     file {
         "/var/lib/glustermanager/.ssh/id_rsa":
             owner   => 'glustermanager',
