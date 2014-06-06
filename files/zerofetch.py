@@ -69,9 +69,9 @@ class ZeroFetcher:
     def __del__(self):
         self.logout
 
-    # Fetches zeroconfig of type "ztype" as JSON data
+    # Fetches zeroportal data of type "ztype" as JSON data
     def zeroconf(self, ztype):
-        return self._apiJSON('get', 'zeroconfig', {'type': ztype})
+        return self._apiJSON('get', 'zeroportal', {'type': ztype})
 
 
 # For use with argparse to validate the output dir exists and is a directory
