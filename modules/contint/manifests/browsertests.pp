@@ -33,7 +33,9 @@ class contint::browsertests(
         ensure => absent
     }
 
-    include ::mediawiki::packages
+    class { '::mediawiki::packages':
+        with_apc => false,
+    }
 
     # Set up all packages required for MediaWiki (includes Apache)
     package { [
