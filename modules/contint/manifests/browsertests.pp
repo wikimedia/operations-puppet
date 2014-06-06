@@ -33,10 +33,6 @@ class contint::browsertests(
         ensure => absent
     }
 
-    class { '::mediawiki::packages':
-        with_apc => false,
-    }
-
     # Set up all packages required for MediaWiki (includes Apache)
     package { [
         'chromium-browser',
