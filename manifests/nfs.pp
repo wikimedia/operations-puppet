@@ -174,14 +174,16 @@ class nfs::home::wikipedia {
             }
         } # /production
         'labs': {
-            generic::systemuser { 'wikipediauser':
-                name => 'wikipedia',
-                home => '/home/wikipedia',
+
+            user { 'wikipediauser':
+                home       => '/home/wikipedia',
+                managehome => true,
+                system     => true,
             }
 
             file { '/home/wikipedia':
                 ensure  => 'directory',
-                require => Generic::Systemuser['wikipediauser'],
+                require => User['wikipediauser'],
             }
         }
     }
