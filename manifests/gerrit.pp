@@ -370,10 +370,13 @@ class gerrit::crons {
 # Setup the `gerritslave` account on any host that wants to receive
 # replication. See role::gerrit::production::replicationdest
 class gerrit::replicationdest( $sshkey, $extra_groups = [], $slaveuser = "gerritslave" ) {
-    generic::systemuser { $slaveuser:
-        name   => $slaveuser,
-        groups => $extra_groups,
-        shell  => '/bin/bash',
+
+    user { $slaveuser:
+        name       => $slaveuser,
+        groups     => $extra_groups,
+        shell      => '/bin/bash',
+        managehome => true,
+        system     => true,
     }
 
     ssh_authorized_key { $slaveuser:
@@ -381,6 +384,6 @@ class gerrit::replicationdest( $sshkey, $extra_groups = [], $slaveuser = "gerrit
         key     => $sshkey,
         type    => 'ssh-rsa',
         user    => $slaveuser,
-        require => Generic::Systemuser[$slaveuser],
+        require => User[$slaveuser],
     }
 }
