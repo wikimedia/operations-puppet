@@ -13,7 +13,7 @@ class icinga::user {
         shell         => '/bin/false',
         groups        => [ 'dialout', 'nagios' ],
         default_group => 'icinga',
-        require    => [ Group['icinga'], Group['nagios'] ],
+        require       => [ Group['nagios'] ],
     }
 }
 
