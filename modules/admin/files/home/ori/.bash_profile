@@ -5,11 +5,11 @@
 # Colors
 #
 
-RED="$(tput setaf 1)"
-DARKGREY="$(tput bold ; tput setaf 0)"
-BRIGHTBLUE="$(tput bold ; tput setaf 4)"
-GREY="$(tput setaf 7)"
 RESET="$(tput sgr0)"
+BRIGHT="$(tput bold)"
+GREY="$(tput setaf 7)"
+BLACK="$(tput setaf 0)"
+HOSTCOLOR="$(tput setaf $(($(cksum<<<$HOSTNAME|cut -d' ' -f-1)%6+1)))"
 
 
 #
@@ -20,7 +20,7 @@ export VISUAL=vim EDITOR=vim TERM=xterm-256color
 export LC_ALL="en_US.UTF-8" LANG="en_US"
 export HISTCONTROL=ignoredups HISTFILESIZE=2000 HISTSIZE=1000
 export BLOCKSIZE=1024 CLICOLOR=1
-export PS1='\[$RED\][\[$BRIGHTBLUE\]${HOSTNAME}\[$RED\]] \[$DARKGREY\][\[$RESET\]\[$GREY\]\w\[$DARKGREY\]]\[$RESET\] $ '
+export PS1='\[$BRIGHT\]\[$BLACK\][\[$HOSTCOLOR\]${HOSTNAME}\[$GREY\]:\[$RESET\]\[$GREY\]\w\[$BRIGHT\]\[$BLACK\]]\[$RESET\] $ '
 
 
 #

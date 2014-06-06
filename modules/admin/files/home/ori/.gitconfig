@@ -45,9 +45,6 @@
   statusHints = false
   submodulesummary = true
 
-[push]
-  default = simple
-
 [rebase]
   autostash = true
 
