@@ -14,17 +14,11 @@ class dataset::cron::kiwix($enable=true) {
 
     include role::mirror::common
 
-    group { 'mirror':
-        ensure => 'present',
-    }
-
-    user { 'mirror':
-        name       => 'mirror',
-        gid        => 'mirror',
-        groups     => 'www-data',
-        membership => minimum,
-        home       => '/data/home',
-        shell      => '/bin/bash',
+    generic::systemuser { 'mirror':
+        name          => 'mirror',
+        home          => '/data/home',
+        shell         => '/bin/bash',
+        default_group => 'mirror',
     }
 
     file { '/data/xmldatadumps/public/kiwix':
