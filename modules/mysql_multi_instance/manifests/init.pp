@@ -26,10 +26,11 @@ class mysql_multi_instance {
         ensure => latest,
     }
 
-    generic::systemuser { 'mysql':
-        name  => 'mysql',
-        shell => '/bin/sh',
-        home  => '/home/mysql',
+    user { 'mysql':
+        shell      => '/bin/sh',
+        home       => '/home/mysql',
+        managehome => true,
+        system     => true,
     }
 
     file { '/a/tmp/':
