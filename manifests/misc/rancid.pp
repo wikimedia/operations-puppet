@@ -11,9 +11,10 @@ class misc::rancid {
         ensure => present,
     }
 
-    generic::systemuser { 'rancid':
-        name  => 'rancid',
-        shell => '/bin/sh',
+    user { 'rancid':
+        shell      => '/bin/sh',
+        managehome => true,
+        system     => true,
     }
 
     include passwords::rancid
@@ -27,7 +28,7 @@ class misc::rancid {
     }
 
     file { '/var/lib/rancid/core':
-        require => [ Package['rancid'], Generic::Systemuser['rancid'] ],
+        require => [ Package['rancid'], User['rancid'] ],
         owner   => 'rancid',
         group   => 'rancid',
         mode    => 'o-rwx',
