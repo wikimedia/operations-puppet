@@ -12,11 +12,12 @@ class pmacct::install {
     }
 
     # User creation (not done by package)
-    generic::systemuser { 'pmacct':
-        name    => 'pmacct',
-        home    => '/var/lib/pmacct',
-        shell   => '/bin/bash',
-        require => Package['pmacct'],
+    user { 'pmacct':
+        home       => '/var/lib/pmacct',
+        shell      => '/bin/bash',
+        managehome => true,
+        system     => true,
+        require    => Package['pmacct'],
     }
 
     # Log directory
