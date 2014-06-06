@@ -7,8 +7,11 @@ class puppetmaster::labs {
     # a known and approved version of this script.
     file {
         '/usr/local/sbin/puppetsigner.py':
-            ensure => link,
-            target => '/usr/local/lib/instance-management/puppetsigner.py',
+            ensure => present,
+            source => 'puppet:///modules/puppetmaster/puppetsigner.py',
+            mode   => '0550',
+            owner  => 'root',
+            group  => 'root'
     }
 
     cron {
@@ -39,7 +42,7 @@ class puppetmaster::labs {
     $labsstatus_username = 'novaadmin'
     $labsstatus_region = $::site
     $labsstatus_auth_url = 'http://virt0.wikimedia.org:35357/v2.0'
- 
+
     file { '/etc/labsstatus.cfg':
         ensure => present,
         content => template('puppetmaster/labsstatus.cfg.erb'),
