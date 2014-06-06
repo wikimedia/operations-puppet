@@ -55,7 +55,10 @@ if $cluster == undef {
     $cluster = 'misc'
 }
 if $puppet_version == undef {
-    $puppet_version = '2.7'
+    $puppet_version = $::realm ? {
+        'labs'  => '3',
+        default => '2.7'
+    }
 }
 # Node definitions (alphabetic order)
 
