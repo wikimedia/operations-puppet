@@ -1,7 +1,12 @@
 # mediawiki::web
 
-class mediawiki::web ( $maxclients = 40 ) {
+class mediawiki::web ( $workers_limit = 100 ) {
     include ::mediawiki
+    include ::mediawiki::php
+
+    $avg_worker_rss   = to_bytes('200M')
+    $workers_capacity = to_bytes($::memorytotal) * 0.7 / $avg_worker_rss
+    $maxclients       = inline_template('<%= [ @workers_limit, @workers_capacity ].min.to_i %>')
 
     file { '/etc/apache2/apache2.conf':
         owner   => 'root',

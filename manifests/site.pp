@@ -1962,11 +1962,11 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     include role::mediawiki::jobrunner
 }
 
-# mw1017-1113 are apaches (precise)
-node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+# mw1017-1113 and mw1149-1152 are apaches (precise)
+node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3]|149|15[0-2])\.eqiad\.wmnet$/ {
     include admin
     $cluster = 'appserver'
-    if $::hostname =~ /^mw101[78]$/ {
+    if $::hostname =~ /^mw101[78]$/ or $::hostname =~ /^mw115[12]$/ {
         $ganglia_aggregator = true
     }
 
@@ -1986,17 +1986,6 @@ node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
     }
 
     include role::mediawiki::appserver::api
-}
-
-# mw1149-1152 are bits apaches (precise)
-node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
-    include admin
-    $cluster = 'bits_appserver'
-    if $::hostname =~ /^mw115[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    include role::mediawiki::appserver::bits
 }
 
 # mw1153-1160 are imagescalers (precise)
