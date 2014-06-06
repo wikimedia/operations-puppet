@@ -1,4 +1,14 @@
-class mediawiki::packages {
+# == Class mediawiki::packages
+#
+# Install Ubuntu packages required by MediaWiki
+#
+# == Parameters:
+#
+# $with_apc whether to install php-apc package. (Default: true)
+#
+class mediawiki::packages (
+    $with_apc = true,
+) {
     package { [
         'apache2-mpm-prefork',
         'imagemagick',
@@ -6,12 +16,21 @@ class mediawiki::packages {
         'libapache2-mod-php5',
         'libmemcached10',       # XXX still needed?
         'libmemcached11',
-        'php-apc',
         'php-pear',
         'php5-cli',
         'php5-common',
     ]:
         ensure => present,
+    }
+
+    if( $with_apc ) {
+        package { 'php-apc':
+            ensure => present,
+        }
+    } else {
+        package { 'php-apc':
+            ensure => absent,
+        }
     }
 
     # Standard PHP extensions
