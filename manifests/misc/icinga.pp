@@ -6,20 +6,14 @@ class icinga::user {
     # FIXME: where does the dialout user group come from?
     # It should be included here somehow
 
-    group { 'icinga':
-        ensure => present,
-        name   => 'icinga',
-    }
-
-    user { 'icinga':
-        name       => 'icinga',
-        home       => '/home/icinga',
-        gid        => 'icinga',
-        system     => true,
-        managehome => false,
-        shell      => '/bin/false',
+    generic::systemuser { 'icinga':
+        name          => 'icinga',
+        home          => '/home/icinga',
+        managehome    => false,
+        shell         => '/bin/false',
+        groups        => [ 'dialout', 'nagios' ],
+        default_group => 'icinga',
         require    => [ Group['icinga'], Group['nagios'] ],
-        groups     => [ 'dialout', 'nagios' ]
     }
 }
 
