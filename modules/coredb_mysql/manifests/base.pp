@@ -2,10 +2,11 @@
 class coredb_mysql::base {
     require coredb_mysql::packages
 
-    generic::systemuser { 'mysql':
-        name  => 'mysql',
-        shell => '/bin/sh',
-        home  => '/home/mysql',
+    user { 'mysql':
+        shell      => '/bin/sh',
+        home       => '/home/mysql',
+        managehome => true,
+        system     => true,
     }
 
     file { '/a/sqldata':
