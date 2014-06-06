@@ -4,5 +4,4 @@ class snapshot::common {
     include nfs::data
     include snapshot::packages
     include snapshot::sync
-    include snapshot::phpfiles
 }
