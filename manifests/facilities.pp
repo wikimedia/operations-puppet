@@ -217,9 +217,10 @@ class facilities::dc-cam-transcoder {
         description => 'Data center camera transcoder',
     }
 
-    generic::systemuser { 'video':
-        name => 'video',
-        home => '/var/lib/video',
+    user { 'video':
+        home       => '/var/lib/video',
+        managehome => true,
+        system     => true,
     }
 
     package { 'vlc-nox':
