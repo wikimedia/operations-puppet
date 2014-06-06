@@ -1,6 +1,6 @@
 # mediawiki::web
 
-class mediawiki::web ( $maxclients = 40 ) {
+class mediawiki::web ( $maxclients = 100 ) {
     include ::mediawiki
 
     file { '/etc/apache2/apache2.conf':
