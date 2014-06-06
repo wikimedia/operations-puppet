@@ -1,7 +1,15 @@
 # mediawiki::web
 
-class mediawiki::web( $maxclients = 40 ) {
+class mediawiki::web ( $workers_limit = undef ) {
     include ::mediawiki
+
+    if is_integer($workers_limit) {
+        $maxclients     = $workers_limit
+    } else {
+        $mem_available  = to_bytes($::memorytotal) * 0.7
+        $mem_per_worker = to_bytes('85M')
+        $maxclients     = floor($mem_available / $mem_per_worker)
+    }
 
     file { '/etc/apache2/apache2.conf':
         content => template('mediawiki/apache/apache2.conf.erb'),
