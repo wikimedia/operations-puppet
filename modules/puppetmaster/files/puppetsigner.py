@@ -29,7 +29,7 @@ def main():
     ldapSupportLib.setBindInfoByOptions(options, parser)
     ds = ldapSupportLib.connect()
     try:
-        proc = subprocess.Popen('/usr/bin/puppet cert list --all', shell=True, stdout=subprocess.PIPE)
+        proc = subprocess.Popen('/usr/bin/puppet cert list', shell=True, stdout=subprocess.PIPE)
         hosts = proc.communicate()
         hosts = hosts[0].split()
         for host in hosts:
