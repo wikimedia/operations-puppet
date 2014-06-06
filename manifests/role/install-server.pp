@@ -64,10 +64,17 @@ class role::installserver {
     }
 
     # System user and group for mirroring
-    generic::systemuser { 'mirror':
-        name => 'mirror',
-        home => '/var/lib/mirror',
-        before => Class['install-server::ubuntu-mirror'],
+    group { 'mirror':
+        ensure => present,
+        name   => 'mirror',
+        system => true,
+    }
+
+    user { 'mirror':
+        home       => '/var/lib/mirror',
+        managehome => true,
+        system     => true,
+        before     => Class['install-server::ubuntu-mirror'],
     }
 
     # Backup
