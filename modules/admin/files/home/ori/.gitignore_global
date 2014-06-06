@@ -1,0 +1,8 @@
+*.pyc
+*.swo
+*.swp
+*~
+.DS_Store
+.svn
+Icon?
+Thumbs.db

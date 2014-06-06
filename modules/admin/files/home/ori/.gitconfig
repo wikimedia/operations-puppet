@@ -1,0 +1,56 @@
+[user]
+  name = Ori Livneh
+  email = ori@wikimedia.org
+
+[color]
+  ui = true
+
+[alias]
+  undo-commit = reset --soft HEAD^
+  redo-commit = commit -c ORIG_HEAD
+
+[column]
+  ui = auto
+
+[branch]
+  autosetuprebase = always
+  autosetupmerge = true
+
+[core]
+  whitespace = trailing-space,space-before-tab
+  excludesfile = ~/.gitignore_global
+  quotepath = false
+  autocrlf = input
+  abbrev = 10
+  precomposeunicode = true
+
+[help]
+  autocorrect = 1
+
+[diff]
+  algorithm = histogram
+  renames = copies
+  mnemonicprefix = true
+
+[fetch]
+  recurseSubmodules = 0
+
+[grep]
+  lineNumber = 1
+
+[rerere]
+  enabled = true
+
+[advice]
+  statusHints = false
+  submodulesummary = true
+
+[push]
+  default = simple
+
+[rebase]
+  autostash = true
+
+[status]
+  showUntrackedFiles = all
+  submodulesummary = true
