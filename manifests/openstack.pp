@@ -732,8 +732,26 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
         require => Package["dnsmasq"];
     }
 
+    $nova_dnsmasq_aliases = {
+        # eqiad
+        'deployment-cache-text02'   => {public_ip  => '208.80.155.135',
+                                        private_ip => '10.68.16.16' },
+        'deployment-cache-upload02' => {public_ip  => '208.80.155.136',
+                                        private_ip => '10.68.17.51' },
+        'deployment-cache-bits01'   => {public_ip  => '208.80.155.137',
+                                        private_ip => '10.68.16.12' },
+        'deployment-eventlogging02' => {public_ip  => '208.80.155.138',
+                                        private_ip => '10.68.16.52' },
+        'deployment-cache-mobile03' => {public_ip  => '208.80.155.139',
+                                        private_ip => '10.68.16.13' },
+
+        # A wide variety of hosts are reachable via a public web proxy.
+        'labs_shared_proxy' => {public_ip  => '208.80.155.156',
+                                private_ip => '10.68.16.65'},
+    }
+
     file { '/etc/dnsmasq-nova.conf':
-        source => "puppet:///files/openstack/${openstack_version}/nova/dnsmasq-nova.conf",
+        content => template("openstack/${$openstack_version}/nova/dnsmasq-nova.conf.erb"),
         owner => 'root',
         group => 'root',
         mode => '0444',
