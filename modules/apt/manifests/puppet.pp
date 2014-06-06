@@ -25,7 +25,7 @@ define apt::puppet (
         } elsif $::lsbdistcodename == 'precise' {
             # Ensure the pref file is not there in this case,
             # so that puppet gets updated.
-            apt::pin { $title:
+        apt::pin { "puppet_${title}_${version}.pref":
                 ensure   => 'absent',
                 priority => 0,
                 pin      => 'release o=Ubuntu'
