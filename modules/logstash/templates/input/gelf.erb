@@ -1,0 +1,8 @@
+input {
+  # Graylog extended logging format
+  gelf {
+    type  => "gelf"
+    port  => <%= @port %>
+    remap => false
+  }
+}
