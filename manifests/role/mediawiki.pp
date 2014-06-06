@@ -21,14 +21,15 @@ class role::mediawiki::common {
     }
 }
 
-class role::mediawiki::webserver( $pool, $maxclients ) {
+class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
     include ::mediawiki
+    include ::mediawiki::web
     include ::apache::monitoring
     include role::mediawiki::common
     include lvs::configuration
 
     class { '::mediawiki::web':
-        maxclients => $maxclients,
+        workers_limit => $workers_limit
     }
 
     class { 'lvs::realserver':
@@ -44,24 +45,13 @@ class role::mediawiki::webserver( $pool, $maxclients ) {
 class role::mediawiki::appserver {
     system::role { 'role::mediawiki::appserver': }
 
-    class { 'role::mediawiki::webserver':
-        pool       => 'apaches',
-        maxclients => $::processorcount ? {
-            16      => 60,
-            12      => 50,
-            24      => 50,
-            default => 40,
-        }
-    }
+    class { 'role::mediawiki::webserver': pool => 'apaches' }
 }
 
 class role::mediawiki::appserver::api {
     system::role { 'role::mediawiki::appserver::api': }
 
-    class { 'role::mediawiki::webserver':
-        pool       => 'api',
-        maxclients => 100,
-    }
+    class { 'role::mediawiki::webserver': pool => 'api' }
 }
 
 class role::mediawiki::imagescaler {
@@ -69,10 +59,7 @@ class role::mediawiki::imagescaler {
 
     include ::mediawiki::multimedia
 
-    class { 'role::mediawiki::webserver':
-        pool       => 'rendering',
-        maxclients => 18,
-    }
+    class { 'role::mediawiki::webserver': pool => 'rendering', workers_limit => 18 }
 }
 
 class role::mediawiki::videoscaler {
