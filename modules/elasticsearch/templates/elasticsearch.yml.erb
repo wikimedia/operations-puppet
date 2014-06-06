@@ -169,7 +169,7 @@ path.plugins: <%= @plugins_dir %>
 
 # If a plugin listed here is not installed for current node, the node will not start.
 #
-# plugin.mandatory: mapper-attachments,lang-groovy
+<%= @plugins_mandatory ? "plugin.mandatory: #{Array(@plugins_mandatory).join(',')}" : '# plugin.mandatory: mapper-attachments,lang-groovy' %>
 
 
 ################################### Memory ####################################

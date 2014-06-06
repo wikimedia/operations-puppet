@@ -12,6 +12,8 @@
 #       smaller.
 # - $multicast_group:  multicast group to use for peer discovery.  Defaults to
 #       elasticsearch's default: '224.2.2.4'.
+# - $plugins_dir: value for path.plugins.  Defaults to /usr/share/elasticsearch/plugins.
+# - $plugins_mandatory: list of mandatory plugins.  Defaults to undef.
 # - $minimum_master_nodes:  how many master nodes must be online for this node
 #       to believe that the Elasticsearch cluster is functioning correctly.
 #       Defaults to 1.  Should be set to number of master eligible nodes in
@@ -58,6 +60,7 @@ class elasticsearch($cluster_name,
                     $heap_memory = '2G',
                     $multicast_group = '224.2.2.4',
                     $plugins_dir = '/usr/share/elasticsearch/plugins',
+                    $plugins_mandatory = undef,
                     $minimum_master_nodes = 1,
                     $master_eligible = true,
                     $holds_data = true,

@@ -11,6 +11,7 @@ class role::elasticsearch::config {
         $awareness_attributes = undef
         $row                  = undef
         $rack                 = undef
+        $plugins_mandatory    = undef
         if ($::hostname =~ /^deployment-/) {
             # Beta
             # Has four nodes all of which can be master
@@ -79,6 +80,11 @@ class role::elasticsearch::config {
         # release then we'll update puppet.
         $awareness_attributes = undef
         $unicast_hosts        = undef
+
+        # Production elasticsearch needs these plugins to be loaded in order
+        # to work properly.  This will keep elasticsearch from starting
+        # if these plugins are  not available.
+        $plugins_mandatory    = ['experimental highlighter', 'analysis-icu']
     }
 }
 
@@ -93,6 +99,8 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         description => 'elasticsearch server',
     }
 
+    deployment::target { 'elasticsearchplugins': }
+
     # Install
     class { '::elasticsearch':
         multicast_group      => $multicast_group,
@@ -101,15 +109,23 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         cluster_name         => $cluster_name,
         heap_memory          => $heap_memory,
         plugins_dir          => '/srv/deployment/elasticsearch/plugins',
+        plugins_mandatory    => $plugins_mandatory,
         expected_nodes       => $expected_nodes,
         recover_after_nodes  => $recover_after_nodes,
         recover_after_time   => $recover_after_time,
         awareness_attributes => $awareness_attributes,
         row                  => $row,
         rack                 => $rack,
-        unicast_hosts        => $unicast_hosts
+        unicast_hosts        => $unicast_hosts,
+        # This depends on the elasticsearchplugins deployment.
+        # A new elasticsearch server shouldn't join the cluster until
+        # the plugins are properly deployed in place.  Note that this
+        # means you will likely have to run puppet twice in order to
+        # get elasticsearch up and running.  Once for the initial
+        # node configuration (including salt), and then once again
+        # after you have signed this node's new salt key over on the salt master.
+        require              => Deployment::Target['elasticsearchplugins'],
     }
-    deployment::target { 'elasticsearchplugins': }
 
     include ::elasticsearch::ganglia
     include ::elasticsearch::log::hot_threads
