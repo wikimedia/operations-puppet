@@ -36,7 +36,7 @@ MaxSpareServers 20
 
 StartServers 10
 
-MaxClients <%= maxclients %>
+MaxClients <%= @max_req_workers %>
 
 <IfDefine SLOW>
 MaxClients 5
