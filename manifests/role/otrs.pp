@@ -27,11 +27,12 @@ class role::otrs {
         srange => '($EXTERNAL_NETWORKS)',
     }
 
-    generic::systemuser { 'otrs':
-        name   => 'otrs',
-        home   => '/var/lib/otrs',
-        groups => ['www-data'],
-        shell  => '/bin/bash',
+    user { 'otrs':
+        home       => '/var/lib/otrs',
+        groups     => ['www-data'],
+        shell      => "/bin/bash",
+        managehome => true,
+        system     => true,
     }
 
     $packages = [
