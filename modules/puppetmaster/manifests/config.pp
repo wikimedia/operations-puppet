@@ -16,17 +16,15 @@ class puppetmaster::config {
 
     if $puppet_version == '3' {
         # See https://tickets.puppetlabs.com/browse/PUP-1237
+        #
+        # As we already have the ACLs defined in apache (see passenger.pp), and masters do not work
+        # with the standalone/webrick install, we can safely move ACLs away from here
+
         file { '/etc/puppet/fileserver.conf':
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
             content => template('puppetmaster/fileserver.conf.puppet3.erb'),
-        }
-        file { '/etc/puppet/auth.conf':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('puppetmaster/auth.conf.erb'),
         }
     } else {
         file { '/etc/puppet/fileserver.conf':
