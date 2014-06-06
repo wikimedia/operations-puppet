@@ -1,0 +1,62 @@
+#regular bash completion in git does not seem to play nice.
+#this is a workaround to get aliases and bash completion
+
+#http://ubuntuforums.org/showthread.php?t=733397
+#http://stackoverflow.com/questions/2553786/how-do-i-alias-commands-in-git
+
+# Author.: Ole J
+# Date...: 23.03.2008
+# License: Whatever
+
+# Wraps a completion function
+# make-completion-wrapper <actual completion function> <name of new func.>
+#                         <command name> <list supplied arguments>
+# eg.
+#       alias agi='apt-get install'
+#       make-completion-wrapper _apt_get _apt_get_install apt-get install
+# defines a function called _apt_get_install (that's $2) that will complete
+# the 'agi' alias. (complete -F _apt_get_install agi)
+#
+function make-completion-wrapper () {
+        local function_name="$2"
+        local arg_count=$(($#-3))
+        local comp_function_name="$1"
+        shift 2
+        local function="
+function $function_name {
+        ((COMP_CWORD+=$arg_count))
+        COMP_WORDS=( "$@" \${COMP_WORDS[@]:1} )
+        "$comp_function_name"
+        return 0
+}"
+        eval "$function"
+        #echo $function_name
+        #echo "$function"
+}
+
+# usage: gitalias <alias> <original command>
+function gitalias () {
+alias $1="$2"
+make-completion-wrapper _git _$1i $2
+complete -o bashdefault -o default -o nospace -F _$1i $1
+}
+
+gitalias gc 'git checkout'
+gitalias ga 'git add'
+gitalias gpu 'git push'
+gitalias gl 'git log'
+gitalias gs 'git status'
+gitalias gd 'git diff'
+gitalias gm 'git commit -m'
+gitalias gb 'git branch'
+gitalias gp 'git pull'
+gitalias gcl 'git clone'
+
+alias glean='git clean -df & git checkout .'
+
+#http://www.jukie.net/bart/blog/pimping-out-git-log
+#desc git log pimped
+alias gg='git lg'
+
+#desc git add/commit/pull/push tag=git -v
+alias ng='git add -A && git commit -m update && git push'

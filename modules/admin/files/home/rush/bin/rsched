@@ -1,0 +1,17 @@
+#!/bin/bash
+#http://rush898.github.io/2013/07/10/nix-lights-out-failsafe/
+if [ -z "$1" ]
+  then
+    echo "Usage: $0 <minutes_until_reboot>"
+    exit 1
+fi
+echo "reboot interval $1 minutes"
+now=`date +"%s"`
+#convert seconds to minutes
+future_time=`expr $1 \\* 60`
+rtime=`expr $now + $future_time`
+#convert epoch to shutdown friendly format
+time=`date -d @$rtime +"%H:%M"`
+echo $time
+#issue shutdown
+shutdown -k -r $time
