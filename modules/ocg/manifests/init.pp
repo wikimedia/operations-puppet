@@ -21,19 +21,16 @@ class ocg (
     $statsd_is_txstatsd = 0,
     $temp_dir = '/srv/deployment/ocg/tmp'
 ) {
+
     deployment::target { 'ocg': }
 
-    group { 'ocg':
-        ensure => present,
-    }
-
-    user { 'ocg':
-        ensure     => present,
-        gid        => 'ocg',
-        shell      => '/bin/false',
-        home       => '/srv/deployment/ocg',
-        managehome => false,
-        system     => true,
+    generic::systemuser { 'ocg':
+        name          => 'ocg',
+        home          => '/home/ocg',
+        shell         => '/bin/false',
+        home          => '/srv/deployment/ocg',
+        managehome    => false,
+        default_group => 'ocg',
     }
 
     if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '14.04') >= 0 ) {
@@ -106,7 +103,7 @@ class ocg (
         group   => 'root',
         mode    => '0444',
         content => template('ocg/ocg.upstart.conf.erb'),
-        require => User['ocg'],
+        require => Generic::Systemuser['ocg'],
         notify  => Service['ocg'],
     }
 
