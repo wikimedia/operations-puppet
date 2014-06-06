@@ -17,7 +17,7 @@ class puppetmaster::passenger(
                                 $bind_address='*',
                                 $verify_client='optional',
                                 $allow_from=[],
-                                $deny_from=[]
+                                $deny_from=$::puppetmaster::deny_from
                             ) {
     apt::puppet{'passenger':
         packages => 'puppetmaster-passenger',
