@@ -2,11 +2,12 @@ class misc::statistics::user {
     $username = 'stats'
     $homedir  = "/var/lib/${username}"
 
-    generic::systemuser { $username:
-        name   => $username,
-        home   => $homedir,
-        groups => ['wikidev'],
-        shell  => '/bin/bash',
+    user { $username:
+        home       => $homedir,
+        groups     => ['wikidev'],
+        shell      => '/bin/bash',
+        managehome => true,
+        system     => true
     }
 
     # create a .gitconfig file for stats user
