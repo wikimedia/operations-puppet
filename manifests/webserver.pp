@@ -68,18 +68,7 @@ class webserver::php5(
 ) {
 
     include webserver::base
-
-    if ! defined( Package['apache2-mpm-prefork'] ) {
-        package { 'apache2-mpm-prefork':
-            ensure => 'present',
-        }
-    }
-
-    if ! defined( Package['libapache2-mod-php5'] ) {
-        package { 'libapache2-mod-php5':
-            ensure => 'present',
-        }
-    }
+    include php5::apache2packages
 
     if $ssl == true {
         apache_module { 'ssl':
