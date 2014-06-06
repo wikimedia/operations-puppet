@@ -29,7 +29,7 @@ def main():
     ldapSupportLib.setBindInfoByOptions(options, parser)
     ds = ldapSupportLib.connect()
     try:
-        proc = subprocess.Popen('/usr/sbin/puppetca -l', shell=True, stdout=subprocess.PIPE)
+        proc = subprocess.Popen('/usr/bin/puppet cert list --all', shell=True, stdout=subprocess.PIPE)
         hosts = proc.communicate()
         hosts = hosts[0].split()
         for host in hosts:
@@ -46,7 +46,7 @@ def main():
                 except Exception:
                     sys.stderr.write('Failed to remove the certificate: ' + path + '\n')
             else:
-                subprocess.Popen(['/usr/sbin/puppetca -s ' + host], shell=True, stderr=subprocess.PIPE)
+                subprocess.Popen(['/usr/bin/puppet cert sign ' + host], shell=True, stderr=subprocess.PIPE)
                 subprocess.Popen(['/usr/bin/php /srv/org/wikimedia/controller/wikis/w/extensions/OpenStackManager/maintenance/onInstanceActionCompletion.php --action=build --instance=' + host], shell=True, stderr=subprocess.PIPE)
         proc = subprocess.Popen('/usr/bin/salt-key --list=unaccepted --out=json', shell=True, stdout=subprocess.PIPE)
         hosts = proc.communicate()
