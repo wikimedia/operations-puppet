@@ -37,10 +37,17 @@ class role::parsoid::production {
 
     deployment::target { 'parsoid': }
 
-    generic::systemuser { 'parsoid':
-        name          => 'parsoid',
-        default_group => 'parsoid',
+    group { 'parsoid':
+        ensure => present,
+        name   => 'parsoid',
+        system => true,
+    }
+
+    user { 'parsoid':
+        gid           => 'parsoid',
         home          => '/var/lib/parsoid',
+        managehome    => true,
+        system        => true,
     }
 
     file { '/var/lib/parsoid/deploy':
