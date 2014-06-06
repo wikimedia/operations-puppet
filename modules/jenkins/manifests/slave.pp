@@ -10,10 +10,11 @@ class jenkins::slave(
 
   include jenkins::slave::requisites
 
-  generic::systemuser { $user:
+  user { $user:
     ensure     => present,
-    name       => $user,
     shell      => '/bin/bash',
+    managehome => true,
+    system     => true,
   }
 
   file { $workdir:
@@ -21,7 +22,7 @@ class jenkins::slave(
     owner   => $user,
     group   => $user,
     mode    => '0775',
-    require => Generic::Systemuser[$user],
+    require => User[$user],
   }
 
   # Finally publish the Jenkins master authorized key
