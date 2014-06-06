@@ -1045,24 +1045,11 @@ class role::cache {
             }
         }
 
-        # Zero mobile related configuration.
-        #
-        # /zero/ files are only reacheable from production (ie not from labs)
-        # /zero-beta/ are publicly available but do not contain actual carrier
-        # data.
-        #
-        # @todo - is this actually used anywhere?
-        $zero_realm = $::realm ? {
-            production => 'zero',
-            labs       => 'zero-beta',
-        }
-        $zero_update_url = $::realm ? {
-            'production' => 'https://zero.wikimedia.org',
-            'labs'       => 'http://zero.wikimedia.beta.wmflabs.org',
-        }
-
         class { "varnish::zero_update":
-            site => $zero_update_url,
+            site => $::realm ? {
+                'production' => 'https://zero.wikimedia.org',
+                'labs'       => 'http://zero.wikimedia.beta.wmflabs.org',
+            },
             auth_src => 'puppet:///private/misc/zerofetcher.auth',
         }
 
