@@ -1,0 +1,9 @@
+#!/bin/bash
+
+puppet-merge() {
+    ssh palladium -t -- puppet-merge
+}
+
+puppet-run() {
+    ssh palladium -t -- salt "${*}" cmd.run "'puppetd -tv'"
+}

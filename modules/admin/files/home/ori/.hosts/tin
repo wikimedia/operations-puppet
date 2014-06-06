@@ -1,0 +1,33 @@
+#!/bin/bash
+
+looksgood () {
+    ( git remote -v | grep -q mediawiki-config ) && { git merge origin/master; return; }
+    dir=$(pwd)
+    branch="${dir#/a/common/php-}"
+    git rebase origin/wmf/$branch
+}
+
+fetch() {
+    cd /a/common
+    if [ "$1" = "config" ]; then
+        cd wmf-config
+        git fetch origin
+        git diff HEAD origin
+    else
+        branch_dir=$(find . -maxdepth 1 -type d -iregex "./php-[0-9.]+wmf$1")
+        branch="origin/wmf/${branch_dir#./php-}"
+        cd "${branch_dir}"
+        git fetch
+        git log HEAD..${branch}
+    fi
+}
+
+cdbranch() {
+    cd /a/common
+    branch_dir=$(find . -maxdepth 1 -type d -iregex "./php-[0-9.]+wmf$1")
+    cd "${branch_dir}"
+}
+
+bump() {
+    git submodule update --init --recursive extensions/$1
+}
