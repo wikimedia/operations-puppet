@@ -93,6 +93,8 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         description => 'elasticsearch server',
     }
 
+    deployment::target { 'elasticsearchplugins': }
+
     # Install
     class { '::elasticsearch':
         multicast_group      => $multicast_group,
@@ -108,8 +110,15 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         row                  => $row,
         rack                 => $rack,
         unicast_hosts        => $unicast_hosts
+        # This depends on the elasticsearchplugins deployment.
+        # A new elasticsearch server shouldn't join the cluster until
+        # the plugins are properly deployed in place.  Note that this
+        # means you will likely have to run puppet twice in order to
+        # get elasticsearch up and running.  Once for the initial
+        # node configuration (including salt), and then once again
+        # after you have signed this node's new salt key over on the salt master.
+        require              => Deployment::Target['elasticsearchplugins'],
     }
-    deployment::target { 'elasticsearchplugins': }
 
     include ::elasticsearch::ganglia
     include ::elasticsearch::log::hot_threads
