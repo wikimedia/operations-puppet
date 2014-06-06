@@ -1,7 +1,10 @@
 # vim: set ts=4 et sw=4:
 # role/otrs.pp
 
-class role::otrs {
+class role::otrs (
+        $otrs_database_host = 'm2-master.eqiad.wmnet',
+        $otrs_database_name = 'otrs',
+    ) {
 
     system::role { 'role::otrs::webserver':
         description => 'OTRS Web Application Server',
@@ -10,6 +13,10 @@ class role::otrs {
     include standard-noexim
     include webserver::apache
     include network::constants
+    include passwords::mysql::otrs
+
+    $otrs_database_user = $::passwords::mysql::otrs::user
+    $otrs_database_pw   = $::passwords::mysql::otrs::pass
 
     ferm::service { 'otrs_http':
         proto => 'tcp',
@@ -55,6 +62,14 @@ class role::otrs {
 
     package { $packages:
         ensure => 'present',
+    }
+
+    file { '/opt/otrs/Kernel/Config.pm':
+        ensure  => 'file',
+        owner   => 'otrs',
+        group   => 'www-data',
+        mode    => '0440',
+        content => template('otrs/Config.pm.erb'),
     }
 
     file { '/etc/apache2/sites-available/ticket.wikimedia.org':

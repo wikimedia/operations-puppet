@@ -1,0 +1,155 @@
+# --
+# Kernel/Config.pm - Config file for OTRS kernel
+# Copyright (C) 2001-2006 OTRS GmbH, http://otrs.org/
+# --
+# $Id: Config.pm.dist,v 1.18 2006/09/07 16:15:41 mh Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/gpl.txt.
+# --
+#  Note:
+#
+#  -->> OTRS does have a lot of config settings. For more settings
+#       (Notifications, Ticket::ViewAccelerator, Ticket::NumberGenerator,
+#       LDAP, PostMaster, Session, Preferences, ...) see
+#       Kernel/Config/Defaults.pm and copy your wanted lines into "this"
+#       config file. This file will not be changed on update!
+#
+# --
+
+package Kernel::Config;
+
+sub Load {
+    my $Self = shift;
+    # ---------------------------------------------------- #
+    # ---------------------------------------------------- #
+    #                                                      #
+    #         Start of your own config options!!!          #
+    #                                                      #
+    # ---------------------------------------------------- #
+    # ---------------------------------------------------- #
+
+    # ---------------------------------------------------- #
+    # database settings                                    #
+    # ---------------------------------------------------- #
+    # DatabaseHost
+    # (The database host.)
+    $Self->{DatabaseHost} = '<%= otrs_database_host %>';
+    # Database
+    # (The database name.)
+    $Self->{Database} = '<%= otrs_database_name %>';
+    # DatabaseUser
+    # (The database user.)
+    $Self->{DatabaseUser} = '<%= otrs_database_user %>';
+    # DatabasePw
+    # (The password of database user. You also can use bin/CryptPassword.pl
+    # for crypted passwords.)
+    $Self->{DatabasePw} = '<%= otrs_database_pw %>';
+    # DatabaseDSN
+    # (The database DSN for MySQL ==> more: "man DBD::mysql")
+    $Self->{DatabaseDSN} = "DBI:mysql:database=$Self->{Database};host=$Self->{DatabaseHost};";
+
+    # (The database DSN for PostgreSQL ==> more: "man DBD::Pg")
+    # if you want to use a local socket connection
+    # $Self->{DatabaseDSN} = "DBI:Pg:dbname=$Self->{Database};";
+    # if you want to use a tcpip connection
+    # $Self->{DatabaseDSN} = "DBI:Pg:dbname=$Self->{Database};host=$Self->{DatabaseHost};";
+
+    # ---------------------------------------------------- #
+    # fs root directory
+    # ---------------------------------------------------- #
+    $Self->{Home} = '/opt/otrs';
+
+    # ---------------------------------------------------- #
+    # insert your own config settings "here"               #
+    # config settings taken from Kernel/Config/Defaults.pm #
+    # ---------------------------------------------------- #
+    # $Self->{SessionUseCookie} = 0;
+    # $Self->{CheckMXRecord} = 0;
+
+    $Self->{CheckEmailInvalidAddress} = '@(aaaaarenulxxxx)\.(..|...)$';
+
+    # ---------------------------------------------------- #
+	# requested by marcel 20130808
+    #    $Self->{PreferencesGroups}->{Password} = {
+    #    Module => 'Kernel::Output::HTML::PreferencesPassword',
+    #    Colum => 'Other Options',
+    #    Label => 'Change Password',
+    #    Prio => 1000,
+    #    Area => 'Agent',
+    #    PasswordHistory => 0,
+    #  	 #PasswordRegExp => '[a-z]|[A-z]|[0-9]|\.|;|,|:|-|\+|#|!|\$|&|\?',
+    #    PasswordRegExp => '',
+    #    PasswordMinSize => 7,
+    #    PasswordMin2Lower2UpperCharacters => 0,
+    #    PasswordMin2Characters => 0,
+    #    PasswordNeedDigit => 1,
+    #    Activ => 1,
+    #};
+
+    $Self->{SecureMode} = 1;
+    $Self->{FQDN} = 'ticket.wikimedia.org';
+    $Self->{HttpType} =  'https';
+    $Self->{AdminEmail} =  'otrs-admins@lists.wikimedia.org';
+    $Self->{Organization} =  'Wikimedia';
+    $Self->{'FAQ::Default::RootCategoryComment'} =  'FAQ Table of Contents';
+
+    # Show online agents
+	#$Self->{'Frontend::NotifyModule'}->{'3-ShowAgentOnline'} = {
+	#    Module      => 'Kernel::Output::HTML::NotificationAgentOnline',
+	#    ShowEmail   => 1,
+	#    IdleMinutes => 60,
+	#};
+
+    # One-click spam configuration
+    $Self->{SpamQueueID} = 3;
+
+    # Close by default after reply
+    $Self->{'Ticket::Frontend::AgentTicketCompose'}->{'StateDefault'} =  'closed successful';
+
+    # Allow change of state from "add note" page
+    $Self->{'Ticket::Frontend::AgentTicketNote'}->{'State'} =  1;
+
+    # Show a link to the plain text email with headers, from zoom
+    $Self->{'Ticket::Frontend::PlainView'} = 1;
+
+    # Responses in a drop-down list (bug 17251)
+    $Self->{'Ticket::Frontend::StdResponsesMode'} = 'Form';
+
+    # Ticket watching (bug 17280)
+    $Self->{'Ticket::Watcher'} = 1;
+
+    # Per-agent statistics (bug 17820)
+    $Self->{'Stats::UseAgentElementInStats'} = 1;
+
+    # added with 3.2.9 upgrade
+    $Self->{'LogSystemCacheSize'} = 256 * 1024;
+
+    # ---------------------------------------------------- #
+    # data inserted by installer                           #
+    # ---------------------------------------------------- #
+    # $DIBI$
+    $Self->{DefaultCharset} = 'utf-8';
+
+    # ---------------------------------------------------- #
+    # ---------------------------------------------------- #
+    #                                                      #
+    #           End of your own config options!!!          #
+    #                                                      #
+    # ---------------------------------------------------- #
+    # ---------------------------------------------------- #
+}
+
+# ---------------------------------------------------- #
+# needed system stuff (don't edit this)                #
+# ---------------------------------------------------- #
+use strict;
+use vars qw(@ISA $VERSION);
+use Kernel::Config::Defaults;
+push (@ISA, 'Kernel::Config::Defaults');
+$VERSION = '$Revision: 1.18 $';
+$VERSION =~ s/^\$.*:\W(.*)\W.+?$/$1/;
+# -----------------------------------------------------#
+
+1;
