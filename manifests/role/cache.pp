@@ -1050,13 +1050,19 @@ class role::cache {
         # /zero/ files are only reacheable from production (ie not from labs)
         # /zero-beta/ are publicly available but do not contain actual carrier
         # data.
+        #
+        # @todo - is this actually used anywhere?
         $zero_realm = $::realm ? {
             production => 'zero',
             labs       => 'zero-beta',
         }
+        $zero_update_url = $::realm ? {
+            'production' => 'https://zero.wikimedia.org',
+            'labs'       => 'http://zero.wikimedia.beta.wmflabs.org',
+        }
 
         class { "varnish::zero_update":
-            site => 'https://zero.wikimedia.org',
+            site => $zero_update_url,
             auth_src => 'puppet:///private/misc/zerofetcher.auth',
         }
 
