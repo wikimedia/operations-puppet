@@ -237,9 +237,13 @@ class ganglia {
             pattern   => 'gmond',
         }
 
-        generic::systemuser { 'gmetric': name => 'gmetric', home => '/home/gmetric', shell => '/bin/sh' }
+        user { 'gmetric':
+            home       => '/home/gmetric',
+            shell      => '/bin/sh',
+            managehome => true,
+            system     => true,
+        }
     }
-
 }
 
 # == Class ganglia::collector::config
