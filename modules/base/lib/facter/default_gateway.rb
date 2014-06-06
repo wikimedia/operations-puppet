@@ -40,7 +40,7 @@ if Facter.value(:kernel) == 'Linux'
     values = line.split("\t").slice(1, 2)
 
     # Convert values to a pair of bytes ...
-    values.collect! { |i| i.to_a.pack('H*') }
+    values.collect! { |i| [i].pack('H*') }
 
     # Add all the bytes together ...
     sum = values[0].unpack('C4').inject { |i, j| i + j }
