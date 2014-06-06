@@ -11,7 +11,6 @@ import 'dns.pp'
 import 'facilities.pp'
 import 'ganglia.pp'
 import 'gerrit.pp'
-import 'imagescaler.pp'
 import 'iptables.pp'
 import 'mail.pp'
 import 'misc/*.pp'
@@ -1221,6 +1220,24 @@ node 'hooft.esams.wikimedia.org' {
 #eventual phabricator alpha
 node 'iridium.wikimedia.org' {
     include admin
+    class { 'phabricator':
+        settings => {
+            'test.value'   => 'boo',
+            'storage.upload-size-limit'  => '5M',
+            'darkconsole.enabled'        => false,
+            'phabricator.base-uri'       => 'http://phabricator.wikimedia.org',
+            'storage.local-disk.path'    => '/var/phabfiles',
+            'metamta.mail-adapter'       => 'PhabricatorMailImplementationPHPMailerAdapter',
+            'phpmailer.mailer'           => 'stmp',
+            'phpmailer.smtp-port'        => "25",
+            'phpmailer.smtp-host'        => 'mchenry.wikimedia.org',
+            'mysql.host'                 => 'localhost',
+            'mysql.pass'                 => 'foo',
+        },
+    }
+
+    #inbound note
+    #metamta.maniphest.reply-handler-domain
 }
 
 node 'manutius.wikimedia.org' {
@@ -2183,11 +2200,6 @@ node 'osmium.eqiad.wmnet' {
     include hhvm::dev
     include mediawiki::cgroup
     include mediawiki::sync
-
-    class { '::mediawiki::jobrunner':
-        run_jobs_enabled => false,
-        user             => 'mwdeploy',
-    }
 }
 
 # base_analytics_logging_node is defined in role/logging.pp

@@ -1,0 +1,3 @@
+
+#recoverying password / admin user
+./bin/auth recover admin <user>
