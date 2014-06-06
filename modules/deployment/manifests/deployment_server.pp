@@ -37,11 +37,12 @@ class deployment::deployment_server($deployer_groups=[]) {
     }
 
     if $::realm != 'labs' {
-      generic::systemuser { 'trebuchet':
-          name   => 'trebuchet',
-          shell  => '/bin/false',
-          home   => '/nonexistent',
-          groups => $deployer_groups,
+      user { 'trebuchet':
+          shell      => '/bin/false',
+          home       => '/nonexistent',
+          managehome => true,
+          groups     => $deployer_groups,
+          system     => true,
       }
     }
 
