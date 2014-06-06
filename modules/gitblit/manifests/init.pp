@@ -12,12 +12,17 @@ class gitblit(
     include webserver::apache
     include gitblit::monitor
 
-    generic::systemuser { 'gitblit':
-        name          => 'gitblit',
-        shell         => '/bin/false',
-        home          => '/var/lib/gitblit',
-        managehome    => false,
-        default_group => 'gitblit',
+    group { 'gitblit':
+        ensure => present,
+    }
+
+    user { 'gitblit':
+        ensure     => present,
+        gid        => 'gitblit',
+        shell      => '/bin/false',
+        home       => '/var/lib/gitblit',
+        system     => true,
+        managehome => false,
     }
 
     file { "/etc/apache2/sites-available/${host}":

@@ -44,11 +44,17 @@ class ipython(
         ensure => latest,
     }
 
-    generic::systemuser { $user:
-        name          => $user,
-        home          => '/nonexistent',
-        shell         => '/bin/false',
-        default_group => $user,
+    user { $user:
+        ensure     => present,
+        gid        => $group,
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        managehome => false,
+        system     => true,
+    }
+
+    group { $user:
+        ensure => present,
     }
 
     file { $ipythondir:

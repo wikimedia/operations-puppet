@@ -24,11 +24,18 @@ class limn(
     }
   }
 
-  generic::systemuser { $user:
-    name          => $user,
-    managehome    => false,
-    home          => $var_directory,
-    default_group => $group,
+  group { $group:
+    ensure => present,
+    system => true,
+  }
+
+  user { $user:
+    ensure     => present,
+    gid        => $group,
+    home       => $var_directory,
+    managehome => false,
+    system     => true,
+    require    => Group[$group],
   }
 
   # Default limn containing data directory.
@@ -39,7 +46,7 @@ class limn(
     owner   => $user,
     group   => $group,
     mode    => '0755',
-    require => [System::User[$user], Group[$group]],
+    require => [User[$user], Group[$group]],
   }
 
   # Default limn log directory.
@@ -50,6 +57,6 @@ class limn(
     owner   => $user,
     group   => $group,
     mode    => '0755',
-    require => [System::User[$user], Group[$group]],
+    require => [User[$user], Group[$group]],
   }
 }

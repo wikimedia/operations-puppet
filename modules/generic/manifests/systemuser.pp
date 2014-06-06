@@ -8,6 +8,13 @@ class systemuser::groups {
 }
 
 # Creates a system username with associated group, fixed or random uid/gid, and /bin/false as shell
+#
+# WARNING
+# It is NOT RECOMMENDED to use this anymore. Use regular user/group stanzas, properly marking them
+# as system => true. While this definition had started as a thin abstraction layer, it has since acquired
+# all the features of user { } and some more, including unnecessary magic.
+# WARNING
+
 define generic::systemuser(
     $name,
     $uid=undef,
