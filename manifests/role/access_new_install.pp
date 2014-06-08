@@ -3,15 +3,15 @@
 # This key is dangerous, do not deploy widely!
 class role::access_new_install {
     file { '/root/.ssh/new_install':
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0400',
-        source => 'puppet:///private/ssh/new_install/new_install';
+        source => 'puppet:///private/ssh/new_install/new_install',
     }
     file { '/root/.ssh/new_install.pub':
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0444',
-        source => 'puppet:///private/ssh/new_install/new_install.pub';
+        source => 'puppet:///private/ssh/new_install/new_install.pub',
     }
 }
