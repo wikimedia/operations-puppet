@@ -12,7 +12,6 @@ class role::gitblit {
     }
 
     # Firewall GitBlit, it should be accessed from localhost or Varnish
-    include base::firewall
     ferm::rule { 'gitblit_8080':
         rule => 'proto tcp dport 8080 { saddr $INTERNAL ACCEPT; }'
     }
