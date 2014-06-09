@@ -237,6 +237,7 @@ node 'analytics1026.eqiad.wmnet' {
     # Include analytics/refinery deployment target.
     # NOTE: refinery roles will soon replace kraken classes.
     include role::analytics::refinery
+    include role::analytics::refinery::data::drop
 }
 
 # analytics1027 hosts the frontend
