@@ -138,13 +138,6 @@ class role::lucene {
 		}
 	}
 
-	class admins {
-		if $::realm == 'production' {
-			sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-			sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-		}
-	}
-
 	class indexer {
 		system::role { "role::lucene::indexer": description => "Lucene search indexer" }
 
