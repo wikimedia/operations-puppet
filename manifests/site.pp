@@ -788,6 +788,14 @@ node /^db104[68]\.eqiad\.wmnet/ {
     }
 }
 
+node 'db1020.eqiad.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::production':
+        shard => 'm2',
+    }
+}
+
 ## m3 shard
 node 'db1043.eqiad.wmnet' {
     include admin

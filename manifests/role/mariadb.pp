@@ -183,3 +183,33 @@ class role::mariadb::backup {
         jobdefaults      => "Weekly-${backup::host::day}-${backup::host::pool}",
     }
 }
+
+# Not suitable for S1-S7 yet. Fine for M1-M3.
+class role::mariadb::production(
+    $shard,
+    ) {
+
+    system::role { "role::mariadb::production::${shard}":
+        description => "Core DB Server ${shard}",
+    }
+
+    include standard
+    include mariadb::packages_wmf
+    include passwords::misc::scripts
+
+    class { 'mariadb::config':
+        prompt   => "PRODUCTION ${shard}",
+        config   => 'mariadb/production.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/a/sqldata',
+        tmpdir   => '/a/tmp',
+    }
+
+    class { 'mariadb::monitor_disk':
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        contact_group => 'admins',
+    }
+}
