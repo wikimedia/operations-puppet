@@ -6,127 +6,11 @@ class exim {
                         '2620::860:2:219:b9ff:fedd:c027' ]
     }
 
-    class stats {
-
-        file { '/usr/local/bin/collect_exim_stats_via_gmetric':
-            owner  => 'root',
-            group  => 'Debian-exim',
-            mode   => '0755',
-            source => 'puppet:///files/ganglia/collect_exim_stats_via_gmetric',
-        }
-
-        cron { 'collect_exim_stats_via_gmetric':
-            ensure  => present,
-            user    => 'root',
-            command => '/usr/local/bin/collect_exim_stats_via_gmetric',
-        }
-    }
-
-    class config(
-        $install_type='light',
-        $queuerunner='queueonly'
-) {
-        package { [ 'exim4-config',
-                    "exim4-daemon-${install_type}"
-            ]:
-            ensure => latest,
-        }
-
-        if $install_type == 'heavy' {
-            exec { 'mkdir /var/spool/exim4/scan':
-                require => Package['exim4-daemon-heavy'],
-                path    => '/bin:/usr/bin',
-                creates => '/var/spool/exim4/scan',
-            }
-
-            mount { [ '/var/spool/exim4/scan',
-                      '/var/spool/exim4/db'
-                ]:
-                ensure  => mounted,
-                device  => 'none',
-                fstype  => 'tmpfs',
-                options => 'defaults',
-            }
-
-            file { [ '/var/spool/exim4/scan',
-                    '/var/spool/exim4/db'
-                ]:
-                ensure => directory,
-                owner  => 'Debian-exim',
-                group  => 'Debian-exim',
-            }
-
-            # add nagios to the Debian-exim group to allow check_disk tmpfs mounts (puppet still can't manage existing users?! so just Exec)
-            exec { 'nagios_to_exim_group':
-                command => 'usermod -a -G Debian-exim nagios',
-                path    => '/usr/sbin',
-            }
-
-            Exec['mkdir /var/spool/exim4/scan'] ->
-            Mount['/var/spool/exim4/scan'] ->
-            File['/var/spool/exim4/scan']
-
-            Package['exim4-daemon-heavy'] ->
-            Mount['/var/spool/exim4/db'] ->
-            File['/var/spool/exim4/db']
-        }
-
-        file { '/etc/default/exim4':
-            require => Package['exim4-config'],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('exim/exim4.default.erb'),
-        }
-
-        file { '/etc/exim4/aliases/':
-            ensure  => directory,
-            require => Package['exim4-config'],
-            mode    => '0755',
-            owner   => 'root',
-            group   => 'root',
-        }
-    }
-
-    class service {
-        Class['exim::config'] -> Class['exim::service']
-
-        # The init script's status command exit value only reflects the SMTP service
-        $hasstatus = $exim::config::queuerunner ? {
-            'queueonly' => false,
-            default     => true
-        }
-
-
-        service { 'exim4':
-            ensure    => running,
-            hasstatus => $hasstatus,
-        }
-
-        if $exim::config::queuerunner != 'queueonly' {
-            # Nagios monitoring
-            monitor_service { 'smtp':
-                description   => 'Exim SMTP',
-                check_command => 'check_smtp',
-            }
-        }
-    }
-
     class simple-mail-sender {
-        class { 'exim::config':
+        class { 'exim4':
             queuerunner => 'queueonly',
+            config      => template('exim/exim4.minimal.erb'),
         }
-        Class['exim::config'] -> Class['exim::simple-mail-sender']
-
-        file { '/etc/exim4/exim4.conf':
-            require => Package['exim4-config'],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('exim/exim4.minimal.erb'),
-        }
-
-        include exim::service
     }
 
     class smtp {
@@ -181,42 +65,15 @@ class exim {
             $smart_route_list=[]
 ) {
 
-        class { 'exim::config':
-            install_type => 'heavy',
-            queuerunner  => 'combined',
-        }
-        Class['exim::config'] -> Class['exim::roled']
-
-        include exim::service
-
         include exim::smtp
         include exim::constants
         include network::constants
         include privateexim::listserve
 
-        file { '/etc/exim4/exim4.conf':
-            require => Package['exim4-config'],
-            notify  => Service['exim4'],
-            owner   => 'root',
-            group   => 'Debian-exim',
-            mode    => '0440',
-            content => template('exim/exim4.conf.SMTP_IMAP_MM.erb'),
-        }
-
-        file { '/etc/exim4/dkim/':
-            ensure  => directory,
-            purge   => true,
-            owner   => 'root',
-            group   => 'Debian-exim',
-            mode    => '0440',
-            require => Package['exim4-config'],
-        }
-
-        file { '/etc/exim4/system_filter':
-            owner   => 'root',
-            group   => 'Debian-exim',
-            mode    => '0444',
-            content => template('exim/system_filter.conf.erb'),
+        class { 'exim4':
+            variant => 'heavy',
+            config  => template('exim/exim4.conf.SMTP_IMAP_MM.erb'),
+            filter  => template('exim/system_filter.conf.erb'),
         }
 
         file { '/etc/exim4/defer_domains':
@@ -227,7 +84,7 @@ class exim {
         }
 
         class mail_relay {
-            Class['exim::config'] -> Class['exim::roled::mail_relay']
+            Class['exim4'] -> Class['exim::roled::mail_relay']
 
             file { '/etc/exim4/relay_domains':
                 owner  => 'root',
@@ -236,19 +93,15 @@ class exim {
                 source => 'puppet:///files/exim/exim4.secondary_relay_domains.conf',
             }
 
-            file { '/etc/exim4/dkim/wikimedia.org-wikimedia.key':
-                ensure  => present,
-                owner   => 'root',
-                group   => 'Debian-exim',
-                mode    => '0440',
-                source  => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
-                require => File['/etc/exim4/dkim'],
-                notify  => Service['exim4'],
+            exim4::dkim { 'wikimedia.org':
+                domain   => 'wikimedia.org',
+                selector => 'wikimedia',
+                source   => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
             }
         }
 
         class mailman {
-            Class['exim::config'] -> Class['exim::roled::mailman']
+            Class['exim4'] -> Class['exim::roled::mailman']
 
             file { '/etc/exim4/aliases/lists.wikimedia.org':
                 owner  => 'root',
@@ -257,42 +110,28 @@ class exim {
                 source => 'puppet:///files/exim/exim4.listserver_aliases.conf',
             }
 
-            file { '/etc/exim4/dkim/lists.wikimedia.org-wikimedia.key':
-                ensure  => present,
-                owner   => 'root',
-                group   => 'Debian-exim',
-                mode    => '0440',
-                source  => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
-                require => File['/etc/exim4/dkim'],
-                notify  => Service['exim4'],
+            exim4::dkim { 'lists.wikimedia.org':
+                domain   => 'lists.wikimedia.org',
+                selector => 'wikimedia',
+                source   => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
             }
         }
 
         if ( $mediawiki_relay == "true" ) {
-            file { '/etc/exim4/dkim/wikimedia.org-wiki-mail.key':
-                ensure  => present,
-                owner   => 'root',
-                group   => 'Debian-exim',
-                mode    => '0440',
-                source  => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
-                require => File['/etc/exim4/dkim'],
-                notify  => Service['exim4'],
+            exim4::dkim { 'wiki-mail':
+                domain   => 'wikimedia.org',
+                selector => 'wiki-mail',
+                source   => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
             }
         }
 
-        include exim::stats
+        include exim4::ganglia
 
         if ( $enable_mailman == "true" ) {
             include mailman
         }
         if ( $enable_mail_relay == 'primary' ) or ( $enable_mail_relay == 'secondary' ) {
             include mail_relay
-        }
-        if ( $enable_spamassassin == "true" ) {
-            Class['spamassassin'] -> Class['exim::roled']
-        }
-        if ( $enable_clamav == "true" ) {
-            Class['clamav'] -> Class['exim::roled']
         }
     }
 }
