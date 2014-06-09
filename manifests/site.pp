@@ -1824,17 +1824,13 @@ node 'mchenry.wikimedia.org' {
 
     include base
 
-    #admin will complete with benign errors
-    #commenting to keep puppet noise to a minimum for now
     #include admin
     include ganglia
     include ntp::client
     include dns::recursor::statistics
     include ldap::role::client::corp
-    include backup::client
-    include privateexim::aliases::private
-    include exim::stats
     include network::constants
+    include role::mail::oldmx
 
     interface::ip { 'dns::recursor':
         interface => 'eth0',
@@ -1847,15 +1843,6 @@ node 'mchenry.wikimedia.org' {
     }
 
     dns::recursor::monitor { '208.80.152.132': }
-
-    # mails the wikimedia.org mail alias file to OIT once per week
-    class { 'misc::maintenance::mail_exim_aliases':
-        enabled => true,
-    }
-
-    # TODO: This unfortunately will not work while mchenry is still hardy
-    include backup::host
-    backup::set { 'roothome': }
 }
 
 node 'mexia.wikimedia.org' {
@@ -2400,58 +2387,18 @@ node 'silver.wikimedia.org' {
 }
 
 node 'sodium.wikimedia.org' {
-
-    system::role { 'role::lists':
-        description => 'Mailing list server',
-    }
-
     $nameservers_prefix = [ $ipaddress ]
 
     include admin
     include base
     include ganglia
     include ntp::client
-    include mailman
     include dns::recursor
     include backup::client
+    include role::mail::lists
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
-    }
-
-    class { 'spamassassin':
-        required_score   => '4.0',
-        use_bayes        => '0',
-        bayes_auto_learn => '0',
-        trusted_networks => $network::constants::all_networks,
-    }
-
-    class { 'exim::roled':
-        outbound_ips           => [ '208.80.154.61',
-                                    '2620:0:861:1:208:80:154:61'
-        ],
-        list_outbound_ips      => [ '208.80.154.4',
-                                    '2620:0:861:1::2'
-        ],
-        local_domains          => [ '+system_domains',
-                                    '+mailman_domains'
-        ],
-        enable_mail_relay      => 'secondary',
-        enable_mailman         => 'true',
-        enable_mail_submission => 'false',
-        enable_spamassassin    => 'true',
-    }
-
-    interface::ip { 'lists.wikimedia.org_v4':
-        interface => 'eth0',
-        address   => '208.80.154.4',
-        prefixlen => '32',
-    }
-
-    interface::ip { 'lists.wikimedia.org_v6':
-        interface => 'eth0',
-        address   => '2620:0:861:1::2',
-        prefixlen => '128',
     }
 }
 
