@@ -28,7 +28,7 @@ class role::analytics::kafka::config {
 
     if ($::realm == 'labs') {
         # TODO: Make hostnames configurable via labs global variables.
-        $cluster = {
+        $cluster_config = {
             'main'     => {
                 'kafka-main1.pmtpa.wmflabs'     => { 'id' => 1 },
                 'kafka-main2.pmtpa.wmflabs'     => { 'id' => 2 },
@@ -49,10 +49,9 @@ class role::analytics::kafka::config {
 
     # else Kafka cluster is based on $::site.
     else {
-        # Please note that, as of now, this tampers with the node-level cluster variable.
-        # This is bad, and should be corrected by puppet 3
-        $cluster = {
+        $cluster_config = {
             'eqiad'   => {
+                'analytics1012.eqiad.wmnet' => { 'id' => 12 },
                 'analytics1021.eqiad.wmnet' => { 'id' => 21 },
                 'analytics1022.eqiad.wmnet' => { 'id' => 22 },
             },
@@ -85,7 +84,7 @@ class role::analytics::kafka::config {
         $nofiles_ulimit = 65536
     }
 
-    $brokers          = $cluster[$kafka_cluster_name]
+    $brokers          = $cluster_config[$kafka_cluster_name]
     if is_hash($brokers) {
         $brokers_array = keys($brokers)
     } else {
