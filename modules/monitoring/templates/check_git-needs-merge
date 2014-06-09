@@ -1,0 +1,33 @@
+#!/bin/bash -e -u
+
+#Config variables
+warn_time_diff=<%= @warning -%>
+crit_time_diff=<%= @critical -%>
+basedir="<%= @dir -%>"
+git_user=<%= @user %>
+
+
+# First of all, check if there is something to merge.
+cd "${basedir}"
+su - $git_user -c "cd ${basedir} && git fetch"
+fetch_head_sha1=$(git rev-parse FETCH_HEAD)
+submodule_changes="$(git diff --submodule=log HEAD..${fetch_head_sha1} | grep -e '^Submodule ')" || true
+
+# Exit if there are no changes to merge.
+if [ -z "$(git diff HEAD..${fetch_head_sha1})" -a -z "${submodule_changes}" ]; then
+    echo "No changes to merge."
+    exit 0
+fi
+
+# Else, check if the change is more than <%= @critical -%> seconds old
+local_time=$(git show -s --format=%ct HEAD)
+fetch_head_time=$(git show -s --format=%ct FETCH_HEAD)
+time_diff=$(( $fetch_head_time - $local_time ))
+if [ $time_diff -gt $crit_time_diff ]; then
+    echo "There are unmerged changes in <%= @title -%> (dir <%= @basedir -%>) waiting since ${time_diff} seconds"
+    exit 2
+fi;
+if [ $time_diff -gt $warn_time_diff ]; then
+    echo "There are unmerged changes in <%= @title -%>  (dir <%= @basedir -%>) waiting since ${time_diff} seconds"
+    exit 1
+fi;
