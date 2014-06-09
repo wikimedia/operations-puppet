@@ -80,27 +80,11 @@ class puppetmaster(
         ca          => $config['ca']
     }
 
-    # monitor HTTPS on puppetmasters
-    # Note that for frontends both 8140 and 8141 ports will be checked since
-    # both will be used
-    if $server_type == 'frontend' or $server_type == 'standalone' {
-        monitor_service { 'puppetmaster_https':
-            description     => 'puppetmaster https',
-            check_command   => 'check_https_port_status!8140!400',
-        }
-    }
-    if $server_type == 'frontend' or $server_type == 'backend' {
-        monitor_service { 'puppetmaster_backend_https':
-            description     => 'puppetmaster backend https',
-            check_command   => 'check_https_port_status!8141!400',
-        }
-    }
-
-
     include puppetmaster::scripts
     include puppetmaster::geoip
     include puppetmaster::gitclone
     include puppetmaster::gitpuppet
+    include puppetmaster::monitoring
 
     if $is_labs_puppet_master {
         include puppetmaster::labs
