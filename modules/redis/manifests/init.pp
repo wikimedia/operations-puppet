@@ -53,6 +53,17 @@ class redis (
         # subscribe => not doing this deliberately
     }
 
+    if $::lsbdistcodename == 'trusty' {
+        # Upon a config change, Redis will be restarted
+        # if it's listening on localhost only, see RT 7583
+        exec {'Restart redis if needed':
+            command     => '/usr/sbin/service redis-server restart',
+            unless      => '/bin/netstat -lp | /bin/grep redis | /usr/bin/awk \'{print $4}\' | /bin/grep -v localhost 2> /dev/null',
+            subscribe   => File['/etc/redis/redis.conf'],
+            refreshonly => true,
+        }
+    }
+
     if $monitor {
         monitor_service { $servicename: description => "Redis", check_command => "check_tcp!${port}" }
     }
