@@ -226,12 +226,6 @@ class exim {
             mode   => '0444',
         }
 
-        include backup::host
-        backup::set { 'var-vmail': }
-        if $enable_mailman {
-            backup::set { 'var-lib-mailman': }
-        }
-
         class mail_relay {
             Class['exim::config'] -> Class['exim::roled::mail_relay']
 
