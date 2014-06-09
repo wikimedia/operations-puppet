@@ -159,6 +159,9 @@ class role::otrs (
         ],
     }
 
+    Class['spamassassin'] -> Class['exim::roled']
+    Class['clamav'] -> Class['exim::roled']
+
     cron { 'otrs_train_spamassassin':
         ensure  => 'present',
         user    => 'root',
