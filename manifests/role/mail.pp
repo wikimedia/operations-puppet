@@ -30,6 +30,7 @@ class role::mail::lists {
     include mailman
     include backup::client
 
+    include clamav
     class { 'spamassassin':
         required_score   => '4.0',
         use_bayes        => '0',
