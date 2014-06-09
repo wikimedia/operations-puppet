@@ -130,6 +130,7 @@ class role::otrs (
     apache_module { 'ssl': name => 'ssl' }
     apache_site { 'ticket': name => 'ticket.wikimedia.org' }
 
+    include clamav
     class { 'spamassassin':
         required_score        => '3.5',
         use_bayes             => true,
