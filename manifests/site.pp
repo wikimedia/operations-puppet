@@ -2286,6 +2286,7 @@ node 'tantalum.eqiad.wmnet' {
 
     class { 'admin': groups => ['pdf-qa-users'] }
 
+	include base::firewall
     include standard
     include role::ocg::test
 }
