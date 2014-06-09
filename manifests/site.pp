@@ -168,12 +168,12 @@ node 'analytics1010.eqiad.wmnet' {
     include role::analytics::hadoop::master
 }
 
-# analytics1011-analytics1020 are Hadoop worker nodes
+# analytics1011, analytics1013,analytics1020 are Hadoop worker nodes
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # templates/hadoop/net-topology.py.erb to make sure the
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
-node /analytics10(1[1-9]|20).eqiad.wmnet/ {
+node /analytics10(11|[3-9]|20).eqiad.wmnet/ {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics'
@@ -187,11 +187,11 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
     include role::analytics::hadoop::worker
 }
 
-# analytics1021 and analytics1022 are Kafka Brokers.
-node /analytics102[12]\.eqiad\.wmnet/ {
+# analytics1012, analytics1021 and analytics1022 are Kafka Brokers.
+node /analytics10(12|21|22)\.eqiad\.wmnet/ {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
-    $cluster = 'analytics'
+    $cluster = 'analytics_kafka'
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
     # addresses.

@@ -157,7 +157,11 @@ class ganglia {
                 'ip_oct'    => '43' },
             'rcstream'      => {
                 'name'      => 'RCStream cluster',
-                'ip_oct'    => '44' },
+                'ip_oct'    => '44',
+            'analytics_kafka' => {
+                'name'      => 'Analytics Kafka cluster',
+                'ip_oct'    => '45' },
+            },
         }
         # NOTE: Do *not* add new clusters *per site* anymore,
         # the site name will automatically be appended now,
