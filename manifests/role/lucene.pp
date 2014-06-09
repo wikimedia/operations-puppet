@@ -148,9 +148,7 @@ class role::lucene {
 		# Include packages needed for MW maintenance scripts
 		include standard,
 			mediawiki,
-			mediawiki::php,
-			role::lucene::admins,
-			lucene::users
+			mediawiki::php
 
 		# dependency for wikimedia-task-appserver
 		service { 'apache':
@@ -171,9 +169,7 @@ class role::lucene {
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] ] }
 
-			include standard,
-				role::lucene::admins,
-				lucene::users
+			include standard
 
 			class { "lucene::server":
 				udplogging => $search_pool ? {
