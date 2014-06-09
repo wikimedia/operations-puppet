@@ -446,7 +446,7 @@ class role::cache {
         if $::realm == 'production' {
             require role::analytics::kafka::config
             # All producers currently produce to the (only) Kafka cluster in eqiad.
-            $kafka_brokers = keys($role::analytics::kafka::config::cluster['eqiad'])
+            $kafka_brokers = keys($role::analytics::kafka::config::cluster_config['eqiad'])
 
             class { '::varnishkafka':
                 brokers                      => $kafka_brokers,
