@@ -298,7 +298,7 @@ class exim {
             Class['spamassassin'] -> Class['exim::roled']
         }
         if ( $enable_clamav == "true" ) {
-            include clamav
+            Class['clamav'] -> Class['exim::roled']
         }
     }
 }
