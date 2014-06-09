@@ -11,6 +11,12 @@ class role::analytics::refinery {
             ensure => 'installed',
         }
     }
+    # refinery python module uses dateutil
+    if !defined(Package['python-dateutil']) {
+        package { 'python-dateutil':
+            ensure => 'installed',
+        }
+    }
 
     # analytics/refinery will deployed to this node.
     deployment::target { 'analytics-refinery': }
@@ -18,4 +24,36 @@ class role::analytics::refinery {
     # analytics/refinery repository is deployed via git-deploy at this path.
     # You must deploy this yourself; puppet will not do it for you.
     $path = '/srv/deployment/analytics/refinery'
+
+    # Put refinery python module in user PYTHONPATH
+    file { '/etc/profile.d/refinery.sh':
+        content => "export PYTHONPATH=\${PYTHONPATH}:${path}/python"
+    }
+
+    # Create directory in /var/log for general purpose Refinery job logging.
+    $log_dir = '/var/log/refinery'
+    file { $log_dir:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'stats',
+        # setgid bit here to make kraken log files writeable
+        # by users in the stats group.
+        mode   => '2775',
+    }
+}
+
+# Installs cron job to drop old hive partitions
+# and delete old data from HDFS.
+class role::analytics::refinery::data::drop {
+    require role::analytics::refinery
+
+    # keep this many days of data
+    $retention_days = 35
+
+    cron { 'hive-drop-webrequest-partitions':
+        command => "export PYTHONPATH=\${PYTHONPATH}:${path}/python && ${path}/bin/hive-drop-webrequest-partitions -d ${retention_days} -D wmf",
+        user    => 'hdfs',
+        hour    => '1',
+        minute  => '0',
+    }
 }
