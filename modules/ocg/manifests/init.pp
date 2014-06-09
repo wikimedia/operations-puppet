@@ -76,6 +76,7 @@ class ocg (
             'lmodern',
             'imagemagick',
             'librsvg2-bin',
+            'libjpeg-progs',
             'unzip',
             'zip',
         ]:
