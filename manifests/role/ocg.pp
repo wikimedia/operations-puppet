@@ -8,6 +8,7 @@
 class role::ocg::production {
     system::role { 'ocg': description => 'offline content generator for MediaWiki Collection extension' }
 
+    include base::firewall
     include passwords::redis
 
     $service_port = 8000
@@ -51,6 +52,7 @@ class role::ocg::production {
 class role::ocg::test {
     system::role { 'ocg-test': description => 'offline content generator for MediaWiki Collection extension (single host testing)' }
 
+    include base::firewall
     include passwords::redis
 
     $service_port = 8000
