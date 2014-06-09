@@ -101,6 +101,7 @@ class puppetmaster(
     include puppetmaster::geoip
     include puppetmaster::gitclone
     include puppetmaster::gitpuppet
+    include puppetmaster::monitoring
 
     if $is_labs_puppet_master {
         include puppetmaster::labs
