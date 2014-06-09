@@ -64,6 +64,7 @@ class ocg (
             'texlive-lang-all',
             'fonts-hosny-amiri',
             'ttf-devanagari-fonts',
+            'fonts-farsiweb',
             'fonts-nafees',
             'ttf-indic-fonts-core',
             'ttf-malayalam-fonts',
