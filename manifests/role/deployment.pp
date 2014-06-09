@@ -148,6 +148,12 @@ class role::deployment::deployment_servers::common {
     docroot             => '/var/www',
     configure_firewall  => false,
   }
+
+  #RT 7427
+  ::monitoring::icinga::git_merge { 'mediawiki_config':
+      dir  => '/a/common/',
+      user => 'root'
+  }
 }
 
 class role::deployment::deployment_servers::production {

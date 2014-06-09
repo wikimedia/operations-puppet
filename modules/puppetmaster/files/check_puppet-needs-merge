@@ -1,0 +1,34 @@
+#!/bin/bash -e
+warn_time_diff=300
+crit_time_diff=900
+
+# Default to /var/lib/git/operations/puppet unless $1 is specified
+basedir=${1:-/var/lib/git/operations/puppet}
+
+# Default to gitpuppet unless $2 is specified
+git_user=${2:-gitpuppet}
+
+
+# First of all, check if there is something to merge.
+cd "${basedir}"
+su - $git_user -c "cd ${basedir} && git fetch"
+fetch_head_sha1=$(git rev-parse FETCH_HEAD)
+submodule_changes="$(git diff --submodule=log HEAD..${fetch_head_sha1} | grep -e '^Submodule ')" || true
+# Exit if there are no changes to merge.
+if [ -z "$(git diff HEAD..${fetch_head_sha1})" -a -z "${submodule_changes}" ]; then
+    echo "No changes to merge."
+    exit 0
+fi
+
+# Else, check if the change is more than 10 minutes old
+local_time=$(git show -s --format=%ct HEAD)
+fetch_head_time=$(git show -s --format=%ct FETCH_HEAD)
+time_diff=$(( $fetch_head_time - $local_time ))
+if [ $time_diff -gt $crit_time_diff ]; then
+    echo "There are unmerged puppet changes waiting since ${time_diff} seconds"
+    exit 2
+fi;
+if [ $time_diff -gt $warn_time_diff ]; then
+    echo "There are unmerged puppet changes waiting since ${time_diff} seconds"
+    exit 1
+fi;
