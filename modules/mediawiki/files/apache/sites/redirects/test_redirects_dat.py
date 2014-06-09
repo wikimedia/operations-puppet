@@ -24,14 +24,16 @@ class RedirectsDatTest(unittest.TestCase):
         fname = os.path.join(this_dir, '../redirects.conf')
         # Get current contents
         old = self.get_contents(fname)
-        # Run the refresh script, possibly modifying the file
-        subprocess.call([os.path.join(this_dir, 'refreshDomainRedirects')])
-        # Get the new contents and make sure it's still the same
-        new = self.get_contents(fname)
+        # Run the refresh script
+        new = subprocess.check_output([
+            '/usr/bin/env', 'ruby',
+            os.path.join(this_dir, 'compile_redirects.rb'),
+            os.path.join(this_dir, 'redirects.dat'),
+            ])
         self.assertEqual(
             old,
             new,
-            'redirects.conf not regenerated. Run ./refreshDomainRedirects.'
+            'redirects.conf not regenerated. Run compile_redirects.rb.'
         )
 
 
