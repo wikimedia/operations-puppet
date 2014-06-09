@@ -28,8 +28,6 @@ class role::mail::lists {
     }
 
     include mailman
-    include backup::client
-
     include clamav
     class { 'spamassassin':
         required_score   => '4.0',
@@ -61,4 +59,18 @@ class role::mail::lists {
             Interface::Ip['lists.wikimedia.org_v6'],
         ],
     }
+
+    # confusingly enough, the former is amanda, the latter is bacula
+    include backup::client
+    include backup::host
+    backup::set { 'var-lib-mailman': }
+}
+
+class role::mail::imap {
+    # confusingly enough, the former is amanda, the latter is bacula
+    include backup::client
+    include backup::host
+    backup::set { 'var-vmail': }
+
+    # FIXME: the rest is unpuppetized so far
 }

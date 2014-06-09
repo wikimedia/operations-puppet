@@ -2272,7 +2272,7 @@ node 'sanger.wikimedia.org' {
     include ntp::client
     include ldap::role::server::corp
     include ldap::role::client::corp
-    include backup::client
+    include role::mail::imap
     class { 'admin': groups => ['oit'] }
 }
 
