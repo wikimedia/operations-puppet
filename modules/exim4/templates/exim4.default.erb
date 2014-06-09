@@ -6,14 +6,14 @@
 
 EX4DEF_VERSION=''
 
-# 'combined' -   one daemon running queue and listening on SMTP port
-# 'no'       -   no daemon running the queue
-# 'separate' -   two separate daemons
+# 'combined' -	 one daemon running queue and listening on SMTP port
+# 'no'       -	 no daemon running the queue
+# 'separate' -	 two separate daemons
 # 'ppp'      -   only run queue with /etc/ppp/ip-up.d/exim4.
 # 'nodaemon' - no daemon is started at all.
 # 'queueonly' - only a queue running daemon is started, no SMTP listener.
 # setting this to 'no' will also disable queueruns from /etc/ppp/ip-up.d/exim4
-QUEUERUNNER='<%= scope.lookupvar('exim::config::queuerunner') %>'
+QUEUERUNNER='<%= @queuerunner %>'
 # how often should we run the queue
 QUEUEINTERVAL='10m'
 # options common to quez-runner and listening daemon
