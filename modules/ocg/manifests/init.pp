@@ -75,6 +75,7 @@ class ocg (
             'latex-xcolor',
             'lmodern',
             'imagemagick',
+            'libjpeg-progs',
             'librsvg2-bin',
             'unzip',
             'zip',
