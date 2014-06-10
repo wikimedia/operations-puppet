@@ -1117,11 +1117,6 @@ host eeden {
 	fixed-address eeden.esams.wikimedia.org;
 }
 
-host ekrem {
-	hardware ethernet 84:2b:2b:06:49:30;
-	fixed-address ekrem.wikimedia.org;
-}
-
 host elastic1001 {
 	hardware ethernet d4:ae:52:6e:e3:32;
 	fixed-address elastic1001.eqiad.wmnet;

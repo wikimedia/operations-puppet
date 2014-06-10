@@ -976,11 +976,6 @@ node 'eeden.esams.wikimedia.org' {
     include role::authdns::ns2
 }
 
-node 'ekrem.wikimedia.org' {
-    include admin
-    include standard
-}
-
 node 'tarin.pmtpa.wmnet' {
     $ganglia_aggregator = true
     include admin
