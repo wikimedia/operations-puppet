@@ -1824,8 +1824,6 @@ node 'mchenry.wikimedia.org' {
 
     include base
 
-    #admin will complete with benign errors
-    #commenting to keep puppet noise to a minimum for now
     #include admin
     include ganglia
     include ntp::client
@@ -1852,10 +1850,6 @@ node 'mchenry.wikimedia.org' {
     class { 'misc::maintenance::mail_exim_aliases':
         enabled => true,
     }
-
-    # TODO: This unfortunately will not work while mchenry is still hardy
-    include backup::host
-    backup::set { 'roothome': }
 }
 
 node 'mexia.wikimedia.org' {
