@@ -7,6 +7,7 @@ user = swift
 <% if @statsd_host -%>
 log_statsd_host = <%= @statsd_host %>
 log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
+log_statsd_default_sample_rate = <%= @statsd_default_sample_rate %>
 <% if @statsd_metric_prefix -%>
 log_statsd_metric_prefix = <%= @statsd_metric_prefix %>
 <% end -%>

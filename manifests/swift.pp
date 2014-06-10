@@ -105,6 +105,7 @@ class swift::proxy(
     $statsd_host               = undef,
     $statsd_metric_prefix      = undef,
     $statsd_sample_rate_factor = '1',
+    $statsd_default_sample_rate = '1',
     $bind_port                 = '8080',
     $proxy_address,
     $memcached_servers,
