@@ -1,9 +1,11 @@
-#!/bin/bash -e -u
+#!/bin/bash
+set -e
+set -u
 
 #Config variables
-warn_time_diff=<%= @warning -%>
-crit_time_diff=<%= @critical -%>
-basedir="<%= @dir -%>"
+warn_time_diff=<%= @warning %>
+crit_time_diff=<%= @critical %>
+basedir="<%= @dir %>"
 git_user=<%= @user %>
 
 
@@ -24,10 +26,10 @@ local_time=$(git show -s --format=%ct HEAD)
 fetch_head_time=$(git show -s --format=%ct FETCH_HEAD)
 time_diff=$(( $fetch_head_time - $local_time ))
 if [ $time_diff -gt $crit_time_diff ]; then
-    echo "There are unmerged changes in <%= @title -%> (dir <%= @basedir -%>) waiting since ${time_diff} seconds"
+    echo "There are unmerged changes in <%= @title -%> (dir ${basedir}) waiting since ${time_diff} seconds"
     exit 2
 fi;
 if [ $time_diff -gt $warn_time_diff ]; then
-    echo "There are unmerged changes in <%= @title -%>  (dir <%= @basedir -%>) waiting since ${time_diff} seconds"
+    echo "There are unmerged changes in <%= @title -%>  (dir ${basedir}) waiting since ${time_diff} seconds"
     exit 1
 fi;
