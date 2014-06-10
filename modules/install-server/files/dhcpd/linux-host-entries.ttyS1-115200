@@ -1421,6 +1421,26 @@ host lvs1006 {
 	fixed-address lvs1006.wikimedia.org;
 }
 
+host lvs3001 {
+	hardware ethernet 90:b1:1c:45:56:0d;
+	fixed-address lvs3001.esams.wmnet;
+}
+
+host lvs3002 {
+	hardware ethernet 90:b1:1c:57:3b:35;
+	fixed-address lvs3002.esams.wmnet;
+}
+
+host lvs3003 {
+	hardware ethernet 90:b1:1c:57:53:93;
+	fixed-address lvs3003.esams.wmnet;
+}
+
+host lvs3004 {
+	hardware ethernet 90:b1:1c:57:5f:2a;
+	fixed-address lvs3004.esams.wmnet;
+}
+
 host lvs4001 {
 	hardware ethernet 90:b1:1c:42:f0:9e;
 	fixed-address lvs4001.ulsfo.wmnet;
@@ -3380,24 +3400,4 @@ host zinc {
 host zirconium {
 	hardware ethernet 18:03:73:f1:4f:4c;
 	fixed-address zirconium.wikimedia.org;
-}
-
-host lvs3001 {
-	hardware ethernet 90:b1:1c:45:56:0d;
-	fixed-address lvs3001.esams.wmnet;
-}
-
-host lvs3002 {
-	hardware ethernet 90:b1:1c:57:3b:35;
-	fixed-address lvs3002.esams.wmnet;
-}
-
-host lvs3003 {
-	hardware ethernet 90:b1:1c:57:53:93;
-	fixed-address lvs3003.esams.wmnet;
-}
-
-host lvs3004 {
-	hardware ethernet 90:b1:1c:57:5f:2a;
-	fixed-address lvs3004.esams.wmnet;
 }
