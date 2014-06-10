@@ -77,20 +77,20 @@ class exim {
         }
 
         file { '/etc/exim4/defer_domains':
-            ensure => present,
-            owner  => 'root',
-            group  => 'Debian-exim',
-            mode   => '0444',
+            ensure  => present,
+            owner   => 'root',
+            group   => 'Debian-exim',
+            mode    => '0444',
+            require => Class['exim4'],
         }
 
         class mail_relay {
-            Class['exim4'] -> Class['exim::roled::mail_relay']
-
             file { '/etc/exim4/relay_domains':
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0444',
-                source => 'puppet:///files/exim/exim4.secondary_relay_domains.conf',
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                source  => 'puppet:///files/exim/exim4.secondary_relay_domains.conf',
+                require => Class['exim4'],
             }
 
             exim4::dkim { 'wikimedia.org':
@@ -101,13 +101,12 @@ class exim {
         }
 
         class mailman {
-            Class['exim4'] -> Class['exim::roled::mailman']
-
             file { '/etc/exim4/aliases/lists.wikimedia.org':
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0444',
-                source => 'puppet:///files/exim/exim4.listserver_aliases.conf',
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                source  => 'puppet:///files/exim/exim4.listserver_aliases.conf',
+                require => Class['exim4'],
             }
 
             exim4::dkim { 'lists.wikimedia.org':
