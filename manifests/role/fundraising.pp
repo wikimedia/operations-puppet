@@ -15,7 +15,6 @@ class role::fundraising::civicrm {
     include backup::client
     include misc::fundraising
     include misc::fundraising::backup::backupmover_user
-    include misc::fundraising::mail
 
     monitor_service { 'smtp':
         description   => 'Exim SMTP',
