@@ -67,7 +67,7 @@ class exim4(
             ensure  => directory,
             owner   => 'Debian-exim',
             group   => 'Debian-exim',
-            mode    => '0755',
+            mode    => '1777',
             require => Mount['/var/spool/exim4/scan', '/var/spool/exim4/db'],
             before  => Service['exim4'],
         }
@@ -96,7 +96,7 @@ class exim4(
         ensure  => directory,
         owner   => 'root',
         group   => 'Debian-exim',
-        mode    => '0750',
+        mode    => '0755',
         require => Package['exim4-config'],
     }
 
@@ -118,10 +118,9 @@ class exim4(
         ensure  => $filter_ensure,
         owner   => 'root',
         group   => 'Debian-exim',
-        mode    => '0440',
+        mode    => '0444',
         content => $filter,
         require => Package['exim4-config'],
-        notify  => Service['exim4'],
     }
 
     file { '/etc/exim4/exim4.conf':
