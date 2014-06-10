@@ -7,8 +7,6 @@
 # - The $docroot provides the DocumentationRoot variable
 # - The $serveradmin will specify an email address for Apache that it will
 #   display when it renders one of it's error pages
-# - The $configure_firewall option is set to true or false to specify if
-#   a firewall should be configured.
 # - The $ssl option is set true or false to enable SSL for this Virtual Host
 # - The $template option specifies whether to use the default template or
 #   override
@@ -44,7 +42,6 @@ define apache::vhost(
     $docroot_dir_allows = ['all'],
     $docroot_dir_denies = '',
     $serveradmin        = false,
-    $configure_firewall = false,
     $ssl                = $apache::params::ssl,
     $template           = $apache::params::template,
     $priority           = $apache::params::priority,
@@ -114,16 +111,4 @@ define apache::vhost(
     ],
     notify  => Service['httpd'],
   }
-
-  if $configure_firewall {
-    if ! defined(Firewall["0100-INPUT ACCEPT $port"]) {
-      @firewall {
-        "0100-INPUT ACCEPT $port":
-          action => 'accept',
-          dport  => $port,
-          proto  => 'tcp'
-      }
-    }
-  }
 }
-
