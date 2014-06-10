@@ -10,10 +10,12 @@ class role::mariadb {
 }
 
 # miscellaneous services clusters m[123], but currently only m3
-class role::mariadb::misc {
+class role::mariadb::misc(
+    $shard
+    ) {
 
     system::role { 'role::mariadb::misc':
-        description => 'miscellaneous services database',
+        description => "Misc Services Database ${shard}",
     }
 
     include standard
@@ -21,15 +23,20 @@ class role::mariadb::misc {
     include passwords::misc::scripts
 
     class { 'mariadb::config':
-        prompt   => 'MISC',
+        prompt   => "MISC ${shard}",
         config   => 'mariadb/misc.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/a/sqldata',
         tmpdir   => '/a/tmp',
     }
 
-    include mariadb::monitor_disk
-    include mariadb::monitor_process
+    class { 'mariadb::monitor_disk':
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        contact_group => 'admins',
+    }
 }
 
 # Beta Cluster Master

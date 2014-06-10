@@ -777,28 +777,21 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 }
 
 ## m2 shard
-node 'db1046.eqiad.wmnet' {
+node /^db10(20|46)\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
-    $ganglia_aggregator = true
-    class { 'role::coredb::m2':
-        mariadb => true,
-    }
-}
-
-node 'db1020.eqiad.wmnet' {
-    include admin
-    $cluster = 'mysql'
-    class { 'role::mariadb::production':
+    class { 'role::mariadb::misc':
         shard => 'm2',
     }
 }
 
 ## m3 shard
-node 'db1043.eqiad.wmnet' {
+node /^db10(43|48)\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
-    include role::mariadb::misc
+    class { 'role::mariadb::misc':
+        shard => 'm3',
+    }
 }
 
 ## researchdb s1
