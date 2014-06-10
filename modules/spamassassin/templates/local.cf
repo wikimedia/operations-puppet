@@ -25,7 +25,7 @@
 #
 trusted_networks <%= @trusted_networks.join(" ") %>
 
-<% if @short_report_template == 'true' then -%>
+<% if @short_report_template == true then -%>
 # short-format report template, starting with Yes/No.
 clear_report_template
 report _YESNO_, score=_SCORE_ | host: _HOSTNAME_ | scores: _TESTSSCORES(,)_ | autolearn=_AUTOLEARN_
