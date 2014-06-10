@@ -27,7 +27,12 @@ define monitoring::icinga::git_merge (
         require      => File[$file_resource]
     }
 
-    sudo_user { 'nagios':
-        privileges   => ["ALL = NOPASSWD: ${filename}"],
+    file { "sudo_nagios_${sane_title}":
+            path    => "/etc/sudoers.d/${sane_title}_needs_merge",
+		    owner   => root,
+		    group   => root,
+		    mode    => 0440,
+		    content => template("monitoring/merge_sudoers.erb");
+        }
     }
 }
