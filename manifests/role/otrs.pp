@@ -159,11 +159,19 @@ class role::otrs (
         ],
     }
 
+    Class['spamassassin'] -> Class['exim::roled']
+    Class['clamav'] -> Class['exim::roled']
+
     cron { 'otrs_train_spamassassin':
         ensure  => 'present',
         user    => 'root',
         minute  => '5',
         command => '/usr/local/bin/train_spamassassin',
+    }
+
+    monitor_service { 'smtp':
+        description   => 'OTRS SMTP',
+        check_command => 'check_smtp',
     }
 
     monitor_service { 'https':

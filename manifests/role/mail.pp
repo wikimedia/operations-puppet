@@ -1,7 +1,7 @@
 class role::mail::oldmx {
     include backup::client
     include privateexim::aliases::private
-    include exim::stats
+    include exim4::ganglia
 
     # mails the wikimedia.org mail alias file to OIT once per week
     class { 'misc::maintenance::mail_exim_aliases':
@@ -9,6 +9,11 @@ class role::mail::oldmx {
     }
 
     # FIXME: the rest is unpuppetized so far
+
+    monitor_service { 'smtp':
+        description   => 'Exim SMTP',
+        check_command => 'check_smtp',
+    }
 }
 
 class role::mail::lists {
@@ -57,16 +62,22 @@ class role::mail::lists {
         enable_mail_submission => 'false',
         enable_spamassassin    => 'true',
         require                => [
-            Class['spamassassin'],
             Interface::Ip['lists.wikimedia.org_v4'],
             Interface::Ip['lists.wikimedia.org_v6'],
         ],
     }
 
+    Class['spamassassin'] -> Class['exim::roled']
+
     # confusingly enough, the former is amanda, the latter is bacula
     include backup::client
     include backup::host
     backup::set { 'var-lib-mailman': }
+
+    monitor_service { 'smtp':
+        description   => 'Exim SMTP',
+        check_command => 'check_smtp',
+    }
 }
 
 class role::mail::imap {
