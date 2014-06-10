@@ -777,18 +777,12 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 }
 
 ## m2 shard
-node /^db104[68]\.eqiad\.wmnet/ {
+node 'db1046.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
-    if $::hostname =~ /^db1048/ {
-        $ganglia_aggregator = true
-    }
-    if $::hostname =~ /^db1046/ {
-        class { 'role::coredb::m2':
-            mariadb => true,
-        }
-    } else {
-        include role::coredb::m2
+    $ganglia_aggregator = true
+    class { 'role::coredb::m2':
+        mariadb => true,
     }
 }
 
