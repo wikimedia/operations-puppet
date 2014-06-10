@@ -18,6 +18,6 @@ define monitoring::icinga::git_merge (
       nrpe::monitor_service { "${title}_merged":
           description  => "Unmerged changes on repository ${title}",
           nrpe_command => "/usr/local/lib/nagios/plugins/check_${title}-needs-merge",
-          require      => File["check_${title}-needs-merge"]
+          require      => File["check_${title}_needs_merge"]
       }
 }
