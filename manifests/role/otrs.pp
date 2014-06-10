@@ -187,9 +187,9 @@ class role::otrs (
         contact_group         => 'admins',
         warning               => ':2',
         critical              => ':1',
-        normal_check_interval => '10',
-        retry_check_interval  => '10',
-        retries               => '6',
+        normal_check_interval => '20',
+        retry_check_interval  => '20',
+        retries               => '3',
         require               => Class['exim4::ganglia'],
     }
 
