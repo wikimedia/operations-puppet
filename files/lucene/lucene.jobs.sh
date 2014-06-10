@@ -8,7 +8,7 @@ dumps="$base/dumps"
 ls2="$base/lucene-search"
 
 MWinstall="/usr/local/apache"
-dblist="$MWinstall/common/all.dblist"
+dblist="$confs/all.dblist"
 
 JAVA_OPTS_IMPORTER='-Xms128m -Xmx2000m'
 JAVA_OPTS_PREFIXINDEXBUILDER='-Xmx4000m'
@@ -29,11 +29,11 @@ fi
 # Per realm override
 case "$WMF_REALM" in
 	'labs')
-		dblist="$MWinstall/common/all-labs.dblist"
+		dblist="$confs/all-labs.dblist"
 	;;
 esac
 
-pvtlist="$MWinstall/common/private.dblist"
+pvtlist="$confs/private.dblist"
 
 function build-new {
 	cd $ls2
@@ -79,11 +79,11 @@ function import-db {
 
 function import-private {
 	# Import all dbs in the cluster
-	for dbname in `<$MWinstall/common/private.dblist`;do
+	for dbname in `<$confs/private.dblist`;do
 		import-db $dbname >> $base/log/log-private 2>&1
 	done
 
-	for dbname in `<$MWinstall/common/fishbowl.dblist`;do
+	for dbname in `<$confs/fishbowl.dblist`;do
 		import-db $dbname >> $base/log/log-private 2>&1
 	done
 }
