@@ -5,6 +5,14 @@ class exim {
         $primary_mx = [ '208.80.152.186',
                         '2620::860:2:219:b9ff:fedd:c027' ]
     }
+
+    class simple-mail-sender {
+        class { 'exim4':
+            queuerunner => 'queueonly',
+            config      => template('exim/exim4.minimal.erb'),
+        }
+    }
+
     class smtp {
         include passwords::exim
         $otrs_mysql_password = $passwords::exim::otrs_mysql_password

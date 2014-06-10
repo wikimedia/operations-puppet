@@ -1,10 +1,3 @@
-class role::mail::sender {
-    class { 'exim4':
-        queuerunner => 'queueonly',
-        config      => template('mail/exim4.minimal.erb'),
-    }
-}
-
 class role::mail::oldmx {
     include backup::client
     include privateexim::aliases::private

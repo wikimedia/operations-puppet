@@ -39,7 +39,7 @@ class standard {
     include base
     include ganglia
     include ntp::client
-    include role::mail::sender
+    include exim::simple-mail-sender
     include role::diamond
 }
 
@@ -936,7 +936,7 @@ node 'dobson.wikimedia.org' {
 
     include base
     include ganglia
-    include role::mail::sender
+    include exim::simple-mail-sender
     include dns::recursor::statistics
     include network::constants
 
@@ -1500,7 +1500,7 @@ node 'linne.wikimedia.org' {
     include admin
     include base
     include ganglia
-    include role::mail::sender
+    include exim::simple-mail-sender
     include url-downloader
 
     class { 'ntp::server':
