@@ -146,7 +146,6 @@ class role::deployment::deployment_servers::common {
     priority            => '000',
     port                => '80',
     docroot             => '/var/www',
-    configure_firewall  => false,
   }
 
   #RT 7427
@@ -169,7 +168,6 @@ class role::deployment::deployment_servers::production {
     docroot_group        => 'wikidev',
     docroot_dir_allows   => $::network::constants::mw_appserver_networks,
     serveradmin          => 'noc@wikimedia.org',
-    configure_firewall   => false,
   }
   class { 'redis':
     dir => '/srv/redis',
@@ -233,7 +231,6 @@ class role::deployment::deployment_servers::labs {
     docroot_group       => "project-${::instanceproject}",
     docroot_dir_allows  => ['10.0.0.0/8'],
     serveradmin         => 'noc@wikimedia.org',
-    configure_firewall  => false,
   }
   class { 'redis':
     dir       => '/srv/redis',
