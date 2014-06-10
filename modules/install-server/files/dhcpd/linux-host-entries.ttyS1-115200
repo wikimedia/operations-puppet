@@ -1379,6 +1379,9 @@ host lanthanum {
 host lead {
 	hardware ethernet C8:1F:66:BF:71:66;
 	fixed-address lead.wikimedia.org;
+
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host logstash1001 {
