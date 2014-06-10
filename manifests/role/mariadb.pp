@@ -86,10 +86,10 @@ class role::mariadb::tendril {
     include mariadb::monitor_process
 }
 
-# MariaDB 10 delayed slaves replicating all shards
+# MariaDB 10 slaves replicating all shards
 class role::mariadb::dbstore(
-    $lag_warn = 90000,
-    $lag_crit = 180000,
+    $lag_warn = 300,
+    $lag_crit = 600,
     ) {
 
     system::role { 'role::mariadb::dbstore':

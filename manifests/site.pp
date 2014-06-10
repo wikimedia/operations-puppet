@@ -908,14 +908,22 @@ node /^dbstore1001\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
     $mariadb_backups_folder = '/a/backups'
-    include role::mariadb::dbstore
     include role::mariadb::backup
+    # 24h pt-slave-delay on all repl streams
+    class { 'role::mariadb::dbstore':
+        lag_warn => 90000,
+        lag_crit => 180000,
+    }
 }
 
 node /^dbstore1002\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
-    include role::mariadb::dbstore
+    # Analytics traffic & eventlogging spikes
+    class { 'role::mariadb::dbstore':
+        lag_warn => 1800,
+        lag_crit => 3600,
+    }
 }
 
 node 'dobson.wikimedia.org' {
