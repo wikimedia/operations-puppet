@@ -183,7 +183,7 @@ class role::otrs (
     monitor_ganglia { 'exim_messages_in':
         ensure                => 'present',
         description           => 'exim incoming message rate',
-        metric                => 'exim messages in',
+        metric                => 'exim_messages_in',
         contact_group         => 'admins',
         warning               => ':2',
         critical              => ':1',
