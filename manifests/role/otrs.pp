@@ -1,4 +1,4 @@
-# vim: set ts=4 et sw=4:
+# vim: set ts=4 et sw=4:               =>
 # role/otrs.pp
 
 class role::otrs (
@@ -148,6 +148,7 @@ class role::otrs (
         debug_logging         => '--debug spf',
     }
 
+    # warning: don't unquote these booleans until exim::roled is fixed
     class { 'exim::roled':
         enable_clamav        => 'true',
         enable_otrs_server   => 'true',
@@ -177,6 +178,19 @@ class role::otrs (
     monitor_service { 'https':
         description   => 'HTTPS',
         check_command => 'check_ssl_cert!ticket.wikimedia.org',
+    }
+
+    monitor_ganglia { 'exim_messages_in':
+        ensure                => 'present',
+        description           => 'exim incoming message rate',
+        metric                => 'exim messages in',
+        contact_group         => 'admins',
+        warning               => ':2',
+        critical              => ':1',
+        normal_check_interval => '10',
+        retry_check_interval  => '10',
+        retries               => '6',
+        require               => Class['exim4::ganglia'],
     }
 
 }
