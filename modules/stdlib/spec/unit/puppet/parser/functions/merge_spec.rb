@@ -8,7 +8,6 @@ describe Puppet::Parser::Functions.function(:merge) do
   describe 'when calling merge from puppet' do
     it "should not compile when no arguments are passed" do
       pending("Fails on 2.6.x, see bug #15912") if Puppet.version =~ /^2\.6\./
-      pending("Fails on 2.7.x, see bug #15912") if Puppet.version =~ /^2\.7\./
       Puppet[:code] = '$x = merge()'
       expect {
         scope.compiler.compile
@@ -17,7 +16,6 @@ describe Puppet::Parser::Functions.function(:merge) do
 
     it "should not compile when 1 argument is passed" do
       pending("Fails on 2.6.x, see bug #15912") if Puppet.version =~ /^2\.6\./
-      pending("Fails on 2.7.x, see bug #15912") if Puppet.version =~ /^2\.7\./
       Puppet[:code] = "$my_hash={'one' => 1}\n$x = merge($my_hash)"
       expect {
         scope.compiler.compile
