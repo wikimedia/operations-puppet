@@ -150,8 +150,9 @@ class role::deployment::deployment_servers::common {
 
   #RT 7427
   ::monitoring::icinga::git_merge { 'mediawiki_config':
-      dir  => '/a/common/',
-      user => 'root'
+      dir           => '/a/common/',
+      user          => 'root',
+      remote_branch => 'readonly/master'
   }
 }
 
