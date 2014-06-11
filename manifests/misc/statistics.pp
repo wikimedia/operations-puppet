@@ -656,6 +656,7 @@ class misc::statistics::limn::mobile_data_sync {
     $mysql_credentials = "${working_path}/.my.cnf.research"
     $rsync_from        = "${working_path}/limn-public-data"
     $output            = "$rsync_from/mobile/datafiles"
+    $log               = "$/var/log/limn-mobile-data.log"
     $gerrit_repo       = "https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git"
     $user              = $misc::statistics::user::username
 
@@ -668,6 +669,12 @@ class misc::statistics::limn::mobile_data_sync {
         owner     => $user,
         require   => [User[$user]],
         ensure    => latest,
+    }
+
+    file { $log:
+        owner   => $user,
+        group   => $user,
+        mode    => '0660',
     }
 
     file { $mysql_credentials:
@@ -685,7 +692,7 @@ class misc::statistics::limn::mobile_data_sync {
     }
 
     cron { "rsync_mobile_apps_stats":
-        command => "python $command $config && /usr/bin/rsync -rt $rsync_from/* stat1001.wikimedia.org::www/limn-public-data/",
+        command => "python $command $config >> $log 2>&1 && /usr/bin/rsync -rt $rsync_from/* stat1001.wikimedia.org::www/limn-public-data/",
         user    => $user,
         minute  => 0,
     }
