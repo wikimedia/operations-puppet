@@ -1,41 +1,38 @@
-define apache::mod (
-  $package = undef
-) {
-  $mod = $name
-  include apache::params
-  #include apache #This creates duplicate resources in rspec-puppet
-  $mod_packages = $apache::params::mod_packages
-  $mod_package = $mod_packages[$mod] # 2.6 compatibility hack
-  if $package {
-    $package_REAL = $package
-  } elsif "$mod_package" {
-    $package_REAL = $mod_package
-  }
-  $mod_libs = $apache::params::mod_libs
-  $mod_lib = $mod_libs[$mod] # 2.6 compatibility hack
-  if "${mod_lib}" {
-    $lib = $mod_lib
-  }
+# == Class: apache::mod
+#
+# This module contains unparametrized classes that wrap some popular
+# Apache mods. Because the classes are not parametrized, they may be
+# included multiple times without causing duplicate definition errors.
+#
+class apache::mod {}  # Stub to work around Puppet 2.x parser bug.
 
-  $mod_identifiers = $apache::params::mod_identifiers
-  $mod_identifier = $mod_identifiers[$mod]
-  if "${mod_identifier}" {
-    $identifier = $mod_identifier
-  }
+# Modules that are bundled with the apache2 package
+class apache::mod::actions       { apache::mod_conf { 'actions':       } }
+class apache::mod::alias         { apache::mod_conf { 'alias':         } }
+class apache::mod::auth_basic    { apache::mod_conf { 'auth_basic':    } }
+class apache::mod::authn_file    { apache::mod_conf { 'authn_file':    } }
+class apache::mod::authnz_ldap   { apache::mod_conf { 'authnz_ldap':   } }
+class apache::mod::authz_user    { apache::mod_conf { 'authz_user':    } }
+class apache::mod::dav           { apache::mod_conf { 'dav':           } }
+class apache::mod::dav_fs        { apache::mod_conf { 'dav_fs':        } }
+class apache::mod::headers       { apache::mod_conf { 'headers':       } }
+class apache::mod::proxy_http    { apache::mod_conf { 'proxy_http':    } }
+class apache::mod::rewrite       { apache::mod_conf { 'rewrite':       } }
+class apache::mod::userdir       { apache::mod_conf { 'userdir':       } }
 
-  if $package_REAL {
-    package { $package_REAL:
-      ensure   => present,
-      require  => Package['httpd'],
-      before   => A2mod[$mod],
-    }
-  }
+# Modules that depend on additional packages
+class apache::mod::fastcgi       { apache::mod_conf { 'fastcgi':       } <- package { 'libapache2-mod-fastcgi':   } }
+class apache::mod::fcgid         { apache::mod_conf { 'fcgid':         } <- package { 'libapache2-mod-fcgid':     } }
+class apache::mod::passenger     { apache::mod_conf { 'passenger':     } <- package { 'libapache2-mod-passenger': } }
+class apache::mod::perl2         { apache::mod_conf { 'perl2':         } <- package { 'libapache2-mod-perl2':     } }
+class apache::mod::php5          { apache::mod_conf { 'php5':          } <- package { 'libapache2-mod-php5':      } }
+class apache::mod::proxy         { apache::mod_conf { 'proxy':         } <- package { 'libapache2-mod-proxy':     } }
+class apache::mod::python        { apache::mod_conf { 'python':        } <- package { 'libapache2-mod-python':    } }
+class apache::mod::rpaf          { apache::mod_conf { 'rpaf':          } <- package { 'libapache2-mod-rpaf':      } }
+class apache::mod::ssl           { apache::mod_conf { 'ssl':           } <- package { 'libapache2-mod-ssl':       } }
+class apache::mod::uwsgi         { apache::mod_conf { 'uwsgi':         } <- package { 'libapache2-mod-uwsgi':     } }
+class apache::mod::wsgi          { apache::mod_conf { 'wsgi':          } <- package { 'libapache2-mod-wsgi':      } }
 
-  a2mod { $mod:
-    ensure     => present,
-    lib        => $lib,
-    identifier => $identifier,
-    require    => Package['httpd'],
-    notify     => Service['httpd'],
-  }
-}
+# Modules that target a specific distribution
+class apache::mod::access_compat { if versioncmp($::lsbdistrelease, '13.10') >= 0 { apache::mod_conf { 'access_compat': } } }  # Not relevant
+class apache::mod::version       { if versioncmp($::lsbdistrelease, '13.10')  < 0 { apache::mod_conf { 'version':       } } }  # Baked-in
