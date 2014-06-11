@@ -50,11 +50,10 @@ class role::analytics::refinery::data::drop {
     $log_file     = "${role::analytics::refinery::log_dir}/hive-drop-webrequest-partitions.log"
 
     # keep this many days of data
-    $retention_days = 35
+    $retention_days = 31
     cron { 'hive-drop-webrequest-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/hive-drop-webrequest-partitions -d ${retention_days} -D wmf >> ${log_file} 2>&1",
         user    => 'hdfs',
-        hour    => '1',
-        minute  => '0',
+        hour    => '*/4',
     }
 }
