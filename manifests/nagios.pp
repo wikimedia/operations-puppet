@@ -313,7 +313,7 @@ class misc::zfs::monitoring {
 # $retries
 # $group
 # $ensure
-# $critical
+# $nagios_critical      - passed as $critical to monitor_service define
 # $passive
 # $freshness
 # $normal_check_interval
@@ -323,8 +323,8 @@ class misc::zfs::monitoring {
 define monitor_ganglia(
     $description,
     $metric,
-    $warning,
-    $critical,
+    $warning_threshold,
+    $critical_threshold,
     $metric_host           = $::fqdn,
     $gmetad_host           = 'nickel.wikimedia.org',
     $gmetad_query_port     = 8654,
@@ -332,7 +332,7 @@ define monitor_ganglia(
     $retries               = 3,
     $group                 = undef,
     $ensure                = present,
-    $critical              = 'false',
+    $nagios_critical       = 'false',
     $passive               = 'false',
     $freshness             = 36000,
     $normal_check_interval = 1,
@@ -369,7 +369,7 @@ define monitor_ganglia(
         check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}!${::ganglia::cname}",
         retries               => $retries,
         group                 => $ganglia_group,
-        critical              => $critical,
+        critical              => $nagios_critical,
         passive               => $passive,
         freshness             => $freshness,
         normal_check_interval => $normal_check_interval,
