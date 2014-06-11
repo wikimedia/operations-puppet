@@ -60,21 +60,41 @@ class role::analytics::kafka::config {
             'esams' => { },
         }
 
-        # production Kafka uses a bunch of JBOD log_dir mounts.
-        $log_dirs = [
-            '/var/spool/kafka/c/data',
-            '/var/spool/kafka/d/data',
-            '/var/spool/kafka/e/data',
-            '/var/spool/kafka/f/data',
-            '/var/spool/kafka/g/data',
-            '/var/spool/kafka/h/data',
-            '/var/spool/kafka/i/data',
-            '/var/spool/kafka/j/data',
-            '/var/spool/kafka/k/data',
-            '/var/spool/kafka/l/data',
-        ]
+        # other brokers will soon use sda and sdb as well, for now its just analytics1012
+        if $::hostname == 'analytics1012.eqiad.wmnet' {
+            # production Kafka uses a bunch of JBOD log_dir mounts.
+            $log_dirs = [
+                '/var/spool/kafka/a/data',
+                '/var/spool/kafka/b/data',
+                '/var/spool/kafka/c/data',
+                '/var/spool/kafka/d/data',
+                '/var/spool/kafka/e/data',
+                '/var/spool/kafka/f/data',
+                '/var/spool/kafka/g/data',
+                '/var/spool/kafka/h/data',
+                '/var/spool/kafka/i/data',
+                '/var/spool/kafka/j/data',
+                '/var/spool/kafka/k/data',
+                '/var/spool/kafka/l/data',
+            ]
+        }
+        else {
+            # production Kafka uses a bunch of JBOD log_dir mounts.
+            $log_dirs = [
+                '/var/spool/kafka/c/data',
+                '/var/spool/kafka/d/data',
+                '/var/spool/kafka/e/data',
+                '/var/spool/kafka/f/data',
+                '/var/spool/kafka/g/data',
+                '/var/spool/kafka/h/data',
+                '/var/spool/kafka/i/data',
+                '/var/spool/kafka/j/data',
+                '/var/spool/kafka/k/data',
+                '/var/spool/kafka/l/data',
+            ]
+        }
         # Ganglia diskstat plugin would like to know what disks to monitor
-        $log_disks = ['sdc', 'sdd', 'sde', 'sdf', 'sdg', 'sdh', 'sdi', 'sdj', 'sdk', 'sdl']
+        $log_disks = ['sda', 'sdb', 'sdc', 'sdd', 'sde', 'sdf', 'sdg', 'sdh', 'sdi', 'sdj', 'sdk', 'sdl']
 
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host   = '239.192.1.32'
