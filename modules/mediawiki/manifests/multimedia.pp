@@ -6,11 +6,9 @@
 class mediawiki::multimedia {
     include ::mediawiki::multimedia::fonts
 
-    cron { 'removetmpfiles': ensure => absent, }  # renamed
-
     cron { 'clear_imagemagick_temp_files':
         ensure  => present,
-        command => template('mediawiki/clear_magick_tmp.erb'),
+        command => strip(template('mediawiki/clear_magick_tmp.erb')),
         user    => 'root',
         minute  => '*/5',
     }
