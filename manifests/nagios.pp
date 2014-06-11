@@ -323,8 +323,8 @@ class misc::zfs::monitoring {
 define monitor_ganglia(
     $description,
     $metric,
-    $warning_threshold,
-    $critical_threshold,
+    $warning,
+    $critical,
     $metric_host           = $::fqdn,
     $gmetad_host           = 'nickel.wikimedia.org',
     $gmetad_query_port     = 8654,
