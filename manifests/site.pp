@@ -362,7 +362,6 @@ node 'carbon.wikimedia.org' {
 
     include admin
     include standard
-    include backup::client
     include role::installserver
 }
 

@@ -33,11 +33,6 @@ class install-server::tftp-server {
             target => '/srv/tftpboot';
     }
 
-    # TODO: Remove this it package has been purged everywhere
-    package { 'openbsd-inetd':
-        ensure => purged,
-    }
-
     file { '/etc/default/atftpd':
         mode    => '0444',
         owner   => 'root',
