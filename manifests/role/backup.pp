@@ -26,7 +26,7 @@ class role::backup::director {
 
     # One pool for all
     bacula::director::pool { 'production':
-        max_vols         => 30,
+        max_vols         => 40,
         storage          => 'FileStorage1',
         volume_retention => '180 days',
         label_fmt        => 'production',
