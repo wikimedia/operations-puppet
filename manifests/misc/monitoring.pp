@@ -106,8 +106,9 @@ class misc::monitoring::views {
     }
 
     $kafka_log_disks_regex = join($::role::analytics::kafka::config::log_disks, '|')
+    $kafka_broker_host_regex = join($::role::analytics::kafka::config::brokers_array, '|')
     misc::monitoring::view::kafka { 'kafka':
-        kafka_broker_host_regex   => 'analytics102[12].*',
+        kafka_broker_host_regex   => $kafka_broker_host_regex,
         kafka_log_disks_regex     => $kafka_log_disks_regex,
     }
     misc::monitoring::view::varnishkafka { 'webrequest':
@@ -119,7 +120,7 @@ class misc::monitoring::views {
 
     class { 'misc::monitoring::view::hadoop':
         master       => 'analytics1010.eqiad.wmnet',
-        worker_regex => 'analytics10(1[1-9]|20).eqiad.wmnet',
+        worker_regex => 'analytics10(11|[3-9]|20).eqiad.wmnet',
     }
 }
 
