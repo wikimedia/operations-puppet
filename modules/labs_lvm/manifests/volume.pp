@@ -29,6 +29,9 @@
 define labs_lvm::volume(
     $volname    = $title,
     $mountat    = "/mnt/$volname",
+    $mountowner = 'root',
+    $mountgroup = 'root',
+    $mountmode  = '755',
     $size       = '100%FREE',
     $fstype     = 'ext4',
     $mkfs_opt   = '',
@@ -57,6 +60,9 @@ define labs_lvm::volume(
 
     file { $mountat:
         ensure      => directory,
+        owner       => $mountowner,
+        group       => $mountgroup,
+        mode        => $mountmode,
     }
 
     mount { $mountat:
