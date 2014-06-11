@@ -1,19 +1,24 @@
-# Class: apache
+# == Class: apache
 #
-# This class installs Apache
+# Provisions Apache web server package and service.
 #
-# Parameters:
+# === Parameters
 #
-# Actions:
-#   - Install Apache
-#   - Manage Apache service
+# [*service_enable*]
+#   Whether the Apache service should be enabled. Boolean; true by default.
 #
-# Requires:
+# === Example
 #
-# Sample Usage:
+#  class { 'apache':
+#    service_enable => false,
+#  }
 #
-class apache ( $service_enable = true ) {
+class apache( $service_enable = true ) {
     validate_bool($service_enable)
+
+    # Strive for seamless Apache 2.2 / 2.4 compatibility
+    include apache::mod::access_compat
+    include apache::mod::version
 
     package { 'httpd':
         name   => 'apache2',
