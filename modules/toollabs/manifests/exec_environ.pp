@@ -51,6 +51,7 @@ class toollabs::exec_environ {
         'r-base',
         'ruby1.9.3',
         'tcl8.6',
+        'tcl8.5-dev',
 
         # Perl libraries
         'libbot-basicbot-perl',
