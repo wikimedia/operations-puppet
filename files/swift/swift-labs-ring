@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+set -u
+
+partpower=${PARTPOWER:-18}
+replicas=${REPLICAS:-2}
+min_part_hours=${MIN_PART_HOURS:-1}
+device=${DEVICE:-swiftstore}
+weight=${WEIGHT:-100}
+
+
+function _missing_device() {
+  local ring=$1
+  local device=$2
+  out=$(swift-ring-builder $ring search $device)
+  [ $? -eq 2 ]
+}
+
+
+for ring in account container object; do
+  [ -e "${ring}.builder" ] && continue
+  swift-ring-builder ${ring}.builder create ${partpower} ${replicas} ${part_move_hours}
+done
+
+
+zone=0
+for host in $*; do
+  echo "adding $host in zone $zone"
+  # no port used to search the device inside the ring, not needed
+  devicesearch="z${zone}-${host}/${device}"
+  _missing_device object.builder "$devicesearch" && \
+    swift-ring-builder object.builder add z${zone}-${host}:6000/${device} ${weight}
+  _missing_device container.builder "$devicesearch" && \
+    swift-ring-builder container.builder add z${zone}-${host}:6001/${device} ${weight}
+  _missing_device account.builder "$devicesearch" && \
+    swift-ring-builder account.builder add z${zone}-${host}:6002/${device} ${weight}
+  zone=$(( $zone + 1 ))
+done
+
+
+for ring in account container object; do
+  swift-ring-builder ${ring}.builder rebalance
+done

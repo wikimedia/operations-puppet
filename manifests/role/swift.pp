@@ -156,4 +156,75 @@ class role::swift {
 			include ::swift::storage::monitoring
 		}
 	}
+
+}
+
+# class role::swift::labs
+#
+#  Classes for a simple swift cluster on labs hosts.
+#
+#  You'll want one node with role::swift::labs::proxy
+#  And two or more nodes using  role::swift::labs::storage
+#
+#  The storage nodes should also have some big partitions mounted in /srv/swift-storage
+#  and the 'swift' user needs to be able to write there.
+#    The simplest way to achieve this is via role::labs::lvm::swift.
+#
+#  To initialize the ring and create the .builder and .ring.gz files:
+#  $ swift-labs-ring storage_host_ip1 storage_host_ip2 ...
+#
+#  After the script is finished you should copy the result files either on the
+#  puppet master in /var/lib/puppet/volatile or copy them on every machine into
+#  /etc/swift (readable by 'swift' user)
+#
+# Finally, start the services everywhere:
+#
+# $ swift-init all start
+#
+# And restart memcached on the proxy:
+#
+# $ server memcached restart
+#
+# That's it!  To test you can do things like this:
+#
+# $ # upload:
+# $ swift -A http://$PROXY_LOCAL_NET_IP:80/auth/v1.0 -U admin:admin -K <password from labs private> upload <containername> <filename>
+# $ # download:
+# $ swift -A http://$PROXY_LOCAL_NET_IP:80/auth/v1.0 -U admin:admin -K <password from labs private> download <containername>
+class role::swift::labs inherits role::swift::base {
+	if $::swift_proxy_hostname == undef {
+		fail('$swift_proxy_hostname must be set to the FQDN of your proxy host.')
+	}
+
+	system::role { "role::swift::labs": description => "Swift labs test production" }
+	include passwords::swift::eqiad_prod
+	class { "::swift::base": hash_path_suffix => "d2e8dd1aecea6e71", cluster_name => "labs_swift" }
+	class proxy inherits role::swift::labs {
+		class { "::swift::proxy":
+			bind_port => "80",
+			proxy_address => "http://${swift_proxy_hostname}",
+			num_workers => $::processorcount,
+			memcached_servers => [ "${swift_proxy_hostname}:11211" ],
+			auth_backend => 'tempauth',
+			super_admin_key => $passwords::swift::eqiad_prod::super_admin_key,
+			rewrite_account => 'AUTH_mw',
+			rewrite_password => $passwords::swift::eqiad_prod::rewrite_password,
+			rewrite_thumb_server => "rendering.svc.eqiad.wmnet",
+			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb,wikipedia-commons-local-public,wikipedia-de-local-public,wikipedia-en-local-public,wikipedia-fi-local-public,wikipedia-fr-local-public,wikipedia-he-local-public,wikipedia-hu-local-public,wikipedia-id-local-public,wikipedia-it-local-public,wikipedia-ja-local-public,wikipedia-ro-local-public,wikipedia-ru-local-public,wikipedia-th-local-public,wikipedia-tr-local-public,wikipedia-uk-local-public,wikipedia-zh-local-public,wikipedia-commons-local-temp,wikipedia-de-local-temp,wikipedia-en-local-temp,wikipedia-fi-local-temp,wikipedia-fr-local-temp,wikipedia-he-local-temp,wikipedia-hu-local-temp,wikipedia-id-local-temp,wikipedia-it-local-temp,wikipedia-ja-local-temp,wikipedia-ro-local-temp,wikipedia-ru-local-temp,wikipedia-th-local-temp,wikipedia-tr-local-temp,wikipedia-uk-local-temp,wikipedia-zh-local-temp,wikipedia-commons-local-transcoded,wikipedia-de-local-transcoded,wikipedia-en-local-transcoded,wikipedia-fi-local-transcoded,wikipedia-fr-local-transcoded,wikipedia-he-local-transcoded,wikipedia-hu-local-transcoded,wikipedia-id-local-transcoded,wikipedia-it-local-transcoded,wikipedia-ja-local-transcoded,wikipedia-ro-local-transcoded,wikipedia-ru-local-transcoded,wikipedia-th-local-transcoded,wikipedia-tr-local-transcoded,wikipedia-uk-local-transcoded,wikipedia-zh-local-transcoded,global-data-math-render",
+			backend_url_format => "sitelang"
+		}
+		class { '::swift::proxy::monitoring':
+			host => $swift_proxy_hostname,
+		}
+	}
+	class storage inherits role::swift::labs {
+		include ::swift::storage
+		include ::swift::storage::monitoring
+	}
+	file { "/usr/local/bin/swift-labs-ring":
+		owner   => 'root',
+		group   => 'root',
+		mode    => '0555',
+		source => "puppet:///files/swift/swift-labs-ring",
+	}
 }
