@@ -185,11 +185,11 @@ class role::otrs (
         description           => 'exim incoming message rate',
         metric                => 'exim_messages_in',
         contact_group         => 'admins',
-        warning               => ':1',
-        critical              => ':0.5',
-        normal_check_interval => '30',
-        retry_check_interval  => '10',
-        retries               => '3',
+        warning               => ':2',
+        critical              => ':1',
+        normal_check_interval => '1',
+        retry_check_interval  => '1',
+        retries               => '60',
         require               => Class['exim4::ganglia'],
     }
 
