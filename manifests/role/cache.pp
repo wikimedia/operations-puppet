@@ -369,33 +369,17 @@ class role::cache {
                         '10.68.16.74',  # deployment-apache01
                         '10.68.16.11',  # deployment-apache02
                     ],
-                    'pmtpa' => [
-                        '10.4.0.166',  # deployment-apache32
-                        '10.4.0.187',  # deployment-apache33
-                    ],
                 },
                 'api' => {
                     'eqiad' => [
                         '10.68.16.74',  # deployment-apache01
                         '10.68.16.11',  # deployment-apache02
                     ],
-                    'pmtpa' => [
-                        '10.4.0.166',  # deployment-apache32
-                        '10.4.0.187',  # deployment-apache33
-                    ],
-                },
-                'bits' => {
-                    # FIXME does eqiad.wmflabs needs that?
-                    'pmtpa' => "10.4.0.252",
                 },
                 'bits_appservers' => {
                     'eqiad' => [
                         '10.68.16.74',  # deployment-apache01
                         '10.68.16.11',  # deployment-apache02
-                    ],
-                    'pmtpa' => [
-                        '10.4.0.166',  # deployment-apache32
-                        '10.4.0.187',  # deployment-apache33
                     ],
                 },
                 'rendering' => {
@@ -403,18 +387,12 @@ class role::cache {
                         '10.68.16.74',  # deployment-apache01
                         '10.68.16.11',  # deployment-apache02
                     ],
-                    'pmtpa' => [
-                        '10.4.0.166',  # deployment-apache32
-                        '10.4.0.187',  # deployment-apache33
-                    ],
                 },
                 'test_appservers' => {
                     'eqiad' => [ '10.68.16.74' ],  # deployment-apache01
-                    'pmtpa' => [ '10.4.0.166' ],  # deployment-apache32
                 },
                 'parsoid' => {
                     'eqiad' => [ '10.68.16.17' ],  # deployment-parsoid04
-                    'pmtpa' => [ '10.4.1.121' ],   # deployment-parsoid2
                 }
             }
         }
