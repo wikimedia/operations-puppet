@@ -135,9 +135,9 @@ class role::deployment::deployment_servers::common {
     deployer_groups => ['wikidev'],
   }
 
-  class { 'apache': }
-  class { 'apache::mod::dav': }
-  class { 'apache::mod::dav_fs': }
+  include ::apache
+  include ::apache::mod::dav
+  include ::apache::mod::dav_fs
 
   class { 'mediawiki::packages': }
 

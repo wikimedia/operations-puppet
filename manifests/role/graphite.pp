@@ -146,11 +146,9 @@ class role::graphite {
     include ::apache::mod::uwsgi
 
     if ($::realm == 'labs') {
-        apache::mod { [
-            'auth_basic',
-            'authn_file',
-            'authz_user',
-            ]: }
+        include ::apache::mod::auth_basic
+        include ::apache::mod::authn_file
+        include ::apache::mod::authz_user
 
         if ($::hostname =~ /^deployment-/) {
             # Beta
@@ -176,8 +174,7 @@ class role::graphite {
     } else {
         # Production
         include ::passwords::ldap::production
-
-        apache::mod { 'authnz_ldap': }
+        include ::apache::mod::authnz_ldap
 
         $hostname      = 'graphite.wikimedia.org'
         $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
