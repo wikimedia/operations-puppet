@@ -5,7 +5,7 @@
 $template MediaWiki,"%programname% %timegenerated% %HOSTNAME%: %msg%\n"
 
 # Maximum 100MB log file size
-$outchannel apache2,/var/log/apache2.log,100000000,/usr/sbin/logrotate -f /etc/logrotate.d/rsyslog-apache2
+$outchannel apache2,/var/log/apache2.log,100000000,/usr/sbin/logrotate -f /etc/logrotate.d/mediawiki_apache
 
 # Send apache2 messages to the apache output channel
 :programname,isequal,"apache2" $apache2
