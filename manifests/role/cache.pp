@@ -354,11 +354,11 @@ class role::cache {
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['bits']['eqiad']['bitslb']]),
                 },
                 'bits_appservers' => {
-                    'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
+                    'pmtpa' => [],
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['apaches']['eqiad']]),
                 },
                 'test_appservers' => {
-                    'pmtpa' => [ "mw1017.eqiad.wmnet" ],
+                    'pmtpa' => [],
                     'eqiad' => [ "mw1017.eqiad.wmnet" ],
                 },
                 'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid']
