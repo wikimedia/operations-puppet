@@ -7,7 +7,6 @@ describe Puppet::Parser::Functions.function(:has_key) do
   describe 'when calling has_key from puppet' do
     it "should not compile when no arguments are passed" do
       pending("Fails on 2.6.x, see bug #15912") if Puppet.version =~ /^2\.6\./
-      pending("Fails on 2.7.x, see bug #15912") if Puppet.version =~ /^2\.7\./
       Puppet[:code] = '$x = has_key()'
       expect {
         scope.compiler.compile
@@ -16,7 +15,6 @@ describe Puppet::Parser::Functions.function(:has_key) do
 
     it "should not compile when 1 argument is passed" do
       pending("Fails on 2.6.x, see bug #15912") if Puppet.version =~ /^2\.6\./
-      pending("Fails on 2.7.x, see bug #15912") if Puppet.version =~ /^2\.7\./
       Puppet[:code] = "$x = has_key('foo')"
       expect {
         scope.compiler.compile
@@ -25,7 +23,6 @@ describe Puppet::Parser::Functions.function(:has_key) do
 
     it "should require the first value to be a Hash" do
       pending("Fails on 2.6.x, see bug #15912") if Puppet.version =~ /^2\.6\./
-      pending("Fails on 2.7.x, see bug #15912") if Puppet.version =~ /^2\.7\./
       Puppet[:code] = "$x = has_key('foo', 'bar')"
       expect {
         scope.compiler.compile
