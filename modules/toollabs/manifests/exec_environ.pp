@@ -290,6 +290,7 @@ class toollabs::exec_environ {
         'iotop',                       # useful for labs admins to monitor tools
         'libav-tools',                 # Bug #53870.
         'libdmtx0a',                   # Bug #53867.
+        'libfcgi0ldbl',                # Bug 56995
         'libfreetype6',
         'libgdal1-1.7.0',              # Bug 56995
         'libjpeg-turbo-progs',         # Bug 59654.
