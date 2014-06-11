@@ -148,11 +148,11 @@ class role::deployment::deployment_servers::common {
     docroot             => '/var/www',
   }
 
-  #RT 7427
-  ::monitoring::icinga::git_merge { 'mediawiki_config':
-      dir  => '/a/common/',
-      user => 'root'
-  }
+  #RT 7427 - disabled until we have a system user able to fetch from git.
+  #::monitoring::icinga::git_merge { 'mediawiki_config':
+  #    dir  => '/a/common/',
+  #    user => 'root'
+  #}
 }
 
 class role::deployment::deployment_servers::production {
