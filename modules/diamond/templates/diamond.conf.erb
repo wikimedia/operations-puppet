@@ -39,10 +39,10 @@ handlers = rotated_file
 propagate = 1
 
 [handler_rotated_file]
-class = FileHandler
+class = logging.handlers.TimedRotatingFileHandler
 level = DEBUG
 formatter = default
-args = ('/var/log/diamond/diamond.log',)
+args = ('/var/log/diamond/diamond.log', 'd', 1, 5)
 
 [formatter_default]
 format = [%(asctime)s] [%(threadName)s] %(message)s
