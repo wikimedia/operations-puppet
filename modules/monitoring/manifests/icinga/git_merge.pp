@@ -2,15 +2,17 @@
 # repositories that need manual merge in production as part of our workflow.
 #
 define monitoring::icinga::git_merge (
-    $dir      = "/var/lib/git/operations/${title}",
-    $user     = 'gitpuppet',
-    $warning  = 600,
-    $critical = 900
+    $dir           = "/var/lib/git/operations/${title}",
+    $user          = 'gitpuppet',
+    $remote_branch = 'origin/production',
+    $interval      = 10
     ) {
 
     $sane_title = regsubst($title, '\W', '_', 'G')
     $filename = "/usr/local/lib/nagios/plugins/check_${sane_title}-needs-merge"
     $file_resource = "check_${sane_title}_needs_merge"
+
+    $remote = regsubst($remote_branch,'/\w+$','')
 
     file { $file_resource:
         ensure  => present,
@@ -24,14 +26,15 @@ define monitoring::icinga::git_merge (
     nrpe::monitor_service { "${sane_title}_merged":
         description  => "Unmerged changes on repository ${title}",
         nrpe_command => "/usr/bin/sudo ${filename}",
+        retries      => $interval,
         require      => File[$file_resource]
     }
 
     file { "sudo_nagios_${sane_title}":
         path    => "/etc/sudoers.d/${sane_title}_needs_merge",
-		owner   => root,
-		group   => root,
-		mode    => 0440,
-		content => template("monitoring/merge_sudoers.erb");
+        owner   => root,
+        group   => root,
+        mode    => 0440,
+        content => template("monitoring/merge_sudoers.erb");
     }
 }
