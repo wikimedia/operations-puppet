@@ -21,7 +21,7 @@
 class ganglia {
 
     # FIXME: remove after the ganglia module migration
-    if $::realm == 'labs' or ($::hostname in ['manutius', 'netmon1001'] or $::site == 'esams' or ($::site == 'pmtpa' and $cluster in ['cache_bits'])) {
+    if $::realm == 'labs' or ($::hostname in ['netmon1001'] or $::site == 'esams' or ($::site == 'pmtpa' and $cluster in ['cache_bits'])) {
         $ganglia_cluster = $::realm ? {
             labs    => $::instanceproject,
             default => $cluster
@@ -265,14 +265,6 @@ class ganglia::collector::config {
         $gmetad_conf = 'gmetad.conf'
         $authority_url = 'http://ganglia.wikimedia.org'
         case $::hostname {
-            # manutius runs gmetad to get varnish data into torrus
-            # unlike other servers, manutius uses the default rrd_rootdir
-            /^manutius$/: {
-                $data_sources = {
-                    'Upload caches eqiad' => 'cp1048.eqiad.wmnet cp1061.eqiad.wmnet'
-                }
-                $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
-            }
             # netmon1001 runs gmetad to get varnish data into torrus
             # unlike other servers, netmon1001 uses the default rrd_rootdir
             /^netmon1001$/: {
