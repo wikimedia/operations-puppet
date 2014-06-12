@@ -59,14 +59,12 @@ class role::kibana {
         default_route => '/dashboard/elasticsearch/default',
     }
 
-    apache::mod { [
-        'alias',
-        'authnz_ldap',
-        'headers',
-        'proxy',
-        'proxy_http',
-        'rewrite',
-    ]: }
+    include ::apache::mod::alias
+    include ::apache::mod::authnz_ldap
+    include ::apache::mod::headers
+    include ::apache::mod::proxy
+    include ::apache::mod::proxy_http
+    include ::apache::mod::rewrite
 
     file { "/etc/apache2/sites-available/${hostname}":
         ensure  => present,
