@@ -192,6 +192,11 @@ node /analytics10(12|21|22)\.eqiad\.wmnet/ {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics_kafka'
+
+    if $::hostname == 'analytics1012' or $::hostname == 'analytics1022' {
+        $ganglia_aggregator = true
+    }
+
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
     # addresses.
