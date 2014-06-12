@@ -1885,7 +1885,7 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
-    include admin
+    class {'::admin': groups => ['deployment']}
     $cluster = 'jobrunner'
     if $::hostname =~ /^mw100[12]$/ {
         $ganglia_aggregator = true
@@ -1900,7 +1900,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 
 # mw1017-1113 are apaches (precise)
 node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
-    include admin
+    class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     if $::hostname =~ /^mw101[78]$/ {
         $ganglia_aggregator = true
@@ -1915,7 +1915,7 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
 # mw1114-1148 are api apaches (precise)
 node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
-    include admin
+    class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
     if $::hostname =~ /^mw111[45]$/ {
         $ganglia_aggregator = true
@@ -1926,7 +1926,7 @@ node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
 
 # mw1149-1152 are bits apaches (precise)
 node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
-    include admin
+    class {'::admin': groups => ['deployment']}
     $cluster = 'bits_appserver'
     if $::hostname =~ /^mw115[12]$/ {
         $ganglia_aggregator = true
@@ -1937,7 +1937,7 @@ node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
-    include admin
+    class {'::admin': groups => ['deployment']}
     $cluster = 'imagescaler'
     if $::hostname =~ /^mw115[34]$/ {
         $ganglia_aggregator = true
@@ -1948,7 +1948,7 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 
 # mw1161-1188 are apaches (precise)
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
-    include admin
+    class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     if $::hostname == 'mw1161' {
         include misc::deployment::scap_proxy
@@ -1959,7 +1959,7 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 
 # mw1189-1208 are api apaches (precise)
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
-    include admin
+    class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
     if $::hostname == 'mw1201' {
         include misc::deployment::scap_proxy
@@ -1970,7 +1970,7 @@ node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
 
 # mw1209-1220 are apaches (precise)
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
-    include admin
+    class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     include role::mediawiki::appserver
 }
