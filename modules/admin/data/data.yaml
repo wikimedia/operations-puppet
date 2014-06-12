@@ -153,7 +153,7 @@ groups:
     description: Have access to so that they can do analysis on webrequest logs
                 and other private data.
     members: [handrade, haithams, ezachte, milimetric, dartar,
-      yurik, halfak, howief, mwalker, awight, dr0ptp4kt, qchris, tnegrin, 
+      yurik, halfak, howief, mwalker, awight, dr0ptp4kt, qchris, tnegrin,
       nuria, leila, manybubbles, ironholds, kleduc]
   statistics-users:
     gid: 726
@@ -798,8 +798,7 @@ users:
     gid: 500
     name: leila
     realname: Leila Zia
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDrQIRAiH2afKoaaIW2K6loEk1CoOD1IKCLMWcfAky+CwqsCQWepiQxlQOZKez+Y3D0hE/jVA8Rv4jktx5SIqOZbkYQXF1s54jp2ULqVujofqjRH8qnUa+b3s7ywCQILGR8gV1X5cHcXztonwKhrEGqjlw3kk1NeOkI0/akRbTdxGjL5QbhJKg9T3bkkBkfwBupVvH8nxzS1twa/1lGLv0GUF220gEo4c8yUhT9EFWwzJlpcmKBo7m6cXrhXeCVoipKlfq3NMupTT1AiYh4Dcdnk+VxWNkmkbOU7CN9dvwXT0gK0OjznntqNC2nadikJXe8tAOPL953S/9br2Q/OGN
-        leila@starfruit-2]
+    ssh_keys: [absent]
     uid: 3963
   santhosh:
     ensure: present
