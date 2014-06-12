@@ -161,7 +161,7 @@ groups:
     members: [dartar, halfak, howief, ironholds, jdlrobson, jgonera, jmorgan,
               maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
-              yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion]
+              yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -995,3 +995,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQChbQJJVbZV7Nh+wq0VKfMaWfrIhmpbpHe6xKbJDJtbz1QOcEJJJzz5mSBkf0yEVypvlQgRs0YPbY7TBaXQ0DK2qjJvRjYQz6AFEqAxhjjtB6YcCqGb1XrVqhmVpRW8E4zpYzdCrFAKhEZrShFvTh19tx2tqJyh2AWV/KqJOx2/VTXz4+fhqZYzuLEdnQIxw4dkUHfHmiJi1gPRatv+chFP5snAAjs0ArZZXkVVyWhCS6kv4hC2objC5vKNFYsAEvsv4QCIRnZHkvdNpa8nsVKCg4iq5bhVkt+98nybQAFVfsN9eOU1a8nYzuDrzdze2CcBOTy483KMyomUZepxBjjf
         handrade@administrator-Dell-System-XPS-L322X]
     uid: 633
+  bsitzmann:
+    ensure: present
+    gid: 500
+    name: bsitzmann
+    realname: Bernd Sitzmann
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyvGjFrt694WfWaeFBJKsaU25oLBTx/yiYQbnAunn6zu98yW374HqCXAvYdn+V0qNNO8uxp+TvIqibfud4Y59Ija2apeY2ck5E0TEeOJD9sbq+gbczJ+IFTQy4+/sr+MRXAsyAmUr6HrDqQYXgrE04kGkuKAac65ga7mq9KKE9GGIbqFl8kcN8WET8I5wTfb3vvB8unmyrLHYR3ewfXcpoPk6MpEDJD8uvf1fWz/Uqpe9IXhsfV37uiCaG+nfU+PlZA6KJSdZ4ceVHNBMlpeCEGX/BB38TtE7QqtK8ghjsl8/SeJ29uXz3OjPTZ4bjtJ0uD/DEoRoq+dpuNnC1RbLN
+        bsitzmann@wikimedia.org]
+    uid: 5037
