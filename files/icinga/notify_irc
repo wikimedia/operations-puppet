@@ -6,7 +6,7 @@
 #        USAGE: notify_irc -N irc.network.net -c \#irc_channel
 #
 #  DESCRIPTION: icinga event handler script that sends alerts to
-#               IRC 
+#               IRC
 #      OPTIONS: ---
 # REQUIREMENTS: AnyEvent, AnyEvent::IRC::Client
 #         BUGS: ---
@@ -92,17 +92,17 @@ sub read_icingalog {
               my $datestamp = ($1);
               my $recent = time() -5;
               my $msg = ($2);
-              $msg =~ s!\\[n]?!!g;  
+              $msg =~ s!\\[n]?!!g;
               my @msg_explode = split(";",$msg,6);
               my ($host, $service, $state, $how, $attempts, $output) = @msg_explode[0,1,2,3,4,5];
 
-              if ( $datestamp >= $recent ) {  
+              if ( $datestamp >= $recent ) {
                 my $msg_out = $state_to_color->{$state} ."$host:$service is $state: $output";
-                return $msg_out;          
+                return $msg_out;
              }
           }
       }
-}     
+}
 
 # these commands will queue until the connection
 # is completely registered and has a valid nick etc.
