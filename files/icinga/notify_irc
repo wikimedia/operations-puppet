@@ -1,0 +1,113 @@
+#!/usr/bin/perl -w
+#===============================================================================
+#
+#         FILE: notify_irc
+#
+#        USAGE: notify_irc -N irc.network.net -c \#irc_channel
+#
+#  DESCRIPTION: icinga event handler script that sends alerts to
+#               IRC 
+#      OPTIONS: ---
+# REQUIREMENTS: AnyEvent, AnyEvent::IRC::Client
+#         BUGS: ---
+#        NOTES: ---
+#       AUTHOR: Christopher Johnson, christopher.johnson@wikimedia.de
+#      COMPANY:
+#      VERSION: 0.1
+#      CREATED:
+#     REVISION: ---
+#===============================================================================
+
+use strict;
+use Term::ANSIColor qw/ :constants /;
+use AnyEvent;
+use AnyEvent::IRC::Client;
+use Getopt::Long;
+
+my $version = "IcingaBot v0.1";
+my $network = undef;
+my $channel = undef;
+
+#ANSI colors
+my %C = (
+    W => "\x0315",
+    B => "\x032",
+    G => "\x033",
+    R => "\x034",
+    O => "\x037",
+    C => "\x0311",
+    Y => "\x038",
+    N => "\x0315",
+);
+
+my $state_to_color = {
+    OK => $C{G},
+    WARNING => $C{Y},
+    CRITICAL => $C{R},
+    UNKNOWN => $C{C},
+};
+
+
+# CONFIG: point this to Icinga log file
+my $nagioslog = "/var/log/icinga/icinga.log";
+
+# process cli arguments
+Getopt::Long::Configure( "no_ignore_case", "bundling" );
+GetOptions(
+    'N|network=s' => \$network,
+    'c|channel=s'   => \$channel,
+);
+
+# Create the IRC and Connection objects
+
+print "Creating connection to IRC server...\n";
+my $c = AnyEvent->condvar;
+my $timer = AnyEvent->timer (after => 5, cb => sub { $c->send });
+my $pc = AnyEvent::IRC::Client->new;
+
+$pc->reg_cb (
+   connect => sub {
+      my ($pc, $err) = @_;
+      if (defined $err) {
+         print "Couldn't connect to server: $err\n";
+      }
+   },
+   registered => sub {
+      my ($self) = @_;
+      print "registered!\n";
+      $pc->enable_ping (60);
+   },
+   disconnect => sub {
+      print "disconnected!\n";
+   }
+);
+
+my $readlog = read_icingalog();
+
+sub read_icingalog {
+    open (my $log, $nagioslog) or die "failed to open $nagioslog: $!\n";
+      while (my $row = <$log>) {
+          chomp $row;
+            if ($row =~ /^\[(\d+)\] (SERVICE ALERT: (.+))/) {
+              my $datestamp = ($1);
+              my $recent = time() -5;
+              my $msg = ($2);
+              $msg =~ s!\\[n]?!!g;  
+              my @msg_explode = split(";",$msg,6);
+              my ($host, $service, $state, $how, $attempts, $output) = @msg_explode[0,1,2,3,4,5];
+
+              if ( $datestamp >= $recent ) {  
+                my $msg_out = $state_to_color->{$state} ."$host:$service is $state: $output";
+                return $msg_out;          
+             }
+          }
+      }
+}     
+
+# these commands will queue until the connection
+# is completely registered and has a valid nick etc.
+$pc->send_srv("JOIN", "$channel");
+$pc->send_chan ("$channel", "PRIVMSG", "$channel", "$readlog");
+$pc->connect ("$network", 6667, { nick => 'IcingaMonitor', user => 'net_irc3', real => 'notification bot' });
+$c->recv;
+$pc->disconnect;
