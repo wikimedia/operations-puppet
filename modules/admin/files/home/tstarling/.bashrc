@@ -62,12 +62,12 @@ export EDITOR=vim
 
 if [ -e /usr/local/lib/mw-deployment-vars.sh ]; then
 	. /usr/local/lib/mw-deployment-vars.sh
-fi
-export ENWIKI_VERSION=`tr -cd 'a-zA-Z0-9-. \n' < $MW_COMMON/wikiversions.json | awk '$1 == "enwiki" {print $2}'`
-if [ -e $MW_COMMON_SOURCE ]; then
-	export WIKI=$MW_COMMON_SOURCE/$ENWIKI_VERSION
-else
-	export WIKI=$MW_COMMON/$ENWIKI_VERSION
+	export ENWIKI_VERSION=`tr -cd 'a-zA-Z0-9-. \n' < $MW_COMMON/wikiversions.json | awk '$1 == "enwiki" {print $2}'`
+	if [ -e $MW_COMMON_SOURCE ]; then
+		export WIKI=$MW_COMMON_SOURCE/$ENWIKI_VERSION
+	else
+		export WIKI=$MW_COMMON/$ENWIKI_VERSION
+	fi
 fi
 
 function cdp() {
