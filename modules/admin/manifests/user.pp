@@ -94,34 +94,35 @@ define admin::user (
 
         # XXX: move under /etc/ssh/userkeys
         # we want to exclusively manage ssh keys in puppet
+        if !is_array($ssh_keys) {
+            fail("${name} is not a valid ssh_keys array: ${ssh_keys}")
+        }
+
         if !empty($ssh_keys) {
-
-            if !is_array($ssh_keys) {
-                fail("${name} does not have a correct ssh_keys array: ${ssh_keys}")
-            }
-
             $ssh_authorized_keys = join($ssh_keys, "\n")
+        } else {
+            $ssh_authorized_keys = ''
+        }
 
-            file { "/home/${name}/.ssh":
-                ensure  => $ensure_dir,
-                owner   => $name,
-                group   => $gid,
-                mode    => '0700',
-                force   => true,
-                tag     => 'user-ssh',
-                require => File["/home/${name}"],
-            }
+        file { "/home/${name}/.ssh":
+            ensure  => $ensure_dir,
+            owner   => $name,
+            group   => $gid,
+            mode    => '0700',
+            force   => true,
+            tag     => 'user-ssh',
+            require => File["/home/${name}"],
+        }
 
-            file { "/home/${name}/.ssh/authorized_keys":
-                ensure  => $ensure,
-                owner   => $name,
-                group   => $gid,
-                mode    => '0400',
-                content => $ssh_authorized_keys,
-                force   => true,
-                tag     => 'user-ssh',
-                require => File["/home/${name}/.ssh"],
-            }
+        file { "/home/${name}/.ssh/authorized_keys":
+            ensure  => $ensure,
+            owner   => $name,
+            group   => $gid,
+            mode    => '0400',
+            content => $ssh_authorized_keys,
+            force   => true,
+            tag     => 'user-ssh',
+            require => File["/home/${name}/.ssh"],
         }
     }
 
