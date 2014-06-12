@@ -1,0 +1,14 @@
+/*
+ * THIS FILE IS MANAGED BY PUPPET
+ * puppet:///templates/misc/cxserver.config.erb
+ */
+
+'use strict';
+
+module.exports = {
+	port: <%= @cxserver_port %>,
+	logDir: '<%= @cxserver_log_dir %>',
+	parsoid: {
+		api: '<%= @cxserver_parsoid_url %>'
+	}
+};
