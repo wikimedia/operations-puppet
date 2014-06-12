@@ -50,11 +50,6 @@ lpmaxdelay=600
 # This should be lower than lpmaxdelay.
 hpmaxtime=30
 
-# The procs parameter to runJobs.php.
-# Lower values keep the process pipeline fuller and lead to more
-# even picking of jobs from wikis, though more overhead is incurred.
-forkcount=1
-
 # default total memory limit for each runJobs.php process
 maxsubprocmemory=300M
 
@@ -90,7 +85,7 @@ function processPipelineWaitForSlot() {
 	local subprocscreate=0 # number of free process slots
 	while [ "$subprocscreate" -le 0 ]; do
 		local subproccount=$((`jobs -pr | wc -w`))
-		subprocscreate=$((pipelinesize/forkcount - subproccount))
+		subprocscreate=$((pipelinesize - subproccount))
 		if [ "$subprocscreate" -gt 0 ]; then
 			break # another immediate child process can start
 		else
@@ -137,7 +132,7 @@ function runJobsLoopService() {
 				elif [ -n "$db" -a -n "$type" ]; then
 					foundjobs=y
 					echo "$db $type"
-					nice -n 19 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --type="$type" --maxtime=$hpmaxtime --memory-limit=$maxsubprocmemory &
+					nice -n 19 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --type="$type" --maxtime=$hpmaxtime --memory-limit=$maxsubprocmemory &
 					# Do not spend too much time on prioritized jobs
 					local timestamp=`date +%s` # UNIX timestamp
 					if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$lpmaxdelay" ]; then
@@ -164,7 +159,7 @@ function runJobsLoopService() {
 				elif [ -n "$db" ]; then
 					foundjobs=y
 					echo "$db"
-					nice -n 19 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --maxtime=$lpmaxtime --memory-limit=$maxsubprocmemory &
+					nice -n 19 timeout $maxrealtime php MWScript.php runJobs.php --wiki="$db" --maxtime=$lpmaxtime --memory-limit=$maxsubprocmemory &
 					# Do not spend too much time on unprioritized jobs
 					local timestamp=`date +%s` # UNIX timestamp
 					if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$hpmaxdelay" ]; then
