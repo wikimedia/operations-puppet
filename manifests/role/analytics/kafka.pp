@@ -78,7 +78,7 @@ class role::analytics::kafka::config {
         $log_disks = ['sda', 'sdb', 'sdc', 'sdd', 'sde', 'sdf', 'sdg', 'sdh', 'sdi', 'sdj', 'sdk', 'sdl']
 
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host   = '239.192.1.32'
+        $ganglia_host   = '239.192.1.45'
         $ganglia_port   = 8649
 
         # Increase ulimit for production kafka.
