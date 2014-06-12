@@ -1,4 +1,4 @@
-class mediawiki::jobqueue (
+class mediawiki::jobqueue(
     $run_jobs_enabled,
     $user                   = 'apache',
     $type                   = '',

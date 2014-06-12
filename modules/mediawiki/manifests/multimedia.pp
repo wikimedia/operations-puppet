@@ -36,10 +36,6 @@ class mediawiki::multimedia {
         mode    => '0644',
     }
 
-    file { '/etc/fonts/conf.d/70-yes-bitmaps.conf':
-        ensure => absent,
-    }
-
     file { '/etc/fonts/conf.d/70-no-bitmaps.conf':
         ensure => link,
         target => '/etc/fonts/conf.avail/70-no-bitmaps.conf',

@@ -104,6 +104,19 @@ class role::beta::appserver {
         maxclients => $maxclients,
     }
 
+    # bug 38996 - Apache service does not run on start, need a fake
+    # sync to start it up though don't bother restarting it is already
+    # running.
+    exec { 'beta_apache_start':
+        command => '/etc/init.d/apache2 start',
+        unless  => '/bin/ps -C apache2',
+    }
+
+    file { '/usr/local/apache/conf':
+        ensure => directory,
+        before => Exec['sync_apache_config'],
+    }
+
     monitor_service { 'appserver http':
         description   => 'Apache HTTP',
         check_command => 'check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page',
