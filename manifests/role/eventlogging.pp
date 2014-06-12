@@ -145,6 +145,9 @@ class role::eventlogging {
     eventlogging::service::consumer { 'kafka':
        input  => "tcp://${processor}:8600",
        output => "kafka://${kafka_cluster}?brokers=${kafka_brokers}&topic=${kafka_topic}",
+       # We are not currently using this data in Kafka or Hadoop, and Kafka is about
+       # to undergo some production failover testing.  Disabling this for now.
+       ensure => 'absent',
     }
 
 
