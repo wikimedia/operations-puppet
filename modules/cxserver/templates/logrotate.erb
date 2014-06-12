@@ -1,0 +1,13 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+<%= @log_dir/* %> {
+    daily
+    copytruncate
+    missingok
+    compress
+    notifempty
+    rotate 15
+    size 256M
+}
