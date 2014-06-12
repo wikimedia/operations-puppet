@@ -48,11 +48,11 @@ class role::lvs::balancer {
             ],
     }
 
-    # Testing on new esams LVS only for now XXX
+    # ulsfo+esams on standard now, eqiad to test
     # In addition to base and ganglia, standard
     #  brings in exim stuff, role::diamond, and
     #  and importantly ntp::client.
-    if $::hostname =~ /^(lvs300[1234])$/ {
+    if $::hostname =~ /^lvs[34]00[1234]$/ {
         include standard
     }
     else {
