@@ -1,0 +1,25 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/misc/cxserver.upstart
+#####################################################################
+
+description "Mediawiki Content Translation service"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+setuid "cxserver"
+setgid "cxserver"
+
+# Basic built-in defaults.
+env CXSERVER_BASE_PATH="/var/lib/cxserver/deploy/src"
+env NODE_PATH="/var/lib/cxserver/deploy/node_modules"
+env CXSERVER_LOG_DIR="/var/lib/cxserver/deploy/src/log"
+
+respawn
+
+# wait 60 seconds for a graceful restart before killing the master
+kill timeout 60
+
+chdir "$CXSERVER_BASE_PATH"
+exec /usr/bin/nodejs Server.js >> "$CXSERVER_LOG_DIR/main.log" 2>&1
