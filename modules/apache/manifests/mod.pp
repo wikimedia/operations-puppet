@@ -13,6 +13,7 @@ class apache::mod::auth_basic    { apache::mod_conf { 'auth_basic':    } }
 class apache::mod::authn_file    { apache::mod_conf { 'authn_file':    } }
 class apache::mod::authnz_ldap   { apache::mod_conf { 'authnz_ldap':   } }
 class apache::mod::authz_user    { apache::mod_conf { 'authz_user':    } }
+class apache::mod::cgi           { apache::mod_conf { 'cgi':           } }
 class apache::mod::dav           { apache::mod_conf { 'dav':           } }
 class apache::mod::dav_fs        { apache::mod_conf { 'dav_fs':        } }
 class apache::mod::filter        { apache::mod_conf { 'filter':        } }

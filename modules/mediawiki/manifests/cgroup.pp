@@ -14,7 +14,7 @@ class mediawiki::cgroup {
 
     service { 'mw-cgroup':
         ensure   => running,
-        provider => upstart,
+        provider => 'upstart',
         require  => File['/etc/init/mw-cgroup.conf'],
     }
 
