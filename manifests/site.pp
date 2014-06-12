@@ -1252,17 +1252,6 @@ node 'iridium.wikimedia.org' {
     include admin
 }
 
-node 'manutius.wikimedia.org' {
-    include admin
-    include standard
-    include webserver::apache
-    include ganglia::collector
-
-    class { 'ganglia_new::monitor::aggregator':
-        sites => ['pmtpa', 'eqiad'],
-    }
-}
-
 node 'iron.wikimedia.org' {
     system::role { 'misc':
         description => 'Operations Bastion',
