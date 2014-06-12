@@ -50,6 +50,12 @@ class swift::base($hash_path_suffix, $cluster_name) {
         recurse => true,
     }
 
+    file { '/var/cache/swift':
+        ensure  => 'directory',
+        require => Package['swift'],
+        mode  => '0755',
+    }
+
     file { '/etc/swift/swift.conf':
         ensure  => present,
         require => Package['swift'],
