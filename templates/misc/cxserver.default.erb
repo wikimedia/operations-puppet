@@ -1,0 +1,20 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///templates/misc/cxserver.default.erb
+#####################################################################
+
+# Checkout of mediawiki/services/cxserver
+<% if @pcxserver_base_path then %>
+CXSERVER_BASE_PATH=<%= @cxserver_base_path %>
+<% else %>
+# Override in puppet using cxserver_base_path
+#CXSERVER_BASE_PATH
+<% end %>
+
+# Checkout of mediawiki/services/cxserver/deploy
+<% if @cxserver_node_path then %>
+NODE_PATH=<%= @cxserver_node_path %>
+<% else %>
+# Override in puppet using cxserver_node_path
+#NODE_PATH=
+<% end %>
