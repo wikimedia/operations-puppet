@@ -2021,6 +2021,10 @@ node 'netmon1001.wikimedia.org' {
     include passwords::network
     include ganglia::collector
 
+    class { 'ganglia_new::monitor::aggregator':
+        sites => ['pmtpa', 'eqiad'],
+    }
+
     $snmp_ro_community = $passwords::network::snmp_ro_community
 
     interface::add_ip6_mapped { 'main': }
