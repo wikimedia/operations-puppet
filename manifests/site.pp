@@ -89,6 +89,22 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
     interface::rps { 'eth0': rss_pattern => 'eth0-%d' }
 }
 
+# amssq31-46 are text varnish
+node /^amssq(3[1-9]|4[0-6])\.esams\.wmnet$/ {
+    include admin
+
+    sysctl::parameters { 'vm dirty page flushes':
+        values => {
+            'vm.dirty_background_ratio' => 5,
+        }
+    }
+
+    $cluster = 'cache_text'
+    include role::cache::text
+
+    interface::add_ip6_mapped { 'main': }
+}
+
 # amssq47 is a text varnish
 node /^amssq47\.esams\.wikimedia\.org$/ {
     include admin
