@@ -2187,7 +2187,7 @@ node 'pdf3.wikimedia.org' {
     include role::logging::systemusers
 }
 
-node 'polonium.eqiad.wmnet' {
+node 'polonium.wikimedia.org' {
     include admin
     include standard-noexim
     include role::mail::mx
