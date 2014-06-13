@@ -9,9 +9,9 @@
 
 CONFDIR=/etc/exim4
 WIKI_INTERFACE=<; 208.80.152.133 ; 208.80.154.91 ; 2620:0:861:3:208:80:154:91
+USERDB=/var/vmaildb/user.db
 
 <% if enable_imap_delivery == true then -%>
-USERDB=/var/vmaildb/user.db
 VMAIL=/var/vmail
 DELIVER=/usr/lib/dovecot/deliver
 NOT_LOCALLY_SUBMITTED=${if !match{$received_protocol}{\Nsmtpsa$\N}}
@@ -699,7 +699,7 @@ bulk_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
 	interface = WIKI_INTERFACE
-	helo_data = <; wiki-mail.wikimedia.org ; lists.wikimedia.org
+	helo_data = ${lookup dnsdb{ptr=$sending_ip_address}{$value}{wiki-mail.wikimedia.org}}
 	dkim_domain = wikimedia.org
 	dkim_selector = wiki-mail
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
