@@ -41,11 +41,11 @@ class role::cache {
                         'cp1068.eqiad.wmnet',
                     ],
                     "esams" => [
-                        # 31-46 being installed, do not uncomment until ready!
-                        # "amssq31.esams.wmnet",
-                        # "amssq32.esams.wmnet",
-                        # "amssq33.esams.wmnet",
-                        # "amssq34.esams.wmnet",
+                        # 31-46 being paced into prod slowly...
+                        "amssq31.esams.wmnet",
+                        "amssq32.esams.wmnet",
+                        "amssq33.esams.wmnet",
+                        "amssq34.esams.wmnet",
                         # "amssq35.esams.wmnet",
                         # "amssq36.esams.wmnet",
                         # "amssq37.esams.wmnet",
