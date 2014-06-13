@@ -42,18 +42,18 @@ define apache::vhost(
     $docroot_dir_allows = ['all'],
     $docroot_dir_denies = '',
     $serveradmin        = false,
-    $ssl                = $apache::params::ssl,
-    $template           = $apache::params::template,
-    $priority           = $apache::params::priority,
-    $servername         = $apache::params::servername,
-    $serveraliases      = $apache::params::serveraliases,
-    $auth               = $apache::params::auth,
-    $redirect_ssl       = $apache::params::redirect_ssl,
-    $options            = $apache::params::options,
-    $override           = $apache::params::override,
-    $apache_name        = $apache::params::apache_name,
-    $vhost_name         = $apache::params::vhost_name,
-    $logroot            = "/var/log/$apache::params::apache_name",
+    $ssl                = true,
+    $template           = 'apache/vhost-default.conf.erb',
+    $priority           = '25',
+    $servername         = '',
+    $serveraliases      = '',
+    $auth               = false,
+    $redirect_ssl       = false,
+    $options            = 'Indexes FollowSymLinks MultiViews',
+    $override           = 'None',
+    $apache_name        = 'apache2',
+    $vhost_name         = '*',
+    $logroot            = '/var/log/apache2',
     $ensure             = 'present'
   ) {
 
@@ -75,9 +75,7 @@ define apache::vhost(
 
   # Since the template will use auth, redirect to https requires mod_rewrite
   if $redirect_ssl == true {
-    if $::osfamily == 'debian' {
-      A2mod <| title == 'rewrite' |>
-    }
+    include apache::mod::rewrite
   }
 
   # This ensures that the docroot exists
@@ -99,7 +97,7 @@ define apache::vhost(
 
   file { "${priority}-${name}.conf":
     ensure  => $ensure,
-    path    => "${apache::params::vdir}/${priority}-${name}.conf",
+    path    => "/etc/apache2/sites-enabled/${priority}-${name}.conf",
     content => template($template),
     owner   => 'root',
     group   => 'root',
