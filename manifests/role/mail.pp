@@ -65,9 +65,9 @@ class role::mail::lists {
                 '+mailman_domains'
             ],
         enable_mail_relay      => 'secondary',
-        enable_mailman         => 'true',
-        enable_mail_submission => 'false',
-        enable_spamassassin    => 'true',
+        enable_mailman         => true,
+        enable_mail_submission => false,
+        enable_spamassassin    => true,
         require                => [
             Interface::Ip['lists.wikimedia.org_v4'],
             Interface::Ip['lists.wikimedia.org_v6'],
