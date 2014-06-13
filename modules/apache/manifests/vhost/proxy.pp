@@ -33,8 +33,6 @@ define apache::vhost::proxy (
   include apache
   include apache::mod::proxy
 
-  $apache_name = $apache::params::apache_name
-  $ssl_path = $apache::params::ssl_path
   if $servername == '' {
     $srvname = $name
   } else {
@@ -46,7 +44,7 @@ define apache::vhost::proxy (
   }
 
   file { "${priority}-${name}.conf":
-    path    => "${apache::params::vdir}/${priority}-${name}.conf",
+    path    => "/etc/apache2/sites-enabled/${priority}-${name}.conf",
     content => template($template),
     owner   => 'root',
     group   => 'root',

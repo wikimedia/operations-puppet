@@ -23,7 +23,7 @@ define apache::vhost::redirect (
     $priority      = '10',
     $serveraliases = '',
     $template      = 'apache/vhost-redirect.conf.erb',
-    $servername    = $apache::params::servername,
+    $servername    = '',
     $vhost_name    = '*'
   ) {
 
@@ -36,7 +36,7 @@ define apache::vhost::redirect (
   }
 
   file { "${priority}-${name}.conf":
-    path    => "${apache::params::vdir}/${priority}-${name}.conf",
+    path    => "/etc/apache2/sites-enabled/${priority}-${name}.conf",
     content => template($template),
     owner   => 'root',
     group   => 'root',
