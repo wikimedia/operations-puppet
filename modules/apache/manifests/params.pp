@@ -41,7 +41,7 @@ class apache::params {
   $mod_uwsgi_package     = 'libapache2-mod-uwsgi'
   $mod_auth_kerb_package = 'libapache2-mod-auth-kerb'
   $apache_dev            = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
-  $vdir                  = '/etc/apache2/sites-enabled/'
+  $vdir                  = '/etc/apache2/sites-enabled'
   $proxy_modules         = ['proxy', 'proxy_http']
   $mod_packages          = {
     'dev'        => ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev'],
