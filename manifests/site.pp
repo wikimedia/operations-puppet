@@ -2187,6 +2187,12 @@ node 'pdf3.wikimedia.org' {
     include role::logging::systemusers
 }
 
+node 'polonium.eqiad.wmnet' {
+    include admin
+    include standard-noexim
+    include role::mail::mx
+}
+
 node 'potassium.eqiad.wmnet' {
     include admin
     include standard
