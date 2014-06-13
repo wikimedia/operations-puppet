@@ -66,7 +66,6 @@ domainlist defer_domains = lsearch;CONFDIR/defer_domains
 domainlist legacy_mailman_domains = wikimedia.org : wikipedia.org : mail.wikimedia.org : mail.wikipedia.org
 domainlist mailman_domains = lists.wikimedia.org
 domainlist rt_domains = rt.wikimedia.org
-domainlist donate_domains = donate.wikimedia.org
 domainlist spamassassin_domains = *
 
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
@@ -373,13 +372,6 @@ wiki_mail:
 
 <% end -%>
 <% if enable_mail_relay != false then -%>
-# Send donate.wikimedia.org mail to Fundraising CiviCRM server
-donate:
-	driver = manualroute
-	domains = +donate_domains
-	route_list = * aluminium.wikimedia.org byname
-	transport = remote_smtp
-
 # Route non-local domains (including +relay_domains) via DNS MX and A records
 dnslookup:
 	driver = dnslookup
