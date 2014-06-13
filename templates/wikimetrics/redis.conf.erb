@@ -123,7 +123,7 @@ rdbcompression yes
 rdbchecksum yes
 
 # The filename where to dump the DB
-dbfilename wikimetrics1-6379.rdb
+dbfilename <%= @redis_dbfilename %>
 
 # The working directory.
 #
@@ -134,7 +134,7 @@ dbfilename wikimetrics1-6379.rdb
 #
 # Note that you must specify a directory here, not a file name.
 # dir /a/redis
-dir /a/redis
+dir <%= @redis_dir %>
 
 ################################# REPLICATION #################################
 

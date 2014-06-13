@@ -61,6 +61,10 @@ class role::wikimetrics {
     $meta_mw_consumer_key  = $::passwords::wikimetrics::meta_mw_consumer_key
     $meta_mw_client_secret = $::passwords::wikimetrics::meta_mw_client_secret
 
+    # base directory settings
+    $var_directory    = '/var/lib/wikimetrics'
+    $public_directory = "$var_directory/public"
+
     # Run as daemon python process or in Apache WSGI.
     $web_mode = $::wikimetrics_web_mode ? {
         undef   => 'apache',
@@ -154,6 +158,9 @@ class role::wikimetrics {
         # where this table is called 'revision_userindex'.
         # The mediawiki database usually calls this 'revision'.
         revision_tablename    => 'revision_userindex',
+
+        var_directory         => $var_directory,
+        public_directory      => $public_directory,
     }
 
     # Run the wikimetrics/scripts/install script
@@ -184,6 +191,8 @@ class role::wikimetrics {
     # Install redis and use a custom config template.
     # Wikimetrics needs redis to save data for longer
     # than the default redis.conf.erb template allows.
+    $redis_dir        = '/a/redis'
+    $redis_dbfilename = 'wikimetrics1-6379.rdb'
     class { '::redis':
         config_template => 'wikimetrics/redis.conf.erb',
     }
@@ -204,5 +213,16 @@ class role::wikimetrics {
 
     class { '::wikimetrics::scheduler':
         require => Exec['install_wikimetrics_dependencies'],
+    }
+
+    # backup regardless of whether we are in debug mode or not
+    if $::wikimetrics_backup {
+        class { '::wikimetrics::backup':
+            destination   => '/data/project/wikimetrics/backup',
+            db_name       => $db_name_wikimetrics,
+            redis_db_file => "$redis_dir/$redis_dbfilename",
+            public_files  => $public_directory,
+            keep_days     => 10,
+        }
     }
 }
