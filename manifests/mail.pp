@@ -52,7 +52,7 @@ class exim {
             $list_outbound_ips=[],
             $local_domains = [ '+system_domains' ],
             $mediawiki_relay=false,
-            $outbound_ips=[ $::ipaddress ],
+            $outbound_ips=[ ],
             $rt_relay=false,
             $smart_route_list=[]
 ) {
