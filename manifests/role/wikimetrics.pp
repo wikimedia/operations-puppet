@@ -205,4 +205,15 @@ class role::wikimetrics {
     class { '::wikimetrics::scheduler':
         require => Exec['install_wikimetrics_dependencies'],
     }
+
+    # backup only if backup is true and debug is false
+    # assumes "/data/project/wikimetrics" exists which is a mount to a
+    # location with sufficient storage for backup
+    if $::wikimetrics_backup and !$::wikimetrics_debug {
+        class { '::wikimetrics::backup':
+            destination    => "/data/project/wikimetrics/",
+            db_name        => $db_name_wikimetrics,
+            keep_days      => 10,
+        }
+    }
 }
