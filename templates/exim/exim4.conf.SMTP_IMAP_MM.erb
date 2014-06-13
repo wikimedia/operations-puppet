@@ -269,7 +269,7 @@ acl_check_connect:
 		! hosts = +wikimedia_nets
 
 <% end -%>
-<% if enable_external_mail == true then -%>
+<% if enable_external_mail == false then -%>
 	# We only accept mail from our own mail relays
 	require message = This server does not accept external mail
 		hosts = <; 127.0.0.0/8 ; ::1 ; +wikimedia_nets

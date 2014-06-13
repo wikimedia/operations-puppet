@@ -41,7 +41,7 @@ class exim {
     #       List of domains to hold on the queue without processing
     class roled(
             $enable_clamav=false,
-            $enable_external_mail=false,
+            $enable_external_mail=true,
             $enable_imap_delivery=false,
             $enable_mail_relay=false,
             $enable_mail_submission=false,

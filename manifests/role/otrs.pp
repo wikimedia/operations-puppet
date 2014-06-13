@@ -153,7 +153,7 @@ class role::otrs (
         enable_clamav        => true,
         enable_otrs_server   => true,
         enable_spamassassin  => true,
-        enable_external_mail => true,
+        enable_external_mail => false,
         smart_route_list     => [
             'mchenry.wikimedia.org',
             'lists.wikimedia.org',
