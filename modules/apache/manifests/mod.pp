@@ -18,6 +18,7 @@ class apache::mod::dav_fs        { apache::mod_conf { 'dav_fs':        } }
 class apache::mod::headers       { apache::mod_conf { 'headers':       } }
 class apache::mod::proxy_http    { apache::mod_conf { 'proxy_http':    } }
 class apache::mod::rewrite       { apache::mod_conf { 'rewrite':       } }
+class apache::mod::ssl           { apache::mod_conf { 'ssl':           } }
 class apache::mod::userdir       { apache::mod_conf { 'userdir':       } }
 
 # Modules that depend on additional packages
@@ -29,7 +30,6 @@ class apache::mod::php5          { apache::mod_conf { 'php5':          } <- pack
 class apache::mod::proxy         { apache::mod_conf { 'proxy':         } <- package { 'libapache2-mod-proxy':     } }
 class apache::mod::python        { apache::mod_conf { 'python':        } <- package { 'libapache2-mod-python':    } }
 class apache::mod::rpaf          { apache::mod_conf { 'rpaf':          } <- package { 'libapache2-mod-rpaf':      } }
-class apache::mod::ssl           { apache::mod_conf { 'ssl':           } <- package { 'libapache2-mod-ssl':       } }
 class apache::mod::uwsgi         { apache::mod_conf { 'uwsgi':         } <- package { 'libapache2-mod-uwsgi':     } }
 class apache::mod::wsgi          { apache::mod_conf { 'wsgi':          } <- package { 'libapache2-mod-wsgi':      } }
 

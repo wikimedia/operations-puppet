@@ -27,8 +27,7 @@ class apache ( $service_enable = true ) {
         subscribe => Package['httpd'],
     }
 
-    file { 'http_vdir':
-        path    => '/etc/apache2/sites-enabled/',
+    file { '/etc/apache2/sites-enabled':
         ensure  => directory,
         recurse => true,
         purge   => true,
