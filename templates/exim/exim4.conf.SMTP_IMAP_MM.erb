@@ -51,11 +51,12 @@ LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 
 domainlist system_domains = @
 domainlist local_domains = <%= local_domains.join(" : ") %>
+domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
 <% if enable_mail_relay == "secondary" then -%>
 domainlist secondary_domains = @mx_secondary/ignore=127.0.0.1
 <% end -%>
 <% if enable_mail_relay != false %>
-domainlist relay_domains = lsearch;CONFDIR/relay_domains
+domainlist relay_domains = +wikimedia_domains
 <% end -%>
 
 # a list of domains to always respond defer; used for emergencies or planned downtimes

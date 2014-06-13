@@ -76,15 +76,19 @@ class exim {
             require => Class['exim4'],
         }
 
+        file { '/etc/exim4/wikimedia_domains':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => 'puppet:///files/exim/exim4.wikimedia_domains',
+            require => Class['exim4'],
+        }
+
         class mail_relay {
             file { '/etc/exim4/relay_domains':
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0444',
-                source  => 'puppet:///files/exim/exim4.secondary_relay_domains.conf',
-                require => Class['exim4'],
+                ensure => absent,
             }
-
             exim4::dkim { 'wikimedia.org':
                 domain   => 'wikimedia.org',
                 selector => 'wikimedia',
