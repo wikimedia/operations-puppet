@@ -1,55 +1,59 @@
 # misc/rancid.pp
 
 class misc::rancid {
-	# TODO: finish. very incomplete.
+    # TODO: finish. very incomplete.
 
-	system::role { "misc::rancid": description => "Really Awful Notorious CIsco config Differ (sp)" }
+    system::role { 'misc::rancid':
+        description => 'Really Awful Notorious CIsco config Differ (sp)'
+    }
 
-	package { "rancid": ensure => present }
+    package { 'rancid':
+        ensure => present
+    }
 
-	generic::systemuser { 'rancid':
-		name => 'rancid',
-		shell => '/bin/sh'
-	}
+    generic::systemuser { 'rancid':
+        name  => 'rancid',
+        shell => '/bin/sh'
+    }
 
-	include passwords::rancid
+    include passwords::rancid
 
-	file { '/etc/rancid/rancid.conf':
-		require => Package['rancid'],
-		owner => root,
-		group => root,
-		mode => 0444,
-		source => 'puppet:///files/misc/rancid/rancid.conf'
-	}
+    file { '/etc/rancid/rancid.conf':
+        require => Package['rancid'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/misc/rancid/rancid.conf',
+    }
 
-	file { "/var/lib/rancid/core":
-		require => [ Package["rancid"], Generic::Systemuser['rancid'] ],
-		owner => rancid,
-		group => rancid,
-		mode => 'o-rwx',
-		recurse => remote,
-		source => "puppet:///files/misc/rancid/core";
-	}
+    file { '/var/lib/rancid/core':
+        require => [ Package['rancid'], Generic::Systemuser['rancid'] ],
+        owner   => 'rancid',
+        group   => 'rancid',
+        mode    => 'o-rwx',
+        recurse => remote,
+        source  => 'puppet:///files/misc/rancid/core',
+    }
 
-	file { '/var/lib/rancid/.cloginrc':
-		require => Package['rancid'],
-		owner => rancid,
-		group => rancid,
-		mode => 0440,
-		content => template('rancid/cloginrc.erb')
-	}
+    file { '/var/lib/rancid/.cloginrc':
+        require => Package['rancid'],
+        owner   => 'rancid',
+        group   => 'rancid',
+        mode    => '0440',
+        content => template('rancid/cloginrc.erb'),
+    }
 
-	file { '/etc/cron.d/rancid':
-		require => File['/var/lib/rancid/core'],
-		owner => root,
-		group => root,
-		mode => 0444,
-		source => 'puppet:///files/misc/rancid/rancid.cron'
-	}
+    file { '/etc/cron.d/rancid':
+        require => File['/var/lib/rancid/core'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/misc/rancid/rancid.cron',
+    }
 
-	file { '/var/log/rancid':
-		owner => rancid,
-		group => rancid,
-		mode => 0750
-	}
+    file { '/var/log/rancid':
+        owner   => 'rancid',
+        group   => 'rancid',
+        mode    => '0750',
+    }
 }
