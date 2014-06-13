@@ -846,7 +846,7 @@ plain:
 begin retry
 
 <% if mediawiki_relay == true then -%>
-*	*	senders=wiki@wikimedia.org      F,1h,15m; G,8
+*	*	senders=wiki@wikimedia.org	F,1h,15m; G,8h,1h,1.5
 <% end -%>
 *	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
 <% if ( enable_mail_relay != false ) -%>
@@ -877,6 +877,8 @@ www-data@$primary_hostname      general@rt.wikimedia.org        Fq
 # as they are usually rejected by sender domain address verification.
 *@*.pmtpa.wmnet		root@wikimedia.org	F
 *@*.eqiad.wmnet		root@wikimedia.org	F
+*@*.codfw.wmnet		root@wikimedia.org	F
 *@*.esams.wmnet		root@wikimedia.org	F
+*@*.ulsfo.wmnet		root@wikimedia.org	F
 #*@*.wikimedia.org	root@wikimedia.org	F
 <% end -%>
