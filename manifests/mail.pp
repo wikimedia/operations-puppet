@@ -81,14 +81,20 @@ class exim {
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            source  => 'puppet:///files/exim/exim4.wikimedia_domains',
+            source  => 'puppet:///files/exim/wikimedia_domains',
+            require => Class['exim4'],
+        }
+
+        file { '/etc/exim4/legacy_mailing_lists':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => 'puppet:///files/exim/legacy_mailing_lists',
             require => Class['exim4'],
         }
 
         class mail_relay {
-            file { '/etc/exim4/relay_domains':
-                ensure => absent,
-            }
             exim4::dkim { 'wikimedia.org':
                 domain   => 'wikimedia.org',
                 selector => 'wikimedia',
@@ -101,7 +107,7 @@ class exim {
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0444',
-                source  => 'puppet:///files/exim/exim4.listserver_aliases.conf',
+                source  => 'puppet:///files/exim/listserver_aliases',
                 require => Class['exim4'],
             }
 
