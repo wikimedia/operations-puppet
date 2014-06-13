@@ -205,4 +205,15 @@ class role::wikimetrics {
     class { '::wikimetrics::scheduler':
         require => Exec['install_wikimetrics_dependencies'],
     }
+
+    # backup regardless of whether we are in debug mode or not
+    if $::wikimetrics_backup {
+        class { '::wikimetrics::backup':
+            destination    => "/data/project/wikimetrics/backup",
+            db_name        => $db_name_wikimetrics,
+            redis_db_file  = '/a/redis/wikimetrics-6379.rdb',
+            public_files   = '/var/lib/wikimetrics/public',
+            keep_days      => 10,
+        }
+    }
 }
