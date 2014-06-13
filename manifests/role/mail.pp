@@ -5,6 +5,29 @@ class role::mail::sender {
     }
 }
 
+class role::mail::mx {
+    include privateexim::aliases::private
+    include exim4::ganglia
+
+    class { 'exim::roled':
+        local_domains          => [
+                '+system_domains',
+                '+wikimedia_domains',
+                '+legacy_mailman_domains',
+                '@mx_primary/ignore=127.0.0.1',
+            ],
+        enable_mail_relay      => 'primary',
+        enable_mail_submission => false,
+        enable_external_mail   => true,
+        mediawiki_relay        => true,
+    }
+
+    monitor_service { 'smtp':
+        description   => 'Exim SMTP',
+        check_command => 'check_smtp',
+    }
+}
+
 class role::mail::oldmx {
     include backup::client
     include privateexim::aliases::private
