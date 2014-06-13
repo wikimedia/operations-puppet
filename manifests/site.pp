@@ -47,6 +47,7 @@ class standard-noexim {
     include base
     include ganglia
     include ntp::client
+    include role::diamond
 }
 
 
