@@ -263,7 +263,9 @@ def check3ware():
 def checkMegaSas():
     try:
         proc = subprocess.Popen(['/usr/sbin/megacli',
-                                '-LDInfo', '-LALL', '-aALL'],
+                                '-LDInfo', '-LALL', '-aALL',
+                                '-NoLog',
+                                ],
                                 stdout=subprocess.PIPE)
     except:
         error = sys.exc_info()[1]
