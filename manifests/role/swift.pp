@@ -32,6 +32,30 @@ class role::swift {
 				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:media' -c eqiad-prod",
 				user    => root,
 			}
+			# report global stats to graphite
+			file { "/usr/local/bin/swift-account-stats":
+				ensure  => present,
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0555',
+				source  => "puppet:///files/swift/swift-account-stats",
+				require => [ Package['python-swiftclient'], Package['python-statsd'] ],
+			}
+			$password = $passwords::swift::eqiad_prod::rewrite_password
+			file { "/etc/swift/account_mw_media.env":
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0440',
+				content => "export ST_AUTH=http://ms-fe.eqiad.wmnet/auth/v1.0\nexport ST_USER=mw:media\nexport ST_KEY=${password}\n"
+			}
+			cron { "swift-account-stats_mw_media":
+				ensure  => present,
+				command => "source /etc/swift/account_mw_media.env && /usr/local/bin/swift-account-stats \
+								--prefix swift.eqiad-prod.stats --statsd-host statsd.eqiad.wmnet 1>/dev/null",
+				user    => root,
+				hour    => "*",
+				minute  => "*",
+			}
 		}
 		class proxy inherits role::swift::eqiad-prod {
 			class { "::swift::proxy":
@@ -81,6 +105,30 @@ class role::swift {
 				ensure  => present,
 				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:media' -c esams-prod",
 				user    => root,
+			}
+			# report global stats to graphite
+			file { "/usr/local/bin/swift-account-stats":
+				ensure  => present,
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0555',
+				source  => "puppet:///files/swift/swift-account-stats",
+				require => [ Package['python-swiftclient'], Package['python-statsd'] ],
+			}
+			$password = $passwords::swift::esams_prod::rewrite_password
+			file { "/etc/swift/account_mw_media.env":
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0440',
+				content => "export ST_AUTH=http://ms-fe.esams.wmnet/auth/v1.0\nexport ST_USER=mw:media\nexport ST_KEY=${password}\n"
+			}
+			cron { "swift-account-stats_mw_media":
+				ensure  => present,
+				command => "source /etc/swift/account_mw_media.env && /usr/local/bin/swift-account-stats \
+								--prefix swift.esams-prod.stats --statsd-host statsd.eqiad.wmnet 1>/dev/null",
+				user    => root,
+				hour    => "*",
+				minute  => "*",
 			}
 		}
 		class proxy inherits role::swift::esams-prod {
