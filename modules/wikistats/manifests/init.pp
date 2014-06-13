@@ -16,11 +16,11 @@ class wikistats (
     $wikistats_host,
 ) {
 
-    # system user for wikistats
-    generic::systemuser { 'wikistatsuser':
-        name   => 'wikistats',
-        home   => '/usr/lib/wikistats',
-        groups => [ 'wikistats' ],
+    user { 'wikistatsuser':
+        home       => '/usr/lib/wikistats',
+        groups     => [ 'wikistats' ],
+        managehome => true,
+        system     => true,
     }
 
     # webserver setup for wikistats
