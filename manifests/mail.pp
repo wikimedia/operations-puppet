@@ -95,6 +95,15 @@ class exim {
         }
 
         class mail_relay {
+            file { '/etc/exim4/imap_accounts':
+                ensure  => present,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                source  => 'puppet:///files/exim/imap_accounts',
+                require => Class['exim4'],
+            }
+
             exim4::dkim { 'wikimedia.org':
                 domain   => 'wikimedia.org',
                 selector => 'wikimedia',

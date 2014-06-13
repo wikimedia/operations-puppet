@@ -9,9 +9,9 @@
 
 CONFDIR=/etc/exim4
 WIKI_INTERFACE=<; 208.80.152.133 ; 208.80.154.91 ; 2620:0:861:3:208:80:154:91
-USERDB=/var/vmaildb/user.db
 
 <% if enable_imap_delivery == true then -%>
+USERDB=/var/vmaildb/user.db
 VMAIL=/var/vmail
 DELIVER=/usr/lib/dovecot/deliver
 NOT_LOCALLY_SUBMITTED=${if !match{$received_protocol}{\Nsmtpsa$\N}}
@@ -533,12 +533,8 @@ ldap_alias:
 # Send mail for IMAP accounts to sanger
 imap:
 	driver = manualroute
-	domains = +local_domains
-	condition = ${lookup sqlite{USERDB \
-		SELECT 'Y' \
-		FROM account \
-		WHERE localpart='${quote_sqlite:$local_part}' \
-			AND domain='${quote_sqlite:$domain}'}}
+	domains = wikimedia.org
+	local_parts = lsearch;CONFDIR/imap_accounts
 	local_part_suffix = +*
 	local_part_suffix_optional
 	transport = remote_smtp
