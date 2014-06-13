@@ -32,7 +32,7 @@ OTRS_GROUP=www-data
 # Main configuration settings #
 ###############################
 
-<% if enable_mail_relay == "primary" or enable_otrs_server == "true" then -%>
+<% if enable_mail_relay == "primary" or enable_otrs_server == true then -%>
 # MySQL lookups (OTRS)
 hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : m2-slave.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 <% end -%>
@@ -48,7 +48,7 @@ domainlist local_domains = <%= local_domains.join(" : ") %>
 <% if enable_mail_relay == "secondary" then -%>
 domainlist secondary_domains = @mx_secondary/ignore=127.0.0.1
 <% end -%>
-<% if enable_mail_relay != "false" %>
+<% if enable_mail_relay != false %>
 domainlist relay_domains = lsearch;CONFDIR/relay_domains
 <% end -%>
 
@@ -64,17 +64,17 @@ domainlist donate_domains = donate.wikimedia.org
 domainlist spamassassin_domains = *
 
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
-hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if enable_mail_relay != "false" -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
+hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if enable_mail_relay != false -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
 # Relay @mx_secondary domains only to these hosts
 hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').join(" ; ") %>
-<% if enable_otrs_server == "true" then -%>
+<% if enable_otrs_server == true then -%>
 hostlist otrs_mail_from_hosts = mchenry.wikimedia.org
 <% end -%>
-<% if enable_imap_delivery == "true" then -%>
+<% if enable_imap_delivery == true then -%>
 
 # Interfaces
 daemon_smtp_ports = smtp : ssmtp
-<% elsif enable_otrs_server == "true" then -%>
+<% elsif enable_otrs_server == true then -%>
 
 # Interfaces
 daemon_smtp_ports = smtp
@@ -82,7 +82,7 @@ daemon_smtp_ports = smtp
 
 # Administration
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
-<% if enable_otrs_server == "false" then -%>
+<% if enable_otrs_server == false then -%>
 message_logs = false
 <% end -%>
 
@@ -91,11 +91,11 @@ acl_smtp_connect = acl_check_connect
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
 
-<% if enable_mail_relay != "false" or enable_otrs_server == "true" then -%>
+<% if enable_mail_relay != false or enable_otrs_server == true then -%>
 helo_try_verify_hosts = *
 <% end -%>
 
-<% if rt_relay == "true" or enable_otrs_server == "true" then -%>
+<% if rt_relay == true or enable_otrs_server == true then -%>
 # Allow RT, OTRS to use any sender address
 untrusted_set_sender = *
 local_from_check = false
@@ -121,18 +121,18 @@ smtp_accept_reserve = 100
 # Lookups
 host_lookup = *
 rfc1413_hosts =
-<% if enable_spamassassin == "true" then -%>
+<% if enable_spamassassin == true then -%>
 
 # Content filtering
 spamd_address = 127.0.0.1 783
 <% end %>
-<% if enable_clamav == "true" then -%>
+<% if enable_clamav == true then -%>
 
 # Malware scanning
 av_scanner = clamd:/var/run/clamav/clamd.ctl
 <% end %>
 
-<% if enable_imap_delivery == "true" then -%>
+<% if enable_imap_delivery == true then -%>
 # TLS
 tls_certificate = /etc/ssl/certs/wikimedia.org.pem
 tls_privatekey = /etc/ssl/private/wikimedia.org.key
@@ -158,7 +158,7 @@ begin acl
 
 acl_check_rcpt:
 
-<% if enable_mail_relay != "false" then -%>
+<% if enable_mail_relay != false then -%>
 	# If there have been ~4 times as many previous RCPT rejects than
 	# accepts, drop the connection
 
@@ -179,7 +179,7 @@ acl_check_rcpt:
 	# is done at this point, which is good for mail submission, but may render
 	# recipient callout verification by affected hosts useless.
 
-<% if enable_otrs_server == "true" then -%>
+<% if enable_otrs_server == true then -%>
 	accept hosts = +otrs_mail_from_hosts : +relay_from_hosts
 <% else -%>
 	accept domains = ! +local_domains
@@ -187,7 +187,7 @@ acl_check_rcpt:
 		control = submission/sender_retain
 <% end -%>
 
-<% if enable_mail_submission == "true" then -%>
+<% if enable_mail_submission == true then -%>
 # Mail submissions from other hosts must be from SMTP authenticated users
 
 	accept authenticated = *
@@ -202,7 +202,7 @@ acl_check_rcpt:
 		condition = ${if eq{$interface_port}{25}}
 <% end -%>
 
-<% if enable_otrs_server == "true" then -%>
+<% if enable_otrs_server == true then -%>
 	# Require recipient domain to be local
 
 	require message = Relay not permitted
@@ -230,7 +230,7 @@ acl_check_rcpt:
 
 	require verify = recipient
 
-<% if enable_mail_relay != "false" then -%>
+<% if enable_mail_relay != false then -%>
 	# If the destination domain is a domain we relay for,
 	# check if the local part exists at the destination,
 	# reject if it doesn't.
@@ -242,7 +242,7 @@ acl_check_rcpt:
 
 	# Mail can be safely accepted here, but we may want to do more
 	# rfc compliance checking and spam filtering.
-	<% if enable_mail_relay != "false" then -%>
+	<% if enable_mail_relay != false then -%>
 
 	# Check whether the sender address domain exists
 
@@ -250,12 +250,12 @@ acl_check_rcpt:
 
 <% end -%>
 	accept
-<% if enable_mail_relay != "false" then -%>
+<% if enable_mail_relay != false then -%>
 		set acl_m2 = ${if eq{$local_part@$domain}{wiki@wikimedia.org}{skip_spamd}{}}
 <% end -%>
 
 acl_check_connect:
-<% if mediawiki_relay == "true" then -%>
+<% if mediawiki_relay == true then -%>
 	# Deny external connections to the internal bulk mail submission
 	# interface
 
@@ -263,7 +263,7 @@ acl_check_connect:
 		! hosts = +wikimedia_nets
 
 <% end -%>
-<% if enable_external_mail == "true" then -%>
+<% if enable_external_mail == true then -%>
 	# We only accept mail from our own mail relays
 	require message = This server does not accept external mail
 		hosts = <; 127.0.0.0/8 ; ::1 ; +wikimedia_nets
@@ -271,8 +271,8 @@ acl_check_connect:
 	accept
 
 acl_check_data:
-<% if ( enable_spamassassin == "true" ) then -%>
-<% if ( enable_otrs_server == "true" ) then -%>
+<% if ( enable_spamassassin == true ) then -%>
+<% if ( enable_otrs_server == true ) then -%>
 	# skip spam-check for locally-submitted messages
 	accept hosts = +relay_from_hosts
 		set acl_m0 = trusted relay
@@ -317,7 +317,7 @@ acl_check_data:
 		condition = ${if >{$spam_score_int}{120}{1}{0}}
 <% end -%>
 <% end -%>
-<% if enable_clamav == "true" then -%>
+<% if enable_clamav == true then -%>
 
 	# silently discard messages with malware attached
 	discard log_message = malware detected ($malware_name)
@@ -333,7 +333,7 @@ acl_check_data:
 
 begin routers
 
-<% if enable_mailman == "true" then -%>
+<% if enable_mailman == true then -%>
 list_outbound:
 	driver = dnslookup
 	domains = ! +local_domains
@@ -354,7 +354,7 @@ secondary:
 	no_more
 
 <% end %>
-<% if mediawiki_relay == "true" then -%>
+<% if mediawiki_relay == true then -%>
 # Route mail generated by MediaWiki differently
 wiki_mail:
 	domains = ! +local_domains
@@ -366,7 +366,7 @@ wiki_mail:
 	no_verify
 
 <% end -%>
-<% if enable_mail_relay != "false" then -%>
+<% if enable_mail_relay != false then -%>
 # Send donate.wikimedia.org mail to Fundraising CiviCRM server
 donate:
 	driver = manualroute
@@ -395,7 +395,7 @@ system_aliases:
 	allow_defer
 	forbid_file
 
-<% if rt_relay == "true" then -%>
+<% if rt_relay == true then -%>
 # Mail destined for RT
 
 # This router checks whether the local part consists of solely digits,
@@ -422,7 +422,7 @@ rt:
 	transport = rt_pipe
 
 <% end -%>
-<% if enable_mailman == "true" then -%>
+<% if enable_mailman == true then -%>
 # Mailman list handling.
 
 list_aliases:
@@ -450,7 +450,7 @@ aliases:
 	include_directory = CONFDIR
 	pipe_transport = address_pipe
 <% end -%>
-<% if enable_mailman == "true" then -%>
+<% if enable_mailman == true then -%>
 # Test the mailing list address without suffix
 # first, as a mailing list like wikifi-admin is a valid list name.
 
@@ -570,7 +570,7 @@ otrs:
 	route_list = *  iodine.wikimedia.org  byname
 	transport = remote_smtp
 <% end %>
-<% if enable_imap_delivery == "true" then -%>
+<% if enable_imap_delivery == true then -%>
 # Run a custom user filter, e.g. to sort mail into subfolders
 # By default Exim filter CONFDIR/default_user_filter is run,
 # which sorts mail classified spam into the Junk folder
@@ -638,7 +638,7 @@ user_left:
 # mail relays ("smart hosts")
 
 <% end %>
-<% if enable_mail_relay != "false" then -%>
+<% if enable_mail_relay != false then -%>
 
 # Redirect postmaster@$domain if it hasn't been accepted before
 postmaster:
@@ -647,12 +647,12 @@ postmaster:
 	local_parts = postmaster
 	data = postmaster@$primary_hostname
 <% end %>
-<% if enable_mailman == "true" then -%>
+<% if enable_mailman == true then -%>
 	cannot_route_message = Mailing list $local_part does not exist.
-<% elsif enable_mail_relay != "false" then -%>
+<% elsif enable_mail_relay != false then -%>
 	cannot_route_message = Address $local_part@$domain does not exist
 <% end %>
-<% if enable_otrs_server == "true" then -%>
+<% if enable_otrs_server == true then -%>
 otrs:
 	driver = accept
 	condition = ${lookup mysql{SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}'}{true}fail}
@@ -677,10 +677,10 @@ begin transports
 remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
-<% if enable_otrs_server == "false" then -%>
+<% if enable_otrs_server == false then -%>
 	interface = <; <%= outbound_ips.join(" ; ") %>
 <% end -%>
-<% if enable_mailman == "true" -%>
+<% if enable_mailman == true -%>
 
 list_smtp:
 	driver = smtp
@@ -693,7 +693,7 @@ list_smtp:
 	dkim_canon = relaxed
 <% end -%>
 
-<% if mediawiki_relay == "true" -%>
+<% if mediawiki_relay == true -%>
 # Transport for sending out automated bulk (wiki) mail
 # DKIM signed with wikimedia.org irrespective of actual sender domain
 # but using a separate selector that only allows "wiki" as the local part
@@ -714,7 +714,7 @@ address_pipe:
 	driver = pipe
 	return_output
 
-<% if rt_relay == "true" then -%>
+<% if rt_relay == true then -%>
 # RT transport
 rt_pipe:
 	driver = pipe
@@ -727,7 +727,7 @@ rt_pipe:
 	return_fail_output
 
 <% end -%>
-<% if enable_otrs_server == "true" then -%>
+<% if enable_otrs_server == true then -%>
 # OTRS pipe transport
 
 otrs:
@@ -743,7 +743,7 @@ otrs:
 	timeout_defer
 
 <% end -%>
-<% if enable_mailman == "true" then -%>
+<% if enable_mailman == true then -%>
 # Mailman pipe transport
 # Rewrite body headers of old mailing list addresses to new ones
 
@@ -761,7 +761,7 @@ list:
 	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 
 <% end %>
-<% if enable_imap_delivery == "true" then -%>
+<% if enable_imap_delivery == true then -%>
 # Delivery via Dovecot's "deliver" LDA. The advantage over using Exim's
 # internal Maildir appendfile transport is that it can immediately update
 # Dovecot's internal indexes for better performance.
@@ -817,7 +817,7 @@ left_message:
 reply_transport:
 	driver = autoreply
 <% end %>
-<% if enable_mail_submission == "true" then -%>
+<% if enable_mail_submission == true then -%>
 ##################
 # Authenticators #
 ##################
@@ -847,11 +847,11 @@ plain:
 
 begin retry
 
-<% if mediawiki_relay == "true" then -%>
+<% if mediawiki_relay == true then -%>
 *	*	senders=wiki@wikimedia.org      F,1h,15m; G,8
 <% end -%>
 *	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
-<% if ( enable_mail_relay != "false" ) -%>
+<% if ( enable_mail_relay != false ) -%>
 
 #################
 # Rewrite rules #
@@ -860,7 +860,7 @@ begin retry
 begin rewrite
 
 <% end %>
-<% if rt_relay == "true" then -%>
+<% if rt_relay == true then -%>
 #################
 # Rewrite rules #
 #################
@@ -871,10 +871,10 @@ begin rewrite
 www-data@$primary_hostname      general@rt.wikimedia.org        Fq
 
 <% end -%>
-<% if enable_mailman == "true" then -%>
+<% if enable_mailman == true then -%>
 \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 <% end %>
-<% if ( enable_mail_relay != "false" ) -%>
+<% if ( enable_mail_relay != false ) -%>
 # Rewrite the envelope From for mails from internal servers in *.pmtpa.wmnet,
 # as they are usually rejected by sender domain address verification.
 *@*.pmtpa.wmnet		root@wikimedia.org	F
