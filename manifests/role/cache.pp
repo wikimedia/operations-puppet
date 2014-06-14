@@ -41,7 +41,6 @@ class role::cache {
                         'cp1068.eqiad.wmnet',
                     ],
                     "esams" => [
-                        # 31-46 being paced into prod slowly...
                         'amssq31.esams.wmnet',
                         'amssq32.esams.wmnet',
                         'amssq33.esams.wmnet',
@@ -54,11 +53,10 @@ class role::cache {
                         'amssq40.esams.wmnet',
                         'amssq41.esams.wmnet',
                         'amssq42.esams.wmnet',
-                        # 'amssq43.esams.wmnet',
-                        # 'amssq44.esams.wmnet',
-                        # 'amssq45.esams.wmnet',
-                        # 'amssq46.esams.wmnet',
-                        ########
+                        'amssq43.esams.wmnet',
+                        'amssq44.esams.wmnet',
+                        'amssq45.esams.wmnet',
+                        'amssq46.esams.wmnet',
                         #'amssq47.esams.wikimedia.org', # Test host
                         'amssq48.esams.wikimedia.org',
                         'amssq49.esams.wikimedia.org',
