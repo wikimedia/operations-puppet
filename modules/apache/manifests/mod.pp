@@ -15,6 +15,7 @@ class apache::mod::authnz_ldap   { apache::mod_conf { 'authnz_ldap':   } }
 class apache::mod::authz_user    { apache::mod_conf { 'authz_user':    } }
 class apache::mod::dav           { apache::mod_conf { 'dav':           } }
 class apache::mod::dav_fs        { apache::mod_conf { 'dav_fs':        } }
+class apache::mod::filter        { apache::mod_conf { 'filter':        } }
 class apache::mod::headers       { apache::mod_conf { 'headers':       } }
 class apache::mod::proxy_http    { apache::mod_conf { 'proxy_http':    } }
 class apache::mod::rewrite       { apache::mod_conf { 'rewrite':       } }
