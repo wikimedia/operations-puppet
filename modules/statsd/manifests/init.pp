@@ -34,6 +34,8 @@ class statsd(
         ensure => present,
     }
 
+    # wmflib is required for the ordered_json parser function, which is used in localConfig.js.erb
+    require wmflib
     file { '/etc/statsd/localConfig.js':
         content => template('statsd/localConfig.js.erb'),
         require => Package['statsd'],
