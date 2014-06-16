@@ -2155,6 +2155,7 @@ node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 }
 
 node 'palladium.eqiad.wmnet' {
+    $puppet_version = '3'
     include standard
     include admin
     include backup::client
@@ -2396,6 +2397,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 }
 
 node 'strontium.eqiad.wmnet' {
+    $puppet_version = '3'
     include standard
     include admin
     include role::puppetmaster::backend
