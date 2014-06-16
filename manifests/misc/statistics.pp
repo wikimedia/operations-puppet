@@ -656,7 +656,7 @@ class misc::statistics::limn::mobile_data_sync {
     $mysql_credentials = "${working_path}/.my.cnf.research"
     $rsync_from        = "${working_path}/limn-public-data"
     $output            = "$rsync_from/mobile/datafiles"
-    $log               = "$/var/log/limn-mobile-data.log"
+    $log               = "/var/log/limn-mobile-data.log"
     $gerrit_repo       = "https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git"
     $user              = $misc::statistics::user::username
 
