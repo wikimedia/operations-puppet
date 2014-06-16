@@ -6,6 +6,7 @@ Job {
   Client = <%= @fqdn -%>-fd
   Messages = Standard
   Where = /var/tmp/bacula-restores
+  Priority = 1
 }
 
 Job {
@@ -18,4 +19,5 @@ Job {
   Messages = Standard
   Selection Type = SQLQuery
   Selection Pattern = "SELECT 15515"
+  Priority = 20
 }
