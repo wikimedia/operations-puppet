@@ -1,24 +1,26 @@
 class misc::statistics::user {
-    $username = "stats"
-    $homedir  = "/var/lib/$username"
+    $username = 'stats'
+    $homedir  = "/var/lib/${username}"
 
     generic::systemuser { $username:
         name   => $username,
         home   => $homedir,
-        groups => ["wikidev"],
-        shell  => "/bin/bash",
+        groups => ['wikidev'],
+        shell  => '/bin/bash',
     }
 
     # create a .gitconfig file for stats user
-    file { "$homedir/.gitconfig":
+    file { '$homedir/.gitconfig':
         mode    => '0664',
         owner   => $username,
-        content => "[user]\n\temail = otto@wikimedia.org\n\tname = Statistics User",
+        content => '[user]\n\temail = otto@wikimedia.org\n\tname = Statistics User',
     }
 }
 
 class misc::statistics::base {
-    system::role { "misc::statistics::base": description => "statistics server" }
+    system::role { 'misc::statistics::base':
+        description => 'statistics server',
+    }
 
     include misc::statistics::packages
 
@@ -79,7 +81,7 @@ class misc::statistics::packages {
         # libwww-perl for wikistats stuff
         'libwww-perl',
     ]:
-        ensure => latest;
+        ensure => 'latest',
     }
 
     include misc::statistics::packages::python
@@ -92,14 +94,14 @@ class misc::statistics::packages {
 # on statistics servers.
 class misc::statistics::packages::python {
     package { [
-        "python-geoip",
-        "libapache2-mod-python",
-        "python-django",
-        "python-mysqldb",
-        "python-yaml",
-        "python-dateutil",
-        "python-numpy",
-        "python-scipy",
+        'python-geoip',
+        'libapache2-mod-python',
+        'python-django',
+        'python-mysqldb',
+        'python-yaml',
+        'python-dateutil',
+        'python-numpy',
+        'python-scipy',
     ]:
         ensure => 'installed',
     }
@@ -121,15 +123,17 @@ class misc::statistics::dataset_mount {
     # need this for NFS mounts.
     include nfs::common
 
-    file { "/mnt/data": ensure => directory }
+    file { '/mnt/data':
+        ensure => 'directory',
+    }
 
-    mount { "/mnt/data":
-        device => "208.80.154.11:/data",
-        fstype => "nfs",
-        options => "ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.154.11",
-        atboot => true,
-        require => [File['/mnt/data'], Class["nfs::common"]],
-        ensure => mounted,
+    mount { '/mnt/data':
+        ensure  => 'mounted',
+        device  => '208.80.154.11:/data',
+        fstype  => 'nfs',
+        options => 'ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.154.11',
+        atboot  => true,
+        require => [File['/mnt/data'], Class['nfs::common']],
     }
 }
 
@@ -142,10 +146,10 @@ class misc::statistics::mediawiki {
 
     $statistics_mediawiki_directory = "${misc::statistics::base::working_path}/mediawiki/core"
 
-    git::clone { "statistics_mediawiki":
-        directory => $statistics_mediawiki_directory,
-        origin    => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git",
+    git::clone { 'statistics_mediawiki':
         ensure    => 'latest',
+        directory => $statistics_mediawiki_directory,
+        origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
         owner     => 'mwdeploy',
         group     => 'wikidev',
     }
@@ -169,7 +173,7 @@ class misc::statistics::wikistats {
     }
     # this cron uses pigz to unzip squid archive files in parallel
     package { 'pigz':
-        ensure => 'installed'
+        ensure => 'installed',
     }
 
     # generates the new mobile pageviews report
@@ -187,15 +191,15 @@ class misc::statistics::wikistats {
 class misc::statistics::plotting {
 
     package { [
-            "ploticus",
-            "libploticus0",
-            "r-base",
-            "r-cran-rmysql",
-            "libcairo2",
-            "libcairo2-dev",
-            "libxt-dev"
+            'ploticus',
+            'libploticus0',
+            'r-base',
+            'r-cran-rmysql',
+            'libcairo2',
+            'libcairo2-dev',
+            'libxt-dev'
         ]:
-        ensure => installed;
+        ensure => installed,
     }
 }
 
@@ -262,76 +266,78 @@ class misc::statistics::sites::stats {
     include misc::statistics::base
     require misc::statistics::geowiki::data::private
 
-    $site_name = "stats.wikimedia.org"
-    $docroot = "/srv/$site_name/htdocs"
-    $geowiki_private_directory = "$docroot/geowiki-private"
-    $geowiki_private_htpasswd_file = "/etc/apache2/htpasswd.stats-geowiki"
+    $site_name                     = 'stats.wikimedia.org'
+    $docroot                       = "/srv/${site_name}/htdocs"
+    $geowiki_private_directory     = "${docroot}/geowiki-private"
+    $geowiki_private_htpasswd_file = '/etc/apache2/htpasswd.stats-geowiki'
 
     # add htpasswd file for stats.wikimedia.org
-    file { "/etc/apache2/htpasswd.stats":
-        owner   => "root",
-        group   => "root",
+    file { '/etc/apache2/htpasswd.stats':
+        owner   => 'root',
+        group   => 'root',
         mode    => '0644',
-        source  => "puppet:///private/apache/htpasswd.stats",
+        source  => 'puppet:///private/apache/htpasswd.stats',
     }
 
     # add htpasswd file for private geowiki data
     file { $geowiki_private_htpasswd_file:
-        owner   => "root",
-        group   => "www-data",
+        owner   => 'root',
+        group   => 'www-data',
         mode    => '0640',
-        source  => "puppet:///private/apache/htpasswd.stats-geowiki",
+        source  => 'puppet:///private/apache/htpasswd.stats-geowiki',
     }
 
     # link geowiki checkout from docroot
     file { $geowiki_private_directory:
-        ensure  => "link",
+        ensure  => 'link',
         target  => "${misc::statistics::geowiki::data::private::geowiki_private_data_path}/datafiles",
-        owner   => "root",
-        group   => "www-data",
+        owner   => 'root',
+        group   => 'www-data',
         mode    => '0750',
     }
 
     install_certificate{ $site_name: }
 
-    file {
-        '/etc/apache2/sites-enabled/stats.wikimedia.org':
-            ensure => present,
-            mode => '0444',
-            owner => root,
-            group => root,
-            content => template('apache/sites/stats.wikimedia.org.erb');
-        '/etc/apache2/ports.conf':
-            ensure  => present,
-            mode    => '0644',
-            owner   => root,
-            group   => root,
-            source  => 'puppet:///files/apache/ports.conf.ssl';
+    file { '/etc/apache2/sites-enabled/stats.wikimedia.org':
+        ensure  => 'present',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('apache/sites/stats.wikimedia.org.erb'),
+    }
+    file { '/etc/apache2/ports.conf':
+        ensure  => 'present',
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///files/apache/ports.conf.ssl',
     }
 
-
+    apache_site { 'statswikimedia':
+        name => 'stats.wikimedia.org',
+    }
 }
 
 # community-analytics.wikimedia.org
 class misc::statistics::sites::community_analytics {
     include misc::statistics::base
 
-    $site_name = "community-analytics.wikimedia.org"
-    $docroot = "/srv/org.wikimedia.community-analytics/community-analytics/web_interface"
+    $site_name = 'community-analytics.wikimedia.org'
+    $docroot   = '/srv/org.wikimedia.community-analytics/community-analytics/web_interface'
 
     # org.wikimedia.community-analytics is kinda big,
     # it really lives on $working_path.
     # Symlink /srv/a/org.wikimedia.community-analytics to it.
     # Oof, this /srv | /a stuff is a mess... :(
-    file { "/srv/org.wikimedia.community-analytics":
-        ensure => "${misc::statistics::base::working_path}/srv/org.wikimedia.community-analytics"
+    file { '/srv/org.wikimedia.community-analytics':
+        ensure => "${misc::statistics::base::working_path}/srv/org.wikimedia.community-analytics",
     }
 
     webserver::apache::site { $site_name:
-        require => [Class["webserver::apache"], Class["misc::statistics::packages::python"]],
-        docroot => $docroot,
-        server_admin => "noc@wikimedia.org",
-        custom => [
+        require      => [Class['webserver::apache'], Class['misc::statistics::packages::python']],
+        docroot      => $docroot,
+        server_admin => 'noc@wikimedia.org',
+        custom       => [
             "SetEnv MPLCONFIGDIR /srv/org.wikimedia.community-analytics/mplconfigdir",
 
     "<Location \"/\">
@@ -364,8 +370,8 @@ class misc::statistics::sites::community_analytics {
 class misc::statistics::sites::metrics {
     require misc::statistics::user
 
-    $site_name       = "metrics.wikimedia.org"
-    $redirect_target = "https://metrics.wmflabs.org/"
+    $site_name       = 'metrics.wikimedia.org'
+    $redirect_target = 'https://metrics.wmflabs.org/'
 
     include webserver::apache
     include ::apache::mod::alias
@@ -375,16 +381,33 @@ class misc::statistics::sites::metrics {
     install_certificate{ $site_name: }
 
     # Set up the VirtualHost
+<<<<<<< HEAD
     file { "/etc/apache2/sites-enabled/$site_name":
+=======
+    file { "/etc/apache2/sites-available/${site_name}":
+>>>>>>> Lint fixes for misc/statistics.pp
         content => template("apache/sites/${site_name}.erb"),
-        require => [Class["webserver::apache"], Class['::apache::mod::alias', '::apache::mod::ssl']],
+        require => [
+            Class['webserver::apache'],
+            Class['::apache::mod::alias'],
+            Class['::apache::mod::ssl'],
+        ],
         notify  => Service['apache2'],
     }
+<<<<<<< HEAD
+=======
+    file { "/etc/apache2/sites-enabled/${site_name}":
+        ensure  => link,
+        target  => "/etc/apache2/sites-available/${site_name}",
+        require => File["/etc/apache2/sites-available/${site_name}"],
+        notify  => Service['apache2'],
+    }
+>>>>>>> Lint fixes for misc/statistics.pp
 
     # make access and error log for metrics-api readable by wikidev group
-    file { ["/var/log/apache2/access.metrics.log", "/var/log/apache2/error.metrics.log"]:
-        group   => "wikidev",
-        require => File["/etc/apache2/sites-enabled/$site_name"],
+    file { ['/var/log/apache2/access.metrics.log', '/var/log/apache2/error.metrics.log']:
+        group   => 'wikidev',
+        require => File["/etc/apache2/sites-enabled/${site_name}"],
     }
 }
 
@@ -404,7 +427,7 @@ class misc::statistics::sites::default {
 class misc::statistics::db::mongo {
     include misc::statistics::base
 
-    class { "mongodb":
+    class { 'mongodb':
         dbpath    => "${misc::statistics::base::working_path}/mongodb",
     }
 }
@@ -412,10 +435,10 @@ class misc::statistics::db::mongo {
 # Install dev environments
 class misc::statistics::dev {
     package { [
-            'python-dev', # RT 6561
-            'python3-dev', # RT 6561
-            ]:
-            ensure => installed,
+        'python-dev',  # RT 6561
+        'python3-dev', # RT 6561
+    ]:
+        ensure => 'installed',
     }
 }
 
@@ -429,7 +452,7 @@ class misc::statistics::dev {
 #   hosts_allow - array.  Hosts to grant rsync access.
 class misc::statistics::rsyncd(
     $hosts_allow = undef,
-    $path = '/srv'
+    $path        = '/srv'
 )
 {
     # this uses modules/rsync to
@@ -484,9 +507,9 @@ class misc::statistics::rsync::jobs::webrequest {
         "${working_path}/aft/archive",
         "${working_path}/public-datasets",
     ]:
-        ensure  => directory,
-        owner   => "stats",
-        group   => "wikidev",
+        ensure  => 'directory',
+        owner   => 'stats',
+        group   => 'wikidev',
         mode    => '0775',
     }
 
@@ -504,26 +527,26 @@ class misc::statistics::rsync::jobs::webrequest {
         "${working_path}/log/webrequest",
     ]:
         ensure  => directory,
-        owner   => "stats",
-        group   => "wikidev",
+        owner   => 'stats',
+        group   => 'wikidev',
         mode    => '0755',
     }
 
     # wikipedia zero logs from oxygen
-    misc::statistics::rsync_job { "wikipedia_zero":
-        source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/zero*.gz",
+    misc::statistics::rsync_job { 'wikipedia_zero':
+        source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/zero*.gz',
         destination => "${working_path}/squid/archive/zero",
     }
 
     # API logs from erbium
-    misc::statistics::rsync_job { "api":
-        source      => "erbium.eqiad.wmnet::udp2log/webrequest/archive/api-usage*.gz",
+    misc::statistics::rsync_job { 'api':
+        source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/api-usage*.gz',
         destination => "${working_path}/squid/archive/api",
     }
 
     # sampled-1000 logs from erbium
-    misc::statistics::rsync_job { "sampled_1000":
-        source      => "erbium.eqiad.wmnet::udp2log/webrequest/archive/sampled-1000*.gz",
+    misc::statistics::rsync_job { 'sampled_1000':
+        source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/sampled-1000*.gz',
         destination => "${working_path}/squid/archive/sampled",
     }
 
@@ -534,14 +557,14 @@ class misc::statistics::rsync::jobs::webrequest {
     }
 
     # edit logs from oxygen
-    misc::statistics::rsync_job { "edits":
-        source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz",
+    misc::statistics::rsync_job { 'edits':
+        source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz',
         destination => "${working_path}/squid/archive/edits",
     }
 
     # mobile logs from oxygen
-    misc::statistics::rsync_job { "mobile":
-        source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz",
+    misc::statistics::rsync_job { 'mobile':
+        source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz',
         destination => "${working_path}/squid/archive/mobile",
     }
 
@@ -566,15 +589,15 @@ class misc::statistics::rsync::jobs::eventlogging {
     $working_path = $misc::statistics::base::working_path
 
     file { "${working_path}/eventlogging":
-        ensure  => directory,
-        owner   => "stats",
-        group   => "wikidev",
+        ensure  => 'directory',
+        owner   => 'stats',
+        group   => 'wikidev',
         mode    => '0775',
     }
 
     # eventlogging logs from vanadium
-    misc::statistics::rsync_job { "eventlogging":
-        source      => "vanadium.eqiad.wmnet::eventlogging/archive/*.gz",
+    misc::statistics::rsync_job { 'eventlogging':
+        source      => 'vanadium.eqiad.wmnet::eventlogging/archive/*.gz',
         destination => "${working_path}/eventlogging/archive",
     }
 }
@@ -595,9 +618,9 @@ define misc::statistics::rsync_job($source, $destination) {
 
     # ensure that the destination directory exists
     file { $destination:
-        ensure  => "directory",
+        ensure  => 'directory',
         owner   => $misc::statistics::user::username,
-        group   => "wikidev",
+        group   => 'wikidev',
         mode    => '0755',
     }
 
@@ -656,49 +679,49 @@ class misc::statistics::limn::mobile_data_sync {
     $working_path      = $misc::statistics::base::working_path
 
     $source_dir        = "${working_path}/limn-mobile-data"
-    $command           = "$source_dir/generate.py"
-    $config            = "$source_dir/mobile/"
+    $command           = "${source_dir}/generate.py"
+    $config            = "${source_dir}/mobile/"
     $mysql_credentials = "${working_path}/.my.cnf.research"
     $rsync_from        = "${working_path}/limn-public-data"
-    $output            = "$rsync_from/mobile/datafiles"
-    $log               = "/var/log/limn-mobile-data.log"
-    $gerrit_repo       = "https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git"
+    $output            = "${rsync_from}/mobile/datafiles"
+    $log               = '/var/log/limn-mobile-data.log'
+    $gerrit_repo       = 'https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git'
     $user              = $misc::statistics::user::username
 
     $db_user           = $passwords::mysql::research::user
     $db_pass           = $passwords::mysql::research::pass
 
-    git::clone { "analytics/limn-mobile-data":
+    git::clone { 'analytics/limn-mobile-data':
+        ensure    => 'latest',
         directory => $source_dir,
         origin    => $gerrit_repo,
         owner     => $user,
         require   => [User[$user]],
-        ensure    => latest,
     }
 
     file { $log:
+        ensure  => 'present',
         owner   => $user,
         group   => $user,
         mode    => '0660',
-        ensure  => present,
     }
 
     file { $mysql_credentials:
         owner   => $user,
         group   => $user,
         mode    => '0600',
-        content => template("misc/mysql-config-research.erb"),
+        content => template('misc/mysql-config-research.erb'),
     }
 
     file { [$source_dir, $rsync_from, $output]:
+        ensure => 'directory',
         owner  => $user,
         group  => wikidev,
         mode   => '0775',
-        ensure => directory,
     }
 
-    cron { "rsync_mobile_apps_stats":
-        command => "python $command $config >> $log 2>&1 && /usr/bin/rsync -rt $rsync_from/* stat1001.wikimedia.org::www/limn-public-data/",
+    cron { 'rsync_mobile_apps_stats':
+        command => "python ${command} ${config} >> ${log} 2>&1 && /usr/bin/rsync -rt ${rsync_from}/* stat1001.wikimedia.org::www/limn-public-data/",
         user    => $user,
         minute  => 0,
     }
@@ -709,7 +732,7 @@ class misc::statistics::limn::mobile_data_sync {
 class misc::statistics::geowiki::params {
     include misc::statistics::base
 
-    $base_path = "${misc::statistics::base::working_path}/geowiki"
+    $base_path              = "${misc::statistics::base::working_path}/geowiki"
     $private_data_bare_path = "${base_path}/data-private-bare"
 }
 
@@ -719,14 +742,14 @@ class misc::statistics::geowiki {
     require misc::statistics::user,
         misc::statistics::geowiki::params
 
-    $geowiki_user = $misc::statistics::user::username
-    $geowiki_base_path = $misc::statistics::geowiki::params::base_path
+    $geowiki_user         = $misc::statistics::user::username
+    $geowiki_base_path    = $misc::statistics::geowiki::params::base_path
     $geowiki_scripts_path = "${geowiki_base_path}/scripts"
 
     git::clone { 'geowiki-scripts':
-        directory => $geowiki_scripts_path,
-        origin    => "https://gerrit.wikimedia.org/r/p/analytics/geowiki.git",
         ensure    => 'latest',
+        directory => $geowiki_scripts_path,
+        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/geowiki.git',
         owner     => $geowiki_user,
         group     => $geowiki_user,
     }
@@ -777,7 +800,7 @@ class misc::statistics::geowiki::data::private_bare::sync {
     $geowiki_private_data_bare_host      = 'stat1003'
     $geowiki_private_data_bare_host_fqdn = "${geowiki_private_data_bare_host}.wikimedia.org"
 
-    file { "$geowiki_private_data_bare_path":
+    file { $geowiki_private_data_bare_path:
         ensure => directory,
         owner  => $geowiki_user,
         group  => $geowiki_user,
@@ -793,9 +816,9 @@ class misc::statistics::geowiki::data::private_bare::sync {
     } else {
         cron { 'geowiki data-private bare sync':
             command => "/usr/bin/rsync -rt --delete rsync://${geowiki_private_data_bare_host_fqdn}${geowiki_private_data_bare_path}/ ${geowiki_private_data_bare_path}/",
-            require => File["$geowiki_private_data_bare_path"],
+            require => File[$geowiki_private_data_bare_path],
             user    => $geowiki_user,
-            hour  => '17',
+            hour    => '17',
             minute  => '0',
         }
     }
@@ -814,9 +837,9 @@ class misc::statistics::geowiki::data::private {
     $geowiki_private_data_bare_path = $misc::statistics::geowiki::data::private_bare::sync::geowiki_private_data_bare_path
 
     git::clone { 'geowiki-data-private':
+        ensure    => 'latest',
         directory => $geowiki_private_data_path,
         origin    => "file://${geowiki_private_data_bare_path}",
-        ensure    => 'latest',
         owner     => $geowiki_user,
         group     => 'www-data',
         mode      => 0750,
@@ -893,9 +916,9 @@ class misc::statistics::geowiki::jobs::limn {
     $geowiki_mysql_research_conf_file = $misc::statistics::geowiki::mysql::conf::research::conf_file
 
     git::clone { 'geowiki-data-public':
-        directory => $geowiki_public_data_path,
-        origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki/data-public.git",
         ensure    => 'latest',
+        directory => $geowiki_public_data_path,
+        origin    => 'ssh://gerrit.wikimedia.org:29418/analytics/geowiki/data-public.git',
         owner     => $geowiki_user,
         group     => $geowiki_user,
     }
@@ -926,20 +949,20 @@ class misc::statistics::geowiki::jobs::monitoring {
     require misc::statistics::geowiki,
         passwords::geowiki
 
-    $geowiki_user = $misc::statistics::geowiki::geowiki_user
-    $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
+    $geowiki_user         = $misc::statistics::geowiki::geowiki_user
+    $geowiki_base_path    = $misc::statistics::geowiki::geowiki_base_path
     $geowiki_scripts_path = $misc::statistics::geowiki::geowiki_scripts_path
 
-    $geowiki_http_user = $passwords::geowiki::user
-    $geowiki_http_pass = $passwords::geowiki::pass
+    $geowiki_http_user    = $passwords::geowiki::user
+    $geowiki_http_pass    = $passwords::geowiki::pass
 
     $geowiki_http_password_file = "${geowiki_base_path}/.http_password"
 
     file { $geowiki_http_password_file:
-        owner   => "$geowiki_user",
-        group   => "$geowiki_user",
+        owner   => $geowiki_user,
+        group   => $geowiki_user,
         mode    => '0400',
-        content => "$geowiki_http_pass",
+        content => $geowiki_http_pass,
     }
 
     # cron job to fetch geowiki data via http://gp.wmflabs.org/ (public data)
@@ -971,7 +994,7 @@ class misc::statistics::researchdb_password {
         owner   => 'root',
         group   => 'researchers',
         mode    => '0440',
-        content => "user: $::passwords::mysql::research::user\npass: $::passwords::mysql::research::pass\n"
+        content => "user: ${::passwords::mysql::research::user}\npass: ${::passwords::mysql::research::pass}\n"
     }
 }
 
