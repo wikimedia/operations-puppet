@@ -48,13 +48,10 @@ class role::rcstream {
         require      => Service['rcstream'],
     }
 
-    # FIXME: Diamond hasn't been packaged for Trusty yet (ori, 2-Jun-2014)
-    # diamond::collector::nginx { 'rcstream': }
+    diamond::collector::nginx { 'rcstream': }
 
-    # diamond::collector { 'RCStream':
-    #     source   => 'puppet:///modules/rcstream/diamond_collector.py',
-    #     settings => {
-    #         backends => $backends,
-    #     },
-    # }
+    diamond::collector { 'RCStream':
+        source   => 'puppet:///modules/rcstream/diamond_collector.py',
+        settings => { backends => $backends, },
+    }
 }
