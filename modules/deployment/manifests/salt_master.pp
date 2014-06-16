@@ -7,6 +7,10 @@ class deployment::salt_master(
     $repo_config,
     $deployment_config
     ) {
+    
+    # wmflib is required for the ordered_json parser function
+    require wmflib
+
     file { '/etc/salt/deploy_runner.conf':
         content => template('deployment/deploy_runner.conf.erb'),
         mode    => '0444',
