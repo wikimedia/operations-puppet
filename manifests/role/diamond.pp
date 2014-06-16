@@ -8,17 +8,13 @@ class role::diamond {
     #start batching in groups of 10 to start, for now current statsd can't
     #accept multiple metrics
 
-    #precise only rollout as diamond deployment group
-    case $::operatingsystemrelease {
-        '12.04': {
-            class { '::diamond':
-                settings => {
-                    enabled => 'true',
-                    host    => '10.64.0.18', # tungsten
-                    port    => '8125',
-                },
-            }
-
+    if $::realm == 'production' {
+        class { '::diamond':
+            settings => {
+                enabled => 'true',
+                host    => '10.64.0.18', # tungsten
+                port    => '8125',
+            },
         }
     }
 }
