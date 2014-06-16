@@ -40,6 +40,7 @@ class gdash(
     $graphite_host,
     $options,
 ) {
+
     $template_dir = '/etc/gdash/templates'
 
     $settings = {

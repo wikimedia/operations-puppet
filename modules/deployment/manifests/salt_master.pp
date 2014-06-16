@@ -6,7 +6,8 @@ class deployment::salt_master(
     $returner_dir='/srv/salt/_returners',
     $repo_config,
     $deployment_config
-    ) {
+) {
+
     file { '/etc/salt/deploy_runner.conf':
         content => template('deployment/deploy_runner.conf.erb'),
         mode    => '0444',
