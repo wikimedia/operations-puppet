@@ -282,7 +282,7 @@ class ganglia::collector::config {
                     'Mobile caches eqiad'            => 'cp1046.eqiad.wmnet cp1047.eqiad.wmnet',
                     'Mobile caches esams'            => 'hooft.esams.wikimedia.org:11677',
                     'Mobile caches ulsfo'            => 'cp4011.ulsfo.wmnet cp4019.ulsfo.wmnet',
-                    'Analytics Kafka cluster eqiad'  => 'analytics1012.eqiad.wmnet analytics1022.eqiad.wmnet',
+                    'Analytics Kafka cluster eqiad'  => 'analytics1012.eqiad.wmnet analytics1018.eqiad.wmnet analytics1022.eqiad.wmnet',
                 }
                 $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:    0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
                 }
@@ -332,8 +332,7 @@ class ganglia::collector::config {
                     'Elasticsearch eqiad'            => 'elastic1001.eqiad.wmnet elastic1007.eqiad.wmnet elastic1013.eqiad.wmnet',
                     'Logstash eqiad'                 => 'logstash1001.eqiad.wmnet logstash1003.eqiad.wmnet',
                     'RCStream eqiad'                 => 'rcs1001.eqiad.wmnet',
-                    'Analytics Kafka cluster eqiad'  => 'analytics1012.eqiad.wmnet analytics1022.eqiad.wmnet',
-
+                    'Analytics Kafka cluster eqiad'  => 'analytics1012.eqiad.wmnet analytics1018.eqiad.wmnet analytics1022.eqiad.wmnet',
                 }
                 $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
                 $rrd_rootdir = '/mnt/ganglia_tmp/rrds.pmtpa'

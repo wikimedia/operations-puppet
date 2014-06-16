@@ -185,12 +185,13 @@ node 'analytics1010.eqiad.wmnet' {
     include role::analytics::hadoop::master
 }
 
-# analytics1011, analytics1013,analytics1020 are Hadoop worker nodes
+# analytics1011, analytics1013-analytics1017, analytics1019 and analytics1020
+# are Hadoop worker nodes.
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # templates/hadoop/net-topology.py.erb to make sure the
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
-node /analytics10(11|1[3-9]|20).eqiad.wmnet/ {
+node /analytics10(11|1[3-7]|19|20).eqiad.wmnet/ {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics'
@@ -204,13 +205,17 @@ node /analytics10(11|1[3-9]|20).eqiad.wmnet/ {
     include role::analytics::hadoop::worker
 }
 
-# analytics1012, analytics1021 and analytics1022 are Kafka Brokers.
-node /analytics10(12|21|22)\.eqiad\.wmnet/ {
+# analytics1012, analytics1018, analytics1021 and analytics1022 are Kafka Brokers.
+node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics_kafka'
 
-    if $::hostname == 'analytics1012' or $::hostname == 'analytics1022' {
+    # one ganglia aggregator per ganglia 'cluster' per row.
+    if ($::hostname == 'analytics1012' or  # Row A
+        $::hostname == 'analytics1018' or  # Row D
+        $::hostname == 'analytics1022')    # Row C
+    {
         $ganglia_aggregator = true
     }
 
