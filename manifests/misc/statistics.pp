@@ -675,6 +675,7 @@ class misc::statistics::limn::mobile_data_sync {
         owner   => $user,
         group   => $user,
         mode    => '0660',
+        ensure  => present,
     }
 
     file { $mysql_credentials:
