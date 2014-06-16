@@ -798,7 +798,8 @@ users:
     gid: 500
     name: leila
     realname: Leila Zia
-    ssh_keys: [absent]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaZ8/149Yz44kP3X+0hse6O1aOXiWTvI3o/qT5q+elDaVzvJleV8C5DR7r5NF6xOWhf1qVXVKHZqqECV3FPS5b+COtuzsvM7B3iGKv8IEvZKCChe8LfMKnXYMJdFPOyhfLrEhNW633NdKRhwp627ln9/M8R+5wUEGUjYWxyuJ0y7w/QrDZ2Q4qLWajNc+ExfO9KX83wOxKCBFIOB2/+eGPUzuqIFAeQTC6CIlH6GQxXqU7gfQj0DnqKOKU3BPsfmhLBZejUb483pmMUspZOsEHsEN+SZKujICHaHmvC1kBYDnvYZEuMaX032mkxDr21tv94lnTyHNbfvOfRWBf6y4p
+        leila@starfruit]
     uid: 3963
   santhosh:
     ensure: present
