@@ -40,6 +40,9 @@ class gdash(
     $graphite_host,
     $options,
 ) {
+    # wmflib is required for the ordered_json parser function
+    require wmflib
+
     $template_dir = '/etc/gdash/templates'
 
     $settings = {
