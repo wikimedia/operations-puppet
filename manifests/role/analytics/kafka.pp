@@ -51,9 +51,10 @@ class role::analytics::kafka::config {
     else {
         $cluster_config = {
             'eqiad'   => {
-                'analytics1012.eqiad.wmnet' => { 'id' => 12 },
-                'analytics1021.eqiad.wmnet' => { 'id' => 21 },
-                'analytics1022.eqiad.wmnet' => { 'id' => 22 },
+                'analytics1012.eqiad.wmnet' => { 'id' => 12 },  # Row C
+                'analytics1012.eqiad.wmnet' => { 'id' => 18 },  # Row D
+                'analytics1021.eqiad.wmnet' => { 'id' => 21 },  # Row A
+                'analytics1022.eqiad.wmnet' => { 'id' => 22 },  # Row C
             },
             'ulsfo' => { },
             'pmtpa' => { },
@@ -121,9 +122,9 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         zookeeper_hosts                 => $zookeeper_hosts,
         zookeeper_chroot                => $zookeeper_chroot,
         nofiles_ulimit                  => $nofiles_ulimit,
-        # Bump this up to 2 to get a little more
+        # Bump this up to 4 to get a little more
         # parallelism between replicas.
-        num_replica_fetchers            => 2,
+        num_replica_fetchers            => 4,
         # Setting this larger so that it is sure to be bigger
         # than batch size from varnishkafka.
         # See: https://issues.apache.org/jira/browse/KAFKA-766
