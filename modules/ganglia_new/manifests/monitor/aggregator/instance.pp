@@ -1,5 +1,5 @@
 define ganglia_new::monitor::aggregator::instance($monitored_site) {
-	Ganglia_new::Monitor::Aggregator::Instance[$title] ->
+    Ganglia_new::Monitor::Aggregator::Instance[$title] ->
     Service['ganglia-monitor-aggregator']
 
     include ganglia_new::configuration
