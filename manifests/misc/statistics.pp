@@ -124,12 +124,12 @@ class misc::statistics::dataset_mount {
     file { "/mnt/data": ensure => directory }
 
     mount { "/mnt/data":
+        ensure => mounted,
         device => "208.80.154.11:/data",
         fstype => "nfs",
         options => "ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.154.11",
         atboot => true,
         require => [File['/mnt/data'], Class["nfs::common"]],
-        ensure => mounted,
     }
 }
 
@@ -143,9 +143,9 @@ class misc::statistics::mediawiki {
     $statistics_mediawiki_directory = "${misc::statistics::base::working_path}/mediawiki/core"
 
     git::clone { "statistics_mediawiki":
+        ensure    => 'latest',
         directory => $statistics_mediawiki_directory,
         origin    => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git",
-        ensure    => 'latest',
         owner     => 'mwdeploy',
         group     => 'wikidev',
     }
@@ -664,18 +664,18 @@ class misc::statistics::limn::mobile_data_sync {
     $db_pass           = $passwords::mysql::research::pass
 
     git::clone { "analytics/limn-mobile-data":
+        ensure    => latest,
         directory => $source_dir,
         origin    => $gerrit_repo,
         owner     => $user,
         require   => [User[$user]],
-        ensure    => latest,
     }
 
     file { $log:
+        ensure  => present,
         owner   => $user,
         group   => $user,
         mode    => '0660',
-        ensure  => present,
     }
 
     file { $mysql_credentials:
@@ -686,10 +686,10 @@ class misc::statistics::limn::mobile_data_sync {
     }
 
     file { [$source_dir, $rsync_from, $output]:
+        ensure => directory,
         owner  => $user,
         group  => wikidev,
         mode   => '0775',
-        ensure => directory,
     }
 
     cron { "rsync_mobile_apps_stats":
@@ -719,9 +719,9 @@ class misc::statistics::geowiki {
     $geowiki_scripts_path = "${geowiki_base_path}/scripts"
 
     git::clone { 'geowiki-scripts':
+        ensure    => 'latest',
         directory => $geowiki_scripts_path,
         origin    => "https://gerrit.wikimedia.org/r/p/analytics/geowiki.git",
-        ensure    => 'latest',
         owner     => $geowiki_user,
         group     => $geowiki_user,
     }
@@ -809,9 +809,9 @@ class misc::statistics::geowiki::data::private {
     $geowiki_private_data_bare_path = $misc::statistics::geowiki::data::private_bare::sync::geowiki_private_data_bare_path
 
     git::clone { 'geowiki-data-private':
+        ensure    => 'latest',
         directory => $geowiki_private_data_path,
         origin    => "file://${geowiki_private_data_bare_path}",
-        ensure    => 'latest',
         owner     => $geowiki_user,
         group     => 'www-data',
         mode      => 0750,
@@ -888,9 +888,9 @@ class misc::statistics::geowiki::jobs::limn {
     $geowiki_mysql_research_conf_file = $misc::statistics::geowiki::mysql::conf::research::conf_file
 
     git::clone { 'geowiki-data-public':
+        ensure    => 'latest',
         directory => $geowiki_public_data_path,
         origin    => "ssh://gerrit.wikimedia.org:29418/analytics/geowiki/data-public.git",
-        ensure    => 'latest',
         owner     => $geowiki_user,
         group     => $geowiki_user,
     }
