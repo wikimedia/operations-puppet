@@ -157,7 +157,8 @@ define command{
 # 'check_smtp' command definition
 define command{
         command_name    check_smtp
-        command_line    $USER1$/check_smtp -H $HOSTADDRESS$
+        # workaround Debian #578333
+        command_line    $USER1$/check_smtp -F <%= @hostname %> -H $HOSTADDRESS$
         }
 
 
