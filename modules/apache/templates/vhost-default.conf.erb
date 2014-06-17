@@ -26,9 +26,9 @@ NameVirtualHost <%= vhost_name %>:<%= port %>
     deny from <%= docroot_dir_denies.join(' ') %>
     <% end %>
   </Directory>
-  ErrorLog <%= logroot %>/<%= name %>_error.log
+  ErrorLog /var/log/apache2/<%= name %>_error.log
   LogLevel warn
-  CustomLog <%= logroot %>/<%= name %>_access.log combined
+  CustomLog /var/log/apache2/<%= name %>_access.log combined
   ServerSignature Off
 </VirtualHost>
 
