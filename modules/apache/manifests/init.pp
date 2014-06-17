@@ -31,11 +31,11 @@ class apache( $service_enable = true ) {
         ensure => present,
     }
 
+    # Dirty hack. Ori will fix/revert by EOD 17-Jun-2014.
     service { 'httpd':
-        name      => 'apache2',
-        ensure    => $service_enable,
-        enable    => $service_enable,
-        subscribe => Package['httpd'],
+        provider  => base,
+        start     => '/bin/true',
+        stop      => '/bin/true',
     }
 
     file { '/etc/apache2/sites-enabled':
