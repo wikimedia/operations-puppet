@@ -10,7 +10,7 @@ class misc::torrus {
 
 	class web {
 		package { "torrus-apache2":
-			before => Class[webserver::apache::service],
+			before => Service['apache2'],
 			ensure => latest
 		}
 

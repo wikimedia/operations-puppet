@@ -379,13 +379,13 @@ class misc::statistics::sites::metrics {
     file { "/etc/apache2/sites-available/$site_name":
         content => template("apache/sites/${site_name}.erb"),
         require => [Class["webserver::apache"], Class['::apache::mod::alias', '::apache::mod::ssl']],
-        notify  => Class['webserver::apache::service'],
+        notify  => Service['apache2'],
     }
     file { "/etc/apache2/sites-enabled/$site_name":
         ensure  => link,
         target  => "/etc/apache2/sites-available/${site_name}",
         require => File["/etc/apache2/sites-available/${site_name}"],
-        notify  => Class['webserver::apache::service'],
+        notify  => Service['apache2'],
     }
 
     # make access and error log for metrics-api readable by wikidev group

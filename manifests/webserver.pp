@@ -68,29 +68,11 @@ class webserver::php5(
 ) {
 
     include webserver::base
-
-    ensure_packages(['apache2-mpm-prefork', 'libapache2-mod-php5'])
+    include ::apache
+    include ::apache::mod::php5
 
     if $ssl == true {
-        apache_module { 'ssl':
-            name => 'ssl' }
-    }
-
-    service { 'apache2':
-        ensure    => running,
-        require   => Package['apache2-mpm-prefork'],
-        subscribe => Package['libapache2-mod-php5'],
-    }
-
-    # ensure default site is removed
-    apache_site { '000-default':
-        ensure => 'absent',
-        name   => '000-default',
-    }
-
-    apache_site { '000-default-ssl':
-        ensure => 'absent',
-        name   => '000-default-ssl',
+        include ::apache::mod::ssl
     }
 
     # Monitoring
@@ -131,12 +113,6 @@ class webserver::apache {
         Webserver::Apache::Site <| |>
     }
 
-    class service {
-        service{ 'apache2':
-            ensure => 'running',
-        }
-    }
-
     # Define: site
     #   Configures and installs an apache virtual host file using generic_vhost.erb.
     #
@@ -169,10 +145,8 @@ class webserver::apache {
         $ensure       = 'present',
         ) {
 
-        Webserver::Apache::Site[$title] -> Class['webserver::apache::service']
-
         file { "/etc/apache2/sites-available/${title}":
-            notify  => Class['webserver::apache::service'],
+            notify  => Service['apache2'],
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
@@ -185,12 +159,11 @@ class webserver::apache {
         file { "/etc/apache2/sites-enabled/${title}":
             ensure => $enabled_symlink_ensure,
             target => "/etc/apache2/sites-available/${title}",
-            notify => Class['webserver::apache::service'],
+            notify => Service['apache2'],
         }
     }
 
     # Default selection
     include config
-    include service
     include webserver::base
 }

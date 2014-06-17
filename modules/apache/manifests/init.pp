@@ -38,6 +38,12 @@ class apache( $service_enable = true ) {
         stop      => '/bin/true',
     }
 
+    service { 'apache2':
+        provider => base,
+        start    => '/bin/true',
+        stop     => '/bin/true',
+    }
+
     file { '/etc/apache2/sites-enabled':
         ensure  => directory,
         recurse => true,
