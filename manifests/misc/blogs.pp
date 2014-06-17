@@ -8,7 +8,8 @@ class misc::blogs::wikimedia {
 
     require webserver::php5-mysql,
         webserver::php5-gd,
-        webserver::apache2::rpaf
+
+    include ::apache::mod::rpaf
 
     package { 'unzip':
         ensure => latest;
