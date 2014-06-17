@@ -23,12 +23,12 @@ class releases::webserver (
     }
 
     include 'webserver::apache'
-    @webserver::apache::module { ['rewrite']: }
+    include ::apache::mod::rewrite
     @webserver::apache::site { $sitename:
         docroot      => "/srv/org/wikimedia/$docroot/",
         server_admin => $server_admin,
         require      => [
-            Webserver::Apache::Module['rewrite'],
+            Class['::apache::mod::rewrite'],
             File['/srv/org/wikimedia/releases']
         ],
     }
