@@ -3,9 +3,7 @@
 class misc::noc-wikimedia {
 	system::role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
 
-	package { 'apache2':
-		ensure => latest;
-	}
+	include ::apache
 
 	file {
 		"/etc/apache2/sites-available/noc.wikimedia.org":
@@ -27,12 +25,6 @@ class misc::noc-wikimedia {
 	apache_module { ssl: name => "ssl" }
 
 	apache_site { noc: name => "noc.wikimedia.org" }
-
-	service { apache2:
-		require => [ Package[apache2], Apache_module[userdir], Apache_module[cgi], Apache_site[noc] ],
-		subscribe => [ Package[libapache2-mod-php5], Apache_module[userdir], Apache_module[cgi], Apache_site[noc], File["/etc/apache2/sites-available/noc.wikimedia.org"] ],
-		ensure => running;
-	}
 
 	# Monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http_url!noc.wikimedia.org!http://noc.wikimedia.org" }

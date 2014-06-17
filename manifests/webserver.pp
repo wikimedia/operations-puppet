@@ -69,17 +69,7 @@ class webserver::php5(
 
     include webserver::base
 
-    if ! defined( Package['apache2-mpm-prefork'] ) {
-        package { 'apache2-mpm-prefork':
-            ensure => 'present',
-        }
-    }
-
-    if ! defined( Package['libapache2-mod-php5'] ) {
-        package { 'libapache2-mod-php5':
-            ensure => 'present',
-        }
-    }
+    ensure_packages(['apache2-mpm-prefork', 'libapache2-mod-php5'])
 
     if $ssl == true {
         apache_module { 'ssl':
@@ -135,22 +125,7 @@ class webserver::php5-gd {
 
 
 class webserver::apache {
-    class packages(
-        $mpm = 'prefork'
-) {
-    if ! defined( Package['apache2'] ) {
-        package { 'apache2':
-            ensure => 'present',
-        }
-    }
 
-    if ! defined( Package["apache2-mpm-${mpm}"] ) {
-        package { "apache2-mpm-${mpm}":
-            ensure => 'present',
-        }
-
-    }
-}
     class config {
         # Realize virtual resources for enabling virtual hosts
         Webserver::Apache::Site <| |>
@@ -194,7 +169,7 @@ class webserver::apache {
         $ensure       = 'present',
         ) {
 
-        Class['webserver::apache::packages'] -> Webserver::Apache::Site[$title] -> Class['webserver::apache::service']
+        Webserver::Apache::Site[$title] -> Class['webserver::apache::service']
 
         file { "/etc/apache2/sites-available/${title}":
             notify  => Class['webserver::apache::service'],
@@ -215,7 +190,6 @@ class webserver::apache {
     }
 
     # Default selection
-    include packages
     include config
     include service
     include webserver::base

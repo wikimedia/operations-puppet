@@ -21,9 +21,14 @@ class apache( $service_enable = true ) {
     include apache::mod::filter
     include apache::mod::version
 
+    # transitional!
     package { 'httpd':
-        name   => 'apache2',
+        name   => 'apache2.2-common',
         ensure => installed,
+    }
+
+    package { [ 'apache2', 'apache2-mpm-prefork' ]:
+        ensure => present,
     }
 
     service { 'httpd':
