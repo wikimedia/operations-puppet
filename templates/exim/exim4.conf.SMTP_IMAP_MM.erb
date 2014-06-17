@@ -214,11 +214,13 @@ acl_check_rcpt:
 
 	require message = Relay not permitted
 		domains = +local_domains
+		set acl_m_relayed = yes
 <% else -%>
 	# Require recipient domain to be local, or a domain we relay for
 
 	require message = Relay not permitted
 		domains = +local_domains : +relay_domains <% if enable_mail_relay == "secondary" then -%>: +secondary_domains<% end %>
+		set acl_m_relayed = yes
 
 	# { recipient domain is under our administrative control }
 
@@ -384,7 +386,7 @@ donate:
 dnslookup:
 	driver = dnslookup
 	domains = ! +local_domains
-	transport = remote_smtp
+	transport = ${if eq {$acl_m_relayed}{yes}{remote_smtp}{remote_smtp_signed}}
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
 	cannot_route_message = Cannot route to remote domain $domain
 	no_more
@@ -674,8 +676,19 @@ remote_smtp:
 <% if !outbound_ips.empty? then -%>
 	interface = <; <%= outbound_ips.join(" ; ") %>
 <% end -%>
-<% if enable_mailman == true -%>
 
+remote_smtp_signed:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+	dkim_domain = wikimedia.org
+	dkim_selector = wikimedia
+	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
+	dkim_canon = relaxed
+<% if !outbound_ips.empty? then -%>
+	interface = <; <%= outbound_ips.join(" ; ") %>
+<% end -%>
+
+<% if enable_mailman == true -%>
 list_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
