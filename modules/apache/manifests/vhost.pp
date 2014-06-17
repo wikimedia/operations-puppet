@@ -16,8 +16,6 @@
 # - The $options for the given vhost
 # - The $override for the given vhost (array of AllowOverride arguments)
 # - The $vhost_name for name based virtualhosting, defaulting to *
-# - The $logroot specifies the location of the virtual hosts logfiles, default
-#   to /var/log/<apache log location>/
 # - The $ensure specifies if vhost file is present or absent.
 #
 # Actions:
@@ -52,7 +50,6 @@ define apache::vhost(
     $options            = 'Indexes FollowSymLinks MultiViews',
     $override           = 'None',
     $vhost_name         = '*',
-    $logroot            = '/var/log/apache2',
     $ensure             = 'present'
 ) {
     validate_re($ensure, '^(present|absent)$', "ensure must be 'present' or 'absent' (got: '${ensure}')")
@@ -84,13 +81,6 @@ define apache::vhost(
         }
     }
 
-    # Same as above, but for logroot
-    if ! defined(File[$logroot]) {
-        file { $logroot:
-            ensure => directory,
-        }
-    }
-
     file { "${priority}-${name}.conf":
         ensure  => $ensure,
         path    => "/etc/apache2/sites-enabled/${priority}-${name}.conf",
@@ -101,7 +91,6 @@ define apache::vhost(
         require => [
             Package['apache2'],
             File[$docroot],
-            File[$logroot],
         ],
         notify  => Service['apache2'],
     }
