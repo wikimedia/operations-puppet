@@ -1,6 +1,5 @@
 class mediawiki::packages {
     package { [
-        'apache2-mpm-prefork',
         'imagemagick',
         'python-imaging',
         'libapache2-mod-php5',
