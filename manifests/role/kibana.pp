@@ -73,12 +73,6 @@ class role::kibana {
         group   => 'root',
         content => template('kibana/apache.conf.erb'),
         require => Package['apache2'],
-    }
-
-    file { "/etc/apache2/sites-enabled/${hostname}":
-        ensure  => link,
-        target  => "/etc/apache2/sites-enabled/${hostname}",
-        require => File["/etc/apache2/sites-enabled/${hostname}"],
         notify  => Service['apache2'],
     }
 }
