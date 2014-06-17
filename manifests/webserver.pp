@@ -145,7 +145,7 @@ class webserver::apache {
         $ensure       = 'present',
         ) {
 
-        file { "/etc/apache2/sites-available/${title}":
+        file { "/etc/apache2/sites-enabled/${title}":
             notify  => Service['apache2'],
             owner   => 'root',
             group   => 'root',
@@ -158,7 +158,7 @@ class webserver::apache {
         }
         file { "/etc/apache2/sites-enabled/${title}":
             ensure => $enabled_symlink_ensure,
-            target => "/etc/apache2/sites-available/${title}",
+            target => "/etc/apache2/sites-enabled/${title}",
             notify => Service['apache2'],
         }
     }

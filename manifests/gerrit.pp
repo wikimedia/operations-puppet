@@ -294,7 +294,7 @@ class gerrit::proxy( $no_apache = true,
         require webserver::apache
     }
 
-    file { '/etc/apache2/sites-available/gerrit.wikimedia.org':
+    file { '/etc/apache2/sites-enabled/gerrit.wikimedia.org':
         ensure  => present,
         mode    => '0644',
         owner   => 'root',
@@ -309,10 +309,6 @@ class gerrit::proxy( $no_apache = true,
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///files/misc/robots-txt-disallow',
-    }
-
-    apache_site { 'gerrit':
-        name => 'gerrit.wikimedia.org'
     }
 
     apache_module { 'rewrite':

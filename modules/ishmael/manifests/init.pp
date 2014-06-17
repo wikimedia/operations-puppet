@@ -21,7 +21,7 @@ class ishmael (
     include passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
 
-    file { "/etc/apache2/sites-available/${site_name}":
+    file { "/etc/apache2/sites-enabled/${site_name}":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
@@ -29,7 +29,6 @@ class ishmael (
         content => template("ishmael/apache/${site_name}.erb");
     }
 
-    apache_site { 'ishmael': name => $site_name }
 
     ishmael::config { $config_main: }
 

@@ -111,7 +111,7 @@ class mediawiki_singlenode(
 
     Mw-extension <| |> -> Exec['mediawiki_update']
 
-    file { '/etc/apache2/sites-available/wiki':
+    file { '/etc/apache2/sites-enabled/wiki':
         ensure => absent
     }
     include apache::mod::php

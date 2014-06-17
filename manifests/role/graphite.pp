@@ -207,14 +207,14 @@ class role::graphite {
         include ::eventlogging::monitoring::graphite
     }
 
-    file { '/etc/apache2/sites-available/graphite':
+    file { '/etc/apache2/sites-enabled/graphite':
         content => template('graphite/graphite.apache.erb'),
         require => Package['apache2'],
     }
 
     file { '/etc/apache2/sites-enabled/graphite':
         ensure => link,
-        target => '/etc/apache2/sites-available/graphite',
+        target => '/etc/apache2/sites-enabled/graphite',
         notify => Service['apache2'],
     }
 

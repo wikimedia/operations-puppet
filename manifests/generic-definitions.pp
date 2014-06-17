@@ -3,19 +3,6 @@
 # File that contains generally useful definitions.
 # e.g. for creating system users
 
-# Enables a certain Apache 2 site
-define apache_site(
-    $name,
-    $prefix = '',
-    $ensure = 'link',
-) {
-
-    file { "/etc/apache2/sites-enabled/${prefix}${name}":
-        ensure => $ensure,
-        target => "/etc/apache2/sites-available/${name}",
-    }
-}
-
 # Enables a certain Apache 2 module
 define apache_module($name) {
     file { "/etc/apache2/mods-available/${name}.conf":

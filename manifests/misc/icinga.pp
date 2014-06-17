@@ -106,7 +106,7 @@ class icinga::monitor::apache {
     }
 
     # install the Icinga Apache site
-    file { '/etc/apache2/sites-available/icinga.wikimedia.org':
+    file { '/etc/apache2/sites-enabled/icinga.wikimedia.org':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
@@ -122,7 +122,6 @@ class icinga::monitor::apache {
         ensure => absent,
     }
 
-    apache_site { 'icinga': name => 'icinga.wikimedia.org' }
     install_certificate{ 'icinga.wikimedia.org': ca => 'RapidSSL_CA.pem' }
     install_certificate{ 'icinga-admin.wikimedia.org': ca => 'RapidSSL_CA.pem' }
 

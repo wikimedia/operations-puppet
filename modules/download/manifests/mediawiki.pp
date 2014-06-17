@@ -6,7 +6,7 @@ class download::mediawiki {
         ensure => present,
     }
 
-    file { '/etc/apache2/sites-available/download.mediawiki.org':
+    file { '/etc/apache2/sites-enabled/download.mediawiki.org':
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
@@ -27,5 +27,4 @@ class download::mediawiki {
         mode   => '0775',
     }
 
-    apache_site { 'download.mediawiki.org': name => 'download.mediawiki.org' }
 }

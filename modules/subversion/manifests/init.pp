@@ -49,10 +49,6 @@ class subversion ($host){
     include backup::host
     backup::set { 'svnroot': }
 
-    apache_site { 'svn':
-        name   => 'svn',
-        prefix => '000-'
-    }
 
     apache_module { 'authz_svn': name => 'authz_svn' }
 
@@ -63,7 +59,7 @@ class subversion ($host){
         require => File['/var/cache/svnusers'],
     }
 
-    file { '/etc/apache2/sites-available/svn':
+    file { '/etc/apache2/sites-enabled/svn':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',

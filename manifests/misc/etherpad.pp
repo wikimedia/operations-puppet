@@ -27,7 +27,7 @@ class misc::etherpad_lite {
     system::role { 'misc::etherpad_lite': description => 'Etherpad-lite server' }
 
     file {
-        '/etc/apache2/sites-available/etherpad.wikimedia.org':
+        '/etc/apache2/sites-enabled/etherpad.wikimedia.org':
             ensure  => present,
             mode    => '0444',
             owner   => 'root',
@@ -45,7 +45,6 @@ class misc::etherpad_lite {
     }
 
 
-    apache_site { 'controller': name => 'etherpad.wikimedia.org' }
     # FIX ME - move this to a common role to avoid duplicate defs
     # apache_module { rewrite: name => 'rewrite' }
     apache_module { 'proxy': name => 'proxy' }

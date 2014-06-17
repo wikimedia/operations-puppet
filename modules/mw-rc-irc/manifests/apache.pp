@@ -2,7 +2,7 @@
 class mw-rc-irc::apache {
 
     file {
-        '/etc/apache2/sites-available/irc.wikimedia.org':
+        '/etc/apache2/sites-enabled/irc.wikimedia.org':
             mode   => '0444',
             owner  => 'root',
             group  => 'root',
@@ -11,9 +11,8 @@ class mw-rc-irc::apache {
 
     class { 'apache':
       serveradmin  => 'noc@wikimedia.org',
-      before      => Apache_site[irc],
+      before      => File['/etc/apache2/sites-enabled/irc.wikimedia.org'],
     }
 
-    apache_site { 'irc': name => 'irc.wikimedia.org' }
 }
 

@@ -13,7 +13,7 @@ class wikistats::web (
     # include webserver::php5-mysql
 
     # Apache site from template
-    file { "/etc/apache2/sites-available/${wikistats_host}":
+    file { "/etc/apache2/sites-enabled/${wikistats_host}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
@@ -35,7 +35,4 @@ class wikistats::web (
         install => true,
         name    => 'namevirtualhost',
     }
-
-    apache_site { 'wikistats': name => $wikistats_host }
-
 }

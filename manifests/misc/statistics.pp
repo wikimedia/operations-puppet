@@ -295,7 +295,7 @@ class misc::statistics::sites::stats {
     install_certificate{ $site_name: }
 
     file {
-        '/etc/apache2/sites-available/stats.wikimedia.org':
+        '/etc/apache2/sites-enabled/stats.wikimedia.org':
             ensure => present,
             mode => '0444',
             owner => root,
@@ -309,7 +309,6 @@ class misc::statistics::sites::stats {
             source  => 'puppet:///files/apache/ports.conf.ssl';
     }
 
-    apache_site { 'statswikimedia': name => 'stats.wikimedia.org' }
 
 }
 
@@ -376,15 +375,15 @@ class misc::statistics::sites::metrics {
     install_certificate{ $site_name: }
 
     # Set up the VirtualHost
-    file { "/etc/apache2/sites-available/$site_name":
+    file { "/etc/apache2/sites-enabled/$site_name":
         content => template("apache/sites/${site_name}.erb"),
         require => [Class["webserver::apache"], Class['::apache::mod::alias', '::apache::mod::ssl']],
         notify  => Service['apache2'],
     }
     file { "/etc/apache2/sites-enabled/$site_name":
         ensure  => link,
-        target  => "/etc/apache2/sites-available/${site_name}",
-        require => File["/etc/apache2/sites-available/${site_name}"],
+        target  => "/etc/apache2/sites-enabled/${site_name}",
+        require => File["/etc/apache2/sites-enabled/${site_name}"],
         notify  => Service['apache2'],
     }
 

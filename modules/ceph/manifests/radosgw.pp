@@ -69,7 +69,7 @@ class ceph::radosgw(
     }
 
     # VirtualHost config
-    file { '/etc/apache2/sites-available/radosgw':
+    file { '/etc/apache2/sites-enabled/radosgw':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
@@ -80,7 +80,7 @@ class ceph::radosgw(
     file { '/etc/apache2/sites-enabled/radosgw':
         ensure  => link,
         target  => '../sites-available/radosgw',
-        require => File['/etc/apache2/sites-available/radosgw'],
+        require => File['/etc/apache2/sites-enabled/radosgw'],
         notify  => Service['apache2'],
     }
     file { '/etc/apache2/sites-enabled/000default':

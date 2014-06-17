@@ -31,7 +31,7 @@ class puppetmaster::passenger(
     }
 
     file {
-        '/etc/apache2/sites-available/puppetmaster':
+        '/etc/apache2/sites-enabled/puppetmaster':
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
@@ -46,10 +46,6 @@ class puppetmaster::passenger(
     apache_module { 'passenger':
         name    => 'passenger',
         require => Package['libapache2-mod-passenger'];
-    }
-    apache_site { 'puppetmaster':
-        name    => 'puppetmaster',
-        require => Apache_module['passenger'];
     }
 
     # Since we are running puppet via passenger, we need to ensure

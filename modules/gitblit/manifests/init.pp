@@ -25,7 +25,7 @@ class gitblit(
         managehome => false,
     }
 
-    file { "/etc/apache2/sites-available/${host}":
+    file { "/etc/apache2/sites-enabled/${host}":
         ensure  => present,
         content => template("gitblit/${host}.erb"),
     }
@@ -69,9 +69,6 @@ class gitblit(
         require   => File['/etc/init/gitblit.conf'],
     }
 
-    apache_site { 'git':
-        name => $host,
-    }
 
     apache_module { 'headers':
         name => 'headers',
