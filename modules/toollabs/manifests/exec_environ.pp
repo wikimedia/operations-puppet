@@ -25,6 +25,7 @@ class toollabs::exec_environ {
         # Locales (Bug 58500)
         'language-pack-ar',
         'language-pack-bn',
+        'language-pack-ca',            # Bugs #62269, #66721.
         'language-pack-de',
         'language-pack-en',
         'language-pack-es',
