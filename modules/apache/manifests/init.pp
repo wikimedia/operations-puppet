@@ -26,9 +26,9 @@ class apache( $service_enable = true ) {
     }
 
     service { 'apache2':
-        provider => base,
-        start    => '/bin/true',
-        stop     => '/bin/true',
+        ensure  => $service_enable,
+        enable  => $service_enable,
+        require => Package['apache2'],
     }
 
     file { '/etc/apache2/sites-enabled':
