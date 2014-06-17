@@ -43,13 +43,10 @@ class puppetmaster::passenger(
             content => template('puppetmaster/ports.conf.erb');
     }
 
-    apache_module { 'passenger':
-        name    => 'passenger',
-        require => Package['libapache2-mod-passenger'];
-    }
+    include ::apache::mod::passenger
     apache_site { 'puppetmaster':
         name    => 'puppetmaster',
-        require => Apache_module['passenger'];
+        require => Class['::apache::mod::passenger'],
     }
 
     # Since we are running puppet via passenger, we need to ensure

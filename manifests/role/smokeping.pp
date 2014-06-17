@@ -10,7 +10,7 @@ class role::smokeping {
     class {'webserver::php5': ssl => true; }
 
     #dependencies for apache
-    #apache_module["ssl"] -> Install_certificate["${smokeping_ssl_cert}"] -> Class['webserver::php5']
+    include ::apache::mod::ssl
 
     # be flexible about labs vs. prod
     case $::realm {

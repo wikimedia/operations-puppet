@@ -17,9 +17,6 @@ class role::racktables {
         class {'webserver::php5': ssl => true; }
     }
 
-    # dependencies
-    Class['webserver::php5'] -> Apache_module['rewrite']
-
     # be flexible about labs vs. prod
     case $::realm {
         'labs': {
@@ -52,7 +49,7 @@ class role::racktables {
 
     apache_site { 'racktables': name => "${racktables_host}" }
     apache_confd {'namevirtualhost': install => true, name => 'namevirtualhost'}
-    apache_module { 'rewrite': name => 'rewrite' }
+    include ::apache::mod::rewrite
 
     ferm::service { 'racktables-http':
         proto => 'tcp',
