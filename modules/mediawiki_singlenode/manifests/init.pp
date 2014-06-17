@@ -123,9 +123,7 @@ class mediawiki_singlenode(
         template   => $apache_site_template
     }
 
-    apache_module { 'rewrite':
-        name => 'rewrite',
-    }
+    include ::apache::mod::rewrite
 
     file { "${install_path}/cache":
         require => Exec['mediawiki_setup'],

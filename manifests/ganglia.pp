@@ -507,7 +507,7 @@ class ganglia::web {
     }
 
     apache_site { 'ganglia': name => $ganglia_servername }
-    apache_module { 'rewrite': name => 'rewrite' }
+    include ::apache::mod::rewrite
 
     package { 'librrds-perl':
         ensure => latest,
