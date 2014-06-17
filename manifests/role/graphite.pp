@@ -212,12 +212,6 @@ class role::graphite {
         require => Package['apache2'],
     }
 
-    file { '/etc/apache2/sites-enabled/graphite':
-        ensure => link,
-        target => '/etc/apache2/sites-enabled/graphite',
-        notify => Service['apache2'],
-    }
-
     nrpe::monitor_service { 'carbon':
         description  => 'Graphite Carbon',
         nrpe_command => '/sbin/carbonctl check',
@@ -228,5 +222,4 @@ class role::graphite {
         description   => 'graphite.wikimedia.org',
         check_command => 'check_http_url!graphite.wikimedia.org!/render',
     }
-
 }
