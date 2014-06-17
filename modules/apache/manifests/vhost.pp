@@ -54,58 +54,55 @@ define apache::vhost(
     $vhost_name         = '*',
     $logroot            = '/var/log/apache2',
     $ensure             = 'present'
-  ) {
+) {
+    validate_re($ensure, '^(present|absent)$', "ensure must be 'present' or 'absent' (got: '${ensure}')")
 
-  validate_re($ensure, '^(present|absent)$',
-  "${ensure} is not supported for ensure.
-  Allowed values are 'present' and 'absent'.")
+    include ::apache
 
-  include apache
-
-  if $servername == '' {
-    $srvname = $name
-  } else {
-    $srvname = $servername
-  }
-
-  if $ssl == true {
-    include apache::mod::ssl
-  }
-
-  # Since the template will use auth, redirect to https requires mod_rewrite
-  if $redirect_ssl == true {
-    include apache::mod::rewrite
-  }
-
-  # This ensures that the docroot exists
-  # But enables it to be specified across multiple vhost resources
-  if ! defined(File[$docroot]) {
-    file { $docroot:
-      ensure => directory,
-      owner  => $docroot_owner,
-      group  => $docroot_group,
+    if $servername == '' {
+        $srvname = $name
+    } else {
+        $srvname = $servername
     }
-  }
 
-  # Same as above, but for logroot
-  if ! defined(File[$logroot]) {
-    file { $logroot:
-      ensure => directory,
+    if $ssl == true {
+        include apache::mod::ssl
     }
-  }
 
-  file { "${priority}-${name}.conf":
-    ensure  => $ensure,
-    path    => "/etc/apache2/sites-enabled/${priority}-${name}.conf",
-    content => template($template),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    require => [
-      Package['httpd'],
-      File[$docroot],
-      File[$logroot],
-    ],
-    notify  => Service['httpd'],
-  }
+    # Since the template will use auth, redirect to https requires mod_rewrite
+    if $redirect_ssl == true {
+        include apache::mod::rewrite
+    }
+
+    # This ensures that the docroot exists
+    # But enables it to be specified across multiple vhost resources
+    if ! defined(File[$docroot]) {
+        file { $docroot:
+            ensure => directory,
+            owner  => $docroot_owner,
+            group  => $docroot_group,
+        }
+    }
+
+    # Same as above, but for logroot
+    if ! defined(File[$logroot]) {
+        file { $logroot:
+            ensure => directory,
+        }
+    }
+
+    file { "${priority}-${name}.conf":
+        ensure  => $ensure,
+        path    => "/etc/apache2/sites-enabled/${priority}-${name}.conf",
+        content => template($template),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => [
+            Package['httpd'],
+            File[$docroot],
+            File[$logroot],
+        ],
+        notify  => Service['httpd'],
+    }
 }
