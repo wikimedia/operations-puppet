@@ -99,10 +99,10 @@ define apache::vhost(
         group   => 'root',
         mode    => '0755',
         require => [
-            Package['httpd'],
+            Package['apache2'],
             File[$docroot],
             File[$logroot],
         ],
-        notify  => Service['httpd'],
+        notify  => Service['apache2'],
     }
 }

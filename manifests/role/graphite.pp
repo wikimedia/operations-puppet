@@ -209,13 +209,13 @@ class role::graphite {
 
     file { '/etc/apache2/sites-available/graphite':
         content => template('graphite/graphite.apache.erb'),
-        require => Package['httpd'],
+        require => Package['apache2'],
     }
 
     file { '/etc/apache2/sites-enabled/graphite':
         ensure => link,
         target => '/etc/apache2/sites-available/graphite',
-        notify => Service['httpd'],
+        notify => Service['apache2'],
     }
 
     nrpe::monitor_service { 'carbon':

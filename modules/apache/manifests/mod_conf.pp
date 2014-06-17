@@ -22,15 +22,15 @@ define apache::mod_conf(
         exec { "ensure_${ensure}_mod_${mod}":
             command => "/usr/sbin/a2enmod ${mod}",
             creates => "/etc/apache2/mods-enabled/${loadfile}",
-            require => Package['httpd'],
-            notify  => Service['httpd'],
+            require => Package['apache2'],
+            notify  => Service['apache2'],
         }
     } elsif $ensure == absent {
         exec { "ensure_${ensure}_mod_${mod}":
             command => "/usr/sbin/a2dismod ${mod}",
             onlyif  => "/usr/bin/test -L /etc/apache2/mods-enabled/${loadfile}",
-            require => Package['httpd'],
-            notify  => Service['httpd'],
+            require => Package['apache2'],
+            notify  => Service['apache2'],
         }
     } else {
         fail("'${ensure}' is not a valid value for ensure.")

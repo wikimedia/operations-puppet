@@ -22,13 +22,13 @@ class role::gdash {
 
     file { '/etc/apache2/sites-available/gdash':
         content => template('apache/sites/gdash.wikimedia.org.erb'),
-        require => Package['httpd'],
+        require => Package['apache2'],
     }
 
     file { '/etc/apache2/sites-enabled/gdash':
         ensure => link,
         target => '/etc/apache2/sites-available/gdash',
-        notify => Service['httpd'],
+        notify => Service['apache2'],
     }
 
     # We're on the backend, no https here.

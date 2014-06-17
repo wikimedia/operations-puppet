@@ -21,21 +21,8 @@ class apache( $service_enable = true ) {
     include apache::mod::filter
     include apache::mod::version
 
-    # transitional!
-    package { 'httpd':
-        name   => 'apache2.2-common',
-        ensure => installed,
-    }
-
     package { [ 'apache2', 'apache2-mpm-prefork' ]:
         ensure => present,
-    }
-
-    # Dirty hack. Ori will fix/revert by EOD 17-Jun-2014.
-    service { 'httpd':
-        provider  => base,
-        start     => '/bin/true',
-        stop      => '/bin/true',
     }
 
     service { 'apache2':
@@ -48,7 +35,7 @@ class apache( $service_enable = true ) {
         ensure  => directory,
         recurse => true,
         purge   => true,
-        notify  => Service['httpd'],
-        require => Package['httpd'],
+        notify  => Service['apache2'],
+        require => Package['apache2'],
     }
 }
