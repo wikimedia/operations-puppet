@@ -44,7 +44,6 @@ class role::otrs (
 
     $packages = [
         'libapache-dbi-perl',
-        'libapache2-mod-perl2',
         'libdbd-mysql-perl',
         'libgd-graph-perl',
         'libgd-text-perl',
