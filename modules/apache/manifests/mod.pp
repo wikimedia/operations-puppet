@@ -18,6 +18,7 @@ class apache::mod::dav           { apache::mod_conf { 'dav':           } }
 class apache::mod::dav_fs        { apache::mod_conf { 'dav_fs':        } }
 class apache::mod::filter        { apache::mod_conf { 'filter':        } }
 class apache::mod::headers       { apache::mod_conf { 'headers':       } }
+class apache::mod::proxy         { apache::mod_conf { 'proxy':         } }
 class apache::mod::proxy_http    { apache::mod_conf { 'proxy_http':    } }
 class apache::mod::rewrite       { apache::mod_conf { 'rewrite':       } }
 class apache::mod::ssl           { apache::mod_conf { 'ssl':           } }
@@ -29,7 +30,6 @@ class apache::mod::fcgid         { apache::mod_conf { 'fcgid':         } <- pack
 class apache::mod::passenger     { apache::mod_conf { 'passenger':     } <- package { 'libapache2-mod-passenger': } }
 class apache::mod::perl2         { apache::mod_conf { 'perl2':         } <- package { 'libapache2-mod-perl2':     } }
 class apache::mod::php5          { apache::mod_conf { 'php5':          } <- package { 'libapache2-mod-php5':      } }
-class apache::mod::proxy         { apache::mod_conf { 'proxy':         } <- package { 'libapache2-mod-proxy':     } }
 class apache::mod::python        { apache::mod_conf { 'python':        } <- package { 'libapache2-mod-python':    } }
 class apache::mod::rpaf          { apache::mod_conf { 'rpaf':          } <- package { 'libapache2-mod-rpaf':      } }
 class apache::mod::uwsgi         { apache::mod_conf { 'uwsgi':         } <- package { 'libapache2-mod-uwsgi':     } }
