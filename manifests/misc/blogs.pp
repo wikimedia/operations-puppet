@@ -17,8 +17,8 @@ class misc::blogs::wikimedia {
 
     # apache virtual host for blog.wikimedia.org
     file {
-        '/etc/apache2/sites-available/blog.wikimedia.org':
-            path   => '/etc/apache2/sites-available/blog.wikimedia.org',
+        '/etc/apache2/sites-enabled/blog.wikimedia.org':
+            path   => '/etc/apache2/sites-enabled/blog.wikimedia.org',
             mode   => '0444',
             owner  => 'root',
             group  => 'root',

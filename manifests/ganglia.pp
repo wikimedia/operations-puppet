@@ -464,7 +464,7 @@ class ganglia::web {
         $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
     }
 
-    file { "/etc/apache2/sites-available/${ganglia_servername}":
+    file { "/etc/apache2/sites-enabled/${ganglia_servername}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
@@ -506,7 +506,6 @@ class ganglia::web {
         source => 'puppet:///files/ganglia/rc.local',
     }
 
-    apache_site { 'ganglia': name => $ganglia_servername }
     include ::apache::mod::rewrite
 
     package { 'librrds-perl':

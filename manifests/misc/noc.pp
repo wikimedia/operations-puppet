@@ -6,9 +6,9 @@ class misc::noc-wikimedia {
 	include ::apache
 
 	file {
-		"/etc/apache2/sites-available/noc.wikimedia.org":
+		"/etc/apache2/sites-enabled/noc.wikimedia.org":
 			require => [ Class['::apache::mod::userdir', '::apache::mod::cgi'], Package[libapache2-mod-php5] ],
-			path => "/etc/apache2/sites-available/noc.wikimedia.org",
+			path => "/etc/apache2/sites-enabled/noc.wikimedia.org",
 			mode => 0444,
 			owner => root,
 			group => root,
@@ -16,15 +16,12 @@ class misc::noc-wikimedia {
 	}
 
 	# ensure default site is removed
-	apache_site { 000_default: name => "000-default", ensure => absent }
-	apache_site { 000-default-ssl: name => "000-default-ssl", ensure => absent }
 
 	include ::apache::mod::php5
 	include ::apache::mod::userdir
 	include ::apache::mod::cgi
 	include ::apache::mod::ssl
 
-	apache_site { noc: name => "noc.wikimedia.org" }
 
 	# Monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http_url!noc.wikimedia.org!http://noc.wikimedia.org" }

@@ -31,7 +31,7 @@ class puppetmaster::passenger(
     }
 
     file {
-        '/etc/apache2/sites-available/puppetmaster':
+        '/etc/apache2/sites-enabled/puppetmaster':
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
@@ -44,10 +44,6 @@ class puppetmaster::passenger(
     }
 
     include ::apache::mod::passenger
-    apache_site { 'puppetmaster':
-        name    => 'puppetmaster',
-        require => Class['::apache::mod::passenger'],
-    }
 
     # Since we are running puppet via passenger, we need to ensure
     # the puppetmaster service is stopped, since they use the same port

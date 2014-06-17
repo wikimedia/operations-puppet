@@ -66,7 +66,7 @@ class role::kibana {
     include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
 
-    file { "/etc/apache2/sites-available/${hostname}":
+    file { "/etc/apache2/sites-enabled/${hostname}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
@@ -77,8 +77,8 @@ class role::kibana {
 
     file { "/etc/apache2/sites-enabled/${hostname}":
         ensure  => link,
-        target  => "/etc/apache2/sites-available/${hostname}",
-        require => File["/etc/apache2/sites-available/${hostname}"],
+        target  => "/etc/apache2/sites-enabled/${hostname}",
+        require => File["/etc/apache2/sites-enabled/${hostname}"],
         notify  => Service['apache2'],
     }
 }

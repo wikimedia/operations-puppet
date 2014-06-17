@@ -90,35 +90,35 @@ class misc::fundraising {
     }
 
     #apache conf stuffs
-    file { '/etc/apache2/sites-available/000-donate':
+    file { '/etc/apache2/sites-enabled/000-donate':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///private/misc/fundraising/apache.conf.donate',
     }
 
-    file { '/etc/apache2/sites-available/001-civicrm':
+    file { '/etc/apache2/sites-enabled/001-civicrm':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///private/misc/fundraising/apache.conf.civicrm',
     }
 
-    file { '/etc/apache2/sites-available/002-civicrm-ssl':
+    file { '/etc/apache2/sites-enabled/002-civicrm-ssl':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///private/misc/fundraising/apache.conf.civicrm-ssl',
     }
 
-    file { '/etc/apache2/sites-available/003-fundraising':
+    file { '/etc/apache2/sites-enabled/003-fundraising':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///private/misc/fundraising/apache.conf.fundraising',
     }
 
-    file { '/etc/apache2/sites-available/004-fundraising-ssl':
+    file { '/etc/apache2/sites-enabled/004-fundraising-ssl':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -159,21 +159,6 @@ class misc::fundraising {
     include ::apache::mod::ssl
 
     #enable apache sites
-    apache_site { 'donate':
-        name => '000-donate',
-    }
-    apache_site { 'civicrm':
-        name => '001-civicrm',
-    }
-    apache_site { 'civicrm-ssl':
-        name => '002-civicrm-ssl',
-    }
-    apache_site { 'fundraising':
-        name => '003-fundraising',
-    }
-    apache_site { 'fundraising-ssl':
-        name => '004-fundraising-ssl',
-    }
 
 }
 

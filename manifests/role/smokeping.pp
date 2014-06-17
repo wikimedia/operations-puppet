@@ -33,9 +33,9 @@ class role::smokeping {
 
     # dependencies
     File['/srv/org/'] -> File['/srv/org/wikimedia/'] ->
-    File['/srv/org/wikimedia/smokeping/'] -> File["/etc/apache2/sites-available/${smokeping_host}"]
+    File['/srv/org/wikimedia/smokeping/'] -> File["/etc/apache2/sites-enabled/${smokeping_host}"]
 
-    file { "/etc/apache2/sites-available/${smokeping_host}":
+    file { "/etc/apache2/sites-enabled/${smokeping_host}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
@@ -60,7 +60,6 @@ class role::smokeping {
         group   => 'root',
     }
 
-    apache_site { 'smokeping': name => $smokeping_host }
     apache_confd {'namevirtualhost': install => true, name => 'namevirtualhost'}
 
 }

@@ -393,7 +393,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     }
 
     file {
-        "/etc/apache2/sites-available/${controller_hostname}":
+        "/etc/apache2/sites-enabled/${controller_hostname}":
             require => [ Package[php5] ],
             mode => 0644,
             owner => root,
@@ -440,7 +440,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
 
     file { '/etc/apache2/conf.d/ports-wikitech.conf':
             ensure => present,
-            require => File["/etc/apache2/sites-available/${controller_hostname}"],
+            require => File["/etc/apache2/sites-enabled/${controller_hostname}"],
             mode => '0644',
             owner => 'root',
             group => 'root',
@@ -483,11 +483,6 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     }
 
 
-    if ( $::realm == "production" ) {
-        apache_site { controller: name => "wikitech.wikimedia.org" }
-    } else {
-        apache_site { controller: name => "${controller_hostname}" }
-    }
     include ::apache::mod::rewrite
 
     include backup::host

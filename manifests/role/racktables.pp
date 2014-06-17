@@ -38,7 +38,7 @@ class role::racktables {
 
 
     file {
-        "/etc/apache2/sites-available/${racktables_host}":
+        "/etc/apache2/sites-enabled/${racktables_host}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
@@ -47,7 +47,6 @@ class role::racktables {
         content => template('apache/sites/racktables.wikimedia.org.erb');
     }
 
-    apache_site { 'racktables': name => "${racktables_host}" }
     apache_confd {'namevirtualhost': install => true, name => 'namevirtualhost'}
     include ::apache::mod::rewrite
 

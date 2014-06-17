@@ -94,7 +94,7 @@ class misc::rt(
     notify      => Service[apache2];
   }
 
-  file { "/etc/apache2/sites-available/${site}":
+  file { "/etc/apache2/sites-enabled/${site}":
     ensure  => present,
     owner   => root,
     group   => root,
@@ -114,9 +114,5 @@ class misc::rt(
   }
 
   include ::apache::mod::perl
-
-  apache_site { "${site}":
-    name => "${site}"
-  }
 
 }

@@ -59,7 +59,7 @@ class wikimania_scholarships(
     deployment::target { 'scholarships': }
 
     file {
-        "/etc/apache2/sites-available/${hostname}":
+        "/etc/apache2/sites-enabled/${hostname}":
             ensure  => present,
             mode    => '0444',
             owner   => 'root',
@@ -91,8 +91,6 @@ class wikimania_scholarships(
         unless  => '/usr/sbin/apache2ctl -M | /bin/grep -q rewrite',
         notify  => Service['apache2'],
     }
-
-    apache_site { 'wikimania_scholarships': name => $hostname }
 
     apache_confd { 'namevirtualhost':
         install => true,

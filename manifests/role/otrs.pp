@@ -72,7 +72,7 @@ class role::otrs (
         content => template('otrs/Config.pm.erb'),
     }
 
-    file { '/etc/apache2/sites-available/ticket.wikimedia.org':
+    file { '/etc/apache2/sites-enabled/ticket.wikimedia.org':
         ensure => 'file',
         owner  => 'root',
         group  => 'root',
@@ -128,7 +128,6 @@ class role::otrs (
     include ::apache::mod::perl
     include ::apache::mod::rewrite
     include ::apache::mod::ssl
-    apache_site { 'ticket': name => 'ticket.wikimedia.org' }
 
     include clamav
     class { 'spamassassin':

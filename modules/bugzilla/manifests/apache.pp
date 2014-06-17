@@ -8,10 +8,9 @@ class bugzilla::apache ($svc_name, $attach_svc_name, $docroot, $cipher_suite){
     install_certificate{ $attach_svc_name: }
 
     # this includes them both, 80 and 443
-    apache_site { "000-${svc_name}": name => "000-${svc_name}" }
 
     file {
-        "/etc/apache2/sites-available/000-${svc_name}":
+        "/etc/apache2/sites-enabled/000-${svc_name}":
             ensure   => present,
             content  => template("bugzilla/apache/${svc_name}.erb"),
             mode     => '0444',

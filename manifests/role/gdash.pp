@@ -20,14 +20,14 @@ class role::gdash {
     include ::apache
     include ::apache::mod::uwsgi
 
-    file { '/etc/apache2/sites-available/gdash':
+    file { '/etc/apache2/sites-enabled/gdash':
         content => template('apache/sites/gdash.wikimedia.org.erb'),
         require => Package['apache2'],
     }
 
     file { '/etc/apache2/sites-enabled/gdash':
         ensure => link,
-        target => '/etc/apache2/sites-available/gdash',
+        target => '/etc/apache2/sites-enabled/gdash',
         notify => Service['apache2'],
     }
 
