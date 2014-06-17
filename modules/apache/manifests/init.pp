@@ -38,4 +38,7 @@ class apache( $service_enable = true ) {
         notify  => Service['apache2'],
         require => Package['apache2'],
     }
+
+    # Provision Apache modules before sites
+    Apache::Mod_conf <| |> -> Apache::Site <| |>
 }
