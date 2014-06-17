@@ -31,8 +31,9 @@ class wikistats::web (
 
     include ::apache::mod::rewrite
 
-    apache_confd { 'namevirtualhost':
-        install => true,
-        name    => 'namevirtualhost',
+    file { '/etc/apache2/conf.d/namevirtualhost':
+        source => 'puppet:///files/apache/conf.d/namevirtualhost',
+        mode   => '0444',
+        notify => Service['apache2'],
     }
 }

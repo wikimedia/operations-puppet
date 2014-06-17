@@ -2,7 +2,6 @@
 #site.pp
 
 import 'realm.pp' # These ones first
-import 'generic-definitions.pp'
 
 import 'admins.pp'
 import 'backups.pp'

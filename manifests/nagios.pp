@@ -1,7 +1,5 @@
 # nagios.pp
 
-import "generic-definitions.pp"
-
 $nagios_config_dir = '/etc/nagios'
 
 $ganglia_url = 'http://ganglia.wikimedia.org'

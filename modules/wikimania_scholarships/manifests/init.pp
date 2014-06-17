@@ -85,16 +85,12 @@ class wikimania_scholarships(
             group  => 'root';
     }
 
-    # Webserver setup
-    exec { 'enable mod_rewrite':
-        command => '/usr/sbin/a2enmod rewrite',
-        unless  => '/usr/sbin/apache2ctl -M | /bin/grep -q rewrite',
-        notify  => Service['apache2'],
-    }
+    include ::apache::mod::rewrite
 
-    apache_confd { 'namevirtualhost':
-        install => true,
-        name    => 'namevirtualhost'
+    file { '/etc/apache2/conf.d/namevirtualhost':
+        source => 'puppet:///files/apache/conf.d/namevirtualhost',
+        mode   => '0444',
+        notify => Service['apache2'],
     }
 }
 # vim:sw=4 ts=4 sts=4 et:

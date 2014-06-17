@@ -5,8 +5,6 @@
 # - $dns_auth_soa_name:DNS SOA name of the server
 # - $dns_auth_master:Which DNS server to use as "master" to fetch zones from
 
-import 'generic-definitions.pp'
-
 class dns::auth-server::ldap(
     $dns_auth_ipaddress,
     $dns_auth_soa_name,
