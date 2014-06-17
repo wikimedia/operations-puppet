@@ -113,9 +113,7 @@ class misc::rt(
     source => 'puppet:///files/apache/ports.conf.ssl';
   }
 
-  apache_module { 'perl':
-    name => 'perl',
-  }
+  include ::apache::mod::perl
 
   apache_site { "${site}":
     name => "${site}"

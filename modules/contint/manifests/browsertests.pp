@@ -44,7 +44,7 @@ class contint::browsertests(
         ]: ensure => present
     }
 
-    apache_module { 'browser_test_apache_mod_rewrite': name => 'rewrite' }
+    include ::apache::mod::rewrite
 
     # And we need a vhost :-)
     contint::localvhost { 'browsertests':

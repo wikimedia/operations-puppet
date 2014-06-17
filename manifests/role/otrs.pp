@@ -125,9 +125,9 @@ class role::otrs (
     }
 
     install_certificate{ 'ticket.wikimedia.org': ca => 'RapidSSL_CA.pem' }
-    apache_module { 'perl': name => 'perl' }
-    apache_module { 'rewrite': name => 'rewrite' }
-    apache_module { 'ssl': name => 'ssl' }
+    include ::apache::mod::perl
+    include ::apache::mod::rewrite
+    include ::apache::mod::ssl
     apache_site { 'ticket': name => 'ticket.wikimedia.org' }
 
     include clamav

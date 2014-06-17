@@ -5,10 +5,6 @@ class subversion ($host){
 
     # include webserver::php5
 
-    package { 'libapache2-svn':
-        ensure => present,
-    }
-
     group { 'svn':
         ensure    => present,
         gid       => 550,
@@ -54,7 +50,7 @@ class subversion ($host){
         prefix => '000-'
     }
 
-    apache_module { 'authz_svn': name => 'authz_svn' }
+    include ::apache::mod::authz_svn
 
     exec { '/usr/bin/svn co file:///svnroot/mediawiki/USERINFO svnusers':
         creates => '/var/cache/svnusers/.svn',
