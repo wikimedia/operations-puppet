@@ -6,9 +6,9 @@ class smokeping::web {
         mode => 0555,
     }
 
-    @webserver::apache::module { 'fcgid': }
+    include ::apache::mod::fcgid
     @webserver::apache::site { 'smokeping.wikimedia.org':
-        require => [Webserver::Apache::Module['fcgid'], File['/usr/share/smokeping/www/smokeping.fcgi']],
+        require => [Class['::apache::mod::fcgid'], File['/usr/share/smokeping/www/smokeping.fcgi']],
         docroot => '/var/www',
         custom => [
             'AliasMatch ^/($|smokeping\.cgi) /usr/share/smokeping/www/smokeping.fcgi',

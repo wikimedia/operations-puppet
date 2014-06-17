@@ -76,12 +76,14 @@ class role::librenms {
 
     install_certificate { $sitename: }
 
-    @webserver::apache::module { [ 'php5', 'rewrite' ]: }
+    include ::apache::mod::php5
+    include ::apache::mod::rewrite
+    include ::apache::mod::ssl
     @webserver::apache::site { $sitename:
         docroot => "${install_dir}/html",
         ssl     => 'redirected',
         require => [
-            Webserver::Apache::Module['php5'],
+            Class['::apache::mod::php5', '::apache::mod::ssl'],
             Install_certificate[$sitename],
             Class['::librenms'],
         ],

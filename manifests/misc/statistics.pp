@@ -215,9 +215,9 @@ class misc::statistics::webserver {
         require => Class['webserver::apache'],
     }
 
-    webserver::apache::module { ['rewrite', 'proxy', 'proxy_http']:
-        require => Class['webserver::apache']
-    }
+    include ::apache::mod::rewrite
+    include ::apache::mod::proxy
+    include ::apache::mod::proxy_http
 }
 
 # reportcard.wikimedia.org
@@ -369,8 +369,8 @@ class misc::statistics::sites::metrics {
     $redirect_target = "https://metrics.wmflabs.org/"
 
     include webserver::apache
-    webserver::apache::module { "alias": }
-    webserver::apache::module { "ssl": }
+    include ::apache::mod::alias
+    include ::apache::mod::ssl
 
     # install metrics.wikimedia.org SSL certificate
     install_certificate{ $site_name: }
@@ -378,7 +378,7 @@ class misc::statistics::sites::metrics {
     # Set up the VirtualHost
     file { "/etc/apache2/sites-available/$site_name":
         content => template("apache/sites/${site_name}.erb"),
-        require =>  [Class["webserver::apache"], Webserver::Apache::Module['alias'], Webserver::Apache::Module['ssl']],
+        require => [Class["webserver::apache"], Class['::apache::mod::alias', '::apache::mod::ssl']],
         notify  => Class['webserver::apache::service'],
     }
     file { "/etc/apache2/sites-enabled/$site_name":
