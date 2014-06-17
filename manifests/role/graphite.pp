@@ -210,12 +210,7 @@ class role::graphite {
     file { '/etc/apache2/sites-enabled/graphite':
         content => template('graphite/graphite.apache.erb'),
         require => Package['apache2'],
-    }
-
-    file { '/etc/apache2/sites-enabled/graphite':
-        ensure => link,
-        target => '/etc/apache2/sites-enabled/graphite',
-        notify => Service['apache2'],
+        notify  => Service['apache2'],
     }
 
     nrpe::monitor_service { 'carbon':
@@ -228,5 +223,4 @@ class role::graphite {
         description   => 'graphite.wikimedia.org',
         check_command => 'check_http_url!graphite.wikimedia.org!/render',
     }
-
 }
