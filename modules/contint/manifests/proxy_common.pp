@@ -3,7 +3,7 @@ class contint::proxy_common {
 
   class {'webserver::php5': ssl => false; }
 
-  apache_module { 'contint_mod_proxy': name => 'proxy' }
-  apache_module { 'contint_mod_proxy_http': name => 'proxy_http' }
+  include ::apache::mod::proxy
+  include ::apache::mod::proxy_http
 
 }

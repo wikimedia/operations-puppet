@@ -7,7 +7,7 @@ class misc::noc-wikimedia {
 
 	file {
 		"/etc/apache2/sites-available/noc.wikimedia.org":
-			require => [ Apache_module[userdir], Apache_module[cgi], Package[libapache2-mod-php5] ],
+			require => [ Class['::apache::mod::userdir', '::apache::mod::cgi'], Package[libapache2-mod-php5] ],
 			path => "/etc/apache2/sites-available/noc.wikimedia.org",
 			mode => 0444,
 			owner => root,
@@ -19,10 +19,10 @@ class misc::noc-wikimedia {
 	apache_site { 000_default: name => "000-default", ensure => absent }
 	apache_site { 000-default-ssl: name => "000-default-ssl", ensure => absent }
 
-	apache_module { php5: name => "php5" }
-	apache_module { userdir: name => "userdir" }
-	apache_module { cgi: name => "cgi" }
-	apache_module { ssl: name => "ssl" }
+	include ::apache::mod::php5
+	include ::apache::mod::userdir
+	include ::apache::mod::cgi
+	include ::apache::mod::ssl
 
 	apache_site { noc: name => "noc.wikimedia.org" }
 

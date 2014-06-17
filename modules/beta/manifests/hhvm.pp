@@ -13,18 +13,13 @@ class beta::hhvm {
     }
 
     class { '::hhvm':
-        require => Apache_module['apache_mod_fastcgi_for_hhvm'],
+        require => Class['::apache::mod::fastcgi'],
     }
 
-    package { 'libapache2-mod-fastcgi':
-        ensure => present,
-        before => Apache_module['apache_mod_fastcgi_for_hhvm'],
-    }
-
-    apache_module { 'apache_mod_rewrite_for_hhvm': name => 'rewrite', }
-    apache_module { 'apache_mod_actions_for_hhvm': name => 'actions', }
-    apache_module { 'apache_mod_alias_for_hhvm': name => 'alias', }
-    apache_module { 'apache_mod_fastcgi_for_hhvm': name => 'fastcgi', }
+    include ::apache::mod::rewrite
+    include ::apache::mod::actions
+    include ::apache::mod::alias
+    include ::apache::mod::fastcgi
 
     file { '/var/run/hhvm':
         ensure => directory,

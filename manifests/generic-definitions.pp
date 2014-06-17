@@ -16,25 +16,6 @@ define apache_site(
     }
 }
 
-# Enables a certain Apache 2 module
-define apache_module($name) {
-    file { "/etc/apache2/mods-available/${name}.conf":
-        ensure => 'present',
-    }
-
-    file { "/etc/apache2/mods-available/${name}.load":
-        ensure => 'present',
-    }
-
-    file { "/etc/apache2/mods-enabled/${name}.conf":
-        ensure => "../mods-available/${name}.conf",
-    }
-
-    file { "/etc/apache2/mods-enabled/${name}.load":
-        ensure => "../mods-available/${name}.load",
-    }
-}
-
 define apache_confd(
     $install= 'false',
     $enable = 'true',

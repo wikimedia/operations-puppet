@@ -488,7 +488,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     } else {
         apache_site { controller: name => "${controller_hostname}" }
     }
-    apache_module { rewrite: name => "rewrite" }
+    include ::apache::mod::rewrite
 
     include backup::host
     backup::set {'a-backup': }

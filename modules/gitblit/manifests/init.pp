@@ -73,23 +73,13 @@ class gitblit(
         name => $host,
     }
 
-    apache_module { 'headers':
-        name => 'headers',
-    }
+    include ::apache::mod::headers
 
-    apache_module { 'rewrite':
-        name => 'rewrite',
-    }
+    include ::apache::mod::rewrite
 
-    apache_module { 'proxy':
-        name => 'proxy',
-    }
+    include ::apache::mod::proxy
 
-    apache_module { 'proxy_http':
-        name => 'proxy_http',
-    }
+    include ::apache::mod::proxy_http
 
-    apache_module { 'ssl':
-        name => 'ssl',
-    }
+    include ::apache::mod::ssl
 }

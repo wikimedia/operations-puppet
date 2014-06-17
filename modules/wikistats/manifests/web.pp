@@ -29,7 +29,7 @@ class wikistats::web (
         group   => 'www-data';
     }
 
-    apache_module { 'mod_rewrite': name => 'rewrite' }
+    include ::apache::mod::rewrite
 
     apache_confd { 'namevirtualhost':
         install => true,
