@@ -1954,6 +1954,9 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
     if $::hostname =~ /^mw115[34]$/ {
         $ganglia_aggregator = true
     }
+    if $::hostname == 'mw1153.eqiad.wmnet' {
+        $puppet_version = '3'
+    }
 
     include role::mediawiki::imagescaler
 }
