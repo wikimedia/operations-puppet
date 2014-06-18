@@ -14,7 +14,7 @@
 #
 # == Globals
 # These parameters can be set globally or via wikitech.
-# $wikimetrics_web_mode       - Either 'apache' or 'daemon'. If apache, 
+# $wikimetrics_web_mode       - Either 'apache' or 'daemon'. If apache,
 #                               wikimetrics will be run in WSGI.  If
 #                               daemon, wikimetrics will be managed
 #                               as a python daemon process via upstart.
@@ -181,10 +181,18 @@ class role::wikimetrics {
         }
     }
 
+    # Install redis and use a custom config template.
+    # Wikimetrics needs redis to save data for longer
+    # than the default redis.conf.erb template allows.
+    class { '::redis':
+        config_template => 'wikimetrics/redis.conf.erb',
+    }
+
     # TODO: Support installation of queue, web and database
     # classes on different nodes (maybe?).
     class { '::wikimetrics::queue':
         require => Exec['install_wikimetrics_dependencies'],
+        require => Class['::redis'],
     }
 
     class { '::wikimetrics::web':
