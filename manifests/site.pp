@@ -1902,6 +1902,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     }
 
     if $::hostname == 'mw1010' {
+        $puppet_version = '3'
         include misc::deployment::scap_proxy
     }
 
