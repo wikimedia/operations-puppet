@@ -529,7 +529,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
     include standard
 }
 
-node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
+node /^cp30(0[3-9]|10|1[5-8])\.esams\.wikimedia\.org$/ {
     include admin
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
@@ -546,13 +546,6 @@ node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
 
     $cluster = 'cache_mobile'
     include role::cache::mobile
-}
-
-# cp3018 has eth1 connected directly to a router in esams.
-# This node will temporarily be used for network tests.
-node 'cp3018.esams.wmnet' {
-    include admin
-    interface::add_ip6_mapped { 'main': }
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
