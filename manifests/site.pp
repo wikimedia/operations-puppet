@@ -1925,13 +1925,11 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
 # mw1114-1148 are api apaches (precise)
 node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
     if $::hostname =~ /^mw111[45]$/ {
         $ganglia_aggregator = true
-    }
-    if $::hostname == 'mw1114.eqiad.wmnet' {
-        $puppet_version = '3'
     }
 
     include role::mediawiki::appserver::api
