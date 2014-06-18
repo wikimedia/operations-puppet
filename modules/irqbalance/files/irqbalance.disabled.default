@@ -1,0 +1,7 @@
+#THIS FILE IS MANAGED BY PUPPET!
+#Configuration for the irqbalance daemon
+
+#Should irqbalance be enabled?
+ENABLED="0"
+#Balance the IRQs only once?
+ONESHOT="0"
