@@ -757,9 +757,6 @@ node /^db10(04|40|42|49|56|59|64|68)\.eqiad\.wmnet/ {
 
 node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
     include admin
-    if $::hostname =~ /^db1021/ {
-        $ganglia_aggregator = true
-    }
     $cluster = 'mysql'
     class { 'role::coredb::s5':
         innodb_file_per_table => true,
@@ -842,6 +839,7 @@ node 'db1017.eqiad.wmnet' {
 node 'db1053.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
+    $ganglia_aggregator = true
     class { 'role::db::sanitarium':
         instances => {
             's1' => {
@@ -859,6 +857,7 @@ node 'db1053.eqiad.wmnet' {
 node 'db1054.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
+    $ganglia_aggregator = true
     class { 'role::db::sanitarium':
         instances => {
             's2' => {
@@ -892,6 +891,7 @@ node 'db1054.eqiad.wmnet' {
 node 'db1057.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
+    $ganglia_aggregator = true
     class { 'role::db::sanitarium':
         instances => {
             's3' => {
