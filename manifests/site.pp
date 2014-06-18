@@ -1961,6 +1961,7 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 
 # mw1161-1188 are apaches (precise)
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     if $::hostname == 'mw1161' {
@@ -1972,6 +1973,7 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 
 # mw1189-1208 are api apaches (precise)
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
     if $::hostname == 'mw1201' {
@@ -1983,6 +1985,7 @@ node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
 
 # mw1209-1220 are apaches (precise)
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     include role::mediawiki::appserver
