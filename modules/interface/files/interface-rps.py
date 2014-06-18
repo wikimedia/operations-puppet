@@ -10,9 +10,14 @@
 # given a second parameter for lookups in /proc/interrupts.  e.g. for
 # bnx2x, this would be "eth0-fp-%d".
 #
-# Sets up matching Transmit Packet Steering (XPS) queues only
-# for cards driven by bnx2x which appear to have a set of tx queues that
-# match up with 3x CoS bands multiplied by the rx queue count.
+# Sets up matching Transmit Packet Steering (XPS) queues if possible as
+# well.  There are only two XPS cases currently covered: generic support
+# for assuming 1:1 tx:rx mapping if the queue counts look even (which
+# works for at least bnx2), and special support for bnx2x:
+#
+# For cards driven by bnx2x which appear to have a set of tx queues that
+# match up with 3x CoS bands multiplied by the rx queue count, we enable
+# XPS and group the bands as appropriate.
 # This is the behavior exhibited by current bnx2x drivers that have
 # working XPS implementations (e.g. in the Ubuntu 3.13.0-30 kernel), on
 # our hardware and config.  The CoS band count could vary on different
@@ -195,6 +200,13 @@ def main():
     tx_queue_map = None
     if driver == 'bnx2x':
         tx_queue_map = get_bnx2x_cos_queue_map(tx_queues, rx_queues)
+    # Some cards are very simple (e.g. bnx2); assume if counts match
+    #   then the queues must map 1:1
+    elif len(tx_queues) == len(rx_queues):
+        tx_queue_map = {rxq: rxq for rxq in rx_queues}
+
+    # This catches the case that a driver-specific txq mapper returned
+    #   None due to some validation failure
     if tx_queue_map is None:
         tx_queue_map = {rxq: None for rxq in rx_queues}
 
