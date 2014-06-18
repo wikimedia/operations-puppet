@@ -152,15 +152,6 @@ class webserver::apache {
             mode    => '0444',
             content => template('apache/generic_vhost.erb'),
         }
-        $enabled_symlink_ensure = $ensure ? {
-            absent => 'absent',
-            default => 'link'
-        }
-        file { "/etc/apache2/sites-enabled/${title}":
-            ensure => $enabled_symlink_ensure,
-            target => "/etc/apache2/sites-enabled/${title}",
-            notify => Service['apache2'],
-        }
     }
 
     # Default selection
