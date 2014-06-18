@@ -1949,13 +1949,11 @@ node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
     $cluster = 'imagescaler'
     if $::hostname =~ /^mw115[34]$/ {
         $ganglia_aggregator = true
-    }
-    if $::fqdn == 'mw1153.eqiad.wmnet' {
-        $puppet_version = '3'
     }
 
     include role::mediawiki::imagescaler
