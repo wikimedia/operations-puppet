@@ -1895,6 +1895,7 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
     $cluster = 'jobrunner'
     if $::hostname =~ /^mw100[12]$/ {
@@ -1902,7 +1903,6 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     }
 
     if $::hostname == 'mw1010' {
-        $puppet_version = '3'
         include misc::deployment::scap_proxy
     }
 
