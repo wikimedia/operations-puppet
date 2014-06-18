@@ -1937,6 +1937,7 @@ node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
 
 # mw1149-1152 are bits apaches (precise)
 node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
     $cluster = 'bits_appserver'
     if $::hostname =~ /^mw115[12]$/ {
