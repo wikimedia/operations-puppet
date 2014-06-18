@@ -14,7 +14,6 @@ class role::mail::mx {
                 '+system_domains',
                 '+wikimedia_domains',
                 '+legacy_mailman_domains',
-                '@mx_primary/ignore=127.0.0.1',
             ],
         enable_mail_relay      => 'primary',
         enable_mail_submission => false,
