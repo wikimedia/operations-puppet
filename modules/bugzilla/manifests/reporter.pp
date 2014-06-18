@@ -3,10 +3,11 @@
 # requires: passwords::bugzilla for the PHP script to connect to db
 class bugzilla::reporter ($bz_report_user = 'reporter') {
 
-    generic::systemuser { 'bzreporter':
-        name   => $bz_report_user,
-        home   => "/home/${bz_report_user}",
-        groups => [ $bz_report_user ]
+    user { 'bzreporter':
+        home       => "/home/${bz_report_user}",
+        groups     => [ $bz_report_user ],
+        managehome => true,
+        system     => true,
     }
 
     require passwords::bugzilla
