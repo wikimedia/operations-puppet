@@ -2814,12 +2814,24 @@ node /virt100[1-7].eqiad.wmnet/ {
     }
 }
 
-node /virt100[8-9].eqiad.wmnet/ {
+node /virt1008.eqiad.wmnet/ {
+    $cluster = 'virt'
+
+    include admin
+    include standard
+
+    #intentional breakage!
+    package { 'coreutils': }
+    package { 'coreutils': }
+}
+
+node /virt1009.eqiad.wmnet/ {
     $cluster = 'virt'
 
     include admin
     include standard
 }
+
 
 node 'iodine.wikimedia.org' {
     class { 'base::firewall': }
