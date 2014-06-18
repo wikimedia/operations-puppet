@@ -191,8 +191,10 @@ class role::wikimetrics {
     # TODO: Support installation of queue, web and database
     # classes on different nodes (maybe?).
     class { '::wikimetrics::queue':
-        require => Exec['install_wikimetrics_dependencies'],
-        require => Class['::redis'],
+        require => [
+            Exec['install_wikimetrics_dependencies'],
+            Class['::redis'],
+        ],
     }
 
     class { '::wikimetrics::web':
