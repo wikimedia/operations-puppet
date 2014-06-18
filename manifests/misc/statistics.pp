@@ -388,6 +388,18 @@ class misc::statistics::sites::metrics {
     }
 }
 
+# == Class misc::statistics::sites::default
+# Serves files from /var/www on this node's $fqdn.
+class misc::statistics::sites::default {
+    apache::vhost { 'default':
+        servername => $::fqdn,
+        port       => '80',
+        docroot    => '/var/www',
+        ssl        => false,
+    }
+}
+
+
 # installs MonogDB
 class misc::statistics::db::mongo {
     include misc::statistics::base
