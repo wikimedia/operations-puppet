@@ -23,10 +23,7 @@ class puppetmaster::passenger(
         packages => 'puppetmaster-passenger',
         before   => Package['puppetmaster-passenger']
     }
-    package { [
-                'puppetmaster-passenger',
-                'libapache2-mod-passenger',
-              ]:
+    package { 'puppetmaster-passenger':
         ensure => latest;
     }
 
