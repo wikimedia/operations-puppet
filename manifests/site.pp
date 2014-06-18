@@ -1485,7 +1485,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     $cluster = 'lvs'
     include admin
     include role::lvs::balancer
-    include role::diamond
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1680,7 +1679,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
     include admin
     include role::lvs::balancer
-    include role::diamond
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',

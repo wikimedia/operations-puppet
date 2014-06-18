@@ -48,16 +48,7 @@ class role::lvs::balancer {
             ],
     }
 
-    # ulsfo+esams on standard now, eqiad to test
-    # In addition to base and ganglia, standard
-    #  brings in exim stuff, role::diamond, and
-    #  and importantly ntp::client.
-    if $::hostname =~ /^lvs[34]00[1234]$/ {
-        include standard
-    }
-    else {
-        include base, ganglia
-    }
+    include standard
 
     class { "::lvs::balancer":
         service_ips => $lvs_balancer_ips,
