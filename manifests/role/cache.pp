@@ -376,6 +376,12 @@ class role::cache {
                         '10.68.16.11',  # deployment-apache02
                     ],
                 },
+                'bits' => {
+                    'eqiad' => [
+                        '10.68.16.74',  # deployment-apache01
+                        '10.68.16.11',  # deployment-apache02
+                    ],
+                },
                 'bits_appservers' => {
                     'eqiad' => [
                         '10.68.16.74',  # deployment-apache01
