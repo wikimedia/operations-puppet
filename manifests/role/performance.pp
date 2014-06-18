@@ -23,10 +23,4 @@ class role::performance {
         content => template('apache/sites/performance.wikimedia.org.erb'),
         require => Package['apache2'],
     }
-
-    file { '/etc/apache2/sites-enabled/performance':
-        ensure => link,
-        target => '/etc/apache2/sites-enabled/performance',
-        notify => Service['apache2'],
-    }
 }
