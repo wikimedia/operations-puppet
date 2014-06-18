@@ -15,6 +15,7 @@ class redis (
     $monitor = true,
     $password = false,
     $auto_aof_rewrite_min_size = '512mb',
+    $config_template = 'redis/redis.conf.erb',
 ) {
     case $::operatingsystem {
         debian, ubuntu: {
@@ -38,7 +39,7 @@ class redis (
     }
 
     file { '/etc/redis/redis.conf':
-        content => template('redis/redis.conf.erb'),
+        content => template($config_template),
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
