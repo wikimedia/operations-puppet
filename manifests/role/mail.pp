@@ -9,6 +9,10 @@ class role::mail::mx {
     include privateexim::aliases::private
     include exim4::ganglia
 
+    mailalias { 'root':
+        recipient => 'root@wikimedia.org',
+    }
+
     class { 'exim::roled':
         local_domains          => [
                 '+system_domains',
@@ -50,6 +54,10 @@ class role::mail::lists {
 
     system::role { 'role::mail::lists':
         description => 'Mailing list server',
+    }
+
+    mailalias { 'root':
+        recipient => 'root@wikimedia.org',
     }
 
     interface::ip { 'lists.wikimedia.org_v4':
