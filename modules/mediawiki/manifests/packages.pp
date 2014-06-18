@@ -2,7 +2,6 @@ class mediawiki::packages {
     package { [
         'imagemagick',
         'python-imaging',
-        'libapache2-mod-php5',
         'libmemcached10',       # XXX still needed?
         'libmemcached11',
         'php-apc',
