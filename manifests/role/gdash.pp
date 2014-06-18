@@ -25,12 +25,6 @@ class role::gdash {
         require => Package['apache2'],
     }
 
-    file { '/etc/apache2/sites-enabled/gdash':
-        ensure => link,
-        target => '/etc/apache2/sites-enabled/gdash',
-        notify => Service['apache2'],
-    }
-
     # We're on the backend, no https here.
     monitor_service { 'gdash':
         description   => 'gdash.wikimedia.org',

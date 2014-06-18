@@ -380,12 +380,6 @@ class misc::statistics::sites::metrics {
         require => [Class["webserver::apache"], Class['::apache::mod::alias', '::apache::mod::ssl']],
         notify  => Service['apache2'],
     }
-    file { "/etc/apache2/sites-enabled/$site_name":
-        ensure  => link,
-        target  => "/etc/apache2/sites-enabled/${site_name}",
-        require => File["/etc/apache2/sites-enabled/${site_name}"],
-        notify  => Service['apache2'],
-    }
 
     # make access and error log for metrics-api readable by wikidev group
     file { ["/var/log/apache2/access.metrics.log", "/var/log/apache2/error.metrics.log"]:
