@@ -1911,6 +1911,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 
 # mw1017-1113 are apaches (precise)
 node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     if $::hostname =~ /^mw101[78]$/ {
@@ -1918,7 +1919,6 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     }
 
     if $::hostname == 'mw1070' {
-        $puppet_version = '3'
         include misc::deployment::scap_proxy
     }
 
