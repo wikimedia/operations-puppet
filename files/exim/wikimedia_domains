@@ -1,21 +1,23 @@
 # This file is managed by puppet
 
-wikimedia.org
-mail.wikimedia.org
-wikipedia.org
-mail.wikipedia.org
 mediawiki.org
 wikibooks.org
 wikidata.org
 wikimedia.cz
 wikimediafoundation.org
+wikimedia.org
 wikinews.org
+wikipedia.org
 wikiquote.org
 wikisource.org
 wikispecies.org
 wikiversity.org
-wiktionary.org
-donate.wikimedia.org
 wikivoyage.de
-wikivoyage.org
 wikivoyage-old.org
+wikivoyage.org
+wiktionary.org
+
+mail.wikimedia.org
+mail.wikipedia.org
+donate.wikimedia.org
+rt.wikimedia.org
