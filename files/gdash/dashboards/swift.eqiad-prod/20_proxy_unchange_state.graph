@@ -1,0 +1,9 @@
+title   "proxy ops/s (not state-changing)"
+
+field :get,
+    :alias => "proxy GET 2xx",
+    :data  => "movingAverage(sumSeries(swift.eqiad-prod.*.proxy-server.object.GET.2*.timing.rate),5)"
+
+field :head,
+    :alias => "proxy HEAD 2xx",
+    :data  => "secondYAxis(movingAverage(sumSeries(swift.eqiad-prod.*.proxy-server.object.HEAD.2*.timing.rate),5))"

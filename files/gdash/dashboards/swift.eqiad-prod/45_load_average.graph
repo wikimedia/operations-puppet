@@ -1,0 +1,9 @@
+title "load average 1min"
+
+field :load_be,
+    :alias => "top 3 load average backend",
+    :data  => "movingAverage(highestMax(servers.ms-be1*.loadavg.01.value, 3),10)"
+
+field :load_fe,
+    :alias => "top 3 load average frontend",
+    :data  => "movingAverage(highestMax(servers.ms-fe1*.loadavg.01.value, 3),10)"
