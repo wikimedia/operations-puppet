@@ -54,7 +54,6 @@ class exim {
 ) {
 
         include exim::smtp
-        include exim::constants
         include network::constants
         include privateexim::listserve
 
