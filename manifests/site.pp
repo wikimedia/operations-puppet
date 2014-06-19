@@ -536,9 +536,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 }
 
 node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
-    if $::hostname == 'cp3003' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     include admin
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
@@ -550,9 +548,7 @@ node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
 }
 
 node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
-    if $::hostname == 'cp3011' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     include admin
     interface::add_ip6_mapped { 'main': }
 
@@ -561,9 +557,7 @@ node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
-    if $::hostname == 'cp3019' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     include admin
     if $::hostname =~ /^cp(3019|3020)$/ {
         $ganglia_aggregator = true
@@ -580,6 +574,9 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
+    if $::hostname == 'cp4001' {
+        $puppet_version = '3'
+    }
     include admin
     # cp4001 and cp4003 are in different racks,
     # make them each ganglia aggregators.
@@ -595,6 +592,9 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
+    if $::hostname == 'cp4005' {
+        $puppet_version = '3'
+    }
     include admin
     if $::hostname =~ /^cp(4005|4013)$/ {
         $ganglia_aggregator = true
@@ -608,6 +608,9 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
+    if $::hostname == 'cp4008' {
+        $puppet_version = '3'
+    }
     include admin
     if $::hostname =~ /^cp(4008|4016)$/ {
         $ganglia_aggregator = true
@@ -621,6 +624,9 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
+    if $::hostname == 'cp4011' {
+        $puppet_version = '3'
+    }
     include admin
     if $::hostname =~ /^cp401[19]$/ {
         $ganglia_aggregator = true
