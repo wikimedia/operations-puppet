@@ -2240,6 +2240,7 @@ node 'potassium.eqiad.wmnet' {
 
 # Live Recent Changes WebSocket stream
 node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
+    $puppet_version = '3'
     include admin
     include standard
     include role::rcstream
