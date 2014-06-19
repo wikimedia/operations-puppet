@@ -41,7 +41,6 @@ class role::swift {
 				source  => "puppet:///files/swift/swift-account-stats",
 				require => [ Package['python-swiftclient'], Package['python-statsd'] ],
 			}
-			$password = $passwords::swift::eqiad_prod::rewrite_password
 			file { "/etc/swift/account_mw_media.env":
 				owner   => 'root',
 				group   => 'root',
@@ -118,7 +117,6 @@ class role::swift {
 				source  => "puppet:///files/swift/swift-account-stats",
 				require => [ Package['python-swiftclient'], Package['python-statsd'] ],
 			}
-			$password = $passwords::swift::esams_prod::rewrite_password
 			file { "/etc/swift/account_mw_media.env":
 				owner   => 'root',
 				group   => 'root',
