@@ -1,10 +1,9 @@
 # This file is managed by puppet
 
+# top-level project domains
 mediawiki.org
 wikibooks.org
 wikidata.org
-wikimedia.community
-wikimedia.cz
 wikimediafoundation.org
 wikimedia.org
 wikinews.org
@@ -13,12 +12,23 @@ wikiquote.org
 wikisource.org
 wikispecies.org
 wikiversity.org
-wikivoyage.de
-wikivoyage-old.org
 wikivoyage.org
 wiktionary.org
 
-mail.wikimedia.org
-mail.wikipedia.org
+# wikivoyage.de -> WMF migration; aliases
+wikivoyage.de
+wikivoyage-old.org
+
+# domains handled by OTRS
+wikimedia.community
+wikimedia.cz
+wikimedia.com
+wikipedia.com
+
+# routed by special-case routers
 donate.wikimedia.org
 rt.wikimedia.org
+
+# legacy; FIXME: possibly unused?
+mail.wikimedia.org
+mail.wikipedia.org
