@@ -1,0 +1,10 @@
+title   "top network errors/drops, all interfaces"
+vtitle  "packets/s"
+
+field :top_tx,
+    :alias => "top 5 drops",
+    :data  => "highestMax(group(servers.ms-fe1*.network.*.tx_drop.value,servers.ms-fe1*.network.*.rx_drop.value,servers.ms-be1*.network.*.tx_drop.value,servers.ms-be1*.network.*.rx_drop.value),5)"
+
+field :top_rx,
+    :alias => "top 5 errors",
+    :data  => "highestMax(group(servers.ms-fe1*.network.*.tx_errors.value,servers.ms-fe1*.network.*.rx_errors.value,servers.ms-be1*.network.*.tx_errors.value,servers.ms-be1*.network.*.rx_errors.value),5)"
