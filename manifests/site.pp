@@ -434,17 +434,22 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
+    if $::hostname == 'cp1037' {
+        $puppet_version = '3'
+    }
     include admin
     if $::hostname =~ /^cp103[78]$/ {
         $ganglia_aggregator = true
     }
-
     interface::add_ip6_mapped { 'main': }
     $cluster = 'cache_text'
     include role::cache::text
 }
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
+    if $::hostname == 'cp1043' {
+        $puppet_version = '3'
+    }
     include admin
     $ganglia_aggregator = true
 
@@ -455,7 +460,9 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
-
+    if $::hostname == 'cp1045' {
+        $puppet_version = '3'
+    }
     class { 'admin': groups => ['parsoid-roots',
                                 'parsoid-admin'] }
 
@@ -468,6 +475,9 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
+    if $::hostname == 'cp1046' {
+        $puppet_version = '3'
+    }
     include admin
     if $::hostname =~ /^cp104[67]$/ {
         $ganglia_aggregator = true
@@ -480,6 +490,9 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 }
 
 node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
+    if $::hostname == 'cp1048' {
+        $puppet_version = '3'
+    }
     include admin
     if $::hostname =~ /^(cp1048|cp1061)$/ {
         $ganglia_aggregator = true
@@ -492,6 +505,9 @@ node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
+    if $::hostname == 'cp1052' {
+        $puppet_version = '3'
+    }
     include admin
     if $::hostname =~ /^cp105[23]$/ {
         $ganglia_aggregator = true
@@ -504,6 +520,9 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 }
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
+    if $::hostname == 'cp1056' {
+        $puppet_version = '3'
+    }
     include admin
     if $::hostname =~ /^cp105[67]$/ {
         $ganglia_aggregator = true
