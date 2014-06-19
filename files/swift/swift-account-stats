@@ -83,12 +83,12 @@ def main():
         if not statsd_found:
             print >>sys.stderr, "statsd module not found, unable to send"
             return 1
-
         client = statsd.StatsClient(args.statsd_host, args.statsd_port)
-        try:
-            client.gauge(name, float(value))
-        except ValueError:
-            print >>sys.stderr, "failed to send %r %r" % (name, value)
+        for name, value in output_stats:
+            try:
+                client.gauge(name, float(value))
+            except ValueError:
+                print >>sys.stderr, "failed to send %r %r" % (name, value)
 
 
 if __name__ == '__main__':
