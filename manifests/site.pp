@@ -1478,9 +1478,7 @@ node 'linne.wikimedia.org' {
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
-    if $::hostname == 'lvs1006' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     if $::hostname =~ /^lvs100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1620,10 +1618,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
-    if $::hostname == 'lvs3004' {
-        $puppet_version = '3'
-    }
-
+    $puppet_version = '3'
 # not yet...
 #    if $::hostname =~ /^lvs300[13]$/ {
 #        $ganglia_aggregator = true
@@ -1684,9 +1679,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
-    if $::hostname == 'lvs4004' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     $cluster = 'lvs'
     # lvs4001 and lvs4003 are in different racks
     if $::hostname =~ /^lvs400[13]$/ {
