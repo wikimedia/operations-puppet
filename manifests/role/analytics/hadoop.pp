@@ -43,7 +43,21 @@ class role::analytics::hadoop::client {
         $ganglia_port = 8649
     }
 
-
+    if $gelf_logging_enabled {
+        package { 'libjson-simple-java':
+            ensure => 'installed',
+        }
+        # symlink into hadoop classpath
+        file { '/usr/lib/hadoop/lib/json_simple-1.1.jar':
+            ensure  => 'link',
+            target  => '/usr/share/java/json_simple-1.1.jar',
+            require => Package['libjson-simple-java'],
+        }
+        # https://github.com/mp911de/logstash-gelf
+        file { "/usr/lib/hadoop/lib/logstash-gelf.jar":
+            source => "puppet:///files/logstash/logstash-gelf-1.4.0.jar",
+        }
+    }
 }
 
 # == Class role::analytics::hadoop::master
@@ -324,6 +338,9 @@ class role::analytics::hadoop::labs {
         mapreduce_reduce_tasks_maximum           => 2,
         mapreduce_job_reuse_jvm_num_tasks        => 1,
         yarn_resourcemanager_scheduler_class     => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
+        gelf_logging_enabled                     => $gelf_logging_enabled,
+        gelf_logging_host                        => $gelf_logging_host,
+        gelf_logging_port                        => $gelf_logging_port,
     }
 
     file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
