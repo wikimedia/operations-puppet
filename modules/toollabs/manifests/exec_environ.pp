@@ -135,6 +135,7 @@ class toollabs::exec_environ {
         'python-gdbm',
         'python-genshi',               # Bug #48863.
         'python-genshi-doc',           # Bug #48863.
+        'python-geoip',                # Bug 62649
         'python-gevent',
         'python-gi',
         'python-greenlet',
@@ -294,6 +295,7 @@ class toollabs::exec_environ {
         'libfcgi0ldbl',                # Bug 56995
         'libfreetype6',
         'libgdal1-1.7.0',              # Bug 56995
+        'libgeoip1',                   # Bug 62649
         'libjpeg-turbo-progs',         # Bug 59654.
         'libmpc2',
         'libmpfr4',

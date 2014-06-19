@@ -39,6 +39,7 @@ class toollabs::dev_environ {
         'libfcgi-dev',                 # Bug #52902.
         'libfreetype6-dev',
         'libgdal1-dev',                # Bug 56995
+        'libgeoip-dev',                # Bug 62649
         'libmariadbclient-dev',
         'libpng12-dev',
         'libproj-dev',                 # Bug 56995
