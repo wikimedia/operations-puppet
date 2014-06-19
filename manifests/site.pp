@@ -574,9 +574,7 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
-    if $::hostname == 'cp4001' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     include admin
     # cp4001 and cp4003 are in different racks,
     # make them each ganglia aggregators.
@@ -592,9 +590,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
-    if $::hostname == 'cp4005' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     include admin
     if $::hostname =~ /^cp(4005|4013)$/ {
         $ganglia_aggregator = true
@@ -608,9 +604,7 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
-    if $::hostname == 'cp4008' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     include admin
     if $::hostname =~ /^cp(4008|4016)$/ {
         $ganglia_aggregator = true
@@ -624,9 +618,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
-    if $::hostname == 'cp4011' {
-        $puppet_version = '3'
-    }
+    $puppet_version = '3'
     include admin
     if $::hostname =~ /^cp401[19]$/ {
         $ganglia_aggregator = true
