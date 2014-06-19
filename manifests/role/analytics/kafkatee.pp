@@ -57,17 +57,17 @@ class role::analytics::kafkatee::webrequest inherits role::analytics::kafkatee {
 
 # Rotate anything in ${webrequest_log_directory}/*.log daily
 ${webrequest_log_directory}/*.log {
-	daily
-	olddir $webrequest_archive_directory
-	notifempty
-	nocreate
-	maxage 180
-	rotate 1000
-	dateext
-	compress
-	postrotate
-		service kafkatee reload
-	endscript
+    daily
+    olddir $webrequest_archive_directory
+    notifempty
+    nocreate
+    maxage 180
+    rotate 1000
+    dateext
+    compress
+    postrotate
+        service kafkatee reload
+    endscript
 }
 "
     }
@@ -76,7 +76,7 @@ ${webrequest_log_directory}/*.log {
     $hosts_allow = ['10.64.0.16']
     include rsync::server
     rsync::server::module { 'webrequest':
-        comment => 'kafkatee generated webrequest log files',
+        comment     => 'kafkatee generated webrequest log files',
         path        => $webrequest_log_directory,
         read_only   => 'yes',
         hosts_allow => $hosts_allow,
