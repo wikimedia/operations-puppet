@@ -53,23 +53,7 @@ class role::analytics::kafkatee::webrequest inherits role::analytics::kafkatee {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "# Note:  This file is managed by Puppet.
-
-# Rotate anything in ${webrequest_log_directory}/*.log daily
-${webrequest_log_directory}/*.log {
-	daily
-	olddir $webrequest_archive_directory
-	notifempty
-	nocreate
-	maxage 180
-	rotate 1000
-	dateext
-	compress
-	postrotate
-		service kafkatee reload
-	endscript
-}
-"
+        content => template('kafkatee/logrotate.erb'),
     }
 
     # stat1002.eqiad.wmnet == 10.64.0.16
