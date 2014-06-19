@@ -76,7 +76,19 @@ class role::analytics::kafka::config {
             '/var/spool/kafka/l/data',
         ]
         # Ganglia diskstat plugin would like to know what disks to monitor
-        $log_disks = ['sda', 'sdb', 'sdc', 'sdd', 'sde', 'sdf', 'sdg', 'sdh', 'sdi', 'sdj', 'sdk', 'sdl']
+        $log_disks = ['sda',
+                    'sdb',
+                    'sdc',
+                    'sdd',
+                    'sde',
+                    'sdf',
+                    'sdg',
+                    'sdh',
+                    'sdi',
+                    'sdj',
+                    'sdk',
+                    'sdl',
+                ]
 
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host   = '239.192.1.45'
@@ -207,7 +219,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     # monitor disk statistics
     ganglia::plugin::python { 'diskstat':
         # oof, this did not do what I thought it would:
-        # +	  value = 'sdcsddsdesdfsdgsdhsdisdjsdksdl'
+        # +   value = 'sdcsddsdesdfsdgsdhsdisdjsdksdl'
         # TODO: FIX THIS!
         # opts => { 'devices' => $log_disks },
     }
