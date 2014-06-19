@@ -13,12 +13,18 @@
 # when it includes this class.
 #
 # == Parameters
-# $contact_group - Nagios contact_group to use for notifications.
-#                  contact groups are defined in contactgroups.cfg.  Default: "admins"
+# $contact_group - Nagios contact_group to use for notifications. Defaults to
+# admins
 #
 class base::monitoring::host($contact_group = 'admins') {
-    monitor_host { $::hostname: contact_group => $contact_group }
-    monitor_service { 'ssh': description => 'SSH', check_command => 'check_ssh', contact_group => $contact_group }
+    monitor_host { $::hostname:
+        contact_group => $contact_group
+    }
+    monitor_service { 'ssh':
+        description   => 'SSH',
+        check_command => 'check_ssh',
+        contact_group => $contact_group
+    }
 
     package { [ 'megacli', 'arcconf', 'mpt-status' ]:
         ensure => 'latest',
@@ -41,15 +47,15 @@ class base::monitoring::host($contact_group = 'admins') {
 
     file { '/usr/local/bin/check-raid.py':
         ensure => present,
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/base/monitoring/check-raid.py';
     }
     file { '/usr/local/lib/nagios/plugins/check_puppet_disabled':
         ensure => present,
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/base/monitoring/check_puppet_disabled';
     }
