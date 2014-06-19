@@ -32,8 +32,9 @@ OTRS_POSTMASTER=/opt/otrs/bin/otrs.PostMaster.pl
 OTRS_HOME=/var/lib/otrs
 OTRS_USER=otrs
 OTRS_GROUP=www-data
-
 <% end -%>
+OTRSQUERY=SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}' AND valid_id=1;
+
 ###############################
 # Main configuration settings #
 ###############################
@@ -544,7 +545,7 @@ rt:
 otrs:
 	driver = manualroute
 	domains = +local_domains
-	condition = ${lookup mysql{SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}'}{true}fail}
+	condition = ${lookup mysql{OTRSQUERY}{true}fail}
 	route_list = *  iodine.wikimedia.org  byname
 	transport = remote_smtp
 <% end %>
@@ -633,7 +634,7 @@ postmaster:
 <% if enable_otrs_server == true then -%>
 otrs:
 	driver = accept
-	condition = ${lookup mysql{SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}'}{true}fail}
+	condition = ${lookup mysql{OTRSQUERY}{true}fail}
 	transport = otrs
 <% end %>
 
