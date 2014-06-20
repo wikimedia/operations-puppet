@@ -246,16 +246,12 @@ class swift::storage {
     class service {
         require swift::storage::config
 
-        Service {
-        ensure => 'running',
-        }
-
         service { ['swift-account',
             'swift-account-auditor',
             'swift-account-reaper',
             'swift-account-replicator'
         ]:
-            subscribe => File['/etc/swift/account-server.conf'],
+            ensure => 'running',
         }
 
         service { ['swift-container',
@@ -263,7 +259,7 @@ class swift::storage {
             'swift-container-replicator',
             'swift-container-updater'
         ]:
-            subscribe => File['/etc/swift/container-server.conf'],
+            ensure => 'running',
         }
 
         service { ['swift-object',
@@ -271,7 +267,7 @@ class swift::storage {
             'swift-object-replicator',
             'swift-object-updater'
         ]:
-            subscribe => File['/etc/swift/object-server.conf'],
+            ensure => 'running',
         }
     }
 
