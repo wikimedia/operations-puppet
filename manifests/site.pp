@@ -2207,6 +2207,7 @@ node 'palladium.eqiad.wmnet' {
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     $cluster = 'mysql'
     include admin
     include role::db::core
