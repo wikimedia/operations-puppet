@@ -1861,6 +1861,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
 # rate limiting purposes (bug 64622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     $cluster = 'swift'
     $nagios_group = 'swift'
     if $::hostname =~ /^ms-fe100[12]$/ {
@@ -1878,6 +1879,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
+    $puppet_version = '3'
     $cluster = 'swift'
     $nagios_group = 'swift'
     $all_drives = [
