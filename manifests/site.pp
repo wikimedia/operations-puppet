@@ -2422,6 +2422,7 @@ node 'sodium.wikimedia.org' {
 }
 
 node /ssl100[1-9]\.wikimedia\.org/ {
+    $puppet_version = '3'
     $cluster = 'ssl'
     if $::hostname =~ /^ssl100[12]$/ {
         $ganglia_aggregator = true
@@ -2436,6 +2437,7 @@ node /ssl100[1-9]\.wikimedia\.org/ {
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
+    $puppet_version = '3'
     $cluster = 'ssl'
     if $::hostname =~ /^ssl300[12]$/ {
         $ganglia_aggregator = true
