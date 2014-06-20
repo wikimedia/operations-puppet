@@ -662,6 +662,7 @@ node 'dataset1001.wikimedia.org' {
 
 # pmtpa dbs
 node /^db(60)\.pmtpa\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
@@ -672,6 +673,7 @@ node /^db(60)\.pmtpa\.wmnet/ {
 }
 
 node /^db(69)\.pmtpa\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s2':
@@ -681,6 +683,7 @@ node /^db(69)\.pmtpa\.wmnet/ {
 }
 
 node /^db(71)\.pmtpa\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s3':
@@ -690,6 +693,7 @@ node /^db(71)\.pmtpa\.wmnet/ {
 }
 
 node /^db(72)\.pmtpa\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s4':
@@ -699,6 +703,7 @@ node /^db(72)\.pmtpa\.wmnet/ {
 }
 
 node /^db(73)\.pmtpa\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s5':
@@ -708,6 +713,7 @@ node /^db(73)\.pmtpa\.wmnet/ {
 }
 
 node /^db(74)\.pmtpa\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s6':
@@ -718,6 +724,7 @@ node /^db(74)\.pmtpa\.wmnet/ {
 
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
 node /^db(60|7[5-7])\.pmtpa\.wmnet/{
+    $puppet_version = '3'
     include admin
     include standard
 }
