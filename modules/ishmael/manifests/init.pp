@@ -14,7 +14,7 @@ class ishmael (
     $docroot,
     $ldap_binddn,
     $ldap_authurl,
-    $ldap_group,
+    $ldap_groups,
     $auth_name,
 ) {
 
