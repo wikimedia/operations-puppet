@@ -1767,6 +1767,7 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
         $ganglia_aggregator = true
     }
 
+    include admin
     include role::memcached
     include passwords::redis
 
