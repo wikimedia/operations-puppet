@@ -233,9 +233,4 @@ class role::parsoid::beta {
     # Also need the slave scripts for multi-git.sh
     include contint::slave-scripts
 
-    # And thus allow ssh access from the Jenkins master (gallium)
-    ferm::rule { 'ssh-from-gallium':
-        rule => 'proto tcp dport ssh { saddr 208.80.154.135 ACCEPT; }',
-    }
-
 }
