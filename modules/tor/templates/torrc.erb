@@ -1,0 +1,61 @@
+######################################################################################
+## THIS FILE IS MANAGED BY PUPPET                                                    #
+## config for a relay-only tor installation                                          #
+## https://www.torproject.org/docs/tor-doc-relay                                     #
+## https://gitweb.torproject.org/tor.git/blob_plain/HEAD:/src/config/torrc.sample.in #
+######################################################################################
+
+## do not open socks proxy by default, run as relay only
+SocksPort 0
+
+## self-explaining
+RunAsDemon 1
+
+## use /srv instead of $HOME/.tor
+DataDirectory /srv/tor/
+
+## log to its own file instead of syslog
+Log notice file /var/log/tor/tor.log
+
+## port for local connections from Tor controller
+ControlPort <%= @tor_controlport %>
+
+## password for connections on the control port, generate hash with 'tor --hash-password'
+HashedControlPassword <%= scope.lookupvar('passwords::tor::hashed_control_password') %>
+
+## port for incoming Tor connections
+ORPort <%= @tor_orport %>
+
+## if we have multiple NICs..
+#OutboundBindAddress 10.0.0.5
+
+## IP or DNS for incoming connections
+Address <%= @tor_address %>
+
+## if we want to throttle
+#RelayBandwidthRate 100 KB  # Throttle traffic to 100KB/s (800Kbps)
+#RelayBandwidthBurst 200 KB # But allow bursts up to 200KB/s (1600Kbps)
+## (there are also Accounting* options for traffic per day/week/month)
+
+# mirror directory information ('please do if enough bandwidth')
+DirPort <%= @tor_dirport %>
+
+# this is what makes it a relay or an exit node
+ExitPolicy <%= @tor_exit_policy %>
+
+# handle for the relay, so people don't have to refer to it by key.
+Nickname <%= @tor_nickname %>
+
+# admin mail contact
+ContactInfo <%= @tor_contact %>
+
+# if we run more than one relay we should set this
+# get it from /var/lib/tor/fingerprint
+# "You should set MyFamily if you have administrative control
+# of the computers or of their network, even if they're not
+# all in the same geographic location."
+# MyFamily $fingerprint1,$fingerprint2,$fingerprint3
+
+# "try to write to disk less frequently than we would otherwise"
+# we enable this because we are on a box with SSD
+AvoidDiskWrites 1
