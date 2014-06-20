@@ -2871,6 +2871,7 @@ node 'zirconium.wikimedia.org' {
 
 node default {
     include standard
+    include admin
 }
 
 # as of 2013-11-18 these fundraising servers use frack puppet
