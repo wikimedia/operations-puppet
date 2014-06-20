@@ -731,6 +731,7 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 
 # eqiad dbs
 node /^db10(50|51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s1':
@@ -740,6 +741,7 @@ node /^db10(50|51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
 }
 
 node /^db10(02|09|18|36|60|63|67)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s2':
@@ -749,6 +751,7 @@ node /^db10(02|09|18|36|60|63|67)\.eqiad\.wmnet/ {
 }
 
 node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s3':
@@ -760,6 +763,7 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
 }
 
 node /^db10(04|40|42|49|56|59|64|68)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s4':
@@ -769,6 +773,7 @@ node /^db10(04|40|42|49|56|59|64|68)\.eqiad\.wmnet/ {
 }
 
 node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s5':
@@ -778,6 +783,7 @@ node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
 }
 
 node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s6':
@@ -787,6 +793,7 @@ node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
 }
 
 node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s7':
@@ -797,6 +804,7 @@ node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
 
 ## x1 shard
 node /^db10(29|31)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     include role::coredb::x1
@@ -804,6 +812,7 @@ node /^db10(29|31)\.eqiad\.wmnet/ {
 
 ## m1 shard
 node /^db10(01|16)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::m1':
@@ -813,6 +822,7 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 
 ## m2 shard
 node /^db10(20|46)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
@@ -822,6 +832,7 @@ node /^db10(20|46)\.eqiad\.wmnet/ {
 
 ## m3 shard
 node /^db10(43|48)\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
@@ -831,6 +842,7 @@ node /^db10(43|48)\.eqiad\.wmnet/ {
 
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     include role::mariadb::analytics
@@ -838,6 +850,7 @@ node 'db1047.eqiad.wmnet' {
 
 ## researchdb s5
 node 'db1017.eqiad.wmnet' {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::researchdb':
@@ -850,6 +863,7 @@ node 'db1017.eqiad.wmnet' {
 
 ## SANITARIUM
 node 'db1053.eqiad.wmnet' {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
@@ -868,6 +882,7 @@ node 'db1053.eqiad.wmnet' {
 }
 
 node 'db1054.eqiad.wmnet' {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
@@ -902,6 +917,7 @@ node 'db1054.eqiad.wmnet' {
 }
 
 node 'db1057.eqiad.wmnet' {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
@@ -937,12 +953,14 @@ node 'db1057.eqiad.wmnet' {
 }
 
 node 'db1044.eqiad.wmnet' {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     include role::mariadb::tendril
 }
 
 node /^dbstore1001\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     $mariadb_backups_folder = '/a/backups'
@@ -955,6 +973,7 @@ node /^dbstore1001\.eqiad\.wmnet/ {
 }
 
 node /^dbstore1002\.eqiad\.wmnet/ {
+    $puppet_version = '3'
     include admin
     $cluster = 'mysql'
     # Analytics traffic & eventlogging spikes
