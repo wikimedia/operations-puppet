@@ -11,8 +11,15 @@ class misc::rancid {
         ensure => present,
     }
 
+    group { 'rancid':
+        ensure => present,
+        name   => 'rancid',
+        system => true,
+    }
+
     user { 'rancid':
         shell      => '/bin/sh',
+        gid        => 'rancid',
         managehome => true,
         system     => true,
     }
