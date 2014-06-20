@@ -1193,6 +1193,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 }
 
 node 'gallium.wikimedia.org' {
+    $puppet_version = '3'
     $cluster = 'misc'
 
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
@@ -1458,7 +1459,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'lanthanum.eqiad.wmnet' {
-
+    $puppet_version = '3'
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
     include standard
