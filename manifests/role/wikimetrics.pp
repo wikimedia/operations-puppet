@@ -189,13 +189,15 @@ class role::wikimetrics {
         }
     }
 
-    # Install redis and use a custom config template.
-    # Wikimetrics needs redis to save data for longer
-    # than the default redis.conf.erb template allows.
+    # When doing backups, we need to know the rdb file name.
+    # Hence, we cannot do with the defaults of the redis class.
     $redis_dir        = '/a/redis'
     $redis_dbfilename = 'wikimetrics1-6379.rdb'
     class { '::redis':
-        config_template => 'wikimetrics/redis.conf.erb',
+        dir                         => $redis_dir,
+        dbfilename                  => $redis_dbfilename,
+        saves                       => [ "900 1", "300 10", "60 20" ],
+        stop_writes_on_bgsave_error => true,
     }
 
     # TODO: Support installation of queue, web and database
