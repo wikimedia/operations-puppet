@@ -16,6 +16,7 @@ class redis (
     $password = false,
     $auto_aof_rewrite_min_size = '512mb',
     $config_template = 'redis/redis.conf.erb',
+    $dbfilename = undef, # filename for rdb. If undef, "$hostname-$port.rdb" is used
 ) {
     case $::operatingsystem {
         debian, ubuntu: {

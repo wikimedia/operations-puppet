@@ -127,7 +127,11 @@ rdbcompression yes
 rdbchecksum yes
 
 # The filename where to dump the DB
-dbfilename <%= @hostname %>-<%= port %>.rdb
+<% if @dbfilename -%>
+dbfilename <%= @dbfilename %>
+<% else -%>
+dbfilename <%= @hostname %>-<%= @port %>.rdb
+<% end -%>
 
 # The working directory.
 #
