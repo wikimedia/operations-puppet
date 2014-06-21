@@ -189,35 +189,24 @@ class role::wikimetrics {
         }
     }
 
-    # Install redis and use a custom config template.
-    # Wikimetrics needs redis to save data for longer
-    # than the default redis.conf.erb template allows.
-    $redis_dir        = '/a/redis'
-    $redis_dbfilename = 'wikimetrics1-6379.rdb'
-    class { '::redis':
-        config_template => 'wikimetrics/redis.conf.erb',
-    }
-
     # TODO: Support installation of queue, web and database
     # classes on different nodes (maybe?).
-    class { '::wikimetrics::queue':
-        require => [
-            Exec['install_wikimetrics_dependencies'],
-            Class['::redis'],
-        ],
-    }
-
     class { '::wikimetrics::web':
         mode    => $web_mode,
         require => Exec['install_wikimetrics_dependencies'],
     }
 
-    class { '::wikimetrics::scheduler':
-        require => Exec['install_wikimetrics_dependencies'],
-    }
-
     # backup regardless of whether we are in debug mode or not
     if $::wikimetrics_backup {
+        # When doing backups, we need to know the rdb file name.
+        # Hence, we cannot do with the defaults of the redis class.
+        $redis_dir        = '/a/redis'
+        $redis_dbfilename = 'wikimetrics1-6379.rdb'
+        class { '::redis':
+            dir        => $redis_dir,
+            dbfilename => $redis_dbfilename,
+        }
+
         class { '::wikimetrics::backup':
             destination   => '/data/project/wikimetrics/backup',
             db_name       => $db_name_wikimetrics,
@@ -225,5 +214,16 @@ class role::wikimetrics {
             public_files  => $public_directory,
             keep_days     => 10,
         }
+    }
+
+    class { '::wikimetrics::queue':
+        require => [
+            Exec['install_wikimetrics_dependencies'],
+            Class['::redis'],
+        ],
+    }
+
+    class { '::wikimetrics::scheduler':
+        require => Exec['install_wikimetrics_dependencies'],
     }
 }
