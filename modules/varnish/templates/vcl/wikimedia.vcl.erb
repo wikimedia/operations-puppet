@@ -370,6 +370,20 @@ sub vcl_deliver {
 		}
 	}
 
+	/* If no Content-Type header is present in the response, set a default
+	 * Content-Type header with a value of "application/octet-stream".
+	 * This was formerly handled by Apache via the DefaultType directive
+	 * but had to be moved to the Varnish layer due to Apache 2.4 dropping
+	 * support for DefaultType. (RT #7700)
+	 */
+	if ((resp.status == 200 || resp.status == 201 || resp.status == 202 || resp.status == 203 || resp.status == 206) && !resp.http.Content-Type && resp.http.Server ~ "Apache") {
+		set resp.http.Content-Type = "application/octet-stream";
+
+		/* Log to syslog so we can determine how prevalent such responses are.
+		 * This is temporary. -- OL, 23-Jun-2014 */
+		std.syslog(9, "DefaultType: " + req.url);
+	}
+
 	/* Function vcl_deliver in <%= vcl %>.inc.vcl will be appended here */
 }
 
