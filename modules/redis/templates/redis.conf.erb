@@ -89,9 +89,9 @@ databases 16
 #
 #   save ""
 <% if persist == "rdb" or persist == "both" -%>
-save 900 1
-save 300 100
-save 60 10000
+<% @saves.each do |save_args| -%>
+save <%= save_args %>
+<% end -%>
 <% else -%>
 # rdb disabled
 <% end -%>
@@ -109,7 +109,11 @@ save 60 10000
 # and persistence, you may want to disable this feature so that Redis will
 # continue to work as usually even if there are problems with disk,
 # permissions, and so forth.
+<% if @stop_writes_on_bgsave_error and @stop_writes_on_bgsave_error != 'no' -%>
+stop-writes-on-bgsave-error yes
+<% else -%>
 stop-writes-on-bgsave-error no
+<% end -%>
 
 # Compress string objects using LZF when dump .rdb databases?
 # For default that's set to 'yes' as it's almost always a win.
@@ -127,7 +131,11 @@ rdbcompression yes
 rdbchecksum yes
 
 # The filename where to dump the DB
-dbfilename <%= @hostname %>-<%= port %>.rdb
+<% if @dbfilename -%>
+dbfilename <%= @dbfilename %>
+<% else -%>
+dbfilename <%= @hostname %>-<%= @port %>.rdb
+<% end -%>
 
 # The working directory.
 #
