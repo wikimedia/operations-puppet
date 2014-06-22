@@ -49,7 +49,7 @@ system_aliases:
 wiki_mail:
 	driver = manualroute
 	condition = ${if eqi{$header_X-Mailer:}{MediaWiki mailer}}
-	errors_to = wiki@wikimedia.org
+	errors_to = ${if def:h_return-path: {${address:$h_return-path:}} fail}
 	transport = remote_smtp
 	route_list = *	<%= exim_mediawiki_route_list %>
 
