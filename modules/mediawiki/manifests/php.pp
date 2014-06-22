@@ -56,12 +56,4 @@ class mediawiki::php(
         mode    => '0444',
         require => Package['php5-igbinary'],
     }
-
-    file { '/etc/php5/conf.d/mail.ini':
-        source  => 'puppet:///modules/mediawiki/php/mail.ini',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['php-mail'],
-    }
 }
