@@ -323,7 +323,6 @@ wiki_mail:
 	driver = dnslookup
 	domains = ! +local_domains
 	condition = ${if and{{match_ip{$interface_address}{WIKI_INTERFACE}}{eqi{$header_X-Mailer:}{MediaWiki mailer}}}}
-	errors_to = wiki@wikimedia.org
 	transport = bulk_smtp
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
 	no_verify
