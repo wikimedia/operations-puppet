@@ -81,7 +81,7 @@ class role::mediawiki::imagescaler {
 
     class { 'role::mediawiki::webserver':
         pool       => 'rendering',
-        maxclients => 18,
+        maxclients => 23,
     }
 }
 
