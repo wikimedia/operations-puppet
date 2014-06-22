@@ -49,7 +49,6 @@ system_aliases:
 wiki_mail:
 	driver = manualroute
 	condition = ${if eqi{$header_X-Mailer:}{MediaWiki mailer}}
-	errors_to = wiki@wikimedia.org
 	transport = remote_smtp
 	route_list = *	<%= @wikimail_smarthost.join(':') %>
 

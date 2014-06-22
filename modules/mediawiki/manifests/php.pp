@@ -51,6 +51,7 @@ class mediawiki::php(
 
     if ubuntu_version('precise') {
         file { '/etc/php5/conf.d/igbinary.ini':
+            ensure  => absent,
             source  => 'puppet:///modules/mediawiki/php/igbinary.ini',
             owner   => 'root',
             group   => 'root',
