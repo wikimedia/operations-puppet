@@ -320,6 +320,7 @@ class toollabs::exec_environ {
         'supybot',                     # Bug 61088.
         'p7zip',
         'pdftk',                       # Bug #65048.
+        'phantomjs',                   # Bug #66928
         'phpunit',
         'poppler-utils',               # Bug #53869.
         'postgresql-client-9.1',
