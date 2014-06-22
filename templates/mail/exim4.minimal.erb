@@ -23,6 +23,9 @@ ignore_bounce_errors_after = 0h
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
 message_logs = false
 
+# Return Path
+return_path_remove = false
+
 begin routers
 
 # Catch unqualified e-mail addresses from MediaWiki
@@ -49,7 +52,8 @@ system_aliases:
 wiki_mail:
 	driver = manualroute
 	condition = ${if eqi{$header_X-Mailer:}{MediaWiki mailer}}
-	errors_to = wiki@wikimedia.org
+	errors_to = ${if def:h_return-path: {${address:$h_return-path:}} fail}
+	headers_remove = return-path
 	transport = remote_smtp
 	route_list = *	<%= exim_mediawiki_route_list %>
 
@@ -74,10 +78,3 @@ begin retry
 
 *	*	F,2h,5m; F,1d,15m
 
-
-begin rewrite
-
-# Rewrite the envelope From for mails from internal servers in *.wmnet,
-# as they are usually rejected by sender domain address verification.
-
-*@$primary_hostname	root@wikimedia.org      F
