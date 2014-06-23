@@ -49,6 +49,7 @@ class zuul (
     'python-statsd',
 
     'python-setuptools',
+    'python-voluptuous',
 
     # For Zuul post v1.3.0
     'python-pbr',
@@ -60,10 +61,6 @@ class zuul (
   ]
 
   package { $packages:
-    ensure => present,
-  }
-
-  package { 'python-voluptuous':
     ensure => present,
   }
 
