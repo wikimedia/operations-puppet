@@ -1,5 +1,6 @@
 class role::labs::instance {
 
+    include standard
     include ldap::role::client::labs
     include base::instance-upstarts
     include role::mail::sender
