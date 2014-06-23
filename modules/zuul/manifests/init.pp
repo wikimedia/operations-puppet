@@ -143,7 +143,7 @@ class zuul (
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    content => template('zuul/default.erb'),
+    content => template('zuul/zuul.default.erb'),
   }
 
 }
