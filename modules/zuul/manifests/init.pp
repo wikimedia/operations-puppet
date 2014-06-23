@@ -91,6 +91,9 @@ class zuul (
     ensure => directory,
   }
 
+  # Craft zuul.conf and zuul-merger.conf, reusing the parameters passed to zuul
+  # class.
+
   # TODO: We should put in  notify either Service['zuul'] or Exec['zuul-reload']
   #       at some point, but that still has some problems.
   file { '/etc/zuul/zuul.conf':
@@ -99,6 +102,19 @@ class zuul (
     mode    => '0400',
     content => template('zuul/zuul.conf.erb'),
     notify  => Exec['craft public zuul conf'],
+    require => [
+      File['/etc/zuul'],
+      Package['jenkins'],
+    ],
+  }
+
+  # Configuration file for the zuul merger
+  file { '/etc/zuul/zuul-merger.conf':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => template('zuul/zuul-merger.conf.erb'),
     require => [
       File['/etc/zuul'],
       Package['jenkins'],
