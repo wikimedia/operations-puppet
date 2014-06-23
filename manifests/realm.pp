@@ -161,13 +161,13 @@ $private_tables = [ 'accountaudit_login',
 
 # Route list for mail coming from MediaWiki mailer
 $wikimail_smarthost = $::realm ? {
-	'production' => [ 'smtp.pmtpa.wmnet' ],
+	'production' => [ 'wiki-mail.wikimedia.org' ],
 	# FIXME: find some SMTP servers for labs
-	'labs'       => [ 'mchenry.wikimedia.org', 'lists.wikimedia.org' ],
+	'labs'       => [ 'polonium.wikimedia.org', 'mchenry.wikimedia.org' ],
 }
 # Generic, default servers
 $mail_smarthost = $::realm ? {
-	'production' => [ 'mchenry.wikimedia.org', 'lists.wikimedia.org' ],
+	'production' => [ 'polonium.wikimedia.org', 'mchenry.wikimedia.org' ],
 	# FIXME: find some SMTP servers for labs
-	'labs'       => [ 'mchenry.wikimedia.org', 'lists.wikimedia.org' ],
+	'labs'       => [ 'polonium.wikimedia.org', 'mchenry.wikimedia.org' ],
 }
