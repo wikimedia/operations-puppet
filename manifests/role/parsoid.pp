@@ -226,19 +226,11 @@ class role::parsoid::beta {
         proto => 'tcp',
         port  => '8000'
     }
-    ferm::rule { 'ssh-from-beta-bastion':
-        rule => 'proto tcp dport ssh { saddr 10.4.0.58 ACCEPT; }',
-    }
 
     # Instance got to be a Jenkins slave so we can update Parsoid whenever a
     # change is made on mediawiki/services/parsoid repository
     include role::ci::slave::labs::common
     # Also need the slave scripts for multi-git.sh
     include contint::slave-scripts
-
-    # And thus allow ssh access from the Jenkins master (gallium)
-    ferm::rule { 'ssh-from-gallium':
-        rule => 'proto tcp dport ssh { saddr 208.80.154.135 ACCEPT; }',
-    }
 
 }
