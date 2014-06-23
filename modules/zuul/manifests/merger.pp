@@ -18,16 +18,35 @@
 class zuul::merger (
     $git_dir = '/var/lib/zuul/git'
 ) {
-    service { 'zuul-merger':
-        name       => 'zuul-merger',
-        enable     => true,
-        hasrestart => true,
-        require    => File['/etc/init.d/zuul-merger'],
+
+    file { '/etc/init.d/zuul-merger':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/zuul/zuul-merger.init',
+    }
+
+    file { '/var/run/zuul-merger':
+        ensure  => directory,
+        owner   => 'jenkins',
+        require => Package['jenkins'],
     }
 
     file { '/etc/zuul/merger-logging.conf':
         ensure => present,
         source => 'puppet:///modules/zuul/merger-logging.conf',
+    }
+
+    service { 'zuul-merger':
+        name       => 'zuul-merger',
+        enable     => true,
+        hasrestart => true,
+        require    => [
+            File['/etc/init.d/zuul-merger'],
+            File['/var/run/zuul-merger'],
+            File['/etc/zuul/merger-logging.conf'],
+        ],
     }
 
     cron { 'zuul_repack':
