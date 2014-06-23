@@ -1437,7 +1437,9 @@ node /labstore100[12]\.eqiad\.wmnet/ {
         #members        => [ 'eth0', 'eth1' ],
     #}
 
-    include admin
+    #need to solve using admin on ldap boxes
+    #RT 7732
+    #include admin
     include standard
     include openstack::project-nfs-storage-service
     include rsync::server
