@@ -49,7 +49,7 @@ class role::swift {
 			}
 			cron { "swift-account-stats_mw_media":
 				ensure  => present,
-				command => "source /etc/swift/account_mw_media.env && /usr/local/bin/swift-account-stats --prefix swift.eqiad-prod.stats --statsd-host statsd.eqiad.wmnet 1>/dev/null",
+				command => ". /etc/swift/account_mw_media.env && /usr/local/bin/swift-account-stats --prefix swift.eqiad-prod.stats --statsd-host statsd.eqiad.wmnet 1>/dev/null",
 				user    => root,
 				hour    => "*",
 				minute  => "*",
@@ -124,7 +124,7 @@ class role::swift {
 			}
 			cron { "swift-account-stats_mw_media":
 				ensure  => present,
-				command => "source /etc/swift/account_mw_media.env && /usr/local/bin/swift-account-stats --prefix swift.esams-prod.stats --statsd-host statsd.eqiad.wmnet 1>/dev/null",
+				command => ". /etc/swift/account_mw_media.env && /usr/local/bin/swift-account-stats --prefix swift.esams-prod.stats --statsd-host statsd.eqiad.wmnet 1>/dev/null",
 				user    => root,
 				hour    => "*",
 				minute  => "*",
