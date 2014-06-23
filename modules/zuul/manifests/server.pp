@@ -17,11 +17,29 @@
 #
 class zuul::server (
 ) {
+
+    file { '/var/run/zuul':
+        ensure  => directory,
+        owner   => 'jenkins',
+        require => Package['jenkins'],
+    }
+
+    file { '/etc/init.d/zuul':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/zuul/zuul.init',
+    }
+
     service { 'zuul':
         name       => 'zuul',
         enable     => true,
         hasrestart => true,
-        require    => File['/etc/init.d/zuul'],
+        require    => [
+            File['/var/run/zuul'],
+            File['/etc/init.d/zuul'],
+        ],
     }
 
     exec { 'zuul-reload':
