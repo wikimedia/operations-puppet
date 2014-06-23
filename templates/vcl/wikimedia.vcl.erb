@@ -375,7 +375,7 @@ sub vcl_deliver {
 
 		/* Log to syslog so we can determine how prevalent such responses are.
 		 * This is temporary. -- OL, 23-Jun-2014 */
-		std.syslog(LOG_USER|LOG_ALERT, "DefaultType: " + req.url);
+		std.syslog(9, "DefaultType: " + req.url);  /* 9 is LOG_USER|LOG_ALERT */
 	}
 
 
