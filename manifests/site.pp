@@ -1430,10 +1430,12 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     $ldapincludes = ['openldap', 'nss', 'utils']
 
     $ganglia_aggregator = true
-    interface::aggregate { 'bond0':
-        orig_interface => 'eth0',
-        members        => [ 'eth0', 'eth1' ],
-    }
+
+    # Commented out pending some troubleshooting
+    #interface::aggregate { 'bond0':
+        #orig_interface => 'eth0',
+        #members        => [ 'eth0', 'eth1' ],
+    #}
 
     include admin
     include standard
