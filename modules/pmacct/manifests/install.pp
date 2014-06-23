@@ -12,9 +12,16 @@ class pmacct::install {
     }
 
     # User creation (not done by package)
+    group { 'pmacct':
+        ensure => present,
+        name   => 'pmacct',
+        system => true,
+    }
+
     user { 'pmacct':
         home       => '/var/lib/pmacct',
         shell      => '/bin/bash',
+        gid        => 'pmacct',
         managehome => true,
         system     => true,
         require    => Package['pmacct'],
