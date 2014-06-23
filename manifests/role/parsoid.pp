@@ -226,9 +226,6 @@ class role::parsoid::beta {
         proto => 'tcp',
         port  => '8000'
     }
-    ferm::rule { 'ssh-from-beta-bastion':
-        rule => 'proto tcp dport ssh { saddr 10.4.0.58 ACCEPT; }',
-    }
 
     # Instance got to be a Jenkins slave so we can update Parsoid whenever a
     # change is made on mediawiki/services/parsoid repository
