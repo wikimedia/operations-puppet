@@ -1,6 +1,15 @@
+# WARNING: this file is managed by puppet
+# modules/zuul/templates/zuul.conf.erb
+
+# Configuration file for the Zuul server and the Zuul merger. Vary depending on
+# $zuul_server (either 'merger' or 'server').
+#
+# The only sections needed by zuul-merger are gearman, gerrit, zuul and merger.
+
 [gearman]
 server=<%= @gearman_server %>
 
+<% if @zuul_role == 'server' -%>
 [gearman_server]
 start=<%= @gearman_server_start %>
 log_config=/etc/zuul/gearman-logging.conf
@@ -9,6 +18,7 @@ log_config=/etc/zuul/gearman-logging.conf
 server=<%= @jenkins_server %>
 user=<%= @jenkins_user %>
 apikey=<%= @jenkins_apikey %>
+<% end -%>
 
 [gerrit]
 server=<%= @gerrit_server %>
@@ -23,6 +33,7 @@ state_dir=/var/lib/zuul
 url_pattern=<%= @url_pattern %>
 status_url=<%= @status_url %>
 
+<% if @zuul_role == 'merger' -%>
 [merger]
 git_dir=<%= @git_dir %>
 zuul_url=<%= @zuul_url %>
@@ -32,4 +43,5 @@ git_user_email=<%= @git_email %>
 <% end -%>
 <% if @git_name != "" -%>
 git_user_name=<%= @git_name %>
+<% end -%>
 <% end -%>
