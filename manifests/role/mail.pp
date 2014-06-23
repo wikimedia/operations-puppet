@@ -9,6 +9,10 @@ class role::mail::mx {
     include network::constants
     include privateexim::aliases::private
 
+    system::role { 'role::mail::mx':
+        description => 'Mail router',
+    }
+
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
     }
