@@ -6,8 +6,8 @@ class role::mail::sender {
 }
 
 class role::mail::mx {
+    include network::constants
     include privateexim::aliases::private
-    include exim4::ganglia
 
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -51,15 +51,17 @@ class role::mail::oldmx {
         enabled => true,
     }
 
-    # FIXME: the rest is unpuppetized so far
-
     monitor_service { 'smtp':
         description   => 'Exim SMTP',
         check_command => 'check_smtp',
     }
+
+    # FIXME: the rest is unpuppetized so far
 }
 
 class role::mail::lists {
+    include network::constants
+
     # FIXME: needs to be split to lists/secondarymx
 
     system::role { 'role::mail::lists':

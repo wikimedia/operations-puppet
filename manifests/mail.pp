@@ -54,8 +54,8 @@ class exim {
 ) {
 
         include exim::smtp
-        include network::constants
         include privateexim::listserve
+        include exim4::ganglia
 
         class { 'exim4':
             variant => 'heavy',
