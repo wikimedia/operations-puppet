@@ -332,6 +332,7 @@ class toollabs::exec_environ {
         'ufraw-batch',                 # Bug 57008
         'tabix',                       # Bug 61501
         'texinfo',                     # Bug #56994
+        'xsltproc',                    # Bug #66962.
         'zbar-tools',                  # Bug 56996
         'zsh',                         # Bug 56995
         ]:
