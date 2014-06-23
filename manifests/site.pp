@@ -1970,16 +1970,13 @@ node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
     include role::mediawiki::appserver::api
 }
 
-# mw1149-1152 are bits apaches (precise)
+# mw1149-1152 are apaches (precise)
 node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
     $puppet_version = '3'
     class {'::admin': groups => ['deployment']}
-    $cluster = 'bits_appserver'
-    if $::hostname =~ /^mw115[12]$/ {
-        $ganglia_aggregator = true
-    }
+    $cluster = 'appserver'
 
-    include role::mediawiki::appserver::bits
+    include role::mediawiki::appserver
 }
 
 # mw1153-1160 are imagescalers (precise)
