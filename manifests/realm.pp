@@ -14,9 +14,6 @@ if $::projectgroup == undef {
 	$projectgroup = "project-$instanceproject"
 }
 
-# TODO: redo this in a much better way
-$all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24", "198.35.26.0/23", "185.15.56.0/22" ]
-
 # Determine the site the server is in
 if $::ipaddress_eth0 != undef {
 	$main_ipaddress = $ipaddress_eth0
