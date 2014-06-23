@@ -38,8 +38,7 @@ class role::analytics::oozie::server inherits role::analytics::oozie::client {
 
     class { 'cdh4::oozie::server':
         jdbc_password   => $jdbc_password,
-        # TODO:  infer smtp_host from some other puppet manifest.
-        smtp_host       => 'mchenry.wikimedia.org',
+        smtp_host       => $::mail_smarthost[0]
         smtp_from_email => "oozie@$::fqdn",
     }
 }

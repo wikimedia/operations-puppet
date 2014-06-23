@@ -18,21 +18,19 @@ class role::rt {
         local_domains          => [ '+system_domains', '+rt_domains' ],
         enable_mail_relay      => false,
         enable_external_mail   => false,
-        smart_route_list       => [
-            'mchenry.wikimedia.org',
-            'lists.wikimedia.org',
-        ],
+        smart_route_list       => $::mail_smarthost,
         enable_mailman         => false,
         rt_relay               => true,
         enable_mail_submission => false,
         enable_spamassassin    => false,
     }
 
-    # allow RT to receive mail from mchenry and sodium
+    # allow RT to receive mail from mail smarthosts
     ferm::service { 'rt-smtp':
         port   => '25',
         proto  => 'tcp',
-        srange => '(208.80.152.186/32 208.80.154.61/32)',
+        srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
+
     }
 
     ferm::service { 'rt-http':
