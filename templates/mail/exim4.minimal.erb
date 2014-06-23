@@ -51,14 +51,14 @@ wiki_mail:
 	condition = ${if eqi{$header_X-Mailer:}{MediaWiki mailer}}
 	errors_to = wiki@wikimedia.org
 	transport = remote_smtp
-	route_list = *	<%= exim_mediawiki_route_list %>
+	route_list = *	<%= @wikimail_smarthost.join(':') %>
 
 # Send all mail via a set of mail relays ("smart hosts")
 
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
-	route_list = *	<%= exim_default_route_list %>
+	route_list = *	<%= @mail_smarthost.join(':') %>
 
 
 begin transports
