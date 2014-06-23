@@ -1642,10 +1642,10 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
 
-# not yet...
-#    if $::hostname =~ /^lvs300[13]$/ {
-#        $ganglia_aggregator = true
-#    }
+    if $::hostname =~ /^lvs300[12]$/ {
+        $ganglia_aggregator = true
+    }
+
     $cluster = 'lvs'
     include admin
     include role::lvs::balancer
