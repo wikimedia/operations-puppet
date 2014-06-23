@@ -267,13 +267,12 @@ acl_check_data:
 	discard log_message = spam detected ($spam_score)
 		condition = ${if >{$spam_score_int}{120}{1}{0}}
 <% else -%>
-	# Let's trust local senders (Mailman) to not send out spam
+	# Let's trust local senders to not send out spam
 	accept hosts = +wikimedia_nets
 		set acl_m0 = trusted relay
 
 	# Only run through SpamAssassin if requested for this domain and
-	# the message is not too large (Mailman's default moderation
-	# threshold of 40 KB)
+	# the message is not too large
 	accept condition = ${if >{$message_size}{400K}}
 
 	# Skip if so requested

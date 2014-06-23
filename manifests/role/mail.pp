@@ -13,6 +13,13 @@ class role::mail::mx {
         recipient => 'root@wikimedia.org',
     }
 
+    class { 'spamassassin':
+        required_score   => '4.0',
+        use_bayes        => '1',
+        bayes_auto_learn => '1',
+        trusted_networks => $network::constants::all_networks,
+    }
+
     class { 'exim::roled':
         local_domains          => [
                 '+system_domains',
@@ -23,7 +30,10 @@ class role::mail::mx {
         enable_mail_submission => false,
         enable_external_mail   => true,
         mediawiki_relay        => true,
+        enable_spamassassin    => true,
     }
+
+    Class['spamassassin'] -> Class['exim::roled']
 
     monitor_service { 'smtp':
         description   => 'Exim SMTP',
