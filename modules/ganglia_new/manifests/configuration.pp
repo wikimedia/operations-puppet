@@ -50,9 +50,6 @@ class ganglia_new::configuration {
         'payments'  => {
             'name'      => 'Fundraiser payments',
             'id'    => 23 },
-        'bits_appserver'    => {
-            'name'      => 'Bits application servers',
-            'id'    => 24 },
         'ssl'       => {
             'name'      => 'SSL cluster',
             'id'    => 26,

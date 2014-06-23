@@ -1,6 +1,5 @@
 @monitor_group { 'appserver_eqiad': description => 'eqiad application servers' }
 @monitor_group { 'api_appserver_eqiad': description => 'eqiad API application servers' }
-@monitor_group { 'bits_appserver_eqiad': description => 'eqiad Bits application servers' }
 @monitor_group { 'imagescaler_eqiad': description => 'eqiad image scalers' }
 @monitor_group { 'jobrunner_eqiad': description => 'eqiad jobrunner application servers' }
 @monitor_group { 'videoscaler_eqiad': description => 'eqiad video scaler' }
@@ -61,15 +60,6 @@ class role::mediawiki::appserver::api {
 
     class { 'role::mediawiki::webserver':
         pool       => 'api',
-        maxclients => 100,
-    }
-}
-
-class role::mediawiki::appserver::bits {
-    system::role { 'role::mediawiki::appserver::bits': }
-
-    class { 'role::mediawiki::webserver':
-        pool       => 'apaches',
         maxclients => 100,
     }
 }
