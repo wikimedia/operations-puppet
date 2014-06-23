@@ -1016,11 +1016,10 @@ node 'dysprosium.eqiad.wmnet' {
 }
 
 node 'eeden.esams.wikimedia.org' {
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
+    include standard
     include admin
     include role::authdns::ns2
 }
@@ -1799,6 +1798,7 @@ node 'rubidium.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    include standard
     include admin
     include role::authdns::ns0
 }
@@ -1832,6 +1832,7 @@ node 'mexia.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    include standard
     include admin
     include role::authdns::ns1
 }

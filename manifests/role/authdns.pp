@@ -1,8 +1,6 @@
 # authdns role classes, heavily relying on the authdns role module
 
 class role::authdns::base {
-    include standard
-
     system::role { 'authdns': description => 'Authoritative DNS server' }
 
     $nameservers = [
