@@ -1,7 +1,4 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///templates/exim/exim4.conf.SMTP_IMAP_MM.erb
-#####################################################################
+# This file is managed by puppet
 
 ##########
 # Macros #
@@ -160,37 +157,31 @@ acl_check_rcpt:
 <% if enable_mail_relay != false then -%>
 	# If there have been ~4 times as many previous RCPT rejects than
 	# accepts, drop the connection
-
 	drop message = Too many ($rcpt_fail_count) rejected recipients, good bye
 		hosts = ! +wikimedia_nets
 		condition = ${if >={$rcpt_fail_count}{${eval:4*($recipients_count+1)}}}
 <% end -%>
 
 	# Accept if the source is local SMTP (a pipe)
-
 	accept hosts = :
 
 	# Deny if the local part contains @, %, /, | or !, or starts with a dot
-
 	deny local_parts = ^.*[@%!/|] : ^\\.
 
 	# Accept relaying from networks we control. Note: no address verification
 	# is done at this point, which is good for mail submission, but may render
 	# recipient callout verification by affected hosts useless.
-
 	accept domains = ! +local_domains
 		hosts = +relay_from_hosts
 		control = submission/sender_retain
 
 <% if enable_mail_submission == true then -%>
-# Mail submissions from other hosts must be from SMTP authenticated users
-
+	# Mail submissions from other hosts must be from SMTP authenticated users
 	accept authenticated = *
 		encrypted = *
 		control = submission/sender_retain
 
-# We only accept mail from our own mail relays, on port 25 only
-
+	# We only accept mail from our own mail relays, on port 25 only
 	require message = Use TLS and SMTP authentication
 		hosts = +wikimedia_nets
 		message = This port is restricted to authenticated and encrypted mail submissions
@@ -199,18 +190,14 @@ acl_check_rcpt:
 
 <% if enable_otrs_server == true then -%>
 	# Require recipient domain to be local
-
 	require message = Relay not permitted
 		domains = +local_domains
 		set acl_m_relayed = yes
 <% else -%>
 	# Require recipient domain to be local, or a domain we relay for
-
 	require message = Relay not permitted
 		domains = +local_domains : +relay_domains
 		set acl_m_relayed = yes
-
-	# { recipient domain is under our administrative control }
 
 	# use this only for emergencies or planned downtimes
 	defer	message = Administratively set to defer
@@ -218,13 +205,11 @@ acl_check_rcpt:
 
 	# Accept mail for postmaster without further policy checking,
 	# for compliance with the RFCs
-
 	accept local_parts = postmaster
 <% end -%>
 
 	# Verify the recipient address for local domains, or require the
 	# recipient domain to exist for remote domains
-
 	require verify = recipient
 
 <% if enable_mail_relay != false then -%>
@@ -232,13 +217,9 @@ acl_check_rcpt:
 	# check if the local part exists at the destination,
 	# reject if it doesn't.
 	# Accept if the destination cannot be reached within 30s.
-
 	deny domains = +relay_domains
 		! verify = recipient/callout=10s,maxwait=30s,defer_ok
 <% end -%>
-
-	# Mail can be safely accepted here, but we may want to do more
-	# rfc compliance checking and spam filtering.
 
 	<% if enable_mail_relay != false then -%>
 	# Check whether the sender address domain exists
@@ -252,9 +233,7 @@ acl_check_rcpt:
 
 acl_check_connect:
 <% if mediawiki_relay == true then -%>
-	# Deny external connections to the internal bulk mail submission
-	# interface
-
+	# Deny external connections to the internal bulk mail submission interface
 	deny condition = ${if match_ip{$interface_address}{WIKI_INTERFACE}{true}{false}}
 		! hosts = +wikimedia_nets
 
@@ -375,7 +354,6 @@ eat:
 <% end -%>
 
 # Use the system aliasfile /etc/aliases for system domains
-
 system_aliases:
 	driver = redirect
 	domains = +system_domains
@@ -392,7 +370,6 @@ system_aliases:
 # and assumes this is the ticket number of an existing ticket if this is
 # the case. It rewrites the address to the general queue, and puts the
 # ticket nr in $address_data, where the rt_pipe transport can access it.
-
 rt_ticket:
 	driver = redirect
 	domains = +rt_domains
@@ -413,8 +390,7 @@ rt:
 
 <% end -%>
 <% if enable_mailman == true then -%>
-# Mailman list handling.
-
+# Mailman list handling
 list_aliases:
 	driver = redirect
 	domains = +local_domains
@@ -429,7 +405,6 @@ list_aliases:
 
 # Test the mailing list address without suffix
 # first, as a mailing list like wikifi-admin is a valid list name.
-
 list:
 	driver = accept
 	domains = +mailman_domains
@@ -449,7 +424,6 @@ list_suffix:
 <% if enable_mail_relay == "primary" then -%>
 # Use alias files /etc/exim4/aliases/$domain for domains like
 # wikimedia.org, wikipedia.org, wiktionary.org etc.
-
 aliases:
 	driver = redirect
 	domains = +local_domains
@@ -462,8 +436,7 @@ aliases:
 	include_directory = CONFDIR
 	pipe_transport = address_pipe
 
-# Alias old mailing list addresses to @lists.wikimedia.org on lily
-
+# Alias old mailing list addresses to @lists.wikimedia.org
 legacy_mailing_lists:
 	driver = redirect
 	domains = +legacy_mailman_domains
@@ -508,7 +481,7 @@ ldap_alias:
 			ldap:///ou=people,dc=corp,dc=wikimedia,dc=org?mail?sub?(&(objectClass=inetOrgPerson)(initials=${quote_ldap:$local_part}@$domain)(x121Address=1))} \
 			{$value}fail}
 
-# Send mail for IMAP accounts to sanger
+# Send mail for IMAP accounts to the IMAP server
 imap:
 	driver = manualroute
 	domains = wikimedia.org
@@ -528,13 +501,6 @@ rt:
 # Query the OTRS MySQL server(s) for the existence of the queue address
 # $local_part@$domain, and manually route to the OTRS server if
 # successful.
-
-# OTRS down, defer mail without checking the db and slowing things down -- mark 20080622
-#otrs_down:
-#	driver = redirect
-#	allow_defer
-#	data = :defer: Cannot check existence of this address right now
-
 otrs:
 	driver = manualroute
 	domains = +local_domains
@@ -546,7 +512,6 @@ otrs:
 # Run a custom user filter, e.g. to sort mail into subfolders
 # By default Exim filter CONFDIR/default_user_filter is run,
 # which sorts mail classified spam into the Junk folder
-
 user_filter:
 	driver = redirect
 	domains = +local_domains
@@ -606,9 +571,6 @@ user_left:
 	require_files = CONFDIR/userleft/$domain/$local_part
 	transport = left_message
 
-# Send all mail not destined for the local machine via a set of
-# mail relays ("smart hosts")
-
 <% end %>
 <% if enable_mail_relay != false then -%>
 
@@ -632,6 +594,8 @@ otrs:
 <% end %>
 
 <% if !smart_route_list.empty? then -%>
+# Send all mail not destined for the local machine via a set of
+# mail relays ("smart hosts")
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
@@ -712,7 +676,6 @@ rt_pipe:
 <% end -%>
 <% if enable_otrs_server == true then -%>
 # OTRS pipe transport
-
 otrs:
 	driver = pipe
 	command = OTRS_POSTMASTER
@@ -729,7 +692,6 @@ otrs:
 <% if enable_mailman == true then -%>
 # Mailman pipe transport
 # Rewrite body headers of old mailing list addresses to new ones
-
 list:
 	driver = pipe
 	command = MAILMAN_WRAP \
@@ -748,7 +710,6 @@ list:
 # Delivery via Dovecot's "deliver" LDA. The advantage over using Exim's
 # internal Maildir appendfile transport is that it can immediately update
 # Dovecot's internal indexes for better performance.
-
 dovecot_delivery:
 	driver = pipe
 	command = DELIVER -m ${extract{mailbox}{$address_data}{$value}{INBOX}}
@@ -762,8 +723,7 @@ dovecot_delivery:
 	user = vmail
 	group = vmail
 
-# Exim appendfile transport for Maildir delivery
-
+# appendfile transport for Maildir delivery
 maildir_delivery:
 	driver = appendfile
 	maildir_format
@@ -786,7 +746,6 @@ maildir_delivery:
 	maildir_tag = ,S=$message_size
 
 # Autoreply bounce transport for users that have left the organization
-
 left_message:
 	driver = autoreply
 	file = CONFDIR/userleft/$domain/$local_part
@@ -810,7 +769,6 @@ begin authenticators
 # PLAIN authenticator
 # Expects the password field to contain a "LDAP format" hash. Only
 # (unsalted) {md5}, {sha1}, {crypt} and {crypt16} are supported.
-
 plain:
 	driver = plaintext
 	public_name = PLAIN
@@ -865,5 +823,4 @@ www-data@$primary_hostname      general@rt.wikimedia.org        Fq
 *@*.codfw.wmnet		root@wikimedia.org	F
 *@*.esams.wmnet		root@wikimedia.org	F
 *@*.ulsfo.wmnet		root@wikimedia.org	F
-#*@*.wikimedia.org	root@wikimedia.org	F
 <% end -%>
