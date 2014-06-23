@@ -2671,12 +2671,11 @@ node 'titanium.wikimedia.org' {
 
 
 node 'tridge.wikimedia.org' {
-
     system::role { 'role::backup':
         description => 'Backup server',
     }
 
-    include base
+    include standard
     include admin
     include backup::server
 }
