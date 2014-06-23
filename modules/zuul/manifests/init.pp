@@ -91,18 +91,36 @@ class zuul (
     ensure => directory,
   }
 
+  # Craft zuul.conf and zuul-merger.conf, reusing the parameters passed to zuul
+  # class.
+
   # TODO: We should put in  notify either Service['zuul'] or Exec['zuul-reload']
   #       at some point, but that still has some problems.
-  file { '/etc/zuul/zuul.conf':
-    ensure  => present,
-    owner   => 'jenkins',
-    mode    => '0400',
-    content => template('zuul/zuul.conf.erb'),
-    notify  => Exec['craft public zuul conf'],
-    require => [
-      File['/etc/zuul'],
-      Package['jenkins'],
-    ],
+
+  zuul::configfile( '/etc/zuul/zuul.conf':
+      zuul_role => 'server',
+      owner     => 'jenkins',
+      group     => 'root',
+      mode      => '0400',
+
+      notify => Exec['craft public zuul conf'],
+      require  => [
+          File['/etc/zuul'],
+          Package['jenkins'],
+      ],
+  )
+
+  # Configuration file for the zuul merger
+  zuul::configfile( '/etc/zuul/zuul-merger.conf':
+      zuul_role => 'merger',
+      owner     => 'root',
+      group     => 'root',
+      mode      => '0444',
+
+      require     => [
+          File['/etc/zuul'],
+          Package['jenkins'],
+      ],
   }
 
   file { '/etc/zuul/gearman-logging.conf':
