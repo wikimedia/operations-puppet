@@ -19,6 +19,15 @@ class zuul::merger (
     $git_dir = '/var/lib/zuul/git'
 ) {
 
+    file { '/etc/default/zuul-merger':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('zuul/zuul-merger.default.erb'),
+        notify  => Service['zuul-merger'],
+    }
+
     file { '/etc/init.d/zuul-merger':
         ensure => present,
         owner  => 'root',
