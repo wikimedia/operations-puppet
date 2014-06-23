@@ -316,6 +316,7 @@ class toollabs::exec_environ {
         'libzbar0',                    # Bug 56996
         'mariadb-client',              # For /usr/bin/mysql.
         'mdbtools',                    # Bug #48805.
+        'openbabel',                   # Bug #66995
         'socat',                       # Bug 57005
         'supybot',                     # Bug 61088.
         'p7zip',
