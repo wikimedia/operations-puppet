@@ -55,10 +55,7 @@ if $cluster == undef {
     $cluster = 'misc'
 }
 if $puppet_version == undef {
-    $puppet_version = $::realm ? {
-        'labs'  => '3',
-        default => '2.7'
-    }
+    $puppet_version = '3'
 }
 # Node definitions (alphabetic order)
 
@@ -434,7 +431,6 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
     include admin
     if $::hostname =~ /^cp103[78]$/ {
         $ganglia_aggregator = true
@@ -445,7 +441,6 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
 }
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
     include admin
     $ganglia_aggregator = true
 
@@ -456,7 +451,6 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
-    $puppet_version = '3'
     class { 'admin': groups => ['parsoid-roots',
                                 'parsoid-admin'] }
 
@@ -469,7 +463,6 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
-    $puppet_version = '3'
     include admin
     if $::hostname =~ /^cp104[67]$/ {
         $ganglia_aggregator = true
@@ -482,7 +475,6 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 }
 
 node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
     include admin
     if $::hostname =~ /^(cp1048|cp1061)$/ {
         $ganglia_aggregator = true
@@ -495,7 +487,7 @@ node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     include admin
     if $::hostname =~ /^cp105[23]$/ {
         $ganglia_aggregator = true
@@ -508,7 +500,7 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 }
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
-    $puppet_version = '3'
+
     include admin
     if $::hostname =~ /^cp105[67]$/ {
         $ganglia_aggregator = true
@@ -521,7 +513,7 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
-    $puppet_version = '3'
+
     include admin
     interface::aggregate { 'bond0':
         orig_interface => 'eth0',
@@ -536,7 +528,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 }
 
 node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
-    $puppet_version = '3'
+
     include admin
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
@@ -548,7 +540,7 @@ node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
 }
 
 node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
-    $puppet_version = '3'
+
     include admin
     interface::add_ip6_mapped { 'main': }
 
@@ -557,7 +549,7 @@ node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
-    $puppet_version = '3'
+
     include admin
     if $::hostname =~ /^cp(3019|3020)$/ {
         $ganglia_aggregator = true
@@ -574,7 +566,7 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
-    $puppet_version = '3'
+
     include admin
     # cp4001 and cp4003 are in different racks,
     # make them each ganglia aggregators.
@@ -590,7 +582,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
-    $puppet_version = '3'
+
     include admin
     if $::hostname =~ /^cp(4005|4013)$/ {
         $ganglia_aggregator = true
@@ -604,7 +596,7 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
-    $puppet_version = '3'
+
     include admin
     if $::hostname =~ /^cp(4008|4016)$/ {
         $ganglia_aggregator = true
@@ -618,7 +610,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
-    $puppet_version = '3'
+
     include admin
     if $::hostname =~ /^cp401[19]$/ {
         $ganglia_aggregator = true
@@ -662,7 +654,7 @@ node 'dataset1001.wikimedia.org' {
 
 # pmtpa dbs
 node /^db(60)\.pmtpa\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
@@ -673,7 +665,7 @@ node /^db(60)\.pmtpa\.wmnet/ {
 }
 
 node /^db(69)\.pmtpa\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s2':
@@ -683,7 +675,7 @@ node /^db(69)\.pmtpa\.wmnet/ {
 }
 
 node /^db(71)\.pmtpa\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s3':
@@ -693,7 +685,7 @@ node /^db(71)\.pmtpa\.wmnet/ {
 }
 
 node /^db(72)\.pmtpa\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s4':
@@ -703,7 +695,7 @@ node /^db(72)\.pmtpa\.wmnet/ {
 }
 
 node /^db(73)\.pmtpa\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s5':
@@ -713,7 +705,7 @@ node /^db(73)\.pmtpa\.wmnet/ {
 }
 
 node /^db(74)\.pmtpa\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s6':
@@ -724,14 +716,14 @@ node /^db(74)\.pmtpa\.wmnet/ {
 
 ## imminent decomission/reclaim from pmtpa pending 12th floor reorg
 node /^db(60|7[5-7])\.pmtpa\.wmnet/{
-    $puppet_version = '3'
+
     include admin
     include standard
 }
 
 # eqiad dbs
 node /^db10(50|51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s1':
@@ -741,7 +733,7 @@ node /^db10(50|51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
 }
 
 node /^db10(02|09|18|36|60|63|67)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s2':
@@ -751,7 +743,7 @@ node /^db10(02|09|18|36|60|63|67)\.eqiad\.wmnet/ {
 }
 
 node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s3':
@@ -763,7 +755,7 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
 }
 
 node /^db10(04|40|42|49|56|59|64|68)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s4':
@@ -773,7 +765,7 @@ node /^db10(04|40|42|49|56|59|64|68)\.eqiad\.wmnet/ {
 }
 
 node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s5':
@@ -783,7 +775,7 @@ node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
 }
 
 node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s6':
@@ -793,7 +785,7 @@ node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
 }
 
 node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s7':
@@ -804,7 +796,7 @@ node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
 
 ## x1 shard
 node /^db10(29|31)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     include role::coredb::x1
@@ -812,7 +804,7 @@ node /^db10(29|31)\.eqiad\.wmnet/ {
 
 ## m1 shard
 node /^db10(01|16)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::m1':
@@ -822,7 +814,7 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
 
 ## m2 shard
 node /^db10(20|46)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
@@ -832,7 +824,7 @@ node /^db10(20|46)\.eqiad\.wmnet/ {
 
 ## m3 shard
 node /^db10(43|48)\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
@@ -842,7 +834,7 @@ node /^db10(43|48)\.eqiad\.wmnet/ {
 
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     include role::mariadb::analytics
@@ -850,7 +842,7 @@ node 'db1047.eqiad.wmnet' {
 
 ## researchdb s5
 node 'db1017.eqiad.wmnet' {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::researchdb':
@@ -863,7 +855,7 @@ node 'db1017.eqiad.wmnet' {
 
 ## SANITARIUM
 node 'db1053.eqiad.wmnet' {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
@@ -882,7 +874,7 @@ node 'db1053.eqiad.wmnet' {
 }
 
 node 'db1054.eqiad.wmnet' {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
@@ -917,7 +909,7 @@ node 'db1054.eqiad.wmnet' {
 }
 
 node 'db1057.eqiad.wmnet' {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
@@ -953,14 +945,14 @@ node 'db1057.eqiad.wmnet' {
 }
 
 node 'db1044.eqiad.wmnet' {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     include role::mariadb::tendril
 }
 
 node /^dbstore1001\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     $mariadb_backups_folder = '/a/backups'
@@ -973,7 +965,7 @@ node /^dbstore1001\.eqiad\.wmnet/ {
 }
 
 node /^dbstore1002\.eqiad\.wmnet/ {
-    $puppet_version = '3'
+
     include admin
     $cluster = 'mysql'
     # Analytics traffic & eventlogging spikes
@@ -1193,7 +1185,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 }
 
 node 'gallium.wikimedia.org' {
-    $puppet_version = '3'
+
     $cluster = 'misc'
 
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
@@ -1459,7 +1451,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'lanthanum.eqiad.wmnet' {
-    $puppet_version = '3'
+
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
     include standard
@@ -1505,7 +1497,7 @@ node 'linne.wikimedia.org' {
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
-    $puppet_version = '3'
+
     if $::hostname =~ /^lvs100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1645,7 +1637,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
-    $puppet_version = '3'
+
 # not yet...
 #    if $::hostname =~ /^lvs300[13]$/ {
 #        $ganglia_aggregator = true
@@ -1706,7 +1698,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
-    $puppet_version = '3'
+
     $cluster = 'lvs'
     # lvs4001 and lvs4003 are in different racks
     if $::hostname =~ /^lvs400[13]$/ {
@@ -1863,7 +1855,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
 # rate limiting purposes (bug 64622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     $cluster = 'swift'
     $nagios_group = 'swift'
     if $::hostname =~ /^ms-fe100[12]$/ {
@@ -1881,7 +1873,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     $cluster = 'swift'
     $nagios_group = 'swift'
     $all_drives = [
@@ -1932,7 +1924,7 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     class {'::admin': groups => ['deployment']}
     $cluster = 'jobrunner'
     if $::hostname =~ /^mw100[12]$/ {
@@ -1948,7 +1940,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 
 # mw1017-1113 are apaches (precise)
 node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     if $::hostname =~ /^mw101[78]$/ {
@@ -1964,7 +1956,7 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
 # mw1114-1148 are api apaches (precise)
 node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
     if $::hostname =~ /^mw111[45]$/ {
@@ -1976,7 +1968,7 @@ node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
 
 # mw1149-1152 are bits apaches (precise)
 node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     class {'::admin': groups => ['deployment']}
     $cluster = 'bits_appserver'
     if $::hostname =~ /^mw115[12]$/ {
@@ -1988,7 +1980,7 @@ node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     class {'::admin': groups => ['deployment']}
     $cluster = 'imagescaler'
     if $::hostname =~ /^mw115[34]$/ {
@@ -2000,7 +1992,7 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 
 # mw1161-1188 are apaches (precise)
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     if $::hostname == 'mw1161' {
@@ -2012,7 +2004,7 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 
 # mw1189-1208 are api apaches (precise)
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
     if $::hostname == 'mw1201' {
@@ -2024,7 +2016,7 @@ node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
 
 # mw1209-1220 are apaches (precise)
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
-    $puppet_version = '3'
+
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
     include role::mediawiki::appserver
@@ -2161,7 +2153,6 @@ node 'nickel.wikimedia.org' {
 }
 
 node 'nitrogen.wikimedia.org' {
-
     include standard
     include admin
     include role::ipv6relay
@@ -2199,7 +2190,6 @@ node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 }
 
 node 'palladium.eqiad.wmnet' {
-    $puppet_version = '3'
     include standard
     include admin
     include backup::client
@@ -2211,7 +2201,6 @@ node 'palladium.eqiad.wmnet' {
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
-    $puppet_version = '3'
     $cluster = 'mysql'
     include admin
     include role::db::core
@@ -2271,7 +2260,6 @@ node 'potassium.eqiad.wmnet' {
 
 # Live Recent Changes WebSocket stream
 node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
-    $puppet_version = '3'
     include admin
     include standard
     include role::rcstream
@@ -2427,7 +2415,6 @@ node 'sodium.wikimedia.org' {
 }
 
 node /ssl100[1-9]\.wikimedia\.org/ {
-    $puppet_version = '3'
     $cluster = 'ssl'
     if $::hostname =~ /^ssl100[12]$/ {
         $ganglia_aggregator = true
@@ -2442,7 +2429,6 @@ node /ssl100[1-9]\.wikimedia\.org/ {
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
-    $puppet_version = '3'
     $cluster = 'ssl'
     if $::hostname =~ /^ssl300[12]$/ {
         $ganglia_aggregator = true
@@ -2457,7 +2443,6 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 }
 
 node 'strontium.eqiad.wmnet' {
-    $puppet_version = '3'
     include standard
     include admin
     include role::puppetmaster::backend
