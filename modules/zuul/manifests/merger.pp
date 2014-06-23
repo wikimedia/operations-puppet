@@ -51,6 +51,7 @@ class zuul::merger (
         name       => 'zuul-merger',
         enable     => true,
         hasrestart => true,
+        subscribe  => File['/etc/zuul/zuul-merger.conf'],
         require    => [
             File['/etc/init.d/zuul-merger'],
             File['/var/run/zuul-merger'],
