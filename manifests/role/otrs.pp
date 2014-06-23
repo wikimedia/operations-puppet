@@ -148,6 +148,10 @@ class role::otrs (
 
     # warning: don't unquote these booleans until exim::roled is fixed
     class { 'exim::roled':
+        local_domains          => [
+            '+system_domains',
+            '+wikimedia_domains',
+            ],
         enable_clamav        => true,
         enable_otrs_server   => true,
         enable_spamassassin  => true,
