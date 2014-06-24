@@ -151,6 +151,8 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         # MinFetchRate ~= 45. 1/45*1000 ~= 22.  Setting this to 30 seconds to overcompensate.
         # See also: http://ganglia.wikimedia.org/latest/graph_all_periods.php?title=&vl=&x=&n=&hreg%5B%5D=analytics102%5B12%5D.*&mreg%5B%5D=kafka.server.ReplicaFetcherManager.Replica-MinFetchRate.Value&gtype=line&glegend=show&aggregate=1
         replica_lag_time_max_ms         => 30000,
+        # Use LinkedIn recommended settings with G1 garbage collector,
+        jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }
 
     # Generate icinga alert if Kafka Server is not running.
