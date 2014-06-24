@@ -165,7 +165,7 @@ $wikimail_smarthost = $::realm ? {
 	# FIXME: find some SMTP servers for labs
 	'labs'       => [ 'polonium.wikimedia.org', 'mchenry.wikimedia.org' ],
 }
-# Generic, default servers
+# Generic, default servers (order matters!)
 $mail_smarthost = $::realm ? {
 	'production' => [ 'polonium.wikimedia.org', 'mchenry.wikimedia.org' ],
 	# FIXME: find some SMTP servers for labs

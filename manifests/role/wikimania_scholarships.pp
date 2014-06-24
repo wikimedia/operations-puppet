@@ -18,7 +18,7 @@ class role::wikimania_scholarships {
         # Misc MySQL shard
         mysql_host   => 'm2-master.eqiad.wmnet',
         mysql_db     => 'scholarships',
-        smtp_host    => 'smtp.pmtpa.wmnet'
+        smtp_host    => $::mail_smarthost[0],
     }
 
     ferm::service { 'scholarships_http':

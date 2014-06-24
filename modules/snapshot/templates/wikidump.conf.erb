@@ -29,7 +29,7 @@ fileperms=0644
 [reporting]
 adminmail=ops-dumps@wikimedia.org
 mailfrom=root@wikimedia.org
-smtpserver=smtp.pmtpa.wmnet
+smtpserver=<%= @mail_smarthost[0] %>
 staleage=3600
 
 [database]
