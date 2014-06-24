@@ -120,6 +120,7 @@ class role::ci::slave {
 
     include contint::packages,
         role::gerrit::production::replicationdest
+    include zuul
 
     deployment::target { 'contint-production-slaves': }
 
@@ -179,6 +180,7 @@ class role::ci::slave::labs::common {
     # Jenkins slaves need to access beta cluster for the browsertests
     include role::beta::natfix
     include contint::firewall::labs
+    include zuul
 
     if $::site == 'eqiad' {
         # Does not come with /dev/vdb, we need to mount it using lvm
