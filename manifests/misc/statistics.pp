@@ -13,7 +13,7 @@ class misc::statistics::user {
     file { "${homedir}/.gitconfig":
         mode    => '0664',
         owner   => $username,
-        content => '[user]\n\temail = otto@wikimedia.org\n\tname = Statistics User',
+        content => "[user]\n\temail = otto@wikimedia.org\n\tname = Statistics User",
     }
 }
 
@@ -311,10 +311,6 @@ class misc::statistics::sites::stats {
         owner   => 'root',
         group   => 'root',
         source  => 'puppet:///files/apache/ports.conf.ssl',
-    }
-
-    apache_site { 'statswikimedia':
-        name => 'stats.wikimedia.org',
     }
 }
 
