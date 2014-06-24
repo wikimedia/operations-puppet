@@ -956,6 +956,7 @@ class role::cache {
                 'retry503' => 4,
                 'retry5xx' => 1,
                 'cache4xx' => "1m",
+                'cluster_tier' => $cluster_tier,
                 'layer' => 'frontend',
                 'ssl_proxies' => $wikimedia_networks,
             },
