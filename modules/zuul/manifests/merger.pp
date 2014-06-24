@@ -16,8 +16,35 @@
 # == Class: zuul::merger
 #
 class zuul::merger (
-    $git_dir = '/var/lib/zuul/git'
+    $gearman_server,
+    $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
+    $gerrit_server,
+    $gerrit_user,
+    $git_dir = '/var/lib/zuul/git',
+    $git_email = "zuul-merger@${::hostname}",
+    $git_name = 'Wikimedia Zuul Merger',
+    $url_pattern,
+    $status_url = "https://${::fqdn}/zuul/status",
+    $zuul_url = 'git://zuul.eqiad.wmnet',
 ) {
+
+    file { $git_dir:
+        ensure  => directory,
+        owner   => 'jenkins',
+        require => Package['jenkins'],
+    }
+
+    # Configuration file for the zuul merger
+    zuul::configfile { '/etc/zuul/zuul-merger.conf':
+        zuul_role => 'merger',
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0444',
+
+        require   => [
+            File['/etc/zuul'],
+        ],
+    }
 
     file { '/etc/default/zuul-merger':
         ensure  => present,
@@ -56,6 +83,7 @@ class zuul::merger (
             File['/etc/init.d/zuul-merger'],
             File['/var/run/zuul-merger'],
             File['/etc/zuul/merger-logging.conf'],
+            File['/etc/zuul/zuul-merger.conf'],
         ],
     }
 
