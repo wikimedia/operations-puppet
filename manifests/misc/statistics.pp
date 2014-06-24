@@ -10,7 +10,7 @@ class misc::statistics::user {
     }
 
     # create a .gitconfig file for stats user
-    file { '$homedir/.gitconfig':
+    file { "${homedir}/.gitconfig":
         mode    => '0664',
         owner   => $username,
         content => '[user]\n\temail = otto@wikimedia.org\n\tname = Statistics User',
