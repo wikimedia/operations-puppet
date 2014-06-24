@@ -23,7 +23,6 @@ class zuul (
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
     $git_branch = 'master',
     $git_dir = '/var/lib/zuul/git',
-    $statsd_host = '',
     $git_email = "zuul-merger@${::hostname}",
     $git_name = 'Wikimedia Zuul Merger',
 ) {
@@ -152,14 +151,6 @@ class zuul (
     ensure  => directory,
     owner   => 'jenkins',
     require => Package['jenkins'],
-  }
-
-  file { '/etc/default/zuul':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => template('zuul/zuul.default.erb'),
   }
 
 }
