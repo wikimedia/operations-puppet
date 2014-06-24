@@ -22,9 +22,6 @@
 [submodule "modules/nginx"]
 	path = modules/nginx
 	url = https://gerrit.wikimedia.org/r/operations/puppet/nginx
-[submodule "modules/varnish"]
-	path = modules/varnish
-	url = https://gerrit.wikimedia.org/r/operations/puppet/varnish
 [submodule "modules/mariadb"]
        path = modules/mariadb
        url = https://gerrit.wikimedia.org/r/operations/puppet/mariadb
