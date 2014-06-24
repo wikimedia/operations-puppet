@@ -18,8 +18,6 @@ class zuulwikimedia {
         $git_branch='master',
         $git_dir='/var/lib/zuul/git',
         $statsd_host = '',
-        $git_email = "zuul-merger@${::hostname}",
-        $git_name = 'Wikimedia Zuul Merger'
     ) {
 
         # Zuul needs an API key to interact with Jenkins:
@@ -48,7 +46,9 @@ class zuulwikimedia {
             statsd_host          => $statsd_host,
         }
         class { '::zuul::merger':
-            git_dir => $git_dir,
+            git_dir   => $git_dir,
+            git_email => "zuul-merger@${::hostname}",
+            git_name  => 'Wikimedia Zuul Merger',
         }
 
         # nagios/icinga monitoring

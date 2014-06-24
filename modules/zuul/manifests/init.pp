@@ -23,8 +23,6 @@ class zuul (
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
     $git_branch = 'master',
     $git_dir = '/var/lib/zuul/git',
-    $git_email = "zuul-merger@${::hostname}",
-    $git_name = 'Wikimedia Zuul Merger',
 ) {
 
   # Dependencies as mentionned in zuul:tools/pip-requires
