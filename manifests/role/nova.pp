@@ -51,9 +51,12 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
     include role::keystone::config::pmtpa
 
     $keystoneconfig = $role::keystone::config::pmtpa::keystoneconfig
-    $controller_hostname = $::realm ? {
+    $controller_hostname = $realm ? {
         'production' => 'virt0.wikimedia.org',
-        'labs'       => $::ipaddress_eth0,
+        'labs'       => $nova_controller_hostname ? {
+            undef   => $::ipaddress_eth0,
+            default => $nova_controller_hostname,
+        }
     }
 
 
@@ -72,19 +75,28 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
             'labs'       => 'eth0',
         },
         network_flat_interface_vlan => '103',
-        flat_network_bridge         => 'br103',
-        network_public_interface    => 'eth0',
-        network_host => $::realm ? {
+        flat_network_bridge => 'br103',
+        network_public_interface => 'eth0',
+        network_host => $realm ? {
             'production' => '10.4.0.1',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_network_hostname ? {
+                undef   => $::ipaddress_eth0,
+                default => $nova_network_hostname,
+            }
         },
-        api_host => $::realm ? {
+        api_host => $realm ? {
             'production' => 'virt2.pmtpa.wmnet',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_hostname,
+            }
         },
-        api_ip => $::realm ? {
+        api_ip => $realm ? {
             'production' => '10.4.0.1',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_network_ip ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_network_ip,
+            }
         },
         fixed_range => $::realm ? {
             'production' => '10.4.0.0/21',
@@ -94,21 +106,30 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
             'production' => '10.4.0.4',
             'labs'       => '192.168.0.4',
         },
-        network_public_ip => $::realm ? {
+        network_public_ip => $realm ? {
             'production' => '208.80.153.192',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_network_ip ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_network_ip,
+            }
         },
         dmz_cidr => $::realm ? {
             'production' => '208.80.153.0/22,10.0.0.0/8',
             'labs'       => '10.4.0.0/21',
         },
-        controller_hostname => $::realm ? {
+        controller_hostname => $realm ? {
             'production' => 'wikitech.wikimedia.org',
-            'labs'       => $::fqdn,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_hostname,
+            }
         },
-        ajax_proxy_url => $::realm ? {
+        ajax_proxy_url => $realm ? {
             'production' => 'http://wikitech.wikimedia.org:8000',
-            'labs'       => "http://${::hostname}.${::domain}:8000",
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => "${nova_controller_hostname}:8000",
+            }
         },
         ldap_host              => $controller_hostname,
         puppet_host            => $controller_hostname,
@@ -141,13 +162,19 @@ class role::nova::config::eqiad inherits role::nova::config::common {
     include role::keystone::config::eqiad
 
     $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
-    $controller_hostname = $::realm ? {
+    $controller_hostname = $realm ? {
         'production' => 'virt1000.wikimedia.org',
-        'labs'       => $::ipaddress_eth0,
+        'labs' => $nova_controller_hostname ? {
+            undef => $::ipaddress_eth0,
+            default => $nova_controller_hostname,
+        }
     }
-    $controller_address = $::realm ? {
+    $controller_address = $realm ? {
         'production' => '208.80.154.18',
-        'labs'       => '127.0.0.1',
+        'labs' => $nova_controller_ip ? {
+            undef => $::ipaddress_eth0,
+            default => $nova_controller_ip,
+        }
     }
 
     $eqiadnovaconfig = {
@@ -165,19 +192,28 @@ class role::nova::config::eqiad inherits role::nova::config::common {
             'labs'       => 'eth0',
         },
         network_flat_interface_vlan => '1102',
-        flat_network_bridge         => 'br1102',
+        flat_network_bridge => 'br1102',
         network_public_interface => 'eth0',
-        network_host => $::realm ? {
+        network_host => $realm ? {
             'production' => '10.64.20.13',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_network_hostname ? {
+                undef   => $::ipaddress_eth0,
+                default => $nova_network_hostname,
+            }
         },
-        api_host => $::realm ? {
+        api_host => $realm ? {
             'production' => 'labnet1001.eqiad.wmnet',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_hostname,
+            }
         },
-        api_ip => $::realm ? {
+        api_ip => $realm ? {
             'production' => '10.64.20.13',
-            'labs'       => 'localhost',
+            'labs' => $nova_controller_ip ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_ip,
+            }
         },
         fixed_range => $::realm ? {
             'production' => '10.68.16.0/21',
@@ -187,9 +223,12 @@ class role::nova::config::eqiad inherits role::nova::config::common {
             'production' => '10.68.16.4',
             'labs'       => '192.168.0.4',
         },
-        network_public_ip => $::realm ? {
+        network_public_ip => $realm ? {
             'production' => '208.80.155.255',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_network_ip ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_network_ip,
+            }
         },
         dmz_cidr => $::realm ? {
             'production' => '208.80.155.0/22,10.0.0.0/8',
@@ -334,7 +373,8 @@ class role::nova::controller {
     class { 'role::keystone::server':
         glanceconfig => $glanceconfig,
     }
-    if $::realm == 'production' {
+    if $realm == 'production' {
+        class { 'openstack::firewall': }
         class { 'role::puppet::server::labs': }
     }
 
@@ -406,14 +446,16 @@ class role::nova::network {
         require role::nova::network::bonding
     }
 
-    $site_address = $::site ? {
-        'pmtpa' => '208.80.153.192',
-        'eqiad' => '208.80.155.255',
-    }
+    if ($::realm == production) {
+        $site_address = $::site ? {
+            'pmtpa' => '208.80.153.192',
+            'eqiad' => '208.80.155.255',
+        }
 
-    interface::ip { 'openstack::network_service_public_dynamic_snat':
-        interface => 'lo',
-        address   => $site_address,
+        interface::ip { 'openstack::network_service_public_dynamic_snat':
+            interface => 'lo',
+            address   => $site_address,
+        }
     }
 
     interface::tagged { $novaconfig['network_flat_interface']:
