@@ -15,8 +15,16 @@
 
 # == Class: zuul::merger
 #
+# === Parameters
+#
+# ** $git_dir ** place where the merger maintains git repositories
+# ** $git_email ** git email used to craft merge commits
+# ** $git_name ** git username to craft merge commits
+#
 class zuul::merger (
-    $git_dir = '/var/lib/zuul/git'
+    $git_dir   = '/var/lib/zuul/git',
+    $git_email = "zuul-merger@${::hostname}",
+    $git_name  = 'Wikimedia Zuul Merger',
 ) {
 
     file { '/etc/default/zuul-merger':
