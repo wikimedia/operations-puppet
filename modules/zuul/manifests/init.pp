@@ -9,22 +9,8 @@
 
 # == Class: zuul
 class zuul (
-    $jenkins_server,
-    $jenkins_user,
-    $jenkins_apikey,
-    $gearman_server,
-    $gearman_server_start,
-    $gerrit_server,
-    $gerrit_user,
-    $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
-    $url_pattern,
-    $status_url = "https://${::fqdn}/zuul/status",
-    $zuul_url = 'git://zuul.eqiad.wmnet',
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
     $git_branch = 'master',
-    $git_dir = '/var/lib/zuul/git',
-    $git_email = "zuul-merger@${::hostname}",
-    $git_name = 'Wikimedia Zuul Merger',
 ) {
 
   # Dependencies as mentionned in zuul:tools/pip-requires
@@ -88,53 +74,6 @@ class zuul (
     ensure => directory,
   }
 
-  # Craft zuul.conf and zuul-merger.conf, reusing the parameters passed to zuul
-  # class.
-
-  # TODO: We should put in  notify either Service['zuul'] or Exec['zuul-reload']
-  #       at some point, but that still has some problems.
-
-  zuul::configfile { '/etc/zuul/zuul.conf':
-      zuul_role => 'server',
-      owner     => 'jenkins',
-      group     => 'root',
-      mode      => '0400',
-
-      notify    => Exec['craft public zuul conf'],
-      require   => [
-          File['/etc/zuul'],
-          Package['jenkins'],
-      ],
-  }
-
-  # Configuration file for the zuul merger
-  zuul::configfile { '/etc/zuul/zuul-merger.conf':
-      zuul_role => 'merger',
-      owner     => 'root',
-      group     => 'root',
-      mode      => '0444',
-
-      require   => [
-          File['/etc/zuul'],
-          Package['jenkins'],
-      ],
-  }
-
-  file { '/etc/zuul/gearman-logging.conf':
-      ensure => present,
-      owner  => 'jenkins',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/zuul/gearman-logging.conf',
-  }
-
-  # Additionally provide a publicly readeable configuration file
-  exec { 'craft public zuul conf':
-    cwd         => '/etc/zuul/',
-    command     => '/bin/sed "s/apikey=.*/apikey=<obfuscacated>/" /etc/zuul/zuul.conf > /etc/zuul/public.conf',
-    refreshonly => true,
-  }
-
   file { '/var/log/zuul':
     ensure  => directory,
     owner   => 'jenkins',
@@ -142,12 +81,6 @@ class zuul (
   }
 
   file { '/var/lib/zuul':
-    ensure  => directory,
-    owner   => 'jenkins',
-    require => Package['jenkins'],
-  }
-
-  file { $git_dir:
     ensure  => directory,
     owner   => 'jenkins',
     require => Package['jenkins'],
