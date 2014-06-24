@@ -3,6 +3,11 @@
 
 import std;
 
+# this is needed by geoip.inc.vcl and zero.inc.vcl, and in general is the only
+#   way to sanely do Set-Cookie in the face of multiple independent cookies
+#   being set from different code.
+import header;
+
 <%
 def backend_option(backend, option, default)
 	if varnish_backend_options.kind_of?(Array)
