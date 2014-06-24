@@ -1,7 +1,8 @@
 # Varnish VCL include file for Wikipedia Zero
 
+# Note: This requires "import header" in the including VCL
+
 import netmapper;
-import header;
 
 sub vcl_init {
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
