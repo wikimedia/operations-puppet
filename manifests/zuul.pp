@@ -41,11 +41,12 @@ class zuulwikimedia {
             zuul_url             => $zuul_url,
             git_branch           => $git_branch,
             git_dir              => $git_dir,
-            statsd_host          => $statsd_host,
             git_email            => "zuul-merger@${::hostname}",
             git_name             => 'Wikimedia Zuul Merger',
         }
-        class { '::zuul::server': }
+        class { '::zuul::server':
+            statsd_host          => $statsd_host,
+        }
         class { '::zuul::merger':
             git_dir => $git_dir,
         }
