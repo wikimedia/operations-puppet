@@ -10,7 +10,7 @@ define backup::set($jobdefaults=$backup::host::jobdefaults) {
             jobdefaults => $jobdefaults,
         }
 
-        $motd_content = "#!/bin/sh\necho \"Backed up on this host: $name\""
+        $motd_content = "#!/bin/sh\necho \"Backed up on this host: ${name}\""
         @file { "/etc/update-motd.d/06-backups-${name}":
             ensure  => 'present',
             owner   => 'root',
@@ -63,7 +63,7 @@ define backup::mysqlset($method='bpipe',
 
     $allowed_methods = [ 'bpipe', 'predump' ]
     if !($method in $allowed_methods) {
-        fail("$method is not allowed")
+        fail("${method} is not allowed")
     }
 
     if !defined(Package['pigz']) {
@@ -73,7 +73,7 @@ define backup::mysqlset($method='bpipe',
     }
     if $method == 'predump' {
         $extras = {
-             'ClientRunBeforeJob' =>  '/etc/bacula/scripts/predump',
+                'ClientRunBeforeJob' =>  '/etc/bacula/scripts/predump',
         }
         $basefileset = regsubst(regsubst($local_dump_dir,'/',''),'/','-','G')
         $fileset = "mysql-${basefileset}"
@@ -113,15 +113,21 @@ define backup::mysqlset($method='bpipe',
 define backup::schedule($pool) {
     bacula::director::schedule { "Monthly-1st-${name}":
         runs => [
-                    { 'level' => 'Full', 'at' => "1st ${name} at 02:05", },
-                    { 'level' => 'Differential', 'at' => "3rd ${name} at 03:05", },
-                    { 'level' => 'Incremental', 'at' => 'at 04:05', },
+            { 'level' => 'Full',
+              'at'    => "1st ${name} at 02:05",
+            },
+            { 'level' => 'Differential',
+              'at'    => "3rd ${name} at 03:05",
+            },
+            { 'level' => 'Incremental',
+              'at'    => 'at 04:05',
+            },
                 ],
     }
 
     bacula::director::jobdefaults { "Monthly-1st-${name}-${pool}":
         when        => "Monthly-1st-${name}",
-        pool        => "${pool}",
+        pool        => $pool,
     }
 
 }
@@ -129,13 +135,15 @@ define backup::schedule($pool) {
 define backup::weeklyschedule($pool) {
     bacula::director::schedule { "Weekly-${name}":
         runs => [
-                    { 'level' => 'Full', 'at' => "${name} at 02:05", },
+            { 'level' => 'Full',
+              'at'    => "${name} at 02:05",
+            },
                 ],
     }
 
     bacula::director::jobdefaults { "Weekly-${name}-${pool}":
         when        => "Weekly-${name}",
-        pool        => "${pool}",
+        pool        => $pool,
     }
 }
 
