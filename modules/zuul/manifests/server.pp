@@ -15,7 +15,12 @@
 
 # == Class: zuul::server
 #
+# === Parameters
+#
+# **statsd_host** IP/hostname of a statsd daemon to send metrics to. If unset
+# (the default), nothing is ported.
 class zuul::server (
+    $statsd_host = '',
 ) {
 
     file { '/var/run/zuul':
@@ -32,6 +37,14 @@ class zuul::server (
         source => 'puppet:///modules/zuul/zuul.init',
     }
 
+    file { '/etc/default/zuul':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('zuul/zuul.default.erb'),
+    }
+
     service { 'zuul':
         name       => 'zuul',
         enable     => true,
@@ -39,6 +52,7 @@ class zuul::server (
         require    => [
             File['/var/run/zuul'],
             File['/etc/init.d/zuul'],
+            File['/etc/default/zuul'],
         ],
     }
 
