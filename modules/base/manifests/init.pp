@@ -1,23 +1,3 @@
-class base::access::dc-techs {
-    # add account and sudoers rules for data center techs
-    #include accounts::cmjohnson
-
-    # hardy doesn't support sudoers.d; only do sudo_user for lucid and later
-    if versioncmp($::lsbdistrelease, '10.04') >= 0 {
-        sudo_user { [ 'cmjohnson' ]: privileges => [
-            'ALL = (root) NOPASSWD: /sbin/fdisk',
-            'ALL = (root) NOPASSWD: /sbin/mdadm',
-            'ALL = (root) NOPASSWD: /sbin/parted',
-            'ALL = (root) NOPASSWD: /sbin/sfdisk',
-            'ALL = (root) NOPASSWD: /usr/bin/MegaCli',
-            'ALL = (root) NOPASSWD: /usr/bin/arcconf',
-            'ALL = (root) NOPASSWD: /usr/bin/lshw',
-            'ALL = (root) NOPASSWD: /usr/sbin/grub-install',
-        ]}
-    }
-
-}
-
 class base::grub {
     # Disable the 'quiet' kernel command line option so console messages
     # will be printed.
@@ -412,7 +392,6 @@ class base {
         base::standard-packages,
         base::environment,
         base::platform,
-        base::access::dc-techs,
         base::screenconfig,
         ssh::client,
         ssh::server,
