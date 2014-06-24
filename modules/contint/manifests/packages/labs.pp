@@ -46,7 +46,6 @@ class contint::packages::labs {
 
     package { [
         'npm',
-        'python-pip',
 
         # Let us compile python modules:
         'python-dev',
@@ -63,6 +62,9 @@ class contint::packages::labs {
 
         ]: ensure => present,
     }
+
+    # Also provided by Zuul installation
+    ensure_packages(['python-pip'])
 
     # Bring tox/virtualenv... from pip  bug 44443
     # TODO: Reevaluate this once we switch to trusty. Maybe provider being apt
