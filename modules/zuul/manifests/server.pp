@@ -21,6 +21,17 @@
 # (the default), nothing is ported.
 class zuul::server (
     $statsd_host = '',
+    $gerrit_server,
+    $gerrit_user,
+    $gearman_server,
+    $gearman_server_start,
+    $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
+    $jenkins_server,
+    $jenkins_user,
+    $jenkins_apikey,
+    $url_pattern,
+    $status_url = "https://${::fqdn}/zuul/status",
+    $zuul_url = 'git://zuul.eqiad.wmnet',
 ) {
 
     file { '/var/run/zuul':
@@ -45,6 +56,26 @@ class zuul::server (
         content => template('zuul/zuul.default.erb'),
     }
 
+    zuul::configfile { '/etc/zuul/zuul.conf':
+        zuul_role => 'server',
+        owner     => 'jenkins',
+        group     => 'root',
+        mode      => '0400',
+
+        notify    => Exec['craft public zuul conf'],
+        require   => [
+            File['/etc/zuul'],
+            Package['jenkins'],
+        ],
+    }
+
+    # Additionally provide a publicly readeable configuration file
+    exec { 'craft public zuul conf':
+        cwd         => '/etc/zuul/',
+        command     => '/bin/sed "s/apikey=.*/apikey=<obfuscacated>/" /etc/zuul/zuul.conf > /etc/zuul/public.conf',
+        refreshonly => true,
+    }
+
     service { 'zuul':
         name       => 'zuul',
         enable     => true,
@@ -53,6 +84,7 @@ class zuul::server (
             File['/var/run/zuul'],
             File['/etc/init.d/zuul'],
             File['/etc/default/zuul'],
+            File['/etc/zuul/zuul.conf'],
         ],
     }
 
