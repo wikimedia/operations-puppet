@@ -1,0 +1,394 @@
+# Wikimedia VCL file for <%= scope.lookupvar("::fqdn") %>, site <%= scope.lookupvar("::site") %>
+# This file is managed by Puppet!
+
+import std;
+
+# this is needed by geoip.inc.vcl and zero.inc.vcl, and in general is the only
+#   way to sanely do Set-Cookie in the face of multiple independent cookies
+#   being set from different code.
+import header;
+
+<%
+def backend_option(backend, option, default)
+	if varnish_backend_options.kind_of?(Array)
+		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
+		varnish_backend_options.each do |be_options|
+			if Regexp.new(be_options.fetch("backend_match", "^.*$")).match(backend)
+				if be_options.has_key?(option)
+					return be_options[option]
+				end
+			end
+		end
+		return default
+	else
+		return varnish_backend_options.fetch(option, default)
+	end
+end
+-%>
+
+<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
+include "geoip.inc.vcl";
+<% end -%>
+
+# ACLs
+
+acl purge { 
+	"127.0.0.1";
+}
+
+<% if ! wikimedia_networks.empty? -%>
+acl wikimedia_nets {
+<% wikimedia_networks.each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
+<% end -%>
+}
+<% end -%>
+
+acl ssl_proxies {
+<% @vcl_config.fetch("ssl_proxies", []).each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
+<% end -%>
+}
+
+# Backend probes
+
+probe bits {
+	.request =
+		"GET /w/load.php HTTP/1.1"
+		"Host: en.wikipedia.<%= cluster_options.fetch( "top_domain", "org" ) %>"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 1s;
+	.interval = 1s;
+	.window = 3;
+	.threshold = 2;
+}
+
+# frontends in front of other varnish instances should send
+# probes that don't depend on the app backend
+probe varnish {
+	.request =
+		"GET /check HTTP/1.1"
+		"Host: varnishcheck"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 1s;
+	.interval = 1s;
+	.window = 3;
+	.threshold = 2;
+}
+
+probe blog {
+	.request =
+		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
+		"Host: blog.wikimedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;	
+}
+
+probe options {
+	.request =
+		"OPTIONS * HTTP/1.0"
+		"Connection: close";
+	.timeout = 2s;
+	.interval = 2s;
+	.window = 6;
+	.threshold = 2;
+}
+
+probe swift {
+	.url = "/monitoring/backend";
+	.timeout = 2s;
+}
+
+probe logstash {
+	.url = "/status";
+	.interval = 5s;
+	.timeout = 1s;
+	.window = 5;
+	.threshold = 3;
+}
+
+# Backends
+
+# List of Puppet generated backends
+<%
+varnish_backends.each do |backend|
+	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+	probe = backend_option(backend, "probe", nil)
+-%>
+backend <%= name %> {
+	.host = "<%= backend %>";
+	.port = "<%= backend_option(backend, "port", "80") %>";
+	.connect_timeout = <%= backend_option(backend, "connect_timeout", "2s") %>;
+	.first_byte_timeout = <%= backend_option(backend, "first_byte_timeout", "35s") %>;
+	.between_bytes_timeout = <%= backend_option(backend, "between_bytes_timeout", "2s") %>;
+	.max_connections = <%= backend_option(backend, "max_connections", "100") %>;
+<% if probe -%>
+	.probe = <%= probe %>;
+<% end -%>
+}
+
+<% end -%>
+
+# Directors
+# Expected format: { "director name" => [ "backend1", "backend2" ] }
+<% varnish_directors.keys.sort.each do |director| -%>
+director <%= director %> <%= director_type %> {
+<% director_options.each_pair do |option,value| -%>
+	.<%= option %> = <%= value %>;
+<% end -%>
+<%
+	varnish_directors[director].each do |backend|
+		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+-%>
+	{
+		.backend = <%= name %>;
+		.weight = <%= backend_option(backend, "weight", 10) %>;
+	}
+<% 	end -%>
+}
+<% end -%>
+
+# Functions
+
+sub rewrite_proxy_urls {
+	set req.url = regsub(req.url, "^http://[^/]+", "");
+}
+
+C{
+	#include <string.h>
+}C
+sub normalize_path {
+	/* Rewrite the path part of the URL, replacing unnecessarily escaped
+	 * punctuation with the actual characters. The character list is from
+	 * MediaWiki's wfUrlencode(), so the URLs produced here will be the same as
+	 * the ones produced by MediaWiki in href attributes. Doing this reduces
+	 * cache fragmentation and fixes bug 27935, i.e. stale cache entries due to
+	 * MediaWiki purging only the wfUrlencode'd version of the URL.
+	 */
+	C{
+		/* DIY hexadecimal conversion, since it is simple enough for a fixed
+		 * width, and all the relevant standard C library functions promise to
+		 * malfunction if the locale is set to anything other than "C"
+		 */
+		#define NP_HEX_DIGIT(c) ( \
+			(c) >= '0' && (c) <= '9' ? (c) - '0' : ( \
+				(c) >= 'A' && (c) <= 'F' ? (c) - 'A' + 0x0a : ( \
+					(c) >= 'a' && (c) <= 'f' ? (c) - 'a' + 0x0a : -1 ) ) )
+		#define NP_IS_HEX(c) (NP_HEX_DIGIT(c) != -1)
+		#define NP_HEXCHAR(c1, c2) (char)( (NP_HEX_DIGIT(c1) << 4) | NP_HEX_DIGIT(c2) )
+		const char * url = VRT_r_req_url(sp);
+		size_t i, outPos;
+		size_t urlLength = strlen(url);
+		char c;
+		int dirty = 0;
+
+		/* Allocate destination memory from the stack using the C99
+		 * variable-length automatic feature. We know the length in advance
+		 * because this function can only shorten the input string.
+		 */
+		char destBuffer[urlLength + 1];
+		if (url) {
+			for (i = 0, outPos = 0; i < urlLength; i++) {
+				if (url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
+					c = NP_HEXCHAR(url[i+1], url[i+2]);
+					if (c == ';'
+						|| c == '@'
+						|| c == '$'
+						|| c == '!'
+						|| c == '*'
+						|| c == '('
+						|| c == ')'
+						|| c == ','
+						|| c == '/'
+						|| c == ':')
+					{
+						destBuffer[outPos++] = c;
+						dirty = 1;
+						i += 2;
+					} else {
+						destBuffer[outPos++] = url[i];
+					}
+				} else if (url[i] == '?') {
+					/* Reached the query part. Just copy the rest of the URL
+					 * to the destination.
+					 */
+					memcpy(destBuffer + outPos, url + i, sizeof(char) * (urlLength - i));
+					outPos += urlLength - i;
+					i = urlLength;
+				} else {
+					destBuffer[outPos++] = url[i];
+				}
+			}
+			destBuffer[outPos] = '\0';
+
+			/* Set req.url. This will copy our stack buffer into the workspace.
+			 * VRT_l_req_url() is varadic, and concatenates its arguments. The
+			 * vrt_magic_string_end marks the end of the list.
+			 */
+			if (dirty) {
+				VRT_l_req_url(sp, destBuffer, vrt_magic_string_end);
+			}
+		}
+		#undef NP_IS_HEX
+		#undef NP_HEX_DIGIT
+		#undef NP_HEXCHAR
+	}C
+}
+
+sub vcl_recv_purge {
+	/* Support HTTP PURGE */
+	if (req.request == "PURGE") {
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		} elsif (req.http.Host ~ "<%= vcl_config.fetch("purge_host_regex", ".*") %>") {
+			set req.hash_ignore_busy = true;
+			return (lookup);
+		} else {
+			error 204 "Domain not cached here.";
+		}
+	}
+}
+
+sub vcl_recv_append_xff {
+	if (req.restarts == 0) {
+		if (req.http.X-Forwarded-For) {
+			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+		} else {
+			set req.http.X-Forwarded-For = client.ip;
+		}
+	}
+}
+
+<% if ! wikimedia_networks.empty? -%>
+sub restrict_access {
+	if (client.ip !~ wikimedia_nets) {
+		error 403 "Access denied";
+	}
+}
+
+<% end -%>
+sub vcl_recv {
+	if (req.request !~ "<%= vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
+		&& !(req.request == "OPTIONS" && req.http.Origin)) {
+		error 403 "HTTP method not allowed.";
+	}
+
+	/* Select the default backend/director */
+	set req.backend = <%= vcl_config.fetch("default_backend", "backend") %>;
+
+	if (req.backend.healthy) {
+		set req.grace = 5m;
+	} else {
+		set req.grace = 60m;
+	}
+	
+<% if vcl_config.fetch("layer", "frontend") == "frontend" -%>
+	/* Ensure we only accept Forwarded-Proto headers from the SSL proxies */
+	if (client.ip !~ ssl_proxies) {
+		unset req.http.X-Forwarded-Proto;
+	}
+<% end -%>
+	call vcl_recv_append_xff;
+
+	if ( req.http.host ~ "^varnishcheck" ) {
+		error 200 "OK"; 
+	}
+
+	/* Function vcl_recv in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_fetch {
+	/* Don't cache private, no-cache, no-store objects */
+	if (beresp.http.Cache-Control ~ "(private|no-cache|no-store)") {
+		set beresp.ttl = 0s;
+		/* This should be translated into hit_for_pass later */
+	}
+	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > <%= vcl_config.fetch("cache4xx", "5m") %>) {
+		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
+	}
+<% if vcl_config.fetch("retry5xx", "0") == "1" -%>
+	if (beresp.status >= 500 && beresp.status < 505) {
+		# Retry the backend request 3 times, then give up and display
+		# the backend's error page, instead of our own.
+		#
+		# Note that max_restarts is 4 by default, so Varnish would
+		# otherwise detect this as a loop and present its own 503.
+		if (req.restarts < 3) {
+			return(restart);
+		} else {
+			return(deliver);
+		}
+	}
+<% end -%>
+	set beresp.grace = 60m;
+
+	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_hit {
+	if (req.request == "PURGE") {
+		purge;
+		error 204 "Purged";
+	}
+	
+	/* Function vcl_hit in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_miss {
+	if (req.request == "PURGE") {
+		purge;
+		error 204 "Cache miss";
+	}
+
+	/* Function vcl_miss in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_deliver {
+<% if vcl_config.fetch("layer", "") == "frontend" -%>
+	std.collect(resp.http.Via);
+	std.collect(resp.http.X-Varnish);
+<% end -%>
+
+	if (resp.http.X-Cache) {
+		if (obj.hits > 0) {
+			set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (name.empty? ? "" : " " + name) %> hit (" + obj.hits + ")";
+		} else {
+			set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (name.empty? ? "" : " " + name) %> miss (0)";
+		}
+	} else {
+		if (obj.hits > 0) {
+			set resp.http.X-Cache = "<%= @hostname + (name.empty? ? "" : " " + name) %> hit (" + obj.hits + ")";
+		} else {
+			set resp.http.X-Cache = "<%= @hostname + (name.empty? ? "" : " " + name) %> miss (0)";
+		}
+	}
+
+	/* Function vcl_deliver in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_error {
+	if (obj.status == 400 || obj.status == 413) {
+		return(deliver);
+	}
+
+<% if vcl_config.fetch("retry503", "0") != "0" -%>
+	if (obj.status == 503 && req.restarts < <%= vcl_config["retry503"].to_i %>) {
+		return(restart);
+	}
+<% end -%>
+	if (obj.status == 204 && req.request == "PURGE") {
+		set obj.http.Connection = "keep-alive";
+	}
+	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
+}
+
+
+/* Include the VCL file for this role */
+include "<%= vcl %>.inc.vcl";
