@@ -22,33 +22,40 @@ class zuulwikimedia {
         $git_name = 'Wikimedia Zuul Merger'
     ) {
 
-        # Zuul needs an API key to interact with Jenkins:
-        require passwords::misc::contint::jenkins
-        $jenkins_apikey = $::passwords::misc::contint::jenkins::zuul_user_apikey
-
         # Load class from the Zuul module:
         class { '::zuul':
             name                 => $name,
-            gearman_server       => $gearman_server,
-            gearman_server_start => $gearman_server_start,
+            git_branch           => $git_branch,
+        }
+
+        # Zuul server needs an API key to interact with Jenkins:
+        require passwords::misc::contint::jenkins
+        $jenkins_apikey = $::passwords::misc::contint::jenkins::zuul_user_apikey
+
+        class { '::zuul::server':
+            statsd_host          => $statsd_host,
+            gerrit_server        => $gerrit_server,
+            gerrit_user          => $gerrit_user,
             jenkins_server       => $jenkins_server,
             jenkins_user         => $jenkins_user,
             jenkins_apikey       => $jenkins_apikey,
-            gerrit_server        => $gerrit_server,
-            gerrit_user          => $gerrit_user,
+            gearman_server       => $gearman_server,
+            gearman_server_start => $gearman_server_start,
+            git_dir              => $git_dir,
             url_pattern          => $url_pattern,
             status_url           => $status_url,
             zuul_url             => $zuul_url,
-            git_branch           => $git_branch,
-            git_dir              => $git_dir,
-            git_email            => "zuul-merger@${::hostname}",
-            git_name             => 'Wikimedia Zuul Merger',
-        }
-        class { '::zuul::server':
-            statsd_host          => $statsd_host,
         }
         class { '::zuul::merger':
-            git_dir => $git_dir,
+            gearman_server => $gearman_server,
+            gerrit_server  => $gerrit_server,
+            gerrit_user    => $gerrit_user,
+            git_dir        => $git_dir,
+            git_email      => "zuul-merger@${::hostname}",
+            git_name       => 'Wikimedia Zuul Merger',
+            url_pattern    => $url_pattern,
+            status_url     => $status_url,
+            zuul_url       => $zuul_url,
         }
 
         # nagios/icinga monitoring

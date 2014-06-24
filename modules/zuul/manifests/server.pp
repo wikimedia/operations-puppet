@@ -21,6 +21,16 @@
 # (the default), nothing is ported.
 class zuul::server (
     $statsd_host = '',
+    $gerrit_server,
+    $gerrit_user,
+    $gearman_server,
+    $gearman_server_start,
+    $jenkins_server,
+    $jenkins_user,
+    $jenkins_apikey,
+    $url_pattern,
+    $status_url = "https://${::fqdn}/zuul/status",
+    $zuul_url = 'git://zuul.eqiad.wmnet',
 ) {
 
     file { '/var/run/zuul':
@@ -45,6 +55,27 @@ class zuul::server (
         content => template('zuul/zuul.default.erb'),
     }
 
+    # TODO: We should put in  notify either Service['zuul'] or Exec['zuul-reload']
+    #       at some point, but that still has some problems.
+    file { '/etc/zuul/zuul.conf':
+        ensure  => present,
+        owner   => 'jenkins',
+        mode    => '0400',
+        content => template('zuul/zuul.conf.erb'),
+        notify  => Exec['craft public zuul conf'],
+        require => [
+            File['/etc/zuul'],
+            Package['jenkins'],
+        ],
+    }
+
+    # Additionally provide a publicly readeable configuration file
+    exec { 'craft public zuul conf':
+        cwd         => '/etc/zuul/',
+        command     => '/bin/sed "s/apikey=.*/apikey=<obfuscacated>/" /etc/zuul/zuul.conf > /etc/zuul/public.conf',
+        refreshonly => true,
+    }
+
     service { 'zuul':
         name       => 'zuul',
         enable     => true,
@@ -53,6 +84,7 @@ class zuul::server (
             File['/var/run/zuul'],
             File['/etc/init.d/zuul'],
             File['/etc/default/zuul'],
+            File['/etc/zuul/zuul.conf'],
         ],
     }
 
