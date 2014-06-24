@@ -24,15 +24,24 @@ class role::keystone::config::pmtpa inherits role::keystone::config {
     $pmtpakeystoneconfig = {
         db_host      => $::realm ? {
             'production' => 'virt0.wikimedia.org',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_hostname,
+            }
         },
         ldap_host    => $::realm ? {
             'production' => 'virt0.wikimedia.org',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_hostname,
+            }
         },
         bind_ip      => $::realm ? {
             'production' => '208.80.152.32',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_ip,
+            }
         },
         token_driver => $::realm ? {
             'production' => 'redis',
@@ -46,15 +55,24 @@ class role::keystone::config::eqiad inherits role::keystone::config {
     $eqiadkeystoneconfig = {
         db_host      => $::realm ? {
             'production' => 'virt1000.wikimedia.org',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_hostname,
+            }
         },
         ldap_host    => $::realm ? {
             'production' => 'virt1000.wikimedia.org',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_hostname,
+            }
         },
         bind_ip      => $::realm ? {
             'production' => '208.80.154.18',
-            'labs'       => $::ipaddress_eth0,
+            'labs' => $nova_controller_hostname ? {
+                undef => $::ipaddress_eth0,
+                default => $nova_controller_ip,
+            }
         },
         token_driver => $::realm ? {
             'production' => 'redis',
