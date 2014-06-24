@@ -118,8 +118,9 @@ class role::ci::slave {
 
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
-    include contint::packages,
-        role::gerrit::production::replicationdest
+    include contint::packages
+    include role::gerrit::production::replicationdest
+    include role::zuul::install
 
     deployment::target { 'contint-production-slaves': }
 
@@ -177,8 +178,9 @@ class role::ci::slave {
 class role::ci::slave::labs::common {
 
     # Jenkins slaves need to access beta cluster for the browsertests
-    include role::beta::natfix
     include contint::firewall::labs
+    include role::beta::natfix
+    include role::zuul::install
 
     if $::site == 'eqiad' {
         # Does not come with /dev/vdb, we need to mount it using lvm
