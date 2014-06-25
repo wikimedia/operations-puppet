@@ -818,6 +818,21 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
+        'stream-https' => {
+            'description' => "Websocket/streaming services",
+            'class' => "high-traffic2",
+            'sites' => [ "eqiad" ],
+            'ip' => $service_ips['stream'][$::site],
+            'port' => 443,
+            'bgp' => 'no',
+            'depool-threshold' => ".5",
+            'monitors' => {
+                'ProxyFetch' => {
+                    'url' => [ 'http://localhost/rcstream_status' ],
+                },
+                'IdleConnection' => $idleconnection_monitor_options,
+            },
+        },
 
     }
 }
