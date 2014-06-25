@@ -1,7 +1,7 @@
-# == Class: rcstream::proxy
+# == Class: rcstream::proxy::ssl
 #
 # This class provisions an Nginx WebSockets reverse-proxy.
-# Requires Nginx 1.4+.
+# Requires Nginx 1.4+. This class uses SSL to connect to the backend.
 #
 # === Parameters
 #
@@ -34,16 +34,26 @@
 #    ],
 #  }
 #
-class rcstream::proxy(
+class rcstream::proxy::ssl(
     $backends,
     $ensure      = present,
     $server_name = '_',
-    $listen      = ['80', '[::]:80'],
-    $location    = '/',
+    $listen      = ['443', '[::]:443'],
+    $location    = '/'
 ) {
-    $use_ssl     = false
-    nginx::site { 'rcstream':
+    $use_ssl = true
+
+    install_certificate {'stream.wikimedia.org':}
+
+    nginx::site { 'rcstream-ssl':
         content => template('rcstream/rcstream.nginx.erb'),
         notify  => Service['nginx'],
+        require => Install_certificate['stream.wikimedia.org']
     }
+
+    class {'nginx::ssl':
+        ie6_compat => true,
+        notify     => Service['nginx']
+    }
+
 }
