@@ -18,6 +18,7 @@
 #   [*log_error]          - path to mysql error log
 #   [*default_engine]     - configure a default table engine
 #   [*root_group]         - use specified group for root-owned files
+#   [*sql_mode*]          - set the sql mode
 #   [*restart]            - whether to restart mysqld (true/false)
 #
 # Actions:
@@ -50,6 +51,7 @@ class mysql::config(
   $ssl_key           = $mysql::params::ssl_key,
   $log_error         = $mysql::params::log_error,
   $default_engine    = 'UNSET',
+  $sql_mode          = '',
   $root_group        = $mysql::params::root_group,
   $restart           = $mysql::params::restart,
   $purge_conf_dir    = false,

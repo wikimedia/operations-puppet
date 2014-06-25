@@ -48,6 +48,9 @@ ssl-ca    = <%= ssl_ca %>
 ssl-cert  = <%= ssl_cert %>
 ssl-key   = <%= ssl_key %>
 <% end %>
+<% if sql_mode %>
+sql_mode  = <%= sql_mode %>
+<% end %>
 
 [mysqldump]
 quick
