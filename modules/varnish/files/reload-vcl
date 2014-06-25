@@ -4,6 +4,9 @@
 # /etc/default/varnish.
 #
 # Stig Sandbeck Mathisen <ssm@debian.org>
+#
+# + $fail_statefile customizations for WMF
+# Brandon Black <bblack@wikimedia.org>
 
 # Settings
 defaults=/etc/default/varnish
@@ -14,6 +17,9 @@ instance=""
 varnishadm=/usr/bin/varnishadm
 date=/bin/date
 tempfile=/bin/tempfile
+
+# Failure statefile
+fail_statefile=/var/tmp/reload-vcl.failed
 
 # Messages
 # msg_no_varnishadm: varnishadm
@@ -48,6 +54,8 @@ else
     vcl_label="$($date +${LOGNAME}${LOGNAME:+:}%s.%N)"
 fi
 
+usage_fail=0
+
 # parse command line arguments
 while getopts n:hcq flag
 do
@@ -66,14 +74,29 @@ do
 		if [  -n "$OPTARG" ] ; then
 			instance="-n $OPTARG"
 			defaults="${defaults}-${OPTARG}"
+			fail_statefile="${fail_statefile}-${OPTARG}"
 		fi
 		;;
 	*)
 	    printf >&2 "$msg_usage\n"
-	    exit 1
+	    usage_fail=1
 	    ;;
     esac
 done
+
+# We touch this at the start so that all abornal-exit cases
+#  leave it place.  We don't update an existing one so as to
+#  preserve the timestamp of the first failure.
+if [ ! -f $fail_statefile ] ; then
+	touch $fail_statefile
+fi
+
+# Bailout from bad cmdline args here so that $fail_statefile
+#   is left behind as a best-effort (hopefully they didn't
+#   mangle -n)
+if [ $usage_fail -ne 0 ] ; then
+	exit 1
+fi
 
 # Load defaults file
 if [ -f "$defaults" ]
@@ -181,4 +204,7 @@ fi
 
 # Cleanup
 rm -f $logfile
+if [ -z "$exitstatus" ] ; then
+	rm -f $fail_statefile
+fi
 exit $exitstatus

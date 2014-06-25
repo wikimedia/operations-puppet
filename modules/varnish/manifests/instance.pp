@@ -104,6 +104,23 @@ define varnish::instance(
         refreshonly => true,
     }
 
+    # reload-vcl leaves behind the tested file below if it fails
+    #  during the exec above, and then this check adds an additional
+    #  notify on that file to trigger retrying on every puppet run
+    #  after such a failure.
+    # This is somewhat like having an "onlyif" above, but what we
+    #  really want is an "if" attribute; we don't want to block
+    #  execution when notified by other resources, we just want
+    #  to add an additional triggering condition.
+    # (Even better would be a persistent_retry attribute in the
+    #  core exec that remembers the state of previously-failed
+    #  execs on its own).
+    exec { "check-failed-load-new-vcl-file${instancesuffix}":
+        command  => "test -f /var/tmp/reload-vcl.failed${instancesuffix}",
+        notify   => Exec["load-new-vcl-file${instancesuffix}"],
+        path     => '/bin:/usr/bin',
+    }
+
     monitor_service { "varnish http ${title}":
         description   => "Varnish HTTP ${title}",
         check_command => "check_http_generic!varnishcheck!${port}"
