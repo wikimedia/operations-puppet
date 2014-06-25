@@ -8,6 +8,10 @@ import std;
 #   being set from different code.
 import header;
 
+<% if @hostname == 'cp4010' -%>
+include does_not_exist;
+<% end -%>
+
 <%
 def backend_option(backend, option, default)
 	if varnish_backend_options.kind_of?(Array)
