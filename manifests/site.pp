@@ -1288,9 +1288,12 @@ node 'hooft.esams.wikimedia.org' {
     }
 }
 
-# eventual phabricator alpha
 node 'iridium.wikimedia.org' {
+
+    class { 'base::firewall': }
+
     include admin
+    include role::phabricator::production
 }
 
 node 'iron.wikimedia.org' {
