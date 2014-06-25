@@ -105,6 +105,7 @@ define varnish::instance(
                 File["/etc/varnish/wikimedia_${vcl}.vcl"]
             ],
         command     => "/usr/share/varnish/reload-vcl ${extraopts} || (touch ${vcl_failed_file}; false)",
+        unless      => "test -f ${vcl_failed_file}",
         path        => '/bin:/usr/bin',
         refreshonly => true,
     }
