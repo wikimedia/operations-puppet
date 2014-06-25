@@ -16,9 +16,14 @@ class role::gitblit {
         rule => 'proto tcp dport 8080 { saddr $INTERNAL ACCEPT; }'
     }
 
-    monitor_service { 'gitblit':
+    monitor_service { 'gitblit_web':
         description   => 'gitblit.wikimedia.org',
         check_command => 'check_https_url!git.wikimedia.org!/tree/mediawiki%2Fcore.git',
+    }
+
+    nrpe::monitor_service { 'gitblit_process':
+        description  => 'gitblit process',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar gitblit.jar'"
     }
 
     # Add ytterbium to ssh exceptions for git replication
