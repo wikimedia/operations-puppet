@@ -10,7 +10,6 @@ class gitblit(
 ) {
 
     include webserver::apache
-    include gitblit::monitor
 
     group { 'gitblit':
         ensure => present,
