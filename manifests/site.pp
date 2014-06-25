@@ -1261,9 +1261,10 @@ node 'hooft.esams.wikimedia.org' {
     }
 }
 
-# eventual phabricator alpha
 node 'iridium.wikimedia.org' {
+    class { 'base::firewall': }
     include admin
+    include role::phabricator::main
 }
 
 node 'iron.wikimedia.org' {
@@ -2247,9 +2248,7 @@ node 'potassium.eqiad.wmnet' {
 }
 
 node 'radon.eqiad.wmnet' {
-
     class { 'base::firewall': }
-
     include admin
     include role::phabricator::legalpad
 }
