@@ -764,6 +764,9 @@ class role::cache {
         if $::hostname =~ /^cp30[0-9][0-9]$/ {
             $storage_size_main = 300
         }
+        elseif $::hostname =~ /^cp301[5-8]$/ {
+            $storage_size_main = 175
+        }
         else {
             $storage_size_main = 250
         }
