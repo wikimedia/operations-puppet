@@ -1275,9 +1275,9 @@ node 'hooft.esams.wikimedia.org' {
     }
 }
 
-#eventual phabricator alpha
 node 'iridium.wikimedia.org' {
     include admin
+    include role::phabricator
 }
 
 node 'iron.wikimedia.org' {
