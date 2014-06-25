@@ -76,6 +76,8 @@ class contint::packages {
         'pyflakes',
         'pylint',
 
+        'python-simplejson',  # For mw/ext/Translate among others
+
         'luajit',
         'libevent-dev',  # PoolCounter daemon
         'liblua5.1-0-dev',
