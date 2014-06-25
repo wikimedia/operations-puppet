@@ -20,7 +20,7 @@ groups:
   parsoid-admin:
     gid: 702
     description: RT 5934
-    members: [ssastry]
+    members: [ssastry, cscott]
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
