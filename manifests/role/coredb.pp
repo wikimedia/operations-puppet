@@ -80,6 +80,10 @@ class role::coredb::config {
             'snapshot'     => ['db1016' ],
             'no_master'    => []
         },
+        # Note that m2 has been moved out of coredb to
+        # role::mariadb::misc (see site.pp's use of that class).
+        # m2-master.eqiad.wmnet should point to the current master.
+        # See discussion on RT 7735.
         'm2' => {
             'hosts' => {
                          'eqiad' => [ 'db1046', 'db1048' ] },
