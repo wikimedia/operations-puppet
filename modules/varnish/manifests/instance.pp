@@ -111,6 +111,7 @@ define varnish::instance(
     }
 
     exec { "retry-load-new-vcl-file${instancesuffix}":
+        require     => Exec["load-new-vcl-file${instancesuffix}"],
         command     => "/usr/share/varnish/reload-vcl ${extraopts} && (rm ${vcl_failed_file}; true)",
         onlyif      => "test -f ${vcl_failed_file}",
         path        => '/bin:/usr/bin',
