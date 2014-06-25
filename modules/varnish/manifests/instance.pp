@@ -115,12 +115,13 @@ define varnish::instance(
     # (Even better would be a persistent_retry attribute in the
     #  core exec that remembers the state of previously-failed
     #  execs on its own).
-    exec { "check-failed-load-new-vcl-file${instancesuffix}":
-        command  => "test -f /var/tmp/reload-vcl.failed${instancesuffix}",
-        returns  => [0, 1],
-        notify   => Exec["load-new-vcl-file${instancesuffix}"],
-        path     => '/bin:/usr/bin',
-    }
+    # XXX below doesn't work, it triggers regardless of the file's existence...
+    #exec { "check-failed-load-new-vcl-file${instancesuffix}":
+    #    command  => "test -f /var/tmp/reload-vcl.failed${instancesuffix}",
+    #    returns  => [0, 1],
+    #    notify   => Exec["load-new-vcl-file${instancesuffix}"],
+    #    path     => '/bin:/usr/bin',
+    #}
 
     monitor_service { "varnish http ${title}":
         description   => "Varnish HTTP ${title}",
