@@ -761,7 +761,11 @@ class role::cache {
 
         $default_backend = $cluster_tier ? { 1 => 'backend', default => 'eqiad' }
 
-        if $::hostname =~ /^cp30[0-9][0-9]$/ {
+
+        if $::hostname =~ /^cp301[5-8]$/ {
+            $storage_size_main = 165
+        }
+        elsif $::hostname =~ /^cp30[0-9][0-9]$/ {
             $storage_size_main = 300
         }
         else {
