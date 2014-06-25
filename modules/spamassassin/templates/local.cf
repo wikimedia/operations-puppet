@@ -44,6 +44,7 @@ required_score <%= @required_score %>
 #   Use Bayesian classifier (default: 1)
 #
 use_bayes <%= @use_bayes %>
+bayes_path /var/lib/spamassassin/bayes
 
 
 #   Bayesian classifier auto-learning (default: 1)
