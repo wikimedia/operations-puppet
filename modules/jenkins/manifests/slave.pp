@@ -10,6 +10,11 @@ class jenkins::slave(
 
   include jenkins::slave::requisites
 
+  group { $user:
+    ensure => present,
+    name   => $user,
+  }
+
   user { $user:
     ensure     => present,
     shell      => '/bin/bash',
