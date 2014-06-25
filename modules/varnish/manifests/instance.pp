@@ -117,6 +117,7 @@ define varnish::instance(
     #  execs on its own).
     exec { "check-failed-load-new-vcl-file${instancesuffix}":
         command  => "test -f /var/tmp/reload-vcl.failed${instancesuffix}",
+        returns  => [0, 1],
         notify   => Exec["load-new-vcl-file${instancesuffix}"],
         path     => '/bin:/usr/bin',
     }
