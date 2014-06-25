@@ -13,6 +13,11 @@ server {
     <%= Array(@listen).map { |bind| "listen #{bind};" }.join("\n") %>
     server_name <%= @server_name %>;
 
+    <%- if @use_ssl -%>
+    ssl_certificate /etc/ssl/certs/<%= @server_name %>.pem
+    ssl_certificate_key /etc/ssl/private/<%= @server_name %>.key
+    <% end %>
+
     location <%= @location %> {
         <%- if @location != '/' -%>
         rewrite <%= @location %>(/.*)$ $1 break;
