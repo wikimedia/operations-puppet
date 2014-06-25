@@ -89,6 +89,11 @@ define varnish::instance(
         before    => Exec['generate varnish.pyconf'],
     }
 
+    # This mechanism with the touch/rm conditionals in the pair of execs
+    #   below should ensure that reload-vcl failures are retried on
+    #   future puppet runs until they succeed.
+    $vcl_failed_file = "/var/tmp/reload-vcl-failed${instancesuffix}"
+
     exec { "load-new-vcl-file${instancesuffix}":
         require     => [
                 Service["varnish${instancesuffix}"],
@@ -99,9 +104,15 @@ define varnish::instance(
                 File[suffix(prefix($extra_vcl, '/etc/varnish/'),".inc.vcl")],
                 File["/etc/varnish/wikimedia_${vcl}.vcl"]
             ],
-        command     => "/usr/share/varnish/reload-vcl ${extraopts}",
+        command     => "/usr/share/varnish/reload-vcl ${extraopts} || (touch ${vcl_failed_file}; false)",
         path        => '/bin:/usr/bin',
         refreshonly => true,
+    }
+
+    exec { "retry-load-new-vcl-file${instancesuffix}":
+        command     => "/usr/share/varnish/reload-vcl ${extraopts} && (rm ${vcl_failed_file}; true)",
+        onlyif      => "test -f ${vcl_failed_file}",
+        path        => '/bin:/usr/bin',
     }
 
     monitor_service { "varnish http ${title}":
