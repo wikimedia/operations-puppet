@@ -2922,6 +2922,11 @@ host praseodymium {
 	fixed-address praseodymium.eqiad.wmnet;
 }
 
+host radon {
+	hardware ethernet C8:1F:66:BF:71:16;
+	fixed-address radon.wikimedia.org;
+}
+
 host rcs1001 {
 	hardware ethernet 78:2B:CB:1F:18:B0;
 	fixed-address rcs1001.eqiad.wmnet;
