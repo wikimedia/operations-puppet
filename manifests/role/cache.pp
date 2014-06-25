@@ -116,6 +116,11 @@ class role::cache {
                         'cp3008.esams.wikimedia.org',
                         'cp3009.esams.wikimedia.org',
                         'cp3010.esams.wikimedia.org',
+                        'cp3015.esams.wmnet',
+                        'cp3016.esams.wmnet',
+                        # Bringing these up two at a time...
+                        # 'cp3017.esams.wmnet',
+                        # 'cp3018.esams.wmnet',
                     ],
                     'ulsfo' => [
                         'cp4005.ulsfo.wmnet',
