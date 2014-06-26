@@ -48,9 +48,9 @@
 #  }
 #
 define diamond::collector(
-    $settings,
-    $ensure  = present,
-    $source  = undef,
+    $settings = undef,
+    $ensure   = present,
+    $source   = undef,
 ) {
     include ::diamond
 
