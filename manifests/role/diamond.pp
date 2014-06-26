@@ -8,27 +8,30 @@ class role::diamond {
     #start batching in groups of 10 to start, for now current statsd can't
     #accept multiple metrics
 
-    if $::realm == 'production' {
+    # Point to diamond-collector on labs and tungsten on prod
+    case $::realm {
+        'labs': { $host = '10.68.17.169' }
+        default: { $host = '10.64.0.18' }
+    }
 
-        class { '::diamond':
-            settings => {
-                enabled => 'true',
-                host    => '10.64.0.18', # tungsten
-                port    => '8125',
-            },
-        }
+    class { '::diamond':
+        settings => {
+            enabled => 'true',
+            host    => $host,
+            port    => '8125',
+        },
+    }
 
-        #IPVS collector seems to be enabled by default on trusty
-        #causes non LVS hosts to spam with sudo violations for
-        #stats collection among other things.  Explicit disable
-        #for now this needs to dealt with upstream.
-        case $::operatingsystemrelease {
-            '14.04': {
-                diamond::collector { 'IPVS':
-                    settings => {
-                        enabled => 'false',
-                    },
-                }
+    #IPVS collector seems to be enabled by default on trusty
+    #causes non LVS hosts to spam with sudo violations for
+    #stats collection among other things.  Explicit disable
+    #for now this needs to dealt with upstream.
+    case $::operatingsystemrelease {
+        '14.04': {
+            diamond::collector { 'IPVS':
+                settings => {
+                    enabled => 'false',
+                },
             }
         }
     }
