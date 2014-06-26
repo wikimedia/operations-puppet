@@ -159,6 +159,7 @@ class role::deployment::deployment_servers::production {
     group  => 'wikidev',
   }
   $deployable_networks = $::network::constants::deployable_networks
+  $apache_fqdn = $::fqdn
   apache::site { 'deployment':
     content => template('apache/sites/deployment.erb'),
     require => File['/srv/deployment'],
@@ -213,19 +214,23 @@ class role::deployment::deployment_servers::labs {
 
   # Enable multiple test environments within a single project
   if ( $::deployment_server_override != undef ) {
-    $deployment_server = $::deployment_server_override
+    $apache_fqdn = $::deployment_server_override
   } else {
-    $deployment_server = "${::instanceproject}-deploy.eqiad.wmflabs"
+    $apache_fqdn = "${::instanceproject}-deploy.eqiad.wmflabs"
   }
-  apache::vhost { $deployment_server:
-    priority            => '10',
-    port                => '80',
-    docroot             => '/srv/deployment',
-    docroot_owner       => 'trebuchet',
-    docroot_group       => "project-${::instanceproject}",
-    docroot_dir_allows  => ['10.0.0.0/8'],
-    serveradmin         => 'noc@wikimedia.org',
+
+  $deployable_networks = '10.0.0.0/8'
+
+  file { '/srv/deployment':
+    ensure => directory,
+    owner  => 'trebuchet',
+    group  => "project-${::instanceproject}",
   }
+  apache::site { 'deployment':
+    content => template('apache/sites/deployment.erb'),
+    require => File['/srv/deployment'],
+  }
+
   class { 'redis':
     dir       => '/srv/redis',
     maxmemory => '500Mb',
