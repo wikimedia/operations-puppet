@@ -637,11 +637,6 @@ node 'dataset2.wikimedia.org' {
 node 'dataset1001.wikimedia.org' {
     $cluster = 'misc'
 
-    interface::aggregate { 'bond0':
-        orig_interface => 'eth0',
-        members        => [ 'eth0', 'eth1' ],
-    }
-
     class { 'admin': groups => [dataset-admins] }
 
     include standard
