@@ -818,12 +818,23 @@ node /^db10(20|46)\.eqiad\.wmnet/ {
 }
 
 ## m3 shard
-node /^db10(43|48)\.eqiad\.wmnet/ {
+node 'db1043.eqiad.wmnet' {
 
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc::phabricator':
-        shard => 'm3',
+        shard  => 'm3',
+        master => true,
+    }
+}
+
+node 'db1048.eqiad.wmnet' {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::misc::phabricator':
+        shard    => 'm3',
+        snapshot => true,
     }
 }
 
