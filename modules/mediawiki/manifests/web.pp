@@ -3,6 +3,10 @@
 class mediawiki::web( $maxclients = 40 ) {
     include ::mediawiki
 
+    if $enable_mw_monitoring_vhost {
+        include ::mediawiki::monitoring::webserver
+    }
+
     file { '/etc/apache2/apache2.conf':
         content => template('mediawiki/apache/apache2.conf.erb'),
         owner   => 'root',
