@@ -47,36 +47,36 @@ class role::beta::natfix {
 # Provision an rsync slave server for scap in beta
 #
 class role::beta::rsync_slave {
-    include labs_lvm
-
-    labs_lvm::volume { 'second-local-disk':
-        mountat => '/srv',
+    system::role { 'role::beta::rsync_slave':
+        description => 'Scap rsync fanout server'
     }
+
+    require ::role::labs::lvm::srv
+    include ::beta::scap::rsync_slave
 
     # FIXME: Each host that has this role applied must also be
     # manually added to the dsh group file found in
-    # modules/beta/files/dsh/group/mediawiki-installation or scap will
+    # modules/beta/files/dsh/group/scap-proxies or scap will
     # not communicate with that host.
-    class { '::beta::scap::rsync_slave':
-        require => Labs_lvm::Volume['second-local-disk'],
-    }
 }
 
+# Class: role::beta::scap_target
+#
+# Provision a target host for scap in beta
+#
 class role::beta::scap_target {
+    system::role { 'role::beta::scap_target':
+        description => 'Scap deployment target'
+    }
+
+    require ::role::labs::lvm::srv
     include ::beta::common
+    include ::beta::scap::target
 
     # FIXME: Each host that has this role applied must also be
     # manually added to the dsh group file found in
     # modules/beta/files/dsh/group/mediawiki-installation or scap will
     # not communicate with that host.
-    class { '::beta::scap::target':
-        require => Labs_lvm::Volume['second-local-disk'],
-    }
-
-    include labs_lvm
-
-    # Eqiad instances do not mount additional disk space
-    labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
 }
 
 class role::beta::appserver {
@@ -133,4 +133,9 @@ class role::beta::appserver {
 class role::beta::videoscaler {
     include role::beta::scap_target
     include role::mediawiki::videoscaler
+}
+
+class role::beta::jobrunner {
+    include role::beta::scap_target
+    include role::mediawiki::jobrunner
 }
