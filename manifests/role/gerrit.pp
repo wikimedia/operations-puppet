@@ -113,6 +113,15 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/cdh4',
 				},
+				'github-puppet-cdh'      => {
+					'url'                  => 'git@github.com:wikimedia/puppet-cdh',
+					'threads'              => '1',
+					'authGroup'            => 'mediawiki-replication',
+					'push'                 => $replication_basic_push_refs,
+					'remoteNameStyle'      => 'dash',
+					'mirror'               => 'true',
+					'projects'             => 'operations/puppet/cdh',
+				},
 				'github-puppet-jmxtrans'  => {
 					'url'                  => 'git@github.com:wikimedia/puppet-jmxtrans',
 					'threads'              => '1',
