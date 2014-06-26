@@ -57,6 +57,10 @@ if $cluster == undef {
 if $puppet_version == undef {
     $puppet_version = '3'
 }
+
+# Temporary guard, will be removed
+$enable_mw_monitoring_vhost = false
+
 # Node definitions (alphabetic order)
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
@@ -1950,6 +1954,10 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     $cluster = 'appserver'
     if $::hostname =~ /^mw101[78]$/ {
         $ganglia_aggregator = true
+    }
+
+    if $::hostname == 'mw1019' {
+        $enable_mw_monitoring_vhost = true
     }
 
     if $::hostname == 'mw1070' {
