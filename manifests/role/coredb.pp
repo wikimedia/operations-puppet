@@ -10,15 +10,15 @@ class role::coredb::config {
     $topology = {
         's1' => {
             'hosts' => { 'pmtpa' => [ 'db60' ],
-                         'eqiad' => [ 'db1037', 'db1043', 'db1049', 'db1050', 'db1051', 'db1052', 'db1055', 'db1056', 'db1061', 'db1062' ] },
+                         'eqiad' => [ 'db1050', 'db1051', 'db1052', 'db1055', 'db1061', 'db1062', 'db1065', 'db1066', 'db1070', 'db1071' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'pmtpa' => 'db60', 'eqiad' => 'db1052' },
             'snapshot'     => [ 'db1050' ],
-            'no_master'    => [ 'db1047', 'db1050', 'db1055' ]
+            'no_master'    => [ 'db1050', 'db1055' ]
         },
         's2' => {
             'hosts' => { 'pmtpa' => [ 'db69' ],
-                         'eqiad' => [ 'db1002', 'db1009', 'db1018', 'db1024', 'db1034', 'db1036', 'db1060', 'db1063' ] },
+                         'eqiad' => [ 'db1002', 'db1009', 'db1018', 'db1024', 'db1036', 'db1060', 'db1063', 'db1067' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'pmtpa' => 'db69', 'eqiad' => 'db1024' },
             'snapshot'     => [ 'db1018' ],
@@ -34,7 +34,7 @@ class role::coredb::config {
         },
         's4' => {
             'hosts' => { 'pmtpa' => [ 'db72' ],
-                         'eqiad' => [ 'db1004', 'db1011', 'db1020', 'db1040', 'db1042', 'db1059' ] },
+                         'eqiad' => [ 'db1004', 'db1040', 'db1042', 'db1056', 'db1059', 'db1064', 'db1068' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'pmtpa' => 'db72', 'eqiad' => 'db1040' },
             'snapshot'     => [ 'db1042' ],
@@ -42,7 +42,7 @@ class role::coredb::config {
         },
         's5' => {
             'hosts' => { 'pmtpa' => [ 'db73' ],
-                         'eqiad' => [ 'db1005', 'db1021', 'db1026', 'db1045', 'db1058' ] },
+                         'eqiad' => [ 'db1005', 'db1021', 'db1026', 'db1037', 'db1045', 'db1049', 'db1058' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'pmtpa' => 'db73', 'eqiad' => 'db1058' },
             'snapshot'     => [ 'db1005' ],
@@ -50,7 +50,7 @@ class role::coredb::config {
         },
         's6' => {
             'hosts' => { 'pmtpa' => [ 'db74' ],
-                         'eqiad' => [ 'db1006', 'db1010', 'db1015', 'db1022', 'db1023' ] },
+                         'eqiad' => [ 'db1006', 'db1010', 'db1015', 'db1022', 'db1023', 'db1030' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'pmtpa' => 'db74', 'eqiad' => 'db1023' },
             'snapshot'     => [ 'db1022' ],
@@ -58,7 +58,7 @@ class role::coredb::config {
         },
         's7' => {
             'hosts' => { 'pmtpa' => [ 'db68' ],
-                         'eqiad' => [ 'db1007', 'db1033', 'db1028', 'db1039', 'db1041' ] },
+                         'eqiad' => [ 'db1007', 'db1028', 'db1033', 'db1034', 'db1039', 'db1041' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'pmtpa' => 'db68', 'eqiad' => 'db1033' },
             'snapshot'     => [ 'db1007' ],
@@ -66,7 +66,7 @@ class role::coredb::config {
         },
         'x1' => {
             'hosts' => {
-                         'eqiad' => [ 'db1029', 'db1030', 'db1031' ] },
+                         'eqiad' => [ 'db1029', 'db1031' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1029' },
             'snapshot'     => [ 'db1031' ],
@@ -80,14 +80,8 @@ class role::coredb::config {
             'snapshot'     => ['db1016' ],
             'no_master'    => []
         },
-        'm2' => {
-            'hosts' => {
-                         'eqiad' => [ 'db1046', 'db1048' ] },
-            'primary_site' => 'both',
-            'masters'      => { 'eqiad' => 'db1048' },
-            'snapshot'     => [ 'db1046' ],
-            'no_master'    => []
-        },
+        # m2 role::mariadb::misc
+        # m3 role::mariadb::misc::phabricator
         'es1' => {
             'hosts' => { 'pmtpa' => [ 'es4' ],
                          'eqiad' => [ 'es1001', 'es1002', 'es1003', 'es1004' ] },
@@ -198,15 +192,8 @@ class role::coredb::m1( $mariadb = false ) {
     }
 }
 
-class role::coredb::m2( $mariadb = false ) {
-    class { 'role::coredb::common':
-        shard                    => 'm2',
-        mariadb                  => $mariadb,
-        innodb_file_per_table    => true,
-        skip_name_resolve        => false,
-        mysql_max_allowed_packet => 1073741824,
-    }
-}
+# m2 role::mariadb::misc
+# m3 role::mariadb::misc::phabricator
 
 class role::coredb::es1( $mariadb = false ) {
     class { 'role::coredb::common':
