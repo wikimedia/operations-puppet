@@ -43,7 +43,9 @@ class role::mariadb::misc(
 # strict sql_mode -- nice! but other services moan
 # admin tool that needs non-trivial permissions
 class role::mariadb::misc::phabricator(
-    $shard
+    $shard    = 'm3',
+    $master   = false,
+    $snapshot = false,
     ) {
 
     system::role { 'role::mariadb::misc':
@@ -54,13 +56,23 @@ class role::mariadb::misc::phabricator(
     include mariadb::packages_wmf
     include passwords::misc::scripts
 
+    $read_only = $master ? {
+        true  => 'off',
+        false => 'on',
+    }
+
     class { 'mariadb::config':
-        prompt   => "MISC ${shard}",
-        config   => 'mariadb/misc.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/a/sqldata',
-        tmpdir   => '/a/tmp',
-        sql_mode => 'STRICT_ALL_TABLES',
+        prompt    => "MISC ${shard}",
+        config    => 'mariadb/misc.my.cnf.erb',
+        password  => $passwords::misc::scripts::mysql_root_pass,
+        datadir   => '/a/sqldata',
+        tmpdir    => '/a/tmp',
+        sql_mode  => 'STRICT_ALL_TABLES',
+        read_only => $read_only,
+    }
+
+    if $snapshot {
+        include coredb_mysql::snapshot
     }
 
     class { 'mariadb::monitor_disk':
@@ -69,6 +81,12 @@ class role::mariadb::misc::phabricator(
 
     class { 'mariadb::monitor_process':
         contact_group => 'admins',
+    }
+
+    unless $master {
+        monitor_replication { [ $shard ]:
+            multisource => false,
+        }
     }
 }
 
