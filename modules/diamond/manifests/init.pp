@@ -25,6 +25,10 @@
 #   See <https://github.com/BrightcoveOS/Diamond/wiki/Handlers>
 #   for a listing of configuration options.
 #
+# [*path_prefix*]
+#   The prefix to be used for metrics, used to namespace where
+#   the metric came from.
+#
 # === Examples
 #
 # A Graphite configuration for Diamond:
@@ -43,6 +47,7 @@ class diamond(
     $settings = { host => 'localhost',
                   port => '8125',
     },
+    $path_prefix = 'system',
 ) {
     package { [ 'python-diamond', 'python-configobj' ]:
         ensure => present,
