@@ -224,15 +224,17 @@ class role::deployment::deployment_servers::labs {
   } else {
     $deployment_server = "${::instanceproject}-deploy.eqiad.wmflabs"
   }
-  apache::vhost { $deployment_server:
-    priority            => '10',
-    port                => '80',
-    docroot             => '/srv/deployment',
-    docroot_owner       => 'trebuchet',
-    docroot_group       => "project-${::instanceproject}",
-    docroot_dir_allows  => ['10.0.0.0/8'],
-    serveradmin         => 'noc@wikimedia.org',
+
+  file { '/srv/deployment':
+    ensure => directory,
+    owner  => 'trebuchet',
+    group  => "project-${::instanceproject}",
   }
+  apache::site { 'deployment':
+    content => template('apache/sites/deployment-labs.erb'),
+    require => File['/srv/deployment'],
+  }
+
   class { 'redis':
     dir       => '/srv/redis',
     maxmemory => '500Mb',
