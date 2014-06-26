@@ -141,13 +141,6 @@ class role::deployment::deployment_servers::common {
 
   class { 'mediawiki::packages': }
 
-  apache::vhost { 'default':
-    ensure              => absent,
-    priority            => '000',
-    port                => '80',
-    docroot             => '/var/www',
-  }
-
   #RT 7427
   ::monitoring::icinga::git_merge { 'mediawiki_config':
       dir           => '/a/common/',
@@ -160,15 +153,14 @@ class role::deployment::deployment_servers::production {
   include role::deployment::deployment_servers::common
   include network::constants
 
-  apache::vhost { 'tin.eqiad.wmnet':
-    priority             => '10',
-    vhost_name           => '10.64.0.196',
-    port                 => '80',
-    docroot              => '/srv/deployment',
-    docroot_owner        => 'trebuchet',
-    docroot_group        => 'wikidev',
-    docroot_dir_allows   => $::network::constants::deployable_networks,
-    serveradmin          => 'noc@wikimedia.org',
+  file { '/srv/deployment':
+    ensure => directory,
+    owner  => 'trebuchet',
+    group  => 'wikidev',
+  }
+  apache::site { 'deployment':
+    content => template('apache/sites/deployment.erb'),
+    require => File['/srv/deployment'],
   }
   class { 'redis':
     dir => '/srv/redis',
