@@ -10,7 +10,7 @@
 
 
 if ! $(hash puppet &>/dev/null) ; then
-    echo "WARNING: puppet not found; skipping syntax checks" >&2
+    echo "WARNING: Puppet not found; skipping syntax checks" >&2
     exit 0
 fi
 
@@ -19,8 +19,8 @@ mapfile -t diff < <(git diff --cached --name-only --diff-filter=ACM -- '*.pp')
 
 for file in "${diff[@]}"; do
     # Validate; ignore warnings about storeconfigs not being set
-    # because it is only set on puppetmaster. Use PIPESTATUS to
-    # get the exit status of puppet rather than grep.
+    # because it is only set on Puppetmaster. Use PIPESTATUS to
+    # get the exit status of Puppet rather than grep.
     puppet parser validate "${file}" 2>&1 | grep -v "without storeconfigs"
     if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         exit 2

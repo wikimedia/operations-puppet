@@ -1,6 +1,6 @@
 =begin
 This rakefile is meant to trigger your local puppet-linter. To take
-advantage of that powerful linter, you must have the puppet and
+advantage of that powerful linter, you must have the Puppet and
 puppet-lint gems:
 
   $ sudo gem install puppet
@@ -11,7 +11,7 @@ Then run the linter using rake (a ruby build helper):
   $ rake lint
 
 A list of top errors can be obtained using:
-  rake lint |rev |cut -d\  -f4- | rev | sort | uniq -c | sort -rn
+  $ rake lint |rev |cut -d\  -f4- | rev | sort | uniq -c | sort -rn
 
 puppet-lint doc is at https://github.com/rodjek/puppet-lint
 
@@ -23,11 +23,11 @@ more gems installed:
 
 Then:
 
-  $rake spec
+  $ rake spec
 
 =end
 
-# Only care about color when using a tty
+# Only care about color when using a tty.
 if Rake.application.tty_output?
 	# Since we are going to use puppet internal stuff, we might as
 	# well attempt to reuse their colorization utility. Note the utility class
@@ -42,7 +42,7 @@ if Rake.application.tty_output?
 end
 
 unless respond_to? :console_color
-	# define our own colorization method that simply output the message
+	# Define our own colorization method that simply outputs the message.
 	def console_color( level, message )
 		return message
 	end
@@ -54,7 +54,7 @@ desc 'Show the help'
 task :help do
 	puts "Puppet helper for operations/puppet.git
 
-Welcome #{ENV['USER']} in WMF wonderful rake helper to play with puppet.
+Welcome #{ENV['USER']} to WMFs wonderful rake helper to play with puppet.
 
 ---[Command line options]----------------------------------------------
 `rake -T` : list available tasks
@@ -62,7 +62,7 @@ Welcome #{ENV['USER']} in WMF wonderful rake helper to play with puppet.
 
 ---[Available rake tasks]----------------------------------------------"
 
-	# show our tasks list
+	# Show our tasks list.
 	system "rake -T"
 
 puts "-----------------------------------------------------------------------"
@@ -87,21 +87,21 @@ task :run_puppet_lint do
 	# Get possible checks values with: puppet-lint --help
 	disabled_checks = [
 
-		# We still use the 2.6 way of referencing variables.
-		# 2.8 will requires $::globalname. Skip for now
+		# We still use the 2.6 way of referencing variables
+		# 2.8 will requires $::globalname. Skip for now.
 		"variable_scope",
 
 		# We really like nesting classes:
 		"nested_classes_or_defines",
 
-		# Lot of long lines (ssh keys for example)
+		# Lot of long lines (ssh keys for example).
 		"80chars",
 
-		# Anyone as a different indentation preference
+		# Anyone as a different indentation preference.
 		"hard_tabs",
 		"2sp_soft_tabs",
 
-		# Misc rules, some of them might use to be enabled later
+		# Misc rules, some of them might use to be enabled later.
 		"autoloader_layout",  # unused in our setup?
 		"inherits_across_namespaces",
 		"double_quoted_strings",
@@ -119,7 +119,7 @@ task :run_puppet_lint do
 		# Variables should be enclosed in {}
 		"variables_not_enclosed",
 
-		# We use dash in class and variables
+		# We use dash in class and variables.
 		"names_containing_dash",
 		"variable_contains_dash",
 
@@ -175,7 +175,7 @@ task :validate, [:files ] do |t, args|
 	end
 end
 
-# Validate manifests passed as an array of filenames
+# Validate manifests passed as an array of filenames.
 def puppet_parser_validate(*manifests)
 	manifests = manifests.join(' ')
 	sh "puppet parser validate #{manifests}"
@@ -184,10 +184,10 @@ end
 desc "Run spec tests found in modules"
 task :spec do
 
-	# Hold a list of modules not passing tests
+	# Hold a list of modules not passing tests.
 	failed_modules = []
 
-	# Invoke rake whenever a module has a Rakefile
+	# Invoke rake whenever a module has a Rakefile.
 	FileList["modules/*/Rakefile"].each do |rakefile|
 
 		module_name = rakefile.match('modules/(.+)/')[1]
@@ -221,7 +221,7 @@ task :tags do
 	puts "integration with the vim tagbar plugin."
 end
 
-# Wrapper to run rspec in a module
+# Wrapper to run rspec in a module.
 def run_module_spec(module_name)
 
 	puts '-' * 80
