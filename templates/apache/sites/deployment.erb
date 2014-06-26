@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot /srv/deployment
+
+    <Directory /srv/deployment>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from <%= scope.lookupvar('::network::constants::deployable_networks').join(' ') %>
+    </Directory>
+
+    LogLevel warn
+    ErrorLog /var/log/apache2/tin.eqiad.wmnet_error.log
+    CustomLog /var/log/apache2/tin.eqiad.wmnet_access.log combined
+    ServerSignature Off
+</VirtualHost>
