@@ -31,12 +31,12 @@ optparse = OptionParser.new do |opts|
 	end
 end
 
-# Parse command line options
+# Parse command line options.
 begin
 	# -f is mandatory
 	optparse.parse!
 	if $filename.nil?
-	 	puts "You must specify an ERB filename"
+	 	puts "You must specify an ERB filename."
 		puts optparse
 		exit
 	end
@@ -57,7 +57,7 @@ p template_values
 
 
 def render_erb(template, locals)
-	# make sure we can render templates with -%> closing tags.
+	# Make sure we can render templates with -%> closing tags.
 	# Note that this does not actually remove newlines after -%>, it just
 	# avoids a syntax error.
 	ERB.new(template, nil, '%<>-').result(OpenStruct.new(locals).instance_eval { binding })
