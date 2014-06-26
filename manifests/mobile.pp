@@ -3,13 +3,13 @@ class mobile::vumi::iptables-purges {
     require 'iptables::tables'
 
     # The deny_all rule must always be purged,
-    #otherwise ACCEPTs can be placed below it
+    # otherwise ACCEPTs can be placed below it
     iptables_purge_service{ 'deny_all_redis':
         service => 'redis',
     }
 
     # When removing or modifying a rule,
-    #place the old rule here, otherwise it won't
+    # place the old rule here, otherwise it won't
     # be purged, and will stay in the iptables forever
 }
 

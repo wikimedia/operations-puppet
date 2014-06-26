@@ -53,10 +53,10 @@ class role::backup::director {
     # Setting execution times so that it is unlikely jobs will run concurrently
     # with cron.{hourly,daily,monthly} or other cronscripts
     backup::schedule { $role::backup::config::days:
-        pool    => 'production',
+        pool => 'production',
     }
     backup::weeklyschedule { $role::backup::config::days:
-        pool    => 'production',
+        pool => 'production',
     }
 
     bacula::director::catalog { 'production':
@@ -69,10 +69,10 @@ class role::backup::director {
 
     # This has been taken straight from old files/backup/disklist-*
     bacula::director::fileset { 'root':
-        includes     => [ '/' ]
+        includes => [ '/' ]
     }
     bacula::director::fileset { 'a-sqldata':
-        includes     => [ '/a/sqldata' ]
+        includes => [ '/a/sqldata' ]
     }
     bacula::director::fileset { 'a-backup':
         includes => [ '/a/backup' ]
@@ -193,9 +193,9 @@ class role::backup::storage() {
     include nfs::netapp::common
 
     class { 'bacula::storage':
-        director            => $role::backup::config::director,
-        sd_max_concur_jobs  => 5,
-        sqlvariant          => 'mysql',
+        director           => $role::backup::config::director,
+        sd_max_concur_jobs => 5,
+        sqlvariant         => 'mysql',
     }
 
     # We have two storage devices to overcome any limitations from backend

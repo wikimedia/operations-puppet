@@ -1,8 +1,8 @@
-#include "mysql.db"
+# include "mysql.db"
 
 class role::labs::db::master {
 
-    system::role { 'role::labs::db::master': description => "Labs user database master" }
+    system::role { 'role::labs::db::master': description => 'Labs user database master' }
 
     class { 'mysql::server':
         config_hash => {
@@ -31,7 +31,7 @@ class role::labs::db::master {
 
 class role::labs::db::slave {
 
-    system::role { 'role::labs::db::slave': description => "Labs user database slave" }
+    system::role { 'role::labs::db::slave': description => 'Labs user database slave' }
 
     class { 'mysql::server':
         config_hash => {

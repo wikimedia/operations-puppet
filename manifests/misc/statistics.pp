@@ -203,7 +203,6 @@ class misc::statistics::plotting {
     }
 }
 
-
 class misc::statistics::webserver {
     include webserver::apache
 
@@ -334,26 +333,34 @@ class misc::statistics::sites::community_analytics {
         docroot      => $docroot,
         server_admin => 'noc@wikimedia.org',
         custom       => [
-            "SetEnv MPLCONFIGDIR /srv/org.wikimedia.community-analytics/mplconfigdir",
+            'SetEnv MPLCONFIGDIR /srv/org.wikimedia.community-analytics/mplconfigdir',
 
     "<Location \"/\">
-        SetHandler python-program
-        PythonHandler django.core.handlers.modpython
-        SetEnv DJANGO_SETTINGS_MODULE web_interface.settings
-        PythonOption django.root /community-analytics/web_interface
-        PythonDebug On
-        PythonPath \"['/srv/org.wikimedia.community-analytics/community-analytics'] + sys.path\"
+
+   SetHandler python-program
+
+   PythonHandler django.core.handlers.modpython
+
+   SetEnv DJANGO_SETTINGS_MODULE web_interface.settings
+
+   PythonOption django.root /community-analytics/web_interface
+
+   PythonDebug On
+
+   PythonPath \"['/srv/org.wikimedia.community-analytics/community-analytics'] + sys.path\"
     </Location>",
 
     "<Location \"/media\">
-        SetHandler None
+
+   SetHandler None
     </Location>",
 
     "<Location \"/static\">
-        SetHandler None
+
+   SetHandler None
     </Location>",
 
-    "<LocationMatch \"\\.(jpg|gif|png)$\">
+    "<LocationMatch \"\\.(jpg|gif|png)\">
         SetHandler None
     </LocationMatch>",
     ],
@@ -470,8 +477,6 @@ class misc::statistics::rsyncd(
         srange => '($INTERNAL 208.80.154.155/32 208.80.154.82/32)',
     }
 }
-
-
 
 # Class: misc::statistics::rsync::jobs::webrequest
 #
@@ -611,13 +616,12 @@ define misc::statistics::rsync_job($source, $destination) {
     # This requires that the $misc::statistics::user::username
     # user is installed on the source host.
     cron { "rsync_${name}_logs":
-        command => "/usr/bin/rsync -rt --perms --chmod=g-w $source $destination/",
+        command => "/usr/bin/rsync -rt --perms --chmod=g-w ${source} ${destination}/",
         user    => $misc::statistics::user::username,
         hour    => 8,
         minute  => 0,
     }
 }
-
 
 # Class: misc::statistics::cron_blog_pageviews
 #
@@ -648,7 +652,6 @@ class misc::statistics::cron_blog_pageviews {
         minute  => 0,
     }
 }
-
 
 # Class: misc::statistics::limn::mobile_data_sync
 #
@@ -878,7 +881,7 @@ password=${globaldev_mysql_pass}
         minute  => 0,
         hour    => 12,
         user    => $geowiki_user,
-        command => "/usr/bin/python ${geowiki_scripts_path}/geowiki/process_data.py -o ${$geowiki_log_path} --wpfiles ${geowiki_scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${geowiki_mysql_research_conf_file} >${geowiki_log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stdout 2>${geowiki_log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stderr",
+        command => "/usr/bin/python ${geowiki_scripts_path}/geowiki/process_data.py -o ${geowiki_log_path} --wpfiles ${geowiki_scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${geowiki_mysql_research_conf_file} >${geowiki_log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stdout 2>${geowiki_log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stderr",
         require => File[$geowiki_log_path],
     }
 }
@@ -980,4 +983,3 @@ class misc::statistics::researchdb_password {
         content => "user: ${::passwords::mysql::research::user}\npass: ${::passwords::mysql::research::pass}\n"
     }
 }
-

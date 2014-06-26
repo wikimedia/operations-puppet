@@ -90,7 +90,6 @@ class role::eventlogging {
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
     }
 
-
     ## Flat files
 
     # Log all raw log records and decoded events to flat files in
@@ -126,7 +125,6 @@ class role::eventlogging {
         }
     }
 
-
     ## Kafka / Hadoop
 
     include role::analytics::kafka::config
@@ -143,13 +141,12 @@ class role::eventlogging {
     }
 
     eventlogging::service::consumer { 'kafka':
-       input  => "tcp://${processor}:8600",
-       output => "kafka://${kafka_cluster}?brokers=${kafka_brokers}&topic=${kafka_topic}",
-       # We are not currently using this data in Kafka or Hadoop, and Kafka is about
-       # to undergo some production failover testing.  Disabling this for now.
-       ensure => 'absent',
+        ensure => 'absent',
+        input  => "tcp://${processor}:8600",
+        output => "kafka://${kafka_cluster}?brokers=${kafka_brokers}&topic=${kafka_topic}",
+        # We are not currently using this data in Kafka or Hadoop, and Kafka is about
+        # to undergo some production failover testing.  Disabling this for now.
     }
-
 
     ## Monitoring
 
@@ -165,7 +162,6 @@ class role::eventlogging {
         contact_group => 'admins,analytics',
     }
 }
-
 
 # == Class: role::eventlogging::graphite
 #

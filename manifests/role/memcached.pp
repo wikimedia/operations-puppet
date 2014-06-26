@@ -18,9 +18,9 @@ class role::memcached {
     }
 
     class { '::memcached':
-        memcached_size => $memcached_size,
-        memcached_port => '11211',
-        version        => '1.4.15-0wmf1',
+        memcached_size    => $memcached_size,
+        memcached_port    => '11211',
+        version           => '1.4.15-0wmf1',
         memcached_options => {
             '-o' => 'slab_reassign',
             '-D' => ':',

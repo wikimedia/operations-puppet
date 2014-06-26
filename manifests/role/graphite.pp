@@ -21,27 +21,27 @@ class role::graphite {
             # five-minute resolution for one month; at 15-minute resolution for
             # one year; and at one-hour resolution for five years.
             'default' => {
-                pattern    => '.*',
-                retentions => '1m:7d,5m:30d,15m:1y,1h:5y',
+                pattern                            => '.*',
+                retentions                         => '1m:7d,5m:30d,15m:1y,1h:5y',
             },
         },
 
         # Aggregation methods for whisper files.
         storage_aggregation => {
-            'min' => {
-                pattern           => '\.min$',
-                xFilesFactor      => 0.1,
-                aggregationMethod => 'min',
+            'min'     => {
+                pattern                            => '\.min$',
+                xFilesFactor                       => 0.1,
+                aggregationMethod                  => 'min',
             },
-            'max' => {
-                pattern           => '\.max$',
-                xFilesFactor      => 0.1,
-                aggregationMethod => 'max',
+            'max'     => {
+                pattern                            => '\.max$',
+                xFilesFactor                       => 0.1,
+                aggregationMethod                  => 'max',
             },
-            'sum' => {
-                pattern           => '\.count$',
-                xFilesFactor      => 0,
-                aggregationMethod => 'sum',
+            'sum'     => {
+                pattern                            => '\.count$',
+                xFilesFactor                       => 0,
+                aggregationMethod                  => 'sum',
             },
         },
 
@@ -69,55 +69,55 @@ class role::graphite {
             ## Carbon caches ##
 
             'cache:a' => {
-                line_receiver_port   => 2103,
-                pickle_receiver_port => 2104,
-                cache_query_port     => 7102,
+                line_receiver_port                 => 2103,
+                pickle_receiver_port               => 2104,
+                cache_query_port                   => 7102,
             },
             'cache:b' => {
-                line_receiver_port   => 2203,
-                pickle_receiver_port => 2204,
-                cache_query_port     => 7202,
+                line_receiver_port                 => 2203,
+                pickle_receiver_port               => 2204,
+                cache_query_port                   => 7202,
             },
             'cache:c' => {
-                line_receiver_port   => 2303,
-                pickle_receiver_port => 2304,
-                cache_query_port     => 7302,
+                line_receiver_port                 => 2303,
+                pickle_receiver_port               => 2304,
+                cache_query_port                   => 7302,
             },
             'cache:d' => {
-                line_receiver_port   => 2403,
-                pickle_receiver_port => 2404,
-                cache_query_port     => 7402,
+                line_receiver_port                 => 2403,
+                pickle_receiver_port               => 2404,
+                cache_query_port                   => 7402,
             },
             'cache:e' => {
-                line_receiver_port   => 2503,
-                pickle_receiver_port => 2504,
-                cache_query_port     => 7502,
+                line_receiver_port                 => 2503,
+                pickle_receiver_port               => 2504,
+                cache_query_port                   => 7502,
             },
             'cache:f' => {
-                line_receiver_port   => 2603,
-                pickle_receiver_port => 2604,
-                cache_query_port     => 7602,
+                line_receiver_port                 => 2603,
+                pickle_receiver_port               => 2604,
+                cache_query_port                   => 7602,
             },
             'cache:g' => {
-                line_receiver_port   => 2703,
-                pickle_receiver_port => 2704,
-                cache_query_port     => 7702,
+                line_receiver_port                 => 2703,
+                pickle_receiver_port               => 2704,
+                cache_query_port                   => 7702,
             },
             'cache:h' => {
-                line_receiver_port   => 2803,
-                pickle_receiver_port => 2804,
-                cache_query_port     => 7802,
+                line_receiver_port                 => 2803,
+                pickle_receiver_port               => 2804,
+                cache_query_port                   => 7802,
             },
 
             ## Carbon relay ##
 
             'relay'   => {
-                line_receiver_interface   => '0.0.0.0',
-                pickle_receiver_interface => '0.0.0.0',
-                udp_receiver_interface    => '0.0.0.0',
-                enable_udp_listener       => true,
-                relay_method              => 'consistent-hashing',
-                destinations              => [
+                line_receiver_interface            => '0.0.0.0',
+                pickle_receiver_interface          => '0.0.0.0',
+                udp_receiver_interface             => '0.0.0.0',
+                enable_udp_listener                => true,
+                relay_method                       => 'consistent-hashing',
+                destinations                       => [
                     '127.0.0.1:2104:a',
                     '127.0.0.1:2204:b',
                     '127.0.0.1:2304:c',
@@ -190,7 +190,7 @@ class role::graphite {
             warning         => 250,
             critical        => 500,
             from            => '15min',
-            nagios_critical => 'false'
+            nagios_critical => false
         }
 
         # Will try to detect anomalies in the requests error ratio;

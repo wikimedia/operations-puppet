@@ -24,7 +24,7 @@ class role::analytics::hue {
     class { '::cdh4::hue':
         secret_key             => $secret_key,
         smtp_host              => $::mail_smarthost[0],
-        smtp_from_email        => "hue@$::fqdn",
+        smtp_from_email        => "hue@${::fqdn}",
         ldap_url               => inline_template('<%= scope.lookupvar("ldap::role::config::labs::servernames").collect { |host| "ldaps://#{host}" }.join(" ") %>'),
         ldap_bind_dn           => $ldap::role::config::labs::ldapconfig['proxyagent'],
         ldap_bind_password     => $ldap::role::config::labs::ldapconfig['proxypass'],

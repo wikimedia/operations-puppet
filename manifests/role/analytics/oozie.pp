@@ -39,6 +39,6 @@ class role::analytics::oozie::server inherits role::analytics::oozie::client {
     class { 'cdh4::oozie::server':
         jdbc_password   => $jdbc_password,
         smtp_host       => $::mail_smarthost[0],
-        smtp_from_email => "oozie@$::fqdn",
+        smtp_from_email => "oozie@${::fqdn}",
     }
 }

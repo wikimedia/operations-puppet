@@ -4,7 +4,7 @@ class misc::fundraising {
     include passwords::civi
     include mysql_wmf::client::default_charset_binary
 
-    #what is currently on grosley/aluminium
+    # what is currently on grosley/aluminium
     system::role { 'misc::fundraising':
         description => 'fundraising sites and operations',
     }
@@ -48,35 +48,35 @@ class misc::fundraising {
         mode   => '0644',
         source => 'puppet:///private/misc/fundraising/logrotate.fundraising-civicrm',
     }
-        #civicrm confs
-        #'/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php':
+        # civicrm confs
+        # '/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php':
         #    owner => 'root',
         #    group => 'www-data',
         #    mode => 0440,
         #    source => 'puppet:///private/misc/fundraising/civicrm.civicrm.settings.php';
-        #'/srv/org.wikimedia.civicrm/sites/default/settings.php':
+        # '/srv/org.wikimedia.civicrm/sites/default/settings.php':
         #    owner => 'root',
         #    group => 'www-data',
         #    mode => 0440,
         #    source => 'puppet:///private/misc/fundraising/civicrm.settings.php';
-        #'/srv/org.wikimedia.civicrm/fundcore_gateway/paypal':
+        # '/srv/org.wikimedia.civicrm/fundcore_gateway/paypal':
         #    owner => 'root',
         #    group => 'www-data',
         #    mode => 0440,
         #    ensure => '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php';
-        #'/srv/org.wikimedia.civicrm/files':
+        # '/srv/org.wikimedia.civicrm/files':
         #    owner => 'root',
         #    group => 'www-data',
         #    mode => 2770,
         #    ensure => directory;
-        #'/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
+        # '/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
         #    owner => 'root',
         #    group => 'www-data',
         #    mode => 0440,
         #    source => 'puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php';
 
         # fundraising wiki stuff
-        #'/srv/org.wikimedia.fundraising/IPNListener_Standalone.php':
+        # '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php':
         #    owner => 'root',
         #    group => 'www-data',
         #    mode => 0440,
@@ -89,7 +89,7 @@ class misc::fundraising {
         source => 'puppet:///private/misc/fundraising/legacy_paypal_config.php',
     }
 
-    #apache conf stuffs
+    # apache conf stuffs
     file { '/etc/apache2/sites-enabled/000-donate':
         owner  => 'root',
         group  => 'root',
@@ -154,11 +154,11 @@ class misc::fundraising {
         source => 'puppet:///private/php/php.ini.fundraising.cli',
     }
 
-    #enable apache mods
+    # enable apache mods
     include ::apache::mod::rewrite
     include ::apache::mod::ssl
 
-    #enable apache sites
+    # enable apache sites
 
 }
 

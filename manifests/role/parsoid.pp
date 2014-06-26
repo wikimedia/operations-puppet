@@ -53,7 +53,7 @@ class role::parsoid::production {
         owner   => root,
         group   => root,
         mode    => '0444',
-        source => 'puppet:///files/misc/parsoid.upstart',
+        source  => 'puppet:///files/misc/parsoid.upstart',
     }
     file { '/var/log/parsoid':
         ensure => directory,
@@ -67,7 +67,7 @@ class role::parsoid::production {
     $parsoid_settings_file = '../conf/wmf/localsettings.js'
     $parsoid_base_path = '/var/lib/parsoid/deploy/src'
 
-    #TODO: Duplication of code from beta class, deduplicate somehow
+    # TODO: Duplication of code from beta class, deduplicate somehow
     file { '/etc/default/parsoid':
         ensure  => present,
         owner   => root,
@@ -91,7 +91,7 @@ class role::parsoid::production {
         user    => 'root',
         hour    => '*',
         minute  => '12',
-       require => File['/etc/logrotate.d/parsoid'],
+        require => File['/etc/logrotate.d/parsoid'],
     }
 
     service { 'parsoid':
@@ -172,7 +172,7 @@ class role::parsoid::beta {
         owner   => root,
         group   => root,
         mode    => '0444',
-        source => 'puppet:///files/misc/parsoid.upstart',
+        source  => 'puppet:///files/misc/parsoid.upstart',
     }
 
     $parsoid_log_file = '/data/project/parsoid/parsoid.log'

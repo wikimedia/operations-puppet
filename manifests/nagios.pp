@@ -8,12 +8,12 @@ define monitor_host(
     $ip_address    = $::ipaddress,
     $group         = $nagios_group,
     $ensure        = present,
-    $critical      = 'false',
+    $critical      = false,
     $contact_group = 'admins'
 )
 {
     if ! $ip_address {
-        fail("Parameter $ip_address not defined!")
+        fail("Parameter ${ip_address} not defined!")
     }
 
     # Determine the hostgroup:
@@ -30,16 +30,16 @@ define monitor_host(
 
     # Export the nagios host instance
     @@nagios_host { $title:
-        ensure               => $ensure,
-        target               => "${::nagios_config_dir}/puppet_hosts.cfg",
-        host_name            => $title,
-        address              => $ip_address,
-        hostgroups           => $hostgroup,
-        check_command        => 'check_ping!500,20%!2000,100%',
-        check_period         => '24x7',
-        max_check_attempts   => 2,
-        contact_groups       => $critical ? {
-            'true'  => 'admins,sms',
+        ensure                => $ensure,
+        target                => "${::nagios_config_dir}/puppet_hosts.cfg",
+        host_name             => $title,
+        address               => $ip_address,
+        hostgroups            => $hostgroup,
+        check_command         => 'check_ping!500,20%!2000,100%',
+        check_period          => '24x7',
+        max_check_attempts    => 2,
+        contact_groups        => $critical ? {
+            true  => 'admins,sms',
             default => $contact_group,
         },
         notification_interval => 0,
@@ -73,8 +73,8 @@ define monitor_service(
     $retries               = 3,
     $group                 = undef,
     $ensure                = present,
-    $critical              = 'false',
-    $passive               = 'false',
+    $critical              = false,
+    $passive               = false,
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
@@ -82,7 +82,7 @@ define monitor_service(
 )
 {
     if ! $host {
-        fail("Parameter $host not defined!")
+        fail("Parameter ${host} not defined!")
     }
 
     if $group != undef {
@@ -97,7 +97,7 @@ define monitor_service(
     }
 
         # Export the nagios service instance
-        @@nagios_service { "$::hostname $title":
+        @@nagios_service { "${::hostname} ${title}":
             ensure                  => $ensure,
             target                  => "${::nagios_config_dir}/puppet_checks.d/${host}.cfg",
             host_name               => $host,
@@ -109,30 +109,30 @@ define monitor_service(
             retry_check_interval    => $retry_check_interval,
             check_period            => '24x7',
             notification_interval   => $critical ? {
-                'true'  => 240,
+                true  => 240,
                 default => 0,
             },
             notification_period     => '24x7',
             notification_options    => 'c,r,f',
             contact_groups          => $critical ? {
-                'true'  => 'admins,sms',
+                true  => 'admins,sms',
                 default => $contact_group,
             },
             passive_checks_enabled  => 1,
             active_checks_enabled   => $passive ? {
-                'true'  => 0,
+                true  => 0,
                 default => 1,
             },
             is_volatile             => $passive ? {
-                'true'  => 1,
+                true  => 1,
                 default => 0,
             },
             check_freshness         => $passive ? {
-                'true'  => 1,
+                true  => 1,
                 default => 0,
             },
             freshness_threshold     => $passive ? {
-                'true'  => $freshness,
+                true  => $freshness,
                 default => undef,
             },
     }
@@ -330,8 +330,8 @@ define monitor_ganglia(
     $retries               = 3,
     $group                 = undef,
     $ensure                = present,
-    $nagios_critical       = 'false',
-    $passive               = 'false',
+    $nagios_critical       = false,
+    $passive               = false,
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
@@ -440,8 +440,8 @@ define monitor_graphite_threshold(
     $retries               = 3,
     $group                 = undef,
     $ensure                = present,
-    $nagios_critical       = 'false',
-    $passive               = 'false',
+    $nagios_critical       = false,
+    $passive               = false,
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
@@ -541,8 +541,8 @@ define monitor_graphite_anomaly(
     $retries               = 3,
     $group                 = undef,
     $ensure                = present,
-    $nagios_critical       = 'false',
-    $passive               = 'false',
+    $nagios_critical       = false,
+    $passive               = false,
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
@@ -572,7 +572,7 @@ define monitor_graphite_anomaly(
     monitor_service { $title:
         ensure                => $ensure,
         description           => $description,
-        check_command         => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!$modifier",
+        check_command         => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!${modifier}",
         retries               => $retries,
         group                 => $group,
         critical              => $nagios_critical,

@@ -21,18 +21,18 @@ class role::ci::master {
 
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins user':
-        homedir => '/var/lib/jenkins',
+        homedir  => '/var/lib/jenkins',
         settings => {
             'user' => {
-                'name'  => 'Wikimedia Jenkins Bot',
-                'email' => 'jenkins@gallium.wikimedia.org',
+                'name'           => 'Wikimedia Jenkins Bot',
+                'email'          => 'jenkins@gallium.wikimedia.org',
             },  # end of [user] section
             'core' => {
                 # bug 56717: avoid eating all RAM when repacking
                 'packedGitLimit' => '2G',
             },  # end of [core] section
         },  # end of settings
-        require => User['jenkins'],
+        require  => User['jenkins'],
     }
 
     # Templates for Jenkins plugin Email-ext.  The templates are hosted in
@@ -136,14 +136,14 @@ class role::ci::slave {
 
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins-slave user':
-        homedir => '/var/lib/jenkins-slave',
+        homedir  => '/var/lib/jenkins-slave',
         settings => {
             'user' => {
                 'name'  => 'Wikimedia Jenkins Bot',
                 'email' => "jenkins-slave@${::fqdn}",
             },  # end of [user] section
         },  # end of settings
-        require => User['jenkins-slave'],
+        require  => User['jenkins-slave'],
     }
 
     # Maven requires a webproxy on production slaves
@@ -217,10 +217,10 @@ class role::ci::slave::labs::common {
     # only LDAP and is not created by puppet
     # bug 61144
     file { '/mnt/home':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
         require => $slash_mnt_require,
     }
 
@@ -261,7 +261,7 @@ class role::ci::slave::labs::common {
                 'email' => "jenkins-deploy@${::instancename}.${::site}.wmflabs",
             },  # end of [user] section
         },  # end of settings
-        require => File['/mnt/home/jenkins-deploy'],
+        require  => File['/mnt/home/jenkins-deploy'],
     }
 
     # The slaves on labs use the `jenkins-deploy` user which is already
@@ -282,11 +282,8 @@ class role::ci::slave::browsertests {
 
     include role::ci::slave::labs::common
 
-    /**
-    * FIXME breaks puppet because jenkins-deploy is not known
-    * by puppet since it is provided via LDAP.
-    */
-    /**
+    FIXME breaks puppet because jenkins-deploy is not known
+by puppet since it is provided via LDAP.
     contint::tmpfs { 'tmpfs for jenkins CI slave':
         user        => 'jenkins-deploy',
         group       => 'wikidev',
@@ -294,7 +291,6 @@ class role::ci::slave::browsertests {
         mount_point => '/home/jenkins-deploy/tmpfs',
         size        => '128M',
     }
-    **/
 
     # We are in labs context, so use /mnt (== /dev/vdb)
     # Never EVER think about using GlusterFS.
@@ -321,7 +317,7 @@ class role::ci::slave::browsertests {
     }
     class { '::elasticsearch':
         cluster_name => 'jenkins',
-        heap_memory  => '1G', #We have small data in test
+        heap_memory  => '1G', # We have small data in test
         require      => File['/var/lib/elasticsearch'],
         # We don't have reliable multicast in labs but we don't mind because we
         # only use a single instance
@@ -348,7 +344,7 @@ class role::ci::slave::labs {
         description => 'CI Jenkins slave on labs' }
 
     if $::realm != 'labs' {
-        fail("role::ci::slave::labs must only be applied in labs")
+        fail('role::ci::slave::labs must only be applied in labs')
     }
 
     class { 'role::ci::slave::browsertests':
@@ -407,7 +403,7 @@ class role::ci::publisher::labs {
     rsync::server::module { 'doc':
         path        => '/srv/doc',
         read_only   => 'no',
-        require => [
+        require     => [
             File['/srv/doc'],
             Class['role::labs::lvm::srv'],
         ],

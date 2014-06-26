@@ -44,7 +44,6 @@ class misc::etherpad_lite {
             source  => 'puppet:///files/misc/etherpad-robots.txt',
     }
 
-
     # FIX ME - move this to a common role to avoid duplicate defs
     include ::apache::mod::rewrite
     include ::apache::mod::proxy
@@ -67,11 +66,11 @@ class misc::etherpad_lite {
         check_command => 'nrpe_check_etherpad_lite';
     }
 
-    #FIXME
-    #service { apache2:
+    # FIXME
+    # service { apache2:
     #   enable => true,
     #   ensure => running;
-    #}
+    # }
 
     file {
         '/etc/etherpad-lite/settings.json':
@@ -94,4 +93,3 @@ class misc::etherpad_lite {
 
 
 }
-

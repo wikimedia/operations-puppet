@@ -109,7 +109,6 @@ define monitor_pdu_3phase(
     description => 'PDUs',
     }
 
-
 class facilities::pdu_monitoring {
     # pmtpa
     # C

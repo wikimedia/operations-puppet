@@ -4,7 +4,7 @@
 # inherit. Note that there is no real node named "base_analytics_logging_node".
 # This is done as a base node primarily so that we can override the
 # $nagios_contact_group variable.
-node "base_analytics_logging_node" {
+node 'base_analytics_logging_node' {
 
     # include analytics in nagios_contact_group.
     # This is used by class base::monitoring::host for
@@ -16,7 +16,7 @@ node "base_analytics_logging_node" {
     # the var down the chain, but that seems like too much
     # modification for just this.  Instead this overrides
     # the default contact_group of 'admins' set in class base.
-    $nagios_contact_group = "admins,analytics"
+    $nagios_contact_group = 'admins,analytics'
 
     include
         standard,
@@ -25,7 +25,7 @@ node "base_analytics_logging_node" {
 
 class role::logging
 {
-    system::role { "role::logging": description => "log collector" }
+    system::role { 'role::logging': description => 'log collector' }
 
     include nrpe
     include geoip
@@ -33,9 +33,9 @@ class role::logging
 
 # mediawiki udp2log instance.  Does not use monitoring.
 class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedia/logs' ) {
-    system::role { "role::logging:mediawiki": description => "MediaWiki log collector" }
+    system::role { 'role::logging:mediawiki': description => 'MediaWiki log collector' }
 
-    class { "misc::udp2log": monitor => $monitor }
+    class { 'misc::udp2log': monitor => $monitor }
     include misc::udp2log::utilities,
         misc::udp2log::iptables
 
@@ -58,33 +58,33 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 
     $logstash_port = 8324
 
-    misc::udp2log::instance { "mw":
-        log_directory    =>    $log_directory,
-        monitor_log_age    =>    false,
-        monitor_processes    =>    false,
+    misc::udp2log::instance { 'mw':
+        log_directory          =>    $log_directory,
+        monitor_log_age        =>    false,
+        monitor_processes      =>    false,
         monitor_packet_loss    =>    false,
-        template_variables => {
+        template_variables     => {
             error_processor_host => $error_processor_host,
             error_processor_port => 8423,
 
             # forwarding to logstash
-            logstash_host => $logstash_host,
-            logstash_port => $logstash_port,
+            logstash_host        => $logstash_host,
+            logstash_port        => $logstash_port,
         },
     }
 
-    cron { "mw-log-cleanup":
-        command => "/usr/local/bin/mw-log-cleanup",
-        user => root,
-        hour => 2,
-        minute => 0
+    cron { 'mw-log-cleanup':
+        command => '/usr/local/bin/mw-log-cleanup',
+        user    => root,
+        hour    => 2,
+        minute  => 0
     }
 
-    file { "/usr/local/bin/mw-log-cleanup":
+    file { '/usr/local/bin/mw-log-cleanup':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => "puppet:///files/misc/scripts/mw-log-cleanup",
+        source => 'puppet:///files/misc/scripts/mw-log-cleanup',
     }
 
     file { '/usr/local/bin/exceptionmonitor':
@@ -124,7 +124,6 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         retries               => (60/$cirrussearch_slow_log_check_interval),
         require               => Logster::Job['CirrusSearch-slow.log'],
     }
-
 
 }
 
@@ -210,7 +209,7 @@ class role::logging::udp2log {
 
 # nginx machines are configured to log to port 8421.
 class role::logging::udp2log::nginx inherits role::logging::udp2log {
-    $nginx_log_directory = "$log_directory/nginx"
+    $nginx_log_directory = "${log_directory}/nginx"
 
     misc::udp2log::instance { 'nginx':
         port                => '8421',
@@ -240,7 +239,7 @@ class role::logging::webstatscollector {
     }
     # install a nrpe check for the webstatscollector collector process
     nrpe::monitor_service { 'webstats-collector':
-        description   => "webstats-collector process running",
+        description   => 'webstats-collector process running',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/collector -c 1:2',
         contact_group => 'analytics',
         retries       => 10,
@@ -273,36 +272,36 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
     include role::cache::configuration
 
     # udp2log::instance will ensure this is created
-    $webrequest_log_directory    = "$log_directory/webrequest"
+    $webrequest_log_directory    = "${log_directory}/webrequest"
 
     # install custom filters here
-    $webrequest_filter_directory = "$webrequest_log_directory/bin"
+    $webrequest_filter_directory = "${webrequest_log_directory}/bin"
     file { $webrequest_filter_directory:
         ensure => directory,
-        mode   => 0755,
+        mode   => '0755',
         owner  => 'udp2log',
         group  => 'udp2log',
     }
 
-    file { "$webrequest_filter_directory/vu.awk":
+    file { "${webrequest_filter_directory}/vu.awk":
         ensure => 'file',
         source => 'puppet:///files/udp2log/vu.awk',
-        mode   => 0755,
+        mode   => '0755',
         owner  => 'udp2log',
         group  => 'udp2log',
     }
-    file { "$webrequest_filter_directory/minnesota.awk":
+    file { "${webrequest_filter_directory}/minnesota.awk":
         ensure => 'file',
         source => 'puppet:///files/udp2log/minnesota.awk',
-        mode   => 0755,
+        mode   => '0755',
         owner  => 'udp2log',
         group  => 'udp2log',
     }
 
     misc::udp2log::instance { 'oxygen':
-        multicast       => true,
-        packet_loss_log => '/var/log/udp2log/packet-loss.log',
-        log_directory   => $webrequest_log_directory,
+        multicast          => true,
+        packet_loss_log    => '/var/log/udp2log/packet-loss.log',
+        log_directory      => $webrequest_log_directory,
         template_variables => { 'webrequest_filter_directory' => $webrequest_filter_directory },
     }
 }
@@ -310,9 +309,9 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
 # lucene udp2log instance for capturing search logs
 class role::logging::udp2log::lucene inherits role::logging::udp2log {
     # udp2log::instance will ensure this is created
-    $lucene_log_directory    = "$log_directory/lucene"
+    $lucene_log_directory    = "${log_directory}/lucene"
 
-    misc::udp2log::instance { 'lucene': 
+    misc::udp2log::instance { 'lucene':
         port                 => '51234',
         log_directory        => $lucene_log_directory,
         monitor_packet_loss  => false,
@@ -328,12 +327,12 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
     include role::logging::systemusers
 
     # udp2log::instance will ensure this is created
-    $webrequest_log_directory    = "$log_directory/webrequest"
+    $webrequest_log_directory    = "${log_directory}/webrequest"
 
     # keep fundraising logs in a subdir
     $fundraising_log_directory = "${log_directory}/fundraising"
 
-    file { "${fundraising_log_directory}":
+    file { $fundraising_log_directory:
         ensure  => 'directory',
         mode    => '0775',
         owner   => 'udp2log',
@@ -371,7 +370,7 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
 
     # install a nrpe check for the webstatscollector filter process
     nrpe::monitor_service { 'webstats-filter':
-        description   => "webstats-filter process running",
+        description   => 'webstats-filter process running',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/filter -c 1:3',
         contact_group => 'analytics',
         retries       => 10,

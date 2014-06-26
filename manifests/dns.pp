@@ -149,7 +149,7 @@ class dns::recursor(
         }
 
         cron { 'pdnsstats':
-            command => "cd /var/www/pdns && /usr/local/powerdnsstats/update && /usr/local/powerdnsstats/makegraphs >/dev/null",
+            command => 'cd /var/www/pdns && /usr/local/powerdnsstats/update && /usr/local/powerdnsstats/makegraphs >/dev/null',
             user    => 'root',
             minute  => '*/5',
         }

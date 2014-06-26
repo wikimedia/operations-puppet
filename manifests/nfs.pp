@@ -1,7 +1,7 @@
 # nfs.pp
 
 # Virtual resource for the monitoring server
-#@monitor_group { "nfs": description => "NFS" }
+# @monitor_group { "nfs": description => "NFS" }
 
 class nfs::common {
     package { 'nfs-common':
@@ -268,7 +268,7 @@ class nfs::netapp::fr_archive(
     }
 }
 
-# moved here from misc-servers.pp
+# Moved here from misc-servers.pp
 class misc::nfs-server::home {
     system::role { 'misc::nfs-server::home': description => '/home NFS' }
 

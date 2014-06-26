@@ -36,7 +36,6 @@ class role::racktables {
         }
     }
 
-
     file {
         "/etc/apache2/sites-enabled/${racktables_host}":
         ensure  => present,

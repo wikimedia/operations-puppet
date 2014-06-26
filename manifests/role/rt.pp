@@ -69,9 +69,8 @@ class role::rt::labs {
     }
 
     exec { 'rt-db-initialize':
-        command => "/bin/echo '' | /usr/sbin/rt-setup-database --action init --dba root --prompt-for-dba-password",
+        command => '/bin/echo '' | /usr/sbin/rt-setup-database --action init --dba root --prompt-for-dba-password',
         unless  => '/usr/bin/mysqlshow rt4',
         require => Class['misc::rt', 'mysql::server'],
     }
 }
-

@@ -1,9 +1,9 @@
 # role/lvs.pp
 
-@monitor_group { "lvs": description => "LVS" }
+@monitor_group { 'lvs': description => 'LVS' }
 
 class role::lvs::balancer {
-    system::role { "role::lvs::balancer": description => "LVS balancer" }
+    system::role { 'role::lvs::balancer': description => 'LVS balancer' }
 
     $rp_args = inline_template('<%= @interfaces.split(",").map{|x| "net.ipv4.conf.#{x.gsub("_","/")}.rp_filter=0" if !x.start_with?("lo") }.compact.join(",") %>')
     nrpe::monitor_service { 'check_rp_filter_disabled':
@@ -50,12 +50,12 @@ class role::lvs::balancer {
 
     include standard
 
-    class { "::lvs::balancer":
-        service_ips => $lvs_balancer_ips,
-        lvs_services => $lvs::configuration::lvs_services,
-        lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
+    class { '::lvs::balancer':
+        service_ips          => $lvs_balancer_ips,
+        lvs_services         => $lvs::configuration::lvs_services,
+        lvs_class_hosts      => $lvs::configuration::lvs_class_hosts,
         pybal_global_options => $lvs::configuration::pybal,
-        site => $::site
+        site                 => $::site
     }
 
     if $::site in ['pmtpa', 'eqiad'] {

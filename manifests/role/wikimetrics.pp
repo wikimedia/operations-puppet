@@ -32,7 +32,7 @@
 #                               this defaults to 5000.
 #
 class role::wikimetrics {
-     # wikimetrics does not yet run via puppet in production
+    # wikimetrics does not yet run via puppet in production
     if $::realm == 'production' {
         fail('Cannot include role::wikimetrics in production (yet).')
     }

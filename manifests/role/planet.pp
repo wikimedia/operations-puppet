@@ -189,7 +189,7 @@ class role::planet {
     }
 
     # protocol-relative link to a meta or index page for all planets
-    $planet_meta_link = "meta.wikimedia.org/wiki/Planet_Wikimedia"
+    $planet_meta_link = 'meta.wikimedia.org/wiki/Planet_Wikimedia'
 
     # the 'planet' class from modules/planet/init.pp does the setup
     class {'::planet':
@@ -209,4 +209,3 @@ class role::planet {
     }
 
 }
-

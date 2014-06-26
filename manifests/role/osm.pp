@@ -4,7 +4,7 @@ class role::osm::common {
     include standard
 
     file { '/etc/postgresql/9.1/main/tuning.conf':
-        ensure => 'present',
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -89,45 +89,45 @@ class role::osm::master {
 
     # OSM user
     postgresql::user { 'osm@labs':
-            ensure   => 'present',
-            user     => 'osm',
-            password => $passwords::osm::osm_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'trust',
-            database => 'gis',
+        ensure   => 'present',
+        user     => 'osm',
+        password => $passwords::osm::osm_password,
+        cidr     => '10.68.16.0/21',
+        type     => 'host',
+        method   => 'trust',
+        database => 'gis',
     }
 
     # Specific users and databases
     postgresql::spatialdb { 'u_kolossos': }
     postgresql::user { 'kolossos@labs':
-            ensure   => 'present',
-            user     => 'kolossos',
-            password => $passwords::osm::kolossos_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'md5',
-            database => 'u_kolossos',
+        ensure   => 'present',
+        user     => 'kolossos',
+        password => $passwords::osm::kolossos_password,
+        cidr     => '10.68.16.0/21',
+        type     => 'host',
+        method   => 'md5',
+        database => 'u_kolossos',
     }
     postgresql::spatialdb { 'u_aude': }
     postgresql::user { 'aude@labs':
-            ensure   => 'present',
-            user     => 'aude',
-            password => $passwords::osm::aude_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'md5',
-            database => 'u_aude',
+        ensure   => 'present',
+        user     => 'aude',
+        password => $passwords::osm::aude_password,
+        cidr     => '10.68.16.0/21',
+        type     => 'host',
+        method   => 'md5',
+        database => 'u_aude',
     }
     postgresql::spatialdb { 'wikimaps_atlas': }
     postgresql::user { 'planemad@labs':
-            ensure   => 'present',
-            user     => 'planemad',
-            password => $passwords::osm::planemad_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'md5',
-            database => 'wikimaps_atlas',
+        ensure   => 'present',
+        user     => 'planemad',
+        password => $passwords::osm::planemad_password,
+        cidr     => '10.68.16.0/21',
+        type     => 'host',
+        method   => 'md5',
+        database => 'wikimaps_atlas',
     }
 }
 
@@ -137,7 +137,7 @@ class role::osm::slave {
     include passwords::osm
     # Note: This is here to illustrate the fact that the slave is expected to
     # have the same dbs as the master.
-    #postgresql::spatialdb { 'gis': }
+    # postgresql::spatialdb { 'gis': }
 
     system::role { 'role::osm::slave':
         ensure      => 'present',

@@ -55,4 +55,3 @@ class role::labs_computenode {
         neutron            => false,
     }
 }
-

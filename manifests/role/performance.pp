@@ -16,7 +16,7 @@ class role::performance {
         purge   => true,
         recurse => true,
         force   => true,
-        source => 'puppet:///files/performance',
+        source  => 'puppet:///files/performance',
     }
 
     file { '/etc/apache2/sites-enabled/performance':

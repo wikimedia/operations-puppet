@@ -73,18 +73,18 @@ class misc::udp2log::rsyncd(
 # Sets up a udp2log daemon instance.
 #
 # Parameters:
-#$port                - Default 8420.
-#$log_directory       - Main location for log files.Default: /var/log/udp2log
-#$packet_loss_log     - Path to packet-loss.log file.  Used for monitoring. Default: $log_directory/packet-loss.log.
-#$logrotate           - If true, sets up a logrotate file for files in $log_directory. Default: true
-#$multicast           - If true, the udp2log instance will be started with the --multicast 233.58.59.1. If you give a string, --mulitcast will be set to this string. Default: false
-#$ensure              - Either 'stopped' or 'running'. Default: 'running'
-#$monitor_packet_loss - bool. Default: true
-#$monitor_processes   - bool. Default: true
-#$monitor_log_age     - bool. Default: true
-#$template_variables  - arbitrary variable(s) for use in udp2log config template file. Default: undef
-#$recv_queue          - in KB.  If unset, --recv-queue may be set to /proc/sys/net/core/rmem_max.
-#$logrotate_template  - Path to template file to use for logrotate.  Default: udp2log_logrotate.erb
+# $port                - Default 8420.
+# $log_directory       - Main location for log files.Default: /var/log/udp2log
+# $packet_loss_log     - Path to packet-loss.log file.  Used for monitoring. Default: $log_directory/packet-loss.log.
+# $logrotate           - If true, sets up a logrotate file for files in $log_directory. Default: true
+# $multicast           - If true, the udp2log instance will be started with the --multicast 233.58.59.1. If you give a string, --mulitcast will be set to this string. Default: false
+# $ensure              - Either 'stopped' or 'running'. Default: 'running'
+# $monitor_packet_loss - bool. Default: true
+# $monitor_processes   - bool. Default: true
+# $monitor_log_age     - bool. Default: true
+# $template_variables  - arbitrary variable(s) for use in udp2log config template file. Default: undef
+# $recv_queue          - in KB.  If unset, --recv-queue may be set to /proc/sys/net/core/rmem_max.
+# $logrotate_template  - Path to template file to use for logrotate.  Default: udp2log_logrotate.erb
 #
 define misc::udp2log::instance(
     $port                = '8420',

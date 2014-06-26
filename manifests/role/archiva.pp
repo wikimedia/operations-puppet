@@ -3,7 +3,7 @@
 # Installs Apache Archiva and
 # sets up a cron job to symlink .jar files to
 # a git-fat store.
-#
+
 class role::archiva {
     system::role { 'role::archiva': description => 'Apache Archiva Host' }
 
@@ -29,7 +29,7 @@ class role::archiva {
     }
     $listen     = 80
     $proxy_pass = "http://127.0.0.1:${archiva_port}/"
-    # need large body size to allow for .jar deployment
+    # Need large body size to allow for .jar deployment
     $server_properties = ['client_max_body_size 256M']
     nginx::site { 'archiva':
         content => template('nginx/sites/simple-proxy.erb'),

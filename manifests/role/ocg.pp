@@ -36,9 +36,9 @@ class role::ocg::production {
     }
 
     ferm::service { 'ocg-http':
-        proto => 'tcp',
+        proto  => 'tcp',
         port   => $service_port,
-        desc  => 'HTTP frontend to submit jobs and get status from pdf rendering',
+        desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
         srange => $INTERNAL
     }
 
@@ -65,9 +65,9 @@ class role::ocg::test {
     }
 
     ferm::service { 'ocg-http':
-        proto => 'tcp',
+        proto  => 'tcp',
         port   => $service_port,
-        desc  => 'HTTP frontend to submit jobs and get status from pdf rendering',
+        desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
         srange => $INTERNAL
     }
 

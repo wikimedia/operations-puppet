@@ -123,7 +123,7 @@ class misc::package-builder(
         require packages
 
         $apt_cache_dir = "${pbuilder_root}/aptcache"
-        $apt_cache = "--aptcache '${$apt_cache_dir}'"
+        $apt_cache = "--aptcache '${apt_cache_dir}'"
         $build_place = "--buildplace '${pbuilder_root}/build'"
         case $realpbuilder {
             'cowbuilder': {
@@ -144,7 +144,7 @@ class misc::package-builder(
         }
 
         $othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe'"
-        $components = "--components 'main universe'"
+        $components = '--components 'main universe''
         $image_file = "${pbuilder_root}/${file_prefix}${realdist}.${file_ext}"
 
         exec { "imaging ${realdist} for ${realpbuilder}":

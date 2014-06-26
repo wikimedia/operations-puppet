@@ -9,7 +9,7 @@ class role::smokeping {
 
     class {'webserver::php5': ssl => true; }
 
-    #dependencies for apache
+    # dependencies for apache
     include ::apache::mod::ssl
 
     # be flexible about labs vs. prod

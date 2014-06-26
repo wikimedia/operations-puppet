@@ -39,7 +39,7 @@ class role::analytics::kafkatee {
 #
 class role::analytics::kafkatee::webrequest inherits role::analytics::kafkatee {
     $webrequest_log_directory     = "${log_directory}/webrequest"
-    $webrequest_archive_directory = "${$webrequest_log_directory}/archive"
+    $webrequest_archive_directory = "${webrequest_log_directory}/archive"
     file { [$webrequest_log_directory, $webrequest_archive_directory]:
         ensure      => 'directory',
         owner       => 'kafkatee',

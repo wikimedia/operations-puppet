@@ -14,7 +14,7 @@ class misc::pdf::fonts {
 
 }
 
-#install mediawiki-math package
+# install mediawiki-math package
 class misc::pdf::math {
   package { 'mediawiki-math':
     ensure => latest;

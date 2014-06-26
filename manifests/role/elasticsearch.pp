@@ -35,7 +35,7 @@ class role::elasticsearch::config {
             # This should be configured per project
             if $::elasticsearch_cluster_name == undef {
                 $message = 'must be set to something unique to the labs project'
-                fail("\$::elasticsearch_cluster_name $message")
+                fail("\$::elasticsearch_cluster_name ${message}")
             }
             $cluster_name         = $::elasticsearch_cluster_name
             # This can be configured per project
@@ -72,7 +72,7 @@ class role::elasticsearch::config {
             /^elastic100[0-6]/          => 'A3',
             /^elastic10(0[7-9]|1[0-2])/ => 'C5',
             /^elastic101[3-9]/          => 'D3',
-            default                     => fail("Don't know rack for $::host"),
+            default                     => fail("Don't know rack for ${::host}"),
         }
         $row                  = regsubst($rack, '^(.).$', '\1' )
         # We're not turning on awareness_attributes right yet.  We'll do that

@@ -28,7 +28,7 @@ class role::solr(
     }
     monitor_service { 'Solr':
         description   => 'Solr',
-        check_command => "$check_command!$average_request_time!5",
+        check_command => "${check_command}!${average_request_time}!5",
     }
 }
 

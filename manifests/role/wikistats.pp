@@ -25,4 +25,3 @@ class role::wikistats {
     }
 
 }
-

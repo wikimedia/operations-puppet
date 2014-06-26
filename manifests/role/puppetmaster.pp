@@ -1,13 +1,13 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class role::puppetmaster::config {
-        $allow_from = [
-            '*.wikimedia.org',
-            '*.pmtpa.wmnet',
-            '*.eqiad.wmnet',
-            '*.ulsfo.wmnet',
-            '*.esams.wmnet',
-        ]
+    $allow_from = [
+        '*.wikimedia.org',
+        '*.pmtpa.wmnet',
+        '*.eqiad.wmnet',
+        '*.ulsfo.wmnet',
+        '*.esams.wmnet',
+    ]
 }
 
 class role::puppetmaster::frontend {
@@ -22,11 +22,11 @@ class role::puppetmaster::frontend {
                         { 'worker' => 'strontium.eqiad.wmnet', },
         ],
         config      => {
-            'thin_storeconfigs' => true,
-            'dbadapter'         => 'mysql',
-            'dbuser'            => 'puppet',
-            'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver'          => 'db1001.eqiad.wmnet',
+            'thin_storeconfigs'    => true,
+            'dbadapter'            => 'mysql',
+            'dbuser'               => 'puppet',
+            'dbpassword'           => $passwords::puppet::database::puppet_production_db_pass,
+            'dbserver'             => 'db1001.eqiad.wmnet',
         }
     }
 }
@@ -40,7 +40,7 @@ class role::puppetmaster::backend {
         server_type => 'backend',
         config      => {
             'thin_storeconfigs' => true,
-            'ca'                => 'false',
+            'ca'                => false,
             'ca_server'         => 'palladium.eqiad.wmnet',
             'dbadapter'         => 'mysql',
             'dbuser'            => 'puppet',

@@ -169,7 +169,7 @@ class mailman {
         include generic::locales::international
 
         generic::debconf::set { 'mailman/gate_news':
-            value  => "false",
+            value  => false,
             notify => Exec['dpkg-reconfigure mailman'],
         }
 
@@ -230,7 +230,7 @@ class mailman {
             require => [ Class['webserver::static'],
                         File['/etc/lighttpd/htdigest']
                         ],
-            install => "true",
+            install => true,
         }
 
         # Add files in /var/www (docroot)
@@ -259,7 +259,7 @@ class mailman {
 # Enables a certain Lighttpd config
 #
 # TODO:  ensure => false removes symlink.  ensure => purged removes available file.
-define mailman_lighttpd_config($install="false") {
+define mailman_lighttpd_config($install=false) {
     # Reload lighttpd if the site config file changes.
     # This subscribes to both the real file and the symlink.
     exec { "lighttpd_reload_${title}":
@@ -267,7 +267,7 @@ define mailman_lighttpd_config($install="false") {
         refreshonly => true,
     }
 
-    if $install == "true" {
+    if $install == true {
         file { "/etc/lighttpd/conf-available/${title}.conf":
             source => "puppet:///files/lighttpd/${title}.conf",
             owner  => 'root',

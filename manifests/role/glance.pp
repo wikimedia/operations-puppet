@@ -51,7 +51,7 @@ class role::glance::config::eqiad inherits role::glance::config {
 
     $auth_uri = $::realm ? {
         'production' => 'http://virt1000.wikimedia.org:5000',
-        'labs'       => "http://$::ipaddress_eth0:5000",
+        'labs'       => "http://${::ipaddress_eth0}:5000",
     }
 
     $eqiadglanceconfig = {

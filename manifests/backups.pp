@@ -1,6 +1,5 @@
 # backups (amanda transitioning to bacula)
 #
-
 # Transitioning to bacula stanzas
 
 define backup::set($jobdefaults=$backup::host::jobdefaults) {

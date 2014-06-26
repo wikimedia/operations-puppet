@@ -39,11 +39,11 @@ class role::pmacct {
             $pmacct_agents = {
                 # tpa - as65001
                 # Currently running old JunOS and will not sample correctly
-                #cr2-pmtpa => {
-                    #port       => '6512',
-                    #ip         => '208.80.152.197',
-                    #samplerate => '1000',
-                    #},
+                # cr2-pmtpa => {
+                    # port       => '6512',
+                    # ip         => '208.80.152.197',
+                    # samplerate => '1000',
+                    # },
 
                 # eqiad - as65002
                 cr1-eqiad => {

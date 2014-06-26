@@ -26,4 +26,3 @@ class role::subversion {
         check_command => "check_ssl_cert!${svnhost}",
     }
 }
-

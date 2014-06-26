@@ -128,4 +128,3 @@ class role::labs::instance {
     }
 
 }
-

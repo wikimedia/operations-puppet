@@ -603,10 +603,10 @@ class ganglia::logtailer {
 # $template     - The ERB template to use for the JSON file.  Only change this if you need to do fancier things than this define allows.
 #
 # == Examples:
-# # A 'regex' (non-aggregate graph) view:
-# # Note that no aggregate_graphs are used.
-# # This will add 4 graphs to the 'cpu' view.
-# # (i.e. cpu_user and cpu_system for each myhost0 and myhost1)
+## A 'regex' (non-aggregate graph) view:
+## Note that no aggregate_graphs are used.
+## This will add 4 graphs to the 'cpu' view.
+## (i.e. cpu_user and cpu_system for each myhost0 and myhost1)
 # $host_regex = 'myhost[01]'
 # ganglia::view { 'cpu':
 #   view_type => 'regex',
@@ -623,10 +623,10 @@ class ganglia::logtailer {
 # }
 #
 #
-# # Use the $graphs parameter to describe aggregate graphs.
-# # You can describe the same graphs to add with $items.
-# # $graphs is just a shortcut.  aggregate_graphs in $items
-# # are a bit overly verbose.
+## Use the $graphs parameter to describe aggregate graphs.
+## You can describe the same graphs to add with $items.
+## $graphs is just a shortcut.  aggregate_graphs in $items
+## are a bit overly verbose.
 # $host_regex = 'erbium|oxygen|gadolinium'
 # ganglia::view { 'udp2log':
 #   graphs => [
@@ -709,7 +709,7 @@ class misc::monitoring::jobqueue {
 
     cron { 'all_jobqueue_length':
         ensure  => present,
-        command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --value=$(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
+        command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --value=(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
         user    => 'mwdeploy',
     }
 
@@ -717,7 +717,7 @@ class misc::monitoring::jobqueue {
     # as to gather these metrics in a fake host called "www.wikimedia.org"
     cron { 'all_jobqueue_length_spoofed':
         ensure  => present,
-        command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'www.wikimedia.org:www.wikimedia.org' --value=$(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
+        command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'www.wikimedia.org:www.wikimedia.org' --value=(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
         user    => 'mwdeploy',
     }
 }

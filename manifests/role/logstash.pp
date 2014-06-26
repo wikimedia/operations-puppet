@@ -47,11 +47,11 @@ class role::logstash {
     include ::redis::ganglia
 
     class { '::logstash':
-       heap_memory_mb => 128,
-       # TODO: the multiline filter that is used in several places in the
-       # current configuration isn't thread safe and can cause crashes or
-       # garbled output when used with more than one thread worker.
-       filter_workers => 1,
+        heap_memory_mb => 128,
+        # TODO: the multiline filter that is used in several places in the
+        # current configuration isn't thread safe and can cause crashes or
+        # garbled output when used with more than one thread worker.
+        filter_workers => 1,
     }
 
     logstash::input::udp2log { 'mediawiki':
