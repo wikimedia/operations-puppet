@@ -1,0 +1,20 @@
+<VirtualHost *>
+    ServerName <%= scope['::fqdn'] %>
+    DocumentRoot "/var/www/monitoring"
+
+    <Directory "/var/www/monitoring">
+        <IfModule mod_php5.c>
+            php_admin_flag engine on
+        </IfModule>
+        Order deny,allow
+        Deny from all
+        # Allow calling from localhost and the private network.
+        Allow from 127.0.0.1
+        Allow from 10.0.0.0/8
+    </Directory>
+
+    # Neat aliases for monitoring scripts
+    <% @endpoints.each do |mountpoint, filepath| -%>
+    Alias /<%= mountpoint %> /var/www/<%= filepath %>
+    <% end %>
+</VirtualHost>
