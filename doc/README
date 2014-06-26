@@ -1,7 +1,7 @@
-This directory is intended to hold the puppet automatically generated
+This directory is intended to hold the Puppet automatically generated
 documentation.  To build it locally, execute the doc rake task in the root
 directory:
 
- rake doc
+ $ rake doc
 
-Then point your browser to the generated index.html
+Then point your browser to the generated index.html file.

@@ -3,7 +3,7 @@
 # Basic setup for the puppet git repository
 
 # Need this info
-echo "Type your Labs console wiki username (ie: Test User):"
+echo "Type your labs console wiki username (ie: test user):"
 read name
 echo "Type your shell username (ie: testuser):"
 read username
