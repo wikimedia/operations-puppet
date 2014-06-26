@@ -14,11 +14,18 @@ class role::diamond {
         default: { $host = '10.64.0.18' }
     }
 
+    # Prefix labs metrics with project name
+    case $::realm {
+        'labs': { $path_prefix = $::instanceproject }
+        default: { $path_prefix = 'servers' }
+    }
+
     class { '::diamond':
-        settings => {
-            enabled => 'true',
-            host    => $host,
-            port    => '8125',
+        settings        => {
+            enabled     => 'true',
+            host        => $host,
+            port        => '8125',
+            path_prefix => $path_prefix,
         },
     }
 
