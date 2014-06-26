@@ -827,7 +827,7 @@ node /^db10(43|48)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
-    class { 'role::mariadb::misc':
+    class { 'role::mariadb::misc::phabricator':
         shard => 'm3',
     }
 }
