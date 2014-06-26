@@ -127,5 +127,28 @@ class role::labs::instance {
         source => 'puppet:///files/nfs/idmapd.conf',
     }
 
+    if defined(Class['::apache']) {
+        # In production, we try to be punctilious about having Puppet manage
+        # system state, and thus it's reasonable to purge Apache site configs
+        # that have not been declared via Puppet. But on Labs we want to allow
+        # users to manage configuration files locally if they so choose,
+        # without having Puppet clobber them. So provision a
+        # /etc/apache2/local-sites directory for Apache to recurse into during
+        # initialization, and tell Puppet not to manage its contents.
+        file { '/etc/apache2/local-sites':
+            ensure  => directory,
+            recurse => false,
+            purge   => false,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => Package['apache2'],
+        }
+
+        apache::site { 'locally_managed_sites':
+            content => "Include /etc/apache2/local-sites/*\n",
+            require => File['/etc/apache2/local-sites'],
+        }
+    }
 }
 
