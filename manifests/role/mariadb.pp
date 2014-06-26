@@ -9,7 +9,7 @@ class role::mariadb {
     include mariadb
 }
 
-# miscellaneous services clusters m[123], but currently only m3
+# miscellaneous services clusters
 class role::mariadb::misc(
     $shard
     ) {
@@ -28,6 +28,39 @@ class role::mariadb::misc(
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/a/sqldata',
         tmpdir   => '/a/tmp',
+    }
+
+    class { 'mariadb::monitor_disk':
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        contact_group => 'admins',
+    }
+}
+
+# Phab pretty much requires its own sandbox
+# strict sql_mode -- nice! but other services moan
+# admin tool that needs non-trivial permissions
+class role::mariadb::misc::phabricator(
+    $shard
+    ) {
+
+    system::role { 'role::mariadb::misc':
+        description => "Misc Services Database ${shard} (phabricator)",
+    }
+
+    include standard
+    include mariadb::packages_wmf
+    include passwords::misc::scripts
+
+    class { 'mariadb::config':
+        prompt   => "MISC ${shard}",
+        config   => 'mariadb/misc.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/a/sqldata',
+        tmpdir   => '/a/tmp',
+        sql_mode => 'STRICT_ALL_TABLES',
     }
 
     class { 'mariadb::monitor_disk':
