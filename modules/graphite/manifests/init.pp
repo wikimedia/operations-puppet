@@ -75,6 +75,12 @@ class graphite(
         before => Service['carbon'],
     }
 
+    file { '/etc/default/graphite-carbon':
+        source => 'puppet:///modules/graphite/graphite-carbon',
+        mode   => '0755',
+        before => Service['carbon'],
+    }
+
     service { 'carbon':
         ensure   => 'running',
         provider => 'base',
