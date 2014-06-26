@@ -40,27 +40,11 @@ define apache::site(
 ) {
     include ::apache
 
-    if $priority !~ /^\d?\d$/             { fail('"priority" must be between 0 - 99')      }
-    if $ensure   !~ /^(present|absent)$/  { fail('"ensure" must be "present" or "absent"') }
-
-    $title_safe  = regsubst($title, '[\W_]', '-', 'G')
-    $config_file = sprintf('%02d-%s.conf', $priority, $title_safe)
-    $link_ensure = $ensure ? {
-        present => link,
-        default => absent,
-    }
-
-    file { "/etc/apache2/sites-available/${config_file}":
-        ensure  => $ensure,
-        content => $content,
-        source  => $source,
-        require => Package['apache2'],
-    }
-
-    file { "/etc/apache2/sites-enabled/${config_file}":
-        ensure  => $link_ensure,
-        target  => "/etc/apache2/sites-available/${config_file}",
-        require => Package['apache2'],
-        notify  => Service['apache2'],
+    apache::conf { $name:
+        ensure    => $ensure,
+        conf_type => 'sites',
+        priority  => $priority,
+        content   => $content,
+        source    => $source,
     }
 }
