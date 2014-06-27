@@ -1,8 +1,7 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
-#site.pp
+# site.pp
 
 import 'realm.pp' # These ones first
-
 import 'admins.pp'
 import 'backups.pp'
 import 'certs.pp'
@@ -897,12 +896,12 @@ node 'db1054.eqiad.wmnet' {
     class { 'role::db::sanitarium':
         instances => {
             's2' => {
-                'port'                   => '3306',
-                'innodb_log_file_size'   => '2000M',
-                'ram'                    => '24G',
-                'repl_wild_ignore_tables'=> $::private_tables,
-                'log_bin'                => true,
-                'binlog_format'          => 'row',
+                'port'                    => '3306',
+                'innodb_log_file_size'    => '2000M',
+                'ram'                     => '24G',
+                'repl_wild_ignore_tables '=> $::private_tables,
+                'log_bin'                 => true,
+                'binlog_format'           => 'row',
             },
             's4' => {
                 'port'                    => '3307',
@@ -1066,7 +1065,7 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     class { 'admin':
         groups => ['udp2log-users',
                    'restricted'],
-     }
+    }
 
     include role::logging::udp2log::erbium
 }
@@ -1144,7 +1143,7 @@ node 'fenari.wikimedia.org' {
     class { 'admin':
         groups => ['deployment',
                    'restricted'],
-     }
+    }
 
     include base
     include role::mediawiki::common
@@ -1166,7 +1165,7 @@ node 'fluorine.eqiad.wmnet' {
 
     include standard
 
-     class { 'admin':
+    class { 'admin':
         groups => ['deployment',
                    'restricted'],
     }
@@ -1259,7 +1258,7 @@ node 'hooft.esams.wikimedia.org' {
         interface => 'eth0',
     }
 
-     class { 'admin':
+    class { 'admin':
         groups => ['deployment',
                    'restricted'],
     }
@@ -1291,7 +1290,7 @@ node 'hooft.esams.wikimedia.org' {
     }
 }
 
-#eventual phabricator alpha
+# eventual phabricator alpha
 node 'iridium.wikimedia.org' {
     include admin
 }
@@ -1345,7 +1344,7 @@ node 'labsdb1002.eqiad.wmnet' {
                 'port'                           => '3306',
                 'innodb_log_file_size'           => '2000M',
                 # kernel oom killer striking mysqld.
-                #reduce footprint during investigation
+                # reduce footprint during investigation
                 'ram'                            => '32G',
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs'                => 'mysql',
@@ -1357,7 +1356,7 @@ node 'labsdb1002.eqiad.wmnet' {
                 'port'                           => '3307',
                 'innodb_log_file_size'           => '2000M',
                 # kernel oom killer striking mysqld.
-                #reduce footprint during investigation
+                # reduce footprint during investigation
                 'ram'                            => '32G',
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs'                => 'mysql',
@@ -1369,7 +1368,7 @@ node 'labsdb1002.eqiad.wmnet' {
                 'port'                           => '3308',
                 'innodb_log_file_size'           => '1000M',
                 # kernel oom killer striking mysqld.
-                #reduce footprint during investigation
+                # reduce footprint during investigation
                 'ram'                            => '32G',
                 'innodb_locks_unsafe_for_binlog' => true,
                 'repl_ignore_dbs'                => 'mysql',
@@ -1426,7 +1425,7 @@ node 'labsdb1004.eqiad.wmnet' {
     $osm_slave_v4 = '10.64.37.9'
 
     include role::osm::master
-    #include role::labs::db::slave
+    # include role::labs::db::slave
 }
 
 node 'labsdb1005.eqiad.wmnet' {
@@ -1434,7 +1433,7 @@ node 'labsdb1005.eqiad.wmnet' {
     $osm_master = 'labsdb1004.eqiad.wmnet'
 
     include role::osm::slave
-    #include role::labs::db::master
+    # include role::labs::db::master
 }
 
 
@@ -1447,14 +1446,14 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     $ganglia_aggregator = true
 
     # Commented out pending some troubleshooting
-    #interface::aggregate { 'bond0':
-        #orig_interface => 'eth0',
-        #members        => [ 'eth0', 'eth1' ],
-    #}
+    # interface::aggregate { 'bond0':
+        # orig_interface => 'eth0',
+        # members        => [ 'eth0', 'eth1' ],
+    # }
 
-    #need to solve using admin on ldap boxes
-    #RT 7732
-    #include admin
+    # need to solve using admin on ldap boxes
+    # RT 7732
+    # include admin
     include standard
     include openstack::project-nfs-storage-service
     include rsync::server
@@ -1697,8 +1696,8 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     #  rx drops under heavy traffic
     interface::ring { 'eth0 rxring':
         interface => 'eth0',
-        setting => 'rx',
-        value => 4078,
+        setting   => 'rx',
+        value     => 4078,
     }
 
     # RPS/RSS config for interface performance
@@ -1749,8 +1748,8 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     #  rx drops under heavy traffic
     interface::ring { 'eth0 rxring':
         interface => 'eth0',
-        setting => 'rx',
-        value => 4078,
+        setting   => 'rx',
+        value     => 4078,
     }
 
     # RPS/RSS config for interface performance
@@ -1823,7 +1822,7 @@ node 'mchenry.wikimedia.org' {
 
     include base
 
-    #include admin
+    # include admin
     include ganglia
     include ntp::client
     include dns::recursor::statistics
@@ -2678,7 +2677,7 @@ node 'tin.eqiad.wmnet' {
 # titanium hosts archiva.wikimedia.org
 node 'titanium.wikimedia.org' {
     $cluster = 'misc'
-    #include firewall here, until it is on all hosts
+    # include firewall here, until it is on all hosts
     class { 'base::firewall': }
 
     include standard
@@ -2742,8 +2741,8 @@ node 'tungsten.eqiad.wmnet' {
 node 'virt1000.wikimedia.org' {
     $cluster               = 'virt'
     $ganglia_aggregator    = true
-    $is_puppet_master      = 'true'
-    $is_labs_puppet_master = 'true'
+    $is_puppet_master      = true
+    $is_labs_puppet_master = true
     $openstack_version     = 'havana'
     $use_neutron           = false
     $puppet_version        = '3'
@@ -2765,8 +2764,8 @@ node 'virt1000.wikimedia.org' {
 node 'virt0.wikimedia.org' {
     $cluster               = 'virt'
     $ganglia_aggregator    = true
-    $is_puppet_master      = 'true'
-    $is_labs_puppet_master = 'true'
+    $is_puppet_master      = true
+    $is_labs_puppet_master = true
     $openstack_version     = 'folsom'
     $use_neutron           = false
     $puppet_version        = '3'
