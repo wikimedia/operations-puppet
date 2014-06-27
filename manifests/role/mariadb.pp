@@ -84,7 +84,7 @@ class role::mariadb::misc::phabricator(
     }
 
     unless $master {
-        monitor_replication { [ $shard ]:
+        mariadb::monitor_replication { [ $shard ]:
             multisource => false,
         }
     }
