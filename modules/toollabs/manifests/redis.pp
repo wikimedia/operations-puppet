@@ -39,10 +39,14 @@ class toollabs::redis (
         monitor         => true
     }
 
-    # Enable diamond monitoring
+    # Enable diamond monitoring. It needs the redis python
+    # module.
+    package { 'python-redis': }
+
     diamond::collector { 'Redis':
         settings => {
             enabled => 'true',
-        }
+        },
+        require => Package['python-redis']
     }
 }
