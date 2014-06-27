@@ -2806,6 +2806,7 @@ node /virt100[1-7].eqiad.wmnet/ {
 
 node /virt100[8-9].eqiad.wmnet/ {
     $cluster = 'virt'
+    $nagios_group = 'virt_eqiad'
 
     include admin
     include standard
