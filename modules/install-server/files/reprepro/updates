@@ -19,14 +19,14 @@ ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
 # track the cloudera hadoop release
 Name: cloudera
-Method: http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh/
+Method: http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh/
 Components: contrib>main
 UDebComponents:
 GetInRelease: no
-Suite: precise-cdh4.3.1
+Suite: precise-cdh5.0.2
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^hadoop-0.20-mapreduce$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^hive$|^oozie$|^hue$|^bigtop-tomcat$|^hcatalog$'  || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^hadoop-0.20-mapreduce$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^hive$|^oozie$|^hue$|^bigtop-tomcat$|^spark$'  || [ $? -eq 1 ]
 
 Name: hwraid
 Method: http://hwraid.le-vert.net/ubuntu
