@@ -11,4 +11,3 @@ class role::apachesync {
     include network::constants
 
 }
-
