@@ -85,6 +85,7 @@ class base::monitoring::host($contact_group = 'admins') {
 
     sudo_user { 'nagios':
         privileges   => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'],
+        privileges   => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
     }
     nrpe::monitor_service { 'raid':
         description  => 'RAID',
@@ -121,7 +122,7 @@ class base::monitoring::host($contact_group = 'admins') {
     $criticalinterval = $base::puppet::params::freshnessinterval * 2
     nrpe::monitor_service { 'puppet_checkpuppetrun':
         description  => 'puppet last run',
-        nrpe_command => "/usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
+        nrpe_command => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
     }
     nrpe::monitor_service {'check_eth':
         description  => 'check configured eth',
