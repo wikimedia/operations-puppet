@@ -26,7 +26,7 @@ GetInRelease: no
 Suite: precise-cdh5.0.2
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^hadoop-0.20-mapreduce$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^hive$|^oozie$|^hue$|^bigtop-tomcat$|^spark$'  || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^hadoop-0.20-mapreduce$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^pig-udf-datafu$|^hive$|^oozie$|^hue$|^bigtop-tomcat$|^spark$|^avro$|^parquet$|^parquet-format$'  || [ $? -eq 1 ]
 
 Name: hwraid
 Method: http://hwraid.le-vert.net/ubuntu
