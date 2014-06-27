@@ -1,6 +1,7 @@
 class firewall::builder {
 
     package { ['fwconfigtool', 'python-argparse'] :
+<<<<<<< HEAD
           ensure => latest,
     }
     file { '/var/lib/fwconfigtool':
@@ -15,6 +16,22 @@ class firewall::builder {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+=======
+        ensure => latest,
+    }
+    file {
+    '/var/lib/fwconfigtool':
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+        ensure => directory;
+
+    '/var/lib/fwconfigtool/machineports':
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+        ensure => directory,
+>>>>>>> dbcda57... Fixed spacing and lint rules for manifests/misc files.
     }
 
     # collect all fw definitions
@@ -22,18 +39,26 @@ class firewall::builder {
 
 }
 
+<<<<<<< HEAD
 class firewall { 
+=======
+class firewall {
+>>>>>>> dbcda57... Fixed spacing and lint rules for manifests/misc files.
     # for each inbound ACL create an exported file on the main server
 
     # This is the definition called from all service manifests, e.g.
     # open_port { "mail": port => 25 }
 
+<<<<<<< HEAD
     define open_port(
         $port,
         $hostname  = $::hostname,
         $ip_address= $::ipaddress,
         $protocol  = 'tcp',
     ) {
+=======
+    define open_port ($hostname=$::hostname, $ip_address=$::ipaddress, $protocol='tcp', $port) {
+>>>>>>> dbcda57... Fixed spacing and lint rules for manifests/misc files.
         @@exported_acl_rule { $title:
             hostname   => $hostname,
             ip_address => $ip_address,
@@ -41,6 +66,7 @@ class firewall {
             port       => $port,
         }
     }
+<<<<<<< HEAD
 
     define exported_acl_rule(
         $port,
@@ -56,7 +82,18 @@ class firewall {
             tag     => 'inboundacl',
         }
     }
+=======
+>>>>>>> dbcda57... Fixed spacing and lint rules for manifests/misc files.
 
+    define exported_acl_rule($hostname=$::hostname, $ip_address=$::ipaddress, $protocol='tcp', $port) {
+        file { "/var/lib/fwconfigtool/machineports/${ip_address}-${port}":
+            content => "${hostname},${ip_address},${protocol},${port}\n",
+            ensure  => present,
+            owner   => root,
+            group   => root,
+            tag     => 'inboundacl',
+        }
+    }
 }
 
 class testcase1 {
@@ -72,7 +109,12 @@ class testcase1 {
 class testcase2 {
     include firewall
     firewall::inboundacl { 'test2':
+<<<<<<< HEAD
         ip_address => '2.3.4.5',
         port       => 80,
+=======
+        ip_address=>'2.3.4.5',
+        port => 80,
+>>>>>>> dbcda57... Fixed spacing and lint rules for manifests/misc files.
     }
 }

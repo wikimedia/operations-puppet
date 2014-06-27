@@ -1,10 +1,10 @@
 # misc/monitoring.pp
 
 class misc::monitoring::htcp-loss {
-    system::role { "misc::monitoring::htcp-loss": description => "HTCP packet loss monitor" }
+    system::role { 'misc::monitoring::htcp-loss': description => 'HTCP packet loss monitor' }
 
     File {
-        require => File["/usr/lib/ganglia/python_modules"],
+        require => File['/usr/lib/ganglia/python_modules'],
         notify => Service['gmond']
     }
 
@@ -32,13 +32,13 @@ class misc::monitoring::htcp-loss {
             source  => 'puppet:///files/ganglia/plugins/compat.py';
         '/etc/ganglia/conf.d/htcpseqcheck.pyconf':
             # Disabled due to excessive memory and CPU usage -- TS
-            #owner   => 'root',
-            #group   => 'root',
-            #mode    => '0444',
+            # owner   => 'root',
+            # group   => 'root',
+            # mode    => '0444',
             notify  => Service['gmond'],
             ensure  => absent;
-            #require => File["/etc/ganglia/conf.d"],
-            #source  => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
+            # require => File["/etc/ganglia/conf.d"],
+            # source  => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
     }
 }
 
@@ -72,26 +72,26 @@ class misc::monitoring::kraken::loss {
     file {
         '/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py':
             require => File['/usr/lib/ganglia/python_modules'],
-            source => 'puppet:///files/ganglia/plugins/kraken_webrequest_loss.py',
-            notify => Service['gmond'];
+            source  => 'puppet:///files/ganglia/plugins/kraken_webrequest_loss.py',
+            notify  => Service['gmond'];
         '/etc/ganglia/conf.d/udp_stats.pyconf':
-            require => File["/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py"],
-            source => "puppet:///files/ganglia/plugins/kraken_webrequest_loss.pyconf",
-            notify => Service['gmond'];
+            require => File['/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py'],
+            source  => 'puppet:///files/ganglia/plugins/kraken_webrequest_loss.pyconf',
+            notify  => Service['gmond'];
     }
 
     # Set up icinga monitoring of Kraken HDFS data loss.
-    monitor_service { "kraken_webrequest_loss_average_positive":
-        description           => "webrequest_loss_average_positive",
-        check_command         => "check_kraken_webrequest_loss_positive!2!8",
-        contact_group         => "analytics",
+    monitor_service { 'kraken_webrequest_loss_average_positive':
+        description           => 'webrequest_loss_average_positive',
+        check_command         => 'check_kraken_webrequest_loss_positive!2!8',
+        contact_group         => 'analytics',
     }
     # It is possible to have negative data loss.  This would mean that
     # we are receiving duplicates log lines.  We need alerts for this too.
-    monitor_service { "kraken_webrequest_loss_average_negative":
-        description           => "webrequest_loss_average_negative",
-        check_command         => "check_kraken_webrequest_loss_negative!-2!-8",
-        contact_group         => "analytics",
+    monitor_service { 'kraken_webrequest_loss_average_negative':
+        description           => 'webrequest_loss_average_negative',
+        check_command         => 'check_kraken_webrequest_loss_negative!-2!-8',
+        contact_group         => 'analytics',
     }
 }
 
@@ -342,13 +342,13 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = '(amssq|c
             # message queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.msgq_cnt",
+                'metric_regex' => "kafka.rdkafka.topics.${topic_regex}\\.msgq_cnt",
                 'type'         => 'line',
             },
             # transmit message queue count
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.xmit_msgq_cnt",
+                'metric_regex' => "kafka.rdkafka.topics.${topic_regex}\\.xmit_msgq_cnt",
                 'type'         => 'line',
             },
             # output buffer queue count
@@ -367,7 +367,7 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = '(amssq|c
             # transaction bytes rate
             {
                 'host_regex'   => $varnishkafka_host_regex,
-                "metric_regex" => "kafka.rdkafka.topics.${topic_regex}\\.txbytes.per_second",
+                'metric_regex' => "kafka.rdkafka.topics.${topic_regex}\\.txbytes.per_second",
                 'type'         => 'stack',
             },
             # transaction messages rate
@@ -396,7 +396,7 @@ class misc::monitoring::view::kafkatee($kafkatee_host_regex, $topic_regex = '.+'
             # receive bytes per second rate
             {
                 'host_regex'   => $kafkatee_host_regex,
-                "metric_regex" => 'kafka.rdkafka.brokers..+\.rxbytes\.per_second',
+                'metric_regex' => 'kafka.rdkafka.brokers..+\.rxbytes\.per_second',
                 'type'         => 'stack',
             },
             # round trip time average

@@ -304,7 +304,7 @@ class misc::maintenance::updatetranslationstats( $ensure = absent ) {
        ensure => $ensure,
        owner  => 'mwdeploy',
        group  => 'mwdeploy',
-       mode   => 0775,
+       mode   => '0775',
        source => 'puppet:///files/misc/scripts/characterEditStatsTranslate',
     }
     cron { 'updatetranslationstats':
@@ -332,7 +332,6 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
             default => absent
         }
 
-
         define updatequerypages::cronjob(
             $status = $misc::maintenance::updatequerypages::status
             ) {
@@ -356,13 +355,13 @@ class misc::maintenance::updatequerypages( $enabled = false ) {
                 cron { "cron-updatequerypages-deadendpages-${name}":
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Deadendpages > /var/log/mediawiki/updateSpecialPages/${name}-DeadendPages.log 2>&1",
                         monthday => 12,
-                    ensure   => $status
+                    ensure       => $status
                 }
 
                 cron { "cron-updatequerypages-mostlinked-${name}":
                         command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=Mostlinked > /var/log/mediawiki/updateSpecialPages/${name}-MostLinked.log 2>&1",
                         monthday => 13,
-                    ensure   => $status
+                    ensure       => $status
                 }
 
                 cron { "cron-updatequerypages-mostrevisions-${name}":
