@@ -17,6 +17,8 @@
 # admins
 #
 class base::monitoring::host($contact_group = 'admins') {
+    include base::puppet::params # In order to be able to use some variables
+
     monitor_host { $::hostname:
         contact_group => $contact_group
     }
@@ -115,9 +117,11 @@ class base::monitoring::host($contact_group = 'admins') {
         description  => 'puppet disabled',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_puppet_disabled',
     }
+    $warninginterval = $base::puppet::params::freshnessinterval
+    $criticalinterval = $base::puppet::params::freshnessinterval * 2
     nrpe::monitor_service { 'puppet_checkpuppetrun':
         description  => 'puppet last run',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_puppetrun',
+        nrpe_command => "/usr/local/lib/nagios/plugins/check_puppetrun -c ${warninginterval} -c ${criticalinterval}",
     }
     nrpe::monitor_service {'check_eth':
         description  => 'check configured eth',
