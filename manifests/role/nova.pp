@@ -518,4 +518,8 @@ class role::nova::compute {
 
 # global icinga hostgroups for virt/labs hosts
 @monitor_group { 'virt_eqiad': description => 'eqiad virt servers' }
+@monitor_group { 'virt_pmtpa': description => 'pmtpa virt servers' }
+@monitor_group { 'virt_esams': description => 'esams virt servers' }
+@monitor_group { 'virt_codfw': description => 'codfw virt servers' }
+@monitor_group { 'virt_ulsfo': description => 'ulsfo virt servers' }
 
