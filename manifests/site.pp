@@ -2731,6 +2731,7 @@ node 'tungsten.eqiad.wmnet' {
 
 node 'virt1000.wikimedia.org' {
     $cluster               = 'virt'
+    $nagios_group          = 'virt_eqiad'
     $ganglia_aggregator    = true
     $is_puppet_master      = 'true'
     $is_labs_puppet_master = 'true'
@@ -2775,6 +2776,7 @@ node 'virt0.wikimedia.org' {
 
 node 'labnet1001.eqiad.wmnet' {
     $cluster = 'virt'
+    $nagios_group = 'virt_eqiad'
     $openstack_version = 'havana'
     $use_neutron = false
 
@@ -2793,6 +2795,7 @@ node 'labnet1001.eqiad.wmnet' {
 
 node /virt100[1-7].eqiad.wmnet/ {
     $cluster = 'virt'
+    $nagios_group = 'virt_eqiad'
     $openstack_version = 'havana'
     $use_neutron = false
 
@@ -2806,6 +2809,7 @@ node /virt100[1-7].eqiad.wmnet/ {
 
 node /virt100[8-9].eqiad.wmnet/ {
     $cluster = 'virt'
+    $nagios_group = 'virt_eqiad'
 
     include admin
     include standard
