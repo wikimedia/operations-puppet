@@ -38,7 +38,7 @@ class gerrit::instance($no_apache=false,
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
     # Configure the base URL
-    $url = "https://${host}/r"
+    $url = 'https://${host}/r'
 
     class { 'gerrit::proxy':
         no_apache    => $no_apache,
@@ -348,7 +348,7 @@ class gerrit::crons {
 
     cron { 'jgit_gc':
     # Keep repo sizes sane, so people can be productive
-        command => "ssh -p 29418 localhost gerrit gc --all > /dev/null 2>&1",
+        command => 'ssh -p 29418 localhost gerrit gc --all > /dev/null 2>&1',
         user    => 'gerrit2',
         hour    => 2,
         weekday => 6
@@ -357,7 +357,7 @@ class gerrit::crons {
 
 # Setup the `gerritslave` account on any host that wants to receive
 # replication. See role::gerrit::production::replicationdest
-class gerrit::replicationdest( $sshkey, $extra_groups = [], $slaveuser = "gerritslave" ) {
+class gerrit::replicationdest( $sshkey, $extra_groups = [], $slaveuser = 'gerritslave' ) {
     generic::systemuser { $slaveuser:
         name   => $slaveuser,
         groups => $extra_groups,
