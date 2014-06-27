@@ -39,5 +39,6 @@ class apache::mod::uwsgi           { apache::mod_conf { 'uwsgi':          } <- p
 class apache::mod::wsgi            { apache::mod_conf { 'wsgi':           } <- package { 'libapache2-mod-wsgi':      } }
 
 # Modules that target a specific distribution
+class apache::mod::proxy_fcgi    { if versioncmp($::lsbdistrelease, '13.10') >= 0 { apache::mod_conf { 'proxy_fcgi':    } } }  # 2.3+
 class apache::mod::access_compat { if versioncmp($::lsbdistrelease, '13.10') >= 0 { apache::mod_conf { 'access_compat': } } }  # Not relevant
 class apache::mod::version       { if versioncmp($::lsbdistrelease, '13.10')  < 0 { apache::mod_conf { 'version':       } } }  # Baked-in
