@@ -71,10 +71,10 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     }
     # Alert if this NameNode is not active
     monitor_ganglia { 'hadoop-hdfs-namenode-primary-is-active':
-        description => 'Hadoop NameNode Primary Is Active',
-        metric      => 'Hadoop.NameNode.FSNamesystem.tag_HAState',
-        warning     => '\!active',
-        critical    => '\!active',
+        description  => 'Hadoop NameNode Primary Is Active',
+        metric       => 'Hadoop.NameNode.FSNamesystem.tag_HAState',
+        warning      => '\!active',
+        critical     => '\!active',
         require      => Class['::cdh4::hadoop::master'],
     }
 
@@ -194,16 +194,16 @@ class role::analytics::hadoop::production {
     $hadoop_journal_directory = '/var/lib/hadoop/journal'
 
     $datanode_mounts = [
-        "$hadoop_data_directory/c",
-        "$hadoop_data_directory/d",
-        "$hadoop_data_directory/e",
-        "$hadoop_data_directory/f",
-        "$hadoop_data_directory/g",
-        "$hadoop_data_directory/h",
-        "$hadoop_data_directory/i",
-        "$hadoop_data_directory/j",
-        "$hadoop_data_directory/k",
-        "$hadoop_data_directory/l"
+        "${hadoop_data_directory}/c",
+        "${hadoop_data_directory}/d",
+        "${hadoop_data_directory}/e",
+        "${hadoop_data_directory}/f",
+        "${hadoop_data_directory}/g",
+        "${hadoop_data_directory}/h",
+        "${hadoop_data_directory}/i",
+        "${hadoop_data_directory}/j",
+        "${hadoop_data_directory}/k",
+        "${hadoop_data_directory}/l"
     ]
 
     class { 'cdh4::hadoop':
@@ -237,11 +237,11 @@ class role::analytics::hadoop::production {
         net_topology_script_template             => 'hadoop/net-topology.py.erb',
     }
 
-    file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
+    file { "${::cdh4::hadoop::config_directory}/fair-scheduler.xml":
         content => template('hadoop/fair-scheduler.xml.erb'),
         require => Class['cdh4::hadoop'],
     }
-    file { "$::cdh4::hadoop::config_directory/fair-scheduler-allocation.xml":
+    file { "${::cdh4::hadoop::config_directory}/fair-scheduler-allocation.xml":
         content => template('hadoop/fair-scheduler-allocation.xml.erb'),
         require => Class['cdh4::hadoop'],
     }
@@ -292,8 +292,8 @@ class role::analytics::hadoop::labs {
 
     $hadoop_data_directory    = '/var/lib/hadoop/data'
     $datanode_mounts = [
-        "$hadoop_data_directory/a",
-        "$hadoop_data_directory/b",
+        "${hadoop_data_directory}/a",
+        "${hadoop_data_directory}/b",
     ]
 
     $hadoop_journal_directory = '/var/lib/hadoop/journal'
@@ -326,14 +326,13 @@ class role::analytics::hadoop::labs {
         yarn_resourcemanager_scheduler_class     => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
     }
 
-    file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
+    file { "${::cdh4::hadoop::config_directory}/fair-scheduler.xml":
         content => template('hadoop/fair-scheduler.xml.erb'),
         require => Class['cdh4::hadoop'],
     }
-    file { "$::cdh4::hadoop::config_directory/fair-scheduler-allocation.xml":
+    file { "${::cdh4::hadoop::config_directory}/fair-scheduler-allocation.xml":
         content => template('hadoop/fair-scheduler-allocation.xml.erb'),
         require => Class['cdh4::hadoop'],
     }
 }
-
 
