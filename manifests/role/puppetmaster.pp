@@ -22,6 +22,7 @@ class role::puppetmaster::frontend {
                         { 'worker' => 'strontium.eqiad.wmnet', },
         ],
         config      => {
+            'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x
             'thin_storeconfigs' => true,
             'dbadapter'         => 'mysql',
             'dbuser'            => 'puppet',
@@ -39,6 +40,7 @@ class role::puppetmaster::backend {
         allow_from  => $role::puppetmaster::config::allow_from,
         server_type => 'backend',
         config      => {
+            'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x
             'thin_storeconfigs' => true,
             'ca'                => 'false',
             'ca_server'         => 'palladium.eqiad.wmnet',
