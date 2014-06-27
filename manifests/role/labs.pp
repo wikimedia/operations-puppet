@@ -136,6 +136,7 @@ class role::labs::instance {
     # initialization, but do not manage its contents.
     exec { 'enable_sites_local':
         command => '/bin/mkdir -m0755 /etc/apache2/sites-local && \
+                    /usr/bin/touch /etc/apache2/sites-local/dummy.conf && \
                     /bin/echo "Include sites-local/*" >> /etc/apache2/apache2.conf',
         onlyif  => '/usr/bin/test -d /etc/apache2 -a ! -d /etc/apache2/sites-local',
     }
