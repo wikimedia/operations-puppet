@@ -1,6 +1,11 @@
 # role/lvs.pp
 
 @monitor_group { "lvs": description => "LVS" }
+@monitor_group { "lvs_pmtpa": description => "pmtpa LVS servers" }
+@monitor_group { "lvs_eqiad": description => "eqiad LVS servers" }
+@monitor_group { "lvs_codfw": description => "codfw LVS servers" }
+@monitor_group { "lvs_ulsfo": description => "ulsfo LVS servers" }
+@monitor_group { "lvs_esams": description => "esams LVS servers" }
 
 class role::lvs::balancer {
     system::role { "role::lvs::balancer": description => "LVS balancer" }

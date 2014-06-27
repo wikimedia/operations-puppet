@@ -9,3 +9,5 @@ class role::pdf {
         misc::pdf::pdftk,
         generic::locales::international
 }
+
+@monitor_group { 'pdf_pmtpa': description => 'pmtpa pdf servers' }

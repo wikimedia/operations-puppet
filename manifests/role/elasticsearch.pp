@@ -2,6 +2,13 @@
 #
 # This class sets up Elasticsearch configuration in a WMF-specific way.
 #
+
+@monitor_group { 'elasticsearch_pmtpa': description => 'pmtpa elasticsearch servers' }
+@monitor_group { 'elasticsearch_eqiad': description => 'eqiad elasticsearch servers' }
+@monitor_group { 'elasticsearch_codfw': description => 'codfw elasticsearch servers' }
+@monitor_group { 'elasticsearch_esams': description => 'esams elasticsearch servers' }
+@monitor_group { 'elasticsearch_ulsfo': description => 'ulsfo elasticsearch servers' }
+
 class role::elasticsearch::config {
     # Config
     if ($::realm == 'labs') {

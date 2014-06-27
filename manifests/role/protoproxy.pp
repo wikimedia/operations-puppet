@@ -359,3 +359,9 @@ class role::protoproxy::ssl::beta {
     create_resources( protoproxy, $instances, $defaults )
 
 }
+
+@monitor_group { 'ssl_pmtpa': description => 'pmtpa ssl servers' }
+@monitor_group { 'ssl_eqiad': description => 'eqiad ssl servers' }
+@monitor_group { 'ssl_codfw': description => 'codfw ssl servers' }
+@monitor_group { 'ssl_esams': description => 'esams ssl servers' }
+@monitor_group { 'ssl_ulsfo': description => 'ulsfo ssl servers' }
