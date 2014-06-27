@@ -789,6 +789,16 @@ node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
     }
 }
 
+# MariaDB 10. Not the real S1 yet.
+node /^db10(72|73)\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's1',
+    }
+}
+
 ## x1 shard
 node /^db10(29|31)\.eqiad\.wmnet/ {
 
