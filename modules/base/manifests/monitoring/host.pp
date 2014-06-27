@@ -121,7 +121,7 @@ class base::monitoring::host($contact_group = 'admins') {
     $criticalinterval = $base::puppet::params::freshnessinterval * 2
     nrpe::monitor_service { 'puppet_checkpuppetrun':
         description  => 'puppet last run',
-        nrpe_command => "/usr/local/lib/nagios/plugins/check_puppetrun -c ${warninginterval} -c ${criticalinterval}",
+        nrpe_command => "/usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
     }
     nrpe::monitor_service {'check_eth':
         description  => 'check configured eth',
