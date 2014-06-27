@@ -54,13 +54,6 @@ class base::monitoring::host($contact_group = 'admins') {
         mode   => '0555',
         source => 'puppet:///modules/base/monitoring/check-raid.py';
     }
-    file { '/usr/local/lib/nagios/plugins/check_puppet_disabled':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/monitoring/check_puppet_disabled';
-    }
     file { '/usr/local/lib/nagios/plugins/check_puppetrun':
         ensure => present,
         owner  => 'root',
@@ -112,10 +105,6 @@ class base::monitoring::host($contact_group = 'admins') {
     nrpe::monitor_service { 'dpkg':
         description  => 'DPKG',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_dpkg',
-    }
-    nrpe::monitor_service { 'puppet_disabled':
-        description  => 'puppet disabled',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_puppet_disabled',
     }
     $warninginterval = $base::puppet::params::freshnessinterval
     $criticalinterval = $base::puppet::params::freshnessinterval * 2
