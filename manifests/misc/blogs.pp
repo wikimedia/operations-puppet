@@ -46,23 +46,23 @@ class misc::blogs::wikimedia {
 
     # varnish cache instance for blog.wikimedia.org
     varnish::instance { 'blog':
-        name => $varnish_blog_instance_name,
-        vcl => 'blog',
-        port => 80,
-        admin_port => 6082,
-        storage => '-s malloc,1G',
-        backends => [ 'localhost' ],
-        directors => { 'backend' => [ 'localhost' ] },
-        vcl_config => {
-            'retry5xx' => 0
+        name            => $varnish_blog_instance_name,
+        vcl             => 'blog',
+        port            => 80,
+        admin_port      => 6082,
+        storage         => '-s malloc,1G',
+        backends        => [ 'localhost' ],
+        directors       => { 'backend'    => [ 'localhost' ] },
+        vcl_config      => {
+            'retry5xx'              => 0
         },
         backend_options => {
-            'port' => 81,
-            'connect_timeout' => '5s',
-            'first_byte_timeout' => '35s',
+            'port'                  => 81,
+            'connect_timeout'       => '5s',
+            'first_byte_timeout'    => '35s',
             'between_bytes_timeout' => '4s',
-            'max_connections' => 256,
-            'probe' => 'blog',
+            'max_connections'       => 256,
+            'probe'                 => 'blog',
         },
     }
 
