@@ -114,7 +114,7 @@ class mediawiki_singlenode(
     file { '/etc/apache2/sites-enabled/wiki':
         ensure => absent
     }
-    include apache::mod::php
+    include apache::mod::php5
     apache::vhost{ 'wikicontroller':
         port       => '80',
         priority   => '000',
