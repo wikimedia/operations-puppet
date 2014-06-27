@@ -17,19 +17,19 @@ class role::neutron::config::eqiad inherits role::neutron::config {
     $eqiadneutronconfig = {
         db_host => $::realm ? {
             'production' => 'virt1000.wikimedia.org',
-            'labs' => 'localhost',
+            'labs'       => 'localhost',
         },
         rabbit_host => $::realm ? {
             'production' => 'virt1000.wikimedia.org',
-            'labs' => 'localhost',
+            'labs'       => 'localhost',
         },
         auth_uri => $::realm ? {
             'production' => 'http://virt1000.wikimedia.org:5000',
-            'labs' => 'http://localhost:5000',
+            'labs'       => 'http://localhost:5000',
         },
         bind_ip => $::realm ? {
             'production' => '208.80.154.18',
-            'labs' => '127.0.0.1',
+            'labs'       => '127.0.0.1',
         },
         keystone_admin_token   => $keystoneconfig['admin_token'],
         keystone_auth_host     => $keystoneconfig['bind_ip'],
@@ -51,10 +51,10 @@ class role::neutron::computenode {
     # In Openstack terms, this is the 'data' interface
     interface::tagged { 'eth1.1102':
         base_interface => 'eth1',
-        vlan_id => '1102',
-        method => 'manual',
-        up => 'ip link set $IFACE up',
-        down => 'ip link set $IFACE down',
+        vlan_id        => '1102',
+        method         => 'manual',
+        up             => 'ip link set $IFACE up',
+        down           => 'ip link set $IFACE down',
     }
 }
 
@@ -74,16 +74,16 @@ class role::neutron::nethost {
     $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
     class { 'openstack::neutron-nethost':
-        openstack_version => $openstack_version,
+        openstack_version  => $openstack_version,
         external_interface => 'eth5.1122',
-        neutronconfig     => $neutronconfig,
-        data_interface_ip => '10.68.16.1',
+        neutronconfig      => $neutronconfig,
+        data_interface_ip  => '10.68.16.1',
     }
 
     if ($::site == 'eqiad') {
         interface::ip { 'openstack::network_service_public_dynamic_snat': interface => 'lo', address => '208.80.155.255' }
 
-        #interface::ip { 'openstack::external_interface': interface => 'br-ex', address => '10.64.22.11', prefixlen => '24' }
+        # interface::ip { 'openstack::external_interface': interface => 'br-ex', address => '10.64.22.11', prefixlen => '24' }
 
         # By hand, unpuppetized step: # ifconfig eth5.1122 promisc
         # By hand, unpuppetized step: # ip addr add 10.64.22.11/24 dev br-ex
@@ -91,21 +91,21 @@ class role::neutron::nethost {
         # In Openstack terms, this is the 'data' interface
         interface::tagged { 'eth4.1102':
             base_interface => 'eth4',
-            vlan_id => '1102',
-            method => 'manual',
-            up => 'ip link set $IFACE up',
-            down => 'ip link set $IFACE down',
-            address => '10.68.16.1',
-            netmask => '255.255.255.0',
+            vlan_id        => '1102',
+            method         => 'manual',
+            up             => 'ip link set $IFACE up',
+            down           => 'ip link set $IFACE down',
+            address        => '10.68.16.1',
+            netmask        => '255.255.255.0',
         }
 
         # In Openstack terms, this is the 'external' interface
         interface::tagged { 'eth5.1122':
             base_interface => 'eth5',
-            vlan_id => '1122',
-            method => 'manual',
-            up => 'ip link set $IFACE up',
-            down => 'ip link set $IFACE down',
+            vlan_id        => '1122',
+            method         => 'manual',
+            up             => 'ip link set $IFACE up',
+            down           => 'ip link set $IFACE down',
         }
 
         # In Openstack terms, eth0 is the management interface.
