@@ -28,14 +28,9 @@ class dynamicproxy (
 
     include misc::labsdebrepo
 
-    package { 'nginx-extras':
-        ensure  => latest,
+    class { 'nginx':
+        variant  => 'extras',
         require => Class['misc::labsdebrepo'],
-    }
-
-    service { 'nginx':
-        ensure  => 'running',
-        require => Package['nginx-extras'],
     }
 
     file { '/etc/logrotate.d/nginx':
@@ -49,28 +44,19 @@ class dynamicproxy (
     file { '/etc/nginx/nginx.conf':
         ensure => 'file',
         content => template("dynamicproxy/nginx.conf"),
-        require => Package['nginx-extras'],
+        require => Package['nginx-common'],
         notify => Service['nginx']
     }
 
     file { '/etc/security/limits.conf':
         ensure => 'file',
         source => 'puppet:///modules/dynamicproxy/limits.conf',
-        require => Package['nginx-extras'],
+        require => Package['nginx-common'],
         notify => Service['nginx']
     }
 
-    file { '/etc/nginx/sites-available/default':
-        ensure  => 'file',
+    nginx::site { 'proxy':
         content => template("dynamicproxy/${luahandler}.conf"),
-        require => Package['nginx-extras'],
-        notify  => Service['nginx'],
-    }
-
-    file { '/etc/nginx/sites-enabled/default':
-        ensure  => 'link',
-        target  => '/etc/nginx/sites-available/default',
-        require => File['/etc/nginx/sites-available/default'],
     }
 
     file { '/etc/nginx/lua':
