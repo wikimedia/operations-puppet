@@ -84,8 +84,10 @@ class base::monitoring::host($contact_group = 'admins') {
     }
 
     sudo_user { 'nagios':
-        privileges   => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'],
-        privileges   => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
+        privileges   => [
+                        'ALL = NOPASSWD: /usr/local/bin/check-raid.py',
+                        'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun',
+                        ],
     }
     nrpe::monitor_service { 'raid':
         description  => 'RAID',
