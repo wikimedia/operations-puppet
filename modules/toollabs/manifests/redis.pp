@@ -39,6 +39,10 @@ class toollabs::redis (
         monitor         => true
     }
 
-    # Enable Ganglia monitoring.
-    include redis::ganglia
+    # Enable diamond monitoring
+    diamond::collector { 'Redis':
+        settings => {
+            enabled => 'true',
+        }
+    }
 }
