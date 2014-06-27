@@ -515,3 +515,7 @@ class role::nova::compute {
         }
     }
 }
+
+# global icinga hostgroups for virt/labs hosts
+@monitor_group { 'virt_eqiad': description => 'eqiad virt servers' }
+
