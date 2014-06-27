@@ -12,7 +12,10 @@ port      = 3306
 datadir   = <%= @datadir %>
 tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
-read_only = 1
+
+# Always start in read_only mode.
+# Master selection will be handled by cluster control.
+read_only = on
 
 log_bin
 log_slave_updates
@@ -37,12 +40,13 @@ wait_timeout                   = 3600
 sync_binlog                    = 1
 binlog_cache_size              = 1M
 max_binlog_size                = 1000M
-binlog_format                  = statement
-expire_logs_days               = 30
+binlog_format                  = MIXED
+expire_logs_days               = 7
 slave_transaction_retries      = 4294967295
 
 table_open_cache               = 50000
 table_definition_cache         = 40000
+open-files-limit               = 200000
 character_set_server           = binary
 character_set_filesystem       = binary
 collation_server               = binary

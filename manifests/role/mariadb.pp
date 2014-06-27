@@ -242,32 +242,29 @@ class role::mariadb::backup {
     }
 }
 
-# Not suitable for S1-S7 yet. Fine for M1-M3.
-class role::mariadb::production(
-    $shard,
+class role::mariadb::core(
+    $shard
     ) {
 
-    system::role { "role::mariadb::production::${shard}":
+    system::role { "role::mariadb::core":
         description => "Core DB Server ${shard}",
     }
 
     include standard
-    include mariadb::packages_wmf
     include passwords::misc::scripts
 
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
     class { 'mariadb::config':
-        prompt   => "PRODUCTION ${shard}",
-        config   => 'mariadb/production.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/a/sqldata',
-        tmpdir   => '/a/tmp',
+        prompt    => "PRODUCTION ${shard}",
+        config    => 'mariadb/production.my.cnf.erb',
+        password  => $passwords::misc::scripts::mysql_root_pass,
+        datadir   => '/srv/sqldata',
+        tmpdir    => '/srv/tmp',
     }
 
-    class { 'mariadb::monitor_disk':
-        contact_group => 'admins',
-    }
-
-    class { 'mariadb::monitor_process':
-        contact_group => 'admins',
-    }
+    include mariadb::monitor_disk
+    #include mariadb::monitor_process
 }
