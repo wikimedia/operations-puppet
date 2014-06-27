@@ -91,6 +91,15 @@ probe blog {
 	.timeout = 5s;	
 }
 
+probe legalpad {
+	.request =
+		"HEAD /legalpad HTTP/1.1"
+		"Host: legalpad.wikimedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;
+}
+
 probe options {
 	.request =
 		"OPTIONS * HTTP/1.0"
