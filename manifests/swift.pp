@@ -53,7 +53,7 @@ class swift::base($hash_path_suffix, $cluster_name) {
     file { '/var/cache/swift':
         ensure  => 'directory',
         require => Package['swift'],
-        mode  => '0755',
+        mode    => '0755',
     }
 
     file { '/etc/swift/swift.conf':
@@ -102,7 +102,7 @@ class swift::base($hash_path_suffix, $cluster_name) {
     }
     cron { 'swift-proxy-ganglia':
         ensure  => 'present',
-        command => "/usr/sbin/ganglia-logtailer --classname SwiftHTTPLogtailer --log_file /var/log/syslog --mode cron > /dev/null 2>&1",
+        command => '/usr/sbin/ganglia-logtailer --classname SwiftHTTPLogtailer --log_file /var/log/syslog --mode cron > /dev/null 2>&1',
         user    => 'root',
         minute  => '*',
     }
@@ -203,21 +203,21 @@ class swift::storage {
                 max_connections => '5',
                 path            => '/srv/swift-storage/',
                 read_only       => 'no',
-                lock_file       => '/var/lock/account.lock';
+                lock_file       => '/var/lock/account.lock',
             'container':
                 uid             => 'swift',
                 gid             => 'swift',
                 max_connections => '5',
                 path            => '/srv/swift-storage/',
                 read_only       => 'no',
-                lock_file       => '/var/lock/container.lock';
+                lock_file       => '/var/lock/container.lock',
             'object':
                 uid             => 'swift',
                 gid             => 'swift',
                 max_connections => '10',
                 path            => '/srv/swift-storage/',
                 read_only       => 'no',
-                lock_file       => '/var/lock/object.lock';
+                lock_file       => '/var/lock/object.lock',
         }
 
         # set up swift specific configs
@@ -338,7 +338,7 @@ class swift::storage {
 # Parameters:
 #   - $title:
 #       The device to partition
-define swift::create_filesystem($partition_nr="1") {
+define swift::create_filesystem($partition_nr='1') {
     require base::platform
 
     if ($title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
@@ -425,6 +425,6 @@ define swift::label_filesystem() {
 
     $label = "swift-${dev_suffix}"
     exec { "/usr/sbin/xfs_admin -L ${label} ${device}":
-        onlyif => "/usr/bin/test $(/bin/mount | /bin/grep ${device} |/usr/bin/wc -l) -eq 0 && /usr/bin/test $(/usr/sbin/grub-probe -t fs -d ${device}) = 'xfs' && /usr/bin/test $(/usr/sbin/xfs_admin -l ${device} |/bin/grep swift | /usr/bin/wc -l) -eq 0"
+        onlyif => "/usr/bin/test (/bin/mount | /bin/grep ${device} |/usr/bin/wc -l) -eq 0 && /usr/bin/test (/usr/sbin/grub-probe -t fs -d ${device}) = 'xfs' && /usr/bin/test (/usr/sbin/xfs_admin -l ${device} |/bin/grep swift | /usr/bin/wc -l) -eq 0"
     }
 }
