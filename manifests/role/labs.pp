@@ -140,3 +140,6 @@ class role::labs::instance {
         onlyif  => '/usr/bin/test -d /etc/apache2 -a ! -d /etc/apache2/sites-local',
     }
 }
+
+# global icinga hostgroups for virt/labs hosts
+@monitor_group { 'virt_eqiad': description => 'eqiad virt servers' }
