@@ -26,7 +26,8 @@
 define nrpe::check($command, $ensure='present') {
     # If the nrpe class is not included, this entire definition will never be
     # realized making it a no-op
-    @file { "/etc/nagios/nrpe.d/${title}.cfg":
+    $title_safe  = regsubst($title, '[\W]', '-', 'G')
+    @file { "/etc/nagios/nrpe.d/${title_safe}.cfg":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
