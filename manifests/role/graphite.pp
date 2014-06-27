@@ -146,31 +146,10 @@ class role::graphite {
     include ::apache::mod::uwsgi
 
     if ($::realm == 'labs') {
-        include ::apache::mod::auth_basic
-        include ::apache::mod::authn_file
-        include ::apache::mod::authz_user
-
         if ($::hostname =~ /^deployment-/) {
             # Beta
             $hostname    = 'graphite-beta.wmflabs.org'
-            $auth_realm  = 'Graphite (see [[office:User:BDavis_(WMF)/graphite]])'
-            $auth_file   = '/data/project/graphite/.htpasswd'
-        } else {
-            # Regular labs instance
-            $hostname = $::graphite_hostname ? {
-                undef   => $::hostname,
-                default => $::graphite_hostname,
-            }
-            $auth_realm = $::graphite_authrealm ? {
-                undef   => 'Graphite',
-                default => $::graphite_authrealm,
-            }
-            $auth_file = $::graphite_authfile ? {
-                undef   => '/data/project/graphite/.htpasswd',
-                default => $::graphite_authfile,
-            }
         }
-        $apache_auth   = template('graphite/apache-auth-local.erb')
     } else {
         # Production
         include ::passwords::ldap::production
