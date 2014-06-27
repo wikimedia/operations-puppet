@@ -64,7 +64,7 @@ class webserver::static {
 }
 
 class webserver::php5(
-    $ssl = 'false',
+    $ssl = false,
 ) {
 
     include webserver::base
@@ -133,7 +133,7 @@ class webserver::apache {
     #   webserver::apache::site { "mysite.wikimedia.org": aliases = ["mysite.wikimedia.com"] }
     define site(
         $aliases      = [],
-        $ssl          = 'false',
+        $ssl          = false,
         $certfile     = "/etc/ssl/certs/${title}.pem",
         $certkey      = "/etc/ssl/private/${title}.key",
         $docroot      = undef,
