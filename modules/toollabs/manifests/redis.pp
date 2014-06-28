@@ -44,9 +44,6 @@ class toollabs::redis (
     package { 'python-redis': }
 
     diamond::collector { 'Redis':
-        settings => {
-            enabled => 'true',
-        },
         require => Package['python-redis']
     }
 }
