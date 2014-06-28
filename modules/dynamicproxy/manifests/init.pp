@@ -82,7 +82,7 @@ class dynamicproxy (
         source  => 'puppet:///modules/dynamicproxy/redis.lua',
     }
 
-    include diamond::collector::nginx
+    diamond::collector::nginx { 'diamond-monitor-proxy': }
 
     # Also monitor local redis
     package { 'python-redis':
