@@ -80,7 +80,7 @@ class toollabs::dev_environ {
 
     file { '/etc/pastebin.d/tools.conf':
         ensure => 'file',
-        source => 'puppet:///modules/tools/pastebinit.conf',
+        source => 'puppet:///modules/toollabss/pastebinit.conf',
         mode   => '0644'
     }
 
