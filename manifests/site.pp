@@ -2804,7 +2804,7 @@ node 'labnet1001.eqiad.wmnet' {
     }
 }
 
-node /virt100[1-7].eqiad.wmnet/ {
+node /virt100[1-8].eqiad.wmnet/ {
     $cluster = 'virt'
     $openstack_version = 'havana'
     $use_neutron = false
@@ -2817,7 +2817,7 @@ node /virt100[1-7].eqiad.wmnet/ {
     }
 }
 
-node /virt1008.eqiad.wmnet/ {
+node /virt1009.eqiad.wmnet/ {
     $cluster = 'virt'
 
     include admin
@@ -2827,14 +2827,6 @@ node /virt1008.eqiad.wmnet/ {
     package { 'coreutils': }
     package { 'coreutils': }
 }
-
-node /virt1009.eqiad.wmnet/ {
-    $cluster = 'virt'
-
-    include admin
-    include standard
-}
-
 
 node 'iodine.wikimedia.org' {
     class { 'base::firewall': }
