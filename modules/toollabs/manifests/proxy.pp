@@ -13,16 +13,13 @@ class toollabs::proxy inherits toollabs {
         require              => Install_certificate['star.wmflabs.org']
     }
 
-    package { 'python-redis':
-        ensure => latest
-    }
-
     file { '/usr/local/sbin/proxylistener':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/proxylistener.py'
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/toollabs/proxylistener.py',
+        require => Package['python-redis'] # Is provided by the dynamicproxy class
     }
 
     file { '/etc/init/proxylistener.conf':
