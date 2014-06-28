@@ -48,7 +48,6 @@ class toollabs::dev_environ {
         'libsparsehash-dev',           # Bug 56995
         'libtiff4-dev', # bug 52717
         'libtool',
-        'libvips-dev',
         'libxml2-dev',
         'libxslt1-dev',
         'libzbar-dev',                 # Bug 56996
