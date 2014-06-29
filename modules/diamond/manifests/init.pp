@@ -24,6 +24,9 @@
 #   A hash of configuration options for the desired handler.
 #   See <https://github.com/BrightcoveOS/Diamond/wiki/Handlers>
 #   for a listing of configuration options.
+# 
+#   These are passed on verbatim to diamond so should all be quoted
+#   strings and not native puppet types e.g. 'true' not true.
 #
 # [*path_prefix*]
 #   The prefix to be used for metrics, used to namespace where
