@@ -47,6 +47,7 @@ class VolumeManager:
         self.redundant_volumes = [ 'project' ]
         self.loglevel = INFO
         self.logfile = "/var/log/manage-nfs-volumes.log"
+        self.orphansfile = self.base_dir + "/volumes-without-projects"
 
     def run(self):
         parser = OptionParser(conflict_handler="resolve")
@@ -172,8 +173,12 @@ class VolumeManager:
             self.log("Unused volume %s is possible candidate for cleanup -- no hosts are using it!" % unused)
         for unloved in unloved_volumes:
             self.log("Unwanted volume %s is possible candidate for cleanup -- this share was not requested." % unloved)
+
+        orphansfile = open(self.orphansfile, "w")
         for orphan in orphan_projects:
             self.log("Project %s no longer exists but still has allocated volumes." % orphan)
+            orphansfile.write(orphan + "\n")
+        orphansfile.close()
 
         ds.unbind()
 
