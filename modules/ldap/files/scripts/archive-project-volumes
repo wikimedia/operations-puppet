@@ -1,0 +1,103 @@
+#!/usr/bin/python
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/ldap/scripts/archive-managed-projects
+#####################################################################
+###
+### Sometimes labs projects are deleted.  When this happens,
+### orphaned volumes are left on the nfs server.
+###
+### manage-nfs-volumes-daemon records a list of of these orphans
+### in <volumedir>/volumes-without-projects.  To avoid craziness,
+### though, it does not attempt to automatically archive them.
+###
+### This script tarballs those orphaned volumes and sets them aside for
+### posterity.
+###
+#####################################################################
+
+
+import logging
+import os
+import shutil
+import subprocess
+from optparse import OptionParser
+
+
+class VolumeArchiver:
+    def __init__(self):
+        self.base_dir = '/srv/project/'
+        self.archive_dir = os.path.join(self.base_dir, 'orphan-volumes')
+        self.orphan_list = os.path.join(self.base_dir, 'volumes-without-projects')
+
+    def archive(self, volname):
+        if not os.path.isdir(self.base_dir):
+            logging.error("Unable to locate %s" % self.base_dir)
+            return False
+
+        volpath = (os.path.join(self.base_dir, volname))
+        if not os.path.isdir(volpath):
+            logging.error("Unable to locate %s" % volpath)
+            return False
+
+        if not os.path.isdir(self.archive_dir):
+            os.mkdir(self.archive_dir)
+
+        n = 0
+        maxn = 200
+        archivepath = os.path.join(self.archive_dir, "%s.tgz" % volname)
+        while os.path.isfile(archivepath):
+            archivepath = os.path.join(self.archive_dir, "%s-%s.tgz" % (volname, str(n)))
+            n += 1
+            if (n > maxn):
+                logging.error("Something terrible is happening, we have more than %s archives for a volume named %s." % (str(maxn), volname))
+                return False
+
+        args = ['tar', '-cpzf', archivepath, volname]
+        rval = subprocess.call(args, cwd=self.base_dir)
+        if rval:
+            logging.info("Failed to archive %s with exit code %s.  Command was: %s" % (volpath, rval, ' '.join(args)))
+            return False
+        else:
+            logging.info("Archived %s to %s" % (volpath, archivepath))
+
+        logging.info("Archive complete; removing %s" % volpath)
+        shutil.rmtree(volpath)
+
+        return True
+
+    def run(self):
+        parser = OptionParser(conflict_handler="resolve")
+        parser.set_usage('archive-project-volumes [options]')
+
+        parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdout)")
+
+        parser.add_option("--volume", dest="volume", help="Volume to archive (default: all orphans)")
+        (options, args) = parser.parse_args()
+
+        if options.logfile:
+            logging.basicConfig(filename=options.logfile, level=logging.DEBUG)
+        else:
+            logging.basicConfig(level=logging.DEBUG)
+
+        if options.volume:
+            vol_list = [options.volume]
+        else:
+            with open(self.orphan_list) as f:
+                vol_list = f.read().splitlines()
+
+        for vol in vol_list:
+            logging.info("Archiving %s" % vol)
+            if not self.archive(vol):
+                logging.error("Archive failed, giving up.")
+
+        return 0
+
+
+def main():
+    archiver = VolumeArchiver()
+    archiver.run()
+
+if __name__ == "__main__":
+    main()
