@@ -176,20 +176,6 @@ class ldap::client::utils($ldapconfig) {
         source => 'puppet:///modules/ldap/scripts/homedirectorymanager.py',
     }
 
-    file { '/usr/local/sbin/manage-exports':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/manage-exports',
-    }
-
-    file { '/usr/local/sbin/manage-volumes-daemon':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/manage-volumes-daemon',
-    }
-
     file { '/usr/local/sbin/manage-nfs-volumes-daemon':
         owner  => 'root',
         group  => 'root',
@@ -202,10 +188,6 @@ class ldap::client::utils($ldapconfig) {
         group  => 'root',
         mode   => '0544',
         source => 'puppet:///modules/ldap/scripts/manage-keys-nfs',
-    }
-
-    file { '/usr/local/sbin/manage-volumes':
-        ensure => absent,
     }
 
     file { '/usr/local/sbin/ldapsupportlib.py':
@@ -358,33 +340,6 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
             group   => 'root',
             mode    => '0444',
             content => template('ldap/access.conf.erb'),
-        }
-    }
-
-    if $::realm == 'labs' {
-        if $managehome {
-            $ircecho_logs = { "/var/log/manage-exports.log" => "#wikimedia-labs" }
-            $ircecho_nick = "labs-home-wm"
-            $ircecho_server = "chat.freenode.net"
-            include role::echoirc
-
-            cron { 'manage-exports':
-                command => '/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log >/dev/null 2>&1',
-                require => [ File['/usr/local/sbin/manage-exports'],
-                            Package['nscd'],
-                            Package['libnss-ldapd'],
-                            Package['ldap-utils'],
-                            File['/etc/ldap.conf'],
-                            File['/etc/ldap/ldap.conf'],
-                            File['/etc/nsswitch.conf'],
-                            File['/etc/nslcd.conf'] ],
-            }
-        } else {
-            # This was added to all nodes accidentally
-            cron { "manage-exports":
-                command => "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log >/dev/null 2>&1",
-                ensure => absent;
-            }
         }
     }
 }
