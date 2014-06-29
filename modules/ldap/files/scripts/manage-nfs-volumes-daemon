@@ -46,7 +46,7 @@ class VolumeManager:
         self.volume_names = ['home', 'project']
         self.redundant_volumes = [ 'project' ]
         self.loglevel = INFO
-        self.logfile = None
+        self.logfile = "/var/log/manage-nfs-volumes.log"
 
     def run(self):
         parser = OptionParser(conflict_handler="resolve")
