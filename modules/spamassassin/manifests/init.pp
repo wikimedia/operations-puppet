@@ -26,12 +26,12 @@
 #  Networks for which to trust Received headers from. Defaults to [].
 #
 # [*spamd_user*]
-#  The user to run spamd as. Defaults to "spamd", which is created if
-#  non-existent.
+#  The user to run spamd as. Defaults to "debian-spamd", which is
+#  created if non-existent.
 #
 # [*spamd_group*]
-#  The group to run spamd as. Defaults to "spamd", which is created if
-#  non-existent.
+#  The group to run spamd as. Defaults to "debian-spamd", which is
+#  created if non-existent.
 #
 # [*custom_scores*]
 #  Provide custom scores to existing tests. Hash of score => value, defaults
@@ -49,8 +49,8 @@ class spamassassin(
     $bayes_auto_learn = 1,
     $short_report_template = false,
     $trusted_networks = [],
-    $spamd_user  = 'spamd',
-    $spamd_group = 'spamd',
+    $spamd_user  = 'debian-spamd',
+    $spamd_group = 'debian-spamd',
     $custom_scores = {},
     $debug_logging = '',
 ) {
@@ -58,18 +58,18 @@ class spamassassin(
         ensure => present,
     }
 
-    if ($spamd_user == 'spamd') {
-        group { 'spamd':
+    if ($spamd_user == 'debian-spamd') {
+        group { 'debian-spamd':
             ensure     => present,
         }
-        user { 'spamd':
+        user { 'debian-spamd':
             ensure     => present,
-            gid        => 'spamd',
+            gid        => 'debian-spamd',
             shell      => '/bin/false',
-            home       => '/nonexistent',
-            managehome => false,
+            home       => '/var/lib/spamassassin',
+            managehome => true,
             system     => true,
-            require    => Group['spamd'],
+            require    => Group['debian-spamd'],
         }
     }
 
