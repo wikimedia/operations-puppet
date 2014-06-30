@@ -48,7 +48,11 @@ class rcstream::proxy::ssl(
     nginx::site { 'rcstream-ssl':
         content => template('rcstream/rcstream.nginx.erb'),
         notify  => Service['nginx'],
-        require => [ Install_certificate[$server_name], Class['nginx::ssl'] ]
+        require => [
+                    Install_certificate[$server_name],
+                    Class['nginx::ssl'],
+                    Class['rcstream::proxy'],
+                    ]
     }
 
     class { 'nginx::ssl':
