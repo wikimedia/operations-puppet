@@ -111,19 +111,12 @@ class mediawiki_singlenode(
 
     Mw-extension <| |> -> Exec['mediawiki_update']
 
-    file { '/etc/apache2/sites-enabled/wiki':
-        ensure => absent
-    }
-    include apache::mod::php5
-    apache::vhost{ 'wikicontroller':
-        port       => '80',
-        priority   => '000',
-        vhost_name => 'wiki',
-        docroot    => $install_path,
-        template   => $apache_site_template
-    }
-
+    include ::apache::mod::php5
     include ::apache::mod::rewrite
+
+    apache::site { 'wikicontroller':
+        content => template($apache_site_template),
+    }
 
     file { "${install_path}/cache":
         require => Exec['mediawiki_setup'],
