@@ -263,7 +263,7 @@ class role::analytics::hadoop::production {
         nrpe::monitor_service { 'hadoop-hdfs-journalnode':
             description  => 'Hadoop JournalNode',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
-            require      => Class["${cdh_module_name}::hadoop"],
+            require      => Class['cdh4::hadoop'],
         }
     }
 }
