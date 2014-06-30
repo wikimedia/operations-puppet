@@ -111,7 +111,7 @@ class role::mariadb::beta {
     }
 }
 
-# What db1044 presently does...
+# tendril.wikimedia.org db
 class role::mariadb::tendril {
 
     system::role { 'role::mariadb::tendril':
