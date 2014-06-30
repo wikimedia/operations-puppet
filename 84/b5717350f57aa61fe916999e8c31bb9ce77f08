@@ -1,0 +1,9 @@
+Verified+2: jenkins-bot
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Verified+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Mon, 30 Jun 2014 10:17:20 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/141924
+Project: operations/puppet
+Branch: refs/heads/production
