@@ -1,13 +1,14 @@
 # Nginx reverse-proxy for RCStream
 # See <http://siriux.net/2013/06/nginx-and-websockets/>.
 # Requires Nginx 1.4+.
-
-upstream websockets {
+<% if ! @use_ssl -%>
+upstream websockets-ssl {
     ip_hash;
     <% @backends.each do |backend| -%>
     server <%= if backend.to_s.include?(':') then backend else "127.0.0.1:#{backend}" end %>;
     <% end %>
 }
+<% end %>
 
 server {
     <%= Array(@listen).map { |bind| "listen #{bind};" }.join("\n") %>
