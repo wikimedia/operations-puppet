@@ -639,11 +639,6 @@ class icinga::monitor::firewall {
     ferm::rule { 'ncsa_allowed':
         rule => 'saddr (127.0.0.1 $EQIAD_PRIVATE_ANALYTICS1_A_EQIAD $EQIAD_PRIVATE_ANALYTICS1_B_EQIAD $EQIAD_PRIVATE_ANALYTICS1_C_EQIAD $EQIAD_PRIVATE_ANALYTICS1_D_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_A_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_B_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_D_EQIAD $EQIAD_PRIVATE_LABS_SUPPORT1_C_EQIAD $EQIAD_PRIVATE_PRIVATE1_A_EQIAD $EQIAD_PRIVATE_PRIVATE1_B_EQIAD $EQIAD_PRIVATE_PRIVATE1_C_EQIAD $EQIAD_PRIVATE_PRIVATE1_D_EQIAD $EQIAD_PUBLIC_PUBLIC1_A_EQIAD $EQIAD_PUBLIC_PUBLIC1_B_EQIAD $EQIAD_PUBLIC_PUBLIC1_C_EQIAD $EQIAD_PUBLIC_PUBLIC1_D_EQIAD $ESAMS_PRIVATE_PRIVATE1_ESAMS $ESAMS_PUBLIC_PUBLIC_SERVICES $PMTPA_PRIVATE_PRIVATE $PMTPA_PRIVATE_VIRT_HOSTS $PMTPA_PUBLIC_PUBLIC_SERVICES $PMTPA_PUBLIC_PUBLIC_SERVICES_2 $PMTPA_PUBLIC_SANDBOX $PMTPA_PUBLIC_SQUID_LVS $ULSFO_PRIVATE_PRIVATE1_ULSFO $ULSFO_PUBLIC_PUBLIC1_ULSFO 208.80.155.0/27 10.64.40.0/24) proto tcp dport 5667 ACCEPT;'
     }
-
-    #snmptrap on port 162
-    ferm::rule { 'snmptrap_allowed':
-        rule => 'saddr  (127.0.0.1 $EQIAD_PRIVATE_ANALYTICS1_A_EQIAD $EQIAD_PRIVATE_ANALYTICS1_B_EQIAD $EQIAD_PRIVATE_ANALYTICS1_C_EQIAD $EQIAD_PRIVATE_ANALYTICS1_D_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_A_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_B_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_D_EQIAD $EQIAD_PRIVATE_LABS_SUPPORT1_C_EQIAD $EQIAD_PRIVATE_PRIVATE1_A_EQIAD $EQIAD_PRIVATE_PRIVATE1_B_EQIAD $EQIAD_PRIVATE_PRIVATE1_C_EQIAD $EQIAD_PRIVATE_PRIVATE1_D_EQIAD $EQIAD_PUBLIC_PUBLIC1_A_EQIAD $EQIAD_PUBLIC_PUBLIC1_B_EQIAD $EQIAD_PUBLIC_PUBLIC1_C_EQIAD $EQIAD_PUBLIC_PUBLIC1_D_EQIAD $ESAMS_PRIVATE_PRIVATE1_ESAMS $ESAMS_PUBLIC_PUBLIC_SERVICES $PMTPA_PRIVATE_PRIVATE $PMTPA_PRIVATE_VIRT_HOSTS $PMTPA_PUBLIC_PUBLIC_SERVICES $PMTPA_PUBLIC_PUBLIC_SERVICES_2 $PMTPA_PUBLIC_SANDBOX $PMTPA_PUBLIC_SQUID_LVS $ULSFO_PRIVATE_PRIVATE1_ULSFO $ULSFO_PUBLIC_PUBLIC1_ULSFO 208.80.155.0/27 10.64.40.0/24) proto udp dport 162 ACCEPT;'
-    }
 }
 
 class icinga::monitor::naggen {
@@ -755,37 +750,23 @@ class icinga::monitor::service {
 class icinga::monitor::snmp {
 
     file { '/etc/snmp/snmptrapd.conf':
-        source => 'puppet:///files/snmp/snmptrapd.conf.icinga',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0600',
+        ensure => absent,
     }
     file { '/etc/snmp/snmptt.conf':
-        source => 'puppet:///files/snmp/snmptt.conf.icinga',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        ensure => absent,
     }
     file { '/etc/init.d/snmptt':
-        source => 'puppet:///files/snmp/snmptt.init',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        ensure => absent,
     }
     file { '/etc/init.d/snmptrapd':
-        source => 'puppet:///files/snmp/snmptrapd.init',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        ensure => absent,
     }
     file { '/etc/init.d/snmpd':
-        source => 'puppet:///files/snmp/snmpd.init',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        ensure => absent,
     }
 
     # snmp tarp stuff
+    # TODO: Ensure absent and kill
     user { 'snmptt':
         home       => '/var/spool/snmptt',
         managehome => true,
@@ -794,15 +775,15 @@ class icinga::monitor::snmp {
     }
 
     package { 'snmpd':
-        ensure => latest,
+        ensure => purged,
     }
 
     package { 'snmptt':
-        ensure => latest,
+        ensure => purged,
     }
 
     service { 'snmptt':
-        ensure     => running,
+        ensure     => stopped,
         hasstatus  => false,
         hasrestart => true,
         subscribe  => [
@@ -813,7 +794,7 @@ class icinga::monitor::snmp {
     }
 
     service { 'snmptrapd':
-        ensure    => running,
+        ensure    => stopped,
         hasstatus => false,
         subscribe => [
             File['/etc/init.d/snmptrapd'],
@@ -822,20 +803,19 @@ class icinga::monitor::snmp {
     }
 
     service { 'snmpd':
-        ensure    => running,
+        ensure    => stopped,
         hasstatus => false,
         subscribe => File['/etc/init.d/snmpd'],
     }
 
     # FIXME: smptt crashes periodically on precise
     cron { 'restart_snmptt':
-        ensure  => present,
+        ensure  => absent,
         command => 'service snmptt restart >/dev/null 2>/dev/null',
         user    => 'root',
         hour    => [0, 4, 8, 12, 16, 20],
         minute  => 7,
     }
-
 }
 
 class icinga::ganglia::ganglios {

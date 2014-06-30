@@ -19,58 +19,19 @@ class base::puppet($server='puppet', $certname=undef) {
     }
 
     # monitoring via snmp traps
+    # TODO: Remove after successful purging
     package { 'snmp':
-        ensure => latest,
+        ensure => purged,
     }
 
     file { '/etc/snmp':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['snmp'],
+        ensure  => absent,
     }
 
     file { '/etc/snmp/snmp.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('base/snmp.conf.erb'),
-        require => [ Package['snmp'], File['/etc/snmp'] ],
+        ensure  => absent,
     }
-
-    monitor_service { 'puppet freshness':
-        description     => 'Puppet freshness',
-        check_command   => 'puppet-FAIL',
-        passive         => 'true',
-        freshness       => $freshnessinterval,
-        retries         => 1,
-    }
-
-    case $::realm {
-        'production': {
-            exec {  'neon puppet snmp trap':
-                command => "snmptrap -v 1 -c public neon.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
-                path    => '/bin:/usr/bin',
-                require => Package['snmp'],
-            }
-        }
-        'labs': {
-            # The next two notifications are read in by the labsstatus.rb puppet report handler.
-            #  It needs to know project/hostname for nova access.
-            notify{"instanceproject: ${::instanceproject}":}
-            notify{"hostname: ${::instancename}":}
-            exec { 'puppet snmp trap':
-                command => "snmptrap -v 1 -c public icinga.eqiad.wmflabs .1.3.6.1.4.1.33298 ${::instancename}.${::site}.wmflabs 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
-                path    => '/bin:/usr/bin',
-                require => Package['snmp'],
-            }
-        }
-        default: {
-            err('realm must be either "labs" or "production".')
-        }
-    }
+    # end of monitoring via snmp traps
 
     file { '/etc/default/puppet':
         owner  => 'root',
