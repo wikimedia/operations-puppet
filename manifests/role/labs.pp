@@ -140,4 +140,14 @@ class role::labs::instance {
                     /bin/echo "Include sites-local/*" >> /etc/apache2/apache2.conf',
         onlyif  => '/usr/bin/test -d /etc/apache2 -a ! -d /etc/apache2/sites-local',
     }
+
+    # In production, puppet freshness checks are done by icinga. Labs has no
+    # icinga, so collect puppet freshness metrics via diamond/graphite
+    package { 'python-yaml':
+        ensure => present
+    }
+
+    diamond::collector { 'PuppetAgent':
+        require => Package['python-yaml']
+    }
 }
