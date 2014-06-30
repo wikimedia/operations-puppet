@@ -39,7 +39,6 @@ class icinga::monitor {
     include icinga::monitor::nsca::daemon
     include icinga::monitor::packages
     include icinga::monitor::service
-    include icinga::monitor::snmp
     include icinga::user
     include lvs::monitor
     include misc::dsh::files
@@ -744,78 +743,6 @@ class icinga::monitor::service {
             File['/etc/icinga/puppet_hostextinfo.cfg'],
             File['/etc/icinga/puppet_hosts.cfg'],
         ],
-    }
-}
-
-class icinga::monitor::snmp {
-
-    file { '/etc/snmp/snmptrapd.conf':
-        ensure => absent,
-    }
-    file { '/etc/snmp/snmptt.conf':
-        ensure => absent,
-    }
-    file { '/etc/init.d/snmptt':
-        ensure => absent,
-    }
-    file { '/etc/init.d/snmptrapd':
-        ensure => absent,
-    }
-    file { '/etc/init.d/snmpd':
-        ensure => absent,
-    }
-
-    # snmp tarp stuff
-    # TODO: Ensure absent and kill
-    user { 'snmptt':
-        ensure     => 'absent',
-        home       => '/var/spool/snmptt',
-        managehome => true,
-        system     => true,
-        groups     => [ 'snmptt', 'nagios' ]
-    }
-
-    package { 'snmpd':
-        ensure => purged,
-    }
-
-    package { 'snmptt':
-        ensure => purged,
-    }
-
-    service { 'snmptt':
-        ensure     => stopped,
-        hasstatus  => false,
-        hasrestart => true,
-        subscribe  => [
-            File['/etc/snmp/snmptt.conf'],
-            File['/etc/init.d/snmptt'],
-            File['/etc/snmp/snmptrapd.conf']
-        ],
-    }
-
-    service { 'snmptrapd':
-        ensure    => stopped,
-        hasstatus => false,
-        subscribe => [
-            File['/etc/init.d/snmptrapd'],
-            File['/etc/snmp/snmptrapd.conf']
-        ],
-    }
-
-    service { 'snmpd':
-        ensure    => stopped,
-        hasstatus => false,
-        subscribe => File['/etc/init.d/snmpd'],
-    }
-
-    # FIXME: smptt crashes periodically on precise
-    cron { 'restart_snmptt':
-        ensure  => absent,
-        command => 'service snmptt restart >/dev/null 2>/dev/null',
-        user    => 'root',
-        hour    => [0, 4, 8, 12, 16, 20],
-        minute  => 7,
     }
 }
 
