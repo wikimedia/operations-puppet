@@ -70,5 +70,6 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
         command => '/usr/local/bin/collect_exim_stats_via_gmetric',
         require => File['/usr/local/bin/collect_exim_stats_via_gmetric'],
     }
-}
 
+    diamond::collector { 'Exim': }
+}
