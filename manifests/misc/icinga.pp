@@ -798,6 +798,7 @@ class icinga::monitor::snmp {
     # snmp tarp stuff
     # TODO: Ensure absent and kill
     user { 'snmptt':
+        ensure     => 'absent',
         home       => '/var/spool/snmptt',
         managehome => true,
         system     => true,
