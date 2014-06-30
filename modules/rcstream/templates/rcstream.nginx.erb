@@ -15,8 +15,8 @@ server {
     server_name <%= @server_name %>;
 
     <%- if @use_ssl -%>
-    ssl_certificate /etc/ssl/certs/<%= @server_name %>.pem
-    ssl_certificate_key /etc/ssl/private/<%= @server_name %>.key
+    ssl_certificate /etc/ssl/certs/<%= @server_name %>.pem;
+    ssl_certificate_key /etc/ssl/private/<%= @server_name %>.key;
     <% end %>
 
     location <%= @location %> {
