@@ -126,18 +126,6 @@ class zuul (
     require => Package['jenkins'],
   }
 
-  file { '/var/run/zuul':
-    ensure  => directory,
-    owner   => 'jenkins',
-    require => Package['jenkins'],
-  }
-
-  file { '/var/run/zuul-merger':
-    ensure  => directory,
-    owner   => 'jenkins',
-    require => Package['jenkins'],
-  }
-
   file { '/var/lib/zuul':
     ensure  => directory,
     owner   => 'jenkins',
@@ -148,22 +136,6 @@ class zuul (
     ensure  => directory,
     owner   => 'jenkins',
     require => Package['jenkins'],
-  }
-
-  file { '/etc/init.d/zuul/':
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0555',
-    source => 'puppet:///modules/zuul/zuul.init',
-  }
-
-  file { '/etc/init.d/zuul-merger':
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0555',
-    source => 'puppet:///modules/zuul/zuul-merger.init',
   }
 
   file { '/etc/default/zuul':
