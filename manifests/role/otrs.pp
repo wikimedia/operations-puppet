@@ -134,8 +134,6 @@ class role::otrs (
         use_bayes             => true,
         bayes_auto_learn      => false,
         short_report_template => true,
-        spamd_user            => 'otrs',
-        spamd_group           => 'otrs',
         trusted_networks      => $network::constants::all_networks,
         custom_scores         => {
             'RP_MATCHES_RCVD'   => '-0.500',
