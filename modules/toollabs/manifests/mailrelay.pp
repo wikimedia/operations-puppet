@@ -71,5 +71,16 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
         require => File['/usr/local/bin/collect_exim_stats_via_gmetric'],
     }
 
-    diamond::collector { 'Exim': }
+    # Diamond user needs sudo to access exim
+    admin::sudo { 'diamond_sudo_for_exim':
+        user    => 'diamond',
+        comment => 'diamond needs sudo to access exim mail queue length',
+        privs   => ['ALL=(root) NOPASSWD: /usr/sbin/exim']
+    }
+
+    diamond::collector { 'Exim':
+        settings     => {
+            use_sudo => 'true',
+        }
+    }
 }
