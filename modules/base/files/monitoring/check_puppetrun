@@ -8,6 +8,15 @@
 # The script will use the puppet last_run-summary.yaml
 # file to determine when last Puppet ran else the age
 # of the statefile.
+#
+# This script has two modes.  By default it only checks for
+# when the most recent run was completed, and warns/fails based
+# on how long ago that was, using the thresholds '--critical' and '--warning'
+# in seconds.
+#
+# In the second mode, with "--check-failures", this script will warn or fail
+# depending on if the total number of puppet failures excees the values set
+# with '--critical' and '--warning'
 
 require 'optparse'
 require 'yaml'

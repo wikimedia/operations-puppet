@@ -126,6 +126,10 @@ class base::monitoring::host($contact_group = 'admins') {
         description  => 'puppet last run',
         nrpe_command => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
     }
+    nrpe::monitor_service { 'puppet_checkpuppeterrors':
+        description  => 'puppet errors',
+        nrpe_command => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -f -w 1 -c 4",
+    }
     nrpe::monitor_service {'check_eth':
         description  => 'check configured eth',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_eth',
