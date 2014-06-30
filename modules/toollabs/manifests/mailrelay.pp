@@ -56,21 +56,6 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
         notify  => Service['exim4'],
     }
 
-    # Enable Ganglia monitoring.
-    file { '/usr/local/bin/collect_exim_stats_via_gmetric':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///files/ganglia/collect_exim_stats_via_gmetric',
-    }
-
-    cron { 'collect_exim_stats_via_gmetric':
-        ensure  => present,
-        user    => 'root',
-        command => '/usr/local/bin/collect_exim_stats_via_gmetric',
-        require => File['/usr/local/bin/collect_exim_stats_via_gmetric'],
-    }
-
     # Diamond user needs sudo to access exim
     admin::sudo { 'diamond_sudo_for_exim':
         user    => 'diamond',
