@@ -35,12 +35,20 @@ class role::analytics::hadoop::client {
         include role::analytics::hadoop::labs
         $ganglia_host = 'aggregator.eqiad.wmflabs'
         $ganglia_port = 50090
+
+        # Currently in transition between using cdh (CDH5) module
+        # and cdh4 module.  Labs uses cdh.
+        $cdh_module_name = 'cdh'
     }
     else {
         include role::analytics::hadoop::production
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host = '239.192.1.32'
         $ganglia_port = 8649
+
+        # Currently in transition between using cdh (CDH5) module
+        # and cdh4 module.  Production uses cdh4.
+        $cdh_module_name = 'cdh4'
     }
 
 
@@ -51,23 +59,24 @@ class role::analytics::hadoop::client {
 #
 class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::master': description => 'Hadoop Master (NameNode & ResourceManager)' }
-    include cdh4::hadoop::master
+
+    class { "${cdh_module_name}::hadoop::master": }
 
     # Icinga process alerts for NameNode, ResourceManager and HistoryServer
     nrpe::monitor_service { 'hadoop-hdfs-namenode':
         description  => 'Hadoop Namenode - Primary',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
-        require      => Class['::cdh4::hadoop::master'],
+        require      => Class["${cdh_module_name}::hadoop::master"],
     }
     nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
         description  => 'Hadoop ResourceManager',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
-        require      => Class['::cdh4::hadoop::master'],
+        require      => Class["${cdh_module_name}::hadoop::master"],
     }
     nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
         description  => 'Hadoop HistoryServer',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
-        require      => Class['::cdh4::hadoop::master'],
+        require      => Class["${cdh_module_name}::hadoop::master"],
     }
     # Alert if this NameNode is not active
     monitor_ganglia { 'hadoop-hdfs-namenode-primary-is-active':
@@ -75,7 +84,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         metric      => 'Hadoop.NameNode.FSNamesystem.tag_HAState',
         warning     => '\!active',
         critical    => '\!active',
-        require      => Class['::cdh4::hadoop::master'],
+        require      => Class["${cdh_module_name}::hadoop::master"],
     }
 
     # Hadoop nodes are spread across multiple rows
@@ -86,7 +95,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     # We use jmxtrans instead.
 
     # Use jmxtrans for sending metrics to ganglia
-    class { 'cdh4::hadoop::jmxtrans::master':
+    class { "${cdh_module_name}::hadoop::jmxtrans::master":
         ganglia => "${ganglia_host}:${ganglia_port}",
     }
 
@@ -100,7 +109,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         command => 'test -d /var/log/hadoop-yarn/fairscheduler && /usr/bin/find /var/log/hadoop-yarn/fairscheduler -type f -mtime +14 -exec rm {} >/dev/null \;',
         minute  => 5,
         hour    => 0,
-        require => Class['::cdh4::hadoop::master'],
+        require => Class["${cdh_module_name}::hadoop::master"],
     }
 }
 
@@ -108,18 +117,19 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
 # Includes cdh4::hadoop::worker classes
 class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::worker': description => 'Hadoop Worker (DataNode & NodeManager)' }
-    include cdh4::hadoop::worker
+
+    class { "${cdh_module_name}::hadoop::worker": }
 
     # Icinga process alerts for DataNode and NodeManager
     nrpe::monitor_service { 'hadoop-hdfs-datanode':
         description  => 'Hadoop DataNode',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
-        require      => Class['::cdh4::hadoop::worker'],
+        require      => Class["${cdh_module_name}::hadoop::worker"],
     }
     nrpe::monitor_service { 'hadoop-yarn-nodemanager':
         description  => 'Hadoop NodeManager',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
-        require      => Class['::cdh4::hadoop::worker'],
+        require      => Class["${cdh_module_name}::hadoop::worker"],
     }
 
     # Hadoop nodes are spread across multiple rows
@@ -130,7 +140,7 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     # We use jmxtrans instead.
 
     # Use jmxtrans for sending metrics to ganglia
-    class { 'cdh4::hadoop::jmxtrans::worker':
+    class { "${cdh_module_name}::hadoop::jmxtrans::worker":
         ganglia => "${ganglia_host}:${ganglia_port}",
     }
 
@@ -142,17 +152,17 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
 # Include standby namenode classes
 class role::analytics::hadoop::standby inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::standby': description => 'Hadoop Standby NameNode' }
-    include cdh4::hadoop::namenode::standby
+    class { "${cdh_module_name}::hadoop::namenode::standby": }
 
     # Icinga process alert for Stand By NameNode
     nrpe::monitor_service { 'hadoop-hdfs-namenode':
         description  => 'Hadoop Namenode - Stand By',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
-        require      => Class['::cdh4::hadoop::namenode::standby'],
+        require      => Class["${cdh_module_name}::hadoop::namenode::standby"],
     }
 
     # Use jmxtrans for sending metrics to ganglia
-    class { 'cdh4::hadoop::jmxtrans::namenode':
+    class { "${cdh_module_name}::hadoop::jmxtrans::namenode":
         ganglia => "${ganglia_host}:${ganglia_port}",
     }
 
@@ -253,7 +263,7 @@ class role::analytics::hadoop::production {
         nrpe::monitor_service { 'hadoop-hdfs-journalnode':
             description  => 'Hadoop JournalNode',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
-            require      => Class['::cdh4::hadoop'],
+            require      => Class["${cdh_module_name}::hadoop"],
         }
     }
 }
@@ -263,10 +273,21 @@ class role::analytics::hadoop::production {
 
 
 # == Class role::analytics::hadoop::labs
-# Common hadoop configs for the labs Kraken cluster
-# namenode_hostname is configurable via the 
-# hadoop_namenode global variable, and defaults to
-# this nodes $::fqdn.
+# Common hadoop configs for the spawning Hadoop
+# clusters in labs.  Since labs instances are
+# configured via global variables, you'll
+# need to make sure the following are set via
+# the Manage Instances GUI.
+#
+# $hadoop_namenodes   - Comma separated list of FQDNs that should be NameNodes
+#                       for this cluster.  The first entry in the list
+#                       is assumed to be the preferred primary NameNode.
+# $journalnode_hosts  - Comma separated list of FQDNs that should be JournalNodes
+#                       for this cluster.
+# $cluster_name       - Logical name of this cluster.  This will be used
+#                       as the Hadoop Nameservice ID.
+# $heapsize           - Optional.  Set this to a value in MB to limit the JVM
+#                       heapsize for all Hadoop daemons.
 #
 class role::analytics::hadoop::labs {
     # if the global variable $::hadoop_namenodes is set,
@@ -282,11 +303,18 @@ class role::analytics::hadoop::labs {
         default => split($::hadoop_journalnodes, ','),
     }
 
-    $nameservice_id = $::hadoop_nameservice_id ? {
+    $cluster_name = $::hadoop_cluster_name ? {
         undef   => undef,
-        default => $::hadoop_nameservice_id,
+        default => $::hadoop_cluster_name,
     }
 
+    # Allow labs users to configure their Hadoop daemon
+    # Heapsize.  NOTE:  This will be applied to
+    # All Hadoop related services on this node.
+    $heapsize = $::hadoop_heapsize ? {
+        undef   => undef,
+        default => $::hadoop_heapsize,
+    }
 
     $hadoop_name_directory    = '/var/lib/hadoop/name'
 
@@ -305,9 +333,9 @@ class role::analytics::hadoop::labs {
         ensure => 'directory',
     }
 
-    class { 'cdh4::hadoop':
+    class { 'cdh::hadoop':
+        cluster_name                             => $cluster_name,
         namenode_hosts                           => $namenode_hosts,
-        nameservice_id                           => $nameservice_id,
         journalnode_hosts                        => $journalnode_hosts,
         datanode_mounts                          => $datanode_mounts,
         dfs_name_dir                             => [$hadoop_name_directory],
@@ -323,16 +351,8 @@ class role::analytics::hadoop::labs {
         mapreduce_map_tasks_maximum              => 2,
         mapreduce_reduce_tasks_maximum           => 2,
         mapreduce_job_reuse_jvm_num_tasks        => 1,
-        yarn_resourcemanager_scheduler_class     => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
-    }
-
-    file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
-        content => template('hadoop/fair-scheduler.xml.erb'),
-        require => Class['cdh4::hadoop'],
-    }
-    file { "$::cdh4::hadoop::config_directory/fair-scheduler-allocation.xml":
-        content => template('hadoop/fair-scheduler-allocation.xml.erb'),
-        require => Class['cdh4::hadoop'],
+        hadoop_heapsize                          => $heapsize,
+        yarn_heapsize                            => $heapsize,
     }
 }
 
