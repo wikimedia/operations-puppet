@@ -7,7 +7,7 @@
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Order allow,deny
-        allow from <%= @deployable_networks %>
+        allow from <%= Array(@deployable_networks).join(' ') %>
     </Directory>
 
     LogLevel warn
