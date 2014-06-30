@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+    ServerName <%= @fqdn %>
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot /srv/deployment
+
+    <Directory /srv/deployment>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from <%= @deployable_networks %>
+    </Directory>
+
+    LogLevel warn
+    ErrorLog /var/log/apache2/<%= @fqdn %>_error.log
+    CustomLog /var/log/apache2/<%= @fqdn %>_access.log combined
+    ServerSignature Off
+</VirtualHost>
