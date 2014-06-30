@@ -15,6 +15,9 @@ class toollabs {
 
     include labs_lvm
 
+    # 'Big' logs, since the default 2G /var is way too little
+    include role::labs::lvm::biglogs
+
     $sysdir = '/data/project/.system'
     $store  = "$sysdir/store"
     $repo   = "$sysdir/deb"
