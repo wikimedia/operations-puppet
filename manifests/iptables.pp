@@ -146,7 +146,7 @@ class iptables::tables {
                 "set table[. = 'filter']/chain[2]/policy ACCEPT",
                 "set table[. = 'filter']/chain[3] OUTPUT",
                 "set table[. = 'filter']/chain[3]/policy ACCEPT" ],
-            require => Augeas['$hostname iptables tables'];
+            require => Augeas["${hostname} iptables tables"];
         }
     }
 
