@@ -18,21 +18,6 @@ class base::puppet($server='puppet', $certname=undef) {
         }
     }
 
-    # monitoring via snmp traps
-    # TODO: Remove after successful purging
-    package { 'snmp':
-        ensure => purged,
-    }
-
-    file { '/etc/snmp':
-        ensure  => absent,
-    }
-
-    file { '/etc/snmp/snmp.conf':
-        ensure  => absent,
-    }
-    # end of monitoring via snmp traps
-
     file { '/etc/default/puppet':
         owner  => 'root',
         group  => 'root',
