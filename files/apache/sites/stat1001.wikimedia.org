@@ -1,0 +1,18 @@
+NameVirtualHost *:80
+<VirtualHost *:80>
+  ServerName stat1001.wikimedia.org
+
+  DocumentRoot /var/www
+
+  <Directory /var/www>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+    Order allow,deny
+    allow from all
+  </Directory>
+
+  LogLevel warn
+  ErrorLog /var/log/apache2/default_error.log
+  CustomLog /var/log/apache2/default_access.log combined
+  ServerSignature Off
+</VirtualHost>
