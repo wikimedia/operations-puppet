@@ -7,8 +7,8 @@ use Sys::Syslog;
 # general conf
 my $spam = '/var/spool/spam/spam';
 my $ham = '/var/spool/spam/ham';
-my $user = 'otrs',
-my $group = 'otrs',
+my $user = 'debian-spamd',
+my $group = 'debian-spamd',
 my $lockfile = '/tmp/train_spamassassin.lock';
 chomp(my $ident = ($0 =~ /([^\/]+)$/) ? $1 : $0);
 
