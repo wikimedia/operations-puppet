@@ -3,7 +3,14 @@
 class mediawiki::web( $maxclients = 40 ) {
     include ::mediawiki
     include ::mediawiki::monitoring::webserver
-    include ::mediawiki::web::config
+
+    if ! defined($mw_use_local_resources) {
+        $mw_use_local_resources = false
+    }
+
+    class { '::mediawiki::web::config':
+        use_local_resources => $mw_use_local_resources
+    }
 
     file { '/etc/apache2/apache2.conf':
         content => template('mediawiki/apache/apache2.conf.erb'),
