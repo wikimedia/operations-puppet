@@ -54,6 +54,22 @@ class role::swift {
 				hour    => "*",
 				minute  => "*",
 			}
+			# swift-dispersion reporting
+			file { "/usr/local/bin/swift-dispersion-stats":
+				ensure  => present,
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0555',
+				source  => "puppet:///files/swift/swift-dispersion-stats",
+				require => [ Package['swift'], Package['python-statsd'] ],
+			}
+			cron { "swift-dispersion-stats":
+				ensure  => present,
+				command => "/usr/local/bin/swift-dispersion-stats --prefix swift.eqiad-prod.dispersion --statsd-host statsd.eqiad.wmnet 1>/dev/null",
+				user    => root,
+				hour    => "*",
+				minute  => "*/15",
+			}
 		}
 		class proxy inherits role::swift::eqiad-prod {
 			class { "::swift::proxy":
@@ -70,7 +86,8 @@ class role::swift {
 				rewrite_password => $passwords::swift::eqiad_prod::rewrite_password,
 				rewrite_thumb_server => "rendering.svc.eqiad.wmnet",
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb,wikipedia-commons-local-public,wikipedia-de-local-public,wikipedia-en-local-public,wikipedia-fi-local-public,wikipedia-fr-local-public,wikipedia-he-local-public,wikipedia-hu-local-public,wikipedia-id-local-public,wikipedia-it-local-public,wikipedia-ja-local-public,wikipedia-ro-local-public,wikipedia-ru-local-public,wikipedia-th-local-public,wikipedia-tr-local-public,wikipedia-uk-local-public,wikipedia-zh-local-public,wikipedia-commons-local-temp,wikipedia-de-local-temp,wikipedia-en-local-temp,wikipedia-fi-local-temp,wikipedia-fr-local-temp,wikipedia-he-local-temp,wikipedia-hu-local-temp,wikipedia-id-local-temp,wikipedia-it-local-temp,wikipedia-ja-local-temp,wikipedia-ro-local-temp,wikipedia-ru-local-temp,wikipedia-th-local-temp,wikipedia-tr-local-temp,wikipedia-uk-local-temp,wikipedia-zh-local-temp,wikipedia-commons-local-transcoded,wikipedia-de-local-transcoded,wikipedia-en-local-transcoded,wikipedia-fi-local-transcoded,wikipedia-fr-local-transcoded,wikipedia-he-local-transcoded,wikipedia-hu-local-transcoded,wikipedia-id-local-transcoded,wikipedia-it-local-transcoded,wikipedia-ja-local-transcoded,wikipedia-ro-local-transcoded,wikipedia-ru-local-transcoded,wikipedia-th-local-transcoded,wikipedia-tr-local-transcoded,wikipedia-uk-local-transcoded,wikipedia-zh-local-transcoded,global-data-math-render",
-				backend_url_format => "sitelang"
+				backend_url_format => "sitelang",
+				dispersion_password => $passwords::swift::eqiad_prod::dispersion_password,
 			}
 			class { '::swift::proxy::monitoring':
 				host => 'ms-fe.eqiad.wmnet',
@@ -130,6 +147,22 @@ class role::swift {
 				hour    => "*",
 				minute  => "*",
 			}
+			# swift-dispersion reporting
+			file { "/usr/local/bin/swift-dispersion-stats":
+				ensure  => present,
+				owner   => 'root',
+				group   => 'root',
+				mode    => '0555',
+				source  => "puppet:///files/swift/swift-dispersion-stats",
+				require => [ Package['swift'], Package['python-statsd'] ],
+			}
+			cron { "swift-dispersion-stats":
+				ensure  => present,
+				command => "/usr/local/bin/swift-dispersion-stats --prefix swift.esams-prod.dispersion --statsd-host statsd.eqiad.wmnet 1>/dev/null",
+				user    => root,
+				hour    => "*",
+				minute  => "*/15",
+			}
 		}
 		class proxy inherits role::swift::esams-prod {
 			class { "::swift::proxy":
@@ -146,7 +179,8 @@ class role::swift {
 				rewrite_password => $passwords::swift::esams_prod::rewrite_password,
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_container_list => "",
-				backend_url_format => "asis"
+				backend_url_format => "asis",
+				dispersion_password => $passwords::swift::esams_prod::dispersion_password,
 			}
 			class { '::swift::proxy::monitoring':
 				host => 'ms-fe.esams.wmnet',
@@ -214,7 +248,8 @@ class role::swift::labs inherits role::swift::base {
 			rewrite_password => $passwords::swift::eqiad_prod::rewrite_password,
 			rewrite_thumb_server => "rendering.svc.eqiad.wmnet",
 			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb,wikipedia-commons-local-public,wikipedia-de-local-public,wikipedia-en-local-public,wikipedia-fi-local-public,wikipedia-fr-local-public,wikipedia-he-local-public,wikipedia-hu-local-public,wikipedia-id-local-public,wikipedia-it-local-public,wikipedia-ja-local-public,wikipedia-ro-local-public,wikipedia-ru-local-public,wikipedia-th-local-public,wikipedia-tr-local-public,wikipedia-uk-local-public,wikipedia-zh-local-public,wikipedia-commons-local-temp,wikipedia-de-local-temp,wikipedia-en-local-temp,wikipedia-fi-local-temp,wikipedia-fr-local-temp,wikipedia-he-local-temp,wikipedia-hu-local-temp,wikipedia-id-local-temp,wikipedia-it-local-temp,wikipedia-ja-local-temp,wikipedia-ro-local-temp,wikipedia-ru-local-temp,wikipedia-th-local-temp,wikipedia-tr-local-temp,wikipedia-uk-local-temp,wikipedia-zh-local-temp,wikipedia-commons-local-transcoded,wikipedia-de-local-transcoded,wikipedia-en-local-transcoded,wikipedia-fi-local-transcoded,wikipedia-fr-local-transcoded,wikipedia-he-local-transcoded,wikipedia-hu-local-transcoded,wikipedia-id-local-transcoded,wikipedia-it-local-transcoded,wikipedia-ja-local-transcoded,wikipedia-ro-local-transcoded,wikipedia-ru-local-transcoded,wikipedia-th-local-transcoded,wikipedia-tr-local-transcoded,wikipedia-uk-local-transcoded,wikipedia-zh-local-transcoded,global-data-math-render",
-			backend_url_format => "sitelang"
+			backend_url_format => "sitelang",
+			dispersion_password => $passwords::swift::eqiad_prod::dispersion_password,
 		}
 		class { '::swift::proxy::monitoring':
 			host => $swift_proxy_hostname,

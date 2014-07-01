@@ -123,7 +123,8 @@ class swift::proxy(
     $rewrite_password,
     $rewrite_thumb_server,
     $shard_container_list,
-    $backend_url_format
+    $backend_url_format,
+    $dispersion_password,
     ) {
     Class['swift::base'] -> Class['swift::proxy']
 
@@ -137,6 +138,14 @@ class swift::proxy(
         mode    => '0440',
         content => template('swift/proxy-server.conf.erb'),
         require => Package['swift-proxy'],
+    }
+
+    file { '/etc/swift/dispersion.conf':
+        owner   => 'swift',
+        group   => 'swift',
+        mode    => '0440',
+        content => template('swift/dispersion.conf.erb'),
+        require => Package['swift'],
     }
 
     package {[
