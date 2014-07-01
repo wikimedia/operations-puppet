@@ -735,8 +735,8 @@ users:
     gid: 500
     name: jamesur
     realname: James Alexander
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+bZ1KKVo3jL93NYN/9++YVvbJobz5onNLMhQz37Ec8UZnb+m22R16JN0Fl++HfHy19RkI2H9Ex1vg5mqQHD+8BGpbRfl5VEJSmXB1zcbr+yJgk/b3G51EDCulJuuqQpcieI2Z4D8ds4q8NVl3cI3kH3hbjrIT4bojWz+GB0WzG2aNdkgwMUZynvLjQb+VrxcTd6fnWQsjEIVdtXXsp1croF3+lDPwrC3DFq0svPsDLu8jaFPM45VQ5VdxVZNYBGBAy+IzMeLCnLph/lBW0vS9jhAR+r0QYzzNHOiEnOISnoiw8ECtwOTAQjTaGdkv3enFme9/KXbdk6YWByapygrL
-        jalexander@wikimedia.org2]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrAneAwlPXWdUJfF5mq6iKhACVr0Zdhlx83oONDqERr8jD3Tn1oebsg0a7OgibL1CRPrZWCzMyh2ggY5Q9vwEyJ3DkIEfiUVxLfA9urtRLfKQ5r4gCv8OKBnG5+7K6dO50H/6IQ0YNr3bs5F3uHK3kDwTqb4M/I7NNtwojkjciZEA6w7DyHuQD15ihy5Q2AqflnjaSyAYn9rMCWHck6G5F16HhtnqGFHTZlZLNZgaC0xKMEPsS9nbFyPt6iECigfxbFOy+/gEpzTbseC0w3VIBxboHW/hpOKm23HVamxZXIZaBISBss6m/VRXxjA/ehz+PpkxvgOZylzKTNma5+wNp
+        jalexander@wikimedia.org July112014]
     uid: 2054
   jdlrobson:
     ensure: present
