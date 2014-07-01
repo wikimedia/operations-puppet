@@ -8,8 +8,11 @@ class gitblit(
     $ssl_cert       = '',
     $ssl_cert_key   = '',
 ) {
-
-    include webserver::apache
+    include ::apache::mod::headers
+    include ::apache::mod::proxy
+    include ::apache::mod::proxy_http
+    include ::apache::mod::rewrite
+    include ::apache::mod::ssl
 
     group { 'gitblit':
         ensure => present,
@@ -24,8 +27,7 @@ class gitblit(
         managehome => false,
     }
 
-    file { "/etc/apache2/sites-enabled/${host}":
-        ensure  => present,
+    apache::site { $host:
         content => template("gitblit/${host}.erb"),
     }
 
@@ -69,13 +71,4 @@ class gitblit(
     }
 
 
-    include ::apache::mod::headers
-
-    include ::apache::mod::rewrite
-
-    include ::apache::mod::proxy
-
-    include ::apache::mod::proxy_http
-
-    include ::apache::mod::ssl
 }
