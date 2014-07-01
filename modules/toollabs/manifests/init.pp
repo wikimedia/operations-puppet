@@ -137,6 +137,9 @@ class toollabs {
         target => "${store}/mail",
     }
 
-    # Collect NFS mount stats
-    diamond::collector { 'MountStats': }
+    # Don't collect MountStats, because we have no clear use for it atm.
+    # Should be removed in a day or two
+    diamond::collector { 'MountStats':
+        ensure => absent
+    }
 }
