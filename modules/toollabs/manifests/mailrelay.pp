@@ -65,7 +65,7 @@ class toollabs::mailrelay($maildomain, $gridmaster) inherits toollabs {
 
     diamond::collector { 'Exim':
         settings     => {
-            use_sudo => 'true',
+            use_sudo => true,
         }
     }
 }
