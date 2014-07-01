@@ -66,14 +66,10 @@ class phabricator (
     }
 
     include apache::mod::rewrite
-    #Phabricator requires http:// syntax and Apache doesn't like it
-    $phab_fqdn = inline_template("<%= phab_settings['phabricator.base-uri'].gsub('http://','') %>")
-    apache::vhost { $phab_fqdn:
-        ensure              => present,
-        priority            => '000',
-        port                => '80',
-        docroot             => '/srv/phab/phabricator/webroot',
-        template           => 'phabricator/phabricator-default.conf.erb',
+
+    $phab_fqdn = regsubst($phab_settings['phabricator.base-uri'], 'http://', '')
+    apache::site { $phab_fqdn:
+        template => 'phabricator/phabricator-default.conf.erb',
     }
 
     git::install { 'phabricator/libphutil':

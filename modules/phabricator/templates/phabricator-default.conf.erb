@@ -1,38 +1,27 @@
-# ************************************
-# Phabricator template in module <%= @modulename %>
-# Managed by Puppet
-# ************************************
+# Apache configuration for Phabricator (<%= @phab_fqdn %>)
+# This file is managed by Puppet.
+NameVirtualHost *:80
 
-NameVirtualHost <%= vhost_name %>:<%= port %>
-<VirtualHost <%= vhost_name %>:<%= port %>>
-  ServerName <%= srvname %>
-<% if serveradmin %>
-  ServerAdmin <%= serveradmin %>
-<% end %>
-<% if serveraliases.is_a? Array -%>
-<% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
-<% elsif serveraliases != '' -%>
-<%= "  ServerAlias #{serveraliases}" %>
-<% end -%>
-  DocumentRoot <%= docroot %>
-  <Directory <%= docroot %>>
-    Options <%= options %>
-    AllowOverride <%= Array(override).join(' ') %>
-    Order <%= docroot_dir_order %>
-    <% if docroot_dir_allows.is_a? Array %>
-    allow from <%= docroot_dir_allows.join(' ') %>
-    <% end %>
-    <% if docroot_dir_denies.is_a? Array %>
-    deny from <%= docroot_dir_denies.join(' ') %>
-    <% end %>
-  </Directory>
-  ErrorLog /var/log/apache2/<%= name %>_error.log
-  LogLevel warn
-  CustomLog /var/log/apache2/<%= name %>_access.log combined
+<VirtualHost *:80>
+  ServerName <%= @phab_fqdn %>
+  ServerAdmin noc@wikimedia.org
   ServerSignature Off
+
+  DocumentRoot /srv/phab/phabricator/webroot
+
+  <Directory /srv/phab/phabricator/webroot>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+    Order allow,deny
+    allow from all
+  </Directory>
 
   RewriteEngine on
   RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
   RewriteRule ^/favicon.ico   -                       [L,QSA]
   RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
+
+  LogLevel warn
+  ErrorLog /var/log/apache2/<%= @phab_fqdn %>_error.log
+  CustomLog /var/log/apache2/<%= @phab_fqdn %>_access.log combined
 </VirtualHost>
