@@ -13,12 +13,17 @@ class mediawiki::web ( $workers_limit = undef ) {
         $max_req_workers = inline_template('<%= ( @mem_available / @mem_per_worker ).to_i %>')
     }
 
+    if $mw_use_local_resources == undef {
+        # This is used in the apache2.conf template to switch from
+        # rsync-based resources to puppet-managed ones
+        $mw_use_local_resources = false
+    }
+
     file { '/etc/apache2/apache2.conf':
         content => template('mediawiki/apache/apache2.conf.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Class['::mediawiki::web::config'],
         before  => Service['apache'],
     }
 
