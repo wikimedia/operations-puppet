@@ -1965,6 +1965,11 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
+    if $::hostname == 'mw1017' {
+        $mw_use_local_resources = true
+    }
+
+
     if $::hostname == 'mw1070' {
         include misc::deployment::scap_proxy
     }
