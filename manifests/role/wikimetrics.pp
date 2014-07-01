@@ -222,7 +222,7 @@ class role::wikimetrics {
     # backup regardless of whether we are in debug mode or not
     if $::wikimetrics_backup {
         class { '::wikimetrics::backup':
-            destination   => '/data/project/wikimetrics/backup',
+            destination   => "/data/project/wikimetrics/backup/${::hostname}",
             db_user       => $db_user_wikimetrics,
             db_pass       => $db_pass_wikimetrics,
             db_name       => $db_name_wikimetrics,
