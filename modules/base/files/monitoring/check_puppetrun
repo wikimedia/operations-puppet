@@ -117,7 +117,7 @@ if failcount == :unknown or failcount == :nostatefile
 end
 
 if failcount > 0
-    puts "CRITICAL: Puppet has ${failcount} failures"
+    puts "CRITICAL: Puppet has #{failcount} failures"
     exit 2
 end
 
