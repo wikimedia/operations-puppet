@@ -25,15 +25,12 @@ class role::analytics::hive::client {
     # based on $::realm
     if ($::realm == 'labs') {
         include role::analytics::hive::labs
+        $cdh_module_name = 'cdh'
     }
     else {
         include role::analytics::hive::production
+        $cdh_module_name = 'cdh4'
     }
-
-    # Include hcatalog class so that Hive client's can use
-    # ths JsonSerDe from it.  If we expand the usage of HCatalog
-    # in the future, this will probably move to its own role.
-    class { '::cdh4::hcatalog': }
 }
 
 
@@ -53,7 +50,7 @@ class role::analytics::hive::server inherits role::analytics::hive::client {
     Package['mysql-server'] -> Class['::cdh4::hive::metastore::mysql']
 
     # Setup Hive server and Metastore
-    class { '::cdh4::hive::master': }
+    class { "${cdh_module_name}::hive::master": }
 }
 
 
@@ -74,15 +71,20 @@ class role::analytics::hive::production {
         zookeeper_hosts => $role::analytics::zookeeper::config::hosts_array,
         auxpath         => 'file:///usr/lib/hcatalog/share/hcatalog/hcatalog-core-0.5.0-cdh4.3.1.jar',
     }
+
+    # Include hcatalog class so that Hive client's can use
+    # ths JsonSerDe from it.  (This class is no longer needed in CDH5,
+    # and will be removed when we upgrade).
+    class { '::cdh4::hcatalog': }
 }
 
 # == Class role::analytics::hive::labs
 # Installs and configures hive for WMF Labs environment.
 #
 class role::analytics::hive::labs {
-    class { '::cdh4::hive':
+    class { '::cdh::hive':
         metastore_host  => $role::analytics::hadoop::labs::namenode_hosts[0],
         zookeeper_hosts => $role::analytics::zookeeper::config::hosts_array,
-        auxpath         => 'file:///usr/lib/hcatalog/share/hcatalog/hcatalog-core-0.5.0-cdh4.3.1.jar',
+        auxpath         => 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-0.12.0-cdh5.0.2.jar',
     }
 }
