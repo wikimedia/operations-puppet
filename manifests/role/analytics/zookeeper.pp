@@ -20,20 +20,27 @@
 # $role::analytics::zookeeper::hosts_array variables.
 #
 class role::analytics::zookeeper::config {
-    # TODO: Make this configurable via labs global variables.
-    $labs_hosts = {
-        'kraken-zookeeper.pmtpa.wmflabs' => 1,
-    }
 
-    $production_hosts = {
-        'analytics1023.eqiad.wmnet' => 1023,
-        'analytics1024.eqiad.wmnet' => 1024,
-        'analytics1025.eqiad.wmnet' => 1025,
+    if $::realm == 'labs' {
+        # It is difficult to to build a parameterized hash from
+        # the labs wikitech console global variables.
+        # Labs only supports a single zookeeper node.
+        if $::zookeeper_host {
+            $hosts = {
+                "${::zookeeper_host}" => 1,
+            }
+        }
+        else {
+            $hosts = undef
+        }
     }
-
-    $hosts = $::realm ? {
-        'labs'       => $labs_hosts,
-        'production' => $production_hosts,
+    # else production
+    else {
+        $hosts = {
+            'analytics1023.eqiad.wmnet' => 1023,
+            'analytics1024.eqiad.wmnet' => 1024,
+            'analytics1025.eqiad.wmnet' => 1025,
+        }
     }
 
     # maintain a $hosts_array variable here for
