@@ -28,7 +28,7 @@ puppet=$(which puppet)
 rm=$(which rm)
 
 function log() {
-  echo -e "\n${green}	->${1}${CLEAR}"
+  echo -e "\n${green}   ->${1}${CLEAR}"
   $logger "${1}"
 }
 
@@ -73,7 +73,7 @@ if [ "$1" != '-y' ]
   done
 fi
 
-#if lock_file is '' don't deal with status
+<%# if lock_file is '' don't deal with status %>
 <% if @lock_file  != ''-%>
 
 if [ -e <%= @lock_file %> ]
@@ -106,7 +106,9 @@ echo ""
 
 #upgrades are idempotent so there is no concern for multiple passes
 #--force silences the 'please stop apache' warnings, etc
-<%= @phabdir %>/phabricator/bin/storage upgrade --force
+<%= @phabdir %>/phabricator/bin/storage upgrade --force -u <%= @storage_user %> -p <%= @storage_pass %>
+#      --password password, -p password
+#      --user username, -u username
 
 <%= @phabdir %>/phabricator/bin/storage status &>/dev/null
 retcode=$?
@@ -117,8 +119,11 @@ fi
 
 log "Puppet should restore the lock file and associated services to normal state."
 
-$puppet agent --test
+/etc/init.d/puppet start
+/etc/init.d/apache2 start
+<%= @phabdir %>/phabricator/bin/phd start
 
 log "Starting puppet for a full reset to baseline"
+$puppet agent --test
 /etc/init.d/puppet start
 exit
