@@ -71,12 +71,9 @@ class toollabs::bastion($gridmaster) inherits toollabs {
         source => 'puppet:///modules/toollabs/crontab',
     }
 
-    # Collect active users metric with diamond
-    package { 'python-utmp':
-        ensure => present
-    }
-
+    # Don't collect active user metrics this way, is useless, clogs graphite
+    # Should be removed in a day or two
     diamond::collector{ 'Users':
-        require => Package['python-utmp']
+        ensure => absent
     }
 }
