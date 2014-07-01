@@ -41,7 +41,7 @@ class apt {
     }
 
     # Pin puppet base packages.
-    apt::puppet{'base':}
+    apt::puppet{ 'base':}
 
     $http_proxy = "http://webproxy.${::site}.wmnet:8080"
 
@@ -57,27 +57,32 @@ class apt {
                 Apt::Conf['old-releases-proxy'],
                 ]
     }
-    apt::conf {
-        'wikimedia-proxy':
-            ensure   => absent,
-            priority => '80',
-            key      => 'Acquire::http::Proxy',
-            value    => $http_proxy;
-        'security-ubuntu-proxy':
-            ensure   => present,
-            priority => '80',
-            key      => 'Acquire::http::Proxy::security.ubuntu.com',
-            value    => $http_proxy;
-        'ubuntu-cloud-archive-proxy':
-            ensure   => present,
-            priority => '80',
-            key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
-            value    => $http_proxy;
-        'old-releases-proxy':
-            ensure   => present,
-            priority => '80',
-            key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
-            value    => $http_proxy;
+    apt::conf { 'wikimedia-proxy':
+        ensure   => absent,
+        priority => '80',
+        key      => 'Acquire::http::Proxy',
+        value    => $http_proxy,
+    }
+
+    apt::conf { 'security-ubuntu-proxy':
+        ensure   => present,
+        priority => '80',
+        key      => 'Acquire::http::Proxy::security.ubuntu.com',
+        value    => $http_proxy,
+    }
+
+    apt::conf { 'ubuntu-cloud-archive-proxy':
+        ensure   => present,
+        priority => '80',
+        key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
+        value    => $http_proxy,
+    }
+
+    apt::conf { 'old-releases-proxy':
+        ensure   => present,
+        priority => '80',
+        key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
+        value    => $http_proxy,
     }
 
     # apt-get should not install recommended packages
