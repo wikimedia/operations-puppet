@@ -1,4 +1,9 @@
-define apt::conf($key, $value, $priority='20', $ensure=present) {
+define apt::conf(
+    $key,
+    $value,
+    $priority='20',
+    $ensure=present,
+) {
     file { "/etc/apt/apt.conf.d/${priority}${name}":
         ensure  => $ensure,
         owner   => 'root',
