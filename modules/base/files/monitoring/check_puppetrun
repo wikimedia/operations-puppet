@@ -12,7 +12,8 @@
 require 'optparse'
 require 'yaml'
 
-lockfile = "/var/lib/puppet/state/puppetdlock"
+runlockfile = "/var/lib/puppet/state/agent_catalog_run.lock"
+adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
 statefile = "/var/lib/puppet/state/state.yaml"
 summaryfile = "/var/lib/puppet/state/last_run_summary.yaml"
 enabled = true
@@ -23,28 +24,27 @@ failcount = 0
 warn = 0
 crit = 0
 enabled_only = false
-failures = false
 
 opt = OptionParser.new
 
-opt.on("--critical [CRIT]", "-c", Integer, "Critical threshold, time or failed resources") do |f|
+opt.on("--critical [CRIT]", "-c", Integer, "Critical staleness threshold, time in seconds") do |f|
     crit = f.to_i
 end
 
-opt.on("--warn [WARN]", "-w", Integer, "Warning thresold, time of failed resources") do |f|
+opt.on("--warn [WARN]", "-w", Integer, "Warning staleness threshold, time in seconds") do |f|
     warn = f.to_i
-end
-
-opt.on("--check-failures", "-f", "Check for failed resources instead of time since run") do |f|
-    failures = true
 end
 
 opt.on("--only-enabled", "-e", "Only alert if Puppet is enabled") do |f|
     enabled_only = true
 end
 
-opt.on("--lock-file [FILE]", "-l", "Location of the lock file, default #{lockfile}") do |f|
-    lockfile = f
+opt.on("--runlock-file [FILE]", "-l", "Location of the run lock file, default #{runlockfile}") do |f|
+    runlockfile = f
+end
+
+opt.on("--adminlock-file [FILE]", "-a", "Location of the admin lock file, default #{adminlockfile}") do |f|
+    adminlockfile = f
 end
 
 opt.on("--state-file [FILE]", "-t", "Location of the state file, default #{statefile}") do |f|
@@ -62,12 +62,12 @@ if warn == 0 || crit == 0
     exit 3
 end
 
-if File.exists?(lockfile)
-    if File::Stat.new(lockfile).zero?
+if File.exists?(adminlockfile)
        enabled = false
-    else
+end
+
+if File.exists?(runlockfile)
        running = true
-    end
 end
 
 lastrun = File.stat(statefile).mtime.to_i if File.exists?(statefile)
@@ -81,63 +81,55 @@ if File.exists?(summaryfile)
         # are treated as huge failures. The yaml file will be valid but
         # it wont have anything but last_run in it
         unless summary.include?("events")
-            failcount = 99
+            failcount = :failed
         else
             # and unless there are failures, the events hash just wont have the failure count
             failcount = summary["events"]["failure"] || 0
         end
     rescue
-        failcount = 0
+        failcount = :unknown
         summary = nil
     end
+else
+    failcount = :nostatefile
 end
 
 time_since_last_run = Time.now.to_i - lastrun
 
-unless failures
-    if enabled_only && enabled == false
-        puts "OK: Puppet is currently disabled, not alerting. Last run #{time_since_last_run} seconds ago with #{failcount} failures"
-        exit 0
-    end
-
-    if time_since_last_run >= crit
-        puts "CRITICAL: Puppet last ran #{time_since_last_run} seconds ago, expected < #{crit}"
-        exit 2
-
-    elsif time_since_last_run >= warn
-        puts "WARNING: Puppet last ran #{time_since_last_run} seconds ago, expected < #{warn}"
-        exit 1
-
-    else
-        if enabled
-            puts "OK: Puppet is currently enabled, last run #{time_since_last_run} seconds ago with #{failcount} failures"
-        else
-            puts "OK: Puppet is currently disabled, last run #{time_since_last_run} seconds ago with #{failcount} failures"
-        end
-
-        exit 0
-    end
-else
-    if enabled_only && enabled == false
-        puts "OK: Puppet is currently disabled, not alerting. Last run #{time_since_last_run} seconds ago with #{failcount} failures"
-        exit 0
-    end
-
-    if failcount >= crit
-        puts "CRITICAL: Puppet last ran had #{failcount} failures, expected < #{crit}"
-        exit 2
-
-    elsif failcount >= warn
-        puts "WARNING: Puppet last ran had #{failcount} failures, expected < #{warn}"
-        exit 1
-
-    else
-        if enabled
-            puts "OK: Puppet is currently enabled, last run #{time_since_last_run} seconds ago with #{failcount} failures"
-        else
-            puts "OK: Puppet is currently disabled, last run #{time_since_last_run} seconds ago with #{failcount} failures"
-        end
-
-        exit 0
-    end
+if enabled_only && enabled == false
+    puts "OK: Puppet is currently disabled, not alerting. Last run #{time_since_last_run} seconds ago with #{failcount} failures"
+    exit 0
 end
+
+if not enabled
+    puts "WARNING: Puppet is currently disabled, last run #{time_since_last_run} seconds ago with #{failcount} failures"
+    exit 1
+end
+
+if failcount == :failed
+    puts "CRITICAL: Complete puppet failure"
+    exit 2
+end
+
+if failcount == :unknown or failcount == :nostatefile
+    puts "UNKNOWN: Failed to check. Probably failed to read the state file"
+    exit 3
+end
+
+if failcount > 0
+    puts "CRITICAL: Puppet has ${failcount} failures"
+    exit 2
+end
+
+if time_since_last_run >= crit
+    puts "CRITICAL: Puppet last ran #{time_since_last_run} seconds ago, expected < #{crit}"
+    exit 2
+end
+
+if time_since_last_run >= warn
+    puts "WARNING: Puppet last ran #{time_since_last_run} seconds ago, expected < #{warn}"
+    exit 1
+end
+
+puts "OK: Puppet is currently enabled, last run #{time_since_last_run} seconds ago with #{failcount} failures"
+exit 0
