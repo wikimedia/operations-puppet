@@ -29,6 +29,11 @@
 #   The prefix to be used for metrics, used to namespace where
 #   the metric came from.
 #
+# [*keep_logs_for*]
+#   How many days to keep local diamond logs for. Logs are rotated
+#   every day, and logs older than the specified number of days
+#   are discarded.
+#
 # === Examples
 #
 # A Graphite configuration for Diamond:
@@ -48,6 +53,7 @@ class diamond(
                   port => '8125',
     },
     $path_prefix = 'servers',
+    $keep_logs_for = 5
 ) {
     package { [ 'python-diamond', 'python-configobj' ]:
         ensure => present,
