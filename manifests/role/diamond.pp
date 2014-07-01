@@ -10,18 +10,22 @@ class role::diamond {
 
     # Point to diamond-collector on labs and tungsten on prod
     case $::realm {
-        'labs': { $host = '10.68.17.169' }
-        default: { $host = '10.64.0.18' }
-    }
-
-    # Prefix labs metrics with project name
-    case $::realm {
-        'labs': { $path_prefix = $::instanceproject }
-        default: { $path_prefix = 'servers' }
+        'labs': {
+            $host = '10.68.17.169'
+            # Prefix labs metrics with project name
+            $path_prefix = $::instanceproject
+            $keep_logs_for = '1' # Keep only one day of logs, saves space
+        }
+        default: {
+            $host = '10.64.0.18'
+            $path_prefix = 'servers'
+            $keep_logs_for = '5'
+        }
     }
 
     class { '::diamond':
-        path_prefix => $path_prefix,
+        path_prefix   => $path_prefix,
+        keep_logs_for => $keep_logs_for,
         settings        => {
             enabled     => 'true',
             host        => $host,

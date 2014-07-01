@@ -42,7 +42,7 @@ propagate = 1
 class = logging.handlers.TimedRotatingFileHandler
 level = DEBUG
 formatter = default
-args = ('/var/log/diamond/diamond.log', 'd', 1, 5)
+args = ('/var/log/diamond/diamond.log', 'd', 1, <%= @keep_logs_for %>)
 
 [formatter_default]
 format = [%(asctime)s] [%(threadName)s] %(message)s
