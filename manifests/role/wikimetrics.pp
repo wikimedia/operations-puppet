@@ -221,15 +221,19 @@ class role::wikimetrics {
 
     # backup regardless of whether we are in debug mode or not
     if $::wikimetrics_backup {
-        class { '::wikimetrics::backup':
-            destination   => "/data/project/wikimetrics/backup/${::hostname}",
-            db_user       => $db_user_wikimetrics,
-            db_pass       => $db_pass_wikimetrics,
-            db_name       => $db_name_wikimetrics,
-            db_host       => $db_host_wikimetrics,
-            redis_db_file => "${redis_dir}/${redis_dbfilename}",
-            public_files  => $public_directory,
-            keep_days     => 10,
-        }
+      $backup_ensure = 'present'
+    } else {
+      $backup_ensure = 'absent'
+    }
+    class { '::wikimetrics::backup':
+        destination   => "/data/project/wikimetrics/backup/${hostname}",
+        db_user       => $db_user_wikimetrics,
+        db_pass       => $db_pass_wikimetrics,
+        db_name       => $db_name_wikimetrics,
+        db_host       => $db_host_wikimetrics,
+        redis_db_file => "${redis_dir}/${redis_dbfilename}",
+        public_files  => $public_directory,
+        keep_days     => 10,
+        ensure        => $backup_ensure,
     }
 }
