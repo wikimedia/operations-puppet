@@ -54,7 +54,7 @@ groups:
     gid: 707
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed, swalling, yuvipanda,
-      haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann]
+      haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -161,7 +161,8 @@ groups:
     members: [dartar, halfak, howief, ironholds, jdlrobson, jgonera, jmorgan,
               maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
-              yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann]
+              yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
+              deskana]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -1003,3 +1004,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyvGjFrt694WfWaeFBJKsaU25oLBTx/yiYQbnAunn6zu98yW374HqCXAvYdn+V0qNNO8uxp+TvIqibfud4Y59Ija2apeY2ck5E0TEeOJD9sbq+gbczJ+IFTQy4+/sr+MRXAsyAmUr6HrDqQYXgrE04kGkuKAac65ga7mq9KKE9GGIbqFl8kcN8WET8I5wTfb3vvB8unmyrLHYR3ewfXcpoPk6MpEDJD8uvf1fWz/Uqpe9IXhsfV37uiCaG+nfU+PlZA6KJSdZ4ceVHNBMlpeCEGX/BB38TtE7QqtK8ghjsl8/SeJ29uXz3OjPTZ4bjtJ0uD/DEoRoq+dpuNnC1RbLN
         bsitzmann@wikimedia.org]
     uid: 5037
+  deskana:
+    ensure: present
+    gid: 500
+    name: deskana
+    realname: Dan Garry
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCdM9OC4SueHM4uUWnbrKbVJyISM4pqBpiT84TW4UORYQMxL6RbBdloPxmXtdXBDIYQJyXUn1ymG+FDlUlk/OMnTo+S9m1fmJdfBADg/2qOJmLC6YcPdpOLapIkK3Fe+7ser6xyt6MGF4kmcOYPJqjtBntP3EabduX0H/PfH4CtmgibYSznLI5Rb1Kvd+/1xR9uFGJnQP5LI4+LQT273HpLx/gdCXTzO+rLS3xKspcUIrHlo6Hy5GmmUrvgemiyNHp8GkjuXt5Y7n45wmwLnZUd6YWx3ylroEzebCcCa//CAwlEztB7I8tOdD7NkbaJwUDoUcprU1PWx8JwSinVup9f
+        dgarry@dan-garry.corp.wikimedia.org]
+    uid: 3262
