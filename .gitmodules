@@ -28,3 +28,6 @@
 [submodule "modules/cdh"]
 	path = modules/cdh
 	url = https://gerrit.wikimedia.org/r/operations/puppet/cdh
+[submodule "modules/mediawiki/files/apache/config"]
+	path = modules/mediawiki/files/apache/config
+	url = https://gerrit.wikimedia.org/r/operations/apache-config
