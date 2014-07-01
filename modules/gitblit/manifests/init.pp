@@ -24,9 +24,14 @@ class gitblit(
         managehome => false,
     }
 
-    file { "/etc/apache2/sites-enabled/${host}":
+    file { "/etc/apache2/sites-available/${host}":
         ensure  => present,
         content => template("gitblit/${host}.erb"),
+    }
+
+    file { "/etc/apache2/sites-enabled/${host}":
+        ensure => link,
+        target => "/etc/apache2/sites-available/${host}"
     }
 
     file { '/var/lib/git':
