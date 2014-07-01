@@ -30,6 +30,8 @@
 # $wikimetrics_server_port    - port on which to listen for wikimetrics web requests.
 #                               If in apache mode, this defaults to 80, else
 #                               this defaults to 5000.
+# $wikimetrics_backup         - If it the evaluates to true, backup gets set up.
+#                               Otherwise, backup gets turned off.
 #
 class role::wikimetrics {
      # wikimetrics does not yet run via puppet in production
