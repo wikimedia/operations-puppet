@@ -79,6 +79,7 @@ class role::swift {
 		class storage inherits role::swift::eqiad-prod {
 			include ::swift::storage
 			include ::swift::storage::monitoring
+			include role::swift::icehouse
 		}
 	}
 	class esams-prod inherits role::swift::base {
