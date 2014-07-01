@@ -136,7 +136,4 @@ class toollabs {
         force  => true,
         target => "${store}/mail",
     }
-
-    # Collect NFS mount stats
-    diamond::collector { 'MountStats': }
 }
