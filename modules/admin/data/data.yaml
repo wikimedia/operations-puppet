@@ -41,8 +41,8 @@ groups:
       brion, bsitu, cmcmahon, cscott, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, mwalker,
-      nikerabbit, phuedx, reedy,
-      rmoen, robla, spage, ssastry, tomasz, yurik, jgonera, tgr]
+      nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik, jgonera,
+      tgr, ssmith]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
@@ -1012,3 +1012,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCdM9OC4SueHM4uUWnbrKbVJyISM4pqBpiT84TW4UORYQMxL6RbBdloPxmXtdXBDIYQJyXUn1ymG+FDlUlk/OMnTo+S9m1fmJdfBADg/2qOJmLC6YcPdpOLapIkK3Fe+7ser6xyt6MGF4kmcOYPJqjtBntP3EabduX0H/PfH4CtmgibYSznLI5Rb1Kvd+/1xR9uFGJnQP5LI4+LQT273HpLx/gdCXTzO+rLS3xKspcUIrHlo6Hy5GmmUrvgemiyNHp8GkjuXt5Y7n45wmwLnZUd6YWx3ylroEzebCcCa//CAwlEztB7I8tOdD7NkbaJwUDoUcprU1PWx8JwSinVup9f
         dgarry@dan-garry.corp.wikimedia.org]
     uid: 3262
+  ssmith:
+    ensure: present
+    gid: 500
+    name: ssmith
+    realname: Sam Smith
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9+TJfrksUVwMxt5Oj6NZxacj3UyKQNN+J48r7nF2SSVoH3hOLpXLB5Vep09X2bxyH+1AsqGQKGLW8a5DSTcEhLQ5Rc01GmaV461e51lxJoRRlDtCI6+sqBJRstZVWUrxYeAjAhaif0CWmepySMWytrFrLJuTQ08L+R4XH9uXxWfE+qY6KBjrrOGKS+98E13vYlxegxpctz729ZC0jDrikSNX47lu5us5OTMotaYPOu/lFYO8RUmqQnGNMjoKJjKQJclDZUp9fV3YWPW9XtJR6z1CACJIqng0501bWulMsjw/nWySoJLrh4H99KeLUVSiEWibupoTI6FKO2PC0vrzF
+        samsmith@wikimedia.org]
+    uid: 4170
