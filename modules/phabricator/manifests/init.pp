@@ -32,6 +32,14 @@
 #   A hash of configuration options for the local settings json file.
 #   https://secure.phabricator.com/book/phabricator/article/advanced_configuration/#configuration-sources
 #
+# [*mysql_admin_user*]
+#   Specify to use a different user for schema upgrades and database maintenance
+#   Requires: mysql_admin_pass
+#
+# [*mysql_admin_pass*]
+#   Specify to use a different password for schema upgrades and database maintenance
+#   Requires: mysql_admin_user
+#
 # === Examples
 #
 #  class { 'phabricator':
@@ -42,22 +50,41 @@
 #    },
 #  }
 #
-# Navigate to base-uri for post install setup
+# See README for post install instructions
 #
 
 class phabricator (
-    $phabdir    = '/srv/phab',
-    $timezone   = 'America/Los_Angeles',
-    $lock_file  = '',
-    $git_tag    = 'HEAD',
-    $settings   = {},
+    $phabdir          = '/srv/phab',
+    $timezone         = 'America/Los_Angeles',
+    $lock_file        = '',
+    $git_tag          = 'HEAD',
+    $settings         = {},
+    $mysql_admin_user = '',
+    $mysql_admin_pass = '',
+    $serveradmin      = '',
 ) {
 
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)
     $fixed_settings = loadyaml("${module_path}/data/fixed_settings.yaml")
+
     #per stdlib merge the dynamic settings will take precendence for conflicts
     $phab_settings = merge($fixed_settings, $settings)
+
+    #we are allowed a string test value that we populate with current tag
+    $phab_settings['test.value'] = $git_tag
+
+    if empty(mysql_admin_user) {
+        $storage_user = $phab_settings['mysql.user']
+    } else {
+        $storage_user = $mysql_admin_user
+    }
+
+    if empty(mysql_admin_pass) {
+        $storage_pass = $phab_settings['mysql.pass']
+    } else {
+        $storage_pass = $mysql_admin_pass
+    }
 
     package {
         ['git-core', 'php5', 'php5-mysql', 'php5-gd', 'php-apc',
@@ -66,71 +93,75 @@ class phabricator (
     }
 
     include apache::mod::rewrite
-    #Phabricator requires http:// syntax and Apache doesn't like it
-    $phab_fqdn = inline_template("<%= phab_settings['phabricator.base-uri'].gsub('http://','') %>")
-    apache::vhost { $phab_fqdn:
-        ensure              => present,
-        priority            => '000',
-        port                => '80',
-        docroot             => '/srv/phab/phabricator/webroot',
-        template           => 'phabricator/phabricator-default.conf.erb',
+
+    $docroot = "${phabdir}/phabricator/webroot"
+    $phab_servername = $phab_settings['phabricator.base-uri']
+    apache::site { 'phabricator':
+        content => template('phabricator/phabricator-default.conf.erb'),
     }
 
     git::install { 'phabricator/libphutil':
-        directory  => "${phabdir}/libphutil",
-        git_tag    => $git_tag,
-        lock_file  => $lock_file,
-        before     => Git::Install['phabricator/arcanist'],
+        directory => "${phabdir}/libphutil",
+        git_tag   => $git_tag,
+        lock_file => $lock_file,
+        before    => Git::Install['phabricator/arcanist'],
     }
 
     git::install { 'phabricator/arcanist':
-        directory  => "${phabdir}/arcanist",
-        git_tag    => $git_tag,
-        lock_file  => $lock_file,
-        before     => Git::Install['phabricator/phabricator'],
+        directory => "${phabdir}/arcanist",
+        git_tag   => $git_tag,
+        lock_file => $lock_file,
+        before    => Git::Install['phabricator/phabricator'],
     }
 
     git::install { 'phabricator/phabricator':
         directory => "${phabdir}/phabricator",
-        git_tag    => $git_tag,
-        lock_file  => $lock_file,
-        notify     => Exec["ensure_lock_${lock_file}"],
+        git_tag   => $git_tag,
+        lock_file => $lock_file,
+        notify    => Exec["ensure_lock_${lock_file}"],
     }
 
     #we ensure lock exists if string is not null
     exec {"ensure_lock_${lock_file}":
-        command     => "touch ${lock_file}",
-        unless      => "test -z ${lock_file} || test -e ${lock_file}",
-        path        => '/usr/bin:/bin',
+        command => "touch ${lock_file}",
+        unless  => "test -z ${lock_file} || test -e ${lock_file}",
+        path    => '/usr/bin:/bin',
     }
 
-    file { '/etc/php5/apache2filter/php.ini':
-        content => template('phabricator/php.ini.erb'),
+    case $::operatingsystemrelease {
+        '12.04': { $php_ini = '/etc/php5/apache2filter/php.ini' }
+        default: { $php_ini = '/etc/php5/apache2/php.ini'}
+    }
+
+    file { $php_ini:
+        content => template("phabricator/${lsbdistcodename}_php.ini.erb"),
         notify  => Service[apache2],
+        require => Package[php5],
     }
 
-    file { '/srv/phab/phabricator/conf/local/local.json':
+    file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => Git::Install['phabricator/phabricator'],
+        notify  => Service[apache2],
     }
 
     #default location for phabricator tracked repositories
     file { $phab_settings['repository.default-local-path']:
-        ensure => directory,
-        owner  => www-data,
-        group  => www-data,
+        ensure  => directory,
+        owner   => www-data,
+        group   => www-data,
         require => Git::Install['phabricator/phabricator'],
     }
 
     file { '/usr/local/sbin/phab_update_tag':
         content => template('phabricator/phab_update_tag.erb'),
-        owner  => root,
-        group  => root,
-        mode   => '0500',
+        owner   => root,
+        group   => root,
+        mode    => '0500',
     }
 
     #https://secure.phabricator.com/book/phabricator/article/managing_daemons/
-    $phd = "/srv/phab/phabricator/bin/phd"
+    $phd = "${phabdir}/phabricator/bin/phd"
     service { 'phd':
         ensure   => running,
         provider => base,
@@ -138,6 +169,6 @@ class phabricator (
         start    => "${phd} start",
         stop     => "${phd} stop",
         status   => "${phd} status",
-        require => Git::Install['phabricator/phabricator'],
+        require  => Git::Install['phabricator/phabricator'],
     }
 }

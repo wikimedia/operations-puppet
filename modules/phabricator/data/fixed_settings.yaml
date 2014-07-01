@@ -27,6 +27,8 @@ maniphest.custom-field-definitions:
     caption: external identifier
     search: true
 
+storage.upload-size-limit: 5M
+
 phabricator.serious-business: true
 
 repository.default-local-path: '/var/repo/'
@@ -36,3 +38,8 @@ phabricator.env: 'default'
 #will be overridden by production values if present
 mysql.host: 'localhost'
 mysql.pass: 'foo'
+
+#we don't host local docs or use the wiki :)
+phabricator.uninstalled-applications:
+  PhabricatorApplicationPhriction: true
+  PhabricatorApplicationDiviner: true

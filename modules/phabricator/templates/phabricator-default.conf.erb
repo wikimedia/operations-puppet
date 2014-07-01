@@ -1,34 +1,40 @@
-# ************************************
-# Phabricator template in module <%= @modulename %>
-# Managed by Puppet
-# ************************************
+# Apache configuration for Phabricator (<%= @phab_servername %>)
+# This file is managed by Puppet.
 
-NameVirtualHost <%= vhost_name %>:<%= port %>
-<VirtualHost <%= vhost_name %>:<%= port %>>
-  ServerName <%= srvname %>
-<% if serveradmin %>
-  ServerAdmin <%= serveradmin %>
-<% end %>
-<% if serveraliases.is_a? Array -%>
-<% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
-<% elsif serveraliases != '' -%>
-<%= "  ServerAlias #{serveraliases}" %>
+<%# Apache Prior to 2.3.11 %>
+<%# http://httpd.apache.org/docs/current/mod/core.html %>
+<% if @lsbdistcodename == 'precise'%>
+  NameVirtualHost *:<%= @port %>
 <% end -%>
-  DocumentRoot <%= docroot %>
-  <Directory <%= docroot %>>
-    Options <%= options %>
-    AllowOverride <%= Array(override).join(' ') %>
-    Order <%= docroot_dir_order %>
-    <% if docroot_dir_allows.is_a? Array %>
-    allow from <%= docroot_dir_allows.join(' ') %>
-    <% end %>
-    <% if docroot_dir_denies.is_a? Array %>
-    deny from <%= docroot_dir_denies.join(' ') %>
-    <% end %>
+
+<VirtualHost *:80>
+  ServerName <%= @phab_servername.gsub('http://', '').gsub('https://', '') %>
+
+<% if !@serveradmin.empty? %>
+  ServerAdmin <%= @serveradmin %>
+<% end %>
+
+  DocumentRoot <%= @docroot %>
+
+<%# Apache 2.4 and Newer %>
+<% if @lsbdistcodename == 'trusty'%>
+  <Directory "<%= @docroot %>">
+    Options Indexes FollowSymLinks MultiViews
+    Require all granted
   </Directory>
-  ErrorLog /var/log/apache2/<%= name %>_error.log
+<%# Apache Older Than 2.4 %>
+<% else %>
+  <Directory <%= @docroot %>>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+    Order allow,deny
+    allow from all
+  </Directory>
+<% end -%>
+
+  ErrorLog /var/log/apache2/<%= @name %>_error.log
   LogLevel warn
-  CustomLog /var/log/apache2/<%= name %>_access.log combined
+  CustomLog /var/log/apache2/<%= @name %>_access.log combined
   ServerSignature Off
 
   RewriteEngine on

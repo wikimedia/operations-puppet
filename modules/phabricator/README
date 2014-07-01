@@ -4,7 +4,25 @@ http://phabricator.org/
 Phabricator is a collection of open source web applications
 that help software companies build better software.
 
-=== Administration Notes
+=== Install
+
+The first puppet pass has failures related to Phabricator processes.
+
+The post-Puppet install process can either be finished via the configured
+URL or by running the phab_update_tag which will handle the storage upgrade
+for new installs in the same way it does for ongoing maintenance.
+
+Step 1.  Puppet run with applied Phabricator class
+Step 3.  phab_update_tag
+Step 2.  Set the default admin user for Phabricator in the UI
+
+At this point the Phabricator UI should indicate remaining issues.
+
+In particular, new installs will see the warning:
+
+  No Authentication Providers Configured
+
+=== Administration
 
 Recovering a password (including for the master admin account):
 
@@ -17,6 +35,14 @@ cat <phabricator_root>phabricator/conf/local/local.json | python -m json.tool
   Or
 
 <phabricator_root>phabricator/bin/config list
+
+All possible values can be seen on a current install: http://<fqdn>/config/all/
+
+=== Notable Settings Values
+
+phabricator.base-uri            - External URL.  Should be https if we are doing SSL.
+storage.default-namespace       - Changes database name prefix across all applications
+test.value                      - native noop value we fill with the current tag
 
 === Upgrading
 
@@ -51,9 +77,8 @@ Example output:
 
     phab_update_tag
 
-
 This script will manage setting up the migration state, upgrading the DB schema,
-rolling the git repositories to the appropriate tag defined in puppet, and 
+rolling the git repositories to the appropriate tag defined in puppet, and
 returning the host to the baseline.
 
 The upgrade process is invasive so an outage needs to be planned.
@@ -61,7 +86,7 @@ The upgrade process is invasive so an outage needs to be planned.
 == Upgrading and versioning notes for Phabricator:
 
 Typically, a tag will exist in the repository prior to upgrading as this same process
-can be used to upgrade a host in labs for testing and validation.  
+can be used to upgrade a host in labs for testing and validation.
 
 === Related Projects
 
