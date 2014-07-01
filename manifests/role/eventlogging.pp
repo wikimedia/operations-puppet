@@ -172,7 +172,12 @@ class role::eventlogging {
 # Keeps a running count of incoming events by schema in Graphite by
 # emitting 'eventlogging.SCHEMA_REVISION:1' on each event to a StatsD
 # instance.
+
+# The consumer connects to the host in 'input' and outputs data to the
+# host in 'output'. The output host should normally be statsd
 #
+# Includes process nanny alarm for graphite consumer
+
 class role::eventlogging::graphite {
     include ::eventlogging
 
@@ -180,4 +185,14 @@ class role::eventlogging::graphite {
         input  => 'tcp://vanadium.eqiad.wmnet:8600',
         output => 'statsd://statsd.eqiad.wmnet:8125',
     }
+
+    # Generate icinga alert if the graphite consumer is not running.
+    nrpe::monitor_service { 'eventlogging':
+        ensure        => 'present',
+        description   => 'Check status of defined EventLogging jobs on graphite consumer',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
+        require       => File['/usr/lib/nagios/plugins/check_eventlogging_jobs'],
+        contact_group => 'admins,analytics',
+    }
+
 }
