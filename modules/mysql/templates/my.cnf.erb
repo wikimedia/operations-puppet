@@ -4,29 +4,29 @@
 
 
 [client]
-port    = <%= port %>
-socket    = <%= socket %>
+port    = <%= @port %>
+socket  = <%= @socket %>
 
 [mysqld_safe]
-socket    = <%= socket %>
-nice    = 0
-<% if log_error == 'syslog' -%>
+socket    = <%= @socket %>
+nice      = 0
+<% if @log_error == 'syslog' -%>
 syslog
 <% end -%>
 
 [mysqld]
-user    = mysql
-pid-file  = <%= pidfile %>
-socket    = <%= socket %>
-port      = <%= port %>
-basedir   = <%= basedir %>
-datadir   = <%= datadir %>
+user      = mysql
+pid-file  = <%= @pidfile %>
+socket    = <%= @socket %>
+port      = <%= @port %>
+basedir   = <%= @basedir %>
+datadir   = <%= @datadir %>
 tmpdir    = /tmp
 skip-external-locking
 
-<% if bind_address %>
-bind_address    = <%= bind_address %>
-<% end %> 
+<% if @bind_address %>
+bind_address    = <%= @bind_address %>
+<% end %>
 
 key_buffer         = 1M
 max_allowed_packet = 16M
@@ -35,21 +35,21 @@ thread_cache_size  = 300
 myisam-recover     = BACKUP
 query_cache_limit  = 1M
 query_cache_size   = 16M
-<% if log_error != 'syslog' -%>
-log_error          = <%= log_error %>
+<% if @log_error != 'syslog' -%>
+log_error          = <%= @log_error %>
 <% end -%>
 expire_logs_days   = 10
 max_binlog_size    = 100M
-<% if default_engine != 'UNSET' %>
-default-storage-engine = <%= default_engine %>
+<% if @default_engine != 'UNSET' %>
+default-storage-engine = <%= @default_engine %>
 <% end %>
-<% if ssl == true %>
-ssl-ca    = <%= ssl_ca %>
-ssl-cert  = <%= ssl_cert %>
-ssl-key   = <%= ssl_key %>
+<% if @ssl == true %>
+ssl-ca    = <%= @ssl_ca %>
+ssl-cert  = <%= @ssl_cert %>
+ssl-key   = <%= @ssl_key %>
 <% end %>
-<% if sql_mode %>
-sql_mode  = <%= sql_mode %>
+<% if @sql_mode %>
+sql_mode  = <%= @sql_mode %>
 <% end %>
 
 [mysqldump]
@@ -61,8 +61,8 @@ max_allowed_packet = 16M
 
 [isamchk]
 key_buffer    = 16M
-<% if multi_instance == true -%>
-!include /etc/mysql/conf.d/my.cnf.<%= port %>
+<% if @multi_instance == true -%>
+!include /etc/mysql/conf.d/my.cnf.<%= @port %>
 <% else %>
 !includedir /etc/mysql/conf.d/
 <% end -%>
