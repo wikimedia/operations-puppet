@@ -13,13 +13,6 @@ pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.o
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerImpressions-sampled100.tsv.log
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:BannerRandom >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerRequests-sampled100.tsv.log
 
-### webstatscollector -- domas
-# NOTE!  The files that filter and collector (on gadolinium) generates
-# are rsynced over to dataset2 by a cron maintained by
-# apergos running on snapshot1.
-# gadolinium.wikimedia.org:3815 should be the webstats collector process.
-pipe 1 /usr/local/bin/filter | /usr/bin/log2udp -h gadolinium.wikimedia.org -p 3815
-
 ### API Usage
 pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= scope.lookupvar('role::logging::udp2log::erbium::webrequest_log_directory') %>/api-usage.tsv.log
 

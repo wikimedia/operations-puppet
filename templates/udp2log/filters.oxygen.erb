@@ -38,3 +38,10 @@ pipe 10 awk -f <%= @template_variables['webrequest_filter_directory'] %>/vu.awk 
 # Former contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former2') %>
 pipe 10 awk -f <%= @template_variables['webrequest_filter_directory'] %>/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
 
+### webstatscollector -- domas
+# NOTE!  The files that filter and collector (on gadolinium) generates
+# are rsynced over to dataset2 by a cron maintained by
+# apergos running on snapshot1.
+# gadolinium.wikimedia.org:3815 should be the webstats collector process.
+pipe 1 /usr/local/bin/filter | /usr/bin/log2udp -h gadolinium.wikimedia.org -p 3815
+
