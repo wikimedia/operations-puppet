@@ -2,11 +2,25 @@
 #
 # Provisions Apache web server package and service.
 #
+# This module was designed to provide a consistent interface over a
+# mixed production environment which includes both Precise / Apache 2.2
+# hosts and Trusty / Apache 2.4 hosts, and which utilizes Apache for
+# both mission-critical services (serving MediaWiki) and small, and
+# internal services.
+#
+# It accomodates different use-cases by expecting the caller to pass in
+# full configuration files, rather than generating configuration files
+# based on complex parameters and switches.
+#
+# The module provides forward- and back-compatibility by enabling
+# mod_version, mod_filter and mod_access_compat by default, and by using
+# /etc/apache2/conf-{enabled,available} to manage configuration snippets
+# on both Precise and Trusty.
+#
 class apache {
-    # Strive for seamless Apache 2.2 / 2.4 compatibility
-    include apache::mod::access_compat
-    include apache::mod::filter
-    include apache::mod::version
+    include apache::mod::access_compat  # enables allow/deny syntax in 2.4
+    include apache::mod::filter         # enables AddOutputFilterByType in 2.4
+    include apache::mod::version        # enables <IfVersion> config guards
 
     package { [ 'apache2', 'apache2-mpm-prefork' ]:
         ensure => present,
@@ -52,6 +66,6 @@ class apache {
         priority => 0,
     }
 
-    # Provision Apache modules before provisioning sites and config snippets
-    Apache::Mod_conf <| |> -> Apache::Conf <| |>
+    # Set up runtime parameters and modules before sites and config snippets.
+    Apache::Def <| |> -> Apache::Mod_conf <| |> -> Apache::Conf <| |>
 }
