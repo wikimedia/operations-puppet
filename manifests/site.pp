@@ -2651,6 +2651,14 @@ node /^elastic10(0[1-9]|1[0-9])\.eqiad\.wmnet/ {
     }
 }
 
+node 'lead.wikimedia.org' {
+    include admin
+    include standard-noexim
+    include role::mail::mx
+
+    interface::add_ip6_mapped { 'main': }
+}
+
 node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     $cluster = 'logstash'
     if $::hostname =~ /^logstash100[13]$/ {
