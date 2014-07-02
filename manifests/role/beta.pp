@@ -155,3 +155,12 @@ class role::beta::jobrunner {
         runners_gwt     => 1,
     }
 }
+
+# = Class: role::beta::puppetmaster
+# Add nice things to the beta puppetmaster.
+class role::beta::puppetmaster {
+    class { 'puppetmaster::reporter::logstash':
+        logstash_host => 'deployment-logstash1.eqiad.wmflabs',
+        logstash_port => 5229,
+    }
+}
