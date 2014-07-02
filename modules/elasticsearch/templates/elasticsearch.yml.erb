@@ -376,8 +376,7 @@ action.auto_create_index: <%= @auto_create_index %>
 # Protect against accidental close/delete operations on all indices. You can
 # still close/delete individual indices.
 ##
-action.disable_close_all_indices: true
-action.disable_delete_all_indices: true
+action.destructive_requires_name: true
 
 ##
 # Disable ability to shutdown nodes via REST API.
