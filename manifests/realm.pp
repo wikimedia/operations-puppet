@@ -165,11 +165,11 @@ $private_tables = [
 $wikimail_smarthost = $::realm ? {
     'production' => [ 'wiki-mail-eqiad.wikimedia.org' ],
     # FIXME: find some SMTP servers for labs
-    'labs'       => [ 'polonium.wikimedia.org', 'mchenry.wikimedia.org' ],
+    'labs'       => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
 }
 # Generic, default servers (order matters!)
 $mail_smarthost = $::realm ? {
-    'production' => [ 'polonium.wikimedia.org', 'mchenry.wikimedia.org' ],
+    'production' => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
     # FIXME: find some SMTP servers for labs
-    'labs'       => [ 'polonium.wikimedia.org', 'mchenry.wikimedia.org' ],
+    'labs'       => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
 }
