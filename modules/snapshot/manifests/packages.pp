@@ -1,6 +1,6 @@
 class snapshot::packages {
 
-    # pick up various users, twemproxy
+    # pick up various users, nutcracker
     include mediawiki
 
     if ($::lsbdistcodename == 'precise') {
