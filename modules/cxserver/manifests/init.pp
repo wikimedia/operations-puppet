@@ -43,7 +43,7 @@ class cxserver(
         ensure => present,
     }
 
-    $log_file = "{$log_dir}/main.log"
+    $log_file = "${log_dir}/main.log"
 
     file { $log_dir:
         ensure => directory,
