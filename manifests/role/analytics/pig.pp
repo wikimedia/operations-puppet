@@ -1,3 +1,7 @@
 class role::analytics::pig {
-    include cdh4::pig
+    $cdh_module_name = $::realm ? {
+        'production' => 'cdh4',
+        'labs'       => 'cdh',
+    }
+    class { "${cdh_module_name}::pig": }
 }
