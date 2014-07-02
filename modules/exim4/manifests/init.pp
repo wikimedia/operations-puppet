@@ -71,6 +71,14 @@ class exim4(
             require => Mount['/var/spool/exim4/scan', '/var/spool/exim4/db'],
             before  => Service['exim4'],
         }
+
+        # allow o+x for /var/spool/exim4 so that the above can be accessed
+        file { '/var/spool/exim4':
+            ensure  => directory,
+            owner   => 'Debian-exim',
+            group   => 'Debian-exim',
+            mode    => '0751',
+        }
     }
 
     # shortcuts update-exim4.conf from messing with us
