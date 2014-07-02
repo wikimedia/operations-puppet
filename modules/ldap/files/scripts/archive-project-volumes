@@ -29,7 +29,8 @@ class VolumeArchiver:
     def __init__(self):
         self.base_dir = '/srv/project/'
         self.archive_dir = os.path.join(self.base_dir, 'orphan-volumes')
-        self.orphan_list = os.path.join(self.base_dir, 'volumes-without-projects')
+        self.orphan_list_filename = 'volumes-without-projects'
+        self.orphan_list = os.path.join(self.base_dir, self.orphan_list_filename)
 
     def archive(self, volname):
         if not os.path.isdir(self.base_dir):
@@ -88,9 +89,18 @@ class VolumeArchiver:
                 vol_list = f.read().splitlines()
 
         for vol in vol_list:
-            logging.info("Archiving %s" % vol)
-            if not self.archive(vol):
-                logging.error("Archive failed, giving up.")
+            # Exclude things that are clearly not project volumes
+            if vol == self.orphan_list_filename:
+                continue
+            if vol == "lost+found":
+                continue
+            # And, just to be safe... make sure it's empty or has a 'home' or 'project' subdir
+            if (os.path.isdir(os.path.join(vol,'home')) or
+               os.path.isdir(os.path.join(vol,'project')) or
+               not os.listdir(vol)):
+                logging.info("Archiving %s" % vol)
+                if not self.archive(vol):
+                    logging.error("Archive failed, giving up.")
 
         return 0
 
