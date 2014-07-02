@@ -128,8 +128,14 @@ class role::logstash::beta {
         channels => ['#wikimedia-labs'],
     }
 
+    logstash::input::tcp { 'tcp-json':
+        port  => 5229,
+        codec => 'json_lines',
+    }
+
     logstash::conf { 'filter_irc_banglog':
         source   => 'puppet:///files/logstash/filter-irc-banglog.conf',
         priority => 50,
     }
+
 }
