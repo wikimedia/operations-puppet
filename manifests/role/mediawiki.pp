@@ -8,7 +8,7 @@ class role::mediawiki::common {
     include standard
     include geoip
     include ::mediawiki
-    include ::twemproxy::monitoring
+    include ::nutcracker::monitoring
 
     $mediawiki_log_aggregator = 'fluorine.eqiad.wmnet:8420'
 
