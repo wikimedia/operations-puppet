@@ -1,0 +1,7 @@
+input {
+  tcp {
+    type => "tcp"
+    port => <%= @port %>
+    codec => "<%= @codec %>"
+  }
+}
