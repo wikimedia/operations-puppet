@@ -266,7 +266,9 @@ class role::logging::webstatscollector {
 }
 
 # oxygen is a generic webrequests udp2log host
-# mostly running wikipedia zero filters.
+# mostly running:
+# - Wikipedia zero filters
+# - Webstatscollector 'filter'
 class role::logging::udp2log::oxygen inherits role::logging::udp2log {
     # include this to infer mobile varnish frontend hosts in
     # udp2log filter template.
@@ -299,11 +301,18 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
         group  => 'udp2log',
     }
 
+    # oxygen run webstatscollector's filter process,
+    # sending filtered logs to gadolinium's collector process.
+    package { 'webstatscollector':
+        ensure => 'installed',
+    }
+
     misc::udp2log::instance { 'oxygen':
         multicast       => true,
         packet_loss_log => '/var/log/udp2log/packet-loss.log',
         log_directory   => $webrequest_log_directory,
         template_variables => { 'webrequest_filter_directory' => $webrequest_filter_directory },
+        require            => Package['webstatscollector'],
     }
 }
 
@@ -321,7 +330,6 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
 # == Class role::logging::udp2log::erbium
 # Erbium udp2log instance:
 # - Fundraising: This requires write permissions on the netapp mount.
-# - Webstatscollector 'filter'
 #
 class role::logging::udp2log::erbium inherits role::logging::udp2log {
     include misc::fundraising::udp2log_rotation
@@ -349,12 +357,6 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
         require =>  User['file_mover'],
     }
 
-    # erbium run webstatscollector's filter process,
-    # sending filtered logs to gadolinium's collector process.
-    package { 'webstatscollector':
-        ensure => 'installed',
-    }
-
     misc::udp2log::instance { 'erbium':
         port               => '8419',
         packet_loss_log    => '/var/log/udp2log/packet-loss.log',
@@ -362,10 +364,7 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
         template_variables => {
             'fundraising_log_directory' => $fundraising_log_directory
         },
-        require            => [
-            File["${fundraising_log_directory}/logs"],
-            Package['webstatscollector']
-        ],
+        require            => File["${fundraising_log_directory}/logs"],
     }
 
 
