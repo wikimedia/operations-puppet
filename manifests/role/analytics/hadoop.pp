@@ -61,6 +61,10 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::master': description => 'Hadoop Master (NameNode & ResourceManager)' }
 
     class { "${cdh_module_name}::hadoop::master": }
+    # Master should run httpfs daemon.
+    class { "${cdh_module_name}::hadoop::httpfs":
+        require => Class["${cdh_module_name}::hadoop::master"],
+    }
 
     # Icinga process alerts for NameNode, ResourceManager and HistoryServer
     nrpe::monitor_service { 'hadoop-hdfs-namenode':
