@@ -45,6 +45,15 @@ class exim4(
 
     # mount tmpfs over the scan & db directories, for efficiency
     if $variant == 'heavy' {
+        # allow o+x for /var/spool/exim4 so that subdirs below can be accessed
+        file { '/var/spool/exim4':
+            ensure  => directory,
+            owner   => 'Debian-exim',
+            group   => 'Debian-exim',
+            mode    => '0751',
+            require => Package["exim4-daemon-${variant}"],
+        }
+
         # catch-22 with Puppet + mkdir/mount/chmod. The Debian package doesn't
         # ship $spool/scan, but exim4/exiscan mkdirs it on demand
         exec { 'mkdir /var/spool/exim4/scan':
