@@ -2284,6 +2284,11 @@ node 'potassium.eqiad.wmnet' {
     include role::poolcounter
 }
 
+node 'radon.eqiad.wmnet' {
+    include admin
+    include role::phabricator
+}
+
 # Live Recent Changes WebSocket stream
 node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
