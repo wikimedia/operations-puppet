@@ -22,6 +22,10 @@ class role::phabricator::legalpad {
                 'mysql.pass'                         => $mysql_apppass,
                 'mysql.host'                         => 'm3-master.eqiad.wmnet',
                 'storage.default-namespace'          => 'phlegal',
+                'metamta.mail-adapter'               => 'PhabricatorMailImplementationPHPMailerAdapter',
+                'phpmailer.mailer'                   => 'smtp',
+                'phpmailer.smtp-port'                => "25",
+                'phpmailer.smtp-host'                => 'polonium.wikimedia.org',
             },
         }
     }
