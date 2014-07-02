@@ -139,3 +139,12 @@ class role::beta::jobrunner {
     include role::beta::scap_target
     include role::mediawiki::jobrunner
 }
+
+# = Class: role::beta::puppetmaster
+# Add nice things to the beta puppetmaster.
+class role::beta::puppetmaster {
+    class { 'puppetmaster::reporter::logstash':
+        logstash_host => 'deployment-logstash1.eqiad.wmflabs',
+        logstash_port => 5229,
+    }
+}
