@@ -1190,7 +1190,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
     include role::logging::udp2log::nginx
 
     # gadolinium runs Domas' webstatscollector.
-    # udp2log runs the 'filter' binary (on erbium)
+    # udp2log runs the 'filter' binary (on oxygen)
     # which sends logs over to the 'collector' (on gadolinium)
     # service, which writes dump files in /a/webstats/dumps.
     include role::logging::webstatscollector
