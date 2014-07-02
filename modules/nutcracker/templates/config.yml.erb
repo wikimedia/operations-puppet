@@ -1,0 +1,8 @@
+memcached:
+<% @config.each do |k,v| -%>
+   <%= k %>: <%= v %>
+<% end -%>
+   servers:
+   <% @server_list.each do |server| -%>
+   - <%= server %>:1
+   <% end -%>
