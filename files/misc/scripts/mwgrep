@@ -86,7 +86,7 @@ args = ap.parse_args()
 
 filters = [
     {'term': {'namespace': str(args.ns)}},
-    {'script': {'script': "_source['text'].contains('%s')" % args.term}},
+    {'script': {'script': "_source['text'].contains('%s')" % args.term.replace("'", "\\'")}},
 ]
 
 if args.ns == NS_USER or args.ns == NS_MEDIAWIKI:
