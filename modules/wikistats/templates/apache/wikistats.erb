@@ -6,10 +6,10 @@
 
 <VirtualHost *:80>
 
-	ServerName <%= wikistats_host %>
+	ServerName <%= scope.lookupvar('wikistats::wikistats_host') %>
 
 	# RewriteEngine on
-	# RewriteRule ^/(.*)$ https://<%= wikistats_host %>/$1 [R=301]
+	# RewriteRule ^/(.*)$ https://<%= scope.lookupvar('wikistats::wikistats_host') %>/$1 [R=301]
 
 	DocumentRoot /var/www/wikistats
 
