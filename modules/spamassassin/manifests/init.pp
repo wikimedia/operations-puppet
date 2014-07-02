@@ -58,21 +58,6 @@ class spamassassin(
         ensure => present,
     }
 
-    if ($spamd_user == 'debian-spamd') {
-        group { 'debian-spamd':
-            ensure     => present,
-        }
-        user { 'debian-spamd':
-            ensure     => present,
-            gid        => 'debian-spamd',
-            shell      => '/bin/false',
-            home       => '/var/lib/spamassassin',
-            managehome => true,
-            system     => true,
-            require    => Group['debian-spamd'],
-        }
-    }
-
     file { '/etc/spamassassin/local.cf':
         content => template('spamassassin/local.cf'),
         owner   => 'root',
