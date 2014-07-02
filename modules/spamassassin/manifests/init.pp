@@ -80,7 +80,6 @@ class spamassassin(
             File['/etc/default/spamassassin'],
             File['/etc/spamassassin/local.cf'],
             Package['spamassassin'],
-            User[$spamd_user],
         ],
         subscribe => [
             File['/etc/default/spamassassin'],
