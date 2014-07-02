@@ -1,15 +1,15 @@
-# == Class: twemproxy::monitoring
+# == Class: nutcracker::monitoring
 #
 # Provisions Icinga alerts for twemproxy.
 #
-class twemproxy::monitoring {
-    nrpe::monitor_service { 'twemproxy':
-        description  => 'twemproxy process',
+class nutcracker::monitoring {
+    nrpe::monitor_service { 'nutcracker':
+        description  => 'nutcracker process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody -C nutcracker',
     }
 
-    nrpe::monitor_service { 'twemproxy_port':
-        description  => 'twemproxy port',
+    nrpe::monitor_service { 'nutcracker_port':
+        description  => 'nutcracker port',
         nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11211 --timeout=2',
     }
 }
