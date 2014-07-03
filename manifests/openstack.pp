@@ -118,7 +118,7 @@ class openstack::common($openstack_version="folsom",
             content => template("openstack/${$openstack_version}/nova/nova.conf.erb"),
             owner => nova,
             group => nogroup,
-            mode => 0440,
+            mode => '0440',
             require => Package['nova-common'];
     }
 
@@ -127,7 +127,7 @@ class openstack::common($openstack_version="folsom",
             content => template("openstack/${$openstack_version}/nova/api-paste.ini.erb"),
             owner => nova,
             group => nogroup,
-            mode => 0440,
+            mode => '0440',
             require => Package['nova-common'];
     }
 
@@ -183,7 +183,7 @@ class openstack::project-nfs-storage-service {
         ensure => directory,
         owner => 'root',
         group => 'nfsmanager',
-        mode => '02775',
+        mode => '2775',
     }
 
     if ($::site == 'eqiad') {
@@ -222,14 +222,14 @@ class openstack::project-storage {
         "/var/lib/glustermanager/.ssh/id_rsa":
             owner => glustermanager,
             group => glustermanager,
-            mode => 0600,
+            mode => '0600',
             source => "puppet:///private/gluster/glustermanager",
             require => Ssh_authorized_key["glustermanager"];
         "/var/run/glustermanager":
             ensure => directory,
             owner => glustermanager,
             group => glustermanager,
-            mode => 0700,
+            mode => '0700',
             require => Generic::Systemuser["glustermanager"];
     }
 }
@@ -312,48 +312,48 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
             content => template("openstack/common/controller/my.cnf.erb"),
             owner => root,
             group => root,
-            mode => 0640;
+            mode => '0640';
         "/etc/nova/mysql.sql":
             content => template("openstack/common/controller/mysql.sql.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["nova-common"];
         "/etc/nova/nova-user.sql":
             content => template("openstack/common/controller/nova-user.sql.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["nova-common"];
         "/etc/nova/nova-user.cnf":
             content => template("openstack/common/controller/nova-user.cnf.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["nova-common"];
         "/etc/puppet/puppet-user.sql":
             content => template("openstack/common/controller/puppet-user.sql.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["puppetmaster"];
         "/etc/puppet/puppet-user.cnf":
             content => template("openstack/common/controller/puppet-user.cnf.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["puppetmaster"];
         "/etc/glance/glance-user.sql":
             content => template("openstack/common/controller/glance-user.sql.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["glance"];
         "/etc/glance/glance-user.cnf":
             content => template("openstack/common/controller/glance-user.cnf.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["glance"];
     }
     file {
@@ -361,13 +361,13 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
             content => template("openstack/common/controller/keystone-user.sql.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["keystone"];
         "/etc/keystone/keystone-user.cnf":
             content => template("openstack/common/controller/keystone-user.cnf.erb"),
             owner => root,
             group => root,
-            mode => 0640,
+            mode => '0640',
             require => Package["keystone"];
     }
 }
@@ -400,7 +400,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     file {
         "/etc/apache2/sites-enabled/${webserver_hostname}":
             require => [ Package[php5] ],
-            mode => 0644,
+            mode => '0644',
             owner => root,
             group => root,
             content => template('apache/sites/wikitech.wikimedia.org.erb'),
@@ -412,32 +412,32 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             group  => 'root',
             source => "puppet:///files/openstack/wikitech-robots.txt";
         "/a":
-            mode => 755,
+            mode => '0755',
             owner => root,
             group => root,
             ensure => directory;
         "/a/backup":
-            mode => 755,
+            mode => '0755',
             owner => root,
             group => root,
             ensure => directory;
         "/a/backup/public":
-            mode => 755,
+            mode => '0755',
             owner => root,
             group => root,
             ensure => directory;
         "/usr/local/sbin/db-bak.sh":
-            mode => 555,
+            mode => '0555',
             owner => root,
             group => root,
             source => "puppet:///files/openstack/db-bak.sh";
         "/usr/local/sbin/mw-files.sh":
-            mode => 555,
+            mode => '0555',
             owner => root,
             group => root,
             source => "puppet:///files/openstack/mw-files.sh";
         "/usr/local/sbin/mw-xml.sh":
-            mode => 555,
+            mode => '0555',
             owner => root,
             group => root,
             source => "puppet:///files/openstack/mw-xml.sh";
@@ -791,7 +791,7 @@ class openstack::api-service($openstack_version="folsom", $novaconfig) {
     }
     file { "/etc/nova/policy.json":
         source => "puppet:///files/openstack/${openstack_version}/nova/policy.json",
-        mode => 0644,
+        mode => '0644',
         owner => root,
         group => root,
         notify => Service["nova-api"],
@@ -843,39 +843,39 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
                 ensure => directory,
                 owner => "nova",
                 group => "nova",
-                mode => 0700,
+                mode => '0700',
                 require => Package["nova-common"];
             "/var/lib/nova/.ssh/id_rsa":
                 source => "puppet:///private/ssh/nova/nova.key",
                 owner => "nova",
                 group => "nova",
-                mode => 0600,
+                mode => '0600',
                 require => File["/var/lib/nova/.ssh"];
             "/var/lib/nova/.ssh/authorized_keys":
                 source => "puppet:///private/ssh/nova/nova.pub",
                 owner => "nova",
                 group => "nova",
-                mode => 0600,
+                mode => '0600',
                 require => File["/var/lib/nova/.ssh"];
             "/etc/libvirt/libvirtd.conf":
                 notify => Service["libvirt-bin"],
                 owner => "root",
                 group => "root",
-                mode => 0444,
+                mode => '0444',
                 content => template("openstack/common/nova/libvirtd.conf.erb"),
                 require => Package["nova-common"];
             "/etc/default/libvirt-bin":
                 notify => Service["libvirt-bin"],
                 owner => "root",
                 group => "root",
-                mode => 0444,
+                mode => '0444',
                 content => template("openstack/common/nova/libvirt-bin.default.erb"),
                 require => Package["nova-common"];
             "/etc/nova/nova-compute.conf":
                 notify => Service["nova-compute"],
                 owner => "root",
                 group => "root",
-                mode => 0444,
+                mode => '0444',
                 content => template("openstack/common/nova/nova-compute.conf.erb"),
                 require => Package["nova-common"];
         }
@@ -916,7 +916,7 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
             notify => Service["nova-compute"],
             owner => "root",
             group => "root",
-            mode => 0444,
+            mode => '0444',
             require => Package["nova-common"];
     }
 }
@@ -1005,7 +1005,7 @@ class openstack::keystone-service($openstack_version="folsom", $keystoneconfig, 
             group => keystone,
             notify => Service["keystone"],
             require => Package["keystone"],
-            mode => 0440;
+            mode => '0440';
     }
 }
 
@@ -1036,14 +1036,14 @@ class openstack::glance-service($openstack_version="folsom", $glanceconfig) {
             group => nogroup,
             notify => Service["glance-api"],
             require => Package["glance"],
-            mode => 0440;
+            mode => '0440';
         "/etc/glance/glance-registry.conf":
             content => template("openstack/${$openstack_version}/glance/glance-registry.conf.erb"),
             owner => glance,
             group => nogroup,
             notify => Service["glance-registry"],
             require => Package["glance"],
-            mode => 0440;
+            mode => '0440';
     }
     if ($openstack_version == "essex") {
         # Keystone config was (thankfully) moved out of the paste config
@@ -1055,14 +1055,14 @@ class openstack::glance-service($openstack_version="folsom", $glanceconfig) {
                 group => glance,
                 notify => Service["glance-api"],
                 require => Package["glance"],
-                mode => 0440;
+                mode => '0440';
             "/etc/glance/glance-registry-paste.ini":
                 content => template("openstack/${$openstack_version}/glance/glance-registry-paste.ini.erb"),
                 owner => glance,
                 group => glance,
                 notify => Service["glance-registry"],
                 require => Package["glance"],
-                mode => 0440;
+                mode => '0440';
         }
     }
 }
