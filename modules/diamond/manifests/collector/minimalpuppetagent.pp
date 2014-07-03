@@ -10,6 +10,11 @@
 define diamond::collector::minimalpuppetagent {
     ensure_packages(['python-yaml'])
 
+    file { '/var/lib/puppet':
+        ensure => present,
+        mode   => '0755'
+    }
+
     diamond::collector { 'MinimalPuppetAgent':
         source  => 'puppet:///modules/diamond/collector/minimalpuppetagent.py',
         require => Package['python-yaml'],
