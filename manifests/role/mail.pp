@@ -43,17 +43,24 @@ class role::mail::mx {
         description   => 'Exim SMTP',
         check_command => 'check_smtp',
     }
+
+    # mails the wikimedia.org mail alias file to OIT once per week
+    $alias_file = '/etc/exim4/aliases/wikimedia.org'
+    $recipient  = 'officeit@wikimedia.org'
+    $subject    = "wikimedia.org mail aliases from ${::hostname}"
+    cron { 'mail_exim_aliases':
+        user    => 'Debian-exim',
+        minute  => 0,
+        hour    => 0,
+        weekday => 0,
+        command => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file} >/dev/null 2>&1",
+    }
 }
 
 class role::mail::oldmx {
     include backup::client
     include privateexim::aliases::private
     include exim4::ganglia
-
-    # mails the wikimedia.org mail alias file to OIT once per week
-    class { 'misc::maintenance::mail_exim_aliases':
-        enabled => true,
-    }
 
     monitor_service { 'smtp':
         description   => 'Exim SMTP',
