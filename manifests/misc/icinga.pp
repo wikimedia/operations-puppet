@@ -786,6 +786,12 @@ class icinga::monitor::snmp {
     }
 
     # snmp tarp stuff
+    group { 'snmptt':
+        ensure => present,
+        name   => 'snmptt',
+        system => true,
+    }
+
     user { 'snmptt':
         home       => '/var/spool/snmptt',
         managehome => true,
