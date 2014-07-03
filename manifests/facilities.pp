@@ -217,6 +217,12 @@ class facilities::dc-cam-transcoder {
         description => 'Data center camera transcoder',
     }
 
+    group { 'video':
+        ensure => present,
+        name   => 'video',
+        system => true,
+    }
+
     user { 'video':
         home       => '/var/lib/video',
         managehome => true,
