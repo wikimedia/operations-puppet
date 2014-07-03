@@ -2,6 +2,12 @@ class misc::statistics::user {
     $username = 'stats'
     $homedir  = "/var/lib/${username}"
 
+    group { $username:
+        ensure => present,
+        name   => $username,
+        system => true,
+    }
+
     user { $username:
         home       => $homedir,
         groups     => ['wikidev'],
