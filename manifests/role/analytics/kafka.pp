@@ -128,6 +128,10 @@ class role::analytics::kafka::client inherits role::analytics::kafka::config {
 # == Class role::analytics::kafka::server
 #
 class role::analytics::kafka::server inherits role::analytics::kafka::client {
+    system::role { 'role::analytics::kafka::server':
+        description => 'Kafka Broker Server'
+    }
+
     class { '::kafka::server':
         log_dirs                        => $log_dirs,
         brokers                         => $brokers,
@@ -158,8 +162,8 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         # to get back in sync with Zookeeper before it is removed from the ISR.
         # See: https://rt.wikimedia.org/Ticket/Display.html?id=6877 (near the bottom)
         # and: http://mail-archives.apache.org/mod_mbox/kafka-users/201407.mbox/%3CCAFbh0Q2f71qgs5JDNFxkm7SSdZyYMH=ZpEOxotuEQfKqeXQHfw@mail.gmail.com%3E
-        zookeeper_connection_timeout_ms => 160000,
-        zookeeper_session_timeout_ms    => 160000,
+        zookeeper_connection_timeout_ms => 16000,
+        zookeeper_session_timeout_ms    => 16000,
         # Use LinkedIn recommended settings with G1 garbage collector,
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }
