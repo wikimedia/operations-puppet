@@ -2632,6 +2632,11 @@ node 'terbium.eqiad.wmnet' {
     class { 'misc::maintenance::updatequerypages':
         enabled => true,
     }
+
+    package { 'python-mysqldb':
+        ensure => installed,
+    }
+
 }
 
 node /^elastic10(0[1-9]|1[0-9])\.eqiad\.wmnet/ {
