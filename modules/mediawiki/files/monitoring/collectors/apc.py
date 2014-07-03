@@ -15,16 +15,16 @@ import urllib2
 import diamond.collector
 
 
-class ApcCollector(diamond.collector.Collector):
+class MW_ApcCollector(diamond.collector.Collector):
 
     def get_default_config_help(self):
         pass
 
     def get_default_config(self):
-        config = super(ApcCollector, self).get_default_config()
+        config = super(MW_ApcCollector, self).get_default_config()
         config.update({
             'host': 'localhost',
-            'path': 'apc',
+            'url': 'apc',
             'timeout': 5
         })
         return config
@@ -32,7 +32,7 @@ class ApcCollector(diamond.collector.Collector):
     def collect(self):
         # publish stats with self.publish
         url = "http://127.0.0.1/{}".format(
-            self.config['path']
+            self.config['url']
         )
         headers = {
             'User-agent': 'diamond-apc-collector/1.0',

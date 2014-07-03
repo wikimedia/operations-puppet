@@ -15,6 +15,6 @@
 
     # Neat aliases for monitoring scripts
     <% @endpoints.each do |mountpoint, filepath| -%>
-    Alias /<%= mountpoint %> /var/www/<%= filepath %>
+    Alias /<%= mountpoint %> /var/www/monitoring/<%= filepath %>
     <% end %>
 </VirtualHost>
