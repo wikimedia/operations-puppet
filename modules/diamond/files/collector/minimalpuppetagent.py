@@ -16,6 +16,7 @@ Adapted from PuppetAgentCollector
 """
 
 import time
+import subprocess
 try:
     import yaml
     yaml  # workaround for pyflakes issue #13
@@ -32,6 +33,7 @@ class MinimalPuppetAgentCollector(diamond.collector.Collector):
                             self).get_default_config_help()
         config_help.update({
             'yaml_path': "Path to last_run_summary.yaml",
+            'sudo_user': "The user to sudo as to read the file at yaml_path"
         })
         return config_help
 
@@ -42,18 +44,20 @@ class MinimalPuppetAgentCollector(diamond.collector.Collector):
         config = super(MinimalPuppetAgentCollector, self).get_default_config()
         config.update({
             'yaml_path': '/var/lib/puppet/state/last_run_summary.yaml',
+            'sudo_user': 'puppet',
             'path':     'puppetagent',
             'method':   'Threaded',
         })
         return config
 
     def _get_summary(self):
-        summary_fp = open(self.config['yaml_path'], 'r')
+        process_path = ['/usr/bin/sudo', '-u', self.config['sudo_user'],
+                        '/bin/cat', self.config['yaml_path']
+                        ]
+        proc = subprocess.Popen(process_path, stdout=subprocess.PIPE)
+        out, _ = proc.communicate()
 
-        try:
-            summary = yaml.load(summary_fp)
-        finally:
-            summary_fp.close()
+        summary = yaml.load(out)
 
         return summary
 
