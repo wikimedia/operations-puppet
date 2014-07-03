@@ -3,6 +3,12 @@
 # requires: passwords::bugzilla for the PHP script to connect to db
 class bugzilla::reporter ($bz_report_user = 'reporter') {
 
+    group { 'bzreportergroup':
+        ensure => present,
+        name   => $bz_report_user,
+        system => true,
+    }
+
     user { 'bzreporter':
         home       => "/home/${bz_report_user}",
         groups     => [ $bz_report_user ],
