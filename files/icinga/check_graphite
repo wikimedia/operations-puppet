@@ -8,6 +8,10 @@ Based on the original plugin from disquis:
 
 :copyright: (c) 2014 Wikimedia Foundation
 :license: Apache License 2.0, see LICENSE for more details.
+
+ Can be tested like:
+ ./files/icinga/check_graphite --url http://graphite.wikimedia.org check_threshold
+   <metric-name> --from 15min -C 1 -W 2 --under
 """
 
 import os
@@ -184,7 +188,7 @@ class Threshold(GraphiteCheck):
             dest="percentage",
             default=1,
             type=int,
-            help='Number of datapoints above threshold that will raise the alarm')
+            help='Number of datapoints above or below threshold that will raise the alarm')
         return p
 
     def get_all(self, args):
@@ -212,8 +216,10 @@ class Threshold(GraphiteCheck):
         for target in self.targets:
             self.params.append(('target', target))
         if args.under:
+            self.under = True
             self.check_func = lambda x, y: x < y
         else:
+            self.under = False
             self.check_func = lambda x, y: x > y
         self.limits = {}
         self.limits['WARNING'] = args.warn
@@ -255,6 +261,10 @@ class Threshold(GraphiteCheck):
         if not datapoints['_total']:
             raise NagiosException('UNKNOWN', 'No valid datapoints found')
 
+        report = "above"
+        if self.under:
+            report = "under"
+
         lengths = {}
         t = datapoints['_total']
         for key in NagiosException.NAGIOS_STATUSES.keys():
@@ -267,10 +277,10 @@ class Threshold(GraphiteCheck):
             if lengths[key] >= t * self.perc / 100.0:
                 perc = lengths[key] * 100.0 / t
                 raise NagiosException(
-                    key, '%3.2f%% of data exceeded the %s threshold [%s]' %
-                    (perc, key.lower(), self.limits[key]))
-        return 'Less than %3.2f%% data above the threshold [%s]' % \
-            (self.perc, self.limits['WARNING'])
+                    key, '%3.2f%% of data %s the %s threshold [%s]' %
+                    (perc, report, key.lower(), self.limits[key]))
+        return 'Less than %3.2f%% %s the threshold [%s]' % \
+            (self.perc, report, self.limits['WARNING'])
 
 
 class Anomaly(GraphiteCheck):
