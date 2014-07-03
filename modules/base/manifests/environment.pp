@@ -17,6 +17,12 @@ class base::environment {
                     mode   => '0444',
                     source => 'puppet:///modules/base/environment/mysql-ps1.sh',
             }
+
+            file { '/etc/alternatives/editor':
+                ensure => link,
+                target => '/usr/bin/vim',
+            }
+
         } # /production
         'labs': {
             file { '/etc/bash.bashrc':

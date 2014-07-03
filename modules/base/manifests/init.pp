@@ -219,7 +219,6 @@ class base {
         base::remote-syslog,
         base::sysctl,
         base::motd,
-        base::vimconfig,
         base::standard-packages,
         base::environment,
         base::platform,
