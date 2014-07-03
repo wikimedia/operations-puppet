@@ -28,6 +28,7 @@ class role::phabricator::legalpad {
                 'phpmailer.mailer'                   => 'smtp',
                 'phpmailer.smtp-port'                => "25",
                 'phpmailer.smtp-host'                => 'polonium.wikimedia.org',
+                'auth.require-approval'              => false,
             },
         }
     }
