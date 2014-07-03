@@ -8,7 +8,7 @@
 # (Normal puppetrun locks contain process pid)
 #
 
-FILE=/var/lib/puppet/state/puppetdlock
+FILE=/var/lib/puppet/state/agent_catalog_run.lock
 
 test -f $FILE && ! test -s $FILE && echo "WARNING: Orphan puppetlock detected" && exit 1
 
