@@ -2274,6 +2274,9 @@ node 'potassium.eqiad.wmnet' {
 }
 
 node 'radon.eqiad.wmnet' {
+
+    class { 'base::firewall': }
+
     include admin
     include role::phabricator::legalpad
 }

@@ -31,4 +31,12 @@ class role::phabricator::legalpad {
             },
         }
     }
+
+    # firewalling, opens just port 80/tcp
+    # no 443 needed, we are behind misc. varnish
+    ferm::service { 'phablegal_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
 }
