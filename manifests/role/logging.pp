@@ -393,7 +393,11 @@ class role::logging::udp2log::misc {
 
 class role::logging::systemusers {
 
-    group { 'file_mover': ensure => present }
+    group { 'file_mover':
+        ensure => present,
+        name   => 'file_mover',
+        system => true,
+    }
 
     user { 'file_mover':
         uid        => 30001,
