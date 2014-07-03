@@ -297,27 +297,6 @@ class misc::maintenance::parsercachepurging( $enabled = false ) {
 
 }
 
-class misc::maintenance::mail_exim_aliases( $enabled = false ) {
-
-    $alias_file = '/etc/exim4/aliases/wikimedia.org'
-    $recipient  = 'officeit@wikimedia.org'
-    $subject    = "${hostname} mail aliases"
-
-    cron { 'mail_exim_aliases':
-        user    => 'apache',
-        minute  => 0,
-        hour    => 0,
-        weekday => 0,
-        command => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file} >/dev/null 2>&1",
-        ensure  => $enabled ?{
-            true    => present,
-            false   => absent,
-            default => absent
-        };
-    }
-
-}
-
 class misc::maintenance::updatetranslationstats( $ensure = absent ) {
     # Include this to a maintenance host to update translation stats.
 
