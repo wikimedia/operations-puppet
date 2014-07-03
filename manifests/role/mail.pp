@@ -90,8 +90,6 @@ class role::mail::mx {
 class role::mail::lists {
     include network::constants
 
-    # FIXME: needs to be split to lists/secondarymx
-
     system::role { 'role::mail::lists':
         description => 'Mailing list server',
     }
@@ -134,7 +132,6 @@ class role::mail::lists {
                 '+system_domains',
                 '+mailman_domains'
             ],
-        enable_mail_relay      => 'secondary',
         enable_mailman         => true,
         enable_spamassassin    => true,
         require                => [
