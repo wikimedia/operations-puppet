@@ -10,6 +10,15 @@
 define diamond::collector::minimalpuppetagent {
     ensure_packages(['python-yaml'])
 
+    # Currently, /var/lib/puppet is set to have no permissions for o,
+    # causing diamond to not be able to read the last_run_summary.yaml
+    # file despite that file having appropriate permissions set by
+    # puppet. This ensures that diamond can actually read that file.
+    exec { 'make-puppet-statefile-readable':
+        command => '/bin/chmod 0755 /var/lib/puppet',
+        unless  => "/bin/sh -c '[ $(/usr/bin/stat -c %a $name) == $mode ]'",
+    }
+
     diamond::collector { 'MinimalPuppetAgent':
         source  => 'puppet:///modules/diamond/collector/minimalpuppetagent.py',
         require => Package['python-yaml'],
