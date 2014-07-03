@@ -9,6 +9,8 @@ class role::phabricator::legalpad {
 
     if $::realm == 'production' {
 
+        system::role { 'role::phabricator::legalpad': description => 'Phabricator (Legalpad)' }
+
         class { '::phabricator':
             git_tag          => $current_tag,
             lock_file        => '/var/run/phab_repo_lock',
