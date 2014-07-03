@@ -859,19 +859,6 @@ node 'db1047.eqiad.wmnet' {
     include role::mariadb::analytics
 }
 
-## researchdb s5
-node 'db1017.eqiad.wmnet' {
-
-    include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::researchdb':
-        shard                 => 's5',
-        mariadb               => true,
-        innodb_file_per_table => true,
-        innodb_log_file_size  => '1000M'
-    }
-}
-
 ## SANITARIUM
 node 'db1053.eqiad.wmnet' {
 
