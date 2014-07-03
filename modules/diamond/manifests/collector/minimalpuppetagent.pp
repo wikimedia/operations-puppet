@@ -10,6 +10,14 @@
 define diamond::collector::minimalpuppetagent {
     ensure_packages(['python-yaml'])
 
+    # Diamond user needs sudo to access puppet
+    admin::sudo { 'diamond_sudo_for_puppet':
+        user    => 'diamond',
+        comment => 'diamond needs sudo to access exim mail queue length',
+        privs   => ['ALL=(root) NOPASSWD: "/bin/cat /var/lib/puppet/state/last_run_summary.yaml"']
+    }
+
+
     diamond::collector { 'MinimalPuppetAgent':
         source  => 'puppet:///modules/diamond/collector/minimalpuppetagent.py',
         require => Package['python-yaml'],
