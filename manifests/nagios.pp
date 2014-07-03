@@ -241,13 +241,6 @@ class nagios::group {
     }
 }
 
-class misc::zfs::monitoring {
-    monitor_service { 'zfs raid':
-        description   => 'ZFS RAID',
-        check_command => 'nrpe_check_zfs',
-    }
-}
-
 # == Define monitor_ganglia
 # Wrapper for monitor_service using check_ganglia command.
 # This allows you to monitor arbitrary values in ganglia
