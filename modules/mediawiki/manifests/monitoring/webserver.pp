@@ -1,5 +1,4 @@
 class mediawiki::monitoring::webserver ($ensure = 'present'){
-    $apache_common = 'apache2.2-common' # TODO: make this compatible with apache 2.4
 
     $dir_ensure = $ensure ? {
         'present' => 'directory',
@@ -22,7 +21,7 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Package[$apache_common]
+        require => Class['::mediawiki::packages']
     }
 
 
@@ -32,7 +31,7 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
         group  => 'root',
         mode   => '0444',
         content => template('mediawiki/apache/monitoring.conf.erb'),
-        require => Package[$apache_common]
+        require => Class['::mediawiki::packages']
     }
 
     # we do NOT notify apache, by design.
