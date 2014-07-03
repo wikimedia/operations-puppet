@@ -72,9 +72,10 @@ class openstack::firewall {
 }
 
 class openstack::repo($openstack_version="folsom") {
+
     if ($::lsbdistcodename == 'precise') {
         apt::repository { 'ubuntucloud':
-            uri    => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+            uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
             dist       => "precise-updates/${openstack_version}",
             components => 'main',
             keyfile    => 'puppet:///files/misc/ubuntu-cloud.key';
@@ -96,12 +97,12 @@ class openstack::common($openstack_version="folsom",
     }
 
     package { [ "nova-common", "python-keystone" ]:
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
     package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "mysql-common" ]:
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
@@ -109,25 +110,25 @@ class openstack::common($openstack_version="folsom",
 
     # For IPv6 support
     package { [ "python-netaddr", "radvd" ]:
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
     file {
         "/etc/nova/nova.conf":
             content => template("openstack/${$openstack_version}/nova/nova.conf.erb"),
-            owner => nova,
-            group => nogroup,
-            mode => '0440',
+            owner   => 'nova',
+            group   => 'nogroup',
+            mode    => '0440',
             require => Package['nova-common'];
     }
 
     file {
         "/etc/nova/api-paste.ini":
             content => template("openstack/${$openstack_version}/nova/api-paste.ini.erb"),
-            owner => nova,
-            group => nogroup,
-            mode => '0440',
+            owner   => nova,
+            group   => nogroup,
+            mode    => '0440',
             require => Package['nova-common'];
     }
 
@@ -144,7 +145,7 @@ class openstack::queue-server($openstack_version, $novaconfig) {
     }
 
     package { [ "rabbitmq-server" ]:
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 }
@@ -157,8 +158,8 @@ class openstack::project-storage-service {
     }
 
     service { "manage-volumes":
-        enable => true,
-        ensure => running,
+        enable  => true,
+        ensure  => running,
         require => Generic::Upstart_job["manage-volumes"];
     }
 }
@@ -169,7 +170,7 @@ class openstack::project-nfs-storage-service {
     }
 
     service { "manage-nfs-volumes":
-        enable => true,
+        enable  => true,
         require => Generic::Upstart_job["manage-nfs-volumes"];
     }
 
@@ -181,18 +182,18 @@ class openstack::project-nfs-storage-service {
 
     file { '/etc/exports.d':
         ensure => directory,
-        owner => 'root',
-        group => 'nfsmanager',
-        mode => '2775',
+        owner  => 'root',
+        group  => 'nfsmanager',
+        mode   => '2775',
     }
 
     if ($::site == 'eqiad') {
         cron { "Update labs ssh keys":
-                ensure => present,
-                user => root,
+                ensure  => present,
+                user    => 'root',
                 command => '/usr/local/sbin/manage-keys-nfs --logfile=/var/log/manage-keys.log >/dev/null 2>&1',
-                hour => '*',
-                minute => '*/5',
+                hour    => '*',
+                minute  => '*/5',
         }
     }
 }
@@ -213,23 +214,23 @@ class openstack::project-storage {
     ssh_authorized_key {
         "glustermanager":
             ensure  => present,
-            user    => "glustermanager",
-            type    => "ssh-rsa",
-            key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==",
-            require => Generic::Systemuser["glustermanager"];
+            user    => 'glustermanager',
+            type    => 'ssh-rsa',
+            key     => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==',
+            require => Generic::Systemuser['glustermanager'];
     }
     file {
         "/var/lib/glustermanager/.ssh/id_rsa":
-            owner => glustermanager,
-            group => glustermanager,
-            mode => '0600',
-            source => "puppet:///private/gluster/glustermanager",
+            owner   => glustermanager,
+            group   => glustermanager,
+            mode    => '0600',
+            source  => "puppet:///private/gluster/glustermanager",
             require => Ssh_authorized_key["glustermanager"];
         "/var/run/glustermanager":
-            ensure => directory,
-            owner => glustermanager,
-            group => glustermanager,
-            mode => '0700',
+            ensure  => directory,
+            owner   => glustermanager,
+            group   => glustermanager,
+            mode    => '0700',
             require => Generic::Systemuser["glustermanager"];
     }
 }
@@ -253,121 +254,121 @@ class openstack::database-server($openstack_version="folsom", $novaconfig, $keys
 
     if !defined(Service['mysql']) {
         service { "mysql":
-            enable => true,
+            enable  => true,
             require => Class['mysql::server::package'],
-            ensure => running;
+            ensure  => running;
         }
     }
 
     # TODO: This expects the services to be installed in the same location
     exec {
         'set_root':
-            onlyif => "/usr/bin/mysql -uroot --password=''",
+            onlyif  => "/usr/bin/mysql -uroot --password=''",
             command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
             require => [Class['mysql'], File["/etc/nova/mysql.sql"]],
-            before => Exec['create_nova_db'];
+            before  => Exec['create_nova_db'];
         'create_nova_db_user':
-            unless => "/usr/bin/mysql --defaults-file=/etc/nova/nova-user.cnf -e 'exit'",
+            unless  => "/usr/bin/mysql --defaults-file=/etc/nova/nova-user.cnf -e 'exit'",
             command => "/usr/bin/mysql -uroot < /etc/nova/nova-user.sql",
             require => [Class['mysql'], File["/etc/nova/nova-user.sql", "/etc/nova/nova-user.cnf", "/root/.my.cnf"]];
         'create_nova_db':
-            unless => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $nova_db_name -e 'exit'",
+            unless  => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $nova_db_name -e 'exit'",
             command => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot -e \"create database $nova_db_name;\"",
             require => [Class['mysql'], File["/root/.my.cnf"]],
-            before => Exec['create_nova_db_user'];
+            before  => Exec['create_nova_db_user'];
         'create_puppet_db_user':
-            unless => "/usr/bin/mysql --defaults-file=/etc/puppet/puppet-user.cnf -e 'exit'",
+            unless  => "/usr/bin/mysql --defaults-file=/etc/puppet/puppet-user.cnf -e 'exit'",
             command => "/usr/bin/mysql -uroot < /etc/puppet/puppet-user.sql",
             require => [Class['mysql'], File["/etc/puppet/puppet-user.sql", "/etc/puppet/puppet-user.cnf", "/root/.my.cnf"]];
         'create_puppet_db':
-            unless => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $puppet_db_name -e 'exit'",
+            unless  => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $puppet_db_name -e 'exit'",
             command => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot -e \"create database $puppet_db_name;\"",
             require => [Class['mysql'], File["/root/.my.cnf"]],
-            before => Exec['create_puppet_db_user'];
+            before  => Exec['create_puppet_db_user'];
         'create_glance_db_user':
-            unless => "/usr/bin/mysql --defaults-file=/etc/glance/glance-user.cnf -e 'exit'",
+            unless  => "/usr/bin/mysql --defaults-file=/etc/glance/glance-user.cnf -e 'exit'",
             command => "/usr/bin/mysql -uroot < /etc/glance/glance-user.sql",
             require => [Class['mysql'], File["/etc/glance/glance-user.sql","/etc/glance/glance-user.cnf","/root/.my.cnf"]];
         'create_glance_db':
-            unless => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $glance_db_name -e 'exit'",
+            unless  => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $glance_db_name -e 'exit'",
             command => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot -e \"create database $glance_db_name;\"",
             require => [Class['mysql'], File["/root/.my.cnf"]],
-            before => Exec['create_glance_db_user'];
+            before  => Exec['create_glance_db_user'];
     }
 
     exec {
         'create_keystone_db_user':
-            unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
+            unless  => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
             command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
             require => [Class['mysql'], File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]];
         'create_keystone_db':
-            unless => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $keystone_db_name -e 'exit'",
+            unless  => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot $keystone_db_name -e 'exit'",
             command => "/usr/bin/mysql --defaults-file=/root/.my.cnf -uroot -e \"create database $keystone_db_name;\"",
             require => [Class['mysql'], File["/root/.my.cnf"]],
-            before => Exec['create_keystone_db_user'];
+            before  => Exec['create_keystone_db_user'];
     }
 
     file {
         "/root/.my.cnf":
             content => template("openstack/common/controller/my.cnf.erb"),
-            owner => root,
-            group => root,
-            mode => '0640';
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640';
         "/etc/nova/mysql.sql":
             content => template("openstack/common/controller/mysql.sql.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["nova-common"];
         "/etc/nova/nova-user.sql":
             content => template("openstack/common/controller/nova-user.sql.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["nova-common"];
         "/etc/nova/nova-user.cnf":
             content => template("openstack/common/controller/nova-user.cnf.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["nova-common"];
         "/etc/puppet/puppet-user.sql":
             content => template("openstack/common/controller/puppet-user.sql.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["puppetmaster"];
         "/etc/puppet/puppet-user.cnf":
             content => template("openstack/common/controller/puppet-user.cnf.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["puppetmaster"];
         "/etc/glance/glance-user.sql":
             content => template("openstack/common/controller/glance-user.sql.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["glance"];
         "/etc/glance/glance-user.cnf":
             content => template("openstack/common/controller/glance-user.cnf.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["glance"];
     }
     file {
         "/etc/keystone/keystone-user.sql":
             content => template("openstack/common/controller/keystone-user.sql.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["keystone"];
         "/etc/keystone/keystone-user.cnf":
             content => template("openstack/common/controller/keystone-user.cnf.erb"),
-            owner => root,
-            group => root,
-            mode => '0640',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             require => Package["keystone"];
     }
 }
@@ -382,7 +383,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     if !defined(Class["memcached"]) {
         class { "memcached":
             memcached_ip => "127.0.0.1",
-            pin => true;
+            pin          => true;
         }
     }
 
@@ -400,11 +401,11 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     file {
         "/etc/apache2/sites-enabled/${webserver_hostname}":
             require => [ Package[php5] ],
-            mode => '0644',
-            owner => root,
-            group => root,
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
             content => template('apache/sites/wikitech.wikimedia.org.erb'),
-            ensure => present;
+            ensure  => present;
         "/var/www/robots.txt":
             ensure => present,
             mode   => '0644',
@@ -412,79 +413,79 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             group  => 'root',
             source => "puppet:///files/openstack/wikitech-robots.txt";
         "/a":
-            mode => '0755',
-            owner => root,
-            group => root,
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
             ensure => directory;
         "/a/backup":
-            mode => '0755',
-            owner => root,
-            group => root,
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
             ensure => directory;
         "/a/backup/public":
-            mode => '0755',
-            owner => root,
-            group => root,
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
             ensure => directory;
         "/usr/local/sbin/db-bak.sh":
-            mode => '0555',
-            owner => root,
-            group => root,
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
             source => "puppet:///files/openstack/db-bak.sh";
         "/usr/local/sbin/mw-files.sh":
-            mode => '0555',
-            owner => root,
-            group => root,
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
             source => "puppet:///files/openstack/mw-files.sh";
         "/usr/local/sbin/mw-xml.sh":
-            mode => '0555',
-            owner => root,
-            group => root,
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
             source => "puppet:///files/openstack/mw-xml.sh";
     }
 
     file { '/etc/apache2/conf.d/ports-wikitech.conf':
-            ensure => present,
+            ensure  => present,
             require => File["/etc/apache2/sites-enabled/${webserver_hostname}"],
-            mode => '0644',
-            owner => 'root',
-            group => 'root',
-            source => 'puppet:///files/openstack/controller/ports-wikitech.conf',
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            source  => 'puppet:///files/openstack/controller/ports-wikitech.conf',
     }
 
     cron {
         "run-jobs":
-            user => mwdeploy,
+            user    => 'mwdeploy',
             command => 'cd /srv/org/wikimedia/controller/wikis/w; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
-            ensure => present;
+            ensure  => present;
         "db-bak":
-            user => root,
-            hour => 1,
-            minute => 0,
+            user    => 'root',
+            hour    => 1,
+            minute  => 0,
             command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
             require => File["/a/backup"],
-            ensure => present;
+            ensure  => present;
         "mw-xml":
-            user => root,
-            hour => 1,
-            minute => 30,
+            user    => 'root',
+            hour    => 1,
+            minute  => 30,
             command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
             require => File["/a/backup"],
-            ensure => present;
+            ensure  => present;
         "mw-files":
-            user => root,
-            hour => 2,
-            minute => 0,
+            user    => 'root',
+            hour    => 2,
+            minute  => 0,
             command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
             require => File["/a/backup"],
-            ensure => present;
+            ensure  => present;
         "backup-cleanup":
-            user => root,
-            hour => 3,
-            minute => 0,
+            user    => 'root',
+            hour    => 3,
+            minute  => 0,
             command => 'find /a/backup -type f -mtime +4 -delete',
             require => File["/a/backup"],
-            ensure => present;
+            ensure  => present;
     }
 
 
@@ -517,14 +518,14 @@ class openstack::scheduler-service($openstack_version="folsom", $novaconfig) {
     }
 
     package { "nova-scheduler":
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
     service { "nova-scheduler":
-        ensure => running,
+        ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require => Package["nova-scheduler"];
+        require   => Package["nova-scheduler"];
     }
 }
 
@@ -534,14 +535,14 @@ class openstack::conductor-service($openstack_version="folsom", $novaconfig) {
     }
 
     package { "nova-conductor":
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
     service { "nova-conductor":
-        ensure => running,
+        ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require => Package["nova-conductor"];
+        require   => Package["nova-conductor"];
     }
 }
 
@@ -647,21 +648,21 @@ class openstack::neutron-nethost(
     }
 
     exec { 'create_br-int':
-            unless => "/usr/bin/ovs-vsctl br-exists br-int",
+            unless  => "/usr/bin/ovs-vsctl br-exists br-int",
             command => "/usr/bin/ovs-vsctl add-br br-int",
             require => Service['openvswitch-switch'],
     }
 
     exec { 'create_br-ex':
-            unless => "/usr/bin/ovs-vsctl br-exists br-ex",
+            unless  => "/usr/bin/ovs-vsctl br-exists br-ex",
             command => "/usr/bin/ovs-vsctl add-br br-ex",
             require => Service['openvswitch-switch'],
-            before => Exec['add-port'],
+            before  => Exec['add-port'],
     }
 
 
     exec { 'add-port':
-            unless => "/usr/bin/ovs-vsctl list-ports br-ex | /bin/grep ${external_interface}",
+            unless  => "/usr/bin/ovs-vsctl list-ports br-ex | /bin/grep ${external_interface}",
             command => "/usr/bin/ovs-vsctl add-port br-ex ${external_interface}",
             require => Service['openvswitch-switch'],
     }
@@ -715,20 +716,20 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
     }
 
     package {  [ "nova-network", "dnsmasq" ]:
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
     service { "nova-network":
-        ensure => running,
+        ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require => Package["nova-network"];
+        require   => Package["nova-network"];
     }
 
     # dnsmasq is run manually by nova-network, we don't want the service running
     service { "dnsmasq":
-        enable => false,
-        ensure => stopped,
+        enable  => false,
+        ensure  => stopped,
         require => Package["dnsmasq"];
     }
 
@@ -752,9 +753,9 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
 
     file { '/etc/dnsmasq-nova.conf':
         content => template("openstack/${$openstack_version}/nova/dnsmasq-nova.conf.erb"),
-        owner => 'root',
-        group => 'root',
-        mode => '0444',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     sysctl::parameters { 'openstack':
@@ -780,21 +781,21 @@ class openstack::api-service($openstack_version="folsom", $novaconfig) {
     }
 
     package {  [ "nova-api" ]:
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
     service { "nova-api":
-        ensure => running,
+        ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require => Package["nova-api"];
+        require   => Package["nova-api"];
     }
     file { "/etc/nova/policy.json":
-        source => "puppet:///files/openstack/${openstack_version}/nova/policy.json",
-        mode => '0644',
-        owner => root,
-        group => root,
-        notify => Service["nova-api"],
+        source  => "puppet:///files/openstack/${openstack_version}/nova/policy.json",
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        notify  => Service["nova-api"],
         require => Package["nova-api"];
     }
 }
@@ -805,14 +806,14 @@ class openstack::volume-service($openstack_version="folsom", $novaconfig) {
     }
 
     package { [ "nova-volume" ]:
-        ensure => absent,
+        ensure  => absent,
         require => Class["openstack::repo"];
     }
 
     #service { "nova-volume":
-    #   ensure => stopped,
+    #   ensure    => stopped,
     #   subscribe => File['/etc/nova/nova.conf'],
-    #   require => Package["nova-volume"];
+    #   require   => Package["nova-volume"];
     #}
 }
 
@@ -824,99 +825,99 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
     if ( $::realm == "production" ) {
         $certname = "virt-star.${site}.wmnet"
         install_certificate{ "${certname}": }
-        install_additional_key{ "${certname}": key_loc => "/var/lib/nova", owner => "nova", group => "libvirtd", require => Package["nova-common"] }
+        install_additional_key{ "${certname}": key_loc => "/var/lib/nova", owner => 'nova', group => "libvirtd", require => Package["nova-common"] }
 
         file {
             "/var/lib/nova/clientkey.pem":
-                ensure => link,
-                target => "/var/lib/nova/${certname}.key",
+                ensure  => link,
+                target  => "/var/lib/nova/${certname}.key",
                 require => Install_additional_key["${certname}"];
             "/var/lib/nova/clientcert.pem":
-                ensure => link,
-                target => "/etc/ssl/certs/${certname}.pem",
+                ensure  => link,
+                target  => "/etc/ssl/certs/${certname}.pem",
                 require => Install_certificate["${certname}"];
             "/var/lib/nova/cacert.pem":
-                ensure => link,
-                target => "/etc/ssl/certs/wmf-ca.pem",
+                ensure  => link,
+                target  => "/etc/ssl/certs/wmf-ca.pem",
                 require => Install_certificate["${certname}"];
             "/var/lib/nova/.ssh":
-                ensure => directory,
-                owner => "nova",
-                group => "nova",
-                mode => '0700',
+                ensure  => directory,
+                owner   => 'nova',
+                group   => 'nova',
+                mode    => '0700',
                 require => Package["nova-common"];
             "/var/lib/nova/.ssh/id_rsa":
-                source => "puppet:///private/ssh/nova/nova.key",
-                owner => "nova",
-                group => "nova",
-                mode => '0600',
+                source  => "puppet:///private/ssh/nova/nova.key",
+                owner   => 'nova',
+                group   => 'nova',
+                mode    => '0600',
                 require => File["/var/lib/nova/.ssh"];
             "/var/lib/nova/.ssh/authorized_keys":
-                source => "puppet:///private/ssh/nova/nova.pub",
-                owner => "nova",
-                group => "nova",
-                mode => '0600',
+                source  => "puppet:///private/ssh/nova/nova.pub",
+                owner   => 'nova',
+                group   => 'nova',
+                mode    => '0600',
                 require => File["/var/lib/nova/.ssh"];
             "/etc/libvirt/libvirtd.conf":
-                notify => Service["libvirt-bin"],
-                owner => "root",
-                group => "root",
-                mode => '0444',
+                notify  => Service["libvirt-bin"],
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
                 content => template("openstack/common/nova/libvirtd.conf.erb"),
                 require => Package["nova-common"];
             "/etc/default/libvirt-bin":
-                notify => Service["libvirt-bin"],
-                owner => "root",
-                group => "root",
-                mode => '0444',
+                notify  => Service["libvirt-bin"],
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
                 content => template("openstack/common/nova/libvirt-bin.default.erb"),
                 require => Package["nova-common"];
             "/etc/nova/nova-compute.conf":
-                notify => Service["nova-compute"],
-                owner => "root",
-                group => "root",
-                mode => '0444',
+                notify  => Service['nova-compute'],
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
                 content => template("openstack/common/nova/nova-compute.conf.erb"),
                 require => Package["nova-common"];
         }
     }
 
     service { "libvirt-bin":
-        ensure => running,
-        enable => true,
+        ensure  => running,
+        enable  => true,
         require => Package["nova-common"];
     }
 
-    package { [ "nova-compute", "nova-compute-kvm" ]:
-        ensure => present,
+    package { [ 'nova-compute', "nova-compute-kvm" ]:
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
     # nova-compute adds the user with /bin/false, but resize, live migration, etc.
     # need the nova use to have a real shell, as it uses ssh.
-    user { "nova":
-        ensure => present,
-        shell => "/bin/bash",
+    user { 'nova':
+        ensure  => present,
+        shell   => "/bin/bash",
         require => Package["nova-common"];
     }
 
-    service { "nova-compute":
-        ensure => running,
+    service { 'nova-compute':
+        ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require => Package["nova-compute"];
+        require   => Package['nova-compute'];
     }
 
     file {
         "/etc/libvirt/qemu/networks/autostart/default.xml":
-            ensure => absent;
+            ensure  => absent;
         # Live hack to use qcow2 ephemeral base images. Need to upstream
         # a config option for this in havana.
         "/usr/share/pyshared/nova/virt/libvirt/driver.py":
-            source => "puppet:///files/openstack/${openstack_version}/nova/virt-libvirt-driver",
-            notify => Service["nova-compute"],
-            owner => "root",
-            group => "root",
-            mode => '0444',
+            source  => "puppet:///files/openstack/${openstack_version}/nova/virt-libvirt-driver",
+            notify  => Service['nova-compute'],
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
             require => Package["nova-common"];
     }
 }
@@ -924,7 +925,7 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
 # Set up neutron on a compute node
 class openstack::neutron-compute($neutronconfig, $data_interface_ip) {
     sysctl::parameters { 'openstack':
-        values => {
+        values   => {
             'net.ipv4.conf.default.rp_filter' => 0,
             'net.ipv4.conf.all.rp_filter'     => 0,
         },
@@ -952,7 +953,7 @@ class openstack::neutron-compute($neutronconfig, $data_interface_ip) {
     }
 
     exec { 'create_br-int':
-        unless => "/usr/bin/ovs-vsctl br-exists br-int",
+        unless  => "/usr/bin/ovs-vsctl br-exists br-int",
         command => "/usr/bin/ovs-vsctl add-br br-int",
         require => Service['openvswitch-switch'],
     }
@@ -981,7 +982,7 @@ class openstack::keystone-service($openstack_version="folsom", $keystoneconfig, 
     }
 
     package { [ "keystone" ]:
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
@@ -993,19 +994,19 @@ class openstack::keystone-service($openstack_version="folsom", $keystoneconfig, 
 
 
     service { "keystone":
-        ensure => running,
+        ensure    => running,
         subscribe => File['/etc/keystone/keystone.conf'],
-        require => Package["keystone"];
+        require   => Package["keystone"];
     }
 
     file {
         "/etc/keystone/keystone.conf":
             content => template("openstack/${openstack_version}/keystone/keystone.conf.erb"),
-            owner => keystone,
-            group => keystone,
-            notify => Service["keystone"],
+            owner   => keystone,
+            group   => keystone,
+            notify  => Service["keystone"],
             require => Package["keystone"],
-            mode => '0440';
+            mode    => '0440';
     }
 }
 
@@ -1015,35 +1016,35 @@ class openstack::glance-service($openstack_version="folsom", $glanceconfig) {
     }
 
     package { [ "glance" ]:
-        ensure => present,
+        ensure  => present,
         require => Class["openstack::repo"];
     }
 
     service { "glance-api":
-        ensure => running,
+        ensure  => running,
         require => Package["glance"];
     }
 
     service { "glance-registry":
-        ensure => running,
+        ensure  => running,
         require => Package["glance"];
     }
 
     file {
         "/etc/glance/glance-api.conf":
             content => template("openstack/${$openstack_version}/glance/glance-api.conf.erb"),
-            owner => glance,
-            group => nogroup,
-            notify => Service["glance-api"],
+            owner   => 'glance',
+            group   => nogroup,
+            notify  => Service["glance-api"],
             require => Package["glance"],
-            mode => '0440';
+            mode    => '0440';
         "/etc/glance/glance-registry.conf":
             content => template("openstack/${$openstack_version}/glance/glance-registry.conf.erb"),
-            owner => glance,
-            group => nogroup,
-            notify => Service["glance-registry"],
+            owner   => 'glance',
+            group   => nogroup,
+            notify  => Service["glance-registry"],
             require => Package["glance"],
-            mode => '0440';
+            mode    => '0440';
     }
     if ($openstack_version == "essex") {
         # Keystone config was (thankfully) moved out of the paste config
@@ -1051,18 +1052,18 @@ class openstack::glance-service($openstack_version="folsom", $glanceconfig) {
         file {
             "/etc/glance/glance-api-paste.ini":
                 content => template("openstack/${$openstack_version}/glance/glance-api-paste.ini.erb"),
-                owner => glance,
-                group => glance,
-                notify => Service["glance-api"],
+                owner   => 'glance',
+                group   => 'glance',
+                notify  => Service["glance-api"],
                 require => Package["glance"],
-                mode => '0440';
+                mode    => '0440';
             "/etc/glance/glance-registry-paste.ini":
                 content => template("openstack/${$openstack_version}/glance/glance-registry-paste.ini.erb"),
-                owner => glance,
-                group => glance,
-                notify => Service["glance-registry"],
+                owner   => 'glance',
+                group   => 'glance',
+                notify  => Service["glance-registry"],
                 require => Package["glance"],
-                mode => '0440';
+                mode    => '0440';
         }
     }
 }
