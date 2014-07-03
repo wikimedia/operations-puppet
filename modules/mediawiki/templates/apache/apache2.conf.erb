@@ -326,6 +326,4 @@ Include /usr/local/apache/conf/all.conf
 # http://bugzilla.wikimedia.org/show_bug.cgi?id=8926
 FileETag MTime Size
 
-<% if @enable_mw_monitoring_vhost -%>
 Include /etc/apache2/sites-enabled/99-monitoring.conf
-<% end %>
