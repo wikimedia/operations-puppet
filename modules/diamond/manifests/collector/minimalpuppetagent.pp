@@ -8,9 +8,7 @@
 # not make the required summary yaml file world readable
 #
 define diamond::collector::minimalpuppetagent {
-    package { 'python-yaml':
-        ensure => present,
-    }
+    ensure_packages(['python-yaml'])
 
     diamond::collector { 'MinimalPuppetAgent':
         source  => 'puppet:///modules/diamond/collector/minimalpuppetagent.py',

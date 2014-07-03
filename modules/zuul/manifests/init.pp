@@ -60,9 +60,7 @@ class zuul (
     'python-prettytable',
   ]
 
-  package { $packages:
-    ensure => present,
-  }
+  ensure_packages($packages)
 
   # Used to be in /var/lib/git/zuul but /var/lib/git can be used
   # to replicate git bare repositories.
