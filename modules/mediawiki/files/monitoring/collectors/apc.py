@@ -15,13 +15,13 @@ import urllib2
 import diamond.collector
 
 
-class MW_ApcCollector(diamond.collector.Collector):
+class mw_apcCollector(diamond.collector.Collector):
 
     def get_default_config_help(self):
         pass
 
     def get_default_config(self):
-        config = super(MW_ApcCollector, self).get_default_config()
+        config = super(mw_apcCollector, self).get_default_config()
         config.update({
             'host': 'localhost',
             'url': 'apc',
@@ -53,8 +53,7 @@ class MW_ApcCollector(diamond.collector.Collector):
         try:
             data = json.load(response)
             for k, v in data.iteritems():
-                metric = 'apache2.mod_php.apc.{}'.format(k)
-                self.publish(metric, v)
+                self.publish(k, v)
         except:
             self.log.error(
                 "error parsing and publishing data received:\n%s",
