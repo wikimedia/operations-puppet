@@ -1347,6 +1347,8 @@ host iodine {
 host iridium {
 	hardware ethernet f0:1f:af:e8:c5:27;
 	fixed-address iridium.wikimedia.org;
+        option pxelinux.pathprefix "trusty-installer/";
+        filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host iron {
