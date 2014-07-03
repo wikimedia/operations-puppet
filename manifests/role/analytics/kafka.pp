@@ -151,6 +151,15 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         # MinFetchRate ~= 45. 1/45*1000 ~= 22.  Setting this to 30 seconds to overcompensate.
         # See also: http://ganglia.wikimedia.org/latest/graph_all_periods.php?title=&vl=&x=&n=&hreg%5B%5D=analytics102%5B12%5D.*&mreg%5B%5D=kafka.server.ReplicaFetcherManager.Replica-MinFetchRate.Value&gtype=line&glegend=show&aggregate=1
         replica_lag_time_max_ms         => 30000,
+        # Allow for 16 seconds of latency when talking with Zookeeper.
+        # We seen an issue where (mainly or only analytics1021) will
+        # pause for almost 12 seconds for a yet unknown reason.  Upping
+        # the session timeout here should give the broker enough time
+        # to get back in sync with Zookeeper before it is removed from the ISR.
+        # See: https://rt.wikimedia.org/Ticket/Display.html?id=6877 (near the bottom)
+        # and: http://mail-archives.apache.org/mod_mbox/kafka-users/201407.mbox/%3CCAFbh0Q2f71qgs5JDNFxkm7SSdZyYMH=ZpEOxotuEQfKqeXQHfw@mail.gmail.com%3E
+        zookeeper_connection_timeout_ms => 160000,
+        zookeeper_session_timeout_ms    => 160000,
         # Use LinkedIn recommended settings with G1 garbage collector,
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }

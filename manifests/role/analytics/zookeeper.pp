@@ -65,7 +65,12 @@ class role::analytics::zookeeper::client {
 # == Class role::analytics::zookeeper::server
 #
 class role::analytics::zookeeper::server inherits role::analytics::zookeeper::client {
-    class { '::zookeeper::server': }
+    class { '::zookeeper::server':
+        # Default tick_time is 2000ms, this should allow a max
+        # of 16 seconds of latency for Zookeeper client sessions.
+        # See comments in role::analytics::kafka::server for more info.
+        sync_time  => 8,
+    }
 
     if ($::realm == 'labs') {
         $ganglia_host = 'aggregator.eqiad.wmflabs'
