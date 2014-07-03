@@ -16,6 +16,12 @@ class wikistats (
     $wikistats_host,
 ) {
 
+    group { 'wikistatsuser':
+        ensure => present,
+        name   => 'wikistatsuser',
+        system => true,
+    }
+
     user { 'wikistatsuser':
         home       => '/usr/lib/wikistats',
         groups     => [ 'wikistats' ],
