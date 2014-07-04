@@ -60,7 +60,7 @@ sub tag_carrier {
 	*   all  | (...,)? client | client
 	*****************************************************************/
 
-	// Grab client IP from the end of the XFF-CE list and feed to map("zero") 
+	// Grab client IP from the end of the XFF-CE list and feed to map("zero")
 	set req.http.X-CS2 = netmapper.map("carriers", regsub(req.http.XFF-ClientEnd, "^([^,]+, ?)+", ""));
 
 	// normalize to boolean (varnish-3.0.4...)
@@ -301,23 +301,36 @@ sub vcl_deliver {
 	}
 
 	/* Assemble X-Analytics header
-	   Some of the headers used for X-Analytics is not varied on, so add them after the backend processing
+	   Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
 	   Note that vcl_deliver in other files may also modify X-Analytics
 	*/
+	// "zero=" might have been cached by previous version, avoid duplicates per bug 62922
+	// Assuming 3 month caching, the !~ "zero=" check can be removed after 6/20/2014.
 	if (req.http.X-CS && resp.http.X-Analytics !~ "zero=") {
 
-		// Until we implement support for multiple ip ranges per carrier with different rules,
-		// we allow several json configurations to refer to the same carrier.
-		// Their X-CS ID will only differ by an extra letter appended to their ID, e.g. "250-99a"
-		// In order for analytics to report correct stats, remove it before modifying X-Analytics.
-		set req.http.X-CS = regsub(req.http.X-CS, "[a-z]$", "");
+		// Some carriers have multiple ip ranges with different rules. IP set name is added at
+		// the end of the X-CS, e.g. "123-45|wap" to indicate a wap gateway with their own IPs.
+		// To minimize analytics impact, the 'zero' value in X-Analytics will stay as carrier id,
+		// and the additional suffix will go into the 'zeronet=xxx' if it was present.
 
-		// "zero=" might have been cached by previous version, avoid duplicates per bug 62922
-		// Assuming 3 month caching, the !~ "zero=" check can be removed after 6/20/2014.
-		if (resp.http.X-Analytics) {
-			set resp.http.X-Analytics = resp.http.X-Analytics + ";zero=" + req.http.X-CS;
+		// Remove everything before and including the first '|' char
+		set req.http.X-ZEROSFX = regsub(req.http.X-CS, "^[^\|]*\|?", "");
+		if (req.http.X-ZEROSFX != "") {
+			// Remove everything on and after the first '|' char
+			set req.http.X-CS = "zero=" + regsub(req.http.X-CS, "\|.*", "") + ";zeronet=" + req.http.X-ZEROSFX;
+		} else if (req.http.X-CS == "404-01b") {
+			// For a short time we had this workaround. This "else if" can be removed after 2014-10-15
+			// We only had one carrier, "404-01b", whom we temporarily had to create an extra entry until backend was ready.
+			// In order for analytics to report correct stats, we used to remove "b" before modifying X-Analytics.
+			set req.http.X-CS = "zero=404-01;zeronet=b";
 		} else {
-			set resp.http.X-Analytics = "zero=" + req.http.X-CS;
+			set req.http.X-CS = "zero=" + req.http.X-CS;
+		}
+
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";" + req.http.X-CS;
+		} else {
+			set resp.http.X-Analytics = req.http.X-CS;
 		}
 	}
 	if (req.http.X-Forwarded-By2) {
