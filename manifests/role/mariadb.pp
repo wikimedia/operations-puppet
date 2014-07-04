@@ -196,7 +196,7 @@ class role::mariadb::analytics {
     include mariadb::monitor_disk
     include mariadb::monitor_process
 
-    mariadb::monitor_replication { ['s1', 'm2' ]: }
+    mariadb::monitor_replication { ['s1','s2','m2']: }
 }
 
 class role::mariadb::backup::config {
