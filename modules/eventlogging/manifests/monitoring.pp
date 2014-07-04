@@ -62,6 +62,6 @@ class eventlogging::monitoring::graphite {
         critical        => 1,
         from            => '15min',
         contact_group   => 'analytics',
-        under           => 'true'
+        under           => true
     }
 }
