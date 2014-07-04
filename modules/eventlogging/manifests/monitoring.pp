@@ -55,7 +55,7 @@ class eventlogging::monitoring::graphite {
     # it will report the following:
     # OK: Less than 1.00% data above the threshold [2.0]
     # but actually the check is correct is checking points below threshold
-    monitor_graphite_threshold { 'eventlogging_throughput':
+    monitor_graphite_threshold { 'eventlogging_NavigationTiming_throughput':
         description     => 'Throughput of event logging NavigationTiming events',
         metric          => 'eventlogging.schema.NavigationTiming.rate',
         warning         => 2,
