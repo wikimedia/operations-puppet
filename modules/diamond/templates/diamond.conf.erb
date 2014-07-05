@@ -1,5 +1,5 @@
 [server]
-handlers = <%= @handler %>, diamond.handler.archive.ArchiveHandler
+handlers = <%= @handler %>
 collectors_path = /usr/share/diamond/collectors/
 collectors_config_path = /etc/diamond/collectors/
 handlers_config_path = /etc/diamond/handlers/
@@ -16,10 +16,6 @@ keys = rotated_file
 
 ### Defaults options for all Handlers
 [[default]]
-
-[[ArchiveHandler]]
-log_file = /var/log/diamond/archive.log
-days = 5
 
 [collectors]
 [[default]]
