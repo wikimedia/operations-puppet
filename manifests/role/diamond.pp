@@ -14,7 +14,7 @@ class role::diamond {
             $host = '10.68.17.169'
             # Prefix labs metrics with project name
             $path_prefix = $::instanceproject
-            $keep_logs_for = '1' # Keep only one day of logs, saves space
+            $keep_logs_for = '0' # Keep only current day's logs, saves space
         }
         default: {
             $host = '10.64.0.18'
