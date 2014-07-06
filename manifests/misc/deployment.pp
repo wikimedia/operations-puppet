@@ -152,6 +152,9 @@ class misc::deployment::scap_scripts {
         '/usr/local/bin/restart-twemproxy':
             ensure => link,
             target => '/srv/deployment/scap/scap/bin/restart-twemproxy';
+        '/usr/local/bin/restart-nutcracker':
+            ensure => link,
+            target => '/srv/deployment/scap/scap/bin/restart-nutcracker';
         '/usr/local/bin/scap':
             ensure => link,
             target => '/srv/deployment/scap/scap/bin/scap';

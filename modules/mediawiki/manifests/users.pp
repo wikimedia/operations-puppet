@@ -78,7 +78,9 @@ class mediawiki::users {
         privileges => [
             'ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
             'ALL = (root) NOPASSWD: /sbin/restart twemproxy',
+            'ALL = (root) NOPASSWD: /sbin/restart nutcracker',
             'ALL = (root) NOPASSWD: /sbin/start twemproxy',
+            'ALL = (root) NOPASSWD: /sbin/start nutcracker',
             'ALL = NOPASSWD: /usr/sbin/apache2ctl',
             'ALL = NOPASSWD: /etc/init.d/apache2',
             'ALL = NOPASSWD: /usr/bin/renice',
