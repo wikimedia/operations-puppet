@@ -11,7 +11,7 @@ rundir = /var/run/puppet
 factpath = $vardir/lib/facter
 
 [agent]
-server = <%= scope.lookupvar('base::puppet::server') %>
+server = <%= @server %>
 <% if @certname %>certname = <%= certname %><% end %>
 configtimeout = 960
 splay = true
