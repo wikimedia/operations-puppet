@@ -11,10 +11,6 @@ class mediawiki {
         content => $::site,
     }
 
-    class { '::twemproxy':
-        default_file => 'puppet:///modules/mediawiki/twemproxy.default',
-    }
-
     if $::realm == 'labs' {
         $mw_mc_server_list = [
             '10.68.16.14:11211', # deployment-memc02.eqiad.wmflabs

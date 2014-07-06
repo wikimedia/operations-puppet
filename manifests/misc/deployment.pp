@@ -149,9 +149,6 @@ class misc::deployment::scap_scripts {
         '/usr/local/bin/mw-update-l10n':
             ensure => link,
             target => '/srv/deployment/scap/scap/bin/mw-update-l10n';
-        '/usr/local/bin/restart-twemproxy':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/restart-twemproxy';
         '/usr/local/bin/restart-nutcracker':
             ensure => link,
             target => '/srv/deployment/scap/scap/bin/restart-nutcracker';
