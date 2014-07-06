@@ -108,14 +108,14 @@ class beta::autoupdater {
     }
     exec { 'beta_mediawiki_skins_git_remote_add':
         command     => "/usr/bin/git remote add origin ${mw_skins_git_url}",
-        user    => 'mwdeploy',
-        group   => 'mwdeploy',
+        user        => 'mwdeploy',
+        group       => 'mwdeploy',
         cwd         => $mw_skins_dest,
         refreshonly => true,
     }
 
     git::clone { 'mediawiki/skins':
-        directory => $mw_skins_dest,
+        directory          => $mw_skins_dest,
         branch             => 'master',
         owner              => 'mwdeploy',
         group              => 'mwdeploy',
