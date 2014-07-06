@@ -11,9 +11,7 @@ class mediawiki {
         content => $::site,
     }
 
-    class { '::twemproxy':
-        default_file => 'puppet:///modules/mediawiki/twemproxy.default',
-    }
+    include ::twemproxy::decom
 
     if $::realm == 'labs' {
         $mw_mc_server_list = [
