@@ -1,14 +1,18 @@
 # bastion hosts
 class bastionhost {
-    system::role { "bastionhost": description => "Bastion" }
+    system::role { 'bastionhost':
+        description => 'Bastion',
+    }
 
-    package { "irssi":
-        ensure => absent;
-        "traceroute-nanog":
-        ensure => absent;
-        "traceroute":
-        ensure =>latest;
-        "mosh":
-        ensure => present;
+    package { [ 'irssi', 'traceroute-nanog' ]:
+        ensure => absent,
+    }
+
+    package { 'traceroute':
+        ensure =>latest,
+    }
+
+    package { 'mosh':
+        ensure => present,
     }
 }
