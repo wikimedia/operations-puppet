@@ -42,7 +42,9 @@ class beta::hhvm {
 
     file { '/etc/init/hhvm.conf':
         source  => 'puppet:///modules/beta/hhvm/hhvm.upstart',
-        require => File['/etc/init.d/hhvm-fastcgi', '/etc/init.d/hhvm', '/etc/hhvm/server.hdf'],
+        require => File['/etc/init.d/hhvm-fastcgi',
+                        '/etc/init.d/hhvm',
+                        '/etc/hhvm/server.hdf'],
     }
 
     service { 'hhvm':
