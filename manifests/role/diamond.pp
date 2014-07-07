@@ -1,6 +1,7 @@
 # role class for diamond
 class role::diamond {
 
+    $labs_enabled_projects = ['tools', 'deployment-prep', 'graphite']
     #these are notes just for initial rollout and testing:
     #tungsten: 10.64.0.18
     #(labs) athens graphite server: 10.68.17.73
@@ -15,11 +16,13 @@ class role::diamond {
             # Prefix labs metrics with project name
             $path_prefix = $::instanceproject
             $keep_logs_for = '0' # Keep only current day's logs, saves space
+            $enabled = member($labs_enabled_projects, $::instanceproject)
         }
         default: {
             $host = '10.64.0.18'
             $path_prefix = 'servers'
             $keep_logs_for = '5'
+            $enabled = 'true'
         }
     }
 
@@ -27,7 +30,7 @@ class role::diamond {
         path_prefix   => $path_prefix,
         keep_logs_for => $keep_logs_for,
         settings        => {
-            enabled     => 'true',
+            enabled     => $enabled,
             host        => $host,
             port        => '8125',
         },
