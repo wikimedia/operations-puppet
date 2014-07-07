@@ -26,12 +26,16 @@ class role::phabricator::legalpad {
                 'storage.default-namespace'          => 'phlegal',
                 'metamta.mail-adapter'               => 'PhabricatorMailImplementationPHPMailerAdapter',
                 'phpmailer.mailer'                   => 'smtp',
-                'phpmailer.smtp-port'                => "25",
+                'phpmailer.smtp-port'                => '25',
                 'phpmailer.smtp-host'                => 'polonium.wikimedia.org',
                 'auth.require-approval'              => false,
+                'auth.require-email-verification'    => true,
+                'metamta.default-address'            => 'noreply@legalpad.wikimedia.org',
+                'metamta.domain'                     => 'legalpad.wikimedia.org',
             },
         }
     }
+
 
     # firewalling, opens just port 80/tcp
     # no 443 needed, we are behind misc. varnish
