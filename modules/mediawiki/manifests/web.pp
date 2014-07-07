@@ -1,18 +1,12 @@
 # mediawiki::web
 
 class mediawiki::web( $maxclients = 40 ) {
+    include ::apache
     include ::mediawiki
     include ::mediawiki::monitoring::webserver
     include ::mediawiki::web::config
 
-    file { '/etc/apache2/apache2.conf':
-        content => template('mediawiki/apache/apache2.conf.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Class['::mediawiki::web::config'],
-        before  => Service['apache'],
-    }
+    # Migrate envvars file to use apache::def if possible, not strictly needed
 
     file { '/etc/apache2/envvars':
         source => 'puppet:///modules/mediawiki/apache/envvars.appserver',
