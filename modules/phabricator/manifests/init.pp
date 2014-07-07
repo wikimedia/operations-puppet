@@ -71,8 +71,7 @@ class phabricator (
     #per stdlib merge the dynamic settings will take precendence for conflicts
     $phab_settings = merge($fixed_settings, $settings)
 
-    #we are allowed a string test value that we populate with current tag
-    $phab_settings['test.value'] = $git_tag
+    $phab_settings['auth.login-message'] = template('phabricator/auth_log_message.erb')
 
     if empty(mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']
