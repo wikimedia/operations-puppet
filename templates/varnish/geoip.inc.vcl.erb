@@ -19,7 +19,7 @@ C{
 
 	int geo_init(void);
 	int geo_get_relevant_ip (const struct sess *sp, char *ip, size_t maxlen);
-	char * geo_sanitize_for_cookie (char *string);
+	void geo_sanitize_for_cookie (char *string);
 	void geo_set_cache_control (const struct sess *sp);
 	const char * geo_get_top_cookie_domain (const char *host);
 
