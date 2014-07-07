@@ -55,7 +55,10 @@ class role::cxserver::beta {
 
     # Allow ssh access from the Jenkins master to the server where cxserver is
     # running
-    include contint::firewall::labs
+
+    ferm::rule { 'gallium_ssh_to_slaves':
+        rule => 'proto tcp dport ssh { saddr 208.80.154.135 ACCEPT; }'
+    }
 
     # Instance got to be a Jenkins slave so we can update cxserver whenever a
     # change is made on mediawiki/services/cxserver (NL: /deploy???) repository

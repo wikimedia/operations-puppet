@@ -109,6 +109,11 @@ class role::ci::master {
         mode   => '0444',
         notify => Service['gmond'],
     }
+
+    # Jenkins on port 8080, reacheable via Apache proxying the requests
+    ferm::rule { 'jenkins_localhost_only':
+        rule => 'proto tcp dport 8080 { saddr (127.0.0.1 ::1) ACCEPT; }'
+    }
 }
 
 # Set up a Jenkins slave suitable for Continuous Integration jobs execution.
@@ -178,7 +183,12 @@ class role::ci::slave::labs::common {
 
     # Jenkins slaves need to access beta cluster for the browsertests
     include role::beta::natfix
-    include contint::firewall::labs
+
+    ferm::service { 'jenkins_ssh_to_slaves':
+        proto  => 'tcp',
+        port   => '22',
+        srange => '(208.80.154.135/32)'
+    }
 
     if $::site == 'eqiad' {
         # Does not come with /dev/vdb, we need to mount it using lvm
@@ -430,4 +440,15 @@ class role::ci::website {
     class { 'contint::website':
         zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
     }
+
+    # web access
+    ferm::service { 'ci_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+    ferm::service { 'ci_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
 }
