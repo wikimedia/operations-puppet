@@ -10,8 +10,8 @@
 
 <VirtualHost *:80>
 	ServerAdmin webmaster@wikimedia.org
-	ServerName <%= scope.lookupvar('bugzilla::apache::svc_name') %>
-	Redirect permanent / https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>/
+	ServerName <%= @svc_name %>
+	Redirect permanent / https://<%= @svc_name %>/
 	RewriteEngine On
 	RewriteCond %{HTTPS} off
 	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
@@ -20,57 +20,57 @@
 <VirtualHost *:80>
 	ServerAdmin webmaster@wikimedia.org
 	ServerName bugs.wikimedia.org
-	Redirect permanent / https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>/
+	Redirect permanent / https://<%= @svc_name %>/
 	RewriteEngine On
 	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>%{REQUEST_URI}
+	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:80>
 	ServerAdmin webmaster@wikimedia.org
 	ServerName bugs.wikipedia.org
-	Redirect permanent / https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>/
+	Redirect permanent / https://<%= @svc_name %>/
 	RewriteEngine On
 	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>%{REQUEST_URI}
+	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:80>
 	ServerAdmin webmaster@wikimedia.org
 	ServerName bugzilla.wikipedia.org
-	Redirect permanent / https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>/
+	Redirect permanent / https://<%= @svc_name %>/
 	RewriteEngine On
 	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>%{REQUEST_URI}
+	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:443>
 	ServerAdmin webmaster@wikimedia.org
 	ServerName bugs.wikimedia.org
-	Redirect permanent / https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>/
+	Redirect permanent / https://<%= @svc_name %>/
 	SSLEngine On
 	SSLProtocol ALL -SSLv2
-	SSLCipherSuite <%= scope.lookupvar('bugzilla::apache::cipher_suite') %>
+	SSLCipherSuite <%= @cipher_suite %>
 	SSLHonorCipherOrder on
 	SSLCompression Off
-	SSLCertificateFile /etc/ssl/certs/<%= scope.lookupvar('bugzilla::apache::svc_name') %>.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= scope.lookupvar('bugzilla::apache::svc_name') %>.key
+	SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
+	SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
 	SSLCACertificatePath /etc/ssl/certs/
 
 	RewriteEngine On
-	RewriteRule (.*) https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>%{REQUEST_URI}
+	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:443>
 	ServerAdmin webmaster@wikimedia.org
-	ServerName <%= scope.lookupvar('bugzilla::apache::svc_name') %>
-	DocumentRoot <%= scope.lookupvar('bugzilla::apache::docroot') %>
+	ServerName <%= @svc_name %>
+	DocumentRoot <%= @docroot %>
 	SSLEngine On
 	SSLProtocol ALL -SSLv2
-	SSLCipherSuite <%= scope.lookupvar('bugzilla::apache::cipher_suite') %>
+	SSLCipherSuite <%= @cipher_suite %>
 	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/<%= scope.lookupvar('bugzilla::apache::svc_name') %>.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= scope.lookupvar('bugzilla::apache::svc_name') %>.key
+	SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
+	SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
 	SSLCACertificatePath /etc/ssl/certs/
 
 	<Directory />
@@ -78,7 +78,7 @@
 		AllowOverride None
 	</Directory>
 
-	<Directory <%= scope.lookupvar('bugzilla::apache::docroot') %>>
+	<Directory <%= @docroot %>>
 		BrowserMatchNoCase spider nobots
 		BrowserMatchNoCase bot nobots
 		Options Indexes FollowSymLinks MultiViews
@@ -149,7 +149,7 @@ CustomLog /var/log/apache2/access.log combined
 ServerSignature On
 
 RewriteEngine On
-RewriteRule ^/(\d+)$ https://<%= scope.lookupvar('bugzilla::apache::svc_name') %>/show_bug.cgi?id=$1 [R]
+RewriteRule ^/(\d+)$ https://<%= @svc_name %>/show_bug.cgi?id=$1 [R]
 
 RewriteCond %{QUERY_STRING} ^(id=bug-writing.html)$
 RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/How_to_report_a_bug? [R=303]
@@ -160,15 +160,15 @@ RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/Bugzilla/Fields? [R=303]
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName <%= scope.lookupvar('bugzilla::apache::attach_svc_name') %>
-	DocumentRoot <%= scope.lookupvar('bugzilla::apache::docroot') %>
+	ServerName <%= @attach_svc_name %>
+	DocumentRoot <%= @docroot %>
 
 	<Directory />
 		Order Allow,Deny
 		Deny from all
 	</Directory>
 
-	ScriptAlias /attachment.cgi <%= scope.lookupvar('bugzilla::apache::docroot') %>attachment.cgi
+	ScriptAlias /attachment.cgi <%= @docroot %>attachment.cgi
 	<Location /attachment.cgi>
 		Order Allow,Deny
 		Allow from all
@@ -176,14 +176,14 @@ RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/Bugzilla/Fields? [R=303]
 </VirtualHost>
 
 <VirtualHost *:443>
-	ServerName <%= scope.lookupvar('bugzilla::apache::attach_svc_name') %>
-	DocumentRoot <%= scope.lookupvar('bugzilla::apache::docroot') %>
+	ServerName <%= @attach_svc_name %>
+	DocumentRoot <%= @docroot %>
 	SSLEngine On
 	SSLProtocol ALL -SSLv2
-	SSLCipherSuite <%= scope.lookupvar('bugzilla::apache::cipher_suite') %>
+	SSLCipherSuite <%= @cipher_suite %>
 	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/<%= scope.lookupvar('bugzilla::apache::attach_svc_name') %>.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= scope.lookupvar('bugzilla::apache::attach_svc_name') %>.key
+	SSLCertificateFile /etc/ssl/certs/<%= @attach_svc_name %>.pem
+	SSLCertificateKeyFile /etc/ssl/private/<%= @attach_svc_name %>.key
 	SSLCACertificatePath /etc/ssl/certs/
 
 	<Directory />
@@ -191,7 +191,7 @@ RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/Bugzilla/Fields? [R=303]
 		Deny from all
 	</Directory>
 
-	ScriptAlias /attachment.cgi <%= scope.lookupvar('bugzilla::apache::docroot') %>attachment.cgi
+	ScriptAlias /attachment.cgi <%= @docroot %>attachment.cgi
 	<Location /attachment.cgi>
 		Order Allow,Deny
 		Allow from all
