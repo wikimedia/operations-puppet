@@ -15,11 +15,28 @@ module.exports = function (config) {
 	config.redis.password = "<%= @redis_password %>";
 
 	config.frontend.port = <%= @service_port %>;
-	config.backend.temp_dir = "<%= @temp_dir %>";
 
 	config.reporting.statsd_server = "<%= @statsd_host %>";
 	config.reporting.statsd_port = <%= @statsd_port %>;
 	config.reporting.is_txstatsd = <%= @statsd_is_txstatsd %>;
+
+	// File paths; there is a short term temp directory, a long term
+	// storage directory, and a medium term error directory
+	config.backend.temp_dir = "<%= @temp_dir %>";
+	config.backend.output_dir = "<%= @output_dir %>";
+	config.backend.post_mortem_dir = "<%= @postmortem_dir %>";
+
+	// Log to both syslog and logstash as an interim thing
+	config.logging["winston-posix-syslog/PosixSyslog"] = {
+		level: "debug",
+		identity: 'mw-ocg-service'
+	};
+	config.logging["winston-graylog2/Graylog2"] = {
+		level: 'debug',
+		graylogHost: "<%= @graylog_host %>",
+		graylogPort: "<%= @graylog_port %>",
+		graylogFacility: "OfflineContentGenerator",
+	};
 
 	// Import the public local settings
 	return require("/srv/deployment/ocg/ocg/LocalSettings.js")(config)

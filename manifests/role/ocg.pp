@@ -26,13 +26,21 @@ class role::ocg::production {
         $statsd_host = 'statsd.eqiad.wmnet'
     }
 
+    if ( $::ocg_graylog_server_override != undef ) {
+        $graylog_host = $::ocg_graylog_server_override
+    } else {
+        # Default host in the WMF production env
+        $graylog_host = 'logstash1002.eqiad.wmnet'
+    }
+
     class { '::ocg':
         redis_host         => $redis_host,
         redis_password     => $passwords::redis::main_password,
         temp_dir           => '/srv/deployment/ocg/tmp',
         service_port       => $service_port,
         statsd_host        => $statsd_host,
-        statsd_is_txstatsd => 1
+        statsd_is_txstatsd => 1,
+        graylog_host       => $graylog_host,
     }
 
     ferm::service { 'ocg-http':
