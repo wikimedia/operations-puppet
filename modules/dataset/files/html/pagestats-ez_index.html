@@ -1,0 +1,53 @@
+<html>
+<!-- This file is maintained by puppet!! -->
+<!-- modules/dataset/files/html/pagestats-ez_index.html -->
+	<head>
+		<title>Various statistics files maintained by Erik Zachte</title>
+	</head>
+	<body bgcolor="#ffffff">
+		<h1>Stats files maintained by Erik Zachte</h1>
+		<p>Pagecount files repackaged and reformatted, one file per month:
+		<a href="monthly/">link</a>
+		</p>
+		<p>Projectcount files repackaged, one file per year:
+		<a href="projectcounts/">link</a>
+		</p>
+		<p>Raw data for reports at http://stats.wikimedia.org/:
+		<a href="wikistats/">link</a>
+		</p>
+		<hr />
+		<p>Notes about the format of the pagecount files</p>
+		<p>These are
+		derived from Domas' pagecount files but the format is not identical.
+		Each line contains four fields separated by spaces:
+		<ul>
+			<li>wiki code (subproject.project)</li>
+			<li>article title</li>
+			<li>monthly total (with interpolation when data is missing)</li>
+			<li>hourly counts</li>
+		</ul>
+		In the wiki code, the subproject is the language code (fr, el, ja, etc)
+		and the project is one of b,k,n,q,s,v,z, corresponding to the projects below:
+		<ul>
+			<li>b:wikibooks</li>
+			<li>k:wiktionary</li>
+			<li>n:wikinews</li>
+			<li>q:wikiquote</li>
+			<li>s:wikisource</li>
+			<li>v:wikiversity</li>
+			<li>z:wikipedia</li>
+		</ul>
+		Hourly counts can be deciphered as follows:
+		<dl>
+			<dt>Hour:</dt>
+			<dd>from 0 to 23, written as 0 = A, 1 = B ... 22 = W, 23 = X</dd>
+			<dt>Day:</dt>
+			<dd>from 1 to 31, written as 0 = A, 1 = B ... 25 = Y, 26 = Z, 27 = [, 28 = \, 29 = ], 30 = ^, 31 = _</dd>
+		</dl>
+		</p>
+		<p>
+		Source for this information is <a href="http://lists.wikimedia.org/pipermail/wikitech-l/2011-August/054644.html">http://lists.wikimedia.org/pipermail/wikitech-l/2011-August/054644.html</a>.
+		</p>
+	</body>
+</html>
+
