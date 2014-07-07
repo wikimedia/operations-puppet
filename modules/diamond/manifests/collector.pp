@@ -57,6 +57,7 @@ define diamond::collector(
     $collector = regsubst($name, '(Collector)?$', 'Collector')
 
     file { "/etc/diamond/collectors/${collector}.conf":
+        ensure  => $ensure,
         content => template('diamond/collector.conf.erb'),
         require => File['/etc/diamond/collectors'],
         notify  => Service['diamond'],
