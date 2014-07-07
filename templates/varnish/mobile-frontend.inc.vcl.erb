@@ -162,5 +162,15 @@ sub vcl_deliver {
 	if (req.url == "/favicon.ico" || req.url ~ "^/apple-touch-icon(-precomposed)?\.png$" || req.url ~ "^/w/index\.php\?title=.*:Gadget-.*&[0-9]+$") {
 		set resp.http.Cache-Control = "s-maxage=3600, max-age=3600";
 	}
+
+        /* TODO: this block of VCL code is copypasta from text-frontend. Some consolidation is in order. */
+        <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
+                /* Perform GeoIP look-up and send the result as a session cookie */
+                if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
+                        && req.http.Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
+                        && req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
+                        call geoip_cookie;
+                }
+        <% end -%>
 }
 
