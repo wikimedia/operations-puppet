@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!-- This file is maintained by puppet!! -->
+<!-- modules/dataset/files/html/public_index.html -->
+	<head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Wikimedia Downloads</title>
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/
+body {
+	font: x-small sans-serif;
+	background: #f9f9f9 url(//bits.wikimedia.org/skins/MonoBook/headbg.jpg) 0 0 no-repeat;
+	color: black;
+	margin: 0;
+	padding: 0;
+}
+/* scale back up to a sane default */
+#globalWrapper {
+	font-size: 127%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+#content {
+	margin: 2em 2em 0 2em;
+	padding: 0 1em 1.5em 1em;
+	background: white;
+	color: black;
+	border: 1px solid #aaa;
+	line-height: 1.5em;
+	position: relative;
+	z-index: 2;
+}
+h1, h2, h3, h4, h5, h6 {
+	color: black;
+	background: none;
+	font-weight: normal;
+	margin: 0;
+	padding-top: .5em;
+	padding-bottom: .17em;
+	border-bottom: 1px solid #aaa;
+}
+h1 {
+	font-size: 188%;
+	margin-bottom: .6em;
+}
+h2 {
+	font-size: 150%;
+	margin-bottom: .6em;
+}
+h3, h4, h5, h6 {
+	border-bottom: none;
+	font-weight: bold;
+	margin-bottom: .3em;
+}
+
+ul {
+	line-height: 1.5em;
+	list-style-type: square;
+	margin: .3em 0 0 1.5em;
+	padding: 0;
+	list-style-image: url(bullet.gif);
+}
+ol {
+	line-height: 1.5em;
+	margin: .3em 0 0 3.2em;
+	padding: 0;
+	list-style-image: none;
+}
+li {
+	margin-bottom: .1em;
+}
+dt {
+	font-weight: bold;
+	margin-bottom: .05em;
+}
+dl {
+	margin-top: .2em;
+	margin-bottom: .5em;
+}
+dd {
+	line-height: 1.5em;
+	margin-left: 2em;
+	margin-bottom: .5em;
+}
+a {
+	text-decoration: none;
+	color: #002bb8;
+	background: none;
+}
+a:visited {
+	color: #5a3696;
+}
+a:active {
+	color: #faa700;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+dl {margin-left:4em;margin-right:4em;}
+.visualClear {
+	clear: both;
+}
+
+/*]]>*/</style>
+
+</head>
+<body>
+	<div id="globalWrapper">
+		<div id="content">
+			<h1>Wikimedia Downloads</h1>
+			<p>
+			Please note that we have rate limited downloaders and we are capping the number of per-ip connections to 2. This will
+			help to ensure that everyone can access the files with resonable download times.  Clients that try to evade these limits
+			may be blocked.
+			<p>
+			<h2>Data downloads</h2>
+			<div style="background:#ffeeee;border-width:1px;border-style:solid;border-color:red;padding:1em;font-size:large;">The Wikimedia Foundation is requesting help to ensure that as many copies as possible are available of all Wikimedia database dumps. Please <strong><a href="http://meta.wikimedia.org/wiki/Mirroring_Wikimedia_project_XML_dumps">volunteer to host a mirror</a></strong> if you have access to sufficient storage and bandwidth.</div>
+			<dl>
+				<dt><a href="backup-index.html">Database backup dumps</a></dt>
+				<dd>A complete copy of all Wikimedia wikis, in the form of wikitext source and metadata embedded in XML. A number of raw database tables in SQL form are also available. </dd> <dd> These snapshots are provided at the very least monthly and usually twice a month. If you are a regular user of these dumps, please consider subscribing to <a href="https://lists.wikimedia.org/mailman/listinfo/xmldatadumps-l">xmldatadumps-l</a> for regular updates.</dd>
+				<dt>Mirror Sites of the XML dumps provided above</dt>
+				<dd>Check the <a href="mirrors.html">complete list</a>.
+				<dt><a href="/other/static_html_dumps/">Static HTML dumps</a></dt>
+				<dd>A copy of all pages from all Wikipedia wikis, in HTML form.</dd>
+				<dd>These are currently not running. </dd>
+
+				<dt><a href="dvd.html">DVD distributions</a></dt>
+				<dd>Available for some Wikipedia editions.</dd>
+
+				<dt><a href="backups-of-old-wikis.html">Backup dumps of wikis which no longer exist</a></dt>
+				<dd>A complete copy of selected Wikimedia wikis which no longer exist and so which are no longer available via the main database backup dump page.  This includes, in particular, the Sept. 11 wiki.</dd>
+
+				<dt><a href="other/">Other files</a></dt>
+				<dd>Pageview stats, image tarballs, survey data and other items.</dd>
+				<dt><a href="http://thedatahub.org/en/group/wikimedia">Dataset collection at the Data Hub</a> (off-site)</dt>
+				<dd>Many additional datasets that may be of interest to researchers, users and developers can be found in this collection.</dd>
+			</dl>
+			<h2>Software downloads</h2>
+			<dl>
+				<dt><a href="http://www.mediawiki.org/wiki/Download">MediaWiki</a></dt>
+				<dd>MediaWiki is a free software wiki package written in PHP, originally for
+				use on Wikipedia. It is now used by several other projects of the
+				non-profit Wikimedia Foundation and by many other wikis.
+				</dd>
+			</dl>
+			<div class="visualClear"></div>
+		</div>
+	</div>
+</body>
+
+</html>
+
