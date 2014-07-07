@@ -5,7 +5,9 @@
 # and remove configuration data.
 #
 class ocg::decommission (
-    $temp_dir = '/srv/deployment/ocg/tmp'
+    $temp_dir = '/srv/deployment/ocg/tmp',
+    $output_dir = '/srv/deployment/ocg/output',
+    $postmortem_dir = '/srv/deployment/ocg/postmortem'
 ) {
     service { 'ocg':
         ensure   => stopped,
@@ -27,6 +29,26 @@ class ocg::decommission (
         ensure  => absent,
         purge   => true,
         force   => true,
+    }
+
+    file { $output_dir:
+        ensure  => absent,
+        purge   => true,
+        force   => true,
+    }
+
+    file { $postmortem_dir:
+        ensure  => absent,
+        purge   => true,
+        force   => true,
+    }
+
+    cron { "Clean up OCG output directory":
+        ensure  => absent,
+    }
+
+    cron { "Clean up OCG postmortem directory":
+        ensure  => absent,
     }
 
     deployment::target { 'ocg':
