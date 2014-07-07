@@ -12,6 +12,10 @@ class mediawiki {
         content => $::site,
     }
 
+    file { '/usr/local/apache':
+        ensure => directory,
+    }
+
     if $::realm == 'labs' {
         $mw_mc_server_list = [
             '10.68.16.14:11211', # deployment-memc02.eqiad.wmflabs
