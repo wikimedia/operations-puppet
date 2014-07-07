@@ -13,4 +13,8 @@ class beta::scap::rsync_slave {
         read_only   => 'yes',
         hosts_allow => $::beta::config::rsync_networks,
     }
+
+    file { '/usr/local/apache':
+        ensure  => directory,
+    }
 }

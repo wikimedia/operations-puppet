@@ -20,10 +20,6 @@ class mediawiki::web( $maxclients = 40 ) {
         before => Service['apache'],
     }
 
-    file { '/usr/local/apache':
-        ensure => directory,
-    }
-
     exec { 'sync_apache_config':
         command => '/usr/bin/rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf',
         creates => '/usr/local/apache/conf',

@@ -112,10 +112,9 @@ class role::beta::appserver {
         unless  => '/bin/ps -C apache2',
     }
 
-    file { '/usr/local/apache/conf':
-        ensure => directory,
-        before => Exec['sync_apache_config'],
-    }
+    # Create symlink (defined in ::beta::common) before ::mediawiki::web tries
+    # to fetch apache config files with rsync.
+    File['/usr/local/apache/conf'] -> Exec['sync_apache_config']
 
     monitor_service { 'appserver http':
         description   => 'Apache HTTP',
