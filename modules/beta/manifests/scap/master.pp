@@ -50,4 +50,8 @@ class beta::scap::master {
         mode    => '0555',
         source  => 'puppet:///modules/beta/wmf-beta-scap',
     }
+
+    file { '/usr/local/apache':
+        ensure  => directory,
+    }
 }

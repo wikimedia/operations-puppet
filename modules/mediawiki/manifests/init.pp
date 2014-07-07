@@ -11,6 +11,10 @@ class mediawiki {
         content => $::site,
     }
 
+    file { '/usr/local/apache':
+        ensure => directory,
+    }
+
     class { '::twemproxy':
         default_file => 'puppet:///modules/mediawiki/twemproxy.default',
     }
