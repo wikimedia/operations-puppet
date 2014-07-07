@@ -42,7 +42,7 @@ class nutcracker( $server_list, $config_parameters = {} ) {
 
     file { '/etc/default/nutcracker':
         ensure  => present,
-        content => 'DAEMON_OPTS="--mbuf-size=65536 "',
+        content => 'DAEMON_OPTS="--mbuf-size=65536 --stats-port=22223"',
         require => Package['nutcracker'],
     }
 

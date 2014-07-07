@@ -3,6 +3,6 @@ memcached:
    <%= k %>: <%= v %>
 <%- end -%>
    servers:
-   <% @server_list.each do |server| -%>
+   <%- @server_list.each do |server| -%>
    - <%= server %>:1
    <%- end -%>
