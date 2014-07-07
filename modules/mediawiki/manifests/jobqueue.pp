@@ -11,6 +11,8 @@ class mediawiki::jobqueue(
     $iprioprocs             = 5,
     $procs_per_iobound_type = 1
 ) {
+    deployment::target { 'jobrunner': }
+
     file { '/etc/init.d/mw-job-runner':
         owner  => 'root',
         group  => 'root',
