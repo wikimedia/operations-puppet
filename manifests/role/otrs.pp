@@ -110,6 +110,14 @@ class role::otrs (
         source => 'puppet:///files/otrs/idle_agent_report',
     }
 
+    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/icons/product.ico':
+        ensure => 'file',
+        owner  => 'otrs',
+        group  => 'www-data',
+        mode   => '0664',
+        source => 'puppet:///files/otrs/wmf.ico',
+    }
+
     file { '/usr/local/bin/train_spamassassin':
         ensure => 'file',
         owner  => 'root',
@@ -146,7 +154,7 @@ class role::otrs (
 
     # warning: don't unquote these booleans until exim::roled is fixed
     class { 'exim::roled':
-        local_domains          => [
+        local_domains        => [
             '+system_domains',
             '+wikimedia_domains',
             ],
