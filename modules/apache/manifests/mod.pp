@@ -12,18 +12,25 @@ class apache::mod::alias           { apache::mod_conf { 'alias':          } }
 class apache::mod::auth_basic      { apache::mod_conf { 'auth_basic':     } }
 class apache::mod::authn_file      { apache::mod_conf { 'authn_file':     } }
 class apache::mod::authnz_ldap     { apache::mod_conf { 'authnz_ldap':    } }
+class apache::mod::authz_host      { apache::mod_conf { 'authz_host':     } }
 class apache::mod::authz_user      { apache::mod_conf { 'authz_user':     } }
+class apache::mod::autoindex       { apache::mod_conf { 'autoindex':      } }
 class apache::mod::cgi             { apache::mod_conf { 'cgi':            } }
 class apache::mod::dav             { apache::mod_conf { 'dav':            } }
 class apache::mod::dav_fs          { apache::mod_conf { 'dav_fs':         } }
+class apache::mod::dir             { apache::mod_conf { 'dir':            } }
+class apache::mod::expires         { apache::mod_conf { 'expires':        } }
 class apache::mod::filter          { apache::mod_conf { 'filter':         } }
 class apache::mod::headers         { apache::mod_conf { 'headers':        } }
 class apache::mod::proxy           { apache::mod_conf { 'proxy':          } }
 class apache::mod::proxy_balancer  { apache::mod_conf { 'proxy_balancer': } }
 class apache::mod::proxy_http      { apache::mod_conf { 'proxy_http':     } }
 class apache::mod::rewrite         { apache::mod_conf { 'rewrite':        } }
+class apache::mod::setenvif        { apache::mod_conf { 'rewrite':        } }
 class apache::mod::ssl             { apache::mod_conf { 'ssl':            } }
+class apache::mod::status          { apache::mod_conf { 'status':         } }
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
+class apache::mod::version         { apache::mod_conf { 'version':        } }
 
 
 # Modules that depend on additional packages
