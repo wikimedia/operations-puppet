@@ -109,11 +109,6 @@ class role::beta::appserver {
         unless  => '/bin/ps -C apache2',
     }
 
-    file { '/usr/local/apache/conf':
-        ensure => directory,
-        before => Exec['sync_apache_config'],
-    }
-
     monitor_service { 'appserver http':
         description   => 'Apache HTTP',
         check_command => 'check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page',

@@ -5,7 +5,7 @@
 class beta::scap::rsync_slave {
     include ::beta::config
     include ::beta::scap::target
-    include rsync::server
+    include ::rsync::server
 
     # Run an rsync server
     rsync::server::module { 'common':

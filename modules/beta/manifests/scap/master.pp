@@ -5,7 +5,8 @@
 class beta::scap::master {
     include ::beta::config
     include ::beta::scap::target
-    include rsync::server
+    include ::misc::deployment::scap_scripts
+    include ::rsync::server
 
     # Install ssh private key for mwdeploy user
     file { '/var/lib/mwdeploy/.ssh':
