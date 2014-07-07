@@ -1209,8 +1209,9 @@ node 'gallium.wikimedia.org' {
         ]
     }
 
+    include base::firewall
+
     include standard
-    include contint::firewall
     include role::ci::master
     include role::ci::slave
     include role::ci::website
@@ -1467,6 +1468,8 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'lanthanum.eqiad.wmnet' {
+
+    include base::firewall
 
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
@@ -2877,6 +2880,8 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
 }
 
 node 'ytterbium.wikimedia.org' {
+
+    include base::firewall
 
     class { 'admin': groups => ['gerrit-root', 'gerrit-admin'] }
 

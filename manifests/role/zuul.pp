@@ -101,4 +101,36 @@ class role::zuul::production {
       zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
     }
 
+    # Zuul status page on port 8001, reacheable via Apache proxying the
+    # requests
+    ferm::service { 'zuul_localhost_only':
+        proto  => 'tcp',
+        port   => '8001',
+        srange => '(127.0.0.1/32 ::1/64)',
+    }
+    # Gearman is used between Zuul and the Jenkin master, both on the same
+    # server and communicating over localhost
+    ferm::service { 'gearman_localhost_only':
+        proto => 'tcp',
+        port  => '4730',
+        srange => '(127.0.0.1/32 ::1/64)',
+    }
+
+    # The master runs a git-daemon process used by slave to fetch changes from
+    # the Zuul git repository. It is only meant to be used from slaves, so
+    # reject outside calls.
+    ferm::service { 'git-daemon_internal':
+        proto  => 'tcp',
+        port   => '9418',
+        srange => '($INTERNAL)',
+    }
+
+    # Need to grant ytterbium ssh access for git
+    ferm::service { 'ytterbium_ssh':
+        proto  => 'tcp',
+        port   => '22',
+        srange => '(208.80.154.80/32 2620:0:861:3:92b1:1cff:fe2a:e60/64 2620:0:861:3:208:80:154:81/64)',
+    }
+
+
 } # /role::zuul::production
