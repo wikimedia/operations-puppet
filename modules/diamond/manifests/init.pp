@@ -50,6 +50,7 @@
 #  }
 #
 class diamond(
+    $ensure   = present,
     $handler  = 'diamond.handler.dastatsd.StatsHandler',
     $interval = '60',
     $settings = { host => 'localhost',
@@ -59,12 +60,14 @@ class diamond(
     $keep_logs_for = '5'
 ) {
     package { [ 'python-diamond', 'python-configobj' ]:
-        ensure => present,
+        ensure => $ensure,
     }
 
     file { '/etc/diamond/diamond.conf':
         content => template('diamond/diamond.conf.erb'),
         require => File['/etc/diamond/collectors', '/etc/diamond/handlers'],
+        notify  => Service['diamond'],
+        ensure  => $ensure,
     }
 
     file { [ '/etc/diamond/collectors', '/etc/diamond/handlers' ]:
@@ -76,30 +79,35 @@ class diamond(
         purge   => true,
         force   => true,
         require => Package['python-diamond'],
+        ensure  => $ensure,
     }
 
     # Truncate the import path, leaving only the class name.
     $handler_class = regsubst($handler, '.*\.', '')
     file { "/etc/diamond/handlers/${handler_class}.conf":
         content => template('diamond/handler.conf.erb'),
+        notify  => Service['diamond'],
+        ensure  => $ensure,
     }
 
-    service { 'diamond':
-        ensure     => running,
-        enable     => true,
-        hasrestart => true,
-        hasstatus  => true,
-        require    => Package['python-diamond'],
-        subscribe  => File['/etc/diamond/diamond.conf'],
+    if $ensure == present {
+        service { 'diamond':
+            ensure     => running,
+            enable     => true,
+            hasrestart => true,
+            hasstatus  => true,
+            require    => Package['python-diamond'],
+            subscribe  => File['/etc/diamond/diamond.conf'],
+        }
+
+
+        diamond::collector { 'CPU':
+            settings => {
+                percore   => 'false',
+                normalize => 'true',
+            },
+        }
+
+        diamond::collector { 'Network': }
     }
-
-
-    diamond::collector { 'CPU':
-        settings => {
-            percore   => 'false',
-            normalize => 'true',
-        },
-    }
-
-    diamond::collector { 'Network': }
 }
