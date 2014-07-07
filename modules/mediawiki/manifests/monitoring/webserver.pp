@@ -5,11 +5,6 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
         default   => $ensure
     }
 
-    $link_ensure = $ensure ? {
-        'present' => 'link',
-        default   => $ensure
-    }
-
     $endpoints = {
         'apc' => 'apc_stats.php'
     }
@@ -22,23 +17,6 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
         group   => 'root',
         mode    => '0555',
         require => Class['::mediawiki::packages']
-    }
-
-
-    file { '/etc/apache2/sites-available/monitoring.conf':
-        ensure => $ensure,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        content => template('mediawiki/apache/monitoring.conf.erb'),
-        require => Class['::mediawiki::packages']
-    }
-
-    # we do NOT notify apache, by design.
-    file { '/etc/apache2/sites-enabled/99-monitoring.conf':
-        ensure => $link_ensure,
-        target => '/etc/apache2/sites-available/monitoring.conf',
-        before => Service['apache']
     }
 
     # monitor definitions
@@ -69,5 +47,8 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
     include stdlib
     $endpoint_list = keys($endpoints)
     mediawiki::monitoring::webserver::endpoint { $endpoint_list: }
-
+    apache::site { 'monitoring':
+        content  => template('mediawiki/apache/monitoring.conf.erb'),
+        priority => '99'
+    }
 }

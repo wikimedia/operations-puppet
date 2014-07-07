@@ -1,0 +1,469 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Process redirects.dat and generate redirects.conf from it. 
+ *
+ * See the comments in redirects.dat for the input format.
+ *
+ * Usage:
+ *   ./refreshDomainRedirects
+ *
+ * The source and destination files are assumed to be in the same directory as
+ * the script.
+ */
+class DomainRedirectParser {
+	var $dir, $lineNum, $lines, $rules;
+
+	function __construct( $dir ) {
+		$this->dir = $dir;
+		$this->lineNum = 0;
+		$lines = file( "$dir/redirects.dat" );
+		if ( $lines === false ) {
+			$this->error( "Unable to open input file" );
+		}
+		$this->lines = array_map( 'rtrim', $lines );
+		$this->rules = array(
+			'wildcard' => array(),
+			'plain' => array(),
+			'wildcardOverride' => array(),
+			'plainOverride' => array()
+		);
+	}
+
+	function execute() {
+		while ( false !== ( $line = $this->nextLine() ) ) {
+			// Remove comments
+			$line = preg_replace( '/#.*$/', '', $line );
+			// Remove leading and trailing whitespace
+			$line = trim( $line );
+			if ( $line === '' ) {
+				continue;
+			}
+
+			$args = preg_split( '/\s+/', $line );
+			$cmd = array_shift( $args );
+			switch ( $cmd ) {
+				case 'funnel':
+					$this->doFunnel( $args );
+					break;
+				case 'rewrite':
+					$this->doRewrite( $args );
+					break;
+				case 'override':
+					$this->doOverride( $args );
+					break;
+				default:
+					$this->error( "Invalid command \"$cmd\"" );
+			}
+		}
+
+		$this->checkOrphanOverrides();
+		$this->checkLoops();
+		$this->writeApacheConf();
+	}
+
+	function nextLine() {
+		if ( $this->lineNum < count( $this->lines ) ) {
+			return $this->lines[$this->lineNum++];
+		} else {
+			return false;
+		}
+	}
+
+	function error( $msg ) {
+		throw new DomainRedirectParser_Error( $msg, $this->lineNum );
+	}
+
+	/**
+	 * Process a funnel command at the current input position
+	 * @param array $args The arguments to the command
+	 */
+	function doFunnel( $args ) {
+		if ( count( $args ) != 2 ) {
+			$this->error( "funnel must be given two parameters" );
+		}
+		list( $domain, $dest ) = $args;
+		$destInfo = $this->interpretDest( $dest );
+
+		if ( strpos( $domain, '*' ) !== false ) {
+			$wildcardList = $this->interpretWildcard( $domain );
+			foreach ( $wildcardList as $wildcard ) {
+				$domainRegex = $wildcard['domainRegex'];
+				if ( strpos( $domainRegex, '(' ) !== false ) {
+					$wildcardDest = str_replace( '*', '%1', $destInfo['dest'] );
+				} else {
+					$wildcardDest = $destInfo['dest'];
+				}
+
+				$this->rules['wildcard'][] = array(
+					'domain' => $domain,
+					'domainRegex' => $domainRegex,
+					'alias' => $wildcard['alias'],
+					'pathRegex' => '.',
+					'dest' => $wildcardDest,
+					'destDomain' => $destInfo['domain'],
+					'lineNum' => $this->lineNum,
+				);
+			}
+		} else {
+			$this->rules['plain'][] = array(
+				'domain' => $domain,
+				'domainRegex' => "=$domain",
+				'alias' => $domain,
+				'pathRegex' => '.',
+				'dest' => $destInfo['dest'],
+				'destDomain' => $destInfo['domain'],
+				'lineNum' => $this->lineNum,
+			);
+		}
+	}
+
+	/**
+	 * Process a rewrite command at the current input position
+	 * @param array $args The arguments to the command
+	 */
+	function doRewrite( $args ) {
+		if ( count( $args ) != 2 ) {
+			$this->error( "rewrite must be given two parameters" );
+		}
+
+		list( $domain, $dest ) = $args;
+		$destInfo = $this->interpretDest( $dest );
+		// Strip trailing slash from dest
+		if ( substr( $destInfo['dest'], -1 ) === '/' ) {
+			$destInfo['dest'] = substr( $destInfo['dest'], 0, -1 );
+		}
+
+		if ( strpos( $domain, '*' ) !== false ) {
+			$wildcardList = $this->interpretWildcard( $domain );
+			foreach ( $wildcardList as $wildcard ) {
+				$domainRegex = $wildcard['domainRegex'];
+				if ( strpos( $domainRegex, '(' ) !== false ) {
+					$wildcardDest = str_replace( '*', '%1', $destInfo['dest'] );
+				} else {
+					$wildcardDest = $destInfo['dest'];
+				}
+				$this->rules['wildcard'][] = array(
+					'domain' => $domain,
+					'domainRegex' => $domainRegex,
+					'alias' => $wildcard['alias'],
+					'pathRegex' => '.*',
+					'dest' => "$wildcardDest\$0",
+					'destDomain' => $destInfo['domain'],
+					'lineNum' => $this->lineNum,
+				);
+			}
+		} else {
+			$this->rules['plain'][] = array(
+				'domain' => $domain,
+				'domainRegex' => "=$domain",
+				'alias' => $domain,
+				'pathRegex' => '.*',
+				'dest' => $destInfo['dest'] . '$0',
+				'destDomain' => $destInfo['domain'],
+				'lineNum' => $this->lineNum,
+			);
+		}
+	}
+
+	/**
+	 * Process an override command at the current input position
+	 * @param array $args The arguments to the command
+	 */
+	function doOverride( $args ) {
+		if ( count( $args ) != 2 ) {
+			$this->error( "override must be given two parameters" );
+		}
+		list ( $source, $dest ) = $args;
+		$destInfo = $this->interpretDest( $dest );
+		$slashPos = strpos( $source, '/' );
+		if ( $slashPos === false ) {
+			$this->error( "the source of an override must include a path component" );
+		}
+		$domain = substr( $source, 0, $slashPos );
+		$path = substr( $source, $slashPos );
+		
+		if ( strpos( $domain, '*' ) !== false ) {
+			$wildcardList = $this->interpretWildcard( $domain );
+			foreach ( $wildcardList as $wildcard ) {
+				$domainRegex = $wildcard['domainRegex'];
+				if ( strpos( $domainRegex, '(' ) !== false ) {
+					$wildcardDest = str_replace( '*', '%1', $destInfo['dest'] );
+				} else {
+					$wildcardDest = $destInfo['dest'];
+				}
+				$this->rules['wildcardOverride'][] = array(
+					'domain' => $domain,
+					'domainRegex' => $domainRegex,
+					'alias' => $wildcard['alias'],
+					'pathRegex' => '^' . preg_quote( $path ) . '$',
+					'dest' => $wildcardDest,
+					'destDomain' => $destInfo['domain'],
+					'lineNum' => $this->lineNum,
+				);
+			}
+		} else {
+			$this->rules['plainOverride'][] = array(
+				'domain' => $domain,
+				'domainRegex' => "=$domain",
+				'alias' => $domain,
+				'pathRegex' => '^' . preg_quote( $path ) . '$',
+				'dest' => $destInfo['dest'],
+				'destDomain' => $destInfo['domain'],
+				'lineNum' => $this->lineNum,
+			);
+		}
+	}
+
+	/**
+	 * Interpret a <dest> token and return information about it. See the comment
+	 * in redirects.dat for information about forms it can take.
+	 */
+	function interpretDest( $dest ) {
+		// Escape non-ASCII characters
+		$dest = preg_replace_callback( 
+			'/[\x80-\xff]/',
+			function ($matches) {
+				return '\\' . urlencode( $matches[0] );
+			},
+			$dest );
+
+
+		if ( preg_match( '!^(https?://)([^/]*)(/.*$|$)!', $dest, $m ) ) {
+			$domain = $m[2];
+			$path = $m[3];
+			if ( $path === '' ) {
+				$dest .= '/';
+			}
+		} elseif ( preg_match( '!^//([^/]*)(/.*$|$)!', $dest, $m ) ) {
+			$dest = '%{ENV:RW_PROTO}:' . $dest;
+			$domain = $m[1];
+			$path = $m[2];
+			if ( $path === '' ) {
+				$dest .= '/';
+			}
+		} else {
+			$this->error( "destination must be either a protocol-relative or a fully-specified URL" );
+		}
+		return array(
+			'dest' => $dest,
+			'domain' => $domain,
+		);
+	}
+
+	/**
+	 * Interpret a source domain wildcard and return information about it.
+	 */
+	function interpretWildcard( $wildcard ) {
+		if ( preg_match( '/^\*\.([^*]*)$/', $wildcard, $m ) ) {
+			return array( array(
+				'domainRegex' => "^(.+)\." . preg_quote( $m[1] ) . '$',
+				'alias' => $wildcard,
+			) );
+		} elseif ( preg_match( '/^\*([^*]*)$/', $wildcard, $m ) ) {
+			return array(
+				array(
+					'domainRegex' => '=' . $m[1],
+					'alias' => $m[1],
+				),
+				array(
+					'domainRegex' => "^(.+)\." . preg_quote( $m[1] ) . '$',
+					'alias' => "*." . $m[1],
+				)
+			);
+		} elseif ( preg_match( '/^([^*]*)\.\*\.([^*]*)$/', $wildcard, $m ) ) {
+			return array( array(
+				'domainRegex' => '^' . preg_quote( $m[1] ) . '\.(.+)\.' . preg_quote( $m[2] ) . '$',
+				'alias' => $wildcard,
+			) );
+		} elseif ( strpos( $wildcard, '*' ) !== false ) {
+			$this->error( "invalid use of asterisk in domain pattern" );
+		} else {
+			return array( array(
+				'domainRegex' => '=' . $wildcard,
+				'alias' => $wildcard
+			) );
+		}
+	}
+
+	/**
+	 * Check to see if any override rules were given which didn't have an
+	 * associated funnel or rewrite, and raise an error if any are found.
+	 */
+	function checkOrphanOverrides() {
+		$servers = array();
+
+		foreach ( array( 'wildcard', 'plain' ) as $type ) {
+			foreach ( $this->rules[$type] as $rule ) {
+				$servers[$rule['alias']] = true;
+			}
+		}
+		
+		foreach ( array( 'wildcardOverride', 'plainOverride' ) as $type ) {
+			foreach ( $this->rules[$type] as $rule ) {
+				if ( !isset( $servers[$rule['alias']] ) ) {
+					throw new DomainRedirectParser_Error(
+						"override rules must have an associated funnel or rewrite", $rule['lineNum'] );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check for double or infinite redirects and raise an error if any are found.
+	 */
+	function checkLoops() {
+		$flatRules = array();
+		foreach ( $this->rules as $type => $rules ) {
+			foreach ( $rules as $rule ) {
+				$flatRules[] = $rule;
+			}
+		}
+
+		for ( $i = 0; $i < count( $flatRules ); $i++ ) {
+			for ( $j = 0; $j < count( $flatRules ); $j++ ) {
+				$outboundRule = $flatRules[$i];
+				$inboundRule = $flatRules[$j];
+				$outboundDomain = $outboundRule['destDomain'];
+				$inboundDomain = $inboundRule['domain'];
+				$inboundRegex = $inboundRule['domainRegex'];
+				$wildcardPos = strpos( $outboundDomain, '%1' );
+				if ( $wildcardPos !== false ) {
+					$outboundSuffix = substr( $outboundDomain, $wildcardPos + 1 );
+					if ( $outboundSuffix == substr( $inboundDomain, -strlen( $outboundSuffix ) ) ) {
+						throw new DomainRedirectParser_Error(
+							"double redirect: rule has destination domain $outboundDomain " .
+							"which matches relevant suffix of source domain \"$inboundDomain\" " .
+							"from line {$inboundRule['lineNum']}",
+							$outboundRule['lineNum'] );
+					}
+				} elseif ( $inboundRegex[0] === '=' ) {
+					if ( $inboundDomain === $outboundDomain ) {
+						throw new DomainRedirectParser_Error(
+							"double redirect: rule has destination domain $outboundDomain " .
+							"from line {$inboundRule['lineNum']}",
+							$outboundRule['lineNum'] );
+					}
+				} elseif ( preg_match( "!$inboundRegex!", $outboundDomain ) ) {
+					throw new DomainRedirectParser_Error(
+						"double redirect: rule has destination domain $outboundDomain " .
+						"which matches wildcard $inboundDomain " .
+						"from line {$inboundRule['lineNum']}",
+						$outboundRule['lineNum'] );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Write the collected rules to the output file.
+	 */
+	function writeApacheConf() {
+		$f = fopen( "{$this->dir}/redirects.conf", 'w' );
+		if ( !$f ) {
+			throw new DomainRedirectParser_Error( "Unable to open redirects.conf for writing" );
+		}
+
+		$servers = array();
+		foreach ( array( 'wildcard', 'plain' ) as $type ) {
+			foreach ( $this->rules[$type] as $rule ) {
+				$servers[$rule['alias']] = true;
+			}
+		}
+
+		fwrite( $f, 
+			"# This file is generated by refreshDomainRedirects from the source file redirects.dat\n" .
+			"# Do not edit it manually!\n" .
+			"\n" .
+			"<VirtualHost *>\n" .
+			"\tServerName redirector\n" .
+			"\tServerAlias \\\n" );
+
+		foreach ( $servers as $server => $unused ) {
+			fwrite( $f, "\t$server \\\n" );
+		}
+		fwrite( $f, "\n" );
+		fwrite( $f, <<<EOT
+	# allow caching for redirects
+	<IfModule mod_headers.c>
+		Header set Cache-control "s-maxage=86000, max-age=0, must-revalidate"
+	</IfModule>
+	<IfModule mod_expires.c>
+		ExpiresActive On
+		ExpiresByType image/gif A2592000
+		ExpiresByType image/png A2592000
+		ExpiresByType image/jpeg A2592000
+		ExpiresByType text/css A2592000
+		ExpiresByType text/javascript A2592000
+		ExpiresByType application/x-javascript A2592000
+		ExpiresByType text/html A2592000
+	</IfModule>
+
+	DocumentRoot /usr/local/apache/common/docroot/default
+
+	RewriteEngine On
+
+	RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+	RewriteCond %{ENV:RW_PROTO} !=https
+	RewriteRule . - [E=RW_PROTO:http]
+
+EOT
+		);
+
+		// Write more specific rules first, followed by less specific rules
+		$precedence = array(
+			'plainOverride',
+			'wildcardOverride',
+			'plain',
+			'wildcard',
+		);
+
+		foreach ( $precedence as $type ) {
+			fwrite( $f, "\n\t# Type: $type\n" );
+			foreach ( $this->rules[$type] as $rule ) {
+				fwrite( $f, 
+					"\t# " . $this->getLine( $rule['lineNum'] ) . "\n" .
+					"\tRewriteCond %{HTTP_HOST} {$rule['domainRegex']}\n" .
+					"\tRewriteRule {$rule['pathRegex']} {$rule['dest']} [R=301,L,NE]\n" );
+			}
+		}
+
+		fwrite( $f, 
+			"</VirtualHost>\n" .
+			"# vim" . ": sts=4 sw=4 autoindent syn=apache\n" );
+		fclose( $f );
+	}
+
+	function getLine( $lineNum ) {
+		if ( isset( $this->lines[$lineNum - 1] ) ) {
+			return $this->lines[$lineNum - 1];
+		} else {
+			return false;
+		}
+	}
+}
+
+class DomainRedirectParser_Error extends Exception {
+	function __construct( $message, $lineNum = 0 ) {
+		if ( $lineNum ) {
+			$realMessage = "error in line $lineNum: $message";
+		} else {
+			$realMessage = "error: $message";
+		}
+		parent::__construct( $realMessage );
+		$this->lineNum = $lineNum;
+	}
+}
+
+$parser = false;
+try {
+	$parser = new DomainRedirectParser( __DIR__ );
+	$parser->execute();
+} catch ( DomainRedirectParser_Error $e ) {
+	print $e->getMessage() . "\n";
+	if ( $parser && $parser->getLine( $e->lineNum ) ) {
+		print "{$e->lineNum}: " . $parser->getLine( $e->lineNum ) . "\n";
+	}
+	exit(1);
+}
