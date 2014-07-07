@@ -5,10 +5,6 @@ class mediawiki::web ( $workers_limit = undef ) {
     include ::mediawiki::monitoring::webserver
     include ::mediawiki::web::config
 
-    file { '/usr/local/apache':
-        ensure => directory,
-    }
-
     service { 'apache':
         ensure    => running,
         name      => 'apache2',

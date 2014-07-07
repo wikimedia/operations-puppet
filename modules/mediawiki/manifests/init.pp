@@ -12,6 +12,10 @@ class mediawiki {
         content => $::site,
     }
 
+    file { '/usr/local/apache':
+        ensure => directory,
+    }
+
     include ::twemproxy::decom
 
     if $::realm == 'labs' {
