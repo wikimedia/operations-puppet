@@ -51,7 +51,7 @@ class nutcracker( $server_list, $config_parameters = {} ) {
         mode    => '0444',
         content => template('nutcracker/config.yml.erb'),
         require => File['/etc/default/nutcracker'],
-        notify  => Service['nutcracker'],
+#        notify  => Service['nutcracker'],
     }
 
     service { 'nutcracker':
