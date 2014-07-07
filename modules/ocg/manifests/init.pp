@@ -19,7 +19,9 @@ class ocg (
     $statsd_host = 'localhost',
     $statsd_port = 8125,
     $statsd_is_txstatsd = 0,
-    $temp_dir = '/srv/deployment/ocg/tmp'
+    $temp_dir = '/srv/deployment/ocg/tmp',
+    $output_dir = '/srv/deployment/ocg/output',
+    $postmortem_dir = '/srv/deployment/ocg/postmortem'
 ) {
     deployment::target { 'ocg': }
 
@@ -122,6 +124,34 @@ class ocg (
         ensure  => directory,
         owner   => 'ocg',
         group   => 'ocg',
+    }
+
+    file { $output_dir:
+        ensure  => directory,
+        owner   => 'ocg',
+        group   => 'ocg',
+    }
+
+    cron { "Clean up OCG output directory":
+        ensure  => present,
+        command => "find ${output_dir}* -mtime +5 -exec rm {} \;",
+        user    => 'ocg',
+        hour    => 0,
+        minute  => 0,
+    }
+
+    file { $postmortem_dir:
+        ensure  => directory,
+        owner   => 'ocg',
+        group   => 'ocg',
+    }
+
+    cron { "Clean up OCG postmortem directory":
+        ensure  => present,
+        command => "find ${output_dir}* -mtime +3 -exec rm {} \;",
+        user    => 'ocg',
+        hour    => 0,
+        minute  => 0,
     }
 
     file { '/var/log/ocg':
