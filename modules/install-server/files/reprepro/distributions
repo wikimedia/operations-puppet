@@ -65,7 +65,7 @@ Version: 14.04
 Architectures: source amd64 i386
 Components: main universe non-free
 UDebComponents: main
-Update: hwraid
+Update: hwraid elasticsearch
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: default
 DebOverride: deb-override
