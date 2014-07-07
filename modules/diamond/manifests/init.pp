@@ -65,6 +65,7 @@ class diamond(
     file { '/etc/diamond/diamond.conf':
         content => template('diamond/diamond.conf.erb'),
         require => File['/etc/diamond/collectors', '/etc/diamond/handlers'],
+        notify  => Service['diamond'],
     }
 
     file { [ '/etc/diamond/collectors', '/etc/diamond/handlers' ]:
@@ -82,6 +83,7 @@ class diamond(
     $handler_class = regsubst($handler, '.*\.', '')
     file { "/etc/diamond/handlers/${handler_class}.conf":
         content => template('diamond/handler.conf.erb'),
+        notify  => Service['diamond'],
     }
 
     service { 'diamond':
