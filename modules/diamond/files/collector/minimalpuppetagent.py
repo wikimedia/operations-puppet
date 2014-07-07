@@ -9,6 +9,8 @@ Only reports:
 
 Adapted from PuppetAgentCollector
 
+Requires the ability to sudo as puppet to be able to collect.
+
 #### Dependencies
 
  * yaml
@@ -16,6 +18,7 @@ Adapted from PuppetAgentCollector
 """
 
 import time
+import subprocess
 try:
     import yaml
     yaml  # workaround for pyflakes issue #13
@@ -32,6 +35,7 @@ class MinimalPuppetAgentCollector(diamond.collector.Collector):
                             self).get_default_config_help()
         config_help.update({
             'yaml_path': "Path to last_run_summary.yaml",
+            'sudo_user': "The user to sudo as to read the file at yaml_path"
         })
         return config_help
 
@@ -42,18 +46,33 @@ class MinimalPuppetAgentCollector(diamond.collector.Collector):
         config = super(MinimalPuppetAgentCollector, self).get_default_config()
         config.update({
             'yaml_path': '/var/lib/puppet/state/last_run_summary.yaml',
+            'sudo_user': 'puppet',
             'path':     'puppetagent',
             'method':   'Threaded',
         })
         return config
 
-    def _get_summary(self):
-        summary_fp = open(self.config['yaml_path'], 'r')
+    def _check_sudo(self):
+        """Check if diamond can sudo as puppet to read the summary file"""
+        check_path = ['/usr/bin/sudo', '-l', '-u', self.config['sudo_user'],
+                      '/bin/cat', self.config['yaml_path']
+                      ]
+        proc = subprocess.Popen(check_path, stdout=subprocess.PIPE)
+        out, _ = proc.communicate()
+        return out.strip() == '/bin/cat %s' % self.config['yaml_path']
 
-        try:
-            summary = yaml.load(summary_fp)
-        finally:
-            summary_fp.close()
+    def _get_summary(self):
+        if not self._check_sudo():
+            self.log.error('diamond user cannot sudo as puppet to read summary file')
+            return
+
+        process_path = ['/usr/bin/sudo', '-u', self.config['sudo_user'],
+                        '/bin/cat', self.config['yaml_path']
+                        ]
+        proc = subprocess.Popen(process_path, stdout=subprocess.PIPE)
+        out, _ = proc.communicate()
+
+        summary = yaml.load(out)
 
         return summary
 
