@@ -197,16 +197,15 @@ class ldap::client::utils($ldapconfig) {
         source => 'puppet:///modules/ldap/scripts/manage-keys-nfs',
     }
 
-    file { '/usr/local/sbin/ldapsupportlib.py':
-        ensure  => link,
-        target  => '/usr/local/bin/ldapsupportlib.py',
-        require => File['/usr/local/bin/ldapsupportlib.py'],
+    file { ['/usr/local/bin/ldapsupportlib.py',
+            '/usr/local/sbin/ldapsupportlib.py']:
+        ensure => absent,
     }
 
-    file { '/usr/local/bin/ldapsupportlib.py':
+    file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
         owner  => 'root',
         group  => 'root',
-        mode   => '0555',
+        mode   => '0444',
         source => 'puppet:///modules/ldap/scripts/ldapsupportlib.py',
     }
 
