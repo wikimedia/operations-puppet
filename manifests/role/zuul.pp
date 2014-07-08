@@ -7,11 +7,15 @@
 # Realm based configuration for Zuul roles.
 class role::zuul::configuration {
 
-    $zuul_git_dir = $::realm ? {
-        'production' => '/srv/ssd/zuul/git',
-        'labs'       => '/srv/zuul/git',
-# FIXME migrate under /data/project whenever bug 64868 is solved
-#        'labs'       => '/data/project/zuul/git',
+    $merger = {
+        'production' => {
+            'git_dir' => '/srv/ssd/zuul/git'
+        },
+        'labs' => {
+            # FIXME migrate under /data/project whenever bug 64868 is solved
+            #   'git_dir'       => '/data/project/zuul/git',
+            'git_dir' => '/srv/zuul/git'
+        },
     }
 
 } # /role::zuul::configuration
@@ -43,7 +47,7 @@ class role::zuul::labs {
         status_url           => 'http://integration.wmflabs.org/zuul/status',
         zuul_url             => 'git://localhost',
         config_git_branch    => 'labs',
-        git_dir              => $role::zuul::configuration::zuul_git_dir,
+        git_dir              => $role::zuul::configuration::merger[$::realm]['git_dir'],
         statsd_host          => '',
         git_email            => "zuul-merger@${::instancename}",
         git_name             => 'Wikimedia Zuul Merger',
@@ -51,7 +55,7 @@ class role::zuul::labs {
 
     # Serves Zuul git repositories
     class { 'contint::zuul::git-daemon':
-      zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
+        zuul_git_dir => $role::zuul::configuration::merger[$::realm]['git_dir'],
     }
 
 } # /role::zuul::labs
@@ -89,7 +93,7 @@ class role::zuul::production {
         status_url           => 'https://integration.wikimedia.org/zuul/',
         zuul_url             => 'git://zuul.eqiad.wmnet',
         config_git_branch    => 'master',
-        git_dir              => $role::zuul::configuration::zuul_git_dir,
+        git_dir              => $role::zuul::configuration::merger[$::realm]['git_dir'],
         statsd_host          => 'statsd.eqiad.wmnet',
         git_email            => "zuul-merger@${::hostname}",
         git_name             => 'Wikimedia Zuul Merger',
@@ -97,7 +101,7 @@ class role::zuul::production {
 
     # Serves Zuul git repositories on git://zuul.eqiad.wmnet/...
     class { 'contint::zuul::git-daemon':
-      zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
+        zuul_git_dir => $role::zuul::configuration::merger[$::realm]['git_dir'],
     }
 
 } # /role::zuul::production
