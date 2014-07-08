@@ -8,6 +8,7 @@
 import ldapsupportlib
 from optparse import OptionParser
 import re
+from signal import signal, SIGPIPE, SIG_DFL
 import sys
 import traceback
 
@@ -17,6 +18,8 @@ except ImportError:
     sys.stderr.write("Unable to import LDAP library.\n")
     sys.exit(1)
 
+# Avoid "IOError: [Errno 32] Broken pipe" when piping to head & Co.
+signal(SIGPIPE, SIG_DFL)
 
 def main():
     "An application that implements the functionality of Solaris's ldaplist."
