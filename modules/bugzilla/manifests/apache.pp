@@ -3,6 +3,10 @@
 # it expects {'webserver::php5': ssl => true; } on the node
 class bugzilla::apache ($svc_name, $attach_svc_name, $docroot, $cipher_suite){
 
+    include ::apache::mod::headers
+    include ::apache::mod::expires
+    include ::apache::mod::env
+
     # separate cert and ServerName for attachments for security
     install_certificate{ $svc_name: }
     install_certificate{ $attach_svc_name: }

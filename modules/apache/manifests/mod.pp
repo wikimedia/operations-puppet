@@ -16,6 +16,8 @@ class apache::mod::authz_user      { apache::mod_conf { 'authz_user':     } }
 class apache::mod::cgi             { apache::mod_conf { 'cgi':            } }
 class apache::mod::dav             { apache::mod_conf { 'dav':            } }
 class apache::mod::dav_fs          { apache::mod_conf { 'dav_fs':         } }
+class apache::mod::env             { apache::mod_conf { 'env':            } }
+class apache::mod::expires         { apache::mod_conf { 'expires':        } }
 class apache::mod::filter          { apache::mod_conf { 'filter':         } }
 class apache::mod::headers         { apache::mod_conf { 'headers':        } }
 class apache::mod::proxy           { apache::mod_conf { 'proxy':          } }
