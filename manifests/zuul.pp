@@ -51,6 +51,7 @@ class zuulwikimedia {
             status_url     => $status_url,
             zuul_url       => $zuul_url,
         }
+        include ::zuul::monitoring::merger
 
         # Deploy Wikimedia Zuul configuration files.
         #
