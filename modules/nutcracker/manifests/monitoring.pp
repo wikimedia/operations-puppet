@@ -1,11 +1,11 @@
 # == Class: nutcracker::monitoring
 #
-# Provisions Icinga alerts for twemproxy.
+# Provisions Icinga alerts for nutcracker.
 #
 class nutcracker::monitoring {
     nrpe::monitor_service { 'nutcracker':
         description  => 'nutcracker process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:2 -u nobody -C nutcracker',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:2 -u nutcracker -C nutcracker',
     }
 
     nrpe::monitor_service { 'nutcracker_port':
