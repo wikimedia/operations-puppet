@@ -3,12 +3,14 @@
 class mediawiki::web( $maxclients = 40 ) {
     include ::mediawiki
     include ::mediawiki::monitoring::webserver
+    include ::mediawiki::web::config
 
     file { '/etc/apache2/apache2.conf':
         content => template('mediawiki/apache/apache2.conf.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        require => Class['::mediawiki::web::config'],
         before  => Service['apache'],
     }
 
@@ -24,12 +26,6 @@ class mediawiki::web( $maxclients = 40 ) {
         ensure => directory,
     }
 
-    exec { 'sync_apache_config':
-        command => '/usr/bin/rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf',
-        creates => '/usr/local/apache/conf',
-        require => File['/usr/local/apache'],
-        notify  => Service['apache'],
-    }
 
     service { 'apache':
         ensure    => running,
