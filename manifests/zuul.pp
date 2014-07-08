@@ -86,15 +86,5 @@ class zuulwikimedia {
                 origin    => 'https://gerrit.wikimedia.org/r/p/integration/zuul-config.git',
                 branch    => $config_git_branch,
         }
-
-        # Logging configuration
-        # Modification done to this file can safely trigger a daemon
-        # reload via the `zuul-reload` exect provided by the `zuul`
-        # puppet module..
-        file { '/etc/zuul/logging.conf':
-            ensure => 'present',
-            source => 'puppet:///files/zuul/logging.conf',
-            notify => Exec['zuul-reload'],
-        }
     }
 }

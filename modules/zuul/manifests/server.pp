@@ -56,6 +56,16 @@ class zuul::server (
         content => template('zuul/zuul.default.erb'),
     }
 
+    # Logging configuration
+    # Modification done to this file can safely trigger a daemon
+    # reload via the `zuul-reload` exect provided by the `zuul`
+    # puppet module..
+    file { '/etc/zuul/logging.conf':
+        ensure => 'present',
+        source => 'puppet:///modules/zuul/logging.conf',
+        notify => Exec['zuul-reload'],
+    }
+
     file { '/etc/zuul/gearman-logging.conf':
         ensure => present,
         owner  => 'jenkins',
