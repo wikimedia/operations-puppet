@@ -7,14 +7,58 @@
 # Realm based configuration for Zuul roles.
 class role::zuul::configuration {
 
+    $shared = {
+        'production' => {
+            'git_source_branch' => 'master',
+            'gerrit_server'     => 'ytterbium.wikimedia.org',
+            'gerrit_user'       => 'jenkins-bot',
+            'url_pattern'       => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
+            'status_url'        => 'https://integration.wikimedia.org/zuul/',
+        },
+        'labs' => {
+            'git_source_branch' => 'labs',
+            'gerrit_server'     => '127.0.0.1',
+            'gerrit_user'       => 'jenkins',
+            'url_pattern'       => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
+            'status_url'        => 'http://integration.wmflabs.org/zuul/status',
+        },
+    }
+
     $merger = {
         'production' => {
-            'git_dir' => '/srv/ssd/zuul/git'
+            'git_dir'   => '/srv/ssd/zuul/git',
+            'git_email' => "zuul-merger@${::hostname}",
+            'git_name'  => 'Wikimedia Zuul Merger',
+            # FIXME should be $::fqdn
+            'zuul_url'  => 'git://zuul.eqiad.wmnet',
         },
         'labs' => {
             # FIXME migrate under /data/project whenever bug 64868 is solved
             #   'git_dir'       => '/data/project/zuul/git',
-            'git_dir' => '/srv/zuul/git'
+            'git_dir' => '/srv/zuul/git',
+            'git_email' => "zuul-merger@${::hostname}",
+            'git_name'  => 'Wikimedia Zuul Merger',
+            # FIXME should be $::fqdn
+            'zuul_url'  => 'git://localhost',
+        },
+    }
+
+    $server = {
+        'production' => {
+            'config_git_branch'    => 'master',
+            'gearman_server'       => '127.0.0.1',
+            'gearman_server_start' => true,
+            'jenkins_server'       => 'http://127.0.0.1:8080/ci',
+            'jenkins_user'         => 'zuul-bot',
+            'statsd_host'          => 'statsd.eqiad.wmnet',
+        },
+        'labs' => {
+            'config_git_branch'    => 'labs',
+            'gearman_server'       => '127.0.0.1',
+            'gearman_server_start' => true,
+            'jenkins_server'       => 'http://127.0.0.1:8080/ci',
+            'jenkins_user'         => 'zuul',
+            'statsd_host'          => '',
         },
     }
 
@@ -32,25 +76,30 @@ class role::zuul::labs {
         role::zuul::configuration
 
     class { '::zuul':
-        git_source_branch => 'labs',
+        git_source_branch => $role::zuul::configuration::shared[$::realm]['git_source_branch'],
     }
 
     # Setup the instance for labs usage
     zuulwikimedia::instance { 'zuul-labs':
-        gearman_server       => '127.0.0.1',
-        gearman_server_start => true,
-        jenkins_server       => 'http://127.0.0.1:8080/ci',
-        jenkins_user         => 'zuul',
-        gerrit_server        => '127.0.0.1',
-        gerrit_user          => 'jenkins',
-        url_pattern          => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
-        status_url           => 'http://integration.wmflabs.org/zuul/status',
-        zuul_url             => 'git://localhost',
-        config_git_branch    => 'labs',
+        # Server related
+        config_git_branch    => $role::zuul::configuration::server[$::realm]['config_git_branch'],
+        gearman_server       => $role::zuul::configuration::server[$::realm]['gearman_server'],
+        gearman_server_start => $role::zuul::configuration::server[$::realm]['gearman_server_start'],
+        jenkins_server       => $role::zuul::configuration::server[$::realm]['jenkins_server'],
+        jenkins_user         => $role::zuul::configuration::server[$::realm]['jenkins_user'],
+        statsd_host          => $role::zuul::configuration::server[$::realm]['statsd_host'],
+
+        # Shared settings
+        gerrit_server        => $role::zuul::configuration::shared[$::realm]['gerrit_server'],
+        gerrit_user          => $role::zuul::configuration::shared[$::realm]['gerrit_user'],
+        url_pattern          => $role::zuul::configuration::shared[$::realm]['url_pattern'],
+        status_url           => $role::zuul::configuration::shared[$::realm]['status_url'],
+
+        # Merger related
         git_dir              => $role::zuul::configuration::merger[$::realm]['git_dir'],
-        statsd_host          => '',
-        git_email            => "zuul-merger@${::instancename}",
-        git_name             => 'Wikimedia Zuul Merger',
+        git_email            => $role::zuul::configuration::merger[$::realm]['git_email'],
+        git_name             => $role::zuul::configuration::merger[$::realm]['git_name'],
+        zuul_url             => $role::zuul::configuration::merger[$::realm]['zuul_url'],
     }
 
     # Serves Zuul git repositories
@@ -78,25 +127,30 @@ class role::zuul::production {
     include contint::proxy_zuul
 
     class { '::zuul':
-        git_source_branch => 'master',
+        git_source_branch => $role::zuul::configuration::shared[$::realm]['git_source_branch'],
     }
 
     # TODO: should require Mount['/srv/ssd']
     zuulwikimedia::instance { 'zuul-production':
-        gearman_server       => '127.0.0.1',
-        gearman_server_start => true,
-        jenkins_server       => 'http://127.0.0.1:8080/ci',
-        jenkins_user         => 'zuul-bot',
-        gerrit_server        => 'ytterbium.wikimedia.org',
-        gerrit_user          => 'jenkins-bot',
-        url_pattern          => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
-        status_url           => 'https://integration.wikimedia.org/zuul/',
-        zuul_url             => 'git://zuul.eqiad.wmnet',
-        config_git_branch    => 'master',
+        # Server related
+        config_git_branch    => $role::zuul::configuration::server[$::realm]['config_git_branch'],
+        gearman_server       => $role::zuul::configuration::server[$::realm]['gearman_server'],
+        gearman_server_start => $role::zuul::configuration::server[$::realm]['gearman_server_start'],
+        jenkins_server       => $role::zuul::configuration::server[$::realm]['jenkins_server'],
+        jenkins_user         => $role::zuul::configuration::server[$::realm]['jenkins_user'],
+        statsd_host          => $role::zuul::configuration::server[$::realm]['statsd_host'],
+
+        # Shared settings
+        gerrit_server        => $role::zuul::configuration::shared[$::realm]['gerrit_server'],
+        gerrit_user          => $role::zuul::configuration::shared[$::realm]['gerrit_user'],
+        url_pattern          => $role::zuul::configuration::shared[$::realm]['url_pattern'],
+        status_url           => $role::zuul::configuration::shared[$::realm]['status_url'],
+
+        # Merger related
         git_dir              => $role::zuul::configuration::merger[$::realm]['git_dir'],
-        statsd_host          => 'statsd.eqiad.wmnet',
-        git_email            => "zuul-merger@${::hostname}",
-        git_name             => 'Wikimedia Zuul Merger',
+        git_email            => $role::zuul::configuration::merger[$::realm]['git_email'],
+        git_name             => $role::zuul::configuration::merger[$::realm]['git_name'],
+        zuul_url             => $role::zuul::configuration::merger[$::realm]['zuul_url'],
     }
 
     # Serves Zuul git repositories on git://zuul.eqiad.wmnet/...
