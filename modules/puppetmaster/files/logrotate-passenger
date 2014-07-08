@@ -10,6 +10,6 @@
 	daily
 	compress
 	postrotate
-		[ ! -f /var/run/apache2.pid ] || kill -HUP `cat /var/run/apache2.pid`
+		/usr/sbin/apachectl graceful
 	endscript
 }
