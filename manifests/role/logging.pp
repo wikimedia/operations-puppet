@@ -402,6 +402,7 @@ class role::logging::systemusers {
         uid        => 30001,
         shell      => '/bin/bash',
         gid        => 30001,
+        home       => '/var/lib/file_mover',
         managehome => true,
         system     => true,
     }
