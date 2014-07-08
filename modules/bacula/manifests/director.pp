@@ -48,9 +48,9 @@ class bacula::director(
     # restrictive to allow any other user/group to read it. Copy it, keep it in
     # sync and set the require permissions for bacula-dir to be able to read it
     exec { 'bacula_cp_private_key':
-        command => "/bin/cp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem > \
+        command => "/bin/cp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
  /var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem",
-        unless => "/usr/bin/cmp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem > \
+        unless => "/usr/bin/cmp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
  /var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem",
     }
 
