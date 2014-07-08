@@ -73,13 +73,6 @@ class role::zuul::production {
     include role::gerrit::production::replicationdest
     include contint::proxy_zuul
 
-    file { '/var/lib/git':
-        ensure => 'directory',
-        owner  => 'gerritslave',
-        group  => 'root',
-        mode   => '0755',
-    }
-
     class { '::zuul':
         git_source_branch => 'master',
     }
