@@ -10,7 +10,7 @@ class mediawiki::web ( $workers_limit = undef ) {
     } else {
         $mem_available   = to_bytes($::memorytotal) * 0.7
         $mem_per_worker  = to_bytes('85M')
-        $max_req_workers = inline_template('<% ( @mem_available / @mem_per_worker ).to_i %>')
+        $max_req_workers = inline_template('<%= ( @mem_available / @mem_per_worker ).to_i %>')
     }
 
     file { '/etc/apache2/apache2.conf':
