@@ -135,12 +135,10 @@ class role::analytics::kraken::jobs::hive::partitions::external {
     }
 
 
-    # Use hcatalog jar for JsonSerDe
-    $hive_options = '--auxpath /usr/lib/hcatalog/share/hcatalog/hcatalog-core-0.5.0-cdh4.3.1.jar'
     # cron job to automatically create hive partitions for any
     # newly imported data.
     cron { 'kraken-create-external-hive-partitions':
-        command => "${script} --database ${database} --tables ${tables} --hive-options='${hive_options}' ${datadir} >> ${log_file} 2>&1",
+        command => "${script} --database ${database} --tables ${tables} ${datadir} >> ${log_file} 2>&1",
         user    => 'hdfs',
         minute  => 21,
         require => Exec["${script}-exists"],
