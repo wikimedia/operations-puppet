@@ -1,3 +1,0 @@
-# Default file for Twemproxy
-# This file is managed by Puppet
-CONFIG=/etc/twemproxy.yaml
