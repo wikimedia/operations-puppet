@@ -207,6 +207,30 @@ class role::mariadb::backup::config {
     }
 }
 
+class role::mariadb::bpipe {
+    include backup::host
+    include passwords::mysql::dump
+
+    file { '/etc/mysql/conf.d/dumps.cnf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => "[client]\nuser=${passwords::mysql::dump::user}\npassword=${passwords::mysql::dump::pass}\n",
+    }
+
+    backup::mysqlset {'bpipe':
+        xtrabackup       => false,
+        per_db           => true,
+        innodb_only      => true,
+        password_file    => '/etc/mysql/conf.d/bpipe.cnf',
+        method           => 'bpipe',
+        mysql_binary     => '/usr/local/bin/mysql',
+        mysqldump_binary => '/usr/local/bin/mysqldump',
+        jobdefaults      => "Monthly-${backup::host::day}-${backup::host::pool}",
+    }
+}
+
 class role::mariadb::backup {
     include backup::host
     include passwords::mysql::dump

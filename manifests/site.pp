@@ -833,6 +833,8 @@ node 'db1043.eqiad.wmnet' {
 
     include admin
     $cluster = 'mysql'
+    include role::mariadb::bpipe
+
     class { 'role::mariadb::misc::phabricator':
         shard  => 'm3',
         master => true,
