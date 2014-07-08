@@ -57,7 +57,7 @@ class role::phabricator::main {
             settings  => {
                 'storage.upload-size-limit'          => '10M',
                 'darkconsole.enabled'                => false,
-                'phabricator.base-uri'               => 'https://phabricator.wikimedia.org',
+                'phabricator.base-uri'               => 'http://phabricator.wikimedia.org',
                 'metamta.mail-adapter'               => 'PhabricatorMailImplementationPHPMailerAdapter',
                 'phpmailer.mailer'                   => 'smtp',
                 'phpmailer.smtp-port'                => '25',
