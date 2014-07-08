@@ -14,10 +14,11 @@ usage ()
 bold=`/usr/bin/tput -T xterm-256color setaf bold`
 normal=`/usr/bin/tput -T xterm-256color setaf sgr0`
 
-PUPPET_LINTER=/usr/bin/puppet-lint
-test -x $PUPPET_LINTER || { echo "$PUPPET_LINTER not installed.";
-        if [ "$1" = "-h" ]; then exit 0;
-        else usage; exit 1; fi; }
+which puppet-lint 2>&1 >/dev/null || {
+  echo "puppet-lint not installed.";
+  if [ "$1" = "-h" ]; then exit 0;
+  else usage; exit 1; fi;
+}
 
 if [ "$1" == "-h" ]
   then
