@@ -86,8 +86,8 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
     interface::rps { 'eth0': rss_pattern => 'eth0-%d' }
 }
 
-# amssq31-46 are text varnish
-node /^amssq(3[1-9]|4[0-6])\.esams\.wmnet$/ {
+# amssq31-62 are text varnish (and the only nodes with this legacy prefix)
+node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
     include admin
 
     sysctl::parameters { 'vm dirty page flushes':
@@ -101,33 +101,6 @@ node /^amssq(3[1-9]|4[0-6])\.esams\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 }
-
-# amssq47 is a text varnish
-node /^amssq47\.esams\.wikimedia\.org$/ {
-    include admin
-    $cluster = 'cache_text'
-    include role::cache::text
-    include role::cache::ssl::unified
-
-    interface::add_ip6_mapped { 'main': }
-}
-
-# amssq48-62 are text varnish
-node /^amssq(4[8-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org$/ {
-    include admin
-
-    sysctl::parameters { 'vm dirty page flushes':
-        values => {
-            'vm.dirty_background_ratio' => 5,
-        }
-    }
-
-    $cluster = 'cache_text'
-    include role::cache::text
-
-    interface::add_ip6_mapped { 'main': }
-}
-
 
 # analytics1003 is being used for testing kafkatee
 # in preperation for replacing udp2log

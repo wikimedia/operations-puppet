@@ -111,7 +111,7 @@ host amssq46 {
 
 host amssq47 {
 	hardware ethernet a4:ba:db:30:cf:b3;
-	fixed-address amssq47.esams.wikimedia.org;
+	fixed-address amssq47.esams.wmnet;
 }
 
 host amssq48 {
