@@ -57,7 +57,7 @@ class role::cache {
                         'amssq44.esams.wmnet',
                         'amssq45.esams.wmnet',
                         'amssq46.esams.wmnet',
-                        #'amssq47.esams.wikimedia.org', # Test host
+                        'amssq47.esams.wmnet',
                         'amssq48.esams.wikimedia.org',
                         'amssq49.esams.wikimedia.org',
                         'amssq50.esams.wikimedia.org',
