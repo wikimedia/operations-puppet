@@ -38,6 +38,7 @@ class base::monitoring::host($contact_group = 'admins') {
         group   => 'root',
         mode    => '0555',
         content => 'RUN_DAEMON=no',
+        require => Package['mpt-status'],
     }
 
     service { 'mpt-statusd':
@@ -45,6 +46,8 @@ class base::monitoring::host($contact_group = 'admins') {
         enable      => false,
         hasstatus   => false,
         stop        => '/usr/bin/pkill -9 -f mpt-statusd',
+        require     => Package['mpt-status'],
+        subscribe   => File['/etc/default/mpt-statusd'],
     }
 
     file { '/usr/local/bin/check-raid.py':
