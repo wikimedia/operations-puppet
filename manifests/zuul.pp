@@ -15,18 +15,11 @@ class zuulwikimedia {
         $status_url,
         $zuul_url,
         $config_git_branch='master',
-        $git_branch='master',
         $git_dir='/var/lib/zuul/git',
         $statsd_host = '',
         $git_email = "zuul-merger@${::hostname}",
         $git_name = 'Wikimedia Zuul Merger'
     ) {
-
-        # Load class from the Zuul module:
-        class { '::zuul':
-            name                 => $name,
-            git_branch           => $git_branch,
-        }
 
         # Zuul server needs an API key to interact with Jenkins:
         require passwords::misc::contint::jenkins
