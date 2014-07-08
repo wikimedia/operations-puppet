@@ -8,25 +8,31 @@ class role::diamond {
     #start batching in groups of 10 to start, for now current statsd can't
     #accept multiple metrics
 
-    # Point to diamond-collector on labs and tungsten on prod
+    # Labs projects in which to enable diamond. This is to reduce
+    # the load on the collector instance, which could not handle
+    # all the metrics from all the projects
+    $labs_enabled_projects = ['tools', 'deployment-prep', 'graphite']
     case $::realm {
         'labs': {
-            $host = '10.68.17.169'
+            $host          = '10.68.17.169'
             # Prefix labs metrics with project name
-            $path_prefix = $::instanceproject
-            $keep_logs_for = '0' # Keep only current day's logs, saves space
+            $path_prefix   = $::instanceproject
+            $keep_logs_for = '0' # Current day only
+            $service       = member($labs_enabled_projects, $::instanceproject)
         }
         default: {
-            $host = '10.64.0.18'
-            $path_prefix = 'servers'
+            $host          = '10.64.0.18'
+            $path_prefix   = 'servers'
             $keep_logs_for = '5'
+            $service       = true
         }
     }
 
     class { '::diamond':
         path_prefix   => $path_prefix,
         keep_logs_for => $keep_logs_for,
-        settings        => {
+        service       => $service,
+        settings      => {
             enabled     => 'true',
             host        => $host,
             port        => '8125',
