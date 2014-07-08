@@ -15,9 +15,10 @@ class contint::firewall {
         rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; }'
     }
     # Gearman is used between Zuul and the Jenkin master, both on the same
-    # server and communicating over localhost
+    # server and communicating over localhost.
+    # It is also used by Zuul merger daemon. The IPs will need to be collected
     ferm::rule { 'gearman_localhost_only':
-        rule => 'proto tcp dport 4730 { saddr (127.0.0.1 ::1) ACCEPT; }'
+        rule => 'proto tcp dport 4730 { saddr (127.0.0.1 208.80.154.135 ::1) ACCEPT; }'
     }
 
     # The master runs a git-daemon process used by slave to fetch changes from
