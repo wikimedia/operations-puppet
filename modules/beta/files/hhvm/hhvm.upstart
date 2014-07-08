@@ -1,8 +1,0 @@
-description "HipHop Virtual Machine for PHP"
-
-setuid www-data
-setgid www-data
-
-exec /usr/bin/hhvm --config /etc/hhvm/server.hdf --mode server -vServer.Type=fastcgi -vServer.Port=9000
-
-respawn
