@@ -23,7 +23,6 @@ class role::mediawiki::common {
 
 class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
     include ::mediawiki
-    include ::mediawiki::web
     include ::apache::monitoring
     include role::mediawiki::common
     include lvs::configuration
