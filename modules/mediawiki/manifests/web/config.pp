@@ -4,7 +4,6 @@ class mediawiki::web::config ($use_local_resources = true) {
         ensure  => directory,
         recurse => true,
         source  => 'puppet:///modules/mediawiki/apache/config',
-        notify  => Service['apache'],
     }
     exec { 'sync_apache_config':
         command => '/usr/bin/rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf',
