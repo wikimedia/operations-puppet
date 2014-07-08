@@ -27,6 +27,10 @@ class role::zuul::labs {
     include contint::proxy_zuul,
         role::zuul::configuration
 
+    class { '::zuul':
+        git_source_branch => 'labs',
+    }
+
     # Setup the instance for labs usage
     zuulwikimedia::instance { 'zuul-labs':
         gearman_server       => '127.0.0.1',
@@ -39,7 +43,6 @@ class role::zuul::labs {
         status_url           => 'http://integration.wmflabs.org/zuul/status',
         zuul_url             => 'git://localhost',
         config_git_branch    => 'labs',
-        git_branch           => 'labs',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
         statsd_host          => '',
         git_email            => "zuul-merger@${::instancename}",
@@ -77,6 +80,10 @@ class role::zuul::production {
         mode   => '0755',
     }
 
+    class { '::zuul':
+        git_source_branch => 'master',
+    }
+
     # TODO: should require Mount['/srv/ssd']
     zuulwikimedia::instance { 'zuul-production':
         gearman_server       => '127.0.0.1',
@@ -89,7 +96,6 @@ class role::zuul::production {
         status_url           => 'https://integration.wikimedia.org/zuul/',
         zuul_url             => 'git://zuul.eqiad.wmnet',
         config_git_branch    => 'master',
-        git_branch           => 'master',
         git_dir              => $role::zuul::configuration::zuul_git_dir,
         statsd_host          => 'statsd.eqiad.wmnet',
         git_email            => "zuul-merger@${::hostname}",
