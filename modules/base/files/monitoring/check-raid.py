@@ -15,46 +15,54 @@ import glob
 def main():
     osName = os.uname()[0]
     if osName == 'SunOS':
-        utility = 'zpool'
+        utilities = ['zpool']
     elif osName == 'Linux':
-        utility = getLinuxUtility()
+        utilities = getLinuxUtilities()
     else:
         print ('WARNING: operating system "%s" is not '
                'supported by this check script' % (osName))
         sys.exit(1)
 
     try:
-        if utility is None:
+        if len(utilities) == 0:
             print 'OK: no RAID installed'
             status = 0
-        elif utility == 'arcconf':
-            status = checkAdaptec()
-        elif utility == 'tw_cli':
-            status = check3ware()
-        elif utility == 'MegaCli':
-            status = checkMegaSas()
-        elif utility == 'zpool':
-            status = checkZfs()
-        elif utility == 'mptsas':
-            status = checkmptsas()
-        elif utility == 'mdadm':
-            status = checkSoftwareRaid()
         else:
-            print ('WARNING: %s is not yet supported '
-                   'by this check script' % (utility))
-            status = 1
+            status = 0
+            for u in utilities:
+                # these should all return 0 for success,
+                # 1 for warning (including 'can't run the check'),
+                # 2 for raid failure
+                if u == 'arcconf':
+                    status = status | checkAdaptec()
+                elif u == 'tw_cli':
+                    status = status | check3ware()
+                elif u == 'MegaCli':
+                    status = status | checkMegaSas()
+                elif u == 'zpool':
+                    status = status | checkZfs()
+                elif u == 'mptsas':
+                    status = status | checkmptsas()
+                elif u == 'mdadm':
+                    status = status | checkSoftwareRaid()
+                else:
+                    print ('WARNING: %s is not yet supported '
+                           'by this check script' % (u))
+                    status = status | 1
     except:
         error = sys.exc_info()[1]
         print 'WARNING: check-raid.py encountered exception: ' + str(error)
-        status = 1
+        status = status | 1
 
+    if status > 2:
+        status = 2
     sys.exit(status)
 
 
-def getLinuxUtility():
+def getLinuxUtilities():
+    utils = []
     f = open("/proc/devices", "r")
     regex = re.compile('^\s*\d+\s+(\w+)')
-    utility = None
     for line in f:
         m = regex.match(line)
         if m is None:
@@ -62,34 +70,32 @@ def getLinuxUtility():
         name = m.group(1)
 
         if name == 'aac':
-            utility = 'arcconf'
-            break
+            utils.append('arcconf')
+            continue
         elif name == 'twe':
-            utility = 'tw_cli'
-            break
+            utils.append('tw_cli')
+            continue
         elif name == 'megadev':
-            utility = 'megarc'
-            break
+            utils.append('megarc')
+            continue
 
     f.close()
-    if utility is not None:
-        return utility
 
     if len(glob.glob("/sys/bus/pci/drivers/megaraid_sas/00*")) > 0:
-        return 'MegaCli'
+        utils.append('MegaCli')
 
     try:
         f = open("/proc/scsi/mptsas/0", "r")
-        return "mptsas"
+        utils.append("mptsas")
     except IOError:
         pass
 
     # Try mdadm
     devices = getSoftwareRaidDevices()
     if len(devices):
-        return 'mdadm'
+        utils.append('mdadm')
 
-    return None
+    return utils
 
 
 def getSoftwareRaidDevices():
@@ -116,8 +122,8 @@ def getSoftwareRaidDevices():
 def checkmptsas():
     status = 0
     if not os.path.exists('/usr/sbin/mpt-status'):
-        print 'mpt-status not installed'
-        return 255
+        print 'WARNING: mpt-status not installed'
+        return 1
 
     try:
         proc = subprocess.Popen([
@@ -126,8 +132,8 @@ def checkmptsas():
                                 '--status_only'],
                                 stdout=subprocess.PIPE)
     except Exception as e:
-        print 'Unable to execute mpt-status: %s' % e
-        return 254
+        print 'WARNING: Unable to execute mpt-status: %s' % e
+        return 1
 
     log_drive_re = re.compile('^log_id \d (\w+)$')
     phy_drive_re = re.compile('^phys_id (\d) (\w+)$')
@@ -137,7 +143,7 @@ def checkmptsas():
         if m is not None:
             print 'RAID STATUS: %s' % m.group(1)
             if m.group(1) != 'OPTIMAL':
-                status = 1
+                status = 2
         m = phy_drive_re.match(line)
         if m is not None:
             print 'DISK %s STATUS: %s' % (m.group(1), m.group(2))
@@ -224,7 +230,7 @@ def check3ware():
     for line in proc.stdout:
         m = regex.match(line)
         if m is not None:
-            controllers.push('/' + m.group(1))
+            controllers.append('/' + m.group(1))
 
     ret = proc.wait()
     if ret != 0:
@@ -238,12 +244,12 @@ def check3ware():
     for controller in controllers:
         proc = subprocess.Popen(['/usr/bin/tw_cli', controller, 'show'],
                                 stdout=subprocess.PIPE)
-        for line in proc.stdout():
+        for line in proc.stdout:
             m = regex.match(line)
             if m is not None:
                 numDrives += 1
                 if m.group(2) != 'OK':
-                    failedDrives.push(controller + '/' + m.group(1))
+                    failedDrives.append(controller + '/' + m.group(1))
 
         proc.wait()
 
