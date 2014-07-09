@@ -251,6 +251,14 @@ sub tag_carrier {
 			// Test carrier allows all proxies and SSL
 			set req.http.X-ZeroTLS = "1";
 			set req.http.X-CS = req.http.X-CS2;
+		} else if (req.http.X-CS2 ~ "^TESTON.*") {
+			// Test carrier for passing ALL requests through and marking traffic as such
+			// TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess... TBD
+			if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" ) {
+				set req.http.X-CS = req.http.X-CS2;
+			} else {
+				set req.http.X-CS = "ON";
+			}
 		} else {
 			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 				// Any new carriers are signed up as both m & zero for all languages, without proxy support
@@ -262,7 +270,6 @@ sub tag_carrier {
 		if (req.http.X-ZeroTLS && req.http.Cookie ~ "ZeroOpts=tls") {
 			unset req.http.X-ZeroTLS;
 		}
-		unset req.http.X-CS2;
 	} // end of if(X-CS2)
 	if ( req.http.X-Forwarded-By ) {
 		// Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
@@ -307,6 +314,10 @@ sub vcl_deliver {
 	// "zero=" might have been cached by previous version, avoid duplicates per bug 62922
 	// Assuming 3 month caching, the !~ "zero=" check can be removed after 6/20/2014.
 	if (req.http.X-CS && resp.http.X-Analytics !~ "zero=") {
+
+		if (req.http.X-CS == "ON") {
+			set req.http.X-CS = req.http.X-CS2;
+		}
 
 		// Some carriers have multiple ip ranges with different rules. IP set name is added at
 		// the end of the X-CS, e.g. "123-45|wap" to indicate a wap gateway with their own IPs.
