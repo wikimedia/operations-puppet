@@ -64,37 +64,83 @@ class role::zuul::configuration {
 
 } # /role::zuul::configuration
 
-# == Class: role::zuul::labs
+# == Class role::zuul::install
 #
-# Install the Zuul gating system suitable for the Continuous Integration labs
-# instance. This role can not really be reused on a different instance since it
-# hardcodes several parameters such as the Gerrit IP or the URL hostnames.
-class role::zuul::labs {
-    system::role { 'role::zuul::labs': description => 'Zuul on labs!' }
+# Wrapper around ::zuul class which is needed by both merger and server roles
+# that can in turn be installed on the same node. Prevent a duplication error.
+#
+class role::zuul::install {
 
-    include contint::proxy_zuul,
-        role::zuul::configuration
+    include role::zuul::configuration
 
     class { '::zuul':
         git_source_branch => $role::zuul::configuration::shared[$::realm]['git_source_branch'],
     }
+} # /role::zuul::install
 
-    # Setup the instance for labs usage
-    zuulwikimedia::instance { 'zuul-labs':
-        # Server related
-        config_git_branch    => $role::zuul::configuration::server[$::realm]['config_git_branch'],
-        gearman_server_start => $role::zuul::configuration::server[$::realm]['gearman_server_start'],
-        jenkins_server       => $role::zuul::configuration::server[$::realm]['jenkins_server'],
-        jenkins_user         => $role::zuul::configuration::server[$::realm]['jenkins_user'],
-        statsd_host          => $role::zuul::configuration::server[$::realm]['statsd_host'],
+class role::zuul::server {
+    system::role { 'role::zuul::server': description => 'Zuul server (scheduler)' }
 
+    include contint::proxy_zuul
+    include role::zuul::configuration
+    include role::zuul::install
+    include ::zuul::monitoring::server
+
+    # Zuul server needs an API key to interact with Jenkins:
+    require passwords::misc::contint::jenkins
+    $jenkins_apikey = $::passwords::misc::contint::jenkins::zuul_user_apikey
+
+    class { '::zuul::server':
         # Shared settings
         gerrit_server        => $role::zuul::configuration::shared[$::realm]['gerrit_server'],
         gerrit_user          => $role::zuul::configuration::shared[$::realm]['gerrit_user'],
         url_pattern          => $role::zuul::configuration::shared[$::realm]['url_pattern'],
         status_url           => $role::zuul::configuration::shared[$::realm]['status_url'],
 
-        # Merger related
+        # Server settings
+        config_git_branch    => $role::zuul::configuration::server[$::realm]['config_git_branch'],
+        gearman_server_start => $role::zuul::configuration::server[$::realm]['gearman_server_start'],
+        jenkins_apikey       => $jenkins_apikey,
+        jenkins_server       => $role::zuul::configuration::server[$::realm]['jenkins_server'],
+        jenkins_user         => $role::zuul::configuration::server[$::realm]['jenkins_user'],
+        statsd_host          => $role::zuul::configuration::server[$::realm]['statsd_host'],
+    }
+
+    # Deploy Wikimedia Zuul configuration files.
+    #
+    # Describe the behaviors and jobs
+    # Conf file is hosted in integration/zuul-config git repo
+    git::clone { 'integration/zuul-config':
+        directory => '/etc/zuul/wikimedia',
+        owner     => jenkins,
+        group     => jenkins,
+        mode      => '0775',
+        origin    => 'https://gerrit.wikimedia.org/r/p/integration/zuul-config.git',
+        branch    => $role::zuul::configuration::server[$::realm]['config_git_branch'],
+    }
+
+} # /role::zuul::server
+
+class role::zuul::merger {
+    system::role { 'role::zuul::server': description => 'Zuul server (scheduler)' }
+
+    if $::realm == 'production' {
+        # We will receive replication of git bare repositories from Gerrit
+        include role::gerrit::production::replicationdest
+    }
+
+    include role::zuul::configuration
+    include role::zuul::install
+    include ::zuul::monitoring::merger
+
+    class { '::zuul::merger':
+        # Shared settings
+        gerrit_server        => $role::zuul::configuration::shared[$::realm]['gerrit_server'],
+        gerrit_user          => $role::zuul::configuration::shared[$::realm]['gerrit_user'],
+        url_pattern          => $role::zuul::configuration::shared[$::realm]['url_pattern'],
+        status_url           => $role::zuul::configuration::shared[$::realm]['status_url'],
+
+        # Merger settings
         gearman_server       => $role::zuul::configuration::merger[$::realm]['gearman_server'],
         git_dir              => $role::zuul::configuration::merger[$::realm]['git_dir'],
         git_email            => $role::zuul::configuration::merger[$::realm]['git_email'],
@@ -106,6 +152,22 @@ class role::zuul::labs {
     class { 'contint::zuul::git-daemon':
         zuul_git_dir => $role::zuul::configuration::merger[$::realm]['git_dir'],
     }
+
+} # /role::zuul::merger
+
+
+# == Class: role::zuul::labs
+#
+# Install the Zuul gating system suitable for the Continuous Integration labs
+# instance. This role can not really be reused on a different instance since it
+# hardcodes several parameters such as the Gerrit IP or the URL hostnames.
+#
+# For back compatibility purposes
+class role::zuul::labs {
+    system::role { 'role::zuul::labs (obsolete)': description => 'Zuul on labs!' }
+
+    include role::zuul::merger
+    include role::zuul::server
 
 } # /role::zuul::labs
 
@@ -120,42 +182,9 @@ class role::zuul::labs {
 # Zuul when a change is submitted.
 #
 class role::zuul::production {
-    system::role { 'role::zuul::production': description => 'Zuul on production' }
+    system::role { 'role::zuul::production (obsolete)': description => 'Zuul on production' }
 
-    # We will receive replication of git bare repositories from Gerrit
-    include role::gerrit::production::replicationdest
-    include contint::proxy_zuul
-
-    class { '::zuul':
-        git_source_branch => $role::zuul::configuration::shared[$::realm]['git_source_branch'],
-    }
-
-    # TODO: should require Mount['/srv/ssd']
-    zuulwikimedia::instance { 'zuul-production':
-        # Server related
-        config_git_branch    => $role::zuul::configuration::server[$::realm]['config_git_branch'],
-        gearman_server_start => $role::zuul::configuration::server[$::realm]['gearman_server_start'],
-        jenkins_server       => $role::zuul::configuration::server[$::realm]['jenkins_server'],
-        jenkins_user         => $role::zuul::configuration::server[$::realm]['jenkins_user'],
-        statsd_host          => $role::zuul::configuration::server[$::realm]['statsd_host'],
-
-        # Shared settings
-        gerrit_server        => $role::zuul::configuration::shared[$::realm]['gerrit_server'],
-        gerrit_user          => $role::zuul::configuration::shared[$::realm]['gerrit_user'],
-        url_pattern          => $role::zuul::configuration::shared[$::realm]['url_pattern'],
-        status_url           => $role::zuul::configuration::shared[$::realm]['status_url'],
-
-        # Merger related
-        gearman_server       => $role::zuul::configuration::merger[$::realm]['gearman_server'],
-        git_dir              => $role::zuul::configuration::merger[$::realm]['git_dir'],
-        git_email            => $role::zuul::configuration::merger[$::realm]['git_email'],
-        git_name             => $role::zuul::configuration::merger[$::realm]['git_name'],
-        zuul_url             => $role::zuul::configuration::merger[$::realm]['zuul_url'],
-    }
-
-    # Serves Zuul git repositories on git://zuul.eqiad.wmnet/...
-    class { 'contint::zuul::git-daemon':
-        zuul_git_dir => $role::zuul::configuration::merger[$::realm]['git_dir'],
-    }
+    include role::zuul::merger
+    include role::zuul::server
 
 } # /role::zuul::production
