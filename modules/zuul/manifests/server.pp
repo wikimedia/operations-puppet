@@ -31,7 +31,6 @@ class zuul::server (
     $jenkins_apikey,
     $url_pattern,
     $status_url = "https://${::fqdn}/zuul/status",
-    $zuul_url = 'git://zuul.eqiad.wmnet',
 ) {
 
     file { '/var/run/zuul':
