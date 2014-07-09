@@ -80,7 +80,7 @@ groups:
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
-    members: [tnegrin, manybubbles, milimetric]
+    members: [tnegrin, manybubbles, milimetric, demon]
   researchers:
     gid: 714
     description: users with access to research db
