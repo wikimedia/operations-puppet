@@ -164,10 +164,17 @@ class misc::fundraising {
 
 class misc::fundraising::backup::backupmover_user {
 
-    generic::systemuser { 'backupmover':
-        name  => 'backupmover',
-        home  => '/var/lib/backupmover',
-        shell => '/bin/sh',
+    group { 'backupmover':
+        ensure => present,
+        name   => 'backupmover',
+        system => true,
+    }
+
+    user { 'backupmover':
+        home       => '/var/lib/backupmover',
+        shell      => '/bin/sh',
+        managehome => true,
+        system     => true,
     }
 
     ssh_authorized_key { 'backupmover/root@boron':
