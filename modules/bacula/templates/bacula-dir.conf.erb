@@ -9,7 +9,7 @@ Director {
     Password = "<%= @bconsolepassword %>"
     Messages = Daemon
     Plugin Directory = "/usr/lib/bacula"
-    Maximum Concurrent Jobs = <%= max_dir_concur_jobs %>
+    Maximum Concurrent Jobs = <%= @max_dir_concur_jobs %>
     # Have the Control channel encrypted. Used for incoming console connections
     TLS Enable = yes
     TLS Require = yes
