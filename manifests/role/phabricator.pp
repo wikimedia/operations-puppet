@@ -87,3 +87,37 @@ class role::phabricator::main {
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
     }
 }
+
+
+class role::phabricator::labs {
+
+    $current_tag = 'fabT440'
+    #not sensitive but has to match phab and db
+    $mysqlpass = 'labspass'
+    class { '::phabricator':
+        git_tag   => $current_tag,
+        lock_file => '/var/run/phab_repo_lock',
+        settings  => {
+            'darkconsole.enabled'                => true,
+            'phabricator.base-uri'               => "http://${::hostname}.wmflabs.org",
+            'phabricator.show-beta-applications' => true,
+            'mysql.pass'                         => $mysqlpass,
+        },
+    }
+
+    package { 'mysql-server': ensure => present }
+
+    class { 'mysql::config':
+        root_password => $mysqlpass,
+        sql_mode      => 'STRICT_ALL_TABLES',
+        restart       => true,
+        require       => Package['mysql-server'],
+    }
+
+    service { 'mysql':
+        ensure     => running,
+        hasrestart => true,
+        hasstatus  => true,
+        require    => Package['mysql-server'],
+    }
+}
