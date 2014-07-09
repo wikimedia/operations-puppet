@@ -54,7 +54,8 @@ groups:
     gid: 707
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed, swalling, yuvipanda,
-      haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana]
+      haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
+      jzerebecki]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -84,7 +85,7 @@ groups:
   researchers:
     gid: 714
     description: users with access to research db
-    members: [dartar]
+    members: [dartar, jzerebecki]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -162,7 +163,7 @@ groups:
               maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
-              deskana]
+              deskana, jzerebecki]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -194,6 +195,13 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDY3GzbCE2eOM7IxQClHag9FRVg0eryA6PVa7p80Yp4suPzW73KVv9BgbSDvkdGNv9NOsVqkZkp01oZe7+XVxh1jaxM60nkF02DGKI0jn2lbzzWR5YS6gabjjn9SaOnh0MAwC8Jpvdz/YKOyE9/PAIFXajNwTuE6alHU/nWnLHaR1FJQRlfZLDlP9deNRAPaXOyn/jbO+ODNQIFeKSV0TmvZAh994wUlLoDYa1UcuqTRc9tJBmpLALVPZs1U2FZvLr7fkuOnUhcOC/uqE/pDdalSy0k6bAh/pkILOMFzhCHtrsbUV0AT7cVBogE7qYRuTo3eBrpzj9Bbsi41Q4y29lridBoyBgEMH/fnEIMDivNLzec5nYLPJ/XIDSc0G2iFoWY/u7SaVT7A6rjlSuzS7owunNXEj1mhmNW7v/FIOqG2Zl3K7INBj8Y0rFL9GuwP5LIkZxlNZT7NEdUOA3i8L4sT3YJJgiaup4Ss66TpWCDQ/znZoz5Vi5ODhXjqMVVFbrHI/7eIYMChoR5HkcRdjaIShvFgSfWcKXlwHouIVUiXprnoZZGmAa9CTAx9GFrjgC7DixK654yx4Gb47q4dttSE2nZKY1njfDRHcbLRuZ1ESEpAcoxkos1agvShw5B4ysSYRcMHkF2yqi2srq7Us19JWCmLm2RW5z+4xPBAfEMcw==
         dz@ubuntu]
     uid: 2075
+  jzerebecki:
+    ensure: present
+    gid: 500
+    name: jzerebecki
+    realname: Jan Zerebecki
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDe6fqrBKdOyu7mUTpWUo850t3zZDOHRsjTrxOH+Wu2KlKgpeAbGwWluY+ZjzI0U8rIjxKCl1NDAGrwhnXxrKblWex6hyjg9X3cFskcv7evBp74tEzQRqNHpsJ4ZS13MdCtgyOQnxzNlQ/ublNWgvNdH4PHFsYtiKtBqZgxOGW0hrieNBjoT8IpBtomaB9Qn96aUY6cBWk217krAxoXQ8ZanaoJVrTAcoyFTjgjhGsum9a+HSD0BTkFJ1fzrHljCjbBoaSXhcv/tgMUHDl3gxGZBYc7lA2EhK91klzdn7mr/oe8DtYqn/cyzmPJZoU7BClpHt8ve4WjJLPN1QYTzZmrVvD3dyugUOVBE5Or2JVxcTszRBG1Hh1+MZAv3EPUFt7S2gTdE8sVIShQhlvuoLpjb5AW1Mwfd84fwWVOThPHQXd98K7edppYapVOdMjGqle02XplZpSpI0+DZxBDBdCZO2ZVpno9Ir/3bH1YxLffamG9Izvf7VVF04pbhI3LLRNTVFQX+znFPcEOiBX/ZFBwuJwWf2R0raL3yoJk3wxjr+VxYl7LbTEifnkbsy1aXKMo4Ng1iillvKN3T7SSnxZwiJvDD6ZGHkf7cMhztde0I53DuzF5RCe1ybOjoAFC3ykv1CbL+cE7ro6q6HY4nXFvGA0+uRSy3GCYo8gDgJRCBQ== jan@zerebecki.de notebook production.wikimedia.org]
+    uid: 2844
   faidon:
     ensure: present
     gid: 500
