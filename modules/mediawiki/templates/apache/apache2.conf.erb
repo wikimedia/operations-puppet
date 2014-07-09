@@ -319,11 +319,7 @@ ErrorDocument 404 /w/404.php
 
 NameVirtualHost *
 
-<% if @mw_use_local_resources -%>
 Include /etc/apache2/wikimedia/all.conf
-<%- else -%>
-Include /usr/local/apache/conf/all.conf
-<%- end -%>
 
 # Set ETags for files to not be based on inode,
 # since that will be different on each backend server
