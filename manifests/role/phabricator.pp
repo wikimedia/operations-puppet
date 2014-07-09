@@ -8,7 +8,7 @@ $mysql_apppass = $passwords::mysql::phabricator::app_pass
 
 class role::phabricator::legalpad {
 
-    $current_tag = 'fabT365'
+    $current_tag = 'fabT440'
     if $::realm == 'production' {
 
         system::role { 'role::phabricator::legalpad': description => 'Phabricator (Legalpad)' }
@@ -46,7 +46,7 @@ class role::phabricator::legalpad {
 
 class role::phabricator::main {
 
-    $current_tag = 'rt7264'
+    $current_tag = 'fabT440'
     if $::realm == 'production' {
 
     system::role { 'role::phabricator::main': description => 'Phabricator (Main)' }
