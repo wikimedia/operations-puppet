@@ -36,7 +36,6 @@ class zuulwikimedia {
             gearman_server_start => $gearman_server_start,
             url_pattern          => $url_pattern,
             status_url           => $status_url,
-            zuul_url             => $zuul_url,
         }
         include ::zuul::monitoring::server
 
