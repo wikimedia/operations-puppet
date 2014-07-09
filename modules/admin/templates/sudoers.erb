@@ -3,7 +3,7 @@
 <%- if @comment %>
 #<%= @comment %>
 <%- end %>
-<%- privs.each do |privilege| -%>
+<%- @privs.each do |privilege| -%>
 <%- if @is_group == true %>
 %<%= @priv_holder %> <%= privilege %>
 <%- else %>
