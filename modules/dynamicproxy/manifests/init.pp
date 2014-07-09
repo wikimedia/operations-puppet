@@ -21,10 +21,16 @@ class dynamicproxy (
     $resolver,
 ) {
     class { '::redis':
-        persist   => 'aof',
-        dir       => '/var/lib/redis',
-        maxmemory => $redis_maxmemory,
+        persist       => 'aof',
+        dir           => '/var/lib/redis',
+        maxmemory     => $redis_maxmemory,
+        redis_options => ['bind 127.0.0.1'],
     }
+
+    # The redis module intentionally does not restart the redis
+    # service if the configuration changes, so we have to do this
+    # explicitly here.
+    File['/etc/redis/redis.conf'] ~> Service['redis']
 
     include misc::labsdebrepo
 
