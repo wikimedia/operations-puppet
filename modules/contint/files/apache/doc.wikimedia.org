@@ -35,4 +35,11 @@
     RewriteEngine On
     RewriteRule ^/favicon\.ico$ /favicon.php [L]
 
+    <IfModule mod_mime.c>
+      AddType application/x-zip .war
+      AddType application/octet-stream .ipa
+      AddType text/plain .pp .erb .conf .yaml
+    </IfModule>
+    DefaultType application/octet-stream
+
 </VirtualHost>
