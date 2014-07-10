@@ -8,8 +8,8 @@ globals {
   user = ganglia
   debug_level = 0
   max_udp_msg_len = 1472
-  mute = <%= aggregator ? "yes": "no" %>
-  deaf = <%= aggregator ? "no": "yes" %>
+  mute = <%= @aggregator ? "yes": "no" %>
+  deaf = <%= @aggregator ? "no": "yes" %>
   host_dmax = 86400 /*secs */
   cleanup_threshold = 300 /*secs */
   gexec = no
@@ -23,7 +23,7 @@ globals {
  * of a <CLUSTER> tag.  If you do not specify a cluster tag, then all <HOSTS> will
  * NOT be wrapped inside of a <CLUSTER> tag. */
 cluster {
-  name = "<%= cname %>"
+  name = "<%= @cname %>"
   owner = "Wikimedia Foundation"
   latlong = "unspecified"
   url = "<%= scope.lookupvar("ganglia_new::configuration::url") %>"
@@ -34,17 +34,17 @@ host {
   location = "<%= @site %>"
 }
 
-<% if not aggregator -%>
-<% aggregator_hosts.each do |host| -%>
+<% if not @aggregator -%>
+<% @aggregator_hosts.each do |host| -%>
 udp_send_channel {
   host = <%= host %>
-  port = <%= gmond_port %>
+  port = <%= @gmond_port %>
 }
 <% end -%>
 <% else -%>
 /* You can specify as many udp_recv_channels as you like as well. */
 udp_recv_channel {
-  port = <%= gmond_port %>
+  port = <%= @gmond_port %>
   acl {
     default = "deny"
 <% scope.lookupvar("::network::constants::all_networks").each do |prefix|
@@ -67,7 +67,7 @@ ip, mask = prefix.split('/')
 /* You can specify as many tcp_accept_channels as you like to share
    an xml description of the state of the cluster */
 tcp_accept_channel {
-  port = <%= gmond_port %>
+  port = <%= @gmond_port %>
   acl {
     default = "deny"
 <% scope.lookupvar("ganglia_new::configuration::gmetad_hosts").each do |host|
@@ -82,7 +82,7 @@ tcp_accept_channel {
 }
 <% end -%>
 
-<% if not aggregator -%>
+<% if not @aggregator -%>
 /* Each metrics module that is referenced by gmond must be specified and
    loaded. If the module has been statically linked with gmond, it does not
    require a load path. However all dynamically loadable modules must include
