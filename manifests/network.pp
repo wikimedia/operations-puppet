@@ -405,7 +405,7 @@ class network::checks {
 
 # This makes the monitoring host include the router group and
 # perform the above checks
-include icinga::monitor::configuration::variables
-if $::hostname in $icinga::monitor::configuration::variables::master_hosts {
+include icinga::config_vars
+if $::hostname in $icinga::config_vars::master_hosts {
     include network::checks
 }
