@@ -15,18 +15,11 @@ class zuulwikimedia {
         $status_url,
         $zuul_url,
         $config_git_branch='master',
-        $git_branch='master',
         $git_dir='/var/lib/zuul/git',
         $statsd_host = '',
         $git_email = "zuul-merger@${::hostname}",
         $git_name = 'Wikimedia Zuul Merger'
     ) {
-
-        # Load class from the Zuul module:
-        class { '::zuul':
-            name                 => $name,
-            git_branch           => $git_branch,
-        }
 
         # Zuul server needs an API key to interact with Jenkins:
         require passwords::misc::contint::jenkins
@@ -45,6 +38,8 @@ class zuulwikimedia {
             status_url           => $status_url,
             zuul_url             => $zuul_url,
         }
+        include ::zuul::monitoring::server
+
         class { '::zuul::merger':
             gearman_server => $gearman_server,
             gerrit_server  => $gerrit_server,
@@ -56,26 +51,11 @@ class zuulwikimedia {
             status_url     => $status_url,
             zuul_url       => $zuul_url,
         }
-
-        # nagios/icinga monitoring
-        nrpe::monitor_service { 'zuul':
-            description   => 'zuul_service_running',
-            contact_group => 'contint',
-            # Zuul has a main process and a fork which is the gearman
-            # server. Thus we need two process running.
-            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:2 --ereg-argument-array '^/usr/bin/python /usr/local/bin/zuul-server'",
-        }
-
-        nrpe::monitor_service { 'zuul_gearman':
-            description   => 'zuul_gearman_service',
-            contact_group => 'contint',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 4730 --timeout=2',
-        }
+        include ::zuul::monitoring::merger
 
         # Deploy Wikimedia Zuul configuration files.
-
-        # Describe the behaviors and jobs
         #
+        # Describe the behaviors and jobs
         # Conf file is hosted in integration/zuul-config git repo
         git::clone {
             'integration/zuul-config':
