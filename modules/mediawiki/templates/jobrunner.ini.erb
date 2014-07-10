@@ -1,0 +1,30 @@
+; Ready queue trackers
+aggrSrvs=<%= aggr_servers %>
+
+; Main queue servers
+queueSrvs=<%= queue_servers %>
+
+; Runner loop config
+runners="5:*,~refreshLinks,~htmlCacheUpdate,-AssembleUploadChunks,-PublishStashedFile,-ParsoidCacheUpdateJobOnEdit,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-gwtoolsetUploadMetadataJob,-gwtoolsetUploadMediafileJob,-gwtoolsetGWTFileBackendCleanupJob,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-uploadFromUrl
+
+&1:AssembleUploadChunks,PublishStashedFile,uploadFromUrl
+
+&1:gwtoolsetUploadMetadataJob,gwtoolsetUploadMediafileJob,gwtoolsetGWTFileBackendCleanupJob
+
+&1:ParsoidCacheUpdateJobOnEdit,~ParsoidCacheUpdateJobOnDependencyChange"
+
+; runJobs.php process time limits
+maxReal=*:3600,webVideoTranscode:86400
+; runJobs.php memory limits
+maxMem=*:300M
+
+; HET deploy wrapper
+wrapper="php /usr/local/apache/common/multiversion/MWScript.php"
+
+; How long jobs can be claimed before being recycled
+claimTTL=*:3600,webVideoTranscode:86400
+; How many times to let jobs be recycled before abandoning
+attempts=*:3
+
+; Redis password
+password="<%= scope.lookupvar('passwords::redis::main_password') %>"

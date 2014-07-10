@@ -3,7 +3,10 @@
 # jobrunner continuously processes the MediaWiki job queue by dispatching
 # workers to perform tasks and monitoring their success or failure.
 #
-class mediawiki::jobrunner {
+class mediawiki::jobrunner (
+	$aggr_servers,
+	$queue_servers
+) {
     deployment::target { 'jobrunner': }
 
     file { '/etc/default/jobrunner':
@@ -20,6 +23,14 @@ class mediawiki::jobrunner {
         group  => 'root',
         mode   => '0444',
         notify => Service['jobrunner'],
+    }
+
+    file { '/etc/jobrunner.ini':
+        content => template('mediawiki/jobrunner.ini.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['jobrunner'],
     }
 
     service { 'jobrunner':
