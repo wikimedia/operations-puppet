@@ -411,14 +411,14 @@ class role::logging::systemusers {
         ensure => directory,
         owner => 'file_mover',
         group => 'file_mover',
-        mode => '0775',
+        mode => '0755',
     }
 
     file { '/var/lib/file_mover/.ssh':
         ensure => directory,
         owner => 'file_mover',
         group => 'file_mover',
-        mode => '0550',
+        mode => '0700',
     }
 
     ssh_authorized_key {
