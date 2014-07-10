@@ -28,6 +28,7 @@ WHERE param_names.name NOT IN ('ensure', 'target') AND resource_id IN
     JOIN resources ON resource_id = resources.id
     JOIN param_names ON param_names.id = param_name_id
     WHERE restype = '%s' AND param_names.name = 'ensure' AND value = 'present')
+    AND resources.created_at < (NOW() - INTERVAL %s)
 GROUP BY resources.id ORDER BY resources.title ASC"""
 
     restype = {
@@ -80,19 +81,19 @@ GROUP BY resources.id ORDER BY resources.title ASC"""
             loader=jinja2.DictLoader(self.restpl)
         )
 
-    def _query(self, what):
+    def _query(self, what, age):
         connection = self.db_engine.connect()
         connection.execute('set group_concat_max_len = @@max_allowed_packet')
-        res = connection.execute(self.base_query % self.restype[what])
+        res = connection.execute(self.base_query % (self.restype[what], age))
         connection.close()
         return res
 
-    def render(self, what):
+    def render(self, what, age):
         if what not in self.restype:
             self.log.error('Exiting  - unsupported resource type %s', what)
             sys.exit(1)
         try:
-            for entity in self._query(what):
+            for entity in self._query(what, age):
                 self.log.debug('Working on resource %s', entity['title'])
                 content = [
                     tuple(i.split("\t"))
@@ -112,6 +113,10 @@ def main():
                         dest='type',
                         help="type of file to generate",
                         choices=['services', 'hosts', 'hostextinfo'])
+    parser.add_argument('--age',
+                        dest='age',
+                        help='minimum age as mysql interval (def: 1 HOUR)'
+                        default='1 HOUR')
     parser.add_argument(
         '--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
     parser.add_argument('--debug', action='store_true', default=False)
@@ -136,7 +141,7 @@ def main():
 
     log.info('Generating output for resource %s', args.type)
     n = NagiosGenerator(args.configfile, args.debug)
-    for entity in n.render(args.type):
+    for entity in n.render(args.type, args.age):
         print(entity)
     log.info('Run completed')
 
