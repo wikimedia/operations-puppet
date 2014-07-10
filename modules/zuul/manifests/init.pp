@@ -21,6 +21,8 @@ class zuul (
     $git_source_branch = 'master',
 ) {
 
+  include zuul::user
+
   # Dependencies as mentionned in zuul:tools/pip-requires
   $packages = [
     'python-yaml',
