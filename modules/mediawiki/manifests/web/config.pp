@@ -1,13 +1,18 @@
 class mediawiki::web::config () {
     tag 'mediawiki', 'mw-apache-config'
 
+    # We can enhance this to depend on the amount of ram as well
+    $apache_server_limit = 256
+
     if is_integer($::mediawiki::web::workers_limit) {
         $max_req_workers = $::mediawiki::web::workers_limit
     } else {
         $mem_available   = to_bytes($::memorytotal) * 0.7
         $mem_per_worker  = to_bytes('85M')
-        $max_req_workers = inline_template('<%= ( @mem_available / @mem_per_worker ).to_i %>')
+        $max_req_workers = inline_template('<%= [( @mem_available / @mem_per_worker ).to_i, @apache_server_limit].min %>')
     }
+
+
 
     file { '/etc/apache2/apache2.conf':
         content => template('mediawiki/apache/apache2.conf.erb'),
