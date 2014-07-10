@@ -119,7 +119,6 @@ class toollabs::exec_environ {
         'libxml-xpathengine-perl',     # For Checkwiki.
 
         # Python libraries
-        'libboost-python1.48.0',
         'python-apport',
         'python-babel',                # Bug 58220
         'python-beautifulsoup',        # For valhallasw.
@@ -294,10 +293,8 @@ class toollabs::exec_environ {
         'libdmtx0a',                   # Bug #53867.
         'libfcgi0ldbl',                # Bug 56995
         'libfreetype6',
-        'libgdal1-1.7.0',              # Bug 56995
         'libgeoip1',                   # Bug 62649
         'libjpeg-turbo-progs',         # Bug 59654.
-        'libmpc2',
         'libmpfr4',
         'libneon27-gnutls',
         'libnfnetlink0',
@@ -308,7 +305,6 @@ class toollabs::exec_environ {
         'libpcsclite1',
         'libpng3',
         'libproj0',                    # Bug 56995
-        'libprotobuf7',                # Bug 56995
         'libquadmath0',
         'librsvg2-bin',                # Bug 58516
         'libsvn1',
@@ -339,6 +335,30 @@ class toollabs::exec_environ {
         ]:
         ensure => latest,
     }
+
+    # Packages that are different between precise and trusty go here.
+    # Note: Every package *must* have equivalent package in both the
+    # branches. If one is unavailable, please mark it as such with a comment.
+    if $::lsbdistrelease == 'precise' {
+        package { [
+            'libboost-python1.48.0',
+            'libmpc2',
+            'libgdal1-1.7.0',              # Bug 56995
+            'libprotobuf7',                # Bug 56995
+            ]:
+            ensure => latest,
+        }
+    } elsif $::lsbdistrelease == 'trusty' {
+        # No obvious package available for libgdal
+        package { [
+            'libboost-python1.54.0',
+            'libmpc3',
+            'libprotobuf8',
+            ]:
+            ensure => latest,
+        }
+    }
+
 
     sysctl::parameters { 'tool labs':
         values => {
