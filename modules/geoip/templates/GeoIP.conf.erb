@@ -8,14 +8,14 @@
 # see https://www.maxmind.com/app/license_key_login to obtain License Key,
 # UserId, and available ProductIds
 # Enter your license key here
-LicenseKey <%= license_key %>
+LicenseKey <%= @license_key %>
 
 # Enter your User ID here
-UserId <%= user_id %>
+UserId <%= @user_id %>
 
 # Enter the (space separated) Product ID(s) of the
 # database(s) you would like to update.  e.g.:
 # 106 - GeoIP.dat        Country database
 # 133 - GeoIPCity.dat    City database
 # 115 - GeoIPRegion.dat  Region database
-ProductIds <%= product_ids.join(' ') %>
+ProductIds <%= @product_ids.join(' ') %>
