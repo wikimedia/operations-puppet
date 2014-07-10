@@ -112,7 +112,7 @@ class toollabs {
     # Trustworthy enough
     file { '/etc/apt/sources.list.d/mariadb.list':
         ensure  => file,
-        content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu precise main\n",
+        content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu $::lsbdistcodename main\n",
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
