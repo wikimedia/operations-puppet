@@ -247,10 +247,6 @@ sub tag_carrier {
 			if (!req.http.X-Forwarded-By) {
 				set req.http.X-CS = req.http.X-CS2;
 			}
-		} else if (req.http.X-CS2 == "TEST") {
-			// Test carrier allows all proxies and SSL
-			set req.http.X-ZeroTLS = "1";
-			set req.http.X-CS = req.http.X-CS2;
 		} else if (req.http.X-CS2 ~ "^TESTON.*") {
 			// Test carrier for passing ALL requests through and marking traffic as such
 			// TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess... TBD
@@ -259,6 +255,10 @@ sub tag_carrier {
 			} else {
 				set req.http.X-CS = "ON";
 			}
+		} else if (req.http.X-CS2 ~ "^TEST.*") {
+			// Test carrier allows all proxies and SSL
+			set req.http.X-ZeroTLS = "1";
+			set req.http.X-CS = req.http.X-CS2;
 		} else {
 			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 				// Any new carriers are signed up as both m & zero for all languages, without proxy support
