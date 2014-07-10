@@ -276,7 +276,9 @@ sub tag_carrier {
 		// unset X-Forwarded-By. We still need that value in the resulting X-Analytics header,
 		// so create a copy to be used in the vcl_deliver.
 		set req.http.X-Forwarded-By2 = req.http.X-Forwarded-By;
-		unset req.http.X-Forwarded-By;
+
+		// Keeping it - the backend now checks this value. Soon we will remove it alltogether.
+		// unset req.http.X-Forwarded-By;
 	}
 }
 
