@@ -326,7 +326,7 @@ class toollabs::exec_environ {
         'phantomjs',                   # Bug #66928
         'phpunit',
         'poppler-utils',               # Bug #53869.
-        'postgresql-client-9.1',
+        'postgresql-client',
         'pstoedit',                    # Bug 57000
         'pv',                          # Bug 57001
         'rrdtool',                     # Bug 57004
