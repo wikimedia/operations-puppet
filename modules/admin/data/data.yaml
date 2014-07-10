@@ -115,6 +115,7 @@ groups:
     privs: ['ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
             'ALL = (gerritslave) NOPASSWD: ALL',
+            'ALL = (zuul) NOPASSWD: ALL',
             'ALL = NOPASSWD: /etc/init.d/jenkins',
             'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
             'ALL = (postgres) NOPASSWD: /usr/bin/psql']
