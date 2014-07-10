@@ -1993,7 +1993,7 @@ node 'neon.wikimedia.org' {
 
     include standard
     include admin
-    include icinga::monitor
+    include role::icinga
     include role::ishmael
     include role::echoirc
     include role::tendril
