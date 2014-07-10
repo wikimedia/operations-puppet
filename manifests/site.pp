@@ -1171,7 +1171,6 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 node 'gallium.wikimedia.org' {
 
     $cluster = 'misc'
-    $nagios_contact_group = 'admins,contint'
 
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
@@ -1441,8 +1440,6 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'lanthanum.eqiad.wmnet' {
-
-    $nagios_contact_group = 'admins,contint'
 
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
