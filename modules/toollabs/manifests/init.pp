@@ -110,19 +110,22 @@ class toollabs {
     }
 
     # Trustworthy enough
-    file { '/etc/apt/sources.list.d/mariadb.list':
-        ensure  => file,
-        content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu precise main\n",
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-    }
-    file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
-        ensure => file,
-        source => 'puppet:///modules/toollabs/mariadb.gpg',
-        mode => '0444',
-        owner => 'root',
-        group => 'root',
+    # Only necessary on precise hosts, trusty has its own mariadb package
+    if $::lsbdistcodename == 'precise' {
+        file { '/etc/apt/sources.list.d/mariadb.list':
+            ensure  => file,
+            content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu $::lsbdistcodename main\n",
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+        }
+        file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
+            ensure => file,
+            source => 'puppet:///modules/toollabs/mariadb.gpg',
+            mode => '0444',
+            owner => 'root',
+            group => 'root',
+        }
     }
 
     File <| title == '/etc/exim4/exim4.conf' |> {
