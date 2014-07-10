@@ -1,0 +1,7 @@
+# This file is managed by Puppet!
+
+[dispersion]
+auth_url = http://<%= @proxy_address %>/auth/v1.0
+auth_user = swift:dispersion
+auth_key = <%= @dispersion_password %>
+swift_dir = /etc/swift

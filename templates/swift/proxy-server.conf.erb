@@ -46,6 +46,7 @@ use = egg:swift#tempauth
 token_life = 604800
 user_admin_admin = <%= @super_admin_key %> .admin .reseller_admin <%= @proxy_address %>/v1/AUTH_admin
 user_mw_media = <%= @rewrite_password %> .admin <%= @proxy_address %>/v1/AUTH_mw
+user_swift_dispersion = <%= @dispersion_password %> .admin <%= @proxy_address %>/v1/AUTH_dispersion
 <% end -%>
 
 [filter:healthcheck]
