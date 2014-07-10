@@ -109,6 +109,13 @@ class mediawiki::users {
         managehome => true,
     }
 
+    file { '/var/lib/pybal-check':
+        ensure  => directory,
+        owner   => 'pybal-check',
+        group   => 'pybal-check',
+        mode    => '0755',
+    }
+
     file { '/var/lib/pybal-check/.ssh':
         ensure  => directory,
         owner   => 'pybal-check',
