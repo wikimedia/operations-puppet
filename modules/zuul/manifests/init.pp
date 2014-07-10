@@ -43,6 +43,7 @@ class zuul (
     'python-extras',  # backported in Precise (bug 47122)
     'python-statsd',
 
+    'python-pip',
     'python-setuptools',
     'python-voluptuous',
 
@@ -70,12 +71,14 @@ class zuul (
 
   exec { 'install_zuul':
     # Make sure to install without downloading from pypi
-    command     => 'python setup.py easy_install --allow-hosts=None .',
+    command     => 'python setup.py install',
+    environment => 'HTTP_PROXY=. HTTPS_PROXY=.',
     cwd         => $zuul_source_dir,
     path        => '/bin:/usr/bin',
     refreshonly => true,
     subscribe   => Git::Clone['integration/zuul'],
     require     => [
+      Package['python-pip'],
       Package['python-setuptools'],
     ],
   }
