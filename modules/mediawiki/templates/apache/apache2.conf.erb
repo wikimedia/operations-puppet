@@ -36,6 +36,7 @@ MaxSpareServers 20
 
 StartServers 10
 
+ServerLimit <%= @apache_server_limit %>
 MaxClients <%= @max_req_workers %>
 
 <IfDefine SLOW>
