@@ -24,7 +24,7 @@ apikey=<%= @jenkins_apikey %>
 server=<%= @gerrit_server %>
 user=<%= @gerrit_user %>
 <% if @gerrit_baseurl %>baseurl=<%= @gerrit_baseurl %><% end %>
-sshkey=/var/lib/jenkins/.ssh/id_rsa
+sshkey=/var/lib/zuul/.ssh/id_rsa
 
 [zuul]
 layout_config=/etc/zuul/wikimedia/layout.yaml

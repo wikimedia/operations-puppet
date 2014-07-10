@@ -30,8 +30,7 @@ class zuul::merger (
 
     file { $git_dir:
         ensure  => directory,
-        owner   => 'jenkins',
-        require => Package['jenkins'],
+        owner   => 'zuul',
     }
 
     # Configuration file for the zuul merger
@@ -65,8 +64,7 @@ class zuul::merger (
 
     file { '/var/run/zuul-merger':
         ensure  => directory,
-        owner   => 'jenkins',
-        require => Package['jenkins'],
+        owner   => 'zuul',
     }
 
     file { '/etc/zuul/merger-logging.conf':
@@ -88,13 +86,12 @@ class zuul::merger (
     }
 
     cron { 'zuul_repack':
-        user        => 'jenkins',
+        user        => 'zuul',
         hour        => '4',
         minute      => '7',
         command     => "MAILTO='jenkins-bot@wikimedia.org' find ${git_dir} -maxdepth 3 -type d -name '.git' -exec git --git-dir='{}' pack-refs --all \\;",
         environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
         require     => [
-            Package['jenkins'],  # provides 'jenkins' user
             File[$git_dir],
         ],
     }
