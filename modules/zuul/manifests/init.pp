@@ -86,14 +86,12 @@ class zuul (
 
   file { '/var/log/zuul':
     ensure  => directory,
-    owner   => 'jenkins',
-    require => Package['jenkins'],
+    owner   => 'zuul',
   }
 
   file { '/var/lib/zuul':
     ensure  => directory,
-    owner   => 'jenkins',
-    require => Package['jenkins'],
+    owner   => 'zuul',
   }
 
 }

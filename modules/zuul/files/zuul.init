@@ -18,7 +18,7 @@ NAME=zuul
 DAEMON=/usr/local/bin/zuul-server
 PIDFILE=/var/run/$NAME/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
-USER=jenkins
+USER=zuul
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
