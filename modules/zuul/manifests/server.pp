@@ -35,8 +35,7 @@ class zuul::server (
 
     file { '/var/run/zuul':
         ensure  => directory,
-        owner   => 'jenkins',
-        require => Package['jenkins'],
+        owner   => 'zuul',
     }
 
     file { '/etc/init.d/zuul':
@@ -67,7 +66,7 @@ class zuul::server (
 
     file { '/etc/zuul/gearman-logging.conf':
         ensure => present,
-        owner  => 'jenkins',
+        owner  => 'zuul',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/zuul/gearman-logging.conf',
@@ -75,14 +74,13 @@ class zuul::server (
 
     zuul::configfile { '/etc/zuul/zuul.conf':
         zuul_role => 'server',
-        owner     => 'jenkins',
+        owner     => 'zuul',
         group     => 'root',
         mode      => '0400',
 
         notify    => Exec['craft public zuul conf'],
         require   => [
             File['/etc/zuul'],
-            Package['jenkins'],
         ],
     }
 
