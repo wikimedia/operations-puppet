@@ -1,6 +1,6 @@
 <%
 _deployment_grains = {}
-repo_config.each do |repo, config|
+@repo_config.each do |repo, config|
   _deployment_grains[repo] = config['grain']
 end
 %>deployment_repo_grains: {<% _deployment_grains.sort.each do |repo, grain| %>'<%= repo %>': '<%= grain %>',<% end %>}
