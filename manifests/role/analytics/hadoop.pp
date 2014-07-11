@@ -226,7 +226,7 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         nrpe::monitor_service { 'hadoop-hdfs-journalnode':
             description  => 'Hadoop JournalNode',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
-            require      => Class['cdh4::hadoop'],
+            require      => Class['cdh::hadoop'],
         }
     }
 }
@@ -234,7 +234,7 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
 
 
 # == Class role::analytics::hadoop::master
-# Includes cdh4::hadoop::master classes
+# Includes cdh::hadoop::master classes
 #
 class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::master':
@@ -303,7 +303,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
 }
 
 # == Class role::analytics::hadoop::worker
-# Includes cdh4::hadoop::worker classes
+# Includes cdh::hadoop::worker classes
 class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     system::role { 'role::analytics::hadoop::worker':
         description => 'Hadoop Worker (DataNode & NodeManager)',

@@ -56,7 +56,7 @@ class role::analytics::users {
 
     # If hdfs user exists, then add it to the stats group.
     # I don't want to use puppet types to manage the hdfs
-    # user, since it is installed by the cdh4 packages.
+    # user, since it is installed by the cdh packages.
     exec { 'hdfs_user_in_stats_group':
         command => 'usermod hdfs -a -G stats',
         # only run this command if the hdfs user exists
