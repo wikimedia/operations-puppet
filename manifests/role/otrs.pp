@@ -135,6 +135,7 @@ class role::otrs (
     include ::apache::mod::perl
     include ::apache::mod::rewrite
     include ::apache::mod::ssl
+    include ::apache::mod::headers
 
     include clamav
     class { 'spamassassin':
