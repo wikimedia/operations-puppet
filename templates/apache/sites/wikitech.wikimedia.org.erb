@@ -6,7 +6,7 @@
 
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
-    ServerName <%= webserver_hostname %>
+    ServerName <%= @webserver_hostname %>
     ServerAlias wmflabs.org www.wmflabs.org
 
     DocumentRoot /var/www
@@ -23,7 +23,7 @@
 
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^/(.*)$ https://<%= webserver_hostname %>/$1 [L,R]
+    RewriteRule ^/(.*)$ https://<%= @webserver_hostname %>/$1 [L,R]
 
     ErrorLog /var/log/apache2/error.log
 
@@ -37,24 +37,24 @@
 </VirtualHost>
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
-    ServerName <%= webserver_hostname %>
+    ServerName <%= @webserver_hostname %>
 
     SSLEngine on
     SSLProtocol -ALL +SSLv3 +TLSv1
     SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
     SSLHonorCipherOrder on
-    SSLCertificateFile /etc/ssl/certs/<%= certificate %>.pem
-    SSLCertificateKeyFile /etc/ssl/private/<%= certificate %>.key
+    SSLCertificateFile /etc/ssl/certs/<%= @certificate %>.pem
+    SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
     SSLCACertificatePath /etc/ssl/certs/
 
     Header append Strict-Transport-Security "max-age=604800"
 
-    RedirectMatch ^/$ https://<%= webserver_hostname %>/wiki/
+    RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
 
     RewriteEngine on
-    RewriteRule ^/view/(.*)$ https://<%= webserver_hostname %>/wiki/$1 [L,R]
-    RewriteCond %{HTTP_HOST}   !^<%= webserver_hostname.gsub(%r[\.],'\\.') %> [NC]
-    RewriteRule ^/(.*)         https://<%= webserver_hostname %>/$1 [L,R]
+    RewriteRule ^/view/(.*)$ https://<%= @webserver_hostname %>/wiki/$1 [L,R]
+    RewriteCond %{HTTP_HOST}   !^<%= @webserver_hostname.gsub(%r[\.],'\\.') %> [NC]
+    RewriteRule ^/(.*)         https://<%= @webserver_hostname %>/$1 [L,R]
 
     DocumentRoot /var/www
     <Directory />
