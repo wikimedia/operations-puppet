@@ -5,23 +5,44 @@
 # Returns a rack/row name for the given node name.
 
 # Usage:
-#   net-topology.sh <ipaddr|fqdn>
+#   net-topology.py <ipaddr|fqdn>
 
 import socket
 from sys import argv
 
 # Maps fqdn to a unique /datacenter/rack/row id.
 nodes = {
-    'analytics1009.eqiad.wmnet':  '/eqiad/A/2',
+    'analytics1004.eqiad.wmnet':  '/eqiad/B/3',
     'analytics1010.eqiad.wmnet':  '/eqiad/B/3',
+
     'analytics1011.eqiad.wmnet':  '/eqiad/A/2',
     'analytics1013.eqiad.wmnet':  '/eqiad/A/2',
+
     'analytics1014.eqiad.wmnet':  '/eqiad/C/7',
     'analytics1015.eqiad.wmnet':  '/eqiad/C/7',
     'analytics1016.eqiad.wmnet':  '/eqiad/C/7',
     'analytics1017.eqiad.wmnet':  '/eqiad/C/7',
+
     'analytics1019.eqiad.wmnet':  '/eqiad/D/2',
     'analytics1020.eqiad.wmnet':  '/eqiad/D/2',
+
+    'analytics1028.eqiad.wmnet':  '/eqiad/C/2',
+    'analytics1029.eqiad.wmnet':  '/eqiad/C/2',
+    'analytics1030.eqiad.wmnet':  '/eqiad/C/2',
+    'analytics1031.eqiad.wmnet':  '/eqiad/C/2',
+
+    'analytics1032.eqiad.wmnet':  '/eqiad/C/3',
+    'analytics1033.eqiad.wmnet':  '/eqiad/C/3',
+    'analytics1034.eqiad.wmnet':  '/eqiad/C/3',
+
+    'analytics1035.eqiad.wmnet':  '/eqiad/D/2',
+    'analytics1036.eqiad.wmnet':  '/eqiad/D/2',
+    'analytics1037.eqiad.wmnet':  '/eqiad/D/2',
+
+    'analytics1038.eqiad.wmnet':  '/eqiad/D/4',
+    'analytics1039.eqiad.wmnet':  '/eqiad/D/4',
+    'analytics1040.eqiad.wmnet':  '/eqiad/D/4',
+    'analytics1041.eqiad.wmnet':  '/eqiad/D/4'
 }
 
 if len(argv) < 2:
