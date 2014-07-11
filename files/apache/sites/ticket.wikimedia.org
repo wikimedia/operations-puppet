@@ -26,6 +26,7 @@
     SSLCertificateKeyFile /etc/ssl/private/ticket.wikimedia.org.key
     SSLCACertificatePath /etc/ssl/certs/
 
+    Header append Strict-Transport-Security "max-age=604800"
 
     # Make an access log, so we know when people abuse OTRS's insecure interface
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
