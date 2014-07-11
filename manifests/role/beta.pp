@@ -136,5 +136,6 @@ class role::beta::videoscaler {
 
 class role::beta::jobrunner {
     include role::beta::scap_target
-    include role::mediawiki::jobrunner
+    include role::mediawiki::common
+    include ::mediawiki::jobrunner
 }
