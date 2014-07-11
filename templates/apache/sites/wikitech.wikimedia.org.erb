@@ -7,7 +7,7 @@
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @webserver_hostname %>
-    ServerAlias wmflabs.org www.wmflabs.org
+    ServerAlias <%= @webserver_hostname_aliases %>
 
     DocumentRoot /var/www
     <Directory />
