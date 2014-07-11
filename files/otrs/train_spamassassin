@@ -23,8 +23,8 @@ if (my $lock_error = setlockfile('set')) {
 # learn from spam
 if (-e "$spam") {
 	execute_shell("chown $user.$group $spam");
-	execute_shell("su - $user -c \"/usr/bin/sa-learn --spam --mbox $spam\"");
-	execute_shell("su - $user -c \"/usr/bin/spamassassin --add-to-blacklist --mbox < $spam\"");
+	execute_shell("su - $user -s /bin/sh -c \"/usr/bin/sa-learn --spam --mbox $spam\"");
+	execute_shell("su - $user -s /bin/sh -c \"/usr/bin/spamassassin --add-to-blacklist --mbox < $spam\"");
 	unlink "$spam";
 	printlog("processed $spam as spam");
 }
@@ -32,8 +32,8 @@ if (-e "$spam") {
 # learn from ham
 if (-e "$ham") {
 	execute_shell("chown $user.$group $ham");
-	execute_shell("su - $user -c \"/usr/bin/sa-learn --ham --mbox $ham\"");
-	execute_shell("su - $user -c \"/usr/bin/spamassassin --add-to-whitelist --mbox < $ham\"");
+	execute_shell("su - $user -s /bin/sh -c \"/usr/bin/sa-learn --ham --mbox $ham\"");
+	execute_shell("su - $user -s /bin/sh -c \"/usr/bin/spamassassin --add-to-whitelist --mbox < $ham\"");
 	unlink "$ham";
 	printlog("processed $ham as ham");
 }
