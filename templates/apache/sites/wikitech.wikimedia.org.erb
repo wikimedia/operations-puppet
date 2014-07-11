@@ -47,6 +47,8 @@
 	SSLCertificateKeyFile /etc/ssl/private/<%= certificate %>.key
 	SSLCACertificatePath /etc/ssl/certs/
 
+    Header append Strict-Transport-Security "max-age=604800"
+
 	RedirectMatch ^/$ https://<%= webserver_hostname %>/wiki/
 
 	RewriteEngine on
