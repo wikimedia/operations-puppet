@@ -67,24 +67,45 @@ class role::analytics::hadoop::config {
         # JournalNodes are colocated on worker DataNodes.
         $journalnode_hosts        = [
             'analytics1011.eqiad.wmnet',  # Row A2
-            'analytics1014.eqiad.wmnet',  # Row C7
+            'analytics1028.eqiad.wmnet',  # Row C2
             'analytics1019.eqiad.wmnet',  # Row D2
         ]
 
-        $datanode_mounts = [
-            "${hadoop_data_directory}/a",
-            "${hadoop_data_directory}/b",
-            "${hadoop_data_directory}/c",
-            "${hadoop_data_directory}/d",
-            "${hadoop_data_directory}/e",
-            "${hadoop_data_directory}/f",
-            "${hadoop_data_directory}/g",
-            "${hadoop_data_directory}/h",
-            "${hadoop_data_directory}/i",
-            "${hadoop_data_directory}/j",
-            "${hadoop_data_directory}/k",
-            "${hadoop_data_directory}/l"
-        ]
+        # analytics1011-analytics1020 have 12 mounts on disks sda - sdl.
+        if $::hostname ~= /analytics10(1[1-9]|20)/ {
+            $datanode_mounts = [
+                "${hadoop_data_directory}/a",
+                "${hadoop_data_directory}/b",
+                "${hadoop_data_directory}/c",
+                "${hadoop_data_directory}/d",
+                "${hadoop_data_directory}/e",
+                "${hadoop_data_directory}/f",
+                "${hadoop_data_directory}/g",
+                "${hadoop_data_directory}/h",
+                "${hadoop_data_directory}/i",
+                "${hadoop_data_directory}/j",
+                "${hadoop_data_directory}/k",
+                "${hadoop_data_directory}/l",
+            ]
+        }
+        # analytics1028-analytics1041 have mounts on disks sdb - sdm.
+        # (sda is hardware raid on the 2 2.5 drives in the flex bays.)
+        elsif $::hostname ~= /analytics10(2[89]|3[0-9]|4[01])/ {
+            $datanode_mounts = [
+                "${hadoop_data_directory}/b",
+                "${hadoop_data_directory}/c",
+                "${hadoop_data_directory}/d",
+                "${hadoop_data_directory}/e",
+                "${hadoop_data_directory}/f",
+                "${hadoop_data_directory}/g",
+                "${hadoop_data_directory}/h",
+                "${hadoop_data_directory}/i",
+                "${hadoop_data_directory}/j",
+                "${hadoop_data_directory}/k",
+                "${hadoop_data_directory}/l",
+                "${hadoop_data_directory}/m",
+            ]
+        }
 
         $mapreduce_map_tasks_maximum              = ($::processorcount - 2) / 2
         $mapreduce_reduce_tasks_maximum           = ($::processorcount - 2) / 2
@@ -101,8 +122,9 @@ class role::analytics::hadoop::config {
         $hadoop_heapsize                          = undef
         $yarn_heapsize                            = undef
 
-        $ganglia_host = 'aggregator.eqiad.wmflabs'
-        $ganglia_port = 50090
+        # TODO: use variables from new ganglia module once it is finished.
+        $ganglia_host = '239.192.1.32'
+        $ganglia_port = 8649
     }
 
     # Configs specific to Labs.
@@ -152,9 +174,8 @@ class role::analytics::hadoop::config {
         $yarn_nodemanager_resource_memory_mb      = undef
         $net_topology_script_template             = undef
 
-        # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host = '239.192.1.32'
-        $ganglia_port = 8649
+        $ganglia_host = 'aggregator.eqiad.wmflabs'
+        $ganglia_port = 50090
     }
 }
 
