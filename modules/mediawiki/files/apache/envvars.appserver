@@ -5,6 +5,9 @@
 NICE=$((-`nice`))
 HTTPD="nice -n$NICE /usr/sbin/apache2 -DPHP5"
 
+# Don't start until a sync has been completed.
+[ -e /run/completed-sync ] || exit 2
+
 # Image scaler detection
 if [ -e /etc/wikimedia-image-scaler ]; then
 	HTTPD="$HTTPD -DSCALER"
