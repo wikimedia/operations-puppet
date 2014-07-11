@@ -34,7 +34,7 @@ class mediawiki::jobrunner (
     }
 
     service { 'jobrunner':
-        ensure   => 'disabled',  # for now!
+        ensure   => 'running',
         provider => 'upstart',
     }
 }
