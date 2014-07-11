@@ -56,24 +56,4 @@ class mediawiki::sync {
         group  => 'wikidev',
         mode   => '0644',
     }
-
-    exec { 'mw-sync':
-        command     => '/usr/local/bin/sync-common',
-        require     => File['/a/common'],
-        user        => 'root',
-        group       => 'root',
-        refreshonly => true,
-        timeout     => 600,
-        logoutput   => 'on_failure',
-    }
-
-    exec { 'mw-sync-rebuild-cdbs':
-        command     => '/usr/local/bin/scap-rebuild-cdbs',
-        subscribe   => Exec['mw-sync'],
-        user        => 'mwdeploy',
-        group       => 'mwdeploy',
-        refreshonly => true,
-        timeout     => 600,
-        logoutput   => 'on_failure',
-    }
 }
