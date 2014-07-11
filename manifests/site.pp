@@ -128,6 +128,7 @@ node 'analytics1009.eqiad.wmnet' {
     # class { 'admin': groups => ['analytics-users'] }
     include admin
     include standard
+
     # include role::analytics::hadoop::standby
 }
 
@@ -143,8 +144,8 @@ node 'analytics1004.eqiad.wmnet' {
     $cluster = 'analytics'
 
     class { 'admin': groups => ['analytics-users'] }
-
     include standard
+
     include role::analytics::hadoop::standby
 }
 
@@ -179,7 +180,7 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
         $ganglia_aggregator = true
     }
     include standard
-    class { 'admin': groups => ['analytics-users'] }
+    include admin
 
     include role::analytics::hadoop::worker
 }
@@ -205,6 +206,7 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
 
     include admin
     include standard
+
     include role::analytics
     include role::analytics::kafka::server
 }
@@ -217,6 +219,7 @@ node /analytics102[345].eqiad.wmnet/ {
 
     include admin
     include standard
+
     include role::analytics
     include role::analytics::zookeeper::server
 }
@@ -227,8 +230,8 @@ node 'analytics1026.eqiad.wmnet' {
     # ganglia cluster name.
     $cluster = 'analytics'
 
+    include admin
     include standard
-    class { 'admin': groups => ['analytics-users'] }
 
     # Include analytics/refinery deployment target.
     include role::analytics::refinery
@@ -243,7 +246,7 @@ node 'analytics1027.eqiad.wmnet' {
     $cluster = 'analytics'
 
     include standard
-    class { 'admin': groups => ['analytics-users'] }
+    include admin
 
     include role::analytics::clients
     include role::analytics::hive::server
