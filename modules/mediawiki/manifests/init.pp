@@ -3,6 +3,7 @@ class mediawiki {
     include ::mediawiki::sync
     include ::mediawiki::cgroup
     include ::mediawiki::packages
+    include ::ssh::server
 
     file { '/etc/cluster':
         owner   => 'root',
@@ -41,5 +42,14 @@ class mediawiki {
 
     class { '::nutcracker':
         server_list => $mw_mc_server_list,
+    }
+
+    # Increase scheduling priority of SSHD
+    file { '/etc/init/ssh.override':
+        content => "nice -10\n",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['ssh'],
     }
 }
