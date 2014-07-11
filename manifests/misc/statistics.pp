@@ -410,15 +410,6 @@ class misc::statistics::sites::metrics {
     }
 }
 
-# == Class misc::statistics::sites::default
-# Serves files from /var/www on this node's $fqdn.
-class misc::statistics::sites::default {
-    apache::site { 'default':
-        source => 'puppet:///files/apache/sites/stat1001.wikimedia.org',
-    }
-}
-
-
 # installs MonogDB
 class misc::statistics::db::mongo {
     include misc::statistics::base

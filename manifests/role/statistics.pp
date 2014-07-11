@@ -49,8 +49,6 @@ class role::statistics::www inherits role::statistics {
     include misc::statistics::sites::metrics
     # reportcard.wikimedia.org
     include misc::statistics::sites::reportcard
-    # default public file vhost
-    include misc::statistics::sites::default
     # rsync public datasets from stat1003 hourly
     include misc::statistics::public_datasets
 }
