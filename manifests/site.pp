@@ -114,28 +114,37 @@ node 'analytics1003.eqiad.wmnet' {
     include role::logging::udp2log::misc
 }
 
-node 'analytics1004.eqiad.wmnet' {
-    include standard
-
-    # search-users using this node while it is idle
-    # to do some elasticsearch testing.
-    class { 'admin': groups => ['search-users'] }
-    include role::analytics
-}
-
-
-# analytics1009 is the Hadoop standby NameNode
+# analytics1009 used to be the standby NameNode,
+# but during cluster reinstall in 2014-07, it
+# had an error when booting.  analytics1004
+# has been repurposed as analytics standby NameNode.
 node 'analytics1009.eqiad.wmnet' {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics'
     # analytics1009 is analytics Ganglia aggregator for Row A
-    $ganglia_aggregator = true
+    # $ganglia_aggregator = true
+
+    # class { 'admin': groups => ['analytics-users'] }
+    include admin
+    include standard
+    # include role::analytics::hadoop::standby
+}
+
+
+
+
+# analytics1004 is the Hadoop standby NameNode
+# TODO: either fix analytics1009, or move this
+# node to Row A.
+node 'analytics1004.eqiad.wmnet' {
+    $nagios_group = 'analytics_eqiad'
+    # ganglia cluster name.
+    $cluster = 'analytics'
 
     class { 'admin': groups => ['analytics-users'] }
 
     include standard
-    include role::analytics::kraken
     include role::analytics::hadoop::standby
 }
 
@@ -150,17 +159,18 @@ node 'analytics1010.eqiad.wmnet' {
 
     include standard
     class { 'admin': groups => ['analytics-users'] }
-    include role::analytics::kraken
+
     include role::analytics::hadoop::master
 }
 
-# analytics1011, analytics1013-analytics1017, analytics1019 and analytics1020
-# are Hadoop worker nodes.
+# analytics1011, analytics1013-analytics1017, analytics1019, analytics1020,
+# analytics1028-analytics1041 are Hadoop worker nodes.
+#
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # templates/hadoop/net-topology.py.erb to make sure the
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
-node /analytics10(11|1[3-7]|19|20).eqiad.wmnet/ {
+node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
     $cluster = 'analytics'
@@ -170,7 +180,7 @@ node /analytics10(11|1[3-7]|19|20).eqiad.wmnet/ {
     }
     include standard
     class { 'admin': groups => ['analytics-users'] }
-    include role::analytics::kraken
+
     include role::analytics::hadoop::worker
 }
 
@@ -219,27 +229,14 @@ node 'analytics1026.eqiad.wmnet' {
 
     include standard
     class { 'admin': groups => ['analytics-users'] }
-    include role::analytics::kraken
-
-    # Including kraken import and hive partition cron jobs.
-
-    # Imports pagecount files from dumps.wikimedia.org into Hadoop
-    include role::analytics::kraken::jobs::import::pagecounts
-    # Imports logs from Kafka into Hadoop (via Camus)
-    include role::analytics::kraken::jobs::import::kafka
-    # Creates hive partitions on all data in HDFS /wmf/data/external
-    include role::analytics::kraken::jobs::hive::partitions::external
 
     # Include analytics/refinery deployment target.
-    # NOTE: refinery roles will soon replace kraken classes.
     include role::analytics::refinery
-    include role::analytics::refinery::data::drop
 }
 
 # analytics1027 hosts the frontend
 # interfaces to Kraken and Hadoop.
 # (Hue, Oozie, Hive, etc.)
-
 node 'analytics1027.eqiad.wmnet' {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
@@ -247,6 +244,7 @@ node 'analytics1027.eqiad.wmnet' {
 
     include standard
     class { 'admin': groups => ['analytics-users'] }
+
     include role::analytics::clients
     include role::analytics::hive::server
     include role::analytics::oozie::server
