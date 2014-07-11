@@ -1,108 +1,108 @@
 # ticket.wikimedia.org http -> https
 <VirtualHost *:80>
-	ServerName ticket.wikimedia.org
-	RewriteEngine On
-	RewriteRule ^.*$ https://ticket.wikimedia.org/ [R]
+    ServerName ticket.wikimedia.org
+    RewriteEngine On
+    RewriteRule ^.*$ https://ticket.wikimedia.org/ [R]
 </VirtualHost>
 
 # otrs-test.wikimedia.org -> nowhere
 <VirtualHost *:80>
-	ServerName otrs-test.wikimedia.org
-	<Directory />
-		Order allow,deny
-	</Directory>
+    ServerName otrs-test.wikimedia.org
+    <Directory />
+        Order allow,deny
+    </Directory>
 </VirtualHost>
 
 # https://ticket.wikimedia.org
 <VirtualHost *:443>
-	ServerName ticket.wikimedia.org
-	ServerAlias iodine.wikimedia.org
+    ServerName ticket.wikimedia.org
+    ServerAlias iodine.wikimedia.org
 
-	SSLEngine On
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/ticket.wikimedia.org.chained.pem
-	SSLCertificateKeyFile /etc/ssl/private/ticket.wikimedia.org.key
-	SSLCACertificatePath /etc/ssl/certs/
+    SSLEngine On
+    SSLProtocol -ALL +SSLv3 +TLSv1
+    SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
+    SSLHonorCipherOrder on
+    SSLCertificateFile /etc/ssl/certs/ticket.wikimedia.org.chained.pem
+    SSLCertificateKeyFile /etc/ssl/private/ticket.wikimedia.org.key
+    SSLCACertificatePath /etc/ssl/certs/
 
 
-	# Make an access log, so we know when people abuse OTRS's insecure interface
-	LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
-	CustomLog /var/log/apache2/otrs-access.log combined
+    # Make an access log, so we know when people abuse OTRS's insecure interface
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
+    CustomLog /var/log/apache2/otrs-access.log combined
 
-	ScriptAlias /otrs/ "/opt/otrs/bin/cgi-bin/"
-	Alias /otrs-web/ "/opt/otrs/var/httpd/htdocs/"
+    ScriptAlias /otrs/ "/opt/otrs/bin/cgi-bin/"
+    Alias /otrs-web/ "/opt/otrs/var/httpd/htdocs/"
 
-	# Setup environment and preload modules
-	PerlRequire /opt/otrs/scripts/apache2-perl-startup.pl
+    # Setup environment and preload modules
+    PerlRequire /opt/otrs/scripts/apache2-perl-startup.pl
 
-	# Reload Perl modules when changed on disk
-	PerlModule Apache2::Reload
-	PerlInitHandler Apache2::Reload
+    # Reload Perl modules when changed on disk
+    PerlModule Apache2::Reload
+    PerlInitHandler Apache2::Reload
 
-	# general mod_perl2 options
-	<Location /otrs>
-		ErrorDocument 403 /otrs/index.pl
-		SetHandler  perl-script
-		PerlResponseHandler ModPerl::Registry
-		Options +ExecCGI
-		PerlOptions +ParseHeaders
-		PerlOptions +SetupEnv
-		Order allow,deny
-		Allow from all
-	</Location>
+    # general mod_perl2 options
+    <Location /otrs>
+        ErrorDocument 403 /otrs/index.pl
+        SetHandler  perl-script
+        PerlResponseHandler ModPerl::Registry
+        Options +ExecCGI
+        PerlOptions +ParseHeaders
+        PerlOptions +SetupEnv
+        Order allow,deny
+        Allow from all
+    </Location>
 
-	# mod_perl2 options for GenericInterface
-	<Location /otrs/nph-genericinterface.pl>
-		PerlOptions -ParseHeaders
-	</Location>
+    # mod_perl2 options for GenericInterface
+    <Location /otrs/nph-genericinterface.pl>
+        PerlOptions -ParseHeaders
+    </Location>
 
-	<Directory "/opt/otrs/bin/cgi-bin/">
-		AllowOverride None
-		Options +ExecCGI -Includes
-		Order allow,deny
-		Allow from all
+    <Directory "/opt/otrs/bin/cgi-bin/">
+        AllowOverride None
+        Options +ExecCGI -Includes
+        Order allow,deny
+        Allow from all
 
-		<IfModule mod_deflate.c>
-			AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json
-		</IfModule>
-	</Directory>
+        <IfModule mod_deflate.c>
+            AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json
+        </IfModule>
+    </Directory>
 
-	<Directory "/opt/otrs/var/httpd/htdocs/">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
+    <Directory "/opt/otrs/var/httpd/htdocs/">
+        AllowOverride None
+        Order allow,deny
+        Allow from all
 
-		<IfModule mod_deflate.c>
-			AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json
-		</IfModule>
-	</Directory>
+        <IfModule mod_deflate.c>
+            AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json
+        </IfModule>
+    </Directory>
 
-	<IfModule mod_headers.c>
-		<Directory "/opt/otrs/var/httpd/htdocs/skins/*/*/css-cache">
-			<FilesMatch "\.(css|CSS)$">
-				Header set Cache-Control "max-age=2592000 must-revalidate"
-			</FilesMatch>
-		</Directory>
-	
-		<Directory "/opt/otrs/var/httpd/htdocs/js/js-cache">
-			<FilesMatch "\.(js|JS)$">
-				Header set Cache-Control "max-age=2592000 must-revalidate"
-			</FilesMatch>
-		</Directory>
-	</IfModule>
+    <IfModule mod_headers.c>
+        <Directory "/opt/otrs/var/httpd/htdocs/skins/*/*/css-cache">
+            <FilesMatch "\.(css|CSS)$">
+                Header set Cache-Control "max-age=2592000 must-revalidate"
+            </FilesMatch>
+        </Directory>
 
-	# Limit the number of requests per child to avoid excessive memory usage
-	#MaxRequestsPerChild 4000
+        <Directory "/opt/otrs/var/httpd/htdocs/js/js-cache">
+            <FilesMatch "\.(js|JS)$">
+                Header set Cache-Control "max-age=2592000 must-revalidate"
+            </FilesMatch>
+        </Directory>
+    </IfModule>
 
-	RewriteEngine On
-	RewriteRule ^/otrs$ /otrs/index.pl [R=301]
-	RewriteRule ^/otrs/$ /otrs/index.pl [R=301]
-	RewriteRule ^/$ /otrs/index.pl [R=301]
+    # Limit the number of requests per child to avoid excessive memory usage
+    #MaxRequestsPerChild 4000
 
-	# Fix incorrect TicketID links (common on Wikipedia)
-	RewriteCond %{QUERY_STRING} ^Action=AgentTicketZoom\&TicketID=(200[0-9]{13})$
-	RewriteRule ^/otrs/index\.pl /otrs/index.pl?Action=AgentTicketZoom&TicketNumber=%1 [R]
+    RewriteEngine On
+    RewriteRule ^/otrs$ /otrs/index.pl [R=301]
+    RewriteRule ^/otrs/$ /otrs/index.pl [R=301]
+    RewriteRule ^/$ /otrs/index.pl [R=301]
+
+    # Fix incorrect TicketID links (common on Wikipedia)
+    RewriteCond %{QUERY_STRING} ^Action=AgentTicketZoom\&TicketID=(200[0-9]{13})$
+    RewriteRule ^/otrs/index\.pl /otrs/index.pl?Action=AgentTicketZoom&TicketNumber=%1 [R]
 
 </VirtualHost>
