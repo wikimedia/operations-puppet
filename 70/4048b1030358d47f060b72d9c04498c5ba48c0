@@ -1,0 +1,9 @@
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+1: Chmarkine <chmarkine@hotmail.com>
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Fri, 11 Jul 2014 14:11:11 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/145491
+Project: operations/puppet
+Branch: refs/heads/production
