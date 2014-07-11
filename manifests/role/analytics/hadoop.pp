@@ -201,7 +201,6 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         dfs_journalnode_edits_dir                => $hadoop_journal_directory,
         dfs_block_size                           => $dfs_block_size,
         io_file_buffer_size                      => $io_file_buffer_size,
-        mapreduce_output_compression             => $mapreduce_output_compression,
         mapreduce_intermediate_compression_codec => $mapreduce_intermediate_compression_codec,
         mapreduce_output_compression             => $mapreduce_output_compression,
         mapreduce_output_compression_codec       => $mapreduce_output_compression_codec,
