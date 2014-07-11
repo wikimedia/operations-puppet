@@ -62,7 +62,7 @@ class role::analytics::hadoop::config {
 
         $namenode_hosts           = [
             'analytics1010.eqiad.wmnet',
-            'analytics1009.eqiad.wmnet',
+            'analytics1004.eqiad.wmnet',
         ]
         # JournalNodes are colocated on worker DataNodes.
         $journalnode_hosts        = [
