@@ -423,6 +423,11 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
         default      => $controller_hostname,
     }
 
+    $webserver_hostname_aliases = $::realm ? {
+        'production' => 'wmflabs.org www.wmflabs.org',
+        default      => "www.${controller_hostname}",
+    }
+
     file {
         "/etc/apache2/sites-enabled/${webserver_hostname}":
             require => [ Package[php5] ],
