@@ -23,6 +23,6 @@ define apache::def( $ensure = present ) {
         ensure => $ensure,
         path   => '/etc/apache2/envvars',
         line   => "export APACHE_ARGUMENTS=\"\$APACHE_ARGUMENTS -D ${title}\"",
-        notify => Service['apache2'],
+        notify => Exec['apache2-restart'],
     }
 }
