@@ -29,25 +29,15 @@ class labs_vagrant(
 
     sudo_user { 'vagrant' :
         privileges => [
-            'ALL=(ALL) NOPASSWD:ALL',
+            'ALL=(ALL) NOPASSWD: ALL',
         ],
     }
 
-    # Primary group for modern wikitech accounts
     sudo_group { 'wikidev_vagrant':
         privileges => [
-            'ALL = (vagrant) NOPASSWD: ALL',
+            'ALL=(vagrant) NOPASSWD: ALL',
         ],
         group => 'wikidev',
-    }
-
-    # Primary group for users imported from old svn credentials
-    # Bug: 63028
-    sudo_group { 'svn_vagrant':
-        privileges => [
-            'ALL = (vagrant) NOPASSWD: ALL',
-        ],
-        group => 'svn',
     }
 
     git::clone { 'vagrant':
