@@ -1,30 +1,34 @@
 # Nginx reverse-proxy for RCStream
 # See <http://siriux.net/2013/06/nginx-and-websockets/>.
 # Requires Nginx 1.4+.
-<% if ! @use_ssl -%>
+<%- if ! @use_ssl -%>
 upstream websockets {
     ip_hash;
-    <% @backends.each do |backend| -%>
+    <%- @backends.each do |backend| -%>
     server <%= if backend.to_s.include?(':') then backend else "127.0.0.1:#{backend}" end %>;
-    <% end %>
+    <%- end -%>
 }
-<% end %>
+<%- end -%>
 
 server {
-    <%= Array(@listen).map { |bind| "listen #{bind};" }.join("\n") %>
+    <%- Array(@listen).each do |bind| -%>
+    listen      <%= @bind %>;
+    <%- end -%>
     server_name <%= @server_name %>;
+    access_log /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>access.log;
+    error_log  /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>error.log;
 
     <%- if @use_ssl -%>
-    ssl_certificate /etc/ssl/certs/<%= @server_name %>.pem;
+    ssl_certificate     /etc/ssl/certs/<%= @server_name %>.pem;
     ssl_certificate_key /etc/ssl/private/<%= @server_name %>.key;
-    <% end %>
+    <%- end -%>
 
     location <%= @location %> {
         <%- if @location != '/' -%>
         rewrite <%= @location %>(/.*)$ $1 break;
         <%- end -%>
 
-        proxy_pass http://websockets;
+        proxy_pass         http://websockets;
         proxy_http_version 1.1;
 
         proxy_set_header Upgrade $http_upgrade;
