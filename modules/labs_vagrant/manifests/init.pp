@@ -1,12 +1,27 @@
-# == labs_vagrant
+# = Class: labs_vagrant
 #
 # Configure a labs host to use MediaWiki-Vagrant to manage local wikis
 #
-# $inital_roles:  list of roles to include in labs vagrant before its first provision.
+# == Parameters:
+# - $install_directory: Directory to install MediaWiki-Vagrant in.
+#   Default /srv/vagrant
+# - $inital_roles: list of roles to include in labs vagrant before its first
+#   provision. Default ['labs_initial_content']
 #
 class labs_vagrant(
-    $initial_roles = ['labs_initial_content']
+    $install_directory = '/srv/vagrant',
+    $initial_roles     = ['labs_initial_content'],
 ) {
+
+    $legacy_directory = '/mnt/vagrant'
+
+    if $install_directory != $legacy_directory {
+        exec { 'migrate legacy files':
+            command => template('labs_vagrant/migrate_legacy.erb'),
+            onlyif  => "/usr/bin/test -f ${legacy_directory}",
+            before  => Git::Clone['vagrant'],
+        }
+    }
 
     file { '/home/vagrant':
         ensure     => 'directory',
@@ -36,22 +51,21 @@ class labs_vagrant(
     }
 
     git::clone { 'vagrant':
-        directory => '/mnt/vagrant/',
+        directory => $install_directory,
         origin    => 'https://gerrit.wikimedia.org/r/mediawiki/vagrant',
     }
 
-    # /mnt has way more space than /
-    file { '/mnt/vagrant':
+    file { $install_directory:
         recurse => true,
         owner   => 'vagrant',
         group   => 'www-data',
-        require => Exec['git_clone_vagrant'],
+        require => Git::Clone['vagrant'],
     }
 
     file { '/vagrant':
         ensure  => 'link',
-        target  => '/mnt/vagrant',
-        require => File['/mnt/vagrant'],
+        target  => $install_directory,
+        require => File[$install_directory],
     }
 
     file { '/bin/labs-vagrant':
@@ -66,6 +80,6 @@ class labs_vagrant(
         replace => false,
         content => template('labs_vagrant/vagrant-managed.pp.erb'),
         owner   => 'vagrant',
-        require => Exec['git_clone_vagrant'],
+        require => Git::Clone['vagrant'],
     }
 }

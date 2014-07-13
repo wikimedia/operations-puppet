@@ -1,0 +1,5 @@
+mkdir "<%= @install_directory %>"
+cd "<%= @legacy_directory %>"
+tar cf - . | (cd "<%= @install_directory %>"; tar xf -)
+cd /
+rm -rf "<%= @legacy_directory %>"
