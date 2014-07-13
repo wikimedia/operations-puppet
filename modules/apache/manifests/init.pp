@@ -27,9 +27,11 @@ class apache {
     }
 
     service { 'apache2':
-        ensure  => running,
-        enable  => true,
-        require => Package['apache2'],
+        ensure   => running,
+        enable   => true,
+        provider => 'debian',
+        restart  => '/usr/sbin/invoke-rc.d apache2 graceful',
+        require  => Package['apache2'],
     }
 
     file { [ '/etc/apache2/sites-available', '/etc/apache2/conf-available' ]:
