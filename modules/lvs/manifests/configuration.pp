@@ -853,7 +853,7 @@ class lvs::configuration {
             'scheduler' => 'sh',
             'monitors' => {
                 'ProxyFetch' => {
-                    'url' => [ 'http://localhost/rcstream_status' ],
+                    'url' => [ 'http://localhost/nginx_status' ],
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
@@ -869,7 +869,7 @@ class lvs::configuration {
             'scheduler' => 'sh',
             'monitors' => {
                 'ProxyFetch' => {
-                    'url' => [ 'http://localhost/rcstream_status' ],
+                    'url' => [ 'http://localhost/nginx_status' ],
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
