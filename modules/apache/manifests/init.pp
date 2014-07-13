@@ -27,9 +27,19 @@ class apache {
     }
 
     service { 'apache2':
-        ensure  => running,
-        enable  => true,
-        require => Package['apache2'],
+        ensure     => running,
+        enable     => true,
+        provider   => 'debian',
+        hasrestart => true,
+        restart    => '/usr/sbin/service apache2 reload',
+        require    => Package['apache2'],
+    }
+
+    exec { 'apache2-restart':
+        command     => '/usr/sbin/service apache2 restart',
+        refreshonly => true,
+        onlyif      => '/bin/pidof apache2',
+        require     => Package['apache2']
     }
 
     file { [ '/etc/apache2/sites-available', '/etc/apache2/conf-available' ]:
