@@ -1,6 +1,7 @@
+<<<<<<< HEAD:modules/mediawiki/manifests/web.pp
 # mediawiki::web
 
-class mediawiki::web ( $workers_limit = undef ) {
+class mediawiki::web ( $workers_limit = undef, $use_sites_available ) {
     tag 'mediawiki', 'mw-apache-config'
 
     include ::mediawiki
@@ -35,11 +36,14 @@ class mediawiki::web ( $workers_limit = undef ) {
         require => Package['apache2'],
     }
 
-    file { '/etc/apache2/wikimedia':
-        ensure  => directory,
-        source  => 'puppet:///modules/mediawiki/apache/config',
-        recurse => true,
-        before  => Service['apache2'],
-        require => Package['apache2'],
+    if ! $use_sites_available {
+        file { '/etc/apache2/wikimedia':
+            ensure  => directory,
+            recurse => true,
+            source  => 'puppet:///modules/mediawiki/apache/config',
+            before  => File['/etc/apache2/apache2.conf'],
+        }
+    } else {
+        include ::mediawiki::web::sites
     }
 }
