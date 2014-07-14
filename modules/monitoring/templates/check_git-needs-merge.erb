@@ -9,7 +9,7 @@ refname=<%= @remote_branch %>
 
 # First of all, check if there is something to merge.
 cd "${basedir}"
-su - $git_user -c "cd ${basedir} && git remote update <%= @remote %>"
+su - $git_user -c "cd ${basedir} && git remote update <%= @remote %> > /dev/null 2>&1"
 remote_sha1=$(git rev-parse ${refname})
 local_sha1=$(git rev-parse HEAD)
 # Exit if there are no changes to merge.
