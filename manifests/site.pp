@@ -2471,7 +2471,8 @@ node 'stat1002.eqiad.wmnet' {
     # clients so that analysts can use the number
     # crunching packages already installed on stat1002
     # in post processing of Hadoop generated datasets.
-    include role::analytics::clients
+    ## Temporarly not including these while CDH5 upgrade is in progress.
+    # include role::analytics::clients
 }
 
 # stat1003 is a general purpose number cruncher for
