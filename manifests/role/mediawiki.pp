@@ -27,8 +27,11 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
     include role::mediawiki::common
     include lvs::configuration
 
+    $mw_use_sites = $::hostname == 'mw1017'
+
     class { '::mediawiki::web':
-        workers_limit => $workers_limit
+        workers_limit       => $workers_limit,
+        use_sites_available => $mw_use_sites,
     }
 
     class { 'lvs::realserver':
