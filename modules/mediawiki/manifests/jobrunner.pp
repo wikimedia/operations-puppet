@@ -5,7 +5,12 @@
 #
 class mediawiki::jobrunner (
 	$aggr_servers,
-	$queue_servers
+	$queue_servers,
+	$runners_basic = 1,
+	$runners_upload = 1,
+	$runners_gwt = 1,
+	$runners_parsoid = 1,
+	$runners_transcode = 1
 ) {
     deployment::target { 'jobrunner': }
 

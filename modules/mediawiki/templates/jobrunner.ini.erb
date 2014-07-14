@@ -5,13 +5,16 @@ aggrSrvs=<%= aggr_servers %>
 queueSrvs=<%= queue_servers %>
 
 ; Runner loop config
-runners="5:*,~refreshLinks,~htmlCacheUpdate,-AssembleUploadChunks,-PublishStashedFile,-ParsoidCacheUpdateJobOnEdit,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-gwtoolsetUploadMetadataJob,-gwtoolsetUploadMediafileJob,-gwtoolsetGWTFileBackendCleanupJob,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-uploadFromUrl
+runners="
+<%= runners_basic %>:*,~refreshLinks,~htmlCacheUpdate,-AssembleUploadChunks,-PublishStashedFile,-ParsoidCacheUpdateJobOnEdit,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-gwtoolsetUploadMetadataJob,-gwtoolsetUploadMediafileJob,-gwtoolsetGWTFileBackendCleanupJob,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-uploadFromUrl
 
-&1:AssembleUploadChunks,PublishStashedFile,uploadFromUrl
+&<%= runners_upload %>:AssembleUploadChunks,PublishStashedFile,uploadFromUrl
 
-&1:gwtoolsetUploadMetadataJob,gwtoolsetUploadMediafileJob,gwtoolsetGWTFileBackendCleanupJob
+&<%= runners_gwt %>:gwtoolsetUploadMetadataJob,gwtoolsetUploadMediafileJob,gwtoolsetGWTFileBackendCleanupJob
 
-&1:ParsoidCacheUpdateJobOnEdit,~ParsoidCacheUpdateJobOnDependencyChange"
+&<%= runners_parsoid %>:ParsoidCacheUpdateJobOnEdit,~ParsoidCacheUpdateJobOnDependencyChange
+
+&<%= runners_transcode %>:webVideoTranscode"
 
 ; runJobs.php process time limits
 maxReal=*:3600,webVideoTranscode:86400
