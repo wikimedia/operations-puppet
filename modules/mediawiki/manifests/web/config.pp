@@ -1,4 +1,4 @@
-class mediawiki::web::config () {
+class mediawiki::web::config ($use_sites_available = false) {
     tag 'mediawiki', 'mw-apache-config'
 
     # We can enhance this to depend on the amount of ram as well
@@ -30,11 +30,14 @@ class mediawiki::web::config () {
         before => Service['apache'],
     }
 
-
-    file { '/etc/apache2/wikimedia':
-        ensure  => directory,
-        recurse => true,
-        source  => 'puppet:///modules/mediawiki/apache/config',
-        before  => File['/etc/apache2/apache2.conf'],
+    if ! $use_sites_available {
+        file { '/etc/apache2/wikimedia':
+            ensure  => directory,
+            recurse => true,
+            source  => 'puppet:///modules/mediawiki/apache/config',
+            before  => File['/etc/apache2/apache2.conf'],
+        }
+    } else {
+        include ::mediawiki::web::sites
     }
 }
