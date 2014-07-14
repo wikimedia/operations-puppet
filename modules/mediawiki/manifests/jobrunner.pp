@@ -10,7 +10,7 @@ class mediawiki::jobrunner (
 	$runners_upload = 1,
 	$runners_gwt = 1,
 	$runners_parsoid = 1,
-	$runners_transcode = 1
+	$runners_transcode = 0
 ) {
     deployment::target { 'jobrunner': }
 
