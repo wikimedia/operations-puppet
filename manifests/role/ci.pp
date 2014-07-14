@@ -179,7 +179,6 @@ class role::ci::slave::labs::common {
 
     # Jenkins slaves need to access beta cluster for the browsertests
     include contint::firewall::labs
-    include role::beta::natfix
     include role::zuul::install
 
     if $::site == 'eqiad' {
