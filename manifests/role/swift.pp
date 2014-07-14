@@ -92,6 +92,7 @@ class role::swift {
 			class { '::swift::proxy::monitoring':
 				host => 'ms-fe.eqiad.wmnet',
 			}
+			include role::swift::icehouse
 		}
 		class storage inherits role::swift::eqiad-prod {
 			include ::swift::storage
