@@ -2,7 +2,6 @@
 # site.pp
 
 import 'realm.pp' # These ones first
-import 'admins.pp'
 import 'backups.pp'
 import 'certs.pp'
 import 'dns.pp'
