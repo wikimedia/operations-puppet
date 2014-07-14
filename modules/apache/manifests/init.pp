@@ -35,11 +35,11 @@ class apache {
         require    => Package['apache2'],
     }
 
-    exec { 'apache2-restart':
+    exec { 'apache2_hard_restart':
         command     => '/usr/sbin/service apache2 restart',
+        onlyif      => '/usr/sbin/service apache2 status',
         refreshonly => true,
-        onlyif      => '/bin/pidof apache2',
-        require     => Package['apache2']
+        require     => Service['apache2']
     }
 
     file { [ '/etc/apache2/sites-available', '/etc/apache2/conf-available' ]:
