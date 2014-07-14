@@ -2404,13 +2404,10 @@ node 'silver.wikimedia.org' {
 }
 
 node 'sodium.wikimedia.org' {
-    $nameservers_prefix = [ $ipaddress ]
-
     include admin
     include base
     include ganglia
     include ntp::client
-    include dns::recursor
     include backup::client
     include role::mail::lists
 
