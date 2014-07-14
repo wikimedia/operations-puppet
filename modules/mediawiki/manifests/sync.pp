@@ -29,6 +29,14 @@ class mediawiki::sync {
         target => '/srv/deployment/scap/scap/bin/refreshCdbJsonFiles',
     }
 
+    file { '/usr/local/apache':
+        ensure  => directory,
+        owner   => root,
+        group   => root,
+        mode    => '0755',
+        replace => false,
+    }
+
     file { '/usr/local/apache/common':
         ensure => link,
         target => '/usr/local/apache/common-local',
