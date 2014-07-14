@@ -27,7 +27,7 @@ class role::analytics::oozie::config {
 class role::analytics::oozie::client inherits role::analytics::oozie::config {
     require role::analytics::hadoop::client
 
-    class { "${cdh_module_name}::oozie":
+    class { 'cdh::oozie':
         oozie_host => $oozie_host,
     }
 }
