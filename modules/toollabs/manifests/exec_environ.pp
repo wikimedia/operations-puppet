@@ -309,7 +309,6 @@ class toollabs::exec_environ {
         'librsvg2-bin',                # Bug 58516
         'libsvn1',
         'libvips-tools',
-        'libvips15',
         'libxml2-utils',               # Bug 62944.
         'libzbar0',                    # Bug 56996
         'mariadb-client',              # For /usr/bin/mysql.
