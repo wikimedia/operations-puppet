@@ -1,20 +1,20 @@
 ; Ready queue trackers
-aggrSrvs=<%= aggr_servers %>
+aggrSrvs=<%= Array(@aggr_servers).join(',') %>
 
 ; Main queue servers
-queueSrvs=<%= queue_servers %>
+queueSrvs=<%= Array(@queue_servers).join(',') %>
 
 ; Runner loop config
 runners="
-<%= runners_basic %>:*,~refreshLinks,~htmlCacheUpdate,-AssembleUploadChunks,-PublishStashedFile,-ParsoidCacheUpdateJobOnEdit,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-gwtoolsetUploadMetadataJob,-gwtoolsetUploadMediafileJob,-gwtoolsetGWTFileBackendCleanupJob,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-uploadFromUrl
+<%= @runners_basic %>:*,~refreshLinks,~htmlCacheUpdate,-AssembleUploadChunks,-PublishStashedFile,-ParsoidCacheUpdateJobOnEdit,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-gwtoolsetUploadMetadataJob,-gwtoolsetUploadMediafileJob,-gwtoolsetGWTFileBackendCleanupJob,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-uploadFromUrl
 
-&<%= runners_upload %>:AssembleUploadChunks,PublishStashedFile,uploadFromUrl
+&<%= @runners_upload %>:AssembleUploadChunks,PublishStashedFile,uploadFromUrl
 
-&<%= runners_gwt %>:gwtoolsetUploadMetadataJob,gwtoolsetUploadMediafileJob,gwtoolsetGWTFileBackendCleanupJob
+&<%= @runners_gwt %>:gwtoolsetUploadMetadataJob,gwtoolsetUploadMediafileJob,gwtoolsetGWTFileBackendCleanupJob
 
-&<%= runners_parsoid %>:ParsoidCacheUpdateJobOnEdit,~ParsoidCacheUpdateJobOnDependencyChange
+&<%= @runners_parsoid %>:ParsoidCacheUpdateJobOnEdit,~ParsoidCacheUpdateJobOnDependencyChange
 
-&<%= runners_transcode %>:webVideoTranscode"
+&<%= @runners_transcode %>:webVideoTranscode"
 
 ; runJobs.php process time limits
 maxReal=*:3600,webVideoTranscode:86400
