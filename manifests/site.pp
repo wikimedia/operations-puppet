@@ -2646,7 +2646,7 @@ node 'tin.eqiad.wmnet' {
     include standard
     include generic::wikidev-umask
     include role::deployment::deployment_servers::production
-    include mediawiki::sync
+    include mediawiki
     include misc::deployment
     include misc::deployment::scap_scripts
     include misc::deployment::l10nupdate
