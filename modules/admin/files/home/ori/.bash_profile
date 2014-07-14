@@ -41,6 +41,7 @@ shopt -s autocd cdable_vars cdspell checkwinsize \
 alias ls="ls --color" ...="cd .." cd..="cd .."
 :() { echo "$*" | python - ; }
 mkpass() { head -c 32 /dev/urandom | base64 | tr -cd [:alnum:]; }
+puppet-run() { sudo puppet agent -tv; }
 
 
 #
