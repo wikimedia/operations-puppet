@@ -320,11 +320,16 @@ ErrorDocument 404 /w/404.php
 
 NameVirtualHost *
 
+<%- if @use_sites_available -%>
+Include sites-enabled/*.conf
+<%- else -%>
 Include /etc/apache2/wikimedia/all.conf
+Include /etc/apache2/sites-enabled/99-monitoring.conf
+<%- end -%>
 
 # Set ETags for files to not be based on inode,
 # since that will be different on each backend server
 # http://bugzilla.wikimedia.org/show_bug.cgi?id=8926
 FileETag MTime Size
 
-Include /etc/apache2/sites-enabled/99-monitoring.conf
+
