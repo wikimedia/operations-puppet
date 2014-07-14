@@ -35,19 +35,6 @@ class role::beta::uploadservice {
 
 }
 
-# Should be applied on any instance that needs to access DNS entries pointing
-# back to the beta cluster. This should be applied at a minimum on any instance
-# running MediaWiki.
-#
-# WARNING: this will enable firewall (managed by ferm) with a default DROP policy
-class role::beta::natfix {
-    system::role { 'role::beta::natfix':
-        description => 'Server has beta NAT fixup'
-    }
-
-    include ::beta::natfix
-}
-
 # Class: role::beta::rsync_slave
 #
 # Provision an rsync slave server for scap in beta
