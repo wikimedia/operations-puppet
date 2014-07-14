@@ -1,12 +1,12 @@
 # This file should be BASH / Python polyglot.
 
-MW_COMMON="<%= mw_common %>"
-MW_COMMON_SOURCE="<%= mw_common_source %>"
-MW_DBLISTS="<%= dblist_common %>"
-MW_DBLISTS_SOURCE="<%= dblist_common_source %>"
+MW_COMMON="<%= @mw_common %>"
+MW_COMMON_SOURCE="<%= @mw_common_source %>"
+MW_DBLISTS="<%= @dblist_common %>"
+MW_DBLISTS_SOURCE="<%= @dblist_common_source %>"
 MW_CRON_LOGS="/home/wikipedia/logs/norotate"
-MW_RSYNC_HOST="<%= mw_rsync_host %>"
+MW_RSYNC_HOST="<%= @mw_rsync_host %>"
 MW_DSH_ARGS=('-cM' '-g' 'mediawiki-installation' '-o' '-oSetupTimeout=30' '-F30')
 MW_RSYNC_ARGS=('-a' '--delete-delay' '--delay-updates' '--compress' '--delete' '--exclude=**/.svn/lock' '--exclude=**/.git/objects' '--exclude=**/.git/**/objects' '--exclude=**/cache/l10n/*.cdb' '--no-perms')
-MW_STATSD_HOST="<%= mw_statsd_host %>"
-MW_STATSD_PORT=<%= mw_statsd_port %>
+MW_STATSD_HOST="<%= @mw_statsd_host %>"
+MW_STATSD_PORT=<%= @mw_statsd_port %>
