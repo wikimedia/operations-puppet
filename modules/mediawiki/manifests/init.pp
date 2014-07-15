@@ -12,8 +12,6 @@ class mediawiki {
         content => $::site,
     }
 
-    include ::twemproxy::decom
-
     if $::realm == 'labs' {
         $mw_mc_server_list = [
             '10.68.16.14:11211', # deployment-memc02.eqiad.wmflabs
