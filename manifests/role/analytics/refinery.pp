@@ -40,6 +40,8 @@ class role::analytics::refinery {
         # by users in the stats group.
         mode   => '2775',
     }
+
+    notify { 'applied role::analytics::refinery with deployment::target analytics-refinery': }
 }
 
 # Installs cron job to drop old hive partitions
