@@ -99,9 +99,7 @@ class role::beta::appserver {
         fatal_log_file => 'udp://deployment-bastion.eqiad.wmflabs:8420',
     }
 
-    class { '::mediawiki::web':
-        maxclients => $maxclients,
-    }
+    class { '::mediawiki::web': }
 
     # bug 38996 - Apache service does not run on start, need a fake
     # sync to start it up though don't bother restarting it is already
