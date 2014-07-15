@@ -1,0 +1,37 @@
+reprepro gpg key management
+===========================
+
+reprepro needs two keyrings to be functioning correctly:
+* the public keyring to validate incoming uploads' signatures
+* the private keyring to sign the published indices (Release, etc) and the
+  corresponding public key is trusted by clients to validate downloads.
+
+add a new public key
+====================
+Authorizing a new public key to be able to do uploads amounts to add it to
+reprepro-keys/ and regenerate the public keyring:
+
+    put the key under reprepro-keys/<username>_<keyid>.key
+    run make
+    send the resulting key + keyring for review
+
+add a new release key
+=====================
+The key used to sign the repository needs to live in the public keyring as
+well, in addition to being in the private repo under private/files/releases.
+
+Thus, to generate a new gpg keypair with gpg --gen-key, the public part:
+
+  gpg -a --export <keyid> > reprepro-keys/releases_<keyid>.key
+  run make
+  send for review the result (key + keyring)
+
+And the private part:
+
+  cd private/files/releases/
+  gpg -a --export-secret-keys <keyid> > reprepro-keys/releases_<keyid>.key
+  make
+  git commit
+
+To switch signing key it is possible to either leave just one key in the
+keyring or change "SignWith" reprepro distribution configuration.
