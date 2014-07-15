@@ -50,4 +50,11 @@ class mediawiki {
         mode    => '0444',
         notify  => Service['ssh'],
     }
+
+    file { '/var/log/mediawiki':
+        ensure => directory,
+        owner  => 'apache',
+        group  => 'wikidev',
+        mode   => '0644',
+    }
 }
