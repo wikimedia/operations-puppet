@@ -6,6 +6,10 @@ class role::snapshot::common {
 class role::snapshot::cron::primary {
     include role::snapshot::common
 
+    class { 'snapshot::wikidatajsondump':
+        enable => true,
+        user   => 'datasets',
+    }
     class { 'snapshot::centralauthdump':
         enable => true,
         user   => 'datasets',
@@ -35,6 +39,10 @@ class role::snapshot::cron::primary {
 class role::snapshot::cron::secondary {
     include role::snapshot::common
 
+    class { 'snapshot::wikidatajsondump':
+        enable => false,
+        user   => 'datasets',
+    }
     class { 'snapshot::centralauthdump':
         enable => false,
         user   => 'datasets',
