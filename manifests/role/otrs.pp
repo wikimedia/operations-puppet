@@ -139,10 +139,10 @@ class role::otrs (
 
     include clamav
     class { 'spamassassin':
-        required_score        => '3.5',
-        use_bayes             => true,
-        bayes_auto_learn      => false,
-        short_report_template => true,
+        required_score        => '3.5',# (5.0)
+        use_bayes             => '1',  # 0|(1)
+        bayes_auto_learn      => '0',  # 0|(1)
+        short_report_template => true, # true|(false)
         trusted_networks      => $network::constants::all_networks,
         custom_scores         => {
             'RP_MATCHES_RCVD'   => '-0.500',
