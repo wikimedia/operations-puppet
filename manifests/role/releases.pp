@@ -11,6 +11,8 @@ class role::releases {
         docroot      => 'releases',
     }
 
+    class { '::releases::reprepro': }
+
     ferm::service { 'releases_http':
         proto => 'tcp',
         port  => '80',
@@ -20,6 +22,4 @@ class role::releases {
         proto => 'tcp',
         port  => '443',
     }
-
 }
-
