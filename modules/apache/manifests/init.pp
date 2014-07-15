@@ -35,11 +35,16 @@ class apache {
         require    => Package['apache2'],
     }
 
+    exec { 'apache2_test_config':
+        command     => '/usr/sbin/apache2ctl configtest',
+        notify      => Exec['apache2_hard_restart'],
+        require     => Service['apache2'],
+        refreshonly => true,
+    }
+
     exec { 'apache2_hard_restart':
         command     => '/usr/sbin/service apache2 restart',
-        onlyif      => '/usr/sbin/service apache2 status',
         refreshonly => true,
-        require     => Service['apache2']
     }
 
     file { [ '/etc/apache2/sites-available', '/etc/apache2/conf-available' ]:
