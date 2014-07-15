@@ -82,6 +82,8 @@ class role::mediawiki::jobrunner {
 
     include role::mediawiki::common
 
+    deployment::target { 'jobrunner': }
+
     class { '::mediawiki::jobqueue':
         dprioprocs             => 17,
         iprioprocs             => 6,
