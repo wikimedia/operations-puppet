@@ -34,8 +34,9 @@ class role::deployment::config {
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/gdash',
     },
     'jobrunner/jobrunner'            => {
-        'grain'    => 'jobrunner',
-        'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner',
+        'grain'        => 'jobrunner',
+        'upstream'     => 'https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner',
+        'service_name' => 'jobrunner',
     },
     'parsoid/deploy'                => {
         'grain'                 => 'parsoid',
