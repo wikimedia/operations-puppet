@@ -12,6 +12,8 @@ class mediawiki::jobrunner (
 	$runners_parsoid = 1,
 	$runners_transcode = 0
 ) {
+    include ::passwords::redis
+
     deployment::target { 'jobrunner': }
 
     file { '/etc/default/jobrunner':
