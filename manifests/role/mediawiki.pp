@@ -82,13 +82,9 @@ class role::mediawiki::jobrunner {
 
     include role::mediawiki::common
 
-    if $::hostname =~ /mw1001/ {
-        class { '::mediawiki::jobrunner':
-            aggr_servers  => [ '10.64.32.76', '10.64.0.201' ],
-            queue_servers => [ '10.64.32.76', '10.64.0.201' ],
-        }
-    } else {
-        deployment::target { 'jobrunner': }
+    class { '::mediawiki::jobrunner':
+        aggr_servers  => [ '10.64.32.76', '10.64.0.201' ],
+        queue_servers => [ '10.64.32.76', '10.64.0.201' ],
     }
 
     class { '::mediawiki::jobqueue':
