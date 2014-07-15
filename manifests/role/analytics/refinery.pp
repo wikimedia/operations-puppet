@@ -4,7 +4,7 @@
 #
 class role::analytics::refinery {
     # Require analytics users so we hdfs can write log files as stats user.
-    role::analytics::users
+    require role::analytics::users
 
     # Many Kraken python scripts use docopt for CLI parsing.
     if !defined(Package['python-docopt']) {
