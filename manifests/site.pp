@@ -223,7 +223,7 @@ node /analytics102[345].eqiad.wmnet/ {
     include role::analytics::zookeeper::server
 }
 
-# analytics1026 is a Hadoop client and job submitter.
+# analytics1026 does not currently have a role
 node 'analytics1026.eqiad.wmnet' {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
@@ -231,14 +231,13 @@ node 'analytics1026.eqiad.wmnet' {
 
     include admin
     include standard
-
-    # Include analytics/refinery deployment target.
-    include role::analytics::refinery
 }
 
 # analytics1027 hosts the frontend
 # interfaces to Kraken and Hadoop.
-# (Hue, Oozie, Hive, etc.)
+# (Hue, Oozie, Hive, etc.).  It
+# also submits regularly scheduled
+# batch Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
     $nagios_group = 'analytics_eqiad'
     # ganglia cluster name.
@@ -251,6 +250,9 @@ node 'analytics1027.eqiad.wmnet' {
     include role::analytics::hive::server
     include role::analytics::oozie::server
     include role::analytics::hue
+
+    # Include analytics/refinery deployment target.
+    include role::analytics::refinery
 }
 
 
