@@ -1,14 +1,6 @@
 # scripts for syncing apache changes
 class apachesync {
 
-
-    file { '/etc/cluster':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => $::site,
-    }
-
     file { '/srv/httpdconf':
         ensure => 'directory',
         owner  => 'root',
