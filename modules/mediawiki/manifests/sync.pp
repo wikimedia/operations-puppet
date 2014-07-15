@@ -49,11 +49,4 @@ class mediawiki::sync {
         mode    => '0775',
         replace => false,
     }
-
-    file { '/var/log/mediawiki':
-        ensure => directory,
-        owner  => 'apache',
-        group  => 'wikidev',
-        mode   => '0644',
-    }
 }
