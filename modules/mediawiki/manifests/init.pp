@@ -50,4 +50,18 @@ class mediawiki {
         mode    => '0444',
         notify  => Service['ssh'],
     }
+
+    file { '/var/log/mediawiki':
+        ensure => directory,
+        owner  => 'apache',
+        group  => 'wikidev',
+        mode   => '0644',
+    }
+
+    file { '/etc/logrotate.d/mediawiki':
+        source  => 'puppet:///modules/mediawiki/logrotate.d_mediawiki',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
 }
