@@ -1,0 +1,13 @@
+# logrotate config for MediaWiki Jobrunner logs
+# This file is managed by Puppet
+/var/log/mediawiki/jobrunner.log {
+    daily
+    missingok
+    rotate 7
+    compress
+    notifempty
+	nocreate
+    postrotate
+        /sbin/restart jobrunner > /dev/null 2>&1
+    endscript
+}

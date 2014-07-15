@@ -44,4 +44,12 @@ class mediawiki::jobrunner (
         ensure   => 'running',
         provider => 'upstart',
     }
+
+    file { '/etc/logrotate.d/mediawiki_jobrunner':
+        source  => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobrunner',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
 }
