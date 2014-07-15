@@ -2,5 +2,5 @@
 JOBRUNNER_CONFIG="/etc/jobrunner.ini"
 JOBRUNNER_PID="/var/run/jobrunner/pid"
 JOBRUNNER_USER="apache"
-JOBRUNNER_GROUP="wikidev"
+JOBRUNNER_GROUP="apache"
 DAEMON_OPTS=""
