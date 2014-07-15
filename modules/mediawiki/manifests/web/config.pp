@@ -1,6 +1,8 @@
 class mediawiki::web::config () {
     tag 'mediawiki', 'mw-apache-config'
 
+    include ::apache
+
     $apache_server_limit = 256
 
     if is_integer($::mediawiki::web::workers_limit) {
@@ -16,8 +18,8 @@ class mediawiki::web::config () {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        # before  => Service['apache2'],
-        # require => Package['apache2'],
+        before  => Service['apache2'],
+        require => Package['apache2'],
     }
 
     file { '/etc/apache2/envvars':
@@ -25,15 +27,15 @@ class mediawiki::web::config () {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        # before  => Service['apache2'],
-        # require => Package['apache2'],
+        before  => Service['apache2'],
+        require => Package['apache2'],
     }
 
     file { '/etc/apache2/wikimedia':
         ensure  => directory,
         source  => 'puppet:///modules/mediawiki/apache/config',
         recurse => true,
-        # before  => Service['apache2'],
-        # require => Package['apache2'],
+        before  => Service['apache2'],
+        require => Package['apache2'],
     }
 }

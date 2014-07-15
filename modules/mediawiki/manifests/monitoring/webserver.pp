@@ -1,4 +1,6 @@
 class mediawiki::monitoring::webserver ($ensure = 'present'){
+    include ::stdlib
+    include ::apache
 
     $dir_ensure = $ensure ? {
         'present' => 'directory',
@@ -38,7 +40,7 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
     file { '/etc/apache2/sites-enabled/99-monitoring.conf':
         ensure => $link_ensure,
         target => '/etc/apache2/sites-available/monitoring.conf',
-        # before => Service['apache2']
+        before => Service['apache2']
     }
 
     # monitor definitions
@@ -66,8 +68,6 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
 
     }
 
-    include stdlib
     $endpoint_list = keys($endpoints)
     mediawiki::monitoring::webserver::endpoint { $endpoint_list: }
-
 }
