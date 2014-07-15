@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo -e "reprepro changes:\n$@" | mail -s "Reprepro changes" <%= @notify_address %>
