@@ -253,6 +253,9 @@ node 'analytics1027.eqiad.wmnet' {
 
     # Include analytics/refinery deployment target.
     include role::analytics::refinery
+    # Add cron jobs to run Camus to import data into
+    # HDFS from Kafka.
+    include role::analytics::refinery::camus
 }
 
 
