@@ -19,6 +19,7 @@ class role::elasticsearch::config {
         $row                  = undef
         $rack                 = undef
         $plugins_mandatory    = undef
+        $filter_cache_size    = '10%'
         if ($::hostname =~ /^deployment-/) {
             # Beta
             # Has four nodes all of which can be master
@@ -92,6 +93,9 @@ class role::elasticsearch::config {
         # to work properly.  This will keep elasticsearch from starting
         # if these plugins are  not available.
         $plugins_mandatory    = ['experimental highlighter', 'analysis-icu']
+
+        # Production can get a lot of use out of the filter cache.
+        $filter_cache_size    = '20%'
     }
 }
 

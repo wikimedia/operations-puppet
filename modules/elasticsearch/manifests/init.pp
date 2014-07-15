@@ -49,6 +49,9 @@
 #       hosts in the cluster to this list.  Elasticsearch will still use
 #       multicast discovery but this will keep it from getting lost if none of
 #       its pings reach other servers.
+# - $filter_cache_size: size of the filter cache.  See
+#       www.elasticsearch.org/guide/en/elasticsearch/reference/current/index-modules-cache.html
+#       for possible values.  Default is 10% like the Elasticsearch default.
 #
 # == Sample usage:
 #
@@ -71,7 +74,8 @@ class elasticsearch($cluster_name,
                     $awareness_attributes = undef,
                     $row = undef,
                     $rack = undef,
-                    $unicast_hosts = undef) {
+                    $unicast_hosts = undef,
+                    $filter_cache_size = '10%') {
 
     include ::elasticsearch::packages
 
