@@ -1,0 +1,4 @@
+/bin/mkdir "<%= @install_directory %>" &&
+(cd "<%= @legacy_directory %>"; /bin/tar cf - .) |
+(cd "<%= @install_directory %>"; /bin/tar xf -) &&
+/bin/rm -rf "<%= @legacy_directory %>"
