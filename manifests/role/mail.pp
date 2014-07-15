@@ -138,6 +138,12 @@ class role::mail::lists {
         description   => 'Exim SMTP',
         check_command => 'check_smtp',
     }
+
+    nrpe::monitor_service { 'procs_mailman':
+        description  => 'mailman',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 9:9 -a mailman',
+    }
+
 }
 
 class role::mail::imap {
