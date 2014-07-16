@@ -18,6 +18,7 @@
 class role::analytics::hive::config {
     # require zookeeper config to get zookeeper hosts array.
     include role::analytics::zookeeper::config
+    include role::analytics::hadoop::config
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
@@ -34,8 +35,8 @@ class role::analytics::hive::config {
         $jdbc_password   = $passwords::analytics::hive_jdbc_password
     }
     elsif $::ream == 'labs' {
-        $server_host     = $role::analytics::hadoop::labs::namenode_hosts[0]
-        $metastore_host  = $role::analytics::hadoop::labs::namenode_hosts[0]
+        $server_host     = $role::analytics::hadoop::config::namenode_hosts[0]
+        $metastore_host  = $role::analytics::hadoop::config::namenode_hosts[0]
         $jdbc_password   = 'hive'
     }
 }

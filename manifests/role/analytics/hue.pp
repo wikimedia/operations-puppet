@@ -25,7 +25,7 @@ class role::analytics::hue {
     elsif ($::realm == 'labs') {
         $secret_key       = 'oVEAAG5dp02MAuIScIetX3NZlmBkhOpagK92wY0GhBbq6ooc0B3rosmcxDg2fJBM'
         # Assume that in Labs, Hue should run on the main master Hadoop NameNode.
-        $hive_server_host = $role::analytics::hadoop::labs::namenode_hosts[0]
+        $hive_server_host = $role::analytics::hadoop::config::namenode_hosts[0]
         # Disable ssl in labs.  Labs proxy handles SSL termination.
         $ssl_private_key  = false
         $ssl_certificate  = false
