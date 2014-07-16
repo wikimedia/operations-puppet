@@ -50,6 +50,7 @@ class exim {
         $mediawiki_relay=false,
         $outbound_ips=[ ],
         $rt_relay=false,
+        $phab_relay=false,
         $smart_route_list=[]
 ) {
 

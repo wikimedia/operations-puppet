@@ -61,6 +61,7 @@ domainlist defer_domains = lsearch;CONFDIR/defer_domains
 domainlist legacy_mailman_domains = wikimedia.org : wikipedia.org : mail.wikimedia.org : mail.wikipedia.org
 domainlist mailman_domains = lists.wikimedia.org
 domainlist rt_domains = rt.wikimedia.org
+domainlist phab_domains = phabricator.wikimedia.org
 domainlist donate_domains = donate.wikimedia.org
 domainlist spamassassin_domains = *
 
@@ -91,8 +92,8 @@ acl_smtp_data = acl_check_data
 helo_try_verify_hosts = *
 <% end -%>
 
-<% if rt_relay == true or enable_otrs_server == true then -%>
-# Allow RT, OTRS to use any sender address
+<% if rt_relay == true or enable_otrs_server == true or phab_relay == true then -%>
+# Allow Phab, RT, OTRS to use any sender address
 untrusted_set_sender = *
 local_from_check = false
 <% end -%>
@@ -362,6 +363,21 @@ system_aliases:
 	allow_defer
 	forbid_file
 
+<% if phab_relay == true then -%>
+#Mail destined for Phabricator
+phabricator_bound:
+        driver = redirect
+        domains = +phab_domains
+        redirect_router = phab
+        data = general$local_part_suffix@$domain
+        no_verify
+
+phab:
+        driver = accept
+        domains = +phab_domains
+        transport = phab_pipe
+<% end -%>
+
 <% if rt_relay == true then -%>
 # Mail destined for RT
 
@@ -489,6 +505,13 @@ imap:
 	local_part_suffix_optional
 	transport = remote_smtp
 	route_list = *  sanger.wikimedia.org
+
+# send phabricator.wm.org emails to Phabricator
+phabricator:
+       driver = manualroute
+       domains = +phab_domains
+       route_list = * iridium.wikimedia.org byname
+       transport = remote_smtp
 
 # Send RT mails to the RT server
 rt:
@@ -659,6 +682,18 @@ bulk_smtp:
 address_pipe:
 	driver = pipe
 	return_output
+
+<% if phab_relay == true then -%>
+# phabricator transport
+phab_pipe:
+        driver = pipe
+        batch_max = 5
+        command = /usr/local/bin/phab_epipe.py
+        environment = $address_data
+        user = mail
+        group = mail
+        return_fail_output
+<% end -%>
 
 <% if rt_relay == true then -%>
 # RT transport
