@@ -85,6 +85,7 @@ class role::mediawiki::jobrunner {
     class { '::mediawiki::jobrunner':
         aggr_servers  => [ '10.64.32.76', '10.64.0.201' ],
         queue_servers => [ '10.64.32.76', '10.64.0.201' ],
+        statsd_server => 'statsd.eqiad.wmnet:8125',
     }
 
     class { '::mediawiki::jobqueue':
