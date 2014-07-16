@@ -2,12 +2,12 @@
 #### THIS FILE IS MANAGED BY PUPPET
 ####  as template('base/resolv.conf.erb')
 #####################################################################
-# Resolver configuration for site <%= site %>
-search <%= domain_search %>
+# Resolver configuration for site <%= @site %>
+search <%= @domain_search %>
 options timeout:3
-<% nameservers_prefix.each do |nameserver| -%>
+<% @nameservers_prefix.each do |nameserver| -%>
 nameserver <%= nameserver %>
 <% end -%>
-<% nameservers.each do |nameserver| -%>
+<% @nameservers.each do |nameserver| -%>
 nameserver <%= nameserver %>
 <% end -%>
