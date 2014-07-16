@@ -10,12 +10,14 @@
 # == Class role::analytics::oozie::config
 #
 class role::analytics::oozie::config {
+    include role::analytics::hadoop::config
+
     if $::realm == 'production' {
         $oozie_host      = 'analytics1027.eqiad.wmnet'
         $jdbc_password   = $passwords::analytics::oozie_jdbc_password
     }
     elsif $::realm == 'labs' {
-        $oozie_host      = $role::analytics::hadoop::labs::namenode_hosts[0]
+        $oozie_host      = $role::analytics::hadoop::config::namenode_hosts[0]
         $jdbc_password   = 'oozie'
     }
 }
