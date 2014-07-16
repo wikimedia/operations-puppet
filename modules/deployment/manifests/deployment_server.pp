@@ -71,6 +71,7 @@ class deployment::deployment_server($deployer_groups=[]) {
         path        => ['/usr/bin'],
         command     => 'salt-call saltutil.sync_all',
         subscribe   => Salt::Grain['deployment_server'],
+        timeout     => 1200,
     }
 
     exec { 'eventual_consistency_deployment_server_init':
