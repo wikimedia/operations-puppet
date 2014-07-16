@@ -154,6 +154,10 @@ class role::mail::lists {
         check_command => 'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'About Wikimedia-l\'',
     }
 
+    monitor_service { 'mailman_archives':
+        description   => 'mailman archives',
+        check_command => 'check_http_url_for_string!lists.wikimedia.org!/pipermail/wikimedia-l/!\'The Wikimedia-l Archives\'',
+    }
 }
 
 class role::mail::imap {
