@@ -105,6 +105,13 @@ class ocg (
         content => template('ocg/mw-ocg-service.js.erb'),
         notify  => Service['ocg'],
     }
+    
+    file { '/etc/ocg/start-ocg':
+		ensure  => present,
+		mode    => 0555,
+		content => template('ocg/start-ocg.erb'),
+		notify  => Service['ocg'],
+	}
 
     file { '/etc/init/ocg.conf':
         ensure  => present,

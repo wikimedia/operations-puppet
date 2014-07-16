@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# THIS FILE IS MANAGED BY PUPPET
+# /modules/ocg/templates/start-ocg.erb
+#
+# This file is used so that we have a consistent entry point
+# for apparmour to act on. We cannot just execute the script
+# because Debian/Ubuntu dont agree with the rest of the world
+# on what the node binary should be called
+
+<%= @nodebin %> /srv/deployment/ocg/ocg/mw-ocg-service.js -c /etc/ocg/mw-ocg-service.js
