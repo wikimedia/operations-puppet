@@ -24,6 +24,8 @@ sub vcl_recv {
 		set req.backend = ruthenium;
 	} elsif (req.http.Host == "legalpad.wikimedia.org") {
 		set req.backend = radon;
+	} elsif (req.http.Host == "contacts.wikimedia.org") {
+		set req.backend = zirconium;
 	} else {
 		error 404 "Domain not served here";
 	}
