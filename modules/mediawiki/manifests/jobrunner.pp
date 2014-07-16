@@ -6,11 +6,11 @@
 class mediawiki::jobrunner (
 	$aggr_servers,
 	$queue_servers,
-	$runners_basic = 1,
-	$runners_upload = 1,
-	$runners_gwt = 1,
-	$runners_parsoid = 1,
-	$runners_transcode = 0
+	$runners_basic     = 1,
+	$runners_upload    = 1,
+	$runners_gwt       = 1,
+	$runners_parsoid   = 1,
+	$runners_transcode = 0,
 ) {
     include ::passwords::redis
 
@@ -51,5 +51,4 @@ class mediawiki::jobrunner (
         group   => 'root',
         mode    => '0444',
     }
-
 }
