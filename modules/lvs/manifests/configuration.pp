@@ -283,6 +283,9 @@ class lvs::configuration {
             'stream' => {
                 'eqiad' => {'streamlb' => '208.80.154.249', 'streamlb6' => '2620:0:861:ed1a::3:15'}
             },
+            'ocg' => {
+                'eqiad' => '10.2.2.31',
+            },
         },
         'labs' => {
             'text' => {
@@ -833,6 +836,18 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
-
+        'ocg' => {
+            'description' => 'Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet',
+            'class' => 'high-traffic2',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['ocg'][$::site],
+            'port' => 8000,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://ocg.svc.eqiad..wmnet/?command=health' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            },
+        },
     }
 }
