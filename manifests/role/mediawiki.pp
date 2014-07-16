@@ -66,6 +66,7 @@ class role::mediawiki::videoscaler {
 
     class { '::mediawiki::jobrunner':
         queue_servers     => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
+        statsd_server     => 'statsd.eqiad.wmnet:8125',
         runners_transcode => 5,
     }
 }
@@ -77,6 +78,7 @@ class role::mediawiki::jobrunner {
 
     class { '::mediawiki::jobrunner':
         queue_servers   => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
+        statsd_server   => 'statsd.eqiad.wmnet:8125',
         runners_basic   => 18,
         runners_parsoid => 18,
         runners_upload  => 7,
