@@ -144,6 +144,16 @@ class role::mail::lists {
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 9:9 -a mailman',
     }
 
+    monitor_service { 'mailman_archives_web':
+        description   => 'lists.wikimedia.org',
+        check_command => 'check_http_url!lists.wikimedia.org!pipermail/wikimedia-l/',
+    }
+
+    monitor_service { 'mailman__web_cgi':
+        description   => 'lists.wikimedia.org',
+        check_command => 'check_http_url!lists.wikimedia.org!/mailman/listinfo/wikimedia-l',
+    }
+
 }
 
 class role::mail::imap {
