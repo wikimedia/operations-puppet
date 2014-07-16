@@ -141,12 +141,12 @@ class role::mail::lists {
 
     nrpe::monitor_service { 'procs_mailmanctl':
         description  => 'mailman_ctl',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array=\'/mailman/bin/mailmanctl\''
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\''
     }
 
     nrpe::monitor_service { 'procs_mailman_qrunner':
         description  => 'mailman_qrunner',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 --ereg-argument-array=\'/mailman/bin/qrunner\''
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\''
     }
 }
 
