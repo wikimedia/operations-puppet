@@ -4,7 +4,7 @@ socket		= /tmp/mysql.sock
 
 [mysqld]
 
-<% ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; %>
+<% ia = @ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; %>
 server_id=<%= server_id %>
 <% if @read_only == false then -%>
 # writes are enabled
@@ -93,14 +93,14 @@ log_slow_extra
 innodb-thread-lifo=1
 <% end -%>
 
-<% ram = memorysize.split[0]; ram = Float(ram) * 0.75; 
+<% ram = @memorysize.split[0]; ram = Float(ram) * 0.75; 
 ram = ram.round; ram = String(ram) + "G"; %>
 
 innodb-adaptive-flushing=1
 innodb-buffer-pool-size=<%= ram %>
 innodb-flush-method=O_DIRECT
 innodb-io-capacity=1000
-innodb-log-file-size=<%= innodb_log_file_size %>
+innodb-log-file-size=<%= @innodb_log_file_size %>
 innodb-old-blocks-pct=80
 innodb-old-blocks-time=1000
 innodb-read-io-threads=16

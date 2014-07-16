@@ -17,7 +17,7 @@ c.NotebookApp.password = u'sha1:<%= scope.function_sha1([password]) %>'
 c.NotebookManager.notebook_dir = '<%= @notebookdir %>'
 
 c.InteractiveShellApp.exec_files = [
-<% exec_files.each do |file| -%>
+<% @exec_files.each do |file| -%>
     '<%= file %>',
 <% end -%>
 ]

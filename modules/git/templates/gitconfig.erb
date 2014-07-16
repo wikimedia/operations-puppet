@@ -1,9 +1,9 @@
 # vim: set ts=4 sw=4 et:
 # This file is managed by Puppet!
 # puppet:://modules/git/gitconfig.erb
-# git::userconfig for '<%= name %>'
+# git::userconfig for '<%= @name %>'
 
-<% settings.sort.each do |section, content|      -%>
+<% @settings.sort.each do |section, content|      -%>
 [<%= section %>]
 <%   content.sort.each do |key, values|          -%>
 <%     [values].flatten.sort.each do |value|     -%>
