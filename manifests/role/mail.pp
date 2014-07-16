@@ -139,11 +139,15 @@ class role::mail::lists {
         check_command => 'check_smtp',
     }
 
-    nrpe::monitor_service { 'procs_mailman':
-        description  => 'mailman',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 9:9 -a mailman',
+    nrpe::monitor_service { 'procs_mailmanctl':
+        description  => 'mailman_ctl',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array=\'/mailman/bin/mailmanctl\''
     }
 
+    nrpe::monitor_service { 'procs_mailman_qrunner':
+        description  => 'mailman_qrunner',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 --ereg-argument-array=\'/mailman/bin/qrunner\''
+    }
 }
 
 class role::mail::imap {
