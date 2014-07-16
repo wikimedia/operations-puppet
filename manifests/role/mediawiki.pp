@@ -83,14 +83,17 @@ class role::mediawiki::jobrunner {
     include role::mediawiki::common
 
     class { '::mediawiki::jobrunner':
-        aggr_servers  => [ '10.64.32.76', '10.64.0.201' ],
-        queue_servers => [ '10.64.32.76', '10.64.0.201' ],
+        aggr_servers    => [ '10.64.32.76', '10.64.0.201' ],
+        queue_servers   => [ '10.64.32.76', '10.64.0.201' ],
+        runners_basic   => 6,
+        runners_upload  => 2,
+        runners_parsoid => 4,
     }
 
     class { '::mediawiki::jobqueue':
-        dprioprocs             => 17,
-        iprioprocs             => 6,
-        procs_per_iobound_type => 5,
+        dprioprocs             => 12,
+        iprioprocs             => 5,
+        procs_per_iobound_type => 4,
         run_jobs_enabled       => true,
     }
 }
