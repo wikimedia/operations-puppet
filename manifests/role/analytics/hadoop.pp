@@ -260,7 +260,9 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     }
 
     # monitor disk statistics
-    ganglia::plugin::python { 'diskstat': }
+    if !defined(Ganglia::Plugin::Python['diskstat']) {
+        ganglia::plugin::python { 'diskstat': }
+    }
 
     # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
     # It rotates them but does not delete old ones.  Set up cronjob to
