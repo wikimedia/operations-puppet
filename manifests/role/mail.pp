@@ -144,6 +144,11 @@ class role::mail::lists {
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 9:9 -a mailman',
     }
 
+    monitor_service { 'mailman_queue':
+        description   => 'mailman_queue_size',
+        check_command => 'check_mailman_queue 300',
+    }
+
 }
 
 class role::mail::imap {
