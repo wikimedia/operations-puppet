@@ -1,0 +1,32 @@
+# This file is managed by Puppet.
+
+[address_routing]
+
+<% if @address_routing -%>
+<%=
+    @address_routing.sort.map { |k,v|
+        v = v.is_a?(Array) ? v.join(',') : ( v == :undef ? '' : v )
+        "#{k} = #{v}"
+    }.join("\n")
+%>
+<% end -%>
+
+[direct_comments_allowed]
+<% if @direct_comments_allowed -%>
+<%=
+    @direct_comments_allowed.sort.map { |k,v|
+        v = v.is_a?(Array) ? v.join(',') : ( v == :undef ? '' : v )
+        "#{k} = #{v}"
+    }.join("\n")
+%>
+<% end -%>
+
+[phab_bot]
+<% if @phab_bot -%>
+<%=
+    @phab_bot.sort.map { |k,v|
+        v = v.is_a?(Array) ? v.join(',') : ( v == :undef ? '' : v )
+        "#{k} = #{v}"
+    }.join("\n")
+%>
+<% end -%>
