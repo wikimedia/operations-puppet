@@ -316,6 +316,7 @@ class toollabs::exec_environ {
         'socat',                       # Bug 57005
         'supybot',                     # Bug 61088.
         'p7zip',
+        'pdf2svg',                     # Bug #68092.
         'pdftk',                       # Bug #65048.
         'phantomjs',                   # Bug #66928
         'phpunit',
