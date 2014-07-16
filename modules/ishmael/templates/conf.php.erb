@@ -5,9 +5,9 @@
 
 	$conf['db_database_mk'] = 'query_digests';
 	$conf['db_database_live'] = ''; # database in which the actual data lives, for EXPLAIN purposes
-	$conf['db_query_review_table'] = '<%= review_table %>';
-	$conf['db_query_review_history_table'] = '<%= history_table %>';
-	$conf['db_central_host'] = '<%= db_central_host %>';
+	$conf['db_query_review_table'] = '<%= @review_table %>';
+	$conf['db_query_review_history_table'] = '<%= @history_table %>';
+	$conf['db_central_host'] = '<%= @db_central_host %>';
 
 	$conf['limit'] = 75;
 	$conf['explain'] = false;

@@ -7,7 +7,7 @@
 #
 
 from socket import gethostbyname
-masterdom = '.<%= mw_primary %>.wmnet'
+masterdom = '.<%= @mw_primary %>.wmnet'
 
 f = open('/etc/db.cluster', 'r')
 c = f.readline()
