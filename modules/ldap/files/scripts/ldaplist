@@ -51,7 +51,6 @@ def main():
                      "automount": base,
                      "auto_*": "nisMapName=auto_AUTO," + base,
                      "uids": "ou=uids," + base,
-                     "servicegroups.old": "ou=projects," + base,
                      "servicegroups": "ou=servicegroups," + base}
     objectdefaulttypes = {"base": "none",
                           "passwd": "uid",
@@ -61,7 +60,6 @@ def main():
                           "automount": "nisMapName",
                           "auto_*": "cn",
                           "uids": "cn",
-                          "servicegroups.old": "cn",
                           "servicegroups": "cn"}
     objectobjectclasses = {"base": "none",
                            "passwd": "posixaccount",
@@ -71,7 +69,6 @@ def main():
                            "automount": "nisMap",
                            "auto_*": "nisObject",
                            "uids": "inetOrgPerson",
-                           "servicegroups.old": "posixgroup",
                            "servicegroups": "posixgroup"}
 
     if options.showdatabase:
