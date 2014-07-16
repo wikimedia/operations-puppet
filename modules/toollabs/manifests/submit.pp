@@ -67,5 +67,11 @@ class toollabs::submit($gridmaster) inherits toollabs {
         mode   => '0444',
         source => 'puppet:///modules/toollabs/bigbrother.conf',
     }
+
+    service { 'bigbrother':
+        require => File[ '/usr/local/sbin/bigbrother', '/etc/init/bigbrother.conf' ],
+        ensure  => running,
+    }
+
 }
 
