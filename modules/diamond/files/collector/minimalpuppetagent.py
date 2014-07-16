@@ -86,6 +86,8 @@ class MinimalPuppetAgentCollector(diamond.collector.Collector):
         # Only publish total executed time and 'time since last puppet run'
         total_time = summary['time']['total']
         time_since = int(time.time()) - int(summary['time']['last_run'])
+        failed_events = summary['events']['failure']
 
         self.publish('total_time', total_time)
         self.publish('time_since_last_run', time_since)
+        self.publish('failed_events', failed_events)
