@@ -4,6 +4,9 @@ aggrSrvs=<%= Array(@aggr_servers).join(',') %>
 ; Main queue servers
 queueSrvs=<%= Array(@queue_servers).join(',') %>
 
+; Statsd sever
+statsdAddr=<%= @statsd_server %>
+
 ; Runner loop config
 runners="
 <%= @runners_basic %>:*,~refreshLinks,~htmlCacheUpdate,-AssembleUploadChunks,-PublishStashedFile,-ParsoidCacheUpdateJobOnEdit,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-gwtoolsetUploadMetadataJob,-gwtoolsetUploadMediafileJob,-gwtoolsetGWTFileBackendCleanupJob,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-uploadFromUrl

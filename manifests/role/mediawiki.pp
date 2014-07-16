@@ -88,6 +88,7 @@ class role::mediawiki::jobrunner {
         runners_basic   => 6,
         runners_upload  => 2,
         runners_parsoid => 4,
+        statsd_server   => 'statsd.eqiad.wmnet:8125',
     }
 
     class { '::mediawiki::jobqueue':
