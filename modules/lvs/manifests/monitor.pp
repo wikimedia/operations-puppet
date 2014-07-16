@@ -13,6 +13,7 @@ class lvs::monitor {
     lvs::monitor_service_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
     lvs::monitor_service_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
     lvs::monitor_service_http { "search.svc.eqiad.wmnet": ip_address => "10.2.2.30", check_command => "check_http_on_port!9200", contact_group => "admins" }
+    lvs::monitor_service_http { 'ocg.svc.eqiad.wmnet': ip_address => $ip['ocg']['eqiad'], check_command => "check_http_lvs_on_port!ocg.svc.eqiad.wmnet!8000!/?command=health" }
 
     lvs::monitor_service_custom { "search-pool1.svc.eqiad.wmnet": ip_address => "10.2.2.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
     lvs::monitor_service_custom { "search-pool2.svc.eqiad.wmnet": ip_address => "10.2.2.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
