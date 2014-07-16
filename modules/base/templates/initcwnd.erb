@@ -5,5 +5,5 @@
 ######################################################################
 
 <% if has_variable?("default_gateway") then -%>
-ip route change default via <%= default_gateway %> dev <%= default_gateway_interface %> metric 100 initcwnd 10
+ip route change default via <%= @default_gateway %> dev <%= @default_gateway_interface %> metric 100 initcwnd 10
 <% end -%>
