@@ -158,6 +158,12 @@ class role::mail::lists {
         description   => 'mailman archives',
         check_command => 'check_http_url_for_string!lists.wikimedia.org!/pipermail/wikimedia-l/!\'The Wikimedia-l Archives\'',
     }
+
+    monitor_service { 'mailman_queue':
+        description   => 'mailman_queue_size',
+        check_command => 'check_mailman_queue!42',
+    }
+
 }
 
 class role::mail::imap {
