@@ -148,6 +148,17 @@ class role::mail::lists {
         description  => 'mailman_qrunner',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\''
     }
+
+    monitor_service { 'mailman_archives_web':
+        description   => 'mailman archives',
+        check_command => 'check_https_url_for_string!lists.wikimedia.org!/pipermail/wikimedia-l/!\'Wikimedia-l Archives\'',
+    }
+
+    monitor_service { 'mailman_web_cgi':
+        description   => 'mailman list info',
+        check_command => 'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'About Wikimedia-l\'',
+    }
+
 }
 
 class role::mail::imap {
