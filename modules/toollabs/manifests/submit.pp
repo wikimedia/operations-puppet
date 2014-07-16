@@ -51,5 +51,21 @@ class toollabs::submit($gridmaster) inherits toollabs {
     package { 'misctools':
         ensure => latest,
     }
+
+    file { '/usr/local/sbin/bigbrother':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/bigbrother',
+    }
+
+    file { '/etc/init/bigbrother.conf':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/toollabs/bigbrother.conf',
+    }
 }
 
