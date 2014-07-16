@@ -36,6 +36,7 @@ class role::lvs::balancer {
             $sip['misc_web'][$::site],
             $sip['parsoidcache'][$::site],
             $sip['stream'][$::site],
+            $sip['ocg'][$::site],
             ],
         /^(lvs100[36])$/ => [
             $sip['apaches'][$::site],

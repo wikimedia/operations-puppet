@@ -2287,6 +2287,11 @@ node 'tantalum.eqiad.wmnet' {
     include base::firewall
     include role::ocg::test
     include standard
+
+    # This should move to manifests/role/ocg.pp as appropriate later
+    # Right now we're configuring "production" LVS using a ::test host...
+    include lvs::configuration
+    class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['ocg'][$::site] }
 }
 
 node 'sanger.wikimedia.org' {
