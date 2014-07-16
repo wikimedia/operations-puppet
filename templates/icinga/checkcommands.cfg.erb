@@ -358,6 +358,10 @@ define command{
 	command_line	/usr/lib/nagios/plugins/check_eventlogging_jobs
 }
 
+define command{
+    command_name    check_mailman_queue
+    command_line    $USER1$/check_mailman_queue $ARG1$
+}
 
 #Generic NRPE check
 # ARG1: command to execute on remote host
