@@ -88,15 +88,15 @@ class role::mediawiki::jobrunner {
     class { '::mediawiki::jobrunner':
         aggr_servers    => [ '10.64.32.76', '10.64.0.201' ],
         queue_servers   => [ '10.64.32.76', '10.64.0.201' ],
-        runners_basic   => 6,
-        runners_upload  => 2,
-        runners_parsoid => 4,
+        runners_basic   => 17,
+        runners_upload  => 6,
+        runners_parsoid => 15,
     }
 
     class { '::mediawiki::jobqueue':
-        dprioprocs             => 12,
-        iprioprocs             => 5,
-        procs_per_iobound_type => 4,
+        dprioprocs             => 1,
+        iprioprocs             => 1,
+        procs_per_iobound_type => 1,
         run_jobs_enabled       => true,
     }
 }
