@@ -2,7 +2,7 @@
 BINDIR=/usr/local/bin
 . /usr/local/lib/mw-deployment-vars.sh
 
-mwVersionNums=$($BINDIR/mwversionsinuse)
+mwVersionNums=$(mwversionsinuse)
 for mwVerNum in ${mwVersionNums[@]}; do
 	find "$MW_COMMON_SOURCE"/php-"$mwVerNum" -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
 done

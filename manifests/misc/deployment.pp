@@ -141,39 +141,6 @@ class misc::deployment::common_scripts {
 class misc::deployment::scap_scripts {
     include misc::deployment::common_scripts
     include misc::deployment::vars
-
-    file {
-        '/usr/local/bin/compile-wikiversions':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/compile-wikiversions';
-        '/usr/local/bin/mw-update-l10n':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/mw-update-l10n';
-        '/usr/local/bin/restart-nutcracker':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/restart-nutcracker';
-        '/usr/local/bin/scap':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/scap';
-        '/usr/local/bin/scap-purge-l10n-cache':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/scap-purge-l10n-cache';
-        '/usr/local/bin/sync-dblist':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/sync-dblist';
-        '/usr/local/bin/sync-dir':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/sync-dir';
-        '/usr/local/bin/sync-docroot':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/sync-docroot';
-        '/usr/local/bin/sync-file':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/sync-file';
-        '/usr/local/bin/sync-wikiversions':
-            ensure => link,
-            target => '/srv/deployment/scap/scap/bin/sync-wikiversions';
-    }
 }
 
 class misc::deployment::passwordscripts {
