@@ -32,12 +32,23 @@ class mediawiki::jobrunner (
         notify => Service['jobrunner'],
     }
 
-    file { '/etc/jobrunner.ini':
+    file { '/etc/jobrunner':
+        ensure => directory,
+        mode   => '0555',
+        before => Service['jobrunner']
+    }
+
+    file { '/etc/jobrunner/jobrunner.ini':
         content => template('mediawiki/jobrunner.ini.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         notify  => Service['jobrunner'],
+    }
+
+    file { '/etc/jobrunner.ini':
+        ensure  => absent,
+        require => Service['jobrunner'],
     }
 
     service { 'jobrunner':
