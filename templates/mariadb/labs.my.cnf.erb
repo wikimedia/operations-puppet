@@ -1,0 +1,78 @@
+# Labs
+
+[client]
+port   = 3309
+socket = /tmp/mysql.sock
+
+[mysqld]
+
+user      = mysql
+socket    = /tmp/mysql.sock
+port      = 3309
+datadir   = <%= @datadir %>
+tmpdir    = <%= @tmpdir %>
+server_id = <%= @server_id %>
+read_only = 0
+
+log_bin
+log_slave_updates
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+max_connections                = 1000
+max_connect_errors             = 1000000000
+max_allowed_packet             = 16M
+connect_timeout                = 3
+query_cache_size               = 0
+query_cache_type               = 0
+event_scheduler                = 1
+userstat                       = 1
+log-warnings                   = 0
+thread_stack                   = 192K
+thread_cache_size              = 300
+interactive_timeout            = 28800
+wait_timeout                   = 3600
+plugin-load                    = ha_tokudb
+
+sync_binlog                    = 0
+binlog_cache_size              = 1M
+max_binlog_size                = 1000M
+binlog_format                  = MIXED
+expire_logs_days               = 3
+slave_transaction_retries      = 4294967295
+
+table_open_cache               = 50000
+table_definition_cache         = 40000
+open-files-limit               = 400000
+character_set_server           = binary
+character_set_filesystem       = binary
+collation_server               = binary
+
+default-storage-engine         = Aria
+aria_pagecache_buffer_size     = 8G
+innodb_data_home_dir           = /srv/innodb
+innodb_file_per_table          = 0
+innodb_buffer_pool_size        = 8G
+innodb_log_file_size           = 2G
+innodb_flush_log_at_trx_commit = 1
+innodb_flush_method            = O_DIRECT
+innodb_thread_concurrency      = 0
+innodb_io_capacity             = 1000
+innodb_read_io_threads         = 16
+innodb_write_io_threads        = 8
+innodb_stats_sample_pages      = 16
+innodb_stats_method            = nulls_unequal
+innodb_locks_unsafe_for_binlog = 1
+tokudb_data_dir                = /srv/tokudb
+tokudb_cache_size              = 8G
+join_cache_level               = 8
+
+optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,engine_condition_pushdown=on'
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/

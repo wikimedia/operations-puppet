@@ -1354,6 +1354,7 @@ node 'labsdb1002.eqiad.wmnet' {
             },
         }
     }
+    include role::mariadb::labs
 }
 
 node 'labsdb1003.eqiad.wmnet' {

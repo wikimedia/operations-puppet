@@ -268,3 +268,43 @@ class role::mariadb::core(
     include mariadb::monitor_disk
     #include mariadb::monitor_process
 }
+
+# MariaDB 10 labsdb multiple-shards slave
+class role::mariadb::labs {
+
+    system::role { 'role::mariadb::labs':
+        description => 'Labs DB Slave',
+    }
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
+    include standard
+    include passwords::misc::scripts
+
+    class { 'mariadb::config':
+        prompt   => 'LABS',
+        config   => 'mariadb/labs.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/srv/sqldata',
+        tmpdir   => '/srv/tmp',
+    }
+
+    include mariadb::monitor_disk
+    include mariadb::monitor_process
+
+    file { '/srv/innodb':
+        ensure  => directory,
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0755',
+    }
+
+    file { '/srv/tokudb':
+        ensure  => directory,
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0755',
+    }
+}
