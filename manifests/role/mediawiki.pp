@@ -70,8 +70,18 @@ class role::mediawiki::videoscaler {
     include role::mediawiki::common
     include ::mediawiki::multimedia
 
+    class { '::mediawiki::jobrunner':
+        aggr_servers      => [ '10.64.32.76', '10.64.0.201' ],
+        queue_servers     => [ '10.64.32.76', '10.64.0.201' ],
+        runners_basic     => 0,
+        runners_upload    => 0,
+        runners_gwt       => 0,
+        runners_parsoid   => 0,
+        runners_transcode => 5
+    }
+
     class { '::mediawiki::jobqueue':
-        run_jobs_enabled       => true,
+        run_jobs_enabled       => false,
         dprioprocs             => 5,
         iprioprocs             => 0,
         procs_per_iobound_type => 0,
@@ -88,15 +98,15 @@ class role::mediawiki::jobrunner {
     class { '::mediawiki::jobrunner':
         aggr_servers    => [ '10.64.32.76', '10.64.0.201' ],
         queue_servers   => [ '10.64.32.76', '10.64.0.201' ],
-        runners_basic   => 17,
-        runners_upload  => 6,
-        runners_parsoid => 15,
+        runners_basic   => 18,
+        runners_upload  => 7,
+        runners_parsoid => 18,
     }
 
     class { '::mediawiki::jobqueue':
+        run_jobs_enabled       => false,
         dprioprocs             => 1,
         iprioprocs             => 1,
         procs_per_iobound_type => 1,
-        run_jobs_enabled       => true,
     }
 }
