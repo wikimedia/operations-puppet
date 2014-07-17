@@ -1,8 +1,8 @@
-@monitor_group { 'appserver_eqiad': description => 'eqiad application servers' }
+@monitor_group { 'appserver_eqiad':     description => 'eqiad application servers' }
 @monitor_group { 'api_appserver_eqiad': description => 'eqiad API application servers' }
-@monitor_group { 'imagescaler_eqiad': description => 'eqiad image scalers' }
-@monitor_group { 'jobrunner_eqiad': description => 'eqiad jobrunner application servers' }
-@monitor_group { 'videoscaler_eqiad': description => 'eqiad video scaler' }
+@monitor_group { 'imagescaler_eqiad':   description => 'eqiad image scalers' }
+@monitor_group { 'jobrunner_eqiad':     description => 'eqiad jobrunner application servers' }
+@monitor_group { 'videoscaler_eqiad':   description => 'eqiad video scaler' }
 
 class role::mediawiki::common {
     include standard
@@ -10,15 +10,9 @@ class role::mediawiki::common {
     include ::mediawiki
     include ::nutcracker::monitoring
 
-    $mediawiki_log_aggregator = 'fluorine.eqiad.wmnet:8420'
-
-    class { '::mediawiki::php':
-        fatal_log_file => "udp://${mediawiki_log_aggregator}",
-    }
-
-    class { '::mediawiki::syslog':
-        apache_log_aggregator => $mediawiki_log_aggregator,
-    }
+    $log_aggregator = 'fluorine.eqiad.wmnet:8420'
+    class { '::mediawiki::php': fatal_log_file => "udp://${log_aggregator}" }
+    class { '::mediawiki::syslog': apache_log_aggregator => $log_aggregator }
 }
 
 class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
@@ -70,8 +64,17 @@ class role::mediawiki::videoscaler {
     include role::mediawiki::common
     include ::mediawiki::multimedia
 
+    class { '::mediawiki::jobrunner':
+        queue_servers     => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
+        runners_basic     => 0,
+        runners_gwt       => 0,
+        runners_parsoid   => 0,
+        runners_transcode => 5,
+        runners_upload    => 0,
+    }
+
     class { '::mediawiki::jobqueue':
-        run_jobs_enabled       => true,
+        run_jobs_enabled       => false,
         dprioprocs             => 5,
         iprioprocs             => 0,
         procs_per_iobound_type => 0,
@@ -86,17 +89,16 @@ class role::mediawiki::jobrunner {
     include role::mediawiki::common
 
     class { '::mediawiki::jobrunner':
-        aggr_servers    => [ '10.64.32.76', '10.64.0.201' ],
-        queue_servers   => [ '10.64.32.76', '10.64.0.201' ],
-        runners_basic   => 17,
-        runners_upload  => 6,
-        runners_parsoid => 15,
+        queue_servers   => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
+        runners_basic   => 18,
+        runners_parsoid => 18,
+        runners_upload  => 7,
     }
 
     class { '::mediawiki::jobqueue':
+        run_jobs_enabled       => false,
         dprioprocs             => 1,
         iprioprocs             => 1,
         procs_per_iobound_type => 1,
-        run_jobs_enabled       => true,
     }
 }
