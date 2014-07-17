@@ -41,10 +41,8 @@ class role::racktables {
         content => template('apache/sites/racktables.wikimedia.org.erb'),
     }
 
-    file { '/etc/apache2/conf.d/namevirtualhost':
+    apache::conf { 'namevirtualhost':
         source => 'puppet:///files/apache/conf.d/namevirtualhost',
-        mode   => '0444',
-        notify => Service['apache2'],
     }
 
     include ::apache::mod::rewrite
