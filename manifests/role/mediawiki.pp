@@ -93,10 +93,18 @@ class role::mediawiki::jobrunner {
         runners_parsoid => 15,
     }
 
-    class { '::mediawiki::jobqueue':
-        dprioprocs             => 1,
-        iprioprocs             => 1,
-        procs_per_iobound_type => 1,
-        run_jobs_enabled       => true,
+    if $jobrunner_hhvm == undef {
+        $jobrunner_hhvm = false
+    }
+
+    if ($jobrunner_hhvm and versoncmp($::lsbdistrelease, '14.04') > 0) {
+        require ::mediawiki::jobrunner::hhvm
+    } else {
+        class { '::mediawiki::jobqueue':
+            dprioprocs             => 1,
+            iprioprocs             => 1,
+            procs_per_iobound_type => 1,
+            run_jobs_enabled       => true,
+        }
     }
 }
