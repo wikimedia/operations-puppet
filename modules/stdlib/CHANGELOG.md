@@ -1,3 +1,72 @@
+##2014-07-15 - Supported Release 4.3.2
+###Summary
+
+This release merely updates metadata.json so the module can be uninstalled and
+upgraded via the puppet module command.
+
+##2014-07-14 - Supported Release 4.3.1
+### Summary
+This supported release updates the metadata.json to work around upgrade behavior of the PMT.
+
+#### Bugfixes
+- Synchronize metadata.json with PMT-generated metadata to pass checksums
+
+##2014-06-27 - Supported Release 4.3.0
+### Summary
+This release is the first supported release of the stdlib 4 series. It remains
+backwards-compatible with the stdlib 3 series. It adds two new functions, one bugfix, and many testing updates.
+
+#### Features
+- New `bool2str()` function
+- New `camalcase()` function
+
+#### Bugfixes
+- Fix `has_interface_with()` when interfaces fact is nil
+
+##2014-06-04 - Release 4.2.2
+### Summary
+
+This release adds PE3.3 support in the metadata and fixes a few tests.
+
+## 2014-05-08 - Release - 4.2.1
+### Summary
+This release moves a stray symlink that can cause problems.
+
+## 2014-05-08 - Release - 4.2.0
+### Summary
+This release adds many new functions and fixes, and continues to be backwards compatible with stdlib 3.x
+
+#### Features
+- New `base64()` function
+- New `deep_merge()` function
+- New `delete_undef_values()` function
+- New `delete_values()` function
+- New `difference()` function
+- New `intersection()` function
+- New `is_bool()` function
+- New `pick_default()` function
+- New `union()` function
+- New `validate_ipv4_address` function
+- New `validate_ipv6_address` function
+- Update `ensure_packages()` to take an option hash as a second parameter.
+- Update `range()` to take an optional third argument for range step
+- Update `validate_slength()` to take an optional third argument for minimum length
+- Update `file_line` resource to take `after` and `multiple` attributes
+
+#### Bugfixes
+- Correct `is_string`, `is_domain_name`, `is_array`, `is_float`, and `is_function_available` for parsing odd types such as bools and hashes.
+- Allow facts.d facts to contain `=` in the value
+- Fix `root_home` fact on darwin systems
+- Fix `concat()` to work with a second non-array argument
+- Fix `floor()` to work with integer strings
+- Fix `is_integer()` to return true if passed integer strings
+- Fix `is_numeric()` to return true if passed integer strings
+- Fix `merge()` to work with empty strings
+- Fix `pick()` to raise the correct error type
+- Fix `uriescape()` to use the default URI.escape list
+- Add/update unit & acceptance tests.
+
+
 ##2014-03-04 - Supported Release - 3.2.1
 ###Summary
 This is a supported release
@@ -9,6 +78,144 @@ This is a supported release
 * No known bugs
 
 ---
+
+##### 2013-05-06 - Jeff McCune <jeff@puppetlabs.com> - 4.1.0
+
+ * (#20582) Restore facter\_dot\_d to stdlib for PE users (3b887c8)
+ * (maint) Update Gemfile with GEM\_FACTER\_VERSION (f44d535)
+
+##### 2013-05-06 - Alex Cline <acline@us.ibm.com> - 4.1.0
+
+ * Terser method of string to array conversion courtesy of ethooz. (d38bce0)
+
+##### 2013-05-06 - Alex Cline <acline@us.ibm.com> 4.1.0
+
+ * Refactor ensure\_resource expectations (b33cc24)
+
+##### 2013-05-06 - Alex Cline <acline@us.ibm.com> 4.1.0
+
+ * Changed str-to-array conversion and removed abbreviation. (de253db)
+
+##### 2013-05-03 - Alex Cline <acline@us.ibm.com> 4.1.0
+
+ * (#20548) Allow an array of resource titles to be passed into the ensure\_resource function (e08734a)
+
+##### 2013-05-02 - Raphaël Pinson <raphael.pinson@camptocamp.com> - 4.1.0
+
+ * Add a dirname function (2ba9e47)
+
+##### 2013-04-29 - Mark Smith-Guerrero <msmithgu@gmail.com> - 4.1.0
+
+ * (maint) Fix a small typo in hash() description (928036a)
+
+##### 2013-04-12 - Jeff McCune <jeff@puppetlabs.com> - 4.0.2
+
+ * Update user information in gemspec to make the intent of the Gem clear.
+
+##### 2013-04-11 - Jeff McCune <jeff@puppetlabs.com> - 4.0.1
+
+ * Fix README function documentation (ab3e30c)
+
+##### 2013-04-11 - Jeff McCune <jeff@puppetlabs.com> - 4.0.0
+
+ * stdlib 4.0 drops support with Puppet 2.7
+ * stdlib 4.0 preserves support with Puppet 3
+
+##### 2013-04-11 - Jeff McCune <jeff@puppetlabs.com> - 4.0.0
+
+ * Add ability to use puppet from git via bundler (9c5805f)
+
+##### 2013-04-10 - Jeff McCune <jeff@puppetlabs.com> - 4.0.0
+
+ * (maint) Make stdlib usable as a Ruby GEM (e81a45e)
+
+##### 2013-04-10 - Erik Dalén <dalen@spotify.com> - 4.0.0
+
+ * Add a count function (f28550e)
+
+##### 2013-03-31 - Amos Shapira <ashapira@atlassian.com> - 4.0.0
+
+ * (#19998) Implement any2array (7a2fb80)
+
+##### 2013-03-29 - Steve Huff <shuff@vecna.org> - 4.0.0
+
+ * (19864) num2bool match fix (8d217f0)
+
+##### 2013-03-20 - Erik Dalén <dalen@spotify.com> - 4.0.0
+
+ * Allow comparisons of Numeric and number as String (ff5dd5d)
+
+##### 2013-03-26 - Richard Soderberg <rsoderberg@mozilla.com> - 4.0.0
+
+ * add suffix function to accompany the prefix function (88a93ac)
+
+##### 2013-03-19 - Kristof Willaert <kristof.willaert@gmail.com> - 4.0.0
+
+ * Add floor function implementation and unit tests (0527341)
+
+##### 2012-04-03 - Eric Shamow <eric@puppetlabs.com> - 4.0.0
+
+ * (#13610) Add is\_function\_available to stdlib (961dcab)
+
+##### 2012-12-17 - Justin Lambert <jlambert@eml.cc> - 4.0.0
+
+ * str2bool should return a boolean if called with a boolean (5d5a4d4)
+
+##### 2012-10-23 - Uwe Stuehler <ustuehler@team.mobile.de> - 4.0.0
+
+ * Fix number of arguments check in flatten() (e80207b)
+
+##### 2013-03-11 - Jeff McCune <jeff@puppetlabs.com> - 4.0.0
+
+ * Add contributing document (96e19d0)
+
+##### 2013-03-04 - Raphaël Pinson <raphael.pinson@camptocamp.com> - 4.0.0
+
+ * Add missing documentation for validate\_augeas and validate\_cmd to README.markdown (a1510a1)
+
+##### 2013-02-14 - Joshua Hoblitt <jhoblitt@cpan.org> - 4.0.0
+
+ * (#19272) Add has\_element() function (95cf3fe)
+
+##### 2013-02-07 - Raphaël Pinson <raphael.pinson@camptocamp.com> - 4.0.0
+
+ * validate\_cmd(): Use Puppet::Util::Execution.execute when available (69248df)
+
+##### 2012-12-06 - Raphaël Pinson <raphink@gmail.com> - 4.0.0
+
+ * Add validate\_augeas function (3a97c23)
+
+##### 2012-12-06 - Raphaël Pinson <raphink@gmail.com> - 4.0.0
+
+ * Add validate\_cmd function (6902cc5)
+
+##### 2013-01-14 - David Schmitt <david@dasz.at> - 4.0.0
+
+ * Add geppetto project definition (b3fc0a3)
+
+##### 2013-01-02 - Jaka Hudoklin <jakahudoklin@gmail.com> - 4.0.0
+
+ * Add getparam function to get defined resource parameters (20e0e07)
+
+##### 2013-01-05 - Jeff McCune <jeff@puppetlabs.com> - 4.0.0
+
+ * (maint) Add Travis CI Support (d082046)
+
+##### 2012-12-04 - Jeff McCune <jeff@puppetlabs.com> - 4.0.0
+
+ * Clarify that stdlib 3 supports Puppet 3 (3a6085f)
+
+##### 2012-11-30 - Erik Dalén <dalen@spotify.com> - 4.0.0
+
+ * maint: style guideline fixes (7742e5f)
+
+##### 2012-11-09 - James Fryman <james@frymanet.com> - 4.0.0
+
+ * puppet-lint cleanup (88acc52)
+
+##### 2012-11-06 - Joe Julian <me@joejulian.name> - 4.0.0
+
+ * Add function, uriescape, to URI.escape strings. Redmine #17459 (fd52b8d)
 
 ##### 2012-09-18 - Chad Metcalf <chad@wibidata.com> - 3.2.0
 
