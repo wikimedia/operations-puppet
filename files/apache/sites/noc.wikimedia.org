@@ -23,8 +23,6 @@ NameVirtualHost *:443
 
     CustomLog /var/log/apache2/access.log combined
 
-    Redirect permanent /cgi-bin/report.py https://performance.wikimedia.org/profiler/report
-
     <Directory />
         Order Deny,Allow
         AllowOverride All
@@ -64,5 +62,4 @@ NameVirtualHost *:443
         AddDefaultCharset utf-8
     </Directory>
 
-    Redirect permanent /cgi-bin/report.py https://performance.wikimedia.org/profiler/report
 </VirtualHost>
