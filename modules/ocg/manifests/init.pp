@@ -40,6 +40,15 @@ class ocg (
         system     => true,
     }
 
+    define hardlink(source=$name, target) {                                                                                                                      
+        exec {                                                                                                                                                   
+            "hardlink-$name":                                                                                                                                    
+                command => "ln --force $target $source",                                                                                                         
+                path    => "/usr/bin:/bin",                                                                                                                      
+                unless  => "test $source -ef $target";                                                                                                           
+        }                                                                                                                                                        
+    }
+
     if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '14.04') >= 0 ) {
         # Although we need NodeJS on the server, only ubuntu 14.04 currently
         # comes with it. On labs or 12.04 boxes it has to be installed by hand :(
@@ -49,12 +58,19 @@ class ocg (
         }
     }
 
+    # NOTE: If you change $nodebin you MUST also change the AppArmor profile
+    #       creation below.
+    $nodebin = '/usr/bin/nodejs-ocg'
     if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 ) {
         # On ubuntu versions greater than 12.04 node is known as nodejs
-        # This is exposed as a variable in the upstart configuration template
-        $nodebin = 'nodejs'
+        # We use the hardlink for a discrete AppArmor profile
+        hardlink { $nodebin:
+            target => '/usr/bin/nodejs',
+        }
     } else {
-        $nodebin = 'node'
+        hardlink { $nodebin:
+            target => '/usr/bin/node',
+        }
     }
 
     package {
@@ -102,6 +118,9 @@ class ocg (
 
     file { '/etc/ocg/mw-ocg-service.js':
         ensure  => present,
+        owner   => 'ocg',
+        group   => 'ocg',
+        mode    => '0440',
         content => template('ocg/mw-ocg-service.js.erb'),
         notify  => Service['ocg'],
     }
@@ -114,6 +133,16 @@ class ocg (
         content => template('ocg/ocg.upstart.conf.erb'),
         require => User['ocg'],
         notify  => Service['ocg'],
+    }
+        
+    # Change this if you change the value of $nodebin
+    file { '/etc/apparmor.d/usr.bin.nodejs-pdf'
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('ocg/usr.bin.nodejs.apparmor.erb'),
+        notify  => Service['apparmor', 'ocg'],
     }
 
     file { ['/srv/deployment','/srv/deployment/ocg']:
