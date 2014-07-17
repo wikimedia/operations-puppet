@@ -276,9 +276,10 @@ class role::mariadb::labs {
         description => 'Labs DB Slave',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    # Clashes with mysql_multi_instance. Enable after migration.
+    #class { 'mariadb::packages_wmf':
+    #    mariadb10 => true,
+    #}
 
     include standard
     include passwords::misc::scripts
