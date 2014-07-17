@@ -763,10 +763,6 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
         ensure  => stopped,
         require => Package["dnsmasq"];
     }
-    # ...or getting restarted by mistake
-    file { '/etc/init.d/dnsmasq':
-        ensure => absent,
-    }
 
     $nova_dnsmasq_aliases = {
         # eqiad
