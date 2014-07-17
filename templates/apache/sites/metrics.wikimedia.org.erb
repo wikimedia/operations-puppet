@@ -54,7 +54,7 @@ A384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SH
 ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES
 128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH
   SSLHonorCipherOrder on
-  SSLCertificateFile    /etc/ssl/certs/<%= site_name %>.pem
-  SSLCertificateChainFile /etc/ssl/certs/<%= site_name %>.chained.pem
-  SSLCertificateKeyFile /etc/ssl/private/<%= site_name %>.key
+  SSLCertificateFile    /etc/ssl/certs/<%= @site_name %>.pem
+  SSLCertificateChainFile /etc/ssl/certs/<%= @site_name %>.chained.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @site_name %>.key
 </VirtualHost>
