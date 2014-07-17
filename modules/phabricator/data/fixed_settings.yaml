@@ -6,6 +6,8 @@ auth.require-email-verification: true
 
 metamta.user-address-format: 'short'
 
+#modifies behavior of metamta.maniphest.reply-handler-domain
+#don't generate a unique reply hash per user, just per issue
 metamta.public-replies: true
 
 storage.upload-size-limit: 5M
@@ -23,7 +25,6 @@ phpmailer.smtp-port: '25'
 repository.default-local-path: '/var/repo/'
 
 phabricator.env: 'default'
-
 
 user.custom-field-definitions:
   bugzilla_email:
