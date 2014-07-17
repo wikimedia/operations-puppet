@@ -14,11 +14,7 @@ class mediawiki::web ( $workers_limit = undef, $use_sites_available = false ) {
     } else {
         $mem_available   = to_bytes($::memorytotal) * 0.7
         $mem_per_worker  = to_bytes('85M')
-        $max_req_workers = inline_template('<%= [( @mem_available / @mem_per_worker ).to_i, @apache_server_limit.to_i].min %>')
-
-        # testing min/floor
-        $max_req_workers_test = min(floor($mem_available /$mem_per_worker), $apache_Server_limit)
-        notice("${max_req_workers} == ${max_req_workers_test}")
+        $max_req_workers = min(floor($mem_available /$mem_per_worker), $apache_Server_limit)
     }
 
     file { '/etc/apache2/apache2.conf':
