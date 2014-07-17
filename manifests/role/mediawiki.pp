@@ -73,6 +73,10 @@ class role::mediawiki::jobrunner {
 
     include ::role::mediawiki::common
 
+    if $::lsbdistcodename == 'trusty' {
+        include ::mediawiki::jobrunner::hhvm
+    }
+
     class { '::mediawiki::jobrunner':
         queue_servers   => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
         statsd_server   => 'statsd.eqiad.wmnet:8125',
