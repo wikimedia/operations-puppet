@@ -5,8 +5,8 @@
 @monitor_group { 'videoscaler_eqiad':   description => 'eqiad video scaler' }
 
 class role::mediawiki::common {
-    include standard
-    include geoip
+    include ::standard
+    include ::geoip
     include ::mediawiki
     include ::nutcracker::monitoring
 
@@ -18,8 +18,8 @@ class role::mediawiki::common {
 class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
     include ::mediawiki
     include ::apache::monitoring
-    include role::mediawiki::common
-    include lvs::configuration
+    include ::role::mediawiki::common
+    include ::lvs::configuration
 
     $mw_use_sites = $::hostname == 'mw1017'
 
@@ -61,44 +61,25 @@ class role::mediawiki::imagescaler {
 class role::mediawiki::videoscaler {
     system::role { 'role::mediawiki::videoscaler': }
 
-    include role::mediawiki::common
+    include ::role::mediawiki::common
     include ::mediawiki::multimedia
 
     class { '::mediawiki::jobrunner':
         queue_servers     => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
-        runners_basic     => 0,
-        runners_gwt       => 0,
-        runners_parsoid   => 0,
         runners_transcode => 5,
-        runners_upload    => 0,
-    }
-
-    class { '::mediawiki::jobqueue':
-        run_jobs_enabled       => false,
-        dprioprocs             => 5,
-        iprioprocs             => 0,
-        procs_per_iobound_type => 0,
-        type                   => 'webVideoTranscode',
-        timeout                => 14400,
     }
 }
 
 class role::mediawiki::jobrunner {
     system::role { 'role::mediawiki::jobrunner': }
 
-    include role::mediawiki::common
+    include ::role::mediawiki::common
 
     class { '::mediawiki::jobrunner':
         queue_servers   => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
         runners_basic   => 18,
         runners_parsoid => 18,
         runners_upload  => 7,
-    }
-
-    class { '::mediawiki::jobqueue':
-        run_jobs_enabled       => false,
-        dprioprocs             => 1,
-        iprioprocs             => 1,
-        procs_per_iobound_type => 1,
+        runners_gwt     => 1,
     }
 }
