@@ -12,6 +12,12 @@ class role::beta::bastion {
     # Bring scap related scripts such as mw-update-l10n
     include ::beta::scap::master
 
+    file { '/data/project/apache':
+        ensure => directory,
+        owner  => 'mwdeploy',
+        group  => 'mwdeploy',
+        mode   => '0775',
+    }
 }
 
 # To be applied on deployment-upload.eqiad.wmflabs

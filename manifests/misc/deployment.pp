@@ -310,51 +310,18 @@ class misc::deployment::vars {
 
     if $::realm == 'production' {
         $mw_rsync_host = 'tin.eqiad.wmnet'
-
         $mw_statsd_host = 'statsd.eqiad.wmnet'
-        $mw_statsd_port = 8125
-
     } else {
-        include ::beta::config
         $mw_rsync_host = "deployment-bastion.${::site}.wmflabs"
-
         $mw_statsd_host = "deployment-graphite.${::site}.wmflabs"
-        $mw_statsd_port = 8125
-
-        # The Apache directories must belong to the mwdeploy user known on
-        # deployment-bastion.{eqiad,pmtpa}.wmflabs. They are the instances used
-        # by Jenkins to deploy and updte the code.
-        # Since /data/project is shared and 'mwdeploy' can have a different uid
-        # on each instance, running owner => mwdeploy would change the UID and
-        # break Jenkins job with some permission denied.
-        # See also bug 58325
-        if ( $::instancename == 'deployment-bastion' ) {
-            file { '/data/project/apache':
-                ensure => directory,
-                owner  => 'mwdeploy',
-                group  => 'mwdeploy',
-                mode   => '0775',
-            }
-
-            file { '/a':
-                ensure => directory,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0775',
-            }
-
-            file { $mw_common_source:
-                ensure => link,
-                target => $::beta::config::scap_stage_dir,
-            }
-        }
     }
+    $mw_statsd_port = 8125
 
     file { '/usr/local/lib/mw-deployment-vars.sh':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('misc/mw-deployment-vars.erb');
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('misc/mw-deployment-vars.erb');
     }
 }
 
