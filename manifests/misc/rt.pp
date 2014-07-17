@@ -94,12 +94,8 @@ class misc::rt(
         notify      => Service[apache2];
     }
 
-    file { "/etc/apache2/sites-enabled/${site}":
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0644',
-        content => template('rt/rt4.apache.erb'),
+    apache::site { 'rt.wikimedia.org':
+        content => template('rt/rt4.apache.erb');
     }
 
     # use this to have a NameVirtualHost *:443
