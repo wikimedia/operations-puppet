@@ -42,9 +42,10 @@
 class role::analytics::hadoop::config {
 
     # Configs common to both Production and Labs.
-    $hadoop_name_directory                    = '/var/lib/hadoop/name'
-    $hadoop_data_directory                    = '/var/lib/hadoop/data'
-    $hadoop_journal_directory                 = '/var/lib/hadoop/journal'
+    $hadoop_var_directory                     = '/var/lib/hadoop'
+    $hadoop_name_directory                    = "${hadoop_var_directory}/name"
+    $hadoop_data_directory                    = "${hadoop_var_directory}/data"
+    $hadoop_journal_directory                 = "${hadoop_var_directory}/journal"
     $dfs_block_size                           = 268435456  # 256 MB
     $io_file_buffer_size                      = 131072
     # Turn on Snappy compression by default for maps and final outputs
@@ -176,6 +177,21 @@ class role::analytics::hadoop::config {
 
         $ganglia_host = 'aggregator.eqiad.wmflabs'
         $ganglia_port = 50090
+
+        # Hadoop directories in labs should be automatically created.
+        # This conditional could be added to each of the main classes
+        # below, but since it doesn't hurt to have these directories
+        # in labs, and since I don't want to add $::realm conditionals
+        # below, I just create them here.
+        file { [
+            $hadoop_var_directory,
+            $hadoop_name_directory,
+            $hadoop_journal_directory,
+            $hadoop_data_directory,
+            $datanode_mounts,
+        ]:
+            ensure => 'directory',
+        }
     }
 }
 
