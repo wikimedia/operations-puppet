@@ -62,7 +62,7 @@ END
 -%>
 
 <VirtualHost *:80>
-<%= @common_config %>
+<%= common_config %>
     RewriteEngine On
     RewriteCond %{HTTP_HOST} stats.wikipedia.org
     RewriteRule ^(.*)$ http://stats.wikimedia.org$1 [R=301,L]
@@ -76,7 +76,7 @@ END
 </VirtualHost>
 
 <VirtualHost *:443>
-<%= @common_config %>
+<%= common_config %>
     RewriteEngine On
     RewriteCond %{HTTP_HOST} stats.wikipedia.org
     RewriteRule ^(.*)$ https://stats.wikimedia.org$1 [R=301,L]
