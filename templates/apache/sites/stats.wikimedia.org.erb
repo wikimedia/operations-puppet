@@ -4,101 +4,101 @@
 # http and https site.  DRY up the VirtualHosts with this
 # variable.
 common_config = <<END
-	ServerName stats.wikimedia.org
-	ServerAlias stats.wikipedia.org
-	ServerAdmin noc@wikimedia.org
+    ServerName stats.wikimedia.org
+    ServerAlias stats.wikipedia.org
+    ServerAdmin noc@wikimedia.org
 
-	DocumentRoot /srv/stats.wikimedia.org/htdocs
-	<Directory /srv/stats.wikimedia.org/htdocs>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-		Order allow,deny
-		allow from all
-	</Directory>
+    DocumentRoot /srv/stats.wikimedia.org/htdocs
+    <Directory /srv/stats.wikimedia.org/htdocs>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
 
-	# Allow CGI scripts for this site
-	ScriptAlias /cgi-bin/ /srv/stats.wikimedia.org/cgi-bin/
+    # Allow CGI scripts for this site
+    ScriptAlias /cgi-bin/ /srv/stats.wikimedia.org/cgi-bin/
 
-	ErrorLog /var/log/apache2/error.log
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
+    ErrorLog /var/log/apache2/error.log
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
 
-	CustomLog /var/log/apache2/access.log combined
-	ServerSignature On
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature On
 
-	Alias /extended /srv/stats.wikimedia.org/htdocs/reportcard/extended
-	Alias /staff /srv/stats.wikimedia.org/htdocs/reportcard/staff
+    Alias /extended /srv/stats.wikimedia.org/htdocs/reportcard/extended
+    Alias /staff /srv/stats.wikimedia.org/htdocs/reportcard/staff
 
-	<Directory "/srv/stats.wikimedia.org/htdocs/reportcard/staff">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-		AuthName "Password protected area"
-		AuthType Basic
-		AuthUserFile /etc/apache2/htpasswd.stats
-		Require user wmf
-	</Directory>
-	<Directory "/srv/stats.wikimedia.org/htdocs/reportcard/extended">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-		AuthName "Password protected area"
-		AuthType Basic
-		AuthUserFile /etc/apache2/htpasswd.stats
-		Require user internal
-	</Directory>
-	<Directory "/srv/stats.wikimedia.org/htdocs/reportcard/pediapress">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-		AuthName "Password protected area"
-		AuthType Basic
-		AuthUserFile /etc/apache2/htpasswd.stats
-		Require user pediapress
-	</Directory>
+    <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/staff">
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+        AuthName "Password protected area"
+        AuthType Basic
+        AuthUserFile /etc/apache2/htpasswd.stats
+        Require user wmf
+    </Directory>
+    <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/extended">
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+        AuthName "Password protected area"
+        AuthType Basic
+        AuthUserFile /etc/apache2/htpasswd.stats
+        Require user internal
+    </Directory>
+    <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/pediapress">
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+        AuthName "Password protected area"
+        AuthType Basic
+        AuthUserFile /etc/apache2/htpasswd.stats
+        Require user pediapress
+    </Directory>
 
 END
 -%>
 
 <VirtualHost *:80>
 <%= common_config %>
-	RewriteEngine On
-	RewriteCond %{HTTP_HOST} stats.wikipedia.org
-	RewriteRule ^(.*)$ http://stats.wikimedia.org$1 [R=301,L]
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} stats.wikipedia.org
+    RewriteRule ^(.*)$ http://stats.wikimedia.org$1 [R=301,L]
 
-	# Force https for geowiki's private data
-	<Directory "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_directory') %>">
-		RewriteEngine On
-		RewriteCond %{HTTPS} !on
-		RewriteRule (.*) https://%{HTTP_HOST}/%{REQUEST_URI} [redirect=301,last]
-	</Directory>
+    # Force https for geowiki's private data
+    <Directory "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_directory') %>">
+        RewriteEngine On
+        RewriteCond %{HTTPS} !on
+        RewriteRule (.*) https://%{HTTP_HOST}/%{REQUEST_URI} [redirect=301,last]
+    </Directory>
 </VirtualHost>
 
 <VirtualHost *:443>
 <%= common_config %>
-	RewriteEngine On
-	RewriteCond %{HTTP_HOST} stats.wikipedia.org
-	RewriteRule ^(.*)$ https://stats.wikimedia.org$1 [R=301,L]
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} stats.wikipedia.org
+    RewriteRule ^(.*)$ https://stats.wikimedia.org$1 [R=301,L]
 
-	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile    /etc/ssl/certs/stats.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/stats.wikimedia.org.key
-	SSLCertificateChainFile /etc/ssl/certs/stats.wikimedia.org.chained.pem
+    SSLEngine on
+    SSLProtocol +ALL -SSLv2
+    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH
+    SSLHonorCipherOrder on
+    SSLCertificateFile    /etc/ssl/certs/stats.wikimedia.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/stats.wikimedia.org.key
+    SSLCertificateChainFile /etc/ssl/certs/stats.wikimedia.org.chained.pem
 
-	# Settings for geowiki's private data
-	<Directory "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_directory') %>">
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-		AuthName "Geowiki's 'foundation only' files"
-		AuthType Basic
-		AuthUserFile "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_htpasswd_file') %>"
-		Require valid-user
-	</Directory>
+    # Settings for geowiki's private data
+    <Directory "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_directory') %>">
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+        AuthName "Geowiki's 'foundation only' files"
+        AuthType Basic
+        AuthUserFile "<%= scope.lookupvar('misc::statistics::sites::stats::geowiki_private_htpasswd_file') %>"
+        Require valid-user
+    </Directory>
 </VirtualHost>
 
 # vim: filetype=apache
