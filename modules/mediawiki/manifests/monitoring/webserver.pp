@@ -27,11 +27,20 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
     }
 
 
-    apache::site {'monitoring':
-        ensure   => present,
-        priority => '99',
-        content  => template('mediawiki/apache/monitoring.conf.erb'),
-        require  => Service['apache2'],
+    file { '/etc/apache2/sites-available/monitoring.conf':
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        content => template('mediawiki/apache/monitoring.conf.erb'),
+        require => Class['::mediawiki::packages']
+    }
+
+    # we do NOT notify apache, by design.
+    file { '/etc/apache2/sites-enabled/99-monitoring.conf':
+        ensure => $link_ensure,
+        target => '/etc/apache2/sites-available/monitoring.conf',
+        before => Service['apache2']
     }
 
     # monitor definitions
