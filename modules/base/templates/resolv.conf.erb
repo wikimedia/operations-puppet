@@ -6,8 +6,8 @@
 search <%= @domain_search %>
 options timeout:3
 <% @nameservers_prefix.each do |nameserver| -%>
-nameserver <%= @nameserver %>
+nameserver <%= nameserver %>
 <% end -%>
 <% @nameservers.each do |nameserver| -%>
-nameserver <%= @nameserver %>
+nameserver <%= nameserver %>
 <% end -%>
