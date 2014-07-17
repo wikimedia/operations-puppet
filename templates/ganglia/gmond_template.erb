@@ -11,7 +11,7 @@ globals {
   debug_level = 0
   max_udp_msg_len = 1472
   mute = no
-  deaf = <%= deaf %>
+  deaf = <%= @deaf %>
   allow_extra_data = yes
   host_dmax = 86400 /*secs */
   cleanup_threshold = 300 /*secs */
@@ -29,15 +29,15 @@ globals {
  * tag that will wrap all hosts collected by this instance.
  */
 cluster {
-  name = "<%= cname %>"
+  name = "<%= @cname %>"
   owner = "Wikimedia Foundation"
   latlong = "unspecified"
-  url = "<%= authority_url %>"
+  url = "<%= @authority_url %>"
 }
 
 /* The host section describes attributes of the host, like the location */
 host {
-  location = "<%= location %>"
+  location = "<%= @location %>"
 }
 
 /* Feel free to specify as many udp_send_channels as you like.  Gmond
@@ -46,23 +46,23 @@ host {
 <% if @realm == "labs" then %>
 <% if has_variable?("project_gid") then %>
 udp_send_channel {
-  host = <%= gmetad_host %>
-  port = <%= project_gid %>
+  host = <%= @gmetad_host %>
+  port = <%= @project_gid %>
   ttl = 3
 }
 <% end %>
 <% else %>
 udp_send_channel {
-  mcast_join = <%= mcast_address %>
+  mcast_join = <%= @mcast_address %>
   port = 8649
   ttl = 3
 }
 
 /* You can specify as many udp_recv_channels as you like as well. */
 udp_recv_channel {
-  mcast_join = <%= mcast_address %>
+  mcast_join = <%= @mcast_address %>
   port = 8649
-  bind = <%= mcast_address %>
+  bind = <%= @mcast_address %>
 <% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %>
   /* Increase the buffer size. With the default setting (224KB), Tim observed
      ~30% packet loss on a cluster with 12 hosts and ~300 metrics per host. */
