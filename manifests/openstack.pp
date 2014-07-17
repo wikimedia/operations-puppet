@@ -761,13 +761,11 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
     service { "dnsmasq":
         enable  => false,
         ensure  => stopped,
-        require => Package["dnsmasq"],
-        onlyif  => "/usr/bin/test -L /etc/init.d/dnsmasq";
+        require => Package["dnsmasq"];
     }
     # ...or getting restarted by mistake
     file { '/etc/init.d/dnsmasq':
         ensure => absent,
-        require => service["dnsmasq"];
     }
 
     $nova_dnsmasq_aliases = {
