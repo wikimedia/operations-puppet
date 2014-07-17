@@ -1,0 +1,92 @@
+# Last Modified: Wed Jul 16 23:12:50 2014
+#include <tunables/global>
+
+<%= @nodebin %> {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  <%= @nodebin %> mrix,
+
+  / r, # Why node wants to read the fs root, I have no idea...
+  /etc/ocg/mw-ocg-service.js r,
+  /srv/deployment/ocg/ocg/** r,
+  /srv/deployment/ocg/ocg/node_modules/**.node mr,
+  <%= @temp_dir %>/** rwk,
+  <%= @output_dir %>/* rw,
+  <%= @postmortem_dir %>/** rw,
+  /tmp/** rwk,  
+
+  /bin/dash ix,
+
+  /usr/bin/rsvg-convert cx -> imagetools,
+  /usr/bin/*.im6 cx -> imagetools,
+  profile imagetools {
+    #include <abstractions/base>
+    network stream, # Used for ImageMagick tools
+
+    /usr/bin/rsvg-convert rm,
+    /usr/bin/*.im6 rm, # ImageMagick binaries
+
+    /tmp/** rwk,
+    <%= @temp_dir %>/** rwk,
+
+    /etc/fonts/** r,
+    /usr/share/fonts/ r,
+    /usr/share/fonts/** r,
+    /usr/local/share/fonts/ r,
+    /usr/local/share/fonts/** r,
+    /var/cache/fontconfig/** r,
+    /usr/share/poppler/cMap/** r,
+    /usr/share/texmf/fonts/** r,
+    /usr/share/texlive/texmf-dist/fonts/** r,
+  
+    /etc/ImageMagick/** r,
+    /usr/share/ImageImagick/** r,
+    /usr/lib/x86_64-linux-gnu/ImageMagick*/** rm,
+  }
+
+  /usr/bin/{unzip,zip} cx,
+  profile /usr/bin/{unzip,zip} {
+    #include <abstractions/base>
+    /usr/bin/unzip rm,
+    /usr/bin/zip rm,
+    
+    /tmp/** rwk,
+    <%= @temp_dir %>/** rwk,
+  
+	# Useful for debugging :)
+	/srv/deployment/ocg/ocg/mw-ocg-texter/samples/* r,
+    /srv/deployment/ocg/ocg/mw-ocg-latexer/samples/* r,
+  }
+
+  /usr/bin/xetex cx,
+  profile /usr/bin/xetex {
+    #include <abstractions/base>
+    network stream,
+
+    /usr/bin/xetex rm,
+    /usr/bin/mktextfm rmix,
+    /bin/dash rmix,
+    /usr/bin/xdvipdfmx rmix,
+
+    /srv/deployment/ocg/ocg/mw-ocg-latexer/tex/** rw,
+    <%= @temp_dir %>/** rwk,
+    <%= @output_dir %>/* rw,
+    /tmp/** rwk,
+
+    /etc/texmf/** r,
+    /etc/fonts/** r,
+
+    /usr/share/texlive/** r,
+    /usr/share/texmf/** r,
+    /usr/share/fonts/ r,
+    /usr/share/fonts/** r,
+    /usr/share/poppler/cMap/** r,
+    /usr/local/share/fonts/ r,
+    /usr/local/share/fonts/** r,
+
+    /var/lib/texmf/** r,
+
+    /var/cache/fontconfig/** r,
+  }
+}
