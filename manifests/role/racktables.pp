@@ -37,14 +37,8 @@ class role::racktables {
     }
 
 
-    file {
-        "/etc/apache2/sites-enabled/${racktables_host}":
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        notify  => Service['apache2'],
-        content => template('apache/sites/racktables.wikimedia.org.erb');
+    apache::site { 'racktables.wikimedia.org':
+        content => template('apache/sites/racktables.wikimedia.org.erb'),
     }
 
     file { '/etc/apache2/conf.d/namevirtualhost':
