@@ -4,6 +4,10 @@ class mediawiki::sync {
 
     deployment::target { 'scap': }
 
+    file { '/etc/profile.d/add_scap_to_path.sh':
+        source => 'puppet:///modules/mediawiki/profile.d_add_scap_to_path.sh',
+    }
+
     file { '/usr/local/bin/mwversionsinuse':
         ensure => link,
         target => '/srv/deployment/scap/scap/bin/mwversionsinuse',
