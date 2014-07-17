@@ -6,30 +6,30 @@
 
 <VirtualHost *:80>
 
-	ServerName <%= @racktables_host %>
+    ServerName <%= @racktables_host %>
 
-	RewriteEngine on
-	RewriteRule ^/(.*)$ https://<%= @racktables_host %>/$1 [R=301]
+    RewriteEngine on
+    RewriteRule ^/(.*)$ https://<%= @racktables_host %>/$1 [R=301]
 
 </VirtualHost>
 
 <VirtualHost *:443>
 
-	ServerName <%= @racktables_host %>
+    ServerName <%= @racktables_host %>
 
-	SSLEngine on
-	SSLProtocol +ALL -SSLv2
-	SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GC
+    SSLEngine on
+    SSLProtocol +ALL -SSLv2
+    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GC
 M-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-A
 ES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-
 SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA
 :AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH
-	SSLHonorCipherOrder on
-	SSLCertificateFile <%= @racktables_ssl_cert %>
-	SSLCertificateKeyFile <%= @racktables_ssl_key %>
-	SSLCACertificatePath /etc/ssl/certs
+    SSLHonorCipherOrder on
+    SSLCertificateFile <%= @racktables_ssl_cert %>
+    SSLCertificateKeyFile <%= @racktables_ssl_key %>
+    SSLCACertificatePath /etc/ssl/certs
 
-	DocumentRoot /srv/org/wikimedia/racktables/wwwroot
+    DocumentRoot /srv/org/wikimedia/racktables/wwwroot
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
