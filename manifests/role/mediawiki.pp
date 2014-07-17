@@ -81,4 +81,12 @@ class role::mediawiki::jobrunner {
         runners_upload  => 7,
         runners_gwt     => 1,
     }
+
+    if $jobrunner_hhvm == undef {
+        $jobrunner_hhvm = false
+    }
+
+    if ($jobrunner_hhvm and versioncmp($::lsbdistrelease, '14.04') > 0) {
+        require ::mediawiki::jobrunner::hhvm
+    }
 }
