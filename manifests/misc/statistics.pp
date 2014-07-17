@@ -410,11 +410,11 @@ class misc::statistics::sites::metrics {
     }
 }
 
-# == Class misc::statistics::sites::default
-# Serves files from /var/www on this node's $fqdn.
-class misc::statistics::sites::default {
-    apache::site { 'default':
-        source => 'puppet:///files/apache/sites/stat1001.wikimedia.org',
+# == Class misc::statistics::sites::datasets
+# Serves files on this node's $fqdn.
+class misc::statistics::sites::datasets {
+    apache::site { 'datasets':
+        source => 'puppet:///files/apache/sites/datasets.wikimedia.org',
     }
 }
 
