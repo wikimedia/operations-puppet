@@ -94,11 +94,7 @@ class misc::rt(
         notify      => Service[apache2];
     }
 
-    file { "/etc/apache2/sites-enabled/${site}":
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0644',
+    apache::site { 'rt.wikimedia.org':
         content => template('rt/rt4.apache.erb'),
     }
 
