@@ -6,96 +6,96 @@
 
 <VirtualHost *:80>
 
-	ServerName <%= etherpad_host %>
+    ServerName <%= etherpad_host %>
 <% if etherpad_serveraliases -%>
-	ServerAlias <%= etherpad_serveraliases %>
+    ServerAlias <%= etherpad_serveraliases %>
 <% end -%>
 
-	RewriteEngine on
-	ProxyVia On
-	ProxyRequests Off
-	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/ retry=15
-	ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
-	ProxyPreserveHost On
-	RewriteRule /p/*$ https://etherpad.wikimedia.org/ [NC,L]
-	RewriteCond %{REQUEST_URI} !^/locales/
-	RewriteCond %{REQUEST_URI} !^/locales.json
-	RewriteCond %{REQUEST_URI} !^/admin
-	RewriteCond %{REQUEST_URI} !^/p/
-	RewriteCond %{REQUEST_URI} !^/static/
-	RewriteCond %{REQUEST_URI} !^/pluginfw/
-	RewriteCond %{REQUEST_URI} !^/javascripts/
-	RewriteCond %{REQUEST_URI} !^/socket.io/
-	RewriteCond %{REQUEST_URI} !^/ep/
-	RewriteCond %{REQUEST_URI} !^/minified/
-	RewriteCond %{REQUEST_URI} !^/api/
-	RewriteCond %{REQUEST_URI} !^/ro/
-	RewriteCond %{REQUEST_URI} !^/error/
-	RewriteCond %{REQUEST_URI} !^/jserror
-	RewriteCond %{REQUEST_URI} !/favicon.ico
-	RewriteCond %{REQUEST_URI} !/robots.txt
-	RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/p/$1 [L]
+    RewriteEngine on
+    ProxyVia On
+    ProxyRequests Off
+    ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/ retry=15
+    ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
+    ProxyPreserveHost On
+    RewriteRule /p/*$ https://etherpad.wikimedia.org/ [NC,L]
+    RewriteCond %{REQUEST_URI} !^/locales/
+    RewriteCond %{REQUEST_URI} !^/locales.json
+    RewriteCond %{REQUEST_URI} !^/admin
+    RewriteCond %{REQUEST_URI} !^/p/
+    RewriteCond %{REQUEST_URI} !^/static/
+    RewriteCond %{REQUEST_URI} !^/pluginfw/
+    RewriteCond %{REQUEST_URI} !^/javascripts/
+    RewriteCond %{REQUEST_URI} !^/socket.io/
+    RewriteCond %{REQUEST_URI} !^/ep/
+    RewriteCond %{REQUEST_URI} !^/minified/
+    RewriteCond %{REQUEST_URI} !^/api/
+    RewriteCond %{REQUEST_URI} !^/ro/
+    RewriteCond %{REQUEST_URI} !^/error/
+    RewriteCond %{REQUEST_URI} !^/jserror
+    RewriteCond %{REQUEST_URI} !/favicon.ico
+    RewriteCond %{REQUEST_URI} !/robots.txt
+    RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/p/$1 [L]
 
-	RewriteCond %{HTTP_HOST} !etherpad.wikimedia.org
-	RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/$1 [R=301,L]
+    RewriteCond %{HTTP_HOST} !etherpad.wikimedia.org
+    RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/$1 [R=301,L]
 
-	<Proxy *>
-		Options FollowSymLinks MultiViews
-		AllowOverride All
-		Order allow,deny
-		Allow from all
+    <Proxy *>
+        Options FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        Allow from all
     </Proxy>
 
 </VirtualHost>
 
 <VirtualHost *:443>
 
-	ServerName <%= etherpad_host %>
+    ServerName <%= etherpad_host %>
 <% if etherpad_serveraliases -%>
-	ServerAlias <%= etherpad_serveraliases %>
+    ServerAlias <%= etherpad_serveraliases %>
 <% end -%>
 
-	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile <%= etherpad_ssl_cert %>
-	SSLCertificateKeyFile <%= etherpad_ssl_key %>
-	SSLCACertificatePath /etc/ssl/certs
+    SSLEngine on
+    SSLProtocol -ALL +SSLv3 +TLSv1
+    SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
+    SSLHonorCipherOrder on
+    SSLCertificateFile <%= etherpad_ssl_cert %>
+    SSLCertificateKeyFile <%= etherpad_ssl_key %>
+    SSLCACertificatePath /etc/ssl/certs
 
-	RewriteEngine on
-	ProxyVia On
-	ProxyRequests Off
-	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/ retry=15
-	ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
-	ProxyPreserveHost On
-	RewriteRule /p/*$ https://etherpad.wikimedia.org/ [NC,L]
-	RewriteCond %{REQUEST_URI} !^/locales/
-	RewriteCond %{REQUEST_URI} !^/locales.json
-	RewriteCond %{REQUEST_URI} !^/admin
-	RewriteCond %{REQUEST_URI} !^/p/
-	RewriteCond %{REQUEST_URI} !^/static/
-	RewriteCond %{REQUEST_URI} !^/pluginfw/
-	RewriteCond %{REQUEST_URI} !^/javascripts/
-	RewriteCond %{REQUEST_URI} !^/socket.io/
-	RewriteCond %{REQUEST_URI} !^/ep/
-	RewriteCond %{REQUEST_URI} !^/minified/
-	RewriteCond %{REQUEST_URI} !^/api/
-	RewriteCond %{REQUEST_URI} !^/ro/
-	RewriteCond %{REQUEST_URI} !^/error/
-	RewriteCond %{REQUEST_URI} !^/jserror
-	RewriteCond %{REQUEST_URI} !/favicon.ico
-	RewriteCond %{REQUEST_URI} !/robots.txt
-	RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/p/$1 [L]
+    RewriteEngine on
+    ProxyVia On
+    ProxyRequests Off
+    ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/ retry=15
+    ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
+    ProxyPreserveHost On
+    RewriteRule /p/*$ https://etherpad.wikimedia.org/ [NC,L]
+    RewriteCond %{REQUEST_URI} !^/locales/
+    RewriteCond %{REQUEST_URI} !^/locales.json
+    RewriteCond %{REQUEST_URI} !^/admin
+    RewriteCond %{REQUEST_URI} !^/p/
+    RewriteCond %{REQUEST_URI} !^/static/
+    RewriteCond %{REQUEST_URI} !^/pluginfw/
+    RewriteCond %{REQUEST_URI} !^/javascripts/
+    RewriteCond %{REQUEST_URI} !^/socket.io/
+    RewriteCond %{REQUEST_URI} !^/ep/
+    RewriteCond %{REQUEST_URI} !^/minified/
+    RewriteCond %{REQUEST_URI} !^/api/
+    RewriteCond %{REQUEST_URI} !^/ro/
+    RewriteCond %{REQUEST_URI} !^/error/
+    RewriteCond %{REQUEST_URI} !^/jserror
+    RewriteCond %{REQUEST_URI} !/favicon.ico
+    RewriteCond %{REQUEST_URI} !/robots.txt
+    RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/p/$1 [L]
 
-	RewriteCond %{HTTP_HOST} !etherpad.wikimedia.org
-	RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/$1 [R=301,L]
+    RewriteCond %{HTTP_HOST} !etherpad.wikimedia.org
+    RewriteRule ^/+(.+)$ https://etherpad.wikimedia.org/$1 [R=301,L]
 
-	<Proxy *>
-		Options FollowSymLinks MultiViews
-		AllowOverride All
-		Order allow,deny
-		Allow from all
-	</Proxy>
+    <Proxy *>
+        Options FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Proxy>
 
 </VirtualHost>
