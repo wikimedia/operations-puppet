@@ -50,7 +50,7 @@ class mysql::server (
     }
   }
 
-  include mysql::apparmorservice
+  include apparmor
   # mysql is protected by apparmor.  Need to
   # reload apparmor if the file changes.
   file { "/etc/apparmor.d/usr.sbin.mysqld":
