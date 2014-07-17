@@ -59,12 +59,13 @@ def main():
         'bytes': headers['x-account-bytes-used'],
     }
 
-    headers, containers = connection.get_account()
-    for container in containers:
-        container_stats[container['name']] = {
-           'bytes': container['bytes'],
-           'objects': container['count'],
-        }
+    if args.show_containers:
+        headers, containers = connection.get_account(full_listing=True)
+        for container in containers:
+            container_stats[container['name']] = {
+               'bytes': container['bytes'],
+               'objects': container['count'],
+            }
 
     for key, value in account_stats.iteritems():
         prefix = '.'.join([args.prefix, key])
