@@ -93,10 +93,14 @@ class role::mediawiki::jobrunner {
         runners_parsoid => 4,
     }
 
-    class { '::mediawiki::jobqueue':
-        dprioprocs             => 12,
-        iprioprocs             => 5,
-        procs_per_iobound_type => 4,
-        run_jobs_enabled       => true,
+    if ($jobrunner_hhvm) {
+        require ::mediawiki::jobrunner::hhvm
+    } else {
+        class { '::mediawiki::jobqueue':
+            dprioprocs             => 12,
+            iprioprocs             => 5,
+            procs_per_iobound_type => 4,
+            run_jobs_enabled       => true,
+        }
     }
 }
