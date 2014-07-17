@@ -1,0 +1,11 @@
+Eval {
+     EnableZendCompat = true
+     Jit = true
+     PerfPidMap = false
+}
+
+DynamicExtensions {
+  * = fss.so
+  * = luasandbox.so
+  * = wikidiff2.so
+}
