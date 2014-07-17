@@ -1,5 +1,30 @@
 #These custom values are hardcoded here to persist across Phabriactor Mediawiki installs
 
+auth.require-approval: false
+
+auth.require-email-verification: true
+
+metamta.user-address-format: 'short'
+
+metamta.public-replies: true
+
+storage.upload-size-limit: 5M
+
+phabricator.serious-business: true
+
+phabricator.show-beta-applications: true
+
+metamta.mail-adapter: 'PhabricatorMailImplementationPHPMailerAdapter'
+
+phpmailer.mailer: 'smtp'
+
+phpmailer.smtp-port: '25'
+
+repository.default-local-path: '/var/repo/'
+
+phabricator.env: 'default'
+
+
 user.custom-field-definitions:
   bugzilla_email:
     name: bugzilla_email
@@ -27,14 +52,6 @@ maniphest.custom-field-definitions:
     caption: external identifier
     search: true
 
-storage.upload-size-limit: 5M
-
-phabricator.serious-business: true
-
-repository.default-local-path: '/var/repo/'
-
-phabricator.env: 'default'
-
 #will be overridden by production values if present
 mysql.host: 'localhost'
 mysql.pass: 'foo'
@@ -43,3 +60,4 @@ mysql.pass: 'foo'
 phabricator.uninstalled-applications:
   PhabricatorApplicationPhriction: true
   PhabricatorApplicationDiviner: true
+

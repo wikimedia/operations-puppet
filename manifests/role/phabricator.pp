@@ -21,17 +21,11 @@ class role::phabricator::legalpad {
             settings         => {
                 'darkconsole.enabled'                => true,
                 'phabricator.base-uri'               => 'https://legalpad.wikimedia.org',
-                'phabricator.show-beta-applications' => true,
                 'mysql.user'                         => $::mysql_appuser,
                 'mysql.pass'                         => $::mysql_apppass,
                 'mysql.host'                         => 'm3-master.eqiad.wmnet',
                 'storage.default-namespace'          => 'phlegal',
-                'metamta.mail-adapter'               => 'PhabricatorMailImplementationPHPMailerAdapter',
-                'phpmailer.mailer'                   => 'smtp',
-                'phpmailer.smtp-port'                => '25',
                 'phpmailer.smtp-host'                => 'polonium.wikimedia.org',
-                'auth.require-approval'              => false,
-                'auth.require-email-verification'    => true,
                 'metamta.default-address'            => 'noreply@legalpad.wikimedia.org',
                 'metamta.domain'                     => 'legalpad.wikimedia.org',
             },
@@ -46,6 +40,7 @@ class role::phabricator::legalpad {
 
 class role::phabricator::main {
 
+    $domain = 'phabricator.wikimedia.org'
     $current_tag = 'fabT440'
     if $::realm == 'production' {
 
@@ -55,17 +50,18 @@ class role::phabricator::main {
             git_tag   => $current_tag,
             lock_file => '/var/run/phab_repo_lock',
             settings  => {
-                'storage.upload-size-limit'          => '10M',
-                'darkconsole.enabled'                => false,
-                'phabricator.base-uri'               => 'http://phabricator.wikimedia.org',
-                'metamta.mail-adapter'               => 'PhabricatorMailImplementationPHPMailerAdapter',
-                'phpmailer.mailer'                   => 'smtp',
-                'phpmailer.smtp-port'                => '25',
-                'phpmailer.smtp-host'                => 'polonium.wikimedia.org',
-                'mysql.user'                         => $::mysql_appuser,
-                'mysql.pass'                         => $::mysql_apppass,
-                'mysql.host'                         => 'm3-master.eqiad.wmnet',
-                'phabricator.show-beta-applications' =>  true,
+                'storage.upload-size-limit'              => '10M',
+                'darkconsole.enabled'                    => false,
+                'phabricator.base-uri'                   => "http://${domain}",
+                'mysql.user'                             => $::mysql_appuser,
+                'mysql.pass'                             => $::mysql_apppass,
+                'mysql.host'                             => 'm3-master.eqiad.wmnet',
+                'phpmailer.smtp-host'                    => 'polonium.wikimedia.org',
+                'metamta.default-address'                => "noreply@${domain}",
+                'metamta.domain'                         => "${domain}",
+                'metamta.maniphest.reply-handler-domain' => "${domain}",
+                'metamta.maniphest.public-create-email'  => "task@${domain}",
+                'metamta.reply-handler-domain'           => "${domain}",
             },
         }
     }
@@ -114,6 +110,7 @@ class role::phabricator::labs {
             'phabricator.base-uri'               => "http://${::hostname}.wmflabs.org",
             'phabricator.show-beta-applications' => true,
             'mysql.pass'                         => $mysqlpass,
+            'auth.require-email-verification'    => false,
         },
     }
 
