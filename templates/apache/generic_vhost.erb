@@ -2,15 +2,15 @@
 
 <% if ["true", "false"].include?(ssl) -%>
 <VirtualHost *:80>
-    ServerName <%= title %>
+    ServerName <%= @title %>
 <% if aliases.length > 0 -%>
-    ServerAlias <%= aliases.join(" ") %>
+    ServerAlias <%= @aliases.join(" ") %>
 <% end -%>
-    ServerAdmin <%= server_admin %>
+    ServerAdmin <%= @server_admin %>
 
-<% if docroot -%>
-    DocumentRoot <%= docroot %>
-    <Directory <%= docroot %>>
+<% if @docroot -%>
+    DocumentRoot <%= @docroot %>
+    <Directory <%= @docroot %>>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
         Order allow,deny
@@ -19,19 +19,19 @@
 <% end -%>
 
 
-    ErrorLog <%= error_log %>
+    ErrorLog <%= @error_log %>
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog <%= access_log %> combined
+    CustomLog <%= @access_log %> combined
     ServerSignature On
 
-<% custom.each do |customconfig| -%>
+<% @custom.each do |customconfig| -%>
     <%= customconfig %>
 <% end -%>
 
-<% includes.each do |include| -%>
+<% @includes.each do |include| -%>
     Include <%= include %>
 <% end -%>
 </VirtualHost>
@@ -39,11 +39,11 @@
 
 <% if ssl == "redirected" -%>
 <VirtualHost *:80>
-    ServerName <%= title %>
+    ServerName <%= @title %>
 <% if aliases.length > 0 -%>
-    ServerAlias <%= aliases.join(" ") %>
+    ServerAlias <%= @aliases.join(" ") %>
 <% end -%>
-    ServerAdmin <%= server_admin %>
+    ServerAdmin <%= @server_admin %>
 
     Redirect permanent / https://<%= title %>/
 </VirtualHost>
@@ -51,23 +51,23 @@
 
 <% if ["true", "only", "redirected"].include?(ssl) -%>
 <VirtualHost *:443>
-    ServerName <%= title %>
+    ServerName <%= @title %>
 <% if aliases.length > 0 -%>
-    ServerAlias <%= aliases.join(" ") %>
+    ServerAlias <%= @aliases.join(" ") %>
 <% end -%>
-    ServerAdmin <%= server_admin %>
+    ServerAdmin <%= @server_admin %>
 
     SSLEngine on
     SSLProtocol +ALL -SSLv2
     SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH
     SSLHonorCipherOrder on
-    SSLCertificateFile <%= certfile %>
-    SSLCertificateKeyFile <%= certkey %>
+    SSLCertificateFile <%= @certfile %>
+    SSLCertificateKeyFile <%= @certkey %>
     SSLCACertificatePath /etc/ssl/certs
 
-<% if docroot -%>
-    DocumentRoot <%= docroot %>
-    <Directory <%= docroot %>>
+<% if @docroot -%>
+    DocumentRoot <%= @docroot %>
+    <Directory <%= @docroot %>>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
         Order allow,deny
@@ -75,19 +75,19 @@
     </Directory>
 <% end -%>
 
-    ErrorLog <%= error_log %>
+    ErrorLog <%= @error_log %>
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog <%= access_log %> combined
+    CustomLog <%= @access_log %> combined
     ServerSignature On
 
-<% custom.each do |customconfig| -%>
+<% @custom.each do |customconfig| -%>
     <%= customconfig %>
 <% end -%>
 
-<% includes.each do |include| -%>
+<% @includes.each do |include| -%>
     Include <%= include %>
 <% end -%>
 </VirtualHost>
