@@ -18,6 +18,14 @@ class role::labs::instance {
         mode   => '0755',
     }
 
+    file { '/etc/mailname':
+        ensure  => present,
+        content => "${::fqdn}\n",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
     # Directory for public (readonly) mounts
     file { '/public':
         ensure => directory,
