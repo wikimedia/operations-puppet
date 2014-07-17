@@ -1,0 +1,24 @@
+NameVirtualHost *:80
+<VirtualHost *:80>
+  ServerName datasets.wikimedia.org
+
+  DocumentRoot /srv/datasets.wikimedia.org
+
+  <Directory /srv/datasets.wikimedia.org >
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+    Order allow,deny
+    allow from all
+  </Directory>
+
+  LogLevel warn
+  ErrorLog /var/log/apache2/datasets_error.log
+  CustomLog /var/log/apache2/datasets_access.log combined
+  ServerSignature Off
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName  stat1001.wikimedia.org
+    RewriteEngine On
+    RewriteRule ^.*$ https://datasets.wikimedia.org/ [R]
+</VirtualHost>

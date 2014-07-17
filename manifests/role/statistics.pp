@@ -51,8 +51,8 @@ class role::statistics::www inherits role::statistics {
     include misc::statistics::sites::reportcard
     # default public file vhost
     # This default site get's used for example for public datasets at
-    #   http://stat1001.wikimedia.org/public-datasets/
-    include misc::statistics::sites::default
+    #   http://datasets.wikimedia.org/public-datasets/
+    include misc::statistics::sites::datasets
     # rsync public datasets from stat1003 hourly
     include misc::statistics::public_datasets
 }
