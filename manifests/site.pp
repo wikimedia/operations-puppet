@@ -695,7 +695,7 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(50|51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
+node /^db10(51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
