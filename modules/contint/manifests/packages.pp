@@ -29,13 +29,8 @@ class contint::packages {
 
     # PHP related packages
     package { [
-        'php-pear',
-        'php5-cli',
-        'php5-curl',
         'php5-dev',  # phpize
         'php5-gd',
-        'php5-intl',
-        'php5-mysql',
         'php5-parsekit',
         'php5-pgsql',
         'php5-sqlite',
@@ -44,13 +39,24 @@ class contint::packages {
         ]:
         ensure => present,
     }
+    # FIXME: This conflicted with mediawiki::packages
+    ensure_packages([
+        'php-pear',
+        'php5-cli',
+        'php5-curl',
+        'php5-mysql',
+        'php5-intl',
+    ])
 
     # luasandbox is a WMF package, we always want to use the very latest version
     # since the package is used by unit tests
-    package { [
-        'php-luasandbox',
-        ]:
-        ensure => latest,
+    if ! defined ( Package['imagemagick'] ) {
+        package { [
+            # FIXME: This conflicted with mediawiki::packages
+            'php-luasandbox',
+            ]:
+            ensure => latest,
+        }
     }
 
     # Database related
@@ -164,9 +170,10 @@ class contint::packages {
     }
 
     # Uninstalled packages
-    package { [
-        'php-apc',
-        ]: ensure => absent,
+    if ! defined ( Package['php-apc'] ) {
+        package { 'php-apc':
+            ensure => absent,
+        }
     }
 
     # Packages to support use of rspec on puppet modules:
