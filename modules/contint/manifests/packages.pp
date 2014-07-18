@@ -64,7 +64,9 @@ class contint::packages {
 
     # Development packages
     package { [
-        'imagemagick',
+        # FIXME: This conflicts with mediawiki::packages
+        # Needs to be installed manually for now.
+        # 'imagemagick',
         'librsvg2-2',
         'librsvg2-bin',
 
