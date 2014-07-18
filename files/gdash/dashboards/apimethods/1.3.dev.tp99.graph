@@ -6,4 +6,4 @@ hide_legend "false"
 from "-8hours"
 
 field :devavg, :alias => "none",
-               :data  => 'cactiStyle(highestMax(maximumAbove(MediaWiki.API.*.tp99,1),10),0)'
+               :data  => 'cactiStyle(aliasByNode(highestMax(maximumAbove(MediaWiki.API.*.tp99,1),10),2))'
