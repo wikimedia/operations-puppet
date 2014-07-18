@@ -86,7 +86,7 @@ class phabricator (
     }
 
     package {
-        ['git-core', 'php5', 'php5-mysql', 'php5-gd', 'php-apc',
+        ['git-core', 'php5', 'php5-mysql', 'php5-gd', 'php-apc', 'php5-mailparse',
          'php5-dev', 'php5-curl', 'php5-cli', 'php5-json', 'php5-ldap']:
             ensure => present;
     }
