@@ -2991,7 +2991,7 @@ host pdf3 {
 
 host platinum {
 	hardware ethernet F0:1F:AF:E8:C5:A3;
-	fixed-address platinum wikimedia.org;
+	fixed-address platinum.wikimedia.org;
 
 	option pxelinux.pathprefix "trusty-installer/";
 	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
