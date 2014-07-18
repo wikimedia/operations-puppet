@@ -40,7 +40,7 @@ Alias /icinga /usr/share/icinga/htdocs
         AuthType Basic
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-        AuthLDAPBindPassword <%= proxypass %>
+        AuthLDAPBindPassword <%= @proxypass %>
         AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
     </DirectoryMatch>
@@ -91,7 +91,7 @@ Alias /icinga /usr/share/icinga/htdocs
         AuthType Basic
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-        AuthLDAPBindPassword <%= proxypass %>
+        AuthLDAPBindPassword <%= @proxypass %>
         AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
     </DirectoryMatch>
