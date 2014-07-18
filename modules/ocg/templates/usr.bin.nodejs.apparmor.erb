@@ -20,7 +20,7 @@
   <%= @output_dir %>/*.tex rw,
   <%= @output_dir %>/*.txt rw,
   <%= @output_dir %>/*.zip rw,
-  <%= @postmortem_dir %>/** rw,
+  <%= @postmortem_dir %>/** rwk,
   /tmp/** rwk,  
 
   /bin/dash ix,
@@ -48,8 +48,12 @@
     /usr/share/texlive/texmf-dist/fonts/** r,
 
     /etc/ImageMagick/** r,
-    /usr/share/ImageImagick/** r,
+    /usr/share/ImageMagick*/** r,
     /usr/lib/x86_64-linux-gnu/ImageMagick*/** rm,
+    
+    # I think it needs this for glibc
+    /etc/passwd
+    /etc/nsswitch.conf
   }
 
   /usr/bin/{unzip,zip} cx,
