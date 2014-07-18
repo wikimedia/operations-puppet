@@ -1379,6 +1379,14 @@ host gadolinium {
 	fixed-address gadolinium.wikimedia.org;
 }
 
+host gold {
+	hardware ethernet F0:1F:AF:E8:C1:87;
+	fixed-address gold.wikimedia.org;
+
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host hafnium {
 	hardware ethernet 78:2b:cb:1f:17:48;
 	fixed-address hafnium.wikimedia.org;
@@ -2979,6 +2987,14 @@ host pdf2 {
 host pdf3 {
 	hardware ethernet 00:21:9B:A0:70:6F;
 	fixed-address pdf3.wikimedia.org;
+}
+
+host platinum {
+	hardware ethernet F0:1F:AF:E8:C5:A3;
+	fixed-address platinum wikimedia.org;
+
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host polonium {
