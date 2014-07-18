@@ -8,29 +8,27 @@ $mysql_apppass = $passwords::mysql::phabricator::app_pass
 
 class role::phabricator::legalpad {
 
+    system::role { 'role::phabricator::legalpad': description => 'Phabricator (Legalpad)' }
+
     $current_tag = 'fabT440'
-    if $::realm == 'production' {
-
-        system::role { 'role::phabricator::legalpad': description => 'Phabricator (Legalpad)' }
-
-        class { '::phabricator':
-            git_tag          => $current_tag,
-            lock_file        => '/var/run/phab_repo_lock',
-            mysql_admin_user => $::mysql_adminuser,
-            mysql_admin_pass => $::mysql_adminpass,
-            settings         => {
-                'darkconsole.enabled'                => true,
-                'phabricator.base-uri'               => 'https://legalpad.wikimedia.org',
-                'mysql.user'                         => $::mysql_appuser,
-                'mysql.pass'                         => $::mysql_apppass,
-                'mysql.host'                         => 'm3-master.eqiad.wmnet',
-                'storage.default-namespace'          => 'phlegal',
-                'phpmailer.smtp-host'                => 'polonium.wikimedia.org',
-                'metamta.default-address'            => 'noreply@legalpad.wikimedia.org',
-                'metamta.domain'                     => 'legalpad.wikimedia.org',
-            },
-        }
+    class { '::phabricator':
+        git_tag          => $current_tag,
+        lock_file        => '/var/run/phab_repo_lock',
+        mysql_admin_user => $::mysql_adminuser,
+        mysql_admin_pass => $::mysql_adminpass,
+        settings         => {
+            'darkconsole.enabled'                => true,
+            'phabricator.base-uri'               => 'https://legalpad.wikimedia.org',
+            'mysql.user'                         => $::mysql_appuser,
+            'mysql.pass'                         => $::mysql_apppass,
+            'mysql.host'                         => 'm3-master.eqiad.wmnet',
+            'storage.default-namespace'          => 'phlegal',
+            'phpmailer.smtp-host'                => 'polonium.wikimedia.org',
+            'metamta.default-address'            => 'noreply@legalpad.wikimedia.org',
+            'metamta.domain'                     => 'legalpad.wikimedia.org',
+        },
     }
+
     # no 443 needed, we are behind misc. varnish
     ferm::service { 'phablegal_http':
         proto => 'tcp',
@@ -40,43 +38,30 @@ class role::phabricator::legalpad {
 
 class role::phabricator::main {
 
-    $domain = 'phabricator.wikimedia.org'
-    $current_tag = 'fabT440'
-    if $::realm == 'production' {
-
     system::role { 'role::phabricator::main': description => 'Phabricator (Main)' }
 
-        class { '::phabricator':
-            git_tag   => $current_tag,
-            lock_file => '/var/run/phab_repo_lock',
-            settings  => {
-                'storage.upload-size-limit'              => '10M',
-                'darkconsole.enabled'                    => false,
-                'phabricator.base-uri'                   => "http://${domain}",
-                'mysql.user'                             => $::mysql_appuser,
-                'mysql.pass'                             => $::mysql_apppass,
-                'mysql.host'                             => 'm3-master.eqiad.wmnet',
-                'phpmailer.smtp-host'                    => 'polonium.wikimedia.org',
-                'metamta.default-address'                => "noreply@${domain}",
-                'metamta.domain'                         => "${domain}",
-                'metamta.maniphest.reply-handler-domain' => "${domain}",
-                'metamta.maniphest.public-create-email'  => "task@${domain}",
-                'metamta.reply-handler-domain'           => "${domain}",
-            },
-        }
+    $current_tag = 'fabT440'
+    $domain = 'phabricator.wikimedia.org'
+    class { '::phabricator':
+        git_tag   => $current_tag,
+        lock_file => '/var/run/phab_repo_lock',
+        mysql_admin_user => $::mysql_adminuser,
+        mysql_admin_pass => $::mysql_adminpass,
+        settings  => {
+            'storage.upload-size-limit'              => '10M',
+            'darkconsole.enabled'                    => false,
+            'phabricator.base-uri'                   => "http://${domain}",
+            'mysql.user'                             => $::mysql_appuser,
+            'mysql.pass'                             => $::mysql_apppass,
+            'mysql.host'                             => 'm3-master.eqiad.wmnet',
+            'phpmailer.smtp-host'                    => 'polonium.wikimedia.org',
+            'metamta.default-address'                => "noreply@${domain}",
+            'metamta.domain'                         => "${domain}",
+            'metamta.maniphest.reply-handler-domain' => "${domain}",
+            'metamta.maniphest.public-create-email'  => "task@${domain}",
+            'metamta.reply-handler-domain'           => "${domain}",
+        },
     }
-
-    class { 'exim::roled':
-        local_domains          => [ '+system_domains', '+phab_domains' ],
-        enable_mail_relay      => false,
-        enable_external_mail   => false,
-        smart_route_list       => $::mail_smarthost,
-        enable_mailman         => false,
-        phab_relay             => true,
-        enable_mail_submission => false,
-        enable_spamassassin    => false,
-    }
-
 
     ferm::service { 'phabmain_http':
         proto => 'tcp',
@@ -99,9 +84,9 @@ class role::phabricator::main {
 
 class role::phabricator::labs {
 
-    $current_tag = 'fabT440'
-    #not sensitive but has to match phab and db
+    #pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
+    $current_tag = 'fabT440'
     class { '::phabricator':
         git_tag   => $current_tag,
         lock_file => '/var/run/phab_repo_lock',
