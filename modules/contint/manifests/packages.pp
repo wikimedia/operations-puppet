@@ -64,7 +64,6 @@ class contint::packages {
 
     # Development packages
     package { [
-        'imagemagick',
         'librsvg2-2',
         'librsvg2-bin',
 
