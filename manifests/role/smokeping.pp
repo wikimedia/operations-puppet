@@ -60,9 +60,8 @@ class role::smokeping {
         group   => 'root',
     }
 
-    file { '/etc/apache2/conf.d/namevirtualhost':
+    apache::conf { 'namevirtualhost':
         source => 'puppet:///files/apache/conf.d/namevirtualhost',
-        mode   => '0444',
-        notify => Service['apache2'],
     }
+
 }
