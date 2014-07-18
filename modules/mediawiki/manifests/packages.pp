@@ -1,5 +1,7 @@
 class mediawiki::packages {
-    package { [
+
+    ensure_packages([
+        'imagemagick',
         'python-imaging',
         'libmemcached10',       # XXX still needed?
         'libmemcached11',
@@ -7,16 +9,7 @@ class mediawiki::packages {
         'php-pear',
         'php5-cli',
         'php5-common',
-    ]:
-        ensure => present,
-    }
-
-    # FIXME: This conflicted with contint::packages
-    if ! defined ( Package['imagemagick'] ) {
-        package { 'imagemagick':
-            ensure => present,
-        }
-    }
+    ])
 
     # Standard PHP extensions
     package { [
