@@ -107,7 +107,7 @@ if not enabled
 end
 
 if failcount == :failed
-    puts "CRITICAL: Complete puppet failure"
+    puts "CRITICAL: Epic puppet fail"
     exit 2
 end
 
