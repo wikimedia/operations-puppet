@@ -12,6 +12,13 @@ class mediawiki::packages {
         ensure => present,
     }
 
+    # FIXME: This conflicted with contint::packages
+    if ! defined ( Package['imagemagick'] ) {
+        package { 'imagemagick':
+            ensure => present,
+        }
+    }
+
     # Standard PHP extensions
     package { [
         'php5-curl',
