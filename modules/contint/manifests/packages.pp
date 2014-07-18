@@ -64,7 +64,6 @@ class contint::packages {
 
     # Development packages
     package { [
-        'imagemagick',
         'librsvg2-2',
         'librsvg2-bin',
 
@@ -89,6 +88,13 @@ class contint::packages {
         'ruby-jsduck',
         ]:
         ensure => present,
+    }
+
+    # FIXME: This conflicted with mediawiki::packages
+    if ! defined ( Package['imagemagick'] ) {
+        package { 'python-requests':
+            ensure => present,
+        }
     }
 
     if ! defined ( Package['python-requests'] ) {
