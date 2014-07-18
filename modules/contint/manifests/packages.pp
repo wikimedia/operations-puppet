@@ -87,13 +87,6 @@ class contint::packages {
         ensure => present,
     }
 
-    # FIXME: This conflicted with mediawiki::packages
-    if ! defined ( Package['imagemagick'] ) {
-        package { 'imagemagick':
-            ensure => present,
-        }
-    }
-
     if ! defined ( Package['python-requests'] ) {
         package { 'python-requests':
             ensure => present,
@@ -180,4 +173,9 @@ class contint::packages {
         ensure => present;
     }
 
+    package { [
+        'ocaml-nox',
+        ]:
+        ensure => present;
+    }
 }
