@@ -1265,7 +1265,7 @@ node 'hooft.esams.wikimedia.org' {
     }
 }
 
-node 'iridium.wikimedia.org' {
+node 'iridium.eqiad.wmnet' {
     class { 'base::firewall': }
     include admin
     include role::phabricator::main
