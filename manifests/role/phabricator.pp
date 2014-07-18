@@ -50,7 +50,7 @@ class role::phabricator::main {
         settings  => {
             'storage.upload-size-limit'              => '10M',
             'darkconsole.enabled'                    => false,
-            'phabricator.base-uri'                   => "http://${domain}",
+            'phabricator.base-uri'                   => "https://${domain}",
             'mysql.user'                             => $::mysql_appuser,
             'mysql.pass'                             => $::mysql_apppass,
             'mysql.host'                             => 'm3-master.eqiad.wmnet',
