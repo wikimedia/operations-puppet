@@ -6,6 +6,7 @@
 class contint::packages {
 
     include androidsdk::dependencies
+    include mediawiki::packages
 
     # Get several OpenJDK packages including the jdk to build mobile
     # applications.
@@ -29,13 +30,8 @@ class contint::packages {
 
     # PHP related packages
     package { [
-        'php-pear',
-        'php5-cli',
-        'php5-curl',
         'php5-dev',  # phpize
         'php5-gd',
-        'php5-intl',
-        'php5-mysql',
         'php5-parsekit',
         'php5-pgsql',
         'php5-sqlite',
@@ -43,14 +39,6 @@ class contint::packages {
         'php5-xdebug',
         ]:
         ensure => present,
-    }
-
-    # luasandbox is a WMF package, we always want to use the very latest version
-    # since the package is used by unit tests
-    package { [
-        'php-luasandbox',
-        ]:
-        ensure => latest,
     }
 
     # Database related
@@ -65,7 +53,6 @@ class contint::packages {
     # Development packages
     package { [
         'librsvg2-2',
-        'librsvg2-bin',
 
         'asciidoc',
         'rake',
@@ -88,13 +75,6 @@ class contint::packages {
         'ruby-jsduck',
         ]:
         ensure => present,
-    }
-
-    # FIXME: This conflicted with mediawiki::packages
-    if ! defined ( Package['imagemagick'] ) {
-        package { 'imagemagick':
-            ensure => present,
-        }
     }
 
     if ! defined ( Package['python-requests'] ) {
@@ -163,12 +143,6 @@ class contint::packages {
         ensure => present,
     }
 
-    # Uninstalled packages
-    package { [
-        'php-apc',
-        ]: ensure => absent,
-    }
-
     # Packages to support use of rspec on puppet modules:
     package { [
     # Packages imported from Debian Sid:
@@ -185,12 +159,6 @@ class contint::packages {
     # Packages built using gem2deb:
         'ruby-rspec-puppet',
         'ruby-puppetlabs-spec-helper',
-        ]:
-        ensure => present;
-    }
-
-    package { [
-        'djvulibre-bin',
         ]:
         ensure => present;
     }
