@@ -1,8 +1,8 @@
-title   "Average Search Latency -1week"
+title   "Average Search Latency -1month"
 linewidth 1
 linemode "connected"
 hide_legend "false"
-from "-1week"
+from "-1month"
 
 field :a, :color => "blue",
                :alias => "none",
