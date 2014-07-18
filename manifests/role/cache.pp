@@ -2,25 +2,53 @@
 # cache::varnish role classes
 
 # Virtual resources for the monitoring server
-@monitor_group { "cache_text_eqiad": description => "eqiad text Varnish" }
-@monitor_group { "cache_text_esams": description => "esams text Varnish" }
-@monitor_group { "cache_text_ulsfo": description => "ulsfo text Varnish" }
+@monitor_group { 'cache_text_eqiad':
+    description => 'eqiad text Varnish',
+}
+@monitor_group { 'cache_text_esams':
+    description => 'esams text Varnish',
+}
+@monitor_group { 'cache_text_ulsfo':
+    description => 'ulsfo text Varnish',
+}
 
-@monitor_group { "cache_upload_eqiad": description => "eqiad upload Varnish" }
-@monitor_group { "cache_upload_esams": description => "esams upload Varnish" }
-@monitor_group { "cache_upload_ulsfo": description => "ulsfo upload Varnish"}
+@monitor_group { 'cache_upload_eqiad':
+    description => 'eqiad upload Varnish',
+}
+@monitor_group { 'cache_upload_esams':
+    description => 'esams upload Varnish',
+}
+@monitor_group { 'cache_upload_ulsfo':
+    description => 'ulsfo upload Varnish',
+}
 
-@monitor_group { "cache_bits_eqiad": description => "eqiad bits Varnish "}
-@monitor_group { "cache_bits_esams": description => "esams bits Varnish" }
-@monitor_group { "cache_bits_ulsfo": description => "ulsfo bits Varnish" }
+@monitor_group { 'cache_bits_eqiad':
+    description => 'eqiad bits Varnish',
+}
+@monitor_group { 'cache_bits_esams':
+    description => 'esams bits Varnish',
+}
+@monitor_group { 'cache_bits_ulsfo':
+    description => 'ulsfo bits Varnish',
+}
 
-@monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
-@monitor_group { "cache_mobile_esams": description => "esams mobile Varnish" }
-@monitor_group { "cache_mobile_ulsfo": description => "ulsfo mobile Varnish" }
+@monitor_group { 'cache_mobile_eqiad':
+    description => 'eqiad mobile Varnish',
+}
+@monitor_group { 'cache_mobile_esams':
+    description => 'esams mobile Varnish',
+}
+@monitor_group { 'cache_mobile_ulsfo':
+    description => 'ulsfo mobile Varnish',
+}
 
-@monitor_group { "cache_parsoid_eqiad": description => "Parsoid caches eqiad" }
+@monitor_group { 'cache_parsoid_eqiad':
+    description => 'Parsoid caches eqiad',
+}
 
-@monitor_group { 'cache_misc_eqiad': description => 'Misc caches eqiad' }
+@monitor_group { 'cache_misc_eqiad':
+    description => 'Misc caches eqiad',
+}
 
 class role::cache {
     class configuration {
@@ -28,9 +56,9 @@ class role::cache {
 
         $active_nodes = {
             'production' => {
-                "text" => {
-                    "pmtpa" => [],
-                    "eqiad" => [
+                'text' => {
+                    'pmtpa' => [],
+                    'eqiad' => [
                         'cp1052.eqiad.wmnet',
                         'cp1053.eqiad.wmnet',
                         'cp1054.eqiad.wmnet',
@@ -40,7 +68,7 @@ class role::cache {
                         'cp1067.eqiad.wmnet',
                         'cp1068.eqiad.wmnet',
                     ],
-                    "esams" => [
+                    'esams' => [
                         'amssq31.esams.wmnet',
                         'amssq32.esams.wmnet',
                         'amssq33.esams.wmnet',
@@ -83,20 +111,32 @@ class role::cache {
                         'cp4018.ulsfo.wmnet',
                     ]
                 },
-                "api" => {
-                    "pmtpa" => [],
-                    "eqiad" => [],
-                    "esams" => [],
-                    "ulsfo" => [],
+                'api' => {
+                    'pmtpa' => [],
+                    'eqiad' => [],
+                    'esams' => [],
+                    'ulsfo' => [],
                 },
-                "bits" => {
-                    "pmtpa" => [],
-                    "eqiad" => ['cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet'],
-                    "esams" => ["cp3019.esams.wikimedia.org", "cp3020.esams.wikimedia.org", "cp3021.esams.wikimedia.org", "cp3022.esams.wikimedia.org"],
-                    "ulsfo" => ["cp4001.ulsfo.wmnet", "cp4002.ulsfo.wmnet", "cp4003.ulsfo.wmnet", "cp4004.ulsfo.wmnet"],
+                'bits' => {
+                    'pmtpa' => [],
+                    'eqiad' => ['cp1056.eqiad.wmnet',
+                                'cp1057.eqiad.wmnet',
+                                'cp1069.eqiad.wmnet',
+                                'cp1070.eqiad.wmnet',
+                    ],
+                    'esams' => ['cp3019.esams.wikimedia.org',
+                                'cp3020.esams.wikimedia.org',
+                                'cp3021.esams.wikimedia.org',
+                                'cp3022.esams.wikimedia.org',
+                    ],
+                    'ulsfo' => ['cp4001.ulsfo.wmnet',
+                                'cp4002.ulsfo.wmnet',
+                                'cp4003.ulsfo.wmnet',
+                                'cp4004.ulsfo.wmnet',
+                    ],
                 },
-                "upload" => {
-                    "pmtpa" => [],
+                'upload' => {
+                    'pmtpa' => [],
                     'eqiad' => [
                         'cp1048.eqiad.wmnet',
                         'cp1049.eqiad.wmnet',
@@ -107,7 +147,7 @@ class role::cache {
                         'cp1063.eqiad.wmnet',
                         'cp1064.eqiad.wmnet',
                     ],
-                    "esams" => [
+                    'esams' => [
                         'cp3003.esams.wikimedia.org',
                         'cp3004.esams.wikimedia.org',
                         'cp3005.esams.wikimedia.org',
@@ -130,23 +170,35 @@ class role::cache {
                         'cp4015.ulsfo.wmnet',
                     ],
                 },
-                "mobile" => {
-                    "pmtpa" => [],
-                    'eqiad' => ['cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet'],
-                    "esams" => ['cp3011.esams.wikimedia.org', 'cp3012.esams.wikimedia.org', 'cp3013.esams.wmnet', 'cp3014.esams.wmnet'],
-                    "ulsfo" => ['cp4011.ulsfo.wmnet', 'cp4012.ulsfo.wmnet', 'cp4019.ulsfo.wmnet', 'cp4020.ulsfo.wmnet']
+                'mobile' => {
+                    'pmtpa' => [],
+                    'eqiad' => ['cp1046.eqiad.wmnet',
+                                'cp1047.eqiad.wmnet',
+                                'cp1059.eqiad.wmnet',
+                                'cp1060.eqiad.wmnet',
+                    ],
+                    'esams' => ['cp3011.esams.wikimedia.org',
+                                'cp3012.esams.wikimedia.org',
+                                'cp3013.esams.wmnet',
+                                'cp3014.esams.wmnet',
+                    ],
+                    'ulsfo' => ['cp4011.ulsfo.wmnet',
+                                'cp4012.ulsfo.wmnet',
+                                'cp4019.ulsfo.wmnet',
+                                'cp4020.ulsfo.wmnet',
+                    ]
                 },
-                "parsoid" => {
-                    "pmtpa" => [],
-                    "eqiad" => ['cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet'],
-                    "esams" => [],
-                    "ulsfo" => []
+                'parsoid' => {
+                    'pmtpa' => [],
+                    'eqiad' => ['cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet'],
+                    'esams' => [],
+                    'ulsfo' => []
                 },
                 'misc' => {
-                    "pmtpa" => [],
+                    'pmtpa' => [],
                     'eqiad' => ['cp1043.wikimedia.org', 'cp1044.wikimedia.org'],
-                    "esams" => [],
-                    "ulsfo" => [],
+                    'esams' => [],
+                    'ulsfo' => [],
                 }
             },
             'labs' => {
@@ -178,8 +230,8 @@ class role::cache {
         }
 
         $decommissioned_nodes = {
-            "text" => {
-                "pmtpa" => [
+            'text' => {
+                'pmtpa' => [
                     'sq16.wikimedia.org',
                     'sq17.wikimedia.org',
                     'sq18.wikimedia.org',
@@ -197,8 +249,8 @@ class role::cache {
                     'sq30.wikimedia.org',
 
                     'sq31.wikimedia.org',
-                    "sq32.wikimedia.org",
-                    "sq35.wikimedia.org",
+                    'sq32.wikimedia.org',
+                    'sq35.wikimedia.org',
                     'sq38.wikimedia.org',
                     'sq40.wikimedia.org',
                     'sq37.wikimedia.org',
@@ -218,12 +270,11 @@ class role::cache {
                     'sq76.wikimedia.org',
                     'sq77.wikimedia.org',
                     'sq78.wikimedia.org',
+                ],
+                'eqiad' => [
 
                 ],
-                "eqiad" => [
-
-                ],
-                "esams" => [
+                'esams' => [
                     'knsq1.knams.wikimedia.org',
                     'knsq2.knams.wikimedia.org',
                     'knsq3.knams.wikimedia.org',
@@ -241,26 +292,26 @@ class role::cache {
                     'knsq30.knams.wikimedia.org',
                 ]
             },
-            "api" => {
-                "pmtpa" => [],
-                "eqiad" => [],
-                "esams" => [],
+            'api' => {
+                'pmtpa' => [],
+                'eqiad' => [],
+                'esams' => [],
             },
-            "bits" => {
-                "pmtpa" => [],
-                "eqiad" => [],
-                "esams" => [
-                    "knsq1.esams.wikimedia.org",
-                    "knsq2.esams.wikimedia.org",
-                    "knsq4.esams.wikimedia.org",
-                    "knsq5.esams.wikimedia.org",
-                    "knsq6.esams.wikimedia.org",
-                    "knsq7.esams.wikimedia.org"
+            'bits' => {
+                'pmtpa' => [],
+                'eqiad' => [],
+                'esams' => [
+                    'knsq1.esams.wikimedia.org',
+                    'knsq2.esams.wikimedia.org',
+                    'knsq4.esams.wikimedia.org',
+                    'knsq5.esams.wikimedia.org',
+                    'knsq6.esams.wikimedia.org',
+                    'knsq7.esams.wikimedia.org',
                 ],
                 'ulsfo' => [],
             },
-            "upload" => {
-                "pmtpa" => [
+            'upload' => {
+                'pmtpa' => [
                     'sq1.wikimedia.org',
                     'sq2.wikimedia.org',
                     'sq3.wikimedia.org',
@@ -299,7 +350,7 @@ class role::cache {
                     'sq85.wikimedia.org',
                     'sq86.wikimedia.org',
                 ],
-                "eqiad" => [
+                'eqiad' => [
                     'cp1021.eqiad.wmnet',
                     'cp1022.eqiad.wmnet',
                     'cp1023.eqiad.wmnet',
@@ -317,7 +368,7 @@ class role::cache {
                     'cp1035.eqiad.wmnet',
                     'cp1036.eqiad.wmnet',
                 ],
-                "esams" => [
+                'esams' => [
                     'knsq8.knams.wikimedia.org',
                     'knsq9.knams.wikimedia.org',
                     'knsq10.knams.wikimedia.org',
@@ -329,31 +380,31 @@ class role::cache {
                 ],
                 'ulsfo' => [],
             },
-            "mobile" => {
-                "pmtpa" => [],
-                "eqiad" => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet'],
-                "esams" => [],
-                "ulsfo" => [],
+            'mobile' => {
+                'pmtpa' => [],
+                'eqiad' => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet'],
+                'esams' => [],
+                'ulsfo' => [],
             },
-            "parsoid" => {
-                "pmtpa" => [],
-                "eqiad" => [],
-                "esams" => [],
-                "ulsfo" => [],
+            'parsoid' => {
+                'pmtpa' => [],
+                'eqiad' => [],
+                'esams' => [],
+                'ulsfo' => [],
             },
-            "misc" => {
-                "pmtpa" => [],
-                "eqiad" => [],
-                "esams" => [],
-                "ulsfo" => [],
+            'misc' => {
+                'pmtpa' => [],
+                'eqiad' => [],
+                'esams' => [],
+                'ulsfo' => [],
             }
         }
 
         $backends = {
             'production' => {
                 'appservers' => $lvs::configuration::lvs_service_ips['production']['apaches'],
-                'api' => $lvs::configuration::lvs_service_ips['production']['api'],
-                'rendering' => $lvs::configuration::lvs_service_ips['production']['rendering'],
+                'api'        => $lvs::configuration::lvs_service_ips['production']['api'],
+                'rendering'  => $lvs::configuration::lvs_service_ips['production']['rendering'],
                 'bits' => {
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['bits']['eqiad']['bitslb']]),
                 },
@@ -362,8 +413,8 @@ class role::cache {
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['apaches']['eqiad']]),
                 },
                 'test_appservers' => {
-                    'pmtpa' => [ "mw1017.eqiad.wmnet" ],
-                    'eqiad' => [ "mw1017.eqiad.wmnet" ],
+                    'pmtpa' => [ 'mw1017.eqiad.wmnet' ],
+                    'eqiad' => [ 'mw1017.eqiad.wmnet' ],
                 },
                 'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid']
             },
@@ -411,15 +462,16 @@ class role::cache {
     class varnish::logging {
         if $::realm == 'production' {
             $cliargs = '-m RxRequest:^(?!PURGE$) -D'
-            varnish::logging {
-                'multicast_relay':
+            varnish::logging { 'multicast_relay':
                     listener_address => '208.80.154.73',
-                    port => '8419',
-                    cli_args => $cliargs;
-                'erbium':
+                    port             => '8419',
+                    cli_args         => $cliargs,
+            }
+
+            varnish::logging { 'erbium':
                     listener_address => '10.64.32.135',
                     port             => '8419',
-                    cli_args         => $cliargs;
+                    cli_args         => $cliargs,
             }
         }
     }
@@ -500,70 +552,78 @@ class role::cache {
 
         # Assumes that LVS service IPs are setup elsewhere
 
-	# For unified or star certs we need to do a bit of
-	# mapping; in other cases we should be OK with the raw name
+    # For unified or star certs we need to do a bit of
+    # mapping; in other cases we should be OK with the raw name
         if $certname == 'unified.wikimedia.org' {
-		$check_cert = '*.wikipedia.org'
-	} elsif $cername == 'star.wikimedia.org' {
-		$check_cert = '*.wikimedia.org'
-	} elsif $cername == 'star.wikipedia.org' {
-		$check_cert = '*.wikipedia.org'
-	} else {
-		$check_cert = $certname
-	}
+        $check_cert = '*.wikipedia.org'
+    } elsif $cername == 'star.wikimedia.org' {
+        $check_cert = '*.wikimedia.org'
+    } elsif $cername == 'star.wikipedia.org' {
+        $check_cert = '*.wikipedia.org'
+    } else {
+        $check_cert = $certname
+    }
 
         # Nagios monitoring
-        monitor_service { "https":
-            description => "HTTPS",
+        monitor_service { 'https':
+            description   => 'HTTPS',
             check_command => "check_ssl_cert!${check_cert}",
         }
 
         install_certificate { $certname:
-            before => Protoproxy::Localssl[$sitename]
+            before => Protoproxy::Localssl[$sitename],
         }
 
         protoproxy::localssl { $sitename:
             proxy_server_cert_name => $certname,
-            upstream_port => '80',
-            enabled => true
+            upstream_port          => '80',
+            enabled                => true,
         }
     }
 
     class ssl::wikimedia {
-        class{ '::role::cache::ssl': sitename => 'wikimedia', certname => 'star.wikimedia.org' }
+        class { '::role::cache::ssl':
+            sitename => 'wikimedia',
+            certname => 'star.wikimedia.org',
+        }
     }
 
     class ssl::unified {
-        class{ '::role::cache::ssl': sitename => 'unified', certname => 'unified.wikimedia.org' }
+        class { '::role::cache::ssl':
+            sitename => 'unified',
+            certname => 'unified.wikimedia.org',
+        }
     }
 
     # Ancestor class for all Varnish clusters
     class varnish::base {
-        include lvs::configuration, role::cache::configuration, network::constants
+        include lvs::configuration
+        include role::cache::configuration
+        include network::constants
 
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
         $storage_size_main = $::realm ? { 'labs' => 5, default => 100 }
-        if $::site in ["pmtpa", "eqiad"] {
+        if $::site in ['pmtpa', 'eqiad'] {
             $cluster_tier = 1
-            $default_backend = "backend"
+            $default_backend = 'backend'
         } else {
             $cluster_tier = 2
             $default_backend = $::mw_primary
         }
-        $wikimedia_networks = flatten([$network::constants::all_networks, "127.0.0.0/8", "::1/128"])
+        $wikimedia_networks = flatten([$network::constants::all_networks, '127.0.0.0/8', '::1/128'])
 
         $storage_partitions = $::realm ? {
-            'production' => ["sda3", "sdb3"],
-            'labs' => ["vdb"],
+            'production' => ['sda3', 'sdb3'],
+            'labs'       => ['vdb'],
         }
 
         # This seems to prevent long term memory fragmentation issues that
         #  result in XFS deadlock log spam + bad problems for varnish health
-        cron { varnish_vm_compact_cron:
-            command => "echo 1 >/proc/sys/vm/compact_memory",
-            user => root,
-            minute => "*";
+        cron { 'varnish_vm_compact_cron':
+            command => 'echo 1 >/proc/sys/vm/compact_memory',
+            user    => 'root',
+            minute  => '*',
         }
 
         #class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
@@ -585,7 +645,7 @@ class role::cache {
         $backend_weight = 10
 
         # Ganglia monitoring
-        class { "varnish::monitoring::ganglia": }
+        class { 'varnish::monitoring::ganglia': }
     }
 
     # Ancestor class for common resources of 2-layer clusters
@@ -604,27 +664,33 @@ class role::cache {
         }
 
         # Ganglia monitoring
-        class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
+        class { 'varnish::monitoring::ganglia':
+            varnish_instances => [ '', 'frontend' ],
+        }
     }
 
     class text inherits role::cache::varnish::2layer {
 
-        system::role { "role::cache::text": description => "text Varnish cache server" }
+        system::role { 'role::cache::text':
+            description => 'text Varnish cache server',
+        }
 
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
 
-        class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
+        class { 'lvs::realserver':
+            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
+        }
 
         $varnish_be_directors = {
             1 => {
-                "backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-                "api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-                "rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-                "test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+                'backend'       => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+                'api'           => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+                'rendering'     => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+                'test_wikipedia'=> $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
             },
             2 => {
-                "eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
+                'eqiad' => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
             },
         }
 
@@ -632,101 +698,111 @@ class role::cache {
             $storage_size_main = 300
         }
 
-        include standard,
-            nrpe
+        include standard
+        include nrpe
 
         #class { "varnish::packages": version => "3.0.3plus~rc1-wm13" }
 
         varnish::setup_filesystem{ $storage_partitions:
-            before => Varnish::Instance["text-backend"]
+            before => Varnish::Instance['text-backend']
         }
 
-        class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
+        class { 'varnish::htcppurger':
+            varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
+        }
 
         include varnish::monitoring::ganglia::vhtcpd
 
-        varnish::instance { "text-backend":
-            name => "",
-            vcl => "text-backend",
-            extra_vcl => ["text-common"],
-            port => 3128,
-            admin_port => 6083,
-            runtime_parameters => $::site ? {
-                #'esams' => ['prefer_ipv6=on', 'default_ttl=2592000'],
-                default => ['default_ttl=2592000'],
+        $runtime_params = $::site ? {
+            #'esams' => ['prefer_ipv6=on','default_ttl=2592000'],
+            default => ['default_ttl=2592000'],
+        }
+
+        $storage_conf = $::realm ? {
+            'production' => $::hostname ? {
+                /^cp10[5-9][0-9]$/          => '-s main1=persistent,/srv/sda3/varnish.main1,100G -s main1b=persistent,/srv/sda3/varnish.main1b,200G -s main2=persistent,/srv/sdb3/varnish.main2,100G -s main2b=persistent,/srv/sdb3/varnish.main2b,200G',
+                /^amssq(3[1-9]|4[0-6])$/    => '-s main1=persistent,/srv/sda3/varnish.main1,100G -s main2=persistent,/srv/sdb3/varnish.main2,100G', # both are SSD
+                /^amssq(4[7-9]|[56][0-9])$/ => '-s main2=persistent,/srv/sdb3/varnish.main2,100G', # sda is an HDD, sdb is an SSD
+                default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
             },
-            storage => $::realm ? {
-                'production' => $::hostname ? {
-                    /^cp10[5-9][0-9]$/ => '-s main1=persistent,/srv/sda3/varnish.main1,100G -s main1b=persistent,/srv/sda3/varnish.main1b,200G -s main2=persistent,/srv/sdb3/varnish.main2,100G -s main2b=persistent,/srv/sdb3/varnish.main2b,200G',
-                    /^amssq(3[1-9]|4[0-6])$/ => "-s main1=persistent,/srv/sda3/varnish.main1,100G -s main2=persistent,/srv/sdb3/varnish.main2,100G", # both are SSD
-                    /^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,100G", # sda is an HDD, sdb is an SSD
-                    default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
-                },
-                'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
-            },
-            directors => $varnish_be_directors[$cluster_tier],
-            director_type => $cluster_tier ? {
-                1 => 'random',
-                default => 'chash',
-            },
-            vcl_config => {
-                'default_backend' => $default_backend,
-                'retry503' => 1,
-                'retry5xx' => 0,
-                'cache4xx' => "1m",
+            'labs'  => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
+        }
+
+        $director_type_cluster = $cluster_tier ? {
+            1       => 'random',
+            default => 'chash',
+        }
+
+        varnish::instance { 'text-backend':
+            name               => '',
+            vcl                => 'text-backend',
+            extra_vcl          => ['text-common'],
+            port               => 3128,
+            admin_port         => 6083,
+            runtime_parameters => $runtime_params,
+            storage            => $storage_conf,
+            directors          => $varnish_be_directors[$cluster_tier],
+            director_type      => $director_type_cluster,
+            vcl_config         => {
+                'default_backend'  => $default_backend,
+                'retry503'         => 1,
+                'retry5xx'         => 0,
+                'cache4xx'         => '1m',
                 'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
-                'cluster_tier' => $cluster_tier,
-                'layer' => 'backend',
-                'ssl_proxies' => $wikimedia_networks,
+                'cluster_tier'     => $cluster_tier,
+                'layer'            => 'backend',
+                'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options    => [
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
-                    'port' => 3128,
-                    'probe' => "varnish",
+                    'port'          => 3128,
+                    'probe'         => 'varnish',
                 },
                 {
-                    'backend_match' => '^mw1017\.eqiad\.wmnet$',
+                    'backend_match'   => '^mw1017\.eqiad\.wmnet$',
                     'max_connections' => 20,
                 },
                 {
-                    'port' => 80,
-                    'connect_timeout' => "5s",
-                    'first_byte_timeout' => "180s",
-                    'between_bytes_timeout' => "4s",
-                    'max_connections' => 1000,
-                    'weight' => $backend_weight,
+                    'port'                  => 80,
+                    'connect_timeout'       => '5s',
+                    'first_byte_timeout'    => '180s',
+                    'between_bytes_timeout' => '4s',
+                    'max_connections'       => 1000,
+                    'weight'                => $backend_weight,
                 }],
             wikimedia_networks => $wikimedia_networks,
         }
 
-        varnish::instance { "text-frontend":
-            name => "frontend",
-            vcl => "text-frontend",
-            extra_vcl => ["text-common"],
-            port => 80,
-            admin_port => 6082,
-            storage => "-s malloc,${memory_storage_size}G",
-            directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
-            director_type => "chash",
-            vcl_config => {
-                'retry503' => 1,
-                'retry5xx' => 0,
-                'cache4xx' => "1m",
+        varnish::instance { 'text-frontend':
+            name            => 'frontend',
+            vcl             => 'text-frontend',
+            extra_vcl       => ['text-common'],
+            port            => 80,
+            admin_port      => 6082,
+            storage         => "-s malloc,${memory_storage_size}G",
+            directors       => {
+                'backend' => $role::cache::configuration::active_nodes[$::realm]['text'][$::site],
+            },
+            director_type   => 'chash',
+            vcl_config      => {
+                'retry503'         => 1,
+                'retry5xx'         => 0,
+                'cache4xx'         => '1m',
                 'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
-                'cluster_tier' => $cluster_tier,
-                'layer' => 'frontend',
-                'ssl_proxies' => $wikimedia_networks,
+                'cluster_tier'     => $cluster_tier,
+                'layer'            => 'frontend',
+                'ssl_proxies'      => $wikimedia_networks,
             },
             backend_options => [
                 {
-                    'port' => 3128,
-                    'connect_timeout' => "5s",
-                    'first_byte_timeout' => "185s",
-                    'between_bytes_timeout' => "2s",
-                    'max_connections' => 100000,
-                    'probe' => "varnish",
-                    'weight' => $backend_weight,
+                    'port'                  => 3128,
+                    'connect_timeout'       => '5s',
+                    'first_byte_timeout'    => '185s',
+                    'between_bytes_timeout' => '2s',
+                    'max_connections'       => 100000,
+                    'probe'                 => 'varnish',
+                    'weight'                => $backend_weight,
                 }],
             cluster_options => {
                 'enable_geoiplookup' => true,
@@ -736,7 +812,7 @@ class role::cache {
         include role::cache::varnish::logging
 
         # HTCP packet loss monitoring on the ganglia aggregators
-        if $ganglia_aggregator and $::site != "esams" {
+        if $ganglia_aggregator and $::site != 'esams' {
             include misc::monitoring::htcp-loss
         }
 
@@ -749,21 +825,28 @@ class role::cache {
 
     class upload inherits role::cache::varnish::2layer {
 
-        system::role { "role::cache::upload": description => "upload Varnish cache server" }
+        system::role { 'role::cache::upload':
+            description => 'upload Varnish cache server',
+        }
 
-        class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
+        class { 'lvs::realserver':
+            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site],
+        }
 
         $varnish_be_directors = {
             1 => {
-                "backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift'][$::mw_primary],
-                "rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+                'backend'   => $lvs::configuration::lvs_service_ips[$::realm]['swift'][$::mw_primary],
+                'rendering' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
             },
             2 => {
-                "eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
+                'eqiad' => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
             }
         }
 
-        $default_backend = $cluster_tier ? { 1 => 'backend', default => 'eqiad' }
+        $default_backend = $cluster_tier ? {
+            1       => 'backend',
+            default => 'eqiad',
+        }
 
 
         if $::hostname =~ /^cp301[5-8]$/ {
@@ -782,18 +865,20 @@ class role::cache {
             $director_retries = $backend_weight * 4
         }
 
-        include standard,
-            nrpe
+        include standard
+        include nrpe
 
         $storage_partitions = $::realm ? {
             'production' => ['sda3', 'sdb3'],
             'labs' => ['vdb']
         }
         varnish::setup_filesystem{ $storage_partitions:
-            before => Varnish::Instance["upload-backend"]
+            before => Varnish::Instance['upload-backend'],
         }
 
-        class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
+        class { 'varnish::htcppurger':
+            varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
+        }
 
         include varnish::monitoring::ganglia::vhtcpd
 
@@ -812,79 +897,87 @@ class role::cache {
             }
         }
 
-        varnish::instance { "upload-backend":
-            name => "",
-            vcl => "upload-backend",
-            port => 3128,
-            admin_port => 6083,
-            runtime_parameters => $::site ? {
-                # 'esams' => ['prefer_ipv6=on', 'default_ttl=2592000'],
-                default => ['default_ttl=2592000'],
-            },
-            storage => $::realm ? {
-                production => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
-                labs => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
-            },
-            directors => $varnish_be_directors[$cluster_tier],
-            director_type => $cluster_tier ? {
-                1 => 'random',
-                default => 'chash',
-            },
-            director_options => {
+        $runtime_params = $::site ? {
+            #'esams' => ['prefer_ipv6=on','default_ttl=2592000'],
+            default  => ['default_ttl=2592000'],
+        }
+
+        $storage_conf =  $::realm ? {
+            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
+            'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
+        }
+
+        $director_type_cluster = $cluster_tier ? {
+            1       => 'random',
+            default => 'chash',
+        }
+
+        varnish::instance { 'upload-backend':
+            name               => '',
+            vcl                => 'upload-backend',
+            port               => 3128,
+            admin_port         => 6083,
+            runtime_parameters => $runtime_params,
+            storage            => $storage_conf,
+            directors          => $varnish_be_directors[$cluster_tier],
+            director_type      => $director_type_cluster,
+            director_options   => {
                 'retries' => $director_retries,
             },
-            vcl_config => {
-                'default_backend' => $default_backend,
-                'retry5xx' => 0,
-                'cache4xx' => "1m",
+            vcl_config         => {
+                'default_backend'  => $default_backend,
+                'retry5xx'         => 0,
+                'cache4xx'         => '1m',
                 'purge_host_regex' => '^upload\.wikimedia\.org$',
-                'cluster_tier' => $cluster_tier,
-                'layer' => 'backend',
-                'ssl_proxies' => $wikimedia_networks,
+                'cluster_tier'     => $cluster_tier,
+                'layer'            => 'backend',
+                'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options    => [
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad.wmnet$',
-                    'port' => 3128,
-                    'probe' => "varnish",
+                    'port'          => 3128,
+                    'probe'         => 'varnish',
                 },
                 {
-                    'port' => 80,
-                    'connect_timeout' => "5s",
-                    'first_byte_timeout' => "35s",
-                    'between_bytes_timeout' => "4s",
-                    'max_connections' => 1000,
-                    'weight' => $backend_weight,
+                    'port'                  => 80,
+                    'connect_timeout'       => '5s',
+                    'first_byte_timeout'    => '35s',
+                    'between_bytes_timeout' => '4s',
+                    'max_connections'       => 1000,
+                    'weight'                => $backend_weight,
                 }],
-            cluster_options => $cluster_options,
+            cluster_options    => $cluster_options,
             wikimedia_networks => $wikimedia_networks,
         }
 
-        varnish::instance { "upload-frontend":
-            name => "frontend",
-            vcl => "upload-frontend",
-            port => 80,
-            admin_port => 6082,
-            storage => "-s malloc,${memory_storage_size}G",
-            directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
-            director_type => "chash",
-            vcl_config => {
-                'retry5xx' => 0,
-                'cache4xx' => "1m",
+        varnish::instance { 'upload-frontend':
+            name            => 'frontend',
+            vcl             => 'upload-frontend',
+            port            => 80,
+            admin_port      => 6082,
+            storage         => "-s malloc,${memory_storage_size}G",
+            directors       => {
+                'backend' => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site],
+            },
+            director_type   => 'chash',
+            vcl_config      => {
+                'retry5xx'         => 0,
+                'cache4xx'         => '1m',
                 'purge_host_regex' => '^upload\.wikimedia\.org$',
-                'cluster_tier' => $cluster_tier,
-                'layer' => 'frontend',
-                'ssl_proxies' => $wikimedia_networks,
+                'cluster_tier'     => $cluster_tier,
+                'layer'            => 'frontend',
+                'ssl_proxies'      => $wikimedia_networks,
             },
             backend_options => [
                 {
-                    'port' => 3128,
-                    'connect_timeout' => "5s",
-                    'first_byte_timeout' => "35s",
-                    'between_bytes_timeout' => "2s",
-                    'max_connections' => 100000,
-                    'probe' => "varnish",
-                    'weight' => $backend_weight,
+                    'port'                  => 3128,
+                    'connect_timeout'       => '5s',
+                    'first_byte_timeout'    => '35s',
+                    'between_bytes_timeout' => '2s',
+                    'max_connections'       => 100000,
+                    'probe'                 => 'varnish',
+                    'weight'                => $backend_weight,
                 }],
             cluster_options => $cluster_options,
         }
@@ -892,7 +985,7 @@ class role::cache {
         include role::cache::varnish::logging
 
         # HTCP packet loss monitoring on the ganglia aggregators
-        if $ganglia_aggregator and $::site != "esams" {
+        if $ganglia_aggregator and $::site != 'esams' {
             include misc::monitoring::htcp-loss
         }
 
@@ -905,29 +998,34 @@ class role::cache {
 
     class bits inherits role::cache::varnish::1layer {
 
-        class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
+        class { 'lvs::realserver':
+            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site],
+        }
 
         $common_cluster_options = {
-            'test_hostname' => "test.wikipedia.org",
+            'test_hostname'      => 'test.wikipedia.org',
             'enable_geoiplookup' => true,
         }
 
-        $default_backend = "backend"
+        $default_backend = 'backend'
         $varnish_directors = {
             1 => {
-                "backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-                "test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+                'backend' => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+                'test_wikipedia' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
             },
             2 => {
-                "backend" => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits'])))
+                'backend' => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits'])))
             }
         }
 
-        $probe = $cluster_tier ? { 1 => "bits", default => "varnish" }
+        $probe = $cluster_tier ? {
+            1       => 'bits',
+            default => 'varnish',
+        }
         case $::realm {
             'labs': {
                 $realm_cluster_options = {
-                    'top_domain' => 'beta.wmflabs.org',
+                    'top_domain'  => 'beta.wmflabs.org',
                     'bits_domain' => 'bits.beta.wmflabs.org',
                 }
             }
@@ -943,38 +1041,40 @@ class role::cache {
             $memory_storage_size = 2
         }
 
-        system::role { "role::cache::bits": description => "bits Varnish cache server" }
+        system::role { 'role::cache::bits':
+            description => 'bits Varnish cache server',
+        }
 
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
 
-        include standard,
-            nrpe
+        include standard
+        include nrpe
 
-        varnish::instance { "bits":
-            name => "",
-            vcl => "bits",
-            port => 80,
-            admin_port => 6082,
-            storage => "-s malloc,${memory_storage_size}G",
-            directors => $varnish_directors[$cluster_tier],
-            director_type => "random",
-            vcl_config => {
+        varnish::instance { 'bits':
+            name            => '',
+            vcl             => 'bits',
+            port            => 80,
+            admin_port      => 6082,
+            storage         => "-s malloc,${memory_storage_size}G",
+            directors       => $varnish_directors[$cluster_tier],
+            director_type   => 'random',
+            vcl_config      => {
                 'default_backend' => $default_backend,
-                'retry503' => 4,
-                'retry5xx' => 1,
-                'cache4xx' => "1m",
-                'cluster_tier' => $cluster_tier,
-                'layer' => 'frontend',
-                'ssl_proxies' => $wikimedia_networks,
+                'retry503'        => 4,
+                'retry5xx'        => 1,
+                'cache4xx'        => '1m',
+                'cluster_tier'    => $cluster_tier,
+                'layer'           => 'frontend',
+                'ssl_proxies'     => $wikimedia_networks,
             },
             backend_options => {
-                'port' => 80,
-                'connect_timeout' => "5s",
-                'first_byte_timeout' => "35s",
-                'between_bytes_timeout' => "4s",
-                'max_connections' => 10000,
-                'probe' => $probe,
+                'port'                  => 80,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '35s',
+                'between_bytes_timeout' => '4s',
+                'max_connections'       => 10000,
+                'probe'                 => $probe,
             },
             cluster_options => $cluster_options,
         }
@@ -984,35 +1084,42 @@ class role::cache {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
         class { 'role::cache::varnish::kafka':
-            topic => 'webrequest_bits',
+            topic        => 'webrequest_bits',
             varnish_name => $::hostname,
         }
     }
 
     class mobile inherits role::cache::varnish::2layer {
 
-        class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
+        class { 'lvs::realserver':
+            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site],
+        }
 
-        system::role { "role::cache::mobile": description => "mobile Varnish cache server" }
+        system::role { 'role::cache::mobile':
+            description => 'mobile Varnish cache server',
+        }
 
-        include standard,
-            nrpe
+        include standard
+        include nrpe
 
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
 
         $varnish_be_directors = {
             1 => {
-                "backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-                "api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-                "test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+                'backend'        => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+                'api'            => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+                'test_wikipedia' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
             },
             2 => {
-                "eqiad" => $role::cache::configuration::active_nodes[$::realm]['mobile']['eqiad']
+                'eqiad' => $role::cache::configuration::active_nodes[$::realm]['mobile']['eqiad'],
             }
         }
 
-        $storage_size_main = $::realm ? { 'labs' => 5, default => 300 }
+        $storage_size_main = $::realm ? {
+            'labs'  => 5,
+            default => 300,
+        }
 
         if $cluster_tier == 1 {
             $director_retries = 2
@@ -1021,10 +1128,12 @@ class role::cache {
         }
 
         varnish::setup_filesystem{ $storage_partitions:
-            before => Varnish::Instance["mobile-backend"]
+            before => Varnish::Instance['mobile-backend']
         }
 
-        class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
+        class { 'varnish::htcppurger':
+            varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
+        }
 
         include varnish::monitoring::ganglia::vhtcpd
 
@@ -1042,98 +1151,106 @@ class role::cache {
             }
         }
 
-        class { "varnish::zero_update":
-            site => $::realm ? {
-                'production' => 'https://zero.wikimedia.org',
-                'labs'       => 'http://zero.wikimedia.beta.wmflabs.org',
-            },
+        $zero_site = $::realm ? {
+            'production' => 'https://zero.wikimedia.org',
+            'labs'       => 'http://zero.wikimedia.beta.wmflabs.org',
+        }
+
+        class { 'varnish::zero_update':
+            site     => $zero_site,
             auth_src => 'puppet:///private/misc/zerofetcher.auth',
         }
 
-        varnish::instance { "mobile-backend":
-            name => "",
-            vcl => "mobile-backend",
-            port => 3128,
-            admin_port => 6083,
-            storage => $::realm ? {
-                'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
-                'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
-            },
-            runtime_parameters => $::site ? {
-                # 'esams' => ["prefer_ipv6=on"],
-                default => [],
-            },
-            directors => $varnish_be_directors[$cluster_tier],
-            director_type => $cluster_tier ? {
-                1 => 'random',
-                default => 'chash',
-            },
-            director_options => {
+        $storage_conf = $::realm ? {
+            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+            'labs'      => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
+        }
+
+        $runtime_param = $::site ? {
+            # 'esams' => ["prefer_ipv6=on"],
+            default  => [],
+        }
+
+        $director_type_cluster = $cluster_tier ? {
+            1       => 'random',
+            default => 'chash',
+        }
+
+        varnish::instance { 'mobile-backend':
+            name               => '',
+            vcl                => 'mobile-backend',
+            port               => 3128,
+            admin_port         => 6083,
+            storage            => $storage_conf,
+            runtime_parameters => $runtime_param,
+            directors          => $varnish_be_directors[$cluster_tier],
+            director_type      => $director_type_cluster,
+            director_options   => {
                 'retries' => $director_retries,
             },
-            vcl_config => {
-                'default_backend' => $default_backend,
-                'retry503' => 4,
-                'retry5xx' => 1,
+            vcl_config         => {
+                'default_backend'  => $default_backend,
+                'retry503'         => 4,
+                'retry5xx'         => 1,
                 'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
-                'cluster_tier' => $cluster_tier,
-                'layer' => 'backend',
-                'ssl_proxies' => $wikimedia_networks,
+                'cluster_tier'     => $cluster_tier,
+                'layer'            => 'backend',
+                'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options    => [
                 {
-                    'backend_match' => '^mw1017\.eqiad\.wmnet$',
+                    'backend_match'   => '^mw1017\.eqiad\.wmnet$',
                     'max_connections' => 20,
                 },
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
-                    'weight' => $backend_weight,
-                    'port' => 3128,
-                    'probe' => "varnish",
+                    'weight'        => $backend_weight,
+                    'port'          => 3128,
+                    'probe'         => 'varnish',
                 },
                 {
-                    'port' => 80,
-                    'connect_timeout' => "5s",
-                    'first_byte_timeout' => "180s",
-                    'between_bytes_timeout' => "4s",
-                    'max_connections' => 600,
+                    'port'                  => 80,
+                    'connect_timeout'       => '5s',
+                    'first_byte_timeout'    => '180s',
+                    'between_bytes_timeout' => '4s',
+                    'max_connections'       => 600,
                 }],
-            cluster_options => $cluster_options,
+            cluster_options    => $cluster_options,
             wikimedia_networks => $wikimedia_networks,
         }
 
-        varnish::instance { "mobile-frontend":
-            name => "frontend",
-            vcl => "mobile-frontend",
-            extra_vcl => ["zero"],
-            port => 80,
-            admin_port => 6082,
-            storage => "-s malloc,${memory_storage_size}G",
-            directors => {
-                "backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
+        varnish::instance { 'mobile-frontend':
+            name             => 'frontend',
+            vcl              => 'mobile-frontend',
+            extra_vcl        => ['zero'],
+            port             => 80,
+            admin_port       => 6082,
+            storage          => "-s malloc,${memory_storage_size}G",
+            directors        => {
+                'backend' => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
             },
             director_options => {
                 'retries' => $backend_weight * size($::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site]),
             },
-            director_type => "chash",
-            vcl_config => {
-                'retry5xx' => 0,
+            director_type    => 'chash',
+            vcl_config       => {
+                'retry5xx'         => 0,
                 'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
-                'cluster_tier' => $cluster_tier,
-                'layer' => 'frontend',
-                'ssl_proxies' => $wikimedia_networks,
+                'cluster_tier'     => $cluster_tier,
+                'layer'            => 'frontend',
+                'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options  => [
             {
-                'port' => 3128,
-                'weight' => $backend_weight,
-                'connect_timeout' => "5s",
-                'first_byte_timeout' => "185s",
-                'between_bytes_timeout' => "2s",
-                'max_connections' => 100000,
-                'probe' => "varnish",
+                'port'                  => 3128,
+                'weight'                => $backend_weight,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '185s',
+                'between_bytes_timeout' => '2s',
+                'max_connections'       => 100000,
+                'probe'                 => 'varnish',
             }],
-            cluster_options => $cluster_options,
+            cluster_options  => $cluster_options,
         }
 
         # varnish::logging to be removed once
@@ -1143,120 +1260,133 @@ class role::cache {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
         class { 'role::cache::varnish::kafka':
-            topic => 'webrequest_mobile'
+            topic => 'webrequest_mobile',
         }
     }
 
     class parsoid inherits role::cache::varnish::2layer {
 
         if ( $::realm == 'production' ) {
-            class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site] }
+            class { 'lvs::realserver':
+                realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site],
+            }
         }
 
-        system::role { "role::cache::parsoid": description => "Parsoid Varnish cache server" }
+        system::role { 'role::cache::parsoid':
+            description => 'Parsoid Varnish cache server',
+        }
 
-        include standard,
-            nrpe
+        include standard
+        include nrpe
 
-        $storage_size_main = $::realm ? { 'labs' => 5, default => 300 }
+        $storage_size_main = $::realm ? {
+            'labs'  => 5,
+            default => 300,
+        }
         $storage_partitions = $::realm ? {
             'production' => ['sda3', 'sdb3'],
-            'labs' => ["vdb"],
+            'labs'       => ['vdb'],
         }
         varnish::setup_filesystem{ $storage_partitions:
-            before => Varnish::Instance["parsoid-backend"]
+            before => Varnish::Instance['parsoid-backend'],
         }
 
         # No HTCP daemon for Parsoid; the MediaWiki extension sends PURGE requests itself
         #class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
 
-        varnish::instance { "parsoid-backend":
-            name => "",
-            vcl => "parsoid-backend",
-            extra_vcl => ["parsoid-common"],
-            port => 3128,
-            admin_port => 6083,
-            storage => $::realm ? {
-                'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
-                'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
-            },
-            directors => {
-                "backend" => $role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+        $storage_conf = $::realm ? {
+            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+            'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
+        }
+
+        varnish::instance { 'parsoid-backend':
+            name             => '',
+            vcl              => 'parsoid-backend',
+            extra_vcl        => ['parsoid-common'],
+            port             => 3128,
+            admin_port       => 6083,
+            storage          => $storage_conf,
+            directors        => {
+                'backend' => $role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
             },
             director_options => {
                 'retries' => 2,
             },
-            vcl_config => {
-                'retry5xx' => 1,
+            vcl_config       => {
+                'retry5xx'    => 1,
                 'ssl_proxies' => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options  => [
                 {
-                    'port' => 8000,
-                    'connect_timeout' => "5s",
-                    'first_byte_timeout' => "5m",
-                    'between_bytes_timeout' => "20s",
-                    'max_connections' => 1000,
+                    'port'                  => 8000,
+                    'connect_timeout'       => '5s',
+                    'first_byte_timeout'    => '5m',
+                    'between_bytes_timeout' => '20s',
+                    'max_connections'       => 1000,
                 }],
         }
 
-        varnish::instance { "parsoid-frontend":
-            name => "frontend",
-            vcl => "parsoid-frontend",
-            extra_vcl => ["parsoid-common"],
-            port => 80,
-            admin_port => 6082,
-            directors => {
-                "backend" => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
+        varnish::instance { 'parsoid-frontend':
+            name             => 'frontend',
+            vcl              => 'parsoid-frontend',
+            extra_vcl        => ['parsoid-common'],
+            port             => 80,
+            admin_port       => 6082,
+            directors        => {
+                'backend' => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
             },
-            director_type => "chash",
+            director_type    => 'chash',
             director_options => {
                 'retries' => $backend_weight * size($::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site]),
             },
-            vcl_config => {
-                'retry5xx' => 0,
+            vcl_config       => {
+                'retry5xx'    => 0,
                 'ssl_proxies' => $wikimedia_networks,
             },
-            backend_options => {
-                'port' => 3128,
-                'weight' => $backend_weight,
-                'connect_timeout' => "5s",
-                'first_byte_timeout' => "6m",
-                'between_bytes_timeout' => "20s",
-                'max_connections' => 100000,
-                'probe' => "varnish",
+            backend_options  => {
+                'port'                  => 3128,
+                'weight'                => $backend_weight,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '6m',
+                'between_bytes_timeout' => '20s',
+                'max_connections'       => 100000,
+                'probe'                 => 'varnish',
             },
         }
     }
 
     class misc inherits role::cache::varnish::1layer {
 
-        class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site] }
+        class { 'lvs::realserver':
+            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site],
+        }
 
-        system::role { 'role::cache::misc': description => 'misc Varnish cache server' }
+        system::role { 'role::cache::misc':
+            description => 'misc Varnish cache server'
+        }
 
-        include standard,
-            nrpe,
-            role::cache::ssl::wikimedia
+        include standard
+        include nrpe
+        include role::cache::ssl::wikimedia
 
         $memory_storage_size = 8
 
         varnish::instance { 'misc':
-            name => '',
-            vcl => 'misc',
-            port => 80,
-            admin_port => 6082,
-            storage => "-s malloc,${memory_storage_size}G",
-            vcl_config => {
-                'retry503' => 4,
-                'retry5xx' => 1,
-                'cache4xx' => '1m',
-                'layer' => 'frontend',
-                'ssl_proxies' => $wikimedia_networks,
+            name            => '',
+            vcl             => 'misc',
+            port            => 80,
+            admin_port      => 6082,
+            storage         => "-s malloc,${memory_storage_size}G",
+            vcl_config      => {
+                'retry503'        => 4,
+                'retry5xx'        => 1,
+                'cache4xx'        => '1m',
+                'layer'           => 'frontend',
+                'ssl_proxies'     => $wikimedia_networks,
                 'default_backend' => 'antimony',    # FIXME
                 'allowed_methods' => '^(GET|HEAD|POST|PURGE|PUT)$',
             },
-            backends => [
+            backends        => [
                 'antimony.wikimedia.org',
                 'caesium.eqiad.wmnet',
                 'dataset1001.wikimedia.org',
@@ -1273,24 +1403,24 @@ class role::cache {
             backend_options => [
             {
                 'backend_match' => '^(antimony|ytterbium)',
-                'port' => 8080,
+                'port'          => 8080,
             },
             {
                 'backend_match' => '^(ruthenium)',
-                'port' => 8001,
+                'port'          => 8001,
             },
             {
                 'backend_match' => '^logstash',
                 'probe'         => 'logstash',
             },
             {
-                'port' => 80,
-                'connect_timeout' => '5s',
-                'first_byte_timeout' => '35s',
+                'port'                  => 80,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '35s',
                 'between_bytes_timeout' => '4s',
-                'max_connections' => 100,
+                'max_connections'       => 100,
             }],
-            directors => {
+            directors       => {
                 'logstash' => [
                     'logstash1001.eqiad.wmnet',
                     'logstash1002.eqiad.wmnet',
