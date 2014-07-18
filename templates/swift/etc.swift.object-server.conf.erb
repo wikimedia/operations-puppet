@@ -10,7 +10,11 @@ workers = 100
 
 
 [pipeline:main]
-pipeline = object-server
+pipeline = recon object-server
+
+[filter:recon]
+use = egg:swift#recon
+recon_cache_path = /var/cache/swift
 
 [app:object-server]
 use = egg:swift#object

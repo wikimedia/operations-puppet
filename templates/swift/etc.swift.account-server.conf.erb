@@ -10,7 +10,11 @@ db_preallocation = on
 # log_statsd_metric_prefix =
 
 [pipeline:main]
-pipeline = account-server
+pipeline = recon account-server
+
+[filter:recon]
+use = egg:swift#recon
+recon_cache_path = /var/cache/swift
 
 [app:account-server]
 use = egg:swift#account
