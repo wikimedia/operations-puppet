@@ -63,7 +63,8 @@ class contint::packages {
     }
 
     # Development packages
-    package { [
+    ensure_packages([
+        'imagemagick',
         'librsvg2-2',
         'librsvg2-bin',
 
@@ -86,16 +87,7 @@ class contint::packages {
         'doxygen',
         'python-sphinx',  # python documentation
         'ruby-jsduck',
-        ]:
-        ensure => present,
-    }
-
-    # FIXME: This conflicted with mediawiki::packages
-    if ! defined ( Package['imagemagick'] ) {
-        package { 'imagemagick':
-            ensure => present,
-        }
-    }
+    ])
 
     if ! defined ( Package['python-requests'] ) {
         package { 'python-requests':
@@ -164,9 +156,10 @@ class contint::packages {
     }
 
     # Uninstalled packages
-    package { [
-        'php-apc',
-        ]: ensure => absent,
+    if ! defined ( Package['php-apc'] ) {
+        package { 'php-apc':
+            ensure => absent,
+        }
     }
 
     # Packages to support use of rspec on puppet modules:
