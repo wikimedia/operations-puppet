@@ -1399,6 +1399,7 @@ class role::cache {
                 'logstash1002.eqiad.wmnet',
                 'logstash1003.eqiad.wmnet',
                 'radon.eqiad.wmnet', # phab instance for legal
+                'iridium.eqiad.wmnet', # main phab
             ],
             backend_options => [
             {
