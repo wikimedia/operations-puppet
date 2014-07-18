@@ -164,9 +164,10 @@ class contint::packages {
     }
 
     # Uninstalled packages
-    package { [
-        'php-apc',
-        ]: ensure => absent,
+    if ! defined ( Package['php-apc'] ) {
+        package { 'php-apc':
+            ensure => absent,
+        }
     }
 
     # Packages to support use of rspec on puppet modules:

@@ -3,7 +3,6 @@ class mediawiki::packages {
         'python-imaging',
         'libmemcached10',       # XXX still needed?
         'libmemcached11',
-        'php-apc',
         'php-pear',
         'php5-cli',
         'php5-common',
@@ -14,6 +13,13 @@ class mediawiki::packages {
     # FIXME: This conflicted with contint::packages
     if ! defined ( Package['imagemagick'] ) {
         package { 'imagemagick':
+            ensure => present,
+        }
+    }
+
+    # FIXME: This conflicted with contint::packages
+    if ! defined ( Package['php-apc'] ) {
+        package { 'php-apc':
             ensure => present,
         }
     }
