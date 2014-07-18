@@ -1,9 +1,10 @@
-title   "99th Percentile Search Latency -1week"
+title   "90th Percentile Search Latency -8hours"
 linewidth 1
-hide_legend "false"
-from "-1 week"
 linemode "connected"
+hide_legend "false"
+from "-8hours"
 
 field :la, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.CirrusSearch.Searcher.search.tp99,"99% Query Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.CirrusSearch.Searcher.search.tp90,"90% Query Latency (ms)"))'
+		

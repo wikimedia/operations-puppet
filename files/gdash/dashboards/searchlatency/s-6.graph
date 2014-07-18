@@ -1,9 +1,9 @@
-title   "Average Search Latency -1year"
+title   "99th Percentile Search Latency -1week"
 linewidth 1
-linemode "connected"
 hide_legend "false"
-from "-1year"
+from "-1 week"
+linemode "connected"
 
-field :a, :color => "blue",
+field :la, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.CirrusSearch.Searcher.search.tavg,"Avg Query Latency (ms)"))'
+               :data  => 'cactiStyle(alias(MediaWiki.CirrusSearch.Searcher.search.tp99,"99% Query Latency (ms)"))'
