@@ -6,4 +6,4 @@ hide_legend "false"
 from "-1day"
 
 field :count, :alias => "none",
-               :data  => 'cactiStyle(mostDeviant(10,maximumAbove(MediaWiki.API.*.count,1)),0)'
+               :data  => 'cactiStyle(aliasByNode(mostDeviant(10,maximumAbove(MediaWiki.API.*.count,1)),2))'
