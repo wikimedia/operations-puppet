@@ -75,7 +75,6 @@ class role::swift {
 			class { "::swift::proxy":
 				statsd_host => 'statsd.eqiad.wmnet',
 				statsd_metric_prefix => "swift.eqiad-prod.${::hostname}",
-				statsd_default_sample_rate => '0.1',
 				bind_port => "80",
 				proxy_address => "http://ms-fe.eqiad.wmnet",
 				num_workers => $::processorcount,
@@ -169,7 +168,6 @@ class role::swift {
 			class { "::swift::proxy":
 				statsd_host => 'statsd.eqiad.wmnet',
 				statsd_metric_prefix => "swift.esams-prod.${::hostname}",
-				statsd_default_sample_rate => '0.1',
 				bind_port => "80",
 				proxy_address => "http://ms-fe.esams.wmnet",
 				num_workers => $::processorcount,
