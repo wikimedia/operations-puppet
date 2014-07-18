@@ -3,34 +3,41 @@ class mediawiki::packages {
         'python-imaging',
         'libmemcached10',       # XXX still needed?
         'libmemcached11',
-        'php-apc',
-        'php-pear',
-        'php5-cli',
         'php5-common',
     ]:
         ensure => present,
     }
 
     # FIXME: This conflicted with contint::packages
-    if ! defined ( Package['imagemagick'] ) {
-        package { 'imagemagick':
+    ensure_packages([
+        'imagemagick',
+        'php-pear',
+        'php5-cli',
+    ])
+
+    # FIXME: This conflicted with contint::packages
+    if ! defined ( Package['php-apc'] ) {
+        package { 'php-apc':
             ensure => present,
         }
     }
 
     # Standard PHP extensions
     package { [
-        'php5-curl',
         'php5-geoip',
         'php5-igbinary',
-        'php5-intl',
         'php5-memcached',
-        'php5-mysql',
         'php5-redis',
         'php5-xmlrpc',
     ]:
         ensure => present,
     }
+    # FIXME: This conflicted with contint::packages
+    ensure_packages([
+        'php5-curl',
+        'php5-mysql',
+        'php5-intl',
+    ])
 
     # Wikimedia-specific PHP extensions
     package { [
@@ -41,6 +48,10 @@ class mediawiki::packages {
     ]:
         ensure => present,
     }
+    # FIXME: This conflicted with contint::packages
+    ensure_packages([
+        'php-luasandbox',
+    ])
 
     # Pear modules
     package { [
