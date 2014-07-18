@@ -16,102 +16,102 @@ Alias /icinga/stylesheets /etc/icinga/stylesheets
 Alias /icinga /usr/share/icinga/htdocs
 
 <VirtualHost *:443>
-	ServerName icinga.wikimedia.org
-	ServerAlias neon.wikimedia.org
-	ServerAdmin noc@wikimedia.org
-	SSLEngine On
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/private/icinga.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/icinga.wikimedia.org.key
-	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
-	DocumentRoot /usr/share/icinga/htdocs
+    ServerName icinga.wikimedia.org
+    ServerAlias neon.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+    SSLEngine On
+    SSLProtocol -ALL +SSLv3 +TLSv1
+    SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
+    SSLHonorCipherOrder on
+    SSLCertificateFile /etc/ssl/private/icinga.wikimedia.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/icinga.wikimedia.org.key
+    SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+    DocumentRoot /usr/share/icinga/htdocs
 
-	<DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
-		Options FollowSymLinks
-		SSLRequireSSL
-		Options ExecCGI
-		DirectoryIndex index.html
-		AllowOverride None
-		Order Allow,Deny
-		Allow From All
-		AuthName "WMF Labs (use wiki login name not shell)"
-		AuthType Basic
-		AuthBasicProvider ldap
-		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-		AuthLDAPBindPassword <%= proxypass %>
-		AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
-		Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
-	</DirectoryMatch>
-	<IfModule !mod_alias.c>
-		LoadModule alias_module modules/mod_alias.so
-	</IfModule>
+    <DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
+        Options FollowSymLinks
+        SSLRequireSSL
+        Options ExecCGI
+        DirectoryIndex index.html
+        AllowOverride None
+        Order Allow,Deny
+        Allow From All
+        AuthName "WMF Labs (use wiki login name not shell)"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= proxypass %>
+        AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+    </DirectoryMatch>
+    <IfModule !mod_alias.c>
+        LoadModule alias_module modules/mod_alias.so
+    </IfModule>
 
-	RedirectMatch ^/$ https://icinga.wikimedia.org/icinga
-	ErrorLog /var/log/apache2/icinga.log
-	LogLevel warn
+    RedirectMatch ^/$ https://icinga.wikimedia.org/icinga
+    ErrorLog /var/log/apache2/icinga.log
+    LogLevel warn
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName icinga.wikimedia.org
-	ServerAlias neon.wikimedia.org
-	ServerAdmin noc@wikimedia.org
-	DocumentRoot /usr/share/icinga/htdocs
+    ServerName icinga.wikimedia.org
+    ServerAlias neon.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot /usr/share/icinga/htdocs
 
         RewriteEngine on
         RewriteCond %{SERVER_PORT} !^443$
         RewriteRule ^/(.*)$ https://icinga.wikimedia.org/$1 [L,R]
 
-	ErrorLog /var/log/apache2/icinga.log
-	LogLevel warn
+    ErrorLog /var/log/apache2/icinga.log
+    LogLevel warn
 </VirtualHost>
 
 <VirtualHost *:443>
-	ServerName icinga-admin.wikimedia.org
-	SSLEngine On
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/private/icinga-admin.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/icinga-admin.wikimedia.org.key
-	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
-	DocumentRoot /usr/share/icinga/htdocs
+    ServerName icinga-admin.wikimedia.org
+    SSLEngine On
+    SSLProtocol -ALL +SSLv3 +TLSv1
+    SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
+    SSLHonorCipherOrder on
+    SSLCertificateFile /etc/ssl/private/icinga-admin.wikimedia.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/icinga-admin.wikimedia.org.key
+    SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+    DocumentRoot /usr/share/icinga/htdocs
 
-	<DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
-		Options FollowSymLinks
-		SSLRequireSSL
-		Options ExecCGI
-		DirectoryIndex index.html
-#		AllowOverride None
-		AllowOverride AuthConfig
-		Order Allow,Deny
-		Allow From All
-		AuthName "WMF Labs (use wiki login name not shell)"
-		AuthType Basic
-		AuthBasicProvider ldap
-		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
-		AuthLDAPBindPassword <%= proxypass %>
-		AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
-		Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
-	</DirectoryMatch>
-	<IfModule !mod_alias.c>
-		LoadModule alias_module modules/mod_alias.so
-	</IfModule>
+    <DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
+        Options FollowSymLinks
+        SSLRequireSSL
+        Options ExecCGI
+        DirectoryIndex index.html
+#       AllowOverride None
+        AllowOverride AuthConfig
+        Order Allow,Deny
+        Allow From All
+        AuthName "WMF Labs (use wiki login name not shell)"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= proxypass %>
+        AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+    </DirectoryMatch>
+    <IfModule !mod_alias.c>
+        LoadModule alias_module modules/mod_alias.so
+    </IfModule>
 
-	RedirectMatch ^/$ https://icinga-admin.wikimedia.org/icinga
-	ErrorLog /var/log/apache2/icinga.log
-	LogLevel warn
+    RedirectMatch ^/$ https://icinga-admin.wikimedia.org/icinga
+    ErrorLog /var/log/apache2/icinga.log
+    LogLevel warn
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName icinga-admin.wikimedia.org
-	DocumentRoot /usr/share/icinga/htdocs
+    ServerName icinga-admin.wikimedia.org
+    DocumentRoot /usr/share/icinga/htdocs
 
         RewriteEngine on
         RewriteCond %{SERVER_PORT} !^443$
         RewriteRule ^/(.*)$ https://icinga-admin.wikimedia.org/$1 [L,R]
 
-	ErrorLog /var/log/apache2/icinga.log
-	LogLevel warn
+    ErrorLog /var/log/apache2/icinga.log
+    LogLevel warn
 </VirtualHost>
