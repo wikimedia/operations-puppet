@@ -41,27 +41,29 @@ class mediawiki::php(
         require => Package['php-apc'],
     }
 
-    file { '/etc/php5/conf.d/wmerrors.ini':
-        content => template('mediawiki/php/wmerrors.ini.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['php5-wmerrors'],
-    }
-
-    file { '/etc/php5/conf.d/igbinary.ini':
-        source  => 'puppet:///modules/mediawiki/php/igbinary.ini',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['php5-igbinary'],
-    }
-
     file { '/etc/php5/conf.d/mail.ini':
         source  => 'puppet:///modules/mediawiki/php/mail.ini',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => Package['php-mail'],
+    }
+
+    if $::lsbdistcodename == 'precise' {
+        file { '/etc/php5/conf.d/igbinary.ini':
+            source  => 'puppet:///modules/mediawiki/php/igbinary.ini',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            require => Package['php5-igbinary'],
+        }
+
+        file { '/etc/php5/conf.d/wmerrors.ini':
+            content => template('mediawiki/php/wmerrors.ini.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            require => Package['php5-wmerrors'],
+        }
     }
 }
