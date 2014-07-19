@@ -3,7 +3,6 @@ class mediawiki::packages {
         'imagemagick',
         'python-imaging',
         'libmemcached10',       # XXX still needed?
-        'libmemcached11',
         'php-apc',
         'php-pear',
         'php5-cli',
@@ -16,7 +15,6 @@ class mediawiki::packages {
     package { [
         'php5-curl',
         'php5-geoip',
-        'php5-igbinary',
         'php5-intl',
         'php5-memcached',
         'php5-mysql',
@@ -30,7 +28,6 @@ class mediawiki::packages {
     package { [
         'php-luasandbox',
         'php-wikidiff2',
-        'php5-wmerrors',
         'php5-fss',
     ]:
         ensure => present,
@@ -99,5 +96,15 @@ class mediawiki::packages {
         'tidy',
     ]:
         ensure => present,
+    }
+
+    if $::lsbdistcodename == 'precise' {
+        package { [
+            'libmemcached11',  # formerly a dependency for php5-memcached
+            'php5-igbinary',   # no longer in use
+            'php5-wmerrors',   # functionality built-in to HHVM
+        ]:
+            ensure => present,
+        }
     }
 }
