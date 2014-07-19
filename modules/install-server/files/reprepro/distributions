@@ -50,7 +50,7 @@ Version: 12.04
 Architectures: source amd64 i386
 Components: main universe non-free mariadb
 UDebComponents: main
-Update: ceph jenkins cloudera hwraid cassandra elasticsearch logstash hhvm
+Update: ceph jenkins cloudera hwraid cassandra elasticsearch logstash
 Description: Wikimedia specific packages for Ubuntu Precise
 SignWith: default
 DebOverride: deb-override
