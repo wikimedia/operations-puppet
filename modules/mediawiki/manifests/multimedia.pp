@@ -13,8 +13,13 @@ class mediawiki::multimedia {
         minute  => '*/5',
     }
 
+    $libav_package = $::lsbdistcodename ?
+        precise => 'ffmpeg',
+        trusty  => 'libav-tools',
+    }
+
     package { [
-        'ffmpeg',
+        $libav_package,
         'ffmpeg2theora',
         'ghostscript',
         'libjpeg-turbo-progs',
