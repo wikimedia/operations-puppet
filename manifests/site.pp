@@ -2166,7 +2166,6 @@ node 'osmium.eqiad.wmnet' {
     include standard
     include admin
 
-    include hhvm::dev
     include mediawiki::cgroup
     include mediawiki::sync
 }
