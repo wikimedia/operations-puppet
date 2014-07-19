@@ -271,6 +271,8 @@ class role::ci::slave::labs::common {
 
 }
 
+# browsertests role class currently unused because it doesn't work:
+# https://bugzilla.wikimedia.org/show_bug.cgi?id=68260
 class role::ci::slave::browsertests {
 
     system::role { 'role::ci::slave::browsertests':
@@ -349,13 +351,6 @@ class role::ci::slave::labs {
 
     if $::realm != 'labs' {
         fail("role::ci::slave::labs must only be applied in labs")
-    }
-
-    class { 'role::ci::slave::browsertests':
-        require => [
-            Class['role::ci::slave::labs::common'],  # /mnt
-            Class['contint::packages::labs'],  # realize common packages first
-        ]
     }
 
     file { '/srv/localhost':
