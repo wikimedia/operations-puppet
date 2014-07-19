@@ -1,0 +1,12 @@
+#!/bin/bash
+PUPPET_PATH='<%= @puppet_directory %>'
+exec "/usr/bin/puppet apply \
+    --modulepath $PUPPET_PATH/modules \
+    --manifestdir $PUPPET_PATH/manifests \
+    --templatedir $PUPPET_PATH/templates \
+    --fileserverconfig $PUPPET_PATH/extra/fileserver.conf \
+    --config_version $PUPPET_PATH/extra/config-version \
+    --verbose \
+    --logdest console \
+    --detailed-exitcodes \
+    $PUPPET_PATH/manifests/site.pp"
