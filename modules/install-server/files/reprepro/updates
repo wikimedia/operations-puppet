@@ -66,12 +66,3 @@ GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl -X -S logstash || [ $? -eq 1 ]
-
-Name: hhvm
-Method: http://dl.hhvm.com/ubuntu/
-Components: main>main
-UDebComponents:
-Suite: precise
-Architectures: amd64
-VerifyRelease: 5A16E7281BE7A449
-ListShellHook: grep-dctrl -X -P hhvm -o -X -P hhvm-fastcgi || [ $? -eq 1 ]
