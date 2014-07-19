@@ -2165,10 +2165,7 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
 node 'osmium.eqiad.wmnet' {
     include standard
     include admin
-
-    include hhvm::dev
-    include mediawiki::cgroup
-    include mediawiki::sync
+    include mediawiki
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
