@@ -1,0 +1,12 @@
+#!/bin/bash
+# Helper command to run the puppet files fetched
+# by puppetception.
+PUPPET_PATH='<%= @puppet_dir %>'
+/usr/bin/puppet apply \
+    --modulepath $PUPPET_PATH/modules \
+    --manifestdir $PUPPET_PATH/manifests \
+    --templatedir $PUPPET_PATH/templates \
+    --verbose \
+    --logdest console \
+    --detailed-exitcodes \
+    $PUPPET_PATH/manifests/site.pp
