@@ -317,7 +317,7 @@ define command{
 
 define command{
 	command_name    check_http_lvs_on_port
-	command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3"
+	command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3$"
 	}
 
 define command{
