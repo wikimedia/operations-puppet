@@ -3,7 +3,6 @@ class mediawiki::packages {
         'imagemagick',
         'python-imaging',
         'libmemcached10',       # XXX still needed?
-        'libmemcached11',
         'php-apc',
         'php-pear',
         'php5-cli',
@@ -30,7 +29,6 @@ class mediawiki::packages {
     package { [
         'php-luasandbox',
         'php-wikidiff2',
-        'php5-wmerrors',
         'php5-fss',
     ]:
         ensure => present,
@@ -99,5 +97,14 @@ class mediawiki::packages {
         'tidy',
     ]:
         ensure => present,
+    }
+
+    if $::lsbdistcodename == 'precise' {
+        package { [
+            'php5-wmerrors',   # functionality built-in to HHVM
+            'libmemcached11',  # not in use
+        ]:
+            ensure => present,
+        }
     }
 }
