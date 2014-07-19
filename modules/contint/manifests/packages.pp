@@ -5,8 +5,6 @@
 #
 class contint::packages {
 
-    include androidsdk::dependencies
-
     include ::mediawiki::packages
 
     # Disable APC entirely it gets confused when files changes often
@@ -105,17 +103,6 @@ class contint::packages {
     # Used to build analytics udp-filters
     package { ['libcidr0-dev', 'libanon0-dev']:
         ensure => 'latest',
-    }
-
-    # Used for mobile device classification in Kraken:
-    package { [
-        'libdclass0',
-        'libdclass0-dev',
-        'libdclass-jni',
-        'libdclass-java',
-        'libdclass-data',
-        ]:
-        ensure => 'installed',
     }
 
     # these packages are used by the tests for wikistats to parse the

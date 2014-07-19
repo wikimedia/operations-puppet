@@ -342,6 +342,38 @@ class role::ci::slave::browsertests {
 
 }
 
+class role::ci::slave::mobilejobs {
+
+    system::role { 'role::ci::slave::mobilejobs':
+        description => 'CI Jenkins slaves able to run Mobile-related jobs' }
+
+    if $::realm != 'labs' {
+        fail( 'role::ci::slave::mobilejobs must only be applied in labs' )
+    }
+
+    # FIXME: This role fails on Ubuntu Trusty due to missing packages that probably need
+    # to be published on apt.wikimedia.org for Trusty first:
+    # - libgcc1
+    # - zlib1g
+    # - libdclass*
+    if $::lsbdistcodename != 'precise' {
+        fail( 'role::ci::slave::mobilejobs only supports precise' )
+    }
+
+    include androidsdk::dependencies
+
+    # Used for mobile device classification in Kraken:
+    package { [
+        'libdclass0',
+        'libdclass0-dev',
+        'libdclass-jni',
+        'libdclass-java',
+        'libdclass-data',
+        ]:
+        ensure => 'installed',
+    }
+}
+
 class role::ci::slave::labs {
 
     system::role { 'role::ci::slave::labs':
