@@ -10,7 +10,7 @@ statsdAddr=<%= @statsd_server %>
 
 ; Runner loop config
 runners="
-<%= @runners_basic %>:*,~refreshLinks,~htmlCacheUpdate,-AssembleUploadChunks,-PublishStashedFile,-ParsoidCacheUpdateJobOnEdit,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-gwtoolsetUploadMetadataJob,-gwtoolsetUploadMediafileJob,-gwtoolsetGWTFileBackendCleanupJob,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-uploadFromUrl
+<%= @runners_basic %>:*,~refreshLinks,~htmlCacheUpdate,~cirrusSearchLinksUpdate,-AssembleUploadChunks,-PublishStashedFile,-ParsoidCacheUpdateJobOnEdit,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-gwtoolsetUploadMetadataJob,-gwtoolsetUploadMediafileJob,-gwtoolsetGWTFileBackendCleanupJob,-ParsoidCacheUpdateJobOnDependencyChange,-webVideoTranscode,-uploadFromUrl
 
 &<%= @runners_upload %>:AssembleUploadChunks,PublishStashedFile,uploadFromUrl
 
