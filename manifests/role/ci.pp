@@ -342,6 +342,25 @@ class role::ci::slave::browsertests {
 
 }
 
+class role::ci::slave::androidsdk {
+
+    system::role { 'role::ci::slave::androidsdk':
+        description => 'CI Jenkins slaves able to build Android apps' }
+
+    if $::realm != 'labs' {
+        fail( 'role::ci::slave::androidsdk must only be applied in labs' )
+    }
+
+    # FIXME: androidsdk::dependencies fails on Ubuntu Trusty
+    # - Unable to locate package libgcc1
+    # - Unable to locate package zlib1g
+    if $::lsbdistcodename != 'precise' {
+        fail( 'role::ci::slave::androidsdk must only be applied on precise' )
+    }
+
+    include androidsdk::dependencies
+}
+
 class role::ci::slave::labs {
 
     system::role { 'role::ci::slave::labs':

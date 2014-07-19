@@ -5,8 +5,6 @@
 #
 class contint::packages {
 
-    include androidsdk::dependencies
-
     include ::mediawiki::packages
 
     # Disable APC entirely it gets confused when files changes often
