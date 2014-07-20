@@ -8,9 +8,9 @@ realm =  @realm
 
 user www-data www-data;
 <% if has_variable?("nginx_use_ssl") then %>
-worker_processes  <%= processorcount.to_i %>;
+worker_processes  <%= @processorcount.to_i %>;
 <% else %>
-worker_processes  <%= processorcount.to_i * 8 %>;
+worker_processes  <%= @processorcount.to_i * 8 %>;
 <% end %>
 worker_rlimit_nofile 30000;
 
@@ -19,7 +19,7 @@ error_log  /var/log/nginx/error.log;
 pid        /var/run/nginx.pid;
 
 events {
-    worker_connections  <%= nginx_worker_connections %>;
+    worker_connections  <%= @nginx_worker_connections %>;
     <% if has_variable?("nginx_use_ssl") then %>
     # Setting multi_accept makes it much less likely that
     # the SSL server will throw SSL connection errors
