@@ -11,7 +11,12 @@ LoadModule headers_module /usr/lib/apache2/modules/mod_headers.so
 LoadModule alias_module /usr/lib/apache2/modules/mod_alias.so
 LoadModule mime_module /usr/lib/apache2/modules/mod_mime.so
 LoadModule status_module /usr/lib/apache2/modules/mod_status.so
-LoadModule version_module /usr/lib/apache2/modules/mod_version.so
+
+<IfModule !mod_version.c>
+  # Without the <IfModule> check, this line causes Apache to fail
+  # with error "module version_module is built-in and can't be loaded".
+  LoadModule version_module /usr/lib/apache2/modules/mod_version.so
+</IfModule>
 
 ServerRoot "/etc/apache2"
 #LockFile /usr/local/apache/logs/httpd.lock
