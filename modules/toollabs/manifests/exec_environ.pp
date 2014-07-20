@@ -57,6 +57,7 @@ class toollabs::exec_environ {
         'libbot-basicbot-perl',
         'libbsd-resource-perl',        # Bug 54690.
         'libcache-memcached-fast-perl',
+        'libcgi-fast-perl',            # Bug 68269.
         'libclass-data-inheritable-perl',
         'libcommon-sense-perl',
         'libcrypt-gcrypt-perl',
