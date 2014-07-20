@@ -29,4 +29,18 @@ class toollabs::proxy inherits toollabs {
         mode   => '0444',
         source => 'puppet:///modules/toollabs/proxylistener.conf',
     }
+
+    # Deploy root web.
+    git::clone { 'labs/toollabs':
+        ensure    => latest,
+        directory => '/data/project/admin/toollabs',
+        owner     => 'tools.admin',
+        group     => 'tools.admin',
+    }
+
+    file { '/data/project/admin/public_html':
+        ensure  => link,
+        target  => 'toollabs/www',
+        require => Git::Clone['toollabs/www'],
+    }
 }
