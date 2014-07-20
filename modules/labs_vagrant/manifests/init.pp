@@ -24,7 +24,9 @@ class labs_vagrant(
     }
 
     file { '/home/vagrant':
-        ensure     => 'directory',
+        ensure => 'directory',
+        owner  => 'vagrant',
+        group  => 'www-data',
     }
 
     sudo_user { 'vagrant' :
