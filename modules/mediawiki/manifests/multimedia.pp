@@ -13,20 +13,23 @@ class mediawiki::multimedia {
         minute  => '*/5',
     }
 
-    $libav_package = $::lsbdistcodename ? {
-        precise => 'ffmpeg',
-        trusty  => 'libav-tools',
+    if $::lsbdistcodename == 'trusty' {
+        $libav_package   = 'libav-tools'
+        $libvips_package = 'libvips37'
+    } elsif $::lsbdistcodename == 'precise' {
+        $libav_package   = 'ffmpeg'
+        $libvips_package = 'libvips15'
     }
 
     package { [
         $libav_package,
+        $libvips_package,
         'ffmpeg2theora',
         'ghostscript',
         'libjpeg-turbo-progs',
         'libogg0',
         'libtheora0',
         'libvips-tools',
-        'libvips15',
         'libvorbisenc2',
         'netpbm',
         'oggvideotools',
