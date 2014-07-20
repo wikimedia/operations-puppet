@@ -11,12 +11,27 @@ LoadModule headers_module /usr/lib/apache2/modules/mod_headers.so
 LoadModule alias_module /usr/lib/apache2/modules/mod_alias.so
 LoadModule mime_module /usr/lib/apache2/modules/mod_mime.so
 LoadModule status_module /usr/lib/apache2/modules/mod_status.so
-LoadModule version_module /usr/lib/apache2/modules/mod_version.so
+
+<IfModule !mod_version.c>
+  # Without the <IfModule> check, this line causes Apache to fail
+  # with error "module version_module is built-in and can't be loaded".
+  LoadModule version_module /usr/lib/apache2/modules/mod_version.so
+  # Allows deprecated Allow / Deny directives.
+  LoadModule access_compat_module /usr/lib/apache2/modules/mod_access_compat.so
+</IfModule>
+
+<IfVersion >= 2.4>
+  # Resolves "AH00534: apache2: Configuration error: No MPM loaded."
+  LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
+</IfVersion>
+
+<IfVersion < 2.4>
+  LockFile /var/lock/apache2/accept.lock
+</IfVersion>
 
 ServerRoot "/etc/apache2"
 #LockFile /usr/local/apache/logs/httpd.lock
 PidFile /var/run/apache2.pid
-LockFile /var/lock/apache2/accept.lock
 
 #ResourceConfig conf/srm.conf
 #AccessConfig conf/access.conf
@@ -88,7 +103,7 @@ DocumentRoot "/usr/local/apache/common/docroot/default"
 </Directory>
 
 <Directory "/usr/local/apache/common/docroot/default">
-    Options -Indexes FollowSymLinks MultiViews
+    Options -Indexes +FollowSymLinks +MultiViews
     AllowOverride None
 
     Order allow,deny
@@ -163,7 +178,7 @@ ServerSignature Off
     Alias /icons/ "/usr/share/apache2/icons/"
 
     <Directory "/usr/share/apache2/icons/">
-        Options -Indexes MultiViews
+        Options -Indexes +MultiViews
         AllowOverride None
         Order allow,deny
         Allow from all
