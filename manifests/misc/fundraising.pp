@@ -82,34 +82,34 @@ class misc::fundraising {
         #    mode => 0440,
         #    source => 'puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php';
 
-    file { '/etc/fundraising/legacy_paypal_config.php':
-        owner  => 'root',
-        group  => 'www-data',
-        mode   => '0440',
-        source => 'puppet:///private/misc/fundraising/legacy_paypal_config.php',
-    }
+    #file { '/etc/fundraising/legacy_paypal_config.php':
+    #    owner  => 'root',
+    #    group  => 'www-data',
+    #    mode   => '0440',
+    #    source => 'puppet:///private/misc/fundraising/legacy_paypal_config.php',
+    #}
 
     # apache conf stuffs
-    file { '/etc/apache2/sites-enabled/000-donate':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///private/misc/fundraising/apache.conf.donate',
-    }
+    #file { '/etc/apache2/sites-enabled/000-donate':
+    #    owner  => 'root',
+    #    group  => 'root',
+    #    mode   => '0444',
+    #    source => 'puppet:///private/misc/fundraising/apache.conf.donate',
+    #}
 
-    file { '/etc/apache2/sites-enabled/001-civicrm':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///private/misc/fundraising/apache.conf.civicrm',
-    }
+    #file { '/etc/apache2/sites-enabled/001-civicrm':
+    #    owner  => 'root',
+    #    group  => 'root',
+    #    mode   => '0444',
+    #    source => 'puppet:///private/misc/fundraising/apache.conf.civicrm',
+    #}
 
-    file { '/etc/apache2/sites-enabled/002-civicrm-ssl':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///private/misc/fundraising/apache.conf.civicrm-ssl',
-    }
+    #file { '/etc/apache2/sites-enabled/002-civicrm-ssl':
+    #    owner  => 'root',
+    #    group  => 'root',
+    #    mode   => '0444',
+    #    source => 'puppet:///private/misc/fundraising/apache.conf.civicrm-ssl',
+    #}
 
     file { '/etc/apache2/sites-enabled/003-fundraising':
         owner  => 'root',
