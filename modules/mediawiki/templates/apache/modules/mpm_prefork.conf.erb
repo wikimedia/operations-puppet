@@ -1,0 +1,17 @@
+# prefork MPM
+# StartServers: number of server processes to start
+# MinSpareServers: minimum number of server processes which are kept spare
+# MaxSpareServers: maximum number of server processes which are kept spare
+# MaxClients: maximum number of server processes allowed to start
+# MaxRequestsPerChild: maximum number of requests a server process serves
+<IfModule mpm_prefork_module>
+    StartServers        10
+    MinSpareServers     5
+    MaxSpareServers     20
+    ServerLimit         <%= scope.lookupvar('::mediawiki::web::apache_server_limit') %>
+    MaxClients          <%= @max_req_workers %>
+    <IfDefine SLOW>
+        MaxClients      5
+    </IfDefine>
+    MaxRequestsPerChild 300
+</IfModule>
