@@ -70,7 +70,8 @@ MaxRequestsPerChild 300
 	CoreDumpDirectory /usr/local/apache/core
 </IfDefine>
 
-Listen 80
+# This listens on port 80 by default and defines NameVirtualHost *:80
+Include ports.conf
 
 User apache
 Group apache
@@ -318,7 +319,6 @@ ExtendedStatus On
 ErrorDocument 503 /503.html
 ErrorDocument 404 /w/404.php
 
-NameVirtualHost *
 Include sites-enabled/*.conf
 
 # Set ETags for files to not be based on inode,
