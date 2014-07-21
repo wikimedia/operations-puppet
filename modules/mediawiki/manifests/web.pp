@@ -1,11 +1,25 @@
 # mediawiki::web
 
-class mediawiki::web ( $workers_limit = undef) {
+class mediawiki::web ( $workers_limit = undef, $use_hhvm = false) {
     tag 'mediawiki', 'mw-apache-config'
 
     include ::mediawiki
     include ::mediawiki::monitoring::webserver
-    include ::apache
+
+    if $use_hhvm {
+        class { 'apache':
+            mpm => 'worker'
+        }
+
+        class { 'mediawiki::hhvm':
+            service => 'running',
+        }
+    } else {
+        include apache
+        include apache::mod::php5
+    }
+
+    include mediawiki::web::modules
 
     $apache_server_limit = 256
 

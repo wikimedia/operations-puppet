@@ -1,18 +1,5 @@
 # This file is managed by Puppet!
 
-LoadModule autoindex_module /usr/lib/apache2/modules/mod_autoindex.so
-LoadModule dir_module /usr/lib/apache2/modules/mod_dir.so
-LoadModule setenvif_module /usr/lib/apache2/modules/mod_setenvif.so
-LoadModule php5_module /usr/lib/apache2/modules/libphp5.so
-LoadModule authz_host_module /usr/lib/apache2/modules/mod_authz_host.so
-LoadModule expires_module /usr/lib/apache2/modules/mod_expires.so
-LoadModule rewrite_module /usr/lib/apache2/modules/mod_rewrite.so
-LoadModule headers_module /usr/lib/apache2/modules/mod_headers.so
-LoadModule alias_module /usr/lib/apache2/modules/mod_alias.so
-LoadModule mime_module /usr/lib/apache2/modules/mod_mime.so
-LoadModule status_module /usr/lib/apache2/modules/mod_status.so
-LoadModule version_module /usr/lib/apache2/modules/mod_version.so
-
 ServerRoot "/etc/apache2"
 #LockFile /usr/local/apache/logs/httpd.lock
 PidFile /var/run/apache2.pid
@@ -96,33 +83,9 @@ DocumentRoot "/usr/local/apache/common/docroot/default"
     Allow from all
 </Directory>
 
-
-# Expires and CORS for static content
-# sends max-age and Expires header, time in seconds
-#LoadModule expires_module   mod_expires.c
-#<IfModule mod_expires.c>
-    ExpiresActive On
-    <Directory "/usr/local/apache/common/docroot">
-        <FilesMatch "\.(gif|jpe?g|png|css|js|json|woff|svg|eot|ttf)$">
-            ExpiresByType image/gif A2592000
-            ExpiresByType image/png A2592000
-            ExpiresByType image/jpeg A2592000
-            ExpiresByType text/css A2592000
-            ExpiresByType text/javascript A2592000
-            ExpiresByType application/x-javascript A2592000
-            ExpiresByType application/json A2592000
-            ExpiresByType application/font-woff A2592000
-            ExpiresByType image/svg+xml A2592000
-            ExpiresByType application/vnd.ms-fontobject A2592000
-            ExpiresByType application/x-font-ttf A2592000
-            Header add Access-Control-Allow-Origin "*"
-        </FilesMatch>
-    </Directory>
-#</IfModule>
-
-<IfModule mod_userdir.c>
-    UserDir disabled
-</IfModule>
+# Include module configuration:
+Include mods-enabled/*.load
+Include mods-enabled/*.conf
 
 DirectoryIndex index.html
 
@@ -159,149 +122,6 @@ LogFormat "%{User-agent}i" agent
 
 ServerSignature Off
 
-<IfModule mod_alias.c>
-
-    Alias /icons/ "/usr/share/apache2/icons/"
-
-    <Directory "/usr/share/apache2/icons/">
-        Options -Indexes MultiViews
-        AllowOverride None
-        Order allow,deny
-        Allow from all
-    </Directory>
-
-    #ScriptAlias /cgi-bin/ "/usr/local/apache/cgi-bin/"
-
-#    <Directory "/usr/local/apache/cgi-bin">
-#        AllowOverride None
-#        Options None
-#        Order allow,deny
-#        Allow from all
-#    </Directory>
-</IfModule>
-
-#<IfModule mod_autoindex.c>
-
-    IndexOptions FancyIndexing
-
-    AddIconByEncoding (CMP,/icons/compressed.gif) x-compress x-gzip
-
-    AddIconByType (TXT,/icons/text.gif) text/*
-    AddIconByType (IMG,/icons/image2.gif) image/*
-    AddIconByType (SND,/icons/sound2.gif) audio/*
-    AddIconByType (VID,/icons/movie.gif) video/*
-
-    AddIcon /icons/binary.gif .bin .exe
-    AddIcon /icons/binhex.gif .hqx
-    AddIcon /icons/tar.gif .tar
-    AddIcon /icons/world2.gif .wrl .wrl.gz .vrml .vrm .iv
-    AddIcon /icons/compressed.gif .Z .z .tgz .gz .zip
-    AddIcon /icons/a.gif .ps .ai .eps
-    AddIcon /icons/layout.gif .html .shtml .htm .pdf
-    AddIcon /icons/text.gif .txt
-    AddIcon /icons/c.gif .c
-    AddIcon /icons/p.gif .pl .py
-    AddIcon /icons/f.gif .for
-    AddIcon /icons/dvi.gif .dvi
-    AddIcon /icons/uuencoded.gif .uu
-    AddIcon /icons/script.gif .conf .sh .shar .csh .ksh .tcl
-    AddIcon /icons/tex.gif .tex
-    AddIcon /icons/bomb.gif core
-
-    AddIcon /icons/back.gif ..
-    AddIcon /icons/hand.right.gif README
-    AddIcon /icons/folder.gif ^^DIRECTORY^^
-    AddIcon /icons/blank.gif ^^BLANKICON^^
-
-    DefaultIcon /icons/unknown.gif
-
-    #AddDescription "GZIP compressed document" .gz
-    #AddDescription "tar archive" .tar
-    #AddDescription "GZIP compressed tar archive" .tgz
-
-    ReadmeName README
-    HeaderName HEADER
-
-    IndexIgnore .??* *~ *# HEADER* README* RCS CVS *,v *,t
-
-#</IfModule>
-
-#<IfModule mod_mime.c>
-
-    AddEncoding x-compress Z
-    AddEncoding x-gzip gz tgz
-
-    AddLanguage da .dk
-    AddLanguage nl .nl
-    AddLanguage en .en
-    AddLanguage eo .eo
-    AddLanguage et .ee
-    AddLanguage fr .fr
-    AddLanguage de .de
-    AddLanguage el .el
-    AddLanguage he .he
-    AddCharset ISO-8859-8 .iso8859-8
-    AddLanguage it .it
-    AddLanguage ja .ja
-    AddCharset ISO-2022-JP .jis
-    AddLanguage kr .kr
-    AddCharset ISO-2022-KR .iso-kr
-    AddLanguage nn .nn
-    AddLanguage no .no
-    AddLanguage pl .po
-    AddCharset ISO-8859-2 .iso-pl
-    AddLanguage pt .pt
-    AddLanguage pt-br .pt-br
-    AddLanguage ltz .lu
-    AddLanguage ca .ca
-    AddLanguage es .es
-    AddLanguage sv .sv
-    AddLanguage cz .cz
-    AddLanguage ru .ru
-    AddLanguage zh-tw .tw
-    AddLanguage tw .tw
-    AddCharset Big5         .Big5    .big5
-    AddCharset WINDOWS-1251 .cp-1251
-    AddCharset CP866        .cp866
-    AddCharset ISO-8859-5   .iso-ru
-    AddCharset KOI8-R       .koi8-r
-    AddCharset UCS-2        .ucs2
-    AddCharset UCS-4        .ucs4
-    AddCharset UTF-8        .utf8
-
-    <IfModule mod_negotiation.c>
-        LanguagePriority en eo da nl et fr de el it ja kr no pl pt pt-br ru ltz ca es sv tw
-    </IfModule>
-
-    AddType application/x-tar .tgz
-    AddType text/xml .rdf
-    AddType application/x-bzip2 .bz2
-    AddType application/font-woff .woff
-    AddType application/vnd.ms-fontobject .eot
-    # TTF doesn't have an official MIME type, but I really don't want to use application/octet-stream for it
-    AddType application/x-font-ttf .ttf
-
-    <IfModule mod_php4.c>
-        AddType application/x-httpd-php .php .php4 .php3 .phtml
-        AddType application/x-httpd-php-source .phps
-    </IfModule>
-    <IfModule mod_php5.c>
-        AddType application/x-httpd-php .php .php5 .php4 .php3 .phtml
-        AddType application/x-httpd-php-source .phps
-    </IfModule>
-
-#</IfModule>
-
-#<IfModule mod_setenvif.c>
-
-    BrowserMatch "Mozilla/2" nokeepalive
-    BrowserMatch "MSIE 4\.0b2;" nokeepalive downgrade-1.0 force-response-1.0
-
-    BrowserMatch "RealPlayer 4\.0" force-response-1.0
-    BrowserMatch "Java/1\.0" force-response-1.0
-    BrowserMatch "JDK/1\.0" force-response-1.0
-
-#</IfModule>
 
 ExtendedStatus On
 <Location /server-status>

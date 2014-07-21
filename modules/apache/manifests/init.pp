@@ -17,12 +17,14 @@
 # /etc/apache2/conf-{enabled,available} to manage configuration snippets
 # on both Precise and Trusty.
 #
-class apache {
+class apache($mpm = 'prefork') {
     include apache::mod::access_compat  # enables allow/deny syntax in 2.4
     include apache::mod::filter         # enables AddOutputFilterByType in 2.4
     include apache::mod::version        # enables <IfVersion> config guards
 
-    package { [ 'apache2', 'apache2-mpm-prefork' ]:
+    $mpm_worker_package = "apache2-mpm-${mpm}"
+
+    package { [ 'apache2', $mpm_worker_package ]:
         ensure => present,
     }
 
