@@ -35,11 +35,11 @@ while [ $i -lt $shards ]; do
 	let i++
 	if [ $i -lt $shards ]; then
 		# Shards don't end with commas so add commas to separate them
-		echo -n ',' | gzip -f >> $targetFile
+		echo ',' | gzip -f >> $targetFile
 	fi
 done
 
-echo ']' | gzip -f >> $targetFile
+echo -e '\n]' | gzip -f >> $targetFile
 
 # Remove dumps we no longer need (keep 10)
 filesToDelete=`ls -r $targetDir/20*.gz | tail -n +11`
