@@ -19,7 +19,7 @@ i=0
 shards=4
 
 while [ $i -lt $shards ]; do
-	sudo -u apache php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet | gzip > $tempDir/wikidataJson.$i.gz &
+	php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet | gzip > $tempDir/wikidataJson.$i.gz &
 	let i++
 done
 
