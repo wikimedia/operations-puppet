@@ -64,13 +64,8 @@ define diamond::collector(
     }
 
     if $source {
-        $directory_ensure = $ensure ? {
-            present => directory,
-            default => absent,
-        }
-
         file { "/usr/share/diamond/collectors/${name}":
-            ensure => $directory_ensure,
+            ensure => ensure_directory($ensure),
             owner  => 'root',
             group  => 'root',
             mode   => '0755',

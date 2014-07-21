@@ -55,11 +55,6 @@ define admin::user (
 {
     validate_re($ensure, '^(present|absent)$')
 
-    $ensure_dir = $ensure ? {
-        'absent'   => 'absent',
-        'present'  => 'directory',
-    }
-
     user { $name:
         ensure     => $ensure,
         name       => $name,
@@ -77,7 +72,7 @@ define admin::user (
     if $ensure == 'present' {
 
         file { "/home/${name}":
-            ensure       => $ensure_dir,
+            ensure       => ensure_directory($ensure),
             source       => [
                 "puppet:///modules/admin/home/${name}/",
                 'puppet:///modules/admin/home/skel/',
@@ -105,7 +100,7 @@ define admin::user (
         }
 
         file { "/home/${name}/.ssh":
-            ensure  => $ensure_dir,
+            ensure  => ensure_directory($ensure),
             owner   => $name,
             group   => $gid,
             mode    => '0700',
