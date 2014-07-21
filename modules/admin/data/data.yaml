@@ -530,8 +530,7 @@ users:
     gid: 500
     name: mattflaschen
     realname: Matthew Flaschen
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCermpz3BWUs5f0Cw4kD5+ngYPoE2/L+5Semq+6/LTboD2+mmXVF6vF0ODSt/Q9VVipzuiYVF0C+MQxMeSZDLKe/scBE3eIftLEQouHSiYq/YS19+ym4Q11rio3gmdqF4yS8Go4cg09FeSXmWy2F1H1apnWqZ9ISfZkeO/ScWQgcW9mY5GzbgZDEK+suXq8CjA3xU6HpPKcnWfRc+nG0ryLkO932Lh4L5Foev0buVEIIbVHcBZijsH2phdYkxAAytP4arRDdMxhpIHfaHdDYTu9OfJq8v+pAFigEj2jAnxCO2gtZRloEanzbTfgUgIhg9/vXcokaaDKtYZ3ezoMu5kJ
-        matthew@matthew-t520]
+    ssh_keys: []
     uid: 2662
   marktraceur:
     ensure: present
