@@ -110,9 +110,6 @@ class ganglia {
             'virt'  => {
                 'name'      => 'Virtualization cluster',
                 'ip_oct'    => '29' },
-            'gluster'   => {
-                'name'      => 'Glusterfs cluster',
-                'ip_oct'    => '30' },
             'jobrunner' =>  {
                 'name'      => 'Jobrunners',
                 'ip_oct'    => '31' },

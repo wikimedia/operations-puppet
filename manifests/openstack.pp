@@ -150,20 +150,6 @@ class openstack::queue-server($openstack_version, $novaconfig) {
     }
 }
 
-class openstack::project-storage-service {
-
-    generic::upstart_job{ "manage-volumes":
-        require => Package["glusterfs-server"],
-        install => true,
-    }
-
-    service { "manage-volumes":
-        enable  => true,
-        ensure  => running,
-        require => Generic::Upstart_job["manage-volumes"];
-    }
-}
-
 class openstack::project-nfs-storage-service {
     generic::upstart_job{ "manage-nfs-volumes":
         install => true,
@@ -207,56 +193,6 @@ class openstack::project-nfs-storage-service {
                 hour    => '*',
                 minute  => '*/5',
         }
-    }
-}
-
-class openstack::project-storage {
-    include gluster::service
-
-    $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /a/*',
-            'ALL = NOPASSWD: /bin/rmdir /a/*',
-            'ALL = NOPASSWD: /usr/sbin/gluster *' ]
-    sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => User["glustermanager"] }
-
-    package { "python-paramiko":
-        ensure => present;
-    }
-
-    group { 'glustermanager':
-        ensure => present,
-        name   => 'glustermanager',
-        system => true,
-    }
-
-    user { 'glustermanager':
-        home       => '/var/lib/glustermanager',
-        shell      => '/bin/bash',
-        managehome => true,
-        system     => true,
-    }
-
-    ssh_authorized_key {
-        "glustermanager":
-            ensure  => present,
-            user    => 'glustermanager',
-            type    => 'ssh-rsa',
-            key     => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==',
-            require => Generic::Systemuser['glustermanager'];
-    }
-
-    file {
-        "/var/lib/glustermanager/.ssh/id_rsa":
-            owner   => 'glustermanager',
-            group   => 'glustermanager',
-            mode    => '0600',
-            source  => "puppet:///private/gluster/glustermanager",
-            require => Ssh_authorized_key["glustermanager"];
-        "/var/run/glustermanager":
-            ensure  => directory,
-            owner   => 'glustermanager',
-            group   => 'glustermanager',
-            mode    => '0700',
-            require => Generic::Systemuser["glustermanager"];
     }
 }
 
