@@ -335,6 +335,14 @@ class toollabs::exec_environ {
         ensure => latest,
     }
 
+    file { '/etc/mysql/conf.d/override.my.cnf':
+        ensure => file,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/toollabs/override.my.cnf',
+    }
+
     # Packages that are different between precise and trusty go here.
     # Note: Every package *must* have equivalent package in both the
     # branches. If one is unavailable, please mark it as such with a comment.
