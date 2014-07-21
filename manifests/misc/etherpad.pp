@@ -74,7 +74,7 @@ class misc::etherpad_lite {
 
     monitor_service { 'etherpad-lite-https':
         description   => 'https.etherpad.wikimedia.org',
-        check_command => 'check_https_url_for_string!etherpad.wikimedia.org!/p/Etherpad!/<title>Etherpad',
+        check_command => 'check_https_url_for_string!etherpad.wikimedia.org!/p/Etherpad!\'<title>Etherpad\'',
     }
 
 
