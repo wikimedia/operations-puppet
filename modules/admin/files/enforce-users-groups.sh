@@ -7,7 +7,7 @@
 # a UID above the ID_BOUNDARY. Removals are logged to syslog.
 # with 'dryrun' as first arg exits 1 if cleanup is needed
 
-ID_BOUNDRY='500'
+ID_BOUNDRY='999'
 ARCHIVE_DIR='/var/userarchive'
 
 function log() {
