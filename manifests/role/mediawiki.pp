@@ -16,10 +16,10 @@ class role::mediawiki::common {
 }
 
 class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
-    include ::mediawiki
-    include ::apache::monitoring
     include ::role::mediawiki::common
+    include ::apache::monitoring
     include ::lvs::configuration
+    include ::mediawiki::web::sites
 
     class { '::mediawiki::web':
         workers_limit       => $workers_limit,

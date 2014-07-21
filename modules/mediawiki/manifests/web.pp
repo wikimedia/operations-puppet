@@ -1,6 +1,4 @@
-# mediawiki::web
-
-class mediawiki::web ( $workers_limit = undef) {
+class mediawiki::web( $workers_limit = undef ) {
     tag 'mediawiki', 'mw-apache-config'
 
     include ::mediawiki
@@ -39,6 +37,4 @@ class mediawiki::web ( $workers_limit = undef) {
     file { '/etc/apache2/wikimedia':
         ensure  => directory,
     }
-
-    include ::mediawiki::web::sites
 }
