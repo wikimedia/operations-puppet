@@ -13,10 +13,10 @@ class mediawiki::multimedia {
         minute  => '*/5',
     }
 
-    if $::lsbdistcodename == 'trusty' {
+    if ubuntu_version('>= trusty') {
         $libav_package   = 'libav-tools'
         $libvips_package = 'libvips37'
-    } elsif $::lsbdistcodename == 'precise' {
+    } else {
         $libav_package   = 'ffmpeg'
         $libvips_package = 'libvips15'
     }
@@ -35,13 +35,6 @@ class mediawiki::multimedia {
         'oggvideotools',
     ]:
         ensure => present,
-    }
-
-    file { '/etc/wikimedia-image-scaler':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
     }
 
     file { '/etc/fonts/conf.d/70-no-bitmaps.conf':

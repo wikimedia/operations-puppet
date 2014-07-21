@@ -68,10 +68,10 @@ class mediawiki::users {
     }
 
     file { '/home/l10nupdate/.ssh/authorized_keys':
+        source  => 'puppet:///modules/mediawiki/authorized_keys.l10nupdate',
         owner   => 'l10nupdate',
         group   => 'l10nupdate',
         mode    => '0400',
-        source  => 'puppet:///modules/mediawiki/authorized_keys.l10nupdate',
     }
 
     sudo_group { 'wikidev':
@@ -122,9 +122,9 @@ class mediawiki::users {
     }
 
     file { '/var/lib/pybal-check/.ssh/authorized_keys':
+        source  => 'puppet:///modules/mediawiki/pybal_key',
         owner   => 'pybal-check',
         group   => 'pybal-check',
         mode    => '0440',
-        source  => 'puppet:///modules/mediawiki/pybal_key',
     }
 }
