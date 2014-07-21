@@ -12,6 +12,8 @@ class role::beta::bastion {
     # Bring scap related scripts such as mw-update-l10n
     include ::beta::scap::master
 
+    include ::mediawiki::nutcracker
+
     file { '/data/project/apache':
         ensure => directory,
         owner  => 'mwdeploy',
