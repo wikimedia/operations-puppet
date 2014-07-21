@@ -57,5 +57,10 @@ class nutcracker( $server_list, $config_parameters = {} ) {
     service { 'nutcracker':
         ensure   => running,
         provider => 'upstart',
+        require  => [
+            File['/etc/default/nutcracker'],
+            File['/etc/nutcracker/nutcracker.yml'],
+            Package['nutcracker'],
+        ],
     }
 }
