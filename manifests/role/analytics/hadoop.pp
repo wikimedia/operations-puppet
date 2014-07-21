@@ -54,6 +54,7 @@ class role::analytics::hadoop::config {
     $mapreduce_output_compression_codec       = 'org.apache.hadoop.io.compress.SnappyCodec'
     $mapreduce_output_compression_type        = 'BLOCK'
     $mapreduce_job_reuse_jvm_num_tasks        = 1
+    $fair_scheduler_template                  = 'hadoop/fair-scheduler.xml.erb'
 
 
     # Configs specific to Production.
@@ -232,8 +233,10 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         mapreduce_task_io_sort_mb                => $mapreduce_task_io_sort_mb,
         mapreduce_task_io_sort_factor            => $mapreduce_task_io_sort_factor,
         yarn_nodemanager_resource_memory_mb      => $yarn_nodemanager_resource_memory_mb,
-        # use net-topology.py.erb to map hostname to /datacenter/rack/row id.
+        # Use net-topology.py.erb to map hostname to /datacenter/rack/row id.
         net_topology_script_template             => $net_topology_script_template,
+        # Use fair-scheduler.xml.erb to define FairScheduler queues.
+        fair_scheduler_template                  => $fair_scheduler_template,
     }
 
     # If in production AND the current node is a journalnode, then
