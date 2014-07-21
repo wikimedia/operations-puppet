@@ -1,10 +1,13 @@
-class mediawiki::web( $workers_limit = undef ) {
+# mediawiki::web
+
+class mediawiki::web ( $workers_limit = undef) {
     tag 'mediawiki', 'mw-apache-config'
 
     include ::apache
     include ::mediawiki
     include ::mediawiki::monitoring::webserver
 
+    $use_hhvm = ubuntu_version('>= trusty')
     $apache_server_limit = 256
 
     if is_integer($workers_limit) {
@@ -13,6 +16,18 @@ class mediawiki::web( $workers_limit = undef ) {
         $mem_available   = to_bytes($::memorytotal) * 0.7
         $mem_per_worker  = to_bytes('85M')
         $max_req_workers = min(floor($mem_available /$mem_per_worker), $apache_server_limit)
+    }
+
+    if $use_hhvm {
+        class { 'mediawiki::hhvm':
+            service => 'running',
+            before  => Service['apache2']
+        }
+    }
+
+    class { '::mediawiki::web::modules':
+        use_hhvm        => $use_hhvm,
+        max_req_workers => $max_req_workers
     }
 
     file { '/etc/apache2/apache2.conf':

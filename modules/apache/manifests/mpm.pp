@@ -45,14 +45,16 @@ class apache::mpm( $mpm = 'prefork' ) {
         before => Package[$rejected_pkgs],
     }
 
-    package { $rejected_pkgs:
-        ensure => absent,
-        before  => Package[$selected_pkg],
-    }
-
-    package { $selected_pkg:
-        ensure => present,
-        before => File[$selected_cfg],
+    #Those are not needed in modern apache packages.
+    if ubuntu_version('< trusty') {
+        package { $rejected_pkgs:
+            ensure  => absent,
+            before  => Package[$selected_pkg],
+        }
+        package { $selected_pkg:
+            ensure => present,
+            before => File[$selected_cfg],
+        }
     }
 
     file { $selected_cfg:
