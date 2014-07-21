@@ -98,7 +98,7 @@ class mediawiki::packages {
         ensure => present,
     }
 
-    if $::lsbdistcodename == 'precise' {
+    if ubuntu_version('precise') {
         package { [
             'libmemcached11',  # formerly a dependency for php5-memcached
             'php5-igbinary',   # no longer in use

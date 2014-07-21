@@ -35,6 +35,8 @@ class mediawiki::jobrunner (
 
     file { '/etc/jobrunner':
         ensure => directory,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0555',
         before => Service['jobrunner']
     }
@@ -47,13 +49,8 @@ class mediawiki::jobrunner (
         notify  => Service['jobrunner'],
     }
 
-    file { '/etc/jobrunner.ini':
-        ensure  => absent,
-        require => Service['jobrunner'],
-    }
-
     service { 'jobrunner':
-        ensure   => 'running',
+        ensure   => running,
         provider => 'upstart',
     }
 

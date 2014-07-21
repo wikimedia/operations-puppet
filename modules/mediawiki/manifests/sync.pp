@@ -35,8 +35,8 @@ class mediawiki::sync {
 
     file { '/usr/local/apache':
         ensure  => directory,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0755',
         replace => false,
     }
