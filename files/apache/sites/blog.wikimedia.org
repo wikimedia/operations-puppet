@@ -52,8 +52,8 @@ NameVirtualHost *:443
 	ServerName blog.wikimedia.org
 
         RewriteEngine On
-        RewriteRule ^/blog/(.*) http://blog.wikimedia.org/$1 [R]
-        RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R]
+        RewriteRule ^/blog/(.*) https://blog.wikimedia.org/$1 [R]
+        RewriteRule ^/category/(.*) https://blog.wikimedia.org/c/$1 [R]
 
 	DocumentRoot /srv/org/wikimedia/blog/
 
