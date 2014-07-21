@@ -22,7 +22,13 @@ class apache {
     include apache::mod::filter         # enables AddOutputFilterByType in 2.4
     include apache::mod::version        # enables <IfVersion> config guards
 
-    package { [ 'apache2', 'apache2-mpm-prefork' ]:
+    # In apache 2.4, packaging has changed and mpm-packages are dummy.
+    $apache2_packages = ubuntu_version('>= 13.10') ? {
+        true => ['apache2'],
+        default => [ 'apache2', 'apache2-mpm-prefork' ]
+    }
+
+    package { $apache2_packages:
         ensure => present,
     }
 
