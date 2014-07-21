@@ -67,6 +67,12 @@ class misc::etherpad_lite {
         check_command => 'nrpe_check_etherpad_lite';
     }
 
+    monitor_service { 'etherpad-lite-web':
+        description   => 'etherpad.wikimedia.org',
+        check_command => 'check_http_url!etherpad.wikimedia.org!/',
+    }
+
+
     #FIXME
     #service { apache2:
     #   enable => true,
