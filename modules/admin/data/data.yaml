@@ -727,8 +727,7 @@ users:
     gid: 500
     name: ezachte
     realname: Erik Zachte
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEA30NTewvOFOErJeFtgi+Bpf52+aGI3fmQtOgmsmBIIdnMXdJAdduKZU95OIvsCVCpGKdtT602Twp3R4tOoe001ObTDpF14i28zwYcXgk1VD+ErPpOqcO1S2Ojs1qAaOOGEMCo/yDYkfgT7qLiplX3q9JdVDLkSlVvm+NiWSmzqnU=
-        rsa-key-20040727]
+    ssh_keys: []
     uid: 523
   jamesur:
     ensure: present
