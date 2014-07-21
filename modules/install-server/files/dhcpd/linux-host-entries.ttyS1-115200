@@ -2932,6 +2932,21 @@ host nitrogen {
 	fixed-address nitrogen.wikimedia.org;
 }
 
+host ocg1001{
+	hardware ethernet F0:1F:AF:E8:AE:EA;
+	fixed-address ocg1001.eqiad.wmnet;
+}
+
+host ocg1002{
+	hardware ethernet F0:1F:AF:E8:BD:1F;
+	fixed-address ocg1002.eqiad.wmnet;
+}
+
+host ocg1003{
+	hardware ethernet F0:1F:AF:E6:81:60;
+	fixed-address ocg1003.eqiad.wmnet;
+}
+
 host osm-cp1001{
 	hardware ethernet d4:be:d9:f0:74:68;
 	fixed-address osm-cp1001.eqiad.wmnet;
