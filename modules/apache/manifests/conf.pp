@@ -53,10 +53,6 @@ define apache::conf(
 
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
     $conf_file   = sprintf('%02d-%s.conf', $priority, $title_safe)
-    $link_ensure = $ensure ? {
-        present => link,
-        default => absent,
-    }
 
     file { "/etc/apache2/${conf_type}-available/${conf_file}":
         ensure  => $ensure,
@@ -65,7 +61,7 @@ define apache::conf(
     }
 
     file { "/etc/apache2/${conf_type}-enabled/${conf_file}":
-        ensure  => $link_ensure,
+        ensure  => ensure_link($ensure),
         target  => "/etc/apache2/${conf_type}-available/${conf_file}",
         notify  => Service['apache2'],
     }

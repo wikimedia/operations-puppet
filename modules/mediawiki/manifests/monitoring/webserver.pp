@@ -2,16 +2,6 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
     include ::stdlib
     include ::apache
 
-    $dir_ensure = $ensure ? {
-        'present' => 'directory',
-        default   => $ensure
-    }
-
-    $link_ensure = $ensure ? {
-        'present' => 'link',
-        default   => $ensure
-    }
-
     $endpoints = {
         'apc' => 'apc_stats.php'
     }
@@ -19,7 +9,7 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
 
     # Basic vhost files
     file { '/var/www/monitoring':
-        ensure  => $dir_ensure,
+        ensure  => ensure_directory($ensure),
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

@@ -46,20 +46,16 @@ define limn::instance (
 
   # symlink $base_directory/var/{css,js,vendor}
   # in $var_directory
-  $symlink_ensure = $ensure ? {
-    present => 'link',
-    default => 'absent',
-  }
   file { "${var_directory}/css":
-    ensure => $symlink_ensure,
+    ensure => ensure_link($ensure),
     target => "${base_directory}/var/css",
   }
   file { "${var_directory}/js":
-    ensure => $symlink_ensure,
+    ensure => ensure_link($ensure),
     target => "${base_directory}/var/js",
   }
   file { "${var_directory}/vendor":
-    ensure => $symlink_ensure,
+    ensure => ensure_link($ensure),
     target => "${base_directory}/var/vendor",
   }
 
