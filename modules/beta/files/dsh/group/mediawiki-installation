@@ -1,3 +1,5 @@
+deployment-mediawiki01.eqiad.wmflabs
+deployment-mediawiki02.eqiad.wmflabs
 deployment-apache01.eqiad.wmflabs
 deployment-apache02.eqiad.wmflabs
 deployment-bastion.eqiad.wmflabs
