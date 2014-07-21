@@ -1,20 +1,20 @@
-uri             <% ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
+uri             <% @ldpaconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
 
-base            <%= ldapconfig["basedn"] %>
-binddn          cn=proxyagent,ou=profile,<%= ldapconfig["basedn"] %>
-bindpw          <%= ldapconfig["proxypass"] %>
+base            <%= @ldpaconfig["basedn"] %>
+binddn          cn=proxyagent,ou=profile,<%= @ldpaconfig["basedn"] %>
+bindpw          <%= @ldpaconfig["proxypass"] %>
 pam_filter      objectclass=posixAccount
-nss_base_passwd ou=people,<%= ldapconfig["basedn"] %>
-nss_base_shadow ou=people,<%= ldapconfig["basedn"] %>
-nss_base_group  ou=groups,<%= ldapconfig["basedn"] %>
-nss_base_hosts  ou=hosts,<%= ldapconfig["basedn"] %>
-nss_base_netgroup     ou=netgroup,<%= ldapconfig["basedn"] %>
+nss_base_passwd ou=people,<%= @ldpaconfig["basedn"] %>
+nss_base_shadow ou=people,<%= @ldpaconfig["basedn"] %>
+nss_base_group  ou=groups,<%= @ldpaconfig["basedn"] %>
+nss_base_hosts  ou=hosts,<%= @ldpaconfig["basedn"] %>
+nss_base_netgroup     ou=netgroup,<%= @ldpaconfig["basedn"] %>
 nss_schema      rfc2307bis
 nss_map_attribute   uniquemember member
 nss_map_objectclass groupofuniquenames groupofnames
-<% if realm == "labs" %>nss_override_attribute_value loginshell /bin/bash<% end %>
+<% if @realm == "labs" %>nss_override_attribute_value loginshell /bin/bash<% end %>
 tls_checkpeer   yes
-tls_cacertfile  /etc/ssl/certs/<%= ldapconfig["ca"] %>
+tls_cacertfile  /etc/ssl/certs/<%= @ldpaconfig["ca"] %>
 tls_cacertdir   /etc/ssl/certs
 ssl             start_tls
 pam_password    clear

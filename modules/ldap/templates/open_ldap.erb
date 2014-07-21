@@ -1,12 +1,12 @@
-BASE            <%= ldapconfig["basedn"] %>
-URI             <% ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
+BASE            <%= @ldpaconfig["basedn"] %>
+URI             <% @ldpaconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
 
-BINDDN          cn=proxyagent,ou=profile,<%= ldapconfig["basedn"] %>
-BINDPW          <%= ldapconfig["proxypass"] %>
+BINDDN          cn=proxyagent,ou=profile,<%= @ldpaconfig["basedn"] %>
+BINDPW          <%= @ldpaconfig["proxypass"] %>
 SSL             start_tls
 TLS_CHECKPEER   yes
 TLS_REQCERT     demand
 TLS_CACERTDIR   /etc/ssl/certs
-TLS_CACERTFILE  /etc/ssl/certs/<%= ldapconfig["ca"] %>
-TLS_CACERT      /etc/ssl/certs/<%= ldapconfig["ca"] %>
-<% if ldapincludes.include?('sudo') then %>SUDOERS_BASE    <%= ldapconfig["sudobasedn"] %><% end %>
+TLS_CACERTFILE  /etc/ssl/certs/<%= @ldpaconfig["ca"] %>
+TLS_CACERT      /etc/ssl/certs/<%= @ldpaconfig["ca"] %>
+<% if @ldapincludes.include?('sudo') then %>SUDOERS_BASE    <%= @ldpaconfig["sudobasedn"] %><% end %>

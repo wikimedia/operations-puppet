@@ -7,35 +7,35 @@ uid nslcd
 gid nslcd
 
 # The location at which the LDAP server(s) should be reachable.
-uri <% ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
+uri <% @ldpaconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
 
 # The search base that will be used for all queries.
-base <%= ldapconfig["basedn"] %>
+base <%= @ldpaconfig["basedn"] %>
 
-base passwd <%= ldapconfig["users_rdn"] %>,<%= ldapconfig["basedn"] %>
-base shadow <%= ldapconfig["users_rdn"] %>,<%= ldapconfig["basedn"] %>
-base group <%= ldapconfig["groups_rdn"] %>,<%= ldapconfig["basedn"] %>
+base passwd <%= @ldpaconfig["users_rdn"] %>,<%= @ldpaconfig["basedn"] %>
+base shadow <%= @ldpaconfig["users_rdn"] %>,<%= @ldpaconfig["basedn"] %>
+base group <%= @ldpaconfig["groups_rdn"] %>,<%= @ldpaconfig["basedn"] %>
 
 <% if @site == "eqiad" -%>
-base passwd <%= ldapconfig["users_rdn"] %>,ou=servicegroups,<%= ldapconfig["basedn"] %>
-base shadow <%= ldapconfig["users_rdn"] %>,ou=servicegroups,<%= ldapconfig["basedn"] %>
-base group ou=servicegroups,<%= ldapconfig["basedn"] %>
+base passwd <%= @ldpaconfig["users_rdn"] %>,ou=servicegroups,<%= @ldpaconfig["basedn"] %>
+base shadow <%= @ldpaconfig["users_rdn"] %>,ou=servicegroups,<%= @ldpaconfig["basedn"] %>
+base group ou=servicegroups,<%= @ldpaconfig["basedn"] %>
 <% elsif @realm == "labs" -%>
 <% if has_variable?("instanceproject") then -%>
-base passwd <%= ldapconfig["users_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= ldapconfig["basedn"] %>
-base shadow <%= ldapconfig["users_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= ldapconfig["basedn"] %>
-base group <%= ldapconfig["groups_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= ldapconfig["basedn"] %>
+base passwd <%= @ldpaconfig["users_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= @ldpaconfig["basedn"] %>
+base shadow <%= @ldpaconfig["users_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= @ldpaconfig["basedn"] %>
+base group <%= @ldpaconfig["groups_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= @ldpaconfig["basedn"] %>
 <% end %><% end -%>
 
 # The DN to bind with for normal lookups.
-binddn cn=proxyagent,ou=profile,<%= ldapconfig["basedn"] %>
-bindpw <%= ldapconfig["proxypass"] %>
+binddn cn=proxyagent,ou=profile,<%= @ldpaconfig["basedn"] %>
+bindpw <%= @ldpaconfig["proxypass"] %>
 
 # SSL options.
 ssl start_tls
 tls_reqcert demand
 tls_cacertdir /etc/ssl/certs
-tls_cacertfile /etc/ssl/certs/<%= ldapconfig["ca"] %>
+tls_cacertfile /etc/ssl/certs/<%= @ldpaconfig["ca"] %>
 
 
 <% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %># Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
@@ -43,7 +43,7 @@ validnames /^[a-z][.a-z0-9_-]*$/i<% end %>
 
 # Group mapping for sudo-ldap.
 <% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) < 0 %>map group uniquemember member<% end %>
-<% if realm == "labs" %>map passwd loginshell "/bin/bash"<% end %>
+<% if @realm == "labs" %>map passwd loginshell "/bin/bash"<% end %>
 
-pagesize <%= ldapconfig["pagesize"] %>
-<% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %>nss_min_uid <%= ldapconfig["nss_min_uid"] %><% end %>
+pagesize <%= @ldpaconfig["pagesize"] %>
+<% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %>nss_min_uid <%= @ldpaconfig["nss_min_uid"] %><% end %>
