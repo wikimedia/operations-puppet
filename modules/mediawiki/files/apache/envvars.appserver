@@ -22,5 +22,10 @@ fi
 # For Ubuntu 10.04+
 APACHE_PID_FILE="/var/run/apache2.pid"
 
+. /etc/lsb-release
+if [ "$DISTRIB_CODENAME" = "trusty" ]; then
+	export APACHE_ARGUMENTS="$APACHE_ARGUMENTS -D HHVM"
+fi
+
 # Don't crash when NFS goes down
 cd /
