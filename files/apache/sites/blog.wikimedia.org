@@ -100,20 +100,12 @@ NameVirtualHost *:443
 <VirtualHost *:81>
     ServerAdmin noc@wikimedia.org
     ServerName techblog.wikimedia.org
-    ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
                     RewriteEngine On
                     RewriteRule ^/feed/(.*) http://blog.wikimedia.org/c/technology/feed/$1 [R=301]
                     RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R=301]
                     RewriteRule ^/20(.*) http://blog.wikimedia.org/20$1 [R=301]
                     RewriteRule ^/wp-content/(.*) http://blog.wikimedia.org/wp-content/$1 [R=301]
-                    RewriteCond %{HTTP_HOST} ^communityblog.wikimedia.org
-                    RewriteRule ^/$ http://blog.wikimedia.org/c/community/ [R=301]
-                    RewriteCond %{HTTP_HOST} ^techblog.wikimedia.org
-                    RewriteRule ^/$ http://blog.wikimedia.org/c/technology/ [R=301]
-                    RewriteCond %{HTTP_HOST} ^globalblog.wikimedia.org
-                    RewriteRule ^/$ http://blog.wikimedia.org/c/global/ [R=301]
-                    RewriteCond %{HTTP_HOST} ^blog.wikimediafoundation.org
-                    RewriteRule ^/$ http://blog.wikimedia.org/ [R=301]
+                    RewriteRule ^/ http://blog.wikimedia.org/c/technology/ [R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -125,13 +117,11 @@ NameVirtualHost *:443
 	SSLCertificateKeyFile /etc/ssl/private/techblog.wikimedia.org.key
 	SSLCACertificatePath /etc/ssl/certs/
 
-	ServerAlias blog.wikimediafoundation.org
 		RewriteEngine On
 		RewriteRule ^/feed/(.*) https://blog.wikimedia.org/c/technology/feed/$1 [R=301]
 		RewriteRule ^/category/(.*) https://blog.wikimedia.org/c/$1 [R=301]
 		RewriteRule ^/20(.*) https://blog.wikimedia.org/20$1 [R=301]
 		RewriteRule ^/wp-content/(.*) https://blog.wikimedia.org/wp-content/$1 [R=301]
-		RewriteCond %{HTTP_HOST} ^techblog.wikimedia.org
-		RewriteRule ^/$ https://blog.wikimedia.org/c/technology/ [R=301]
+		RewriteRule ^/ https://blog.wikimedia.org/c/technology/ [R=301]
 
 </VirtualHost>
