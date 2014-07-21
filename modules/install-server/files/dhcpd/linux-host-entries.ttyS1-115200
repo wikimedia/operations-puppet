@@ -2935,16 +2935,22 @@ host nitrogen {
 host ocg1001{
 	hardware ethernet F0:1F:AF:E8:AE:EA;
 	fixed-address ocg1001.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ocg1002{
 	hardware ethernet F0:1F:AF:E8:BD:1F;
 	fixed-address ocg1002.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ocg1003{
 	hardware ethernet F0:1F:AF:E6:81:60;
 	fixed-address ocg1003.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host osm-cp1001{
