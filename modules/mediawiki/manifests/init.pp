@@ -1,15 +1,16 @@
 class mediawiki {
-    include ::mediawiki::users
-    include ::mediawiki::sync
     include ::mediawiki::cgroup
     include ::mediawiki::packages
+    include ::mediawiki::sync
+    include ::mediawiki::users
+
     include ::ssh::server
 
     file { '/etc/cluster':
+        content => $::site,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => $::site,
     }
 
     if $::realm == 'labs' {
