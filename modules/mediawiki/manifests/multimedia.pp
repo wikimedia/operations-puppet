@@ -46,18 +46,11 @@ class mediawiki::multimedia {
         target => '/etc/fonts/conf.avail/70-no-bitmaps.conf',
     }
 
-    file { '/a/magick-tmp':
+    file { [ '/a/magick-tmp', '/tmp/magick-tmp' ]:
         ensure  => directory,
         owner   => 'apache',
         group   => 'root',
         mode    => '0755',
-    }
-
-    file { '/tmp/magick-tmp':
-        ensure => directory,
-        owner  => 'apache',
-        group  => 'root',
-        mode   => '0755',
     }
 }
 

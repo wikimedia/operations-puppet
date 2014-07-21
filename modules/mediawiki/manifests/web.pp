@@ -3,9 +3,10 @@
 class mediawiki::web ( $workers_limit = undef) {
     tag 'mediawiki', 'mw-apache-config'
 
+    include ::apache
     include ::mediawiki
     include ::mediawiki::monitoring::webserver
-    include ::apache
+    include ::mediawiki::web::sites
 
     $apache_server_limit = 256
 
@@ -39,6 +40,4 @@ class mediawiki::web ( $workers_limit = undef) {
     file { '/etc/apache2/wikimedia':
         ensure  => directory,
     }
-
-    include ::mediawiki::web::sites
 }

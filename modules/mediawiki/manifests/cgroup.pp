@@ -4,11 +4,10 @@ class mediawiki::cgroup {
     }
 
     file { '/etc/init/mw-cgroup.conf':
-        ensure  => present,
+        source  => 'puppet:///modules/mediawiki/cgroup/mw-cgroup.conf',
         owner   => 'root',
         group   => 'root',
-        mode    => '0644',
-        source  => 'puppet:///modules/mediawiki/cgroup/mw-cgroup.conf',
+        mode    => '0444',
         require => Package['cgroup-bin'],
     }
 
@@ -19,10 +18,9 @@ class mediawiki::cgroup {
     }
 
     file { '/usr/local/bin/cgroup-mediawiki-clean':
-        ensure => present,
+        source => 'puppet:///modules/mediawiki/cgroup/cgroup-mediawiki-clean',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/mediawiki/cgroup/cgroup-mediawiki-clean',
     }
 }
