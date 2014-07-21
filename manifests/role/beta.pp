@@ -107,12 +107,8 @@ class role::beta::appserver {
 
     class { '::mediawiki::web': }
 
-    # bug 38996 - Apache service does not run on start, need a fake
-    # sync to start it up though don't bother restarting it is already
-    # running.
-    exec { 'beta_apache_start':
-        command => '/etc/init.d/apache2 start',
-        unless  => '/bin/ps -C apache2',
+    apache::site { 'beta_cluster':
+        content => "Include /usr/local/apache/conf/all.conf\n",
     }
 
     monitor_service { 'appserver http':
