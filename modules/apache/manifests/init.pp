@@ -57,6 +57,7 @@ class apache {
 
     file { [ '/etc/apache2/sites-enabled', '/etc/apache2/conf-enabled' ]:
         ensure  => directory,
+        source  => 'puppet:///modules/apache/conf-skel',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -66,7 +67,7 @@ class apache {
         require => Package['apache2'],
     }
 
-    if versioncmp($::lsbdistrelease, '14.04') < 0 {
+    if ubuntu_version('< trusty') {
         # Early releases of Apache manage configuration snippets in conf.d/.
         # We standardize on conf-enabled/*.conf with this small shim.
         file { '/etc/apache2/conf.d/load-conf-enabled.conf':
