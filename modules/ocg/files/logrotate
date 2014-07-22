@@ -11,4 +11,5 @@
        dateext
        compress
        missingok
+       create 644 syslog adm
 }
