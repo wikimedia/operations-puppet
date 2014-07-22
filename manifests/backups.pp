@@ -174,7 +174,7 @@ class backup::server {
     File <<| tag == "backup_host" |>>
 
     #service { xinetd:
-    #    ensure	=> stopped;
+    #    ensure => stopped;
     #}
 
     cron {
