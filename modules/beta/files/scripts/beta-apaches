@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# Send commands to the beta apache servers via salt
+
+set -e
+
+APACHE_ROLE=role::applicationserver::appserver::beta
+BATCH_SIZE="50%"
+ACTIONS=('start' 'stop' 'restart' 'graceful' 'graceful-stop' 'configtest')
+ACTION=
+
+function join() {
+    local IFS="$1"
+    shift
+    echo "$*"
+}
+
+function usage() {
+    echo
+    echo "Usage: $0 [OPTIONS] <ACTION>"
+    echo "Send commands to the beta apache servers via salt"
+    echo "  --help|-h              :  This help message"
+    echo "  --batch-size|-b <SIZE> : Number of hosts to message at once."
+    echo "                           Both percentages and finite numbers are supported."
+    echo "                           (default ${BATCH_SIZE})"
+    echo "  <ACTION>               : $(join '|' "${ACTIONS[@]}")"
+}
+
+while test "$#" -gt 0; do
+    case "$1" in
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        --batch-size|-b)
+            BATCH_SIZE="$2"
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            echo "Unknown option: '$1'" >&2
+            usage
+            exit 2
+            ;;
+        *)
+            if [[ -z $ACTION ]]; then
+                for e in "${ACTIONS[@]}"; do
+                    if [[ $e == $1 ]]; then
+                        ACTION=$1
+                        shift
+                    fi
+                done
+            fi
+            if [[ -z $ACTION ]]; then
+                echo "Unknown action: '$1'" >&2
+                usage
+                exit 2
+            fi
+            ;;
+    esac
+done
+
+# If required argument isn't present, show usage
+if [[ -z $ACTION ]]; then
+    echo "No action given." >&2
+    usage
+    exit 1
+fi
+
+# Run apache.signal via salt targeting nodes with the desired grain
+exec /usr/bin/sudo -- /usr/bin/salt \
+    -G "rolename:${APACHE_ROLE}" \
+    --batch-size "${BATCH_SIZE}" \
+    apache.signal "$1"
