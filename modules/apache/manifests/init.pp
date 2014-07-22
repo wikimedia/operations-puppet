@@ -21,8 +21,9 @@ class apache {
     include apache::mod::access_compat  # enables allow/deny syntax in 2.4
     include apache::mod::filter         # enables AddOutputFilterByType in 2.4
     include apache::mod::version        # enables <IfVersion> config guards
+    include apache::mpm                 # prefork by default
 
-    package { [ 'apache2', 'apache2-mpm-prefork' ]:
+    package { 'apache2':
         ensure => present,
     }
 
