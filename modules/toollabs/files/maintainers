@@ -1,20 +1,8 @@
-#! /bin/bash
+#!/bin/bash
 #
 # THIS FILE IS MAINTAINED BY PUPPET
 # source: modules/toollabs/files/maintainers
 # from:   toollabs::mailrelay
 #
 
-# FIXME: For nested service groups, this returns only the addresses of
-# users who are direct members of the service group queried, but not
-# of those who are members of the related service groups.  This should
-# be replaced by a proper recursive query with protections against
-# circular loops, etc.
-
-echo $(
-  (/usr/bin/ldapsearch -LLL -x -b "cn=$1,ou=servicegroups,dc=wikimedia,dc=org" member|grep member:|grep -v '^member: uid=\(local-\|tools\.\)'|while read x dn
-  do
-    /usr/bin/ldapsearch -LLL -x -b "$dn" mail
-  done) |
-  /bin/sed -ne '/^mail: \(.*\)/{;s//\1,/;p;}'
-) | sed -e 's/,\s*$//'
+/usr/bin/ldapsearch -b "cn=$1,ou=servicegroups,dc=wikimedia,dc=org" -LLL -o ldif-wrap=no -x member | sed -ne 's/^member: uid=\(.*\),ou=people,\(ou=servicegroups,\)\?dc=wikimedia,dc=org$/\1/p;'
