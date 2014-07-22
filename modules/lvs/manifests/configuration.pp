@@ -312,6 +312,7 @@ class lvs::configuration {
             'https' => {},
             'misc_web' => {},
             'mobile' => {},
+            'ocg' => {},
             'osm' => {},
             'search_pool1' => {},
             'search_pool2' => {},
