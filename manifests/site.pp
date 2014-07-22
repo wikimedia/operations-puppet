@@ -286,9 +286,6 @@ node 'argon.wikimedia.org' {
 }
 
 node 'bast1001.wikimedia.org' {
-    system::role { 'misc':
-        description => 'Bastion Server',
-    }
     $cluster = 'misc'
     $domain_search = 'wikimedia.org eqiad.wmnet pmtpa.wmnet esams.wikimedia.org'
 
@@ -313,7 +310,6 @@ node 'bast1001.wikimedia.org' {
 }
 
 node 'bast4001.wikimedia.org' {
-    system::role { 'misc': description => 'Operations Bastion' }
     $cluster = 'misc'
     $domain_search = 'wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet esams.wikimedia.org'
 
@@ -323,6 +319,7 @@ node 'bast4001.wikimedia.org' {
 
     include admin
     include standard
+    include bastionhost
     include misc::management::ipmi
     include role::installserver::tftp-server
 
@@ -1096,9 +1093,6 @@ node /es10(0[89]|10)\.eqiad\.wmnet/ {
 }
 
 node 'fenari.wikimedia.org' {
-    system::role { 'misc':
-        description => 'Bastion & NOC Server',
-    }
     $cluster = 'misc'
     $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org'
 
@@ -1284,6 +1278,7 @@ node 'iron.wikimedia.org' {
 
     include admin
     include standard
+    include bastionhost
     include misc::management::ipmi
     include role::access_new_install
 
