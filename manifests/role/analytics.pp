@@ -30,6 +30,13 @@ class role::analytics::clients {
         role::analytics::oozie::client,
         role::analytics::pig,
         role::analytics::sqoop
+
+    # jq is very useful, install it.
+    if !defined(Package['jq']) {
+        package { 'jq':
+            ensure => 'installed',
+        }
+    }
 }
 
 # == Class role::analytics::users
