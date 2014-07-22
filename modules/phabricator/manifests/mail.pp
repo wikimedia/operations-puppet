@@ -36,7 +36,7 @@ class phabricator::mail(
 
     file { '/usr/local/bin/phab_epipe.py':
         ensure  => file,
-        source => 'puppet:///modules/phabricator/phab_epipe.py',
+        source  => 'puppet:///modules/phabricator/phab_epipe.py',
         owner   => mail,
         group   => mail,
     }
