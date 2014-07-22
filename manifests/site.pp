@@ -1935,8 +1935,13 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     include role::mediawiki::jobrunner
 }
 
-# mw1017-1113 are apaches (precise)
-node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+# mw1053 is the HHVM jobrunner
+node 'mw1053.eqiad.wmnet' {
+    include standard
+}
+
+# mw1017-1052 are apaches (precise)
+node /^mw1(01[7-9]|0[2-4][0-9]|05[0-2])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
@@ -1950,6 +1955,23 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
     include role::mediawiki::appserver
 }
+
+# mw1054-1113 are apaches (precise)
+node /^mw1(05[4-9]|0[6-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+
+    class {'::admin': groups => ['deployment']}
+    $cluster = 'appserver'
+    if $::hostname =~ /^mw101[78]$/ {
+        $ganglia_aggregator = true
+    }
+
+    if $::hostname == 'mw1070' {
+        include misc::deployment::scap_proxy
+    }
+
+    include role::mediawiki::appserver
+}
+
 
 # mw1114-1148 are api apaches (precise)
 node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
