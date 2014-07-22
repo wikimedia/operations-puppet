@@ -85,9 +85,18 @@ class phabricator (
         $storage_pass = $mysql_admin_pass
     }
 
-    package {
-        ['git-core', 'php5', 'php5-mysql', 'php5-gd', 'php-apc', 'php5-mailparse',
-         'php5-dev', 'php5-curl', 'php5-cli', 'php5-json', 'php5-ldap']:
+    package { [
+        'git-core',
+        'php5',
+        'php5-mysql',
+        'php5-gd',
+        'php-apc',
+        'php5-mailparse',
+        'php5-dev',
+        'php5-curl',
+        'php5-cli',
+        'php5-json',
+        'php5-ldap']:
             ensure => present;
     }
 
@@ -134,8 +143,8 @@ class phabricator (
 
     file { $php_ini:
         content => template("phabricator/${lsbdistcodename}_php.ini.erb"),
-        notify  => Service[apache2],
-        require => Package[php5],
+        notify  => Service['apache2'],
+        require => Package['php5'],
     }
 
     file { "${phabdir}/phabricator/conf/local/local.json":
@@ -147,15 +156,15 @@ class phabricator (
     #default location for phabricator tracked repositories
     file { $phab_settings['repository.default-local-path']:
         ensure  => directory,
-        owner   => www-data,
-        group   => www-data,
+        owner   => 'www-data',
+        group   => 'www-data',
         require => Git::Install['phabricator/phabricator'],
     }
 
     file { '/usr/local/sbin/phab_update_tag':
         content => template('phabricator/phab_update_tag.erb'),
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0500',
     }
 
