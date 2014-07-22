@@ -14,10 +14,9 @@ tmpdir    = /srv/tmp
 server_id = <%= @server_id %>
 read_only = 0
 
-log_bin
-log_slave_updates
 skip-external-locking
 skip-name-resolve
+skip-slave-start
 temp-pool
 
 max_connections                = 1000
@@ -34,12 +33,6 @@ thread_cache_size              = 300
 interactive_timeout            = 28800
 wait_timeout                   = 3600
 plugin-load                    = ha_tokudb
-
-sync_binlog                    = 0
-binlog_cache_size              = 1M
-max_binlog_size                = 1000M
-binlog_format                  = MIXED
-expire_logs_days               = 3
 slave_transaction_retries      = 4294967295
 
 table_open_cache               = 50000
@@ -50,10 +43,10 @@ character_set_filesystem       = binary
 collation_server               = binary
 
 default-storage-engine         = Aria
-aria_pagecache_buffer_size     = 8G
+aria_pagecache_buffer_size     = <%= (Float(@memorysize.split[0]) * 0.05).round %>G
 innodb_data_home_dir           = /srv/innodb
 innodb_file_per_table          = 0
-innodb_buffer_pool_size        = 8G
+innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.25).round %>G
 innodb_log_file_size           = 2G
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
@@ -65,10 +58,19 @@ innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 innodb_locks_unsafe_for_binlog = 1
 tokudb_data_dir                = /srv/tokudb
-tokudb_cache_size              = 8G
+tokudb_cache_size              = <%= (Float(@memorysize.split[0]) * 0.50).round %>G
 join_cache_level               = 8
 
 optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,engine_condition_pushdown=on'
+
+s1.replicate-wild-do-table = %wik%.%
+s2.replicate-wild-do-table = %wik%.%
+s3.replicate-wild-do-table = %wik%.%
+s4.replicate-wild-do-table = %wik%.%
+s5.replicate-wild-do-table = %wik%.%
+s6.replicate-wild-do-table = %wik%.%
+s7.replicate-wild-do-table = %wik%.%
+s7.replicate-wild-do-table = %auth%.%
 
 [mysqldump]
 
