@@ -2181,12 +2181,10 @@ node 'nitrogen.wikimedia.org' {
 
 node /^ocg100[123]\.eqiad\.wmnet$/ {
     $gid = '500'
-
-    class { 'admin': groups => ['pdf-render-admins'] }
-
     include base::firewall
-    include role::ocg::production
     include standard
+    class { 'admin': groups => ['pdf-render-admins'] }
+    class { 'role::ocg::production': tmpfs_size => '5120M' }
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {

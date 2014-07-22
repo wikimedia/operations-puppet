@@ -5,8 +5,14 @@
 # Virtual resources for the monitoring server
 @monitor_group { 'ocg_eqiad': description => 'offline content generator eqiad' }
 
-class role::ocg::production {
-    system::role { 'ocg': description => 'offline content generator for MediaWiki Collection extension' }
+class role::ocg::production (
+        $tmpfs_size = '512M', # size of tmpfs filesystem e.g. 512M
+        $tmpfs_mountpoint = '/mnt/tmpfs',
+    ) {
+
+    system::role { 'ocg':
+        description => 'offline content generator for MediaWiki Collection extension',
+    }
 
     include passwords::redis
 
@@ -15,7 +21,8 @@ class role::ocg::production {
     if ( $::ocg_redis_server_override != undef ) {
         $redis_host = $::ocg_redis_server_override
     } else {
-        # Default host in the WMF production env... this needs a variable or something
+        # Default host in the WMF production env...
+        # this needs a variable or something
         $redis_host = 'rdb1002.eqiad.wmnet'
     }
 
@@ -33,10 +40,27 @@ class role::ocg::production {
         $graylog_host = 'logstash1002.eqiad.wmnet'
     }
 
+    file { $tmpfs_mountpoint:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    mount { $tmpfs_mountpoint:
+        ensure  => mounted,
+        device  => 'tmpfs',
+        fstype  => 'tmpfs',
+        options => "nodev,nosuid,noexec,nodiratime,size=${tmpfs_size}",
+        pass    => 0,
+        dump    => 0,
+        require => File[$tmpfs_mountpoint],
+    }
+
     class { '::ocg':
         redis_host         => $redis_host,
         redis_password     => $passwords::redis::main_password,
-        temp_dir           => '/mnt/tmpfs',
+        temp_dir           => $tmpfs_mountpoint,
         service_port       => $service_port,
         statsd_host        => $statsd_host,
         statsd_is_txstatsd => 1,
@@ -44,10 +68,10 @@ class role::ocg::production {
     }
 
     ferm::service { 'ocg-http':
-        proto => 'tcp',
+        proto  => 'tcp',
         port   => $service_port,
-        desc  => 'HTTP frontend to submit jobs and get status from pdf rendering',
-        srange => $INTERNAL
+        desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
+        srange => $::INTERNAL
     }
 
     monitor_service { 'ocg':
@@ -69,17 +93,16 @@ class role::ocg::test {
     class { '::ocg':
         redis_host         => 'localhost',
         redis_password     => $passwords::redis::ocg_test_password,
-        temp_dir           => '/mnt/tmpfs',
         service_port       => $service_port,
         statsd_host        => 'statsd.eqiad.wmnet',
         statsd_is_txstatsd => 1
     }
 
     ferm::service { 'ocg-http':
-        proto => 'tcp',
+        proto  => 'tcp',
         port   => $service_port,
-        desc  => 'HTTP frontend to submit jobs and get status from pdf rendering',
-        srange => $INTERNAL
+        desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
+        srange => $::INTERNAL
     }
 
     class { 'redis':

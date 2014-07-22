@@ -125,7 +125,7 @@ class ocg (
         require => User['ocg'],
         notify  => Service['ocg'],
     }
-        
+
     # Change this if you change the value of $nodebin
     include apparmor
     file { '/etc/apparmor.d/usr.bin.nodejs-pdf':
@@ -143,10 +143,14 @@ class ocg (
         group   => 'root',
     }
 
-    file { $temp_dir:
-        ensure  => directory,
-        owner   => 'ocg',
-        group   => 'ocg',
+    if $temp_dir == '/srv/deployment/ocg/tmp' {
+        file { $temp_dir:
+            ensure  => directory,
+            owner   => 'ocg',
+            group   => 'ocg',
+        }
+    } else {
+        File[$temp_dir] -> Class['ocg']
     }
 
     file { $output_dir:
@@ -155,7 +159,7 @@ class ocg (
         group   => 'ocg',
     }
 
-    cron { "Clean up OCG output directory":
+    cron { 'Clean up OCG output directory':
         ensure  => present,
         command => "find ${output_dir}* -mtime +5 -exec rm {} \\;",
         user    => 'ocg',
@@ -169,7 +173,7 @@ class ocg (
         group   => 'ocg',
     }
 
-    cron { "Clean up OCG postmortem directory":
+    cron { 'Clean up OCG postmortem directory':
         ensure  => present,
         command => "find ${output_dir}* -mtime +3 -exec rm {} \\;",
         user    => 'ocg',
