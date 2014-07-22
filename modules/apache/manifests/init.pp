@@ -22,7 +22,7 @@ class apache {
     include apache::mod::filter         # enables AddOutputFilterByType in 2.4
     include apache::mod::version        # enables <IfVersion> config guards
 
-    package { [ 'apache2', 'apache2-mpm-prefork' ]:
+    package { 'apache2':
         ensure => present,
     }
 
@@ -75,6 +75,8 @@ class apache {
             notify  => Service['apache2'],
         }
     }
+
+    apache::mpm { 'prefork': }
 
     apache::conf { 'defaults':
         source   => 'puppet:///modules/apache/defaults.conf',
