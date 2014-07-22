@@ -190,10 +190,12 @@ class ocg (
 
     # horrible hack to work around the fact that we can't currently add users to
     # group 'adm' alongside system user 'syslog', see RT: 7596
-    class { 'base::syslogs':
-        readable => true,
+    file { '/var/log/syslog':
+        mode => '0644',
     }
-    syslogs::readable { 'ocg/ocg.log': }
+    file { '/var/log/ocg/ocg.log':
+        mode => '0644',
+    }
 
     file { '/etc/logrotate.d/ocg':
         ensure  => present,
