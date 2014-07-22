@@ -32,9 +32,7 @@ class rcstream(
     $ensure       = present,
     $bind_address = '0.0.0.0',
 ) {
-    if versioncmp($::lsbdistrelease, '14.04') < 0 {
-        fail('requires 14.04+')
-    }
+    requires_ubuntu('> trusty')
 
     group { 'rcstream':
         ensure => present,

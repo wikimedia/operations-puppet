@@ -1,10 +1,7 @@
 # Packages that should only be on labs
 #
 class contint::packages::labs {
-
-    if $::realm == 'production' {
-        fail( 'contint::packages::labs must not be used in production' )
-    }
+    requires_realm('labs')
 
     Package['puppet-lint'] -> Class['contint::packages::labs']
 
