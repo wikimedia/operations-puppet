@@ -4,7 +4,6 @@ class mediawiki::web( $workers_limit = undef ) {
     include ::apache
     include ::mediawiki
     include ::mediawiki::monitoring::webserver
-    include ::mediawiki::web::sites
 
     $apache_server_limit = 256
 

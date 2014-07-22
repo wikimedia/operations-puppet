@@ -8,6 +8,7 @@ module Puppet::Parser::Functions
     raise(Puppet::ParseError, "min(): Wrong number of arguments " +
           "need at least one") if args.size == 0
 
-    return args.min
+    result = args.map(&:to_f).min
+    return result.to_i == result ? result.to_i : result
   end
 end
