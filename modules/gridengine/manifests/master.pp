@@ -11,10 +11,15 @@ class gridengine::master {
     }
 
     class monitoring {
+        package { 'gridengine-client':
+            ensure => latest,
+        }
+
         file { '/usr/local/sbin/grid-ganglia-report':
-            ensure => present,
-            mode   => '0555',
-            source => 'puppet:///modules/gridengine/grid-ganglia-report',
+            ensure  => present,
+            mode    => '0555',
+            source  => 'puppet:///modules/gridengine/grid-ganglia-report',
+            require => [Package['gridengine-client'], Package['libxml-libxml-perl']],
         }
 
         cron { 'grid-ganglia-report':
