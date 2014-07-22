@@ -3,7 +3,7 @@ port		= 3306
 socket		= /tmp/mysql.sock
 
 [mysqld]
-<% ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; %>
+<% ia = @ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; %>
 server_id=<%= server_id %>
 #read_only
 
@@ -48,7 +48,7 @@ temp-pool
 
 #innodb-use-purge-thread=1
 
-<% ram = memorysize.split[0]; ram = Float(ram) * 0.8; 
+<% ram = @memorysize.split[0]; ram = Float(ram) * 0.8; 
 ram = ram.round; ram = String(ram) + "G"; %>
 
 innodb-adaptive-flushing=1
