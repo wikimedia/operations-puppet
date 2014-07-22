@@ -16,5 +16,5 @@ ssldir = /var/lib/puppet/server/ssl/
 ssl_client_header = SSL_CLIENT_S_DN 
 ssl_client_verify_header = SSL_CLIENT_VERIFY
 <%- end -%>
-hostcert = /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
-hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
+hostcert = /var/lib/puppet/server/ssl/certs/<%= @fqdn %>.pem
+hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= @fqdn %>.pem
