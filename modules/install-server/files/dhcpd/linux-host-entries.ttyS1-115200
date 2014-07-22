@@ -1434,6 +1434,13 @@ host iron {
 	fixed-address iron.wikimedia.org;
 }
 
+host labmon1001 {
+	hardware ethernet 90:B1:1C:2D:79:8C;
+	fixed-address labmon1001.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host labnet1001 {
 	hardware ethernet d4:be:d9:af:66:ba;
 	fixed-address labnet1001.eqiad.wmnet;
@@ -1457,6 +1464,16 @@ host labsdb1004 {
 host labsdb1005 {
 	hardware ethernet d4:ae:52:76:5c:b2;
 	fixed-address labsdb1005.eqiad.wmnet;
+}
+
+host labsdb1006 {
+	hardware ethernet d4:be:d9:f0:21:31;
+	fixed-address labsdb1006.eqiad.wmnet;
+}
+
+host labsdb1007 {
+	hardware ethernet d4:be:d9:f0:0d:81;
+	fixed-address labsdb1007.eqiad.wmnet;
 }
 
 host lanthanum {
@@ -2973,16 +2990,6 @@ host osm-cp1003 {
 host osm-cp1004 {
 	hardware ethernet  d4:be:d9:f0:77:fe;
 	fixed-address osm-cp1004.eqiad.wmnet;
-}
-
-host labsdb1006 {
-	hardware ethernet d4:be:d9:f0:21:31;
-	fixed-address labsdb1006.eqiad.wmnet;
-}
-
-host labsdb1007 {
-	hardware ethernet d4:be:d9:f0:0d:81;
-	fixed-address labsdb1007.eqiad.wmnet;
 }
 
 host osmium {
