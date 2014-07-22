@@ -73,7 +73,7 @@
 	SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
 	SSLCACertificatePath /etc/ssl/certs/
 
-	Header set Strict-Transport-Security "max-age=604800"
+	Header set Strict-Transport-Security "max-age=31536000"
 
 	<Directory />
 		Options FollowSymLinks
