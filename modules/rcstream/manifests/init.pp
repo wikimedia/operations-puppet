@@ -32,7 +32,7 @@ class rcstream(
     $ensure       = present,
     $bind_address = '0.0.0.0',
 ) {
-    requires_ubuntu('> trusty')
+    requires_ubuntu('>= trusty')
 
     group { 'rcstream':
         ensure => present,
