@@ -2156,6 +2156,16 @@ node 'nitrogen.wikimedia.org' {
     }
 }
 
+node /^ocg100[123]\.eqiad\.wmnet$/ {
+    $gid = '500'
+
+    class { 'admin': groups => ['pdf-render-admins'] }
+
+    include base::firewall
+    include role::ocg::production
+    include standard
+}
+
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
     include admin
     include standard-noexim
