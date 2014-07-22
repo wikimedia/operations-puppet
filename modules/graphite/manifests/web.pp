@@ -6,7 +6,7 @@
 # === Parameters
 #
 # [*uwsgi_processes*]
-#   Number of uWSGI workers to run.
+#   Number of uWSGI workers to run (default: 8).
 #
 # [*memcached_size*]
 #   Size of memcached store, in megabytes (default: 200).
@@ -33,7 +33,7 @@ class graphite::web(
     $admin_pass,
     $secret_key,
     $storage_dir,
-    $uwsgi_processes   = 4,
+    $uwsgi_processes   = 8,
     $memcached_size    = 200,
     $admin_user        = 'admin',
     $documentation_url = 'http://graphite.readthedocs.org/',
