@@ -72,16 +72,14 @@ class hhvm(
             dynamic_extension_path   => '/usr/lib/hphp/extensions/current',
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
-            include_path             => '.:/usr/share/php:/usr/share/pear',
+            include_path             => '.:/usr/share/php',
             mysql                    => { typed_results => false },
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
             log                      => {
-                always_log_unhandled_exceptions => true,
-                header                          => true,
-                level                           => 'Error',
-                runtime_error_reporting_level   => 8191,  # bitmask; see hphp/runtime/base/runtime-error.h / http://git.io/jcNNFA
-                                                          # equivalent to (PHP_ALL | STRICT) & ~(PHP_DEPRECATED | USER_DEPRECATED)
+                header             => true,
+                level              => 'Error',
+                native_stack_trace => true,
             },
         },
     }
@@ -213,12 +211,14 @@ class hhvm(
         owner  => $user,
         group  => $group,
         mode   => '0755',
+        before => Service['hhvm'],
     }
 
     file { '/run/hhvm/cache':
-        ensure  => directory,
-        owner   => $user,
-        group   => $group,
-        mode    => '0750',
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0750',
+        before => Service['hhvm'],
     }
 }
