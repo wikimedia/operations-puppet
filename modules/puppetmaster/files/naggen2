@@ -115,7 +115,7 @@ def main():
                         choices=['services', 'hosts', 'hostextinfo'])
     parser.add_argument('--age',
                         dest='age',
-                        help='minimum age as mysql interval (def: 1 HOUR)'
+                        help='minimum age as mysql interval (def: 1 HOUR)',
                         default='1 HOUR')
     parser.add_argument(
         '--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
