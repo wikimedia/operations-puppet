@@ -21,8 +21,13 @@ class mediawiki::jobrunner::hhvm {
         }
     }
 
+    #temporary while we work out luasandbox issues
+    package { 'lua5.1':
+        ensure => present
+    }
+
     # ensure hhvm is the chosen runtime for /usr/bin/php
-    alternatives::config{ 'php':
+    alternatives::config { 'php':
         path        => '/usr/bin/hhvm',
         require     => Package['hhvm']
     }
