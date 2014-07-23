@@ -15,6 +15,6 @@ hhvm.log.use_syslog = true
 hhvm.repo.central.path = /run/hhvm/hhvm.hhbc.sq3
 hhvm.mysql.typed_results = false
 
-<% @ini_overrides.sorted.each do |k,v| -%>
+<% @ini_overrides.sort.each do |k,v| -%>
 <%= k %> = <%= v %> 
 <% end -%>
