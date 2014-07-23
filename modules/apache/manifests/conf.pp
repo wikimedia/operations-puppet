@@ -58,6 +58,9 @@ define apache::conf(
         ensure  => $ensure,
         content => $content,
         source  => $source,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     file { "/etc/apache2/${conf_type}-enabled/${conf_file}":
