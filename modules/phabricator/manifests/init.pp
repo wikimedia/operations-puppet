@@ -62,6 +62,7 @@ class phabricator (
     $mysql_admin_user = '',
     $mysql_admin_pass = '',
     $serveradmin      = '',
+    $auth_type        = '',
 ) {
 
     #A combination of static and dynamic conf parameters must be merged
@@ -71,7 +72,15 @@ class phabricator (
     #per stdlib merge the dynamic settings will take precendence for conflicts
     $phab_settings = merge($fixed_settings, $settings)
 
-    $phab_settings['auth.login-message'] = template('phabricator/auth_log_message.erb')
+    # depending on what type of auth we use (SUL,LDAP,both,others) we change
+    # which template we use for the login message
+    case $auth_type {
+        'sul':  { $auth_template = 'auth_log_message_sul.erb' }
+        'dual': { $auth_template = 'auth_log_message_dual.erb'}
+        default: { fail ('please set an auth type for the login message') }
+    }
+
+    $phab_settings['auth.login-message'] = template($auth_template)
 
     if empty(mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']
