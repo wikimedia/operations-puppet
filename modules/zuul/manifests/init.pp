@@ -78,8 +78,7 @@ class zuul (
     refreshonly => true,
     subscribe   => Git::Clone['integration/zuul'],
     require     => [
-      Package['python-pip'],
-      Package['python-setuptools'],
+      Package[$packages],
     ],
   }
 
