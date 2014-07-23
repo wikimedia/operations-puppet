@@ -84,37 +84,36 @@ cgi.assign = (
 )
 
 EOF
- 
-cat <<EOF >$runbase-php.conf~
- 
-fastcgi.server += ( ".php" =>
-        ((
-                "bin-path" => "/usr/bin/php-cgi",
-                "socket" => "/tmp/php.socket.$tool",
-                "max-procs" => 2,
-                "bin-environment" => (
-                        "PHP_FCGI_CHILDREN" => "2",
-                        "PHP_FCGI_MAX_REQUESTS" => "500"
-                ),
-                "bin-copy-environment" => (
-                        "PATH", "SHELL", "USER"
-                ),
-                "broken-scriptfilename" => "enable",
-                "allow-x-send-file" => "enable",
-         ))
-)
-EOF
 
 /usr/share/lighttpd/create-mime.assign.pl >>$runbase.conf~
 
 if [ -r $home/.lighttpd.conf ]; then
   cat $home/.lighttpd.conf >>$runbase.conf~
   if [[ ! $(cat "$home/.lighttpd.conf" | grep -P '^(?:[ \t]*fastcgi.server[ \t\+\(=]+".php"|#no-default-php)') ]]; then
-     cat $runbase-php.conf~ >>$runbase.conf~
+
+cat <<EOF >>$runbase.conf~
+fastcgi.server += ( ".php" =>
+	((
+	        "bin-path" => "/usr/bin/php-cgi",
+	        "socket" => "/tmp/php.socket.$tool",
+	        "max-procs" => 2,
+	        "bin-environment" => (
+	                "PHP_FCGI_CHILDREN" => "2",
+	                "PHP_FCGI_MAX_REQUESTS" => "500"
+	        ),
+	        "bin-copy-environment" => (
+	                "PATH", "SHELL", "USER"
+	        ),
+	        "broken-scriptfilename" => "enable",
+	        "allow-x-send-file" => "enable"
+	 ))
+)
+EOF
+
   fi
 fi
 
 mv $runbase.conf~ $runbase.conf
-
+cp $runbase.conf $home/runbase.conf
 exec /usr/sbin/lighttpd -f $runbase.conf -D >>$home/error.log 2>&1
 
