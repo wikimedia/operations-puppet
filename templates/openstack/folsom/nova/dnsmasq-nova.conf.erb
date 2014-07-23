@@ -1,6 +1,6 @@
 #default is 150, not enough.
 cache-size=1200
-<% @nova_dnsmasq_aliases.each do |k,v| -%>
+<% @nova_dnsmasq_aliases.sort.map do |k,v| -%>
 # <%= k %>
 alias=<%= v['public_ip'] %>,<%= v['private_ip'] %>
 <% end -%>
