@@ -80,7 +80,7 @@ class phabricator (
         default: { fail ('please set an auth type for the login message') }
     }
 
-    $phab_settings['auth.login-message'] = template($auth_template)
+    $phab_settings['auth.login-message'] = template("phabricator/${auth_template}")
 
     if empty(mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']
