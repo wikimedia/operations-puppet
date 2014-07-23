@@ -87,6 +87,8 @@ class misc::statistics::packages {
         'zpubsub',
         # libwww-perl for wikistats stuff
         'libwww-perl',
+        'libgdal1-dev', # Requested by lzia for rgdal
+        'libproj-dev', # Requested by lzia for rgdal
     ]:
         ensure => 'latest',
     }
