@@ -1303,6 +1303,7 @@ node 'labsdb1001.eqiad.wmnet' {
             },
         }
     }
+    include role::mariadb::labs
 }
 
 node 'labsdb1002.eqiad.wmnet' {
@@ -1388,6 +1389,7 @@ node 'labsdb1003.eqiad.wmnet' {
             },
         }
     }
+    include role::mariadb::labs
 }
 
 node 'labsdb1004.eqiad.wmnet' {
