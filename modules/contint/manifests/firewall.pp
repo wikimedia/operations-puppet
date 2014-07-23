@@ -2,6 +2,7 @@
 class contint::firewall {
 
     include base::firewall
+    include network::constants
 
     # Restrict some services to be only reacheable from localhost over both
     # IPv4 and IPv6 (to be safe)
@@ -14,11 +15,13 @@ class contint::firewall {
     ferm::rule { 'zuul_localhost_only':
         rule => 'proto tcp dport 8001 { saddr (127.0.0.1 ::1) ACCEPT; }'
     }
+
     # Gearman is used between Zuul and the Jenkin master, both on the same
     # server and communicating over localhost.
-    # It is also used by Zuul merger daemon. The IPs will need to be collected
-    ferm::rule { 'gearman_localhost_only':
-        rule => 'proto tcp dport 4730 { saddr (127.0.0.1 208.80.154.135 ::1) ACCEPT; }'
+    # It is also used by Zuul merger daemons.
+    $zuul_merger_hosts = flatten($::network::constants::contint_zuul_merger_hosts[$::realm])
+    ferm::rule { 'gearman_from_zuul_merger':
+        rule => "proto tcp dport 4730 { saddr (127.0.0.1 ::1 $zuul_merger_hosts) ACCEPT; }"
     }
 
     # The master runs a git-daemon process used by slave to fetch changes from
