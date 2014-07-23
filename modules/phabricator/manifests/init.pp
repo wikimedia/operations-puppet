@@ -109,6 +109,7 @@ class phabricator (
             ensure => present;
     }
 
+    include apache::mod::php5
     include apache::mod::rewrite
 
     $docroot = "${phabdir}/phabricator/webroot"
