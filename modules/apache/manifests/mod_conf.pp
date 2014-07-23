@@ -2,6 +2,11 @@
 #
 # Custom resource for managing the configuration of Apache modules.
 #
+# apache::mod and apache::mpm expose a higher-level interface for
+# configuring Apache. You probably want to use one of those instead
+# of this defined type, which is used internally by other members
+# of the Apache module.
+#
 # === Parameters
 #
 # [*mod*]
