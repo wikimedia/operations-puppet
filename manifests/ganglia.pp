@@ -155,6 +155,7 @@ class ganglia {
             'analytics_kafka' => {
                 'name'      => 'Analytics Kafka cluster',
                 'ip_oct'    => '45' },
+            # TODO: Add mathoid servers here
         }
         # NOTE: Do *not* add new clusters *per site* anymore,
         # the site name will automatically be appended now,

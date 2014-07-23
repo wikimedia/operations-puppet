@@ -21,10 +21,10 @@ groups:
     gid: 702
     description: RT 5934
     members: [ssastry, cscott]
-    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload']
+    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
   gerrit-root:
     gid: 703
     description: manage gerrit server
@@ -177,7 +177,19 @@ groups:
     gid: 728
     description: developers on the PDF QA system
     members: [mwalker, maxsem, anomie, cscott]
-
+  mathoid-roots:
+    gid: 729
+    description: changethis
+    members: [gwicke]
+    privs: ['ALL = (parsoid) NOPASSWD: ALL']
+  mathoid-admin:
+    gid: 730
+    description: changethis
+    members: [ssastry, cscott]
+    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
 users:
   rush:
     ensure: present

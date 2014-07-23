@@ -1,0 +1,18 @@
+#! /bin/bash
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/misc/mathoid
+#####################################################################
+
+# Script to start mathoid
+
+(
+	cd /var/lib/mathoid
+	export NODE_PATH=/var/lib/mathoid/node_modules
+	sudo -E -u mathoid nohup node /var/lib/mathoid/mathoid.js > /var/lib/mathoid/nohup.out 2>&1 &
+	MATHOIDPID=$!
+	echo $PMATHOIDPID > /var/run/mathoid.pid
+	wait $MATHOIDPID
+	rm /var/run/mathoid.pid
+) &
