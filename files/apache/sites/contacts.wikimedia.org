@@ -4,6 +4,12 @@
 
         DocumentRoot /srv/org/wikimedia/contacts/
 
+        RewriteEngine on
+        RewriteCond %{HTTP:X-Forwarded-Proto} !https
+        RewriteCond %{REQUEST_URI} !^/status$
+        RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+        Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
