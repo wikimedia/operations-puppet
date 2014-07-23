@@ -1,0 +1,31 @@
+# vim: set ft=upstart:
+
+description "Mathoid HTTP service"
+
+start on (local-filesystem and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+# up ulimit -n a bit
+limit nofile 10000 10000
+
+setuid "mathoid"
+setgid "mathoid"
+
+env DEFAULTFILE=/etc/default/mathoid
+
+# Basic built-in defaults. Overridden by whatever
+# is defined in the DEFAULTFILE defined above.
+env NODE_PATH="/usr/lib/mathoid/node_modules"
+env MATHOID_BASE_PATH="/usr/lib/mathoid"
+env MATHOID_LOG_FILE="/var/log/mathoid/mathoid.log"
+env MATHOID_PORT="10042"
+
+respawn
+
+script
+    if [ -f "$DEFAULTFILE" ] ; then
+        . "$DEFAULTFILE"
+    fi
+    chdir "$MATHOID_BASE_PATH"
+    exec /usr/bin/nodejs mathoid.js < /dev/null >> "$MATHOID_LOG_FILE" 2>&1
+end script
