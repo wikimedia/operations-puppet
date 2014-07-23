@@ -55,11 +55,7 @@ class subversion ($host){
         require => File['/var/cache/svnusers'],
     }
 
-    file { '/etc/apache2/sites-enabled/svn':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+    ::apache::site { 'svn':
         source => "puppet:///modules/subversion/apache/${host}",
     }
 }
-
