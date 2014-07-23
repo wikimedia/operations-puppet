@@ -31,3 +31,10 @@ cdbranch() {
 bump() {
     git submodule update --init --recursive extensions/$1
 }
+
+deploy() {
+    cd /srv/deployment/$1/*
+    git deploy start
+    [ "$1" = "--no-update" ] || git pull
+    git deploy sync
+}
