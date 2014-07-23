@@ -1435,7 +1435,7 @@ host iron {
 }
 
 host labmon1001 {
-	hardware ethernet 90:B1:1C:2D:79:8C;
+	hardware ethernet F0:1F:AF:E8:B1:77;
 	fixed-address labmon1001.eqiad.wmnet;
 	option pxelinux.pathprefix "trusty-installer/";
 	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
