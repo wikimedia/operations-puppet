@@ -8,7 +8,7 @@
 
 # Space separated list of addresses 389 and 636 should forward to, defaults
 # to all configured IPs. Used to configure iptables
-BINDADDRS="<%= server_bind_ips %>"
+BINDADDRS="<%= @server_bind_ips %>"
 
 # increase the number of open file descriptors
 # note: the init script uses start-stop-daemon which doesn't do PAM, hence
