@@ -32,10 +32,6 @@ if [ "$(getent group $user | cut -d : -f 1)" != "$user" ]; then
 fi
 spool="/var/run/lighttpd"
 runbase="$spool/$tool"
-workers=5
-if [ -r "/data/project/.system/config/$tool.workers" ]; then
-  workers=$(cat "/data/project/.system/config/$tool.workers")
-fi
 
 if [ "$home" = "" -o ! -d "$home/public_html" ]; then
   echo "$1 does not have a public_html" >&2
@@ -65,10 +61,9 @@ server.pid-file = "$runbase.pid"
 server.errorlog = "$home/error.log"
 server.breakagelog = "$home/error.log"
 server.follow-symlink = "enable"
-server.max-connections = $[$workers*4]
-server.max-keep-alive-idle = 60
-server.max-worker = $workers
+server.max-connections = 300
 server.stat-cache-engine = "fam"
+server.event-handler = "linux-sysepoll"
 ssl.engine = "disable"
 
 alias.url = ( "/$tool" => "$home/public_html/" )
@@ -88,31 +83,36 @@ cgi.assign = (
   ".pyc" => "/usr/bin/python",
 )
 
-fastcgi.server += ( ".php" =>
-        ((
-                "bin-path" => "/usr/bin/php-cgi",
-                "socket" => "/tmp/php.socket.$tool",
-                "max-procs" => 1,
-                "bin-environment" => (
-                        "PHP_FCGI_CHILDREN" => "4",
-                        "PHP_FCGI_MAX_REQUESTS" => "10000"
-                ),
-                "bin-copy-environment" => (
-                        "PATH", "SHELL", "USER"
-                ),
-                "broken-scriptfilename" => "enable",
-                "allow-x-send-file" => "enable"
-        ))
-)
-
 EOF
 
 /usr/share/lighttpd/create-mime.assign.pl >>$runbase.conf~
+
 if [ -r $home/.lighttpd.conf ]; then
   cat $home/.lighttpd.conf >>$runbase.conf~
+  if [[ ! $(cat "$home/.lighttpd.conf" | grep -P '^(?:[ \t]*fastcgi.server[ \t\+\(=]+".php"|#no-default-php)') ]]; then
+
+cat <<EOF >>$runbase.conf~
+fastcgi.server += ( ".php" =>
+	((
+	        "bin-path" => "/usr/bin/php-cgi",
+	        "socket" => "/tmp/php.socket.$tool",
+	        "max-procs" => 2,
+	        "bin-environment" => (
+	                "PHP_FCGI_CHILDREN" => "2",
+	                "PHP_FCGI_MAX_REQUESTS" => "500"
+	        ),
+	        "bin-copy-environment" => (
+	                "PATH", "SHELL", "USER"
+	        ),
+	        "broken-scriptfilename" => "enable",
+	        "allow-x-send-file" => "enable"
+	 ))
+)
+EOF
+
+  fi
 fi
 
 mv $runbase.conf~ $runbase.conf
 
 exec /usr/sbin/lighttpd -f $runbase.conf -D >>$home/error.log 2>&1
-
