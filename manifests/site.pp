@@ -1933,8 +1933,12 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 
 # mw1053 is the HHVM jobrunner
 node 'mw1053.eqiad.wmnet' {
-    include standard
+
+    class {'::admin': groups => ['deployment']}
     $cluster = 'jobrunner'
+
+    include role::mediawiki::jobrunner
+    include mediawiki::jobrunner::hhvm
 }
 
 # mw1017-1052 are apaches (precise)

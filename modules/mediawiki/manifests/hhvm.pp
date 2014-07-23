@@ -45,7 +45,7 @@ class mediawiki::hhvm(
     }
 
     file { 'hhvm_config_ini':
-        path    => '/etc/hhvm/hhvm.ini',
+        path    => '/etc/hhvm/php.ini',
         ensure  => present,
         content => template('mediawiki/hhvm/hhvm.ini.erb'),
         require => Package['hhvm']
