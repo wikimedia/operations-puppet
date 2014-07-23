@@ -3,6 +3,10 @@
 #### puppet:///modules/install-server/dhcpd/linux-host-entries.ttyS1-115200
 ######################################################################
 
+host actinium {
+	hardware ethernet 84:2b:2b:fd:bc:fc;
+	fixed-address actinium.eqiad.wmnet;
+}
 
 host aluminium {
 	hardware ethernet d4:ae:52:65:05:2a;
