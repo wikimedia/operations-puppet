@@ -16,6 +16,7 @@ class role::phabricator::legalpad {
         lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $::mysql_adminuser,
         mysql_admin_pass => $::mysql_adminpass,
+        auth_type        => 'sul',
         settings         => {
             'darkconsole.enabled'                => true,
             'phabricator.base-uri'               => 'https://legalpad.wikimedia.org',
@@ -47,6 +48,7 @@ class role::phabricator::main {
         lock_file => '/var/run/phab_repo_lock',
         mysql_admin_user => $::mysql_adminuser,
         mysql_admin_pass => $::mysql_adminpass,
+        auth_type => 'dual',
         settings  => {
             'storage.upload-size-limit'              => '10M',
             'darkconsole.enabled'                    => false,
@@ -90,6 +92,7 @@ class role::phabricator::labs {
     class { '::phabricator':
         git_tag   => $current_tag,
         lock_file => '/var/run/phab_repo_lock',
+        auth_type => 'dual',
         settings  => {
             'darkconsole.enabled'                => true,
             'phabricator.base-uri'               => "http://${::hostname}.wmflabs.org",
