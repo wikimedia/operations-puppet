@@ -16,8 +16,8 @@ class mediawiki::jobrunner::hhvm {
     class { '::mediawiki::hhvm':
         service       => 'stopped',
         ini_overrides => {
-            'hhvm.repo.local.mode' => '--',
-            'max_execution_time'   => 86400, # yes, one day.
+            'hhvm.repo.local.mode'        => '--',
+            'max_execution_time'          => 86400, # yes, one day.
         }
     }
 
