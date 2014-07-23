@@ -32,7 +32,7 @@ class apache::mpm( $mpm = 'prefork' ) {
     $rejected_mods = prefix($rejected_mpms, 'mpm_')
     $rejected_pkgs = prefix($rejected_mpms, 'apache2-mpm-')
 
-    if $selected_mod != 'prefork' {
+    if $mpm != 'prefork' {
         # mod_php5 is unsafe for threaded MPMs
         apache::mod_conf { 'php5':
             ensure => absent,
