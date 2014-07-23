@@ -26,6 +26,7 @@ class apache::mod::proxy_http      { apache::mod_conf { 'proxy_http':     } }
 class apache::mod::rewrite         { apache::mod_conf { 'rewrite':        } }
 class apache::mod::ssl             { apache::mod_conf { 'ssl':            } }
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
+class apache::mod::status          { apache::mod_conf { 'status':         } }
 
 
 # Modules that depend on additional packages
