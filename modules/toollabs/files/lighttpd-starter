@@ -89,28 +89,29 @@ EOF
 
 if [ -r $home/.lighttpd.conf ]; then
   cat $home/.lighttpd.conf >>$runbase.conf~
-  if [[ ! $(cat "$home/.lighttpd.conf" | grep -P '^(?:[ \t]*fastcgi.server[ \t\+\(=]+".php"|#no-default-php)') ]]; then
+fi
+
+if [ ! -r $home/.lighttpd.conf ] || [[ ! $(cat "$home/.lighttpd.conf" | grep -P '^(?:[ \t]*fastcgi.server[ \t\+\(=]+".php"|#no-default-php)') ]]; then
 
 cat <<EOF >>$runbase.conf~
 fastcgi.server += ( ".php" =>
-	((
-	        "bin-path" => "/usr/bin/php-cgi",
-	        "socket" => "/tmp/php.socket.$tool",
-	        "max-procs" => 2,
-	        "bin-environment" => (
-	                "PHP_FCGI_CHILDREN" => "2",
-	                "PHP_FCGI_MAX_REQUESTS" => "500"
-	        ),
-	        "bin-copy-environment" => (
-	                "PATH", "SHELL", "USER"
-	        ),
-	        "broken-scriptfilename" => "enable",
-	        "allow-x-send-file" => "enable"
-	 ))
+        ((
+                "bin-path" => "/usr/bin/php-cgi",
+                "socket" => "/tmp/php.socket.$tool",
+                "max-procs" => 2,
+                "bin-environment" => (
+                        "PHP_FCGI_CHILDREN" => "2",
+                        "PHP_FCGI_MAX_REQUESTS" => "500"
+                ),
+                "bin-copy-environment" => (
+                        "PATH", "SHELL", "USER"
+                ),
+                "broken-scriptfilename" => "enable",
+                "allow-x-send-file" => "enable"
+         ))
 )
 EOF
 
-  fi
 fi
 
 mv $runbase.conf~ $runbase.conf
