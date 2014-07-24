@@ -136,6 +136,10 @@ groups:
     gid: 721
     description: admins for pdf render (rt 6468)
     members: [mwalker]
+    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service ocg reload']
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
