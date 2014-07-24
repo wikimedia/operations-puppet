@@ -18,11 +18,11 @@ daemonize yes
 
 # When running daemonized, Redis writes a pid file in /var/run/redis.pid by
 # default. You can specify a custom pid file location here.
-pidfile /var/run/redis/<%= servicename %>.pid
+pidfile /var/run/redis/<%= @servicename %>.pid
 
 # Accept connections on the specified port, default is 6379.
 # If port 0 is specified Redis will not listen on a TCP socket.
-port <%= port %>
+port <%= @port %>
 
 # If you want you can bind a single interface, if the bind option is not
 # specified all the interfaces will listen for incoming connections.
@@ -88,7 +88,7 @@ databases 16
 #   like in the following example:
 #
 #   save ""
-<% if persist == "rdb" or persist == "both" -%>
+<% if @persist == "rdb" or @persist == "both" -%>
 <% @saves.each do |save_args| -%>
 save <%= save_args %>
 <% end -%>
@@ -146,7 +146,7 @@ dbfilename <%= @hostname %>-<%= @port %>.rdb
 #
 # Note that you must specify a directory here, not a file name.
 # dir /a/redis
-dir <%= dir %>
+dir <%= @dir %>
 
 ################################# REPLICATION #################################
 
@@ -156,10 +156,10 @@ dir <%= dir %>
 # different interval, or to listen to another port, and so on.
 #
 # slaveof <masterip> <masterport>
-<% if @redis_replication and redis_replication.has_key?('site') and redis_replication['site'] -%>
-slaveof <%= redis_replication[@hostname] %>.<%= redis_replication['site'] %> <%= port %>
-<% elsif @redis_replication and redis_replication.has_key?(@hostname) -%>
-slaveof <%= redis_replication[@hostname] %> <%= port %>
+<% if @redis_replication and @redis_replication.has_key?('site') and @redis_replication['site'] -%>
+slaveof <%= @redis_replication[@hostname] %>.<%= @redis_replication['site'] %> <%= @port %>
+<% elsif @redis_replication and @redis_replication.has_key?(@hostname) -%>
+slaveof <%= @redis_replication[@hostname] %> <%= @port %>
 <% end -%>
 
 # If the master is password protected (using the "requirepass" configuration
@@ -266,7 +266,7 @@ slave-priority 100
 #
 # rename-command CONFIG ""
 
-<% rename_commands.sort.each do |command, renamed_to| -%>
+<% @rename_commands.sort.each do |command, renamed_to| -%>
 rename-command <%= command %> "<%= renamed_to %>"
 <% end -%>
 
@@ -306,7 +306,7 @@ rename-command <%= command %> "<%= renamed_to %>"
 # limit for maxmemory so that there is some free RAM on the system for slave
 # output buffers (but this is not needed if the policy is 'noeviction').
 #
-maxmemory <%= maxmemory %>
+maxmemory <%= @maxmemory %>
 
 # MAXMEMORY POLICY: how Redis will select what to remove when maxmemory
 # is reached? You can select among five behavior:
@@ -330,7 +330,7 @@ maxmemory <%= maxmemory %>
 # The default is:
 #
 # maxmemory-policy volatile-lru
-maxmemory-policy <%= maxmemory_policy %>
+maxmemory-policy <%= @maxmemory_policy %>
 
 # LRU and minimal TTL algorithms are not precise algorithms but approximated
 # algorithms (in order to save memory), so you can select as well the sample
@@ -339,7 +339,7 @@ maxmemory-policy <%= maxmemory_policy %>
 # using the following configuration directive.
 #
 # maxmemory-samples 3
-maxmemory-samples <%= maxmemory_samples %>
+maxmemory-samples <%= @maxmemory_samples %>
 
 ############################## APPEND ONLY MODE ###############################
 
@@ -360,13 +360,13 @@ maxmemory-samples <%= maxmemory_samples %>
 # with the better durability guarantees.
 #
 # Please check http://redis.io/topics/persistence for more information.
-<% if persist == "aof" or persist == "both" -%>
+<% if @persist == "aof" or @persist == "both" -%>
 appendonly yes
 <% else -%>
 appendonly no
 <% end -%>
 # The name of the append only file (default: "appendonly.aof")
-appendfilename <%= @hostname %>-<%= port %>.aof
+appendfilename <%= @hostname %>-<%= @port %>.aof
 
 # The fsync() call tells the Operating System to actually write data on disk
 # instead to wait for more data in the output buffer. Some OS will really flush
@@ -431,7 +431,7 @@ no-appendfsync-on-rewrite yes
 # Specify a percentage of zero in order to disable the automatic AOF
 # rewrite feature.
 auto-aof-rewrite-percentage 100
-auto-aof-rewrite-min-size <%= auto_aof_rewrite_min_size %>
+auto-aof-rewrite-min-size <%= @auto_aof_rewrite_min_size %>
 
 ################################ LUA SCRIPTING  ###############################
 
@@ -562,7 +562,7 @@ client-output-buffer-limit pubsub 32mb 8mb 60
 ##############################################################################
 # Anything passed into redis_options ( i.e. { "save" => "20 10000" } ) will
 # appear here and override the above
-<% redis_options.sort.each do |option, value| -%>
+<% @redis_options.sort.each do |option, value| -%>
 <%= option %> <%= value %>
 <% end -%>
 
