@@ -636,6 +636,20 @@ class role::cache {
                 max => 262144,
             }
         }
+
+        # mma: mmap addrseses for fixed persistent storage on x86_64 Linux:
+        #  This scheme fits 4x fixed memory mappings of up to 4TB each
+        #  into the range 0x500000000000 - 0x5FFFFFFFFFFF, which on
+        #  x86_64 Linux is in the middle of the user address space and thus
+        #  unlikely to ever be used by normal, auto-addressed allocations,
+        #  as those grow in from the edges (typically from the top, but
+        #  possibly from the bottom depending).  Regardless of which
+        #  direction heap grows from, there's 32TB or more for normal
+        #  allocations to chew through before they reach our fixed range.
+        $mma0 = 0x500000000000
+        $mma1 = 0x540000000000
+        $mma2 = 0x580000000000
+        $mma3 = 0x5C0000000000
     }
 
     # Ancestor class for common resources of 1-layer clusters
@@ -720,12 +734,12 @@ class role::cache {
 
         $storage_conf = $::realm ? {
             'production' => $::hostname ? {
-                /^cp10[5-9][0-9]$/          => '-s main1=persistent,/srv/sda3/varnish.main1,100G -s main1b=persistent,/srv/sda3/varnish.main1b,200G -s main2=persistent,/srv/sdb3/varnish.main2,100G -s main2b=persistent,/srv/sdb3/varnish.main2b,200G',
-                /^amssq(3[1-9]|4[0-6])$/    => '-s main1=persistent,/srv/sda3/varnish.main1,100G -s main2=persistent,/srv/sdb3/varnish.main2,100G', # both are SSD
-                /^amssq(4[7-9]|[56][0-9])$/ => '-s main2=persistent,/srv/sdb3/varnish.main2,100G', # sda is an HDD, sdb is an SSD
-                default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+                /^cp10[5-9][0-9]$/          => "-s main1=persistent,/srv/sda3/varnish.main1,100G,$mma0 -s main1b=persistent,/srv/sda3/varnish.main1b,200G,$mma1 -s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma2 -s main2b=persistent,/srv/sdb3/varnish.main2b,200G,$mma3",
+                /^amssq(3[1-9]|4[0-6])$/    => "-s main1=persistent,/srv/sda3/varnish.main1,100G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma1", # both are SSD
+                /^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma0", # sda is an HDD, sdb is an SSD
+                default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
             },
-            'labs'  => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
+            'labs'  => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
         }
 
         $director_type_cluster = $cluster_tier ? {
@@ -903,8 +917,8 @@ class role::cache {
         }
 
         $storage_conf =  $::realm ? {
-            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
-            'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
+            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
+            'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
         }
 
         $director_type_cluster = $cluster_tier ? {
@@ -1162,8 +1176,8 @@ class role::cache {
         }
 
         $storage_conf = $::realm ? {
-            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
-            'labs'      => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
+            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
+            'labs'      => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
         }
 
         $runtime_param = $::site ? {
@@ -1295,8 +1309,8 @@ class role::cache {
         #class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
 
         $storage_conf = $::realm ? {
-            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
-            'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
+            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
+            'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
         }
 
         varnish::instance { 'parsoid-backend':
