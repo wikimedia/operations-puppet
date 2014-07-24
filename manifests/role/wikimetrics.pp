@@ -121,6 +121,18 @@ class role::wikimetrics {
         false => 100,
     }
 
+    $db_pool_wikimetrics = $debug ? {
+        true  => 20,
+        # Run at 100 concurrency in non debug environments.
+        false => 100,
+    }
+
+    $db_pool_mediawiki = $debug ? {
+        true  => 32,
+        # Run at 200 concurrency in non debug environments.
+        false => 200,
+    }
+
     # need pip :/
     if !defined(Package['python-pip']) {
         package { 'python-pip':
@@ -158,11 +170,13 @@ class role::wikimetrics {
         db_pass_wikimetrics   => $db_pass_wikimetrics,
         db_host_wikimetrics   => $db_host_wikimetrics,
         db_name_wikimetrics   => $db_name_wikimetrics,
+        db_pool_wikimetrics   => $db_pool_wikimetrics,
 
         db_user_mediawiki     => $db_user_mediawiki,
         db_pass_mediawiki     => $db_pass_mediawiki,
         db_host_mediawiki     => $db_host_mediawiki,
         db_name_mediawiki     => $db_name_mediawiki,
+        db_pool_mediawiki     => $db_pool_mediawiki,
 
         # wikimetrics runs on the LabsDB usually,
         # where this table is called 'revision_userindex'.
