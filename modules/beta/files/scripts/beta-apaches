@@ -3,7 +3,7 @@
 
 set -e
 
-APACHE_ROLE=role::applicationserver::appserver::beta
+APACHE_ROLE=role::beta::appserver
 BATCH_SIZE="50%"
 ACTIONS=('start' 'stop' 'restart' 'graceful' 'graceful-stop' 'configtest')
 ACTION=
@@ -73,4 +73,4 @@ fi
 exec /usr/bin/sudo -- /usr/bin/salt \
     -G "rolename:${APACHE_ROLE}" \
     --batch-size "${BATCH_SIZE}" \
-    apache.signal "$1"
+    apache.signal "$ACTION"
