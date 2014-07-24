@@ -2180,14 +2180,18 @@ node 'nitrogen.wikimedia.org' {
 }
 
 node /^ocg100[123]\.eqiad\.wmnet$/ {
-	$cluster = 'pdf'
-	$ganglia_aggregator = ( $::hostname == 'ocg1001' )
+    $cluster = 'pdf'
+    $ganglia_aggregator = ( $::hostname == 'ocg1001' )
 
     $gid = '500'
     include base::firewall
     include standard
-    class { 'admin': groups => ['pdf-render-admins'] }
-    class { 'role::ocg::production': tmpfs_size => '5120M' }
+    class { 'admin':
+        groups => ['pdf-render-admins']
+    }
+    class { 'role::ocg::production':
+        tmpfs_size => '5120M'
+    }
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
@@ -2233,7 +2237,7 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
     include mysql_wmf::datadirs
     include mysql_wmf::pc::conf
 
-    class { mysql_wmf::packages : mariadb => true }
+    class { 'mysql_wmf::packages': mariadb => true }
 
     system::role { 'mysql::pc::conf':
         description => 'parser cache mysql server',
