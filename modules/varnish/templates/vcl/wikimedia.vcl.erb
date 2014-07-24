@@ -185,7 +185,9 @@ sub normalize_path {
 		#define NP_HEXCHAR(c1, c2) (char)( (NP_HEX_DIGIT(c1) << 4) | NP_HEX_DIGIT(c2) )
 		const char * url = VRT_r_req_url(sp);
 		size_t i, outPos;
-		size_t urlLength = strlen(url);
+		const size_t urlLength = strlen(url);
+                // index for the last position %XX can start at:
+		const size_t lastConvertIdx = urlLength > 2 ? urlLength - 3 : 0;
 		char c;
 		int dirty = 0;
 
@@ -196,7 +198,7 @@ sub normalize_path {
 		char destBuffer[urlLength + 1];
 		if (url) {
 			for (i = 0, outPos = 0; i < urlLength; i++) {
-				if (url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
+				if (i <= lastConvertIdx && url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
 					c = NP_HEXCHAR(url[i+1], url[i+2]);
 					if (c == ';'
 						|| c == '@'
