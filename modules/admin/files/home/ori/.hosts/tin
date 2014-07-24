@@ -33,8 +33,11 @@ bump() {
 }
 
 deploy() {
-    cd /srv/deployment/$1/*
-    git deploy start
-    [ "$1" = "--no-update" ] || git pull
-    git deploy sync
+    pushd /srv/deployment/$1/* &>/dev/null && (
+      git deploy finish
+      [ "$1" = "--no-update" ] || { git fetch; git checkout origin/master; }
+      git deploy start
+    ) &>/dev/null && (
+      yes | git deploy sync 2>&1 | grep completed
+    ) && { popd &>/dev/null; notice "Ok."; } || warn "Failed."
 }

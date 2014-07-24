@@ -43,6 +43,8 @@ alias ls="ls --color" ...="cd .." cd..="cd .."
 mkpass()     { head -c 32 /dev/urandom | base64 | tr -cd [:alnum:]; }
 puppet-run() { sudo puppet agent -tv; }
 puppetd()    { sudo puppt-agent "${@}"; }
+warn()       { printf "$(tput setaf 1)%s$(tput sgr0)\n" "$1" >&2; }
+notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
 
 
 #
