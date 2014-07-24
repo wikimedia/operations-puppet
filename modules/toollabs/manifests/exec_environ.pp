@@ -269,6 +269,7 @@ class toollabs::exec_environ {
 
         # Other packages
         'adminbot',
+        'bison',                       # Bug #65974.
         'csh',                        # common user request
         'csvtool',                     # Bug 58649
         'dc',
@@ -278,6 +279,7 @@ class toollabs::exec_environ {
         'doxygen-latex',               # Bug 56326
         'expect',
         'fabric',                      # Bug #54135.
+        'gawk',                        # Bug #65974.
         'gdal-bin',
         'git',
         'git-review',                  # Bug 62871.
@@ -292,10 +294,13 @@ class toollabs::exec_environ {
         'libav-tools',                 # Bug #53870.
         'libdmtx0a',                   # Bug #53867.
         'libfcgi0ldbl',                # Bug 56995
+        'libffi-dev',                  # Bug #65974.
         'libfreetype6',
+        'libgdbm-dev',                 # Bug #65974.
         'libgeoip1',                   # Bug 62649
         'libjpeg-turbo-progs',         # Bug 59654.
         'libmpfr4',
+        'libncurses5-dev',             # Bug #65974.
         'libneon27-gnutls',
         'libnfnetlink0',
         'libnspr4',
@@ -310,6 +315,7 @@ class toollabs::exec_environ {
         'libsvn1',
         'libvips-tools',
         'libxml2-utils',               # Bug 62944.
+        'libyaml-dev',                 # Bug #65974.
         'libzbar0',                    # Bug 56996
         'mariadb-client',              # For /usr/bin/mysql.
         'mdbtools',                    # Bug #48805.
