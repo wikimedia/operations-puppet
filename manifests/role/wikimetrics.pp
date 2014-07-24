@@ -115,6 +115,12 @@ class role::wikimetrics {
         default => $::wikimetrics_debug,
     }
 
+    $celery_concurrency = $debug ? {
+        true  => 16,
+        # Run at 100 concurrency in non debug environments.
+        false => 100,
+    }
+
     # need pip :/
     if !defined(Package['python-pip']) {
         package { 'python-pip':
@@ -139,6 +145,7 @@ class role::wikimetrics {
         server_aliases        => $server_aliases,
         server_port           => $server_port,
         ssl_redirect          => $ssl_redirect,
+        celery_concurrency    => $celery_concurrency,
 
         flask_secret_key      => $flask_secret_key,
         google_client_id      => $google_client_id,
