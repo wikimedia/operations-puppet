@@ -65,5 +65,6 @@ class apache::mpm( $mpm = 'prefork' ) {
 
     apache::mod_conf { $selected_mod:
         ensure => present,
+        notify => Exec['apache2_test_config'],
     }
 }
