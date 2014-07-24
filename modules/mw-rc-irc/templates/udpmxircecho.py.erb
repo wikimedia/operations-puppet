@@ -50,7 +50,7 @@ class EchoBot(SingleServerIRCBot):
 
         def on_welcome(self, c, e):
                 print "got welcome"
-                c.oper("rc", "<%= ircpassword %>")
+                c.oper("rc", "<%= @ircpassword %>")
 
                 for chan in self.chans:
                         c.join(chan)
