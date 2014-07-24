@@ -184,6 +184,7 @@ class role::graphite {
         }
         include ::mediawiki::monitoring::graphite
         include ::eventlogging::monitoring::graphite
+        include ::swift::monitoring::graphite
     }
 
     file { '/etc/apache2/sites-enabled/graphite':
