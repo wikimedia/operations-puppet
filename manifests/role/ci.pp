@@ -119,6 +119,7 @@ class role::ci::slave {
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages
+    include contint::qunit_localhost
     include role::gerrit::production::replicationdest
     include role::zuul::install
 
