@@ -2180,6 +2180,9 @@ node 'nitrogen.wikimedia.org' {
 }
 
 node /^ocg100[123]\.eqiad\.wmnet$/ {
+	$cluster = 'pdf'
+	$ganglia_aggregator = ( $::hostname == 'ocg1001' )
+
     $gid = '500'
     include base::firewall
     include standard
