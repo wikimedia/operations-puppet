@@ -48,39 +48,39 @@ class misc::fundraising {
         mode   => '0644',
         source => 'puppet:///private/misc/fundraising/logrotate.fundraising-civicrm',
     }
-        # civicrm confs
-        # '/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php':
-        #    owner => 'root',
-        #    group => 'www-data',
-        #    mode => 0440,
-        #    source => 'puppet:///private/misc/fundraising/civicrm.civicrm.settings.php';
-        # '/srv/org.wikimedia.civicrm/sites/default/settings.php':
-        #    owner => 'root',
-        #    group => 'www-data',
-        #    mode => 0440,
-        #    source => 'puppet:///private/misc/fundraising/civicrm.settings.php';
-        # '/srv/org.wikimedia.civicrm/fundcore_gateway/paypal':
-        #    owner => 'root',
-        #    group => 'www-data',
-        #    mode => 0440,
-        #    ensure => '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php';
-        # '/srv/org.wikimedia.civicrm/files':
-        #    owner => 'root',
-        #    group => 'www-data',
-        #    mode => 2770,
-        #    ensure => directory;
-        # '/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
-        #    owner => 'root',
-        #    group => 'www-data',
-        #    mode => 0440,
-        #    source => 'puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php';
+    # civicrm confs
+    # '/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php':
+    #    owner => 'root',
+    #    group => 'www-data',
+    #    mode => 0440,
+    #    source => 'puppet:///private/misc/fundraising/civicrm.civicrm.settings.php';
+    # '/srv/org.wikimedia.civicrm/sites/default/settings.php':
+    #    owner => 'root',
+    #    group => 'www-data',
+    #    mode => 0440,
+    #    source => 'puppet:///private/misc/fundraising/civicrm.settings.php';
+    # '/srv/org.wikimedia.civicrm/fundcore_gateway/paypal':
+    #    owner => 'root',
+    #    group => 'www-data',
+    #    mode => 0440,
+    #    ensure => '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php';
+    # '/srv/org.wikimedia.civicrm/files':
+    #    owner => 'root',
+    #    group => 'www-data',
+    #    mode => 2770,
+    #    ensure => directory;
+    # '/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
+    #    owner => 'root',
+    #    group => 'www-data',
+    #    mode => 0440,
+    #    source => 'puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php';
 
-        # fundraising wiki stuff
-        # '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php':
-        #    owner => 'root',
-        #    group => 'www-data',
-        #    mode => 0440,
-        #    source => 'puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php';
+    # fundraising wiki stuff
+    # '/srv/org.wikimedia.fundraising/IPNListener_Standalone.php':
+    #    owner => 'root',
+    #    group => 'www-data',
+    #    mode => 0440,
+    #    source => 'puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php';
 
     #file { '/etc/fundraising/legacy_paypal_config.php':
     #    owner  => 'root',
@@ -111,20 +111,21 @@ class misc::fundraising {
     #    source => 'puppet:///private/misc/fundraising/apache.conf.civicrm-ssl',
     #}
 
-    file { '/etc/apache2/sites-enabled/003-fundraising':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///private/misc/fundraising/apache.conf.fundraising',
-    }
+    #file { '/etc/apache2/sites-enabled/003-fundraising':
+    #    owner  => 'root',
+    #    group  => 'root',
+    #    mode   => '0444',
+    #    source => 'puppet:///private/misc/fundraising/apache.conf.fundraising',
+    #}
 
-    file { '/etc/apache2/sites-enabled/004-fundraising-ssl':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///private/misc/fundraising/apache.conf.fundraising-ssl',
-    }
-        # part of scheme to execute drush as a consistent user
+    #file { '/etc/apache2/sites-enabled/004-fundraising-ssl':
+    #    owner  => 'root',
+    #    group  => 'root',
+    #    mode   => '0444',
+    #    source => 'puppet:///private/misc/fundraising/apache.conf.fundraising-ssl',
+    #}
+
+    # part of scheme to execute drush as a consistent user
     file { '/usr/local/bin/drush':
         owner  => 'root',
         group  => 'root',
@@ -139,7 +140,7 @@ class misc::fundraising {
         source => 'puppet:///files/sudo/sudoers.drupal_fundraising',
     }
 
-        # php config
+    # php config
     file { '/etc/php5/apache2/php.ini':
         owner  => 'root',
         group  => 'root',
@@ -155,10 +156,8 @@ class misc::fundraising {
     }
 
     # enable apache mods
-    include ::apache::mod::rewrite
-    include ::apache::mod::ssl
-
-    # enable apache sites
+    #include ::apache::mod::rewrite
+    #include ::apache::mod::ssl
 
 }
 

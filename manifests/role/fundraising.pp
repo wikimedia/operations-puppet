@@ -16,13 +16,13 @@ class role::fundraising::civicrm {
     include misc::fundraising
     include misc::fundraising::backup::backupmover_user
 
-    monitor_service { 'smtp':
-        description   => 'Exim SMTP',
-        check_command => 'check_smtp',
-    }
+    #monitor_service { 'smtp':
+    #    description   => 'Exim SMTP',
+    #    check_command => 'check_smtp',
+    #}
 
-    monitor_service { 'http':
-        description   => 'HTTP',
-        check_command => 'check_http',
-    }
+    #monitor_service { 'http':
+    #    description   => 'HTTP',
+    #    check_command => 'check_http',
+    #}
 }
