@@ -121,6 +121,18 @@ class role::wikimetrics {
         false => 100,
     }
 
+    $db_pool_wikimetrics = $debug ? {
+        true  => 20,
+        # Run at 100 concurrency in non debug environments.
+        false => 100,
+    }
+
+    $db_pool_mediawiki = $debug ? {
+        true  => 32,
+        # Run at 100 concurrency in non debug environments.
+        false => 200,
+    }
+
     # need pip :/
     if !defined(Package['python-pip']) {
         package { 'python-pip':
