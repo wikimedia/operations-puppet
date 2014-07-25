@@ -460,8 +460,9 @@ users:
     gid: 500
     name: gjg
     realname: Greg Grossmeier
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcwwxwZqCRMBQsMIutloeVS5Nx+nljUr914Yradb8YLeo2PbqLEjVKgC6+yKHe7binFNk3rlgiXhXOm2issytl7sWUZz8YpFqxp7fDqnfVVOTGTwMtAjBoZHugz9RaR1SVlz2dRk0N5qrovffz/Av3QQIS12jX3C/GCdqCMixgwi+ecYo2xA7WJyEGFnp+0Ah8hBIn2xabZAfHhZ8dF6VifEHsgp08Ot52sOZwb99+H0SjEWRwc9decwuPGNWX94BPvWcP6dQ2bzjqR3iRkwEIvKcgMvanYUXAvPb32382QCsW0r22HtvsUvA340ISlvcauRS1GGpyYmZYGSSfgHVH
-        greg@x200s]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcwwxwZqCRMBQsMIutloeVS5Nx+nljUr914Yradb8YLeo2PbqLEjVKgC6+yKHe7binFNk3rlgiXhXOm2issytl7sWUZz8YpFqxp7fDqnfVVOTGTwMtAjBoZHugz9RaR1SVlz2dRk0N5qrovffz/Av3QQIS12jX3C/GCdqCMixgwi+ecYo2xA7WJyEGFnp+0Ah8hBIn2xabZAfHhZ8dF6VifEHsgp08Ot52sOZwb99+H0SjEWRwc9decwuPGNWX94BPvWcP6dQ2bzjqR3iRkwEIvKcgMvanYUXAvPb32382QCsW0r22HtvsUvA340ISlvcauRS1GGpyYmZYGSSfgHVH greg@x200s
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC16FrhA5M9oVeFTpJMZrjMSnmNXv4sW+Ku1PUpv14qOEw9zpW8JhWLzhD4+C66sE3vvDm/xwrfYeyn9lLFlxCM8ZbUOh9YCuZv3ABam5UHODg+YS3tdMHbZ/U4ZPSg1B6t79f2/CLCrpj0Tk+G2DQe9/d75fdmZBBC6ICKrY8glNWZOL2kxi22P2dUamTDzBu1j9UHmpSNYpMh169AeNFV5njNYlEpOueg4iDkLvXqvMyDyvXvYbSNSRAfGTZYdzlNmasBEWuS7zuSIQ1Fy0VJs5JEG5TtsRKOzEkfRsBwTumaaqJy5XCC1vK3qVDtNecmkrxezf4Yw0EmCIwSF6l7 greg@x230
     uid: 2890
   halfak:
     ensure: present
