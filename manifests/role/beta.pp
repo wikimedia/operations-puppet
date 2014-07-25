@@ -8,6 +8,7 @@ class role::beta::bastion {
     include beta::autoupdater
     include beta::fatalmonitor
     include beta::syncsiteresources
+    include ssh::hostkeys_collect
 
     # Bring scap related scripts such as mw-update-l10n
     include ::beta::scap::master
@@ -18,6 +19,7 @@ class role::beta::bastion {
         group  => 'mwdeploy',
         mode   => '0775',
     }
+
 }
 
 # To be applied on deployment-upload.eqiad.wmflabs

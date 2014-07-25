@@ -305,7 +305,7 @@ node 'bast1001.wikimedia.org' {
     include bastionhost
     include nfs::netapp::home::othersite
     include misc::dsh
-    include ssh::hostkeys-collect
+    include ssh::hostkeys_collect
 }
 
 node 'bast4001.wikimedia.org' {
@@ -1114,7 +1114,7 @@ node 'fenari.wikimedia.org' {
     include drac
     include generic::wikidev-umask
     include misc::dsh
-    include ssh::hostkeys-collect
+    include ssh::hostkeys_collect
     include mysql_wmf::client
     install_certificate{ 'noc.wikimedia.org': }
 }
@@ -2659,7 +2659,7 @@ node 'tin.eqiad.wmnet' {
     include misc::deployment::l10nupdate
     include mysql
     include role::labsdb::manager
-    include ssh::hostkeys-collect
+    include ssh::hostkeys_collect
     include role::apachesync
 
     class { 'admin': groups => ['deployment'] }
