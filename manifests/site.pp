@@ -2152,6 +2152,9 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
     class { 'role::ocg::production':
         tmpfs_size => '5120M'
     }
+    class { 'base::syslogs':
+        readable   => true
+    }
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
