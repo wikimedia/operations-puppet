@@ -70,6 +70,13 @@
     <Directory /srv/org/wikimedia/controller/wikis/images>
         php_flag engine off
     </Directory>
+    <Location /server-status>
+        SetHandler server-status
+        Order deny,allow
+        Deny from all
+        Allow from 208.80.154.18
+        Allow from 208.80.152.32
+    </Location>
 
     Alias /w/images /srv/org/wikimedia/controller/wikis/images
     Alias /w /srv/org/wikimedia/controller/wikis/w
