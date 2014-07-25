@@ -44,7 +44,7 @@ class role::ocg::production (
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0755',
+        mode   => '1777',
     }
 
     mount { $tmpfs_mountpoint:
