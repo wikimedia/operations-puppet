@@ -169,12 +169,6 @@ sub tag_carrier {
 					set req.http.X-CS = req.http.X-CS2;
 				}
 			}
-		} else if (req.http.X-CS2 == "250-99") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-				if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
 		} else if (req.http.X-CS2 == "410-01") {
 			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
 				if (req.http.host ~ "^((en|ur)\.)?(zero|m)\.") {
@@ -244,6 +238,7 @@ sub tag_carrier {
 				}
 			}
 		} else if (req.http.X-CS2 == "426-04" ||
+				   req.http.X-CS2 == "250-99" ||
 				   req.http.X-CS2 ~ "^TESTON.*") {
 			//
 			// Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
@@ -270,7 +265,7 @@ sub tag_carrier {
 			unset req.http.X-ZeroTLS;
 		}
 	} // end of if(X-CS2)
-	if ( req.http.X-Forwarded-By ) {
+	if (req.http.X-Forwarded-By) {
 		// Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
 		// unset X-Forwarded-By. We still need that value in the resulting X-Analytics header,
 		// so create a copy to be used in the vcl_deliver.
@@ -323,6 +318,12 @@ sub vcl_deliver {
 			if (req.http.X-CS2 == "426-04") {
 				if (!req.http.X-Forwarded-By) {
 					set req.http.X-CS = req.http.X-CS2;
+				}
+			} else if (req.http.X-CS2 == "250-99") {
+				if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
+					if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
+						set req.http.X-CS = req.http.X-CS2;
+					}
 				}
 			} else {
 				set req.http.X-CS = req.http.X-CS2;
