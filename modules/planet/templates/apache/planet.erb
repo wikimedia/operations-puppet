@@ -11,8 +11,11 @@
     SSLCertificateChainFile /etc/ssl/certs/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.chained.pem
     SSLCertificateKeyFile /etc/ssl/private/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.key
 
-    RewriteEngine on
-    RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+    DocumentRoot /var/www/planet
+
+    Redirect /atom.xml https://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/atom.xml
+    Redirect /rss10.xml https://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/rss10.xml
+    Redirect /rss20.xml https://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/rss20.xml
 
     RedirectTemp / https://<%= scope.lookupvar('planet::planet_meta_link') %>
 </VirtualHost>
