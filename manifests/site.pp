@@ -2150,7 +2150,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
         groups => ['pdf-render-admins']
     }
     class { 'role::ocg::production':
-        tmpfs_size => '5120M'
+        tmpfs_size => '32G'
     }
 }
 
