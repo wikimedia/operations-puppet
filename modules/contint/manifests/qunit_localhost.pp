@@ -3,8 +3,8 @@ class contint::qunit_localhost {
     file { '/srv/localhost':
         ensure => directory,
         mode   => '0775',
-        owner  => 'jenkins',
-        group  => 'jenkins',
+        owner  => 'jenkins-slave',
+        group  => 'jenkins-slave',
     }
     file { '/srv/localhost/qunit':
         ensure => directory,
