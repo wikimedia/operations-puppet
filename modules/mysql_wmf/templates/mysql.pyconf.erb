@@ -20,7 +20,7 @@ modules {
       value = 'dbstats'
     }
     param passwd {
-      value = <%= ganglia_mysql_pass %>
+      value = <%= @ganglia_mysql_pass %>
     }
     param unix_socket {
       value = '/tmp/mysql.sock'
@@ -36,7 +36,7 @@ modules {
     }
 <% if has_variable?("innodb_version") then -%>
     param innodb_version {
-      value = '<%= innodb_version %>'
+      value = '<%= @innodb_version %>'
     }
 <% end -%>
   }
