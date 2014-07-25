@@ -175,7 +175,7 @@ class ocg (
 
     cron { 'Clean up OCG postmortem directory':
         ensure  => present,
-        command => "find ${output_dir}* -mtime +3 -exec rm {} \\;",
+        command => "find ${postmortem_dir}* -mtime +3 -exec rm {} \\;",
         user    => 'ocg',
         hour    => 0,
         minute  => 0,
