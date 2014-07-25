@@ -125,6 +125,7 @@ class swift::proxy(
     $shard_container_list,
     $backend_url_format,
     $dispersion_password,
+    $search_password,
     ) {
     Class['swift::base'] -> Class['swift::proxy']
 
