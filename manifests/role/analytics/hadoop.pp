@@ -362,6 +362,12 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
             require      => Class['cdh::hadoop::worker'],
         }
     }
+
+    # Install hive client on worker nodes to get
+    # hive-hcatalog package.  hive-catalog depends
+    # on hive package, so we might as well
+    # configure hive too.
+    include role::analytics::hive::client
 }
 
 # == Class role::analytics::hadoop::standby
