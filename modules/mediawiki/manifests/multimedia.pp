@@ -25,6 +25,7 @@ class mediawiki::multimedia {
         $libav_package,
         $libvips_package,
         'ffmpeg2theora',
+        'fontconfig-config',
         'ghostscript',
         'libjpeg-turbo-progs',
         'libogg0',
@@ -38,15 +39,9 @@ class mediawiki::multimedia {
     }
 
     file { '/etc/fonts/conf.d/70-no-bitmaps.conf':
-        ensure => link,
-        target => '/etc/fonts/conf.avail/70-no-bitmaps.conf',
-    }
-
-    file { '/a/magick-tmp':
-        ensure  => directory,
-        owner   => 'apache',
-        group   => 'root',
-        mode    => '0755',
+        ensure  => link,
+        target  => '/etc/fonts/conf.avail/70-no-bitmaps.conf',
+        require => Package['fontconfig-config'],
     }
 
     file { '/tmp/magick-tmp':
