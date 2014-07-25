@@ -42,7 +42,7 @@ groups:
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, mwalker,
       nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik, jgonera,
-      tgr, ssmith]
+      tgr, ssmith, bsimmers]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
@@ -1032,3 +1032,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9+TJfrksUVwMxt5Oj6NZxacj3UyKQNN+J48r7nF2SSVoH3hOLpXLB5Vep09X2bxyH+1AsqGQKGLW8a5DSTcEhLQ5Rc01GmaV461e51lxJoRRlDtCI6+sqBJRstZVWUrxYeAjAhaif0CWmepySMWytrFrLJuTQ08L+R4XH9uXxWfE+qY6KBjrrOGKS+98E13vYlxegxpctz729ZC0jDrikSNX47lu5us5OTMotaYPOu/lFYO8RUmqQnGNMjoKJjKQJclDZUp9fV3YWPW9XtJR6z1CACJIqng0501bWulMsjw/nWySoJLrh4H99KeLUVSiEWibupoTI6FKO2PC0vrzF
         samsmith@wikimedia.org]
     uid: 4170
+  bsimmers:
+    ensure: present
+    gid: 500
+    name: bsimmers
+    realname: Brett Simmers
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDsVGh2nH/6mGiL1mJMxAWyN9nxB3jivLfmUJKOaxqinPpPX4o+vAj/93todMm3Vcg/BEx/jdenqp9fzW4CYA+d/iHnHY1tfQdU6BrI71AhwCfwtEQBScwYTRiaE8pBU8x1gs71SfvtyUoqQdbKlNgJKwXBq/te0uz4M9I5wKItB6KyNiCyPfFFu1Zt7UCkKEY53U1J1UIk1oZkVby4k0DXjRkONijBK+Q1NKRgN9bVcJmZP9BF+eSH03I9SmPMl3/CZa1ExHbtQDJdVV57SxqmtBZaux4gM+aaFtro6cH1Q7uwSHCvXS+FYqUHAg51LZ61GpRHZYQ+HzkcHEcsnGd
+        bsimmers@bsimmers-mbp.local]
+    uid: 10173
