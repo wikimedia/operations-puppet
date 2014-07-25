@@ -1,0 +1,96 @@
+// Configuration file for MediaWiki Jobrunner
+// This file is managed by Puppet
+{
+	"groups": {
+		"basic": {
+			"runners": <%= @runners_basic %>,
+			"include": [
+				"*"
+			],
+			"exclude": [
+				"AssembleUploadChunks",
+				"ParsoidCacheUpdateJobOnDependencyChange",
+				"ParsoidCacheUpdateJobOnEdit",
+				"PublishStashedFile",
+				"gwtoolsetGWTFileBackendCleanupJob",
+				"gwtoolsetUploadMediafileJob",
+				"gwtoolsetUploadMetadataJob",
+				"uploadFromUrl",
+				"webVideoTranscode"
+			],
+			"low-priority": [
+				"cirrusSearchLinksUpdate",
+				"htmlCacheUpdate",
+				"refreshLinks"
+			]
+		},
+		"gwt": {
+			"runners": <%= @runners_gwt %>,
+			"include": [
+				"gwtoolsetUploadMetadataJob",
+				"gwtoolsetUploadMediafileJob",
+				"gwtoolsetGWTFileBackendCleanupJob"
+			]
+		},
+		"parsoid": {
+			"runners": <%= @runners_parsoid %>,
+			"include": [
+				"ParsoidCacheUpdateJobOnEdit"
+			],
+			"low-priority": [
+				"ParsoidCacheUpdateJobOnDependencyChange"
+			]
+		},
+		"transcode": {
+			"runners": <%= @runners_transcode %>,
+			"include": [
+				"webVideoTranscode"
+			]
+		},
+		"upload": {
+			"runners": <%= @runners_upload %>,
+			"include": [
+				"AssembleUploadChunks",
+				"PublishStashedFile",
+				"uploadFromUrl"
+			]
+		}
+	},
+
+	"limits": {
+		// How many times to let jobs be recycled before abandoning
+		"attempts": {
+			"*": 3
+		},
+		// How long jobs can be claimed before being recycled
+		"claimTTL": {
+			"*": 3600,
+			"webVideoTranscode": 86400
+		},
+		// runJobs.php process time limits
+		"real": {
+			"*": 300,
+			"webVideoTranscode": 86400
+		},
+		// runJobs.php memory limits
+		"memory": {
+			"*": "300M"
+		}
+	},
+
+	"redis": {
+		// Ready queue trackers
+		"aggregators": [ "<%= Array(@aggr_servers).join('", "') %>" ],
+		// Main queue servers
+		"queues": [ "<%= Array(@queue_servers).join('", "') %>" ],
+		// Password for above servers
+		"password": "<%= scope.lookupvar('passwords::redis::main_password') %>"
+	},
+
+	<%- if @statsd_server -%>
+	"statsd": "<%= @statsd_server %>",
+	<%- end -%>
+
+	// HET deploy wrapper
+	"wrapper": "php /usr/local/apache/common/multiversion/MWScript.php"
+}
