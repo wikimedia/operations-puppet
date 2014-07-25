@@ -34,9 +34,11 @@ interactive_timeout            = 28800
 wait_timeout                   = 3600
 plugin-load                    = ha_tokudb
 slave_transaction_retries      = 4294967295
+slave_parallel_threads         = 8
+slave_parallel_max_queued      = 16M
 
-table_open_cache               = 50000
-table_definition_cache         = 40000
+table_open_cache               = 10000
+table_definition_cache         = 50000
 open-files-limit               = 400000
 character_set_server           = binary
 character_set_filesystem       = binary
@@ -59,6 +61,7 @@ innodb_stats_method            = nulls_unequal
 innodb_locks_unsafe_for_binlog = 1
 tokudb_data_dir                = /srv/tokudb
 tokudb_cache_size              = <%= (Float(@memorysize.split[0]) * 0.50).round %>G
+tokudb_lock_timeout            = 50000
 join_cache_level               = 8
 
 optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,engine_condition_pushdown=on'
