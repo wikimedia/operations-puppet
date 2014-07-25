@@ -2179,8 +2179,12 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
     $gid = '500'
     include base::firewall
     include standard
-    class { 'admin': groups => ['pdf-render-admins'] }
-    class { 'role::ocg::production': tmpfs_size => '5120M' }
+    class { 'admin':
+        groups => ['pdf-render-admins']
+    }
+    class { 'role::ocg::production':
+        tmpfs_size => '32G'
+    }
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
