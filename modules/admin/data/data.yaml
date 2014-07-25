@@ -1038,6 +1038,7 @@ users:
     gid: 500
     name: bsimmers
     realname: Brett Simmers
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDsVGh2nH/6mGiL1mJMxAWyN9nxB3jivLfmUJKOaxqinPpPX4o+vAj/93todMm3Vcg/BEx/jdenqp9fzW4CYA+d/iHnHY1tfQdU6BrI71AhwCfwtEQBScwYTRiaE8pBU8x1gs71SfvtyUoqQdbKlNgJKwXBq/te0uz4M9I5wKItB6KyNiCyPfFFu1Zt7UCkKEY53U1J1UIk1oZkVby4k0DXjRkONijBK+Q1NKRgN9bVcJmZP9BF+eSH03I9SmPMl3/CZa1ExHbtQDJdVV57SxqmtBZaux4gM+aaFtro6cH1Q7uwSHCvXS+FYqUHAg51LZ61GpRHZYQ+HzkcHEcsnGd
-        bsimmers@bsimmers-mbp.local]
+    ssh_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDsVGh2nH/6mGiL1mJMxAWyN9nxB3jivLfmUJKOaxqinPpPX4o+vAj/93todMm3Vcg/BEx/jdenqp9fzW4CYA+d/iHnHY1tfQdU6BrI71AhwCfwtEQBScwYTRiaE8pBU8x1gs71SfvtyUoqQdbKlNgJKwXBq/te0uz4M9I5wKItB6KyNiCyPfFFu1Zt7UCkKEY53U1J1UIk1oZkVby4k0DXjRkONijBK+Q1NKRgN9bVcJmZP9BF+eSH03I9SmPMl3/CZa1ExHbtQDJdVV57SxqmtBZaux4gM+aaFtro6cH1Q7uwSHCvXS+FYqUHAg51LZ61GpRHZYQ+HzkcHEcsnGd bsimmers@bsimmers-mbp.local
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8p9BABLz+Xq2fTmjoRmCnRbf8Z5hRODb2oYpiinRAebkujhp5BuW7hxli9Ekq7ymJ9vRPfnmzjG+rDHIseckYF87N28ujEs0rsLTDyqTiXgr9bo1tw066gcecdpJoYy/ZaOc7nHk90PMIPyJ3Vs2f5DAMl0PUi4NnOl7ENQtCEuz2I2WVd9rIQO6qHJU9PpWqapt3ZLjv8mQuAiUnhNHgo6xePlWuWGo7rugHHAns7zICwfGzwozj89ttEQZ1rEu5ckWuXMAkyIqjPuP6UzEqymrul4HghK0Eo/0Uoq+4Gre9/JumhSsCWVBtvMlRIxm5wJ6pJ7Bh4zc9ptYIb96n bsimmers@osmium
     uid: 10173
