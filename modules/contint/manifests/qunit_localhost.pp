@@ -13,6 +13,8 @@ class contint::qunit_localhost {
         group  => 'jenkins-slave',
     }
 
+    include ::apache::mod::rewrite
+
     contint::localvhost { 'qunit':
         port       => 9412,
         docroot    => '/srv/localhost/qunit',
