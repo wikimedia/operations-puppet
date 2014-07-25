@@ -182,19 +182,12 @@ class ocg (
         minute  => 0,
     }
 
-    file { '/var/log/ocg':
-        ensure  => directory,
-        owner   => 'syslog',
-        group   => 'ocg',
-        mode    => '0664',
-    }
-
     # makes some basic logfiles readable for non-roots
     # in labs this is used by default in role/labs
     if $::realm == 'production' {
         class { 'base::syslogs':
             readable => true,
-            logfiles => ['syslog','messages','ocg'],
+            logfiles => ['syslog','messages','ocg.log'],
         }
     }
 
