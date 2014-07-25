@@ -70,6 +70,10 @@
     <Directory /srv/org/wikimedia/controller/wikis/images>
         php_flag engine off
     </Directory>
+    <Directory /server-status>
+        Allow from 208.80.154.18
+        Allow from 208.80.152.32
+    </Directory>
 
     Alias /w/images /srv/org/wikimedia/controller/wikis/images
     Alias /w /srv/org/wikimedia/controller/wikis/w
