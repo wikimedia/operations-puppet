@@ -54,6 +54,12 @@ class role::deployment::config {
         'service_name'          => 'ocg',
         'checkout_submodules'   => true,
     },
+    'mathoid/mathoid' => {
+        'grain'                 => 'mathoid',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/mathoid',
+        'service_name'          => 'mathoid',
+        'checkout_submodules'   => true,
+    },
     'rcstream/rcstream' => {
         'grain'                 => 'rcstream',
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/rcstream',
