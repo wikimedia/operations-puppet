@@ -189,13 +189,13 @@ class ocg (
         mode    => '0664',
     }
 
-    # horrible hack to work around the fact that we can't currently add users to
-    # group 'adm' alongside system user 'syslog', see RT: 7596
-    file { '/var/log/syslog':
-        mode => '0644',
-    }
-    file { '/var/log/ocg/ocg.log':
-        mode => '0644',
+    # makes some basic logfiles readable for non-roots
+    # in labs this is used by default in role/labs
+    if $::realm == 'production' {
+        class { 'base::syslogs':
+            readable => true,
+            logfiles => ['syslog','messages','ocg'],
+        }
     }
 
     file { '/etc/logrotate.d/ocg':
