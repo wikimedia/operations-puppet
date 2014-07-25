@@ -20,10 +20,10 @@ logfile /var/log/memcached.log
 # Start with a cap of 2000 megs of memory. It's reasonable, and the daemon default
 # Note that the daemon will grow to this size, but does not start out holding this much
 # memory
--m <%= memcached_size %>
+-m <%= @memcached_size %>
 
 # Default connection port is 11000 ( Wikimedia specific, general default is 11211 )
--p <%= memcached_port %>
+-p <%= @memcached_port %>
 
 # Run the daemon as nobody. The start-memcached will default to running as root if no
 # -u command is present in this config file
@@ -33,7 +33,7 @@ logfile /var/log/memcached.log
 # This parameter is one of the only security measures that memcached has, so make sure
 # it's listening on a firewalled interface.
 # -l 0.0.0.0
--l <%= memcached_ip %>
+-l <%= @memcached_ip %>
 
 # Limit the number of simultaneous incoming connections. The daemon default is 1024
 -c 25000
@@ -53,7 +53,7 @@ logfile /var/log/memcached.log
 # Chunk growth factor - allows more steps and better memory efficiency too
 -f 1.05
 
-<% memcached_options.sort.each do |option,value| -%>
+<% @memcached_options.sort.each do |option,value| -%>
 <%= option %> <%= value %>
 <% end -%>
 
