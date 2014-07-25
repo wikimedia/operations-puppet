@@ -37,7 +37,7 @@ class apache {
         require    => Package['apache2'],
     }
 
-    exec { 'apache2_test_config':
+    exec { 'apache2_test_config_and_restart':
         command     => '/usr/sbin/apache2ctl configtest',
         notify      => Exec['apache2_hard_restart'],
         require     => Service['apache2'],
