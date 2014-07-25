@@ -21,8 +21,10 @@ class deployment::deployment_server($deployer_groups=[]) {
             ensure => present;
         }
     }
-    package { 'python-gitdb':
-        ensure => present;
+    if ! defined(Package['python-git']){
+        package { 'python-gitdb':
+            ensure => present;
+        }
     }
     package { 'trebuchet-trigger':
         ensure => present;
