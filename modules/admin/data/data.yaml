@@ -182,7 +182,19 @@ groups:
     gid: 728
     description: developers on the PDF QA system
     members: [mwalker, maxsem, anomie, cscott]
-
+  mathoid-roots:
+    gid: 729
+    description: root rights for mathoid
+    members: [gwicke]
+    privs: ['ALL = (mathoid) NOPASSWD: ALL']
+  mathoid-admin:
+    gid: 730
+    description: group of mathoid admins
+    members: [ssastry, cscott]
+    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
 users:
   rush:
     ensure: present
