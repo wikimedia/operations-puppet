@@ -181,6 +181,12 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
     include standard
 
     include role::analytics::hadoop::worker
+
+    # Install hive client on worker nodes to get
+    # hive-hcatalog package.  hive-catalog depends
+    # on hive package, so we might as well
+    # configure hive too.
+    include role::analytics::hive::client
 }
 
 # analytics1012, analytics1018, analytics1021 and analytics1022 are Kafka Brokers.
