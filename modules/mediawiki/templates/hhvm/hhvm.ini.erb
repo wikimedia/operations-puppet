@@ -1,19 +1,29 @@
+; PHP options
 date.timezone = "UTC"
-include_path='.:/usr/share/php:/usr/share/pear'
-hhvm.dynamic_extension_path = /usr/lib/hphp/extensions/20140702
-
-; php options
+include_path = '.:/usr/share/php:/usr/share/pear'
 pid = /run/hhvm/cache/hhvm.pid
 
-; Error logging
-hhvm.log.level = Error
+; Extensions
+hhvm.dynamic_extension_path = /usr/lib/hphp/extensions/20140702
+hhvm.eval.enable_zend_compat = true
+hhvm.mysql.typed_results = false
+
+; Runtime
+hhvm.enable_obj_destruct_call = true
+
+; JIT
+hhvm.jit = true
+hhvm.jit_afrozen_size = 100000000
+
+; Logging
+hhvm.eval.perf_pid_map = false
 hhvm.log.always_log_unhandled_exceptions = true
+hhvm.log.level = Error
 hhvm.log.runtime_error_reporting_level = 8191
 hhvm.log.use_syslog = true
 
-; the central repo is in a ramdisk
+; Repo
 hhvm.repo.central.path = /run/hhvm/hhvm.hhbc.sq3
-hhvm.mysql.typed_results = false
 
 <% @ini_overrides.sort.each do |k,v| -%>
 <%= k %> = <%= v %> 

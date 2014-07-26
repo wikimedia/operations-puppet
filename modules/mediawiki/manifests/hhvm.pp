@@ -36,7 +36,7 @@ class mediawiki::hhvm(
         owner   => 'apache',
         group   => 'apache',
         mode    => '0750',
-        before  => File['hhvm_config_ini']
+        before  => File['hhvm_config_ini'],
     }
 
     file { '/etc/hhvm/config.hdf':
@@ -48,7 +48,7 @@ class mediawiki::hhvm(
         path    => '/etc/hhvm/php.ini',
         ensure  => present,
         content => template('mediawiki/hhvm/hhvm.ini.erb'),
-        require => Package['hhvm']
+        require => Package['hhvm'],
     }
 
     # Ensure the fcgi server is stopped
