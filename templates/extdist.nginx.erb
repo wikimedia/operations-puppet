@@ -1,0 +1,18 @@
+# Nginx configuration for extdist
+# This file is managed by Puppet
+
+upstream extdist {
+    server unix:/run/uwsgi/extdist.sock;
+}
+
+server {
+    listen 80;
+
+    ## uWSGI ##
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass extdist;
+        root /srv/extdist;
+    }
+}
