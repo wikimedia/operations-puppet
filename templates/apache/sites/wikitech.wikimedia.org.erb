@@ -47,7 +47,7 @@
     SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
     SSLCACertificatePath /etc/ssl/certs/
 
-    Header append Strict-Transport-Security "max-age=31536000"
+    Header set Strict-Transport-Security "max-age=31536000"
 
     RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
 
