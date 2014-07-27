@@ -1,43 +1,33 @@
-# == Function: ordered_json
+# == Functions: ordered_json(), ordered_yaml()
 #
-# Serialize a hash into JSON with lexicographically sorted keys.
+# Emit a hash as JSON or YAML with keys (both shallow and deep) sorted
+# in lexicographical order.
 #
-# Because the order of keys in Ruby 1.8 hashes is undefined, 'to_pson'
-# is not idempotent: i.e., the serialized form of the same hash object
-# can vary from one invocation to the next. This causes problems
-# whenever a JSON-serialized hash is included in a file template,
-# because the variations in key order are picked up as file updates by
-# Puppet, causing Puppet to replace the file and refresh dependent
-# resources on every run.
-#
-# Copyright 2014 Ori Livneh
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-def ordered_json(o)
-    case o
+require 'json'
+require 'yaml'
+
+def sort_keys_recursive(value)
+    # Prepare a value for JSON or YAML serialization by sorting its keys
+    # (if it is a hash) and the keys of any hash object that is contained
+    # within the value. Returns a new value.
+    case value
     when Array
-        '[' + o.map { |x| ordered_json(x) }.join(', ') + ']'
+        value.map { |elem| sort_keys_recursive(elem) }
     when Hash
-        '{' + o.sort.map { |k,v| k.to_pson + ': ' + ordered_json(v) }.join(', ') + '}'
+        value.sort.inject({}) { |h, (k, v)| h[k] = sort_keys_recursive(v); h }
+    when 'true', 'false'
+        value == 'true'
+    when :undef
+        nil
     else
-        o.include?('.') ? Float(o).to_s : Integer(o).to_s rescue o.to_pson
+        value.include?('.') ? Float(value) : Integer(value) rescue value
     end
 end
 
 module Puppet::Parser::Functions
-    newfunction(:ordered_json, :type => :rvalue) do |args|
-        fail 'ordered_json() requires an argument' if args.empty?
-        ordered_json(args.inject(:merge))
+    {:ordered_json => :to_json, :ordered_yaml => :to_yaml}.each do |func, method|
+        newfunction(func, :type => :rvalue, :arity => 1) do |args|
+            sort_keys_recursive(args.first).send(method)
+        end
     end
 end
