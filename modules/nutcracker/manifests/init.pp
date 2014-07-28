@@ -6,61 +6,68 @@
 #
 # === Parameters
 #
-# [*config_parameters*]
-#   Non-standard config parameters for the memcached section of
-#   the configuration.
+# [*mbuf_size*]
+#   When set, will determine the size of nutcracker's mbufs.
+#   The default is 16384. See <https://github.com/twitter/twemproxy
+#   /blob/b2cd3ad/notes/recommendation.md> for a discussion of this
+#   option.
 #
-# [*server_list*]
-#   List of the servers (in IP:PORT format) that will be used as
-#   backends for memcached.
+# [*pools*]
+#   A hash defining a nutcracker server pool.
+#   See <https://github.com/twitter/twemproxy#configuration>.
 #
 # === Examples
 #
-#  class { 'nutcracker':
-#    server_list => ['192.168.0.1:11211', '192.168.0.2:11211'],
+#  class { '::nutcracker':
+#    pools => {
+#      'parser' => {
+#        listen       => '127.0.0.1:11211',
+#        distribution => 'ketama',
+#        hash         => 'md5',
+#        timeout      => 250,
+#        servers      => ['10.64.0.180:11211:1', '10.64.0.181:11211:1'],
+#      },
+#    },
 #  }
 #
-class nutcracker( $server_list, $config_parameters = {} ) {
-    tag 'nutcracker'
+class nutcracker(
+    $pools,
+    $mbuf_size = undef,
+    $ensure    = present,
+) {
+    validate_hash($pools)
 
-    $default_config = {
-        'listen'               => '127.0.0.1:11212',
-        'hash'                 => 'md5',
-        'distribution'         => 'ketama',
-        'timeout'              => 250,
-        'preconnect'           => 'true', # this is quoted on purpose
-        'redis'                => 'false',# same here
-        'auto_eject_hosts'     => 'true', # same here
-        'server_retry_timeout' => 30000,
-        'server_failure_limit' => 3,
-        'server_connections'   => 2,
-    }
-
-    $config = merge($default_config, $config_parameters)
-
-    package { 'nutcracker': }
-
-    file { '/etc/default/nutcracker':
-        ensure  => present,
-        content => 'DAEMON_OPTS="--mbuf-size=65536 --stats-port=22223"',
-        require => Package['nutcracker'],
+    package { 'nutcracker':
+        ensure => $ensure,
     }
 
     file { '/etc/nutcracker/nutcracker.yml':
-        ensure  => present,
-        mode    => '0444',
+        ensure  => $ensure,
         content => template('nutcracker/config.yml.erb'),
-        require => File['/etc/default/nutcracker'],
-#        notify  => Service['nutcracker'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['nutcracker'],
+        # notify  => Service['nutcracker'],
+    }
+
+    if $ensure == 'present' and versioncmp($::puppetversion, '3.5') >= 0 {
+        File['/etc/nutcracker/nutcracker.yml'] {
+          validate_cmd => '/usr/sbin/nutcracker --test-conf %',
+        }
+    }
+
+    file { '/etc/default/nutcracker':
+        ensure  => $ensure,
+        content => template('nutcracker/default.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        # notify  => Service['nutcracker'],
     }
 
     service { 'nutcracker':
-        ensure   => running,
+        ensure   => ensure_service($ensure),
         provider => 'upstart',
-        require  => [
-            File['/etc/default/nutcracker'],
-            File['/etc/nutcracker/nutcracker.yml'],
-            Package['nutcracker'],
-        ],
     }
 }
