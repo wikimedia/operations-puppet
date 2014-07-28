@@ -49,8 +49,9 @@ class ocg (
         }
     }
 
-    # NOTE: If you change $nodebin you MUST also change the AppArmor profile
-    #       creation below.
+    # NOTE: If you change $nodebin you MUST also change the AppArmor
+    #       profile creation below and the maintenance sudo rules in
+    #       modules/admin/data/data.yaml
     $nodebin = '/usr/bin/nodejs-ocg'
     if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 ) {
         # On ubuntu versions greater than 12.04 node is known as nodejs
