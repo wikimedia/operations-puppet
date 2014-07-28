@@ -435,6 +435,7 @@ class misc::statistics::dev {
     package { [
         'python-dev',  # RT 6561
         'python3-dev', # RT 6561
+        'build-essential', # Requested by halfak to install SciPy
     ]:
         ensure => 'installed',
     }
