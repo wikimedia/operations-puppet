@@ -21,7 +21,12 @@ sub vcl_recv {
 	} elsif (req.http.Host == "scholarships.wikimedia.org") {
 		set req.backend = zirconium;
 	} elsif (req.http.Host == "parsoid-tests.wikimedia.org") {
-		set req.backend = ruthenium;
+		set req.backend = ruthenium_rt_tests;
+	} elsif (req.http.Host == "parsoid-visualdiff-tests.wikimedia.org") {
+		set req.backend = ruthenium_vd_tests;
+	} elsif (req.http.Host == "parsoid-visualdiff.wikimedia.org") {
+		set req.backend = ruthenium_vd;
+	}
 	} elsif (req.http.Host == "legalpad.wikimedia.org") {
 		set req.backend = radon;
 	} elsif (req.http.Host == "phabricator.wikimedia.org") {
@@ -43,4 +48,19 @@ sub vcl_recv {
 sub vcl_error {
 	call errorpage;
 	return(deliver);
+}
+
+backend ruthenium_rt_tests {
+	.host = ruthenium;
+	.port = 8001;
+}
+
+backend ruthenium_vd_tests {
+	.host = ruthenium;
+	.port = 8010;
+}
+
+backend ruthenium_vd {
+	.host = ruthenium;
+	.port = 8012;
 }
