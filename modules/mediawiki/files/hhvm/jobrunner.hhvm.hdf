@@ -1,3 +1,7 @@
+Eval {
+  PerfPidMap = false
+}
+
 DynamicExtensions {
   * = fss.so
   * = luasandbox.so
