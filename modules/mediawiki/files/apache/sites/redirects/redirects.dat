@@ -507,3 +507,6 @@ funnel	*w.wiki	//www.wikipedia.org
 
 # RT #8077
 override wikimedia.org/research https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
+
+# RT #6862
+override noc.wikimedia.org/~ //people.wikimedia.org
