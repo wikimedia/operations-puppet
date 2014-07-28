@@ -7,7 +7,7 @@ class mediawiki::multimedia {
     include ::mediawiki::multimedia::fonts
 
     cron { 'clear_imagemagick_temp_files':
-        ensure  => present,
+        ensure  => absent,
         command => strip(template('mediawiki/clear_magick_tmp.erb')),
         user    => 'root',
         minute  => '*/5',
@@ -49,6 +49,14 @@ class mediawiki::multimedia {
         owner  => 'apache',
         group  => 'root',
         mode   => '0755',
+    }
+
+    tidy { [ '/tmp', '/tmp/magick-tmp' ]:
+        matches => [ 'gs_*', 'magick-*', 'localcopy_*', 'transform_*', 'vips-*.v' ],
+        age     => '15m',
+        type    => 'ctime',
+        backup  => false,
+        recurse => 1,
     }
 }
 
