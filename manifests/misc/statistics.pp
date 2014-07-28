@@ -89,6 +89,8 @@ class misc::statistics::packages {
         'libwww-perl',
         'libgdal1-dev', # Requested by lzia for rgdal
         'libproj-dev', # Requested by lzia for rgdal
+        'build-essential', # Requested by halfak
+        'python3-dev', # Requested by halfak
     ]:
         ensure => 'latest',
     }
