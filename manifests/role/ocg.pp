@@ -72,6 +72,14 @@ class role::ocg::production (
         desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
         srange => $::INTERNAL
     }
+    
+    # Hack to allow ganglia to work on the ocg nodes
+    ferm::service{ 'gmond':
+        proto  => 'tcp',
+        port   => 8649,
+        desc   => 'Ganglia monitor port (OCG config)'
+        srange => $::INTERNAL
+    }
 
     monitor_service { 'ocg':
         description   => 'Offline Content Generation - Collection',
