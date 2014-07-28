@@ -11,7 +11,7 @@ class role::diamond {
     # Labs projects in which to enable diamond. This is to reduce
     # the load on the collector instance, which could not handle
     # all the metrics from all the projects
-    $labs_enabled_projects = ['tools', 'deployment-prep', 'graphite']
+    $labs_enabled_projects = ['cvn', 'deployment-prep', 'graphite', 'tools']
     case $::realm {
         'labs': {
             $host          = '10.68.17.169'
