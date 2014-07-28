@@ -528,6 +528,17 @@ class role::cache {
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C varnishkafka',
                 require      => Class['::varnishkafka'],
             }
+
+             # Generate an alert if too many delivery report errors
+            monitor_ganglia { 'varnishkafka-drerr':
+                description => 'Varnishkafka Delivery Errors',
+                metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
+                # Warn if between more than 0 but less than 30
+                warning     => '0.1:29.9',
+                # Critical if greater than 30.
+                critical    => '30.0',
+                require     => Class['::varnishkafka::monitoring'],
+            }
         }
     }
 
