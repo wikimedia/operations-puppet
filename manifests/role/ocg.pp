@@ -79,7 +79,7 @@ class role::ocg::production (
     }
 
     include lvs::configuration
-    class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['ocg'][$::site] }	
+    class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['ocg'][$::site] }
 }
 
 class role::ocg::test {
@@ -109,5 +109,3 @@ class role::ocg::test {
         password        => $passwords::redis::ocg_test_password,
     }
 }
-
-@monitor_group { 'pdf_eqiad': description => 'eqiad pdf servers' }
