@@ -110,6 +110,26 @@ class role::beta::appserver {
         check_command => 'check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page',
     }
 
+    class { '::nutcracker':
+        mbuf_size => '64k',
+        pools     => {
+            'memcached' => {
+                auto_eject_hosts     => true,
+                distribution         => 'ketama',
+                hash                 => 'md5',
+                listen               => '127.0.0.1:11212',
+                preconnect           => true,
+                server_connections   => 2,
+                server_failure_limit => 3,
+                timeout              => 250,
+                servers              => [
+                    '10.68.16.14:11211',
+                    '10.68.16.15:11211',
+                ],
+            },
+        },
+    }
+
     # Beta application servers have some ferm DNAT rewriting rules (bug
     # 45868) so we have to explicitly allow http (port 80)
     ferm::service { 'http':
