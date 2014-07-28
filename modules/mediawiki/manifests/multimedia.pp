@@ -6,13 +6,6 @@
 class mediawiki::multimedia {
     include ::mediawiki::multimedia::fonts
 
-    cron { 'clear_imagemagick_temp_files':
-        ensure  => absent,
-        command => strip(template('mediawiki/clear_magick_tmp.erb')),
-        user    => 'root',
-        minute  => '*/5',
-    }
-
     if ubuntu_version('>= trusty') {
         $libav_package   = 'libav-tools'
         $libvips_package = 'libvips37'
