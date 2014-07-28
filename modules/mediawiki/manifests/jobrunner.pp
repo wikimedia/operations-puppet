@@ -41,6 +41,14 @@ class mediawiki::jobrunner (
         before => Service['jobrunner']
     }
 
+    file { '/etc/jobrunner/jobrunner.conf':
+        content => template('mediawiki/jobrunner.conf.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['jobrunner'],
+    }
+
     file { '/etc/jobrunner/jobrunner.ini':
         content => template('mediawiki/jobrunner.ini.erb'),
         owner   => 'root',
