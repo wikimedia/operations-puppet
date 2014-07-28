@@ -28,6 +28,10 @@ sub vcl_recv {
 		set req.backend = iridium;
 	} elsif (req.http.Host == "contacts.wikimedia.org") {
 		set req.backend = zirconium;
+	} elsif (req.http.Host == "people.wikimedia.org") {
+		set req.backend = terbium;
+		/* no caching of public_html dirs */
+		return (pass);
 	} else {
 		error 404 "Domain not served here";
 	}

@@ -1,0 +1,28 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/publichtml/apacheconfig.erb
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerAdmin <%= @server_admin %>
+    ServerName <%= @sitename %>
+
+    DocumentRoot <%= @docroot %>
+
+    UserDir public_html
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+
+    <Directory />
+        Order Deny,Allow
+        AllowOverride All
+    </Directory>
+
+</VirtualHost>
