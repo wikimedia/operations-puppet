@@ -10,6 +10,40 @@ class role::mediawiki::common {
     include ::mediawiki
     include ::nutcracker::monitoring
 
+    class { '::nutcracker':
+        mbuf_size => '64k',
+        pools     => {
+            'memcached' => {
+                auto_eject_hosts     => true,
+                distribution         => 'ketama',
+                hash                 => 'md5',
+                listen               => '127.0.0.1:11212',
+                preconnect           => true,
+                server_connections   => 2,
+                server_failure_limit => 3,
+                timeout              => 250,
+                servers              => [
+                    '10.64.0.180:11211:1',
+                    '10.64.0.181:11211:1',
+                    '10.64.0.182:11211:1',
+                    '10.64.0.183:11211:1',
+                    '10.64.0.184:11211:1',
+                    '10.64.0.185:11211:1',
+                    '10.64.0.186:11211:1',
+                    '10.64.0.187:11211:1',
+                    '10.64.0.188:11211:1',
+                    '10.64.0.189:11211:1',
+                    '10.64.0.190:11211:1',
+                    '10.64.0.191:11211:1',
+                    '10.64.0.192:11211:1',
+                    '10.64.0.193:11211:1',
+                    '10.64.0.194:11211:1',
+                    '10.64.0.195:11211:1',
+                ],
+            },
+        },
+    }
+
     $log_aggregator = 'fluorine.eqiad.wmnet:8420'
     class { '::mediawiki::php': fatal_log_file => "udp://${log_aggregator}" }
     class { '::mediawiki::syslog': apache_log_aggregator => $log_aggregator }
