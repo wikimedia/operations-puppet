@@ -1,1 +1,0 @@
-for dir in /tmp /tmp/magick-tmp; do find $dir -ignore_readdir_race -type f \( -name 'gs_*' -o -name 'magick-*' -o -name 'localcopy_*svg' -o -name 'vips-*.v' \) -cmin +15 -exec rm -f {} \;; done
