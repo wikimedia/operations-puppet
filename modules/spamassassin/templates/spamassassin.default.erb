@@ -14,7 +14,7 @@ ENABLED=1
 # make sure --max-children is not set to anything higher than 5,
 # unless you know what you're doing.
 
-OPTIONS="--max-children <%= max_children %> <%= debug_logging %> --nouser-config --listen-ip=127.0.0.1 -u <%= spamd_user %> -g <%= spamd_group %>"
+OPTIONS="--max-children <%= @max_children %> <%= debug_logging %> --nouser-config --listen-ip=127.0.0.1 -u <%= spamd_user %> -g <%= spamd_group %>"
 
 # Pid file
 # Where should spamd write its PID to file? If you use the -u or
@@ -23,7 +23,7 @@ OPTIONS="--max-children <%= max_children %> <%= debug_logging %> --nouser-config
 PIDFILE="/var/run/spamd.pid"
 
 # Set nice level of spamd
-NICE="--nicelevel <%= nicelevel %>"
+NICE="--nicelevel <%= @nicelevel %>"
 
 # Cronjob
 # Set to anything but 0 to enable the cron job to automatically update
