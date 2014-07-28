@@ -38,8 +38,6 @@ NameVirtualHost *:443
 
     DocumentRoot /usr/local/apache/common/docroot/noc
 
-    UserDir public_html
-
     SSLEngine on
     SSLCertificateFile /etc/ssl/certs/noc.wikimedia.org.pem
     SSLCertificateKeyFile /etc/ssl/private/noc.wikimedia.org.key
@@ -59,5 +57,9 @@ NameVirtualHost *:443
     <Directory /usr/local/apache/common/docroot/noc/conf>
         AddDefaultCharset utf-8
     </Directory>
+
+    # Rewrite old user directories
+    RewriteEngine on
+    RewriteRule ^/(~.+)$ people.wikimedia.org/$1 [L,R=301,QSA]
 
 </VirtualHost>
