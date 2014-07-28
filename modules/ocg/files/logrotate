@@ -3,7 +3,7 @@
 ### puppet:///modules/ocg/logrotate
 #####################################################################
 
-/var/log/ocg/*.log {
+/var/log/ocg.log {
        daily
        notifempty
        maxage 30
