@@ -1,0 +1,20 @@
+upstream quarry {
+    server unix:/run/uwsgi/quarry-web.sock;
+}
+
+server {
+    listen 80;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass quarry;
+    }
+
+    location /static {
+        alias <%= @clone_path %>/static;
+    }
+
+    location /api/query/output {
+        alias <%= @result_path %>;
+    }
+}
