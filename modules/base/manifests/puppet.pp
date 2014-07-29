@@ -102,6 +102,13 @@ class base::puppet($server='puppet', $certname=undef) {
         notify  => Exec['compile puppet.conf'],
     }
 
+    # restrict access to logs to root, RT #8022
+    file { '/var/log/puppet.log':
+        owner => 'root',
+        group => 'root',
+        mode  => '0640',
+    }
+
     if $::realm == 'labs' {
         # Clear master certs if puppet.conf changed
         exec { 'delete master certs':
