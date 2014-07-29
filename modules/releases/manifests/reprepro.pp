@@ -16,15 +16,17 @@
 class releases::reprepro {
     $basedir = '/srv/org/wikimedia/reprepro'
     $outdir = '/srv/org/wikimedia/releases/debian'
+    $homedir = '/var/lib/reprepro'
     $incomingdir = "${basedir}/incoming"
 
     class { '::reprepro':
-        basedir => $basedir,
-        options => ["outdir ${outdir}"],
-        gpg_pubring => 'puppet:///modules/releases/pubring.gpg',
-        gpg_secring => 'puppet:///private/releases/secring.gpg',
-        incomingdir => $incomingdir,
-        uploaders => ['allow * by any key'],
+        basedir         => $basedir,
+        homedir         => $homedir,
+        options         => ["outdir ${outdir}"],
+        gpg_pubring     => 'puppet:///modules/releases/pubring.gpg',
+        gpg_secring     => 'puppet:///private/releases/secring.gpg',
+        incomingdir     => $incomingdir,
+        authorized_keys => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeOQ3TcjrC6HbauhJ6Cov0PSHCRGo2N3lgD8ABUp7sGkewJ8H4szXGwdSJQ560vvGAgQcovVjjHISqMo4EhHIJtmF+8yFs0uQ0aCvHsvrkSJnOKPn9G/Y76E3HgozcXkh+0d2n1j9WiPQlZP0OdT4Ug50v6W3bNyDu4n6FQPwYxzgbKDzo3cL93+qOyEcNNonUkj0IQoM18XvKoZvLJ8n02tn2gkd0QV21OxlMMa9h/FX+KPf8bZWDRzTzGH5351u4p01l2ro43fUDWHKHXVObGf1+1gus9FdOVBf9k9WhlHnoeICqTtAo6Dmpzp5XXEi7PBGsfm178AXgsMvSpSfn'],
     }
 
     file { $outdir:
@@ -38,18 +40,10 @@ class releases::reprepro {
     file { $incomingdir:
         ensure  => directory,
         owner   => 'reprepro',
-        group   => 'wikidev',
-        mode    => '0775',
+        group   => 'reprepro',
+        mode    => '0755',
         require => Class['::reprepro'],
     }
-
-#    cron { 'processincoming':
-#        ensure  => present,
-#        command => "reprepro -Vb ${basedir} processincoming default >> ${basedir}/logs/processincoming.log 2>&1",
-#        user    => 'reprepro',
-#        hour    => '*',
-#        minute  => '*/5',
-#    }
 
     class { '::reprepro::distribution':
         basedir => $basedir,
@@ -65,7 +59,6 @@ class releases::reprepro {
                 'Components' => 'main',
                 'Description' => 'MediaWiki packages for Ubuntu Precise Pangolin',
                 'SignWith' => 'default',
-                'Uploaders' => 'uploaders',
                 'Log' => "precise-mediawiki\n  log",
             },
             'trusty' => {
@@ -79,9 +72,82 @@ class releases::reprepro {
                 'Components' => 'main',
                 'Description' => 'MediaWiki packages for Ubuntu Trusty Tahr',
                 'SignWith' => 'default',
-                'Uploaders' => 'uploaders',
                 'Log' => "trusty-mediawiki\n  log",
             }
         }
+    }
+}
+
+class releases::reprepro::upload (
+    $private_key  = 'puppet:///private/releases/id_rsa.upload',
+    $user         = 'releases',
+    $group        = 'releases',
+    $sudo_user    = '%wikidev',
+    $homedir      = '/var/lib/releases',
+    $upload_host  = 'caesium.eqiad.wmnet',
+) {
+    group { 'releases':
+        ensure => present,
+        name   => $group,
+    }
+
+    user { 'releases':
+        ensure     => present,
+        name       => $user,
+        home       => $homedir,
+        shell      => '/bin/false',
+        comment    => 'Releases user',
+        gid        => $group,
+        managehome => true,
+        require    => Group['releases'],
+    }
+
+    file { "${homedir}/.ssh":
+        ensure  => directory,
+        owner   => $user,
+        group   => $group,
+        mode    => '0700',
+        require => User['releases'],
+    }
+
+    file { "${homedir}/.ssh/id_rsa.${upload_host}":
+        ensure  => file,
+        owner   => $user,
+        group   => $group,
+        mode    => '0600',
+        require => User['releases'],
+        source  => $private_key,
+    }
+
+    file { "${homedir}/.ssh/config":
+        ensure  => file,
+        owner   => $user,
+        group   => $group,
+        mode    => '0600',
+        require => User['releases'],
+        content => template('releases/ssh_config.erb'),
+    }
+
+    file { "${homedir}/.dput.cf":
+        ensure  => file,
+        owner   => $user,
+        group   => $group,
+        mode    => '0600',
+        require => User['releases'],
+        content => template('releases/dput.erb'),
+    }
+
+    file { '/usr/local/bin/deb-upload':
+        ensure  => file,
+        owner   => $user,
+        group   => $group,
+        mode    => '0555',
+        require => User['releases'],
+        source  => 'puppet:///modules/releases/deb-upload',
+    }
+
+    admin::sudo { "releases_dput_${upload_host}":
+        user => $sudo_user,
+        privs => ["ALL = (${user}) NOPASSWD: dput"],
     }
 }

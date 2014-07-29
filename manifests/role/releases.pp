@@ -23,3 +23,7 @@ class role::releases {
         port  => '443',
     }
 }
+
+class role::releases::upload {
+    class { '::releases::reprepro::upload': }
+}
