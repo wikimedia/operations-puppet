@@ -213,6 +213,10 @@ groups:
     privs: ['ALL = (hdfs)  NOPASSWD: ALL',
             'ALL = (oozie) NOPASSWD: ALL',
             'ALL = (hive)  NOPASSWD: ALL']
+  eventlogging-admins:
+    gid: 733
+    description: Login access for eventlogging investigation
+    members: [nuria, qchris]
 
 users:
   rush:

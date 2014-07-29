@@ -2690,7 +2690,9 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
 # processes it, and broadcasts to internal subscribers.
 node 'vanadium.eqiad.wmnet' {
-    include admin
+    class { 'admin':
+        groups => ['eventlogging-admins']
+    }
     include standard
     include role::eventlogging
     include role::ipython_notebook
@@ -2701,7 +2703,9 @@ node 'vanadium.eqiad.wmnet' {
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
     include standard
-    include admin
+    class { 'admin':
+        groups => ['eventlogging-admins']
+    }
     include base::firewall
     include role::eventlogging::graphite
     include role::webperf
