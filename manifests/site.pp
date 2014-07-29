@@ -2477,6 +2477,9 @@ node 'stat1002.eqiad.wmnet' {
     # clients so that analysts can access Hadoop
     # from here.
     include role::analytics::clients
+
+    # Include analytics/refinery deployment target.
+    include role::analytics::refinery
 }
 
 # stat1003 is a general purpose number cruncher for
