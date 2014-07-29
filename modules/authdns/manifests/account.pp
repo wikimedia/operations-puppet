@@ -19,7 +19,7 @@ class authdns::account {
     }
 
     sudo_user { $user:
-        privileges => 'ALL=NOPASSWD: /usr/local/sbin/authdns-local-update',
+        privileges => ['ALL=NOPASSWD: /usr/local/sbin/authdns-local-update'],
     }
 
     file { "${home}/.ssh":
