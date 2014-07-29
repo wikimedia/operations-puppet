@@ -1,0 +1,8 @@
+CELERYD_NODES = "w1"
+CELERY_BIN = "<%= @venv_path %>/bin/celery"
+CELERYD_CHDIR = "<%= @clone_path %>"
+CELERYD_LOG_FILE = "/var/log/celery/%N.log"
+CELERYD_PID_FILE = "/run/celery/%N.pid"
+CELERYD_USER = "quarry"
+CELERYD_GROUP = "quarry"
+CELERYD_CREATE_DIRS = 1
