@@ -196,7 +196,7 @@ class role::cache {
                 },
                 'misc' => {
                     'pmtpa' => [],
-                    'eqiad' => ['cp1043.wikimedia.org', 'cp1044.wikimedia.org'],
+                    'eqiad' => ['cp1043.eqiad.wmnet', 'cp1044.eqiad.wmnet'],
                     'esams' => [],
                     'ulsfo' => [],
                 }
