@@ -1,7 +1,7 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [csalvia, rainman]
+    members: [csalvia, rainman, mwalker]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -40,7 +40,7 @@ groups:
     members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808,
       brion, bsitu, cmcmahon, cscott, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
-      maxsem, mattflaschen, marktraceur, milimetric, mlitn, mwalker,
+      maxsem, mattflaschen, marktraceur, milimetric, mlitn,
       nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik, jgonera,
       tgr, ssmith, bsimmers]
   restricted:
@@ -135,7 +135,7 @@ groups:
   ocg-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)
-    members: [mwalker, cscott]
+    members: [cscott]
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
@@ -160,7 +160,7 @@ groups:
     description: Have access to so that they can do analysis on webrequest logs
                 and other private data.
     members: [handrade, haithams, ezachte, milimetric, dartar,
-      yurik, halfak, howief, mwalker, awight, dr0ptp4kt, qchris, tnegrin,
+      yurik, halfak, howief, awight, dr0ptp4kt, qchris, tnegrin,
       nuria, leila, manybubbles, ironholds, kleduc]
   statistics-users:
     gid: 726
@@ -182,7 +182,7 @@ groups:
   pdf-qa-users:
     gid: 728
     description: developers on the PDF QA system
-    members: [mwalker, maxsem, anomie, cscott]
+    members: [maxsem, anomie, cscott]
 
 users:
   rush:
@@ -573,7 +573,7 @@ users:
         matthias@mullie.eu]
     uid: 2269
   mwalker:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mwalker
     realname: Matt Walker
