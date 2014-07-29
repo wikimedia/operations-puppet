@@ -1,0 +1,17 @@
+[DEFAULT]
+method                  = scp
+allow_unsigned_uploads  = 1
+run_lintian             = 0
+run_dinstall            = 0
+check_version           = 0
+scp_compress            = 0
+post_upload_command     = ssh <%= @upload_host %>
+default_host_main       = <%= @upload_host %>
+allowed_distributions   = (?!UNRELEASED)
+
+[<%= @upload_host %>]
+fqdn = <%= @upload_host %>
+login = reprepro
+# ignored but required by dput
+# ssh forced commands are used instead
+incoming = /tmp
