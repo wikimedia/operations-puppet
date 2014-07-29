@@ -132,6 +132,11 @@ groups:
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams]
+  eventlogging:
+    posix_name: eventlogging
+    gid: 729
+    description: Login access for eventlogging investigation
+    members: [nuria]
   pdf-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)

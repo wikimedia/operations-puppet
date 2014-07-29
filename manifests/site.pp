@@ -2721,7 +2721,9 @@ node 'vanadium.eqiad.wmnet' {
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
     include standard
-    include admin
+    class { 'admin':
+        groups => ['eventlogging']
+    }
     include base::firewall
     include role::eventlogging::graphite
     include role::webperf
