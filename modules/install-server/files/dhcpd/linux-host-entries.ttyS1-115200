@@ -1470,6 +1470,11 @@ host labstore1002 {
 	fixed-address labstore1002.eqiad.wmnet;
 }
 
+host labstore1003 {
+        hardware ethernet 78:2b:cb:0a:16:60;
+        fixed-address labstore1003.eqiad.wmnet;
+}
+
 host labsdb1004 {
 	hardware ethernet d4:ae:52:76:66:59;
 	fixed-address labsdb1004.eqiad.wmnet;
@@ -1687,10 +1692,6 @@ host ms1001 {
 	fixed-address ms1001.wikimedia.org;
 }
 
-host ms1002 {
-	hardware ethernet 78:2b:cb:0a:16:60;
-	fixed-address ms1002.eqiad.wmnet;
-}
 host ms1003 {
 	hardware ethernet 78:2b:cb:0b:04:c0;
 	fixed-address ms1003.eqiad.wmnet;
