@@ -169,12 +169,6 @@ sub tag_carrier {
 					set req.http.X-CS = req.http.X-CS2;
 				}
 			}
-		} else if (req.http.X-CS2 == "250-99") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-				if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
 		} else if (req.http.X-CS2 == "410-01") {
 			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
 				if (req.http.host ~ "^((en|ur)\.)?(zero|m)\.") {
@@ -243,8 +237,11 @@ sub tag_carrier {
 					set req.http.X-CS = req.http.X-CS2;
 				}
 			}
-		} else if (req.http.X-CS2 == "426-04" ||
-				   req.http.X-CS2 ~ "^TESTON.*") {
+		} else if ((req.http.X-Forwarded-By != "Opera" && (
+					req.http.X-CS2 == "426-04" ||
+					req.http.X-CS2 == "250-99"
+					)) ||
+				    req.http.X-CS2 ~ "^TESTON.*") {
 			//
 			// Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
 			//
@@ -254,6 +251,18 @@ sub tag_carrier {
 			} else {
 				set req.http.X-CS = "ON";
 			}
+
+			/* These are opera-mini leftovers */
+
+		} else if (req.http.X-CS2 == "250-99") {
+			if (!req.http.X-Forwarded-Proto) {
+				if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
+					set req.http.X-CS = req.http.X-CS2;
+				}
+			}
+
+			/* End of opera-mini leftovers */
+
 		} else if (req.http.X-CS2 ~ "^TEST.*") {
 			// Test carrier allows all proxies and SSL
 			set req.http.X-ZeroTLS = "1";
@@ -323,6 +332,12 @@ sub vcl_deliver {
 			if (req.http.X-CS2 == "426-04") {
 				if (!req.http.X-Forwarded-By) {
 					set req.http.X-CS = req.http.X-CS2;
+				}
+			} else if (req.http.X-CS2 == "250-99") {
+				if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+					if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
+						set req.http.X-CS = req.http.X-CS2;
+					}
 				}
 			} else {
 				set req.http.X-CS = req.http.X-CS2;
