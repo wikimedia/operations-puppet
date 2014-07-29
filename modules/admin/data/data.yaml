@@ -544,7 +544,8 @@ users:
     gid: 500
     name: mattflaschen
     realname: Matthew Flaschen
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHESn/vYQ5F7M1fOWjQMKnTe83DpT0GSlDmJW9rhJO4GEX4VT2P/csQsNPjYHD4zqJyYf49mk1idldxg7QFjoZCeLvlw0QHcg+pTOh91IE2fP+V6qLErIs0VHW7pzPb4slevKqxYpKJKY2P4qvviulfENg4XoqkH8szfPdN0L0iouVZVLxIB2jjD561Zc0ytc1Kg4QW9dXZi3Jb7ukxdVC7v7Sipz/H8ge4urc4Y4BCbTPciRf30Ne5sRjqlR0qDvmeUhi9AOz/qmLqj4lmYRJ+OaaLat2ejyAFF0HAI/uZjtNgpvkaV85FlIahqKgVGKlCaV0fXOQP9oRUkvLPKsd 
+        mflaschen@wikimedia.org]
     uid: 2662
   marktraceur:
     ensure: present
