@@ -204,6 +204,16 @@ groups:
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams, otto, jgonera]
+  analytics-admins:
+    gid: 732
+    description: Admin access to analytics cluster.
+        This will grant shell access on all Analytics Cluster nodes, as well
+        as the ability to sudo to certain Analytics Cluster system users.
+    members: [qchris]
+    privs: ['ALL = (hdfs)  NOPASSWD: ALL',
+            'ALL = (oozie) NOPASSWD: ALL',
+            'ALL = (hive)  NOPASSWD: ALL']
+
 users:
   rush:
     ensure: present
