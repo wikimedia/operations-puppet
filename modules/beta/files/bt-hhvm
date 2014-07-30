@@ -1,0 +1,25 @@
+#!/bin/bash
+# Capture a backtrace and core dump for the hhvm process.
+#
+set -e
+
+# Run script as root
+[[ ${UID} -ne 0 ]] && exec sudo ${0} "${@}"
+
+DUMPDIR=/data/project/hhvm-dumps
+
+HHVM=$(pidof hhvm)
+TS=$(date +%s)
+HOST=$(hostname)
+
+OUTFILE="${DUMPDIR}/hhvm.${TS}.${HOST}.${HHVM}.bt"
+COREFILE="${DUMPDIR}/hhvm.${TS}.${HOST}.${HHVM}.core"
+BINFILE="${DUMPDIR}/hhvm.${TS}.${HOST}.${HHVM}.bin"
+
+mkdir -p $DUMPDIR
+echo "Attaching gdb to the hhvm process $HHVM"
+gdb -batch -p $HHVM -ex "symbol-file /usr/bin/hhvm" \
+    -ex "thread apply all backtrace full" \
+    -ex "generate-core-file $COREFILE" > $OUTFILE
+cp $(readlink -f /proc/$HHVM/exe) $BINFILE
+echo "Backtrace saved at $OUTFILE, core at $COREFILE, binary at $BINFILE"
