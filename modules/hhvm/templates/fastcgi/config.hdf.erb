@@ -1,0 +1,9 @@
+# Configuration for HHVM running in server (FastCGI) mode.
+# Note: HDF syntax is deprecated. Use php.ini where possible.
+# This file is managed by Puppet.
+
+#include "/etc/hhvm/extensions.hdf"
+
+Eval {
+  PerfPidMap = false
+}
