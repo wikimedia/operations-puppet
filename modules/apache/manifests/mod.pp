@@ -23,6 +23,7 @@ class apache::mod::env             { apache::mod_conf { 'env':            } }
 class apache::mod::expires         { apache::mod_conf { 'expires':        } }
 class apache::mod::filter          { apache::mod_conf { 'filter':         } }
 class apache::mod::headers         { apache::mod_conf { 'headers':        } }
+class apache::mod::mime            { apache::mod_conf { 'mime':           } }
 class apache::mod::proxy           { apache::mod_conf { 'proxy':          } }
 class apache::mod::proxy_balancer  { apache::mod_conf { 'proxy_balancer': } }
 class apache::mod::proxy_http      { apache::mod_conf { 'proxy_http':     } }

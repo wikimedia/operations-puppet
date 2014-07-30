@@ -14,6 +14,10 @@ class mediawiki::web::modules (
     include apache::mod::mime
     include apache::mod::status
 
+    apache::mod_conf { ['cgi','negotiation', 'authn_file']:
+        ensure => absent
+    }
+
     if $use_hhvm {
         include apache::mod::proxy_fcgi
 
@@ -31,6 +35,7 @@ class mediawiki::web::modules (
         include apache::mod::php5
     }
 
+
     # This will be useful once we switch to mpm worker. Please keep it.
     file { '/etc/apache2/mods-available/mpm_prefork.conf':
         ensure  => present,
@@ -40,6 +45,14 @@ class mediawiki::web::modules (
         mode    => '0444',
         require => Package['apache2'],
         before  => Class['apache::mpm'],
+    }
+
+    # As we already have apache::mpm declared, the prefork conf file
+    # wouldn't be loaded or linked, so we ensure that manually.
+    file { '/etc/apache2/mods-enabled/mpm_prefork.conf':
+        ensure => link,
+        target => '/etc/apache2/mods-available/mpm_prefork.conf',
+        before => Class['apache::mpm']
     }
 
     file { '/etc/apache2/mods-available/expires.conf':
