@@ -3,11 +3,6 @@
 #### puppet:///modules/install-server/dhcpd/linux-host-entries.ttyS1-115200
 ######################################################################
 
-host actinium {
-	hardware ethernet 84:2b:2b:fd:bc:fc;
-	fixed-address actinium.eqiad.wmnet;
-}
-
 host aluminium {
 	hardware ethernet d4:ae:52:65:05:2a;
 	fixed-address aluminium.wikimedia.org;
@@ -3067,6 +3062,16 @@ host radon {
 	fixed-address radon.eqiad.wmnet;
 	option pxelinux.pathprefix "trusty-installer/";
 	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host rbf1001 {
+	hardware ethernet 84:2b:2b:fd:bc:fc;
+	fixed-address rbf1001.eqiad.wmnet;
+}
+
+host rbf1002 {
+	hardware ethernet 84:2b:2b:fd:bd:5f;
+	fixed-address rbf1002.eqiad.wmnet;
 }
 
 host rcs1001 {
