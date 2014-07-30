@@ -20,6 +20,10 @@ class role::analytics::hive::config {
     include role::analytics::zookeeper::config
     include role::analytics::hadoop::config
 
+    # Set this pretty high, to avoid limiting the number
+    # of substitutionvariables a Hive script can use.
+    $variable_substitute_depth = 10000
+
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
     $auxpath         = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-0.12.0-cdh5.0.2.jar'
@@ -49,10 +53,11 @@ class role::analytics::hive::client inherits role::analytics::hive::config {
     require role::analytics::hadoop::client
 
     class { '::cdh::hive':
-        metastore_host  => $metastore_host,
-        jdbc_password   => $jdbc_password,
-        zookeeper_hosts => $zookeeper_hosts,
-        auxpath         => $auxpath,
+        metastore_host            => $metastore_host,
+        jdbc_password             => $jdbc_password,
+        zookeeper_hosts           => $zookeeper_hosts,
+        variable_substitute_depth => $variable_substitute_depth,
+        auxpath                   => $auxpath,
     }
 }
 
