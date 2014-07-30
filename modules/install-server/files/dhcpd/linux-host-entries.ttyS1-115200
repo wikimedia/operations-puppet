@@ -1471,8 +1471,10 @@ host labstore1002 {
 }
 
 host labstore1003 {
-        hardware ethernet 78:2b:cb:0a:16:60;
-        fixed-address labstore1003.eqiad.wmnet;
+	hardware ethernet 78:2b:cb:0a:16:60;
+	fixed-address labstore1003.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labsdb1004 {
