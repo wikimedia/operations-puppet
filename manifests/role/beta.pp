@@ -90,6 +90,7 @@ class role::beta::appserver {
     include geoip
 
     include ::beta::common
+    include ::beta::bt_hhvm
 
     class { '::mediawiki::syslog':
         apache_log_aggregator => 'deployment-bastion.eqiad.wmflabs:8420',
