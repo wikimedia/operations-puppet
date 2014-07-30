@@ -6,24 +6,14 @@
 # - $deployer_groups: Array of unix groups to add to the trebuchet user
 #
 class deployment::deployment_server($deployer_groups=[]) {
-    if ! defined(Package['git-core']){
-        package { 'git-core':
-            ensure => present;
-        }
-    }
-    if ! defined(Package['python-redis']){
-        package { 'python-redis':
-            ensure => present;
-        }
-    }
-    if ! defined(Package['python-git']){
-        package { 'python-git':
-            ensure => present;
-        }
-    }
-    package { 'python-gitdb':
-        ensure => present;
-    }
+
+    ensure_packages([
+        'git-core',
+        'python-redis',
+        'python-gitdb',
+        'python-git',
+        ])
+
     package { 'trebuchet-trigger':
         ensure => present;
     }
