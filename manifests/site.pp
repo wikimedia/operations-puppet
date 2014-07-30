@@ -102,7 +102,9 @@ node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
 # analytics1003 is being used for testing kafkatee
 # in preperation for replacing udp2log
 node 'analytics1003.eqiad.wmnet' {
-    include admin
+    class { 'admin':
+        groups => ['analytics-admins'],
+    }
     include standard
 
     include role::analytics
@@ -123,8 +125,9 @@ node 'analytics1009.eqiad.wmnet' {
     # analytics1009 is analytics Ganglia aggregator for Row A
     # $ganglia_aggregator = true
 
-    # class { 'admin': groups => ['analytics-users'] }
-    include admin
+    class { 'admin':
+        groups => ['analytics-admins'],
+    }
     include standard
 
     # include role::analytics::hadoop::standby
@@ -141,7 +144,9 @@ node 'analytics1004.eqiad.wmnet' {
     # ganglia cluster name.
     $cluster = 'analytics'
 
-    class { 'admin': groups => ['analytics-users'] }
+    class { 'admin':
+        groups => ['analytics-users', 'analytics-admins'],
+    }
     include standard
 
     include role::analytics::hadoop::standby
@@ -156,7 +161,9 @@ node 'analytics1010.eqiad.wmnet' {
     # analytics1010 is analytics Ganglia aggregator for Row B
     $ganglia_aggregator = true
 
-    class { 'admin': groups => ['analytics-users'] }
+    class { 'admin':
+        groups => ['analytics-users', 'analytics-admins'],
+    }
     include standard
 
     include role::analytics::hadoop::master
@@ -177,7 +184,9 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
     if $::hostname == 'analytics1014' {
         $ganglia_aggregator = true
     }
-    include admin
+    class { 'admin':
+        groups => ['analytics-admins'],
+    }
     include standard
 
     include role::analytics::hadoop::worker
@@ -202,7 +211,9 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
     # addresses.
     interface::add_ip6_mapped { 'main': }
 
-    include admin
+    class { 'admin':
+        groups => ['analytics-admins'],
+    }
     include standard
 
     include role::analytics
@@ -215,7 +226,9 @@ node /analytics102[345].eqiad.wmnet/ {
     # ganglia cluster name.
     $cluster = 'analytics'
 
-    include admin
+    class { 'admin':
+        groups => ['analytics-admins'],
+    }
     include standard
 
     include role::analytics
@@ -228,7 +241,9 @@ node 'analytics1026.eqiad.wmnet' {
     # ganglia cluster name.
     $cluster = 'analytics'
 
-    include admin
+    class { 'admin':
+        groups => ['analytics-admins'],
+    }
     include standard
 }
 
@@ -242,7 +257,9 @@ node 'analytics1027.eqiad.wmnet' {
     # ganglia cluster name.
     $cluster = 'analytics'
 
-    include admin
+    class { 'admin':
+        groups => ['analytics-admins'],
+    }
     include standard
 
     include role::analytics::clients
@@ -2466,8 +2483,13 @@ node 'stat1002.eqiad.wmnet' {
     # Users should not use it for app development.
     # Data processing on this machine is fine.
 
-    class { 'admin': groups => ['statistics-privatedata-users',
-                                'statistics-admins'] }
+    class { 'admin':
+        groups => [
+            'statistics-privatedata-users',
+            'statistics-admins',
+            'analytics-admins',
+        ]
+    }
 
     # include classes needed for storing and crunching
     # private data on stat1002.

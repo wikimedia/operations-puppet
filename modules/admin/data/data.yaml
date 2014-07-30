@@ -182,6 +182,14 @@ groups:
     gid: 728
     description: developers on the PDF QA system
     members: [mwalker, maxsem, anomie, cscott]
+  analytics-admins:
+    gid: 729
+    description: Admin access to analytics cluster.
+    members: [otto, qchris]
+    privs: ['ALL = (stats) NOPASSWD: ALL',
+            'ALL = (hdfs)  NOPASSWD: ALL',
+            'ALL = (oozie) NOPASSWD: ALL',
+            'ALL = (hive)  NOPASSWD: ALL']
 
 users:
   rush:
