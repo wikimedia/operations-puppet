@@ -27,7 +27,6 @@ class mediawiki::web::modules (
                         'authz_user',
                         'deflate',
                         'env',
-                        'filter',
                         'reqtimeout'
                         ]:
         ensure => absent
