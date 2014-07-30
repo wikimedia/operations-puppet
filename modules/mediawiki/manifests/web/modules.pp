@@ -80,7 +80,7 @@ class mediawiki::web::modules (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['apache']
+        notify  => Service['apache2']
     }
 
     file { '/etc/apache2/mods-available/mime.conf':
@@ -89,7 +89,7 @@ class mediawiki::web::modules (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['apache']
+        notify  => Service['apache2']
     }
 
     # TODO: remove this? It's not used anywhere AFAICT
