@@ -32,7 +32,6 @@ class apache::mod::setenvif        { apache::mod_conf { 'setenvif':       } }
 class apache::mod::ssl             { apache::mod_conf { 'ssl':            } }
 class apache::mod::status          { apache::mod_conf { 'status':         } }
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
-class apache::mod::version         { apache::mod_conf { 'version':        } }
 
 # Modules that depend on additional packages
 class apache::mod::authz_svn       { apache::mod_conf { 'authz_svn':      } <- package { 'libapache2-svn':           } }
