@@ -25,14 +25,8 @@ class mediawiki::web( $workers_limit = undef ) {
     }
 
     if ubuntu_version('>= trusty') {
-        file { '/etc/apache2/envvars':
-            ensure => present,
-            source => 'puppet:///modules/mediawiki/apache/envvars.trusty'
-        }
-    } else {
-        file { '/etc/apache2/envvars':
-            ensure => present,
-            source => 'puppet:///modules/mediawiki/apache/envvars.precise'
+        apache::def { 'HHVM':
+            ensure => present
         }
     }
 
