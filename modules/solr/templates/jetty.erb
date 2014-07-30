@@ -25,7 +25,7 @@ JETTY_PORT=8983
 #JETTY_ARGS=
 
 # Extra options to pass to the JVM
-JAVA_OPTIONS="-XX:+UseConcMarkSweepGC -Xmx<%= max_heap %> -Xms<%= max_heap %>"
+JAVA_OPTIONS="-XX:+UseConcMarkSweepGC -Xmx<%= @max_heap %> -Xms<%= @max_heap %>"
 
 # Home of Java installation.
 #JAVA_HOME=
