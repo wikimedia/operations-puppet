@@ -1,0 +1,10 @@
+# HHVM dynamic extension configuration
+# This file is managed by Puppet
+
+DynamicExtensionPath = /usr/lib/hphp/extensions/20140702
+
+DynamicExtensions {
+  * = fss.so
+  * = luasandbox.so
+  * = wikidiff2.so
+}
