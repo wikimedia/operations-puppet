@@ -22,7 +22,7 @@ class logstash(
     include ::elasticsearch::packages
 
     package { 'logstash':
-        ensure  => '1.2.2-debian1',
+        ensure  => 'present',
         require => Package['openjdk-7-jdk'],
     }
 
