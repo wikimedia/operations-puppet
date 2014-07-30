@@ -13,7 +13,6 @@ class mediawiki::web::modules (
     include apache::mod::alias
     include apache::mod::mime
     include apache::mod::status
-    include apache::mod::negotiation
 
     # Modules we don't enable.
     # Note that deflate and filter are activated deep down in the
