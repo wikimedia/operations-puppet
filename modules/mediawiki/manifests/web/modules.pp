@@ -39,7 +39,7 @@ class mediawiki::web::modules (
     # This will be useful once we switch to mpm worker. Please keep it.
     file { '/etc/apache2/mods-available/mpm_prefork.conf':
         ensure  => present,
-        content  => template('/mediawiki/apache/modules/mpm_prefork.conf.erb'),
+        content  => template('mediawiki/apache/modules/mpm_prefork.conf.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
