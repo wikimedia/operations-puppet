@@ -1,0 +1,13 @@
+# Configuration for HHVM running in server (FastCGI) mode.
+# Note: HDF syntax is deprecated. Use php.ini where possible.
+# This file is managed by Puppet.
+
+DynamicExtensions {
+  * = fss.so
+  * = luasandbox.so
+  * = wikidiff2.so
+}
+
+Eval {
+  PerfPidMap = false
+}
