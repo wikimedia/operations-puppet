@@ -13,8 +13,24 @@ class mediawiki::web::modules (
     include apache::mod::alias
     include apache::mod::mime
     include apache::mod::status
+    include apache::mod::negotiation
 
-    apache::mod_conf { ['cgi','negotiation', 'authn_file']:
+    # Modules we don't enable.
+    # Note that deflate and filter are activated deep down in the
+    # apache sites, we should probably move them here
+    apache::mod_conf { [
+                        'cgi',
+                        'authn_file',
+                        'negotiation',
+                        'auth_basic',
+                        'authz_default',
+                        'authz_groupfile',
+                        'authz_user',
+                        'deflate',
+                        'env',
+                        'filter',
+                        'reqtimeout'
+                        ]:
         ensure => absent
     }
 
