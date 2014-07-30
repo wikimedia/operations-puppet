@@ -326,8 +326,8 @@ define monitor_ganglia(
     $nagios_critical       = 'false',
     $passive               = 'false',
     $freshness             = 36000,
-    $normal_check_interval = 1,
-    $retry_check_interval  = 1,
+    $normal_check_interval = 3,
+    $retry_check_interval  = 3,
     $contact_group         = 'admins'
 )
 {
