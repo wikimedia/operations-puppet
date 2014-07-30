@@ -33,7 +33,10 @@ class tcpircbot(
         ensure => present,
     }
 
-    group { 'tcpircbot': }
+    group { 'tcpircbot':
+        ensure  => present,
+        name    => 'tcpircbot',
+    }
 
     user { 'tcpircbot':
         ensure     => present,
@@ -42,6 +45,7 @@ class tcpircbot(
         home       => $dir,
         managehome => true,
         system     => true,
+        require    => Group['tcpircbot'],
     }
 
     file { "${dir}/tcpircbot.py":
