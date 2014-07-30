@@ -85,7 +85,10 @@ class toollabs::webnode($gridmaster, $type) inherits toollabs {
                 ensure => latest,
             }
 
-            package { 'lighttpd':
+            package { [
+                'lighttpd',
+                'lighttpd-mod-magnet',        #Bug 68614
+                ]:
                 ensure => latest,
                 require => File['/var/run/lighttpd'],
             }
