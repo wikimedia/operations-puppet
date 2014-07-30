@@ -75,6 +75,7 @@ class hhvm(
             include_path             => '.:/usr/share/php:/usr/share/pear',
             mysql                    => { typed_results => false },
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
+            resource_limit           => { core_file_size => to_bytes('8 Gb') },
             log                      => {
                 always_log_unhandled_exceptions => true,
                 header                          => true,
@@ -89,7 +90,7 @@ class hhvm(
         memory_limit => '300M',
         hhvm         => {
             jit              => true,
-            jit_afrozen_size => to_bytes('100Mb'),
+            jit_afrozen_size => to_bytes('100 Mb'),
             repo             => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
             server           => { port => 9000, type => 'fastcgi', gzip_compression_level => 0 },
             admin_server     => { port => 9001 },
@@ -185,6 +186,14 @@ class hhvm(
 
     file { '/usr/local/bin/hstr':
         source => 'puppet:///modules/hhvm/hstr',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        before => Service['hhvm'],
+    }
+
+    file { '/usr/local/sbin/hhvm-debug-dump':
+        source => 'puppet:///modules/hhvm/hhvm-debug-dump',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
