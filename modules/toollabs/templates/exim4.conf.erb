@@ -56,6 +56,13 @@ accept
 
 begin routers
 
+dnslookup:
+  driver = dnslookup
+  domains = ! +local_domains
+  transport = remote_smtp
+  ignore_target_hosts = 0.0.0.0 : 127.0.0.0/8
+  no_more
+
 postmaster_mail:
   driver = redirect
   condition = ${if forany{root:postmaster}{eq{$item}{$local_part}}}
@@ -133,13 +140,6 @@ tool_default:
   check_ancestor
   modemask = 002
   data = ${run{/usr/local/sbin/maintainers <%= instanceproject %>.$local_part}{$value}fail}
-
-dnslookup:
-  driver = dnslookup
-  domains = ! +local_domains
-  transport = remote_smtp
-  ignore_target_hosts = 0.0.0.0 : 127.0.0.0/8
-  no_more
 
 system_aliases:
   driver = redirect
