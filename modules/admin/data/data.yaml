@@ -135,7 +135,7 @@ groups:
   ocg-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)
-    members: [mwalker]
+    members: [mwalker, cscott]
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
