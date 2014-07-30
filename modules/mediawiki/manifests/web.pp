@@ -39,12 +39,10 @@ class mediawiki::web ( $workers_limit = undef) {
         require => Package['apache2'],
     }
 
-    file { '/etc/apache2/envvars':
-        ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0444',
-        source => "puppet:///modules/mediawiki/apache/envvars.${::lsbdistcodename}"
+    if ubuntu_version('>= trusty') {
+        apache::def { 'HHVM':
+            ensure => present
+        }
     }
 
     # do not erase this for now, it may come handy soon...
