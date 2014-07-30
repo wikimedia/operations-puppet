@@ -70,7 +70,6 @@ class role::beta::scap_target {
     ferm::rule { 'deployment-bastion-scap-ssh':
         ensure  => present,
         rule    => "proto tcp dport ssh saddr ${::beta::config::bastion_ip} ACCEPT;",
-        require => Ferm::Rule['bastion-ssh'],
     }
 
     # FIXME: Each host that has this role applied must also be
