@@ -1,0 +1,12 @@
+# Default file for HHVM
+# This file is managed by Puppet.
+
+# Run the FastCGI server as this user.
+HHVM_USER="<%= @user %>"
+
+# Run the FastCGI server with this group's GID.
+HHVM_GROUP="<%= @group %>"
+
+# If set to an executable, that executable will be invoked with the path
+# to a stack trace as an argument whenever HHVM crashes.
+HHVM_TRACE_HANDLER="/usr/local/sbin/hstr"
