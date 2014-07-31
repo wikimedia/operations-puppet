@@ -35,11 +35,11 @@ module Puppet::Parser::Functions
     END
   ) do |args|
     fail 'php_ini() operates on hashes' if args.map(&:class).uniq != [Hash]
-    args.map { |arg| flatten_map(arg) }
-        .inject(:merge)
-        .sort
-        .map { |kv| kv.join(' = ') }
-        .push('')
-        .join("\n")
+    args.map { |arg| flatten_map(arg) }.
+         inject(:merge).
+         sort.
+         map { |kv| kv.join(' = ') }.
+         push('').
+         join("\n")
   end
 end
