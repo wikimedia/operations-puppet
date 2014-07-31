@@ -1,0 +1,62 @@
+# == Class hhvm::packages::dev
+#
+# Packages needed for hhvm development such as compiling extensions
+#
+class hhvm::packages::dev {
+
+    $packages = [
+        'autoconf',
+        'automake',
+        'binutils-dev',
+        'build-essential',
+        'cmake',
+        'g++',
+        'git',
+        'hhvm',
+        'hhvm-dev',
+        'libboost-dev',
+        'libboost-filesystem-dev',
+        'libboost-program-options-dev',
+        'libboost-regex-dev',
+        'libboost-system-dev',
+        'libboost-thread-dev',
+        'libbz2-dev',
+        'libc-client-dev',
+        'libc-client2007e-dev',
+        'libcap-dev',
+        'libcurl4-openssl-dev',
+        'libdwarf-dev',
+        'libedit-dev',
+        'libelf-dev',
+        'libevent-dev',
+        'libexpat-dev',
+        'libgd2-xpm-dev',
+        'libgoogle-glog-dev',
+        'libgoogle-perftools-dev',
+        'libiberty-dev',
+        'libiconv-hook-dev',
+        'libicu-dev',
+        'libinotifytools0-dev',
+        'libjemalloc-dev',
+        'libldap2-dev',
+        'liblua5.1-dev',
+        'libmagickwand-dev',
+        'libmcrypt-dev',
+        'libmemcached-dev',
+        'libmysqlclient-dev',
+        'libncurses-dev',
+        'libonig-dev',
+        'libpcre3-dev',
+        'libreadline-dev',
+        'libtbb-dev',
+        'libtool',
+        'libxml2-dev',
+        'libxslt1-dev',
+        'libyaml-dev',
+        'ocaml-native-compilers',
+        'php5-imagick',
+        'zlib1g-dev',
+    ]
+
+    ensure_packages($packages)
+}

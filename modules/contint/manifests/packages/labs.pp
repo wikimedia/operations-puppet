@@ -75,4 +75,8 @@ class contint::packages::labs {
         require  => Package['python-pip'],
     }
 
+    if $::lsbdistcodename == 'trusty' {
+        include ::hhvm::packages::dev
+    }
+
 }
