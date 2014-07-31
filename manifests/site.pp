@@ -1355,6 +1355,22 @@ node 'labsdb1005.eqiad.wmnet' {
     # include role::labs::db::master
 }
 
+node 'labsdb1006.eqiad.wmnet' {
+    include admin
+    $osm_slave = 'labsdb1007.eqiad.wmnet'
+    $osm_slave_v4 = '10.64.37.12'
+
+    include role::osm::master
+    # include role::labs::db::slave
+}
+
+node 'labsdb1007.eqiad.wmnet' {
+    include admin
+    $osm_master = 'labsdb1006.eqiad.wmnet'
+
+    include role::osm::slave
+    # include role::labs::db::master
+}
 
 node /labstore100[12]\.eqiad\.wmnet/ {
 
