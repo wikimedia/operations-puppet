@@ -6,6 +6,10 @@ class mediawiki {
 
     include ::ssh::server
 
+    if ubuntu_version('>= trusty') {
+        include ::mediawiki::hhvm
+    }
+
     file { '/etc/cluster':
         content => $::site,
         owner   => 'root',

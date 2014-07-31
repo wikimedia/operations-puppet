@@ -33,7 +33,8 @@ class apache {
         enable     => true,
         provider   => 'debian',
         hasrestart => true,
-        restart    => '/usr/sbin/service apache2 reload',
+        restart    => '/bin/true',
+        # restart    => '/usr/sbin/service apache2 reload',
         require    => Package['apache2'],
     }
 
@@ -45,7 +46,8 @@ class apache {
     }
 
     exec { 'apache2_hard_restart':
-        command     => '/usr/sbin/service apache2 restart',
+        # command   => '/usr/sbin/service apache2 restart',
+        command     => '/bin/true',
         refreshonly => true,
     }
 
