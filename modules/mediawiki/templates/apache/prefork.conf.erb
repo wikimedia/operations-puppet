@@ -8,7 +8,7 @@
     StartServers        10
     MinSpareServers     5
     MaxSpareServers     20
-    ServerLimit         <%= scope.lookupvar('::mediawiki::web::apache_server_limit') %>
+    ServerLimit         <%= @apache_server_limit %>
     MaxClients          <%= @max_req_workers %>
     <IfDefine SLOW>
         MaxClients      5

@@ -1900,7 +1900,6 @@ node 'mw1053.eqiad.wmnet' {
     $cluster = 'jobrunner'
 
     include role::mediawiki::jobrunner
-    include mediawiki::jobrunner::hhvm
 }
 
 # mw1017-1052 are apaches (precise)
