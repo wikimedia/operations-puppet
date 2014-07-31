@@ -30,7 +30,6 @@ class apache::mpm( $mpm = 'prefork' ) {
 
     $rejected_mpms = reject($available_mpms, $mpm)
     $rejected_mods = prefix($rejected_mpms, 'mpm_')
-    $rejected_pkgs = prefix($rejected_mpms, 'apache2-mpm-')
 
     if $mpm != 'prefork' {
         # mod_php5 is unsafe for threaded MPMs
@@ -42,15 +41,10 @@ class apache::mpm( $mpm = 'prefork' ) {
 
     apache::mod_conf { $rejected_mods:
         ensure => absent,
-        before => Package[$rejected_pkgs],
     }
 
     #Those are not needed in modern apache packages.
     if ubuntu_version('< trusty') {
-        package { $rejected_pkgs:
-            ensure  => absent,
-            before  => Package[$selected_pkg],
-        }
         package { $selected_pkg:
             ensure => present,
             before => File[$selected_cfg],
