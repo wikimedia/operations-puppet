@@ -12,6 +12,7 @@ class mediawiki::jobrunner (
     $runners_parsoid   = 0,
     $runners_transcode = 0,
     $statsd_server     = undef,
+    $dispatcher_cmd
 ) {
     include ::passwords::redis
 
