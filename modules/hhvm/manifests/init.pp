@@ -75,8 +75,9 @@ class hhvm(
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             log                      => {
-                level                           => 'Error',
                 always_log_unhandled_exceptions => true,
+                header                          => true,
+                level                           => 'Error',
                 runtime_error_reporting_level   => 8191,
             },
         },
