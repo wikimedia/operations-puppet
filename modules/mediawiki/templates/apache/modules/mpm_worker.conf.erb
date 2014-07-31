@@ -12,11 +12,11 @@
 <IfModule mpm_worker_module>
         ServerLimit              <%= (scope.lookupvar('::mediawiki:::web::apache_server_limit') / 25).to_i + 1 %>
         StartServers             2
-        MinSpareThreads          <%= [@max_req_workers, 25].min %>
-        MaxSpareThreads          <%= @max_req_workers %>
+        MinSpareThreads          <%= [scope.lookupvar('::mediawiki::web::max_req_workers').to_i, 25].min %>
+        MaxSpareThreads          <%= scope.lookupvar('::mediawiki::web::max_req_workers') %>
         ThreadLimit              256
         ThreadsPerChild          25
-        MaxRequestWorkers        <%= @max_req_workers %>
+        MaxRequestWorkers        <%= scope.lookupvar('::mediawiki::web::max_req_workers') %>
         MaxConnectionsPerChild   10000
 </IfModule>
 
