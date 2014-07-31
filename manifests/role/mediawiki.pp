@@ -65,6 +65,7 @@ class role::mediawiki::videoscaler {
         queue_servers     => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
         statsd_server     => 'statsd.eqiad.wmnet:8125',
         runners_transcode => 5,
+        dispatcher_cmd    => "php /usr/local/apache/common/multiversion/MWScript.php runJobs.php --wiki={db} --type={type} --maxtime={maxtime} --memory-limit={maxmem}",
     }
 }
 
@@ -73,6 +74,10 @@ class role::mediawiki::jobrunner {
 
     include ::role::mediawiki::common
 
+    if $jobrunner_hhvm == undef {
+        $jobrunner_hhvm = false
+    }
+
     class { '::mediawiki::jobrunner':
         queue_servers   => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
         statsd_server   => 'statsd.eqiad.wmnet:8125',
@@ -80,10 +85,10 @@ class role::mediawiki::jobrunner {
         runners_parsoid => 20,
         runners_upload  => 7,
         runners_gwt     => 1,
-    }
-
-    if $jobrunner_hhvm == undef {
-        $jobrunner_hhvm = false
+        dispatcher_cmd  => $jobrunner_hhvm ? {
+            true    => "curl -XPOST -s -a 'http://127.0.0.1:9002/rpc/RunJobs.php?wiki={db}&type={type}&maxtime={maxtime}&maxmem={maxmem}'",
+            default => "php /usr/local/apache/common/multiversion/MWScript.php runJobs.php --wiki={db} --type={type} --maxtime={maxtime} --memory-limit={maxmem}",
+        }
     }
 
     if ($jobrunner_hhvm and versioncmp($::lsbdistrelease, '14.04') > 0) {
