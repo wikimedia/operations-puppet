@@ -1289,20 +1289,6 @@ node 'iron.wikimedia.org' {
 node 'labsdb1001.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
-    class { 'role::db::labsdb':
-        instances => {
-            's1' => {
-                'port'                           => '3306',
-                'innodb_log_file_size'           => '2000M',
-                'ram'                            => '120G',
-                'innodb_locks_unsafe_for_binlog' => true,
-                'repl_ignore_dbs'                => 'mysql',
-                'slave_transaction_retries'      => '100000',
-                'read_only'                      => '0',
-                'max_user_connections'           => '512',
-            },
-        }
-    }
     include role::mariadb::labs
 }
 
