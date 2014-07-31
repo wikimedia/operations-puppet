@@ -2149,7 +2149,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
     include base::firewall
     include standard
     class { 'admin':
-        groups => ['pdf-render-admins']
+        groups => ['ocg-render-admins']
     }
     class { 'role::ocg::production':
         tmpfs_size => '32G'
@@ -2211,7 +2211,7 @@ node 'pdf2.wikimedia.org' {
     $ganglia_aggregator = true
     $cluster = 'pdf'
 
-    class { 'admin': groups => ['pdf-render-admins'] }
+    class { 'admin': groups => ['ocg-render-admins'] }
     include role::pdf
     include role::logging::systemusers
 }
@@ -2219,7 +2219,7 @@ node 'pdf2.wikimedia.org' {
 node 'pdf3.wikimedia.org' {
     $cluster = 'pdf'
 
-    class { 'admin': groups => ['pdf-render-admins'] }
+    class { 'admin': groups => ['ocg-render-admins'] }
     include role::pdf
     include role::logging::systemusers
 }
