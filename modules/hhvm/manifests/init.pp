@@ -69,11 +69,12 @@ class hhvm(
     $common_defaults = {
         date => { timezone => 'UTC' },
         hhvm => {
-            mysql                    => { typed_results => false },
-            include_path             => '.:/usr/share/php:/usr/share/pear',
             dynamic_extension_path   => '/usr/lib/hphp/extensions/20140702',
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
+            include_path             => '.:/usr/share/php:/usr/share/pear',
+            mysql                    => { typed_results => false },
+            pid_file                 => '',  # PID file managed by start-stop-daemon(8)
             log                      => {
                 always_log_unhandled_exceptions => true,
                 header                          => true,
