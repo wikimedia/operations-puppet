@@ -1,39 +1,19 @@
-class mediawiki::web::modules (
-    $use_hhvm = $::mediawiki::web::use_hhvm,
-    $max_req_workers = $::mediawiki::web::max_req_workers
-)
-{
-    include apache::mod::autoindex
-    include apache::mod::dir
-    include apache::mod::setenvif
-    include apache::mod::authz_host
-    include apache::mod::expires
-    include apache::mod::rewrite
-    include apache::mod::headers
-    include apache::mod::alias
-    include apache::mod::mime
-    include apache::mod::status
+class mediawiki::web::modules {
+    include ::mediawiki::web
 
-    # Modules we don't enable.
-    # Note that deflate and filter are activated deep down in the
-    # apache sites, we should probably move them here
-    apache::mod_conf { [
-                        'cgi',
-                        'authn_file',
-                        'negotiation',
-                        'auth_basic',
-                        'authz_default',
-                        'authz_groupfile',
-                        'authz_user',
-                        'deflate',
-                        'env',
-                        'reqtimeout'
-                        ]:
-        ensure => absent
-    }
+    include ::apache::mod::alias
+    include ::apache::mod::authz_host
+    include ::apache::mod::autoindex
+    include ::apache::mod::dir
+    include ::apache::mod::expires
+    include ::apache::mod::headers
+    include ::apache::mod::mime
+    include ::apache::mod::rewrite
+    include ::apache::mod::setenvif
+    include ::apache::mod::status
 
-    if $use_hhvm {
-        include apache::mod::proxy_fcgi
+    if ubuntu_version('>= trusty') {
+        include ::apache::mod::proxy_fcgi
 
         # This will be useful once we switch to mpm worker. Please keep it.
         file { '/etc/apache2/mods-available/mpm_worker.conf':
@@ -42,15 +22,30 @@ class mediawiki::web::modules (
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            before  => Class['apache::mpm'],
+            before  => Class['::apache::mpm'],
         }
-
     } else {
-        include apache::mod::php5
+        include ::apache::mod::php5
     }
 
+    # Modules we don't enable.
+    # Note that deflate and filter are activated deep down in the
+    # apache sites, we should probably move them here
+    apache::mod_conf { [
+        'auth_basic',
+        'authn_file',
+        'authz_default',
+        'authz_groupfile',
+        'authz_user',
+        'cgi',
+        'deflate',
+        'env',
+        'negotiation',
+        'reqtimeout',
+    ]:
+        ensure => absent,
+    }
 
-    # This will be useful once we switch to mpm worker. Please keep it.
     file { '/etc/apache2/mods-available/mpm_prefork.conf':
         ensure  => present,
         content  => template('mediawiki/apache/modules/mpm_prefork.conf.erb'),
@@ -58,7 +53,7 @@ class mediawiki::web::modules (
         group   => 'root',
         mode    => '0444',
         require => Package['apache2'],
-        before  => Class['apache::mpm'],
+        before  => Class['::apache::mpm'],
     }
 
     # As we already have apache::mpm declared, the prefork conf file
@@ -66,7 +61,7 @@ class mediawiki::web::modules (
     file { '/etc/apache2/mods-enabled/mpm_prefork.conf':
         ensure => link,
         target => '/etc/apache2/mods-available/mpm_prefork.conf',
-        before => Class['apache::mpm']
+        before => Class['::apache::mpm'],
     }
 
     file { '/etc/apache2/mods-available/expires.conf':
@@ -75,7 +70,7 @@ class mediawiki::web::modules (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        before  => Class['apache::mod::expires'],
+        before  => Class['::apache::mod::expires'],
     }
 
     file { '/etc/apache2/mods-available/autoindex.conf':
@@ -84,7 +79,7 @@ class mediawiki::web::modules (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        before  => Class['apache::mod::autoindex'],
+        before  => Class['::apache::mod::autoindex'],
     }
 
 
@@ -94,7 +89,7 @@ class mediawiki::web::modules (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['apache2']
+        notify  => Service['apache2'],
     }
 
     file { '/etc/apache2/mods-available/mime.conf':
@@ -103,7 +98,7 @@ class mediawiki::web::modules (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['apache2']
+        notify  => Service['apache2'],
     }
 
     # TODO: remove this? It's not used anywhere AFAICT
@@ -114,5 +109,4 @@ class mediawiki::web::modules (
         group   => 'root',
         mode    => '0444',
     }
-
 }
