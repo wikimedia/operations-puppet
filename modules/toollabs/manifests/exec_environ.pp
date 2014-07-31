@@ -291,6 +291,7 @@ class toollabs::exec_environ {
         'jq',                          # Bug #65049.
         'ksh',
         'iotop',                       # useful for labs admins to monitor tools
+        'libaio1',                     # Bug 68615
         'libav-tools',                 # Bug #53870.
         'libdmtx0a',                   # Bug #53867.
         'libfcgi0ldbl',                # Bug 56995
