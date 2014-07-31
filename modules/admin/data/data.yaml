@@ -132,7 +132,7 @@ groups:
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams]
-  pdf-render-admins:
+  ocg-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)
     members: [mwalker]
