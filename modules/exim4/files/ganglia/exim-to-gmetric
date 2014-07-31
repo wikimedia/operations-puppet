@@ -231,7 +231,6 @@ sub running {
 
 sub failboat {
 	my $msg = shift;
-	print "$conf->{'ident'} died: $msg\n"; # make for a barfy cron job
 	printlog("died: $msg");
 	exit 1;
 }
