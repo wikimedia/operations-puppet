@@ -10,7 +10,7 @@ class quarry::base {
 
     package { [
         'python-flask',
-        'python-flask-mwoauth',
+        'python-mwoauth',
         'python-celery',
         'python-redis',
         'python-pymysql',
