@@ -89,6 +89,8 @@ class misc::statistics::packages {
         'libwww-perl',
         'libgdal1-dev', # Requested by lzia for rgdal
         'libproj-dev', # Requested by lzia for rgdal
+        'php5-cli',
+        'php5-mysql',
     ]:
         ensure => 'latest',
     }
