@@ -21,6 +21,7 @@ end
 module Puppet::Parser::Functions
   newfunction(
     :php_ini,
+    :type => :rvalue,
     :doc  => <<-END
       Serialize a hash into php.ini-style format. Takes one or more hashes
       as arguments. If the argument list contains more than one hash, they
