@@ -77,4 +77,8 @@ class contint::packages::labs {
         require  => Package['python-pip'],
     }
 
+    if ubuntu_version('>= trusty') {
+        include ::hhvm::packages::dev
+    }
+
 }
