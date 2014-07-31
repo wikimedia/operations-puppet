@@ -60,14 +60,18 @@
 #   Ditto, except for FastCGI mode.
 #
 #
+# [*warmup_urls*]
+#   An array of URLs to fetch from the server on startup. Optional.
+#
 # === Examples
 #
 #  class { 'hhvm':
 #    user          => 'apache',
 #    group         => 'wikidev',
+#    warmup_urls   => [ 'http://en.wikipedia.org/Main_Page' ],
 #    fcgi_settings => {
 #      'hhvm' => { server => { source_root => '/srv/mediawiki' } },
-#    }
+#    },
 #  }
 #
 class hhvm(
@@ -75,6 +79,7 @@ class hhvm(
     $group         = 'www-data',
     $fcgi_settings = {},
     $cli_settings  = {},
+    $warmup_urls   = [],
 ) {
     requires_ubuntu('>= trusty')
 
@@ -185,6 +190,13 @@ class hhvm(
         group   => 'root',
         mode    => '0444',
         notify  => Service['hhvm'],
+    }
+
+    file { '/etc/hhvm/fcgi/warmup.urls':
+        content => template('hhvm/warmup.urls.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
 
