@@ -7,3 +7,7 @@ DynamicExtensions {
   * = luasandbox.so
   * = wikidiff2.so
 }
+
+MySQL {
+  SlowQueryThreshold = 10000 # in ms, log slow queries as errors
+}

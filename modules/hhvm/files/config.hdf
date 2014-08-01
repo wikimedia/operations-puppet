@@ -14,3 +14,7 @@ DynamicExtensions {
 Eval {
   PerfPidMap = false
 }
+
+MySQL {
+  SlowQueryThreshold = 10000 # in ms, log slow queries as errors
+}
