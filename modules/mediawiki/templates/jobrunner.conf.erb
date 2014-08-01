@@ -91,5 +91,6 @@
     "statsd": "<%= @statsd_server %>",
     <%- end -%>
 
-    "dispatcher": "<%= @dispatcher_cmd %>"
+    // HET deploy wrapper
+    "wrapper": "php /usr/local/apache/common/multiversion/MWScript.php"
 }
