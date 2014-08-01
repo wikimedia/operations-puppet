@@ -89,7 +89,7 @@ class hhvm(
             jit              => true,
             jit_afrozen_size => to_bytes('100Mb'),
             repo             => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
-            server           => { port => 9000, type => 'fastcgi' },
+            server           => { port => 9000, type => 'fastcgi', gzip_compression_level => 0 },
         },
     }
 
