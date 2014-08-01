@@ -39,28 +39,5 @@ class mediawiki::web ( $workers_limit = undef) {
         require => Package['apache2'],
     }
 
-    file_line { 'fix_apache_user':
-        ensure => present,
-        path   => '/etc/apache2/envvars',
-        line   => 'export APACHE_RUN_USER=apache',
-        match  => 'export APACHE_RUN_USER='
-    }
-
-    file_line { 'fix_apache_group':
-        ensure => present,
-        path   => '/etc/apache2/envvars',
-        line   => 'export APACHE_RUN_GROUP=apache',
-        match  => 'export APACHE_RUN_GROUP='
-    }
-
-    if ubuntu_version('>= trusty') {
-        apache::def{ 'HHVM': }
-    }
-
-    # do not erase this for now, it may come handy soon...
-    file { '/etc/apache2/wikimedia':
-        ensure  => absent,
-        recurse => true,
-        force   => true,
-    }
+    include ::mediawiki::web::envvars
 }
