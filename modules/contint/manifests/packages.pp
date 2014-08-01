@@ -5,7 +5,12 @@
 #
 class contint::packages {
 
-    include androidsdk::dependencies
+    if ubuntu_version('precise') {
+        # Will stay on Precise and not reconducted on Trusty. Ie the jobs
+        # depending on Android SDK will eventually be phased out whenever we
+        # have time to do so. -- hashar 20140801
+        include androidsdk::dependencies
+    }
 
     include ::mediawiki::packages
 
