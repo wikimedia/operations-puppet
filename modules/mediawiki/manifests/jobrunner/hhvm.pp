@@ -18,6 +18,7 @@ class mediawiki::jobrunner::hhvm {
         ini_overrides => {
             'hhvm.repo.local.mode'        => '--',
             'max_execution_time'          => 86400, # yes, one day.
+            'memory_limit'                => '300M',
         }
     }
 
