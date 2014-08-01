@@ -94,7 +94,7 @@ echo '  </p>
     Domas Mituzas, a long-time volunteer db admin for WMF, started generating these statistics in
     <a href="http://lists.wikimedia.org/pipermail/wikitech-l/2007-December/035435.html">2007</a>.
     Some of the older files (from 2010 through at least mid-2011) are also available at the
-    <a href="http://www.archive.org/search.php?query=wikimedia%20projects%20visitor%20statistics%20AND%20collection%3Aopensource">Internet Archive</a>
+    <a href="http://www.archive.org/search.php?query=wikipedia_visitor_stats">Internet Archive</a>
 
     thanks to <a href"http://lists.wikimedia.org/pipermail/toolserver-l/2011-August/004300.html">Federico Leva</a>.
   </p>
