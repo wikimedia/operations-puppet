@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# Update the local puppet checkout
+
+set -e
+#set -x
+
+# TODO: rewrite in python?
+
+# Run script as root
+[[ ${UID} -ne 0 ]] && exec sudo ${0} "${@}"
+
+echo "--- $0 $(date +%Y-%m-%dT%H:%M:%S)"
+
+REPO=/var/lib/git/operations/puppet
+TRACK_BRANCH=production
+REBASE_OPTS=(
+    '--preserve-merges'
+    '--stat'
+    '--strategy-option=patience'
+    '--strategy=recursive'
+)
+HAVE_STASH=0
+
+# Create a temp file for capturing command output
+TEMPFILE="$(mktemp -t gsu.XXXXXX)"
+trap '{ rm -f "$TEMPFILE"; }' EXIT
+
+cd ${REPO}
+
+# Fetch new changes from origin
+git fetch --verbose origin 2>&1 |
+tee "${TEMPFILE}"
+
+if grep "${TRACK_BRANCH}" "${TEMPFILE}" | grep -q "up to date" ; then
+    echo "Already up to date" 1>&2
+    exit 0
+fi
+
+# Hide any dirty local files
+git stash save "rebase $(date +%Y-%m-%dT%H:%M)" 2>&1 |
+tee "${TEMPFILE}"
+
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+    echo "Failed to save local changes; cowardly refusing to continue" 1>&2
+    exit 1
+fi
+
+grep -q "No local changes" "${TEMPFILE}" || HAVE_STASH=1
+
+# Rebase locally commited changes on top of tracked origin branch
+git rebase "${REBASE_OPTS[@]}" origin/${TRACK_BRANCH} 2>&1 |
+tee "${TEMPFILE}"
+
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+    echo "Rebase failed! See error messages above." 1>&2
+    echo "Reverting rebase attempt" 1>&2
+    git rebase --abort
+    [[ ${HAVE_STASH} -ne 0 ]] && git stash pop
+    exit 2
+fi
+
+# Ensure that submodule changes are applied to the local checkout
+git submodule update --init --recursive 2>&1 |
+tee "${TEMPFILE}"
+
+# Tag the local repo state for rollback and troubleshooting
+TAG="beta-$(date +%Y%m%dT%H%M)"
+git tag "$TAG"
+echo "Tagged as: ${TAG}"
+
+# Display local commits
+echo "Local hacks:"
+git log --color --pretty=oneline --abbrev-commit origin/HEAD..HEAD |
+sed 's/^/  /'
+
+# Restore dirty files if present
+[[ ${HAVE_STASH} -ne 0 ]] && git stash pop
