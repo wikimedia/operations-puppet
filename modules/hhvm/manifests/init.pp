@@ -81,6 +81,9 @@ class hhvm(
                 level              => 'Error',
                 native_stack_trace => true,
             },
+            mysql                    => {
+                slow_query_threshold => 10 * 1000,  # milliseconds
+            }
         },
     }
 
