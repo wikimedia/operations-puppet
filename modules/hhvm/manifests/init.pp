@@ -85,7 +85,8 @@ class hhvm(
     }
 
     $fcgi_defaults = {
-        hhvm => {
+        memory_limit => '300M',
+        hhvm         => {
             jit              => true,
             jit_afrozen_size => to_bytes('100Mb'),
             repo             => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
