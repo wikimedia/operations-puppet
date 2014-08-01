@@ -1,5 +1,3 @@
-# mediawiki::web
-
 class mediawiki::web( $workers_limit = undef ) {
     tag 'mediawiki', 'mw-apache-config'
 
@@ -30,12 +28,5 @@ class mediawiki::web( $workers_limit = undef ) {
 
     apache::conf { 'prefork':
         content  => template('mediawiki/apache/prefork.conf.erb'),
-    }
-
-    file { [
-        '/etc/apache2/mods-available/mpm_prefork.conf',
-        '/etc/apache2/mods-enabled/mpm_prefork.conf',
-    ]:
-        ensure => absent,
     }
 }
