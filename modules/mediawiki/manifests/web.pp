@@ -39,20 +39,18 @@ class mediawiki::web ( $workers_limit = undef) {
         require => Package['apache2'],
     }
 
-    if ubuntu_version('>= trusty') {
-        file { '/etc/apache2/envvars':
-            ensure => present,
-            source => 'puppet:///modules/mediawiki/apache/envvars.trusty'
-        }
-    } else {
-        file { '/etc/apache2/envvars':
-            ensure => present,
-            source => 'puppet:///modules/mediawiki/apache/envvars.precise'
-        }
+    file { '/etc/apache2/envvars':
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0444',
+        source => "puppet:///modules/mediawiki/apache/envvars.${::lsbdistcodename}"
     }
 
     # do not erase this for now, it may come handy soon...
     file { '/etc/apache2/wikimedia':
-        ensure  => directory,
+        ensure  => absent,
+        recurse => true,
+        force   => true,
     }
 }
