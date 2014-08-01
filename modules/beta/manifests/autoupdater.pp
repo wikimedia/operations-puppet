@@ -124,7 +124,7 @@ class beta::autoupdater {
         require            => Exec['beta_mediawiki_skins_git_init'],
     }
 
-    git::clone { 'mediawiki/core/vendor':
+    git::clone { 'mediawiki/vendor':
         directory          => "${stage_dir}/php-master/vendor",
         branch             => 'master',
         owner              => 'mwdeploy',
