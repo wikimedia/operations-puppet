@@ -1,0 +1,109 @@
+#!/bin/bash
+
+usage_message="check_hdfs_file_exists [--warning|--critical] [--exists|--not-exists] <hdfs_path>"
+
+help_message="Check for existence or non-existence of file in HDFS.
+
+This will generate a WARNING or CRITICAL alert if <hdfs_path>
+either exists or doesn't exist.  The default is to CRITICAL
+alert if the file does not exist.  You can change the alert
+level by specifying --warning, and you can invert the
+meaning of the alert by specifying --not-exists.
+
+That is:
+  --exists    alerts if the file DOES NOT exist.
+              We are ensuring that the file 'exists'.
+              This is the default behavior.
+
+ --not-exists alerts if the file DOES exist.
+              We are ensuring that the file does 'not exist'.
+
+
+Usage:
+  ${usage}
+"
+
+
+alert='CRITICAL'
+ensure_file='exists'
+
+if [ $# -eq 0 ]; then
+    echo 'Must provide HDFS path to check.' >&2
+    echo "${usage_message}"
+    exit 1
+fi
+
+# Parse CLI args
+while test $# != 1
+do
+    case "$1" in
+    --critical)
+        alert='CRITICAL'
+        ;;
+    --warning)
+        alert='WARNING'
+        ;;
+    --exists)
+        ensure_file='exists'
+        ;;
+    --not-exists)
+        ensure_file='not-exists'
+        ;;
+    -h|--help)
+        echo "${help_message}"
+        exit 0
+        ;;
+    *)
+        echo "Invalid argument '$1'" >&2
+        echo "${usage_message}"
+        exit 1
+        ;;
+    esac
+    shift
+done
+
+if [ $# -eq 0 ]; then
+    echo 'Must provide HDFS path to check.' >&2
+    echo "${usage_message}"
+    exit 1
+fi
+
+hdfs_path="$1"
+
+if [[ "${hdfs_path}" == -*  ]]; then
+    if [ "${hdfs_path}" == '-h' -o "${hdfs_path}" == '--help' ]; then
+        echo "${help_message}"
+        exit 0
+    else
+        echo "${hdfs_path} is not a valid path." >&2
+        echo "${usage_message}"
+        exit 1
+    fi
+fi
+
+# use hdfs dfs -test -e to test for HDFS file existence
+/usr/bin/hdfs dfs -test -e "${hdfs_path}" 2> /dev/null;
+# save the exitval of hdfs -test -e to react to based on CLI options.
+exists=$?
+
+
+# If we want to be OK if the file exists:
+if [ "${ensure_file}" == 'exists' ]; then
+    if [ ${exists} -eq 0 ]; then
+        echo "OK: ${hdfs_path} exists in HDFS."
+        exit 0
+    else
+        echo "${alert}: ${hdfs_path} does not exist in HDFS."
+        exit 1
+    fi
+# Else we want to be OK if the file does not exist:
+else
+    if [ ${exists} -eq 1 ]; then
+        echo "OK: ${hdfs_path} does not exist in HDFS."
+        exit 0
+    else
+        echo "${alert}: ${hdfs_path} exists in HDFS."
+        exit 1
+    fi
+fi
+
