@@ -13,6 +13,9 @@ pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.o
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerImpressions-sampled100.tsv.log
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:BannerRandom >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerRequests-sampled100.tsv.log
 
+## RT 8060
+pipe 100 /usr/bin/udp-filter -F '\t' -d meta.wikimedia.org -p Special:HideBanners >> <%= @template_variables['fundraising_log_directory'] %>/logs/hideBanners-sampled100.tsv.log
+
 ### API Usage
 pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= scope.lookupvar('role::logging::udp2log::erbium::webrequest_log_directory') %>/api-usage.tsv.log
 
