@@ -421,36 +421,36 @@ class role::cache {
             'labs' => {
                 'appservers' => {
                     'eqiad' => [
-                        '10.68.17.96',  # deployment-mediawiki01
+                        # '10.68.17.96',  # deployment-mediawiki01
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
                 'api' => {
                     'eqiad' => [
-                        '10.68.17.96',  # deployment-mediawiki01
+                        # '10.68.17.96',  # deployment-mediawiki01
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
                 'bits' => {
                     'eqiad' => [
-                        '10.68.17.96',  # deployment-mediawiki01
+                        # '10.68.17.96',  # deployment-mediawiki01
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
                 'bits_appservers' => {
                     'eqiad' => [
-                        '10.68.17.96',  # deployment-mediawiki01
+                        # '10.68.17.96',  # deployment-mediawiki01
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
                 'rendering' => {
                     'eqiad' => [
-                        '10.68.17.96',  # deployment-mediawiki01
+                        # '10.68.17.96',  # deployment-mediawiki01
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
                 'test_appservers' => {
-                    'eqiad' => [ '10.68.17.96' ],  # deployment-mediawiki01
+                    'eqiad' => [ '10.68.17.208' ],  # deployment-mediawiki02
                 },
                 'parsoid' => {
                     'eqiad' => [ '10.68.16.17' ],  # deployment-parsoid04
