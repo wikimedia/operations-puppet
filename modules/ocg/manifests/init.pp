@@ -161,26 +161,10 @@ class ocg (
         group   => 'ocg',
     }
 
-    cron { 'Clean up OCG output directory':
-        ensure  => present,
-        command => "find ${output_dir}* -mtime +5 -exec rm {} \\;",
-        user    => 'ocg',
-        hour    => 0,
-        minute  => 0,
-    }
-
     file { $postmortem_dir:
         ensure  => directory,
         owner   => 'ocg',
         group   => 'ocg',
-    }
-
-    cron { 'Clean up OCG postmortem directory':
-        ensure  => present,
-        command => "find ${postmortem_dir}* -mtime +3 -exec rm {} \\;",
-        user    => 'ocg',
-        hour    => 0,
-        minute  => 0,
     }
 
     # makes some basic logfiles readable for non-roots
