@@ -39,12 +39,22 @@ class mediawiki::web ( $workers_limit = undef) {
         require => Package['apache2'],
     }
 
-    file { '/etc/apache2/envvars':
+    file_line { 'fix_apache_user':
         ensure => present,
-        owner  => root,
-        group  => root,
-        mode   => '0444',
-        source => "puppet:///modules/mediawiki/apache/envvars.${::lsbdistcodename}"
+        path   => '/etc/apache2/envvars',
+        line   => 'export APACHE_RUN_USER=apache',
+        match  => 'export APACHE_RUN_USER=www-data'
+    }
+
+    file_line { 'fix_apache_group':
+        ensure => present,
+        path   => '/etc/apache2/envvars',
+        line   => 'export APACHE_RUN_GROUP=apache',
+        match  => 'export APACHE_RUN_GROUP=www-data'
+    }
+
+    if ubuntu_version('>= trusty') {
+        apache::def{ 'HHVM': }
     }
 
     # do not erase this for now, it may come handy soon...
