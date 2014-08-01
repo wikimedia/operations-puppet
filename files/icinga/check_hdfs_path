@@ -1,0 +1,118 @@
+#!/bin/bash
+
+set -e
+
+usage_message="Usage: $(basename ${0}) [--ensure=(exists|not-exists)] [--warning|--critical] <hdfs_path>"
+
+help_message="${usage_message}
+
+Check for existence or non-existence of a path in HDFS.
+
+This will generate a WARNING or CRITICAL alert if <hdfs_path>
+either exists or doesn't exist.  The default is to generate a
+CRITICAL alert if the path does not exist.  You can change the
+alert level by specifying --warning, and you can invert the
+meaning of the alert by specifying --not-exists.
+
+
+Options:
+  -e, --exists        Ensure that the path exists.
+                      We alert if the file DOES NOT exist.
+                      This is the default behavior.
+
+  -n, --not-exists    Ensure the path does not exist.
+                      We alert if the path DOES exist.
+
+  -c, --critical      Generate a CRITICAL alert if the check fails.
+                      This is the default behavior.
+
+  -w, --warning       Generate a WARNING alert if the check fails.
+
+
+"
+
+
+# See http://docs.icinga.org/latest/en/pluginapi.html#returncode
+# for documentation on exit states and values.
+# These will be the exit state and value if the check fails.
+alert_exitval=2
+alert_state='CRITICAL'
+
+ensure_path='exists'
+
+
+if [ $# -eq 0 ]; then
+    echo 'Must provide HDFS path to check.' >&2
+    echo "${usage_message}"
+    exit 3
+fi
+
+
+# Parse CLI args
+while [ $# != 0 ]; do
+
+    case "$1" in
+    -e|--exists)
+        ensure_path='exists'
+        ;;
+    -n|--not-exists)
+        ensure_path='not-exists'
+        ;;
+    -c|--critical)
+        alert_state='CRITICAL'
+        alert_exitval=2
+        ;;
+    -w|--warning)
+        alert_state='WARNING'
+        alert_exitval=1
+        ;;
+    -h|--help)
+        echo "${help_message}"
+        exit 0
+        ;;
+    *)
+        if [ $# -gt 1 ]; then
+            echo "Invalid argument '${1}'" >&2
+            echo "${usage_message}"
+            exit 3
+        else
+             hdfs_path="${1}"
+        fi
+        ;;
+    esac
+    shift
+done
+
+# Validate $hdfs_path.
+if [ "${hdfs_path:0:1}" != '/' -a "${hdfs_path:0:7}" != 'hdfs://' ]; then
+    echo "'${hdfs_path}' is not a valid HDFS path.  Path must start with '/' or 'hdfs://'." >&2
+    echo "${usage_message}"
+    exit 3
+fi
+
+# Use hdfs dfs -test -e to test for HDFS path existence.
+/usr/bin/hdfs dfs -test -e "${hdfs_path}" 2> /dev/null;
+# save the exitval of hdfs -test -e to react to based on CLI options.
+exists=$?
+
+
+# If we want to be OK if the path exists:
+if [ "${ensure_path}" == 'exists' ]; then
+    if [ "${exists}" -eq 0 ]; then
+        echo "OK: ${hdfs_path} exists in HDFS."
+        exit 0
+    else
+        echo "${alert_state}: ${hdfs_path} does not exist in HDFS."
+        exit $alert_exitval
+    fi
+# Else we want to be OK if the path does not exist:
+else
+    if [ "${exists}" -eq 1 ]; then
+        echo "OK: ${hdfs_path} does not exist in HDFS."
+        exit $alert_exitval
+    else
+        echo "${alert_state}: ${hdfs_path} exists in HDFS."
+        exit $alert_exitval
+    fi
+fi
+
