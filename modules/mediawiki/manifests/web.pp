@@ -43,14 +43,14 @@ class mediawiki::web ( $workers_limit = undef) {
         ensure => present,
         path   => '/etc/apache2/envvars',
         line   => 'export APACHE_RUN_USER=apache',
-        match  => 'export APACHE_RUN_USER=www-data'
+        match  => 'export APACHE_RUN_USER='
     }
 
     file_line { 'fix_apache_group':
         ensure => present,
         path   => '/etc/apache2/envvars',
         line   => 'export APACHE_RUN_GROUP=apache',
-        match  => 'export APACHE_RUN_GROUP=www-data'
+        match  => 'export APACHE_RUN_GROUP='
     }
 
     if ubuntu_version('>= trusty') {
