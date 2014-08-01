@@ -17,4 +17,3 @@ command[check_ram]=/usr/lib/nagios/plugins/check_ram.sh 20 5 b
 
 # process checks, we can't make this generic because we don't pass args via nrpe (security)
 command[check_varnishncsa]=/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:6 -C varnishncsa
-command[check_etherpad_lite]=/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^node /usr/share/etherpad-lite/node_modules/ep_etherpad-lite/node/server.js'

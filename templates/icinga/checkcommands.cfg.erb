@@ -348,10 +348,6 @@ define command{
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
 }
 define command{
-        command_name    nrpe_check_etherpad_lite
-        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_etherpad_lite
-}
-define command{
 	command_name	nrpe_check_udp2log_log_age
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
 }

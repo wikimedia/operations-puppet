@@ -49,7 +49,7 @@ class role::etherpad{
     # Icinga process monitoring, RT #5790
     nrpe::monitor_service { 'etherpad-lite-proc':
         description   => 'etherpad_lite_process_running',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^node node_modules/ep_etherpad-lite/node/server.js'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^node /usr/share/etherpad-lite/node_modules/ep_etherpad-lite/node/server.js'",
     }
 
     monitor_service { 'etherpad-lite-http':
