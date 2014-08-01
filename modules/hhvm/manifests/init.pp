@@ -81,6 +81,9 @@ class hhvm(
                 level                           => 'Error',
                 runtime_error_reporting_level   => 8191,
             },
+            mysql                    => {
+                slow_query_threshold => 10000
+            }
         },
     }
 
