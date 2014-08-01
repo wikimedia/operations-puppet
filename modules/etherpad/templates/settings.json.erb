@@ -23,11 +23,11 @@
 	"requireAuthorization": false,
 	"socketTransportProtocols" : ["xhr-polling", "jsonp-polling", "htmlfile"],
 	"loglevel": "INFO",
-	"logconfig" :
-		{ "appenders": [
-		    { "type": "console"
-		    //, "category": "access"// only logs pad access
-		    }
+	"logconfig" : {
+		"appenders": [
+		        { "type": "file",
+		          "filename": "/var/log/etherpad-lite/etherpad-lite.log"
+			}
 		  ]
 		}
 }
