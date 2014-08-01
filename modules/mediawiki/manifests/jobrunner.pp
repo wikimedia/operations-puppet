@@ -12,11 +12,12 @@ class mediawiki::jobrunner (
     $runners_parsoid   = 0,
     $runners_transcode = 0,
     $statsd_server     = undef,
-    $dispatcher_cmd
 ) {
     include ::passwords::redis
 
     deployment::target { 'jobrunner': }
+
+    $dispatcher = template("mediawiki/jobrunner/dispatchers/${lsbdistcodename}.erb")
 
     file { '/etc/default/jobrunner':
         source => 'puppet:///modules/mediawiki/jobrunner.default',
@@ -43,7 +44,7 @@ class mediawiki::jobrunner (
     }
 
     file { '/etc/jobrunner/jobrunner.conf':
-        content => template('mediawiki/jobrunner.conf.erb'),
+        content => template('mediawiki/jobrunner/jobrunner.conf.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
