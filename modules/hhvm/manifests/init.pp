@@ -79,7 +79,8 @@ class hhvm(
                 always_log_unhandled_exceptions => true,
                 header                          => true,
                 level                           => 'Error',
-                runtime_error_reporting_level   => 8191,
+                runtime_error_reporting_level   => 8191,  # bitmask; see hphp/runtime/base/runtime-error.h / http://git.io/jcNNFA
+                                                          # equivalent to (PHP_ALL | STRICT) & ~(PHP_DEPRECATED | USER_DEPRECATED)
             },
         },
     }
