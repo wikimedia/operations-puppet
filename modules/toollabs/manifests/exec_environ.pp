@@ -18,6 +18,7 @@
 class toollabs::exec_environ {
     include generic::locales::international
     include identd
+    include mediawiki::multimedia::fonts
 
     package { [
         # Please keep all packages in each group sorted in alphabetical order
