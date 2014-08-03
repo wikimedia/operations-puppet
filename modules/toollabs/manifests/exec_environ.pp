@@ -54,6 +54,7 @@ class toollabs::exec_environ {
         'tcl8.6',
 
         # Perl libraries
+        'libberkeleydb-perl',          # Bug 58785
         'libbot-basicbot-perl',
         'libbsd-resource-perl',        # Bug 54690.
         'libcache-memcached-fast-perl',
@@ -63,7 +64,6 @@ class toollabs::exec_environ {
         'libcrypt-gcrypt-perl',
         'libcrypt-openssl-bignum-perl',
         'libcrypt-openssl-rsa-perl',
-        'libberkeleydb-perl',          # Bug 58785
         'libdata-compare-perl',        # For Checkwiki.
         'libdata-dumper-simple-perl',
         'libdatetime-format-duration-perl',
@@ -75,8 +75,8 @@ class toollabs::exec_environ {
         'libdigest-crc-perl',
         'libdigest-hmac-perl',
         'libfile-nfslock-perl',
-        'libhtml-html5-entities-perl',
         'libhtml-format-perl',
+        'libhtml-html5-entities-perl',
         'libhtml-parser-perl',
         'libhtml-template-perl',       # Bug 57123
         'libhttp-message-perl',
@@ -111,8 +111,8 @@ class toollabs::exec_environ {
         'libtimedate-perl',
         'liburi-encode-perl',
         'liburi-perl',
-        'libwww-perl',
         'libwww-mechanize-perl',       # Bug 57118
+        'libwww-perl',
         'libxml-libxml-perl',
         'libxml-parser-perl',
         'libxml-simple-perl',
@@ -156,20 +156,20 @@ class toollabs::exec_environ {
         'python-problem-report',
         'python-pyexiv2',              # Bug 59122.
         'python-pyinotify',            # Bug 57003
-        'python-svn',                  # Bug 56996
-        'python-rsvg',                 # Bug 56996
-        'python-zbar',                 # Bug 56996
         'python-redis',
         'python-requests',
+        'python-rsvg',                 # Bug 56996
         'python-scipy',
         'python-sqlalchemy',
-        'python-twitter',
+        'python-svn',                  # Bug 56996
         'python-twisted',
+        'python-twitter',
         'python-virtualenv',
         'python-wadllib',
         'python-webpy',
         'python-werkzeug',
         'python-wikitools',
+        'python-zbar',                 # Bug 56996
         'python-zmq',
 
         # PHP libraries
@@ -289,9 +289,9 @@ class toollabs::exec_environ {
         'graphicsmagick',              # Bug 56995
         'graphviz',
         'imagemagick',                 # Bug 63000
+        'iotop',                       # useful for labs admins to monitor tools
         'jq',                          # Bug #65049.
         'ksh',
-        'iotop',                       # useful for labs admins to monitor tools
         'libaio1',                     # Bug 68615
         'libav-tools',                 # Bug #53870.
         'libdmtx0a',                   # Bug #53867.
@@ -323,8 +323,6 @@ class toollabs::exec_environ {
         'mariadb-client',              # For /usr/bin/mysql.
         'mdbtools',                    # Bug #48805.
         'openbabel',                   # Bug #66995
-        'socat',                       # Bug 57005
-        'supybot',                     # Bug 61088.
         'p7zip',
         'pdf2svg',                     # Bug #68092.
         'pdftk',                       # Bug #65048.
@@ -335,9 +333,11 @@ class toollabs::exec_environ {
         'pstoedit',                    # Bug 57000
         'pv',                          # Bug 57001
         'rrdtool',                     # Bug 57004
-        'ufraw-batch',                 # Bug 57008
+        'socat',                       # Bug 57005
+        'supybot',                     # Bug 61088.
         'tabix',                       # Bug 61501
         'texinfo',                     # Bug #56994
+        'ufraw-batch',                 # Bug 57008
         'xsltproc',                    # Bug #66962.
         'zbar-tools',                  # Bug 56996
         'zsh',                         # Bug 56995
@@ -363,8 +363,8 @@ class toollabs::exec_environ {
     if $::lsbdistcodename == 'precise' {
         package { [
             'libboost-python1.48.0',
-            'libmpc2',
             'libgdal1-1.7.0',              # Bug 56995
+            'libmpc2',
             'libprotobuf7',                # Bug 56995
             ]:
             ensure => latest,
