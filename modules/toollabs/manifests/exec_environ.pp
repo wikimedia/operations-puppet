@@ -75,6 +75,7 @@ class toollabs::exec_environ {
         'libdigest-crc-perl',
         'libdigest-hmac-perl',
         'libfile-nfslock-perl',
+        'libgd-gd2-perl',              # Bug 67199.
         'libhtml-html5-entities-perl',
         'libhtml-format-perl',
         'libhtml-parser-perl',
