@@ -52,20 +52,20 @@ class toollabs::dev_environ {
         'libxml2-dev',
         'libxslt1-dev',
         'libzbar-dev',                 # Bug 56996
-        'lintian',
         'links',
+        'lintian',
         'lynx',
         'maven',
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
         'npm',
         'openjdk-7-jdk',
+        'p7zip-full', # requested by Betacommand to extract files using 7zip
         'pastebinit',
         'pep8',                        # Bug 57863
         'pyflakes',                    # Bug 57863
-        'p7zip-full', # requested by Betacommand to extract files using 7zip
-        'python-dev',
         'python-coverage',             # Bug 57002
+        'python-dev',
         'qt4-qmake',
         'sbt',
         'sqlite3',
