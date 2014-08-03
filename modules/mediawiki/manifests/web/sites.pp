@@ -52,4 +52,9 @@ class mediawiki::web::sites {
         source   => 'puppet:///modules/mediawiki/apache/sites/foundation.conf',
         priority => 9,
     }
+
+    apache::site { 'toolserver':
+        source   => 'puppet:///modules/mediawiki/apache/sites/toolserver.conf',
+        priority => 10,
+    }
 }
