@@ -176,6 +176,7 @@ class toollabs::exec_environ {
         'php5-cli',
         'php5-curl',
         'php5-gd',
+        'php5-imagick',                # Bug 69078.
         'php5-intl',                   # Bug 55652
         'php5-mcrypt',
         'php5-mysql',
