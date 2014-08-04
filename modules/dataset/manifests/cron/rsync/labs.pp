@@ -29,14 +29,14 @@ class dataset::cron::rsync::labs($enable=true) {
             options => 'rw,vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc',
             require => File['/mnt/dumps'],
         }
-    }
 
-    file { '/mnt/dumps/public':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => Mount['/mnt/dumps'],
+        file { '/mnt/dumps/public':
+            ensure  => directory,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => Mount['/mnt/dumps'],
+        }
     }
 
     file { '/usr/local/bin/wmfdumpsmirror.py':
