@@ -126,12 +126,15 @@ groups:
     members: [hashar]
     privs: ['ALL = NOPASSWD: ALL']
   analytics-users:
-    posix_name: stats
     gid: 7080
-    description: XXX:TEMP -- should not need to use posix_name attribute
+    description: Gives generic access to the Analytics (Hadoop) clsuter.
+    members: []
+  analytics-privatedata-users:
+    gid: 7080
+    description: Gives access to the Analytics (Hadoop) cluster as well as prviate data within.
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
-              kleduc, nuria, haithams]
+              kleduc, nuria, haithams, otto]
   ocg-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)
