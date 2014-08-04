@@ -51,16 +51,23 @@ class dataset::cron::rsync::labs($enable=true) {
         source => 'puppet:///modules/dataset/labs/labs-rsync-cron.sh',
     }
 
-    cron { 'dumps_labs_rsync':
-        ensure      => $ensure,
-        user        => 'root',
-        minute      => '50',
-        hour        => '3',
-        command     => '/usr/local/sbin/labs-rsync-cron.sh',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        require     => File['/usr/local/bin/wmfdumpsmirror.py',
-                            '/usr/local/sbin/labs-rsync-cron.sh',
-                            '/mnt/dumps/public'],
+    if ($enable) {
+        cron { 'dumps_labs_rsync':
+            ensure      => $ensure,
+            user        => 'root',
+            minute      => '50',
+            hour        => '3',
+            command     => '/usr/local/sbin/labs-rsync-cron.sh',
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            require     => File['/usr/local/bin/wmfdumpsmirror.py',
+                                '/usr/local/sbin/labs-rsync-cron.sh',
+                                '/mnt/dumps/public'],
+        }
+    }
+    else {
+        cron { 'dumps_labs_rsync':
+            ensure      => absent,
+        }
     }
 }
 
