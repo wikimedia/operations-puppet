@@ -20,13 +20,15 @@ class dataset::cron::rsync::labs($enable=true) {
         mode   => '0755',
     }
 
-    mount { '/mnt/dumps':
-        ensure  => mounted,
-        atboot  => true,
-        fstype  => 'nfs',
-        device  => 'labstore1003.eqiad.wmnet:/dumps',
-        options => 'rw,vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc',
-        require => File['/mnt/dumps'],
+    if ($enable) {
+        mount { '/mnt/dumps':
+            ensure  => mounted,
+            atboot  => true,
+            fstype  => 'nfs',
+            device  => 'labstore1003.eqiad.wmnet:/dumps',
+            options => 'rw,vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc',
+            require => File['/mnt/dumps'],
+        }
     }
 
     file { '/mnt/dumps/public':
