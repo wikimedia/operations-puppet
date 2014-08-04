@@ -2,6 +2,7 @@
 
 include "errorpage.inc.vcl";
 include "zero.inc.vcl";
+include "via.inc.vcl";
 
 sub filter_noise {
 	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
