@@ -328,7 +328,20 @@ sub vcl_deliver {
 	if (req.http.X-CS && resp.http.X-Analytics !~ "zero=") {
 
 		if (req.http.X-CS == "ON") {
-			set req.http.X-CS = req.http.X-CS2;
+			// This is where all conditionals from above will be moved to support analytics, until they finish their migration
+			if (req.http.X-CS2 == "426-04") {
+				if (!req.http.X-Forwarded-By) {
+					set req.http.X-CS = req.http.X-CS2;
+				}
+			} else if (req.http.X-CS2 == "250-99") {
+				if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+					if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
+						set req.http.X-CS = req.http.X-CS2;
+					}
+				}
+			} else {
+				set req.http.X-CS = req.http.X-CS2;
+			}
 		}
 
 		// Some carriers have multiple ip ranges with different rules. IP set name is added at
