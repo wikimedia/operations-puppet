@@ -33,13 +33,13 @@ class apache::mpm( $mpm = 'prefork' ) {
 
     if $mpm != 'prefork' {
         # mod_php5 is unsafe for threaded MPMs
-        apache::mod_conf { 'php5':
+        mod_conf { 'php5':
             ensure => absent,
             before => Package[$selected_pkg],
         }
     }
 
-    apache::mod_conf { $rejected_mods:
+    mod_conf { $rejected_mods:
         ensure => absent,
     }
 
@@ -56,10 +56,10 @@ class apache::mpm( $mpm = 'prefork' ) {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        before => Apache::Mod_conf[$selected_mod],
+        before => Mod_conf[$selected_mod],
     }
 
-    apache::mod_conf { $selected_mod:
+    mod_conf { $selected_mod:
         ensure => present,
         notify => Exec['apache2_test_config_and_restart'],
     }

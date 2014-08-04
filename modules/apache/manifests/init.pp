@@ -89,5 +89,5 @@ class apache {
     }
 
     # Set up runtime parameters and modules before sites and config snippets.
-    Apache::Def <| |> -> Apache::Mod_conf <| |> -> Apache::Conf <| |>
+    Apache::Def <| |> -> Mod_conf <| |> -> Apache::Conf <| |>
 }
