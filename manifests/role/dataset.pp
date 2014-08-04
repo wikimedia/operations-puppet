@@ -16,7 +16,7 @@ class role::dataset::primary {
     $rsync = {
         'public' => true,
         'peers'  => true,
-        'labs'   => true,
+        'labs'   => false,
     }
     $grabs = {
         'kiwix' => true,
