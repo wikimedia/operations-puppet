@@ -34,49 +34,29 @@ class mediawiki::web::modules {
         ensure => absent,
     }
 
-    file { '/etc/apache2/mods-available/expires.conf':
-        ensure  => present,
-        source  => 'puppet:///modules/mediawiki/apache/modules/expires.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        before  => Class['::apache::mod::expires'],
+    apache::mod_files { 'autoindex':
+        ensure        => present,
+        config_source => 'puppet:///modules/mediawiki/apache/modules/autoindex.conf'
     }
 
-    file { '/etc/apache2/mods-available/autoindex.conf':
-        ensure  => present,
-        source  => 'puppet:///modules/mediawiki/apache/modules/autoindex.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        before  => Class['::apache::mod::autoindex'],
+    apache::mod_files { 'expires':
+        ensure        => present,
+        config_source => 'puppet:///modules/mediawiki/apache/modules/expires.conf'
     }
 
-
-    file { '/etc/apache2/mods-available/setenvif.conf':
-        ensure  => present,
-        source  => 'puppet:///modules/mediawiki/apache/modules/setenvif.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['apache2'],
+    apache::mod_files { 'mime':
+        ensure        => present,
+        config_source => 'puppet:///modules/mediawiki/apache/modules/mime.conf'
     }
 
-    file { '/etc/apache2/mods-available/mime.conf':
-        ensure  => present,
-        source  => 'puppet:///modules/mediawiki/apache/modules/mime.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['apache2'],
+    apache::mod_files { 'setenvif':
+        ensure        => present,
+        config_source => 'puppet:///modules/mediawiki/apache/modules/setenvif.conf'
     }
 
     # TODO: remove this? It's not used anywhere AFAICT
-    file { '/etc/apache2/mods-available/userdir.conf':
-        ensure  => present,
-        source  => 'puppet:///modules/mediawiki/apache/modules/userdir.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    apache::mod_files { 'userdir':
+        ensure        => present,
+        config_source => 'puppet:///modules/mediawiki/apache/modules/userdir.conf'
     }
 }
