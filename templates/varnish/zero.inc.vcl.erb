@@ -323,7 +323,9 @@ sub vcl_deliver {
 	   Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
 	   Note that vcl_deliver in other files may also modify X-Analytics
 	*/
-	if (req.http.X-CS) {
+	// "zero=" might have been cached by previous version, avoid duplicates per bug 62922
+	// Assuming 3 month caching, the !~ "zero=" check can be removed after 6/20/2014.
+	if (req.http.X-CS && resp.http.X-Analytics !~ "zero=") {
 
 		if (req.http.X-CS == "ON") {
 			set req.http.X-CS = req.http.X-CS2;
