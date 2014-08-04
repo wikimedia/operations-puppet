@@ -16,7 +16,7 @@
 #   Name of the chosen MPM. Must be 'prefork', 'worker', or 'event'.
 #   The default is 'prefork'.
 #
-class apache::mpm( $mpm = 'prefork' ) {
+class apache::mpm( $mpm = 'prefork', $config = undef) {
     include ::apache
 
     $available_mpms = ['prefork', 'worker', 'event']
@@ -26,7 +26,6 @@ class apache::mpm( $mpm = 'prefork' ) {
 
     $selected_mod = "mpm_${mpm}"
     $selected_pkg = "apache2-mpm-${mpm}"
-    $selected_cfg = "/etc/apache2/mods-available/mpm_${mpm}.load"
 
     $rejected_mpms = reject($available_mpms, $mpm)
     $rejected_mods = prefix($rejected_mpms, 'mpm_')
@@ -47,16 +46,12 @@ class apache::mpm( $mpm = 'prefork' ) {
     if ubuntu_version('< trusty') {
         package { $selected_pkg:
             ensure => present,
-            before => File[$selected_cfg],
+            before => Apache::Mod_files[$selected_mod],
         }
     }
 
-    file { $selected_cfg:
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        before => Apache::Mod_conf[$selected_mod],
+    apache::mod_files { $selected_mod:
+        config_content => $config
     }
 
     apache::mod_conf { $selected_mod:

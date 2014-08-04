@@ -16,17 +16,38 @@
 #   The .load config file that Puppet should manage.
 #   Defaults to the resource title plus a '.load' suffix.
 #
+# [*conffile*]
+#   The .conf config file that Puppet should manage.
+#   Defaults to the resource title plus a '.conf' suffix.
+#
+
 define apache::mod_conf(
     $ensure   = present,
     $mod      = $title,
     $loadfile = "${title}.load",
-) {
+    $conffile = "${title}.conf",
+    ) {
     include ::apache
 
+    $loadfile_path = "/etc/apache2/mods-available/${loadfile}"
+    $conffile_path = "/etc/apache2/mods-available/${conffile}"
+
+    $loadfile_target = "/etc/apache2/mods-enabled/${loadfile}"
+    $conffile_path = "/etc/apache2/mods-enabled/${conffile}"
+
+    # Make sure all resources are in place
+    File<| path == $loadfile_path or path == $conffile_path |>
+
+    # Edge case: we're adding a .conf file to a resource that's already
+    # been enabled. So given a2enmod is a very simple, idempotent
+    # shell script we can safely exec it at every puppet run.
+    # a2enmod will then do the right thing(TM).
+    # OTOH, when we run a2dismod it's enough to be sure we removed the
+    # loadfile as it will effectively remove the module from the
+    # apache configuration.
     if $ensure == present {
         exec { "ensure_${ensure}_mod_${mod}":
             command => "/usr/sbin/a2enmod ${mod}",
-            creates => "/etc/apache2/mods-enabled/${loadfile}",
             require => Package['apache2'],
             notify  => Service['apache2'],
         }
