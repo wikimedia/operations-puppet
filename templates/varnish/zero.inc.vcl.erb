@@ -323,11 +323,23 @@ sub vcl_deliver {
 	   Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
 	   Note that vcl_deliver in other files may also modify X-Analytics
 	*/
-	if (req.http.X-CS) {
-
-		if (req.http.X-CS == "ON") {
+	if (req.http.X-CS == "ON") {
+		// This is where all conditionals from above will be moved to support analytics
+		// until they finish their migration
+		// According to qchris, analytics can handle language and subdomain, but not proxy or https
+		unset req.http.X-CS;
+		if (req.http.X-CS2 == "426-04") {
+			if (!req.http.X-Forwarded-By) {
+				set req.http.X-CS = req.http.X-CS2;
+			}
+		} else if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+			// Default for NON-HTTPS DIRECT connections
+			// Handles: 250-99
 			set req.http.X-CS = req.http.X-CS2;
 		}
+	}
+
+	if (req.http.X-CS) {
 
 		// Some carriers have multiple ip ranges with different rules. IP set name is added at
 		// the end of the X-CS, e.g. "123-45|wap" to indicate a wap gateway with their own IPs.
