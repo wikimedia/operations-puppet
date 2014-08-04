@@ -141,7 +141,12 @@ node 'analytics1004.eqiad.wmnet' {
     # ganglia cluster name.
     $cluster = 'analytics'
 
-    class { 'admin': groups => ['analytics-users'] }
+    class { 'admin':
+        groups => [
+            'analytics-users',
+            'analytics-privatedata-users',
+        ],
+    }
     include standard
 
     include role::analytics::hadoop::standby
@@ -156,7 +161,12 @@ node 'analytics1010.eqiad.wmnet' {
     # analytics1010 is analytics Ganglia aggregator for Row B
     $ganglia_aggregator = true
 
-    class { 'admin': groups => ['analytics-users'] }
+    class { 'admin':
+        groups => [
+            'analytics-users'
+            'analytics-privatedata-users',
+        ]
+    }
     include standard
 
     include role::analytics::hadoop::master
@@ -2465,8 +2475,13 @@ node 'stat1002.eqiad.wmnet' {
     # Users should not use it for app development.
     # Data processing on this machine is fine.
 
-    class { 'admin': groups => ['statistics-privatedata-users',
-                                'statistics-admins'] }
+    class { 'admin':
+        groups => [
+            'statistics-privatedata-users',
+            'statistics-admins',
+            'analytics-privatedata-users',
+        ],
+    }
 
     # include classes needed for storing and crunching
     # private data on stat1002.
