@@ -3,9 +3,6 @@
 # and using the analytics/refinery repository.
 #
 class role::analytics::refinery {
-    # Require analytics users so we hdfs can write log files as stats user.
-    require role::analytics::users
-
     # Many Kraken python scripts use docopt for CLI parsing.
     if !defined(Package['python-docopt']) {
         package { 'python-docopt':
@@ -36,6 +33,8 @@ class role::analytics::refinery {
     file { $log_dir:
         ensure => 'directory',
         owner  => 'root',
+        # TODO: Change this to analytics-admins group after
+        # https://gerrit.wikimedia.org/r/#/c/150560 is merged.
         group  => 'stats',
         # setgid bit here to make kraken log files writeable
         # by users in the stats group.

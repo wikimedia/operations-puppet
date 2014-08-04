@@ -125,13 +125,6 @@ groups:
     description: users who have full root on jenkins servers
     members: [hashar]
     privs: ['ALL = NOPASSWD: ALL']
-  analytics-users:
-    posix_name: stats
-    gid: 7080
-    description: XXX:TEMP -- should not need to use posix_name attribute
-    members: [dartar, erik, milimetric, yurik, maryana,
-              halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
-              kleduc, nuria, haithams]
   ocg-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)
@@ -196,6 +189,21 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
+  analytics-users:
+    gid: 7080
+    description: Gives generic client access to the Analytics (Hadoop) cluster.
+        This will grant shell access on Hadoop client nodes (stat1002) and on
+        Hadoop NameNodes.
+    members: []
+  analytics-privatedata-users:
+    gid: 731
+    description: Gives access to the Analytics (Hadoop) cluster as well as prviate data within.
+        This will grant shell access on Hadoop client nodes (stat1002) and on
+        Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
+        Those files are group readable by the analytics-privatedata-users group.
+    members: [dartar, erik, milimetric, yurik, maryana,
+              halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
+              kleduc, nuria, haithams, otto]
 users:
   rush:
     ensure: present
