@@ -1,0 +1,18 @@
+sub vcl_deliver {
+	// Add proxy=IORG X-Analytics tag if appropriate.
+	// Although Via: Internet.org usually comes via proxying, it isn't guaranteed to come that way.
+	// Nonetheless, as it is tagged with Via and the equipment is under Internet.org, we proxy tag.
+	// Note, Internet.org is believed to apply to all Wikimedia sites, so this code should run not
+	// just for (m|zero).wikipedia.org and subdomains. Hence the inclusion of this file by both
+	// mobile-frontend.inc.vcl.erb and text-frontend.inc.vcl.erb, as opposed to a one-off in
+	// zero.inc.vcl.erb alone. See the notes at the top of mobile-frontend.inc.vcl.erb and
+	// text-frontend.inc.vcl.erb for more context.
+	if (req.http.Via ~ "(?i)Internet.org") {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=IORG";
+		} else {
+			set resp.http.X-Analytics = "proxy=IORG";
+		}
+	}
+}
+
