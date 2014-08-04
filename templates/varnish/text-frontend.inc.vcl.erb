@@ -122,6 +122,16 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
+	// Add via=Internet.org X-Analytics tag if appropriate
+	// Although Via: Internet.org usually comes via proxying, it isn't guaranteed to come that way
+	if (req.http.Via && req.http.Via == "Internet.org") {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";via=Internet.org";
+		} else {
+			set resp.http.X-Analytics = "via=Internet.org";
+		}
+	}
+
 	/* Override the Cache-Control header for wiki content pages */
 	if (req.url ~ "(?i)^/w(iki)?/.*"
 		&& req.url !~ "^/wiki/Special\:Banner(Controller|ListLoader)"
