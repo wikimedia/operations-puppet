@@ -33,12 +33,26 @@ class role::analytics::refinery {
     file { $log_dir:
         ensure => 'directory',
         owner  => 'root',
-        # TODO: Change this to analytics-admins group after
-        # https://gerrit.wikimedia.org/r/#/c/150560 is merged.
-        group  => 'stats',
-        # setgid bit here to make kraken log files writeable
-        # by users in the stats group.
+        group  => 'analytics-admins',
+        # setgid bit here to make refinery log files writeable
+        # by users in the analytics-admins group.
         mode   => '2775',
+    }
+
+    # If hdfs user exists, then add it to the analytics-admins group.
+    # I don't want to use puppet types or the admin module to manage
+    # the hdfs user, since it is installed by the CDH packages.
+    # TODO: Move this to the admin module if/when it supports
+    # adding system users to groups.
+    exec { 'hdfs_user_in_stats_group':
+        command => 'usermod hdfs -a -G analytics-admins',
+        # Only run this command if the hdfs user exists
+        # and it is not already in the stats group
+        # This command returns true if hdfs user does not exist,
+        # or if hdfs user does exist and is in the stats group.
+        unless  => 'getent passwd hdfs > /dev/null; if [ $? != 0 ]; then true; else groups hdfs | grep -q analytics-admins; fi',
+        path    => '/usr/sbin:/usr/bin:/bin',
+        require => Group['analytics-admins'],
     }
 }
 
