@@ -395,6 +395,17 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     # on hive package, so we might as well
     # configure hive too.
     include role::analytics::hive::client
+
+
+    # We use this to send passive checks off to icinga
+    # for generating alerts.  We need the nsca-client package
+    # to do this remotely.  Some oozie jobs use this,
+    # and it must be present on all datanodes.
+    if !defined(Package['nsca-client']) {
+        package { 'nsca-client':
+            ensure => 'installed',
+        }
+    }
 }
 
 # == Class role::analytics::hadoop::standby
