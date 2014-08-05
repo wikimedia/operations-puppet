@@ -88,5 +88,8 @@ class puppetmaster(
 
     if $is_labs_puppet_master {
         include puppetmaster::labs
+        class { '::puppetmaster::hiera':
+            source => 'puppet:///modules/puppetmaster/labs.hiera.yaml',
+        }
     }
 }
