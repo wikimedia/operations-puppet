@@ -5,6 +5,7 @@
 #
 class role::transparency {
     include ::apache
+    include ::apache::mod::rewrite
 
     $repo_dir = '/srv/TransparencyReport'
     $docroot  = "${repo_dir}/build"
