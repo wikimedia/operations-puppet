@@ -11,7 +11,6 @@ case $PID in ''|*[!0-9]*)
 esac
 
 gdb -batch -p "$PID"                               \
-    -ex "symbol-file /usr/bin/hhvm"                \
     -ex "thread apply all backtrace full"          \
     -ex "generate-core-file /tmp/hhvm.${PID}.core" \
     >"/tmp/hhvm.${PID}.bt" 2>/dev/null

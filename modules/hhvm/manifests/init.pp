@@ -69,7 +69,7 @@ class hhvm(
     $common_defaults = {
         date => { timezone => 'UTC' },
         hhvm => {
-            dynamic_extension_path   => '/usr/lib/hphp/extensions/20140727',
+            dynamic_extension_path   => '/usr/lib/hphp/extensions/current',
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             include_path             => '.:/usr/share/php:/usr/share/pear',
@@ -192,8 +192,8 @@ class hhvm(
         before => Service['hhvm'],
     }
 
-    file { '/usr/local/sbin/hhvm-debug-dump':
-        source => 'puppet:///modules/hhvm/hhvm-debug-dump',
+    file { '/usr/local/sbin/hhvm-dump-debug':
+        source => 'puppet:///modules/hhvm/hhvm-dump-debug',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
