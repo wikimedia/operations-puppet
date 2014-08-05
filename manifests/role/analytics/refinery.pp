@@ -71,8 +71,10 @@ class role::analytics::refinery::camus {
     }
 }
 
+# == Class role::analytics::refinery::data::drop
 # Installs cron job to drop old hive partitions
 # and delete old data from HDFS.
+#
 class role::analytics::refinery::data::drop {
     require role::analytics::refinery
 
@@ -84,5 +86,53 @@ class role::analytics::refinery::data::drop {
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${retention_days} -D wmf >> ${log_file} 2>&1",
         user    => 'hdfs',
         hour    => '*/4',
+    }
+}
+
+# == Class role::analytics::refinery::data::check
+# Configures passive/freshness icinga checks or data imports
+# in HDFS.
+#
+# For webrequest imports, the Oozie job that is responsible
+# for adding Hive partitions and checking data integrity
+# is responsible for triggering these passive checks.
+class role::analytics::refinery::data::check {
+    # Let's be lenient, and give Camus and Oozie 3 hours to
+    # successfully import a dataset.
+    $freshness_threshold = 10800
+    # 1 == warning, 2 == critical.
+    # Use warning for now while we make sure this works.
+    $alert_return_code   = 1
+
+    # Monitor that each webrequest source is succesfully imported.
+    # This is a passive check that is triggered by the Oozie
+    # webrequest add partition jobs.
+    monitor_service { 'hive_partition_webrequest-mobile':
+        description     => 'Raw webrequest mobile data imported into HDFS and Hive.',
+        check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest mobile!${$alert_return_code}",
+        passive         => 'true',
+        freshness       => $freshness_threshold,
+        retries         => 1,
+    }
+    monitor_service { 'hive_partition_webrequest-text':
+        description     => 'Raw webrequest text data imported into HDFS and Hive.',
+        check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest text!${$alert_return_code}",
+        passive         => 'true',
+        freshness       => $freshness_threshold,
+        retries         => 1,
+    }
+    monitor_service { 'hives_partition_webrequest-bits':
+        description     => 'Raw webrequest bits data imported into HDFS and Hive.',
+        check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest bits!${$alert_return_code}",
+        passive         => 'true',
+        freshness       => $freshness_threshold,
+        retries         => 1,
+    }
+    monitor_service { 'hive_partition_webrequest-upload':
+        description     => 'Raw webrequest upload data imported into HDFS and Hive.',
+        check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest upload!${$alert_return_code}",
+        passive         => 'true',
+        freshness       => $freshness_threshold,
+        retries         => 1,
     }
 }

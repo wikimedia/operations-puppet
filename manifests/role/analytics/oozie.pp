@@ -63,4 +63,13 @@ class role::analytics::oozie::server inherits role::analytics::oozie::client {
         # settings look like they are properly configured.
         authorization_service_authorization_enabled => false,
     }
+
+    # We sometimes use oozie to send passive checks off to icinga
+    # for generating alerts.  We need the nsca-client package
+    # to do this remotely.
+    if !defined(Package['nsca-client']) {
+        package { 'nsca-client':
+            ensure => 'installed',
+        }
+    }
 }
