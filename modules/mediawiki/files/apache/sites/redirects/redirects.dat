@@ -505,5 +505,5 @@ funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
 # w.wiki - upcoming URL shortener
 funnel	*w.wiki	//www.wikipedia.org
 
-# RT #7862
-override wikimedia.org/research https://s.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP&Preview=Survey&BrandID=wikimedia
+# RT #8077
+override wikimedia.org/research https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
