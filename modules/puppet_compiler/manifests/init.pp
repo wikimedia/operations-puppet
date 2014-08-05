@@ -64,7 +64,7 @@ class puppet_compiler(
             require => Git::Install['operations/software'],
         }
 
-        puppet_compiler::bundle {['2.7', '3']: }
+        puppet_compiler::bundle {['3']: }
 
         # Now install the puppet repo
 
