@@ -1,0 +1,21 @@
+#!/bin/bash
+# hhvm-debug-dump: dump HHVM core and backtrace to /tmp.
+
+die() { local st="$?"; echo "$@" >&2; exit $st; }
+
+. /etc/default/hhvm || die
+
+read PID <"${HHVM_RUN_DIR:-/run/hhvm}/hhvm.pid"
+case $PID in ''|*[!0-9]*)
+    die "Can't find PID file of HHVM." ;;
+esac
+
+gdb -batch -p "$PID"                               \
+    -ex "symbol-file /usr/bin/hhvm"                \
+    -ex "thread apply all backtrace full"          \
+    -ex "generate-core-file /tmp/hhvm.${PID}.core" \
+    >"/tmp/hhvm.${PID}.bt" 2>/dev/null
+
+cp "/proc/$PID/exe" "/tmp/hhvm.${PID}.bin"
+
+die "Saved HHVM debug data in /tmp/hhvm.${PID}.{bt,core,bin}."
