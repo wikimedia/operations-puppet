@@ -152,9 +152,9 @@ groups:
     gid: 725
     description: Have access to so that they can do analysis on webrequest logs
                 and other private data.
-    members: [handrade, haithams, ezachte, milimetric, dartar,
-      yurik, halfak, howief, mwalker, awight, dr0ptp4kt, qchris, tnegrin,
-      nuria, leila, manybubbles, ironholds, kleduc]
+    members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
+              howief, mwalker, awight, dr0ptp4kt, qchris, tnegrin, nuria,
+              leila, manybubbles, ironholds, kleduc]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
