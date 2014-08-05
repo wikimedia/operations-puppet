@@ -34,12 +34,14 @@ class postgresql::master(
     $max_wal_senders=3,
     $checkpoint_segments=64,
     $wal_keep_segments=128
+    $datadir=undef,
     ) {
 
     class { 'postgresql::server':
         pgversion => $pgversion,
         ensure    => $ensure,
         includes  => [ $includes, 'master.conf'],
+        datadir   => $datadir,
     }
 
     file { "/etc/postgresql/${pgversion}/main/master.conf":

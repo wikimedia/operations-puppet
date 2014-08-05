@@ -30,12 +30,14 @@ class postgresql::slave(
     $includes=[],
     $pgversion='9.1',
     $ensure='present',
+    $datadir=undef,
     ) {
 
     class { 'postgresql::server':
         pgversion => $pgversion,
         ensure    => $ensure,
         includes  => [ $includes, 'slave.conf'],
+        datadir   => $datadir,
     }
 
     file { "/etc/postgresql/${pgversion}/main/slave.conf":

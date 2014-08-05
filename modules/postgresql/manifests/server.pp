@@ -25,6 +25,7 @@ class postgresql::server(
     $includes=[],
     $listen_addresses='*',
     $port='5432'
+    $datadir=undef,
     ) {
 
     package { [
