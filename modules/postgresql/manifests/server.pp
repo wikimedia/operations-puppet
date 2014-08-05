@@ -24,7 +24,8 @@ class postgresql::server(
     $ensure='present',
     $includes=[],
     $listen_addresses='*',
-    $port='5432'
+    $port='5432',
+    $datadir=undef,
     ) {
 
     package { [
