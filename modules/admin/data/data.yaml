@@ -203,7 +203,7 @@ groups:
         Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
-              kleduc, nuria, haithams, otto]
+              kleduc, nuria, haithams, otto, jgonera]
 users:
   rush:
     ensure: present
