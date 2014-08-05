@@ -1,0 +1,17 @@
+# vim:ft=apache: ts=4 sw=4
+# Apache configuration for <http://transparency.wikimedia.org>
+# This file is managed by Puppet.
+<VirtualHost *:80>
+    ServerName transparency.wikimedia.org
+    DocumentRoot <%= @docroot %>
+
+    <Directory />
+        AllowOverride None
+    </Directory>
+
+    <Directory <%= @docroot %>
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+</VirtualHost>
