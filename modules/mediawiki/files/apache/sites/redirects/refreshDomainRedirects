@@ -379,7 +379,7 @@ class DomainRedirectParser {
 		    "# source file redirects.dat and managed on servers by Puppet\n".
 			"# Do not edit it manually!\n" .
 			"\n" .
-			"<VirtualHost *>\n" .
+			"<VirtualHost *:80>\n" .
 			"\tServerName redirector\n" .
 			"\tServerAlias \\\n" );
 
