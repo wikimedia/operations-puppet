@@ -15,8 +15,10 @@
         allow from all
     </Directory>
 
+    # Serve 404s for all requests until the launch, at 2014-Aug-06 09:00 UTC.
+    # This code can be removed any time after that. --OL
     RewriteEngine on
     RewriteCond %{ENV:REDIRECT_STATUS} !=404
-    RewriteCond %{TIME} <<%= Time.utc(2014, 'Aug', 5, 21).strftime('%Y%m%d%H%M%S') %>
+    RewriteCond %{TIME} <<%= Time.utc(2014, 'Aug', 6, 9).strftime('%Y%m%d%H%M%S') %>
     RewriteRule .* - [L,R=404]
 </VirtualHost>
