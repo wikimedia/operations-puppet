@@ -69,7 +69,7 @@ class hhvm(
     $common_defaults = {
         date => { timezone => 'UTC' },
         hhvm => {
-            dynamic_extension_path   => '/usr/lib/hphp/extensions/20140702',
+            dynamic_extension_path   => '/usr/lib/hphp/extensions/20140727',
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             include_path             => '.:/usr/share/php:/usr/share/pear',
