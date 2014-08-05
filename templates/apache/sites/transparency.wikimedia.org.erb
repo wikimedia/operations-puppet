@@ -14,4 +14,9 @@
         Order allow,deny
         allow from all
     </Directory>
+
+    RewriteEngine on
+    RewriteCond %{ENV:REDIRECT_STATUS} !=404
+    RewriteCond %{TIME} <<%= Time.utc(2014, 'Aug', 5, 21).strftime('%Y%m%d%H%M%S') %>
+    RewriteRule .* - [L,R=404]
 </VirtualHost>
