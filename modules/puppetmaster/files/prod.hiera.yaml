@@ -1,0 +1,18 @@
+:backends:
+  - nuyaml
+:nuyaml:
+  :datadir: /etc/puppet/hiera
+  :dynlookup:
+    - mainrole
+  :expand_path:
+    - common
+    - realm
+:private:
+  :datadir: /etc/puppet/private
+:hierarchy:
+  - "%{::hostname}"
+  - "%{::realm}"
+  - "%{::site}"
+  - private
+  - mainrole
+  - common
