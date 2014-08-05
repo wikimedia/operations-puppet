@@ -12,7 +12,5 @@ class puppet_compiler::packages($ensure = $puppet_compiler::ensure) {
              'ruby-bcrypt',
              'nginx'
              ]
-    package {$list:
-        ensure => $ensure
-    }
+    ensure_packages([$list])
 }
