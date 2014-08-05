@@ -1,7 +1,7 @@
 class puppet_compiler::packages($ensure = $puppet_compiler::ensure) {
+    include stdlib
     $list = [
              'curl',
-             'python-pip',
              'python-dev',
              'rubygems',
              'ruby-bundler',
