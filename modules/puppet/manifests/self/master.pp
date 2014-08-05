@@ -85,6 +85,12 @@ class puppet::self::master($server) {
         ],
     }
 
+    #Set up hiera locally
+    class { '::puppetmaster::hiera':
+        source => 'puppet:///modules/puppetmaster/labs.hiera.yaml',
+    }
+
+
     service { 'puppetmaster':
         ensure    => 'running',
         require   => Package['puppetmaster'],
