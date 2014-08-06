@@ -1919,6 +1919,8 @@ host mw1016 {
 host mw1017 {
 	hardware ethernet 78:2b:cb:08:79:0c;
 	fixed-address mw1017.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1018 {
