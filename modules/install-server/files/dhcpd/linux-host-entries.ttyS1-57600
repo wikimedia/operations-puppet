@@ -33,10 +33,6 @@ host sanger {
 	fixed-address sanger.wikimedia.org;
 }
 
-host tarin {
-	hardware ethernet 00:26:B9:5C:42:FA;
-	fixed-address tarin.pmtpa.wmnet;
-}
 host tridge {
 	hardware ethernet 00:1e:c9:48:69:38;
 	fixed-address tridge.wikimedia.org;
