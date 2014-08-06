@@ -19,6 +19,7 @@ class role::protoproxy::ssl::common {
 
     # Tune kernel settings
     include webserver::base
+    include wmflib
 
     $nginx_worker_connections = '32768'
     $nginx_use_ssl = true
