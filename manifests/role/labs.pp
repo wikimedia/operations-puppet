@@ -89,7 +89,7 @@ class role::labs::instance {
         atboot  => true,
         fstype  => 'nfs',
         options => "ro,${nfs_opts}",
-        device  => 'labstore1003.eqiad.wmnet:/dumps',
+        device  => "${nfs_server}:/dumps",
         require => File['/public/dumps'],
     }
 
