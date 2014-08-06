@@ -20,7 +20,8 @@ class quarry::base {
 
     user { 'quarry':
         ensure => present,
-        system => true
+        system => true,
+        uid    => 997
     }
 
     file { [$clone_path, $result_path_parent, $result_path]:
