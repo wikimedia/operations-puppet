@@ -1,17 +1,14 @@
-# Serve HHVM status info on </hhvm-status> to internal clients.
+# Serve HHVM status info to internal clients.
 # This file is managed by Puppet.
 
-<Location /hhvm-status>
-    ProxyPass fcgi://127.0.0.1:9001/ retry=0
-    <RequireAll>
-        # Disallow proxied requests
-        Require expr -z http('X-Forwarded-For') && -z http('X-Varnish')
-        # Allow requests from internal and local IPs only
+<VirtualHost *:<%= @port %>>
+    DocumentRoot /var/www
+    <Location />
+        ProxyPass fcgi://127.0.0.1:9001/ retry=0
         <RequireAny>
             Require ip 10. <%= scope['::network::constants::all_networks'].join(' ') %>
             Require local
         </RequireAny>
-    </RequireAll>
-</Location>
-
+    </Location>
+</VirtualHost>
 # vim: ft=apache.erb:
