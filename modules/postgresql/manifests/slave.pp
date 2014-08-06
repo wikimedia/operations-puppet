@@ -49,7 +49,12 @@ class postgresql::slave(
         require => Class['postgresql::server'],
     }
 
-    file { "/var/lib/postgresql/${pgversion}/main/recovery.conf":
+    if $datadir {
+        $basepath = $datadir
+    } else {
+        $basepath = "/var/lib/postgresql/${pgversion}/main":
+    }
+    file { "${basepath}/recovery.conf":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
@@ -62,9 +67,9 @@ class postgresql::slave(
     if $ensure == 'present' {
         exec { "pg_basebackup-${master_server}":
             environment => "PGPASSWORD=${replication_pass}",
-            command     => "/usr/bin/pg_basebackup -D /var/lib/postgresql/${pgversion}/main -h ${master_server} -U replication -w",
+            command     => "/usr/bin/pg_basebackup -D ${basepath} -h ${master_server} -U replication -w",
             user        => 'postgres',
-            unless      => "/usr/bin/test -f /var/lib/postgresql/${pgversion}/main/PG_VERSION",
+            unless      => "/usr/bin/test -f ${basepath}/PG_VERSION",
             require     => Class['postgresql::server'],
         }
     }
