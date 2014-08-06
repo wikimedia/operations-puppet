@@ -283,7 +283,6 @@ class ganglia::collector::config {
             # neon needs gmetad config for ganglios
             /^neon$/: {
                 $data_sources = {
-                    'Miscellaneous'                  => 'tarin.pmtpa.wmnet',
                     'Miscellaneous eqiad'            => 'carbon.wikimedia.org ms1004.eqiad.wmnet',
                     'Analytics cluster eqiad'        => 'analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet',
                     'Mobile caches eqiad'            => 'cp1046.eqiad.wmnet cp1047.eqiad.wmnet',
@@ -303,7 +302,6 @@ class ganglia::collector::config {
                     'MySQL'                          => 'db1050.eqiad.wmnet',
                     'PDF servers pmtpa'              => 'pdf2.wikimedia.org pdf3.wikimedia.org',
                     'PDF servers eqiad'              => 'ocg1001.eqiad.wmnet',
-                    'Miscellaneous'                  => 'tarin.pmtpa.wmnet',
                     'Fundraising eqiad'              => 'pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet',
                     'SSL cluster esams'              => 'hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org',
                     'Virtualization cluster eqiad'   => 'labnet1001.eqiad.wmnet virt1000.wikimedia.org',

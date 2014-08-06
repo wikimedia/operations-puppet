@@ -1026,13 +1026,6 @@ node 'eeden.esams.wikimedia.org' {
     include role::authdns::ns2
 }
 
-node 'tarin.pmtpa.wmnet' {
-    $ganglia_aggregator = true
-    include admin
-    include standard
-    include role::poolcounter
-}
-
 node 'aluminium.wikimedia.org' {
     $cluster = 'fundraising'
     include admin
