@@ -1,0 +1,206 @@
+#!/usr/bin/python
+#
+# Copyright (c) 2014 Jeff Green <jgreen@wikimedia.org>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+# of the Software, and to permit persons to whom the Software is furnished to do
+# so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+import argparse
+import decimal
+import json
+import re
+import requests
+import sys
+
+def parse_arguments():
+	"""parse command line arguments into various thresholds
+	:returns: dict containing validated arguments
+	"""
+	parser = argparse.ArgumentParser(
+			formatter_class=argparse.RawDescriptionHelpFormatter,
+			description='Online Content Generator health check plugin for Nagios',
+			epilog="example:\n  check_ocg_health --wtd 1GB --ctd 1.5GB --wrj 1000 --crj 2000\n",
+		)
+	parser.add_argument('--wod', type=size_string, help='output dir size warning threshold')
+	parser.add_argument('--cod', type=size_string, help='output dir size critical threshold')
+	parser.add_argument('--wpd', type=size_string, help='postmortem dir size warning threshold')
+	parser.add_argument('--cpd', type=size_string, help='postmortem dir size critical threshold')
+	parser.add_argument('--wtd', type=size_string, help='temp dir size warning threshold')
+	parser.add_argument('--ctd', type=size_string, help='temp dir size critical threshold')
+	parser.add_argument('--wjs', type=int, help='job status queue critical threshold (integer)')
+	parser.add_argument('--cjs', type=int, help='job status queue warning threshold (integer)')
+	parser.add_argument('--wrj', type=int, help='render jobs queue warning threshold (integer)')
+	parser.add_argument('--crj', type=int, help='render jobs queue critical threshold (integer)')
+	parser.add_argument('--url', help='OCG health check URI (%(default)s)',
+			default='http://localhost:8000/?command=health'
+		)
+	try:
+		args = parser.parse_args()
+	except SystemExit:
+		sys.exit(1) # trigger a nagios warning
+	return args
+
+def size_string(input_text):
+	"""parse an incoming human-readable size string and return sanitized values
+	:param input_text: size string like '29KB' or '5 MB'
+	:returns: size, unit
+	"""
+	try:
+		x = re.match("(?P<num>[0-9]+\.?[0-9]*)\s*(?P<suffix>K|M|G)?B?$",str(input_text))
+		size = float(x.group('num'))
+		unit = (x.group('suffix') + 'B') if x.group('suffix') else 'B'
+	except:
+		raise ValueError("can't parse size string %s" % input_text)
+	return size, unit
+
+def size_conversion(size=0, unit='B', unit_out='B'):
+	"""convert size string from one unit to another
+	:param size: numeric size value i.e. 2.5
+	:param unit: unit (i.e. B|KB|MB|GB) for the incoming size value
+	:param unit_out: desired unit (i.e. B|KB|MB|GB) for the result
+	:returns: size_out, unit_out
+	"""
+	try:
+		x = {'B':0, 'KB':1, 'MB':2, 'GB':3 }
+		size_bytes = size * 1024 ** x[unit]
+		size_out = size_bytes / 1024 ** x[unit_out]
+	except:
+		raise ValueError("size_conversion failed %s %s %s" % (size, unit, unit_out))
+	return size_out, unit_out
+
+
+def poll_ocg_server(url):
+	"""make an http request to OCG server and parse JSON response data
+	:param url: URL for the OCG health status JSON report
+	:returns: dict containing the parsed JSON data
+	"""
+	try:
+		r = requests.get(url, timeout=5)
+	except requests.exceptions.RequestException as e:
+		raise StandardError("connection error: %s" % e)
+	if r.status_code != 200:
+		raise StandardError("http status %s" % r.status_code)
+	try:
+		json_data = r.json()
+	except:
+		raise ValueError("failed to parse json data from %s" % url)
+	return json_data
+
+
+def check_dir_size(cth, wth, dd):
+	"""check server-reported directory size against warning/critical thresholds
+	:param cth: 'critical' threshold as a tuple of [size,unit]
+	:param wth: 'warning' threshold as a tuple of [size,unit]
+	:param dd: dictionary of reported server directory data, parsed from JSON report
+	:returns: status code, result text
+	"""
+	try:
+		dir_size,dir_unit = size_string(dd[u'size'])
+		dir_bytes,__ = size_conversion(size=dir_size,unit=dir_unit)
+	except:
+		result = "unexpected size %s reported for %s" % (dd[u'size'],dd[u'path'])
+		status = 1
+	cth_bytes = (size_conversion(size=cth[0],unit=cth[1]))[0] if cth else None
+	wth_bytes = (size_conversion(size=wth[0],unit=wth[1]))[0] if wth else None
+	result = str(dd[u'path'])
+	if cth_bytes and dir_bytes >= cth_bytes:
+		ds,du = size_conversion(size=dir_size,unit=dir_unit,unit_out=cth[1])
+		result += " %s%s (>= %s%s critical)" % (rounding_hack(ds,cth[0]),du,cth[0],cth[1])
+		status = 2
+	elif wth_bytes and dir_bytes >= wth_bytes:
+		ds,du = size_conversion(size=dir_size,unit=dir_unit,unit_out=wth[1])
+		result += " %s%s (>= %s%s warning)" % (rounding_hack(ds,wth[0]),du,wth[0],wth[1])
+		status = 1
+	else:
+		result += " %s%s" % (int(dir_size),dir_unit)
+		status = 0
+	return status, result
+
+def rounding_hack(num_in, reference_num):
+	"""round an input number to resemble a reference number for readable reports
+	:param num_in: a decimal/integer we want to round/format (e.g. 29.95395)
+	:param reference_num: a decimal/integer we're using as a reference for the format (e.g 1.9)
+	:returns: a nicely formatted number (e.g. 30.0)
+	"""
+	d = decimal.Decimal(str(reference_num))
+	ndigits = abs(d.as_tuple().exponent)
+	result = round(num_in,ndigits)
+	return result
+
+def check_queue_message_count(cth, wth, qd):
+	"""check the server-reported message queue size against alert thresholds
+	:param cth: message count critical threshold, an integer
+	:param wth: message count warning threshold, an integer
+	:returns: status, result
+	"""
+	result = str(qd[u'name']) + ' ' + str(qd[u'length']) + ' msg'
+	if cth and qd[u'length'] >= cth:
+		result += ' (>=' +str(cth) + ' critical)'
+		status = 2
+	elif wth and qd[u'length'] >= wth:
+		result += ' (>=' +str(wth) + ' warning)'
+		status = 1
+	else:
+		status = 0
+	return status, result
+
+def run_checks(args, data):
+	"""loop through a list of individual results, return the highest alert and report text
+	:param args: dict containing santized command line arguments
+	:param data: dict containing OCG server report data
+	:returns: max_alert, report_blob
+	"""
+	raw_results = []
+	try:
+		raw_results.append(check_dir_size( dd=data[u'directories'][u'temp'], cth=args.ctd, wth=args.wtd ))
+		raw_results.append(check_dir_size( dd=data[u'directories'][u'output'], cth=args.cod, wth=args.wod ))
+		raw_results.append(check_dir_size( dd=data[u'directories'][u'postmortem'], cth=args.cpd, wth=args.wpd ))
+		raw_results.append(check_queue_message_count( qd=data[u'StatusObjects'], cth=args.cjs, wth=args.wjs ))
+		raw_results.append(check_queue_message_count( qd=data[u'JobQueue'], cth=args.crj, wth=args.wrj ))
+	except:
+		raw_results.append([1,"some report data didn't process successfully!"])
+	previous = None
+	max_alert = None
+	result_list = []
+	for status, result in raw_results:
+		max_alert = max(previous, status)
+		result_list.append(result)
+		previous = max_alert
+	report_blob = ': '.join(result_list)
+	return max_alert, report_blob
+
+def main():
+	"""fetches arguments, poll ocg daemon, produce report, trigger nagios alert"""
+	args = parse_arguments()
+	try:
+		data = poll_ocg_server(args.url)
+	except:
+		report = str(sys.exc_info()[1])
+		exit_status = 1
+	else:
+		exit_status,report = run_checks(args, data)
+	if exit_status == 2:
+		print "CRITICAL: %s" % report
+	elif exit_status == 1:
+		print "WARNING: %s" % report
+	else:
+		print "OK: %s" % report
+	sys.exit(exit_status)
+
+if __name__ == "__main__":
+	main()
