@@ -2176,7 +2176,9 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
         groups => ['ocg-render-admins']
     }
     class { 'role::ocg::production':
-        tmpfs_size => '32G'
+        tmpfs_size             => '32G',
+        ocg_temp_size_warning  => '1G',
+        ocg_temp_size_critical => '5G',
     }
 }
 
