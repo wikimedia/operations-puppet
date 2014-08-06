@@ -15,9 +15,9 @@
 #
 # SYNTAX:
 #
-#	define command{
+#   define command{
 #               template      <templatename>
-#		name          <objectname>
+#       name          <objectname>
 #               command_name  <commandname>
 #               command_line  <commandline>
 #               }
@@ -87,23 +87,23 @@ define command{
 
 # Example usage:  check_solr!500:1000|5
 define command{
-	command_name	check_solr
-	command_line	$USER1$/check_solr -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
-	}
+    command_name    check_solr
+    command_line    $USER1$/check_solr -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
+    }
 
 # Example usage:  check_replicated_solr!500:1000|5
 define command{
-	command_name	check_replicated_solr
-	command_line	$USER1$/check_solr -r -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
-	}
+    command_name    check_replicated_solr
+    command_line    $USER1$/check_solr -r -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
+    }
 
 # 'check_ssl_cert'
 # Verify a SSL certificate is not going to expire in the next 14 days
 # Example usage:  check_ssl_cert!secure.wikimedia.org
 define command{
-	command_name	check_ssl_cert
-	command_line	$USER1$/check_ssl_cert --rootcert /etc/ssl/certs/ --critical 90 -H $HOSTADDRESS$ --cn $ARG1$
-	}
+    command_name    check_ssl_cert
+    command_line    $USER1$/check_ssl_cert --rootcert /etc/ssl/certs/ --critical 90 -H $HOSTADDRESS$ --cn $ARG1$
+    }
 
 # 'check_local_disk' command definition
 define command{
@@ -164,9 +164,9 @@ define command{
 
 # 'check_tcp' command definition
 define command{
-	command_name	check_tcp
-	command_line	$USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$
-	}
+    command_name    check_tcp
+    command_line    $USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$
+    }
 
 
 # 'check_telnet' command definition
@@ -178,13 +178,13 @@ define command{
 
 # 'check_udp' command definition
 define command{
-	command_name	check_udp
-	command_line	$USER1$/check_udp -H $HOSTADDRESS$ -p $ARG1$
-	}
+    command_name    check_udp
+    command_line    $USER1$/check_udp -H $HOSTADDRESS$ -p $ARG1$
+    }
 
 define command{
         command_name    check_lucene
-	# :P flappy
+    # :P flappy
         #command_line    $USER1$/check_http -t 60 -w 10 -p 8123 -u /stats -H $HOSTADDRESS$
         command_line    $USER1$/check_tcp -t 90 -w 10 -p 8123 -H $HOSTADDRESS$
         }
@@ -197,9 +197,9 @@ define command{
        }
 
 define command {
-	command_name	check_bgpstate
-	command_line	$USER1$/check_bgpstate -C $ARG1$ $HOSTADDRESS$
-	}
+    command_name    check_bgpstate
+    command_line    $USER1$/check_bgpstate -C $ARG1$ $HOSTADDRESS$
+    }
 
 ################################################################################
 #
@@ -220,24 +220,24 @@ define command{
         }
 
 define command{
-	command_name	by_ssh_check_disk
-	command_line	$USER1$/check_by_ssh -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C "/usr/local/apache/common/nagios-fedora-plugins/check_disk.switch -w $ARG1$ -c $ARG2$ -l -e"
-	}
+    command_name    by_ssh_check_disk
+    command_line    $USER1$/check_by_ssh -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C "/usr/local/apache/common/nagios-fedora-plugins/check_disk.switch -w $ARG1$ -c $ARG2$ -l -e"
+    }
 
 define command{
-	command_name	by_ssh_check_3ware
-	command_line	$USER1$/check_by_ssh -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C /usr/local/apache/common/nagios-fedora-plugins/check_3ware.sh
-	}
+    command_name    by_ssh_check_3ware
+    command_line    $USER1$/check_by_ssh -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C /usr/local/apache/common/nagios-fedora-plugins/check_3ware.sh
+    }
 
 define command{
-	command_name	by_ssh_check_postfix
-	command_line	$USER1$/check_by_ssh -t 15 -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C /usr/local/apache/common/nagios-fedora-plugins/contrib/check_postfix
-	}
+    command_name    by_ssh_check_postfix
+    command_line    $USER1$/check_by_ssh -t 15 -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C /usr/local/apache/common/nagios-fedora-plugins/contrib/check_postfix
+    }
 
 define command{
-	command_name	check_mysqlstatus
-	command_line	/usr/bin/php $USER1$/check_MySQL.php -h $HOSTADDRESS$ -u nagios -p <%= @nagios_mysql_check_pass %> $ARG1$
-	}
+    command_name    check_mysqlstatus
+    command_line    /usr/bin/php $USER1$/check_MySQL.php -h $HOSTADDRESS$ -u nagios -p <%= @nagios_mysql_check_pass %> $ARG1$
+    }
 
 # 'check_http_wikipedia' command definition, querying a different URL
 define command{
@@ -259,15 +259,15 @@ define command{
 
 # 'check_http_bits' command definition
 define command{
-	command_name	check_http_bits
-	command_line	$USER1$/check_http -H bits.wikimedia.org -I $HOSTADDRESS$ -u /skins/common/images/poweredby_mediawiki_88x31.png
-	}
+    command_name    check_http_bits
+    command_line    $USER1$/check_http -H bits.wikimedia.org -I $HOSTADDRESS$ -u /skins/common/images/poweredby_mediawiki_88x31.png
+    }
 
 # 'check_http_generic' command definition
 define command{
-	command_name	check_http_generic
-	command_line	$USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u /wikimedia-monitoring-test
-	}
+    command_name    check_http_generic
+    command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u /wikimedia-monitoring-test
+    }
 
 # 'check_http_upload' command definition, querying a different URL
 define command{
@@ -276,92 +276,92 @@ define command{
         }
 
 define command{
-	command_name    check_http_donate
-	command_line	$USER1$/check_http -H donate.wikimedia.org -I $HOSTADDRESS$
-	}
+    command_name    check_http_donate
+    command_line    $USER1$/check_http -H donate.wikimedia.org -I $HOSTADDRESS$
+    }
 # 'check_http_mobile' command definition
 define command{
-	command_name	check_http_mobile
-	command_line	$USER1$/check_http -H en.m.wikipedia.org -I $HOSTADDRESS$ -u /wiki/Main_Page -w 10 -c 20 -t 60 -f warning -r 'Terms of Use'
-	}
+    command_name    check_http_mobile
+    command_line    $USER1$/check_http -H en.m.wikipedia.org -I $HOSTADDRESS$ -u /wiki/Main_Page -w 10 -c 20 -t 60 -f warning -r 'Terms of Use'
+    }
 
 define command{
-	command_name	check_http_url_for_string
-	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u $ARG2$ -s $ARG3$
-	}
+    command_name    check_http_url_for_string
+    command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u $ARG2$ -s $ARG3$
+    }
 
 define command{
-	command_name	check_https_url_for_string
-	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -S -u $ARG2$ -s $ARG3$
-	}
+    command_name    check_https_url_for_string
+    command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -S -u $ARG2$ -s $ARG3$
+    }
 
 define command{
-	command_name	check_http_url
-	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u $ARG2$
-	}
+    command_name    check_http_url
+    command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u $ARG2$
+    }
 
 define command{
-	command_name    check_http_url_on_port
-	command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3$"
-	}
+    command_name    check_http_url_on_port
+    command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3$"
+    }
 
 define command {
-	command_name	check_https_url
-	command_line	$USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u $ARG2$
-	}
+    command_name    check_https_url
+    command_line    $USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u $ARG2$
+    }
 
 define command{
-	command_name	check_http_lvs
-	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u "$ARG2$"
-	}
+    command_name    check_http_lvs
+    command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u "$ARG2$"
+    }
 
 define command{
-	command_name    check_https_lvs
-	command_line    $USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u "$ARG2$"
-	}
+    command_name    check_https_lvs
+    command_line    $USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u "$ARG2$"
+    }
 
 define command{
-	command_name    check_http_lvs_on_port
-	command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3$"
-	}
+    command_name    check_http_lvs_on_port
+    command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3$"
+    }
 
 define command{
-	command_name	check_ssh
-	command_line	$USER1$/check_ssh $HOSTADDRESS$
-	}
+    command_name    check_ssh
+    command_line    $USER1$/check_ssh $HOSTADDRESS$
+    }
 
 define command{
-	command_name	check_all_memcached
-	command_line	/usr/bin/php $USER1$/check_all_memcached.php
-	}
+    command_name    check_all_memcached
+    command_line    /usr/bin/php $USER1$/check_all_memcached.php
+    }
 
 define command{
-	command_name	nrpe_check_raid
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_raid
-	}
+    command_name    nrpe_check_raid
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_raid
+    }
 define command{
-	command_name	check_ircd
-	command_line	$USER1$/check_ircd -H $HOSTADDRESS$ -w 800 -c 1000
+    command_name    check_ircd
+    command_line    $USER1$/check_ircd -H $HOSTADDRESS$ -w 800 -c 1000
 }
 define command{
-	command_name	nrpe_check_dpkg
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
+    command_name    nrpe_check_dpkg
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
 }
 define command{
-	command_name	nrpe_check_udp2log_log_age
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
+    command_name    nrpe_check_udp2log_log_age
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
 }
 define command{
-	command_name	nrpe_check_udp2log_procs
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_procs
+    command_name    nrpe_check_udp2log_procs
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_procs
 }
 define command{
-	command_name	nrpe_check_varnishncsa
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
+    command_name    nrpe_check_varnishncsa
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
 }
 define command{
-	command_name	check_eventlogging_jobs
-	command_line	/usr/lib/nagios/plugins/check_eventlogging_jobs
+    command_name    check_eventlogging_jobs
+    command_line    /usr/lib/nagios/plugins/check_eventlogging_jobs
 }
 
 define command{
@@ -373,23 +373,23 @@ define command{
 # ARG1: command to execute on remote host
 # ARG2: timeout in seconds
 define command{
-	command_name	nrpe_check
-	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -t $ARG2$
+    command_name    nrpe_check
+    command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -t $ARG2$
 }
 
 define command{
-	command_name	check_longqueries
-	command_line	/usr/lib/nagios/plugins/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= @nagios_mysql_check_pass %> -w 30 -c 66
+    command_name    check_longqueries
+    command_line    /usr/lib/nagios/plugins/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= @nagios_mysql_check_pass %> -w 30 -c 66
 }
 
 define command{
-	command_name	check_db_lag
-	command_line	$USER1$/check_mysql-replication.pl -sa $HOSTADDRESS$ -sl nagios -spd <%= @nagios_mysql_check_pass %>  -a lag -w 60 -c 600
+    command_name    check_db_lag
+    command_line    $USER1$/check_mysql-replication.pl -sa $HOSTADDRESS$ -sl nagios -spd <%= @nagios_mysql_check_pass %>  -a lag -w 60 -c 600
 }
 
 define command {
-	command_name	check_ntp_time
-	command_line	$USER1$/check_ntp_time -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$
+    command_name    check_ntp_time
+    command_line    $USER1$/check_ntp_time -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$
 }
 
 define command {
@@ -398,23 +398,23 @@ define command {
 }
 
 define command {
-	command_name	check_ifstatus
-	command_line	$USER1$/check_ifstatus -H $HOSTADDRESS$ -v 2 -I -C $ARG1$
+    command_name    check_ifstatus
+    command_line    $USER1$/check_ifstatus -H $HOSTADDRESS$ -v 2 -I -C $ARG1$
 }
 
 define command {
-	command_name	ssl-cert-check
-	command_line    $USER1$/ssl-cert-check -s $HOSTADDRESS$ -p
+    command_name    ssl-cert-check
+    command_line    $USER1$/ssl-cert-check -s $HOSTADDRESS$ -p
 }
 
 define command{
-        command_name	check_cert
-        command_line	$USER1$/check_cert $ARG1$ $ARG2$ $ARG3$
+        command_name    check_cert
+        command_line    $USER1$/check_cert $ARG1$ $ARG2$ $ARG3$
 }
 
 define command{
-	command_name	puppet-FAIL
-	command_line	date --date @$LASTSERVICEOK$ +"Last successful Puppet run was %a %d %b %Y %T %Z" && exit 2
+    command_name    puppet-FAIL
+    command_line    date --date @$LASTSERVICEOK$ +"Last successful Puppet run was %a %d %b %Y %T %Z" && exit 2
 }
 
 define command{
@@ -423,8 +423,8 @@ define command{
 }
 
 define command{
-	command_name	check_snmp_generic
-	command_line	$USER1$/check_snmp -H $HOSTADDRESS$ -C $ARG1$ -o $ARG2$ -l '$ARG3$' -w $ARG4$ -c $ARG5$
+    command_name    check_snmp_generic
+    command_line    $USER1$/check_snmp -H $HOSTADDRESS$ -C $ARG1$ -o $ARG2$ -l '$ARG3$' -w $ARG4$ -c $ARG5$
 }
 
 # generic "check number of procs"
@@ -432,8 +432,8 @@ define command{
 # Only scan for processes with args that contain STRING.
 
 define command{
-	command_name	check_procs_generic
-	command_line	$USER1$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -a $ARG5$
+    command_name    check_procs_generic
+    command_line    $USER1$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -a $ARG5$
 }
 
 # generic "check number of procs"-2
@@ -441,50 +441,50 @@ define command{
 # Only scan for exact matches of COMMAND (without path).
 
 define command{
-	command_name	check_procs_generic_c
-	command_line	$USER1$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -C $ARG5$
+    command_name    check_procs_generic_c
+    command_line    $USER1$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -C $ARG5$
 }
 
 define command{
-	command_name    check_memory_used
-	command_line    $USER3$/check_ganglios_memory_v2 -H $HOSTADDRESS -w $ARG1$ -c $ARG2$
+    command_name    check_memory_used
+    command_line    $USER3$/check_ganglios_memory_v2 -H $HOSTADDRESS -w $ARG1$ -c $ARG2$
 }
 
 # check arbitrary ganglia metric values
 define command{
-	command_name	check_ganglia
-	command_line	$USER1$/check_ganglia -q -g $ARG1$ -p $ARG2$ -H $ARG3$ -m '$ARG4$' -w '$ARG5$' -c '$ARG6$' -C '$ARG7$'
+    command_name    check_ganglia
+    command_line    $USER1$/check_ganglia -q -g $ARG1$ -p $ARG2$ -H $ARG3$ -m '$ARG4$' -w '$ARG5$' -c '$ARG6$' -C '$ARG7$'
 }
 
 # percona mysql checks
 define command{
-	command_name	nrpe_check_lvs
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_lvs
+    command_name    nrpe_check_lvs
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_lvs
 }
 
 define command{
-	command_name	nrpe_check_mysql_idle_transactions
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_idle_transactions
+    command_name    nrpe_check_mysql_idle_transactions
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_idle_transactions
 }
 
 define command{
-	command_name	nrpe_check_mysql_recent_restart
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_recent_restart
+    command_name    nrpe_check_mysql_recent_restart
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_recent_restart
 }
 
 define command{
-	command_name	nrpe_check_mysql_slave_running
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_running
+    command_name    nrpe_check_mysql_slave_running
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_running
 }
 
 define command{
-	command_name	nrpe_check_mysql_slave_delay
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_delay
+    command_name    nrpe_check_mysql_slave_delay
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_delay
 }
 
 define command{
-	command_name	nrpe_check_mysql_slave_heartbeat
-	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
+    command_name    nrpe_check_mysql_slave_heartbeat
+    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
 }
 
 define command{
@@ -507,8 +507,8 @@ define command{
 # Elasticsearch Checks
 
 define command{
-	command_name	check_elasticsearch
-	command_line	$USER1$/check_elasticsearch -H $HOSTADDRESS$
+    command_name    check_elasticsearch
+    command_line    $USER1$/check_elasticsearch -H $HOSTADDRESS$
 }
 
 # Generic checks for graphite
@@ -525,7 +525,7 @@ define command{
 
 # Checks whether a host belongs to given dsh group(s)
 define command{
-	command_name	check_dsh_groups
-	command_line	$HOSTNAME$ $ARG1$
+    command_name    check_dsh_groups
+    command_line    $HOSTNAME$ $ARG1$
 }
 
