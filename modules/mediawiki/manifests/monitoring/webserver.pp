@@ -1,11 +1,17 @@
 class mediawiki::monitoring::webserver ($ensure = 'present'){
     include ::stdlib
     include ::apache
+    include ::network::constants
 
-    $endpoints = {
-        'apc' => 'apc_stats.php'
+    if ubuntu_version('< trusty') {
+        $endpoints = {
+            'apc' => 'apc_stats.php'
+        }
     }
-
+    else {
+        $endpoints = {}
+        include ::hhvm::status
+    }
 
     # Basic vhost files
     file { '/var/www/monitoring':

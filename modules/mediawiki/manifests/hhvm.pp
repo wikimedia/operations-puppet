@@ -17,4 +17,7 @@ class mediawiki::hhvm {
         path    => '/usr/bin/hhvm',
         require => Package['hhvm'],
     }
+
+    include ::hhvm::monitoring
+
 }
