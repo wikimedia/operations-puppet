@@ -3,6 +3,8 @@
 class role::osm::common {
     include standard
 
+    $datadir = '/srv/postgres'
+
     file { '/etc/postgresql/9.1/main/tuning.conf':
         ensure => 'present',
         owner   => 'root',
@@ -27,7 +29,8 @@ class role::osm::master {
     include passwords::osm
 
     class { 'postgresql::master':
-        includes => 'tuning.conf'
+        includes => 'tuning.conf',
+        datadir  => $role::osm::common::datadir,
     }
 
     class { 'postgresql::ganglia':
@@ -148,6 +151,7 @@ class role::osm::slave {
         master_server    => $osm_master,
         replication_pass => $passwords::osm::replication_pass,
         includes         => 'tuning.conf',
+        datadir          => $role::osm::common::datadir,
     }
 
     class { 'postgresql::ganglia':
