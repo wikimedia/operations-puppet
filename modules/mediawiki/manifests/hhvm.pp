@@ -5,6 +5,8 @@
 class mediawiki::hhvm {
     requires_ubuntu('>= trusty')
 
+    include ::hhvm::monitoring
+
     class { '::hhvm':
         user          => 'apache',
         group         => 'apache',
