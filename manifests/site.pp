@@ -1125,13 +1125,6 @@ node 'eeden.esams.wikimedia.org' {
     include role::authdns::server
 }
 
-node 'tarin.pmtpa.wmnet' {
-    $ganglia_aggregator = true
-    include admin
-    include standard
-    include role::poolcounter
-}
-
 # erbium is a webrequest udp2log host
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
