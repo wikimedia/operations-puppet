@@ -44,7 +44,7 @@ data_directory = <%= @datadir %> 	# use data in another directory
 data_directory = '/var/lib/postgresql/<%= @pgversion %>/main'		# use data in another directory
 <% end %>
 					# (change requires restart)
-hba_file = '/etc/postgresql/<%= @pgversion %>> /main/pg_hba.conf'	# host-based authentication file
+hba_file = '/etc/postgresql/<%= @pgversion %>/main/pg_hba.conf'	# host-based authentication file
 					# (change requires restart)
 ident_file = '/etc/postgresql/<%= @pgversion %>/main/pg_ident.conf'	# ident configuration file
 					# (change requires restart)
