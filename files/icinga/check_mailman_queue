@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#check_mailman_queue
+#~~~~~~~
+
+#:copyright: (c) 2014 Matanya Moses
+#:license: Apache License 2.0.
+
+# Usage:
+# /files/icinga/check_mailman_queue $ARG
+
+mailman_base="/var/lib/mailman/qfiles"
+FILES="$mailman_base/in $mailman_base/out"
+
+for f in $FILES
+do
+    if [ -d $f ]
+        then
+        queue_size=$(ls $f|wc -l)
+        if [ $queue_size -gt $1 ]
+            then
+            echo "CRITICAL: mailman ${f} queue is above ${queue_size}"
+            exit 2
+        else
+            echo "OK: mailman ${f} queue is at ${queue_size}"
+            exit 0
+        fi
+    else
+       echo "UNKNOWN : Unable to open ${f}"
+       exit 3
+    fi
+done
+
