@@ -3057,6 +3057,11 @@ host praseodymium {
 	fixed-address praseodymium.eqiad.wmnet;
 }
 
+host protactinium {
+	hardware ethernet 84:2b:2b:fd:be:b5;
+	fixed-address protactinium.wikimedia.org;
+}
+
 host radon {
 	hardware ethernet C8:1F:66:BF:71:16;
 	fixed-address radon.eqiad.wmnet;
