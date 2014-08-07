@@ -37,6 +37,9 @@ transaction-isolation          = READ-COMMITTED
 slave_transaction_retries      = 4294967295
 slave_parallel_threads         = 8
 slave_parallel_max_queued      = 16M
+sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
+tmp_table_size                 = 64M
+max_heap_table_size            = 64M
 
 table_open_cache               = 10000
 table_definition_cache         = 50000
@@ -63,6 +66,7 @@ innodb_locks_unsafe_for_binlog = 1
 tokudb_data_dir                = /srv/tokudb
 tokudb_cache_size              = <%= (Float(@memorysize.split[0]) * 0.50).round %>G
 tokudb_lock_timeout            = 50000
+tokudb_empty_scan              = disabled
 join_cache_level               = 8
 
 # index_condition_pushdown=off https://github.com/Tokutek/mariadb-5.5/issues/39
