@@ -3363,13 +3363,6 @@ host strontium {
 	fixed-address strontium.eqiad.wmnet;
 }
 
-host tantalum {
-	hardware ethernet 78:2B:CB:2D:F3:D9;
-	fixed-address tantalum.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host tellurium {
 	hardware ethernet 00:10:18:E4:1E:26;
 	fixed-address tellurium.eqiad.wmnet;
