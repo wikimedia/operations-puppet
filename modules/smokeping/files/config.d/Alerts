@@ -4,8 +4,8 @@
 #####################################################################
 
 *** Alerts ***
-to = rob@wikimedia.org
-from = rob@wikimedia.org
+to = root@wikimedia.org
+from = root@wikimedia.org
 
 +bigloss
 type = loss
