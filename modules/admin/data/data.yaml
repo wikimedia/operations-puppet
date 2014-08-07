@@ -286,6 +286,12 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service xvfb start',
             'ALL = (root) NOPASSWD: /usr/sbin/service xvfb restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service xvfb reload']
+  snapshot-admins:
+    gid: 742
+    description: People who can sudo into the datasets user on snapshot hosts.
+    members: [hoo]
+    privileges: ['ALL = (datasets) NOPASSWD: ALL']
+
 users:
   rush:
     ensure: present
