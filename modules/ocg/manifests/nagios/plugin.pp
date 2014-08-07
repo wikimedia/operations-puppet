@@ -8,6 +8,6 @@ class ocg::nagios::plugin {
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => Package['icinga'],
+        require => Package['nagios-plugins'],
     }
 }
