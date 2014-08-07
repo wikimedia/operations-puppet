@@ -256,6 +256,11 @@ groups:
     description: Full root on EventLogging servers.
     members: [qchris]
     privs: ['ALL = NOPASSWD: ALL']
+  snapshot-admins:
+    gid: 740
+    description: People who can sudo into the datasets user on snapshot hosts.
+    members: [hoo]
+    privs: ['ALL = (datasets) NOPASSWD: ALL']
 
 users:
   rush:
