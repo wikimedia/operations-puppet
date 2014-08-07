@@ -49,13 +49,11 @@
 	ServerName bugs.wikimedia.org
 	Redirect permanent / https://<%= @svc_name %>/
 	SSLEngine On
-	SSLProtocol ALL -SSLv2
-	SSLCipherSuite <%= @cipher_suite %>
-	SSLHonorCipherOrder on
 	SSLCompression Off
 	SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
 	SSLCACertificatePath /etc/ssl/certs/
+    <%= @ssl_settings.join("\n") %>   
 
 	RewriteEngine On
 	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
