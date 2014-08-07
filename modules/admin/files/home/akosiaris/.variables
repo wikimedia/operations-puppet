@@ -1,3 +1,4 @@
 export HISTFILESIZE=50000
 export HISTSIZE=50000
-export REPREPRO_BASE_DIR=/srv/wikimedia
+export REPREPRO_BASE_DIR=/srv/wikimedia # This is just for apt.wikimedia.org
+export GNUPGHOME=/root/.gnupg # Not like I am ever going to put my GPG homedir on the cluster anyway
