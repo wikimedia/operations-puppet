@@ -14,6 +14,7 @@ factpath = $vardir/lib/facter
 server = <%= @server %>
 <% if @certname %>certname = <%= certname %><% end %>
 configtimeout = 960
+usecacheonfailure = false
 splay = true
 prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
