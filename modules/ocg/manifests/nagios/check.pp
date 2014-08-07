@@ -15,7 +15,7 @@ class ocg::nagios::check (
         $url = 'http://localhost:8000/?command=health', # OCG health check URL
     ) {
     include ocg::nagios::plugin
-    nrpe::monitor_service { 'check_ocg_health':
+    nrpe::monitor_service { 'ocg_health':
         description  => 'OCG health',
         nrpe_command => "/usr/lib/nagios/plugins/check_ocg_health --wtd ${wtd} --ctd ${ctd} --wod ${wod} --cod ${cod} --wpd ${wpd} --cpd ${cpd} --wjs ${wjs} --cjs ${cjs} --wrj ${wrj} --crj ${crj} --url '${url}'",
     }
