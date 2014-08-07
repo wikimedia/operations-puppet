@@ -12,7 +12,7 @@ class ocg::nagios::check (
         $critical_job_status = '-', # messages i.e. 30000
         $warning_render_jobs = '-', # messages i.e. 100
         $critical_render_jobs = '-', # messages i.e. 500
-        $url = '-', # OCG URL i.e. http://localhost:8000/?command=health
+        $ocg_health_url = '-', # OCG URL i.e. http://localhost:8000/?command=health
     ) {
     include ocg::nagios::plugin
     $wtd = $warning_temp_dir ? {
@@ -55,9 +55,9 @@ class ocg::nagios::check (
         '-'  => '',
         default => " --crj ${critical_render_jobs}",
     }
-    $url = $url ? {
+    $url = $ocg_health_report_url ? {
         '-'  => '',
-        default => " --url ${url}",
+        default => " --url ${ocg_health_report_url}",
     }
     monitor_service { 'ocg':
         check_command => "check_ocg_health ${wtd}${ctd}${wod}${cod}${wpd}${cpd}${wjs}${cjs}${wrj}${crj}${url}",
