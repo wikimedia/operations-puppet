@@ -2218,6 +2218,10 @@ node /^snapshot100[1-4]\.eqiad\.wmnet/ {
     if $::fqdn == 'snapshot1003.eqiad.wmnet' {
         include role::snapshot::cron::primary
     }
+
+    class { 'admin':
+        groups => ['snapshot-admins'],
+    }
 }
 
 node 'terbium.eqiad.wmnet' {
