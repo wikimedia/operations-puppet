@@ -83,16 +83,16 @@ class role::ocg::production (
     }
 
     class { 'ocg::nagios::check':
-        warning_temp_dir        => $ocg_temp_size_warning,
-        critical_temp_dir       => $ocg_temp_size_critical,
-        warning_output_dir      => '4G',
-        critical_output_dir     => '5G',
-        warning_postmortem_dir  => '1G',
-        critical_postmortem_dir => '2G',
-        warning_job_status      => '20000',
-        critical_job_status     => '30000',
-        warning_render_jobs     => '100',
-        critical_render_jobs    => '500',
+        wtd => $ocg_temp_size_warning,
+        ctd => $ocg_temp_size_critical,
+        wod => '4G',
+        cod => '5G',
+        wpd => '1G',
+        cpd => '2G',
+        wjs => '20000',
+        cjs => '30000',
+        wrj => '100',
+        cjr => '500',
     }
 
     include lvs::configuration

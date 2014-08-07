@@ -529,3 +529,9 @@ define command{
     command_line    $HOSTNAME$ $ARG1$
 }
 
+# check Online Content Generator health from server health page 
+define command{
+    command_name    check_ocg_health
+    command_line    /usr/lib/nagios/plugins/check_ocg_health --wtd $ARG1$ --ctd $ARG2$ --wod $ARG3$ --cod $ARG4$ --wpd $ARG5$ --cpd $ARG6$ --wjs $ARG7$ --cjs $ARG8$ --wrj $ARG9$ --crj $ARG10$ --url '$ARG11$'
+}
+
