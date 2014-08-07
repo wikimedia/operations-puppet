@@ -8,6 +8,8 @@
 class role::ocg::production (
         $tmpfs_size = '512M', # size of tmpfs filesystem e.g. 512M
         $tmpfs_mountpoint = '/mnt/tmpfs',
+        $ocg_temp_size_warning  = '100M', # nagios warning threshold
+        $ocg_temp_size_critical = '250M', # nagios critical threshold
     ) {
 
     system::role { 'ocg':
@@ -73,7 +75,6 @@ class role::ocg::production (
         srange => $::INTERNAL
     }
 
-    # Hack to allow ganglia to work on the ocg nodes
     ferm::service{ 'gmond':
         proto  => 'tcp',
         port   => 8649,
@@ -81,9 +82,17 @@ class role::ocg::production (
         srange => $::INTERNAL
     }
 
-    monitor_service { 'ocg':
-        description   => 'Offline Content Generation - Collection',
-        check_command => "check_http_url_on_port!ocg.svc.${::site}.wmnet!${service_port}!/?command=health"
+    class { 'ocg::nagios::check':
+        warning_temp_dir        => $ocg_temp_size_warning,
+        critical_temp_dir       => $ocg_temp_size_critical,
+        warning_output_dir      => '4G',
+        critical_output_dir     => '5G',
+        warning_postmortem_dir  => '1G',
+        critical_postmortem_dir => '2G',
+        warning_job_status      => '20000',
+        critical_job_status     => '30000',
+        warning_render_jobs     => '100',
+        critical_render_jobs    => '500',
     }
 
     include lvs::configuration
