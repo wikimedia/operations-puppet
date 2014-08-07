@@ -69,7 +69,7 @@ groups:
   dataset-admins:
     gid: 710
     description: does work on dataset hosts
-    members: [brion]
+    members: [brion, hoo]
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
@@ -213,6 +213,11 @@ groups:
     privs: ['ALL = (hdfs)  NOPASSWD: ALL',
             'ALL = (oozie) NOPASSWD: ALL',
             'ALL = (hive)  NOPASSWD: ALL']
+  snapshot-admins:
+    gid: 733
+    description: People who can sudo into the datasets user on snapshot hosts.
+    members: [hoo]
+    privs: ['ALL = (datasets) NOPASSWD: ALL']
 
 users:
   rush:
