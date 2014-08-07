@@ -2334,6 +2334,24 @@ node /^snapshot100[1-4]\.eqiad\.wmnet/ {
     include snapshot::dumps
     if $::fqdn == 'snapshot1003.eqiad.wmnet' {
         include role::snapshot::cron::primary
+
+    class { 'admin':
+        groups => ['udp2log-users',
+                   'deployment',
+                   'snapshot-admins'],
+    }
+
+    include role::snapshot::common
+}
+node 'snapshot1003.eqiad.wmnet' {
+    include snapshot
+    include snapshot::dumps
+    include role::snapshot::cron::primary
+
+    class { 'admin':
+        groups => ['udp2log-users',
+                   'deployment',
+                   'snapshot-admins'],
     }
 }
 

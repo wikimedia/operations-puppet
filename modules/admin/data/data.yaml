@@ -271,6 +271,12 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service cxserver restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service cxserver reload',
             'ALL = (cxserver) NOPASSWD: ALL']
+    privs: ['ALL = NOPASSWD: ALL']
+  snapshot-admins:
+    gid: 740
+    description: People who can sudo into the datasets user on snapshot hosts.
+    members: [hoo]
+    privs: ['ALL = (datasets) NOPASSWD: ALL']
 
 users:
   rush:
