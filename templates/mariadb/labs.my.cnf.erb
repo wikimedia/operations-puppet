@@ -1,14 +1,14 @@
 # Labs
 
 [client]
-port   = 3309
+port   = 3306
 socket = /tmp/mysql.sock
 
 [mysqld]
 
 user      = mysql
 socket    = /tmp/mysql.sock
-port      = 3309
+port      = 3306
 datadir   = /srv/sqldata
 tmpdir    = /srv/tmp
 server_id = <%= @server_id %>
