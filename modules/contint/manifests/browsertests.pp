@@ -15,10 +15,16 @@ class contint::browsertests(
     # Dependencies for qa/browsertests.git
     package { [
         'ruby1.9.1-dev', # Bundler compiles gems
-        'rubygems',
         'phantomjs',     # headless browser
     ]:
         ensure => present
+    }
+
+    # Ruby gems is provided within ruby since Trusty
+    if ubuntu_version('< trusty') {
+        package { 'rubygems':
+            ensure => present,
+        }
     }
 
     # Ubuntu Precise version is too old.  Instead use either:
