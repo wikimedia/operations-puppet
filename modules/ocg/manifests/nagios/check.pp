@@ -15,6 +15,7 @@ class ocg::nagios::check (
         $ocg_health_report_url = '-', # http://localhost:8000/?command=health
     ) {
     include ocg::nagios::plugin
+	File <| tag == nagiosplugin |>
     $wtd = $warning_temp_dir ? {
         '-'  => '',
         default => " --wtd ${warning_temp_dir}",
