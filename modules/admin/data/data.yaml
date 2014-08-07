@@ -68,8 +68,9 @@ groups:
     privs: ['ALL = NOPASSWD: ALL']
   dataset-admins:
     gid: 710
-    description: does work on dataset hosts
-    members: [brion]
+    description: Users that do work on/ with dataset(s)
+    members: [brion, hoo]
+    privs: ['ALL = (datasets) NOPASSWD: ALL']
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
