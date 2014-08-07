@@ -3,12 +3,11 @@
 # include this class on your Nagios/Icinga node.
 #
 class ocg::nagios::plugin {
-    @file { '/usr/lib/nagios/plugins/check_ocg_health':
+    file { '/usr/lib/nagios/plugins/check_ocg_health':
         source  => 'puppet:///modules/ocg/nagios/check_ocg_health',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
         require => Package['icinga'],
-        tag     => 'nagiosplugin'
     }
 }
