@@ -71,7 +71,7 @@ groups:
   dataset-admins:
     gid: 710
     description: does work on dataset hosts
-    members: []
+    members: [hoo]
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
@@ -256,6 +256,11 @@ groups:
     description: Full root on EventLogging servers.
     members: [qchris]
     privs: ['ALL = NOPASSWD: ALL']
+  snapshot-admins:
+    gid: 733
+    description: People who can sudo into the datasets user on snapshot hosts.
+    members: [hoo]
+    privs: ['ALL = (datasets) NOPASSWD: ALL']
 
 users:
   rush:
