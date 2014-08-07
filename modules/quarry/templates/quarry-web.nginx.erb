@@ -18,5 +18,8 @@ server {
         alias <%= @result_path %>;
 
         add_header 'Access-Control-Allow-Origin' '*';
+        types {
+            application/json    json;
+        }
     }
 }
