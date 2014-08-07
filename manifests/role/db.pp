@@ -90,11 +90,6 @@ class role::db::labsdb( $instances = {} ) {
         mode    => '0555',
         source  => 'puppet:///modules/mysql_wmf/icinga/percona',
     }
-
-    nrpe::monitor_service { 'mysqld':
-        description  => 'mysqld processes',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${instances_count}:${instances_count} -C mysqld",
-    }
 }
 
 class role::labsdb::manager {
