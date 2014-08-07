@@ -49,9 +49,9 @@ esac
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-#if [ -f ~/.bash_aliases ]; then
-#    . ~/.bash_aliases
-#fi
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
 
 # enable color support of ls and also add handy aliases
 if [ "$TERM" != "dumb" ]; then
@@ -61,11 +61,6 @@ if [ "$TERM" != "dumb" ]; then
     #alias vdir='ls --color=auto --format=long'
 fi
 
-# some more ls aliases
-alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -73,10 +68,7 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
-if [ -f ~/.aliases ]; then
-        . ~/.aliases
-fi
-
+# Read some extra variables
 if [ -f ~/.variables ]; then
 	. ~/.variables
 fi
