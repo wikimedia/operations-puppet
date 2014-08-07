@@ -39,7 +39,7 @@
 # option or PGDATA environment variable, represented here as ConfigDir.
 
 <% if @datadir %>
-data_directory = <%= @datadir %> 	# use data in another directory
+data_directory = '<%= @datadir %>' 	# use data in another directory
 <% else %>
 data_directory = '/var/lib/postgresql/<%= @pgversion %>/main'		# use data in another directory
 <% end %>
