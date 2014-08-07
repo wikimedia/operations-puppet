@@ -49,13 +49,11 @@
 	ServerName bugs.wikimedia.org
 	Redirect permanent / https://<%= @svc_name %>/
 	SSLEngine On
-	SSLProtocol ALL -SSLv2
-	SSLCipherSuite <%= @cipher_suite %>
-	SSLHonorCipherOrder on
 	SSLCompression Off
 	SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
 	SSLCACertificatePath /etc/ssl/certs/
+    <%= @ssl_settings.join("\n") %>
 
 	RewriteEngine On
 	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
@@ -66,12 +64,10 @@
 	ServerName <%= @svc_name %>
 	DocumentRoot <%= @docroot %>
 	SSLEngine On
-	SSLProtocol ALL -SSLv2
-	SSLCipherSuite <%= @cipher_suite %>
-	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
 	SSLCACertificatePath /etc/ssl/certs/
+    <%= @ssl_settings.join("\n") %>
 
 	Header set Strict-Transport-Security "max-age=31536000"
 
@@ -181,12 +177,10 @@ RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/Bugzilla/Fields? [R=303]
 	ServerName <%= @attach_svc_name %>
 	DocumentRoot <%= @docroot %>
 	SSLEngine On
-	SSLProtocol ALL -SSLv2
-	SSLCipherSuite <%= @cipher_suite %>
-	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/certs/<%= @attach_svc_name %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= @attach_svc_name %>.key
 	SSLCACertificatePath /etc/ssl/certs/
+    <%= @ssl_settings.join("\n") %>
 
 	Header set Strict-Transport-Security "max-age=604800"
 
