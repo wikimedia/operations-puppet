@@ -16,5 +16,7 @@ server {
 
     location /api/query/output {
         alias <%= @result_path %>;
+
+        add_header 'Access-Control-Allow-Origin' '*';
     }
 }
