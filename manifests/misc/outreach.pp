@@ -3,12 +3,8 @@ class misc::outreach::civicrm {
 
     system::role { 'misc::outreach::civicrm': description => 'contacts.wikimedia.org - Drupal/CiviCRM' }
 
-    file { '/etc/apache2/sites-enabled/contacts.wikimedia.org':
-        ensure => present,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///files/apache/sites/contacts.wikimedia.org';
+    apache::site { 'contacts.wikimedia.org':
+        content => template('apache/sites/contacts.wikimedia.org.erb'),
     }
 
     install_certificate{ 'contacts.wikimedia.org': }
