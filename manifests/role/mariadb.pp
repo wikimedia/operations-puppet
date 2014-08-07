@@ -324,6 +324,4 @@ class role::mariadb::labs {
         group   => 'mysql',
         mode    => '0755',
     }
-
-    include mariadb::monitor_process
 }
