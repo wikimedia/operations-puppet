@@ -2889,6 +2889,8 @@ node 'ytterbium.wikimedia.org' {
 
     class { 'admin': groups => ['gerrit-root', 'gerrit-admin'] }
 
+    class { 'base::firewall': }
+
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
     include role::gerrit::production
