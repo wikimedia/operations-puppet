@@ -2542,10 +2542,9 @@ node 'snapshot1001.eqiad.wmnet' {
     include snapshot
 
     class { 'admin':
-        groups => [
-            'udp2log-users',
-            'deployment',
-        ],
+        groups => ['udp2log-users',
+                   'deployment',
+                   'snapshot-admins'],
     }
 
     class { 'snapshot::dumps': hugewikis => true }
@@ -2556,10 +2555,9 @@ node /^snapshot100[24]\.eqiad\.wmnet/ {
     include snapshot::dumps
 
     class { 'admin':
-        groups => [
-            'udp2log-users',
-            'deployment',
-        ],
+        groups => ['udp2log-users',
+                   'deployment',
+                   'snapshot-admins'],
     }
 
     include role::snapshot::common
@@ -2570,10 +2568,9 @@ node 'snapshot1003.eqiad.wmnet' {
     include role::snapshot::cron::primary
 
     class { 'admin':
-        groups => [
-            'udp2log-users',
-            'deployment',
-        ],
+        groups => ['udp2log-users',
+                   'deployment',
+                   'snapshot-admins'],
     }
 }
 
