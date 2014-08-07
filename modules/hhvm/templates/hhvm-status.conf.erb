@@ -1,8 +1,8 @@
 # Serve HHVM status info on </hhvm-status> to internal clients.
 # This file is managed by Puppet.
 
-<Location /hhvm-status>
-    ProxyPass fcgi://127.0.0.1:9001/ retry=0
+<LocationMatch "/hhvm-status/(.*)">
+    ProxyPassMatch fcgi://127.0.0.1:9001/$1 retry=0
     <RequireAll>
         # Disallow proxied requests
         Require expr -z http('X-Forwarded-For') && -z http('X-Varnish')
@@ -12,6 +12,6 @@
             Require local
         </RequireAny>
     </RequireAll>
-</Location>
+</LocationMatch>
 
 # vim: ft=apache.erb:
