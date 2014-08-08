@@ -237,6 +237,11 @@ sub tag_carrier {
 					set req.http.X-CS = req.http.X-CS2;
 				}
 			}
+		} else if (req.http.X-CS2 == "404-01") {
+			// "404-01|wap" will be handled by default case
+			if (!req.http.X-Forwarded-By) {
+				set req.http.X-CS = req.http.X-CS2;
+			}
 		} else if ((req.http.X-Forwarded-By != "Opera" && (
 					req.http.X-CS2 == "426-04" ||
 					req.http.X-CS2 == "250-99"
