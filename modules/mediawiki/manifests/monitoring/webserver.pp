@@ -10,7 +10,7 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
     }
     else {
         $endpoints = {}
-        include ::hhvm::status
+        include ::hhvm::admin
     }
 
     # Basic vhost files
