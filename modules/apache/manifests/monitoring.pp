@@ -1,17 +1,8 @@
 # == Class: apache::monitoring
 #
-# Configures Apache to serve a server status page via mod_status
-# at /server-status (exposed only to requests originating on the
-# server), and provisions metric-gathering modules for Diamond
-# and Ganglia.
+# Provisions a Ganglia metric module for monitoring Apache.
 #
 class apache::monitoring {
-    include ::apache::mod::status
-    include ::diamond
-    include ::ganglia
-
-    diamond::collector { 'Httpd': }
-
     file { '/usr/lib/ganglia/python_modules/apache_status.py':
         source  => 'puppet:///modules/apache/apache_status.py',
         owner   => 'root',
