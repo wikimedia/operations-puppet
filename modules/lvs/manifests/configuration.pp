@@ -222,6 +222,9 @@ class lvs::configuration {
             'apaches' => {
                 'eqiad' => "10.2.2.1",
             },
+            'hhvm_appservers' => {
+                'eqiad' => "10.2.2.2",
+            },
             'rendering' => {
                 'eqiad' => "10.2.2.21",
             },
@@ -293,6 +296,9 @@ class lvs::configuration {
             },
             'apaches' => {
                 'pmtpa' => "10.4.0.254",
+            },
+            'hhvm_apaches' => {
+                # left empty as probably not used anymore
             },
             'rendering' => {
                 # Used to be 10.4.0.252
