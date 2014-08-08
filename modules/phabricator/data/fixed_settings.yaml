@@ -1,5 +1,7 @@
 #These custom values are hardcoded here to persist across Phabriactor Mediawiki installs
 
+policy.allow-public: true
+
 auth.require-approval: false
 
 auth.require-email-verification: true
