@@ -7,6 +7,19 @@ sub vcl_recv {
 	if (req.request == "POST") {
 		error 403 "HTTP method not allowed.";
 	}
+
+    /* transform the cookie in an http header */
+    if (req.http.Cookie ~ "hhvm=true") {
+		set req.http.X-Use-HHVM = 1;            
+	}
+
+
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+    if ( req.http.X-Use-HHVM == 1 && req.restarts == 0) {
+		set req.backend = hhvm_appservers;
+	}
+<% end -%>
+
 	if (req.http.host == "<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>") {
 		if (req.url ~ "^/event\.gif") {
 			error 204;
@@ -40,6 +53,13 @@ sub vcl_recv {
 sub vcl_fetch {
 	/* Don't run the default vcl_fetch function */
 	return (deliver);
+}
+
+sub vcl_hash {
+	/* Hash objects from HHVM servers differently for safety. */
+	if (req.http.X-Use-HHVM == 1){
+		hash_data("HHVM");
+	}
 }
 
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
@@ -86,4 +106,13 @@ sub vcl_error {
 
 	call errorpage;
 	return(deliver);
+}
+
+sub vcl_fetch {
+    /* do not cache requests that should go to hhvm but have been
+     * replied by Zend. */
+    if (req.http.X-Use-HHVM == 1 && beresp.http.X-Powered-By !~ "^HHVM") {
+		return (hit_for_pass)
+    }
+	return (deliver);
 }

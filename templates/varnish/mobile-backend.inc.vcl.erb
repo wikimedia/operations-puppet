@@ -6,6 +6,11 @@ sub vcl_recv {
 	call vcl_recv_purge;
 	/* FIXME: restrict access */
 
+    /* transform the cookie in an http header */
+    if (req.http.Cookie ~ "hhvm=true") {
+		set req.http.X-Use-HHVM = 1;            
+	}
+
 	if ( req.http.host ~ "^test\." ) {
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 		set req.backend = test_wikipedia;
@@ -15,6 +20,14 @@ sub vcl_recv {
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	if (req.url ~ "^/w/api.php") {
 		set req.backend = api;
+	}
+<% end -%>
+
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	/* Use the hhvm backend for any request to the standard appservers.
+	 On a request restart (often due to an error), fallback to the Zend pool */
+	if (req.http.X-Use-HHVM == 1 && req.backend == backend && req.restarts == 0) {
+		set req.backend = hhvm_appservers;
 	}
 <% end -%>
 
@@ -39,7 +52,21 @@ sub vcl_fetch {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
+
+    /* do not cache requests that should go to hhvm but have been
+     * replied by Zend. */
+    if (req.http.X-Use-HHVM == 1 && beresp.http.X-Powered-By !~ "^HHVM") {
+		return (hit_for_pass)
+    }
+
 	return (deliver);
+}
+
+sub vcl_hash {
+	/* Hash objects from HHVM servers differently for safety. */
+	if (req.http.X-Use-HHVM == 1){
+		hash_data("HHVM");
+	}
 }
 
 sub vcl_error {
