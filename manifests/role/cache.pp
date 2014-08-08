@@ -402,9 +402,10 @@ class role::cache {
 
         $backends = {
             'production' => {
-                'appservers' => $lvs::configuration::lvs_service_ips['production']['apaches'],
-                'api'        => $lvs::configuration::lvs_service_ips['production']['api'],
-                'rendering'  => $lvs::configuration::lvs_service_ips['production']['rendering'],
+                'appservers'        => $lvs::configuration::lvs_service_ips['production']['apaches'],
+                'hhvm_appservers'   => $lvs::configuration::lvs_service_ips['production']['hhvm_appservers'],
+                'api'               => $lvs::configuration::lvs_service_ips['production']['api'],
+                'rendering'         => $lvs::configuration::lvs_service_ips['production']['rendering'],
                 'bits' => {
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['bits']['eqiad']['bitslb']]),
                 },
@@ -420,6 +421,12 @@ class role::cache {
             },
             'labs' => {
                 'appservers' => {
+                    'eqiad' => [
+                        '10.68.16.74',  # deployment-apache01
+                        '10.68.16.11',  # deployment-apache02
+                    ],
+                },
+                'hhvm_appservers' => {
                     'eqiad' => [
                         '10.68.17.96',  # deployment-mediawiki01
                         '10.68.17.208', # deployment-mediawiki02
@@ -709,10 +716,11 @@ class role::cache {
 
         $varnish_be_directors = {
             1 => {
-                'backend'       => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-                'api'           => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-                'rendering'     => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-                'test_wikipedia'=> $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+                'backend'           => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+                'hhvm_appservers'   => $role::cache::configuration::backends[$::realm]['hhvm_appservers'][$::mw_primary],
+                'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+                'rendering'         => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+                'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
             },
             2 => {
                 'eqiad' => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],

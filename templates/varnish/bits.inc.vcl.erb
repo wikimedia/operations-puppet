@@ -7,6 +7,16 @@ sub vcl_recv {
 	if (req.request == "POST") {
 		error 403 "HTTP method not allowed.";
 	}
+
+	/* wikimedia.vcl sets req.backend to the default 'backend' at the start of vcl_recv.
+	 * For normal requests to the normal app server clusters, we can select the HHVM
+	 * app server backend instead. On a request restart (often due to an error),
+	 * go back to the Zend app server pool.
+	 */
+	if (req.backend == backend && req.restarts == 0 && req.http.Cookie ~ "hhvm=true") {
+		set req.backend = hhvm_appservers;
+	}
+
 	if (req.http.host == "<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>") {
 		if (req.url ~ "^/event\.gif") {
 			error 204;
