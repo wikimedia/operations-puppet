@@ -18,6 +18,17 @@ sub vcl_recv {
 	}
 <% end -%>
 
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	/* wikimedia.vcl sets req.backend to the default 'backend' at the start of vcl_recv.
+	 * For normal requests to the normal app server clusters, we can select the HHVM
+	 * app server backend instead. On a request restart (often due to an error),
+	 * go back to the Zend app server pool.
+	 */
+	if (req.backend == backend && req.restarts == 0 && req.http.Cookie ~ "hhvm=true") {
+		set req.backend = hhvm_appservers;
+	}
+<% end -%>
+
 	/* Default (now modified) Varnish vcl_recv function */
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET and HEAD by default */
@@ -40,6 +51,13 @@ sub vcl_fetch {
 		return (hit_for_pass);
 	}
 	return (deliver);
+}
+
+sub vcl_hash {
+	/* Hash objects from HHVM servers differently for safety. */
+    if (beresp.http.X-Powered-By ~ "^HHVM")
+		hash_data("HHVM");
+	}
 }
 
 sub vcl_error {
