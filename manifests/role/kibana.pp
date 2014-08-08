@@ -13,7 +13,7 @@ class role::kibana {
             # Beta
             $hostname    = 'logstash.beta.wmflabs.org'
             $deploy_dir  = '/srv/deployment/kibana/kibana'
-            $auth_realm  = 'Logstash (see [[office:User:BDavis_(WMF)/logstash]])'
+            $auth_realm  = 'Logstash (ssh deployment-bastion.eqiad.wmflabs sudo cat /root/secrets.txt)'
             $auth_file   = '/data/project/logstash/.htpasswd'
             $require_ssl = true
         } else {
