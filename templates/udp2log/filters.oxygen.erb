@@ -7,7 +7,7 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> /var/log/udp2log/packet-loss.log
 
 ### Capture all logs with 'zero=' set.  The X-Analytics header is set with this
 # by mobile varnish frontends upon getting a Wikipedia Zero request.
-pipe 1 /bin/grep -P 'zero=\d{3}-\d{2}' >> <%= log_directory %>/zero.tsv.log
+pipe 1 /bin/grep -P 'zero=\d' >> <%= log_directory %>/zero.tsv.log
 
 ### All edits
 pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= log_directory %>/edits.tsv.log
