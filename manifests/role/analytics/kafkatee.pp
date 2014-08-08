@@ -83,7 +83,7 @@ class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::ka
     # Capture all logs with 'zero=' set.  The X-Analytics header is set with this
     # by mobile varnish frontends upon getting a Wikipedia Zero request.
     ::kafkatee::output { 'zero':
-        destination => "/bin/grep -P 'zero=\\d{3}-\\d{2}' >> ${webrequest_log_directory}/zero.tsv.log",
+        destination => "/bin/grep -P 'zero=\\d' >> ${webrequest_log_directory}/zero.tsv.log",
         type        => 'pipe',
     }
 }
