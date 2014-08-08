@@ -9,20 +9,30 @@
 #   If 'present', the environment variable will be defined; if absent,
 #   undefined. The default is 'present'.
 #
+# [*priority*]
+#   If you need this var defined before or after other scripts, you can
+#   do so by manipulating this value. In most cases, the default value
+#   of 50 should be fine.
+#
 # === Example
 #
 #  apache::def { 'HHVM':
 #    ensure => present,
 #  }
 #
-define apache::def( $ensure = present ) {
+define apache::def(
+    $ensure   = present,
+    $priority = 50,
+
+) {
     include ::apache
     include ::stdlib
 
-    file_line { "apache2_def_${title}":
-        ensure => $ensure,
-        path   => '/etc/apache2/envvars',
-        line   => "export APACHE_ARGUMENTS=\"\$APACHE_ARGUMENTS -D ${title}\"",
-        notify => Exec['apache2_test_config_and_restart'],
+    apache::conf { "define_${title}"
+        ensure    => $ensure,
+        conf_type => 'env',
+        priority  => $priority,
+        content   => $content,
+        source    => $source,
     }
 }
