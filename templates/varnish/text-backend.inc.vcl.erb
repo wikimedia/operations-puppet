@@ -2,6 +2,7 @@
 
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
+include "hhvm.inc.vcl";
 
 <% if @vcl_config.fetch("cluster_tier", "1") != "1" -%>
 # A random director with the same backends as the default 'backend' (chash) director
@@ -36,7 +37,14 @@ sub vcl_recv {
 		set req.backend = test_wikipedia;
 	}
 
+	/* Use the hhvm backend for any request to the standard appservers.
+	 On a request restart (often due to an error), fallback to the Zend pool */
+	if ( req.http.X-Use-HHVM == "1" && req.restarts == 0) {
+		set req.backend = hhvm_appservers;
+	}
+
 <% end -%>
+
 	call pass_requests;
 
 	if (req.request == "POST" || req.url ~ "^/wiki/Special:CentralAutoLogin/") {
@@ -63,7 +71,7 @@ sub vcl_fetch {
 	/* Make sure Set-Cookie responses are not cacheable, and log violations */
 	/* FIXME: exceptions are ugly; maybe get rid of the whole thing? */
 	if (beresp.ttl > 0s && beresp.http.Set-Cookie &&
-	    req.url !~ "^/wiki/Special:HideBanners") {
+		req.url !~ "^/wiki/Special:HideBanners") {
 		std.log("Cacheable object with Set-Cookie found. req.url: " + req.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
 		set beresp.http.Cache-Control = "private, max-age=0, s-maxage=0";
 		set beresp.ttl = 0s;
@@ -80,6 +88,11 @@ sub vcl_fetch {
 			set beresp.http.Vary = "X-Forwarded-Proto";
 		}
 	}
+
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	call hhvm_add_vary;
+<% end -%>
+	call hhvm_is_cacheable;
 
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;

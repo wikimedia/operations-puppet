@@ -16,6 +16,9 @@ include "via.inc.vcl";
 // address) in X-Forwarded-For, even if it's the only value, as in
 // the example of traffic sourced directly by satellite or something.
 
+include "hhvm.inc.vcl";
+
+
 sub filter_noise {
 	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
 		error 403 "Noise";
@@ -95,6 +98,15 @@ sub vcl_recv {
 		return (pass);
 	}
 
+	/* Set the hhvm header for requests:
+	 * a) not for api
+	 * b) not for testwiki */
+	if ( req.http.X-Orig-Cookie ~ "hhvm=true"
+		&& req.http.host !~ "^test\."
+		&& req.url !~ "^/w/api.php" ) {
+		set req.http.X-Use-HHVM = "1";
+	}
+
 	set req.hash_ignore_busy = true;
 
 	unset req.http.Surrogate-Capability;
@@ -134,6 +146,8 @@ sub vcl_fetch {
 		return (hit_for_pass);
 	}
 */
+
+	call hhvm_is_cacheable;
 	return (deliver);
 }
 
