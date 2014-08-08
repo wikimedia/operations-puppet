@@ -9,133 +9,133 @@
 # NameVirtualHost *:443
 
 <VirtualHost *:80>
-	ServerAdmin webmaster@wikimedia.org
-	ServerName <%= @svc_name %>
-	Redirect permanent / https://<%= @svc_name %>/
-	RewriteEngine On
-	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+    ServerAdmin webmaster@wikimedia.org
+    ServerName <%= @svc_name %>
+    Redirect permanent / https://<%= @svc_name %>/
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerAdmin webmaster@wikimedia.org
-	ServerName bugs.wikimedia.org
-	Redirect permanent / https://<%= @svc_name %>/
-	RewriteEngine On
-	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
+    ServerAdmin webmaster@wikimedia.org
+    ServerName bugs.wikimedia.org
+    Redirect permanent / https://<%= @svc_name %>/
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerAdmin webmaster@wikimedia.org
-	ServerName bugs.wikipedia.org
-	Redirect permanent / https://<%= @svc_name %>/
-	RewriteEngine On
-	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
+    ServerAdmin webmaster@wikimedia.org
+    ServerName bugs.wikipedia.org
+    Redirect permanent / https://<%= @svc_name %>/
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerAdmin webmaster@wikimedia.org
-	ServerName bugzilla.wikipedia.org
-	Redirect permanent / https://<%= @svc_name %>/
-	RewriteEngine On
-	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
+    ServerAdmin webmaster@wikimedia.org
+    ServerName bugzilla.wikipedia.org
+    Redirect permanent / https://<%= @svc_name %>/
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:443>
-	ServerAdmin webmaster@wikimedia.org
-	ServerName bugs.wikimedia.org
-	Redirect permanent / https://<%= @svc_name %>/
-	SSLEngine On
-	SSLCompression Off
-	SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
-	SSLCACertificatePath /etc/ssl/certs/
+    ServerAdmin webmaster@wikimedia.org
+    ServerName bugs.wikimedia.org
+    Redirect permanent / https://<%= @svc_name %>/
+    SSLEngine On
+    SSLCompression Off
+    SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
+    SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
+    SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
-	RewriteEngine On
-	RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
+    RewriteEngine On
+    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:443>
-	ServerAdmin webmaster@wikimedia.org
-	ServerName <%= @svc_name %>
-	DocumentRoot <%= @docroot %>
-	SSLEngine On
-	SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
-	SSLCACertificatePath /etc/ssl/certs/
+    ServerAdmin webmaster@wikimedia.org
+    ServerName <%= @svc_name %>
+    DocumentRoot <%= @docroot %>
+    SSLEngine On
+    SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
+    SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
+    SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
-	Header set Strict-Transport-Security "max-age=31536000"
+    Header set Strict-Transport-Security "max-age=31536000"
 
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-	</Directory>
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
 
-	<Directory <%= @docroot %>>
-		BrowserMatchNoCase spider nobots
-		BrowserMatchNoCase bot nobots
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-		Order allow,deny
-		Deny from env=nobots
-		allow from all
-		# This directive allows us to have apache2's default start page
-		# in /apache2-default/, but still have / go to the right place
-		#RedirectMatch ^/$ /apache2-default/
+    <Directory <%= @docroot %>>
+        BrowserMatchNoCase spider nobots
+        BrowserMatchNoCase bot nobots
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        Deny from env=nobots
+        allow from all
+        # This directive allows us to have apache2's default start page
+        # in /apache2-default/, but still have / go to the right place
+        #RedirectMatch ^/$ /apache2-default/
 
-		# For bugzilla
-		AddHandler cgi-script .cgi
-		Options +ExecCGI +FollowSymLinks
-		AllowOverride Limit FileInfo Indexes
-		DirectoryIndex index.cgi index.html
+        # For bugzilla
+        AddHandler cgi-script .cgi
+        Options +ExecCGI +FollowSymLinks
+        AllowOverride Limit FileInfo Indexes
+        DirectoryIndex index.cgi index.html
 
-		# what Bugzilla generates in a .htaccess otherwise if you enable it
+        # what Bugzilla generates in a .htaccess otherwise if you enable it
 
-		# Don't allow people to retrieve non-cgi executable files or our private data
-		<FilesMatch (\.pm|\.pl|\.tmpl|localconfig.*)$>
-			deny from all
-		</FilesMatch>
+        # Don't allow people to retrieve non-cgi executable files or our private data
+        <FilesMatch (\.pm|\.pl|\.tmpl|localconfig.*)$>
+            deny from all
+        </FilesMatch>
 
-		Options -Indexes
+        Options -Indexes
 
-		<IfModule mod_expires.c>
-		<IfModule mod_headers.c>
-		<IfModule mod_env.c>
-			<FilesMatch (\.js|\.css)$>
-				ExpiresActive On
-				# According to RFC 2616, "1 year in the future" means "never expire".
-				# We change the name of the file's URL whenever its modification date
-				# changes, so browsers can cache any individual JS or CSS URL forever.
-				# However, since all JS and CSS URLs involve a ? in them (for the changing
-				# name) we have to explicitly set an Expires header or browsers won't
-				# *ever* cache them.
-				ExpiresDefault "now plus 1 years"
-				Header append Cache-Control "public"
-			</FilesMatch>
+        <IfModule mod_expires.c>
+        <IfModule mod_headers.c>
+        <IfModule mod_env.c>
+            <FilesMatch (\.js|\.css)$>
+                ExpiresActive On
+                # According to RFC 2616, "1 year in the future" means "never expire".
+                # We change the name of the file's URL whenever its modification date
+                # changes, so browsers can cache any individual JS or CSS URL forever.
+                # However, since all JS and CSS URLs involve a ? in them (for the changing
+                # name) we have to explicitly set an Expires header or browsers won't
+                # *ever* cache them.
+                ExpiresDefault "now plus 1 years"
+                Header append Cache-Control "public"
+            </FilesMatch>
 
-		# This lets Bugzilla know that we are properly sending Cache-Control
-		# and Expires headers for CSS and JS files.
-		SetEnv BZ_CACHE_CONTROL 1
-		</IfModule>
-		</IfModule>
-		</IfModule>
-		# /from bugzilla generated .htaccess
+        # This lets Bugzilla know that we are properly sending Cache-Control
+        # and Expires headers for CSS and JS files.
+        SetEnv BZ_CACHE_CONTROL 1
+        </IfModule>
+        </IfModule>
+        </IfModule>
+        # /from bugzilla generated .htaccess
 
-	</Directory>
+    </Directory>
 
-	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
 
-	<Directory "/usr/lib/cgi-bin">
-		AllowOverride None
-		Options ExecCGI -MultiViews +SymLinksIfOwnerMatch
-		Order allow,deny
-		Allow from all
-	</Directory>
+    <Directory "/usr/lib/cgi-bin">
+        AllowOverride None
+        Options ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        Order allow,deny
+        Allow from all
+    </Directory>
 
 ErrorLog /var/log/apache2/error.log
 
@@ -158,40 +158,40 @@ RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/Bugzilla/Fields? [R=303]
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName <%= @attach_svc_name %>
-	DocumentRoot <%= @docroot %>
+    ServerName <%= @attach_svc_name %>
+    DocumentRoot <%= @docroot %>
 
-	<Directory />
-		Order Allow,Deny
-		Deny from all
-	</Directory>
+    <Directory />
+        Order Allow,Deny
+        Deny from all
+    </Directory>
 
-	ScriptAlias /attachment.cgi <%= @docroot %>attachment.cgi
-	<Location /attachment.cgi>
-		Order Allow,Deny
-		Allow from all
-	</Location>
+    ScriptAlias /attachment.cgi <%= @docroot %>attachment.cgi
+    <Location /attachment.cgi>
+        Order Allow,Deny
+        Allow from all
+    </Location>
 </VirtualHost>
 
 <VirtualHost *:443>
-	ServerName <%= @attach_svc_name %>
-	DocumentRoot <%= @docroot %>
-	SSLEngine On
-	SSLCertificateFile /etc/ssl/certs/<%= @attach_svc_name %>.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= @attach_svc_name %>.key
-	SSLCACertificatePath /etc/ssl/certs/
+    ServerName <%= @attach_svc_name %>
+    DocumentRoot <%= @docroot %>
+    SSLEngine On
+    SSLCertificateFile /etc/ssl/certs/<%= @attach_svc_name %>.pem
+    SSLCertificateKeyFile /etc/ssl/private/<%= @attach_svc_name %>.key
+    SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
-	Header set Strict-Transport-Security "max-age=604800"
+    Header set Strict-Transport-Security "max-age=604800"
 
-	<Directory />
-		Order Allow,Deny
-		Deny from all
-	</Directory>
+    <Directory />
+        Order Allow,Deny
+        Deny from all
+    </Directory>
 
-	ScriptAlias /attachment.cgi <%= @docroot %>attachment.cgi
-	<Location /attachment.cgi>
-		Order Allow,Deny
-		Allow from all
-	</Location>
+    ScriptAlias /attachment.cgi <%= @docroot %>attachment.cgi
+    <Location /attachment.cgi>
+        Order Allow,Deny
+        Allow from all
+    </Location>
 </VirtualHost>
