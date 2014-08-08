@@ -12,14 +12,10 @@ class bugzilla::apache ($svc_name, $attach_svc_name, $docroot, $cipher_suite){
     install_certificate{ $attach_svc_name: }
 
     # this includes them both, 80 and 443
-
-    file {
-        "/etc/apache2/sites-enabled/000-${svc_name}":
-            ensure   => present,
-            content  => template("bugzilla/apache/${svc_name}.erb"),
-            mode     => '0444',
-            owner    => 'root',
-            group    => 'www-data';
+    apache::site { 'bugzilla.wikimedia.org':
+        content  => template("bugzilla/apache/${svc_name}.erb"),
+        priority => 10,
     }
+
 }
 
