@@ -17,11 +17,19 @@ class varnish::common::vcl {
         content => template('varnish/errorpage.inc.vcl.erb'),
     }
 
+
     file { '/etc/varnish/via.inc.vcl':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('varnish/via.inc.vcl.erb'),
+    }
+
+    file { '/etc/varnish/hhvm.inc.vcl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/hhvm.inc.vcl.erb'),
     }
 
     # VCL unit tests
