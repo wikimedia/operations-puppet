@@ -21,6 +21,8 @@ include "via.inc.vcl";
 // mobile-frontend.inc.vcl.erb for (m|zero).wikipedia.org and its
 // subdomains.
 
+include "hhvm.inc.vcl";
+
 # A random director with the same backends as the default 'backend' (chash) director
 <%
 default_backend = @vcl_config.fetch("default_backend", "backend")
@@ -36,6 +38,21 @@ director <%= default_backend %>_random random {
 		.weight = 10;
 	}
 <% 	end -%>
+}
+
+sub set_hhvm_header {
+	/* Set the hhvm header for requests:
+	 * a) not for api
+	 * b) not for the rendering backend
+	 * c) not for testwiki */
+	if ( req.http.Cookie ~ "hhvm=true"
+		&& req.url !~ "^/w/api\.php"
+		&& req.url !~ "^/w/thumb(_handler)?\.php"
+		&& req.http.host !~ "^test\.") {
+		set req.http.X-Use-HHVM = "1";
+	} else {
+		unset req.http.X-Use-HHVM;
+	}
 }
 
 sub mobile_redirect {
@@ -104,6 +121,7 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
+	call set_hhvm_header;
 	call evaluate_cookie;
 
 	return(lookup);
@@ -122,6 +140,8 @@ sub vcl_fetch {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
+
+	call hhvm_is_cacheable;
 	return (deliver);
 }
 
