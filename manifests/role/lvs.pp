@@ -40,6 +40,7 @@ class role::lvs::balancer {
             ],
         /^(lvs100[36])$/ => [
             $sip['apaches'][$::site],
+            $sip['hhvm_appservers'][$::site],
             $sip['api'][$::site],
             $sip['rendering'][$::site],
             $sip['search_pool1'][$::site],
