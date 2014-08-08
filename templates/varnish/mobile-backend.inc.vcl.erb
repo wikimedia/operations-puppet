@@ -1,6 +1,7 @@
 # Varnish VCL include file for mobile backends
 
 include "errorpage.inc.vcl";
+include "hhvm.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
@@ -15,6 +16,14 @@ sub vcl_recv {
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	if (req.url ~ "^/w/api.php") {
 		set req.backend = api;
+	}
+<% end -%>
+
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	/* Use the hhvm backend for any request to the standard appservers.
+	 On a request restart (often due to an error), fallback to the Zend pool */
+	if (req.http.X-Use-HHVM == "1" && req.restarts == 0) {
+		set req.backend = hhvm_appservers;
 	}
 <% end -%>
 
@@ -35,10 +44,17 @@ sub vcl_fetch {
 		set beresp.ttl = 60 s;
 	}
 
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	call hhvm_add_vary;
+<% end -%>
+
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
+
+	call hhvm_is_cacheable;
+
 	return (deliver);
 }
 
