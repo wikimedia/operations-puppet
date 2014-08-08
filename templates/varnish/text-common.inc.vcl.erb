@@ -45,3 +45,11 @@ sub evaluate_cookie {
 		call cookie_munging;
 	}
 }
+
+sub hhvm_cacheable {
+	/* do not cache requests that should go to hhvm but have been
+	 * replied by Zend. */
+	if (req.http.X-Use-HHVM == "1" && beresp.http.X-Powered-By !~ "^HHVM") {
+		return (hit_for_pass);
+	}
+}

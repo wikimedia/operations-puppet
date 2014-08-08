@@ -20,6 +20,19 @@ director <%= default_backend %>_random random {
 <% 	end -%>
 }
 
+sub set_hhvm_header {
+	/* Set the hhvm header for requests: 
+	 * a) not for api 
+	 * b) not for the rendering backend
+	 * c) not for testwiki */
+	if ( req.http.Cookie ~ "hhvm=true"
+	&& req.url !~ "^/w/api\.php"
+	&& req.url !~ "^/w/thumb(_handler)?\.php"
+	&& req.http.host !~ "^test\.") {
+			set req.http.X-Use-HHVM = "1";
+	}
+}
+
 sub mobile_redirect {
 	if ((req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
 		|| req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
@@ -86,6 +99,7 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
+	call set_hhvm_header;
 	call evaluate_cookie;
 
 	return(lookup);
@@ -104,6 +118,8 @@ sub vcl_fetch {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
+
+	call hhvm_cacheable;
 	return (deliver);
 }
 

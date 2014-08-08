@@ -18,6 +18,14 @@ sub vcl_recv {
 	}
 <% end -%>
 
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	/* Use the hhvm backend for any request to the standard appservers.
+	 On a request restart (often due to an error), fallback to the Zend pool */
+	if (req.http.X-Use-HHVM == "1" && req.restarts == 0) {
+		set req.backend = hhvm_appservers;
+	}
+<% end -%>
+
 	/* Default (now modified) Varnish vcl_recv function */
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET and HEAD by default */
@@ -39,6 +47,24 @@ sub vcl_fetch {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
+
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+    /* Set Vary to depend on X-Use-HHVM */ 
+	if (beresp.http.Vary !~ "X-Use-HHVM") {
+		if (beresp.http.Vary) {
+			set beresp.http.Vary = beresp.http.Vary + ",X-Use-HHVM";
+		} else {
+			set beresp.http.Vary = "X-Use-HHVM";
+		}
+	}
+<% end -%>
+
+	/* do not cache requests that should go to hhvm but have been
+	 * replied by Zend. */
+	if (req.http.X-Use-HHVM == "1" && beresp.http.X-Powered-By !~ "^HHVM") {
+		return (hit_for_pass);
+	}
+
 	return (deliver);
 }
 

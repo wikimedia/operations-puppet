@@ -82,8 +82,18 @@ sub vcl_recv {
 		return (pass);
 	}
 
-	set req.hash_ignore_busy = true;
+	/* Set the hhvm header for requests: 
+	 * a) not for api 
+	 * b) not for testwiki */
+	if ( req.http.X-Orig-Cookie ~ "hhvm=true"
+	&& req.http.host !~ "^test\."
+	&& req.url !~ "^/w/api.php"
+	) {
+		set req.http.X-Use-HHVM = "1";
+	}
 
+	set req.hash_ignore_busy = true;
+	
 	unset req.http.Surrogate-Capability;
 <% if cluster_options.fetch( "enable_esi", false ) -%>
 	if (req.http.X-CS == "-TEST") {
@@ -121,6 +131,12 @@ sub vcl_fetch {
 		return (hit_for_pass);
 	}
 */
+	/* do not cache requests that should go to hhvm but have been
+	 * replied by Zend. */
+	if (req.http.X-Use-HHVM == "1" && beresp.http.X-Powered-By !~ "^HHVM") {
+		return (hit_for_pass);
+	}
+
 	return (deliver);
 }
 
