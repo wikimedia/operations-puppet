@@ -6,6 +6,7 @@ class mediawiki::hhvm {
     requires_ubuntu('>= trusty')
 
     include ::hhvm::monitoring
+    include ::mediawiki::users
 
     class { '::hhvm':
         user          => 'apache',
@@ -13,6 +14,7 @@ class mediawiki::hhvm {
         fcgi_settings => {
             hhvm => { server => { source_root => '/usr/local/apache/common/docroot' } },
         },
+        require       => User['apache'],
     }
 
     alternatives::config { 'php':
