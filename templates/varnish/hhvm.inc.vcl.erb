@@ -1,0 +1,21 @@
+# Common functions for HHVM handling
+
+sub hhvm_add_vary {
+	/* Set Vary to depend on X-Use-HHVM */
+	if (beresp.http.Vary !~ "X-Use-HHVM") {
+		if (beresp.http.Vary) {
+			set beresp.http.Vary = beresp.http.Vary + ",X-Use-HHVM";
+		} else {
+			set beresp.http.Vary = "X-Use-HHVM";
+		}
+	}
+}
+
+
+sub hhvm_is_cacheable {
+	/* do not cache requests that should go to hhvm but have been
+	 * replied by Zend. */
+	if (req.http.X-Use-HHVM == "1" && beresp.http.X-Powered-By !~ "^HHVM") {
+		set beresp.ttl = 0;
+	}
+}
