@@ -58,15 +58,11 @@ class wikimania_scholarships(
     # Trebuchet deployment
     deployment::target { 'scholarships': }
 
-    file {
-        "/etc/apache2/sites-enabled/${hostname}":
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            notify  => Service['apache2'],
-            content => template('wikimania_scholarships/apache.conf.erb');
+    apache::site { 'scholarships.wikimedia.org':
+        content => template('wikimania_scholarships/apache.conf.erb'),
+    }
 
+    file {
         $deploy_dir:
             ensure  => directory;
 
