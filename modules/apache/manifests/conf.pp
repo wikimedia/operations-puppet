@@ -13,8 +13,8 @@
 #   The default is 'present'.
 #
 # [*conf_type*]
-#   Either 'sites' for a vhost config or 'conf' for instance-wide configs.
-#   The default is 'conf'.
+#   Either 'sites' for a vhost config, 'conf' for instance-wide configs,
+#   or 'env' for envvars. The default is 'conf'.
 #
 # [*priority*]
 #   If you need this config to load before or after other configs, you can
@@ -47,12 +47,13 @@ define apache::conf(
 
     if $priority  !~ /^\d?\d$/                 { fail('"priority" must be between 0 - 99')             }
     if $ensure    !~ /^(present|absent)$/      { fail('"ensure" must be "present" or "absent"')        }
-    if $conf_type !~ /^(conf|sites)$/          { fail('"conf_type" must be "conf" or "sites"')         }
+    if !($conf_type in $::apache::conf_types)  { fail("'$conf_type' not one of $::apache::conf_types"  }
     if $source == undef and $content == undef  { fail('you must provide either "source" or "content"') }
     if $source != undef and $content != undef  { fail('"source" and "content" are mutually exclusive') }
 
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
-    $conf_file   = sprintf('%02d-%s.conf', $priority, $title_safe)
+    $file_ext    = $conf_type ? { env => 'sh', default => 'conf' }
+    $conf_file   = sprintf('%02d-%s.%s', $priority, $title_safe, $file_ext)
 
     file { "/etc/apache2/${conf_type}-available/${conf_file}":
         ensure  => $ensure,
