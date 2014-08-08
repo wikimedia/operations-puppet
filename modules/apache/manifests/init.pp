@@ -97,7 +97,4 @@ class apache {
         source   => 'puppet:///modules/apache/dummy.conf',
         priority => 0,
     }
-
-    # Set up runtime parameters and modules before sites and config snippets.
-    Apache::Def <| |> -> Apache::Mod_conf <| |> -> Apache::Conf <| |>
 }
