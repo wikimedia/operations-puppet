@@ -622,6 +622,21 @@ class lvs::configuration {
                 'RunCommand' => $runcommand_monitor_options
             },
         },
+        "hhvm_appservers" => {
+            'description' => "Main MediaWiki application server cluster (HHVM), hhvm-appservers.svc.eqiad.wmnet",
+            'class' => "low-traffic",
+            'sites' => [ "eqiad" ],
+            'ip' => $service_ips['hhvm_appservers'][$::site],
+            'bgp' => "yes",
+            'depool-threshold' => ".9",
+            'monitors' => {
+                'ProxyFetch' => {
+                    'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
+                    },
+                'IdleConnection' => $idleconnection_monitor_options,
+                'RunCommand' => $runcommand_monitor_options
+            },
+        },
         "rendering" => {
             'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.eqiad.wmnet",
             'class' => "low-traffic",
