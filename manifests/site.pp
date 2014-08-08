@@ -1326,40 +1326,6 @@ node 'labsdb1002.eqiad.wmnet' {
 node 'labsdb1003.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
-    class { 'role::db::labsdb':
-        instances => {
-            's3' => {
-                'port'                           => '3306',
-                'innodb_log_file_size'           => '500M',
-                'ram'                            => '32G',
-                'innodb_locks_unsafe_for_binlog' => true,
-                'repl_ignore_dbs'                => 'mysql',
-                'slave_transaction_retries'      => '100000',
-                'read_only'                      => '0',
-                'max_user_connections'           => '512',
-            },
-            's6' => {
-                'port'                           => '3307',
-                'innodb_log_file_size'           => '500M',
-                'ram'                            => '32G',
-                'innodb_locks_unsafe_for_binlog' => true,
-                'repl_ignore_dbs'                => 'mysql',
-                'slave_transaction_retries'      => '100000',
-                'read_only'                      => '0',
-                'max_user_connections'           => '512',
-            },
-            's7' => {
-                'port'                           => '3308',
-                'innodb_log_file_size'           => '500M',
-                'ram'                            => '32G',
-                'innodb_locks_unsafe_for_binlog' => true,
-                'repl_ignore_dbs'                => 'mysql',
-                'slave_transaction_retries'      => '100000',
-                'read_only'                      => '0',
-                'max_user_connections'           => '512',
-            },
-        }
-    }
     include role::mariadb::labs
 }
 
