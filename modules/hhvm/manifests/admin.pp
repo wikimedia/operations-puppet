@@ -1,7 +1,12 @@
 # == Class: hhvm::admin
 #
-# Configures Apache to proxy web requests for Port 9002 from
-# internal IPs to HHVM's admin server port.
+# Configures Apache to proxy web requests on a specific port
+# from internal IPs to HHVM's admin server port.
+#
+# === Parameters
+#
+# [*port*]
+#   Port the admin site should listen on (default: 9002).
 #
 class hhvm::admin(
     $ensure = present,
@@ -13,11 +18,13 @@ class hhvm::admin(
     if $port !~ /^\d+$/ { fail('port must be numeric') }
 
     apache::conf { 'hhvm_admin_port':
+        ensure   => $ensure,
         content  => "Listen ${port}\n",
         priority => 1,
     }
 
     apache::site { 'hhvm_admin':
-        content  => template('hhvm/hhvm-admin.conf.erb'),
+        ensure  => $ensure,
+        content => template('hhvm/hhvm-admin.conf.erb'),
     }
 }
