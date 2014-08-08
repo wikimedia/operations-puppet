@@ -36,6 +36,15 @@ sub vcl_recv {
 		set req.backend = test_wikipedia;
 	}
 
+	/* wikimedia.vcl sets req.backend to the default 'backend' at the start of vcl_recv.
+	 * For normal requests to the normal app server clusters, we can select the HHVM
+	 * app server backend instead. On a request restart (often due to an error),
+	 * go back to the Zend app server pool.
+	 */
+	if (req.backend == backend && req.restarts == 0 && req.http.Cookie ~ "hhvm=true") {
+		set req.backend = hhvm_appservers;
+	}
+
 <% end -%>
 	call pass_requests;
 
@@ -57,6 +66,13 @@ sub vcl_pass {
 
 sub vcl_miss {
 	call restore_cookie;
+}
+
+sub vcl_hash {
+	/* Hash objects from HHVM servers differently for safety. */
+	if (req.backend == hhvm_appservers) {
+		hash_data("HHVM");
+	}
 }
 
 sub vcl_fetch {
