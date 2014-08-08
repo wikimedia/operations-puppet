@@ -1,12 +1,24 @@
 # Varnish VCL include file for bits
 
 include "errorpage.inc.vcl";
+include "hhvm.inc.vcl";
 
 sub vcl_recv {
 	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
 	if (req.request == "POST") {
 		error 403 "HTTP method not allowed.";
 	}
+
+	/* transform the cookie in an http header */
+	if (req.http.Cookie ~ "hhvm=true") {
+		set req.http.X-Use-HHVM = 1;
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+		if (req.restarts == 0) {
+			set req.backend = hhvm_appservers;
+		}
+<% end -%>
+	}
+
 	if (req.http.host == "<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>") {
 		if (req.url ~ "^/event\.gif") {
 			error 204;
@@ -38,6 +50,12 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	call hhvm_add_vary;
+
+<% end -%>
+	call hhvm_is_cacheable;
+
 	/* Don't run the default vcl_fetch function */
 	return (deliver);
 }
