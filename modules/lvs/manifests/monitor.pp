@@ -8,6 +8,7 @@ class lvs::monitor {
     # INTERNAL
 
     lvs::monitor_service_http { "appservers.svc.eqiad.wmnet": ip_address => "10.2.2.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
+    lvs::monitor_service_http { "hhvm-appservers.svc.eqiad.wmnet": ip_address => "10.2.2.2", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
     lvs::monitor_service_http { "api.svc.eqiad.wmnet": ip_address => "10.2.2.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
     lvs::monitor_service_http { "rendering.svc.eqiad.wmnet": ip_address => "10.2.2.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
     lvs::monitor_service_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
