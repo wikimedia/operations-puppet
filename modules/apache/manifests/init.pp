@@ -73,7 +73,7 @@ class apache {
     }
 
     file_line { 'load_env_enabled':
-        line    => 'for f in /etc/apache2/env-enabled/*; do [ -r "$f" ] && . "$f"; done',
+        line    => 'for f in /etc/apache2/env-enabled/*; do [ -r "$f" ] && . "$f"; done || true',
         path    => '/etc/apache2/envvars',
         require => Package['apache2'],
     }
