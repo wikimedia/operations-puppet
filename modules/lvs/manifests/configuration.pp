@@ -815,6 +815,7 @@ class lvs::configuration {
             'port' => 80,
             'bgp' => "yes",
             'depool-threshold' => ".5",
+            'scheduler' => 'sh',
             'monitors' => {
                 'ProxyFetch' => {
                     'url' => [ 'http://localhost/rcstream_status' ],
@@ -830,6 +831,7 @@ class lvs::configuration {
             'port' => 443,
             'bgp' => 'no',
             'depool-threshold' => ".5",
+            'scheduler' => 'sh',
             'monitors' => {
                 'ProxyFetch' => {
                     'url' => [ 'http://localhost/rcstream_status' ],
