@@ -24,6 +24,10 @@ class apache {
     include apache::monitoring          # send metrics to Diamond and Ganglia
     include apache::mpm                 # prefork by default
 
+    $conf_types     = ['conf', 'env', 'sites']
+    $available_dirs = apply_format('/etc/apache2/%s-available', $conf_types)
+    $enabled_dirs   = apply_format('/etc/apache2/%s-enabled', $conf_types)
+
     package { 'apache2':
         ensure => present,
     }
@@ -49,7 +53,7 @@ class apache {
         refreshonly => true,
     }
 
-    file { [ '/etc/apache2/sites-available', '/etc/apache2/conf-available' ]:
+    file { $available_dirs:
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
@@ -57,7 +61,7 @@ class apache {
         require => Package['apache2'],
     }
 
-    file { [ '/etc/apache2/sites-enabled', '/etc/apache2/conf-enabled' ]:
+    file { $enabled_dirs:
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
@@ -65,6 +69,12 @@ class apache {
         recurse => true,
         purge   => true,
         notify  => Service['apache2'],
+        require => Package['apache2'],
+    }
+
+    file_line { 'load_env_enabled':
+        line    => 'for f in /etc/apache2/env-enabled/*; do [ -r "$f" ] && . "$f"; done',
+        path    => '/etc/apache2/envvars',
         require => Package['apache2'],
     }
 
