@@ -5,13 +5,8 @@ class misc::noc-wikimedia {
 
     include ::apache
 
-    file { '/etc/apache2/sites-enabled/noc.wikimedia.org':
-        require => [ Class['::apache::mod::userdir', '::apache::mod::cgi'], Package[libapache2-mod-php5] ],
-        path    => '/etc/apache2/sites-enabled/noc.wikimedia.org',
-        mode    => '0444',
-        owner   => root,
-        group   => root,
-        source  => 'puppet:///files/apache/sites/noc.wikimedia.org',
+    apache::site { 'noc.wikimedia.org':
+        content => template('apache/sites/noc.wikimedia.org.erb'),
     }
 
     # ensure default site is removed
