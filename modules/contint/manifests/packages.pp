@@ -107,20 +107,25 @@ class contint::packages {
         ensure => 'installed',
     }
 
-    # Used to build analytics udp-filters
-    package { ['libcidr0-dev', 'libanon0-dev']:
-        ensure => 'latest',
-    }
+    if ubuntu_version( '< trusty') {
+        # Packages that are not available on Trusty.
+        # The related Jenkins jobs need to be rewritten anyway.
 
-    # Used for mobile device classification in Kraken:
-    package { [
-        'libdclass0',
-        'libdclass0-dev',
-        'libdclass-jni',
-        'libdclass-java',
-        'libdclass-data',
-        ]:
-        ensure => 'installed',
+        # Used to build analytics udp-filters
+        package { ['libcidr0-dev', 'libanon0-dev']:
+            ensure => 'latest',
+        }
+
+        # Used for mobile device classification in Kraken:
+        package { [
+            'libdclass0',
+            'libdclass0-dev',
+            'libdclass-jni',
+            'libdclass-java',
+            'libdclass-data',
+            ]:
+            ensure => 'installed',
+        }
     }
 
     # these packages are used by the tests for wikistats to parse the
