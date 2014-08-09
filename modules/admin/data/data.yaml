@@ -69,7 +69,7 @@ groups:
   dataset-admins:
     gid: 710
     description: does work on dataset hosts
-    members: [brion]
+    members: []
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
@@ -1091,3 +1091,4 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSbcCuTyzTLxzVvPIVTXHL+FJ4Kj/LIPZmaOJ0I0IbTpJYUBxvLpq5uXcb41bC4DmSr/Wdd74PLoJCLN0Kew5OKpf52L78eddbFUHPcHiFfdsXOAn7Exm1T3oJRSFYLK9Aryy8JFbmKsIrlPIJ0caJIckcUrnQW3ZnttxQy459kFi6SGK8D/zWIuzN6845YkyH8H9bHdU/AhNNn8Mw0o4S5U8USvQXW6+7WL+kVncVHLiZYiJuDkyI6AGHiJe5ur/tTV7jOOf7zQ94vgA4uaIqHMC9OTnOQ8DawovirdkILQYnsG8THIfLb9O1O4njyeudJG7ZzhqDcwvFc1uMKj79
         eeggleston@wikimedia.org]
     uid: 3649
+
