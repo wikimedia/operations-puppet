@@ -5,377 +5,377 @@
 import netmapper;
 
 sub vcl_init {
-	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
-	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
+    // args here are map-name (for .map()), data file, and seconds between mtime checks for reload
+    netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
+    netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
 }
 
 sub tag_carrier {
-	// This is what things look like on entry in four basic scenarios
-	// ("both" here means something MITM-proxied the SSL connection, like OperaMini,
-	//   but was kind enough to set an XFF header on the way)
-	// (the leading "..." in XFF is that sometimes there are other local
-	//   proxies on 127.0.0.1 or whatever, according to some OperaMini docs...)
+    // This is what things look like on entry in four basic scenarios
+    // ("both" here means something MITM-proxied the SSL connection, like OperaMini,
+    //   but was kind enough to set an XFF header on the way)
+    // (the leading "..." in XFF is that sometimes there are other local
+    //   proxies on 127.0.0.1 or whatever, according to some OperaMini docs...)
 
-	/*********************************************************
-	*    v> | client.ip | XFF                        | XFP
-	* direct| client    | (...,)? client             |
-	* ssl   | ssl       | (...,)? client, ssl        | https
-	* proxy | proxy     | (...,)? client, proxy      |
-	* both  | ssl       | (...,)? client, proxy, ssl | https
-	*********************************************************/
+    /*********************************************************
+    *    v> | client.ip | XFF                        | XFP
+    * direct| client    | (...,)? client             |
+    * ssl   | ssl       | (...,)? client, ssl        | https
+    * proxy | proxy     | (...,)? client, proxy      |
+    * both  | ssl       | (...,)? client, proxy, ssl | https
+    *********************************************************/
 
-	// first, strip the SSL entry from XFF if applicable
-	if (req.http.X-Forwarded-Proto) {
-		set req.http.XFF-NoSSL = regsub(req.http.X-Forwarded-For, ",[^,]+$", ""); // strips final entry
-	} else {
-		set req.http.XFF-NoSSL = req.http.X-Forwarded-For;
-	}
+    // first, strip the SSL entry from XFF if applicable
+    if (req.http.X-Forwarded-Proto) {
+        set req.http.XFF-NoSSL = regsub(req.http.X-Forwarded-For, ",[^,]+$", ""); // strips final entry
+    } else {
+        set req.http.XFF-NoSSL = req.http.X-Forwarded-For;
+    }
 
-	/*****************************************************************************
-	*    v>      | XFF-NoSSL             | map("proxies") input from regsub below
-	* direct/ssl | (...,)? client        | client
-	* proxy/both | (...,)? client, proxy | proxy
-	*****************************************************************************/
+    /*****************************************************************************
+    *    v>      | XFF-NoSSL             | map("proxies") input from regsub below
+    * direct/ssl | (...,)? client        | client
+    * proxy/both | (...,)? client, proxy | proxy
+    *****************************************************************************/
 
-	// now get the trusted proxy into XFB, if any - the regsub grabs the final entry in the list
-	set req.http.X-Forwarded-By = netmapper.map("proxies", regsub(req.http.XFF-NoSSL, "^([^,]+, ?)+", ""));
+    // now get the trusted proxy into XFB, if any - the regsub grabs the final entry in the list
+    set req.http.X-Forwarded-By = netmapper.map("proxies", regsub(req.http.XFF-NoSSL, "^([^,]+, ?)+", ""));
 
-	// normalize to boolean again...
-	if (req.http.X-Forwarded-By == "") {
-		unset req.http.X-Forwarded-By;
-	}
+    // normalize to boolean again...
+    if (req.http.X-Forwarded-By == "") {
+        unset req.http.X-Forwarded-By;
+    }
 
-	// now, iff XFB was set, strip away one more layer to put the supposed client IP at the end
-	if (req.http.X-Forwarded-By) {
-		set req.http.XFF-ClientEnd = regsub(req.http.XFF-NoSSL, ",[^,]+$", "");
-	} else {
-		set req.http.XFF-ClientEnd = req.http.XFF-NoSSL;
-	}
+    // now, iff XFB was set, strip away one more layer to put the supposed client IP at the end
+    if (req.http.X-Forwarded-By) {
+        set req.http.XFF-ClientEnd = regsub(req.http.XFF-NoSSL, ",[^,]+$", "");
+    } else {
+        set req.http.XFF-ClientEnd = req.http.XFF-NoSSL;
+    }
 
-	unset req.http.XFF-NoSSL; // clean up temp var
+    unset req.http.XFF-NoSSL; // clean up temp var
 
-	/****************************************************************
-	*    v>  | XFF-CE         | map("carriers") input from regsub below
-	*   all  | (...,)? client | client
-	*****************************************************************/
+    /****************************************************************
+    *    v>  | XFF-CE         | map("carriers") input from regsub below
+    *   all  | (...,)? client | client
+    *****************************************************************/
 
-	// Grab client IP from the end of the XFF-CE list and feed to map("zero")
-	set req.http.X-CS2 = netmapper.map("carriers", regsub(req.http.XFF-ClientEnd, "^([^,]+, ?)+", ""));
+    // Grab client IP from the end of the XFF-CE list and feed to map("zero")
+    set req.http.X-CS2 = netmapper.map("carriers", regsub(req.http.XFF-ClientEnd, "^([^,]+, ?)+", ""));
 
-	// normalize to boolean (varnish-3.0.4...)
-	if (req.http.X-CS2 == "") {
-		unset req.http.X-CS2;
-	}
+    // normalize to boolean (varnish-3.0.4...)
+    if (req.http.X-CS2 == "") {
+        unset req.http.X-CS2;
+    }
 
-	unset req.http.XFF-ClientEnd; // clean up temp var
+    unset req.http.XFF-ClientEnd; // clean up temp var
 
-	// Now the per-carrier stuff...
-	// Short of having netmapper (or equivalent) return a set of match parameters, I can't see any
-	//   good way to make the rest of this cleaner really.
-	if (req.http.X-CS2) {
-		if (req.http.X-CS2 == "502-13") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "623-03") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "413-02") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((en|si|simple|ta)\.)?zero\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "502-16") {
-			if (!req.http.X-Forwarded-Proto && req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "520-18") {
-			if (!req.http.X-Forwarded-Proto && req.http.X-Subdomain == "ZERO" && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "470-01") {
-			if (req.http.X-Subdomain == "ZERO") {
-				if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "470-03") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((en|bn)\.)?(zero|m)\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "416-03") {
-			if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-				set req.http.X-ZeroTLS = "1";
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "456-02") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "652-02") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "624-02") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "630-86") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "612-03") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "639-07") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "604-00") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((fr|en|ar|es|de|it|zh|nl|pt|ru)\.)?m\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "614-04") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "605-01") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((fr|ru|ja|zh|it|de|en|es|ar)\.)?m\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "641-14") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((en|zh|ar|hi|fr|sw|rw|de|es|ko)\.)?m\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "420-01") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((ar|tl|en|bn|ur)\.)?(zero|m)\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "410-01") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-				if (req.http.host ~ "^((en|ur)\.)?(zero|m)\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "510-11") {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((id|en|zh|ar|hi|ms|jv|su)\.)?zero\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "646-02") {
-			if (!req.http.X-Forwarded-By) {
-				if (req.http.host ~ "^((fr|en|mg)\.)?m\.") {
-					set req.http.X-ZeroTLS = "1";
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "401-01") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-				if (req.http.host ~ "^((ru|kk|en)\.)?(zero|m)\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "297-01") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "655-12") {
-			if (req.http.X-Forwarded-By == "Opera") {
-				set req.http.X-ZeroTLS = "1";
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "515-03") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "635-10") {
-			if (!req.http.X-Forwarded-By) {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "437-01") {
-			if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "514-02") {
-			if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "470-07") {
-			if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "429-02") {
-			if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "428-98") {
-			if (!req.http.X-Forwarded-By) {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (req.http.X-CS2 == "310-260") {
-			if (req.http.X-Forwarded-By == "Nokiaprod" || req.http.X-Forwarded-By == "Nokiaqa") {
-				if (req.http.X-Subdomain == "ZERO" && req.http.host ~ "^en\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
-		} else if (req.http.X-CS2 == "404-01") {
-			// "404-01|wap" will be handled by default case
-			if (!req.http.X-Forwarded-By) {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if ((req.http.X-Forwarded-By != "Opera" && (
-					req.http.X-CS2 == "426-04" ||
-					req.http.X-CS2 == "250-99"
-					)) ||
-				    req.http.X-CS2 ~ "^TESTON.*") {
-			//
-			// Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
-			//
-			// TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess... TBD
-			if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" ) {
-				set req.http.X-CS = req.http.X-CS2;
-			} else {
-				set req.http.X-CS = "ON";
-			}
+    // Now the per-carrier stuff...
+    // Short of having netmapper (or equivalent) return a set of match parameters, I can't see any
+    //   good way to make the rest of this cleaner really.
+    if (req.http.X-CS2) {
+        if (req.http.X-CS2 == "502-13") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "623-03") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "413-02") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((en|si|simple|ta)\.)?zero\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "502-16") {
+            if (!req.http.X-Forwarded-Proto && req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "520-18") {
+            if (!req.http.X-Forwarded-Proto && req.http.X-Subdomain == "ZERO" && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "470-01") {
+            if (req.http.X-Subdomain == "ZERO") {
+                if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "470-03") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((en|bn)\.)?(zero|m)\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "416-03") {
+            if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+                set req.http.X-ZeroTLS = "1";
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "456-02") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "652-02") {
+            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "624-02") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "630-86") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "612-03") {
+            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "639-07") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "604-00") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((fr|en|ar|es|de|it|zh|nl|pt|ru)\.)?m\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "614-04") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "605-01") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((fr|ru|ja|zh|it|de|en|es|ar)\.)?m\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "641-14") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((en|zh|ar|hi|fr|sw|rw|de|es|ko)\.)?m\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "420-01") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((ar|tl|en|bn|ur)\.)?(zero|m)\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "410-01") {
+            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
+                if (req.http.host ~ "^((en|ur)\.)?(zero|m)\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "510-11") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((id|en|zh|ar|hi|ms|jv|su)\.)?zero\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "646-02") {
+            if (!req.http.X-Forwarded-By) {
+                if (req.http.host ~ "^((fr|en|mg)\.)?m\.") {
+                    set req.http.X-ZeroTLS = "1";
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "401-01") {
+            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
+                if (req.http.host ~ "^((ru|kk|en)\.)?(zero|m)\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "297-01") {
+            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "655-12") {
+            if (req.http.X-Forwarded-By == "Opera") {
+                set req.http.X-ZeroTLS = "1";
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "515-03") {
+            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "635-10") {
+            if (!req.http.X-Forwarded-By) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "437-01") {
+            if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "514-02") {
+            if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "470-07") {
+            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "429-02") {
+            if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "428-98") {
+            if (!req.http.X-Forwarded-By) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "310-260") {
+            if (req.http.X-Forwarded-By == "Nokiaprod" || req.http.X-Forwarded-By == "Nokiaqa") {
+                if (req.http.X-Subdomain == "ZERO" && req.http.host ~ "^en\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "404-01") {
+            // "404-01|wap" will be handled by default case
+            if (!req.http.X-Forwarded-By) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if ((req.http.X-Forwarded-By != "Opera" && (
+                    req.http.X-CS2 == "426-04" ||
+                    req.http.X-CS2 == "250-99"
+                    )) ||
+                    req.http.X-CS2 ~ "^TESTON.*") {
+            //
+            // Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
+            //
+            // TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess... TBD
+            if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" ) {
+                set req.http.X-CS = req.http.X-CS2;
+            } else {
+                set req.http.X-CS = "ON";
+            }
 
-			/* These are opera-mini leftovers */
+            /* These are opera-mini leftovers */
 
-		} else if (req.http.X-CS2 == "250-99") {
-			if (!req.http.X-Forwarded-Proto) {
-				if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
-					set req.http.X-CS = req.http.X-CS2;
-				}
-			}
+        } else if (req.http.X-CS2 == "250-99") {
+            if (!req.http.X-Forwarded-Proto) {
+                if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
 
-			/* End of opera-mini leftovers */
+            /* End of opera-mini leftovers */
 
-		} else if (req.http.X-CS2 ~ "^TEST.*") {
-			// Test carrier allows all proxies and SSL
-			set req.http.X-ZeroTLS = "1";
-			set req.http.X-CS = req.http.X-CS2;
-		} else {
-			if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-				// Any new carriers are signed up as both m & zero for all languages, without proxy support
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		}
+        } else if (req.http.X-CS2 ~ "^TEST.*") {
+            // Test carrier allows all proxies and SSL
+            set req.http.X-ZeroTLS = "1";
+            set req.http.X-CS = req.http.X-CS2;
+        } else {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                // Any new carriers are signed up as both m & zero for all languages, without proxy support
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        }
 
-		// Only trigger Set-Cookie below if the cookie isn't already being sent by the client
-		if (req.http.X-ZeroTLS && req.http.Cookie ~ "ZeroOpts=tls") {
-			unset req.http.X-ZeroTLS;
-		}
-	} // end of if(X-CS2)
-	if ( req.http.X-Forwarded-By ) {
-		// Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
-		// unset X-Forwarded-By. We still need that value in the resulting X-Analytics header,
-		// so create a copy to be used in the vcl_deliver.
-		set req.http.X-Forwarded-By2 = req.http.X-Forwarded-By;
+        // Only trigger Set-Cookie below if the cookie isn't already being sent by the client
+        if (req.http.X-ZeroTLS && req.http.Cookie ~ "ZeroOpts=tls") {
+            unset req.http.X-ZeroTLS;
+        }
+    } // end of if(X-CS2)
+    if ( req.http.X-Forwarded-By ) {
+        // Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
+        // unset X-Forwarded-By. We still need that value in the resulting X-Analytics header,
+        // so create a copy to be used in the vcl_deliver.
+        set req.http.X-Forwarded-By2 = req.http.X-Forwarded-By;
 
-		// the backend now checks this value. Soon we will stop varying on it
-		if (!req.http.X-CS) {
-			unset req.http.X-Forwarded-By;
-		}
-	}
+        // the backend now checks this value. Soon we will stop varying on it
+        if (!req.http.X-CS) {
+            unset req.http.X-Forwarded-By;
+        }
+    }
 }
 
 sub vcl_deliver {
-	// This, and the supporting X-ZeroTLS bits above in tag_carrier set a cookie
-	// to tell the browser if contributory features would be zero-rated.
-	// Once a carrier's config above has had req.http.X-ZeroTLS set to 1 for
-	// 30 days after HTTPS enablement, then then specific block above can be removed
-	// because the origin will have populated the cache sufficiently.
-	// Notice that a cookie of ZeroOpts=   (empty value) tells the browser to
-	// not enable the contributory features, so we remove this first if it exists.
-	if (req.http.X-ZeroTLS) {
-		// We must use header.remove()/append() here because there can be multiple unrelated Set-Cookie headers
-		header.remove(resp.http.Set-Cookie,"ZeroOpts=");
-		header.append(resp.http.Set-Cookie,"ZeroOpts=tls");
-	}
+    // This, and the supporting X-ZeroTLS bits above in tag_carrier set a cookie
+    // to tell the browser if contributory features would be zero-rated.
+    // Once a carrier's config above has had req.http.X-ZeroTLS set to 1 for
+    // 30 days after HTTPS enablement, then then specific block above can be removed
+    // because the origin will have populated the cache sufficiently.
+    // Notice that a cookie of ZeroOpts=   (empty value) tells the browser to
+    // not enable the contributory features, so we remove this first if it exists.
+    if (req.http.X-ZeroTLS) {
+        // We must use header.remove()/append() here because there can be multiple unrelated Set-Cookie headers
+        header.remove(resp.http.Set-Cookie,"ZeroOpts=");
+        header.append(resp.http.Set-Cookie,"ZeroOpts=tls");
+    }
 
-	// All mobile responses need to have the X-CS set if it came from a zero network.
-	// This allows apps to detect when we switch from zero to non-zero and back,
-	// or when the user switches from one network to another and both are zero (multi-sim phones).
-	// The client should constantly check each response for this header, and if it changes,
-	// re-request the partner's message info.
-	// This value is only based on Varnish's zero detection, not the backend processing of any sort
-	// We are in vcl_deliver, so changing it here would not affect the cached object
-	if (req.http.X-CS) {
-		set resp.http.X-CS = req.http.X-CS;
-	} else {
-		unset resp.http.X-CS;
-	}
+    // All mobile responses need to have the X-CS set if it came from a zero network.
+    // This allows apps to detect when we switch from zero to non-zero and back,
+    // or when the user switches from one network to another and both are zero (multi-sim phones).
+    // The client should constantly check each response for this header, and if it changes,
+    // re-request the partner's message info.
+    // This value is only based on Varnish's zero detection, not the backend processing of any sort
+    // We are in vcl_deliver, so changing it here would not affect the cached object
+    if (req.http.X-CS) {
+        set resp.http.X-CS = req.http.X-CS;
+    } else {
+        unset resp.http.X-CS;
+    }
 
-	/* Assemble X-Analytics header
-	   Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
-	   Note that vcl_deliver in other files may also modify X-Analytics
-	*/
-	if (req.http.X-CS == "ON") {
-		// This is where all conditionals from above will be moved to support analytics
-		// until they finish their migration
-		// According to qchris, analytics can handle language and subdomain, but not proxy or https
-		unset req.http.X-CS;
-		if (req.http.X-CS2 == "426-04") {
-			if (!req.http.X-Forwarded-By) {
-				set req.http.X-CS = req.http.X-CS2;
-			}
-		} else if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-			// Default for NON-HTTPS DIRECT connections
-			// Handles: 250-99
-			set req.http.X-CS = req.http.X-CS2;
-		}
-	}
+    /* Assemble X-Analytics header
+       Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
+       Note that vcl_deliver in other files may also modify X-Analytics
+    */
+    if (req.http.X-CS == "ON") {
+        // This is where all conditionals from above will be moved to support analytics
+        // until they finish their migration
+        // According to qchris, analytics can handle language and subdomain, but not proxy or https
+        unset req.http.X-CS;
+        if (req.http.X-CS2 == "426-04") {
+            if (!req.http.X-Forwarded-By) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+            // Default for NON-HTTPS DIRECT connections
+            // Handles: 250-99
+            set req.http.X-CS = req.http.X-CS2;
+        }
+    }
 
-	if (req.http.X-CS) {
+    if (req.http.X-CS) {
 
-		// Some carriers have multiple ip ranges with different rules. IP set name is added at
-		// the end of the X-CS, e.g. "123-45|wap" to indicate a wap gateway with their own IPs.
-		// To minimize analytics impact, the 'zero' value in X-Analytics will stay as carrier id,
-		// and the additional suffix will go into the 'zeronet=xxx' if it was present.
+        // Some carriers have multiple ip ranges with different rules. IP set name is added at
+        // the end of the X-CS, e.g. "123-45|wap" to indicate a wap gateway with their own IPs.
+        // To minimize analytics impact, the 'zero' value in X-Analytics will stay as carrier id,
+        // and the additional suffix will go into the 'zeronet=xxx' if it was present.
 
-		// Remove everything before and including the first '|' char
-		set req.http.X-ZEROSFX = regsub(req.http.X-CS, "^[^\|]*\|?", "");
-		if (req.http.X-ZEROSFX != "") {
-			// Remove everything on and after the first '|' char
-			set req.http.X-CS = "zero=" + regsub(req.http.X-CS, "\|.*", "") + ";zeronet=" + req.http.X-ZEROSFX;
-		} else if (req.http.X-CS == "404-01b") {
-			// For a short time we had this workaround. This "else if" can be removed after 2014-10-15
-			// We only had one carrier, "404-01b", whom we temporarily had to create an extra entry until backend was ready.
-			// In order for analytics to report correct stats, we used to remove "b" before modifying X-Analytics.
-			set req.http.X-CS = "zero=404-01;zeronet=b";
-		} else {
-			set req.http.X-CS = "zero=" + req.http.X-CS;
-		}
+        // Remove everything before and including the first '|' char
+        set req.http.X-ZEROSFX = regsub(req.http.X-CS, "^[^\|]*\|?", "");
+        if (req.http.X-ZEROSFX != "") {
+            // Remove everything on and after the first '|' char
+            set req.http.X-CS = "zero=" + regsub(req.http.X-CS, "\|.*", "") + ";zeronet=" + req.http.X-ZEROSFX;
+        } else if (req.http.X-CS == "404-01b") {
+            // For a short time we had this workaround. This "else if" can be removed after 2014-10-15
+            // We only had one carrier, "404-01b", whom we temporarily had to create an extra entry until backend was ready.
+            // In order for analytics to report correct stats, we used to remove "b" before modifying X-Analytics.
+            set req.http.X-CS = "zero=404-01;zeronet=b";
+        } else {
+            set req.http.X-CS = "zero=" + req.http.X-CS;
+        }
 
-		if (resp.http.X-Analytics) {
-			set resp.http.X-Analytics = resp.http.X-Analytics + ";" + req.http.X-CS;
-		} else {
-			set resp.http.X-Analytics = req.http.X-CS;
-		}
-	}
-	if (req.http.X-Forwarded-By2) {
-		if (resp.http.X-Analytics) {
-			set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Forwarded-By2;
-		} else {
-			set resp.http.X-Analytics = "proxy=" + req.http.X-Forwarded-By2;
-		}
-	}
+        if (resp.http.X-Analytics) {
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";" + req.http.X-CS;
+        } else {
+            set resp.http.X-Analytics = req.http.X-CS;
+        }
+    }
+    if (req.http.X-Forwarded-By2) {
+        if (resp.http.X-Analytics) {
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Forwarded-By2;
+        } else {
+            set resp.http.X-Analytics = "proxy=" + req.http.X-Forwarded-By2;
+        }
+    }
 }
