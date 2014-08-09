@@ -213,7 +213,11 @@ groups:
     privs: ['ALL = (hdfs)  NOPASSWD: ALL',
             'ALL = (oozie) NOPASSWD: ALL',
             'ALL = (hive)  NOPASSWD: ALL']
-
+  labmon-roots:
+    gid: 733
+    description: Full root access to labmon nodes
+    members: []
+    privs: ['ALL = NOPASSWD: ALL']
 users:
   rush:
     ensure: present
