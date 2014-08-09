@@ -13,6 +13,7 @@ class quarry::base {
         'python-mwoauth',
         'python-celery',
         'python-redis',
+        'python-sqlalchemy',
         'python-pymysql',
     ]:
         ensure => latest
