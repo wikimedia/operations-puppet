@@ -12,137 +12,137 @@ MaxClients 50
 
 NameVirtualHost *:80
 <VirtualHost *:80>
-	ServerAdmin noc@wikimedia.org
-	ServerName <%= host %>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= host %>
 
-	DocumentRoot /var/www
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-	</Directory>
-	<Directory /var/www/>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-		Order allow,deny
-		allow from all
-	</Directory>
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
 
-	ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/error.log
 
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
 
-	CustomLog /var/log/apache2/access.log combined_time
-	ServerSignature Off
+    CustomLog /var/log/apache2/access.log combined_time
+    ServerSignature Off
 
-	RewriteEngine on
-	RewriteCond %{SERVER_PORT} !^443$
-	RewriteRule ^/(.*)$ https://<%= host %>/$1 [L,R,NE]
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://<%= host %>/$1 [L,R,NE]
 </VirtualHost>
 
 NameVirtualHost *:443
 <VirtualHost *:443>
-	ServerAdmin noc@wikimedia.org
-	ServerName <%= host %>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= host %>
 
-	SSLEngine on
-	SSLProtocol +ALL -SSLv2
-	SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH
-	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/<%= ssl_cert %>.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert_key %>.key
-	SSLCACertificatePath /etc/ssl/certs/
+    SSLEngine on
+    SSLProtocol +ALL -SSLv2
+    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH
+    SSLHonorCipherOrder on
+    SSLCertificateFile /etc/ssl/certs/<%= ssl_cert %>.pem
+    SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert_key %>.key
+    SSLCACertificatePath /etc/ssl/certs/
 
-	RedirectMatch ^/$ https://<%= host %>/r/
-	RedirectMatch ^/gitweb/(.*)$ https://<%= host %>/r/gitweb?p=$1
+    RedirectMatch ^/$ https://<%= host %>/r/
+    RedirectMatch ^/gitweb/(.*)$ https://<%= host %>/r/gitweb?p=$1
 
-	# Misbehaving bots
-	SetEnvIf User-Agent 80legs bad_browser
-	SetEnvIf User-Agent bingbot bad_browser
-	SetEnvIf User-Agent Baiduspider bad_browser
-	SetEnvIf User-Agent Sogou bad_browser
-	SetEnvIf User-Agent TweetmemeBot bad_browser
-	SetEnvIf User-Agent Yeti bad_browser
-	SetEnvIf Remote_Addr 208.110.84.34 bad_browser
-	SetEnvIf Remote_Addr 89.83.122.45 bad_browser
-	SetEnvIf Remote_Addr 129.242.4.62 bad_browser
+    # Misbehaving bots
+    SetEnvIf User-Agent 80legs bad_browser
+    SetEnvIf User-Agent bingbot bad_browser
+    SetEnvIf User-Agent Baiduspider bad_browser
+    SetEnvIf User-Agent Sogou bad_browser
+    SetEnvIf User-Agent TweetmemeBot bad_browser
+    SetEnvIf User-Agent Yeti bad_browser
+    SetEnvIf Remote_Addr 208.110.84.34 bad_browser
+    SetEnvIf Remote_Addr 89.83.122.45 bad_browser
+    SetEnvIf Remote_Addr 129.242.4.62 bad_browser
 
-	TimeOut 720
+    TimeOut 720
 
-	DocumentRoot /var/www
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-		Order deny,allow
-		deny from env=bad_browser
-	</Directory>
-	<Directory /var/www/>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-	</Directory>
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Order deny,allow
+        deny from env=bad_browser
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+    </Directory>
 
-	ProxyRequests Off
-	ProxyVia Off
-	ProxyPreserveHost On
+    ProxyRequests Off
+    ProxyVia Off
+    ProxyPreserveHost On
 
-	<Proxy *>
-		Order deny,allow
-		deny from env=bad_browser
-	</Proxy>
+    <Proxy *>
+        Order deny,allow
+        deny from env=bad_browser
+    </Proxy>
 
-	AllowEncodedSlashes On
-	RewriteEngine On
+    AllowEncodedSlashes On
+    RewriteEngine On
 
-	# Rewrite old gerrit gitweb URLs to redirect to new gitblit server.
-	# Here are some sample URLs that should continue to work
-	#  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/Agora.git;hb=HEAD;
-	#  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob_plain;f=languages/messages/MessagesEn.php;hb=HEAD
-	#  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/examples.git;hb=HEAD;f=BoilerPlate/README;
-	#  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/ArticleFeedback.git;hb=HEAD;f=modules/jquery.articleFeedback/images/star-new-down.png;a=raw;
-	#
-	# Notes
-	# 1. gitblit requires URL-encoding (%2F) of the slashes in the matched
-	# paths to project and file.  The [B] option does this for the
-	# backreferences; it also converts '.' in .git and .php to "%2e", gitblit
-	# accepts this. Due to the additional 'AllowEncodedSlashes On' (which
-	# is a requirement from gerrit's suggested reverse proxy configuration),
-	# the '%' in these '%2f', '%2e', ... get encoded themselves, and we end up
-	# seeing double encoded characters '%252f', '%252e', ... . To prohibit
-	# this final (unneeded, since backreferences get encoded, and the other URL
-	# parts should be safe, as they are plain literals) encoding, we add [NE]
-	# to the options.
-	# 2. Append an empty query string (which mod_rewrite is smart enough to
-	# drop), otherwise the original query string is appended -- mod_rewrite
-	# lacks a DiscardQueryString option.
-	# 3. You can't have separate RewriteCond for p= and f= because the
-	# RewriteRule can only reference matches from the last RewriteCond.
-	# (You could use [N] to re-run the rewriting process after rewriting
-	# for each parameter ... agggh.)
-	# 4. To avoid complicated "p= at start or preceded with ;", stick ';' on front.
-	# 5. The semicolon-separated parameters p and f can be in any order, so look
-	# for p anywhere and add it back at the front.
-	# 6. gitweb parameters not handled: a=<some other action>, hb=<some
-	# commit>, and #l123 line number fragment.
-	#
-	# Rewrite a gitweb project link (no file).
-	RewriteCond ;%{QUERY_STRING} !;f=
-	RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
-	RewriteRule ^/r/gitweb$ https://git.wikimedia.org/summary/%1/HEAD? [R=301,L,B,NE]
-	# Rewrite a gitweb file link (project and file, in any order).
-	RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
-	RewriteCond ;p=%1;%{QUERY_STRING} ^;p=([^;]*).*;f=([^;]*)
-	RewriteRule ^/r/gitweb$ https://git.wikimedia.org/raw/%1/HEAD/%2? [R=301,L,B,NE]
+    # Rewrite old gerrit gitweb URLs to redirect to new gitblit server.
+    # Here are some sample URLs that should continue to work
+    #  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/Agora.git;hb=HEAD;
+    #  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob_plain;f=languages/messages/MessagesEn.php;hb=HEAD
+    #  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/examples.git;hb=HEAD;f=BoilerPlate/README;
+    #  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/ArticleFeedback.git;hb=HEAD;f=modules/jquery.articleFeedback/images/star-new-down.png;a=raw;
+    #
+    # Notes
+    # 1. gitblit requires URL-encoding (%2F) of the slashes in the matched
+    # paths to project and file.  The [B] option does this for the
+    # backreferences; it also converts '.' in .git and .php to "%2e", gitblit
+    # accepts this. Due to the additional 'AllowEncodedSlashes On' (which
+    # is a requirement from gerrit's suggested reverse proxy configuration),
+    # the '%' in these '%2f', '%2e', ... get encoded themselves, and we end up
+    # seeing double encoded characters '%252f', '%252e', ... . To prohibit
+    # this final (unneeded, since backreferences get encoded, and the other URL
+    # parts should be safe, as they are plain literals) encoding, we add [NE]
+    # to the options.
+    # 2. Append an empty query string (which mod_rewrite is smart enough to
+    # drop), otherwise the original query string is appended -- mod_rewrite
+    # lacks a DiscardQueryString option.
+    # 3. You can't have separate RewriteCond for p= and f= because the
+    # RewriteRule can only reference matches from the last RewriteCond.
+    # (You could use [N] to re-run the rewriting process after rewriting
+    # for each parameter ... agggh.)
+    # 4. To avoid complicated "p= at start or preceded with ;", stick ';' on front.
+    # 5. The semicolon-separated parameters p and f can be in any order, so look
+    # for p anywhere and add it back at the front.
+    # 6. gitweb parameters not handled: a=<some other action>, hb=<some
+    # commit>, and #l123 line number fragment.
+    #
+    # Rewrite a gitweb project link (no file).
+    RewriteCond ;%{QUERY_STRING} !;f=
+    RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
+    RewriteRule ^/r/gitweb$ https://git.wikimedia.org/summary/%1/HEAD? [R=301,L,B,NE]
+    # Rewrite a gitweb file link (project and file, in any order).
+    RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
+    RewriteCond ;p=%1;%{QUERY_STRING} ^;p=([^;]*).*;f=([^;]*)
+    RewriteRule ^/r/gitweb$ https://git.wikimedia.org/raw/%1/HEAD/%2? [R=301,L,B,NE]
 
-	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
+    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
 
-	ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/error.log
 
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
 
-	CustomLog /var/log/apache2/access.log combined_time
-	ServerSignature Off
+    CustomLog /var/log/apache2/access.log combined_time
+    ServerSignature Off
 
 </VirtualHost>
