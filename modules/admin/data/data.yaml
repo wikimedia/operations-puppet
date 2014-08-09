@@ -69,7 +69,7 @@ groups:
   dataset-admins:
     gid: 710
     description: Users that do work on/ with dataset(s)
-    members: [brion, hoo]
+    members: [hoo]
     privs: ['ALL = (datasets) NOPASSWD: ALL']
   releasers-mediawiki:
     gid: 711
