@@ -217,7 +217,11 @@ groups:
     gid: 733
     description: Login access for eventlogging investigation
     members: [nuria, qchris]
-
+  labmon-roots:
+    gid: 734
+    description: Full root access to labmon nodes
+    members: []
+    privs: ['ALL = NOPASSWD: ALL']
 users:
   rush:
     ensure: present
