@@ -213,12 +213,14 @@ class hhvm(
         owner  => $user,
         group  => $group,
         mode   => '0755',
+        before => Service['hhvm'],
     }
 
     file { '/run/hhvm/cache':
-        ensure  => directory,
-        owner   => $user,
-        group   => $group,
-        mode    => '0750',
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0750',
+        before => Service['hhvm'],
     }
 }
