@@ -4,7 +4,6 @@ class mediawiki::web( $workers_limit = undef ) {
     include ::apache
     include ::mediawiki
     include ::mediawiki::monitoring::webserver
-    include ::mediawiki::web::envvars
     include ::mediawiki::web::modules
 
     $apache_server_limit = 256
@@ -26,7 +25,26 @@ class mediawiki::web( $workers_limit = undef ) {
         require => Package['apache2'],
     }
 
+    file { '/var/lock/apache2':
+        ensure  => directory,
+        owner   => 'apache',
+        group   => 'root',
+        mode    => '0755',
+        before  => File['/etc/apache2/apache2.conf'],
+    }
+
     apache::conf { 'prefork':
         content  => template('mediawiki/apache/prefork.conf.erb'),
+    }
+
+    apache::env { 'chuid_apache':
+        vars => {
+            'APACHE_RUN_USER'  => 'apache',
+            'APACHE_RUN_GROUP' => 'apache',
+        },
+    }
+
+    if ubuntu_version('>= trusty') {
+        apache::def { 'HHVM': }
     }
 }
