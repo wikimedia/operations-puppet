@@ -1174,7 +1174,6 @@ node 'francium.wikimedia.org' {
     include base::firewall
 
     include standard
-    include misc::blogs::wikimedia
 }
 
 # gadolinium is the webrequest socat multicast relay.
@@ -1247,7 +1246,6 @@ node 'holmium.wikimedia.org' {
     include base::firewall
 
     include standard
-    include misc::blogs::wikimedia
 }
 
 node 'hooft.esams.wikimedia.org' {
@@ -2499,7 +2497,6 @@ node 'stat1003.wikimedia.org' {
 
     include role::statistics::cruncher
 
-    include misc::statistics::cron_blog_pageviews
     include misc::statistics::limn::mobile_data_sync
     include misc::statistics::researchdb_password
 
