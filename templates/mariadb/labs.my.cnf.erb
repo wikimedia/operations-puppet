@@ -73,12 +73,25 @@ join_cache_level               = 8
 optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,engine_condition_pushdown=on,index_condition_pushdown=off'
 
 s1.replicate-wild-do-table = %wik%.%
+s1.replicate-wild-do-table = information_schema_p.%
+
 s2.replicate-wild-do-table = %wik%.%
+s2.replicate-wild-do-table = information_schema_p.%
+
 s3.replicate-wild-do-table = %wik%.%
+s3.replicate-wild-do-table = information_schema_p.%
+
 s4.replicate-wild-do-table = %wik%.%
+s4.replicate-wild-do-table = information_schema_p.%
+
 s5.replicate-wild-do-table = %wik%.%
+s5.replicate-wild-do-table = information_schema_p.%
+
 s6.replicate-wild-do-table = %wik%.%
+s6.replicate-wild-do-table = information_schema_p.%
+
 s7.replicate-wild-do-table = %wik%.%
+s7.replicate-wild-do-table = information_schema_p.%
 s7.replicate-wild-do-table = %auth%.%
 
 [mysqldump]
