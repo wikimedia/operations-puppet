@@ -4,4 +4,6 @@
     AuthLDAPBindDN <%= @ldap_binddn %>
     AuthLDAPBindPassword <%= @ldap_bindpass %>
     AuthLDAPURL "<%= @ldap_authurl %>"
-    Require ldap-group <%= @ldap_group %>
+    <% ldap_groups.each do |group| -%>
+    Require ldap-group <%= group %>
+    <% end -%>
