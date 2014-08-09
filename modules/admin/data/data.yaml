@@ -69,7 +69,7 @@ groups:
   dataset-admins:
     gid: 710
     description: does work on dataset hosts
-    members: [brion, hoo]
+    members: [hoo]
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
