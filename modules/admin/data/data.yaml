@@ -220,7 +220,7 @@ groups:
   labmon-roots:
     gid: 734
     description: Full root access to labmon nodes
-    members: []
+    members: [yuvipanda]
     privs: ['ALL = NOPASSWD: ALL']
 users:
   rush:
