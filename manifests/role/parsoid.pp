@@ -60,7 +60,7 @@ class role::parsoid::production {
         owner   => root,
         group   => root,
         mode    => '0444',
-        source => 'puppet:///files/misc/parsoid.upstart',
+        source  => 'puppet:///files/misc/parsoid.upstart',
     }
     file { '/var/log/parsoid':
         ensure => directory,
@@ -93,12 +93,12 @@ class role::parsoid::production {
     }
 
     cron { 'parsoid-hourly-logrot':
-        ensure  => present,
-        command => '/usr/sbin/logrotate /etc/logrotate.d/parsoid',
-        user    => 'root',
-        hour    => '*',
-        minute  => '12',
-       require => File['/etc/logrotate.d/parsoid'],
+        ensure   => present,
+        command  => '/usr/sbin/logrotate /etc/logrotate.d/parsoid',
+        user     => 'root',
+        hour     => '*',
+        minute   => '12',
+        require  => File['/etc/logrotate.d/parsoid'],
     }
 
     service { 'parsoid':
@@ -179,7 +179,7 @@ class role::parsoid::beta {
         owner   => root,
         group   => root,
         mode    => '0444',
-        source => 'puppet:///files/misc/parsoid.upstart',
+        source  => 'puppet:///files/misc/parsoid.upstart',
     }
 
     $parsoid_log_file = '/data/project/parsoid/parsoid.log'
