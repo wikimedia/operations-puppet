@@ -122,7 +122,7 @@ class role::zuul::server {
 } # /role::zuul::server
 
 class role::zuul::merger {
-    system::role { 'role::zuul::merver': description => 'Zuul merger' }
+    system::role { 'role::zuul::merger': description => 'Zuul merger' }
 
     if $::realm == 'production' {
         # We will receive replication of git bare repositories from Gerrit
