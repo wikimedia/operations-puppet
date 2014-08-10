@@ -729,6 +729,7 @@ class role::cache {
 
         include standard
         include nrpe
+        include passwords::network
 
         #class { "varnish::packages": version => "3.0.3plus~rc1-wm13" }
 
@@ -835,6 +836,7 @@ class role::cache {
                 }],
             cluster_options => {
                 'enable_geoiplookup' => true,
+                'hhvm_cookie'        => $passwords::network::hhvm_cookie,
             },
         }
 
@@ -1027,6 +1029,8 @@ class role::cache {
 
     class bits inherits role::cache::varnish::1layer {
 
+        include passwords::network
+
         class { 'lvs::realserver':
             realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site],
         }
@@ -1034,6 +1038,7 @@ class role::cache {
         $common_cluster_options = {
             'test_hostname'      => 'test.wikipedia.org',
             'enable_geoiplookup' => true,
+            'hhvm_cookie'        => $passwords::network::hhvm_cookie,
         }
 
         $default_backend = 'backend'
@@ -1131,6 +1136,7 @@ class role::cache {
 
         include standard
         include nrpe
+        include passwords::network
 
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
@@ -1172,12 +1178,14 @@ class role::cache {
             'production': {
                 $cluster_options = {
                     'enable_geoiplookup' => true,
+                    'hhvm_cookie'        => $passwords::network::hhvm_cookie,
                 }
             }
             'labs': {
                 $cluster_options = {
                     'enable_geoiplookup' => true,
                     'enable_esi'         => true,
+                    'hhvm_cookie'        => $passwords::network::hhvm_cookie,
                 }
             }
         }

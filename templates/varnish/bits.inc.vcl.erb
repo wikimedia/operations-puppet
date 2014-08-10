@@ -57,6 +57,11 @@ sub vcl_miss {
 			set req.backend = test_wikipedia;
 		}
 <% end -%>
+<% if cluster_options.fetch('hhvm_cookie', false) -%>
+		if (req.http.Orig-Cookie ~ "<%= cluster_options.fetch('hhvm_cookie') %>" || req.http.Cookie ~ "<%= cluster_options.fetch('hhvm_cookie') %>") {
+			set req.backend = hhvm;
+		}
+<% end -%>
 	}
 }
 <% end -%>
