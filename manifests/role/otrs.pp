@@ -71,12 +71,8 @@ class role::otrs (
         content => template('otrs/Config.pm.erb'),
     }
 
-    file { '/etc/apache2/sites-enabled/ticket.wikimedia.org':
-        ensure => 'file',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///files/apache/sites/ticket.wikimedia.org',
+    apache::site { 'ticket.wikimedia.org':
+        content => template('apache/sites/ticket.wikimedia.org.erb'),
     }
 
     file { '/etc/cron.d/otrs':
