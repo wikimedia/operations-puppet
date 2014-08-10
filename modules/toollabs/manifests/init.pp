@@ -112,19 +112,15 @@ class toollabs {
     # Trustworthy enough
     # Only necessary on precise hosts, trusty has its own mariadb package
     if $::lsbdistcodename == 'precise' {
-        file { '/etc/apt/sources.list.d/mariadb.list':
-            ensure  => file,
-            content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu $::lsbdistcodename main\n",
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
+        apt::repository { 'mariadb':
+            uri        => 'http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu',
+            dist       => $::lsbdistcodename,
+            components => 'main',
+            source     => false,
+            keyfile    => 'puppet:///modules/toollabs/mariadb.gpg',
         }
         file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
-            ensure => file,
-            source => 'puppet:///modules/toollabs/mariadb.gpg',
-            mode => '0444',
-            owner => 'root',
-            group => 'root',
+            ensure => absent,
         }
     }
 
