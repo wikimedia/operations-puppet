@@ -416,6 +416,9 @@ class role::cache {
                     'pmtpa' => [ 'mw1017.eqiad.wmnet' ],
                     'eqiad' => [ 'mw1017.eqiad.wmnet' ],
                 },
+                'hhvm_appservers' => {
+                    'eqiad' => [ 'mw1017.eqiad.wmnet' ],
+                },
                 'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid']
             },
             'labs' => {
@@ -713,6 +716,7 @@ class role::cache {
                 'api'           => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
                 'rendering'     => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
                 'test_wikipedia'=> $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+                'hhvm'          => $role::cache::configuration::backends[$::realm]['hhvm'][$::mw_primary],
             },
             2 => {
                 'eqiad' => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
@@ -1037,6 +1041,7 @@ class role::cache {
             1 => {
                 'backend' => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
                 'test_wikipedia' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+                'hhvm' => $::role::cache::configuration::backends[$::realm]['hhvm'][$::mw_primary],
             },
             2 => {
                 'backend' => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits'])))
@@ -1135,6 +1140,7 @@ class role::cache {
                 'backend'        => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
                 'api'            => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
                 'test_wikipedia' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+                'hhvm'           => $role::cache::configuration::backends[$::realm]['hhvm'][$::mw_primary],
             },
             2 => {
                 'eqiad' => $role::cache::configuration::active_nodes[$::realm]['mobile']['eqiad'],
