@@ -29,6 +29,12 @@
 #   Path to file containing configuration directives. Undefined by
 #   default. Mutually exclusive with 'content'.
 #
+# [*replaces*]
+#   A relative path to a file that is superseded by this one. Can be
+#   useful when redefining module configurations in ways incompatible
+#   with what shipped by the distribution. If the path is not empty,
+#   this will ensure the removal of the replaced file.
+#
 # === Examples
 #
 #  apache::conf { 'blog.wikimedia.org':
@@ -42,6 +48,7 @@ define apache::conf(
     $priority  = 50,
     $content   = undef,
     $source    = undef,
+    $replaces  = undef,
 ) {
     include ::apache
 
@@ -68,5 +75,12 @@ define apache::conf(
         ensure  => ensure_link($ensure),
         target  => "/etc/apache2/${conf_type}-available/${conf_file}",
         notify  => Service['apache2'],
+    }
+
+    if $replaces != undef {
+        file { "${title_safe}_${replaces}":
+            path   => "/etc/apache2/${replaces}",
+            ensure => absent,
+        }
     }
 }
