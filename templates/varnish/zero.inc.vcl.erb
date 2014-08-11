@@ -245,6 +245,7 @@ sub tag_carrier {
 		} else if ((req.http.X-Forwarded-By != "Opera" && (
 					req.http.X-CS2 == "426-04" ||
 					req.http.X-CS2 == "250-99" ||
+					req.http.X-CS2 == "436-01" ||
 					req.http.X-CS2 == "436-04"
 					)) ||
 				    req.http.X-CS2 ~ "^TESTON.*") {
@@ -334,12 +335,14 @@ sub vcl_deliver {
 		// until they finish their migration
 		// According to qchris, analytics can handle language and subdomain, but not proxy or https
 		unset req.http.X-CS;
-		if (req.http.X-CS2 == "426-04") {
+		if (req.http.X-CS2 == "426-04" ||
+			req.http.X-CS2 == "436-01" ||
+			req.http.X-CS2 == "436-04"
+		) {
+			// These carriers support HTTPS DIRECT connections (no proxies)
 			if (!req.http.X-Forwarded-By) {
 				set req.http.X-CS = req.http.X-CS2;
 			}
-		} else if (req.http.X-CS2 == "436-04") {
-			set req.http.X-CS = req.http.X-CS2;
 		} else if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
 			// Default for NON-HTTPS DIRECT connections
 			// Handles: 250-99
