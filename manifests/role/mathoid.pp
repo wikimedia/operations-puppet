@@ -32,6 +32,8 @@ class role::mathoid::beta {
         mode => '755',
     }
 
+    deployment::target { 'mathoid': }
+
     group { 'mathoid':
         ensure => present,
         name   => 'mathoid',
