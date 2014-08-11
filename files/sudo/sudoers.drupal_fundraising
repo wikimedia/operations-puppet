@@ -1,4 +1,0 @@
-# This file is managed by Puppet!
-# group-based sudo policy for drupal/drush
-#%www-data ALL = (www-data) NOPASSWD: /srv/drush/drush.php
-%www-data ALL = (www-data) NOPASSWD: /usr/local/drush/drush.php

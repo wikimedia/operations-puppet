@@ -1034,15 +1034,7 @@ node 'tarin.pmtpa.wmnet' {
 }
 
 node 'aluminium.wikimedia.org' {
-    $cluster = 'fundraising'
     include admin
-    include role::fundraising::civicrm
-    include role::logging::systemusers
-
-    interface::ip { 'fundraising.wikimedia.org':
-        interface => 'eth0',
-        address   => '208.80.154.12',
-    }
 }
 
 # erbium is a webrequest udp2log host
