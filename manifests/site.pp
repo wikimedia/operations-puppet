@@ -186,6 +186,7 @@ node 'analytics1010.eqiad.wmnet' {
 # used for Hadoop network topology awareness.
 node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
     $nagios_group = 'analytics_eqiad'
+    $gelf_logging_enabled = true
     # ganglia cluster name.
     $cluster = 'analytics'
     # analytics1014 is analytics Ganglia aggregator for Row C
