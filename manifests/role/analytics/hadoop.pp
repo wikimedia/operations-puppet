@@ -55,6 +55,8 @@ class role::analytics::hadoop::config {
     $mapreduce_output_compression_type        = 'BLOCK'
     $mapreduce_job_reuse_jvm_num_tasks        = 1
     $fair_scheduler_template                  = 'hadoop/fair-scheduler.xml.erb'
+    # setting this to false or undef interferes with defining it within a node
+    #$gelf_logging_enabled                     = true
 
 
     # Configs specific to Production.
@@ -127,6 +129,7 @@ class role::analytics::hadoop::config {
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host = '239.192.1.32'
         $ganglia_port = 8649
+        $gelf_logging_host                        = "logstash1001.eqiad.wmnet"
     }
 
     # Configs specific to Labs.
@@ -178,6 +181,7 @@ class role::analytics::hadoop::config {
 
         $ganglia_host = 'aggregator.eqiad.wmflabs'
         $ganglia_port = 50090
+        $gelf_logging_host                        = "127.0.0.1"
 
         # Hadoop directories in labs should be automatically created.
         # This conditional could be added to each of the main classes
@@ -237,6 +241,9 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         net_topology_script_template             => $net_topology_script_template,
         # Use fair-scheduler.xml.erb to define FairScheduler queues.
         fair_scheduler_template                  => $fair_scheduler_template,
+        gelf_logging_enabled                     => $gelf_logging_enabled,
+        gelf_logging_host                        => $gelf_logging_host,
+        gelf_logging_port                        => $gelf_logging_port,
     }
 
     # If in production AND the current node is a journalnode, then
@@ -246,6 +253,26 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             description  => 'Hadoop JournalNode',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
             require      => Class['cdh::hadoop'],
+        }
+    }
+    if $gelf_logging_enabled {
+        package { 'libjson-simple-java':
+            ensure => 'installed',
+        }
+        # symlink into hadoop classpath
+        file { '/usr/lib/hadoop/lib/json_simple-1.1.jar':
+            ensure => 'link',
+            target => '/usr/share/java/json_simple-1.1.jar',
+            require => Package['libjson-simple-java'],
+        }
+        package { 'liblogstash-gelf-java':
+            ensure => 'installed',
+        }
+        # symlink into hadoop classpath
+        file { '/usr/lib/hadoop/lib/logstash-gelf.jar':
+            ensure => 'link',
+            target => '/usr/share/java/logstash-gelf.jar',
+            require => Package['liblogstash-gelf-java'],
         }
     }
 }
