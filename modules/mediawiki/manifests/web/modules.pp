@@ -12,6 +12,12 @@ class mediawiki::web::modules {
 
     if ubuntu_version('>= trusty') {
         include ::apache::mod::proxy_fcgi
+
+        # Debian packages we do install on appservers enable this
+        # automagically. Also being explicit cannot do any harm...
+        apache::mod_conf { 'php5':
+            ensure => absent
+        }
     } else {
         include ::apache::mod::php5
     }
