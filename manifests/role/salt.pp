@@ -89,54 +89,30 @@ class role::salt::masters::labs::project_master {
 }
 
 class role::salt::minions {
+    if $::realm == 'labs' {
+        $labs_masters  = [ 'virt1000.wikimedia.org', 'virt0.wikimedia.org' ]
+        $labs_finger   = 'c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd'
+        $master        = pick($::salt_master_override, $labs_masters)
+        $master_finger = pick($::salt_master_finger_override, $master_finger)
+        $client_id     = "${::ec2id}.${::domain}"
 
-    if ($::realm == 'labs') {
-        if ( $::salt_master_override != undef ) {
-            $salt_master = $::salt_master_override
-        } else {
-            $salt_master = $::site ? {
-                'pmtpa' => ['virt0.wikimedia.org', 'virt1000.wikimedia.org'],
-                'eqiad' => ['virt1000.wikimedia.org', 'virt0.wikimedia.org'],
-            }
-        }
-        if ( $::salt_master_finger_override != undef ) {
-            $salt_master_finger = $::salt_master_finger_override
-        } else {
-            $salt_master_finger = 'c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd'
-        }
-        $salt_client_id = "${dc}"
-        $salt_grains = {
-            'instanceproject' => $instanceproject,
-            'realm'           => $::realm,
-            'site'            => $::site,
-            'cluster'         => $cluster,
+        salt::grain { 'instanceproject':
+            value => $::instanceproject,
         }
     } else {
-        ## Disabling multi-master salt for now, until synchronization
-        ## issues are handled for puppet managing salt.
-        ## When minions fetch modules/returners/pillars/etc. it's necessary
-        ## for both salt masters to have the same sets of data or
-        ## inconsistencies can occur.
-        #$salt_master = $site ? {
-        #   "pmtpa" => [ "sockpuppet.pmtpa.wmnet", "palladium.eqiad.wmnet" ],
-        #   "eqiad" => [ "palladium.eqiad.wmnet", "sockpuppet.pmtpa.wmnet" ],
-        #}
-        $salt_master = 'palladium.eqiad.wmnet'
-        $salt_client_id = $::fqdn
-        $salt_grains = {
-            'realm'   => $::realm,
-            'site'    => $::site,
-            'cluster' => $cluster,
-        }
-        $salt_master_finger = 'f6:1d:a7:1f:7e:12:10:40:75:d5:73:af:0c:be:7d:7c'
+        $master        = 'palladium.eqiad.wmnet'
+        $master_finger = 'f6:1d:a7:1f:7e:12:10:40:75:d5:73:af:0c:be:7d:7c'
+        $client_id     = $::fqdn
     }
 
-    class { 'salt::minion':
-        salt_master        => $salt_master,
-        salt_client_id     => $salt_client_id,
-        salt_grains        => $salt_grains,
-        salt_master_finger => $salt_master_finger,
-        salt_dns_check     => 'False',
+    class { '::salt::minion':
+        id            => $client_id,
+        master        => $master,
+        master_finger => $master_finger,
+        grains         => {
+            realm   => $::realm,
+            site    => $::site,
+            cluster => $::cluster,
+        },
     }
-
 }
