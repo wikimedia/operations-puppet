@@ -12,9 +12,12 @@ class mediawiki::hhvm {
         user          => 'apache',
         group         => 'apache',
         fcgi_settings => {
-            hhvm => { server => { source_root => '/usr/local/apache/common/docroot' } },
+            hhvm => {
+                server => {
+                    source_root => '/usr/local/apache/common/docroot',
+                },
+            },
         },
-        require       => User['apache'],
     }
 
     alternatives::config { 'php':
