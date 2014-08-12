@@ -53,7 +53,7 @@ define admin::user (
     $ssh_keys = [],
     )
 {
-    validate_re($ensure, '^(present|absent)$')
+    validate_ensure($ensure)
 
     user { $name:
         ensure     => $ensure,

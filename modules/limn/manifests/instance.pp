@@ -19,6 +19,8 @@ define limn::instance (
 {
   require limn
 
+  validate_ensure($ensure)
+
   if !defined(File[$base_directory]) {
     file { $base_directory:
       ensure => 'directory',
