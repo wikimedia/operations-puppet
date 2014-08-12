@@ -3,11 +3,6 @@
 #### puppet:///modules/install-server/dhcpd/linux-host-entries.ttyS1-115200
 ######################################################################
 
-host aluminium {
-	hardware ethernet d4:ae:52:65:05:2a;
-	fixed-address aluminium.wikimedia.org;
-}
-
 host amslvs1 {
 	hardware ethernet a4:ba:db:38:e2:5e;
 	fixed-address amslvs1.esams.wikimedia.org;

@@ -1041,10 +1041,6 @@ node 'tarin.pmtpa.wmnet' {
     include role::poolcounter
 }
 
-node 'aluminium.wikimedia.org' {
-    include admin
-}
-
 # erbium is a webrequest udp2log host
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
@@ -2886,8 +2882,9 @@ node default {
     }
 }
 
-# as of 2013-11-18 these fundraising servers use frack puppet
+# as of 2014-08-12 these fundraising servers use frack puppet
 #
+# aluminium.frack.eqiad.wmnet
 # barium.frack.eqiad.wmnet
 # boron.frack.eqiad.wmnet
 # db1008.frack.eqiad.wmnet
