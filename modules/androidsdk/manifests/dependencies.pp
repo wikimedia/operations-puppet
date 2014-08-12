@@ -17,6 +17,12 @@ class androidsdk::dependencies( $ensure = 'present' ) {
         }
     }
 
+    if ! defined(Package['openjdk-7-jdk']) {
+        package { 'openjdk-7-jdk':
+            ensure => $ensure,
+        }
+    }
+
     # 32bit libs needed by Android SDK
     # ..but NOT just all of ia32-libs ..
     package { [
