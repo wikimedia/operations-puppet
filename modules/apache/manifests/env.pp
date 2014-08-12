@@ -33,6 +33,7 @@ define apache::env(
 ) {
     include ::apache
 
+    validate_ensure($ensure)
     validate_hash($vars)
 
     apache::conf { $title:

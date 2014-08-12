@@ -21,6 +21,8 @@ define apache::mod_conf(
     $mod      = $title,
     $loadfile = "${title}.load",
 ) {
+    validate_ensure($ensure)
+
     include ::apache
 
     if $ensure == present {
@@ -30,14 +32,12 @@ define apache::mod_conf(
             require => Package['apache2'],
             notify  => Service['apache2'],
         }
-    } elsif $ensure == absent {
+    } else {
         exec { "ensure_${ensure}_mod_${mod}":
             command => "/usr/sbin/a2dismod ${mod}",
             onlyif  => "/usr/bin/test -L /etc/apache2/mods-enabled/${loadfile}",
             require => Package['apache2'],
             notify  => Service['apache2'],
         }
-    } else {
-        fail("'${ensure}' is not a valid value for ensure.")
     }
 }

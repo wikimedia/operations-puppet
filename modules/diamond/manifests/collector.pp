@@ -52,6 +52,8 @@ define diamond::collector(
     $ensure   = present,
     $source   = undef,
 ) {
+    validate_ensure($ensure)
+
     include ::diamond
 
     $collector = regsubst($name, '(Collector)?$', 'Collector')

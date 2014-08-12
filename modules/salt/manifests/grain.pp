@@ -36,6 +36,8 @@ define salt::grain(
         $ensure = present,
         $replace = false,
 ){
+    validate_ensure($ensure)
+
     $command = $replace ? {
         true    => 'set',
         default => 'add',

@@ -45,8 +45,8 @@ define apache::conf(
 ) {
     include ::apache
 
+    validate_ensure($ensure)
     if $priority  !~ /^\d?\d$/                 { fail('"priority" must be between 0 - 99')             }
-    if $ensure    !~ /^(present|absent)$/      { fail('"ensure" must be "present" or "absent"')        }
     if !($conf_type in $::apache::conf_types)  { fail("invalid conf_type '$conf_type'")                }
     if $source == undef and $content == undef  { fail('you must provide either "source" or "content"') }
     if $source != undef and $content != undef  { fail('"source" and "content" are mutually exclusive') }
