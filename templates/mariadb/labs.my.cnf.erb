@@ -67,6 +67,8 @@ tokudb_data_dir                = /srv/tokudb
 tokudb_cache_size              = <%= (Float(@memorysize.split[0]) * 0.50).round %>G
 tokudb_lock_timeout            = 50000
 tokudb_empty_scan              = disabled
+tokudb_read_buf_size           = 256K
+tokudb_pk_insert_mode          = 2
 join_cache_level               = 8
 
 # index_condition_pushdown=off https://github.com/Tokutek/mariadb-5.5/issues/39
