@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Manually specifying --defaults-file because mysqld_multi
+# will detect our /etc/mysql/my.cnf symlink as a second cnf
+# and try to start each instance twice.
+
+case "$1" in
+    start)
+        mysqld_multi --defaults-file=/etc/my.cnf start 1-7
+        ;;
+    stop)
+        mysqld_multi --defaults-file=/etc/my.cnf stop 1-7
+        ;;
+    status)
+        mysqld_multi --defaults-file=/etc/my.cnf report
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status}"
+        exit 1
+esac
+exit 0

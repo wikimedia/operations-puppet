@@ -288,6 +288,8 @@ class role::mariadb::sanitarium {
         password  => $passwords::misc::scripts::mysql_root_pass,
     }
 
+    # One instance per shard using mysqld_multi.
+    # This allows us to send separate replication channels downstream.
     $folders = [
         "/srv/sqldata.s1",
         "/srv/sqldata.s2",
@@ -310,6 +312,24 @@ class role::mariadb::sanitarium {
         owner  => 'mysql',
         group  => 'mysql',
         mode   => '0755',
+    }
+
+    # mysqld_multi wrapper
+    file { '/etc/init.d/mariadb':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('mariadb/sanitarium.sysvinit.erb'),
+    }
+    file { '/etc/init.d/mysql':
+        ensure => link,
+        target => '/etc/init.d/mariadb',
+    }
+
+    include mariadb::monitor_disk
+
+    class { 'mariadb::monitor_process':
+        process_count => 7,
     }
 }
 
