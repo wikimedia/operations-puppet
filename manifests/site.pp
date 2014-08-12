@@ -947,6 +947,13 @@ node 'db1057.eqiad.wmnet' {
     }
 }
 
+node 'db1069.eqiad.wmnet' {
+
+    include admin
+    $cluster = 'mysql'
+    include role::mariadb::sanitarium
+}
+
 node 'db1011.eqiad.wmnet' {
 
     include admin

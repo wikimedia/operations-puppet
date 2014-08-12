@@ -269,6 +269,50 @@ class role::mariadb::core(
     #include mariadb::monitor_process
 }
 
+class role::mariadb::sanitarium {
+
+    system::role { "role::mariadb::sanitarium":
+        description => "Sanitarium DB Server",
+    }
+
+    include standard
+    include passwords::misc::scripts
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
+    class { 'mariadb::config':
+        prompt    => "SANITARIUM",
+        config    => 'mariadb/sanitarium.my.cnf.erb',
+        password  => $passwords::misc::scripts::mysql_root_pass,
+    }
+
+    $folders = [
+        "/srv/sqldata.s1",
+        "/srv/sqldata.s2",
+        "/srv/sqldata.s3",
+        "/srv/sqldata.s4",
+        "/srv/sqldata.s5",
+        "/srv/sqldata.s6",
+        "/srv/sqldata.s7",
+        "/srv/tmp.s1",
+        "/srv/tmp.s2",
+        "/srv/tmp.s3",
+        "/srv/tmp.s4",
+        "/srv/tmp.s5",
+        "/srv/tmp.s6",
+        "/srv/tmp.s7",
+    ]
+
+    file { $folders:
+        ensure => directory,
+        owner  => 'mysql',
+        group  => 'mysql',
+        mode   => '0755',
+    }
+}
+
 # MariaDB 10 labsdb multiple-shards slave.
 # This role currently duplicates much of mariadb::config. This is necessary
 # while mysql_multi_instance is still applied to labsdb100[123], as there
