@@ -20,6 +20,8 @@ class role::osm::common {
             'kernel.shmmax' => 8388608000,
         },
     }
+
+    ganglia::plugin::python { 'diskstat': }
 }
 
 class role::osm::master {
