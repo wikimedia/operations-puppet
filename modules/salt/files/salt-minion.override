@@ -1,0 +1,7 @@
+# salt-minion.override: validate salt-minion config before starting.
+# This file is managed by Puppet.
+pre-start script
+  [ -f /etc/default/salt-minion ] && . /etc/default/salt-minion
+  /usr/bin/salt-call --out=txt test.ping 2>/dev/null | grep -q True
+end script
+# vim: set ft=upstart:
