@@ -1,26 +1,56 @@
+# == Class: salt::minion
+#
+# Provisions a Salt minion.
+#
+# === Parameters
+#
+# [*master*]
+#   Sets the location of the salt master server. May be a string or
+#   an array (for multi-master setups).
+#
+# [*master_finger*]
+#   Fingerprint of the master public key to double verify the master
+#   is valid. Find the fingerprint by running 'salt-key -F master' on
+#   the salt master.
+#
+# [*id*]
+#   Explicitly declare the ID for this minion to use.
+#   Defaults to the value of $::fqdn.
+#
+# [*grains*]
+#   An optional hash of custom static grains for this minion.
+#
+# === Examples
+#
+#   class { '::salt::minion':
+#     master          => 'saltmaster.eqiad.wmnet',
+#     master_finger   => 'a0:ce:17:67:fb:1e:07:da:c7:5f:45:27:d7:f3:11:d0'
+#     grains          => {
+#       cluster => $::cluster,
+#     },
+#   }
+#
 class salt::minion(
-    $salt_version='installed',
-    $salt_master=undef,
-    $salt_client_id=undef,
-    $salt_cache_jobs=undef,
-    $salt_module_dirs="[]",
-    $salt_returner_dirs="[]",
-    $salt_returner_dirs="[]",
-    $salt_states_dirs="[]",
-    $salt_render_dirs="[]",
-    $salt_grains={},
-    $salt_environment=undef,
-    $salt_master_finger=undef,
-    $salt_dns_check=undef,
-){
+    $master,
+    $master_finger,
+    $id        = $::fqdn,
+    $grains    = {},
+) {
+    $config = {
+        id            => $client_id,
+        master        => $master,
+        master_finger => $master_finger,
+        grains        => $grains,
+        dns_check     => false,
+    }
+
     package { 'salt-minion':
-        ensure => $salt_version,
+        ensure => present,
     }
 
     service { 'salt-minion':
-        ensure  => running,
-        enable  => true,
-        require => Package['salt-minion'],
+        ensure   => running,
+        provider => 'upstart',
     }
 
     file { '/etc/init/salt-minion.override':
@@ -33,7 +63,7 @@ class salt::minion(
     }
 
     file { '/etc/salt/minion':
-        content => template('salt/minion.erb'),
+        content => ordered_yaml($config),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
