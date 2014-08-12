@@ -23,6 +23,15 @@ class salt::minion(
         require => Package['salt-minion'],
     }
 
+    file { '/etc/init/salt-minion.override':
+        source  => 'puppet:///modules/salt/salt-minion.override',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        before  => Service['salt-minion'],
+        require => Package['salt-minion'],
+    }
+
     file { '/etc/salt/minion':
         content => template('salt/minion.erb'),
         owner   => 'root',
