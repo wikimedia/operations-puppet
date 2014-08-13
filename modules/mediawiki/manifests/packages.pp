@@ -1,40 +1,18 @@
 class mediawiki::packages {
+    if ubuntu_version('precise') {
+        include mediawiki::packages::php5
+    }
+
     package { [
         'imagemagick',
         'python-imaging',
-        'libmemcached10',       # XXX still needed?
-        'php-apc',
+    ]:
+        ensure => present,
+    }
+
+    # Pear
+    package { [
         'php-pear',
-        'php5-cli',
-        'php5-common',
-    ]:
-        ensure => present,
-    }
-
-    # Standard PHP extensions
-    package { [
-        'php5-curl',
-        'php5-geoip',
-        'php5-intl',
-        'php5-memcached',
-        'php5-mysql',
-        'php5-redis',
-        'php5-xmlrpc',
-    ]:
-        ensure => present,
-    }
-
-    # Wikimedia-specific PHP extensions
-    package { [
-        'php-luasandbox',
-        'php-wikidiff2',
-        'php5-fss',
-    ]:
-        ensure => present,
-    }
-
-    # Pear modules
-    package { [
         'php-mail',
         'php-mail-mime',
     ]:
@@ -96,15 +74,5 @@ class mediawiki::packages {
         'tidy',
     ]:
         ensure => present,
-    }
-
-    if ubuntu_version('precise') {
-        package { [
-            'libmemcached11',  # formerly a dependency for php5-memcached
-            'php5-igbinary',   # no longer in use
-            'php5-wmerrors',   # functionality built-in to HHVM
-        ]:
-            ensure => present,
-        }
     }
 }
