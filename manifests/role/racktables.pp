@@ -36,6 +36,7 @@ class role::racktables {
         }
     }
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
     apache::site { 'racktables.wikimedia.org':
         content => template('apache/sites/racktables.wikimedia.org.erb'),
