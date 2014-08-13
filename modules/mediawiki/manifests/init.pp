@@ -3,6 +3,8 @@ class mediawiki {
     include ::mediawiki::packages
     include ::mediawiki::sync
     include ::mediawiki::users
+    include ::mediawiki::syslog
+    include ::mediawiki::php
 
     include ::ssh::server
 
