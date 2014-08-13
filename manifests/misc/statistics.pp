@@ -322,8 +322,11 @@ class misc::statistics::sites::stats {
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///files/apache/ports.conf.ssl',
+        source => 'puppet:///files/apache/ports.conf.ssl',
     }
+
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
 }
 
 # community-analytics.wikimedia.org
