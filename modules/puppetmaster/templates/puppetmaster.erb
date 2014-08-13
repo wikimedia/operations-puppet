@@ -13,8 +13,6 @@ RailsAutoDetect Off
 <%- if @server_type == 'frontend' or @server_type == 'standalone' -%>
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
 	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
 
 	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= scope.lookupvar('puppetmaster::server_name') %>.pem
 	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= scope.lookupvar('puppetmaster::server_name') %>.pem
@@ -26,6 +24,7 @@ RailsAutoDetect Off
 	SSLVerifyClient <%= scope.lookupvar('puppetmaster::passenger::verify_client') %>
 	SSLVerifyDepth  1
 	SSLOptions +StdEnvVars
+	<%= @ssl_settings.join("\n") %>
 
 	<%- if @server_type == 'frontend' -%>
 	# These request headers are used to pass the client certificate
