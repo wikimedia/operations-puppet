@@ -8,6 +8,7 @@ class role::puppetmaster::config {
             '*.ulsfo.wmnet',
             '*.esams.wmnet',
         ]
+
 }
 
 class role::puppetmaster::frontend {
