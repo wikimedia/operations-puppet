@@ -27,17 +27,13 @@ class puppetmaster::passenger(
         ensure => latest;
     }
 
-    file {
-        '/etc/apache2/sites-enabled/puppetmaster':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('puppetmaster/puppetmaster.erb');
-        '/etc/apache2/ports.conf':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('puppetmaster/ports.conf.erb');
+    apache::site { 'puppetmaster.wikimedia.org':
+        content => template('puppetmaster/puppetmaster.erb'),
+    }
+
+    apache::conf { 'puppetmaster_ports':
+        ensure  => present,
+        content => template('puppetmaster/ports.conf.erb'),
     }
 
     include ::apache::mod::passenger
