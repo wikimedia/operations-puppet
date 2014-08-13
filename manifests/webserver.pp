@@ -145,6 +145,12 @@ class webserver::apache {
         $ensure       = 'present',
         ) {
 
+        if ubuntu_version('>= trusty') {
+            $ssl_settings = ssl_ciphersuite('apache-2.4', 'compat')
+        } else {
+            $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+        }
+
         file { "/etc/apache2/sites-enabled/${title}":
             notify  => Service['apache2'],
             owner   => 'root',
