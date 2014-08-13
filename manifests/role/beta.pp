@@ -90,14 +90,6 @@ class role::beta::appserver {
 
     include ::beta::common
 
-    class { '::mediawiki::syslog':
-        log_aggregator => 'deployment-bastion.eqiad.wmflabs:8420',
-    }
-
-    class { '::mediawiki::php':
-        fatal_log_file => 'udp://deployment-bastion.eqiad.wmflabs:8420',
-    }
-
     class { '::mediawiki::web': }
 
     apache::site { 'beta_cluster':
