@@ -49,19 +49,13 @@ class contint::website(
   }
 
   # Apache configuration for integration.wikimedia.org
-  file { '/etc/apache2/sites-enabled/integration.wikimedia.org':
-    mode    => '0444',
-    owner   => 'root',
-    group   => 'root',
+  apache::site { 'integration.wikimedia.org':
     content => template('contint/apache/integration.wikimedia.org.erb'),
   }
 
   # Apache configuration for integration.mediawiki.org
-  file { '/etc/apache2/sites-enabled/integration.mediawiki.org':
-    mode   => '0444',
-    owner  => 'root',
-    group  => 'root',
-    source => 'puppet:///modules/contint/apache/integration.mediawiki.org',
+  apache::site { 'integration.mediawiki.org':
+    content => template('contint/apache/integration.mediawiki.org.erb',
   }
 
   # Written to by jenkins for automatically generated
@@ -72,11 +66,10 @@ class contint::website(
     owner  => 'jenkins-slave',
     group  => 'jenkins-slave',
   }
-  file { '/etc/apache2/sites-enabled/doc.wikimedia.org':
-    mode   => '0444',
-    owner  => 'root',
-    group  => 'root',
-    source => 'puppet:///modules/contint/apache/doc.wikimedia.org',
+
+  # Apache configuration for doc.wikimedia.org
+  apache::site { 'doc.wikimedia.org':
+    content => template('contint/apache/doc.wikimedia.org.erb',
   }
 
 }
