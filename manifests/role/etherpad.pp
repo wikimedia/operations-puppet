@@ -25,6 +25,8 @@ class role::etherpad{
         'default': {
             fail('unknown realm, should be labs or production')
         }
+
+        $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
     }
 
     class { '::etherpad':
