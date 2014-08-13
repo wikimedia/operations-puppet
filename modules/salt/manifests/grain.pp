@@ -21,39 +21,33 @@
 #
 # === Examples
 #
-#  salt::grain { 'deployment_target':
-#    value => 'parsoid',
-#  }
-#
 #  salt::grain { 'cluster':
-#    value => 'eqiad_text_cache',
+#    value   => 'eqiad_text_cache',
 #    replace => true,
 #  }
 #
 define salt::grain(
-        $value,
-        $grain  = $title,
-        $ensure = present,
-        $replace = false,
-){
+    $value,
+    $grain   = $title,
+    $ensure  = present,
+    $replace = false,
+) {
     validate_ensure($ensure)
+    validate_bool($replace)
 
-    $command = $replace ? {
-        true    => 'set',
-        default => 'add',
+    if $ensure == 'present' {
+        if $replace { $subcommand = 'set' } else { $subcommand = 'add' }
+        $onlyif     = undef
+        $unless     = "/usr/local/sbin/grain-ensure contains ${grain} ${value}"
+    } else {
+        $subcommand = 'remove'
+        $onlyif     = "/usr/local/sbin/grain-ensure contains ${grain} ${value}"
+        $unless     = undef
     }
-    case $ensure {
-        'absent': {
-            exec { "/usr/local/sbin/grain-ensure remove ${grain} ${value}":
-                onlyif  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
-                require => File['/usr/local/sbin/grain-ensure'],
-            }
-        }
-        'present': {
-            exec { "/usr/local/sbin/grain-ensure ${command} ${grain} ${value}":
-                unless  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
-                require => File['/usr/local/sbin/grain-ensure'],
-            }
-        }
+
+    exec { "ensure_${grain}_${value}":
+        command => "/usr/local/sbin/grain-ensure ${subcommand} ${grain} ${value}",
+        onlyif  => $onlyif,
+        unless  => $unless,
     }
 }
