@@ -696,30 +696,39 @@ class icinga::monitor::naggen {
 }
 
 # NSCA - Nagios Service Check Acceptor
-# package contains daemon and client script
-class icinga::nsca {
-
-    package { 'nsca':
-        ensure => latest,
-    }
-
-}
-
 # NSCA - daemon config
 class icinga::monitor::nsca::daemon {
 
     system::role { 'icinga::nsca::daemon': description => 'Nagios Service Checks Acceptor Daemon' }
 
-    require icinga::nsca
+    package { 'nsca':
+        ensure => latest,
+    }
 
     file { '/etc/nsca.cfg':
-        source => 'puppet:///private/icinga/nsca.cfg',
-        owner  => 'root',
-        mode   => '0400',
+        source  => 'puppet:///private/icinga/nsca.cfg',
+        owner   => 'root',
+        mode    => '0400',
+        require => Package['nsca'],
     }
 
     service { 'nsca':
-        ensure => running,
+        ensure  => running,
+        require => File['/etc/nsca.cfg'],
+    }
+}
+
+# NSCA - client config
+class icinga::monitor::nsca::client {
+    package { 'nsca-client':
+        ensure => 'installed',
+    }
+
+    file { '/etc/send_nsca.cfg':
+        source  => 'puppet:///private/icinga/send_nsca.cfg',
+        owner   => 'root',
+        mode    => '0400',
+        require => Package['nsca-client'],
     }
 }
 
