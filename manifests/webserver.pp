@@ -145,6 +145,8 @@ class webserver::apache {
         $ensure       = 'present',
         ) {
 
+        $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
         file { "/etc/apache2/sites-enabled/${title}":
             notify  => Service['apache2'],
             owner   => 'root',
