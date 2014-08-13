@@ -5,6 +5,8 @@ class role::gitblit {
 
     include role::gerrit::production::replicationdest
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
     class { '::gitblit':
         host         => 'git.wikimedia.org',
         ssl_cert     => 'git.wikimedia.org',
