@@ -294,13 +294,10 @@ class gerrit::proxy( $no_apache = true,
         require webserver::apache
     }
 
-    file { '/etc/apache2/sites-enabled/gerrit.wikimedia.org':
-        ensure  => present,
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
+    apache::site { 'gerrit.wikimedia.org':
         content => template('apache/sites/gerrit.wikimedia.org.erb'),
     }
+
 # We don't use gitweb anymore, so we're going to allow spiders again
 # If it becomes a problem, just set ensure => present again
     file { '/var/www/robots.txt':
