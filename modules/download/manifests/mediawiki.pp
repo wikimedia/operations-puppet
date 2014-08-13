@@ -2,15 +2,8 @@ class download::mediawiki {
 
     system::role { 'download::mediawiki': description => 'MediaWiki download' }
 
-    package { 'apache':
-        ensure => present,
-    }
-
-    file { '/etc/apache2/sites-enabled/download.mediawiki.org':
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/downloads/apache/download.mediawiki.org',
+    apache::site { 'download.mediawiki.org':
+        content => template('download/apache/download.mediawiki.org.erb'),
     }
 
     file { '/srv/org/mediawiki':
