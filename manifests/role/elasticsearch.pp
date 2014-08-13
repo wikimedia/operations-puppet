@@ -86,7 +86,7 @@ class role::elasticsearch::config {
         # We're not turning on awareness_attributes right yet.  We'll do that
         # with the setting update API after things settle down with the 1.0
         # release then we'll update puppet.
-        $awareness_attributes = undef
+        $awareness_attributes = 'row'
         $unicast_hosts        = undef
 
         # Production elasticsearch needs these plugins to be loaded in order
