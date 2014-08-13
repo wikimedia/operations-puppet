@@ -24,14 +24,8 @@ define limn::instance::proxy (
   $server_aliases  = '')
 {
   # Configure the Apache Limn instance proxy VirtualHost.
-  $priority = 10
-  file { "${priority}-limn-${name}.conf":
-    path    => "/etc/apache2/sites-enabled/${priority}-limn-${name}.conf",
-    content => template('limn/vhost-limn-proxy.conf.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    require => Package['apache2'],
-    notify  => Service['apache2'],
+  apache::site { "limn-${name}":
+    content  => template('limn/vhost-limn-proxy.conf.erb'),
+    priority => 10,
   }
 }
