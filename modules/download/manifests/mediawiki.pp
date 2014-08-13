@@ -6,11 +6,8 @@ class download::mediawiki {
         ensure => present,
     }
 
-    file { '/etc/apache2/sites-enabled/download.mediawiki.org':
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/downloads/apache/download.mediawiki.org',
+    apache::site { 'download.wikimedia.org':
+        content => template('downloads/apache.conf.erb'),
     }
 
     file { '/srv/org/mediawiki':
