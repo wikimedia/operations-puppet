@@ -2,11 +2,15 @@ class jenkins {
     require jenkins::user
     require jenkins::group
 
+    # We want to run Jenkins under Java 7.
+    ensure_packages(['openjdk-7-jre-headless'])
+
     # Upgrades are usually done manually by upload the Jenkins
     # package at apt.wikimedia.org then restarting jenkins and
     # double checking everything went fine.
     package { 'jenkins':
-        ensure => present,
+        ensure  => present,
+        require => Package['openjdk-7-jre-headless'],
     }
 
     # Graphiz is needed by the job dependency graph plugin
@@ -84,6 +88,7 @@ class jenkins {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/jenkins/etc_default_jenkins',
+        require => Package['openjdk-7-jre-headless'],
     }
 
 }
