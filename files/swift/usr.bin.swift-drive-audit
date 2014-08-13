@@ -14,6 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Upon exit, the following will be bitwise OR-ed:
+# EX_OK: no errors found in log files
+# 2: a device was unmounted
+# 4: a device was unavailable while unmounting
+
 import datetime
 import glob
 import os
@@ -23,6 +28,9 @@ import sys
 from ConfigParser import ConfigParser
 
 from swift.common.utils import backward, get_logger
+
+EX_DEV_UNMOUNTED = 2
+EX_DEV_UNAVAILABLE = 4
 
 
 def get_devices(device_dir, logger):
@@ -83,7 +91,7 @@ def get_errors(error_re, log_file_pattern, minutes):
         except IOError:
             logger.error("Error: Unable to open " + path)
             print("Unable to open " + path)
-            sys.exit(1)
+            sys.exit(os.EX_OSFILE)
         for line in backward(f):
             if '[    0.000000]' in line \
                 or 'KERNEL supported cpus:' in line \
@@ -133,10 +141,10 @@ if __name__ == '__main__':
         conf_path = sys.argv[1]
     except Exception:
         print "Usage: %s CONF_FILE" % sys.argv[0].split('/')[-1]
-        sys.exit(1)
+        sys.exit(os.EX_USAGE)
     if not c.read(conf_path):
         print "Unable to read config file %s" % conf_path
-        sys.exit(1)
+        sys.exit(os.EX_CONFIG)
     conf = dict(c.items('drive-audit'))
     device_dir = conf.get('device_dir', '/srv/node')
     minutes = int(conf.get('minutes', 60))
@@ -150,8 +158,9 @@ if __name__ == '__main__':
             try:
                 r = re.compile(error_pattern)
             except re.error:
-                sys.exit('Error: unable to compile regex pattern "%s"' %
-                         error_pattern)
+                logger.error('Error: unable to compile regex pattern "%s"' %
+                             error_pattern)
+                sys.exit(os.EX_DATAERR)
             error_re.append(r)
     if not error_re:
         error_re = [
@@ -167,19 +176,26 @@ if __name__ == '__main__':
     errors = get_errors(error_re, log_file_pattern, minutes)
     logger.debug("Errors found: %s" % str(errors))
     unmounts = 0
+    exitcode = os.EX_OK
     for kernel_device, count in errors.items():
         if count >= error_limit:
             device = \
                 [d for d in devices if d['kernel_device'] == kernel_device]
-            if device:
-                mount_point = device[0]['mount_point']
-                if mount_point.startswith(device_dir):
-                    logger.info("Unmounting %s with %d errors" %
-                                (mount_point, count))
-                    subprocess.call(['umount', '-fl', mount_point])
-                    logger.info("Commenting out %s from /etc/fstab" %
-                                (mount_point))
-                    comment_fstab(mount_point)
-                    unmounts += 1
+            if not device:
+                exitcode = exitcode | EX_DEV_UNAVAILABLE
+                logger.info("Errors found but device unavailable: %s:%s" %
+                            (kernel_device, count))
+                continue
+            mount_point = device[0]['mount_point']
+            if mount_point.startswith(device_dir):
+                logger.info("Unmounting %s with %d errors" %
+                            (mount_point, count))
+                subprocess.call(['umount', '-fl', mount_point])
+                logger.info("Commenting out %s from /etc/fstab" %
+                            (mount_point))
+                comment_fstab(mount_point)
+                unmounts += 1
+                exitcode = exitcode | EX_DEV_UNMOUNTED
     if unmounts == 0:
         logger.info("No drives were unmounted")
+    sys.exit(exitcode)
