@@ -58,6 +58,7 @@ class quarry::database {
     $data_path = "/srv/mysql/data"
 
     class { 'mysql::server':
+        package_name => 'mariadb-server',
         config_hash => {
             'datadir' => $data_path,
             'bind_address' => '0.0.0.0'
