@@ -56,6 +56,6 @@ class subversion ($host){
     }
 
     ::apache::site { $host:
-        source => "puppet:///modules/subversion/apache/${host}",
+        content => template("subversion/apache/${host}"),
     }
 }
