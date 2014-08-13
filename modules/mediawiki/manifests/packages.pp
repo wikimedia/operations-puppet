@@ -1,14 +1,24 @@
 class mediawiki::packages {
+
+    $ensure_php = ubuntu_version('< trusty') ? {
+        true    => 'present',
+        default => 'absent',
+    }
     package { [
         'imagemagick',
         'python-imaging',
         'libmemcached10',       # XXX still needed?
+    ]:
+        ensure => present
+    }
+
+    package { [
         'php-apc',
         'php-pear',
         'php5-cli',
         'php5-common',
     ]:
-        ensure => present,
+        ensure => $ensure_php,
     }
 
     # Standard PHP extensions
@@ -21,7 +31,7 @@ class mediawiki::packages {
         'php5-redis',
         'php5-xmlrpc',
     ]:
-        ensure => present,
+        ensure => $ensure_php,
     }
 
     # Wikimedia-specific PHP extensions
@@ -30,7 +40,7 @@ class mediawiki::packages {
         'php-wikidiff2',
         'php5-fss',
     ]:
-        ensure => present,
+        ensure => $ensure_php,
     }
 
     # Pear modules
