@@ -1,12 +1,4 @@
-# Configuration files for php5 running on application servers
-#
-# **fatal_log_file**
-# Where to send PHP fatal traces.
-#
-# requires mediawiki::packages to be in place
-class mediawiki::php(
-    $fatal_log_file='udp://10.64.0.21:8420'
-) {
+class mediawiki::php {
     include ::mediawiki::packages
 
     file { '/etc/php5/apache2/php.ini':
@@ -56,7 +48,7 @@ class mediawiki::php(
         }
 
         file { '/etc/php5/conf.d/wmerrors.ini':
-            content => template('mediawiki/php/wmerrors.ini.erb'),
+            source  => 'puppet:///modules/mediawiki/php/wmerrors.ini',
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
