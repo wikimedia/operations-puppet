@@ -718,6 +718,8 @@ class openstack::network-service($openstack_version="folsom", $novaconfig) {
                                         private_ip => '10.68.16.13' },
         'tools-webproxy'            => {public_ip  => '208.80.155.131',
                                         private_ip => '10.68.16.4' },
+        'udplog'                    => {public_ip  => '208.80.155.191',
+                                        private_ip => '10.68.16.58' },
 
         # A wide variety of hosts are reachable via a public web proxy.
         'labs_shared_proxy' => {public_ip  => '208.80.155.156',
