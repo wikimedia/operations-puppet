@@ -1,7 +1,6 @@
-# syslog instance and configuration for applicationservers
-class mediawiki::syslog( $log_aggregator ) {
+class mediawiki::syslog {
     rsyslog::conf { 'mediawiki':
-        content  => template('mediawiki/rsyslog.conf.erb'),
+        source   => 'puppet:///modules/mediawiki/rsyslog.conf',
         priority => 40,  # before 50-default.conf
     }
 
