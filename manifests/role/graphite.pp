@@ -191,10 +191,8 @@ class role::graphite {
         include ::swift::monitoring::graphite
     }
 
-    file { '/etc/apache2/sites-enabled/graphite':
+    apache::site { $site_name:
         content => template('graphite/graphite.apache.erb'),
-        require => Package['apache2'],
-        notify  => Service['apache2'],
     }
 
     nrpe::monitor_service { 'carbon':
