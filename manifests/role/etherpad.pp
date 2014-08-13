@@ -27,6 +27,8 @@ class role::etherpad{
         }
     }
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
     class { '::etherpad':
         etherpad_host    => $etherpad_host,
         etherpad_ip      => $etherpad_ip,
