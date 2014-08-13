@@ -13,12 +13,8 @@ class wikistats::web (
     # include webserver::php5-mysql
 
     # Apache site from template
-    file { "/etc/apache2/sites-enabled/${wikistats_host}":
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => template('wikistats/apache/wikistats.erb');
+    apache::site { $wikistats_host:
+        content => template('wikistats/apace/wikistats.erb'),
     }
 
     # document root
