@@ -309,13 +309,10 @@ class misc::statistics::sites::stats {
 
     install_certificate{ $site_name: }
 
-    file { '/etc/apache2/sites-enabled/stats.wikimedia.org':
-        ensure  => 'present',
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+    apache::site { 'stats.wikimedia.org':
         content => template('apache/sites/stats.wikimedia.org.erb'),
     }
+
     file { '/etc/apache2/ports.conf':
         ensure  => 'present',
         mode    => '0644',
