@@ -19,8 +19,8 @@ class role::performance {
         source => 'puppet:///files/performance',
     }
 
-    file { '/etc/apache2/sites-enabled/performance':
+    apache::site { 'performance.wikimedia.org':
         content => template('apache/sites/performance.wikimedia.org.erb'),
-        require => Package['apache2'],
+        require => File['/var/www/performance'],
     }
 }
