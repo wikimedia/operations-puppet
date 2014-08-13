@@ -8,31 +8,6 @@ class mediawiki::sync {
         source => 'puppet:///modules/mediawiki/profile.d_add_scap_to_path.sh',
     }
 
-    file { '/usr/local/bin/mwversionsinuse':
-        ensure => link,
-        target => '/srv/deployment/scap/scap/bin/mwversionsinuse',
-    }
-
-    file { '/usr/local/bin/scap-rebuild-cdbs':
-        ensure => link,
-        target => '/srv/deployment/scap/scap/bin/scap-rebuild-cdbs',
-    }
-
-    file { '/usr/local/bin/scap-recompile':
-        ensure => link,
-        target => '/srv/deployment/scap/scap/bin/scap-recompile',
-    }
-
-    file { '/usr/local/bin/sync-common':
-        ensure => link,
-        target => '/srv/deployment/scap/scap/bin/sync-common',
-    }
-
-    file { '/usr/local/bin/refreshCdbJsonFiles':
-        ensure => link,
-        target => '/srv/deployment/scap/scap/bin/refreshCdbJsonFiles',
-    }
-
     file { '/usr/local/apache':
         ensure  => directory,
         owner   => 'root',

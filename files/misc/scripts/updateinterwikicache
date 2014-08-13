@@ -1,14 +1,8 @@
 #!/bin/bash
-
-BINDIR=/usr/local/bin
-
 echo "Updating interwiki cache..."
-
 file=/tmp/interwiki-$(date +%s).cdb
-
-$BINDIR/mwscript extensions/WikimediaMaintenance/dumpInterwiki.php -o $file --protocolrelative
+mwscript extensions/WikimediaMaintenance/dumpInterwiki.php -o $file --protocolrelative
 cp $file /a/common/wmf-config/interwiki.cdb
-$BINDIR/sync-file wmf-config/interwiki.cdb Updating interwiki cache
+sync-file wmf-config/interwiki.cdb Updating interwiki cache
 
 echo "Done"
-

@@ -66,7 +66,7 @@ done
 echo "git clone updated."
 
 # Get all MW message cache versions (and a wiki DB name for each)
-mwVerDbSets=$($BINDIR/mwversionsinuse --withdb)
+mwVerDbSets=$(mwversionsinuse --withdb)
 if [ -z "$mwVerDbSets" ]; then
 	$BINDIR/dologmsg "!log LocalisationUpdate failed: mwversionsinuse returned empty list"
 	echo "Obtaining MediaWiki version list FAILED"
@@ -95,7 +95,7 @@ do
 		echo "Completed at `date --rfc-3339=seconds`. Copying LC files to $MW_COMMON_SOURCE"
 		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MW_COMMON_SOURCE/php-"$mwVerNum"/cache/l10n
 		# Include JSON versions of the CDB files and add MD5 files
-		/usr/local/bin/refreshCdbJsonFiles --directory="$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n"
+		refreshCdbJsonFiles --directory="$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n"
 
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
 		SYNC_START=$(date +%s)
