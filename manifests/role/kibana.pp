@@ -70,13 +70,7 @@ class role::kibana {
     include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
 
-    file { "/etc/apache2/sites-enabled/${hostname}":
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+    apache::site { $hostname:
         content => template('kibana/apache.conf.erb'),
-        require => Package['apache2'],
-        notify  => Service['apache2'],
     }
 }
