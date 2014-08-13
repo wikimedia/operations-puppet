@@ -7,12 +7,10 @@ NameVirtualHost *:443
 <VirtualHost *:443>
 	ServerName <%= @site_name %>
 	SSLEngine On
-	SSLProtocol +ALL -SSLv2
-	SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH
-	SSLHonorCipherOrder on
 	SSLCertificateFile /etc/ssl/private/tendril.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
 	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+    <%= @ssl_settings.join("\n") %>
 	DocumentRoot <%= @docroot %>
 
 	<Directory "<%= @docroot %>">
