@@ -20,9 +20,8 @@ class role::gdash {
     include ::apache
     include ::apache::mod::uwsgi
 
-    file { '/etc/apache2/sites-enabled/gdash':
+    apache::site { 'gdash.wikimedia.org':
         content => template('apache/sites/gdash.wikimedia.org.erb'),
-        require => Package['apache2'],
     }
 
     # We're on the backend, no https here.
