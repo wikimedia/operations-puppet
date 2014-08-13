@@ -313,18 +313,11 @@ class misc::statistics::sites::stats {
 
     install_certificate{ $site_name: }
 
-    file { '/etc/apache2/sites-enabled/stats.wikimedia.org':
-        ensure  => 'present',
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => template('apache/sites/stats.wikimedia.org.erb'),
+    apache::site { $site_name:
+        content => template("apache/sites/${site_name}.erb"),
     }
-    file { '/etc/apache2/ports.conf':
-        ensure  => 'present',
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
+
+    apache::conf { 'stats-apache-ports':
         source  => 'puppet:///files/apache/ports.conf.ssl',
     }
 }
