@@ -6,6 +6,8 @@ class role::rt {
 
     install_certificate { 'rt.wikimedia.org': }
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
     class { 'misc::rt':
         site   => 'rt.wikimedia.org',
         dbhost => 'db1001.eqiad.wmnet',
