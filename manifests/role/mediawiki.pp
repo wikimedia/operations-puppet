@@ -9,10 +9,6 @@ class role::mediawiki::common {
     include ::geoip
     include ::mediawiki
     include ::nutcracker::monitoring
-
-    $log_aggregator = 'fluorine.eqiad.wmnet:8420'
-    class { '::mediawiki::php': fatal_log_file => "udp://${log_aggregator}" }
-    class { '::mediawiki::syslog': apache_log_aggregator => $log_aggregator }
 }
 
 class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
@@ -22,7 +18,7 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
     include ::mediawiki::web::sites
 
     class { '::mediawiki::web':
-        workers_limit       => $workers_limit,
+        workers_limit => $workers_limit,
     }
 
     class { 'lvs::realserver':

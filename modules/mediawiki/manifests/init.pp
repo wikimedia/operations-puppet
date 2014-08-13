@@ -8,6 +8,8 @@ class mediawiki {
 
     if ubuntu_version('>= trusty') {
         include ::mediawiki::hhvm
+    } else {
+        include ::mediawiki::php
     }
 
     file { '/etc/cluster':
