@@ -31,7 +31,7 @@ define osm::planet_import(
         unless  => $tables_exist,
     }
 
-    $load_planet_cmd = inline_template("<%- data=@memoryfree.split(' '); multi={'MB' => 1, 'GB' => 1000}[data[1]]-%>/usr/bin/osm2pgsql -s -C <%= data[0].to_i*multi %> -d <%= @name %> --number-processes <%= @processorcount %> <%= @input_pbf_file %>")
+    $load_planet_cmd = inline_template("<%- data=@memoryfree.split(' '); multi={'MB' => 1, 'GB' => 1000}[data[1]]-%>/usr/bin/osm2pgsql -k -s -C <%= data[0].to_i*multi %> -d <%= @name %> --number-processes <%= @processorcount %> <%= @input_pbf_file %>")
     exec { "load_planet_osm-${name}":
         command     => $load_planet_cmd,
         user        => 'postgres',
