@@ -309,6 +309,8 @@ class misc::statistics::sites::stats {
 
     install_certificate{ $site_name: }
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
     file { '/etc/apache2/sites-enabled/stats.wikimedia.org':
         ensure  => 'present',
         mode    => '0444',
