@@ -27,7 +27,7 @@ end
 module Puppet::Parser::Functions
     {:ordered_json => :to_json, :ordered_yaml => :to_yaml}.each do |func, method|
         newfunction(func, :type => :rvalue, :arity => 1) do |args|
-            sort_keys_recursive(args.first).send(method)
+            sort_keys_recursive(args.first).send(method).gsub(/^---\s*/, '') << "\n"
         end
     end
 end
