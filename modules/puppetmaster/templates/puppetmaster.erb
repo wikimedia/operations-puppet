@@ -13,9 +13,7 @@ RailsAutoDetect Off
 <%- if @server_type == 'frontend' or @server_type == 'standalone' -%>
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
 	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
-
+    <%= @ssl_settings.join("\n") %>
 	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= scope.lookupvar('puppetmaster::server_name') %>.pem
 	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= scope.lookupvar('puppetmaster::server_name') %>.pem
 	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
@@ -84,8 +82,7 @@ RailsAutoDetect Off
 <%- if @server_type == 'frontend' or @server_type == 'backend' -%>
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8141>
 	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+    <%= @ssl_settings.join("\n") %>
 
 	SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
 	SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem

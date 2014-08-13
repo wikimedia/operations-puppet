@@ -8,6 +8,8 @@ class role::puppetmaster::config {
             '*.ulsfo.wmnet',
             '*.esams.wmnet',
         ]
+
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 }
 
 class role::puppetmaster::frontend {
