@@ -364,14 +364,11 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
         default      => "www.${controller_hostname}",
     }
 
+    apache::site { $webserver_hostname:
+        content => template("apache/sites/${webserver_hostname}.erb"),
+    }
+
     file {
-        "/etc/apache2/sites-enabled/${webserver_hostname}":
-            require => [ Package[php5] ],
-            mode    => '0644',
-            owner   => 'root',
-            group   => 'root',
-            content => template('apache/sites/wikitech.wikimedia.org.erb'),
-            ensure  => present;
         "/var/www/robots.txt":
             ensure => present,
             mode   => '0644',
