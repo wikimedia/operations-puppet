@@ -1,17 +1,13 @@
 # redirect http://irc.wikimedia.org to http://meta.wikimedia.org/wiki/IRC
 class mw-rc-irc::apache {
 
-    file {
-        '/etc/apache2/sites-enabled/irc.wikimedia.org':
-            mode   => '0444',
-            owner  => 'root',
-            group  => 'root',
-            source => 'puppet:///modules/mw-rc-irc/apache/irc.wikimedia.org';
+    apache::site { 'irc.wikimedia.org':
+        content => template('mw-rc-irc/apache/irc.wikimedia.org.erb'),
     }
 
     class { 'apache':
       serveradmin  => 'noc@wikimedia.org',
-      before      => File['/etc/apache2/sites-enabled/irc.wikimedia.org'],
+      before       => Apache::site['irc.wikimedia.org'],
     }
 
 }
