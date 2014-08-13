@@ -43,10 +43,6 @@ class role::mediawiki::common {
             },
         },
     }
-
-    $log_aggregator = 'fluorine.eqiad.wmnet:8420'
-    class { '::mediawiki::php':    fatal_log_file => "udp://${log_aggregator}" }
-    class { '::mediawiki::syslog': log_aggregator => $log_aggregator }
 }
 
 class role::mediawiki::webserver( $pool, $workers_limit = undef ) {

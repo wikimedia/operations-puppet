@@ -47,4 +47,16 @@ class mediawiki::web( $workers_limit = undef ) {
     if ubuntu_version('>= trusty') {
         apache::def { 'HHVM': }
     }
+
+    file { '/etc/logrotate.d/mediawiki_apache':
+        source  => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_apache',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
+    rsyslog::conf { 'mediawiki':
+        source   => 'puppet:///modules/mediawiki/rsyslog.conf',
+        priority => 40,
+    }
 }
