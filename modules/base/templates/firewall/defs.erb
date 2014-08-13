@@ -3,10 +3,12 @@ external_networks = scope.lookupvar('network::constants::external_networks')
 all_networks = scope.lookupvar('network::constants::all_networks')
 all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
 special_hosts = scope.lookupvar('network::constants::special_hosts')
+analytics_networks = scope.lookupvar('network::constants::analytics_networks')
 -%>
 
 @def $EXTERNAL_NETWORKS = (<%- external_networks.each do |external_net| -%><%= external_net %> <% end -%>);
 @def $ALL_NETWORKS = (<%- all_networks.each do |net| -%><%= net %> <% end -%>);
+@def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%>);
 
 <%- special_hosts.sort.map do |realm, services | -%>
 	<%- if @realm != realm then next end -%>

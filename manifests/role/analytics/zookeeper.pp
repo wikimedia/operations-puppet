@@ -83,6 +83,14 @@ class role::analytics::zookeeper::server inherits role::analytics::zookeeper::cl
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host = '239.192.1.32'
         $ganglia_port = 8649
+
+        # Only allow hosts in the Analytics Cluster to
+        # connect to the Zookeeper admin client port.
+        ferm::service { 'zookeeper-client':
+            proto  => 'tcp',
+            port   => '2181',
+            srange => '($ANALYTICS_NETWORKS)',
+        }
     }
     # Use jmxtrans for sending metrics to ganglia
     class { 'zookeeper::jmxtrans':
