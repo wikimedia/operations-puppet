@@ -2803,7 +2803,7 @@ node 'labnet1001.eqiad.wmnet' {
     }
 }
 
-node /virt100[1-8].eqiad.wmnet/ {
+node /virt100[1-9].eqiad.wmnet/ {
     $cluster = 'virt'
     $openstack_version = 'havana'
     $use_neutron = false
@@ -2814,17 +2814,6 @@ node /virt100[1-8].eqiad.wmnet/ {
     if $use_neutron == true {
         include role::neutron::computenode
     }
-}
-
-node /virt1009.eqiad.wmnet/ {
-    $cluster = 'virt'
-
-    include admin
-    include standard
-
-    #intentional breakage!
-    package { 'coreutils': }
-    package { 'coreutils': }
 }
 
 node 'iodine.wikimedia.org' {
