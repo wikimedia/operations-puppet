@@ -14,17 +14,20 @@
 #        Adds a Deny from statement (order Allow,Deny), limiting access
 #        to the passenger service.
 class puppetmaster::passenger(
-                                $bind_address='*',
-                                $verify_client='optional',
-                                $allow_from=[],
-                                $deny_from=[]
-                            ) {
-    apt::puppet{'passenger':
+    $bind_address  = '*',
+    $verify_client = 'optional',
+    $allow_from    = [],
+    $deny_from     = []
+) {
+    include ::apache::mod::passenger
+
+    apt::puppet { 'passenger':
         packages => 'puppetmaster-passenger',
-        before   => Package['puppetmaster-passenger']
+        before   => Package['puppetmaster-passenger'],
     }
+
     package { 'puppetmaster-passenger':
-        ensure => latest;
+        ensure => latest,
     }
 
     apache::site { 'puppetmaster.wikimedia.org':
@@ -35,15 +38,6 @@ class puppetmaster::passenger(
         content => template('puppetmaster/ports.conf.erb'),
     }
 
-    file { '/etc/apache2/ports.conf':
-        source => 'puppet:///files/apache/ports.orig.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-    }
-
-    include ::apache::mod::passenger
-
     # Since we are running puppet via passenger, we need to ensure
     # the puppetmaster service is stopped, since they use the same port
     # and will conflict when both started.
@@ -51,18 +45,20 @@ class puppetmaster::passenger(
         service { 'puppetmaster':
             ensure => stopped,
             enable => false,
+            before => Service['apache2'],
         }
     }
 
-    # rotate apache logs
+    # Rotate apache logs
     file { '/etc/logrotate.d/passenger':
         ensure => present,
         owner  => 'root',
         group  => 'root',
-        mode   => '0664',
+        mode   => '0444',
         source => 'puppet:///modules/puppetmaster/logrotate-passenger',
     }
-    # installed by apache2.x-common and would override our settings
+
+    # Installed by apache2.x-common and would override our settings
     file { '/etc/logrotate.d/apache2':
         ensure => absent,
     }
