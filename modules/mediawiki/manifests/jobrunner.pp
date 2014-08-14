@@ -12,7 +12,7 @@ class mediawiki::jobrunner (
     $runners_parsoid   = 0,
     $runners_transcode = 0,
     $statsd_server     = undef,
-    $jr_port           = 9002,
+    $port              = 9002,
 ) {
     include ::passwords::redis
 
@@ -67,14 +67,13 @@ class mediawiki::jobrunner (
     if ubuntu_version('>= trusty') {
         include ::apache::mod::proxy_fcgi
 
-        # Temporarily disabled, need hhvm repackaging
-        #class { 'apache::mpm':
-        #    mpm => 'worker',
-        #}
+        class { 'apache::mpm':
+            mpm => 'worker',
+        }
 
         apache::conf { 'hhvm_jobrunner_port':
             priority => 1,
-            content  => inline_template("# This file is managed by Puppet\nListen <%= @jr_port %>\n"),
+            content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\n"),
         }
 
         apache::site{ 'hhvm_jobrunner':
