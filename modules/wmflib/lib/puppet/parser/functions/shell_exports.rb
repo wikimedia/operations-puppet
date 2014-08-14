@@ -41,6 +41,6 @@ module Puppet::Parser::Functions
     vars, uppercase_keys = args
     raise Puppet::ParseError, 'shell_exports() requires a hash argument' unless vars.is_a? Hash
     vars = Hash[vars.map { |k, v| [k.upcase, v] }] unless uppercase_keys == false
-    vars.map { |k, v| "export #{k}=#{v.to_pson}" }.push('').join("\n")
+    vars.sort.map { |k, v| "export #{k}=#{v.to_pson}" }.push('').join("\n")
   end
 end
