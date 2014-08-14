@@ -113,6 +113,10 @@ class misc::statistics::packages::python {
         'python-dateutil',
         'python-numpy',
         'python-scipy',
+        'python-boto',      # Amazon S3 access (needed to get zero sms logs)
+        'python-pandas',    # Pivot tables processing
+        'python-requests',  # Simple lib to make API calls
+        'python-unidecode', # Unicode simplification - converts everything to latin set
     ]:
         ensure => 'installed',
     }
