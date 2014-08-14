@@ -18,6 +18,8 @@ class role::otrs (
     $otrs_database_user = $::passwords::mysql::otrs::user
     $otrs_database_pw   = $::passwords::mysql::otrs::pass
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
     ferm::service { 'otrs_http':
         proto => 'tcp',
         port  => '80',
