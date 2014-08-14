@@ -30,7 +30,7 @@ define logstash::conf(
 
     file { "/etc/logstash/conf.d/${priority}-${config_name}.conf":
         ensure  => $ensure,
-        content => ensure_final_newline($content),
+        content => $content,
         source  => $source,
         require => File['/etc/logstash/conf.d'],
         notify  => Service['logstash'],

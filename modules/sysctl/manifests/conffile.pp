@@ -47,7 +47,7 @@ define sysctl::conffile(
 
     file { $filename:
         ensure  => $ensure,
-        content => ensure_final_newline($content),
+        content => $content,
         source  => $source,
         notify  => Exec['update_sysctl'],
     }

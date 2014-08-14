@@ -42,7 +42,7 @@ define eventlogging::plugin(
 
     file { "/usr/local/lib/eventlogging/${basename}.py":
         ensure  => $ensure,
-        content => ensure_final_newline($content),
+        content => $content,
         source  => $source,
         require => File['/usr/local/lib/eventlogging'],
         notify  => Service['eventlogging/init'],
