@@ -127,7 +127,11 @@ class role::beta::jobrunner {
     include role::mediawiki::common
 
     class { '::mediawiki::jobrunner':
-        aggr_servers  => [ '10.68.16.146' ],
-        queue_servers => [ '10.68.16.146' ],
+        aggr_servers    => [ '10.68.16.146' ],
+        queue_servers   => [ '10.68.16.146' ],
+        runners_basic   => 5,
+        runners_parsoid => 5,
+        runners_upload  => 2,
+        runners_gwt     => 1,
     }
 }
