@@ -361,10 +361,13 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     # This only needs to be run on the NameNode
     # where all users that want to use Hadoop
     # must have shell accounts anyway.
-    class { 'cdh::hadoop::users':
-        group   => $hadoop_users_posix_group,
-        require => Class['cdh::hadoop::master'],
-    }
+
+    # TODO: fix this tomorrow, I have to run.
+    # Temporarily commenting this out.
+    # class { 'cdh::hadoop::users':
+    #     group   => $hadoop_users_posix_group,
+    #     require => Class['cdh::hadoop::master'],
+    # }
 }
 
 # == Class role::analytics::hadoop::worker
