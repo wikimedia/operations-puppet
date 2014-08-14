@@ -401,7 +401,19 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     # for generating alerts.  We need the nsca-client package
     # to do this remotely.  Some oozie jobs use this,
     # and it must be present on all datanodes.
-    include icinga::monitor::nsca::client
+    include role::analytics::hadoop::monitor::nsca::client
+}
+
+# == Class role::analytics::hadoop::monitor::nsca::client
+# This class exists in order to override the group ownership
+# and permissions of the /etc/send_nsca.cfg file.  Hadoop
+# processes need to be able to read this file in order to
+# run send_nsca as part of Oozie submitted monitoring jobs.
+class role::analytics::hadoop::monitor::nsca::client inherits icinga::monitor::nsca::client {
+    File ['/etc/send_nsca.cfg'] {
+        group => 'hadoop',
+        mode  => '0440',
+    }
 }
 
 # == Class role::analytics::hadoop::standby
