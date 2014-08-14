@@ -104,6 +104,7 @@ class mediawiki::multimedia::fonts {
         'ttf-kochi-gothic',          # Bug 64002
         'ttf-kochi-mincho',          # Bug 64002
         'ttf-lyx',                   # Bug 38299
+        'fonts-wqy-zenhei',          # Bug 69535
     ]:
         ensure => present,
     }
