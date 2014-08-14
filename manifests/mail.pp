@@ -260,7 +260,7 @@ define mailman_lighttpd_config($install='false') {
     # Reload lighttpd if the site config file changes.
     # This subscribes to both the real file and the symlink.
     exec { "lighttpd_reload_${title}":
-        command     => '/usr/sbin/service service lighttpd reload',
+        command     => '/usr/sbin/service lighttpd reload',
         refreshonly => true,
     }
 
