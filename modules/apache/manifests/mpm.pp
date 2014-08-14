@@ -35,7 +35,7 @@ class apache::mpm( $mpm = 'prefork' ) {
         # mod_php5 is unsafe for threaded MPMs
         apache::mod_conf { 'php5':
             ensure => absent,
-            before => Package[$selected_pkg],
+            before => Apache::Mod_conf[$selected_mod],
         }
     }
 
