@@ -1317,6 +1317,14 @@ node 'iron.wikimedia.org' {
     include search::searchqa
 }
 
+## labs monitoring
+node 'labmon1001.eqiad.wmnet' {
+    include standard
+    # include role::labmon
+
+    class { 'admin': groups => ['labmon-roots'] }
+}
+
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
     include admin
