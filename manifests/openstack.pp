@@ -407,9 +407,13 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             source => "puppet:///files/openstack/mw-xml.sh";
     }
 
-    # listen on 443 for HTTPS
-    apache::conf { 'wikitech_https_port':
-        content => "Listen 443\n",
+    file { '/etc/apache2/conf.d/ports-wikitech.conf':
+            ensure  => present,
+            require => File["/etc/apache2/sites-available/${webserver_hostname}"],
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            source  => 'puppet:///files/openstack/controller/ports-wikitech.conf',
     }
 
     cron {
