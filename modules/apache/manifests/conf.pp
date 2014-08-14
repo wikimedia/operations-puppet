@@ -61,10 +61,14 @@ define apache::conf(
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
     $file_ext    = $conf_type ? { env => 'sh', default => 'conf' }
     $conf_file   = sprintf('%02d-%s.%s', $priority, $title_safe, $file_ext)
+    $content_formatted = $content ? {
+        undef   => undef,
+        default => regsubst($content, "\n?$", "\n"),
+    }
 
     file { "/etc/apache2/${conf_type}-available/${conf_file}":
         ensure  => $ensure,
-        content => $content,
+        content => $content_formatted,
         source  => $source,
         owner   => 'root',
         group   => 'root',
