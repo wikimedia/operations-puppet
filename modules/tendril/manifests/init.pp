@@ -15,11 +15,7 @@ class tendril (
     include passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
 
-    file { "/etc/apache2/sites-enabled/${site_name}":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0440',
+    apache::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
     }
 
