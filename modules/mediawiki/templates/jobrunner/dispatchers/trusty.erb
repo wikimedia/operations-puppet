@@ -1,1 +1,1 @@
-curl -XPOST -s -a 'http:\/\/127.0.0.1:9002\/rpc\/RunJobs.php?wiki=%(db)u&type=%(type)u&maxtime=%(maxtime)u&maxmem=%(maxmem)u'
+curl -XPOST -s -a 'http:\/\/127.0.0.1:<%= @jr_port %>\/rpc\/RunJobs.php?wiki=%(db)u&type=%(type)u&maxtime=%(maxtime)u&maxmem=%(maxmem)u'
