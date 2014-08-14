@@ -1,0 +1,17 @@
+# Configuration for HHVM
+#
+# Note: HDF syntax is deprecated. Use php.ini where possible.
+# The configuration options declared in this file do not have
+# php.ini equivalents yet (Aug 2014).
+#
+# This file is managed by Puppet.
+DynamicExtensions {
+  * = fss.so
+  * = luasandbox.so
+  * = wikidiff2.so
+}
+
+Eval {
+  PerfPidMap = false
+  Jit = false
+}

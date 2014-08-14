@@ -62,4 +62,24 @@ class mediawiki::jobrunner (
         group   => 'root',
         mode    => '0444',
     }
+
+    if ubuntu_version('>= trusty') {
+        include ::apache::mod::proxy_fcgi
+
+        # Temporarily disabled, need hhvm repackaging
+        #class { 'apache::mpm':
+        #    mpm => 'worker',
+        #}
+
+        apache::conf { 'hhvm_jobrunner_port':
+            priority => 1,
+            content  => "# This file is managed by Puppet\nListen 9002\n",
+        }
+
+        apache::site{ 'hhvm_jobrunner':
+            priority => 1,
+            source   => 'puppet:///modules/mediawiki/jobrunner.site.conf',
+        }
+    }
+
 }

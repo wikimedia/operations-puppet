@@ -129,7 +129,7 @@ class hhvm(
     }
 
     file { '/etc/hhvm/config.hdf':
-        source => 'puppet:///modules/hhvm/config.hdf',
+        source => 'puppet:///modules/hhvm/config-cli.hdf',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
