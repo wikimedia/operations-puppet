@@ -44,7 +44,7 @@ class nutcracker(
 
     file { '/etc/nutcracker/nutcracker.yml':
         ensure  => $ensure,
-        content => template('nutcracker/config.yml.erb'),
+        content => ordered_yaml($pools),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
