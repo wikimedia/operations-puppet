@@ -24,6 +24,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import argparse
+from collections import defaultdict
 import json
 import urllib
 import urllib2
@@ -105,11 +106,15 @@ query = {
 uri = BASE_URI + '?' + urllib.urlencode(query)
 req = urllib2.urlopen(uri, json.dumps(search))
 result = json.load(req)['hits']
-
+out = defaultdict(list)
 for hit in result['hits']:
     db = hit['_index'].rsplit('_', 2)[0]
     title = hit['_source']['title']
     pagename = '%s%s' % (PREFIX_NS[args.ns], title)
-    print('{:<20}{}'.format(db, pagename))
+    out[db].append(pagename)
+
+for db in sorted(out):
+    for pagename in sorted(out[db]):
+        print('{:<20}{}'.format(db, pagename))
 
 print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
