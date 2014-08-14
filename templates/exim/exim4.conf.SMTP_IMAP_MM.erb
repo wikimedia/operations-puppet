@@ -206,7 +206,8 @@ acl_check_rcpt:
 
 	# Accept mail for postmaster without further policy checking,
 	# for compliance with the RFCs
-	accept local_parts = postmaster
+	accept local_parts = postmaster : abuse
+		set acl_m2 = skip_spamd
 <% end -%>
 
 	# Verify the recipient address for local domains, or require the
@@ -272,6 +273,9 @@ acl_check_data:
 	# Only run through SpamAssassin if requested for this domain and
 	# the message is not too large
 	accept condition = ${if >{$message_size}{400K}}
+
+	# Skip if so requested
+	accept condition = ${if eq{$acl_m2}{skip_spamd}}
 
 	# Add spam headers if score >= 1
 	warn spam = nonexistent:true
