@@ -41,15 +41,9 @@ define rsyslog::conf(
     $basename = regsubst($title, '[\W_]', '-', 'G')
     $filename = sprintf('/etc/rsyslog.d/%02d-%s.conf', $priority, $basename)
 
-    # append a trailing newline if omitted
-    $content_formatted = $content ? {
-        undef   => undef,
-        default => regsubst($content, "\n?$", "\n")
-    }
-
     file { $filename:
         ensure  => $ensure,
-        content => $content_formatted,
+        content => ensure_final_newline($content),
         source  => $source,
         owner   => 'root',
         group   => 'root',
