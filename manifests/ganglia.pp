@@ -471,13 +471,10 @@ class ganglia::web {
         $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
     }
 
-    file { "/etc/apache2/sites-enabled/${ganglia_servername}":
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => template('apache/sites/ganglia.wikimedia.org.erb'),
+    apache::site { $ganglia_servername:
+        content => template("apache/sites/${ganglia_servername}.erb"),
     }
+
     file { '/usr/local/bin/restore-gmetad-rrds':
         ensure => present,
         mode   => '0555',
