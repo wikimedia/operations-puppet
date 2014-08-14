@@ -24,6 +24,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import argparse
+import bisect
+import collections
 import json
 import urllib
 import urllib2
@@ -102,14 +104,18 @@ query = {
     'timeout': args.timeout,
 }
 
+matches = []
 uri = BASE_URI + '?' + urllib.urlencode(query)
 req = urllib2.urlopen(uri, json.dumps(search))
 result = json.load(req)['hits']
 
 for hit in result['hits']:
-    db = hit['_index'].rsplit('_', 2)[0]
+    db_name = hit['_index'].rsplit('_', 2)[0]
     title = hit['_source']['title']
-    pagename = '%s%s' % (PREFIX_NS[args.ns], title)
-    print('{:<20}{}'.format(db, pagename))
+    page_name = '%s%s' % (PREFIX_NS[args.ns], title)
+    bisect.insort(matches, (db_name, page_name))
+
+for db_name, page_name in matches:
+    print('{:<20}{}'.format(db_name, page_name))
 
 print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
