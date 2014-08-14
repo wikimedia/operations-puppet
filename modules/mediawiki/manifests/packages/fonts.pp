@@ -48,6 +48,7 @@ class mediawiki::packages::fonts {
         'culmus-fancy',              # Bug 38946
         'fonts-lklug-sinhala',       # Bug 55462
         'fonts-vlgothic',            # Bug 64002
+        'fonts-wqy-zenhei',          # Bug 69535
         'ttf-dejavu-core',           # Bug 63206
         'ttf-dejavu-extra',          # Bug 63206
         'ttf-kochi-gothic',          # Bug 64002
