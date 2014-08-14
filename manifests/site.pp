@@ -281,6 +281,17 @@ node 'analytics1027.eqiad.wmnet' {
     # Add cron jobs to run Camus to import data into
     # HDFS from Kafka.
     include role::analytics::refinery::camus
+
+    # Oozie runs a monitor_done_flag job to make
+    # sure the _SUCCESS done-flag is written
+    # for each hourly webrequest import.  This
+    # file is written only if the hourly import
+    # reports a 0.0 percent_different in expected
+    # vs actual number of sequence numbers per host.
+    # These are passive checks, so if
+    # icinga is not notified of a successful import
+    # hourly, icinga should generate an alert.
+    include role::analytics::refinery::data::check
 }
 
 
