@@ -20,8 +20,9 @@ class mediawiki::hhvm {
         },
     }
 
-    alternatives::config { 'php':
-        path    => '/usr/bin/hhvm',
+    exec { 'set_hhvm_as_default_php':
+        command => 'update-alternatives --force --set php /usr/bin/hhvm',
+        unless  => '/usr/bin/test "$(/bin/readlink -f /etc/alternatives/php)" = "/usr/bin/hhvm"',
         require => Package['hhvm'],
     }
 }
