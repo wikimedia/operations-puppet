@@ -78,6 +78,7 @@ class hhvm(
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
             log                      => {
                 header             => true,
+                use_syslog         => true,
                 level              => 'Error',
                 native_stack_trace => true,
             },

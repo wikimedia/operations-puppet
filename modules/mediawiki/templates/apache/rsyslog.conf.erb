@@ -15,3 +15,9 @@ $outchannel apache2,/var/log/apache2.log,100000000,/usr/sbin/logrotate -f /etc/l
 
 # Discard apache2 messages before they get to 50-default.conf
 & ~
+
+# Send HHVM messages to the MediaWiki log aggregator
+:programname,isequal,"hhvm" @<%= @apache_log_aggregator %>;MediaWiki
+
+# Discard HHVM messages before they get to 50-default.conf
+& ~
