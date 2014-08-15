@@ -20,8 +20,9 @@ class mediawiki::hhvm {
         },
     }
 
-    alternatives::config { 'php':
+    alternatives::select { 'php':
         path    => '/usr/bin/hhvm',
         require => Package['hhvm'],
+        before  => Service['hhvm'],
     }
 }
