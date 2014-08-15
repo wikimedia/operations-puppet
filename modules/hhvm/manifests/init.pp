@@ -191,14 +191,6 @@ class hhvm(
         mode   => '0555',
     }
 
-    file { '/usr/local/bin/hstr':
-        source => 'puppet:///modules/hhvm/hstr',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        before => Service['hhvm'],
-    }
-
     file { '/usr/local/sbin/hhvm-dump-debug':
         source => 'puppet:///modules/hhvm/hhvm-dump-debug',
         owner  => 'root',
