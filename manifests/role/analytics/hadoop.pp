@@ -131,8 +131,8 @@ class role::analytics::hadoop::config {
         $ganglia_port = 8649
         $gelf_logging_host                        = "logstash1001.eqiad.wmnet"
         # In production, make sure that HDFS user directories are
-        # created for everyone in the analytics-users group.
-        $hadoop_users_posix_group                 = 'analytics-users'
+        # created for everyone in these groups.
+        $hadoop_users_posix_groups                 = 'analytics-users analytics-privatedata-users analytics-admins'
     }
 
     # Configs specific to Labs.
@@ -187,7 +187,7 @@ class role::analytics::hadoop::config {
         $gelf_logging_host                        = "127.0.0.1"
         # In labs, make sure that HDFS user directories are
         # created for everyone in the project-analytics group.
-        $hadoop_users_posix_group                 = 'project-analytics'
+        $hadoop_users_posix_groups                 = 'project-analytics'
 
 
         # Hadoop directories in labs should be automatically created.
@@ -357,17 +357,14 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     }
 
     # This will create HDFS user home directories
-    # for all users in the provided group.
+    # for all users in the provided groups.
     # This only needs to be run on the NameNode
     # where all users that want to use Hadoop
     # must have shell accounts anyway.
-
-    # TODO: fix this tomorrow, I have to run.
-    # Temporarily commenting this out.
-    # class { 'cdh::hadoop::users':
-    #     group   => $hadoop_users_posix_group,
-    #     require => Class['cdh::hadoop::master'],
-    # }
+    class { 'cdh::hadoop::users':
+        group   => $hadoop_users_posix_groups,
+        require => Class['cdh::hadoop::master'],
+    }
 }
 
 # == Class role::analytics::hadoop::worker
