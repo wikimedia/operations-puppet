@@ -435,3 +435,20 @@ script.disable_dynamic: false
 # Filter cache size
 ##
 indices.cache.filter.size: <%= @filter_cache_size %>
+
+<% if @bulk_thread_pool_capacity or @bulk_thread_pool_executors -%>
+##
+# Thread pool settings
+##
+<% if @bulk_thread_pool_capacity or @bulk_thread_pool_executors -%>
+threadpool:
+    bulk:
+        type: fixed
+<% if @bulk_thread_pool_executors -%>
+        size: <%= @bulk_thread_pool_executors %>
+<% end -%>
+<% if @bulk_thread_pool_capacity -%>
+        queue_size: <%= @bulk_thread_pool_capacity %>
+<% end -%>
+<% end -%>
+<% end -%>

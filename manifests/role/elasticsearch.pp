@@ -12,14 +12,16 @@
 class role::elasticsearch::config {
     # Config
     if ($::realm == 'labs') {
-        $multicast_group      = '224.2.2.4'
-        $master_eligible      = true
-        $recover_after_time   = '1m'
-        $awareness_attributes = undef
-        $row                  = undef
-        $rack                 = undef
-        $plugins_mandatory    = undef
-        $filter_cache_size    = '10%'
+        $multicast_group            = '224.2.2.4'
+        $master_eligible            = true
+        $recover_after_time         = '1m'
+        $awareness_attributes       = undef
+        $row                        = undef
+        $rack                       = undef
+        $plugins_mandatory          = undef
+        $filter_cache_size          = '10%'
+        $bulk_thread_pool_capacity  = undef
+        $bulk_thread_pool_executors = undef
         if ($::hostname =~ /^deployment-/) {
             # Beta
             # Has four nodes all of which can be master
@@ -95,7 +97,9 @@ class role::elasticsearch::config {
         $plugins_mandatory    = ['experimental highlighter', 'analysis-icu']
 
         # Production can get a lot of use out of the filter cache.
-        $filter_cache_size    = '20%'
+        $filter_cache_size          = '20%'
+        $bulk_thread_pool_capacity  = 1000
+        $bulk_thread_pool_executors = 6
     }
 }
 
@@ -114,20 +118,20 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
 
     # Install
     class { '::elasticsearch':
-        multicast_group      => $multicast_group,
-        master_eligible      => $master_eligible,
-        minimum_master_nodes => $minimum_master_nodes,
-        cluster_name         => $cluster_name,
-        heap_memory          => $heap_memory,
-        plugins_dir          => '/srv/deployment/elasticsearch/plugins',
-        plugins_mandatory    => $plugins_mandatory,
-        expected_nodes       => $expected_nodes,
-        recover_after_nodes  => $recover_after_nodes,
-        recover_after_time   => $recover_after_time,
-        awareness_attributes => $awareness_attributes,
-        row                  => $row,
-        rack                 => $rack,
-        unicast_hosts        => $unicast_hosts,
+        multicast_group            => $multicast_group,
+        master_eligible            => $master_eligible,
+        minimum_master_nodes       => $minimum_master_nodes,
+        cluster_name               => $cluster_name,
+        heap_memory                => $heap_memory,
+        plugins_dir                => '/srv/deployment/elasticsearch/plugins',
+        plugins_mandatory          => $plugins_mandatory,
+        expected_nodes             => $expected_nodes,
+        recover_after_nodes        => $recover_after_nodes,
+        recover_after_time         => $recover_after_time,
+        awareness_attributes       => $awareness_attributes,
+        row                        => $row,
+        rack                       => $rack,
+        unicast_hosts              => $unicast_hosts,
         # This depends on the elasticsearchplugins deployment.
         # A new elasticsearch server shouldn't join the cluster until
         # the plugins are properly deployed in place.  Note that this
@@ -135,7 +139,9 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         # get elasticsearch up and running.  Once for the initial
         # node configuration (including salt), and then once again
         # after you have signed this node's new salt key over on the salt master.
-        require              => Deployment::Target['elasticsearchplugins'],
+        require                    => Deployment::Target['elasticsearchplugins'],
+        bulk_thread_pool_capacity  => $bulk_thread_pool_capacity
+        bulk_thread_pool_executors => $bulk_thread_pool_executors
     }
 
     include ::elasticsearch::ganglia
