@@ -91,7 +91,7 @@ class role::beta::appserver {
     include ::beta::common
 
     class { '::mediawiki::syslog':
-        apache_log_aggregator => 'deployment-bastion.eqiad.wmflabs:8420',
+        log_aggregator => 'deployment-bastion.eqiad.wmflabs:8420',
     }
 
     class { '::mediawiki::php':
