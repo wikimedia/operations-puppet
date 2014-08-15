@@ -398,14 +398,8 @@ class misc::statistics::sites::metrics {
     install_certificate{ $site_name: }
 
     # Set up the VirtualHost
-    file { "/etc/apache2/sites-enabled/${site_name}":
+    apache::site { $site_name:
         content => template("apache/sites/${site_name}.erb"),
-        require => [
-            Class['webserver::apache'],
-            Class['::apache::mod::alias'],
-            Class['::apache::mod::ssl'],
-        ],
-        notify  => Service['apache2'],
     }
 
     # make access and error log for metrics-api readable by wikidev group
