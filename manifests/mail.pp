@@ -241,6 +241,12 @@ class mailman {
 
         # Add a new default theme to make mailman prettier
         file { '/var/lib/mailman/templates':
+            ensure  => link,
+            target  => '/etc/mailman',
+        }
+
+        # Add a new default theme to make mailman prettier
+        file { '/etc/mailman':
             source  => 'puppet:///files/mailman/templates/',
             owner   => 'root',
             group   => 'root',
