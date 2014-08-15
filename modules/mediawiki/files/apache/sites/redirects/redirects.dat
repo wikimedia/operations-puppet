@@ -410,6 +410,8 @@ rewrite	*softwarewikipedia.org	//www.mediawiki.org
 
 rewrite	nostalgia.wikimedia.org	//nostalgia.wikipedia.org
 
+rewrite	mail.wikipedia.org	//lists.wikimedia.org
+
 ###############
 ## projects
 ###############
