@@ -11,5 +11,5 @@ tmp = tmp.map { |x| if x < 60 then x  else x - 60 end }
 tmp = tmp.sort()
 times = tmp.join(',')
 -%>
-<%= times %>	*	*	*	*	root	timeout <% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %> -k 300<% end %> 1800 puppet agent --onetime --verbose --no-daemonize --splay --splaylimit 60 --show_diff >> /var/log/puppet.log 2>&1
+<%= times %>	*	*	*	*	root	timeout <% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %> -k 300<% end %> 1800 puppet agent --onetime --verbose --no-daemonize --splay --splaylimit 59 --show_diff >> /var/log/puppet.log 2>&1
 @reboot	root	timeout <% if scope.function_versioncmp([@lsbdistrelease, "12.04"]) >= 0 %> -k 300<% end %> 1800 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff >> /var/log/puppet.log 2>&1
