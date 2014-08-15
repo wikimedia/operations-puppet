@@ -45,8 +45,6 @@
     SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
-    Header set Strict-Transport-Security "max-age=31536000"
-
     RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
 
     RewriteEngine on
