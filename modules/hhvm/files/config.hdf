@@ -14,3 +14,12 @@ DynamicExtensions {
 Eval {
   PerfPidMap = false
 }
+
+Log {
+  Level = Warning
+  AlwaysLogUnhandledExceptions = true
+  RuntimeErrorReportingLevel = 8191
+  UseLogFile = true
+  UseSyslog = false
+  File = /var/log/hhvm/fcgi-error.log
+}
