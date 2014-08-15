@@ -317,7 +317,11 @@ class misc::statistics::sites::stats {
         content => template("apache/sites/${site_name}.erb"),
     }
 
-    apache::conf { 'stats-apache-ports':
+    file { '/etc/apache2/ports.conf':
+        ensure  => 'present',
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
         source  => 'puppet:///files/apache/ports.conf.ssl',
     }
 }
