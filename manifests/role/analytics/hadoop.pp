@@ -362,7 +362,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     # where all users that want to use Hadoop
     # must have shell accounts anyway.
     class { 'cdh::hadoop::users':
-        group   => $hadoop_users_posix_groups,
+        groups  => $hadoop_users_posix_groups,
         require => Class['cdh::hadoop::master'],
     }
 }
