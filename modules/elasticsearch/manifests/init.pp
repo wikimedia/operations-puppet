@@ -52,6 +52,9 @@
 # - $filter_cache_size: size of the filter cache.  See
 #       www.elasticsearch.org/guide/en/elasticsearch/reference/current/index-modules-cache.html
 #       for possible values.  Default is 10% like the Elasticsearch default.
+# - $bulk_thread_pool_capacity: queue depth for bulk actions of each node.
+# - $bulk_thread_pool_executors: number of executors for bulk actions on each
+#       node.
 #
 # == Sample usage:
 #
@@ -75,7 +78,9 @@ class elasticsearch($cluster_name,
                     $row = undef,
                     $rack = undef,
                     $unicast_hosts = undef,
-                    $filter_cache_size = '10%') {
+                    $filter_cache_size = '10%',
+                    $bulk_thread_pool_executors = undef,
+                    $bulk_thread_pool_capacity = undef) {
 
     include ::elasticsearch::packages
 
