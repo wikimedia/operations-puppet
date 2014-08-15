@@ -8,13 +8,13 @@
 
 # Set the location of the salt master server, if the master server cannot be
 # resolved, then the minion will fail to start.
-<% if salt_master.is_a? Array -%>
+<% if @salt_master.is_a? Array -%>
 master:
-<% salt_master.each do |name| -%>
+<% @salt_master.each do |name| -%>
   - <%= name  %>
 <% end -%>
 <% else -%>
-master: <%= salt_master %>
+master: <%= @salt_master %>
 <% end -%>
 
 # Set the number of seconds to wait before attempting to resolve
@@ -43,7 +43,7 @@ master: <%= salt_master %>
 # Since salt uses detached ids it is possible to run multiple minions on the
 # same machine but with different ids, this can be useful for salt compute
 # clusters.
-<% if @salt_master %>id: <%= salt_client_id %><% end %>
+<% if @salt_master %>id: <%= @salt_client_id %><% end %>
 
 # Append a domain to a hostname in the event that it does not exist.  This is
 # useful for systems where socket.getfqdn() does not actually result in a
@@ -60,8 +60,8 @@ master: <%= salt_master %>
 #  deployment: datacenter4
 #  cabinet: 13
 #  cab_u: 14-15
-<% if salt_grains != {} %>
-grains:<% salt_grains.sort.each do |salt_name, salt_values| %>
+<% if @salt_grains != {} %>
+grains:<% @salt_grains.sort.each do |salt_name, salt_values| %>
 <% if salt_values.kind_of?(Array) %>  <%= salt_name %>:<% salt_values.sort.each do |salt_value| %>
     - <%= salt_value %><% end %><% else %>  <%= salt_name %>: <%= salt_values %><% end %><% end %><% end %>
 
@@ -115,7 +115,7 @@ grains:<% salt_grains.sort.each do |salt_name, salt_values| %>
 # When healing, a dns_check is run. This is to make sure that the originally
 # resolved dns has not changed. If this is something that does not happen in
 # your environment, set this value to False.
-<% if @salt_dns_check %>dns_check: <%= salt_dns_check %><% end %>
+<% if @salt_dns_check %>dns_check: <%= @salt_dns_check %><% end %>
 
 # Windows platforms lack posix IPC and must rely on slower TCP based inter-
 # process communications. Set ipc_mode to 'tcp' on such systems
@@ -297,7 +297,7 @@ grains:<% salt_grains.sort.each do |salt_name, salt_values| %>
 # Fingerprint of the master public key to double verify the master is valid,
 # the master fingerprint can be found by running "salt-key -F master" on the
 # salt master.
-<%if @salt_master_finger %>master_finger: <%= salt_master_finger %><% end %>
+<%if @salt_master_finger %>master_finger: <%= @salt_master_finger %><% end %>
 
 ######         Thread settings        #####
 ###########################################
