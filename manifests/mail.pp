@@ -241,6 +241,14 @@ class mailman {
 
         # Add a new default theme to make mailman prettier
         file { '/var/lib/mailman/templates':
+            ensure  => link,
+            target  => '/etc/mailman',
+        }
+
+        # Add default theme to make mailman prettier.
+        #  Recurse => remote adds a bunch of files here and there
+        #  while leaving the by-hand mailman config files in place.
+        file { '/etc/mailman':
             source  => 'puppet:///files/mailman/templates/',
             owner   => 'root',
             group   => 'root',
