@@ -8,21 +8,12 @@ class mediawiki::sync {
         source => 'puppet:///modules/mediawiki/profile.d_add_scap_to_path.sh',
     }
 
-    # (╯°□°）╯︵ ┻━┻
-
     file { '/usr/local/apache':
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
         replace => false,
-    }
-
-    file { '/usr/local/apache/common-local':
-        ensure => directory,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0775',
     }
 
     file { '/usr/local/apache/common':
