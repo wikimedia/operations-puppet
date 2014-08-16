@@ -7,8 +7,12 @@
 #
 class apache::monitoring {
     include ::apache::mod::status
-    include ::diamond
     include ::ganglia
+
+    # Labs instance always have diamond
+    if $::realm != 'labs' {
+        include ::diamond
+    }
 
     diamond::collector { 'Httpd': }
 
