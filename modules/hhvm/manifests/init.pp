@@ -30,6 +30,24 @@
 # documentation is getting better, but expect to have to dig around in
 # the source code.
 #
+#
+# === Logging
+#
+# By default, this module configures HHVM to log to syslog, and it
+# configures rsyslog to route HHVM messages to /var/log/hhvm.log.
+# Finally, it configures HHVM to write stack traces to /var/log/hhvm.
+#
+#   /var/log
+#   │
+#   ├── hhvm.log
+#   │
+#   └── hhvm
+#       │
+#       ├── stacktrace.XXXX.log
+#       │
+#       └── stacktrace.YYYY.log, ...
+#
+#
 # === Parameters
 #
 # [*user*]
@@ -44,6 +62,7 @@
 #
 # [*fcgi_settings*]
 #   Ditto, except for FastCGI mode.
+#
 #
 # === Examples
 #
@@ -84,7 +103,10 @@ class hhvm(
             },
             mysql                    => {
                 slow_query_threshold => 10 * 1000,  # milliseconds
-            }
+            },
+            debug                    => {
+                core_dump_report_directory => '/var/log/hhvm',
+            },
         },
     }
 
@@ -200,7 +222,23 @@ class hhvm(
     }
 
 
-    ## Run-time directories
+    ## Run-time data and logging
+
+    rsyslog::conf { 'hhvm':
+        source   => 'puppet:///modules/hhvm/hhvm.rsyslog.conf',
+        priority => 20,
+        require  => File['/etc/hhvm/logrotate.d/hhvm'],
+        before   => Service['hhvm'],
+    }
+
+    file { '/etc/hhvm/logrotate.d/hhvm':
+        source  => 'puppet:///modules/hhvm/hhvm.logrotate',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/var/log/hhvm'],
+        before  => Service['hhvm'],
+    }
 
     file { [ '/run/hhvm', '/var/log/hhvm' ]:
         ensure => directory,
