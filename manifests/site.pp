@@ -2134,7 +2134,7 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
 # Trusty app server / HHVM staging
 node 'osmium.eqiad.wmnet' {
     include standard
-    include mediawiki
+    include role::mediawiki::jobrunner
 
     class {'::admin': groups => ['deployment']}
 
