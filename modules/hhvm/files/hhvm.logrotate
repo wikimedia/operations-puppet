@@ -1,0 +1,23 @@
+# logrotate(8) config for HHVM
+# This file is managed by Puppet
+
+# HHVM's error log, managed by rsyslog.
+/var/log/hhvm/error.log {
+    daily
+    dateext
+    dateyesterday
+    rotate 90
+    missingok
+    nocreate
+    delaycompress
+    sharedscripts
+    postrotate
+        reload rsyslog >/dev/null 2>&1 || true
+    endscript
+}
+
+# Delete local stack trace logs after one week.
+/var/log/hhvm/stacktrace.*.log.* {
+    rotate 0
+    maxage 7
+}

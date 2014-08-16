@@ -30,6 +30,20 @@
 # documentation is getting better, but expect to have to dig around in
 # the source code.
 #
+#
+# === Logging
+#
+# This module configures HHVM to write to syslog, and it configures
+# rsyslogd(8) to write HHVM's log messages to /var/log/hhvm/error.log.
+# HHVM is also configured to write stack traces to the same directory.
+#
+#   /var/log/hhvm
+#   │
+#   ├── error.log
+#   │
+#   └── stacktrace.NNN.log.YYYYMMDD, ...
+#
+#
 # === Parameters
 #
 # [*user*]
@@ -44,6 +58,7 @@
 #
 # [*fcgi_settings*]
 #   Ditto, except for FastCGI mode.
+#
 #
 # === Examples
 #
@@ -84,7 +99,10 @@ class hhvm(
             },
             mysql                    => {
                 slow_query_threshold => 10 * 1000,  # milliseconds
-            }
+            },
+            debug                    => {
+                core_dump_report_directory => '/var/log/hhvm',
+            },
         },
     }
 
@@ -200,21 +218,37 @@ class hhvm(
     }
 
 
-    ## Run-time directories
+    ## Run-time data and logging
 
-    file { [ '/run/hhvm', '/var/log/hhvm' ]:
+    rsyslog::conf { 'hhvm':
+        source   => 'puppet:///modules/hhvm/hhvm.rsyslog.conf',
+        priority => 20,
+        require  => File['/etc/hhvm/logrotate.d/hhvm'],
+        before   => Service['hhvm'],
+    }
+
+    file { '/etc/hhvm/logrotate.d/hhvm':
+        source  => 'puppet:///modules/hhvm/hhvm.logrotate',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/var/log/hhvm'],
+        before  => Service['hhvm'],
+    }
+
+    file { '/var/log/hhvm':
+        ensure => directory,
+        owner  => 'syslog',
+        group  => $group,
+        mode   => '0775',
+        before => Service['hhvm'],
+    }
+
+    file { [ '/run/hhvm', '/run/hhvm/cache' ]:
         ensure => directory,
         owner  => $user,
         group  => $group,
         mode   => '0755',
-        before => Service['hhvm'],
-    }
-
-    file { '/run/hhvm/cache':
-        ensure => directory,
-        owner  => $user,
-        group  => $group,
-        mode   => '0750',
         before => Service['hhvm'],
     }
 }
