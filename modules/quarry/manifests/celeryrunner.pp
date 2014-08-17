@@ -21,4 +21,9 @@ class quarry::celeryrunner {
         ensure  => running
     }
 
+    cron { 'query-killer':
+        command => "$clone_path/quarry/web/killer.py",
+        minute  => '*',
+        user    => 'quarry',
+    }
 }
