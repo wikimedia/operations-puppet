@@ -32,6 +32,7 @@ log_config=/etc/zuul/logging.conf
 state_dir=/var/lib/zuul
 url_pattern=<%= @url_pattern %>
 status_url=<%= @status_url %>
+job_name_in_report = true
 
 <% if @zuul_role == 'merger' -%>
 [merger]
