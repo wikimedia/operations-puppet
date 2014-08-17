@@ -79,3 +79,22 @@ class quarry::redis {
         monitor   => false,
     }
 }
+
+# = Class: quarry:querykiller
+#
+# Sets up a cron based query-killer
+class quarry::querykiller {
+    $clone_path = '/srv/quarry'
+
+    file { '/var/log/quarry':
+        ensure => directory,
+        owner  => 'quarry',
+        group  => 'quarry'
+    }
+
+    cron { 'query-killer':
+        command => "$clone_path/quarry/web/killer.py",
+        minute  => '*',
+        user    => 'quarry',
+    }
+}

@@ -20,5 +20,4 @@ class quarry::celeryrunner {
         require => [File['/etc/init.d/celeryd'], File['/etc/default/celeryd'], User['quarry']],
         ensure  => running
     }
-
 }
