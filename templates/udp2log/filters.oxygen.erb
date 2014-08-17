@@ -36,7 +36,7 @@ pipe 10 awk -f <%= @template_variables['webrequest_filter_directory'] %>/vu.awk 
 # Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact') %>
 # Former Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former') %>
 # Former contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former2') %>
-pipe 10 awk -f <%= @template_variables['webrequest_filter_directory'] %>/minnesota.awk | /bin/grep -v -F '://bits.wikimedia.org/event.gif?' | log2udp -h bento.cs.umn.edu -p 9999
+#pipe 10 awk -f <%= @template_variables['webrequest_filter_directory'] %>/minnesota.awk | /bin/grep -v -F '://bits.wikimedia.org/event.gif?' | log2udp -h bento.cs.umn.edu -p 9999
 
 ### webstatscollector -- domas
 # NOTE!  The files that filter and collector (on gadolinium) generates
