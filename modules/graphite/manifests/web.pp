@@ -62,8 +62,7 @@ class graphite::web(
     }
 
     exec { 'graphite_syncdb':
-        command     => '/usr/bin/python manage.py syncdb --noinput',
-        cwd         => '/usr/share/pyshared/graphite',
+        command     => '/usr/lib/python2.7/dist-packages/graphite/manage.py syncdb --noinput',
         user        => 'www-data',
         subscribe   => File['/etc/graphite/local_settings.py'],
         refreshonly => true,
