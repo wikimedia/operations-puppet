@@ -91,6 +91,10 @@
 [commentlink "mingle-analytics"]
         match = "\\b([aA]nalytics\\s*[:-]?\\s*[cC]ard|[cC]ard\\s*[:-]?\\s*[aA]nalytics)\\s*\\#?\\s*(\\d+)\\b"
         link = https://wikimedia.mingle.thoughtworks.com/projects/analytics/cards/$2
+[commentlink "testresult"]
+[commentlink "testresult"]
+    match = "<li>([^ ]+) <a href=\"[^\"]+\" target=\"_blank\">([^<]+)</a> : ([^ ]+)([^<]*)</li>"
+    html  = "<li class=\"comment_test\"><span class=\"comment_test_name\"><a href=\"$2\">$1</a></span> <span class=\"comment_test_result\"><span class=\"result_$3\">$3</span>$4</span></li>"
 [mimetype "application/javascript"]
 	safe = true
 [mimetype "application/x-php"]

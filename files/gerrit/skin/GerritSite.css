@@ -153,3 +153,31 @@ a:hover {
 #login_form input[type="submit"] {
 	font-size: 12px;
 }
+
+/** Zuul test result. From OpenStack Foundation */
+.comment_test_name {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	width: auto !important;
+	width: 25em;
+	min-width: 20em;
+	padding-bottom: 2pt;
+}
+
+.comment_test_result {
+}
+
+.result_SUCCESS {
+	color: #007f00;
+}
+.result_FAILURE {
+	color: #cf2f19;
+}
+.result_UNSTABLE {
+	color: #e39f00;
+}
+.result_LOST {
+	color: #e39f00;
+}
+li.comment_test {list-style-type: none; }
