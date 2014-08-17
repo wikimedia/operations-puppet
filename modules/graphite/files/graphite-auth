@@ -11,11 +11,9 @@
 import sys
 import argparse
 import socket
+import os
 
-import graphite.settings
-
-from django.core.management import setup_environ
-setup_environ(graphite.settings)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'graphite.settings')
 
 from django.contrib.auth.models import User
 
