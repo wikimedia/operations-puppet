@@ -242,12 +242,10 @@ sub tag_carrier {
             if (!req.http.X-Forwarded-By) {
                 set req.http.X-CS = req.http.X-CS2;
             }
-        } else if ((req.http.X-Forwarded-By != "Opera" && (
-                    req.http.X-CS2 == "426-04" ||
+        } else if ( req.http.X-CS2 == "426-04" ||
                     req.http.X-CS2 == "250-99" ||
                     req.http.X-CS2 == "436-01" ||
-                    req.http.X-CS2 == "436-04"
-                    )) ||
+                    req.http.X-CS2 == "436-04" ||
                     req.http.X-CS2 ~ "^TESTON.*") {
             //
             // Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
@@ -258,17 +256,6 @@ sub tag_carrier {
             } else {
                 set req.http.X-CS = "ON";
             }
-
-            /* These are opera-mini leftovers */
-
-        } else if (req.http.X-CS2 == "250-99") {
-            if (!req.http.X-Forwarded-Proto) {
-                if (req.http.host ~ "^((ru|en)\.)?(zero|m)\.") {
-                    set req.http.X-CS = req.http.X-CS2;
-                }
-            }
-
-            /* End of opera-mini leftovers */
 
         } else if (req.http.X-CS2 ~ "^TEST.*") {
             // Test carrier allows all proxies and SSL
@@ -343,9 +330,13 @@ sub vcl_deliver {
             if (!req.http.X-Forwarded-By) {
                 set req.http.X-CS = req.http.X-CS2;
             }
-        } else if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-            // Default for NON-HTTPS DIRECT connections
-            // Handles: 250-99
+        } else if (req.http.X-CS2 == "250-99" ) {
+            // These carriers support DIRECT and OPERA connections
+            if (!req.http.X-Forwarded-Proto) {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else {
+            // Support everything (currently only TESTON, once analytics is fixed - everyone)
             set req.http.X-CS = req.http.X-CS2;
         }
     }
