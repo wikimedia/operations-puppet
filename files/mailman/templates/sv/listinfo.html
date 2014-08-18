@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!-- Version: 1.5 -->
+<html lang="sv">
+<meta charset="utf-8">
+  <head>
+    <title><MM-List-Name> Epostlista - Wikimedia</title>
+    <style>
+      html, body {
+        height: 100%;
+      }
+      body {
+        margin: 0px;
+        padding: 0px;
+        background: #F0F0F0;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 13px;
+        color: #252525;
+      }   
+      h1, h2, h3 {
+        margin: 0;
+        padding: 0;
+      }
+      p, ol, ul {
+        margin-top: 0px;
+      }
+      p {
+        line-height: 180%;
+      }
+      a {
+        color: #0000FF;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      a img {
+        border: none;
+      }
+      img.border {
+      }
+      img.alignleft {
+        float: left;
+      }
+      img.alignright {
+        float: right;
+      }
+      img.aligncenter {
+        margin: 0px auto;
+        margin-top: -25px;
+        padding-bottom: 10px;
+      }
+      hr {
+        display: none;
+      }
+ 
+/** WRAPPER */
+ 
+      .container {
+        width: 1000px;
+        margin: 0px auto;
+      }
+ 
+/** MENU */
+ 
+      #menu {
+        #float: right;
+        #width: 600px;
+        #height: 99px;
+      }
+      #menu ul {
+        #float: right;
+        margin-left: -25px;
+        #padding: 40x 0px;
+        list-style: none;
+        line-height: normal;
+      }
+      #menu li {
+        #float: left;
+        #margin-left: 2em;
+      }
+      #menu a {
+        display: block;
+        padding: 10px 0px;
+        letter-spacing: 2px;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-family: 'Archivo Narrow', sans-serif;
+        font-size: 1.10em;
+        font-weight: 600;
+        color: #252525;
+      }
+      #menu .active a {
+        background: #0091E6;
+        border-radius: 5px;
+        color: #FFFFFF;
+      }
+      #menu a:hover {
+        text-decoration: underline;
+      }
+ 
+/** PAGE */
+ 
+      #page {
+        overflow: hidden;
+        width: 900px;
+        padding: 50px 30px 30px 30px;
+        background-color: #FFFFFF;
+        border-radius: 10px 10px 10px 10px;
+      }
+      #page h2 {
+        margin-bottom: 30px;
+      }
+ 
+/** CONTENT */
+ 
+      #content {
+        float: right;
+        width: 660px;
+      }
+      #content #onecolumn {
+        padding-bottom: 15px;
+        border-bottom: 1px solid #D4D4D4;
+      }
+      #content h2 {
+        letter-spacing: -1px;
+        font-size: 3em;
+      }
+ 
+/** SIDEBAR */
+ 
+      #sidebar {
+        float: left;
+        width: 220px;
+        padding-top: 0px;
+      }
+      #sidebar #sbox1 {
+        margin-bottom: 40px;
+      }
+      #sidebar #sbox2 {
+        overflow: hidden;
+        margin-bottom: 50px;
+      }
+      #sidebar #sbox3 {
+        overflow: hidden;
+      }
+ 
+/** FOOTER */
+
+      #copyright{
+        overflow: hidden;
+        width: 900px;
+        padding: 50px;
+      }
+      #copyright p {
+        text-align: center;
+        #text-shadow: 1px 1px 1px rgba(0,0,0,1);
+      }
+      #copyright a {
+      color: #4E4E4E;
+      }
+ 
+/** BODY */
+ 
+      #two-column {
+        padding-top: 30px;
+      }
+      .box-content {
+        overflow: hidden;
+        margin-bottom: 2em;
+      }
+      .box-content p {
+        padding-left: 60px;
+      }
+      .title {
+        display: block;
+        padding-left: 60px;
+        padding-bottom: 1em;
+        font-size: 1.70em !important;
+        font-weight: 600;
+        color: #252525;
+      }
+      .title01 {
+        background: url(//upload.wikimedia.org/wikipedia/commons/thumb/5/5a/News_subscribe.png/40px-News_subscribe.png) no-repeat left top;
+      }
+      .title02 {
+        background: url(//upload.wikimedia.org/wikipedia/commons/thumb/9/94/Filing_cabinet_icon.svg/40px-Filing_cabinet_icon.svg.png) no-repeat left top;
+      }
+      .title03 {
+        background: url(//upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Emblem-persons-blue-green.svg/40px-Emblem-persons-blue-green.svg.png) no-repeat left top;
+      }
+      .title04 {
+        background: url(//upload.wikimedia.org/wikipedia/commons/thumb/f/ff/WMF-Agora-Settings_424242.svg/40px-WMF-Agora-Settings_424242.svg.png) no-repeat left top;
+      }
+     .title05 {
+        background: url(//upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Wiki-broom.svg/40px-Wiki-broom.svg.png) no-repeat left top;
+      }
+    </style>
+  </head>
+  <body>
+  <p>
+  <div id="page" class="container">
+    <div id="content">
+      <div id="onecolumn">
+        <h1><MM-List-Name></h1>
+          <br />
+        <h3><MM-List-Description></h3>
+        <p><MM-List-Info></p>
+        <ul>
+          <li>Besök arkiven för <MM-Archive><MM-List-Name></MM-Archive>. <MM-Restricted-List-Message></li>
+          <li>Skicka epost till <A HREF="mailto:<MM-Posting-Addr>"><MM-Posting-Addr></A>.</li>
+         <li><a href="https://meta.wikimedia.org/wiki/Special:MyLanguage/Mailing_lists/List_info">Översätt sida</a>
+        </ul>
+      </div>
+      <div id="two-column">
+        <div class="box-content" id="subscribe">
+          <h3 class="title title01">Prenumerera</h3>
+          <MM-Subscribe-Form-Start>
+          <table>
+            <tr><td>Din epostadress:</td><td><MM-Subscribe-Box></td></tr>
+            <tr><td>Ditt namn (valfritt):</td><td><mm-fullname-box></td></tr>
+            <!-- Optional Password Fields (can leave out for public lists as Mailman auto-generates) -->
+            <!-- Password reminders can always be requested through web interface -->
+            <!-- Most likely only to be used with lists with private archives or subscription lists -->
+            <!-- <tr><td>Lösenord:</td><td><MM-New-Password-Box></td></tr> -->
+            <!-- <tr><td>Bekräfta lösenord:</td><td><MM-Confirm-Password></td></tr> -->
+            <!-- Part of the multilingual selector below -->
+            <tr><td>Önskat språk:</td><td><MM-list-langs></td></tr>
+          </table>
+          <p><MM-Reminder></p>
+          <p><mm-digest-question-start> Vill du få listans epost i ett dagligt sammandrag?
+          <MM-Undigest-Radio-Button> Nej <MM-Digest-Radio-Button>  Ja <mm-digest-question-end></p>
+          <!-- MM-List-Subscription-Msg gives extra details about the subscription rules of the list -->
+          <!-- This is optional, and will include variations between subscription rules (confirm vs confirm and approve) -->
+          <!-- On the majority of lists this can be commented out as subscription rules will simply be confirm -->
+          <MM-List-Subscription-Msg>
+          <p style="text-align: center"><MM-Subscribe-Button><MM-Form-End></p>
+        </div>
+        <div class="box-content" id="members">
+          <h3 class="title title03">Medlemmar i listan</h3>
+          <!-- MM-Roster-Form gives easy access to the subscribers list from the main list info page -->
+          <!-- You can comment the line below out for when you don't need to give access to the subscribers list -->
+          <!-- For example for announcement mailing lists or mailing lists with a large number of subscribers  -->
+          <p><MM-Roster-Form-Start><MM-Roster-Option><MM-Form-End></p></div>
+        <div class="box-content" id="manage">
+          <h3 class="title title04">Ändra dina inställningar eller avsluta din prenumeration</h3>
+          <p><MM-Options-Form-Start><MM-Editing-Options><MM-Form-End></p>
+        </div>
+        <div class="box-content" id="admins">
+          <h3 class="title title05">Administratörer</h3>
+          <p><MM-Mailman-Footer></p>
+        </div>
+      </div>
+    </div>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Wikimedia_logo_text_RGB.svg/200px-Wikimedia_logo_text_RGB.svg.png" alt="Wikimedia Logo" class="aligncenter"><br />
+    <div id="sidebar">
+      <div id="menu">
+        <ul>
+          <li><a href="https://meta.wikimedia.org/wiki/Mailing_lists" >Epostlistor</a></li>
+          <li><a href="https://meta.wikimedia.org/wiki/Wikimedia">Om Wikimedia</a></li>
+        </ul>
+      </div>
+      <!-- Optional multilingual selector -->
+      <!-- Mailman needs to be restarted to localize this custom template -->
+      <!-- http://wiki.list.org/pages/viewpage.action?pageId=4030605 -->
+      <MM-lang-form-start><MM-displang-box> <MM-list-langs><MM-form-end>
+    </div>
+  </div>
+  <div id="copyright" class="container">
+    <p>Baserad på en design gjord av <a href="http://www.freecsstemplates.org">freeCSStemplates.org</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY 3.0</a>.
+    [[<a href="https://github.com/quimgil/mailman-templates">källa</a>]]</p>
+  </div>
+  </body>
+</html>
