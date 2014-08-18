@@ -11,7 +11,7 @@ class snapshot::wikidatajsondump(
 
     system::role { 'snapshot::wikidatajsondump':
         ensure => $ensure,
-        description => 'Creator of Wikidata json dumps'
+        description => 'producer of weekly wikidata json dumps'
     }
 
     file { '/usr/local/bin/dumpwikidatajson.sh':
