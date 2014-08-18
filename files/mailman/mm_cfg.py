@@ -120,3 +120,6 @@ MAX_MESSAGE_SIZE = 5120
 # we put footers etc. and hence invalidate DKIM signatures
 # although they shouldn't theoretically hurt, remove them to avoid confusion
 REMOVE_DKIM_HEADERS = Yes
+
+# use https for mailman archive links instead of the default http
+PUBLIC_ARCHIVE_URL = 'https://%(hostname)s/pipermail/%(listname)s/'
