@@ -40,6 +40,9 @@
 #   Specify to use a different password for schema upgrades and database maintenance
 #   Requires: mysql_admin_user
 #
+# [*auth_type*]
+#   Specify a template to match the provided login mechanisms
+#
 # === Examples
 #
 #  class { 'phabricator':
@@ -75,6 +78,7 @@ class phabricator (
     # depending on what type of auth we use (SUL,LDAP,both,others) we change
     # which template we use for the login message
     case $auth_type {
+        'local':  { $auth_template = 'auth_log_message_local.erb' }
         'sul':  { $auth_template = 'auth_log_message_sul.erb' }
         'dual': { $auth_template = 'auth_log_message_dual.erb'}
         default: { fail ('please set an auth type for the login message') }

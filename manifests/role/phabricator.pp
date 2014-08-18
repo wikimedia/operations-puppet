@@ -92,7 +92,7 @@ class role::phabricator::labs {
     class { '::phabricator':
         git_tag   => $current_tag,
         lock_file => '/var/run/phab_repo_lock',
-        auth_type => 'dual',
+        auth_type => 'local',
         settings  => {
             'darkconsole.enabled'                => true,
             'phabricator.base-uri'               => "http://${::hostname}.wmflabs.org",
