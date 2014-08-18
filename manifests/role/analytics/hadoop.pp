@@ -113,26 +113,95 @@ class role::analytics::hadoop::config {
 
         $mapreduce_map_tasks_maximum              = ($::processorcount - 2) / 2
         $mapreduce_reduce_tasks_maximum           = ($::processorcount - 2) / 2
-        $mapreduce_map_memory_mb                  = 1536
-        $mapreduce_reduce_memory_mb               = 3072
-        $mapreduce_map_java_opts                  = '-Xmx1024M'
-        $mapreduce_reduce_java_opts               = '-Xmx2560M'
+
         $mapreduce_reduce_shuffle_parallelcopies  = 10
         $mapreduce_task_io_sort_mb                = 200
         $mapreduce_task_io_sort_factor            = 10
-        $yarn_nodemanager_resource_memory_mb      = 40960
+
+
+        # Configure memory based on these recommendations:
+        # http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.6.0/bk_installing_manually_book/content/rpm-chap1-11.html
+
+        # Select a 'reserve' memory size for the
+        # OS and other Hadoop processes.
+        if $::memorysize_mb <= 4096 {
+            $reserve_memory_mb = 1024
+        }
+        elsif $::memorysize_mb <= 16384 {
+            $reserve_memory_mb = 2048
+        }
+        elsif $::memorysize_mb <= 24576 {
+            $reserve_memory_mb = 4096
+        }
+        elsif $::memorysize_mb <= 49152 {
+            $reserve_memory_mb = 6144
+        }
+        elsif $::memorysize_mb <= 73728 {
+            $reserve_memory_mb = 8192
+        }
+        elsif $::memorysize_mb <= 98304 {
+            $reserve_memory_mb = 12288
+        }
+        elsif $::memorysize_mb <= 131072 {
+            $reserve_memory_mb = 24576
+        }
+        elsif $::memorysize_mb <= 262144 {
+            $reserve_memory_mb = 32768
+        }
+        else {
+            $reserve_memory_mb = 65536
+        }
+
+        # Memory available for use by Hadoop jobs.
+        $available_memory_mb = $::memsize_mb - $reserve_memory_mb
+
+        # Using + 0 here ensures that these variables are
+        # integers (Fixnums) and won't throw errors
+        # when used with min()/max() functions.
+        if $available_memory_mb <= 4096 {
+            $min_container_size_mb = 256 + 0
+        }
+        elsif $available_memory_mb <= 8192 {
+            $min_container_size_mb = 512 + 0
+        }
+        elsif $available_memory_mb <= 24576 {
+            $min_container_size_mb = 1024 + 0
+        }
+        else  {
+            $min_container_size_mb = 2048 + 0
+        }
+        # number of containers = min (2*CORES, 1.8*DISKS, (Total available RAM) / MIN_CONTAINER_SIZE)
+        $number_of_containers                     = floor(min(2 * $::processorcount, 1.8 * size($datanode_mounts), $available_memory_mb / $min_container_size_mb))
+        # RAM-per-container = max(MIN_CONTAINER_SIZE, (Total Available RAM) / containers))
+        $memory_per_container_mb                  = max($min_container_size_mb, $available_memory_mb / $number_of_containers)
+
+        $mapreduce_map_memory_mb                  = floor($memory_per_container_mb)
+        $mapreduce_reduce_memory_mb               = floor(2 * $memory_per_container_mb)
+        $map_jvm_heap_size                        = floor(0.8 * $memory_per_container_mb)
+        $mapreduce_map_java_opts                  = "-Xmx${map_jvm_heap_size}"
+        $reduce_jvm_heap_size                     = floor(0.8 * 2 * $memory_per_container_mb)
+        $mapreduce_reduce_java_opts               = "-Xmx${reduce_jvm_heap_size}"
+
+        $yarn_app_mapreduce_am_resource_mb        = floor(2 * $memory_per_container_mb)
+        $mapreduce_am_heap_size                   = floor(0.8 * 2 * $memory_per_container_mb)
+        $yarn_app_mapreduce_am_command_opts       = "-Xmx${mapreduce_am_heap_size}"
+
+        $yarn_nodemanager_resource_memory_mb      = floor($number_of_containers * $memory_per_container_mb)
+        $yarn_scheduler_minimum_allocation_mb     = floor($memory_per_container_mb)
+        $yarn_scheduler_maximum_allocation_mb     = floor($number_of_containers * $memory_per_container_mb)
+
         # use net-topology.py.erb to map hostname to /datacenter/rack/row id.
         $net_topology_script_template             = 'hadoop/net-topology.py.erb'
         $hadoop_heapsize                          = undef
         $yarn_heapsize                            = undef
 
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host = '239.192.1.32'
-        $ganglia_port = 8649
-        $gelf_logging_host                        = "logstash1001.eqiad.wmnet"
+        $ganglia_host                             = '239.192.1.32'
+        $ganglia_port                             = 8649
+        $gelf_logging_host                        = 'logstash1001.eqiad.wmnet'
         # In production, make sure that HDFS user directories are
         # created for everyone in these groups.
-        $hadoop_users_posix_groups                 = 'analytics-users analytics-privatedata-users analytics-admins'
+        $hadoop_users_posix_groups                = 'analytics-users analytics-privatedata-users analytics-admins'
     }
 
     # Configs specific to Labs.
@@ -172,19 +241,23 @@ class role::analytics::hadoop::config {
         $mapreduce_reduce_tasks_maximum           = 2
 
         # Labs sets these at undef, which lets the Hadoop defaults stick.
+        $mapreduce_reduce_shuffle_parallelcopies  = undef
+        $mapreduce_task_io_sort_mb                = undef
+        $mapreduce_task_io_sort_factor            = undef
         $mapreduce_map_memory_mb                  = undef
         $mapreduce_reduce_memory_mb               = undef
         $mapreduce_map_java_opts                  = undef
         $mapreduce_reduce_java_opts               = undef
-        $mapreduce_reduce_shuffle_parallelcopies  = undef
-        $mapreduce_task_io_sort_mb                = undef
-        $mapreduce_task_io_sort_factor            = undef
+        $yarn_app_mapreduce_am_resource_mb        = undef
+        $yarn_app_mapreduce_am_command_opts       = undef
         $yarn_nodemanager_resource_memory_mb      = undef
+        $yarn_scheduler_minimum_allocation_mb     = undef
+        $yarn_scheduler_maximum_allocation_mb     = undef
         $net_topology_script_template             = undef
 
-        $ganglia_host = 'aggregator.eqiad.wmflabs'
-        $ganglia_port = 50090
-        $gelf_logging_host                        = "127.0.0.1"
+        $ganglia_host                             = 'aggregator.eqiad.wmflabs'
+        $ganglia_port                             = 50090
+        $gelf_logging_host                        = '127.0.0.1'
         # In labs, make sure that HDFS user directories are
         # created for everyone in the project-analytics group.
         $hadoop_users_posix_groups                 = 'project-analytics'
@@ -236,14 +309,21 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         mapreduce_map_tasks_maximum              => $mapreduce_map_tasks_maximum,
         mapreduce_reduce_tasks_maximum           => $mapreduce_reduce_tasks_maximum,
         mapreduce_job_reuse_jvm_num_tasks        => $mapreduce_job_reuse_jvm_num_tasks,
+        mapreduce_reduce_shuffle_parallelcopies  => $mapreduce_reduce_shuffle_parallelcopies,
+        mapreduce_task_io_sort_mb                => $mapreduce_task_io_sort_mb,
+        mapreduce_task_io_sort_factor            => $mapreduce_task_io_sort_factor,
+
         mapreduce_map_memory_mb                  => $mapreduce_map_memory_mb,
         mapreduce_reduce_memory_mb               => $mapreduce_reduce_memory_mb,
         mapreduce_map_java_opts                  => $mapreduce_map_java_opts,
         mapreduce_reduce_java_opts               => $mapreduce_reduce_java_opts,
-        mapreduce_reduce_shuffle_parallelcopies  => $mapreduce_reduce_shuffle_parallelcopies,
-        mapreduce_task_io_sort_mb                => $mapreduce_task_io_sort_mb,
-        mapreduce_task_io_sort_factor            => $mapreduce_task_io_sort_factor,
+        yarn_app_mapreduce_am_resource_mb        => $yarn_app_mapreduce_am_resource_mb,
+        yarn_app_mapreduce_am_command_opts       => $yarn_app_mapreduce_am_command_opts,
+
         yarn_nodemanager_resource_memory_mb      => $yarn_nodemanager_resource_memory_mb,
+        yarn_scheduler_minimum_allocation_mb     => $yarn_scheduler_minimum_allocation_mb,
+        yarn_scheduler_maximum_allocation_mb     => $yarn_scheduler_maximum_allocation_mb,
+
         # Use net-topology.py.erb to map hostname to /datacenter/rack/row id.
         net_topology_script_template             => $net_topology_script_template,
         # Use fair-scheduler.xml.erb to define FairScheduler queues.
