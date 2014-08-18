@@ -123,3 +123,6 @@ REMOVE_DKIM_HEADERS = Yes
 
 # use https for mailman archive links instead of the default http
 PUBLIC_ARCHIVE_URL = 'https://%(hostname)s/pipermail/%(listname)s/'
+
+# see bug 46049
+SENDER_HEADERS = ('from')
