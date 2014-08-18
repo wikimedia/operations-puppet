@@ -10,7 +10,7 @@ $template MediaWiki,"%programname% %timegenerated% %HOSTNAME%: %msg%\n"
 # Forward Apache to /var/log/apache2.log and log aggregator.
 # Rotate /var/log/apache2.log when it exceeds 100MB.
 $outchannel apache2,/var/log/apache2.log,100000000,/usr/sbin/logrotate -f /etc/logrotate.d/mediawiki_apache
-:programname,isequal,"apache2" $apache2 @<%= @log_aggregator %>;MediaWiki ~
+:programname,isequal,"apache2" :omfile:$apache2 @<%= @log_aggregator %>;MediaWiki ~
 
 # Forward HHVM logs and stack traces to log aggregator.
 :programname,isequal,"hhvm" @<%= @log_aggregator %>;MediaWiki ~
