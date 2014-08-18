@@ -8,6 +8,11 @@ root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 instance_name_template=i-%08x
 daemonize=1
 scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
+
+# virt1006 is misbehaving.  This setting prevents the scheduler
+#  from placing any new VMs on it.
+isolated_hosts=virt1006
+
 my_ip=<%= novaconfig["my_ip"] %>
 logdir=/var/log/nova
 state_path=/var/lib/nova
