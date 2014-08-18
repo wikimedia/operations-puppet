@@ -2,15 +2,9 @@
 # !! this file is managed by puppet !!
 
 NameVirtualHost *:80
-NameVirtualHost *:443
 
-<VirtualHost *:443>
+<VirtualHost *:80>
     ServerName <%= @site_name %>
-    SSLEngine On
-    SSLCertificateFile /etc/ssl/private/ishmael.wikimedia.org.pem
-    SSLCertificateKeyFile /etc/ssl/private/ishmael.wikimedia.org.key
-    SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
-    <%= @ssl_settings.join("\n") %>
     DocumentRoot <%= @docroot %>
 
     <Directory "<%= @docroot %>">
@@ -33,11 +27,3 @@ NameVirtualHost *:443
     </Directory>
 </VirtualHost>
 
-<VirtualHost *:80>
-    ServerName <%= @site_name %>
-    DocumentRoot <%= @docroot %>
-
-    RewriteEngine on
-    RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R]
-</VirtualHost>
