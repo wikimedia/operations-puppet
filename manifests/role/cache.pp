@@ -1439,6 +1439,7 @@ class role::cache {
                 'radon.eqiad.wmnet', # phab instance for legal
                 'iridium.eqiad.wmnet', # main phab
                 'terbium.eqiad.wmnet', # public_html
+                'neon.wikimedia.org', # monitoring tools (icinga et al)
             ],
             backend_options => [
             {
