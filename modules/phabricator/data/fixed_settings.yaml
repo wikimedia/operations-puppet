@@ -1,5 +1,66 @@
 #These custom values are hardcoded here to persist across Phabriactor Mediawiki installs
 
+# DO NOT CHANGE THESE VALUES.  Must be updated
+# to match in security extensions.
+maniphest.custom-field-definitions:
+  external_reference:
+    name: ext_ref
+    type: text
+    caption: external reference identifier
+    search: true
+  security_topic:
+    instructions: Security settings will override permissions and projects as needed.
+    name: Security
+    description: Used for security oriented custom extensions
+    search: true
+    type: select
+    default: none
+    options:
+      default: none
+      security-bug: 'Security or Sensitive Bug'
+      ops-access-request: 'Operations Access Request'
+      ops-procurement: 'Operations Procurement'
+      sensitive: 'Another Private Issue'
+
+maniphest.statuses:
+  open:
+    name: Open
+    special: default
+  needsinfo:
+    name: 'Needs Info'
+    name.full: 'Open, Needs Info'
+    closed: false
+    prefixes: [stalled, info]
+    suffixes: ['as needs info']
+  resolved:
+    name: Resolved
+    name.full: 'Closed, Resolved'
+    closed: true
+    special: closed
+    prefixes: [closed, closes, close, fix, fixes, fixed, resolve, resolves, resolved]
+    suffixes: ['as resolved', 'as fixed']
+  invalid:
+    name: Invalid
+    name.full: "Closed, Invalid"
+    closed: true
+    prefixes: [invalidate, invalidates, invalidated]
+    suffixes: ['as invalid']
+  duplicate:
+    name: Duplicate
+    name.full: "Closed, Duplicate"
+    transaction.icon: fa-times
+    special: duplicate
+    closed: true
+  declined:
+    name: Declined
+    name.full: "Closed, Declined"
+    name.action: Declined
+    transaction.icon: fa-thumbs-o-down
+    closed: true
+    prefixes: [decline, declines, declined]
+    suffixes: ['as declined']
+
+
 policy.allow-public: true
 
 auth.require-approval: false
@@ -48,13 +109,6 @@ user.custom-field-definitions:
     instructions: This field should contain the login name for the old rt.bugzilla.org
     search: true
 
-maniphest.custom-field-definitions:
-  external_id:
-    name: ext_id
-    type: text
-    caption: external identifier
-    search: true
-
 #will be overridden by production values if present
 mysql.host: 'localhost'
 mysql.pass: 'foo'
@@ -63,4 +117,3 @@ mysql.pass: 'foo'
 phabricator.uninstalled-applications:
   PhabricatorApplicationPhriction: true
   PhabricatorApplicationDiviner: true
-
