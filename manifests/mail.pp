@@ -239,6 +239,15 @@ class mailman {
             recurse => 'remote',
         }
 
+        # Add a new default theme to make mailman prettier
+        file { '/var/lib/mailman/templates':
+            source  => 'puppet:///files/mailman/templates/',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            recurse => 'remote',
+        }
+
         # monitor SSL cert expiry
         if ( $::realm == 'production' ) {
             monitor_service { 'https':
