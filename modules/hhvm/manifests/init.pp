@@ -223,12 +223,12 @@ class hhvm(
     rsyslog::conf { 'hhvm':
         source   => 'puppet:///modules/hhvm/hhvm.rsyslog.conf',
         priority => 20,
-        require  => File['/etc/hhvm/logrotate.d/hhvm'],
+        require  => File['/etc/logrotate.d/hhvm'],
         before   => Service['hhvm'],
     }
 
-    file { '/etc/hhvm/logrotate.d/hhvm':
-        source  => 'puppet:///modules/hhvm/hhvm.logrotate',
+    file { '/etc/logrotate.d/hhvm':
+        source  => 'puppet:///modules/hhvm.logrotate',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
