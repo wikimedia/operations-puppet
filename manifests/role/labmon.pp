@@ -3,10 +3,8 @@
 
 class role::labmon {
 
-    file { '/srv/carbon':
-        ensure => directory,
-        owner => '_graphite',
-        group => '_graphite',
+    class { 'role::graphite':
+        storage_dir => '/srv/carbon'
     }
 
     file { '/var/lib/carbon':
@@ -14,11 +12,8 @@ class role::labmon {
         target => '/srv/carbon',
         owner => '_graphite',
         group => '_graphite',
-        require => File['/srv/carbon']
+        require => Class['role::graphite']
     }
 
-    class { 'role::graphite':
-        require => File['/var/lib/carbon']
-    }
     include role::txtstsd
 }
