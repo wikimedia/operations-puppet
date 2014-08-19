@@ -1445,6 +1445,7 @@ class role::cache {
                 'iridium.eqiad.wmnet', # main phab
                 'terbium.eqiad.wmnet', # public_html
                 'neon.wikimedia.org', # monitoring tools (icinga et al)
+                'magnesium.wikimedia.org', # RT and racktables
             ],
             backend_options => [
             {
