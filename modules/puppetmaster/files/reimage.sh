@@ -16,8 +16,10 @@ function clean_puppet {
     log "cleaning puppet certificate for ${nodename}"
     puppet cert clean ${nodename}
     # An additional, paranoid check.
-    (puppet cert list --all | fgrep -q ${nodename}; \
-        if [ $? eq 0 ]; then log "unable to clean puppet cert, please check manually"; exit 1; fi;)
+    if puppet cert list --all | fgrep -q ${nodename}; then
+        log "unable to clean puppet cert, please check manually"
+        exit 1
+    fi
     log "cleaning puppet facts cache for ${nodename}"
     /usr/local/sbin/puppetstoredconfigclean.rb ${nodename}
 }
@@ -27,15 +29,16 @@ function clean_salt {
     log "cleaning salt key cache for ${nodename}"
     # This actually exits with 0, no matter what
     salt-key -d ${nodename}
-    (salt-key --list accepted | fgrep -q ${nodename}; \
-        if [ $? eq 0 ]; then log "unable to clean salt key, please check manually"; exit 1; fi;)
+    if salt-key --list accepted | fgrep -q ${nodename}; then
+        log "unable to clean salt key, please check manually"
+        exit 1
+    fi
 }
 
 function sign_puppet {
     nodename=${1}
     force_yes=${2}
-    while 1;
-    do
+    while true; do
         log "Seeking the node cert to sign"
         res=$(puppet cert list | sed -ne "s/\"$nodename\"//p")
         if [ "x${res}" == "x" ]; then
@@ -47,11 +50,11 @@ function sign_puppet {
         if [ ${force_yes} -eq 0 ]; then
             echo "We have found a key for ${nodename} with the following fingerprint:"
             echo "$res"
-            echo "Can we go on and sign it? (y/n)"
+            echo -n "Can we go on and sign it? (y/N) "
             read choice
             echo
             if [ "x${choice}" != "xy" ]; then
-                log "Aborting on users request."
+                log "Aborting on user request."
                 exit 1
             fi;
         fi;
@@ -62,8 +65,7 @@ function sign_puppet {
 
 function sign_salt {
     nodename=${1}
-    while 1;
-    do
+    while true; do
         log "Seeking the node key to add"
         res=$(salt-key --list unaccepted | sed -ne "s/$nodename//p")
         if [ "x${res}" == "x" ]; then
