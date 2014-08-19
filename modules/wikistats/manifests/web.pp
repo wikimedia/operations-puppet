@@ -21,7 +21,7 @@ class wikistats::web (
     file { '/var/www/wikistats':
         ensure  => directory,
         mode    => '0755',
-        owner   => 'wikistats',
+        owner   => 'wikistatsuser',
         group   => 'www-data';
     }
 
