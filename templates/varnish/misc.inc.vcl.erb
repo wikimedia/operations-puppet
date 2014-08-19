@@ -28,6 +28,8 @@ sub vcl_recv {
 		set req.backend = iridium;
 	} elsif (req.http.Host == "contacts.wikimedia.org") {
 		set req.backend = zirconium;
+	} elsif (req.http.Host == "svn.wikimedia.org") {
+		set req.backend = antimony;
 	} else {
 		error 404 "Domain not served here";
 	}
