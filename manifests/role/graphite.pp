@@ -1,4 +1,4 @@
-class role::graphite {
+class role::graphite($storage_dir = false) {
     include ::passwords::graphite
 
     if ($::realm == 'labs') {
@@ -10,9 +10,11 @@ class role::graphite {
         description => 'real-time metrics processor',
     }
 
-    $carbon_storage_dir = $::realm ? {
-        labs    => '/srv/carbon',
-        default => '/var/lib/carbon',
+    if $storage_dir == false {
+        $storage_dir = $::realm ? {
+            labs    => '/srv/carbon',
+            default => '/var/lib/carbon',
+        }
     }
 
     class { '::graphite':
@@ -130,7 +132,7 @@ class role::graphite {
             },
         },
 
-        storage_dir         => $carbon_storage_dir,
+        storage_dir         => $storage_dir,
     }
 
     class { '::graphite::web':

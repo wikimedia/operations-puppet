@@ -3,23 +3,17 @@
 
 class role::labmon {
 
-    file { '/srv/carbon':
-        ensure => directory,
-        owner => '_graphite',
-        group => '_graphite',
+    class { 'role::graphite':
+        storage_dir => '/srv/carbon'
     }
 
-    # Hack, since /var/lib/carbon is *also* defined in graphite::init
-    File <| title == '/var/lib/carbon' |> {
+    file { '/var/lib/carbon':
         ensure => link,
         target => '/srv/carbon',
         owner => '_graphite',
         group => '_graphite',
-        require => File['/srv/carbon']
+        require => Class['role::graphite']
     }
 
-    class { 'role::graphite':
-        require => File['/var/lib/carbon']
-    }
     include role::txtstsd
 }
