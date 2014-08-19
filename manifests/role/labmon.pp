@@ -10,7 +10,7 @@ class role::labmon {
         target => '/srv/carbon',
         owner => '_graphite',
         group => '_graphite',
-        require => Class['role::graphite']
+        require => Class['role::graphite::labmon']
     }
 
     include role::txstatsd
