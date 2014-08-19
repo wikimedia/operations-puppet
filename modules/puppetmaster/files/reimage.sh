@@ -8,7 +8,7 @@ SLEEPTIME=60
 FORCE=0
 
 function log  {
-    echo "$@";
+    echo "$@"
 }
 
 function clean_puppet {
@@ -27,8 +27,12 @@ function clean_puppet {
 function clean_salt {
     nodename=${1}
     log "cleaning salt key cache for ${nodename}"
-    # This actually exits with 0, no matter what
-    salt-key -d ${nodename}
+    # delete the key only if it has been accepted already, we are going to
+    # ask confirmation later about unaccepted keys
+    if salt-key --list accepted | fgrep -q ${nodename}; then
+        salt-key --delete ${hostname}
+    fi
+    # salt-key --delete above exits 0 regardless, double check
     if salt-key --list accepted | fgrep -q ${nodename}; then
         log "unable to clean salt key, please check manually"
         exit 1
@@ -42,13 +46,14 @@ function sign_puppet {
         log "Seeking the node cert to sign"
         res=$(puppet cert list | sed -ne "s/\"$nodename\"//p")
         if [ "x${res}" == "x" ]; then
-            log "cert not found, sleeping for 1 minute"
+            log "cert not found, sleeping for ${SLEEPTIME}s"
             sleep $SLEEPTIME
             continue
-        fi;
+        fi
 
         if [ ${force_yes} -eq 0 ]; then
-            echo "We have found a key for ${nodename} with the following fingerprint:"
+            echo "We have found a key for ${nodename} " \
+                 "with the following fingerprint:"
             echo "$res"
             echo -n "Can we go on and sign it? (y/N) "
             read choice
@@ -56,8 +61,8 @@ function sign_puppet {
             if [ "x${choice}" != "xy" ]; then
                 log "Aborting on user request."
                 exit 1
-            fi;
-        fi;
+            fi
+        fi
         puppet cert -s ${nodename}
         break
     done
@@ -67,16 +72,14 @@ function sign_salt {
     nodename=${1}
     while true; do
         log "Seeking the node key to add"
-        res=$(salt-key --list unaccepted | sed -ne "s/$nodename//p")
-        if [ "x${res}" == "x" ]; then
-            log "key not found, sleeping for 1 minute"
+        if ! salt-key --list unaccepted | fgrep -q ${nodename}; then
+            log "key not found, sleeping for ${SLEEPTIME}s"
             sleep $SLEEPTIME
             continue
         fi;
         salt-key -a ${nodename}
         break
     done
-
 }
 
 function usage {
