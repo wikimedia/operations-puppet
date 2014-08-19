@@ -15,6 +15,7 @@ class role::diamond {
         'cvn',
         'deployment-prep',
         'graphite',
+        'integration',
         'tools',
         'quarry',
     ]
