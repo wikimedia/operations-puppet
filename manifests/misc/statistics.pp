@@ -405,7 +405,6 @@ class misc::statistics::sites::metrics {
     # make access and error log for metrics-api readable by wikidev group
     file { ['/var/log/apache2/access.metrics.log', '/var/log/apache2/error.metrics.log']:
         group   => 'wikidev',
-        require => File["/etc/apache2/sites-enabled/${site_name}"],
     }
 }
 
