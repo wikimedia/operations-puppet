@@ -1425,6 +1425,7 @@ class role::cache {
                 'logstash1003.eqiad.wmnet',
                 'radon.eqiad.wmnet', # phab instance for legal
                 'iridium.eqiad.wmnet', # main phab
+                'magnesium.wikimedia.org', # RT and racktables
             ],
             backend_options => [
             {

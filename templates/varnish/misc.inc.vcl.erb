@@ -28,6 +28,8 @@ sub vcl_recv {
 		set req.backend = iridium;
 	} elsif (req.http.Host == "contacts.wikimedia.org") {
 		set req.backend = zirconium;
+	} elsif (req.http.Host == "racktables.wikimedia.org") {
+		set req.backend = magnesium;
 	} else {
 		error 404 "Domain not served here";
 	}

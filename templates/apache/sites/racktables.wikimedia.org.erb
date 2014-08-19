@@ -8,21 +8,6 @@
 
     ServerName <%= @racktables_host %>
 
-    RewriteEngine on
-    RewriteRule ^/(.*)$ https://<%= @racktables_host %>/$1 [R=301]
-
-</VirtualHost>
-
-<VirtualHost *:443>
-
-    ServerName <%= @racktables_host %>
-
-    SSLEngine On
-    SSLCertificateFile <%= @racktables_ssl_cert %>
-    SSLCertificateKeyFile <%= @racktables_ssl_key %>
-    SSLCACertificatePath /etc/ssl/certs
-    <%= @ssl_settings.join("\n") %>
-
     DocumentRoot /srv/org/wikimedia/racktables/wwwroot
     <Directory />
         Options FollowSymLinks
