@@ -94,7 +94,7 @@ class role::analytics::hadoop::config {
         }
         # analytics1028-analytics1041 have mounts on disks sdb - sdm.
         # (sda is hardware raid on the 2 2.5 drives in the flex bays.)
-        elsif $::hostname =~ /analytics10(2[89]|3[0-9]|4[01])/ {
+        else {
             $datanode_mounts = [
                 "${hadoop_data_directory}/b",
                 "${hadoop_data_directory}/c",
@@ -152,7 +152,6 @@ class role::analytics::hadoop::config {
             $reserve_memory_mb = 65536
         }
 
-        notify { "memorysize_mb: $::memorysize_mb, reserve_memory_mb: $reserve_memory_mb": }
         # Memory available for use by Hadoop jobs.
         $available_memory_mb = $::memorysize_mb - $reserve_memory_mb
 
@@ -172,19 +171,10 @@ class role::analytics::hadoop::config {
             $min_container_size_mb = 2048 + 0
         }
 
-        notify { "available_memory_mb: $available_memory_mb, min_container_size_mb: $min_container_size_mb": }
-        $container_by_ram = $available_memory_mb / $min_container_size_mb
-        notify { "container_by_ram: $container_by_ram": }
-
-        $datanode_mount_size = size($datanode_mounts)
-        notify { "processorcount: $::processorcount, size(datanode_mounts): $datanode_mount_size": }
         # number of containers = min (2*CORES, 1.8*DISKS, (Total available RAM) / MIN_CONTAINER_SIZE)
         $number_of_containers                     = floor(min(2 * $::processorcount, 1.8 * size($datanode_mounts), $available_memory_mb / $min_container_size_mb))
-        notify { "number_of_containers: $number_of_containers": }
-
         # RAM-per-container = max(MIN_CONTAINER_SIZE, (Total Available RAM) / containers))
-        $memory_per_container_mb                  = 2234 #max($min_container_size_mb, $available_memory_mb / $number_of_containers)
-        notify { "memory_per_container_mb: $memory_per_container_mb": }
+        $memory_per_container_mb                  = max($min_container_size_mb, $available_memory_mb / $number_of_containers)
 
         $mapreduce_map_memory_mb                  = floor($memory_per_container_mb)
         $mapreduce_reduce_memory_mb               = floor(2 * $memory_per_container_mb)
