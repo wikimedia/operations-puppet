@@ -1,4 +1,7 @@
-class role::graphite($storage_dir = false) {
+class role::graphite(
+    $storage_dir = false,
+    $auth = true,
+) {
     include ::passwords::graphite
 
     if ($::realm == 'labs') {
@@ -155,44 +158,46 @@ class role::graphite($storage_dir = false) {
             $hostname    = 'graphite-beta.wmflabs.org'
         }
     } else {
-        # Production
-        include ::passwords::ldap::production
-        include ::apache::mod::authnz_ldap
+        if $auth {
+            # Production
+            include ::passwords::ldap::production
+            include ::apache::mod::authnz_ldap
 
-        $hostname      = 'graphite.wikimedia.org'
-        $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
-        $ldap_bindpass = $passwords::ldap::production::proxypass
-        $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
-        $ldap_groups   = [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=nda,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-        ]
-        $auth_realm    = 'WMF Labs (use wiki login name not shell)'
-        $apache_auth   = template('graphite/apache-auth-ldap.erb')
+            $hostname      = 'graphite.wikimedia.org'
+            $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
+            $ldap_bindpass = $passwords::ldap::production::proxypass
+            $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
+            $ldap_groups   = [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=nda,ou=groups,dc=wikimedia,dc=org',
+                'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+            ]
+            $auth_realm    = 'WMF Labs (use wiki login name not shell)'
+            $apache_auth   = template('graphite/apache-auth-ldap.erb')
 
-        monitor_graphite_threshold { 'reqstats_5xx':
-            description     => 'HTTP 5xx req/min',
-            metric          => 'reqstats.5xx',
-            warning         => 250,
-            critical        => 500,
-            from            => '15min',
-            nagios_critical => 'false'
+            monitor_graphite_threshold { 'reqstats_5xx':
+                description     => 'HTTP 5xx req/min',
+                metric          => 'reqstats.5xx',
+                warning         => 250,
+                critical        => 500,
+                from            => '15min',
+                nagios_critical => 'false'
+            }
+
+            # Will try to detect anomalies in the requests error ratio;
+            # if 10% of the last 100 checks is out of forecasted bounds
+            monitor_graphite_anomaly { 'requests_error_ratio':
+                description  => 'HTTP error ratio anomaly detection',
+                metric       => 'reqstats.5xx',
+                warning      => 5,
+                critical     => 10,
+                check_window => 100,
+                over         => true
+            }
+            include ::mediawiki::monitoring::graphite
+            include ::eventlogging::monitoring::graphite
+            include ::swift::monitoring::graphite
         }
-
-        # Will try to detect anomalies in the requests error ratio;
-        # if 10% of the last 100 checks is out of forecasted bounds
-        monitor_graphite_anomaly { 'requests_error_ratio':
-            description  => 'HTTP error ratio anomaly detection',
-            metric       => 'reqstats.5xx',
-            warning      => 5,
-            critical     => 10,
-            check_window => 100,
-            over         => true
-        }
-        include ::mediawiki::monitoring::graphite
-        include ::eventlogging::monitoring::graphite
-        include ::swift::monitoring::graphite
     }
 
     apache::site { $hostname:

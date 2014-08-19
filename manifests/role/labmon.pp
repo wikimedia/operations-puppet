@@ -4,7 +4,8 @@
 class role::labmon {
 
     class { 'role::graphite':
-        storage_dir => '/srv/carbon'
+        storage_dir => '/srv/carbon',
+        auth => false
     }
 
     file { '/var/lib/carbon':
