@@ -172,10 +172,12 @@ class role::analytics::hadoop::config {
             $min_container_size_mb = 2048 + 0
         }
 
-        notify { "min_container_size_mb: $min_container_size_mb": }
+        notify { "available_memory_mb: $available_memory_mb, min_container_size_mb: $min_container_size_mb": }
         $container_by_ram = $available_memory_mb / $min_container_size_mb
         notify { "container_by_ram: $container_by_ram": }
 
+        $datanode_mount_size = size($datanode_mounts)
+        notify { "processorcount: $::processorcount, size(datanode_mounts): $datanode_mount_size": }
         # number of containers = min (2*CORES, 1.8*DISKS, (Total available RAM) / MIN_CONTAINER_SIZE)
         $number_of_containers                     = floor(min(2 * $::processorcount, 1.8 * size($datanode_mounts), $available_memory_mb / $min_container_size_mb))
         notify { "number_of_containers: $number_of_containers": }
