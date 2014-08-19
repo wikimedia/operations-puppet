@@ -178,13 +178,13 @@ class role::analytics::hadoop::config {
         $mapreduce_map_memory_mb                  = floor($memory_per_container_mb)
         $mapreduce_reduce_memory_mb               = floor(2 * $memory_per_container_mb)
         $map_jvm_heap_size                        = floor(0.8 * $memory_per_container_mb)
-        $mapreduce_map_java_opts                  = "-Xmx${map_jvm_heap_size}"
+        $mapreduce_map_java_opts                  = "-Xmx${map_jvm_heap_size}m"
         $reduce_jvm_heap_size                     = floor(0.8 * 2 * $memory_per_container_mb)
-        $mapreduce_reduce_java_opts               = "-Xmx${reduce_jvm_heap_size}"
+        $mapreduce_reduce_java_opts               = "-Xmx${reduce_jvm_heap_size}m"
 
         $yarn_app_mapreduce_am_resource_mb        = floor(2 * $memory_per_container_mb)
         $mapreduce_am_heap_size                   = floor(0.8 * 2 * $memory_per_container_mb)
-        $yarn_app_mapreduce_am_command_opts       = "-Xmx${mapreduce_am_heap_size}"
+        $yarn_app_mapreduce_am_command_opts       = "-Xmx${mapreduce_am_heap_size}m"
 
         $yarn_nodemanager_resource_memory_mb      = floor($number_of_containers * $memory_per_container_mb)
         $yarn_scheduler_minimum_allocation_mb     = floor($memory_per_container_mb)
