@@ -3,9 +3,7 @@
 
 class role::labmon {
 
-    class { 'role::graphite':
-        storage_dir => '/srv/carbon'
-    }
+    class { 'role::graphite::labmon': }
 
     file { '/var/lib/carbon':
         ensure => link,

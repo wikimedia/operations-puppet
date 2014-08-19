@@ -1,4 +1,24 @@
-class role::graphite($storage_dir = false) {
+# == Class: role::graphite::base
+# Base class for setting up a graphite instance.
+#
+# Sets up graphite + carbon listeners, with 8 carbon listeners running on localhost
+# feeding data into graphite.
+# Also sets up basic icinga checks.
+#
+# === Parameters
+#
+# [*storage_dir*]
+#
+#   Location to store the whisper files used by graphite in
+#
+# [*auth*]
+#
+#   Set to true to enable LDAP based authentication to access the graphite interface
+#
+class role::graphite::base(
+    $storage_dir = '/var/lib/carbon',
+    $auth = true,
+) {
     include ::passwords::graphite
 
     if ($::realm == 'labs') {
@@ -10,14 +30,7 @@ class role::graphite($storage_dir = false) {
         description => 'real-time metrics processor',
     }
 
-    if $storage_dir == false {
-        $carbon_storage_dir = $::realm ? {
-            labs    => '/srv/carbon',
-            default => '/var/lib/carbon',
-        }
-    } else {
-        $carbon_storage_dir = $storage_dir
-    }
+    $carbon_storage_dir = $storage_dir
 
     class { '::graphite':
         storage_schemas     => {
@@ -155,21 +168,23 @@ class role::graphite($storage_dir = false) {
             $hostname    = 'graphite-beta.wmflabs.org'
         }
     } else {
-        # Production
-        include ::passwords::ldap::production
-        include ::apache::mod::authnz_ldap
+        if $auth {
+            # Production
+            include ::passwords::ldap::production
+            include ::apache::mod::authnz_ldap
 
-        $hostname      = 'graphite.wikimedia.org'
-        $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
-        $ldap_bindpass = $passwords::ldap::production::proxypass
-        $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
-        $ldap_groups   = [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=nda,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-        ]
-        $auth_realm    = 'WMF Labs (use wiki login name not shell)'
-        $apache_auth   = template('graphite/apache-auth-ldap.erb')
+            $hostname      = 'graphite.wikimedia.org'
+            $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
+            $ldap_bindpass = $passwords::ldap::production::proxypass
+            $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
+            $ldap_groups   = [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=nda,ou=groups,dc=wikimedia,dc=org',
+                'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+            ]
+            $auth_realm    = 'WMF Labs (use wiki login name not shell)'
+            $apache_auth   = template('graphite/apache-auth-ldap.erb')
+        }
 
         monitor_graphite_threshold { 'reqstats_5xx':
             description     => 'HTTP 5xx req/min',
@@ -190,9 +205,6 @@ class role::graphite($storage_dir = false) {
             check_window => 100,
             over         => true
         }
-        include ::mediawiki::monitoring::graphite
-        include ::eventlogging::monitoring::graphite
-        include ::swift::monitoring::graphite
     }
 
     apache::site { $hostname:
@@ -208,5 +220,33 @@ class role::graphite($storage_dir = false) {
     monitor_service { 'graphite':
         description   => 'graphite.wikimedia.org',
         check_command => 'check_http_url!graphite.wikimedia.org!/render',
+    }
+}
+
+# == Class: role::graphite::production
+#
+# Set up graphite instance for production.
+# Also includes icinga checks for anomalies for Mediawiki, EL & Swift metrics
+# Instance requires people to authenticate via LDAP before they can see metrics.
+#
+class role::graphite::production {
+    class { 'role::graphite::base':
+        storage_dir => '/var/lib/carbon',
+        auth => true,
+    }
+
+    include ::mediawiki::monitoring::graphite
+    include ::eventlogging::monitoring::graphite
+    include ::swift::monitoring::graphite
+}
+
+# == Class: role::graphite::labmon
+#
+# Sets up graphite instance for monitoring labs, running on production hardware.
+# Instance is open to all, no password required to see metrics
+class role::graphite::labmon {
+    class { 'role::graphite::base':
+        storage_dir => '/srv/carbon',
+        auth => false,
     }
 }
