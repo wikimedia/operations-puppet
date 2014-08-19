@@ -37,5 +37,7 @@ class wikistats (
     # data update scripts/crons for wikistats
     class { 'wikistats::updates': }
 
+    # install a db on localhost
+    class { 'wikistats::db': }
 }
 
