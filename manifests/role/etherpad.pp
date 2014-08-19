@@ -43,7 +43,7 @@ class role::etherpad{
     include ::apache::mod::ssl
 
     ::apache::site { 'etherpad.wikimedia.org':
-        content => template('misc/etherpad.wikimedia.org.erb'),
+        content => template('etherpad/etherpad.wikimedia.org.erb'),
     }
 
     # Icinga process monitoring, RT #5790
