@@ -1409,6 +1409,15 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
 }
 
+node 'labstore1003.eqiad.wmnet' {
+    $site = 'eqiad'
+    $cluster = 'labsnfs'
+
+    $ganglia_aggregator = true
+
+    include standard
+}
+
 node 'lanthanum.eqiad.wmnet' {
 
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
