@@ -7,6 +7,8 @@ class role::subversion {
     }
     $svnhost = 'svn.wikimedia.org'
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
     class { '::subversion':
         host => $svnhost,
     }
