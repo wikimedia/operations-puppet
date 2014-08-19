@@ -153,7 +153,7 @@ class role::analytics::hadoop::config {
         }
 
         # Memory available for use by Hadoop jobs.
-        $available_memory_mb = $::memsize_mb - $reserve_memory_mb
+        $available_memory_mb = $::memorysize_mb - $reserve_memory_mb
 
         # Using + 0 here ensures that these variables are
         # integers (Fixnums) and won't throw errors
