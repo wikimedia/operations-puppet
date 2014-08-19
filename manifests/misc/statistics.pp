@@ -117,6 +117,8 @@ class misc::statistics::packages::python {
         'python-pandas',    # Pivot tables processing
         'python-requests',  # Simple lib to make API calls
         'python-unidecode', # Unicode simplification - converts everything to latin set
+        'python-pygeoip',   # For geo-encoding IP addresses
+        'python-ua-parser', # For parsing User Agents
     ]:
         ensure => 'installed',
     }
