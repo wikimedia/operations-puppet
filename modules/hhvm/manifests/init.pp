@@ -228,7 +228,7 @@ class hhvm(
     }
 
     file { '/etc/logrotate.d/hhvm':
-        source  => 'puppet:///modules/hhvm.logrotate',
+        source  => 'puppet:///modules/hhvm/hhvm.logrotate',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
