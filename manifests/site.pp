@@ -2736,7 +2736,7 @@ node 'hafnium.wikimedia.org' {
 node 'tungsten.eqiad.wmnet' {
     include admin
     include standard
-    include role::graphite
+    include role::graphite::production
     include role::txstatsd
     include role::gdash
     include role::mwprof
