@@ -24,7 +24,7 @@ class wikistats (
 
     user { 'wikistatsuser':
         home       => '/usr/lib/wikistats',
-        groups     => [ 'wikistats' ],
+        groups     => [ 'wikistatsuser' ],
         managehome => true,
         system     => true,
     }
