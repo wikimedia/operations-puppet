@@ -175,7 +175,7 @@ class mailman {
         }
 
         generic::debconf::set { 'mailman/used_languages':
-            value  => 'ar big5 ca cs da de en es et eu fi fr gb hr hu ia it ja ko lt nl no pl pt pt_BR ro ru sl sr sv tr uk vi zh_CN zh_TW',
+            value  => 'ar big5 ca cs da de en es et eu fa fi fr gb hi hr hu ia id it ja ko lt nl no pl pt pt_BR ro ru sl sr sv ta tr uk vi zh_CN zh_TW',
             notify => Exec['dpkg-reconfigure mailman'],
         }
 
