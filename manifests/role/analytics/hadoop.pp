@@ -181,7 +181,7 @@ class role::analytics::hadoop::config {
         notify { "number_of_containers: $number_of_containers": }
 
         # RAM-per-container = max(MIN_CONTAINER_SIZE, (Total Available RAM) / containers))
-        $memory_per_container_mb                  = max($min_container_size_mb, $available_memory_mb / $number_of_containers)
+        $memory_per_container_mb                  = 2234 #max($min_container_size_mb, $available_memory_mb / $number_of_containers)
         notify { "memory_per_container_mb: $memory_per_container_mb": }
 
         $mapreduce_map_memory_mb                  = floor($memory_per_container_mb)
