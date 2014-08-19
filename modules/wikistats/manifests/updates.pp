@@ -11,8 +11,8 @@ class wikistats::updates {
     file { '/var/log/wikistats':
         ensure => directory,
         mode   => '0664',
-        owner  => 'wikistats',
-        group  => 'wikistats',
+        owner  => 'wikistatsuser',
+        group  => 'wikistatsuser',
     }
 
     # update cron jobs: usage: <project prefix>@<hour>
