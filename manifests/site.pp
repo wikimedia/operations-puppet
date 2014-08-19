@@ -1375,6 +1375,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
     $site = 'eqiad'
     $cluster = 'labsnfs'
+    $domain_search = 'wikimedia.org eqiad.wmnet'
     $ldapincludes = ['openldap', 'nss', 'utils']
 
     $ganglia_aggregator = true
@@ -1405,6 +1406,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 node 'labstore1003.eqiad.wmnet' {
     $site = 'eqiad'
     $cluster = 'labsnfs'
+    $domain_search = 'wikimedia.org eqiad.wmnet'
 
     $ganglia_aggregator = true
 
