@@ -8,7 +8,7 @@ define wikistats::cronjob() {
     cron { "cron-wikistats-update-${name}":
         ensure  => 'present',
         command => "/usr/bin/php /usr/lib/wikistats/update.php ${project} > /var/log/wikistats/update_${name}.log 2>&1",
-        user    => 'wikistats',
+        user    => 'wikistatsuser',
         hour    => $hour,
         minute  => '0',
     }
