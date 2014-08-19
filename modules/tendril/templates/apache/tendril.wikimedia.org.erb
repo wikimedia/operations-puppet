@@ -5,39 +5,39 @@ NameVirtualHost *:80
 NameVirtualHost *:443
 
 <VirtualHost *:443>
-	ServerName <%= @site_name %>
-	SSLEngine On
-	SSLCertificateFile /etc/ssl/private/tendril.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
-	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+    ServerName <%= @site_name %>
+    SSLEngine On
+    SSLCertificateFile /etc/ssl/private/tendril.wikimedia.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
+    SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
     <%= @ssl_settings.join("\n") %>
-	DocumentRoot <%= @docroot %>
+    DocumentRoot <%= @docroot %>
 
-	<Directory "<%= @docroot %>">
-		Options FollowSymLinks
-		SSLRequireSSL
-		Options ExecCGI
-		DirectoryIndex index.php
-		AllowOverride All
-		Order Allow,Deny
-		Allow From All
-		AuthName "<%= @auth_name %>"
-		AuthType Basic
-		AuthBasicProvider ldap
-		AuthLDAPBindDN <%= @ldap_binddn %>
-		AuthLDAPBindPassword <%= @proxypass %>
-		AuthLDAPURL "<%= @ldap_authurl %>"
-		<% ldap_groups.each do |group| -%>
-		Require ldap-group <%= group %>
-		<% end -%>
-	</Directory>
+    <Directory "<%= @docroot %>">
+        Options FollowSymLinks
+        SSLRequireSSL
+        Options ExecCGI
+        DirectoryIndex index.php
+        AllowOverride All
+        Order Allow,Deny
+        Allow From All
+        AuthName "<%= @auth_name %>"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN <%= @ldap_binddn %>
+        AuthLDAPBindPassword <%= @proxypass %>
+        AuthLDAPURL "<%= @ldap_authurl %>"
+        <% ldap_groups.each do |group| -%>
+        Require ldap-group <%= group %>
+        <% end -%>
+    </Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName <%= @site_name %>
-	DocumentRoot <%= @docroot %>
+    ServerName <%= @site_name %>
+    DocumentRoot <%= @docroot %>
 
-	RewriteEngine on
-	RewriteCond %{SERVER_PORT} !^443$
-	RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R]
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R]
 </VirtualHost>
