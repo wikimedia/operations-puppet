@@ -9,7 +9,8 @@ class role::labmon {
         group => '_graphite',
     }
 
-    file { '/var/lib/carbon':
+    # Hack, since /var/lib/carbon is *also* defined in graphite::init
+    File <| '/var/lib/carbon' |> {
         ensure => link,
         target => '/srv/carbon',
         owner => '_graphite',
