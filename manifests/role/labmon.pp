@@ -15,5 +15,5 @@ class role::labmon {
         require => Class['role::graphite']
     }
 
-    include role::txtstsd
+    include role::txstatsd
 }
