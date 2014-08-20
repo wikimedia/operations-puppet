@@ -1,0 +1,17 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/contint/apache/proxy_gerrit
+#####################################################################
+# vim: filetype=apache
+
+ProxyPass            /gerrit/ http://localhost:8082/ nocanon
+ProxyRequests        Off
+ProxyVia             Off
+ProxyPreserveHost    On
+
+AllowEncodedSlashes  On
+
+<Proxy http://localhost:8082/*>
+    Order deny,allow
+    Allow from all
+</Proxy>
