@@ -161,6 +161,10 @@ class role::ci::slave {
         mount_point => '/var/lib/jenkins-slave/tmpfs',
         size        => '512M',
     }
+    nrpe::monitor::service { 'ci_tmpfs':
+        description  => 'CI tmpfs disk space',
+        nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 20% -c 5% -e -p /var/lib/jenkins-slave/tmpfs',
+    }
 
     # Setup Gerrit replication destination:
     file { '/srv/ssd/gerrit':
