@@ -29,6 +29,10 @@ class wikistats (
         system     => true,
     }
 
+    package { 'wikistats':
+        ensure => present,
+    }
+
     # webserver setup for wikistats
     class { 'wikistats::web':
         wikistats_host => $wikistats_host,
