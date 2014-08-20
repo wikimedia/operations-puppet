@@ -1,90 +1,90 @@
 [gerrit]
-	basePath = git
-	canonicalWebUrl = <%= url %>
-	reportBugUrl = https://bugzilla.wikimedia.org/enter_bug.cgi?product=Wikimedia&component=Git/Gerrit
+    basePath = git
+    canonicalWebUrl = <%= url %>
+    reportBugUrl = https://bugzilla.wikimedia.org/enter_bug.cgi?product=Wikimedia&component=Git/Gerrit
 [core]
-	packedGitOpenFiles = 4096
-	packedGitLimit = 500m
-	packedGitWindowSize = 16k
-	streamFileThreshold = 100m
-	useRecursiveMerge = true
+    packedGitOpenFiles = 4096
+    packedGitLimit = 500m
+    packedGitWindowSize = 16k
+    streamFileThreshold = 100m
+    useRecursiveMerge = true
 [database]
-	type = MYSQL
-	hostname = <%= dbhost %>
-	database = <%= dbname %>
-	username = <%= dbuser %>
-	url = jdbc:mysql://<%= dbhost %>/<%= dbname %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+    type = MYSQL
+    hostname = <%= dbhost %>
+    database = <%= dbname %>
+    username = <%= dbuser %>
+    url = jdbc:mysql://<%= dbhost %>/<%= dbname %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
 [auth]
-	type = LDAP
-	cookieSecure = true
-	registerUrl = https://wikitech.wikimedia.org/w/index.php?title=Special:UserLogin&returnto=Help%3AGetting+Started&type=signup
+    type = LDAP
+    cookieSecure = true
+    registerUrl = https://wikitech.wikimedia.org/w/index.php?title=Special:UserLogin&returnto=Help%3AGetting+Started&type=signup
 [ldap]
-	server = <% ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
-	accountBase = ou=people,<%= ldap_base_dn %>
-	accountPattern = (&(objectClass=person)(cn=${username}))
-	accountFullName = cn
-	groupBase = ou=groups,<%= ldap_base_dn %>
-	groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
-	groupScope = one
+    server = <% ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
+    accountBase = ou=people,<%= ldap_base_dn %>
+    accountPattern = (&(objectClass=person)(cn=${username}))
+    accountFullName = cn
+    groupBase = ou=groups,<%= ldap_base_dn %>
+    groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
+    groupScope = one
 [sendemail]
-	includeDiff = true
-	smtpServerPort = 25
+    includeDiff = true
+    smtpServerPort = 25
 <% if smtp_host != "" then %>
-	smtpServer = <%= smtp_host %>
+    smtpServer = <%= smtp_host %>
 <% else %>
-	enable = false
+    enable = false
 <% end %>
 [container]
-	user = gerrit2
-	javaHome = /usr/lib/jvm/java-7-openjdk-amd64/jre
-	heapLimit = 20g
+    user = gerrit2
+    javaHome = /usr/lib/jvm/java-7-openjdk-amd64/jre
+    heapLimit = 20g
 [sshd]
-	listenAddress = *:<%= sshport %>
-	threads = 8
-	batchThreads = 2
-	idleTimeout = 864000
+    listenAddress = *:<%= sshport %>
+    threads = 8
+    batchThreads = 2
+    idleTimeout = 864000
 [httpd]
-	listenUrl = proxy-https://127.0.0.1:8080/r/
-	maxQueued = 500
-	minThreads = 10
-	maxThreads = 60
+    listenUrl = proxy-https://127.0.0.1:8080/r/
+    maxQueued = 500
+    minThreads = 10
+    maxThreads = 60
 [cache]
-	directory = cache
+    directory = cache
 [cache "web_sessions"]
-	maxAge = 90 days
+    maxAge = 90 days
 [cache "accounts"]
-	maxAge = 7 days
+    maxAge = 7 days
 [cache "accounts_byemail"]
-	maxAge = 7 days
+    maxAge = 7 days
 [cache "accounts_byname"]
-	maxAge = 7 days
+    maxAge = 7 days
 [gitweb]
-	url = https://git.wikimedia.org
-	type = custom
-	revision = /commit/${project}/${commit}
-	project = /summary/${project}
-	branch = /log/${project}/${branch}
-	filehistory = /blob/${project}/${branch}/${file}
-	linkname = gitblit
-	linkDrafts = false
+    url = https://git.wikimedia.org
+    type = custom
+    revision = /commit/${project}/${commit}
+    project = /summary/${project}
+    branch = /log/${project}/${branch}
+    filehistory = /blob/${project}/${branch}/${file}
+    linkname = gitblit
+    linkDrafts = false
 [user]
-	email = gerrit@wikimedia.org
+    email = gerrit@wikimedia.org
 [commentlink "changeid"]
-	match = \\b(I[0-9a-f]{7,40})\\b
-	link = "#q,$1,n,z"
+    match = \\b(I[0-9a-f]{7,40})\\b
+    link = "#q,$1,n,z"
 [commentlink "commit"]
-	match = (^|\\s|[:,!?\\(\\[\\{])([0-9a-f]{7,40})\\b
-	link = "#q,$2,n,z"
+    match = (^|\\s|[:,!?\\(\\[\\{])([0-9a-f]{7,40})\\b
+    link = "#q,$2,n,z"
 [commentlink "bugzilla"]
-	match =  "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
-	link = https://bugzilla.wikimedia.org/$1
-	association = OPTIONAL
+    match =  "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
+    link = https://bugzilla.wikimedia.org/$1
+    association = OPTIONAL
 [commentlink "codereview"]
-	match = \\br(\\d+)\\b
-	link = https://www.mediawiki.org/wiki/Special:CodeReview/MediaWiki/$1
+    match = \\br(\\d+)\\b
+    link = https://www.mediawiki.org/wiki/Special:CodeReview/MediaWiki/$1
 [commentlink "rt"]
-	match = "\\b[rR][tT]\\:?\\s+#?(\\d+)\\b"
-	link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
+    match = "\\b[rR][tT]\\:?\\s+#?(\\d+)\\b"
+    link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
 [commentlink "cve"]
         match = "\\b(CVE\\-\\d{4}\\-\\d+)\\b"
         link = https://cve.mitre.org/cgi-bin/cvename.cgi?name=$1
@@ -92,52 +92,52 @@
         match = "\\b([aA]nalytics\\s*[:-]?\\s*[cC]ard|[cC]ard\\s*[:-]?\\s*[aA]nalytics)\\s*\\#?\\s*(\\d+)\\b"
         link = https://wikimedia.mingle.thoughtworks.com/projects/analytics/cards/$2
 [commentlink "ci-test-result"]
-	match = "<li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_-]+\" target=\"_blank\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>"
-	html  = "<li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>"
+    match = "<li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_-]+\" target=\"_blank\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>"
+    html  = "<li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>"
 [mimetype "application/javascript"]
-	safe = true
+    safe = true
 [mimetype "application/x-php"]
-	safe = true
+    safe = true
 [mimetype "image/*"]
-	safe = true
+    safe = true
 [mimetype "text/css"]
-	safe = true
+    safe = true
 [mimetype "text/javascript"]
-	safe = true
+    safe = true
 [mimetype "text/plain"]
-	safe = true
+    safe = true
 [mimetype "text/x-php"]
-	safe = true
+    safe = true
 [repository "*"]
-	ownerGroup = Project and Group Creators
+    ownerGroup = Project and Group Creators
 [pack]
-	deltacompression = true
+    deltacompression = true
 [theme]
-	backgroundColor = fff
-	topMenuColor = fff
-	trimColor = eee
-	selectionColor = d8edf9
+    backgroundColor = fff
+    topMenuColor = fff
+    trimColor = eee
+    selectionColor = d8edf9
 [trackingid "rt"]
-	footer = RT:
-	match = "\\#?\\d{1,6}"
-	system = RT
+    footer = RT:
+    match = "\\#?\\d{1,6}"
+    system = RT
 [trackingid "bugzilla"]
-	footer = Bug:
-	match = "\\#?\\d{1,6}"
-	system = Bugzilla
+    footer = Bug:
+    match = "\\#?\\d{1,6}"
+    system = Bugzilla
 [changeMerge]
-	test = true
-	checkFrequency = 0
+    test = true
+    checkFrequency = 0
 [bugzilla]
-	url = https://bugzilla.wikimedia.org
-	username = gerritadmin@wikimedia.org
-	commentOnChangeAbandoned = false
-	commentOnChangeMerged = false
-	commentOnChangeRestored = false
-	commentOnChangeCreated = false
-	commentOnCommentAdded = false
-	commentOnPatchSetCreated = false
-	commentOnRefUpdatedGitWeb = false
+    url = https://bugzilla.wikimedia.org
+    username = gerritadmin@wikimedia.org
+    commentOnChangeAbandoned = false
+    commentOnChangeMerged = false
+    commentOnChangeRestored = false
+    commentOnChangeCreated = false
+    commentOnCommentAdded = false
+    commentOnPatchSetCreated = false
+    commentOnRefUpdatedGitWeb = false
 [commitmessage]
-	maxSubjectLength = 100
-	maxLineLength = 120
+    maxSubjectLength = 100
+    maxLineLength = 120
