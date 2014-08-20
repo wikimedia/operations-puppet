@@ -1,5 +1,31 @@
 #These custom values are hardcoded here to persist across Phabriactor Mediawiki installs
 
+maniphest.priorities:
+  '100':
+    name: 'Unbreak Now!'
+    short: 'Unbreak!'
+    color: indigo
+  '90':
+    name: 'Needs Triage'
+    short: Triage
+    color: violet
+  '80':
+    name: High
+    short: High
+    color: red
+  '50':
+    name: Normal
+    short: Normal
+    color: orange
+  '25':
+    name: Low
+    short: Low
+    color: yellow
+  '10':
+    name: 'Needs Volunteer'
+    short: Voluneer
+    color: sky
+
 # DO NOT CHANGE THESE VALUES.  Must be updated
 # to match in security extensions.
 maniphest.custom-field-definitions:
@@ -108,10 +134,6 @@ user.custom-field-definitions:
     caption: login name for rt
     instructions: This field should contain the login name for the old rt.bugzilla.org
     search: true
-
-#will be overridden by production values if present
-mysql.host: 'localhost'
-mysql.pass: 'foo'
 
 #we don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
