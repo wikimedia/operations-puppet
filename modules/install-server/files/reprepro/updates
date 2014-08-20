@@ -48,7 +48,7 @@ VerifyRelease: 4BD736A82B5C1B00
 ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
 
 Name: elasticsearch
-Method: http://packages.elasticsearch.org/elasticsearch/1.2/debian
+Method: http://packages.elasticsearch.org/elasticsearch/1.3/debian
 Components: main>main
 UDebComponents:
 Suite: stable
