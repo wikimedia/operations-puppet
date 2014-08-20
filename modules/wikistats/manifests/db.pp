@@ -5,4 +5,7 @@ class wikistats::db {
         ensure => present,
     }
 
+    package { 'php5-mysql':
+        ensure => present,
+    }
 }
