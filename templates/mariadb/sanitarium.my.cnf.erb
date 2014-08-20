@@ -31,7 +31,7 @@ wait_timeout                   = 3600
 plugin-load                    = ha_tokudb
 transaction-isolation          = REPEATABLE-READ
 slave_transaction_retries      = 4294967295
-slave_parallel_threads         = 8
+slave_parallel_threads         = 2
 slave_parallel_max_queued      = 16M
 binlog-format                  = ROW
 expire_logs_days               = 7
@@ -80,8 +80,8 @@ mysqladmin = /opt/wmf-mariadb10/bin/mysqladmin
 
 port      = 3311
 socket    = /tmp/mysql.s1.sock
-log-bin   = s1
-relay-log = s1
+log-bin   = s1-bin
+relay-log = s1-rel
 datadir   = /srv/sqldata.s1
 pid-file  = /srv/sqldata.s1/pid
 tmpdir    = /srv/tmp.s1
@@ -91,8 +91,8 @@ server_id = <%= @server_id %>3311
 
 port      = 3312
 socket    = /tmp/mysql.s2.sock
-log-bin   = s2
-relay-log = s2
+log-bin   = s2-bin
+relay-log = s2-rel
 datadir   = /srv/sqldata.s2
 pid-file  = /srv/sqldata.s2/pid
 tmpdir    = /srv/tmp.s2
@@ -102,8 +102,8 @@ server_id = <%= @server_id %>3312
 
 port      = 3313
 socket    = /tmp/mysql.s3.sock
-log-bin   = s3
-relay-log = s3
+log-bin   = s3-bin
+relay-log = s3-rel
 datadir   = /srv/sqldata.s3
 pid-file  = /srv/sqldata.s3/pid
 tmpdir    = /srv/tmp.s3
@@ -113,8 +113,8 @@ server_id = <%= @server_id %>3313
 
 port      = 3314
 socket    = /tmp/mysql.s4.sock
-log-bin   = s4
-relay-log = s4
+log-bin   = s4-bin
+relay-log = s4-rel
 datadir   = /srv/sqldata.s4
 pid-file  = /srv/sqldata.s4/pid
 tmpdir    = /srv/tmp.s4
@@ -124,8 +124,8 @@ server_id = <%= @server_id %>3314
 
 port      = 3315
 socket    = /tmp/mysql.s5.sock
-log-bin   = s5
-relay-log = s5
+log-bin   = s5-bin
+relay-log = s5-rel
 datadir   = /srv/sqldata.s5
 pid-file  = /srv/sqldata.s5/pid
 tmpdir    = /srv/tmp.s5
@@ -135,8 +135,8 @@ server_id = <%= @server_id %>3315
 
 port      = 3316
 socket    = /tmp/mysql.s6.sock
-log-bin   = s6
-relay-log = s6
+log-bin   = s6-bin
+relay-log = s6-rel
 datadir   = /srv/sqldata.s6
 pid-file  = /srv/sqldata.s6/pid
 tmpdir    = /srv/tmp.s6
@@ -146,8 +146,8 @@ server_id = <%= @server_id %>3316
 
 port      = 3317
 socket    = /tmp/mysql.s7.sock
-log-bin   = s7
-relay-log = s7
+log-bin   = s7-bin
+relay-log = s7-rel
 datadir   = /srv/sqldata.s7
 pid-file  = /srv/sqldata.s7/pid
 tmpdir    = /srv/tmp.s7
