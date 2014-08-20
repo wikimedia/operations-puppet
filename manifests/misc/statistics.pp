@@ -91,6 +91,7 @@ class misc::statistics::packages {
         'libproj-dev', # Requested by lzia for rgdal
         'php5-cli',
         'php5-mysql',
+        'sqlite3', # For storing and interacting with intermediate results
     ]:
         ensure => 'latest',
     }
