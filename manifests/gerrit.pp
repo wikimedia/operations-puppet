@@ -27,6 +27,7 @@ class gerrit::instance($no_apache=false,
     $dbuser = $db_user
     $dbpass = $passwords::gerrit::gerrit_db_pass
     $bzpass = $passwords::gerrit::gerrit_bz_pass
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
     # Setup LDAP
     include ldap::role::config::labs
