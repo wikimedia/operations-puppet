@@ -46,13 +46,15 @@ class rcstream(
         system => true,
     }
 
-    deployment::target { 'rcstream':
-        before => Service['rcstream'],
-    }
-
     package { [ 'python-socketio', 'python-redis' ]:
         ensure => $ensure,
-        before => Service['rcstream'],
+        before => Package['rcstream'],
+    }
+
+    package { 'rcstream':
+        ensure   => $ensure,
+        provider => 'trebuchet',
+        notify   => Service['rcstream'],
     }
 
     file { '/usr/local/sbin/rcstreamctl':
