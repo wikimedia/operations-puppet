@@ -282,6 +282,9 @@ node 'analytics1027.eqiad.wmnet' {
     # HDFS from Kafka.
     include role::analytics::refinery::camus
 
+    # Add cron job to delete old data in HDFS
+    include role::analytics::refinery::data::drop
+
     # Oozie runs a monitor_done_flag job to make
     # sure the _SUCCESS done-flag is written
     # for each hourly webrequest import.  This

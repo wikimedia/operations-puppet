@@ -83,7 +83,7 @@ class role::analytics::refinery::data::drop {
     # keep this many days of data
     $retention_days = 31
     cron { 'refinery-drop-webrequest-partitions':
-        command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${retention_days} -D wmf >> ${log_file} 2>&1",
+        command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${retention_days} -D wmf_raw -l /wmf/data/raw/webrequest >> ${log_file} 2>&1",
         user    => 'hdfs',
         hour    => '*/4',
     }
