@@ -188,10 +188,6 @@ sub tag_carrier {
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
-        } else if (req.http.X-CS2 == "401-01") {
-            if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
         } else if (req.http.X-CS2 == "297-01") {
             if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
                 set req.http.X-CS = req.http.X-CS2;
@@ -240,11 +236,7 @@ sub tag_carrier {
             if (!req.http.X-Forwarded-By) {
                 set req.http.X-CS = req.http.X-CS2;
             }
-        } else if ( req.http.X-CS2 == "426-04" ||
-                    req.http.X-CS2 == "250-99" ||
-                    req.http.X-CS2 == "436-01" ||
-                    req.http.X-CS2 == "436-04" ||
-                    req.http.X-CS2 ~ "^TESTON.*") {
+        } else if (req.http.X-CS2 ~ "^(250-99|401-01|426-04|436-01|436-04|631-02|TESTON)(\|.*)?$") {
             //
             // Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
             //
@@ -320,21 +312,19 @@ sub vcl_deliver {
         // until they finish their migration
         // According to qchris, analytics can handle language and subdomain, but not proxy or https
         unset req.http.X-CS;
-        if (req.http.X-CS2 == "426-04" ||
-            req.http.X-CS2 == "436-01" ||
-            req.http.X-CS2 == "436-04"
-        ) {
+        if (req.http.X-CS2 ~ "^(426-04|436-01|436-04|631-02)$") {
             // These carriers support HTTPS DIRECT connections (no proxies)
             if (!req.http.X-Forwarded-By) {
                 set req.http.X-CS = req.http.X-CS2;
             }
         } else if (req.http.X-CS2 == "250-99" ) {
-            // These carriers support DIRECT and OPERA connections
+            // These carriers support HTTP-only DIRECT and OPERA connections
             if (!req.http.X-Forwarded-Proto) {
                 set req.http.X-CS = req.http.X-CS2;
             }
         } else {
-            // Support everything (currently only TESTON, once analytics is fixed - everyone)
+            // Support everything (401-01, TESTON)
+            // Once analytics is fixed, this will be everyone
             set req.http.X-CS = req.http.X-CS2;
         }
     }
