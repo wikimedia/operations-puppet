@@ -226,6 +226,7 @@ class base {
         ssh::client,
         ssh::server,
         role::salt::minions,
+        role::trebuchet,
         nrpe
 
 
