@@ -139,4 +139,6 @@ class role::salt::minions {
         salt_dns_check     => 'False',
     }
 
+    # Trebuchet requires the salt-minion service for querying grains.
+    Service['salt-minion'] -> Package <| provider == 'trebuchet' |>
 }
