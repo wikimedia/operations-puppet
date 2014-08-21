@@ -151,7 +151,7 @@ class role::mail::lists {
 
     monitor_service { 'mailman_listinfo':
         description   => 'mailman list info',
-        check_command => 'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'About Wikimedia-l\'',
+        check_command => 'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'Discussion list for the Wikimedia community\'',
     }
 
     monitor_service { 'mailman_archives':
