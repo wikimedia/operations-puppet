@@ -98,7 +98,7 @@ class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::ka
 class role::analytics::kafkatee::input::webrequest::mobile {
     ::kafkatee::input { 'kafka-webrequest_mobile':
         topic       => 'webrequest_mobile',
-        partitions  => '0-9',
+        partitions  => '0-11',
         options     => { 'encoding' => 'json' },
         offset      => 'stored',
     }
