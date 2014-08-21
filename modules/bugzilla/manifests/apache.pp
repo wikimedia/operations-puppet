@@ -11,7 +11,7 @@ class bugzilla::apache ($svc_name, $attach_svc_name, $docroot){
     install_certificate{ $svc_name: }
     install_certificate{ $attach_svc_name: }
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
     # this includes them both, 80 and 443
     apache::site { 'bugzilla.wikimedia.org':

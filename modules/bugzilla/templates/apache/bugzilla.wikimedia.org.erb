@@ -70,8 +70,6 @@
     SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
-    Header set Strict-Transport-Security "max-age=31536000"
-
     <Directory />
         Options FollowSymLinks
         AllowOverride None
