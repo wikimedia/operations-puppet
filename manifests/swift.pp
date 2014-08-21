@@ -196,9 +196,9 @@ class swift::monitoring::graphite {
     monitor_graphite_threshold { 'swift_eqiad-prod_dispersion_container':
         description     => 'swift eqiad-prod container availability',
         metric          => 'swift.eqiad-prod.dispersion.container.pct_found.value',
-        from            => '1hours',
-        warning         => 95,
-        critical        => 90,
+        from            => '30minutes',
+        warning         => 98,
+        critical        => 96,
         under           => true,
         nagios_critical => false
     }
