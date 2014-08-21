@@ -138,5 +138,4 @@ class role::salt::minions {
         salt_master_finger => $salt_master_finger,
         salt_dns_check     => 'False',
     }
-
 }
