@@ -57,6 +57,8 @@ use = egg:swift#healthcheck
 use = egg:swift#memcache
 memcache_servers = <%= @memcached_servers.join(",") %>
 memcache_serialization_support = 2
+# per worker!
+memcache_max_connections = 12
 
 [filter:cors]
 paste.filter_factory = wmf.cors:filter_factory
