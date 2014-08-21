@@ -426,7 +426,7 @@ def dig_it_up(obj, path):
 
 
 def load(url):
-    return json.load(urllib2.urlopen(url, None, 5))
+    return json.load(urllib2.urlopen(url, None, 2))
 
 
 def update_result(data):
