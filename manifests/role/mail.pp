@@ -159,9 +159,17 @@ class role::mail::lists {
         check_command => 'check_https_url_for_string!lists.wikimedia.org!/pipermail/wikimedia-l/!\'The Wikimedia-l Archives\'',
     }
 
-    monitor_service { 'mailman_queue':
+    file { '/usr/lib/nagios/plugins/mailman_queue_size':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///files/icinga/check_mailman_qeue',
+    }
+
+    nrpe::monitor_service { 'mailman_queue':
         description   => 'mailman_queue_size',
-        check_command => 'check_mailman_queue!42',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_mailman_queue 42',
     }
 
 }
