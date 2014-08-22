@@ -1,8 +1,8 @@
 [database]
 	password = <%= scope.lookupvar('gerrit::instance::dbpass') %>
 [ldap]
-	username = <%= ldap_proxyagent %>
-	password = <%= ldap_proxyagent_pass %>
+	username = <%= @ldap_proxyagent %>
+	password = <%= @ldap_proxyagent_pass %>
 [auth]
 	registerEmailPrivateKey = <%= scope.lookupvar('gerrit::instance::email_key') %>
 [bugzilla]
