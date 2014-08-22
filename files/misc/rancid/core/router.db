@@ -27,5 +27,8 @@ asw-ulsfo.mgmt.ulsfo.wmnet:juniper:up:
 mr1-ulsfo.mgmt.ulsfo.wmnet:juniper:up:
 cr1-codfw.wikimedia.org:juniper:up:
 cr2-codfw.wikimedia.org:juniper:up:
+asw-a-codfw.mgmt.codfw.wmnet:juniper:up:
+asw-b-codfw.mgmt.codfw.wmnet:juniper:up:
+asw-c-codfw.mgmt.codfw.wmnet:juniper:up:
 asw-d-codfw.mgmt.codfw.wmnet:juniper:up:
 mr1-esams.wikimedia.org:juniper:up:
