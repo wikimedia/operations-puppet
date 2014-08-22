@@ -306,7 +306,7 @@ class role::nova::manager {
         ca => $ca
     }
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
     class { 'openstack::openstack-manager':
         openstack_version => $openstack_version,
