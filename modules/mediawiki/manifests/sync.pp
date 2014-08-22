@@ -45,4 +45,16 @@ class mediawiki::sync {
         mode    => '0775',
         replace => false,
     }
+
+    # these get invoked by scap over SSH using a non-interactive, non-login
+    # shell thus won't pick up /etc/profile.d above
+    file { '/usr/local/bin/scap-rebuild-cdbs':
+        ensure => link,
+        target => '/srv/deployment/scap/scap/bin/scap-rebuild-cdbs',
+    }
+
+    file { '/usr/local/bin/sync-common':
+        ensure => link,
+        target => '/srv/deployment/scap/scap/bin/sync-common',
+    }
 }
