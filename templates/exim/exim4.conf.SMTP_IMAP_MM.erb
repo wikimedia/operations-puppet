@@ -32,6 +32,8 @@ OTRS_GROUP=www-data
 <% end -%>
 OTRSQUERY=SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}' AND valid_id=1;
 
+VERP_BOUNCE_LOCALPART_REGEXP = ^wiki-\w+-\w+-\w+-\w+$
+
 ###############################
 # Main configuration settings #
 ###############################
@@ -50,6 +52,7 @@ LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 domainlist system_domains = @
 domainlist local_domains = <%= local_domains.join(" : ") %>
 domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
+domainlist verp_domains = <%= @verp_domains.join(" : ") %>
 <% if enable_mail_relay != false %>
 domainlist relay_domains = +wikimedia_domains
 <% end -%>
@@ -342,6 +345,15 @@ dnslookup:
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
 	cannot_route_message = Cannot route to remote domain $domain
 	no_more
+
+# Route bounce emails
+mwverpbounceprocessor:
+	driver = pipe
+	domains = +verp_domains
+	condition = ${if match{$local_part}{VERP_BOUNCE_LOCALPART_REGEXP}{true}{false}}
+	command = /usr/bin/curl -H 'Host: <%= @verp_post_connect_server %>' <%= @verp_bounce_post_url %> -d "action=bouncehandler" --data-urlencode"email@-"
+	user = nobody
+	group = nogroup
 
 eat:
 	driver = redirect
