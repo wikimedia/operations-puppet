@@ -108,6 +108,7 @@ sub vcl_recv {
 	call rewrite_proxy_urls;
 	call normalize_path;
 	call mobile_redirect;
+	call set_hhvm_header;
 	call pass_requests;
 
 	if (req.request == "POST" || req.url ~ "^/wiki/Special:CentralAutoLogin/") {
@@ -121,7 +122,6 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	call set_hhvm_header;
 	call evaluate_cookie;
 
 	return(lookup);
