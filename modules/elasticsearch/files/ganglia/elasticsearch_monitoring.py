@@ -16,6 +16,8 @@ import time
 import urllib2
 from functools import partial
 
+URLOPEN_TIMEOUT = 0.5
+
 
 # Used to merge stat descriptions
 def merge(skel, stat):
@@ -426,7 +428,7 @@ def dig_it_up(obj, path):
 
 
 def load(url):
-    return json.load(urllib2.urlopen(url, None, 2))
+    return json.load(urllib2.urlopen(url, None, URLOPEN_TIMEOUT))
 
 
 def update_result(data):
