@@ -1,0 +1,17 @@
+#!/bin/bash
+# schedule icinga downtime for a new host
+#
+# have this triggered on neon somehow
+# when new hosts are installed and
+# icinga spam should be avoided
+
+icinga_user=$USER
+icinga_fifo=/var/lib/nagios/rw/nagios.cmd
+icinga_host=$1
+
+duration=$(( 2 * 60 * 60)) ; 2 hours
+ts_from=$(date +%s)
+ts_to=$(( ts_from + duration))
+
+printf "[%lu] SCHEDULE_HOST_DOWNTIME;${icinga_host};${ts_from};${ts_to};1;0;${duration};${icinga_user};automatic downtime for newly installed host\n" $(date +%s) > $icinga_fifo
+
