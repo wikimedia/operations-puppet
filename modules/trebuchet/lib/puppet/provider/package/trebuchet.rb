@@ -19,6 +19,7 @@
 #
 require 'puppet/provider/package'
 
+require 'rubygems'
 require 'fileutils'
 require 'json'
 require 'open-uri'
