@@ -51,7 +51,10 @@ class exim {
         $outbound_ips=[ ],
         $rt_relay=false,
         $phab_relay=false,
-        $smart_route_list=[]
+        $smart_route_list=[],
+        $verp_domains=[],
+        verp_post_connect_server=[],
+        verp_bounce_post_url=[]
 ) {
 
         include exim::smtp
