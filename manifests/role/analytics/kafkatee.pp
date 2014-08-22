@@ -88,6 +88,69 @@ class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::ka
     }
 }
 
+# == role::analytics::kafkatee::webstatscollector
+# We want to run webstatscollector via kafkatee for testing.
+# Some of the production (role::logging::webstatscollector)
+# configs are not relevant here, so we copy the class
+# and edit it.
+#
+# webstatscollector needs all of the webrequest logs,
+# so this class makes sure all webrequest topic input
+# classes are included.
+class role::analytics::kafkatee::webrequest::webstatscollector {
+    include role::analytics::kafkatee::input::webrequest
+
+    # webstats-collector process writes dump files here.
+    $webstats_dumps_directory = '/srv/webstats/dumps'
+
+    package { 'webstatscollector': ensure => installed }
+    service { 'webstats-collector':
+        ensure     => 'running',
+        hasstatus  => 'false',
+        hasrestart => 'true',
+        require    => Package['webstatscollector'],
+    }
+
+    # Gzip pagecounts files hourly.
+    cron { 'webstats-dumps-gzip':
+        command => "/bin/gzip ${webstats_dumps_directory}/pagecounts-????????-?????? 2> /dev/null",
+        minute  => 2,
+        user    => 'nobody',
+        require => Service['webstats-collector'],
+    }
+
+    # Delete webstats dumps that are older than 10 days daily.
+    cron { 'webstats-dumps-delete':
+        command => "/usr/bin/find ${webstats_dumps_directory} -maxdepth 1 -type f -mtime +10 -delete",
+        minute  => 28,
+        hour    => 1,
+        user    => 'nobody',
+        require => Service['webstats-collector'],
+    }
+
+    # kafkatee outputs into webstats filter and forwards to webstats collector via log2udp
+    ::kafkatee::output { 'webstatscollector':
+        destination => "/usr/local/bin/filter | /usr/bin/log2udp -h localhost -p 3815",
+        type        => 'pipe',
+        require     => Service['webstats-collector'],
+    }
+}
+
+
+
+# == Class role::analytics::kafkatee::input::webrequest
+# Includes each of the 4 webrequest topics as input
+# You can use this class, or if you want to consume
+# only an individual topic, include one of the
+# topic specific classes manually.
+class role::analytics::kafkatee::input::webrequest {
+    include role::analytics::kafkatee::input::webrequest::mobile
+    include role::analytics::kafkatee::input::webrequest::text
+    include role::analytics::kafkatee::input::webrequest::bits
+    include role::analytics::kafkatee::input::webrequest::upload
+}
+
+
 
 # == Class role::analytics::kafkatee::input::webrequest::mobile
 # Sets up a kafkatee input to consume from the webrequest_mobile topic
@@ -103,3 +166,47 @@ class role::analytics::kafkatee::input::webrequest::mobile {
         offset      => 'stored',
     }
 }
+# == Class role::analytics::kafkatee::input::webrequest::text
+# Sets up a kafkatee input to consume from the webrequest_text topic
+# This is its own class so that if a kafkatee instance wants
+# to consume from multiple topics, it may include each
+# topic as a class.
+#
+class role::analytics::kafkatee::input::webrequest::text {
+    ::kafkatee::input { 'kafka-webrequest_text':
+        topic       => 'webrequest_text',
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'stored',
+    }
+}
+# == Class role::analytics::kafkatee::input::webrequest::bits
+# Sets up a kafkatee input to consume from the webrequest_bits topic
+# This is its own class so that if a kafkatee instance wants
+# to consume from multiple topics, it may include each
+# topic as a class.
+#
+class role::analytics::kafkatee::input::webrequest::bits {
+    ::kafkatee::input { 'kafka-webrequest_bits':
+        topic       => 'webrequest_bits',
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'stored',
+    }
+}
+# == Class role::analytics::kafkatee::input::webrequest::upload
+# Sets up a kafkatee input to consume from the webrequest_upload topic
+# This is its own class so that if a kafkatee instance wants
+# to consume from multiple topics, it may include each
+# topic as a class.
+#
+class role::analytics::kafkatee::input::webrequest::upload {
+    ::kafkatee::input { 'kafka-webrequest_upload':
+        topic       => 'webrequest_upload',
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'stored',
+    }
+}
+
+
