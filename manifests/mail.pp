@@ -35,6 +35,12 @@ class exim {
     #       IP addresses to use for sending outbound e-mail from Mailman
     #   - $hold_domains:
     #       List of domains to hold on the queue without processing
+    #   - $verp_domains:
+    #       List of domains for which VERP responses should be POST-ed to the MediaWiki 'bouncehandler' API for processing
+    #   - $verp_post_connect_server:
+    #       External hostname to connect while HTTP POST-ing a bounced email to the MediaWiki 'bouncehandler' API
+    #   - $verp_bounce_post_url:
+    #       Internal hostname of the wiki to which verp bounce emails are HTTP POST-ed and processed
     class roled(
         $enable_clamav=false,
         $enable_external_mail=true,
@@ -51,7 +57,10 @@ class exim {
         $outbound_ips=[ ],
         $rt_relay=false,
         $phab_relay=false,
-        $smart_route_list=[]
+        $smart_route_list=[],
+        $verp_domains=[],
+        $verp_post_connect_server='',
+        $verp_bounce_post_url='',
 ) {
 
         include exim::smtp
