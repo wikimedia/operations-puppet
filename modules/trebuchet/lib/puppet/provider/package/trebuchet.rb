@@ -141,7 +141,7 @@ Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Pac
       salt 'grains.append', 'deployment_target', base
     end
     salt 'deploy.fetch', qualified_name
-    git 'checkout', '--force', latest_sha1
+    salt 'deploy.checkout', qualified_name
   end
 
   # Remove a deployment target. This won't touch the Git repository
