@@ -297,6 +297,9 @@ class lvs::configuration {
             'apaches' => {
                 'pmtpa' => "10.4.0.254",
             },
+            'hhvm_appservers' => {
+                'pmtpa' => "10.4.0.254",
+            },
             'hhvm_apaches' => {
                 # left empty as probably not used anymore
             },
