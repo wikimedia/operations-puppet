@@ -68,6 +68,12 @@ Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Pac
     salt_cmd *args.map(&:split).flatten.unshift('--out=json')
   end
 
+  # Synchronize local state with Salt master.
+  def salt_refresh!
+      salt 'saltutil.sync_all'
+      salt 'saltutil.refresh_pillar'
+  end
+
   # Make sure that the salt-minion service is running.
   def check_salt_minion_status
     begin
@@ -139,6 +145,7 @@ Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Pac
   def install
     unless targets.include? base
       salt 'grains.append', 'deployment_target', base
+      salt_refresh!
     end
     salt 'deploy.fetch', qualified_name
     salt 'deploy.checkout', qualified_name
@@ -148,6 +155,7 @@ Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Pac
   # on disk; it merely unsets the `deployment_target` grain value.
   def uninstall
     salt 'grains.remove', 'deployment_target', base
+    salt_refresh!
   end
 
   def update
