@@ -109,6 +109,7 @@ node 'analytics1003.eqiad.wmnet' {
 
     include role::analytics
     include role::analytics::kafkatee::webrequest::mobile
+    include role::analytics::kafkatee::webrequest::webstatscollector
 
     # run misc udp2log here for sqstat
     include role::logging::udp2log::misc
