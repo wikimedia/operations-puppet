@@ -20,10 +20,7 @@ define contint::localvhost(
     $log_prefix = $name,
 ){
 
-    file { "/etc/apache2/sites-enabled/${name}.localhost":
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+    apache::site { "${name}.localhost":
         content => template('contint/apache/localvhost.erb'),
     }
 
