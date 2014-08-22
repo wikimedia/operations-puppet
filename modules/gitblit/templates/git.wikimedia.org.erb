@@ -9,8 +9,8 @@ LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" c
 
 NameVirtualHost *:80
 <VirtualHost *:80>
-	ServerAdmin noc@wikimedia.org
-	ServerName <%= @host %>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= @host %>
 
 	DocumentRoot /var/www
 	<Directory />
@@ -54,54 +54,54 @@ NameVirtualHost *:443
 	RequestHeader set X-Forwarded-Proto https
 	RequestHeader set X-Forwarded-Port 443
 
-	# Misbehaving bots
-	SetEnvIf User-Agent 80legs bad_browser
-	SetEnvIf User-Agent bingbot bad_browser
-	SetEnvIf User-Agent Baiduspider bad_browser
-	SetEnvIf User-Agent Sogou bad_browser
-	SetEnvIf User-Agent TweetmemeBot bad_browser
-	SetEnvIf User-Agent Yeti bad_browser
-	SetEnvIf Remote_Addr 208.110.84.34 bad_browser
-	SetEnvIf Remote_Addr 89.83.122.45 bad_browser
-	SetEnvIf Remote_Addr 129.242.4.62 bad_browser
+    # Misbehaving bots
+    SetEnvIf User-Agent 80legs bad_browser
+    SetEnvIf User-Agent bingbot bad_browser
+    SetEnvIf User-Agent Baiduspider bad_browser
+    SetEnvIf User-Agent Sogou bad_browser
+    SetEnvIf User-Agent TweetmemeBot bad_browser
+    SetEnvIf User-Agent Yeti bad_browser
+    SetEnvIf Remote_Addr 208.110.84.34 bad_browser
+    SetEnvIf Remote_Addr 89.83.122.45 bad_browser
+    SetEnvIf Remote_Addr 129.242.4.62 bad_browser
 
-	TimeOut 720
+    TimeOut 720
 
-	DocumentRoot /var/www
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-		Order deny,allow
-		deny from env=bad_browser
-		deny from 208.110.84.34
-	</Directory>
-	<Directory /var/www/>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-	</Directory>
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Order deny,allow
+        deny from env=bad_browser
+        deny from 208.110.84.34
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+    </Directory>
 
-	ProxyRequests Off
-	ProxyVia Off
-	ProxyPreserveHost On
+    ProxyRequests Off
+    ProxyVia Off
+    ProxyPreserveHost On
 
-	<Proxy *>
-		Order deny,allow
-		deny from env=bad_browser
-		deny from 208.110.84.34
-	</Proxy>
+    <Proxy *>
+        Order deny,allow
+        deny from env=bad_browser
+        deny from 208.110.84.34
+    </Proxy>
 
-	AllowEncodedSlashes NoDecode
-	RewriteEngine On
-	RewriteCond %{REQUEST_URI} !^/robots.txt$
-	RewriteRule ^/(.*) http://127.0.0.1:8080/$1 [NE,P]
+    AllowEncodedSlashes NoDecode
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/robots.txt$
+    RewriteRule ^/(.*) http://127.0.0.1:8080/$1 [NE,P]
 
-	ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/error.log
 
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
 
-	CustomLog /var/log/apache2/access.log combined_time
-	ServerSignature Off
+    CustomLog /var/log/apache2/access.log combined_time
+    ServerSignature Off
 
 </VirtualHost>
