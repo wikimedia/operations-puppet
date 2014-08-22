@@ -343,11 +343,13 @@ dnslookup:
 	cannot_route_message = Cannot route to remote domain $domain
 	no_more
 
-eat:
-	driver = redirect
+bouncehandler:
+	driver = pipe
 	domains = +local_domains
-	local_parts = no-reply-notifications
-	data = :blackhole:
+	condition = ${if match{$local_part}{^wiki-\w+-\w+-\w+-\w+$}{true}{false}}
+	command = /usr/bin/curl "action=bouncehandler" --data-urlencode "email@-" http://localhost/api.php
+	user = nobody
+	group = nogroup
 <% end -%>
 
 # Use the system aliasfile /etc/aliases for system domains
