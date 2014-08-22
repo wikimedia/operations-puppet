@@ -35,6 +35,32 @@ class role::mail::mx {
         enable_external_mail   => true,
         mediawiki_relay        => true,
         enable_spamassassin    => true,
+
+        # MediaWiki VERP bounce processor config - labs vs. production
+        case $::realm {
+            'labs': {
+                $verp_domains   => [
+                        'deployment.wikimedia.beta.wmflabs.org',
+                    ],
+                $verp_post_connect_server => [
+                        'deployment.wikimedia.beta.wmflabs.org',
+                    ],
+                $verp_bounce_post_url     => [
+                        'http://deployment.wikimedia.beta.wmflabs.org/w/api.php',
+                    ],
+            }
+            'production': {
+                # currently not used as bouncehandler extension is not yet installed in production
+                $verp_domains   => [
+                    ],
+                $verp_post_connect_server => [
+                        'appservers.svc."${::mw_primary}".wmnet',
+                    ],
+                $verp_bounce_post_url     => [
+                        'http://meta.wikimedia.org/w/api.php',
+                    ],
+            }
+        },
     }
 
     Class['spamassassin'] -> Class['exim::roled']
