@@ -35,7 +35,8 @@ define contint::localvhost(
         default      => true,
     }
 
-    file { "/etc/apache2/conf.d/listen-localhost-${port}":
-        content => template('contint/apache/listen.erb'),
+    apache::conf { "listen-localhost-${port}":
+        content  => template('contint/apache/listen.erb'),
+        replaces => "/etc/apache2/conf.d/listen-localhost-${port}",
     }
 }
