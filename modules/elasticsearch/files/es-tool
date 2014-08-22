@@ -1,0 +1,39 @@
+#!/usr/bin/bash
+
+function es_all_indexes() {
+	curl -s localhost:9200/_cluster/state | jq '.indices | keys[]'
+}
+
+function es_large_indexes() {
+	curl -s localhost:9200/_stats?level=shards | jq '.indices | keys[] as $index | {
+       index: $index,
+       shards: ([.[$index].shards[]] | length),
+       average_size: ([.[$index].shards[][].store.size_in_bytes] | add / length / 1024 / 1024 / 1024),
+       total_size: ([.[$index].shards[][].store.size_in_bytes] | add / 1024 / 1024 / 1024)
+       }
+       | select(.total_size > 5)'
+}
+
+function es_moving_shards() {
+   curl -s localhost:9200/_cluster/state | jq -c '.nodes as $nodes |
+       .routing_table.indices[].shards[][] |
+       select(.relocating_node) | {index, shard, from: $nodes[.node].name, to: $nodes[.relocating_node].name}'
+}
+
+function es_unaliased_indexes() {
+   curl -s localhost:9200/_cluster/state | jq '.metadata.indices |
+       keys[] as $index |
+       select(.[$index].aliases | length == 0) | $index' | head
+}
+
+function es_rolling_upgrade_dashboard() {
+  watch -n5 'curl -s localhost:9200/_cat/health?v; curl -s localhost:9200/_cat/allocation?v | sort -rk5; curl -s localhost:9200/_cat/nodes?v\&h=h,ip,v,m | sort -rk3'
+}
+
+function es_num_open_files() {
+  for dir in /var/lib/elasticsearch/production-search-eqiad/nodes/0/indices/*/
+  do
+    echo "${dir}"
+    sudo lsof -u elasticsearch +D ${dir} -a | wc -l
+  done
+}
