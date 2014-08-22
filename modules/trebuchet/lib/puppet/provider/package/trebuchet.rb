@@ -119,7 +119,7 @@ Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Pac
   def latest_sha1
     @cached_sha1 || begin
       source = master || fail('Unable to determine Trebuchet master.')
-      source =  'http://' + source  unless source.include? '://'
+      source = 'http://' + source unless source.include? '://'
       source.gsub!(/\/?$/, "/#{qualified_name}/.git/deploy/deploy")
       tag = open(source) { |raw| PSON.load(raw).fetch('tag', nil) }
       @cached_sha1 = resolve_tag(tag)

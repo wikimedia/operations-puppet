@@ -47,7 +47,7 @@ caller = salt.client.Caller()
 
 def get(grain):
     values = caller.function('grains.get', grain)
-    return values if isinstance(values, list) else []
+    return values if isinstance(values, list) else [values]
 
 
 def add(grain, value):
