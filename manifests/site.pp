@@ -763,7 +763,7 @@ node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(04|40|42|56|59|64|68)\.eqiad\.wmnet/ {
+node /^db10(04|40|42|53|56|59|64|68)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -871,24 +871,6 @@ node 'db1047.eqiad.wmnet' {
 }
 
 ## SANITARIUM
-node 'db1053.eqiad.wmnet' {
-
-    include admin
-    $cluster = 'mysql'
-    $ganglia_aggregator = true
-    class { 'role::db::sanitarium':
-        instances => {
-            's1' => {
-                'port'                    => '3306',
-                'innodb_log_file_size'    => '2000M',
-                'ram'                     => '72G',
-                'repl_wild_ignore_tables' => $::private_tables,
-                'log_bin'                 => true,
-                'binlog_format'           => 'row',
-            },
-        }
-    }
-}
 
 node 'db1054.eqiad.wmnet' {
 
@@ -965,6 +947,7 @@ node 'db1069.eqiad.wmnet' {
 
     include admin
     $cluster = 'mysql'
+    $ganglia_aggregator = true
     include role::mariadb::sanitarium
 }
 
@@ -979,6 +962,7 @@ node /^dbstore1001\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
+    $ganglia_aggregator = true
     $mariadb_backups_folder = '/a/backups'
     include role::mariadb::backup
     # 24h pt-slave-delay on all repl streams
