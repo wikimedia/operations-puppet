@@ -58,6 +58,24 @@ class exim {
         include privateexim::listserve
         include exim4::ganglia
 
+        # config - labs vs. production
+        case $::realm {
+            'labs': {
+                $verp_domains = 'deployment.wikimedia.beta.wmflabs.org'
+                $verp_post_connect_server = 'deployment.wikimedia.beta.wmflabs.org'
+                $verp_bounce_post_url = 'http://deployment.wikimedia.beta.wmflabs.org/w/api.php'
+            }
+            'production': {
+                # not used at the moment as bouncehandler extension is not yet installed in production
+                $verp_domains = ''
+                $verp_post_connect_server = 'appservers.svc."${::mw_primary}".wmnet'
+                $verp_verp_bounce_post_url = 'http://meta.wikimedia.org/w/api.php'
+            }
+            default: {
+                fail('unknown realm, should be labs or production')
+            }
+        }
+
         class { 'exim4':
             variant => 'heavy',
             config  => template('exim/exim4.conf.SMTP_IMAP_MM.erb'),
