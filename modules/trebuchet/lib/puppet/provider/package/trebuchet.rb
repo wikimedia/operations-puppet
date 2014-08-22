@@ -20,7 +20,6 @@
 require 'puppet/provider/package'
 
 require 'fileutils'
-require 'json'
 require 'open-uri'
 
 Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Package do
@@ -84,7 +83,7 @@ Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Pac
     @cached_targets || begin
       check_salt_minion_status
       raw = salt 'grains.get', 'deployment_target'
-      @cached_targets = JSON.load(raw).fetch('local', [])
+      @cached_targets = PSON.load(raw).fetch('local', [])
     rescue Puppet::ExecutionFailure
       @cached_targets = []
     end
@@ -105,7 +104,7 @@ Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Pac
   def master
     @resource[:source] || begin
       raw = salt 'grains.get', 'trebuchet_master'
-      @resource[:source] = JSON.load(raw).fetch('local')
+      @resource[:source] = PSON.load(raw).fetch('local')
     end
   end
 
@@ -116,7 +115,7 @@ Puppet::Type.type(:package).provide :trebuchet, :parent => Puppet::Provider::Pac
       source = master || fail('Unable to determine Trebuchet master.')
       source.prepend('http://') unless source.include? '://'
       source.gsub!(/\/?$/, "/#{qualified_name}/.git/deploy/deploy")
-      tag = open(source) { |raw| JSON.load(raw).fetch('tag', nil) }
+      tag = open(source) { |raw| PSON.load(raw).fetch('tag', nil) }
       @cached_sha1 = resolve_tag(tag)
     end
   end
