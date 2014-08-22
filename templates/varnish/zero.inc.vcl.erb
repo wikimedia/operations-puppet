@@ -228,7 +228,7 @@ sub tag_carrier {
             if (!req.http.X-Forwarded-By) {
                 set req.http.X-CS = req.http.X-CS2;
             }
-        } else if (req.http.X-CS2 ~ "^(250-99|401-01|426-04|436-01|436-04|437-01|515-03|631-02|TESTON)(\|.*)?$") {
+        } else if (req.http.X-CS2 ~ "^(250-99|401-01|426-04|436-01|436-04|437-01|515-03|515-05|631-02|TESTON)(\|.*)?$") {
             //
             // Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
             //
@@ -319,7 +319,8 @@ sub vcl_deliver {
             // Once analytics is fixed, this will be done for everything
             set req.http.X-CS = req.http.X-CS2;
         } else if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-            // Default: Support HTTPS for both DIRECT and OPERA (401-01, 437-01, 515-03), allows all subnets
+            // Default: Support HTTPS for both DIRECT and OPERA, allows all subnets
+            // 401-01, 437-01, 515-03, 515-05
             set req.http.X-CS = req.http.X-CS2;
         }
     }
