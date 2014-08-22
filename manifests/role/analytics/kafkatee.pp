@@ -94,11 +94,13 @@ class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::ka
 # configs are not relevant here, so we copy the class
 # and edit it.
 #
-# webstatscollector needs all of the webrequest logs,
-# so this class makes sure all webrequest topic input
-# classes are included.
+# webstatscollector needs the mobile and text webrequest logs,
+# so this class makes sure that these topics are consumed by kafkaee
+# by including their kafkatee::input::* roles.
+#
 class role::analytics::kafkatee::webrequest::webstatscollector {
-    include role::analytics::kafkatee::input::webrequest
+    include role::analytics::kafkatee::input::webrequest::mobile
+    include role::analytics::kafkatee::input::webrequest::text
 
     # webstats-collector process writes dump files here.
     $webstats_dumps_directory = '/srv/webstats/dumps'
