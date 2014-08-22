@@ -1127,10 +1127,6 @@ node 'fenari.wikimedia.org' {
     $cluster = 'misc'
     $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org'
 
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
     class { 'admin':
         groups => ['deployment',
                    'restricted'],
