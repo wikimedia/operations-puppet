@@ -110,9 +110,6 @@ node 'analytics1003.eqiad.wmnet' {
     include role::analytics
     include role::analytics::kafkatee::webrequest::mobile
     include role::analytics::kafkatee::webrequest::webstatscollector
-
-    # run misc udp2log here for sqstat
-    include role::logging::udp2log::misc
 }
 
 # analytics1009 used to be the standby NameNode,
@@ -255,6 +252,10 @@ node 'analytics1026.eqiad.wmnet' {
         groups => ['analytics-admins'],
     }
     include standard
+
+
+    # run misc udp2log here for sqstat
+    include role::logging::udp2log::misc
 }
 
 # analytics1027 hosts the frontend
