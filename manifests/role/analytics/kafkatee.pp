@@ -104,6 +104,8 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
 
     # webstats-collector process writes dump files here.
     $webstats_dumps_directory = '/srv/webstats/dumps'
+    $collector_host           = $::fqdn
+    $collector_port           = 3815
 
     package { 'webstatscollector': ensure => installed }
     service { 'webstats-collector':
@@ -132,7 +134,7 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
 
     # kafkatee outputs into webstats filter and forwards to webstats collector via log2udp
     ::kafkatee::output { 'webstatscollector':
-        destination => "/usr/local/bin/filter | /usr/bin/log2udp -h localhost -p 3815",
+        destination => "/usr/local/bin/filter | /usr/bin/log2udp -h ${collector_host} -p ${collector_port}",
         type        => 'pipe',
         require     => Service['webstats-collector'],
     }
