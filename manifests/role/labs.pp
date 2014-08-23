@@ -40,6 +40,7 @@ class role::labs::instance {
 
     $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc'
     $nfs_server = 'labstore.svc.eqiad.wmnet'
+    $dumps_server = 'labstore1003.eqiad.wmnet'
 
     mount { '/home':
         ensure  => mounted,
@@ -89,7 +90,7 @@ class role::labs::instance {
         atboot  => true,
         fstype  => 'nfs',
         options => "ro,${nfs_opts}",
-        device  => "${nfs_server}:/dumps",
+        device  => "${dumps_server}:/dumps",
         require => File['/public/dumps'],
     }
 
