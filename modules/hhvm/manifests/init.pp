@@ -88,7 +88,6 @@ class hhvm(
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             include_path             => '.:/usr/share/php',
-            mysql                    => { typed_results => false },
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
             log                      => {
@@ -98,6 +97,7 @@ class hhvm(
                 native_stack_trace => true,
             },
             mysql                    => {
+                typed_results        => false,
                 slow_query_threshold => 10 * 1000,  # milliseconds
             },
             debug                    => {
