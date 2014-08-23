@@ -16,7 +16,11 @@ class mediawiki::jobrunner (
 ) {
     include ::passwords::redis
 
-    deployment::target { 'jobrunner': }
+    package { 'jobrunner':
+        ensure   => latest,
+        provider => 'trebuchet',
+        notify   => Service['jobrunner'],
+    }
 
     $dispatcher = template("mediawiki/jobrunner/dispatchers/${lsbdistcodename}.erb")
 
