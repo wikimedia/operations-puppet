@@ -62,4 +62,9 @@ class mediawiki::sync {
         target  => '/srv/deployment/scap/scap/bin/sync-common',
         require => Package['scap'],
     }
+
+    exec { '/usr/local/bin/sync-common':
+        creates => '/usr/local/apache/common/wmf-config/InitialiseSettings.php',
+        timeout => 30 * 60,  # 30 minutes
+    }
 }
