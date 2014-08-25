@@ -109,7 +109,11 @@ node 'analytics1003.eqiad.wmnet' {
 
     include role::analytics
     include role::analytics::kafkatee::webrequest::mobile
-    include role::analytics::kafkatee::webrequest::webstatscollector
+
+    # Temporarily commenting this out as qchris runs a custom version
+    # of webstatscollector for some testing.  This will be
+    # re-enabled in a few days max.
+    #include role::analytics::kafkatee::webrequest::webstatscollector
 }
 
 # analytics1009 used to be the standby NameNode,
