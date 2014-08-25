@@ -85,6 +85,7 @@ class role::analytics::refinery::data::drop {
     cron { 'refinery-drop-webrequest-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${retention_days} -D wmf_raw -l /wmf/data/raw/webrequest >> ${log_file} 2>&1",
         user    => 'hdfs',
+        minute  => '15',
         hour    => '*/4',
     }
 }
