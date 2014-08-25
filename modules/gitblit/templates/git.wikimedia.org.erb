@@ -7,8 +7,6 @@
 
 LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" combined_time
 
-NameVirtualHost *:80
-
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
