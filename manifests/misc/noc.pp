@@ -5,6 +5,8 @@ class misc::noc-wikimedia {
 
     include ::apache
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+
     apache::site { 'noc.wikimedia.org':
         content => template('apache/sites/noc.wikimedia.org.erb'),
     }
