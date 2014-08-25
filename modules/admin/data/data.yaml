@@ -42,7 +42,7 @@ groups:
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn,
       nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik, jgonera,
-      tgr, ssmith, bsimmers, ejegg]
+      tgr, ssmith, bsimmers, ejegg, twentyafterfour]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
@@ -1091,3 +1091,10 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSbcCuTyzTLxzVvPIVTXHL+FJ4Kj/LIPZmaOJ0I0IbTpJYUBxvLpq5uXcb41bC4DmSr/Wdd74PLoJCLN0Kew5OKpf52L78eddbFUHPcHiFfdsXOAn7Exm1T3oJRSFYLK9Aryy8JFbmKsIrlPIJ0caJIckcUrnQW3ZnttxQy459kFi6SGK8D/zWIuzN6845YkyH8H9bHdU/AhNNn8Mw0o4S5U8USvQXW6+7WL+kVncVHLiZYiJuDkyI6AGHiJe5ur/tTV7jOOf7zQ94vgA4uaIqHMC9OTnOQ8DawovirdkILQYnsG8THIfLb9O1O4njyeudJG7ZzhqDcwvFc1uMKj79
         eeggleston@wikimedia.org]
     uid: 3649
+  twentyafterfour:
+    ensure: present
+    gid: 500
+    name: twentyafterfour
+    realname: Mukunda Modell
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPe9i/PI48Xk3BwCBSJ3L/o4n8noRBEFrINAPLVw4SDPmMOgPu5/HyvdxWkS47li2PQnDx4EobYE4WErxdQ0nB/Fe43ZzWEFQ6RvWuuPAxUwEFcGhraDHFFQc/TLh7adtNA247jUhLCQN/O3Nb6Qq1RPuAZgF59UuWKPNwnSOCOyLV0zHvqhjUkWmDcCI7sln1Kbv+JiEKBrVyokpv18pgCgyKL54UvFRbVD/aU7qu1DyJCFZ0GTitqFX0OMHjEyCo2bGPFUAHBkbKn/lsNz4hXNjF9iorxBvl1ZXLCRMkdRJBA6xGgLGWPXBQOXbUTc+9ow05KH0kHmQu5lXez7CZ twentyafterfour@wikiafterfour]
+    uid: 4967
