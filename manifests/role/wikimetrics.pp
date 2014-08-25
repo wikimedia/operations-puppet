@@ -145,46 +145,56 @@ class role::wikimetrics {
         }
     }
     class { '::wikimetrics':
-        path                  => $wikimetrics_path,
-        group                 => $wikimetrics_group,
+        path                         => $wikimetrics_path,
+        group                        => $wikimetrics_group,
 
         # clone wikimetrics as root user so it can write to /srv
-        repository_owner      => 'root',
+        repository_owner             => 'root',
 
-        debug                 => $debug,
+        debug                        => $debug,
 
-        server_name           => $server_name,
-        server_aliases        => $server_aliases,
-        server_port           => $server_port,
-        ssl_redirect          => $ssl_redirect,
-        celery_concurrency    => $celery_concurrency,
+        server_name                  => $server_name,
+        server_aliases               => $server_aliases,
+        server_port                  => $server_port,
+        ssl_redirect                 => $ssl_redirect,
+        celery_concurrency           => $celery_concurrency,
 
-        flask_secret_key      => $flask_secret_key,
-        google_client_id      => $google_client_id,
-        google_client_email   => $google_client_email,
-        google_client_secret  => $google_client_secret,
-        meta_mw_consumer_key  => $meta_mw_consumer_key,
-        meta_mw_client_secret => $meta_mw_client_secret,
+        flask_secret_key             => $flask_secret_key,
+        google_client_id             => $google_client_id,
+        google_client_email          => $google_client_email,
+        google_client_secret         => $google_client_secret,
+        meta_mw_consumer_key         => $meta_mw_consumer_key,
+        meta_mw_client_secret        => $meta_mw_client_secret,
 
-        db_user_wikimetrics   => $db_user_wikimetrics,
-        db_pass_wikimetrics   => $db_pass_wikimetrics,
-        db_host_wikimetrics   => $db_host_wikimetrics,
-        db_name_wikimetrics   => $db_name_wikimetrics,
-        db_pool_wikimetrics   => $db_pool_wikimetrics,
+        db_user_wikimetrics          => $db_user_wikimetrics,
+        db_pass_wikimetrics          => $db_pass_wikimetrics,
+        db_host_wikimetrics          => $db_host_wikimetrics,
+        db_name_wikimetrics          => $db_name_wikimetrics,
+        db_pool_wikimetrics          => $db_pool_wikimetrics,
 
-        db_user_mediawiki     => $db_user_mediawiki,
-        db_pass_mediawiki     => $db_pass_mediawiki,
-        db_host_mediawiki     => $db_host_mediawiki,
-        db_name_mediawiki     => $db_name_mediawiki,
-        db_pool_mediawiki     => $db_pool_mediawiki,
+        db_user_mediawiki            => $db_user_mediawiki,
+        db_pass_mediawiki            => $db_pass_mediawiki,
+        db_host_mediawiki            => $db_host_mediawiki,
+        db_name_mediawiki            => $db_name_mediawiki,
+        db_pool_mediawiki            => $db_pool_mediawiki,
+        db_replication_lag_dbs       => [
+            'enwiki', # s1
+            'eowiki', # s2
+            'elwiki', # s3
+            'commonswiki', # s4
+            'dewiki', # s5
+            'frwiki', # s6
+            'eswiki', # s7
+        ],
+        db_replication_lag_threshold => 3,
 
         # wikimetrics runs on the LabsDB usually,
         # where this table is called 'revision_userindex'.
         # The mediawiki database usually calls this 'revision'.
-        revision_tablename    => 'revision_userindex',
+        revision_tablename           => 'revision_userindex',
 
-        var_directory         => $var_directory,
-        public_subdirectory   => $public_subdirectory,
+        var_directory                => $var_directory,
+        public_subdirectory          => $public_subdirectory,
     }
 
     # Run the wikimetrics/scripts/install script
