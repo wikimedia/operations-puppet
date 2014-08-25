@@ -1,8 +1,7 @@
 # manifests/gerrit.pp
 # Manifest to setup a Gerrit instance
 
-class gerrit::instance($no_apache=false,
-    $apache_ssl  = false,
+class gerrit::instance($apache_ssl  = false,
     $slave       = false,
     $ssh_port    = '29418',
     $db_host     = '',
@@ -42,7 +41,6 @@ class gerrit::instance($no_apache=false,
     $url = "https://${host}/r"
 
     class { 'gerrit::proxy':
-        no_apache    => $no_apache,
         ssl_cert     => $ssl_cert,
         ssl_cert_key => $ssl_cert_key,
         host         => $host
@@ -286,14 +284,11 @@ class gerrit::jetty ($ldap_hosts,
     }
 }
 
-class gerrit::proxy( $no_apache = true,
-    $host        = '',
+class gerrit::proxy($host        = '',
     $ssl_cert    = '',
     $ssl_cert_key= '') {
 
-    if !$no_apache {
-        require webserver::apache
-    }
+    require webserver::apache
 
     file { '/etc/apache2/sites-enabled/gerrit.wikimedia.org':
         ensure  => present,
