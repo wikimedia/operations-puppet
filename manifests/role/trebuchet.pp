@@ -7,7 +7,7 @@
 class role::trebuchet {
     $trebuchet_master = $::realm ? {
         production => 'tin.eqiad.wmnet',
-        labs       => pick($::trebuchet_master_override, "${::instanceproject}-deploy.eqiad.wmflabs"),
+        labs       => pick($::deployment_server_override, "${::instanceproject}-deploy.eqiad.wmflabs"),
     }
 
     salt::grain { 'trebuchet_master':
