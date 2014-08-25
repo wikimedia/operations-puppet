@@ -339,6 +339,7 @@ class toollabs::exec_environ {
         'supybot',                     # Bug 61088.
         'tabix',                       # Bug 61501
         'texinfo',                     # Bug #56994
+        'texlive',
         'ufraw-batch',                 # Bug 57008
         'xsltproc',                    # Bug #66962.
         'zbar-tools',                  # Bug 56996
