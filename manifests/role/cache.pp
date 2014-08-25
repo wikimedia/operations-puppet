@@ -508,8 +508,12 @@ class role::cache {
                 # At ~6000 msgs per second, 500000 messages is over 1 minute
                 # of buffering, which should be more than enough.
                 queue_buffering_max_messages => 500000,
+                # We have seen metadata changes (e.g. leader elections) take
+                # up to 3 seconds to propogate to some producers.  The buffer
+                # needs to account for this.  Buffering up to 5 seconds.
+                queue_buffering_max_ms       => 5000,
                 # bits varnishes do about 6000 reqs / sec each.
-                # We want to buffer for about max 1 second.
+                # We want to send batches at least once a second.
                 batch_num_messages           => 6000,
                 # large timeout to account for potential cross DC latencies
                 topic_request_timeout_ms     => 30000, # request ack timeout
