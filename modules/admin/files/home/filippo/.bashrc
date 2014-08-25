@@ -13,8 +13,10 @@ shopt -s histappend
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-RESET="$(tput sgr0)"
-BRIGHT="$(tput bold)"
-RED="$(tput setaf 1)"
-WHITE="$(tput setaf 7)"
-export PS1='\[$BRIGHT\]\[$RED\]\h\[$RESET\]:\w\[$BRIGHT\]\[$WHITE\]\$\[$RESET\] '
+if [ -n "$PS1" ]; then
+  RESET="$(tput sgr0)"
+  BRIGHT="$(tput bold)"
+  RED="$(tput setaf 1)"
+  WHITE="$(tput setaf 7)"
+  export PS1='\[$BRIGHT\]\[$RED\]\h\[$RESET\]:\w\[$BRIGHT\]\[$WHITE\]\$\[$RESET\] '
+fi
