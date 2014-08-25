@@ -7,7 +7,6 @@
 #
 class apache::monitoring {
     include ::apache::mod::status
-    include ::diamond
     include ::ganglia
 
     diamond::collector { 'Httpd': }
