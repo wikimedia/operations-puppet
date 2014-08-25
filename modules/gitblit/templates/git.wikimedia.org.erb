@@ -8,51 +8,15 @@
 LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" combined_time
 
 NameVirtualHost *:80
+
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
 	ServerName <%= @host %>
 
-	DocumentRoot /var/www
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-	</Directory>
-	<Directory /var/www/>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-		Order allow,deny
-		allow from all
-	</Directory>
-
-	ErrorLog /var/log/apache2/error.log
-
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
-
-	CustomLog /var/log/apache2/access.log combined_time
-	ServerSignature Off
-
-	RewriteEngine on
-	RewriteCond %{SERVER_PORT} !^443$
-	RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R,NE]
-</VirtualHost>
-
-NameVirtualHost *:443
-<VirtualHost *:443>
-	ServerAdmin noc@wikimedia.org
-	ServerName <%= @host %>
-
-	SSLEngine on
-	SSLProtocol -ALL +SSLv3 +TLSv1
-	SSLCipherSuite AES128-GCM-SHA256:RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA
-	SSLHonorCipherOrder on
-	SSLCertificateFile /etc/ssl/certs/<%= @ssl_cert %>.pem
-	SSLCertificateChainFile /etc/ssl/certs/<%= @ssl_cert %>.chained.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= @ssl_cert_key %>.key
-
-	RequestHeader set X-Forwarded-Proto https
-	RequestHeader set X-Forwarded-Port 443
+    # gitblit supposed to generate https URLs
+    # we are behind varnish
+    RequestHeader set X-Forwarded-Proto https
+    RequestHeader set X-Forwarded-Port 443
 
 	# Misbehaving bots
 	SetEnvIf User-Agent 80legs bad_browser
