@@ -204,7 +204,8 @@ groups:
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams, otto, jgonera, deskana,
-              bsitzmann]
+              bsitzmann, dbrant]
+>>>>>>> hadoop: grant access to Dimitry Brant
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
