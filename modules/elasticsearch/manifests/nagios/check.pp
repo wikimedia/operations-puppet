@@ -8,4 +8,9 @@ class elasticsearch::nagios::check {
         check_command => 'check_elasticsearch',
         description   => 'ElasticSearch health check',
     }
+
+    monitor_service { 'elasticsearch shards':
+        check_command => 'check_elasticsearch_shards',
+        description   => 'ElasticSearch health check for shards',
+    }
 }
