@@ -1,0 +1,148 @@
+# Features to permit
+#allow bind_v2
+
+# Schema and objectClass definitions
+include         /etc/ldap/schema/core.schema
+include         /etc/ldap/schema/cosine.schema
+include         /etc/ldap/schema/nis.schema
+include         /etc/ldap/schema/inetorgperson.schema
+
+# Where the pid file is put. The init.d script
+# will not stop the server if you change this.
+pidfile         /var/run/slapd/slapd.pid
+
+# List of arguments that were passed to the server
+argsfile        /var/run/slapd/slapd.args
+
+# Read slapd.conf(5) for possible values
+loglevel        sync stats config
+#TODO template this 
+ServerID        1
+
+# Where the dynamically loaded modules are stored
+modulepath  /usr/lib/ldap
+moduleload  back_hdb
+moduleload  back_monitor
+moduleload  memberof
+moduleload  syncprov
+moduleload  auditlog
+
+# The maximum number of entries that is returned for a search operation
+sizelimit 500 
+
+# The tool-threads parameter sets the actual amount of cpu's that is used
+# for indexing.
+tool-threads 1
+#######################################################################
+
+## Databases
+
+database        monitor
+rootdn          "cn=Manager,dc=corp,dc=wikimedia,dc=org"
+
+access to dn="cn=monitor"
+        by dn="cn=admin,dc=corp,dc=wikimedia,dc=org" write
+        by self write
+        by * none
+
+database            hdb
+suffix              "dc=corp,dc=wikimedia,dc=org"
+directory           "/var/lib/ldap/corp"
+rootdn              "cn=Manager,dc=corp,dc=wikimedia,dc=org"
+# rootpw "..."
+
+overlay auditlog
+auditlog /var/lib/ldap/slapd-audit.log
+
+### Replication
+# TODO: Simple stanzas for now, untested yet
+overlay syncprov
+syncprov-checkpoint 100 5
+syncprov-sessionlog 100
+syncprov-reloadhint TRUE
+
+#access to *
+#        by dn="cn=admin,dc=corp,dc=wikimedia,dc=org" write
+#        by self write
+#        by * read
+
+# Replication user
+access  to dn.subtree="dc=corp,dc=wikimedia,dc=org"
+        by dn.base="uid=repluser,dc=corp,dc=wikimedia,dc=org" read
+        by * break
+
+# And at the same time a replica
+# TODO simple stanza for now, untested
+#TODO fix somehost template it
+syncrepl rid=2
+        provider=ldap://somehost.corp.wikimedia.org:389
+        searchbase="dc=corp,dc=wikimedia,dc=org"
+        type=refreshOnly
+        interval=00:00:10:00
+        filter="(objectClass=*)"
+        scope=sub
+        schemachecking=on
+        bindmethod=simple
+        starttls=critical
+        tls_reqcert=demand
+        tls_cacert=/etc/ssl/certs/ca-certificates.crt
+        binddn="uid=repluser,dc=corp,dc=wikimedia,dc=org"
+        credentials="none"
+#TODO: template it via a private::openldap class
+
+dbconfig set_cachesize 0 2097152 0
+dbconfig set_lk_max_objects 1500
+dbconfig set_lk_max_locks 1500
+dbconfig set_lk_max_lockers 1500
+dbconfig set_lg_regionmax 262144
+dbconfig set_lg_bsize 2097152
+
+# TODO: make sure all have been transferred
+index       default pres,eq
+index       objectClass eq
+index       entryCSN eq
+index       entryUUID eq
+index       uid pres,eq,sub
+index       mail pres,eq,sub
+index       uidNumber eq
+index       gidNumber eq
+index       cn
+index       member eq
+index       memberOf eq
+index       l eq,sub
+index       memberUid eq
+index       uniqueMember eq
+
+lastmod         on
+checkpoint      512 30
+
+### Access lists
+
+# The userPassword by default can be changed
+# by the entry owning it if they are authenticated.
+# Others should not be able to see it, except the
+# admin entry below
+# These access lines apply to database #1 only
+access to attrs=userPassword,shadowLastChange
+        by dn="cn=admin,dc=corp,dc=wikimedia,dc=org" write
+        by anonymous auth
+        by self write
+        by * none
+
+# Ensure read access to the base for things like
+# supportedSASLMechanisms.  Without this you may
+# have problems with SASL not knowing what
+# mechanisms are available and the like.
+# Note that this is covered by the 'access to *'
+# ACL below too but if you change that as people
+# are wont to do you'll still need this if you
+# want SASL (and possible other things) to work 
+# happily.
+access to dn.base="" by * read
+
+# The admin dn has full write access, everyone else
+# can read everything.
+access to *
+        by dn="cn=admin,dc=corp,dc=wikimedia,dc=org" write
+        by self write
+        by * read
