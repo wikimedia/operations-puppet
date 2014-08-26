@@ -163,6 +163,7 @@ class role::deployment::deployment_servers::common {
 class role::deployment::deployment_servers::production {
   include role::deployment::deployment_servers::common
   include network::constants
+  include wikitech::wiki::passwords
 
   file { '/srv/deployment':
     ensure => directory,
