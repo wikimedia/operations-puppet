@@ -18,7 +18,7 @@ class role::phabricator::legalpad {
         mysql_admin_pass => $::mysql_adminpass,
         auth_type        => 'sul',
         settings         => {
-            'darkconsole.enabled'                => true,
+            'darkconsole.enabled'                => false,
             'phabricator.base-uri'               => 'https://legalpad.wikimedia.org',
             'mysql.user'                         => $::mysql_appuser,
             'mysql.pass'                         => $::mysql_apppass,
