@@ -271,8 +271,16 @@ class misc::statistics::public_datasets {
     }
 
     # rsync from stat1003:/srv/public-datasets to $working_path/public-datasets
-    cron { 'rsync public datasets':
+    cron { 'rsync public datasets from stat1003':
         command => "/usr/bin/rsync -rt --delete stat1003.wikimedia.org::srv/public-datasets/* ${working_path}/public-datasets/",
+        require => File["${working_path}/public-datasets"],
+        user    => 'root',
+        minute  => '*/30',
+    }
+
+    # rsync from stat1002:/srv/public-datasets to $working_path/public-datasets
+    cron { 'rsync public datasets from stat1002':
+        command => "/usr/bin/rsync -rt --delete stat1002.wikimedia.org::srv/public-datasets/* ${working_path}/public-datasets/",
         require => File["${working_path}/public-datasets"],
         user    => 'root',
         minute  => '*/30',
