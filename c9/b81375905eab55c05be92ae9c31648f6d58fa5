@@ -1,0 +1,10 @@
+Code-Review+1: Chad <chadh@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Manybubbles <neverett@wikimedia.org>
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Verified+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Tue, 26 Aug 2014 10:50:03 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/154786
+Project: operations/puppet
+Branch: refs/heads/production
