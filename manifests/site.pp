@@ -746,7 +746,7 @@ node /^db10(51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|36|60|63|67)\.eqiad\.wmnet/ {
+node /^db10(02|09|18|36|57|60|63|67)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -876,41 +876,6 @@ node 'db1047.eqiad.wmnet' {
 }
 
 ## SANITARIUM
-
-node 'db1054.eqiad.wmnet' {
-
-    include admin
-    $cluster = 'mysql'
-    $ganglia_aggregator = true
-    class { 'role::db::sanitarium':
-        instances => {
-            's2' => {
-                'port'                    => '3306',
-                'innodb_log_file_size'    => '2000M',
-                'ram'                     => '24G',
-                'repl_wild_ignore_tables '=> $::private_tables,
-                'log_bin'                 => true,
-                'binlog_format'           => 'row',
-            },
-            's4' => {
-                'port'                    => '3307',
-                'innodb_log_file_size'    => '2000M',
-                'ram'                     => '24G',
-                'repl_wild_ignore_tables' => $::private_tables,
-                'log_bin'                 => true,
-                'binlog_format'           => 'row',
-            },
-            's5' => {
-                'port'                    => '3308',
-                'innodb_log_file_size'    => '1000M',
-                'ram'                     => '24G',
-                'repl_wild_ignore_tables' => $::private_tables,
-                'log_bin'                 => true,
-                'binlog_format'           => 'row',
-            },
-        }
-    }
-}
 
 node 'db1057.eqiad.wmnet' {
 
