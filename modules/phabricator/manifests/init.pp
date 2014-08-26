@@ -86,13 +86,13 @@ class phabricator (
 
     $phab_settings['auth.login-message'] = template("phabricator/${auth_template}")
 
-    if empty(mysql_admin_user) {
+    if empty($mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']
     } else {
         $storage_user = $mysql_admin_user
     }
 
-    if empty(mysql_admin_pass) {
+    if empty($mysql_admin_pass) {
         $storage_pass = $phab_settings['mysql.pass']
     } else {
         $storage_pass = $mysql_admin_pass

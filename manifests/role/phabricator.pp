@@ -41,7 +41,7 @@ class role::phabricator::main {
 
     system::role { 'role::phabricator::main': description => 'Phabricator (Main)' }
 
-    $current_tag = 'fabT440'
+    $current_tag = 'fabT552'
     $domain = 'phabricator.wikimedia.org'
     class { '::phabricator':
         git_tag   => $current_tag,
@@ -62,6 +62,7 @@ class role::phabricator::main {
             'metamta.maniphest.reply-handler-domain' => "${domain}",
             'metamta.maniphest.public-create-email'  => "task@${domain}",
             'metamta.reply-handler-domain'           => "${domain}",
+            'security.alternate-file-domain'         => 'phab.wmfusercontent.org'
         },
     }
 
@@ -88,7 +89,7 @@ class role::phabricator::labs {
 
     #pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
-    $current_tag = 'fabT440'
+    $current_tag = 'fabT552'
     class { '::phabricator':
         git_tag   => $current_tag,
         lock_file => '/var/run/phab_repo_lock',
