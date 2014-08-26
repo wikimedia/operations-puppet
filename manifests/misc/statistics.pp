@@ -254,7 +254,10 @@ class misc::statistics::public_datasets {
     include misc::statistics::base
 
     $working_path = $misc::statistics::base::working_path
-    file { "${working_path}/public-datasets":
+    file { [
+        "${working_path}/public-datasets",
+        "${working_path}/aggregate-datasets"
+    ]:
         ensure => 'directory',
         owner  => 'root',
         group  => 'www-data',
@@ -270,10 +273,27 @@ class misc::statistics::public_datasets {
         mode   => '0640',
     }
 
+    # symlink /var/www/aggregate-datasets to $working_path/aggregate-datasets
+    file { '/var/www/aggregate-datasets':
+        ensure => 'link',
+        target => "${working_path}/aggregate-datasets",
+        owner  => 'root',
+        group  => 'www-data',
+        mode   => '0640',
+    }
+
     # rsync from stat1003:/srv/public-datasets to $working_path/public-datasets
-    cron { 'rsync public datasets':
+    cron { 'rsync public datasets from stat1003':
         command => "/usr/bin/rsync -rt --delete stat1003.wikimedia.org::srv/public-datasets/* ${working_path}/public-datasets/",
         require => File["${working_path}/public-datasets"],
+        user    => 'root',
+        minute  => '*/30',
+    }
+
+    # rsync from stat1002:/srv/aggregate-datasets to $working_path/aggregate-datasets
+    cron { 'rsync public datasets from stat1002':
+        command => "/usr/bin/rsync -rt --delete stat1002.wikimedia.org::srv/aggregate-datasets/* ${working_path}/aggregate-datasets/",
+        require => File["${working_path}/aggregate-datasets"],
         user    => 'root',
         minute  => '*/30',
     }
