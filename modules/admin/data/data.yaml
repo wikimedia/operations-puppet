@@ -203,7 +203,8 @@ groups:
         Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
-              kleduc, nuria, haithams, otto, jgonera, deskana]
+              kleduc, nuria, haithams, otto, jgonera, deskana,
+              bsitzmann]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
