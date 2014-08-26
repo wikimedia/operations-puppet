@@ -148,7 +148,7 @@ Puppet::Type.type(:package).provide(
   # Get the SHA1 associated with a Git tag.
   def resolve_tag(tag)
     entry = git('ls-remote', 'origin', "refs/tags/#{tag}")
-    entry.split.first.strip || tag
+    entry[/^\S+/] || tag
   rescue Puppet::ExecutionFailure
     tag
   end
