@@ -138,6 +138,12 @@ if($opts{'e'}) {
         push @crontab, $_;
     }
 
+    if($#crontab < 0) {
+        print STDERR "$0: cowardly refusing to install empty crontab\n";
+        print STDERR "$0: use '$0 -r' if you want to remove the crontab\n";
+        exit 1;
+    }
+
 }
 
 my $crlino = 0;
