@@ -15,6 +15,7 @@ class quarry::base {
         'python-redis',
         'python-sqlalchemy',
         'python-pymysql',
+        'python-unicodecsv',
     ]:
         ensure => latest
     }
