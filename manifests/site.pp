@@ -2211,6 +2211,7 @@ node 'polonium.wikimedia.org' {
     include admin
     include standard-noexim
     include role::mail::mx
+    class { 'admin': groups => ['oit'] }
 
     interface::add_ip6_mapped { 'main': }
 
@@ -2604,6 +2605,7 @@ node 'lead.wikimedia.org' {
     include admin
     include standard-noexim
     include role::mail::mx
+    class { 'admin': groups => ['oit'] }
 
     interface::add_ip6_mapped { 'main': }
 }
