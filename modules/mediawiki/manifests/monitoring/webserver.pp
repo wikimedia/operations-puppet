@@ -23,11 +23,9 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
     }
 
 
-    apache::site {'monitoring':
-        ensure   => present,
-        priority => '99',
+    apache::site { 'monitoring':
         content  => template('mediawiki/apache/monitoring.conf.erb'),
-        require  => Package['apache2'],
+        priority => 99,
     }
 
     # monitor definitions
