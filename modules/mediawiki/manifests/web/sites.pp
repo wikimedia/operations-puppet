@@ -1,5 +1,28 @@
 class mediawiki::web::sites {
     tag 'mediawiki', 'mw-apache-config'
+
+    file { '/etc/apache2/includes':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/etc/apache2/mw-includes/engine_rewrite.conf':
+        ensure => present,
+        owner  => root,
+        group  => root,
+        source => 'puppet:///modules/mediawiki/apache/sites/include_engine_rewrite.conf',
+        notify => Service['apache2'],
+    }
+
+    file { '/etc/apache2/mw-includes/hhvm_proxy.conf':
+        ensure => present,
+        owner  => root,
+        group  => root,
+        source => 'puppet:///modules/mediawiki/apache/sites/include_hhvm_proxy.conf',
+        notify => Service['apache2'],
+    }
+
     # Now the sites, in strict sequence
     apache::site { 'nonexistent':
         source   => 'puppet:///modules/mediawiki/apache/sites/nonexistent.conf',
