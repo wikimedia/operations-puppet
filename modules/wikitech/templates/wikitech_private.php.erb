@@ -4,10 +4,10 @@
 # These keys derive from puppet, so are inserted into this dir
 #  via puppet to keep things in sync.
 
-$wgDBpassword    = "<%= @wikitech_db_password %>"
-$wgSecretKey     = "<%= @wikitech_secret_key %>"
-$wgUpgradeKey    = "<%= @wikitech_upgrade_key %>"
-$wgCaptchaSecret = "<%= @wikitech_captcha_secret %>"
+$wgDBpassword    = "<%= @wikitech_db_password %>";
+$wgSecretKey     = "<%= @wikitech_secret_key %>";
+$wgUpgradeKey    = "<%= @wikitech_upgrade_key %>";
+$wgCaptchaSecret = "<%= @wikitech_captcha_secret %>";
 
 $wgLDAPProxyAgent         =  array( 'labs' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org' );
 $wgLDAPProxyAgentPassword =  array( 'labs' => "<%= @wikitech_nova_ldap_proxyagent_pass %>" );
