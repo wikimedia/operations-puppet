@@ -16,6 +16,7 @@ class quarry::base {
         'python-sqlalchemy',
         'python-pymysql',
         'python-unicodecsv',
+        'python-translitcodec',
     ]:
         ensure => latest
     }
