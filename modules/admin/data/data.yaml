@@ -185,7 +185,7 @@ groups:
   mathoid-admin:
     gid: 730
     description: group of mathoid admins
-    members: [ssastry, cscott]
+    members: [gwicke]
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',

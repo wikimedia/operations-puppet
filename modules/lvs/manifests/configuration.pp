@@ -285,6 +285,9 @@ class lvs::configuration {
             'ocg' => {
                 'eqiad' => '10.2.2.31',
             },
+            'mathoid' => {
+                'eqiad' => "10.2.2.20",
+            },
         },
         'labs' => {
             'text' => {
@@ -910,6 +913,19 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'http://ocg.svc.eqiad.wmnet/?command=health' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            },
+        },
+        'mathoid' => {
+            'description' => 'Mathematical rendering service, mathoid.scv.eqiad.wmnet',
+            'class' => 'high-traffic2',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['mathoid'][$::site],
+            'port' => 10042,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://mathoid.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
