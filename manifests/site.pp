@@ -355,7 +355,7 @@ node 'bast1001.wikimedia.org' {
 
 node 'bast4001.wikimedia.org' {
     $cluster = 'misc'
-    $domain_search = 'wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet esams.wikimedia.org'
+    $domain_search = 'wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet codfw.wmnet esams.wikimedia.org'
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1254,7 +1254,7 @@ node 'iron.wikimedia.org' {
         description => 'Operations Bastion',
     }
     $cluster = 'misc'
-    $domain_search = 'wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet esams.wikimedia.org'
+    $domain_search = 'wikimedia.org eqiad.wmnet pmtpa.wmnet ulsfo.wmnet codfw.wmnet esams.wikimedia.org'
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2021,10 +2021,12 @@ node 'netmon1001.wikimedia.org' {
         'cr1-eqiad.wikimedia.org',
         'cr1-esams.wikimedia.org',
         'cr1-ulsfo.wikimedia.org',
+        'cr1-ulsfo.wikimedia.org',
         'cr2-eqiad.wikimedia.org',
         'cr2-knams.wikimedia.org',
         'cr2-pmtpa.wikimedia.org',
         'cr2-ulsfo.wikimedia.org',
+        'cr2-codfw.wikimedia.org',
         'mr1-pmtpa.mgmt.pmtpa.wmnet',
         'pfw1-eqiad.wikimedia.org',
     ]
@@ -2036,6 +2038,10 @@ node 'netmon1001.wikimedia.org' {
         'asw-c-eqiad.mgmt.eqiad.wmnet',
         'asw-d-eqiad.mgmt.eqiad.wmnet',
         'asw-d-pmtpa.mgmt.pmtpa.wmnet',
+        'asw-a-codfw.mgmt.codfw.wmnet',
+        'asw-b-codfw.mgmt.codfw.wmnet',
+        'asw-c-codfw.mgmt.codfw.wmnet',
+        'asw-d-codfw.mgmt.codfw.wmnet',
         'csw2-esams.wikimedia.org',
         'msw1-eqiad.mgmt.eqiad.wmnet',
         'msw2-pmtpa.mgmt.pmtpa.wmnet',
