@@ -105,7 +105,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     # Alert if CirrusSearch-slow.log shows more than
     # 10 slow searches within an hour.  The logster
     # job runs every $cirrussearch_slow_log_check_interval
-    # minutes.  We set retries to 
+    # minutes.  We set retries to
     # 60 minutes / cirrussearch_slow_log_check_interval minutes)
     # This should keep icinga from alerting
     # us unless the alert thresholds are exceeded
@@ -216,7 +216,7 @@ class role::logging::udp2log::nginx inherits role::logging::udp2log {
         port                => '8421',
         log_directory       => $nginx_log_directory,
         # don't monitor packet loss,
-        # we aren't keeping packet loss log, 
+        # we aren't keeping packet loss log,
         # and nginx sequence numbers are messed up anyway.
         monitor_packet_loss => false
     }
@@ -230,13 +230,50 @@ class role::logging::webstatscollector {
     # webstatscollector package creates this directory.
     # webstats-collector process writes dump files here.
     $webstats_dumps_directory = '/a/webstats/dumps'
+    # collector creates temporary Berkeley DB files that have
+    # very high write IO.  Upstart will chdir into
+    # this temp directory before starting collector.
+    $webstats_temp_directory   = '/run/shm/webstats'
 
-    package { 'webstatscollector': ensure => installed }
+    package { 'webstatscollector':
+        ensure => 'installed',
+    }
+
+    file { [$webstats_temp_directory, $webstats_dumps_directory]:
+        ensure => 'directory',
+        owner  => 'nobody',
+        group  => 'nogroup',
+    }
+    # collector writes dumps to $cwd/dumps.  We are going
+    # run collector in /run/shm, but we want dumps to be
+    # on the normal filesystem.  Symlink $cwd/dumps
+    # to the dumps directory.
+    file { "${webstats_temp_directory}/dumps":
+        ensure => 'link',
+        target => $webstats_dumps_directory,
+    }
+
+
+    # Install a custom webstats-collector init script to use
+    # custom temp directory.
+    file { '/etc/init/webstats-collector':
+        content => template('webstatscollector/webstats-collector.init.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Package['webstatscollector'],
+    }
+
     service { 'webstats-collector':
-        ensure     => running,
+        ensure     => 'running',
         hasstatus  => false,
         hasrestart => true,
-        require    => Package['webstatscollector'],
+        require    => [
+            File['/etc/init/webstats-collector'],
+            File[$webstats_temp_directory],
+            File[$webstats_dumps_directory],
+            File["${webstats_temp_directory}/dumps"],
+        ],
     }
     # install a nrpe check for the webstatscollector collector process
     nrpe::monitor_service { 'webstats-collector':
@@ -321,7 +358,7 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
     # udp2log::instance will ensure this is created
     $lucene_log_directory    = "$log_directory/lucene"
 
-    misc::udp2log::instance { 'lucene': 
+    misc::udp2log::instance { 'lucene':
         port                 => '51234',
         log_directory        => $lucene_log_directory,
         monitor_packet_loss  => false,
