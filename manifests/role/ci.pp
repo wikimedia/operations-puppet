@@ -325,6 +325,7 @@ class role::ci::slave::browsertests {
         require => File['/mnt/elasticsearch'],
         target  => '/mnt/elasticsearch',
     }
+    deployment::target { 'elasticsearchplugins': }
     class { '::elasticsearch':
         cluster_name => 'jenkins',
         heap_memory  => '1G', #We have small data in test
@@ -332,8 +333,8 @@ class role::ci::slave::browsertests {
         # We don't have reliable multicast in labs but we don't mind because we
         # only use a single instance
 
-        # Right now we're not testing with any of the plugins we plan to install
-        # later.  We'll cross that bridge when we come to it.
+        # Use git-deploy managed plugins from beta
+        plugins_dir => '/srv/deployment/elasticsearch/plugins',
     }
 
     # For CirrusSearch testing:
