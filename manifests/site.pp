@@ -3040,6 +3040,13 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     class { 'lvs::realserver':
         realserver_ips => ['10.2.2.28'],
     }
+
+    if ( $::hostname == 'wtp1023' ) or ( $::hostname == 'wtp1024' ) {
+        include role::mathoid::production
+        #TODO: overwrite admin groups for mathoid
+        #class { 'admin': groups => ['mathoid-roots',
+        #    'mathoid-admin'] }
+    }
 }
 
 node 'ytterbium.wikimedia.org' {
