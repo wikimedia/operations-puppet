@@ -2131,6 +2131,8 @@ node 'osmium.eqiad.wmnet' {
     include mediawiki
 
     class {'::admin': groups => ['deployment']}
+
+    service { 'hhvm': ensure => stopped, }
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
