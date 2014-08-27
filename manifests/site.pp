@@ -3025,6 +3025,14 @@ node 'iodine.wikimedia.org' {
     }
 }
 
+node /^sca100[12]\.eqiad\.wmnet$/ {
+    $cluster = 'sca'
+    include standard
+    include admin
+
+    include role::mathoid::production
+}
+
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     $cluster = 'parsoid'
 
