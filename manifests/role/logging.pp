@@ -256,7 +256,7 @@ class role::logging::webstatscollector {
 
     # Install a custom webstats-collector init script to use
     # custom temp directory.
-    file { '/etc/init/webstats-collector':
+    file { '/etc/init/webstats-collector.conf':
         content => template('webstatscollector/webstats-collector.init.erb'),
         owner   => 'root',
         group   => 'root',
