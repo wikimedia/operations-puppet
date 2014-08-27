@@ -199,7 +199,7 @@ class role::analytics::hadoop::config {
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host                             = '239.192.1.32'
         $ganglia_port                             = 8649
-        $gelf_logging_host                        = 'logstash1001.eqiad.wmnet'
+        $gelf_logging_host                        = 'logstash1002.eqiad.wmnet'
         # In production, make sure that HDFS user directories are
         # created for everyone in these groups.
         $hadoop_users_posix_groups                = 'analytics-users analytics-privatedata-users analytics-admins'
