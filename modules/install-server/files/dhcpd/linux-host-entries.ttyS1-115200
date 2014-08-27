@@ -402,16 +402,12 @@ host cobalt {
 	hardware ethernet 78:2b:cb:08:a1:68;
 	fixed-address cobalt.wikimedia.org;
 
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host copper {
 	hardware ethernet 78:2b:cb:09:0e:9d;
 	fixed-address copper.eqiad.wmnet;
 
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cp1037 {
@@ -1387,8 +1383,6 @@ host gold {
 	hardware ethernet F0:1F:AF:E8:C1:87;
 	fixed-address gold.wikimedia.org;
 
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host hafnium {
@@ -1434,8 +1428,6 @@ host iodine {
 host iridium {
 	hardware ethernet f0:1f:af:e8:c5:27;
 	fixed-address iridium.eqiad.wmnet;
-        option pxelinux.pathprefix "trusty-installer/";
-        filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host iron {
@@ -1446,8 +1438,6 @@ host iron {
 host labmon1001 {
 	hardware ethernet F0:1F:AF:E8:B1:77;
 	fixed-address labmon1001.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labnet1001 {
@@ -1468,8 +1458,6 @@ host labstore1002 {
 host labstore1003 {
 	hardware ethernet 78:2b:cb:0a:16:60;
 	fixed-address labstore1003.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labsdb1004 {
@@ -1500,9 +1488,6 @@ host lanthanum {
 host lead {
 	hardware ethernet C8:1F:66:BF:71:66;
 	fixed-address lead.wikimedia.org;
-
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host logstash1001 {
@@ -1598,9 +1583,6 @@ host magnesium {
 host mercury {
 	hardware ethernet f0:1f:af:e8:ab:4a;
 	fixed-address mercury.wikimedia.org;
-
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc1001 {
@@ -1919,8 +1901,6 @@ host mw1016 {
 host mw1017 {
 	hardware ethernet 78:2b:cb:08:79:0c;
 	fixed-address mw1017.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1018 {
@@ -1931,8 +1911,6 @@ host mw1018 {
 host mw1019 {
 	hardware ethernet 84:2b:2b:77:e4:67;
 	fixed-address mw1019.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1020 {
@@ -1943,6 +1921,7 @@ host mw1020 {
 host mw1021 {
 	hardware ethernet 84:2b:2b:77:e6:16;
 	fixed-address mw1021.eqiad.wmnet;
+
 }
 
 host mw1022 {
@@ -2103,8 +2082,6 @@ host mw1052 {
 host mw1053 {
 	hardware ethernet 78:2b:cb:08:78:7c;
 	fixed-address mw1053.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1054 {
@@ -2970,22 +2947,16 @@ host nitrogen {
 host ocg1001{
 	hardware ethernet F0:1F:AF:E8:AE:EA;
 	fixed-address ocg1001.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ocg1002{
 	hardware ethernet F0:1F:AF:E8:BD:1F;
 	fixed-address ocg1002.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ocg1003{
 	hardware ethernet F0:1F:AF:E6:81:60;
 	fixed-address ocg1003.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host osm-cp1001{
@@ -3011,8 +2982,6 @@ host osm-cp1004 {
 host osmium {
 	hardware ethernet F0:1F:AF:E6:72:40;
 	fixed-address osmium.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host oxygen {
@@ -3038,17 +3007,11 @@ host pdf3 {
 host platinum {
 	hardware ethernet F0:1F:AF:E8:C5:A3;
 	fixed-address platinum.wikimedia.org;
-
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host polonium {
 	hardware ethernet C8:1F:66:BF:8D:D6;
 	fixed-address polonium.wikimedia.org;
-
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host potassium {
@@ -3069,8 +3032,6 @@ host protactinium {
 host radon {
 	hardware ethernet C8:1F:66:BF:71:16;
 	fixed-address radon.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host rbf1001 {
@@ -3086,15 +3047,11 @@ host rbf1002 {
 host rcs1001 {
 	hardware ethernet 78:2B:CB:1F:18:B0;
 	fixed-address rcs1001.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host rcs1002 {
 	hardware ethernet 78:2B:CB:2D:FA:E6;
 	fixed-address rcs1002.eqiad.wmnet;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host rdb1001 {
@@ -3385,9 +3342,6 @@ host terbium {
 host thallium {
 	hardware ethernet f0:1f:af:e6:68:c7;
 	fixed-address thallium.wikimedia.org;
-
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host tin {
