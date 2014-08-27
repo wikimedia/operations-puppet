@@ -260,7 +260,7 @@ class role::logging::webstatscollector {
         content => template('webstatscollector/webstats-collector.init.erb'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0755',
+        mode    => '0444',
         require => Package['webstatscollector'],
     }
 
