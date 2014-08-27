@@ -1,16 +1,50 @@
 # vim: set ts=4 et sw=4:
 
-# We do not have monitoring yet
-#@monitor_group { 'mathoid_eqiad': description => 'eqiad mathoid servers' }
+@monitor_group { 'mathoid_eqiad': description => 'eqiad mathoid servers' }
 
-# Skipping production for now
-#class role::mathoid::production {
-#    system::role { 'role::mathoid::production':
-#        description => 'mathoid server'
-#    }
-#
-#    deployment::target { 'mathoid': }
-#}
+class role::mathoid::production {
+    system::role { 'role::mathoid::production':
+        description => 'mathoid server'
+    }
+
+    class { '::mathoid':
+      base_path => '/srv/deployment/mathoid/mathoid',
+      node_path => '/srv/deployment/mathoid/mathoid/node_modules',
+      conf_path => '/srv/deployment/mathoid/mathoid/mathoid.config.json',
+      log_dir   => '/var/log/mathoid',
+      require   => File[ '/srv/deployment/mathoid/mathoid' ]
+    }
+
+    file { '/srv/deployment/mathoid/mathoid':
+      ensure => directory,
+      owner => mathoid,
+      group => mathoid,
+      mode => '755',
+    }
+
+    deployment::target { 'mathoid': }
+
+    group { 'mathoid':
+      ensure => present,
+      name   => 'mathoid',
+      system => true,
+    }
+
+    user { 'mathoid':
+      gid           => 'mathoid',
+      home          => '/srv/deployment/mathoid/mathoid',
+      managehome    => true,
+      system        => true,
+    }
+
+    # Mathoid server has some ferm DNAT rewriting rules (bug 45868) so we
+    # have to explicitly allow mathoid port 10042
+    ferm::service { 'mathoid':
+      proto => 'tcp',
+      port  => '10042'
+    }
+
+}
 
 class role::mathoid::beta {
     system::role { 'role::mathoid::beta':
@@ -49,7 +83,7 @@ class role::mathoid::beta {
 
     # Beta mathoid server has some ferm DNAT rewriting rules (bug 45868) so we
     # have to explicitly allow mathoid port 10042
-    ferm::service { 'http':
+    ferm::service { 'mathoid':
         proto => 'tcp',
         port  => '10042'
     }
