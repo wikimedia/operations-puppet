@@ -285,6 +285,9 @@ class lvs::configuration {
             'ocg' => {
                 'eqiad' => '10.2.2.31',
             },
+            'mathoid' => {
+                'eqiad' => "10.2.2.20",
+            },
         },
         'labs' => {
             'text' => {

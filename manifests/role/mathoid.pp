@@ -1,6 +1,8 @@
 # vim: set ts=4 et sw=4:
 
-@monitor_group { 'mathoid_eqiad': description => 'eqiad mathoid servers' }
+# TODO: when other services inhabit service cluster A, move this definition in a
+# better place
+@monitor_group { 'sca_eqiad': description => 'Service Cluster A servers' }
 
 class role::mathoid::production {
     system::role { 'role::mathoid::production':
