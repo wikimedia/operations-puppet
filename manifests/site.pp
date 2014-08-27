@@ -1243,6 +1243,19 @@ node 'hooft.esams.wikimedia.org' {
     }
 }
 
+node 'install2001.wikimedia.org' {
+    $cluster = 'misc'
+    $ganglia_aggregator = true
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
+    include admin
+    include standard
+    include role::installserver::tftp-server
+}
+
 node 'iridium.eqiad.wmnet' {
     class { 'base::firewall': }
     include admin
