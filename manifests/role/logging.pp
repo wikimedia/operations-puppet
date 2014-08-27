@@ -269,7 +269,7 @@ class role::logging::webstatscollector {
         hasstatus  => false,
         hasrestart => true,
         require    => [
-            File['/etc/init/webstats-collector'],
+            File['/etc/init/webstats-collector.conf'],
             File[$webstats_temp_directory],
             File[$webstats_dumps_directory],
             File["${webstats_temp_directory}/dumps"],
