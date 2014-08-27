@@ -24,10 +24,12 @@ if $::ipaddress_eth0 != undef {
 }
 
 $site = $main_ipaddress ? {
-    /^208\.80\.15[23]\./                      => 'pmtpa',
+    /^208\.80\.152\./                         => 'pmtpa',
+    /^208\.80\.153\./                         => 'codfw',
     /^208\.80\.15[45]\./                      => 'eqiad',
     /^10\.[0-4]\./                            => 'pmtpa',
     /^10\.6[48]\./                            => 'eqiad',
+    /^10\.192\./                              => 'codfw',
     /^91\.198\.174\./                         => 'esams',
     /^198\.35\.26\.([0-9]|[1-5][0-9]|6[0-2])/ => 'ulsfo',
     /^10\.128\./                              => 'ulsfo',
@@ -48,9 +50,10 @@ $network_zone = $main_ipaddress ? {
 # TODO: create hash of all LVS service IPs
 
 # Set some basic variables
+# TODO: update after codfw gets its nameservers
 $nameservers = $site ? {
     'esams' => [ '91.198.174.6', '208.80.154.239' ],   # esams -> esams (nescio), eqiad (LVS)
-    default => [ '208.80.154.239', '91.198.174.6' ],   # pmtpa+eqiad+ulsfo -> eqiad (LVS), esams (nescio)
+    default => [ '208.80.154.239', '91.198.174.6' ],   # pmtpa+eqiad+ulsfo+codfw -> eqiad (LVS), esams (nescio)
 }
 
 # Allow per-server nameserver prefixes
