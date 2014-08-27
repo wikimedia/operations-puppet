@@ -62,7 +62,6 @@ class role::phabricator::main {
             'metamta.maniphest.reply-handler-domain' => "${domain}",
             'metamta.maniphest.public-create-email'  => "task@${domain}",
             'metamta.reply-handler-domain'           => "${domain}",
-            'security.alternate-file-domain'         => 'http://phab.wmfusercontent.org'
         },
     }
 
