@@ -49,6 +49,7 @@ class ganglia {
         $ip_prefix = $::site ? {
             'pmtpa' => '239.192.0',
             'eqiad' => '239.192.1',
+            'codfw' => '239.192.2',
             'esams' => '239.192.20',
             'ulsfo' => '239.192.10'
         }
@@ -285,6 +286,7 @@ class ganglia::collector::config {
                 $data_sources = {
                     'Miscellaneous'                  => 'tarin.pmtpa.wmnet',
                     'Miscellaneous eqiad'            => 'carbon.wikimedia.org ms1004.eqiad.wmnet',
+                    'Miscellaneous codfw'            => 'install2001.wikimedia.org',
                     'Analytics cluster eqiad'        => 'analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet',
                     'Mobile caches eqiad'            => 'cp1046.eqiad.wmnet cp1047.eqiad.wmnet',
                     'Mobile caches esams'            => 'hooft.esams.wikimedia.org:11677',
