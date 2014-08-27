@@ -2137,6 +2137,10 @@ node 'osmium.eqiad.wmnet' {
     include mediawiki
 
     class {'::admin': groups => ['deployment']}
+
+    # even though this is the HHVM staging box
+    # we don't want the service to run except for manual debug
+    service { 'hhvm': ensure => 'stopped', }
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
