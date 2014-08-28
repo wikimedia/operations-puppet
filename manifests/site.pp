@@ -2208,10 +2208,9 @@ node 'pdf3.wikimedia.org' {
 }
 
 node 'polonium.wikimedia.org' {
-    include admin
+    class { 'admin': groups => ['oit'] }
     include standard-noexim
     include role::mail::mx
-    class { 'admin': groups => ['oit'] }
 
     interface::add_ip6_mapped { 'main': }
 
@@ -2602,10 +2601,9 @@ node /^elastic10(0[1-9]|1[0-9])\.eqiad\.wmnet/ {
 }
 
 node 'lead.wikimedia.org' {
-    include admin
+    class { 'admin': groups => ['oit'] }
     include standard-noexim
     include role::mail::mx
-    class { 'admin': groups => ['oit'] }
 
     interface::add_ip6_mapped { 'main': }
 }
