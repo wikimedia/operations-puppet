@@ -146,7 +146,11 @@ class releases::reprepro::upload (
         source  => 'puppet:///modules/releases/deb-upload',
     }
 
-    admin::sudo { "releases_dput_${upload_host}":
+    package { 'dput':
+        before => File['/usr/local/bin/deb-upload'],
+    }
+
+    admin::sudo { "releases_dput":
         user => $sudo_user,
         privs => ["ALL = (${user}) NOPASSWD: dput"],
     }
