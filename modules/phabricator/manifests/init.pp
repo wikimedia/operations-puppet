@@ -182,6 +182,18 @@ class phabricator (
         mode    => '0500',
     }
 
+    # Phabricator needs an initial index built and from there
+    # will update as appropriate.
+    if ($phab_settings['search.elastic.host']) {
+        $create_index = "${phabdir}/phabricator/bin/search index --all"
+        exec { 'elastic_search_setup':
+            command   => "${create_index} && touch ${phabdir}/needs_es_indexed_false",
+            creates   => "${phabdir}/needs_es_indexed_false",
+            logoutput => true,
+            require   => File["${phabdir}/phabricator/conf/local/local.json"],
+        }
+    }
+
     #https://secure.phabricator.com/book/phabricator/article/managing_daemons/
     $phd = "${phabdir}/phabricator/bin/phd"
     service { 'phd':
