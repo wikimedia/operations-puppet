@@ -361,6 +361,7 @@ node 'bast2001.wikimedia.org' {
         interface => 'eth0',
     }
 
+    include admin
     include standard
     include bastionhost
 }
