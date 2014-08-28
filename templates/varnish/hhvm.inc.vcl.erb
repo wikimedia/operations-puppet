@@ -19,3 +19,18 @@ sub hhvm_is_cacheable {
 		set beresp.ttl = 0s;
 	}
 }
+
+/* Manage X-Analytics token for HHVM/Zend tracking */
+sub vcl_deliver {
+	if (resp.http.X-Powered-By ~ "^HHVM") {
+		set php_token = "php=hhvm";
+	} else {
+		set php_token = "php=zend";
+	}
+	
+	if (resp.http.X-Analytics) {
+		set resp.http.X-Analytics = resp.http.X-Analytics + ";" + php_token;
+	} else {
+		set resp.http.X-Analytics = php_token;
+	}
+}
