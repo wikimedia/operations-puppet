@@ -90,11 +90,8 @@ class role::beta::appserver {
 
     include ::beta::common
 
-    class { '::mediawiki::web': }
-
-    apache::site { 'beta_cluster':
-        content => "Include /etc/apache2/mods-enabled/*.load\nInclude /usr/local/apache/conf/all.conf\n",
-    }
+    include ::mediawiki::web
+    include ::mediawiki::web::beta_sites
 
     monitor_service { 'appserver http':
         description   => 'Apache HTTP',
