@@ -245,7 +245,7 @@ class role::logging::webstatscollector {
         ensure  => 'mounted',
         device  => 'tmpfs',
         fstype  => 'tmpfs',
-        options => 'noatime,defaults,size=2000m',
+        options => 'uid=nobody,gid=nogroup,mode=0755,noatime,defaults,size=2000m',
         pass    => 0,
         dump    => 0,
         require => File[$webstats_temp_directory],
