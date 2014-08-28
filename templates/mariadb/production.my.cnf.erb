@@ -36,6 +36,7 @@ thread_stack                   = 192K
 thread_cache_size              = 300
 interactive_timeout            = 28800
 wait_timeout                   = 3600
+transaction-isolation          = REPEATABLE-READ
 
 sync_binlog                    = 1
 binlog_cache_size              = 1M
@@ -43,6 +44,9 @@ max_binlog_size                = 1000M
 binlog_format                  = MIXED
 expire_logs_days               = 7
 slave_transaction_retries      = 4294967295
+sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
+tmp_table_size                 = 64M
+max_heap_table_size            = 64M
 
 table_open_cache               = 50000
 table_definition_cache         = 40000
@@ -65,6 +69,7 @@ innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 innodb_locks_unsafe_for_binlog = 1
 aria_pagecache_buffer_size     = 1G
+join_cache_level               = 8
 
 optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
 
