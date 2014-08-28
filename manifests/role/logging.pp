@@ -233,26 +233,46 @@ class role::logging::webstatscollector {
     # collector creates temporary Berkeley DB files that have
     # very high write IO.  Upstart will chdir into
     # this temp directory before starting collector.
-    $webstats_temp_directory   = '/run/shm/webstats'
+    $webstats_temp_directory   = '/run/webstats'
 
-    package { 'webstatscollector':
-        ensure => 'installed',
-    }
-
-    file { [$webstats_temp_directory, $webstats_dumps_directory]:
+    file { $webstats_temp_directory:
         ensure => 'directory',
         owner  => 'nobody',
         group  => 'nogroup',
     }
-    # collector writes dumps to $cwd/dumps.  We are going
-    # run collector in /run/shm, but we want dumps to be
-    # on the normal filesystem.  Symlink $cwd/dumps
-    # to the dumps directory.
-    file { "${webstats_temp_directory}/dumps":
-        ensure => 'link',
-        target => $webstats_dumps_directory,
+    # Mount the temp directory as a tmpfs in /run
+    mount { $webstats_temp_directory:
+        ensure  => 'mounted',
+        device  => 'tmpfs',
+        fstype  => 'tmpfs',
+        options => 'noatime,defaults,size=2000m',
+        pass    => 0,
+        dump    => 0,
+        require => File[$webstats_temp_directory],
     }
 
+    # Create the dumps/ directory in which
+    # we want collector to output hourly dump files.
+    file { $webstats_dumps_directory:
+        ensure  => 'directory',
+        owner   => 'nobody',
+        group   => 'nogroup',
+        require => Mount[$webstats_temp_directory],
+    }
+    # collector writes dumps to $cwd/dumps.  We are going
+    # run collector in $webstats_temp_directory, but we want dumps to be
+    # on the normal filesystem.  Symlink $webstats_temp_directory/dumps
+    # to the dumps directory.
+    file { "${webstats_temp_directory}/dumps":
+        ensure  => 'link',
+        target  => $webstats_dumps_directory,
+        require => File[$webstats_dumps_directory],
+    }
+
+
+    package { 'webstatscollector':
+        ensure => 'installed',
+    }
 
     # Install a custom webstats-collector init script to use
     # custom temp directory.
@@ -270,11 +290,10 @@ class role::logging::webstatscollector {
         hasrestart => true,
         require    => [
             File['/etc/init/webstats-collector.conf'],
-            File[$webstats_temp_directory],
-            File[$webstats_dumps_directory],
             File["${webstats_temp_directory}/dumps"],
         ],
     }
+
     # install a nrpe check for the webstatscollector collector process
     nrpe::monitor_service { 'webstats-collector':
         description   => "webstats-collector process running",
