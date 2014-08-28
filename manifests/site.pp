@@ -1564,6 +1564,103 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     interface::rps { 'eth3': rss_pattern => 'eth3-%d' }
 }
 
+# codfw lvs
+node /lvs200[1-6]\.wikimedia\.org/ {
+
+    # XXX will need $nameservers_prefix hack eventually (see eqiad above)
+
+    if $::hostname =~ /^lvs200[12]$/ {
+        $ganglia_aggregator = true
+    }
+
+    $cluster = 'lvs'
+    include admin
+    include role::lvs::balancer
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0' }
+
+    include lvs::configuration
+    $ips = $lvs::configuration::subnet_ips
+
+    # Set up tagged interfaces to all subnets with real servers in them
+    case $::hostname {
+        /^lvs200[1-3]$/: {
+            # Row A subnets on eth0
+            interface::tagged { 'eth0.2017':
+                base_interface => 'eth0',
+                vlan_id        => '2017',
+                address        => $ips['private1-a-codfw'][$::hostname],
+                netmask        => '255.255.252.0',
+            }
+            # Row B subnets on eth1
+            interface::tagged { 'eth1.2002':
+                base_interface => 'eth1',
+                vlan_id        => '2002',
+                address        => $ips['public1-b-codfw'][$::hostname],
+                netmask        => '255.255.255.224',
+            }
+            interface::tagged { 'eth1.2018':
+                base_interface => 'eth1',
+                vlan_id        => '2018',
+                address        => $ips['private1-b-codfw'][$::hostname],
+                netmask        => '255.255.252.0',
+            }
+        }
+        /^lvs200[4-6]$/: {
+            # Row B subnets on eth0
+            interface::tagged { 'eth0.2018':
+                base_interface => 'eth0',
+                vlan_id        => '2018',
+                address        => $ips['private1-b-codfw'][$::hostname],
+                netmask        => '255.255.252.0',
+            }
+            # Row A subnets on eth1
+            interface::tagged { 'eth1.2001':
+                base_interface => 'eth1',
+                vlan_id        => '2001',
+                address        => $ips['public1-a-codfw'][$::hostname],
+                netmask        => '255.255.255.224',
+            }
+            interface::tagged { 'eth1.2017':
+                base_interface => 'eth1',
+                vlan_id        => '2017',
+                address        => $ips['private1-a-codfw'][$::hostname],
+                netmask        => '255.255.252.0',
+            }
+        }
+    }
+
+    # Row C subnets on eth2
+    interface::tagged { 'eth2.2003':
+        base_interface => 'eth2',
+        vlan_id        => '2003',
+        address        => $ips['public1-c-codfw'][$::hostname],
+        netmask        => '255.255.255.224',
+    }
+    interface::tagged { 'eth2.2019':
+        base_interface => 'eth2',
+        vlan_id        => '2019',
+        address        => $ips['private1-c-codfw'][$::hostname],
+        netmask        => '255.255.252.0',
+    }
+
+    # Row D subnets on eth3
+    interface::tagged { 'eth3.2004':
+        base_interface => 'eth3',
+        vlan_id        => '2004',
+        address        => $ips['public1-d-codfw'][$::hostname],
+        netmask        => '255.255.255.224',
+    }
+    interface::tagged { 'eth3.2020':
+        base_interface => 'eth3',
+        vlan_id        => '2020',
+        address        => $ips['private1-d-codfw'][$::hostname],
+        netmask        => '255.255.252.0',
+    }
+
+    # XXX ethernet GRO/LRO/tuning stuff
+}
+
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
 

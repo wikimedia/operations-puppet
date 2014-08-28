@@ -1534,6 +1534,36 @@ host lvs1006 {
 	fixed-address lvs1006.wikimedia.org;
 }
 
+host lvs2001 {
+	hardware ethernet XXX;
+	fixed-address lvs2001.wikimedia.org;
+}
+
+host lvs2002 {
+	hardware ethernet XXX;
+	fixed-address lvs2002.wikimedia.org;
+}
+
+host lvs2003 {
+	hardware ethernet XXX;
+	fixed-address lvs2003.wikimedia.org;
+}
+
+host lvs2004 {
+	hardware ethernet XXX;
+	fixed-address lvs2004.wikimedia.org;
+}
+
+host lvs2005 {
+	hardware ethernet XXX;
+	fixed-address lvs2005.wikimedia.org;
+}
+
+host lvs2006 {
+	hardware ethernet XXX;
+	fixed-address lvs2006.wikimedia.org;
+}
+
 host lvs3001 {
 	hardware ethernet 90:b1:1c:45:56:0d;
 	fixed-address lvs3001.esams.wmnet;
