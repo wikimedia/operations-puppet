@@ -42,6 +42,7 @@ class wikistats::updates {
                 'wk@21', # Wikkii
                 're@22', # Referata
                 'pa@23', # Pardus
+                'wc@23', # W3C
                 ]: }
 
 }
