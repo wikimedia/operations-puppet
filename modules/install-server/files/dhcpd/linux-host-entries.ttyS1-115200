@@ -358,6 +358,11 @@ host bast1001 {
 	fixed-address bast1001.wikimedia.org;
 }
 
+host bast2001 {
+	hardware ethernet 90:B1:1C:00:9D:EB;
+	fixed-address bast2001.wikimedia.org;
+}
+
 host bast4001 {
 	hardware ethernet 90:b1:1c:4d:42:49;
 	fixed-address bast4001.wikimedia.org;
@@ -1415,8 +1420,6 @@ host hydrogen {
 host install2001 {
 	hardware ethernet D4:AE:52:AA:06:C3;
 	fixed-address install2001.wikimedia.org;
-	option pxelinux.pathprefix "trusty-installer/";
-	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host iodine {
