@@ -2745,6 +2745,7 @@ node 'virt1000.wikimedia.org' {
     include role::nova::manager
     include role::salt::masters::labs
     include role::deployment::salt_masters::labs
+    include ::mediawiki::sync
     if $use_neutron == true {
         include role::neutron::controller
     }
