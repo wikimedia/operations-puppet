@@ -331,7 +331,14 @@ node 'argon.wikimedia.org' {
 
 node 'bast1001.wikimedia.org' {
     $cluster = 'misc'
-    $domain_search = 'wikimedia.org eqiad.wmnet codfw.wmnet ulsfo.wmnet pmtpa.wmnet esams.wikimedia.org'
+    $domain_search = [
+        'wikimedia.org',
+        'eqiad.wmnet',
+        'codfw.wmnet',
+        'ulsfo.wmnet',
+        'pmtpa.wmnet',
+        'esams.wikimedia.org'
+    ]
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -355,7 +362,14 @@ node 'bast1001.wikimedia.org' {
 
 node 'bast2001.wikimedia.org' {
     $cluster = 'misc'
-    $domain_search = 'wikimedia.org codfw.wmnet eqiad.wmnet ulsfo.wmnet pmtpa.wmnet esams.wikimedia.org'
+    $domain_search = [
+        'wikimedia.org',
+        'codfw.wmnet',
+        'eqiad.wmnet',
+        'ulsfo.wmnet',
+        'pmtpa.wmnet',
+        'esams.wikimedia.org'
+    ]
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -367,7 +381,14 @@ node 'bast2001.wikimedia.org' {
 
 node 'bast4001.wikimedia.org' {
     $cluster = 'misc'
-    $domain_search = 'wikimedia.org ulsfo.wmnet eqiad.wmnet codfw.wmnet pmtpa.wmnet esams.wikimedia.org'
+    $domain_search = [
+        'wikimedia.org',
+        'ulsfo.wmnet',
+        'eqiad.wmnet',
+        'codfw.wmnet',
+        'pmtpa.wmnet',
+        'esams.wikimedia.org'
+    ]
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1094,7 +1115,14 @@ node /es10(0[89]|10)\.eqiad\.wmnet/ {
 
 node 'fenari.wikimedia.org' {
     $cluster = 'misc'
-    $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet codfw.wmnet ulsfo.wmnet esams.wikimedia.org'
+    $domain_search = [
+        'wikimedia.org',
+        'pmtpa.wmnet',
+        'eqiad.wmnet',
+        'codfw.wmnet',
+        'ulsfo.wmnet',
+        'esams.wikimedia.org'
+    ]
 
     class { 'admin':
         groups => ['deployment',
@@ -1217,8 +1245,11 @@ node 'holmium.wikimedia.org' {
 
 node 'hooft.esams.wikimedia.org' {
     $ganglia_aggregator = true
-    $domain_search = 'esams.wikimedia.org wikimedia.org esams.wmnet'
-
+    $domain_search = [
+        'esams.wikimedia.org',
+        'wikimedia.org',
+        'esams.wmnet'
+    ]
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1280,7 +1311,14 @@ node 'iron.wikimedia.org' {
         description => 'Operations Bastion',
     }
     $cluster = 'misc'
-    $domain_search = 'wikimedia.org eqiad.wmnet codfw.wmnet ulsfo.wmnet pmtpa.wmnet esams.wikimedia.org'
+    $domain_search = [
+        'wikimedia.org',
+        'eqiad.wmnet',
+        'codfw.wmnet',
+        'ulsfo.wmnet',
+        'pmtpa.wmnet',
+        'esams.wikimedia.org'
+    ]
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1354,7 +1392,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
     $site = 'eqiad'
     $cluster = 'labsnfs'
-    $domain_search = 'wikimedia.org eqiad.wmnet'
+    $domain_search = ['wikimedia.org', 'eqiad.wmnet']
     $ldapincludes = ['openldap', 'nss', 'utils']
 
     $ganglia_aggregator = true
@@ -1385,7 +1423,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 node 'labstore1003.eqiad.wmnet' {
     $site = 'eqiad'
     $cluster = 'labsnfs'
-    $domain_search = 'wikimedia.org eqiad.wmnet'
+    $domain_search = ['wikimedia.org', 'eqiad.wmnet']
 
     $ganglia_aggregator = true
 
@@ -2088,7 +2126,14 @@ node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
 
 node 'neon.wikimedia.org' {
     class { 'base::firewall': }
-    $domain_search = 'wikimedia.org eqiad.wmnet codfw.wmnet ulsfo.wmnet pmtpa.wmnet esams.wikimedia.org'
+    $domain_search = [
+        'wikimedia.org',
+        'eqiad.wmnet',
+        'codfw.wmnet',
+        'ulsfo.wmnet',
+        'pmtpa.wmnet',
+        'esams.wikimedia.org'
+    ]
 
     include standard
     include admin
@@ -2733,8 +2778,12 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
 
 node 'tin.eqiad.wmnet' {
     $cluster = 'misc'
-    $domain_search = 'wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org'
-
+    $domain_search = [
+        'wikimedia.org',
+        'pmtpa.wmnet',
+        'eqiad.wmnet',
+        'esams.wikimedia.org'
+    ]
 
     include standard
     include generic::wikidev-umask
