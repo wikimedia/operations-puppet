@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# use this script as a forced command in authorized_keys to allow scp of files
+# to the incoming directory or process the incoming queue otherwise
+
+set -e
+set -u
+
+basedir=$1
+incomingdir=$2
+queue=${3:-default}
+command=${SSH_ORIGINAL_COMMAND:-}
+
+if echo "$command" | grep -q '^scp'; then
+  exec env scp -d -t -- ${incomingdir}
+else
+  exec env reprepro -Vb ${basedir} processincoming ${queue} | tee ${basedir}/logs/processincoming.log
+fi

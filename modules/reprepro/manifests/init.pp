@@ -15,6 +15,7 @@
 #   - *default_distro*: The default distribution if none specified.
 #   - *gpg_secring*: The GPG secret keyring for reprepro to use.
 #   - *gpg_pubring*: The GPG public keyring for reprepro to use.
+#   - *authorized_keys*: A list of ssh public keys allowed to upload and process the incoming queue
 #
 # === Example
 #
@@ -24,16 +25,17 @@
 #
 class reprepro (
     $basedir,
-    $homedir        = '/var/lib/reprepro',
-    $user           = 'reprepro',
-    $group          = 'reprepro',
-    $notify_address = 'root@wikimedia.org',
-    $options        = [],
-    $uploaders      = [],
-    $incomingdir    = 'incoming',
-    $default_distro = 'trusty',
-    $gpg_secring    = undef,
-    $gpg_pubring    = undef,
+    $homedir         = '/var/lib/reprepro',
+    $user            = 'reprepro',
+    $group           = 'reprepro',
+    $notify_address  = 'root@wikimedia.org',
+    $options         = [],
+    $uploaders       = [],
+    $incomingdir     = 'incoming',
+    $default_distro  = 'trusty',
+    $gpg_secring     = undef,
+    $gpg_pubring     = undef,
+    $authorized_keys = [],
 ) {
 
     package { 'reprepro':
@@ -49,9 +51,9 @@ class reprepro (
         ensure     => present,
         name       => $user,
         home       => $homedir,
-        shell      => '/bin/bash',
+        shell      => '/bin/sh',
         comment    => 'Reprepro user',
-        gid        => 'reprepro',
+        gid        => $group,
         managehome => true,
         require    => Group['reprepro'],
     }
@@ -128,12 +130,30 @@ class reprepro (
         content => template("reprepro/log.erb"),
     }
 
-    file { "${homedir}/.gnupg":
+    file { [ "${homedir}/.gnupg", "${homedir}/.ssh" ]:
         ensure  => directory,
         owner   => $user,
         group   => $group,
         mode    => '0700',
         require => User['reprepro'],
+    }
+
+    file { "${homedir}/.ssh/authorized_keys":
+        ensure  => file,
+        owner   => $user,
+        group   => $group,
+        mode    => '0600',
+        require => User['reprepro'],
+        content => template("reprepro/authorized_keys.erb"),
+    }
+
+    file { "/usr/local/bin/reprepro-ssh-upload":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => User['reprepro'],
+        source  => 'puppet:///modules/reprepro/reprepro-ssh-upload',
     }
 
     if $gpg_secring != undef {
