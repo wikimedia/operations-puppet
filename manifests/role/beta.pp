@@ -98,11 +98,9 @@ class role::beta::appserver {
         fatal_log_file => 'udp://deployment-bastion.eqiad.wmflabs:8420',
     }
 
-    class { '::mediawiki::web': }
 
-    apache::site { 'beta_cluster':
-        content => "Include /etc/apache2/mods-enabled/*.load\nInclude /usr/local/apache/conf/all.conf\n",
-    }
+    include ::mediawiki::web
+    include ::mediawiki::web::beta_sites
 
     monitor_service { 'appserver http':
         description   => 'Apache HTTP',
