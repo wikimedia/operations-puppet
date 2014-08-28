@@ -3,8 +3,9 @@ class mediawiki::packages {
 
     package { [
         'imagemagick',
-        'python-imaging',
         'libmemcached10', # TODO: remove this?
+        'python-imaging',
+        'tidy',
     ]:
         ensure => present,
     }
@@ -65,13 +66,5 @@ class mediawiki::packages {
     # timidity recommends timidity-daemon, but we don't need it.
     package { 'timidity-daemon':
       ensure => absent,
-    }
-
-    # Tidy
-    package { [
-        'libtidy-0.99-0',
-        'tidy',
-    ]:
-        ensure => present,
     }
 }
