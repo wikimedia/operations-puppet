@@ -50,6 +50,8 @@ class role::phabricator::main {
         mysql_admin_pass => $::mysql_adminpass,
         auth_type => 'dual',
         settings  => {
+            'search.elastic.host'                    => 'http://search.svc.eqiad.wmnet:9200',
+            'search.elastic.namespace'               => 'phabricatormain',
             'storage.upload-size-limit'              => '10M',
             'darkconsole.enabled'                    => false,
             'phabricator.base-uri'                   => "https://${domain}",
