@@ -368,6 +368,10 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
         content => template("apache/sites/${webserver_hostname}.erb"),
     }
 
+    # ::mediawiki::sync supports syncing the wikitech wiki from tin.
+    #  It also defines /a which is used later on in this manifest for backups.
+    include ::mediawiki::sync
+
     file {
         "/var/www/robots.txt":
             ensure => present,
@@ -375,11 +379,6 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             owner  => 'root',
             group  => 'root',
             source => "puppet:///files/openstack/wikitech-robots.txt";
-        "/a":
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-            ensure => directory;
         "/a/backup":
             mode   => '0755',
             owner  => 'root',
