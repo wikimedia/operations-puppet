@@ -3,7 +3,7 @@
 ####  as template('base/resolv.conf.erb')
 #####################################################################
 # Resolver configuration for site <%= @site %>
-search <%= @domain_search %>
+search <%= Array(@domain_search).join(' ') %>
 options timeout:3
 <% @nameservers_prefix.each do |nameserver| -%>
 nameserver <%= nameserver %>
