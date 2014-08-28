@@ -1547,10 +1547,10 @@ host lvs2002 {
 	fixed-address lvs2002.wikimedia.org;
 }
 
-#host lvs2003 {
-#	hardware ethernet XXX;
-#	fixed-address lvs2003.wikimedia.org;
-#}
+host lvs2003 {
+	hardware ethernet fc:15:b4:1f:99:58;
+	fixed-address lvs2003.wikimedia.org;
+}
 
 host lvs2004 {
 	hardware ethernet fc:15:b4:1f:3b:00;
