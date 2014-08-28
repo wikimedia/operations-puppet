@@ -2912,19 +2912,17 @@ node 'virt1000.wikimedia.org' {
 
     # For unclear historic reasons, this box has a massive /a drive.
     #  So, do all of our mediawiki-syncing done there.
-    file { '/a/common-local':
+    file { '/a/local-apache':
         ensure => 'directory',
         owner  => 'mwdeploy',
         group  => 'mwdeploy',
     }
 
-    #  The following isn't enabled because it will cause a puppet collision.  But
-    #   it is in effect nontheless :)
-    #file { '/usr/local/apache/common-local':
-        #ensure => 'link',
-        #require => File['/a/common-local'],
-        #target => '/a/common-local',
-    #}
+    file { '/usr/local/apache/':
+        ensure => 'link',
+        require => File['/a/local-apache'],
+        target => '/a/local-apache',
+    }
 }
 
 node 'virt0.wikimedia.org' {
