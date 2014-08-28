@@ -94,6 +94,8 @@ class role::phabricator::labs {
         lock_file => '/var/run/phab_repo_lock',
         auth_type => 'local',
         settings  => {
+            'search.elastic.host'                => 'http://localhost:9200',
+            'search.elastic.namespace'           => 'phabricator',
             'darkconsole.enabled'                => true,
             'phabricator.base-uri'               => "http://${::hostname}.wmflabs.org",
             'phabricator.show-beta-applications' => true,
@@ -116,5 +118,20 @@ class role::phabricator::labs {
         hasrestart => true,
         hasstatus  => true,
         require    => Package['mysql-server'],
+    }
+    package { 'openjdk-7-jre-headless':
+        ensure => present,
+    }
+
+    package { 'elasticsearch':
+        ensure => present,
+        require    => Package['openjdk-7-jre-headless'],
+    }
+
+    service { 'elasticsearch':
+        ensure     => running,
+        hasrestart => true,
+        hasstatus  => true,
+        require    => Package['elasticsearch'],
     }
 }
