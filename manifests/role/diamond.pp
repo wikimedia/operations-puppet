@@ -12,12 +12,8 @@ class role::diamond {
     # the load on the collector instance, which could not handle
     # all the metrics from all the projects
     $labs_enabled_projects = [
-        'cvn',
         'deployment-prep',
         'graphite',
-        'integration',
-        'tools',
-        'quarry',
     ]
     case $::realm {
         'labs': {
