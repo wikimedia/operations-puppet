@@ -19,8 +19,14 @@
 class base::monitoring::host($contact_group = 'admins') {
     include base::puppet::params # In order to be able to use some variables
 
+    if $cluster != undef {
+        $host_group = "${cluster}_${site}"
+    } else {
+        $host_group = "misc_${site}"
+    }
     monitor_host { $::hostname:
-        contact_group => $contact_group
+        contact_group => $contact_group,
+        group         => $host_group,
     }
     monitor_service { 'ssh':
         description   => 'SSH',
