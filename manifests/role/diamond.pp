@@ -14,6 +14,7 @@ class role::diamond {
     $labs_enabled_projects = [
         'deployment-prep',
         'graphite',
+        'tools',
     ]
     case $::realm {
         'labs': {
