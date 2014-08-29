@@ -22,6 +22,7 @@ class role::elasticsearch::config {
         $filter_cache_size          = '10%'
         $bulk_thread_pool_capacity  = undef
         $bulk_thread_pool_executors = undef
+        $auto_create_index = false
         if ($::hostname =~ /^deployment-/) {
             # Beta
             # Has four nodes all of which can be master
@@ -100,6 +101,9 @@ class role::elasticsearch::config {
         $filter_cache_size          = '20%'
         $bulk_thread_pool_capacity  = 1000
         $bulk_thread_pool_executors = 6
+
+        # Disable most auto index creation
+        $auto_create_index = '+phabricator*,-*'
     }
 }
 
@@ -132,6 +136,7 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         row                        => $row,
         rack                       => $rack,
         unicast_hosts              => $unicast_hosts,
+        auto_create_index          => $auto_create_index,
         # This depends on the elasticsearchplugins deployment.
         # A new elasticsearch server shouldn't join the cluster until
         # the plugins are properly deployed in place.  Note that this
