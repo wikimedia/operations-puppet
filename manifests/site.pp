@@ -770,7 +770,7 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(51|52|55|61|62|65|66|70|71)\.eqiad\.wmnet/ {
+node /^db10(51|52|55|61|62|65|66|71)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -842,13 +842,22 @@ node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
     }
 }
 
-# MariaDB 10. Not the real S1 yet.
+# MariaDB 10
 node /^db10(44|72|73)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's1',
+    }
+}
+
+node /^db10(70)\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's4',
     }
 }
 
