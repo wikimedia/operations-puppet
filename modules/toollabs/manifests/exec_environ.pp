@@ -163,6 +163,7 @@ class toollabs::exec_environ {
         'python-requests',
         'python-rsvg',                 # Bug 56996
         'python-scipy',
+        'python-sh',
         'python-sqlalchemy',
         'python-svn',                  # Bug 56996
         'python-twisted',
