@@ -75,6 +75,7 @@ class hhvm(
     $group         = 'www-data',
     $fcgi_settings = {},
     $cli_settings  = {},
+    $debug_path    = '/var/log/hhvm',
 ) {
     requires_ubuntu('>= trusty')
 
@@ -210,11 +211,11 @@ class hhvm(
     }
 
     file { '/usr/local/sbin/hhvm-dump-debug':
-        source => 'puppet:///modules/hhvm/hhvm-dump-debug',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        before => Service['hhvm'],
+        content => template('hhvm/hhvm-dump-debug.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        before  => Service['hhvm'],
     }
 
 
