@@ -17,7 +17,7 @@ class role::diamond {
     ]
     case $::realm {
         'labs': {
-            $host          = '10.68.17.169'
+            $host          = '10.64.37.13' # labmon1001
             # Prefix labs metrics with project name
             $path_prefix   = $::instanceproject
             $keep_logs_for = '0' # Current day only
