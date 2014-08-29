@@ -2913,22 +2913,6 @@ node 'virt1000.wikimedia.org' {
     if $use_neutron == true {
         include role::neutron::controller
     }
-
-    # For unclear historic reasons, this box has a massive /a drive.
-    #  So, do all of our mediawiki-syncing done there.
-    file { '/a/common-local':
-        ensure => 'directory',
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-    }
-
-    #  The following isn't enabled because it will cause a puppet collision.  But
-    #   it is in effect nontheless :)
-    #file { '/usr/local/apache/common-local':
-        #ensure => 'link',
-        #require => File['/a/common-local'],
-        #target => '/a/common-local',
-    #}
 }
 
 node 'virt0.wikimedia.org' {
