@@ -1299,6 +1299,10 @@ node 'install2001.wikimedia.org' {
     include admin
     include standard
     include role::installserver::tftp-server
+
+    class { 'ganglia_new::monitor::aggregator':
+        sites =>  'codfw',
+    }
 }
 
 node 'iridium.eqiad.wmnet' {
