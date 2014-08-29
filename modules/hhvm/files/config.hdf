@@ -12,5 +12,6 @@ DynamicExtensions {
 }
 
 Eval {
-  PerfPidMap = false
+  PerfPidMap    = false     # Don't create perf-*.map files in /tmp
+  PCRETableSize = 1048576   # Cache up to 1024 * 1024 regexps (the default is 96 * 1024)
 }
