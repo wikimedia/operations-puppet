@@ -1289,7 +1289,6 @@ node 'hooft.esams.wikimedia.org' {
 }
 
 node 'install2001.wikimedia.org' {
-    $cluster = 'misc'
     $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main':
