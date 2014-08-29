@@ -172,6 +172,7 @@ groups:
     gid: 727
     description: office it folk
     members: [jkrauska]
+    privs: ['ALL = (syslog) NOPASSWD: ALL']
   pdf-qa-users:
     gid: 728
     description: developers on the PDF QA system
