@@ -12,7 +12,7 @@ class ganglia_new::configuration {
         'lvs'   => {
             'name'      => 'LVS loadbalancers',
             'id'    => 2,
-            'sites' => ['pmtpa', 'eqiad', 'esams']  },
+            'sites' => ['pmtpa', 'eqiad', 'esams', 'codfw']  },
         'search'    =>  {
             'name'      => 'Search',
             'id'    => 4 },
@@ -22,7 +22,7 @@ class ganglia_new::configuration {
         'misc'      =>  {
             'name'      => 'Miscellaneous',
             'id'    => 8,
-            'sites' => ['pmtpa', 'eqiad', 'esams'] },
+            'sites' => ['pmtpa', 'eqiad', 'esams', 'codfw'] },
         'appserver' =>  {
             'name'      => 'Application servers',
             'id'    => 11   },
@@ -117,12 +117,14 @@ class ganglia_new::configuration {
             $aggregator_hosts = {
                 'pmtpa' => [ '208.80.152.15', '208.80.154.150' ],
                 'eqiad' => [ '208.80.152.15', '208.80.154.150' ],
-                'esams' => [ '91.198.174.113' ]
+                'esams' => [ '91.198.174.113' ],
+                'codfw' => [ '208.80.153.4' ],
             }
             $base_port = 8649
             $id_prefix = {
                 pmtpa => 0,
                 eqiad => 1000,
+                codfw => 2000,
                 esams => 3000,
             }
             $default_sites = ['pmtpa', 'eqiad']
