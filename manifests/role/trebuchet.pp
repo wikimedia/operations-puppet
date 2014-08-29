@@ -10,6 +10,8 @@ class role::trebuchet {
         labs       => pick($::deployment_server_override, "${::instanceproject}-deploy.eqiad.wmflabs"),
     }
 
+    include ::trebuchet::packages
+
     salt::grain { 'trebuchet_master':
         value   => $trebuchet_master,
         replace => true,
@@ -17,7 +19,9 @@ class role::trebuchet {
 
     # Trebuchet needs salt-minion to query grains, and it needs the
     # `trebuchet_master` grain set so that it knows where to fetch from.
+    # It also needs the dependencies from ::trebuchet::packages.
     Service['salt-minion'] ->
         Salt::Grain['trebuchet_master'] ->
-            Package <| provider == 'trebuchet' |>
+            Class['::trebuchet::packages'] ->
+                Package <| provider == 'trebuchet' |>
 }
