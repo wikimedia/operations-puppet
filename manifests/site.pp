@@ -1289,6 +1289,7 @@ node 'hooft.esams.wikimedia.org' {
 }
 
 node 'install2001.wikimedia.org' {
+    $cluster = 'misc'
     $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main':
@@ -1296,7 +1297,7 @@ node 'install2001.wikimedia.org' {
     }
 
     include admin
-    include standard
+    include base
     include role::installserver::tftp-server
 
     class { 'ganglia_new::monitor::aggregator':
