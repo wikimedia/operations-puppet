@@ -21,7 +21,7 @@
 class ganglia {
 
     # FIXME: remove after the ganglia module migration
-    if $::realm == 'labs' or ($::hostname in ['netmon1001'] or $::site == 'esams' or ($::site == 'pmtpa' and $cluster in ['cache_bits'])) {
+    if $::realm == 'labs' or ($::hostname in ['netmon1001'] or $::site == 'esams' or $::site == 'codfw' or ($::site == 'pmtpa' and $cluster in ['cache_bits'])) {
         $ganglia_cluster = $::realm ? {
             labs    => $::instanceproject,
             default => $cluster
