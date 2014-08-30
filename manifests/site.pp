@@ -1306,7 +1306,7 @@ node 'install2001.wikimedia.org' {
     }
 
     include admin
-    include base
+    include standard
     include role::installserver::tftp-server
 
     class { 'ganglia_new::monitor::aggregator':
