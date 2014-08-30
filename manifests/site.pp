@@ -1074,12 +1074,21 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
 }
 
 # es1 equad
-node /es100[1-4]\.eqiad\.wmnet/ {
+node /es100[2-4]\.eqiad\.wmnet/ {
     include admin
 
     $cluster = 'mysql'
     class { 'role::coredb::es1':
         mariadb => true,
+    }
+}
+
+node /es100[1]\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 'es1',
     }
 }
 
