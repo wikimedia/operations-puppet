@@ -368,6 +368,11 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
         content => template("apache/sites/${webserver_hostname}.erb"),
     }
 
+    # temporary for Wikitech migration to multiversion
+    apache::site { 'virt1000.wikimedia.org':
+        content => template("apache/sites/virt1000.wikimedia.org.erb"),
+    }
+
     # ::mediawiki::sync supports syncing the wikitech wiki from tin.
     #  It also defines /a which is used later on in this manifest for backups.
     include ::mediawiki::sync
