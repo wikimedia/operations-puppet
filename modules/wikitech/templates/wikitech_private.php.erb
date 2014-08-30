@@ -8,13 +8,3 @@ $wgDBpassword    = "<%= @wikitech_db_password %>";
 $wgSecretKey     = "<%= @wikitech_secret_key %>";
 $wgUpgradeKey    = "<%= @wikitech_upgrade_key %>";
 $wgCaptchaSecret = "<%= @wikitech_captcha_secret %>";
-
-$wgLDAPProxyAgent         =  array( 'labs' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org' );
-$wgLDAPProxyAgentPassword =  array( 'labs' => "<%= @wikitech_nova_ldap_proxyagent_pass %>" );
-
-$wgLDAPWriterDN       = array( 'labs' => 'uid=novaadmin,ou=people,dc=wikimedia,dc=org' );
-$wgLDAPWriterPassword = array( 'labs' => "<%= @wikitech_nova_ldap_user_pass %>" );
-
-$wgOpenStackManagerLDAPUser         = 'uid=novaadmin,ou=people,dc=wikimedia,dc=org';
-$wgOpenStackManagerLDAPUsername     = 'novaadmin';
-$wgOpenStackManagerLDAPUserPassword = "<%= @wikitech_nova_ldap_user_pass %>";

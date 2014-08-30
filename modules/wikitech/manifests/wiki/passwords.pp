@@ -19,4 +19,12 @@ class wikitech::wiki::passwords {
         owner  => 'root',
         group  => 'root',
     }
+
+    file { '/a/common/private/WikitechPrivateLdapSettings.php':
+        ensure => present,
+        content => template('wikitech/wikitech_ldap.php.erb'),
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
