@@ -56,7 +56,7 @@ class role::analytics::hadoop::config {
     $mapreduce_job_reuse_jvm_num_tasks        = 1
     $fair_scheduler_template                  = 'hadoop/fair-scheduler.xml.erb'
     # setting this to false or undef interferes with defining it within a node
-    $gelf_logging_enabled                     = true
+    $gelf_logging_enabled                     = false
 
 
     # Configs specific to Production.
