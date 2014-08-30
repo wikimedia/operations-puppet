@@ -23,7 +23,8 @@ skip-external-locking
 skip-name-resolve
 temp-pool
 
-max_connections                = 2500
+thread_handling                = pool-of-threads
+max_connections                = 5000
 max_connect_errors             = 1000000000
 max_allowed_packet             = 16M
 connect_timeout                = 3
