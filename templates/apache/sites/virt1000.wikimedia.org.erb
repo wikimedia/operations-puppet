@@ -48,7 +48,7 @@
 
     RewriteEngine on
     RewriteRule ^/view/(.*)$ https://virt1000.wikimedia.org/wiki/$1 [L,R]
-    RewriteCond %{HTTP_HOST}   !^virt1001\.wikimedia\.org [NC]
+    RewriteCond %{HTTP_HOST}   !^virt1000\.wikimedia\.org [NC]
     RewriteRule ^/(.*)         https://virt1000.wikimedia.org/$1 [L,R]
 
     DocumentRoot /usr/local/apache/common/docroot/wikimedia.org
