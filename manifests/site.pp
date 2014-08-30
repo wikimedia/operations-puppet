@@ -2943,11 +2943,6 @@ node 'virt1000.wikimedia.org' {
         include role::neutron::controller
 
     }
-
-    # temporary for Wikitech migration to multiversion
-    apache::site { 'virt1000.wikimedia.org':
-        content => template("apache/sites/virt1000.wikimedia.org.erb"),
-    }
 }
 
 node 'virt0.wikimedia.org' {
