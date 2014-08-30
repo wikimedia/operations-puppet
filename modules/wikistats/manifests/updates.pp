@@ -41,6 +41,7 @@ class wikistats::updates {
                 'ro@21', # Rodovid
                 'wk@21', # Wikkii
                 're@22', # Referata
+                'ga@22', # Gamepedias
                 'pa@23', # Pardus
                 'w3@23', # W3C
                 ]: }
