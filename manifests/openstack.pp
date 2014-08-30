@@ -370,7 +370,8 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
 
     # temporary for Wikitech migration to multiversion
     apache::site { 'virt1000.wikimedia.org':
-        content => template("apache/sites/virt1000.wikimedia.org.erb"),
+        content  => template("apache/sites/virt1000.wikimedia.org.erb"),
+        priority => 60,
     }
 
     # ::mediawiki::sync supports syncing the wikitech wiki from tin.
