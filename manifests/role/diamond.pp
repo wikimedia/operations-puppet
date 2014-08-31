@@ -15,6 +15,7 @@ class role::diamond {
         'deployment-prep',
         'graphite',
         'tools',
+        'toolsbeta',
     ]
     case $::realm {
         'labs': {
