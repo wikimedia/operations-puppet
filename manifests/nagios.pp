@@ -18,12 +18,10 @@ define monitor_host(
 
     # Determine the hostgroup:
     # If defined in the declaration of resource, we use it;
-    # If not, 'misc' servers have no hostgroup, the others adopt the
-    # standard format
+    # If not, adopt the standard format
     $hostgroup = $group ? {
         /.+/    => $group,
         default => $cluster ? {
-            'misc'  => undef,
             default => "${cluster}_${::site}"
         }
     }
