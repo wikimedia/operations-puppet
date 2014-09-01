@@ -2940,6 +2940,12 @@ node 'virt1000.wikimedia.org' {
     include role::deployment::salt_masters::labs
     if $use_neutron == true {
         include role::neutron::controller
+
+    }
+
+    # temporary for Wikitech migration to multiversion
+    apache::site { 'virt1000.wikimedia.org':
+        content => template("apache/sites/virt1000.wikimedia.org.erb"),
     }
 }
 
