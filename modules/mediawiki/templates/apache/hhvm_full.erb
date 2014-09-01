@@ -1,0 +1,15 @@
+    <IfDefine HHVM>
+        RewriteEngine On
+        ProxyPass /wiki  /fcgi://<%= @hhvm_host_port %><%= @doc_root %>/w/index.php
+        ProxyPass /w/extensions !
+        ProxyPassMatch ^/w/(.*\.(php|hh))$  fcgi://<%= @hhvm_host_port %><%= @doc_root %>/w/$1  retry=0
+        # ProxyPass is very performant, but it gets executed _before_ rewrite rules are applied
+        # So we need another catchall for all rewritten content, that we write in the form of a FilesMatch directive (which is evaluated after all vh-global RewriteRules have been evaluated).
+        # Oddly enough, a RewriteRule inside a FilesMatch directive works even if the last encountered rewrite had the 'L' flag (weird!)
+        <FilesMatch "\.(php|hh)$">
+            RewriteRule ^(.*)$ fcgi://<%= @hhvm_host_port %><%= @doc_root %>$1 [P]
+        </FilesMatch>
+   <IfDefine HHVM>
+   <IfModule mod_php5.c>
+       php_admin_flag engine on
+   </IfModule>
