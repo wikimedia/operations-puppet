@@ -500,10 +500,14 @@ define command{
 }
 
 # Elasticsearch Checks
-
 define command{
     command_name    check_elasticsearch
     command_line    $USER1$/check_elasticsearch -H $HOSTADDRESS$
+}
+
+define command{
+    command_name    check_elasticsearch_shards
+    command_line    $USER1$/check_elasticsearch.py --ignore-status --url http://$HOSTADDRESS$:9200
 }
 
 # Generic checks for graphite
