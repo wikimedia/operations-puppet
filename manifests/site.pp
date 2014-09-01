@@ -843,12 +843,21 @@ node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
 }
 
 # MariaDB 10
-node /^db10(44|72|73)\.eqiad\.wmnet/ {
+node /^db10(72|73)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's1',
+    }
+}
+
+node /^db10(44)\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's3',
     }
 }
 
