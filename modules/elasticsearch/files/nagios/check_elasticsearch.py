@@ -19,8 +19,9 @@
 
 
 import argparse
-import re
+import json
 import operator
+import re
 import sys
 
 import requests
@@ -116,7 +117,7 @@ def check_elasticsearch(options):
         return EX_CRITICAL
 
     try:
-        cluster_health = response.json()
+        cluster_health = json.loads(response.content)
     except ValueError, e:
         log_critical('%s error while decoding json: %s' % (
             cluster_health_url, e))
