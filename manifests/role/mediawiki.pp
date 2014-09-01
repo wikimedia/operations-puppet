@@ -88,7 +88,7 @@ class role::mediawiki::imagescaler {
 
     include ::mediawiki::multimedia
 
-    class { 'role::mediawiki::webserver': pool => 'rendering', workers_limit => 18 }
+    class { 'role::mediawiki::webserver': pool => 'rendering', workers_limit => 30 }
 }
 
 class role::mediawiki::videoscaler {
