@@ -1,0 +1,12 @@
+    <IfDefine HHVM>
+        RewriteEngine On
+        # Catchall for all rewritten content, that we write in the form of a FilesMatch directive (which is evaluated after all vh-global RewriteRules have been evaluated).
+        # Oddly enough, a RewriteRule inside a FilesMatch directive works even if the last encountered rewrite had the 'L' flag (weird!)
+        <FilesMatch "\.(php|hh)$">
+            RewriteRule ^(.*)$ fcgi://<%= @hhvm_host_port %><%= @doc_root %>$1 [P]
+        </FilesMatch>
+    </IfDefine>
+    <IfModule mod_php5.c>
+        php_admin_flag engine on
+    </IfModule>
+
