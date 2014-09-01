@@ -1,0 +1,11 @@
+    <IfDefine HHVM>
+        RewriteEngine On
+        # Execute all PHP and Hack files via HHVM
+        <FilesMatch "\.(php|hh)$">
+            RewriteRule ^(.*)$ fcgi://<%= @hhvm_host_port %><%= @docroot %>$1 [P]
+        </FilesMatch>
+    </IfDefine>
+    <IfModule mod_php5.c>
+        php_admin_flag engine on
+    </IfModule>
+

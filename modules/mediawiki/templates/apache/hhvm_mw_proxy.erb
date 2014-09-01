@@ -1,0 +1,6 @@
+    <IfDefine HHVM>
+        # Main ProxyPass rules for mediawiki served via hhvm.
+        ProxyPass /wiki  /fcgi://<%= @hhvm_host_port %><%= @docroot %>/w/index.php
+        ProxyPass /w/extensions !
+        ProxyPassMatch ^/w/(.*\.(php|hh))$  fcgi://<%= @hhvm_host_port %><%= @docroot %>/w/$1  retry=0
+    </IfDefine>
