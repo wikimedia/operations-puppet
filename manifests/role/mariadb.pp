@@ -266,7 +266,7 @@ class role::mariadb::core(
     }
 
     include mariadb::monitor_disk
-    #include mariadb::monitor_process
+    include mariadb::monitor_process
 }
 
 class role::mariadb::sanitarium {
