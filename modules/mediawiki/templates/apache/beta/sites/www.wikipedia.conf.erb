@@ -9,7 +9,7 @@
     # search-redirect.php, let it through
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
-    php_admin_flag engine on
+<%= @hhvm_catchall %>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -23,6 +23,6 @@
     # search-redirect.php, let it through
     # RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
-    php_admin_flag engine on
+<%= @hhvm_catchall %>
 </VirtualHost>
 
