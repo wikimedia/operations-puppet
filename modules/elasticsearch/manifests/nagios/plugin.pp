@@ -21,4 +21,9 @@ class elasticsearch::nagios::plugin {
       require => Package['icinga'],
       tag => 'nagiosplugin'
     }
+
+    package { "python-requests":
+      ensure => 'installed',
+      before => File['/usr/lib/nagios/plugins/check_elasticsearch.py'],
+    }
 }
