@@ -28,7 +28,6 @@ class role::lvs::balancer {
             ],
         /^(lvs100[25])$/ => [
             $sip['upload'][$::site],
-            $sip['payments'][$::site],
             $sip['dns_rec'][$::site],
             $sip['osm'][$::site],
             $sip['misc_web'][$::site],
@@ -73,7 +72,7 @@ class role::lvs::balancer {
         site => $::site
     }
 
-    if $::site in ['pmtpa', 'eqiad'] {
+    if $::site in ['eqiad'] {
         include ::lvs::balancer::runcommand
     }
 
