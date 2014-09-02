@@ -60,6 +60,7 @@ if $puppet_version == undef {
 # To be decommissioned/reused, not presently serving traffic
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
     include admin
+    include standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
