@@ -7,5 +7,98 @@
 module.exports = {
 	port: <%= @port %>,
 	logDir: '<%= @log_dir %>',
-	'parsoid.api': '<%= @parsoid %>'
+	'parsoid.api': '<%= @parsoid %>',
+	'mt.apertium.api': '<%= @apertium %>',
+	registry: {
+		ca: {
+			es: {
+				mt: {
+					providers: [
+						'Apertium'
+					]
+				}
+			},
+			pt: {
+				mt: {
+					providers: [
+						'Apertium'
+					]
+				}
+			}
+		},
+		en: {
+			en: {
+				dictionary: {
+					providers: [
+						'Dictd'
+					]
+				}
+			},
+			es: {
+				dictionary: {
+					providers: [
+						'JsonDict'
+					]
+				}
+			},
+			hi: {
+				dictionary: {
+					providers: [
+						'Dictd'
+					]
+				}
+			},
+			ru: {
+				dictionary: {
+					providers: [
+						'Dictd'
+					]
+				}
+			},
+			de: {
+				dictionary: {
+					providers: [
+						'Dictd'
+					]
+				}
+			}
+		},
+		es: {
+			ca: {
+				dictionary: {
+					providers: [
+						'JsonDict'
+					]
+				},
+				mt: {
+					providers: [
+						'Apertium'
+					]
+				}
+			},
+			pt: {
+				mt: {
+					providers: [
+						'Apertium'
+					]
+				}
+			}
+		},
+		pt: {
+			ca: {
+				mt: {
+					providers: [
+						'Apertium'
+					]
+				}
+			},
+			es: {
+				mt: {
+					providers: [
+						'Apertium'
+					]
+				}
+			}
+		}
+	}
 };
