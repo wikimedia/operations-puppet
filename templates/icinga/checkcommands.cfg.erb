@@ -296,6 +296,11 @@ define command{
     }
 
 define command{
+    command_name    check_https_url_for_regexp
+    command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -S -u $ARG2$ --linespan --ereg $ARG3$
+    }
+
+define command{
     command_name    check_http_url
     command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u $ARG2$
     }
