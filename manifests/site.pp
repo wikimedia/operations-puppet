@@ -57,30 +57,13 @@ if $puppet_version == undef {
 
 # Node definitions (alphabetic order)
 
+# To be decommissioned/reused, not presently serving traffic
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
     include admin
-
-    if $::hostname =~ /^amslvs[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    $cluster = 'lvs'
-    include role::lvs::balancer
-    include role::diamond
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
-    # Make sure GRO is off
-    interface::offload { 'eth0 gro':
-        interface => 'eth0',
-        setting   => 'gro',
-        value     => 'off',
-    }
-
-    # RPS/RSS config for interface performance
-    interface::rps { 'eth0': rss_pattern => 'eth0-%d' }
 }
 
 # amssq31-62 are text varnish (and the only nodes with this legacy prefix)
