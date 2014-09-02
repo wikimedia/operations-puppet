@@ -267,7 +267,7 @@ class role::logging::webstatscollector {
 
 
     package { 'webstatscollector':
-        ensure => 'installed',
+        ensure => 'latest',
     }
 
     # Install a custom webstats-collector init script to use
@@ -356,7 +356,7 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
     # oxygen run webstatscollector's filter process,
     # sending filtered logs to gadolinium's collector process.
     package { 'webstatscollector':
-        ensure => 'installed',
+        ensure => 'latest',
     }
 
     misc::udp2log::instance { 'oxygen':
