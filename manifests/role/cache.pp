@@ -318,6 +318,10 @@ class role::cache {
                 'bits_appservers' => {
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['apaches']['eqiad']]),
                 },
+                'security_audit' => {
+                    'pmtpa' => [],
+                    'eqiad' => [],
+                },
                 'test_appservers' => {
                     'eqiad' => [ 'mw1017.eqiad.wmnet' ],
                 },
@@ -363,6 +367,9 @@ class role::cache {
                         '10.68.17.96',  # deployment-mediawiki01
                         '10.68.17.208', # deployment-mediawiki02
                     ],
+                },
+                'security_audit' => {
+                    'eqiad' => [ '10.68.16.163' ], # deployment-mediawiki03
                 },
                 'test_appservers' => {
                     'eqiad' => [ '10.68.17.96' ],  # deployment-mediawiki01
@@ -759,6 +766,7 @@ class role::cache {
                 'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
                 'hhvm_api'          => $role::cache::configuration::backends[$::realm]['hhvm_api'][$::mw_primary],
                 'rendering'         => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+                'security_audit'    => $role::cache::configuration::backends[$::realm]['security_audit'][$::mw_primary],
                 'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
             },
             2 => {
