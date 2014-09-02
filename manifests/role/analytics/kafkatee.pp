@@ -107,7 +107,7 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
     $collector_host           = $::fqdn
     $collector_port           = 3815
 
-    package { 'webstatscollector': ensure => installed }
+    package { 'webstatscollector': ensure => 'latest' }
     service { 'webstats-collector':
         ensure     => 'running',
         hasstatus  => 'false',
