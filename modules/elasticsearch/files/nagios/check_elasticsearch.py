@@ -106,12 +106,28 @@ def check_shards_inactive(health, threshold):
     return EX_CRITICAL
 
 
+def fetch_url(url, timeout, retries):
+    exception = None
+
+    for i in range(retries):
+        try:
+            cluster_health_url = options.url + '/_cluster/health'
+            response = requests.get(url, timeout=timeout)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.Timeout, e:
+            exception = e
+            continue
+    else:
+        if exception:
+            raise exception
+
+
 def check_elasticsearch(options):
     try:
         cluster_health_url = options.url + '/_cluster/health'
-        response = requests.get(cluster_health_url,
-                                timeout=options.timeout)
-        response.raise_for_status()
+        response = fetch_url(cluster_health_url, options.timeout,
+                options.retries)
     except requests.exceptions.RequestException, e:
         log_critical('%s error while fetching: %s' % (cluster_health_url, e))
         return EX_CRITICAL
@@ -141,8 +157,10 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--url', default='http://localhost:9200',
                         help='Elasticsearch endpoint')
-    parser.add_argument('--timeout', default=2, type=int, metavar='SECONDS',
+    parser.add_argument('--timeout', default=4, type=int, metavar='SECONDS',
                         help='Timeout for the request to complete')
+    parser.add_argument('--retries', default=2, type=int, metavar='INTEGER',
+                        help='How many times to retry a request on timeout')
     parser.add_argument('--shards-inactive', default='>=0.1%',
                         dest='shards_inactive', metavar='THRESHOLD',
                         help='Threshold to check for inactive shards '
