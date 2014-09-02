@@ -102,12 +102,64 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
     include role::analytics::kafkatee::input::webrequest::mobile
     include role::analytics::kafkatee::input::webrequest::text
 
+    # webstatscollector package creates this directory.
     # webstats-collector process writes dump files here.
-    $webstats_dumps_directory = '/srv/webstats/dumps'
+    $webstats_dumps_directory = '/srv/log/webstats/dumps'
+    # collector creates temporary Berkeley DB files that have
+    # very high write IO.  Upstart will chdir into
+    # this temp directory before starting collector.
+    $webstats_temp_directory   = '/run/webstats'
+
     $collector_host           = $::fqdn
     $collector_port           = 3815
 
-    package { 'webstatscollector': ensure => installed }
+    file { $webstats_temp_directory:
+        ensure => 'directory',
+        owner  => 'nobody',
+        group  => 'nogroup',
+    }
+    # Mount the temp directory as a tmpfs in /run
+    mount { $webstats_temp_directory:
+        ensure  => 'mounted',
+        device  => 'tmpfs',
+        fstype  => 'tmpfs',
+        options => 'uid=nobody,gid=nogroup,mode=0755,noatime,defaults,size=2000m',
+        pass    => 0,
+        dump    => 0,
+        require => File[$webstats_temp_directory],
+    }
+
+    # Create the dumps/ directory in which
+    # we want collector to output hourly dump files.
+    file { $webstats_dumps_directory:
+        ensure  => 'directory',
+        owner   => 'nobody',
+        group   => 'nogroup',
+        require => Mount[$webstats_temp_directory],
+    }
+    # collector writes dumps to $cwd/dumps.  We are going
+    # run collector in $webstats_temp_directory, but we want dumps to be
+    # on the normal filesystem.  Symlink $webstats_temp_directory/dumps
+    # to the dumps directory.
+    file { "${webstats_temp_directory}/dumps":
+        ensure  => 'link',
+        target  => $webstats_dumps_directory,
+        require => File[$webstats_dumps_directory],
+    }
+
+    package { 'webstatscollector':
+        ensure => 'installed',
+    }
+    # Install a custom webstats-collector init script to use
+    # custom temp directory.
+    file { '/etc/init/webstats-collector.conf':
+        content => template('webstatscollector/webstats-collector.init.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['webstatscollector'],
+    }
+
     service { 'webstats-collector':
         ensure     => 'running',
         hasstatus  => 'false',
