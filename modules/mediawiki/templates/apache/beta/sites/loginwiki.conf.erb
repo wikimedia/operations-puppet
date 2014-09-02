@@ -6,15 +6,7 @@
     AllowEncodedSlashes On
 
     RewriteEngine On
-
-    <IfDefine HHVM>
-        ProxyPass       /wiki                fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/login/w/index.php retry=0
-        ProxyPass       /w/extensions        !
-        ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/login/w/$1
-        RewriteRule     ^/$                  fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/login/w/index.php    [P]
-        RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/login/w/robots.php   [P]
-        RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/login/w/favicon.php  [P]
-    </IfDefine>
+<%= scope.function_mw_hhvm_proxy(["/usr/local/apache/common/docroot/login"]) %>
 
     #RewriteCond %{HTTP:X-Forwarded-Proto} !https
     #RewriteRule ^/(.*)$ https://login.wikimedia.beta.wmflabs.org/$1 [R=301,L]
@@ -36,4 +28,5 @@
             php_admin_flag engine off
         </IfModule>
     </Directory>
+<%= scope.function_mw_hhvm_catchall() %>
 </VirtualHost>
