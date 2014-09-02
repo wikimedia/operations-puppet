@@ -74,33 +74,9 @@ sub tag_carrier {
     // Short of having netmapper (or equivalent) return a set of match parameters, I can't see any
     //   good way to make the rest of this cleaner really.
     if (req.http.X-CS2) {
-        if (req.http.X-CS2 == "502-13") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "623-03") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-                if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
-                    set req.http.X-CS = req.http.X-CS2;
-                }
-            }
-        } else if (req.http.X-CS2 == "413-02") {
+        if (req.http.X-CS2 == "413-02") {
             if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
                 if (req.http.host ~ "^((en|si|simple|ta)\.)?zero\.") {
-                    set req.http.X-CS = req.http.X-CS2;
-                }
-            }
-        } else if (req.http.X-CS2 == "502-16") {
-            if (!req.http.X-Forwarded-Proto && req.http.X-Forwarded-By == "Opera" && req.http.X-Subdomain == "ZERO") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "520-18") {
-            if (!req.http.X-Forwarded-Proto && req.http.X-Subdomain == "ZERO" && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "470-01") {
-            if (req.http.X-Subdomain == "ZERO") {
-                if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
@@ -110,46 +86,11 @@ sub tag_carrier {
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
-        } else if (req.http.X-CS2 == "416-03") {
-            if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-                set req.http.X-ZeroTLS = "1";
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "456-02") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "ZERO") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "652-02") {
-            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
         } else if (req.http.X-CS2 == "624-02") {
             if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
                 if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
                     set req.http.X-CS = req.http.X-CS2;
                 }
-            }
-        } else if (req.http.X-CS2 == "630-86") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "612-03") {
-            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") && req.http.X-Subdomain == "M") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "639-07") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "604-00") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-                if (req.http.host ~ "^((fr|en|ar|es|de|it|zh|nl|pt|ru)\.)?m\.") {
-                    set req.http.X-CS = req.http.X-CS2;
-                }
-            }
-        } else if (req.http.X-CS2 == "614-04") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By && req.http.X-Subdomain == "M") {
-                set req.http.X-CS = req.http.X-CS2;
             }
         } else if (req.http.X-CS2 == "605-01") {
             if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
@@ -183,70 +124,79 @@ sub tag_carrier {
             }
         } else if (req.http.X-CS2 == "646-02") {
             if (!req.http.X-Forwarded-By) {
-                if (req.http.host ~ "^((fr|en|mg)\.)?m\.") {
+                if (req.http.X-Subdomain == "M") {
                     set req.http.X-ZeroTLS = "1";
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
-        } else if (req.http.X-CS2 == "297-01") {
-            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "655-12") {
-            if (req.http.X-Forwarded-By == "Opera") {
-                set req.http.X-ZeroTLS = "1";
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "635-10") {
-            if (!req.http.X-Forwarded-By) {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "514-02") {
-            if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "470-07") {
-            if (!req.http.X-Forwarded-Proto && (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera")) {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "429-02") {
-            if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "428-98") {
-            if (!req.http.X-Forwarded-By) {
-                set req.http.X-CS = req.http.X-CS2;
-            }
-        } else if (req.http.X-CS2 == "310-260") {
-            if (req.http.X-Forwarded-By == "Nokiaprod" || req.http.X-Forwarded-By == "Nokiaqa") {
-                if (req.http.X-Subdomain == "ZERO" && req.http.host ~ "^en\.") {
+        } else if (req.http.X-CS2 ~ "^(456-02|502-13)$") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.X-Subdomain == "ZERO") {
+                    // ZERO only, direct HTTP only
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
-        } else if (req.http.X-CS2 == "404-01") {
-            // "404-01|wap" will be handled by default case
-            if (!req.http.X-Forwarded-By) {
+        } else if (req.http.X-CS2 ~ "^(614-04|630-86|639-07)$") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                if (req.http.X-Subdomain == "M") {
+                    // M only, direct HTTP only
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 ~ "^(612-03|652-02)$") {
+            if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
+                if (req.http.X-Subdomain == "M") {
+                    // M only, direct HTTP or Opera
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 ~ "^(470-01|520-18)$") {
+            if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
+                if (req.http.X-Subdomain == "ZERO") {
+                    // ZERO only, direct HTTP or opera
+                    set req.http.X-CS = req.http.X-CS2;
+                }
+            }
+        } else if (req.http.X-CS2 == "655-12") {
+            if (req.http.X-Forwarded-By == "Opera") {
+                // Opera only
+                set req.http.X-ZeroTLS = "1";
                 set req.http.X-CS = req.http.X-CS2;
             }
-        } else if (req.http.X-CS2 ~ "^(250-99|255-03|401-01|426-04|436-01|436-04|437-01|515-03|515-05|631-02|TESTON)(\|.*)?$") {
-            //
-            // Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
-            //
-            // TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess... TBD
-            if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" ) {
-                set req.http.X-CS = req.http.X-CS2;
-            } else {
-                set req.http.X-CS = "ON";
+        } else if (req.http.X-CS2 == "502-16") {
+            if (req.http.X-Forwarded-By == "Opera") {
+                if (req.http.X-Subdomain == "ZERO") {
+                    // ZERO only, Opera only
+                    set req.http.X-ZeroTLS = "1";
+                    set req.http.X-CS = req.http.X-CS2;
+                }
             }
-
-        } else if (req.http.X-CS2 ~ "^TEST.*") {
+        } else if (req.http.X-CS2 ~ "^(621-20|639-02|639-03)$") {
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+                // Supports all languages/subdomains, direct HTTP only
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 ~ "^(293-41|297-01|470-07)$") {
+            if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
+                // Supports all languages/subdomains, direct HTTP, Opera
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 ~ "^TEST.*" && req.http.X-CS2 !~ "^TESTON.*") {
             // Test carrier allows all proxies and SSL
             set req.http.X-ZeroTLS = "1";
             set req.http.X-CS = req.http.X-CS2;
         } else {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-                // Any new carriers are signed up as both m & zero for all languages, without proxy support
+            //
+            // Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
+            // Enabled: 250-99,401-01,404-01,414-06,416-03,426-04,428-98,429-02,436-01,436-04,437-01,514-02,515-03,635-10,TESTON
+            // Disabled: 255-03,310-260,410-06,436-05,515-05,604-00,621-30,623-03,630-03,631-02
+            //
+            // TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess...
+            //
+            if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" ) {
                 set req.http.X-CS = req.http.X-CS2;
+            } else {
+                set req.http.X-CS = "ON";
             }
         }
 
@@ -255,7 +205,8 @@ sub tag_carrier {
             unset req.http.X-ZeroTLS;
         }
     } // end of if(X-CS2)
-    if ( req.http.X-Forwarded-By ) {
+
+    if (req.http.X-Forwarded-By) {
         // Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
         // unset X-Forwarded-By. We still need that value in the resulting X-Analytics header,
         // so create a copy to be used in the vcl_deliver.
@@ -304,23 +255,28 @@ sub vcl_deliver {
         // until they finish their migration
         // According to qchris, analytics can handle language and subdomain, but not proxy or https
         unset req.http.X-CS;
-        if (req.http.X-CS2 ~ "^(426-04|436-01|436-04|631-02)$") {
+        if (req.http.X-CS2 ~ "^(404-01|426-04|428-98|436-01|436-04|635-10)$") {
             // These carriers support HTTPS DIRECT connections (no proxies)
             if (!req.http.X-Forwarded-By) {
                 set req.http.X-CS = req.http.X-CS2;
             }
-        } else if (req.http.X-CS2 == "250-99") {
-            // These carriers support HTTP-only DIRECT and OPERA connections
-            if (!req.http.X-Forwarded-Proto) {
+        } else if (req.http.X-CS2 ~ "^(404-01\|wap)$") {
+            // These carriers support HTTP DIRECT connections (no proxies)
+            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
                 set req.http.X-CS = req.http.X-CS2;
             }
-        } else if (req.http.X-CS2 ~ "^TESTON(\|.*)?$") {
+        } else if (req.http.X-CS2 == "250-99") {
+            // These carriers support HTTP-only DIRECT and OPERA connections
+            if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
+                set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 ~ "^(255-03|310-260|410-06|436-05|515-05|604-00|621-30|623-03|630-03|631-02|TESTON)(\|.*)?$") {
             // Support HTTPS, allows all proxies
             // Once analytics is fixed, this will be done for everything
             set req.http.X-CS = req.http.X-CS2;
         } else if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
             // Default: Support HTTPS for both DIRECT and OPERA, allows all subnets
-            // 255-03, 401-01, 437-01, 515-03, 515-05
+            // 401-01|414-06|416-03|429-02|437-01|514-02|515-03
             set req.http.X-CS = req.http.X-CS2;
         }
     }
