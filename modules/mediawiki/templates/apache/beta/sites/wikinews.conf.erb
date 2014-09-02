@@ -7,17 +7,7 @@
     AllowEncodedSlashes On
 
     RewriteEngine On
-
-    <IfDefine HHVM>
-        ProxyPass       /wiki                fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/wikinews.org/w/index.php retry=0
-        ProxyPass       /w/extensions        !
-        ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/wikinews.org/w/$1
-        ProxyPassMatch  ^/zh(-(hans|hant|cn|hk|sg|tw))|sr(-(ec|el)) \
-                                             fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/wikinews.org/w/index.php retry=0
-        RewriteRule     ^/$                  fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/wikinews.org/w/index.php    [P]
-        RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/wikinews.org/w/robots.php   [P]
-        RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/wikinews.org/w/favicon.php  [P]
-    </IfDefine>
+<%= scope.function_mw_hhvm_proxy(['/usr/local/apache/common/docroot/wikinews.org']) %>
 
     # www -> portal
     RewriteCond %{HTTP_HOST} www.wikinews.org
@@ -79,4 +69,5 @@
     Alias /zh-hk /usr/local/apache/common/docroot/wikinews.org/w/index.php
     Alias /zh-sg /usr/local/apache/common/docroot/wikinews.org/w/index.php
     Alias /zh-tw /usr/local/apache/common/docroot/wikinews.org/w/index.php
+<%= scope.function_mw_hhvm_catchall() %>
 </VirtualHost>

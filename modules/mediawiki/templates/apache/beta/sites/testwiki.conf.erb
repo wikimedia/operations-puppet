@@ -7,15 +7,7 @@
     AllowEncodedSlashes On
 
     RewriteEngine On
-
-    <IfDefine HHVM>
-        ProxyPass       /wiki                fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/test/w/index.php retry=0
-        ProxyPass       /w/extensions        !
-        ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/test/w/$1
-        RewriteRule     ^/$                  fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/test/w/index.php    [P]
-        RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/test/w/robots.php   [P]
-        RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000/usr/local/apache/common/docroot/test/w/favicon.php  [P]
-    </IfDefine>
+<%= scope.function_mw_hhvm_proxy(["/usr/local/apache/common/docroot/test"]) %>
 
     # First grab the subdomain from HTTP_HOST
 #    RewriteCond %{HTTP_HOST} ([a-z\-]+)\.wikibooks\.org
@@ -49,5 +41,5 @@
 
     # Stats
 #    RewriteRule ^/stats(/(.*$)|$) http://www2.knams.wikimedia.org/stats/%{HTTP_HOST}/$1 [R=301,L]
-
+<%= scope.function_mw_hhvm_catchall() %>
 </VirtualHost>

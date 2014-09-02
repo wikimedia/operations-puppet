@@ -7,82 +7,82 @@ class mediawiki::web::beta_sites {
     }
 
     apache::site { 'www.wikipedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/www.wikipedia.conf',
+        content  => template('mediawiki/apache/beta/sites/www.wikipedia.conf.erb'),
         priority => 1,
     }
 
     apache::site { 'main':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/main.conf',
+        content  => template('mediawiki/apache/beta/sites/main.conf.erb'),
         priority => 2,
     }
 
     apache::site { 'wikidata':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikidata.conf',
+        content  => template('mediawiki/apache/beta/sites/wikidata.conf.erb'),
         priority => 4,
     }
 
     apache::site { 'wikisource':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikisource.conf',
+        content  => template('mediawiki/apache/beta/sites/wikisource.conf.erb'),
         priority => 5,
     }
 
     apache::site { 'wikispecies':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikispecies.conf',
+        content  => template('mediawiki/apache/beta/sites/wikispecies.conf.erb'),
         priority => 6,
     }
 
     apache::site { 'wikiversity':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikiversity.conf',
+        content  => template('mediawiki/apache/beta/sites/wikiversity.conf.erb'),
         priority => 7,
     }
 
     apache::site { 'wikiquote':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikiquote.conf',
+        content  => template('mediawiki/apache/beta/sites/wikiquote.conf.erb'),
         priority => 8,
     }
 
     apache::site { 'testwiki':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/testwiki.conf',
+        content  => template('mediawiki/apache/beta/sites/testwiki.conf.erb'),
         priority => 9,
     }
 
     apache::site { 'wiktionary':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wiktionary.conf',
+        content  => template('mediawiki/apache/beta/sites/wiktionary.conf.erb'),
         priority => 10,
     }
 
     apache::site { 'wikinews':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikinews.conf',
+        content  => template('mediawiki/apache/beta/sites/wikinews.conf.erb'),
         priority => 11,
     }
 
     apache::site { 'loginwiki':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/loginwiki.conf',
+        content  => template('mediawiki/apache/beta/sites/loginwiki.conf.erb'),
         priority => 12,
     }
 
     apache::site { 'upload':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/upload.conf',
+        source   => 'puppet:///modules/mediawiki/apache/beta/sites/upload.conf.erb',
         priority => 13,
     }
 
     apache::site { 'config':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/config.conf',
+        content  => template('mediawiki/apache/beta/sites/config.conf.erb'),
         priority => 14,
     }
 
     apache::site { 'wmflabs':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wmflabs.conf',
+        content  => template('mediawiki/apache/beta/sites/wmflabs.conf.erb'),
         priority => 15,
     }
 
     apache::site { 'wikimedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikimedia.conf',
+        content  => template('mediawiki/apache/beta/sites/wikimedia.conf.erb'),
         priority => 16,
     }
 
     apache::site { 'remnant':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/remnant.conf',
+        content  => template('mediawiki/apache/beta/sites/remnant.conf.erb'),
         priority => 20,
     }
 
