@@ -9,12 +9,12 @@
     ServerName <%= @webserver_hostname %>
     ServerAlias <%= @webserver_hostname_aliases %>
 
-    DocumentRoot /var/www
+    DocumentRoot /usr/local/apache/common/docroot/wikimedia.org
     <Directory />
         Options FollowSymLinks
         AllowOverride None
     </Directory>
-    <Directory /var/www/>
+    <Directory /usr/local/apache/common/docroot/wikimedia.org>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Order allow,deny
@@ -52,12 +52,12 @@
     RewriteCond %{HTTP_HOST}   !^<%= @webserver_hostname.gsub(%r[\.],'\\.') %> [NC]
     RewriteRule ^/(.*)         https://<%= @webserver_hostname %>/$1 [L,R]
 
-    DocumentRoot /var/www
+    DocumentRoot /usr/local/apache/common/docroot/wikimedia.org
     <Directory />
         Options FollowSymLinks
         AllowOverride None
     </Directory>
-    <Directory /var/www/>
+    <Directory /usr/local/apache/common/docroot/wikimedia.org>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Order allow,deny
@@ -75,8 +75,8 @@
     </Location>
 
     Alias /w/images /srv/org/wikimedia/controller/wikis/images
-    Alias /w /srv/org/wikimedia/controller/wikis/w
-    Alias /wiki /srv/org/wikimedia/controller/wikis/w/index.php
+    Alias /w /usr/local/apache/common/docroot/wikimedia.org/w
+    Alias /wiki /usr/local/apache/common/docroot/wikimedia.org/w/index.php
     Alias /dumps /a/backup/public
     <% if realm == "labs" %>
     # Add additional wikis for development
