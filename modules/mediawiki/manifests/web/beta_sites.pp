@@ -7,17 +7,17 @@ class mediawiki::web::beta_sites {
     }
 
     apache::site { 'www.wikipedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/www.wikipedia.conf',
+        content   => template('mediawiki/apache/beta/sites/www.wikipedia.conf.erb'),
         priority => 1,
     }
 
     apache::site { 'main':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/main.conf',
+        source   => template('mediawiki/apache/beta/sites/main.conf.erb'),
         priority => 2,
     }
 
     apache::site { 'wikidata':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikidata.conf',
+        source   => template('mediawiki/apache/beta/sites/wikidata.conf.erb'),
         priority => 4,
     }
 
