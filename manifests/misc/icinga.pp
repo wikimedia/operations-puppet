@@ -40,6 +40,7 @@ class icinga::monitor {
     include icinga::monitor::packages
     include icinga::monitor::service
     include icinga::monitor::snmp
+    include icinga::monitoring::wikidata
     include icinga::user
     include lvs::monitor
     include misc::dsh::files
@@ -867,6 +868,20 @@ class icinga::ganglia::ganglios {
         owner  => 'icinga',
     }
 
+}
+
+class icinga::monitoring::wikidata {
+    monitor_host { 'wikidata':
+        ip_address => '91.198.174.192',
+    }
+
+    monitor_service { 'wikidata.org dispatch lag':
+        description   => 'check if wikidata.org dispatch lag is higher than 2 minutes',
+        check_command => 'check_https_url_for_regexp!www.wikidata.org!/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics!"median":[^}]*"lag":[1-5]?[0-9]',
+        host          => 'wikidata',
+        normal_check_interval => 30,
+        retry_check_interval => 5,
+    }
 }
 
 # == Class icinga::ganglia::check
