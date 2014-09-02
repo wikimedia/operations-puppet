@@ -26,7 +26,7 @@ class gerrit::instance($apache_ssl  = false,
     $dbuser = $db_user
     $dbpass = $passwords::gerrit::gerrit_db_pass
     $bzpass = $passwords::gerrit::gerrit_bz_pass
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '7')
 
     # Setup LDAP
     include ldap::role::config::labs
@@ -309,6 +309,8 @@ class gerrit::proxy($host        = '',
     include ::apache::mod::proxy_http
 
     include ::apache::mod::ssl
+
+    include ::apache::mod::headers
 }
 
 class gerrit::crons {
