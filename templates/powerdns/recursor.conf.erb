@@ -91,7 +91,7 @@ forward-zones= wmnet=208.80.154.238;208.80.152.214;91.198.174.239, 10.in-addr.ar
 #################################
 # local-address	IP addresses to listen on, separated by spaces or commas
 #
-local-address=<%= flatten_ips(listen_addresses).sort.join(" ") %>
+local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
 
 #################################
 # local-port	port to listen on
