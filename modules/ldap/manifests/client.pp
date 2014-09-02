@@ -62,7 +62,10 @@ class ldap::client::nss($ldapconfig) {
 
     file { '/etc/nscd.conf':
         notify => Service['nscd'],
-        source => 'puppet:///modules/ldap/nscd.conf',
+        source => $::realm ? {
+            'labs'  => 'puppet:///modules/ldap/nscd-labs.conf',
+            default => 'puppet:///modules/ldap/nscd.conf',
+        }
     }
 
     file { '/etc/nsswitch.conf':
