@@ -28,7 +28,9 @@ sub vcl_recv {
 	call restrict_access;
 
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
-	if (req.url ~ "^/w/api\.php") {
+	if (req.http.Cookie ~ "(^|;\s*)security_audit=1") {
+		set req.backend = security_audit;
+	} else if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
 		set req.backend = rendering;
