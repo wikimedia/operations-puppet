@@ -4,4 +4,5 @@ class { 'cxserver':
     conf_path => '/tmp/cxserver/config.js',
     log_dir   => '/var/log/cxserver',
     parsoid   => 'http://127.0.0.1',
+    apertium  => 'http://apertium.wmflabs.org',
 }

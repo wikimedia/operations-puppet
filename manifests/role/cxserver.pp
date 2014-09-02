@@ -18,6 +18,7 @@ class role::cxserver::beta {
         conf_path => '/srv/deployment/cxserver/config.js',
         log_dir   => '/data/project/cxserver/log',
         parsoid   => 'http://parsoid-lb.eqiad.wikimedia.org',
+        apertium  => 'http://apertium.wmflabs.org',
         require   => [
             File['/srv/deployment/cxserver'],
             File['/data/project/cxserver']
