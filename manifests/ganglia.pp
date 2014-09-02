@@ -323,7 +323,7 @@ class ganglia::collector::config {
                     'Swift eqiad'                    => 'ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet',
                     'Search eqiad'                   => 'search1001.eqiad.wmnet search1002.eqiad.wmnet',
                     'Bits caches esams'              => 'hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org',
-                    'LVS loadbalancers esams'        => 'hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org',
+                    'LVS loadbalancers esams'        => 'hooft.esams.wikimedia.org:11651 lvs3001.esams.wmnet lvs3002.esams.wmnet',
                     'Miscellaneous esams'            => 'hooft.esams.wikimedia.org:11657',
                     'Analytics cluster eqiad'        => 'analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet',
                     'Memcached eqiad'                => 'mc1001.eqiad.wmnet mc1002.eqiad.wmnet',
