@@ -790,7 +790,7 @@ node /^db10(02|09|18|36|54|60|63|67)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(03|19|35|38)\.eqiad\.wmnet/ {
+node /^db10(03|19|38)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -852,7 +852,7 @@ node /^db10(72|73)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(44)\.eqiad\.wmnet/ {
+node /^db10(35|44)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
