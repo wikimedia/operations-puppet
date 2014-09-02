@@ -13,12 +13,13 @@ class role::cxserver::beta {
     }
 
     class { '::cxserver':
-        base_path => '/srv/deployment/cxserver/cxserver',
-        node_path => '/srv/deployment/cxserver/deploy/node_modules',
-        conf_path => '/srv/deployment/cxserver/config.js',
-        log_dir   => '/data/project/cxserver/log',
-        parsoid   => 'http://parsoid-lb.eqiad.wikimedia.org',
-        require   => [
+        base_path  => '/srv/deployment/cxserver/cxserver',
+        node_path  => '/srv/deployment/cxserver/deploy/node_modules',
+        conf_path  => '/srv/deployment/cxserver/config.js',
+        log_dir    => '/data/project/cxserver/log',
+        parsoid    => 'http://parsoid-lb.eqiad.wikimedia.org',
+        apertium   => 'http://apertium.wmflabs.org',
+        require    => [
             File['/srv/deployment/cxserver'],
             File['/data/project/cxserver']
         ],
