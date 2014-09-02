@@ -3,7 +3,6 @@ class mediawiki::packages {
 
     package { [
         'imagemagick',
-        'libmemcached10', # TODO: remove this?
         'python-imaging',
         'tidy',
     ]:
