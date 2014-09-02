@@ -169,12 +169,12 @@ class hhvm(
     ## Packages
 
     package { [ 'hhvm', 'hhvm-dbg' ]:
-        ensure => latest,
+        ensure => present,
         before => Service['hhvm'],
     }
 
     package { [ 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-wikidiff2' ]:
-        ensure => latest,
+        ensure => present,
         before => Service['hhvm'],
     }
 
