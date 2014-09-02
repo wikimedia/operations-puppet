@@ -43,6 +43,12 @@ sub vcl_recv {
 		set req.backend = hhvm_appservers;
 	}
 
+<% unless (@varnish_directors['security_audit'] || []).empty? -%>
+	/* Use a reserved backend for all security audit requests. */
+	if (req.http.Cookie ~ "(^|;\s*)security_audit=1") {
+		set req.backend = security_audit;
+	}
+<% end -%>
 <% end -%>
 
 	call pass_requests;
