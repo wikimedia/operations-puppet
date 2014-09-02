@@ -5,35 +5,35 @@
 #
 # === Parameters
 #
-# [*port*]
-#   UDP port on which metric module should listen (default: 8423).
+# [*listen_port*]
+#   UDP port on which to listen for log data (default: 8423).
 #
-# [*ensure*]
-#   If 'present' (the default), provisions the metric module. If
-#   'absent', removes the module source and configuration files.
+# [*statsd_host*]
+#   StatsD server host (default: 'statsd').
 #
-# === Examples
-#
-#  class { 'mediawiki::monitoring::errors':
-#      ensure => present,
-#      port   => 9400,
-#  }
+# [*statsd_port*]
+#   StatsD server port (default: 8125).
 #
 class mediawiki::monitoring::errors(
-    $ensure = present,
-    $port   = 8423,
+    $ensure      = present,
+    $listen_port = 8423,
+    $statsd_host = 'statsd',
+    $statsd_port = 8125,
 ) {
-    # Metric module.
-    file { '/usr/lib/ganglia/python_modules/mwerrors.py':
+    file { '/usr/local/bin/mwerrors':
         ensure => $ensure,
-        source => 'puppet:///modules/mediawiki/mwerrors.py',
-        before => File['/etc/ganglia/conf.d/mwerrors.pyconf'],
+        source => 'puppet:///modules/mediawiki/monitoring/mwerrors.py',
+        notify => Service['mwerrors'],
     }
 
-    # Metric definitions.
-    file { '/etc/ganglia/conf.d/mwerrors.pyconf':
+    file { '/etc/init/mwerrors.conf':
         ensure  => $ensure,
-        content => template('mediawiki/mwerrors.pyconf.erb'),
-        notify  => Service['gmond'],
+        content => template('mediawiki/monitoring/mwerrors.conf.erb'),
+        notify  => Service['mwerrors'],
+    }
+
+    service { 'mwerrors':
+        ensure   => $ensure ? { present => running, absent => stopped },
+        provider => upstart,
     }
 }
