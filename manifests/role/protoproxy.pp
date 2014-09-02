@@ -62,6 +62,9 @@ class role::protoproxy::ssl {
         realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['https'][$::site]
     }
 
+    install_certificate{ 'unified.wikimedia.org': }
+
+    # XXX Are these 12 star certs still used?
     install_certificate{ 'star.wikimedia.org': }
     install_certificate{ 'star.wikipedia.org': }
     install_certificate{ 'star.wiktionary.org': }
@@ -74,12 +77,12 @@ class role::protoproxy::ssl {
     install_certificate{ 'star.wikimediafoundation.org': }
     install_certificate{ 'star.wikidata.org': }
     install_certificate{ 'star.wikivoyage.org': }
-    install_certificate{ 'unified.wikimedia.org': }
 
+    # text-lb + login-lb
     protoproxy{ 'wikimedia':
         proxy_addresses   => {
-            'eqiad' => [ '208.80.154.224', '[2620:0:861:ed1a::]' ],
-            'esams' => [ '91.198.174.192', '91.198.174.201', '91.198.174.224', '[2620:0:862:ed1a::1:9]' ],
+            'eqiad' => [ '208.80.154.224', '208.80.154.233', '[2620:0:861:ed1a::1]', '[2620:0:861:ed1a::1:9]' ],
+            'esams' => [ '91.198.174.192', '91.198.174.201', '[2620:0:862:ed1a::1]', '[2620:0:862:ed1a::1:9]' ],
         },
         proxy_server_name => '*.wikimedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -119,132 +122,6 @@ class role::protoproxy::ssl {
         ipv6_enabled => true,
         enabled => true,
     }
-    protoproxy{ 'wikipedia':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.225', '[2620:0:861:ed1a::1]' ],
-            'esams' => [ '[2620:0:862:ed1a::1]' ],
-        },
-        proxy_server_name => '*.wikipedia.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
-    protoproxy{ 'wiktionary':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.226', '[2620:0:861:ed1a::2]' ],
-            'esams' => [],
-        },
-        proxy_server_name => '*.wiktionary.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
-    protoproxy{ 'wikiquote':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.227', '[2620:0:861:ed1a::3]' ],
-            'esams' => [],
-        },
-        proxy_server_name => '*.wikiquote.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
-    protoproxy{ 'wikibooks':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.228', '[2620:0:861:ed1a::4]' ],
-            'esams' => [],
-        },
-        proxy_server_name => '*.wikibooks.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
-    protoproxy{ 'wikisource':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.229', '[2620:0:861:ed1a::5]' ],
-            'esams' => [],
-        },
-        proxy_server_name => '*.wikisource.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
-    protoproxy{ 'wikinews':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.230', '[2620:0:861:ed1a::6]' ],
-            'esams' => [],
-        },
-        proxy_server_name => '*.wikinews.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
-    protoproxy{ 'wikiversity':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.231', '[2620:0:861:ed1a::7]' ],
-            'esams' => [],
-        },
-        proxy_server_name => '*.wikiversity.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
-    protoproxy{ 'mediawiki':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.232', '[2620:0:861:ed1a::8]' ],
-            'esams' => [],
-        },
-        proxy_server_name => '*.mediawiki.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
-    protoproxy{ 'wikimediafoundation':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.233', '[2620:0:861:ed1a::9]' ],
-            'esams' => [],
-        },
-        proxy_server_name => '*.wikimediafoundation.org',
-        proxy_server_cert_name => 'unified.wikimedia.org',
-        proxy_backend => {
-            'eqiad' => { 'primary' => '10.2.2.25' },
-            'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-        },
-        ipv6_enabled => true,
-        enabled => true,
-    }
     protoproxy{ 'mobilewikipedia':
         proxy_addresses => {
             'eqiad' => [ '208.80.154.236', '[2620:0:861:ed1a::1:c]', '[2620:0:861:ed1a::c]' ],
@@ -258,36 +135,6 @@ class role::protoproxy::ssl {
         },
         ipv6_enabled => true,
         enabled => true,
-    }
-    # wikidata.org
-    protoproxy{ 'wikidata':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.242', '[2620:0:861:ed1a::12]' ],
-            'esams' => [],
-            },
-            proxy_server_name => '*.wikidata.org',
-            proxy_server_cert_name => 'unified.wikimedia.org',
-            proxy_backend => {
-                'eqiad' => { 'primary' => '10.2.2.25' },
-                'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-                },
-                ipv6_enabled => true,
-                enabled => true,
-    }
-    # wikivoyage.org
-    protoproxy{ 'wikivoyage':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.243', '[2620:0:861:ed1a::13]' ],
-            'esams' => [],
-            },
-            proxy_server_name => '*.wikivoyage.org',
-            proxy_server_cert_name => 'unified.wikimedia.org',
-            proxy_backend => {
-                'eqiad' => { 'primary' => '10.2.2.25' },
-                'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-                },
-                ipv6_enabled => true,
-                enabled => true,
     }
     # Misc services
     protoproxy{ 'videos':
