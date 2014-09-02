@@ -71,16 +71,14 @@ class lvs::configuration {
     $pybal = {
         'bgp' => "yes",
         'bgp-peer-address' => $hostname ? {
-            /^lvs[1-3]$/ => "208.80.152.197",
-            /^lvs[4-6]$/ => "208.80.152.196",
-            /^lvs100[1-3]$/ => "208.80.154.196",
-            /^lvs100[4-6]$/ => "208.80.154.197",
+            /^lvs100[1-3]$/ => "208.80.154.196", # cr1-eqiad
+            /^lvs100[4-6]$/ => "208.80.154.197", # cr2-eqiad
             /^lvs200[1-3]$/ => "208.80.153.192", # cr1-codfw
             /^lvs200[4-6]$/ => "208.80.153.193", # cr2-codfw
-            /^lvs400[12]$/ => "198.35.26.192",
-            /^lvs400[34]$/ => "198.35.26.193",
-            /^lvs300[12]$/ => "91.198.174.245",
-            /^lvs300[34]$/ => "91.198.174.246",
+            /^lvs300[12]$/ => "91.198.174.245",  # cr1-esams
+            /^lvs300[34]$/ => "91.198.174.246",  # cr2-knams
+            /^lvs400[12]$/ => "198.35.26.192",   # cr1-ulsfo
+            /^lvs400[34]$/ => "198.35.26.193",   # cr2-ulsfo
             default => "(unspecified)"
             },
         'bgp-nexthop-ipv4' => $::ipaddress_eth0,
@@ -221,10 +219,6 @@ class lvs::configuration {
                 'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
                 'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b' },
             },
-            'payments' => {
-                'pmtpa' => "208.80.152.213",
-                'eqiad' => {},
-            },
             'apaches' => {
                 'eqiad' => "10.2.2.1",
             },
@@ -261,7 +255,6 @@ class lvs::configuration {
                 'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6' => '2620:0:863:ed1a::1:c', 'mobilesvc' => '10.2.4.26'},
             },
             'swift' => {
-                'pmtpa' => "10.2.1.27",
                 'eqiad' => "10.2.2.27",
             },
             'dns_auth' => {
@@ -269,15 +262,12 @@ class lvs::configuration {
                 'eqiad' => "208.80.154.238",
             },
             'dns_rec' => {
-                'pmtpa' => { 'dns_rec' => "208.80.152.215", 'dns_rec6' => "2620:0:860:ed1a::f" },
                 'eqiad' => { 'dns_rec' => "208.80.154.239", 'dns_rec6' => "2620:0:861:ed1a::f" },
             },
             'osm' => {
-                'pmtpa' => "208.80.152.216",
                 'eqiad' => "208.80.154.244",
             },
             'misc_web' => {
-                'pmtpa' => { 'misc_web' => '208.80.152.217', 'misc_web6' => '2620:0:860:ed1a::11' },
                 'eqiad' => { 'misc_web' => '208.80.154.241', 'misc_web6' => '2620:0:861:ed1a::11' },
             },
             'parsoid' => {
@@ -342,7 +332,6 @@ class lvs::configuration {
                 'eqiad' => '10.68.16.189',  # deployment-upload.eqiad.wmflabs
                 'pmtpa' => '10.4.1.103',  # deployment-upload.pmtpa.wmflabs
             },
-            'payments' => {},
             'upload' => {
                 'pmtpa' => {
                     'uploadlb'  => [ '10.4.0.166', '10.4.0.187', ],
@@ -605,26 +594,10 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options
             },
         },
-        "payments" => {
-            'description' => "Payments cluster, HTTPS payments.wikimedia.org",
-            'class' => "high-traffic2",
-            'sites' => [ "pmtpa" ],
-            'ip' => $service_ips['payments'][$::site],
-            'port' => 443,
-            'scheduler' => 'sh',
-            'bgp' => "yes",
-            'depool-threshold' => ".5",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'https://payments.wikimedia.org/index.php/Special:SystemStatus' ],
-                    },
-                'IdleConnection' => $idleconnection_monitor_options
-            },
-        },
         "dns_rec" => {
             'description' => "Recursive DNS",
             'class' => "high-traffic2",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'protocol' => "udp",
             'ip' => $service_ips['dns_rec'][$::site],
             'port' => 53,
@@ -652,7 +625,7 @@ class lvs::configuration {
         "misc_web" => {
             'description' => "Miscellaneous web sites Varnish cluster",
             'class' => "high-traffic2",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "eqiad" ],
             'ip' => $service_ips['misc_web'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".5",
@@ -663,7 +636,7 @@ class lvs::configuration {
         'misc_web_https' => {
             'description' => 'Miscellaneous web sites Varnish cluster (HTTPS)',
             'class' => 'high-traffic2',
-            'sites' => [ 'pmtpa', 'eqiad' ],
+            'sites' => [ 'eqiad' ],
             'ip' => $service_ips['misc_web'][$::site],
             'port' => 443,
             'scheduler' => 'sh',
