@@ -871,7 +871,8 @@ class icinga::ganglia::ganglios {
 }
 
 class icinga::monitor::wikidata {
-    monitor_host { 'wikidata':
+
+    @monitor_host { 'wikidata':
         ip_address => '91.198.174.192',
     }
 
