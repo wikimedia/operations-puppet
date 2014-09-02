@@ -7,7 +7,7 @@ class mediawiki::web::beta_sites {
     }
 
     apache::site { 'www.wikipedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/www.wikipedia.conf',
+        content   => template('mediawiki/apache/beta/sites/www.wikipedia.conf.erb'),
         priority => 1,
     }
 
