@@ -33,6 +33,11 @@ class mediawiki::sync {
         target => '/usr/local/apache/common-local',
     }
 
+    file { '/srv/mediawiki':
+        ensure => link,
+        target => '/usr/local/apache/common-local',
+    }
+
     # these get invoked by scap over SSH using a non-interactive, non-login
     # shell thus won't pick up /etc/profile.d above
     file { '/usr/local/bin/scap-rebuild-cdbs':
