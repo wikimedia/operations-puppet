@@ -62,6 +62,7 @@ class toollabs::dev_environ {
         'p7zip-full', # requested by Betacommand to extract files using 7zip
         'pastebinit',
         'pep8',                        # Bug 57863
+        'php5-xdebug',                 # Bug 70313
         'pyflakes',                    # Bug 57863
         'python-coverage',             # Bug 57002
         'python-dev',
