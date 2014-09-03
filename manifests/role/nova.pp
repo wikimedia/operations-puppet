@@ -390,7 +390,7 @@ class role::nova::controller {
                 server_failure_limit => 3,
                 timeout              => 250,
                 servers              => [
-                    '127.0.0.1:11211:1',
+                    '127.0.0.1:11000:1',
                 ],
             },
         },
