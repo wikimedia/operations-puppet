@@ -510,8 +510,8 @@ class role::cache {
                 queue_buffering_max_messages => 500000,
                 # We have seen metadata changes (e.g. leader elections) take
                 # up to 3 seconds to propogate to some producers.  The buffer
-                # needs to account for this.  Buffering up to 5 seconds.
-                queue_buffering_max_ms       => 5000,
+                # needs to account for this.  Buffering up to 10 seconds.
+                queue_buffering_max_ms       => 10000,
                 # bits varnishes do about 6000 reqs / sec each.
                 # We want to send batches at least once a second.
                 batch_num_messages           => 6000,
