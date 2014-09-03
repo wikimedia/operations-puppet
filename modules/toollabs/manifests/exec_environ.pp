@@ -187,6 +187,7 @@ class toollabs::exec_environ {
         'php5-pgsql',                  # For access to OSM db
         'php5-redis',
         'php5-sqlite',
+        'php5-xdebug',                 # Bug 70313
         'php5-xsl',
 
         # Fonts for vCat tool.
