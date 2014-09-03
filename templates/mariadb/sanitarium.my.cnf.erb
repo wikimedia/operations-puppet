@@ -62,6 +62,7 @@ optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buff
 
 replicate-wild-ignore-table = mysql.%
 replicate-wild-ignore-table = heartbeat.%
+replicate-wild-ignore-table = oai.%
 
 <% scope.lookupvar("::private_wikis").each do |name| -%>
 replicate-wild-ignore-table = <%= name %>.%
