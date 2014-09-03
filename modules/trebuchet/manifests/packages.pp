@@ -3,13 +3,10 @@
 # Provision packages required for trebuchet to operate
 #
 class trebuchet::packages {
+    include ::redis::client::python
+
     if ! defined(Package['git-core']){
       package { 'git-core':
-        ensure => present,
-      }
-    }
-    if ! defined(Package['python-redis']){
-      package { 'python-redis':
         ensure => present,
       }
     }
