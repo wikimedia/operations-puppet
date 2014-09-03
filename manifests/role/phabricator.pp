@@ -78,6 +78,20 @@ class role::phabricator::main {
         enable_spamassassin    => false,
     }
 
+    include passwords::phabricator
+    $emailbotcert = $passwords::mysql::phabricator::emailbot_cert
+
+    class { '::phabricator::mailrelay':
+        address_routing         => { testproj => 1},
+        phab_bot => { root_dir   => '/srv/phab/phabricator/',
+                      env         => 'default',
+                      username    => 'emailbot',
+                      host        => "http://${domain}",
+                      certificate => $emailbotcert,
+        },
+    }
+
+
     ferm::service { 'phabmain_http':
         proto => 'tcp',
         port  => '80',
