@@ -17,6 +17,7 @@ class rsyslog {
         recurse => true,
         purge   => true,
         force   => true,
+        ignore  => '50-default.conf',
         require => Package['rsyslog'],
         notify  => Service['rsyslog'],
     }
@@ -25,11 +26,5 @@ class rsyslog {
         ensure    => running,
         provider  => 'upstart',
         require   => Package['rsyslog'],
-    }
-
-    rsyslog::conf { 'default':
-        source   => '/usr/share/rsyslog/50-default.conf',
-        priority => 50,
-        require  => Package['rsyslog'],
     }
 }
