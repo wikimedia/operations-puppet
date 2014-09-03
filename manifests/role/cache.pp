@@ -525,7 +525,7 @@ class role::cache {
 
             # Persist the rsyslog conf bundled with the varnishkafka .deb
             # by declaring it to Puppet.
-            file { '/etc/rsyslog.d/75-kafkatee.conf':
+            file { '/etc/rsyslog.d/70-varnishkafka.conf':
                 ensure  => file,
                 require => Class['::varnishkafka'],
             }
