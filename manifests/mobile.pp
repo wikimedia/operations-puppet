@@ -53,7 +53,8 @@ class mobile::vumi::iptables  {
 class mobile::vumi {
 
     include passwords::mobile::vumi,
-        mobile::vumi::iptables
+        mobile::vumi::iptables,
+        ::redis::client::python
 
     $testvumi_pw          = $passwords::mobile::vumi::wikipedia_xmpp_sms_out
     $vumi_pw              = $passwords::mobile::vumi::wikipedia_xmpp
@@ -72,10 +73,6 @@ class mobile::vumi {
     include redis::ganglia
     package { 'python-iso8601':
         ensure => '0.1.4-1ubuntu1',
-    }
-
-    package { 'python-redis':
-        ensure => '2.4.9-1',
     }
 
     package { 'python-smpp':

@@ -19,6 +19,7 @@ class toollabs::exec_environ {
     include generic::locales::international
     include identd
     include ::mediawiki::packages::fonts
+    include ::redis::client::python
 
     package { [
         # Please keep all packages in each group sorted in alphabetical order
@@ -159,7 +160,6 @@ class toollabs::exec_environ {
         'python-pyexiv2',              # Bug 59122.
         'python-pygments',             # Bug 69050
         'python-pyinotify',            # Bug 57003
-        'python-redis',
         'python-requests',
         'python-rsvg',                 # Bug 56996
         'python-scipy',
