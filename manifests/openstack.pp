@@ -407,13 +407,19 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     }
 
     cron {
+        "run-jobs-old":
+            command => 'cd /srv/org/wikimedia/controller/wikis/w; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
+            ensure  => absent;
+        "send-echo-emails-old":
+            command => 'cd /srv/org/wikimedia/controller/wikis/w; /usr/bin/php extensions/Echo/maintenance/processEchoEmailBatch.php > /dev/null 2>&1',
+            ensure  => absent;
         "run-jobs":
             user    => 'mwdeploy',
-            command => 'cd /srv/org/wikimedia/controller/wikis/w; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
+            command => 'mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1',
             ensure  => present;
         "send-echo-emails":
             user    => 'mwdeploy',
-            command => 'cd /srv/org/wikimedia/controller/wikis/w; /usr/bin/php extensions/Echo/maintenance/processEchoEmailBatch.php > /dev/null 2>&1',
+            command => 'mwscript extensions/Echo/maintenance/processEchoEmailBatch.php --wiki=labswiki > /dev/null 2>&1',
             ensure  => present;
         "db-bak":
             user    => 'root',
