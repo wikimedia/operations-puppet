@@ -152,6 +152,6 @@ class releases::reprepro::upload (
 
     admin::sudo { "releases_dput":
         user  => $sudo_user,
-        privs => ["ALL = (${user}) NOPASSWD: dput"],
+        privs => ["ALL = (${user}) NOPASSWD: /usr/bin/dput"],
     }
 }
