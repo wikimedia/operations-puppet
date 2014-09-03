@@ -30,7 +30,7 @@ function clean_salt {
     # delete the key only if it has been accepted already, we are going to
     # ask confirmation later about unaccepted keys
     if salt-key --list accepted | fgrep -q ${nodename}; then
-        salt-key --delete ${hostname}
+        salt-key --delete ${nodename}
     fi
     # salt-key --delete above exits 0 regardless, double check
     if salt-key --list accepted | fgrep -q ${nodename}; then
