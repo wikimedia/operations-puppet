@@ -49,7 +49,7 @@ class nutcracker(
         group   => 'root',
         mode    => '0444',
         require => Package['nutcracker'],
-        # notify  => Service['nutcracker'],
+        notify  => Service['nutcracker'],
     }
 
     if $ensure == 'present' and versioncmp($::puppetversion, '3.5') >= 0 {
@@ -64,7 +64,7 @@ class nutcracker(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        # notify  => Service['nutcracker'],
+        notify  => Service['nutcracker'],
     }
 
     service { 'nutcracker':
