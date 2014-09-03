@@ -249,4 +249,6 @@ class role::graphite::labmon {
         storage_dir => '/srv/carbon',
         auth => false,
     }
+
+    include role::beta::monitoring::graphite
 }
