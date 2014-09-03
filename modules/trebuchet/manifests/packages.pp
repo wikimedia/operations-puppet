@@ -3,16 +3,11 @@
 # Provision packages required for trebuchet to operate
 #
 class trebuchet::packages {
-    include stdlib
+    include ::redis::client::python
 
-    # Installs git-core
-    require base::standard-packages
-
-    #git-fat was not in hardy
     if ubuntu_version('> lucid') {
-        ensure_packages(['git-fat'])
+        package { 'git-fat':
+            ensure => present,
+        }
     }
-
-
-    ensure_packages(['python-redis'])
 }

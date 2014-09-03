@@ -1,6 +1,7 @@
 # A dynamic HTTP routing proxy, based on the dynamicproxy module.
 class toollabs::proxy inherits toollabs {
     include toollabs::infrastructure
+    include ::redis::client::python
 
     install_certificate { 'star.wmflabs.org':
         privatekey => false
@@ -20,7 +21,7 @@ class toollabs::proxy inherits toollabs {
         mode    => '0555',
         source  => 'puppet:///modules/toollabs/proxylistener.py',
         # Is provided by the dynamicproxy class.
-        require => Package['python-redis']
+        require => Class['::redis::client::python'],
     }
 
     file { '/etc/init/proxylistener.conf':

@@ -6,9 +6,9 @@
 # - $deployer_groups: Array of unix groups to add to the trebuchet user
 #
 class deployment::deployment_server($deployer_groups=[]) {
+    include ::redis::client::python
 
     ensure_packages([
-        'python-redis',
         'python-gitdb',
         'python-git',
         ])
