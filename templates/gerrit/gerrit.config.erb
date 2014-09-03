@@ -1,6 +1,6 @@
 [gerrit]
     basePath = git
-    canonicalWebUrl = <%= url %>
+    canonicalWebUrl = <%= @url %>
     reportBugUrl = https://bugzilla.wikimedia.org/enter_bug.cgi?product=Wikimedia&component=Git/Gerrit
 [core]
     packedGitOpenFiles = 4096
@@ -10,27 +10,27 @@
     useRecursiveMerge = true
 [database]
     type = MYSQL
-    hostname = <%= dbhost %>
-    database = <%= dbname %>
-    username = <%= dbuser %>
-    url = jdbc:mysql://<%= dbhost %>/<%= dbname %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+    hostname = <%= @dbhost %>
+    database = <%= @dbname %>
+    username = <%= @dbuser %>
+    url = jdbc:mysql://<%= @dbhost %>/<%= @dbname %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
 [auth]
     type = LDAP
     cookieSecure = true
     registerUrl = https://wikitech.wikimedia.org/w/index.php?title=Special:UserLogin&returnto=Help%3AGetting+Started&type=signup
 [ldap]
-    server = <% ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
-    accountBase = ou=people,<%= ldap_base_dn %>
+    server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
+    accountBase = ou=people,<%= @ldap_base_dn %>
     accountPattern = (&(objectClass=person)(cn=${username}))
     accountFullName = cn
-    groupBase = ou=groups,<%= ldap_base_dn %>
+    groupBase = ou=groups,<%= @ldap_base_dn %>
     groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
     groupScope = one
 [sendemail]
     includeDiff = true
     smtpServerPort = 25
 <% if smtp_host != "" then %>
-    smtpServer = <%= smtp_host %>
+    smtpServer = <%= @smtp_host %>
 <% else %>
     enable = false
 <% end %>
@@ -39,7 +39,7 @@
     javaHome = /usr/lib/jvm/java-7-openjdk-amd64/jre
     heapLimit = 20g
 [sshd]
-    listenAddress = *:<%= sshport %>
+    listenAddress = *:<%= @sshport %>
     threads = 8
     batchThreads = 2
     idleTimeout = 864000
