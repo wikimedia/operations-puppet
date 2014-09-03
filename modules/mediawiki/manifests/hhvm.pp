@@ -14,7 +14,7 @@ class mediawiki::hhvm {
         fcgi_settings => {
             hhvm => {
                 server => {
-                    source_root => '/usr/local/apache/common/docroot',
+                    source_root => '/srv/mediawiki/docroot',
                 },
             },
         },
