@@ -12,11 +12,14 @@ try:
 except ImportError:
     import json
 
+import socket
+import threading
 import time
 import urllib2
+from Queue import Queue
 from functools import partial
 
-URLOPEN_TIMEOUT = 0.5
+URLOPEN_TIMEOUT = 4
 
 
 # Used to merge stat descriptions
@@ -413,6 +416,37 @@ health_stats['es_unassigned_shards'] = merge(GAUGE, {
 })
 
 
+class MetricCache(object):
+    def __init__(self):
+        self.queue = Queue()
+        self.cache = {}
+
+    def get(self, url):
+        self.queue.put(url)
+        data, last_fetch = self.cache.get(url, (None, 0))
+        return data, last_fetch
+
+    def set(self, url, data, last_fetch):
+        self.cache[url] = (data, last_fetch)
+
+    def shutdown(self):
+        self.queue.put(None)
+
+    @staticmethod
+    def url_fetcher(cache):
+        while True:
+            url = cache.queue.get()
+            if url is None:
+                break
+            try:
+                data = load(url)
+                cache.set(url, data, time.time())
+            except socket.timeout:
+                continue
+            except ValueError:
+                continue
+
+
 def dig_it_up(obj, path):
     def tryint(s):
         try:
@@ -427,21 +461,24 @@ def dig_it_up(obj, path):
         return False
 
 
-def load(url):
-    return json.load(urllib2.urlopen(url, None, URLOPEN_TIMEOUT))
+def load(url, timeout=URLOPEN_TIMEOUT):
+    return json.load(urllib2.urlopen(url, None, timeout))
 
 
-def update_result(data):
+def update_result(data, cache):
     # If time delta is > 3 seconds, then update the JSON results
     now = time.time()
     diff = now - data['last_update']
     if diff > 3:
-        data['stats'] = load(data['url'])
+        data['stats'], data['last_fetch'] = cache.get(data['url'])
         data['last_update'] = now
 
 
-def get_stat(data, stats, name):
-    update_result(data)
+def get_stat(data, stats, cache, name):
+    update_result(data, cache)
+
+    if data['stats'] is None:
+        return None
 
     path = data['path_transformer'](data, stats[name]['path'])
     val = dig_it_up(data['stats'], path)
@@ -460,6 +497,13 @@ def deunicode(s):
 
 
 def metric_init(params):
+    metric_cache = MetricCache()
+
+    fetch_thread = threading.Thread(target=MetricCache.url_fetcher,
+                                    args=(metric_cache,))
+    fetch_thread.daemon = True
+    fetch_thread.start()
+
     descriptors = []
 
     host = params.get('host', 'http://localhost:9200/')
@@ -490,7 +534,8 @@ def metric_init(params):
         'url': main_url,
         'path_transformer': main_path_transformer,
     }
-    Desc_Skel['call_back'] = partial(get_stat, main_result, main_stats)
+    Desc_Skel['call_back'] = partial(get_stat, main_result, main_stats,
+                                     metric_cache)
     init(main_stats)
 
     # Monitor search grouped stats by making a stat per group.
@@ -510,7 +555,8 @@ def metric_init(params):
                 path = deunicode(stat['path'] % {'group': group})
                 group_index_stats[stat_name] = merge(stat, {'path': path})
             Desc_Skel['call_back'] = partial(
-                get_stat, stats_groups_results, group_index_stats)
+                get_stat, stats_groups_results, group_index_stats,
+                metric_cache)
             init(group_index_stats)
 
     # Cluster health stats and the last time we fetched them.
@@ -521,7 +567,8 @@ def metric_init(params):
         'url': '{0}_cluster/health'.format(host),
         'path_transformer': noop_path_transformer,
     }
-    Desc_Skel['call_back'] = partial(get_stat, health_result, health_stats)
+    Desc_Skel['call_back'] = partial(get_stat, health_result, health_stats,
+                                     metric_cache)
     init(health_stats)
 
     return descriptors
@@ -531,7 +578,7 @@ def metric_cleanup():
     pass
 
 
-#This code is for debugging and unit testing
+# This code is for debugging and unit testing
 if __name__ == '__main__':
     descriptors = metric_init({})
     from time import sleep
