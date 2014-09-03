@@ -1,0 +1,15 @@
+<?php
+
+# This file is managed by Puppet, do not modify manually.
+# These keys derive from puppet, so are inserted into this dir
+#  via puppet to keep things in sync.
+
+$wgLDAPProxyAgent         =  array( 'labs' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org' );
+$wgLDAPProxyAgentPassword =  array( 'labs' => "<%= @wikitech_nova_ldap_proxyagent_pass %>" );
+
+$wgLDAPWriterDN       = array( 'labs' => 'uid=novaadmin,ou=people,dc=wikimedia,dc=org' );
+$wgLDAPWriterPassword = array( 'labs' => "<%= @wikitech_nova_ldap_user_pass %>" );
+
+$wgOpenStackManagerLDAPUser         = 'uid=novaadmin,ou=people,dc=wikimedia,dc=org';
+$wgOpenStackManagerLDAPUsername     = 'novaadmin';
+$wgOpenStackManagerLDAPUserPassword = "<%= @wikitech_nova_ldap_user_pass %>";
