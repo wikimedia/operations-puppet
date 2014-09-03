@@ -144,3 +144,15 @@ class role::beta::jobrunner {
         runners_gwt     => 1,
     }
 }
+
+# = Class: role::beta::monitoring::graphite
+# Sets up graphite based icinga checks for all of betalabs
+class role::beta::monitoring::graphite {
+    monitor_graphite_threshold { 'betalabs-puppet-fail':
+        description => 'Monitor for puppet failures on beta labs',
+        metric => 'deployment-prep.*.puppetagent.failed_events.value',
+        critical => 1,
+        graphite_url => 'labmon1001.eqiad.wmnet',
+        contact_group => 'betalabs'
+    }
+}
