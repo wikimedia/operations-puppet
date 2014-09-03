@@ -1,4 +1,4 @@
-# == Class: phabricator::mail
+# == Class: phabricator::mailrelay
 #
 # Sets up special routing for exim handler
 #
@@ -15,7 +15,7 @@
 #
 # === Examples
 #
-#    class { '::phabricator::mail':
+#    class { '::phabricator::mailrelay':
 #        address_routing         => { maint-announce => 3},
 #        direct_comments_allowed => { testproj => 'cisco.com,gmail.com'},
 #        phab_bot => { root_dir   => '/srv/phab/phabricator/',
@@ -28,7 +28,7 @@
 #
 # See modules/phabricator/files/phab_epipe.py for more usage info
 #
-class phabricator::mail(
+class phabricator::mailrelay(
         $phab_bot                = {},
         $address_routing         = {},
         $direct_comments_allowed = {},
