@@ -9,13 +9,13 @@ class snapshot::dumps::configs(
         smallwikis => {
             dblist        => "${snapshot::dirs::apachedir}/all.dblist",
             skipdblist    => "${snapshot::dirs::dumpsdir}/dblists/skip.dblist",
-            keep          => '14',
+            keep          => '12',
             chunksEnabled => '0',
         },
         bigwikis => {
             dblist           => "${snapshot::dirs::dumpsdir}/dblists/bigwikis.dblist",
             skipdblist       => "${snapshot::dirs::dumpsdir}/dblists/skipnone.dblist",
-            keep             => '12',
+            keep             => '10',
             chunksEnabled    => '1',
             recombineHistory => '0',
             wikis            => {
@@ -60,7 +60,7 @@ class snapshot::dumps::configs(
         hugewikis => {
             dblist           => "${snapshot::dirs::dumpsdir}/dblists/hugewikis.dblist",
             skipdblist       => "${snapshot::dirs::dumpsdir}/dblists/skipnone.dblist",
-            keep             => '10',
+            keep             => '9',
             chunksEnabled    => '1',
             recombineHistory => '0',
             checkpointTime   => '720',
