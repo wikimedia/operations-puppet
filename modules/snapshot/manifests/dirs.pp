@@ -1,7 +1,7 @@
 class snapshot::dirs {
     $dumpsdir = '/srv/dumps'
     $datadir = '/mnt/data/xmldatadumps'
-    $apachedir = '/apache/common'
+    $apachedir = '/usr/local/apache/common-local'
 
     file { $dumpsdir:
         ensure  => 'directory',
