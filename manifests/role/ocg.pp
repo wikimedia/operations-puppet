@@ -85,8 +85,8 @@ class role::ocg::production (
     class { 'ocg::nagios::check':
         wtd => $ocg_temp_size_warning,
         ctd => $ocg_temp_size_critical,
-        wod => '4G',
-        cod => '5G',
+        wod => '40G',
+        cod => '50G',
         wpd => '1G',
         cpd => '2G',
         wjs => '20000',
