@@ -33,22 +33,6 @@ class mediawiki::sync {
         target => '/usr/local/apache/common-local',
     }
 
-    file { '/a':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0775',
-    }
-
-    file { '/a/common':
-        ensure  => link,
-        target  => '/usr/local/apache/common-local',
-        owner   => 'root',
-        group   => 'wikidev',
-        mode    => '0775',
-        replace => false,
-    }
-
     # these get invoked by scap over SSH using a non-interactive, non-login
     # shell thus won't pick up /etc/profile.d above
     file { '/usr/local/bin/scap-rebuild-cdbs':

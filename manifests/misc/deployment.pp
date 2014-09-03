@@ -15,6 +15,22 @@ class misc::deployment::common_scripts {
         ensure => present;
     }
 
+    file { '/a':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0775',
+    }
+
+    file { '/a/common':
+        ensure  => link,
+        target  => '/usr/local/apache/common-local',
+        owner   => 'root',
+        group   => 'wikidev',
+        mode    => '0775',
+        replace => false,
+    }
+
     file {
         '/usr/local/bin/clear-profile':
             owner  => 'root',
