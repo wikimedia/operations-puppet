@@ -9,7 +9,7 @@ class trebuchet::packages {
     require base::standard-packages
 
     #git-fat was not in hardy
-    if ubuntu_version('> hardy') {
+    if ubuntu_version('> lucid') {
         ensure_packages(['git-fat'])
     }
 
