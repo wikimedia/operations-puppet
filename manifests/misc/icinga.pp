@@ -748,6 +748,15 @@ class icinga::monitor::service {
 
     require icinga::monitor::apache
 
+    if $::realm == 'labs' {
+      #TODO this tempfs mount is not yet puppetized in production
+      file { '/var/icinga-tmpfs':
+        enusre => directory,
+        owner => 'icinga',
+        group => 'icinga',
+      }
+    }
+
     service { 'icinga':
         ensure    => running,
         hasstatus => false,
