@@ -888,6 +888,7 @@ class icinga::monitor::wikidata {
         host          => 'wikidata',
         normal_check_interval => 30,
         retry_check_interval => 5,
+        contact_group => 'admins,wikidata',
     }
 }
 
