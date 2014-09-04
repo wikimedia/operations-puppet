@@ -121,6 +121,7 @@ class lvs::configuration {
                     'loginlb6'  => '2620:0:862:ed1a::1:9',
                 },
                 'ulsfo' => {
+                    'textsvc'   => '10.2.4.25',
                     'textlb'    => '198.35.26.96',
                     'loginlb'   => '198.35.26.105',
 
@@ -130,47 +131,42 @@ class lvs::configuration {
             },
             'https' => {
                 'eqiad' => {
-                    'wikimedialbsecure' => "208.80.154.224",
+                    'textlbsecure' => "208.80.154.224",
+                    'loginlbsecure' => "208.80.154.233",
                     'bitslbsecure' => "208.80.154.234",
                     'uploadlbsecure' => '208.80.154.240',
                     'mobilelbsecure' => "208.80.154.236",
 
-                    'wikipedialbsecure6' => "2620:0:861:ed1a::1",
+                    'textlbsecure6' => "2620:0:861:ed1a::1",
+                    'loginlbsecure6' => "2620:0:861:ed1a::1:9",
                     'bitslbsecure6' => '2620:0:861:ed1a::1:a',
-                    'bitslbsecure6-old' => "2620:0:861:ed1a::a",
                     'uploadlbsecure6' => '2620:0:861:ed1a::2:b',
                     'mobilelbsecure6' => '2620:0:861:ed1a::1:c',
-                    'mobilelbsecure6-old' => "2620:0:861:ed1a::c",
                 },
                 'esams' => {
                     'textlbsecure' => '91.198.174.192',
                     'loginlbsecure' => '91.198.174.201',
                     'bitslbsecure' => '91.198.174.202',
-                    'bitslbsecure-old' => "91.198.174.233",
                     'uploadlbsecure' => '91.198.174.208',
                     'mobilelbsecure' => '91.198.174.204',
-                    'mobilelbsecure-old' => '91.198.174.236',
-                    'donatelbsecure' => '91.198.174.224',
 
                     'textlb6secure'   => '2620:0:862:ed1a::1',
                     'loginlbsecure6' => '2620:0:862:ed1a::1:9',
                     'bitslbsecure6' => '2620:0:862:ed1a::1:a',
-                    'bitslbsecure6-old' => "2620:0:862:ed1a::a",
                     'uploadlbsecure6' => '2620:0:862:ed1a::2:b',
                     'mobilelbsecure6' => '2620:0:862:ed1a::1:c',
-                    'mobilelbsecure6-old' => '2620:0:862:ed1a::c',
                 },
                 'ulsfo' => {}
             },
             'bits' => {
-                'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => '2620:0:861:ed1a::1:a', 'bitslb6-old' => "2620:0:861:ed1a::a", 'bitssvc' => "10.2.2.23" },
-                'esams' => { 'bitslb' => '91.198.174.202', 'bitslb-old' => "91.198.174.233", 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitslb6-old' => "2620:0:862:ed1a::a", 'bitssvc' => "10.2.3.23" },
+                'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => '2620:0:861:ed1a::1:a', 'bitssvc' => "10.2.2.23" },
+                'esams' => { 'bitslb' => '91.198.174.202', 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitssvc' => "10.2.3.23" },
                 'ulsfo' => { 'bitslb' => "198.35.26.106", 'bitslb6' => '2620:0:863:ed1a::1:a', 'bitssvc' => "10.2.4.23" },
             },
             'upload' => {
                 'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadsvc' => '10.2.2.24' },
                 'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
-                'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b' },
+                'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b', 'uploadsvc' => '10.2.4.24' },
             },
             'apaches' => {
                 'eqiad' => "10.2.2.1",
@@ -203,8 +199,8 @@ class lvs::configuration {
                 'eqiad' => "10.2.2.16",
             },
             'mobile' => {
-                'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilelb6-old' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"},
-                'esams' => { 'mobilelb' => '91.198.174.204', 'mobilelb-old' => '91.198.174.236', 'mobilelb6' => '2620:0:862:ed1a::1:c', 'mobilelb6-old' => '2620:0:862:ed1a::c', 'mobilesvc' => '10.2.3.26'},
+                'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilesvc' => "10.2.2.26"},
+                'esams' => { 'mobilelb' => '91.198.174.204', 'mobilelb6' => '2620:0:862:ed1a::1:c', 'mobilesvc' => '10.2.3.26'},
                 'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6' => '2620:0:863:ed1a::1:c', 'mobilesvc' => '10.2.4.26'},
             },
             'swift' => {
