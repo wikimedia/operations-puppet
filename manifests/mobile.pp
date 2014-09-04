@@ -75,7 +75,7 @@ class mobile::vumi {
     }
 
     package { 'python-redis':
-        ensure => '2.4.9-1',
+        ensure =>'present',
     }
 
     package { 'python-smpp':
