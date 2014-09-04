@@ -81,7 +81,7 @@ class role::protoproxy::ssl {
     # text-lb + login-lb
     protoproxy{ 'wikimedia':
         proxy_addresses   => {
-            'eqiad' => [ '208.80.154.224', '[2620:0:861:ed1a::1]' ],
+            'eqiad' => [ '208.80.154.224', '208.80.154.233', '[2620:0:861:ed1a::1]', '[2620:0:861:ed1a::1:9]' ],
             'esams' => [ '91.198.174.192', '91.198.174.201', '[2620:0:862:ed1a::1]', '[2620:0:862:ed1a::1:9]' ],
         },
         proxy_server_name => '*.wikimedia.org',
