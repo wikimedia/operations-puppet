@@ -20,20 +20,34 @@ class mediawiki::monitoring::errors(
     $statsd_host = 'statsd',
     $statsd_port = 8125,
 ) {
+    validate_ensure($ensure)
+
     file { '/usr/local/bin/mwerrors':
         ensure => $ensure,
         source => 'puppet:///modules/mediawiki/monitoring/mwerrors.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
         notify => Service['mwerrors'],
     }
 
     file { '/etc/init/mwerrors.conf':
         ensure  => $ensure,
         content => template('mediawiki/monitoring/mwerrors.upstart.conf.erb'),
-        notify  => Service['mwerrors'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     service { 'mwerrors':
-        ensure   => $ensure ? { present => running, absent => stopped },
+        ensure   => $ensure == present,
         provider => upstart,
+    }
+
+    if $ensure == present {
+        File['/etc/init/mwerrors.conf'] ~> Service['mwerrors']
+    } else {
+        # Stop the service before removing its config file.
+        Service['mwerrors'] -> File['/etc/init/mwerrors.conf']
     }
 }
