@@ -655,21 +655,24 @@ class icinga::monitor::naggen {
     require icinga::monitor::packages
 
     file { '/etc/icinga/puppet_hosts.cfg':
-        content => generate('/usr/local/bin/naggen2', '--type', 'hosts'),
+        #content => generate('/usr/local/bin/naggen2', '--type', 'hosts'),
+        content => '',
         backup  => false,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
     }
     file { '/etc/icinga/puppet_services.cfg':
-        content => generate('/usr/local/bin/naggen2', '--type', 'services'),
+        #content => generate('/usr/local/bin/naggen2', '--type', 'services'),
+        content => '',
         backup  => false,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
     }
     file { '/etc/icinga/puppet_hostextinfo.cfg':
-        content => generate('/usr/local/bin/naggen2', '--type', 'hostextinfo'),
+        #content => generate('/usr/local/bin/naggen2', '--type', 'hostextinfo'),
+        content => '',
         backup  => false,
         owner   => 'root',
         group   => 'root',
