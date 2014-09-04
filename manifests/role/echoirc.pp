@@ -5,7 +5,10 @@ class role::echoirc {
 
     case $::realm {
         'production': {
-            $ircecho_logs   = { '/var/log/icinga/irc.log' => '#wikimedia-operations' }
+            $ircecho_logs   = {
+                '/var/log/icinga/irc.log'          => '#wikimedia-operations',
+                '/var/log/icinga/irc-wikidata.log' => '#wikidata',
+            }
             $ircecho_nick   = 'icinga-wm'
             $ircecho_server = 'chat.freenode.net'
         }
