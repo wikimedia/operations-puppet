@@ -303,6 +303,19 @@ class icinga::monitor::files::misc {
     exec { 'fix_icinga_command_file':
         command => '/bin/chmod a+rw /var/lib/nagios/rw/nagios.cmd';
     }
+    file { '/var/log/icinga':
+        ensure => directory,
+        owner => 'icinga',
+        mode => '2755',
+    }
+    file { '/var/log/icinga/archives':
+        ensure => directory,
+        owner => 'icinga',
+    }
+    file { '/var/log/icinga/icinga.log':
+        ensure => file,
+        owner => 'icinga',
+    }
 }
 
 class icinga::monitor::files::nagios-plugins {
