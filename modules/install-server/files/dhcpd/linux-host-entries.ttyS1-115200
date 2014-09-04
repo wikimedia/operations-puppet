@@ -363,6 +363,11 @@ host backup4001 {
 	fixed-address backup4001.ulsfo.wmnet;
 }
 
+host baham {
+	hardware ethernet D4:AE:52:B3:90:36;
+	fixed-address baham.wikimedia.org;
+}
+
 host bast1001 {
 	hardware ethernet 78:2b:cb:09:11:ba;
 	fixed-address bast1001.wikimedia.org;
