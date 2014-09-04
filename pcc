@@ -1,0 +1,85 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  Shell helper for the Puppet catalog compiler
+  https://integration.wikimedia.org/ci/job/operations-puppet-catalog-compiler/
+
+  Usage: pcc [-h] [--api-token API_TOKEN] [--username USERNAME] change nodes
+
+  Positional arguments:
+    change                 Gerrit change number.
+    nodes                  Comma-separated list of nodes.
+
+  Optional arguments:
+    --api-token API_TOKEN  Jenkins API token. Defaults to JENKINS_API_TOKEN.
+    --username USERNAME    Jenkins user name. Defaults to JENKINS_USERNAME.
+
+  Example:
+    $ pcc.py 158262 rcs1001.eqiad.wmnet,rcs1002.eqiad.wmnet
+
+  You can get your API token by clicking on your name in Jenkins and then
+  clicking on 'configure'.
+
+  pcc requires the jenkinsapi python module:
+  https://pypi.python.org/pypi/jenkinsapi
+
+  Copyright 2014 Ori Livneh <ori@wikimedia.org>
+  Licensed under the Apache license.
+
+"""
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+import argparse
+import os
+import sys
+
+import jenkinsapi
+
+
+JENKINS_URL = 'https://integration.wikimedia.org/ci/'
+
+ap = argparse.ArgumentParser(description='Puppet catalog compiler')
+ap.add_argument('change', help='Gerrit change number.', type=int)
+ap.add_argument('nodes', help='Comma-separated list of nodes.')
+ap.add_argument('--api-token', default=os.environ.get('JENKINS_API_TOKEN'),
+                help='Jenkins API token. Defaults to JENKINS_API_TOKEN.')
+ap.add_argument('--username', default=os.environ.get('JENKINS_USERNAME'),
+                help='Jenkins user name. Defaults to JENKINS_USERNAME.')
+args = ap.parse_args()
+
+if not args.api_token or not args.username:
+    sys.exit('You must either provide the --api-token and --username options'
+             ' or define JENKINS_API_TOKEN and JENKINS_USERNAME in your env.')
+
+jenkins = jenkinsapi.jenkins.Jenkins(
+    baseurl=JENKINS_URL,
+    username=args.username,
+    password=args.api_token
+)
+
+print 'Compiling change %(change)s on nodes %(nodes)s...' % vars(args)
+
+job = jenkins.get_job('operations-puppet-catalog-compiler')
+build_params = {
+    'GERRIT_CHANGE_NUMBER': str(args.change),
+    'LIST_OF_NODES': args.nodes,
+}
+invocation = job.invoke(build_params=build_params)
+invocation.block(until='not_queued')
+build = invocation.get_build()
+
+print 'Your build URL is %s' % build.baseurl
+
+running = True
+output = ''
+while running:
+    running = invocation.is_running()
+    new_output = build.get_console()
+    print new_output[len(output):],
+    output = new_output
+
+status = build.get_status()
+print status
+sys.exit(0 if status == 'SUCCESS' else 1)
