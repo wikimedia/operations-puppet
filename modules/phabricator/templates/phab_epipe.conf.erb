@@ -1,16 +1,5 @@
 # This file is managed by Puppet.
 
-[default]
-
-<% if @default -%>
-<%=
-    @default.sort.map { |k,v|
-        v = v.is_a?(Array) ? v.join(',') : ( v == :undef ? '' : v )
-        "#{k} = #{v}"
-    }.join("\n")
-%>
-<% end -%>
-
 [address_routing]
 
 <% if @address_routing -%>

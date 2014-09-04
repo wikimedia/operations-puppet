@@ -79,12 +79,11 @@ class role::phabricator::main {
     }
 
     include passwords::phabricator
-    $emailbotcert = $passwords::phabricator::emailbot_cert
+    $emailbotcert = $passwords::mysql::phabricator::emailbot_cert
 
     class { '::phabricator::mailrelay':
-        default                  => { security => default},
-        address_routing           => { testproj => demoproject},
-        phab_bot => { root_dir    => '/srv/phab/phabricator/',
+        address_routing         => { testproj => 1},
+        phab_bot => { root_dir   => '/srv/phab/phabricator/',
                       env         => 'default',
                       username    => 'emailbot',
                       host        => "http://${domain}",
