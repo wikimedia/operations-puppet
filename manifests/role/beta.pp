@@ -154,7 +154,7 @@ class role::beta::monitoring::graphite {
         metric          => 'deployment-prep.*.puppetagent.failed_events.value',
         critical        => 1,
         warning         => 1,
-        graphite_url    => 'labmon1001.eqiad.wmnet',
+        graphite_url    => 'http://labmon1001.eqiad.wmnet',
         contact_group   => 'betalabs'
     }
 }
