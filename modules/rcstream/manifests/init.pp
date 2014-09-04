@@ -34,6 +34,8 @@ class rcstream(
 ) {
     requires_ubuntu('>= trusty')
 
+    include ::redis::client::python
+
     group { 'rcstream':
         ensure => present,
     }
@@ -46,7 +48,7 @@ class rcstream(
         system => true,
     }
 
-    package { [ 'python-socketio']:
+    package { 'python-socketio':
         ensure => $ensure,
         before => Package['rcstream'],
     }

@@ -17,6 +17,7 @@ class toollabs::redis (
     $maxmemory = '1GB'
 ) inherits toollabs {
     include toollabs::infrastructure
+    include ::redis::client::python
 
     class { '::redis':
         persist         => 'aof',
@@ -39,11 +40,7 @@ class toollabs::redis (
         monitor         => true
     }
 
-    # Enable diamond monitoring. It needs the redis python
-    # module.
-    package { 'python-redis': }
-
     diamond::collector { 'Redis':
-        require => Package['python-redis']
+        require => Class['::redis::client::python']
     }
 }

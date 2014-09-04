@@ -91,11 +91,9 @@ class dynamicproxy (
     diamond::collector::nginx { 'diamond-monitor-proxy': }
 
     # Also monitor local redis
-    package { 'python-redis':
-        ensure => present
-    }
+    include ::redis::client::python
 
     diamond::collector { 'Redis':
-        require => Package['python-redis']
+        require => Class['::redis::client::python'],
     }
 }
