@@ -876,9 +876,15 @@ class icinga::monitor::wikidata {
         ip_address => '91.198.174.192',
     }
 
+    file { '/usr/local/lib/nagios/plugins/check_wikidata':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///files/icinga/check_wikidata',
+    }
+
     monitor_service { 'wikidata.org dispatch lag':
         description   => 'check if wikidata.org dispatch lag is higher than 2 minutes',
-        check_command => 'check_https_url_for_regexp!www.wikidata.org!\'/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics\'!\',.median.:[^}]*,.lag.:[1-5]?[0-9],\'',
+        check_command => 'check_wikidata',
         host          => 'wikidata',
         normal_check_interval => 30,
         retry_check_interval => 5,
