@@ -32,6 +32,7 @@
 # See modules/phabricator/files/phab_epipe.py for more usage info
 #
 class phabricator::mailrelay(
+        $default                 = {},
         $phab_bot                = {},
         $address_routing         = {},
         $direct_comments_allowed = {},
