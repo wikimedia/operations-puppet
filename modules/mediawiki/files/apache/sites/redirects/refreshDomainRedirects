@@ -403,7 +403,7 @@ class DomainRedirectParser {
 		ExpiresByType text/html A2592000
 	</IfModule>
 
-	DocumentRoot /usr/local/apache/common/docroot/default
+	DocumentRoot /srv/mediawiki/docroot/default
 
 	RewriteEngine On
 
