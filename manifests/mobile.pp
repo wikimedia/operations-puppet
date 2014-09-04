@@ -74,8 +74,10 @@ class mobile::vumi {
         ensure => '0.1.4-1ubuntu1',
     }
 
-    package { 'python-redis':
-        ensure => '2.4.9-1',
+    if !defined(Package['python-redis']) {
+        package { 'python-redis':
+            ensure =>'present',
+        }
     }
 
     package { 'python-smpp':
