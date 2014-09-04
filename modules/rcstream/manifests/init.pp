@@ -46,7 +46,7 @@ class rcstream(
         system => true,
     }
 
-    package { [ 'python-socketio', 'python-redis' ]:
+    package { [ 'python-socketio']:
         ensure => $ensure,
         before => Package['rcstream'],
     }
