@@ -3,7 +3,6 @@ class wikitech::wiki::passwords {
     include passwords::wikitech
     include passwords::openstack::nova
 
-    $wikitech_db_password    = $passwords::wikitech::wikitech_db_password
     $wikitech_secret_key     = $passwords::wikitech::wikitech_secret_key
     $wikitech_upgrade_key    = $passwords::wikitech::wikitech_upgrade_key
     $wikitech_captcha_secret = $passwords::wikitech::wikitech_captcha_secret
