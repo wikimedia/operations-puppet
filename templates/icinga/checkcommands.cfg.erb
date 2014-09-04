@@ -545,3 +545,9 @@ define command{
     command_name    nrpe_check_ocg_health
     command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_ocg_health
 }
+
+# monitor wikidata
+define command{
+    command_name    check_wikidata
+    command_line    /usr/local/lib/nagios/plugins/check_wikidata
+}
