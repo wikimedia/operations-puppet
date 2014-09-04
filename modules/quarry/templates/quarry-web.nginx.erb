@@ -13,11 +13,4 @@ server {
     location /static {
         alias <%= @clone_path %>/quarry/web/static;
     }
-
-    location /api/query/output {
-        alias <%= @result_path %>;
-
-        add_header 'Access-Control-Allow-Origin' '*';
-        default_type application/json;
-    }
 }
