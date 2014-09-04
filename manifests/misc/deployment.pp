@@ -286,7 +286,7 @@ class misc::deployment::l10nupdate {
 }
 
 class misc::deployment::vars {
-    $mw_common = '/usr/local/apache/common-local'
+    $mw_common = '/srv/mediawiki'
     $mw_common_source = '/a/common'
     $dblist_common = $mw_common
     $dblist_common_source = $mw_common_source
@@ -324,7 +324,7 @@ class misc::deployment::scap_proxy {
     include network::constants
 
     rsync::server::module { 'common':
-        path        => '/usr/local/apache/common-local',
+        path        => '/srv/mediawiki',
         read_only   => 'true',
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
