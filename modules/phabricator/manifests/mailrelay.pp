@@ -4,11 +4,14 @@
 #
 # === Parameters
 #
+# [*default*]
+#   Key/Value defaults for the email bot to function
+#
 # [*phab_bot*]
 #   Key/Value parameters for the email bot to function
 #
 # [*address_routing*]
-#   Key/value email address to project id mappings
+#   Key/value email address to project name / security setting
 #
 # [*direct_comments_allowed*]
 #   Key/value project name to comma separated domain list
