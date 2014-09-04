@@ -197,7 +197,22 @@ class icinga::monitor::configuration::files {
         mode    => '0644',
     }
 
-    file { '/etc/icinga/contactgroups.cfg':
+    if $::realm == 'labs' {
+        # avoid referencing private contacts
+        file { '/etc/icinga/contactgroups.cfg':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+        }
+        exec { 'icinga-contactgroups-command':
+            command => "/bin/sed -e '/^ *members/d' /etc/icinga/contactgroups.cfg-source > /etc/icinga/contactgroups.cfg",
+            subscribe => File['/etc/icinga/contactgroups.cfg-source'],
+        }
+        $source = '-source'
+    } else {
+        $source = ''
+    }
+    file { "/etc/icinga/contactgroups.cfg${source}":
         source => 'puppet:///files/icinga/contactgroups.cfg',
         owner  => 'root',
         group  => 'root',
