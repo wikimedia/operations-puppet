@@ -3,19 +3,16 @@
 # Provision packages required for trebuchet to operate
 #
 class trebuchet::packages {
-    if ! defined(Package['git-core']){
-      package { 'git-core':
-        ensure => present,
-      }
+    include stdlib
+
+    # Installs git-core
+    require base::standard-packages
+
+    #git-fat was not in hardy
+    if ubuntu_version('>= 10.04') {
+        ensure_packages(['git-fat'])
     }
-    if ! defined(Package['python-redis']){
-      package { 'python-redis':
-        ensure => present,
-      }
-    }
-    if ! defined(Package['git-fat']){
-      package { 'git-fat':
-        ensure => present,
-      }
-    }
+
+
+    ensure_packages(['python-redis'])
 }
