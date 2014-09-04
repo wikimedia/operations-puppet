@@ -92,6 +92,7 @@ class misc::statistics::packages {
         'php5-cli',
         'php5-mysql',
         'sqlite3', # For storing and interacting with intermediate results
+        'libbz2-dev' # for compiling some python libs.  RT 8278
     ]:
         ensure => 'latest',
     }
