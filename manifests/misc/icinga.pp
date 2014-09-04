@@ -297,6 +297,9 @@ class icinga::monitor::files::misc {
     exec { 'fix_icinga_temp_files':
         command => '/bin/chown -R icinga /var/lib/icinga';
     }
+    exec { 'fix_icinga_log_files':
+        command => '/bin/chown -R icinga /var/log/icinga';
+    }
     exec { 'fix_nagios_plugins_files':
         command => '/bin/chmod -R a+w /var/lib/nagios';
     }
