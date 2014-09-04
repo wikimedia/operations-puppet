@@ -44,12 +44,12 @@ class role::phabricator::main {
     $current_tag = 'fabT552'
     $domain = 'phabricator.wikimedia.org'
     class { '::phabricator':
-        git_tag   => $current_tag,
-        lock_file => '/var/run/phab_repo_lock',
+        git_tag          => $current_tag,
+        lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $::mysql_adminuser,
         mysql_admin_pass => $::mysql_adminpass,
-        auth_type => 'dual',
-        settings  => {
+        auth_type        => 'dual',
+        settings         => {
             'search.elastic.host'                    => 'http://search.svc.eqiad.wmnet:9200',
             'search.elastic.namespace'               => 'phabricatormain',
             'storage.upload-size-limit'              => '10M',
@@ -79,18 +79,18 @@ class role::phabricator::main {
     }
 
     include passwords::phabricator
-    $emailbotcert = $passwords::mysql::phabricator::emailbot_cert
+    $emailbotcert = $passwords::phabricator::emailbot_cert
 
     class { '::phabricator::mailrelay':
-        address_routing         => { testproj => 1},
-        phab_bot => { root_dir   => '/srv/phab/phabricator/',
-                      env         => 'default',
-                      username    => 'emailbot',
-                      host        => "http://${domain}",
-                      certificate => $emailbotcert,
+        default                   => { security => 'default'},
+        address_routing           => { testproj => 'demoproject'},
+        phab_bot                  => { root_dir    => '/srv/phab/phabricator/',
+                                       env         => 'default',
+                                       username    => 'emailbot',
+                                       host        => "http://${domain}",
+                                       certificate => $emailbotcert,
         },
     }
-
 
     ferm::service { 'phabmain_http':
         proto => 'tcp',
