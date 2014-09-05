@@ -117,8 +117,8 @@ class role::wikimetrics {
 
     $celery_concurrency = $debug ? {
         true  => 16,
-        # Run at 100 concurrency in non debug environments.
-        false => 100,
+        # Run at 24 concurrency in non debug environments.
+        false => 24,
     }
 
     $db_pool_wikimetrics = $debug ? {
