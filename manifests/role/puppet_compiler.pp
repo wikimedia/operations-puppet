@@ -25,26 +25,26 @@ class role::puppet_compiler {
     file { '/mnt/puppet-compiler-output':
         ensure  => directory,
         owner   => 'jenkins-deploy',
-        group   => 'jenkins-deploy',
         require => $::role::ci::slave::labs::common::slash_mnt_require
     }
 
     mount { "${::puppet_compiler::program_dir}/output":
         ensure  => mounted,
-        options => "bind",
+        type    => 'auto',
+        options => 'bind',
         device  => '/mnt/puppet-compiler-output'
     }
 
     file { '/mnt/puppet-compiler-external':
         ensure  => directory,
         owner   => 'jenkins-deploy',
-        group   => 'jenkins-deploy',
         require => $::role::ci::slave::labs::common::slash_mnt_require
     }
 
     mount { "${::puppet_compiler::program_dir}/external/change":
         ensure  => mounted,
-        options => "bind",
+        type    => 'auto',
+        options => 'bind',
         device  => '/mnt/puppet-compiler-external'
     }
 
