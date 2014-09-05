@@ -88,6 +88,11 @@ if ($check eq "slave_io_state")
 {
 	my $status = $db->selectrow_hashref("show slave status");
 
+	unless ($status) {
+		printf("%s %s not a slave", $OK, $check);
+		exit($EOK);
+	}
+
 	# IO thread stopped without error, eq explicit STOP SLAVE IO_THREAD? WARN
 	if ($status->{Slave_IO_Running} ne "Yes" && $status->{Last_IO_Errno} == 0) {
 		printf("%s %s Slave_IO_Running: %s\n",
@@ -109,6 +114,11 @@ if ($check eq "slave_io_state")
 if ($check eq "slave_sql_state")
 {
 	my $status = $db->selectrow_hashref("show slave status");
+
+	unless ($status) {
+		printf("%s %s not a slave", $OK, $check);
+		exit($EOK);
+	}
 
 	# IO thread stopped? WARN
 	if ($status->{Slave_IO_Running} ne "Yes") {
@@ -141,6 +151,11 @@ if ($check eq "slave_sql_lag")
 	# TODO: Make this check heartbeat
 
 	my $status = $db->selectrow_hashref("show slave status");
+
+	unless ($status) {
+		printf("%s %s not a slave", $OK, $check);
+		exit($EOK);
+	}
 
 	# Either IO or SQL threads stopped? WARN
 	if ($status->{Slave_IO_Running} ne "Yes" || $status->{Slave_SQL_Running} ne "Yes") {

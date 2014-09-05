@@ -267,6 +267,10 @@ class role::mariadb::core(
 
     include mariadb::monitor_disk
     include mariadb::monitor_process
+
+    mariadb::monitor_replication { [ $shard ]:
+        multisource => false,
+    }
 }
 
 class role::mariadb::sanitarium {
