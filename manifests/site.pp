@@ -751,7 +751,7 @@ node /^db(60|7[5-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(51|52|55|61|62|65|66)\.eqiad\.wmnet/ {
+node /^db10(51|52|55|61|65|66)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -783,7 +783,7 @@ node /^db10(03|19|38)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(04|40|42|53|56|59|64|68)\.eqiad\.wmnet/ {
+node /^db10(04|40|42|53|56|59|64)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -824,7 +824,7 @@ node /^db10(07|28|33|34|39|41)\.eqiad\.wmnet/ {
 }
 
 # MariaDB 10
-node /^db10(72|73)\.eqiad\.wmnet/ {
+node /^db10(62|72|73)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -851,7 +851,7 @@ node /^db10(35|44)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(70)\.eqiad\.wmnet/ {
+node /^db10(68|70)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
