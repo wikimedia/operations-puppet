@@ -20,7 +20,7 @@ from Queue import Queue
 from functools import partial
 
 URLOPEN_TIMEOUT = 4
-
+METRIC_INTERVAL = 60
 
 # Used to merge stat descriptions
 def merge(skel, stat):
@@ -466,7 +466,7 @@ def update_result(data, cache):
     # If time delta is > 3 seconds, then update the JSON results
     now = time.time()
     diff = now - data['last_update']
-    if diff > 3:
+    if diff > METRIC_INTERVAL:
         data['stats'], data['last_fetch'] = cache.get(data['url'])
         data['last_update'] = now
 
