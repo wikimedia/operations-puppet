@@ -1906,6 +1906,20 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
     }
 }
 
+node /^rbf100[1-2]\.eqiad\.wmnet/ {
+    $cluster = 'redis'
+
+    include admin
+
+    $redis_replication = {
+        'rbf1002' => 'rbf1001',
+    }
+
+    class { 'role::db::redis':
+        redis_replication => $redis_replication,
+    }
+}
+
 node 'rubidium.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
