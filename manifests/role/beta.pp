@@ -157,4 +157,13 @@ class role::beta::monitoring::graphite {
         graphite_url    => 'http://labmon1001.eqiad.wmnet',
         contact_group   => 'betalabs'
     }
+
+    monitor_graphite_threshold { 'betalabs-low-space-var':
+        description     => 'Monitor for low disk space on /var for beta labs',
+        metric          => 'deployment-prep.*.diskspace._var.byte_avail.value',
+        warning         => 67108864, # 512MiB
+        critical        => 33554432, # 256MiB,
+        graphite_url    => 'http://labmon1001.eqiad.wmnet',
+        contact_group   => 'betalabs',
+    }
 }
