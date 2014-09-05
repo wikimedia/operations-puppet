@@ -422,7 +422,7 @@ define monitor_graphite_threshold(
     $metric,
     $warning,
     $critical,
-    $from                  = '-10m',
+    $from                  = '10min',
     $percentage            = 1,
     $under                 = false,
     $graphite_url          = 'http://graphite.wikimedia.org',
