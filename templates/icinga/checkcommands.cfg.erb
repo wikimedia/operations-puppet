@@ -538,6 +538,7 @@ define command{
 define command{
     command_name    check_dsh_groups
     command_line    $USER1$/check_dsh_groups $HOSTNAME$ $ARG1$
+    check_interval  60
 }
 
 # check Online Content Generator health from server health page
