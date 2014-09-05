@@ -399,7 +399,7 @@ define monitor_ganglia(
 # $warning              - alert warning threshold
 # $critical             - alert critical threshold
 # $from                 - Date from which to fetch data.
-#                         Examples: '-1d','-10m' (default), '-2hours'
+#                         Examples: '1hours','10min' (default), '2w'
 # $percentage           - Number of datapoints exceeding the
 #                         threshold. Defaults to 1%.
 # $under                - If true, the threshold is a lower limit.
