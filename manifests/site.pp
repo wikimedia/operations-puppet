@@ -1884,6 +1884,7 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 
     class { 'redis':
         maxmemory => '500Mb',
+        dir       => '/a/redis',
         password  => $passwords::redis::main_password,
     }
     include redis::ganglia
@@ -1903,6 +1904,7 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
 
     class { 'role::db::redis':
         redis_replication => $redis_replication,
+        dir               => '/a/redis',
     }
 }
 
@@ -1911,12 +1913,8 @@ node /^rbf100[1-2]\.eqiad\.wmnet/ {
 
     include admin
 
-    $redis_replication = {
-        'rbf1002' => 'rbf1001',
-    }
-
     class { 'role::db::redis':
-        redis_replication => $redis_replication,
+        redis_replication => { 'rbf1002' => 'rbf1001' },
     }
 }
 

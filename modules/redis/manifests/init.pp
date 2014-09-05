@@ -1,7 +1,7 @@
 # application server base class
 class redis (
     $port = 6379,
-    $dir = '/a/redis',
+    $dir = '/srv/redis',
     $maxmemory = '1GB',
     $maxmemory_policy = 'volatile-lru',
     $maxmemory_samples = 5,

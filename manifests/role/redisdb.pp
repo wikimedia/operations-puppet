@@ -10,8 +10,9 @@
 }
 
 class role::db::redis (
-    $maxmemory = inline_template("<%= (Float(memorysize.split[0]) * 0.82).round %>Gb"),
-    $redis_replication = undef
+    $maxmemory         = inline_template("<% = (Float(memorysize.split[0]) * 0.82).round %>Gb"),
+    $redis_replication = undef,
+    $dir               = '/srv/redis'
 ) {
 
     system::role { 'db::redis':
@@ -25,6 +26,7 @@ class role::db::redis (
 
         class { '::redis':
             maxmemory         => $maxmemory,
+            dir               => $dir,
             persist           => 'aof',
             redis_replication => $redis_replication,
             password          => $passwords::redis::main_password,
@@ -40,7 +42,7 @@ class role::db::redis (
             persist                   => 'aof',
             redis_replication         => undef,
             password                  => $::passwords::redis::main_password,
-            dir                       => '/var/lib/redis/',
+            dir                       => $dir,
             auto_aof_rewrite_min_size => '64mb',
         }
     }
