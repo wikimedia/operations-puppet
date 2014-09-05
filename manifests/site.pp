@@ -783,7 +783,7 @@ node /^db10(03|19|38)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(04|40|42|53|56|59|64)\.eqiad\.wmnet/ {
+node /^db10(40|42|53|56|59|64)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -1002,6 +1002,13 @@ node /^dbstore1002\.eqiad\.wmnet/ {
         lag_warn => 1800,
         lag_crit => 3600,
     }
+}
+
+# springle using for codfw preparation
+node 'db1004.eqiad.wmnet' {
+
+    include admin
+    include standard
 }
 
 node 'dobson.wikimedia.org' {
