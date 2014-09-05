@@ -149,7 +149,7 @@ class role::beta::jobrunner {
 # Sets up graphite based icinga checks for all of betalabs
 class role::beta::monitoring::graphite {
     monitor_graphite_threshold { 'betalabs-puppet-fail':
-        from            => '-10m',
+        from            => '10min',
         description     => 'Monitor for puppet failures on beta labs',
         metric          => 'deployment-prep.*.puppetagent.failed_events.value',
         critical        => 1,
