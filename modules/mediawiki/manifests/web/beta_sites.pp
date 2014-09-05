@@ -1,5 +1,15 @@
 class mediawiki::web::beta_sites {
     tag 'mediawiki', 'mw-apache-config'
+    # HHVM catchall, and removal of mod_php
+    apache::conf { 'hhvm_catchall':
+        source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_catchall.conf',
+        priority => 50,
+    }
+
+    apache::mod_conf { 'php5':
+        ensure => 'absent',
+    }
+
     # Now the sites, in strict sequence
     apache::site { 'nonexistent':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/nonexistent.conf',
