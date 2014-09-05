@@ -46,7 +46,7 @@ class role::mediawiki::common {
 
     monitor_service { 'mediawiki-installation DSH group':
         description   => 'mediawiki-installation DSH group',
-        check_command => "check_dsh_group!mediawiki-installation",
+        check_command => "check_dsh_groups!mediawiki-installation",
     }
 }
 
