@@ -56,6 +56,11 @@ sub vcl_fetch {
 	call hhvm_add_vary;
 
 <% end -%>
+        if (beresp.ttl <= 0s) {
+                set beresp.ttl = 120s;
+                return (hit_for_pass);
+        }
+
 	call hhvm_is_cacheable;
 
 	/* Don't run the default vcl_fetch function */
