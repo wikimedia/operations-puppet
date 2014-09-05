@@ -751,13 +751,12 @@ class icinga::monitor::service {
 
     require icinga::monitor::apache
 
-    if $::realm == 'labs' {
-      #TODO this tempfs mount is not yet puppetized in production
-      file { '/var/icinga-tmpfs':
-        ensure => directory,
-        owner => 'icinga',
-        group => 'icinga',
-      }
+    mount { '/var/icinga-tmpfs':
+        ensure  => mounted,
+        atboot  => true,
+        fstype  => 'tmpfs',
+        device  => 'none',
+        options => 'size=128m,uid=icinga,gid=icinga,mode=755',
     }
 
     service { 'icinga':
@@ -771,6 +770,7 @@ class icinga::monitor::service {
             File['/etc/icinga/puppet_hostextinfo.cfg'],
             File['/etc/icinga/puppet_hosts.cfg'],
         ],
+        require => Mount['/var/icinga-tmpfs'],
     }
 }
 
