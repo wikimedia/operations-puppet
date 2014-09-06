@@ -49,6 +49,9 @@ class role::phabricator::main {
         mysql_admin_user => $::mysql_adminuser,
         mysql_admin_pass => $::mysql_adminpass,
         auth_type        => 'dual',
+        extension_tag    => 'HEAD',
+        extensions       => ['MediaWikiUserpageCustomField.php',
+                             'SecurityPolicyEnforcerAction.php'],
         settings         => {
             'search.elastic.host'                    => 'http://search.svc.eqiad.wmnet:9200',
             'search.elastic.namespace'               => 'phabricatormain',
@@ -117,10 +120,12 @@ class role::phabricator::labs {
     $mysqlpass = 'labspass'
     $current_tag = 'fabT552'
     class { '::phabricator':
-        git_tag   => $current_tag,
-        lock_file => '/var/run/phab_repo_lock',
-        auth_type => 'local',
-        settings  => {
+        git_tag          => $current_tag,
+        lock_file        => '/var/run/phab_repo_lock',
+        auth_type        => 'local',
+        extension_tag    => 'HEAD',
+        extensions       => ['SecurityPolicyEnforcerAction.php'],
+        settings         => {
             'search.elastic.host'                => 'http://localhost:9200',
             'search.elastic.namespace'           => 'phabricator',
             'darkconsole.enabled'                => true,
@@ -151,7 +156,7 @@ class role::phabricator::labs {
     }
 
     package { 'elasticsearch':
-        ensure => present,
+        ensure     => present,
         require    => Package['openjdk-7-jre-headless'],
     }
 
