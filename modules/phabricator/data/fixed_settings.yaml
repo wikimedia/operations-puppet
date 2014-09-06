@@ -45,7 +45,7 @@ maniphest.custom-field-definitions:
       default: none
       security-bug: 'Security or Sensitive Bug'
       ops-access-request: 'Operations Access Request'
-      ops-procurement: 'Operations Procurement'
+      ops-sensitive: 'Operations Sensitive'
       sensitive: 'Another Private Issue'
 
 maniphest.statuses:
