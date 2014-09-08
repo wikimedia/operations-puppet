@@ -161,7 +161,7 @@ class Threshold(GraphiteCheck):
     """
     parser_name = 'check_threshold'
     from_regex = re.compile('^-(\d+)(\w+)$')
-    _accepted_time_defs = ['hours', 'h', 'w', 'weeks', 'min']
+    _accepted_time_defs = ['hours', 'h', 'w', 'weeks', 'min', 'minutes']
 
     @classmethod
     def create_parser(cls, parser):
@@ -430,7 +430,7 @@ def main():
     Check if a metric exceeds a certain value 10 times in the last 20 minutes:
 
     ./check_graphite --url http://some-graphite-host \
-           check_threshold my.beloved.metric  --from -20m \
+           check_threshold my.beloved.metric  --from -20minutes \
            --threshold 100 --over -C 10 -W 5
 
     Check if a metric has exceeded its holt-winters confidence bands 5% of the
