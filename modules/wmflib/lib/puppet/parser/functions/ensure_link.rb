@@ -1,4 +1,4 @@
-# == Function: ensure_directory( string|bool $ensure )
+# == Function: ensure_link( string|bool $ensure )
 #
 # Takes a generic 'ensure' parameter value and convert it to an
 # appropriate value for use with a symlink file declaration.
