@@ -38,6 +38,7 @@ import os
 import re
 import subprocess
 import textwrap
+import time
 import urllib2
 
 try:
@@ -50,14 +51,15 @@ JENKINS_URL = 'https://integration.wikimedia.org/ci/'
 GERRIT_URL_FORMAT = ('https://gerrit.wikimedia.org/r/changes/'
                      'operations%%2Fpuppet~production~%s/detail')
 red, green, yellow, blue, white = [
-    ('\033[9%sm{}\033[0m' % n).format for n in (1, 2, 3, 4, 7)]
+    ('\x1b[9%sm{}\x1b[0m' % n).format for n in (1, 2, 3, 4, 7)]
 
 
-def highlight(text):
+def format_console_output(text):
     """Colorize log output."""
-    return (text.replace('\n', '\033[0m\n')
-                .replace('INFO:', '\033[94mINFO:')
-                .replace('ERROR:', '\033[91mINFO:'))
+    return (re.sub(r'((?<=\n) +|(?<=Finished: )\w+)', '', text, re.M)
+              .replace('\n', '\x1b[0m\n')
+              .replace('INFO:', '\x1b[94mINFO:')
+              .replace('ERROR:', '\x1b[91mINFO:'))
 
 
 def get_change_id(change='HEAD'):
@@ -119,7 +121,7 @@ jenkins = jenkinsapi.jenkins.Jenkins(
     password=args.api_token
 )
 
-print yellow('Compiling change %(change)s on nodes %(nodes)s...' % vars(args))
+print yellow('Compiling %(change)s on node(s) %(nodes)s...' % vars(args))
 
 job = jenkins.get_job('operations-puppet-catalog-compiler')
 build_params = {
@@ -130,15 +132,23 @@ invocation = job.invoke(build_params=build_params)
 invocation.block(until='not_queued')
 build = invocation.get_build()
 
-print 'Your build URL is \033[97m%s\033[0m' % white(build.baseurl)
-
+print 'Your build URL is %s' % white(build.baseurl)
 
 running = True
 output = ''
 while running:
+    time.sleep(1)
     running = invocation.is_running()
-    new_output = build.get_console()
-    print highlight(new_output[len(output):].rstrip(' ')),
+    new_output = build.get_console().rstrip('\n')
+    print format_console_output(new_output[len(output):]),
     output = new_output
 
-sys.exit(0 if build.is_good() else 1)
+# Puppet's exit code is not always meaningful, so we grep the output
+# for failures before declaring victory.
+ok = build.is_good() and not re.search(r'[1-9]\d* FAIL', output)
+if ok:
+    print green('SUCCESS')
+    sys.exit(0)
+else:
+    print red('FAIL')
+    sys.exit(1)
