@@ -12,6 +12,16 @@ class mediawiki::web::modules {
 
     if ubuntu_version('>= trusty') {
         include ::apache::mod::proxy_fcgi
+
+        apache::mod_conf { 'mod_php5':
+            ensure => absent,
+        }
+
+        # HHVM catchall, and removal of mod_php
+        apache::conf { 'hhvm_catchall':
+            source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_catchall.conf',
+            priority => 50,
+        }
     } else {
         include ::apache::mod::php5
     }
