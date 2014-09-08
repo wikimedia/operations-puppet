@@ -31,7 +31,7 @@ class ganglia {
         }
     } else {
             if ! $::cluster {
-                $cluster = 'misc'
+                $cluster = 'pending_deployment'
             }
             # aggregator should not be deaf (they should listen)
             # ganglia_aggregator for production are defined in site.pp;
@@ -159,6 +159,9 @@ class ganglia {
             'mathoid' => {
                 'name'      => 'Math rendering cluster',
                 'ip_oct'    => '46' },
+            'pending_deployment' => {
+                'name'      => 'Pending deployment',
+                'ip_oct'    => '47' },
         }
         # NOTE: Do *not* add new clusters *per site* anymore,
         # the site name will automatically be appended now,
@@ -301,7 +304,7 @@ class ganglia::collector::config {
                     'Image scalers eqiad'            => 'mw1153.eqiad.wmnet mw1154.eqiad.wmnet',
                     'API application servers eqiad'  => 'mw1114.eqiad.wmnet mw1115.eqiad.wmnet',
                     'Application servers eqaid'      => 'mw1017.eqiad.wmnet mw1018.eqiad.wmnet',
-                    'Jobrunners eqiad'              => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
+                    'Jobrunners eqiad'               => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
                     'MySQL'                          => 'db1050.eqiad.wmnet',
                     'PDF servers pmtpa'              => 'pdf2.wikimedia.org pdf3.wikimedia.org',
                     'PDF servers eqiad'              => 'ocg1001.eqiad.wmnet',
@@ -315,6 +318,9 @@ class ganglia::collector::config {
                     'LVS loadbalancers codfw'        => 'install2001.wikimedia.org:10651 lvs2001.wikimedia.org lvs2002.wikimedia.org',
                     'Miscellaneous eqiad'            => 'carbon.wikimedia.org ms1004.eqiad.wmnet',
                     'Miscellaneous codfw'            => 'install2001.wikimedia.org:10657',
+                    'Pending deployment codfw'       => 'install2001.wikimedia.org:10691',
+                    'Pending deployment eqiad'       => 'carbon.wikimedia.org',
+                    'Pending deployment esams'       => 'hooft.esams.wikimedia.org:11691',
                     'Mobile caches eqiad'            => 'cp1046.eqiad.wmnet cp1047.eqiad.wmnet',
                     'Mobile caches esams'            => 'hooft.esams.wikimedia.org:11677',
                     'Bits caches eqiad'              => 'cp1056.eqiad.wmnet cp1057.eqiad.wmnet',
