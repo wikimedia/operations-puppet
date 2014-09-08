@@ -113,6 +113,8 @@ sub vcl_error {
 	return(deliver);
 }
 
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 sub vcl_deliver {
 	call php_mark_engine;
 }
+<% end -%>
