@@ -3,6 +3,7 @@
 include "errorpage.inc.vcl";
 include "hhvm.inc.vcl";
 
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 sub mangle_request {
 	/* transform backend url: /<sitename>/load.php -> /w/load.php
 	   set host header for backend to <sitename>
@@ -19,7 +20,7 @@ sub mangle_request {
 <% end -%>
 	}
 }
-
+<% end -%>
 
 sub vcl_recv {
 	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
