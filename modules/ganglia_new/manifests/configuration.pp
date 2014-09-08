@@ -101,6 +101,11 @@ class ganglia_new::configuration {
         'cache_misc'    => {
             'name'      => 'Misc Web caching cluster',
             'id'    => 41 },
+        'pending_deployment'    => {
+            'name'      => 'Pending deployment',
+            'id'    => 42 },
+            'sites' => ['codfw', 'eqiad', 'esams', 'ulsfo']  },
+
     }
     # NOTE: Do *not* add new clusters *per site* anymore,
     # the site name will automatically be appended now,
@@ -126,6 +131,7 @@ class ganglia_new::configuration {
                 eqiad => 1000,
                 codfw => 2000,
                 esams => 3000,
+                ulsfo => 4000,
             }
             $default_sites = ['pmtpa', 'eqiad']
         }
