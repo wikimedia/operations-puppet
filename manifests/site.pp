@@ -453,7 +453,7 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
     }
 }
 
-node /^(chromium|hydrogen)\.wikimedia\.org$/ {
+node /^(chromium|hydrogen|acamar|achernar)\.wikimedia\.org$/ {
     include admin
     include base::firewall
     include standard
