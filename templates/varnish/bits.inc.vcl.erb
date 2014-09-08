@@ -3,6 +3,24 @@
 include "errorpage.inc.vcl";
 include "hhvm.inc.vcl";
 
+sub mangle_request {
+	/* transform backend url: /<sitename>/load.php -> /w/load.php
+	   set host header for backend to <sitename>
+	*/
+	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape( cluster_options.fetch( "top_domain", "org" ) ) %>/load\.php" ) {
+		set bereq.http.host = regsub( req.url, "^/([^/]+)/(.*)$", "\1" );
+		set bereq.url = regsub( req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2" );
+<% if cluster_options.fetch( "test_hostname", false ) -%>
+
+		# Send test.wikipedia.org to the right backend server
+		if ( req.url ~ "^/<%= Regexp.escape( cluster_options.fetch( "test_hostname" ) ) %>/load\.php" ) {
+			set req.backend = test_wikipedia;
+		}
+<% end -%>
+	}
+}
+
+
 sub vcl_recv {
 	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
 	if (req.request == "POST") {
@@ -58,6 +76,9 @@ sub vcl_fetch {
 <% end -%>
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+		call mangle_request;
+<% end -%>
 		return (hit_for_pass);
 	}
 
@@ -69,20 +90,7 @@ sub vcl_fetch {
 
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 sub vcl_miss {
-	/* transform backend url: /<sitename>/load.php -> /w/load.php
-	   set host header for backend to <sitename>
-	*/
-	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape( cluster_options.fetch( "top_domain", "org" ) ) %>/load\.php" ) {
-		set bereq.http.host = regsub( req.url, "^/([^/]+)/(.*)$", "\1" );
-		set bereq.url = regsub( req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2" );
-<% if cluster_options.fetch( "test_hostname", false ) -%>
-
-		# Send test.wikipedia.org to the right backend server
-		if ( req.url ~ "^/<%= Regexp.escape( cluster_options.fetch( "test_hostname" ) ) %>/load\.php" ) {
-			set req.backend = test_wikipedia;
-		}
-<% end -%>
-	}
+	call mangle_request;
 }
 <% end -%>
 
