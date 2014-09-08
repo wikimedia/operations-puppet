@@ -104,9 +104,9 @@ Emit a hash as YAML with keys (both shallow and deep) in sorted order.
     }
 
 
-## require_packages
+## require_package
 
-`require_packages( string $package_name [, string $... ] )`
+`require_package( string $package_name [, string $... ] )`
 
 Declare one or more packages a dependency for the current scope.
 This is equivalent to declaring and requiring the package resources.
@@ -119,11 +119,11 @@ evaluating any of the resources in the current scope.
     require_package('python-redis')
 
     # Multiple packages as arguments
-    require_packages('redis-server', 'python-redis')
+    require_package('redis-server', 'python-redis')
 
     # Multiple packages as array
     $deps = [ 'redis-server', 'python-redis' ]
-    require_packages($deps)
+    require_package($deps)
 
 
 ## requires_realm
