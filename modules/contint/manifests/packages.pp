@@ -146,7 +146,10 @@ class contint::packages {
 
     # Node.js evolves quickly so we want to update it
     # automatically.
-    package { 'nodejs':
+    package { [
+        'nodejs',
+        'nodejs-legacy',
+        ]:
         ensure => latest,
     }
 
