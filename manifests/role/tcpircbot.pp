@@ -23,6 +23,7 @@ class role::tcpircbot {
     }
 
     ferm::rule { 'tcpircbot_allowed':
-        rule => 'proto tcp dport 9200 { saddr (10.64.21.123 10.64.0.196 208.80.152.165 127.0.0.1) ACCEPT; }',
+        # Vanadium, tin(v4), fenari, localhost, tin (v6)
+        rule => 'proto tcp dport 9200 { saddr (10.64.21.123 10.64.0.196 208.80.152.165 127.0.0.1 2620:0:861:101:10:64:0:196) ACCEPT; }',
     }
 }
