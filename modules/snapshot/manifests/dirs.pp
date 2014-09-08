@@ -1,7 +1,7 @@
 class snapshot::dirs {
     $dumpsdir = '/srv/dumps'
     $datadir = '/mnt/data/xmldatadumps'
-    $apachedir = '/usr/local/apache/common-local'
+    $apachedir = '/srv/mediawiki'
 
     file { $dumpsdir:
         ensure  => 'directory',
