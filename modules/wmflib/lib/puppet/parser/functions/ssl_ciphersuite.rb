@@ -1,11 +1,7 @@
-# == Function: ssl_ciphersuite
+# == Function: ssl_ciphersuite( string $servercode, string $encryption_type, int $hsts_days )
 #
-# === Description
-#
-# Outputs the ssl configuration directives for use with either nginx
-# or apache using our selection of ciphers and ssl options.
-# This is an attempt at unifying the configurations we use across our
-# uncountable number of systems.
+# Outputs the ssl configuration directives for use with either Nginx
+# or Apache using our selection of ciphers and SSL options.
 #
 # === Arguments
 #
@@ -13,7 +9,7 @@
 #
 # - The servercode, or which browser-version combination to
 #   support. At the moment only 'apache-2.2', 'apache-2.4' and 'nginx'
-#  are supported.
+#   are supported.
 # - The compatibility mode,indicating the degree of compatibility we
 #   want to retain with older browsers (basically, IE6, IE7 and
 #   Android prior to 3.0)
@@ -46,7 +42,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+#
 require 'puppet/util/package'
 
 module Puppet::Parser::Functions
@@ -74,7 +70,7 @@ END
 
 
     if args.length < 2 || args.length > 3
-      raise Puppet::ParseError, 'ssl_ciphersuite() requires at least 2 arguments'
+      fail(ArgumentError, 'ssl_ciphersuite() requires at least 2 arguments')
     end
 
     servercode = args.shift
@@ -88,19 +84,19 @@ END
     when 'nginx' then
       server = 'nginx'
       server_version = nil
-    else raise Puppet::ParseError,
-      "ssl_ciphersuite(): unknown server string '#{servercode}'"
+    else
+      fail(ArgumentError, "ssl_ciphersuite(): unknown server string '#{servercode}'")
     end
 
     ciphersuite = args.shift
     unless ciphersuites.has_key?(ciphersuite)
-      raise Puppet::ParseError, "ssl_ciphersuite(): unknown ciphersuite '#{ciphersuite}'"
+      fail(ArgumentError, "ssl_ciphersuite(): unknown ciphersuite '#{ciphersuite}'")
     end
 
     cipherlist = ciphersuites[ciphersuite]
 
     if ciphersuite == 'strong' && server == 'apache' && server_version < 24
-      raise Puppet::ParseError, "ssl_ciphersuite(): apache 2.2 cannot work in strong PFS mode"
+      fail(ArgumentError, 'ssl_ciphersuite(): apache 2.2 cannot work in strong PFS mode')
     end
     if args.length == 1
       hsts_days = args.shift.to_i

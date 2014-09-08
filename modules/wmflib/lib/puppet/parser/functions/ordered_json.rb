@@ -1,4 +1,4 @@
-# == Function: ordered_json
+# == Function: ordered_json( hash $data [, hash $... ] )
 #
 # Serialize a hash into JSON with lexicographically sorted keys.
 #
@@ -10,34 +10,27 @@
 # Puppet, causing Puppet to replace the file and refresh dependent
 # resources on every run.
 #
-# Copyright 2014 Ori Livneh
+# === Examples
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+#   # Render a Puppet hash as a configuration file:
+#   $options = { 'useGraphite' => true, 'minVal' => '0.1' }
+#   file { '/etc/kibana/config.json':
+#     content => ordered_json($options),
+#   }
 #
 def ordered_json(o)
-    case o
-    when Array
-        '[' + o.map { |x| ordered_json(x) }.join(', ') + ']'
-    when Hash
-        '{' + o.sort.map { |k,v| k.to_pson + ': ' + ordered_json(v) }.join(', ') + '}'
-    else
-        o.include?('.') ? Float(o).to_s : Integer(o).to_s rescue o.to_pson
-    end
+  case o
+  when Array
+    '[' + o.map { |x| ordered_json(x) }.join(', ') + ']'
+  when Hash
+    '{' + o.sort.map { |k, v| k.to_pson + ': ' + ordered_json(v) }.join(', ') + '}'
+  else
+    o.include?('.') ? Float(o).to_s : Integer(o).to_s rescue o.to_pson
+  end
 end
 
 module Puppet::Parser::Functions
-    newfunction(:ordered_json, :type => :rvalue) do |args|
-        fail 'ordered_json() requires an argument' if args.empty?
-        ordered_json(args.inject(:merge))
-    end
+  newfunction(:ordered_json, :type => :rvalue, :arity => -2) do |args|
+    ordered_json(args.reduce(&:merge))
+  end
 end
