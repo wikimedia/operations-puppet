@@ -2724,6 +2724,7 @@ node 'snapshot1003.eqiad.wmnet' {
 node 'terbium.eqiad.wmnet' {
     include role::mediawiki::common
     include role::db::maintenance
+    include role::peopleweb
     include misc::monitoring::jobqueue
     include generic::wikidev-umask
     include misc::deployment::common_scripts
