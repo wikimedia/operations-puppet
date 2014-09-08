@@ -126,11 +126,14 @@ class contint::packages {
             ]:
             ensure => 'installed',
         }
+
+        package { 'nodejs-legacy':
+            ensure => latest,
+        }
     }
 
     # these packages are used by the tests for wikistats to parse the
     # generated reports to see if they are correct
-
     package { [
         'libhtml-treebuilder-xpath-perl',
         'libjson-xs-perl',
@@ -144,8 +147,7 @@ class contint::packages {
     # need geoip to build udp-filter
     include geoip
 
-    # Node.js evolves quickly so we want to update it
-    # automatically.
+    # Node.js evolves quickly so we want to update automatically.
     package { 'nodejs':
         ensure => latest,
     }
