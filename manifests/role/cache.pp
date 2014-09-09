@@ -494,6 +494,13 @@ class role::cache {
             # All producers currently produce to the (only) Kafka cluster in eqiad.
             $kafka_brokers = keys($role::analytics::kafka::config::cluster_config['eqiad'])
 
+
+            # Make sure varnishkafka rsyslog file is in place properly.
+            rsyslog::conf { 'varnishkafka':
+                source   => 'puppet:///files/varnish/varnishkafka_rsyslog.conf',
+                priority => 70,
+            }
+
             class { '::varnishkafka':
                 brokers                      => $kafka_brokers,
                 topic                        => $topic,
@@ -521,13 +528,10 @@ class role::cache {
                 # this often.  This is set at 15 so that
                 # stats will be fresh when polled from gmetad.
                 log_statistics_interval      => 15,
-            }
-
-            # Persist the rsyslog conf bundled with the varnishkafka .deb
-            # by declaring it to Puppet.
-            file { '/etc/rsyslog.d/70-varnishkafka.conf':
-                ensure  => file,
-                require => Class['::varnishkafka'],
+                # Require the varnishkafka rsyslog file so that
+                # logs will go to rsyslog the first time puppet
+                # sets up varnishkafka.
+                require                      => Rsyslog::Conf['varnishkafka'],
             }
 
             class { '::varnishkafka::monitoring': }
