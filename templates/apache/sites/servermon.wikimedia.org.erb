@@ -44,9 +44,7 @@
         AuthLDAPBindPassword <%= @proxypass %>
         AuthLDAPURL "ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
         Require ldap-group cn=ops,ou=groups,dc=wikimedia,dc=org
-	# TODO: Evaluate which other groups we need. Possible ones are:
-        # Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
-        # Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
+        Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
     </Location>
 
     ErrorLog /var/log/apache2/servermon.wikimedia.org-error.log
