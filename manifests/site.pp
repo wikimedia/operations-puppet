@@ -93,7 +93,7 @@ node 'analytics1003.eqiad.wmnet' {
 
     include role::analytics
     include role::analytics::kafkatee::webrequest::mobile
-
+    include role::analytics::kafkatee::webrequest::sampled
     include role::analytics::kafkatee::webrequest::webstatscollector
 }
 

@@ -95,6 +95,20 @@ class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::ka
     }
 }
 
+# == Class role::analytics::kafkatee::webrequest::sampled inherits role::analytics::kafkatee::webrequest
+# Sets up kafkatee to consume from all 4 webrequest topics output
+# to a file with no filtering, but with 1/1000 requests sampled.
+#
+class role::analytics::kafkatee::webrequest::sampled inherits role::analytics::kafkatee::webrequest {
+    include role::analytics::kafkatee::input::webrequest
+
+    ::kafkatee::output { 'sampled-1000':
+        destination => "${webrequest_log_directory}/sampled-1000.tsv.log",
+        sample      => 1000,
+    }
+}
+
+
 # == role::analytics::kafkatee::webstatscollector
 # We want to run webstatscollector via kafkatee for testing.
 # Some of the production (role::logging::webstatscollector)
