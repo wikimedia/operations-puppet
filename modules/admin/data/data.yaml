@@ -1,7 +1,7 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [csalvia, rainman, mwalker]
+    members: [csalvia, rainman, mwalker, jgonera]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -41,7 +41,7 @@ groups:
       brion, bsitu, cmcmahon, cscott, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn,
-      nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik, jgonera,
+      nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
       tgr, ssmith, bsimmers, ejegg, twentyafterfour]
   restricted:
     gid: 706
@@ -158,7 +158,7 @@ groups:
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
-    members: [dartar, halfak, howief, ironholds, jdlrobson, jgonera, jmorgan,
+    members: [dartar, halfak, howief, ironholds, jdlrobson, jmorgan,
               maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
@@ -204,7 +204,7 @@ groups:
         Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
-              kleduc, nuria, haithams, otto, jgonera, deskana,
+              kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant]
   analytics-admins:
     gid: 732
@@ -716,7 +716,7 @@ users:
         yastrakhan@wikimedia.org]
     uid: 1011
   jgonera:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jgonera
     realname: Juliusz Gonera
