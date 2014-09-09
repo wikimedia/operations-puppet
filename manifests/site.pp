@@ -2872,13 +2872,8 @@ node 'titanium.wikimedia.org' {
 
 
 node 'tridge.wikimedia.org' {
-    system::role { 'role::backup':
-        description => 'Backup server',
-    }
-
     include standard
     include admin
-    include backup::server
 }
 
 # tmh1001/tmh1002 video encoding server (precise only)
