@@ -282,6 +282,7 @@ class backup::client {
     define client_backup($host=$hostname, $path) {
         $line_of_text = "$host $path default"
         @@file { "/etc/amanda/disklist":
+            ensure  => absent,
             owner   => root,
             group   => root,
             content => $line_of_text,
@@ -348,9 +349,6 @@ class backup::client {
 }
 
 class backup::mysql {
-
-    include backup::client
-
     file { "/usr/local/sbin/snaprotate.pl":
         owner  => root,
         group  => root,
@@ -364,5 +362,4 @@ class backup::mysql {
         hour    => 1,
         minute  => 0;
     }
-
 }
