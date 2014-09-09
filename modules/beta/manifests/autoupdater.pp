@@ -31,13 +31,6 @@ class beta::autoupdater {
         content => template('beta/wmf-beta-mwconfig-update.erb'),
     }
 
-    file { $stage_dir:
-        ensure => directory,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0775',
-    }
-
     git::clone { 'operations/mediawiki-config':
         directory => $stage_dir,
         branch    => 'master',
