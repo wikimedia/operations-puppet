@@ -227,58 +227,10 @@ class backup::server::daily {
 
     file {
     "$conf_location":
-        owner   => root,
-        group   => root,
-        mode    => 0777,
-        purge   => false,
+        ensure  => absent,
+        recurse => true,
         require => Package["amanda-server"],
-        ensure  => directory;
-    "$conf_location/amanda.conf":
-        owner   => root,
-        group   => root,
-        mode    => 0644,
-        require => File["$conf_location"],
-        content => template("backups/amanda-server.conf.erb");
-    "$conf_location/logs":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        require => File["$conf_location"],
-        ensure  => directory;
-    "$conf_location/index":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        require => File["$conf_location"],
-        ensure  => directory;
-    "$conf_location/curinfo":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        require => File["$conf_location"],
-        ensure  => directory;
-    "$conf_location/tapelist":
-        owner   => backup,
-        group   => backup,
-        require => File["$conf_location"],
-        mode    => 0644;
-    "$conf_location/disklist":
-        owner   => root,
-        group   => root,
-        mode    => 0644,
-        require => File["$conf_location"],
-        source  => "puppet:///files/backup/disklist-daily";
     }
-
-    exec { create_daily_vtapes:
-        command => "/etc/amanda/create_vtapes.sh $cycle_type $tape_num $vtapes_location",
-        require => [ File["/etc/amanda/create_vtapes.sh"], File["$conf_location"] ],
-        user    => root;
-    }
-
 }
 
 class backup::server::weekly {
@@ -297,59 +249,10 @@ class backup::server::weekly {
 
     file {
     "$conf_location":
-        owner   => root,
-        group   => root,
-        mode    => 0777,
-        purge   => false,
+        ensure  => absent,
+        recurse => true,
         require => Package["amanda-server"],
-        ensure  => directory;
-    "$conf_location/amanda.conf":
-        owner   => root,
-        group   => root,
-        mode    => 0644,
-        content => template("backups/amanda-server.conf.erb"),
-        require => File["$conf_location"];
-    "$conf_location/logs":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        ensure  => directory,
-        require => File["$conf_location"];
-    "$conf_location/index":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        ensure  => directory,
-        require => File["$conf_location"];
-    "$conf_location/curinfo":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        ensure  => directory,
-        require => File["$conf_location"];
-    "$conf_location/tapelist":
-        owner   => backup,
-        group   => backup,
-        mode    => 0644,
-        require => File["$conf_location"];
-    "$conf_location/disklist":
-        owner   => root,
-        group   => root,
-        mode    => 0644,
-        source  => "puppet:///files/backup/disklist-weekly",
-        require => File["$conf_location"];
     }
-
-    exec {
-        create_weekly_vtapes:
-            command => "/etc/amanda/create_vtapes.sh $cycle_type $tape_num $vtapes_location",
-            require => [ File["/etc/amanda/create_vtapes.sh"], File["$conf_location"] ],
-            user    => root;
-    }
-
 }
 
 class backup::server::monthly {
@@ -368,58 +271,10 @@ class backup::server::monthly {
 
     file {
     "$conf_location":
-        owner   => root,
-        group   => root,
-        mode    => 0777,
-        purge   => false,
+        ensure  => absent,
+        recurse => true,
         require => Package["amanda-server"],
-        ensure  => directory;
-    "$conf_location/amanda.conf":
-        owner   => root,
-        group   => root,
-        mode    => 0644,
-        require => File["$conf_location"],
-        content => template("backups/amanda-server.conf.erb");
-        "$conf_location/logs":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        require => File["$conf_location"],
-        ensure  => directory;
-    "$conf_location/index":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        require => File["$conf_location"],
-        ensure  => directory;
-    "$conf_location/curinfo":
-        owner   => backup,
-        group   => backup,
-        mode    => 0755,
-        purge   => false,
-        require => File["$conf_location"],
-        ensure  => directory;
-    "$conf_location/tapelist":
-        owner   => backup,
-        group   => backup,
-        require => File["$conf_location"],
-        mode    => 0644;
-    "$conf_location/disklist":
-        owner   => root,
-        group   => root,
-        mode    => 0644,
-        require => File["$conf_location"],
-        source  => "puppet:///files/backup/disklist-monthly";
     }
-
-    exec { create_monthly_vtapes:
-        command => "/etc/amanda/create_vtapes.sh $cycle_type $tape_num $vtapes_location",
-        require => [ File["/etc/amanda/create_vtapes.sh"], File["$conf_location"] ],
-        user    => root;
-    }
-
 }
 
 class backup::client {
