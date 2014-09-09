@@ -151,27 +151,17 @@ define backup::weeklyschedule($pool) {
 class backup::server {
 
     package { [ "amanda-common", "amanda-server" ]:
-        ensure => latest;
+        ensure => purged;
     }
 
     file {
-    "/var/backups/.ssh/authorized_keys":
-        owner  => backup,
-        group  => backup,
-        mode   => 0600,
-        source => "puppet:///private/backup/ssh-keys/authorized_keys_server";
-    "/var/backups/.ssh/amanda_restore":
-        owner  => backup,
-        group  => backup,
-        mode   => 0600,
-        source => "puppet:///private/backup/ssh-keys/amanda_restore";
+    "/var/backups/":
+        ensure  => absent,
+        recurse => true;
+        force   => true;
     "/etc/amanda/create_vtapes.sh":
-        owner  => root,
-        group  => root,
-        mode   => 0700,
-        source => "puppet:///files/backup/create_vtape.sh";
+        ensure => absent,
     }
-    File <<| tag == "backup_host" |>>
 }
 
 class backup::mysql {
