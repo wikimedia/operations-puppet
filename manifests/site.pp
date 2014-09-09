@@ -2729,6 +2729,11 @@ node 'terbium.eqiad.wmnet' {
     include generic::wikidev-umask
     include misc::deployment::common_scripts
 
+    $domain_search = [
+        'wikimedia.org',
+        'eqiad.wmnet',
+    ]
+
     class { 'admin':
         groups => ['restricted',
                    'deployment'],
