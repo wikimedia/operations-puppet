@@ -44,13 +44,5 @@ class beta::scap::target {
         source  => '/etc/security/access.conf~',
         require => File['/etc/security/access.conf~'],
     }
-
-    # Target directory for scap
-    file { $::beta::config::scap_deploy_dir:
-        ensure  => directory,
-        owner   => 'mwdeploy',
-        group   => 'mwdeploy',
-        mode    => '0755',
-    }
 }
 

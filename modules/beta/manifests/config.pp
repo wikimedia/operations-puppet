@@ -12,10 +12,8 @@ class beta::config {
     ]
 
     # Directory where files to be scap'ed are staged
-    # (eg /a/common on tin)
     $scap_stage_dir = '/srv/scap-stage-dir'
 
     # Directory where scap'ed files will be placed
-    # (eg /usr/local/apache/common-local on tin)
-    $scap_deploy_dir = '/srv/common-local'
+    $scap_deploy_dir = '/srv/mediawiki'
 }
