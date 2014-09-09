@@ -18,6 +18,8 @@ class role::servermon {
     include ::apache::mod::proxy
     include ::apache::mod::rewrite
     include ::apache::mod::ssl
+    include ::apache::mod::auth_basic
+    include ::apache::mod::authnz_ldap
 
     include passwords::servermon
     $db_user = $passwords::servermon::db_user

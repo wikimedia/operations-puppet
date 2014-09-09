@@ -47,8 +47,8 @@
     # alert, emerg.
     LogLevel warn
 
-    ProxyPass / http://localhost:8090
-    ProxyPassReverse / http://localhost:8090
+    ProxyPass / http://127.0.0.1:8090
+    ProxyPassReverse / http://127.0.0.1:8090
 
     CustomLog /var/log/apache2/servermon.wikimedia.org-access.log combined
     ServerSignature On
