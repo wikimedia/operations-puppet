@@ -147,22 +147,6 @@ define backup::weeklyschedule($pool) {
     }
 }
 
-# TODO: Deprecate all of this before 2013-01-01
-class backup::server {
-
-    package { [ "amanda-common", "amanda-server" ]:
-        ensure => purged;
-    }
-
-    file {
-    "/var/backups/":
-        ensure  => absent,
-        recurse => true;
-    "/etc/amanda/create_vtapes.sh":
-        ensure => absent,
-    }
-}
-
 class backup::mysql {
     file { "/usr/local/sbin/snaprotate.pl":
         owner  => root,
