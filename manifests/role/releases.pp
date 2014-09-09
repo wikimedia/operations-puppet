@@ -13,6 +13,13 @@ class role::releases {
 
     class { '::releases::reprepro': }
 
+    # ssh-based uploads from tin
+    ferm::service { 'tin_package_upload':
+        proto => 'tcp',
+        port  => '22',
+        srange => '10.64.0.196/32',
+    }
+
     ferm::service { 'releases_http':
         proto => 'tcp',
         port  => '80',
