@@ -229,6 +229,7 @@ class backup::server::daily {
     "$conf_location":
         ensure  => absent,
         recurse => true,
+        force   => true,
         require => Package["amanda-server"],
     }
 }
@@ -251,6 +252,7 @@ class backup::server::weekly {
     "$conf_location":
         ensure  => absent,
         recurse => true,
+        force   => true,
         require => Package["amanda-server"],
     }
 }
@@ -273,6 +275,7 @@ class backup::server::monthly {
     "$conf_location":
         ensure  => absent,
         recurse => true,
+        force   => true,
         require => Package["amanda-server"],
     }
 }
