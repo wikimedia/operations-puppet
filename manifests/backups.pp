@@ -174,44 +174,6 @@ class backup::server {
     File <<| tag == "backup_host" |>>
 }
 
-class backup::client {
-
-    define client_backup($host=$hostname, $path) {
-        $line_of_text = "$host $path default"
-        @@file { "/etc/amanda/disklist":
-            ensure  => absent,
-            owner   => root,
-            group   => root,
-            content => $line_of_text,
-            tag     => "backup_host";
-        }
-    }
-
-    $backup_server = "tridge.wikimedia.org"
-    $backup_name   = "Wikimedia-Daily"
-    $ssh_key_location = "/var/backups/.ssh/id_rsa"
-
-    package { ["amanda-common", "amanda-client" ]:
-        ensure => purged;
-    }
-
-    file {
-    "/etc/amanda/":
-        ensure  => absent,
-        recurse => true;
-    "/etc/amandahosts":
-        ensure  => absent;
-    "/var/backups/.amandahosts":
-        ensure  => absent;
-    "/var/backups/":
-        ensure  => absent,
-        recurse => true;
-    }
-    #service { xinetd:
-    #    ensure => stopped;
-    #}
-}
-
 class backup::mysql {
     file { "/usr/local/sbin/snaprotate.pl":
         owner  => root,
