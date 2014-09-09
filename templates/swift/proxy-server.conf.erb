@@ -65,6 +65,7 @@ paste.filter_factory = wmf.cors:filter_factory
 
 [filter:proxy-logging]
 use = egg:swift#proxy_logging
+set access_log_facility = LOG_LOCAL1
 
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.
