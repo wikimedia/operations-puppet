@@ -310,6 +310,15 @@ node 'argon.wikimedia.org' {
     include role::mw-rc-irc
 }
 
+node 'baham.wikimedia.org' {
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+    include standard
+    include admin
+    include role::authdns::baham
+}
+
 node 'bast1001.wikimedia.org' {
     $cluster = 'misc'
     $domain_search = [
