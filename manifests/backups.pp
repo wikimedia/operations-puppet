@@ -179,6 +179,7 @@ class backup::server {
 
     cron {
         amanda_daily:
+        ensure  => absent,
         command => "/usr/sbin/amdump Wikimedia-Daily",
         require => Package["amanda-server"],
         user    => backup,
@@ -186,6 +187,7 @@ class backup::server {
         minute  => 0;
 
         amanda_weekly:
+        ensure  => absent,
         command => "/usr/sbin/amdump Wikimedia-Weekly",
         require => Package["amanda-server"],
         user    => backup,
@@ -194,6 +196,7 @@ class backup::server {
         weekday => Sunday;
 
         amanda_monthly:
+        ensure  => absent,
         command  => "/usr/sbin/amdump Wikimedia-Monthly",
         require  => Package["amanda-server"],
         user     => backup,
