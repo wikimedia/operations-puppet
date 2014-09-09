@@ -41,7 +41,7 @@ groups:
       brion, bsitu, cmcmahon, cscott, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn,
-      nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik, jgonera,
+      nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
       tgr, ssmith, bsimmers, ejegg, twentyafterfour]
   restricted:
     gid: 706
@@ -158,7 +158,7 @@ groups:
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
-    members: [dartar, halfak, howief, ironholds, jdlrobson, jgonera, jmorgan,
+    members: [dartar, halfak, howief, ironholds, jdlrobson, jmorgan,
               maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
@@ -204,7 +204,7 @@ groups:
         Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
-              kleduc, nuria, haithams, otto, jgonera, deskana,
+              kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant]
   analytics-admins:
     gid: 732
@@ -715,14 +715,6 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEA4nAjWgQOlzel8gYe/Hsl3DpT7KF7ygNVl7mZBG7285YUakrr2Hj8fSn0YfYX8b4u+FTywah7adefxTCuG6x9PkEzKAYSnaWXRxz3C2bZclkxXaKcVR+IJUG/9WyqwLxVj/UeATsuydSEljcwoMkTkV0m1p5hFNShTwslOiKA6VIwVQPufMjFaduUMXl3H1MzA0ymO/xzkMsOmsqXLgOIE6GOE1r3kzQHSD7tvb0o9dwtApUEhRiwGPnWxlDaGpWhzNQ9hHXGZG2XvfDvhVZ6HNJ/wR+x0WI1xX6b27fPbDPYkQDxOrts6G3F4WjDqmPLMYJGcsBXwueh99X2LaaDX6rWU1vq37Hj8Q8ROEdsL/RX30t8WdOj7YRGBEMbZliaGJNhTyOK2nFOBLKRcLSYVXtCvjFa9iTSqG8ZHdwho+vYRcs26hxMa1bWdS+Sg/YUJlfCxZk+zi5xryF/pog0IJdyqgNDqPau0w6DZKphlo8/eXcLJB6KkuaJ2xE52iqLokGGHu+EyYyOSrBSCOLsvbHvOwe9ESqDiJs1TAxjXqoOzNfWZKrfeoZb0AqycDwwbvM3oQB4/N590Jsb6frozsDCo+y08AYfjhM+lIFY2SdZHOmEzmNTDwJYf2MQOc7Mi/5wl+tMMnkXU0OPz9Y5ItDyfTwIsyESumVa3FYSE2s=
         yastrakhan@wikimedia.org]
     uid: 1011
-  jgonera:
-    ensure: present
-    gid: 500
-    name: jgonera
-    realname: Juliusz Gonera
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDT6QY2PcibrrwSCyrBI2TRSN9rwDCLt2uSVlpCRCAUVrHNdXEpLt1WgUotZx3HIWQdPrmpakg4+R8ltsrY01oe5jcjP44aAgj8isIjujjsqKwElKdAl4UxXUQ2udjaqzqr8Qe3sl13bkt/Kkt1yRTzenVek71k878f0TUBQtcTpPUOeRpcNAvHxs/sJMdylGBM3KfjDzD0Cps6NluWXbsrQJCHiMSIaAAYyYaLXBsGRvTYG+vL9nC7gvik+VFh+kyGAindGaCnjx7q+L67837UQloXGrJ/lKDRbaXW8xpepDewSBQ3ItVkXz+TNBWNVcIRo7SL3ZgREpW/WG4DyThj
-        WMF-work]
-    uid: 2688
   tgr:
     ensure: present
     gid: 500
