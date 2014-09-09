@@ -295,54 +295,21 @@ class backup::client {
     $ssh_key_location = "/var/backups/.ssh/id_rsa"
 
     package { ["amanda-common", "amanda-client" ]:
-        ensure => latest;
+        ensure => purged;
     }
 
     file {
     "/etc/amanda/":
-        owner   => root,
-        group   => root,
-        mode    => 0755,
-        purge   => true,
-        require => Package["amanda-client"],
-        ensure  => directory;
-    "/etc/amanda/amanda-client.conf":
-        owner   => root,
-        group   => root,
-        mode    => 0644,
-        require => File["/etc/amanda"],
-        content => template("backups/amanda-client.conf.erb");
+        ensure  => absent,
+        recurse => true;
     "/etc/amandahosts":
-        owner   => backup,
-        group   => backup,
-        mode    => 0644,
-        require => File["/etc/amanda"],
-        content => template("backups/amandahosts-client.erb");
+        ensure  => absent;
     "/var/backups/.amandahosts":
-        owner   => backup,
-        group   => backup,
-        mode    => 0644,
-        content => template("backups/amandahosts-client.erb");
-    "/var/backups/.ssh":
-        owner   => backup,
-        group   => backup,
-        mode    => 0700,
-        purge   => false,
-        ensure  =>  directory;
-    "/var/backups/.ssh/authorized_keys":
-        owner   => backup,
-        group   => backup,
-        mode    => 0600,
-        require => File["/var/backups/.ssh"],
-        source  => "puppet:///private/backup/ssh-keys/authorized_keys_client";
-    "/var/backups/.ssh/id_rsa":
-        owner   => backup,
-        group   => backup,
-        mode    => 0600,
-        require => File["/var/backups/.ssh"],
-        source  => "puppet:///private/backup/ssh-keys/amanda_restore";
+        ensure  => absent;
+    "/var/backups/":
+        ensure  => absent,
+        recurse => true;
     }
-
     #service { xinetd:
     #    ensure => stopped;
     #}
