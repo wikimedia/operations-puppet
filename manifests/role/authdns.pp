@@ -69,7 +69,7 @@ class role::authdns::ns1 inherits role::authdns::base {
 
 # ns1/baham @ codfw (replacing mexia above, will both be live for a time)
 class role::authdns::baham inherits role::authdns::base {
-    $ipv4 = '208.80.153.239'
+    $ipv4 = '208.80.153.231'
     $ipv6 = '2620:0:860:ed1a::e'
 
     interface::ip { 'authdns_ipv4':
