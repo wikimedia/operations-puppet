@@ -69,11 +69,20 @@ class Threshold(object):
         predicate, value, percent = m.groups()
         try:
             value = float(value)
-        except ValueError, e:
+        except ValueError:
             raise ValueError('unable to parse as float: %r' % value)
         self.predicate = self.PREDICATES.get(predicate, operator.eq)
         self.threshold = value
         self.percent = percent
+
+
+def _format_health(health):
+    out = []
+    for k, v in health.iteritems():
+        health_item = '%s: %s' % (k.encode('utf8', 'ignore'),
+                                  v.encode('utf8', 'ignore'))
+        out.append(health_item)
+    return ', '.join(out)
 
 
 def check_status(health):
@@ -145,7 +154,8 @@ def check_elasticsearch(options):
         if r != EX_OK:
             return r
 
-    log_ok('status %s: %r' % (cluster_health['cluster_name'], cluster_health))
+    log_ok('status %s: %s' % (cluster_health['cluster_name'],
+                              _format_health(cluster_health)))
     return EX_OK
 
 
