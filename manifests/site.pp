@@ -2311,7 +2311,6 @@ node 'nfs1.pmtpa.wmnet' {
     include admin
     include standard
     include misc::nfs-server::home::rsyncd
-    include backup::client
     include backup::host
     include role::syslog::centralserver
     backup::set { 'var-opendj-backups': }
@@ -2383,7 +2382,6 @@ node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 node 'palladium.eqiad.wmnet' {
     include standard
     include admin
-    include backup::client
     include misc::management::ipmi
     include role::salt::masters::production
     include role::deployment::salt_masters::production
@@ -2593,7 +2591,6 @@ node 'sodium.wikimedia.org' {
     include base
     include ganglia
     include ntp::client
-    include backup::client
     include role::mail::lists
 
     interface::add_ip6_mapped { 'main':
@@ -2996,7 +2993,6 @@ node 'virt0.wikimedia.org' {
     include role::nova::manager
     include role::salt::masters::labs
     include role::deployment::salt_masters::labs
-    include backup::client
 }
 
 node 'labnet1001.eqiad.wmnet' {
@@ -3068,7 +3064,6 @@ node 'ytterbium.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
     include role::gerrit::production
-    include backup::client
 
     install_certificate{ 'gerrit.wikimedia.org':
         ca => 'RapidSSL_CA.pem',

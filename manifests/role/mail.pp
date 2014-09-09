@@ -58,7 +58,6 @@ class role::mail::mx {
 }
 
 class role::mail::oldmx {
-    include backup::client
     include privateexim::aliases::private
     include exim4::ganglia
 
@@ -130,7 +129,6 @@ class role::mail::lists {
     Class['spamassassin'] -> Class['exim::roled']
 
     # confusingly enough, the former is amanda, the latter is bacula
-    include backup::client
     include backup::host
     backup::set { 'var-lib-mailman': }
 
@@ -176,7 +174,6 @@ class role::mail::lists {
 
 class role::mail::imap {
     # confusingly enough, the former is amanda, the latter is bacula
-    include backup::client
     include backup::host
     backup::set { 'var-vmail': }
 

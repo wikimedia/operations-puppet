@@ -2,7 +2,6 @@
 
 class role::statistics {
     include misc::statistics::user
-    include backup::client  # amanda backups
     include misc::statistics::base
     include base::packages::emacs
 
