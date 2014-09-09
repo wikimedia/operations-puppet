@@ -149,6 +149,17 @@ class swift::proxy(
         require => Package['swift'],
     }
 
+    file { '/etc/logrotate.d/swift-proxy':
+        ensure => present,
+        source => 'puppet:///files/swift/swift-proxy.logrotate.conf',
+        mode   => '0444',
+    }
+
+    rsyslog::conf { 'swift-proxy':
+        source   => 'puppet:///files/swift/swift-proxy.rsyslog.conf',
+        priority => 30,
+    }
+
     package {[
             'swift-proxy',
             'python-swauth'
