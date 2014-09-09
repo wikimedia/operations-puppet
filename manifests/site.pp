@@ -1365,7 +1365,8 @@ node 'iron.wikimedia.org' {
         'codfw.wmnet',
         'ulsfo.wmnet',
         'pmtpa.wmnet',
-        'esams.wikimedia.org'
+        'esams.wikimedia.org',
+        'esams.wmnet',
     ]
 
     interface::add_ip6_mapped { 'main':
