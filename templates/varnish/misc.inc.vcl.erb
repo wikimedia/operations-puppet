@@ -34,6 +34,8 @@ sub vcl_recv {
 		set req.backend = terbium;
 		/* no caching of public_html dirs */
 		return (pass);
+	} elsif (req.http.Host == "ishmael.wikimedia.org") {
+		set req.backend = neon;
 	} else {
 		error 404 "Domain not served here";
 	}
