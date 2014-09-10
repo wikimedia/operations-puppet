@@ -7,7 +7,7 @@ class phabricator::migration() {
     package { 'python-mysqldb': ensure => present}
 
     git::install { 'phabricator/tools':
-        directory => "${phabdir}/tools",
+        directory => "/srv/phab/tools",
         git_tag   => 'HEAD',
     }
 
