@@ -43,6 +43,7 @@ groups:
       maxsem, mattflaschen, marktraceur, milimetric, mlitn,
       nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
       tgr, ssmith, bsimmers, ejegg, twentyafterfour]
+    privs: ['ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful']
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
