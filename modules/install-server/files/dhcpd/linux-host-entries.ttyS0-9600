@@ -3,11 +3,6 @@
 #### puppet:///modules/install-server/dhcpd/linux-host-entries.ttyS0-9600
 ######################################################################
 
-host scs-c1-pmtpa {
-	hardware ethernet 00:13:c6:00:15:a3;
-	fixed-address scs-c1-pmtpa.mgmt.pmtpa.wmnet;
-}
-
 host cam1-a-eqiad {
 	hardware ethernet 00:40:8c:a2:61:40;
 	fixed-address cam1-a-eqiad.eqiad.wmnet;
