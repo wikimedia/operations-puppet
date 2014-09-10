@@ -2388,6 +2388,7 @@ node 'palladium.eqiad.wmnet' {
     include role::deployment::salt_masters::production
     include role::access_new_install
     include role::puppetmaster::frontend
+    include role::pybal_config
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
