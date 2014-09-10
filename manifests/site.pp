@@ -2302,20 +2302,6 @@ node 'netmon1001.wikimedia.org' {
     }
 }
 
-node 'nfs1.pmtpa.wmnet' {
-
-    $server_bind_ips = "127.0.0.1 ${ipaddress_eth0}"
-    $cluster = 'misc'
-
-    include admin
-    include standard
-    include misc::nfs-server::home::rsyncd
-    include backup::client
-    include backup::host
-    include role::syslog::centralserver
-    backup::set { 'var-opendj-backups': }
-}
-
 node 'nickel.wikimedia.org' {
     $ganglia_aggregator = true
 
