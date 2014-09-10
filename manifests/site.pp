@@ -337,7 +337,6 @@ node 'bast1001.wikimedia.org' {
         'eqiad.wmnet',
         'codfw.wmnet',
         'ulsfo.wmnet',
-        'pmtpa.wmnet',
         'esams.wikimedia.org'
     ]
 
@@ -368,7 +367,6 @@ node 'bast2001.wikimedia.org' {
         'codfw.wmnet',
         'eqiad.wmnet',
         'ulsfo.wmnet',
-        'pmtpa.wmnet',
         'esams.wikimedia.org'
     ]
 
@@ -388,7 +386,6 @@ node 'bast4001.wikimedia.org' {
         'ulsfo.wmnet',
         'eqiad.wmnet',
         'codfw.wmnet',
-        'pmtpa.wmnet',
         'esams.wikimedia.org'
     ]
 
@@ -1366,7 +1363,6 @@ node 'iron.wikimedia.org' {
         'eqiad.wmnet',
         'codfw.wmnet',
         'ulsfo.wmnet',
-        'pmtpa.wmnet',
         'esams.wikimedia.org',
         'esams.wmnet',
     ]
@@ -2151,7 +2147,6 @@ node 'neon.wikimedia.org' {
         'eqiad.wmnet',
         'codfw.wmnet',
         'ulsfo.wmnet',
-        'pmtpa.wmnet',
         'esams.wikimedia.org'
     ]
 
@@ -2801,7 +2796,6 @@ node 'tin.eqiad.wmnet' {
     $cluster = 'misc'
     $domain_search = [
         'wikimedia.org',
-        'pmtpa.wmnet',
         'eqiad.wmnet',
         'esams.wikimedia.org'
     ]
