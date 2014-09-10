@@ -45,7 +45,6 @@ class base::grub {
 
 class base::remote-syslog {
     if ($::lsbdistid == 'Ubuntu') and
-            ($::hostname != 'nfs1') and
             ($::instancename != 'deployment-bastion') {
 
         $syslog_host = $::realm ? {
