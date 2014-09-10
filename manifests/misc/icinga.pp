@@ -571,12 +571,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_bad_apaches':
-        source => 'puppet:///files/icinga/check_bad_apaches',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
     file { '/usr/lib/nagios/plugins/check_dsh_groups':
         source => 'puppet:///files/icinga/check_dsh_groups',
         owner  => 'root',
