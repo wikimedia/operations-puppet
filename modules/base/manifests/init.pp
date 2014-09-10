@@ -45,7 +45,6 @@ class base::grub {
 
 class base::remote-syslog {
     if ($::lsbdistid == 'Ubuntu') and
-            ($::hostname != 'nfs1') and
             ($::hostname != 'lithium') and
             ($::instancename != 'deployment-bastion') {
 
