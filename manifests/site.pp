@@ -1884,15 +1884,6 @@ node 'mchenry.wikimedia.org' {
     dns::recursor::monitor { '208.80.152.132': }
 }
 
-node 'mexia.wikimedia.org' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    include standard
-    include admin
-    include role::authdns::server
-}
-
 node 'ms1001.wikimedia.org' {
     include admin
     include standard
