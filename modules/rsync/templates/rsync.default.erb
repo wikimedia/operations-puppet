@@ -10,7 +10,7 @@
 #  Use "inetd" if you want to start the rsyncd from inetd,
 #  all this does is prevent the init.d script from printing a message
 #  about not starting rsyncd (you still need to modify inetd's config yourself).
-RSYNC_ENABLE=<%= use_xinetd == true ? 'false' : 'true' %>
+RSYNC_ENABLE=<%= @use_xinetd == true ? 'false' : 'true' %>
 
 # which file should be used as the configuration file for rsync.
 # This file is used instead of the default /etc/rsyncd.conf
@@ -18,7 +18,7 @@ RSYNC_ENABLE=<%= use_xinetd == true ? 'false' : 'true' %>
 #          using a remote shell. When using a different file for
 #          rsync you might want to symlink /etc/rsyncd.conf to
 #          that file.
-RSYNC_CONFIG_FILE=<%= rsync_conf %>
+RSYNC_CONFIG_FILE=<%= @rsync_conf %>
 
 # what extra options to give rsync --daemon?
 #  that excludes the --daemon; that's always done in the init.d script
