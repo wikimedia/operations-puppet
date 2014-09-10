@@ -808,41 +808,6 @@ host dataset1001 {
 	fixed-address dataset1001.wikimedia.org;
 }
 
-host db60 {
-	hardware ethernet d4:ae:52:65:8c:1e;
-	fixed-address db60.pmtpa.wmnet;
-}
-
-host db68 {
-	hardware ethernet d4:ae:52:8b:eb:2e;
-	fixed-address db68.pmtpa.wmnet;
-}
-
-host db69 {
-	hardware ethernet d4:ae:52:90:3e:dc;
-	fixed-address db69.pmtpa.wmnet;
-}
-
-host db71 {
-	hardware ethernet d4:ae:52:8d:c1:1a;
-	fixed-address db71.pmtpa.wmnet;
-}
-
-host db72 {
-	hardware ethernet d4:ae:52:90:3a:de;
-	fixed-address db72.pmtpa.wmnet;
-}
-
-host db73 {
-	hardware ethernet d4:ae:52:8b:a4:ea;
-	fixed-address db73.pmtpa.wmnet;
-}
-
-host db74 {
-	hardware ethernet d4:ae:52:90:3b:5c;
-	fixed-address db74.pmtpa.wmnet;
-}
-
 host db1001 {
 	hardware ethernet 78:2b:cb:03:68:61;
 	fixed-address db1001.eqiad.wmnet;
@@ -1305,21 +1270,6 @@ host elastic1018 {
 host elastic1019 {
 	hardware ethernet 90:B1:1C:23:36:1D;
 	fixed-address elastic1019.eqiad.wmnet;
-}
-
-host es4 {
-	hardware ethernet 78:2b:cb:60:34:26;
-	fixed-address es4.pmtpa.wmnet;
-}
-
-host es7 {
-	hardware ethernet d4:ae:52:8b:d2:0a;
-	fixed-address es7.pmtpa.wmnet;
-}
-
-host es10 {
-	hardware ethernet d4:ae:52:b0:3a:ca;
-	fixed-address es10.pmtpa.wmnet;
 }
 
 host es1001 {
