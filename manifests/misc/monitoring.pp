@@ -127,7 +127,7 @@ class misc::monitoring::views {
 }
 
 class misc::monitoring::views::dns {
-    $auth_dns_host_regex = '^(rubidium|mexia|baham|eeden.esams).wikimedia.org$'
+    $auth_dns_host_regex = '^(rubidium|baham|eeden.esams).wikimedia.org$'
     $rec_dns_host_regex = '^(chromium|hydrogen).wikimedia.org$'
 
     ganglia::view { 'authoritative_dns':
