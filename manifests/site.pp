@@ -1350,6 +1350,7 @@ node 'install2001.wikimedia.org' {
 node 'iridium.eqiad.wmnet' {
     class { 'base::firewall': }
     include admin
+    include standard-noexim
     include role::phabricator::main
 }
 
