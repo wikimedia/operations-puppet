@@ -2,19 +2,19 @@
 # This file is managed by Puppet!
 
 [global]
-bgp = <%= global_options.fetch('bgp', "no") %>
+bgp = <%= @global_options.fetch('bgp', "no") %>
 bgp-local-asn = 64600
-bgp-peer-address = <%= global_options['bgp-peer-address'] %>
+bgp-peer-address = <%= @global_options['bgp-peer-address'] %>
 #bgp-as-path = 64600 64601
-bgp-nexthop-ipv4 = <%= global_options['bgp-nexthop-ipv4'] %>
-bgp-nexthop-ipv6 = <%= global_options['bgp-nexthop-ipv6'] %>
+bgp-nexthop-ipv4 = <%= @global_options['bgp-nexthop-ipv4'] %>
+bgp-nexthop-ipv6 = <%= @global_options['bgp-nexthop-ipv6'] %>
 
 #
 # LVS service definitions
 #
 
-<% lvs_services.sort.each do |servicename, service| -%>
-<% if service['sites'].include?(site) and lvs_class_hosts[service['class']].include?(scope.lookupvar("::hostname")) then -%>
+<% @lvs_services.sort.each do |servicename, service| -%>
+<% if service['sites'].include?(@site) and @lvs_class_hosts[service['class']].include?(scope.lookupvar("::hostname")) then -%>
 <% if service['ip'].class.eql?(String) then
 service['ip'] = { servicename => service['ip'] }
 end -%>
@@ -22,13 +22,13 @@ end -%>
 # SERVICE <%= subservicename %>
 # Class: <%= service['class'] %>
 # Description: <%= service['description'] %>
-# LVS balancers: <%= lvs_class_hosts[service['class']].join(" ") %>
+# LVS balancers: <%= @lvs_class_hosts[service['class']].join(" ") %>
 [<%= subservicename %>_<%= service.fetch('port', 80) %>]
 protocol = <%= service.fetch('protocol', "tcp") %>
 ip = <%= subserviceip %>
 port = <%= service.fetch('port', 80) %>
 scheduler = <%= service.fetch('scheduler', "wrr") %>
-config = http://noc.wikimedia.org/pybal/<%= site %>/<%= servicename %>
+config = http://noc.wikimedia.org/pybal/<%= @site %>/<%= servicename %>
 bgp = <%= service.fetch('bgp', "no") %>
 depool-threshold = <%= service.fetch('depool-threshold', ".5") %>
 monitors = <%= service['monitors'].keys.sort.inspect %>
