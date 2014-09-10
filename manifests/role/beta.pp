@@ -155,7 +155,8 @@ class role::beta::monitoring::graphite {
         critical        => 1,
         warning         => 1,
         graphite_url    => 'http://labmon1001.eqiad.wmnet',
-        contact_group   => 'betalabs'
+        contact_group   => 'betalabs',
+        series          => true,
     }
 
     monitor_graphite_threshold { 'betalabs-low-space-var':
@@ -166,5 +167,6 @@ class role::beta::monitoring::graphite {
         under           => true,
         graphite_url    => 'http://labmon1001.eqiad.wmnet',
         contact_group   => 'betalabs',
+        series          => true,
     }
 }

@@ -283,6 +283,95 @@ class Threshold(GraphiteCheck):
             (self.perc, report, self.limits['WARNING'])
 
 
+class SeriesThreshold(Threshold):
+
+    """
+    Checks a series of metrics to see if they individually are within acceptable thresholds
+    """
+    parser_name = 'check_series_threshold'
+
+    def parse_result(self, result):
+        """
+        Parses the results of the fetch operation
+
+        :param result: A data structure (typically, a list)
+                       with graphite datapoints
+        :returns: A dictionary with key target and value categorized datapoints list
+        """
+        seriespoints = {}
+        for series in result:
+            datapoints = defaultdict(list)
+            datapoints['_total'] = 0
+            for (data, time) in series['datapoints']:
+                if not isinstance(data, Real):
+                    datapoints['UNKNOWN'].append((time, data))
+                    continue
+                elif self.check_func(data, self.limits['CRITICAL']):
+                    datapoints['CRITICAL'].append((time, data))
+
+                elif self.check_func(data, self.limits['WARNING']):
+                    datapoints['WARNING'].append((time, data))
+                else:
+                    datapoints['OK'].append((time, data))
+                datapoints['_total'] += 1
+            seriespoints[series['target']] = datapoints
+        return seriespoints
+
+    def check_data(self, seriespoints):
+        """
+        Checks the parsed datasets to emit the nagios status.
+
+        :param seriespoints: A dictionary of lists of categorized data.
+        :returns: Message string containing the status.
+        :raises: NagiosException on non-OK statuses
+        """
+        messages = {'OK': [], 'CRITICAL': [], 'WARNING':[]}
+        for target, datapoints in seriespoints.iteritems():
+            if not datapoints['_total']:
+                raise NagiosException('UNKNOWN', 'No valid datapoints found for %s' % target)
+
+            lengths = {}
+            t = datapoints['_total']
+            for key in NagiosException.NAGIOS_STATUSES.keys():
+                lengths[key] = len(datapoints[key])
+                # Very simple count, no timeseries evaluation, no flap detection.
+            if t < lengths['UNKNOWN']:
+                raise NagiosException(
+                    'UNKNOWN', 'More than half of the datapoints for %s are undefined' % target)
+            for key in ['CRITICAL', 'WARNING']:
+                if lengths[key] >= t * self.perc / 100.0:
+                    perc = lengths[key] * 100.0 / t
+                    messages[key].append((target, perc))
+                    break
+            else:
+                messages['OK'].append((target, 100.0))
+
+        report = "above"
+        if self.under:
+            report = "under"
+
+        message = self.format_message(messages)
+        if messages['CRITICAL']:
+            raise NagiosException('CRITICAL', message)
+        elif messages['WARNING']:
+            raise NagiosException('WARNING', message)
+        else:
+            return message
+
+    def format_message(self, messages):
+        if not (messages['CRITICAL'] or messages['WARNING']):
+            return 'All targets OK'
+        sign = '<' if self.under else '>'
+        message = ''
+        if messages['CRITICAL']:
+            message += 'CRIT: '
+            message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['CRITICAL']])
+        if messages['WARNING']:
+            message += ' WARN: '
+            message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['WARNING']])
+        return message.strip()
+
+
 class Anomaly(GraphiteCheck):
 
     """
@@ -447,6 +536,8 @@ def main():
         dest='check_type')
 
     threshold = Threshold.create_parser(subparsers)
+
+    series_threshold = SeriesThreshold.create_parser(subparsers)
 
     anomaly = Anomaly.create_parser(subparsers)
 

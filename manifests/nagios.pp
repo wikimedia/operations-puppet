@@ -398,6 +398,8 @@ define monitor_ganglia(
 # $metric               - graphite metric name
 # $warning              - alert warning threshold
 # $critical             - alert critical threshold
+# $series               - true if the metric refers to a series of graphite
+#                         datapoints that should be checked individually
 # $from                 - Date from which to fetch data.
 #                         Examples: '1hours','10min' (default), '2w'
 # $percentage           - Number of datapoints exceeding the
@@ -422,6 +424,7 @@ define monitor_graphite_threshold(
     $metric,
     $warning,
     $critical,
+    $series                = false,
     $from                  = '10min',
     $percentage            = 1,
     $under                 = false,
@@ -456,10 +459,14 @@ define monitor_graphite_threshold(
         true  => '--under',
         default => '--over'
     }
+    $command = $series ? {
+        true    => 'check_graphite_series_threshold',
+        default => 'check_graphite_threshold'
+    }
     monitor_service { $title:
         ensure                => $ensure,
         description           => $description,
-        check_command         => "check_graphite_threshold!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${percentage}!${modifier}",
+        check_command         => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${percentage}!${modifier}",
         retries               => $retries,
         group                 => $group,
         critical              => $nagios_critical,
