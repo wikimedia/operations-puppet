@@ -3,6 +3,6 @@
 
 # vim: sts=0 noet ts=8
 
-<% privileges.each do |privilege| -%>
-	<% if has_variable?("user") then %><%= user %><% elsif has_variable?("group") then %>%<%= group %><% end %> <%= privilege %>
+<% @privileges.each do |privilege| -%>
+	<% if has_variable?("user") then %><%= @user %><% elsif has_variable?("group") then %>%<%= @group %><% end %> <%= @privilege %>
 <% end -%>
