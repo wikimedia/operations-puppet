@@ -1,0 +1,23 @@
+<VirtualHost *:80>
+    ServerName pybal-config
+    ServerAlias <%= @hostname %>
+    
+    DocumentRoot /srv/pybal-config
+
+    <Directory "/srv/pybal-config">
+ <%= if @is_24 -%>
+         Require all granted
+<%= else -%>
+         Order allow,deny
+         Allow from all
+<% end -%>
+         Options +Indexes -Followsymlinks
+         AllowOverride None
+     </Directory>
+
+     CustomLog ${APACHE_LOG_DIR}/pybal-access.log combined
+     ErrorLog ${APACHE_LOG_DIR}/pybal-error.log
+</VirtualHost>
+
+
+<!-- The ssl virtual host will be added if needed -->
