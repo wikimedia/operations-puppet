@@ -1,0 +1,9 @@
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+1: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Verified+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Wed, 10 Sep 2014 08:52:56 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/159348
+Project: operations/puppet
+Branch: refs/heads/production
