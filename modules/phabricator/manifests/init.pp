@@ -109,7 +109,6 @@ class phabricator (
 
     package { [
         'python-phabricator',
-        'git-core',
         'php5',
         'php5-mysql',
         'php5-gd',
