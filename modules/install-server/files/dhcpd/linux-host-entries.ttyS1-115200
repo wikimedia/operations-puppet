@@ -3425,6 +3425,11 @@ host tungsten {
 	fixed-address tungsten.eqiad.wmnet;
 }
 
+host uranium {
+	hardware ethernet 84:2b:2b:fb:a6:67;
+	fixed-address uranium.wikimedia.org;
+}
+
 host vanadium {
 	hardware ethernet 78:2b:cb:08:a4:3b;
 	fixed-address vanadium.eqiad.wmnet;
