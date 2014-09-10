@@ -2741,7 +2741,7 @@ node 'terbium.eqiad.wmnet' {
 
     $domain_search = [
         'wikimedia.org',
-        'eqiad.wmnet',
+        'eqiad.wmnet'
     ]
 
     class { 'admin':
