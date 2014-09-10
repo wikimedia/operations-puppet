@@ -133,7 +133,9 @@ class role::beta::videoscaler {
 
 class role::beta::jobrunner {
     include role::beta::scap_target
+    include ::beta::common
     include role::mediawiki::common
+    include ::mediawiki
 
     class { '::mediawiki::jobrunner':
         aggr_servers    => [ '10.68.16.146' ],
