@@ -27,7 +27,7 @@ class ZeroFetcher:
         resp = getattr(self.sess, method)(self.baseurl, params=params)
         if resp.status_code != requests.codes.ok:
             raise Exception('Bad response code '
-                            + resp.status_code
+                            + str(resp.status_code)
                             + ' from API request for '
                             + action)
         try:
