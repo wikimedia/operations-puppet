@@ -21,6 +21,20 @@ class mediawiki::sync {
         replace => false,
     }
 
+    file { '/srv/mediawiki':
+        ensure  => directory,
+        owner   => 'mwdeploy',
+        group   => 'mwdeploy',
+        mode    => '0775',
+        replace => false,
+    }
+
+    file { '/usr/local/apache/common-local':
+        ensure  => link,
+        target  => '/srv/mediawiki',
+        replace => false,
+    }
+
     # these get invoked by scap over SSH using a non-interactive, non-login
     # shell thus won't pick up /etc/profile.d above
     file { '/usr/local/bin/scap-rebuild-cdbs':
