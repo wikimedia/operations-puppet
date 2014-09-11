@@ -159,6 +159,16 @@ class role::beta::monitoring::graphite {
         series          => true,
     }
 
+    monitor_graphite_threshold { 'betalabs-puppet-stale':
+        description     => 'BetaLabs: Puppet freshness check',
+        metric          => 'deployment-prep.*.puppetagent.time_since_last_run.value',
+        warning         => 3600, # 1h
+        critical        => 43200, # 12h
+        graphite_url    => 'http://labmon1001.eqiad.wmnet',
+        contact_group   => 'betalabs',
+        series          => true,
+    }
+
     monitor_graphite_threshold { 'betalabs-low-space-var':
         description     => 'BetaLabs: Low disk space on /var',
         metric          => 'deployment-prep.*.diskspace._var.byte_avail.value',
