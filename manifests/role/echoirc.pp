@@ -8,6 +8,7 @@ class role::echoirc {
             $ircecho_logs   = {
                 '/var/log/icinga/irc.log'          => '#wikimedia-operations',
                 '/var/log/icinga/irc-wikidata.log' => '#wikidata',
+                '/var/log/icinga/irc-qa.log'       => '#wikimedia-qa',
             }
             $ircecho_nick   = 'icinga-wm'
             $ircecho_server = 'chat.freenode.net'
