@@ -1,0 +1,86 @@
+http_port <%= @service_ip %>:8080
+hierarchy_stoplist cgi-bin ?
+acl everything src 0.0.0.0/0.0.0.0
+cache deny everything
+acl apache rep_header Server ^Apache
+broken_vary_encoding allow apache
+maximum_object_size 510 MB
+cache_replacement_policy heap LFUDA
+cache_dir null /tmp
+access_log /var/log/squid/access.log squid
+log_mime_hdrs on
+hosts_file /etc/hosts
+request_header_max_size 1 KB
+request_body_max_size 1 KB
+refresh_pattern ^ftp:		1440	20%	10080
+refresh_pattern ^gopher:	1440	0%	1440
+refresh_pattern .		0	20%	4320
+quick_abort_min 0 KB
+quick_abort_max 0 KB
+read_ahead_gap 1024 KB
+forward_timeout 30 seconds
+connect_timeout 10 seconds
+read_timeout 30 seconds
+request_timeout 30 seconds
+client_lifetime 5 minutes
+
+acl all src 0.0.0.0/0.0.0.0
+acl manager proto cache_object
+acl localhost src 127.0.0.1/255.255.255.255
+acl to_localhost dst 127.0.0.0/8
+acl SSL_ports port 443	# https
+acl Safe_ports port 80 443		# http, https
+acl Safe_ports port 21		# ftp
+acl purge method PURGE
+acl CONNECT method CONNECT
+
+acl wikimedia src 208.80.152.0/22
+acl wikimedia src 10.0.0.0/16
+acl wikimedia src 10.64.0.0/22
+acl wikimedia src 10.64.16.0/24
+acl wikimedia src 10.64.32.0/22
+acl wikimedia src 10.64.48.0/22
+
+acl to-wikimedia dst 208.80.152.0/22
+acl to-wikimedia dst 91.198.174.0/24
+acl to-wikimedia dst 10.0.0.0/16
+acl to-wikimedia dst 10.64.0.0/22
+acl to-wikimedia dst 10.64.16.0/24
+acl to-wikimedia dst 10.64.32.0/22
+acl to-wikimedia dst 10.64.48.0/22
+
+http_access allow manager localhost
+http_access deny manager
+http_access allow purge localhost
+http_access deny purge
+http_access deny !Safe_ports
+
+http_access deny CONNECT !SSL_ports
+http_access deny !CONNECT SSL_ports
+http_access deny to_localhost
+
+http_access deny to-wikimedia
+
+http_access allow localhost
+http_access allow wikimedia
+
+http_access deny all
+
+http_reply_access allow all
+
+icp_access deny all
+
+tcp_outgoing_address <%= @service_ip %>
+
+reply_body_max_size 534773760 allow all
+
+cache_mgr root@wikimedia.org
+
+cache_effective_user proxy
+cache_effective_group proxy
+
+visible_hostname url-downloader.wikimedia.org
+
+via off
+
+coredump_dir /var/spool/squid
