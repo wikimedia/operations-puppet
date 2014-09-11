@@ -1608,16 +1608,19 @@ node 'lanthanum.eqiad.wmnet' {
 }
 
 node 'linne.wikimedia.org' {
+    $url_downloader_ip = '208.80.152.143'
+
     interface::ip { 'url-downloader':
         interface => 'eth0',
-        address   => '208.80.152.143',
+        address   => $url_downloader_ip,
+        before    => Class['role::url-downloader'],
     }
 
     include admin
     include base
     include ganglia
     include role::mail::sender
-    include url-downloader
+    include role::url-downloader
 
     class { 'ntp::server':
         servers => [ '198.186.191.229',

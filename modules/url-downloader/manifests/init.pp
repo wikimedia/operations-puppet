@@ -1,31 +1,38 @@
-class url-downloader {
-    system::role { 'url-downloader': description => 'Upload-by-URL proxy' }
+class url-downloader($service_ip) {
+    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
+        $package_name = 'squid3'
+    } else {
+        $package_name = 'squid'
+    }
 
-    file { '/etc/squid/squid.conf':
-        require => Package['squid'],
+    $confdir = "/etc/${package_name}"
+    $service_name = $package_name
+
+    file { "${confdir}/squid.conf":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("url-downloader/${package_name}.conf.erb"),
+    }
+
+    file { "/etc/logrotate.d/${package_name}":
+        ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        path    => '/etc/squid/squid.conf',
-        source  => 'puppet:///modules/url-downloader/copy-by-url-proxy.conf',
+        source  => "puppet:///modules/url-downloader/${package_name}-logrotate",
     }
 
-    # pin package to the default, Ubuntu version, instead of our own
-    apt::pin { [ 'squid', 'squid-common' ]:
-        pin      => 'release o=Ubuntu',
-        priority => '1001',
-        before   => Package['squid'],
+    package { $package_name:
+        ensure => installed,
     }
 
-    package { 'squid':
-        ensure => latest,
+    service { $service_name:
+        ensure => running,
     }
 
-    service { 'squid':
-        ensure    => running,
-        require   => [  File['/etc/squid/squid.conf'],
-                        Package['squid'],
-                        Interface::Ip['url-downloader']],
-        subscribe => File['/etc/squid/squid.conf'],
-    }
+    Package[$package_name] -> Service[$service_name]
+    Package[$package_name] -> File["/etc/logrotate.d/${package_name}"]
+    Package[$package_name] -> File["${confdir}/squid.conf"]
+    File["${confdir}/squid.conf"] ~> Service[$service_name] # also notify
 }
