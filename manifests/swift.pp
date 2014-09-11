@@ -92,19 +92,14 @@ class swift::base($hash_path_suffix, $cluster_name) {
         source => "puppet:///volatile/swift/${cluster_name}/object.ring.gz",
     }
 
-    include ganglia::logtailer
+    package { 'ganglia-logtailer':
+        ensure => 'absent',
+    }
     file { '/usr/share/ganglia-logtailer/SwiftHTTPLogtailer.py':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///files/swift/SwiftHTTPLogtailer.py',
-        require => Package['ganglia-logtailer'],
+        ensure => 'absent',
     }
     cron { 'swift-proxy-ganglia':
-        ensure  => 'present',
-        command => '/usr/sbin/ganglia-logtailer --classname SwiftHTTPLogtailer --log_file /var/log/syslog --mode cron > /dev/null 2>&1',
-        user    => 'root',
-        minute  => '*',
+        ensure  => 'absent',
     }
 }
 
