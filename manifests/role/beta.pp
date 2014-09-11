@@ -169,4 +169,15 @@ class role::beta::monitoring::graphite {
         contact_group   => 'betalabs',
         series          => true,
     }
+
+    monitor_graphite_threshold { 'betalabs-low-space-root':
+        description     => 'BetaLabs: Low disk space on /',
+        metric          => 'deployment-prep.*.diskspace.root.byte_avail.value',
+        warning         => 67108864, # 512MiB
+        critical        => 33554432, # 256MiB,
+        under           => true,
+        graphite_url    => 'http://labmon1001.eqiad.wmnet',
+        contact_group   => 'betalabs',
+        series          => true,
+    }
 }
