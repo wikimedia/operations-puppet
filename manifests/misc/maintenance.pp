@@ -140,7 +140,7 @@ class misc::maintenance::tor_exit_node( $enabled = false ) {
 class misc::maintenance::echo_mail_batch( $enabled = false ) {
     cron {
         'echo_mail_batch':
-            command => '/usr/local/bin/foreachwikiindblist /usr/local/apache/common/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php 2>/dev/null',
+            command => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php 2>/dev/null',
             user    => 'apache',
             minute  => 0,
             hour    => 0,
@@ -154,7 +154,7 @@ class misc::maintenance::echo_mail_batch( $enabled = false ) {
 
 class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
     file {
-        '/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh':
+        '/srv/mediawiki/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh':
             source => 'puppet:///files/misc/scripts/wikimedia-periodic-update.sh',
             owner  => 'apache',
             group  => 'wikidev',
@@ -164,7 +164,7 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
 
     cron {
         'update_flaggedrev_stats':
-            command => '/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null',
+            command => '/srv/mediawiki/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null',
             user    => 'apache',
             hour    => '*/2',
             minute  => '0',

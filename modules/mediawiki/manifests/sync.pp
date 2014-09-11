@@ -36,7 +36,7 @@ class mediawiki::sync {
     }
 
     exec { '/usr/local/bin/sync-common':
-        creates => '/usr/local/apache/common/wmf-config/InitialiseSettings.php',
+        creates => '/srv/mediawiki/wmf-config/InitialiseSettings.php',
         timeout => 30 * 60,  # 30 minutes
     }
 }
