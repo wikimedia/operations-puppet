@@ -368,9 +368,9 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
         content => template("apache/sites/${webserver_hostname}.erb"),
     }
 
-    # ::mediawiki::sync supports syncing the wikitech wiki from tin.
+    # ::mediawiki::scap supports syncing the wikitech wiki from tin.
     #  It also defines /a which is used later on in this manifest for backups.
-    include ::mediawiki::sync
+    include ::mediawiki::scap
 
     file {
         "/var/www/robots.txt":
