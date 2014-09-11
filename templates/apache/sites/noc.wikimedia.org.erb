@@ -11,7 +11,7 @@ NameVirtualHost *:443
 
     ServerName noc.wikimedia.org
 
-    DocumentRoot /usr/local/apache/common/docroot/noc
+    DocumentRoot /srv/mediawiki/docroot/noc
 
     UserDir public_html
 
@@ -28,7 +28,7 @@ NameVirtualHost *:443
         AllowOverride All
     </Directory>
 
-    <Directory /usr/local/apache/common/docroot/noc/conf>
+    <Directory /srv/mediawiki/docroot/noc/conf>
         AddDefaultCharset utf-8
     </Directory>
 </VirtualHost>
@@ -36,7 +36,7 @@ NameVirtualHost *:443
     ServerAdmin noc@wikimedia.org
     ServerName noc.wikimedia.org
 
-    DocumentRoot /usr/local/apache/common/docroot/noc
+    DocumentRoot /srv/mediawiki/docroot/noc
 
     UserDir public_html
 
@@ -56,7 +56,7 @@ NameVirtualHost *:443
         AllowOverride All
     </Directory>
 
-    <Directory /usr/local/apache/common/docroot/noc/conf>
+    <Directory /srv/mediawiki/docroot/noc/conf>
         AddDefaultCharset utf-8
     </Directory>
 
