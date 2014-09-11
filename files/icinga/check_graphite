@@ -364,12 +364,12 @@ class SeriesThreshold(Threshold):
         sign = '<' if self.under else '>'
         message = ''
         if messages['CRITICAL']:
-            message += 'CRIT: '
             message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['CRITICAL']])
         if messages['WARNING']:
-            message += ' WARN: '
+            if messages['CRITICAL']:
+                message += ' WARN: ' # only add WARN: if there are also CRIT messages
             message += ' '.join(['%s (%s%3.2f%%)' % (k, sign, v) for k, v in messages['WARNING']])
-        return message.strip()
+        return message
 
 
 class Anomaly(GraphiteCheck):
