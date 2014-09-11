@@ -49,7 +49,7 @@ groups:
     members: [avar, daniel, dartar, diederik,
       erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
       tparscal, tnegrin, ssastry, ironholds, nuria, leila,
-      santhosh, amire80, legoktm]
+      santhosh, amire80, legoktm, ellery]
   bastiononly:
     gid: 707
     description: these folks are allowed bastion _only_ access
@@ -154,7 +154,7 @@ groups:
                 and other private data.
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
               howief, awight, dr0ptp4kt, qchris, tnegrin, nuria,
-              leila, manybubbles, ironholds, kleduc]
+              leila, manybubbles, ironholds, kleduc, ellery]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -205,7 +205,7 @@ groups:
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams, otto, deskana,
-              bsitzmann, dbrant, declerambaul]
+              bsitzmann, dbrant, declerambaul, ellery]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1107,3 +1107,10 @@ users:
     realname: Fabian Kaelin
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3aScUQs0HeQEp/pnMuJ6JKWTwEa8IPVKa7Gkrx2DJ3z1qUtA5wzxSG6m//MJBokIntwBAGuqRazAqs5cB3m4GVqViA1fabxZy55l1/GB+962/d8goVEbtkj/MO47vuUBosVSy5GGjGOs3hWtKId9q6+AU0OCNZwC3j12tXGIX3ztcf4Ef2pdBoCfJMgrvlnIpdFDBftrua9kVvYRQj6tVr5rTbFlEioNgNcdQXhvDP0sU81i1NG/nAeOZMDYOzUscDHa6JcCts3nRyqrqgaMixxGjF7WG42tqS+AEqKi9IOqFnaiHtwipZrnJJ8IxtDOve3HHA3VctBsh03qB4RZ6w== declerembaul@fabian.local]
     uid: 2042
+  ellery:
+    ensure: present
+    gid: 500
+    name: ellery
+    real name: Ellery Wulczyn
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCKFGOn5NPv0el5EtWWwffENDgrt8GKzXTUdhOOWOBemPc98MGEMkKoeAY3RAZW1xbJo+b+ZDTDORVWw3A5Lw6b8Es/fBnJR2rfChKOwj7VzeMLyIFzjgkzI+UekgfWcCsEk24ic6aJAAFLvhVV6Ib9vg1l8p+ZJFL+5+54XMt0MphZtN2w3pgv/SccJzF/kodPyu7N7jRmzweOosH7dY20cSXbnkoz8jCDs6HeLTvLErLsjYWUtwnzjhDp4lBvvZVpzkMXpp/Ju44ksypgyfzEBa/+iP1QQpls6KqRMb6wD56Z8E5BFm2s/nbff3BP3Hk7dsTLJPXYGZw48pWMwWD ellerywulczyn@administorsair4.corp.wikimedia.org]
+    uid: 10517
