@@ -8,7 +8,11 @@ shift
 
 for x in $DBLIST; do
 	echo -----------------------------------------------------------------
-	echo $x 
+	echo $x
 	echo -----------------------------------------------------------------
-	sudo -u apache php -ddisplay_errors=On $MW_COMMON/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
+	if groups | grep -Ewq 'sudo|wikidev|root'; then
+		sudo -u apache php -ddisplay_errors=On $MW_COMMON/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
+	else
+		php -ddisplay_errors=On $MW_COMMON/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
+	fi
 done
