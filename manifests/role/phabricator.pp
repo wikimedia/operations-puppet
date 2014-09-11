@@ -41,7 +41,7 @@ class role::phabricator::main {
 
     system::role { 'role::phabricator::main': description => 'Phabricator (Main)' }
 
-    $current_tag = 'fabT552'
+    $current_tag = 'phT172'
     $domain = 'phabricator.wikimedia.org'
     class { '::phabricator':
         git_tag          => $current_tag,

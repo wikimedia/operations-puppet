@@ -1,5 +1,12 @@
 #These custom values are hardcoded here to persist across Phabriactor Mediawiki installs
 
+ui.footer-items:
+  - {name: Copyright 2014}
+  - {href: 'https://www.wikimedia.org/', name: Wikimedia Foundation}
+  - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy Policy}
+  - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use', name: Terms of Use}
+  - {href: 'https://wikimediafoundation.org/wiki/Wikimedia:General_disclaimer', name: Disclaimer}
+
 maniphest.priorities:
   '100':
     name: 'Unbreak Now!'
