@@ -2,8 +2,6 @@
 PATH="$PATH:/srv/deployment/scap/scap/bin"
 MW_COMMON="<%= @mw_common %>"
 MW_COMMON_SOURCE="<%= @mw_common_source %>"
-MW_DBLISTS="<%= @dblist_common %>"
-MW_DBLISTS_SOURCE="<%= @dblist_common_source %>"
 MW_CRON_LOGS="/home/wikipedia/logs/norotate"
 MW_RSYNC_HOST="<%= @mw_rsync_host %>"
 MW_DSH_ARGS=('-cM' '-g' 'mediawiki-installation' '-o' '-oSetupTimeout=30' '-F30')

@@ -18,8 +18,8 @@ if [ $# -lt 2 ]; then
 	exit 1
 fi
 
-if [ ! -f $MW_DBLISTS/$LISTFILE ]; then
-	echo "The specified dblist file, $MW_DBLISTS/$LISTFILE, could not be found."
+if [ ! -f $MW_COMMON/$LISTFILE ]; then
+	echo "The specified dblist file, $MW_COMMON/$LISTFILE, could not be found."
 	exit 1
 fi
 
@@ -30,7 +30,7 @@ unset SCRIPTARGS[1] # dblist file name
 SCRIPTARGS="${SCRIPTARGS[@]}"
 
 # Run the script on all wikis in the dblist
-for DBNAME in $(cat $MW_DBLISTS/$LISTFILE)
+for DBNAME in $(cat $MW_COMMON/$LISTFILE)
 do
 	RES=$(mwscript "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS)
 	test $? -gt 128 && break; # make Ctrl-C actually work

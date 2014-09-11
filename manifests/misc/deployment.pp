@@ -288,8 +288,6 @@ class misc::deployment::l10nupdate {
 class misc::deployment::vars {
     $mw_common = '/srv/mediawiki'
     $mw_common_source = '/a/common'
-    $dblist_common = $mw_common
-    $dblist_common_source = $mw_common_source
 
     if $::realm == 'production' {
         $mw_rsync_host = 'tin.eqiad.wmnet'
