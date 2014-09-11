@@ -11,7 +11,7 @@ class wikitech::wiki::passwords {
     $wikitech_nova_ldap_user_pass       = $passwords::openstack::nova::nova_ldap_user_pass
 
     # Drop this file onto the mediawiki deployment host so that the passwords are deployed
-    file { '/a/common/private/WikitechPrivateSettings.php':
+    file { '/srv/mediawiki/private/WikitechPrivateSettings.php':
         ensure => present,
         content => template('wikitech/wikitech_private.php.erb'),
         mode   => '0444',
@@ -19,7 +19,7 @@ class wikitech::wiki::passwords {
         group  => 'root',
     }
 
-    file { '/a/common/private/WikitechPrivateLdapSettings.php':
+    file { '/srv/mediawiki/private/WikitechPrivateLdapSettings.php':
         ensure => present,
         content => template('wikitech/wikitech_ldap.php.erb'),
         mode   => '0444',
