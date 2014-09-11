@@ -1969,7 +1969,7 @@ node 'mexia.wikimedia.org' {
     }
     include standard
     include admin
-    include role::authdns::ns1
+    include role::authdns::mexia
 }
 
 node 'ms1001.wikimedia.org' {

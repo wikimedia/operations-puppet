@@ -5,8 +5,8 @@ class role::authdns::base {
 
     $nameservers = [
             'ns0.wikimedia.org',
-            'ns1.wikimedia.org',
-            'baham.wikimedia.org',
+            'ns1-mexia.wikimedia.org',
+            'ns1-baham.wikimedia.org',
             'ns2.wikimedia.org',
     ]
     $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
@@ -40,7 +40,7 @@ class role::authdns::ns0 inherits role::authdns::base {
 }
 
 # ns1/mexia @ pmtpa (being replaced by baham below, both will be live for a time)
-class role::authdns::ns1 inherits role::authdns::base {
+class role::authdns::mexia inherits role::authdns::base {
     $ipv4 = '208.80.152.214'
     $ipv6 = '2620:0:860:ed1a::f' # this isn't currently routing to pmtpa anyways,
                                  # and was never a public authdns target addr.
@@ -59,7 +59,7 @@ class role::authdns::ns1 inherits role::authdns::base {
     }
 
     class { 'authdns':
-        fqdn          => 'ns1.wikimedia.org',
+        fqdn          => 'ns1-mexia.wikimedia.org',
         ipaddress     => $ipv4,
         ipaddress6    => $ipv6,
         nameservers   => $nameservers,
@@ -84,7 +84,7 @@ class role::authdns::baham inherits role::authdns::base {
     }
 
     class { 'authdns':
-        fqdn          => 'baham.wikimedia.org',
+        fqdn          => 'ns1-baham.wikimedia.org',
         ipaddress     => $ipv4,
         ipaddress6    => $ipv6,
         nameservers   => $nameservers,
