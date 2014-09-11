@@ -7,7 +7,7 @@ index="$base/indexes/index" # here indexer keeps it's copy
 dumps="$base/dumps"
 ls2="$base/lucene-search"
 
-MWinstall="/usr/local/apache"
+MWinstall="/srv/mediawiki"
 dblist="$confs/all.dblist"
 
 JAVA_OPTS_IMPORTER='-Xms128m -Xmx2000m'
@@ -63,10 +63,10 @@ function import-db {
 	timestamp=`date -u +%Y-%m-%d`
 
 	# not going to compute this param as it's broken in dumpBackup.php
-	#slave=`php $MWinstall/common/multiversion/MWScript.php getSlaveServer.php $dbname`
+	#slave=`php $MWinstall/multiversion/MWScript.php getSlaveServer.php $dbname`
 
 	echo "Dumping $dbname..."
-	php $MWinstall/common/multiversion/MWScript.php dumpBackup.php $dbname --current > $dumpfile && 
+	php $MWinstall/multiversion/MWScript.php dumpBackup.php $dbname --current > $dumpfile &&
 	import-file $dumpfile $dbname &&
 	(
 	  if [ -e $import ]; then
