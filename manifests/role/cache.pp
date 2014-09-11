@@ -573,22 +573,24 @@ class role::cache {
         }
     }
 
-    class ssl($sitename, $certname) {
+    class ssl($sitename, $certname, $sni_default=false, $tld='') {
         include certificates::wmf_ca, role::protoproxy::ssl::common
 
         # Assumes that LVS service IPs are setup elsewhere
 
-    # For unified or star certs we need to do a bit of
-    # mapping; in other cases we should be OK with the raw name
+        # For unified or star certs we need to do a bit of
+        # mapping; in other cases we should be OK with the raw name
         if $certname == 'unified.wikimedia.org' {
-        $check_cert = '*.wikipedia.org'
-    } elsif $cername == 'star.wikimedia.org' {
-        $check_cert = '*.wikimedia.org'
-    } elsif $cername == 'star.wikipedia.org' {
-        $check_cert = '*.wikipedia.org'
-    } else {
-        $check_cert = $certname
-    }
+            $check_cert = '*.wikipedia.org'
+        } elsif $cername == 'star.wikimedia.org' {
+            $check_cert = '*.wikimedia.org'
+        } elsif $cername == 'star.wikipedia.org' {
+            $check_cert = '*.wikipedia.org'
+        } elsif $cername == 'star.wmfusercontent.org' {
+            $check_cert = '*.wmfusercontent.org'
+        } else {
+            $check_cert = $certname
+        }
 
         # Nagios monitoring
         monitor_service { 'https':
@@ -600,17 +602,36 @@ class role::cache {
             before => Protoproxy::Localssl[$sitename],
         }
 
+        if empty($tld) {
+            #to be filled in at the template level
+            $full_site_name = ''
+        } else {
+            $full_site_name = "${sitename}.${tld}"
+        }
+
         protoproxy::localssl { $sitename:
             proxy_server_cert_name => $certname,
             upstream_port          => '80',
             enabled                => true,
+            server_name            => $full_site_name,
+            sni_default            => $sni_default,
+        }
+    }
+
+    class ssl::wmfusercontent {
+        class { '::role::cache::ssl':
+            sitename   => 'wmfusercontent',
+            certname   => 'star.wmfusercontent.org',
+            sni_defalt => false,
+            tld        => 'org',
         }
     }
 
     class ssl::wikimedia {
         class { '::role::cache::ssl':
-            sitename => 'wikimedia',
-            certname => 'star.wikimedia.org',
+            sitename   => 'wikimedia',
+            certname   => 'star.wikimedia.org',
+            sni_defalt => true,
         }
     }
 
@@ -1411,7 +1432,7 @@ class role::cache {
         include standard
         include nrpe
         include role::cache::ssl::wikimedia
-
+        include role::cache::ssl::wmfusercontent
         $memory_storage_size = 8
 
         varnish::instance { 'misc':
