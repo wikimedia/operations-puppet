@@ -28,7 +28,7 @@ protocol = <%= service.fetch('protocol', "tcp") %>
 ip = <%= subserviceip %>
 port = <%= service.fetch('port', 80) %>
 scheduler = <%= service.fetch('scheduler', "wrr") %>
-config = http://noc.wikimedia.org/pybal/<%= @site %>/<%= servicename %>
+config = http://config-master.<%= @site %>.wmnet/pybal/<%= @site %>/<%= servicename %>
 bgp = <%= service.fetch('bgp', "no") %>
 depool-threshold = <%= service.fetch('depool-threshold', ".5") %>
 monitors = <%= service['monitors'].keys.sort.inspect %>
