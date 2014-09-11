@@ -407,21 +407,13 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     }
 
     cron {
-        "run-jobs-old":
-            user    => 'mwdeploy',
-            command => 'mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1',
-            ensure  => absent;
-        "send-echo-emails-old":
-            user    => 'mwdeploy',
-            command => 'mwscript extensions/Echo/maintenance/processEchoEmailBatch.php --wiki=labswiki > /dev/null 2>&1',
-            ensure  => absent;
         "run-jobs":
             user    => 'apache',
-            command => 'mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1',
+            command => '/usr/local/bin/mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1',
             ensure  => present;
         "send-echo-emails":
             user    => 'apache',
-            command => 'mwscript extensions/Echo/maintenance/processEchoEmailBatch.php --wiki=labswiki > /dev/null 2>&1',
+            command => '/usr/local/bin/mwscript extensions/Echo/maintenance/processEchoEmailBatch.php --wiki=labswiki > /dev/null 2>&1',
             ensure  => present;
         "db-bak":
             user    => 'root',
