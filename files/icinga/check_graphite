@@ -169,7 +169,7 @@ class Threshold(GraphiteCheck):
         p.add_argument(
             '--from',
             dest='_from',
-            help='When to fetch the metric from (date or '-1d')',
+            help='When to fetch the metric from (date or "-1d")',
             default='-1h')
         p.add_argument(
             '--over',
