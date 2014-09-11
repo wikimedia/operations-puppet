@@ -51,10 +51,10 @@ class NagiosException(Exception):
 
 
 class GraphiteCheck(object):
-    parser_name = 'check_generic'
     """
     Nothing to see here
     """
+    parser_name = 'check_generic'
 
     def __init__(self, args):
         """
