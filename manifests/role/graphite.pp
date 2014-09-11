@@ -18,6 +18,7 @@
 class role::graphite::base(
     $storage_dir = '/var/lib/carbon',
     $auth = true,
+    $hostname = 'graphite.wikimedia.org',
 ) {
     include ::passwords::graphite
 
@@ -162,29 +163,21 @@ class role::graphite::base(
     include ::apache
     include ::apache::mod::uwsgi
 
-    if ($::realm == 'labs') {
-        if ($::hostname =~ /^deployment-/) {
-            # Beta
-            $hostname    = 'graphite-beta.wmflabs.org'
-        }
-    } else {
-        if $auth {
-            # Production
-            include ::passwords::ldap::production
-            include ::apache::mod::authnz_ldap
+    if $auth {
+        # Production
+        include ::passwords::ldap::production
+        include ::apache::mod::authnz_ldap
 
-            $hostname      = 'graphite.wikimedia.org'
-            $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
-            $ldap_bindpass = $passwords::ldap::production::proxypass
-            $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
-            $ldap_groups   = [
-                'cn=ops,ou=groups,dc=wikimedia,dc=org',
-                'cn=nda,ou=groups,dc=wikimedia,dc=org',
-                'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-            ]
-            $auth_realm    = 'WMF Labs (use wiki login name not shell)'
-            $apache_auth   = template('graphite/apache-auth-ldap.erb')
-        }
+        $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
+        $ldap_bindpass = $passwords::ldap::production::proxypass
+        $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
+        $ldap_groups   = [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+        ]
+        $auth_realm    = 'WMF Labs (use wiki login name not shell)'
+        $apache_auth   = template('graphite/apache-auth-ldap.erb')
     }
 
     apache::site { $hostname:
@@ -248,7 +241,8 @@ class role::graphite::production {
 class role::graphite::labmon {
     class { 'role::graphite::base':
         storage_dir => '/srv/carbon',
-        auth => false,
+        auth        => false,
+        hostname    => 'graphite.wmflabs.org',
     }
 
     include role::beta::monitoring::graphite
