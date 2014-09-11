@@ -3,7 +3,7 @@
 . /usr/local/lib/mw-deployment-vars.sh
 
 cd "$MW_COMMON/multiversion"
-for db in `<"$MW_DBLISTS/all.dblist"`; do
+for db in `<"$MW_COMMON/all.dblist"`; do
 	echo $db
 	php MWScript.php updateSpecialPages.php $db
 	echo

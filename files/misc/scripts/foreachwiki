@@ -10,6 +10,6 @@
 #
 # On production the call will return all.dblist
 # On labs: all-labs.dblist
-ALL_DBLIST=$(getRealmSpecificFilename $MW_DBLISTS_SOURCE'/all.dblist')
+ALL_DBLIST=$(getRealmSpecificFilename $MW_COMMON_SOURCE'/all.dblist')
 
 exec "$(dirname "$0")/foreachwikiindblist" "$ALL_DBLIST" "${@}"
