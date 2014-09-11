@@ -1,31 +1,42 @@
 class url-downloader {
-    system::role { 'url-downloader': description => 'Upload-by-URL proxy' }
+    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
+        $confdir = '/etc/squid3'
+        $package_name = 'squid3'
+        $service_name = 'squid3'
+    } else {
+        $confdir = '/etc/squid'
+        $package_name = 'squid'
+        $service_name = 'squid'
+    }
 
-    file { '/etc/squid/squid.conf':
-        require => Package['squid'],
+    file { "${confdir}/squid.conf":
+        require => Package[$package_name],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        #TODO: inspect this
+        source  => "puppet:///modules/url-downloader/{$package_name}.conf",
+    }
+
+    file { "/etc/logrotate.d/${package_name}":
+        ensure  => present,
+        require => Package[$package_name],
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        path    => '/etc/squid/squid.conf',
-        source  => 'puppet:///modules/url-downloader/copy-by-url-proxy.conf',
+        source  => "puppet:///modules/url-downloader/${package_name}-logrotate",
     }
 
-    # pin package to the default, Ubuntu version, instead of our own
-    apt::pin { [ 'squid', 'squid-common' ]:
-        pin      => 'release o=Ubuntu',
-        priority => '1001',
-        before   => Package['squid'],
+    package { $package_name:
+        ensure => installed,
     }
 
-    package { 'squid':
-        ensure => latest,
-    }
-
-    service { 'squid':
+    service { $service_name:
         ensure    => running,
-        require   => [  File['/etc/squid/squid.conf'],
-                        Package['squid'],
-                        Interface::Ip['url-downloader']],
-        subscribe => File['/etc/squid/squid.conf'],
+        require   => [
+                      File["${confdir}/squid.conf"],
+                      Package[$package_name],
+                     ],
+        subscribe => File["${confdir}/squid.conf"],
     }
 }

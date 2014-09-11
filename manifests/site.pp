@@ -1512,7 +1512,7 @@ node 'linne.wikimedia.org' {
     include base
     include ganglia
     include role::mail::sender
-    include url-downloader
+    include role::url-downloader
 
     class { 'ntp::server':
         servers => [ '198.186.191.229',
