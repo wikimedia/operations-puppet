@@ -1,7 +1,7 @@
 class mediawiki {
     include ::mediawiki::cgroup
     include ::mediawiki::packages
-    include ::mediawiki::sync
+    include ::mediawiki::scap
     include ::mediawiki::users
     include ::mediawiki::syslog
     include ::mediawiki::php

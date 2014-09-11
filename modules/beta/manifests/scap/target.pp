@@ -4,7 +4,7 @@
 #
 class beta::scap::target {
     include ::beta::config
-    include ::mediawiki::sync
+    include ::mediawiki::scap
     include ::beta::mwdeploy_sudo
 
     # Install authorized_keys for mwdeploy user
