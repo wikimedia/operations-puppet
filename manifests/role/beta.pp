@@ -150,7 +150,7 @@ class role::beta::jobrunner {
 class role::beta::monitoring::graphite {
     monitor_graphite_threshold { 'betalabs-puppet-fail':
         from            => '10min',
-        description     => 'Monitor for puppet failures on beta labs',
+        description     => 'BetaLabs: Puppet failure events',
         metric          => 'deployment-prep.*.puppetagent.failed_events.value',
         critical        => 1,
         warning         => 1,
@@ -160,7 +160,7 @@ class role::beta::monitoring::graphite {
     }
 
     monitor_graphite_threshold { 'betalabs-low-space-var':
-        description     => 'Monitor for low disk space on /var for beta labs',
+        description     => 'BetaLabs: Low disk space on /var',
         metric          => 'deployment-prep.*.diskspace._var.byte_avail.value',
         warning         => 67108864, # 512MiB
         critical        => 33554432, # 256MiB,
