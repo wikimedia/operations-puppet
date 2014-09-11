@@ -320,8 +320,6 @@ class toollabs::exec_environ {
         'libquadmath0',
         'librsvg2-bin',                # Bug 58516
         'libsvn1',
-        'libvips-tools',
-        'libvips15',
         'libxml2-utils',               # Bug 62944.
         'libyaml-dev',                 # Bug #65974.
         'libzbar0',                    # Bug 56996
@@ -373,6 +371,8 @@ class toollabs::exec_environ {
             'libgdal1-1.7.0',              # Bug 56995
             'libmpc2',
             'libprotobuf7',                # Bug 56995
+            'libvips-tools',               # FIXME: Our custom packages are causing problems
+            'libvips15',                   # on trusty. Don't try to install them for now
             ]:
             ensure => latest,
         }
