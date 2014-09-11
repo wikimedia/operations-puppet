@@ -17,15 +17,23 @@ class androidsdk::dependencies( $ensure = 'present' ) {
         }
     }
 
-    # 32bit libs needed by Android SDK
-    # ..but NOT just all of ia32-libs ..
-    package { [
-        'libgcc1:i386',
-        'libncurses5:i386',
-        'libsdl1.2debian:i386',
-        'libstdc++6:i386',
-        'zlib1g:i386',
-        ]: ensure => $ensure;
+    # 32bit compat libraries needed by AndroidSDK
+    # They have different names in precise and trusty
+    if $::lsbdistcodename == 'precise' {
+        package { [
+            'libgcc1:i386',
+            'libncurses5:i386',
+            'libstdc++6:i386',
+            'zlib1g:i386',
+            ]: ensure => $ensure
+        }
+    } else {
+        package { [
+            'lib32stdc++6',
+            'lib32z1',
+            'lib32ncurses5',
+            'lib32bz2-1.0',
+            ]: ensure => $ensure
+        }
     }
-
 }
