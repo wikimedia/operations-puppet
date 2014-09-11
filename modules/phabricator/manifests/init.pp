@@ -74,6 +74,7 @@ class phabricator (
     $mysql_admin_pass = '',
     $serveradmin      = '',
     $auth_type        = '',
+    $content_ssl_cert = '',
 ) {
 
     #XXX: todo fix path issue 9/9/14
@@ -131,6 +132,8 @@ class phabricator (
     apache::site { 'phabricator':
         content => template('phabricator/phabricator-default.conf.erb'),
     }
+
+    install_certificate{ $content_ssl_cert: }
 
     git::install { 'phabricator/libphutil':
         directory => "${phabdir}/libphutil",

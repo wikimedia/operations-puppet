@@ -16,6 +16,7 @@ class role::phabricator::legalpad {
         lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $::mysql_adminuser,
         mysql_admin_pass => $::mysql_adminpass,
+        content_ssl_cert => 'star.wmfusercontent.org',
         auth_type        => 'sul',
         settings         => {
             'darkconsole.enabled'                => false,
@@ -48,6 +49,7 @@ class role::phabricator::main {
         lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $::mysql_adminuser,
         mysql_admin_pass => $::mysql_adminpass,
+        content_ssl_cert => 'star.wmfusercontent.org',
         auth_type        => 'dual',
         extension_tag    => 'HEAD',
         extensions       => ['MediaWikiUserpageCustomField.php',
