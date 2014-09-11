@@ -55,6 +55,8 @@ class role::protoproxy::ssl {
         role::protoproxy::ssl::common,
         protoproxy::ganglia
 
+    install_certificate( 'star.wmfusercontent.org': }
+
     # Nagios monitoring
     monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikipedia.org", critical => true }
 
