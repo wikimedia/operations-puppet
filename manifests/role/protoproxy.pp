@@ -75,6 +75,7 @@ class role::protoproxy::ssl {
     install_certificate{ 'star.wikidata.org': }
     install_certificate{ 'star.wikivoyage.org': }
     install_certificate{ 'unified.wikimedia.org': }
+    install_certificate( 'star.wmfusercontent.org': }
 
     protoproxy{ 'wikimedia':
         proxy_addresses   => {
