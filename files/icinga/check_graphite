@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""
+'''
 check_graphite
 ~~~~~~~
 
@@ -12,7 +12,7 @@ Based on the original plugin from disquis:
  Can be tested like:
  ./files/icinga/check_graphite --url http://graphite.wikimedia.org check_threshold
    <metric-name> --from 15min -C 1 -W 2 --under
-"""
+'''
 
 import os
 import json
@@ -44,23 +44,23 @@ class NagiosException(Exception):
 
     def __init__(self, exitcode, msg):
         self.exitcode = self.NAGIOS_STATUSES.get(exitcode, 3)
-        self.msg = "%s: %s" % (exitcode, msg)
+        self.msg = '%s: %s' % (exitcode, msg)
 
     def exit(self):
         sys.exit(self.exitcode)
 
 
 class GraphiteCheck(object):
-    """
+    '''
     Nothing to see here
-    """
+    '''
     parser_name = 'check_generic'
 
     def __init__(self, args):
-        """
+        '''
         :param args: Namespace with command-line arguments
         :returns: None
-        """
+        '''
         self.targets = args.metric.split('::')  # expressions use commas!
         parsed_url = urlparse(args.url)
         if parsed_url.netloc.find('@') > 0:
@@ -68,7 +68,7 @@ class GraphiteCheck(object):
         else:
             host = parsed_url.netloc
             self.credentials = None
-        self.base_url = "%s://%s" % (parsed_url.scheme, host)
+        self.base_url = '%s://%s' % (parsed_url.scheme, host)
         # subclasses should just implement get_all here.
         self.get_all(args)
 
@@ -91,16 +91,16 @@ class GraphiteCheck(object):
         raise NotImplementedError('Please implement this method in a subclass')
 
     def fetch(self):
-        """
+        '''
         Fetches the required datapoints from the
 
         :returns: Parsed json structure (usually a list)
         :raises: NagiosException on non-OK statuses
-        """
+        '''
 
         h = {'User-Agent': 'check_graphite/1.0'}
 
-        full_url = "%s/render?%s" % (self.base_url, urlencode(self.params))
+        full_url = '%s/render?%s' % (self.base_url, urlencode(self.params))
 
         try:
             req = urllib2.Request(full_url, None, h)
@@ -119,10 +119,10 @@ class GraphiteCheck(object):
 
     @classmethod
     def create_parser(cls, parser):
-        """
+        '''
         :param parser: the parser to attach the subparser to.
         :returns: argparse.ArgumentParser
-        """
+        '''
         p = parser.add_parser(cls.parser_name, help=cls.__doc__)
         p.add_argument(
             'metric',
@@ -142,23 +142,23 @@ class GraphiteCheck(object):
         raise NotImplementedError('Please implement this method in a subclass')
 
     def run(self):
-        """
+        '''
         Runs all the processing pipeline. If successful it exits.
 
         :returns: None
-        """
+        '''
         res = self.fetch()
         dp = self.parse_result(res)
         msg = self.check_data(dp)
-        print("OK: %s" % msg)
+        print('OK: %s' % msg)
         sys.exit(NagiosException.NAGIOS_STATUSES['OK'])
 
 
 class Threshold(GraphiteCheck):
 
-    """
+    '''
     Checks if the metric exceeds the desired threshold
-    """
+    '''
     parser_name = 'check_threshold'
     from_regex = re.compile('^-(\d+)(\w+)$')
     _accepted_time_defs = ['hours', 'h', 'w', 'weeks', 'min', 'minutes']
@@ -169,38 +169,38 @@ class Threshold(GraphiteCheck):
         p.add_argument(
             '--from',
             dest='_from',
-            help='When to fetch the metric from (date or "-1d")',
+            help='When to fetch the metric from (date or '-1d')',
             default='-1h')
         p.add_argument(
             '--over',
-            dest="over",
+            dest='over',
             action='store_true',
             default=True,
             help='If alarms should happen when we exceed the threshold')
         p.add_argument(
             '--under',
-            dest="under",
+            dest='under',
             action='store_true',
             default=False,
             help='If alarms should happen when we are below the threshold')
         p.add_argument(
             '--perc',
-            dest="percentage",
+            dest='percentage',
             default=1,
             type=int,
             help='Number of datapoints above or below threshold that will raise the alarm')
         return p
 
     def get_all(self, args):
-        """
+        '''
         Gets additional data from the command-line args.
 
         :param args: Namespace with command-line arguments
         :returns: None
-        """
+        '''
         _from = args._from
         if not args._from.startswith('-'):
-            _from = "-%s" % args._from
+            _from = '-%s' % args._from
         m = self.from_regex.match(_from)
         if not m:
             raise ValueError(
@@ -227,13 +227,13 @@ class Threshold(GraphiteCheck):
         self.perc = args.percentage
 
     def parse_result(self, result):
-        """
+        '''
         Parses the results of the fetch operation
 
         :param result: A data structure (tipically, a list)
                        with graphite datapoints
         :returns: a categorized list of datapoints
-        """
+        '''
         datapoints = defaultdict(list)
         datapoints['_total'] = 0
         for (data, time) in result[0]['datapoints']:
@@ -251,19 +251,19 @@ class Threshold(GraphiteCheck):
         return datapoints
 
     def check_data(self, datapoints):
-        """
+        '''
         Checks the parsed datasets to emit the nagios status.
 
         :param datapoints: A dictionary of lists of categorized data.
         :returns: Message string containing the status.
         :raises: NagiosException on non-OK statuses
-        """
+        '''
         if datapoints['_total'] == 0:
             raise NagiosException('UNKNOWN', 'No valid datapoints found')
 
-        report = "above"
+        report = 'above'
         if self.under:
-            report = "under"
+            report = 'under'
 
         lengths = {}
         t = datapoints['_total']
@@ -285,19 +285,19 @@ class Threshold(GraphiteCheck):
 
 class SeriesThreshold(Threshold):
 
-    """
+    '''
     Checks a series of metrics to see if they individually are within acceptable thresholds
-    """
+    '''
     parser_name = 'check_series_threshold'
 
     def parse_result(self, result):
-        """
+        '''
         Parses the results of the fetch operation
 
         :param result: A data structure (typically, a list)
                        with graphite datapoints
         :returns: A dictionary with key target and value categorized datapoints list
-        """
+        '''
         seriespoints = {}
         for series in result:
             datapoints = defaultdict(list)
@@ -318,13 +318,13 @@ class SeriesThreshold(Threshold):
         return seriespoints
 
     def check_data(self, seriespoints):
-        """
+        '''
         Checks the parsed datasets to emit the nagios status.
 
         :param seriespoints: A dictionary of lists of categorized data.
         :returns: Message string containing the status.
         :raises: NagiosException on non-OK statuses
-        """
+        '''
         messages = {'OK': [], 'CRITICAL': [], 'WARNING':[]}
         for target, datapoints in seriespoints.iteritems():
             if datapoints['_total'] == 0:
@@ -346,9 +346,9 @@ class SeriesThreshold(Threshold):
             else:
                 messages['OK'].append((target, 100.0))
 
-        report = "above"
+        report = 'above'
         if self.under:
-            report = "under"
+            report = 'under'
 
         message = self.format_message(messages)
         if messages['CRITICAL']:
@@ -374,9 +374,9 @@ class SeriesThreshold(Threshold):
 
 class Anomaly(GraphiteCheck):
 
-    """
+    '''
     Checks if the metric is out of the forecasted bounds for a number of times in the last iterations
-    """
+    '''
     parser_name = 'check_anomaly'
 
     @classmethod
@@ -384,20 +384,20 @@ class Anomaly(GraphiteCheck):
         p = super(Anomaly, cls).create_parser(parser)
         p.add_argument(
             '--check_window',
-            dest="check_window",
+            dest='check_window',
             type=int,
             help='''How many datapoints to consider in the anomaly detection
 sampling (we will still require 1w of data)''',
             default=20)
         p.add_argument(
             '--over',
-            dest="over",
+            dest='over',
             action='store_true',
             default=False,
             help='If alarms should happen when we are above normal values')
         p.add_argument(
             '--under',
-            dest="under",
+            dest='under',
             action='store_true',
             default=False,
             help='If alarms should happen when we are below normal values')
@@ -405,12 +405,12 @@ sampling (we will still require 1w of data)''',
         return p
 
     def get_all(self, args):
-        """
+        '''
         Gets additional data from the command-line args.
 
         :param args: Namespace with command-line arguments
         :returns: None
-        """
+        '''
         self.params = [('format', 'json')]
         for target in self.targets:
             self.params.append(('target', target))
@@ -423,13 +423,13 @@ sampling (we will still require 1w of data)''',
         self.under = args.under
 
     def parse_result(self, result):
-        """
+        '''
         Parses the results of the fetch operation
 
         :param result: A data structure (tipically, a list)
                        with graphite datapoints
         :returns: a categorized list of datapoints
-        """
+        '''
         datapoints = defaultdict(list)
         my_slice = self.check_window * -1
         measures = result[0]['datapoints'][my_slice:]
@@ -450,13 +450,13 @@ sampling (we will still require 1w of data)''',
         return datapoints
 
     def check_data(self, datapoints):
-        """
+        '''
         Checks the parsed datasets to emit the nagios status.
 
         :param datapoints: A dictionary of lists of categorized data.
         :returns: Message string containing the status.
         :raises: NagiosException on non-OK statuses
-        """
+        '''
         u = len(datapoints['unknown'])
         h = len(datapoints['higher'])
         l = len(datapoints['lower'])
@@ -508,7 +508,7 @@ sampling (we will still require 1w of data)''',
 
 
 def main():
-    """
+    '''
     Controller for the graphite fetching plugin.
 
     You can build a few different type of checks, both traditional nagios checks
@@ -528,7 +528,7 @@ def main():
     ./check_graphyte.py --url http://some-graphite-host  \
           check_anomaly my.beloved.metric --check_window 500 -C 5 -W 1
 
-    """
+    '''
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(
         title='check_type',
