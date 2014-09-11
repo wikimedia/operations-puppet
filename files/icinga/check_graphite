@@ -258,7 +258,7 @@ class Threshold(GraphiteCheck):
         :returns: Message string containing the status.
         :raises: NagiosException on non-OK statuses
         """
-        if not datapoints['_total']:
+        if datapoints['_total'] == 0:
             raise NagiosException('UNKNOWN', 'No valid datapoints found')
 
         report = "above"
@@ -327,7 +327,7 @@ class SeriesThreshold(Threshold):
         """
         messages = {'OK': [], 'CRITICAL': [], 'WARNING':[]}
         for target, datapoints in seriespoints.iteritems():
-            if not datapoints['_total']:
+            if datapoints['_total'] == 0:
                 raise NagiosException('UNKNOWN', 'No valid datapoints found for %s' % target)
 
             lengths = {}
