@@ -20,7 +20,7 @@ function _missing_device() {
 
 for ring in account container object; do
   [ -e "${ring}.builder" ] && continue
-  swift-ring-builder ${ring}.builder create ${partpower} ${replicas} ${part_move_hours}
+  swift-ring-builder ${ring}.builder create ${partpower} ${replicas} ${min_part_hours}
 done
 
 
