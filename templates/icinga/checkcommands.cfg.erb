@@ -220,21 +220,6 @@ define command{
         }
 
 define command{
-    command_name    by_ssh_check_disk
-    command_line    $USER1$/check_by_ssh -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C "/usr/local/apache/common/nagios-fedora-plugins/check_disk.switch -w $ARG1$ -c $ARG2$ -l -e"
-    }
-
-define command{
-    command_name    by_ssh_check_3ware
-    command_line    $USER1$/check_by_ssh -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C /usr/local/apache/common/nagios-fedora-plugins/check_3ware.sh
-    }
-
-define command{
-    command_name    by_ssh_check_postfix
-    command_line    $USER1$/check_by_ssh -t 15 -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C /usr/local/apache/common/nagios-fedora-plugins/contrib/check_postfix
-    }
-
-define command{
     command_name    check_mysqlstatus
     command_line    /usr/bin/php $USER1$/check_MySQL.php -h $HOSTADDRESS$ -u nagios -p <%= @nagios_mysql_check_pass %> $ARG1$
     }
