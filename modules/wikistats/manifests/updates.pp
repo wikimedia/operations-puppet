@@ -26,12 +26,14 @@ class wikistats::updates {
                 'wq@6',  # Wikiquotes
                 'os@7',  # OpenSUSE
                 'gt@8',  # Gentoo
+                'sf@8',  # Sourceforge
                 'an@9',  # Anarchopedias
                 'wf@10', # Wikifur
                 'wv@11', # Wikiversities
                 'sc@12', # Scoutwikis
                 'ne@13', # Neoseeker
                 'wr@14', # Wikitravel
+                'or@14', # Orain
                 'et@15', # EditThis
                 'mt@16', # Metapedias
                 'un@17', # Uncylomedias
