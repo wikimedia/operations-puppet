@@ -193,7 +193,7 @@ sub tag_carrier {
             //
             // TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess...
             //
-            if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" ) {
+            if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" || req.http.host ~ "^(zero|m)\.") {
                 set req.http.X-CS = req.http.X-CS2;
             } else {
                 set req.http.X-CS = "ON";
