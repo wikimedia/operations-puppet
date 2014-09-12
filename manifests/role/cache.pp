@@ -578,17 +578,13 @@ class role::cache {
 
         # Assumes that LVS service IPs are setup elsewhere
 
-    # For unified or star certs we need to do a bit of
-    # mapping; in other cases we should be OK with the raw name
-        if $certname == 'unified.wikimedia.org' {
-        $check_cert = '*.wikipedia.org'
-    } elsif $cername == 'star.wikimedia.org' {
-        $check_cert = '*.wikimedia.org'
-    } elsif $cername == 'star.wikipedia.org' {
-        $check_cert = '*.wikipedia.org'
-    } else {
-        $check_cert = $certname
-    }
+        # For unified or star certs we need to do a bit of
+        # mapping; in other cases we should be OK with the raw name
+        $check_cert = $certname ? {
+            'unified.wikimedia.org'         => '*.wikipedia.org',
+            /^star\.(wiki[m]edia\.org)$/    => "*.$1",
+            default                         => $certname
+        }
 
         # Nagios monitoring
         monitor_service { 'https':
