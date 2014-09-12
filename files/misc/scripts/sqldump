@@ -1,7 +1,7 @@
 #!/bin/bash
 
 db=$1
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 
 MWMULTIDIR=$MEDIAWIKI_DEPLOYMENT_DIR/multiversion
 

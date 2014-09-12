@@ -3,7 +3,7 @@
 # This file is managed by Puppet (files/misc/scripts/sql).
 
 # Read configuration.
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 MWMULTIDIR=$MEDIAWIKI_DEPLOYMENT_DIR/multiversion
 
 # Database that the user wants to use/query.

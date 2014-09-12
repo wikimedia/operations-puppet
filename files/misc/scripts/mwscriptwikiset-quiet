@@ -6,7 +6,7 @@
 # This only prints information for wikis thas that the script gives
 # a non-empty result for via STD_OUT.
 
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 
 SCRIPTFILE=$1
 LISTFILE=$2

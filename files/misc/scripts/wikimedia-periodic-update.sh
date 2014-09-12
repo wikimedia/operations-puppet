@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 
 for db in `<"$MEDIAWIKI_DEPLOYMENT_DIR/flaggedrevs.dblist"`;do
 	echo $db

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Shell wrapper for the home version of multiversion/MWScript.php.
 # This script belongs in /usr/local/bin/ and should be in PATH.
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 
 # Use the source version of the script if the source directory is present.
 # This only matters if the source dir is shared or when run on the deployment server.

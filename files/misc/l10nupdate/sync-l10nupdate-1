@@ -1,8 +1,9 @@
 #!/bin/bash
 # This script belongs in /usr/local/bin/.
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 
 MWVER="$1"
+MW_RSYNC_HOST="tin.eqiad.wmnet"
 
 if [ -z "$MWVER" ]; then
 	echo "FAILED: MediaWiki version not provided"

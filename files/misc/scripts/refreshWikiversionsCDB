@@ -2,5 +2,5 @@
 # Shell wrapper for the home version of multiversion/refreshWikiVersionsCDB
 # This script belongs in /usr/bin/ and should be in PATH.
 
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 exec php "$MEDIAWIKI_STAGING_DIR/multiversion/refreshWikiVersionsCDB" "$@"
