@@ -5,7 +5,7 @@
 # and runs the maintenance script on each of the wikis in the list.
 # Note that this script prints some status info.
 
-. /usr/local/lib/mw-deployment-vars.sh
+. /etc/profile.d/mediawiki.sh
 
 SCRIPTFILE=$1
 LISTFILE=$2
