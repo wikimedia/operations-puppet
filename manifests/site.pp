@@ -57,6 +57,17 @@ if $puppet_version == undef {
 
 # Node definitions (alphabetic order)
 
+node /^(acamar|achernar)\.wikimedia\.org$/ {
+    include admin
+    include base::firewall
+    include standard
+    include role::dns::recursor
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+}
+
 # To be decommissioned/reused, not presently serving traffic
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
     include admin
