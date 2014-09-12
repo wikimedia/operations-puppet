@@ -1,0 +1,13 @@
+# map "realm name" into "key = value" to be written verbatim to
+# container-sync-realms.conf.
+# See also
+# http://docs.openstack.org/developer/swift/overview_container_sync.html
+swift_new::params::replication_accounts:
+    mw_media:
+        cluster_codfw: 'http://ms-fe.svc.codfw.wmnet/v1/'
+
+# the private part looks like this:
+# swift_new::params::replication_keys:
+#   mw_media:
+#       key: 'foo'
+#       key2: 'bar'

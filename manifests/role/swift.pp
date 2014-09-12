@@ -108,11 +108,15 @@ class role::swift {
                 host => 'ms-fe.eqiad.wmnet',
             }
             include role::swift::icehouse
+            include ::swift_new::params
+            include ::swift_new::container_sync
         }
         class storage inherits role::swift::eqiad-prod {
             include ::swift::storage
             include ::swift::storage::monitoring
             include role::swift::icehouse
+            include ::swift_new::params
+            include ::swift_new::container_sync
         }
     }
     class esams-prod inherits role::swift::base {
@@ -343,6 +347,8 @@ class role::swift::proxy {
     include ::swift_new::params
     include ::swift_new
     include ::swift_new::ring
+    include ::swift_new::container_sync
+
     class { '::swift_new::proxy':
         statsd_metric_prefix => "swift.${::swift_new::params::swift_cluster}.${::hostname}",
     }
@@ -374,6 +380,7 @@ class role::swift::storage {
     include ::swift_new
     include ::swift_new::ring
     include ::swift_new::storage
+    include ::swift_new::container_sync
     include ::swift_new::storage::monitoring
 
     $all_drives = hiera('swift_storage_drives')

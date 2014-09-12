@@ -15,9 +15,9 @@ log_statsd_metric_prefix = <%= @statsd_metric_prefix %>
 
 [pipeline:main]
 <% if @auth_backend == 'swauth' -%>
-pipeline = rewrite healthcheck cache tempurl swauth cors proxy-logging proxy-server
+pipeline = rewrite healthcheck cache container_sync tempurl swauth cors proxy-logging proxy-server
 <% elsif @auth_backend == 'tempauth' -%>
-pipeline = rewrite healthcheck cache tempurl tempauth cors proxy-logging proxy-server
+pipeline = rewrite healthcheck cache container_sync tempurl tempauth cors proxy-logging proxy-server
 <% end -%>
 
 [app:proxy-server]
@@ -52,6 +52,9 @@ user_search_backup = <%= @search_password %> .admin <%= @proxy_address %>/v1/AUT
 
 [filter:healthcheck]
 use = egg:swift#healthcheck
+
+[filter:container_sync]
+use = egg:swift#container_sync
 
 [filter:cache]
 use = egg:swift#memcache
