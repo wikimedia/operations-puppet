@@ -11,6 +11,10 @@ server {
         <% end -%>
 	ssl on;
 	server_name  <%= @server_name %>;
+        <% if @sslonly == "true" -%>
+        return 301 https://$host$request_uri;
+        <% end -%>
+
 	error_log   /var/log/nginx/<%= @name %>.error.log;
 	access_log   off;
 
