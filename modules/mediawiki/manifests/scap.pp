@@ -3,6 +3,7 @@ class mediawiki::scap {
 
     $mediawiki_deployment_dir = '/srv/mediawiki'
     $mediawiki_staging_dir    = '/srv/mediawiki-staging'
+    $scap_bin_dir             = '/srv/deployment/scap/scap/bin'
 
     package { 'scap':
         ensure   => latest,
@@ -10,10 +11,10 @@ class mediawiki::scap {
     }
 
     file { $mediawiki_deployment_dir:
-        ensure  => directory,
-        owner   => 'mwdeploy',
-        group   => 'mwdeploy',
-        mode    => '0775',
+        ensure => directory,
+        owner  => 'mwdeploy',
+        group  => 'mwdeploy',
+        mode   => '0775',
     }
 
     file { '/etc/profile.d/mediawiki.sh':
@@ -23,22 +24,10 @@ class mediawiki::scap {
         mode    => '0444',
     }
 
-    # These get invoked by scap over SSH using a non-interactive, non-login
-    # shell and thus won't pick up the /etc/profile.d script declared above.
-    file { '/usr/local/bin/scap-rebuild-cdbs':
-        ensure  => link,
-        target  => '/srv/deployment/scap/scap/bin/scap-rebuild-cdbs',
-        require => Package['scap'],
-    }
-
-    file { '/usr/local/bin/sync-common':
-        ensure  => link,
-        target  => '/srv/deployment/scap/scap/bin/sync-common',
-        require => Package['scap'],
-    }
-
-    exec { '/usr/local/bin/sync-common':
-        creates => "${mediawiki_deployment_dir}/wmf-config/InitialiseSettings.php",
+    exec { 'fetch_mediawiki':
+        command => "${scap_bin_dir}/sync-common",
+        creates => "${mediawiki_deployment_dir}/docroot",
+        require => [ File[$mediawiki_deployment_dir], Package['scap'] ],
         timeout => 30 * 60,  # 30 minutes
     }
 }
