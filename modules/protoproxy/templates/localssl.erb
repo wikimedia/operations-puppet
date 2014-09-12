@@ -3,10 +3,10 @@
 
 # SSL proxying
 server {
-	listen [::]:443 ssl ipv6only=on;
-	listen 443 ssl;
+	listen [::]:443 <%= @default_server ? "default_server " : "" %>ssl ipv6only=on;
+	listen 443 <%= @default_server ? "default_server " : "" %>ssl;
 	ssl on;
-	server_name  <%= @fqdn %>;
+	server_name  <%= @server_name %>;
 
 	error_log   /var/log/nginx/<%= @name %>.error.log;
 	access_log   off;
