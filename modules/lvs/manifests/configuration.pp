@@ -121,6 +121,7 @@ class lvs::configuration {
                     'loginlb6'  => '2620:0:862:ed1a::1:9',
                 },
                 'ulsfo' => {
+                    'textsvc'   => '10.2.4.25',
                     'textlb'    => '198.35.26.96',
                     'loginlb'   => '198.35.26.105',
 
@@ -165,7 +166,7 @@ class lvs::configuration {
             'upload' => {
                 'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadsvc' => '10.2.2.24' },
                 'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
-                'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b' },
+                'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b', 'uploadsvc' => '10.2.4.24' },
             },
             'apaches' => {
                 'eqiad' => "10.2.2.1",
