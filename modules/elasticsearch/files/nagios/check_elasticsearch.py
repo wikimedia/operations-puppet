@@ -79,8 +79,8 @@ class Threshold(object):
 def _format_health(health):
     out = []
     for k, v in health.iteritems():
-        health_item = '%s: %s' % (k.encode('utf8', 'ignore'),
-                                  v.encode('utf8', 'ignore'))
+        health_item = '%s: %s' % (str(k).encode('utf8', 'ignore'),
+                                  str(v).encode('utf8', 'ignore'))
         out.append(health_item)
     return ', '.join(out)
 
