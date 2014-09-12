@@ -148,7 +148,6 @@ class lvs::configuration {
                     'bitslbsecure' => '91.198.174.202',
                     'uploadlbsecure' => '91.198.174.208',
                     'mobilelbsecure' => '91.198.174.204',
-                    'donatelbsecure' => '91.198.174.224',
 
                     'textlb6secure'   => '2620:0:862:ed1a::1',
                     'loginlbsecure6' => '2620:0:862:ed1a::1:9',
