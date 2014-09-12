@@ -12,7 +12,7 @@ class beta::config {
     ]
 
     # Directory where files to be scap'ed are staged
-    $scap_stage_dir = '/srv/scap-stage-dir'
+    $scap_stage_dir = '/srv/mediawiki-staging'
 
     # Directory where scap'ed files will be placed
     $scap_deploy_dir = '/srv/mediawiki'
