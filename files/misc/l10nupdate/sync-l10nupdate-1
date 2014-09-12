@@ -9,9 +9,9 @@ if [ -z "$MWVER" ]; then
 	exit 1
 fi
 
-echo "Synchronizing $MW_COMMON_SOURCE/php-$MWVER/cache/l10n to $MW_COMMON/php-$MWVER/cache/l10n..."
+echo "Synchronizing $MEDIAWIKI_STAGING_DIR/php-$MWVER/cache/l10n to $MEDIAWIKI_DEPLOYMENT_DIR/php-$MWVER/cache/l10n..."
 echo "mediawiki-installation:"
 
 # Set forklimit to 30 (-F 30) to prevent NFS from getting overloaded causing some machines to be skipped
 dsh -o -oPasswordAuthentication=no -F 30 -cM -g mediawiki-installation \
-  "sudo -u mwdeploy rsync -a $MW_RSYNC_HOST::common/php-$MWVER/cache/l10n/ $MW_COMMON/php-$MWVER/cache/l10n"
+  "sudo -u mwdeploy rsync -a $MW_RSYNC_HOST::common/php-$MWVER/cache/l10n/ $MEDIAWIKI_DEPLOYMENT_DIR/php-$MWVER/cache/l10n"

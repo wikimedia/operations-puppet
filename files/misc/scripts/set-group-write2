@@ -4,8 +4,8 @@ BINDIR=/usr/local/bin
 
 mwVersionNums=$(mwversionsinuse)
 for mwVerNum in ${mwVersionNums[@]}; do
-	find "$MW_COMMON_SOURCE"/php-"$mwVerNum" -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
+	find "$MEDIAWIKI_STAGING_DIR"/php-"$mwVerNum" -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
 done
 
-find "$MW_COMMON_SOURCE"/wmf-config -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
-find "$MW_COMMON_SOURCE"/multiversion -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
+find "$MEDIAWIKI_STAGING_DIR"/wmf-config -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
+find "$MEDIAWIKI_STAGING_DIR"/multiversion -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'

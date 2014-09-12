@@ -1,14 +1,16 @@
 #!/bin/bash
 
+. /usr/local/lib/mw-deployment-vars.sh
+
 looksgood () {
     ( git remote -v | grep -q mediawiki-config ) && { git merge origin/master; return; }
     dir=$(pwd)
-    branch="${dir#/a/common/php-}"
+    branch="${dir#/srv/mediawiki-staging/php-}"
     git rebase origin/wmf/$branch
 }
 
 fetch() {
-    cd /a/common
+    cd "$MEDIAWIKI_STAGING_DIR"
     if [ "$1" = "config" ]; then
         cd wmf-config
         git fetch origin
@@ -23,7 +25,7 @@ fetch() {
 }
 
 cdbranch() {
-    cd /a/common
+    cd "$MEDIAWIKI_STAGING_DIR"
     branch_dir=$(find . -maxdepth 1 -type d -iregex "./php-[0-9.]+wmf$1")
     cd "${branch_dir}"
 }

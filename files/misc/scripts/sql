@@ -4,7 +4,7 @@
 
 # Read configuration.
 . /usr/local/lib/mw-deployment-vars.sh
-MWMULTIDIR=$MW_COMMON/multiversion
+MWMULTIDIR=$MEDIAWIKI_DEPLOYMENT_DIR/multiversion
 
 # Database that the user wants to use/query.
 db=$1

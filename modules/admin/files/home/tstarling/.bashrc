@@ -62,11 +62,11 @@ export EDITOR=vim
 
 if [ -e /usr/local/lib/mw-deployment-vars.sh ]; then
 	. /usr/local/lib/mw-deployment-vars.sh
-	export ENWIKI_VERSION=`tr -cd 'a-zA-Z0-9-. \n' < $MW_COMMON/wikiversions.json | awk '$1 == "enwiki" {print $2}'`
-	if [ -e $MW_COMMON_SOURCE ]; then
-		export WIKI=$MW_COMMON_SOURCE/$ENWIKI_VERSION
+	export ENWIKI_VERSION=`tr -cd 'a-zA-Z0-9-. \n' < $MEDIAWIKI_DEPLOYMENT_DIR/wikiversions.json | awk '$1 == "enwiki" {print $2}'`
+	if [ -e $MEDIAWIKI_STAGING_DIR ]; then
+		export WIKI=$MEDIAWIKI_STAGING_DIR/$ENWIKI_VERSION
 	else
-		export WIKI=$MW_COMMON/$ENWIKI_VERSION
+		export WIKI=$MEDIAWIKI_DEPLOYMENT_DIR/$ENWIKI_VERSION
 	fi
 fi
 

@@ -3,13 +3,13 @@
 . /usr/local/lib/mw-deployment-vars.sh
 
 # Let us vary mediawiki-config files by realm
-. $MW_COMMON_SOURCE/multiversion/MWRealm.sh
+. $MEDIAWIKI_STAGING_DIR/multiversion/MWRealm.sh
 
 # Get the all.dblist to be used depending on the realm we are on. This is made
 # possible by multiversion/MWRealm.sh
 #
 # On production the call will return all.dblist
 # On labs: all-labs.dblist
-ALL_DBLIST=$(getRealmSpecificFilename $MW_COMMON_SOURCE'/all.dblist')
+ALL_DBLIST=$(getRealmSpecificFilename $MEDIAWIKI_STAGING_DIR'/all.dblist')
 
 exec "$(dirname "$0")/foreachwikiindblist" "$ALL_DBLIST" "${@}"
