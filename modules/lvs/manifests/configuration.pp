@@ -257,10 +257,6 @@ class lvs::configuration {
             'swift' => {
                 'eqiad' => "10.2.2.27",
             },
-            'dns_auth' => {
-                'pmtpa' => "208.80.152.214",
-                'eqiad' => "208.80.154.238",
-            },
             'dns_rec' => {
                 'eqiad' => { 'dns_rec' => "208.80.154.239", 'dns_rec6' => "2620:0:861:ed1a::f" },
             },
@@ -312,7 +308,6 @@ class lvs::configuration {
             'search_pool1' => {},
             'search_pool2' => {},
             'search_pool3' => {},
-            'dns_auth' => {},
             'dns_rec' => {},
             'https' => {},
             'misc_web' => {},
