@@ -24,13 +24,6 @@ define protoproxy::localssl(
     $enabled        = true,
     $upstream_port  = '80'
 ) {
-    # TEMP migration
-    nginx::site { 'localssl':
-        content => template('protoproxy/localssl.erb'),
-        ensure  => absent,
-        enabled => false
-    }
-
     nginx::site { $name:
         content => template('protoproxy/localssl.erb'),
         enabled => $enabled
