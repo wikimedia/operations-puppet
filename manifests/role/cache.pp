@@ -617,6 +617,7 @@ class role::cache {
 
     # This class sets up multiple sites with multiple SSL certs using SNI
     class ssl::misc {
+        include certificates::globalsign_ca
         include certificates::wmf_ca, role::protoproxy::ssl::common
         require ::role::cache::ssl::misc::certs
 
