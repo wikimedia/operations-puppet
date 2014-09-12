@@ -15,22 +15,6 @@ class misc::deployment::common_scripts {
         ensure => present;
     }
 
-    file { '/a':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0775',
-    }
-
-    file { '/a/common':
-        ensure  => link,
-        target  => '/usr/local/apache/common-local',
-        owner   => 'root',
-        group   => 'wikidev',
-        mode    => '0775',
-        replace => false,
-    }
-
     file {
         '/usr/local/bin/clear-profile':
             owner  => 'root',
@@ -311,7 +295,7 @@ class misc::deployment::scap_primary {
     include network::constants
 
     rsync::server::module { 'common':
-        path        => '/a/common',
+        path        => '/srv/mediawiki-staging',
         read_only   => 'yes',
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
