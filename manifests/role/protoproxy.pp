@@ -79,7 +79,7 @@ class role::protoproxy::ssl {
     protoproxy{ 'wikimedia':
         proxy_addresses   => {
             'eqiad' => [ '208.80.154.224', '[2620:0:861:ed1a::1]' ],
-            'esams' => [ '91.198.174.192', '91.198.174.201', '91.198.174.224', '[2620:0:862:ed1a::1:9]', '[2620:0:862:ed1a::1]' ],
+            'esams' => [ '91.198.174.192', '91.198.174.201', '[2620:0:862:ed1a::1:9]', '[2620:0:862:ed1a::1]' ],
         },
         proxy_server_name => '*.wikimedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -93,8 +93,8 @@ class role::protoproxy::ssl {
     }
     protoproxy{ 'bits':
         proxy_addresses => {
-            'eqiad' => [ '208.80.154.234', '[2620:0:861:ed1a::1:a]', '[2620:0:861:ed1a::a]' ],
-            'esams' => [ '91.198.174.202', '91.198.174.233', '[2620:0:862:ed1a::1:a]', '[2620:0:862:ed1a::a]' ],
+            'eqiad' => [ '208.80.154.234', '[2620:0:861:ed1a::1:a]' ],
+            'esams' => [ '91.198.174.202', '[2620:0:862:ed1a::1:a]' ],
         },
         proxy_server_name => 'bits.wikimedia.org geoiplookup.wikimedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
@@ -247,8 +247,8 @@ class role::protoproxy::ssl {
     }
     protoproxy{ 'mobilewikipedia':
         proxy_addresses => {
-            'eqiad' => [ '208.80.154.236', '[2620:0:861:ed1a::1:c]', '[2620:0:861:ed1a::c]' ],
-            'esams' => [ '91.198.174.204', '91.198.174.236', '[2620:0:862:ed1a::1:c]', '[2620:0:862:ed1a::c]' ],
+            'eqiad' => [ '208.80.154.236', '[2620:0:861:ed1a::1:c]' ],
+            'esams' => [ '91.198.174.204', '[2620:0:862:ed1a::1:c]' ],
         },
         proxy_server_name => '*.m.wikipedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
