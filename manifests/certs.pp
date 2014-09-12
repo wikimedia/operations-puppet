@@ -302,3 +302,21 @@ class certificates::digicert_ca {
         require => File['/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem'],
     }
 }
+
+class certificates::globalsign_ca {
+
+    include certificates::packages
+
+    file { '/etc/ssl/certs/GlobalSign_CA.pem':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/ssl/GlobalSign_CA.pem',
+        require => Package['openssl'],
+    }
+
+    exec { '/bin/ln -sf /etc/ssl/certs/GlobalSign_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0':
+        unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/GlobalSign_CA.pem).0\" ]",
+        require => File['/etc/ssl/certs/GlobalSign_CA.pem'],
+    }
+}
