@@ -21,6 +21,7 @@ define protoproxy::localssl(
     $upstream_port = '80',
     $server_name   = $::fqdn,
     $sni_default   = false,
+    $sslonly       = false,
 ) {
 
     nginx::site { 'localssl':

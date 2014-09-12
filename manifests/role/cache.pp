@@ -573,7 +573,7 @@ class role::cache {
         }
     }
 
-    class ssl($sitename, $certname, $sni_default=false, $tld='') {
+    class ssl($sitename, $certname, $sni_default=false, $tld='', sslonly=false) {
         include certificates::wmf_ca, role::protoproxy::ssl::common
 
         # Assumes that LVS service IPs are setup elsewhere
@@ -615,6 +615,7 @@ class role::cache {
             enabled                => true,
             server_name            => $full_site_name,
             sni_default            => $sni_default,
+            sslonly                => $sslonly,
         }
     }
 
@@ -624,6 +625,7 @@ class role::cache {
             certname   => 'star.wmfusercontent.org',
             sni_defalt => false,
             tld        => 'org',
+            sslonly    => true,
         }
     }
 
