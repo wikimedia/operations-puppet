@@ -627,9 +627,10 @@ class role::cache {
             'wikimedia':
                 proxy_server_cert_name => 'star.wikimedia.org',
                 default_server         => true;
-            'wmfusercontent.org':
-                server_name            => 'wmfusercontent.org',
-                proxy_server_cert_name => 'star.wmfusercontent.org';
+# This doesn't work right, disabling temporarily until it's sorted out
+#            'wmfusercontent.org':
+#                server_name            => 'wmfusercontent.org',
+#                proxy_server_cert_name => 'star.wmfusercontent.org';
         }
 
         # FIXME: Icinga monitoring with support for SNI
