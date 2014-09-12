@@ -76,10 +76,11 @@ class role::protoproxy::ssl {
     install_certificate{ 'star.wikivoyage.org': }
     install_certificate{ 'unified.wikimedia.org': }
 
+    # text-lb + login-lb
     protoproxy{ 'wikimedia':
         proxy_addresses   => {
-            'eqiad' => [ '208.80.154.224', '[2620:0:861:ed1a::1]' ],
-            'esams' => [ '91.198.174.192', '91.198.174.201', '[2620:0:862:ed1a::1:9]', '[2620:0:862:ed1a::1]' ],
+            'eqiad' => [ '208.80.154.224', '208.80.154.233', '[2620:0:861:ed1a::1]', '[2620:0:861:ed1a::1:9]' ],
+            'esams' => [ '91.198.174.192', '91.198.174.201', '[2620:0:862:ed1a::1]', '[2620:0:862:ed1a::1:9]' ],
         },
         proxy_server_name => '*.wikimedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
