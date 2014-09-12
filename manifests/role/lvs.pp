@@ -51,6 +51,15 @@ class role::lvs::balancer {
             $sip['search'][$::site],
             ],
 
+        # codfw (should mirror eqiad above, eventually, and become merged with it via regex
+        /^(lvs200[14])$/ => [
+            ],
+        /^(lvs200[25])$/ => [
+            $sip['dns_rec'][$::site],
+            ],
+        /^(lvs200[36])$/ => [
+            ],
+
         # esams + ulsfo
         /^(lvs[34]00[13])$/ => [
             $sip['text'][$::site],
