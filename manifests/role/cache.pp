@@ -604,17 +604,38 @@ class role::cache {
         }
     }
 
-    class ssl::wikimedia {
-        class { '::role::cache::ssl':
-            sitename => 'wikimedia',
-            certname => 'star.wikimedia.org',
-        }
-    }
-
     class ssl::unified {
         class { '::role::cache::ssl':
             sitename => 'unified',
             certname => 'unified.wikimedia.org',
+        }
+    }
+
+    class ssl::misc::certs {
+        install_certificate { ['star.wikimedia.org', 'star.wmfusercontent.org']: }
+    }
+
+    # This class sets up multiple sites with multiple SSL certs using SNI
+    class ssl::misc {
+        include certificates::wmf_ca, role::protoproxy::ssl::common
+        require ::role::cache::ssl::misc::certs
+
+        # Assumes that LVS service IPs are setup elsewhere
+
+        protoproxy::localssl {
+            'wikimedia':
+                proxy_server_cert_name => 'star.wikimedia.org',
+                default_server => true;
+            'wmfusercontent':
+                server_name => 'wmfusercontent.org',
+                proxy_server_cert_name => 'star.wmfusercontent.org';
+        }
+
+        # FIXME: Icinga monitoring with support for SNI
+
+        monitor_service { 'https':
+            description   => 'HTTPS',
+            check_command => "check_ssl_cert!star.wikimedia.org",
         }
     }
 
@@ -1407,7 +1428,7 @@ class role::cache {
 
         include standard
         include nrpe
-        include role::cache::ssl::wikimedia
+        include role::cache::ssl::misc
 
         $memory_storage_size = 8
 
