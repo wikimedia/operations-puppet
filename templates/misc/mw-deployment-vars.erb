@@ -1,7 +1,13 @@
 # This file should be BASH / Python polyglot.
 PATH="$PATH:/srv/deployment/scap/scap/bin"
-MW_COMMON="<%= @mw_common %>"
-MW_COMMON_SOURCE="<%= @mw_common_source %>"
+
+MEDIAWIKI_DEPLOYMENT_DIR="<%= @mw_common %>"
+MEDIAWIKI_STAGING_DIR="<%= @mw_common_source %>"
+
+# Back-compat aliases
+MW_COMMON="$MEDIAWIKI_DEPLOYMENT_DIR"
+MW_COMMON_SOURCE="$MEDIAWIKI_STAGING_DIR"
+
 MW_CRON_LOGS="/home/wikipedia/logs/norotate"
 MW_RSYNC_HOST="<%= @mw_rsync_host %>"
 MW_DSH_ARGS=('-cM' '-g' 'mediawiki-installation' '-o' '-oSetupTimeout=30' '-F30')

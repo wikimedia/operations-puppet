@@ -287,7 +287,7 @@ class misc::deployment::l10nupdate {
 
 class misc::deployment::vars {
     $mw_common = '/srv/mediawiki'
-    $mw_common_source = '/a/common'
+    $mw_common_source = '/srv/mediawiki-staging'
 
     if $::realm == 'production' {
         $mw_rsync_host = 'tin.eqiad.wmnet'

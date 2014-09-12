@@ -3,4 +3,4 @@
 # This script belongs in /usr/bin/ and should be in PATH.
 
 . /usr/local/lib/mw-deployment-vars.sh
-exec php "$MW_COMMON_SOURCE/multiversion/refreshWikiVersionsCDB" "$@"
+exec php "$MEDIAWIKI_STAGING_DIR/multiversion/refreshWikiVersionsCDB" "$@"

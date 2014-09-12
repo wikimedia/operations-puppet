@@ -3,7 +3,7 @@
 db=$1
 . /usr/local/lib/mw-deployment-vars.sh
 
-MWMULTIDIR=$MW_COMMON/multiversion
+MWMULTIDIR=$MEDIAWIKI_DEPLOYMENT_DIR/multiversion
 
 if [ -z $db ];then
 	db=enwiki

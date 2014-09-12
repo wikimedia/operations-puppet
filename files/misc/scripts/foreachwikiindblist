@@ -11,8 +11,8 @@ for x in $DBLIST; do
 	echo $x
 	echo -----------------------------------------------------------------
 	if groups | grep -Ewq 'sudo|wikidev|root'; then
-		sudo -u apache php -ddisplay_errors=On $MW_COMMON/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
+		sudo -u apache php -ddisplay_errors=On $MEDIAWIKI_DEPLOYMENT_DIR/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
 	else
-		php -ddisplay_errors=On $MW_COMMON/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
+		php -ddisplay_errors=On $MEDIAWIKI_DEPLOYMENT_DIR/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
 	fi
 done
