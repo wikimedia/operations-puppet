@@ -599,6 +599,7 @@ class role::cache {
         protoproxy::localssl { $sitename:
             proxy_server_cert_name => $certname,
             upstream_port          => '80',
+            default_server         => true,
             enabled                => true,
         }
     }
