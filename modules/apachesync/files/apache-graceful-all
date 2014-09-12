@@ -1,10 +1,4 @@
 #!/bin/bash
-if [ `cat /etc/cluster` == eqiad ]; then
-	/usr/local/bin/dologmsg "$USER is doing a graceful restart of all apaches"
-fi
-
+/usr/local/bin/dologmsg "$USER is doing a graceful restart of all apaches"
 dsh -F20 -g apaches -cM 'sudo /usr/sbin/apache2ctl graceful'
-
-if [ `cat /etc/cluster` == eqiad ]; then
-	/usr/local/bin/dologmsg "!log $USER gracefulled all apaches"
-fi
+/usr/local/bin/dologmsg "!log $USER gracefulled all apaches"

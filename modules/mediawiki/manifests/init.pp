@@ -12,13 +12,6 @@ class mediawiki {
         include ::mediawiki::hhvm
     }
 
-    file { '/etc/cluster':
-        content => $::site,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
-
     # Increase scheduling priority of SSHD
     file { '/etc/init/ssh.override':
         content => "nice -10\n",
