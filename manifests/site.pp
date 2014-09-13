@@ -2818,54 +2818,24 @@ node 'terbium.eqiad.wmnet' {
                    'deployment'],
     }
 
-    class { 'misc::maintenance::pagetriage':
-        enabled => true,
-    }
-    class { 'misc::maintenance::translationnotifications':
-        enabled => true,
-    }
-    class { 'misc::maintenance::updatetranslationstats':
-        ensure => 'present',
-    }
-    class { 'misc::maintenance::wikidata':
-        enabled => true,
-    }
-    class { 'misc::maintenance::echo_mail_batch':
-        enabled => true,
-    }
-    class { 'misc::maintenance::parsercachepurging':
-        enabled => true,
-    }
-    class { 'misc::maintenance::cleanup_upload_stash':
-        enabled => true,
-    }
-    class { 'misc::maintenance::tor_exit_node':
-        enabled => true,
-    }
-    class { 'misc::maintenance::update_flaggedrev_stats':
-        enabled => true,
-    }
-    class { 'misc::maintenance::refreshlinks':
-        enabled => true,
-    }
-    class { 'misc::maintenance::update_special_pages':
-        enabled => true,
-    }
-    class { 'misc::maintenance::purge_abusefilter':
-        enabled => true,
-    }
-    class { 'misc::maintenance::purge_checkuser':
-        enabled => true,
-    }
-    class { 'misc::maintenance::purge_securepoll':
-        enabled => true,
-    }
+    include misc::maintenance::pagetriage
+    include misc::maintenance::translationnotifications
+    include misc::maintenance::updatetranslationstats
+    include misc::maintenance::wikidata
+    include misc::maintenance::echo_mail_batch
+    include misc::maintenance::parsercachepurging
+    include misc::maintenance::cleanup_upload_stash
+    include misc::maintenance::tor_exit_node
+    include misc::maintenance::update_flaggedrev_stats
+    include misc::maintenance::refreshlinks
+    include misc::maintenance::update_special_pages
+    include misc::maintenance::purge_abusefilter
+    include misc::maintenance::purge_checkuser
+    include misc::maintenance::purge_securepoll
 
     # (bug 15434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
-    class { 'misc::maintenance::updatequerypages':
-        enabled => true,
-    }
+    include misc::maintenance::updatequerypages
 
     package { 'python-mysqldb':
         ensure => installed,
