@@ -1,4 +1,12 @@
 # MediaWiki-related shell environment variables
-PATH="$PATH:/srv/deployment/scap/scap/bin"
+
 MEDIAWIKI_DEPLOYMENT_DIR="<%= @mediawiki_deployment_dir %>"
 MEDIAWIKI_STAGING_DIR="<%= @mediawiki_staging_dir %>"
+
+
+# Members of the wikidev group are deployers, so we add scap's bin
+# directory to their $PATH.
+
+if groups | grep -qw wikidev; then
+  PATH="${PATH}:/srv/deployment/scap/scap/bin"
+fi

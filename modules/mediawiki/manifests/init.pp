@@ -1,3 +1,14 @@
+# == Class: mediawiki
+#
+# MediaWiki is the collaborative editing software that runs Wikipedia.
+# It powers some of the most highly-trafficked sites on the web, serving
+# content in over a hundred languages to more than half a billion people
+# each month.
+#
+# This module configures Wikimedia's execution environment for
+# MediaWiki, which comprises software packages and service
+# configuration.
+#
 class mediawiki {
     include ::mediawiki::cgroup
     include ::mediawiki::packages
@@ -12,7 +23,10 @@ class mediawiki {
         include ::mediawiki::hhvm
     }
 
-    # Increase scheduling priority of SSHD
+
+    # Increase the scheduling priority of sshd so we can still
+    # log in remotely in cases of overload.
+
     file { '/etc/init/ssh.override':
         content => "nice -10\n",
         owner   => 'root',

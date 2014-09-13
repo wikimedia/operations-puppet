@@ -1,3 +1,7 @@
+# == Class: mediawiki::php
+#
+# Packages and .ini files for PHP5 extensions.
+#
 class mediawiki::php {
     include ::mediawiki::packages
 
