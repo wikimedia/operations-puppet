@@ -83,10 +83,10 @@ class lucene {
             $sync_conf_initialisesettings_labs = ''
             $sync_conf_messages                = 'tin.eqiad.wmnet::common/php/languages/messages'
         } else {
-            $sync_conf_all_dblist              = '/data/project/apache/common/*.dblist'
-            $sync_conf_initialisesettings      = '/data/project/apache/common/wmf-config/InitialiseSettings.php'
-            $sync_conf_initialisesettings_labs = '/data/project/apache/common/wmf-config/InitialiseSettings-labs.php'
-            $sync_conf_messages                = '/data/project/apache/common/php-master/languages/messages'
+            $sync_conf_all_dblist              = '/srv/mediawiki/*.dblist'
+            $sync_conf_initialisesettings      = '/srv/mediawiki/wmf-config/InitialiseSettings.php'
+            $sync_conf_initialisesettings_labs = '/srv/mediawiki/wmf-config/InitialiseSettings-labs.php'
+            $sync_conf_messages                = '/srv/mediawiki/php-master/languages/messages'
         }
         cron { 'sync-conf-from-common':
             ## to occassionally poll for mediawiki configs

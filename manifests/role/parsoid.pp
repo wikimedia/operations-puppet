@@ -141,7 +141,7 @@ class role::parsoid::beta {
 
     file { '/var/lib/parsoid/Parsoid':
         ensure => link,
-        target => '/data/project/apache/common-local/php-master/extensions/Parsoid',
+        target => '/srv/mediawiki/php-master/extensions/Parsoid',
         owner  => parsoid,
         group  => wikidev,
         mode   => '2775',
