@@ -47,6 +47,7 @@ class role::racktables {
     }
 
     include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     ferm::service { 'racktables-http':
         proto => 'tcp',
