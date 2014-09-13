@@ -32,10 +32,6 @@ echo "Undefining the instance on $FROMHOST"
 echo ""
 ssh $FROMHOST.eqiad.wmnet "virsh undefine ${INSTANCE}"
 echo
-echo "Defining the network filter on $TOHOST"
-echo
-ssh $FROMHOST.eqiad.wmnet cat "/etc/libvirt/nwfilter/nova-instance-${INSTANCE}-*" | \
-	ssh $TOHOST.eqiad.wmnet virsh nwfilter-define /proc/self/fd/0
 echo ""
 echo "Updating the instance's host in the database"
 echo ""
