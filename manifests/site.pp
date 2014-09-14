@@ -1145,11 +1145,20 @@ node /^es([569]|10)\.pmtpa\.wmnet/{
     include standard
 }
 
-node /es100[5-7]\.eqiad\.wmnet/ {
+node /es100[67]\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::es2':
         mariadb => true,
+    }
+}
+
+node /es100[5]\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 'es2',
     }
 }
 
