@@ -1128,7 +1128,9 @@ node /es4\.pmtpa\.wmnet/ {
 node /es7\.pmtpa\.wmnet/ {
     include admin
     $cluster = 'mysql'
-    include role::coredb::es2
+    class { 'role::coredb::es2':
+        mariadb => true,
+    }
 }
 
 node /es8\.pmtpa\.wmnet/ {
@@ -1146,12 +1148,8 @@ node /^es([569]|10)\.pmtpa\.wmnet/{
 node /es100[5-7]\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
-    if $::hostname =~ /^es100[67]/ {
-        class { 'role::coredb::es2':
-            mariadb => true,
-        }
-    } else {
-        include role::coredb::es2
+    class { 'role::coredb::es2':
+        mariadb => true,
     }
 }
 
