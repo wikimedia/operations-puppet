@@ -110,7 +110,14 @@ class hhvm(
         memory_limit => '300M',
         hhvm         => {
             jit              => true,
+
+            # HHVM's translation cache is a slab of memory allocated in the
+            # bottom 2 GiB for caching translated code. It is partitioned into
+            # several differently-sized blocks of memory that group code blocks
+            # by frequency of execution.
+
             jit_afrozen_size => to_bytes('100 Mb'),
+
             repo             => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
             admin_server     => { port => 9001 },
             server           => {
