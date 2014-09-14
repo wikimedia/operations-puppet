@@ -94,8 +94,8 @@ class role::coredb::config {
             'hosts' => { 'pmtpa' => [ 'es7' ],
                          'eqiad' => [ 'es1005', 'es1006', 'es1007' ] },
             'primary_site' => $::mw_primary,
-            'masters'      => { 'pmtpa' => 'es7', 'eqiad' => 'es1005' },
-            'snapshot'     => [ 'es1007' ],
+            'masters'      => { 'eqiad' => 'es1006' },
+            'snapshot'     => [],
             'no_master'    => []
         },
         'es3' => {
