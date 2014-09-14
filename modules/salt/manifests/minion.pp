@@ -37,7 +37,7 @@ class salt::minion(
     $grains    = {},
 ) {
     $config = {
-        id            => $client_id,
+        id            => $id,
         master        => $master,
         master_finger => $master_finger,
         grains        => $grains,

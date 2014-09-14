@@ -34,8 +34,16 @@ def sort_keys_recursive(value)
   end
 end
 
+def dedent_string(string)
+  lines = string.split("\n")
+  return string if lines.empty?
+  min_indent = lines.map { |line| line.start_with?(" ") ? line.match(/^ +/).offset(0)[1] : 0 }.min
+  return string if min_indent.zero?
+  lines.map { |line| line.gsub(/^ {#{min_indent}}/, "") }.join("\n")
+end
+
 module Puppet::Parser::Functions
   newfunction(:ordered_yaml, :type => :rvalue, :arity => 1) do |args|
-    ZAML.dump(sort_keys_recursive(args.first)).gsub(/^---\s*/, '') << "\n"
+    dedent_string(ZAML.dump(sort_keys_recursive(args.first)).gsub(/^---.*?\n/, '')) << "\n"
   end
 end
