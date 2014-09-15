@@ -38,7 +38,7 @@ if @proxy_addresses.has_key?(@site) then
 			next
 		end
 -%>
-	listen <%= @proxy_address %>:443<% if @proxy_address == proxy_addresses[@site][0] -%> <%= @proxy_listen_flags %><% end -%>;
+	listen <%= proxy_address %>:443<% if proxy_address == @proxy_addresses[@site][0] -%> <%= @proxy_listen_flags %><% end -%>;
 <%
 	end  # .each
 end  # if
@@ -101,7 +101,7 @@ location @fallback {
 server {
 <% @proxy_addresses[@site].each do |proxy_address| -%>
 	<% if proxy_address[0].chr != '[' then next end %>
-	listen <%= @proxy_address %>:80;
+	listen <%= proxy_address %>:80;
 <% end -%>
 	listen <%= @ipaddress %>:80;
 	server_name  <%= @proxy_server_name %>;
