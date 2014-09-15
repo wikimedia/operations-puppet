@@ -5,8 +5,9 @@ MEDIAWIKI_STAGING_DIR="<%= @mediawiki_staging_dir %>"
 
 
 # Members of the wikidev group are deployers, so we add scap's bin
-# directory to their $PATH.
+# directory to their $PATH. Also l10nupdate needs scap stuff for
+# performing its task.
 
-if groups | grep -qw wikidev; then
+if groups | grep -qw 'wikidev\|l10nupdate'; then
   PATH="${PATH}:/srv/deployment/scap/scap/bin"
 fi
