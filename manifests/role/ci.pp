@@ -334,6 +334,7 @@ class role::ci::slave::browsertests {
         ensure  => 'link',
         require => File['/mnt/elasticsearch'],
         target  => '/mnt/elasticsearch',
+        force   => true,
     }
     class { '::elasticsearch':
         cluster_name => 'jenkins',
