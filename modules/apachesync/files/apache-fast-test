@@ -43,8 +43,9 @@ if (@ARGV[1]) {
 		if (/^pybal$/) {
 			# list of production servers from pybal config (URL or local file)
 			$servers = get_server_list_from_pybal_config(qw(
-				http://noc.wikimedia.org/pybal/eqiad/apaches
-				http://noc.wikimedia.org/pybal/eqiad/api
+				http://config-master.eqiad.wmnet/pybal/eqiad/apaches
+				http://config-master.eqiad.wmnet/pybal/eqiad/api
+				http://config-master.eqiad.wmnet/pybal/eqiad/hhvm_appservers
 			));
 		} elsif (/^([\w\.]+)$/) {
 			$servers->{$1} = 1;
