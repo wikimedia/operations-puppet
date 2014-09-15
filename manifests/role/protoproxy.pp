@@ -122,7 +122,7 @@ class role::protoproxy::ssl {
     protoproxy{ 'wikipedia':
         proxy_addresses => {
             'eqiad' => [ '208.80.154.225', '[2620:0:861:ed1a::]' ],
-            'esams' => [ '[2620:0:862:ed1a::]' ],
+            'esams' => [ ],
         },
         proxy_server_name => '*.wikipedia.org',
         proxy_server_cert_name => 'unified.wikimedia.org',
