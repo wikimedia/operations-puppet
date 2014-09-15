@@ -112,7 +112,7 @@ class role::salt::minions {
         grains         => {
             realm   => $::realm,
             site    => $::site,
-            cluster => $::cluster,
+            cluster => $cluster,
         },
     }
 }
