@@ -86,6 +86,7 @@ class role::analytics::zookeeper::server inherits role::analytics::zookeeper::cl
 
         # Only allow hosts in the Analytics Cluster to
         # connect to the Zookeeper admin client port.
+        include ferm
         ferm::service { 'zookeeper-client':
             proto  => 'tcp',
             port   => '2181',
