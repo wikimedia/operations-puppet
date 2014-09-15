@@ -139,11 +139,18 @@ class role::wikimetrics {
             ensure => 'installed',
         }
     }
-    if !defined(Package['mysql-server']) {
-        package { 'mysql-server':
-            ensure => 'installed',
-        }
+    # Put data on /srv so it has room to grow
+    include role::labs::lvm::srv
+
+    # Setup mysql, put data in /srv
+    class { 'mysql::server':
+        config_hash   => {
+            'datadir' => '/srv/mysql'
+        },
+        before  => Class['::wikimetrics::database'],
+        require => Labs_lvm::Volume['second-local-disk']
     }
+
     class { '::wikimetrics':
         path                         => $wikimetrics_path,
         group                        => $wikimetrics_group,
