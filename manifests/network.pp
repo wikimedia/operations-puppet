@@ -43,7 +43,8 @@ class network::constants {
                     ],
             'monitoring_hosts' => [
                         '208.80.154.14', # neon.wikimedia.org
-                        '2620:0:861:1:7a2b:cbff:fe08:a42f', # neon.wikimedia.org
+                        '2620:0:861:1:208:80:154:14', # neon.wikimedia.org
+                        '2620:0:861:1:7a2b:cbff:fe08:a42f', # neon.wikimedia.org SLAAC
                         ]
         },
         'labs' => {
