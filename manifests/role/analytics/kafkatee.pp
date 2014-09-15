@@ -95,7 +95,7 @@ class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::ka
     }
 }
 
-# == Class role::analytics::kafkatee::webrequest::sampled inherits role::analytics::kafkatee::webrequest
+# == Class role::analytics::kafkatee::webrequest::sampled
 # Sets up kafkatee to consume from all 4 webrequest topics output
 # to a file with no filtering, but with 1/1000 requests sampled.
 #
@@ -107,6 +107,58 @@ class role::analytics::kafkatee::webrequest::sampled inherits role::analytics::k
         sample      => 1000,
     }
 }
+
+# == Class role::analytics::kafkatee::webrequest::edits
+# Filter for all edit webrequests
+#
+class role::analytics::kafkatee::webrequest::edits inherits role::analytics::kafkatee::webrequest {
+    include role::analytics::kafkatee::input::webrequest
+
+    ::kafkatee::output { 'edits':
+        destination => "/usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> ${webrequest_log_directory}/edits.tsv.log",
+        type        => 'pipe',
+    }
+}
+
+# == Class role::analytics::kafkatee::webrequest::5xx
+# Filter for all webrequest 5xx HTTP response status not from upload hosts.
+#
+class role::analytics::kafkatee::webrequest::5xx inherits role::analytics::kafkatee::webrequest {
+    include role::analytics::kafkatee::input::webrequest
+
+    ::kafkatee::output { '5xx':
+        destination => "/usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ \"upload.wikimedia.org\"' >> ${webrequest_log_directory}/5xx.tsv.log",
+        type        => 'pipe',
+    }
+}
+
+# == Class role::analytics::kafkatee::webrequest::api
+# Filter for all API webrequests, sampling 1 out of 100 requests
+#
+class role::analytics::kafkatee::webrequest::api inherits role::analytics::kafkatee::webrequest {
+    include role::analytics::kafkatee::input::webrequest
+
+    ::kafkatee::output { 'api':
+        destination => "/usr/bin/udp-filter -F '\t' -p /w/api.php >> ${webrequest_log_directory}/api-usage.tsv.log",
+        type        => 'pipe',
+        sample      => 100,
+    }
+}
+
+# == Class role::analytics::kafkatee::webrequest::glam_nara
+# Filter for GLAM NARA / National Archives - RT 2212, sampled 1 / 10 requests.
+#
+class role::analytics::kafkatee::webrequest::glam_nara inherits role::analytics::kafkatee::webrequest {
+    include role::analytics::kafkatee::input::webrequest
+
+    ::kafkatee::output { 'glam_nara':
+        destination => "/usr/bin/udp-filter -F '\t' -p _NARA_ -g -b country >> ${webrequest_log_directory}/glam_nara.tsv.log",
+        type        => 'pipe',
+        sample      => 10,
+    }
+}
+
+
 
 
 # == role::analytics::kafkatee::webstatscollector
