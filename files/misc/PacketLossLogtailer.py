@@ -33,7 +33,7 @@ class PacketLossLogtailer(object):
         self.lock = threading.RLock()
 
         # a list of rolematchers which are simple object to determine the role of a particular server
-        # this list is obtained from crawling noc.wikimedia.org/pybal and parse the available configurations
+        # this list is obtained from crawling config-master.wikimedia.org/pybal and parse the available configurations
         self.matchers = rolematcher.init()
         # this is what will match the packet loss lines
         # packet loss format :
