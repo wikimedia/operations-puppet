@@ -115,8 +115,15 @@ class hhvm(
             # bottom 2 GiB for caching translated code. It is partitioned into
             # several differently-sized blocks of memory that group code blocks
             # by frequency of execution.
+            #
+            # You can check TC memory usage stats via the /vm-tcspace end-point
+            # of the admin server.
+            #
+            # XXX: These configuration options have been renamed in
+            # <https://github.com/facebook/hhvm/commit/ca99ef1>.
 
             jit_afrozen_size => to_bytes('100 Mb'),
+            jit_acold_size   => to_bytes('60 Mb'),
 
             repo             => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
             admin_server     => { port => 9001 },
