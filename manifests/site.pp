@@ -853,7 +853,25 @@ node /^db10(62|72|73)\.eqiad\.wmnet/ {
     }
 }
 
+node /^db20(16)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's1',
+    }
+}
+
 node /^db10(36|67)\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's2',
+    }
+}
+
+node /^db20(17)\.codfw\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -871,7 +889,25 @@ node /^db10(35|44)\.eqiad\.wmnet/ {
     }
 }
 
+node /^db20(18)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's3',
+    }
+}
+
 node /^db10(68|70)\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's4',
+    }
+}
+
+node /^db20(19)\.codfw\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -886,6 +922,33 @@ node /^db10(71)\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's5',
+    }
+}
+
+node /^db20(23)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's5',
+    }
+}
+
+node /^db20(28)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's6',
+    }
+}
+
+node /^db20(29)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's7',
     }
 }
 
