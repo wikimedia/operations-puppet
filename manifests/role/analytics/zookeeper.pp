@@ -86,7 +86,22 @@ class role::analytics::zookeeper::server inherits role::analytics::zookeeper::cl
 
         # Only allow hosts in the Analytics Cluster to
         # connect to the Zookeeper admin client port.
+        #
+        # We don't include base::firewall yet, but do
+        # want to restrict access to administrative
+        # services.  We need defs.erb to be rendered
+        # so we can reference defined networks in rules.
+        # NOTE:  This should be removed if we get a useable
+        # base::firewall class.
         include ferm
+        ferm::conf { 'defs':
+            # defs can always be present.
+            # They don't actually do firewalling.
+            ensure  => 'present',
+            prio    => '00',
+            content => template('base/firewall/defs.erb')
+        }
+
         ferm::service { 'zookeeper-client':
             proto  => 'tcp',
             port   => '2181',
