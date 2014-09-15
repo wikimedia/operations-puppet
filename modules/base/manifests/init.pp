@@ -137,9 +137,18 @@ class base::tcptweaks {
     }
 }
 
+# == Class class base::firewall
 # Don't include this sub class on all hosts yet
-# NOTE: Policy is DROP by default
-class base::firewall($ensure = 'present') {
+# NOTE: Policy is DROP by default.
+#
+# == Parameters
+# $default_policy   - Anything other than 'accept' will automatically DROP everything by default.
+# $ensure
+#
+class base::firewall(
+    $ensure         = 'present',
+    $default_policy = 'drop',
+) {
     include network::constants
     include ferm
 
@@ -155,8 +164,17 @@ class base::firewall($ensure = 'present') {
         content => $defscontent,
     }
 
+    # Allow the default drop policy to be configurable.
+    # If $default_policy is accept, then ensure that
+    # main-input-default-drop.conf is absent.  Else,
+    # just rely on the value of $ensure.
+    $main_ensure = $default_policy ? {
+        'accept' => 'absent',
+        default  => $ensure,
+    }
+
     ferm::conf { 'main':
-        ensure  => $ensure,
+        ensure  => $main_ensure,
         prio    => '00',
         source  => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
