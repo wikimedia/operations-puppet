@@ -2268,6 +2268,9 @@ node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
 
 node 'neon.wikimedia.org' {
     class { 'base::firewall': }
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0' }
+
     $domain_search = [
         'wikimedia.org',
         'eqiad.wmnet',
