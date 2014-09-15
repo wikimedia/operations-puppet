@@ -1201,6 +1201,11 @@ host db2005 {
 	fixed-address db2005.codfw.wmnet;
 }
 
+host db2006 {
+	hardware ethernet 78:2b:cb:6b:d2:82;
+	fixed-address db2006.codfw.wmnet;
+}
+
 host db2007 {
 	hardware ethernet 78:2b:cb:6b:aa:33;
 	fixed-address db2007.codfw.wmnet;
