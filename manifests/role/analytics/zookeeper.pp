@@ -94,6 +94,7 @@ class role::analytics::zookeeper::server inherits role::analytics::zookeeper::cl
         # NOTE:  This should be removed if we get a useable
         # base::firewall class.
         include ferm
+        include network::constants
         ferm::conf { 'defs':
             # defs can always be present.
             # They don't actually do firewalling.
