@@ -203,7 +203,7 @@ def main():
     # Some cards are very simple (e.g. bnx2); assume if counts match
     #   then the queues must map 1:1
     elif len(tx_queues) == len(rx_queues):
-        tx_queue_map = {rxq: rxq for rxq in rx_queues}
+        tx_queue_map = {rxq: [rxq] for rxq in rx_queues}
 
     # This catches the case that a driver-specific txq mapper returned
     #   None due to some validation failure
