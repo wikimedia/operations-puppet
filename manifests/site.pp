@@ -324,7 +324,7 @@ node 'argon.wikimedia.org' {
     include role::mw-rc-irc
 }
 
-node 'baham.wikimedia.org' {
+node 'baham.codfw.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }

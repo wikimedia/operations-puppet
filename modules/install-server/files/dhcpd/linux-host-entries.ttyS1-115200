@@ -365,7 +365,7 @@ host backup4001 {
 
 host baham {
 	hardware ethernet D4:AE:52:B3:90:36;
-	fixed-address baham.wikimedia.org;
+	fixed-address baham.codfw.wmnet;
 }
 
 host bast1001 {
