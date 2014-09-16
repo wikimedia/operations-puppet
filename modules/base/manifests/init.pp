@@ -166,7 +166,7 @@ class base::firewall($ensure = 'present') {
         rule   => 'proto tcp dport ssh saddr $BASTION_HOSTS ACCEPT;',
     }
 
-    ferm::rule { 'icinga-all':
+    ferm::rule { 'monitoring-all':
         ensure => $ensure,
         rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
     }
