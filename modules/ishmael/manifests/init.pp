@@ -25,6 +25,8 @@ class ishmael (
         content => template("ishmael/apache/${site_name}.erb"),
     }
 
+    include ::apache::mod::headers
+
     ishmael::config { $config_main: }
 
     ishmael::config { $config_sample:
