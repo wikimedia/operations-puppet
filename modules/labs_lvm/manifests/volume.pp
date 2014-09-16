@@ -37,16 +37,6 @@ define labs_lvm::volume(
     $mkfs_opt   = '',
     $options    = 'defaults',
 ) {
-
-    file { '/usr/local/sbin/make-instance-vol':
-        ensure      => file,
-        source      => 'puppet:///modules/labs_lvm/make-instance-vol',
-        require     => Package['lvm2'],
-        mode        => 0544,
-        owner       => 'root',
-        group       => 'root',
-    }
-
     exec { "create-vd-$volname":
         creates     => "/dev/vd/$volname",
         unless      => "/sbin/lvdisplay -c vd/$volname",
