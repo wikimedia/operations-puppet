@@ -81,7 +81,7 @@ class role::lvs::balancer {
         site => $::site
     }
 
-    if $::site in ['eqiad'] {
+    if $::site in ['eqiad', 'codfw'] {
         include ::lvs::balancer::runcommand
     }
 
