@@ -64,7 +64,7 @@ class role::wikimetrics {
     $meta_mw_client_secret = $::passwords::wikimetrics::meta_mw_client_secret
 
     # base directory settings
-    $var_directory       = '/var/lib/wikimetrics'
+    $var_directory       = '/srv/wikimetrics/wikimetrics/static'
     $public_subdirectory = 'public'
     $public_directory    = "${var_directory}/${public_subdirectory}"
 
