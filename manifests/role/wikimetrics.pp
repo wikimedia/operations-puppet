@@ -139,8 +139,19 @@ class role::wikimetrics {
             ensure => 'installed',
         }
     }
-    # Put data on /srv so it has room to grow
-    include role::labs::lvm::srv
+    # Put data on /srv so it has room to grow.
+    # Note, not using role::labs::lvm::srv
+    # here so that we don't use up all the space.
+    include labs_lvm
+    labs_lvm::volume { 'second-local-disk':
+        mountat => '/srv',
+        size    => '20%VG',
+    }
+    # Also make a mount for /var/lib/wikimetrics.
+    labs_lvm::volume { 'wikimetrics':
+        mountat => $var_directory,
+        size    => '20%VG',
+    }
 
     # Setup mysql, put data in /srv
     class { 'mysql::server':
@@ -202,6 +213,8 @@ class role::wikimetrics {
 
         var_directory                => $var_directory,
         public_subdirectory          => $public_subdirectory,
+
+        require                      => Labs_lvm::Volume['wikimetrics'],
     }
 
     # Run the wikimetrics/scripts/install script
