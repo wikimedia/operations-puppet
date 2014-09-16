@@ -1622,6 +1622,11 @@ host iron {
 	fixed-address iron.wikimedia.org;
 }
 
+host labcontrol2001 {
+	hardware ethernet 90:B1:1C:2D:7F:19;
+	fixed-address labcontrol2001.wikimedia.org;
+}
+
 host labmon1001 {
 	hardware ethernet F0:1F:AF:E8:B1:77;
 	fixed-address labmon1001.eqiad.wmnet;
