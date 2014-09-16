@@ -14,6 +14,7 @@ class role::analytics::kafkatee {
         kafka_brokers           => $role::analytics::kafka::config::brokers_array,
         log_statistics_interval => 15,
     }
+    include kafkatee::monitoring
 
     # Declare packaged rsyslog config to ensure it isn't purged.
     file { '/etc/rsyslog.d/75-kafkatee.conf':
@@ -28,6 +29,7 @@ class role::analytics::kafkatee {
         group       => 'kafkatee',
         require     => Class['::kafkatee'],
     }
+
 }
 
 
