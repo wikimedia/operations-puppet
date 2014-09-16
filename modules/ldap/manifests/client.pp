@@ -91,7 +91,11 @@ class ldap::client::nss($ldapconfig) {
 # ldap database will then be listed as users of the system, so use care.
 class ldap::client::utils($ldapconfig) {
 
-    require_package('python-mwclient')
+    if ! defined(Package['python-mwclient']) {
+        package { 'python-mwclient':
+            ensure => latest,
+        }
+    }
 
     package { [ 'python-ldap',
                 'python-pycurl' ]:
