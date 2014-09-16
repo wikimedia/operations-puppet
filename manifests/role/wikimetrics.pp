@@ -64,7 +64,10 @@ class role::wikimetrics {
     $meta_mw_client_secret = $::passwords::wikimetrics::meta_mw_client_secret
 
     # base directory settings
-    $var_directory       = '/var/lib/wikimetrics'
+
+    # We keep vardir under /srv so that wikimetrics
+    # has enough space to write files.
+    $var_directory       = '/srv/var/wikimetrics'
     $public_subdirectory = 'public'
     $public_directory    = "${var_directory}/${public_subdirectory}"
 
@@ -141,6 +144,20 @@ class role::wikimetrics {
     }
     # Put data on /srv so it has room to grow
     include role::labs::lvm::srv
+
+    # Make sure /srv/var exists.
+    # The wikimetrics module will manage $var_directory.
+    if !defined(File['/srv/var']) {
+        file { '/srv/var':
+            ensure  => 'directory',
+            mode    => '755',
+            owner   => 'root',
+            group   => 'root',
+            require => Labs_lvm::Volume['second-local-disk'],
+            before  => Class['::wikimetrics'],
+        }
+    }
+
 
     # Setup mysql, put data in /srv
     class { 'mysql::server':
