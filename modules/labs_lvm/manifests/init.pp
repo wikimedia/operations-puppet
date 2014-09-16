@@ -25,6 +25,16 @@ class labs_lvm($disk = '/dev/vda') {
         group       => 'root',
     }
 
+
+    file { '/usr/local/sbin/make-instance-vol':
+        ensure      => file,
+        source      => 'puppet:///modules/labs_lvm/make-instance-vol',
+        require     => Package['lvm2'],
+        mode        => 0544,
+        owner       => 'root',
+        group       => 'root',
+    }
+
     exec { 'create-volume-group':
         logoutput   => 'on_failure',
         unless      => '/sbin/vgdisplay -c vd',
