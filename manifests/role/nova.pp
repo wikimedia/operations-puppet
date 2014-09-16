@@ -521,7 +521,6 @@ class role::nova::wikiupdates {
                 owner   => 'root',
                 group   => 'root',
                 require => Package['python-mwclient'],
-                notify  => Service['nova-compute'],
             }
         } else {
             file { '/usr/local/lib/python2.7/dist-packages/wikinotifier.py':
@@ -530,7 +529,6 @@ class role::nova::wikiupdates {
                 owner   => 'root',
                 group   => 'root',
                 require => Package['python-mwclient'],
-                notify  => Service['nova-compute'],
             }
         }
     }
