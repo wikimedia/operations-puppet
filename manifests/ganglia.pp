@@ -84,6 +84,9 @@ class ganglia {
             'api_appserver' =>  {
                 'name'      => 'API application servers',
                 'ip_oct'    => '13' },
+            'appserver_hhvm' => {
+                'name'       => 'HHVM Appservers',
+                'ip_oct'     => '14'},
             'pdf'       =>  {
                 'name'      => 'PDF servers',
                 'ip_oct'    => '15' },
@@ -300,8 +303,9 @@ class ganglia::collector::config {
                     'Video scalers eqiad'            => 'tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet',
                     'Image scalers eqiad'            => 'mw1153.eqiad.wmnet mw1154.eqiad.wmnet',
                     'API application servers eqiad'  => 'mw1114.eqiad.wmnet mw1115.eqiad.wmnet',
-                    'Application servers eqaid'      => 'mw1017.eqiad.wmnet mw1018.eqiad.wmnet',
-                    'Jobrunners eqiad'              => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
+                    'Application servers eqaid'      => 'mw1054.eqiad.wmnet mw1055.eqiad.wmnet',
+                    'HHVM Appservers eqiad'          => 'mw1017.eqiad.wmnet mw1018.eqiad.wmnet',
+                    'Jobrunners eqiad'               => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
                     'MySQL'                          => 'db1050.eqiad.wmnet',
                     'PDF servers pmtpa'              => 'pdf2.wikimedia.org pdf3.wikimedia.org',
                     'PDF servers eqiad'              => 'ocg1001.eqiad.wmnet',
