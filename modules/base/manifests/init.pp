@@ -166,7 +166,15 @@ class base::firewall($ensure = 'present') {
         rule   => 'proto tcp dport ssh saddr $BASTION_HOSTS ACCEPT;',
     }
 
+    # NOTE:  Renaming icinga-all to monitoring-all,
+    # since $MONITORING_HOSTS now includes nickel for ganglia.
+    # icinga-all will be removed after puppet runs everywhere
+    # and replaces icinga-all with monitoring-all.
     ferm::rule { 'icinga-all':
+        ensure => 'absent',
+        rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
+    }
+    ferm::rule { 'monitoring-all':
         ensure => $ensure,
         rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
     }
