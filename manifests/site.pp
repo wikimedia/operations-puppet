@@ -2168,14 +2168,22 @@ node 'mw1053.eqiad.wmnet' {
     include role::mediawiki::jobrunner
 }
 
+#mw1017-1021 are apaches (trusty)
+node /^mw10(1[7-9]|2[01])\.eqiad\.wmnet$/ {
+    class {'::admin': groups => ['deployment']}
+    $cluster = 'appserver_hhvm'
+    if $::hostname =~ /^mw101[78]$/ {
+        $ganglia_aggregator = true
+    }
+
+    include role::mediawiki::appserver
+}
+
 # mw1017-1052 are apaches (precise)
 node /^mw1(01[7-9]|0[2-4][0-9]|05[0-2])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
-    if $::hostname =~ /^mw101[78]$/ {
-        $ganglia_aggregator = true
-    }
 
     if $::hostname == 'mw1070' {
         include misc::deployment::scap_proxy
