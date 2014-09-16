@@ -47,7 +47,6 @@ class contint::packages {
     package { [
         'php5-dev',  # phpize
         'php5-gd',
-        'php5-parsekit',
         'php5-pgsql',
         'php5-sqlite',
         'php5-tidy',
