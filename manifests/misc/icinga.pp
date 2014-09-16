@@ -306,7 +306,7 @@ class icinga::monitor::files::misc {
     file { '/var/log/icinga':
         ensure => directory,
         owner => 'icinga',
-        mode => '2755',
+        mode => '2757',
     }
     file { '/var/log/icinga/archives':
         ensure => directory,
