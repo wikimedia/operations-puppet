@@ -2401,6 +2401,16 @@ node 'palladium.eqiad.wmnet' {
     include role::access_new_install
     include role::puppetmaster::frontend
     include role::pybal_config
+
+    $domain_search = [
+        'wikimedia.org',
+        'eqiad.wmnet',
+        'codfw.wmnet',
+        'ulsfo.wmnet',
+        'pmtpa.wmnet',
+        'esams.wmnet',
+        'esams.wikimedia.org'
+    ]
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
