@@ -129,7 +129,7 @@ class role::phabricator::labs {
             'search.elastic.host'                => 'http://localhost:9200',
             'search.elastic.namespace'           => 'phabricator',
             'darkconsole.enabled'                => true,
-            'phabricator.base-uri'               => "http://${::hostname}.wmflabs.org",
+            'phabricator.base-uri'               => "https://${::hostname}.wmflabs.org",
             'phabricator.show-beta-applications' => true,
             'mysql.pass'                         => $mysqlpass,
             'auth.require-email-verification'    => false,
