@@ -1715,7 +1715,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 }
 
 # codfw lvs
-node /lvs200[1-6]\.wikimedia\.org/ {
+node /lvs200[1-6]\.codfw\.wmnet/ {
 
     # XXX will need $nameservers_prefix hack eventually (see eqiad above)
 
@@ -1736,11 +1736,11 @@ node /lvs200[1-6]\.wikimedia\.org/ {
     case $::hostname {
         /^lvs200[1-3]$/: {
             # Row A subnets on eth0
-            interface::tagged { 'eth0.2017':
+            interface::tagged { 'eth0.2001':
                 base_interface => 'eth0',
-                vlan_id        => '2017',
-                address        => $ips['private1-a-codfw'][$::hostname],
-                netmask        => '255.255.252.0',
+                vlan_id        => '2001',
+                address        => $ips['public1-a-codfw'][$::hostname],
+                netmask        => '255.255.255.224',
             }
             # Row B subnets on eth1
             interface::tagged { 'eth1.2002':
@@ -1758,11 +1758,11 @@ node /lvs200[1-6]\.wikimedia\.org/ {
         }
         /^lvs200[4-6]$/: {
             # Row B subnets on eth0
-            interface::tagged { 'eth0.2018':
+            interface::tagged { 'eth0.2002':
                 base_interface => 'eth0',
-                vlan_id        => '2018',
-                address        => $ips['private1-b-codfw'][$::hostname],
-                netmask        => '255.255.252.0',
+                vlan_id        => '2002',
+                address        => $ips['public1-b-codfw'][$::hostname],
+                netmask        => '255.255.255.224',
             }
             # Row A subnets on eth1
             interface::tagged { 'eth1.2001':

@@ -311,7 +311,7 @@ class ganglia::collector::config {
                     'Virtualization cluster eqiad'   => 'labnet1001.eqiad.wmnet virt1000.wikimedia.org',
                     'MySQL eqiad'                    => 'db1053.eqiad.wmnet db1054.eqiad.wmnet db1057.eqiad.wmnet',
                     'LVS loadbalancers eqiad'        => 'lvs1001.wikimedia.org lvs1002.wikimedia.org',
-                    'LVS loadbalancers codfw'        => 'install2001.wikimedia.org:10651 lvs2001.wikimedia.org lvs2002.wikimedia.org',
+                    'LVS loadbalancers codfw'        => 'install2001.wikimedia.org:10651 lvs2001.codfw.wmnet lvs2002.codfw.wmnet',
                     'Miscellaneous eqiad'            => 'carbon.wikimedia.org ms1004.eqiad.wmnet',
                     'Miscellaneous codfw'            => 'install2001.wikimedia.org:10657',
                     'Mobile caches eqiad'            => 'cp1046.eqiad.wmnet cp1047.eqiad.wmnet',
