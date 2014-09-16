@@ -1706,46 +1706,12 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         netmask        => '255.255.252.0',
     }
 
-    # Make sure GRO is off
-    interface::manual { 'eth1':
-        interface => 'eth1',
-        before    => Interface::Offload['eth1 gro'],
+    lvs::interface-tweaks {
+        'eth0': rss_pattern => 'eth0-%d';
+        'eth1': rss_pattern => 'eth1-%d';
+        'eth2': rss_pattern => 'eth2-%d';
+        'eth3': rss_pattern => 'eth3-%d';
     }
-    interface::manual { 'eth2':
-        interface => 'eth2',
-        before    => Interface::Offload['eth2 gro'],
-    }
-    interface::manual { 'eth3':
-        interface => 'eth3',
-        before    => Interface::Offload['eth3 gro'],
-    }
-
-    interface::offload { 'eth0 gro':
-        interface => 'eth0',
-        setting   => 'gro',
-        value     => 'off',
-    }
-    interface::offload { 'eth1 gro':
-        interface => 'eth1',
-        setting   => 'gro',
-        value     => 'off',
-    }
-    interface::offload { 'eth2 gro':
-        interface => 'eth2',
-        setting   => 'gro',
-        value     => 'off',
-    }
-    interface::offload { 'eth3 gro':
-        interface => 'eth3',
-        setting   => 'gro',
-        value     => 'off',
-    }
-
-    # RPS/RSS config for interface performance
-    interface::rps { 'eth0': rss_pattern => 'eth0-%d' }
-    interface::rps { 'eth1': rss_pattern => 'eth1-%d' }
-    interface::rps { 'eth2': rss_pattern => 'eth2-%d' }
-    interface::rps { 'eth3': rss_pattern => 'eth3-%d' }
 }
 
 # codfw lvs
@@ -1842,7 +1808,12 @@ node /lvs200[1-6]\.wikimedia\.org/ {
         netmask        => '255.255.252.0',
     }
 
-    # XXX ethernet GRO/LRO/tuning stuff
+    lvs::interface-tweaks {
+        'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
+        'eth1': bnx2x => true, txqlen => 10000, rss_pattern => 'eth1-fp-%d';
+        'eth2': bnx2x => true, txqlen => 10000, rss_pattern => 'eth2-fp-%d';
+        'eth3': bnx2x => true, txqlen => 10000, rss_pattern => 'eth3-fp-%d';
+    }
 }
 
 # ESAMS lvs servers
@@ -1870,40 +1841,18 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
         netmask        => '255.255.255.128',
     }
 
-    # Make sure GRO is off
-    interface::offload { 'eth0 gro':
-        interface => 'eth0',
-        setting   => 'gro',
-        value     => 'off',
-    }
-
-    # bnx2x is buggy with TPA (LRO) + LVS
-    interface::offload { 'eth0 lro':
-        interface => 'eth0',
-        setting   => 'lro',
-        value     => 'off',
-    }
-
-    # Max for bnx2x/BCM57800, seems to eliminate the spurious
-    #  rx drops under heavy traffic
-    interface::ring { 'eth0 rxring':
-        interface => 'eth0',
-        setting   => 'rx',
-        value     => 4078,
-    }
-
-    # RPS/RSS config for interface performance
-    interface::rps { 'eth0': rss_pattern => 'eth0-fp-%d' }
-
-    # txqueuelen 20K for 10Gbps LVS in esams
-    # (higher traffic than ulsfo. There is no perfect value based
+    # txqueuelen 20K for 10Gbps LVS in esams:
+    # Higher traffic than ulsfo. There is no perfect value based
     #  on hardware alone, but this seems to get rid of common
     #  spiky drops currently in esams.  The real answer is
     #  probably a red or codel variant within each multiqueue
     #  class, but we need a much newer kernel + driver to
     #  be able to do that (both to get good schedulers
     #  and driver updates for XPS).
-    interface::txqueuelen { 'eth0': len => 20000 }
+
+    lvs::interface-tweaks {
+        'eth0': bnx2x => true, txqlen => 20000, rss_pattern => 'eth0-fp-%d';
+    }
 }
 
 # ULSFO lvs servers
@@ -1922,33 +1871,9 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
         interface => 'eth0',
     }
 
-    # Make sure GRO is off
-    interface::offload { 'eth0 gro':
-        interface => 'eth0',
-        setting   => 'gro',
-        value     => 'off',
+    lvs::interface-tweaks {
+        'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
     }
-
-    # bnx2x is buggy with TPA (LRO) + LVS
-    interface::offload { 'eth0 lro':
-        interface => 'eth0',
-        setting   => 'lro',
-        value     => 'off',
-    }
-
-    # Max for bnx2x/BCM57800, seems to eliminate the spurious
-    #  rx drops under heavy traffic
-    interface::ring { 'eth0 rxring':
-        interface => 'eth0',
-        setting   => 'rx',
-        value     => 4078,
-    }
-
-    # RPS/RSS config for interface performance
-    interface::rps { 'eth0': rss_pattern => 'eth0-fp-%d' }
-
-    # txqueuelen 10K for 10Gbps LVS
-    interface::txqueuelen { 'eth0': len => 10000 }
 }
 
 node 'magnesium.wikimedia.org' {
