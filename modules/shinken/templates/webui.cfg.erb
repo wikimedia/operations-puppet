@@ -1,0 +1,14 @@
+define module{
+      module_name      WebUI
+      module_type      webui
+
+      host             0.0.0.0
+      port             7767
+
+      # CHANGE THIS VALUE or someone may forge your cookies
+      auth_secret      <%= @auth_secret %>
+
+      allow_html_output  0
+
+      modules          Cfg_password
+}
