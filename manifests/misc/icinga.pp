@@ -107,11 +107,7 @@ class icinga::monitor::apache {
     }
 
     # install the Icinga Apache site
-    file { '/etc/apache2/sites-enabled/icinga.wikimedia.org':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    apache::site { 'icinga.wikimedia.org':
         content => template('apache/sites/icinga.wikimedia.org.erb'),
     }
 
