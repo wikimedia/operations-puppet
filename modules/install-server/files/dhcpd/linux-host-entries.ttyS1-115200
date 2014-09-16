@@ -1296,6 +1296,56 @@ host db2031 {
 	fixed-address db2031.codfw.wmnet;
 }
 
+host db2033 {
+	hardware ethernet a0:d3:c1:fa:33:e0;
+	fixed-address db2033.codfw.wmnet;
+}
+
+host db2034 {
+	hardware ethernet a0:d3:c1:fa:2d:80;
+	fixed-address db2034.codfw.wmnet;
+}
+
+host db2035 {
+	hardware ethernet a0:d3:c1:fa:33:10;
+	fixed-address db2035.codfw.wmnet;
+}
+
+host db2036 {
+	hardware ethernet a0:d3:c1:fa:4a:4c;
+	fixed-address db2036.codfw.wmnet;
+}
+
+host db2037 {
+	hardware ethernet a0:d3:c1:f9:8c:b4;
+	fixed-address db2037.codfw.wmnet;
+}
+
+host db2038 {
+	hardware ethernet a0:d3:c1:fa:31:20;
+	fixed-address db2038.codfw.wmnet;
+}
+
+host db2039 {
+	hardware ethernet a0:d3:c1:fa:4a:e8;
+	fixed-address db2039.codfw.wmnet;
+}
+
+host db2040 {
+	hardware ethernet a0:d3:c1:fa:31:70;
+	fixed-address db2040.codfw.wmnet;
+}
+
+host db2041 {
+	hardware ethernet a0:d3:c1:fa:2a:c4;
+	fixed-address db2040.codfw.wmnet;
+}
+
+host db2042 {
+	hardware ethernet a0:d3:c1:fa:32:28;
+	fixed-address db2040.codfw.wmnet;
+}
+
 host dbproxy1001 {
 	hardware ethernet 84:2b:2b:fd:bd:56;
 	fixed-address dbproxy1001.eqiad.wmnet;
