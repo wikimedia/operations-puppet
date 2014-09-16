@@ -19,5 +19,5 @@ class tendril (
         content => template("tendril/apache/${site_name}.erb");
     }
 
-
+    include ::apache::mod::headers
 }

@@ -2,20 +2,18 @@
 # !! this file is managed by puppet !!
 
 NameVirtualHost *:80
-NameVirtualHost *:443
 
-<VirtualHost *:443>
+<VirtualHost *:80>
     ServerName <%= @site_name %>
-    SSLEngine On
-    SSLCertificateFile /etc/ssl/private/tendril.wikimedia.org.pem
-    SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
-    SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
-    <%= @ssl_settings.join("\n") %>
     DocumentRoot <%= @docroot %>
+
+    RewriteEngine on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
 
     <Directory "<%= @docroot %>">
         Options FollowSymLinks
-        SSLRequireSSL
         Options ExecCGI
         DirectoryIndex index.php
         AllowOverride All
@@ -31,13 +29,4 @@ NameVirtualHost *:443
         Require ldap-group <%= group %>
         <% end -%>
     </Directory>
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName <%= @site_name %>
-    DocumentRoot <%= @docroot %>
-
-    RewriteEngine on
-    RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R]
 </VirtualHost>

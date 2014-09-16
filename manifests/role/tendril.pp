@@ -5,9 +5,6 @@ class role::tendril {
 
     system::role { 'role::tendril': description => 'tendril server' }
 
-    install_certificate{ 'tendril.wikimedia.org': }
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
-
     class { '::tendril':
         site_name     => 'tendril.wikimedia.org',
         docroot       => '/srv/tendril/web',
