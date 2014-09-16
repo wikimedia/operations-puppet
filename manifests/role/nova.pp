@@ -501,9 +501,7 @@ class role::nova::network {
 class role::nova::wikiupdates {
 
     if $::realm == 'production' {
-        package { 'python-mwclient':
-            ensure => latest,
-        }
+        require_package('python-mwclient')
     }
 
     if ($openstack_version == 'folsom') {
