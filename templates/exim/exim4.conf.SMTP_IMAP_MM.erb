@@ -460,6 +460,24 @@ legacy_mailing_lists:
 				-subscribe : -unsubscribe
 	local_part_suffix_optional
 
+# TEMP migration
+ldap_migration_account:
+	driver = manualroute
+	local_parts = mark : mbergsma
+	domains = wikimedia.org
+	condition = ${lookup ldap \
+			{user="cn=eximagent,ou=other,dc=corp,dc=wikimedia,dc=org" pass=LDAPPASSWORD \
+			ldap:///ou=people,dc=corp,dc=wikimedia,dc=org?mail?sub?(&(objectClass=inetOrgPerson)(mail=${quote_ldap:$local_part}@$domain))} \
+			{true}{${lookup ldap \
+				{user="cn=eximagent,ou=other,dc=corp,dc=wikimedia,dc=org" pass=LDAPPASSWORD \
+				ldap:///ou=people,dc=corp,dc=wikimedia,dc=org?mail?sub?(&(objectClass=inetOrgPerson)(initials=${quote_ldap:$local_part}@$domain))} \
+				{true}fail}}}
+	local_part_suffix = +*
+	local_part_suffix_optional
+	transport = remote_smtp
+	unseen
+	route_list = *  aspmx.l.google.com
+
 # LDAP accounts
 ldap_account:
 	driver = manualroute
@@ -471,7 +489,7 @@ ldap_account:
 	local_part_suffix = +*
 	local_part_suffix_optional
 	transport = remote_smtp
-route_list = *  aspmx.l.google.com
+	route_list = *  aspmx.l.google.com
 
 ldap_group:
 	driver = manualroute
