@@ -1729,32 +1729,32 @@ host lvs1006 {
 
 host lvs2001 {
 	hardware ethernet fc:15:b4:1f:ab:08;
-	fixed-address lvs2001.wikimedia.org;
+	fixed-address lvs2001.codfw.wmnet;
 }
 
 host lvs2002 {
 	hardware ethernet fc:15:b4:21:3e:38;
-	fixed-address lvs2002.wikimedia.org;
+	fixed-address lvs2002.codfw.wmnet;
 }
 
 host lvs2003 {
 	hardware ethernet fc:15:b4:1f:99:58;
-	fixed-address lvs2003.wikimedia.org;
+	fixed-address lvs2003.codfw.wmnet;
 }
 
 host lvs2004 {
 	hardware ethernet fc:15:b4:1f:3b:00;
-	fixed-address lvs2004.wikimedia.org;
+	fixed-address lvs2004.codfw.wmnet;
 }
 
 host lvs2005 {
 	hardware ethernet fc:15:b4:1f:5b:e8;
-	fixed-address lvs2005.wikimedia.org;
+	fixed-address lvs2005.codfw.wmnet;
 }
 
 host lvs2006 {
 	hardware ethernet fc:15:b4:1f:19:18;
-	fixed-address lvs2006.wikimedia.org;
+	fixed-address lvs2006.codfw.wmnet;
 }
 
 host lvs3001 {
