@@ -282,6 +282,8 @@ class role::nova::common {
         instance_status_wiki_user        => $passwords::misc::scripts::wikinotifier_user,
         instance_status_wiki_pass        => $passwords::misc::scripts::wikinotifier_pass
     }
+
+    include role::nova::wikiupdates
 }
 
 class role::nova::manager {
@@ -536,7 +538,6 @@ class role::nova::compute {
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
-    include role::nova::wikiupdates
     include role::nova::common
 
     system::role { 'role::nova::compute':
