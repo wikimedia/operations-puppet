@@ -11,8 +11,11 @@ class misc::deployment {
 class misc::deployment::common_scripts {
     require passwordscripts
 
-    package { ['php5-parsekit', 'libwww-perl', 'libnet-dns-perl']:
+    package { ['libwww-perl', 'libnet-dns-perl']:
         ensure => present;
+    }
+    package { 'php5-parsekit':
+        ensure => absent;
     }
 
     file {
@@ -54,17 +57,9 @@ class misc::deployment::common_scripts {
             mode   => '0555',
             source => 'puppet:///files/misc/scripts/foreachwikiindblist';
         '/usr/local/bin/lint':
-            owner   => 'root',
-            group   => 'root',
-            mode    =>  '0555',
-            require => Package[ 'php5-parsekit' ], # bug 37076
-            source  => 'puppet:///files/misc/scripts/lint';
+            ensure => 'absent';
         '/usr/local/bin/lint.php':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            require => Package[ 'php5-parsekit' ], # bug 37076
-            source  => 'puppet:///files/misc/scripts/lint.php';
+            ensure => 'absent';
         '/usr/local/bin/mwscript':
             owner   => 'root',
             group   => 'root',
