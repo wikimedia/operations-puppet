@@ -4,12 +4,12 @@
 #  is the primary interface and is treated differently wrt
 #  forcing GRO off...
 
-define lvs::interface-tweaks($bnx2x=false, $txqlen=undef, $rss_pattern=undef) {
+define lvs::interface-tweaks($bnx2x=false, $txqlen=false, $rss_pattern=false) {
     # Disable GRO (generically incompatible with LVS due to kernel issues, I believe this
     #   is now fixed upstream for both ipv4 and ipv6 as of kernel 3.7 or higher, but
     #   that idea needs testing!)
     interface::offload { "$name gro": interface => $name, setting => 'gro', value => 'off' }
-    if($name != 'eth0') {
+    if $name != 'eth0' {
         # Make sure GRO is off for the non-primary interfaces...
         interface::manual { $name: interface => $name, before => Interface::Offload["$name gro"] }
     }
