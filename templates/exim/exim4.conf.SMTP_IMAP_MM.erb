@@ -332,7 +332,7 @@ donate:
 	driver = manualroute
 	domains = +donate_domains
 	route_list = * barium.frack.eqiad.wmnet byname
-	transport = remote_smtp
+	transport = remote_smtp_tls
 
 # Route non-local domains (including +relay_domains) via DNS MX and A records
 dnslookup:
@@ -470,7 +470,7 @@ ldap_account:
 			{true}fail}
 	local_part_suffix = +*
 	local_part_suffix_optional
-	transport = remote_smtp
+	transport = remote_smtp_tls
 route_list = *  aspmx.l.google.com
 
 ldap_group:
@@ -482,7 +482,7 @@ ldap_group:
 			{true}fail}
 	local_part_suffix = +*
 	local_part_suffix_optional
-	transport = remote_smtp
+	transport = remote_smtp_tls
 	route_list = *  aspmx.l.google.com
 
 ldap_alias:
@@ -500,7 +500,7 @@ imap:
 	local_parts = lsearch;CONFDIR/imap_accounts
 	local_part_suffix = +*
 	local_part_suffix_optional
-	transport = remote_smtp
+	transport = remote_smtp_tls
 	route_list = *  sanger.wikimedia.org
 
 # send phabricator.wm.org emails to Phabricator
@@ -508,14 +508,14 @@ phabricator:
        driver = manualroute
        domains = +phab_domains
        route_list = * iridium.eqiad.wmnet byname
-       transport = remote_smtp
+       transport = remote_smtp_tls
 
 # Send RT mails to the RT server
 rt:
 	driver = manualroute
 	domains = +rt_domains
 	route_list = * magnesium.wikimedia.org byname
-	transport = remote_smtp
+	transport = remote_smtp_tls
 
 # Query the OTRS MySQL server(s) for the existence of the queue address
 # $local_part@$domain, and manually route to the OTRS server if
@@ -525,7 +525,7 @@ otrs:
 	domains = +local_domains
 	condition = ${lookup mysql{OTRSQUERY}{true}fail}
 	route_list = *  iodine.wikimedia.org  byname
-	transport = remote_smtp
+	transport = remote_smtp_tls
 <% end %>
 <% if enable_imap_delivery == true then -%>
 # Run a custom user filter, e.g. to sort mail into subfolders
@@ -617,7 +617,7 @@ otrs:
 # mail relays ("smart hosts")
 smart_route:
 	driver = manualroute
-	transport = remote_smtp
+	transport = remote_smtp_tls
 	route_list = *  <%= smart_route_list.join(":") %>
 <% end %>
 
@@ -632,6 +632,12 @@ begin transports
 remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+<% if !outbound_ips.empty? then -%>
+	interface = <; <%= outbound_ips.join(" ; ") %>
+<% end -%>
+
+remote_smtp_tls:
+	driver = smtp
 <% if !outbound_ips.empty? then -%>
 	interface = <; <%= outbound_ips.join(" ; ") %>
 <% end -%>
