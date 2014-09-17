@@ -26,8 +26,11 @@ class ldap::role::server::labs {
                     'virt1000': {
                         $certificate = 'virt1000.wikimedia.org'
                     }
+                    'labcontrol2001': {
+                        $certificate = 'labcontrol2001.wikimedia.org'
+                    }
                     'default': {
-                        fail('Production realm ldap certificates for virt0/1000 only!')
+                        fail('Production realm ldap certificates for virt0/1000/labcontrol2001 only!')
                     }
                 }
         }
