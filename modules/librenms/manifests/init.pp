@@ -109,4 +109,19 @@ class librenms(
         ensure => link,
         target => "${install_dir}/syslog.php",
     }
+
+    file { "${install_dir}/purge.py":
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/librenms/purge.py',
+    }
+    cron { 'purge-syslog-eventlog':
+        ensure  => present,
+        user    => 'librenms',
+        command => "python ${install_dir}/purge.py --syslog --eventlog --perftimes '1 month' >/dev/null 2>&1",
+        hour    => '0',
+        minute  => '45',
+    }
 }
