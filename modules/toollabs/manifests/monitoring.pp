@@ -42,37 +42,4 @@ class toollabs::monitoring::graphite {
         contact_group   => 'toollabs',
         series          => true,
     }
-
-    monitor_graphite_threshold { 'toollabs-cpu-iowait':
-        description     => 'ToolLabs: Excess CPU check: iowait',
-        metric          => 'tools.*.cpu.total.iowait.value',
-        warning         => 95,
-        critical        => 99,
-        percentage      => 100,
-        graphite_url    => 'http://labmon1001.eqiad.wmnet',
-        contact_group   => 'toollabs',
-        series          => true,
-    }
-
-    monitor_graphite_threshold { 'toollabs-cpu-user':
-        description     => 'ToolLabs: Excess CPU check: user',
-        metric          => 'tools.*.cpu.total.user.value',
-        warning         => 95,
-        critical        => 99,
-        percentage      => 100,
-        graphite_url    => 'http://labmon1001.eqiad.wmnet',
-        contact_group   => 'toollabs',
-        series          => true,
-    }
-
-    monitor_graphite_threshold { 'toollabs-cpu-system':
-        description     => 'ToolLabs: Excess CPU check: system',
-        metric          => 'tools.*.cpu.total.system.value',
-        warning         => 95,
-        critical        => 99,
-        percentage      => 100,
-        graphite_url    => 'http://labmon1001.eqiad.wmnet',
-        contact_group   => 'toollabs',
-        series          => true,
-    }
 }
