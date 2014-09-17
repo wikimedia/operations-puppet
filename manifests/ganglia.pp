@@ -156,8 +156,8 @@ class ganglia {
             'analytics_kafka' => {
                 'name'      => 'Analytics Kafka cluster',
                 'ip_oct'    => '45' },
-            'mathoid' => {
-                'name'      => 'Math rendering cluster',
+            'sca'           => {
+                'name'      => 'Service Cluster A',
                 'ip_oct'    => '46' },
         }
         # NOTE: Do *not* add new clusters *per site* anymore,
