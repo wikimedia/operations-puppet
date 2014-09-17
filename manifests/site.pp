@@ -963,6 +963,15 @@ node /^db10(29|31)\.eqiad\.wmnet/ {
     include role::coredb::x1
 }
 
+node /^db20(09)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 'x1',
+    }
+}
+
 ## m1 shard
 node /^db10(01|16)\.eqiad\.wmnet/ {
 
@@ -973,12 +982,30 @@ node /^db10(01|16)\.eqiad\.wmnet/ {
     }
 }
 
+node /^db20(10)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 'm1',
+    }
+}
+
 ## m2 shard
 node /^db10(20|46)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
+        shard => 'm2',
+    }
+}
+
+node /^db20(11)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
         shard => 'm2',
     }
 }
@@ -1001,6 +1028,15 @@ node 'db1048.eqiad.wmnet' {
     class { 'role::mariadb::misc::phabricator':
         shard    => 'm3',
         snapshot => true,
+    }
+}
+
+node /^db20(12)\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::misc::phabricator':
+        shard => 'm3',
     }
 }
 
