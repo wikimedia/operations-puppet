@@ -128,38 +128,6 @@ class nfs::netapp::home::othersite($ensure='mounted', $mountpoint=undef) {
     }
 }
 
-class nfs::netapp::originals($ensure='mounted', $mountpoint='/mnt/upload7') {
-    include common
-
-    file { $mountpoint:
-        ensure => 'directory',
-    }
-
-    mount { $mountpoint:
-        ensure  => $ensure,
-        require => File[$mountpoint],
-        device  => "${nfs::netapp::common::device}:/vol/originals",
-        fstype  => 'nfs',
-        options => $nfs::netapp::common::options,
-    }
-}
-
-class nfs::netapp::thumbs($ensure='mounted', $mountpoint='/mnt/thumbs2') {
-    include common
-
-    file { $mountpoint:
-        ensure => 'directory',
-    }
-
-    mount { $mountpoint:
-        ensure  => $ensure,
-        require => File[$mountpoint],
-        device  => "${nfs::netapp::common::device}:/vol/thumbs",
-        fstype  => 'nfs',
-        options => $nfs::netapp::common::options,
-    }
-}
-
 # Historical /home/wikipedia
 class nfs::home::wikipedia {
 
@@ -196,41 +164,6 @@ class nfs::home::wikipedia {
 
 }
 
-class nfs::upload {
-    include nfs::common
-
-    # NetApp migration
-    class { 'nfs::netapp::originals':
-        ensure => 'absent',
-    }
-    class { 'nfs::netapp::thumbs':
-        ensure => 'absent',
-    }
-
-    file { [ '/mnt/thumbs', '/mnt/upload6' ]:
-        ensure => 'directory',
-    }
-
-}
-
-# Setup /mnt/{thumbs,upload6} as symlink to /data/project/<subdir>
-class nfs::upload::labs {
-    file { '/mnt/thumbs':
-        ensure => 'absent',
-    }
-
-    file { '/mnt/upload6':
-        ensure => 'link',
-        target => '/data/project/upload6',
-    }
-
-# Production started using upload7 on its config on mediawiki-config:158e6540
-    file { '/mnt/upload7':
-        ensure => 'link',
-        target => '/data/project/upload7',
-    }
-}
-
 class nfs::data {
     include nfs::common
 
@@ -254,7 +187,6 @@ class nfs::data {
         remounts => false,
     }
 }
-
 
 class nfs::netapp::fr_archive(
         $ensure= 'mounted',
