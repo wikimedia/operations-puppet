@@ -73,7 +73,7 @@ class librenms(
             'nmap',
             'python-mysqldb',
             'rrdtool',
-            #'snmp',
+            'snmp',
             'snmp-mibs-downloader',
             'whois',
         ]:
