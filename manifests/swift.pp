@@ -208,8 +208,8 @@ class swift::monitoring::graphite {
         description     => 'swift eqiad-prod container availability',
         metric          => 'swift.eqiad-prod.dispersion.container.pct_found.value',
         from            => '30min',
-        warning         => 98,
-        critical        => 96,
+        warning         => 92,
+        critical        => 88,
         under           => true,
         nagios_critical => false
     }
