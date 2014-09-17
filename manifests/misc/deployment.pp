@@ -129,6 +129,11 @@ class misc::deployment::common_scripts {
             group   => 'root',
             mode    => '0444',
             source  => 'puppet:///files/misc/scripts/man';
+        '/usr/local/bin/sudo-withagent':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            source  => 'puppet:///files/misc/scripts/sudo-withagent';
     }
 }
 
