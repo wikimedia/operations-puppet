@@ -5,6 +5,7 @@ class ldap::role::config::labs {
     $servernames = $site ? {
         'pmtpa' => [ 'virt0.wikimedia.org', 'virt1000.wikimedia.org' ],
         'eqiad' => [ 'virt1000.wikimedia.org', 'virt0.wikimedia.org' ],
+        'codfw' => [ 'labcontrol2001.wikimedia.org', 'virt1000.wikimedia.org' ],
     }
     $sudobasedn = $::realm ? {
         'labs'       => "ou=sudoers,cn=${instanceproject},ou=projects,${basedn}",
