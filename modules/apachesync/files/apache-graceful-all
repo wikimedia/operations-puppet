@@ -1,4 +1,4 @@
 #!/bin/bash
 /usr/local/bin/dologmsg "$USER is doing a graceful restart of all apaches"
-dsh -F20 -g apaches -cM 'sudo /usr/sbin/apache2ctl graceful'
+salt --out raw --batch-size=10% --timeout=30 'mw*' cmd.run 'service apache2 graceful'
 /usr/local/bin/dologmsg "!log $USER gracefulled all apaches"
