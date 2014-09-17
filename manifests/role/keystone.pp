@@ -108,7 +108,7 @@ class role::keystone::redis {
 
     if ($::realm == 'production') {
         $replication = {
-            'virt1000' => 'virt0.wikimedia.org'
+            'labcontrol2001' => 'virt1000.wikimedia.org'
         }
     } else {
         $replication = {
