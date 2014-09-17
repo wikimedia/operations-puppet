@@ -1977,6 +1977,61 @@ host ms-be1015 {
 	fixed-address ms-be1015.eqiad.wmnet;
 }
 
+host ms-be2001 {
+	hardware ethernet 90:B1:1C:18:A7:74;
+	fixed-address ms-be2001.codfw.wmnet;
+}
+
+# host ms-be2002 {
+#	hardware ethernet ;
+#	fixed-address ms-be2002.codfw.wmnet;
+#}
+
+host ms-be2003 {
+	hardware ethernet 90:B1:1C:18:EE:F1;
+	fixed-address ms-be2003.codfw.wmnet;
+}
+
+host ms-be2004 {
+	hardware ethernet 90:B1:1C:18:A6:3A;
+	fixed-address ms-be2004.codfw.wmnet;
+}
+
+#host ms-be2005 {
+#	hardware ethernet ;
+#	fixed-address ms-be2005.codfw.wmnet;
+#}
+
+host ms-be2006 {
+	hardware ethernet 90:B1:1C:12:94:83;
+	fixed-address ms-be2006.codfw.wmnet;
+}
+
+host ms-be2007 {
+	hardware ethernet 90:B1:1C:18:BC:65;
+	fixed-address ms-be2007.codfw.wmnet;
+}
+
+host ms-be2008 {
+	hardware ethernet 90:B1:1C:18:AD:2C;
+	fixed-address ms-be2008.codfw.wmnet;
+}
+
+host ms-be2009 {
+	hardware ethernet 90:B1:1C:18:A7:68;
+	fixed-address ms-be2009.codfw.wmnet;
+}
+
+host ms-be2010 {
+	hardware ethernet 90:B1:1C:18:BC:7D;
+	fixed-address ms-be2010.codfw.wmnet;
+}
+
+host ms-be2011 {
+	hardware ethernet 90:B1:1C:14:E1:63;
+	fixed-address ms-be2011.codfw.wmnet;
+}
+
 host ms-be3001 {
 	hardware ethernet 24:B6:FD:F6:13:AC;
 	fixed-address ms-be3001.esams.wmnet;
