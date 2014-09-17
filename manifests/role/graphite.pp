@@ -247,4 +247,5 @@ class role::graphite::labmon {
 
     include role::beta::monitoring::graphite
     include toollabs::monitoring::graphite
+    include contint::monitoring::graphite
 }
