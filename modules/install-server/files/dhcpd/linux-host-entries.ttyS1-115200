@@ -1982,10 +1982,10 @@ host ms-be2001 {
 	fixed-address ms-be2001.codfw.wmnet;
 }
 
-# host ms-be2002 {
-#	hardware ethernet ;
-#	fixed-address ms-be2002.codfw.wmnet;
-#}
+host ms-be2002 {
+	hardware ethernet 90:B1:1C:18:A6:32;
+	fixed-address ms-be2002.codfw.wmnet;
+}
 
 host ms-be2003 {
 	hardware ethernet 90:B1:1C:18:EE:F1;
