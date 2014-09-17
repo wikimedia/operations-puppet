@@ -416,10 +416,6 @@ class misc::statistics::sites::metrics {
 
     include webserver::apache
     include ::apache::mod::alias
-    include ::apache::mod::ssl
-
-    # install metrics.wikimedia.org SSL certificate
-    install_certificate{ $site_name: }
 
     # Set up the VirtualHost
     apache::site { $site_name:
