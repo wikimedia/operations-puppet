@@ -8,11 +8,11 @@
     - common
     - realm
 :private:
-  :datadir: /etc/puppet/private
+  :datadir: /etc/puppet/private/hiera
 :hierarchy:
   - "host/%{::hostname}"
   - "%{::realm}"
   - "%{::site}"
-  - private
-  - mainrole
-  - common
+  - "private"
+  - "mainrole"
+  - "common"
