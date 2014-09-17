@@ -24,7 +24,16 @@ define protoproxy::localssl(
     $enabled        = true,
     $upstream_port  = '80'
 ) {
+
+    # Ensure that exactly one definition exists with default_server = true
+    if $default_server {
+        notify { 'protoproxy localssl default_server':
+            message => "protoproxy::localssl instance $title with server name $server_name is the default server."
+        }
+    }
+
     nginx::site { $name:
+        require => Notify['protoproxy localssl default_server'],
         content => template('protoproxy/localssl.erb'),
         enabled => $enabled
     }
