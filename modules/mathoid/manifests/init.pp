@@ -15,7 +15,6 @@
 #   have write access to mathoid user.
 # [*port*]
 #   Port where to run the mathoid service. Defaults to 10042.
-
 #
 class mathoid(
     $base_path,
@@ -24,8 +23,6 @@ class mathoid(
     $log_dir,
     $port=10042
 ) {
-    deployment::target { 'mathoid': }
-
     package { ['nodejs'
     # TODO Add dependency to node-jsdom once
     # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347
