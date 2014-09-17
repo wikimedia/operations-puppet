@@ -4,7 +4,7 @@ class interface::vlan-tools {
     }
 }
 
-define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef) {
+define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $v6_token=false, $remove=undef) {
     require interface::vlan-tools
 
     $intf = "${base_interface}.${vlan_id}"
@@ -32,6 +32,13 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
         $down_cmd = ''
     }
 
+    if $v6_token {
+        $v6_token_addr = inline_template("::<%= ${address}.gsub('.', ':') %>")
+        $v6_token_cmd = "set iface[. = '${intf}']/up /sbin/ip token set '${v6_token_addr}' dev '${intf}'"
+    } else {
+        $v6_token_cmd = ''
+    }
+
     if $remove == 'true' {
         $augeas_cmd = [ "rm auto[./1 = '${intf}']",
                 "rm iface[. = '${intf}']"
@@ -44,6 +51,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
                 $addr_cmd,
                 $netmask_cmd,
                 $up_cmd,
+                $v6_token_cmd,
                 $down_cmd,
             ]
     }
