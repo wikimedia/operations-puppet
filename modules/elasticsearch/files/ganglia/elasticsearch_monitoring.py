@@ -528,7 +528,7 @@ def metric_init(params):
     def main_path_transformer(data, path):
         node = data['stats']['nodes'].keys()[0]
         return 'nodes.%(node)s.%(path)s' % {'node': node, 'path': path}
-    main_url = '{0}/_nodes/_local/stats?groups=_all'.format(host)
+    main_url = '{0}/_nodes/_local/stats/thread_pool,process,transport,fs,jvm,indices'.format(host)
     main_result = {
         'last_update': 0,
         'url': main_url,
