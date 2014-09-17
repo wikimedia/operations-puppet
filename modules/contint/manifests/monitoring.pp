@@ -32,6 +32,17 @@ class contint::monitoring::graphite {
         series          => true,
     }
 
+    monitor_graphite_threshold { 'contint-low-space-mnt':
+        description     => 'CI: Low disk space on /mnt',
+        metric          => 'integration.*.diskspace._mnt.byte_avail.value',
+        warning         => 17179869184, # 16GiB
+        critical        => 1073741824, # 1 GiB
+        under           => true,
+        graphite_url    => 'http://labmon1001.eqiad.wmnet',
+        contact_group   => 'contint',
+        series          => true,
+    }
+
     monitor_graphite_threshold { 'contint-low-space-root':
         description     => 'CI: Low disk space on /',
         metric          => 'integration.*.diskspace.root.byte_avail.value',
