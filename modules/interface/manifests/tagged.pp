@@ -35,7 +35,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
     if $v6_token {
         $v6_token_lower64 = regsubst($address, '\.', ':', 'G')
         $v6_token_addr = "::${v6_token_lower64}"
-        $v6_token_cmd = "set iface[. = '${intf}']/up /sbin/ip token set ${v6_token_addr} dev ${intf}"
+        $v6_token_cmd = "set iface[. = '${intf}']/up '/sbin/ip token set ${v6_token_addr} dev ${intf}'"
     } else {
         $v6_token_cmd = ''
     }
