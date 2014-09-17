@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# runas-withagent USER /path/to/script param1 param2
+#
+# This file is managed by puppet.
+#
+set -e
+
+# User that the script should be run as
+RUN_AS=$1
+shift
+
+# Ensure that script is run as the correct user
+[[ $(whoami) = $RUN_AS ]] || exec sudo -H -u $RUN_AS -- "$0" "$@"
+
+# Ensure that an ssh-agent is running
+if [[ -z $SSH_AUTH_SOCK ]]; then
+    echo Starting ssh-agent
+    eval $(ssh-agent)
+
+    # Add default keys
+    ssh-add
+
+    # Kill the agent when this script exits
+    trap 'trap - EXIT; [[ $SSH_AGENT_PID ]] && kill $SSH_AGENT_PID' \
+        EXIT SIGHUP SIGINT SIGQUIT SIGPIPE SIGTERM
+fi
+
+# Set a sane terminal type
+export TERM=dumb
+
+# Run script
+"$@"

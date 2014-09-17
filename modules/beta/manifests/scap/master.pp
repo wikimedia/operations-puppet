@@ -51,4 +51,12 @@ class beta::scap::master {
         mode    => '0555',
         source  => 'puppet:///modules/beta/wmf-beta-scap',
     }
+
+    file { '/usr/local/bin/runas-withagent':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/beta/runas-withagent',
+    }
+
 }
