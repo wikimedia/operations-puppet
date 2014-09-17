@@ -45,10 +45,13 @@ class beta::scap::master {
     }
 
     # Install a scap runner script for commmand line or jenkins use
+    # Depends on sudo-withagent from misc::deployment::scap_scripts
     file { '/usr/local/bin/wmf-beta-scap':
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
+        require => File['/usr/local/bin/sudo-withagent'],
         source  => 'puppet:///modules/beta/wmf-beta-scap',
     }
+
 }
