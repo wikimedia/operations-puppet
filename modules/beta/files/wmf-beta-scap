@@ -1,31 +1,4 @@
 #!/usr/bin/env bash
 # This file is managed by puppet.
 #
-# Run scap on the beta cluster.
-#
-set -e
-
-# User that scap should be run as
-RUN_AS=mwdeploy
-
-# Ensure that script is run as the correct user
-[[ $(whoami) = $RUN_AS ]] || exec sudo -H -u $RUN_AS -- "$0" "$@"
-
-# Ensure that an ssh-agent is running
-if [[ -z $SSH_AUTH_SOCK ]]; then
-    echo Starting ssh-agent
-    eval $(ssh-agent)
-
-    # Add default keys
-    ssh-add
-
-    # Kill the agent when this script exits
-    trap 'trap - EXIT; [[ $SSH_AGENT_PID ]] && kill $SSH_AGENT_PID' \
-        EXIT SIGHUP SIGINT SIGQUIT SIGPIPE SIGTERM
-fi
-
-# Set a sane terminal type
-export TERM=dumb
-
-# Run scap
-/usr/local/bin/scap "$@"
+/usr/local/bin/sudo-withagent mwdeploy /usr/local/bin/scap "$@"

@@ -51,4 +51,12 @@ class beta::scap::master {
         mode    => '0555',
         source  => 'puppet:///modules/beta/wmf-beta-scap',
     }
+
+    file { '/usr/local/bin/sudo-withagent':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/beta/sudo-withagent',
+    }
+
 }
