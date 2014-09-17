@@ -4,20 +4,23 @@
 # created by the labs_lvm class.
 #
 # Parameters:
-#   volname  => arbitrary identifier used to construct the volume
-#               name, and the default mountpoint.  Needs to be
-#               unique in the instance.  Defaults to the resource
-#               title.
-#   mountat  => point where the volume is to be mounted
-#   size     => size of the volume, using the lvcreate(8) syntax.
-#               defaults to allocate all of the available space
-#               in the volume group.  Note that if you use the
-#               default value, any /other/ volumes must be created
-#               before that one and should be marked as dependencies.
-#   fstype   => filesystem type.  Defaults to ext4.
-#   mkfs_opt => options for the mkfs if the filesystem needs to
-#               be created.
-#   options  => mount options
+#   volname        => arbitrary identifier used to construct the volume
+#                     name, and the default mountpoint.  Needs to be
+#                     unique in the instance.  Defaults to the resource
+#                     title.
+#   mountat        => point where the volume is to be mounted
+#   size           => size of the volume, using the lvcreate(8) syntax.
+#                     defaults to allocate all of the available space
+#                     in the volume group.  Note that if you use the
+#                     default value, any /other/ volumes must be created
+#                     before that one and should be marked as dependencies.
+#   fstype         => filesystem type.  Defaults to ext4.
+#   mkfs_opt       => options for the mkfs if the filesystem needs to
+#                     be created.
+#   options        => mount options
+#   manage_mountat => If true, $mountat will be ensured to be a directory.
+#                     Set this to false if you use puppet to manage this path
+#                     already.
 #
 # Requires:
 #   The node must have included the labs_lvm class.
@@ -27,15 +30,16 @@
 #
 
 define labs_lvm::volume(
-    $volname    = $title,
-    $mountat    = "/mnt/$volname",
-    $mountowner = 'root',
-    $mountgroup = 'root',
-    $mountmode  = '755',
-    $size       = '100%FREE',
-    $fstype     = 'ext4',
-    $mkfs_opt   = '',
-    $options    = 'defaults',
+    $volname        = $title,
+    $mountat        = "/mnt/$volname",
+    $mountowner     = 'root',
+    $mountgroup     = 'root',
+    $mountmode      = '755',
+    $size           = '100%FREE',
+    $fstype         = 'ext4',
+    $mkfs_opt       = '',
+    $options        = 'defaults',
+    $manage_mountat = true,
 ) {
     exec { "create-vd-$volname":
         creates     => "/dev/vd/$volname",
@@ -48,11 +52,13 @@ define labs_lvm::volume(
         command     => "/usr/local/sbin/make-instance-vol '$volname' '$size' '$fstype' $mkfs_opt",
     }
 
-    file { $mountat:
-        ensure      => directory,
-        owner       => $mountowner,
-        group       => $mountgroup,
-        mode        => $mountmode,
+    if $manage_mountat {
+        file { $mountat:
+            ensure      => directory,
+            owner       => $mountowner,
+            group       => $mountgroup,
+            mode        => $mountmode,
+        }
     }
 
     mount { $mountat:
