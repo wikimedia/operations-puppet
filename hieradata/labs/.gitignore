@@ -1,0 +1,2 @@
+# Exclude all yaml files here from git, as they should be created on-demand for any instance.
+*.yaml
