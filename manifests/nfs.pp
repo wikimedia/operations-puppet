@@ -128,38 +128,6 @@ class nfs::netapp::home::othersite($ensure='mounted', $mountpoint=undef) {
     }
 }
 
-class nfs::netapp::originals($ensure='mounted', $mountpoint='/mnt/upload7') {
-    include common
-
-    file { $mountpoint:
-        ensure => 'directory',
-    }
-
-    mount { $mountpoint:
-        ensure  => $ensure,
-        require => File[$mountpoint],
-        device  => "${nfs::netapp::common::device}:/vol/originals",
-        fstype  => 'nfs',
-        options => $nfs::netapp::common::options,
-    }
-}
-
-class nfs::netapp::thumbs($ensure='mounted', $mountpoint='/mnt/thumbs2') {
-    include common
-
-    file { $mountpoint:
-        ensure => 'directory',
-    }
-
-    mount { $mountpoint:
-        ensure  => $ensure,
-        require => File[$mountpoint],
-        device  => "${nfs::netapp::common::device}:/vol/thumbs",
-        fstype  => 'nfs',
-        options => $nfs::netapp::common::options,
-    }
-}
-
 # Historical /home/wikipedia
 class nfs::home::wikipedia {
 
@@ -198,14 +166,6 @@ class nfs::home::wikipedia {
 
 class nfs::upload {
     include nfs::common
-
-    # NetApp migration
-    class { 'nfs::netapp::originals':
-        ensure => 'absent',
-    }
-    class { 'nfs::netapp::thumbs':
-        ensure => 'absent',
-    }
 
     file { [ '/mnt/thumbs', '/mnt/upload6' ]:
         ensure => 'directory',
