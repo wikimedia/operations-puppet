@@ -38,6 +38,8 @@ sub vcl_recv {
 		set req.backend = neon;
 	} elsif (req.http.Host == "racktables.wikimedia.org") {
 		set req.backend = magnesium;
+	} elsif (req.http.Host == "metrics.wikimedia.org") {
+		set req.backend = stat1001;
 	} else {
 		error 404 "Domain not served here";
 	}

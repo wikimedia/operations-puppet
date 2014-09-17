@@ -1466,6 +1466,7 @@ class role::cache {
                 'terbium.eqiad.wmnet', # public_html
                 'neon.wikimedia.org', # monitoring tools (icinga et al)
                 'magnesium.wikimedia.org', # RT and racktables
+                'stat1001.wikimedia.org', # metrics and metrics-api
             ],
             backend_options => [
             {
