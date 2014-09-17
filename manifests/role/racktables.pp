@@ -21,22 +21,14 @@ class role::racktables {
     case $::realm {
         'labs': {
             $racktables_host = "${instancename}.${domain}"
-            $racktables_ssl_cert = '/etc/ssl/certs/star.wmflabs.pem'
-            $racktables_ssl_key = '/etc/ssl/private/star.wmflabs.key'
-            install_certificate{ 'star.wmflabs.org': }
         }
         'production': {
             $racktables_host = 'racktables.wikimedia.org'
-            $racktables_ssl_cert = '/etc/ssl/certs/racktables.wikimedia.org.pem'
-            $racktables_ssl_key = '/etc/ssl/private/racktables.wikimedia.org.key'
-            install_certificate{ 'racktables.wikimedia.org': }
         }
         'default': {
             fail('unknown realm, should be labs or production')
         }
     }
-
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
     apache::site { 'racktables.wikimedia.org':
         content => template('apache/sites/racktables.wikimedia.org.erb'),
