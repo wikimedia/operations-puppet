@@ -40,9 +40,10 @@
 import argparse
 
 import salt.client
+import salt.config
 
 
-caller = salt.client.Caller()
+caller = salt.client.Caller('/etc/salt/masterless-minion')
 
 
 def get(grain):

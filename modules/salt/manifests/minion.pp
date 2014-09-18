@@ -44,6 +44,8 @@ class salt::minion(
         dns_check     => false,
     }
 
+    $masterless_config = merge($config, { file_client => 'local' })
+
     package { 'salt-minion':
         ensure => present,
     }
@@ -67,10 +69,19 @@ class salt::minion(
         require => Package['salt-minion'],
     }
 
+    file { '/etc/salt/masterless-minion':
+        content => ordered_yaml($masterless_config),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['salt-minion'],
+    }
+
     file { '/usr/local/sbin/grain-ensure':
-        source => 'puppet:///modules/salt/grain-ensure.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
+        source  => 'puppet:///modules/salt/grain-ensure.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        require => File['/etc/salt/masterless-minion'],
     }
 }
