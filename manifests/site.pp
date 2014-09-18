@@ -487,6 +487,15 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     }
 }
 
+# cp1008: temporary test host for SNI SSL
+node 'cp1008.eqiad.wikimedia.org' {
+    include admin
+    interface::add_ip6_mapped { 'main': }
+    $cluster = 'cache_text'
+    include role::cache::text
+    include role::cache::ssl::sni
+}
+
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
     include admin
     if $::hostname =~ /^cp103[78]$/ {
