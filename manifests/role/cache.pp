@@ -573,7 +573,7 @@ class role::cache {
         }
     }
 
-    define localssl($certname, $default_server=false) {
+    define localssl($certname, $server_aliases=[], $default_server=false) {
         # Assumes that LVS service IPs are setup elsewhere
 
         # For unified or star certs we need to do a bit of
@@ -598,6 +598,7 @@ class role::cache {
             proxy_server_cert_name => $certname,
             upstream_port          => '80',
             default_server         => $default_server,
+            server_aliases         => $server_aliases,
         }
     }
 
@@ -620,8 +621,8 @@ class role::cache {
 
         define sni_star() {
             localssl { $name:
-                server_aliases => ["*.${name}"],
                 certname => "star.${name}",
+                server_aliases => ["*.${name}"],
             }
         }
 
