@@ -98,6 +98,7 @@ search = {
     'size': args.max_results,
     '_source': ['namespace', 'title'],
     'query': {'filtered': {'filter': {'bool': {'must': filters}}}},
+    'stats': ['mwgrep'],
 }
 
 query = {
