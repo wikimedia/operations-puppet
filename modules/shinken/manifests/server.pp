@@ -63,10 +63,10 @@ class shinken::server(
     }
 }
 
-# = Class: shinken::hosts
+# = Define: shinken::hosts
 # Setup a shinken hosts definition file
 # FIXME: Autogenerate hosts definitions later on
-class shinken::hosts(
+define shinken::hosts(
     $name,
     $ensure  = present,
     $source  = undef,
