@@ -134,20 +134,6 @@ class role::protoproxy::ssl {
         ipv6_enabled => true,
         enabled => true,
     }
-    # Misc services
-    protoproxy{ 'videos':
-        proxy_addresses => {
-            'eqiad' => [ '208.80.154.224', '[2620:0:862:3::80:2]' ],
-            'esams' => [] },
-            proxy_server_name => 'videos.wikimedia.org',
-            proxy_server_cert_name => 'unified.wikimedia.org',
-            proxy_backend => {
-                'eqiad' => { 'primary' => '10.64.16.146' },
-                'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
-            },
-            ssl_backend => { 'esams' => 'true' },
-            enabled => true,
-    }
 }
 
 class role::protoproxy::ssl::beta::common {
