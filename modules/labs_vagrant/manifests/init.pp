@@ -5,12 +5,9 @@
 # == Parameters:
 # - $install_directory: Directory to install MediaWiki-Vagrant in.
 #   Default /srv/vagrant
-# - $inital_roles: list of roles to include in labs vagrant before its first
-#   provision. Default ['labs_initial_content']
 #
 class labs_vagrant(
     $install_directory = '/srv/vagrant',
-    $initial_roles     = ['labs_initial_content'],
 ) {
 
     $legacy_directory = '/mnt/vagrant'
@@ -61,13 +58,5 @@ class labs_vagrant(
         target  => '/vagrant/lib/labs-vagrant.rb',
         mode    => '0555',
         require => File['/vagrant'],
-    }
-
-    file { '/vagrant/puppet/manifests/manifests.d/vagrant-managed.pp':
-        ensure  => present,
-        replace => false,
-        content => template('labs_vagrant/vagrant-managed.pp.erb'),
-        owner   => 'vagrant',
-        require => Git::Clone['vagrant'],
     }
 }
