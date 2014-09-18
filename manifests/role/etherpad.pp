@@ -1,7 +1,6 @@
 class role::etherpad{
 
     include passwords::etherpad_lite
-    include webserver::apache
 
     system::role { 'etherpad':
         description => 'Etherpad-lite server'
