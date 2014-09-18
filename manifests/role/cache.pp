@@ -735,6 +735,10 @@ class role::cache {
             description => 'text Varnish cache server',
         }
 
+        if $::realm == 'production' {
+            include role::cache::ssl::unified
+        }
+
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
 
@@ -887,6 +891,10 @@ class role::cache {
 
         system::role { 'role::cache::upload':
             description => 'upload Varnish cache server',
+        }
+
+        if $::realm == 'production' {
+            include role::cache::ssl::unified
         }
 
         class { 'lvs::realserver':
@@ -1106,6 +1114,10 @@ class role::cache {
             description => 'bits Varnish cache server',
         }
 
+        if $::realm == 'production' {
+            include role::cache::ssl::unified
+        }
+
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
 
@@ -1158,6 +1170,10 @@ class role::cache {
 
         system::role { 'role::cache::mobile':
             description => 'mobile Varnish cache server',
+        }
+
+        if $::realm == 'production' {
+            include role::cache::ssl::unified
         }
 
         include standard
