@@ -569,21 +569,6 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
     include role::cache::bits
 }
 
-node /^cp300[12]\.esams\.wikimedia\.org$/ {
-
-    include admin
-    interface::aggregate { 'bond0':
-        orig_interface => 'eth0',
-        members        => [ 'eth0', 'eth1' ],
-    }
-
-    interface::add_ip6_mapped { 'main':
-        require   => Interface::Aggregate['bond0'],
-        interface => 'bond0'
-    }
-    include standard
-}
-
 node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
 
     include admin
