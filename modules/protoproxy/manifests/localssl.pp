@@ -13,6 +13,7 @@
 #
 # [*default_server*]
 #   Boolean. Adds the 'default_server' option to the listen statement.
+#   Exactly one instance should have this set to true.
 #
 # [*enabled*]
 #   Boolean. Whether the site is enabled in the nginx sites-enabled directory.
@@ -24,7 +25,18 @@ define protoproxy::localssl(
     $enabled        = true,
     $upstream_port  = '80'
 ) {
+
+    # Ensure that exactly one definition exists with default_server = true
+    # if multiple defines have default_server set to true, this
+    # resource will conflict.
+    if $default_server {
+        notify { 'protoproxy localssl default_server':
+            message => "protoproxy::localssl instance $title with server name $server_name is the default server."
+        }
+    }
+
     nginx::site { $name:
+        require => Notify['protoproxy localssl default_server'],    # Ensure a default_server has been defined
         content => template('protoproxy/localssl.erb'),
         enabled => $enabled
     }
