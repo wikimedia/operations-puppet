@@ -629,6 +629,7 @@ class role::cache {
                 default_server         => true;
             'wmfusercontent.org':
                 server_name            => 'wmfusercontent.org',
+                server_alias           => ['*.wmfusercontent.org'],
                 proxy_server_cert_name => 'star.wmfusercontent.org';
         }
 
