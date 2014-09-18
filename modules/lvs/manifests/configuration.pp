@@ -581,7 +581,7 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options
             },
         },
-        'misc_web_https' => {
+        'misc_web-https' => {
             'description' => 'Miscellaneous web sites Varnish cluster (HTTPS)',
             'class' => 'high-traffic2',
             'sites' => [ 'eqiad' ],
