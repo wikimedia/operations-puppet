@@ -573,7 +573,7 @@ class role::cache {
         }
     }
 
-    class ssl($sitename, $certname) {
+    class ssl($sitename, $certname, $default_server=false) {
         include certificates::wmf_ca, role::protoproxy::ssl::common
 
         # Assumes that LVS service IPs are setup elsewhere
@@ -582,7 +582,7 @@ class role::cache {
         # mapping; in other cases we should be OK with the raw name
         $check_cert = $certname ? {
             'unified.wikimedia.org'         => '*.wikipedia.org',
-            /^star\.(wiki[mp]edia\.org)$/   => "*.$1",
+            /^star\.(.+)$/                  => "*.$1",
             default                         => $certname
         }
 
@@ -599,7 +599,7 @@ class role::cache {
         protoproxy::localssl { $sitename:
             proxy_server_cert_name => $certname,
             upstream_port          => '80',
-            default_server         => true,
+            default_server         => $default_server,
             enabled                => true,
         }
     }
@@ -608,6 +608,64 @@ class role::cache {
         class { '::role::cache::ssl':
             sitename => 'unified',
             certname => 'unified.wikimedia.org',
+            default_server => true,
+        }
+    }
+
+    # To replace ssl::unified above after testing...
+    class ssl::sni {
+        class { '::role::cache::ssl':
+            sitename => 'unified',
+            certname => 'unified.wikimedia.org',
+            default_server => true,
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikipedia',
+            certname => 'star.wikipedia.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikimedia',
+            certname => 'star.wikimedia.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wiktionary',
+            certname => 'star.wiktionary.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikiquote',
+            certname => 'star.wikiquote.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikibooks',
+            certname => 'star.wikibooks.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikisource',
+            certname => 'star.wikisource.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikinews',
+            certname => 'star.wikinews.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikiversity',
+            certname => 'star.wikiversity.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikimediafoundation',
+            certname => 'star.wikimediafoundation.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikidata',
+            certname => 'star.wikidata.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikivoyage',
+            certname => 'star.wikivoyage.org',
+        }
+        class { '::role::cache::ssl':
+            sitename => 'star-wikibooks',
+            certname => 'star.wikibooks.org',
         }
     }
 
