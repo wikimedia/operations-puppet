@@ -620,7 +620,6 @@ class role::cache {
 
         define sni_star() {
             localssl { $name:
-                server_name => $name,
                 server_aliases => ["*.${name}"],
                 certname => "star.${name}",
             }
