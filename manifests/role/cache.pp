@@ -601,14 +601,6 @@ class role::cache {
         }
     }
 
-    class ::role::cache::ssl::unified {
-        include certificates::wmf_ca, role::protoproxy::ssl::common
-        ::role::cache::localssl { 'unified':
-            certname => 'unified.wikimedia.org',
-            default_server => true,
-        }
-    }
-
     # ssl::sni To replace ssl::unified above after testing...
     class ::role::cache::ssl::sni {
         include certificates::wmf_ca, role::protoproxy::ssl::common
@@ -766,6 +758,10 @@ class role::cache {
             description => 'text Varnish cache server',
         }
 
+        if $::realm == 'production' {
+            include role::cache::ssl::sni
+        }
+
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
 
@@ -918,6 +914,10 @@ class role::cache {
 
         system::role { 'role::cache::upload':
             description => 'upload Varnish cache server',
+        }
+
+        if $::realm == 'production' {
+            include role::cache::ssl::sni
         }
 
         class { 'lvs::realserver':
@@ -1137,6 +1137,10 @@ class role::cache {
             description => 'bits Varnish cache server',
         }
 
+        if $::realm == 'production' {
+            include role::cache::ssl::sni
+        }
+
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
 
@@ -1189,6 +1193,10 @@ class role::cache {
 
         system::role { 'role::cache::mobile':
             description => 'mobile Varnish cache server',
+        }
+
+        if $::realm == 'production' {
+            include role::cache::ssl::sni
         }
 
         include standard
