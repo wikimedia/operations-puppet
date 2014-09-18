@@ -573,16 +573,14 @@ class role::cache {
         }
     }
 
-    class ssl($sitename, $certname) {
-        include certificates::wmf_ca, role::protoproxy::ssl::common
-
+    define ::role::cache::localssl($certname, $default_server=false) {
         # Assumes that LVS service IPs are setup elsewhere
 
         # For unified or star certs we need to do a bit of
         # mapping; in other cases we should be OK with the raw name
         $check_cert = $certname ? {
             'unified.wikimedia.org'         => '*.wikipedia.org',
-            /^star\.(wiki[mp]edia\.org)$/   => "*.$1",
+            /^star\.(.+)$/                  => "*.$1",
             default                         => $certname
         }
 
@@ -593,20 +591,55 @@ class role::cache {
         }
 
         install_certificate { $certname:
-            before => Protoproxy::Localssl[$sitename],
+            before => Protoproxy::Localssl[$name],
         }
 
-        protoproxy::localssl { $sitename:
+        protoproxy::localssl { $name:
             proxy_server_cert_name => $certname,
             upstream_port          => '80',
-            default_server         => true
+            default_server         => $default_server,
         }
     }
 
-    class ssl::unified {
-        class { '::role::cache::ssl':
-            sitename => 'unified',
+    class ::role::cache::ssl::unified {
+        include certificates::wmf_ca, role::protoproxy::ssl::common
+        ::role::cache::localssl { 'unified':
             certname => 'unified.wikimedia.org',
+            default_server => true,
+        }
+    }
+
+    # ssl::sni To replace ssl::unified above after testing...
+    class ::role::cache::ssl::sni {
+        include certificates::wmf_ca, role::protoproxy::ssl::common
+
+        ::role::cache::localssl { 'unified':
+            certname => 'unified.wikimedia.org',
+            default_server => true,
+        }
+
+        define ::role::cache::ssl::sni::sni_star() {
+            ::role::cache::localssl { $name:
+                server_name => $name,
+                server_aliases => ["*.${name}"],
+                sitename => "star-${name}",
+                certname => "star.${name}",
+            }
+        }
+
+        ::role::cache::ssl::sni::sni_star {
+            'wikipedia.org':;
+            'wikimedia.org':;
+            'wiktionary.org':;
+            'wikiquote.org':;
+            'wikibooks.org':;
+            'wikisource.org':;
+            'wikinews.org':;
+            'wikiversity.org':;
+            'wikidata.org':;
+            'wikivoyage.org':;
+            'wikimediafoundation.org':;
+            'mediawiki.org':;
         }
     }
 
