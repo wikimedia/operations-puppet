@@ -45,19 +45,15 @@ class labs_vagrant(
     git::clone { 'vagrant':
         directory => $install_directory,
         origin    => 'https://gerrit.wikimedia.org/r/mediawiki/vagrant',
-    }
-
-    file { $install_directory:
-        recurse => true,
-        owner   => 'vagrant',
-        group   => 'www-data',
-        require => Git::Clone['vagrant'],
+        owner     => 'vagrant',
+        group     => 'www-data',
+        shared    => true,
     }
 
     file { '/vagrant':
         ensure  => 'link',
         target  => $install_directory,
-        require => File[$install_directory],
+        require => Git::Clone['vagrant'],
     }
 
     file { '/bin/labs-vagrant':
