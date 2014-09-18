@@ -40,9 +40,20 @@
 import argparse
 
 import salt.client
+import salt.config
 
 
-caller = salt.client.Caller()
+class SaltLocalCaller(salt.client.Caller):
+    """A salt.client.Caller that doesn't require the salt master.
+    See <http://docs.saltstack.com/en/latest/ref/clients/#salt.client.Caller>.
+    """
+    def __init__(self, c_path='/etc/salt/minion'):
+        self.opts = salt.config.minion_config(c_path)
+        self.opts['file_client'] = 'local'
+        self.sminion = salt.minion.SMinion(self.opts)
+
+
+caller = SaltLocalCaller()
 
 
 def get(grain):
