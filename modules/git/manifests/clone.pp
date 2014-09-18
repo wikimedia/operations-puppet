@@ -135,7 +135,7 @@ define git::clone(
                     mode    => $file_mode,
                     owner   => $owner,
                     group   => $group,
-                    require => Exec["git_clone_${title}"],
+                    before  => Exec["git_clone_${title}"],
                 }
             }
 
