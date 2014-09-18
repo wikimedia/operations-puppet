@@ -6,6 +6,9 @@
 # [*server_name*]
 #   Server name, used e.g. for SNI. Defaults to $::fqdn
 #
+# [*server_aliases*]
+#   List of server aliases, host names also served.
+#
 # [*proxy_server_cert_name*]
 #
 # [*upstream_port*]
@@ -20,6 +23,7 @@
 
 define protoproxy::localssl(
     $server_name    = $::fqdn,
+    $server_aliases = [],
     $proxy_server_cert_name,
     $default_server = false,
     $enabled        = true,
