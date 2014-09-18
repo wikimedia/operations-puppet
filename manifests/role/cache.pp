@@ -573,7 +573,7 @@ class role::cache {
         }
     }
 
-    class ssl($sitename, $certname) {
+    class ssl($sitename, $certname, $default_server=false) {
         include certificates::wmf_ca, role::protoproxy::ssl::common
 
         # Assumes that LVS service IPs are setup elsewhere
@@ -582,7 +582,7 @@ class role::cache {
         # mapping; in other cases we should be OK with the raw name
         $check_cert = $certname ? {
             'unified.wikimedia.org'         => '*.wikipedia.org',
-            /^star\.(wiki[mp]edia\.org)$/   => "*.$1",
+            /^star\.(.+)$/                  => "*.$1",
             default                         => $certname
         }
 
@@ -599,7 +599,7 @@ class role::cache {
         protoproxy::localssl { $sitename:
             proxy_server_cert_name => $certname,
             upstream_port          => '80',
-            default_server         => true
+            default_server         => $default_server,
         }
     }
 
@@ -607,7 +607,38 @@ class role::cache {
         class { '::role::cache::ssl':
             sitename => 'unified',
             certname => 'unified.wikimedia.org',
+            default_server => true,
         }
+    }
+
+    # ssl::sni To replace ssl::unified above after testing...
+    class sni_star($sdom) {
+        class { '::role::cache::ssl':
+            server_name => $sdom,
+            server_aliases => ["*.${sdom}"],
+            sitename => "star-${sdom}",
+            certname => "star.${sdom}",
+        }
+    }
+
+    class ssl::sni {
+        class { '::role::cache::ssl':
+            sitename => 'unified',
+            certname => 'unified.wikimedia.org',
+            default_server => true,
+        }
+        class { '::role::cache::sni_star': sdom => 'wikipedia.org' }
+        class { '::role::cache::sni_star': sdom => 'wikimedia.org' }
+        class { '::role::cache::sni_star': sdom => 'wiktionary.org' }
+        class { '::role::cache::sni_star': sdom => 'wikiquote.org' }
+        class { '::role::cache::sni_star': sdom => 'wikibooks.org' }
+        class { '::role::cache::sni_star': sdom => 'wikisource.org' }
+        class { '::role::cache::sni_star': sdom => 'wikinews.org' }
+        class { '::role::cache::sni_star': sdom => 'wikiversity.org' }
+        class { '::role::cache::sni_star': sdom => 'wikimediafoundation.org' }
+        class { '::role::cache::sni_star': sdom => 'wikidata.org' }
+        class { '::role::cache::sni_star': sdom => 'wikivoyage.org' }
+        class { '::role::cache::sni_star': sdom => 'wikibooks.org' }
     }
 
     class ssl::misc::certs {
