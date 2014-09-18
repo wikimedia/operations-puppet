@@ -63,19 +63,21 @@ class shinken::server(
     }
 }
 
-# = Class: shinken::hosts
+# = Define: shinken::hosts
 # Setup a shinken hosts definition file
 # FIXME: Autogenerate hosts definitions later on
-class shinken::hosts(
-    $name,
+define shinken::hosts(
     $ensure  = present,
     $source  = undef,
     $content = undef
 ) {
-    file { "/etc/shinken/hosts/$name.cfg":
+    if $content == undef {
+        $content = file($source)
+    }
+
+    file { "/etc/shinken/hosts/$title.cfg":
         ensure  => ensure,
-        source  => source,
-        content => content,
+        content => $content,
         owner   => 'shinken',
         group   => 'shinken',
         notify  => Service['shinken'],

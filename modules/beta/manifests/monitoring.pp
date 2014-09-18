@@ -45,3 +45,10 @@ class beta::monitoring::graphite {
     }
 }
 
+# = Class: beta::monitoring::shinken
+# Sets up shinken monitoring for betacluster
+class beta::monitoring::shinken {
+    shinken::hosts { 'betacluster-hosts':
+        source => 'puppet:///beta/shinken/hosts.cfg',
+    }
+}
