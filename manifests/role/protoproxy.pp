@@ -89,7 +89,6 @@ class role::protoproxy::ssl {
             'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.224' },
         },
         ipv6_enabled       => true,
-        enabled => true,
         proxy_listen_flags => 'default ssl',
     }
     protoproxy{ 'bits':
@@ -104,7 +103,6 @@ class role::protoproxy::ssl {
             'esams' => { 'primary' => '10.2.3.23', 'secondary' => '208.80.154.234' },
         },
         ipv6_enabled => true,
-        enabled => true,
     }
     protoproxy{ 'upload':
         proxy_addresses => {
@@ -118,7 +116,6 @@ class role::protoproxy::ssl {
             'esams' => { 'primary' => '10.2.3.24', 'secondary' => '208.80.154.240' },
         },
         ipv6_enabled => true,
-        enabled => true,
     }
     protoproxy{ 'mobilewikipedia':
         proxy_addresses => {
@@ -132,7 +129,6 @@ class role::protoproxy::ssl {
             'esams' => { 'primary' => '10.2.3.26', 'secondary' => '208.80.154.236' },
         },
         ipv6_enabled => true,
-        enabled => true,
     }
 }
 
@@ -170,7 +166,6 @@ class role::protoproxy::ssl::beta {
             'eqiad' => { 'primary' => '127.0.0.1' }
         },
         ipv6_enabled => false,
-        enabled => true,
     }
 
     $instances = {

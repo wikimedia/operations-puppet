@@ -22,12 +22,6 @@
 #
 # [*proxy_backend*]
 #
-# [*enabled*]
-# Whether to enable the site configuration. It will always be generated under
-# /etc/nginx/sites-available , enabling this parameter will create a symbolic
-# link under /etc/nginx/sites-enabled.
-# Defaults to false
-#
 # [*proxy_listen_flags*]
 # Defaults to ''
 #
@@ -53,8 +47,7 @@
 #    proxy_backend => {
 #     'pmtpa' => {'primary' => 'apaches.wmnet' },
 #    },
-#    ipv6_enabled => false,
-#    enabled => true,
+#    ipv6_enabled => false
 #  }
 #
 define protoproxy(
@@ -62,14 +55,12 @@ define protoproxy(
     $proxy_server_cert_name,
     $proxy_backend,
     $proxy_addresses={},
-    $enabled=false,
     $proxy_listen_flags='',
     $proxy_port='80',
     $ipv6_enabled=false,
     $ssl_backend={},
 ) {
     nginx::site { $name:
-        content  => template('protoproxy/proxy.erb'),
-        enabled  => $enabled,
+        content  => template('protoproxy/proxy.erb')
     }
 }
