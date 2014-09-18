@@ -10,9 +10,9 @@ import header;
 
 <%
 def backend_option(backend, option, default)
-	if varnish_backend_options.kind_of?(Array)
+	if @varnish_backend_options.kind_of?(Array)
 		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
-		varnish_backend_options.each do |be_options|
+		@varnish_backend_options.each do |be_options|
 			if Regexp.new(be_options.fetch("backend_match", "^.*$")).match(backend)
 				if be_options.has_key?(option)
 					return be_options[option]
@@ -21,12 +21,12 @@ def backend_option(backend, option, default)
 		end
 		return default
 	else
-		return varnish_backend_options.fetch(option, default)
+		return @varnish_backend_options.fetch(option, default)
 	end
 end
 -%>
 
-<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
+<% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
 include "geoip.inc.vcl";
 <% end -%>
 
@@ -36,9 +36,9 @@ acl purge {
 	"127.0.0.1";
 }
 
-<% if ! wikimedia_networks.empty? -%>
+<% if ! @wikimedia_networks.empty? -%>
 acl wikimedia_nets {
-<% wikimedia_networks.each do |entry|
+<% @wikimedia_networks.each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;
@@ -59,7 +59,7 @@ acl ssl_proxies {
 probe bits {
 	.request =
 		"GET /w/load.php HTTP/1.1"
-		"Host: en.wikipedia.<%= cluster_options.fetch( "top_domain", "org" ) %>"
+		"Host: en.wikipedia.<%= @cluster_options.fetch( "top_domain", "org" ) %>"
 		"User-agent: Varnish backend check"
 		"Connection: close";
 	.timeout = 1s;
@@ -118,7 +118,7 @@ probe logstash {
 
 # List of Puppet generated backends
 <%
-varnish_backends.each do |backend|
+@varnish_backends.each do |backend|
 	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
 	probe = backend_option(backend, "probe", nil)
 -%>
@@ -138,13 +138,13 @@ backend <%= name %> {
 
 # Directors
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
-<% varnish_directors.keys.sort.each do |director| -%>
-director <%= director %> <%= director_type %> {
-<% director_options.each_pair do |option,value| -%>
+<% @varnish_directors.keys.sort.each do |director| -%>
+director <%= director %> <%= @director_type %> {
+<% @director_options.each_pair do |option,value| -%>
 	.<%= option %> = <%= value %>;
 <% end -%>
 <%
-	varnish_directors[director].each do |backend|
+	@varnish_directors[director].each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
 -%>
 	{
@@ -249,7 +249,7 @@ sub vcl_recv_purge {
 	if (req.request == "PURGE") {
 		if (!client.ip ~ purge) {
 			error 405 "Denied.";
-		} elsif (req.http.Host ~ "<%= vcl_config.fetch("purge_host_regex", ".*") %>") {
+		} elsif (req.http.Host ~ "<%= @vcl_config.fetch("purge_host_regex", ".*") %>") {
 			set req.hash_ignore_busy = true;
 			return (lookup);
 		} else {
@@ -268,7 +268,7 @@ sub vcl_recv_append_xff {
 	}
 }
 
-<% if ! wikimedia_networks.empty? -%>
+<% if ! @wikimedia_networks.empty? -%>
 sub restrict_access {
 	if (client.ip !~ wikimedia_nets) {
 		error 403 "Access denied";
@@ -277,13 +277,13 @@ sub restrict_access {
 
 <% end -%>
 sub vcl_recv {
-	if (req.request !~ "<%= vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
+	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
 		&& !(req.request == "OPTIONS" && req.http.Origin)) {
 		error 403 "HTTP method not allowed.";
 	}
 
 	/* Select the default backend/director */
-	set req.backend = <%= vcl_config.fetch("default_backend", "backend") %>;
+	set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>;
 
 	if (req.backend.healthy) {
 		set req.grace = 5m;
@@ -291,7 +291,7 @@ sub vcl_recv {
 		set req.grace = 60m;
 	}
 	
-<% if vcl_config.fetch("layer", "frontend") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
 	/* Ensure we only accept Forwarded-Proto headers from the SSL proxies */
 	if (client.ip !~ ssl_proxies) {
 		unset req.http.X-Forwarded-Proto;
@@ -303,7 +303,7 @@ sub vcl_recv {
 		error 200 "OK"; 
 	}
 
-	/* Function vcl_recv in <%= vcl %>.inc.vcl will be appended here */
+	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_fetch {
@@ -312,10 +312,10 @@ sub vcl_fetch {
 		set beresp.ttl = 0s;
 		/* This should be translated into hit_for_pass later */
 	}
-	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > <%= vcl_config.fetch("cache4xx", "5m") %>) {
-		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
+	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > <%= @vcl_config.fetch("cache4xx", "5m") %>) {
+		set beresp.ttl = <%= @vcl_config.fetch("cache4xx", "5m") %>;
 	}
-<% if vcl_config.fetch("retry5xx", "0") == "1" -%>
+<% if @vcl_config.fetch("retry5xx", "0") == "1" -%>
 	if (beresp.status >= 500 && beresp.status < 505) {
 		# Retry the backend request 3 times, then give up and display
 		# the backend's error page, instead of our own.
@@ -331,7 +331,7 @@ sub vcl_fetch {
 <% end -%>
 	set beresp.grace = 60m;
 
-	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
+	/* Function vcl_fetch in <%= @vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_hit {
@@ -340,7 +340,7 @@ sub vcl_hit {
 		error 204 "Purged";
 	}
 	
-	/* Function vcl_hit in <%= vcl %>.inc.vcl will be appended here */
+	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_miss {
@@ -349,11 +349,11 @@ sub vcl_miss {
 		error 204 "Cache miss";
 	}
 
-	/* Function vcl_miss in <%= vcl %>.inc.vcl will be appended here */
+	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_deliver {
-<% if vcl_config.fetch("layer", "") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	std.collect(resp.http.Via);
 	std.collect(resp.http.X-Varnish);
 <% end -%>
@@ -372,7 +372,7 @@ sub vcl_deliver {
 		}
 	}
 
-	/* Function vcl_deliver in <%= vcl %>.inc.vcl will be appended here */
+	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_error {
@@ -380,17 +380,17 @@ sub vcl_error {
 		return(deliver);
 	}
 
-<% if vcl_config.fetch("retry503", "0") != "0" -%>
-	if (obj.status == 503 && req.restarts < <%= vcl_config["retry503"].to_i %>) {
+<% if @vcl_config.fetch("retry503", "0") != "0" -%>
+	if (obj.status == 503 && req.restarts < <%= @vcl_config["retry503"].to_i %>) {
 		return(restart);
 	}
 <% end -%>
 	if (obj.status == 204 && req.request == "PURGE") {
 		set obj.http.Connection = "keep-alive";
 	}
-	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
+	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
 }
 
 
 /* Include the VCL file for this role */
-include "<%= vcl %>.inc.vcl";
+include "<%= @vcl %>.inc.vcl";
