@@ -18,28 +18,30 @@ class ldap::role::server::labs {
             $ca_name = 'wmf-labs.pem'
         }
         'production': {
-            $ca_name = 'Equifax_Secure_CA.pem'
-                case $::hostname {
-                    'virt0': {
-                        $certificate = 'virt0.wikimedia.org'
-                    }
-                    'virt1000': {
-                        $certificate = 'virt1000.wikimedia.org'
-                    }
-                    'labcontrol2001': {
-                        $certificate = 'labcontrol2001.wikimedia.org'
-                    }
-                    'default': {
-                        fail('Production realm ldap certificates for virt0/1000/labcontrol2001 only!')
-                    }
+            case $::hostname {
+                'virt0': {
+                    $ca_name = 'Equifax_Secure_CA.pem'
+                    $certificate = 'virt0.wikimedia.org'
                 }
+                'virt1000': {
+                    $ca_name = 'GlobalSign_CA.pem'
+                    $certificate = 'ldap-eqiad.wikimedia.org'
+                }
+                'labcontrol2001': {
+                    $ca_name = 'GlobalSign_CA.pem'
+                    $certificate = 'ldap-codfw.wikimedia.org'
+                }
+                'default': {
+                    fail('Production realm ldap certificates for virt0/1000/labcontrol2001 only!')
+                }
+            }
         }
         'default': {
             fail('unknown realm, should be labs or production')
         }
     }
 
-    install_certificate{ $certificate: }
+    install_certificate{ $certificate: ca => $ca_name }
     # Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
     # Add it into the instance location, and ensure opendj can read it.
     create_pkcs12{ "${certificate}.opendj":
