@@ -488,7 +488,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 }
 
 # cp1008: temporary test host for SNI SSL
-node 'cp1008.eqiad.wikimedia.org' {
+node 'cp1008.wikimedia.org' {
     include admin
     interface::add_ip6_mapped { 'main': }
     $cluster = 'cache_text'
