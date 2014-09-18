@@ -35,6 +35,10 @@ class mediawiki {
         notify  => Service['ssh'],
     }
 
+
+    # /var/log/mediawiki contains log files for the MediaWiki jobrunner
+    # and for various periodic jobs that are managed by cron.
+
     file { '/var/log/mediawiki':
         ensure => directory,
         owner  => 'apache',
