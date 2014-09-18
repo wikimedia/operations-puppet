@@ -585,7 +585,7 @@ class role::cache {
         }
 
         # Nagios monitoring
-        monitor_service { 'https':
+        monitor_service { "https_${name}":
             description   => 'HTTPS',
             check_command => "check_ssl_cert!${check_cert}",
         }
