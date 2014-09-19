@@ -127,6 +127,12 @@ class ldap::role::server::production {
         initial_password     => $initial_password,
         first_master         => false,
     }
+
+    class { 'ldap::firewall':
+        server_list => ['ldap-eqiad.wikimedia.org',
+                        'ldap-codfw.wikimedia.org',
+                        'virt0.wikimedia.org']
+    }
 }
 
 class ldap::role::server::corp {
