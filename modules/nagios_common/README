@@ -1,0 +1,3 @@
+This module contains config and code that can be shared across
+nagios compatible monitoring systems. Currently those
+are icinga and shinken. Code here should work in both of them.
