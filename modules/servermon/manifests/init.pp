@@ -64,14 +64,8 @@ class servermon(
         ensure => $ensure,
     }
 
-    $service_ensure = $ensure ? {
-        present => 'running',
-        absent  => 'stopped',
-        default => 'running',
-    }
-
     service { 'gunicorn':
-        ensure => $service_ensure,
+        ensure => ensure_service($ensure),
     }
 
     file { "$directory/settings.py":

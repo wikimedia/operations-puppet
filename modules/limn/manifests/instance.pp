@@ -84,12 +84,8 @@ define limn::instance (
   }
 
   # Start the service.
-  $service_ensure = $ensure ? {
-    present   => 'running',
-    default   => 'stopped',
-  }
   service { "limn-${name}":
-    ensure     => $service_ensure,
+    ensure     => ensure_service($ensure),
     provider   => 'upstart',
     subscribe  => File["/etc/init/limn-${name}.conf"],
   }

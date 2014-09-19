@@ -38,13 +38,6 @@ class postgresql::server(
         ensure    => $ensure,
     }
 
-    $run = $ensure ? {
-        'present'   => 'running',
-        'absent'    => 'stopped',
-        'purged'    => 'stopped',
-        default     => 'running',
-    }
-
     exec { 'pgreload':
         command     => "/usr/bin/pg_ctlcluster $pgversion main reload",
         user        => 'postgres',
@@ -52,7 +45,7 @@ class postgresql::server(
     }
 
     service { 'postgresql':
-        ensure  => $run,
+        ensure  => ensure_service($ensure),
         require => Package["postgresql-$pgversion"]
     }
 
