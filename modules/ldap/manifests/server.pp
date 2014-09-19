@@ -230,6 +230,30 @@ class ldap::server::schema::openstack {
 
 }
 
+class ldap::server::schema::openstack {
+
+    file { '/var/opendj/instance/config/schema/99-user.ldif':
+        owner   => 'opendj',
+        group   => 'opendj',
+        mode    => '0444',
+        require => Package['opendj'],
+        source  => 'puppet:///modules/ldap/user.ldif',
+    }
+
+}
+
+class ldap::server::schema::openstack {
+
+    file { '/var/opendj/instance/config/schema/80-dnsdomain2.ldif':
+        owner   => 'opendj',
+        group   => 'opendj',
+        mode    => '0444',
+        require => Package['opendj'],
+        source  => 'puppet:///modules/ldap/dnsdomain2.ldif',
+    }
+
+}
+
 class ldap::server::schema::puppet {
 
     file { '/var/opendj/instance/config/schema/98-puppet.ldif':
