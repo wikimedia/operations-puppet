@@ -214,11 +214,8 @@ class icinga::monitor::configuration::files {
         mode   => '0644',
     }
 
-    file { '/etc/icinga/resource.cfg':
-        source => 'puppet:///files/icinga/resource.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+    class { 'nagios_common::user_macros':
+        notify => Service['icinga'],
     }
 
     file { '/etc/icinga/timeperiods.cfg':
