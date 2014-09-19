@@ -1,6 +1,21 @@
 # ldap
 #
 
+class ldap::firewall( $server_list) {
+
+    #  Allow admin communication between ldap servers
+    ferm::rule { 'bastion-ssh':
+        ensure => present,
+        rule   => 'proto tcp dport 4444 saddr $server_list ACCEPT;',
+    }
+
+    #  Allow replication between ldap servers
+    ferm::rule { 'bastion-ssh':
+        ensure => present,
+        rule   => 'proto tcp dport 8989 saddr $server_list ACCEPT;',
+    }
+}
+
 class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $base_dn, $proxyagent, $proxyagent_pass, $server_bind_ips, $initial_password, $first_master=false ) {
     package { 'openjdk-6-jre':
         ensure => latest,
