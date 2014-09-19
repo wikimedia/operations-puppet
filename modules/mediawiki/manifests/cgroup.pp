@@ -4,10 +4,7 @@
 # resource usage of commands invoked in a subprocess via wfShellExec(),
 # like texvc and lilypond. The cgroup is specified by via $wgShellCgroup.
 #
-# See also:
-# * <https://www.mediawiki.org/wiki/Manual:$wgShellCgroup>
-# * <https://github.com/wikimedia/mediawiki-core/blob/master/includes/limit.sh>
-# * <https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt>
+# See also: <https://www.mediawiki.org/wiki/Manual:$wgShellCgroup>
 #
 class mediawiki::cgroup {
     package { 'cgroup-bin':
@@ -28,6 +25,7 @@ class mediawiki::cgroup {
         provider => 'upstart',
         require  => File['/etc/init/mw-cgroup.conf'],
     }
+
 
     # The cgroup-mediawiki-clean script is used as the release_agent
     # script for the cgroup. When the last task in the cgroup exits,
