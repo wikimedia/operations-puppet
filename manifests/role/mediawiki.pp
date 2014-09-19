@@ -75,7 +75,13 @@ class role::mediawiki::appserver {
     system::role { 'role::mediawiki::appserver': }
 
     if ubuntu_version('>= trusty') {
+
         $pool = 'hhvm_appservers'
+
+        monitor_service { 'appserver_http_hhvm':
+            description   => 'HHVM rendering',
+            check_command => 'check_http_wikipedia_main',
+        }
     } else {
         $pool = 'apaches'
     }

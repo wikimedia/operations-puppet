@@ -616,7 +616,7 @@ class lvs::configuration {
             'sites' => [ "eqiad" ],
             'ip' => $service_ips['hhvm_appservers'][$::site],
             'bgp' => "yes",
-            'depool-threshold' => ".9",
+            'depool-threshold' => ".3",
             'monitors' => {
                 'ProxyFetch' => {
                     'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
