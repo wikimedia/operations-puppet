@@ -141,8 +141,8 @@ class hhvm(
                 memcache     => 'true',
                 memcache_key => 'true',
                 memory       => 'true',
-                sql          => 'true',
-                sqltable     => 'true',
+                sql          => 'false',
+                sqltable     => 'false',
                 slot         => 300, # 5 minutes
                 max_slot     => 12, # 1 hour
                 web          => 'true',
