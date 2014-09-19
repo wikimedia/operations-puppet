@@ -54,6 +54,13 @@ class shinken::server(
         require => Package['shinken'],
         notify  => Service['shinken'],
     }
+    class { 'nagios_common::user_macros':
+        config_dir => '/etc/shinken',
+        owner      => 'shinken',
+        group      => 'shinken',
+        notify     => Service['shinken'],
+        require    => Package['shinken'],
+    }
 
     # Default localhost config, we do not need this
     file { '/etc/shinken/hosts/localhost.cfg':
