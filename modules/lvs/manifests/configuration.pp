@@ -862,7 +862,7 @@ class lvs::configuration {
             },
         },
         'mathoid' => {
-            'description' => 'Mathematical rendering service, mathoid.scv.eqiad.wmnet',
+            'description' => 'Mathematical rendering service, mathoid.svc.eqiad.wmnet',
             'class' => 'high-traffic2',
             'sites' => [ 'eqiad' ],
             'ip' => $service_ips['mathoid'][$::site],
