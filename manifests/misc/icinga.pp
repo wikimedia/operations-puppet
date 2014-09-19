@@ -185,6 +185,13 @@ class icinga::monitor::configuration::files {
         ensure  => 'absent',
     }
 
+    file { '/etc/icinga/commands':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/etc/icinga/checkcommands.cfg':
         content => template('icinga/checkcommands.cfg.erb'),
         owner   => 'root',
@@ -616,12 +623,11 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_graphite':
-        source => 'puppet:///files/icinga/check_graphite',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+
+    nagios_common::check_command { 'check_graphite':
+        require => File['/etc/icinga/commands'],
     }
+
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
 
