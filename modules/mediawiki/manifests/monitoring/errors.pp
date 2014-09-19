@@ -40,7 +40,7 @@ class mediawiki::monitoring::errors(
     }
 
     service { 'mwerrors':
-        ensure   => $ensure == present,
+        ensure   => ensure_service($ensure),
         provider => upstart,
     }
 

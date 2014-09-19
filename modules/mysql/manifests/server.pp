@@ -34,15 +34,9 @@ class mysql::server (
     package_name => $package_name,
   }
 
-  if $enabled {
-    $service_ensure = 'running'
-  } else {
-    $service_ensure = 'stopped'
-  }
-
   if $manage_service {
     service { 'mysqld':
-      ensure   => $service_ensure,
+      ensure   => service_ensure($enabled),
       name     => $service_name,
       enable   => $enabled,
       require  => Package['mysql-server'],
