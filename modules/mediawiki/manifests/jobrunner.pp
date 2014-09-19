@@ -12,7 +12,7 @@ class mediawiki::jobrunner (
     $runners_parsoid   = 0,
     $runners_transcode = 0,
     $statsd_server     = undef,
-    $port              = 9002,
+    $port              = 9005,
 ) {
     include ::passwords::redis
 
