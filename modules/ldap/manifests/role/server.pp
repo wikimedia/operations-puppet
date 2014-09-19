@@ -83,6 +83,12 @@ class ldap::role::server::labs {
             before  => Exec['start_opendj'],
         }
     }
+
+    class { 'ldap::firewall':
+        server_list => ['ldap-eqiad.wikimedia.org',
+                        'ldap-codfw.wikimedia.org',
+                        'virt0.wikimedia.org']
+    }
 }
 
 class ldap::role::server::production {
@@ -126,12 +132,6 @@ class ldap::role::server::production {
         server_bind_ips      => "127.0.0.1 ${ipaddress_eth0}",
         initial_password     => $initial_password,
         first_master         => false,
-    }
-
-    class { 'ldap::firewall':
-        server_list => ['ldap-eqiad.wikimedia.org',
-                        'ldap-codfw.wikimedia.org',
-                        'virt0.wikimedia.org']
     }
 }
 
