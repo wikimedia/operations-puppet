@@ -213,7 +213,13 @@ set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-ce
 
     monitor_service { 'ldap': description      => 'LDAP', check_command                   => 'check_tcp!389' }
     monitor_service { 'ldaps': description     => 'LDAPS', check_command                  => 'check_tcp!636' }
-    monitor_service { 'ldap cert': description => 'Certificate expiration', check_command => "check_cert!${fqdn}!636!${ca_name}", critical => true }
+
+    # TODO: make this critical (paging) again once confirmed fixed
+    monitor_service { 'ldap cert':
+        description   => 'Certificate expiration',
+        check_command => "check_ssl_ldap${fqdn}!${ca_name}",
+        critical      => false
+    }
 
 }
 
