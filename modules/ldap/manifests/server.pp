@@ -1,6 +1,23 @@
 # ldap
 #
 
+class ldap::firewall( $server_list) {
+
+    #  Allow admin communication between ldap servers
+    ferm::service { 'ldap-admin':
+	proto  => 'tcp',
+	port   => '4444',
+        srange => inline_template('(<%= @server_list.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
+    }
+
+    #  Allow replication between ldap servers
+    ferm::service { 'ldap-replication':
+	proto  => 'tcp',
+	port   => '8989',
+        srange => inline_template('(<%= @server_list.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
+    }
+}
+
 class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $base_dn, $proxyagent, $proxyagent_pass, $server_bind_ips, $initial_password, $first_master=false ) {
     package { 'openjdk-6-jre':
         ensure => latest,
