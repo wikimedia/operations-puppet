@@ -629,7 +629,6 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 
     $cluster = 'cache_bits'
     include role::cache::bits
-    include role::cache::ssl::unified
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
@@ -643,7 +642,6 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 
     $cluster = 'cache_upload'
     include role::cache::upload
-    include role::cache::ssl::unified
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
@@ -657,7 +655,6 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 
     $cluster = 'cache_text'
     include role::cache::text
-    include role::cache::ssl::unified
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
@@ -671,7 +668,6 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
     $cluster = 'cache_mobile'
     include role::cache::mobile
-    include role::cache::ssl::unified
 }
 
 node 'dataset2.wikimedia.org' {
