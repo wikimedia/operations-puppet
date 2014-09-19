@@ -616,12 +616,11 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_graphite':
-        source => 'puppet:///files/icinga/check_graphite',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+
+    class { 'nagios_common::commands::custom':
+        notify => Service['icinga'],
     }
+
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
 
