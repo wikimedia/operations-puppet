@@ -24,6 +24,18 @@ class mediawiki {
     }
 
 
+    # Set the Salt grain 'php' to the name of the PHP runtime, to make
+    # it easier to select a subset of MediaWiki servers. For example:
+    #   $ salt -G php:hhvm cmd.run 'apt-show-versions hhvm'
+
+    salt::grain { 'php':
+        value => $::lsbdistcodename ? {
+            trusty  => 'hhvm',
+            default => 'php5',
+        }
+    }
+
+
     # Increase the scheduling priority of sshd so we can still
     # log in remotely in cases of overload.
 
