@@ -3100,7 +3100,29 @@ node 'labnet1001.eqiad.wmnet' {
     }
 }
 
-node /virt100[1-9].eqiad.wmnet/ {
+node /virt100[1-5].eqiad.wmnet/ {
+    $cluster = 'virt'
+    $openstack_version = 'havana'
+    $use_neutron = false
+
+    include admin
+    include standard
+    include role::nova::compute
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
+}
+
+node 'virt1006.eqiad.wmnet' {
+    $cluster = 'virt'
+    $openstack_version = 'havana'
+    $use_neutron = false
+
+    include admin
+    include standard
+}
+
+node /virt100[7-9].eqiad.wmnet/ {
     $cluster = 'virt'
     $openstack_version = 'havana'
     $use_neutron = false
