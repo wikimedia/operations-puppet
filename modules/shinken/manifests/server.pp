@@ -61,6 +61,15 @@ class shinken::server(
         require => Package['shinken'],
         notify  => Service['shinken'],
     }
+
+    # Custom commands we use
+    class { 'nagios_common::commands::custom':
+        require    => Package['shinken'],
+        config_dir => '/etc/shinken',
+        owner      => 'shinken',
+        group      => 'shinken',
+        notify     => Service['shinken'],
+    }
 }
 
 # = Define: shinken::hosts
