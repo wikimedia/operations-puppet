@@ -142,7 +142,26 @@ user.custom-field-definitions:
     instructions: This field should contain the login name for the old rt.bugzilla.org
     search: true
 
-#we don't host local docs or use the wiki :)
+#we don't host local docs or use the wiki and other stuff.
+#See https://phabricator.wikimedia.org/T193
 phabricator.uninstalled-applications:
   PhabricatorApplicationPhriction: true
+  PhabricatorApplicationChatLog: true
+  PhabricatorApplicationCountdown: true
   PhabricatorApplicationDiviner: true
+  PhabricatorApplicationDrydock: true
+  PhabricatorApplicationHarbormaster: true
+  PhabricatorApplicationLegalpad: true
+  PhabricatorApplicationMacro: true
+  PhabricatorApplicationOwners: true
+  PhabricatorApplicationPassphrase: true
+  PhabricatorApplicationPhlux: true
+  PhabricatorApplicationPhortune: true
+  PhabricatorApplicationPhragment: true
+  PhabricatorApplicationPhrequent: true
+  PhabricatorApplicationSlowvote: true
+  PhabricatorApplicationRepositories: true
+  PhabricatorApplicationPHPAST: true
+  PhabricatorApplicationUIExamples: true
+  PhabricatorApplicationXHProf: true
+
