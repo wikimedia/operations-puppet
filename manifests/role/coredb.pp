@@ -3,6 +3,7 @@
 @monitor_group { 'es_eqiad': description => 'eqiad External Storage' }
 @monitor_group { 'mysql_pmtpa': description => 'pmtpa mysql core' }
 @monitor_group { 'mysql_eqiad': description => 'eqiad mysql core' }
+@monitor_group { 'mysql_codfw': description => 'codfw mysql core' }
 
 ## for describing replication topology
 ## hosts must be added here in addition to site.pp
