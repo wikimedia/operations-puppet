@@ -43,8 +43,16 @@ class labs_vagrant(
         directory => $install_directory,
         origin    => 'https://gerrit.wikimedia.org/r/mediawiki/vagrant',
         owner     => 'vagrant',
-        group     => 'www-data',
+        group     => 'wikidev',
         shared    => true,
+    }
+
+    file { "${install_directory}/logs":
+        ensure  => 'directory',
+        owner   => 'vagrant',
+        group   => 'www-data',
+        mode    => '0775',
+        require => Git::Clone['vagrant'],
     }
 
     file { '/vagrant':
