@@ -125,7 +125,7 @@ class role::mediawiki::jobrunner {
     class { '::mediawiki::jobrunner':
         queue_servers   => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
         statsd_server   => 'statsd.eqiad.wmnet:8125',
-        runners_basic   => 20,
+        runners_basic   => 14,
         runners_parsoid => 21,
         runners_upload  => 7,
         runners_gwt     => 1,
