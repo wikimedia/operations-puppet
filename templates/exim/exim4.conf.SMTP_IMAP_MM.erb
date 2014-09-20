@@ -32,7 +32,7 @@ OTRS_GROUP=www-data
 <% end -%>
 OTRSQUERY=SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}' AND valid_id=1;
 
-VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-\w+$\N
+VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 
 ###############################
 # Main configuration settings #
@@ -822,7 +822,7 @@ reply_transport:
 # POST VERP bounce emails to a MediaWiki 'bouncehandler' API
 mwverpbounceprocessor:
 	driver = pipe
-	command = /usr/bin/curl -H 'Host: <%= @verp_post_connect_server %>' <%= @verp_bounce_post_url %> -d "action=bouncehandler" --data-urlencode "email@-"
+	command = /usr/bin/curl -H 'Host: <%= @verp_post_connect_server %>' <%= @verp_bounce_post_url %> -d "action=bouncehandler" --data-urlencode "email@-" -o /dev/null
 	user = nobody
 	group = nogroup
 
