@@ -57,8 +57,8 @@ class contint::monitoring::graphite {
     monitor_graphite_threshold { 'contint-cpu-iowait':
         description     => 'CI: Excess CPU check: iowait',
         metric          => 'integration.*.cpu.total.iowait.value',
-        warning         => 95,
-        critical        => 99,
+        warning         => 90,
+        critical        => 97,
         percentage      => 100,
         graphite_url    => 'http://labmon1001.eqiad.wmnet',
         contact_group   => 'contint',
@@ -68,8 +68,8 @@ class contint::monitoring::graphite {
     monitor_graphite_threshold { 'contint-cpu-user':
         description     => 'CI: Excess CPU check: user',
         metric          => 'integration.*.cpu.total.user.value',
-        warning         => 95,
-        critical        => 99,
+        warning         => 90,
+        critical        => 97,
         percentage      => 100,
         graphite_url    => 'http://labmon1001.eqiad.wmnet',
         contact_group   => 'contint',
@@ -79,8 +79,8 @@ class contint::monitoring::graphite {
     monitor_graphite_threshold { 'contint-cpu-system':
         description     => 'CI: Excess CPU check: system',
         metric          => 'integration.*.cpu.total.system.value',
-        warning         => 95,
-        critical        => 99,
+        warning         => 90,
+        critical        => 97,
         percentage      => 100,
         graphite_url    => 'http://labmon1001.eqiad.wmnet',
         contact_group   => 'contint',
