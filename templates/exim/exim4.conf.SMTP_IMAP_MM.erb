@@ -32,7 +32,7 @@ OTRS_GROUP=www-data
 <% end -%>
 OTRSQUERY=SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}' AND valid_id=1;
 
-VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-\w+$\N
+VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 
 ###############################
 # Main configuration settings #
