@@ -133,22 +133,7 @@ class hhvm(
                 gzip_compression_level => 0,
                 graceful_shutdown_wait => 5,
             },
-            debug            => {
-                core_dump_report_directory => '/var/log/hhvm',
-            },
-            stats            => {
-                apc          => 'true',
-                memcache     => 'true',
-                memcache_key => 'true',
-                memory       => 'true',
-                sql          => 'false',
-                sqltable     => 'false',
-                slot         => 300, # 5 minutes
-                max_slot     => 12, # 1 hour
-                web          => 'true',
-            }
         },
-        "hhvm.stats" => 'true',
     }
 
     $cli_defaults = {
