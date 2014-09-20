@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#
+# File permissions
+#
+
+chmod -f u+x ~/.bin/*
+
 
 #
 # Colors
@@ -46,6 +52,11 @@ puppet-run() { sudo puppet agent -tv; }
 puppetd()    { sudo puppt-agent "${@}"; }
 warn()       { printf "$(tput setaf 1)%s$(tput sgr0)\n" "$1" >&2; }
 notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
+localcurl()  {
+  for var; do [[ $var == */* ]] && url="${var#*//}" || args+=("$var"); done
+  curl -H "host: ${url%%/*}" "${args[@]}" "localhost/${url#*/}"
+}
+
 
 #
 # z - https://github.com/rupa/z
@@ -53,6 +64,7 @@ notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
 
 _Z_OWNER="ori"
 . "${HOME}/.z.sh"
+
 
 #
 # Host-specific profile
