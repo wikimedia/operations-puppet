@@ -3092,6 +3092,25 @@ node 'labcontrol2001.wikimedia.org' {
     #include role::deployment::salt_masters::labs
 }
 
+node 'neptunium.wikimedia.org' {
+    $cluster               = 'virt'
+    #$is_puppet_master      = true
+    #$is_labs_puppet_master = true
+    #$openstack_version     = 'folsom'
+    #$use_neutron           = false
+
+    include standard
+    include admin
+    include role::dns::ldap
+    include ldap::role::server::labs
+    include ldap::role::client::labs
+
+    #include role::nova::controller
+    #include role::nova::manager
+    #include role::salt::masters::labs
+    #include role::deployment::salt_masters::labs
+}
+
 node 'labnet1001.eqiad.wmnet' {
     $cluster = 'virt'
     $openstack_version = 'havana'
