@@ -521,12 +521,6 @@ define command{
 }
 
 
-# Checks whether a host belongs to given dsh group(s)
-define command{
-    command_name    check_dsh_groups
-    command_line    $USER1$/check_dsh_groups $HOSTNAME$ $ARG1$
-}
-
 # check Online Content Generator health from server health page
 define command{
     command_name    nrpe_check_ocg_health

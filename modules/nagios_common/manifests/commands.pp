@@ -26,7 +26,10 @@ class nagios_common::commands(
         mode   => '0755',
     }
 
-    nagios_common::check_command { 'check_graphite':
+    nagios_common::check_command { [
+        'check_graphite',
+        'check_dsh_groups'
+    ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
         owner      => $owner,
