@@ -40,6 +40,10 @@ sub vcl_recv {
 		set req.backend = magnesium;
 	} elsif (req.http.Host == "metrics.wikimedia.org") {
 		set req.backend = stat1001;
+	} elsif (req.http.Host == "config-master.wikimedia.org") {
+		set req.backend = palladium;
+		/* no caching of configs; scripts may want to know when things change */
+		return (pass);
 	} else {
 		error 404 "Domain not served here";
 	}

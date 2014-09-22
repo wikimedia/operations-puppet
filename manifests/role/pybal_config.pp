@@ -7,6 +7,7 @@ class role::pybal_config {
                        'config-master.codfw.wmnet',
                        'config-master.esams.wmnet',
                        'config-master.ulsfo.wmnet',
+                       'config-master.wikimedia.org',
                        ]
     }
 }
