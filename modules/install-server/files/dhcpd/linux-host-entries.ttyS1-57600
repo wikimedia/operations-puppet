@@ -13,11 +13,6 @@ host fenari {
 	fixed-address fenari.wikimedia.org;
 }
 
-host linne {
-	hardware ethernet 00:1e:c9:ea:ab:a7;
-	fixed-address linne.wikimedia.org;
-}
-
 host mchenry {
 	hardware ethernet 00:19:B9:DD:C0:27;
 	fixed-address mchenry.wikimedia.org;
