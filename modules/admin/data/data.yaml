@@ -137,7 +137,7 @@ groups:
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
-    members: [aaron, bd808, manybubbles, demon]
+    members: [aaron, bd808, manybubbles, demon, reedy]
     privs: ['ALL = NOPASSWD: ALL']
   pmacct-roots:
     gid: 723
