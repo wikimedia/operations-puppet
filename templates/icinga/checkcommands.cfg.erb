@@ -85,20 +85,6 @@ define command{
         command_line    $USER1$/check_http -S -H $HOSTADDRESS$ -p $ARG1$ -e $ARG2$
         }
 
-# 'check_ssl_cert'
-# Verify a SSL certificate is not going to expire in the next 14 days
-# Example usage:  check_ssl_cert!secure.wikimedia.org
-define command{
-    command_name    check_ssl_cert
-    command_line    $USER1$/check_ssl_cert --rootcert /etc/ssl/certs/ --critical 90 -H $HOSTADDRESS$ --cn $ARG1$
-    }
-
-# check SSL certs on LDAP servers
-define command{
-    command_name    check_ssl_ldap
-    command_line    $USER1$/check_ssl_cert --critical 90 -H $HOSTADDRESS$ -p 636 -n $ARG1$ -r /etc/ssl/certs/$ARG2$
-    }
-
 # 'check_local_disk' command definition
 define command{
         command_name    check_local_disk

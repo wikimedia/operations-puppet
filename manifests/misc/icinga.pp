@@ -583,12 +583,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_ssl_cert':
-        source => 'puppet:///files/icinga/check_ssl_cert/check_ssl_cert',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
     file { '/usr/lib/nagios/plugins/check_nrpe':
         source => 'puppet:///files/icinga/check_nrpe',
         owner  => 'root',

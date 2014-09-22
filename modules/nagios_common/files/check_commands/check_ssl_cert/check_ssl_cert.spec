@@ -174,4 +174,3 @@ rm -rf $RPM_BUILD_ROOT
 
 * Mon Sep 24 2007 Matteo Corti <matteo.corti@id.ethz.ch> - 1.1.0-0
 - first RPM package
-
