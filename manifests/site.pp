@@ -476,12 +476,49 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
     }
 }
 
-node /^(chromium|hydrogen)\.wikimedia\.org$/ {
+node 'chromium.wikimedia.org' {
     include admin
     include base::firewall
     include standard
     include role::dns::recursor
 
+    interface::ip { 'url-downloader':
+        interface => 'eth0',
+        address   => '208.80.154.156',
+    }
+    $url_downloader_ip = '208.80.154.156'
+
+    include role::url_downloader
+
+    class { 'ntp::server':
+        servers => [ '198.186.191.229',
+                    '64.113.32.2',
+                    '173.8.198.242',
+                    '208.75.88.4',
+                    '75.144.70.35',
+        ],
+        peers   => [ 'dobson.wikimedia.org' ],
+    }
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+}
+
+node 'hydrogen.wikimedia.org' {
+    include admin
+    include base::firewall
+    include standard
+    include role::dns::recursor
+
+    class { 'ntp::server':
+        servers => [ '173.9.142.98',
+                    '66.250.45.2',
+                    '169.229.70.201',
+                    '69.31.13.207',
+                    '72.167.54.201'
+        ],
+        peers   => [ 'linne.wikimedia.org' ],
+    }
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
