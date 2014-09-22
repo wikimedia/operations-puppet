@@ -39,8 +39,10 @@ maniphest.custom-field-definitions:
   external_reference:
     name: ext_ref
     type: text
-    caption: external reference identifier
+    caption: Reference
     search: true
+    edit: false
+    view: true
   security_topic:
     instructions: Security settings will override permissions and projects as needed.
     name: Security
