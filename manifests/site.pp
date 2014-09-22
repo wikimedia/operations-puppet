@@ -2957,12 +2957,6 @@ node 'titanium.wikimedia.org' {
     include role::archiva
 }
 
-
-node 'tridge.wikimedia.org' {
-    include standard
-    include admin
-}
-
 # tmh1001/tmh1002 video encoding server (precise only)
 node /^tmh100[1-2]\.eqiad\.wmnet/ {
     include admin
