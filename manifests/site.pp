@@ -2123,6 +2123,34 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
     swift::mount_filesystem{ '/dev/sdb3': }
 }
 
+node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
+    include admin
+
+    $cluster = 'swift'
+    $nagios_group = 'swift'
+    if $::hostname =~ /^ms-fe200[12]$/ {
+        $ganglia_aggregator = true
+    }
+
+    if $::hostname == 'ms-fe2001' {
+        include role::swift::stats_reporter
+    }
+
+    # XXX update with codfw service address
+    #class { 'lvs::realserver': realserver_ips => [ '10.2.2.27' ] }
+
+    include role::swift::proxy
+}
+
+node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
+    include admin
+
+    $cluster = 'swift'
+    $nagios_group = 'swift'
+
+    include role::swift::storage
+}
+
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 
