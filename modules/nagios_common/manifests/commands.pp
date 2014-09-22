@@ -38,4 +38,13 @@ class nagios_common::commands(
         owner      => $owner,
         group      => $group,
     }
+
+    nagios_common::check_command { 'check_ssl_cert':
+        require       => File["$config_dir/commands"],
+        config_dir    => $config_dir,
+        owner         => $owner,
+        group         => $group,
+        plugin_source => 'puppet:///modules/nagios_common/check_commands/check_ssl_cert/check_ssl_cert',
+    }
+
 }
