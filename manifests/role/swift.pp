@@ -2,6 +2,7 @@
     description => 'swift servers',
 }
 
+
 class role::swift {
     class base {
         include standard
@@ -314,4 +315,139 @@ class role::swift::icehouse {
         pin      => 'release n=precise-updates/icehouse',
         priority => 1005,
     }
+}
+
+#######
+
+include passwords::swift::codfw_prod
+
+# swift accounts, each sub-hash contains a single account specification:
+# user: username specified as account:user (config files will change : with _)
+# key: password
+# auth: auth URL to get authentication tokens
+# access: account access level
+# account_name: internal account name, AUTH_<id>
+$codfw_prod_accounts = {
+    'super_admin' => {
+        'access'       => '.admin .reseller_admin',
+        'account_name' => 'AUTH_admin',
+        'auth'         => 'http://ms-fe.codfw.wmnet/auth/v1.0',
+        'key'          => $passwords::swift::codfw_prod::admin_password,
+        'user'         => 'admin:admin',
+    },
+    'mw_media' => {
+        'access'       => '.admin',
+        'account_name' => 'AUTH_mw',
+        'auth'         => 'http://ms-fe.codfw.wmnet/auth/v1.0',
+        'key'          => $passwords::swift::codfw_prod::rewrite_password,
+        'user'         => 'mw:media',
+    },
+    'dispersion' => {
+        'access'       => '.admin',
+        'account_name' => 'AUTH_dispersion',
+        'auth'         => 'http://ms-fe.codfw.wmnet/auth/v1.0',
+        'key'          => $passwords::swift::codfw_prod::dispersion_password,
+        'user'         => 'swift:dispersion',
+    },
+    'search_backup' => {
+        'access'       => '.admin',
+        'account_name' => 'AUTH_search',
+        'auth'         => 'http://ms-fe.codfw.wmnet/auth/v1.0',
+        'key'          => $passwords::swift::codfw_prod::search_password,
+        'user'         => 'search:backup',
+    },
+}
+
+# XXX refactor and split into wikipedia-$project-local-$type
+$shard_container_list = [
+    'global-data-math-render',
+    'wikipedia-commons-local-public', 'wikipedia-commons-local-temp', 'wikipedia-commons-local-thumb', 'wikipedia-commons-local-transcoded',
+    'wikipedia-de-local-public', 'wikipedia-de-local-temp', 'wikipedia-de-local-thumb', 'wikipedia-de-local-transcoded',
+    'wikipedia-en-local-public', 'wikipedia-en-local-temp', 'wikipedia-en-local-thumb', 'wikipedia-en-local-transcoded',
+    'wikipedia-fi-local-public', 'wikipedia-fi-local-temp', 'wikipedia-fi-local-thumb', 'wikipedia-fi-local-transcoded',
+    'wikipedia-fr-local-public', 'wikipedia-fr-local-temp', 'wikipedia-fr-local-thumb', 'wikipedia-fr-local-transcoded',
+    'wikipedia-he-local-public', 'wikipedia-he-local-temp', 'wikipedia-he-local-thumb', 'wikipedia-he-local-transcoded',
+    'wikipedia-hu-local-public', 'wikipedia-hu-local-temp', 'wikipedia-hu-local-thumb', 'wikipedia-hu-local-transcoded',
+    'wikipedia-id-local-public', 'wikipedia-id-local-temp', 'wikipedia-id-local-thumb', 'wikipedia-id-local-transcoded',
+    'wikipedia-it-local-public', 'wikipedia-it-local-temp', 'wikipedia-it-local-thumb', 'wikipedia-it-local-transcoded',
+    'wikipedia-ja-local-public', 'wikipedia-ja-local-temp', 'wikipedia-ja-local-thumb', 'wikipedia-ja-local-transcoded',
+    'wikipedia-ro-local-public', 'wikipedia-ro-local-temp', 'wikipedia-ro-local-thumb', 'wikipedia-ro-local-transcoded',
+    'wikipedia-ru-local-public', 'wikipedia-ru-local-temp', 'wikipedia-ru-local-thumb', 'wikipedia-ru-local-transcoded',
+    'wikipedia-th-local-public', 'wikipedia-th-local-temp', 'wikipedia-th-local-thumb', 'wikipedia-th-local-transcoded',
+    'wikipedia-tr-local-public', 'wikipedia-tr-local-temp', 'wikipedia-tr-local-thumb', 'wikipedia-tr-local-transcoded',
+    'wikipedia-uk-local-public', 'wikipedia-uk-local-temp', 'wikipedia-uk-local-thumb', 'wikipedia-uk-local-transcoded',
+    'wikipedia-zh-local-public', 'wikipedia-zh-local-temp', 'wikipedia-zh-local-thumb', 'wikipedia-zh-local-transcoded',
+]
+
+class role::swift::codfw-prod::stats_reporter {
+    class {'swift_new::stats': }
+
+    class {'swift_new::stats::dispersion':
+        cluster => 'codfw-prod',
+    }
+
+    class {'swift_new::stats::accounts':
+        cluster  => 'codfw-prod',
+        accounts => $codfw_prod_accounts,
+    }
+}
+
+class role::swift::codfw-prod::proxy {
+    class {'swift_new':
+        cluster          => 'codfw-prod',
+        hash_path_suffix => 'de4227064232ed08',
+    }
+
+    class {'swift_new::ring':
+        cluster => 'codfw-prod',
+    }
+
+    class {'swift_new::proxy::monitoring':
+        host => 'ms-fe.codfw.wmnet',
+    }
+
+    class {'swift_new::proxy':
+        proxy_address        => 'http://ms-fe.codfw.wmnet',
+        memcached_servers    => ['ms-fe2001.eqiad.wmnet:11211'],
+        rewrite_thumb_server => 'rendering.svc.eqiad.wmnet',
+        shard_container_list => $shard_container_list,
+        accounts             => $codfw_prod_accounts,
+        dispersion_account   => $codfw_prod_accounts['dispersion'],
+        rewrite_account      => $codfw_prod_accounts['mw_media'],
+    }
+
+    class { '::memcached':
+        memcached_size => '128',
+        memcached_port => '11211',
+    }
+}
+
+class role::swift::codfw-prod::storage {
+    class {'swift_new':
+        cluster          => 'codfw-prod',
+        hash_path_suffix => 'de4227064232ed08',
+    }
+
+    class {'swift_new::ring':
+        cluster => 'codfw-prod',
+    }
+
+    class {'swift_new::storage::monitoring':
+    }
+
+    class {'swift_new::storage':
+    }
+
+    $all_drives = [
+        '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
+        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
+        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+    ]
+
+    swift_new::init_device{ $all_drives: partition_nr => '1' }
+    # these are already partitioned and xfs formatted by the installer
+    swift_new::label_filesystem{ '/dev/sdm3': }
+    swift_new::label_filesystem{ '/dev/sdn3': }
+    swift_new::mount_filesystem{ '/dev/sdm3': }
+    swift_new::mount_filesystem{ '/dev/sdn3': }
 }

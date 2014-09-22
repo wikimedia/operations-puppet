@@ -1,0 +1,35 @@
+[DEFAULT]
+bind_ip = 0.0.0.0
+devices = /srv/swift-storage/
+workers = 100
+# statsd collection is off for the initial deploy; on after figuring out ganglia issues
+# log_statsd_host = localhost
+# log_statsd_port = 8125
+# log_statsd_default_sample_rate = 1
+# log_statsd_metric_prefix =
+
+
+[pipeline:main]
+pipeline = recon object-server
+
+[filter:recon]
+use = egg:swift#recon
+recon_cache_path = /var/cache/swift
+
+[app:object-server]
+use = egg:swift#object
+# 5G, ought to be enough for everybody
+keep_cache_size = 5368709120
+allowed_headers = content-disposition,
+	content-encoding,
+	x-delete-at,
+	x-object-manifest,
+	x-content-duration
+
+[object-replicator]
+concurrency = 3
+
+[object-updater]
+concurrency = 1
+
+[object-auditor]
