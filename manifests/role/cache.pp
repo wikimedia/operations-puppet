@@ -1500,6 +1500,7 @@ class role::cache {
                 'neon.wikimedia.org', # monitoring tools (icinga et al)
                 'magnesium.wikimedia.org', # RT and racktables
                 'stat1001.wikimedia.org', # metrics and metrics-api
+                'palladium.eqiad.wmnet',
             ],
             backend_options => [
             {
