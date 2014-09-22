@@ -2,6 +2,7 @@
     description => 'swift servers',
 }
 
+
 class role::swift {
     class base {
         include standard
@@ -314,4 +315,49 @@ class role::swift::icehouse {
         pin      => 'release n=precise-updates/icehouse',
         priority => 1005,
     }
+}
+
+#######
+
+
+
+class role::swift::stats_reporter {
+    include ::swift_new::params
+    include ::swift_new::stats
+    include ::swift_new::stats::dispersion
+    include ::swift_new::stats::accounts
+}
+
+class role::swift::proxy {
+    include ::swift_new::params
+    include ::swift_new
+    include ::swift_new::ring
+    include ::swift_new::proxy::monitoring
+    include ::swift_new::proxy
+
+    # Note: this could be moved to hiera as well, but I preferred not to.
+    class { '::memcached':
+        memcached_size => '128',
+        memcached_port => '11211',
+    }
+}
+
+
+class role::swift::storage {
+    include ::swift_new::params
+    include ::swift_new
+    include ::swift_new::ring
+    include ::swift_new::storage
+    include ::swift_new::storage::monitoring
+
+    $all_drives = hiera('swift_storage_drives')
+
+    swift::init_device { $all_drives:
+        partition_nr => '1',
+    }
+
+    # these are already partitioned and xfs formatted by the installer
+    $installed_partitions = hiera('swift_installed_partitions')
+    swift_new::label_filesystem { $installed_partitions: }
+    swift_new::mount_filesystem { $installed_partitions: }
 }
