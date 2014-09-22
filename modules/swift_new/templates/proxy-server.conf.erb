@@ -1,0 +1,68 @@
+# This file is managed by Puppet!
+
+[DEFAULT]
+bind_port = <%= @bind_port %>
+workers = <%= @num_workers %>
+user = swift
+<% if @statsd_host -%>
+log_statsd_host = <%= @statsd_host %>
+log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
+<% if @statsd_metric_prefix -%>
+log_statsd_metric_prefix = <%= @statsd_metric_prefix %>
+<% end -%>
+<% end -%>
+
+[pipeline:main]
+pipeline = rewrite healthcheck cache tempurl tempauth cors proxy-logging proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+account_autocreate = true
+
+[filter:tempurl]
+use = egg:swift#tempurl
+# default includes PUT
+methods = GET HEAD
+
+[filter:tempauth]
+use = egg:swift#tempauth
+token_life = 604800
+<% @accounts.each_pair do |name, info| -%>
+<% key = @credentials[name] -%>
+<%= "user_#{info['user'].gsub(':', '_')} = #{key} #{info['access']} #{info['auth']}" %>
+<% end -%>
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:cache]
+use = egg:swift#memcache
+memcache_servers = <%= @memcached_servers.join(",") %>
+memcache_serialization_support = 2
+# per worker!
+memcache_max_connections = 12
+
+[filter:cors]
+paste.filter_factory = wmf.cors:filter_factory
+
+[filter:proxy-logging]
+use = egg:swift#proxy_logging
+set access_log_facility = LOG_LOCAL1
+
+[filter:rewrite]
+# the auth system turns our login and key into an account / token pair.
+# the account remains valid forever, but the token times out.
+account = <%= @accounts[@rewrite_account]['account_name'] %>
+# the name of the scaler cluster.
+thumbhost = <%= @rewrite_thumb_server %>
+# upload doesn't like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
+user_agent = Mozilla/5.0
+# this list is the containers that should be sharded
+shard_container_list = <%= @shard_container_list.join(',') %>
+# backend_url_format controls whether we pass the URL through to the thumbhost unmolested
+# or mangle it to be consumed by mediawiki.  ms5 takes URLs unmolested, mediawiki wants them
+# transformed to something more palatable (specifically, turning http://upload/proj/lang/ into http://lang.proj/
+# valid options are 'asis' (leave it alone) and 'sitelang' (change upload to lang.site.org)
+backend_url_format = <%= @backend_url_format %>
+
+paste.filter_factory = wmf.rewrite:filter_factory

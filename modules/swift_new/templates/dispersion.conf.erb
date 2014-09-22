@@ -1,0 +1,7 @@
+# This file is managed by Puppet!
+
+[dispersion]
+auth_url = <%= @accounts[@dispersion_account]['auth'] %>
+auth_user = <%= @accounts[@dispersion_account]['user'] %>
+auth_key = <%= @credentials[@dispersion_account] %>
+swift_dir = '/etc/swift'
