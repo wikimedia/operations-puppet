@@ -482,6 +482,15 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     include standard
     include role::dns::recursor
 
+    if $::hostname == 'chromium' {
+        interface::ip { 'url-downloader':
+            interface => 'eth0',
+            address   => '208.80.154.156',
+        }
+        $url_downloader_ip = '208.80.154.156'
+        include role::url_downloader
+    }
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
