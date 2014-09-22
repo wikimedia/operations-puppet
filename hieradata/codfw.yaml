@@ -1,0 +1,97 @@
+swift_new::params::swift_cluster: codfw-prod
+swift_new::params::accounts:
+    super_admin:
+        access:       '.admin .reseller_admin'
+        account_name: 'AUTH_admin'
+        auth:         'http://ms-fe.svc.codfw.wmnet/auth/v1.0'
+        user:         'admin:admin'
+    mw_media:
+        access:       '.admin'
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.codfw.wmnet/auth/v1.0'
+        user:         'mw:media'
+    dispersion:
+        access:       '.admin'
+        account_name: 'AUTH_dispersion'
+        auth:         'http://ms-fe.svc.codfw.wmnet/auth/v1.0'
+        user:         'swift:dispersion'
+    search_backup:
+        access:       '.admin'
+        account_name: 'AUTH_search'
+        auth:         'http://ms-fe.svc.codfw.wmnet/auth/v1.0'
+        user:         'search:backup'
+
+# keys are to be defined in private repo, e.g.:
+#swift_new::params::account_keys:
+#    super_admin: <key>
+#    mw_media: <key>
+#    dispersion: <key>
+#    search_backup: <key>
+
+swift_new::hash_path_suffix: 'de4227064232ed08'
+swift_new::proxy::proxy_address: 'http://ms-fe.svc.codfw.wmnet'
+swift_new::proxy::memcached_servers: ['ms-fe2001.eqiad.wmnet:11211']
+swift_new::proxy::statsd_host: 'statsd.eqiad.wmnet'
+swift_new::proxy::backend_url_format: 'sitelang'
+swift_new::proxy::rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
+swift_new::proxy::dispersion_account: 'dispersion'
+swift_new::proxy::rewrite_account:    'mw_media'
+swift_new::proxy::shard_container_list: [
+    'global-data-math-render',
+
+    'wikipedia-commons-local-public', 'wikipedia-commons-local-temp',
+    'wikipedia-commons-local-thumb', 'wikipedia-commons-local-transcoded',
+
+    'wikipedia-de-local-public', 'wikipedia-de-local-temp',
+    'wikipedia-de-local-thumb', 'wikipedia-de-local-transcoded',
+
+    'wikipedia-en-local-public', 'wikipedia-en-local-temp',
+    'wikipedia-en-local-thumb', 'wikipedia-en-local-transcoded',
+
+    'wikipedia-fi-local-public', 'wikipedia-fi-local-temp',
+    'wikipedia-fi-local-thumb', 'wikipedia-fi-local-transcoded',
+
+    'wikipedia-fr-local-public', 'wikipedia-fr-local-temp',
+    'wikipedia-fr-local-thumb', 'wikipedia-fr-local-transcoded',
+
+    'wikipedia-he-local-public', 'wikipedia-he-local-temp',
+    'wikipedia-he-local-thumb', 'wikipedia-he-local-transcoded',
+
+    'wikipedia-hu-local-public', 'wikipedia-hu-local-temp',
+    'wikipedia-hu-local-thumb', 'wikipedia-hu-local-transcoded',
+
+    'wikipedia-id-local-public', 'wikipedia-id-local-temp',
+    'wikipedia-id-local-thumb', 'wikipedia-id-local-transcoded',
+
+    'wikipedia-it-local-public', 'wikipedia-it-local-temp',
+    'wikipedia-it-local-thumb', 'wikipedia-it-local-transcoded',
+
+    'wikipedia-ja-local-public', 'wikipedia-ja-local-temp',
+    'wikipedia-ja-local-thumb', 'wikipedia-ja-local-transcoded',
+
+    'wikipedia-ro-local-public', 'wikipedia-ro-local-temp',
+    'wikipedia-ro-local-thumb', 'wikipedia-ro-local-transcoded',
+
+    'wikipedia-ru-local-public', 'wikipedia-ru-local-temp',
+    'wikipedia-ru-local-thumb', 'wikipedia-ru-local-transcoded',
+
+    'wikipedia-th-local-public', 'wikipedia-th-local-temp',
+    'wikipedia-th-local-thumb', 'wikipedia-th-local-transcoded',
+
+    'wikipedia-tr-local-public', 'wikipedia-tr-local-temp',
+    'wikipedia-tr-local-thumb', 'wikipedia-tr-local-transcoded',
+
+    'wikipedia-uk-local-public', 'wikipedia-uk-local-temp',
+    'wikipedia-uk-local-thumb', 'wikipedia-uk-local-transcoded',
+
+    'wikipedia-zh-local-public', 'wikipedia-zh-local-temp',
+    'wikipedia-zh-local-thumb', 'wikipedia-zh-local-transcoded',
+]
+
+swift_storage_drives: [
+        '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
+        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
+        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+    ]
+swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+swift_check_http_host: 'ms-fe.svc.codfw.wmnet'
