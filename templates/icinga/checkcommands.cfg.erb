@@ -406,11 +406,6 @@ define command {
 }
 
 define command{
-        command_name    check_cert
-        command_line    $USER1$/check_cert $ARG1$ $ARG2$ $ARG3$
-}
-
-define command{
     command_name    puppet-FAIL
     command_line    date --date @$LASTSERVICEOK$ +"Last successful Puppet run was %a %d %b %Y %T %Z" && exit 2
 }
