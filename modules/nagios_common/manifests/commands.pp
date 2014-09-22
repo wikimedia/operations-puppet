@@ -30,6 +30,7 @@ class nagios_common::commands(
         'check_graphite',
         'check_dsh_groups',
         'check_wikidata',
+        'check_cert',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
