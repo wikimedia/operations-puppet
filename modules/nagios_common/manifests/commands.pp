@@ -31,6 +31,7 @@ class nagios_common::commands(
         'check_dsh_groups',
         'check_wikidata',
         'check_cert',
+        'check_solr',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
