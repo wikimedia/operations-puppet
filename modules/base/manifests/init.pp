@@ -207,6 +207,7 @@ class base {
             'labs' => $::site ? {
                 'pmtpa' => 'virt0.wikimedia.org',
                 'eqiad' => 'virt1000.wikimedia.org',
+                'codfw' => 'virt1000.wikimedia.org',
             },
             default => 'puppet',
         },
