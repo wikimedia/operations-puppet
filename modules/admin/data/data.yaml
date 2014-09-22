@@ -55,7 +55,7 @@ groups:
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed, swalling, yuvipanda,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
-      jzerebecki, declerambaul, ellery]
+      jzerebecki, declerambaul, ellery, dduvall]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -162,7 +162,7 @@ groups:
               maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
-              deskana, jzerebecki]
+              deskana, jzerebecki, dduvall]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
