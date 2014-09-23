@@ -357,12 +357,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/etc/nagios-plugins/config/apt.cfg':
-        source => 'puppet:///files/icinga/plugin-config/apt.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/breeze.cfg':
         source => 'puppet:///files/icinga/plugin-config/breeze.cfg',
         owner  => 'root',
