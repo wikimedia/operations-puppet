@@ -1,7 +1,7 @@
 # NTP client
 
 class ntp::client(
-  $servers =['dobson.wikimedia.org'],
+  $servers =['rubidium.wikimedia.org', 'eeden.esams.wikimedia.org'],
   $peers   =[]
 ) {
   $ntp_server = false
