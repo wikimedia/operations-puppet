@@ -61,6 +61,7 @@ class nagios_common::commands(
         'http',
         'ifstatus',
         'ldap',
+        'load',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
