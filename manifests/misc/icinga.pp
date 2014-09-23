@@ -565,12 +565,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_all_memcached.php':
-        source => 'puppet:///files/icinga/check_all_memcached.php',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
     file { '/usr/lib/nagios/plugins/check_longqueries':
         source => 'puppet:///files/icinga/check_longqueries',
         owner  => 'root',
