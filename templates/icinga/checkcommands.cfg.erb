@@ -308,11 +308,6 @@ define command{
     }
 
 define command{
-    command_name    check_all_memcached
-    command_line    /usr/bin/php $USER1$/check_all_memcached.php
-    }
-
-define command{
     command_name    nrpe_check_raid
     command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_raid
     }

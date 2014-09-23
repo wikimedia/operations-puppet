@@ -32,6 +32,7 @@ class nagios_common::commands(
         'check_wikidata',
         'check_cert',
         'check_solr',
+        'check_all_memcached.php',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
