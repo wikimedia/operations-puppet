@@ -58,6 +58,7 @@ class role::phabricator::main {
             'storage.upload-size-limit'              => '10M',
             'darkconsole.enabled'                    => false,
             'phabricator.base-uri'                   => "https://${domain}",
+            'security.alternate-file-domain'         => "https://phab.wmfusercontent.org",
             'mysql.user'                             => $::mysql_appuser,
             'mysql.pass'                             => $::mysql_apppass,
             'mysql.host'                             => 'm3-master.eqiad.wmnet',
