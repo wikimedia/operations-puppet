@@ -213,9 +213,10 @@ class role::wikimetrics {
         db_replication_lag_threshold => 3,
 
         # wikimetrics runs on the LabsDB usually,
-        # where this table is called 'revision_userindex'.
-        # The mediawiki database usually calls this 'revision'.
+        # where the archive and revision tables have _userindex variants
+        # These are preferable to use for performance reasons
         revision_tablename           => 'revision_userindex',
+        archive_tablename            => 'archive_userindex',
 
         var_directory                => $var_directory,
         public_subdirectory          => $public_subdirectory,
