@@ -2658,6 +2658,13 @@ node /^searchidx100[0-2]\.eqiad\.wmnet/ {
         groups => ['deployment',
                    'search-roots'],
     }
+    mount { '/srv/mediawiki':
+        ensure => mounted,
+        type   => 'auto',
+        options => 'bind',
+        device => '/a/bind-mount-mediawiki',
+        before => Exec['fetch_mediawiki']
+    }
     include role::lucene::indexer
 }
 
