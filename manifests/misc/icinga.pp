@@ -537,12 +537,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0644',
     }
-    file { '/etc/nagios-plugins/config/telnet.cfg':
-        source => 'puppet:///files/icinga/plugin-config/telnet.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/vsz.cfg':
         source => 'puppet:///files/icinga/plugin-config/vsz.cfg',
         owner  => 'root',
