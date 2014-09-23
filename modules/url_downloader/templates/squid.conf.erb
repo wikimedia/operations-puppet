@@ -10,7 +10,6 @@ acl apache rep_header Server ^Apache
 broken_vary_encoding allow apache
 maximum_object_size 510 MB
 cache_replacement_policy heap LFUDA
-cache_dir null /tmp
 access_log /var/log/<%= @package_name %>/access.log squid
 log_mime_hdrs on
 hosts_file /etc/hosts
@@ -81,6 +80,7 @@ tcp_outgoing_address <%= @service_ip %>
 
 <%- if @package_name == 'squid' -%>
 reply_body_max_size 534773760 allow all
+cache_dir null /tmp
 <%- else -%>
 reply_body_max_size 510 MB all
 <%- end -%>
