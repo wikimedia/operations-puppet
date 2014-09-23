@@ -4,10 +4,18 @@
 
 http_port <%= @service_ip %>:8080
 hierarchy_stoplist cgi-bin ?
-acl everything src 0.0.0.0/0.0.0.0
+<%- if @package_name == 'squid' -%>
+# ACLs that are builtin in squid 3 but not squid 2
+acl all src 0.0.0.0/0.0.0.0
+<%- end -%>
+# The following 3 are built-in in squid 3.3 but not squid 3.1
+acl manager proto cache_object
+acl localhost src 127.0.0.1/255.255.255.255
+acl to_localhost dst 127.0.0.0/8
+
+acl everything src all
 cache deny everything
 acl apache rep_header Server ^Apache
-broken_vary_encoding allow apache
 maximum_object_size 510 MB
 cache_replacement_policy heap LFUDA
 access_log /var/log/<%= @package_name %>/access.log squid
@@ -27,13 +35,6 @@ read_timeout 30 seconds
 request_timeout 30 seconds
 client_lifetime 5 minutes
 
-<%- if @package_name == 'squid' -%>
-# ACLs that are builtin in squid 3 but not squid 2
-acl all src 0.0.0.0/0.0.0.0
-acl manager proto cache_object
-acl localhost src 127.0.0.1/255.255.255.255
-acl to_localhost dst 127.0.0.0/8
-<%- end -%>
 acl SSL_ports port 443	# https
 acl Safe_ports port 80 443		# http, https
 acl Safe_ports port 21		# ftp
@@ -81,6 +82,7 @@ tcp_outgoing_address <%= @service_ip %>
 <%- if @package_name == 'squid' -%>
 reply_body_max_size 534773760 allow all
 cache_dir null /tmp
+broken_vary_encoding allow apache
 <%- else -%>
 reply_body_max_size 510 MB all
 <%- end -%>
