@@ -148,6 +148,11 @@ define command{
     command_line    $USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$
     }
 
+# just like check_tcp but allow passing IP address as ARG
+define command{
+    command_name    check_tcp_ip
+    command_line    $USER1$/check_tcp -H $ARG1$ -p $ARG2$
+    }
 
 # 'check_telnet' command definition
 define command{
