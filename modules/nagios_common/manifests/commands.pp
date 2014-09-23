@@ -60,6 +60,7 @@ class nagios_common::commands(
         'ftp',
         'http',
         'ifstatus',
+        'ldap',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
