@@ -53,6 +53,7 @@ class nagios_common::commands(
         'breeze',
         'dhcp',
         'disk-smb',
+        'disk',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
