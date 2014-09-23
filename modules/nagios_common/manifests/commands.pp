@@ -40,6 +40,15 @@ class nagios_common::commands(
         group      => $group,
     }
 
+    nagios_common::check_command::config { [
+        'users'
+    ] :
+        require    => File["$config_dir/commands"],
+        config_dir => $config_dir,
+        owner      => $owner,
+        group      => $group,
+    }
+
     nagios_common::check_command { 'check_ssl_cert':
         require       => File["$config_dir/commands"],
         config_dir    => $config_dir,
