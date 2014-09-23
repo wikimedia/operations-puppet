@@ -1114,3 +1114,9 @@ users:
     real name: Ellery Wulczyn
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCKFGOn5NPv0el5EtWWwffENDgrt8GKzXTUdhOOWOBemPc98MGEMkKoeAY3RAZW1xbJo+b+ZDTDORVWw3A5Lw6b8Es/fBnJR2rfChKOwj7VzeMLyIFzjgkzI+UekgfWcCsEk24ic6aJAAFLvhVV6Ib9vg1l8p+ZJFL+5+54XMt0MphZtN2w3pgv/SccJzF/kodPyu7N7jRmzweOosH7dY20cSXbnkoz8jCDs6HeLTvLErLsjYWUtwnzjhDp4lBvvZVpzkMXpp/Ju44ksypgyfzEBa/+iP1QQpls6KqRMb6wD56Z8E5BFm2s/nbff3BP3Hk7dsTLJPXYGZw48pWMwWD ellerywulczyn@administorsair4.corp.wikimedia.org]
     uid: 10517
+  nettrom:
+    ensure: present
+    gid: 500
+    name: nettrom
+    realname: Morten Warncke-Wang
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAmjVSpmltf5d+0BTwdxRL6HmtvBKT8G2tsyET/Q0QJSu7jAEKoXHtsQlpWLJJecOe/9kCUDc5X3/1EOBTvlSOKRz4iPCgscGjIr4C8wT6tbboE5VkLlBPZqyC0pi0dTsILu599CPCBkwpr2K1yUwXwAJ0W3Y0XmsmJQmsDRyWP0Ck69EQ1NOfYp44NpZXdm63DzvIozNHRXNfyGQDHp8aNokegeuyd/cjDEVsUotH7ll0NoayStezJsL364i/yc9MWGEhHxsBRNaK9W9OPb6guaNwdXbwCiIgu+5WkTcJ9WauBl3DrY529aGQoqEps61VGeYkHKk/p+12TDPOZdKcYw== morten@fjord]
