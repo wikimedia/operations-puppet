@@ -357,12 +357,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/etc/nagios-plugins/config/dummy.cfg':
-        source => 'puppet:///files/icinga/plugin-config/dummy.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/flexlm.cfg':
         source => 'puppet:///files/icinga/plugin-config/flexlm.cfg',
         owner  => 'root',

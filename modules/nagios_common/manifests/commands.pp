@@ -55,6 +55,7 @@ class nagios_common::commands(
         'disk-smb',
         'disk',
         'dns',
+        'dummy',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
