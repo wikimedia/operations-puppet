@@ -44,6 +44,7 @@ class nagios_common::commands(
         'users',
         'telnet',
         'ssh',
+        'snmp',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
