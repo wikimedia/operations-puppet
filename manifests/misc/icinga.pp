@@ -357,12 +357,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/etc/nagios-plugins/config/ifstatus.cfg':
-        source => 'puppet:///files/icinga/plugin-config/ifstatus.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/ldap.cfg':
         source => 'puppet:///files/icinga/plugin-config/ldap.cfg',
         owner  => 'root',
