@@ -357,12 +357,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/etc/nagios-plugins/config/mail.cfg':
-        source => 'puppet:///files/icinga/plugin-config/mail.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/mrtg.cfg':
         source => 'puppet:///files/icinga/plugin-config/mrtg.cfg',
         owner  => 'root',
