@@ -2659,8 +2659,8 @@ node /^searchidx100[0-2]\.eqiad\.wmnet/ {
                    'search-roots'],
     }
     mount { '/srv/mediawiki':
-        ensure => mounted,
-        type   => 'auto',
+        ensure => present,
+        fstype   => 'none',
         options => 'bind',
         device => '/a/bind-mount-mediawiki',
         before => Exec['fetch_mediawiki']
