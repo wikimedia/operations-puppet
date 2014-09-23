@@ -125,6 +125,7 @@ class phabricator (
 
     include apache::mod::php5
     include apache::mod::rewrite
+    include apache::mod::headers
 
     $docroot = "${phabdir}/phabricator/webroot"
     $phab_servername = $phab_settings['phabricator.base-uri']
