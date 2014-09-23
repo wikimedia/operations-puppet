@@ -501,12 +501,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0644',
     }
-    file { '/etc/nagios-plugins/config/radius.cfg':
-        source => 'puppet:///files/icinga/plugin-config/radius.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/rpc-nfs.cfg':
         source => 'puppet:///files/icinga/plugin-config/rpc-nfs.cfg',
         owner  => 'root',
