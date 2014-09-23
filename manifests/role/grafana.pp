@@ -21,7 +21,7 @@ class role::grafana {
     }
 
     class { '::grafana::web::apache':
-        site_name => "grafana.${domain_suffix}",
+        server_name => "grafana.${domain_suffix}",
     }
 
     monitor_service { 'grafana':
