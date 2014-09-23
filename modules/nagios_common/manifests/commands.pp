@@ -50,6 +50,7 @@ class nagios_common::commands(
         'rpc-nfs',
         'tcp_udp',
         'apt',
+        'breeze',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
