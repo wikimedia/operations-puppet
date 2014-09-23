@@ -357,12 +357,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/etc/nagios-plugins/config/disk-smb.cfg':
-        source => 'puppet:///files/icinga/plugin-config/disk-smb.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/disk.cfg':
         source => 'puppet:///files/icinga/plugin-config/disk.cfg',
         owner  => 'root',
