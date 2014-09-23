@@ -10,7 +10,7 @@
 :private:
   :datadir: /etc/puppet/private/hiera
 :hierarchy:
-  - "host/%{::hostname}"
+  - "hosts/%{::hostname}"
   - "%{::realm}"
   - "%{::site}"
   - "private"
