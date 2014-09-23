@@ -55,7 +55,7 @@ groups:
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed, swalling, yuvipanda,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
-      jzerebecki, declerambaul, ellery, dduvall]
+      jzerebecki, declerambaul, ellery, dduvall, nettrom]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -85,7 +85,7 @@ groups:
   researchers:
     gid: 714
     description: users with access to research db
-    members: [dartar, jzerebecki, dduvall]
+    members: [dartar, jzerebecki, dduvall, nettrom]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -154,7 +154,7 @@ groups:
                 and other private data.
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
               howief, awight, dr0ptp4kt, qchris, tnegrin, nuria,
-              leila, manybubbles, ironholds, kleduc, ellery]
+              leila, manybubbles, ironholds, kleduc, ellery, nettrom]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -162,7 +162,7 @@ groups:
               maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
-              deskana, jzerebecki, dduvall]
+              deskana, jzerebecki, dduvall, nettrom]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -205,7 +205,7 @@ groups:
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams, otto, deskana,
-              bsitzmann, dbrant, declerambaul, ellery]
+              bsitzmann, dbrant, declerambaul, ellery, nettrom]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
