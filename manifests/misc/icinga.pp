@@ -525,12 +525,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0644',
     }
-    file { '/etc/nagios-plugins/config/ssh.cfg':
-        source => 'puppet:///files/icinga/plugin-config/ssh.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/tcp_udp.cfg':
         source => 'puppet:///files/icinga/plugin-config/tcp_udp.cfg',
         owner  => 'root',
