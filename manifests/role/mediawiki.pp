@@ -75,17 +75,13 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef ) {
 class role::mediawiki::appserver {
     system::role { 'role::mediawiki::appserver': }
 
+    include ::role::mediawiki::webserver
+
     if ubuntu_version('>= trusty') {
-
-        include ::role::mediawiki::webserver
-
         monitor_service { 'appserver_http_hhvm':
             description   => 'HHVM rendering',
             check_command => 'check_http_wikipedia_main',
         }
-    } else {
-        $pool = 'apaches'
-        class { 'role::mediawiki::webserver': pool => $pool, }
     }
 }
 
