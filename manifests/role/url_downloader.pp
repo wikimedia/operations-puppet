@@ -61,8 +61,8 @@ class role::url_downloader {
     }
 
     # Monitoring
-    monitor_service { 'url_dowloader':
-        description   => 'url_dowloader',
+    monitor_service { 'url_downloader':
+        description   => 'url_downloader',
         check_command => 'check_tcp!8080',
     }
 }
