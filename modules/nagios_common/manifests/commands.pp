@@ -71,6 +71,7 @@ class nagios_common::commands(
         'ntp',
         'pgsql',
         'ping',
+        'procs',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
