@@ -2041,6 +2041,11 @@ host ms-be2011 {
 	fixed-address ms-be2011.codfw.wmnet;
 }
 
+host ms-be2012 {
+	hardware ethernet 90:B1:1C:18:AA:93;
+	fixed-address ms-be2012.codfw.wmnet;
+}
+
 host ms-be3001 {
 	hardware ethernet 24:B6:FD:F6:13:AC;
 	fixed-address ms-be3001.esams.wmnet;
