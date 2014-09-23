@@ -659,11 +659,13 @@ class role::cache {
         protoproxy::localssl {
             'wikimedia':
                 proxy_server_cert_name => 'star.wikimedia.org',
+                server_name            => 'wikimedia.org',
+                server_aliases         => ['*.wikimedia.org'],
                 default_server         => true;
             'wmfusercontent.org':
+                proxy_server_cert_name => 'star.wmfusercontent.org',
                 server_name            => 'wmfusercontent.org',
-                server_aliases         => ['*.wmfusercontent.org'],
-                proxy_server_cert_name => 'star.wmfusercontent.org';
+                server_aliases         => ['*.wmfusercontent.org'];
         }
 
         # FIXME: Icinga monitoring with support for SNI
