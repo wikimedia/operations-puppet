@@ -1,1 +1,2 @@
 cluster: appserver_hhvm
+role::mediawiki::webserver::pool: hhvm_appservers
