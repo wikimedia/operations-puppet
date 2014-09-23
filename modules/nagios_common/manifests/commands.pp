@@ -59,6 +59,7 @@ class nagios_common::commands(
         'flexlm',
         'ftp',
         'http',
+        'ifstatus',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
