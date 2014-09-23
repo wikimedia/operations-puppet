@@ -357,12 +357,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/etc/nagios-plugins/config/hppjd.cfg':
-        source => 'puppet:///files/icinga/plugin-config/hppjd.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/http.cfg':
         source => 'puppet:///files/icinga/plugin-config/http.cfg',
         owner  => 'root',
