@@ -1121,3 +1121,10 @@ users:
     realname: Dan Duvall
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwuECslbMWNQVKxjwtLI8BGouDmP/OcfTwVwNpXHFBKz9VEwXJC1x2sJVuDJJ55dZGhPBwhxJuuxL/kn8Lsr3mQus2402QBuG4YwCYNjnElhkmQcsCQIZ4P1dJRlPBetN7cv+2/ROx4Ophkl9hpRxdpvGQQ2k3DXpgMzPqUrH62Dv5/ln96FdtbHdXNYAB0r3sCw6iGxS+8PjaVpVg6qjyQ5+cAxYOi+qaiK/WkF/Sxt7vEq7GTFZPZwx7pKl/ZnTj05yYx2kVNecJRX6FozszsmMX96cn8LUEURicEnxlzIJ+hYGGGyIqmWigzupvxaJAZ+c7pZJTznb4DTDa3Gfd dduvall@shawarma.corp.wikimedia.org]
     uid: 5117
+  nettrom:
+    ensure: present
+    gid: 500
+    name: nettrom
+    realname: Morten Warncke-Wang
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAmjVSpmltf5d+0BTwdxRL6HmtvBKT8G2tsyET/Q0QJSu7jAEKoXHtsQlpWLJJecOe/9kCUDc5X3/1EOBTvlSOKRz4iPCgscGjIr4C8wT6tbboE5VkLlBPZqyC0pi0dTsILu599CPCBkwpr2K1yUwXwAJ0W3Y0XmsmJQmsDRyWP0Ck69EQ1NOfYp44NpZXdm63DzvIozNHRXNfyGQDHp8aNokegeuyd/cjDEVsUotH7ll0NoayStezJsL364i/yc9MWGEhHxsBRNaK9W9OPb6guaNwdXbwCiIgu+5WkTcJ9WauBl3DrY529aGQoqEps61VGeYkHKk/p+12TDPOZdKcYw== morten@fjord]
+    uid: 3290
