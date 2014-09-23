@@ -3214,6 +3214,11 @@ host neon {
 	fixed-address neon.wikimedia.org;
 }
 
+host neptunium {
+	hardware ethernet 84:2b:2b:fd:bd:7a;
+	fixed-address neptunium.wikimedia.org;
+}
+
 host netmon1001 {
 	hardware ethernet 84:2b:2b:51:91:ff;
 	fixed-address netmon1001.wikimedia.org;
