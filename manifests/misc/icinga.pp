@@ -357,12 +357,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/etc/nagios-plugins/config/ping.cfg':
-        source => 'puppet:///files/icinga/plugin-config/ping.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/procs.cfg':
         source => 'puppet:///files/icinga/plugin-config/procs.cfg',
         owner  => 'root',
