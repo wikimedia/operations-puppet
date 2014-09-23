@@ -129,7 +129,7 @@ class role::analytics::kafkatee::webrequest::5xx inherits role::analytics::kafka
     include role::analytics::kafkatee::input::webrequest
 
     ::kafkatee::output { '5xx':
-        destination => "/usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ \"upload.wikimedia.org\"' >> ${webrequest_log_directory}/5xx.tsv.log",
+        destination => "/usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '\$9 !~ \"upload.wikimedia.org\"' >> ${webrequest_log_directory}/5xx.tsv.log",
         type        => 'pipe',
     }
 }
