@@ -72,6 +72,7 @@ class nagios_common::commands(
         'pgsql',
         'ping',
         'procs',
+        'vsz',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
