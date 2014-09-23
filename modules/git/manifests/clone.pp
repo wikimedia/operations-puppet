@@ -20,6 +20,8 @@
 #  by this user.
 # $+group+:: Group owner of $directory, default: 'root'
 # $+recurse_submodules:: If true, git
+# $+shared+:: Enable git's core.sharedRepository=group setting for sharing the
+# repository between serveral users, default: false
 # $+mode+:: Permission mode of $directory, default: 2755 if shared, 0755 otherwise
 # $+ssh+:: SSH command/wrapper to use when checking out, default: ''
 # $+timeout+:: Time out in seconds for the exec command, default: 300
@@ -136,41 +138,6 @@ define git::clone(
                     owner   => $owner,
                     group   => $group,
                     before  => Exec["git_clone_${title}"],
-                }
-            }
-
-            if ( $shared ) {
-                # Changing an existing git repository to be shared by a group is ugly,
-                # but here's how you do it without causing log churn.
-                exec { "git_clone_${title}_configure_shared_repository":
-                    command => 'git config --local core.sharedRepository group',
-                    unless  => 'test $(git config --local core.sharedRepository) = group',
-                    cwd     => $directory,
-                    require => Exec["git_clone_${title}"],
-                    notify  => Exec["git_clone_${title}_set_group_owner"],
-                }
-
-                exec { "git_clone_${title}_set_group_owner":
-                    command => "chgrp -R '${group}' '${directory}'",
-                    onlyif  => "find '${directory}' ! -group '${group}' -print -quit | grep ''",
-                    cwd     => $directory,
-                    require => Exec["git_clone_${title}_configure_shared_repository"],
-                    notify  => Exec["git_clone_${title}_group_writable"],
-                }
-
-                exec { "git_clone_${title}_group_writable":
-                    command => "find '${directory}' ! -perm -g=wX,o= -exec chmod g+wX,o= '{}' ';'",
-                    onlyif  => "find '${directory}' ! -perm -g=wX,o= -print -quit | grep ''",
-                    cwd     => $directory,
-                    require => Exec["git_clone_${title}_set_group_owner"],
-                    notify  => Exec["git_clone_${title}_sgid_bit"],
-                }
-
-                exec { "git_clone_${title}_sgid_bit":
-                    command => "find '${directory}' -mindepth 1 -type d -and ! -perm -g+s -exec chmod g+s '{}' ';'",
-                    onlyif  => "find '${directory}' -mindepth 1 -type d -and ! -perm -g+s -print -quit | grep ''",
-                    cwd     => $directory,
-                    require => Exec["git_clone_${title}_group_writable"],
                 }
             }
 
