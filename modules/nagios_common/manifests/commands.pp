@@ -64,6 +64,7 @@ class nagios_common::commands(
         'load',
         'mail',
         'mrtg',
+        'mysql',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,

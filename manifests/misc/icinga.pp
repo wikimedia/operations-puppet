@@ -357,12 +357,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/etc/nagios-plugins/config/mysql.cfg':
-        source => 'puppet:///files/icinga/plugin-config/mysql.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/netware.cfg':
         source => 'puppet:///files/icinga/plugin-config/netware.cfg',
         owner  => 'root',
