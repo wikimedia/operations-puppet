@@ -1,0 +1,3 @@
+cluster: imagescaler
+role::mediawiki::webserver::pool: rendering
+role::mediawiki::webserver::workers_limit: 30

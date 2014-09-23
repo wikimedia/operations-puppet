@@ -88,15 +88,15 @@ class role::mediawiki::appserver {
 class role::mediawiki::appserver::api {
     system::role { 'role::mediawiki::appserver::api': }
 
-    class { 'role::mediawiki::webserver': pool => 'api' }
+    include ::role::mediawiki::webserver
 }
 
 class role::mediawiki::imagescaler {
     system::role { 'role::mediawiki::imagescaler': }
 
     include ::mediawiki::multimedia
-
-    class { 'role::mediawiki::webserver': pool => 'rendering', workers_limit => 30 }
+    include ::role::mediawiki::webserver
+#    class { 'role::mediawiki::webserver': pool => 'rendering', workers_limit => 30 }
 }
 
 class role::mediawiki::videoscaler {
