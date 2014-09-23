@@ -51,6 +51,7 @@ class nagios_common::commands(
         'tcp_udp',
         'apt',
         'breeze',
+        'dhcp',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
