@@ -54,6 +54,7 @@ class nagios_common::commands(
         'dhcp',
         'disk-smb',
         'disk',
+        'dns',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
