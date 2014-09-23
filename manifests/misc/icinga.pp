@@ -507,12 +507,6 @@ class icinga::monitor::files::nagios-plugins {
         group  => 'root',
         mode   => '0644',
     }
-    file { '/etc/nagios-plugins/config/real.cfg':
-        source => 'puppet:///files/icinga/plugin-config/real.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
     file { '/etc/nagios-plugins/config/rpc-nfs.cfg':
         source => 'puppet:///files/icinga/plugin-config/rpc-nfs.cfg',
         owner  => 'root',
