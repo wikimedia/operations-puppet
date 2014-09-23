@@ -2152,7 +2152,7 @@ node 'mw1053.eqiad.wmnet' {
 node /^mw10(1[7-9]|2[01])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
-    $cluster = 'appserver_hhvm'
+    $cluster = hiera('cluster')
 
     if $::hostname =~ /^mw101[78]$/ {
         $ganglia_aggregator = true
