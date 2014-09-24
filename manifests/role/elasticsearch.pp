@@ -85,10 +85,9 @@ class role::elasticsearch::config {
             default                     => fail("Don't know rack for $::host"),
         }
         $row                  = regsubst($rack, '^(.).$', '\1' )
-        # We're not turning on awareness_attributes right yet.  We'll do that
-        # with the setting update API after things settle down with the 1.0
-        # release then we'll update puppet.
-        $awareness_attributes = 'row'
+        # We've temporarily turned off awareness because we believe it puts
+        # unbalanced load on the cluster.
+        $awareness_attributes = undef
         $unicast_hosts        = undef
 
         # Production elasticsearch needs these plugins to be loaded in order
