@@ -1,9 +1,14 @@
 class role::labs::instance {
 
     include standard
-    include ldap::role::client::labs
     include base::instance-upstarts
     include role::mail::sender
+
+    class { 'ldap::role::client::labs': 
+        # Puppet requires ldap, so we need to update ldap before anything
+        #  happens to puppet.
+        before => File['/etc/puppet/puppet.conf'],
+    }
 
     # make common logs readable
     class { 'base::syslogs':
