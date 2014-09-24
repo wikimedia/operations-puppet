@@ -3304,6 +3304,11 @@ host platinum {
 	fixed-address platinum.wikimedia.org;
 }
 
+host plutonium {
+	hardware ethernet 84:2b:2b:fd:b9:ff;
+	fixed-address plutonium.wikimedia.org;
+}
+
 host polonium {
 	hardware ethernet C8:1F:66:BF:8D:D6;
 	fixed-address polonium.wikimedia.org;
