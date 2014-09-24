@@ -89,8 +89,14 @@ class ldap::role::server::labs {
     }
 
     class { 'ldap::firewall':
+        #  There are some repeats in this list, but as long as we're
+        #   playing a shell game with the service domains, best to have
+        #   everything listed here.
         server_list => ['ldap-eqiad.wikimedia.org',
                         'ldap-codfw.wikimedia.org',
+                        'virt1000.wikimedia.org',
+                        'labcontrol2001.wikimedia.org',
+                        'neptunium.wikimedia.org',
                         'virt0.wikimedia.org']
     }
 }
