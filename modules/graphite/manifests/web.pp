@@ -29,6 +29,10 @@
 #   Overrides the Documentation link used in the header of the Graphite
 #   Composer (default: 'http://graphite.readthedocs.org/').
 #
+# [*cors_origins*]
+#   An optional array of HTTP Origin header values or regexp patterns
+#   for which graphite-web should set CORS headers.
+#
 class graphite::web(
     $admin_pass,
     $secret_key,
@@ -37,11 +41,18 @@ class graphite::web(
     $memcached_size    = 200,
     $admin_user        = 'admin',
     $documentation_url = 'http://graphite.readthedocs.org/',
+    $cors_origins      = undef,
 ) {
     include ::graphite
 
     package { [ 'memcached', 'python-memcache' ]: }
     package { 'graphite-web': }
+
+    file { '/etc/graphite/cors.py':
+        source  => 'puppet:///modules/graphite/cors.py',
+        require => Package['graphite-web'],
+        notify  => Service['uwsgi'],
+    }
 
     file { '/etc/graphite/local_settings.py':
         content => template('graphite/local_settings.py.erb'),
