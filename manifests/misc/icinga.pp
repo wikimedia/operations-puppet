@@ -79,7 +79,7 @@ class icinga::monitor::configuration::variables {
         "${icinga::monitor::configuration::variables::icinga_config_dir}/contactgroups.cfg",
         "${icinga::monitor::configuration::variables::icinga_config_dir}/contacts.cfg",
         "${icinga::monitor::configuration::variables::icinga_config_dir}/resource.cfg",
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/timeperiods.cfg"]
+    ]
 }
 
 class icinga::monitor::apache {
@@ -206,16 +206,13 @@ class icinga::monitor::configuration::files {
         mode   => '0644',
     }
 
-    class { 'nagios_common::user_macros':
+    class { [
+      'nagios_common::user_macros',
+      'nagios_common::timeperiods'
+    ] :
         notify => Service['icinga'],
     }
 
-    file { '/etc/icinga/timeperiods.cfg':
-        source => 'puppet:///files/icinga/timeperiods.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
 
     file { '/etc/init.d/icinga':
         source => 'puppet:///files/icinga/icinga-init',
