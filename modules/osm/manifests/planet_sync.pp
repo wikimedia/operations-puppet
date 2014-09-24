@@ -14,7 +14,6 @@
 #
 # Sample Usage:
 #  osm::planet_sync { 'mydb': }
-#
 define osm::planet_sync(
                 $osmosis_dir='/srv/osmosis',
                 $period='minute',
@@ -37,10 +36,10 @@ define osm::planet_sync(
         content => template('osm/osmosis_configuration.txt.erb'),
     }
 
-    $sync_planet_cmd = inline_template("<%- data=@memoryfree.split(' '); multi={'MB' => 1, 'GB' => 1000}[data[1]]-%>/usr/bin/osmosis --read-replication-interval workingDirectory=<%= @osmosis_dir %> --simplify-change --write-xml-change - | /usr/bin/osm2pgsql -k -s -C <%= data[0].to_i*multi %> --number-processes <%= @processorcount %> --append -")
+    $sync_planet_cmd = inline_template("<%- data=@memoryfree.split(' '); multi={'MB' => 1, 'GB' => 1000}[data[1]]-%>/usr/bin/osmosis --read-replication-interval workingDirectory=<%= @osmosis_dir %> --simplify-change --write-xml-change - | /usr/bin/osm2pgsql -k -s -C <%= data[0].to_i/10*multi %> --number-processes <%= @processorcount %> --append -")
     cron { "planet_sync-${name}":
         environment => "JAVACMD_OPTIONS='-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080'",
-        command => $sync_planet_cmd,
+        command => "$sync_planet_cmd > /tmp/osmosis.log 2>&1",
         user    => 'postgres',
         hour    => $hour,
         minute  => $minute,
