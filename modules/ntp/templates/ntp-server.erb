@@ -1,9 +1,39 @@
-# Wikimedia ntp <% if @ntp_server == true %>server<% else %>client<% end %> configuration
+### Wikimedia ntp configuration
 
-driftfile /var/lib/ntp/ntp.drift
+### Servers and Peers: #########################################
+
+<% @peers.each do |val| -%>peer <%= val %><% end -%>
+<% @servers.each do |val| -%>server <%= val %><% end -%>
+
+### Access Control: ############################################
 
 # By default ignore any packets we receive
 restrict default ignore
+
+# Allow everything from localhost addresses
+restrict 127.0.0.1
+restrict ::1
+
+# Allow (only) peering with all explicit servers/peers
+restrict source kod notrap noquery
+
+<% if @time_acl.count -%>
+# Allow non-peering time service from these:
+<% @time_acl.each do |val| -%>
+restrict <%= val %> kod notrap noquery nopeer
+<% end -%>
+<% end -%>
+
+<% if @query_acl.count -%>
+# Allow non-peering time service *and* info queries:
+<% @query_acl.each do |val| -%>
+restrict <%= val %> kod notrap nomodify nopeer
+<% end -%>
+<% end -%>
+
+### Stats/Files: ###############################################
+
+driftfile /var/lib/ntp/ntp.drift
 
 # Enable this if you want statistics to be logged.
 #statsdir /var/log/ntpstats/
@@ -13,57 +43,9 @@ filegen loopstats file loopstats type day enable
 filegen peerstats file peerstats type day enable
 filegen clockstats file clockstats type day enable
 
-# Specify servers explicitly for access control, as the "pool" keyword is not
-# yet supported by this version of ntpd
+### Labs: ######################################################
 
-<% @servers.each do |val| -%>
-restrict <%= val %> kod notrap noquery
-server <%= val %>
-
-<% end -%>
-<% @peers.each do |val| -%>
-restrict <%= val %> kod notrap noquery
-peer <%= val %>
-
-<% end -%>
-
-# Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for
-# details.  The web page <http://support.ntp.org/bin/view/Support/AccessRestrictions>
-# might also be helpful.
-#
-# Note that "restrict" applies to both servers and clients, so a configuration
-# that might be intended to block requests from certain clients could also end
-# up blocking replies from your own upstream servers.
-
-# Local users may interrogate the ntp server more closely.
-restrict 127.0.0.1
-restrict ::1
-
-<% if @ntp_server == true then -%>
-# Clients from our own IP ranges are allowed to exchange time
-restrict 10.0.0.0 mask 255.0.0.0 kod notrap nomodify nopeer
-restrict 208.80.152.0 mask 255.255.252.0 kod notrap nomodify nopeer
-restrict 91.198.174.0 mask 255.255.255.0 kod notrap nomodify nopeer
-restrict 2620:0:860:: mask ffff:ffff:ffff:: kod notrap nomodify nopeer
-restrict 198.35.26.0 mask 255.255.254.0 kod notrap nomodify nopeer
-restrict 185.15.56.0 mask 255.255.252.0 kod notrap nomodify nopeer
-restrict 2a02:ec80:: mask ffff:ffff:: kod notrap nomodify nopeer
-<% else -%>
-# Allow the monitoring server to query us
-# neon
-restrict 208.80.154.14 mask 255.255.255.255 kod notrap nomodify nopeer
-<% end -%>
-
-# If you want to provide time to your local subnet, change the next line.
-# (Again, the address is an example only.)
-#broadcast 192.168.123.255
-
-# If you want to listen to time broadcasts on your local subnet, de-comment the
-# next lines.  Please do this only if you trust everybody on the network!
-#disable auth
-#broadcastclient
 <% if @realm == "labs" then -%>
-
 # On Labs the default "interface" configuration leads to ntpd
 # complaining that it can't create a IPv6 socket for eth0
 # (cf. https://bugzilla.wikimedia.org/60166).  To work around that, we

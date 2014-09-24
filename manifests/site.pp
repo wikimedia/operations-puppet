@@ -34,7 +34,7 @@ import 'stages.pp'
 class standard {
     include base
     include ganglia
-    include ntp::client
+    include role::ntp
     include role::mail::sender
     include role::diamond
 }
@@ -42,7 +42,7 @@ class standard {
 class standard-noexim {
     include base
     include ganglia
-    include ntp::client
+    include role::ntp
     include role::diamond
 }
 
@@ -1150,15 +1150,17 @@ node 'dobson.wikimedia.org' {
     include dns::recursor::statistics
     include network::constants
 
-    class { 'ntp::server':
-        servers => [ '173.9.142.98',
-                    '66.250.45.2',
-                    '169.229.70.201',
-                    '69.31.13.207',
-                    '72.167.54.201'
-        ],
-        peers   => [ 'linne.wikimedia.org' ],
-    }
+# Let this run in existing config from
+# before refactor for its last few days
+#    class { 'ntp::server':
+#        servers => [ '173.9.142.98',
+#                    '66.250.45.2',
+#                    '169.229.70.201',
+#                    '69.31.13.207',
+#                    '72.167.54.201'
+#        ],
+#        peers   => [ 'linne.wikimedia.org' ],
+#    }
 
     class { 'dns::recursor':
         listen_addresses => [ '208.80.152.131' ],
@@ -1640,15 +1642,17 @@ node 'linne.wikimedia.org' {
     include role::mail::sender
     include role::url_downloader
 
-    class { 'ntp::server':
-        servers => [ '198.186.191.229',
-                    '64.113.32.2',
-                    '173.8.198.242',
-                    '208.75.88.4',
-                    '75.144.70.35',
-        ],
-        peers   => [ 'dobson.wikimedia.org' ],
-    }
+# Let this run in existing config from
+# before refactor for its last few days
+#    class { 'ntp::server':
+#        servers => [ '198.186.191.229',
+#                    '64.113.32.2',
+#                    '173.8.198.242',
+#                    '208.75.88.4',
+#                    '75.144.70.35',
+#        ],
+#        peers   => [ 'dobson.wikimedia.org' ],
+#    }
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
@@ -2005,7 +2009,7 @@ node 'mchenry.wikimedia.org' {
 
     # include admin
     include ganglia
-    include ntp::client
+    include role::ntp
     include dns::recursor::statistics
     include ldap::role::client::corp
     include network::constants
@@ -2560,7 +2564,7 @@ node 'rhenium.wikimedia.org' {
 node 'sanger.wikimedia.org' {
     include base
     include ganglia
-    include ntp::client
+    include role::ntp
     include ldap::role::server::corp
     include ldap::role::client::corp
     include role::mail::imap
@@ -2680,7 +2684,7 @@ node 'sodium.wikimedia.org' {
     include admin
     include base
     include ganglia
-    include ntp::client
+    include role::ntp
     include role::mail::lists
 
     interface::add_ip6_mapped { 'main':
