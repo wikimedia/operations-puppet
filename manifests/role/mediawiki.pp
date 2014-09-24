@@ -23,24 +23,7 @@ class role::mediawiki::common {
                 server_connections   => 2,
                 server_failure_limit => 3,
                 timeout              => 250,
-                servers              => [
-                    '10.64.0.180:11211:1',
-                    '10.64.0.181:11211:1',
-                    '10.64.0.182:11211:1',
-                    '10.64.0.183:11211:1',
-                    '10.64.0.184:11211:1',
-                    '10.64.0.185:11211:1',
-                    '10.64.0.186:11211:1',
-                    '10.64.0.187:11211:1',
-                    '10.64.0.188:11211:1',
-                    '10.64.0.189:11211:1',
-                    '10.64.0.190:11211:1',
-                    '10.64.0.191:11211:1',
-                    '10.64.0.192:11211:1',
-                    '10.64.0.193:11211:1',
-                    '10.64.0.194:11211:1',
-                    '10.64.0.195:11211:1',
-                ],
+                servers              => hiera('mediawiki_memcached_servers')
             },
         },
     }
@@ -96,7 +79,6 @@ class role::mediawiki::imagescaler {
 
     include ::mediawiki::multimedia
     include ::role::mediawiki::webserver
-#    class { 'role::mediawiki::webserver': pool => 'rendering', workers_limit => 30 }
 }
 
 class role::mediawiki::videoscaler {
