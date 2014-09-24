@@ -72,12 +72,11 @@ class zuul::server (
         source => 'puppet:///modules/zuul/gearman-logging.conf',
     }
 
-    zuul::configfile { '/etc/zuul/zuul.conf':
+    zuul::configfile { '/etc/zuul/zuul-server.conf':
         zuul_role => 'server',
         owner     => 'zuul',
         group     => 'root',
         mode      => '0400',
-
         notify    => Exec['craft public zuul conf'],
         require   => [
             File['/etc/zuul'],
@@ -87,8 +86,17 @@ class zuul::server (
     # Additionally provide a publicly readeable configuration file
     exec { 'craft public zuul conf':
         cwd         => '/etc/zuul/',
-        command     => '/bin/sed "s/apikey=.*/apikey=<obfuscacated>/" /etc/zuul/zuul.conf > /etc/zuul/public.conf',
+        command     => '/bin/sed "s/apikey=.*/apikey=<obfuscacated>/" /etc/zuul/zuul-server.conf > /etc/zuul/zuul.conf',
         refreshonly => true,
+    }
+    file { '/etc/zuul/zuul.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
+    file { '/etc/zuul/public.conf':
+        ensure  => absent,
     }
 
     service { 'zuul':
@@ -99,7 +107,7 @@ class zuul::server (
             File['/var/run/zuul'],
             File['/etc/init.d/zuul'],
             File['/etc/default/zuul'],
-            File['/etc/zuul/zuul.conf'],
+            File['/etc/zuul/zuul-server.conf'],
             File['/etc/zuul/gearman-logging.conf'],
         ],
     }
