@@ -1114,3 +1114,10 @@ users:
     real name: Ellery Wulczyn
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCKFGOn5NPv0el5EtWWwffENDgrt8GKzXTUdhOOWOBemPc98MGEMkKoeAY3RAZW1xbJo+b+ZDTDORVWw3A5Lw6b8Es/fBnJR2rfChKOwj7VzeMLyIFzjgkzI+UekgfWcCsEk24ic6aJAAFLvhVV6Ib9vg1l8p+ZJFL+5+54XMt0MphZtN2w3pgv/SccJzF/kodPyu7N7jRmzweOosH7dY20cSXbnkoz8jCDs6HeLTvLErLsjYWUtwnzjhDp4lBvvZVpzkMXpp/Ju44ksypgyfzEBa/+iP1QQpls6KqRMb6wD56Z8E5BFm2s/nbff3BP3Hk7dsTLJPXYGZw48pWMwWD ellerywulczyn@administorsair4.corp.wikimedia.org]
     uid: 10517
+  dduvall:
+    ensure: present
+    gid: 500
+    name: dduvall
+    realname: Dan Duvall
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwuECslbMWNQVKxjwtLI8BGouDmP/OcfTwVwNpXHFBKz9VEwXJC1x2sJVuDJJ55dZGhPBwhxJuuxL/kn8Lsr3mQus2402QBuG4YwCYNjnElhkmQcsCQIZ4P1dJRlPBetN7cv+2/ROx4Ophkl9hpRxdpvGQQ2k3DXpgMzPqUrH62Dv5/ln96FdtbHdXNYAB0r3sCw6iGxS+8PjaVpVg6qjyQ5+cAxYOi+qaiK/WkF/Sxt7vEq7GTFZPZwx7pKl/ZnTj05yYx2kVNecJRX6FozszsmMX96cn8LUEURicEnxlzIJ+hYGGGyIqmWigzupvxaJAZ+c7pZJTznb4DTDa3Gfd dduvall@shawarma.corp.wikimedia.org]
+    uid: 5117
