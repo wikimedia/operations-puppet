@@ -76,6 +76,7 @@ class ldap::client::nss($ldapconfig) {
     file { '/etc/ldap.conf':
         notify  => Service['nscd'],
         content => template('ldap/nss_ldap.erb'),
+        require => Class['certificates::wmf_ca', 'certificates::globalsign_ca'],
     }
 
     file { '/etc/nslcd.conf':
@@ -248,6 +249,11 @@ class ldap::client::sudo($ldapconfig) {
             ensure => latest,
         }
     }
+
+    file { '/etc/sudo-ldap':
+        ensure  => link,
+        target  => '/etc/ldap/ldap.conf',
+    }
 }
 
 class ldap::client::openldap($ldapconfig, $ldapincludes) {
@@ -260,6 +266,7 @@ class ldap::client::openldap($ldapconfig, $ldapincludes) {
         group   => 'root',
         mode    => '0444',
         content => template('ldap/open_ldap.erb'),
+        require => Class['certificates::wmf_ca', 'certificates::globalsign_ca'],
     }
 }
 
