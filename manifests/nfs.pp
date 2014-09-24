@@ -213,17 +213,8 @@ class misc::nfs-server::home {
     system::role { 'misc::nfs-server::home': description => '/home NFS' }
 
     class backup {
-        cron { 'home-rsync':
-            ensure  => 'absent',
-            require => File['/root/.ssh/home-rsync'],
-            command => '[ -d /home/wikipedia ] && rsync --rsh="ssh -c blowfish-cbc -i /root/.ssh/home-rsync" -azu /home/* db20@tridge.wikimedia.org:~/home/',
-            user    => 'root',
-            hour    => 2,
-            minute  => 35,
-            weekday => 6,
-        }
-
         file { '/root/.ssh/home-rsync':
+            ensure => absent,
             owner  => 'root',
             group  => 'root',
             mode   => '0400',
