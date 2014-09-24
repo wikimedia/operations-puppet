@@ -150,7 +150,7 @@ sub tag_carrier {
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
-        } else if (req.http.X-CS2 ~ "^(470-01|520-18)$") {
+        } else if (req.http.X-CS2 ~ "^(520-18)$") {
             if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
                 if (req.http.X-Subdomain == "ZERO") {
                     // ZERO only, direct HTTP or opera
@@ -188,7 +188,7 @@ sub tag_carrier {
         } else {
             //
             // Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
-            // Enabled: 250-99,401-01,404-01,414-06,416-03,426-04,428-98,429-02,436-01,436-04,437-01,514-02,515-03,635-10,TESTON
+            // Enabled: 250-99,401-01,404-01,414-06,416-03,426-04,428-98,429-02,436-01,436-04,437-01,470-01,514-02,515-03,635-10,TESTON
             // Disabled: 255-03,310-260,410-06,436-05,515-05,604-00,621-30,623-03,630-03,631-02
             //
             // TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess...
@@ -269,6 +269,13 @@ sub vcl_deliver {
             // These carriers support HTTP-only DIRECT and OPERA connections
             if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
                 set req.http.X-CS = req.http.X-CS2;
+            }
+        } else if (req.http.X-CS2 == "470-01") {
+            // These carriers support HTTPS for DIRECT and OPERA, but ZERO-only
+            if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+                if (req.http.X-Subdomain == "ZERO") {
+                    set req.http.X-CS = req.http.X-CS2;
+                }
             }
         } else if (req.http.X-CS2 ~ "^(255-03|310-260|410-06|436-05|515-05|604-00|621-30|623-03|630-03|631-02|TESTON)(\|.*)?$") {
             // Support HTTPS, allows all proxies
