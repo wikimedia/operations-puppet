@@ -4,8 +4,8 @@
 
 class misc::deployment {
     system::role { 'misc::deployment': description => 'Deployment host' }
-    include misc::deployment::scap_primary,
-        misc::dsh
+    include misc::deployment::scap_primary
+    include dsh
 }
 
 class misc::deployment::common_scripts {

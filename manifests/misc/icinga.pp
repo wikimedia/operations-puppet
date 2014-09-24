@@ -42,7 +42,7 @@ class icinga::monitor {
     include icinga::monitor::wikidata
     include icinga::user
     include lvs::monitor
-    include misc::dsh::files
+    include dsh::config
     include mysql
     include nagios::gsbmonitoring
     include nrpe
