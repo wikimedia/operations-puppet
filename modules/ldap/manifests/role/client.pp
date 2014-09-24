@@ -10,6 +10,8 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
         }
 
         include certificates::wmf_labs_ca
+        include certificates::globalsign_ca
+
     } else {
         $includes = $ldapincludes
     }

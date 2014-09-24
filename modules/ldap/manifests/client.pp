@@ -248,6 +248,11 @@ class ldap::client::sudo($ldapconfig) {
             ensure => latest,
         }
     }
+
+    file { '/etc/sudo-ldap':
+        ensure  => link,
+        target  => '/etc/ldap/ldap.conf',
+    }
 }
 
 class ldap::client::openldap($ldapconfig, $ldapincludes) {
