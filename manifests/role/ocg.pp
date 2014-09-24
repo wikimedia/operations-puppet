@@ -89,8 +89,8 @@ class role::ocg::production (
         cod => '50G',
         wpd => '1G',
         cpd => '2G',
-        wjs => '20000',
-        cjs => '30000',
+        wjs => '75000',
+        cjs => '100000',
         wrj => '100',
         crj => '500',
     }
