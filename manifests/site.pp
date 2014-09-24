@@ -2826,6 +2826,7 @@ node 'terbium.eqiad.wmnet' {
     include misc::monitoring::jobqueue
     include generic::wikidev-umask
     include misc::deployment::common_scripts
+    include misc::noc-wikimedia
 
     $domain_search = [
         'wikimedia.org',
