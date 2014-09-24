@@ -10,25 +10,28 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
         }
 
         include certificates::wmf_labs_ca
+        include certificates::globalsign_ca
+
     } else {
         $includes = $ldapincludes
     }
 
     class{ 'ldap::client::includes':
         ldapincludes => $includes,
-        ldapconfig   => $ldap::role::config::labs::ldapconfig
+        ldapconfig   => $ldap::role::config::labs::ldapconfig,
     }
 }
 
 class ldap::role::client::corp {
     include ldap::role::config::corp,
-        certificates::wmf_ca
+        certificates::wmf_ca,
+        certificates::globalsign_ca
 
     $ldapincludes = ['openldap', 'utils']
 
     class{ 'ldap::client::includes':
         ldapincludes => $ldapincludes,
-        ldapconfig   => $ldap::role::config::corp::ldapconfig
+        ldapconfig   => $ldap::role::config::corp::ldapconfig,
     }
 }
 
