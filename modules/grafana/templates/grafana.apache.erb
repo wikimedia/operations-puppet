@@ -2,13 +2,13 @@
 # This file is managed by Puppet.
 <VirtualHost <%= @listen %>>
   ServerName <%= @server_name %>
-  DocumentRoot /srv/deploy/grafana/grafana/src
+  DocumentRoot /srv/deployment/grafana/grafana/dist
 
   <Directory />
     AllowOverride None
   </Directory>
 
-  <Directory /srv/deploy/grafana/grafana/src>
+  <Directory /srv/deploy/grafana/grafana/dist>
     AllowOverride None
     Order allow,deny
     allow from all
