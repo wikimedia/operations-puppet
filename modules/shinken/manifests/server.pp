@@ -54,7 +54,11 @@ class shinken::server(
         require => Package['shinken'],
         notify  => Service['shinken'],
     }
-    class { 'nagios_common::user_macros':
+
+    class { [
+      'nagios_common::user_macros',
+      'nagios_common::timeperiods'
+    ] :
         config_dir => '/etc/shinken',
         owner      => 'shinken',
         group      => 'shinken',
