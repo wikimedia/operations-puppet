@@ -16,10 +16,18 @@
 #  osm::planet_sync { 'mydb': }
 define osm::planet_sync(
                 $osmosis_dir='/srv/osmosis',
+                $expire_dir='/srv/osm_expire',
                 $period='minute',
                 $hour='*',
                 $minute='*/30'
 ) {
+
+    file { $expire_dir:
+        ensure => directory,
+        owner  => 'postgres',
+        group  => 'postgres',
+        mode   => 0700,
+    }
 
     file { $osmosis_dir:
         ensure => directory,
@@ -36,7 +44,7 @@ define osm::planet_sync(
         content => template('osm/osmosis_configuration.txt.erb'),
     }
 
-    $sync_planet_cmd = inline_template("<%- data=@memoryfree.split(' '); multi={'MB' => 1, 'GB' => 1000}[data[1]]-%>/usr/bin/osmosis --read-replication-interval workingDirectory=<%= @osmosis_dir %> --simplify-change --write-xml-change - | /usr/bin/osm2pgsql -k -s -C <%= data[0].to_i/10*multi %> --number-processes <%= @processorcount %> --append -")
+    $sync_planet_cmd = inline_template("<%- data=@memoryfree.split(' '); multi={'MB' => 1, 'GB' => 1000}[data[1]]-%>/usr/bin/osmosis --read-replication-interval workingDirectory=<%= @osmosis_dir %> --simplify-change --write-xml-change - | /usr/bin/osm2pgsql -k -s -C <%= data[0].to_i/10*multi %> --number-processes <%= @processorcount %> -e15 -o <%= @expire_dir %>/expire.list --append -")
     cron { "planet_sync-${name}":
         environment => "JAVACMD_OPTIONS='-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080'",
         command => "$sync_planet_cmd > /tmp/osmosis.log 2>&1",
