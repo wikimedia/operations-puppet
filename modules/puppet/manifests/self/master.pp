@@ -51,6 +51,7 @@ class puppet::self::master($server) {
         bindaddress          => $bindaddress,
         puppet_client_subnet => $puppet_client_subnet,
         certname             => $certname,
+        require              => File['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.cof'],
     }
     class { 'puppet::self::gitclone':
         require => Class['puppet::self::config'],
