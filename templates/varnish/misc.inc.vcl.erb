@@ -60,3 +60,14 @@ sub vcl_error {
 	call errorpage;
 	return(deliver);
 }
+
+sub vcl_deliver {
+	/* CORS for Grafana. Since Access-Control-Allow-Origin must be either     *
+	 * '*' or an exact match (including protocol), we read in the value from  *
+	 * the Origin header.                                                     */
+	if (req.http.Host == "graphite.wikimedia.org" && req.http.Origin ~ "//grafana.wikimedia.org$") {
+		set resp.http.Access-Control-Allow-Origin = req.http.Origin;
+		set resp.http.Access-Control-Allow-Methods = "GET, OPTIONS";
+		set resp.http.Access-Control-Allow-Headers = req.http.Access-Control-Request-Headers;
+	}
+}
