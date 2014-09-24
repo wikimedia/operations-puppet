@@ -8,9 +8,10 @@ mkdir /target/root/.ssh
 wget -O /target/root/.ssh/authorized_keys http://apt.wikimedia.org/autoinstall/ssh/authorized_keys
 chmod go-rwx /target/root/.ssh/authorized_keys
 
-# install openssh-server to make the machine accessible
-# and puppet because we'll need it soon anyway
-apt-install openssh-server puppet
+# openssh-server: to make the machine accessible
+# puppet: because we'll need it soon anyway
+# lldpd: announce the machine on the network
+apt-install openssh-server puppet lldpd
 
 # Change /etc/motd to read the auto-install date
 chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
