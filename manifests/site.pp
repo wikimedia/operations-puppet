@@ -361,7 +361,7 @@ node 'bast1001.wikimedia.org' {
 
     include bastionhost
     include nfs::netapp::home::othersite
-    include misc::dsh
+    include dsh
     include ssh::hostkeys-collect
 }
 
@@ -1307,7 +1307,7 @@ node 'fenari.wikimedia.org' {
     include misc::noc-wikimedia
     include drac
     include generic::wikidev-umask
-    include misc::dsh
+    include dsh
     include ssh::hostkeys-collect
     include mysql_wmf::client
     install_certificate{ 'noc.wikimedia.org': }
