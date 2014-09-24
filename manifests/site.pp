@@ -3037,7 +3037,6 @@ node 'virt1000.wikimedia.org' {
     $is_labs_puppet_master = true
     $openstack_version     = 'havana'
     $use_neutron           = false
-    $puppet_version        = '3'
 
     include standard
     include admin
@@ -3061,7 +3060,6 @@ node 'virt0.wikimedia.org' {
     $is_labs_puppet_master = true
     $openstack_version     = 'folsom'
     $use_neutron           = false
-    $puppet_version        = '3'
 
     include standard
     include admin
@@ -3081,7 +3079,6 @@ node 'labcontrol2001.wikimedia.org' {
     #$is_labs_puppet_master = true
     #$openstack_version     = 'folsom'
     #$use_neutron           = false
-    $puppet_version        = '3'
 
     include standard
     include admin
