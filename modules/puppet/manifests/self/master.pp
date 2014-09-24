@@ -45,12 +45,15 @@ class puppet::self::master($server) {
         default     => "${::ec2id}.${::domain}"
     }
 
+    # We'd best be sure that our ldap config is set up properly
+    # before puppet goes to work.
     class { 'puppet::self::config':
         is_puppetmaster      => true,
         server               => $server,
         bindaddress          => $bindaddress,
         puppet_client_subnet => $puppet_client_subnet,
         certname             => $certname,
+        require              => File['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf'],
     }
     class { 'puppet::self::gitclone':
         require => Class['puppet::self::config'],

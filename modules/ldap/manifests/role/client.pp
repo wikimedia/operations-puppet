@@ -9,26 +9,32 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
             $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs', 'access']
         }
 
+        # Cert for the old virt1000/virt0 ldap servers:
         include certificates::wmf_labs_ca
+
+        # Cert for the old ldap-eqiad/ldap-codfw ldap servers:
+        include certificates::globalsign_ca
+
     } else {
         $includes = $ldapincludes
     }
 
     class{ 'ldap::client::includes':
         ldapincludes => $includes,
-        ldapconfig   => $ldap::role::config::labs::ldapconfig
+        ldapconfig   => $ldap::role::config::labs::ldapconfig,
     }
 }
 
 class ldap::role::client::corp {
     include ldap::role::config::corp,
-        certificates::wmf_ca
+        certificates::wmf_ca,
+        certificates::globalsign_ca
 
     $ldapincludes = ['openldap', 'utils']
 
     class{ 'ldap::client::includes':
         ldapincludes => $ldapincludes,
-        ldapconfig   => $ldap::role::config::corp::ldapconfig
+        ldapconfig   => $ldap::role::config::corp::ldapconfig,
     }
 }
 
