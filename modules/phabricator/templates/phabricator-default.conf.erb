@@ -16,6 +16,12 @@
 
   DocumentRoot <%= @docroot %>
 
+  # redirect/enforce http->https
+  RewriteEngine on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect,L]
+  Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+
 <%# Apache 2.4 and Newer %>
 <% if @lsbdistcodename == 'trusty'%>
   <Directory "<%= @docroot %>">
@@ -37,8 +43,8 @@
   CustomLog /var/log/apache2/<%= @name %>_access.log combined
   ServerSignature Off
 
-  RewriteEngine on
   RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
   RewriteRule ^/favicon.ico   -                       [L,QSA]
   RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
+
 </VirtualHost>
