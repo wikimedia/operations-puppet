@@ -3,9 +3,8 @@ class ldap::role::config::labs {
 
     $basedn = 'dc=wikimedia,dc=org'
     $servernames = $site ? {
-        'pmtpa' => [ 'virt0.wikimedia.org', 'virt1000.wikimedia.org' ],
-        'eqiad' => [ 'virt1000.wikimedia.org', 'virt0.wikimedia.org' ],
-        'codfw' => [ 'labcontrol2001.wikimedia.org', 'virt1000.wikimedia.org' ],
+        'eqiad' => [ 'ldap-eqiad.wikimedia.org', 'ldap-codfw.wikimedia.org' ],
+        'codfw' => [ 'ldap-codfw.wikimedia.org', 'ldap-eqiad.wikimedia.org' ],
     }
     $sudobasedn = $::realm ? {
         'labs'       => "ou=sudoers,cn=${instanceproject},ou=projects,${basedn}",
@@ -25,7 +24,7 @@ class ldap::role::config::labs {
         'script_user_pass'     => $passwords::ldap::labs::script_user_pass,
         'user_id_attribute'    => 'uid',
         'tenant_id_attribute'  => 'cn',
-        'ca'                   => 'Equifax_Secure_CA.pem',
+        'ca'                   => 'GlobalSign_CA.pem',
         'wikildapdomain'       => 'labs',
         'wikicontrollerapiurl' => 'https://wikitech.wikimedia.org/w/api.php',
         'sudobasedn'           => $sudobasedn,
