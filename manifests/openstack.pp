@@ -345,7 +345,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
 
     $controller_hostname = $novaconfig["controller_hostname"]
 
-    package { [ 'php5-ldap', 'php5-uuid', 'imagemagick', 'librsvg2-bin' ]:
+    package { [ 'php5-ldap', 'php5-uuid', 'imagemagick', 'librsvg2-bin', 'tidy' ]:
         ensure => present;
     }
 
