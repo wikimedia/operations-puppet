@@ -14,7 +14,7 @@ class role::grafana {
             datasources => {
                 graphite => {
                     type => 'graphite',
-                    url  => "graphite.${domain_suffix}",
+                    url  => "//graphite.${domain_suffix}",
                 },
             },
         },
