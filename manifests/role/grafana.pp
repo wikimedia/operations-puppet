@@ -13,8 +13,9 @@ class role::grafana {
         config => {
             datasources => {
                 graphite => {
-                    type => 'graphite',
-                    url  => "//graphite.${domain_suffix}",
+                    type          => 'graphite',
+                    url           => "//graphite.${domain_suffix}",
+                    render_method => 'GET',
                 },
             },
         },
