@@ -12,7 +12,7 @@ class icinga::monitor {
     include icinga::monitor::files::misc
     include icinga::monitor::files::nagios-plugins
     include icinga::logrotate
-    include icinga::monitor::naggen
+    include icinga::naggen
     include icinga::nsca::firewall
     include icinga::nsca::daemon
     include icinga::packages
@@ -26,7 +26,7 @@ class icinga::monitor {
     include nrpe
     include passwords::nagios::mysql
 
-    Class['icinga::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service']
+    Class['icinga::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service'] -> Class['icinga::naggen']
 
 }
 
@@ -40,11 +40,6 @@ class icinga::monitor::configuration::variables {
 
     $icinga_config_dir = '/etc/icinga'
     $nagios_config_dir = '/etc/nagios'
-
-    # puppet_hosts.cfg must be first
-    $puppet_files = [
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/puppet_hostgroups.cfg",
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/puppet_servicegroups.cfg"]
 
     $static_files = [
         "${icinga::monitor::configuration::variables::icinga_config_dir}/puppet_hostextinfo.cfg",
@@ -299,54 +294,6 @@ class icinga::monitor::files::nagios-plugins {
 
 }
 
-class icinga::monitor::naggen {
-
-    # Naggen takes exported resources from hosts and creates nagios
-    # configuration files
-
-    require icinga::packages
-
-    file { '/etc/icinga/puppet_hosts.cfg':
-        content => generate('/usr/local/bin/naggen2', '--type', 'hosts'),
-        backup  => false,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-    }
-    file { '/etc/icinga/puppet_services.cfg':
-        content => generate('/usr/local/bin/naggen2', '--type', 'services'),
-        backup  => false,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-    }
-    file { '/etc/icinga/puppet_hostextinfo.cfg':
-        content => generate('/usr/local/bin/naggen2', '--type', 'hostextinfo'),
-        backup  => false,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-    }
-
-    # Fix permissions
-
-    file { $icinga::monitor::configuration::variables::puppet_files:
-        ensure => present,
-        mode   => '0644',
-    }
-
-    # Collect all (virtual) resources
-    Monitor_group <| |> {
-        notify => Service[icinga],
-    }
-    Monitor_host <| |> {
-        notify => Service[icinga],
-    }
-    Monitor_service <| tag != 'nrpe' |> {
-        notify => Service[icinga],
-    }
-
-}
 
 
 class icinga::monitor::service {
@@ -374,11 +321,7 @@ class icinga::monitor::service {
         hasstatus => false,
         restart   => '/etc/init.d/icinga reload',
         subscribe => [
-            File[$icinga::monitor::configuration::variables::puppet_files],
             File[$icinga::monitor::configuration::variables::static_files],
-            File['/etc/icinga/puppet_services.cfg'],
-            File['/etc/icinga/puppet_hostextinfo.cfg'],
-            File['/etc/icinga/puppet_hosts.cfg'],
         ],
         require => Mount['/var/icinga-tmpfs'],
     }
