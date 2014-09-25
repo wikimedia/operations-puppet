@@ -1,0 +1,54 @@
+### Wikimedia ntp configuration
+
+### Servers and Peers: #########################################
+
+<% @peers.each do |val| -%>peer <%= val %><% end -%>
+<% @servers.each do |val| -%>server <%= val %><% end -%>
+
+### Access Control: ############################################
+
+# By default ignore any packets we receive
+restrict default ignore
+
+# Allow everything from localhost addresses
+restrict 127.0.0.1
+restrict ::1
+
+# Allow (only) peering with all explicit servers/peers
+restrict source kod notrap noquery
+
+<% if @time_acl.count -%>
+# Allow non-peering time service from these:
+<% @time_acl.each do |val| -%>
+restrict <%= val %> kod notrap noquery nopeer
+<% end -%>
+<% end -%>
+
+<% if @query_acl.count -%>
+# Allow non-peering time service *and* info queries:
+<% @query_acl.each do |val| -%>
+restrict <%= val %> kod notrap nomodify nopeer
+<% end -%>
+<% end -%>
+
+### Stats/Files: ###############################################
+
+driftfile /var/lib/ntp/ntp.drift
+
+# Enable this if you want statistics to be logged.
+#statsdir /var/log/ntpstats/
+
+statistics loopstats peerstats clockstats
+filegen loopstats file loopstats type day enable
+filegen peerstats file peerstats type day enable
+filegen clockstats file clockstats type day enable
+
+### Labs: ######################################################
+
+<% if @realm == "labs" then -%>
+# On Labs the default "interface" configuration leads to ntpd
+# complaining that it can't create a IPv6 socket for eth0
+# (cf. https://bugzilla.wikimedia.org/60166).  To work around that, we
+# let ntpd listen only on IPv4.
+interface listen ipv4
+<% end -%>
