@@ -56,3 +56,10 @@ CARBONLINK_HOSTS = [<%=
     }.join(', ')
 %>]
 <%- end -%>
+
+
+## CORS
+
+from graphite.app_settings import *
+MIDDLEWARE_CLASSES += ('cors.CorsMiddleware',)
+CORS_ORIGINS = <%= Array(@cors_origins).to_s %>
