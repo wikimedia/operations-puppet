@@ -4,7 +4,6 @@
 class icinga::monitor {
 
     include facilities::pdu_monitoring
-    include icinga::ganglia::ganglios
     include icinga::apache
     include icinga::monitor::checkpaging
     include icinga::monitor::configuration::files
@@ -336,26 +335,4 @@ class icinga::monitor::service {
         ],
         require => Mount['/var/icinga-tmpfs'],
     }
-}
-
-class icinga::ganglia::ganglios {
-    include ganglia::collector::config
-
-    package { 'ganglios':
-        ensure => 'installed',
-    }
-
-    cron { 'ganglios-cron':
-        ensure  => present,
-        command => 'test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser',
-        user    => 'icinga',
-        minute  => '*/2',
-    }
-
-    file { '/var/lib/ganglia/xmlcache':
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'icinga',
-    }
-
 }

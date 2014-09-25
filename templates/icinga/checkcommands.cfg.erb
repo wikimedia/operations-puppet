@@ -412,11 +412,6 @@ define command{
     command_line    $USER1$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -C $ARG5$
 }
 
-define command{
-    command_name    check_memory_used
-    command_line    $USER3$/check_ganglios_memory_v2 -H $HOSTADDRESS -w $ARG1$ -c $ARG2$
-}
-
 # percona mysql checks
 define command{
     command_name    nrpe_check_lvs
