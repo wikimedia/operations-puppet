@@ -7,8 +7,8 @@ peer <%= val %>
 restrict <%= val %> kod notrap noquery
 <% end -%>
 <% @servers.each do |val| -%>
-server <%= val %>
-restrict <%= val %> kod notrap noquery
+server <%= @servers_opt %> <%= val %>
+restrict <%= @servers_opt %> <%= val %> kod notrap noquery
 <% end -%>
 
 ### Access Control: ############################################

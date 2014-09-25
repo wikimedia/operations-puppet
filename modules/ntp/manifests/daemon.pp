@@ -1,4 +1,4 @@
-define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[]) {
+define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[], $servers_opt='') {
     package { 'ntp': ensure => latest }
 
     file { 'ntp.conf':
