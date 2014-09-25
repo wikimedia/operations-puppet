@@ -54,7 +54,6 @@ class icinga::monitor::configuration::variables {
         "${icinga::monitor::configuration::variables::icinga_config_dir}/cgi.cfg",
         "${icinga::monitor::configuration::variables::icinga_config_dir}/checkcommands.cfg",
         "${icinga::monitor::configuration::variables::icinga_config_dir}/contactgroups.cfg",
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/contacts.cfg",
         "${icinga::monitor::configuration::variables::icinga_config_dir}/resource.cfg",
     ]
 }
@@ -107,11 +106,9 @@ class icinga::monitor::configuration::files {
         mode   => '0644',
     }
 
-    file { '/etc/icinga/contacts.cfg':
+    class { 'nagios_common::contacts':
         source => 'puppet:///private/nagios/contacts.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        notify => Service['icinga'],
     }
 
     class { [

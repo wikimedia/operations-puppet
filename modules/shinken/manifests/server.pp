@@ -37,18 +37,17 @@ class shinken::server(
         notify  => Service['shinken'],
     }
 
-    file { '/etc/shinken/contacts.cfg':
+    file { '/etc/shinken/contactgroups.cfg':
         ensure  => present,
-        source  => 'puppet:///modules/shinken/contacts.cfg',
+        source  => 'puppet:///modules/shinken/contactgroups.cfg',
         owner   => 'shinken',
         group   => 'shinken',
         require => Package['shinken'],
         notify  => Service['shinken'],
     }
 
-    file { '/etc/shinken/contactgroups.cfg':
-        ensure  => present,
-        source  => 'puppet:///modules/shinken/contactgroups.cfg',
+    class { 'nagios_common::contacts':
+        source => 'puppet:///modules/shinken/contacts.cfg',
         owner   => 'shinken',
         group   => 'shinken',
         require => Package['shinken'],
