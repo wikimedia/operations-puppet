@@ -310,7 +310,6 @@ class ganglia::collector::config {
                     'HHVM Appservers eqiad'          => 'mw1017.eqiad.wmnet mw1018.eqiad.wmnet',
                     'Jobrunners eqiad'               => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
                     'MySQL'                          => 'db1050.eqiad.wmnet',
-                    'PDF servers pmtpa'              => 'pdf2.wikimedia.org pdf3.wikimedia.org',
                     'PDF servers eqiad'              => 'ocg1001.eqiad.wmnet',
                     'Miscellaneous'                  => 'tarin.pmtpa.wmnet',
                     'Fundraising eqiad'              => 'pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet',
