@@ -260,8 +260,8 @@ class role::analytics::hadoop::config {
         $ganglia_port                             = 50090
         $gelf_logging_host                        = '127.0.0.1'
         # In labs, make sure that HDFS user directories are
-        # created for everyone in the project-analytics group.
-        $hadoop_users_posix_groups                 = 'project-analytics'
+        # created for everyone in the current labs project.
+        $hadoop_users_posix_groups                 = $::instanceproject
 
 
         # Hadoop directories in labs should be automatically created.
