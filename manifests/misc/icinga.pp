@@ -11,10 +11,10 @@ class icinga::monitor {
     include icinga::monitor::configuration::files
     include icinga::monitor::files::misc
     include icinga::monitor::files::nagios-plugins
-    include icinga::monitor::firewall
     include icinga::logrotate
     include icinga::monitor::naggen
-    include icinga::monitor::nsca::daemon
+    include icinga::nsca::firewall
+    include icinga::nsca::daemon
     include icinga::monitor::packages
     include icinga::monitor::service
     include icinga::monitor::wikidata
@@ -334,13 +334,6 @@ class icinga::monitor::files::nagios-plugins {
 
 }
 
-class icinga::monitor::firewall {
-    # ncsa on port 5667
-    ferm::rule { 'ncsa_allowed':
-        rule => 'saddr (127.0.0.1 $EQIAD_PRIVATE_ANALYTICS1_A_EQIAD $EQIAD_PRIVATE_ANALYTICS1_B_EQIAD $EQIAD_PRIVATE_ANALYTICS1_C_EQIAD $EQIAD_PRIVATE_ANALYTICS1_D_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_A_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_B_EQIAD $EQIAD_PRIVATE_LABS_HOSTS1_D_EQIAD $EQIAD_PRIVATE_LABS_SUPPORT1_C_EQIAD $EQIAD_PRIVATE_PRIVATE1_A_EQIAD $EQIAD_PRIVATE_PRIVATE1_B_EQIAD $EQIAD_PRIVATE_PRIVATE1_C_EQIAD $EQIAD_PRIVATE_PRIVATE1_D_EQIAD $EQIAD_PUBLIC_PUBLIC1_A_EQIAD $EQIAD_PUBLIC_PUBLIC1_B_EQIAD $EQIAD_PUBLIC_PUBLIC1_C_EQIAD $EQIAD_PUBLIC_PUBLIC1_D_EQIAD $ESAMS_PRIVATE_PRIVATE1_ESAMS $ESAMS_PUBLIC_PUBLIC_SERVICES $PMTPA_PRIVATE_PRIVATE $PMTPA_PRIVATE_VIRT_HOSTS $PMTPA_PUBLIC_PUBLIC_SERVICES $PMTPA_PUBLIC_PUBLIC_SERVICES_2 $PMTPA_PUBLIC_SANDBOX $PMTPA_PUBLIC_SQUID_LVS $ULSFO_PRIVATE_PRIVATE1_ULSFO $ULSFO_PUBLIC_PUBLIC1_ULSFO 208.80.155.0/27 10.64.40.0/24) proto tcp dport 5667 ACCEPT;'
-    }
-}
-
 class icinga::monitor::naggen {
 
     # Naggen takes exported resources from hosts and creates nagios
@@ -388,43 +381,6 @@ class icinga::monitor::naggen {
         notify => Service[icinga],
     }
 
-}
-
-# NSCA - Nagios Service Check Acceptor
-# NSCA - daemon config
-class icinga::monitor::nsca::daemon {
-
-    system::role { 'icinga::nsca::daemon': description => 'Nagios Service Checks Acceptor Daemon' }
-
-    package { 'nsca':
-        ensure => latest,
-    }
-
-    file { '/etc/nsca.cfg':
-        source  => 'puppet:///private/icinga/nsca.cfg',
-        owner   => 'root',
-        mode    => '0400',
-        require => Package['nsca'],
-    }
-
-    service { 'nsca':
-        ensure  => running,
-        require => File['/etc/nsca.cfg'],
-    }
-}
-
-# NSCA - client config
-class icinga::monitor::nsca::client {
-    package { 'nsca-client':
-        ensure => 'installed',
-    }
-
-    file { '/etc/send_nsca.cfg':
-        source  => 'puppet:///private/icinga/send_nsca.cfg',
-        owner   => 'root',
-        mode    => '0400',
-        require => Package['nsca-client'],
-    }
 }
 
 class icinga::monitor::packages {
