@@ -22,6 +22,9 @@
   RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect,L]
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
 
+  # enable HTTP Strict Transport Security
+  Header set Strict-Transport-Security "max-age=604800"
+
 <%# Apache 2.4 and Newer %>
 <% if @lsbdistcodename == 'trusty'%>
   <Directory "<%= @docroot %>">
