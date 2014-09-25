@@ -874,5 +874,18 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
+        'citoid' => {
+            'description' => 'Citation lookup service, citoid.svc.eqiad.wmnet',
+            'class' => 'low-traffic',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['citoid'][$::site],
+            'port' => 1970,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://citoid.svc.eqiad.wmnet' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            }
+        }
     }
 }
