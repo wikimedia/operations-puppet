@@ -49,6 +49,7 @@ class nagios_common::commands(
         'radius',
         'rpc-nfs',
         'tcp_udp',
+        'apt',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
