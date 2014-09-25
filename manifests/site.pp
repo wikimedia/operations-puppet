@@ -3101,7 +3101,6 @@ node 'neptunium.wikimedia.org' {
 
     include standard
     include admin
-    include role::dns::ldap
     include ldap::role::server::labs
     include ldap::role::client::labs
 
