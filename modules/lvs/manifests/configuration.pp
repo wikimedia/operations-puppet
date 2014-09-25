@@ -238,6 +238,9 @@ class lvs::configuration {
             'mathoid' => {
                 'eqiad' => "10.2.2.20",
             },
+            'citoid' => {
+                'eqiad' => "10.2.2.19",
+            },
         },
         'labs' => {
             'text' => {
@@ -271,6 +274,7 @@ class lvs::configuration {
             'dns_rec' => {},
             'https' => {},
             'mathoid' => {},
+            'citoid' => {},
             'misc_web' => {},
             'mobile' => {},
             'ocg' => {},
@@ -896,5 +900,18 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
+        'citoid' => {
+            'description' => 'Citation lookup service, citoid.svc.eqiad.wmnet',
+            'class' => 'low-traffic',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['citoid'][$::site],
+            'port' => 1970,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://citoid.svc.eqiad.wmnet' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            }
+        }
     }
 }
