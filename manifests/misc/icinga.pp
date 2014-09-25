@@ -34,7 +34,7 @@ class icinga::monitor {
     include icinga::monitor::files::misc
     include icinga::monitor::files::nagios-plugins
     include icinga::monitor::firewall
-    include icinga::monitor::logrotate
+    include icinga::logrotate
     include icinga::monitor::naggen
     include icinga::monitor::nsca::daemon
     include icinga::monitor::packages
@@ -552,14 +552,6 @@ class icinga::ganglia::check {
         ensure  => 'link',
         target  => '/usr/bin/check_ganglia',
         require => Package['check-ganglia'],
-    }
-}
-
-class icinga::monitor::logrotate {
-    file { '/etc/logrotate.d/icinga':
-        ensure => present,
-        source => 'puppet:///files/logrotate/icinga',
-        mode   => '0444',
     }
 }
 
