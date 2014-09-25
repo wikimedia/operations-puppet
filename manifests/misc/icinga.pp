@@ -208,7 +208,8 @@ class icinga::monitor::configuration::files {
 
     class { [
       'nagios_common::user_macros',
-      'nagios_common::timeperiods'
+      'nagios_common::timeperiods',
+      'nagios_common::notification_commands',
     ] :
         notify => Service['icinga'],
     }
