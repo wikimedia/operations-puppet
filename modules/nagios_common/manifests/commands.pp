@@ -46,6 +46,7 @@ class nagios_common::commands(
         'ssh',
         'snmp',
         'real',
+        'radius',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
