@@ -6,6 +6,8 @@ class contint::packages::labs {
     Package['puppet-lint'] -> Class['contint::packages::labs']
 
     include contint::packages
+    # Fonts needed for browser tests screenshots (bug 69535)
+    include mediawiki::packages::fonts
 
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
