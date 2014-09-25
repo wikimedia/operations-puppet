@@ -42,11 +42,9 @@ director <%= default_backend %>_random random {
 
 sub set_hhvm_header {
 	/* Set the hhvm header for requests:
-	 * a) not for api
-	 * b) not for the rendering backend
-	 * c) not for testwiki */
+	 * a) not for the rendering backend
+	 * b) not for testwiki */
 	if ( req.http.Cookie ~ "hhvm=true"
-		&& req.url !~ "^/w/api\.php"
 		&& req.url !~ "^/w/thumb(_handler)?\.php"
 		&& req.http.host !~ "^test\.") {
 		set req.http.X-Use-HHVM = "1";
