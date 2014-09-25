@@ -1,0 +1,10 @@
+Code-Review+1: Hashar <hashar@free.fr>
+Verified+2: jenkins-bot
+Code-Review+1: Zfilipin <zfilipin@wikimedia.org>
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Verified+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Thu, 25 Sep 2014 11:02:26 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/162604
+Project: operations/puppet
+Branch: refs/heads/production
