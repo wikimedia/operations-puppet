@@ -81,6 +81,25 @@ class hhvm(
 
     ## Settings
 
+    ### JIT
+
+    # HHVM's translation cache is a slab of memory allocated in the
+    # bottom 2 GiB for caching translated code. It is partitioned into
+    # several differently-sized blocks of memory that group code blocks
+    # by frequency of execution.
+    #
+    # You can check TC memory usage stats via the /vm-tcspace end-point
+    # of the admin server.
+    #
+    # A ratio of 1 : 0.33 : 1 for a : a_cold : a_frozen is good general
+    # guidance.
+
+    $base_jit_size = to_bytes('100 Mb')
+    $a_size        = $base_jit_size
+    $a_cold_size   = 0.33 * $base_jit_size
+    $a_frozen_size = $base_jit_size
+
+
     $common_defaults = {
         date => { timezone => 'UTC' },
         hhvm => {
@@ -106,28 +125,17 @@ class hhvm(
         },
     }
 
+
     $fcgi_defaults = {
         memory_limit => '300M',
         hhvm         => {
-            jit              => true,
-
-            # HHVM's translation cache is a slab of memory allocated in the
-            # bottom 2 GiB for caching translated code. It is partitioned into
-            # several differently-sized blocks of memory that group code blocks
-            # by frequency of execution.
-            #
-            # You can check TC memory usage stats via the /vm-tcspace end-point
-            # of the admin server.
-            #
-            # XXX: These configuration options have been renamed in
-            # <https://github.com/facebook/hhvm/commit/ca99ef1>.
-
-            jit_afrozen_size => to_bytes('100 Mb'),
-            jit_acold_size   => to_bytes('60 Mb'),
-
-            repo             => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
-            admin_server     => { port => 9001 },
-            server           => {
+            jit               => true,
+            jit_a_size        => $a_size,
+            jit_a_cold_size   => $a_cold_size,
+            jit_a_frozen_size => $a_frozen_size,
+            repo              => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
+            admin_server      => { port => 9001 },
+            server            => {
                 port                   => 9000,
                 type                   => 'fastcgi',
                 gzip_compression_level => 0,
@@ -183,7 +191,7 @@ class hhvm(
     ## Packages
 
     package { [ 'hhvm', 'hhvm-dbg' ]:
-        ensure => present,
+        ensure => '3.3.0-20140925+wmf1',
         before => Service['hhvm'],
     }
 
