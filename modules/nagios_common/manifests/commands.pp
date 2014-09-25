@@ -41,7 +41,8 @@ class nagios_common::commands(
     }
 
     nagios_common::check_command::config { [
-        'users'
+        'users',
+        'telnet',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
