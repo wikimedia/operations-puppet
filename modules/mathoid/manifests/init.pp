@@ -23,13 +23,10 @@ class mathoid(
     $log_dir,
     $port=10042
 ) {
-    package { ['nodejs'
+    ensure_packages('nodejs')
     # TODO Add dependency to node-jsdom once
     # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347
     # is fixed
-              ]:
-        ensure => present,
-    }
 
     $log_file = "${log_dir}/main.log"
 
