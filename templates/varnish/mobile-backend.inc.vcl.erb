@@ -14,7 +14,7 @@ sub vcl_recv {
 		return (pass);
 	}
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
-	if (req.url ~ "^/w/api.php") {
+	if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
 	}
 <% end -%>
@@ -22,9 +22,7 @@ sub vcl_recv {
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	/* Use the hhvm backend for any request to the standard appservers.
 	 On a request restart (often due to an error), fallback to the Zend pool */
-	if (req.http.X-Use-HHVM == "1" && req.restarts == 0) {
-		set req.backend = hhvm_appservers;
-	}
+	 call choose_hhvm_backend;
 <% end -%>
 
 	/* Default (now modified) Varnish vcl_recv function */

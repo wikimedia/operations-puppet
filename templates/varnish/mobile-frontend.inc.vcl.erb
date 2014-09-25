@@ -99,11 +99,9 @@ sub vcl_recv {
 	}
 
 	/* Set the hhvm header for requests:
-	 * a) not for api
-	 * b) not for testwiki */
+	 * not for testwiki */
 	if ( req.http.X-Orig-Cookie ~ "hhvm=true"
-		&& req.http.host !~ "^test\."
-		&& req.url !~ "^/w/api.php" ) {
+		&& req.http.host !~ "^test\.") {
 		set req.http.X-Use-HHVM = "1";
 	} else {
 		unset req.http.X-Use-HHVM;
