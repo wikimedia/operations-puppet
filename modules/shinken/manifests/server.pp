@@ -47,11 +47,12 @@ class shinken::server(
     }
 
     class { 'nagios_common::contacts':
-        source => 'puppet:///modules/shinken/contacts.cfg',
-        owner   => 'shinken',
-        group   => 'shinken',
-        require => Package['shinken'],
-        notify  => Service['shinken'],
+        source     => 'puppet:///modules/shinken/contacts.cfg',
+        owner      => 'shinken',
+        group      => 'shinken',
+        config_dir => '/etc/shinken',
+        require    => Package['shinken'],
+        notify     => Service['shinken'],
     }
 
     class { [
