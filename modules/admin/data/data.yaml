@@ -190,6 +190,19 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
+  citoid-roots:
+    gid: 731
+    description: root rights for citoid
+    members: [gwicke]
+    privs: ['ALL = (citoid) NOPASSWD: ALL']
+  citoid-admin:
+    gid: 732
+    description: group of citoid admins
+    members: [gwicke]
+    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service citoid start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service citoid restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service citoid reload']
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
