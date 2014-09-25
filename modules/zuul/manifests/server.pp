@@ -83,6 +83,15 @@ class zuul::server (
         ],
     }
 
+    file { '/usr/local/bin/zuul-gearman.py':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => Package['python-gear'],
+        source  => 'puppet:///modules/zuul/zuul-gearman.py',
+    }
+
     # Additionally provide a publicly readeable configuration file
     exec { 'craft public zuul conf':
         cwd         => '/etc/zuul/',
