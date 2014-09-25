@@ -3129,11 +3129,14 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
     include standard
 
     include role::mathoid::production
+    include role::citoid::production
 
     class { 'admin':
         groups => [
                    'mathoid-roots',
-                   'mathoid-admin'
+                   'mathoid-admin',
+                   'citoid-roots',
+                   'citoid-admin'
                 ]
     }
 }
