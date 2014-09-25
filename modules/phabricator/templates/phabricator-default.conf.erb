@@ -38,6 +38,7 @@
   </Directory>
 <% end -%>
 
+  SetEnv PHABRICATOR_ENV default
   ErrorLog /var/log/apache2/<%= @name %>_error.log
   LogLevel warn
   CustomLog /var/log/apache2/<%= @name %>_access.log combined

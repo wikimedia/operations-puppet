@@ -166,6 +166,14 @@ class phabricator (
             before    => Git::Install['phabricator/phabricator'],
         }
 
+        git::install { 'phabricator/extensions/Sprint':
+            directory => "${phabdir}/extensions/Sprint",
+            git_tag   => $extension_tag,
+            lock_file => $ext_lock_path,
+            notify    => Exec[$ext_lock_path],
+            before    => Git::Install['phabricator/phabricator'],
+        }
+
         exec {$ext_lock_path:
             command => "touch ${ext_lock_path}",
             unless  => "test -z ${ext_lock_path} || test -e ${ext_lock_path}",
