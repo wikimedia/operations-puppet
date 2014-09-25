@@ -82,9 +82,9 @@ class Hiera
 
       def get_path(key, scope, source)
         # Special case: 'private' repository.
-        # we search the data.yaml within the datadir for the :private backend.
-        if source == 'private'
-          return key, Backend.datafile(:private, scope, :data, "yaml")
+        # We use a different datadir in this case.
+        if m = /private\/(.*)/.match(source)
+          return key, Backend.datafile(:private, scope, m[1], "yaml")
         end
 
         # If the source is in the expand_path list, perform path
