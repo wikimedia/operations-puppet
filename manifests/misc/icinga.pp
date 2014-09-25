@@ -4,7 +4,6 @@
 class icinga::monitor {
 
     include facilities::pdu_monitoring
-    include icinga::ganglia::check
     include icinga::ganglia::ganglios
     include icinga::apache
     include icinga::monitor::checkpaging
@@ -286,6 +285,10 @@ class icinga::monitor::files::nagios-plugins {
         notify => Service['icinga'],
     }
 
+    class { 'nagios_common::check::ganglia':
+        notify => Service['icinga'],
+    }
+
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
 
@@ -349,26 +352,4 @@ class icinga::ganglia::ganglios {
         owner  => 'icinga',
     }
 
-}
-
-# == Class icinga::ganglia::check
-#
-# Installs check_ganglia package and sets up symlink into
-# /usr/lib/nagios/plugins.
-#
-# check_ganglia allows arbitrary values to be queried from ganglia and checked
-# for nagios/icinga.  This is better than ganglios, as it queries gmetad's xml
-# query interfaces directly, rather than downloading and mangling xmlfiles from
-# each aggregator.
-#
-class icinga::ganglia::check {
-    package { 'check-ganglia':
-        ensure  => 'installed',
-    }
-
-    file { '/usr/lib/nagios/plugins/check_ganglia':
-        ensure  => 'link',
-        target  => '/usr/bin/check_ganglia',
-        require => Package['check-ganglia'],
-    }
 }
