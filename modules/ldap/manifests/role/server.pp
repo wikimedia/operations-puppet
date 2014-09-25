@@ -34,7 +34,7 @@ class ldap::role::server::labs {
                 }
                 'neptunium': {
                     $ca_name = 'GlobalSign_CA.pem'
-                    $certificate = 'ldap-eqiad.wikimedia.org'
+                    $certificate = 'ldap-codfw.wikimedia.org'
                 }
                 'default': {
                     fail('Production realm ldap certificates for virt0/1000/labcontrol2001 only!')
