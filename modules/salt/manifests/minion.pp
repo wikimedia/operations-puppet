@@ -51,17 +51,31 @@ class salt::minion(
         dns_check     => false,
     }
 
+    # our config file must be in place before
+    # package installation, so that the deb postinst
+    # step which automatically starts the minion
+    # will start it with the correct settings
     package { 'salt-minion':
-        ensure => present,
+        ensure  => present,
+        require => File['/etc/salt/minion'],
     }
 
     service { 'salt-minion':
-        ensure   => running,
+        ensure    => running,
+        provider  => 'upstart',
+        require   => Package['salt-minion'],
     }
 
     file { '/etc/init/salt-minion.override':
         ensure => absent,
         notify => Service['salt-minion'],
+    }
+
+    file { '/etc/salt':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/etc/salt/minion':
@@ -70,14 +84,15 @@ class salt::minion(
         group   => 'root',
         mode    => '0444',
         notify  => Service['salt-minion'],
-        require => Package['salt-minion'],
+        require => File['/etc/salt'],
     }
 
     file { '/usr/local/sbin/grain-ensure':
-        source => 'puppet:///modules/salt/grain-ensure.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
+        source  => 'puppet:///modules/salt/grain-ensure.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        require => Package['salt-minion'],
     }
 
     if ($master_key) {
