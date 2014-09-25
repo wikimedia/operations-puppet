@@ -20,4 +20,5 @@ class CorsMiddleware(object):
             response['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
             response['Access-Control-Allow-Headers'] = (
                 'origin, authorization, accept')
+            response['Access-Control-Allow-Credentials'] = 'true'
         return response
