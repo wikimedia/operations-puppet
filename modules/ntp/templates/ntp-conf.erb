@@ -4,9 +4,11 @@
 
 <% @peers.each do |val| -%>
 peer <%= val %>
+restrict <%= val %> kod notrap noquery
 <% end -%>
 <% @servers.each do |val| -%>
 server <%= val %>
+restrict <%= val %> kod notrap noquery
 <% end -%>
 
 ### Access Control: ############################################
@@ -17,9 +19,6 @@ restrict default ignore
 # Allow everything from localhost addresses
 restrict 127.0.0.1
 restrict ::1
-
-# Allow (only) peering with all explicit servers/peers
-restrict source kod notrap noquery
 
 <% if @time_acl.count -%>
 # Allow non-peering time service from these:

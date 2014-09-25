@@ -26,28 +26,47 @@ class role::ntp {
         $wmf_peers['pmtpa']
     )
 
+    # NOTE to the future: we *should* be using regional
+    #   NTP pool aliases, removing the per-server "restrict"
+    #   lines in the config template, and adding a
+    #   "restrict source ..." line, but current stable
+    #   versions of ntpd do not yet support "restrict source"
+    # The current sets of peers have some thought and research
+    #   behind them based on current S2 lists (Sept 2014), but
+    #   they will need long-term periodic upkeep until we can
+    #   switch to per-site pool addrs + "restrict source"
     # These are the pool servers used by the peers above
     $peer_upstreams = {
-        eqiad => [
-            '0.us.pool.ntp.org',
-            '1.us.pool.ntp.org',
-            '2.us.pool.ntp.org',
-            '3.us.pool.ntp.org',
+        'chromium.wikimedia.org' => [
+            'ac-ntp1.net.cmu.edu',
+            'tock.teljet.net',
+            'e.time.steadfast.net',
+            '50.116.55.65',
         ],
-        codfw => [
-            '0.us.pool.ntp.org',
-            '1.us.pool.ntp.org',
-            '2.us.pool.ntp.org',
-            '3.us.pool.ntp.org',
+        'hydrogen.wikimedia.org' => [
+            'ac-ntp2.net.cmu.edu',
+            'tick.teljet.net',
+            'f.time.steadfast.net',
+            'ntp3.servman.ca',
         ],
-        esams => [
-            '0.europe.pool.ntp.org',
-            '1.europe.pool.ntp.org',
-            '2.europe.pool.ntp.org',
-            '3.europe.pool.ntp.org',
+        'acamar.wikimedia.org' => [
+            'ntp3.tamu.edu',
+            'stratum2.ord2.publicntp.net',
+            '72.14.183.239',
+            'jikan.ae7.st',
         ],
-        ulsfo => [],
-        pmtpa => [],
+        'achernar.wikimedia.org' => [
+            'ntp3.tamu.edu',
+            'stratum2.ord2.publicntp.net',
+            '68.108.190.192',
+            'oxygen.neersighted.com',
+        ],
+        'nescio.esams.wikimedia.org' => [
+            'ntp2.proserve.nl',
+            'ntp2.roethof.net',
+            'tick.jpunix.net',
+            'ntp.baseip.com',
+        ],
     }
 
     # This maps the servers that regular clients use
@@ -79,7 +98,7 @@ class role::ntp {
         system::role { 'ntp': description => 'NTP server' }
 
         ntp::daemon { 'server':
-            servers => $peer_upstreams[$::site],
+            servers => $peer_upstreams[$::fqdn],
             peers => delete($wmf_all_peers, $::fqdn),
             time_acl => $our_networks_acl,
             query_acl => $neon_acl,
