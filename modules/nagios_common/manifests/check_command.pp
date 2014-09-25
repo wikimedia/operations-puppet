@@ -86,7 +86,7 @@ define nagios_common::check_command::config(
 ) {
     file { "$config_dir/commands/$title.cfg":
         ensure => $ensure,
-        source => $config_source,
+        source => $source,
         owner  => $owner,
         group  => $group,
     }
