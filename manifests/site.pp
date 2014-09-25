@@ -60,7 +60,15 @@ if $puppet_version == undef {
 node /^(acamar|achernar)\.wikimedia\.org$/ {
     include admin
     include base::firewall
-    include standard
+# copy of standard with role::ntp instead, for testing...
+#    include standard
+    include base
+    include ganglia
+    include role::ntp
+    include role::mail::sender
+    include role::diamond
+# end copy of standard
+
     include role::dns::recursor
 
     interface::add_ip6_mapped { 'main':
@@ -328,7 +336,14 @@ node 'baham.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include standard
+# copy of standard with role::ntp instead, for testing...
+#    include standard
+    include base
+    include ganglia
+    include role::ntp
+    include role::mail::sender
+    include role::diamond
+# end copy of standard
     include admin
     include role::authdns::baham
 }
@@ -479,7 +494,14 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     include admin
     include base::firewall
-    include standard
+# copy of standard with role::ntp instead, for testing...
+#    include standard
+    include base
+    include ganglia
+    include role::ntp
+    include role::mail::sender
+    include role::diamond
+# end copy of standard
     include role::dns::recursor
 
     if $::hostname == 'chromium' {
@@ -2283,7 +2305,15 @@ node 'nescio.esams.wikimedia.org' {
     }
 
     include admin
-    include standard
+# copy of standard with role::ntp instead, for testing...
+#    include standard
+    include base
+    include ganglia
+    include role::ntp
+    include role::mail::sender
+    include role::diamond
+# end copy of standard
+
     include dns::recursor::statistics
     include network::constants
 
