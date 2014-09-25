@@ -405,6 +405,7 @@ class role::cache {
                 'appservers'        => $lvs::configuration::lvs_service_ips['production']['apaches'],
                 'hhvm_appservers'   => $lvs::configuration::lvs_service_ips['production']['hhvm_appservers'],
                 'api'               => $lvs::configuration::lvs_service_ips['production']['api'],
+                'hhvm_api'          => $lvs::configuration::lvs_service_ips['production']['hhvm_api'],
                 'rendering'         => $lvs::configuration::lvs_service_ips['production']['rendering'],
                 'bits' => {
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['bits']['eqiad']['bitslb']]),
