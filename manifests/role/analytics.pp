@@ -31,6 +31,10 @@ class role::analytics::clients {
         role::analytics::pig,
         role::analytics::sqoop
 
+    # Mount HDFS via Fuse on Analytics client nodes.
+    # This will mount HDFS at /mnt/hdfs read only.
+    include cdh::hadoop::mount
+
     # jq is very useful, install it.
     if !defined(Package['jq']) {
         package { 'jq':
