@@ -31,9 +31,20 @@ class role::analytics::clients {
         role::analytics::pig,
         role::analytics::sqoop
 
+    # This packages conflicts with the hadoop-fuse-dfs
+    # script in that two libjvm.so files get added
+    # to LD_LIBRARY_PATH.  We dont't need this
+    # package anyway, so ensure it is absent.
+    package { 'icedtea-7-jre-jamvm':
+        ensure => 'absent'
+    }
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.
-    include cdh::hadoop::mount
+    class { 'cdh::hadoop::mount':
+        # Make sure this package is removed before
+        # cdh::hadoop::mount evaluates.
+        require => Package['icedtea-7-jre-jamvm'],
+    }
 
     # jq is very useful, install it.
     if !defined(Package['jq']) {
