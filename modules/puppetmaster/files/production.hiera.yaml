@@ -13,6 +13,7 @@
   - "hosts/%{::hostname}"
   - "%{::realm}"
   - "%{::site}"
-  - "private"
+  - "private/%{::site}"
   - "mainrole"
   - "common"
+  - "private/common"

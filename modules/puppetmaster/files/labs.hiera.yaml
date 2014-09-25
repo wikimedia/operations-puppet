@@ -12,5 +12,6 @@
   - "labs/%{::labsproject}"
   - "%{::realm}"
   - "%{::site}"
-  - private
+  - "private/%{::labsproject}"
   - common
+  - "private/common"
