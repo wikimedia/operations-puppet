@@ -15,7 +15,7 @@ class icinga::monitor {
     include icinga::monitor::naggen
     include icinga::nsca::firewall
     include icinga::nsca::daemon
-    include icinga::monitor::packages
+    include icinga::packages
     include icinga::monitor::service
     include icinga::monitor::wikidata
     include icinga::user
@@ -27,7 +27,7 @@ class icinga::monitor {
     include passwords::nagios::mysql
     include certificates::globalsign_ca
 
-    Class['icinga::monitor::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service']
+    Class['icinga::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service']
 
 }
 
@@ -61,7 +61,7 @@ class icinga::monitor::configuration::files {
 
     # For all files dealing with icinga configuration
 
-    require icinga::monitor::packages
+    require icinga::packages
     require passwords::nagios::mysql
 
     $nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
@@ -207,7 +207,7 @@ class icinga::monitor::files::misc {
 
 class icinga::monitor::files::nagios-plugins {
 
-    require icinga::monitor::packages
+    require icinga::packages
 
     file { '/usr/lib/nagios':
         ensure => directory,
@@ -305,7 +305,7 @@ class icinga::monitor::naggen {
     # Naggen takes exported resources from hosts and creates nagios
     # configuration files
 
-    require icinga::monitor::packages
+    require icinga::packages
 
     file { '/etc/icinga/puppet_hosts.cfg':
         content => generate('/usr/local/bin/naggen2', '--type', 'hosts'),
@@ -349,16 +349,6 @@ class icinga::monitor::naggen {
 
 }
 
-class icinga::monitor::packages {
-
-    # icinga: icinga itself
-    # icinga-doc: files for the web-frontend
-
-    package { [ 'icinga', 'icinga-doc' ]:
-        ensure => latest,
-    }
-
-}
 
 class icinga::monitor::service {
 
