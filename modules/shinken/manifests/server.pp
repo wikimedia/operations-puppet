@@ -57,7 +57,8 @@ class shinken::server(
 
     class { [
       'nagios_common::user_macros',
-      'nagios_common::timeperiods'
+      'nagios_common::timeperiods',
+      'nagios_common::notification_commands',
     ] :
         config_dir => '/etc/shinken',
         owner      => 'shinken',
