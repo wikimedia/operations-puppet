@@ -28,7 +28,7 @@ class icinga::monitor {
     include facilities::pdu_monitoring
     include icinga::ganglia::check
     include icinga::ganglia::ganglios
-    include icinga::monitor::apache
+    include icinga::apache
     include icinga::monitor::checkpaging
     include icinga::monitor::configuration::files
     include icinga::monitor::files::misc
@@ -82,46 +82,6 @@ class icinga::monitor::configuration::variables {
     ]
 }
 
-class icinga::monitor::apache {
-    class {'webserver::php5': ssl => true,}
-    ferm::service { 'icinga-https':
-      proto => 'tcp',
-      port  => 443,
-    }
-    ferm::service { 'icinga-http':
-      proto => 'tcp',
-      port  => 80,
-    }
-
-    include webserver::php5-gd
-
-    include passwords::ldap::wmf_cluster
-    $proxypass = $passwords::ldap::wmf_cluster::proxypass
-
-    file { '/usr/share/icinga/htdocs/images/logos/ubuntu.png':
-        source => 'puppet:///files/icinga/ubuntu.png',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
-    # install the Icinga Apache site
-    apache::site { 'icinga.wikimedia.org':
-        content => template('apache/sites/icinga.wikimedia.org.erb'),
-    }
-
-    # remove icinga default config
-    file { '/etc/icinga/apache2.conf':
-        ensure => absent,
-    }
-    file { '/etc/apache2/conf.d/icinga.conf':
-        ensure => absent,
-    }
-
-    install_certificate{ 'icinga.wikimedia.org': ca => 'RapidSSL_CA.pem' }
-    install_certificate{ 'icinga-admin.wikimedia.org': ca => 'RapidSSL_CA.pem' }
-
-}
 
 class icinga::monitor::checkpaging {
 
@@ -501,7 +461,7 @@ class icinga::monitor::packages {
 
 class icinga::monitor::service {
 
-    require icinga::monitor::apache
+    require icinga::apache
 
     file { '/var/icinga-tmpfs':
         ensure => directory,
