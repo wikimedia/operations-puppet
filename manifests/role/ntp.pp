@@ -63,7 +63,7 @@ class role::ntp {
         ],
         'nescio.esams.wikimedia.org' => [
             'ntp2.proserve.nl',
-            'ntp2.roethof.net',
+            'ntp.systemtid.se',
             'tick.jpunix.net',
             'ntp-1.zeroloop.net',
         ],
