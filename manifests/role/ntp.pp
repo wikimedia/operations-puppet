@@ -65,7 +65,7 @@ class role::ntp {
             'ntp2.proserve.nl',
             'ntp2.roethof.net',
             'tick.jpunix.net',
-            'ntp.baseip.com',
+            'ntp-1.zeroloop.net',
         ],
     }
 
