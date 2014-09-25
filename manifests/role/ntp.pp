@@ -110,9 +110,20 @@ class role::ntp {
         }
     }
     else { # client config
+
+        # XXX special case for now, virt100x seem to need v4-only access
+        #  (probably router/firewall issue needs to be tracked down)
+        if $::hostname =~ /^virt[0-9]+$/ {
+            $s_opt = '-4'
+        }
+        else {
+            $s_opt = ''
+        }
+
         ntp::daemon { 'client':
             servers => $client_upstreams[$::site],
             query_acl => $neon_acl,
+            servers_opt => $s_opt,
         }
 
         monitor_service { 'ntp':
