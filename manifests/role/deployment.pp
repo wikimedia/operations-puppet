@@ -64,6 +64,12 @@ class role::deployment::config {
         'service_name'          => 'mathoid',
         'checkout_submodules'   => true,
     },
+    'citoid/deploy' => {
+        'grain'                 => 'citoid',
+        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/citoid/deploy',
+        'service_name'          => 'citoid',
+        'checkout_submodules'   => true,
+    },
     'rcstream/rcstream' => {
         'grain'                 => 'rcstream',
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/rcstream',
