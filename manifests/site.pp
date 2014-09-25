@@ -2162,7 +2162,7 @@ node /^mw10(1[7-9]|2[01])\.eqiad\.wmnet$/ {
 }
 
 # mw1022-1052 are apaches (precise)
-node /^mw10(2[3-9]|[3-4][0-9]|5[0-2])\.eqiad\.wmnet$/ {
+node /^mw10(2[2-9]|[3-4][0-9]|5[0-2])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
