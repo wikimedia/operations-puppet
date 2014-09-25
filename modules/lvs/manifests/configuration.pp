@@ -180,6 +180,9 @@ class lvs::configuration {
             'api' => {
                 'eqiad' => "10.2.2.22",
             },
+            'hhvm_api' => {
+                'eqiad' => "10.2.2.3",
+            },
             'search_pool1' => {
                 'eqiad' => "10.2.2.11",
             },
@@ -254,6 +257,9 @@ class lvs::configuration {
             },
             'api' => {
                 'pmtpa' => "10.4.0.253",
+            },
+            'hhvm_api' => {
+                'pmtpa' => "10.4.0.254",
             },
             'bits' => {
                 'pmtpa' => "10.4.0.252",
@@ -651,6 +657,21 @@ class lvs::configuration {
                 'ProxyFetch' => {
                     'url' => [ 'http://en.wikipedia.org/w/api.php' ],
                     },
+                'IdleConnection' => $idleconnection_monitor_options,
+                'RunCommand' => $runcommand_monitor_options
+            },
+        },
+        "hhvm_api" => {
+            'description' => "MediaWiki API cluster (HHVM), hhvm-api.svc.eqiad.wmnet",
+            'class' => "low-traffic",
+            'sites' => [ "eqiad" ],
+            'ip' => $service_ips['hhvm_api'][$::site],
+            'bgp' => "yes",
+            'depool-threshold' => ".6",
+            'monitors' => {
+                'ProxyFetch' => {
+                    'url' => [ 'http://en.wikipedia.org/w/api.php' ],
+                },
                 'IdleConnection' => $idleconnection_monitor_options,
                 'RunCommand' => $runcommand_monitor_options
             },
