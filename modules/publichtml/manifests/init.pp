@@ -50,7 +50,7 @@ class publichtml (
     include ::apache::mod::cgi
     include ::apache::mod::php5
 
-    monitor_service { 'http':
+    monitor_service { 'http-peopleweb':
         description   => 'HTTP',
         check_command => "check_http_url!${sitename}!http://${sitename}"
     }
