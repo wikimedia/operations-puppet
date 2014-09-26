@@ -1,13 +1,23 @@
 # authdns role classes, heavily relying on the authdns role module
 
+# XXX Note: things are in a state of flux here to deal with
+#   nameserver moves for pmtpa/codfw and related fallout.
+# $nameservers should be using the canonical names ns[012],
+#   and the fqdn arguments to class authdns should be using
+#   those names as well.  They're currently using the real
+#   hostnames of the machines so that authdns-update isn't
+#   confused by some machines having loopback IPs for other
+#   machines' nsX addrs.
+# We should put it all back once the transition is complete
+
 class role::authdns::base {
     system::role { 'authdns': description => 'Authoritative DNS server' }
 
     $nameservers = [
-            'ns0.wikimedia.org',
-            'ns1-mexia.wikimedia.org',
-            'ns1-baham.wikimedia.org',
-            'ns2.wikimedia.org',
+            'rubidium.wikimedia.org',
+            'mexia.wikimedia.org',
+            'baham.wikimedia.org',
+            'eeden.esams.wikimedia.org',
     ]
     $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
 
@@ -30,12 +40,27 @@ class role::authdns::ns0 inherits role::authdns::base {
         prefixlen => '128',
     }
 
+    # temporary for pmtpa/codfw transitional purposes
+    $mexia_ipv4 = '208.80.152.214'
+    $baham_ipv4 = '208.80.153.231'
+    interface::ip { 'mexia_ipv4':
+        interface => 'lo',
+        address   => $mexia_ipv4,
+        prefixlen => '32',
+    }
+    interface::ip { 'baham_ipv4':
+        interface => 'lo',
+        address   => $baham_ipv4,
+        prefixlen => '32',
+    }
+
     class { 'authdns':
-        fqdn          => 'ns0.wikimedia.org',
+        fqdn          => 'rubidium.wikimedia.org',
         ipaddress     => $ipv4,
         ipaddress6    => $ipv6,
         nameservers   => $nameservers,
         gitrepo       => $gitrepo,
+        extra_listeners => [ $mexia_ipv4, $baham_ipv4 ],
     }
 }
 
@@ -59,7 +84,7 @@ class role::authdns::mexia inherits role::authdns::base {
     }
 
     class { 'authdns':
-        fqdn          => 'ns1-mexia.wikimedia.org',
+        fqdn          => 'mexia.wikimedia.org',
         ipaddress     => $ipv4,
         ipaddress6    => $ipv6,
         nameservers   => $nameservers,
@@ -83,12 +108,21 @@ class role::authdns::baham inherits role::authdns::base {
         prefixlen => '128',
     }
 
+    # temporary for pmtpa/codfw transitional purposes
+    $mexia_ipv4 = '208.80.152.214'
+    interface::ip { 'mexia_ipv4':
+        interface => 'lo',
+        address   => $mexia_ipv4,
+        prefixlen => '32',
+    }
+
     class { 'authdns':
-        fqdn          => 'ns1-baham.wikimedia.org',
+        fqdn          => 'baham.wikimedia.org',
         ipaddress     => $ipv4,
         ipaddress6    => $ipv6,
         nameservers   => $nameservers,
         gitrepo       => $gitrepo,
+        extra_listeners => [ $mexia_ipv4 ],
     }
 }
 
@@ -109,7 +143,7 @@ class role::authdns::ns2 inherits role::authdns::base {
     }
 
     class { 'authdns':
-        fqdn          => 'ns2.wikimedia.org',
+        fqdn          => 'eeden.esams.wikimedia.org',
         ipaddress     => $ipv4,
         ipaddress6    => $ipv6,
         nameservers   => $nameservers,
