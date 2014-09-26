@@ -24,7 +24,7 @@ sub vcl_recv {
 	 On a request restart (often due to an error), fallback to the Zend pool */
 	if ( req.http.X-Use-HHVM == "1" && req.restarts == 0) {
 		if (req.backend == api) {
-			set req.backend = hhvm_api
+			set req.backend = hhvm_api;
 		} else {
 			set req.backend = hhvm_appservers;
 		}
