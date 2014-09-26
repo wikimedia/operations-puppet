@@ -2674,9 +2674,7 @@ node /^searchidx100[0-2]\.eqiad\.wmnet/ {
 }
 
 node 'silver.wikimedia.org' {
-    class { 'admin': groups => ['ldap-admins'] }
     include standard
-    include ldap::role::client::labs
 }
 
 node 'sodium.wikimedia.org' {
@@ -2837,8 +2835,11 @@ node 'terbium.eqiad.wmnet' {
 
     class { 'admin':
         groups => ['restricted',
-                   'deployment'],
+                   'deployment',
+                   'ldap-admins'],
     }
+
+    include ldap::role::client::labs
 
     class { 'misc::maintenance::pagetriage':
         enabled => true,
