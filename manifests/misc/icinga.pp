@@ -19,17 +19,9 @@ class icinga::monitor {
     include passwords::nagios::mysql
     include certificates::globalsign_ca
 
-    class { 'icinga':
-    }
-
-    class { 'icinga::web':
-        require => Class['icinga'],
-    }
-
-    class { 'icinga::naggen':
-        require => Class['icinga'],
-        notify  => Service['icinga'],
-    }
+    class { 'icinga':            }
+    class { 'icinga::web':       }
+    class { 'icinga::naggen':    }
 }
 
 # Nagios/icinga configuration files

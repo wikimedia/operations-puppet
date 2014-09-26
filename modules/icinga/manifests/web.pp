@@ -3,6 +3,10 @@
 # Sets up an apache instance for icinga web interface,
 # protected with ldap authentication
 class icinga::web {
+    # Using require here is ok, because the icinga class is not parameterized.
+    # if it was we would do Class['icinga'] -> Class['icinga::web'].
+    require icinga
+
     # Apparently required for the web interface
     package { 'icinga-doc':
         ensure => latest
