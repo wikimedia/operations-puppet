@@ -111,14 +111,6 @@ class icinga::monitor::configuration::files {
     ] :
         notify => Service['icinga'],
     }
-
-
-    file { '/etc/init.d/icinga':
-        source => 'puppet:///files/icinga/icinga-init',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 }
 
 class icinga::monitor::files::misc {
