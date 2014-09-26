@@ -23,11 +23,11 @@ define create_pkcs12(
     # pkcs12 file, used by things like opendj, nss, and tomcat
     exec  { "${name}_create_pkcs12":
         creates => "${location}/${certname}.p12",
-        command => "/usr/bin/openssl pkcs12 -export -name \"${certalias}\" -passout pass:${defaultpassword} -in /etc/ssl/certs/${certname}.pem -inkey /etc/ssl/private/${certname}.key -out ${location}/${certname}.p12",
+        command => "/usr/bin/openssl pkcs12 -export -name \"${certalias}\" -passout pass:${defaultpassword} -in /usr/local/share/ca-certificates/${certname}.crt -inkey /etc/ssl/private/${certname}.key -out ${location}/${certname}.p12",
         onlyif  => "/usr/bin/test -s /etc/ssl/private/${certname}.key",
         require => [Package['openssl'],
                     File["/etc/ssl/private/${certname}.key"],
-                    File["/etc/ssl/certs/${certname}.pem"],
+                    File["/usr/local/share/ca-certificates/${certname}.crt"],
         ],
     }
     # Fix permissions on the p12 file, and make it available as
@@ -46,20 +46,20 @@ define create_chained_cert(
     $certname = $name,
     $user     = 'root',
     $group    = 'ssl-cert',
-    $location = '/etc/ssl/certs',
+    $location = '/usr/local/share/ca-certificates',
 ) {
     # chained cert, used when needing to provide
     # an entire certificate chain to a client
     exec { "${name}_create_chained_cert":
-        creates => "${location}/${certname}.chained.pem",
-        command => "/bin/cat ${certname}.pem ${ca} > ${location}/${certname}.chained.pem",
-        cwd     => '/etc/ssl/certs',
+        creates => "${location}/${certname}.chained.crt",
+        command => "/bin/cat ${certname}.crt ${ca} > ${location}/${certname}.chained.crt",
+        cwd     => '/usr/local/share/ca-certificates',
         require => [Package['openssl'],
-                    File["/etc/ssl/certs/${certname}.pem"],
+                    File["/usr/local/share/ca-certificates/${certname}.crt"],
         ],
     }
     # Fix permissions on the chained file, and make it available as
-    file { "${location}/${certname}.chained.pem":
+    file { "${location}/${certname}.chained.crt":
         ensure  => 'file',
         mode    => '0444',
         owner   => $user,
@@ -76,16 +76,16 @@ define create_combined_cert(
 ) {
     # combined cert, used by things like lighttp and nginx
     exec { "${name}_create_combined_cert":
-        creates => "${location}/${certname}.pem",
-        command => "/bin/cat /etc/ssl/certs/${certname}.pem /etc/ssl/private/${certname}.key > ${location}/${certname}.pem",
+        creates => "${location}/${certname}.crt",
+        command => "/bin/cat /usr/local/share/ca-certificates/${certname}.crt /etc/ssl/private/${certname}.key > ${location}/${certname}.crt",
         require => [Package['openssl'],
                     File["/etc/ssl/private/${certname}.key"],
-                    File["/etc/ssl/certs/${certname}.pem"],
+                    File["/usr/local/share/ca-certificates/${certname}.crt"],
         ];
     }
     # Fix permissions on the combined file, and make it available as
     # a puppet resource
-    file { "${location}/${certname}.pem":
+    file { "${location}/${certname}.crt":
         ensure  => 'file',
         mode    => '0440',
         owner   => $user,
@@ -100,17 +100,18 @@ define install_certificate(
     $privatekey=true,
 ) {
 
-    require certificates::packages,
+    require certificates::base,
         certificates::rapidssl_ca,
         certificates::rapidssl_ca_2,
         certificates::digicert_ca,
         certificates::wmf_ca
     # Public key
-    file { "/etc/ssl/certs/${name}.pem":
+    file { "/usr/local/share/ca-certificates/${name}.crt":
         owner  => 'root',
         group  => $group,
         mode   => '0444',
         source => "puppet:///files/ssl/${name}.pem",
+        notify  => Exec['update-ca-certificates'],
     }
 
 
@@ -128,15 +129,6 @@ define install_certificate(
             ensure => 'present',
         }
     }
-    # Many services require certificates to be found by a hash in
-    # the certs directory
-    exec { "${name}_create_hash":
-        unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${name}.pem).0\" ]",
-        command => "/bin/ln -sf /etc/ssl/certs/${name}.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${name}.pem).0",
-        require => [Package['openssl'],
-                    File["/etc/ssl/certs/${name}.pem"],
-        ],
-    }
 
     create_pkcs12{ $name: }
     create_combined_cert{ $name: }
@@ -148,22 +140,22 @@ define install_certificate(
         # If this is out of order either servers will fail to start,
         # or will not properly have SSL enabled.
         $cas = $name ? {
-            'unified.wikimedia.org'        => 'DigiCertHighAssuranceCA-3.pem',
-            'star.wikimedia.org'           => 'RapidSSL_CA.pem RapidSSL_CA_2.pem GeoTrust_Global_CA.pem',
-            'star.wikipedia.org'           => 'DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem',
-            'star.wiktionary.org'          => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikiquote.org'           => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikibooks.org'           => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikisource.org'          => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikinews.org'            => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikiversity.org'         => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.mediawiki.org'           => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikimediafoundation.org' => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wmflabs.org'             => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wmflabs'                 => 'wmf-labs.pem',
-            'star.planet.wikimedia.org'    => 'DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem',
-            'star.wmfusercontent.org'      => 'GlobalSign_CA.pem',
-            default => 'wmf-ca.pem',
+            'unified.wikimedia.org'        => 'DigiCertHighAssuranceCA-3.crt',
+            'star.wikimedia.org'           => 'RapidSSL_CA.crt RapidSSL_CA_2.crt GeoTrust_Global_CA.crt',
+            'star.wikipedia.org'           => 'DigiCertHighAssuranceCA-3.crt DigiCert_High_Assurance_EV_Root_CA.crt',
+            'star.wiktionary.org'          => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.wikiquote.org'           => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.wikibooks.org'           => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.wikisource.org'          => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.wikinews.org'            => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.wikiversity.org'         => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.mediawiki.org'           => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.wikimediafoundation.org' => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.wmflabs.org'             => 'RapidSSL_CA.crt GeoTrust_Global_CA.crt',
+            'star.wmflabs'                 => 'wmf-labs.crt',
+            'star.planet.wikimedia.org'    => 'DigiCertHighAssuranceCA-3.crt DigiCert_High_Assurance_EV_Root_CA.crt',
+            'star.wmfusercontent.org'      => 'GlobalSign_CA.crt',
+            default => 'wmf-ca.crt',
         }
     }
     create_chained_cert{ $name:
@@ -189,10 +181,20 @@ define install_additional_key(
     }
 }
 
-class certificates::packages {
+class certificates::base {
 
-    package { [ 'openssl', 'ca-certificates', 'ssl-cert' ]:
+    package { [ 'openssl', 'ssl-cert' ]:
         ensure => 'latest',
+    }
+
+    exec { 'update-ca-certificates':
+        command => '/usr/sbin/update-ca-certificates',
+        refreshonly => true,
+    }
+
+    package { 'ca-certificates':
+        ensure => 'latest',
+        notify => Exec['update-ca-certificates'],
     }
 
 }
@@ -211,112 +213,86 @@ class certificates::star_wmflabs {
 
 class certificates::wmf_ca {
 
-    include certificates::packages
+    include certificates::base
 
-    file { '/etc/ssl/certs/wmf-ca.pem':
+    file { '/usr/local/share/ca-certificates/wmf-ca.crt':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///files/ssl/wmf-ca.pem',
         require => Package['openssl'],
-    }
-
-    exec { '/bin/ln -s /etc/ssl/certs/wmf-ca.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-ca.pem).0':
-            unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-ca.pem).0\" ]",
-            require => File['/etc/ssl/certs/wmf-ca.pem'],
+        notify  => Exec['update-ca-certificates'],
     }
 
 }
 
 class certificates::wmf_labs_ca {
 
-    include certificates::packages
+    include certificates::base
 
-    file { '/etc/ssl/certs/wmf-labs.pem':
+    file { '/usr/local/share/ca-certificates/wmf-labs.crt':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///files/ssl/wmf-labs.pem',
         require => Package['openssl'],
-    }
-
-    exec { '/bin/ln -s /etc/ssl/certs/wmf-labs.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0':
-        unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0\" ]",
-        require => File['/etc/ssl/certs/wmf-labs.pem'],
+        notify  => Exec['update-ca-certificates'],
     }
 
 }
 
 class certificates::rapidssl_ca {
 
-    include certificates::packages
+    include certificates::base
 
-    file { '/etc/ssl/certs/RapidSSL_CA.pem':
+    file { '/usr/local/share/ca-certificates/RapidSSL_CA.crt':
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
             source  => 'puppet:///files/ssl/RapidSSL_CA.pem',
             require => Package['openssl'],
+            notify  => Exec['update-ca-certificates'],
     }
-
-    exec { '/bin/ln -sf /etc/ssl/certs/RapidSSL_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0':
-        unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0\" ]",
-        require => File['/etc/ssl/certs/RapidSSL_CA.pem'],
-    }
-
 }
 
 class certificates::rapidssl_ca_2 {
 
-    include certificates::packages
+    include certificates::base
 
-    file { '/etc/ssl/certs/RapidSSL_CA_2.pem':
+    file { '/usr/local/share/ca-certificates/RapidSSL_CA_2.crt':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///files/ssl/RapidSSL_CA_2.pem',
         require => Package['openssl'],
+        notify  => Exec['update-ca-certificates'],
     }
-
-    exec { '/bin/ln -sf /etc/ssl/certs/RapidSSL_CA_2.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA_2.pem).0':
-        unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA_2.pem).0\" ]",
-        require => File['/etc/ssl/certs/RapidSSL_CA_2.pem'],
-    }
-
 }
 
 class certificates::digicert_ca {
 
-    include certificates::packages
+    include certificates::base
 
-    file { '/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem':
+    file { '/usr/local/share/ca-certificates/DigiCertHighAssuranceCA-3.crt':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///files/ssl/DigiCertHighAssuranceCA-3.pem',
         require => Package['openssl'],
-    }
-
-    exec { '/bin/ln -sf /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0':
-        unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0\" ]",
-        require => File['/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem'],
+        notify  => Exec['update-ca-certificates'],
     }
 }
 
 class certificates::globalsign_ca {
 
-    include certificates::packages
+    include certificates::base
 
-    file { '/etc/ssl/certs/GlobalSign_CA.pem':
+    file { '/usr/local/share/ca-certificates/GlobalSign_CA.crt':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///files/ssl/GlobalSign_CA.pem',
         require => Package['openssl'],
-    }
-
-    exec { '/bin/ln -sf /etc/ssl/certs/GlobalSign_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/GlobalSign_CA.pem).0':
-        unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/GlobalSign_CA.pem).0\" ]",
-        require => File['/etc/ssl/certs/GlobalSign_CA.pem'],
+        notify  => Exec['update-ca-certificates'],
     }
 }
