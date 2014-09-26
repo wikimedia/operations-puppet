@@ -18,10 +18,10 @@ if [ -z "$INSTANCENAME" -o -z "$PROJECT" ]; then
 fi
 FROMREGION='pmtpa'
 TOREGION='eqiad'
-FROMAUTH="http://virt0.wikimedia.org:35357/v2.0"
-TOAUTH="http://virt1000.wikimedia.org:35357/v2.0"
-FROMPUPPETMASTER="virt0.wikimedia.org"
-TOPUPPETMASTER="virt1000.wikimedia.org"
+FROMAUTH="http://virt1000.wikimedia.org:35357/v2.0"
+TOAUTH="http://labcontrol2001.wikimedia.org:35357/v2.0"
+FROMPUPPETMASTER="virt1000.wikimedia.org"
+TOPUPPETMASTER="labcontrol2001.wikimedia.org"
 TOINSTANCE=`OS_TENANT_NAME=${PROJECT} OS_AUTH_URL=${TOAUTH} nova --os-region ${TOREGION} show ${INSTANCENAME} | grep ' id ' | awk '{ print $4 }'`
 if [ -n "$TOINSTANCE" ]; then
 	echo "Name conflict!  ${INSTANCENAME} already exists in ${TOREGION} with ID \"${TOINSTANCE}\""

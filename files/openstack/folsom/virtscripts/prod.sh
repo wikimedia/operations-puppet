@@ -7,7 +7,7 @@
 set -x
 
 # Using token auth env variables
-SERVICE_ENDPOINT=http://virt0.wikimedia.org:35357/v2.0/
+SERVICE_ENDPOINT=http://virt1000.wikimedia.org:35357/v2.0/
 SERVICE_TOKEN=<redacted>
 
 # ENDPOINT URLS
@@ -15,12 +15,12 @@ NOVA_PUBLIC_URL="http://virt2.pmtpa.wmnet:8774/v2/\$(tenant_id)s"
 NOVA_ADMIN_URL=$NOVA_PUBLIC_URL
 NOVA_INTERNAL_URL=$NOVA_PUBLIC_URL
 
-GLANCE_PUBLIC_URL="http://virt0.wikimedia.org:9292/v1"
+GLANCE_PUBLIC_URL="http://virt1000.wikimedia.org:9292/v1"
 GLANCE_ADMIN_URL=$GLANCE_PUBLIC_URL
 GLANCE_INTERNAL_URL=$GLANCE_PUBLIC_URL
 
-KEYSTONE_PUBLIC_URL="http://virt0.wikimedia.org:5000/v2.0"
-KEYSTONE_ADMIN_URL="http://virt0.wikimedia.org:35357/v2.0"
+KEYSTONE_PUBLIC_URL="http://virt1000.wikimedia.org:5000/v2.0"
+KEYSTONE_ADMIN_URL="http://virt1000.wikimedia.org:35357/v2.0"
 KEYSTONE_INTERNAL_URL=$KEYSTONE_PUBLIC_URL
 
 PROXY_PUBLIC_URL="http://dynamicproxy/dynamicproxy-api/v1"
