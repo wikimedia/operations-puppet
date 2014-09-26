@@ -30,7 +30,7 @@ class role::puppet_compiler {
 
     mount { "${::puppet_compiler::program_dir}/output":
         ensure  => mounted,
-        type    => 'auto',
+        fstype  => 'auto',
         options => 'bind',
         device  => '/mnt/puppet-compiler-output'
     }
@@ -43,7 +43,7 @@ class role::puppet_compiler {
 
     mount { "${::puppet_compiler::program_dir}/external/change":
         ensure  => mounted,
-        type    => 'auto',
+        fstype  => 'auto',
         options => 'bind',
         device  => '/mnt/puppet-compiler-external'
     }
