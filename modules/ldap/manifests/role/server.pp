@@ -19,10 +19,6 @@ class ldap::role::server::labs {
         }
         'production': {
             case $::hostname {
-                'virt0': {
-                    $ca_name = 'Equifax_Secure_CA.pem'
-                    $certificate = 'virt0.wikimedia.org'
-                }
                 'virt1000': {
                     $ca_name = 'GlobalSign_CA.pem'
                     $certificate = 'ldap-eqiad.wikimedia.org'
@@ -36,7 +32,7 @@ class ldap::role::server::labs {
                     $certificate = 'ldap-codfw.wikimedia.org'
                 }
                 'default': {
-                    fail('Production realm ldap certificates for virt0/1000/labcontrol2001 only!')
+                    fail('Production realm ldap certificates for virt1000/labcontrol2001 only!')
                 }
             }
         }
@@ -95,8 +91,7 @@ class ldap::role::server::labs {
                         'ldap-codfw.wikimedia.org',
                         'virt1000.wikimedia.org',
                         'labcontrol2001.wikimedia.org',
-                        'neptunium.wikimedia.org',
-                        'virt0.wikimedia.org']
+                        'neptunium.wikimedia.org']
     }
 }
 
