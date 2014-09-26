@@ -7,6 +7,9 @@ options => {
 <% if (! @ipaddress6.nil?) -%>
 		<%= @ipaddress6 %>,
 <% end -%>
+<% @extra_listeners.each do |listener| -%>
+		<%= listener %>
+<% end -%>
 	],
 <% end -%>
 	http_listen = [

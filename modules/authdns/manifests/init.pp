@@ -6,6 +6,7 @@ class authdns(
     $nameservers = [ $::fqdn ],
     $ipaddress = undef,
     $ipaddress6 = undef,
+    $extra_listeners = [],
     $gitrepo = undef,
     $monitoring = true,
 ) {
