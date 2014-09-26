@@ -119,7 +119,7 @@ class webserver::apache {
     # Parameters:
     #   $aliases=[]       - array of ServerAliases
     #   $ssl="false"      - if true, sets up an ssl certificate for $title
-    #   $certfile=undef   - defaults to /etc/ssl/certs/${title}.pem
+    #   $certfile=undef   - defaults to /etc/ssl/localcerts/${title}.crt
     #   $certkey=undef    - defaults to "/etc/ssl/private/${title}.key
     #   $docroot=undef    - defaults to: $title == 'stats.wikimedia.org', then /srv/stats.wikimedia.org
     #   $custom=[]        - custom Apache config strings to put into virtual host site file
@@ -134,7 +134,7 @@ class webserver::apache {
     define site(
         $aliases      = [],
         $ssl          = 'false',
-        $certfile     = "/etc/ssl/certs/${title}.pem",
+        $certfile     = "/etc/ssl/localcerts/${title}.crt",
         $certkey      = "/etc/ssl/private/${title}.key",
         $docroot      = undef,
         $custom       = [],

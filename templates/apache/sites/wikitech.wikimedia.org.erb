@@ -40,8 +40,9 @@
     ServerName <%= @webserver_hostname %>
 
     SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/<%= @certificate %>.pem
+    SSLCertificateFile /etc/ssl/localcerts/<%= @certificate %>.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
+    # XXX: Do we really use SSL client auth?
     SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 

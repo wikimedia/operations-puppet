@@ -781,11 +781,11 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
                 require => Install_additional_key["${certname}"];
             "/var/lib/nova/clientcert.pem":
                 ensure  => link,
-                target  => "/etc/ssl/certs/${certname}.pem",
+                target  => "/etc/ssl/localcerts/${certname}.crt",
                 require => Install_certificate["${certname}"];
             "/var/lib/nova/cacert.pem":
                 ensure  => link,
-                target  => "/etc/ssl/certs/wmf-ca.pem",
+                target  => "/usr/local/share/ca-certificates/wmf-ca.crt",
                 require => Install_certificate["${certname}"];
             "/var/lib/nova/.ssh":
                 ensure  => directory,

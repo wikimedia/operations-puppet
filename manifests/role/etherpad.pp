@@ -18,7 +18,7 @@ class role::etherpad{
         'production': {
             $etherpad_host = 'etherpad.wikimedia.org'
             install_certificate{ 'etherpad.wikimedia.org': }
-            $etherpad_ssl_cert = '/etc/ssl/certs/etherpad.wikimedia.org.pem'
+            $etherpad_ssl_cert = '/etc/ssl/localcerts/etherpad.wikimedia.org.crt'
             $etherpad_ssl_key = '/etc/ssl/private/etherpad.wikimedia.org.key'
         }
         'default': {
