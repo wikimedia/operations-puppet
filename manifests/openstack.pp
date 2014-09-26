@@ -2,14 +2,15 @@ class openstack::firewall {
     include base::firewall
 
     $labs_private_net = '10.0.0.0/0'
-    if ($::site == 'pmtpa') {
-        $labs_nodes = '10.4.16.0/24'
+    if ($::site == 'codfw') {
+        # TODO!  codfw will need something
+        # like this when the ip range is assigned.
+        # $labs_nodes = '10.4.16.0/24'
         # virt1000
         $other_master = '208.80.154.18'
     } elsif ($::site == 'eqiad') {
         $labs_nodes = '10.64.20.0/24'
-        # virt0
-        $other_master = '208.80.152.32'
+        $other_master = '208.80.153.14'
     }
 
     # Wikitech ssh
