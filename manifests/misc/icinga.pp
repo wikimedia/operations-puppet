@@ -25,7 +25,6 @@ class icinga::monitor {
     include nagios::gsbmonitoring
     include nrpe
     include passwords::nagios::mysql
-    include certificates::globalsign_ca
 
     Class['icinga::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service']
 

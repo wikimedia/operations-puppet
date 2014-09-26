@@ -1,8 +1,7 @@
 class ldap::role::server::labs {
     include ldap::role::config::labs,
         passwords::certs,
-        passwords::ldap::initial_setup,
-        certificates::globalsign_ca
+        passwords::ldap::initial_setup
 
     $certificate_location = '/var/opendj/instance'
     $cert_pass = $passwords::certs::certs_default_pass
