@@ -8,32 +8,6 @@ class role::glance::config {
     }
 }
 
-class role::glance::config::pmtpa inherits role::glance::config {
-    include role::keystone::config::pmtpa
-
-    $keystoneconfig = $role::keystone::config::pmtpa::keystoneconfig
-
-    $db_host = $::realm ? {
-        'production' => 'virt0.wikimedia.org',
-        'labs'       => $::ipaddress_eth0,
-    }
-
-    $bind_ip = $::realm ? {
-        'production' => '208.80.152.32',
-        'labs'       => $::ipaddress_eth0,
-        }
-
-    $pmtpaglanceconfig = {
-        db_host                => $db_host,
-        bind_ip                => $bind_ip,
-        keystone_admin_token   => $keystoneconfig['admin_token'],
-        keystone_auth_host     => $keystoneconfig['bind_ip'],
-        keystone_auth_protocol => $keystoneconfig['auth_protocol'],
-        keystone_auth_port     => $keystoneconfig['auth_port'],
-    }
-    $glanceconfig = merge($pmtpaglanceconfig, $commonglanceconfig)
-}
-
 class role::glance::config::eqiad inherits role::glance::config {
     include role::keystone::config::eqiad
 
@@ -67,17 +41,14 @@ class role::glance::config::eqiad inherits role::glance::config {
 }
 
 class role::glance::server {
-    include role::glance::config::pmtpa
     include role::glance::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $glanceconfig = $::openstack_site_override ? {
-            'pmtpa' => $role::glance::config::pmtpa::glanceconfig,
             'eqiad' => $role::glance::config::eqiad::glanceconfig,
         }
     } else {
         $glanceconfig = $::site ? {
-            'pmtpa' => $role::glance::config::pmtpa::glanceconfig,
             'eqiad' => $role::glance::config::eqiad::glanceconfig,
         }
     }
