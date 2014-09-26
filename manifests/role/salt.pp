@@ -43,7 +43,7 @@ class role::salt::masters::labs {
     }
 
     class { 'salt::reactors':
-        salt_reactor_options => { 'puppet_server' => 'virt0.wikimedia.org' },
+        salt_reactor_options => { 'puppet_server' => 'virt1000.wikimedia.org' },
     }
 
     salt::master_environment{ 'base':
@@ -90,7 +90,7 @@ class role::salt::masters::labs::project_master {
 
 class role::salt::minions {
     if $::realm == 'labs' {
-        $labs_masters  = [ 'virt1000.wikimedia.org', 'virt0.wikimedia.org' ]
+        $labs_masters  = [ 'virt1000.wikimedia.org', 'labcontrol2001.wikimedia.org' ]
         $labs_finger   = 'c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd'
         $master        = pick($::salt_master_override, $labs_masters)
         $master_finger = pick($::salt_master_finger_override, $labs_finger)
