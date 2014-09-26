@@ -5,7 +5,6 @@ class icinga::monitor {
 
     include facilities::pdu_monitoring
     include icinga::ganglia::ganglios
-    include icinga::apache
     include icinga::monitor::checkpaging
     include icinga::monitor::files::misc
     include icinga::monitor::files::nagios-plugins
@@ -13,7 +12,6 @@ class icinga::monitor {
     include icinga::nsca::firewall
     include icinga::nsca::daemon
     include icinga::packages
-    include icinga::monitor::service
     include icinga::monitor::wikidata
     include icinga::user
     include icinga::groups::misc
@@ -25,16 +23,22 @@ class icinga::monitor {
     include passwords::nagios::mysql
     include certificates::globalsign_ca
 
-    Class['icinga::packages'] -> Class['icinga::monitor::service']
-
     class { 'icinga::config':
-        require => [Class['icinga::packages'], Class['icinga::monitor::service']],
+        require => [Class['icinga::packages'], Class['icinga::service']],
         notify => Service['icinga']
     }
 
     class { 'icinga::naggen':
         require => Class['icinga::config'],
         notify  => Service['icinga'],
+    }
+
+    class { 'icinga::apache':
+        require => Class['icinga::packages'],
+    }
+
+    class { 'icinga::service':
+        require => Class['icinga::apache'],
     }
 }
 
@@ -225,36 +229,6 @@ class icinga::monitor::files::nagios-plugins {
         ensure => absent,
     }
 
-}
-
-
-
-class icinga::monitor::service {
-
-    require icinga::apache
-
-    file { '/var/icinga-tmpfs':
-        ensure => directory,
-        owner => 'icinga',
-        group => 'icinga',
-        mode => '0755',
-    }
-
-    mount { '/var/icinga-tmpfs':
-        ensure  => mounted,
-        atboot  => true,
-        fstype  => 'tmpfs',
-        device  => 'none',
-        options => 'size=128m,uid=icinga,gid=icinga,mode=755',
-        require => File['/var/icinga-tmpfs']
-    }
-
-    service { 'icinga':
-        ensure    => running,
-        hasstatus => false,
-        restart   => '/etc/init.d/icinga reload',
-        require => Mount['/var/icinga-tmpfs'],
-    }
 }
 
 class icinga::ganglia::ganglios {
