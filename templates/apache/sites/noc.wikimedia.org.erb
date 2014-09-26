@@ -4,16 +4,12 @@
 #####################################################################
 # vim: filetype=apache
 
-NameVirtualHost *:443
-
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
 
     ServerName noc.wikimedia.org
 
     DocumentRoot /srv/mediawiki/docroot/noc
-
-    UserDir public_html
 
     ErrorLog /var/log/apache2/error.log
 
@@ -31,33 +27,4 @@ NameVirtualHost *:443
     <Directory /srv/mediawiki/docroot/noc/conf>
         AddDefaultCharset utf-8
     </Directory>
-</VirtualHost>
-<VirtualHost *:443>
-    ServerAdmin noc@wikimedia.org
-    ServerName noc.wikimedia.org
-
-    DocumentRoot /srv/mediawiki/docroot/noc
-
-    UserDir public_html
-
-    SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/noc.wikimedia.org.pem
-    SSLCertificateKeyFile /etc/ssl/private/noc.wikimedia.org.key
-    <%= @ssl_settings.join("\n") %>
-
-    # Possible values include: debug, info, notice, warn, error, crit,
-    # alert, emerg.
-    LogLevel warn
-
-    CustomLog /var/log/apache2/access.log combined
-
-    <Directory />
-        Order Deny,Allow
-        AllowOverride All
-    </Directory>
-
-    <Directory /srv/mediawiki/docroot/noc/conf>
-        AddDefaultCharset utf-8
-    </Directory>
-
 </VirtualHost>
