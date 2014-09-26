@@ -2,11 +2,7 @@
 # A class to implement Wikimedia's authoritative DNS system
 #
 class authdns(
-    $fqdn = $::fqdn,
     $nameservers = [ $::fqdn ],
-    $ipaddress = undef,
-    $ipaddress6 = undef,
-    $extra_listeners = [],
     $gitrepo = undef,
     $monitoring = true,
 ) {
@@ -87,28 +83,5 @@ class authdns(
 
     if $monitoring {
         include authdns::monitoring
-    }
-
-    # export the SSH host key for service hostname/IP keys too
-    if $fqdn != $::fqdn {
-        @@sshkey { $fqdn:
-            ensure => 'present',
-            type   => 'ssh-rsa',
-            key    => $::sshrsakey,
-        }
-    }
-    if $ipaddress {
-        @@sshkey { $ipaddress:
-            ensure => 'present',
-            type   => 'ssh-rsa',
-            key    => $::sshrsakey,
-        }
-    }
-    if $ipaddress6 {
-        @@sshkey { $ipaddress6:
-            ensure => 'present',
-            type   => 'ssh-rsa',
-            key    => $::sshrsakey,
-        }
     }
 }
