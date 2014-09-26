@@ -191,7 +191,7 @@ class hhvm(
     ## Packages
 
     package { [ 'hhvm', 'hhvm-dbg' ]:
-        ensure => '3.3.0-20140925+wmf1',
+        ensure => present,
         before => Service['hhvm'],
     }
 
