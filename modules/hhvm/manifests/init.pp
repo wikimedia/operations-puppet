@@ -117,7 +117,7 @@ class hhvm(
             },
             mysql                    => {
                 typed_results        => false,
-                slow_query_threshold => to_milliseconds('10s'),
+                slow_query_threshold => 10 * 1000,  # milliseconds
             },
             debug                    => {
                 core_dump_report_directory => '/var/log/hhvm',
