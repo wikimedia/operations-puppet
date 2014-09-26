@@ -1,21 +1,6 @@
 options => {
-<% if (! @ipaddress.nil? || ! @ipaddress6.nil?) -%>
-	listen = [
-<% if (! @ipaddress.nil?) -%>
-		<%= @ipaddress  %>,
-<% end -%>
-<% if (! @ipaddress6.nil?) -%>
-		<%= @ipaddress6 %>,
-<% end -%>
-<% @extra_listeners.each do |listener| -%>
-		<%= listener %>,
-<% end -%>
-	],
-<% end -%>
-	http_listen = [
-		127.0.0.1,
-		::1,
-	],
+	listen = [ 0.0.0.0, :: ],
+	http_listen = [ 127.0.0.1, ::1 ],
 	zones_strict_data = true,
 	zones_default_ttl = 43200,
 	# don't inotify on zonefiles but wait for HUP

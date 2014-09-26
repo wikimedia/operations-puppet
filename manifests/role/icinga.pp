@@ -12,6 +12,7 @@ class role::icinga {
     include icinga::monitor::wikidata
     include icinga::groups::misc
     include lvs::monitor
+    include role::authdns::monitoring
     include dsh::config
     include mysql
     include nagios::gsbmonitoring

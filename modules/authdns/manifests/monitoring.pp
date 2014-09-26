@@ -1,21 +1,14 @@
 # == Class authdns::monitoring
 # Monitoring checks for authdns, specific to Wikimedia setup
 #
+
+# This monitors the specific authdns server directly via
+#  its own fqdn, which won't generally be one of the listener
+#  addresses we really care about.  This gives a more-direct
+#  view of reality, though, as the mapping of listener addresses
+#  to real hosts could be fluid due to routing/anycast.
 class authdns::monitoring {
-    Class['authdns'] -> Class['authdns::monitoring']
-
-    if $authdns::ipaddress {
-        $monitor_ip = $authdns::ipaddress
-    } else {
-        $monitor_ip = $::ipaddress
-    }
-
-    monitor_host { $authdns::fqdn:
-        ip_address    => $monitor_ip,
-    }
-
     monitor_service { 'auth dns':
-        host          => $authdns::fqdn,
         description   => 'Auth DNS',
         check_command => 'check_dns!www.wikipedia.org'
     }
