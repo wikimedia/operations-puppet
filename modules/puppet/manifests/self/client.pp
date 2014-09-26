@@ -12,7 +12,11 @@ class puppet::self::client($server) {
 
     # Most of the defaults in puppet::self::config
     # are good for setting up a puppet client.
+    #
+    # We'd best be sure that our ldap config is set up properly
+    # before puppet goes to work, though.
     class { 'puppet::self::config':
-        server => $server,
+        server   => $server,
+        require  => File['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf'],
     }
 }
