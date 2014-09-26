@@ -4,6 +4,20 @@ class contint::slave-scripts {
         fail("contint::slave-scripts must not be used in production. Slaves are already Trebuchet deployment targets.")
     }
 
+    # Hack: faking directories that Trebuchet would normally manage.
+    # The integration project in labs does not use Trebuchet to manage these
+    # packages, but in production we do.
+    if ! defined(File['/srv/deployment']) {
+        file { '/srv/deployment':
+            ensure => 'directory',
+        }
+    }
+    if ! defined(File['/srv/deployment/integration']) {
+        file { '/srv/deployment/integration':
+            ensure => 'directory',
+        }
+    }
+
     git::clone { 'jenkins CI slave scripts':
         ensure             => 'latest',
         directory          => '/srv/deployment/integration/slave-scripts',
@@ -11,7 +25,6 @@ class contint::slave-scripts {
         recurse_submodules => true,
     }
 
-    # We can not Trebuchet on labs, so use the good old git::clone
     git::clone { 'jenkins CI kss':
         ensure             => 'latest',
         directory          => '/srv/deployment/integration/kss',
