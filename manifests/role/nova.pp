@@ -183,7 +183,7 @@ class role::nova::manager {
         }
         'production': {
             $certificate = 'wikitech.wikimedia.org'
-            $ca = 'RapidSSL_CA.pem GeoTrust_Global_CA.pem'
+            $ca = 'RapidSSL_CA.crt GeoTrust_Global_CA.crt'
         }
         default: {
             fail('unknown realm, should be labs or production')

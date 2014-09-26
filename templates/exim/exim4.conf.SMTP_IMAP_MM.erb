@@ -134,7 +134,7 @@ av_scanner = clamd:/var/run/clamav/clamd.ctl
 
 <% if enable_imap_delivery == true then -%>
 # TLS
-tls_certificate = /etc/ssl/certs/wikimedia.org.pem
+tls_certificate = /etc/ssl/localcerts/wikimedia.org.crt
 tls_privatekey = /etc/ssl/private/wikimedia.org.key
 tls_advertise_hosts = *
 tls_on_connect_ports = 465

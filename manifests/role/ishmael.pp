@@ -4,7 +4,7 @@ class role::ishmael {
 
     system::role { 'role::ishmael': description => 'ishmael server' }
 
-    install_certificate{ 'ishmael.wikimedia.org': ca => 'RapidSSL_CA.pem' }
+    install_certificate{ 'ishmael.wikimedia.org': ca => 'RapidSSL_CA.crt' }
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
     class { '::ishmael':

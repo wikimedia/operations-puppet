@@ -7,7 +7,7 @@ import sys
 from optparse import OptionParser
 
 parser = OptionParser(conflict_handler="resolve")
-parser.set_usage("check_cert <hostname> <port> <CAfile>\nExample: check_cert secure.wikimedia.org 443 Equifax_Secure_CA.pem")
+parser.set_usage("check_cert <hostname> <port> <CAfile>\nExample: check_cert secure.wikimedia.org 443 Equifax_Secure_CA.crt")
 (options, args) = parser.parse_args()
 
 if len(args) != 3:

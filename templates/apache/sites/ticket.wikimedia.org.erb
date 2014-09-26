@@ -19,7 +19,7 @@
     ServerAlias iodine.wikimedia.org
 
     SSLEngine On
-    SSLCertificateFile /etc/ssl/certs/ticket.wikimedia.org.chained.pem
+    SSLCertificateFile /etc/ssl/localcerts/ticket.wikimedia.org.chained.crt
     SSLCertificateKeyFile /etc/ssl/private/ticket.wikimedia.org.key
     SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>

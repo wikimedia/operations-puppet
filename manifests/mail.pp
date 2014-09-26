@@ -213,7 +213,7 @@ class mailman {
 
         if ( $::realm == 'production' ) {
             install_certificate{ 'lists.wikimedia.org':
-                ca => 'RapidSSL_CA.pem',
+                ca => 'RapidSSL_CA.crt',
             }
         }
 

@@ -305,10 +305,10 @@ node 'antimony.wikimedia.org' {
     class { 'admin': groups => ['gerrit-root', 'gerrit-admin'] }
 
     install_certificate{ 'git.wikimedia.org':
-        ca => 'RapidSSL_CA.pem',
+        ca => 'RapidSSL_CA.crt',
     }
     install_certificate{ 'svn.wikimedia.org':
-        ca => 'RapidSSL_CA.pem',
+        ca => 'RapidSSL_CA.crt',
     }
 
     class { 'base::firewall': }
@@ -3166,7 +3166,7 @@ node 'ytterbium.wikimedia.org' {
     include role::gerrit::production
 
     install_certificate{ 'gerrit.wikimedia.org':
-        ca => 'RapidSSL_CA.pem',
+        ca => 'RapidSSL_CA.crt',
     }
 
 }

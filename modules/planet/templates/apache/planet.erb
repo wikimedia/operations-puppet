@@ -4,8 +4,8 @@
 <VirtualHost *:443>
     ServerName planet.<%= scope.lookupvar('planet::planet_domain_name') %>
     SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.pem
-    SSLCertificateChainFile /etc/ssl/certs/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.chained.pem
+    SSLCertificateFile /etc/ssl/localcerts/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.crt
+    SSLCertificateChainFile /etc/ssl/localcerts/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.chained.crt
     SSLCertificateKeyFile /etc/ssl/private/star.planet.<%= scope.lookupvar('planet::planet_domain_name') %>.key
     <%= @ssl_settings.join("\n") %>
 

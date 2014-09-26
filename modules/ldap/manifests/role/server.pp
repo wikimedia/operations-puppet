@@ -15,20 +15,20 @@ class ldap::role::server::labs {
     case $::realm {
         'labs': {
             $certificate = 'star.wmflabs'
-            $ca_name = 'wmf-labs.pem'
+            $ca_name = 'wmf-labs.crt'
         }
         'production': {
             case $::hostname {
                 'virt1000': {
-                    $ca_name = 'GlobalSign_CA.pem'
+                    $ca_name = 'GlobalSign_CA.crt'
                     $certificate = 'ldap-eqiad.wikimedia.org'
                 }
                 'labcontrol2001': {
-                    $ca_name = 'GlobalSign_CA.pem'
+                    $ca_name = 'GlobalSign_CA.crt'
                     $certificate = 'ldap-codfw.wikimedia.org'
                 }
                 'neptunium': {
-                    $ca_name = 'GlobalSign_CA.pem'
+                    $ca_name = 'GlobalSign_CA.crt'
                     $certificate = 'ldap-codfw.wikimedia.org'
                 }
                 'default': {
@@ -110,7 +110,7 @@ class ldap::role::server::production {
     $proxypass = $ldap::role::config::production::ldapconfig['proxypass']
 
     $certificate = "${hostname}.pmtpa.wmnet"
-    $ca_name = 'wmf-ca.pem'
+    $ca_name = 'wmf-ca.crt'
     install_certificate{ $certificate: }
     create_pkcs12{ "${certificate}.opendj":
         certname => $certificate,
@@ -154,7 +154,7 @@ class ldap::role::server::corp {
     $proxypass = $ldap::role::config::corp::ldapconfig['proxypass']
 
     $certificate = $::fqdn
-    $ca_name = 'wmf-ca.pem'
+    $ca_name = 'wmf-ca.crt'
     install_certificate{ $certificate: }
     create_pkcs12{ "${certificate}.opendj":
         certname => $certificate,
