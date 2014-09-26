@@ -1,6 +1,5 @@
 # UUID                                  	Group Name
 #
-269806ca452396f2b1f6079fc4eded8c67b7a8de	ops-labs
 global:Registered-Users                 	Registered Users
 ldap:cn=ops,ou=groups,dc=wikimedia,dc=org	ldap/ops
 ldap:cn=testlabs,ou=groups,dc=wikimedia,dc=org	ldap/testlabs
