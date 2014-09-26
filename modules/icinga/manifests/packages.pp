@@ -9,4 +9,6 @@ class icinga::packages {
     ] :
         ensure => latest,
     }
+
+    include icinga::initscript
 }
