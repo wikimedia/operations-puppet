@@ -1,15 +1,12 @@
 class role::nova::config {
-    include role::nova::config::pmtpa
     include role::nova::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $novaconfig = $::openstack_site_override ? {
-            'pmtpa' => $role::nova::config::pmtpa::novaconfig,
             'eqiad' => $role::nova::config::eqiad::novaconfig,
         }
     } else {
         $novaconfig = $::site ? {
-            'pmtpa' => $role::nova::config::pmtpa::novaconfig,
             'eqiad' => $role::nova::config::eqiad::novaconfig,
         }
     }
@@ -44,117 +41,6 @@ class role::nova::config::common {
             'production' => 'kvm',
             'labs'       => 'qemu',
         },
-    }
-}
-
-class role::nova::config::pmtpa inherits role::nova::config::common {
-    include role::keystone::config::pmtpa
-
-    $keystoneconfig = $role::keystone::config::pmtpa::keystoneconfig
-    $controller_hostname = $::realm ? {
-        'production' => 'virt0.wikimedia.org',
-        'labs'       => $nova_controller_hostname ? {
-            undef   => $::ipaddress_eth0,
-            default => $nova_controller_hostname,
-        }
-    }
-
-
-    $pmtpanovaconfig = {
-        db_host     => $controller_hostname,
-        dhcp_domain => 'pmtpa.wmflabs',
-        glance_host => $controller_hostname,
-        rabbit_host => $controller_hostname,
-        cc_host     => $controller_hostname,
-        network_flat_interface => $::realm ? {
-            'production' => 'eth1.103',
-            'labs'       => 'eth0.103',
-        },
-        network_flat_tagged_base_interface => $::realm ? {
-            'production' => 'eth1',
-            'labs'       => 'eth0',
-        },
-        network_flat_interface_vlan => '103',
-        flat_network_bridge => 'br103',
-        network_public_interface => 'eth0',
-        network_host => $::realm ? {
-            'production' => '10.4.0.1',
-            'labs'       => $nova_network_hostname ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_network_hostname,
-            }
-        },
-        api_host => $::realm ? {
-            'production' => 'virt2.pmtpa.wmnet',
-            'labs'       => $nova_controller_hostname ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_controller_hostname,
-            }
-        },
-        api_ip => $::realm ? {
-            'production' => '10.4.0.1',
-            'labs'       => $nova_network_ip ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_network_ip,
-            }
-        },
-        fixed_range => $::realm ? {
-            'production' => '10.4.0.0/21',
-            'labs'       => '192.168.0.0/21',
-        },
-        dhcp_start => $::realm ? {
-            'production' => '10.4.0.4',
-            'labs'       => '192.168.0.4',
-        },
-        network_public_ip => $::realm ? {
-            'production' => '208.80.153.192',
-            'labs'       => $nova_network_ip ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_network_ip,
-            }
-        },
-        dmz_cidr => $::realm ? {
-            'production' => '208.80.153.0/22,10.0.0.0/8',
-            'labs'       => '10.4.0.0/21',
-        },
-        controller_hostname => $::realm ? {
-            'production' => 'wikitech.wikimedia.org',
-            'labs'       => $nova_controller_hostname ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_controller_hostname,
-            }
-        },
-        ajax_proxy_url => $::realm ? {
-            'production' => 'http://wikitech.wikimedia.org:8000',
-            'labs'       => $nova_controller_hostname ? {
-                undef   => $::ipaddress_eth0,
-                default => "${nova_controller_hostname}:8000",
-            }
-        },
-        ldap_host              => $controller_hostname,
-        puppet_host            => $controller_hostname,
-        puppet_db_host         => $controller_hostname,
-        live_migration_uri     => 'qemu://%s.pmtpa.wmnet/system?pkipath=/var/lib/nova',
-        zone                   => 'pmtpa',
-        keystone_admin_token   => $keystoneconfig['admin_token'],
-        keystone_auth_host     => $keystoneconfig['bind_ip'],
-        keystone_auth_protocol => $keystoneconfig['auth_protocol'],
-        keystone_auth_port     => $keystoneconfig['auth_port'],
-    }
-    if ( $::hostname == 'virt2' ) {
-        $networkconfig = {
-            network_flat_interface => $::realm ? {
-                'production' => 'bond1.103',
-                'labs'       => 'eth0.103',
-            },
-            network_flat_tagged_base_interface => $::realm ? {
-                'production' => 'bond1',
-                'labs'       => 'eth0',
-            },
-        }
-        $novaconfig = merge( $pmtpanovaconfig, $commonnovaconfig, $networkconfig )
-    } else {
-        $novaconfig = merge( $pmtpanovaconfig, $commonnovaconfig )
     }
 }
 
@@ -321,27 +207,21 @@ class role::nova::controller {
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
-    include role::keystone::config::pmtpa
     include role::keystone::config::eqiad
-    include role::glance::config::pmtpa
     include role::glance::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $glanceconfig = $::openstack_site_override ? {
-            'pmtpa' => $role::glance::config::pmtpa::glanceconfig,
             'eqiad' => $role::glance::config::eqiad::glanceconfig,
         }
         $keystoneconfig = $::openstack_site_override ? {
-            'pmtpa' => $role::keystone::config::pmtpa::keystoneconfig,
             'eqiad' => $role::keystone::config::eqiad::keystoneconfig,
         }
     } else {
         $glanceconfig = $::site ? {
-            'pmtpa' => $role::glance::config::pmtpa::glanceconfig,
             'eqiad' => $role::glance::config::eqiad::glanceconfig,
         }
         $keystoneconfig = $::site ? {
-            'pmtpa' => $role::keystone::config::pmtpa::keystoneconfig,
             'eqiad' => $role::keystone::config::eqiad::keystoneconfig,
         }
     }
@@ -468,13 +348,8 @@ class role::nova::network {
 
     include role::nova::common
 
-    if ($::site == 'pmtpa' and $::realm == 'production') {
-        require role::nova::network::bonding
-    }
-
     if ($::realm == production) {
         $site_address = $::site ? {
-            'pmtpa' => '208.80.153.192',
             'eqiad' => '208.80.155.255',
         }
 
@@ -580,7 +455,6 @@ class role::nova::compute {
 
 # global icinga hostgroups for virt/labs hosts
 @monitor_group { 'virt_eqiad': description => 'eqiad virt servers' }
-@monitor_group { 'virt_pmtpa': description => 'pmtpa virt servers' }
 @monitor_group { 'virt_esams': description => 'esams virt servers' }
 @monitor_group { 'virt_codfw': description => 'codfw virt servers' }
 @monitor_group { 'virt_ulsfo': description => 'ulsfo virt servers' }

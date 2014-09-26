@@ -20,36 +20,6 @@ class role::keystone::config {
         token_driver_password      => $passwords::openstack::keystone::keystone_db_pass,
     }
 }
-class role::keystone::config::pmtpa inherits role::keystone::config {
-    $pmtpakeystoneconfig = {
-        db_host      => $::realm ? {
-            'production' => 'virt0.wikimedia.org',
-            'labs'       => $nova_controller_hostname ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_controller_hostname,
-            }
-        },
-        ldap_host    => $::realm ? {
-            'production' => 'virt0.wikimedia.org',
-            'labs'       => $nova_controller_hostname ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_controller_hostname,
-            }
-        },
-        bind_ip      => $::realm ? {
-            'production' => '208.80.152.32',
-            'labs'       => $nova_controller_ip ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_controller_ip,
-            }
-        },
-        token_driver => $::realm ? {
-            'production' => 'redis',
-            'labs'       => 'redis',
-        },
-    }
-    $keystoneconfig = merge($pmtpakeystoneconfig, $commonkeystoneconfig)
-}
 
 class role::keystone::config::eqiad inherits role::keystone::config {
     $eqiadkeystoneconfig = {
@@ -83,17 +53,14 @@ class role::keystone::config::eqiad inherits role::keystone::config {
 }
 
 class role::keystone::server ($glanceconfig) {
-    include role::keystone::config::pmtpa,
-            role::keystone::config::eqiad
+    include role::keystone::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $keystoneconfig = $::openstack_site_override ? {
-            'pmtpa' => $role::keystone::config::pmtpa::keystoneconfig,
             'eqiad' => $role::keystone::config::eqiad::keystoneconfig,
         }
     } else {
         $keystoneconfig = $::site ? {
-            'pmtpa' => $role::keystone::config::pmtpa::keystoneconfig,
             'eqiad' => $role::keystone::config::eqiad::keystoneconfig,
         }
     }
