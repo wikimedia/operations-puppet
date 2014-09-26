@@ -2,6 +2,9 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
     include ldap::role::config::labs,
         certificates::wmf_ca
 
+    # Cert for the new ldap-eqiad/ldap-codfw ldap servers:
+    include certificates::globalsign_ca
+
     if ( $::realm == 'labs' ) {
         if( $::site == 'eqiad' ) {
             $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'access']
@@ -11,9 +14,6 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
 
         # Cert for the old virt1000/virt0 ldap servers:
         include certificates::wmf_labs_ca
-
-        # Cert for the old ldap-eqiad/ldap-codfw ldap servers:
-        include certificates::globalsign_ca
 
     } else {
         $includes = $ldapincludes
