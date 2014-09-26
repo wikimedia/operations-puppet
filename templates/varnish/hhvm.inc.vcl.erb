@@ -37,6 +37,8 @@ sub php_mark_engine {
 	}
 }
 
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+/* this will fail compilation on non-tier-1 varnishes due to missing hhvm_api symbol */
 sub choose_hhvm_backend {
 	/* Use the hhvm backend for any request to the standard appservers.
 	On a request restart (often due to an error), fallback to the Zend pool */
@@ -48,3 +50,4 @@ sub choose_hhvm_backend {
 		}
 	}
 }
+<% end -%>
