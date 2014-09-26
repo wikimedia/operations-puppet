@@ -330,7 +330,7 @@ node 'baham.wikimedia.org' {
     }
     include standard
     include admin
-    include role::authdns::baham
+    include role::authdns::server
 }
 
 node 'bast1001.wikimedia.org' {
@@ -1122,7 +1122,7 @@ node 'eeden.esams.wikimedia.org' {
     }
     include standard
     include admin
-    include role::authdns::ns2
+    include role::authdns::server
 }
 
 node 'tarin.pmtpa.wmnet' {
@@ -1938,7 +1938,7 @@ node 'rubidium.wikimedia.org' {
     }
     include standard
     include admin
-    include role::authdns::ns0
+    include role::authdns::server
 }
 
 node 'mchenry.wikimedia.org' {
@@ -1972,7 +1972,7 @@ node 'mexia.wikimedia.org' {
     }
     include standard
     include admin
-    include role::authdns::mexia
+    include role::authdns::server
 }
 
 node 'ms1001.wikimedia.org' {
