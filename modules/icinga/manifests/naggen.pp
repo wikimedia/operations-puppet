@@ -3,9 +3,7 @@
 # Runs naggen2 to generate hosts, service and hostext config
 # from exported puppet resources
 class icinga::naggen {
-    # Using require here is ok, because the icinga class is not parameterized.
-    # if it was we would do Class['icinga'] -> Class['icinga::web'].
-    require icinga
+    include icinga
 
     file { '/etc/icinga/puppet_hosts.cfg':
         content => generate('/usr/local/bin/naggen2', '--type', 'hosts'),
