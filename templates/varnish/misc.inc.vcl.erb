@@ -44,6 +44,8 @@ sub vcl_recv {
 		set req.backend = palladium;
 		/* no caching of configs; scripts may want to know when things change */
 		return (pass);
+	} elsif (req.http.Host == "noc.wikimedia.org") {
+		set req.backend = terbium;
 	} else {
 		error 404 "Domain not served here";
 	}
