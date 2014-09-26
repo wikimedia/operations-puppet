@@ -438,6 +438,11 @@ class role::cache {
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
+                'hhvm_api' => {
+                    'eqiad' => [
+                        '10.68.17.208', # deployment-mediawiki02
+                    ],
+                },
                 'bits' => {
                     'eqiad' => [
                         '10.68.17.96',  # deployment-mediawiki01
@@ -782,6 +787,7 @@ class role::cache {
                 'backend'           => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
                 'hhvm_appservers'   => $role::cache::configuration::backends[$::realm]['hhvm_appservers'][$::mw_primary],
                 'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+                'hhvm_api'          => $role::cache::configuration::backends[$::realm]['hhvm_api'][$::mw_primary],
                 'rendering'         => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
                 'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
             },
@@ -1207,6 +1213,7 @@ class role::cache {
                 'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
                 'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
                 'hhvm_appservers'   => $role::cache::configuration::backends[$::realm]['hhvm_appservers'][$::mw_primary],
+                'hhvm_api'          => $role::cache::configuration::backends[$::realm]['hhvm_api'][$::mw_primary],
 
             },
             2 => {
