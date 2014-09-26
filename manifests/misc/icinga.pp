@@ -7,11 +7,9 @@ class icinga::monitor {
     include icinga::ganglia::ganglios
     include icinga::apache
     include icinga::monitor::checkpaging
-    include icinga::monitor::configuration::files
     include icinga::monitor::files::misc
     include icinga::monitor::files::nagios-plugins
     include icinga::logrotate
-    include icinga::naggen
     include icinga::nsca::firewall
     include icinga::nsca::daemon
     include icinga::packages
@@ -24,11 +22,19 @@ class icinga::monitor {
     include mysql
     include nagios::gsbmonitoring
     include nrpe
-    include passwords::nagios::mysql
     include certificates::globalsign_ca
 
-    Class['icinga::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service'] -> Class['icinga::naggen']
+    Class['icinga::packages'] -> Class['icinga::monitor::service']
 
+    class { 'icinga::config':
+        require => [Class['icinga::packages'], Class['icinga::monitor::service']],
+        notify => Service['icinga']
+    }
+
+    class { 'icinga::naggen':
+        require => Class['icinga::config'],
+        notify  => Service['icinga'],
+    }
 }
 
 # Nagios/icinga configuration files
@@ -41,77 +47,6 @@ class icinga::monitor::configuration::variables {
 
     $icinga_config_dir = '/etc/icinga'
     $nagios_config_dir = '/etc/nagios'
-
-    $static_files = [
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/puppet_hostextinfo.cfg",
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/puppet_services.cfg",
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/icinga.cfg",
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/cgi.cfg",
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/checkcommands.cfg",
-        "${icinga::monitor::configuration::variables::icinga_config_dir}/contactgroups.cfg",
-    ]
-}
-
-class icinga::monitor::configuration::files {
-
-    # For all files dealing with icinga configuration
-
-    require icinga::packages
-    require passwords::nagios::mysql
-
-    $nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
-
-    Class['icinga::monitor::configuration::variables'] -> Class['icinga::monitor::configuration::files']
-
-    # Icinga configuration files
-
-    file { '/etc/icinga/cgi.cfg':
-        source => 'puppet:///files/icinga/cgi.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
-    file { '/etc/icinga/icinga.cfg':
-        source => 'puppet:///files/icinga/icinga.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
-    file { '/etc/icinga/nsca_frack.cfg':
-        source => 'puppet:///private/nagios/nsca_frack.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
-    file { '/etc/icinga/checkcommands.cfg':
-        content => template('icinga/checkcommands.cfg.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-    }
-
-    file { '/etc/icinga/contactgroups.cfg':
-        source => 'puppet:///files/icinga/contactgroups.cfg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
-    class { 'nagios_common::contacts':
-        source => 'puppet:///private/nagios/contacts.cfg',
-        notify => Service['icinga'],
-    }
-
-    class { [
-      'nagios_common::user_macros',
-      'nagios_common::timeperiods',
-      'nagios_common::notification_commands',
-    ] :
-        notify => Service['icinga'],
-    }
 }
 
 class icinga::monitor::files::misc {
@@ -317,9 +252,6 @@ class icinga::monitor::service {
         ensure    => running,
         hasstatus => false,
         restart   => '/etc/init.d/icinga reload',
-        subscribe => [
-            File[$icinga::monitor::configuration::variables::static_files],
-        ],
         require => Mount['/var/icinga-tmpfs'],
     }
 }
