@@ -1,8 +1,12 @@
-# = Class: icinga::apache
+# = Class: icinga::web
 #
 # Sets up an apache instance for icinga web interface,
 # protected with ldap authentication
-class icinga::apache {
+class icinga::web {
+    # Apparently required for the web interface
+    package { 'icinga-doc':
+        ensure => latest
+    }
     class {'webserver::php5': ssl => true,}
 
     ferm::service { 'icinga-https':
