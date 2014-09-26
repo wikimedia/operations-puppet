@@ -17,7 +17,7 @@
 #     - see the How to use section
 #
 #  Out :
-#     - only print on the standard output 
+#     - only print on the standard output
 #
 #  Features :
 #     - perfdata output
@@ -71,12 +71,12 @@
 #   is null for lag action
 # --------------------------------------------------------------------
 #   Date:25/03/2010   Version:0.2.4     Author:Christoph Maser
-#   >> Add a little check if replication is up otherwise 
+#   >> Add a little check if replication is up otherwise
 #   $result->{Slave_IO_State} is undefined.
 # --------------------------------------------------------------------
 #   Date:18/03/2010   Version:0.2.3     Author:Erwan Ben Souiden
-#   >> Bugfix to catch condition when lag check is run and 
-#   relication is not running. Minor Perl synax fixes for ePN. 
+#   >> Bugfix to catch condition when lag check is run and
+#   relication is not running. Minor Perl synax fixes for ePN.
 #   from Brian Rudy (brudyNO@SPAMpraecogito.com)
 # --------------------------------------------------------------------
 #   Date:09/03/2010   Version:0.2.2     Author:Erwan Ben Souiden
@@ -224,7 +224,7 @@ if (($s_slave_sios eq 'Waiting for master to send event') or ($s_slave_sios eq '
 
     # lag action
     # ----------
-    if ($action eq 'lag' || (($action eq 'both') && ($flag == 0))) { 
+    if ($action eq 'lag' || (($action eq 'both') && ($flag == 0))) {
 
         # About the slave
         my $result = &request_executor("$slave_address",$slave_port,$slave_login,$slave_pwd,"SHOW SLAVE STATUS");
@@ -233,7 +233,7 @@ if (($s_slave_sios eq 'Waiting for master to send event') or ($s_slave_sios eq '
         my ($master_address,$master_port,$master_login) = ($result->{Master_Host},$result->{Master_Port},$result->{Master_User});
 
         if (defined $s_slave_sbm) {
-            $return .= ', ' if ($action eq 'both'); 
+            $return .= ', ' if ($action eq 'both');
             $return .= 'Seconds_Behind_Master : '.$s_slave_sbm.'s';
 
             # now we can analyse
@@ -249,7 +249,7 @@ if (($s_slave_sios eq 'Waiting for master to send event') or ($s_slave_sios eq '
             $return .= ' Replication not running';
         }
     }
-}    
+}
 else {
     # not in waiting state!
     $return = " Slave IO State not correct, slave stopped or replication broken!";
@@ -279,7 +279,7 @@ Options:
  -V, --version
     Print version information
  -D, --display=STRING
-    to modify the output display... 
+    to modify the output display...
     default is "CHECK MySQL REPLICATION - "
  -sa, --slave-address=STRING
     address or name of the slave mysql server
@@ -312,7 +312,7 @@ Options:
     If you want to activate the perfdata output
  -v, --verbose
     Show details for command-line debugging (Nagios may truncate the output)
-    
+
 Send email to $a_mail if you have questions
 regarding use of this software. To submit patches or suggest improvements,
 send email to $a_mail

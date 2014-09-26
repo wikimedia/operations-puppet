@@ -27,22 +27,22 @@ ini_set( 'display_errors', 'stderr' );
 function mysql_gather_status( $server, $user, $password ) {
         $result = array( 'status' => 0 );
         $link = mysql_connect( $server, $user, $password );
-        if ( !$link ) {         
+        if ( !$link ) {
                 $result['status'] = 2;
 		$result['error'] = mysql_error();
 		return $result;
-        } else {                
+        } else {
 
 		# status
 
                 $myres = mysql_query( "show status" );
-                
+
                 if ( !$myres ) {
                         $result['status'] = 2;
                         $result['error'] = mysql_error( $link );
                         return $result;
                 }
-        
+
                 while ( $row = mysql_fetch_row( $myres ) ) {
                         $result[$row[0]] = $row[1];
                 }
@@ -143,9 +143,9 @@ Checks the status of a MySQL server
 			be set to read only.
 
 	--warnconnected limit
-			Warn if more than 'limit' threads are connected	
+			Warn if more than 'limit' threads are connected
 	--critconnected limit
-			Critical if more than 'limit' threads are connected	
+			Critical if more than 'limit' threads are connected
 	--warnrunning limit
 			Warn if more than 'limit' threads are running
 	--critrunning limit
@@ -224,8 +224,8 @@ if ( $slave ) {
 	}
 	if (!$rwslave)
 		$n->valueTest( $status['read_only'], 'ON', "Read only" );
-} elseif ( $master ) { 
-	$n->valueTest( $status['read_only'], 'OFF', "Read only" ); 
+} elseif ( $master ) {
+	$n->valueTest( $status['read_only'], 'OFF', "Read only" );
 } elseif ( $readonly ) {
 	if ( isset( $status['Slave_IO_Running'] ) ) {
 		$n->valueTest( $status['Slave_IO_Running'], 'No', "Slave running" );

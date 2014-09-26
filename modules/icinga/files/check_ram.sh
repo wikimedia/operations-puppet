@@ -66,4 +66,3 @@ if [ "$use" -gt "$warn" -o "$use" -eq "$warn" ]; then
         echo "Unknown"
         exit 3
 fi
-

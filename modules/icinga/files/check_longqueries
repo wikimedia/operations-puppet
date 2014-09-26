@@ -233,4 +233,3 @@ $np->nagios_exit( WARNING, $longquery_info ) if $longquery_time >= $np->opts->wa
 
 # OK if if the longest query didn't match crit & warn
 $np->nagios_exit( OK, "No long running queries found ($count threads checked)" );
-
