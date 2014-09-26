@@ -7,7 +7,6 @@ class icinga::monitor {
     include icinga::ganglia::ganglios
     include icinga::monitor::checkpaging
     include icinga::monitor::files::misc
-    include icinga::monitor::files::nagios-plugins
     include icinga::logrotate
     include icinga::nsca::firewall
     include icinga::nsca::daemon
@@ -22,6 +21,14 @@ class icinga::monitor {
     include nrpe
     include certificates::globalsign_ca
 
+    class { 'icinga::apache':
+        require => Class['icinga::packages'],
+    }
+
+    class { 'icinga::service':
+        require => Class['icinga::apache'],
+    }
+
     class { 'icinga::config':
         require => [Class['icinga::packages'], Class['icinga::service']],
         notify => Service['icinga']
@@ -32,12 +39,9 @@ class icinga::monitor {
         notify  => Service['icinga'],
     }
 
-    class { 'icinga::apache':
-        require => Class['icinga::packages'],
-    }
-
-    class { 'icinga::service':
-        require => Class['icinga::apache'],
+    class { 'icinga::plugins':
+        require => Class['icinga::config'],
+        notify  => Service['icinga'],
     }
 }
 
@@ -129,105 +133,6 @@ class icinga::monitor::files::misc {
         ensure => file,
         owner => 'icinga',
     }
-}
-
-class icinga::monitor::files::nagios-plugins {
-
-    require icinga::packages
-
-    file { '/usr/lib/nagios':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/eventhandlers':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/eventhandlers/submit_check_result':
-        source => 'puppet:///files/icinga/submit_check_result',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/var/lib/nagios/rm':
-      ensure => directory,
-      owner  => 'icinga',
-      group  => 'nagios',
-      mode   => '0775',
-    }
-    file { '/etc/nagios-plugins':
-      ensure => directory,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-    }
-    file { '/etc/nagios-plugins/config':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    File <| tag == nagiosplugin |>
-
-    # WMF custom service checks
-    file { '/usr/lib/nagios/plugins/check_mysql-replication.pl':
-        source => 'puppet:///files/icinga/check_mysql-replication.pl',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/check_longqueries':
-        source => 'puppet:///files/icinga/check_longqueries',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/check_MySQL.php':
-        source => 'puppet:///files/icinga/check_MySQL.php',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/check_nrpe':
-        source => 'puppet:///files/icinga/check_nrpe',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/check_ram.sh':
-        source => 'puppet:///files/icinga/check_ram.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    class { 'nagios_common::commands':
-        notify => Service['icinga'],
-    }
-
-    class { 'nagios_common::check::ganglia':
-        notify => Service['icinga'],
-    }
-
-    # Include check_elasticsearch from elasticsearch module
-    include elasticsearch::nagios::plugin
-
-    # some default configuration files conflict and should be removed
-    file { '/etc/nagios-plugins/config/mailq.cfg':
-        ensure => absent,
-    }
-
 }
 
 class icinga::ganglia::ganglios {
