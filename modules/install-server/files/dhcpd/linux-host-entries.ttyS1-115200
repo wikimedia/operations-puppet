@@ -2094,6 +2094,26 @@ host ms-fe1004 {
 	fixed-address ms-fe1004.eqiad.wmnet;
 }
 
+host ms-fe2001 {
+	hardware ethernet 00:0A:F7:72:AA:64;
+	fixed-address ms-fe2001.codfw.wmnet;
+}
+
+host ms-fe2002 {
+	hardware ethernet 00:0A:F7:72:A5:D0;
+	fixed-address ms-fe2002.codfw.wmnet;
+}
+
+host ms-fe2003 {
+	hardware ethernet 00:0A:F7:72:A5:D8;
+	fixed-address ms-fe2003.codfw.wmnet;
+}
+
+host ms-fe2004 {
+	hardware ethernet 00:0A:F7:72:AA:20;
+	fixed-address ms-fe2004.codfw.wmnet;
+}
+
 host ms-fe3001 {
 	hardware ethernet 24:B6:FD:F5:B2:84;
 	fixed-address ms-fe3001.esams.wmnet;
