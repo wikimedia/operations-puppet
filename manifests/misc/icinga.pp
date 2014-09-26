@@ -7,12 +7,9 @@ class icinga::monitor {
     include icinga::ganglia::ganglios
     include icinga::monitor::checkpaging
     include icinga::monitor::files::misc
-    include icinga::logrotate
     include icinga::nsca::firewall
     include icinga::nsca::daemon
-    include icinga::packages
     include icinga::monitor::wikidata
-    include icinga::user
     include icinga::groups::misc
     include lvs::monitor
     include dsh::config
@@ -22,26 +19,15 @@ class icinga::monitor {
     include passwords::nagios::mysql
     include certificates::globalsign_ca
 
-    class { 'icinga::apache':
-        require => Class['icinga::packages'],
+    class { 'icinga':
     }
 
-    class { 'icinga::service':
-        require => Class['icinga::apache'],
-    }
-
-    class { 'icinga::config':
-        require => [Class['icinga::packages'], Class['icinga::service']],
-        notify => Service['icinga']
+    class { 'icinga::web':
+        require => Class['icinga'],
     }
 
     class { 'icinga::naggen':
-        require => Class['icinga::config'],
-        notify  => Service['icinga'],
-    }
-
-    class { 'icinga::plugins':
-        require => Class['icinga::config'],
+        require => Class['icinga'],
         notify  => Service['icinga'],
     }
 }

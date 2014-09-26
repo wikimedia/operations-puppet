@@ -85,6 +85,16 @@ class icinga::plugins {
     ] :
     }
 
+    include passwords::nagios::mysql
+
+    $nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+    file { '/etc/icinga/checkcommands.cfg':
+        content => template('icinga/checkcommands.cfg.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+    }
+
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
 
