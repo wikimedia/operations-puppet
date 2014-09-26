@@ -239,4 +239,9 @@ class base {
             default   => $::nagios_contact_group,
         }
     }
+
+    # CA for the new ldap-eqiad/ldap-codfw ldap servers, among
+    # other things.
+    include certificates::globalsign_ca
+    include certificates::wmf_ca
 }

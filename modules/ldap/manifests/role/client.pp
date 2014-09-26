@@ -1,9 +1,5 @@
 class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
     include ldap::role::config::labs,
-        certificates::wmf_ca
-
-    # Cert for the new ldap-eqiad/ldap-codfw ldap servers:
-    include certificates::globalsign_ca
 
     if ( $::realm == 'labs' ) {
         if( $::site == 'eqiad' ) {
@@ -26,9 +22,7 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
 }
 
 class ldap::role::client::corp {
-    include ldap::role::config::corp,
-        certificates::wmf_ca,
-        certificates::globalsign_ca
+    include ldap::role::config::corp
 
     $ldapincludes = ['openldap', 'utils']
 
