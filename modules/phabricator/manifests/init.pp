@@ -43,6 +43,9 @@
 # [*auth_type*]
 #   Specify a template to match the provided login mechanisms
 #
+# [*libext_tag*]
+#   Track library extension revision
+#
 # [*extension_tag*]
 #   Track extension revision
 #
@@ -67,6 +70,7 @@ class phabricator (
     $timezone         = 'America/Los_Angeles',
     $lock_file        = '',
     $git_tag          = 'HEAD',
+    $libext_tag       = '',
     $extension_tag    = '',
     $extensions       = [],
     $settings         = {},
@@ -152,6 +156,29 @@ class phabricator (
         git_tag   => $git_tag,
         lock_file => $lock_file,
         notify    => Exec["ensure_lock_${lock_file}"],
+    }
+
+    if ($libext_tag) {
+
+        file { '/srv/phab/libext':
+            ensure => 'directory',
+        }
+
+        $libext_lock_path = "${phabdir}/library_lock_${libext_tag}"
+
+        git::install { 'phabricator/extensions/Sprint':
+            directory => "${phabdir}/libext/Sprint",
+            git_tag   => $libext_tag,
+            lock_file => $libext_lock_path,
+            notify    => Exec[$libext_lock_path],
+            before    => Git::Install['phabricator/phabricator'],
+        }
+
+        exec {$libext_lock_path:
+            command => "touch ${libext_lock_path}",
+            unless  => "test -z ${libext_lock_path} || test -e ${libext_lock_path}",
+            path    => '/usr/bin:/bin',
+        }
     }
 
     if ($extension_tag) {
