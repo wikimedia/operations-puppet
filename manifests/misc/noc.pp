@@ -18,7 +18,9 @@ class misc::noc-wikimedia {
     include ::apache::mod::ssl
 
     # Monitoring
-    monitor_service { 'http': description => 'HTTP', check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org' }
+    monitor_service { 'http-noc':
+        description   => 'HTTP-noc',
+        check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org' }
 
     # caches the ganglia xml data from gmetric used by dbtree every minute
     cron { 'dbtree_cache_cron':
