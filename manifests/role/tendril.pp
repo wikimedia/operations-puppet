@@ -12,7 +12,7 @@ class role::tendril {
         site_name     => 'tendril.wikimedia.org',
         docroot       => '/srv/tendril/web',
         ldap_binddn   => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-        ldap_authurl  => 'ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
+        ldap_authurl  => 'ldaps://ldap-eqiad.wikimedia.org ldap-codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
         ldap_groups   => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
