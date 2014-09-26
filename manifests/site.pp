@@ -2509,6 +2509,12 @@ node 'pdf3.wikimedia.org' {
     include role::logging::systemusers
 }
 
+node 'plutonium.wikimedia.org' {
+    $cluster = 'openldap_oit_mirror'
+    include standard
+    include role::openldap::oit
+}
+
 node 'polonium.wikimedia.org' {
     class { 'admin': groups => ['oit'] }
     include standard-noexim
