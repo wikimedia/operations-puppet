@@ -39,6 +39,7 @@ class role::lvs::balancer {
             $sip['apaches'][$::site],
             $sip['hhvm_appservers'][$::site],
             $sip['api'][$::site],
+            $sip['hhvm_api'][$::site],
             $sip['rendering'][$::site],
             $sip['search_pool1'][$::site],
             $sip['search_pool2'][$::site],
