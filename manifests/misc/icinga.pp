@@ -1,31 +1,6 @@
 # vim: set ts=2 sw=2 et :
 # misc/icinga.pp
 
-class icinga::monitor {
-
-    include facilities::pdu_monitoring
-    include icinga::ganglia::ganglios
-    include icinga::monitor::checkpaging
-    include icinga::monitor::files::misc
-    include icinga::nsca::firewall
-    include icinga::nsca::daemon
-    include icinga::monitor::wikidata
-    include icinga::groups::misc
-    include lvs::monitor
-    include dsh::config
-    include mysql
-    include nagios::gsbmonitoring
-    include nrpe
-    include passwords::nagios::mysql
-    include certificates::globalsign_ca
-
-    class { 'icinga':            }
-    class { 'icinga::web':       }
-    class { 'icinga::naggen':    }
-}
-
-# Nagios/icinga configuration files
-
 class icinga::monitor::configuration::variables {
 
     # This variable declares the monitoring hosts It is called master hosts as
