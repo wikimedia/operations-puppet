@@ -39,7 +39,13 @@ sub vcl_recv {
 
 	/* Use the hhvm backend for any request to the standard appservers.
 	 On a request restart (often due to an error), fallback to the Zend pool */
-	 call choose_hhvm_backend;
+	if ( req.http.X-Use-HHVM == "1" && req.restarts == 0) {
+		if (req.backend == api) {
+			set req.backend = hhvm_api
+		} else {
+			set req.backend = hhvm_appservers;
+		}
+        }
 <% end -%>
 
 	call pass_requests;
