@@ -169,7 +169,7 @@ class role::graphite::base(
         include ::passwords::ldap::production
         include ::apache::mod::authnz_ldap
 
-        $ldap_authurl  = 'ldaps://virt1000.wikimedia.org virt0.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
+        $ldap_authurl  = 'ldaps://ldap-eqiad.wikimedia.org ldap-codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
         $ldap_bindpass = $passwords::ldap::production::proxypass
         $ldap_binddn   = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
         $ldap_groups   = [
