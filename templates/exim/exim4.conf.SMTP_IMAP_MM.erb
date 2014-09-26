@@ -473,7 +473,7 @@ legacy_mailing_lists:
 # TEMP migration
 ldap_migration_account:
 	driver = manualroute
-	local_parts = mark : mbergsma
+	local_parts = mark : mbergsma : ariel : aglenn
 	domains = wikimedia.org
 	condition = ${lookup ldap \
 			{user="cn=eximagent,ou=other,dc=corp,dc=wikimedia,dc=org" pass=LDAPPASSWORD \
