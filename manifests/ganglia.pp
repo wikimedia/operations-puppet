@@ -477,7 +477,7 @@ class ganglia::web {
         $ganglia_webdir = '/srv/org/wikimedia/ganglia-web-latest'
         $ganglia_confdir = '/srv/org/wikimedia/ganglia-web-conf'
 
-        $ganglia_ssl_cert = '/etc/ssl/certs/ganglia.wikimedia.org.pem'
+        $ganglia_ssl_cert = '/etc/ssl/localcerts/ganglia.wikimedia.org.crt'
         $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
 
         $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')

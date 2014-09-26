@@ -41,7 +41,7 @@ NameVirtualHost *:443
     UserDir public_html
 
     SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/noc.wikimedia.org.pem
+    SSLCertificateFile /etc/ssl/localcerts/noc.wikimedia.org.crt
     SSLCertificateKeyFile /etc/ssl/private/noc.wikimedia.org.key
     <%= @ssl_settings.join("\n") %>
 

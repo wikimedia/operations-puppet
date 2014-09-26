@@ -47,7 +47,7 @@ NameVirtualHost *:443
     ServerName <%= @host %>
 
     SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/<%= @ssl_cert %>.pem
+    SSLCertificateFile /etc/ssl/localcerts/<%= @ssl_cert %>.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @ssl_cert_key %>.key
     SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>

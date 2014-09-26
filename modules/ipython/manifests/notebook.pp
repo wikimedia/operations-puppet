@@ -38,7 +38,7 @@
 #   The port the Notebook server will listen on (default: 8888).
 #
 # [*certfile*]
-#   Fully qualified path to your SSL certificate's .pem file. If
+#   Fully qualified path to your SSL certificate's .crt file. If
 #   unspecified, the server will not be configured for SSL.
 #
 # [*password*]

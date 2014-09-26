@@ -107,7 +107,7 @@ class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $
         subscribe   => Exec['start_opendj'],
         refreshonly => true,
         user        => 'opendj',
-        command     => '/usr/bin/keytool -importcert -trustcacerts -alias \'wmf-ca\' -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/admin-truststore -storepass `cat /var/opendj/instance/config/admin-keystore.pin` -noprompt',
+        command     => '/usr/bin/keytool -importcert -trustcacerts -alias \'wmf-ca\' -file /usr/local/share/ca-certificates/wmf-ca.crt -keystore /var/opendj/instance/config/admin-truststore -storepass `cat /var/opendj/instance/config/admin-keystore.pin` -noprompt',
         require     => Package['ca-certificates'],
     }
     # Add the wmf CA to the opendj ssl truststore
@@ -115,7 +115,7 @@ class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $
         subscribe   => Exec['start_opendj'],
         refreshonly => true,
         user        => 'opendj',
-        command     => '/usr/bin/keytool -importcert -trustcacerts -alias \'wmf-ca\' -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt',
+        command     => '/usr/bin/keytool -importcert -trustcacerts -alias \'wmf-ca\' -file /usr/local/share/ca-certificates/wmf-ca.crt -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt',
         require     => Package['ca-certificates'],
     }
     # Make the admin connector use the same pkcs12 file as ldaps config
