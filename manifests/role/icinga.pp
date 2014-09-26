@@ -18,7 +18,7 @@ class role::icinga {
     include nrpe
     include certificates::globalsign_ca
 
-    class { 'icinga':            }
-    class { 'icinga::web':       }
-    class { 'icinga::naggen':    }
+    class { '::icinga':            }
+    class { '::icinga::web':       }
+    class { '::icinga::naggen':    }
 }
