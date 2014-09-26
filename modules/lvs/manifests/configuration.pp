@@ -884,7 +884,7 @@ class lvs::configuration {
         },
         'mathoid' => {
             'description' => 'Mathematical rendering service, mathoid.svc.eqiad.wmnet',
-            'class' => 'high-traffic2',
+            'class' => 'low-traffic',
             'sites' => [ 'eqiad' ],
             'ip' => $service_ips['mathoid'][$::site],
             'port' => 10042,
