@@ -56,7 +56,7 @@ Adding user 'foo':
 
 # NOTE: To choose the UID for a new user please lookup
 # the existing UID in (labs) LDAP and use that.
-# currently you do this on silver, example:
+# currently you do this on bast1001, example:
 #
 # ldaplist -l passwd someuser
 # ...

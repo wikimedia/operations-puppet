@@ -354,7 +354,8 @@ node 'bast1001.wikimedia.org' {
     class { 'admin':
         groups => ['deployment',
                    'restricted',
-                   'bastiononly'],
+                   'bastiononly',
+                   'ldap-admins'],
     }
 
 
@@ -362,6 +363,7 @@ node 'bast1001.wikimedia.org' {
     include nfs::netapp::home::othersite
     include misc::dsh
     include ssh::hostkeys-collect
+    include ldap::role::client::labs
 }
 
 node 'bast2001.wikimedia.org' {
@@ -2674,9 +2676,7 @@ node /^searchidx100[0-2]\.eqiad\.wmnet/ {
 }
 
 node 'silver.wikimedia.org' {
-    class { 'admin': groups => ['ldap-admins'] }
     include standard
-    include ldap::role::client::labs
 }
 
 node 'sodium.wikimedia.org' {
