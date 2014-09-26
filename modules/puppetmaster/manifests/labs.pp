@@ -41,7 +41,7 @@ class puppetmaster::labs {
     $labsstatus_password = $passwords::openstack::keystone::keystone_ldap_user_pass
     $labsstatus_username = 'novaadmin'
     $labsstatus_region = $::site
-    $labsstatus_auth_url = 'http://virt0.wikimedia.org:35357/v2.0'
+    $labsstatus_auth_url = 'http://virt1000.wikimedia.org:35357/v2.0'
 
     file { '/etc/labsstatus.cfg':
         ensure => present,
