@@ -113,7 +113,9 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         description => 'elasticsearch server',
     }
 
-    deployment::target { 'elasticsearchplugins': }
+    package { 'elasticsearchplugins':
+        provider => 'trebuchet',
+    }
 
     # Install
     class { '::elasticsearch':
@@ -138,7 +140,7 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         # get elasticsearch up and running.  Once for the initial
         # node configuration (including salt), and then once again
         # after you have signed this node's new salt key over on the salt master.
-        require                    => Deployment::Target['elasticsearchplugins'],
+        require                    => Package['elasticsearchplugins'],
         bulk_thread_pool_capacity  => $bulk_thread_pool_capacity,
         bulk_thread_pool_executors => $bulk_thread_pool_executors,
     }
