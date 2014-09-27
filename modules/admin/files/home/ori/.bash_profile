@@ -3,8 +3,7 @@
 #
 # File permissions
 #
-
-chmod -f u+x ~/.bin/*
+rsync --delete --recursive --chmod=u+x ~/.binned/ ~/.bin >/dev/null 2>&1
 
 
 #
