@@ -25,7 +25,9 @@ class ocg (
     $output_dir = '/srv/deployment/ocg/output',
     $postmortem_dir = '/srv/deployment/ocg/postmortem'
 ) {
-    deployment::target { 'ocg': }
+    package { 'ocg':
+        provider => 'trebuchet',
+    }
 
     group { 'ocg':
         ensure => present,
