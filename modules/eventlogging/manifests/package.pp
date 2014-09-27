@@ -18,7 +18,8 @@ class eventlogging::package {
         ensure => present,
     }
 
-    deployment::target { 'eventlogging':
-        before => File['/etc/init/eventlogging'],
+    package { 'eventlogging':
+        provider => 'trebuchet',
+        before   => File['/etc/init/eventlogging'],
     }
 }
