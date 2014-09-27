@@ -35,7 +35,9 @@ class role::parsoid::production {
 
     include role::parsoid::common
 
-    deployment::target { 'parsoid': }
+    package { 'parsoid/deploy':
+        provider => 'trebuchet',
+    }
 
     group { 'parsoid':
         ensure => present,
@@ -110,6 +112,7 @@ class role::parsoid::production {
             File['/etc/default/parsoid'],
             File['/etc/init/parsoid.conf'],
         ],
+        require    => Package['parsoid/deploy'],
     }
 
     monitor_service { 'parsoid':
