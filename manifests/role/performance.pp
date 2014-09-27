@@ -6,7 +6,9 @@
 class role::performance {
     include ::apache
 
-    deployment::target { 'reporter': }
+    package { 'reporter':
+        provider => 'trebuchet',
+    }
 
     file { '/var/www/performance':
         ensure  => directory,
