@@ -269,6 +269,7 @@ class lvs::configuration {
             'search_pool3' => {},
             'dns_rec' => {},
             'https' => {},
+            'mathoid' => {},
             'misc_web' => {},
             'mobile' => {},
             'ocg' => {},
