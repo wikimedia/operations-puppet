@@ -238,6 +238,29 @@ configuration part.
     ssl_ciphersuite('nginx', 'strong')
 
 
+## to_milliseconds
+`to_milliseconds( string $time_spec )`
+
+Convert a unit of time expressed as a string to milliseconds.
+
+### Examples
+
+    to_milliseconds('1s')        # 1000
+    to_milliseconds('1 second')  # 1000
+
+
+## to_seconds
+`to_seconds( string $time_spec )`
+
+Convert a unit of time expressed as a string to seconds.
+
+### Examples
+
+    to_seconds('9000ms')  # 9
+    to_seconds('1hr')     # 3600
+    to_seconds('2 days')  # 172800
+
+
 ## ubuntu_version
 
 `ubuntu_version( string $version_predicate )`
