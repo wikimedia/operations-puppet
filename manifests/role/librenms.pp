@@ -6,17 +6,11 @@ class role::librenms {
     include passwords::network
 
     $sitename = 'librenms.wikimedia.org'
-
-    # FIXME: deployment::target really needs to handle this better
-    file { [ '/srv/deployment', '/srv/deployment/librenms' ]:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    deployment::target { 'librenms': }
     $install_dir = '/srv/deployment/librenms/librenms'
+
+    package { 'librenms/librenms':
+        provider => 'trebuchet',
+    }
 
     $config = {
         'title_image'      => 'url(//upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wikimedia_Foundation_RGB_logo_with_text.svg/100px-Wikimedia_Foundation_RGB_logo_with_text.svg.png)',
@@ -69,6 +63,7 @@ class role::librenms {
         install_dir => $install_dir,
         rrd_dir     => '/srv/librenms/rrd',
         config      => $config,
+        require     => Package['librenms/librenms'],
     }
     class { '::librenms::syslog':
         require => Class['::librenms']
