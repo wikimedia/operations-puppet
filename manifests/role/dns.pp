@@ -39,6 +39,23 @@ class role::dns::ldap {
             ldap_user_pass          => $ldapconfig['proxypass'],
         }
     }
+    if $::site == 'codfw' {
+        interface::ip { 'role::dns::ldap':
+            interface => 'eth0',
+            address   => '208.80.153.15'
+        }
+
+        # FIXME: turn these settings into a hash that can be included somewhere
+        class { 'dns::auth-server::ldap':
+            dns_auth_ipaddress      => '208.80.154.15 208.80.154.14',
+            dns_auth_query_address  => '208.80.153.15',
+            dns_auth_soa_name       => 'labs-ns2.wikimedia.org',
+            ldap_hosts              => $ldapconfig['servernames'],
+            ldap_base_dn            => $ldapconfig['basedn'],
+            ldap_user_dn            => $ldapconfig['proxyagent'],
+            ldap_user_pass          => $ldapconfig['proxypass'],
+        }
+    }
 }
 
 class role::dns::recursor {
