@@ -14,17 +14,12 @@ class role::mathoid::production {
       node_path => '/srv/deployment/mathoid/mathoid/node_modules',
       conf_path => '/srv/deployment/mathoid/mathoid/mathoid.config.json',
       log_dir   => '/var/log/mathoid',
+      require   => Package['mathoid'],
     }
 
-    # FIXME: deployment::target really needs to handle this better
-    file { [ '/srv/deployment', '/srv/deployment/mathoid' ]:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+    package { 'mathoid':
+        provider => 'trebuchet',
     }
-
-    deployment::target { 'mathoid': }
 
     group { 'mathoid':
       ensure => present,
@@ -60,17 +55,12 @@ class role::mathoid::beta {
         node_path => '/srv/deployment/mathoid/mathoid/node_modules',
         conf_path => '/srv/deployment/mathoid/mathoid/mathoid.config.json',
         log_dir   => '/var/log/mathoid',
-        require   => File[ '/srv/deployment/mathoid/mathoid' ]
+        require   => Package['mathoid'],
     }
 
-    file { '/srv/deployment/mathoid/mathoid':
-        ensure => directory,
-        owner  => 'mathoid',
-        group  => 'mathoid',
-        mode   => '0755',
+    package { 'mathoid':
+        provider => 'trebuchet',
     }
-
-    deployment::target { 'mathoid': }
 
     group { 'mathoid':
         ensure => present,
