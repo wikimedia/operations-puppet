@@ -35,7 +35,9 @@ class role::parsoid::production {
 
     include role::parsoid::common
 
-    deployment::target { 'parsoid': }
+    package { 'parsoid':
+        provider => 'trebuchet',
+    }
 
     group { 'parsoid':
         ensure => present,
