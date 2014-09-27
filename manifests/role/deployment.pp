@@ -268,5 +268,7 @@ class role::deployment::deployment_servers::labs {
 }
 
 class role::deployment::test {
-    deployment::target { 'testrepo': }
+    package { 'testrepo':
+        provider => 'trebuchet',
+    }
 }
