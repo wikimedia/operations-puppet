@@ -15,7 +15,8 @@ class eventlogging::decommission {
         recurse => true,
     }
 
-    deployment::target { 'eventlogging':
-        ensure => absent,
+    package { 'eventlogging':
+        ensure   => absent,
+        provider => 'trebuchet',
     }
 }
