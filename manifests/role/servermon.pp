@@ -44,7 +44,9 @@ class role::servermon {
         admins      => '("Ops Team", "ops@lists.wikimedia.org")',
     }
 
-    deployment::target {'servermon': }
+    package { 'servermon':
+        provider => 'trebuchet',
+    }
 
     apache::site { 'servermon.wikimedia.org':
         content => template('apache/sites/servermon.wikimedia.org.erb'),
