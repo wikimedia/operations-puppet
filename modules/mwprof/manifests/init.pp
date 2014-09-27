@@ -11,7 +11,9 @@ class mwprof(
         description => 'MediaWiki profiler',
     }
 
-    deployment::target { 'mwprof': }
+    package { 'mwprof':
+        provider => 'trebuchet',
+    }
 
     package { [ 'build-essential', 'libglib2.0-dev', 'glib-networking' ]: }
 
