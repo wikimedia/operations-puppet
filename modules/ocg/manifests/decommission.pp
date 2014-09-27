@@ -51,8 +51,9 @@ class ocg::decommission (
         ensure  => absent,
     }
 
-    deployment::target { 'ocg':
-        ensure  => absent,
-        require => Service['ocg'],
+    package { 'ocg/ocg':
+        ensure   => absent,
+        provider => 'trebuchet',
+        require  => Service['ocg'],
     }
 }

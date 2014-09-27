@@ -25,7 +25,9 @@ class ocg (
     $output_dir = '/srv/deployment/ocg/output',
     $postmortem_dir = '/srv/deployment/ocg/postmortem'
 ) {
-    deployment::target { 'ocg': }
+    package { 'ocg/ocg':
+        provider => 'trebuchet',
+    }
 
     group { 'ocg':
         ensure => present,
@@ -103,7 +105,10 @@ class ocg (
         provider   => upstart,
         hasstatus  => false,
         hasrestart => false,
-        require    => File['/etc/init/ocg.conf'],
+        require    => [
+            File['/etc/init/ocg.conf'],
+            Package['ocg/ocg'],
+        ],
     }
 
     file { '/etc/ocg':
