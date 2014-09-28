@@ -5,13 +5,6 @@
 #### puppet:///files/sudo/sudoers.appserver
 #### Installed by the sudo::appserver puppet class
 ######################################################################
-
-#
-# *******************************************
-# WIKIMEDIA SYSTEM ADMINISTRATORS PLEASE NOTE
-# *******************************************
-# Please edit /home/config/others/etc/sudoers and copy to /etc on all machines
-# with dshroot
 #
 # See the sudoers man page for the details on how to write a sudoers file.
 #
@@ -25,7 +18,6 @@ User_Alias      WIKIUSER = apache,%wikidev
 Cmnd_Alias	ADMIN_COMMANDS = \
 	/usr/sbin/apache2ctl, \
 	/etc/init.d/apache2, \
-        /usr/sbin/scap-2, \
 	/usr/local/sbin/set-group-write2, \
 	/usr/sbin/install-common, \
 	/usr/bin/renice
