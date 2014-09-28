@@ -25,7 +25,6 @@ User_Alias      WIKIUSER = apache,%wikidev
 Cmnd_Alias	ADMIN_COMMANDS = \
 	/usr/sbin/apache2ctl, \
 	/etc/init.d/apache2, \
-        /usr/sbin/scap-2, \
 	/usr/local/sbin/set-group-write2, \
 	/usr/sbin/install-common, \
 	/usr/bin/renice
