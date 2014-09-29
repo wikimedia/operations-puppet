@@ -2645,10 +2645,6 @@ node /^searchidx100[0-2]\.eqiad\.wmnet/ {
     include role::lucene::indexer
 }
 
-node 'silver.wikimedia.org' {
-    include standard
-}
-
 node 'sodium.wikimedia.org' {
     include admin
     include base
