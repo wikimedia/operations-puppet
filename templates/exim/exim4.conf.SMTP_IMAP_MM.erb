@@ -45,7 +45,7 @@ hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim:
 
 <% if enable_mail_relay == "primary" then -%>
 # LDAP lookups (Office)
-ldap_default_servers = sanger.wikimedia.org
+ldap_default_servers = ldap-mirror.wikimedia.org
 LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 <% end -%>
 
@@ -529,7 +529,7 @@ imap:
 	local_part_suffix = +*
 	local_part_suffix_optional
 	transport = remote_smtp
-	route_list = *  sanger.wikimedia.org
+	route_list = *  ldap-mirror.wikimedia.org
 
 # send phabricator.wm.org emails to Phabricator
 phabricator:
