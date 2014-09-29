@@ -30,7 +30,7 @@ class dns::auth-server::ldap(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('powerdns/pdns-ldap.conf.erb'),
+        content => template('powerdns/${::lsbdistcodename}/pdns-ldap.conf.erb'),
     }
 
     service { 'pdns':
@@ -82,7 +82,7 @@ class dns::recursor(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('powerdns/recursor.conf.erb'),
+        content => template('powerdns/${::lsbdistcodename}/recursor.conf.erb'),
     }
 
     service { 'pdns-recursor':
