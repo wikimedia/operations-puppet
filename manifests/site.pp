@@ -1348,16 +1348,6 @@ node 'holmium.wikimedia.org' {
     include standard
     include misc::blogs::wikimedia
 
-    ferm::service { 'http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '198.73.209.0/24',
-    }
-    ferm::service { 'https':
-        proto  => 'tcp',
-        port   => '443',
-        srange => '198.73.209.0/24',
-    }
 }
 
 node 'hooft.esams.wikimedia.org' {
