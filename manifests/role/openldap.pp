@@ -1,6 +1,6 @@
 # vim: set ts=4 et sw=4:
 
-@monitor_group { 'openldap_corp_mirror': description => 'Corp OIT LDAP Mirror' }
+@monitor_group { "openldap_corp_mirror_${::site}": description => 'Corp OIT LDAP Mirror' }
 
 class role::openldap::corp {
     include passwords::openldap::corp
