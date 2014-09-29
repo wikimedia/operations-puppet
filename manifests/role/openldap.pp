@@ -26,12 +26,13 @@ class role::openldap::corp {
     }
 
     ferm::service { 'corp_ldap':
-      proto => 'tcp',
-      port  => '389' # Yes, explicitly not supporting LDAPS (port 636)
+        proto  => 'tcp',
+        port   => '389', # Yes, explicitly not supporting LDAPS (port 636)
+        srange => '$ALL_NETWORKS',
     }
 
     monitor_service { 'corp_ldap_mirror':
-      description   => 'Corp OIT LDAP Mirror ',
-      check_command => 'check_ldap!dc=corp,dc=wikimedia,dc=org',
+        description   => 'Corp OIT LDAP Mirror ',
+        check_command => 'check_ldap!dc=corp,dc=wikimedia,dc=org',
     }
 }

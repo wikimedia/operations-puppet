@@ -2478,6 +2478,7 @@ node 'plutonium.wikimedia.org' {
 
     include standard
     include role::openldap::corp
+    include base::firewall
 }
 
 node 'polonium.wikimedia.org' {
