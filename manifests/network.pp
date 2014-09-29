@@ -381,37 +381,6 @@ class network::checks {
         check_command => "check_bgpstate!${snmp_ro_community}",
     }
 
-    @monitor_host { 'cr2-pmtpa':
-        ip_address => '208.80.152.197',
-        group      => 'routers',
-    }
-
-    @monitor_service { 'cr2-pmtpa interfaces':
-        host          => 'cr2-pmtpa',
-        group         => 'routers',
-        description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
-    }
-
-    @monitor_service { 'cr2-pmtpa bgp status':
-        host          => 'cr2-pmtpa',
-        group         => 'routers',
-        description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
-    }
-
-    @monitor_host { 'mr1-pmtpa':
-        ip_address => '10.1.2.3',
-        group      => 'routers',
-    }
-
-    @monitor_service { 'mr1-pmtpa interfaces':
-        host          => 'mr1-pmtpa',
-        group         => 'routers',
-        description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
-    }
-
     @monitor_host { 'mr1-eqiad':
         ip_address => '10.65.0.1',
         group      => 'routers',
@@ -422,18 +391,6 @@ class network::checks {
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus!${snmp_ro_community}",
-    }
-
-    @monitor_host { 'nas1-a.pmtpa.wmnet':
-        ip_address => '10.0.0.253',
-        group      => 'storage',
-        critical   => true,
-    }
-
-    @monitor_host { 'nas1-b.pmtpa.wmnet':
-        ip_address => '10.0.0.254',
-        group      => 'storage',
-        critical   => true,
     }
 
     @monitor_host { 'nas1001-a.eqiad.wmnet':
