@@ -125,6 +125,11 @@ phabricator.env: 'default'
 
 security.allow-outbound-http: false
 
+
+translation.override:
+  'Maniphest Task': 'Task'
+  'Pholio Mock': 'Mockup'
+
 user.custom-field-definitions:
   bugzilla_email:
     name: bugzilla_email
