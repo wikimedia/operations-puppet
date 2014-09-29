@@ -610,7 +610,11 @@ class role::cache {
     }
 
     class ssl::unified {
-        include certificates::wmf_ca, role::protoproxy::ssl::common
+        #TODO: kill the old wmf_ca
+        include certificates::wmf_ca
+        include certificates::wmf_ca_2014_2017
+        include role::protoproxy::ssl::common
+
         localssl { 'unified':
             certname => 'unified.wikimedia.org',
             default_server => true,
@@ -619,7 +623,10 @@ class role::cache {
 
     # ssl::sni To replace ssl::unified above after testing...
     class ssl::sni {
-        include certificates::wmf_ca, role::protoproxy::ssl::common
+        #TODO: kill the old wmf_ca
+        include certificates::wmf_ca
+        include certificates::wmf_ca_2014_2017
+        include role::protoproxy::ssl::common
 
         localssl { 'unified':
             certname => 'unified.wikimedia.org',
