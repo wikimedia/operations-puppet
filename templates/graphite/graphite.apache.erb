@@ -14,7 +14,7 @@
         SetHandler uwsgi-handler
     </Location>
 
-    <Location /render>
+    <Location ~ "/(render|metrics)">
         Satisfy Any
         Allow from all
     </Location>
