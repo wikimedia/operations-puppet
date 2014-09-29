@@ -1566,34 +1566,6 @@ node 'lanthanum.eqiad.wmnet' {
 
 }
 
-node 'linne.wikimedia.org' {
-    $url_downloader_ip = '208.80.152.143'
-
-    interface::ip { 'url_downloader':
-        interface => 'eth0',
-        address   => $url_downloader_ip,
-        before    => Class['role::url_downloader'],
-    }
-
-    include admin
-    include base
-    include ganglia
-    include role::mail::sender
-    include role::url_downloader
-
-# NTP still running here till pmtpa shutdown,
-#  unmanaged and in original configuration
-#    class { 'ntp::server':
-#        servers => [ '198.186.191.229',
-#                    '64.113.32.2',
-#                    '173.8.198.242',
-#                    '208.75.88.4',
-#                    '75.144.70.35',
-#        ],
-#        peers   => [ 'dobson.wikimedia.org' ],
-#    }
-}
-
 node /lvs100[1-6]\.wikimedia\.org/ {
 
     if $::hostname =~ /^lvs100[12]$/ {
