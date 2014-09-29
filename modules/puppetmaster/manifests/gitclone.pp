@@ -135,7 +135,7 @@ class puppetmaster::gitclone {
         target => "${puppetmaster::gitdir}/operations/puppet/modules",
         force  => true,
     }
-    file { '/etc/puppet/hiera':
+    file { '/etc/puppet/hieradata':
         ensure => link,
         target => "${puppetmaster::gitdir}/operations/puppet/hieradata",
         force  => true,

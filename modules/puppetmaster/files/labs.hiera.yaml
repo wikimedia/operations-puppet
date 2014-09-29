@@ -1,12 +1,12 @@
 :backends:
   - nuyaml
 :nuyaml:
-  :datadir: /etc/puppet/hiera
+  :datadir: /etc/puppet/hieradata
   :expand_path:
     - common
     - realm
 :private:
-  :datadir: /etc/puppet/private
+  :datadir: /etc/puppet/private/hieradata
 :hierarchy:
   - "labs/host/%{::hostname}"
   - "labs/%{::labsproject}"
