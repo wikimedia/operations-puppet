@@ -521,12 +521,7 @@ class role::cache {
                 # At ~6000 msgs per second, 500000 messages is over 1 minute
                 # of buffering, which should be more than enough.
                 queue_buffering_max_messages => 500000,
-                # Broker <-> Zookeeper timeout is currently set at
-                # 16 seconds, and it can take a few seconds for leadership
-                # change metadata to propagate to down to varnishkafka.
-                # Setting this to 30 seconds.
-                queue_buffering_max_ms       => 30000,
-                # bits varnishes do about 6000 reqs / sec each.
+                # bits varnishes can do about 6000 reqs / sec each.
                 # We want to send batches at least once a second.
                 batch_num_messages           => 6000,
                 # large timeout to account for potential cross DC latencies
