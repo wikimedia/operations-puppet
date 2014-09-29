@@ -13,7 +13,7 @@ class role::openldap::corp {
     $sync_pass = $passwords::openldap::oit::sync_pass
 
     # TODO: Actuall acquire a certificate for this
-    install-certificate { 'star.wikimedia.org': }
+    install_certificate { 'star.wikimedia.org': }
 
     class { '::openldap':
         server_id   => 3, # 1 and 2 used in OIT
