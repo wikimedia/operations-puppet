@@ -1,0 +1,207 @@
+# recursor.conf
+# This file is managed by puppet - don't edit it locally!
+
+<%
+	def flatten_ips(ips)
+		result = []
+
+		if ips.is_a?(Hash) then
+			ips.sort.map do |k, v|
+				result += flatten_ips(v)
+			end
+		elsif ips.is_a?(Array) then
+			ips.each do |v|
+				result += flatten_ips(v)
+			end
+		else
+			result << ips
+		end
+
+		return result
+	end
+-%>
+#################################
+# aaaa-additional-processing	turn on to do AAAA additional processing (slow)
+#
+# aaaa-additional-processing=off
+
+#################################
+# allow-from	If set, only allow these comma separated netmasks to recurse
+#
+# allow-from=127.0.0.0/8, 10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12, ::1/128, fe80::/10
+
+allow-from=127.0.0.0/8, ::1/128, <%= (@allow_from + flatten_ips(@listen_addresses)).join(", ") %>
+
+#################################
+# auth-can-lower-ttl	If we follow RFC 2181 to the letter, an authoritative server can lower the TTL of NS records
+#
+# auth-can-lower-ttl=off
+
+#################################
+# auth-zones	Zones for which we have authoritative data, comma separated domain=file pairs 
+#
+# auth-zones=
+
+#################################
+# chroot	switch to chroot jail
+#
+# chroot=
+
+#################################
+# client-tcp-timeout	Timeout in seconds when talking to TCP clients
+#
+# client-tcp-timeout=2
+
+#################################
+# config-dir	Location of configuration directory (recursor.conf)
+#
+# config-dir=/etc/powerdns/
+
+#################################
+# daemon	Operate as a daemon
+#
+daemon=yes
+
+#################################
+# delegation-only	Which domains we only accept delegations from
+#
+delegation-only=com,net
+
+#################################
+# export-etc-hosts	If we should serve up contents from /etc/hosts
+#
+# export-etc-hosts=off
+
+#################################
+# fork	If set, fork the daemon for possible double performance
+#
+# fork=no
+
+#################################
+# forward-zones	Zones for which we forward queries, comma separated domain=ip pairs
+#
+
+forward-zones= wmnet=208.80.154.238;208.80.152.214;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.152.214;91.198.174.239, wmflabs=208.80.152.32
+
+#################################
+# hint-file	If set, load root hints from this file
+#
+# hint-file=
+
+#################################
+# local-address	IP addresses to listen on, separated by spaces or commas
+#
+local-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
+
+#################################
+# local-port	port to listen on
+#
+local-port=53
+
+#################################
+# log-common-errors	If we should log rather common errors
+#
+# log-common-errors=yes
+
+#################################
+# max-cache-entries	If set, maximum number of entries in the main cache
+#
+# max-cache-entries=0
+
+#################################
+# max-negative-ttl	maximum number of seconds to keep a negative cached entry in memory
+#
+# max-negative-ttl=3600
+
+#################################
+# max-tcp-clients	Maximum number of simultaneous TCP clients
+#
+# max-tcp-clients=128
+
+#################################
+# max-tcp-per-client	If set, maximum number of TCP sessions per client (IP address)
+#
+# max-tcp-per-client=0
+
+#################################
+# no-shuffle	Don't change
+#
+# no-shuffle=off
+
+#################################
+# query-local-address	Source IP address for sending queries
+#
+# query-local-address=0.0.0.0
+
+#################################
+# query-local-address6	Source IPv6 address for sending queries
+#
+# query-local-address6=
+
+#################################
+# quiet	Suppress logging of questions and answers
+#
+quiet=yes
+
+#################################
+# remotes-ringbuffer-entries	maximum number of packets to store statistics for
+#
+# remotes-ringbuffer-entries=0
+
+#################################
+# serve-rfc1918	If we should be authoritative for RFC 1918 private IP space
+#
+# serve-rfc1918=
+
+#################################
+# server-id	Returned when queried for 'server.id' TXT, defaults to hostname
+#
+# server-id=
+
+#################################
+# setgid	If set, change group id to this gid for more security
+#
+
+setgid=pdns
+
+#################################
+# setuid	If set, change user id to this uid for more security
+#
+
+setuid=pdns
+
+#################################
+# single-socket	If set, only use a single socket for outgoing queries
+#
+# single-socket=off
+
+#################################
+# soa-minimum-ttl	Don't change
+#
+# soa-minimum-ttl=0
+
+#################################
+# soa-serial-offset	Don't change
+#
+# soa-serial-offset=0
+
+#################################
+# socket-dir	Where the controlsocket will live
+#
+# socket-dir=/var/run/
+
+#################################
+# spoof-nearmiss-max	If non-zero, assume spoofing after this many near misses
+#
+# spoof-nearmiss-max=20
+
+#################################
+# trace	if we should output heaps of logging
+#
+# trace=off
+
+#################################
+# version-string	string reported on version.pdns or version.bind
+#
+# version-string=PowerDNS Recursor 3.1 $Id: pdns_recursor.cc 838 2006-05-19 14:35:27Z ahu $
+

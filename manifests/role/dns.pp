@@ -47,7 +47,7 @@ class role::dns::ldap {
 
         # FIXME: turn these settings into a hash that can be included somewhere
         class { 'dns::auth-server::ldap':
-            dns_auth_ipaddress      => '208.80.154.15 208.80.154.14',
+            dns_auth_ipaddress      => '208.80.153.15 208.80.153.14',
             dns_auth_query_address  => '208.80.153.15',
             dns_auth_soa_name       => 'labs-ns2.wikimedia.org',
             ldap_hosts              => $ldapconfig['servernames'],
