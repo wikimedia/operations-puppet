@@ -526,6 +526,9 @@ class role::cache {
                 batch_num_messages           => 6000,
                 # large timeout to account for potential cross DC latencies
                 topic_request_timeout_ms     => 30000, # request ack timeout
+                # We force ACKs from all in-sync replicas, so we're able to
+                # survive a leader re-election without loosing messages.
+                topic_request_required_acks  => -1,
                 # Write out stats to varnishkafka.stats.json
                 # this often.  This is set at 15 so that
                 # stats will be fresh when polled from gmetad.
