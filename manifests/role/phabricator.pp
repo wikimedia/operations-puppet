@@ -131,7 +131,6 @@ class role::phabricator::labs {
             'search.elastic.namespace'           => 'phabricator',
             'darkconsole.enabled'                => true,
             'phabricator.base-uri'               => "https://${::hostname}.wmflabs.org",
-            'phabricator.show-beta-applications' => true,
             'mysql.pass'                         => $mysqlpass,
             'auth.require-email-verification'    => false,
         },

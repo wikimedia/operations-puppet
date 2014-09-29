@@ -110,7 +110,7 @@ storage.upload-size-limit: 5M
 
 phabricator.serious-business: true
 
-phabricator.show-beta-applications: true
+phabricator.show-prototypes: true
 
 metamta.mail-adapter: 'PhabricatorMailImplementationPHPMailerAdapter'
 
