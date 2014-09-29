@@ -20,15 +20,14 @@ sub vcl_recv {
 <% end -%>
 
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
-	/* Use the hhvm backend for any request to the standard appservers.
-	 On a request restart (often due to an error), fallback to the Zend pool */
-	if ( req.http.X-Use-HHVM == "1" && req.restarts == 0) {
+	/* Use the hhvm backend for any request marked as such */
+	if ( req.http.X-Use-HHVM == "1") {
 		if (req.backend == api) {
 			set req.backend = hhvm_api;
 		} else {
 			set req.backend = hhvm_appservers;
 		}
-        }
+	}
 <% end -%>
 
 	/* Default (now modified) Varnish vcl_recv function */
@@ -56,8 +55,6 @@ sub vcl_fetch {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
-
-	call hhvm_is_cacheable;
 
 	return (deliver);
 }

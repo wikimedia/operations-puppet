@@ -32,9 +32,7 @@ sub vcl_recv {
 	if (req.http.Cookie ~ "hhvm=true") {
 		set req.http.X-Use-HHVM = 1;
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
-		if (req.restarts == 0) {
-			set req.backend = hhvm_appservers;
-		}
+		set req.backend = hhvm_appservers;
 <% end -%>
 	} else {
 		unset req.http.X-Use-HHVM;
@@ -84,8 +82,6 @@ sub vcl_fetch {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
-
-	call hhvm_is_cacheable;
 
 	/* Don't run the default vcl_fetch function */
 	return (deliver);
