@@ -8,8 +8,6 @@
 class role::ocg::production (
         $tmpfs_size = '512M', # size of tmpfs filesystem e.g. 512M
         $tmpfs_mountpoint = '/mnt/tmpfs',
-        $ocg_temp_size_warning  = '100M', # nagios warning threshold
-        $ocg_temp_size_critical = '250M', # nagios critical threshold
     ) {
 
     system::role { 'ocg':
@@ -84,12 +82,6 @@ class role::ocg::production (
 
     class { 'ocg::nagios::check':
         # see modules/ocg/files/nagios/check_ocg_health for descriptions
-        wtd => $ocg_temp_size_warning,
-        ctd => $ocg_temp_size_critical,
-        wod => '200G',
-        cod => '350G',
-        wpd => '1G',
-        cpd => '5G',
         wjs => '75000',
         cjs => '100000',
         wrj => '100',
