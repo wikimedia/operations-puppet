@@ -123,6 +123,8 @@ repository.default-local-path: '/var/repo/'
 
 phabricator.env: 'default'
 
+security.allow-outbound-http: false
+
 user.custom-field-definitions:
   bugzilla_email:
     name: bugzilla_email
