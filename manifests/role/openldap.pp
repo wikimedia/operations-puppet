@@ -10,7 +10,7 @@ class role::openldap::corp {
     }
 
     $master = 'ldap1.corp.wikimedia.org'
-    $sync_pass = $passwords::openldap::oit::sync_pass
+    $sync_pass = $passwords::openldap::corp::sync_pass
 
     # TODO: Actuall acquire a certificate for this
     install_certificate { 'star.wikimedia.org': }
