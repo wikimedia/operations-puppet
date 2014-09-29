@@ -16,6 +16,14 @@ class ldap::firewall( $server_list) {
         port   => '8989',
         srange => inline_template('(<%= @server_list.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
     }
+
+    ferm::rule { 'ldap_private_labs':
+        rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (ldap ldaps) ACCEPT;',
+    }
+
+    ferm::rule { 'ldap_backend_private_labs':
+        rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (1389 1636) ACCEPT;',
+    }
 }
 
 class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $base_dn, $proxyagent, $proxyagent_pass, $server_bind_ips, $initial_password, $first_master=false ) {

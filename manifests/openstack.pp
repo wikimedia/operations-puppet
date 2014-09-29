@@ -28,17 +28,6 @@ class openstack::firewall {
         rule => 'saddr (0.0.0.0/0) proto (udp tcp) dport 53 ACCEPT;',
     }
 
-    # LDAP
-    ferm::rule { 'ldap_private_labs':
-        rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (ldap ldaps) ACCEPT;',
-    }
-    ferm::rule { 'ldap_backend_private_labs':
-        rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (1389 1636) ACCEPT;',
-    }
-    ferm::rule { 'ldap_admin_replication':
-        rule => "saddr (10.0.0.244 $other_master) proto tcp dport (4444 8989) ACCEPT;",
-    }
-
     # Redis replication for keystone
     ferm::rule { 'redis_replication':
         rule => "saddr ($other_master) proto tcp dport (6379) ACCEPT;",
