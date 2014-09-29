@@ -448,10 +448,3 @@ class network::checks {
         critical   => true,
     }
 }
-
-# This makes the monitoring host include the router group and
-# perform the above checks
-include icinga::monitor::configuration::variables
-if $::hostname in $icinga::monitor::configuration::variables::master_hosts {
-    include network::checks
-}
