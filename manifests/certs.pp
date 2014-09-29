@@ -104,7 +104,9 @@ define install_certificate(
         certificates::rapidssl_ca,
         certificates::rapidssl_ca_2,
         certificates::digicert_ca,
-        certificates::wmf_ca
+        certificates::wmf_ca,
+        certificates::wmf_ca_2014_2017
+
     # Public key
     file { "/etc/ssl/certs/${name}.pem":
         owner  => 'root',
@@ -209,6 +211,8 @@ class certificates::star_wmflabs {
 
 }
 
+# TODO: define this
+# old lost CA, need to remove from all over
 class certificates::wmf_ca {
 
     include certificates::packages
@@ -226,6 +230,26 @@ class certificates::wmf_ca {
             require => File['/etc/ssl/certs/wmf-ca.pem'],
     }
 
+}
+
+# New WMF CA
+class certificates::wmf_ca_2014_2017 {
+
+    include certificates::packages
+    $ca_name = 'wmf_ca_2014_2017'
+
+    file { "/etc/ssl/certs/${ca_name}.pem":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => "puppet:///files/ssl/${ca_name}.pem",
+        require => Package['openssl'],
+    }
+
+    exec { "/bin/ln -s /etc/ssl/certs/${ca_name}.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${ca_name}.pem).0":
+            unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${ca_name}.pem).0\" ]",
+            require => File["/etc/ssl/certs/${ca_name}.pem"],
+    }
 }
 
 class certificates::wmf_labs_ca {

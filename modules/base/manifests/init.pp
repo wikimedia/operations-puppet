@@ -242,5 +242,7 @@ class base {
     # CA for the new ldap-eqiad/ldap-codfw ldap servers, among
     # other things.
     include certificates::globalsign_ca
+    # TODO: Kill the old wmf_ca
     include certificates::wmf_ca
+    include certificates::wmf_ca_2014_2017
 }
