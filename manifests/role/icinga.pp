@@ -13,6 +13,7 @@ class role::icinga {
     include icinga::groups::misc
     include lvs::monitor
     include role::authdns::monitoring
+    include network::checks
     include dsh::config
     include mysql
     include nagios::gsbmonitoring
