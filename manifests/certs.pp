@@ -238,17 +238,21 @@ class certificates::wmf_ca_2014_2017 {
     include certificates::packages
     $ca_name = 'wmf_ca_2014_2017'
 
-    file { "/etc/ssl/certs/${ca_name}.pem":
+    file { "/usr/local/share/ca-certificates/${ca_name}.crt":
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => "puppet:///files/ssl/${ca_name}.pem",
+        source  => "puppet:///files/ssl/${ca_name}.crt",
+        notify  => Exec["update_ca_certificates_${ca_name}"],
         require => Package['openssl'],
     }
 
-    exec { "/bin/ln -s /etc/ssl/certs/${ca_name}.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${ca_name}.pem).0":
-            unless  => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${ca_name}.pem).0\" ]",
-            require => File["/etc/ssl/certs/${ca_name}.pem"],
+    #TODO: This can be deduplicated nicely, but a PoC right now
+    exec { "update_ca_certificates_${ca_name}":
+        command => '/usr/sbin/update-ca-certificates',
+        creates => "/etc/ssl/certs/${ca_name}.pem",
+        # implicitly also creates => "/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${ca_name}.pem).0\",
+        require => File["/usr/local/share/ca-certificates/${ca_name}.crt"],
     }
 }
 
