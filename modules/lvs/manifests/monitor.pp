@@ -31,7 +31,7 @@ class lvs::monitor {
             uri => 'en.wikipedia.org!/wiki/Main_Page';
         'bits-lb.eqiad.wikimedia.org':
             ip_address => $ip['bits']['eqiad']['bitslb'],
-            uri => 'bits.wikimedia.org!/skins/common/images/poweredby_mediawiki_88x31.png';
+            uri => 'bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png';
         'upload-lb.eqiad.wikimedia.org':
             ip_address => $ip['upload']['eqiad']['uploadlb'],
             uri => 'upload.wikimedia.org!/monitoring/backend';
@@ -49,7 +49,7 @@ class lvs::monitor {
             uri => 'en.wikipedia.org!/wiki/Main_Page';
         'bits-lb.eqiad.wikimedia.org':
             ip_address => $ip['bits']['eqiad']['bitslb6'],
-            uri => 'bits.wikimedia.org!/skins/common/images/poweredby_mediawiki_88x31.png';
+            uri => 'bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png';
         'upload-lb.eqiad.wikimedia.org':
             ip_address => $ip['upload']['eqiad']['uploadlb6'],
             uri => 'upload.wikimedia.org!/monitoring/backend';
@@ -76,7 +76,7 @@ class lvs::monitor {
             uri => "en.wikipedia.org!/wiki/Main_Page";
         "bits-lb.esams.wikimedia.org":
             ip_address => $ip['bits']['esams']['bitslb'],
-            uri => "bits.wikimedia.org!/skins/common/images/poweredby_mediawiki_88x31.png";
+            uri => "bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png";
         "upload-lb.esams.wikimedia.org":
             ip_address => $ip['upload']['esams']['uploadlb'],
             uri => "upload.wikimedia.org!/monitoring/backend";
@@ -91,7 +91,7 @@ class lvs::monitor {
             uri => "en.wikipedia.org!/wiki/Main_Page";
         "bits-lb.esams.wikimedia.org":
             ip_address => $ip['bits']['esams']['bitslb6'],
-            uri => "bits.wikimedia.org!/skins/common/images/poweredby_mediawiki_88x31.png";
+            uri => "bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png";
         "upload-lb.esams.wikimedia.org":
             ip_address => $ip['upload']['esams']['uploadlb6'],
             uri => "upload.wikimedia.org!/monitoring/backend";
@@ -108,7 +108,7 @@ class lvs::monitor {
             uri => "en.wikipedia.org!/wiki/Main_Page";
         "bits-lb.ulsfo.wikimedia.org":
             ip_address => $ip['bits']['ulsfo']['bitslb'],
-            uri => "bits.wikimedia.org!/skins/common/images/poweredby_mediawiki_88x31.png";
+            uri => "bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png";
         "upload-lb.ulsfo.wikimedia.org":
             ip_address => $ip['upload']['ulsfo']['uploadlb'],
             uri => "upload.wikimedia.org!/monitoring/backend";
@@ -123,7 +123,7 @@ class lvs::monitor {
             uri => "en.wikipedia.org!/wiki/Main_Page";
         "bits-lb.ulsfo.wikimedia.org":
             ip_address => $ip['bits']['ulsfo']['bitslb6'],
-            uri => "bits.wikimedia.org!/skins/common/images/poweredby_mediawiki_88x31.png";
+            uri => "bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png";
         "upload-lb.ulsfo.wikimedia.org":
             ip_address => $ip['upload']['ulsfo']['uploadlb6'],
             uri => "upload.wikimedia.org!/monitoring/backend";
