@@ -53,6 +53,11 @@ define command{
         command_line    $USER1$/check_dns -H $ARG1$ -s $HOSTADDRESS$
         }
 
+# 'check_auth_dns' command definition
+define command{
+        command_name    check_auth_dns
+        command_line    $USER1$/check_dns -H $ARG1$ -A -s $HOSTADDRESS$
+        }
 
 # 'check_ftp' command definition
 define command{
