@@ -39,6 +39,7 @@ class swift_new (
         'python-swiftclient',
         'python-statsd',
         'parted',
+        'xfsprogs',
     ]:
         ensure => 'present',
     }
