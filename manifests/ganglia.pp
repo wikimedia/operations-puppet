@@ -162,6 +162,9 @@ class ganglia {
             'sca'           => {
                 'name'      => 'Service Cluster A',
                 'ip_oct'    => '46' },
+            'openldap_corp_mirror'           => {
+                'name'      => 'Corp OIT LDAP mirror',
+                'ip_oct'    => '47' },
         }
         # NOTE: Do *not* add new clusters *per site* anymore,
         # the site name will automatically be appended now,
