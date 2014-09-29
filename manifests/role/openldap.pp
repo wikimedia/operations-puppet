@@ -12,8 +12,7 @@ class role::openldap::corp {
     $master = 'ldap1.corp.wikimedia.org'
     $sync_pass = $passwords::openldap::corp::sync_pass
 
-    # TODO: Actuall acquire a certificate for this
-    install_certificate { 'star.wikimedia.org': }
+    install_certificate { 'ldap-mirror.wikimedia.org': }
 
     class { '::openldap':
         server_id   => 3, # 1 and 2 used in OIT
@@ -22,8 +21,8 @@ class role::openldap::corp {
         master      => $master,
         sync_pass   => $sync_pass,
         ca          => '/etc/ssl/certs/ca-certificates.crt',
-        certificate => "/etc/ssl/certs/star.wikimedia.org.crt",
-        key         => "/etc/ssl/private/star.wikimedia.org.key",
+        certificate => "/etc/ssl/certs/ldap-mirror.wikimedia.org.pem",
+        key         => "/etc/ssl/private/ldap-mirror.wikimedia.org.key",
     }
 
     ferm::service { 'corp_ldap':
