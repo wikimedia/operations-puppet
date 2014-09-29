@@ -79,7 +79,16 @@ class misc::blogs::wikimedia {
     include backup::host
     backup::set { 'srv-org-wikimedia': }
 
-    ferm::rule { 'blog':
-        rule => 'proto tcp dport (http https) ACCEPT;'
+    ferm::rule { 'blog-http':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '198.73.209.0/24',
     }
+
+    ferm::rule { 'blog-https':
+        proto  => 'tcp',
+        port   => '443',
+        srange => '198.73.209.0/24',
+    }
+
 }
