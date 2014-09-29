@@ -1,4 +1,9 @@
-#These custom values are hardcoded here to persist across Phabriactor Mediawiki installs
+# These custom values are hardcoded here to persist across Phabriactor Mediawiki installs.
+# Values set here should only be default settings that apply to all installs.  Environment
+# specific settings go in the role under manifests.  Changes to these settings usually
+# require a phd daemon restart to be fully affective.  This message will show up as a banner
+# in Phabricator but only for administrators.  If you do not have the ability to restart the
+# associated daemons do not merge changes to this file.
 
 ui.footer-items:
   - {name: 'Text is available under the Creative Commons Attribution-ShareAlike License; code is available under the GNU General Public License or other appropriate open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy. Wikipedia is a registered trademark of the Wikimedia Foundation, Inc., a non-profit organization.'}
@@ -34,8 +39,7 @@ maniphest.priorities:
     short: Voluneer
     color: sky
 
-# DO NOT CHANGE THESE VALUES.  Must be updated
-# to match in security extensions.
+# DO NOT CHANGE THESE VALUES.  Must be updated to match in security extensions.
 maniphest.custom-field-definitions:
   external_reference:
     name: ext_ref
@@ -53,10 +57,14 @@ maniphest.custom-field-definitions:
     default: none
     options:
       default: none
-      security-bug: 'Security or Sensitive Bug'
-      ops-access-request: 'Operations Access Request'
-      ops-sensitive: 'Operations Sensitive'
-      sensitive: 'Another Private Issue'
+      sensitive: 'Private Issue'
+
+# Security/Operations Macro's for enabling
+# as we rollout to RT and bugzilla.
+#security-bug: 'Security or Sensitive Bug'
+#ops-access-request: 'Operations Access Request'
+#ops-sensitive: 'Operations Sensitive'
+#sensitive: 'Another Private Issue'
 
 maniphest.statuses:
   open:
@@ -96,23 +104,26 @@ maniphest.statuses:
     prefixes: [decline, declines, declined]
     suffixes: ['as declined']
 
-
+# Allow the "view" policy setting of public to be available
 policy.allow-public: true
 
+# Adminstrators do not need to approve all accounts
 auth.require-approval: false
 
+# Require an email verification for all users
 auth.require-email-verification: true
 
 metamta.user-address-format: 'short'
 
-#modifies behavior of metamta.maniphest.reply-handler-domain
-#don't generate a unique reply hash per user, just per issue
+# Modifies behavior of metamta.maniphest.reply-handler-domain
+# Don't generate a unique reply hash per user, only per task
 metamta.public-replies: true
 
 storage.upload-size-limit: 5M
 
 phabricator.serious-business: true
 
+# Replaces show-beta applications
 phabricator.show-prototypes: true
 
 metamta.mail-adapter: 'PhabricatorMailImplementationPHPMailerAdapter'
@@ -125,34 +136,14 @@ repository.default-local-path: '/var/repo/'
 
 phabricator.env: 'default'
 
+# Do not try to call out for external resouces such as avatars
 security.allow-outbound-http: false
-
 
 translation.override:
   'Maniphest Task': 'Task'
   'Pholio Mock': 'Mockup'
 
-user.custom-field-definitions:
-  bugzilla_email:
-    name: bugzilla_email
-    type: text
-    caption: email registered to bugzilla.wikimedia.org
-    instructions: This field should contain the email that was registered to the old bugzilla.wikimedia.org
-    search: true
-  rt_email:
-    name: rt_email
-    type: text
-    caption: email registered to rt.wikimedia.org
-    instructions: This field should contain the email that was registered to the old rt.wikimedia.org
-    search: true
-  rt_id:
-    name: rt_id
-    type: text
-    caption: login name for rt
-    instructions: This field should contain the login name for the old rt.bugzilla.org
-    search: true
-
-#we don't host local docs or use the wiki :)
+# We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
   PhabricatorApplicationPhriction: true
   PhabricatorApplicationDiviner: true
