@@ -8,7 +8,7 @@
     - common
     - realm
 :private:
-  :datadir: /etc/puppet/private/hiera
+  :datadir: /etc/puppet/private/hieradata
 :hierarchy:
   - "hosts/%{::hostname}"
   - "%{::realm}"
