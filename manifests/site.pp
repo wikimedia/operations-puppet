@@ -3059,6 +3059,7 @@ node 'labcontrol2001.wikimedia.org' {
 
     include standard
     include admin
+    include base::firewall
     include role::dns::ldap
     include ldap::role::server::labs
     include ldap::role::client::labs
