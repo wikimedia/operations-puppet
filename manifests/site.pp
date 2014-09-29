@@ -707,70 +707,8 @@ node 'dataset1001.wikimedia.org' {
     include role::download::wikimedia
 }
 
-# pmtpa dbs
-node /^db(60)\.pmtpa\.wmnet/ {
-
-    include admin
-    $cluster = 'mysql'
-    $ganglia_aggregator = true
-    class { 'role::coredb::s1':
-        mariadb               => true,
-        innodb_file_per_table => true,
-    }
-}
-
-node /^db(69)\.pmtpa\.wmnet/ {
-
-    include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::s2':
-        mariadb               => true,
-        innodb_file_per_table => true,
-    }
-}
-
-node /^db(71)\.pmtpa\.wmnet/ {
-
-    include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::s3':
-        mariadb               => true,
-        innodb_file_per_table => true,
-    }
-}
-
-node /^db(72)\.pmtpa\.wmnet/ {
-
-    include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::s4':
-        mariadb               => true,
-        innodb_file_per_table => true,
-    }
-}
-
-node /^db(73)\.pmtpa\.wmnet/ {
-
-    include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::s5':
-        mariadb               => true,
-        innodb_file_per_table => true,
-    }
-}
-
-node /^db(74)\.pmtpa\.wmnet/ {
-
-    include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::s6':
-        mariadb               => true,
-        innodb_file_per_table => true,
-    }
-}
-
-## imminent decomission/reclaim from pmtpa pending 12th floor reorg
-node /^db(60|7[5-7])\.pmtpa\.wmnet/{
+## imminent decomission/reclaim from pmtpa
+node /^db[67][0-9]\.pmtpa\.wmnet/{
 
     include admin
     include standard
