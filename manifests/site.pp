@@ -2391,8 +2391,6 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
     }
     class { 'role::ocg::production':
         tmpfs_size             => '32G',
-        ocg_temp_size_warning  => '10G',
-        ocg_temp_size_critical => '20G',
     }
 }
 
