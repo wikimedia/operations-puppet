@@ -2068,6 +2068,7 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
     include admin
+    include standard
 
     $cluster = 'swift'
     $nagios_group = 'swift'
@@ -2086,6 +2087,7 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
 
 node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
     include admin
+    include standard
 
     $cluster = 'swift'
     $nagios_group = 'swift'
