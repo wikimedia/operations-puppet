@@ -3,11 +3,6 @@ class ferm {
         ensure => present,
     }
 
-    # This package is needed to allow @resolve
-    package { 'libnet-dns-perl':
-        ensure => present,
-    }
-
     service { 'ferm':
         hasstatus => false,
         status    => '/bin/true',
