@@ -529,8 +529,8 @@ class role::cache {
             $topic_request_required_acks  = $::fqdn ? {
                 'cp3019.esams.wikimedia.org' => '2',  # esams bits
                 'cp1056.eqiad.wmnet'         => '2',  # eqiad bits
-                'cp1057.eqiad.wmnet'         => '-1', # esams bits
-                'cp3020.esams.wikimedia.org' => '-1', # eqiad bits
+                'cp3020.esams.wikimedia.org' => '-1', # esams bits
+                'cp1057.eqiad.wmnet'         => '-1', # eqiad bits
                 default                      => '1',
             }
 
