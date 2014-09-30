@@ -19,13 +19,15 @@
 #
 module Puppet::Parser::Functions
   newfunction(:require_package, :arity => -2) do |args|
-    Puppet::Parser::Functions.function(:create_resources)
-    packages = @compiler.topscope.function_create_resources [
-      'package',
-      Hash[args.map { |package_name| [package_name, {}] }]
-    ]
-    unless self.is_topscope?
-      resource.set_parameter(:require, resource[:require].to_a | packages)
+    args.each do |package_name|
+      class_name = 'packages::' + package_name.tr('-', '_')
+      unless compiler.topscope.find_hostclass(class_name)
+        host = Puppet::Resource::Type.new(:hostclass, class_name)
+        known_resource_types.add_hostclass(host)
+        send Puppet::Parser::Functions.function(:create_resources),
+             ['package', { package_name => { :ensure => :present } }]
+      end
+      send Puppet::Parser::Functions.function(:require), [class_name]
     end
   end
 end
