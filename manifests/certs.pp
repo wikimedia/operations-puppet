@@ -50,15 +50,14 @@ define create_chained_cert(
 ) {
     # chained cert, used when needing to provide
     # an entire certificate chain to a client
-    # NOTE: This is annoying because to work right regardless of whether
-    # the root CA comes from the OS or us, we need to use the /etc/ssl/certs/
-    # linkfarm so filenames need to use '*.pem'.
+    # XXX: this actually ignores the specificed $ca now
 
     exec { "${name}_create_chained_cert":
         creates => "${location}/${certname}.chained.crt",
-        command => "/bin/cat /etc/ssl/localcerts/${certname}.crt ${ca} > ${location}/${certname}.chained.crt",
-        cwd     => '/etc/ssl/certs',
+        command => "/usr/local/bin/construct-cert-chain ${certname}.crt > ${location}/${certname}.chained.crt",
+        cwd     => '/etc/ssl/localcerts',
         require => [Package['openssl'],
+                    File['/usr/local/bin/construct-cert-chain'],
                     File["/etc/ssl/localcerts/${certname}.crt"],
         ],
     }
@@ -68,7 +67,10 @@ define create_chained_cert(
         mode    => '0444',
         owner   => $user,
         group   => $group,
-        require => Exec["${name}_create_chained_cert"],
+        require => [
+                    File["/etc/ssl/localcerts/${certname}.crt"],
+                    Exec["${name}_create_chained_cert"],
+        ],
     }
 }
 
@@ -212,6 +214,14 @@ class certificates::base {
         mode   => '0755',
     }
 
+    file { '/usr/local/bin/construct-cert-chain':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///files/ssl/construct-cert-chain',
+        require => Package['openssl'],
+    }
 }
 
 class certificates::star_wmflabs_org {
