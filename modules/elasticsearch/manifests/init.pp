@@ -152,4 +152,16 @@ class elasticsearch($cluster_name,
     file { '/var/log/elasticsearch/elasticsearch_index_search_slowlog.log':
         ensure => absent
     }
+
+    # Cluster management tool, trusty only
+    if ubuntu_version('>= trusty') {
+        file { '/usr/local/bin/es-tool':
+            ensure  => file,
+            owner   => root,
+            group   => root,
+            mode    => '0755',
+            source  => 'puppet:///modules/elasticsearch/es-tool',
+            require => Package['python-elasticsearch']
+        }
+    }
 }
