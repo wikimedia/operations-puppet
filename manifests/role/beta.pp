@@ -138,8 +138,8 @@ class role::beta::jobrunner {
     include ::mediawiki
 
     class { '::mediawiki::jobrunner':
-        aggr_servers    => [ '10.68.16.146' ],
-        queue_servers   => [ '10.68.16.146' ],
+        aggr_servers    => [ 'deployment-redis01' ],
+        queue_servers   => [ 'deployment-redis01' ],
         runners_basic   => 5,
         runners_parsoid => 5,
         runners_upload  => 2,
