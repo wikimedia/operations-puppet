@@ -17,4 +17,9 @@ class elasticsearch::packages {
     if ! defined ( Package['curl'] ) {
         package { 'curl': ensure => present }
     }
+
+    # library for elasticsearch. only in trusty+
+    if ubuntu_version('>= trusty') {
+        package { 'python-elasticsearch': ensure => present }
+    }
 }
