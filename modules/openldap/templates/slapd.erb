@@ -8,6 +8,7 @@ include         /etc/ldap/schema/rfc2307bis.schema
 include         /etc/ldap/schema/inetorgperson.schema
 include         /etc/ldap/schema/dyngroup.schema
 include         /etc/ldap/schema/samba.schema
+include         /etc/ldap/schema/ppolicy.schema
 
 # Where the pid file is put. The init.d script
 # will not stop the server if you change this.
@@ -27,6 +28,7 @@ moduleload  back_monitor
 moduleload  memberof
 moduleload  syncprov
 moduleload  auditlog
+moduleload  ppolicy
 
 # The maximum number of entries that is returned for a search operation
 sizelimit 2048
@@ -67,6 +69,11 @@ overlay syncprov
 syncprov-checkpoint 100 5
 syncprov-sessionlog 100
 syncprov-reloadhint TRUE
+
+# Password policy
+overlay ppolicy
+ppolicy_hash_cleartext
+password-hash {SHA}
 
 ##### Replication ACL
 
