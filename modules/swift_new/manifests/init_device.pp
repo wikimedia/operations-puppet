@@ -24,7 +24,7 @@ define swift_new::init_device($partition_nr='1') {
         path    => '/sbin/:/usr/sbin/',
         require => Package['xfsprogs'],
         before  => Exec["parted-${title}"],
-        unless  => "xfs_admin -l ${title}",
+        unless  => "xfs_admin -l ${dev}",
     }
 
     swift_new::label_filesystem { $dev:
