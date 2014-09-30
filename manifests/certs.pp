@@ -42,7 +42,6 @@ define create_pkcs12(
 }
 
 define create_chained_cert(
-    $ca,
     $certname = $name,
     $user     = 'root',
     $group    = 'ssl-cert',
@@ -50,15 +49,14 @@ define create_chained_cert(
 ) {
     # chained cert, used when needing to provide
     # an entire certificate chain to a client
-    # NOTE: This is annoying because to work right regardless of whether
-    # the root CA comes from the OS or us, we need to use the /etc/ssl/certs/
-    # linkfarm so filenames need to use '*.pem'.
+    # XXX: this actually ignores the specificed $ca now
 
     exec { "${name}_create_chained_cert":
         creates => "${location}/${certname}.chained.crt",
-        command => "/bin/cat /etc/ssl/localcerts/${certname}.crt ${ca} > ${location}/${certname}.chained.crt",
-        cwd     => '/etc/ssl/certs',
+        command => "/usr/local/bin/construct-cert-chain ${certname}.crt > ${location}/${certname}.chained.crt",
+        cwd     => '/etc/ssl/localcerts',
         require => [Package['openssl'],
+                    File['/usr/local/bin/construct-cert-chain'],
                     File["/etc/ssl/localcerts/${certname}.crt"],
         ],
     }
@@ -68,7 +66,10 @@ define create_chained_cert(
         mode    => '0444',
         owner   => $user,
         group   => $group,
-        require => Exec["${name}_create_chained_cert"],
+        require => [
+                    File["/etc/ssl/localcerts/${certname}.crt"],
+                    Exec["${name}_create_chained_cert"],
+        ],
     }
 
     # TODO: Remove once nothing references this anymore
@@ -158,36 +159,7 @@ define install_certificate(
 
     create_pkcs12{ $name: }
     create_combined_cert{ $name: }
-    if ( $ca ) {
-        $cas = $ca
-    } else {
-        # PEM files should be listed in order:
-        # intermediate -> intermediate -> ... -> root
-        # If this is out of order either servers will fail to start,
-        # or will not properly have SSL enabled.
-        $cas = $name ? {
-            # NOTE: Those use .pem filenames
-            'unified.wikimedia.org'        => 'DigiCertHighAssuranceCA-3.pem',
-            'star.wikimedia.org'           => 'RapidSSL_CA.pem RapidSSL_CA_2.pem GeoTrust_Global_CA.pem',
-            'star.wikipedia.org'           => 'DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem',
-            'star.wiktionary.org'          => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikiquote.org'           => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikibooks.org'           => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikisource.org'          => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikinews.org'            => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikiversity.org'         => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.mediawiki.org'           => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wikimediafoundation.org' => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wmflabs.org'             => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wmflabs'                 => 'wmf-labs.pem',
-            'star.planet.wikimedia.org'    => 'DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem',
-            'star.wmfusercontent.org'      => 'GlobalSign_CA.pem',
-            default => 'wmf-ca.pem',
-        }
-    }
-    create_chained_cert{ $name:
-        ca => $cas,
-    }
+    create_chained_cert{ $name: }
 }
 
 define install_additional_key(
@@ -232,6 +204,14 @@ class certificates::base {
         mode   => '0755',
     }
 
+    file { '/usr/local/bin/construct-cert-chain':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///files/ssl/construct-cert-chain',
+        require => Package['openssl'],
+    }
 }
 
 class certificates::star_wmflabs_org {
