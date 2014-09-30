@@ -1,0 +1,36 @@
+[user]
+	name = Chad Horohoe
+	email = chadh@wikimedia.org
+[alias]
+	push-for-review = push origin HEAD:refs/for/master
+	up = pull --ff-only
+	log-graph = log --graph --oneline --branches --all
+	rollback = reset --hard HEAD~1
+	amend = commit -a --amend
+[core]
+	editor = vim
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[mergetool]
+	keepBackup = false
+[gitreview]
+	username = demon
+[push]
+	default = simple
+[url "ssh://gerrit.wikimedia.org/"]
+    insteadOf = "gerrit:"
