@@ -121,6 +121,8 @@ class misc::statistics::packages::python {
         'python-unidecode', # Unicode simplification - converts everything to latin set
         'python-pygeoip',   # For geo-encoding IP addresses
         'python-ua-parser', # For parsing User Agents
+        'python-matplotlib',  # For generating plots of data
+        'python3-matplotlib', # For generating plots of data
     ]:
         ensure => 'installed',
     }
