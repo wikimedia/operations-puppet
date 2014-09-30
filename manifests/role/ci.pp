@@ -277,13 +277,22 @@ class role::ci::slave::labs::common {
 
 }
 
+class role::ci::slave::localbrowser {
+    requires_realm('labs')
+
+    system::role { 'role::ci::slave::localbrowser':
+        description => 'CI Jenkins slave for running tests in local browsers',
+    }
+
+    include role::ci::slave::labs::common
+    include contint::browsers
+}
+
 class role::ci::slave::browsertests {
+    requires_realm('labs')
 
     system::role { 'role::ci::slave::browsertests':
-        description => 'CI Jenkins slave for browser tests' }
-
-    if $::realm != 'labs' {
-        fail( 'role::ci::slave::browsertests must only be applied in labs' )
+        description => 'CI Jenkins slave for browser tests',
     }
 
     include role::ci::slave::labs::common
@@ -349,13 +358,10 @@ class role::ci::slave::browsertests {
 }
 
 class role::ci::slave::labs {
+    requires_realm('labs')
 
     system::role { 'role::ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
-
-    if $::realm != 'labs' {
-        fail("role::ci::slave::labs must only be applied in labs")
-    }
 
     class { 'role::ci::slave::browsertests':
         require => [
@@ -383,11 +389,12 @@ class role::ci::slave::labs {
         require    => File['/srv/localhost/mediawiki'],
     }
 
-    include role::ci::slave::labs::common,
-        # Trebuchet replacement on labs
-        contint::slave-scripts,
-        # Include package unsafe for production
-        contint::packages::labs
+    include role::ci::slave::labs::common
+    include role::ci::slave::localbrowser
+    # Trebuchet replacement on labs
+    include contint::slave-scripts
+    # Include package unsafe for production
+    include contint::packages::labs
 
 }
 
