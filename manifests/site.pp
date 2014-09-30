@@ -2447,7 +2447,7 @@ node 'pdf3.wikimedia.org' {
     include role::logging::systemusers
 }
 
-node 'plutonium.wikimedia.org' {
+node /(plutonium|pollux)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
 
     include standard
