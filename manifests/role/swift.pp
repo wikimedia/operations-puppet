@@ -322,6 +322,8 @@ class role::swift::icehouse {
 # initially only codfw, to be followed by esams and eqiad
 
 class role::swift::stats_reporter {
+    include role::swift::base
+
     system::role { 'role::swift::stats_reporter':
         description => 'swift statistics reporter',
     }
@@ -332,6 +334,8 @@ class role::swift::stats_reporter {
 }
 
 class role::swift::proxy {
+    include role::swift::base
+
     system::role { 'role::swift::proxy':
         description => 'swift frontend proxy',
     }
@@ -360,6 +364,8 @@ class role::swift::proxy {
 
 
 class role::swift::storage {
+    include role::swift::base
+
     system::role { 'role::swift::storage':
         description => 'swift storage brick',
     }
