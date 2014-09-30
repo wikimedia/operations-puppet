@@ -4,6 +4,7 @@ ca_md = sha1
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
 templatedir = /etc/puppet/templates
 modulepath = /etc/puppet/private/modules:/etc/puppet/modules
+pluginsync = true
 
 # puppetmaster($config) settings
 <% scope.lookupvar('puppetmaster::config').sort.each do |setting, value| -%>
