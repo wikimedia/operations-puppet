@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Quickly (but safely) restarts elasticsearch. Nicer than just
+# using init.d because it avoids unnecessary shard allocation.
+
+# Disable non-primary allocation
+curl -s -XPUT localhost:9200/_cluster/settings?pretty -d '{
+    "transient" : {
+        "cluster.routing.allocation.enable": "primaries"
+    }
+}'
+
+# Restart elasticsearch
+sudo /etc/init.d/elasticsearch restart
+
+# Wait for it to come up
+until curl -s localhost:9200/_cluster/health?pretty; do
+    sleep 1
+done
+sleep 1
+
+# Enable non-primary allocation
+curl -s -XPUT localhost:9200/_cluster/settings?pretty -d '{
+    "transient" : {
+        "cluster.routing.allocation.enable": "all"
+    }
+}'
+sleep 20
+
+# Wait for green
+until curl -s localhost:9200/_cluster/health?pretty | tee /tmp/health | grep green; do
+    cat /tmp/health
+    sleep 1
+done
+
+# Bounce gmond to make sure stats are up to date
+sudo /etc/init.d/ganglia-monitor restart

@@ -150,4 +150,13 @@ class elasticsearch($cluster_name,
     file { '/var/log/elasticsearch/elasticsearch_index_search_slowlog.log':
         ensure => absent
     }
+
+    # Various tools to aid in using elasticsearch
+    file { '/usr/local/bin/es-restart-quickly':
+        ensure  => file,
+        owner   => root,
+        group   => root,
+        mode    => '0755',
+        source  => 'puppet:///modules/elasticsearch/node-tools/es-restart-quickly',
+    }
 }
