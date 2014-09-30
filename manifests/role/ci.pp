@@ -277,6 +277,31 @@ class role::ci::slave::labs::common {
 
 }
 
+class role::ci::slave::localbrowser {
+    system::role { 'role::ci::slave::localbrowser':
+        description => 'CI Jenkins slave for running unit tests in local browsers (e.g. Chromium)' }
+
+    if $::realm != 'labs' {
+        fail( 'role::ci::slave::localbrowser must not be applied outside labs' )
+    }
+
+    requires_ubuntu('>= trusty')
+
+    package { [
+        'xvfb',
+        # Without xfonts-cyrillic Xvdb emits warning:
+        # "[dix] Could not init font path element /usr/share/fonts/X11/cyrillic"
+        'xfonts-cyrillic',
+        ]:
+        ensure => present,
+    }
+
+    package { 'chromium-browser':
+        ensure => latest,
+    }
+
+}
+
 class role::ci::slave::browsertests {
 
     system::role { 'role::ci::slave::browsertests':
@@ -349,13 +374,10 @@ class role::ci::slave::browsertests {
 }
 
 class role::ci::slave::labs {
+    requires_realm('labs')
 
     system::role { 'role::ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
-
-    if $::realm != 'labs' {
-        fail("role::ci::slave::labs must only be applied in labs")
-    }
 
     class { 'role::ci::slave::browsertests':
         require => [
