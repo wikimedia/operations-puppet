@@ -1,0 +1,57 @@
+#! /usr/bin/perl
+#
+#  Copyright © 2013 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+##
+## construct-cert-chain
+##
+##  This script constructs a certificate chain from the certificate
+##  file provided on the command line, and sends it to standard output.
+##  The process stops at the first self-signed issuer.
+##
+##  It requires every intermediate and root certificates to be
+##  correctly installed in /etc/ssl/certs/ which is a normal side effect
+##  of certificate installation.
+##
+
+use strict;
+
+my $certfile = shift;
+my $certhash = `/usr/bin/openssl x509 -subject_hash -in "$certfile" -noout`;
+chomp $certhash;
+
+CERT: for(;;) {
+    my $issuerhash = `/usr/bin/openssl x509 -issuer_hash -in "$certfile" -noout`;
+    chomp $issuerhash;
+    my $issuerdn   = `/usr/bin/openssl x509 -issuer -in "$certfile" -noout|sed -e 's/issuer=\\s*//'`;
+    chomp $issuerdn;
+    last CERT if $issuerhash eq $certhash;
+    open CF, "<", $certfile or die "$certfile: $!\n";
+    print while(<CF>);
+    close CF;
+    foreach my $cert (glob "/etc/ssl/certs/$issuerhash.?") {
+        if(-r $cert) {
+            my $dn = `/usr/bin/openssl x509 -subject -in "$cert" -noout|sed -e 's/subject=\\s*//'`;
+            chomp $dn;
+            if($dn eq $issuerdn) {
+                $certfile = $cert;
+                $certhash = $issuerhash;
+                next CERT;
+            }
+        }
+    }
+    die "Unable to find CA cert for $issuerdn\n";
+};
+
