@@ -9,7 +9,7 @@ require 'open3'
 require 'time'
 
 Puppet::Reports.register_report(:labsstatus) do
-    desc = 'Record puppet status of labs instances in labs instance metadata'
+    desc 'Record puppet status of labs instances in labs instance metadata'
 
     def addMeta(conf, project, host, key, value)
             command = "/usr/bin/nova --no-cache --os-region-name #{conf['region']} --os-auth-url #{conf['auth_url']} --os-password #{conf['password']} --os-username #{conf['username']} --os-tenant-name #{project} meta #{host} set #{key}=#{value}"
