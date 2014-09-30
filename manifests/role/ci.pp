@@ -277,6 +277,33 @@ class role::ci::slave::labs::common {
 
 }
 
+class role::ci::slave::localbrowser {
+    system::role { 'role::ci::slave::localbrowser':
+        description => 'CI Jenkins slave for running unit tests in local browsers (e.g. Chromium)' }
+
+    if $::realm != 'labs' {
+        fail( 'role::ci::slave::localbrowser must not be applied outside labs' )
+    }
+
+    requires_ubuntu('> trusty')
+
+    package { [
+        'xvfb',
+        # Xvdb shows warning "[dix] Could not init font path element /usr/share/fonts/X11/cyrillic"
+        # without xfonts-cyrillic. Plus,
+        'xfonts-cyrillic',
+        ]:
+        ensure => present,
+    }
+
+    package { [
+        'chromium-browser',
+        ]:
+        ensure => latest,
+    }
+
+}
+
 class role::ci::slave::browsertests {
 
     system::role { 'role::ci::slave::browsertests':
