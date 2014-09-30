@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+from elasticsearch import ConnectionError
+from elasticsearch import Elasticsearch
+
+
+# Helper functions go here
+def cluster_health():
+    es = Elasticsearch(args.server)
+    return es.cluster.health()["status"]
+
+
+# Add new command functions here
+def es_health():
+    health = cluster_health()
+    print health
+    if health != "green":
+        return 1
+    else:
+        return 0
+
+# And register them here
+commands = {
+    "health": es_health
+}
+
+# main()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Tool for Elasticsearch cluster maintenance")
+    parser.add_argument("command", metavar='C', type=str,
+                        help="Subcommand, one of: " + ",".join(commands))
+    parser.add_argument("--server", metavar='S', type=str, default="localhost",
+                        help="Server to work on, default localhost")
+    args = parser.parse_args()
+
+    if args.command not in commands:
+        print "Unknown command"
+        sys.exit(1)
+
+    try:
+        sys.exit(commands[args.command]())
+    except ConnectionError:
+        print "Unable to connect"
+        sys.exit(1)
