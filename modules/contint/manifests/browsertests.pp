@@ -12,10 +12,11 @@ class contint::browsertests(
     # Ship several packages such as php5-sqlite or ruby1.9.3
     include contint::packages
 
-    # Dependencies for qa/browsertests.git
+    # Provides phantomjs, firefox and xvfb
+    include contint::browsers
+
     package { [
-        'ruby1.9.1-dev', # Bundler compiles gems
-        'phantomjs',     # headless browser
+        'ruby1.9.1-dev', # for qa/browsertests.git (bundler compiles gems)
     ]:
         ensure => present
     }
@@ -37,14 +38,6 @@ class contint::browsertests(
         'ruby-bundler',
     ]:
         ensure => absent
-    }
-
-    # Set up all packages required for MediaWiki (includes Apache)
-    package { [
-        'chromium-browser',
-        'firefox',
-        'xvfb',  # headless testing
-        ]: ensure => present
     }
 
     include ::apache::mod::rewrite
