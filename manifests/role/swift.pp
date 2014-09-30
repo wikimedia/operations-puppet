@@ -360,7 +360,7 @@ class role::swift::proxy {
 
 
 class role::swift::storage {
-    system::role { 'role::swift::proxy':
+    system::role { 'role::swift::storage':
         description => 'swift storage brick',
     }
 
