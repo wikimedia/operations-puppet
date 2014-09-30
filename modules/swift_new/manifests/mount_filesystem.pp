@@ -14,7 +14,11 @@ define swift_new::mount_filesystem (
     }
 
     mount { $mount_point:
-        # XXX this won't mount the disks the first time they are added to fstab
+        # XXX this won't mount the disks the first time they are added to
+        # fstab.
+        # We don't want puppet to keep the FS mounted, otherwise
+        # it would conflict with swift-drive-auditor trying to keep FS
+        # unmounted.
         ensure   => 'present',
         device   => "LABEL=swift-${dev_suffix}",
         name     => $mount_point,

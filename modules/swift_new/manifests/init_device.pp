@@ -10,7 +10,6 @@ define swift_new::init_device($partition_nr='1') {
     $fs_label      = "swift-${dev_suffix}"
     $parted_cmd    = "parted --script --align optimal ${title}"
     $parted_script = "mklabel gpt mkpart ${fs_label} 0 100%"
-    $mkfs_cmd      = "mkfs -t xfs -i size=512 ${dev}"
 
     exec { "parted-${title}":
         path    => '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -19,17 +18,14 @@ define swift_new::init_device($partition_nr='1') {
         creates => $dev,
     }
 
-    exec { "mkfs-${title}":
-        command => $mkfs_cmd,
+    exec { "mkfs-${dev}":
+        command => "mkfs -t xfs -L $fs_label -i size=512 ${dev}",
         path    => '/sbin/:/usr/sbin/',
-        require => Package['xfsprogs'],
-        before  => Exec["parted-${title}"],
+        require => [Package['xfsprogs'], Exec["parted-${title}"]],
         unless  => "xfs_admin -l ${dev}",
     }
 
-    swift_new::label_filesystem { $dev:
-        before => Exec["mkfs-${title}"],
+    swift_new::mount_filesystem { $dev:
+        require => Exec["mkfs-${dev}"],
     }
-
-    swift_new::mount_filesystem { $dev: }
 }

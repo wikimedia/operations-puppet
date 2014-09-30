@@ -3,7 +3,7 @@ define swift_new::label_filesystem {
     $dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
     $fs_label   = "swift-${dev_suffix}"
 
-    exec { "fs_label-${dev}":
+    exec { "xfs_label-${dev}":
         command => "xfs_admin -L ${fs_label} ${dev}",
         path    => '/usr/sbin:/usr/bin:/sbin:/bin',
         require => Package['xfsprogs'],
