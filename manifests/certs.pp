@@ -228,7 +228,7 @@ class certificates::base {
     file { '/etc/ssl/localcerts':
         ensure => directory,
         owner  => 'root',
-        group  => 'ca-certs',
+        group  => 'ssl-certs',
         mode   => '0755',
     }
 
