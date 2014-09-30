@@ -124,6 +124,7 @@ class role::phabricator::labs {
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
         auth_type        => 'local',
+        libext_tag       => 'HEAD',
         extension_tag    => 'HEAD',
         extensions       => ['SecurityPolicyEnforcerAction.php'],
         settings         => {
