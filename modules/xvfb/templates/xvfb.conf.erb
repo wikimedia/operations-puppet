@@ -1,0 +1,13 @@
+# Upstart service job for xvfb
+#
+description "X virtual framebuffer"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+
+setuid xvfb
+setgid xvfb
+
+respawn
+respawn limit 10 5
+
+exec Xvfb :<%= @display %> -screen 0 <%= @resolution %> -ac -noreset
