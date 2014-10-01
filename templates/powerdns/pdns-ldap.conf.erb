@@ -1,6 +1,6 @@
 # This file is managed by puppet - don't edit it locally!
 #
-# PowerDNS configuration file for package wikimedia-task-dns-auth
+# PowerDNS configuration file
 # Written on 2011/04/20 by Ryan Lane <rlane@wikimedia.org>
 
 # Always bind to specific addresses - pdns complains when using INADDR_ANY.
@@ -21,8 +21,10 @@ default-soa-name=<%= @dns_auth_soa_name %>
 # and may even impact performance.
 #distributor-threads=1
 
+<% if scope.function_versioncmp([@lsbdistrelease, "14.04"]) < 0 %>
 # We are not using wildcards
 wildcards=yes
+<% end -%>
 
 # Master for allowing AXFRs
 master=yes
