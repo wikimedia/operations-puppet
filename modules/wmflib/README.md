@@ -129,6 +129,19 @@ Emit a hash as YAML with keys (both shallow and deep) in sorted order.
     }
 
 
+## php_ini
+
+`php_ini( hash $ini_settings [, hash $... ] )`
+
+Serialize a hash into php.ini-style format. Takes one or more hashes as
+arguments. If the argument list contains more than one hash, they are
+merged together. In case of duplicate keys, hashes to the right win.
+
+### Example
+
+    php_ini({'server' => {'port' => 80}}) # => server.port = 80
+
+
 ## require_package
 
 `require_package( string $package_name [, string $... ] )`
