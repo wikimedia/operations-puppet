@@ -69,7 +69,7 @@ tokudb_lock_timeout            = 50000
 tokudb_empty_scan              = disabled
 tokudb_read_buf_size           = 256K
 tokudb_pk_insert_mode          = 2
-join_cache_level               = 8
+join_cache_level               = 2
 
 # index_condition_pushdown=off https://github.com/Tokutek/mariadb-5.5/issues/39
 optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,engine_condition_pushdown=on,index_condition_pushdown=off'
