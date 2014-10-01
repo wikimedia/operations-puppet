@@ -88,6 +88,11 @@ class role::ocg::production (
         crj => '500',
     }
 
+    class { 'ocg::ganglia::module':
+        tmp_filesystem  => $tmpfs_mountpoint,
+        data_filesystem => '/srv',
+    }
+
     include lvs::configuration
     class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['ocg'][$::site] }
 }
