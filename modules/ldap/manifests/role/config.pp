@@ -70,7 +70,7 @@ class ldap::role::config::corp {
     include passwords::ldap::corp
 
     $basedn = 'dc=corp,dc=wikimedia,dc=org'
-    $servernames = [ 'sanger.wikimedia.org', 'sfo-aaa1.corp.wikimedia.org' ]
+    $servernames = [ 'ldap1.corp.wikimedia.org', 'ldap2.corp.wikimedia.org' ]
     $sudobasedn = "ou=sudoers,${basedn}"
     $ldapconfig = {
         'servernames'         => $servernames,
