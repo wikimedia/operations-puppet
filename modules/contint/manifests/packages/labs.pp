@@ -78,7 +78,9 @@ class contint::packages::labs {
     }
 
     if ubuntu_version('>= trusty') {
-        include ::hhvm::packages::dev
+        exec { '/usr/bin/apt-get -y build-dep hhvm':
+            onlyif => '/usr/bin/apt-get -s build-dep hhvm | /bin/grep -Pq "will be (installed|upgraded)"',
+        }
     }
 
 }
