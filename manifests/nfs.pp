@@ -173,8 +173,7 @@ class nfs::data {
 
         $datasetserver = $::site ? {
             'eqiad' => 'dataset1001.wikimedia.org',
-            'pmtpa' => 'dataset2.wikimedia.org',
-            default => 'dataset2.wikimedia.org',
+            default => 'dataset1001.wikimedia.org',
         }
 
     mount { '/mnt/data':
