@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+from elastictool import ElasticTool
+
+
+class StopReplication(ElasticTool):
+    def execute(self):
+        self.set_replication_state("primaries")
+
+if __name__ == "__main__":
+    tool = StopReplication("Stop non-primary replication of shards")
+    tool.run()
