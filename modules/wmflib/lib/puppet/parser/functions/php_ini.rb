@@ -28,7 +28,7 @@ module Puppet::Parser::Functions
     flat = args.map { |arg| ini_flatten(arg) }.inject(:merge)
     options = flat.map do |k, vs|
       case vs
-      when Array then vs.map { |v| "#{k}[*] = #{ini_cast(v)}" }
+      when Array then vs.map { |v| "#{k}[#{v}] = #{ini_cast(v)}" }
       else "#{k} = #{ini_cast(vs)}"
       end
     end
