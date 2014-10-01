@@ -19,7 +19,7 @@
   </Directory>
 
   <%- if @elastic_backends -%>
-  ProxyPass /grafana-dashboards balancer://elastic
+  ProxyPassMatch ^(/grafana-dashboards/.*)$ balancer://elastic$1
   ProxyPassReverse /grafana-dashboards balancer://elastic
 
   <Proxy balancer://elastic>

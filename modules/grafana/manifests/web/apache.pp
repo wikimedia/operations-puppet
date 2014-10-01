@@ -25,6 +25,8 @@ class grafana::web::apache(
     $listen           = '*:80',
     $elastic_backends = undef,
 ) {
+    include ::apache::mod::proxy_balancer
+
     apache::site { 'grafana':
         ensure  => $ensure,
         content => template('grafana/grafana.apache.erb'),
