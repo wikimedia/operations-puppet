@@ -43,18 +43,7 @@ end
 	</creator-info>
 	
 	<datasources>
-		<param name="expr-Squid_text_pmtpa">
-<%= squid_rpn('text', 'pmtpa') %>
-		</param>
 		
-		<param name="expr-Squid_api_pmtpa">
-<%= squid_rpn('text', 'pmtpa', node_list_squid('api', 'pmtpa')) %>
-		</param>
-
-		<param name="expr-Squid_upload_pmtpa">	
-<%= squid_rpn('upload', 'pmtpa') %>
-		</param>
-
 		<param name="expr-Squid_text_eqiad">
 <%= squid_rpn('text', 'eqiad') %>
 		</param>
@@ -71,10 +60,6 @@ end
 <%= squid_rpn('upload', 'esams') %>
 		</param>
 		
-		<param name="expr-Varnish_bits_pmtpa">
-<%= varnish_rpn('bits', 'pmtpa') %>
-		</param>
-
 		<param name="expr-Varnish_text_eqiad">
 <%= varnish_rpn('text', 'eqiad', dual=true) %>
 		</param>
@@ -374,7 +359,7 @@ end
 				<param name="line-color-text-esams" value="##text-esams"/>
 				<param name="line-order-text-esams" value="9"/>
 
-				<param name="ds-expr-total" value="%expr-Varnish_bits_pmtpa%,%expr-Varnish_text_eqiad%,%expr-Varnish_bits_eqiad%,%expr-Varnish_upload_eqiad%,%expr-Varnish_mobile_eqiad%,%expr-Varnish_text_esams%,%expr-Varnish_bits_esams%,%expr-Varnish_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
+				<param name="ds-expr-total" value="%expr-Varnish_text_eqiad%,%expr-Varnish_bits_eqiad%,%expr-Varnish_upload_eqiad%,%expr-Varnish_mobile_eqiad%,%expr-Varnish_text_esams%,%expr-Varnish_bits_esams%,%expr-Varnish_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
 				<param name="graph-legend-total" value="Total"/>
 				<param name="line-style-total" value="LINE1"/>
 				<param name="line-stack-total" value="no"/>
