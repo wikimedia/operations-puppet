@@ -11,7 +11,8 @@ class role::authdns::data {
     # which "include role::authdns"
     $nameservers = [
             'rubidium.wikimedia.org',
-            'mexia.wikimedia.org',
+# mexia powered off for pmtpa shutdown...
+#            'mexia.wikimedia.org',
             'baham.wikimedia.org',
             'eeden.esams.wikimedia.org',
     ]
