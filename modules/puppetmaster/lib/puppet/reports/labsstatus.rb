@@ -13,7 +13,7 @@ Puppet::Reports.register_report(:labsstatus) do
 
     def addMeta(conf, project, host, key, value)
             command = "/usr/bin/nova --no-cache --os-region-name #{conf['region']} --os-auth-url #{conf['auth_url']} --os-password #{conf['password']} --os-username #{conf['username']} --os-tenant-name #{project} meta #{host} set #{key}=#{value}"
-            system("echo trying \"#{command}\" >> /var/log/labsstatus.log")
+            #system("echo trying \"#{command}\" >> /var/log/labsstatus.log")
 
             stdin, stdout, stderr, wait_thr = Open3.popen3(command)
             std_out = stdout.read
@@ -22,11 +22,11 @@ Puppet::Reports.register_report(:labsstatus) do
             stdout.close
             stderr.close
             insp = std_err.inspect
-            system("echo insp: #{insp} >> /var/log/labsstatus.log")
+            #system("echo insp: #{insp} >> /var/log/labsstatus.log")
     end
 
     def process
-        system("echo trying this >> /var/log/labsstatus.log")
+        #system("echo trying this >> /var/log/labsstatus.log")
         project = ""
         hostname = ""
         conf = YAML.load_file('/etc/labsstatus.cfg')
