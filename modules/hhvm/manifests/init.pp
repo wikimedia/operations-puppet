@@ -7,24 +7,15 @@
 #
 #   /etc/hhvm
 #   │
-#   ├── config.hdf        ┐
-#   │                     ├ Settings for CLI mode
-#   ├── php.ini           ┘
+#   ├── php.ini         # Settings for CLI mode
 #   │
 #   └── fcgi
 #       │
-#       ├── config.hdf    ┐
-#       │                 ├ Settings for FastCGI mode
-#       └── php.ini       ┘
+#       └── php.ini     # Settings for FastCGI mode
 #
 # The CLI configs are located in the paths HHVM automatically loads by
 # default. This makes it easy to invoke HHVM from the command line,
 # because no special arguments are required.
-#
-# HHVM is in the process of standardizing on the INI file format for
-# configuration files. At the moment (Aug 2014) there are still some
-# options that can only be set using the deprecated HDF syntax. This
-# is why we have two configuration files for each SAPI.
 #
 # The exact purpose of certain options is a little mysterious. The
 # documentation is getting better, but expect to have to dig around in
@@ -109,9 +100,11 @@ class hhvm(
         date => { timezone => 'UTC' },
         hhvm => {
             dynamic_extension_path   => '/usr/lib/x86_64-linux-gnu/hhvm/extensions/current',
+            dynamic_extensions       => [ 'fss.so', 'luasandbox.so', 'wikidiff2.so' ],
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             include_path             => '.:/usr/share/php',
+            perf_pid_map             => false,
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
             log                      => {
@@ -171,21 +164,6 @@ class hhvm(
 
     file { '/etc/hhvm/fcgi/php.ini':
         content => php_ini($common_defaults, $fcgi_defaults, $fcgi_settings),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['hhvm'],
-    }
-
-    file { '/etc/hhvm/config.hdf':
-        source => 'puppet:///modules/hhvm/config-cli.hdf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
-
-    file { '/etc/hhvm/fcgi/config.hdf':
-        source => 'puppet:///modules/hhvm/config.hdf',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
