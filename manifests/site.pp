@@ -707,13 +707,6 @@ node 'dataset1001.wikimedia.org' {
     include role::download::wikimedia
 }
 
-## imminent decomission/reclaim from pmtpa
-node /^db[67][0-9]\.pmtpa\.wmnet/{
-
-    include admin
-    include standard
-}
-
 # eqiad dbs
 node /^db10(51|52|55|61|65|66)\.eqiad\.wmnet/ {
 
