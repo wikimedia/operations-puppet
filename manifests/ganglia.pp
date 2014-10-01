@@ -287,7 +287,7 @@ class ganglia::collector::config {
                 }
                 $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
             }
-            # neon needs gmetad config for ganglios
+            # neon needs gmetad config
             /^neon$/: {
                 $data_sources = {
                     'Miscellaneous'                  => 'tarin.pmtpa.wmnet',

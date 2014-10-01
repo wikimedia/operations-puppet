@@ -4,7 +4,6 @@
 # and hosts for Wikimedia Production cluster
 class role::icinga {
     include facilities::pdu_monitoring
-    include icinga::ganglia::ganglios
     include icinga::monitor::checkpaging
     include icinga::monitor::files::misc
     include icinga::nsca::firewall
