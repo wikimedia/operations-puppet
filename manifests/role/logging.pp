@@ -220,7 +220,7 @@ class role::logging::udp2log::nginx inherits role::logging::udp2log {
 
 class role::logging::webstatscollector {
     # datasets account is needed so that snapshot1
-    # can rsync webstats dumps to dataset2 (dumps.wikimedia.org).
+    # can rsync webstats dumps to dataset1001 (dumps.wikimedia.org).
     include role::dataset::systemusers
 
     # webstatscollector package creates this directory.
