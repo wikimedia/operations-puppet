@@ -1566,6 +1566,15 @@ node 'lanthanum.eqiad.wmnet' {
 
 }
 
+node 'lithium.eqiad.wmnet' {
+    $cluster = 'misc'
+
+    include admin
+    include standard
+    include backup::host
+    include role::syslog::centralserver
+}
+
 node /lvs100[1-6]\.wikimedia\.org/ {
 
     if $::hostname =~ /^lvs100[12]$/ {
