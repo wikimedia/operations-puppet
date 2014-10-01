@@ -2,18 +2,28 @@
 #
 # Sets up an apache instance for icinga web interface,
 # protected with ldap authentication
-class icinga::web {
+#
+# [*ssl*]
+#   Set to true to enable ssl handling at the apache level.
+#
+class icinga::web(
+    $ssl = true
+){
     include icinga
 
     # Apparently required for the web interface
     package { 'icinga-doc':
         ensure => latest
     }
-    class {'webserver::php5': ssl => true,}
+    class {'webserver::php5':
+        ssl => $ssl,
+    }
 
-    ferm::service { 'icinga-https':
-      proto => 'tcp',
-      port  => 443,
+    if $ssl {
+        ferm::service { 'icinga-https':
+          proto => 'tcp',
+          port  => 443,
+        }
     }
     ferm::service { 'icinga-http':
       proto => 'tcp',
@@ -45,7 +55,9 @@ class icinga::web {
         ensure => absent,
     }
 
-    install_certificate{ 'icinga.wikimedia.org': ca => 'RapidSSL_CA.pem' }
-    install_certificate{ 'icinga-admin.wikimedia.org': ca => 'RapidSSL_CA.pem' }
+    if $ssl {
+        install_certificate{ 'icinga.wikimedia.org': ca => 'RapidSSL_CA.pem' }
+        install_certificate{ 'icinga-admin.wikimedia.org': ca => 'RapidSSL_CA.pem' }
+    }
 
 }

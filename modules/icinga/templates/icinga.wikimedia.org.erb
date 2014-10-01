@@ -15,6 +15,7 @@ Alias /icinga/stylesheets /etc/icinga/stylesheets
 # Where the HTML pages live
 Alias /icinga /usr/share/icinga/htdocs
 
+<% if @ssl %>
 <VirtualHost *:443>
     ServerName icinga.wikimedia.org
     ServerAlias neon.wikimedia.org
@@ -54,6 +55,7 @@ Alias /icinga /usr/share/icinga/htdocs
     ErrorLog /var/log/apache2/icinga.log
     LogLevel warn
 </VirtualHost>
+<% end %>
 
 <VirtualHost *:80>
     ServerName icinga.wikimedia.org
@@ -69,6 +71,7 @@ Alias /icinga /usr/share/icinga/htdocs
     LogLevel warn
 </VirtualHost>
 
+<% if @ssl %>
 <VirtualHost *:443>
     ServerName icinga-admin.wikimedia.org
     SSLEngine On
@@ -105,6 +108,7 @@ Alias /icinga /usr/share/icinga/htdocs
     ErrorLog /var/log/apache2/icinga.log
     LogLevel warn
 </VirtualHost>
+<% end %>
 
 <VirtualHost *:80>
     ServerName icinga-admin.wikimedia.org
