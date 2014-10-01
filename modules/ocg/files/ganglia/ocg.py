@@ -25,13 +25,16 @@ import argparse
 import logging
 import logging.handlers
 import os
+import re
 import requests
 import time
 
 _url = 'http://localhost:8000/?command=health'
-_tmp_filesystem = '/mnt/tmpfs'
-_data_filesystem = '/srv'
-_json_data_cache = {}
+_timeout = 15
+_time_max = 330
+_tmp_fs = '/mnt/tmpfs'
+_data_fs = '/srv'
+_report_cache = {}
 _last_ocg_health_time = 0
 _descriptions = {}
 _logger = None
@@ -53,14 +56,18 @@ def poll_ocg_server():
     '''make an http request to OCG server and parse JSON response data
     :returns: dict containing the parsed JSON data
     '''
-    global _last_ocg_health_time, _json_data_cache
+    global _last_ocg_health_time, _report_cache
     if time.time() - _last_ocg_health_time > 45:
         informative_message = 'GET %s' % _url
         _logger.info(informative_message)
         _last_ocg_health_time = time.time()
-        _json_data_cache = {}
+        _report_cache = {
+            'ocg_job_status_queue': 0,
+            'ocg_job_queue': 0,
+            'ocg_health_check_response_time': _timeout,
+        }
         try:
-            r = requests.get(_url, timeout=45)
+            r = requests.get(_url, timeout=_timeout)
         except requests.exceptions.RequestException as e:
             informative_message = 'connection error: %s' % e
             _logger.error(informative_message)
@@ -70,11 +77,16 @@ def poll_ocg_server():
                 _logger.error(informative_message)
             else:
                 try:
-                    _json_data_cache = r.json()
+                    jd = r.json()
+                    _report_cache = {
+                        'ocg_job_status_queue': jd[u'StatusObjects'][u'length'],
+                        'ocg_job_queue': jd[u'JobQueue'][u'length'],
+                        'ocg_health_check_response_time': jd[u'requestTime'],
+                    }
                 except Exception as e:
                     informative_message = 'parse json failed %s' % e
                     _logger.error(informative_message)
-    return _json_data_cache
+    return _report_cache
 
 
 def check_utilization(path):
@@ -95,24 +107,19 @@ def check_utilization(path):
 
 
 def fetch_value(name):
-    '''look up reported values in json data, return in appropriate units
+    '''look up reported values and return in appropriate units
     :param name: metric name
     :returns: the reported value
     '''
     value = None
-    if name == 'ocg_job_status_queue':
-        json_data = poll_ocg_server()
-        value = json_data[u'StatusObjects'][u'length']
-    elif name == 'ocg_job_queue':
-        json_data = poll_ocg_server()
-        value = json_data[u'JobQueue'][u'length']
-    elif name == 'ocg_health_check_response_time':
-        json_data = poll_ocg_server()
-        value = json_data[u'requestTime']
+    if re.match('ocg_(job_status_queue|job_queue|health_check_response_time)$',
+                name):
+        data = poll_ocg_server()
+        value = data[name]
     elif name == 'ocg_tmp_filesystem_utilization':
-        value = check_utilization(_tmp_filesystem)
+        value = check_utilization(_tmp_fs)
     elif name == 'ocg_data_filesystem_utilization':
-        value = check_utilization(_data_filesystem)
+        value = check_utilization(_data_fs)
     informative_message = '%s %s' % (name, value)
     _logger.info(informative_message)
     return value
@@ -121,19 +128,22 @@ def fetch_value(name):
 def metric_init(params):
     '''initialize metrics, run ocg health check fetcher
     :param params: dict of params from ganglia config or CLI arguments
-    :returns: _json_data global, _descriptions, descriptors
+    :returns: descriptors, also sets globals _url, _timeout, _tmp_fs,
+    :         _data_fs, _descriptions
     '''
-    global _url, _tmp_filesystem, _data_filesystem, _descriptions, descriptors
+    global _url, _timeout, _tmp_fs, _data_fs, _descriptions, descriptors
     setup_logging()
     _logger.debug('metric_init')
     if 'url' in params:
         _url = params['url']
     if 'tmp_filesystem' in params:
-        _tmp_filesystem = params['tmp_filesystem']
+        _tmp_fs = params['tmp_filesystem']
     if 'data_filesystem' in params:
-        _data_filesystem = params['data_filesystem']
+        _data_fs = params['data_filesystem']
+    if 'timeout' in params:
+        _timeout = params['timeout']
     METRIC_DEFAULTS = {
-        'time_max': 90,
+        'time_max': _time_max,
         'units': 'messages',
         'groups': 'OCG',
         'slope': 'both',
@@ -183,10 +193,13 @@ if __name__ == '__main__':
         '-u', '--url', dest='url', default=_url,
         help='OCG health URI (%(default)s)')
     parser.add_argument(
-        '--tmp', dest='tmp_filesystem', default=_tmp_filesystem,
+        '--timeout', type=int, default=_timeout,
+        help='OCG health URI timeout (%(default)s)')
+    parser.add_argument(
+        '--tmp', dest='tmp_filesystem', default=_tmp_fs,
         help='OCG tmp filesystem (%(default)s)')
     parser.add_argument(
-        '--data', dest='data_filesystem', default=_data_filesystem,
+        '--data', dest='data_filesystem', default=_data_fs,
         help='OCG data filesystem (%(default)s)')
     parsed_params = vars(parser.parse_args())
     descriptors = metric_init(parsed_params)
