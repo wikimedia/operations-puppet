@@ -10,6 +10,9 @@
 # [*listen*]
 #   Interface / port to listen on (default: "*:80").
 #
+# [*elastic_backends*]
+#   Array of URLs of ElasticSearch backends to use for storage.
+#
 # === Examples
 #
 #  class { '::grafana::web::apache':
@@ -18,8 +21,9 @@
 #
 class grafana::web::apache(
     $server_name,
-    $ensure = present,
-    $listen = '*:80',
+    $ensure           = present,
+    $listen           = '*:80',
+    $elastic_backends = undef,
 ) {
     apache::site { 'grafana':
         ensure  => $ensure,

@@ -18,5 +18,16 @@
     Allow from all
   </Directory>
 
+  <%- if @elastic_backends -%>
+  ProxyPass /grafana-dashboards balancer://elastic
+  ProxyPassReverse /grafana-dashboards balancer://elastic
+
+  <Proxy balancer://elastic>
+  <%- @elastic_backends.each do |backend| -%>
+    BalancerMember <%= backend %>
+  <%- end -%>
+  </Proxy>
+  <%- end -%>
+
   Alias /config.js /etc/grafana/config.js
 </VirtualHost>

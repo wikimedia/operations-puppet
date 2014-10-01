@@ -12,17 +12,28 @@ class role::grafana {
     class { '::grafana':
         config => {
             datasources => {
-                graphite => {
+                graphite      => {
                     type          => 'graphite',
                     url           => "//graphite.${domain_suffix}",
                     render_method => 'GET',
+                },
+                elasticsearch => {
+                   type           => 'elasticsearch',
+                   url            => "//grafana.${domain_suffix}",
+                   index          => 'grafana-dashboards',
+                   grafanaDB      => true,
                 },
             },
         },
     }
 
     class { '::grafana::web::apache':
-        server_name => "grafana.${domain_suffix}",
+        server_name      => "grafana.${domain_suffix}",
+        elastic_backends => [
+            'http://logstash1001.eqiad.wmnet:9200',
+            'http://logstash1002.eqiad.wmnet:9200',
+            'http://logstash1003.eqiad.wmnet:9200',
+        ],
     }
 
     monitor_service { 'grafana':
