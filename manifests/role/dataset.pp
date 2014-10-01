@@ -9,6 +9,20 @@ class role::dataset::pagecountsraw($enable=true) {
     }
 }
 
+# == Class role::dataset::pagecounts_all_sites
+#
+# NOTE: this requires that an rsync server
+# module named 'hdfs-archive' is configured on stat1002.
+#
+class role::dataset::pagecounts_all_sites($enable = true) {
+    class { '::dataset::cron::pagecounts_all_sites':
+        source  =>  'stat1002.eqiad.wmnet::hdfs-archive/webstats',
+        enable  => $enable,
+        user    => 'datasets',
+    }
+}
+
+
 # a dumps primary server has dumps generated on this host; other directories
 # of content may or may not be generated here (but should all be eventually)
 # mirrors to the public should not be provided from here via rsync
@@ -30,6 +44,10 @@ class role::dataset::primary {
         uploads      => $uploads,
     }
     class { 'role::dataset::pagecountsraw': enable => true }
+
+    class { 'role::dataset::pagecounts_all_sites':
+        enable => true,
+    }
 }
 
 # a dumps secondary server may be a primary source of content for a small
