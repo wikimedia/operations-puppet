@@ -8,11 +8,6 @@ host dobson {
 	fixed-address dobson.wikimedia.org;
 }
 
-host fenari {
-	hardware ethernet 00:1E:C9:EA:AB:95;
-	fixed-address fenari.wikimedia.org;
-}
-
 host mchenry {
 	hardware ethernet 00:19:B9:DD:C0:27;
 	fixed-address mchenry.wikimedia.org;
