@@ -1219,37 +1219,6 @@ node /es10(0[89]|10)\.eqiad\.wmnet/ {
     }
 }
 
-node 'fenari.wikimedia.org' {
-    $cluster = 'misc'
-    $domain_search = [
-        'wikimedia.org',
-        'pmtpa.wmnet',
-        'eqiad.wmnet',
-        'codfw.wmnet',
-        'ulsfo.wmnet',
-        'esams.wikimedia.org'
-    ]
-
-    class { 'admin':
-        groups => ['deployment',
-                   'restricted'],
-    }
-
-    include base
-    include role::mediawiki::common
-    include sudo::appserver
-    include subversion::client
-    include nfs::netapp::home
-    include bastionhost
-    include misc::noc-wikimedia
-    include drac
-    include generic::wikidev-umask
-    include dsh
-    include ssh::hostkeys-collect
-    include mysql_wmf::client
-    install_certificate{ 'noc.wikimedia.org': }
-}
-
 node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
