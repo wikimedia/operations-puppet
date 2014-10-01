@@ -1065,39 +1065,6 @@ node 'db1004.eqiad.wmnet' {
     include standard
 }
 
-node 'dobson.wikimedia.org' {
-    include admin
-
-    interface::ip { 'dns::recursor':
-        interface => 'eth0',
-        address   => '208.80.152.131',
-    }
-
-    include base
-    include ganglia
-    include role::mail::sender
-    include dns::recursor::statistics
-    include network::constants
-
-# NTP still running here till pmtpa shutdown,
-#  unmanaged and in original configuration
-#    class { 'ntp::server':
-#        servers => [ '173.9.142.98',
-#                    '66.250.45.2',
-#                    '169.229.70.201',
-#                    '69.31.13.207',
-#                    '72.167.54.201'
-#        ],
-#        peers   => [ 'linne.wikimedia.org' ],
-#    }
-
-    class { 'dns::recursor':
-        listen_addresses => [ '208.80.152.131' ],
-        allow_from       => $network::constants::all_networks
-    }
-    dns::recursor::monitor { '208.80.152.131': }
-}
-
 node 'dysprosium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
