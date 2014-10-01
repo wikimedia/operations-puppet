@@ -159,4 +159,18 @@ class elasticsearch($cluster_name,
         mode    => '0755',
         source  => 'puppet:///modules/elasticsearch/tools/es-health',
     }
+    file { '/usr/local/bin/es-start-replication':
+        ensure  => file,
+        owner   => root,
+        group   => root,
+        mode    => '0755',
+        source  => 'puppet:///modules/elasticsearch/tools/es-start-replication',
+    }
+    file { '/usr/local/bin/es-stop-replication':
+        ensure  => file,
+        owner   => root,
+        group   => root,
+        mode    => '0755',
+        source  => 'puppet:///modules/elasticsearch/tools/es-stop-replication',
+    }
 }

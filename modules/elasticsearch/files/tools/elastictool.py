@@ -22,3 +22,18 @@ class ElasticTool:
     def health(self):
         es = Elasticsearch(self.server)
         return es.cluster.health()["status"]
+
+    def set_replication_state(self, status):
+        es = Elasticsearch(self.server)
+        res = es.cluster.put_settings(
+            body={
+                # custom analyzer for analyzing file paths
+                "transient": {
+                    "cluster.routing.allocation.enable": status
+                }
+            }
+        )
+        if res["acknowledged"]:
+            return True
+        else:
+            return False
