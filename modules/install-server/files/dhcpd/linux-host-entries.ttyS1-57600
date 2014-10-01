@@ -3,11 +3,6 @@
 #### puppet:///modules/install-server/dhcpd/linux-host-entries.ttyS1-57600
 ######################################################################
 
-host mchenry {
-	hardware ethernet 00:19:B9:DD:C0:27;
-	fixed-address mchenry.wikimedia.org;
-}
-
 host sanger {
 	hardware ethernet 00:19:B9:DD:86:EB;
 	fixed-address sanger.wikimedia.org;
