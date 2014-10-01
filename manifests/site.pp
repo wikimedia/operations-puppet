@@ -1923,31 +1923,6 @@ node 'rubidium.wikimedia.org' {
     include role::authdns::server
 }
 
-node 'mchenry.wikimedia.org' {
-
-    include base
-
-    # include admin
-    include ganglia
-    include role::ntp
-    include dns::recursor::statistics
-    include ldap::role::client::corp
-    include network::constants
-    include role::mail::oldmx
-
-    interface::ip { 'dns::recursor':
-        interface => 'eth0',
-        address   => '208.80.152.132',
-    }
-
-    class { 'dns::recursor':
-        listen_addresses => ['208.80.152.132'],
-        allow_from       => $network::constants::all_networks
-    }
-
-    dns::recursor::monitor { '208.80.152.132': }
-}
-
 node 'mexia.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
