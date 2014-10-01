@@ -232,6 +232,21 @@ class certificates::base {
         mode   => '0755',
     }
 
+    ## NOTE: The ssl_certs abstraction for apparmor is known to exist
+    ## and be mutually compatible up to Trusty; new versions will need
+    ## validation before they are cleared.
+
+    if versioncmp($::lsbdistrelease, '14.04') > 0 {
+        fail("The apparmor profile for certificates::base is only known to work up to Trusty");
+    }
+    file { '/etc/apparmor.d/abstractions/ssl_certs':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///files/ssl/ssl_certs',
+    }
+
 }
 
 class certificates::star_wmflabs_org {
