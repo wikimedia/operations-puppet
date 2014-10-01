@@ -2,6 +2,6 @@
 	/.snapshot -fstype=autofs,ghost file:/etc/auto.time.home
 /data	/project -fstype=nfs4,rw	<%= nfscluster %>:/<%= instanceproject %>/project \
 	/project/.snapshot -fstype=autofs,ghost file:/etc/auto.time.project
-/public	/keys	-nfsvers=3,ro,ghost labstore1.pmtpa.wmnet:/keys \
-	/datasets -nfsvers=3,ro,ghost labstore1.pmtpa.wmnet:/publicdata-project \
+/public	/keys	-nfsvers=3,ro,ghost labstore1001.eqiad.wmnet:/keys \
+	/datasets -nfsvers=3,ro,ghost labstore1001.eqiad.wmnet:/publicdata-project \
     /pagecounts -fstype=nfs4,ro <%= nfscluster %>:/pagecounts
