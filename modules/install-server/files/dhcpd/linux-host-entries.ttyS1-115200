@@ -807,11 +807,6 @@ host cp4020 {
 	fixed-address cp4020.ulsfo.wmnet;
 }
 
-host dataset2 {
-	hardware ethernet 84:2B:2B:6A:F4:60;
-	fixed-address dataset2.wikimedia.org;
-}
-
 host dataset1001 {
 	hardware ethernet 78:2b:cb:76:42:ee;
 	fixed-address dataset1001.wikimedia.org;
