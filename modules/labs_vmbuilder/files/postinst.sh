@@ -25,6 +25,7 @@ else
   apt-get install -y puppet puppet-common facter nfs-client salt-minion
   /etc/init.d/salt-minion stop
   /etc/init.d/puppet stop
+  /usr/bin/killall puppet
   mv /etc/puppet/puppet.conf.install /etc/puppet/puppet.conf
   mv /etc/default/puppet.install /etc/default/puppet
   rm /etc/ssh/ssh_host*key*
