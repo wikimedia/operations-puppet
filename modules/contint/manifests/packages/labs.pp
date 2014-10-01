@@ -79,6 +79,13 @@ class contint::packages::labs {
 
     if ubuntu_version('>= trusty') {
         include ::hhvm::packages::dev
+
+        package { [
+            'python3.4',
+            # Let us compile python modules:
+            'python3.4-dev',
+            ]: ensure => present,
+        }
     }
 
 }
