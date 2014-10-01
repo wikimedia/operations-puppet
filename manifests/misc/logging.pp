@@ -41,7 +41,7 @@ class misc::syslog-server($config='nfs', $basepath='/home/wikipedia/syslog') {
             creates => $basepath,
         }
         file { $basepath:
-            ensure  => directory,
+            ensure  => present,
             require => Exec['create_syslog_basepath'],
             owner   => 'root',
             group   => 'root',
