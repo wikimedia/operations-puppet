@@ -683,17 +683,6 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     include role::cache::ssl::unified
 }
 
-node 'dataset2.wikimedia.org' {
-    $cluster = 'misc'
-
-    class { 'admin': groups => [dataset-admins] }
-    include standard
-    include role::dataset::systemusers
-#    include role::download::primary
-    include role::dataset::secondary
-    include role::download::wikimedia
-}
-
 node 'dataset1001.wikimedia.org' {
     $cluster = 'misc'
 

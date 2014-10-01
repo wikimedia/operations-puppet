@@ -9,4 +9,4 @@ uid = root
 gid = root
 read only = false
 path = /data
-hosts allow = dataset1001.wikimedia.org, dataset2.wikimedia.org
+hosts allow = dataset1001.wikimedia.org
