@@ -101,6 +101,24 @@ class ganglia_new::configuration {
         'cache_misc'    => {
             'name'      => 'Misc Web caching cluster',
             'id'    => 41 },
+        'elasticsearch' => {
+            'name'      => 'Elasticsearch cluster',
+            'id'    => '42' },
+        'logstash'      => {
+            'name'      => 'Logstash cluster',
+            'id'    => '43' },
+        'rcstream'      => {
+            'name'      => 'RCStream cluster',
+            'id'    => '44' },
+        'analytics_kafka' => {
+            'name'      => 'Analytics Kafka cluster',
+            'id'    => '45' },
+        'sca'           => {
+            'name'      => 'Service Cluster A',
+            'id'    => '46' },
+        'openldap_corp_mirror'           => {
+            'name'      => 'Corp OIT LDAP mirror',
+            'id'    => '47' },
     }
     # NOTE: Do *not* add new clusters *per site* anymore,
     # the site name will automatically be appended now,
