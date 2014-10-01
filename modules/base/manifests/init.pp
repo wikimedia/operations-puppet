@@ -55,7 +55,7 @@ class base::remote-syslog {
         }
 
         rsyslog::conf { 'remote_syslog':
-            content  => "*.info;mail.none;authpriv.none;cron.none @${syslog_host}",
+            content  => "*.info;mail.none;authpriv.none;cron.none;httpd.none @${syslog_host}",
             priority => 30,
         }
     }
