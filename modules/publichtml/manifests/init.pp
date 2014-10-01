@@ -49,6 +49,7 @@ class publichtml (
     include ::apache::mod::userdir
     include ::apache::mod::cgi
     include ::apache::mod::php5
+    include ::apache::mod::rewrite
 
     monitor_service { 'http-peopleweb':
         description   => 'HTTP-peopleweb',
