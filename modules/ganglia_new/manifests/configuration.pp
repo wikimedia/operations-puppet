@@ -130,7 +130,7 @@ class ganglia_new::configuration {
             # 208.80.154.14 is neon (icinga).
             # It is not actually a gmetad host, but it should
             # be allowed to query gmond instances for use by
-            # ganglios.
+            # neon/icinga.
             $gmetad_hosts = [ '208.80.152.15', '208.80.154.150', '208.80.154.14' ]
             $aggregator_hosts = {
                 'pmtpa' => [ '208.80.152.15', '208.80.154.150' ],
