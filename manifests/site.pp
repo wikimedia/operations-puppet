@@ -2459,6 +2459,8 @@ node 'pdf3.wikimedia.org' {
 node /(plutonium|pollux)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
 
+    include admin
+
     include standard
     include role::openldap::corp
     include base::firewall
