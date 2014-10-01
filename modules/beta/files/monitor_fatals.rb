@@ -28,7 +28,7 @@ https://logstash-beta.wmflabs.org/#/dashboard/elasticsearch/fatalmonitor
 
 MESSAGE_END
 
-  Net::SMTP.start('mchenry.wikimedia.org') do |smtp|
+  Net::SMTP.start('polonium.wikimedia.org') do |smtp|
     smtp.send_message message, 'qa@lists.wikimedia.org',
     'qa@lists.wikimedia.org'
   end
