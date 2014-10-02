@@ -15,6 +15,8 @@ class misc::syslog-server($config='nfs', $basepath='/home/wikipedia/syslog') {
 
     system::role { 'misc::syslog-server': description => "central syslog server (${config})" }
 
+    $archivepath = "$basepath/archive"
+
     package { 'syslog-ng':
         ensure => latest,
     }
@@ -42,6 +44,13 @@ class misc::syslog-server($config='nfs', $basepath='/home/wikipedia/syslog') {
         }
         file { $basepath:
             ensure  => present,
+            require => Exec['create_syslog_basepath'],
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+        }
+        file { $archivepath:
+            ensure  => directory,
             require => Exec['create_syslog_basepath'],
             owner   => 'root',
             group   => 'root',
