@@ -72,13 +72,6 @@ class labs_vmbuilder($vmbuilder_version) {
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/access.conf":
     }
 
-    exec { "cp /etc/default/autofs ${vmbuilder_filepath}/default_autofs":
-        subscribe   => File['vmbuilder_version'],
-    } ~>
-
-    exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/default_autofs":
-    }
-
     exec { "cp /etc/nslcd.conf ${vmbuilder_filepath}/nslcd.conf":
         subscribe   => File['vmbuilder_version'],
     } ~>
