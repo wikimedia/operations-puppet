@@ -63,10 +63,14 @@ dnslookup:
   ignore_target_hosts = 0.0.0.0 : 127.0.0.0/8
   no_more
 
+# Send mail to root@ or postmaster@ to the Labs project admin
+
 postmaster_mail:
   driver = redirect
   condition = ${if forany{root:postmaster}{eq{$item}{$local_part}}}
   data = <%= instanceproject %>.admin
+
+# Alias tools.<toolname>@ to <toolname>.maintainers@
 
 tool_fallback:
   driver = redirect
@@ -78,6 +82,8 @@ tool_fallback:
   modemask = 002
   data = $local_part.maintainers
 
+# Forward mail to <user>@ to the mail address set in LDAP (wikitech preference)
+
 user_forward:
   driver = redirect
   caseful_local_part
@@ -86,6 +92,9 @@ user_forward:
   check_ancestor
   modemask = 002
   data = ${run{/usr/local/sbin/localuser $local_part}{$value}fail}
+
+# Forward mail to <toolname>.<anything>@ using a specific .forward.<anything> file
+# if present in the tool's home directory
 
 tool_forward_specific:
   driver = redirect
@@ -108,6 +117,9 @@ tool_forward_specific:
   forbid_smtp_code
   hide_child_in_errmsg
 
+# Forward mail to <toolname>.<anything>@ using the plain .forward file if
+# .forward.<anything> doesn't exist
+
 tool_forward_general:
   driver = redirect
   local_part_suffix = .*
@@ -128,6 +140,8 @@ tool_forward_general:
   forbid_file
   forbid_smtp_code
   hide_child_in_errmsg
+
+# Forward mail to <toolname>.<anything> to the tool's maintainers if no .forward file exists
 
 tool_default:
   driver = redirect
