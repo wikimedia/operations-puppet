@@ -503,6 +503,7 @@ node 'cp1008.wikimedia.org' {
     $cluster = 'cache_text'
     include role::cache::text
     include role::cache::ssl::sni
+    include role::authdns::testns # test dns stuff too
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
