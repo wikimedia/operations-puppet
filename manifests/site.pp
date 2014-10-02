@@ -1558,9 +1558,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
     # lvs100[25] are LVS balancers for the eqiad recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
-    #   (chromium and hydrogen)
+    #   (chromium and hydrogen) with fallback to codfw
     if $::hostname =~ /^lvs100[25]$/ {
-        $nameservers_prefix = [ '208.80.154.157', '208.80.154.50' ]
+        $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
     }
     $cluster = 'lvs'
     include admin
@@ -1658,12 +1658,16 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 # codfw lvs
 node /lvs200[1-6]\.codfw\.wmnet/ {
 
-    # XXX will need $nameservers_prefix hack eventually (see eqiad above)
-
     if $::hostname =~ /^lvs200[12]$/ {
         $ganglia_aggregator = true
     }
 
+    # lvs200[25] are LVS balancers for the codfw recursive DNS IP,
+    #   so they need to use the recursive DNS backends directly
+    #   (acamar and achernar) with fallback to eqiad
+    if $::hostname =~ /^lvs200[25]$/ {
+        $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.239' ]
+    }
     $cluster = 'lvs'
     include admin
     include role::lvs::balancer
