@@ -65,7 +65,7 @@ class role::analytics::rsyncd {
         'stat1002.eqiad.wmnet',
         'stat1003.wikimedia.org',
         'analytics1027.eqiad.wmnet',
-        'datasets1001.wikimedia.org',
+        'dataset1001.wikimedia.org',
     ]
 
     # This will allow $hosts_allow to host public data files
