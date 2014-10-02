@@ -30,7 +30,5 @@
 	keepBackup = false
 [gitreview]
 	username = demon
-[push]
-	default = simple
 [url "ssh://gerrit.wikimedia.org/"]
     insteadOf = "gerrit:"
