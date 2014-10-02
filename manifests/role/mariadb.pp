@@ -393,3 +393,31 @@ class role::mariadb::labs {
         mode    => '0755',
     }
 }
+
+class role::mariadb::proxy {
+
+    system::role { 'role::mariadb::proxy':
+        description => 'DB Proxy',
+    }
+
+    include standard
+
+    package { [
+        'mysql-client',
+        'percona-toolkit',
+    ]:
+        ensure => present,
+    }
+
+    class { 'haproxy':
+        template => "mariadb/haproxy.cfg.erb",
+    }
+
+    # m1 trial
+    file { '/etc/haproxy/conf.d/m1.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('mariadb/haproxy.m1.cfg.erb'),
+    }
+}
