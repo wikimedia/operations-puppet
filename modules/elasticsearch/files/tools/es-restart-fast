@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import time
+from elastictool import ElasticTool
+from subprocess import Popen
+
+
+class RestartFast(ElasticTool):
+    command = ["/etc/init.d/elasticsearch", "restart"]
+
+    def execute(self):
+        if os.getuid() != 0:
+            print "Must be run as root"
+            sys.exit(1)
+
+        print "Disabling non-primary replication...",
+        if not self.set_replication_state("primaries"):
+            print "failed!"
+            sys.exit(1)
+        print "ok"
+
+        print "Restarting Elasticsearch...",
+        p = Popen(self.command, shell=True)
+        out, err = p.communicate()
+        if p.returncode != 0:
+            print "failed!"
+            sys.exit(1)
+        print "ok"
+
+        print "Waiting for Elasticsearch...",
+        while True:
+            try:
+                if self.health():
+                    print "ok"
+                    break
+            except:
+                pass
+            print ".",
+            time.sleep(1)
+
+        # Wait a sec
+        time.sleep(1)
+
+        print "Enabling all replication...",
+        if not self.set_replication_state("all"):
+            print "failed! -- You will still need to enable replication " +
+                "again, run `es-start-replication`"
+            sys.exit(1)
+        print "ok"
+
+        # Wait a bit
+        time.sleep(5)
+
+        print "Waiting for green (you can ctrl+c here if you have to)...",
+        while self.health() != "green":
+            time.sleep(1)
+        print "ok"
+
+
+if __name__ == "__main__":
+    tool = RestartFast("Restart Elasticsearch the quick way")
+    tool.run()
