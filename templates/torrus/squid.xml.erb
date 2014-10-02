@@ -85,20 +85,6 @@ end
 			Cannot expand parameter reference %snmp-host% in /Squids/
 			-->
 			<param name="snmp-host" value="placeholder"/>
-		
-			<subtree name="pmtpa">
-				<subtree name="text">
-<% squid_nodes('text', 'pmtpa').each do |line| -%>
-					<%= line %>
-<% end -%>
-				</subtree>
-			
-				<subtree name="upload">
-<% squid_nodes('upload', 'pmtpa').each do |line| -%>
-					<%= line %>
-<% end -%>
-				</subtree>
-			</subtree>
 			
 			<subtree name="eqiad">
 				<subtree name="text">
