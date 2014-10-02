@@ -1658,12 +1658,16 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 # codfw lvs
 node /lvs200[1-6]\.codfw\.wmnet/ {
 
-    # XXX will need $nameservers_prefix hack eventually (see eqiad above)
-
     if $::hostname =~ /^lvs200[12]$/ {
         $ganglia_aggregator = true
     }
 
+    # lvs200[25] are LVS balancers for the codfw recursive DNS IP,
+    #   so they need to use the recursive DNS backends directly
+    #   (acamar and achernar)
+    if $::hostname =~ /^lvs100[25]$/ {
+        $nameservers_prefix = [ '208.80.153.12', '208.80.153.42' ]
+    }
     $cluster = 'lvs'
     include admin
     include role::lvs::balancer
