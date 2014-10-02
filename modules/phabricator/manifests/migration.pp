@@ -9,6 +9,7 @@ class phabricator::migration {
     git::install { 'phabricator/tools':
         directory => '/srv/phab/tools',
         git_tag   => 'HEAD',
+        lock_file => '/srv/phab/tools.lock',
     }
 
     $fab_lock = '/var/run/fab_update_user.flock'
