@@ -1384,8 +1384,6 @@ node 'iron.wikimedia.org' {
     include misc::management::ipmi
     include role::access_new_install
 
-    # search QA scripts for ops use
-    include search::searchqa
 }
 
 
