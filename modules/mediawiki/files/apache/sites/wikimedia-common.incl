@@ -1,0 +1,37 @@
+# Common include for all sites using wikimedia.org as their docroot
+    DocumentRoot "/srv/mediawiki/docroot/wikimedia.org"
+    AllowEncodedSlashes On
+    RewriteEngine On
+    <IfDefine HHVM>
+        ProxyPass       /wiki                fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php
+        ProxyPass       /w/extensions        !
+        ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/$1
+        RewriteRule     ^/$                  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php    [P]
+        RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/robots.php   [P]
+        RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/favicon.php  [P]
+    </IfDefine>
+
+
+    # Make robots.txt editable via Mediawiki:robots.txt
+    RewriteRule ^/robots.txt$ /w/robots.php [L]
+
+    # Primary wiki redirector:
+    Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
+    RewriteRule ^/$ /w/index.php
+
+    # Configurable favicon
+    RewriteRule ^/favicon\.ico$ /w/favicon.php [L]
+
+    # Math compatibility mode
+    RewriteRule ^/math/(.*) https://upload.wikimedia.org/math/$1 [R=301]
+
+    <Directory "/srv/mediawiki/docroot/wikimedia.org/w">
+        <IfModule mod_php5.c>
+          php_admin_flag engine on
+        </IfModule>
+    </Directory>
+    <Directory "/srv/mediawiki/docroot/wikimedia.org/w/extensions">
+        <IfModule mod_php5.c>
+          php_admin_flag engine off
+        </IfModule>
+    </Directory>
