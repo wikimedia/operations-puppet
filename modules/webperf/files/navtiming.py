@@ -50,9 +50,16 @@ def dispatch_stat(*args):
     sock.sendto(stat.encode('utf-8'), addr)
 
 
-for meta in iter(zsock.recv_json, ''):
-    if meta['schema'] != 'NavigationTiming':
-        continue
+def handle_save_timing(meta):
+    event = meta['event']
+    duration = event['duration']
+    runtime = event['runtime']
+    if duration > 0 and duration < 60000:
+        stat = 'mw.performance.save.%s:%s|ms' % (runtime, duration)
+        sock.sendto(stat.encode('utf-8'), addr)
+
+
+def handle_navigation_timing(meta):
     event = meta['event']
 
     if 'fetchStart' in event:
@@ -92,3 +99,10 @@ for meta in iter(zsock.recv_json, ''):
                 dispatch_stat(runtime, metric, site, auth, value)
                 dispatch_stat(runtime, metric, site, 'overall', value)
                 dispatch_stat(runtime, metric, 'overall', value)
+
+
+for meta in iter(zsock.recv_json, ''):
+    if meta['schema'] == 'NavigationTiming':
+        handle_navigation_timing(meta)
+    if meta['schema'] == 'SaveTiming':
+        handle_save_timing(meta)
