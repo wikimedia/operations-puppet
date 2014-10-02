@@ -177,10 +177,6 @@ class misc::torrus {
                 content => template('torrus/varnish.xml.erb'),
             }
 
-            file { '/etc/torrus/xmlconfig/squid.xml':
-                content => template('torrus/squid.xml.erb'),
-            }
-
             file { '/etc/torrus/xmlconfig/cdn-aggregates.xml':
                 content => template('torrus/cdn-aggregates.xml.erb'),
             }
