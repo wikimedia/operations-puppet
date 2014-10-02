@@ -15,6 +15,14 @@ class toollabs::mailrelay($maildomain,
     include toollabs::infrastructure,
         toollabs::gridnode
 
+    # FIXME: -ugly-, we need to have a better way for this
+    Package <| title == 'exim4-daemon-light' |> {
+        ensure => undef
+    }
+    package{ 'exim4-daemon-heavy':
+        ensure => present
+    }
+
     class { 'gridengine::submit_host':
         gridmaster => $gridmaster,
     }
