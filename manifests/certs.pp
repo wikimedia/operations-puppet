@@ -210,6 +210,8 @@ define install_additional_key(
 
 class certificates::base {
 
+    include apparmor
+
     package { [ 'openssl', 'ssl-cert' ]:
         ensure => 'latest',
     }
@@ -245,6 +247,7 @@ class certificates::base {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///files/ssl/ssl_certs',
+        notify => Service['apparmor'],
     }
 
 }
