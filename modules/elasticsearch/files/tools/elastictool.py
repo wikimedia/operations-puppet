@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import argparse
+import sys
 from elasticsearch import Elasticsearch
+from elasticsearch import ConnectionError
 
 
 class ElasticTool:
@@ -14,7 +16,12 @@ class ElasticTool:
     def run(self):
         self.args = self.parser.parse_args()
         self.server = self.args.server
-        self.execute()
+        # Catch the most common exception in one place here
+        try:
+            self.execute()
+        except ConnectionError:
+            print "Unable to connect to server: " + self.server
+            sys.exit(1)
 
     def execute(self):
         raise NotImplementedError("Please implement this method")

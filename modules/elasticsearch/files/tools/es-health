@@ -3,6 +3,7 @@
 import sys
 from elastictool import ElasticTool
 
+
 class ServerHealth(ElasticTool):
     def execute(self):
         health = self.health()
