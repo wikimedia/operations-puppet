@@ -38,11 +38,6 @@ class misc::deployment::common_scripts {
             group  => 'root',
             mode   => '0555',
             source => 'puppet:///files/misc/scripts/deploy2graphite';
-        '/usr/local/bin/fatalmonitor':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///files/misc/scripts/fatalmonitor';
         '/usr/local/bin/foreachwiki':
             owner  => 'root',
             group  => 'root',
@@ -141,6 +136,16 @@ class misc::deployment::common_scripts {
 class misc::deployment::scap_scripts {
     include misc::deployment::common_scripts
     include misc::deployment::vars
+}
+
+class misc::deployment::fatalmonitor {
+    file {
+        '/usr/local/bin/fatalmonitor':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///files/misc/scripts/fatalmonitor';
+    }
 }
 
 class misc::deployment::passwordscripts {
