@@ -1229,6 +1229,7 @@ node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
     include standard
+    include misc::deployment::fatalmonitor
 
     class { 'admin':
         groups => ['deployment',

@@ -1,2 +1,13 @@
 #! /bin/bash
-watch "tail -n 1000 /home/wikipedia/syslog/apache.log | grep 'PHP\|Segmentation fault' | grep -v 'filemtime\|failed to mkdir\|GC cache entry\|cache slam averted\|SHA-1 metadata' | sed -r 's/\[notice\] child pid [0-9]+ exit signal //g' | sed 's/, referer.*$//g' | cut -d ' ' -f 7- | sort | uniq -c | sort -rn"
+
+cmd="tail -n 1000 /a/mw-log/apache2.log \
+    | grep 'PHP\|Segmentation fault'\
+    | grep -v 'filemtime\|failed to mkdir\|GC cache entry\|cache slam averted\|SHA-1 metadata' \
+    | sed -r 's/\[notice\] child pid [0-9]+ exit signal //g' \
+    | sed 's/, referer.*$//g' \
+    | cut -d ' ' -f 7- \
+    | sort \
+    | uniq -c \
+    | sort -rn"
+
+watch "$cmd"
