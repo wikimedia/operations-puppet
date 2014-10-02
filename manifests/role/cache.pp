@@ -57,7 +57,6 @@ class role::cache {
         $active_nodes = {
             'production' => {
                 'text' => {
-                    'pmtpa' => [],
                     'eqiad' => [
                         'cp1052.eqiad.wmnet',
                         'cp1053.eqiad.wmnet',
@@ -112,13 +111,11 @@ class role::cache {
                     ]
                 },
                 'api' => {
-                    'pmtpa' => [],
                     'eqiad' => [],
                     'esams' => [],
                     'ulsfo' => [],
                 },
                 'bits' => {
-                    'pmtpa' => [],
                     'eqiad' => ['cp1056.eqiad.wmnet',
                                 'cp1057.eqiad.wmnet',
                                 'cp1069.eqiad.wmnet',
@@ -136,7 +133,6 @@ class role::cache {
                     ],
                 },
                 'upload' => {
-                    'pmtpa' => [],
                     'eqiad' => [
                         'cp1048.eqiad.wmnet',
                         'cp1049.eqiad.wmnet',
@@ -171,7 +167,6 @@ class role::cache {
                     ],
                 },
                 'mobile' => {
-                    'pmtpa' => [],
                     'eqiad' => ['cp1046.eqiad.wmnet',
                                 'cp1047.eqiad.wmnet',
                                 'cp1059.eqiad.wmnet',
@@ -189,13 +184,11 @@ class role::cache {
                     ]
                 },
                 'parsoid' => {
-                    'pmtpa' => [],
                     'eqiad' => ['cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet'],
                     'esams' => [],
                     'ulsfo' => []
                 },
                 'misc' => {
-                    'pmtpa' => [],
                     'eqiad' => ['cp1043.eqiad.wmnet', 'cp1044.eqiad.wmnet'],
                     'esams' => [],
                     'ulsfo' => [],
@@ -204,73 +197,27 @@ class role::cache {
             'labs' => {
                 'api'    => {
                     'eqiad' => '127.0.0.1',
-                    'pmtpa' => '127.0.0.1',
                 },
                 'bits'   => {
                     'eqiad' => '127.0.0.1',
-                    'pmtpa' => '127.0.0.1',
                 },
                 'mobile' => {
                     'eqiad' => '127.0.0.1',
-                    'pmtpa' => '127.0.0.1',
                 },
                 'text'   => {
                     'eqiad' => '127.0.0.1',
-                    'pmtpa' => '127.0.0.1',
                 },
                 'upload' => {
                     'eqiad' => '127.0.0.1',
-                    'pmtpa' => '127.0.0.1',
                 },
                 'parsoid' => {
                     'eqiad' => '127.0.0.1',
-                    'pmtpa' => '127.0.0.1',
                 },
             },
         }
 
         $decommissioned_nodes = {
             'text' => {
-                'pmtpa' => [
-                    'sq16.wikimedia.org',
-                    'sq17.wikimedia.org',
-                    'sq18.wikimedia.org',
-                    'sq19.wikimedia.org',
-                    'sq20.wikimedia.org',
-                    'sq21.wikimedia.org',
-                    'sq22.wikimedia.org',
-                    'sq23.wikimedia.org',
-                    'sq24.wikimedia.org',
-                    'sq25.wikimedia.org',
-                    'sq26.wikimedia.org',
-                    'sq27.wikimedia.org',
-                    'sq28.wikimedia.org',
-                    'sq29.wikimedia.org',
-                    'sq30.wikimedia.org',
-
-                    'sq31.wikimedia.org',
-                    'sq32.wikimedia.org',
-                    'sq35.wikimedia.org',
-                    'sq38.wikimedia.org',
-                    'sq40.wikimedia.org',
-                    'sq37.wikimedia.org',
-                    'sq59.wikimedia.org',
-                    'sq60.wikimedia.org',
-                    'sq61.wikimedia.org',
-                    'sq62.wikimedia.org',
-                    'sq63.wikimedia.org',
-                    'sq64.wikimedia.org',
-                    'sq65.wikimedia.org',
-                    'sq66.wikimedia.org',
-                    'sq71.wikimedia.org',
-                    'sq72.wikimedia.org',
-                    'sq73.wikimedia.org',
-                    'sq74.wikimedia.org',
-                    'sq75.wikimedia.org',
-                    'sq76.wikimedia.org',
-                    'sq77.wikimedia.org',
-                    'sq78.wikimedia.org',
-                ],
                 'eqiad' => [
 
                 ],
@@ -293,12 +240,10 @@ class role::cache {
                 ]
             },
             'api' => {
-                'pmtpa' => [],
                 'eqiad' => [],
                 'esams' => [],
             },
             'bits' => {
-                'pmtpa' => [],
                 'eqiad' => [],
                 'esams' => [
                     'knsq1.esams.wikimedia.org',
@@ -311,45 +256,6 @@ class role::cache {
                 'ulsfo' => [],
             },
             'upload' => {
-                'pmtpa' => [
-                    'sq1.wikimedia.org',
-                    'sq2.wikimedia.org',
-                    'sq3.wikimedia.org',
-                    'sq4.wikimedia.org',
-                    'sq5.wikimedia.org',
-                    'sq6.wikimedia.org',
-                    'sq7.wikimedia.org',
-                    'sq8.wikimedia.org',
-                    'sq9.wikimedia.org',
-                    'sq10.wikimedia.org',
-                    'sq11.wikimedia.org',
-                    'sq12.wikimedia.org',
-                    'sq13.wikimedia.org',
-                    'sq14.wikimedia.org',
-                    'sq15.wikimedia.org',
-                    'sq47.wikimedia.org',
-                    'sq43.wikimedia.org',
-                    'sq49.wikimedia.org',
-                    'sq50.wikimedia.org',
-
-                    'sq51.wikimedia.org',
-                    'sq52.wikimedia.org',
-                    'sq53.wikimedia.org',
-                    'sq54.wikimedia.org',
-                    'sq55.wikimedia.org',
-                    'sq56.wikimedia.org',
-                    'sq57.wikimedia.org',
-                    'sq58.wikimedia.org',
-
-                    'sq79.wikimedia.org',
-                    'sq80.wikimedia.org',
-                    'sq81.wikimedia.org',
-                    'sq82.wikimedia.org',
-                    'sq83.wikimedia.org',
-                    'sq84.wikimedia.org',
-                    'sq85.wikimedia.org',
-                    'sq86.wikimedia.org',
-                ],
                 'eqiad' => [
                     'cp1021.eqiad.wmnet',
                     'cp1022.eqiad.wmnet',
@@ -381,19 +287,16 @@ class role::cache {
                 'ulsfo' => [],
             },
             'mobile' => {
-                'pmtpa' => [],
                 'eqiad' => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet'],
                 'esams' => [],
                 'ulsfo' => [],
             },
             'parsoid' => {
-                'pmtpa' => [],
                 'eqiad' => [],
                 'esams' => [],
                 'ulsfo' => [],
             },
             'misc' => {
-                'pmtpa' => [],
                 'eqiad' => [],
                 'esams' => [],
                 'ulsfo' => [],
@@ -411,11 +314,9 @@ class role::cache {
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['bits']['eqiad']['bitslb']]),
                 },
                 'bits_appservers' => {
-                    'pmtpa' => [],
                     'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['apaches']['eqiad']]),
                 },
                 'test_appservers' => {
-                    'pmtpa' => [ 'mw1017.eqiad.wmnet' ],
                     'eqiad' => [ 'mw1017.eqiad.wmnet' ],
                 },
                 'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid']
@@ -721,7 +622,7 @@ class role::cache {
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
         $storage_size_main = $::realm ? { 'labs' => 5, default => 100 }
-        if $::site in ['pmtpa', 'eqiad'] {
+        if $::site in ['eqiad'] {
             $cluster_tier = 1
             $default_backend = 'backend'
         } else {
