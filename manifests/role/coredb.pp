@@ -91,8 +91,8 @@ class role::coredb::config {
         'es3' => {
             'hosts' => { 'eqiad' => [ 'es1008', 'es1009', 'es1010' ] },
             'primary_site' => $::mw_primary,
-            'masters'      => { 'eqiad' => 'es1008' },
-            'snapshot'     => [ 'es1010' ],
+            'masters'      => { 'eqiad' => 'es1009' },
+            'snapshot'     => [],
             'no_master'    => []
         },
     }

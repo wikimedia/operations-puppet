@@ -1207,7 +1207,7 @@ node /es100[5]\.eqiad\.wmnet/ {
     }
 }
 
-node /es10(09|10)\.eqiad\.wmnet/ {
+node /es100[9]\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::es3':
@@ -1215,7 +1215,7 @@ node /es10(09|10)\.eqiad\.wmnet/ {
     }
 }
 
-node /es100[8]\.eqiad\.wmnet/ {
+node /es10(08|10)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
