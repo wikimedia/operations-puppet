@@ -75,6 +75,7 @@ for meta in iter(zsock.recv_json, ''):
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
+    runtime = event.get('runtime')
 
     # bits_cache = meta.get('recvFrom', '').split('.')[0]
     # wiki = meta.get('wiki', '')
@@ -85,3 +86,9 @@ for meta in iter(zsock.recv_json, ''):
             dispatch_stat(metric, site, auth, value)
             dispatch_stat(metric, site, 'overall', value)
             dispatch_stat(metric, 'overall', value)
+
+            if runtime is not None:
+                # PHP5/HHVM-qualified metrics
+                dispatch_stat(runtime, metric, site, auth, value)
+                dispatch_stat(runtime, metric, site, 'overall', value)
+                dispatch_stat(runtime, metric, 'overall', value)
