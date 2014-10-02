@@ -1,7 +1,7 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [csalvia, rainman, mwalker, jgonera]
+    members: [csalvia, rainman, mwalker, jgonera, swalling]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -53,7 +53,7 @@ groups:
   bastiononly:
     gid: 707
     description: these folks are allowed bastion _only_ access
-    members: [howief, jforrester, jmorgan, maryana, msyed, swalling, yuvipanda,
+    members: [howief, jforrester, jmorgan, maryana, msyed, yuvipanda,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom]
   cassandra-roots:
@@ -159,7 +159,7 @@ groups:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
     members: [dartar, halfak, howief, ironholds, jdlrobson, jmorgan,
-              maryana, mattflaschen, mhurd, swalling, yurik, awight, jforrester,
+              maryana, mattflaschen, mhurd, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom]
@@ -923,12 +923,11 @@ users:
         msyed@wikimedia.org]
     uid: 4206
   swalling:
-    ensure: present
+    ensure: absent
     gid: 500
     name: swalling
     realname: Steven Walling
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDmsa2kRWHxgjNbw51CafupOENyZF6aTC7uuWeaPQZpVAK7epFoyjdajAnIBq9q81rJ6JUWwVNyiwsC4VuNlpk29v5y7PmsbLvQU0nXHQ0VEDeorGfSdbYrv5I1/JhHQCFIPIGdsoiamTlnM6jqlRFSnUaTVtpLnQVJAkjnh6xZxZNBPhkplHgj31/XOTw0KUVnrVhWLdkyYzgT4452/EF1arPaPWgh6SczGTOkNkK0kUlzXYTST/jdTX7NiYJ+N6via64Ccro1hu6w+gTc0WdA9gg1TaaASzKpQtutddo0xMInzp3EIs6gsfoICRgbYiO5NuHluFd73UBQ2FTmaw6T
-        swalling@wikimedia.org]
+    ssh_keys: []
     uid: 2516
   yuvipanda:
     ensure: present
