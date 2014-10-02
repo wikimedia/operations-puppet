@@ -13,7 +13,12 @@
 class toollabs::mailrelay($maildomain,
                           $gridmaster) inherits toollabs {
     include toollabs::infrastructure,
-        toollabs::gridnode
+        toollabs::gridnode,
+        ldap::role::config::labs
+
+    $ldap_servers = $ldap::role::config::labs::servernames
+    $ldapbind = $ldap::role::config::labs::ldapconfig['proxyagent']
+    $ldappass = $ldap::role::config::labs::ldapconfig['proxypass']
 
     # FIXME: -ugly-, we need to have a better way for this
     Package <| title == 'exim4-daemon-light' |> {
