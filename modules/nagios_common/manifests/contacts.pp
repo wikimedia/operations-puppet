@@ -10,9 +10,9 @@
 #   The base directory to put configuration directory in.
 #   Defaults to '/etc/icinga/'
 #
-# [*source*]
-#   puppet URL specifying the source of the contacts.cfg
-#   Defaults to 'puppet:///modules/nagios_common/contacts.cfg'
+# [*template*]
+#   puppet URL specifying the template of the contacts.cfg file
+#   Defaults to 'nagios_common/contacts.cfg.erb'
 #
 # [*owner*]
 #   The user which should own the check config files.
@@ -22,16 +22,20 @@
 #   The group which should own the check config files.
 #   Defaults to 'root'
 #
+# [*contacts*]
+#   The list of contacts to include in the configuration.
+#
 class nagios_common::contacts(
     $ensure = present,
     $config_dir = '/etc/icinga',
-    $source = 'puppet:///modules/nagios_common/contacts.cfg',
+    $template = 'nagios_common/contacts.cfg.erb',
     $owner = 'root',
     $group = 'root',
+    $contacts = [],
 ) {
     file { "$config_dir/contacts.cfg":
         ensure => $ensure,
-        source => $source,
+        content => template($template),
         owner  => $owner,
         group  => $group,
     }
