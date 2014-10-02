@@ -32,7 +32,7 @@
 	'CDN' => {
 		'description'	=> 'Content Delivery Network',
 		'info'		=> 'Wikimedia Content Delivery Network',
-		'xmlfiles'	=> [qw(squid.xml varnish.xml cdn-aggregates.xml)],
+		'xmlfiles'	=> [qw(varnish.xml cdn-aggregates.xml)],
 		'run'		=> { 'collector' => 1, 'monitor' => 0 }
 	},
 #	'Test' => {
