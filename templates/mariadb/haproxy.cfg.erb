@@ -1,0 +1,22 @@
+# Note: This file is managed by puppet.
+
+global
+    pidfile /var/run/haproxy.pid
+    daemon
+    user haproxy
+    group haproxy
+    stats socket /tmp/haproxy.socket user haproxy group haproxy mode 600 level admin
+
+defaults
+    #log global
+    mode tcp
+    option dontlognull
+    option tcp-smart-accept
+    option tcp-smart-connect
+    #option dontlog-normal
+    retries 3
+    option redispatch
+    maxconn 5000
+    timeout connect 3000ms
+    timeout client  28800s
+    timeout server  28800s

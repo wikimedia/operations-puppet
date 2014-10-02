@@ -1,0 +1,7 @@
+listen mariadb 0.0.0.0:3306
+    mode tcp
+    balance roundrobin
+    option tcpka
+    option mysql-check user haproxy
+    <%= @primary_name %> <%= @primary_addr %> check inter 3s fall 3 rise 99999999
+    <%= @secondary_name %> <%= @secondary_addr %> check backup
