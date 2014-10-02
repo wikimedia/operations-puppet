@@ -393,3 +393,32 @@ class role::mariadb::labs {
         mode    => '0755',
     }
 }
+
+class role::mariadb::proxy {
+
+    system::role { 'role::mariadb::proxy':
+        description => 'DB Proxy',
+    }
+
+    include standard
+    include passwords::misc::scripts
+
+    $prompt   = 'PROXY'
+    $password = $passwords::misc::scripts::mysql_root_pass
+
+    package { [
+        'haproxy',
+        'mysql-client',
+        'percona-toolkit',
+        'percona-xtrabackup',
+    ]:
+        ensure => present,
+    }
+
+    file { '/root/.my.cnf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template("mariadb/root.my.cnf.erb"),
+    }
+}

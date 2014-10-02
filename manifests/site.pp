@@ -1074,6 +1074,12 @@ node 'db1004.eqiad.wmnet' {
     include standard
 }
 
+node /^dbproxy100[12]\.eqiad\.wmnet/ {
+    include admin
+    $cluster = 'mysql'
+    include role::mariadb::proxy
+}
+
 node 'dobson.wikimedia.org' {
     include admin
 
