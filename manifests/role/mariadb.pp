@@ -393,3 +393,21 @@ class role::mariadb::labs {
         mode    => '0755',
     }
 }
+
+class role::mariadb::proxy {
+
+    system::role { 'role::mariadb::proxy':
+        description => 'DB Proxy',
+    }
+
+    include standard
+
+    package { [
+        'haproxy',
+        'mysql-client',
+        'percona-toolkit',
+        'percona-xtrabackup',
+    ]:
+        ensure => present,
+    }
+}
