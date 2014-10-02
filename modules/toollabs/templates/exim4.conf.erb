@@ -88,7 +88,7 @@ user_forward:
   driver = redirect
   caseful_local_part
   check_local_user
-  no_expn
+  expn = false
   check_ancestor
   modemask = 002
   data = ${run{/usr/local/sbin/localuser $local_part}{$value}fail}
@@ -99,18 +99,18 @@ user_forward:
 tool_forward_specific:
   driver = redirect
   local_part_suffix = .*
-  not_local_part_suffix_optional
+  local_part_suffix_optional = false
   caseful_local_part
   local_parts = passwd;<%= instanceproject %>.$local_part
   require_files = <%= instanceproject %>.$local_part:$home/.forward$local_part_suffix
   router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
   file = /data/project/$local_part/.forward$local_part_suffix
-  no_expn
+  expn = false
   check_ancestor
   modemask = 002
   pipe_transport = gridqueue
-  no_allow_filter
-  no_allow_defer
+  allow_filter = false
+  allow_defer = false
   allow_fail
   forbid_include
   forbid_file
@@ -123,18 +123,18 @@ tool_forward_specific:
 tool_forward_general:
   driver = redirect
   local_part_suffix = .*
-  not_local_part_suffix_optional
+  local_part_suffix_optional = false
   caseful_local_part
   local_parts = passwd;<%= instanceproject %>.$local_part
   require_files = <%= instanceproject %>.$local_part:$home/.forward
   router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
   file = /data/project/$local_part/.forward
-  no_expn
+  expn = false
   check_ancestor
   modemask = 002
   pipe_transport = gridqueue
-  no_allow_filter
-  no_allow_defer
+  allow_filter = false
+  allow_defer = false
   allow_fail
   forbid_include
   forbid_file
@@ -146,11 +146,11 @@ tool_forward_general:
 tool_default:
   driver = redirect
   local_part_suffix = .*
-  not_local_part_suffix_optional
+  local_part_suffix_optional = false
   caseful_local_part
   local_parts = passwd;<%= instanceproject %>.$local_part
   router_home_directory = ${lookup passwd{<%= instanceproject %>.$local_part}{${extract{5}{:}{$value}}}fail}
-  no_expn
+  expn = false
   check_ancestor
   modemask = 002
   data = ${run{/usr/local/sbin/maintainers <%= instanceproject %>.$local_part}{$value}fail}
