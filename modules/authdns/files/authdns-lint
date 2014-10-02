@@ -57,4 +57,10 @@ sed -nr 's/.*(geoip_db(.*)?|city_region_names)\s*=>\s*//p' $TESTDIR/etc/config \
     echo "  $file"
 done
 
-gdnsd -sSd $TESTDIR checkconf
+# 1.x and 2.x have different path-related flags...
+gdnsd -h 2>&1 | grep -q 'gdnsd version 2'
+if [ $? = 0 ]; then
+    gdnsd -sSc $TESTDIR/etc checkconf
+else
+    gdnsd -sSd $TESTDIR checkconf
+fi

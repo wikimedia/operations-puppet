@@ -105,10 +105,16 @@ fi
 
 if ! cmp --quiet /etc/gdnsd/config~ /etc/gdnsd/config; then
     rm -f /etc/gdnsd/config~
-    echo "Reloading zones & config"
-    gdnsd force-reload
+    echo "Restarting to update zones & config"
+    gdnsd restart
 else
     rm -f /etc/gdnsd/config~
     echo "Reloading zones"
-    gdnsd reload
+    # 1.x and 2.x have different commands to reload zones
+    gdnsd -h 2>&1 | grep -q 'gdnsd version 2'
+    if [ $? = 0 ]; then
+        gdnsd reload-zones
+    else
+        gdnsd reload
+    fi
 fi
