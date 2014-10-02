@@ -393,3 +393,56 @@ class role::mariadb::labs {
         mode    => '0755',
     }
 }
+
+class role::mariadb::proxy {
+
+    system::role { 'role::mariadb::proxy':
+        description => 'DB Proxy',
+    }
+
+    include standard
+
+    package { [
+        'mysql-client',
+        'percona-toolkit',
+    ]:
+        ensure => present,
+    }
+
+    class { 'haproxy':
+        template => "mariadb/haproxy.cfg.erb",
+    }
+}
+
+class role::mariadb::proxy::master(
+    $shard,
+    $primary_name,
+    $primary_addr,
+    $secondary_addr,
+    $secondary_addr,
+    ) {
+
+    include role::mariadb::proxy
+
+    file { '/etc/haproxy/conf.d/db-master.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('mariadb/haproxy-master.cfg.erb'),
+    }
+}
+
+class role::mariadb::proxy::slaves(
+    $shard,
+    $servers,
+    ) {
+
+    include role::mariadb::proxy
+
+    file { '/etc/haproxy/conf.d/db-slaves.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('mariadb/haproxy-slaves.cfg.erb'),
+    }
+}

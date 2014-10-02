@@ -1074,6 +1074,30 @@ node 'db1004.eqiad.wmnet' {
     include standard
 }
 
+node 'dbproxy1001.eqiad.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::proxy::master':
+        shard          => 'm2',
+        primary_name   => 'db1020',
+        primary_addr   => '10.64.16.9',
+        secondary_name => 'db1046',
+        secondary_addr => '10.64.16.35',
+    }
+}
+
+node 'dbproxy1002.eqiad.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::proxy::master':
+        shard          => 'm3',
+        primary_name   => 'db1043',
+        primary_addr   => '10.64.16.32',
+        secondary_name => 'db1048',
+        secondary_addr => '10.64.16.37',
+    }
+}
+
 node 'dobson.wikimedia.org' {
     include admin
 
