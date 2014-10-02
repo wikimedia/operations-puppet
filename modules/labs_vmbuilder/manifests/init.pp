@@ -66,55 +66,43 @@ class labs_vmbuilder($vmbuilder_version) {
     Exec { path => '/bin' }
 
     exec { "cp /etc/security/access.conf ${vmbuilder_filepath}/access.conf":
-        refreshonly => true,
         subscribe   => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/access.conf":
-        refreshonly => true,
     }
 
     exec { "cp /etc/default/autofs ${vmbuilder_filepath}/default_autofs":
-        refreshonly => true,
         subscribe   => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/default_autofs":
-        refreshonly => true,
     }
 
     exec { "cp /etc/nslcd.conf ${vmbuilder_filepath}/nslcd.conf":
-        refreshonly => true,
         subscribe   => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/nslcd.conf":
-        refreshonly => true,
     }
 
     exec { "cp /etc/ldap/ldap.conf ${vmbuilder_filepath}/nss_ldap.conf":
-        refreshonly => true,
         subscribe   => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/nss_ldap.conf":
-        refreshonly => true,
     }
 
     exec { "cp /etc/puppet/puppet.conf ${vmbuilder_filepath}/puppet.conf":
-        refreshonly => true,
         subscribe   => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/puppet.conf":
-        refreshonly => true,
     } ~>
 
     exec { "sed -i '${fqdnregex}' ${vmbuilder_filepath}/puppet.conf":
-        refreshonly => true,
     } ~>
 
     exec { "sed -i '${masterregex}' ${vmbuilder_filepath}/puppet.conf":
-        refreshonly => true,
     }
 }
