@@ -67,7 +67,7 @@ dnslookup:
 
 postmaster_mail:
   driver = redirect
-  condition = ${if forany{root:postmaster}{eq{$item}{$local_part}}}
+  local_parts = root : postmaster
   data = <%= instanceproject %>.admin
 
 # Alias tools.<toolname>@ to <toolname>.maintainers@
