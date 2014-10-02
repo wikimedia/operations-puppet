@@ -58,22 +58,6 @@ class icinga::monitor::files::misc {
         mode   => '0755',
     }
 
-    # fix permissions on all individual service files
-    exec { 'fix_nagios_perms':
-        command => '/bin/chmod -R a+r /etc/nagios';
-    }
-    exec { 'fix_icinga_perms':
-        command => '/bin/chmod -R a+r /etc/icinga';
-    }
-    exec { 'fix_icinga_temp_files':
-        command => '/bin/chown -R icinga /var/lib/icinga';
-    }
-    exec { 'fix_nagios_plugins_files':
-        command => '/bin/chmod -R a+w /var/lib/nagios';
-    }
-    exec { 'fix_icinga_command_file':
-        command => '/bin/chmod a+rw /var/lib/nagios/rw/nagios.cmd';
-    }
     file { '/var/log/icinga':
         ensure => directory,
         owner => 'icinga',

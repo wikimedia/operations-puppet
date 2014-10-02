@@ -132,4 +132,25 @@ class icinga {
             File['/etc/init.d/icinga'],
         ],
     }
+
+    # fix permissions on all individual service files
+    # FIXME: THis should not be needed *at all*. Should
+    # just have everything bet written with 'icinga' as
+    # owner, rather than this monstrosity.
+    exec { 'fix_nagios_perms':
+        command => '/bin/chmod -R a+r /etc/nagios';
+    }
+    exec { 'fix_icinga_perms':
+        command => '/bin/chmod -R a+r /etc/icinga';
+    }
+    exec { 'fix_icinga_temp_files':
+        command => '/bin/chown -R icinga /var/lib/icinga';
+    }
+    exec { 'fix_nagios_plugins_files':
+        command => '/bin/chmod -R a+w /var/lib/nagios';
+    }
+    exec { 'fix_icinga_command_file':
+        command => '/bin/chmod a+rw /var/lib/nagios/rw/nagios.cmd';
+    }
+
 }
