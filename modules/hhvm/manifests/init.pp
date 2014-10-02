@@ -6,12 +6,8 @@
 # The layout of configuration files in /etc/hhvm is as follows:
 #
 #   /etc/hhvm
-#   │
-#   ├── php.ini         # Settings for CLI mode
-#   │
-#   └── fcgi
-#       │
-#       └── php.ini     # Settings for FastCGI mode
+#   ├── php.ini      # Settings for CLI mode
+#   └── fcgi.ini     # Settings for FastCGI mode
 #
 # The CLI configs are located in the paths HHVM automatically loads by
 # default. This makes it easy to invoke HHVM from the command line,
@@ -29,9 +25,7 @@
 # HHVM is also configured to write stack traces to the same directory.
 #
 #   /var/log/hhvm
-#   │
 #   ├── error.log
-#   │
 #   └── stacktrace.NNN.log.YYYYMMDD, ...
 #
 #
@@ -49,7 +43,6 @@
 #
 # [*fcgi_settings*]
 #   Ditto, except for FastCGI mode.
-#
 #
 # [*warmup_urls*]
 #   An array of URLs to fetch from the server on startup. Optional.
@@ -162,7 +155,7 @@ class hhvm(
         mode    => '0444',
     }
 
-    file { '/etc/hhvm/fcgi/php.ini':
+    file { '/etc/hhvm/fcgi.ini':
         content => php_ini($common_defaults, $fcgi_defaults, $fcgi_settings),
         owner   => 'root',
         group   => 'root',
@@ -170,7 +163,7 @@ class hhvm(
         notify  => Service['hhvm'],
     }
 
-    file { '/etc/hhvm/fcgi/warmup.urls':
+    file { '/etc/hhvm/warmup.urls':
         content => template('hhvm/warmup.urls.erb'),
         owner   => 'root',
         group   => 'root',
@@ -214,7 +207,7 @@ class hhvm(
         provider => 'upstart',
     }
 
-    file { [ '/etc/hhvm', '/etc/hhvm/fcgi' ]:
+    file { '/etc/hhvm':
         ensure => directory,
         owner  => 'root',
         group  => 'root',
