@@ -5,6 +5,7 @@
 #
 
 class apparmor {
+
     package { 'apparmor':
         ensure => present,
     }
@@ -16,4 +17,17 @@ class apparmor {
         hasrestart => true,
         require    => Package['apparmor'],
     }
+
+    # This directory is only created when some
+    # profiles are installed by default, but we
+    # forcibly create it in case we need to
+    # install one ourselves in it
+    file { '/etc/apparmor.d/abstractions':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Package['apparmor'],
+    }
+
 }
