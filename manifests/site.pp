@@ -1207,15 +1207,20 @@ node /es100[5]\.eqiad\.wmnet/ {
     }
 }
 
-node /es10(0[89]|10)\.eqiad\.wmnet/ {
+node /es10(09|10)\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
-    if $::hostname =~ /^es10(09|10)/ {
-        class { 'role::coredb::es3':
-            mariadb => true,
-        }
-    } else {
-        include role::coredb::es3
+    class { 'role::coredb::es3':
+        mariadb => true,
+    }
+}
+
+node /es100[8]\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 'es3',
     }
 }
 
