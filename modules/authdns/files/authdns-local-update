@@ -111,8 +111,9 @@ else
     rm -f /etc/gdnsd/config~
     echo "Reloading zones"
     # 1.x and 2.x have different commands to reload zones
-    gdnsd -h 2>&1 | grep -q 'gdnsd version 2'
-    if [ $? = 0 ]; then
+    v2=1
+    (gdnsd -h 2>&1 | grep -q 'gdnsd version 2') || v2=0
+    if [ $v2 -eq 1 ]; then
         gdnsd reload-zones
     else
         gdnsd reload
