@@ -1,5 +1,17 @@
 class mediawiki::web::sites {
     tag 'mediawiki', 'mw-apache-config'
+
+    #common code snippets that are included in the virtualhosts.
+    file { '/etc/apache2/includes':
+        ensure => directory,
+        before => Service['apache2']
+    }
+
+    file { '/etc/apache2/includes/wikimedia-common.conf':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/sites/wikimedia-common.conf',
+    }
+
     # Now the sites, in strict sequence
     apache::site { 'nonexistent':
         source   => 'puppet:///modules/mediawiki/apache/sites/nonexistent.conf',
