@@ -1,0 +1,22 @@
+# This file is managed by Puppet, via nagios_common::contacts
+# Do NOT edit by hand! any manual change will be lost.
+#
+
+<%- @contacts.each do |contact| -%>
+<%- period = contact.include? 'period' ? contact['period'] : '24x7' -%>
+<%- email = contact.include? 'email' ? contact['email'] : 'nowhere' -%>
+<%- commands = contact.include? 'commands' ? contact['commands']: ['by-email'] -%>
+define contact{
+        contact_name                    <%= contact['name'] %>
+        alias                           <%= contact['alias'] %>
+        host_notification_period        <%= period %>
+        service_notification_period     <%= period %>
+        host_notification_options       d,u,r,f
+        service_notification_options    c,r,f
+<% if contact.include? 'email' -%>
+        email                           <%= contact['email']  %>
+<% end -%>
+        host_notification_commands      <%= commands.map{|v| "host-notify-#{v}"}.join(',') %>
+        service_notification_commands   <%= commands.map{|v| "host-notify-#{v}"}.join(',') %>
+}
+<% end %>
