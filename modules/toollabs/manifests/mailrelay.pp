@@ -15,6 +15,10 @@ class toollabs::mailrelay($maildomain,
     include toollabs::infrastructure,
         toollabs::gridnode
 
+    Class <| title == 'exim4' |> {
+        variant => 'heavy'
+    }
+
     class { 'gridengine::submit_host':
         gridmaster => $gridmaster,
     }
