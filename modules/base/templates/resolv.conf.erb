@@ -5,9 +5,12 @@
 # Resolver configuration for site <%= @site %>
 search <%= Array(@domain_search).join(' ') %>
 options timeout:3
-<% @nameservers_prefix.each do |nameserver| -%>
+<% if @nameserervers_override.count -%>
+<% @nameservers_override.each do |nameserver| -%>
 nameserver <%= nameserver %>
 <% end -%>
+<% else -%>
 <% @nameservers.each do |nameserver| -%>
 nameserver <%= nameserver %>
+<% end -%>
 <% end -%>
