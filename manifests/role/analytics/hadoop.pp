@@ -273,7 +273,6 @@ class role::analytics::hadoop::config {
             $hadoop_var_directory,
             $hadoop_journal_directory,
             $hadoop_data_directory,
-            $datanode_mounts,
         ]:
             ensure => 'directory',
         }
