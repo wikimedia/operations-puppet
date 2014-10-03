@@ -6,7 +6,7 @@
 # associated daemons do not merge changes to this file.
 
 ui.footer-items:
-  - {name: 'Text is available under the Creative Commons Attribution-ShareAlike License; code is available under the GNU General Public License or other appropriate open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy. Wikipedia is a registered trademark of the Wikimedia Foundation, Inc., a non-profit organization.'}
+  - {name: 'Text is available under the Creative Commons Attribution-ShareAlike License; code is available under the GNU General Public License or other appropriate open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
   - {name: Copyright 2014}
   - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia Foundation}
   - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy Policy}
