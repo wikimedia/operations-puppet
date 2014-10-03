@@ -5,7 +5,7 @@ class lvs::monitor {
 
     $ip = $lvs::configuration::lvs_service_ips['production']
 
-    # INTERNAL
+    # INTERNAL EQIAD
 
     lvs::monitor_service_http { "appservers.svc.eqiad.wmnet": ip_address => "10.2.2.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
     lvs::monitor_service_http { "hhvm-appservers.svc.eqiad.wmnet": ip_address => "10.2.2.2", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
@@ -23,6 +23,11 @@ class lvs::monitor {
     lvs::monitor_service_custom { "search-pool4.svc.eqiad.wmnet": ip_address => "10.2.2.14", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
     lvs::monitor_service_custom { "search-pool5.svc.eqiad.wmnet": ip_address => "10.2.2.16", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
     lvs::monitor_service_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+
+    # INTERNAL CODFW
+
+    lvs::monitor_service_http { "ms-fe.svc.codfw.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.svc.codfw.wmnet!/monitoring/backend" }
+
 
     # EQIAD
     lvs::monitor_service_http_https {
