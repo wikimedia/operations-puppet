@@ -394,6 +394,14 @@ filter f_swift {
 	;
 };
 
+filter f_nojunk_swift {
+	not (
+		match("Handoff requested" value("MESSAGE")) or
+		match("GET /" value("MESSAGE")) or
+		match("HEAD /" value("MESSAGE"))
+	);
+};
+
 # Remote syslog
 log {
 	source(s_remote);
@@ -406,6 +414,7 @@ log {
 # OpenSwift related
 log {
 	source(s_remote);
+	filter(f_nojunk_swift);
 	filter(f_swift);
 	destination(df_swift);
 };
@@ -413,6 +422,7 @@ log {
 log {
 	source(s_remote);
 	filter(f_nojunk);
+	filter(f_nojunk_swift);
 	destination(df_remote);
 	flags(fallback, final);
 };
