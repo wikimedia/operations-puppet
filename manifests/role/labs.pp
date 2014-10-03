@@ -140,6 +140,16 @@ class role::labs::instance {
         source => 'puppet:///files/nfs/idmapd.conf',
     }
 
+    # Labs instances /var is quite small, provide our own default
+    # to keep less records (bug 69604).
+    file { '/etc/default/acct':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/base/labs-acct.default',
+    }
+
     # In production, we try to be punctilious about having Puppet manage
     # system state, and thus it's reasonable to purge Apache site configs
     # that have not been declared via Puppet. But on Labs we want to allow
