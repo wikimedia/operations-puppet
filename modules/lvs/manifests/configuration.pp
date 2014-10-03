@@ -208,6 +208,7 @@ class lvs::configuration {
             },
             'swift' => {
                 'eqiad' => "10.2.2.27",
+                'codfw' => "10.2.1.27",
             },
             'dns_rec' => {
                 'eqiad' => { 'dns_rec' => "208.80.154.239", 'dns_rec6' => "2620:0:861:ed1a::f" },
@@ -285,7 +286,6 @@ class lvs::configuration {
                 # ms emulator set in July 2013. Beta does not have Swift yet.
                 # instance is an unpuppetized hack with nginx proxy.
                 'eqiad' => '10.68.16.189',  # deployment-upload.eqiad.wmflabs
-                'pmtpa' => '10.4.1.103',  # deployment-upload.pmtpa.wmflabs
             },
             'upload' => {
                 'pmtpa' => {
@@ -782,7 +782,7 @@ class lvs::configuration {
         "swift" => {
             'description' => "Swift/Ceph media storage",
             'class' => "low-traffic",
-            'sites' => [ "pmtpa", "eqiad" ],
+            'sites' => [ "codfw", "eqiad" ],
             'ip' => $service_ips['swift'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".5",
