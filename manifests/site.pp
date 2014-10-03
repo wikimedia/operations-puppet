@@ -2076,8 +2076,9 @@ node 'mw1053.eqiad.wmnet' {
     include role::mediawiki::jobrunner
 }
 
-#mw1017-1021 are apaches (trusty)
-node /^mw10(1[7-9]|2[01])\.eqiad\.wmnet$/ {
+# mw1017-1022 are apaches (trusty)
+# mw1023-1052 are apaches (precise)
+node /^mw10(1[7-9]|[2-4][0-9]|5[0-2])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
     $cluster = hiera('cluster')
@@ -2089,14 +2090,6 @@ node /^mw10(1[7-9]|2[01])\.eqiad\.wmnet$/ {
     include role::mediawiki::appserver
 }
 
-# mw1022-1052 are apaches (precise)
-node /^mw10(2[2-9]|[3-4][0-9]|5[0-2])\.eqiad\.wmnet$/ {
-
-    class {'::admin': groups => ['deployment']}
-    $cluster = 'appserver'
-
-    include role::mediawiki::appserver
-}
 
 # mw1054-1113 are apaches (precise)
 node /^mw1(05[4-9]|0[6-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
