@@ -1,10 +1,12 @@
 # this is for checks from the percona-nagios-checks project
 # http://percona-nagios-checks.googlecode.com
-class mysql_wmf::monitor::percona::files {
+class mysql_wmf::monitor::percona::files(
+    $icinga_config_dir = '/etc/icinga'
+) {
     include passwords::nagios::mysql
     $mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
-    file { "${icinga::monitor::configuration::variables::icinga_config_dir}/nrpe.d/nrpe_percona.cfg":
+    file { "$icinga_config_dir/nrpe.d/nrpe_percona.cfg":
         owner   => 'root',
         group   => 'nagios',
         mode    => '0440',
