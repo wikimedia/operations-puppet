@@ -7,19 +7,19 @@
 # over deny
 [files]
 	path /etc/puppet/files
-	allow <%= @puppet_client_subnet %>
+	allow *
 
 [plugins]
-	allow <%= @puppet_client_subnet %>
+	allow *
 
 [private]
 	path /etc/puppet/private/files
-	allow <%= @puppet_client_subnet %>
+	allow *
 
 [facts]
 	path /var/lib/puppet/facts
-	allow <%= @puppet_client_subnet %>
+	allow *
 
 [volatile]
 	path /var/lib/puppet/volatile
-	allow <%= @puppet_client_subnet %>
+	allow *
