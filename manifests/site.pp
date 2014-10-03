@@ -48,7 +48,7 @@ class standard-noexim {
 
 # Default variables. this way, they work with an ENC (as in labs) as well.
 if $cluster == undef {
-    $cluster = 'misc'
+    $cluster = hiera('cluster', 'misc')
 }
 if $puppet_version == undef {
     $puppet_version = '3'
@@ -2048,7 +2048,6 @@ node 'mw1053.eqiad.wmnet' {
 node /^mw10(1[7-9]|[2-4][0-9]|5[0-2])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
-    $cluster = hiera('cluster')
 
     if $::hostname =~ /^mw101[78]$/ {
         $ganglia_aggregator = true
