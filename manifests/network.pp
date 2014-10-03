@@ -303,8 +303,9 @@ class network::checks {
         description => 'Storage equipment',
     }
 
-    # Virtual resource for the monitoring host
+    ### ESAMS ###
 
+    # cr1-esams
     @monitor_host { 'cr1-esams':
         ip_address => '91.198.174.245',
         group      => 'routers',
@@ -316,11 +317,11 @@ class network::checks {
         check_command => "check_bgpstate!${snmp_ro_community}",
     }
 
+    # csw1-esams
     @monitor_host { 'csw1-esams':
         ip_address => '91.198.174.247',
         group      => 'routers',
     }
-
     @monitor_service { 'csw1-esams bgp status':
         host          => 'csw1-esams',
         group         => 'routers',
@@ -328,11 +329,11 @@ class network::checks {
         check_command => "check_bgpstate!${snmp_ro_community}",
     }
 
+    # csw2-esams
     @monitor_host { 'csw2-esams':
         ip_address => '91.198.174.244',
         group      => 'routers'
     }
-
     @monitor_service { 'csw2-esams bgp status':
         host          => 'csw2-esams',
         group         => 'routers',
@@ -340,18 +341,19 @@ class network::checks {
         check_command => "check_bgpstate!${snmp_ro_community}",
     }
 
+    ### EQIAD ###
+
+    # cr1-eqiad
     @monitor_host { 'cr1-eqiad':
         ip_address => '208.80.154.196',
         group      => 'routers',
     }
-
     @monitor_service { 'cr1-eqiad interfaces':
         host          => 'cr1-eqiad',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus!${snmp_ro_community}",
     }
-
     @monitor_service { 'cr1-eqiad bgp status':
         host          => 'cr1-eqiad',
         group         => 'routers',
@@ -359,18 +361,17 @@ class network::checks {
         check_command => "check_bgpstate!${snmp_ro_community}",
     }
 
+    # cr2-eqiad
     @monitor_host { 'cr2-eqiad':
         ip_address => '208.80.154.197',
         group      => 'routers',
     }
-
     @monitor_service { 'cr2-eqiad interfaces':
         host          => 'cr2-eqiad',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus!${snmp_ro_community}",
     }
-
     @monitor_service { 'cr2-eqiad bgp status':
         host          => 'cr2-eqiad',
         group         => 'routers',
@@ -378,11 +379,11 @@ class network::checks {
         check_command => "check_bgpstate!${snmp_ro_community}",
     }
 
+    # mr1-eqiad
     @monitor_host { 'mr1-eqiad':
         ip_address => '10.65.0.1',
         group      => 'routers',
     }
-
     @monitor_service { 'mr1-eqiad interfaces':
         host          => 'mr1-eqiad',
         group         => 'routers',
@@ -390,15 +391,104 @@ class network::checks {
         check_command => "check_ifstatus!${snmp_ro_community}",
     }
 
+    # NAS
     @monitor_host { 'nas1001-a.eqiad.wmnet':
         ip_address => '10.64.16.4',
         group      => 'storage',
         critical   => true,
     }
-
     @monitor_host { 'nas1001-b.eqiad.wmnet':
         ip_address => '10.64.16.5',
         group      => 'storage',
         critical   => true,
     }
+
+    ### ULSFO ###
+
+    # cr1-ulsfo
+    @monitor_host { 'cr1-ulsfo':
+        ip_address => '198.35.26.192',
+        group      => 'routers',
+    }
+    @monitor_service { 'cr1-ulsfo interfaces':
+        host          => 'cr1-ulsfo',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus!${snmp_ro_community}",
+    }
+    @monitor_service { 'cr1-ulsfo bgp status':
+        host          => 'cr1-ulsfo',
+        group         => 'routers',
+        description   => 'BGP status',
+        check_command => "check_bgpstate!${snmp_ro_community}",
+    }
+
+    # cr2-ulsfo
+    @monitor_host { 'cr2-ulsfo':
+        ip_address => '198.35.26.193',
+        group      => 'routers',
+    }
+    @monitor_service { 'cr2-ulsfo interfaces':
+        host          => 'cr2-ulsfo',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus!${snmp_ro_community}",
+    }
+    @monitor_service { 'cr2-ulsfo bgp status':
+        host          => 'cr2-ulsfo',
+        group         => 'routers',
+        description   => 'BGP status',
+        check_command => "check_bgpstate!${snmp_ro_community}",
+    }
+
+    # mr1-ulsfo
+    @monitor_host { 'mr1-ulsfo':
+        ip_address => '10.128.128.1',
+        group      => 'routers',
+    }
+    @monitor_service { 'mr1-ulsfo interfaces':
+        host          => 'mr1-ulsfo',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus!${snmp_ro_community}",
+    }
+
+    ### CODFW ###
+
+    # cr1-codfw
+    @monitor_host { 'cr1-codfw':
+        ip_address => '208.80.153.192',
+        group      => 'routers',
+    }
+    @monitor_service { 'cr1-codfw interfaces':
+        host          => 'cr1-codfw',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus!${snmp_ro_community}",
+    }
+    @monitor_service { 'cr1-codfw bgp status':
+        host          => 'cr1-codfw',
+        group         => 'routers',
+        description   => 'BGP status',
+        check_command => "check_bgpstate!${snmp_ro_community}",
+    }
+
+    # cr2-codfw
+    @monitor_host { 'cr2-codfw':
+        ip_address => '208.80.153.193',
+        group      => 'routers',
+    }
+    @monitor_service { 'cr2-codfw interfaces':
+        host          => 'cr2-codfw',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus!${snmp_ro_community}",
+    }
+    @monitor_service { 'cr2-codfw bgp status':
+        host          => 'cr2-codfw',
+        group         => 'routers',
+        description   => 'BGP status',
+        check_command => "check_bgpstate!${snmp_ro_community}",
+    }
+
 }
