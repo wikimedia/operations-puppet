@@ -29,6 +29,17 @@ class mediawiki::hhvm {
     }
 
 
+    # furl is a cURL-like command-line tool for making FastCGI requests.
+    # See `furl --help` for documentation and usage.
+
+    file { '/usr/local/bin/furl':
+        source  => 'puppet:///modules/mediawiki/furl',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+    }
+
+
     # Use Debian's Alternatives system to mark HHVM as the default PHP
     # implementation for this system. This makes /usr/bin/php a symlink
     # to /usr/bin/hhvm.
