@@ -38,7 +38,7 @@ class role::analytics::hive::config {
         $metastore_host  = 'analytics1027.eqiad.wmnet'
         $jdbc_password   = $passwords::analytics::hive_jdbc_password
     }
-    elsif $::ream == 'labs' {
+    elsif $::realm == 'labs' {
         $server_host     = $role::analytics::hadoop::config::namenode_hosts[0]
         $metastore_host  = $role::analytics::hadoop::config::namenode_hosts[0]
         $jdbc_password   = 'hive'
