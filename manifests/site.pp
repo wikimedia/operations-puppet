@@ -1157,33 +1157,6 @@ node /es100[12]\.eqiad\.wmnet/ {
     }
 }
 
-node /es4\.pmtpa\.wmnet/ {
-    include admin
-    $cluster = 'mysql'
-    include role::coredb::es1
-}
-
-# es2-3
-node /es7\.pmtpa\.wmnet/ {
-    include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::es2':
-        mariadb => true,
-    }
-}
-
-node /es8\.pmtpa\.wmnet/ {
-    include admin
-    $cluster = 'mysql'
-    include role::coredb::es3
-}
-
-## imminent decomission/reclaim from pmtpa pending 12th floor reorg
-node /^es([569]|10)\.pmtpa\.wmnet/{
-    include admin
-    include standard
-}
-
 node /es100[67]\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
