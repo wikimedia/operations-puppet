@@ -14,6 +14,7 @@
 # the "none" priority found in the original syslogd configuration is
 # only used in internal messages created by syslogd
 
+@version: 3.5
 
 ######
 # options
@@ -21,7 +22,7 @@
 options {
         # disable the chained hostname format in logs
         # (default is enabled)
-        chain_hostnames(0);
+        chain_hostnames(no);
 
         # the time to wait before a died connection is re-established
         # (default is 60)
@@ -39,7 +40,7 @@ options {
         #sync(0);
 
         # the number of lines fitting in the output queue
-        log_fifo_size(2048);
+        log_fifo_size(10000);
 
         # enable or disable directory creation for destination files
         create_dirs(no);
@@ -92,7 +93,7 @@ source s_all {
         # function to send logs to)
         unix-stream("/dev/log");
         # messages from the kernel
-        file("/proc/kmsg" log_prefix("kernel: "));
+        file("/proc/kmsg" program_override("kernel: "));
         # use the following line if you want to receive remote UDP logging messages
         # (this is equivalent to the "-r" syslogd flag)
         #udp();
@@ -376,9 +377,9 @@ destination df_swift {
 filter f_nojunk {
 	not (
 		program("apache2") and
-		match("File does not exist:") or
-		match("File name too long:") or
-		match("Directory index forbidden")
+		match("File does not exist:" value("MESSAGE")) or
+		match("File name too long:" value("MESSAGE")) or
+		match("Directory index forbidden" value("MESSAGE"))
 	);
 };
 

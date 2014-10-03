@@ -17,7 +17,7 @@ class misc::syslog-server($config='nfs', $basepath='/home/wikipedia/syslog') {
 
     $archivepath = "$basepath/archive"
 
-    package { 'syslog-ng':
+    package { ['syslog-ng', 'syslog-ng-core']:
         ensure => latest,
     }
 
