@@ -8,11 +8,11 @@ class ganglia_new::configuration {
         'decommissioned'=> {
             'name'      => 'Decommissioned servers',
             'id'    => 1,
-            'sites' => ['pmtpa', 'eqiad', 'esams'] },
+            'sites' => ['eqiad', 'esams'] },
         'lvs'   => {
             'name'      => 'LVS loadbalancers',
             'id'    => 2,
-            'sites' => ['pmtpa', 'eqiad', 'esams', 'codfw']  },
+            'sites' => ['eqiad', 'esams', 'codfw']  },
         'search'    =>  {
             'name'      => 'Search',
             'id'    => 4 },
@@ -22,7 +22,7 @@ class ganglia_new::configuration {
         'misc'      =>  {
             'name'      => 'Miscellaneous',
             'id'    => 8,
-            'sites' => ['pmtpa', 'eqiad', 'esams', 'codfw'] },
+            'sites' => ['eqiad', 'esams', 'codfw'] },
         'appserver' =>  {
             'name'      => 'Application servers',
             'id'    => 11   },
@@ -57,7 +57,7 @@ class ganglia_new::configuration {
         'swift' => {
             'name'      => 'Swift',
             'id'    => 27,
-            'sites' => ['pmtpa', 'eqiad', 'esams']  },
+            'sites' => ['eqiad', 'esams']  },
         'cache_mobile'  => {
             'name'      => 'Mobile caches',
             'id'    => 28,
@@ -133,33 +133,29 @@ class ganglia_new::configuration {
             # ganglios.
             $gmetad_hosts = [ '208.80.152.15', '208.80.154.150', '208.80.154.14' ]
             $aggregator_hosts = {
-                'pmtpa' => [ '208.80.152.15', '208.80.154.150' ],
                 'eqiad' => [ '208.80.152.15', '208.80.154.150' ],
                 'esams' => [ '91.198.174.113' ],
                 'codfw' => [ '208.80.153.4' ],
             }
             $base_port = 8649
             $id_prefix = {
-                pmtpa => 0,
                 eqiad => 1000,
                 codfw => 2000,
                 esams => 3000,
             }
-            $default_sites = ['pmtpa', 'eqiad']
+            $default_sites = ['eqiad']
         }
         'labs': {
             $url = 'http://ganglia.wmflabs.org'
             $gmetad_hosts = [ '10.68.16.101']   # aggregator.eqiad.wmflabs
             $aggregator_hosts = {
-                'pmtpa' => [ '10.4.0.79' ],     # aggregator1.pmtpa.wmflabs
                 'eqiad' => [ '10.68.16.101' ],  # aggregator.eqiad.wmflabs
             }
             $base_port = 8649
             $id_prefix = {
-                pmtpa => 0,
                 eqiad => 0,
             }
-            $default_sites = ['pmtpa', 'eqiad']
+            $default_sites = ['eqiad']
         }
     }
 }
