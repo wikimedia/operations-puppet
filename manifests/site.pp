@@ -2009,8 +2009,7 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
         include role::swift::stats_reporter
     }
 
-    class { 'lvs::realserver': realserver_ips => [ '10.2.1.27' ] }
-
+    include ::lvs::realserver
     include role::swift::proxy
 }
 
