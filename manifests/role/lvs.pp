@@ -60,6 +60,7 @@ class role::lvs::balancer {
             $sip['dns_rec'][$::site],
             ],
         /^(lvs200[36])$/ => [
+            $sip['swift'][$::site],
             ],
 
         # esams + ulsfo
