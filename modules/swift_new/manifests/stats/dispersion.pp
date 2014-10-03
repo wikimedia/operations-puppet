@@ -1,7 +1,7 @@
 class swift_new::stats::dispersion(
     $swift_cluster = $::swift_new::params::swift_cluster,
     $statsd_host   = 'statsd.eqiad.wmnet',
-    $statsd_prefix = "swift.${swift_cluster}.dispersion",
+    $statsd_prefix = "swift.${::swift_new::params::swift_cluster}.dispersion",
 ) {
     $required_packages = [
         Package['python-swiftclient'],
