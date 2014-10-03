@@ -51,7 +51,7 @@ class mediawiki_singlenode(
     if $::labs_mediawiki_hostname {
         $servername = $::labs_mediawiki_hostname
     } else {
-        $servername = "${::hostname}.pmtpa.wmflabs"
+        $servername = "${::hostname}.eqiad.wmflabs"
     }
     $mwserver = "http://${servername}"
 
