@@ -30,12 +30,18 @@ swift_new::params::accounts:
 
 swift_new::hash_path_suffix: 'de4227064232ed08'
 swift_new::proxy::proxy_address: 'http://ms-fe.svc.codfw.wmnet'
-swift_new::proxy::memcached_servers: ['ms-fe2001.eqiad.wmnet:11211']
 swift_new::proxy::statsd_host: 'statsd.eqiad.wmnet'
 swift_new::proxy::backend_url_format: 'sitelang'
 swift_new::proxy::rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
 swift_new::proxy::dispersion_account: 'dispersion'
 swift_new::proxy::rewrite_account:    'mw_media'
+swift_new::proxy::memcached_servers: [
+  'ms-fe2001.codfw.wmnet:11211',
+  'ms-fe2002.codfw.wmnet:11211',
+  'ms-fe2003.codfw.wmnet:11211',
+  'ms-fe2004.codfw.wmnet:11211'
+# no trailing comma!
+]
 swift_new::proxy::shard_container_list: [
     'global-data-math-render',
 
