@@ -1,0 +1,15 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/base/labs-acct.default
+#####################################################################
+
+# Defaults for acct
+
+# If you want to keep acct installed, but not started automatically, set this
+# variable to 0. Because /etc/cron.daily/acct calls the initscript daily, it is
+# not sufficient to stop acct once after booting if your machine remains up.
+ACCT_ENABLE="1"
+
+# Amount of days that the logs are kept.
+# Labs instances /var is quite small, keep less records (bug 69604).
+ACCT_LOGGING="7"

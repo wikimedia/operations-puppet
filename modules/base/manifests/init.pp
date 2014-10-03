@@ -198,6 +198,16 @@ class base {
             fail('Failed to fetch instance ID')
         }
         $certname = "${::ec2id}.${::domain}"
+
+        # Labs instances /var is quite small, provide our own default
+        # to keep less records (bug 69604).
+        file { '/etc/default/acct':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/base/labs-acct.default',
+        }
     } else {
         $certname = undef
     }
