@@ -161,4 +161,54 @@ class icinga {
         command => '/bin/chmod a+rw /var/lib/nagios/rw/nagios.cmd';
     }
 
+    # Misc. icinga files and directories
+    # FIXME: This all should be setup by the package as well
+    file { '/etc/icinga/conf.d':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/etc/nagios':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/var/cache/icinga':
+        ensure => directory,
+        owner  => 'icinga',
+        group  => 'www-data',
+        mode   => '0775',
+    }
+
+    file { '/var/lib/nagios/rw':
+        ensure => directory,
+        owner  => 'icinga',
+        group  => 'nagios',
+        mode   => '0777',
+    }
+
+    file { '/var/lib/icinga':
+        ensure => directory,
+        owner  => 'icinga',
+        group  => 'www-data',
+        mode   => '0755',
+    }
+
+    file { '/var/log/icinga':
+        ensure => directory,
+        owner => 'icinga',
+        mode => '2757',
+    }
+    file { '/var/log/icinga/archives':
+        ensure => directory,
+        owner => 'icinga',
+    }
+    file { '/var/log/icinga/icinga.log':
+        ensure => file,
+        owner => 'icinga',
+    }
 }

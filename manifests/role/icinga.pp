@@ -5,7 +5,6 @@
 class role::icinga {
     include facilities::pdu_monitoring
     include icinga::monitor::checkpaging
-    include icinga::monitor::files::misc
     include icinga::nsca::firewall
     include icinga::nsca::daemon
     include icinga::monitor::wikidata
