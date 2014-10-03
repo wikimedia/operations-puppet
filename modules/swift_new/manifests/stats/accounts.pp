@@ -21,7 +21,7 @@ class swift_new::stats::accounts(
         require => $required_packages,
     }
 
-    $account_names = keys($accounts)
+    $account_names = sorted(keys($accounts))
     swift_new::stats::stats_account { $account_names:
         accounts      => $accounts,
         statsd_prefix => $statsd_prefix,
