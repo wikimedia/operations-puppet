@@ -7,7 +7,7 @@ define swift_new::stats::stats_account (
     $account_info = $accounts[$name]
     $auth_url     = $account_info[auth]
     $user         = $account_info[user]
-    $key          = $credentials[$user]
+    $key          = $credentials[user]
     $account_name = $account_info[account_name]
 
     $account_file = "/etc/swift/account_${account_name}.env"
