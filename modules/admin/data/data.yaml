@@ -85,7 +85,7 @@ groups:
   researchers:
     gid: 714
     description: users with access to research db
-    members: [dartar, jzerebecki, dduvall, nettrom]
+    members: [dartar, jzerebecki, dduvall, nettrom, declerambaul]
   ldap-admins:
     gid: 715
     description: ldap admins
