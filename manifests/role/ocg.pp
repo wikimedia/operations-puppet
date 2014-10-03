@@ -82,8 +82,8 @@ class role::ocg::production (
 
     class { 'ocg::nagios::check':
         # see modules/ocg/files/nagios/check_ocg_health for descriptions
-        wjs => '75000',
-        cjs => '100000',
+        wjs => '400000',
+        cjs => '800000',
         wrj => '100',
         crj => '500',
     }
