@@ -50,9 +50,6 @@ class standard-noexim {
 if $cluster == undef {
     $cluster = hiera('cluster', 'misc')
 }
-if $puppet_version == undef {
-    $puppet_version = '3'
-}
 
 # Node definitions (alphabetic order)
 

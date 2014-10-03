@@ -29,7 +29,6 @@ class puppetmaster(
             $server_type='standalone',
             $workers=undef,
             $config={},
-            $puppet_version = $puppet_version
             ){
 
     system::role { 'puppetmaster': description => 'Puppetmaster' }

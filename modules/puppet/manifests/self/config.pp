@@ -83,24 +83,19 @@ class puppet::self::config(
             default => absent,
     }
 
-    # Temporary, while we complete labs transition to puppet 3
-    if $puppet_version == '2.7' {
-        $fileserver_template = 'puppet/fileserver-self.conf.erb'
-     } else {
-        $fileserver_template = 'puppet/fileserver-self.conf.3.erb'
-        file {'/etc/puppet/auth.conf':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('puppet/auth-self.conf.erb')
-        }
+    file { '/etc/puppet/auth.conf':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('puppet/auth-self.conf.erb')
     }
+
     file { '/etc/puppet/fileserver.conf':
-        ensure   => $puppetmaster_status,
-        owner    => 'root',
-        group    => 'root',
-        mode     => '0444',
-        content  => template($fileserver_template),
+        ensure  => $puppetmaster_status,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('puppet/fileserver-self.conf.erb'),
     }
 }
