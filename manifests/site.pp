@@ -1855,6 +1855,12 @@ node /^rbf100[1-2]\.eqiad\.wmnet/ {
     class { 'role::db::redis':
         redis_replication => { 'rbf1002' => 'rbf1001' },
     }
+
+    # Background save may fail under low memory condition unless
+    # vm.overcommit_memory is 1.
+    sysctl::parameters { 'vm.overcommit_memory':
+        values => { 'vm.overcommit_memory' => 1, },
+    }
 }
 
 node 'rubidium.wikimedia.org' {
