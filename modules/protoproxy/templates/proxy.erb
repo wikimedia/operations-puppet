@@ -6,11 +6,6 @@ upstream <%= name %> {
 	# TODO: find a way to properly support proxy_port
 	server <%= @proxy_backend["esams"]["primary"] %>;
 <% end -%>
-<% if @site == "pmtpa" then -%>
-	# max fails is ignored when using one host, so we use the same host twice
-	server <%= @proxy_backend["pmtpa"]["primary"] %>:<%= @proxy_port %>;
-	server <%= @proxy_backend["pmtpa"]["primary"] %>:<%= @proxy_port %>;
-<% end -%>
 <% if @site == "eqiad" then -%>
 	# max fails is ignored when using one host, so we use the same host twice
 	server <%= @proxy_backend["eqiad"]["primary"] %>:<%= @proxy_port %>;
