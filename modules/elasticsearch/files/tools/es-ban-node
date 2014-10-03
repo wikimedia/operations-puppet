@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+
+import sys
+from elastictool import ElasticTool
+
+
+class BanNode(ElasticTool):
+    def __init__(self, desc):
+        ElasticTool.__init__(self, desc)
+        self.parser.add_argument("IP", metavar="IP", type=str,
+                                 help="IP address to ban from allocation")
+
+    def execute(self):
+        if not self.is_valid_ip(self.args.IP):
+            print "Invalid IP"
+            sys.exit(1)
+
+        banned = self.get_banned_ips()
+        if self.args.IP in banned:
+            print "Already banned from allocation"
+            sys.exit(0)
+
+        banned.append(self.args.IP)
+        if self.set_banned_ips(banned):
+            print "Banned IP"
+            sys.exit(0)
+        else:
+            print "Failed"
+            sys.exit(1)
+
+if __name__ == "__main__":
+    tool = BanNode("Ban an IP address from hosting any shards")
+    tool.run()
