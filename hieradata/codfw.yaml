@@ -3,22 +3,22 @@ swift_new::params::accounts:
     super_admin:
         access:       '.admin .reseller_admin'
         account_name: 'AUTH_admin'
-        auth:         'http://ms-fe.svc.codfw.wmnet/auth/v1.0'
+        auth:         'http://ms-fe.svc.codfw.wmnet'
         user:         'admin:admin'
     mw_media:
         access:       '.admin'
         account_name: 'AUTH_mw'
-        auth:         'http://ms-fe.svc.codfw.wmnet/auth/v1.0'
+        auth:         'http://ms-fe.svc.codfw.wmnet'
         user:         'mw:media'
     dispersion:
         access:       '.admin'
         account_name: 'AUTH_dispersion'
-        auth:         'http://ms-fe.svc.codfw.wmnet/auth/v1.0'
+        auth:         'http://ms-fe.svc.codfw.wmnet'
         user:         'swift:dispersion'
     search_backup:
         access:       '.admin'
         account_name: 'AUTH_search'
-        auth:         'http://ms-fe.svc.codfw.wmnet/auth/v1.0'
+        auth:         'http://ms-fe.svc.codfw.wmnet'
         user:         'search:backup'
 
 # keys are to be defined in private repo, e.g.:

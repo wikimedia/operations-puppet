@@ -29,7 +29,7 @@ use = egg:swift#tempauth
 token_life = 604800
 <% @accounts.each_pair do |name, info| -%>
 <% key = @credentials[name] -%>
-<%= "user_#{info['user'].gsub(':', '_')} = #{key} #{info['access']} #{info['auth']}" %>
+<%= "user_#{info['user'].gsub(':', '_')} = #{key} #{info['access']} #{info['auth']}/v1/#{info['account_name']}" %>
 <% end -%>
 
 [filter:healthcheck]
