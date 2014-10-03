@@ -2,13 +2,7 @@
 # misc/icinga.pp
 
 class icinga::monitor::configuration::variables {
-
-    # This variable declares the monitoring hosts It is called master hosts as
-    # monitor_host is already a service.
-    $master_hosts = [ 'neon.wikimedia.org' ]
-
     $icinga_config_dir = '/etc/icinga'
-    $nagios_config_dir = '/etc/nagios'
 }
 
 class icinga::monitor::files::misc {
