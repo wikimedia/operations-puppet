@@ -655,6 +655,9 @@ if (
 }
 
 $uri = array_pop($argv);
+if (!empty($uri) && !preg_match('!.://!', $uri)) {
+    $uri = 'http://' . $uri;
+}
 if ( !filter_var($uri, FILTER_VALIDATE_URL)) {
     file_put_contents('php://stderr', $usage . "Invalid URI: $uri\n");
     exit(1);
@@ -667,14 +670,22 @@ $opts = array_merge(array(
     'timeout' => 30,
 ), getopt('', array('docroot:', 'script:', 'server:', 'headers')));
 
-try {
-    $resp = doFcgiRequest($opts['server'], $opts['docroot'], $opts['script'], $uri, $opts['timeout']);
-    if (isset( $opts['headers'])) {
-        $resp = array_shift(explode("\r\n\r\n", $resp, 2)) . "\n\n";
+while ($uri) {
+    try {
+        $resp = doFcgiRequest($opts['server'], $opts['docroot'], $opts['script'], $uri, $opts['timeout']);
+    } catch (Exception $e) {
+        file_put_contents('php://stderr', $e->getMessage() . "\n");
+        exit(1);
     }
-    print $resp;
-    exit(0);
-} catch (Exception $e) {
-    file_put_contents('php://stderr', $e->getMessage() . "\n");
-    exit(1);
+    if (preg_match('/Status: 30/', $resp) !== false && preg_match('/(?<=Location: )\S+/', $resp, $matches) !== false) {
+        print $resp;
+        $uri = $matches[0];
+    } else {
+        unset($uri);
+    }
 }
+if (isset($opts['headers'])) {
+    $resp = array_shift(explode("\r\n\r\n", $resp, 2)) . "\n\n";
+}
+print $resp;
+exit(0);
