@@ -1,5 +1,12 @@
 class base::standard-packages {
 
+    # Which metapackage to install for `perf`.
+    if ubuntu_version('>= trusty') {
+        $linux_tools_package = 'linux-tools-generic'
+    } else {
+        $linux_tools_package = 'linux-tools'
+    }
+
     $packages = [
         'wipe',
         'tzdata',
@@ -20,6 +27,7 @@ class base::standard-packages {
         'tree',
         'debian-goodies',
         'ethtool',
+        $linux_tools_package,
     ]
 
     if $::lsbdistid == 'Ubuntu' {
