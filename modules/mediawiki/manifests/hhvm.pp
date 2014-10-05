@@ -72,4 +72,12 @@ class mediawiki::hhvm {
         require => Package['hhvm'],
         before  => Service['hhvm'],
     }
+
+
+    # Install perf, a tool for instrumenting CPU performance counters
+    # and tracepoints.
+
+    package { 'linux-tools-generic':
+        ensure => present,
+    }
 }
