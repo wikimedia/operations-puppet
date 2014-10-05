@@ -2944,15 +2944,21 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
     include standard
 
     include role::mathoid::production
+    include role::citoid::production
 
     class { 'admin':
         groups => [
                    'mathoid-roots',
-                   'mathoid-admin'
+                   'mathoid-admin',
+                   'citoid-roots',
+                   'citoid-admin'
                 ]
     }
     class { 'lvs::realserver':
-        realserver_ips => ['10.2.2.20'],
+        realserver_ips => [
+                    '10.2.2.19', # citoid.svc.eqiad.wmnet
+                    '10.2.2.20', # mathoid.svc.eqiad.wmnet
+                    ],
     }
 }
 
