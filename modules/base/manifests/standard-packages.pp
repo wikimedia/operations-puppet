@@ -1,5 +1,11 @@
 class base::standard-packages {
 
+    if ubuntu_version('>= trusty') {
+        package { "linux-tools-${::kernelrelease}":
+            ensure => present,
+        }
+    }
+
     $packages = [
         'wipe',
         'tzdata',
