@@ -57,7 +57,7 @@ class ganglia_new::configuration {
         'swift' => {
             'name'      => 'Swift',
             'id'    => 27,
-            'sites' => ['pmtpa', 'eqiad', 'esams']  },
+            'sites' => ['codfw', 'eqiad', 'esams']  },
         'cache_mobile'  => {
             'name'      => 'Mobile caches',
             'id'    => 28,
