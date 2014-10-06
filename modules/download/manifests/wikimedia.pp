@@ -5,7 +5,7 @@ class download::wikimedia {
         ensure => latest,
     }
 
-    install_certificate{ 'dumps.wikimedia.org': ca => 'RapidSSL_CA.pem' }
+    install_certificate{ 'dumps.wikimedia.org': }
 
     file { '/etc/lighttpd/lighttpd.conf':
         mode   => '0444',

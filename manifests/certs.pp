@@ -49,7 +49,6 @@ define create_chained_cert(
 ) {
     # chained cert, used when needing to provide
     # an entire certificate chain to a client
-    # XXX: this actually ignores the specificed $ca now
 
     exec { "${name}_create_chained_cert":
         creates => "${location}/${certname}.chained.crt",
@@ -115,7 +114,6 @@ define create_combined_cert(
 
 define install_certificate(
     $group     = 'ssl-cert',
-    $ca        = '',
     $privatekey=true,
 ) {
 

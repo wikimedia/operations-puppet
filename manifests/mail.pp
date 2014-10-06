@@ -212,9 +212,7 @@ class mailman {
         include webserver::static
 
         if ( $::realm == 'production' ) {
-            install_certificate{ 'lists.wikimedia.org':
-                ca => 'RapidSSL_CA.pem',
-            }
+            install_certificate{ 'lists.wikimedia.org': }
         }
 
         # htdigest file for private list archives
