@@ -52,7 +52,6 @@ class role::mail::mx {
                 '+legacy_mailman_domains',
             ],
         enable_mail_relay        => 'primary',
-        enable_mail_submission   => false,
         enable_external_mail     => true,
         mediawiki_relay          => true,
         enable_spamassassin      => true,
@@ -142,7 +141,6 @@ class role::mail::lists {
             ],
         enable_mail_relay      => 'secondary',
         enable_mailman         => true,
-        enable_mail_submission => false,
         enable_spamassassin    => true,
         require                => [
             Interface::Ip['lists.wikimedia.org_v4'],
@@ -194,12 +192,4 @@ class role::mail::lists {
         nrpe_command  => '/usr/local/lib/nagios/plugins/check_mailman_queue 42',
     }
 
-}
-
-class role::mail::imap {
-    # confusingly enough, the former is amanda, the latter is bacula
-    include backup::host
-    backup::set { 'var-vmail': }
-
-    # FIXME: the rest is unpuppetized so far
 }

@@ -78,7 +78,6 @@ class role::phabricator::main {
         smart_route_list       => $::mail_smarthost,
         enable_mailman         => false,
         phab_relay             => true,
-        enable_mail_submission => false,
         enable_spamassassin    => false,
     }
 

@@ -7,13 +7,6 @@
 CONFDIR=/etc/exim4
 WIKI_INTERFACE=<; 208.80.154.91 ; 2620:0:861:3:208:80:154:91
 
-<% if enable_imap_delivery == true then -%>
-USERDB=/var/vmaildb/user.db
-VMAIL=/var/vmail
-DELIVER=/usr/lib/dovecot/deliver
-NOT_LOCALLY_SUBMITTED=${if !match{$received_protocol}{\Nsmtpsa$\N}}
-
-<% end -%>
 <% if enable_mailman == true then -%>
 # Mailman
 MAILMAN_HOME = /usr/lib/mailman
@@ -70,11 +63,7 @@ domainlist spamassassin_domains = *
 
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if enable_mail_relay != false -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
-<% if enable_imap_delivery == true then -%>
-
-# Interfaces
-daemon_smtp_ports = smtp : ssmtp
-<% elsif enable_otrs_server == true then -%>
+<% if enable_otrs_server == true then -%>
 
 # Interfaces
 daemon_smtp_ports = smtp
@@ -132,14 +121,6 @@ spamd_address = 127.0.0.1 783
 av_scanner = clamd:/var/run/clamav/clamd.ctl
 <% end %>
 
-<% if enable_imap_delivery == true then -%>
-# TLS
-tls_certificate = /etc/ssl/certs/wikimedia.org.pem
-tls_privatekey = /etc/ssl/private/wikimedia.org.key
-tls_advertise_hosts = *
-tls_on_connect_ports = 465
-<% end %>
-
 # Other
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
@@ -178,19 +159,6 @@ acl_check_rcpt:
 	accept domains = ! +local_domains
 		hosts = +relay_from_hosts
 		control = submission/sender_retain
-
-<% if enable_mail_submission == true then -%>
-	# Mail submissions from other hosts must be from SMTP authenticated users
-	accept authenticated = *
-		encrypted = *
-		control = submission/sender_retain
-
-	# We only accept mail from our own mail relays, on port 25 only
-	require message = Use TLS and SMTP authentication
-		hosts = +wikimedia_nets
-		message = This port is restricted to authenticated and encrypted mail submissions
-		condition = ${if eq{$interface_port}{25}}
-<% end -%>
 
 <% if enable_otrs_server == true then -%>
 	# Require recipient domain to be local
@@ -544,70 +512,6 @@ otrs:
 	route_list = *  iodine.wikimedia.org  byname
 	transport = remote_smtp
 <% end %>
-<% if enable_imap_delivery == true then -%>
-# Run a custom user filter, e.g. to sort mail into subfolders
-# By default Exim filter CONFDIR/default_user_filter is run,
-# which sorts mail classified spam into the Junk folder
-user_filter:
-	driver = redirect
-	domains = +local_domains
-	condition = NOT_LOCALLY_SUBMITTED
-	router_home_directory = VMAIL/$domain/$local_part
-	address_data = ${lookup sqlite{USERDB \
-		SELECT id, filter NOTNULL AS hasfilter \
-		FROM account \
-		WHERE localpart='${quote_sqlite:$local_part}' \
-			AND domain='${quote_sqlite:$domain}' \
-	 		AND active='1'}{$value}fail}
-	data = ${if eq{${extract{hasfilter}{$address_data}}}{1}{ \
-		${lookup sqlite{USERDB \
-		SELECT filter \
-		FROM account \
-		WHERE id='${quote_sqlite:${extract{id}{$address_data}}}'}}} \
-		{${readfile{CONFDIR/default_user_filter}}}}
-	allow_filter
-	forbid_filter_dlfunc
-	forbid_filter_existstest
-	forbid_filter_logwrite
-	forbid_filter_lookup
-	forbid_filter_perl
-	forbid_filter_readfile
-	forbid_filter_readsocket
-	forbid_filter_run
-	forbid_include
-	forbid_pipe
-	user = vmail
-	group = vmail
-	directory_transport = maildir_delivery
-	reply_transport = reply_transport
-	no_verify
-
-# Delivery to a Maildir mail box.
-local_user:
-	driver = accept
-	domains = +local_domains
-	condition = NOT_LOCALLY_SUBMITTED
-	local_part_suffix = +*
-	local_part_suffix_optional
-	address_data = ${lookup sqlite{USERDB \
-		SELECT id, quota \
-		FROM account \
-		WHERE localpart='${quote_sqlite:$local_part}' \
-			AND domain='${quote_sqlite:$domain}' \
-			AND active='1'}{$value}fail}
-	transport = maildir_delivery
-	transport_home_directory = VMAIL/$domain/$local_part
-	transport_current_directory = VMAIL
-
-# Bounce/auto-reply messages for users that have left
-user_left:
-	driver = accept
-	domains = +local_domains
-	condition = NOT_LOCALLY_SUBMITTED
-	require_files = CONFDIR/userleft/$domain/$local_part
-	transport = left_message
-
-<% end %>
 <% if enable_mail_relay != false then -%>
 
 # Redirect postmaster@$domain if it hasn't been accepted before
@@ -754,59 +658,6 @@ list:
 	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 
 <% end %>
-<% if enable_imap_delivery == true then -%>
-# Delivery via Dovecot's "deliver" LDA. The advantage over using Exim's
-# internal Maildir appendfile transport is that it can immediately update
-# Dovecot's internal indexes for better performance.
-dovecot_delivery:
-	driver = pipe
-	command = DELIVER -m ${extract{mailbox}{$address_data}{$value}{INBOX}}
-	log_output
-	return_fail_output
-	message_prefix =
-	message_suffix =
-	delivery_date_add
-	envelope_to_add
-	return_path_add
-	user = vmail
-	group = vmail
-
-# appendfile transport for Maildir delivery
-maildir_delivery:
-	driver = appendfile
-	maildir_format
-	directory = ${if def:address_file{$address_file}{$home}}
-	create_directory
-	create_file = belowhome
-	delivery_date_add
-	envelope_to_add
-	return_path_add
-	user = vmail
-	group = vmail
-
-	# Quota support
-	quota = ${if !eq{$received_protocol}{local}{${extract{quota}{$address_data}{${value}K}{0}}}}
-	quota_is_inclusive = false
-	quota_warn_threshold = 100%
-	quota_warn_message = ${expand:${readfile{CONFDIR/quota_warn_message}}}
-	maildir_use_size_file
-	maildir_quota_directory_regex = ^(?:cur|new|\.(?!Trash).*)
-	maildir_tag = ,S=$message_size
-
-# Autoreply bounce transport for users that have left the organization
-left_message:
-	driver = autoreply
-	file = CONFDIR/userleft/$domain/$local_part
-	file_expand
-	return_message
-	from = Wikimedia Foundation <postmaster@wikimedia.org>
-	to = $sender_address
-	reply_to = office@wikimedia.org
-	subject = User ${quote_local_part:$local_part}@$domain has left the organization: returning message to sender
-
-reply_transport:
-	driver = autoreply
-<% end %>
 
 # POST VERP bounce emails to a MediaWiki 'bouncehandler' API
 mwverpbounceprocessor:
@@ -815,29 +666,6 @@ mwverpbounceprocessor:
 	user = nobody
 	group = nogroup
 
-<% if enable_mail_submission == true then -%>
-##################
-# Authenticators #
-##################
-
-begin authenticators
-
-# PLAIN authenticator
-# Expects the password field to contain a "LDAP format" hash. Only
-# (unsalted) {md5}, {sha1}, {crypt} and {crypt16} are supported.
-plain:
-	driver = plaintext
-	public_name = PLAIN
-	server_prompts = :
-	server_condition = ${lookup sqlite{USERDB \
-		SELECT password \
-		FROM account \
-		WHERE localpart||'@'||domain='${quote_sqlite:$auth2}' \
-			AND active='1'} \
-		{${if crypteq{$auth3}{$value}}}{false}}
-	server_set_id = $auth2
-	server_advertise_condition = ${if def:tls_cipher}
-<% end %>
 ###############
 # Retry rules #
 ###############
