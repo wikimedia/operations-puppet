@@ -1,0 +1,22 @@
+title   "network IO, all interfaces"
+vtitle  "bytes/s"
+
+field :tx_backend,
+    :alias => "TX ms-be1*",
+    :data  => "scale(sumSeries(servers.ms-be1*.network.*.tx_byte.value), -1)"
+
+field :rx_backend,
+    :alias => "RX ms-be1*",
+    :data  => "sumSeries(servers.ms-be1*.network.*.rx_byte.value)"
+
+field :tx_frontend,
+    :alias => "TX ms-fe1*",
+    :data  => "scale(sumSeries(servers.ms-fe1*.network.*.tx_byte.value), -1)"
+
+field :rx_frontend,
+    :alias => "RX ms-fe1*",
+    :data  => "sumSeries(servers.ms-fe1*.network.*.rx_byte.value)"
+
+field :zero_line, :color => "black",
+    :alias => "",
+    :data  => "constantLine(0)"
