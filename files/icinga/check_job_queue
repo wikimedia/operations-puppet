@@ -1,0 +1,23 @@
+#!/bin/bash
+# nagios plugin to check the mediawiki job queue
+
+LARGEQUEUES=
+while read wiki count
+do
+	if [ ! $(echo "$count" | grep -E "^[0-9]+$") ]; then
+		echo "JOBQUEUE CRITICAL - check plugin (`basename $0`) or PHP errors - $wiki"
+		exit 2
+	elif [ $count -gt 199999 ]; then
+		LARGEQUEUES="$LARGEQUEUES, $wiki ($count)"
+	fi
+# The line below is a bash-ism that's needed for the LARGEQUEUES variable above to be in the right scope
+# If you do php ... | while read wiki count; do LARGEQUEUE=blah; done , then the LARGEQUEUE variable will
+# be manipulated in a subshell and the changes won't be visible to the if check below
+done < <( php /srv/mediawiki/multiversion/MWScript.php extensions/WikimediaMaintenance/getJobQueueLengths.php --nototal )
+if [ -z "$LARGEQUEUES" ]; then
+	echo "JOBQUEUE OK - all job queues below 200,000"
+	exit 0
+else
+	echo "JOBQUEUE CRITICAL - the following wikis have more than 199,999 jobs: $LARGEQUEUES"
+	exit 2
+fi

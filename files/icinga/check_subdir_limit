@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+"""
+Nagios script to check how close we are to ext3 subdir limit in a dir
+"""
+
+import commands
+import sys
+import getopt
+
+warning_threshold = None
+critical_threshold = None
+dir = None
+
+def handle_opts():
+	global warning_threshold, critical_threshold, dir
+
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], "hw:c:d:",\
+				["help", "warning=", "critical=", "dir="])
+	except getopt.GetoptError, err:
+		print str(err)
+		usage()
+		sys.exit(3)
+	for o,a in opts:
+		if o in ("h", "--help"):
+			usage()
+			sys.exit()
+		elif o in ('-w', '--warning'):
+			warning_threshold = float(a)
+		elif o in ('-c', '--critical'):
+			critical_threshold = float(a)
+		elif o in ('-d', '--dir'):
+			dir = a
+	if not warning_threshold or not critical_threshold or not dir:
+		usage()
+		sys.exit()
+
+def usage():
+	print """Usage: %s --warning=<level> --critical=<level> --dir=<dir to check>""" % (sys.argv[0])
+	print """Where <level> is decimal form percentage for threshold level of subidrs"""
+	print """Additional options:"""
+	print """		-h, --help: print this message"""
+	print """Example:"""
+	print """		%s --warning=0.7 --critical=0.9 --dir=/tmp""" % (sys.argv[0])
+
+# nagios exit statuses
+UNKNOWN = 3
+OK = 0
+WARNING = 1
+CRITICAL = 2
+
+# ext3 subdir link limit
+SUBDIR_LIMIT = 32000
+
+def print_msg( level, location, num_dirs, percentage_of_capacity ):
+	return "SUBDIR COUNT %s: %d dirs in %s; at %.2f%% of subdir limit" % ( level,\
+			num_dirs, location, percentage_of_capacity )
+
+handle_opts()
+
+subdir_count_command = "find %s -maxdepth 1 -type d -print | wc -l" % ( dir )
+statusoutput = commands.getstatusoutput( subdir_count_command )
+if statusoutput[0] != 0:
+		exit( UNKNOWN )
+
+num_dirs = int(statusoutput[1])
+percent_of_capacity =	float( num_dirs ) / float( SUBDIR_LIMIT )
+if percent_of_capacity >= critical_threshold:
+	print print_msg( 'CRITICAL', dir, num_dirs, percent_of_capacity * 100 )
+	sys.exit( CRITICAL )
+elif percent_of_capacity >= warning_threshold:
+	print print_msg( 'WARNING', dir, num_dirs, percent_of_capacity * 100 )
+	sys.exit( WARNING )
+else:
+	print print_msg( 'OK', dir, num_dirs, percent_of_capacity * 100 )
+	sys.exit( OK )
