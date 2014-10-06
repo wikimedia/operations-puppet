@@ -85,7 +85,7 @@ do_graceful_stop()
 		i=0
 		while kill -0 "${PID:-}" 2> /dev/null;  do
 			if [ $i -eq '0' ]; then
-				echo -n " ... waiting "
+				echo -n " ... waiting for jobs to complete "
 			else
 				echo -n "."
 			fi
