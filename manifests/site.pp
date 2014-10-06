@@ -420,6 +420,7 @@ node 'beryllium.wikimedia.org' {
 node 'boron.wikimedia.org' {
     include admin
     include standard-noexim
+    include bastionhost
 }
 
 node 'calcium.wikimedia.org' {
