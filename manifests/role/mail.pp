@@ -195,11 +195,3 @@ class role::mail::lists {
     }
 
 }
-
-class role::mail::imap {
-    # confusingly enough, the former is amanda, the latter is bacula
-    include backup::host
-    backup::set { 'var-vmail': }
-
-    # FIXME: the rest is unpuppetized so far
-}

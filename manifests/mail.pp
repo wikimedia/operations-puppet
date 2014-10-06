@@ -21,8 +21,6 @@ class exim {
     #       other mail servers
     #   - $enable_mailman:
     #       Whether Mailman delivery functionality is enabled (true/false)
-    #   - $enable_imap_delivery:
-    #       Whether IMAP local delivery functional is enabled (true/false)
     #   - $enable_mail_submission:
     #       Enable/disable mail submission by users/client MUAs
     #   - $mediawiki_relay:
@@ -44,7 +42,6 @@ class exim {
     class roled(
         $enable_clamav=false,
         $enable_external_mail=true,
-        $enable_imap_delivery=false,
         $enable_mail_relay=false,
         $enable_mail_submission=false,
         $enable_mailman=false,
@@ -100,15 +97,6 @@ class exim {
         }
 
         class mail_relay {
-            file { '/etc/exim4/imap_accounts':
-                ensure  => present,
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0444',
-                source  => 'puppet:///files/exim/imap_accounts',
-                require => Class['exim4'],
-            }
-
             exim4::dkim { 'wikimedia.org':
                 domain   => 'wikimedia.org',
                 selector => 'wikimedia',
