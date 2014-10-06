@@ -486,7 +486,6 @@ ldap_migration_account:
 	local_part_suffix_optional
 	transport = remote_smtp
 	route_list = *  aspmx.l.google.com
-	unseen
 
 # LDAP accounts
 ldap_account:
@@ -520,16 +519,6 @@ ldap_alias:
 			{user="cn=eximagent,ou=other,dc=corp,dc=wikimedia,dc=org" pass=LDAPPASSWORD \
 			ldap:///ou=people,dc=corp,dc=wikimedia,dc=org?mail?sub?(&(objectClass=inetOrgPerson)(initials=${quote_ldap:$local_part}@$domain)(x121Address=1))} \
 			{$value}fail}
-
-# Send mail for IMAP accounts to the IMAP server
-imap:
-	driver = manualroute
-	domains = wikimedia.org
-	local_parts = lsearch;CONFDIR/imap_accounts
-	local_part_suffix = +*
-	local_part_suffix_optional
-	transport = remote_smtp
-	route_list = *  sanger.wikimedia.org
 
 # send phabricator.wm.org emails to Phabricator
 phabricator:
