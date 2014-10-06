@@ -7,7 +7,7 @@
 #
 
 from socket import gethostbyname
-masterdom = '.pmtpa.wmnet'
+masterdom = '.eqiad.wmnet'
 
 f = open('/etc/db.cluster', 'r')
 c = f.readline()
