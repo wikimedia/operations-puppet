@@ -23,7 +23,7 @@
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
 
   # enable HTTP Strict Transport Security
-  Header set Strict-Transport-Security "max-age=604800"
+  Header set Strict-Transport-Security "max-age=31536000"
 
 <%# Apache 2.4 and Newer %>
 <% if @lsbdistcodename == 'trusty'%>
