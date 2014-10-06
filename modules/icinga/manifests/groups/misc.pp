@@ -7,10 +7,6 @@ class icinga::groups::misc {
         description => 'eqiad misc servers'
     }
 
-    @monitor_group { 'misc_pmtpa':
-        description => 'pmtpa misc servers'
-    }
-
     @monitor_group { 'misc_codfw':
         description => 'codfw misc servers'
     }
