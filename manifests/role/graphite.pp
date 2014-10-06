@@ -212,6 +212,7 @@ class role::graphite::production {
     include ::mediawiki::monitoring::graphite
     include ::eventlogging::monitoring::graphite
     include ::swift::monitoring::graphite
+    include ::swift_new::monitoring::graphite
 
     # Monitor production 5xx rates
     monitor_graphite_threshold { 'reqstats_5xx':
