@@ -11,17 +11,17 @@
 #
 # [*owner*]
 #   The user which should own the config file.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 # [*group*]
 #   The group which should own the config file.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 class nagios_common::user_macros(
     $ensure = present,
     $config_dir = '/etc/icinga/',
-    $owner = 'root',
-    $group = 'root',
+    $owner = 'icinga',
+    $group = 'icinga',
 ){
     file { "$config_dir/resource.cfg":
         ensure => $ensure,

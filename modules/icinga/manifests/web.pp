@@ -27,8 +27,8 @@ class icinga::web {
 
     file { '/usr/share/icinga/htdocs/images/logos/ubuntu.png':
         source => 'puppet:///modules/icinga/ubuntu.png',
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0644',
     }
 
