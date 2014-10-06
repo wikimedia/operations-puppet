@@ -16,6 +16,7 @@ sub hhvm_is_cacheable {
 	/* do not cache requests that should go to hhvm but have been
 	 * replied by Zend. */
 	if (req.http.X-Use-HHVM == "1" && beresp.http.X-Powered-By !~ "^HHVM") {
+		set beresp.http.X-Has-HHVM-Failures = "yes";
 		set beresp.ttl = 0s;
 	}
 }
