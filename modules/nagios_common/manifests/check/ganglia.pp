@@ -16,15 +16,15 @@
 #
 # [*owner*]
 #   The user which should own the config file.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 # [*group*]
 #   The group which should own the config file.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 class nagios_common::check::ganglia(
     $config_dir = '/etc/icinga',
-    $owner = 'root',
-    $group = 'root',
+    $owner = 'icinga',
+    $group = 'icinga',
 ) {
     package { 'check-ganglia':
         ensure  => 'installed',

@@ -11,17 +11,17 @@
 #
 # [*owner*]
 #   The user which should own the check config files.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 # [*group*]
 #   The group which should own the check config files.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 class nagios_common::timeperiods(
     $ensure = present,
     $config_dir = '/etc/icinga',
-    $owner = 'root',
-    $group = 'root',
+    $owner = 'icinga',
+    $group = 'icinga',
 ) {
     file { "$config_dir/timeperiods.cfg":
         ensure => $ensure,

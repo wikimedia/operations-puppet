@@ -43,8 +43,8 @@ class icinga {
 
     file { '/etc/icinga/cgi.cfg':
         source  => 'puppet:///modules/icinga/cgi.cfg',
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'icinga',
+        group   => 'icinga',
         mode    => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -52,8 +52,8 @@ class icinga {
 
     file { '/etc/icinga/icinga.cfg':
         source => 'puppet:///modules/icinga/icinga.cfg',
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icing',
         mode   => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -61,8 +61,8 @@ class icinga {
 
     file { '/etc/icinga/nsca_frack.cfg':
         source => 'puppet:///private/nagios/nsca_frack.cfg',
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -70,8 +70,8 @@ class icinga {
 
     file { '/etc/icinga/contactgroups.cfg':
         source => 'puppet:///modules/icinga/contactgroups.cfg',
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
@@ -136,29 +136,9 @@ class icinga {
     # Script to purge resources for non-existent hosts
     file { '/usr/local/sbin/purge-nagios-resources.py':
         source => 'puppet:///modules/icinga/purge-nagios-resources.py',
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0755',
-    }
-
-    # fix permissions on all individual service files
-    # FIXME: THis should not be needed *at all*. Should
-    # just have everything bet written with 'icinga' as
-    # owner, rather than this monstrosity.
-    exec { 'fix_nagios_perms':
-        command => '/bin/chmod -R a+r /etc/nagios';
-    }
-    exec { 'fix_icinga_perms':
-        command => '/bin/chmod -R a+r /etc/icinga';
-    }
-    exec { 'fix_icinga_temp_files':
-        command => '/bin/chown -R icinga /var/lib/icinga';
-    }
-    exec { 'fix_nagios_plugins_files':
-        command => '/bin/chmod -R a+w /var/lib/nagios';
-    }
-    exec { 'fix_icinga_command_file':
-        command => '/bin/chmod a+rw /var/lib/nagios/rw/nagios.cmd';
     }
 
     # Misc. icinga files and directories

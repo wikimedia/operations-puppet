@@ -18,11 +18,11 @@
 #
 # [*owner*]
 #   The user which should own the check config files.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 # [*group*]
 #   The group which should own the check config files.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 # [*contacts*]
 #   The list of contacts to include in the configuration.
@@ -32,8 +32,8 @@ class nagios_common::contacts(
     $config_dir = '/etc/icinga',
     $source = undef,
     $template = 'nagios_common/contacts.cfg.erb',
-    $owner = 'root',
-    $group = 'root',
+    $owner = 'icinga',
+    $group = 'icinga',
     $contacts = [],
     ) {
     if ($source != undef) {
@@ -42,6 +42,7 @@ class nagios_common::contacts(
             source => $source,
             owner  => $owner,
             group  => $group,
+            mode   => '0600', # Only $owner:$group can read/write
         }
     } else {
         file { "$config_dir/contacts.cfg":
@@ -49,6 +50,7 @@ class nagios_common::contacts(
             content => template($template),
             owner  => $owner,
             group  => $group,
+            mode   => '0600', # Only $owner:$group can read/write
         }
     }
 }
