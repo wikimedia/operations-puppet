@@ -205,7 +205,8 @@ groups:
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams, otto, deskana,
-              bsitzmann, dbrant, declerambaul, ellery, nettrom, leila]
+              bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
+              ezachte]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
