@@ -164,9 +164,6 @@ foreach $snmpoid (@snmpoids) {
 
 $session->close;
 
-use Data::Dumper;
-print Dumper(\%ifStatus);
-
 alarm(0);
 
 foreach $key (keys %ifStatus) {
