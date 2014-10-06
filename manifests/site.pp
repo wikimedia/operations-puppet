@@ -414,11 +414,6 @@ node 'beryllium.wikimedia.org' {
     include standard-noexim
 }
 
-node 'boron.wikimedia.org' {
-    include admin
-    include standard-noexim
-}
-
 node 'calcium.wikimedia.org' {
     $cluster = 'misc'
 
