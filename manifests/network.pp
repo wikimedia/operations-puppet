@@ -352,7 +352,7 @@ class network::checks {
         host          => 'cr1-eqiad',
         group         => 'routers',
         description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
     @monitor_service { 'cr1-eqiad bgp status':
         host          => 'cr1-eqiad',
@@ -370,7 +370,7 @@ class network::checks {
         host          => 'cr2-eqiad',
         group         => 'routers',
         description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
     @monitor_service { 'cr2-eqiad bgp status':
         host          => 'cr2-eqiad',
@@ -388,7 +388,7 @@ class network::checks {
         host          => 'mr1-eqiad',
         group         => 'routers',
         description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
 
     # NAS
@@ -414,7 +414,7 @@ class network::checks {
         host          => 'cr1-ulsfo',
         group         => 'routers',
         description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
     @monitor_service { 'cr1-ulsfo bgp status':
         host          => 'cr1-ulsfo',
@@ -432,7 +432,7 @@ class network::checks {
         host          => 'cr2-ulsfo',
         group         => 'routers',
         description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
     @monitor_service { 'cr2-ulsfo bgp status':
         host          => 'cr2-ulsfo',
@@ -450,7 +450,7 @@ class network::checks {
         host          => 'mr1-ulsfo',
         group         => 'routers',
         description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
 
     ### CODFW ###
@@ -464,7 +464,7 @@ class network::checks {
         host          => 'cr1-codfw',
         group         => 'routers',
         description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
     @monitor_service { 'cr1-codfw bgp status':
         host          => 'cr1-codfw',
@@ -482,7 +482,7 @@ class network::checks {
         host          => 'cr2-codfw',
         group         => 'routers',
         description   => 'Router interfaces',
-        check_command => "check_ifstatus!${snmp_ro_community}",
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
     @monitor_service { 'cr2-codfw bgp status':
         host          => 'cr2-codfw',
