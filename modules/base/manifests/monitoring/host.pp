@@ -126,4 +126,8 @@ class base::monitoring::host($contact_group = 'admins') {
         description  => 'check if dhclient is running',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
     }
+    nrpe::monitor_service { 'check_salt_minion':
+        description  => 'check if salt-minion is running',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
+    }
 }
