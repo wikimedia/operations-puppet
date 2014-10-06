@@ -2464,7 +2464,6 @@ node 'sanger.wikimedia.org' {
     include role::ntp
     include ldap::role::server::corp
     include ldap::role::client::corp
-    include role::mail::imap
     class { 'admin': groups => ['oit'] }
 }
 
