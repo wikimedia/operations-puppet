@@ -161,4 +161,12 @@ class icinga {
         command => '/bin/chmod a+rw /var/lib/nagios/rw/nagios.cmd';
     }
 
+    # Misc. icinga files and directories
+    # FIXME: Unsure if this is still needed
+    file { '/var/lib/nagios/rw':
+        ensure => directory,
+        owner  => 'icinga',
+        group  => 'nagios',
+        mode   => '0777',
+    }
 }
