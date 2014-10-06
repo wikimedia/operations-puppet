@@ -20,19 +20,19 @@
 #
 # [*owner*]
 #   The user which should own the config file.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 # [*group*]
 #   The group which should own the config file.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 define nagios_common::check_command(
     $ensure = present,
     $config_dir = '/etc/icinga',
     $plugin_source = "puppet:///modules/nagios_common/check_commands/$title",
     $config_source = "puppet:///modules/nagios_common/check_commands/$title.cfg",
-    $owner = 'root',
-    $group = 'root',
+    $owner = 'icinga',
+    $group = 'icinga',
 ) {
 
     file { "/usr/lib/nagios/plugins/$title":
@@ -71,18 +71,18 @@ define nagios_common::check_command(
 #
 # [*owner*]
 #   The user which should own the config file.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 # [*group*]
 #   The group which should own the config file.
-#   Defaults to 'root'
+#   Defaults to 'icinga'
 #
 define nagios_common::check_command::config(
     $ensure = present,
     $config_dir = '/etc/icinga',
     $source = "puppet:///modules/nagios_common/check_commands/$title.cfg",
-    $owner = 'root',
-    $group = 'root',
+    $owner = 'icinga',
+    $group = 'icinga',
 ) {
     file { "$config_dir/commands/$title.cfg":
         ensure => $ensure,
