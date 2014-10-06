@@ -133,6 +133,14 @@ class icinga {
         ],
     }
 
+    # Script to purge resources for non-existent hosts
+    file { '/usr/local/sbin/purge-nagios-resources.py':
+        source => 'puppet:///modules/icinga/purge-nagios-resources.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     # fix permissions on all individual service files
     # FIXME: THis should not be needed *at all*. Should
     # just have everything bet written with 'icinga' as
