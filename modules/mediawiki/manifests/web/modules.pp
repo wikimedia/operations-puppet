@@ -22,6 +22,12 @@ class mediawiki::web::modules {
             source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_catchall.conf',
             priority => 50,
         }
+
+        # Mark static assets as coming from an HHVM appserver as well. Needed for Varnish
+        apache::conf { 'mark_engine':
+            source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_mark_engine.conf',
+            priority => 49,
+        }
     } else {
         include ::apache::mod::php5
     }
