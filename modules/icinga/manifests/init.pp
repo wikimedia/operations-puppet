@@ -53,7 +53,7 @@ class icinga {
     file { '/etc/icinga/icinga.cfg':
         source => 'puppet:///modules/icinga/icinga.cfg',
         owner  => 'icinga',
-        group  => 'icing',
+        group  => 'icinga',
         mode   => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
