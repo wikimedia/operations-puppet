@@ -3091,6 +3091,7 @@ node 'zirconium.wikimedia.org' {
     include role::bugzilla
     include role::transparency
     include role::grafana
+    include role::iegreview
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
