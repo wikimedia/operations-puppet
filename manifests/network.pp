@@ -343,7 +343,7 @@ class network::checks {
 
     # mr1-esams
     @monitor_host { 'mr1-esams':
-        ip_address => '91.198.174.244',
+        ip_address => '91.198.174.247',
         group      => 'routers'
     }
     @monitor_service { 'mr1-esams interfaces':
