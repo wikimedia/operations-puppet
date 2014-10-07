@@ -1,4 +1,0 @@
-#!/bin/bash
-# This script belongs in /usr/local/bin/.
-sudo -u l10nupdate /usr/local/bin/sync-l10nupdate-1 "$@"
-
