@@ -32,10 +32,12 @@ import 'stages.pp'
 # Class for *most* servers, standard includes
 class standard {
     include base
-    include ganglia
     include role::ntp
     include role::mail::sender
     include role::diamond
+    if $::realm == 'production' {
+        include ganglia # No ganglia in labs
+    }
 }
 
 class standard-noexim {
