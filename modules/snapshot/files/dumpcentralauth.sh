@@ -3,7 +3,7 @@
 usage() {
     echo "Usage: $0 --site <datacenter> [--config <pathtofile>] [--dryrun]"
     echo
-    echo "  --site     pmtpa, eqiad, etc"
+    echo "  --site     codfw, eqiad, etc"
     echo "  --config   path to configuration file for dump generation"
     echo "             (default value: /backups/dumps/production/confs/wikidump.conf"
     echo "  --dryrun   don't run dump, show what would have been done"
