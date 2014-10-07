@@ -7,12 +7,21 @@
 #
 class mediawiki::packages::php5 {
     # Run-time
-    package { [ 'php-apc', 'php5-cli', 'php5-common', 'php5-dbg' ]:
+    package { [
+        'php-apc',
+        'php5-cli',
+        'php5-common',
+        'php5-dbg',
+    ]:
         ensure => present,
     }
 
     # Wikimedia PHP extensions
-    package { [ 'php-luasandbox', 'php-wikidiff2', 'php5-fss' ]:
+    package { [
+        'php-luasandbox',
+        'php-wikidiff2',
+        'php5-fss',
+    ]:
         ensure => present,
     }
 
