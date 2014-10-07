@@ -310,6 +310,12 @@ class network::checks {
         ip_address => '91.198.174.245',
         group      => 'routers',
     }
+    @monitor_service { 'cr1-esams interfaces':
+        host          => 'cr1-esams',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
+    }
     @monitor_service { 'cr1-esams bgp status':
         host          => 'cr1-esams',
         group         => 'routers',
@@ -317,28 +323,34 @@ class network::checks {
         check_command => "check_bgp!${snmp_ro_community}",
     }
 
-    # csw1-esams
-    @monitor_host { 'csw1-esams':
-        ip_address => '91.198.174.247',
+    # cr2-knams
+    @monitor_host { 'cr2-knams':
+        ip_address => '91.198.174.246',
         group      => 'routers',
     }
-    @monitor_service { 'csw1-esams bgp status':
-        host          => 'csw1-esams',
+    @monitor_service { 'cr2-knams interfaces':
+        host          => 'cr2-knams',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
+    }
+    @monitor_service { 'cr2-knams bgp status':
+        host          => 'cr2-knams',
         group         => 'routers',
         description   => 'BGP status',
         check_command => "check_bgp!${snmp_ro_community}",
     }
 
-    # csw2-esams
-    @monitor_host { 'csw2-esams':
+    # mr1-esams
+    @monitor_host { 'mr1-esams':
         ip_address => '91.198.174.244',
         group      => 'routers'
     }
-    @monitor_service { 'csw2-esams bgp status':
-        host          => 'csw2-esams',
+    @monitor_service { 'mr1-esams interfaces':
+        host          => 'mr1-esams',
         group         => 'routers',
-        description   => 'BGP status',
-        check_command => "check_bgp!${snmp_ro_community}",
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
 
     ### EQIAD ###
