@@ -232,15 +232,9 @@ class misc::deployment::l10nupdate {
             mode   => '0555',
             source => 'puppet:///files/misc/l10nupdate/l10nupdate-1';
         '/usr/local/bin/sync-l10nupdate':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///files/misc/l10nupdate/sync-l10nupdate';
+            ensure => 'absent';
         '/usr/local/bin/sync-l10nupdate-1':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///files/misc/l10nupdate/sync-l10nupdate-1';
+            ensure => 'absent';
         # add ssh keypair for l10nupdate user from fenari for RT-5187
         '/home/l10nupdate/.ssh/id_rsa':
             owner  => 'l10nupdate',
