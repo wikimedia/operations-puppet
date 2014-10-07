@@ -3030,6 +3030,9 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
                    'mathoid-admin'
                 ]
     }
+    class { 'lvs::realserver':
+        realserver_ips => ['10.2.2.20'],
+    }
 }
 
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
