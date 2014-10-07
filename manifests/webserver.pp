@@ -88,9 +88,7 @@ class webserver::php5-mysql {
 
     include webserver::base
 
-    package { 'php5-mysql':
-        ensure => 'present',
-        }
+    require_package( 'php5-mysql' )
 }
 
 class webserver::php5-gd {
