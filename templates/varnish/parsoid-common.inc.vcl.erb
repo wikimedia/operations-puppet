@@ -6,6 +6,7 @@ sub vcl_recv {
 
 	/* Support HTTP PURGE */
 	if (req.request == "PURGE") {
+		set req.hash_ignore_busy = true;
 		return (lookup);
 	}
 	// Enable force-refresh
