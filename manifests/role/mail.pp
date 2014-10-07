@@ -1,7 +1,11 @@
 class role::mail::sender {
-    class { 'exim4':
-        queuerunner => 'queueonly',
-        config      => template('mail/exim4.minimal.erb'),
+    if $::mail_full_mx {
+        class { 'exim4':
+            queuerunner => 'queueonly',
+            config      => template('mail/exim4.minimal.erb'),
+        }
+    } else {
+        class { 'role::mail::mx': }
     }
 }
 
