@@ -17,7 +17,6 @@ class contint::browsertests(
 
     package { [
         'ruby1.9.1-dev', # for qa/browsertests.git (bundler compiles gems)
-        'libsikuli-script-java', # bug 54393 (for MediaWiki/apache)
     ]:
         ensure => present
     }
