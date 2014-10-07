@@ -316,12 +316,19 @@ class network::checks {
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
-    @monitor_service { 'cr1-esams bgp status':
-        host          => 'cr1-esams',
-        group         => 'routers',
-        description   => 'BGP status',
-        check_command => "check_bgp!${snmp_ro_community}",
-    }
+# XXX
+# cr1-esams BGP disabled for now.  The check_bgp script takes over 100s
+#  to complete on this host currently, assuming reasonably-fair conditions
+#  on neon and the network.  Probably because esams has 238 BGP peers
+#  and it's relatively high-latency from neon.  Need to investigate a
+#  better solution, as the check_bgp perl script sucks in general and
+#  is ancient.
+#    @monitor_service { 'cr1-esams bgp status':
+#        host          => 'cr1-esams',
+#        group         => 'routers',
+#        description   => 'BGP status',
+#        check_command => "check_bgp!${snmp_ro_community}",
+#    }
 
     # cr2-knams
     @monitor_host { 'cr2-knams':
