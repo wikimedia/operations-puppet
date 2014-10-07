@@ -11,8 +11,6 @@ class role::authdns::data {
     # which "include role::authdns"
     $nameservers = [
             'rubidium.wikimedia.org',
-# mexia powered off for pmtpa shutdown...
-#            'mexia.wikimedia.org',
             'baham.wikimedia.org',
             'eeden.esams.wikimedia.org',
     ]
@@ -26,8 +24,6 @@ class role::authdns::data {
         ns0-v6 => { address => '2620:0:861:ed1a::e', prefixlen => '128' },
         ns1-v6 => { address => '2620:0:860:ed1a::e', prefixlen => '128' },
         ns2-v6 => { address => '2620:0:862:ed1a::e', prefixlen => '128' },
-        # old ns1 addr from pmtpa, to be removed once traffic dies off:
-        ns1-v4-old => { address => '208.80.152.214', prefixlen => '32'  },
     }
 }
 
