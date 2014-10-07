@@ -141,12 +141,18 @@ class icinga {
         mode   => '0755',
     }
 
-    # Misc. icinga files and directories
-    # FIXME: Unsure if this is still needed
+    # Command folders / files to let icinga web to execute commands
     file { '/var/lib/nagios/rw':
         ensure => directory,
         owner  => 'icinga',
         group  => 'nagios',
-        mode   => '0777',
+        mode   => '0775',
+    }
+
+    file { '/var/lib/nagios/rw/nagios.cmd':
+        ensure => present,
+        owner  => 'icinga',
+        group  => 'www-data',
+        mode   => '0664',
     }
 }
