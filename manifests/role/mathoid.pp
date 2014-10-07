@@ -17,13 +17,6 @@ class role::mathoid::production {
       require   => File[ '/srv/deployment/mathoid/mathoid' ]
     }
 
-    file { '/srv/deployment/mathoid/mathoid':
-      ensure => directory,
-      owner  => 'mathoid',
-      group  => 'mathoid',
-      mode   => '0755',
-    }
-
     # FIXME: deployment::target really needs to handle this better
     file { [ '/srv/deployment', '/srv/deployment/mathoid' ]:
         ensure => directory,
