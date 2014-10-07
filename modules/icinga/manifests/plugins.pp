@@ -4,20 +4,20 @@
 class icinga::plugins {
     file { '/usr/lib/nagios':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/eventhandlers':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0755',
     }
     file { '/usr/lib/nagios/plugins/eventhandlers/submit_check_result':
@@ -34,14 +34,14 @@ class icinga::plugins {
     }
     file { '/etc/nagios-plugins':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0755',
     }
     file { '/etc/nagios-plugins/config':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'icinga',
+        group  => 'icinga',
         mode   => '0755',
     }
 
@@ -90,8 +90,8 @@ class icinga::plugins {
     $nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
     file { '/etc/icinga/checkcommands.cfg':
         content => template('icinga/checkcommands.cfg.erb'),
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'icinga',
+        group   => 'icinga',
         mode    => '0644',
     }
 
