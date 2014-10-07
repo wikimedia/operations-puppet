@@ -314,7 +314,7 @@ class network::checks {
         host          => 'cr1-esams',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
     # csw1-esams
@@ -326,7 +326,7 @@ class network::checks {
         host          => 'csw1-esams',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
     # csw2-esams
@@ -338,7 +338,7 @@ class network::checks {
         host          => 'csw2-esams',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
     ### EQIAD ###
@@ -358,7 +358,7 @@ class network::checks {
         host          => 'cr1-eqiad',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
     # cr2-eqiad
@@ -376,7 +376,7 @@ class network::checks {
         host          => 'cr2-eqiad',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
     # mr1-eqiad
@@ -420,7 +420,7 @@ class network::checks {
         host          => 'cr1-ulsfo',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
     # cr2-ulsfo
@@ -438,7 +438,7 @@ class network::checks {
         host          => 'cr2-ulsfo',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
     # mr1-ulsfo
@@ -470,7 +470,7 @@ class network::checks {
         host          => 'cr1-codfw',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
     # cr2-codfw
@@ -488,7 +488,7 @@ class network::checks {
         host          => 'cr2-codfw',
         group         => 'routers',
         description   => 'BGP status',
-        check_command => "check_bgpstate!${snmp_ro_community}",
+        check_command => "check_bgp!${snmp_ro_community}",
     }
 
 }

@@ -35,6 +35,7 @@ class nagios_common::commands(
         'check_all_memcached.php',
         'check_to_check_nagios_paging',
         'check_ifstatus_nomon',
+        'check_bgp',
     ] :
         require    => File["$config_dir/commands"],
         config_dir => $config_dir,
