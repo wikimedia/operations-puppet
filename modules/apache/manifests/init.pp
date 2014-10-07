@@ -98,4 +98,13 @@ class apache {
         source   => 'puppet:///modules/apache/dummy.conf',
         priority => 0,
     }
+
+    # Keep two weeks' worth of Apache2 logs. (The default is one year.)
+    file { '/etc/logrotate.d/apache2':
+        source  => 'puppet:///modules/apache/apache2.logrotate',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['apache2'],
+    }
 }
