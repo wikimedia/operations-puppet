@@ -14,7 +14,6 @@ class role::mathoid::production {
       node_path => '/srv/deployment/mathoid/mathoid/node_modules',
       conf_path => '/srv/deployment/mathoid/mathoid/mathoid.config.json',
       log_dir   => '/var/log/mathoid',
-      require   => File[ '/srv/deployment/mathoid/mathoid' ]
     }
 
     # FIXME: deployment::target really needs to handle this better
