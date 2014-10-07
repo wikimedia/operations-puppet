@@ -364,6 +364,10 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             require => Package['liblogstash-gelf-java'],
         }
     }
+
+    # Need python3 on Hadoop nodes in order to run
+    # Hadoop Streaming python jobs.
+    require_package('python3')
 }
 
 
