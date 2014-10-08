@@ -47,12 +47,6 @@ class mediawiki::packages {
         ensure => present,
     }
 
-    if ubuntu_version('>= trusty') {
-        package { 'mediawiki-math-texvc':
-            ensure => present,
-        }
-    }
-
     # PDF and DjVu
     package { [
         'djvulibre-bin',
