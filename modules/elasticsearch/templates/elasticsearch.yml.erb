@@ -557,7 +557,7 @@ script.groovy.sandbox.receiver_whitelist:
 # Graphite plugin configuration
 ##
 <% if @graphite_host -%>
-metrics.graphite.host = <%= @graphite_host %>
+metrics.graphite.host: <%= @graphite_host %>
 <% else -%>
 #metrics.graphite.host: monitoring1001
 <% end -%>
