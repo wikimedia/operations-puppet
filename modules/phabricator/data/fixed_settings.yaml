@@ -104,6 +104,12 @@ maniphest.statuses:
     prefixes: [decline, declines, declined]
     suffixes: ['as declined']
 
+user.custom-field-definitions:
+  irc_nick:
+    name: 'IRC alias'
+    type: text
+    search: true
+
 # Allow the "view" policy setting of public to be available
 policy.allow-public: true
 
