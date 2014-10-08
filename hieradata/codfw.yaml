@@ -29,6 +29,7 @@ swift_new::params::accounts:
 #    search_backup: <key>
 
 swift_new::hash_path_suffix: 'de4227064232ed08'
+swift_new::storage::statsd_host: 'statsd.eqiad.wmnet'
 swift_new::proxy::proxy_address: 'http://ms-fe.svc.codfw.wmnet'
 swift_new::proxy::statsd_host: 'statsd.eqiad.wmnet'
 swift_new::proxy::backend_url_format: 'sitelang'

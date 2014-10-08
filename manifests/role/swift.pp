@@ -379,7 +379,9 @@ class role::swift::storage {
     include ::swift_new::params
     include ::swift_new
     include ::swift_new::ring
-    include ::swift_new::storage
+    class { '::swift_new::storage':
+        statsd_metric_prefix => "swift.${::swift_new::params::swift_cluster}.${::hostname}",
+    }
     include ::swift_new::container_sync
     include ::swift_new::storage::monitoring
 
