@@ -1816,8 +1816,13 @@ node 'rubidium.wikimedia.org' {
 }
 
 node 'ms1001.wikimedia.org' {
-    include admin
+    $cluster = 'misc'
+
+    class { 'admin': groups => [dataset-admins] }
     include standard
+    include role::dataset::systemusers
+    include role::dataset::secondary
+    include role::download::wikimedia
 #    include role::mirror::media
 }
 
