@@ -10,7 +10,7 @@
 class citoid( $port = 1970 ) {
     ensure_packages( ['nodejs'] )
 
-    package { 'citoid':
+    package { 'citoid/deploy':
         provider => 'trebuchet',
     }
 
