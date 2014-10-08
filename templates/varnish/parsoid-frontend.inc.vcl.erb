@@ -13,4 +13,5 @@ sub vcl_miss {
 
 sub vcl_fetch {
 	set beresp.ttl = 0s;
+	return (deliver); // don't execute default vcl_fetch, which converts to hit_for_pass
 }
