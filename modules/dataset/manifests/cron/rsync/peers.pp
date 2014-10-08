@@ -9,12 +9,7 @@ class dataset::cron::rsync::peers($enable=true) {
     }
 
     file { '/usr/local/bin/rsync-dumps.sh':
-        ensure => $ensure,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        path   => '/usr/local/bin/rsync-dumps.sh',
-        source => 'puppet:///modules/dataset/rsync-dumps.sh',
+        ensure => $absent,
     }
 
     file { '/usr/local/bin/rsync-dumps.py':
