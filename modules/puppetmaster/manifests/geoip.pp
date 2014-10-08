@@ -37,7 +37,7 @@ class puppetmaster::geoip {
             environment    => $environment,
             license_key    => $passwords::geoip::license_key,
             user_id        => $passwords::geoip::user_id,
-            product_ids    => [106, 133, 115],
+            product_ids    => [106, 133, 115, 171, 177],
         }
     }
 }
