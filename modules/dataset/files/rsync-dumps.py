@@ -192,8 +192,6 @@ if __name__ == '__main__':
             'hosts': {
                 # everything but a specific list of dirs will be pushed:
                 'dataset1001': {'primary': True},
-                # only the specified list of dirs is here:
-                'dataset2': {'dirs': []}
             }
         },
         'other': {   # job name
@@ -203,7 +201,6 @@ if __name__ == '__main__':
             'source': '/data/xmldatadumps/public/other/',
             'dest': 'data/xmldatadumps/public/other/',
             'hosts': {
-                'dataset2': {'dirs': []},
                 'dataset1001': {'primary': True}
             }
         }
