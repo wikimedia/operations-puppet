@@ -32,7 +32,7 @@ class role::dataset::pagecounts_all_sites($enable = true) {
 class role::dataset::primary {
     $rsync = {
         'public' => true,
-#        'peers'  => true,
+        'peers'  => true,
         'labs'   => true,
     }
     $grabs = {
