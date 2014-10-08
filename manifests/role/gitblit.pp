@@ -17,8 +17,8 @@ class role::gitblit {
     }
 
     monitor_service { 'gitblit_web':
-        description   => 'gitblit.wikimedia.org',
-        check_command => 'check_https_url!git.wikimedia.org!/tree/mediawiki%2Fcore.git',
+        description   => 'git.wikimedia.org',
+        check_command => 'check_http_url!git.wikimedia.org!/tree/mediawiki%2Fcore.git',
     }
 
     nrpe::monitor_service { 'gitblit_process':
