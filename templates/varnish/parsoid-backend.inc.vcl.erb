@@ -8,3 +8,9 @@ sub vcl_miss {
 		error 412 "Entity not in cache";
 	}
 }
+
+sub vcl_pass {
+	if (req.http.Cache-Control ~ "only-if-cached") {
+		error 412 "Entity not in cache";
+	}
+}
