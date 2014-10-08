@@ -1,0 +1,20 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+description "Apertium APY service"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+setuid "apertium"
+setgid "apertium"
+
+script
+ LANG=en_US.utf-8 python3 /usr/share/apertium-apy/servlet.py -p 80 /usr/share/apertium/modes
+end script
+
+respawn
+
+# wait 60 seconds for a graceful restart before killing the master
+kill timeout 60
