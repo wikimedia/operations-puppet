@@ -2262,7 +2262,6 @@ node 'palladium.eqiad.wmnet' {
         'eqiad.wmnet',
         'codfw.wmnet',
         'ulsfo.wmnet',
-        'pmtpa.wmnet',
         'esams.wmnet',
         'esams.wikimedia.org'
     ]
