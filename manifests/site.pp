@@ -2828,25 +2828,6 @@ node 'virt1000.wikimedia.org' {
     }
 }
 
-node 'virt0.wikimedia.org' {
-    $cluster               = 'virt'
-    $ganglia_aggregator    = true
-    $is_puppet_master      = true
-    $is_labs_puppet_master = true
-    $openstack_version     = 'folsom'
-    $use_neutron           = false
-
-    include standard
-    include admin
-    include role::dns::ldap
-    include ldap::role::server::labs
-    include ldap::role::client::labs
-    include role::nova::controller
-    include role::nova::manager
-    include role::salt::masters::labs
-    include role::deployment::salt_masters::labs
-}
-
 node 'labcontrol2001.wikimedia.org' {
     $cluster               = 'virt'
     $ganglia_aggregator    = true
