@@ -1,0 +1,18 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+description "Apertium APY service"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+# Set LC_ALL to make sure that APY works fine with UTF-8 data.
+env LC_ALL=en_US.utf-8
+
+exec python3 /usr/share/apertium-apy/servlet.py -p <%= @port %> /usr/share/apertium/modes
+
+respawn
+
+# wait 60 seconds for a graceful restart before killing the master
+kill timeout 60
