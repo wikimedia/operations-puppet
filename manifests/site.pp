@@ -1985,7 +1985,6 @@ node /^mw10(1[7-9]|[2-4][0-9]|5[0-2])\.eqiad\.wmnet$/ {
 node /^mw1(05[4-9]|0[6-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
-    $cluster = 'appserver'
 
     if $::hostname =~ /^mw105[45]$/ {
         $ganglia_aggregator = true
@@ -2036,7 +2035,7 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
-    $cluster = 'appserver'
+
     if $::hostname == 'mw1161' {
         include misc::deployment::scap_proxy
     }
