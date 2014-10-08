@@ -16,7 +16,7 @@
 # Source function library
 . /lib/lsb/init-functions
 
-NAME=varnishd<%= instancesuffix %>
+NAME=varnishd<%= @instancesuffix %>
 DESC="HTTP accelerator"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/sbin/varnishd
@@ -25,8 +25,8 @@ PIDFILE=/var/run/$NAME.pid
 test -x $DAEMON || exit 0
 
 # Include varnish defaults if available
-if [ -f /etc/default/varnish<%= instancesuffix %> ] ; then
-        . /etc/default/varnish<%= instancesuffix %>
+if [ -f /etc/default/varnish<%= @instancesuffix %> ] ; then
+        . /etc/default/varnish<%= @instancesuffix %>
 fi
 
 # Open files (usually 1024, which is way too small for varnish)
@@ -40,7 +40,7 @@ ulimit -l ${MEMLOCK:-82000}
 # installed application server.)
 DAEMON_OPTS=${DAEMON_OPTS:--b localhost}
 
-<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
+<% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
 # Bash sucks
 CC_COMMAND="exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lGeoIP"
 <% end %>
@@ -54,7 +54,7 @@ case "$1" in
 		do
 			if start-stop-daemon \
 			    --start --quiet --pidfile ${PIDFILE} --exec ${DAEMON} -- \
-			    -P ${PIDFILE} ${DAEMON_OPTS} <% if cluster_options.fetch("enable_geoiplookup", false) -%>-p cc_command="${CC_COMMAND}"<% end -%> > ${output} 2>&1; then
+			    -P ${PIDFILE} ${DAEMON_OPTS} <% if @cluster_options.fetch("enable_geoiplookup", false) -%>-p cc_command="${CC_COMMAND}"<% end -%> > ${output} 2>&1; then
 				log_end_msg 0
 				break
 			else
@@ -82,7 +82,7 @@ case "$1" in
 	reload)
 		log_daemon_msg "Reloading $DESC"
 		log_progress_msg $NAME
-		if /usr/share/varnish/reload-vcl <%= extraopts %> -q; then
+		if /usr/share/varnish/reload-vcl <%= @extraopts %> -q; then
 			log_end_msg 0
 		else
 			log_end_msg 1

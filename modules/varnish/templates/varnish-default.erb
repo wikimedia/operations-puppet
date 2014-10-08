@@ -53,17 +53,17 @@ INSTANCE=$(uname -n)
 # See varnishd(1) for more information.
 #
 # # Main configuration file. You probably want to change it :)
-VARNISH_VCL_CONF=/etc/varnish/wikimedia_<%= vcl %>.vcl
+VARNISH_VCL_CONF=/etc/varnish/wikimedia_<%= @vcl %>.vcl
 #
 # # Default address and port to bind to
 # # Blank address means all IPv4 and IPv6 interfaces, otherwise specify
 # # a host name, an IPv4 dotted quad, or an IPv6 address in brackets.
 VARNISH_LISTEN_ADDRESS=
-VARNISH_LISTEN_PORT=<%= varnish_port %>
+VARNISH_LISTEN_PORT=<%= @varnish_port %>
 
 # # Telnet admin interface listen address and port
 VARNISH_ADMIN_LISTEN_ADDRESS=127.0.0.1
-VARNISH_ADMIN_LISTEN_PORT=<%= varnish_admin_port %>
+VARNISH_ADMIN_LISTEN_PORT=<%= @varnish_admin_port %>
 	
 #
 # # The minimum number of worker threads to start
@@ -90,7 +90,7 @@ VARNISH_SECRET_FILE=/etc/varnish/secret
 # # Backend storage specification
 # VARNISH_STORAGE="file,${VARNISH_STORAGE_FILE},${VARNISH_STORAGE_SIZE}"
 
-VARNISH_STORAGE="<%= varnish_storage %>"
+VARNISH_STORAGE="<%= @varnish_storage %>"
 
 # # Default TTL used when the backend does not specify one
 # VARNISH_TTL=120
@@ -106,9 +106,9 @@ VARNISH_STORAGE="<%= varnish_storage %>"
 #              -s ${VARNISH_STORAGE}"
 #
 
-EXTRA_OPTS="-p user=varnish -p thread_pool_add_delay=1 -p thread_pool_stack=131072 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off -p nuke_limit=300 -p shm_reclen=1024 <%= runtime_params %>"
+EXTRA_OPTS="-p user=varnish -p thread_pool_add_delay=1 -p thread_pool_stack=131072 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off -p nuke_limit=300 -p shm_reclen=1024 <%= @runtime_params %>"
 <% if has_variable?("extraopts") then %>
-EXTRA_OPTS="$EXTRA_OPTS <%= extraopts %>"
+EXTRA_OPTS="$EXTRA_OPTS <%= @extraopts %>"
 <% end %>
 
 ## Alternative 4, Do It Yourself
