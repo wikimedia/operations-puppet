@@ -552,3 +552,12 @@ script.groovy.sandbox.receiver_whitelist:
  # Added for Cirrus
  - org.apache.lucene.util.automaton.RegExp
  - org.apache.lucene.util.automaton.CharacterRunAutomaton
+
+##
+# Graphite plugin configuration
+##
+<% if @graphite_host -%>
+metrics.graphite.host = <%= @graphite_host %>
+<% else -%>
+#metrics.graphite.host: monitoring1001
+<% end -%>
