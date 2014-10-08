@@ -11,6 +11,14 @@ sub vcl_miss {
 	}
 }
 
+sub vcl_pass {
+	// forward the Cache-Control header to the backend
+	if ( req.http.Cache-Control )
+	{
+		set bereq.http.Cache-Control = req.http.Cache-Control;
+	}
+}
+
 sub vcl_fetch {
 	set beresp.ttl = 0s;
 }
