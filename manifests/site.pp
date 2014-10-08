@@ -2136,10 +2136,8 @@ node 'netmon1001.wikimedia.org' {
         'cr1-ulsfo.wikimedia.org',
         'cr2-eqiad.wikimedia.org',
         'cr2-knams.wikimedia.org',
-        'cr2-pmtpa.wikimedia.org',
         'cr2-ulsfo.wikimedia.org',
         'cr2-codfw.wikimedia.org',
-        'mr1-pmtpa.mgmt.pmtpa.wmnet',
         'pfw1-eqiad.wikimedia.org',
     ]
 
@@ -2149,20 +2147,16 @@ node 'netmon1001.wikimedia.org' {
         'asw-b-eqiad.mgmt.eqiad.wmnet',
         'asw-c-eqiad.mgmt.eqiad.wmnet',
         'asw-d-eqiad.mgmt.eqiad.wmnet',
-        'asw-d-pmtpa.mgmt.pmtpa.wmnet',
         'asw-a-codfw.mgmt.codfw.wmnet',
         'asw-b-codfw.mgmt.codfw.wmnet',
         'asw-c-codfw.mgmt.codfw.wmnet',
         'asw-d-codfw.mgmt.codfw.wmnet',
         'csw2-esams.wikimedia.org',
         'msw1-eqiad.mgmt.eqiad.wmnet',
-        'msw2-pmtpa.mgmt.pmtpa.wmnet',
         'psw1-eqiad.mgmt.eqiad.wmnet',
     ]
 
     $storagehosts = [
-        'nas1-a.pmtpa.wmnet',
-        'nas1-b.pmtpa.wmnet',
         'nas1001-a.eqiad.wmnet',
         'nas1001-b.eqiad.wmnet',
     ]
