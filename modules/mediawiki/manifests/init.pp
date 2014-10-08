@@ -5,9 +5,8 @@
 # content in over a hundred languages to more than half a billion people
 # each month.
 #
-# This module configures Wikimedia's execution environment for
-# MediaWiki, which comprises software packages and service
-# configuration.
+# This module configures Wikimedia's MediaWiki execution environment,
+# which comprises software packages and service configuration.
 #
 class mediawiki {
     include ::mediawiki::cgroup
