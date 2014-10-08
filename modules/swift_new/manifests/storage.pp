@@ -1,4 +1,8 @@
-class swift_new::storage {
+class swift_new::storage (
+    $statsd_host               = undef,
+    $statsd_metric_prefix      = undef,
+    $statsd_sample_rate_factor = '1',
+) {
     package {
         [ 'swift-account',
           'swift-container',

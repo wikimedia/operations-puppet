@@ -227,7 +227,10 @@ class swift::storage {
         }
     }
 
-    class config {
+    class config (
+        $statsd_host = 'statsd.eqiad.wmnet',
+        $statsd_metric_prefix = "swift.${cluster_name}.${::hostname}"
+    ){
         require swift::storage::packages
 
         class { 'rsync::server':
