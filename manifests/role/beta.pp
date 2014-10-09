@@ -65,6 +65,7 @@ class role::beta::scap_target {
     require ::role::labs::lvm::srv
     include ::beta::common
     include ::beta::scap::target
+    include ::role::beta::nutcracker
 
     # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for scap
     ferm::rule { 'deployment-bastion-scap-ssh':
@@ -98,6 +99,16 @@ class role::beta::appserver {
         check_command => 'check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page',
     }
 
+    # Beta application servers have some ferm DNAT rewriting rules (bug
+    # 45868) so we have to explicitly allow http (port 80)
+    ferm::service { 'http':
+        proto => 'tcp',
+        port  => 'http'
+    }
+}
+
+class role::beta::nutcracker {
+
     class { '::nutcracker':
         mbuf_size => '64k',
         pools     => {
@@ -118,12 +129,6 @@ class role::beta::appserver {
         },
     }
 
-    # Beta application servers have some ferm DNAT rewriting rules (bug
-    # 45868) so we have to explicitly allow http (port 80)
-    ferm::service { 'http':
-        proto => 'tcp',
-        port  => 'http'
-    }
 }
 
 class role::beta::videoscaler {
@@ -136,6 +141,7 @@ class role::beta::jobrunner {
     include ::beta::common
     include role::mediawiki::common
     include ::mediawiki
+    include ::role::beta::nutcracker
 
     class { '::mediawiki::jobrunner':
         aggr_servers    => [ 'deployment-redis01' ],
