@@ -90,6 +90,7 @@ class ocg (
             'poppler-utils',
             'libjpeg-progs',
             'librsvg2-bin',
+            'djvulibre-bin',
             'unzip',
             'zip',
         ]:
