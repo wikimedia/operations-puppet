@@ -5,9 +5,6 @@
 @monitor_group { 'redis_eqiad':
     description => 'eqiad Redis',
 }
-@monitor_group { 'redis_pmtpa':
-    description => 'pmtpa Redis',
-}
 
 class role::db::redis (
     $maxmemory         = inline_template("<%= (Float(memorysize.split[0]) * 0.82).round %>Gb"),
