@@ -12,6 +12,21 @@ def cluster_health():
     return es.cluster.health()["status"]
 
 
+def set_replication_state(status):
+        es = Elasticsearch(args.server)
+        res = es.cluster.put_settings(
+            body={
+                "transient": {
+                    "cluster.routing.allocation.enable": status
+                }
+            }
+        )
+        if res["acknowledged"]:
+            return True
+        else:
+            return False
+
+
 # Add new command functions here
 def es_health():
     health = cluster_health()
@@ -21,9 +36,29 @@ def es_health():
     else:
         return os.EX_OK
 
+
+def es_start_replication():
+    if set_replication_state("all"):
+        print "All replication enabled"
+        return os.EX_OK
+    else:
+        print "Failed to set replication state"
+        return os.EX_UNAVAILABLE
+
+
+def es_stop_replication():
+    if set_replication_state("primaries"):
+        print "Non-primary replication disabled"
+        return os.EX_OK
+    else:
+        print "Failed to set replication state"
+        return os.EX_UNAVAILABLE
+
 # And register them here
 commands = {
-    "health": es_health
+    "health": es_health,
+    "start-replication": es_start_replication,
+    "stop-replication": es_stop_replication
 }
 
 # main()
