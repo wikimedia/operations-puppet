@@ -15,12 +15,12 @@ def cluster_health():
     return es.cluster.health()["status"]
 
 
-def set_replication_state(status):
+def set_setting(setting, value, settingtype="transient"):
         es = Elasticsearch(args.server)
         res = es.cluster.put_settings(
             body={
-                "transient": {
-                    "cluster.routing.allocation.enable": status
+                settingtype: {
+                    setting: value
                 }
             }
         )
@@ -30,7 +30,42 @@ def set_replication_state(status):
             return False
 
 
+def set_replication_state(status):
+    return set_setting("cluster.routing.allocation.enable", status)
+
+
+def set_banned_ips(iplist):
+    return set_setting("cluster.routing.allocation.exclude._ip",
+                       ",".join(iplist))
+
+
+def get_banned_ips():
+    es = Elasticsearch(args.server)
+    res = es.cluster.get_settings()
+    try:
+        if res["transient"]["cluster"]["routing"]["allocation"]["exclude"]["_ip"]:
+            return res["transient"]["cluster"]["routing"]["allocation"]["exclude"]["_ip"].split(",")
+    except KeyError:
+        pass
+    return []
+
+
 # Add new command functions here
+def es_ban_node():
+    banned = get_banned_ips()
+    if args.IP in banned:
+        print "Already banned from allocation, nothing to do"
+        return 0
+
+    banned.append(args.IP)
+    if set_banned_ips(banned):
+        print "Banned IP"
+        return 0
+    else:
+        print "Failed to ban IP"
+        return 1
+
+
 def es_health():
     health = cluster_health()
     print health
@@ -93,6 +128,7 @@ def es_restart_fast():
     while cluster_health() != "green":
         time.sleep(1)
     print "ok"
+    return 0
 
 
 def es_start_replication():
@@ -112,20 +148,39 @@ def es_stop_replication():
         print "Failed to set replication state"
         return 1
 
+
+def es_unban_node():
+    banned = get_banned_ips()
+    if args.IP not in banned:
+        print "Not banned from allocation currently, nothing to do"
+        return 0
+
+    banned.remove(self.args.IP)
+    if self.set_banned_ips(banned):
+        print "Unbanned IP"
+        return 0
+    else:
+        print "Failed to unban IP"
+        return 1
+
 # And register them here
 commands = {
+    "ban-node": es_ban_node,
     "health": es_health,
     "restart-fast": es_restart_fast,
     "start-replication": es_start_replication,
-    "stop-replication": es_stop_replication
+    "stop-replication": es_stop_replication,
+    "unban-node": es_unban_node
 }
 
 # main()
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Tool for Elasticsearch cluster maintenance")
-    parser.add_argument("command", metavar='C', type=str,
+    parser.add_argument("command", metavar='CMD', type=str,
                         help="Subcommand, one of: " + ",".join(commands))
+    parser.add_argument("IP", metavar='IP', type=str,
+                        help="IP address, used by (un)ban-node")
     parser.add_argument("--server", metavar='S', type=str, default="localhost",
                         help="Server to work on, default localhost")
     args = parser.parse_args()
