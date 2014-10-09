@@ -118,28 +118,6 @@ class facilities::pdu_monitoring {
     package { 'snmp':
         ensure => installed,
     }
-    # pmtpa
-    # C
-    monitor_pdu_3phase { 'ps1-c1-pmtpa':
-        ip=> '10.1.5.20',
-    }
-    monitor_pdu_3phase { 'ps1-c2-pmtpa':
-        ip=> '10.1.5.21',
-    }
-    monitor_pdu_3phase { 'ps1-c3-pmtpa':
-        ip=> '10.1.5.22',
-    }
-    # D
-    monitor_pdu_3phase { 'ps1-d1-pmtpa':
-        ip=> '10.1.5.17',
-    }
-    monitor_pdu_3phase { 'ps1-d2-pmtpa':
-        ip=> '10.1.5.18',
-    }
-    monitor_pdu_3phase { 'ps1-d3-pmtpa':
-        ip=> '10.1.5.19',
-    }
-
     # eqiad
     # A
     monitor_pdu_3phase { 'ps1-a1-eqiad':
