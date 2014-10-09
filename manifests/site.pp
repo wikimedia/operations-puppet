@@ -350,6 +350,8 @@ node 'bast1001.wikimedia.org' {
     class { 'admin':
         groups => ['deployment',
                    'restricted',
+                   'parsoid-admin',
+                   'ocg-render-admin',
                    'bastiononly'],
     }
 
@@ -2666,7 +2668,13 @@ node 'tin.eqiad.wmnet' {
     include role::apachesync
     include role::releases::upload
 
-    class { 'admin': groups => ['deployment'] }
+    class { 'admin':
+        groups => [
+            'deployment',
+            'parsoid-admin',
+            'ocg-render-admin',
+        ]
+    }
 
     # for reedy RT #6322
     package { 'unzip':
