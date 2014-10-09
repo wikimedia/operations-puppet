@@ -112,7 +112,7 @@ groups:
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins hosts
-    members: [bd808, demon, krinkle, reedy, marktraceur]
+    members: [bd808, cscott, demon, krinkle, reedy, marktraceur]
     privs: ['ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
             'ALL = (gerritslave) NOPASSWD: ALL',
