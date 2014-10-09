@@ -1,12 +1,8 @@
-cr2-pmtpa.wikimedia.org:juniper:up:
-csw5-pmtpa.wikimedia.org:foundry:down:
 csw1-esams.wikimedia.org:foundry:down:
 br1-knams.wikimedia.org:foundry:down:
 csw2-esams.wikimedia.org:juniper:up:
 cr1-esams.wikimedia.org:juniper:up:
 cr2-knams.wikimedia.org:juniper:up:
-mr1-pmtpa.mgmt.pmtpa.wmnet:juniper:up:
-asw-d-pmtpa.mgmt.pmtpa.wmnet:juniper:up:
 cr1-eqiad.wikimedia.org:juniper:up:
 cr2-eqiad.wikimedia.org:juniper:up:
 asw-a-eqiad.mgmt.eqiad.wmnet:juniper:up:
@@ -19,7 +15,6 @@ msw1-eqiad.mgmt.eqiad.wmnet:juniper:up:
 mr1-eqiad.mgmt.eqiad.wmnet:juniper:up:
 lab-ex4200-1.mgmt.eqiad.wmnet:juniper:down:
 lab-ex4500-1.mgmt.eqiad.wmnet:juniper:down:
-msw2-pmtpa.mgmt.pmtpa.wmnet:juniper:up:
 pfw1-eqiad.wikimedia.org:juniper:up:
 cr1-ulsfo.wikimedia.org:juniper:up:
 cr2-ulsfo.wikimedia.org:juniper:up:
