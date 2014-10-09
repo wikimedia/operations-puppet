@@ -76,6 +76,15 @@ class keyholder( $trusted_group ) {
     }
 
 
+    # Log all system calls that access the keyholder's agent
+    # and proxy sockets from users in the trusted user group.
+
+    auditd::rules { 'keyholder':
+        content => template('keyholder/keyholder.rules.erb'),
+        before  => Service['keyholder-agent'],
+    }
+
+
     # The `keyholder-agent` service is responsible for running
     # the ssh-agent instance that will hold shared key(s).
 

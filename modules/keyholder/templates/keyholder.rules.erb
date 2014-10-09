@@ -1,0 +1,3 @@
+# Log all system calls that access the keyholder's agent and proxy
+# sockets from users in the trusted user group.
+-a always,exit -F arch=b64 -S all -F dir=/run/keyholder/ -F gid=<%= @trusted_group %> -F uid!=keyholder
