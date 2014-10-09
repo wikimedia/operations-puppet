@@ -1,0 +1,21 @@
+# keyholder-proxy - Filtering proxy for ssh-agent(1)
+#
+# The `keyholder-proxy` service runs the filtering ssh-agent proxy
+# that acts as an intermediary between users in the trusted group
+# and the backend ssh-agent that holds the shared key(s).
+
+description "Shared SSH agent proxy"
+
+start on started keyholder-agent
+stop on stopped keyholder-agent
+
+setuid keyholder
+setgid <%= @trusted_group %>
+
+umask 007
+
+pre-start exec /bin/rm -f /run/keyholder/proxy.sock
+exec /usr/local/bin/ssh-agent-proxy
+post-stop exec /bin/rm -f /run/keyholder/proxy.sock
+
+# vim: set ft=upstart:
