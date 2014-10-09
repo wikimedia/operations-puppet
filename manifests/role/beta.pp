@@ -82,6 +82,7 @@ class role::beta::appserver {
     system::role { 'role::beta::appserver': }
 
     include role::beta::scap_target
+    include ::role::beta::nutcracker
 
     include ::mediawiki
     include ::mediawiki::multimedia
@@ -97,6 +98,16 @@ class role::beta::appserver {
         description   => 'Apache HTTP',
         check_command => 'check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page',
     }
+
+    # Beta application servers have some ferm DNAT rewriting rules (bug
+    # 45868) so we have to explicitly allow http (port 80)
+    ferm::service { 'http':
+        proto => 'tcp',
+        port  => 'http'
+    }
+}
+
+class role::beta::nutcracker {
 
     class { '::nutcracker':
         mbuf_size => '64k',
@@ -118,12 +129,6 @@ class role::beta::appserver {
         },
     }
 
-    # Beta application servers have some ferm DNAT rewriting rules (bug
-    # 45868) so we have to explicitly allow http (port 80)
-    ferm::service { 'http':
-        proto => 'tcp',
-        port  => 'http'
-    }
 }
 
 class role::beta::videoscaler {
@@ -133,9 +138,11 @@ class role::beta::videoscaler {
 
 class role::beta::jobrunner {
     include role::beta::scap_target
+    include ::role::beta::nutcracker
+
     include ::beta::common
-    include role::mediawiki::common
     include ::mediawiki
+    include ::role::beta::nutcracker
 
     class { '::mediawiki::jobrunner':
         aggr_servers    => [ 'deployment-redis01' ],
