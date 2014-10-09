@@ -25,7 +25,6 @@ numbers = re.compile('([0-9]+)')
 base_url = 'http://config-master.wikimedia.org/pybal'
 dcs = {
     'eqiad': ['apaches', 'api', 'bits', 'https', 'mobile', 'rendering', 'text', 'upload'],
-    'pmtpa': ['apaches', 'api', 'bits', 'https', 'mobile', 'rendering', 'text', 'upload'],
     'esams': ['bits', 'https', 'text', 'upload'],
 }
 
@@ -67,24 +66,6 @@ def manual_init():
     testing purposes.
     '''
     matchers = [
-        RoleMatcher('pmtpa_apache_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 226, 249),
-        RoleMatcher('pmtpa_apache_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 258, 289),
-        RoleMatcher('pmtpa_apache_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 17, 59),
-        RoleMatcher('pmtpa_apache_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 81, 111),
-        RoleMatcher('pmtpa_rendering_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 75, 80),
-        RoleMatcher('pmtpa_api_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 250, 257),
-        RoleMatcher('pmtpa_api_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 290, 301),
-        RoleMatcher('pmtpa_api_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 62, 74),
-        RoleMatcher('pmtpa_api_mw', 'mw([0-9]+)\.pmtpa\.wmnet', 112, 125),
-        RoleMatcher('pmtpa_bits_sq', 'sq([0-9]+)\.pmtpa\.wmnet', 67, 70),
-        RoleMatcher('pmtpa_text_sq', 'sq([0-9]+)\.pmtpa\.wmnet', 37, 37),
-        RoleMatcher('pmtpa_text_sq', 'sq([0-9]+)\.pmtpa\.wmnet', 59, 66),
-        RoleMatcher('pmtpa_text_sq', 'sq([0-9]+)\.pmtpa\.wmnet', 71, 78),
-        RoleMatcher('pmtpa_ssl-ip6_ssl', 'ssl([0-9]{1})', 1, 4),
-        RoleMatcher('pmtpa_mobile_mobile', 'mobile([0-9]{1})', 1, 4),
-        RoleMatcher('pmtpa_upload_sq', 'sq([0-9]+)', 41, 58),
-        RoleMatcher('pmtpa_upload_sq', 'sq([0-9]+)', 79, 86),
-
         RoleMatcher('eqiad_apache_mw', 'mw([0-9]+)\.eqiad\.wmnet', 1017, 1113),
         RoleMatcher('eqiad_apache_mw', 'mw([0-9]+)\.eqiad\.wmnet', 1161, 1220),
         RoleMatcher('eqiad_api_mw', 'mw([0-9]+)\.eqiad\.wmnet', 1189, 1208),
