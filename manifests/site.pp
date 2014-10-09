@@ -2264,23 +2264,6 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
     }
 }
 
-node 'pdf2.wikimedia.org' {
-    $ganglia_aggregator = true
-    $cluster = 'pdf'
-
-    class { 'admin': groups => ['ocg-render-admins'] }
-    include role::pdf
-    include role::logging::systemusers
-}
-
-node 'pdf3.wikimedia.org' {
-    $cluster = 'pdf'
-
-    class { 'admin': groups => ['ocg-render-admins'] }
-    include role::pdf
-    include role::logging::systemusers
-}
-
 node /(plutonium|pollux)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
 
