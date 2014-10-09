@@ -2,8 +2,6 @@ class swift_new::container_sync (
   $replication_accounts = $::swift_new::params::replication_accounts,
   $replication_keys = $::swift_new::params::replication_keys,
 ) {
-    $accounts = merge($replication_accounts, $replication_keys)
-
     file { '/etc/swift/container-sync-realms.conf':
         ensure  => present,
         mode    => 0440,
