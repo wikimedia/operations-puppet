@@ -20,7 +20,7 @@ groups:
   parsoid-admin:
     gid: 702
     description: RT 5934
-    members: [ssastry, cscott]
+    members: [ssastry, cscott, arlolra]
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
@@ -128,7 +128,7 @@ groups:
   ocg-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)
-    members: [cscott, ssastry, gwicke]
+    members: [cscott, ssastry, gwicke, arlolra]
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
@@ -751,6 +751,13 @@ users:
     realname: Avar
     ssh_keys: []
     uid: 534
+  arlolra:
+    ensure: present
+    gid: 500
+    name: arlolra
+    realname: Arlo Breault
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAuTCgnQmqjHCcpm+JRaeY0wnCMhfHLCzEKNu70nVKpA7dJPnWHvTvWKcS/cd3e2Hz3DgtsFEu1YIbPpQflj9UOTTAD5BrT3GZym9h72l4Omgj2XjiIWYQgFPu+aS3RKcTxWw5nIrrYUPIawEezNlRU+dYhpkjY0u8E6N27DBLhdvGvjQUYCwy1qddcLIQhAQ0ev1K3aol5EeEmH0kMPUXF6XikyRFuNMwwBnLxNJFPTD4LGX72rkzhMSo110uEXAeIoEurb5spbUDWwVNxlpjZBSLf6KhkA/rN69gXetkvgQ2LvlW0gIqLmJ9KlD10PZMOag7FSH9djUG0kdZhwdZPQ== arlolra@gmail.com]
+    uid: 3381
   cscott:
     ensure: present
     gid: 500
