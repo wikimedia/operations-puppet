@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 import sys
+import time
 from elasticsearch import ConnectionError
 from elasticsearch import Elasticsearch
+from subprocess import Popen
 
 
 # Helper functions go here
@@ -37,6 +40,61 @@ def es_health():
         return 0
 
 
+def es_restart_fast():
+    # Sanity checks
+    if os.getuid() != 0:
+        print "Must be run as root"
+        return 1
+    if args.server != "localhost":
+        print "Must be run against localhost only"
+        return 1
+
+    # Disable replication so we can make recovery easier
+    print "Disabling non-primary replication...",
+    if not set_replication_state("primaries"):
+        print "failed!"
+        return 1
+    print "ok"
+
+    # Actually restart the service
+    print "Restarting Elasticsearch...",
+    p = Popen(["/etc/init.d/elasticsearch", "restart"], shell=True)
+    out, err = p.communicate()
+    if p.returncode != 0:
+        print "failed! -- You will still need to enable replication again"
+        return 1
+    print "ok"
+
+    # Wait for it to come back alive
+    print "Waiting for Elasticsearch...",
+    while True:
+        try:
+            if cluster_health():
+                print "ok"
+                break
+        except:
+            pass
+        print ".",
+        time.sleep(1)
+
+    # Wait a sec
+    time.sleep(1)
+
+    # Turn replication back on so things will recover fully
+    print "Enabling all replication...",
+    if not set_replication_state("all"):
+        print "failed! -- You will still need to enable replication again"
+        return 1
+    print "ok"
+
+    # Wait a bit
+    time.sleep(5)
+    print "Waiting for green (you can ctrl+c here if you have to)...",
+    while cluster_health() != "green":
+        time.sleep(1)
+    print "ok"
+
+
 def es_start_replication():
     if set_replication_state("all"):
         print "All replication enabled"
@@ -57,6 +115,7 @@ def es_stop_replication():
 # And register them here
 commands = {
     "health": es_health,
+    "restart-fast": es_restart_fast,
     "start-replication": es_start_replication,
     "stop-replication": es_stop_replication
 }
