@@ -1,0 +1,49 @@
+#!/bin/bash
+# keyholder -- Manage shared SSH agent
+
+show_usage() {
+  /bin/echo >&2 "keyholder -- Manage shared SSH agent
+
+  keyholder add KEY
+    Add a private key identity to the agent
+
+  keyholder list
+    Lists fingerprints of all identities currently represented by the agent
+
+  keyholder clear
+    Deletes all identities from the agent
+
+  keyholder start/stop/restart
+    Start / stop / restart the keyholder service
+
+  keyholder tail
+    Tail the keyholder service's log file
+  "
+  exit 1
+}
+
+command=$1; shift
+case "$command" in
+    status)
+        /sbin/status keyholder-agent
+        /sbin/status keyholder-proxy
+        ;;
+    list)
+        SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/bin/ssh-add -l
+        ;;
+    add)
+        SSH_AUTH_SOCK=/run/keyholder/agent.sock sudo -u keyholder -E /usr/bin/ssh-add "$@"
+        ;;
+    clear)
+        SSH_AUTH_SOCK=/run/keyholder/agent.sock sudo -u keyholder -E /usr/bin/ssh-add -D
+        ;;
+    start|stop|restart)
+        "/sbin/${command}" keyholder-agent
+        ;;
+    tail)
+        /usr/bin/tail "$@" /var/log/upstart/keyholder-proxy.log
+        ;;
+    *)
+        show_usage
+        ;;
+esac

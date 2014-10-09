@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+  ssh-agent-proxy -- filtering proxy for ssh-agent
+
+  Creates a UNIX domain socket that proxies connections to an ssh-agent(1)
+  socket, disallowing any operations except listing identities and signing
+  requests.
+
+  usage: ssh-agent-proxy [--bind ADDRESS] [--connect ADDRESS]
+
+  Options:
+    --bind ADDRESS     Bind the proxy to the UNIX domain socket at this address
+    --connect ADDRESS  Proxy connects to the ssh-agent socket at this address
+
+
+  Copyright 2014 Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY CODE, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+import argparse
+import grp
+import logging
+import os
+import pwd
+import select
+import socket
+import socketserver
+import struct
+
+
+SSH_AGENT_FAILURE = 5
+
+s_message_header = struct.Struct('!LB')
+s_ucred = struct.Struct('2Ii')
+
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(message)s')
+
+
+class SshAgentProxyHandler(socketserver.BaseRequestHandler):
+    # See <http://api.libssh.org/rfc/PROTOCOL.agent>
+    permitted_requests = {
+        0x1: 'SSH_AGENTC_REQUEST_RSA_IDENTITIES',
+        0xb: 'SSH2_AGENTC_REQUEST_IDENTITIES',
+        0xd: 'SSH2_AGENTC_SIGN_REQUEST',
+    }
+
+    def get_peer_credentials(self, sock):
+        credentials = sock.getsockopt(
+            socket.SOL_SOCKET, socket.SO_PEERCRED, s_ucred.size)
+        pid, uid, gid = s_ucred.unpack(credentials)
+        return pwd.getpwuid(uid).pw_name, grp.getgrgid(gid).gr_name
+
+    def setup(self):
+        self.proxy = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        self.proxy.setblocking(False)
+        self.proxy.connect(self.connect)
+        self.sockets = (self.request, self.proxy)
+
+    def recv_message(self, sock):
+        header = sock.recv(s_message_header.size, socket.MSG_WAITALL)
+        if len(header) < s_message_header.size:
+            return None, b''
+        size, code = s_message_header.unpack(header)
+        message = sock.recv(size - 1, socket.MSG_WAITALL)
+        return code, message
+
+    def send_message(self, sock, code, message=b''):
+        header = s_message_header.pack(len(message) + 1, code)
+        sock.sendall(header + message)
+
+    def handle(self):
+        while 1:
+            readable, *_ = select.select(self.sockets, (), (), 1)
+            if self.proxy in readable:
+                self.request.sendall(self.proxy.recv(64 * 1024))
+            if self.request in readable:
+                code, message = self.recv_message(self.request)
+                if code is None:
+                    return
+                user, group = self.get_peer_credentials(self.request)
+                req = self.permitted_requests.get(code, 'UNKNOWN (%s)' % code)
+                logging.info('Received %s from %s:%s', req, user, group)
+                if code in self.permitted_requests:
+                    self.send_message(self.proxy, code, message)
+                else:
+                    self.send_message(self.request, SSH_AGENT_FAILURE)
+
+
+ap = argparse.ArgumentParser(description='Filtering proxy for ssh-agent(1)')
+ap.add_argument('--bind', default='/run/keyholder/proxy.sock',
+                help='Bind the proxy to the domain socket at this address')
+ap.add_argument('--connect', default='/run/keyholder/agent.sock',
+                help='Proxy connects to the ssh-agent socket at this address')
+args = ap.parse_args()
+
+SshAgentProxyHandler.connect = args.connect
+logging.info('Proxying %s -> %s', args.bind, args.connect)
+proxy = socketserver.ThreadingUnixStreamServer(args.bind, SshAgentProxyHandler)
+proxy.serve_forever()
