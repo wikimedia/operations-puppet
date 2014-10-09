@@ -188,8 +188,8 @@ sub tag_carrier {
         } else {
             //
             // Each carrier migrated to the unified design must be moved to the vcl_deliver so that analytics stays current
-            // Enabled: 250-99,401-01,404-01,414-06,416-03,426-04,428-98,429-02,436-01,436-04,437-01,470-01,514-02,515-03,635-10,TESTON
-            // Disabled: 255-03,310-260,410-06,436-05,515-05,604-00,621-30,623-03,630-03,631-02
+            // Enabled: 250-99,255-03,401-01,404-01,414-06,416-03,426-04,428-98,429-02,436-01,436-04,437-01,470-01,514-02,515-03,635-10,TESTON
+            // Disabled:310-260,410-06,436-05,437-05,515-05,604-00,621-30,623-03,630-03,631-02
             //
             // TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess...
             //
@@ -255,7 +255,7 @@ sub vcl_deliver {
         // until they finish their migration
         // According to qchris, analytics can handle language and subdomain, but not proxy or https
         unset req.http.X-CS;
-        if (req.http.X-CS2 ~ "^(404-01|426-04|428-98|436-01|436-04|635-10)$") {
+        if (req.http.X-CS2 ~ "^(404-01|426-04|428-98|436-01|436-04|437-05|635-10)$") {
             // These carriers support HTTPS DIRECT connections (no proxies)
             if (!req.http.X-Forwarded-By) {
                 set req.http.X-CS = req.http.X-CS2;
