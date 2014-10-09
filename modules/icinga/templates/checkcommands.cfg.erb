@@ -311,28 +311,8 @@ define command{
     }
 
 define command{
-    command_name    nrpe_check_raid
-    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_raid
-    }
-define command{
     command_name    check_ircd
     command_line    $USER1$/check_ircd -H $HOSTADDRESS$ -w 800 -c 1000
-}
-define command{
-    command_name    nrpe_check_dpkg
-    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
-}
-define command{
-    command_name    nrpe_check_udp2log_log_age
-    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
-}
-define command{
-    command_name    nrpe_check_udp2log_procs
-    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_procs
-}
-define command{
-    command_name    nrpe_check_varnishncsa
-    command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
 }
 define command{
     command_name    check_eventlogging_jobs
@@ -344,7 +324,7 @@ define command{
 # ARG2: timeout in seconds
 define command{
     command_name    nrpe_check
-    command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -t $ARG2$
+    command_line    $USER1$/check_nrpe -u -H $HOSTADDRESS$ -c $ARG1$ -t $ARG2$
 }
 
 define command{
