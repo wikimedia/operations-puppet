@@ -128,6 +128,6 @@ class base::monitoring::host($contact_group = 'admins') {
     }
     nrpe::monitor_service { 'check_salt_minion':
         description  => 'check if salt-minion is running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:2 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
     }
 }
