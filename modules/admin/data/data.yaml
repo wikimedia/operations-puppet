@@ -55,7 +55,7 @@ groups:
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed, yuvipanda,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
-      jzerebecki, declerambaul, ellery, dduvall, nettrom]
+      jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -154,7 +154,7 @@ groups:
                 and other private data.
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
               howief, awight, dr0ptp4kt, qchris, tnegrin, nuria,
-              leila, manybubbles, ironholds, kleduc, ellery, nettrom]
+              leila, manybubbles, ironholds, kleduc, ellery, nettrom, mforns]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -162,7 +162,7 @@ groups:
               maryana, mattflaschen, mhurd, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
-              deskana, jzerebecki, dduvall, nettrom]
+              deskana, jzerebecki, dduvall, nettrom, mforns]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -206,7 +206,7 @@ groups:
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
-              ezachte]
+              ezachte, mforns]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1147,3 +1147,10 @@ users:
     realname: Morten Warncke-Wang
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAmjVSpmltf5d+0BTwdxRL6HmtvBKT8G2tsyET/Q0QJSu7jAEKoXHtsQlpWLJJecOe/9kCUDc5X3/1EOBTvlSOKRz4iPCgscGjIr4C8wT6tbboE5VkLlBPZqyC0pi0dTsILu599CPCBkwpr2K1yUwXwAJ0W3Y0XmsmJQmsDRyWP0Ck69EQ1NOfYp44NpZXdm63DzvIozNHRXNfyGQDHp8aNokegeuyd/cjDEVsUotH7ll0NoayStezJsL364i/yc9MWGEhHxsBRNaK9W9OPb6guaNwdXbwCiIgu+5WkTcJ9WauBl3DrY529aGQoqEps61VGeYkHKk/p+12TDPOZdKcYw== morten@fjord]
     uid: 3290
+  mforns:
+    ensure: present
+    gid: 500
+    name: mforns
+    realname: Marcel Ruiz Forns
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbO6Vkqy7ojVxQwNIFn9n6afGHsVci0UF2izNId6/3qDD2qHEKqew9JfkqQyOiff2bZXDNFp4KE3jSmAuFq2nRJKE+YJXX4t6CfwhWY4cUdbVNtWugV+bb8MuOblWs5VbxENqPS8WuvT3lyib4q6Gvlg43QJaKy292D9yHmx9sz3k/JADgYcwK6+tA5Qtby6PTup9lgVzhXdl7hxS5TPcUmMk/k7CZNx1KD5kcbHIPtggMTC9izO4se/kQB/vdggwV2JRAycKStg7GD+kj7yUJhN/G8UDyMZTPgLZcAtRHAsMETL5pYEk9MqD5WLVrVhWr5cuUXTh4pYgHGuQSdJVD mforns@zenmote]
+    uid: 10668
