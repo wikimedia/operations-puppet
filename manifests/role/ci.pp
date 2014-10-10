@@ -129,6 +129,9 @@ class role::ci::master {
         require => User['jenkins'],
     }
 
+    # backups
+    include backup::host
+    backup::set {'var-lib-jenkins-config': }
 
 }
 
