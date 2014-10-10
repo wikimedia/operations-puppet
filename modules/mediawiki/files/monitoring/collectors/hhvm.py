@@ -26,6 +26,7 @@ class hhvm_healthCollector(diamond.collector.Collector):
             'url': '/',
             'timeout': 5,
         })
+        return config
 
     def collect(self):
         # publish stats with self.publish
