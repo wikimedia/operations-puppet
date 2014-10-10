@@ -67,7 +67,7 @@
 
 class phabricator (
     $phabdir          = '/srv/phab',
-    $timezone         = 'America/Los_Angeles',
+    $timezone         = 'UTC',
     $lock_file        = '',
     $git_tag          = 'HEAD',
     $libext_tag       = '',
