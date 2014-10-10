@@ -1,0 +1,6 @@
+# 'check_smtp' command definition
+define command{
+        command_name    check_smtp
+        # workaround Debian #578333
+        command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$
+        }
