@@ -20,7 +20,7 @@ class hhvm_healthCollector(diamond.collector.Collector):
         pass
 
     def get_default_config(self):
-        config = super(mw_hhvmCollector, self).get_default_config()
+        config = super(hhvm_healthCollector, self).get_default_config()
         config.update({
             'host': 'localhost:9002',
             'url': '/',
