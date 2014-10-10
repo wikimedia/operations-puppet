@@ -10,6 +10,12 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
     }
     else {
         $endpoints = {}
+        diamond::collector { 'hhvm_health':
+            ensure   => $ensure,
+            source   => 'puppet:///modules/mediawiki/monitoring/collectors/hhvm.py',
+            settings => { url => '/check-health' },
+            require  => Apache::Site['hhvm-admin'],
+        }
     }
 
     # Basic vhost files
