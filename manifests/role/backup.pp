@@ -162,6 +162,9 @@ class role::backup::director {
     bacula::director::fileset { 'var-lib-archiva':
         includes     => [ '/var/lib/archiva' ],
     }
+    bacula::director::fileset { 'var-lib-jenkins-config':
+        includes     => [ '/var/lib/jenkins/config.xml' ],
+    }
     bacula::director::fileset { 'var-lib-gerrit2-review_site-git':
         includes => [ '/var/lib/gerrit2/review_site/git' ]
     }
