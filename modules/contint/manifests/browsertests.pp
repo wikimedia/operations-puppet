@@ -44,7 +44,6 @@ class contint::browsertests(
         'chromium-browser',
         'firefox',
         'xvfb',  # headless testing
-        'libsikuli-script-java',  # bug 54393
         ]: ensure => present
     }
 
