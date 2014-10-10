@@ -14,7 +14,7 @@ import urllib2
 import diamond.collector
 
 
-class mw_hhvmCollector(diamond.collector.Collector):
+class hhvm_healthCollector(diamond.collector.Collector):
 
     def get_default_config_help(self):
         pass
