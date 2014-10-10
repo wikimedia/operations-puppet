@@ -1,4 +1,1 @@
-root 8192
-/var 2048
-/var/log 2048
-swap 2048
+root 10240
