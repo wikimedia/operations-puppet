@@ -138,6 +138,10 @@ class phabricator (
         content => template('phabricator/phabricator-default.conf.erb'),
     }
 
+    file { $phabdir:
+        ensure => directory,
+    }
+
     git::install { 'phabricator/libphutil':
         directory => "${phabdir}/libphutil",
         git_tag   => $git_tag,
