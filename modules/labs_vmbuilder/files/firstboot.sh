@@ -3,6 +3,78 @@
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 restart rsyslog
+
+# If we don't have a LVM volume group, we'll create it,
+# and allocate the remainder of the disk to it,
+if ! /sbin/vgdisplay -c vd
+then
+  echo 'Creating the volume group'
+  if /sbin/parted -s /dev/vda mkpart primary $(
+      /sbin/parted -s /dev/vda print free |
+      /usr/bin/tail -n 1 |
+      /bin/sed -e 's/ */ /g' |
+      /usr/bin/cut -d ' ' -f 2,3
+    )
+  then
+    part=$( /sbin/parted -s /dev/vda print |
+            /bin/grep 'primary' |
+            /usr/bin/tail -n 1 |
+            /bin/sed -e 's/  */ /g' |
+            /bin/sed -e 's/^ *//' |
+            /usr/bin/cut -d ' ' -f 1 )
+
+    if [ "$part" != "" ]; then
+      if [ "$part" -gt 1 ]; then
+        /sbin/parted -s /dev/vda set $part lvm on
+        /sbin/pvcreate /dev/vda$part
+        /sbin/vgcreate vd /dev/vda$part
+        /sbin/partprobe
+      fi
+    fi
+  fi
+fi
+# At this point, all our disk are belong to LVM.
+
+# If we don't have a swap partition, make one now
+if ! /bin/egrep -q '^\S+\s+\S+\s+swap\s' /etc/fstab
+then
+  echo 'Creating swap volume'
+  /sbin/lvcreate -L 2G -n swap vd
+  /sbin/mkswap /dev/mapper/vd-swap
+  echo "/dev/mapper/vd-swap none swap defaults 0 0" >>/etc/fstab
+then
+
+# If we don't have a /var, we create it and /var/log,
+# move everything to it, and forcibly reboot now to try
+# everything anew
+if ! /bin/egrep -q '^\S+\s+/var\s' /etc/fstab
+then
+  echo 'Creating /var and /var/log volumes'
+  /sbin/lvcreate -L 2G -n var vd
+  /sbin/mkfs -t ext4 /dev/mapper/vd-var
+  /sbin/lvcreate -L 2G -n log vd
+  /sbin/mkfs -t ext4 /dev/mapper/vd-log
+  /sbin/mkdir -p /tmp/var
+  /bin/mount /dev/mapper/vd-var /tmp/var
+  /sbin/mkdir -p /tmp/var/log
+  /bin/mount /dev/mapper/vd-log /tmp/var/log
+  /bin/tar cf - -C / var | /bin/tar xf - -C /tmp
+  /bin/umount /tmp/var/log
+  /bin/umount /tmp/var
+  echo "/dev/mapper/vd-var /var ext4 defaults 0 0" >>/etc/fstab
+  echo "/dev/mapper/vd-log /var/log ext4 defaults 0 0" >>/etc/fstab
+
+  # We're all done.  Now all that's left is to reboot making sure
+  # that this script executes again.  This is done by remounting
+  # / readonly before a forcible reboot - this way the file
+  # used to tell rc.local to not execute firstboot.sh again can't
+  # be created.
+
+  /bin/sync
+  /bin/mount -oro,remount /
+  /sbin/reboot -f
+fi
+
 puppet agent --enable
 
 binddn=`grep 'binddn' /etc/ldap.conf | sed 's/.* //'`
