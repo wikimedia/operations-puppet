@@ -2709,7 +2709,6 @@ node 'titanium.wikimedia.org' {
 
 # tmh1001/tmh1002 video encoding server (precise only)
 node /^tmh100[1-2]\.eqiad\.wmnet/ {
-    include admin
     $cluster = 'videoscaler'
     if $::hostname =~ /^tmh100[12]$/ {
         $ganglia_aggregator = true
