@@ -17,6 +17,10 @@ class androidsdk::dependencies( $ensure = 'present' ) {
         }
     }
 
+    package { 'openjdk-7-jdk':
+        ensure => $ensure,
+    }
+
     # 32bit compat libraries needed by AndroidSDK
     # They have different names in precise and trusty
     if $::lsbdistcodename == 'precise' {
