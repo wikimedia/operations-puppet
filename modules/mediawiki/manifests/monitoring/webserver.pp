@@ -14,7 +14,7 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
             ensure   => $ensure,
             source   => 'puppet:///modules/mediawiki/monitoring/collectors/hhvm.py',
             settings => { url => '/check-health' },
-            require  => Apache::Site['hhvm-admin'],
+            require  => Apache::Site['hhvm_admin'],
         }
     }
 
