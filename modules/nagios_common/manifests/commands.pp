@@ -90,4 +90,11 @@ class nagios_common::commands(
         group         => $group,
         plugin_source => 'puppet:///modules/nagios_common/check_commands/check_ssl_cert/check_ssl_cert',
     }
+
+    file { "$config_dir/checkcommands.cfg":
+        source => 'puppet:///modules/nagios_common/checkcommands.cfg',
+        owner  => $owner,
+        group  => $group,
+        mode   => '0644',
+    }
 }
