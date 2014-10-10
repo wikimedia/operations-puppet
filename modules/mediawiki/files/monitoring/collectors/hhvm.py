@@ -30,7 +30,7 @@ class mw_hhvmCollector(diamond.collector.Collector):
     def collect(self):
         # publish stats with self.publish
         url = "http://{}{}".format(
-            self.config['host']
+            self.config['host'],
             self.config['url']
         )
         headers = {
