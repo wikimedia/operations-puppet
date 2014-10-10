@@ -58,7 +58,6 @@ class toollabs::dev_environ {
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
         'npm',
-        'openjdk-7-jdk',
         'p7zip-full', # requested by Betacommand to extract files using 7zip
         'pastebinit',
         'pep8',                        # Bug 57863
