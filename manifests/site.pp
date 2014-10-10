@@ -2715,6 +2715,10 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
         $ganglia_aggregator = true
     }
     include role::mediawiki::videoscaler
+
+    class { 'admin':
+        groups => ['deployment']
+    }
 }
 
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
