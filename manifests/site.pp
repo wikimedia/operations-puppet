@@ -1208,6 +1208,9 @@ node 'gallium.wikimedia.org' {
     include role::ci::website
     include role::zuul::production
 
+    include backup::host
+    backup::set {'var-lib-jenkins-config': }
+
     # gallium received a SSD drive (RT #4916) mount it
     file { '/srv/ssd':
         ensure => 'directory',
