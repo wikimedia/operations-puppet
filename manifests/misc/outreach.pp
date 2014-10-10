@@ -7,16 +7,9 @@ class misc::outreach::civicrm {
         content => template('apache/sites/contacts.wikimedia.org.erb'),
     }
 
-    install_certificate{ 'contacts.wikimedia.org': }
-
     ferm::service { 'contacts_http':
         proto => 'tcp',
         port  => '80',
-    }
-
-    ferm::service { 'contacts_https':
-        proto => 'tcp',
-        port  => '443',
     }
 
 }
