@@ -95,6 +95,15 @@ class icinga::plugins {
         mode    => '0644',
     }
 
+    nagios_common::check_command::config { 'smtp.cfg':
+        ensure     => present,
+        content    => template('icinga/check_commands/smtp.cfg.erb'),
+        config_dir => '/etc/icinga',
+        owner      => 'icinga',
+        group      => 'icinga'
+    }
+
+
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
 
