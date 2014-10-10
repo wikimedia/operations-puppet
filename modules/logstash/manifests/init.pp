@@ -21,9 +21,13 @@ class logstash(
 ) {
     include ::elasticsearch::packages
 
-    package { 'logstash':
-        ensure  => 'present',
-        require => Package['openjdk-7-jdk'],
+    package {
+        'logstash':
+                ensure  => 'present',
+                require => Package['openjdk-7-jdk'];
+
+        'logstash-contrib':
+                ensure  => 'present';
     }
 
     file { '/etc/default/logstash':
