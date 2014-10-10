@@ -86,6 +86,11 @@ class contint::packages::labs {
             'python3.4',
             # Let us compile python modules:
             'python3.4-dev',
+
+            'ruby2.0',
+            # bundle/gem compile ruby modules:
+            'ruby2.0-dev',
+
             ]: ensure => present,
         }
     }
