@@ -18,6 +18,10 @@
 #   Path to source for the plugin configuration.
 #   Defaults to puppet:///modules/nagios_common/check_commands/$title.cfg
 #
+# [*config_content*]
+#   String content for the plugin configuration.
+#   Should not be specified if config_source is specified
+#
 # [*owner*]
 #   The user which should own the config file.
 #   Defaults to 'icinga'
@@ -30,10 +34,12 @@ define nagios_common::check_command(
     $ensure = present,
     $config_dir = '/etc/icinga',
     $plugin_source = "puppet:///modules/nagios_common/check_commands/$title",
-    $config_source = "puppet:///modules/nagios_common/check_commands/$title.cfg",
+    $config_source = undef,
+    $config_content = undef,
     $owner = 'icinga',
     $group = 'icinga',
 ) {
+
 
     file { "/usr/lib/nagios/plugins/$title":
         ensure => $ensure,
@@ -43,12 +49,19 @@ define nagios_common::check_command(
         mode   => '0755',
     }
 
+    if $config_source != undef {
+        $real_config_source =  "puppet:///modules/nagios_common/check_commands/$title.cfg"
+    } else {
+        $real_config_source = undef
+    }
+
     nagios_common::check_command::config { $title:
         ensure     => $ensure,
-        source     => $config_source,
+        source     => $real_config_source,
+        content    => $config_content,
         config_dir => $config_dir,
         owner      => $owner,
-        group     => $group
+        group      => $group
     }
 }
 
@@ -69,6 +82,10 @@ define nagios_common::check_command(
 #   Path to source for the plugin configuration.
 #   Defaults to puppet:///modules/nagios_common/check_commands/$title.cfg
 #
+# [*source*]
+#   String content to use for the plugin configuration.
+#   Should not be used with the source parameter.
+#
 # [*owner*]
 #   The user which should own the config file.
 #   Defaults to 'icinga'
@@ -81,13 +98,21 @@ define nagios_common::check_command::config(
     $ensure = present,
     $config_dir = '/etc/icinga',
     $source = "puppet:///modules/nagios_common/check_commands/$title.cfg",
+    $content = undef,
     $owner = 'icinga',
     $group = 'icinga',
 ) {
+    if $source != undef {
+        $real_source = $source
+    } else {
+        $real_source = undef
+    }
+
     file { "$config_dir/commands/$title.cfg":
-        ensure => $ensure,
-        source => $source,
-        owner  => $owner,
-        group  => $group,
+        ensure  => $ensure,
+        source  => $real_source,
+        content => $content,
+        owner   => $owner,
+        group   => $group,
     }
 }
