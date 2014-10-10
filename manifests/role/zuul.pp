@@ -109,13 +109,13 @@ class role::zuul::server {
     # Deploy Wikimedia Zuul configuration files.
     #
     # Describe the behaviors and jobs
-    # Conf file is hosted in integration/zuul-config git repo
-    git::clone { 'integration/zuul-config':
+    # Conf file is hosted in integration/config git repo
+    git::clone { 'integration/config':
         directory => '/etc/zuul/wikimedia',
         owner     => zuul,
         group     => zuul,
         mode      => '0775',
-        origin    => 'https://gerrit.wikimedia.org/r/p/integration/zuul-config.git',
+        origin    => 'https://gerrit.wikimedia.org/r/p/integration/config.git',
         branch    => $role::zuul::configuration::server[$::realm]['config_git_branch'],
     }
 
