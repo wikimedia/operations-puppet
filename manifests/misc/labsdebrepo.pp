@@ -6,9 +6,6 @@ class misc::labsdebrepo {
     file { '/data/project/repo':
         ensure => directory,
     }
-    file { '/data/project/repo/Packages.gz':
-        ensure => present,
-    }
     # run dpkg-scanpackages . /dev/null | gzip -9c > binary/Packages.gz
     # dpkg-scanpackages is in dpkg-dev
     package { 'dpkg-dev':
@@ -17,8 +14,9 @@ class misc::labsdebrepo {
     exec { 'Turn dir into deb repo':
         cwd     => '/data/project/repo',
         command => '/usr/bin/dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz',
-        # only run if Packages.gz is *not* the newest file in the directory
-        onlyif  => '/usr/bin/test $(find . -newer Packages.gz | wc -l) -gt 0',
+        # Only run if Packages.gz is *not* the newest file in the
+        # directory or doesn't exist at all.
+        onlyif  => '/usr/bin/test ! -e Packages.gz -o $(find . -newer Packages.gz | wc -l) -gt 0',
         require => [Package['dpkg-dev'], File['/data/project/repo']],
     }
     # add the dir-turned-repo to sources.list
