@@ -110,15 +110,24 @@ define git::install(
             unless  => "git clean -df & git checkout . && git diff HEAD..${git_tag} --exit-code",
             path    => '/usr/bin/',
             require => Git::Clone[$title],
-            notify  => Exec["git_checkout_${title}"],
+            notify  => Exec["git_fetchtags_${title}"],
         }
 
-        exec {"git_checkout_${title}":
-            command     => "git checkout tags/${git_tag}",
+        exec {"git_fetchtags_${title}":
+            command     => "git fetch --tags",
             cwd         => $directory,
             user        => $owner,
             path        => '/usr/bin/',
-            refreshonly => true
+            notify  => Exec["git_checkout_${title}"]
         }
+
+
+	exec {"git_checkout_${title}":
+                command     => "git checkout tags/${git_tag}",
+                cwd         => $directory,
+                user        => $owner,
+                path        => '/usr/bin/',
+                refreshonly => true
+	}
     }
 }
