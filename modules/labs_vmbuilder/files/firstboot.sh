@@ -11,6 +11,10 @@ then
   echo 'Creating the volume group'
   # the tail|sed|cut is just to get the start and
   # end of the last unpartitioned span on the disk
+  /sbin/parted -s /dev/vda print
+  /sbin/parted -ms /dev/vda print
+  /sbin/parted -s /dev/vda print free
+  /sbin/parted -ms /dev/vda print free
   if /sbin/parted -s /dev/vda mkpart primary $(
       /sbin/parted -ms /dev/vda print free |
       /usr/bin/tail -n 1 |
