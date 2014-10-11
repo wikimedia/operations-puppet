@@ -56,9 +56,9 @@ then
   /sbin/mkfs -t ext4 /dev/mapper/vd-var
   /sbin/lvcreate -L 2G -n log vd
   /sbin/mkfs -t ext4 /dev/mapper/vd-log
-  /sbin/mkdir -p /tmp/var
+  /bin/mkdir -p /tmp/var
   /bin/mount /dev/mapper/vd-var /tmp/var
-  /sbin/mkdir -p /tmp/var/log
+  /bin/mkdir -p /tmp/var/log
   /bin/mount /dev/mapper/vd-log /tmp/var/log
   /bin/tar cf - -C / var | /bin/tar xf - -C /tmp
   /bin/umount /tmp/var/log
