@@ -19,6 +19,7 @@ class wikistats::updates {
     wikistats::cronjob { [
                 'wp@0',  # Wikipedias
                 'lx@1',  # LXDE
+                'si@1',  # Wikisite
                 'wt@2',  # Wiktionaries
                 'ws@3',  # Wikisources
                 'wn@4',  # Wikinews
@@ -28,6 +29,7 @@ class wikistats::updates {
                 'gt@8',  # Gentoo
                 'sf@8',  # Sourceforge
                 'an@9',  # Anarchopedias
+                'et@9',  # EdiThis
                 'wf@10', # Wikifur
                 'wv@11', # Wikiversities
                 'sc@12', # Scoutwikis
