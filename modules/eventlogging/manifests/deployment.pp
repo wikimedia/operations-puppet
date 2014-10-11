@@ -4,9 +4,4 @@
 #
 class eventlogging::deployment {
     $path = '/srv/deployment/eventlogging/EventLogging'
-
-    package { 'eventlogging':
-        provider => 'trebuchet',
-        before   => File['/etc/init/eventlogging'],
-    }
 }

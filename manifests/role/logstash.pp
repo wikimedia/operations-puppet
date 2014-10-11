@@ -10,7 +10,7 @@ class role::logstash {
     include ::elasticsearch::nagios::check
     include ::passwords::logstash
 
-    package { 'elasticsearchplugins':
+    package { 'elasticsearch/plugins':
         provider => 'trebuchet',
     }
 

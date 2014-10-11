@@ -18,7 +18,7 @@ class eventlogging::package {
         ensure => present,
     }
 
-    package { 'eventlogging':
+    package { 'eventlogging/EventLogging':
         provider => 'trebuchet',
         before   => File['/etc/init/eventlogging'],
     }
