@@ -1,60 +1,29 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 """
-Collect stats from hhvm
-
-### Dependencies
-
- * json
- * urllib2
+  Diamond collector for HHVM
 
 """
-
 import json
 import urllib2
+
 import diamond.collector
 
 
-class hhvm_healthCollector(diamond.collector.Collector):
-
-    def get_default_config_help(self):
-        pass
+class hhvmHealthCollector(diamond.collector.Collector):
+    """Collect health metrics from HHVM."""
 
     def get_default_config(self):
-        config = super(hhvm_healthCollector, self).get_default_config()
-        config.update({
-            'host': 'localhost:9002',
-            'url': '/',
-            'timeout': 5,
-        })
+        config = super(hhvmHealthCollector, self).get_default_config()
+        config.update(url='http://localhost:9002/check-health', timeout=5)
         return config
 
     def collect(self):
-        # publish stats with self.publish
-        url = "http://{}{}".format(
-            self.config['host'],
-            self.config['url']
-        )
-        headers = {
-            'User-agent': 'diamond-hhvm-collector/1.0',
-        }
+        req = urllib2.Request(self.config['url'])
+        req.add_header('User-Agent', 'diamond-hhvm-collector/1.0')
         try:
-            req = urllib2.Request(url, None, headers)
             response = urllib2.urlopen(req, None, self.config['timeout'])
-        except urllib2.HTTPError as e:
-            self.log.error(
-                'Got error status code %d from the HTTP server',
-                e.code)
-            return
-        except urllib2.URLError as e:
-            self.log.error('Could not contact server on localhost')
-            return
-
-        try:
             data = json.load(response)
-            for k, v in data.iteritems():
-                self.publish(k, v)
-        except:
-            self.log.error(
-                "error parsing and publishing data received:\n%s",
-                response.read())
-            return
+            for key, val in data.items():
+                self.publish(key, val)
+        except (IOError, ValueError):
+            self.log.exception('Failed to collect metrics')

@@ -1,37 +1,32 @@
-class mediawiki::monitoring::webserver ($ensure = 'present'){
-    include ::stdlib
+class mediawiki::monitoring::webserver( $ensure = present ) {
     include ::apache
     include ::network::constants
 
     if ubuntu_version('< trusty') {
-        $endpoints = {
-            'apc' => 'apc_stats.php'
-        }
-    }
-    else {
+        $endpoints = {'apc' => 'apc_stats.php'}
+    } else {
         $endpoints = {}
-        diamond::collector { 'hhvm_health':
+
+        diamond::collector { 'hhvmHealth':
             ensure   => $ensure,
             source   => 'puppet:///modules/mediawiki/monitoring/collectors/hhvm.py',
-            settings => { url => '/check-health' },
             require  => Apache::Site['hhvm_admin'],
         }
     }
 
-    # Basic vhost files
     file { '/var/www/monitoring':
         ensure  => ensure_directory($ensure),
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Class['::mediawiki::packages']
+        require => Class['::mediawiki::packages'],
     }
 
 
-    apache::site {'monitoring':
-        ensure   => present,
-        priority => '99',
+    apache::site { 'monitoring':
+        ensure   => $ensure,
         content  => template('mediawiki/apache/monitoring.conf.erb'),
+        priority => 99,
         require  => Package['apache2'],
     }
 
@@ -40,16 +35,15 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
     # This define is designed to be private to this class,
     # this is why it's defined within the class itself.
     # We are choosing convention over configuration here, which is usualy wise.
-    define endpoint ($ensure = $::mediawiki::monitoring::webserver::ensure) {
-
+    define endpoint( $ensure = $::mediawiki::monitoring::webserver::ensure ) {
         $endpoint = $::mediawiki::monitoring::webserver::endpoints[$title]
 
         file { "/var/www/monitoring/${endpoint}":
             ensure => $ensure,
+            source => "puppet:///modules/mediawiki/monitoring/${endpoint}",
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
-            source => "puppet:///modules/mediawiki/monitoring/${endpoint}"
         }
 
         diamond::collector {"mw_${title}":
