@@ -44,7 +44,7 @@ then
   /sbin/mkswap /dev/mapper/vd-swap
   echo "/dev/mapper/vd-swap none swap defaults 0 0" >>/etc/fstab
   /sbin/swapon -a
-then
+fi
 
 # If we don't have a /var, we create it and /var/log,
 # move everything to it, and forcibly reboot now to try
