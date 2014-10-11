@@ -4,8 +4,4 @@
 #
 class eventlogging::deployment {
     $path = '/srv/deployment/eventlogging/EventLogging'
-
-    deployment::target { 'eventlogging':
-        before => File['/etc/init/eventlogging'],
-    }
 }

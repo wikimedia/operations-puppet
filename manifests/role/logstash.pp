@@ -10,7 +10,9 @@ class role::logstash {
     include ::elasticsearch::nagios::check
     include ::passwords::logstash
 
-    deployment::target { 'elasticsearchplugins': }
+    package { 'elasticsearch/plugins':
+        provider => 'trebuchet',
+    }
 
     $minimum_master_nodes = $::realm ? {
         'production' => 2,
