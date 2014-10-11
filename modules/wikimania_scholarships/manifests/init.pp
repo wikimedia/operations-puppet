@@ -55,8 +55,9 @@ class wikimania_scholarships(
         description => 'Wikimania Scholarships server'
     }
 
-    # Trebuchet deployment
-    deployment::target { 'scholarships': }
+    package { 'scholarships':
+        provider => 'trebuchet',
+    }
 
     apache::site { 'scholarships.wikimedia.org':
         content => template('wikimania_scholarships/apache.conf.erb'),

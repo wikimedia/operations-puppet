@@ -16,7 +16,9 @@
 class kibana (
     $default_route = '/dashboard/file/default.json'
 ) {
-    deployment::target { 'kibana': }
+    package { 'kibana':
+        provider => 'trebuchet',
+    }
 
     file { '/etc/kibana':
         ensure  => directory,

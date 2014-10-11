@@ -49,7 +49,9 @@ class gdash(
         options     => $options,
     }
 
-    deployment::target { 'gdash': }
+    package { 'gdash':
+        provider => 'trebuchet',
+    }
 
     package { [ 'ruby-rack', 'ruby-sinatra', 'rubygems' ]: }
 
