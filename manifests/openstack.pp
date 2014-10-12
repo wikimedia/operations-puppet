@@ -354,10 +354,14 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     }
 
     # ::mediawiki::scap supports syncing the wikitech wiki from tin.
-    #  It also defines /a which is used later on in this manifest for backups.
     include ::mediawiki::scap
 
     file {
+        "/a":
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+            ensure => directory;
         "/var/www/robots.txt":
             ensure => present,
             mode   => '0644',
