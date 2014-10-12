@@ -1,18 +1,21 @@
 # server with user public_html directories enabled and nothing else
 # no critical services, in fact no services at all should run here
-
-class publichtml (
-    $sitename = undef,
-    $docroot = '/srv/org/wikimedia/publichtml',
+class publichtml(
+    $sitename     = undef,
+    $docroot      = '/srv/org/wikimedia/publichtml',
     $server_admin = undef,
 ) {
+    include ::apache::mod::userdir
+    include ::apache::mod::cgi
+    include ::apache::mod::php5
+    include ::apache::mod::rewrite
 
     system::role { 'publichtml':
-        description => 'web server of public_html directories'
+        description => 'web server of public_html directories',
     }
 
     apache::site { $sitename:
-        content => template('publichtml/apacheconfig.erb')
+        content => template('publichtml/apacheconfig.erb'),
     }
 
     file { '/srv/org':
@@ -31,29 +34,20 @@ class publichtml (
 
     file { $docroot:
         ensure  => 'directory',
-        path    => $docroot,
         mode    => '0755',
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
     }
 
     file { "${docroot}/index.html":
-        ensure  => 'present',
-        path    => "${docroot}/index.html",
-        mode    => '0444',
-        owner   => root,
-        group   => root,
         content => template('publichtml/index.html.erb'),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
     }
-
-    include ::apache::mod::userdir
-    include ::apache::mod::cgi
-    include ::apache::mod::php5
-    include ::apache::mod::rewrite
 
     monitor_service { 'http-peopleweb':
         description   => 'HTTP-peopleweb',
-        check_command => "check_http_url!${sitename}!http://${sitename}"
+        check_command => "check_http_url!${sitename}!http://${sitename}",
     }
-
 }
