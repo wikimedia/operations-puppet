@@ -1,0 +1,33 @@
+{
+    "query": "select t.id from maniphest_customfieldstorage f, maniphest_task t where t.PHID=f.objectPHID and f.fieldIndex='$fieldIndex' and f.fieldValue='$fieldValue'",
+    "mysql": {
+        "user": "<%= @mysql_user %>",
+        "pass": "<%= @mysql_pass %>",
+        "host": "<%= @mysql_host %>"
+    },
+    "fieldIndex": "eMsRmlNjLuet",
+    "urlPatterns": [
+        {
+            "pattern": "bug[szila]+.wikimedia.org/show_bug.cgi\\?id=([0-9]+)",
+            "fieldValue": "bz$1",
+            "redirectUrl": "https://phabricator.wikimedia.org/T$id"
+        },
+        {
+            "pattern": "bug[szila]+.wikimedia.org/([0-9]+)",
+            "fieldValue": "bz$1",
+            "redirectUrl": "shttp://phabricator.wikimedia.org/T$id"
+        },
+        {
+            "pattern": "https://bug[szila]+.wikimedia.org/index.cgi",
+            "redirectUrl": "https://phabricator.wikimedia.org/"
+        },
+        {
+            "pattern": "https://bug[szila]+.wikimedia.org/query.cgi",
+            "redirectUrl": "https://phabricator.wikimedia.org/maniphest/query/advanced/"
+        },
+        {
+            "pattern": "https://bug[szila]+.wikimedia.org/describecomponents.cgi",
+            "redirectUrl": "https://phabricator.wikimedia.org/fact/"
+        }
+    ]
+}
