@@ -1,4 +1,4 @@
-# == Class: phabricator
+0ac117e050b8233df19b0abb265b4bbdb8107414# == Class: phabricator
 #
 # Phabricator is a collection of open source web applications
 # that help software companies build better software.
@@ -273,5 +273,16 @@ define phabricator::extension($rootdir='/') {
     file { "${rootdir}/phabricator/src/extensions/${name}":
         ensure => link,
         target => "${rootdir}/extensions/${name}",
+    }
+}
+
+define phabricator::redirector($mysql_user, $mysql_pass, $mysql_host, $rootdir='/') {
+    file { "${rootdir}/phabricator/support/preamble.php":
+        source => 'puppet:///modules/phabricator/preamble.php'
+        require => File["${rootdir}/phabricator/support/redirect_config.json"]
+    }
+
+    file { "${rootdir}/phabricator/support/redirect_config.json":
+        content => template('phabricator/redirect_config.json.erb')
     }
 }

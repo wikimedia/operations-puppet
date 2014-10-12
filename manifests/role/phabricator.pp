@@ -169,4 +169,13 @@ class role::phabricator::labs {
         hasstatus  => true,
         require    => Package['elasticsearch'],
     }
+
+    # dummy redirector to test out the redirect patterns for bugzilla
+    phabricator::redirector { 'phabzilla.wmflabs.org':
+        $mysql_user => 'root',
+        $mysql_pass => $mysqlpass,
+        $mysql_host => 'localhost',
+        $rootdir => '/srv/phab'
+    }
+
 }
