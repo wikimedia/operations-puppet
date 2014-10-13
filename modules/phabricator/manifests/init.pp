@@ -171,7 +171,7 @@ class phabricator (
 
         $phab_settings['load-libraries'] = $libraries
 
-        $libext_lock_path = "${phabdir}/library_lock_${libext_tag}"
+        $libext_lock_path = "${lock_file}_libext"
 
         phabricator::libext { 'Sprint':
             rootdir          => $phabdir,
