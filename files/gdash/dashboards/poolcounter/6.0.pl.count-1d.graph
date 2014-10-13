@@ -1,0 +1,9 @@
+title   "10 most deviant PingLimiter by count, log(2) -1day"
+linewidth 1
+linemode "connected"
+logbase 2
+hide_legend "false"
+from "-1day"
+
+field :count, :alias => "none",
+               :data  => 'cactiStyle(aliasByNode(mostDeviant(10,removeBelowValue(MediaWiki.User.pingLimiter-*.count,0.01)),2))'
