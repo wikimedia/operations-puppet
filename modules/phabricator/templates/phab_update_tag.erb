@@ -57,6 +57,7 @@ function log_repo_head() {
   gitcmd "rev-parse HEAD" <%= @phabdir %>/phabricator/
   gitcmd "rev-parse HEAD" <%= @phabdir %>/arcanist/
   gitcmd "rev-parse HEAD" <%= @phabdir %>/libphutil/
+  gitcmd "rev-parse HEAD" <%= @phabdir %>/libext/Sprint/
 }
 
 if [ "$1" != '-y' ]
@@ -82,8 +83,15 @@ if [ -e <%= @lock_file %> ]
   else
     log "<%= @lock_file %> not found"
 fi
-<% end -%>
 
+if [ -e <%= @libext_lock_path %> ]
+  then
+   $rm -v <%= @libext_lock_path %>
+  else
+    log "<%= @libext_lock_path %> not found"
+fi
+
+<% end -%>
 /etc/init.d/puppet stop
 /etc/init.d/apache2 stop
 <%= @phabdir %>/phabricator/bin/phd stop
