@@ -57,6 +57,7 @@ function log_repo_head() {
   gitcmd "rev-parse HEAD" <%= @phabdir %>/phabricator/
   gitcmd "rev-parse HEAD" <%= @phabdir %>/arcanist/
   gitcmd "rev-parse HEAD" <%= @phabdir %>/libphutil/
+  gitcmd "rev-parse HEAD" <%= @phabdir %>/libext/Sprint/
 }
 
 if [ "$1" != '-y' ]
@@ -75,12 +76,20 @@ fi
 
 <%# if lock_file is '' don't deal with status %>
 <% if @lock_file  != ''-%>
-
 if [ -e <%= @lock_file %> ]
   then
     $rm -v <%= @lock_file %>
   else
     log "<%= @lock_file %> not found"
+fi
+<% end -%>
+
+<% if @libext_tag  != ''-%>
+if [ -e <%= @libext_lock_path %> ]
+  then
+   $rm -v <%= @libext_lock_path %>
+  else
+    log "<%= @libext_lock_path %> not found"
 fi
 <% end -%>
 
