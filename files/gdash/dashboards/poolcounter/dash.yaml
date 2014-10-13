@@ -1,2 +1,2 @@
 :name: "MediaWiki: PoolCounter"
-:description: "PoolCounter Client Stats"
+:description: "PoolCounter Client and RateLimits Stats"
