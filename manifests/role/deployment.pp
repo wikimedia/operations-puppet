@@ -91,7 +91,6 @@ class role::deployment::config {
         'grain'               => 'testrepo',
         'service_name'        => 'puppet',
         'checkout_submodules' => true,
-        'gitfat_enabled'      => true,
     },
     'elasticsearch/plugins'          => {
         'grain'          => 'elasticsearchplugins',
