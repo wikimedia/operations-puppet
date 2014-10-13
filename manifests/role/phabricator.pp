@@ -123,7 +123,7 @@ class role::phabricator::labs {
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
         auth_type        => 'local',
-        libext_tag       => 'HEAD',
+        libext_tag       => '0.5.2',
         libraries        => {
             'burndown'   => '/srv/phab/libext/Sprint',
         },
