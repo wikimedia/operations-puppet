@@ -16,6 +16,25 @@ class mediawiki::monitoring::webserver ($ensure = 'present'){
             settings => { url => '/check-health' },
             require  => Apache::Site['hhvm_admin'],
         }
+
+        monitor_graphite_threshold { 'hhvm_queue_size':
+            description     => 'HHVM queue size',
+            metric          => "servers.${::hostname}.hhvm_healthCollector.queued.value",
+            warning         => 10,
+            critical        => 80,
+            nagios_critical => false
+        }
+
+        $hhvm_max_threads = $::processorcount * 2
+
+        monitor_graphite_threshold { 'hhvm_load':
+            description     => 'HHVM busy threads',
+            metric          => "servers.${::hostname}.hhvm_healthCollector.load.value",
+            warning         => $hhvm_max_threads * 0.8,
+            critical        => $hhvm_max_threads,
+            nagios_critical => false
+        }
+
     }
 
     # Basic vhost files
