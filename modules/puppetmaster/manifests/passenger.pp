@@ -47,6 +47,14 @@ class puppetmaster::passenger(
             enable => false,
             before => Service['apache2'],
         }
+        # puppetmaster's init script does not clean the pid. Not only that but
+        # it also uses it to report on the status of the puppetmaster service.
+        # This creates a race condition that makes it possible for the
+        # puppetmaster service to be forcefully stopped again. This seems to
+        # interfere sometimes with passenger which starts to spew 500s
+        file { '/var/run/puppet/master.pid':
+            ensure => absent,
+        }
     }
 
     # Rotate apache logs
