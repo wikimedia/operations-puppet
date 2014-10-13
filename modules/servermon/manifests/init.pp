@@ -92,4 +92,11 @@ class servermon(
         content => template('servermon/gunicorn.erb'),
         require => Package['gunicorn'],
     }
+
+    cron { 'servermon_make_updates':
+        command => "${directory}/servermon/manage.py make_updates --pythonpath=${directory}",
+        user    => "www-data",
+        hour    => 0,
+        minute  => 0,
+    }
 }
