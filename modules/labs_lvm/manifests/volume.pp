@@ -39,7 +39,7 @@ define labs_lvm::volume(
 ) {
     exec { "create-vd-$volname":
         creates     => "/dev/vd/$volname",
-        unless      => "/sbin/lvdisplay -c vd/$volname",
+        unless      => "/bin/mountpoint -q '$mountat'",
         logoutput   => 'on_failure',
         require     => [
                          File['/usr/local/sbin/make-instance-vol'],
@@ -65,6 +65,11 @@ define labs_lvm::volume(
                          Exec["create-vd-$volname"],
                          File[$mountat],
                        ],
+    }
+
+    labs_lvm::extend { $mountat:
+        size       => $size,
+        require    => [ Mount[$mountat] ],
     }
 
 }

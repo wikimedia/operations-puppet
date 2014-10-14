@@ -1,0 +1,36 @@
+#! /bin/bash
+
+mount="$1"; shift
+size="$1"; shift
+sopt="-L $size"
+
+if (/bin/echo "$size"|/bin/grep -q '%'); then
+  sopt="-l $size"
+fi
+
+if ! mountpoint -q "$mount"; then
+  echo "$0: $mount is not a mountpoint" >&2
+  exit 1
+fi
+
+volume=$(grep "\S* $mount " /proc/mounts | cut -d ' ' -f 1 | tail -n 1)
+if [ "x$volume" = "x" -o ! -b "$volume" ]; then
+  echo "$0: unable to find device for $mount" >&2
+  exit 1
+fi
+if ! /sbin/lvs "$volume" >/dev/null 2>&1; then
+  echo "$0: $mount is not a logical volume" >&2
+  exit 1
+fi
+
+if /sbin/lvextend -t $sopt "$volume" >/dev/null 2>&1; then
+  /sbin/lvextend -r $sopt "$volume"
+  exit
+else
+  if [ "$?" -eq 5 ]; then
+    echo "$0: no space left to grow $mount to $size" >&2
+    exit 2
+  fi
+fi
+
+exit 0
