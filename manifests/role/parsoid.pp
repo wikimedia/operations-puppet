@@ -160,13 +160,6 @@ class role::parsoid::beta {
         group  => wikidev,
         mode   => '0755',
     }
-    file { '/srv/deployment/parsoid/localsettings.js':
-        ensure => present,
-        owner  => jenkins-deploy,
-        group  => wikidev,
-        mode   => '0555',
-        source => 'puppet:///files/misc/parsoid-localsettings-beta.js',
-    }
 
     # beta uses upstart:
     # FIXME: move users to upstart
@@ -194,7 +187,7 @@ class role::parsoid::beta {
     # For beta, override NODE_PATH:
     $parsoid_node_path = '/srv/deployment/parsoid/deploy/node_modules'
     # Also override PARSOID_SETTINGS_FILE
-    $parsoid_settings_file = '/srv/deployment/parsoid/localsettings.js'
+    $parsoid_settings_file = '../conf/wmf/betalabs.localsettings.js'
 
     # Checkout of mediawiki/services/parsoid
     $parsoid_base_path = '/srv/deployment/parsoid/parsoid'
