@@ -55,7 +55,7 @@
 # - $bulk_thread_pool_capacity: queue depth for bulk actions of each node.
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
-# - $graphite_host: host to send graphite data to
+# - $statsd_host: host to send statsd data to
 #
 # == Sample usage:
 #
@@ -82,7 +82,7 @@ class elasticsearch($cluster_name,
                     $filter_cache_size = '10%',
                     $bulk_thread_pool_executors = undef,
                     $bulk_thread_pool_capacity = undef,
-                    $graphite_host = undef) {
+                    $statsd_host = undef) {
 
     include ::elasticsearch::packages
 
