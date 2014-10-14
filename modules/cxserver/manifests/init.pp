@@ -77,12 +77,21 @@ class cxserver(
         content => template('cxserver/logrotate.erb'),
     }
 
+    # Link with upstart-job
+    file { '/etc/init.d/cxserver':
+        ensure => 'link',
+        target => '/lib/init/upstart-job',
+    }
+
     service { 'cxserver':
         ensure     => running,
         hasstatus  => true,
         hasrestart => true,
         provider   => 'upstart',
-        require    => File[$log_dir],
+        require    => [
+            File[$log_dir],
+            File['/etc/init.d/cxserver']
+        ],
         subscribe  => File['/etc/init/cxserver.conf'],
     }
 }
