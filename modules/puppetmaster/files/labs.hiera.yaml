@@ -9,9 +9,9 @@
   :datadir: /etc/puppet/private/hieradata
 :hierarchy:
   - "labs/host/%{::hostname}"
-  - "labs/%{::labsproject}"
+  - "labs/%{::instanceproject}"
   - "%{::realm}"
   - "%{::site}"
-  - "private/%{::labsproject}"
+  - "private/%{::instanceproject}"
   - common
   - "private/common"
