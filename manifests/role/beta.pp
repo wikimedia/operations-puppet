@@ -78,6 +78,20 @@ class role::beta::scap_target {
     # not communicate with that host.
 }
 
+class role::beta::trebuchet_testing {
+    system::role { 'role::beta::trebuchet_testing':
+        description => 'Trebuchet testing host'
+    }
+
+    include ::role::deployment::test
+
+    # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for testing
+    ferm::rule { 'deployment-bastion-trebuchet-testing-ssh':
+        ensure  => present,
+        rule    => "proto tcp dport ssh saddr ${::beta::config::bastion_ip} ACCEPT;",
+    }
+}
+
 class role::beta::appserver {
     system::role { 'role::beta::appserver': }
 
