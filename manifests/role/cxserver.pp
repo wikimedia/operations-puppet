@@ -53,6 +53,12 @@ class role::cxserver::beta {
         port  => $cxserver_port,
     }
 
+    # Link upstart job
+    file { '/etc/init.d/cxserver':
+        ensure => 'link',
+        target => '/lib/init/upstart-job',
+    }
+
     # Allow ssh access from the Jenkins master to the server where cxserver is
     # running
     include contint::firewall::labs
