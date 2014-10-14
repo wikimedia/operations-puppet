@@ -64,12 +64,6 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_poo
         description   => 'Apache HTTP',
         check_command => 'check_http_wikipedia',
     }
-}
-
-class role::mediawiki::appserver {
-    system::role { 'role::mediawiki::appserver': }
-
-    include ::role::mediawiki::webserver
 
     if ubuntu_version('>= trusty') {
         monitor_service { 'appserver_http_hhvm':
@@ -77,6 +71,13 @@ class role::mediawiki::appserver {
             check_command => 'check_http_wikipedia_main',
         }
     }
+}
+
+class role::mediawiki::appserver {
+    system::role { 'role::mediawiki::appserver': }
+
+    include ::role::mediawiki::webserver
+
 }
 
 class role::mediawiki::appserver::api {
