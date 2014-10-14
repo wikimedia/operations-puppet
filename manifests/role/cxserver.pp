@@ -47,6 +47,9 @@ class role::cxserver::beta {
         mode   => '0755',
     }
 
+    # Define cxserver port
+    $cxserver_port = '8080'
+
     # We have to explicitly open the cxserver port (bug 45868)
     ferm::service { 'cxserver_http':
         proto => 'tcp',
