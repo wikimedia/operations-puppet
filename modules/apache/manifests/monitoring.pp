@@ -9,7 +9,13 @@ class apache::monitoring {
     include ::apache::mod::status
     include ::ganglia
 
-    diamond::collector { 'Httpd': }
+
+    diamond::collector { 'Httpd':
+        settings => {
+            path => "${::site}.${cluster}.httpd",
+            urls => "http://127.0.0.1/server-status?auto"
+        }
+    }
 
     file { '/usr/lib/ganglia/python_modules/apache_status.py':
         source  => 'puppet:///modules/apache/apache_status.py',
