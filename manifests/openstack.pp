@@ -1018,3 +1018,42 @@ class openstack::glance-service($openstack_version="folsom", $glanceconfig) {
         }
     }
 }
+
+class openstack::adminscripts {
+    # Script to cold-migrate instances between compute nodes
+    file { '/root/cold-migrate':
+        ensure => present,
+        source => "puppet:///files/openstack/${openstack_version}/virtscripts/cold-migrate",
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    # Script to migrate instance from one dc to another
+    # (specifically, pmtpa to eqiad)
+    file { '/root/dc-migrate':
+        ensure => present,
+        source => 'puppet:///files/openstack/havana/virtscripts/dc-migrate',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    # Log analysis tool
+    file { '/root/logstat.py':
+        ensure => present,
+        source => "puppet:///files/openstack/${openstack_version}/virtscripts/logstat.py",
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    # Set up keystone services (example script)
+    file { '/root/prod-example.sh':
+        ensure => present,
+        source => "puppet:///files/openstack/${openstack_version}/virtscripts/prod.sh",
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+}
