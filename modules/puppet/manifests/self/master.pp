@@ -93,7 +93,7 @@ class puppet::self::master($server) {
         source => 'puppet:///modules/puppetmaster/labs.hiera.yaml',
     }
 
-    file { '/etc/puppet/hiera':
+    file { '/etc/puppet/hieradata':
         ensure => link,
         target => "${puppet::self::gitclone::gitdir}/operations/puppet/hieradata",
         force  => true,
