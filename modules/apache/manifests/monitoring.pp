@@ -11,10 +11,11 @@ class apache::monitoring {
 
 
     diamond::collector { 'Httpd':
+        ensure => absent,
         settings => {
             path => "${::site}.${cluster}.httpd",
             urls => "http://127.0.0.1/server-status?auto"
-        }
+        },
     }
 
     file { '/usr/lib/ganglia/python_modules/apache_status.py':
