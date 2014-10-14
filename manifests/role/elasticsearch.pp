@@ -34,7 +34,7 @@ class role::elasticsearch::config {
             $unicast_hosts        = ['deployment-elastic01',
                 'deployment-elastic02', 'deployment-elastic03',
                 'deployment-elastic04']
-            $graphite_host        = 'labmon1001.eqiad.wmnet'
+            $statsd_host        = 'labmon1001.eqiad.wmnet'
         } else {
             # Regular labs instance
             # We don't know how many instances will be in each labs project so
@@ -57,8 +57,8 @@ class role::elasticsearch::config {
             $expected_nodes       = 1
             $recover_after_nodes  = 1
 
-            # Don't let random test instances spam graphite
-            $graphite_host = undef
+            # Don't let random test instances spam statsd
+            $statsd_host = undef
         }
     } else {
         # Production
@@ -93,7 +93,7 @@ class role::elasticsearch::config {
         $unicast_hosts        = undef
 
         # Not enabled in production yet
-        $graphite_host = undef
+        $statsd_host = undef
 
         # Production elasticsearch needs these plugins to be loaded in order
         # to work properly.  This will keep elasticsearch from starting
@@ -146,7 +146,7 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         require                    => Deployment::Target['elasticsearchplugins'],
         bulk_thread_pool_capacity  => $bulk_thread_pool_capacity,
         bulk_thread_pool_executors => $bulk_thread_pool_executors,
-        graphite_host              => $graphite_host,
+        statsd_host              => $statsd_host,
     }
 
     include ::elasticsearch::ganglia

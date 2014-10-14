@@ -554,12 +554,12 @@ script.groovy.sandbox.receiver_whitelist:
  - org.apache.lucene.util.automaton.CharacterRunAutomaton
 
 ##
-# Graphite plugin configuration
+# Statsd plugin configuration
 ##
-<% if @graphite_host -%>
-metrics.graphite.host: <%= @graphite_host %>
+<% if @statsd_host -%>
+metrics.statsd.host: <%= @statsd_host %>
 <% else -%>
-#metrics.graphite.host: monitoring1001
+#metrics.statsd.host: monitoring1001
 <% end -%>
 
 
