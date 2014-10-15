@@ -1,0 +1,132 @@
+#!/usr/bin/python3
+'''
+Archives graphite metrics for labs hosts that have been deleted.
+
+This is done for each project by:
+    1. Gets list of hosts that have any metric defined
+    2. Gets list of hosts in the project
+    3. Diff (1) against (2), this is hosts with metrics but don't exist
+    4. Assume these are all deleted hosts, and archive them.
+
+This leaves out the instances that are deleted and then re-created
+before this script runs with the same name, but that is perhaps ok
+for now.
+
+Logs to /var/log/graphite/instance-archiver.log
+'''
+import os
+import time
+import urllib.request
+import codecs
+import json
+import logging
+
+
+# Hostname Mapping, for hosts that have a different name in graphite
+# and on wikitech. This seems like a bug in diamond that needs to be
+# fixed. In the mean time, update this mapping! Can be moved into
+# an external file if this gets too big.
+# Maps hostname as in wikitech to graphite metric name.
+HOSTNAME_MAPPING = {
+    'tools-webproxy': 'tools',
+}
+
+WHISPER_PATH = '/srv/carbon/whisper'
+
+
+def archive_host(project_name, host_name):
+    '''
+    Archives all metrics for a particular host in a particular project.
+
+    Moves them to archived_metrics/<project-name>/<timestamp-instancename>
+    '''
+    cur_path = os.path.join(WHISPER_PATH, project_name, host_name)
+    if os.path.exists(cur_path):
+        archived_name = '%s-%s' % (
+            time.strftime('%Y%m%d%H%M%S'),
+            host_name
+        )
+        archived_path = os.path.join(
+            WHISPER_PATH,
+            'archived_metrics',
+            project_name,
+            archived_name
+        )
+        os.makedirs(os.path.dirname(archived_path), 0o755, exist_ok=True)
+        os.rename(cur_path, archived_path)
+        return archived_name
+
+
+def get_hosts_with_metrics(project_name):
+    '''
+    Get list of hosts with at least one metric from this project
+    '''
+    project_path = os.path.join(WHISPER_PATH, project_name)
+    if os.path.exists(project_path):
+        return os.listdir(project_path)
+    else:
+        return []
+
+
+def get_hosts_for_project(project_name):
+    '''
+    Get hosts that are currently present in the given project
+    '''
+    req = urllib.request.urlopen(
+        'https://wikitech.wikimedia.org/w/api.php' +
+        '?action=query&list=novainstances&niproject=%s&niregion=eqiad&format=json' % (
+            project_name,
+        )
+    )
+    reader = codecs.getreader('utf-8')
+    data = json.load(reader(req))
+    return [HOSTNAME_MAPPING.get(instance['name'], instance['name'])
+            for instance in data['query']['novainstances']]
+
+
+def get_projects_list():
+    '''
+    Get a list of all active projects from the wikitech API
+    '''
+    req = urllib.request.urlopen(
+        'https://wikitech.wikimedia.org/w/api.php?action=query&list=novaprojects&format=json'
+    )
+    reader = codecs.getreader('utf-8')
+    data = json.load(reader(req))
+    return data['query']['novaprojects']
+
+
+def get_deleted_instances():
+    '''
+    Get list of instances that have been deleted
+
+    Returns a dictionary with key being the project name and value a set of deleted hostnames
+    '''
+    projects = get_projects_list()
+    deleted_hosts = {}
+    for project in projects:
+        hosts_with_metrics = get_hosts_with_metrics(project)
+        actual_hosts = get_hosts_for_project(project)
+        deleted = set(hosts_with_metrics) - set(actual_hosts)
+        if deleted:
+            deleted_hosts[project] = deleted
+    return deleted_hosts
+
+if __name__ == '__main__':
+    logging.basicConfig(filename='/var/log/graphite/instance-archiver.log',
+                        format='%(asctime)s %(message)s',
+                        level=logging.INFO)
+    try:
+        deleted_hosts = get_deleted_instances()
+        if not deleted_hosts:
+            logging.info('No hosts to archive, all OK')
+        else:
+            logging.info('Found %d host(s) in %d project(s) to archive',
+                         len(deleted_hosts),
+                         sum([len(hosts) for hosts in deleted_hosts.values()]))
+            for project, hosts in deleted_hosts.items():
+                for host in hosts:
+                    archived_name = archive_host(project, host)
+                    logging.info('Archived host %s to %s', host, archived_name)
+    except:
+        logging.exception('Exception!')
