@@ -8,14 +8,6 @@ class deployment::salt_master(
     $deployment_config
 ) {
 
-    file { '/etc/salt/deploy_runner.conf':
-        content => template('deployment/deploy_runner.conf.erb'),
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        require => [Package['salt-master']],
-    }
-
     file { "${state_dir}/deploy":
         ensure  => directory,
         mode    => '0555',
