@@ -8,26 +8,11 @@ import re
 import yaml
 
 
-def __get_conf(repo, key):
-    try:
-        config = yaml.load(file('/etc/salt/deploy_runner.conf', 'r'))
-        return config[key][repo]
-    except IOError:
-        return ''
-    except yaml.YAMLError:
-        return ''
-    except KeyError:
-        return ''
-
-
 def fetch(repo):
     '''
     Fetch from a master, for the specified repo
     '''
-    grain = __get_conf(repo, 'deployment_repo_grains')
-    if not grain:
-        return "No grain defined for this repo."
-    grain = "deployment_target:" + grain
+    grain = "deployment_target:" + repo
     client = salt.client.LocalClient(__opts__['conf_file'])
     cmd = 'deploy.fetch'
     # comma in the tuple is a workaround for a bug in salt
@@ -41,10 +26,7 @@ def checkout(repo, reset=False):
     '''
     Checkout from a master, for the specified repo
     '''
-    grain = __get_conf(repo, 'deployment_repo_grains')
-    if not grain:
-        return "No grain defined for this repo."
-    grain = "deployment_target:" + grain
+    grain = "deployment_target:" + repo
     client = salt.client.LocalClient(__opts__['conf_file'])
     cmd = 'deploy.checkout'
     arg = (repo, reset)
@@ -58,10 +40,7 @@ def restart(repo, batch='10%'):
     Restart the service associated with this repo. If no service is associated
     this call will do nothing.
     '''
-    grain = __get_conf(repo, 'deployment_repo_grains')
-    if not grain:
-        return "No grain defined for this repo."
-    grain = "deployment_target:" + grain
+    grain = "deployment_target:" + repo
     client = salt.client.LocalClient(__opts__['conf_file'])
     cmd = 'deploy.restart'
     # comma in the tuple is a workaround for a bug in salt
