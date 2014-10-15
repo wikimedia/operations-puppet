@@ -83,6 +83,7 @@ class role::beta::trebuchet_testing {
         description => 'Trebuchet testing host'
     }
 
+    include ::beta::config
     include ::role::deployment::test
 
     # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for testing
