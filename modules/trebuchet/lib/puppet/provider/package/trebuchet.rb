@@ -41,20 +41,15 @@ Puppet::Type.type(:package).provide(
     []
   end
 
-  def base
-    @resource[:name].split('/').first
-  end
-
   def repo
-    @resource[:name].split('/').last
-  end
-
-  def qualified_name
-    [base, repo].join('/')
+    case @resource[:name]
+    when /\// then @resource[:name]
+    else ([@resource[:name]] * 2).join('/')
+    end
   end
 
   def target_path
-    path = File.expand_path(File.join(self.class::BASE_PATH, qualified_name))
+    path = File.expand_path(File.join(self.class::BASE_PATH, @repo))
     unless path.length > self.class::BASE_PATH.length
       fail Puppet::Error, "Target path '#{path}' is invalid."
     end
@@ -103,7 +98,7 @@ Puppet::Type.type(:package).provide(
   # Return structured information about a particular package or `nil` if
   # it is not installed.
   def query
-    return nil unless targets.include?(base)
+    return nil unless targets.include?(@repo)
 
     begin
       tag = git('rev-parse', 'HEAD')
@@ -139,7 +134,7 @@ Puppet::Type.type(:package).provide(
     @cached_sha1 || begin
       source = master
       source = ('http://' + source) unless source.include?('://')
-      source.gsub!(/\/?$/, "/#{qualified_name}/.git/deploy/deploy")
+      source.gsub!(/\/?$/, "/#{@repo}/.git/deploy/deploy")
       tag = open(source) { |raw| PSON.load(raw)['tag'] }
       @cached_sha1 = resolve_tag(tag)
     end
@@ -160,18 +155,18 @@ Puppet::Type.type(:package).provide(
   # Install a package. This ensures that the package is listed in the
   # deployment_target grain and that it is checked out.
   def install
-    unless targets.include?(base)
-      salt('grains.append', 'deployment_target', base)
+    unless targets.include?(@repo)
+      salt('grains.append', 'deployment_target', @repo)
       salt_refresh!
     end
-    salt('deploy.fetch', qualified_name)
-    salt('deploy.checkout', qualified_name)
+    salt('deploy.fetch', @repo)
+    salt('deploy.checkout', @repo)
   end
 
   # Remove a deployment target. This won't touch the Git repository
   # on disk; it merely unsets the `deployment_target` grain value.
   def uninstall
-    salt('grains.remove', 'deployment_target', base)
+    salt('grains.remove', 'deployment_target', @repo)
     salt_refresh!
   end
 
