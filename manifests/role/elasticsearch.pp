@@ -31,9 +31,12 @@ class role::elasticsearch::config {
             # The cluster can limp along just fine with three nodes so we'll
             # let it
             $recover_after_nodes  = 3
-            $unicast_hosts        = ['deployment-elastic01',
-                'deployment-elastic02', 'deployment-elastic03',
-                'deployment-elastic04']
+            $unicast_hosts        = [
+                'deployment-elastic02',
+                'deployment-elastic03',
+                'deployment-elastic04',
+                'deployment-elastic05'
+            ]
             $statsd_host        = 'labmon1001.eqiad.wmnet'
         } else {
             # Regular labs instance
