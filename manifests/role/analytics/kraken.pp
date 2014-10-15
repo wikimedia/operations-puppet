@@ -28,7 +28,9 @@ class role::analytics::kraken {
     }
 
     # Include kraken/deploy repository target.
-    deployment::target { 'analytics-kraken-deploy': }
+    package { 'analytics/kraken/deploy':
+        provider => 'trebuchet',
+    }
     # kraken/deploy repository is deployed via git deploy into here.
     # You must deploy this yourself, puppet will not do it for you.
     $path = '/srv/deployment/analytics/kraken/deploy/kraken'

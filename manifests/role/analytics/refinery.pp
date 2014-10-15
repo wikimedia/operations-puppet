@@ -17,7 +17,9 @@ class role::analytics::refinery {
     }
 
     # analytics/refinery will deployed to this node.
-    deployment::target { 'analytics-refinery': }
+    package { 'analytics/refinery':
+        provider => 'trebuchet',
+    }
 
     # analytics/refinery repository is deployed via git-deploy at this path.
     # You must deploy this yourself; puppet will not do it for you.
