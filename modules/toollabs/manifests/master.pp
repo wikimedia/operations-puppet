@@ -14,7 +14,13 @@ class toollabs::master inherits toollabs {
     include gridengine::master,
         toollabs::infrastructure,
         toollabs::exec_environ,
-        toollabs::gridnode
+        toollabs::gridnode,
+        toollabs::hostgroup,
+        toollabs::queue::task,
+        toollabs::queue::continuous
+
+    toollabs::hostgroup::collector { 'general': }
+    toollabs::hostgroup::collector { 'webgrid': }
 
     #
     # These things are done on toollabs::master because they
@@ -42,3 +48,4 @@ class toollabs::master inherits toollabs {
     }
 
 }
+

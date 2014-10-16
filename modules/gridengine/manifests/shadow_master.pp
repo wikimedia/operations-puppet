@@ -1,5 +1,4 @@
-# gridengine.pp
-
+# gridengine/shadow_master.pp
 
 class gridengine::shadow_master(
     $gridmaster = $grid_master,
