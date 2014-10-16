@@ -200,6 +200,7 @@ class role::analytics::hadoop::config {
         $ganglia_host                             = '239.192.1.32'
         $ganglia_port                             = 8649
         $gelf_logging_host                        = 'logstash1002.eqiad.wmnet'
+        $gelf_logging_port                        = 12201
         # In production, make sure that HDFS user directories are
         # created for everyone in these groups.
         $hadoop_users_posix_groups                = 'analytics-users analytics-privatedata-users analytics-admins'
@@ -259,6 +260,7 @@ class role::analytics::hadoop::config {
         $ganglia_host                             = 'aggregator.eqiad.wmflabs'
         $ganglia_port                             = 50090
         $gelf_logging_host                        = '127.0.0.1'
+        $gelf_logging_port                        = 12201
         # In labs, make sure that HDFS user directories are
         # created for everyone in the current labs project.
         $hadoop_users_posix_groups                 = $::instanceproject
@@ -342,7 +344,12 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             require      => Class['cdh::hadoop'],
         }
     }
+    file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
+        content => template('hadoop/hadoop-yarn-logging-helper.erb'),
+        mode => 744,
+    }
     if $gelf_logging_enabled {
+        # library dependency
         package { 'libjson-simple-java':
             ensure => 'installed',
         }
@@ -352,6 +359,7 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             target => '/usr/share/java/json_simple-1.1.jar',
             require => Package['libjson-simple-java'],
         }
+        # the libary itself: logstash-gelf.jar
         package { 'liblogstash-gelf-java':
             ensure => 'installed',
         }
@@ -360,6 +368,18 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             ensure => 'link',
             target => '/usr/share/java/logstash-gelf.jar',
             require => Package['liblogstash-gelf-java'],
+        }
+        # Patch container-log4j.properties inside nodemanager jar
+        # See script source for details
+        exec { 'hadoop-yarn-logging-helper-set':
+            command => '/usr/local/bin/hadoop-yarn-logging-helper.sh set',
+            subscribe  => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
+        }
+    } else {
+        # Revert to original unmodified jar
+        exec { 'hadoop-yarn-logging-helper-reset':
+            command => '/usr/local/bin/hadoop-yarn-logging-helper.sh reset',
+            subscribe  => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
         }
     }
 
