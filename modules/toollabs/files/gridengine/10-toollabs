@@ -1,0 +1,2 @@
+release             rel        CSTRING     ==    YES         NO         NONE     0
+user_slot           u          INT         <=    YES         YES        0        0

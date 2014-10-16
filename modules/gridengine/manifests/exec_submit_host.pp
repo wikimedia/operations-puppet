@@ -1,8 +1,12 @@
-# gridengine/exec_host.pp
+# gridengine/exec_submit_host.pp
 
 ## Stupid [mumble] [mumble] puppet
 
-class gridengine::exec_submit_host($gridmaster = $grid_master) {
+class gridengine::exec_submit_host(
+    $gridmaster = $grid_master,
+    $collectdir )
+{
+
     class { 'gridengine':
         gridmaster => $gridmaster,
     }
@@ -20,5 +24,6 @@ class gridengine::exec_submit_host($gridmaster = $grid_master) {
         ensure => link,
         target => '/data/project/.system/accounting',
     }
+
 }
 
