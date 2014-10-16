@@ -1,7 +1,9 @@
-# gridengine.pp
+# gridengine/submit_host.pp
 
-
-class gridengine::submit_host($gridmaster = $grid_master) {
+class gridengine::submit_host(
+    $gridmaster = $grid_master,
+    $collectdir)
+{
     class { 'gridengine':
         gridmaster => $gridmaster,
     }
