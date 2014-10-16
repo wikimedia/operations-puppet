@@ -344,6 +344,10 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             require      => Class['cdh::hadoop'],
         }
     }
+    file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
+        content => template('hadoop/hadoop-yarn-logging-helper.erb'),
+        mode => 744,
+    }
     if $gelf_logging_enabled {
         package { 'libjson-simple-java':
             ensure => 'installed',
@@ -362,6 +366,15 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             ensure => 'link',
             target => '/usr/share/java/logstash-gelf.jar',
             require => Package['liblogstash-gelf-java'],
+        }
+        exec { 'hadoop-yarn-logging-helper-set':
+            command => '/usr/local/bin/hadoop-yarn-logging-helper.sh set',
+            subscribe  => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
+        }
+    } else {
+        exec { 'hadoop-yarn-logging-helper-reset':
+            command => '/usr/local/bin/hadoop-yarn-logging-helper.sh reset',
+            subscribe  => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
         }
     }
 
