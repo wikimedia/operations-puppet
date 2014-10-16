@@ -95,7 +95,7 @@ node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
 # in preperation for replacing udp2log
 node 'analytics1003.eqiad.wmnet' {
     class { 'admin':
-        groups => ['analytics-admins'],
+        groups => ['analytics-admins', 'analytics-test-users'],
     }
     include standard
 
