@@ -47,6 +47,17 @@ class mediawiki::packages {
         ensure => present,
     }
 
+    # on trusty, mediawiki-math-texvc brings mysql with it!
+    if ubuntu_version('>= trusty') {
+        package { [
+            'mysql-server',
+            'mysql-server-5.5',
+        ]:
+            ensure => absent,
+        }
+    }
+
+
     # PDF and DjVu
     package { [
         'djvulibre-bin',
