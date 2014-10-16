@@ -111,7 +111,7 @@ END
       when 'strong' then
         output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1')
       when 'compat' then
-        output.push('SSLProtocol all -SSLv2')
+        output.push('SSLProtocol all -SSLv2 -SSLv3')
       end
       output.push("SSLCipherSuite #{cipherlist}")
       output.push('SSLHonorCipherOrder On')
@@ -125,7 +125,7 @@ END
       when 'strong' then
         output.push('ssl_protocols TLSv1.1 TLSv1.2;')
       when 'compat' then
-        output.push('ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;')
+        output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
       end
       output.push("ssl_ciphers #{cipherlist};")
       output.push('ssl_prefer_server_ciphers on;')
