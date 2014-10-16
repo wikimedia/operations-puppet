@@ -1106,6 +1106,15 @@ node /es100[12]\.eqiad\.wmnet/ {
     }
 }
 
+node /es200[1]\.codfw\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 'es1',
+    }
+}
+
 node /es100[67]\.eqiad\.wmnet/ {
     include admin
     $cluster = 'mysql'
