@@ -1,0 +1,33 @@
+qname                 <%= @title %>
+hostlist              <%= @hostlist %>
+seq_no                0
+load_thresholds       np_load_avg=1.75
+priority              0
+min_cpu_interval      00:05:00
+qtype                 BATCH INTERACTIVE
+ckpt_list             NONE
+rerun                 FALSE
+slots                 50
+tmpdir                /tmp
+shell                 /bin/bash
+shell_start_mode      unix_behavior
+terminate_method      /bin/kill -INT -$job_pid
+notify                00:00:60
+<% if @s_rt then -%>
+s_rt                  <%= @s_rt %>
+<% end -%>
+<% if @h_rt then -%>
+s_rt                  <%= @h_rt %>
+<% end -%>
+<% if @s_cpu then -%>
+s_cpu                 <%= @s_cpu %>
+<% end -%>
+<% if @h_cpu then -%>
+s_cpu                 <%= @h_cpu %>
+<% end -%>
+<% if @s_vmem then -%>
+s_vmem                <%= @s_vmem %>
+<% end -%>
+<% if @h_cpu then -%>
+s_vmem                <%= @h_vmem %>
+<% end -%>
