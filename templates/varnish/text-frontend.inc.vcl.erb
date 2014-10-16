@@ -66,6 +66,10 @@ sub mobile_redirect {
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikimediafoundation)\.", "m.\2.");
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^(commons|incubator|legalteam|meta|office|outreach|pl|species|strategy|wikimania201[2-5])\.(wikimedia)\.", "\1.m.\2.");
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!commons|meta|nostalgia|quote|quality|sep11|sources|species|textbook)\w+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
+		# wikisource.org is an exception, it's the only wiki not in a subdomain
+		if ( req.http.MobileHost == 'wikisource.org' ) {
+			set req.http.MobileHost = 'm.wikisource.org';
+		}
 
 		if (req.http.Host != req.http.MobileHost) {
 			if (req.http.X-Forwarded-Proto) {
