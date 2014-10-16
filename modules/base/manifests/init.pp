@@ -176,6 +176,8 @@ class base {
     include apt
     include apt::update
 
+    Apt::Conf['no-recommends'] -> Package <| provider == 'apt' |>
+
     if ($::realm == 'labs') {
         include apt::unattendedupgrades,
             apt::noupgrade
