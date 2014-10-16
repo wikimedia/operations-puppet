@@ -5,100 +5,127 @@
 class role::deployment::config {
   $repo_config = {
     'integration/kss' => {
+        'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/kss',
     },
     'integration/mediawiki-tools-codesniffer' => {
+        'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer',
     },
     'integration/phpunit' => {
+        'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpunit',
     },
     'integration/phpcs' => {
+        'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/phpcs',
     },
     'integration/php-coveralls' => {
+        'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/php-coveralls',
     },
     'integration/slave-scripts' => {
+        'grain' => 'contint-production-slaves',
         'upstream' => 'https://gerrit.wikimedia.org/r/integration/jenkins',
         'checkout_submodules'   => true,
     },
     'gdash/gdash'                    => {
+        'grain'    => 'gdash',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/gdash',
     },
     'jobrunner/jobrunner'            => {
+        'grain'        => 'jobrunner',
         'upstream'     => 'https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner',
         'service_name' => 'jobrunner',
     },
     'grafana/grafana'                => {
+        'grain'    => 'grafana',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/grafana',
     },
     'parsoid/deploy'                => {
+        'grain'                 => 'parsoid',
         'upstream'              => 'https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy',
         'checkout_submodules'   => true,
         'service_name'          => 'parsoid',
     },
     'eventlogging/EventLogging'      => {
+        'grain'    => 'eventlogging',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging',
     },
     'ocg/ocg' => {
+        'grain'                 => 'ocg',
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection',
         'service_name'          => 'ocg',
         'checkout_submodules'   => true,
     },
     'mathoid/mathoid' => {
+        'grain'                 => 'mathoid',
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/mathoid',
         'service_name'          => 'mathoid',
         'checkout_submodules'   => true,
     },
     'citoid/deploy' => {
+        'grain'                 => 'citoid',
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/citoid/deploy',
         'service_name'          => 'citoid',
         'checkout_submodules'   => true,
     },
     'rcstream/rcstream' => {
+        'grain'                 => 'rcstream',
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/rcstream',
         'service_name'          => 'rcstream',
     },
     'fluoride/fluoride'              => {
+        'grain'    => 'eventlogging',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
     },
     'mwprof/mwprof'                  => {
+        'grain'    => 'mwprof',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof',
     },
     'reporter/reporter'              => {
+        'grain'    => 'reporter',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof/reporter',
     },
     'test/testrepo'                  => {
+        'grain'               => 'testrepo',
         'service_name'        => 'puppet',
         'checkout_submodules' => true,
     },
     'elasticsearch/plugins'          => {
+        'grain'          => 'elasticsearchplugins',
         'gitfat_enabled' => true,
         'upstream'       => 'https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins',
     },
     'analytics/kraken/deploy'        => {
+        'grain'               => 'analytics-kraken-deploy',
         'gitfat_enabled'      => true,
         'checkout_submodules' => true,
         'upstream'            => 'https://gerrit.wikimedia.org/r/p/analytics/kraken/deploy',
     },
     'analytics/refinery'        => {
+        'grain'               => 'analytics-refinery',
         'gitfat_enabled'      => true,
         'upstream'            => 'https://gerrit.wikimedia.org/r/analytics/refinery',
     },
     'scholarships/scholarships'      => {
+        'grain'    => 'scholarships',
         'upstream' => 'https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships',
     },
     'librenms/librenms'                  => {
+        'grain'    => 'librenms',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/librenms',
     },
     'kibana/kibana'      => {
+        'grain'    => 'kibana',
         'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/kibana',
     },
     'scap/scap' => {
+        'grain'    => 'scap',
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/scap',
     },
     'servermon/servermon'            => {
+        'grain'        => 'servermon',
         'service_name' => 'servermon',
     },
   }
