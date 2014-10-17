@@ -13,7 +13,7 @@ test $# -eq 2 || exit 1
 cd "$1" || exit 1
 
 for f in *; do
-  if [ ! -f "$2/$f" ]; then
+  if [ -f "$f" -a ! -f "$2/$f" ]; then
     /bin/bash "$f" && /bin/rm "$f"
   fi
 done

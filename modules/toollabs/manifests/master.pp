@@ -25,7 +25,7 @@ class toollabs::master inherits toollabs {
         owner        => 'root',
         group        => 'root',
         mode         => '0755',
-        source       => 'puppet:///modules/gridengine/gethgrp',
+        source       => 'puppet:///modules/toollabs/gethgrp',
     }
 
     toollabs::hostgroup::collector { 'general': }
