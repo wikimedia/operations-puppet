@@ -35,4 +35,27 @@ class tor (
         ensure  => 'running',
         require => Package['tor'],
     }
+
+    # TC - Tor control protocol, private
+    # https://gitweb.torproject.org/torspec.git?a=blob_plain;hb=HEAD;f=control-spec.txt
+    ferm::service { 'tor_controlport':
+        desc   => 'control port for the tor relay'
+        proto  => 'tcp',  # can be TCP, TLS-over-TCP, or Unix-domain socket
+        port   => '9051', # default
+        srange => $::INTERNAL, # keep private for security!
+    }
+
+    # actual Tor port where clients connect, public
+    ferm::service { 'tor_orport':
+        desc   => 'port for the actual Tor client connections',
+        proto  => 'tcp',
+        port   => '443',
+    }
+
+    # for serving directory updates, public
+    ferm::service { 'tor_dirport':
+        desc   => 'port advertising the directory service'
+        proto  => 'tcp',
+        port   => '80',
+    }
 }
