@@ -1,0 +1,20 @@
+#! /bin/bash
+#
+# runpurge tracker dir
+#
+# For every file in tracker that does not have a corresponding
+# file (of the same name) in dir, run the content of the file
+# then remove it if succesful.
+#
+# This allows running a command when a configured resource no
+# longer exists, something that puppet does not otherwise allow.
+
+test $# -eq 2 || exit 1
+cd "$1" || exit 1
+
+for f in *; do
+  if [ ! -f "$2/$f" ]; then
+    /bin/bash "$f" && /bin/rm "$f"
+  fi
+done
+

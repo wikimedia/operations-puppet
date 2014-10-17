@@ -15,16 +15,15 @@ define gridengine::resource(
 
     exec { "create-$dir-$rname-tracker":
         creates => $tracker,
-        path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        command => "bash -c 'echo $addcmd $conf && /bin/echo echo $delcmd $rname >$tracker'",
-        require => File[$conf],
+        command => "$etcdir/bin/trackpurge $tracker '$delcmd $rname' echo $addcmd $conf",
+        require => File[ "$etcdir/bin", $conf ],
     }
 
     exec { "modify-$dir-$rname":
         refreshonly => true,
-        path        => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        onlyif      => "test -r '$tracker' -a '$conf' -nt '$tracker'",
-        command     => "bash -c 'echo $modcmd $conf && /bin/touch $tracker'",
+        onlyif      => "/usr/bin/test -r '$tracker' -a '$conf' -nt '$tracker'",
+        command     => "$etcdir/bin/trackpurge $tracker '$delcmd $rname' echo $modcmd $conf"
+        require     => File["$etcdir/bin"],
         subscribe   => File[$conf],
     }
 
