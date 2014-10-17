@@ -3324,6 +3324,11 @@ host protactinium {
 	fixed-address protactinium.wikimedia.org;
 }
 
+host radium {
+	hardware ethernet 84:2b:2b:fd:bd:0e;
+	fixed-address radium.wikimedia.org;
+}
+
 host radon {
 	hardware ethernet C8:1F:66:BF:71:16;
 	fixed-address radon.eqiad.wmnet;
