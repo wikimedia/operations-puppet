@@ -128,6 +128,10 @@ class role::deployment::config {
         'grain'        => 'servermon',
         'service_name' => 'servermon',
     },
+    'iegreview/iegreview'      => {
+        'grain'    => 'iegreview',
+        'upstream' => 'https://gerrit.wikimedia.org/r/wikimedia/iegreview',
+    },
   }
 }
 
