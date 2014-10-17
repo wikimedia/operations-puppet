@@ -7,7 +7,7 @@
 #
 # (RT 6689) - cleanup wikitech's robot.txt
 # ! THIS IS THE LABS robots.txt and handled by puppet now !
-# see operations/puppet/files/openstack/wikitech-robots.txt
+# see operations/puppet/modules/openstack/wikitech-robots.txt
 #
 # this way you can test changes in robots.txt in labs
 # before using the production PHP file
