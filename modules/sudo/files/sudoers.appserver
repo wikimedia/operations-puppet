@@ -2,7 +2,7 @@
 
 #####################################################################
 #### THIS FILE IS MANAGED BY PUPPET
-#### puppet:///files/sudo/sudoers.appserver
+#### puppet:///modules/sudo/sudoers.appserver
 #### Installed by the sudo::appserver puppet class
 ######################################################################
 #
