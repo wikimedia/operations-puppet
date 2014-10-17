@@ -2287,6 +2287,12 @@ node 'potassium.eqiad.wmnet' {
     include role::poolcounter
 }
 
+node 'radium.wikimedia.org' {
+    class { 'base::firewall': }
+    include admin
+    include standard
+}
+
 node 'radon.eqiad.wmnet' {
     class { 'base::firewall': }
     include admin
