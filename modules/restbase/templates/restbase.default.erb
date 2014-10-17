@@ -1,0 +1,10 @@
+# Defaults for restbase initscript
+
+SETTINGS_FILE=/etc/restbase/config.yaml
+
+PORT="<%= @port %>"
+
+# Default is to listen on all interfaces
+#INTERFACE="0.0.0.0"
+
+DAEMON_ARGS="-c $SETTINGS_FILE"
