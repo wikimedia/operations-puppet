@@ -1,0 +1,10 @@
+# RESTBase config
+
+logging:
+- name: main
+  streams:
+  # XXX: Use gelf-stream -> logstash
+  - type: rotating-file
+    path: /var/log/restbase/main.log
+    period: 1d  # daily rotation
+    count: 7    # back copies
