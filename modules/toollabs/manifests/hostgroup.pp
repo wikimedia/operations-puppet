@@ -25,7 +25,7 @@ class toollabs::hostgroup($groups = undef) {
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => inline_template('<%= @groups.each {|g| "#{v}\n" } -%>'),
+            content => inline_template('<%= @groups.each {|g| "#{g}\n" } -%>'),
         }
     }
 
