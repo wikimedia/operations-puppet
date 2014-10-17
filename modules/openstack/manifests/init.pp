@@ -1,73 +1,3 @@
-class openstack::firewall {
-    include base::firewall
-
-    $labs_private_net = '10.0.0.0/0'
-    if ($::site == 'codfw') {
-        # TODO!  codfw will need something
-        # like this when the ip range is assigned.
-        # $labs_nodes = '10.4.16.0/24'
-        # virt1000
-        $other_master = '208.80.154.18'
-    } elsif ($::site == 'eqiad') {
-        $labs_nodes = '10.64.20.0/24'
-        $other_master = '208.80.153.14'
-    }
-
-    # Wikitech ssh
-    ferm::rule { 'ssh_public':
-        rule => 'saddr (0.0.0.0/0) proto tcp dport (ssh) ACCEPT;',
-    }
-
-    # Wikitech HTTP/HTTPS
-    ferm::rule { 'http_public':
-        rule => 'saddr (0.0.0.0/0) proto tcp dport (http https) ACCEPT;',
-    }
-
-    # Labs DNS
-    ferm::rule { 'dns_public':
-        rule => 'saddr (0.0.0.0/0) proto (udp tcp) dport 53 ACCEPT;',
-    }
-
-    # Redis replication for keystone
-    ferm::rule { 'redis_replication':
-        rule => "saddr ($other_master) proto tcp dport (6379) ACCEPT;",
-    }
-
-    # internal services to Labs virt servers
-    ferm::rule { 'keystone':
-        rule => "saddr ($other_master $labs_nodes) proto tcp dport (5000 35357) ACCEPT;",
-    }
-    ferm::rule { 'mysql_nova':
-        rule => "saddr $labs_nodes proto tcp dport (3306) ACCEPT;",
-    }
-    ferm::rule { 'beam_nova':
-        rule => "saddr $labs_nodes proto tcp dport (5672 56918) ACCEPT;",
-    }
-    ferm::rule { 'glance_api_nova':
-        rule => "saddr $labs_nodes proto tcp dport 9292 ACCEPT;",
-    }
-
-    # services provided to Labs instances
-    ferm::rule { 'puppetmaster':
-        rule => "saddr $labs_private_net proto tcp dport 8140 ACCEPT;",
-    }
-    ferm::rule { 'salt':
-        rule => "saddr $labs_private_net proto tcp dport (4505 4506) ACCEPT;",
-    }
-}
-
-class openstack::repo($openstack_version="folsom") {
-
-    if ($::lsbdistcodename == 'precise') {
-        apt::repository { 'ubuntucloud':
-            uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-            dist       => "precise-updates/${openstack_version}",
-            components => 'main',
-            keyfile    => 'puppet:///files/misc/ubuntu-cloud.key';
-        }
-    }
-}
-
 class openstack::common($openstack_version="folsom",
             $novaconfig,
             $instance_status_wiki_host,
@@ -367,7 +297,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
-            source => "puppet:///files/openstack/wikitech-robots.txt";
+            source => "puppet:///modules/openstack/wikitech-robots.txt";
         "/a/backup":
             mode   => '0755',
             owner  => 'root',
@@ -382,17 +312,17 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
             mode   => '0555',
             owner  => 'root',
             group  => 'root',
-            source => "puppet:///files/openstack/db-bak.sh";
+            source => "puppet:///modules/openstack/db-bak.sh";
         "/usr/local/sbin/mw-files.sh":
             mode   => '0555',
             owner  => 'root',
             group  => 'root',
-            source => "puppet:///files/openstack/mw-files.sh";
+            source => "puppet:///modules/openstack/mw-files.sh";
         "/usr/local/sbin/mw-xml.sh":
             mode   => '0555',
             owner  => 'root',
             group  => 'root',
-            source => "puppet:///files/openstack/mw-xml.sh";
+            source => "puppet:///modules/openstack/mw-xml.sh";
     }
 
     cron {
@@ -742,7 +672,7 @@ class openstack::api-service($openstack_version="folsom", $novaconfig) {
         require   => Package["nova-api"];
     }
     file { "/etc/nova/policy.json":
-        source  => "puppet:///files/openstack/${openstack_version}/nova/policy.json",
+        source  => "puppet:///modules/openstack/${openstack_version}/nova/policy.json",
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
@@ -864,7 +794,7 @@ class openstack::compute-service($openstack_version="folsom", $novaconfig) {
         # Live hack to use qcow2 ephemeral base images. Need to upstream
         # a config option for this in havana.
         "/usr/share/pyshared/nova/virt/libvirt/driver.py":
-            source  => "puppet:///files/openstack/${openstack_version}/nova/virt-libvirt-driver",
+            source  => "puppet:///modules/openstack/${openstack_version}/nova/virt-libvirt-driver",
             notify  => Service['nova-compute'],
             owner   => 'root',
             group   => 'root',
@@ -1016,84 +946,5 @@ class openstack::glance-service($openstack_version="folsom", $glanceconfig) {
                 require => Package["glance"],
                 mode    => '0440';
         }
-    }
-}
-
-class openstack::adminscripts {
-    include passwords::openstack::nova
-    $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
-
-    # Handy script to set up environment for commandline nova magic
-    file { '/root/novaenv.sh':
-        content => template("openstack/novaenv.sh.erb"),
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    # Script to cold-migrate instances between compute nodes
-    file { '/root/cold-migrate':
-        ensure => present,
-        source => "puppet:///files/openstack/${openstack_version}/virtscripts/cold-migrate",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    # Script to migrate instance from one dc to another
-    # (specifically, pmtpa to eqiad)
-    file { '/root/dc-migrate':
-        ensure => present,
-        source => 'puppet:///files/openstack/havana/virtscripts/dc-migrate',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    # Log analysis tool
-    file { '/root/logstat.py':
-        ensure => present,
-        source => "puppet:///files/openstack/${openstack_version}/virtscripts/logstat.py",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    # Set up keystone services (example script)
-    file { '/root/prod-example.sh':
-        ensure => present,
-        source => "puppet:///files/openstack/${openstack_version}/virtscripts/prod.sh",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/root/novastats':
-        ensure => directory,
-        owner  => 'root',
-    }
-
-    file { '/root/novastats/novastats.py':
-        ensure => present,
-        source => "puppet:///files/openstack/novastats/novastats.py",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/root/novastats/saltstats':
-        ensure => present,
-        source => "puppet:///files/openstack/novastats/saltstats",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/root/novastats/imagestats':
-        ensure => present,
-        source => "puppet:///files/openstack/novastats/imagestats",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
     }
 }
