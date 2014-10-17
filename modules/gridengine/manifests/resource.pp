@@ -3,23 +3,23 @@
 define gridengine::resource(
     $etcdir  = '/etc/gridengine/local',
     $dir     = '',
-    $name    = $title,
+    $rname   = $title,
     $source  = undef,
     $content = undef,
     $addcmd  = '',
     $modcmd  = '',
     $delcmd  = '' )
 {
-    $conf    = "$etcdir/$dir/$name"
-    $tracker = "$etcdir/.tracker/$dir/$name"
+    $conf    = "$etcdir/$dir/$rname"
+    $tracker = "$etcdir/.tracker/$dir/$rname"
 
-    exec { "create-$dir-$name-tracker":
+    exec { "create-$dir-$rname-tracker":
         creates => $tracker,
-        command => "echo $addcmd '$conf' && /bin/echo 'echo $delcmd $name' >'$tracker'",
+        command => "echo $addcmd '$conf' && /bin/echo 'echo $delcmd $rname' >'$tracker'",
         require => File[$conf],
     }
 
-    exec { "modify-$dir-$name":
+    exec { "modify-$dir-$rname":
         refreshonly => true,
         onlyif      => "test -r '$tracker' -a '$conf' -nt '$tracker'",
         command     => "echo $modcmd '$conf' && /bin/touch '$tracker'",

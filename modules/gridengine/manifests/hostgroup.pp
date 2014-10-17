@@ -2,12 +2,12 @@
 
 define gridengine::hostgroup(
     $etcdir  = '/etc/gridengine/local',
-    $name    = $title,
+    $hgname  = $title,
     $source  = undef,
     $content = undef )
 {
 
-    gridengine::resource { $name:
+    gridengine::resource { $hgname:
         etcdir  => $etcdir,
         dir     => 'hostgroups',
         source  => $source,

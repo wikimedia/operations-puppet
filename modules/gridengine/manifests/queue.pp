@@ -2,12 +2,12 @@
 
 define gridengine::queue(
     $etcdir  = '/etc/gridengine/local',
-    $name    = $title,
+    $qname   = $title,
     $source  = undef,
     $content = undef )
 {
 
-    gridengine::resource { $name:
+    gridengine::resource { $qname:
         etcdir => $etcdir,
         dir    => 'queues',
         source => $source,

@@ -1,8 +1,10 @@
 # Resource toollabs::hostgroup::collector
 #
 #
-define toollabs::hostgroup::collector( $name = $title )
+define toollabs::hostgroup::collector( $hgname = $title )
 {
+
+    $hgrpfile  = "/etc/gridengine/local/${hgname}.hosts"
 
     file { $dir:
         ensure  => directory,
@@ -11,14 +13,14 @@ define toollabs::hostgroup::collector( $name = $title )
         mode    => '0755',
     }
 
-    exec { "make-${name}-hosts":
+    exec { "make-${hgname}-hosts":
         cwd     => $toollabs::hostgroup::hgstore,
-        command => "(echo group_name @{$name};echo hostlist \$(/bin/egrep -l '^${name}' *)) >'/etc/gridengine/local/${name}.hosts'",
+        command => "(echo group_name @{$hgname};echo hostlist \$(/bin/egrep -l '^${hgname}' *)) >'${hgrpfile}'",
     }
 
-    gridengine::hostgroup { "@${name}":
-        source  => "/etc/gridengine/local/${name}.hosts",
-        require => Exec["make-${name}-hosts"],
+    gridengine::hostgroup { "@${hgname}":
+        spirce  => $hgrpfile,
+        require => Exec["make-${hgname}-hosts"],
     }
 
 }
