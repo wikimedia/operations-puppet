@@ -49,6 +49,7 @@ NameVirtualHost *:443
 	DocumentRoot /srv/org/wikimedia/svn
 
 	SSLEngine on
+    SSLProtocol +ALL -SSLv2 -SSLv3
 	SSLCertificateFile /etc/ssl/certs/svn.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/svn.wikimedia.org.key
 	SSLCACertificatePath /etc/ssl/certs/
