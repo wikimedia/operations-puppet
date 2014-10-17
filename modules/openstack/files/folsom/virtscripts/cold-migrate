@@ -1,7 +1,7 @@
 #!/bin/bash
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/openstack/havana/virtscripts/cold-migrate
+### puppet:///modules/openstack/folsom/virtscripts/cold-migrate
 #####################################################################
 ssh-add -l > /dev/null
 if [ "$?" != "0" ]
@@ -13,25 +13,29 @@ INSTANCENAME=$1
 TOHOST=$2
 PROJECT=$3
 FROMHOST=`OS_TENANT_NAME=${PROJECT} nova show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:host' | awk '{ print $4 }'`
-INSTANCE=`OS_TENANT_NAME=${PROJECT} nova show ${INSTANCENAME} | grep ' id ' | awk '{ print $4 }'`
+INSTANCE=`OS_TENANT_NAME=${PROJECT} nova show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:instance_name' | awk '{ print $4 }'`
 echo "Migrating $INSTANCE from $FROMHOST to $TOHOST"
 echo ""
 echo "Destroying instance on $FROMHOST"
 echo ""
-ssh $FROMHOST.eqiad.wmnet "virsh destroy ${INSTANCE}"
+ssh $FROMHOST.pmtpa.wmnet "virsh destroy ${INSTANCE}"
 echo ""
 echo "Rsyncing instance from $FROMHOST to $TOHOST"
 echo ""
-ssh -A $FROMHOST.eqiad.wmnet "rsync -S -av /var/lib/nova/instances/${INSTANCE} ${TOHOST}.eqiad.wmnet:/var/lib/nova/instances/"
+ssh -A $FROMHOST.pmtpa.wmnet "rsync -S -av /var/lib/nova/instances/${INSTANCE} ${TOHOST}.pmtpa.wmnet:/var/lib/nova/instances/"
 echo ""
 echo "Defining the instance on $TOHOST"
 echo ""
-ssh $TOHOST.eqiad.wmnet "virsh define /var/lib/nova/instances/${INSTANCE}/libvirt.xml"
+ssh $TOHOST.pmtpa.wmnet "virsh define /var/lib/nova/instances/${INSTANCE}/libvirt.xml"
 echo ""
 echo "Undefining the instance on $FROMHOST"
 echo ""
-ssh $FROMHOST.eqiad.wmnet "virsh undefine ${INSTANCE}"
+ssh $FROMHOST.pmtpa.wmnet "virsh undefine ${INSTANCE}"
 echo
+echo "Defining the network filter on $TOHOST"
+echo
+ssh $FROMHOST.pmtpa.wmnet cat "/etc/libvirt/nwfilter/nova-instance-${INSTANCE}-*" | \
+	ssh $TOHOST.pmtpa.wmnet virsh nwfilter-define /proc/self/fd/0
 echo ""
 echo "Updating the instance's host in the database"
 echo ""
