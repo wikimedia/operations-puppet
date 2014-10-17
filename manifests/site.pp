@@ -2291,6 +2291,10 @@ node 'radium.wikimedia.org' {
     class { 'base::firewall': }
     include admin
     include standard
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node 'radon.eqiad.wmnet' {
