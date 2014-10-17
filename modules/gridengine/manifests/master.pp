@@ -90,7 +90,7 @@ class gridengine::master
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0664',
-        source  => 'puppet:///modules/gridengine/99-default',
+        source  => 'puppet:///modules/gridengine/complex-99-default',
     }
 
     exec { "update-complex-conf":
