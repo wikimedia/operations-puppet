@@ -1,6 +1,6 @@
 # gridengine/master.pp
 
-class gridengine::master( $configsource )
+class gridengine::master
 {
     class { 'gridengine':
         gridmaster => $fqdn,
