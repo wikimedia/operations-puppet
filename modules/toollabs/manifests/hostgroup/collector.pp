@@ -8,6 +8,7 @@ define toollabs::hostgroup::collector( $hgname = $title )
 
     exec { "make-${hgname}-hosts":
         cwd     => $toollabs::hostgroup::hgstore,
+        path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
         command => "(echo group_name @{$hgname};echo hostlist \$(/bin/egrep -l '^${hgname}' *)) >'${hgrpfile}'",
     }
 
