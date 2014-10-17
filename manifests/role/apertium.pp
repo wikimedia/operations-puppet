@@ -14,7 +14,7 @@ class role::apertium::beta {
     include ::apertium
 
     # Need to allow jenkins-deploy to reload apertium
-    sudo_user { 'jenkins-deploy': privileges => [
+    sudo::user { 'jenkins-deploy': privileges => [
         # Since the "root" user is local, we cant add the sudo policy in
         # OpenStack manager interface at wikitech
         'ALL = (root)  NOPASSWD:/usr/sbin/service apertium-apy restart',
