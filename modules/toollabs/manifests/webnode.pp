@@ -23,6 +23,8 @@ class toollabs::webnode($gridmaster, $type) inherits toollabs {
         gridengine::exec_host,
         gridengine::submit_host
 
+    class { 'toollabs::hostgroup': groups => [ 'webgrid' ] }
+
     file { "${toollabs::store}/execnode-${::fqdn}":
         ensure  => file,
         owner   => 'root',

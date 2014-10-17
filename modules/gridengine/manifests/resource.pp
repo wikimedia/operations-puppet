@@ -31,7 +31,7 @@ define gridengine::resource(
     file { $conf:
         ensure  => file,
         owner   => 'sgeadmin',
-        group   => 'sgeamind',
+        group   => 'sgeadmin',
         mode    => '0664',
         source  => $source,
         content => $content,
