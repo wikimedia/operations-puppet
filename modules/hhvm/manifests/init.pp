@@ -61,6 +61,7 @@ class hhvm(
     $cli_settings  = {},
 ) {
     requires_ubuntu('>= trusty')
+    require ::hhvm::packages
 
 
     ## Settings
@@ -156,19 +157,6 @@ class hhvm(
         group   => 'root',
         mode    => '0444',
         notify  => Service['hhvm'],
-    }
-
-
-    ## Packages
-
-    package { [ 'hhvm', 'hhvm-dbg' ]:
-        ensure => present,
-        before => Service['hhvm'],
-    }
-
-    package { [ 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-wikidiff2' ]:
-        ensure => present,
-        before => Service['hhvm'],
     }
 
 
