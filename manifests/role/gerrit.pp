@@ -104,88 +104,11 @@ class role::gerrit {
                     'remoteNameStyle'      => 'dash',
                     'mirror'               => 'true',
                 },
-                'github-puppet-cdh'      => {
-                    'url'                  => 'git@github.com:wikimedia/puppet-cdh',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'operations/puppet/cdh',
-                },
-                'github-puppet-jmxtrans'  => {
-                    'url'                  => 'git@github.com:wikimedia/puppet-jmxtrans',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'operations/puppet/jmxtrans',
-                },
-                'github-puppet-zookeeper' => {
-                    'url'                  => 'git@github.com:wikimedia/puppet-zookeeper',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'operations/puppet/zookeeper',
-                },
-                'github-kraken'           => {
-                    'url'                  => 'git@github.com:wikimedia/kraken',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'analytics/kraken',
-                },
-
-                'github-puppet-kafka'     => {
-                    'url'                  => 'git@github.com:wikimedia/puppet-kafka',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'operations/puppet/kafka',
-                },
-                'github-varnish-varnishkafka' => {
-                    'url'                  => 'git@github.com:wikimedia/varnishkafka',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'operations/software/varnish/varnishkafka',
-                },
-                'github-oojs-core' => {
-                    'url'                  => 'git@github.com:wikimedia/oojs',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'oojs/core',
-                },
-                'github-oojs-ui' => {
-                    'url'                  => 'git@github.com:wikimedia/oojs-ui',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'oojs/ui',
-                },
-                'github-VisualEditor' => {
-                    'url'                  => 'git@github.com:wikimedia/VisualEditor',
-                    'threads'              => '1',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
-                    'projects'             => 'VisualEditor/VisualEditor',
-                },
+                # Do not add custom mirrors for GitHub here!
+                # Instead let the default replication happen and perform the rename
+                # on GitHub. This to avoid having duplicate repos on GitHub with
+                # their own Stars, Pull requests, Issues etc. as well as duplicate
+                # results in Code Search. See bug 68054.
             }
         }
     }
