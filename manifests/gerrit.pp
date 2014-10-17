@@ -225,6 +225,22 @@ class gerrit::jetty ($ldap_hosts,
         require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
     }
 
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublishedPhabricator.vm':
+        source  => 'puppet:///files/gerrit/its/templates/DraftPublishedPhabricator.vm',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0755',
+        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetCreatedPhabricator.vm':
+        source  => 'puppet:///files/gerrit/its/templates/PatchSetCreatedPhabricator.vm',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0755',
+        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
+    }
+
     file { '/var/lib/gerrit2/review_site/static/page-bkg.jpg':
         owner  => 'gerrit2',
         group  => 'gerrit2',
