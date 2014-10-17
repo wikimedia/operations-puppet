@@ -74,7 +74,7 @@ class mediawiki::users {
         mode    => '0400',
     }
 
-    sudo_group { 'wikidev':
+    sudo::group { 'wikidev':
         privileges => [
             'ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
             'ALL = (root) NOPASSWD: /sbin/restart hhvm',
@@ -85,7 +85,7 @@ class mediawiki::users {
         ],
     }
 
-    sudo_user { 'l10nupdate':
+    sudo::user { 'l10nupdate':
         require    => User['l10nupdate', 'mwdeploy'],
         privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'],
     }

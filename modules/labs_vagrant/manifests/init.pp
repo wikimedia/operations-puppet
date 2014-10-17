@@ -26,13 +26,13 @@ class labs_vagrant(
         group  => 'vagrant',
     }
 
-    sudo_user { 'vagrant' :
+    sudo::user { 'vagrant' :
         privileges => [
             'ALL=(ALL) NOPASSWD: ALL',
         ],
     }
 
-    sudo_group { 'wikidev_vagrant':
+    sudo::group { 'wikidev_vagrant':
         privileges => [
             'ALL=(vagrant) NOPASSWD: ALL',
         ],

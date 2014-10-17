@@ -25,7 +25,7 @@ class role::cxserver::beta {
     }
 
     # Need to allow jenkins-deploy to reload cxserver
-    sudo_user { 'jenkins-deploy': privileges => [
+    sudo::user { 'jenkins-deploy': privileges => [
         # Since the "root" user is local, we cant add the sudo policy in
         # OpenStack manager interface at wikitech
         'ALL = (root)  NOPASSWD:/usr/sbin/service cxserver restart',

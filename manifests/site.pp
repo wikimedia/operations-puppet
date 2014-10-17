@@ -18,7 +18,6 @@ import 'openstack.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
 import 'search.pp'
-import 'sudo.pp'
 import 'swift.pp'
 import 'webserver.pp'
 
@@ -1222,7 +1221,7 @@ node 'gallium.wikimedia.org' {
     class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
 
     # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
-    sudo_user { 'jenkins-slave':
+    sudo::user { 'jenkins-slave':
         privileges => [
             'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
         ]
