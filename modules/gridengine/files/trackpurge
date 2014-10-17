@@ -1,0 +1,14 @@
+#! /bin/bash
+#
+# trackpurge tracker delcmd addcmd [args...]
+#
+
+test $# -gt 2 || exit 1
+tracker="$1"
+delcmd="$2"
+addcmd="$3"
+shift 3
+
+if "$addcmd" "$@"; then
+  echo "$delcmd" >"$tracker"
+fi

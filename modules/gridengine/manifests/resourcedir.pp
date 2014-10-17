@@ -15,9 +15,9 @@ define gridengine::resourcedir(
         purge   => $local,
     }
 
-    $resourcedir = "$etcdir/.tracker/$dir"
+    $trackerdir = "$etcdir/.tracker/$dir"
 
-    file { $resourcedir:
+    file { $trackerdir:
         ensure  => directory,
         force   => true,
         owner   => 'sgeadmin',
@@ -28,10 +28,8 @@ define gridengine::resourcedir(
     }
 
     exec { "purge-deleted-$dir":
-        cwd     => $resourcedir,
-        path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        command => "bash -c 'for r in *; do if [ ! -f $etcdir/$dir/\$r ]; then /bin/bash \$r && rm \$f; fi; done'",
-        require => File[$resourcedir],
+        command => "$etcdir/bin/runpurge $trackerdir $etcdir/$dir",
+        require => File["$etcdir/bin", $trackerdir],
     }
 
 }
