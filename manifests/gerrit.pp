@@ -26,6 +26,7 @@ class gerrit::instance($apache_ssl  = false,
     $dbuser = $db_user
     $dbpass = $passwords::gerrit::gerrit_db_pass
     $bzpass = $passwords::gerrit::gerrit_bz_pass
+    $phabcert = $passwords::gerrit::gerrit_phab_cert
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
     # Setup LDAP
@@ -219,6 +220,22 @@ class gerrit::jetty ($ldap_hosts,
 
     file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublished.vm':
         source  => 'puppet:///files/gerrit/its/templates/DraftPublished.vm',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0755',
+        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublishedPhabricator.vm':
+        source  => 'puppet:///files/gerrit/its/templates/DraftPublishedPhabricator.vm',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0755',
+        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetCreatedPhabricator.vm':
+        source  => 'puppet:///files/gerrit/its/templates/PatchSetCreatedPhabricator.vm',
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0755',

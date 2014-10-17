@@ -7,3 +7,5 @@
 	registerEmailPrivateKey = <%= scope.lookupvar('gerrit::instance::email_key') %>
 [bugzilla]
 	password = <%= scope.lookupvar('gerrit::instance::bzpass') %>
+[its-phabricator]
+	certificate = <%= scope.lookupvar('gerrit::instance::phabcert') %>
