@@ -10,6 +10,8 @@
 #
 class toollabs::gridnode inherits toollabs {
 
+    class toollabs::hostgroup( groups => [ 'general' ] )
+
     file { "${toollabs::sysdir}/gridengine":
         ensure  => directory,
         require => File[$toollabs::sysdir],
