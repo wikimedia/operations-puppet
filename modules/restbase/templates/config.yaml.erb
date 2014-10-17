@@ -1,0 +1,25 @@
+# RESTBase config
+
+# System domain (used to store restbase metadata) in reverse DNS notation
+sysdomain: restbase.local
+
+storage:
+  default:
+    # module name
+    type: restbase-cassandra
+    hosts: ["localhost"]
+    keyspace": system
+    # username: <%= scope.lookupvar('passwords::cassandra::cluster1::user') %>';
+    username": test
+    # password: <%= scope.lookupvar('passwords::cassandra::cluster1::password') %>';
+    password": test
+    poolSize": 70
+
+
+logging:
+- name: main
+  streams:
+  # XXX: Use gelf-stream -> logstash
+  - type: gelf
+    host: <% @logstash_host %>
+    port: <% @logstash_port %>
