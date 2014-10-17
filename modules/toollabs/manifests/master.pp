@@ -19,6 +19,15 @@ class toollabs::master inherits toollabs {
         toollabs::queue::task,
         toollabs::queue::continuous
 
+    file { '/etc/gridengine/local/bin/gethgrp':
+        ensure   => file,
+        force        => true,
+        owner        => 'root',
+        group        => 'root',
+        mode         => '0755',
+        source       => 'puppet:///modules/gridengine/gethgrp',
+    }
+
     toollabs::hostgroup::collector { 'general': }
     toollabs::hostgroup::collector { 'webgrid': }
 

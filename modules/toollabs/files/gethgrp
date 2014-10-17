@@ -1,0 +1,16 @@
+#! /bin/bash
+#
+# gethgrp group dest dir
+#
+
+group="$1"
+dest="$2"
+cd "$3" || exit 1
+
+(
+  echo group_name "$group"
+  if [ $# -gt 0 ]; then
+    echo "hostlist " $(egrep -l "^$group\$" *)
+  fi
+) >"$dest"
+

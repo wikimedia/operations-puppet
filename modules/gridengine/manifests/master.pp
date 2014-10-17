@@ -34,7 +34,7 @@ class gridengine::master
         purge   => true,
     }
 
-    file { "$etcdir/bin":
+    file { "$etcdir/bin/":
         ensure       => directory,
         force        => true,
         owner        => 'root',
