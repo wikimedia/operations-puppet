@@ -2287,10 +2287,12 @@ node 'potassium.eqiad.wmnet' {
     include role::poolcounter
 }
 
+# Tor relay
 node 'radium.wikimedia.org' {
     class { 'base::firewall': }
     include admin
     include standard
+    include role::tor
 }
 
 node 'radon.eqiad.wmnet' {
