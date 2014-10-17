@@ -34,18 +34,38 @@ class gridengine::master
         purge   => true,
     }
 
-    file { "$etcdir/bin/":
-        ensure       => directory,
-        force        => true,
-        owner        => 'root',
-        group        => 'root',
-        mode         => '0755',
-        recurse      => true,
-        purge        => true,
-        sourceselect => all,
-        source       => [ 'puppet:///modules/gridengine/mergeconf',
-                          'puppet:///modules/gridengine/trackpurge',
-                          'puppet:///modules/gridengine/runpurge' ],
+    file { "$etcdir/bin":
+        ensure  => directory,
+        force   => true,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
+    }
+
+    file { "$etcdir/bin/mergeconf":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/gridengine/mergeconf',
+    }
+
+    file { "$etcdir/bin/trackpurge":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/gridengine/trackpurge',
+    }
+
+    file { "$etcdir/bin/runpurge":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/gridengine/runpurge',
     }
 
     gridengine::resourcedir { 'queues': }
