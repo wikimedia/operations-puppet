@@ -2319,6 +2319,7 @@ node 'radium.wikimedia.org' {
     class { 'base::firewall': }
     include admin
     include standard
+    include role::tor
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
