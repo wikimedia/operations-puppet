@@ -148,7 +148,7 @@ class openstack::project-nfs-storage-service {
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
             'ALL = NOPASSWD: /bin/rmdir /srv/*',
             'ALL = NOPASSWD: /usr/local/sbin/sync-exports' ]
-    sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => User["nfsmanager"] }
+    sudo::user { [ "nfsmanager" ]: privileges => $sudo_privs, require => User["nfsmanager"] }
 
     group { 'nfsmanager':
         ensure => present,

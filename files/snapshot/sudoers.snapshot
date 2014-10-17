@@ -2,8 +2,8 @@
 
 #####################################################################
 #### THIS FILE IS MANAGED BY PUPPET
-#### puppet:///files/sudo/sudoers.appserver
-#### Installed by the sudo::appserver puppet class
+#### puppet:///files/snapshot/sudoers.snapshot
+#### Installed by the role::snapshot::common puppet class
 ######################################################################
 #
 # See the sudoers man page for the details on how to write a sudoers file.
