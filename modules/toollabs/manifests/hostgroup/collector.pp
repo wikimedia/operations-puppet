@@ -12,7 +12,7 @@ define toollabs::hostgroup::collector( $hgname = $title )
     }
 
     gridengine::hostgroup { "@${hgname}":
-        spirce  => $hgrpfile,
+        source  => $hgrpfile,
         require => Exec["make-${hgname}-hosts"],
     }
 
