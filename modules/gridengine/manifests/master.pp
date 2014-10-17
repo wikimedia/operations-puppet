@@ -63,7 +63,7 @@ class gridengine::master
     exec { "create-complex-conf":
         cwd     => $etcdir,
         path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        command => '/usr/bin/sort -ufst " " -k 1,1 complex/* >complex.conf && echo /usr/bin/qconf -Mc complex.conf',
+        command => "bash -c '/usr/bin/sort -ufst \" \" -k 1,1 complex/* >complex.conf && echo /usr/bin/qconf -Mc complex.conf'",
         require => File["$etcdir/complex/99-default"],
     }
 
@@ -88,7 +88,7 @@ class gridengine::master
     exec { "create-config-conf":
         cwd     => $etcdir,
         path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        command => '/usr/bin/sort -ufst " " -k 1,1 config/* >config.conf && echo /usr/bin/qconf -Mconf config.conf',
+        command => "bash -c '/usr/bin/sort -ufst \" \" -k 1,1 config/* >config.conf && echo /usr/bin/qconf -Mconf config.conf'",
         require => File["$etcdir/complex/99-default"],
     }
 
