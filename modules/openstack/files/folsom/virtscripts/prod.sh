@@ -1,7 +1,7 @@
 #!/bin/bash
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/openstack/folsom/virtscripts/prod.sh
+### puppet:///modules/openstack/folsom/virtscripts/prod.sh
 #####################################################################
 
 set -x
