@@ -20,7 +20,18 @@ class gridengine::master
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0775',
-        recurse => true,
+        recurse => false,
+        purge   => true,
+    }
+
+    file { "$etcdir/.tracker":
+        ensure  => directory,
+        require => Package['gridengine-master'],
+        force   => true,
+        owner   => 'sgeadmin',
+        group   => 'sgeadmin',
+        mode    => '0775',
+        recurse => false,
         purge   => true,
     }
 

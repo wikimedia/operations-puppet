@@ -15,10 +15,9 @@ define gridengine::resourcedir(
         purge   => $local,
     }
 
-    $trackerdir = "$etcdir/.tracker"
-    $resourcedir = "$trackerdir/$dir"
+    $resourcedir = "$etcdir/.tracker/$dir"
 
-    file { [ $trackerdir, $resourcedir ]:
+    file { $resourcedir:
         ensure  => directory,
         force   => true,
         owner   => 'sgeadmin',
