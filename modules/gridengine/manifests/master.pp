@@ -26,13 +26,26 @@ class gridengine::master
 
     file { "$etcdir/.tracker":
         ensure  => directory,
-        require => Package['gridengine-master'],
         force   => true,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0775',
         recurse => false,
         purge   => true,
+    }
+
+    file { "$etcdir/bin":
+        ensure       => directory,
+        force        => true,
+        owner        => 'root',
+        group        => 'root',
+        mode         => '0755',
+        recurse      => true,
+        purge        => true,
+        sourceselect => all,
+        source       => [ 'puppet:///modules/gridengine/mergeconf',
+                          'puppet:///modules/gridengine/trackpurge',
+                          'puppet:///modules/gridengine/runpurge' ],
     }
 
     gridengine::resourcedir { 'queues': }
@@ -57,14 +70,13 @@ class gridengine::master
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0664',
-        source  => 'puppet:///modules/gridengine/99-default';
+        source  => 'puppet:///modules/gridengine/99-default',
     }
 
-    exec { "create-complex-conf":
-        cwd     => $etcdir,
-        path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        command => "bash -c '/usr/bin/sort -ufst \" \" -k 1,1 complex/* >complex.conf && echo /usr/bin/qconf -Mc complex.conf'",
-        require => File["$etcdir/complex/99-default"],
+    exec { "update-complex-conf":
+        onlyif  => "$etcdir/bin/mergeconf $etcdir/complex.conf $etcdir/complex/*",
+        command => "/bin/echo /usr/bin/qconf -Mc $etcdir/complex.conf'",
+        require => File[ [ "$etcdir/bin", "$etcdir/complex/99-default" ] ],
     }
 
     file { "$etcdir/config":
@@ -82,14 +94,13 @@ class gridengine::master
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0664',
-        source  => 'puppet:///modules/gridengine/config-99-default';
+        source  => 'puppet:///modules/gridengine/config-99-default',
     }
 
-    exec { "create-config-conf":
-        cwd     => $etcdir,
-        path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        command => "bash -c '/usr/bin/sort -ufst \" \" -k 1,1 config/* >config.conf && echo /usr/bin/qconf -Mconf config.conf'",
-        require => File["$etcdir/complex/99-default"],
+    exec { "update-config-conf":
+        onlyif  => "$etcdir/bin/mergeconf $etcdir/config.conf $etcdir/config/*",
+        command => "/bin/echo /usr/bin/qconf -Mconf $etcdir/config.conf",
+        require => File[ [ "$etcdir/bin", "$etcdir/complex/99-default" ] ],
     }
 
 }
