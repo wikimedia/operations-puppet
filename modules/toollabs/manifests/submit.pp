@@ -12,8 +12,13 @@
 # Sample Usage:
 #
 class toollabs::submit($gridmaster) inherits toollabs {
+    class { 'gridengine':
+        gridmaster => $gridmaster,
+    }
+
     include toollabs::exec_environ,
-        toollabs::gridnode
+        toollabs::gridnode,
+        gridengine::submit_host
 
     file { '/etc/ssh/ssh_config':
         ensure => file,
@@ -21,10 +26,6 @@ class toollabs::submit($gridmaster) inherits toollabs {
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
-    }
-
-    class { 'gridengine::submit_host':
-        gridmaster => $gridmaster,
     }
 
     class { 'toollabs::hba':

@@ -11,9 +11,15 @@
 # Sample Usage:
 #
 class toollabs::mailrelay($maildomain,
-                          $gridmaster) inherits toollabs {
+                          $gridmaster) inherits toollabs
+{
+    class { 'gridengine':
+        gridmaster => $gridmaster,
+    }
+
     include toollabs::infrastructure,
-        toollabs::gridnode
+        toollabs::gridnode,
+        gridengine::submit_host
 
     # FIXME: -ugly-, we need to have a better way for this
     Package <| title == 'exim4-daemon-light' |> {
@@ -21,10 +27,6 @@ class toollabs::mailrelay($maildomain,
     }
     package{ 'exim4-daemon-heavy':
         ensure => present
-    }
-
-    class { 'gridengine::submit_host':
-        gridmaster => $gridmaster,
     }
 
     file { "${toollabs::store}/mail-relay":

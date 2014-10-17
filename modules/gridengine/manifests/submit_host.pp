@@ -1,13 +1,7 @@
 # gridengine/submit_host.pp
 
-class gridengine::submit_host(
-    $gridmaster = $grid_master,
-    $collectdir)
+class gridengine::submit_host( $collectdir = undef )
 {
-    class { 'gridengine':
-        gridmaster => $gridmaster,
-    }
-
     package { [ 'jobutils' ]:
         ensure => latest,
     }

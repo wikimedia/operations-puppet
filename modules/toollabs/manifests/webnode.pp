@@ -13,15 +13,15 @@
 # Sample Usage:
 #
 class toollabs::webnode($gridmaster, $type) inherits toollabs {
-    include toollabs::exec_environ,
-        toollabs::infrastructure,
-        toollabs::gridnode
-
-    # should be exec_host and submit_host
-    # [bleep] puppet
-    class { 'gridengine::exec_submit_host':
+    class { 'gridengine':
         gridmaster => $gridmaster,
     }
+
+    include toollabs::exec_environ,
+        toollabs::infrastructure,
+        toollabs::gridnode,
+        gridengine::exec_host,
+        gridengine::submit_host
 
     file { "${toollabs::store}/execnode-${::fqdn}":
         ensure  => file,

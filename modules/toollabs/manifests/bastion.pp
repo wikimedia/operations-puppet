@@ -12,9 +12,14 @@
 # Sample Usage:
 #
 class toollabs::bastion($gridmaster) inherits toollabs {
+    class { 'gridengine':
+        gridmaster => $gridmaster,
+    }
+
     include toollabs::exec_environ,
         toollabs::dev_environ,
-        toollabs::gridnode
+        toollabs::gridnode,
+        gridengine::submit_host
 
     file { '/etc/ssh/ssh_config':
         ensure => file,
@@ -22,10 +27,6 @@ class toollabs::bastion($gridmaster) inherits toollabs {
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
-    }
-
-    class { 'gridengine::submit_host':
-        gridmaster => $gridmaster,
     }
 
     file { '/etc/update-motd.d/40-bastion-banner':

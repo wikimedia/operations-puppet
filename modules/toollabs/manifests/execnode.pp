@@ -12,12 +12,13 @@
 # Sample Usage:
 #
 class toollabs::execnode($gridmaster) inherits toollabs {
-    include toollabs::exec_environ,
-        toollabs::gridnode
-
-    class { 'gridengine::exec_host':
+    class { 'gridengine':
         gridmaster => $gridmaster,
     }
+
+    include toollabs::exec_environ,
+        toollabs::gridnode,
+        gridengine::exec_host
 
     class { 'toollabs::hba':
         store => $toollabs::store,
