@@ -9,7 +9,7 @@ class role::iegreview {
         deploy_dir           => '/srv/deployment/iegreview/iegreview',
         cache_dir            => '/var/cache/iegreview',
         # Send logs to udp2log relay
-        log_dest             => 'udp://udplog:8420/iegreview',
+        log_dest             => 'udp://udplog.eqiad.wmnet:8420/iegreview',
         # Misc MySQL shard
         mysql_host           => 'm2-master.eqiad.wmnet',
         mysql_db             => 'iegreview',
