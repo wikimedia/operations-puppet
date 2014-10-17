@@ -219,7 +219,7 @@ groups:
   eventlogging-admins:
     gid: 733
     description: Login access for eventlogging investigation
-    members: [nuria, qchris]
+    members: [nuria, qchris, milimetric]
   labmon-roots:
     gid: 734
     description: Full root access to labmon nodes
