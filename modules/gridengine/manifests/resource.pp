@@ -15,6 +15,7 @@ define gridengine::resource(
 
     exec { "create-$dir-$rname-tracker":
         creates => $tracker,
+        path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
         command => "echo $addcmd '$conf' && /bin/echo 'echo $delcmd $rname' >'$tracker'",
         require => File[$conf],
     }

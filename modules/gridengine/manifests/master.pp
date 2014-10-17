@@ -51,6 +51,7 @@ class gridengine::master
 
     exec { "create-complex-conf":
         cwd     => $etcdir,
+        path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
         command => '/usr/bin/sort -ufst " " -k 1,1 complex/* >complex.conf && echo /usr/bin/qconf -Mc complex.conf',
         require => File["$etcdir/complex/complex-99-default"],
     }
@@ -75,42 +76,9 @@ class gridengine::master
 
     exec { "create-config-conf":
         cwd     => $etcdir,
+        path    => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
         command => '/usr/bin/sort -ufst " " -k 1,1 config/* >config.conf && echo /usr/bin/qconf -Mconf config.conf',
         require => File["$etcdir/complex/99-default"],
-    }
-
-}
-
-# gridengine/resourcedir.pp
-
-define gridengine::resourcedir(
-    $etcdir = '/etc/gridengine/local',
-    $dir    = $title,
-    $local  = true )
-{
-    file { "$etcdir/$dir":
-        ensure  => directory,
-        force   => $local,
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0775',
-        recurse => $local,
-        purge   => $local,
-    }
-
-    file { "$etcdir/.tracker/$dir":
-        ensure  => directory,
-        force   => true,
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0775',
-        recurse => false,
-        purge   => false,
-    }
-
-    exec { "purge-deleted-$dir":
-        cwd     => "$etcdir/.tracker/$dir",
-        command => "for r in *; do if [ ! -f $etcdir/$dir/\$r ]; then /bin/bash \$r && rm \$f; fi; done",
     }
 
 }
