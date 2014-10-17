@@ -61,7 +61,8 @@ class hhvm(
     $cli_settings  = {},
 ) {
     requires_ubuntu('>= trusty')
-    require ::hhvm::packages
+
+    include ::hhvm::packages
 
 
     ## Settings
@@ -179,8 +180,9 @@ class hhvm(
     }
 
     service { 'hhvm':
-        ensure   => 'running',
-        provider => 'upstart',
+        ensure    => 'running',
+        provider  => 'upstart',
+        subscribe => Package['hhvm', 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-wikidiff2'],
     }
 
     file { '/etc/hhvm':

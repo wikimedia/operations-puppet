@@ -11,7 +11,6 @@ class hhvm::packages {
         'hhvm-dbg',
     ]:
         ensure => present,
-        notify => Service['hhvm'],
     }
 
 
@@ -23,7 +22,6 @@ class hhvm::packages {
         'hhvm-wikidiff2',
     ]:
         ensure => present,
-        notify => Service['hhvm'],
     }
 
 
@@ -47,7 +45,6 @@ class hhvm::packages {
         'libxslt1-dbg',
     ]:
         ensure => present,
-        before => Service['hhvm'],
     }
 
 
