@@ -14,7 +14,7 @@ class lvs::monitor {
     lvs::monitor_service_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
     lvs::monitor_service_http { "search.svc.eqiad.wmnet": ip_address => "10.2.2.30", check_command => "check_http_on_port!9200", contact_group => "admins" }
     lvs::monitor_service_http { 'ocg.svc.eqiad.wmnet': ip_address => $ip['ocg']['eqiad'], check_command => "check_http_lvs_on_port!ocg.svc.eqiad.wmnet!8000!/?command=health" }
-    lvs::monitor_service_http { 'mathoid.svc.eqiad.wmnet': ip_address => $ip['mathoid']['eqiad'], check_command => "check_http_lvs_on_port!mathoid.svc.eqiad.wmnet!10042!/" }
+    lvs::monitor_service_http { 'mathoid.svc.eqiad.wmnet': ip_address => $ip['mathoid']['eqiad'], check_command => "check_http_lvs_on_port!mathoid.svc.eqiad.wmnet!10042!/_info" }
     lvs::monitor_service_http { 'citoid.svc.eqiad.wmnet': ip_address => $ip['citoid']['eqiad'], check_command => "check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/", contact_group => "admins,parsoid" }
     lvs::monitor_service_http { 'cxserver.svc.eqiad.wmnet': ip_address => $ip['cxserver']['eqiad'], check_command => "check_http_lvs_on_port!citoid.svc.eqiad.wmnet!8080!/" }
     lvs::monitor_service_http { 'graphoid.svc.eqiad.wmnet': ip_address => $ip['graphoid']['eqiad'], check_command => "check_http_lvs_on_port!graphoid.svc.eqiad.wmnet!19000!/_info", contact_group => "admins,parsoid" }
