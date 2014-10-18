@@ -9,26 +9,7 @@ class role::mathoid{
         description => 'mathoid server'
     }
 
-    class { '::mathoid':
-      require   => Package['mathoid/mathoid'],
-    }
-
-    package { 'mathoid/mathoid':
-        provider => 'trebuchet',
-    }
-
-    group { 'mathoid':
-      ensure => present,
-      name   => 'mathoid',
-      system => true,
-    }
-
-    user { 'mathoid':
-      gid        => 'mathoid',
-      home       => '/srv/deployment/mathoid/mathoid',
-      managehome => true,
-      system     => true,
-    }
+    include ::mathoid
 
     ferm::service { 'mathoid':
       proto => 'tcp',
