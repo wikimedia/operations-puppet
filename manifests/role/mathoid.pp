@@ -5,34 +5,9 @@
 @monitor_group { 'sca_eqiad': description => 'Service Cluster A servers' }
 
 class role::mathoid::production {
-    system::role { 'role::mathoid::production':
-        description => 'mathoid server'
-    }
+    system::role { 'role::mathoid::production': }
 
-    class { '::mathoid':
-      base_path => '/srv/deployment/mathoid/mathoid',
-      node_path => '/srv/deployment/mathoid/mathoid/node_modules',
-      conf_path => '/srv/deployment/mathoid/mathoid/mathoid.config.json',
-      log_dir   => '/var/log/mathoid',
-      require   => Package['mathoid/mathoid'],
-    }
-
-    package { 'mathoid/mathoid':
-        provider => 'trebuchet',
-    }
-
-    group { 'mathoid':
-      ensure => present,
-      name   => 'mathoid',
-      system => true,
-    }
-
-    user { 'mathoid':
-      gid           => 'mathoid',
-      home          => '/srv/deployment/mathoid/mathoid',
-      managehome    => true,
-      system        => true,
-    }
+    include ::mathoid
 
     ferm::service { 'mathoid':
       proto => 'tcp',
@@ -40,40 +15,15 @@ class role::mathoid::production {
     }
 
     monitor_service { 'mathoid':
-      description => 'mathoid',
+      description   => 'mathoid',
       check_command => 'check_http_on_port!10042',
     }
 }
 
 class role::mathoid::beta {
-    system::role { 'role::mathoid::beta':
-        description => 'mathoid server (on beta)'
-    }
+    system::role { 'role::mathoid::beta': }
 
-    class { '::mathoid':
-        base_path => '/srv/deployment/mathoid/mathoid',
-        node_path => '/srv/deployment/mathoid/mathoid/node_modules',
-        conf_path => '/srv/deployment/mathoid/mathoid/mathoid.config.json',
-        log_dir   => '/var/log/mathoid',
-        require   => Package['mathoid'],
-    }
-
-    package { 'mathoid':
-        provider => 'trebuchet',
-    }
-
-    group { 'mathoid':
-        ensure => present,
-        name   => 'mathoid',
-        system => true,
-    }
-
-    user { 'mathoid':
-        gid           => 'mathoid',
-        home          => '/srv/deployment/mathoid/mathoid',
-        managehome    => true,
-        system        => true,
-    }
+    include ::mathoid
 
     # Beta mathoid server has some ferm DNAT rewriting rules (bug 45868) so we
     # have to explicitly allow mathoid port 10042
