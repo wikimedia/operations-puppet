@@ -1,6 +1,8 @@
 # == Class: mathoid
 #
-# mathoid is a node.js backend for the math rendering.
+# Mathoid is an application which takes various forms of math input and
+# converts it to MathML + SVG output. It is a web-service implemented
+# in node.js.
 #
 # === Parameters
 #
@@ -24,42 +26,56 @@ class mathoid(
     $port=10042
 ) {
     require_package('nodejs')
-    # TODO Add dependency to node-jsdom once
-    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347
-    # is fixed
 
-    $log_file = "${log_dir}/main.log"
+    # Pending fix for <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347>
+    # require_package('node-jsdom')
 
-    file { $log_dir:
+    package { 'mathoid/mathoid':
+        provider => 'trebuchet',
+        before   => Service['mathoid'],
+    }
+
+    group { 'mathoid':
+        ensure => present,
+        system => true,
+    }
+
+    user { 'mathoid':
+        gid    => 'mathoid',
+        home   => '/nonexistent',
+        shell  => '/bin/false',
+        system => true,
+    }
+
+    file { '/var/log/mathoid':
         ensure => directory,
-        owner  => mathoid,
-        group  => mathoid,
+        owner  => 'mathoid',
+        group  => 'mathoid',
         mode   => '0775',
+        before => Service['mathoid'],
     }
 
-    file { $conf_path:
-        ensure  => present,
-        owner   => mathoid,
-        group   => mathoid,
-        mode    => '0555',
-        content => template('mathoid/config.erb'),
-    }
-
-    # The upstart configuration
-    file { '/etc/init/mathoid.conf':
-        ensure  => present,
-        owner   => root,
-        group   => root,
+    file { '/srv/deployment/mathoid/mathoid/mathoid.config.json':
+        content => "{}\n",
+        owner   => 'mathoid',
+        group   => 'mathoid',
         mode    => '0444',
-        content => template('mathoid/upstart.erb'),
+        require => Package['mathoid/mathoid'],
+    }
+
+    file { '/etc/init/mathoid.conf':
+        source => 'puppet:///modules/mathoid/mathoid.conf',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        notify => Service['mathoid'],
     }
 
     file { '/etc/logrotate.d/mathoid':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        content => template('mathoid/logrotate.erb'),
+        source => 'puppet:///modules/mathoid/mathoid.logrotate',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     service { 'mathoid':
@@ -67,7 +83,5 @@ class mathoid(
         hasstatus  => true,
         hasrestart => true,
         provider   => 'upstart',
-        require    => File[$log_dir],
-        subscribe  => File['/etc/init/mathoid.conf'],
     }
 }
