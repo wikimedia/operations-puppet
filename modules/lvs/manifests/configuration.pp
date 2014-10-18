@@ -684,7 +684,7 @@ class lvs::configuration {
             'bgp' => 'yes',
             'depool-threshold' => '.5',
             'monitors' => {
-                'ProxyFetch' => { 'url' => [ 'http://mathoid.svc.eqiad.wmnet' ] },
+                'ProxyFetch' => { 'url' => [ 'http://mathoid.svc.eqiad.wmnet/_info' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
