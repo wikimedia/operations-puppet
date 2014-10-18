@@ -55,6 +55,7 @@ class iegreview(
     include ::apache
     include ::apache::mod::php5
     include ::apache::mod::rewrite
+    include passwords::mysql::iegreview
 
     system::role { 'iegreview':
         description => 'IEG grant review server',
