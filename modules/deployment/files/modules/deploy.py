@@ -267,9 +267,9 @@ def sync_all():
     status = 0
     stats = {}
 
-    for repo, config in repo_config.items():
+    for repo in repo_config:
         # Ensure the minion is a deployment target for this repo
-        if config['grain'] not in deployment_target:
+        if repo not in deployment_target:
             continue
         if repo not in stats:
             stats[repo] = {}
