@@ -93,7 +93,7 @@ Puppet::Type.type(:package).provide(
   def targets
     @cached_targets || begin
       check_salt_minion_status
-      raw = salt('grains.get', 'deployment_target')
+      raw = salt('--local', 'grains.get', 'deployment_target')
       @cached_targets = PSON.load(raw).fetch('local', [])
     rescue Puppet::ExecutionFailure
       @cached_targets = []
@@ -121,7 +121,7 @@ Puppet::Type.type(:package).provide(
 
   def master
     @resource[:source] || begin
-      raw = salt('grains.get', 'trebuchet_master')
+      raw = salt('--local', 'grains.get', 'trebuchet_master')
       master = PSON.load(raw)['local']
       if master.nil? || master.empty?
         fail Puppet::Error, <<-END
