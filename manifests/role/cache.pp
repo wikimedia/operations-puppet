@@ -519,10 +519,13 @@ class role::cache {
             # ramping up the number of machines that request more
             # ACKs.
             #
-            # For now, it's only mobile (smallest cluster).
-            # Other clusters will follow, if this works well.
+            # For now, it's only mobile (smallest cluster), and text.
+            # That's roughly 30% of requests and covers the production
+            # use of the Analytics cluster.
+            # Other cache clusters will follow, if this works well.
             $topic_request_required_acks  = $topic ? {
                 'webrequest_mobile' => '2',
+                'webrequest_text'   => '2',
                 default             => '1',
             }
 
