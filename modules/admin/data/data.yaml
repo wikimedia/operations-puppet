@@ -1166,3 +1166,10 @@ users:
     realname: Magnus Edenhill
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoJZ07ZiN5tdIRqEhQeLsiz2a2KcMjH+Ei6Q/1Xp/Ozl7TmWlImnKNl0VeehCRZGTFbRNfd8qCyyA0zPzk8wEP6i1gw4nWiBk0mizuJwTQ4t5XWAwZ2dj8lUz3MfAZ4Vg198sPuaJJeL8ia4wJlxMlvPspPgVOq7rbKZxzCkpZWjtpGF08Pw3QVBXRY1ECXCT7elVJ9yvnDRHJNbm9bZCym/wU+kvJKp1+Go0qLXvWzADfUbZCOwfREHkupcTs9nAzxbcRfbaLWWPpAGVuH0p8hvsqtZCYrDf1HPhMrCgoT4MGXyfVs1guN8ncUyqiZHRaAncoy1p5xyoU2rhek8gl maglun@bib]
     uid: 3092
+  jsahleen:
+    ensure: present
+    gid: 500
+    name: jsahleen
+    realname: Joel Sahleen
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2T57VzSaiXa3wgaoeMHSTFa9PTpSQeKKVn9ww4CaY/qW3e6+X8Mqql4YanBYNXlg4r3LJTKUFvnf99uuInvXVYfll7Nt8g9Hos+nXJCZuJHq5eLTAijpm8zannofWDE55Twfwzg1aNAgXjILvyHghGWsCM1QpVcCsQtMgijaNRhDT5xV290s3uVXAjIWaHz1VtyJuQELrWafowY+2g6Z9lqhIhU6qt4HdBE7Rp0JRfPXgONM+5s7ltZHoRlLd2axOwFLsECTjeMD/RYDc5pqlI7Cvn9btU35/mDDYbbPvxBJF7Xw658tSC2V9v8Vu6VS0HVpyfuZRpyjF4G/j6A3r jsahleen@wikimedia.org]
+    uid: 10257
