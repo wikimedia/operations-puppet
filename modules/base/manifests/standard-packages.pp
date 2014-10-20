@@ -4,6 +4,10 @@ class base::standard-packages {
         package { [ "linux-tools-${::kernelrelease}", 'linux-tools-generic' ]:
             ensure => present,
         }
+
+        package { 'quickstack':
+            ensure => present,
+        }
     }
 
     $packages = [
