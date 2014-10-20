@@ -5,9 +5,14 @@ include "errorpage.inc.vcl";
 sub vcl_recv {
 	call vcl_recv_purge;
 
+	/* CORS preflight requests */
+	if (req.request == "OPTIONS" & req.http.Origin) {
+		error 667 "CORS";
+	}
+
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET, HEAD at this point */
-		error 403 "HTTP method not allowed.";
+		error 403 "HTTP method not allowed";
 	}
 
 	/* Look for a "download" request parameter */
@@ -79,6 +84,22 @@ sub vcl_fetch {
 }
 
 sub vcl_error {
+	/* Handle CORS preflight requests */
+        if (obj.status == 667) {
+		set obj.status = 200;
+		set obj.response = "OK";
+		set obj.http.Connection = "keep-alive";
+		set obj.http.Content-Length = "0";
+
+		/* allow Range requests, used by ogv.js */
+		set resp.http.Access-Control-Allow-Origin = "*";
+		set resp.http.Access-Control-Allow-Headers = "Range";
+		set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
+		set resp.http.Access-Control-Max-Age = "86400";
+
+		return(deliver);
+	}
+
 	call errorpage;
 	return(deliver);
 }
