@@ -18,6 +18,8 @@
 #   have write access to cxserver user.
 # [*parsoid*]
 #   Url to parsoid service.
+# [*apertium*]
+#   Url to apertium service.
 # [*port*]
 #   Port where to run the cxserver service. Defaults to 8080.
 
@@ -28,13 +30,12 @@ class cxserver(
     $conf_path,
     $log_dir,
     $parsoid,
+    $apertium,
     $port=8080
 ) {
     # apertium-* packages are for machine translation.
     # dictd-* packages for dictionary server.
     package { ['nodejs',
-               'apertium',
-               'apertium-es-ca',
                'dictd',
                'dict-freedict-eng-spa',
                'dict-freedict-spa-eng',
