@@ -507,30 +507,6 @@ class role::cache {
                 priority => 70,
             }
 
-            # The default of 1 ACK per batch causes issues (i.e.:
-            # missing messages) when a broker drops out of its leader
-            # role. Previous tests showed that requiring of 2 ACKs per
-            # batch solved the issue in 4 of 4 instances. So it seems
-            # 2 ACKs are sufficient, and we don't need to require ACKs
-            # of all ISR machines.
-            #
-            # While the expected increase in network traffic should
-            # not affect network performance, we're only slowly
-            # ramping up the number of machines that request more
-            # ACKs.
-            #
-            # For now, it's only bits, mobile, and text.
-            # That's roughly 55% of requests and covers the production
-            # use of the Analytics cluster.
-            # Upload cache cluster will follow, if this works well.
-            $topic_request_required_acks  = $topic ? {
-                'webrequest_bits'   => '2',
-                'webrequest_mobile' => '2',
-                'webrequest_text'   => '2',
-                default             => '1',
-            }
-
-
             class { '::varnishkafka':
                 brokers                      => $kafka_brokers,
                 topic                        => $topic,
@@ -550,7 +526,10 @@ class role::cache {
                 batch_num_messages           => 6000,
                 # large timeout to account for potential cross DC latencies
                 topic_request_timeout_ms     => 30000, # request ack timeout
-                topic_request_required_acks  => $topic_request_required_acks,
+                # By requiring 2 ACKs per message batch, we survive a
+                # single broker dropping out of its leader role,
+                # without seeing lost messages.
+                topic_request_required_acks  => '2',
                 # Write out stats to varnishkafka.stats.json
                 # this often.  This is set at 15 so that
                 # stats will be fresh when polled from gmetad.
