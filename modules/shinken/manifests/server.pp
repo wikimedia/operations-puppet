@@ -37,6 +37,15 @@ class shinken::server(
         notify  => Service['shinken'],
     }
 
+    file { '/etc/shinken/templates.cfg':
+        ensure  => present,
+        source  => 'puppet:///modules/shinken/templates.cfg',
+        owner   => 'shinken',
+        group   => 'shinken',
+        require => Package['shinken'],
+        notify  => Service['shinken'],
+    }
+
     file { '/etc/shinken/contactgroups.cfg':
         ensure  => present,
         source  => 'puppet:///modules/shinken/contactgroups.cfg',
