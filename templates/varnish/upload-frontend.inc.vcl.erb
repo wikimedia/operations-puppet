@@ -6,7 +6,7 @@ sub vcl_recv {
 	call vcl_recv_purge;
 
 	/* CORS preflight requests */
-	if (req.request == "OPTIONS" & req.http.Origin) {
+	if (req.request == "OPTIONS" && req.http.Origin) {
 		error 667 "CORS";
 	}
 
@@ -92,10 +92,10 @@ sub vcl_error {
 		set obj.http.Content-Length = "0";
 
 		/* allow Range requests, used by ogv.js */
-		set resp.http.Access-Control-Allow-Origin = "*";
-		set resp.http.Access-Control-Allow-Headers = "Range";
-		set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
-		set resp.http.Access-Control-Max-Age = "86400";
+		set obj.http.Access-Control-Allow-Origin = "*";
+		set obj.http.Access-Control-Allow-Headers = "Range";
+		set obj.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
+		set obj.http.Access-Control-Max-Age = "86400";
 
 		return(deliver);
 	}
