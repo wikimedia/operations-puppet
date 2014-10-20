@@ -507,31 +507,23 @@ class role::cache {
                 priority => 70,
             }
 
-            # Trying out acks = -1 for select varnishes.
-            # We have always run with acks = 1, which means
-            # that only the leader of a partition needs to
-            # ACK a request for varnishkafka to consider it
-            # received by the Brokers.  acks = -1 means
-            # that all Brokers in the partition's ISR must
-            # also ACK that they have received the produce
-            # request.  This will mean lower latency, but
-            # less risk of losing messages due to broker
-            # problems.  We also try with acks = 2,
-            # which would mean that at least 2 brokers
-            # would have to ack, rather than all of them.
-            # This is related to Bug 69667:
-            # https://bugzilla.wikimedia.org/show_bug.cgi?id=69667
+            # The default of 1 ACK per batch causes issues (i.e.:
+            # missing messages) when a broker drops out of its leader
+            # role. Previous tests showed that requiring of 2 ACKs per
+            # batch solved the issue in 4 of 4 instances. So it seems
+            # 2 ACKs are sufficient, and we don't need to require ACKs
+            # of all ISR machines.
             #
-            # We will wait until the next time that analytics1021
-            # timesout from Zookeeper and examine the lost
-            # message count from the webrequest_sequence_stats
-            # table for these hosts, to see what the difference is.
-            $topic_request_required_acks  = $::fqdn ? {
-                'cp3019.esams.wikimedia.org' => '2',  # esams bits
-                'cp1056.eqiad.wmnet'         => '2',  # eqiad bits
-                'cp3020.esams.wikimedia.org' => '-1', # esams bits
-                'cp1057.eqiad.wmnet'         => '-1', # eqiad bits
-                default                      => '1',
+            # While the expected increase in network traffic should
+            # not affect network performance, we're only slowly
+            # ramping up the number of machines that request more
+            # ACKs.
+            #
+            # For now, it's only mobile (smallest cluster).
+            # Other clusters will follow, if this works well.
+            $topic_request_required_acks  = $topic ? {
+                'webrequest_mobile' => '2',
+                default             => '1',
             }
 
 
