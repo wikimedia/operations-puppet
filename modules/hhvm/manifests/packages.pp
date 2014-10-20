@@ -50,7 +50,10 @@ class hhvm::packages {
 
     ## Profiling and debugging tools
 
-    package { 'google-perftools':
+    package { [
+        'google-perftools',
+        'quickstack',
+    ]:
         ensure => present,
     }
 }
