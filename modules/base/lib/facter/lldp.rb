@@ -1,0 +1,50 @@
+require 'facter'
+require 'rexml/document'
+
+if Facter.value('virtual') == 'physical' and File.exists?('/usr/sbin/lldpctl')
+
+    lldpeers = nil
+
+    data = Facter::Util::Resolution.exec('/usr/sbin/lldpctl -f xml')
+    document = REXML::Document.new(data)
+    document.elements.each('lldp/interface') do |iface|
+        eth = iface.attributes['name']
+        iface.elements.each('chassis/name') do |switch|
+            Facter.add('lldppeer_%s' % eth) do
+                confine :kernel => %w{Linux FreeBSD OpenBSD}
+                setcode do
+                    switch.text
+                end
+            end
+            if lldppeers
+                lldppeers = lldppeers + ',' + switch.text
+            else
+                lldppeers = switch.text
+            end
+        end
+        iface.elements.each('port/descr') do |port|
+            Facter.add('lldpswport_%s' % eth) do
+                confine :kernel => %w{Linux FreeBSD OpenBSD}
+                setcode do
+                    port.text
+                end
+            end
+        end
+        iface.elements.each('port/id') do |port|
+            Facter.add('lldpswportid_%s' % eth) do
+                confine :kernel => %w{Linux FreeBSD OpenBSD}
+                setcode do
+                    port.text
+                end
+            end
+        end
+    end
+
+    # Aggregate all the lldp peers on one single variable
+    Facter.add('lldppeers') do
+        confine :kernel => %w{Linux FreeBSD OpenBSD}
+        setcode do
+            lldppeers
+        end
+    end
+end
