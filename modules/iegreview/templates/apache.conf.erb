@@ -27,6 +27,7 @@
   </Directory>
 
   <Location />
+    RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule .* index.php/$0 [L,PT]
   </Location>
