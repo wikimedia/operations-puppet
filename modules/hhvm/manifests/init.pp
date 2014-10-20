@@ -200,6 +200,14 @@ class hhvm(
         before => Service['hhvm'],
     }
 
+    file { '/usr/local/sbin/hhvm-watch-mem':
+        source => 'puppet:///modules/hhvm/hhvm-watch-mem',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        before => Service['hhvm'],
+    }
+
 
     ## Run-time data and logging
 

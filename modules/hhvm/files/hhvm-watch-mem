@@ -1,0 +1,45 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+  hhvm-watch-mem
+  ~~~~~~~~~~~~~~
+  Watch memory stats from HHVM's admin server
+
+"""
+import json
+import os
+import re
+import time
+import urllib2
+
+
+REFRESH_INTERVAL = 2
+
+
+def flatten(mapping, prefix=''):
+    items = []
+    for key, val in mapping.items():
+        key = prefix + re.sub('[^a-z ]', '', key.lower()).replace(' ', '_')
+        items.extend(flatten(val, key + '.').items() if isinstance(val, dict)
+                     else ((key, val),))
+    return dict(items)
+
+
+def get_stats():
+    req = urllib2.urlopen('http://localhost:9002/memory.json')
+    return flatten(json.load(req)['Memory'])
+
+
+stats = previous_stats = initial_stats = get_stats()
+
+while 1:
+    os.system('clear')
+    print('{:<30}{:>15}{:>15}{:>15}'.format(
+        'METRIC', 'VALUE', 'DELTA', 'LIFETIME DELTA'))
+    for k, v in sorted(stats.items()):
+        delta = v - previous_stats[k]
+        lifetime_delta = v - initial_stats[k]
+        print('{:<30}{:>15}{:>15}{:>15}'.format(k, v, delta, lifetime_delta))
+    previous_stats = stats
+    time.sleep(REFRESH_INTERVAL)
+    stats = get_stats()
