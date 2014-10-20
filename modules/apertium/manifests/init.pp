@@ -38,9 +38,7 @@ class apertium(
         hasrestart => true,
         provider   => 'upstart',
         require    => [
-            File[$log_dir],
             File['/etc/init.d/apertium-apy']
         ],
-        subscribe  => File['/etc/init/apertium-apy.conf'],
     }
 }
