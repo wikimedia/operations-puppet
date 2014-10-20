@@ -46,6 +46,13 @@ class shinken::server(
         notify  => Service['shinken'],
     }
 
+    file { '/etc/shinken/generated':
+        ensure  => directory,
+        owner   => 'shinken',
+        group   => 'shinken',
+        require => Package['shinken'],
+    }
+
     file { '/etc/shinken/contactgroups.cfg':
         ensure  => present,
         source  => 'puppet:///modules/shinken/contactgroups.cfg',
