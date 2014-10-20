@@ -52,7 +52,6 @@ class hhvm::packages {
 
     package { [
         'google-perftools',
-        'quickstack',
     ]:
         ensure => present,
     }
