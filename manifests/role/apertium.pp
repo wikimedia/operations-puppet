@@ -12,9 +12,7 @@ class role::apertium::beta {
         description => 'Apertium APY server (on beta)'
     }
 
-    class { '::apertium':
-        log_dir => '/var/log/apertium'
-    }
+    include ::apertium
 
     # Need to allow jenkins-deploy to reload apertium
     sudo_user { 'jenkins-deploy': privileges => [

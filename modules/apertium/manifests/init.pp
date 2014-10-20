@@ -10,11 +10,7 @@
 #   have write access to apertium user.
 # [*port*]
 #   Port where to run the apertium service. Defaults to 2737.
-
-class apertium(
-    $log_dir,
-    $port=2737
-) {
+class apertium(){
     package { [
         'apertium',
         'apertium-apy',
@@ -27,18 +23,11 @@ class apertium(
         ensure => present,
     }
 
-    file { '/etc/init.d/apertium-apy':
-        ensure => 'link',
-        target => '/lib/init/upstart-job',
-    }
-
     service { 'apertium-apy':
         ensure     => running,
         hasstatus  => true,
         hasrestart => true,
         provider   => 'upstart',
-        require    => [
-            File['/etc/init.d/apertium-apy']
-        ],
+        require    => Package['apertium-apy'],
     }
 }
