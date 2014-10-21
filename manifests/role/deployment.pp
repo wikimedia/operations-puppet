@@ -189,7 +189,6 @@ class role::deployment::salt_masters::labs {
   $deployment_config = {
     'parent_dir' => '/srv/deployment',
     'servers'    => {
-       'pmtpa'  => $deployment_server,
        'eqiad'  => $deployment_server,
     },
     'redis'      => {
