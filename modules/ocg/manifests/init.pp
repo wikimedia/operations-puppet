@@ -45,10 +45,8 @@ class ocg (
     if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '14.04') >= 0 ) {
         # Although we need NodeJS on the server, only ubuntu 14.04 currently
         # comes with it. On labs or 12.04 boxes it has to be installed by hand :(
-        package { 'nodejs':
-            ensure => present,
-            notify => Service['ocg'],
-        }
+        require_package('nodejs')
+        Package['nodejs'] ~> Service['ocg']
     }
 
     # NOTE: If you change $nodebin you MUST also change the AppArmor

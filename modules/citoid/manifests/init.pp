@@ -8,7 +8,7 @@
 #   Port where to run the citoid service. Defaults to 1970.
 #
 class citoid( $port = 1970 ) {
-    ensure_packages( ['nodejs'] )
+    require_package('nodejs')
 
     package { 'citoid/deploy':
         provider => 'trebuchet',

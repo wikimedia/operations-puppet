@@ -18,11 +18,7 @@ class limn(
   $group = 'limn'
 
   # Make sure nodejs is installed.
-  if (!defined(Package['nodejs'])) {
-    package { 'nodejs':
-      ensure => installed,
-    }
-  }
+  require_package('nodejs')
 
   group { $group:
     ensure => present,

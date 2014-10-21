@@ -35,8 +35,9 @@ class cxserver(
 ) {
     # apertium-* packages are for machine translation.
     # dictd-* packages for dictionary server.
-    package { ['nodejs',
-               'dictd',
+    require_package('nodejs')
+
+    package { ['dictd',
                'dict-freedict-eng-spa',
                'dict-freedict-spa-eng',
                'dict-freedict-eng-hin'

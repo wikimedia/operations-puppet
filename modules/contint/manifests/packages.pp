@@ -103,9 +103,7 @@ class contint::packages {
     }
 
     # Node.js evolves quickly so we want to update automatically.
-    package { 'nodejs':
-        ensure => latest,
-    }
+    require_package('nodejs')
 
 
     # Includes packages needed for building

@@ -23,7 +23,7 @@ class mathoid(
     $log_dir,
     $port=10042
 ) {
-    ensure_packages( ['nodejs'] )
+    require_package('nodejs')
     # TODO Add dependency to node-jsdom once
     # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347
     # is fixed
