@@ -1,0 +1,4 @@
+cluster: pdf
+admin::groups:
+  - ocg-render-admins
+role::ocg::production::tmpfs_size: '32G'
