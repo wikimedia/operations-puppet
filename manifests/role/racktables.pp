@@ -9,14 +9,6 @@ class role::racktables {
 
     system::role { 'role::racktables': description => 'Racktables' }
 
-    include standard-noexim, webserver::php5-gd,
-    webserver::php5-mysql,
-    misc::racktables
-
-    if ! defined(Class['webserver::php5']) {
-        class {'webserver::php5': ssl => true; }
-    }
-
     # be flexible about labs vs. prod
     case $::realm {
         'labs': {
@@ -29,17 +21,6 @@ class role::racktables {
             fail('unknown realm, should be labs or production')
         }
     }
-
-    apache::site { 'racktables.wikimedia.org':
-        content => template('apache/sites/racktables.wikimedia.org.erb'),
-    }
-
-    apache::conf { 'namevirtualhost':
-        source => 'puppet:///files/apache/conf.d/namevirtualhost',
-    }
-
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
 
     ferm::service { 'racktables-http':
         proto => 'tcp',
