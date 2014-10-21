@@ -18,20 +18,20 @@ class role::ocg::production (
     include ::ocg::nagios::check
     include ocg::ganglia::module
 
-    file { $::ocg::tmpfs_mountpoint:
+    file { $::ocg::temp_dir:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
     }
 
-    mount { $::ocg::tmpfs_mountpoint:
+    mount { $::ocg::temp_dir:
         ensure  => mounted,
         device  => 'tmpfs',
         fstype  => 'tmpfs',
         options => "nodev,nosuid,noexec,nodiratime,size=${tmpfs_size}",
         pass    => 0,
         dump    => 0,
-        require => File[$::ocg::tmpfs_mountpoint],
+        require => File[$::ocg::temp_dir],
     }
 
 
