@@ -249,7 +249,6 @@ class network::constants {
     # Networks hosting MediaWiki application servers
     $mw_appserver_networks = [
         '208.80.152.0/22',    # external
-        $all_network_subnets['production']['pmtpa']['private']['private']['ipv4'],
         $all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
         $all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
         $all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv4'],
