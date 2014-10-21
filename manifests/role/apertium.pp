@@ -34,10 +34,4 @@ class role::apertium::beta {
     # Allow ssh access from the Jenkins master to the server where apertium is
     # running
     include contint::firewall::labs
-
-    # Instance got to be a Jenkins slave so we can update apertium whenever a
-    # change is made on mediawiki/services/apertium (NL: /deploy???) repository
-    include role::ci::slave::labs::common
-    # Also need the slave scripts for multi-git.sh
-    include contint::slave-scripts
 }
