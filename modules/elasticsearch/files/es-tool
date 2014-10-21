@@ -4,7 +4,7 @@ import argparse
 import os
 import sys
 
-from elasticsearch import ConnectionError, Elasticsearch
+from elasticsearch import Elasticsearch, TransportError
 
 
 # Helper functions go here
@@ -74,6 +74,6 @@ args = parser.parse_args()
 
 try:
     sys.exit(commands[args.command]())
-except ConnectionError:
-    print "Unable to connect"
+except TransportError as te:
+    print te
     sys.exit(os.EX_UNAVAILABLE)
