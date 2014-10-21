@@ -78,8 +78,8 @@ class nfs::netapp::common {
     include nfs::common
 
     $device = $::site ? {
-        'pmtpa'   => 'nas1-a.pmtpa.wmnet',
-        'eqiad'   => 'nas1001-a.eqiad.wmnet',
+        'eqiad' => 'nas1001-a.eqiad.wmnet',
+        'codfw' => 'nas2001-a.codfw.wmnet',
         default => undef,
     }
 
@@ -106,8 +106,8 @@ class nfs::netapp::home::othersite($ensure='mounted', $mountpoint=undef) {
     include common
 
     $peersite = $::site ? {
-        'pmtpa' => 'eqiad',
-        'eqiad' => 'pmtpa',
+        'eqiad' => 'codfw',
+        'codfw' => 'eqiad',
         default => undef
     }
     $path = $mountpoint ? {
