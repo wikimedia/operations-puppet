@@ -21,6 +21,7 @@ class role::elasticsearch::config {
         $filter_cache_size          = '10%'
         $bulk_thread_pool_capacity  = undef
         $bulk_thread_pool_executors = undef
+        $use_ganglia                = false
         if ($::hostname =~ /^deployment-/) {
             # Beta
             # Has four nodes all of which can be master
@@ -104,6 +105,9 @@ class role::elasticsearch::config {
         $filter_cache_size          = '20%'
         $bulk_thread_pool_capacity  = 1000
         $bulk_thread_pool_executors = 6
+
+        # only in production, no ganglia in beta
+        $use_ganglia = true
     }
 }
 
@@ -151,7 +155,9 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         statsd_host                => $statsd_host,
     }
 
-    include ::elasticsearch::ganglia
+    if $use_ganglia {
+        include ::elasticsearch::ganglia
+    }
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check
 
