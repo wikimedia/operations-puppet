@@ -124,7 +124,9 @@ metamta.user-address-format: 'short'
 # Don't generate a unique reply hash per user, only per task
 metamta.public-replies: true
 
-storage.upload-size-limit: 5M
+# https://secure.phabricator.com/book/phabricator/article/configuring_file_storage/
+storage.mysql-engine.max-size: 10000000
+storage.upload-size-limit: 10M
 
 phabricator.serious-business: true
 
