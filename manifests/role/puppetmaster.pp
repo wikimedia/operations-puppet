@@ -6,6 +6,7 @@ class role::puppetmaster::config {
             '*.eqiad.wmnet',
             '*.ulsfo.wmnet',
             '*.esams.wmnet',
+            '*.codfw.wmnet',
         ]
 }
 
