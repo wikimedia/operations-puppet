@@ -3,7 +3,6 @@
 class role::puppetmaster::config {
         $allow_from = [
             '*.wikimedia.org',
-            '*.pmtpa.wmnet',
             '*.eqiad.wmnet',
             '*.ulsfo.wmnet',
             '*.esams.wmnet',
