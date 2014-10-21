@@ -7,7 +7,6 @@
 
 ui.footer-items:
   - {name: 'Text is available under the Creative Commons Attribution-ShareAlike License; code is available under the GNU General Public License or other appropriate open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
-  - {name: Copyright 2014}
   - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia Foundation}
   - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy Policy}
   - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use/Phabricator', name: Terms of Use}
