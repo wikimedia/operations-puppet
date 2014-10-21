@@ -170,27 +170,6 @@ class network::constants {
                     },
                 },
             },
-            'pmtpa' => {
-                'public' => {
-                    'public-services' => {
-                        'ipv4' => '208.80.152.128/26',
-                    },
-                    'public-services-2' => {
-                        'ipv4' => '208.80.153.192/26'
-                    },
-                    'sandbox' => {
-                        'ipv4' => '208.80.152.224/27',
-                    },
-                    'squid+lvs' => {
-                        'ipv4' => '208.80.152.0/25',
-                    },
-                },
-                'private' => {
-                    'virt-hosts' => {
-                        'ipv4' => '10.4.16.0/24'
-                    },
-                },
-            },
             'ulsfo' => {
                 'public' => {
                     'public1-ulsfo' => {
