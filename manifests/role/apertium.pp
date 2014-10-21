@@ -23,7 +23,7 @@ class role::apertium::beta {
 
     # Define Apertium log directory and port
     $log_dir = '/var/log/apertium'
-    $apertium_port = '2737'
+    $apertium_port = '80'
 
     # We have to explicitly open the apertium port (bug 45868)
     ferm::service { 'apertium_http':
