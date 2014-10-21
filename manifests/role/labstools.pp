@@ -8,7 +8,8 @@ class role::labs::tools {
 
         $grid_master = $::site? {
             'eqiad' => "${::instanceproject}-master.eqiad.wmflabs",
-            default => "${::instanceproject}-master.pmtpa.wmflabs",
+            'codfw' => "${::instanceproject}-master.codfw.wmflabs",
+            default => "${::instanceproject}-master.eqiad.wmflabs",
         }
     }
 
