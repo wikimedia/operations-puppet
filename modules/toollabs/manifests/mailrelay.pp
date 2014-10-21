@@ -10,16 +10,10 @@
 #
 # Sample Usage:
 #
-class toollabs::mailrelay($maildomain,
-                          $gridmaster) inherits toollabs
+class toollabs::mailrelay($maildomain) inherits toollabs
 {
-    class { 'gridengine':
-        gridmaster => $gridmaster,
-    }
-
-    include toollabs::infrastructure,
-        toollabs::gridnode,
-        gridengine::submit_host
+    include gridengine::submit_host,
+            toollabs::infrastructure
 
     # FIXME: -ugly-, we need to have a better way for this
     Package <| title == 'exim4-daemon-light' |> {

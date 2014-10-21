@@ -68,6 +68,31 @@ class toollabs {
         group   => 'root',
     }
 
+    # This is atrocious, but the only way to make certain
+    # that the gridengine system directory is properly shared
+    # between all grid nodes for proper access to accounting
+    # and scheduling.  Yes, this uses before.
+
+    file { "${sysdir}/gridengine":
+        ensure  => directory,
+        require => File[$toollabs::sysdir],
+    }
+
+    file { '/var/lib/gridengine':
+        ensure  => directory,
+    }
+
+    mount { '/var/lib/gridengine':
+        ensure  => mounted,
+        atboot  => False,
+        device  => "${sysdir}/gridengine",
+        fstype  => none,
+        options => 'rw,bind',
+        require => File["${sysdir}/gridengine",
+                        '/var/lib/gridengine'],
+        before  => Package['gridengine-common'],
+    }
+
     # this is a link to shared folder
     file { '/shared':
         ensure => link,
@@ -141,4 +166,5 @@ class toollabs {
     diamond::collector { 'MountStats':
         ensure => absent,
     }
+
 }
