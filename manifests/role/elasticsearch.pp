@@ -34,7 +34,7 @@ class role::elasticsearch::config {
             $recover_after_nodes  = 3
             $unicast_hosts        = ['deployment-elastic05',
                 'deployment-elastic06', 'deployment-elastic07',
-                'deployment-elastic04']
+                'deployment-elastic08']
             $statsd_host          = 'labmon1001.eqiad.wmnet'
         } else {
             # Regular labs instance
