@@ -188,9 +188,6 @@ class network::constants {
                     'virt-hosts' => {
                         'ipv4' => '10.4.16.0/24'
                     },
-                    'private' => {
-                        'ipv4' => '10.0.0.0/16'
-                    },
                 },
             },
             'ulsfo' => {
