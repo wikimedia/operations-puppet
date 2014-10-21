@@ -42,7 +42,7 @@ class subversion ($host){
         mode   => '0775';
     }
 
-    include backup::host
+    include role::backup::host
     backup::set { 'svnroot': }
 
 

@@ -1488,7 +1488,7 @@ node 'lithium.eqiad.wmnet' {
 
     include admin
     include standard
-    include backup::host
+    include role::backup::host
     include role::syslog::centralserver
 }
 

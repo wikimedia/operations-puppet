@@ -28,7 +28,7 @@ class role::gerrit {
 
     class production {
         system::role { 'role::gerrit::production': description => 'Gerrit master' }
-        include backup::host
+        include role::backup::host
 
         backup::set { 'var-lib-gerrit2-review_site-git': }
 

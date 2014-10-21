@@ -150,8 +150,7 @@ class role::mail::lists {
 
     Class['spamassassin'] -> Class['exim::roled']
 
-    # confusingly enough, the former is amanda, the latter is bacula
-    include backup::host
+    include role::backup::host
     backup::set { 'var-lib-mailman': }
 
     monitor_service { 'smtp':

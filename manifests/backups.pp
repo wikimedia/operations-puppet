@@ -1,9 +1,5 @@
-# backups (amanda transitioning to bacula)
-#
-
-# Transitioning to bacula stanzas
-
-define backup::set($jobdefaults=$backup::host::jobdefaults) {
+# backup::set is probably what you want
+define backup::set($jobdefaults=$role::backup::host::jobdefaults) {
     if $jobdefaults != undef {
         @bacula::client::job { "${name}-${jobdefaults}":
             fileset     => $name,
@@ -22,34 +18,6 @@ define backup::set($jobdefaults=$backup::host::jobdefaults) {
     }
 }
 
-class backup::host($pool='production') {
-    include role::backup::config
-
-    class { 'bacula::client':
-        director       => $role::backup::config::director,
-        catalog        => 'production',
-        file_retention => '90 days',
-        job_retention  => '6 months',
-    }
-
-    # This will use uniqueid fact to distribute (hopefully evenly) machines on
-    # days of the week
-    $days = $role::backup::config::days
-    $day = inline_template('<%= @days[[@uniqueid].pack("H*").unpack("L")[0] % 7] -%>')
-
-    $jobdefaults = "Monthly-1st-${day}-${pool}"
-
-    Bacula::Client::Job <| |> {
-        require => Class['bacula::client'],
-    }
-    File <| tag == 'backup-motd' |>
-
-    # If the machine includes base::firewall then let director connect to us
-    ferm::rule { 'bacula_director':
-        rule => "proto tcp dport 9102 { saddr ${role::backup::config::director_ip} ACCEPT; }"
-    }
-}
-
 define backup::mysqlset($method='bpipe',
                         $xtrabackup=true,
                         $per_db=false,
@@ -58,7 +26,7 @@ define backup::mysqlset($method='bpipe',
                         $password_file=undef,
                         $mysql_binary=undef,
                         $mysqldump_binary=undef,
-                        $jobdefaults=$backup::host::jobdefaults,
+                        $jobdefaults=$role::backup::host::jobdefaults,
 ) {
 
     $allowed_methods = [ 'bpipe', 'predump' ]
