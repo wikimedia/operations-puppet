@@ -3,7 +3,6 @@
 # This role sets up an bastion/dev instance in the Tool Labs model.
 #
 # Parameters:
-#       gridmaster => FQDN of the gridengine master
 #
 # Actions:
 #
@@ -11,15 +10,11 @@
 #
 # Sample Usage:
 #
-class toollabs::bastion($gridmaster) inherits toollabs {
-    class { 'gridengine':
-        gridmaster => $gridmaster,
-    }
+class toollabs::bastion inherits toollabs {
 
-    include toollabs::exec_environ,
-        toollabs::dev_environ,
-        toollabs::gridnode,
-        gridengine::submit_host
+    include gridengine::submit_host,
+            toollabs::exec_environ,
+            toollabs::dev_environ
 
     file { '/etc/ssh/ssh_config':
         ensure => file,
@@ -72,9 +67,4 @@ class toollabs::bastion($gridmaster) inherits toollabs {
         source => 'puppet:///modules/toollabs/crontab',
     }
 
-    # Don't collect active user metrics this way, is useless, clogs graphite
-    # Should be removed in a day or two
-    diamond::collector{ 'Users':
-        ensure => absent
-    }
 }

@@ -1,9 +1,10 @@
 # Class: toollabs::submit
 #
 # This role sets up an submit host instance in the Tool Labs model.
+# (A host that can only be used to submit jobs; presently used by
+# tools-submit which runs bigbrother and the gridwide cron.
 #
 # Parameters:
-#       gridmaster => FQDN of the gridengine master
 #
 # Actions:
 #
@@ -11,14 +12,11 @@
 #
 # Sample Usage:
 #
-class toollabs::submit($gridmaster) inherits toollabs {
-    class { 'gridengine':
-        gridmaster => $gridmaster,
-    }
+class toollabs::submit inherits toollabs {
 
-    include toollabs::exec_environ,
-        toollabs::gridnode,
-        gridengine::submit_host
+    include gridengine::submit_host,
+            toollabs::exec_environ,
+            toollabs::hba
 
     file { '/etc/ssh/ssh_config':
         ensure => file,
@@ -26,10 +24,6 @@ class toollabs::submit($gridmaster) inherits toollabs {
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
-    }
-
-    class { 'toollabs::hba':
-        store => $toollabs::store,
     }
 
     file { '/etc/update-motd.d/40-bastion-banner':

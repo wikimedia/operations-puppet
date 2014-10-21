@@ -26,6 +26,6 @@ class toollabs::infrastructure {
     # service group and root.
 
     File <| title == '/etc/security/access.conf' |> {
-        content => "-:ALL EXCEPT (tools.admin) root:ALL\n",
+        content => "-:ALL EXCEPT (${::instanceproject}.admin) root:ALL\n",
     }
 }
