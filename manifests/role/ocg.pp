@@ -6,8 +6,7 @@
 @monitor_group { 'ocg_eqiad': description => 'offline content generator eqiad' }
 
 class role::ocg::production (
-        $tmpfs_size = '512M', # size of tmpfs filesystem e.g. 512M
-        $tmpfs_mountpoint = '/mnt/tmpfs',
+    $tmpfs_size = '512M', # size of tmpfs filesystem e.g. 512M
     ) {
 
     system::role { 'ocg':
@@ -15,60 +14,30 @@ class role::ocg::production (
     }
 
     include passwords::redis
+    include ::ocg
+    include ::ocg::nagios::check
+    include ocg::ganglia::module
 
-    $service_port = 8000
-
-    if ( $::ocg_redis_server_override != undef ) {
-        $redis_host = $::ocg_redis_server_override
-    } else {
-        # Default host in the WMF production env...
-        # this needs a variable or something
-        $redis_host = 'rdb1002.eqiad.wmnet'
-    }
-
-    if ( $::ocg_statsd_server_override != undef ) {
-        $statsd_host = $::ocg_statsd_server_override
-    } else {
-        # Default host in the WMF production env
-        $statsd_host = 'statsd.eqiad.wmnet'
-    }
-
-    if ( $::ocg_graylog_server_override != undef ) {
-        $graylog_host = $::ocg_graylog_server_override
-    } else {
-        # Default host in the WMF production env
-        $graylog_host = 'logstash1002.eqiad.wmnet'
-    }
-
-    file { $tmpfs_mountpoint:
+    file { $::ocg::tmpfs_mountpoint:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
     }
 
-    mount { $tmpfs_mountpoint:
+    mount { $::ocg::tmpfs_mountpoint:
         ensure  => mounted,
         device  => 'tmpfs',
         fstype  => 'tmpfs',
         options => "nodev,nosuid,noexec,nodiratime,size=${tmpfs_size}",
         pass    => 0,
         dump    => 0,
-        require => File[$tmpfs_mountpoint],
+        require => File[$::ocg::tmpfs_mountpoint],
     }
 
-    class { '::ocg':
-        redis_host         => $redis_host,
-        redis_password     => $passwords::redis::main_password,
-        temp_dir           => $tmpfs_mountpoint,
-        service_port       => $service_port,
-        statsd_host        => $statsd_host,
-        statsd_is_txstatsd => 1,
-        graylog_host       => $graylog_host,
-    }
 
     ferm::service { 'ocg-http':
         proto  => 'tcp',
-        port   => $service_port,
+        port   => $::ocg::service_port,
         desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
         srange => $::INTERNAL
     }
@@ -78,19 +47,6 @@ class role::ocg::production (
         port   => 8649,
         desc   => 'Ganglia monitor port (OCG config)',
         srange => $::INTERNAL
-    }
-
-    class { 'ocg::nagios::check':
-        # see modules/ocg/files/nagios/check_ocg_health for descriptions
-        wjs => '400000',
-        cjs => '800000',
-        wrj => '100',
-        crj => '500',
-    }
-
-    class { 'ocg::ganglia::module':
-        tmp_filesystem  => $tmpfs_mountpoint,
-        data_filesystem => '/srv',
     }
 
     include lvs::configuration

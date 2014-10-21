@@ -15,3 +15,18 @@ mediawiki_memcached_servers:
   - '10.64.0.193:11211:1'
   - '10.64.0.194:11211:1'
   - '10.64.0.195:11211:1'
+
+#
+# OCG
+#
+ocg::tmpfs_mountpoint: "/mnt/tmpfs"
+ocg::redis_host: "rdb1002.eqiad.wmnet"
+ocg::statsd_host: "statsd.eqiad.wmnet"
+ocg::graylog_host: "logstash1002.eqiad.wmnet"
+ocg::statsd_is_txstatsd: 1
+# see modules/ocg/files/nagios/check_ocg_health for descriptions
+ocg::nagios::check::wjs: 400000
+ocg::nagios::check::cjs: 800000
+ocg::nagios::check::wrj: 500
+ocg::nagios::crj: 3000
+ocg::ganglia::module::data_filesystem: "/srv"

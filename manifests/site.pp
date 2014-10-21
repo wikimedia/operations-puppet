@@ -2206,18 +2206,14 @@ node 'nitrogen.wikimedia.org' {
 }
 
 node /^ocg100[123]\.eqiad\.wmnet$/ {
-    $cluster = 'pdf'
-    $ganglia_aggregator = ( $::hostname == 'ocg1001' )
+    # Mainrole: pdf!
+    $ganglia_aggregator = hiera('ganglia_aggregator', false)
+    $gid = '500' # what is this used for? I couldn't get that.
 
-    $gid = '500'
     include base::firewall
     include standard
-    class { 'admin':
-        groups => ['ocg-render-admins']
-    }
-    class { 'role::ocg::production':
-        tmpfs_size             => '32G',
-    }
+    include admin
+    include role::ocg::production
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
