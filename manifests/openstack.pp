@@ -438,7 +438,7 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
-    include backup::host
+    include role::backup::host
     backup::set {'a-backup': }
 
     include nrpe

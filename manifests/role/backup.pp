@@ -9,13 +9,46 @@ class role::backup::config {
     $director_ip = '10.64.0.179'
     $database = 'db1001.eqiad.wmnet'
     $days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+    $pool = 'production'
+}
+
+class role::backup::host {
+    include role::backup::config
+
+    $pool = $role::backup::config::pool
+
+    class { 'bacula::client':
+        director       => $role::backup::config::director,
+        catalog        => 'production',
+        file_retention => '90 days',
+        job_retention  => '6 months',
+    }
+
+
+    # This will use uniqueid fact to distribute (hopefully evenly) machines on
+    # days of the week
+    $days = $role::backup::config::days
+    $day = inline_template('<%= @days[[@uniqueid].pack("H*").unpack("L")[0] % 7] -%>')
+
+    $jobdefaults = "Monthly-1st-${day}-${pool}"
+
+    Bacula::Client::Job <| |> {
+        require => Class['bacula::client'],
+    }
+    File <| tag == 'backup-motd' |>
+
+    # If the machine includes base::firewall then let director connect to us
+    ferm::rule { 'bacula_director':
+        rule => "proto tcp dport 9102 { saddr ${role::backup::config::director_ip} ACCEPT; }"
+    }
 }
 
 class role::backup::director {
-    include backup::host
+    include role::backup::host
     include role::backup::config
     include passwords::bacula
     require misc::statistics::geowiki::params
+    $pool = $role::backup::config::pool
 
     system::role { 'role::backup::director': description => 'Backup server' }
 
@@ -25,11 +58,11 @@ class role::backup::director {
     }
 
     # One pool for all
-    bacula::director::pool { 'production':
+    bacula::director::pool { $pool:
         max_vols         => 50,
         storage          => 'FileStorage1',
         volume_retention => '180 days',
-        label_fmt        => 'production',
+        label_fmt        => $pool,
         max_vol_bytes    => '536870912000',
     }
 
@@ -44,7 +77,7 @@ class role::backup::director {
     bacula::director::pool { 'Archive':
         max_vols         => 5,
         storage          => 'FileStorage2',
-        volume_retention => '10 years',
+        volume_retention => '5 years',
         label_fmt        => 'archive',
         max_vol_bytes    => '536870912000',
     }
@@ -53,10 +86,10 @@ class role::backup::director {
     # Setting execution times so that it is unlikely jobs will run concurrently
     # with cron.{hourly,daily,monthly} or other cronscripts
     backup::schedule { $role::backup::config::days:
-        pool    => 'production',
+        pool    => $pool,
     }
     backup::weeklyschedule { $role::backup::config::days:
-        pool    => 'production',
+        pool    => $pool,
     }
 
     bacula::director::catalog { 'production':
