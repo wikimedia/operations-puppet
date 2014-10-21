@@ -4,18 +4,9 @@
 ## into its web directory root.  This means that puppet cannot fully automate
 ## the installation at this time & the actual tarball must be downloaded from
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
-
 class role::racktables {
 
     system::role { 'role::racktables': description => 'Racktables' }
-
-    include standard-noexim, webserver::php5-gd,
-    webserver::php5-mysql,
-    misc::racktables
-
-    if ! defined(Class['webserver::php5']) {
-        class {'webserver::php5': ssl => true; }
-    }
 
     # be flexible about labs vs. prod
     case $::realm {
@@ -30,17 +21,6 @@ class role::racktables {
         }
     }
 
-    apache::site { 'racktables.wikimedia.org':
-        content => template('apache/sites/racktables.wikimedia.org.erb'),
-    }
-
-    apache::conf { 'namevirtualhost':
-        source => 'puppet:///files/apache/conf.d/namevirtualhost',
-    }
-
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
     ferm::service { 'racktables-http':
         proto => 'tcp',
         port  => '80',
@@ -51,4 +31,9 @@ class role::racktables {
         port  => '443',
     }
 
+    # use modules/racktables
+    class { '::racktables':
+        $racktables_db_host => 'db1001.eqiad.wmnet',
+        $racktables_db = 'racktables',
+    }
 }
