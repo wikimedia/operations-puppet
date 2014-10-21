@@ -1,13 +1,10 @@
 #!/bin/bash
 # hhvm-dump-debug: dump HHVM backtrace to /tmp.
-# When invoked with "--core", also dump core.
+# When invoked with "--full", also dump core.
+
+[[ ! $SUDO_COMMAND ]] && { sudo $0 "$@"; exit $?; }
 
 die() { local st="$?"; echo "$@" >&2; exit $st; }
-
-[[ ! $SUDO_COMMAND ]] && {
-    sudo $0 "$@"
-    exit $?
-}
 
 . /etc/default/hhvm || die
 
@@ -16,12 +13,15 @@ case $PID in ''|*[!0-9]*)
     die "Can't find PID file of HHVM." ;;
 esac
 
-args=("-batch" "-p" "$PID" "-ex" "thread apply all backtrace full")
+if [[ $1 == --full ]]; then
+    gdb -batch -p "$PID"                               \
+        -ex "thread apply all backtrace full"          \
+        -ex "generate-core-file /tmp/hhvm.${PID}.core" \
+        >"/tmp/hhvm.${PID}.bt" 2>/dev/null
 
-if [[ $1 == --core ]]; then
-   args+=("-ex" "generate-core-file /tmp/hhvm.${PID}.core")
-   cp "/proc/$PID/exe" "/tmp/hhvm.${PID}.bin"
+    cp "/proc/$PID/exe" "/tmp/hhvm.${PID}.bin"
+    die "Saved HHVM debug data in /tmp/hhvm.${PID}.{bt,core,bin}."
+else
+    quickstack -p "$PID" | tee "/tmp/hhvm.${PID}.bt"
+    die "Backtrace saved as /tmp/hhvm.${PID}.bt."
 fi
-
-gdb "${args[@]}" >"/tmp/hhvm.${PID}.bt" 2>/dev/null
-die "Saved HHVM debug data in /tmp/hhvm.${PID}.*"
