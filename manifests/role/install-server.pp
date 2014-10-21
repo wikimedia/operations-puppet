@@ -32,7 +32,7 @@ class role::installserver {
     }
 
     include base::firewall
-    include backup::host
+    include role::backup::host
     include install-server::apt-repository
     include install-server::preseed-server
 

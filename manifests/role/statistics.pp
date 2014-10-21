@@ -5,7 +5,7 @@ class role::statistics {
     include misc::statistics::base
     include base::packages::emacs
 
-    include backup::host
+    include role::backup::host
     backup::set { 'home' : }
 }
 
