@@ -1,6 +1,6 @@
 # Class: toollabs::master
 #
-# This role sets up a grid master in the Tool Labs model.
+# This role sets up the grid master in the Tool Labs model.
 #
 # Parameters:
 #
@@ -12,12 +12,11 @@
 #
 class toollabs::master inherits toollabs {
     include gridengine::master,
-        toollabs::infrastructure,
-        toollabs::exec_environ,
-        toollabs::gridnode,
-        toollabs::hostgroup,
-        toollabs::queue::task,
-        toollabs::queue::continuous
+            toollabs::infrastructure,
+            toollabs::exec_environ,
+            toollabs::hostgroup,
+            toollabs::queue::task,
+            toollabs::queue::continuous
 
     file { '/etc/gridengine/local/bin/gethgrp':
         ensure   => file,

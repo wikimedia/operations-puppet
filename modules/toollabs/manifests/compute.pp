@@ -1,9 +1,12 @@
-# Class: toollabs::execnode
+# Class: toollabs::compute
 #
-# This role sets up an execution node in the Tool Labs model.
+# This role sets up a grid compute node in the Tool Labs model.
+#
+# On its own, this sets up a working node of the grid, but it is
+# useless without a more specific role from toollabs::node::* that
+# will add functionality and place it on queues or hostgroups.
 #
 # Parameters:
-#       gridmaster => FQDN of the gridengine master
 #
 # Actions:
 #
@@ -11,18 +14,11 @@
 #
 # Sample Usage:
 #
-class toollabs::execnode($gridmaster) inherits toollabs {
-    class { 'gridengine':
-        gridmaster => $gridmaster,
-    }
+class toollabs::compute inherits toollabs {
 
-    include toollabs::exec_environ,
-        toollabs::gridnode,
-        gridengine::exec_host
-
-    class { 'toollabs::hba':
-        store => $toollabs::store,
-    }
+    include gridengine::exec_host,
+            toollabs::exec_environ,
+            toollabs::hba
 
     file { '/etc/update-motd.d/40-exechost-banner':
         ensure => file,
@@ -41,5 +37,4 @@ class toollabs::execnode($gridmaster) inherits toollabs {
         content => "${::ipaddress}\n",
     }
 
-    # TODO: grid node setup
 }

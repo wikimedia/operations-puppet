@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::hba($store) {
+class toollabs::hba {
 
     file { '/usr/local/sbin/project-make-shosts':
         ensure => file,
@@ -22,7 +22,7 @@ class toollabs::hba($store) {
 
     exec { 'make-shosts':
         command => '/usr/local/sbin/project-make-shosts >/etc/ssh/shosts.equiv~',
-        require => File['/usr/local/sbin/project-make-shosts', $store],
+        require => File['/usr/local/sbin/project-make-shosts'],
     }
 
     file { '/etc/ssh/shosts.equiv':
@@ -44,7 +44,7 @@ class toollabs::hba($store) {
 
     exec { 'make-access':
         command => '/usr/local/sbin/project-make-access >/etc/security/access.conf~',
-        require => File['/usr/local/sbin/project-make-access', $store],
+        require => File['/usr/local/sbin/project-make-access'],
     }
 
     File <| title == '/etc/security/access.conf' |> {
