@@ -1,4 +1,4 @@
 class releases::backups {
-    include 'backup::host'
+    include role::backup::host
     backup::set { 'srv-org-wikimedia': }
 }

@@ -826,7 +826,7 @@ class misc::statistics::geowiki::data::private_bare::sync {
     # It only needs backup (as the repo is not living in gerrit)
     # Other hosts need to rsync it over
     if $::hostname == $geowiki_private_data_bare_host {
-        include backup::host
+        include role::backup::host
         backup::set { 'a-geowiki-data-private-bare': }
     } else {
         cron { 'geowiki data-private bare sync':

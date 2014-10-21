@@ -76,7 +76,7 @@ class misc::blogs::wikimedia {
     varnish::logging { 'erbium' :          listener_address => '10.64.32.135',  port => '8419' }
     varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73', port => '8419' }
 
-    include backup::host
+    include role::backup::host
     backup::set { 'srv-org-wikimedia': }
 
     ferm::service { 'blog-http':

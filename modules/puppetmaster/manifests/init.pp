@@ -63,7 +63,7 @@ class puppetmaster(
         include ::apache::mod::proxy_balancer
     }
 
-    include backup::host
+    include role::backup::host
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
 
