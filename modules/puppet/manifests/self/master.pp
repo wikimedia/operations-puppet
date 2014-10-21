@@ -33,7 +33,6 @@ class puppet::self::master($server) {
     $puppet_client_subnet = $server ? {
         'localhost' => '127.0.0.1',
         default => $::site ? {
-            'pmtpa' => '10.4.0.0/21',
             'eqiad' => '10.68.16.0/21',
         }
     }
