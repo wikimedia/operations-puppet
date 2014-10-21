@@ -28,5 +28,5 @@ ocg::statsd_is_txstatsd: 1
 ocg::nagios::check::wjs: 400000
 ocg::nagios::check::cjs: 800000
 ocg::nagios::check::wrj: 500
-ocg::nagios::crj: 3000
+ocg::nagios::check::crj: 3000
 ocg::ganglia::module::data_filesystem: "/srv"
