@@ -3,7 +3,7 @@
 # and using the analytics/refinery repository.
 #
 class role::analytics::refinery {
-    # Many Kraken python scripts use docopt for CLI parsing.
+    # Some refinery python scripts use docopt for CLI parsing.
     if !defined(Package['python-docopt']) {
         package { 'python-docopt':
             ensure => 'installed',

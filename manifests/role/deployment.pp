@@ -77,11 +77,6 @@ class role::deployment::config {
         'gitfat_enabled' => true,
         'upstream'       => 'https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins',
     },
-    'analytics/kraken/deploy'        => {
-        'gitfat_enabled'      => true,
-        'checkout_submodules' => true,
-        'upstream'            => 'https://gerrit.wikimedia.org/r/p/analytics/kraken/deploy',
-    },
     'analytics/refinery'        => {
         'gitfat_enabled'      => true,
         'upstream'            => 'https://gerrit.wikimedia.org/r/analytics/refinery',

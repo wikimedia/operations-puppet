@@ -254,10 +254,8 @@ node 'analytics1026.eqiad.wmnet' {
     include role::logging::udp2log::misc
 }
 
-# analytics1027 hosts the frontend
-# interfaces to Kraken and Hadoop.
-# (Hue, Oozie, Hive, etc.).  It
-# also submits regularly scheduled
+# analytics1027 hosts some frontend web interfaces to Hadoop
+# (Hue, Oozie, Hive, etc.).  It also submits regularly scheduled
 # batch Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
     $nagios_group = 'analytics_eqiad'

@@ -122,17 +122,6 @@ class contint::packages {
         package { ['libcidr0-dev', 'libanon0-dev']:
             ensure => 'latest',
         }
-
-        # Used for mobile device classification in Kraken:
-        package { [
-            'libdclass0',
-            'libdclass0-dev',
-            'libdclass-jni',
-            'libdclass-java',
-            'libdclass-data',
-            ]:
-            ensure => 'installed',
-        }
     }
 
     if ubuntu_version('>= trusty') {
