@@ -480,6 +480,8 @@ class ganglia::web {
         $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
 
         $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
+        include role::backup::host
+        backup::set { 'var-lib-ganglia': }
     }
 
     apache::site { $ganglia_servername:

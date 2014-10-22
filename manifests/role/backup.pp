@@ -173,6 +173,9 @@ class role::backup::director {
     bacula::director::fileset { 'var-lib-carbon-whisper':
         includes => [ '/var/lib/carbon/whisper' ]
     }
+    bacula::director::fileset { 'var-lib-ganglia':
+        includes => [ '/var/lib/ganglia' ]
+    }
     # As all /a this will hopefully no longer be needed at some point and will
     # be killed with fire
     bacula::director::fileset { 'mysql-a-backups':
