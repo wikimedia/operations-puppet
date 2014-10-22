@@ -98,6 +98,8 @@ class shinken::server(
         group      => 'shinken',
         notify     => Service['shinken'],
     }
+
+    include shinken::shinkengen
 }
 
 # = Define: shinken::hosts
