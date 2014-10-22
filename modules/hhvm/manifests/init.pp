@@ -210,9 +210,11 @@ class hhvm(
 
     # Install HHVM's source files to /usr/local/src/hhvm.
 
+    require_package('dpkg-dev')
+
     exec { 'install_hhvm_source_files':
         command     => template('hhvm/install_hhvm_source_files.sh.erb'),
-        creates     => '/usr/local/srv/hhvm',
+        creates     => '/usr/local/src/hhvm',
         provider    => 'shell',
     }
 
