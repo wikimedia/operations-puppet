@@ -133,7 +133,7 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg reload',
-            'ALL = (ocg) NOPASSWD: /usr/bin/nodejs-ocg']
+            'ALL = (ocg) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
