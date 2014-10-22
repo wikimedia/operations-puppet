@@ -4,6 +4,8 @@
 class shinken::server(
     $auth_secret
 ) {
+    include shinken::shinkengen
+
     package { 'shinken':
         ensure  => present,
     }
