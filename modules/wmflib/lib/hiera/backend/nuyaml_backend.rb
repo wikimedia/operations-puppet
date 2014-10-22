@@ -81,10 +81,14 @@ class Hiera
       end
 
       def get_path(key, scope, source)
+        config_section = :nuyaml
         # Special case: 'private' repository.
         # We use a different datadir in this case.
+        # Example: private/common will search in the common source
+        # within the private datadir
         if m = /private\/(.*)/.match(source)
-          return key, Backend.datafile(:private, scope, m[1], "yaml")
+          config_section = :private
+          source = m[1]
         end
 
         # If the source is in the expand_path list, perform path
@@ -101,7 +105,7 @@ class Hiera
           end
         end
 
-        return key, Backend.datafile(:nuyaml, scope, source, "yaml")
+        return key, Backend.datafile(config_section, scope, source, "yaml")
       end
 
       def lookup(key, scope, order_override, resolution_type)
