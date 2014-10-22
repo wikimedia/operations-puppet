@@ -211,10 +211,10 @@ class hhvm(
     # Install HHVM's source files to /usr/local/src/hhvm.
 
     exec { 'install_hhvm_source_files':
-        command   => template('hhvm/install_hhvm_source_files.sh.erb'),
-        creates   => '/usr/local/src/hhvm',
-        shell     => true,
-        subscribe => Package['hhvm'],
+        command     => template('hhvm/install_hhvm_source_files.sh.erb'),
+        refreshonly => true,
+        provider    => 'shell',
+        subscribe   => Package['hhvm'],
     }
 
 
