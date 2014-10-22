@@ -212,9 +212,8 @@ class hhvm(
 
     exec { 'install_hhvm_source_files':
         command     => template('hhvm/install_hhvm_source_files.sh.erb'),
-        refreshonly => true,
+        creates     => '/usr/local/srv/hhvm',
         provider    => 'shell',
-        subscribe   => Package['hhvm'],
     }
 
 
