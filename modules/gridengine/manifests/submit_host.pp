@@ -15,5 +15,11 @@ class gridengine::submit_host( $collectdir = undef )
         ensure => link,
         target => '/data/project/.system/accounting',
     }
+
+    gridengine::resource { "${::fqdn}":
+        dir     => 'submithosts',
+        content => "${::fqdn}", # the content here doesn't actually matter
+    }
+
 }
 
