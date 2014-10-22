@@ -58,4 +58,10 @@ class tor (
         proto  => 'tcp',
         port   => $tor_dirport,
     }
+
+     motd::script { 'tor_arm':
+        ensure   => present,
+        content  => "echo 'This is a Tor relay. arm is a monitoring tool for it.\nusage: sudo -u debian-tor arm'\nalso see: tail -f /var/log/tor/tor.log\n'",
+    }
+
 }
