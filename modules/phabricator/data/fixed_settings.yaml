@@ -125,6 +125,7 @@ metamta.user-address-format: 'short'
 metamta.public-replies: true
 
 # https://secure.phabricator.com/book/phabricator/article/configuring_file_storage/
+# Needs to match php.ini upload_max_filesize
 storage.mysql-engine.max-size: 10000000
 storage.upload-size-limit: 10M
 
