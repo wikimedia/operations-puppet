@@ -64,37 +64,6 @@ class misc::monitoring::net::udp {
     }
 }
 
-# == Class misc::monitoring::kraken::loss
-# Checks recently generated webrequest loss statistics in
-# Kraken HDFS and sends the average loss percentage to ganglia.
-#
-class misc::monitoring::kraken::loss {
-    file {
-        '/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py':
-            require => File['/usr/lib/ganglia/python_modules'],
-            source  => 'puppet:///files/ganglia/plugins/kraken_webrequest_loss.py',
-            notify  => Service['gmond'];
-        '/etc/ganglia/conf.d/udp_stats.pyconf':
-            require => File['/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py'],
-            source  => 'puppet:///files/ganglia/plugins/kraken_webrequest_loss.pyconf',
-            notify  => Service['gmond'];
-    }
-
-    # Set up icinga monitoring of Kraken HDFS data loss.
-    monitor_service { 'kraken_webrequest_loss_average_positive':
-        description           => 'webrequest_loss_average_positive',
-        check_command         => 'check_kraken_webrequest_loss_positive!2!8',
-        contact_group         => 'analytics',
-    }
-    # It is possible to have negative data loss.  This would mean that
-    # we are receiving duplicates log lines.  We need alerts for this too.
-    monitor_service { 'kraken_webrequest_loss_average_negative':
-        description           => 'webrequest_loss_average_negative',
-        check_command         => 'check_kraken_webrequest_loss_negative!-2!-8',
-        contact_group         => 'analytics',
-    }
-}
-
 # Ganglia views that should be
 # avaliable on ganglia.wikimedia.org
 class misc::monitoring::views {

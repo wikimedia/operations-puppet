@@ -18,9 +18,6 @@ class role::analytics {
 # == Class role::analytics::clients
 # Includes common client classes for
 # working with hadoop and other analytics services.
-# This class is often included by including
-# role::analytics::kraken, but you may include
-# it on its own if you don't need any kraken code.
 class role::analytics::clients {
     include role::analytics
 
