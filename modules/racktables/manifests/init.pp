@@ -11,10 +11,10 @@ class racktables (
     include mysql
     include standard-noexim
     include passwords::racktables
-    include webserver::php5-gd
-    include webserver::php5-mysql
     include ::apache::mod::rewrite
     include ::apache::mod::headers
+
+    require_package('php5-mysql', 'php5-gd')
 
     file { '/srv/org/wikimedia/racktables/wwwroot/inc/secret.php':
         ensure  => present,
