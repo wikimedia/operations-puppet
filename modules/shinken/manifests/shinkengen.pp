@@ -15,12 +15,12 @@ class shinken::shinkengen {
 
     file { '/etc/shinkengen.yaml':
         source  => 'puppet:///modules/shinken/shinkengen.yaml',
-        user    => 'shinken',
+        owner   => 'shinken',
         group   => 'shinken',
     }
 
     exec { '/usr/bin/shingen':
-        user    => 'shinken',
+        owner   => 'shinken',
         group   => 'shinken',
         require => [Package['python3-shinkengen'], File['/etc/shinkengen.yaml']],
         notify  => Service['shinken'],
