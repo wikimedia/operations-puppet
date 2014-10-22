@@ -32,6 +32,12 @@ class role::mail::mx {
                 ]
             $verp_post_connect_server = 'mediawiki-verp.wmflabs.org'
             $verp_bounce_post_url     = 'http://mediawiki-verp.wmflabs.org/w/api.php'
+            $local_domains  = [
+                    '+system_domains',
+                    '+wikimedia_domains',
+                    '+legacy_mailman_domains',
+                    'mediawiki-verp.wmflabs.org'
+                ]
         }
         'production': {
             # currently not used as bouncehandler extension is not yet installed in production
@@ -39,6 +45,11 @@ class role::mail::mx {
             $verp_domains   = [ ]
             $verp_post_connect_server = 'login.wikimedia.org'
             $verp_bounce_post_url     = "appservers.svc.${::mw_primary}.wmnet/w/api.php"
+            $local_domains  = [
+                    '+system_domains',
+                    '+wikimedia_domains',
+                    '+legacy_mailman_domains'
+                ]
         }
         default: {
             fail('unknown realm, should be labs or production')
@@ -46,11 +57,7 @@ class role::mail::mx {
     }
 
     class { 'exim::roled':
-        local_domains          => [
-                '+system_domains',
-                '+wikimedia_domains',
-                '+legacy_mailman_domains',
-            ],
+        local_domains            => $local_domains,
         enable_mail_relay        => 'primary',
         enable_external_mail     => true,
         mediawiki_relay          => true,
