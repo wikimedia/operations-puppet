@@ -1,0 +1,1 @@
+cd `/bin/mktemp -qd` && /usr/bin/apt-get -qq source hhvm && /usr/bin/find . -mindepth 1 -maxdepth 1 -type d -exec /usr/bin/rsync -r -a --delete --force {}/ /usr/local/src/hhvm \; ; /bin/rm -rf `pwd`
