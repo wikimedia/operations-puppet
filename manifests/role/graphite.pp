@@ -209,6 +209,9 @@ class role::graphite::production {
         auth => true,
     }
 
+    include role::backup::host
+    backup::set {'var-lib-carbon-whisper': }
+
     include ::mediawiki::monitoring::graphite
     include ::eventlogging::monitoring::graphite
     include ::swift::monitoring::graphite

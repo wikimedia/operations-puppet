@@ -170,6 +170,9 @@ class role::backup::director {
     bacula::director::fileset { 'mysql-srv-backups':
         includes => [ '/srv/backups' ]
     }
+    bacula::director::fileset { 'var-lib-carbon-whisper':
+        includes => [ '/var/lib/carbon/whisper' ]
+    }
     # As all /a this will hopefully no longer be needed at some point and will
     # be killed with fire
     bacula::director::fileset { 'mysql-a-backups':
