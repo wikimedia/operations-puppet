@@ -81,12 +81,17 @@ class Hiera
       end
 
       def get_path(key, scope, source)
+        config_section = :nuyaml
         # Special case: 'private' repository.
         # We use a different datadir in this case.
+        # Example: private/common will search in the common source
+        # within the private datadir
         if m = /private\/(.*)/.match(source)
-          return key, Backend.datafile(:private, scope, m[1], "yaml")
+          config_section = :private
+          source = m[1]
         end
 
+        Hiera.debug("The source is: #{source}")
         # If the source is in the expand_path list, perform path
         # expansion. This is thought to allow large codebases to live
         # with fairly small yaml files as opposed to a very large one.
@@ -95,13 +100,14 @@ class Hiera
         if @expand_path.include? source
           namespaces = key.gsub(/^::/,'').split('::')
           newkey = namespaces.pop
+
           unless namespaces.empty?
             source += "/".concat(namespaces.join('/'))
             key = newkey
           end
         end
 
-        return key, Backend.datafile(:nuyaml, scope, source, "yaml")
+        return key, Backend.datafile(config_section, scope, source, "yaml")
       end
 
       def lookup(key, scope, order_override, resolution_type)
@@ -115,7 +121,6 @@ class Hiera
           if @dynlookup.include? source
             Hiera.debug("Dynamic lookup for source #{source}")
             if key == source
-              Hiera.debug("#{source}: Not searching recursively myself")
               next
             end
             dynsource = lookup(source, scope, order_override, :priority)
@@ -123,9 +128,11 @@ class Hiera
             source += "/#{dynsource}"
           end
 
-          Hiera.debug("Loading info from #{source}")
+          Hiera.debug("Loading info from #{source} for #{key}")
 
-          key, yamlfile = get_path(key, scope, source)
+          lookup_key, yamlfile = get_path(key, scope, source)
+
+          Hiera.debug("Searching for #{lookup_key} in #{yamlfile}")
 
           next if yamlfile.nil?
 
@@ -138,13 +145,13 @@ class Hiera
           end
 
           next if data.empty?
-          next unless data.include?(key)
+          next unless data.include?(lookup_key)
 
           # Extra logging that we found the key. This can be outputted
           # multiple times if the resolution type is array or hash but that
           # should be expected as the logging will then tell the user ALL the
           # places where the key is found.
-          Hiera.debug("Found #{key} in #{source}")
+          Hiera.debug("Found #{lookup_key} in #{source}")
 
           # for array resolution we just append to the array whatever
           # we find, we then goes onto the next file and keep adding to
@@ -153,7 +160,7 @@ class Hiera
           # for priority searches we break after the first found data
           # item
 
-          new_answer = Backend.parse_answer(data[key], scope)
+          new_answer = Backend.parse_answer(data[lookup_key], scope)
           case resolution_type
           when :array
             raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of? Array or new_answer.kind_of? String
