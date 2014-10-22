@@ -73,9 +73,17 @@ class toollabs {
     # between all grid nodes for proper access to accounting
     # and scheduling.  Yes, this uses before.
 
-    file { "${sysdir}/gridengine":
+    $geconf     = "${sysdir}/gridengine"
+    $collectors = "${geconf}/collectors"
+    
+    file { $geconf:
         ensure  => directory,
-        require => File[$toollabs::sysdir],
+        require => File[$sysdir],
+    }
+
+    file { $collectors:
+        ensure  => directory,
+        require => File[$geconf],
     }
 
     file { '/var/lib/gridengine':

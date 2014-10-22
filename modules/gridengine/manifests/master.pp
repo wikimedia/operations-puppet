@@ -7,35 +7,21 @@ class gridengine::master
         require => Package['gridengine-common'],
     }
 
-    $etcdir = '/etc/gridengine/local'
+    $etcdir = '/var/lib/gridengine/etc'
 
-    file { $etcdir:
+    file { "$etcdir/tracker":
         ensure  => directory,
-        require => Package['gridengine-master'],
-        force   => true,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0775',
-        recurse => false,
-        purge   => true,
-    }
-
-    file { "$etcdir/.tracker":
-        ensure  => directory,
-        force   => true,
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0775',
-        recurse => false,
-        purge   => true,
     }
 
     file { "$etcdir/bin":
         ensure  => directory,
-        force   => true,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
+        force   => true,
         recurse => true,
         purge   => true,
     }
@@ -48,28 +34,58 @@ class gridengine::master
         source  => 'puppet:///modules/gridengine/mergeconf',
     }
 
-    file { "$etcdir/bin/trackpurge":
+    file { "$etcdir/bin/tracker":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/gridengine/trackpurge',
+        source  => 'puppet:///modules/gridengine/tracker',
     }
 
-    file { "$etcdir/bin/runpurge":
+    file { "$etcdir/bin/collector":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/gridengine/runpurge',
+        source  => 'puppet:///modules/gridengine/collector',
     }
 
-    gridengine::resourcedir { 'queues': }
-    gridengine::resourcedir { 'hostgroups': }
-    gridengine::resourcedir { 'quotas': }
-    gridengine::resourcedir { 'checkpoints': }
-    gridengine::resourcedir { 'exechosts':   local => false }
-    gridengine::resourcedir { 'submithosts': local => false }
+    gridengine::resourcedir { 'queues':
+        addcmd  => '/usr/bin/qconf -Aq',
+        modcmd  => '/usr/bin/qconf -Mq',
+        delcmd  => '/usr/bin/qconf -dq',
+    }
+    gridengine::resourcedir { 'hostgroups':
+        addcmd  => '/usr/bin/qconf -Ahgrp',
+        modcmd  => '/usr/bin/qconf -Mhgrp',
+        delcmd  => '/usr/bin/qconf -dhgrp',
+    }
+    gridengine::resourcedir { 'quotas':
+        addcmd  => '/usr/bin/qconf -Arqs',
+        modcmd  => '/usr/bin/qconf -Mrqs',
+        delcmd  => '/usr/bin/qconf -drqs',
+    }
+    gridengine::resourcedir { 'checkpoints':
+        addcmd  => '/usr/bin/qconf -Ackpt',
+        modcmd  => '/usr/bin/qconf -Mckpt',
+        delcmd  => '/usr/bin/qconf -dckpt',
+    }
+    gridengine::resourcedir { 'exechosts':
+        addcmd  => '/usr/bin/qconf -Ae',
+        modcmd  => '/usr/bin/qconf -Me',
+        delcmd  => '/usr/bin/qconf -de',
+    }
+    gridengine::resourcedir { 'submithosts':
+        addcmd  => '/usr/bin/qconf -as',
+        modcmd  => '/bin/true',
+        delcmd  => '/usr/bin/qconf -ds',
+    }
+
+    gridengine::resourcedir { 'adminhosts':
+        addcmd  => '/usr/bin/qconf -ah',
+        modcmd  => '/bin/true',
+        delcmd  => '/usr/bin/qconf -dh',
+    }
 
     file { "$etcdir/complex":
         ensure  => directory,
