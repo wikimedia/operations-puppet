@@ -1,14 +1,13 @@
 # https://noc.wikimedia.org/
 
-class misc::noc-wikimedia {
-    system::role { 'misc::noc-wikimedia': description => 'noc.wikimedia.org' }
+class noc-wikimedia {
 
     include ::apache
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
     apache::site { 'noc.wikimedia.org':
-        content => template('apache/sites/noc.wikimedia.org.erb'),
+        content => template('noc/noc.wikimedia.org.erb'),
     }
 
     # ensure default site is removed
