@@ -14,8 +14,7 @@
 #
 class toollabs::node::web inherits toollabs {
 
-    include gridengine::submit_host,
-            toollabs::infrastructure
+    include gridengine::submit_host
 
     file { '/usr/local/bin/portgrabber':
         ensure => file,
