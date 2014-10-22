@@ -4,9 +4,6 @@ class gridengine::shadow_master(
     $gridmaster = $grid_master,
     $sgeroot = '/var/lib/gridengine',
   ) {
-    class { 'gridengine':
-        gridmaster => $gridmaster,
-    }
 
     package { 'gridengine-master':
         ensure => latest,
