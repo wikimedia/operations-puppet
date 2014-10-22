@@ -5,12 +5,14 @@
 # Configure logstash to collect input from a Redis server
 #
 # == Parameters:
-# - $host: Redis server to contact
-# - $port: Redis server port
-# - $data_type: Type of communication: 'list', 'channel', 'pattern_channel'
-# - $key: Name of a redis list or channel
-# - $priority: Configuration loading priority. Default '10'.
 # - $ensure: Whether the config should exist.
+# - $host: Redis server to contact. Default 127.0.0.1
+# - $port: Redis server port. Default 6379
+# - $data_type: Type of communication: 'list', 'channel', 'pattern_channel'.
+#     Default 'list'
+# - $key: Name of a redis list or channel. Default 'logstash'
+# - $password: Password to authenticate with. Default undef.
+# - $priority: Configuration loading priority. Default '10'.
 #
 # == Sample usage:
 #
@@ -25,6 +27,7 @@ define logstash::input::redis(
     $port       = 6379,
     $data_type  = 'list',
     $key        = 'logstash',
+    $password   = undef,
     $priority   = 10,
 ) {
     logstash::conf { "input-redis-${title}":

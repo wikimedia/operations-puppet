@@ -65,8 +65,9 @@ class role::logstash {
     }
 
     logstash::input::redis { 'redis':
-        host => '127.0.0.1',
-        key  => 'logstash',
+        host     => '127.0.0.1',
+        key      => 'logstash',
+        password => $passwords::logstash::redis,
     }
 
     logstash::input::gelf { 'gelf':
