@@ -4,6 +4,8 @@ class role::tor {
         description => 'Tor relay'
     }
 
+    include passwords::tor
+
     class { '::tor':
         tor_controlport => '9051',
         tor_orport      => '443',
