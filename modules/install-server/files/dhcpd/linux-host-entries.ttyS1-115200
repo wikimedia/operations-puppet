@@ -193,6 +193,11 @@ host amssq62 {
 	fixed-address amssq62.esams.wikimedia.org;
 }
 
+host americium {
+        hardware ethernet c4:34:6b:b5:2d:d0;
+        fixed-address americium.eqiad.wmnet;
+}
+
 host analytics1011 {
 	hardware ethernet 90:b1:1c:06:bf:01;
 	fixed-address analytics1011.eqiad.wmnet;
