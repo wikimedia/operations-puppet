@@ -31,12 +31,6 @@ class tor (
         require => Package['tor'],
     }
 
-    file { '/srv/tor':
-        ensure => 'directory',
-        owner  => 'debian-tor',
-        group  => 'debian-tor',
-    }
-
     service { 'tor':
         ensure  => 'running',
         require => Package['tor'],
