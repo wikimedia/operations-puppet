@@ -29,6 +29,7 @@ class role::osm::master {
     include postgresql::postgis
     include osm::packages
     include passwords::osm
+    include osm::ganglia
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
