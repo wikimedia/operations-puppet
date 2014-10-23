@@ -1,3 +1,3 @@
 hostname              <%= @fqdn %>
 complex_values        h_vmem=<%= ((@swapsize_mb.to_i)>>10) + ((@memorysize_mb.to_i)>>10)
-                      %>G,slots=<%= 16*@processorcount %>,release=<%= @lsbdistcodename %>
+                      %>G,slots=<%= 16*(@processorcount.to_i) %>,release=<%= @lsbdistcodename %>
