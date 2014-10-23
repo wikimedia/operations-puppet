@@ -12,7 +12,7 @@ class toollabs::hostgroups($groups = undef) {
 
     gridengine::join { "hostgroups-${::fqdn}":
         sourcedir => "${toollabs::collectors}/hostgroups",
-        list      => $goups,
+        list      => $groups,
     }
 
 }

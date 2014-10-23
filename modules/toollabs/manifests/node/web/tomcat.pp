@@ -16,6 +16,9 @@ class toollabs::node::web::tomcat inherits toollabs::node::web {
         ensure => latest,
     }
 
+    # For now, the tomcat nodes double as the generic webserver nodes
+    class { 'toollabs::queues': queues => [ 'webgrid-tomcat', 'webgrid-generic' ] }
+
     file { "/usr/local/bin/tool-tomcat":
         ensure => file,
         owner  => 'root',
