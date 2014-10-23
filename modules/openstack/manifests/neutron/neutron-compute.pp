@@ -1,5 +1,5 @@
 # Set up neutron on a compute node
-class openstack::neutron-compute($neutronconfig, $data_interface_ip) {
+class openstack::neutron::compute($neutronconfig, $data_interface_ip) {
     sysctl::parameters { 'openstack':
         values   => {
             'net.ipv4.conf.default.rp_filter' => 0,

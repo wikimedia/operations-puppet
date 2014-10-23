@@ -43,7 +43,7 @@ class role::neutron::computenode {
     include role::neutron::config::eqiad
     $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
-    class { 'openstack::neutron-compute':
+    class { 'openstack::neutron::compute':
         neutronconfig     => $neutronconfig,
         data_interface_ip => $::ipaddress,
     }
@@ -62,7 +62,7 @@ class role::neutron::controller {
     include role::neutron::config::eqiad
     $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
-    class { 'openstack::neutron-controller':
+    class { 'openstack::neutron::controller':
         neutronconfig     => $neutronconfig,
         data_interface_ip => $::ipaddress,
     }
@@ -73,7 +73,7 @@ class role::neutron::nethost {
 
     $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
-    class { 'openstack::neutron-nethost':
+    class { 'openstack::neutron::nethost':
         openstack_version  => $openstack_version,
         external_interface => 'eth5.1122',
         neutronconfig      => $neutronconfig,
