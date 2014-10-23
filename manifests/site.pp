@@ -2953,6 +2953,17 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
     }
 }
 
+node 'uranium.wikimedia.org' {
+    $ganglia_aggregator = true
+
+    include standard
+    include admin
+    include ganglia::web
+    include misc::monitoring::views
+
+    install_certificate{ 'ganglia.wikimedia.org': }
+}
+
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     $cluster = 'parsoid'
 

@@ -64,7 +64,8 @@ class network::constants {
                     '208.80.153.249',
                     '10.4.1.120',
                     '10.4.1.137',
-                    '208.80.154.150' # nickel.wikimedia.org (ganglia)
+                    '208.80.154.150', # nickel.wikimedia.org (ganglia)
+                    '208.80.154.53', # uranium.wikimedia.org (ganglia)
                     ],
         }
     }
