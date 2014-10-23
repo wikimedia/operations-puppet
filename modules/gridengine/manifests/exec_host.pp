@@ -11,7 +11,8 @@ class gridengine::exec_host(
         require => Package['gridengine-common'],
     }
 
-    gridengine::resource { "${::fqdn}":
+    gridengine::resource { "exec-${::fqdn}":
+        rname   => $::fqdn,
         dir     => 'exechosts',
         content => $config,
     }
