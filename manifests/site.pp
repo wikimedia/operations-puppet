@@ -2900,6 +2900,10 @@ node 'virt1006.eqiad.wmnet' {
 
     include admin
     include standard
+    include role::nova::compute
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
 }
 
 node /virt100[7-9].eqiad.wmnet/ {
