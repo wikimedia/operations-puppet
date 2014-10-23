@@ -229,12 +229,12 @@ class role::nova::controller {
     include role::nova::common
 
     if ( $openstack_version == 'havana' ) {
-        class { 'openstack::conductor-service':
+        class { 'openstack::nova::conductor':
             openstack_version => $openstack_version,
             novaconfig        => $novaconfig,
         }
     }
-    class { 'openstack::scheduler-service':
+    class { 'openstack::nova::scheduler':
         openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
@@ -293,7 +293,7 @@ class role::nova::api {
 
     include role::nova::common
 
-    class { 'openstack::api-service':
+    class { 'openstack::nova::api':
         openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
@@ -331,7 +331,7 @@ class role::nova::network {
         down           => 'ip link set $IFACE down',
     }
 
-    class { 'openstack::network-service':
+    class { 'openstack::nova::network':
         openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
@@ -395,7 +395,7 @@ class role::nova::compute {
         }
     }
 
-    class { 'openstack::compute-service':
+    class { 'openstack::nova::compute':
         openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
