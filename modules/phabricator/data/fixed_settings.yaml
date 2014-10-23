@@ -141,7 +141,7 @@ phpmailer.mailer: 'smtp'
 
 phpmailer.smtp-port: '25'
 
-repository.default-local-path: '/var/repo/'
+repository.default-local-path: '/srv/phab/repos'
 
 phabricator.env: 'default'
 
