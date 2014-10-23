@@ -43,7 +43,7 @@ LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 <% end -%>
 
 domainlist system_domains = @
-domainlist local_domains = <%= local_domains.join(" : ") %>
+domainlist local_domains = <%= @local_domains.join(" : ") %>
 domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
 domainlist verp_domains = <%= @verp_domains.join(" : ") %>
 <% if enable_mail_relay != false %>
