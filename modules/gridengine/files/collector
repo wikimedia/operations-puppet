@@ -33,10 +33,10 @@ if cd "$2"; then
             /bin/mv "$outfile~" "$outfile" && exit 0
         fi
         /bin/rm -f "$outfile~"
-        exit 2
+        exit 0
     fi
 
 fi
 
 /bin/rm -f "$outfile"
-exit 1
+exit 0

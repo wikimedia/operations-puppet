@@ -26,9 +26,11 @@ class role::labs::tools {
     }
 
     class shadow inherits role::labs::tools::common {
-        include toollabs::shadow
-
         system::role { 'role::labs::tools::shadow': description => 'Tool Labs gridengine shadow (backup) master' }
+
+        class { 'toollabs::shadow':
+            gridmaster => $role::labs::tools::common::gridmaster,
+        }
     }
 
     class submit inherits role::labs::tools::common {
