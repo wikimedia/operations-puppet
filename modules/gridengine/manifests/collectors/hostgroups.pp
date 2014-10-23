@@ -7,7 +7,6 @@ define gridengine::collectors::hostgroups($store)
         dir       => 'hostgroups',
         sourcedir => $store,
         config    => 'gridengine/hostgroup.erb',
-        require   => File[$store],
     }
 
 }
