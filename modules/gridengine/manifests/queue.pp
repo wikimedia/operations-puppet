@@ -1,15 +1,14 @@
 # gridengine/queue.pp
 
 define gridengine::queue(
-    $qname   = $title,
-    $source  = undef,
-    $content = undef )
+    $rname   = $title,
+    $config  = undef )
 {
 
-    gridengine::resource { $qname:
+    gridengine::resource { $rname:
         dir     => 'queues',
         source  => $source,
-        content => $content,
+        content => template($config),
     }
 
 }

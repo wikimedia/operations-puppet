@@ -4,8 +4,7 @@ define gridengine::collector(
     $dir,
     $sourcedir,
     $rname   = $title,
-    $source  = undef,
-    $content = undef )
+    $config  = undef )
 {
     $etcdir  = '/var/lib/gridengine/etc'
     $conf    = "$etcdir/$dir/$rname"
@@ -17,8 +16,7 @@ define gridengine::collector(
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0664',
-        source  => $source,
-        content => $content,
+        content => template($config),
     }
 
     exec { "collect-$rname-resource":

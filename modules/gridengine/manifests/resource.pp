@@ -3,20 +3,18 @@
 define gridengine::resource(
     $dir,
     $rname   = $title,
-    $source  = undef,
-    $content = undef )
+    $config  = undef )
 {
     $etcdir  = '/var/lib/gridengine/etc'
     $conf    = "$etcdir/$dir/$rname"
 
-    if $source or $content {
+    if $config {
         file { $conf:
             ensure  => file,
             owner   => 'sgeadmin',
             group   => 'sgeadmin',
             mode    => '0664',
-            source  => $source,
-            content => $content,
+            content => template($config),
         }
     } else {
         file { $conf:
