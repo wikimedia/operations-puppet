@@ -24,8 +24,9 @@ class toollabs::node::compute::dedicated {
         # being, dedicated queues can have just the one one in them.
 
         gridengine::collectors::queues { $::node_dedicated_tool:
-            store  => "${toollabs::collectors}/queues",
-            config => 'toollabs/gridengine/queue-dedicated.erb',
+            store   => "${toollabs::collectors}/queues",
+            config  => 'toollabs/gridengine/queue-dedicated.erb',
+            require => Class['toollabs::queues'],
         }
 
     } else {
