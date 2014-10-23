@@ -2,7 +2,6 @@
 
 # We do not have monitoring yet
 #@monitor_group { 'apertium_eqiad': description => 'eqiad apertium servers' }
-#@monitor_group { 'apertium_pmtpa': description => 'pmtpa apertium servers' }
 
 # Skipping production for now
 #class role::apertium::production {}

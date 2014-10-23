@@ -2,7 +2,6 @@
 
 # We do not have monitoring yet
 #@monitor_group { 'cxserver_eqiad': description => 'eqiad cxserver servers' }
-#@monitor_group { 'cxserver_pmtpa': description => 'pmtpa cxserver servers' }
 
 # Skipping production for now
 #class role::cxserver::production {}
