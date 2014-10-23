@@ -21,6 +21,21 @@ class toollabs::master inherits toollabs {
         store => "${toollabs::collectors}/hostgroups",
     }
 
+    gridengine::collectors::queues { 'webgrid-lighttpd':
+        store  => "${toollabs::collectors}/queues",
+        config => template('toollabs/gridengine/queue-webgrid.erb'),
+    }
+
+    gridengine::collectors::queues { 'webgrid-tomcat':
+        store  => "${toollabs::collectors}/queues",
+        config => template('toollabs/gridengine/queue-webgrid.erb'),
+    }
+
+    gridengine::collectors::queues { 'webgrid-generic':
+        store  => "${toollabs::collectors}/queues",
+        config => template('toollabs/gridengine/queue-webgrid.erb'),
+    }
+
     #
     # These things are done on toollabs::master because they
     # need to be done exactly once per project (they live on the

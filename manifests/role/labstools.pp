@@ -16,7 +16,7 @@ class role::labs::tools {
     class compute inherits role::labs::tools::common {
         include toollabs::compute
 
-        system::role { 'role::labs::tools::common': description => 'Tool Labs compute node' }
+        system::role { 'role::labs::tools::compute': description => 'Tool Labs compute node' }
     }
 
     class master inherits role::labs::tools::common {
