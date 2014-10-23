@@ -24,6 +24,8 @@ class toollabs::node::web::lighttpd inherits toollabs::node::web {
         require => File['/var/run/lighttpd'],
     }
 
+    class { 'toollabs::queues': queues => [ 'webgrid-lighttpd' ] }
+
     file { '/var/run/lighttpd':
         ensure => directory,
         owner  => 'www-data',
@@ -48,3 +50,4 @@ class toollabs::node::web::lighttpd inherits toollabs::node::web {
     }
 
 }
+
