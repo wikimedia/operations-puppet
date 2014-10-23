@@ -238,7 +238,7 @@ class role::nova::controller {
         openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
-    class { 'openstack::glance-service':
+    class { 'openstack::glance::service':
         openstack_version => $openstack_version,
         glanceconfig      => $glanceconfig,
     }
