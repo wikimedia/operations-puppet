@@ -1,4 +1,4 @@
-class openstack::compute-service($openstack_version="folsom", $novaconfig) {
+class openstack::compute::service($openstack_version="folsom", $novaconfig) {
     if ! defined(Class["openstack::repo"]) {
         class { "openstack::repo": openstack_version => $openstack_version }
     }

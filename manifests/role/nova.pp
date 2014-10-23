@@ -395,7 +395,7 @@ class role::nova::compute {
         }
     }
 
-    class { 'openstack::compute-service':
+    class { 'openstack::compute::service':
         openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
