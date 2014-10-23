@@ -6,7 +6,7 @@ define gridengine::collectors::queues($store, $config)
     gridengine::collector { $title:
         dir       => 'queues',
         sourcedir => $store,
-        content   => $config,
+        content   => template($config),
         require   => File[$store],
     }
 

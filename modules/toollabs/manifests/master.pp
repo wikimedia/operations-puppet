@@ -37,17 +37,17 @@ class toollabs::master inherits toollabs {
 
     gridengine::collectors::queues { 'webgrid-lighttpd':
         store  => "${toollabs::collectors}/queues",
-        config => template('toollabs/gridengine/queue-webgrid.erb'),
+        config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
     gridengine::collectors::queues { 'webgrid-tomcat':
         store  => "${toollabs::collectors}/queues",
-        config => template('toollabs/gridengine/queue-webgrid.erb'),
+        config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
     gridengine::collectors::queues { 'webgrid-generic':
         store  => "${toollabs::collectors}/queues",
-        config => template('toollabs/gridengine/queue-webgrid.erb'),
+        config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
     #

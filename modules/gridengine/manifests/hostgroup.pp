@@ -1,15 +1,14 @@
 # gridengine/hostgroup.pp
 
 define gridengine::hostgroup(
-    $hgname  = $title,
-    $source  = undef,
-    $content = undef )
+    $rname  = $title,
+    $config = undef )
 {
 
-    gridengine::resource { $hgname:
+    gridengine::resource { $rname:
         dir     => 'hostgroups',
         source  => $source,
-        content => $content,
+        content => template($config),
     }
 
 }
