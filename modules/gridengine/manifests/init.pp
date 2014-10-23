@@ -40,7 +40,6 @@ class gridengine($gridmaster) {
 
     file { $etcdir:
         ensure  => directory,
-        require => Package['gridengine-master'],
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0775',
