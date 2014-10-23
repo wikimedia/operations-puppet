@@ -17,6 +17,20 @@ class toollabs::master inherits toollabs {
             toollabs::queue::task,
             toollabs::queue::continuous
 
+    file { "${toollabs::collectors}/hostgroups":
+        ensure    => directory,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0755',
+    }
+
+    file { "${toollabs::collectors}/queues":
+        ensure    => directory,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0755',
+    }
+
     gridengine::collectors::hostgroups { '@general':
         store => "${toollabs::collectors}/hostgroups",
     }
