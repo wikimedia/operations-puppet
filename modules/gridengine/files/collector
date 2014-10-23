@@ -28,7 +28,7 @@ if cd "$2"; then
     done
 
     if [ "x$matches" != "x" ]; then
-        /bin/sed -e "s/#*#/$matches/" "$infile" >"$outfile~"
+        /bin/sed -e "s/#@#/$matches/" "$infile" >"$outfile~"
         if ! /usr/bin/diff -qbBN "$outfile~" "$outfile"; then
             /bin/mv "$outfile~" "$outfile" && exit 0
         fi
