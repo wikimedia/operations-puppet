@@ -1,6 +1,6 @@
 # gridengine/submit_host.pp
 
-class gridengine::submit_host( $collectdir = undef )
+class gridengine::submit_host
 {
     package { [ 'jobutils' ]:
         ensure => latest,
@@ -19,7 +19,7 @@ class gridengine::submit_host( $collectdir = undef )
     gridengine::resource { "submit-${::fqdn}":
         rname   => $::fqdn,
         dir     => 'submithosts',
-        content => "${::fqdn}", # the content here doesn't actually matter
+        content => 'gridengine/nothing.erb', # the content here doesn't actually matter
     }
 
 }
