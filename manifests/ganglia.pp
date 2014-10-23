@@ -439,12 +439,27 @@ class ganglia::aggregator {
 class ganglia::web {
 # Class for the ganglia frontend machine
 
-    require ganglia::collector,
-        webserver::php5-gd,
-        webserver::php5-mysql,
-        subversion::client
+    require ganglia::collector
+    require subversion::client
 
-    class {'webserver::php5': ssl => true; }
+    include ::apache
+    include ::apache::mod::php5
+    include ::apache::mod::ssl
+    include ::apache::mod::rewrite
+
+    package { [ 'php5-gd',
+                'php5-mysql',
+                'rrdtool',
+                'librrds-perl',
+            ]:
+        ensure => present,
+    }
+
+    # Monitoring
+    monitor_service { 'ganglia_http':
+        description   => 'HTTP',
+        check_command => 'check_http',
+    }
 
     if $::realm == 'labs' {
         $ganglia_servername = 'ganglia.wmflabs.org'
@@ -468,13 +483,47 @@ class ganglia::web {
         }
 
         include ganglia::aggregator
+
+        file { '/usr/share/ganglia-webfrontend/conf.php':
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            source  => 'puppet:///files/ganglia/conf.php',
+            require => Package['ganglia-webfrontend'],
+        }
+        file { '/usr/share/ganglia-webfrontend/conf_default.php':
+            ensure => link,
+            target => '/usr/share/ganglia-webfrontend/conf.php',
+        }
+        file { '/usr/share/ganglia-webfrontend/version.php':
+            content => '<?php $GLOBALS["ganglia_version"] = "wmflabs";';
+        }
+
     } else {
+        # We are in production land
         $ganglia_servername = 'ganglia.wikimedia.org'
-        $ganglia_serveralias = 'nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org'
-        # TODO(ssmollett): when switching to ganglia-webfrontend
-        # package, use /usr/share/ganglia-webfrontend
-        $ganglia_webdir = '/srv/org/wikimedia/ganglia-web-latest'
-        $ganglia_confdir = '/srv/org/wikimedia/ganglia-web-conf'
+        $ganglia_serveralias = 'nickel.wikimedia.org uranium.wikimedia.org'
+        #TODO: Ugly hideous hack to be removed soon after we migrate to trusty
+        if ubuntu_version('>= trusty') {
+            package { 'ganglia-webfrontend':
+                ensure => present,
+            }
+            $ganglia_webdir = '/usr/share/ganglia/web-frontend'
+            $ganglia_confdir = '/var/lib/ganglia-web'
+            file { '/etc/ganglia-webfrontend/conf.php':
+                ensure  => present,
+                mode    => '0444',
+                owner   => 'root',
+                group   => 'root',
+                source  => 'puppet:///files/ganglia/conf_production.php',
+                require => Package['ganglia-webfrontend'],
+            }
+        }
+        else {
+            $ganglia_webdir = '/srv/org/wikimedia/ganglia-web-latest'
+            $ganglia_confdir = '/srv/org/wikimedia/ganglia-web-conf'
+        }
 
         $ganglia_ssl_cert = '/etc/ssl/certs/ganglia.wikimedia.org.pem'
         $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
@@ -523,16 +572,6 @@ class ganglia::web {
         source => 'puppet:///files/ganglia/rc.local',
     }
 
-    include ::apache::mod::rewrite
-
-    package { 'librrds-perl':
-        ensure => latest,
-        before => Package['rrdtool'],
-    }
-    package { 'rrdtool':
-        ensure => latest,
-    }
-
     # back up rrds every half hour
     cron { 'save-rrds':
         ensure  => present,
@@ -570,30 +609,6 @@ class ganglia::web {
         group   => 'root',
     }
 
-
-    # TODO(ssmollett): install ganglia-webfrontend package in production,
-    # using appropriate conf.php
-    if $::realm == 'labs' {
-        package { 'ganglia-webfrontend':
-            ensure => latest,
-        }
-
-        file { '/usr/share/ganglia-webfrontend/conf.php':
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            source  => 'puppet:///files/ganglia/conf.php',
-            require => Package['ganglia-webfrontend'],
-        }
-        file { '/usr/share/ganglia-webfrontend/conf_default.php':
-            ensure => link,
-            target => '/usr/share/ganglia-webfrontend/conf.php',
-        }
-        file { '/usr/share/ganglia-webfrontend/version.php':
-            content => '<?php $GLOBALS["ganglia_version"] = "wmflabs";';
-        }
-    }
 }
 
 # == Class ganglia::logtailer
