@@ -13,6 +13,7 @@
 class toollabs::bastion inherits toollabs {
 
     include gridengine::submit_host,
+            gridengine::admin_host,
             toollabs::exec_environ,
             toollabs::dev_environ
 
