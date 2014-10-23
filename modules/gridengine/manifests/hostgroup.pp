@@ -7,7 +7,6 @@ define gridengine::hostgroup(
 
     gridengine::resource { $rname:
         dir     => 'hostgroups',
-        source  => $source,
         config  => $config,
     }
 

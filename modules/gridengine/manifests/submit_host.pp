@@ -19,7 +19,7 @@ class gridengine::submit_host
     gridengine::resource { "submit-${::fqdn}":
         rname   => $::fqdn,
         dir     => 'submithosts',
-        content => 'gridengine/nothing.erb', # the content here doesn't actually matter
+        config  => 'gridengine/nothing.erb', # the content here doesn't actually matter
     }
 
 }

@@ -50,7 +50,7 @@ class gridengine::shadow_master(
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0555',
-        content => $fqdn,
+        content => "${::fqdn}\n",
     }
 
     service { 'gridengine-shadow':

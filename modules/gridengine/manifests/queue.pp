@@ -7,7 +7,6 @@ define gridengine::queue(
 
     gridengine::resource { $rname:
         dir     => 'queues',
-        source  => $source,
         config  => $config,
     }
 
