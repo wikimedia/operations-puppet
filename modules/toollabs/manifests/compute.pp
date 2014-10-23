@@ -16,8 +16,7 @@
 #
 class toollabs::compute inherits toollabs {
 
-    include gridengine::exec_host,
-            toollabs::exec_environ,
+    include toollabs::exec_environ,
             toollabs::hba
 
     file { '/etc/update-motd.d/40-exechost-banner':

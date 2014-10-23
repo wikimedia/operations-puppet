@@ -16,6 +16,10 @@ class toollabs::node::web inherits toollabs {
 
     include gridengine::submit_host
 
+    class { 'gridengine::exec_host':
+        content => template('toollabs/gridengine/host-web.erb'),
+    }
+
     file { '/usr/local/bin/portgrabber':
         ensure => file,
         owner  => 'root',

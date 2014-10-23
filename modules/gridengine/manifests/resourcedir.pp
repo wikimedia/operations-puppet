@@ -1,11 +1,15 @@
 # gridengine/resourcedir.pp
 
 define gridengine::resourcedir(
-    $etcdir = '/etc/gridengine/local',
-    $dir    = $title,
-    $local  = true )
+    $dir = $title,
+    $addcmd, $modcmd, $delcmd)
 {
-    file { "$etcdir/$dir":
+    $etcdir     = '/var/lib/gridengine/etc'
+    $confdir    = "$etcdir/$dir"
+    $trackerdir = "$etcdir/tracker/$dir"
+
+
+    file { $confdir:
         ensure  => directory,
         force   => $local,
         owner   => 'sgeadmin',
@@ -14,8 +18,6 @@ define gridengine::resourcedir(
         recurse => $local,
         purge   => $local,
     }
-
-    $trackerdir = "$etcdir/.tracker/$dir"
 
     file { $trackerdir:
         ensure  => directory,
@@ -27,9 +29,9 @@ define gridengine::resourcedir(
         purge   => false,
     }
 
-    exec { "purge-deleted-$dir":
-        command => "$etcdir/bin/runpurge $trackerdir $etcdir/$dir",
-        require => File[ "$etcdir/bin", $trackerdir ],
+    exec { "track-$dir":
+        command => "$etcdir/bin/tracker '$confdir' '$trackerdir' '$addcmd' '$modcmd' '$delcmd'",
+        require => File[ "$etcdir/bin/runpurge", $confdir, $trackerdir ],
     }
 
 }
