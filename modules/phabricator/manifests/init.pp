@@ -79,6 +79,7 @@ class phabricator (
     $mysql_admin_pass = '',
     $serveradmin      = '',
     $auth_type        = '',
+    $preamble_script  = 'preamble.php',
 ) {
 
     include phabricator::migration
@@ -267,6 +268,12 @@ class phabricator (
         status   => "${phd} status",
         require  => Git::Install['phabricator/phabricator'],
     }
+
+    if ($preamble_script) {
+        file { "${phabdir}/phabricator/support/preamble.php":
+            source  => "puppet:///modules/phabricator/${preamble_script}",
+        }
+    }
 }
 
 define phabricator::extension($rootdir='/') {
@@ -278,7 +285,7 @@ define phabricator::extension($rootdir='/') {
 
 define phabricator::redirector($mysql_user, $mysql_pass, $mysql_host, $rootdir='/') {
     file { "${rootdir}/phabricator/support/preamble.php":
-        source => 'puppet:///modules/phabricator/preamble.php',
+        source => 'puppet:///modules/phabricator/redirector.php',
         require => File["${rootdir}/phabricator/support/redirect_config.json"]
     }
 
