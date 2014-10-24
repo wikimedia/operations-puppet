@@ -23,35 +23,35 @@ class role::mediawiki::common {
                 server_connections   => 2,
                 server_failure_limit => 3,
                 timeout              => 250,
-                servers              => hiera('mediawiki_memcached_servers')
+                servers              => hiera('mediawiki_memcached_servers'),
             },
         },
     }
 
     monitor_service { 'mediawiki-installation DSH group':
-        description   => 'mediawiki-installation DSH group',
-        check_command => "check_dsh_groups!mediawiki-installation",
+        description           => 'mediawiki-installation DSH group',
+        check_command         => 'check_dsh_groups!mediawiki-installation',
         normal_check_interval => 60,
     }
 }
 
-class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_pool = undef) {
+class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_pool = undef ) {
     include ::role::mediawiki::common
     include ::apache::monitoring
     include ::lvs::configuration
     include ::mediawiki::web::sites
 
     class { '::mediawiki::web':
-        workers_limit       => $workers_limit,
+        workers_limit => $workers_limit,
     }
 
     # Horrible, temporarily hack for hhvm - which is sharing servers for api and normal
     # appservers; this will go away soon
     if $additional_pool != undef {
         $ips = [
-                $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site],
-                $lvs::configuration::lvs_service_ips[$::realm][$additional_pool][$::site]
-                ]
+            $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site],
+            $lvs::configuration::lvs_service_ips[$::realm][$additional_pool][$::site]
+        ]
     } else {
         $ips = $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site]
     }
@@ -69,6 +69,13 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_poo
         monitor_service { 'appserver_http_hhvm':
             description   => 'HHVM rendering',
             check_command => 'check_http_wikipedia_main',
+        }
+
+        nrpe::monitor_service { 'hhvm':
+            description   => 'HHVM processes',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1: -C hhvm',
+            critical      => 'true',
+            contact_group => 'hhvm',
         }
     }
 }

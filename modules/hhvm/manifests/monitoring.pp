@@ -1,14 +1,26 @@
-class hhvm::monitoring(
-    $is_critical   = true,
-    $contact_group = 'hhvm',
-    $process_count = 1,
-) {
+# == Class: hhvm::monitoring
+#
+# Provisions Ganglia metric-gathering modules for HHVM.
+#
+class hhvm::monitoring {
+    include ::ganglia
 
-    nrpe::monitor_service { 'hhvm':
-        description   => 'HHVM processes',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w ${process_count}:${process_count} -c ${process_count}: -C hhvm",
-        critical      => $is_critical,
-        contact_group => $contact_group,
+    ## Memory statistics
+
+    file { '/usr/lib/ganglia/python_modules/hhvm_mem.py':
+        source  => 'puppet:///modules/hhvm/monitoring/hhvm_mem.pyconf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => Package['ganglia-monitor'],
     }
 
+    file { '/etc/ganglia/conf.d/hhvm_mem.pyconf':
+        source  => 'puppet:///modules/hhvm/monitoring/hhvm_mem.pyconf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/usr/lib/ganglia/python_modules/hhvm_mem.py'],
+        notify  => Service['gmond'],
+    }
 }

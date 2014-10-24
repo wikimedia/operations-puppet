@@ -1,0 +1,23 @@
+# Ganglia metric module for HHVM memory statistics.
+
+modules {
+    module {
+        name     = "hhvm_mem"
+        language = "python"
+
+        param url {
+            value = 'http://localhost:9002/memory.json'
+        }
+    }
+}
+
+collection_group {
+    collect_every  = 20
+    time_threshold = 60
+
+    metric {
+        name_match      = "HHVM.(.+)"
+        title           = "\\1"
+        value_threshold = 1.0
+    }
+}
