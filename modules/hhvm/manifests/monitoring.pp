@@ -8,7 +8,7 @@ class hhvm::monitoring {
     ## Memory statistics
 
     file { '/usr/lib/ganglia/python_modules/hhvm_mem.py':
-        source  => 'puppet:///modules/hhvm/monitoring/hhvm_mem.pyconf',
+        source  => 'puppet:///modules/hhvm/monitoring/hhvm_mem.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
