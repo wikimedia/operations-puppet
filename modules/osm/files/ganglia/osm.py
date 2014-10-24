@@ -24,7 +24,7 @@ Desc_Skel = {
     "slope"       : "both", # zero|positive|negative|both
     "format"      : "%d",
     "description" : "N/A",
-    "groups"      : "PostgreSQL",
+    "groups"      : "OpenStreetMap",
     }
 
 # Create your queries here. Keys whose names match those defined in the default
@@ -37,7 +37,6 @@ def get_planet_osm_lag(obj):
         with open(obj.state_path, "r") as f:
             for line in f.readlines():
                 if line.startswith("timestamp="):
-                    print line.split('=')[1]
                     t = datetime.datetime.strptime(line.strip().split('=')[1], "%Y-%m-%dT%H\:%M\:%SZ")
                     r = datetime.datetime.now() - t
                     return r.seconds
@@ -101,7 +100,6 @@ class UpdateMetricThread(threading.Thread):
 
         for metric_name, metric_attrs in metric_defs.iteritems():
             data = metric_attrs["query"](self)
-            print data
             convert_fn = converter.get(metric_defs[metric_name].get("value_type"), int)
             metric_results[metric_name] = convert_fn(data)
 
