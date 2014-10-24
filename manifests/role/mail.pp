@@ -42,8 +42,10 @@ class role::mail::mx {
         'production': {
             # currently not used as bouncehandler extension is not yet installed in production
             # the api urls should change once the extension gets installed
-            $verp_domains   = [ ]
-            $verp_post_connect_server = 'login.wikimedia.org'
+            $verp_domains   = [
+                    'en.wikipedia.org'
+                ]
+            $verp_post_connect_server = 'en.wikipedia.org'
             $verp_bounce_post_url     = "appservers.svc.${::mw_primary}.wmnet/w/api.php"
             $local_domains  = [
                     '+system_domains',
