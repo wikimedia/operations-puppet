@@ -3,7 +3,7 @@ class varnish::common {
 
     # Tune kernel settings
     # TODO: Should be moved to a role class.
-    include webserver::base
+    include webserver::sysctl_settings
 
     # Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk

@@ -3,7 +3,7 @@
 # It is used to find the ring files in the puppet files
 class swift::base($hash_path_suffix, $cluster_name) {
 
-    include webserver::base
+    include webserver::sysctl_settings
 
     # Recommendations from Swift -- see <http://tinyurl.com/swift-sysctl>.
     sysctl::parameters { 'swift_performance':

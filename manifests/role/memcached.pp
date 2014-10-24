@@ -10,7 +10,7 @@ class role::memcached {
     system::role { 'role::memcached': description => 'memcached server' }
 
     include standard
-    include webserver::base
+    include webserver::sysctl_settings
 
     $memcached_size = $::realm ? {
         'production' => '89088',

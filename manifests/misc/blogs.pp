@@ -6,8 +6,8 @@ class misc::blogs::wikimedia {
 
     class {'webserver::php5': ssl => true; }
 
-    require webserver::php5-mysql,
-        webserver::php5-gd
+    require_package('php5-mysql')
+    require_package('php5-gd')
 
     include ::apache::mod::rpaf
 
