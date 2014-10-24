@@ -296,7 +296,7 @@ class nagios::group {
 #                         Can't use nagios macro in checkcommands.cfg
 #                         because fqdn is not available.
 #                         Default: $::fqdn of this node
-# $gmetad_host          - Default: 'nickel.wikimedia.org'
+# $gmetad_host          - Default: 'uranium.wikimedia.org'
 # $gmetad_query_port    - gmetad XML query interface port.  Default: 8654
 # $host
 # $retries
@@ -315,7 +315,7 @@ define monitor_ganglia(
     $warning,
     $critical,
     $metric_host           = $::fqdn,
-    $gmetad_host           = 'nickel.wikimedia.org',
+    $gmetad_host           = 'uranium.wikimedia.org',
     $gmetad_query_port     = 8654,
     $host                  = $::hostname,
     $retries               = 3,
