@@ -374,13 +374,6 @@ class role::ci::slave::labs {
     system::role { 'role::ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
 
-    class { 'role::ci::slave::browsertests':
-        require => [
-            Class['role::ci::slave::labs::common'],  # /mnt
-            Class['contint::packages::labs'],  # realize common packages first
-        ]
-    }
-
     file { '/srv/localhost':
         ensure => directory,
         mode   => '0755',
@@ -400,12 +393,22 @@ class role::ci::slave::labs {
         require    => File['/srv/localhost/mediawiki'],
     }
 
-    include role::ci::slave::labs::common
-    include role::ci::slave::localbrowser
-    # Trebuchet replacement on labs
     include contint::slave-scripts
     # Include package unsafe for production
+
     include contint::packages::labs
+
+    include role::ci::slave::labs::common
+
+    include role::ci::slave::localbrowser
+    # Trebuchet replacement on labs
+
+    class { 'role::ci::slave::browsertests':
+        require => [
+            Class['role::ci::slave::labs::common'], # /mnt
+            Class['contint::packages::labs'], # realize common packages first
+        ]
+    }
 
 }
 
