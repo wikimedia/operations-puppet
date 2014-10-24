@@ -11,5 +11,5 @@
        missingok
        create 644 syslog adm
        rotate 15
-       size 256M
+       maxsize 256M
 }
