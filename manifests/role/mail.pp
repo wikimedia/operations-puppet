@@ -32,24 +32,13 @@ class role::mail::mx {
                 ]
             $verp_post_connect_server = 'mediawiki-verp.wmflabs.org'
             $verp_bounce_post_url     = 'http://mediawiki-verp.wmflabs.org/w/api.php'
-            $local_domains  = [
-                    '+system_domains',
-                    '+wikimedia_domains',
-                    '+legacy_mailman_domains',
-                    'mediawiki-verp.wmflabs.org'
-                ]
         }
         'production': {
-            # currently not used as bouncehandler extension is not yet installed in production
-            # the api urls should change once the extension gets installed
-            $verp_domains   = [ ]
-            $verp_post_connect_server = 'login.wikimedia.org'
-            $verp_bounce_post_url     = "appservers.svc.${::mw_primary}.wmnet/w/api.php"
-            $local_domains  = [
-                    '+system_domains',
-                    '+wikimedia_domains',
-                    '+legacy_mailman_domains'
+            $verp_domains   = [
+                    'wikimedia.org'
                 ]
+            $verp_post_connect_server = 'meta.wikimedia.org'
+            $verp_bounce_post_url     = "appservers.svc.${::mw_primary}.wmnet/w/api.php"
         }
         default: {
             fail('unknown realm, should be labs or production')
@@ -57,14 +46,19 @@ class role::mail::mx {
     }
 
     class { 'exim::roled':
-        local_domains            => $local_domains,
+        verp_domains             => $verp_domains,
+        verp_post_connect_server => $verp_post_connect_server,
+        verp_bounce_post_url     => $verp_bounce_post_url,
+        local_domains            => [
+                '+system_domains',
+                '+wikimedia_domains',
+                '+legacy_mailman_domains',
+                '+verp_domains',
+            ],
         enable_mail_relay        => 'primary',
         enable_external_mail     => true,
         mediawiki_relay          => true,
         enable_spamassassin      => true,
-        verp_domains             => $verp_domains,
-        verp_post_connect_server => $verp_post_connect_server,
-        verp_bounce_post_url     => $verp_bounce_post_url,
     }
 
     Class['spamassassin'] -> Class['exim::roled']
