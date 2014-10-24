@@ -2086,7 +2086,7 @@ node 'netmon1001.wikimedia.org' {
     include admin
     include standard
     include webserver::apache
-    include misc::rancid
+    include role::rancid
     include smokeping
     include smokeping::web
     include role::librenms
