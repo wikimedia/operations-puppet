@@ -7,15 +7,18 @@
     <Directory "/var/www">
     Options FollowSymLinks
     AllowOverride None
+    <% if @is_trusty %>
+    Require all granted
+    <% else %>
     Order allow,deny
     Allow from all
+    <% end %>
     </Directory>
 
-    Alias /2.2.0 <%= @ganglia_webdir %>
     Alias /latest <%= @ganglia_webdir %>
 
     RedirectMatch ^/$ http://<%= @ganglia_servername %>/latest
-    ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/ganglia.wikimedia.org-error.log
     LogLevel warn
 </VirtualHost>
 <% if @ganglia_ssl_cert %>
@@ -33,15 +36,18 @@
     <Directory "/var/www">
     Options FollowSymLinks
     AllowOverride None
+    <% if @is_trusty %>
+    Require all granted
+    <% else %>
     Order allow,deny
     Allow from all
+    <% end %>
     </Directory>
 
-    Alias /2.2.0 <%= @ganglia_webdir %>
     Alias /latest <%= @ganglia_webdir %>
 
     RedirectMatch ^/$ https://<%= @ganglia_servername %>/latest
-    ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/ganglia.wikimedia.org-error.log
     LogLevel warn
 </VirtualHost>
 <% end %>

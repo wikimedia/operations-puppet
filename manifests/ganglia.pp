@@ -509,7 +509,7 @@ class ganglia::web {
             package { 'ganglia-webfrontend':
                 ensure => present,
             }
-            $ganglia_webdir = '/usr/share/ganglia/web-frontend'
+            $ganglia_webdir = '/usr/share/ganglia-webfrontend'
             $ganglia_confdir = '/var/lib/ganglia-web'
             file { '/etc/ganglia-webfrontend/conf.php':
                 ensure  => present,
@@ -519,6 +519,7 @@ class ganglia::web {
                 source  => 'puppet:///files/ganglia/conf_production.php',
                 require => Package['ganglia-webfrontend'],
             }
+            $is_trusty = true
         }
         else {
             $ganglia_webdir = '/srv/org/wikimedia/ganglia-web-latest'
