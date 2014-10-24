@@ -1,6 +1,4 @@
-class misc::fundraising::udp2log_rotation {
-
-    include role::logging::systemusers
+class fundraising {
 
     sudo::user { 'file_mover':
         privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }

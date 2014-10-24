@@ -384,7 +384,7 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
 # - Fundraising: This requires write permissions on the netapp mount.
 #
 class role::logging::udp2log::erbium inherits role::logging::udp2log {
-    include misc::fundraising::udp2log_rotation
+    include role::fundraising
     include role::logging::systemusers
 
     # udp2log::instance will ensure this is created
