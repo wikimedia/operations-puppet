@@ -383,6 +383,11 @@ host bast4001 {
 	fixed-address bast4001.wikimedia.org;
 }
 
+host berkelium {
+	hardware ethernet 84:2b:2b:fd:be:64;
+	fixed-address berkelium.eqiad.wmnet;
+}
+
 host beryllium {
 	hardware ethernet 78:2b:cb:08:a3:ab;
 	fixed-address beryllium.wikimedia.org;
@@ -805,6 +810,11 @@ host cp4019 {
 host cp4020 {
 	hardware ethernet 90:b1:1c:43:13:cb;
 	fixed-address cp4020.ulsfo.wmnet;
+}
+
+host curium {
+	hardware ethernet 84:2b:2b:fd:be:6d;
+	fixed-address curium.eqiad.wmnet;
 }
 
 host dataset1001 {
