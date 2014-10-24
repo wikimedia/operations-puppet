@@ -70,6 +70,8 @@ class misc::statistics::base {
 }
 
 class misc::statistics::packages {
+    require_package('nodejs')
+
     package { [
         'mc',
         'zip',
@@ -77,7 +79,6 @@ class misc::statistics::packages {
         'p7zip-full',
         'subversion',
         'mercurial',
-        'nodejs',
         'tofrodos',
         'git-review',
         'imagemagick',
