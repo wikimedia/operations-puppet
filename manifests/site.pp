@@ -2276,6 +2276,7 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
 
 node /(plutonium|pollux)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
+    $ganglia_aggregator = true
 
     include admin
 
@@ -2932,6 +2933,7 @@ node 'iodine.wikimedia.org' {
 
 node /^sca100[12]\.eqiad\.wmnet$/ {
     $cluster = 'sca'
+    $ganglia_aggregator = true
     include standard
 
     include role::mathoid::production
