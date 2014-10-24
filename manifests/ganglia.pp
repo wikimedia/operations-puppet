@@ -349,6 +349,9 @@ class ganglia::collector::config {
                     'Logstash eqiad'                 => 'logstash1001.eqiad.wmnet logstash1003.eqiad.wmnet',
                     'RCStream eqiad'                 => 'rcs1001.eqiad.wmnet',
                     'Analytics Kafka cluster eqiad'  => 'analytics1012.eqiad.wmnet analytics1018.eqiad.wmnet analytics1022.eqiad.wmnet',
+                    'Service Cluster A eqiad'        => 'sca1001.eqiad.wmnet sca1002.eqiad.wmnet',
+                    'Corp OIT LDAP mirror eqiad'     => 'plutonium.wikimedia.org',
+                    'Corp OIT LDAP mirror codfw'     => 'pollux.wikimedia.org',
                 }
                 $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
                 $rrd_rootdir = '/mnt/ganglia_tmp/rrds.pmtpa'
