@@ -399,12 +399,19 @@ class role::ci::slave::labs {
         owner  => 'jenkins-deploy',
         group  => 'root',  # no jenkins-deploy group in labs
     }
+    file { '/srv/localhost/qunit':
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'jenkins-deploy',
+        group  => 'root',
+    }
     contint::localvhost { 'mediawiki':
         port       => 9414,
         docroot    => '/srv/localhost/mediawiki',
         log_prefix => 'mediawiki',
         require    => File['/srv/localhost/mediawiki'],
     }
+    include contint::qunit_localhost
 
     # Trebuchet replacement on labs
     include contint::slave-scripts
