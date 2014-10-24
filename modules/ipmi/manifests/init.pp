@@ -1,15 +1,8 @@
-# misc/mgmt.pp
-
 # IPMItool mgmt hosts
-
-class misc::management::ipmi {
-
-    system::role { 'misc::management::ipmi':
-        description => 'IPMI Management'
-    }
+class ipmi {
 
     package { 'ipmitool':
-        ensure =>latest,
+        ensure => 'latest',
     }
 
     file { '/usr/local/sbin/ipmi_mgmt':
@@ -17,6 +10,6 @@ class misc::management::ipmi {
         owner  => 'root',
         group  => 'root',
         mode   => '0550',
-        source => 'puppet:///files/ipmitool/ipmi_mgmt',
+        source => 'puppet:///ipmi/ipmi_mgmt',
     }
 }

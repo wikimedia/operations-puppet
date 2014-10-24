@@ -397,7 +397,7 @@ node 'bast4001.wikimedia.org' {
     include admin
     include standard
     include role::bastionhost
-    include misc::management::ipmi
+    include role::ipmi
     include role::installserver::tftp-server
 }
 
@@ -1333,7 +1333,7 @@ node 'iron.wikimedia.org' {
     include admin
     include standard
     include role::bastionhost
-    include misc::management::ipmi
+    include role::ipmi
     include role::access_new_install
 
 }
@@ -2221,7 +2221,7 @@ node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 node 'palladium.eqiad.wmnet' {
     include standard
     include admin
-    include misc::management::ipmi
+    include role::ipmi
     include role::salt::masters::production
     include role::deployment::salt_masters::production
     include role::access_new_install
