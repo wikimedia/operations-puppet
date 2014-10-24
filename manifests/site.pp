@@ -1283,6 +1283,7 @@ node 'hooft.esams.wikimedia.org' {
     }
 
     include standard
+    include bastionhost
     include role::installserver::tftp-server
 
     # TODO: 2013-12-13. rsync is an unpuppetized service on hooft. Ferms is
