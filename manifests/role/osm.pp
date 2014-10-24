@@ -29,7 +29,6 @@ class role::osm::master {
     include postgresql::postgis
     include osm::packages
     include passwords::osm
-    include osm::ganglia
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
@@ -39,6 +38,9 @@ class role::osm::master {
     class { 'postgresql::ganglia':
         pgstats_user => $passwords::osm::ganglia_user,
         pgstats_pass => $passwords::osm::ganglia_pass,
+    }
+    class { 'osm::ganglia':
+        state_path   => '/srv/osmosis/state.txt',
     }
 
     system::role { 'role::osm::master':

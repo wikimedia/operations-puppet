@@ -26,7 +26,7 @@ define osm::planet_sync(
         ensure => directory,
         owner  => 'postgres',
         group  => 'postgres',
-        mode   => 0700,
+        mode   => 0755,
     }
 
     file { $osmosis_dir:
