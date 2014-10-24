@@ -1,11 +1,6 @@
-# misc/rancid.pp
-
-class misc::rancid {
+# Really Awful Notorious CIsco config Differ
+class rancid {
     # TODO: finish. very incomplete.
-
-    system::role { 'misc::rancid':
-        description => 'Really Awful Notorious CIsco config Differ (sp)'
-    }
 
     package { 'rancid':
         ensure => present,
@@ -31,7 +26,7 @@ class misc::rancid {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///files/misc/rancid/rancid.conf',
+        source  => 'puppet:///rancid/rancid.conf',
     }
 
     file { '/var/lib/rancid/core':
@@ -40,7 +35,7 @@ class misc::rancid {
         group   => 'rancid',
         mode    => 'o-rwx',
         recurse => remote,
-        source  => 'puppet:///files/misc/rancid/core',
+        source  => 'puppet:///rancid/core',
     }
 
     file { '/var/lib/rancid/.cloginrc':
@@ -56,7 +51,7 @@ class misc::rancid {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///files/misc/rancid/rancid.cron',
+        source  => 'puppet:///rancid/rancid.cron',
     }
 
     file { '/var/log/rancid':
