@@ -406,6 +406,7 @@ class role::ci::slave::labs {
         log_prefix => 'mediawiki',
         require    => File['/srv/localhost/mediawiki'],
     }
+    include contint::qunit_localhost
 
     include contint::slave-scripts
     # Include package unsafe for production
