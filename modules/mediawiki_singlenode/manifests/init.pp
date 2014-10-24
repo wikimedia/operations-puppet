@@ -21,8 +21,10 @@ class mediawiki_singlenode(
     $mysql_pass = '',
     $memcached_size    = 128,
     $apache_site_template = 'mediawiki_singlenode/mediawiki_singlenode.erb'
-) {
-    require role::labs-mysql-server, webserver::php5-mysql
+    ) {
+    require role::labs-mysql-server, webserver::sysctl_settings
+
+    require_package('php5-mysql')
 
     package { [ 'imagemagick', 'php-apc', 'php5-cli' ] :
         ensure => latest,

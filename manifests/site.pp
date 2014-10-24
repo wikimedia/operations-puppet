@@ -17,7 +17,6 @@ import 'role/*.pp'
 import 'role/analytics/*.pp'
 import 'search.pp'
 import 'swift.pp'
-import 'webserver.pp'
 
 # Include stages last
 import 'stages.pp'
