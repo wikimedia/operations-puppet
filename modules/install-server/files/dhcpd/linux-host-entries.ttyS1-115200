@@ -1447,7 +1447,7 @@ host elastic1019 {
 }
 
 host elastic1020 {
-        hardware ethernetB0:83:FE:C0:AE:DB;
+        hardware ethernet B0:83:FE:C0:AE:DB;
         fixed-address elastic1020.eqiad.wmnet;
 }
 
