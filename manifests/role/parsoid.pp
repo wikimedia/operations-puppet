@@ -1,7 +1,6 @@
 # vim: set ts=4 et sw=4:
 
 @monitor_group { 'parsoid_eqiad': description => 'eqiad parsoid servers' }
-@monitor_group { 'parsoid_pmtpa': description => 'pmtpa parsoid servers' }
 
 class role::parsoid::common {
     package { [
