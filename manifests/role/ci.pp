@@ -405,6 +405,7 @@ class role::ci::slave::labs {
         log_prefix => 'mediawiki',
         require    => File['/srv/localhost/mediawiki'],
     }
+    include contint::qunit_localhost
 
     # Trebuchet replacement on labs
     include contint::slave-scripts
