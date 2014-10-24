@@ -119,7 +119,6 @@ class role::ci::slave {
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages
-    include contint::qunit_localhost
     include role::gerrit::production::replicationdest
     include role::zuul::install
 
@@ -183,6 +182,20 @@ class role::ci::slave {
         group  => 'root',
         mode   => '0755',
     }
+
+    file { '/srv/localhost':
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'jenkins-slave',
+        group  => 'jenkins-slave',
+    }
+    file { '/srv/localhost/qunit':
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'jenkins-slave',
+        group  => 'jenkins-slave',
+    }
+    include contint::qunit_localhost
 
     # Ganglia diskstat plugin is being evaluated on contint production slaves
     # servers merely to evaluate it for the standard role. -- hashar, 23-Oct-2013
