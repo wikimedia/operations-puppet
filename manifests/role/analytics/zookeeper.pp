@@ -103,9 +103,10 @@ class role::analytics::zookeeper::server inherits role::analytics::zookeeper::cl
             content => template('base/firewall/defs.erb')
         }
 
-        ferm::service { 'zookeeper-client':
+        ferm::service { 'zookeeper':
             proto  => 'tcp',
-            port   => '2181',
+            # Zookeeper client, protocol, and jmx listen ports.
+            port   => "(2181 2182 2183 ${$::zookeeper::server::jmx_port})",
             srange => '($ANALYTICS_NETWORKS)',
         }
     }
