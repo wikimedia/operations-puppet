@@ -30,11 +30,11 @@ class role::analytics::kafka::config {
         # TODO: Make hostnames configurable via labs global variables.
         $cluster_config = {
             'main'     => {
-                'kafka-main1.pmtpa.wmflabs'     => { 'id' => 1 },
-                'kafka-main2.pmtpa.wmflabs'     => { 'id' => 2 },
+                'kafka-main1.eqiad.wmflabs'     => { 'id' => 1 },
+                'kafka-main2.eqiad.wmflabs'     => { 'id' => 2 },
             },
             'external'                          => {
-                'kafka-external1.pmtpa.wmflabs' => { 'id' => 10 },
+                'kafka-external1.eqiad.wmflabs' => { 'id' => 10 },
             },
         }
         # labs only uses a single log_dir
@@ -57,7 +57,6 @@ class role::analytics::kafka::config {
                 'analytics1022.eqiad.wmnet' => { 'id' => 22 },  # Row C
             },
             'ulsfo' => { },
-            'pmtpa' => { },
             'esams' => { },
         }
 
