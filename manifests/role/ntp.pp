@@ -14,7 +14,6 @@ class role::ntp {
             'nescio.esams.wikimedia.org', # esams recdns
         ],
         ulsfo => [],
-        pmtpa => [],
     }
 
     # Combines the peers above into a single list
@@ -22,8 +21,7 @@ class role::ntp {
         $wmf_peers['eqiad'],
         $wmf_peers['codfw'],
         $wmf_peers['esams'],
-        $wmf_peers['ulsfo'],
-        $wmf_peers['pmtpa']
+        $wmf_peers['ulsfo']
     )
 
     # NOTE to the future: we *should* be using regional
@@ -75,7 +73,6 @@ class role::ntp {
         codfw => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
         esams => array_concat($wmf_peers['esams'], $wmf_peers['eqiad']),
         ulsfo => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
-        pmtpa => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
     }
 
     # TODO: generate from $network::constants::all_networks
