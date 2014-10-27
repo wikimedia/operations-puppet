@@ -10,6 +10,6 @@ class ipmi {
         owner  => 'root',
         group  => 'root',
         mode   => '0550',
-        source => 'puppet:///ipmi/ipmi_mgmt',
+        source => 'puppet:///modules/ipmi/ipmi_mgmt',
     }
 }
