@@ -339,6 +339,13 @@ system_aliases:
 	forbid_file
 
 <% if phab_relay == true then -%>
+
+devnull:
+	driver = redirect
+	domains = +phab_domains
+	local_parts = noreply
+	data = :blackhole:
+
 #Mail destined for Phabricator
 phabricator_bound:
         driver = redirect
