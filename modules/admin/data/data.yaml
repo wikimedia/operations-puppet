@@ -242,6 +242,12 @@ groups:
       gid: 737
       description: Allows unpriviledged access to a few analytics testing nodes.
       members: [edenhill]
+  analytics-roots:
+      gid:738
+      description: Full root access to Analytics Cluster nodes.
+      members: [qchris]
+      privs: ['ALL = NOPASSWD: ALL']
+
 
 users:
   rush:
