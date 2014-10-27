@@ -244,7 +244,11 @@ groups:
       description: Full root access to Analytics Cluster nodes.
       members: [qchris]
       privs: ['ALL = NOPASSWD: ALL']
-
+  eventlogging-roots:
+    gid: 739
+    description: Full root on eventlogging servers.
+    members: [qchris]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:

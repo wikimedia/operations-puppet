@@ -2790,8 +2790,12 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
 # processes it, and broadcasts to internal subscribers.
 node 'vanadium.eqiad.wmnet' {
     class { 'admin':
-        groups => ['eventlogging-admins']
+        groups => [
+            'eventlogging-admins',
+            'eventlogging-roots',
+        ],
     }
+
     include standard
     include role::eventlogging
     include role::ipython_notebook
@@ -2803,8 +2807,12 @@ node 'vanadium.eqiad.wmnet' {
 node 'hafnium.wikimedia.org' {
     include standard
     class { 'admin':
-        groups => ['eventlogging-admins']
+        groups => [
+            'eventlogging-admins',
+            'eventlogging-roots',
+        ],
     }
+
     include base::firewall
     include role::eventlogging::graphite
     include role::webperf
