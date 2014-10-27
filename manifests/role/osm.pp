@@ -27,7 +27,7 @@ class role::osm::common {
 class role::osm::master {
     include role::osm::common
     include postgresql::postgis
-    include osm::packages
+    include osm
     include passwords::osm
 
     class { 'postgresql::master':
@@ -141,6 +141,14 @@ class role::osm::master {
             type     => 'host',
             method   => 'md5',
             database => 'wikimaps_atlas',
+    }
+
+    include rsync::server
+    rsync::server::module { 'osm_expired_tiles':
+        path    => '/srv/osm_expire',
+        comment => 'OpenStreetMap expired tile list',
+        uid     => 'postgres',
+        gid     => 'postgres',
     }
 }
 

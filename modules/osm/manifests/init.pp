@@ -1,6 +1,6 @@
 #
 
-class osm::packages($ensure='present') {
+class osm($ensure='present') {
     package { [
         'osm2pgsql',
         'osmosis',
