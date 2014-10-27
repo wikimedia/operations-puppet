@@ -87,18 +87,6 @@ class role::mail::mx {
     }
 }
 
-class role::mail::oldmx {
-    include privateexim::aliases::private
-    include exim4::ganglia
-
-    monitor_service { 'smtp':
-        description   => 'Exim SMTP',
-        check_command => 'check_smtp',
-    }
-
-    # FIXME: the rest is unpuppetized so far
-}
-
 class role::mail::lists {
     include network::constants
 
