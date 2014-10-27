@@ -35,4 +35,6 @@ MAX_LOCKED_MEMORY=unlimited
 #CONF_FILE=/etc/elasticsearch/elasticsearch.yml
 
 # Additional Java OPTS
-#ES_JAVA_OPTS=
+ES_JAVA_OPTS="-XX:HeapDumpPath=/var/lib/elasticsearch "
+ES_JAVA_OPTS="${ES_JAVA_OPTS} -XX:GCTimeLimit=70"
+ES_JAVA_OPTS="${ES_JAVA_OPTS} -XX:GCHeapFreeLimit=10"
