@@ -20,7 +20,7 @@ class icinga::web {
       port  => 80,
     }
 
-    require_packages('php5-gd')
+    require_package('php5-gd')
 
     include passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
