@@ -1,0 +1,5 @@
+# config file for quilt(1)
+QUILT_PATCHES=debian/patches
+QUILT_NO_DIFF_INDEX=1
+QUILT_NO_DIFF_TIMESTAMPS=1
+QUILT_REFRESH_ARGS="-p ab"

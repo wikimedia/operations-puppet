@@ -1,0 +1,57 @@
+#!/bin/bash
+
+PYBAL_CONFIG="/srv/pybal-config/pybal"
+
+
+# Echo the current state of a host.
+_pybal_query() { (
+  cd "$PYBAL_CONFIG"
+  enabled=$(git grep "$1" | grep -Po '(True|False)')
+  case "$enabled" in
+  True) echo "$1 is $(tput setaf 7; tput bold)pooled$(tput sgr0)." ;;
+  False) echo "$1 is $(tput setaf 0; tput bold)depooled$(tput sgr0)." ;;
+  esac
+) }
+
+
+# Verify that a string corresponds to a hostname with a single entry.
+_pybal_validate_host() { (
+  cd "$PYBAL_CONFIG"
+  [ "$(git grep -c "$1" | awk -F: '{s+=$2}END{print s}')" -eq 1 ]
+) }
+
+
+# Pool/depool a host.
+_pybal_set() { (
+  local command="$1" host="$2"
+
+  cd "$PYBAL_CONFIG"
+
+  case "$command" in
+  pool|repool) replace=False with=True ;;
+  depool) replace=True with=False ;;
+  *) echo >&2 "Invalid command."; return 1 ;;
+  esac
+
+  local match=$(git grep -n "$host" | cut -d: -f-2)
+  local line="${match##*:}"
+  local file="${PYBAL_CONFIG}/${match%%:*}"
+
+  sudo sed -i -e "${line}s/${replace}/${with}/" "$file"
+) }
+
+
+pybal() {
+  local command="$1" host="$2"
+
+  _pybal_validate_host "$host" || {
+    echo >&2 "'$1' is ambiguous."
+    return 1
+  }
+
+  case "$command" in
+  pool|repool|depool) _pybal_set "$command" "$host" ;;
+  esac
+
+  _pybal_query "$host"
+}

@@ -82,10 +82,14 @@ set ffs=unix,dos,mac        " Try recognizing dos, unix, and mac line endings.
 """" Backups
 set backupdir=$HOME/.vim/backup,$TMPDIR
 set directory=$HOME/.vim/backup,$TMPDIR
-set undodir=$HOME/.vim/undo,$TMPDIR
 set writebackup
 set backup
-set undofile
+
+if has('persistent_undo')
+  set undofile
+  set undodir=$HOME/.vim/undo,$TMPDIR
+  set undolevels=1000
+endif
 
 """" Menus
 set gdefault                " Regexes are global by default.

@@ -27,6 +27,8 @@ export HISTCONTROL="ignoredups" HISTFILESIZE=2000 HISTSIZE=1000
 export BLOCKSIZE=1024 CLICOLOR=1
 export PS1='\[$BRIGHT\]\[$BLACK\][\[$HOSTCOLOR\]${HOSTNAME}\[$GREY\]:\[$RESET\]\[$GREY\]\w\[$BRIGHT\]\[$BLACK\]]\[$RESET\] $ '
 export PATH="${PATH}:${HOME}/.bin"
+export DEBFULLNAME="Ori Livneh" DEBEMAIL="ori@wikimedia.org"
+export PYTHONSTARTUP="${HOME}/.pythonrc"
 
 
 #
@@ -51,6 +53,10 @@ puppet-run() { sudo puppet agent -tv; }
 puppetd()    { sudo puppt-agent "${@}"; }
 warn()       { printf "$(tput setaf 1)%s$(tput sgr0)\n" "$1" >&2; }
 notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
+repackage()  { sudo dpkg-buildpackage -b -uc; }
+psmem()      { sudo ps_mem.py "${@}"; }
+where()      { find . -iname \*"$*"\* ; }
+
 localcurl()  {
   for var; do [[ $var == */* ]] && url="${var#*//}" || args+=("$var"); done
   curl -H "host: ${url%%/*}" "${args[@]}" "localhost/${url#*/}"
