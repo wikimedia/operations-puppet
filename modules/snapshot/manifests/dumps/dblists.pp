@@ -7,7 +7,11 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
                     'nlwiki', 'plwiki', 'ptwiki', 'ruwiki']
         $bigwikis_dblist = join($bigwikis, "\n")
 
-        $skip_dblist = "${hugewikis_dblist}\n${bigwikis_dblist}"
+        # Broken, DB permissions issues?
+        $excludewikis = ['labswiki']
+        $excludewikis_dblist = join($excludewikis, "\n")
+
+        $skip_dblist = "${hugewikis_dblist}\n${bigwikis_dblist}\n${excludewikis_dblist}"
 
         $skipnone_dblist = ''
 
