@@ -353,9 +353,11 @@ node 'bast1001.wikimedia.org' {
 
 
     include role::bastionhost
-    include nfs::netapp::home::othersite
     include dsh
     include ssh::hostkeys-collect
+    class { 'nfs::netapp::home':
+        mount_site => 'pmtpa',
+    }
 }
 
 node 'bast2001.wikimedia.org' {
