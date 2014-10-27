@@ -51,6 +51,22 @@ class role::analytics::clients {
     }
 }
 
+# == Class role::analytics::password::research
+# Install the researcher MySQL username and password
+# into a file and make it readable by analytics-privatedata-users
+#
+class role::analytics::password::research {
+    include passwords::mysql::research
+
+    mysql::config::client { 'analytics-research':
+        user  => $::passwords::mysql::research::user,
+        pass  => $::passwords::mysql::research::pass,
+        group => 'analytics-privatedata-users',
+        mode  => '0440',
+    }
+}
+
+
 # == Class role::analytics::rsyncd
 # Set up an rsync module at certain paths to
 # allow read only rsync access to analytics generated data.
