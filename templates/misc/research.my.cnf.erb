@@ -1,0 +1,8 @@
+# Note: This file is managed by Puppet.
+
+# To use this file with the MySQL CLI:
+#   mysql --defaults-extra-file=<%= @research_defaults_file%> -h $hostname [...]
+
+[client]
+user=<%= @research_username %>
+password=<%= @research_password %>
