@@ -1,10 +1,14 @@
 :backends:
   - nuyaml
+  - mwyaml
 :nuyaml:
   :datadir: /etc/puppet/hieradata
   :expand_path:
     - common
     - realm
+:mwyaml:
+  :host: https://wikitech.wikimedia.org
+  :cache_ttl: 120
 :private:
   :datadir: /etc/puppet/private/hieradata
 :hierarchy:
