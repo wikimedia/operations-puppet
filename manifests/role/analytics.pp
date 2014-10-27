@@ -51,6 +51,39 @@ class role::analytics::clients {
     }
 }
 
+# == Class role::analytics::password::research
+# Install the researcher MySQL username and password
+# into a file and make it readable by analytics-privatedata-users
+#
+class role::analytics::password::research {
+    include passwords::mysql::research
+
+    # Using ensure_resource here (from stdlib module)
+    # just in case someone else has already ensured this
+    # directory exists.
+    ensure_resource(
+        'file',
+        '/srv/passwords',
+        {
+            'ensure' => 'directory',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0555',
+        },
+    )
+
+    $research_username      = $::passwords::mysql::research::user
+    $research_password      = $::passwords::mysql::research::pass
+    $research_defaults_file = '/srv/passworfds/research.my.cnf'
+    file { $research_defaults_file:
+        content => template('misc/research.my.cnf.erb'),
+        owner   => 'root',
+        group   => 'analytics-privatedata-users',
+        mode    => '0440',
+    }
+}
+
+
 # == Class role::analytics::rsyncd
 # Set up an rsync module at certain paths to
 # allow read only rsync access to analytics generated data.
