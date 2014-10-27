@@ -242,6 +242,11 @@ groups:
       gid: 737
       description: Allows unpriviledged access to a few analytics testing nodes.
       members: [edenhill]
+  eventlogging-roots:
+    gid: 739
+    description: Full root on eventlogging servers.
+    members: [qchris]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
