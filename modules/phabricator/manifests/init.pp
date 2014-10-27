@@ -138,6 +138,10 @@ class phabricator (
     apache::site { 'phabricator':
         content => template('phabricator/phabricator-default.conf.erb'),
     }
+    monitor_service { 'phab-https':
+        description   => 'phabricator.wikimedia.org',
+        check_command => 'check_https_url_for_string!phabricator.wikimedia.org!Maniphest',
+    }
 
     file { $phabdir:
         ensure => directory,
