@@ -73,6 +73,7 @@ define apache::conf(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        notify  => Service['apache2'],
     }
 
     file { "/etc/apache2/${conf_type}-enabled/${conf_file}":
