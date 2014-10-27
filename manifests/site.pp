@@ -359,6 +359,8 @@ node 'bast1001.wikimedia.org' {
         mountpoint => '/srv/home_pmtpa',
         mount_site => 'pmtpa',
     }
+    include role::backup::host
+    backup-set {'home': }
 }
 
 node 'bast2001.wikimedia.org' {
@@ -1336,6 +1338,8 @@ node 'iron.wikimedia.org' {
     include misc::management::ipmi
     include role::access_new_install
 
+    include role::backup::host
+    backup-set {'home': }
 }
 
 
@@ -2630,6 +2634,8 @@ node 'terbium.eqiad.wmnet' {
         ensure => installed,
     }
 
+    include role::backup::host
+    backup-set {'home': }
 }
 
 node /^elastic10(0[1-9]|1[0-9])\.eqiad\.wmnet/ {
@@ -2716,6 +2722,8 @@ node 'tin.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    include role::backup::host
+    backup-set {'home': }
 }
 
 # titanium hosts archiva.wikimedia.org
