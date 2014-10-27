@@ -25,7 +25,7 @@ class rancid {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///rancid/rancid.conf',
+        source  => 'puppet:///modules/rancid/rancid.conf',
     }
 
     file { '/var/lib/rancid/core':
@@ -34,7 +34,7 @@ class rancid {
         group   => 'rancid',
         mode    => '0770',
         recurse => remote,
-        source  => 'puppet:///rancid/core',
+        source  => 'puppet:///modules/rancid/core',
     }
 
     file { '/var/lib/rancid/.cloginrc':
@@ -50,7 +50,7 @@ class rancid {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///rancid/rancid.cron',
+        source  => 'puppet:///modules/rancid/rancid.cron',
     }
 
     file { '/var/log/rancid':
