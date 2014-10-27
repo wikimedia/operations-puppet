@@ -1,5 +1,7 @@
 # https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
-class contacts {
+class misc::outreach::civicrm {
+
+    system::role { 'misc::outreach::civicrm': description => 'contacts.wikimedia.org - Drupal/CiviCRM' }
 
     apache::site { 'contacts.wikimedia.org':
         content => template('contacts/contacts.wikimedia.org.erb'),
