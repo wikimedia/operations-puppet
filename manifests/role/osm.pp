@@ -27,7 +27,7 @@ class role::osm::common {
 class role::osm::master {
     include role::osm::common
     include postgresql::postgis
-    include osm::packages
+    include osm
     include passwords::osm
 
     class { 'postgresql::master':
@@ -141,6 +141,26 @@ class role::osm::master {
             type     => 'host',
             method   => 'md5',
             database => 'wikimaps_atlas',
+    }
+
+    include rsync::server
+    rsync::server::module { 'osm_expired_tiles':
+        path    => '/srv/osm_expire',
+        comment => 'OpenStreetMap expired tile list',
+        uid     => 'postgres',
+        gid     => 'postgres',
+    }
+
+    ferm::service { 'rsync_from_labs':
+        desc   => 'Allow labs machines to get the expired OSM tile list',
+        prio   => '50',
+        proto  => 'tcp',
+        port   => 873,
+        srange => '($EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD)',
+    }
+    nrpe::monitor_service { 'check_rsync_server_running':
+        description => 'Check if rsync server is running',
+        command     => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:4 --ereg-argument-array 'rsync --daemon'",
     }
 }
 

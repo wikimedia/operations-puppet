@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'osm::packages', :type => :class do
+describe 'osm', :type => :class do
     let(:params) { {
         :ensure           => 'present',
         }
@@ -12,7 +12,7 @@ describe 'osm::packages', :type => :class do
     end
 end
 
-describe 'osm::packages', :type => :class do
+describe 'osm', :type => :class do
     let(:params) { {
         :ensure           => 'absent',
         }
