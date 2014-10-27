@@ -86,7 +86,7 @@ class nfs::netapp::common {
     $options = 'bg,intr'
 }
 
-class nfs::netapp::home($ensure='mounted', $mountpoint='/home') {
+class nfs::netapp::home($ensure='mounted', $mountpoint='/home', $mount_site=$::site) {
     include common
 
     file { $mountpoint:
@@ -96,7 +96,7 @@ class nfs::netapp::home($ensure='mounted', $mountpoint='/home') {
     mount { $mountpoint:
         ensure  => $ensure,
         require => File[$mountpoint],
-        device  => "${nfs::netapp::common::device}:/vol/home_${::site}",
+        device  => "${nfs::netapp::common::device}:/vol/home_${mount_site}",
         fstype  => 'nfs',
         options => $nfs::netapp::common::options,
     }
