@@ -69,6 +69,7 @@ class role::phabricator::main {
             'metamta.maniphest.public-create-email'  => "task@${domain}",
             'metamta.reply-handler-domain'           => "${domain}",
             'repository.default-local-path'          => '/srv/phab/repos',
+            'phd.start-taskmasters'                  => 10,
         },
     }
 
