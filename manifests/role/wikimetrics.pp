@@ -49,6 +49,12 @@ class role::wikimetrics {
     $db_host_wikimetrics   = 'localhost'
     $db_name_wikimetrics   = 'wikimetrics'
 
+    # Centralauth Database Creds
+    $db_user_centralauth   = $::passwords::wikimetrics::db_user_labsdb
+    $db_pass_centralauth   = $::passwords::wikimetrics::db_pass_labsdb
+    $db_host_centralauth   = 's1.labsdb'
+    $db_name_centralauth   = 'centralauth_p'
+
     # Use the LabsDB for editor cohort analysis
     $db_user_mediawiki     = $::passwords::wikimetrics::db_user_labsdb
     $db_pass_mediawiki     = $::passwords::wikimetrics::db_pass_labsdb
@@ -195,6 +201,11 @@ class role::wikimetrics {
         db_host_wikimetrics          => $db_host_wikimetrics,
         db_name_wikimetrics          => $db_name_wikimetrics,
         db_pool_wikimetrics          => $db_pool_wikimetrics,
+
+        db_user_centralauth          => $db_user_centralauth,
+        db_pass_centralauth          => $db_pass_centralauth,
+        db_host_centralauth          => $db_host_centralauth,
+        db_name_centralauth          => $db_name_centralauth,
 
         db_user_mediawiki            => $db_user_mediawiki,
         db_pass_mediawiki            => $db_pass_mediawiki,
