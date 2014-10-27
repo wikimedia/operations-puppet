@@ -2648,6 +2648,15 @@ node /^elastic10(0[1-9]|1[0-9])\.eqiad\.wmnet/ {
     }
 }
 
+# Installing OS on these nodes, will include elasticseach roles shortly...
+node /^elastic10(2[0-9]|3[01])\.eqiad\.wmnet/ {
+    # ganglia cluster name.
+    $cluster = 'elasticsearch'
+    class { 'admin': groups => ['elasticsearch-roots'] }
+    include standard
+}
+
+
 node 'lead.wikimedia.org' {
     class { 'admin': groups => ['oit'] }
     include standard-noexim
