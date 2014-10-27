@@ -256,7 +256,13 @@ class phabricator (
         }
     }
 
-    #https://secure.phabricator.com/book/phabricator/article/managing_daemons/
+    class { 'phabricator::phd':
+        settings => $phab_settings,
+        before => Service['phd'],
+    }
+
+    # This needs to become Upstart managed
+    # https://secure.phabricator.com/book/phabricator/article/managing_daemons/
     $phd = "${phabdir}/phabricator/bin/phd"
     service { 'phd':
         ensure   => running,

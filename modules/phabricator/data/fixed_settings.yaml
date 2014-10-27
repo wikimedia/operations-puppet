@@ -154,3 +154,7 @@ translation.override:
 phabricator.uninstalled-applications:
   PhabricatorApplicationPhriction: true
   PhabricatorApplicationDiviner: true
+
+phd.pid-directory: "/var/run/phd/pid"
+phd.log-directory: "/var/log/phd"
+phd.user: 'phd'
