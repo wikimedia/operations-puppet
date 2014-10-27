@@ -356,6 +356,7 @@ node 'bast1001.wikimedia.org' {
     include dsh
     include ssh::hostkeys-collect
     class { 'nfs::netapp::home':
+        mountpoint => '/srv/home_pmtpa',
         mount_site => 'pmtpa',
     }
 }
