@@ -2,7 +2,7 @@
 class contacts {
 
     apache::site { 'contacts.wikimedia.org':
-        content => template('apache/sites/contacts.wikimedia.org.erb'),
+        content => template('contacts/contacts.wikimedia.org.erb'),
     }
 
     ferm::service { 'contacts_http':
