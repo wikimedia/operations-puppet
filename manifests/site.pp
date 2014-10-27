@@ -92,7 +92,11 @@ node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
 # in preperation for replacing udp2log
 node 'analytics1003.eqiad.wmnet' {
     class { 'admin':
-        groups => ['analytics-admins', 'analytics-test-users'],
+        groups => [
+            'analytics-roots',
+            'analytics-admins',
+            'analytics-test-users'
+        ],
     }
     include standard
 
@@ -117,7 +121,10 @@ node 'analytics1009.eqiad.wmnet' {
     # $ganglia_aggregator = true
 
     class { 'admin':
-        groups => ['analytics-admins'],
+        groups => [
+            'analytics-roots',
+            'analytics-admins',
+        ],
     }
     include standard
 
@@ -139,6 +146,7 @@ node 'analytics1004.eqiad.wmnet' {
         groups => [
             'analytics-users',
             'analytics-privatedata-users',
+            'analytics-roots',
             'analytics-admins',
         ],
     }
@@ -160,6 +168,7 @@ node 'analytics1010.eqiad.wmnet' {
         groups => [
             'analytics-users',
             'analytics-privatedata-users',
+            'analytics-roots',
             'analytics-admins',
         ],
     }
@@ -184,7 +193,10 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
         $ganglia_aggregator = true
     }
     class { 'admin':
-        groups => ['analytics-admins'],
+        groups => [
+            'analytics-roots',
+            'analytics-admins',
+        ],
     }
     include standard
 
@@ -211,7 +223,10 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 
     class { 'admin':
-        groups => ['analytics-admins'],
+        groups => [
+            'analytics-roots',
+            'analytics-admins',
+        ],
     }
     include standard
 
@@ -226,7 +241,10 @@ node /analytics102[345].eqiad.wmnet/ {
     $cluster = 'analytics'
 
     class { 'admin':
-        groups => ['analytics-admins'],
+        groups => [
+            'analytics-roots',
+            'analytics-admins',
+        ],
     }
     include standard
 
@@ -241,7 +259,10 @@ node 'analytics1026.eqiad.wmnet' {
     $cluster = 'analytics'
 
     class { 'admin':
-        groups => ['analytics-admins'],
+        groups => [
+            'analytics-roots',
+            'analytics-admins',
+        ],
     }
     include standard
 
@@ -259,7 +280,10 @@ node 'analytics1027.eqiad.wmnet' {
     $cluster = 'analytics'
 
     class { 'admin':
-        groups => ['analytics-admins'],
+        groups => [
+            'analytics-roots',
+            'analytics-admins',
+        ],
     }
     include standard
 
@@ -2505,6 +2529,7 @@ node 'stat1002.eqiad.wmnet' {
             'statistics-privatedata-users',
             'statistics-admins',
             'analytics-privatedata-users',
+            'analytics-roots',
             'analytics-admins',
         ],
     }
