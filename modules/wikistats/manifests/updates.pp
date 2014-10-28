@@ -31,6 +31,7 @@ class wikistats::updates {
                 'an@9',  # Anarchopedias
                 'et@9',  # EdiThis
                 'wf@10', # Wikifur
+                'wy@10', # Wikivoyage
                 'wv@11', # Wikiversities
                 'sc@12', # Scoutwikis
                 'ne@13', # Neoseeker
