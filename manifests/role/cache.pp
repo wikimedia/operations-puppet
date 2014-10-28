@@ -465,7 +465,7 @@ class role::cache {
                     'eqiad' => [ '10.68.17.96' ],  # deployment-mediawiki01
                 },
                 'parsoid' => {
-                    'eqiad' => [ '10.68.16.17' ],  # deployment-parsoid04
+                    'eqiad' => [ '10.68.16.120' ],  # deployment-parsoid05
                 }
             }
         }
