@@ -52,6 +52,8 @@ class hhvm::packages {
 
     package { [
         'google-perftools',
+        'graphviz',
+        'gv',
     ]:
         ensure => present,
     }
