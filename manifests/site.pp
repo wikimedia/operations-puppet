@@ -2632,7 +2632,7 @@ node 'terbium.eqiad.wmnet' {
 
 }
 
-node /^elastic10(0[1-9]|1[0-9]|2[0])\.eqiad\.wmnet/ {
+node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
     # ganglia cluster name.
     $cluster = 'elasticsearch'
     if $::hostname =~ /^elastic10(0[17]|13)/ {
@@ -2648,15 +2648,6 @@ node /^elastic10(0[1-9]|1[0-9]|2[0])\.eqiad\.wmnet/ {
         realserver_ips => '10.2.2.30',
     }
 }
-
-# Installing OS on these nodes, will include elasticseach roles shortly...
-node /^elastic10(2[1-9]|3[01])\.eqiad\.wmnet/ {
-    # ganglia cluster name.
-    $cluster = 'elasticsearch'
-    class { 'admin': groups => ['elasticsearch-roots'] }
-    include standard
-}
-
 
 node 'lead.wikimedia.org' {
     class { 'admin': groups => ['oit'] }
