@@ -9,13 +9,13 @@ groups:
   ops:
     gid: 700
     description: include everywhere ops folks
-    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, catrope,
+    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner,
               dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling, ori]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
     description: RT 5934
-    members: [gwicke]
+    members: [gwicke, catrope]
     privs: ['ALL = (parsoid) NOPASSWD: ALL']
   parsoid-admin:
     gid: 702
@@ -42,7 +42,7 @@ groups:
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn,
       nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
-      tgr, ssmith, bsimmers, ejegg, twentyafterfour, legoktm]
+      tgr, ssmith, bsimmers, ejegg, twentyafterfour, legoktm, catrope]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
@@ -180,12 +180,12 @@ groups:
   mathoid-roots:
     gid: 729
     description: root rights for mathoid
-    members: [gwicke]
+    members: [gwicke, catrope]
     privs: ['ALL = (mathoid) NOPASSWD: ALL']
   mathoid-admin:
     gid: 730
     description: group of mathoid admins
-    members: [gwicke]
+    members: [gwicke, catrope]
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
@@ -228,12 +228,12 @@ groups:
   citoid-roots:
     gid: 735
     description: root rights for citoid
-    members: [gwicke]
+    members: [gwicke, catrope]
     privs: ['ALL = (citoid) NOPASSWD: ALL']
   citoid-admin:
     gid: 736
     description: group of citoid admins
-    members: [gwicke]
+    members: [gwicke, catrope]
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid restart',
