@@ -1,0 +1,9 @@
+Code-Review+1: Aaron Schulz <aschulz@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Nemo bis <federicoleva@tiscali.it>
+Code-Review+2: Springle <springle@wikimedia.org>
+Submitted-by: Springle <springle@wikimedia.org>
+Submitted-at: Tue, 28 Oct 2014 04:15:09 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/168933
+Project: operations/puppet
+Branch: refs/heads/production
