@@ -1,0 +1,10 @@
+Code-Review+1: Catrope <roan.kattouw@gmail.com>
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Code-Review+1: Andrew Bogott <abogott@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Rush <rush@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Tue, 28 Oct 2014 20:57:16 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/169566
+Project: operations/puppet
+Branch: refs/heads/production
