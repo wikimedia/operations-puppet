@@ -284,7 +284,9 @@ class role::nova::controller {
         class { 'role::puppet::server::labs': }
     }
 
-    include openstack::adminscripts
+    class { 'openstack::adminscripts':
+        novaconfig => $novaconfig
+    }
 }
 
 class role::nova::api {

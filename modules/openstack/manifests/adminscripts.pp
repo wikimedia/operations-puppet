@@ -1,6 +1,9 @@
-class openstack::adminscripts {
+class openstack::adminscripts(
+        $novaconfig) {
     include passwords::openstack::nova
     $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+    $nova_controller_hostname = $novaconfig["controller_hostname"]
+    $nova_region = $::site
 
     # Handy script to set up environment for commandline nova magic
     file { '/root/novaenv.sh':
