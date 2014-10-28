@@ -86,6 +86,8 @@ class role::phabricator::main {
     include passwords::phabricator
     $emailbotcert = $passwords::phabricator::emailbot_cert
 
+    include phabricator::monitoring
+
     class { '::phabricator::mailrelay':
         default                   => { security => 'default'},
         address_routing           => { testproj => 'demoproject'},
