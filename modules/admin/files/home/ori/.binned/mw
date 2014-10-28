@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
-
-list( $__script, $__wiki ) = array_slice( $argv, 1 );
+@list( $__script, $__wiki ) = array_slice( $argv, 1 );
 if ( strpos( $__script, '.php' ) === false ) {
 	list( $__wiki, $__script ) = array( $__script, $__wiki );
 }
