@@ -22,7 +22,7 @@ class firewall::builder {
 
 }
 
-class firewall { 
+class firewall {
     # for each inbound ACL create an exported file on the main server
 
     # This is the definition called from all service manifests, e.g.
@@ -30,9 +30,9 @@ class firewall {
 
     define open_port(
         $port,
-        $hostname  = $::hostname,
-        $ip_address= $::ipaddress,
-        $protocol  = 'tcp',
+        $hostname   = $::hostname,
+        $ip_address = $::ipaddress,
+        $protocol   = 'tcp',
     ) {
         @@exported_acl_rule { $title:
             hostname   => $hostname,
