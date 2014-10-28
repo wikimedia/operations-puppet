@@ -47,6 +47,9 @@ class lvs::monitor {
         'misc-web-lb.eqiad.wikimedia.org':
             ip_address => $ip['misc_web']['eqiad']['misc_web'],
             uri => 'varnishcheck!/';
+        'misc-web-lb.eqiad.wikimedia.org':
+            ip_address => $ip['misc_web']['eqiad']['misc_web'],
+            uri => 'phabricator.wikimedia.org!/';
     }
 
     lvs::monitor_service6_http_https {
