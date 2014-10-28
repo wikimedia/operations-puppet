@@ -4,7 +4,7 @@ class misc::outreach::civicrm {
     system::role { 'misc::outreach::civicrm': description => 'contacts.wikimedia.org - Drupal/CiviCRM' }
 
     apache::site { 'contacts.wikimedia.org':
-        content => template('contacts/contacts.wikimedia.org.erb'),
+        content => template('apache/sites/contacts.wikimedia.org.erb'),
     }
 
     ferm::service { 'contacts_http':
