@@ -56,6 +56,7 @@ notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
 repackage()  { sudo dpkg-buildpackage -b -uc; }
 psmem()      { sudo ps_mem.py "${@}"; }
 where()      { find . -iname \*"$*"\* ; }
+reqs()       { curl -s 127.0.0.1/server-status | grep -Po '\d+(?= requests currently being processed)'; }
 
 localcurl()  {
   for var; do [[ $var == */* ]] && url="${var#*//}" || args+=("$var"); done
