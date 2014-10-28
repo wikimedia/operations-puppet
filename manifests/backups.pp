@@ -116,17 +116,17 @@ define backup::weeklyschedule($pool) {
 }
 
 class backup::mysql {
-    file { "/usr/local/sbin/snaprotate.pl":
-        owner  => root,
-        group  => root,
-        mode   => 0755,
-        source => "puppet:///files/backup/snaprotate.pl";
+    file { '/usr/local/sbin/snaprotate.pl':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///files/backup/snaprotate.pl',
     }
 
-    cron { snaprotate:
-        command => "/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 20G -c 1",
-        user    => root,
+    cron { 'snaprotate':
+        command => '/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 20G -c 1',
+        user    => 'root',
         hour    => 1,
-        minute  => 0;
+        minute  => 0,
     }
 }
