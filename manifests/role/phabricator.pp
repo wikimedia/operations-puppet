@@ -25,7 +25,7 @@ class role::phabricator::legalpad {
             'mysql.host'                         => 'm3-master.eqiad.wmnet',
             'storage.default-namespace'          => 'phlegal',
             'phpmailer.smtp-host'                => 'polonium.wikimedia.org',
-            'metamta.default-address'            => 'noreply@legalpad.wikimedia.org',
+            'metamta.default-address'            => 'no-reply@legalpad.wikimedia.org',
             'metamta.domain'                     => 'legalpad.wikimedia.org',
         },
     }
@@ -63,7 +63,7 @@ class role::phabricator::main {
             'mysql.pass'                             => $::mysql_apppass,
             'mysql.host'                             => 'm3-master.eqiad.wmnet',
             'phpmailer.smtp-host'                    => 'polonium.wikimedia.org',
-            'metamta.default-address'                => "noreply@${domain}",
+            'metamta.default-address'                => "no-reply@${domain}",
             'metamta.domain'                         => "${domain}",
             'metamta.maniphest.reply-handler-domain' => "${domain}",
             'metamta.maniphest.public-create-email'  => "task@${domain}",
