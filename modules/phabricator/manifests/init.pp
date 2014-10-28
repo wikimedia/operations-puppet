@@ -82,6 +82,7 @@ class phabricator (
 ) {
 
     include phabricator::migration
+    include phabricator::monitoring
 
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)
