@@ -166,8 +166,10 @@ $private_tables = [
 # Route list for mail coming from MediaWiki mailer
 $wikimail_smarthost = $::realm ? {
     'production' => [ 'wiki-mail-eqiad.wikimedia.org' ],
-    # FIXME: find some SMTP servers for labs
-    'labs'       => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
+    'labs'       => $::instanceproject ? {
+        'deployment-prep' => [ 'deployment-mx.wmflabs.org' ],
+        default           => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
+    }
 }
 # Generic, default servers (order matters!)
 $mail_smarthost = $::realm ? {
