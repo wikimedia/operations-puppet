@@ -412,8 +412,8 @@ rewrite	nostalgia.wikimedia.org	//nostalgia.wikipedia.org
 
 rewrite	mail.wikipedia.org	https://lists.wikimedia.org
 
-rewrite	cs.wikimedia.org	http://www.wikimedia.cz
-rewrite	cz.wikimedia.org	http://www.wikimedia.cz
+funnel	cs.wikimedia.org	http://www.wikimedia.cz
+funnel	cz.wikimedia.org	http://www.wikimedia.cz
 
 ###############
 ## projects
