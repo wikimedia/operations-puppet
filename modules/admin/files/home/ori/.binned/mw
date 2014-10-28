@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+list( $__script, $__wiki ) = array_slice( $argv, 1 );
+if ( strpos( $__script, '.php' ) === false ) {
+	list( $__wiki, $__script ) = array( $__script, $__wiki );
+}
+
+require_once '/srv/mediawiki/multiversion/MWVersion.php';
+require_once getMediaWiki( 'maintenance/commandLine.inc', $__wiki ?: 'enwiki' );
+require_once $__script ?: $IP . '/maintenance/eval.php';
+
+unset( $__script );
+unset( $__wiki );

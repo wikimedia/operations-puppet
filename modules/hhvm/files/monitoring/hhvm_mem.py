@@ -45,7 +45,7 @@ def metric_init(params):
     url = params.get('url', 'http://localhost:9002/memory.json')
     stats = MemoryStats(url)
     return [{
-        'name': key,
+        'name': str(key),
         'value_type': 'uint',
         'format': '%u',
         'units': 'count' if 'count' in key.lower() else 'bytes',
