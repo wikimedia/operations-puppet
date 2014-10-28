@@ -22,7 +22,6 @@ class lvs::monitor {
     lvs::monitor_service_custom { "search-pool2.svc.eqiad.wmnet": ip_address => "10.2.2.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
     lvs::monitor_service_custom { "search-pool3.svc.eqiad.wmnet": ip_address => "10.2.2.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
     lvs::monitor_service_custom { "search-pool4.svc.eqiad.wmnet": ip_address => "10.2.2.14", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-    lvs::monitor_service_custom { "search-pool5.svc.eqiad.wmnet": ip_address => "10.2.2.16", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
     lvs::monitor_service_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 
     # INTERNAL CODFW

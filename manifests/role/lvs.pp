@@ -44,7 +44,6 @@ class role::lvs::balancer {
             $sip['search_pool2'][$::site],
             $sip['search_pool3'][$::site],
             $sip['search_pool4'][$::site],
-            $sip['search_pool5'][$::site],
             $sip['search_prefix'][$::site],
             $sip['swift'][$::site],
             $sip['parsoid'][$::site],

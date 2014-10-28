@@ -203,11 +203,6 @@ class role::lucene {
                 search_pool => 'search_pool4',
             }
         }
-        class pool5 {
-            class { 'role::lucene::front_end::common':
-                search_pool => 'search_pool5',
-            }
-        }
         # Search frontend for the beta cluster
         class poolbeta {
             if $::realm == 'labs' {

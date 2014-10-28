@@ -2381,16 +2381,6 @@ node /^search101[56]\.eqiad\.wmnet/ {
     include role::lucene::front_end::pool4
 }
 
-node /^search10(19|20)\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
-    class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
-    }
-    include role::lucene::front_end::pool5
-}
-
 node /^search101[78]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
