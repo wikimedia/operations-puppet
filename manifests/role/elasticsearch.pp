@@ -85,8 +85,15 @@ class role::elasticsearch::config {
             /^elastic100[0-6]/          => 'A3',
             /^elastic10(0[7-9]|1[0-2])/ => 'C5',
             /^elastic101[3-9]/          => 'D3',
-            default                     => fail("Don't know rack for $::host"),
+            /^elastic10(1[3-9]|2[0-2])/ => 'D3',
+            /^elastic10(2[3-9]|3[01])/  => 'D4',
+            default                     => 'Unknown',
         }
+
+        if ($rack == 'Unknown') {
+             fail("Don't know rack for $::host")
+        }
+
         $row                  = regsubst($rack, '^(.).$', '\1' )
         # We've temporarily turned off awareness because we believe it puts
         # unbalanced load on the cluster.
