@@ -493,7 +493,9 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     }
 
     # monitor disk statistics
-    ganglia::plugin::python { 'diskstat': }
+    if !defined(Ganglia::Plugin::Python['diskstat']) {
+        ganglia::plugin::python { 'diskstat': }
+    }
 
 
     # Include icinga alerts if production realm.
@@ -553,7 +555,9 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
     }
 
     # monitor disk statistics
-    ganglia::plugin::python { 'diskstat': }
+    if !defined(Ganglia::Plugin::Python['diskstat']) {
+        ganglia::plugin::python { 'diskstat': }
+    }
 
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
