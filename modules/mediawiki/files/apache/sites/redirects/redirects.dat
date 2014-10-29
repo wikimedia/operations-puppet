@@ -109,6 +109,8 @@ rewrite	arbcom.en.wikipedia.org	https://arbcom-en.wikipedia.org
 rewrite	arbcom.fi.wikipedia.org	https://arbcom-fi.wikipedia.org
 rewrite	arbcom.nl.wikipedia.org	https://arbcom-nl.wikipedia.org
 
+rewrite chapcom.wikimedia.org	https://affcom.wikimedia.org
+
 rewrite	noboard.chapters.wikimedia.org	//noboard-chapters.wikimedia.org
 
 rewrite	wg.en.wikipedia.org	//wg-en.wikipedia.org
