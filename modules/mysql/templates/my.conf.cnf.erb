@@ -1,5 +1,6 @@
-### MANAGED BY PUPPET ###
-<% settings.sort.each do |section, content|      -%>
+# Note:  This file is managed by Puppet.
+
+<% @settings.sort.each do |section, config|      -%>
 [<%= section %>]
 <%   content.sort.each do |key, values|          -%>
 <%     [values].flatten.sort.each do |value|     -%>
