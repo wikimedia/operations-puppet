@@ -37,7 +37,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 
     class { "misc::udp2log": monitor => $monitor }
     include misc::udp2log::utilities,
-        misc::udp2log::iptables
+        misc::udp2log::firewall
 
     $error_processor_host = $::realm ? {
         production => 'vanadium.eqiad.wmnet',
