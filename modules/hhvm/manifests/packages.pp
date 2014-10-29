@@ -51,6 +51,7 @@ class hhvm::packages {
     ## Profiling and debugging tools
 
     package { [
+        'dpkg-dev',
         'google-perftools',
         'graphviz',
         'gv',
