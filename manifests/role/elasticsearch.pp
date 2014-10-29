@@ -67,11 +67,6 @@ class role::elasticsearch::config {
             'eqiad' => '224.2.2.5',
         }
         $master_eligible = $::hostname ? {
-            # Current masters as of 2014-10-28
-            'elastic1002' => true,
-            'elastic1007' => true,
-            'elastic1014' => true,
-            # New masters as of 2014-10-28
             'elastic1001' => true,
             'elastic1008' => true,
             'elastic1013' => true,
