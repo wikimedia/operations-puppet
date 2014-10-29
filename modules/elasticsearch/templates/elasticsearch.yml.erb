@@ -553,10 +553,10 @@ script.groovy.sandbox.receiver_whitelist:
  - org.apache.lucene.util.automaton.RegExp
  - org.apache.lucene.util.automaton.CharacterRunAutomaton
 
+<% if @statsd_host -%>
 ##
 # Statsd plugin configuration
 ##
-<% if @statsd_host -%>
 metrics.statsd.host: <%= @statsd_host %>
 <% end -%>
 
