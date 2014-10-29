@@ -1,0 +1,7 @@
+<%= args = []
+    args.push('--symlinks') if @include_symlinks
+    args.push('--all') if @include_all
+    args.concat(@protect.map { |p| ['--protect', p] })
+    args.push(@age, @path)
+    args.map! { |arg| arg.gsub(/([^A-Za-z0-9_\-.,:\/@\n])/n, "\\\\\\1").gsub(/\n/, "'\n'") }
+    args.join(' ').strip -%>
