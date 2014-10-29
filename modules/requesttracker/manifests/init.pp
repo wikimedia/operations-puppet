@@ -20,6 +20,7 @@ class requesttracker (
     include requesttracker::config
     include requesttracker::forms
     include requesttracker::plugins
+    include requesttracker::aliases
 
     class { 'requesttracker::apache':
         apache_site => $apache_site,
