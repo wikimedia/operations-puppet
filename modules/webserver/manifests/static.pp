@@ -2,7 +2,6 @@
 # with default config, which serves /var/www
 class webserver::static {
     include webserver::sysctl_settings
-    include firewall
 
     #TODO: declare this class as incompatible with the other webserver classes.
 
@@ -27,11 +26,13 @@ class webserver::static {
     }
 
     # Firewall
-    firewall::open_port { "http-${::hostname}":
-        port => 80,
+    ferm::service { "http-${::hostname}":
+        proto => 'tcp',
+        port  => 80,
     }
 
-    firewall::open_port { "https-${::hostname}":
-        port => 443,
+    ferm::service { "https-${::hostname}":
+        proto => 'tcp',
+        port  => 443,
     }
 }
