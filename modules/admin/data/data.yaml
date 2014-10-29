@@ -198,7 +198,7 @@ groups:
     members: []
   analytics-privatedata-users:
     gid: 731
-    description: Gives access to the Analytics (Hadoop) cluster as well as prviate data within.
+    description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
         This will grant shell access on Hadoop client nodes (stat1002) and on
         Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
         Those files are group readable by the analytics-privatedata-users group.
