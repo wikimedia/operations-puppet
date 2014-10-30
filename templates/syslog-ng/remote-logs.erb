@@ -4,7 +4,7 @@
 #####################################################################
 
 <%= @basepath %>/* {
-	rotate 7
+	rotate 30
 	dateext
 	olddir <%= @archivepath %>
 	daily
@@ -12,7 +12,7 @@
 	missingok
 	notifempty
 	postrotate
-		/usr/sbin/invoke-rc.d syslog-ng reload >/dev/null
+		/usr/sbin/service syslog-ng reload >/dev/null
 	endscript
 }
 
