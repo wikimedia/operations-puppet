@@ -80,8 +80,10 @@ class mediawiki::hhvm {
     # against subtle memory leaks. A graceful restart once a day is
     # nicer than gradual memory exhaustion followed by a visit from
     # the OOM killer.
-
+    # This is disabled at the moment while we understand:
+    #  a) If it's needed b) how stable hhvm is.
     cron { 'periodic_hhvm_restart':
+        ensure  => absent,
         command => '/bin/ps -C hhvm -o etime= | /bin/grep -q - && /sbin/initctl restart hhvm',
         hour    => fqdn_rand(23, 'periodic_hhvm_restart'),
     }
