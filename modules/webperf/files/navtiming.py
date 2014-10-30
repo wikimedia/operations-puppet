@@ -82,6 +82,7 @@ def handle_navigation_timing(meta):
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
+    https = 'https' if event.get('isHttps') else 'http'
     runtime = event.get('runtime')
 
     # bits_cache = meta.get('recvFrom', '').split('.')[0]
@@ -97,6 +98,7 @@ def handle_navigation_timing(meta):
             if runtime is not None:
                 # PHP5/HHVM-qualified metrics
                 dispatch_stat(runtime, metric, site, auth, value)
+                dispatch_stat(runtime, metric, site, https, value)
                 dispatch_stat(runtime, metric, site, 'overall', value)
                 dispatch_stat(runtime, metric, 'overall', value)
 
