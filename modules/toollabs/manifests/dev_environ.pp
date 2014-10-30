@@ -18,6 +18,11 @@
 #
 class toollabs::dev_environ {
 
+    package { 'libmariadbclient-dev':
+        ensure  => absent,
+        before  => Package['libmysqlclient-dev'],
+    }
+
     package { [
         'apt-file',
         'autoconf',
@@ -39,7 +44,11 @@ class toollabs::dev_environ {
         'libfreetype6-dev',
         'libgdal1-dev',                # Bug 56995
         'libgeoip-dev',                # Bug 62649
-        'libmariadbclient-dev',
+        # Previously we installed libmariadbclient-dev, but that causes
+        # dependency issues on Trusty.  libmariadbclient-dev formerly
+        # provided libmysqlclient-dev, but no longer.
+        # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759309
+        'libmysqlclient-dev',
         'libpng12-dev',
         'libproj-dev',                 # Bug 56995
         'libprotobuf-dev',             # Bug 56995
