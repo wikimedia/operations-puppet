@@ -73,4 +73,16 @@ class mediawiki::hhvm {
         require => Package['hhvm'],
         before  => Service['hhvm'],
     }
+
+
+    # Once a day, check the uptime of HHVM. If HHVM has been running
+    # for more than a day, restart it. We do this as a form of insurance
+    # against subtle memory leaks. A graceful restart once a day is
+    # nicer than gradual memory exhaustion followed by a visit from
+    # the OOM killer.
+
+    cron { 'periodic_hhvm_restart':
+        command => '/bin/ps -C hhvm -o etime= | /bin/grep -q - && /sbin/initctl restart hhvm',
+        hour    => fqdn_rand(23, 'periodic_hhvm_restart'),
+    }
 }
