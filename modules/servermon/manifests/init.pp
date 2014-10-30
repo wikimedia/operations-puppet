@@ -96,7 +96,7 @@ class servermon(
     cron { 'servermon_make_updates':
         command => "${directory}/servermon/manage.py make_updates --pythonpath=${directory}",
         user    => "www-data",
-        hour    => 0,
-        minute  => 0,
+        hour    => '*/4',
+        minute  => '0',
     }
 }
