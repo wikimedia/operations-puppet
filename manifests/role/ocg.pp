@@ -55,6 +55,29 @@ class role::ocg {
     class { 'lvs::realserver': realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['ocg'][$::site] }
 }
 
+class role::ocg::beta {
+    system::role { 'role::ocg::beta':
+        description => 'offline content generator for MediaWiki Collection extension (on beta)'
+    }
+    include role::ocg::production
+    sudo_user { 'jenkins-deploy': privileges => [
+        # Need to allow jenkins-deploy to reload ocg
+        'ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
+        'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
+        'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
+        'ALL = (root) NOPASSWD: /usr/sbin/service ocg reload'
+    ] }
+    # Allow ssh access from the Jenkins master to the server where cxserver is
+    # running
+    include contint::firewall::labs
+    # Instance got to be a Jenkins slave so we can update OCG whenever a
+    # change is made on mediawiki/services/ocg repository
+    include role::ci::slave::labs::common
+    # Also need the slave scripts for multi-git.sh
+    include contint::slave-scripts
+}
+
+# Unused?
 class role::ocg::test {
     system::role { 'ocg-test': description => 'offline content generator for MediaWiki Collection extension (single host testing)' }
 
