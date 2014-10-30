@@ -692,13 +692,18 @@ define ganglia::view(
     $default_size = 'large',
     $conf_dir     = "${ganglia::web::ganglia_confdir}/conf",
     $template     = 'ganglia/ganglia_view.json.erb',
+    $description  = undef,
     $ensure       = 'present'
 )
 {
     require ganglia::web
 
     # require ganglia::web
-    $view_name = $name
+    if $description {
+        $view_name = $name
+    } else {
+        $view_name = $description
+    }
     file { "${conf_dir}/view_${name}.json":
         ensure  => $ensure,
         content => template($template),
