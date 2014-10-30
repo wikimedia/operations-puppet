@@ -96,6 +96,9 @@ class contint::packages {
         ensure => present,
     }
 
+    # For Doxygen based documentations
+    require_package('graphviz')
+
     if ! defined ( Package['python-requests'] ) {
         package { 'python-requests':
             ensure => present,
