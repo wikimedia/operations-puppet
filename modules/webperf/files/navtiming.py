@@ -82,6 +82,7 @@ def handle_navigation_timing(meta):
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
+    https = 'https' if event.get('isHttps') else 'http'
     runtime = event.get('runtime')
 
     # bits_cache = meta.get('recvFrom', '').split('.')[0]
@@ -90,6 +91,7 @@ def handle_navigation_timing(meta):
     for metric in metrics:
         value = event.get(metric, 0)
         if value > 0 and value < 60000:
+            dispatch_stat(metric, site, https, value)
             dispatch_stat(metric, site, auth, value)
             dispatch_stat(metric, site, 'overall', value)
             dispatch_stat(metric, 'overall', value)
