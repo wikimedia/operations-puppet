@@ -206,7 +206,7 @@ groups:
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
-              ezachte, mforns]
+              ezachte, mforns, reedy]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
