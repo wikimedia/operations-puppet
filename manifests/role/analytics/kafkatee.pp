@@ -236,7 +236,9 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
     }
 
     service { 'webstats-collector':
-        ensure     => 'running',
+        # 2014-10-30 turning of webstatscollector here while we
+        # troubleshoot some kafkatee missing lines. - otto
+        ensure     => 'stopped',
         hasstatus  => 'false',
         hasrestart => 'true',
         require    => Package['webstatscollector'],
@@ -244,6 +246,9 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
 
     # Gzip pagecounts files hourly.
     cron { 'webstats-dumps-gzip':
+        # 2014-10-30 turning of webstatscollector here while we
+        # troubleshoot some kafkatee missing lines. - otto
+        ensure => 'absent',
         command => "/bin/gzip ${webstats_dumps_directory}/pagecounts-????????-?????? 2> /dev/null",
         minute  => 2,
         user    => 'nobody',
@@ -252,6 +257,9 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
 
     # Delete webstats dumps that are older than 10 days daily.
     cron { 'webstats-dumps-delete':
+        # 2014-10-30 turning of webstatscollector here while we
+        # troubleshoot some kafkatee missing lines. - otto
+        ensure => 'absent',
         command => "/usr/bin/find ${webstats_dumps_directory} -maxdepth 1 -type f -mtime +10 -delete",
         minute  => 28,
         hour    => 1,
@@ -261,6 +269,9 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
 
     # kafkatee outputs into webstats filter and forwards to webstats collector via log2udp
     ::kafkatee::output { 'webstatscollector':
+        # 2014-10-30 turning of webstatscollector here while we
+        # troubleshoot some kafkatee missing lines. - otto
+        ensure => 'absent',
         destination => "/usr/local/bin/filter | /usr/bin/log2udp -h ${collector_host} -p ${collector_port}",
         type        => 'pipe',
         require     => Service['webstats-collector'],
