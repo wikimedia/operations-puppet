@@ -41,7 +41,7 @@ maniphest.priorities:
 # DO NOT CHANGE THESE VALUES.  Must be updated to match in security extensions.
 maniphest.custom-field-definitions:
   external_reference:
-    name: ext_ref
+    name: Reference
     type: text
     caption: Reference
     search: true
