@@ -100,8 +100,9 @@ class misc::monitoring::views::dns {
     $rec_dns_host_regex = '^(chromium|hydrogen).wikimedia.org$'
 
     ganglia::view { 'authoritative_dns':
-        ensure => 'present',
-        graphs => [
+        ensure      => 'present',
+        description => 'DNS: Authoritative',
+        graphs      => [
             {
             'title'         => 'DNS UDP Requests',
             'host_regex'    => $auth_dns_host_regex,
@@ -142,8 +143,9 @@ class misc::monitoring::views::dns {
     }
 
     ganglia::view { 'recursive_dns':
-        ensure => 'present',
-        graphs => [
+        ensure      => 'present',
+        description => 'DNS: Recursive',
+        graphs      => [
             {
             'title'         => 'DNS Outgoing queries',
             'host_regex'    => $rec_dns_host_regex,
