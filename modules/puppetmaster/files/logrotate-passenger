@@ -5,10 +5,12 @@
 
 # Rotate puppetmaster passenger (apache) logs
 /var/log/apache2/*.log {
+	daily
 	missingok
 	rotate 7
-	daily
 	compress
+	delaycompress
+	sharedscripts
 	postrotate
 		/usr/sbin/service apache2 graceful
 	endscript
