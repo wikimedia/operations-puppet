@@ -523,10 +523,12 @@ class ganglia::web {
                 require => Package['ganglia-webfrontend'],
             }
             $is_trusty = true
+            $tmpfs_ensure = 'absent'
         }
         else {
             $ganglia_webdir = '/srv/org/wikimedia/ganglia-web-latest'
             $ganglia_confdir = '/srv/org/wikimedia/ganglia-web-conf'
+            $tmpfs_ensure = 'present'
         }
 
         $ganglia_ssl_cert = '/etc/ssl/certs/ganglia.wikimedia.org.pem'
@@ -542,21 +544,21 @@ class ganglia::web {
     }
 
     file { '/usr/local/bin/restore-gmetad-rrds':
-        ensure => present,
+        ensure => $tmpfs_ensure,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///files/ganglia/restore-gmetad-rrds',
     }
     file { '/usr/local/bin/save-gmetad-rrds':
-        ensure => present,
+        ensure => $tmpfs_ensure,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///files/ganglia/save-gmetad-rrds',
     }
     file { '/etc/init.d/gmetad':
-        ensure => present,
+        ensure => $tmpfs_ensure,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
@@ -569,7 +571,7 @@ class ganglia::web {
         group  => 'root',
     }
     file { '/etc/rc.local':
-        ensure => present,
+        ensure => $tmpfs_ensure,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
@@ -578,7 +580,7 @@ class ganglia::web {
 
     # back up rrds every half hour
     cron { 'save-rrds':
-        ensure  => present,
+        ensure  => $tmpfs_ensure,
         command => '/usr/local/bin/save-gmetad-rrds',
         user    => 'root',
         minute  => [ 7, 37 ],
@@ -595,8 +597,13 @@ class ganglia::web {
         group  => 'root',
     }
 
+    # Avoiding mounting as tmpfs on trusty
+    case $tmpfs_ensure {
+        'present': { $mount_tmpfs = 'mounted' }
+        default: { $mount_tmpfs = 'absent' }
+    }
     mount { $ganglia_tmp_mountpoint:
-        ensure  => mounted,
+        ensure  => $mount_tmpfs,
         require => File[$ganglia_tmp_mountpoint],
         device  => 'tmpfs',
         fstype  => 'tmpfs',
@@ -612,7 +619,6 @@ class ganglia::web {
         owner   => 'nobody',
         group   => 'root',
     }
-
 }
 
 # == Class ganglia::logtailer
