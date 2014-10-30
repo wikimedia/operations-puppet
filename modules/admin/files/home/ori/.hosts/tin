@@ -2,11 +2,18 @@
 
 . /etc/profile.d/mediawiki.sh
 
-looksgood () {
-    ( git remote -v | grep -q mediawiki-config ) && { git merge origin/master; return; }
-    dir=$(pwd)
-    branch="${dir#/srv/mediawiki-staging/php-}"
-    git rebase origin/wmf/$branch
+looksgood() {
+    ( git remote -v | grep -q mediawiki-config ) && {
+        git merge origin/master;
+        return
+    };
+    dir=$(pwd);
+    branch="origin/wmf/${dir#/srv/mediawiki-staging/php-}";
+    while read -r extension; do
+        echo "$(tput setaf 4)Updating $(tput setaf 3; tput bold)${extension}$(tput sgr0)"
+        git submodule update --init --recursive "$extension"
+    done < <(git log -p "HEAD..${branch}" | grep -Po '(?<= b/)extensions/.*' | sort | uniq)
+    git rebase "$branch"
 }
 
 fetch() {
