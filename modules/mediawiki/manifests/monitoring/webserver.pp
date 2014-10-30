@@ -7,6 +7,8 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
     } else {
         $endpoints = {}
 
+        require mediawiki::hhvm
+
         diamond::collector { 'hhvmHealth':
             ensure   => $ensure,
             source   => 'puppet:///modules/mediawiki/monitoring/collectors/hhvm.py',
@@ -15,19 +17,17 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
 
         monitor_graphite_threshold { 'hhvm_queue_size':
             description     => 'HHVM queue size',
-            metric          => "servers.${::hostname}.hhvm_healthCollector.queued.value",
+            metric          => "servers.${::hostname}.hhvmHealthCollector.queued.value",
             warning         => 10,
             critical        => 80,
             nagios_critical => false
         }
 
-        $hhvm_max_threads = $::processorcount * 2
-
         monitor_graphite_threshold { 'hhvm_load':
             description     => 'HHVM busy threads',
-            metric          => "servers.${::hostname}.hhvm_healthCollector.load.value",
-            warning         => $hhvm_max_threads * 0.8,
-            critical        => $hhvm_max_threads,
+            metric          => "servers.${::hostname}.hhvmHealthCollector.load.value",
+            warning         => $::mediawiki::hhvm::max_threads*0.6,
+            critical        => $::mediawiki::hhvm::max_threads * 0.9,
             nagios_critical => false
         }
 
