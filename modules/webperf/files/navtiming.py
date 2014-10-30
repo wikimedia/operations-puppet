@@ -14,7 +14,7 @@ import zmq
 
 metrics = ('connecting', 'sending', 'waiting', 'redirecting', 'receiving',
            'rendering', 'loading', 'dnsLookup', 'pageSpeed',
-           'totalPageLoadTime', 'mediaWikiLoadComplete')
+           'totalPageLoadTime', 'mediaWikiLoadComplete', 'sslNegotiation')
 prefix = 'frontend.navtiming'
 
 
