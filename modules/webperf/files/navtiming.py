@@ -79,6 +79,9 @@ def handle_navigation_timing(meta):
             event['loadEventEnd'] - event['domInteractive'])
     if 'loadEventEnd' in event:
         event['totalPageLoadTime'] = event['loadEventEnd']
+    if 'connectEnd' in event and 'secureConnectionStart' in event:
+        event['sslNegotiation'] = (
+            event['connectEnd'] - event['secureConnectionStart'])
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
@@ -91,10 +94,12 @@ def handle_navigation_timing(meta):
     for metric in metrics:
         value = event.get(metric, 0)
         if value > 0 and value < 60000:
-            dispatch_stat(metric, site, https, value)
             dispatch_stat(metric, site, auth, value)
             dispatch_stat(metric, site, 'overall', value)
             dispatch_stat(metric, 'overall', value)
+
+            if metric == 'connecting':
+                dispatch_stat(metric, site, https, value)
 
             if runtime is not None:
                 # PHP5/HHVM-qualified metrics
