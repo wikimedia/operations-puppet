@@ -119,7 +119,7 @@ def get_config(repo):
     # checkout_submodules determines whether or not this repo should
     # recursively fetch and checkout submodules.
     config.setdefault('checkout_submodules', False)
-    # If gitfat_enabled is true, git-fat will be initiliazed and
+    # If gitfat_enabled is true, git-fat will be initialized and
     # git-fat pull will be run on each target as part of the checkout.
     config.setdefault('gitfat_enabled', False)
     # dependencies are a set of repositories that should be fetched
@@ -233,7 +233,7 @@ def deployment_server_init():
             if status != 0:
                 ret_status = 1
                 continue
-            # git clone does ignores umask and does explicit mkdir with 755
+            # git clone does ignore umask and does explicit mkdir with 755
             __salt__['file.set_mode'](config['location'], 2775)
             # Set the repo name in the repo's config
             cmd = 'git config deploy.repo-name %s' % repo
@@ -322,7 +322,7 @@ def _update_gitmodules(config, location, shadow=False):
                 submodules.append(keyval[1].strip())
         f.close()
         if shadow:
-            # Tranform .gitmodules based on reference. Point the submodules
+            # Transform .gitmodules based on reference. Point the submodules
             # to the local git repository this repo references.
             reference_dir = gitmodules_dir.replace(location,
                                                    config['location'])
