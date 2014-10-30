@@ -450,6 +450,8 @@ class ganglia::web {
     include ::apache::mod::ssl
     include ::apache::mod::rewrite
 
+    ganglia::plugin::python { 'diskstat': }
+
     package { [ 'php5-gd',
                 'php5-mysql',
                 'rrdtool',
