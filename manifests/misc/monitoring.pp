@@ -93,6 +93,7 @@ class misc::monitoring::views {
     }
 
     include misc::monitoring::views::dns
+    include misc::monitoring::views::swift
 }
 
 class misc::monitoring::views::dns {
@@ -191,6 +192,291 @@ class misc::monitoring::views::dns {
         ]
     }
 }
+
+class misc::monitoring::views::swift {
+    $backend_host_regex_codfw = '^ms-be2[0-9]+'
+    $backend_host_regex_eqiad = '^ms-be1[0-9]+'
+    $frontend_host_regex_codfw = '^ms-fe2[0-9]+'
+    $frontend_host_regex_eqiad = '^ms-fe1[0-9]+'
+
+    ganglia::view { 'swiftFront_codfw':
+        ensure      => 'present',
+        description => 'Swift Frontend Storage codfw',
+        graphs      => [
+            {
+            'title'         => 'Swift queries per second',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'  => 'swift_[A-Z]+_hits$',
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift queries by status per second',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_[0-9]+_hits$', 'swift_other_hits$' ],
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift percentage queries by status code',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_[0-9]+_hits_%25$', 'swift_other_hits_%25$' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift GETs per second',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> 'swift_GET_[^_]+_hits',
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift average query response time - 200s',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_GET_200_avg', 'swift_PUT_201_avg', 'swift_DELETE_204_avg' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 50th percentile query response time - 200s',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_GET_200_50th', 'swift_PUT_201_50th', 'swift_DELETE_204_50th' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 90th percentile query response time - 200s',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_GET_200_90th', 'swift_PUT_201_90th', 'swift_DELETE_204_90th' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift max percentile query response time - 200s',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_GET_200_max', 'swift_PUT_201_max', 'swift_DELETE_204_max' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift average query response time - 404s',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> 'swift_.*_404_avg',
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 90th percentile query response time - 404s',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> 'swift_.*_404_90th',
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 50th percentile query response time - 404s',
+            'host_regex'    => $frontend_host_regex_codfw,
+            'metric_regex'	=> 'swift_.*_404_50th',
+            'type'          => 'line',
+            },
+        ]
+    }
+    ganglia::view { 'swiftFront_eqiad':
+        ensure      => 'present',
+        description => 'Swift Frontend Storage Eqiad',
+        graphs      => [
+            {
+            'title'         => 'Swift queries per second',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'  => 'swift_[A-Z]+_hits$',
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift queries by status per second',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_[0-9]+_hits$', 'swift_other_hits$' ],
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift percentage queries by status code',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_[0-9]+_hits_%25$', 'swift_other_hits_%25$' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift GETs per second',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> 'swift_GET_[^_]+_hits',
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift average query response time - 200s',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_GET_200_avg', 'swift_PUT_201_avg', 'swift_DELETE_204_avg' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 50th percentile query response time - 200s',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_GET_200_50th', 'swift_PUT_201_50th', 'swift_DELETE_204_50th' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 90th percentile query response time - 200s',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_GET_200_90th', 'swift_PUT_201_90th', 'swift_DELETE_204_90th' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift max percentile query response time - 200s',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_GET_200_max', 'swift_PUT_201_max', 'swift_DELETE_204_max' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift average query response time - 404s',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> 'swift_.*_404_avg',
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 90th percentile query response time - 404s',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> 'swift_.*_404_90th',
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 50th percentile query response time - 404s',
+            'host_regex'    => $frontend_host_regex_eqiad,
+            'metric_regex'	=> 'swift_.*_404_50th',
+            'type'          => 'line',
+            },
+        ]
+    }
+    ganglia::view { 'swiftBack_codfw':
+        ensure      => 'present',
+        description => 'Swift Backend Storage codfw',
+        graphs      => [
+            {
+            'title'         => 'Swift queries per second',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'  => 'swift_[A-Z]+_hits$',
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift queries by status per second',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_[0-9]+_hits$', 'swift_other_hits$' ],
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift percentage queries by status code',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_[0-9]+_hits__', 'swift_other_hits__' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift GETs per second',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> 'swift_GET_[^_]+_hits',
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift average query response time - 200s',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_GET_200_avg', 'swift_PUT_201_avg', 'swift_DELETE_204_avg' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 90th percentile query response time - 200s',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_GET_200_90th', 'swift_PUT_201_90th', 'swift_DELETE_204_90th' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift max percentile query response time - 200s',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> [ 'swift_GET_200_max', 'swift_PUT_201_max', 'swift_DELETE_204_max' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift average query response time - 404s',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> 'swift_.*_404_avg',
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 90th percentile query response time - 404s',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> 'swift_.*_404_90th',
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift max percentile query response time - 404s',
+            'host_regex'    => $backend_host_regex_codfw,
+            'metric_regex'	=> 'swift_.*_404_max',
+            'type'          => 'line',
+            },
+        ]
+    }
+    ganglia::view { 'swiftBack_eqiad':
+        ensure      => 'present',
+        description => 'Swift Backend Storage Eqiad',
+        graphs      => [
+            {
+            'title'         => 'Swift queries per second',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'  => 'swift_[A-Z]+_hits$',
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift queries by status per second',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_[0-9]+_hits$', 'swift_other_hits$' ],
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift percentage queries by status code',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_[0-9]+_hits__', 'swift_other_hits__' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift GETs per second',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> 'swift_GET_[^_]+_hits',
+            'type'          => 'stack',
+            },
+            {
+            'title'			=> 'Swift average query response time - 200s',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_GET_200_avg', 'swift_PUT_201_avg', 'swift_DELETE_204_avg' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 90th percentile query response time - 200s',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_GET_200_90th', 'swift_PUT_201_90th', 'swift_DELETE_204_90th' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift max percentile query response time - 200s',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> [ 'swift_GET_200_max', 'swift_PUT_201_max', 'swift_DELETE_204_max' ],
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift average query response time - 404s',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> 'swift_.*_404_avg',
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift 90th percentile query response time - 404s',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> 'swift_.*_404_90th',
+            'type'          => 'line',
+            },
+            {
+            'title'			=> 'Swift max percentile query response time - 404s',
+            'host_regex'    => $backend_host_regex_eqiad,
+            'metric_regex'	=> 'swift_.*_404_max',
+            'type'          => 'line',
+            },
+        ]
+    }
+}
+
 
 # == Define misc:monitoring::view::udp2log
 # Installs a ganglia::view for a group of nodes
