@@ -295,7 +295,7 @@ class misc::statistics::public_datasets {
 
     # rsync from stat1002:/srv/aggregate-datasets to $working_path/aggregate-datasets
     cron { 'rsync aggregate datasets from stat1002':
-        command => "/usr/bin/rsync -rt --delete stat1002.wikimedia.org::srv/aggregate-datasets/* ${working_path}/aggregate-datasets/",
+        command => "/usr/bin/rsync -rt --delete stat1002.eqiad.wmnet::srv/aggregate-datasets/* ${working_path}/aggregate-datasets/",
         require => File["${working_path}/aggregate-datasets"],
         user    => 'root',
         minute  => '*/30',
