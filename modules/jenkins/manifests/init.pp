@@ -9,10 +9,8 @@ class jenkins {
         ensure => present,
     }
 
-    # Graphiz is needed by the job dependency graph plugin
-    package { 'graphviz':
-        ensure => present,
-    }
+    # Graphiz on Jenkins master for the 'job dependency graph' plugin
+    require_package('graphviz')
 
     # Jenkins should write everything group writable so admins can interact with
     # files easily, hence we need it to run with umask 0002.
