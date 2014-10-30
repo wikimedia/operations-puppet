@@ -1363,18 +1363,18 @@ node 'labsdb1003.eqiad.wmnet' {
 
 node 'labsdb1004.eqiad.wmnet' {
     include admin
-    $osm_slave = 'labsdb1005.eqiad.wmnet'
-    $osm_slave_v4 = '10.64.37.9'
+    $postgres_slave = 'labsdb1005.eqiad.wmnet'
+    $postgres_slave_v4 = '10.64.37.9'
 
-    include role::osm::master
+    include role::postgres::master
     # include role::labs::db::slave
 }
 
 node 'labsdb1005.eqiad.wmnet' {
     include admin
-    $osm_master = 'labsdb1004.eqiad.wmnet'
+    $postgres_master = 'labsdb1004.eqiad.wmnet'
 
-    include role::osm::slave
+    include role::postgres::slave
     # include role::labs::db::master
 }
 
