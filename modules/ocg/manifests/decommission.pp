@@ -12,8 +12,10 @@ class ocg::decommission (
     service { 'ocg':
         ensure   => stopped,
         provider => upstart,
-        before   => File['/etc/init/ocg.conf'],
-        before   => File[$temp_dir],
+        before   => File[
+            '/etc/init/ocg.conf',
+            $temp_dir,
+        ],
     }
 
     file { [
