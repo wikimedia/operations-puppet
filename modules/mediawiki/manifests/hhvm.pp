@@ -5,6 +5,7 @@
 class mediawiki::hhvm {
     requires_ubuntu('>= trusty')
 
+    $max_threads = floor(to_bytes($::memorytotal) / to_bytes('120M'))
     include ::hhvm::admin
     include ::hhvm::monitoring
     include ::mediawiki::users
@@ -23,7 +24,7 @@ class mediawiki::hhvm {
                     error_document500     => '/srv/mediawiki/hhvm-fatal-error.php',
                     error_document404     => '/srv/mediawiki/w/404.php',
                     request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
-                    thread_count          => floor(to_bytes($::memorytotal) / to_bytes('120M')),
+                    thread_count          => $max_threads,
                 },
             },
         },
