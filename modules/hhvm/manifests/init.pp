@@ -200,17 +200,18 @@ class hhvm(
         before => Service['hhvm'],
     }
 
-    file { '/usr/local/sbin/hhvm-watch-mem':
-        ensure => absent,
-    }
-
     # Install HHVM's source files to /usr/local/src/hhvm.
 
-    exec { 'install_hhvm_source_files':
-        command  => template('hhvm/install_hhvm_source_files.sh.erb'),
-        creates  => '/usr/local/src/hhvm',
-        provider => 'shell',
-        require  => Package['dpkg-dev'],
+    file { '/usr/local/sbin/install-pkg-src':
+        source => 'puppet:///modules/hhvm/install-pkg-src',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    exec { '/usr/local/sbin/install-pkg-src hhvm':
+        unless  => '/usr/local/sbin/install-pkg-src --dry-run hhvm | grep -q up-to-date',
+        require => Package['dpkg-dev', 'hhvm'],
     }
 
 
