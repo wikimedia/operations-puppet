@@ -34,9 +34,9 @@ define admin::group(
 
     if !empty($privs) {
         admin::sudo { $name:
-            ensure     => $ensure,
-            privs      => $privs,
-            is_group   => true,
+            ensure   => $ensure,
+            privs    => $privs,
+            is_group => true,
         }
     }
 }
