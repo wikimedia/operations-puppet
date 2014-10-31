@@ -1,0 +1,8 @@
+WSGIScriptAlias /horizon /usr/share/openstack-dashboard/openstack_dashboard/wsgi/django.wsgi
+WSGIDaemonProcess horizon user=horizon group=horizon processes=3 threads=10
+WSGIProcessGroup horizon
+Alias /static /usr/share/openstack-dashboard/openstack_dashboard/static/
+<Directory /usr/share/openstack-dashboard/openstack_dashboard/wsgi>
+  Order allow,deny
+  Allow from all
+</Directory>
