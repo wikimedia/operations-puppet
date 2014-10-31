@@ -55,9 +55,9 @@ class archiva::gitfat {
     # The git fat store will be available at:
     #   hostname::archiva/git-fat
     rsync::server::module { 'archiva':
-        path        => $archiva_path,
-        read_only   => 'yes',
-        uid         => 'nobody',
-        gid         => 'nogroup',
+        path      => $archiva_path,
+        read_only => 'yes',
+        uid       => 'nobody',
+        gid       => 'nogroup',
     }
 }
