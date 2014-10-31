@@ -50,7 +50,7 @@ class bacula::director(
     exec { 'bacula_cp_private_key':
         command => "/bin/cp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
  /var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem",
-        unless => "/usr/bin/cmp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
+        unless  => "/usr/bin/cmp /var/lib/puppet/ssl/private_keys/${::fqdn}.pem \
  /var/lib/puppet/ssl/private_keys/bacula-${::fqdn}.pem",
     }
 
