@@ -25,10 +25,10 @@ class authdns(
     # install the package, so that the daemon starts up with a well-known
     # config that leaves no window where it'd refuse to answer properly
     file { '/etc/gdnsd':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
     # to be replaced with config + include statement, post-1.9.0
     file { '/etc/gdnsd/config-head':
@@ -40,10 +40,10 @@ class authdns(
         require => File['/etc/gdnsd'],
     }
     file { '/etc/gdnsd/zones':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     $workingdir = '/srv/authdns/git' # export to template
