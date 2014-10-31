@@ -3,26 +3,22 @@
     AllowEncodedSlashes On
     RewriteEngine On
     <IfDefine HHVM>
-        ProxyPass       /wiki                fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php
+        ProxyPass       /wiki                fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php retry=0
         ProxyPass       /w/extensions        !
-        ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/$1
+        ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/$1 retry=0
         RewriteRule     ^/$                  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php    [P]
         RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/robots.php   [P]
         RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/favicon.php  [P]
     </IfDefine>
 
 
-    # Make robots.txt editable via Mediawiki:robots.txt
-    RewriteRule ^/robots.txt$ /w/robots.php [L]
-
     # Primary wiki redirector:
     Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
-    RewriteRule ^/$ /w/index.php
-
-    # Configurable favicon
-    RewriteRule ^/favicon\.ico$ /w/favicon.php [L]
+    Include "sites-enabled/public-wiki-rewrites.incl"
 
     # Math compatibility mode
+    RewriteCond %{ENV:RW_PROTO} != ""
+    RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.org/math/$1 [R=301]
     RewriteRule ^/math/(.*) https://upload.wikimedia.org/math/$1 [R=301]
 
     <Directory "/srv/mediawiki/docroot/wikimedia.org/w">
