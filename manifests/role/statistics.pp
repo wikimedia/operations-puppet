@@ -75,6 +75,9 @@ class role::statistics::private inherits role::statistics {
     include misc::statistics::rsync::jobs::webrequest
     include misc::statistics::rsync::jobs::eventlogging
 
+    # kafkatee is useful here for adhoc processing of kafkadata
+    require_package('kafkatee')
+
     # backup eventlogging logs
     backup::set { 'a-eventlogging' : }
 }
