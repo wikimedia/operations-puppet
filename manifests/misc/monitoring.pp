@@ -101,7 +101,7 @@ class misc::monitoring::views::dns {
 
     ganglia::view { 'authoritative_dns':
         ensure      => 'present',
-        description => 'DNS: Authoritative',
+        description => 'DNS Authoritative',
         graphs      => [
             {
             'title'         => 'DNS UDP Requests',
@@ -144,7 +144,7 @@ class misc::monitoring::views::dns {
 
     ganglia::view { 'recursive_dns':
         ensure      => 'present',
-        description => 'DNS: Recursive',
+        description => 'DNS Recursive',
         graphs      => [
             {
             'title'         => 'DNS Outgoing queries',
