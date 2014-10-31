@@ -4,14 +4,14 @@ class phabricator::phd($settings = {}) {
 
     file { $settings['phd.pid-directory']:
         ensure => 'directory',
-        owner   => $settings['phd.user'],
-        group   => 'phd',
+        owner  => $settings['phd.user'],
+        group  => 'phd',
     }
 
     file { $settings['phd.log-directory']:
         ensure => 'directory',
-        owner   => $settings['phd.user'],
-        group   => 'phd',
+        owner  => $settings['phd.user'],
+        group  => 'phd',
     }
 
     group { 'phd':
