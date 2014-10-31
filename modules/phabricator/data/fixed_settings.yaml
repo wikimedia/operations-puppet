@@ -109,6 +109,9 @@ user.custom-field-definitions:
     type: text
     search: true
 
+# make optional the 'real name' user profile field
+user.require-real-name: false
+
 # Allow the "view" policy setting of public to be available
 policy.allow-public: true
 
