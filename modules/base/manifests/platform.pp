@@ -32,7 +32,7 @@ start on stopped rc RUNLEVEL=[2345]
 stop on runlevel [!2345]
 
 respawn
-exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
+exec /sbin/getty -L ${lom_serial_port} ${lom_serial_speed} vt102
 "
 
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '10.04') >= 0 {

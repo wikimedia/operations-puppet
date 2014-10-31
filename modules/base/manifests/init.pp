@@ -21,15 +21,15 @@ class base::grub {
     # (the installer does this too, but not for Lucid->Precise upgrades)
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
         exec { 'grub1 iosched deadline':
-            path    => "/bin:/usr/bin",
+            path    => '/bin:/usr/bin',
             command => "sed -i '/^# kopt=/s/\$/ elevator=deadline/' /boot/grub/menu.lst",
             unless  => "grep -q '^# kopt=.*elevator=deadline' /boot/grub/menu.lst",
-            onlyif  => "test -f /boot/grub/menu.lst",
-            notify  => Exec["update-grub"],
+            onlyif  => 'test -f /boot/grub/menu.lst',
+            notify  => Exec['update-grub'],
         }
 
         exec { 'grub2 iosched deadline':
-            path    => "/bin:/usr/bin",
+            path    => '/bin:/usr/bin',
             command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\\"\$/ elevator=deadline\\\"/' /etc/default/grub",
             unless  => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=deadline' /etc/default/grub",
             onlyif  => 'test -f /etc/default/grub',
@@ -156,9 +156,9 @@ class base::firewall($ensure = 'present') {
     }
 
     ferm::conf { 'main':
-        ensure  => $ensure,
-        prio    => '00',
-        source  => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
+        ensure => $ensure,
+        prio   => '00',
+        source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
 
     ferm::rule { 'bastion-ssh':
@@ -213,8 +213,8 @@ class base {
     }
 
     class { 'base::puppet':
-        server => $::realm ? {
-            'labs' => $::site ? {
+        server   => $::realm ? {
+            'labs'  => $::site ? {
                 'eqiad' => 'virt1000.wikimedia.org',
             },
             default => 'puppet',
@@ -244,8 +244,8 @@ class base {
     # as the monitor host's contact group.
     class { 'base::monitoring::host':
         contact_group => $::nagios_contact_group ? {
-            undef     => 'admins',
-            default   => $::nagios_contact_group,
+            undef   => 'admins',
+            default => $::nagios_contact_group,
         }
     }
 
