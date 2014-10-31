@@ -1,6 +1,6 @@
 class puppetmaster::ssl(
             $server_name='puppet',
-            $ca='false') {
+            $ca=false) {
     $ssldir = '/var/lib/puppet/server/ssl'
 
     # TODO: Hack to make class pass tests
@@ -33,7 +33,7 @@ class puppetmaster::ssl(
             ensure => directory;
     }
 
-    if $ca != 'false' {
+    if $ca != false {
         exec { 'generate hostcert':
             require => File["${ssldir}/certs"],
             command => "/usr/bin/puppet cert generate ${server_name}",
