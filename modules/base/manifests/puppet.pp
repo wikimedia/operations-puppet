@@ -81,7 +81,7 @@ class base::puppet($server='puppet', $certname=undef) {
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
     exec { 'compile puppet.conf':
         path        => '/usr/bin:/bin',
-        command     => "cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf",
+        command     => 'cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf',
         refreshonly => true,
     }
 
@@ -109,10 +109,10 @@ class base::puppet($server='puppet', $certname=undef) {
     # Report the last puppet run in MOTD
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '9.10') >= 0 {
         file { '/etc/update-motd.d/97-last-puppet-run':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            source  => 'puppet:///modules/base/puppet/97-last-puppet-run',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/base/puppet/97-last-puppet-run',
         }
     }
 }
