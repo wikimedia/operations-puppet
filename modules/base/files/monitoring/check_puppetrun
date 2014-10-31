@@ -94,15 +94,23 @@ else
     failcount = :nostatefile
 end
 
+def time_ago(s)
+  units = {86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second'}
+  units.sort.reverse.each do |len, unit|
+    return "#{s / len} #{unit}#{'s' if s / len > 1}" if s > len
+  end
+end
+
 time_since_last_run = Time.now.to_i - lastrun
+human_time_since_last_run = time_ago(time_since_last_run)
 
 if enabled_only && enabled == false
-    puts "OK: Puppet is currently disabled, not alerting. Last run #{time_since_last_run} seconds ago with #{failcount} failures"
+    puts "OK: Puppet is currently disabled, not alerting. Last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 0
 end
 
 if not enabled
-    puts "WARNING: Puppet is currently disabled, last run #{time_since_last_run} seconds ago with #{failcount} failures"
+    puts "WARNING: Puppet is currently disabled, last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 1
 end
 
@@ -122,14 +130,14 @@ if failcount > 0
 end
 
 if time_since_last_run >= crit
-    puts "CRITICAL: Puppet last ran #{time_since_last_run} seconds ago, expected < #{crit}"
+    puts "CRITICAL: Puppet last ran #{human_time_since_last_run} ago"
     exit 2
 end
 
 if time_since_last_run >= warn
-    puts "WARNING: Puppet last ran #{time_since_last_run} seconds ago, expected < #{warn}"
+    puts "WARNING: Puppet last ran #{human_time_since_last_run} ago"
     exit 1
 end
 
-puts "OK: Puppet is currently enabled, last run #{time_since_last_run} seconds ago with #{failcount} failures"
+puts "OK: Puppet is currently enabled, last run #{human_time_since_last_run} ago with #{failcount} failures"
 exit 0
