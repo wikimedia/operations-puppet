@@ -77,10 +77,10 @@ define bacula::client::mysql-bpipe(
         }
 
         file { $xbstream_dir:
-            ensure  => directory,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0440',
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0440',
         }
     }
 }
