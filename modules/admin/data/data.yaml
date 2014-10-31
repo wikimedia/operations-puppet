@@ -10,7 +10,7 @@ groups:
     gid: 700
     description: include everywhere ops folks
     members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner,
-              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling, ori]
+              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling, ori, yuvipanda]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
@@ -53,7 +53,7 @@ groups:
   bastiononly:
     gid: 707
     description: these folks are allowed bastion _only_ access
-    members: [howief, jforrester, jmorgan, maryana, msyed, yuvipanda,
+    members: [howief, jforrester, jmorgan, maryana, msyed,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, edenhill, jkatz]
   cassandra-roots:
@@ -77,7 +77,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [brion, yuvipanda, dbrant, bsitzmann]
+    members: [brion, dbrant, bsitzmann]
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
@@ -147,7 +147,7 @@ groups:
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
-    members: [ezachte, qchris, yuvipanda]
+    members: [ezachte, qchris]
   statistics-privatedata-users:
     gid: 725
     description: Have access to so that they can do analysis on webrequest logs
@@ -161,7 +161,7 @@ groups:
     members: [dartar, halfak, howief, ironholds, jdlrobson, jmorgan,
               maryana, mattflaschen, mhurd, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
-              yuvipanda, dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
+              dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz]
   statistics-admins:
     posix_name: stats
@@ -203,7 +203,7 @@ groups:
         Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
         Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, erik, milimetric, yurik, maryana,
-              halfak, dr0ptp4kt, qchris, tnegrin, ironholds, yuvipanda,
+              halfak, dr0ptp4kt, qchris, tnegrin, ironholds,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns]
