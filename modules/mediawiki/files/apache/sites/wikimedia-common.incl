@@ -12,15 +12,9 @@
     </IfDefine>
 
 
-    # Make robots.txt editable via Mediawiki:robots.txt
-    RewriteRule ^/robots.txt$ /w/robots.php [L]
-
     # Primary wiki redirector:
     Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
-    RewriteRule ^/$ /w/index.php
-
-    # Configurable favicon
-    RewriteRule ^/favicon\.ico$ /w/favicon.php [L]
+    Include "sites-enabled/public-wiki-rewrites.incl"
 
     # Math compatibility mode
     RewriteRule ^/math/(.*) https://upload.wikimedia.org/math/$1 [R=301]

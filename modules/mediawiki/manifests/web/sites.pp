@@ -14,6 +14,12 @@ class mediawiki::web::sites {
         before => Service['apache2'],
     }
 
+    file { '/etc/apache2/sites-enabled/public-wiki-rewrites.incl':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/sites/public-wiki-rewrites.incl',
+        before => Service['apache2'],
+    }
+
     # Now the sites, in strict sequence
     apache::site { 'nonexistent':
         source   => 'puppet:///modules/mediawiki/apache/sites/nonexistent.conf',
