@@ -708,9 +708,9 @@ define ganglia::view(
 
     # require ganglia::web
     if $description {
-        $view_name = $name
-    } else {
         $view_name = $description
+    } else {
+        $view_name = $name
     }
     file { "${conf_dir}/view_${name}.json":
         ensure  => $ensure,
