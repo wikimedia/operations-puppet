@@ -2,8 +2,8 @@
 define backup::weeklyschedule($pool) {
     bacula::director::schedule { "Weekly-${name}":
         runs => [
-            { 'level' => 'Full',
-              'at'    => "${name} at 02:05",
+            { 'level'            => 'Full',
+              'at'  => "${name} at 02:05",
             },
                 ],
     }
