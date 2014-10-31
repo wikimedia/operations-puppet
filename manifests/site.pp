@@ -2225,12 +2225,7 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
 # Trusty app server / HHVM staging
 node 'osmium.eqiad.wmnet' {
     include standard
-    include mediawiki
-
     class {'::admin': groups => ['deployment']}
-
-    $cluster = 'api_appserver'
-    include role::mediawiki::appserver::api
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
