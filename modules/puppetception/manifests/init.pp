@@ -58,20 +58,20 @@ class puppetception(
     }
 
     git::clone { $install_dir:
+        ensure    => latest,
         directory => $install_dir,
         origin    => $git_url,
-        ensure    => latest,
         require   => File[$install_dir],
         branch    => $git_branch,
         owner     => $owner,
         group     => $group,
     }
 
-    file { "/sbin/puppetception":
-        content  => template('puppetception/puppetception.erb'),
-        ensure => present,
-        mode   => '0700',
-        owner  => 'root',
-        group  => 'root',
+    file { '/sbin/puppetception':
+        ensure  => present,
+        content => template('puppetception/puppetception.erb'),
+        mode    => '0700',
+        owner   => 'root',
+        group   => 'root',
     }
 }
