@@ -26,7 +26,16 @@ class role::analytics::hive::config {
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
-    $auxpath         = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-0.12.0-cdh5.0.2.jar'
+    $hcatalog_jar = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-0.12.0-cdh5.0.2.jar'
+
+    # If refinery is included on this node, then add
+    # refinery-hive.jar to the auxpath as well
+    if defined(Class['role::analytics::refinery']) {
+        $auxpath = "${hcatalog_jar},${::role::analytics::refinery::path}/artifacts/refinery-hive.jar"
+    }
+    else {
+        $auxpath = $hcatalog_jar
+    }
 
     # Hive uses Zookeeper for table locking.
     $zookeeper_hosts = $role::analytics::zookeeper::config::hosts_array
