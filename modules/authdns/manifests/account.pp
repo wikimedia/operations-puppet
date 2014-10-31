@@ -30,22 +30,22 @@ class authdns::account {
         require => [ User[$user], Group[$group] ],
     }
     file { "${home}/.ssh/id_rsa":
-        ensure  => 'present',
-        owner   => $user,
-        group   => $group,
-        mode    => '0400',
-        source  => 'puppet:///private/authdns/id_rsa',
+        ensure => 'present',
+        owner  => $user,
+        group  => $group,
+        mode   => '0400',
+        source => 'puppet:///private/authdns/id_rsa',
     }
     file { "${home}/.ssh/id_rsa.pub":
-        ensure  => 'present',
-        owner   => $user,
-        group   => $group,
-        mode    => '0400',
-        source  => 'puppet:///private/authdns/id_rsa.pub',
+        ensure => 'present',
+        owner  => $user,
+        group  => $group,
+        mode   => '0400',
+        source => 'puppet:///private/authdns/id_rsa.pub',
     }
     file { "${home}/.ssh/authorized_keys":
-        ensure  => 'link',
-        target  => 'id_rsa.pub',
+        ensure => 'link',
+        target => 'id_rsa.pub',
     }
 
     file { "${home}/git-shell-commands":
