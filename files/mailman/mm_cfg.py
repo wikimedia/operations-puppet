@@ -123,3 +123,6 @@ REMOVE_DKIM_HEADERS = Yes
 
 # use https for mailman archive links instead of the default http
 PUBLIC_ARCHIVE_URL = 'https://%(hostname)s/pipermail/%(listname)s/'
+
+# allow listadmins to delete mailing lists
+OWNERS_CAN_DELETE_THEIR_OWN_LISTS = yes
