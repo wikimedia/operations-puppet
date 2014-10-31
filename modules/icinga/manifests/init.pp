@@ -51,34 +51,34 @@ class icinga {
     }
 
     file { '/etc/icinga/icinga.cfg':
-        source => 'puppet:///modules/icinga/icinga.cfg',
-        owner  => 'icinga',
-        group  => 'icinga',
-        mode   => '0644',
+        source  => 'puppet:///modules/icinga/icinga.cfg',
+        owner   => 'icinga',
+        group   => 'icinga',
+        mode    => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
 
     file { '/etc/icinga/nsca_frack.cfg':
-        source => 'puppet:///private/nagios/nsca_frack.cfg',
-        owner  => 'icinga',
-        group  => 'icinga',
-        mode   => '0644',
+        source  => 'puppet:///private/nagios/nsca_frack.cfg',
+        owner   => 'icinga',
+        group   => 'icinga',
+        mode    => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
 
     file { '/etc/icinga/contactgroups.cfg':
-        source => 'puppet:///modules/icinga/contactgroups.cfg',
-        owner  => 'icinga',
-        group  => 'icinga',
-        mode   => '0644',
+        source  => 'puppet:///modules/icinga/contactgroups.cfg',
+        owner   => 'icinga',
+        group   => 'icinga',
+        mode    => '0644',
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
 
     class { 'nagios_common::contacts':
-        source => 'puppet:///private/nagios/contacts.cfg',
+        source  => 'puppet:///private/nagios/contacts.cfg',
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
@@ -108,9 +108,9 @@ class icinga {
     # Setup tmpfs for use by icinga
     file { '/var/icinga-tmpfs':
         ensure => directory,
-        owner => 'icinga',
-        group => 'icinga',
-        mode => '0755',
+        owner  => 'icinga',
+        group  => 'icinga',
+        mode   => '0755',
     }
 
     mount { '/var/icinga-tmpfs':
