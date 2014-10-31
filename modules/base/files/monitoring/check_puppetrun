@@ -96,9 +96,13 @@ end
 
 def time_ago(s)
   units = {86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second'}
-  units.sort.reverse.each do |len, unit|
-    return "#{s / len} #{unit}#{'s' if s / len > 1}" if s > len
+  if s == 0
+    return "0 seconds"
   end
+  units.sort.reverse.each do |len, unit|
+    return "#{s / len} #{unit}#{'s' if s / len > 1}" if s >= len
+  end
+  "Indeterminate amount of time (see time_ago)"
 end
 
 time_since_last_run = Time.now.to_i - lastrun
