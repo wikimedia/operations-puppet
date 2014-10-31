@@ -259,7 +259,7 @@ class phabricator (
 
     class { 'phabricator::phd':
         settings => $phab_settings,
-        before => Service['phd'],
+        before   => Service['phd'],
     }
 
     # This needs to become Upstart managed
@@ -276,20 +276,3 @@ class phabricator (
     }
 }
 
-define phabricator::extension($rootdir='/') {
-    file { "${rootdir}/phabricator/src/extensions/${name}":
-        ensure => link,
-        target => "${rootdir}/extensions/${name}",
-    }
-}
-
-define phabricator::redirector($mysql_user, $mysql_pass, $mysql_host, $rootdir='/') {
-    file { "${rootdir}/phabricator/support/preamble.php":
-        source => 'puppet:///modules/phabricator/preamble.php',
-        require => File["${rootdir}/phabricator/support/redirect_config.json"]
-    }
-
-    file { "${rootdir}/phabricator/support/redirect_config.json":
-        content => template('phabricator/redirect_config.json.erb')
-    }
-}
