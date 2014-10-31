@@ -53,10 +53,22 @@ define apache::conf(
     include ::apache
 
     validate_ensure($ensure)
-    if $priority  !~ /^\d?\d$/                 { fail('"priority" must be between 0 - 99')             }
-    if !($conf_type in $::apache::conf_types)  { fail("invalid conf_type '$conf_type'")                }
-    if $source == undef and $content == undef  { fail('you must provide either "source" or "content"') }
-    if $source != undef and $content != undef  { fail('"source" and "content" are mutually exclusive') }
+
+    if $priority  !~ /^\d?\d$/ {
+        fail('"priority" must be between 0 - 99')
+    }
+
+    if !($conf_type in $::apache::conf_types)  {
+        fail("invalid conf_type '${conf_type}'")
+    }
+
+    if $source == undef and $content == undef  {
+        fail('you must provide either "source" or "content"')
+    }
+
+    if $source != undef and $content != undef  {
+        fail('"source" and "content" are mutually exclusive')
+    }
 
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
     $file_ext    = $conf_type ? { env => 'sh', default => 'conf' }
@@ -77,9 +89,9 @@ define apache::conf(
     }
 
     file { "/etc/apache2/${conf_type}-enabled/${conf_file}":
-        ensure  => ensure_link($ensure),
-        target  => "/etc/apache2/${conf_type}-available/${conf_file}",
-        notify  => Service['apache2'],
+        ensure => ensure_link($ensure),
+        target => "/etc/apache2/${conf_type}-available/${conf_file}",
+        notify => Service['apache2'],
     }
 
     if $replaces != undef {
