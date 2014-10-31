@@ -57,7 +57,7 @@ class base::puppet($server='puppet', $certname=undef) {
     # Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
     exec { 'compile puppet.conf':
         path        => '/usr/bin:/bin',
-        command     => "cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf",
+        command     => 'cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf',
         refreshonly => true,
     }
 

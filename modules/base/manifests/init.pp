@@ -129,9 +129,9 @@ class base::firewall($ensure = 'present') {
     }
 
     ferm::conf { 'main':
-        ensure  => $ensure,
-        prio    => '00',
-        source  => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
+        ensure => $ensure,
+        prio   => '00',
+        source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
 
     ferm::rule { 'bastion-ssh':
@@ -183,8 +183,8 @@ class base {
     }
 
     class { 'base::puppet':
-        server => $::realm ? {
-            'labs' => $::site ? {
+        server   => $::realm ? {
+            'labs'  => $::site ? {
                 'eqiad' => 'virt1000.wikimedia.org',
             },
             default => 'puppet',
@@ -214,8 +214,8 @@ class base {
     # as the monitor host's contact group.
     class { 'base::monitoring::host':
         contact_group => $::nagios_contact_group ? {
-            undef     => 'admins',
-            default   => $::nagios_contact_group,
+            undef   => 'admins',
+            default => $::nagios_contact_group,
         }
     }
 

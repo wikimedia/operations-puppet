@@ -42,12 +42,12 @@ class base::monitoring::host($contact_group = 'admins') {
     }
 
     service { 'mpt-statusd':
-        ensure      => stopped,
-        enable      => false,
-        hasstatus   => false,
-        stop        => '/usr/bin/pkill -9 -f mpt-statusd',
-        require     => Package['mpt-status'],
-        subscribe   => File['/etc/default/mpt-statusd'],
+        ensure    => stopped,
+        enable    => false,
+        hasstatus => false,
+        stop      => '/usr/bin/pkill -9 -f mpt-statusd',
+        require   => Package['mpt-status'],
+        subscribe => File['/etc/default/mpt-statusd'],
     }
 
     file { '/usr/local/bin/check-raid.py':

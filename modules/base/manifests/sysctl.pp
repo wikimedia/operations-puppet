@@ -6,7 +6,7 @@ class base::sysctl {
     #
     # We also set them ourselves so we can purge /etc/sysctl.d.
     sysctl::parameters { 'ubuntu defaults':
-        values => {
+        values   => {
             # 10-console-messages.conf
             'kernel.printk'                   => [ 4, 4, 1, 7 ],
 
@@ -35,7 +35,7 @@ class base::sysctl {
     }
 
     sysctl::parameters { 'wikimedia base':
-        values => {
+        values   => {
             # Increase TCP max buffer size
             'net.core.rmem_max'             => 16777216,
             'net.core.wmem_max'             => 16777216,
