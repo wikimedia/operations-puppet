@@ -1,9 +1,9 @@
 #
 
 class { 'bacula::storage':
-    director            => 'dir.example.com',
-    sd_max_concur_jobs  => 5,
-    sqlvariant          => 'mysql',
+    director           => 'dir.example.com',
+    sd_max_concur_jobs => 5,
+    sqlvariant         => 'mysql',
 }
 
 bacula::storage::device { 'FileStorage':
