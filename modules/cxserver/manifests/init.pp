@@ -60,6 +60,7 @@ class cxserver(
         group   => cxserver,
         mode    => '0555',
         content => template('cxserver/config.erb'),
+        notify  => Service['cxserver'],
     }
 
     # The upstart configuration
