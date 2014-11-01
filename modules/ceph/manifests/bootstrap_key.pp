@@ -7,10 +7,10 @@ define ceph::bootstrap_key($type, $cluster='ceph') {
     }
 
     file { "/var/lib/ceph/bootstrap-${type}":
-        ensure  => directory,
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
+        ensure => directory,
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
     }
 
     ceph::key { "bootstrap-${type}":

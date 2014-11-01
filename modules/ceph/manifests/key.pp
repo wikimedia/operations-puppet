@@ -44,27 +44,27 @@ define ceph::key(
 ) {
     # ping-pong trickery to securely do permissions, puppet has no umask on exec
     file { $keyring:
-        ensure  => $ensure,
-        owner   => $owner,
-        group   => $group,
-        mode    => $mode,
-        backup  => false,
+        ensure => $ensure,
+        owner  => $owner,
+        group  => $group,
+        mode   => $mode,
+        backup => false,
     }
 
     if $ensure == 'present' {
         exec { "ceph key ${name}":
-            command  => "/usr/bin/ceph --cluster=${cluster} \
+            command => "/usr/bin/ceph --cluster=${cluster} \
                         auth get-or-create client.${name} \
                         ${caps} \
                         > ${keyring}",
-            unless   => "/usr/bin/test -s ${keyring}",
-            require  => File[$keyring],
+            unless  => "/usr/bin/test -s ${keyring}",
+            require => File[$keyring],
         }
     } elsif $ensure == 'absent' {
         exec { "ceph key ${name}":
-            command  => "/usr/bin/ceph --cluster=${cluster} \
+            command => "/usr/bin/ceph --cluster=${cluster} \
                         auth del client.${name}",
-            onlyif   => "/usr/bin/ceph auth print-key client.${name}",
+            onlyif  => "/usr/bin/ceph auth print-key client.${name}",
         }
     } else {
         fail('ceph::key ensure parameter must be absent or present')

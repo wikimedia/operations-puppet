@@ -27,11 +27,11 @@ class ceph::mon(
     }
 
     exec { 'ceph-mon-mkfs':
-        command  => "/usr/bin/ceph-mon --mkfs \
+        command => "/usr/bin/ceph-mon --mkfs \
                      -i ${::hostname} \
                      --keyring ${keyring}",
-        creates  => "${mon_data}/keyring",
-        notify   => Exec['ceph-create-keys'],
+        creates => "${mon_data}/keyring",
+        notify  => Exec['ceph-create-keys'],
     }
 
     exec { 'ceph-create-keys':
