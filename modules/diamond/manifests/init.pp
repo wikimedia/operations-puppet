@@ -59,7 +59,7 @@ class diamond(
     $keep_logs_for = '5',
     $service       = running,
     $settings      = { host => 'localhost',
-                       port => '8125',
+  port => '8125',
     },
 ) {
     package { [ 'python-diamond', 'python-configobj' ]:
@@ -102,8 +102,8 @@ class diamond(
 
     diamond::collector { 'CPU':
         settings => {
-            percore   => 'false',
-            normalize => 'true',
+            percore   => false,
+            normalize => true,
         },
     }
 
