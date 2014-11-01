@@ -1,4 +1,6 @@
-class openstack::repo($openstack_version="folsom") {
+class openstack::repo(
+    $openstack_version='folsom'
+) {
 
     if ($::lsbdistcodename == 'precise') {
         apt::repository { 'ubuntucloud':
