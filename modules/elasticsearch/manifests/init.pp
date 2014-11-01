@@ -116,11 +116,11 @@ class elasticsearch($cluster_name,
         require => Package['elasticsearch'],
     }
     file { '/etc/logrotate.d/elasticsearch':
-        ensure  => file,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        source  => 'puppet:///modules/elasticsearch/logrotate',
+        ensure => file,
+        owner  => root,
+        group  => root,
+        mode   => '0444',
+        source => 'puppet:///modules/elasticsearch/logrotate',
     }
     # Note that we don't notify the Elasticsearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.

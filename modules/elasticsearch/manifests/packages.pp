@@ -10,8 +10,8 @@ class elasticsearch::packages {
     }
 
     package { 'elasticsearch':
+        ensure  => present,
         require => Package['openjdk-7-jdk'],
-        ensure  => 'present',
     }
 
     if ! defined ( Package['curl'] ) {
