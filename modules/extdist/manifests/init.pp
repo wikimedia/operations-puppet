@@ -4,21 +4,21 @@
 # extension enabled on mediawiki.org.
 #
 class extdist(
-    $base_dir = "/srv",
-    $log_path = "/var/log/extdist") {
+    $base_dir = '/srv',
+    $log_path = '/var/log/extdist') {
 
-    $dist_dir = "$base_dir/dist"
-    $clone_dir = "$base_dir/extdist"
-    $src_path = "$base_dir/src"
-    $pid_folder = "/run/extdist"
+    $dist_dir = "${base_dir}/dist"
+    $clone_dir = "${base_dir}/extdist"
+    $src_path = "${base_dir}/src"
+    $pid_folder = '/run/extdist'
 
     $settings = {
-        'API_URL'   => "https://www.mediawiki.org/w/api.php",
+        'API_URL'   => 'https://www.mediawiki.org/w/api.php',
         'DIST_PATH' => $dist_dir,
-        'GIT_URL'   => "https://gerrit.wikimedia.org/r/mediawiki/extensions/%s",
+        'GIT_URL'   => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/%s',
         'LOG_FILE'  => $log_path,
         'SRC_PATH'  => $src_path,
-        'PID_FILE'  => "$pid_folder/pid.lock"
+        'PID_FILE'  => "${pid_folder}/pid.lock"
     }
 
     user { 'extdist':
@@ -40,15 +40,15 @@ class extdist(
     }
 
     file { [$dist_dir, $clone_dir, $src_path, $pid_folder]:
-        ensure  => directory,
-        owner   => 'extdist',
-        group   => 'www-data',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'extdist',
+        group  => 'www-data',
+        mode   => '0755',
     }
 
     git::clone {'labs/tools/extdist':
-        directory => $clone_dir,
         ensure    => latest,
+        directory => $clone_dir,
         branch    => 'master',
         require   => [File[$clone_dir], User['extdist']],
         owner     => 'extdist',
@@ -63,7 +63,7 @@ class extdist(
     }
 
     cron { 'extdist-generate-tarballs':
-        command => "/usr/bin/python $clone_dir/nightly.py --all",
+        command => "/usr/bin/python ${clone_dir}/nightly.py --all",
         user    => 'extdist',
         minute  => '0',
         hour    => '*',
