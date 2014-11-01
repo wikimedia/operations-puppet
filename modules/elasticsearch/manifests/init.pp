@@ -93,34 +93,34 @@ class elasticsearch($cluster_name,
 
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         content => template('elasticsearch/elasticsearch.yml.erb'),
         mode    => '0444',
         require => Package['elasticsearch'],
     }
     file { '/etc/elasticsearch/logging.yml':
         ensure  => file,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         content => template('elasticsearch/logging.yml.erb'),
         mode    => '0444',
         require => Package['elasticsearch'],
     }
     file { '/etc/default/elasticsearch':
         ensure  => file,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         content => template('elasticsearch/elasticsearch.erb'),
         mode    => '0444',
         require => Package['elasticsearch'],
     }
     file { '/etc/logrotate.d/elasticsearch':
-        ensure  => file,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        source  => 'puppet:///modules/elasticsearch/logrotate',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/elasticsearch/logrotate',
     }
     # Note that we don't notify the Elasticsearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.
@@ -157,8 +157,8 @@ class elasticsearch($cluster_name,
     if ubuntu_version('>= trusty') {
         file { '/usr/local/bin/es-tool':
             ensure  => file,
-            owner   => root,
-            group   => root,
+            owner   => 'root',
+            group   => 'root',
             mode    => '0755',
             source  => 'puppet:///modules/elasticsearch/es-tool',
             require => Package['python-elasticsearch']
