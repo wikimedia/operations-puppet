@@ -3,7 +3,7 @@ class mysql_wmf::conf inherits mysql_wmf {
         'fundraisingdb' => {
             'innodb_log_file_size' => '500M'
         },
-        'm1' => {
+        'm1'            => {
             'innodb_log_file_size' => '500M'
         },
     }
