@@ -14,10 +14,10 @@ class dataset::rsync::default(
     }
 
     file { '/etc/default/rsync':
-        ensure   => 'present',
-        mode     => '0444',
-        owner    => 'root',
-        group    => 'root',
-        content  => template('dataset/rsync.default.erb'),
+        ensure  => 'present',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('dataset/rsync.default.erb'),
     }
 }
