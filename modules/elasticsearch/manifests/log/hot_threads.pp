@@ -4,15 +4,15 @@
 #
 class elasticsearch::log::hot_threads {
     $script_name = 'elasticsearch_hot_threads_logger.py'
-    $script = "/usr/local/bin/$script_name"
+    $script = "/usr/local/bin/${script_name}"
     $log = '/var/log/elasticsearch/elasticsearch_hot_threads.log'
     file { $script:
-        source => "puppet:///modules/elasticsearch/$script_name",
+        source => "puppet:///modules/elasticsearch/${script_name}",
         mode   => '0555',
     }
 
     cron { 'elasticsearch-hot-threads-log':
-        command => "python $script 2>&1 >> $log",
+        command => "python ${script} 2>&1 >> ${log}",
         #So the destination directory exists
         require => Package['elasticsearch'],
         user    => 'elasticsearch',
