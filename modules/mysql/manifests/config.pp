@@ -62,8 +62,8 @@ class mysql::config(
     owner  => 'root',
     group  => $root_group,
     mode   => '0400',
-    notify    => $restart ? {
-      true => Exec['mysqld-restart'],
+    notify => $restart ? {
+      true  => Exec['mysqld-restart'],
       false => undef,
     },
   }
@@ -103,7 +103,7 @@ class mysql::config(
       unless    => "mysqladmin -u root -p'${root_password}' status > /dev/null",
       path      => '/usr/local/sbin:/usr/bin:/usr/local/bin',
       notify    => $restart ? {
-        true => Exec['mysqld-restart'],
+        true  => Exec['mysqld-restart'],
         false => undef,
       },
       require   => File['/etc/mysql/conf.d'],
