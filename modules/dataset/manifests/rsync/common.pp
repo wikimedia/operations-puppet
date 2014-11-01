@@ -3,12 +3,12 @@ class dataset::rsync::common($ensure='present') {
         ensure => 'directory',
     }
     file { '/etc/rsyncd.d/00-globalopts.conf':
-        ensure  => $ensure,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/dataset/rsync/rsyncd.conf.globalopts',
-        notify  => Exec['update-rsyncd.conf'],
+        ensure => $ensure,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dataset/rsync/rsyncd.conf.globalopts',
+        notify => Exec['update-rsyncd.conf'],
     }
     exec { 'update-rsyncd.conf':
         command     => '/bin/cat /etc/rsyncd.d/*.conf > /etc/rsyncd.conf',
