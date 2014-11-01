@@ -47,53 +47,25 @@ class mysql::server (
   include apparmor
   # mysql is protected by apparmor.  Need to
   # reload apparmor if the file changes.
-  file { "/etc/apparmor.d/usr.sbin.mysqld":
-    owner => 'root',
-    group => 'root',
-    mode => 0644,
+  file { '/etc/apparmor.d/usr.sbin.mysqld':
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
     content => template('mysql/apparmor.template.usr.sbin.mysqld.erb'),
     require => Package['mysql-server'],
-    notify => Service['apparmor'],
+    notify  => Service['apparmor'],
   }
 
 
   # This is needed because reconfigure creates $datadir and the necessary files inside.
   # The sleep is to avoid mysql getting canned for speedy respawn;
   #   the retry is to give apparmor a chance to settle in.
-  exec { "dpkg-reconfigure mysql-server":
-    command => "/bin/sleep 30; /usr/sbin/dpkg-reconfigure -fnoninteractive ${package_name}",
-    require => [File["/etc/apparmor.d/usr.sbin.mysqld"]],
-    tries => 2,
+  exec { 'dpkg-reconfigure mysql-server':
+    command     => "/bin/sleep 30; /usr/sbin/dpkg-reconfigure -fnoninteractive ${package_name}",
+    require     => [File['/etc/apparmor.d/usr.sbin.mysqld']],
+    tries       => 2,
     refreshonly => true,
-    subscribe => File['/etc/mysql/my.cnf']
+    subscribe   => File['/etc/mysql/my.cnf']
   }
 }
 
-# This is handled by a separate class in case we want to just
-# install the package and configure elsewhere.
-class mysql::server::package (
-  $package_name     = $mysql::params::server_package_name,
-) {
-  if $package_name =~ /mariadb/ {
-    file { "/etc/apt/sources.list.d/wikimedia-mariadb.list":
-      owner => root,
-      group => root,
-      mode => 0444,
-      source => "puppet:///modules/coredb_mysql/wikimedia-mariadb.list"
-    }
-    exec { "update_mysql_apt":
-      subscribe => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
-      command => "/usr/bin/apt-get update",
-      refreshonly => true;
-    }
-  }
-
-  package { 'mysql-server':
-    ensure   => $package_ensure,
-    name     => $package_name,
-    require  => $package_name ? {
-      "mariadb-server-5.5" => File["/etc/apt/sources.list.d/wikimedia-mariadb.list"],
-      default => undef
-    }
-  }
-}
