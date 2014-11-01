@@ -87,23 +87,23 @@ class mysql::params {
 
       # begin WMF customization
       if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '11.10') >= 0 {
-         $run_directory = '/run'
+          $run_directory = '/run'
       } else {
-        $run_directory = '/var/run'
+          $run_directory = '/var/run'
       }
 
-      if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, "12.04") >= 0 {
-        $ver = "5.5"
+      if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
+        $ver = '5.5'
       } else {
-        $ver = "5.1"
+        $ver = '5.1'
       }
       $client_package_name  = "mysql-client-${ver}"
       $server_package_name  = "mysql-server-${ver}"
-      
+
       $socket               = "$run_directory/mysqld/mysqld.sock"
       $pidfile              = "$run_directory/mysqld/mysqld.pid"
       $datadir              = '/var/lib/mysql'
-      $log_error            = "/var/log/mysql/mysql.err"
+      $log_error            = '/var/log/mysql/mysql.err'
       # end WMF customization
 
       $basedir              = '/usr'
