@@ -3,7 +3,7 @@
 class contint::proxy_gerrit {
 
     if $::realm != 'labs' {
-        fail( "contint::proxy_gerrit must only be used on labs")
+        fail( 'contint::proxy_gerrit must only be used on labs')
     }
 
     file { '/etc/apache2/gerrit_proxy':
