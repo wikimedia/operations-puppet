@@ -38,9 +38,9 @@ class cxserver(
     require_package('nodejs')
 
     package { ['dictd',
-               'dict-freedict-eng-spa',
-               'dict-freedict-spa-eng',
-               'dict-freedict-eng-hin'
+  'dict-freedict-eng-spa',
+  'dict-freedict-spa-eng',
+  'dict-freedict-eng-hin'
               ]:
         ensure => present,
     }
