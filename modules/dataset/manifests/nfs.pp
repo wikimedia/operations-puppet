@@ -29,7 +29,7 @@ class dataset::nfs($enable=true) {
     service { 'nfs-kernel-server':
         ensure  => $nfs_ensure,
         require => [Package['nfs-kernel-server'],
-                   File['/etc/exports']],
+  File['/etc/exports']],
     }
 
     monitor_service { 'nfs':
