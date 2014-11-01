@@ -49,7 +49,7 @@ class deployment::salt_master(
     }
 
     file { "${pillar_dir}/deployment/repo_config.sls":
-        content => ordered_json({'repo_config' => $repo_config }),
+        content => ordered_json({'repo_config'        => $repo_config }),
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -57,7 +57,7 @@ class deployment::salt_master(
     }
 
     file { "${pillar_dir}/deployment/deployment_config.sls":
-        content => ordered_json({'deployment_config' => $deployment_config}),
+        content => ordered_json({'deployment_config'        => $deployment_config}),
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
