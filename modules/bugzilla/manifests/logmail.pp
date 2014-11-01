@@ -31,11 +31,11 @@ define bugzilla::logmail (
 ) {
 
     file { "${bz_path}/${script_name}":
-        ensure   => present,
-        owner    => 'root',
-        group    => $script_user,
-        mode     => '0550',
-        content  => template("bugzilla/scripts/${script_name}.erb"),
+        ensure  => present,
+        owner   => 'root',
+        group   => $script_user,
+        mode    => '0550',
+        content => template("bugzilla/scripts/${script_name}.erb"),
     }
 
     cron { "bugzillacron_${title}":
