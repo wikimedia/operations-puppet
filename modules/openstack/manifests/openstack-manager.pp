@@ -1,18 +1,22 @@
-class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $certificate) {
+class openstack::openstack-manager(
+    $openstack_version='folsom',
+    $novaconfig,
+    $certificate
+) {
     # require mediawiki::users::mwdeploy  -- temp. removed for ::mediawiki refactor -- OL
 
-    if !defined(Class["webserver::php5"]) {
+    if !defined(Class['webserver::php5']) {
         class {'webserver::php5': ssl => true; }
     }
 
-    if !defined(Class["memcached"]) {
-        class { "memcached":
-            memcached_ip => "127.0.0.1",
+    if !defined(Class['memcached']) {
+        class { 'memcached':
+            memcached_ip => '127.0.0.1',
             pin          => true;
         }
     }
 
-    $controller_hostname = $novaconfig["controller_hostname"]
+    $controller_hostname = $novaconfig['controller_hostname']
 
     package { [ 'php5-ldap', 'php5-uuid', 'imagemagick', 'librsvg2-bin' ]:
         ensure => present;
@@ -36,80 +40,80 @@ class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $ce
     include ::mediawiki::scap
 
     file {
-        "/a":
+        '/a':
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
             ensure => directory;
-        "/var/www/robots.txt":
+        '/var/www/robots.txt':
             ensure => present,
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
-            source => "puppet:///modules/openstack/wikitech-robots.txt";
-        "/a/backup":
+            source => 'puppet:///modules/openstack/wikitech-robots.txt';
+        '/a/backup':
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
             ensure => directory;
-        "/a/backup/public":
+        '/a/backup/public':
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
             ensure => directory;
-        "/usr/local/sbin/db-bak.sh":
+        '/usr/local/sbin/db-bak.sh':
             mode   => '0555',
             owner  => 'root',
             group  => 'root',
-            source => "puppet:///modules/openstack/db-bak.sh";
-        "/usr/local/sbin/mw-files.sh":
+            source => 'puppet:///modules/openstack/db-bak.sh';
+        '/usr/local/sbin/mw-files.sh':
             mode   => '0555',
             owner  => 'root',
             group  => 'root',
-            source => "puppet:///modules/openstack/mw-files.sh";
-        "/usr/local/sbin/mw-xml.sh":
+            source => 'puppet:///modules/openstack/mw-files.sh';
+        '/usr/local/sbin/mw-xml.sh':
             mode   => '0555',
             owner  => 'root',
             group  => 'root',
-            source => "puppet:///modules/openstack/mw-xml.sh";
+            source => 'puppet:///modules/openstack/mw-xml.sh';
     }
 
     cron {
-        "run-jobs":
+        'run-jobs':
             user    => 'apache',
             command => '/usr/local/bin/mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1',
             ensure  => present;
-        "send-echo-emails":
+        'send-echo-emails':
             user    => 'apache',
             command => '/usr/local/bin/mwscript extensions/Echo/maintenance/processEchoEmailBatch.php --wiki=labswiki > /dev/null 2>&1',
             ensure  => present;
-        "db-bak":
+        'db-bak':
             user    => 'root',
             hour    => 1,
             minute  => 0,
             command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
-            require => File["/a/backup"],
+            require => File['/a/backup'],
             ensure  => present;
-        "mw-xml":
+        'mw-xml':
             user    => 'root',
             hour    => 1,
             minute  => 30,
             command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
-            require => File["/a/backup"],
+            require => File['/a/backup'],
             ensure  => present;
-        "mw-files":
+        'mw-files':
             user    => 'root',
             hour    => 2,
             minute  => 0,
             command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
-            require => File["/a/backup"],
+            require => File['/a/backup'],
             ensure  => present;
-        "backup-cleanup":
+        'backup-cleanup':
             user    => 'root',
             hour    => 3,
             minute  => 0,
             command => 'find /a/backup -type f -mtime +4 -delete',
-            require => File["/a/backup"],
+            require => File['/a/backup'],
             ensure  => present;
     }
 
