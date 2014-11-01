@@ -45,12 +45,12 @@ class ceph::nagios(
     }
 
     file { '/var/lib/ceph/nagios':
-        ensure  => $ensure_dir,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        backup  => false,
-        force   => true,
+        ensure => $ensure_dir,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        backup => false,
+        force  => true,
     }
 
     ceph::key { $entity:

@@ -35,19 +35,19 @@ class ceph::radosgw(
     $id = 'client.radosgw'
     $keyfname = "/etc/ceph/ceph.${id}.keyring"
     exec { "ceph auth ${id}":
-        command  => "/usr/bin/ceph \
+        command => "/usr/bin/ceph \
                     auth get-or-create \
                     ${id} \
                     mon 'allow r' osd 'allow rwx' > ${keyfname}",
-        creates  => $keyfname,
+        creates => $keyfname,
     }
 
     # for <= bobtail, http://tracker.newdream.net/issues/3813
     file { '/etc/logrotate.d/radosgw':
         ensure => present,
         source => 'puppet:///modules/ceph/logrotate-radosgw',
-        owner   => 'root',
-        group   => 'root',
+        owner  => 'root',
+        group  => 'root',
     }
 
     # install apache + fastcgi + rewrite. fcgid doesn't stream
@@ -57,7 +57,7 @@ class ceph::radosgw(
         serveradmin  => $serveradmin,
     }
     package { 'libapache2-mod-fastcgi':
-        ensure => present,
+        ensure  => present,
         require => Package['apache2'],
         notify  => Service['apache2'],
     }
