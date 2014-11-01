@@ -4,7 +4,7 @@
 #you may not use this file except in compliance with the License.
 #You may obtain a copy of the License at
 
-   #http://www.apache.org/licenses/LICENSE-2.0
+  #http://www.apache.org/licenses/LICENSE-2.0
 
 #Unless required by applicable law or agreed to in writing, software
 #distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,30 +35,30 @@ class dynamicproxy (
     include misc::labsdebrepo
 
     class { 'nginx':
-        variant  => 'extras',
+        variant => 'extras',
         require => Class['misc::labsdebrepo'],
     }
 
     file { '/etc/logrotate.d/nginx':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        source  => 'puppet:///modules/dynamicproxy/logrotate',
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0444',
+        source => 'puppet:///modules/dynamicproxy/logrotate',
     }
 
     file { '/etc/nginx/nginx.conf':
-        ensure => 'file',
-        content => template("dynamicproxy/nginx.conf"),
+        ensure  => 'file',
+        content => template('dynamicproxy/nginx.conf'),
         require => Package['nginx-common'],
-        notify => Service['nginx']
+        notify  => Service['nginx']
     }
 
     file { '/etc/security/limits.conf':
-        ensure => 'file',
-        source => 'puppet:///modules/dynamicproxy/limits.conf',
+        ensure  => 'file',
+        source  => 'puppet:///modules/dynamicproxy/limits.conf',
         require => Package['nginx-common'],
-        notify => Service['nginx']
+        notify  => Service['nginx']
     }
 
     nginx::site { 'proxy':
