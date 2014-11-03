@@ -13,7 +13,7 @@ class mediawiki::monitoring::graphite {
     }
 
     # Also check that the metric is being collected
-    monitor_graphite_threshold { 'mediawiki_jobs_queued_above_0':
+    monitoring::graphite_threshold { 'mediawiki_jobs_queued_above_0':
         description     => 'More than 0 jobs queued',
         metric          => 'MediaWiki.stats.job-insert.count',
         from            => '1hours',
@@ -34,7 +34,7 @@ class mediawiki::monitoring::graphite {
     }
 
     # Also check that the metric is being collected
-    monitor_graphite_threshold { 'mediawiki_jobs_running_above_0':
+    monitoring::graphite_threshold { 'mediawiki_jobs_running_above_0':
         description     => 'More than 0 jobs running',
         metric          => 'MediaWiki.stats.job-pop.count',
         from            => '1hours',

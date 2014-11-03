@@ -218,7 +218,7 @@ class role::graphite::production {
     include ::swift_new::monitoring::graphite
 
     # Monitor production 5xx rates
-    monitor_graphite_threshold { 'reqstats_5xx':
+    monitoring::graphite_threshold { 'reqstats_5xx':
         description     => 'HTTP 5xx req/min',
         metric          => 'reqstats.5xx',
         warning         => 250,

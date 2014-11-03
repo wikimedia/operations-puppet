@@ -15,7 +15,7 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
             require  => Apache::Site['hhvm_admin'],
         }
 
-        monitor_graphite_threshold { 'hhvm_queue_size':
+        monitoring::graphite_threshold { 'hhvm_queue_size':
             description     => 'HHVM queue size',
             metric          => "servers.${::hostname}.hhvmHealthCollector.queued.value",
             warning         => 10,
@@ -23,7 +23,7 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
             nagios_critical => false
         }
 
-        monitor_graphite_threshold { 'hhvm_load':
+        monitoring::graphite_threshold { 'hhvm_load':
             description     => 'HHVM busy threads',
             metric          => "servers.${::hostname}.hhvmHealthCollector.load.value",
             warning         => $::mediawiki::hhvm::max_threads*0.6,
