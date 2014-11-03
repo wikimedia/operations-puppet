@@ -1,7 +1,7 @@
 # vim: set ts=4 et sw=4:
 
 # We do not have monitoring yet
-#@monitor_group { 'cxserver_eqiad': description => 'eqiad cxserver servers' }
+#@monitoring::group { 'cxserver_eqiad': description => 'eqiad cxserver servers' }
 
 # Skipping production for now
 #class role::cxserver::production {}

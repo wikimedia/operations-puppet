@@ -1,7 +1,7 @@
 # vim: noet
 
 # Virtual resource for monitoring server
-@monitor_group { 'memcached_eqiad':
+@monitoring::group { 'memcached_eqiad':
     description => 'eqiad memcached',
 }
 

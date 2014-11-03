@@ -1,7 +1,7 @@
 # nfs.pp
 
 # Virtual resource for the monitoring server
-#@monitor_group { "nfs": description => "NFS" }
+#@monitoring::group { "nfs": description => "NFS" }
 
 class nfs::common {
     package { 'nfs-common':

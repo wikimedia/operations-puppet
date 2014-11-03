@@ -1,4 +1,4 @@
-@monitor_group { 'swift':
+@monitoring::group { 'swift':
     description => 'swift servers',
 }
 
