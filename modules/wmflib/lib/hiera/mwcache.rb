@@ -51,10 +51,11 @@ class Hiera
         return true
       end
     rescue => detail
-      error = "Retrieving metadata from ${path} failed: #{detail}"
+      error = "Retrieving metadata from #{path} failed: #{detail}"
       Hiera.warn(error)
-      # Fill  this up with very safe defaults
-      @cache[path][:meta] = {:ts => 0, :revision => 0}
+      # Fill  this up with very safe defaults - we cache non-existence
+      # for cache_ttl as well.
+      @cache[path][:meta] = {:ts => Time.now.to_i, :revision => 0}
       return true
     end
 
