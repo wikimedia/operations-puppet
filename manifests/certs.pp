@@ -182,6 +182,7 @@ define install_certificate(
             'star.wmflabs'                 => 'wmf-labs.pem',
             'star.planet.wikimedia.org'    => 'DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem',
             'star.wmfusercontent.org'      => 'GlobalSign_CA.pem',
+            'sni.wikimedia.org'            => 'GlobalSign_CA.pem',
             default => 'wmf-ca.pem',
         }
     }
