@@ -68,6 +68,17 @@ class role::postgres::master {
             database => 'replication',
         }
     }
+    # An admin user for labs
+    postgresql::user { 'labsadmin@labs':
+            ensure   => 'present',
+            user     => 'labsadmin',
+            password => $passwords::postgres::labsadmin_password,
+            cidr     => '10.68.16.0/21',
+            type     => 'host',
+            method   => 'md5',
+            attrs    => 'CREATEROLE CREATEDB',
+            database => 'template1',
+    }
 
     # TODO: An old user that requested to join early on. Should be migrated to
     # the new schema
