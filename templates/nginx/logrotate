@@ -4,7 +4,6 @@
         rotate 52
         compress
         delaycompress
-        notifempty
         create 640 root www-data
         sharedscripts
         postrotate
