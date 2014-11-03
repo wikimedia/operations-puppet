@@ -20,6 +20,8 @@ define contint::localvhost(
     $log_prefix = $name,
 ){
 
+    $is_24 = ubuntu_version('>= trusty')
+
     apache::site { "${name}.localhost":
         content => template('contint/apache/localvhost.erb'),
     }
