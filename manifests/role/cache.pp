@@ -642,7 +642,6 @@ class role::cache {
 
         sni_star {
             'wikipedia.org':;
-            'wikimedia.org':;
             'wiktionary.org':;
             'wikiquote.org':;
             'wikibooks.org':;
@@ -653,6 +652,18 @@ class role::cache {
             'wikivoyage.org':;
             'wikimediafoundation.org':;
             'mediawiki.org':;
+        }
+
+        define sni_cert() {
+            localssl { $name:
+                certname => "sni.${name}",
+                server_name => $name,
+                server_aliases => ["*.${name}"],
+            }
+        }
+
+        sni_cert {
+            'wikimedia.org':;
         }
     }
 
