@@ -110,7 +110,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     # This should keep icinga from alerting
     # us unless the alert thresholds are exceeded
     # for more than an hour.
-    monitor_ganglia { 'CirrusSearch-slow-queries':
+    monitoring::ganglia { 'CirrusSearch-slow-queries':
         description           => 'Slow CirrusSearch query rate',
         # this metric is output to ganglia by logster
         metric                => 'CirrusSearch-slow.log_line_rate',
