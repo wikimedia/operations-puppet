@@ -158,9 +158,9 @@ class role::osm::master {
         port   => 873,
         srange => '($EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD)',
     }
-    nrpe::monitor_service { 'check_rsync_server_running':
+    nrpe::monitor_service { 'rsync_server_running':
         description  => 'Check if rsync server is running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:4 --ereg-argument-array '/usr/bin/rsync --no-detach --daemon'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -C rsync --ereg-argument-array '/usr/bin/rsync --no-detach --daemon'",
     }
 }
 
