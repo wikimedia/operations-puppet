@@ -87,6 +87,8 @@ class puppetmaster(
 
     if $is_labs_puppet_master {
         include puppetmaster::labs
+        require_package('ruby-httpclient')
+
         class { '::puppetmaster::hiera':
             source => "puppet:///modules/puppetmaster/labs.hiera.yaml",
         }

@@ -70,6 +70,7 @@ class puppet::self::master($server) {
         'rails',
         'ruby-sqlite3',
         'ruby-ldap',
+        'ruby-httpclient',
     ]:
         ensure => present,
     }
