@@ -46,33 +46,33 @@ class releases::reprepro {
     }
 
     class { '::reprepro::distribution':
-        basedir => $basedir,
+        basedir  => $basedir,
         settings => {
             'precise' => {
-                'Origin' => 'MediaWiki',
-                'Label'  => 'MediaWiki',
-                'Suite'  => 'precise-mediawiki',
-                'Codename' => 'precise-mediawiki',
+                'Origin'        => 'MediaWiki',
+                'Label'         => 'MediaWiki',
+                'Suite'         => 'precise-mediawiki',
+                'Codename'      => 'precise-mediawiki',
                 'AlsoAcceptFor' => 'precise',
-                'Version' => '12.04',
+                'Version'       => '12.04',
                 'Architectures' => 'source amd64 i386',
-                'Components' => 'main',
-                'Description' => 'MediaWiki packages for Ubuntu Precise Pangolin',
-                'SignWith' => 'default',
-                'Log' => "precise-mediawiki\n  log",
+                'Components'    => 'main',
+                'Description'   => 'MediaWiki packages for Ubuntu Precise Pangolin',
+                'SignWith'      => 'default',
+                'Log'           => "precise-mediawiki\n  log",
             },
-            'trusty' => {
-                'Origin' => 'MediaWiki',
-                'Label'  => 'MediaWiki',
-                'Suite'  => 'trusty-mediawiki',
-                'Codename' => 'trusty-mediawiki',
+            'trusty'  => {
+                'Origin'        => 'MediaWiki',
+                'Label'         => 'MediaWiki',
+                'Suite'         => 'trusty-mediawiki',
+                'Codename'      => 'trusty-mediawiki',
                 'AlsoAcceptFor' => 'trusty',
-                'Version' => '14.04',
+                'Version'       => '14.04',
                 'Architectures' => 'source amd64 i386',
-                'Components' => 'main',
-                'Description' => 'MediaWiki packages for Ubuntu Trusty Tahr',
-                'SignWith' => 'default',
-                'Log' => "trusty-mediawiki\n  log",
+                'Components'    => 'main',
+                'Description'   => 'MediaWiki packages for Ubuntu Trusty Tahr',
+                'SignWith'      => 'default',
+                'Log'           => "trusty-mediawiki\n  log",
             }
         }
     }
@@ -150,7 +150,7 @@ class releases::reprepro::upload (
         before => File['/usr/local/bin/deb-upload'],
     }
 
-    admin::sudo { "releases_dput":
+    admin::sudo { 'releases_dput':
         user  => $sudo_user,
         privs => ["ALL = (${user}) NOPASSWD: /usr/bin/dput"],
     }
