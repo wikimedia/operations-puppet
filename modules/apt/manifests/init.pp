@@ -85,6 +85,13 @@ class apt {
         value    => $http_proxy,
     }
 
+    apt::conf { 'no-translations':
+        ensure   => 'present',
+        priority => '90',
+        key      => 'Acquire::Languages',
+        value    => 'none',
+    }
+
     # apt-get should not install recommended packages
     apt::conf { 'no-recommends':
         ensure   => 'present',
