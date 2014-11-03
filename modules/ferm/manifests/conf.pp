@@ -5,10 +5,10 @@ define ferm::conf(
     $prio='10',
 ) {
     if $source == undef and $content == undef {
-        fail("Either source or content attribute needs to be given")
+        fail('Either source or content attribute needs to be given')
     }
     if $source != undef and $content != undef {
-        fail("Both source and content attribute have been defined")
+        fail('Both source and content attribute have been defined')
     }
     @file { "/etc/ferm/conf.d/${prio}_${name}":
         ensure  => $ensure,
