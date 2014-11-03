@@ -328,9 +328,6 @@ node 'antimony.wikimedia.org' {
 
     class { 'admin': groups => ['gerrit-root', 'gerrit-admin'] }
 
-    install_certificate{ 'git.wikimedia.org':
-        ca => 'RapidSSL_CA.pem',
-    }
     install_certificate{ 'svn.wikimedia.org':
         ca => 'RapidSSL_CA.pem',
     }
