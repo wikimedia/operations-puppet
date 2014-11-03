@@ -49,6 +49,15 @@ class role::analytics::clients {
             ensure => 'installed',
         }
     }
+
+    # To avoid having to upload the >50MB refinery jars to the hive
+    # machines again and again during development, we install maven,
+    # so we can build locally. (RT #8765)
+    if !defined(Package['maven']) {
+        package { 'maven':
+            ensure => present,
+        }
+    }
 }
 
 # == Class role::analytics::rsyncd
