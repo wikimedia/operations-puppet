@@ -7,7 +7,7 @@
 class icinga {
     # Setup icinga user
     # FIXME: This should be done by the package
-    include nagios::group
+    include icinga::group
     # FIXME: where does the dialout user group come from?
     # It should be included here somehow
 
