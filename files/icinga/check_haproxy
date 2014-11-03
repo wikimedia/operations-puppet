@@ -1,0 +1,73 @@
+#!/bin/bash
+
+OK="OK"
+EOK=0
+WARN="WARNING"
+EWARN=1
+CRIT="CRITICAL"
+ECRIT=2
+UNKN="UNKNOWN"
+EUNKN=3
+
+socket="/tmp/haproxy.socket"
+check="check_alive"
+
+for var in "$@"; do
+
+    if [[ "$var" =~ ^--check=(.+) ]]; then
+        check="check_${BASH_REMATCH[1]}"
+    fi
+
+    if [[ "$var" =~ ^--socket=(.+) ]]; then
+        socket="${BASH_REMATCH[1]}"
+    fi
+
+done
+
+# Check service normal response
+if [ "$check" == "check_alive" ]; then
+
+    up=$(echo "show info" | socat stdio $socket | egrep '^Uptime_sec' | awk '{print $2}')
+
+    if [[ "$up" =~ ^[0-9]+$ ]]; then
+
+        if [ $up -lt 300 ]; then
+            echo "${WARN} ${check} recent restart ${up}s"
+            exit $EWARN
+        fi
+
+        echo "${OK} ${check} uptime ${up}s"
+        exit $EOK
+    fi
+
+    echo "${CRIT} ${check} invalid response"
+    exit $ECRIT
+
+fi
+
+# Check a primary/secondary pair for failover
+if [ "$check" == "check_failover" ]; then
+
+    tmp='/tmp/haproxy_stat.csv'
+    echo "show stat" | socat stdio $socket >$tmp
+
+    up=$(grep L7OK $tmp | wc -l)
+    down=$(grep DOWN $tmp | wc -l)
+
+    rm -f $tmp
+
+    msg="servers up ${up} down ${down}"
+
+    if [ $down -eq 0 ]; then
+        echo "${OK} ${check} ${msg}"
+        exit $EOK
+    fi
+
+    echo "${CRIT} ${check} ${msg}"
+    exit $ECRIT
+
+fi
+
+
+echo "${CRIT} unkown check ${check} "
+exit $ECRIT
