@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  This file is managed by puppet
+
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <mirrors>
+    <mirror>
+      <id>system-wide-wmf-releases</id>
+      <mirrorOf>wmf-releases</mirrorOf>
+      <name>WMF Archiva. Mirrored Artifacts</name>
+      <url>http://archiva.wikimedia.org/repository/releases/</url>
+    </mirror>
+    <mirror>
+      <id>system-wide-wmf-mirrored-default</id>
+      <mirrorOf>*,!system-wide-wmf-releases</mirrorOf>
+      <name>WMF Archiva. Mirrored Artifacts</name>
+      <url>http://archiva.wikimedia.org/repository/mirrored/</url>
+    </mirror>
+  </mirrors>
+</settings>
