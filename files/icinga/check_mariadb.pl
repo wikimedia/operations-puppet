@@ -24,6 +24,9 @@ my $sock = "";
 my $sql_lag_warn = 30;
 my $sql_lag_crit = 60;
 
+# Warn when IO or SQL stopped cleanly (no errno)
+my $warn_stopped = 0;
+
 my @vars = ();
 
 foreach my $arg (@ARGV)
@@ -60,6 +63,14 @@ foreach my $arg (@ARGV)
 	{
 		$sql_lag_crit = $1;
 	}
+	elsif ($arg =~ /^--warn-stopped$/)
+	{
+		$warn_stopped = 1;
+	}
+	elsif ($arg =~ /^--no-warn-stopped$/)
+	{
+		$warn_stopped = 0;
+	}
 	elsif ($arg =~ /^--set=(.+)$/)
 	{
 		push(@vars, $1);
@@ -95,9 +106,14 @@ if ($check eq "slave_io_state")
 
 	# IO thread stopped without error, eq explicit STOP SLAVE IO_THREAD? WARN
 	if ($status->{Slave_IO_Running} ne "Yes" && $status->{Last_IO_Errno} == 0) {
-		printf("%s %s Slave_IO_Running: %s\n",
-			$WARN, $check, $status->{Slave_IO_Running});
-		exit($EWARN);
+		if ($warn_stopped == 1) {
+			printf("%s %s Slave_IO_Running: %s\n",
+				$WARN, $check, $status->{Slave_IO_Running});
+			exit($EWARN);
+		}
+		printf("%s %s Slave_IO_Running: %s, (no error; intentional)\n",
+			$OK, $check, $status->{Slave_IO_Running});
+		exit($EOK);
 	}
 
 	if ($status->{Slave_IO_Running} eq "Yes") {
@@ -120,13 +136,6 @@ if ($check eq "slave_sql_state")
 		exit($EOK);
 	}
 
-	# IO thread stopped? WARN
-	if ($status->{Slave_IO_Running} ne "Yes") {
-		printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s\n",
-			$WARN, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
-		exit($EWARN);
-	}
-
 	# Both SQL and IO threads running? OK
 	if ($status->{Slave_SQL_Running} eq "Yes") {
 		printf("%s %s Slave_SQL_Running: %s\n",
@@ -136,9 +145,14 @@ if ($check eq "slave_sql_state")
 
 	# SQL thread stopped without error, eq explicit STOP SLAVE SQL_THREAD? WARN
 	if ($status->{Slave_SQL_Running} ne "Yes" && $status->{Last_SQL_Errno} == 0) {
-		printf("%s %s Slave_SQL_Running: %s\n",
-			$WARN, $check, $status->{Slave_SQL_Running});
-		exit($EWARN);
+		if ($warn_stopped == 1) {
+			printf("%s %s Slave_SQL_Running: %s\n",
+				$WARN, $check, $status->{Slave_SQL_Running});
+			exit($EWARN);
+		}
+		printf("%s %s Slave_SQL_Running: %s, (no error; intentional)\n",
+			$OK, $check, $status->{Slave_SQL_Running});
+		exit($EOK);
 	}
 
 	printf("%s %s Slave_SQL_Running: No, Errno: %s, Errmsg: %s\n",
@@ -159,9 +173,14 @@ if ($check eq "slave_sql_lag")
 
 	# Either IO or SQL threads stopped? WARN
 	if ($status->{Slave_IO_Running} ne "Yes" || $status->{Slave_SQL_Running} ne "Yes") {
-		printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s\n",
-			$WARN, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
-		exit($EWARN);
+		if ($warn_stopped == 1) {
+			printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s\n",
+				$WARN, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
+			exit($EWARN);
+		}
+		printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s, (no error; intentional)\n",
+			$OK, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
+		exit($EOK);
 	}
 
 	# Small lag? OK
