@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cmd="tail -n 1000 /a/mw-log/apache2.log |
+cmd="tail -n 10000 /a/mw-log/apache2.log |
     grep 'PHP\|Segmentation fault' |
     grep -v 'filemtime\|failed to mkdir\|GC cache entry\|cache slam averted\|SHA-1 metadata' |
     sed -r 's/\[notice\] child pid [0-9]+ exit signal //g' |
