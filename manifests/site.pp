@@ -1293,7 +1293,6 @@ node 'holmium.wikimedia.org' {
     include base::firewall
 
     include standard
-    include misc::blogs::wikimedia
 
 }
 
