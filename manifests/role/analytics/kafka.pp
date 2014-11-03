@@ -194,7 +194,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     # adjust them if you add or remove data from Kafka topics.
     $nagios_servicegroup = 'analytics_eqiad'
 
-    monitor_ganglia { 'kafka-broker-MessagesIn':
+    monitoring::ganglia { 'kafka-broker-MessagesIn':
         description => 'Kafka Broker Messages In',
         metric      => 'kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate',
         warning     => ':1500.0',
@@ -206,7 +206,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     # Alert if any Kafka has under replicated partitions.
     # If it does, this means a broker replica is falling behind
     # and will be removed from the ISR.
-    monitor_ganglia { 'kafka-broker-UnderReplicatedPartitions':
+    monitoring::ganglia { 'kafka-broker-UnderReplicatedPartitions':
         description => 'Kafka Broker Under Replicated Partitions',
         metric      => 'kafka.server.ReplicaManager.UnderReplicatedPartitions.Value',
         # Any under replicated partitions are bad.
@@ -219,7 +219,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     }
 
     # Alert if any Kafka Broker replica lag is too high
-    monitor_ganglia { 'kafka-broker-Replica-MaxLag':
+    monitoring::ganglia { 'kafka-broker-Replica-MaxLag':
         description => 'Kafka Broker Replica Lag',
         metric      => 'kafka.server.ReplicaFetcherManager.Replica-MaxLag.Value',
         # As of 2014-02 replag could catch up at more than 1000 msgs / sec,

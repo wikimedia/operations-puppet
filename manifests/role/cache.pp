@@ -550,7 +550,7 @@ class role::cache {
             }
 
              # Generate an alert if too many delivery report errors
-            monitor_ganglia { 'varnishkafka-drerr':
+            monitoring::ganglia { 'varnishkafka-drerr':
                 description => 'Varnishkafka Delivery Errors',
                 metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
                 # Warn if between more than 0 but less than 30

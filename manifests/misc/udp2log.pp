@@ -261,7 +261,7 @@ define misc::udp2log::instance::monitoring(
 
         # Set up nagios monitoring of packet loss
         # for this udp2log instance.
-        monitor_ganglia{ "udp2log-${name}-packetloss":
+        monitoring::ganglia{ "udp2log-${name}-packetloss":
             ensure                => $ensure_monitor_packet_loss,
             description           => 'Packetloss_Average',
             metric                => 'packet_loss_average',
