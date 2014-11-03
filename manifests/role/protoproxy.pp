@@ -187,7 +187,7 @@ class role::protoproxy::ssl::beta {
 
 }
 
-@monitor_group { 'ssl_eqiad': description => 'eqiad ssl servers' }
-@monitor_group { 'ssl_codfw': description => 'codfw ssl servers' }
-@monitor_group { 'ssl_esams': description => 'esams ssl servers' }
-@monitor_group { 'ssl_ulsfo': description => 'ulsfo ssl servers' }
+@monitoring::group { 'ssl_eqiad': description => 'eqiad ssl servers' }
+@monitoring::group { 'ssl_codfw': description => 'codfw ssl servers' }
+@monitoring::group { 'ssl_esams': description => 'esams ssl servers' }
+@monitoring::group { 'ssl_ulsfo': description => 'ulsfo ssl servers' }

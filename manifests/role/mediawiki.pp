@@ -1,9 +1,9 @@
-@monitor_group { 'appserver_hhvm_eqiad':     description => 'eqiad application servers (HHVM)' }
-@monitor_group { 'appserver_eqiad':     description => 'eqiad application servers' }
-@monitor_group { 'api_appserver_eqiad': description => 'eqiad API application servers' }
-@monitor_group { 'imagescaler_eqiad':   description => 'eqiad image scalers' }
-@monitor_group { 'jobrunner_eqiad':     description => 'eqiad jobrunner application servers' }
-@monitor_group { 'videoscaler_eqiad':   description => 'eqiad video scaler' }
+@monitoring::group { 'appserver_hhvm_eqiad':     description => 'eqiad application servers (HHVM)' }
+@monitoring::group { 'appserver_eqiad':     description => 'eqiad application servers' }
+@monitoring::group { 'api_appserver_eqiad': description => 'eqiad API application servers' }
+@monitoring::group { 'imagescaler_eqiad':   description => 'eqiad image scalers' }
+@monitoring::group { 'jobrunner_eqiad':     description => 'eqiad jobrunner application servers' }
+@monitoring::group { 'videoscaler_eqiad':   description => 'eqiad video scaler' }
 
 class role::mediawiki::common {
     include ::standard

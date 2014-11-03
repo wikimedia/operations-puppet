@@ -1,7 +1,7 @@
 # vim: set ts=4 et sw=4:
 
 # We do not have monitoring yet
-#@monitor_group { 'apertium_eqiad': description => 'eqiad apertium servers' }
+#@monitoring::group { 'apertium_eqiad': description => 'eqiad apertium servers' }
 
 # Skipping production for now
 #class role::apertium::production {}

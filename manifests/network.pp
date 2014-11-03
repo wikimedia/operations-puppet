@@ -272,11 +272,11 @@ class network::checks {
     $snmp_ro_community = $passwords::network::snmp_ro_community
 
     # Nagios monitoring
-    @monitor_group { 'routers':
+    @monitoring::group { 'routers':
         description => 'IP routers',
     }
 
-    @monitor_group { 'storage':
+    @monitoring::group { 'storage':
         description => 'Storage equipment',
     }
 

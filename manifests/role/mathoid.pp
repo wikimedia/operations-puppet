@@ -2,7 +2,7 @@
 
 # TODO: now that other services inhabit service cluster A, move this definition in a
 # better place
-@monitor_group { 'sca_eqiad': description => 'Service Cluster A servers' }
+@monitoring::group { 'sca_eqiad': description => 'Service Cluster A servers' }
 
 class role::mathoid::production {
     system::role { 'role::mathoid::production':

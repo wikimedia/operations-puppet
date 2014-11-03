@@ -1,5 +1,5 @@
 # vim:sw=4 ts=4 sts=4 et:
-@monitor_group { 'logstash_eqiad': description => 'eqiad logstash' }
+@monitoring::group { 'logstash_eqiad': description => 'eqiad logstash' }
 
 # == Class: role::logstash
 #
