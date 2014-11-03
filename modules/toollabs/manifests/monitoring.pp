@@ -1,7 +1,7 @@
 # = Class: toollabs::monitoring::graphite
 # Sets up graphite based icinga checks for all of toollabs
 class toollabs::monitoring::graphite {
-    monitor_graphite_threshold { 'toollabs-puppet-fail':
+    monitoring::graphite_threshold { 'toollabs-puppet-fail':
         description     => 'ToolLabs: Puppet failure events',
         metric          => 'tools.*.puppetagent.failed_events.value',
         critical        => 1,
@@ -11,7 +11,7 @@ class toollabs::monitoring::graphite {
         series          => true,
     }
 
-    monitor_graphite_threshold { 'toollabs-puppet-stale':
+    monitoring::graphite_threshold { 'toollabs-puppet-stale':
         description     => 'ToolLabs: Puppet freshness check',
         metric          => 'tools.*.puppetagent.time_since_last_run.value',
         warning         => 3600, # 1h
@@ -21,7 +21,7 @@ class toollabs::monitoring::graphite {
         series          => true,
     }
 
-    monitor_graphite_threshold { 'toollabs-low-space-var':
+    monitoring::graphite_threshold { 'toollabs-low-space-var':
         description     => 'ToolLabs: Low disk space on /var',
         metric          => 'tools.*.diskspace._var.byte_avail.value',
         warning         => 67108864, # 512MiB
@@ -32,7 +32,7 @@ class toollabs::monitoring::graphite {
         series          => true,
     }
 
-    monitor_graphite_threshold { 'toollabs-low-space-root':
+    monitoring::graphite_threshold { 'toollabs-low-space-root':
         description     => 'ToolLabs: Low disk space on /',
         metric          => 'tools.*.diskspace.root.byte_avail.value',
         warning         => 67108864, # 512MiB

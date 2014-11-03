@@ -189,7 +189,7 @@ class swift::proxy::monitoring($host) {
 }
 
 class swift::monitoring::graphite {
-    monitor_graphite_threshold { 'swift_eqiad-prod_dispersion_object':
+    monitoring::graphite_threshold { 'swift_eqiad-prod_dispersion_object':
         description     => 'swift eqiad-prod object availability',
         metric          => 'swift.eqiad-prod.dispersion.object.pct_found.value',
         from            => '1hours',
@@ -199,7 +199,7 @@ class swift::monitoring::graphite {
         nagios_critical => false
     }
 
-    monitor_graphite_threshold { 'swift_eqiad-prod_dispersion_container':
+    monitoring::graphite_threshold { 'swift_eqiad-prod_dispersion_container':
         description     => 'swift eqiad-prod container availability',
         metric          => 'swift.eqiad-prod.dispersion.container.pct_found.value',
         from            => '30min',
