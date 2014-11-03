@@ -14,7 +14,7 @@ class role::icinga {
     include network::checks
     include dsh::config
     include mysql
-    include nagios::gsbmonitoring
+    include icinga::gsbmonitoring
     include nrpe
     include certificates::globalsign_ca
 
