@@ -229,7 +229,7 @@ class role::graphite::production {
 
     # Will try to detect anomalies in the requests error ratio;
     # if 10% of the last 100 checks is out of forecasted bounds
-    monitor_graphite_anomaly { 'requests_error_ratio':
+    monitoring::graphite_anomaly { 'requests_error_ratio':
         description  => 'HTTP error ratio anomaly detection',
         metric       => 'reqstats.5xx',
         warning      => 5,
