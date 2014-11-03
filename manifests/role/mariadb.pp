@@ -141,6 +141,7 @@ class role::mariadb::tendril {
 class role::mariadb::dbstore(
     $lag_warn = 300,
     $lag_crit = 600,
+    $warn_stopped = true,
     ) {
 
     system::role { 'role::mariadb::dbstore':
@@ -166,8 +167,9 @@ class role::mariadb::dbstore(
     include mariadb::monitor_process
 
     mariadb::monitor_replication { ['s1','s2','s3','s4','s5','s6','s7','m2','m3']:
-        lag_warn => $lag_warn,
-        lag_crit => $lag_crit,
+        lag_warn     => $lag_warn,
+        lag_crit     => $lag_crit,
+        warn_stopped => $warn_stopped,
     }
 }
 

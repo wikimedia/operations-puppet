@@ -1059,6 +1059,9 @@ node /^dbstore1001\.eqiad\.wmnet/ {
     class { 'role::mariadb::dbstore':
         lag_warn => 90000,
         lag_crit => 180000,
+        # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
+        # don't spam Icinga with warnings. This will not block properly critical alerts.
+        warn_stopped => false,
     }
 }
 
