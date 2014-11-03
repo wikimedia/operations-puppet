@@ -8,6 +8,9 @@
  * ------------------------------------------------------------------ */
 
 module.exports = function (config) {
+	// Import the public local settings
+	config = require("/srv/deployment/ocg/ocg/LocalSettings.js")(config);
+
 	config.coordinator.hostname = "<%= @host_name %>";
 
 	config.redis.host = "<%= @redis_host %>";
@@ -26,18 +29,17 @@ module.exports = function (config) {
 	config.backend.output_dir = "<%= @output_dir %>";
 	config.backend.post_mortem_dir = "<%= @postmortem_dir %>";
 
-	// Log to both syslog and logstash as an interim thing
-	config.logging["winston-posix-syslog/PosixSyslog"] = {
-		level: "debug",
-		identity: 'mw-ocg-service'
-	};
-	config.logging["winston-graylog2/Graylog2"] = {
-		level: 'debug',
-		graylogHost: "<%= @graylog_host %>",
-		graylogPort: "<%= @graylog_port %>",
-		graylogFacility: "OfflineContentGenerator",
-	};
+	// Temporary backwards compatibility with winston logging
+	// (pre-2014-11-03 deploy)
+	if (!config.logging.streams) { return config; }
 
-	// Import the public local settings
-	return require("/srv/deployment/ocg/ocg/LocalSettings.js")(config)
+	// Configure logging to logstash, via bunyan/gelf-stream.
+	config.logging.streams.push({
+		type: 'raw',
+		stream: require('gelf-stream').forBunyan(
+			"<%= @graylog_host %>", <%= @graylog_port %>
+		)
+	});
+
+	return config;
 }
