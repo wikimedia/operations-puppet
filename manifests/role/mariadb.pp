@@ -436,6 +436,11 @@ class role::mariadb::proxy::master(
         mode    => '0444',
         content => template('mariadb/haproxy-master.cfg.erb'),
     }
+
+    nrpe::monitor_service { 'haproxy_failover':
+        description   => 'haproxy failover',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_haproxy --check=failover",
+    }
 }
 
 class role::mariadb::proxy::slaves(
