@@ -26,10 +26,8 @@ sub vcl_recv {
 		set req.backend = radon;
 	} elsif (req.http.Host == "phabricator.wikimedia.org" || req.http.Host == "phab.wmfusercontent.org") {
 		set req.backend = iridium;
-	} elsif (req.http.Host == "contacts.wikimedia.org") {
+	} elsif (req.http.Host == "contacts.wikimedia.org" || req.http.Host == "svn.wikimedia.org") {
 		set req.backend = zirconium;
-	} elsif (req.http.Host == "svn.wikimedia.org") {
-		set req.backend = antimony;
 	} elsif (req.http.Host == "people.wikimedia.org") {
 		set req.backend = terbium;
 		/* no caching of public_html dirs */

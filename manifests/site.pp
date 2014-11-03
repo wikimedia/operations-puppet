@@ -331,15 +331,11 @@ node 'antimony.wikimedia.org' {
     install_certificate{ 'git.wikimedia.org':
         ca => 'RapidSSL_CA.pem',
     }
-    install_certificate{ 'svn.wikimedia.org':
-        ca => 'RapidSSL_CA.pem',
-    }
 
     class { 'base::firewall': }
 
     include standard
     include role::gitblit
-    include role::subversion
 }
 
 node 'argon.wikimedia.org' {
@@ -3059,6 +3055,7 @@ node 'zirconium.wikimedia.org' {
     include role::transparency
     include role::grafana
     include role::iegreview
+    include role::subversion
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
