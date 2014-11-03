@@ -19,12 +19,12 @@ class bugzilla::reporter ($bz_report_user = 'reporter') {
     require passwords::bugzilla
 
     file { 'bugzilla_report':
-        ensure   => present,
-        path     => "/home/${bz_report_user}/bugzilla_report.php",
-        owner    => $bz_report_user,
-        group    => $bz_report_user,
-        mode     => '0550',
-        content  => template('bugzilla/scripts/bugzilla_report.php.erb'),
+        ensure  => present,
+        path    => "/home/${bz_report_user}/bugzilla_report.php",
+        owner   => $bz_report_user,
+        group   => $bz_report_user,
+        mode    => '0550',
+        content => template('bugzilla/scripts/bugzilla_report.php.erb'),
     }
 
     cron { 'bugzilla_reporter_cron':
