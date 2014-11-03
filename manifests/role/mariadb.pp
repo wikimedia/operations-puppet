@@ -420,7 +420,7 @@ class role::mariadb::proxy::master(
     $shard,
     $primary_name,
     $primary_addr,
-    $secondary_addr,
+    $secondary_name,
     $secondary_addr,
     ) {
 
