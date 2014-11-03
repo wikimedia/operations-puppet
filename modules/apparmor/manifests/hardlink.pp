@@ -6,9 +6,9 @@
 
 define apparmor::hardlink ($source = $name, $target) {
     exec {
-        "hardlink-$name":
-            command => "ln --force $target $source",
-            path    => "/usr/bin:/bin",
-            unless  => "test $source -ef $target";
+        "hardlink-${name}":
+            command => "ln --force ${target} ${source}",
+            path    => '/usr/bin:/bin',
+            unless  => "test ${source} -ef ${target}";
     }
 }
