@@ -136,7 +136,7 @@ define monitor_service(
     }
 }
 
-define monitor_group ($description, $ensure=present) {
+define monitoring::group ($description, $ensure=present) {
     # Nagios hostgroup instance
     nagios_hostgroup { $title:
         ensure         => $ensure,
@@ -151,29 +151,5 @@ define monitor_group ($description, $ensure=present) {
         target            => "${::nagios_config_dir}/puppet_servicegroups.cfg",
         servicegroup_name => $title,
         alias             => $description,
-    }
-}
-define decommission_monitor_host {
-    if defined(Nagios_host[$title]) {
-        # Override the existing resources
-        Nagios_host <| title == $title |> {
-            ensure => absent
-        }
-        Nagios_hostextinfo <| title == $title |> {
-            ensure => absent
-        }
-    }
-    else {
-        # Resources don't exist in Puppet. Remove from Nagios config as well.
-        nagios_host { $title:
-            host_name => $title,
-            ensure    => absent;
-
-        }
-        nagios_hostextinfo { $title:
-            host_name => $title,
-            ensure    => absent;
-
-        }
     }
 }

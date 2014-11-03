@@ -1,7 +1,7 @@
 # Virtual resource for the monitoring server
-@monitor_group { 'es_eqiad': description => 'eqiad External Storage' }
-@monitor_group { 'mysql_eqiad': description => 'eqiad mysql core' }
-@monitor_group { 'mysql_codfw': description => 'codfw mysql core' }
+@monitoring::group { 'es_eqiad': description => 'eqiad External Storage' }
+@monitoring::group { 'mysql_eqiad': description => 'eqiad mysql core' }
+@monitoring::group { 'mysql_codfw': description => 'codfw mysql core' }
 
 ## for describing replication topology
 ## hosts must be added here in addition to site.pp

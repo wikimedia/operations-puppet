@@ -2,51 +2,51 @@
 # cache::varnish role classes
 
 # Virtual resources for the monitoring server
-@monitor_group { 'cache_text_eqiad':
+@monitoring::group { 'cache_text_eqiad':
     description => 'eqiad text Varnish',
 }
-@monitor_group { 'cache_text_esams':
+@monitoring::group { 'cache_text_esams':
     description => 'esams text Varnish',
 }
-@monitor_group { 'cache_text_ulsfo':
+@monitoring::group { 'cache_text_ulsfo':
     description => 'ulsfo text Varnish',
 }
 
-@monitor_group { 'cache_upload_eqiad':
+@monitoring::group { 'cache_upload_eqiad':
     description => 'eqiad upload Varnish',
 }
-@monitor_group { 'cache_upload_esams':
+@monitoring::group { 'cache_upload_esams':
     description => 'esams upload Varnish',
 }
-@monitor_group { 'cache_upload_ulsfo':
+@monitoring::group { 'cache_upload_ulsfo':
     description => 'ulsfo upload Varnish',
 }
 
-@monitor_group { 'cache_bits_eqiad':
+@monitoring::group { 'cache_bits_eqiad':
     description => 'eqiad bits Varnish',
 }
-@monitor_group { 'cache_bits_esams':
+@monitoring::group { 'cache_bits_esams':
     description => 'esams bits Varnish',
 }
-@monitor_group { 'cache_bits_ulsfo':
+@monitoring::group { 'cache_bits_ulsfo':
     description => 'ulsfo bits Varnish',
 }
 
-@monitor_group { 'cache_mobile_eqiad':
+@monitoring::group { 'cache_mobile_eqiad':
     description => 'eqiad mobile Varnish',
 }
-@monitor_group { 'cache_mobile_esams':
+@monitoring::group { 'cache_mobile_esams':
     description => 'esams mobile Varnish',
 }
-@monitor_group { 'cache_mobile_ulsfo':
+@monitoring::group { 'cache_mobile_ulsfo':
     description => 'ulsfo mobile Varnish',
 }
 
-@monitor_group { 'cache_parsoid_eqiad':
+@monitoring::group { 'cache_parsoid_eqiad':
     description => 'Parsoid caches eqiad',
 }
 
-@monitor_group { 'cache_misc_eqiad':
+@monitoring::group { 'cache_misc_eqiad':
     description => 'Misc caches eqiad',
 }
 

@@ -1,4 +1,4 @@
-@monitor_group { 'rcstream_eqiad': description => 'eqiad rcstream' }
+@monitoring::group { 'rcstream_eqiad': description => 'eqiad rcstream' }
 
 # == Class: role::rcstream
 #

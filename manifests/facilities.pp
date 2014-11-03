@@ -105,7 +105,7 @@ define monitor_pdu_3phase(
 }
 
 # Nagios monitoring
-@monitor_group { 'pdus':
+@monitoring::group { 'pdus':
     description => 'PDUs',
     }
 

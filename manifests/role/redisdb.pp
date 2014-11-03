@@ -2,7 +2,7 @@
 # db::redis
 
 # Virtual resource for the monitoring server
-@monitor_group { 'redis_eqiad':
+@monitoring::group { 'redis_eqiad':
     description => 'eqiad Redis',
 }
 

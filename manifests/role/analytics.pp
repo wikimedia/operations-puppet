@@ -1,6 +1,6 @@
 # analytics servers (RT-1985)
 
-@monitor_group { 'analytics_eqiad': description => 'analytics servers in eqiad' }
+@monitoring::group { 'analytics_eqiad': description => 'analytics servers in eqiad' }
 
 # == Class role::analytics
 # Base class for all analytics nodes.

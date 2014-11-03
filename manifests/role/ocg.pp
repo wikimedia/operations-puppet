@@ -3,7 +3,7 @@
 # Offline content generator for the MediaWiki collection extension
 
 # Virtual resources for the monitoring server
-@monitor_group { 'ocg_eqiad': description => 'offline content generator eqiad' }
+@monitoring::group { 'ocg_eqiad': description => 'offline content generator eqiad' }
 
 class role::ocg::production (
     $tmpfs_size = '512M', # size of tmpfs filesystem e.g. 512M
