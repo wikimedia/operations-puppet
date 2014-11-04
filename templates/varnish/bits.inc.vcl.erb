@@ -23,11 +23,6 @@ sub mangle_request {
 <% end -%>
 
 sub vcl_recv {
-	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
-	if (req.request == "POST") {
-		error 403 "HTTP method not allowed.";
-	}
-
 	/* transform the cookie in an http header */
 	if (req.http.Cookie ~ "hhvm=true") {
 		set req.http.X-Use-HHVM = 1;
@@ -44,12 +39,18 @@ sub vcl_recv {
 		if (req.url ~ "^/event\.gif") {
 			error 204;
 		}
-	/* For https-only wikis, the redirect from http to https for bits assets should occur
+
+		if (req.request == "POST") {
+			error 403 "HTTP method not allowed";
+		}
+
+		/* For https-only wikis, the redirect from http to https for bits assets should occur
 		in varnish instead of apache, since the apache redirect and mediawiki doesn't
 		vary by protocol. This can result in a redirect loop and assets not loading. */
 		if ( req.url ~ "^/(auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|donate|exec|fdc|grants|internal|movementroles|nomcom|office|otrs-wiki|searchcom|spcom|steward|wikimaniateam)\.wikimedia\.org/" && req.http.X-Forwarded-Proto != "https" ) {
 			error 301 "https://<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>" + req.url;
 		}
+
 <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 		if (req.url == "/geoiplookup") {
 			error 666 "geoiplookup";
