@@ -32,8 +32,8 @@ class mediawiki_singlenode(
 
     if !defined(Class['memcached']) {
         class { 'memcached':
-            memcached_ip   => '127.0.0.1',
-            memcached_size => $memcached_size,
+            ip   => '127.0.0.1',
+            size => $memcached_size,
         }
     }
 
