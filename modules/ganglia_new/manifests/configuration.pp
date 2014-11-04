@@ -83,7 +83,7 @@ class ganglia_new::configuration {
         'fundraising'   => {
             'name'      => 'Fundraising',
             'id'    => 35 },
-        'ceph'          => {
+        'ceph'          => { # Not used anymore
             'name'      => 'Ceph',
             'id'    => 36 },
         'parsoid'       => {
