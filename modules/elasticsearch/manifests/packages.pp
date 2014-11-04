@@ -3,6 +3,8 @@
 # Provisions Elasticsearch package and dependencies.
 #
 class elasticsearch::packages {
+    include ::java::tools
+
     if ! defined ( Package['openjdk-7-jdk'] ) {
         package { 'openjdk-7-jdk':
             ensure => 'present',
