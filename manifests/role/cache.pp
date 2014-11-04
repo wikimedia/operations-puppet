@@ -668,7 +668,7 @@ class role::cache {
     }
 
     class ssl::misc::certs {
-        install_certificate { ['star.wikimedia.org', 'star.wmfusercontent.org']: }
+        install_certificate { ['sni.wikimedia.org', 'star.wmfusercontent.org']: }
     }
 
     # This class sets up multiple sites with multiple SSL certs using SNI
@@ -680,7 +680,7 @@ class role::cache {
 
         protoproxy::localssl {
             'wikimedia':
-                proxy_server_cert_name => 'star.wikimedia.org',
+                proxy_server_cert_name => 'sni.wikimedia.org',
                 server_name            => 'wikimedia.org',
                 server_aliases         => ['*.wikimedia.org'],
                 default_server         => true;
@@ -694,7 +694,7 @@ class role::cache {
 
         monitor_service { 'https':
             description   => 'HTTPS',
-            check_command => "check_ssl_cert!star.wikimedia.org",
+            check_command => "check_ssl_cert!*.wikimedia.org",
         }
     }
 
