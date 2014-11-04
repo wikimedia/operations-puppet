@@ -37,11 +37,19 @@ class cxserver(
     # dictd-* packages for dictionary server.
     require_package('nodejs')
 
-    package { ['dictd',
-               'dict-freedict-eng-spa',
-               'dict-freedict-spa-eng',
-               'dict-freedict-eng-hin'
-              ]:
+    package { 'dictd':
+        ensure => present,
+    }
+
+    package { 'dict-freedict-eng-spa':
+        ensure => present,
+    }
+
+    package { 'dict-freedict-spa-eng':
+        ensure => present,
+    }
+
+    package { 'dict-freedict-eng-hin':
         ensure => present,
     }
 
