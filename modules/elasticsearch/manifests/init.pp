@@ -122,6 +122,13 @@ class elasticsearch($cluster_name,
         mode    => '0444',
         source  => 'puppet:///modules/elasticsearch/logrotate',
     }
+    file { '/usr/local/bin/jheapdump':
+        ensure  => file,
+        owner   => root,
+        group   => root,
+        mode    => '0555',
+        source  => 'puppet:///modules/elasticsearch/jheapdump',
+    }
     # Note that we don't notify the Elasticsearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.
     # So, for now at least, we'll be restarting it manually.
