@@ -67,9 +67,9 @@ define admin::sudo(
     #the final sudo file.  if bad, remove and throw an exception.
     #prepending all admin sudo w/ numeric to allow for easy before or after processing
     exec { "${name}_sudo_linting":
-        command    => "rm -f ${filepath} && false",
-        unless     => "test -e ${filepath} && /usr/sbin/visudo -cf ${filepath} || exit 0",
-        path       => '/bin:/usr/bin',
-        subscribe  => File[$filepath],
+        command   => "rm -f ${filepath} && false",
+        unless    => "test -e ${filepath} && /usr/sbin/visudo -cf ${filepath} || exit 0",
+        path      => '/bin:/usr/bin',
+        subscribe => File[$filepath],
     }
 }
