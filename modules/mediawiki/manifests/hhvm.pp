@@ -8,6 +8,8 @@ class mediawiki::hhvm {
     $max_threads = floor(to_bytes($::memorytotal) / to_bytes('120M'))
     include ::hhvm::admin
     include ::hhvm::monitoring
+    include ::hhvm::debug
+
     include ::mediawiki::users
 
 

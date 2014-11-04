@@ -1,0 +1,16 @@
+# /etc/gdb/gdbinit: global gdb configuration
+# This file was provisioned by Puppet.
+set verbose off
+set print pretty on
+set prompt (\033[32mgdb\033[0m)
+
+# Don't pause output
+set height 0
+set width 0
+
+# Load pretty printers for libstdc++
+python import sys; sys.path.insert(0, '/usr/share/gcc-4.8/python')
+add-auto-load-safe-path /usr/lib/x86_64-linux-gnu
+
+# Load utilities and pretty printers for HHVM
+source /usr/local/src/hhvm/hphp/tools/gdb/hhvm.py
