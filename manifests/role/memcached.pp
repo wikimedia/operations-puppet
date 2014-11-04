@@ -6,22 +6,21 @@
 }
 
 class role::memcached {
-
-    system::role { 'role::memcached': description => 'memcached server' }
+    system::role { 'role::memcached': }
 
     include standard
     include webserver::sysctl_settings
 
-    $memcached_size = $::realm ? {
-        'production' => '89088',
-        'labs'       => '3000',
-    }
+	$memcached_size = $::realm ? {
+		'production' => 89088,
+		'labs'       => 3000,
+	}
 
     class { '::memcached':
-        memcached_size => $memcached_size,
-        memcached_port => '11211',
-        version        => '1.4.15-0wmf1',
-        memcached_options => {
+        size          => $memcached_size,
+        port          => 11211,
+        version       => '1.4.15-0wmf1',
+        extra_options => {
             '-o' => 'slab_reassign',
             '-D' => ':',
         }

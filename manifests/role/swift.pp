@@ -354,8 +354,8 @@ class role::swift::proxy {
     }
 
     class { '::memcached':
-        memcached_size => '128',
-        memcached_port => '11211',
+        size => 128,
+        port => 11211,
     }
 
     monitor_service { 'swift-http-frontend':
