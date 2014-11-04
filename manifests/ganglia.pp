@@ -129,7 +129,7 @@ class ganglia {
             'fundraising'   => {
                 'name'      => 'Fundraising',
                 'ip_oct'    => '35' },
-            'ceph'          => {
+            'ceph'          => { # Not used anymore
                 'name'      => 'Ceph',
                 'ip_oct'    => '36' },
             'parsoid'       => {
