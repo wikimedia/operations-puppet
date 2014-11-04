@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+# Copyright 2014 Filippo Giunchedi <fgiunchedi@wikimedia.org>
+# Copyright 2014 Wikimedia Foundation
+
+set -e
+set -u
+
+pid=${1:-}
+path=${2:-}
+
+function usage_exit() {
+  echo "usage: $0 PID BASE_NAME"
+  echo "  capture a core from PID into BASE_NAME.core.PID"
+  echo "  and extract java heap dump into BASE_NAME.hprof.PID"
+  exit 1
+}
+
+if [ -z "$pid" -o -z "$path" ]; then
+  usage_exit
+fi
+
+jmap=${JMAP:-$(command -vp jmap)}
+gcore=${GCORE:-$(command -vp gcore)}
+java=${JAVA:-$(command -vp java)}
+
+if [ -z "$jmap" -o -z "$gcore" -o -z "$java" ]; then
+  echo "jmap or gcore or java not found"
+  usage_exit
+fi
+
+if [ -d "$path" ]; then
+  echo "BASE_NAME can't be a directory"
+  usage_exit
+fi
+
+core_path="${path}.core.${pid}"
+heap_path="${path}.hprof.${pid}"
+jmap_options="-dump:format=b,file=${heap_path}"
+# remove trailing ".${pid}"
+gcore_options="-o ${core_path%*.${pid}}"
+
+# XXX check disk space
+if [ ! -e "$core_path" ]; then
+  echo "dumping core from ${pid} into ${core_path}"
+  echo "WARNING: this file can get very big!"
+  echo "         make sure there is enough disk space available"
+  sudo ${gcore} ${gcore_options} ${pid}
+fi
+
+if [ ! -e "$heap_path" ]; then
+  echo "writing heap profile to ${heap_path}"
+  sudo ${jmap} ${jmap_options} "${java}" "${core_path}"
+fi
+
+echo "done."
+
+echo "NOTE: the core file at ${core_path}, if unused remove with:"
+echo "      sudo rm ${core_path}"
