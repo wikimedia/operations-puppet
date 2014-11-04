@@ -2,15 +2,15 @@ class openstack::adminscripts(
         $novaconfig) {
     include passwords::openstack::nova
     $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
-    $nova_controller_hostname = $novaconfig["controller_hostname"]
+    $nova_controller_hostname = $novaconfig['controller_hostname']
     $nova_region = $::site
 
     # Handy script to set up environment for commandline nova magic
     file { '/root/novaenv.sh':
-        content => template("openstack/novaenv.sh.erb"),
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
+        content => template('openstack/novaenv.sh.erb'),
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
     }
 
     # Script to cold-migrate instances between compute nodes
@@ -57,7 +57,7 @@ class openstack::adminscripts(
 
     file { '/root/novastats/novastats.py':
         ensure => present,
-        source => "puppet:///modules/openstack/novastats/novastats.py",
+        source => 'puppet:///modules/openstack/novastats/novastats.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
@@ -65,7 +65,7 @@ class openstack::adminscripts(
 
     file { '/root/novastats/saltstats':
         ensure => present,
-        source => "puppet:///modules/openstack/novastats/saltstats",
+        source => 'puppet:///modules/openstack/novastats/saltstats',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
@@ -73,7 +73,7 @@ class openstack::adminscripts(
 
     file { '/root/novastats/imagestats':
         ensure => present,
-        source => "puppet:///modules/openstack/novastats/imagestats",
+        source => 'puppet:///modules/openstack/novastats/imagestats',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
