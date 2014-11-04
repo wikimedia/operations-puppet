@@ -231,11 +231,13 @@ class phabricator (
     }
 
     #default location for phabricator tracked repositories
-    file { $phab_settings['repository.default-local-path']:
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'www-data',
-        require => Git::Install['phabricator/phabricator'],
+    if ($phab_settings['repository.default-local-path']) {
+        file { $phab_settings['repository.default-local-path']:
+            ensure  => directory,
+            owner   => 'www-data',
+            group   => 'www-data',
+            require => Git::Install['phabricator/phabricator'],
+        }
     }
 
     file { '/usr/local/sbin/phab_update_tag':
