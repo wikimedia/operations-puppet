@@ -62,7 +62,16 @@ class hhvm(
 ) {
     requires_ubuntu('>= trusty')
 
-    include ::hhvm::packages
+
+    ## Packages
+
+    package { 'hhvm':
+        ensure => present,
+    }
+
+    package { [ 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-wikidiff2' ]:
+        ensure => present,
+    }
 
 
     ## Settings
@@ -190,28 +199,6 @@ class hhvm(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-    }
-
-    file { '/usr/local/sbin/hhvm-dump-debug':
-        source => 'puppet:///modules/hhvm/hhvm-dump-debug',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        before => Service['hhvm'],
-    }
-
-    # Install HHVM's source files to /usr/local/src/hhvm.
-
-    file { '/usr/local/sbin/install-pkg-src':
-        source => 'puppet:///modules/hhvm/install-pkg-src',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
-    exec { '/usr/local/sbin/install-pkg-src hhvm':
-        unless  => '/usr/local/sbin/install-pkg-src --dry-run hhvm | grep -q up-to-date',
-        require => Package['dpkg-dev', 'hhvm'],
     }
 
 
