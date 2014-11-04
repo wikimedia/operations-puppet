@@ -1,0 +1,10 @@
+Code-Review+1: Hashar <hashar@free.fr>
+Verified+2: Hashar <hashar@free.fr>
+Verified+2: jenkins-bot
+Code-Review+2: Yuvipanda <yuvipanda@gmail.com>
+Code-Review+1: Zfilipin <zfilipin@wikimedia.org>
+Submitted-by: Yuvipanda <yuvipanda@gmail.com>
+Submitted-at: Tue, 04 Nov 2014 10:56:47 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/166046
+Project: operations/puppet
+Branch: refs/heads/production
