@@ -1,0 +1,21 @@
+#!/bin/bash
+# hhvmadm -- Shell helper for the HHVM admin site.
+#
+# Usage:
+#
+#   hhvmadm [ENDPOINT] [--KEY=VALUE ..]
+#
+# Example:
+#
+#   hhvmadm jemalloc-dump-prof --file=/tmp/dump.heap
+#
+case $1 in --help|-h|help)
+  grep -Po '(?<=^# ).*' $0 >&2 2>/dev/null
+  exit 1
+  ;;
+esac
+url="http://localhost:9002/${1#/}"
+shift
+params=()
+for arg in "${@##--}"; do params+=('--data-urlencode' $arg); done
+/usr/bin/curl -s -G "${params[@]}" "$url"

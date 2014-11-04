@@ -1,0 +1,96 @@
+# Ganglia metric module for HHVM health statistics.
+
+modules {
+    module {
+        name     = "hhvm_health"
+        language = "python"
+    }
+}
+
+collection_group {
+    collect_every  = 20
+    time_threshold = 60
+
+    metric {
+        name            = "HHVM.targetcache"
+        title           = "Target Cache"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.tcprofsize"
+        title           = "Translation Cache - Prof Size"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.units"
+        title           = "Units"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.tcfrozensize"
+        title           = "Translation Cache - Frozen Size"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.hhbcroarenacapac"
+        title           = "HHBC RO Arena Capacity"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.rds"
+        title           = "RDS"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.tchotsize"
+        title           = "Translation Cache - Hot Size"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.funcs"
+        title           = "Funcs"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.queued"
+        title           = "Queued"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.tcsize"
+        title           = "Translation Cache - Size"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.tccoldsize"
+        title           = "Translation Cache - Cold Size"
+        value_threshold = 1.0
+    }
+
+
+    metric {
+        name            = "HHVM.load"
+        title           = "Load"
+        value_threshold = 1.0
+    }
+}

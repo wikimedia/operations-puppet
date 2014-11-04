@@ -49,6 +49,24 @@ class hhvm::debug {
         mode   => '0555',
     }
 
+    # `hhvmadm` is a shell helper for cURLing endpoints of the HHVM
+    # admin server.
+    #
+    # Usage:
+    #  hhvmadm [ENDPOINT] [--KEY=VALUE ..]
+    #
+    # Example:
+    #  hhvmadm jemalloc-dump-prof --file=/tmp/dump.heap
+    #
+    # Invoke `hhvmadm` with no arguments to see a list of endpoints.
+
+    file { '/usr/local/bin/hhvmadm':
+        source => 'puppet:///modules/hhvm/debug/hhvmadm',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
 
     ## Source code
 
