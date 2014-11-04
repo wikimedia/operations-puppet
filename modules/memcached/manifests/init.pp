@@ -1,61 +1,81 @@
-# memcached/init.pp
-
-class memcached (
-    $memcached_size = '2000',
-    $memcached_port = '11000',
-    $memcached_ip = '0.0.0.0',
-    $version = "present",
-    $memcached_options = {},
-    $pin=false)
-{
-
-    class { "memcached::config":
-        memcached_size => "$memcached_size",
-        memcached_port => "$memcached_port",
-        memcached_ip => "$memcached_ip",
-        memcached_options => $memcached_options
+# == Class: memcached
+#
+# Memcached is a general-purpose, in-memory key-value store.
+#
+# === Parameters
+#
+# [*size*]
+#   Instance size in megabytes (default: 2000).
+#
+# [*port*]
+#   Port to listen on (default: 11000).
+#
+# [*ip*]
+#   IP address to listen on (default: '0.0.0.0').
+#
+# [*version*]
+#   Package version to install, or 'present' for any version
+#   (default: 'present').
+#
+# [*extra_options*]
+#   A hash of additional command-line options and values.
+#
+# === Examples
+#
+#  class { '::memcached':
+#    size => 100,
+#    port => 11211,
+#    ip   => '127.0.0.1',
+#  }
+#
+class memcached(
+    $size          = 2000,
+    $port          = 11000,
+    $ip            = '0.0.0.0',
+    $version       = 'present',
+    $extra_options = {},
+) {
+    package { 'memcached':
+        ensure => $version,
+        before => Service['memcached'],
     }
 
-    if ( $pin ) {
-        apt::pin { 'memcached':
-            pin      => 'release o=Ubuntu',
-            priority => '1001',
-            before   => Package['memcached'],
-        }
+    file { '/etc/memcached.conf':
+        content => template('memcached/memcached.conf.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        before  => Service['memcached'],
     }
 
-    package { memcached:
-        ensure => $version;
+    file { '/etc/default/memcached':
+        source => 'puppet:///modules/memcached/memcached.default',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        before => Service['memcached'],
     }
 
-    service { memcached:
-        require => Package[memcached],
-        enable     => true,
-        ensure => running;
+    service { 'memcached':
+        enable  => true,
+        ensure  => running,
     }
 
-    # prefer a direct check if memcached is not running on localhost
-    # no point in running this over nrpe for e.g. our memcached cluster
-    if ($memcached_ip == '127.0.0.1') {
+    # Prefer a direct check if memcached is not running on localhost.
+
+    if $memcached_ip == '127.0.0.1' {
         nrpe::monitor_service { 'memcached':
             description   => 'Memcached',
-            nrpe_command  => "/usr/lib/nagios/plugins/check_tcp -H $memcached_ip -p $memcached_port",
+            nrpe_command  => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
         }
     } else {
         monitoring::service { 'memcached':
             description   => 'Memcached',
-            check_command => "check_tcp!$memcached_port",
+            check_command => "check_tcp!${port}",
         }
     }
 
     if hiera('has_ganglia', true) {
         include ::memcached::ganglia
-    }
-}
-
-class memcached::disabled {
-    service { memcached:
-        enable  => false,
-        ensure  => stopped;
     }
 }

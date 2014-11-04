@@ -9,10 +9,15 @@ class openstack::openstack-manager(
         class {'webserver::php5': ssl => true; }
     }
 
-    if !defined(Class['memcached']) {
-        class { 'memcached':
-            memcached_ip => '127.0.0.1',
-            pin          => true;
+    if !defined(Class["memcached"]) {
+        apt::pin { 'memcached':
+            pin      => 'release o=Ubuntu',
+            priority => '1001',
+            before   => Package['memcached'],
+        }
+
+        class { "memcached":
+            ip  => '127.0.0.1',
         }
     }
 

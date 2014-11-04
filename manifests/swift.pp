@@ -164,8 +164,8 @@ class swift::proxy(
 
     # use a generic (parameterized) memcached class
     class { 'memcached':
-        memcached_size => '128',
-        memcached_port => '11211',
+        size => 128,
+        port => 11211,
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/wmf/':
