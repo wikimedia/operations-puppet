@@ -450,6 +450,9 @@ funnel	pt.wikimedia.org	http://wikimedia.pt
 
 rewrite	uk.wikimedia.org	https://wikimedia.org.uk/
 
+rewrite	ve.wikimedia.org	http://wikimedia.org.ve
+
+
 # Wikimania
 rewrite	*wikimania.org	//wikimania2015.wikimedia.org
 rewrite	*wikimania.com	//wikimania2015.wikimedia.org
