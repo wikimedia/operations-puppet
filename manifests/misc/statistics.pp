@@ -762,6 +762,72 @@ class misc::statistics::limn::mobile_data_sync {
     }
 }
 
+
+# Class: misc::statistics::limn::flow_data_sync
+#
+# Sets up daily cron jobs to run a script which
+# generates csv datafiles from flow and event logging data
+# then rsyncs those files to stat1001 so they can be served publicly
+class misc::statistics::limn::flow_data_sync {
+    # TODO: this depends on misc::statistics::limn::mobile_data_sync being
+    #       active so that generate.py exists there to execute.  Puppet help
+    #       is needed as I'm not sure what the right way is.  Sorry for the copy paste
+    include misc::statistics::limn::mobile_data_sync
+    include misc::statistics::base
+    include passwords::mysql::research
+
+    $working_path      = $misc::statistics::base::working_path
+
+    $source_dir        = "${working_path}/limn-mobile-data"
+    $config_dir        = "${working_path}/limn-flow-data"
+    $command           = "${source_dir}/generate.py"
+    $config            = "${config_dir}/flow/"
+    $mysql_credentials = "${working_path}/.my.cnf.research"
+    $rsync_from        = "${working_path}/limn-public-data"
+    $output            = "${rsync_from}/flow/datafiles"
+    $log               = '/var/log/limn-flow-data.log'
+    $gerrit_repo       = 'https://gerrit.wikimedia.org/r/p/analytics/limn-flow-data.git'
+    $user              = $misc::statistics::user::username
+
+    $db_user           = $passwords::mysql::research::user
+    $db_pass           = $passwords::mysql::research::pass
+
+    git::clone { 'analytics/limn-flow-data':
+        ensure    => 'latest',
+        directory => $config_dir,
+        origin    => $gerrit_repo,
+        owner     => $user,
+        require   => [User[$user]],
+    }
+
+    file { $log:
+        ensure  => 'present',
+        owner   => $user,
+        group   => $user,
+        mode    => '0660',
+    }
+
+    file { $mysql_credentials:
+        owner   => $user,
+        group   => $user,
+        mode    => '0600',
+        content => template('misc/mysql-config-research.erb'),
+    }
+
+    file { [$config_dir, $rsync_from, $output]:
+        ensure => 'directory',
+        owner  => $user,
+        group  => wikidev,
+        mode   => '0775',
+    }
+
+    cron { 'rsync_flow_apps_stats':
+        command => "python ${command} ${config} >> ${log} 2>&1 && /usr/bin/rsync -rt ${rsync_from}/* stat1001.wikimedia.org::www/limn-public-data/",
+        user    => $user,
+        minute  => 0,
+    }
+}
+
 # == Class misc::statistics::geowiki::params
 # Parameters for geowiki that get used outside this file
 class misc::statistics::geowiki::params {
