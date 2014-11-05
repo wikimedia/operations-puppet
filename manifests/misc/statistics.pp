@@ -603,6 +603,9 @@ class misc::statistics::rsync::jobs::webrequest {
 class misc::statistics::rsync::jobs::eventlogging {
     include misc::statistics::base
     $working_path = $misc::statistics::base::working_path
+    # Any logs older than this will be pruned by
+    # the rsync_job define.
+    $retention_days = 90
 
     file { "${working_path}/eventlogging":
         ensure  => 'directory',
@@ -613,8 +616,10 @@ class misc::statistics::rsync::jobs::eventlogging {
 
     # eventlogging logs from vanadium
     misc::statistics::rsync_job { 'eventlogging':
-        source      => 'vanadium.eqiad.wmnet::eventlogging/archive/*.gz',
-        destination => "${working_path}/eventlogging/archive",
+        source         => 'vanadium.eqiad.wmnet::eventlogging/archive/*.gz',
+        destination    => "${working_path}/eventlogging/archive",
+        retention_days => $retention_days,
+
     }
 }
 
@@ -626,10 +631,11 @@ class misc::statistics::rsync::jobs::eventlogging {
 # on both $source and $destination hosts.
 #
 # Parameters:
-#    source      - rsync source argument (including hostname)
-#    destination - rsync destination argument
+#    source         - rsync source argument (including hostname)
+#    destination    - rsync destination argument
+#    retention_days - If set, a cron will be installed to remove files older than this many days from $destination.
 #
-define misc::statistics::rsync_job($source, $destination) {
+define misc::statistics::rsync_job($source, $destination, $retention_days = undef) {
     require misc::statistics::user
 
     # ensure that the destination directory exists
@@ -648,6 +654,19 @@ define misc::statistics::rsync_job($source, $destination) {
         user    => $misc::statistics::user::username,
         hour    => 8,
         minute  => 0,
+    }
+
+    $prune_old_logs_ensure = $retention_days ? {
+        undef   => 'absent',
+        default => 'present',
+    }
+
+    cron { "prune_old_${name}_logs":
+        ensure  => $prune_old_logs_ensure,
+        command => "/usr/bin/find ${destination} -ctime +${retention_days} -exec rm {} \;"
+        user    => $misc::statistics::user::username,
+        minute  => 0,
+        hour    => 9,
     }
 }
 
