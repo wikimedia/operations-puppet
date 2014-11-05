@@ -2610,6 +2610,7 @@ node 'terbium.eqiad.wmnet' {
     include generic::wikidev-umask
     include misc::deployment::common_scripts
     include role::noc
+    include role::mediawiki::searchmonitor
 
     $domain_search = [
         'wikimedia.org',
