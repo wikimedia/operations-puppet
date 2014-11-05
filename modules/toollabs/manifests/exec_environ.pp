@@ -134,6 +134,7 @@ class toollabs::exec_environ {
         'python-flask-login',
         'python-flask-oauth',
         'python-flup',
+        'python-gdal',
         'python-gdbm',
         'python-genshi',               # Bug #48863.
         'python-genshi-doc',           # Bug #48863.
