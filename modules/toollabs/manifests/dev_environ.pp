@@ -18,16 +18,22 @@
 #
 class toollabs::dev_environ {
 
-    # Previously we installed libmariadbclient-dev, but that causes
-    # dependency issues on Trusty.  libmariadbclient-dev formerly
-    # provided libmysqlclient-dev, but not in trusty.
-    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759309
     if ubuntu_version('>= trusty') {
-        package { 'libmysqlclient-dev':
+        package { [
+            # Previously we installed libmariadbclient-dev, but that causes
+            # dependency issues on Trusty.  libmariadbclient-dev formerly
+            # provided libmysqlclient-dev, but not in trusty.
+            # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759309
+            'libmysqlclient-dev',
+            'libboost-python1.55-dev',
+        ]:
             ensure  => present,
         }
     } else {
-        package { 'libmariadbclient-dev':
+        package { [
+            'libmariadbclient-dev',
+            'libboost-python1.55-dev',
+        ]:
             ensure  => present,
         }
     }
@@ -46,7 +52,6 @@ class toollabs::dev_environ {
         'gcj-jdk',                     # Bug 56995
         'ipython',                     # Bug 56995
         'joe',                         # Bug 62236.
-        'libboost-python1.48-dev',
         'libdjvulibre-dev',            # Bug 56972
         'libdmtx-dev',                 # Bug #53867.
         'libfcgi-dev',                 # Bug #52902.
