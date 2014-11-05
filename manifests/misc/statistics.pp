@@ -996,20 +996,14 @@ class misc::statistics::geowiki::jobs::monitoring {
 # password to access the research database
 # 'researchers' group has read access
 class misc::statistics::researchdb_password {
-
     include passwords::mysql::research
 
-    file { '/srv/passwords':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'researchers',
-        mode   => '0555',
-    }
-
-    file { '/srv/passwords/researchdb':
-        owner   => 'root',
-        group   => 'researchers',
-        mode    => '0440',
-        content => "user: ${::passwords::mysql::research::user}\npass: ${::passwords::mysql::research::pass}\n"
+    # This file will render at
+    # /etc/mysql/conf.d/research-client.cnf.
+    mysql::config::client { 'research':
+        user  => $::passwords::mysql::research::user,
+        pass  => $::passwords::mysql::research::pass,
+        group => 'researchers',
+        mode  => '0440',
     }
 }
