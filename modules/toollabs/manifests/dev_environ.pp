@@ -76,7 +76,6 @@ class toollabs::dev_environ {
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
         'npm',
-        'p7zip-full', # requested by Betacommand to extract files using 7zip
         'pastebinit',
         'pep8',                        # Bug 57863
         'pyflakes',                    # Bug 57863
