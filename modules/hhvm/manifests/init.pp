@@ -235,4 +235,13 @@ class hhvm(
         mode   => '0755',
         before => Service['hhvm'],
     }
+
+
+    ## Kernel parameters
+
+    sysctl::parameters { 'hhvm':
+        # Core filename pattern: 'core.<host>.<executable>.<pid>.<timestamp>'
+        values => { 'kernel.core_pattern' => = 'core.%h.%e.%p.%t', },
+    }
+
 }
