@@ -136,7 +136,6 @@ class hhvm(
                 port                   => 9000,
                 type                   => 'fastcgi',
                 gzip_compression_level => 0,
-                graceful_shutdown_wait => 5,
             },
         },
     }
