@@ -76,4 +76,28 @@ class base::environment {
         mode    => '0444',
         content => "${::realm}\n",
     }
+
+
+    ### Core dumps
+
+    # Write core dumps to /var/tmp/core/core.<host>.<executable>.<pid>.<timestamp>.
+    # Remove core dumps with atime > one week.
+
+    file { '/var/tmp/core':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '1773',
+    }
+
+    sysctl::parameters { 'core_dumps':
+        values  => { 'kernel.core_pattern' => '/var/tmp/core/core.%h.%e.%p.%t', },
+        require => File['/var/tmp/core'],
+    }
+
+    tidy { '/var/tmp/core':
+        age     => '1w',
+        recurse => 1,
+        matches => 'core.*',
+    }
 }
