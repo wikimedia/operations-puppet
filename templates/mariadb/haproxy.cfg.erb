@@ -5,7 +5,7 @@ global
     daemon
     user haproxy
     group haproxy
-    stats socket /tmp/haproxy.socket user haproxy group haproxy mode 600 level admin
+    stats socket /tmp/haproxy.socket mode 666 level user
 
 defaults
     #log global
