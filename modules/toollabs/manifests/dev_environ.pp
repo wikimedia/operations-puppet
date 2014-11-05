@@ -33,6 +33,7 @@ class toollabs::dev_environ {
         package { [
             'libmariadbclient-dev',
             'libboost-python1.48-dev',
+            'libvips-dev', # This is our own custom package, doesn't work on trusty yet.
         ]:
             ensure  => latest,
         }
@@ -65,7 +66,6 @@ class toollabs::dev_environ {
         'libsparsehash-dev',           # Bug 56995
         'libtiff4-dev', # bug 52717
         'libtool',
-        'libvips-dev',
         'libxml2-dev',
         'libxslt1-dev',
         'libzbar-dev',                 # Bug 56996
