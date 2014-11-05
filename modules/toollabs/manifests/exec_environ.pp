@@ -327,7 +327,7 @@ class toollabs::exec_environ {
         'mdbtools',                    # Bug #48805.
         'melt',                        # Bug #69365
         'openbabel',                   # Bug #66995
-        'p7zip',
+        'p7zip-full',
         'pdf2svg',                     # Bug #68092.
         'pdftk',                       # Bug #65048.
         'phantomjs',                   # Bug #66928
