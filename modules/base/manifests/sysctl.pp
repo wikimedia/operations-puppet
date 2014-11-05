@@ -27,6 +27,9 @@ class base::sysctl {
 
     sysctl::parameters { 'wikimedia base':
         values => {
+            # Core filename pattern: 'core.<host>.<executable>.<pid>.<timestamp>'
+            'kernel.core_pattern'           => 'core.%h.%e.%p.%t',
+
             # Increase TCP max buffer size
             'net.core.rmem_max'             => 16777216,
             'net.core.wmem_max'             => 16777216,
