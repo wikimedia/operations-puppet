@@ -2,7 +2,7 @@
 # This file was provisioned by Puppet.
 set verbose off
 set print pretty on
-set prompt (\033[32mgdb\033[0m)
+set prompt (\001\033[32m\002gdb\001\033[0m\002)\040
 
 # Don't pause output
 set height 0
