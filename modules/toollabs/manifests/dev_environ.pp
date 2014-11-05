@@ -27,14 +27,14 @@ class toollabs::dev_environ {
             'libmysqlclient-dev',
             'libboost-python1.54-dev',
         ]:
-            ensure  => present,
+            ensure  => latest,
         }
     } else {
         package { [
             'libmariadbclient-dev',
             'libboost-python1.48-dev',
         ]:
-            ensure  => present,
+            ensure  => latest,
         }
     }
 
