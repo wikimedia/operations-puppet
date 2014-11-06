@@ -23,7 +23,7 @@
 #  }
 #
 class txstatsd($settings) {
-    package { [ 'python-txstatsd', 'python-twisted-web' ]: }
+    package { [ 'python-txstatsd', 'python-twisted-web', 'graphite-carbon' ]: }
 
     file { '/etc/init/txstatsd.conf':
         source => 'puppet:///modules/txstatsd/txstatsd.conf',
