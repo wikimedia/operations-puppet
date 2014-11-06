@@ -75,7 +75,7 @@ class restbase(
         notify  => Service['restbase'],
     }
 
-    file { '/usr/lib/parsoid':
+    file { '/usr/lib/restbase':
         ensure => directory,
         owner  => 'restbase',
         group  => 'restbase',
@@ -86,6 +86,7 @@ class restbase(
     file { '/usr/lib/restbase/deploy':
         ensure => link,
         target => '/srv/deployment/restbase/deploy',
+        require => File['/usr/lib/restbase'],
         before => Service['restbase'],
     }
 
