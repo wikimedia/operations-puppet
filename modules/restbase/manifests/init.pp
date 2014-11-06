@@ -23,13 +23,13 @@
 #   GELF logging port. Default: 12201
 #
 class restbase(
-    $cassandra_user,
-    $cassandra_password,
+    $cassandra_user = 'cassandra',
+    $cassandra_password = 'cassandra',
     $seeds          = [$::ipaddress],
     $cassandra_defaultConsistency = 'localQuorum',
     $port           = 7231,
     $logstash_host  = 'localhost',
-    $logstash_port  = '12201',
+    $logstash_port  = 12201,
 ) {
     ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
