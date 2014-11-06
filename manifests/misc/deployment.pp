@@ -213,7 +213,7 @@ class misc::deployment::l10nupdate {
     require misc::deployment::scap_scripts
 
     cron { 'l10nupdate':
-        ensure  => absent,
+        ensure  => present,
         command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
         user    => 'l10nupdate',
         hour    => 2,
