@@ -3,8 +3,7 @@
 ### puppet:///modules/ocg/logrotate
 #####################################################################
 
-/var/log/ocg.log {
-       daily
+/srv/deployment/ocg/log/ocg.log {
        notifempty
        dateext
        compress

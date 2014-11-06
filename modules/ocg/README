@@ -15,6 +15,7 @@ The system is designed to have an LVS balancer in front of it (any
 front end can respond to any request -- excepting document download.)
 
 Configuration is under /etc/ocg
-Logs are under /var/log/ocg
+Logs are under /srv/deployment/ocg/log
+(moved from /var/log/ocg due to a small root partition size)
 
 More details: https://www.mediawiki.org/wiki/Extension:Collection
