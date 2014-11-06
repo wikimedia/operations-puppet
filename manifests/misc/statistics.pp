@@ -762,7 +762,7 @@ class misc::statistics::limn::data {
     }
 
     # Make sure these are writeable by $user.
-    file { [$log_dir, $source_dir, $public_data_dir]:
+    file { [$log_dir, $source_dir, $public_dir]:
         ensure => 'directory',
         owner  => $user,
         group  => wikidev,
