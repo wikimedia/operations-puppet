@@ -358,6 +358,14 @@ class role::swift::proxy {
         memcached_port => '11211',
     }
 
+    class { '::txstatsd':
+        settings => {
+            statsd => {
+                'carbon-cache-host' => "${::swift_new::params::graphite_host}",
+            },
+        },
+    }
+
     monitor_service { 'swift-http-frontend':
         description   => 'Swift HTTP frontend',
         check_command => "check_http_url!${swift_check_http_host}!/monitoring/frontend",
@@ -384,6 +392,14 @@ class role::swift::storage {
     }
     include ::swift_new::container_sync
     include ::swift_new::storage::monitoring
+
+    class { '::txstatsd':
+        settings => {
+            statsd => {
+                'carbon-cache-host' => "${::swift_new::params::graphite_host}",
+            },
+        },
+    }
 
     $all_drives = hiera('swift_storage_drives')
 
