@@ -5,13 +5,17 @@
 class mediawiki::hhvm {
     requires_ubuntu('>= trusty')
 
-    $max_threads = floor(to_bytes($::memorytotal) / to_bytes('120M'))
     include ::hhvm::admin
     include ::hhvm::monitoring
     include ::hhvm::debug
 
     include ::mediawiki::users
 
+
+    # Derive HHVM's thread count by dividing RAM by 120 MiB.
+    # This works out to be 100 threads on 12 GiB servers and
+    # 536 threads on 64 GiB servers.
+    $max_threads = floor(to_bytes($::memorytotal) / to_bytes('120M'))
 
     class { '::hhvm':
         user          => 'apache',
@@ -78,16 +82,13 @@ class mediawiki::hhvm {
     }
 
 
-    # Once a day, check the uptime of HHVM. If HHVM has been running
-    # for more than a day, restart it. We do this as a form of insurance
-    # against subtle memory leaks. A graceful restart once a day is
-    # nicer than gradual memory exhaustion followed by a visit from
-    # the OOM killer.
-    # This is disabled at the moment while we understand:
-    #  a) If it's needed b) how stable hhvm is.
-    cron { 'periodic_hhvm_restart':
-        ensure  => absent,
-        command => '/bin/ps -C hhvm -o etime= | /bin/grep -q - && /sbin/initctl restart hhvm',
-        hour    => fqdn_rand(23, 'periodic_hhvm_restart'),
+    # Ensure that jemalloc heap profiling is disabled. This means that
+    # if you want to capture heap profiles, you have to disable Puppet.
+    # But this way we can be sure we're not forgetting to turn it off.
+
+    exec { 'ensure_jemalloc_prof_deactivated':
+        command => '/usr/bin/curl -fs http://localhost:9002/jemalloc-prof-deactivate',
+        unless  => '/usr/bin/curl -fs http://localhost:9002/jemalloc-stats-print | grep -Pq "opt.prof(_active)?: false"',
+        require => Service['hhvm', 'apache2'],
     }
 }
