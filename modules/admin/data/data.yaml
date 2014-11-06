@@ -55,7 +55,7 @@ groups:
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
-      jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, edenhill, jkatz]
+      jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -239,10 +239,6 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid reload']
-  analytics-test-users:
-      gid: 737
-      description: Allows unpriviledged access to a few analytics testing nodes.
-      members: [edenhill]
   analytics-roots:
       gid: 738
       description: Full root access to Analytics Cluster nodes.
