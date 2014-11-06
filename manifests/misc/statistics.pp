@@ -811,9 +811,6 @@ define misc::statistics::limn::data::generate() {
     # log file for the generate cron job
     $log               = "${misc::statistics::limn::data::log_dir}/limn-${title}-data.log"
 
-    # I'm not totally sure what this is...
-    $output            = "${rsync_from}/datafiles"
-
     if !defined(Git::Clone["analytics/limn-${title}-data"]) {
         git::clone { "analytics/limn-${title}-data":
             ensure    => 'latest',
@@ -822,13 +819,6 @@ define misc::statistics::limn::data::generate() {
             owner     => $user,
             require   => [User[$user]],
         }
-    }
-
-    file { [$rsync_from, $output]:
-        ensure => 'directory',
-        owner  => $misc::statistics::limn::data::user,
-        group  => wikidev,
-        mode   => '0775',
     }
 
     # This will generate data into $public_dir/${title} (if configured correctly)
