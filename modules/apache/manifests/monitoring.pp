@@ -9,6 +9,9 @@ class apache::monitoring {
     include ::apache::mod::status
     include ::ganglia
 
+    # Use `links -dump http://127.0.0.1/server-status` to generate
+    # an Apache status report.
+    require_package('links')
 
     diamond::collector { 'Httpd':
         ensure   => absent,
