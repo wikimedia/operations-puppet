@@ -174,6 +174,7 @@ class ocg (
     file { $log_dir:
         ensure  => directory,
         # matches /var/log
+        mode    => '0775',
         owner   => 'root',
         group   => 'syslog',
     }
