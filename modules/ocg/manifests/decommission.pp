@@ -7,7 +7,8 @@
 class ocg::decommission (
     $temp_dir = '/srv/deployment/ocg/tmp',
     $output_dir = '/srv/deployment/ocg/output',
-    $postmortem_dir = '/srv/deployment/ocg/postmortem'
+    $postmortem_dir = '/srv/deployment/ocg/postmortem',
+    $log_dir = '/srv/deployment/ocg/log'
 ) {
     service { 'ocg':
         ensure   => stopped,
@@ -20,7 +21,10 @@ class ocg::decommission (
 
     file { [
             '/etc/init/ocg.conf',
-            '/etc/ocg'
+            '/etc/ocg',
+            '/etc/logrotate.d/ocg',
+            '/etc/cron.hourly/logrotate.ocg',
+            '/var/log/ocg',
         ]:
         ensure  => absent,
         purge   => true,
@@ -45,12 +49,10 @@ class ocg::decommission (
         force   => true,
     }
 
-    cron { "Clean up OCG output directory":
+    file { $log_dir:
         ensure  => absent,
-    }
-
-    cron { "Clean up OCG postmortem directory":
-        ensure  => absent,
+        purge   => true,
+        force   => true,
     }
 
     package { 'ocg/ocg':

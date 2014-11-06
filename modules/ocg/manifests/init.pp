@@ -23,7 +23,8 @@ class ocg (
     $graylog_port = 12201,
     $temp_dir = '/srv/deployment/ocg/tmp',
     $output_dir = '/srv/deployment/ocg/output',
-    $postmortem_dir = '/srv/deployment/ocg/postmortem'
+    $postmortem_dir = '/srv/deployment/ocg/postmortem',
+    $log_dir = '/srv/deployment/ocg/log'
 ) {
     package { 'ocg/ocg':
         provider => 'trebuchet',
@@ -170,6 +171,19 @@ class ocg (
         group   => 'ocg',
     }
 
+    file { $log_dir:
+        ensure  => directory,
+        # matches /var/log
+        owner   => 'root',
+        group   => 'syslog',
+    }
+
+    # help unfamiliar sysadmins find the logs
+    file { '/var/log/ocg':
+        ensure  => link,
+        target  => $log_dir,
+    }
+
     # makes some basic logfiles readable for non-roots
     # in labs this is used by default in role/labs
     if $::realm == 'production' {
@@ -185,6 +199,13 @@ class ocg (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
+    }
+
+    # run logrotate hourly, instead of daily, to ensure that log size
+    # limits are enforced more-or-less accurately
+    file { '/etc/cron.hourly/logrotate.ocg':
+        ensure  => link,
+        target  => '/etc/cron.daily/logrotate',
     }
 
     rsyslog::conf { 'ocg':
