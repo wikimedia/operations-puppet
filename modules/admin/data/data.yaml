@@ -219,7 +219,7 @@ groups:
             'ALL = (hive)  NOPASSWD: ALL']
   eventlogging-admins:
     gid: 733
-    description: Login access for eventlogging investigation
+    description: Login access for EventLogging investigation
     members: [nuria, qchris, milimetric]
   labmon-roots:
     gid: 734
@@ -246,7 +246,7 @@ groups:
       privs: ['ALL = NOPASSWD: ALL']
   eventlogging-roots:
     gid: 739
-    description: Full root on eventlogging servers.
+    description: Full root on EventLogging servers.
     members: [qchris]
     privs: ['ALL = NOPASSWD: ALL']
 
