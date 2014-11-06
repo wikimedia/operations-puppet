@@ -95,7 +95,6 @@ node 'analytics1003.eqiad.wmnet' {
         groups => [
             'analytics-roots',
             'analytics-admins',
-            'analytics-test-users'
         ],
     }
     include standard
