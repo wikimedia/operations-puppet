@@ -768,6 +768,13 @@ class misc::statistics::limn::data {
         group  => wikidev,
         mode   => '0775',
     }
+
+    # Rsync anything generated in $public_dir to $rsync_to
+    cron { "rsync_limn_public_data":
+        command => "/usr/bin/rsync -rt ${public_dir}/* ${rsync_to}",
+        user    => $user,
+        minute  => 15,
+    }
 }
 
 
@@ -804,10 +811,6 @@ define misc::statistics::limn::data::generate() {
     # log file for the generate cron job
     $log               = "${misc::statistics::limn::data::log_dir}/limn-${title}-data.log"
 
-    # Rsync from $public_dir/${title}
-    $rsync_from        = "${misc::statistics::limn::data::public_dir}/${title}"
-    $rsync_to          = $misc::statistics::limn::data::rsync_to
-
     # I'm not totally sure what this is...
     $output            = "${rsync_from}/datafiles"
 
@@ -828,8 +831,9 @@ define misc::statistics::limn::data::generate() {
         mode   => '0775',
     }
 
-    cron { "rsync_${title}_apps_stats":
-        command => "python ${command} ${config_dir} >> ${log} 2>&1 && /usr/bin/rsync -rt ${rsync_from} ${rsync_to}",
+    # This will generate data into $public_dir/${title} (if configured correctly)
+    cron { "generate_${title}_limn_public_data":
+        command => "python ${command} ${config_dir} >> ${log}",
         user    => $user,
         minute  => 0,
     }
