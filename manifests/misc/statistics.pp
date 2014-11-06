@@ -762,7 +762,7 @@ class misc::statistics::limn::data {
     }
 
     # Make sure these are writeable by $user.
-    file { [$log_dir, $source_dir, $public_dir]:
+    file { [$log_dir, $public_dir]:
         ensure => 'directory',
         owner  => $user,
         group  => wikidev,
@@ -821,7 +821,7 @@ define misc::statistics::limn::data::generate() {
         }
     }
 
-    file { [$source_dir, $rsync_from, $output]:
+    file { [$rsync_from, $output]:
         ensure => 'directory',
         owner  => $misc::statistics::limn::data::user,
         group  => wikidev,
