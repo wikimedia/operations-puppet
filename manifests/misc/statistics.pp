@@ -709,14 +709,14 @@ class misc::statistics::cron_blog_pageviews {
 # then rsyncs those files to stat1001 so they can be served publicly
 class misc::statistics::limn::mobile_data_sync {
     include misc::statistics::base
-    include passwords::mysql::research
+    include misc::statistics::stats_researchdb_password
 
     $working_path      = $misc::statistics::base::working_path
 
     $source_dir        = "${working_path}/limn-mobile-data"
     $command           = "${source_dir}/generate.py"
     $config            = "${source_dir}/mobile/"
-    $mysql_credentials = "${working_path}/.my.cnf.research"
+    $mysql_credentials = '/etc/mysql/conf.d/stats-research-client.cnf'
     $rsync_from        = "${working_path}/limn-public-data"
     $output            = "${rsync_from}/mobile/datafiles"
     $log               = '/var/log/limn-mobile-data.log'
@@ -741,11 +741,12 @@ class misc::statistics::limn::mobile_data_sync {
         mode    => '0660',
     }
 
-    file { $mysql_credentials:
-        owner   => $user,
-        group   => $user,
-        mode    => '0600',
-        content => template('misc/mysql-config-research.erb'),
+    # This path is used in the limn-mobile-data config.
+    # Symlink this until they change it.
+    # https://github.com/wikimedia/analytics-limn-mobile-data/blob/2321a6a0976b1805e79fecd495cf12ed7c6565a0/mobile/config.yaml#L5
+    file { "${working_path}/.my.cnf.research":
+        ensure => 'link',
+        target => $mysql_credentials,
     }
 
     file { [$source_dir, $rsync_from, $output]:
@@ -1023,6 +1024,20 @@ class misc::statistics::researchdb_password {
         user  => $::passwords::mysql::research::user,
         pass  => $::passwords::mysql::research::pass,
         group => 'researchers',
+        mode  => '0440',
+    }
+}
+
+# Same as above, but renders a file readable by the stats user.
+class misc::statistics::stats_researchdb_password {
+    include misc::statistics::user
+
+    # This file will render at
+    # /etc/mysql/conf.d/stats-research-client.cnf.
+    mysql::config::client { 'stats-research':
+        user  => $::passwords::mysql::research::user,
+        pass  => $::passwords::mysql::research::pass,
+        group => $misc::statistics::user::username,
         mode  => '0440',
     }
 }
