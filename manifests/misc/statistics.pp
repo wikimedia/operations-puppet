@@ -809,7 +809,7 @@ define misc::statistics::limn::data::generate() {
     $rsync_to          = $misc::statistics::limn::data::rsync_to
 
     # I'm not totally sure what this is...
-    $output            = "${rsync_from}/mobile/datafiles"
+    $output            = "${rsync_from}/datafiles"
 
     if !defined(Git::Clone["analytics/limn-${title}-data"]) {
         git::clone { "analytics/limn-${title}-data":
@@ -829,7 +829,7 @@ define misc::statistics::limn::data::generate() {
     }
 
     cron { "rsync_${title}_apps_stats":
-        command => "python ${command} ${config} >> ${log} 2>&1 && /usr/bin/rsync -rt ${rsync_from} ${rsync_to}/",
+        command => "python ${command} ${config_dir} >> ${log} 2>&1 && /usr/bin/rsync -rt ${rsync_from} ${rsync_to}",
         user    => $user,
         minute  => 0,
     }
