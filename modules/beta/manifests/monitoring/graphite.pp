@@ -2,7 +2,7 @@
 # Sets up graphite based icinga checks for all of betalabs
 class beta::monitoring::graphite {
 
-    monitor::graphite_threshold { 'betalabs-puppet-fail':
+    monitoring::graphite_threshold { 'betalabs-puppet-fail':
         from          => '10min',
         description   => 'BetaLabs: Puppet failure events',
         metric        => 'deployment-prep.*.puppetagent.failed_events.value',
@@ -13,7 +13,7 @@ class beta::monitoring::graphite {
         series        => true,
     }
 
-    monitor::graphite_threshold { 'betalabs-puppet-stale':
+    monitoring::graphite_threshold { 'betalabs-puppet-stale':
         description   => 'BetaLabs: Puppet freshness check',
         metric        => 'deployment-prep.*.puppetagent.time_since_last_run.value',
         warning       => 3600, # 1h
@@ -23,7 +23,7 @@ class beta::monitoring::graphite {
         series        => true,
     }
 
-    monitor::graphite_threshold { 'betalabs-low-space-var':
+    monitoring::graphite_threshold { 'betalabs-low-space-var':
         description   => 'BetaLabs: Low disk space on /var',
         metric        => 'deployment-prep.*.diskspace._var.byte_avail.value',
         warning       => 67108864, # 512MiB
@@ -34,7 +34,7 @@ class beta::monitoring::graphite {
         series        => true,
     }
 
-    monitor::graphite_threshold { 'betalabs-low-space-root':
+    monitoring::graphite_threshold { 'betalabs-low-space-root':
         description   => 'BetaLabs: Low disk space on /',
         metric        => 'deployment-prep.*.diskspace.root.byte_avail.value',
         warning       => 67108864, # 512MiB
