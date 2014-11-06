@@ -701,45 +701,41 @@ class misc::statistics::cron_blog_pageviews {
     }
 }
 
-
-# Class: misc::statistics::limn::mobile_data_sync
+# == Class misc::statistics::limn::data
+# Sets up base directories and repositories
+# for using the misc::statistics::limn::data::generate() define.
 #
-# Sets up daily cron jobs to run a script which
-# generates csv datafiles from mobile apps statistics
-# then rsyncs those files to stat1001 so they can be served publicly
-class misc::statistics::limn::mobile_data_sync {
+class misc::statistics::limn::data {
     include misc::statistics::base
     include misc::statistics::stats_researchdb_password
 
+    # Either '/a' or '/srv', depending on the server. :/
     $working_path      = $misc::statistics::base::working_path
 
+    # Directory where the repository of the generate.py will be cloned.
     $source_dir        = "${working_path}/limn-mobile-data"
+
+    # generate.py command to run in a cron.
     $command           = "${source_dir}/generate.py"
-    $config            = "${source_dir}/mobile/"
+
+    # my.cnf credentials file. This is the file rendered by
+    # misc::statistics::stats_researchdb_password.
     $mysql_credentials = '/etc/mysql/conf.d/stats-research-client.cnf'
-    $rsync_from        = "${working_path}/limn-public-data"
-    $output            = "${rsync_from}/mobile/datafiles"
-    $log               = '/var/log/limn-mobile-data.log'
-    $gerrit_repo       = 'https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git'
+
+    # cron job logs will be kept here
+    $log_dir           = '/var/log/limn-data'
+
+    # generate.py's repository
+    $git_remote        = 'https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git'
+
+    # public data directory.  Data will be synced from here to a public web host.
+    $public_dir        = "${working_path}/limn-public-data"
+
+    # Rsync generated data to stat1001 at http://datasets.wikimedia.org/limn-public-data/
+    $rsync_to          = "stat1001.wikimedia.org::www/limn-public-data/"
+
+    # user to own files and run cron job as (stats).
     $user              = $misc::statistics::user::username
-
-    $db_user           = $passwords::mysql::research::user
-    $db_pass           = $passwords::mysql::research::pass
-
-    git::clone { 'analytics/limn-mobile-data':
-        ensure    => 'latest',
-        directory => $source_dir,
-        origin    => $gerrit_repo,
-        owner     => $user,
-        require   => [User[$user]],
-    }
-
-    file { $log:
-        ensure  => 'present',
-        owner   => $user,
-        group   => $user,
-        mode    => '0660',
-    }
 
     # This path is used in the limn-mobile-data config.
     # Symlink this until they change it.
@@ -749,18 +745,102 @@ class misc::statistics::limn::mobile_data_sync {
         target => $mysql_credentials,
     }
 
-    file { [$source_dir, $rsync_from, $output]:
+    # TODO:  This repository contains the generate.py script.
+    # Other limn data repositories only have config and data
+    # directories.  generate.py should be abstracted out into
+    # a general purupose limn data generator.
+    # For now, all limn data classes rely on this repository
+    # and generate.py script to be present.
+    if !defined(Git::Clone['analytics/limn-mobile-data']) {
+        git::clone { 'analytics/limn-mobile-data':
+            ensure    => 'latest',
+            directory => $source_dir,
+            origin    => $git_remote,
+            owner     => $user,
+            require   => [User[$user]],
+        }
+    }
+
+    # Make sure these are writeable by $user.
+    file { [$log_dir, $source_dir, $public_data_dir]:
         ensure => 'directory',
         owner  => $user,
         group  => wikidev,
         mode   => '0775',
     }
+}
 
-    cron { 'rsync_mobile_apps_stats':
-        command => "python ${command} ${config} >> ${log} 2>&1 && /usr/bin/rsync -rt ${rsync_from}/* stat1001.wikimedia.org::www/limn-public-data/",
+
+
+# == Define: misc::statistics::limn::data::generate
+#
+# Sets up daily cron jobs to run a script which
+# generates csv datafiles and rsyncs those files
+# to stat1001 so they can be served publicly.
+#
+# This requires that a repository with config to pass to generate.py
+# exists at https://gerrit.wikimedia.org/r/p/analytics/limn-${title}-data.git.
+#
+# == Usage
+#   misc::statistics::limn::data::generate { 'mobile': }
+#   misc::statistics::limn::data::generate { 'flow': }
+#   ...
+#
+define misc::statistics::limn::data::generate() {
+    require misc::statistics::limn::data
+
+    $user    = $misc::statistics::limn::data::user
+    $command = $misc::statistics::limn::data::command
+
+    # A repo at analytics/limn-${title}-data.git had better exist!
+    $git_remote        = "https://gerrit.wikimedia.org/r/p/analytics/limn-${title}-data.git"
+
+    # Directory at which to clone $git_remote
+    $source_dir        = "${misc::statistics::base::limn::data::working_path}/limn-${title}-data"
+
+    # config directory for this limn data generate job
+    $config_dir        = "${$source_dir}/${title}/"
+
+    # log file for the generate cron job
+    $log               = "${misc::statistics::limn::data::log_dir}/limn-${title}-data.log"
+
+    # Rsync from $public_dir/${title}
+    $rsync_from        = "${misc::statistics::limn::data::public_dir}/${title}"
+    $rsync_to          = $misc::statistics::limn::data::rsync_to
+
+    # I'm not totally sure what this is...
+    $output            = "${rsync_from}/mobile/datafiles"
+
+    if !defined(Git::Clone["analytics/limn-${title}-data"]) {
+        git::clone { "analytics/limn-${title}-data":
+            ensure    => 'latest',
+            directory => $source_dir,
+            origin    => $git_remote,
+            owner     => $user,
+            require   => [User[$user]],
+        }
+    }
+
+    file { [$source_dir, $rsync_from, $output]:
+        ensure => 'directory',
+        owner  => $misc::statistics::limn::data::user,
+        group  => wikidev,
+        mode   => '0775',
+    }
+
+    cron { "rsync_${title}_apps_stats":
+        command => "python ${command} ${config} >> ${log} 2>&1 && /usr/bin/rsync -rt ${rsync_from} ${rsync_to}/",
         user    => $user,
         minute  => 0,
     }
+}
+
+# == Class misc::statistics::limn::data::jobs
+# Uses the misc::statistics::limn::data::generate define
+# to set up cron jobs to generate and sync particular data.
+#
+class misc::statistics::limn::data::jobs {
+    misc::statistics::limn::data::generate { 'mobile': }
 }
 
 # == Class misc::statistics::geowiki::params

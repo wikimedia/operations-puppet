@@ -2590,7 +2590,7 @@ node 'stat1003.wikimedia.org' {
     include role::statistics::cruncher
 
     include misc::statistics::cron_blog_pageviews
-    include misc::statistics::limn::mobile_data_sync
+    include misc::statistics::limn::data::jobs
     include misc::statistics::researchdb_password
 
     class { 'admin':
