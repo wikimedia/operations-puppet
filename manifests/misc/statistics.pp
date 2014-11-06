@@ -796,7 +796,7 @@ define misc::statistics::limn::data::generate() {
     $git_remote        = "https://gerrit.wikimedia.org/r/p/analytics/limn-${title}-data.git"
 
     # Directory at which to clone $git_remote
-    $source_dir        = "${misc::statistics::base::limn::data::working_path}/limn-${title}-data"
+    $source_dir        = "${misc::statistics::limn::data::working_path}/limn-${title}-data"
 
     # config directory for this limn data generate job
     $config_dir        = "${$source_dir}/${title}/"
