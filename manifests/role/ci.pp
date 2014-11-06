@@ -423,6 +423,19 @@ class role::ci::slave::labs {
         ]
     }
 
+    file { '/srv/localhost':
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'jenkins-slave',
+        group  => 'jenkins-slave',
+    }
+    file { '/srv/localhost/qunit':
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'jenkins-slave',
+        group  => 'jenkins-slave',
+    }
+    include contint::qunit_localhost
 }
 
 
