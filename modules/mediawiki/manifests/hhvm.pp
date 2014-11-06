@@ -78,6 +78,16 @@ class mediawiki::hhvm {
     }
 
 
+    # Ensure that jemalloc heap profiling is disabled. This means that
+    # if you want to capture heap profiles, you have to disable Puppet.
+    # But this way we can be sure we're not forgetting to turn it off.
+
+    exec { 'ensure_jemalloc_prof_deactivated':
+        command => '/bin/true',
+        unless  => '/usr/bin/curl -fs http://localhost:9005/jemalloc-prof-deactivate',
+    }
+
+
     # Once a day, check the uptime of HHVM. If HHVM has been running
     # for more than a day, restart it. We do this as a form of insurance
     # against subtle memory leaks. A graceful restart once a day is
