@@ -125,10 +125,10 @@ class beta::autoupdater {
     }
 
     git::clone { 'mediawiki/vendor':
-        directory          => "${stage_dir}/php-master/vendor",
-        branch             => 'master',
-        owner              => 'mwdeploy',
-        group              => 'mwdeploy',
-        require            => Git::Clone['mediawiki/core'],
+        directory => "${stage_dir}/php-master/vendor",
+        branch    => 'master',
+        owner     => 'mwdeploy',
+        group     => 'mwdeploy',
+        require   => Git::Clone['mediawiki/core'],
     }
 }
