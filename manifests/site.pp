@@ -367,11 +367,13 @@ node 'bast1001.wikimedia.org' {
     include subversion::client
 
     class { 'admin':
-        groups => ['deployment',
-                   'restricted',
-                   'parsoid-admin',
-                   'ocg-render-admins',
-                   'bastiononly'],
+        groups => [
+            'deployment',
+            'restricted',
+            'parsoid-admin',
+            'ocg-render-admins',
+            'bastiononly',
+        ],
     }
 
 
@@ -1110,8 +1112,10 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
 
     class { 'admin':
-        groups => ['udp2log-users',
-                   'restricted'],
+        groups => [
+            'udp2log-users',
+            'restricted',
+        ],
     }
 
     include role::logging::udp2log::erbium
@@ -1204,8 +1208,10 @@ node 'fluorine.eqiad.wmnet' {
     include misc::deployment::fatalmonitor
 
     class { 'admin':
-        groups => ['deployment',
-                   'restricted'],
+        groups => [
+            'deployment',
+            'restricted',
+        ],
     }
 
     class { 'role::logging::mediawiki':
@@ -1301,8 +1307,10 @@ node 'hooft.esams.wikimedia.org' {
     }
 
     class { 'admin':
-        groups => ['deployment',
-                   'restricted'],
+        groups => [
+            'deployment',
+            'restricted',
+        ],
     }
 
     include standard
@@ -2382,8 +2390,10 @@ node /^search100[0-6]\.eqiad\.wmnet/ {
     }
 
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     include role::lucene::front_end::pool1
 }
@@ -2392,8 +2402,10 @@ node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     include role::lucene::front_end::pool2
 }
@@ -2402,8 +2414,10 @@ node /^search101[1-4]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     include role::lucene::front_end::pool3
 }
@@ -2412,8 +2426,10 @@ node /^search101[56]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     include role::lucene::front_end::pool4
 }
@@ -2422,8 +2438,10 @@ node /^search10(19|20)\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     include role::lucene::front_end::pool5
 }
@@ -2432,8 +2450,10 @@ node /^search101[78]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     include role::lucene::front_end::prefix
 }
@@ -2442,8 +2462,10 @@ node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     include role::lucene::front_end::pool4
 }
@@ -2452,8 +2474,10 @@ node /^search102[3-4]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     include role::lucene::front_end::pool3
 }
@@ -2462,15 +2486,17 @@ node /^searchidx100[0-2]\.eqiad\.wmnet/ {
     $cluster = 'search'
     $nagios_group = 'lucene'
     class { 'admin':
-        groups => ['deployment',
-                   'search-roots'],
+        groups => [
+            'deployment',
+            'search-roots',
+        ],
     }
     mount { '/srv/mediawiki':
-        ensure => present,
-        fstype   => 'none',
+        ensure  => present,
+        fstype  => 'none',
         options => 'bind',
-        device => '/a/bind-mount-mediawiki',
-        before => Exec['fetch_mediawiki']
+        device  => '/a/bind-mount-mediawiki',
+        before  => Exec['fetch_mediawiki']
     }
     include role::lucene::indexer
 }
@@ -2593,10 +2619,12 @@ node 'stat1003.wikimedia.org' {
     include misc::statistics::researchdb_password
 
     class { 'admin':
-        groups => ['statistics-admins',
-                   'statistics-privatedata-users',
-                   'statistics-users',
-                   'researchers'],
+        groups => [
+            'statistics-admins',
+            'statistics-privatedata-users',
+            'statistics-users',
+            'researchers',
+        ],
     }
 }
 
@@ -2604,8 +2632,10 @@ node 'snapshot1001.eqiad.wmnet' {
     include snapshot
 
     class { 'admin':
-        groups => ['udp2log-users',
-                   'deployment'],
+        groups => [
+            'udp2log-users',
+            'deployment',
+        ],
     }
 
     class { 'snapshot::dumps': hugewikis => true }
@@ -2616,8 +2646,10 @@ node /^snapshot100[24]\.eqiad\.wmnet/ {
     include snapshot::dumps
 
     class { 'admin':
-        groups => ['udp2log-users',
-                   'deployment'],
+        groups => [
+            'udp2log-users',
+            'deployment',
+        ],
     }
 
     include role::snapshot::common
@@ -2628,8 +2660,10 @@ node 'snapshot1003.eqiad.wmnet' {
     include role::snapshot::cron::primary
 
     class { 'admin':
-        groups => ['udp2log-users',
-                   'deployment'],
+        groups => [
+            'udp2log-users',
+            'deployment',
+        ],
     }
 }
 
@@ -2648,9 +2682,11 @@ node 'terbium.eqiad.wmnet' {
     ]
 
     class { 'admin':
-        groups => ['restricted',
-                   'deployment',
-                   'ldap-admins'],
+        groups => [
+            'restricted',
+            'deployment',
+            'ldap-admins',
+        ],
     }
 
     include ldap::role::client::labs
@@ -2980,11 +3016,11 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
 
     class { 'admin':
         groups => [
-                   'mathoid-roots',
-                   'mathoid-admin',
-                   'citoid-roots',
-                   'citoid-admin'
-                ]
+            'mathoid-roots',
+            'mathoid-admin',
+            'citoid-roots',
+            'citoid-admin',
+        ]
     }
     class { 'lvs::realserver':
         realserver_ips => [
