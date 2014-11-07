@@ -13,9 +13,8 @@ class phabricator::migration {
     }
 
     $fab_lock = '/var/run/fab_update_user.flock'
-
     cron { 'fab_user_update':
-        ensure  => present,
+        ensure  => absent,
         command => "/usr/bin/flock -n ${fab_lock} -c '/srv/phab/tools/fab_update_user.py -a' 2>&1",
         user    => root,
         hour    => '*/1',
