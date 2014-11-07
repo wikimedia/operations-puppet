@@ -160,7 +160,10 @@ class role::nova::common {
     class { 'openstack::common':
         openstack_version                => $openstack_version,
         novaconfig                       => $novaconfig,
-        instance_status_wiki_host        => 'wikitech.wikimedia.org',
+        instance_status_wiki_host        => $::realm ? {
+            'production' => 'wikitech.wikimedia.org',
+            'labs'       => $::osm_hostname,
+        },
         instance_status_wiki_domain      => 'labs',
         instance_status_wiki_page_prefix => 'Nova_Resource:',
         instance_status_wiki_region      => $::site,
@@ -209,6 +212,7 @@ class role::nova::controller {
 
     include role::keystone::config::eqiad
     include role::glance::config::eqiad
+    include role::nova::wikiupdates
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $glanceconfig = $::openstack_site_override ? {
@@ -313,6 +317,7 @@ class role::nova::network {
     $novaconfig = $role::nova::config::novaconfig
 
     include role::nova::common
+    include role::nova::wikiupdates
 
     if ($::realm == production) {
         $site_address = $::site ? {
