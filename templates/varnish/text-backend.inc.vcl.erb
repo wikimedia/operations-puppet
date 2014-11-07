@@ -93,6 +93,10 @@ sub vcl_fetch {
 	}
 
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	/* If a request to HHVM has got a 503 response, retry it, on Zend this time */
+	if (req.http.X-Use-HHVM == "1" && req.restarts == 0 && beresp.status == 503 ){
+		return(restart);
+	}
 	call hhvm_add_vary;
 <% end -%>
 
