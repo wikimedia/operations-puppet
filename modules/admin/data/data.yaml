@@ -9,7 +9,7 @@ groups:
   ops:
     gid: 700
     description: include everywhere ops folks
-    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner,
+    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, yuvipanda,
               dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling, ori]
     privs: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
@@ -224,7 +224,7 @@ groups:
   labmon-roots:
     gid: 734
     description: Full root access to labmon nodes
-    members: []
+    members: [yuvipanda]
     privs: ['ALL = NOPASSWD: ALL']
   citoid-roots:
     gid: 735
