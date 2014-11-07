@@ -60,6 +60,10 @@ class role::deployment::config {
         'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/rcstream',
         'service_name'          => 'rcstream',
     },
+    'restbase/deploy' => {
+        'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/restbase/deploy',
+        'service_name'          => 'restbase',
+    },
     'fluoride/fluoride'              => {
         'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
     },
