@@ -49,8 +49,8 @@ shopt -s autocd cdable_vars cdspell checkwinsize \
 alias ls="ls --color" ...="cd .." cd..="cd .." g="git"
 =()          { py "$*"; }
 mkpass()     { head -c 32 /dev/urandom | base64 | tr -cd [:alnum:]; }
-puppet-run() { sudo puppet agent -tv; }
-puppetd()    { sudo puppt-agent "${@}"; }
+puppet()     { sudo puppet "$@"; }
+gdbh()       { sudo gdb -p "$(pidof hhvm)"; }
 warn()       { printf "$(tput setaf 1)%s$(tput sgr0)\n" "$1" >&2; }
 notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
 repackage()  { sudo dpkg-buildpackage -b -uc; }
