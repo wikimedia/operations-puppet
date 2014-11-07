@@ -8,38 +8,38 @@
  * ------------------------------------------------------------------ */
 
 module.exports = function (config) {
-	// Import the public local settings
-	config = require("/srv/deployment/ocg/ocg/LocalSettings.js")(config);
+    // Import the public local settings
+    config = require("/srv/deployment/ocg/ocg/LocalSettings.js")(config);
 
-	config.coordinator.hostname = "<%= @host_name %>";
+    config.coordinator.hostname = "<%= @host_name %>";
 
-	config.redis.host = "<%= @redis_host %>";
-	config.redis.port = <%= @redis_port %>;
-	config.redis.password = "<%= @redis_password %>";
+    config.redis.host = "<%= @redis_host %>";
+    config.redis.port = <%= @redis_port %>;
+    config.redis.password = "<%= @redis_password %>";
 
-	config.frontend.port = <%= @service_port %>;
+    config.frontend.port = <%= @service_port %>;
 
-	config.reporting.statsd_server = "<%= @statsd_host %>";
-	config.reporting.statsd_port = <%= @statsd_port %>;
-	config.reporting.is_txstatsd = <%= @statsd_is_txstatsd %>;
+    config.reporting.statsd_server = "<%= @statsd_host %>";
+    config.reporting.statsd_port = <%= @statsd_port %>;
+    config.reporting.is_txstatsd = <%= @statsd_is_txstatsd %>;
 
-	// File paths; there is a short term temp directory, a long term
-	// storage directory, and a medium term error directory
-	config.backend.temp_dir = "<%= @temp_dir %>";
-	config.backend.output_dir = "<%= @output_dir %>";
-	config.backend.post_mortem_dir = "<%= @postmortem_dir %>";
+    // File paths; there is a short term temp directory, a long term
+    // storage directory, and a medium term error directory
+    config.backend.temp_dir = "<%= @temp_dir %>";
+    config.backend.output_dir = "<%= @output_dir %>";
+    config.backend.post_mortem_dir = "<%= @postmortem_dir %>";
 
-	// Temporary backwards compatibility with winston logging
-	// (pre-2014-11-03 deploy)
-	if (!config.logging.streams) { return config; }
+    // Temporary backwards compatibility with winston logging
+    // (pre-2014-11-03 deploy)
+    if (!config.logging.streams) { return config; }
 
-	// Configure logging to logstash, via bunyan/gelf-stream.
-	config.logging.streams.push({
-		type: 'raw',
-		stream: require('/srv/deployment/ocg/ocg/node_modules/gelf-stream').forBunyan(
-			"<%= @graylog_host %>", <%= @graylog_port %>
-		)
-	});
+    // Configure logging to logstash, via bunyan/gelf-stream.
+    config.logging.streams.push({
+        type: 'raw',
+        stream: require('/srv/deployment/ocg/ocg/node_modules/gelf-stream').forBunyan(
+            "<%= @graylog_host %>", <%= @graylog_port %>
+        )
+    });
 
-	return config;
+    return config;
 }
