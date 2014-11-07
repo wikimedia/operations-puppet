@@ -491,6 +491,8 @@ script.groovy.sandbox.class_whitelist:
  - java.util.Locale
  - org.apache.lucene.util.automaton.RegExp
  - org.apache.lucene.util.automaton.CharacterRunAutomaton
+ # Added for Translate
+ - org.apache.lucene.search.spell.LevensteinDistance
 script.groovy.sandbox.package_whitelist:
  # Defaults
  - java.util
@@ -499,6 +501,8 @@ script.groovy.sandbox.package_whitelist:
  - org.elasticsearch.common.joda.time
  # Added for Cirrus
  - org.apache.lucene.util.automaton
+ # Added for Translate
+ - org.apache.lucene.search.spell
 script.groovy.sandbox.receiver_whitelist:
  # Defaults
  - java.lang.Math
@@ -552,6 +556,8 @@ script.groovy.sandbox.receiver_whitelist:
  # Added for Cirrus
  - org.apache.lucene.util.automaton.RegExp
  - org.apache.lucene.util.automaton.CharacterRunAutomaton
+ # Added for Translate
+ - org.apache.lucene.search.spell.LevensteinDistance
 
 <% if @statsd_host -%>
 ##
