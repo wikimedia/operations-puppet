@@ -89,7 +89,8 @@ groups:
       ellery, ezachte, gage, gilles, haithams, halfak, handrade,
       ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
       kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
-      nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda]
+      nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
+      mforns]
   ldap-admins:
     gid: 715
     description: ldap admins
