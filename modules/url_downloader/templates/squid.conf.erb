@@ -16,7 +16,7 @@ acl to_localhost dst 127.0.0.0/8
 acl everything src all
 cache deny everything
 acl apache rep_header Server ^Apache
-maximum_object_size 510 MB
+maximum_object_size 1010 MB
 cache_replacement_policy heap LFUDA
 access_log /var/log/<%= @package_name %>/access.log squid
 log_mime_hdrs on
@@ -78,11 +78,11 @@ icp_access deny all
 tcp_outgoing_address <%= @service_ip %>
 
 <%- if @package_name == 'squid' -%>
-reply_body_max_size 534773760 allow all
+reply_body_max_size 1059061760 allow all
 cache_dir null /tmp
 broken_vary_encoding allow apache
 <%- else -%>
-reply_body_max_size 510 MB all
+reply_body_max_size 1010 MB all
 <%- end -%>
 
 cache_mgr root@wikimedia.org
