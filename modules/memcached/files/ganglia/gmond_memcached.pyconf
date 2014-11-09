@@ -1,6 +1,6 @@
 modules {
   module {
-    name     = "memcached"
+    name     = "gmond_memcached"
     language = "python"
 
     param host {

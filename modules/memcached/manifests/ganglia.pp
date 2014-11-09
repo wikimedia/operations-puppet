@@ -10,19 +10,25 @@ class memcached::ganglia {
     # means there's actually a hidden dependency on ganglia.pp for
     # the memcache class to work.
     file { '/usr/lib/ganglia/python_modules/memcached.py':
+        ensure => absent,
+    }
+    file { '/usr/lib/ganglia/python_modules/gmond_memcached.py':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => "puppet:///modules/${module_name}/ganglia/memcached.py",
+        source  => "puppet:///modules/${module_name}/ganglia/gmond_memcached.py",
         require => File['/usr/lib/ganglia/python_modules'],
         notify  => Service['gmond'],
     }
-    file { '/etc/ganglia/conf.d/memcached.pyconf':
+    file { '/usr/lib/ganglia/python_modules/memcached.pyconf':
+        ensure => absent,
+    }
+    file { '/etc/ganglia/conf.d/gmond_memcached.pyconf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => "puppet:///modules/${module_name}/ganglia/memcached.pyconf",
-        require => File['/usr/lib/ganglia/python_modules/memcached.py'],
+        source  => "puppet:///modules/${module_name}/ganglia/gmond_memcached.pyconf",
+        require => File['/usr/lib/ganglia/python_modules/gmond_memcached.py'],
         notify  => Service['gmond'],
     }
 }
