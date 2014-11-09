@@ -1788,6 +1788,10 @@ node 'magnesium.wikimedia.org' {
 
     class { 'base::firewall': }
 
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
     include admin
     include role::diamond
     include role::racktables
