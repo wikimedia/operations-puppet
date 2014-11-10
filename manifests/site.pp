@@ -2680,6 +2680,7 @@ node 'uranium.wikimedia.org' {
     include admin
     include role::ganglia::web
     include misc::monitoring::views
+    include base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
