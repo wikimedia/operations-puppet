@@ -6,5 +6,10 @@ class role::labs::shinken {
         auth_secret => 'This is insecure, should switch to using private repo',
     }
 
+    # Basic labs monitoring
+    shinken::services { 'basic-checks':
+        source => 'file:///modules/shinken/basic-checks.cfg',
+    }
+
     include beta::monitoring::shinken
 }
