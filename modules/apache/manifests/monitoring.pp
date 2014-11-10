@@ -16,7 +16,7 @@ class apache::monitoring {
     diamond::collector { 'Httpd':
         ensure   => absent,
         settings => {
-            path => "${::site}.${cluster}.httpd",
+            path => "${::site}.${::cluster}.httpd",
             urls => 'http://127.0.0.1/server-status?auto'
         },
     }
