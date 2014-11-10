@@ -2980,6 +2980,7 @@ node 'uranium.wikimedia.org' {
     include admin
     include ganglia::web
     include misc::monitoring::views
+    include base::firewall
 
     install_certificate{ 'ganglia.wikimedia.org': }
 }
