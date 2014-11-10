@@ -1115,3 +1115,85 @@ class misc::statistics::stats_researchdb_password {
         mode  => '0440',
     }
 }
+
+# == Class misc::statistics::aggregator
+# Defines common settings for aggregator jobs, and clones the repos
+class misc::statistics::aggregator {
+    include misc::statistics::base
+    include misc::statistics::user
+
+    $working_path   = "${misc::statistics::base::working_path}/aggregator"
+
+    $script_path    = "${working_path}/scripts"
+    $data_repo_path = "${working_path}/data"
+    $data_path      = "${data_repo_path}/projectcounts/daily"
+    $user           = $misc::statistics::user::username
+    $group          = $misc::statistics::user::username
+
+    git::clone { 'aggregator_code':
+        ensure    => 'latest',
+        directory => $script_path,
+        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator.git',
+        owner     => $user,
+        group     => $group,
+        mode      => '0750',
+    }
+
+    git::clone { 'aggregator_data':
+        ensure    => 'latest',
+        directory => $data_repo_path,
+        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator/data.git',
+        owner     => $user,
+        group     => $group,
+        mode      => '0750',
+    }
+}
+
+# == Class misc::statistics::aggregator::projectcounts::aggregate
+# Aggregates hourly projectcounts files into daily per project csvs
+class misc::statistics::aggregator::projectcounts::aggregate {
+    include misc::statistics::aggregator
+
+    Class['cdh::hadoop::mount'] -> Class['misc::statistics::aggregator::projectcounts::aggregate']
+
+    $working_path = $misc::statistics::aggregator::working_path
+    $script_path  = $misc::statistics::aggregator::script_path
+    $data_path    = $misc::statistics::aggregator::data_path
+    $user         = $misc::statistics::aggregator::working_path::user
+    $group        = $misc::statistics::aggregator::working_path::group
+    $log_path     = "${working_path}/log"
+
+    $source_path = "${cdh::hadoop::mount::mount_point}/wmf/data/archive/webstats"
+
+    file { $log_path:
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0750',
+    }
+
+    cron { 'aggregator projectcounts aggregate':
+        command => "${script_path}/bin/aggregate_projectcounts --source ${source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log ${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log",
+        require => File[$log_path],
+        user    => $user,
+        hour    => '13',
+        minute  => '0',
+    }
+}
+
+# == Class misc::statistics::aggregator::projectcounts::monitor
+# Basic monitoring of the aggregated daily per project csvs
+class misc::statistics::aggregator::projectcounts::monitor {
+    include misc::statistics::aggregator
+
+    $script_path  = $misc::statistics::aggregator::script_path
+    $data_path    = $misc::statistics::aggregator::data_path
+    $user         = $misc::statistics::aggregator::working_path::user
+
+    cron { 'aggregator projectcounts monitor':
+        monitor => "${script_path}/bin/check_validity_aggregated_projectcounts --data ${data_path}",
+        user    => $user,
+        hour    => '13',
+        minute  => '45',
+    }
+}
