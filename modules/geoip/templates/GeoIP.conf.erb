@@ -19,3 +19,7 @@ UserId <%= @user_id %>
 # 133 - GeoIPCity.dat    City database
 # 115 - GeoIPRegion.dat  Region database
 ProductIds <%= @product_ids.join(' ') %>
+
+<% if @proxy -%>
+Proxy <%= @proxy %>
+<% end -%>
