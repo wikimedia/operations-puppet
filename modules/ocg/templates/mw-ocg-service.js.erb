@@ -29,10 +29,6 @@ module.exports = function (config) {
 	config.backend.output_dir = "<%= @output_dir %>";
 	config.backend.post_mortem_dir = "<%= @postmortem_dir %>";
 
-	// Temporary backwards compatibility with winston logging
-	// (pre-2014-11-03 deploy)
-	if (!config.logging.streams) { return config; }
-
 	// Configure logging to logstash, via bunyan/gelf-stream.
 	config.logging.streams.push({
 		type: 'raw',
