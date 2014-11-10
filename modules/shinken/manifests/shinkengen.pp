@@ -20,7 +20,7 @@ class shinken::shinkengen {
     }
 
     exec { '/usr/bin/shingen':
-        owner   => 'shinken',
+        user    => 'shinken',
         group   => 'shinken',
         require => [Package['python3-shinkengen'], File['/etc/shinkengen.yaml']],
         notify  => Service['shinken'],
