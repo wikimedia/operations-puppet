@@ -4,6 +4,9 @@ set verbose off
 set print pretty on
 set prompt (\001\033[32m\002gdb\001\033[0m\002)\040
 
+# FIXME: Build packages in /usr/local/src/hhvm.
+set substitute-path /home/joe/HHVM/hhvm /usr/local/src/hhvm
+
 # Don't pause output
 set height 0
 set width 0
