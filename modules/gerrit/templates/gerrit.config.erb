@@ -40,6 +40,7 @@
     heapLimit = 20g
 [sshd]
     listenAddress = *:<%= @sshport %>
+    listenAddress = <%= @host %>:22
     threads = 8
     batchThreads = 2
     idleTimeout = 864000
