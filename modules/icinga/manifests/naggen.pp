@@ -31,7 +31,7 @@ class icinga::naggen {
     }
 
     # Collect all (virtual) resources
-    Monitor_group <| |> {
+    Monitoring::Group <| |> {
         notify  => Service['icinga'],
     }
     Monitor_host <| |> {
