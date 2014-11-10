@@ -4,7 +4,7 @@ class puppetmaster::geoip {
     # normal puppet File resource (see the geoip module for more)
 
     $geoip_destdir = "${puppetmaster::volatiledir}/GeoIP"
-    $environment = "http_proxy=http://webproxy.${::site}.wmnet:8080"
+    $webproxy = "http://webproxy.${::site}.wmnet:8080"
 
     # geoip::data classes depend on this
     file { $geoip_destdir:
@@ -14,7 +14,7 @@ class puppetmaster::geoip {
     # fetch the GeoLite databases
     class { 'geoip::data::lite':
         data_directory => $geoip_destdir,
-        environment    => $environment,
+        environment    => "http_proxy=$webproxy",
     }
 
     if $is_labs_puppet_master {
@@ -34,7 +34,7 @@ class puppetmaster::geoip {
 
         class { 'geoip::data::maxmind':
             data_directory => $geoip_destdir,
-            environment    => $environment,
+            proxy          => $webproxy,
             license_key    => $passwords::geoip::license_key,
             user_id        => $passwords::geoip::user_id,
             product_ids    => [
