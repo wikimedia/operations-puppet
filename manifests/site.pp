@@ -2595,6 +2595,9 @@ node 'stat1002.eqiad.wmnet' {
     # and only readable by users in the
     # analytics-privatedata-users group.
     include role::analytics::password::research
+
+    # Run aggregation jobs
+    include role::statistics::aggregator
 }
 
 # stat1003 is a general purpose number cruncher for
