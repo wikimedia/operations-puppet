@@ -81,3 +81,14 @@ class role::statistics::private inherits role::statistics {
     # backup eventlogging logs
     backup::set { 'a-eventlogging' : }
 }
+
+class role::statistics::aggregator inherits role::statistics {
+    system::role { 'role::statistics':
+        description => 'statistics aggregator',
+    }
+
+    # aggregator: aggregate hourly projectcount files
+    include misc::statistics::aggregator::projectcounts::aggregate
+    # aggregator: monitor aggregated hourly projectcount files
+    include misc::statistics::aggregator::projectcounts::monitor
+}
