@@ -96,8 +96,8 @@ define apache::conf(
 
     if $replaces != undef {
         file { "${title_safe}_${replaces}":
-            path   => "/etc/apache2/${replaces}",
             ensure => absent,
+            path   => "/etc/apache2/${replaces}",
         }
     }
 }
