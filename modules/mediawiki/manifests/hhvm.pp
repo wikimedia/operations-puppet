@@ -89,6 +89,6 @@ class mediawiki::hhvm {
     exec { 'ensure_jemalloc_prof_deactivated':
         command => '/usr/bin/curl -fs http://localhost:9002/jemalloc-prof-deactivate',
         unless  => '/usr/bin/curl -fs http://localhost:9002/jemalloc-stats-print | grep -Pq "opt.prof(_active)?: false"',
-        require => Service['hhvm', 'apache2'],
+        require => Service['hhvm'],
     }
 }
