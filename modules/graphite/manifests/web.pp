@@ -45,7 +45,8 @@ class graphite::web(
 ) {
     include ::graphite
 
-    require_package(['memcached', 'python-memcache', 'graphite-web'])
+    $deps = ['memcached', 'python-memcache', 'graphite-web']
+    require_package($deps)
 
     file { '/etc/graphite/cors.py':
         source  => 'puppet:///modules/graphite/cors.py',
