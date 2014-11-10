@@ -69,12 +69,12 @@ maniphest.statuses:
   open:
     name: Open
     special: default
-  needsinfo:
-    name: 'Needs Info'
-    name.full: 'Open, Needs Info'
+  stalled:
+    name: 'Stalled'
+    name.full: 'Open, Stalled'
     closed: false
-    prefixes: [stalled, info]
-    suffixes: ['as needs info']
+    prefixes: [stalled]
+    suffixes: ['as stalled']
   resolved:
     name: Resolved
     name.full: 'Closed, Resolved'
