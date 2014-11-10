@@ -1089,3 +1089,64 @@ class misc::statistics::stats_researchdb_password {
         mode  => '0440',
     }
 }
+
+# == Class misc::statistics::aggregator
+# Handles aggregation of pagecounts-all-sites projectcounts files
+class misc::statistics::aggregator {
+    include misc::statistics::base
+    include misc::statistics::user
+
+    Class['cdh::hadoop::mount'] -> Class['misc::statistics::aggregator']
+
+    $working_path     = "${misc::statistics::base::working_path}/aggregator"
+
+    $script_path      = "${working_path}/scripts"
+    $data_repo_path   = "${working_path}/data"
+    $data_path        = "${data_repo_path}/projectcounts"
+    $log_path         = "${working_path}/log"
+    $hdfs_source_path = "${cdh::hadoop::mount::mount_point}/wmf/data/archive/pagecounts-all-sites"
+    $user             = $misc::statistics::user::username
+    $group            = $misc::statistics::user::username
+
+    git::clone { 'aggregator_code':
+        ensure    => 'latest',
+        directory => $script_path,
+        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator.git',
+        owner     => $user,
+        group     => $group,
+        mode      => '0750',
+    }
+
+    git::clone { 'aggregator_data':
+        ensure    => 'latest',
+        directory => $data_repo_path,
+        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator/data.git',
+        owner     => $user,
+        group     => $group,
+        mode      => '0750',
+    }
+
+    file { $log_path:
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0750',
+    }
+
+    # Cron for doing the basic aggregation step itself
+    cron { 'aggregator projectcounts aggregate':
+        command => "${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log ${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log",
+        require => File[$log_path],
+        user    => $user,
+        hour    => '13',
+        minute  => '0',
+    }
+
+    # Cron for basing monitoring of the aggregated data
+    cron { 'aggregator projectcounts monitor':
+        monitor => "${script_path}/bin/check_validity_aggregated_projectcounts --data ${data_path}",
+        user    => $user,
+        hour    => '13',
+        minute  => '45',
+    }
+}
