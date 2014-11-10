@@ -13,6 +13,10 @@
 #  # Multiple packages as arguments
 #  require_package('redis-server', 'python-redis')
 #
+#  # Multiple packages as array
+#  $deps = [ 'redis-server', 'python-redis' ]
+#  require_package($deps)
+#
 module Puppet::Parser::Functions
   newfunction(:require_package, :arity => -2) do |args|
     Puppet::Parser::Functions.function :create_resources
