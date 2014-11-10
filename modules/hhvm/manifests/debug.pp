@@ -34,8 +34,10 @@ class hhvm::debug {
     # which can generate useful reports from jemalloc heap dumps.
     # The gv and graphiz packages enable pprof to generate PDF and SVG
     # reports of things like call graphs.
+    #
+    # `apache2-utils` provides `ab`, an HTTP server benchmarking tool.
 
-    package { [ 'google-perftools', 'graphviz', 'gv' ]:
+    package { [ 'google-perftools', 'graphviz', 'gv', 'apache2-utils' ]:
         ensure => present,
     }
 
