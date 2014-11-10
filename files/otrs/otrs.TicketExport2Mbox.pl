@@ -111,7 +111,12 @@ for my $TicketID (@TicketIDs) {
 		);
 		if (@TicketArticleIds) {
 			for my $ArticleID (@TicketArticleIds) {
-				printArticle($ArticleID);
+				eval {
+					printArticle($ArticleID);
+				};
+				if ($@) {
+					printlog("printArticle error: $@");
+				}
 			}
 			closeTicket($TicketID) if defined $Close;
 		} else {
