@@ -130,7 +130,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
     # 1) get statistics for the day:
     cron { 'bugzilla_collectstats':
         ensure  => 'present',
-        command => "cd ${bz_path}; ./${collectstats}",
+        command => "cd ${bz_path}; ./${collectstats} > /dev/null 2>&1",
         user    => 'root',
         hour    => '0',
         minute  => '5',
@@ -140,7 +140,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
     # 2) on sunday, regenerates the whole statistics data
     cron { 'bugzilla_collectstats_regenerate':
         ensure  => 'present',
-        command => "cd ${bz_path}; ./${collectstats} --regenerate",
+        command => "cd ${bz_path}; ./${collectstats} --regenerate > /dev/null 2>&1",
         user    => root,
         hour    => 0,
         minute  => 5,
