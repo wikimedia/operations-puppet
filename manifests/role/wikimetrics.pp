@@ -82,6 +82,7 @@ class role::wikimetrics {
         undef   => 'apache',
         default => $::wikimetrics_web_mode,
     }
+    $wikimetrics_user = 'wikimetrics'
     # Make wikimetrics group 'www-data' if running in apache mode.
     # This allows for apache to write files to wikimetrics var directories.
     $wikimetrics_group = $web_mode ? {
@@ -176,6 +177,7 @@ class role::wikimetrics {
 
     class { '::wikimetrics':
         path                         => $wikimetrics_path,
+        user                         => $wikimetrics_user,
         group                        => $wikimetrics_group,
 
         # clone wikimetrics as root user so it can write to /srv
@@ -306,5 +308,31 @@ class role::wikimetrics {
         public_files  => $public_directory,
         keep_days     => 10,
         ensure        => $backup_ensure,
+    }
+
+    # Link aggregated projectcounts files to public directory
+    $aggregator_data_directory = '/srv/aggregator-data'
+    git::clone { 'aggregator_data':
+        ensure    => 'latest',
+        directory => $aggregator_data_directory,
+        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator/data.git',
+        owner     => $wikimetrics_user,
+        group     => $wikimetrics_group,
+    }
+
+    file { "${public_directory}/datafiles":
+        ensure  => 'directory',
+        target  => "${aggregator_data_directory}/projectcounts/daily",
+        owner   => $wikimetrics_user,
+        group   => $wikimetrics_group,
+        require => [File[$public_directory]],
+    }
+
+    file { "${public_directory}/datafiles/DailyPageviews":
+        ensure  => 'link',
+        target  => "${aggregator_data_directory}/projectcounts/daily",
+        owner   => $wikimetrics_user,
+        group   => $wikimetrics_group,
+        require => File["${public_directory}/datafiles"]
     }
 }
