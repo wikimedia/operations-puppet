@@ -217,10 +217,10 @@ class Threshold(GraphiteCheck):
             self.params.append(('target', target))
         if args.under:
             self.under = True
-            self.check_func = lambda x, y: x < y
+            self.check_func = lambda x, y: x <= y
         else:
             self.under = False
-            self.check_func = lambda x, y: x > y
+            self.check_func = lambda x, y: x >= y
         self.limits = {}
         self.limits['WARNING'] = args.warn
         self.limits['CRITICAL'] = args.crit
