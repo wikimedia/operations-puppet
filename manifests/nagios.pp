@@ -135,21 +135,3 @@ define monitor_service(
             },
     }
 }
-
-define monitoring::group ($description, $ensure=present) {
-    # Nagios hostgroup instance
-    nagios_hostgroup { $title:
-        ensure         => $ensure,
-        target         => "${::nagios_config_dir}/puppet_hostgroups.cfg",
-        hostgroup_name => $title,
-        alias          => $description,
-    }
-
-    # Nagios servicegroup instance
-    nagios_servicegroup { $title:
-        ensure            => $ensure,
-        target            => "${::nagios_config_dir}/puppet_servicegroups.cfg",
-        servicegroup_name => $title,
-        alias             => $description,
-    }
-}
