@@ -113,9 +113,6 @@ node 'analytics1003.eqiad.wmnet' {
 # had an error when booting.  analytics1004
 # has been repurposed as analytics standby NameNode.
 node 'analytics1009.eqiad.wmnet' {
-    $nagios_group = 'analytics_eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics'
     # analytics1009 is analytics Ganglia aggregator for Row A
     # $ganglia_aggregator = true
 
@@ -137,9 +134,6 @@ node 'analytics1009.eqiad.wmnet' {
 # TODO: either fix analytics1009, or move this
 # node to Row A.
 node 'analytics1004.eqiad.wmnet' {
-    $nagios_group = 'analytics_eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics'
 
     class { 'admin':
         groups => [
@@ -157,9 +151,6 @@ node 'analytics1004.eqiad.wmnet' {
 # analytics1010 is the Hadoop master node
 # (primary NameNode, ResourceManager, etc.)
 node 'analytics1010.eqiad.wmnet' {
-    $nagios_group = 'analytics_eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics'
     # analytics1010 is analytics Ganglia aggregator for Row B
     $ganglia_aggregator = true
 
@@ -184,9 +175,6 @@ node 'analytics1010.eqiad.wmnet' {
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
 node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
-    $nagios_group = 'analytics_eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics'
     # analytics1014 is analytics Ganglia aggregator for Row C
     if $::hostname == 'analytics1014' {
         $ganglia_aggregator = true
@@ -204,10 +192,6 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
 
 # analytics1012, analytics1018, analytics1021 and analytics1022 are Kafka Brokers.
 node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
-    $nagios_group = 'analytics_eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics_kafka'
-
     # one ganglia aggregator per ganglia 'cluster' per row.
     if ($::hostname == 'analytics1012' or  # Row A
         $::hostname == 'analytics1018' or  # Row D
@@ -235,9 +219,6 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
 
 # analytics1023-1025 are zookeeper server nodes
 node /analytics102[345].eqiad.wmnet/ {
-    $nagios_group = 'analytics_eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics'
 
     class { 'admin':
         groups => [
@@ -253,9 +234,6 @@ node /analytics102[345].eqiad.wmnet/ {
 
 # analytics1026 does not currently have a role
 node 'analytics1026.eqiad.wmnet' {
-    $nagios_group = 'analytics_eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics'
 
     class { 'admin':
         groups => [
@@ -274,9 +252,6 @@ node 'analytics1026.eqiad.wmnet' {
 # (Hue, Oozie, Hive, etc.).  It also submits regularly scheduled
 # batch Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
-    $nagios_group = 'analytics_eqiad'
-    # ganglia cluster name.
-    $cluster = 'analytics'
 
     class { 'admin':
         groups => [
@@ -1905,8 +1880,6 @@ node /ms100[4]\.eqiad\.wmnet/ {
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
 # rate limiting purposes (bug 64622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
-    $cluster = 'swift'
-    $nagios_group = 'swift'
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1922,8 +1895,6 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
-    $cluster = 'swift'
-    $nagios_group = 'swift'
     $all_drives = [
         '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
@@ -1942,15 +1913,11 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
-    $cluster = 'swift'
-    $nagios_group = 'swift'
     include admin
     include role::swift::esams-prod::proxy
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
-    $cluster = 'swift'
-    $nagios_group = 'swift'
     # 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
     $all_drives = [
         '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
@@ -1973,8 +1940,6 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
     include admin
 
-    $cluster = 'swift'
-    $nagios_group = 'swift'
     if $::hostname =~ /^ms-fe200[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1989,9 +1954,6 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
 
 node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
     include admin
-
-    $cluster = 'swift'
-    $nagios_group = 'swift'
 
     include role::swift::storage
 }
@@ -2386,8 +2348,6 @@ node 'sanger.wikimedia.org' {
 }
 
 node /^search100[0-6]\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     if $::hostname =~ /^search100(1|2)$/ {
         $ganglia_aggregator = true
     }
@@ -2402,8 +2362,6 @@ node /^search100[0-6]\.eqiad\.wmnet/ {
 }
 
 node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     class { 'admin':
         groups => [
             'deployment',
@@ -2414,8 +2372,6 @@ node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
 }
 
 node /^search101[1-4]\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     class { 'admin':
         groups => [
             'deployment',
@@ -2426,8 +2382,6 @@ node /^search101[1-4]\.eqiad\.wmnet/ {
 }
 
 node /^search101[56]\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     class { 'admin':
         groups => [
             'deployment',
@@ -2438,8 +2392,6 @@ node /^search101[56]\.eqiad\.wmnet/ {
 }
 
 node /^search10(19|20)\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     class { 'admin':
         groups => [
             'deployment',
@@ -2450,8 +2402,6 @@ node /^search10(19|20)\.eqiad\.wmnet/ {
 }
 
 node /^search101[78]\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     class { 'admin':
         groups => [
             'deployment',
@@ -2462,8 +2412,6 @@ node /^search101[78]\.eqiad\.wmnet/ {
 }
 
 node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     class { 'admin':
         groups => [
             'deployment',
@@ -2474,8 +2422,6 @@ node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
 }
 
 node /^search102[3-4]\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     class { 'admin':
         groups => [
             'deployment',
@@ -2486,8 +2432,6 @@ node /^search102[3-4]\.eqiad\.wmnet/ {
 }
 
 node /^searchidx100[0-2]\.eqiad\.wmnet/ {
-    $cluster = 'search'
-    $nagios_group = 'lucene'
     class { 'admin':
         groups => [
             'deployment',
