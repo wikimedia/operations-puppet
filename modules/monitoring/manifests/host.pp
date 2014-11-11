@@ -3,7 +3,7 @@
 #
 define monitoring::host (
     $ip_address = $::ipaddress,
-    $group         = $nagios_group,
+    $group         = hiera('nagios_group', "${cluster}_${::site}"),
     $ensure        = present,
     $critical      = 'false',
     $contact_group = 'admins'
