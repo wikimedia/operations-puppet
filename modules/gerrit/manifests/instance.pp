@@ -7,6 +7,7 @@ class gerrit::instance(
     $db_host     = '',
     $db_name     = 'reviewdb',
     $host        = '',
+    $server_host = '',
     $db_user     = 'gerrit',
     $ssh_key     = '',
     $ssl_cert    = 'ssl-cert-snakeoil',
@@ -62,4 +63,15 @@ class gerrit::instance(
         smtp_host            => $smtp_host,
         ssh_key              => $ssh_key,
     }
+
+    # configure SSHd to NOT listen on the gerrit IP
+    # so that we can let gerrit listen on port 22 here (bug 35611)
+    file { '/etc/ssh/sshd_config':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('gerrit/sshd_config.erb'),
+    }
+
 }
