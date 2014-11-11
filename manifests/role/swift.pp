@@ -84,7 +84,7 @@ class role::swift {
         }
         class proxy inherits role::swift::eqiad-prod {
             class { '::swift::proxy':
-                statsd_host          => 'statsd.eqiad.wmnet',
+                statsd_host          => 'localhost',
                 statsd_metric_prefix => "swift.eqiad-prod.${::hostname}",
                 bind_port            => '80',
                 proxy_address        => 'http://ms-fe.eqiad.wmnet',
@@ -110,6 +110,14 @@ class role::swift {
             include role::swift::icehouse
             include ::swift_new::params
             include ::swift_new::container_sync
+
+            class { '::txstatsd':
+                settings => {
+                    statsd => {
+                        'carbon-cache-host' => 'graphite-in.eqiad.wmnet',
+                    },
+                },
+            }
         }
         class storage inherits role::swift::eqiad-prod {
             include ::swift::storage
@@ -117,6 +125,14 @@ class role::swift {
             include role::swift::icehouse
             include ::swift_new::params
             include ::swift_new::container_sync
+
+            class { '::txstatsd':
+                settings => {
+                    statsd => {
+                        'carbon-cache-host' => 'graphite-in.eqiad.wmnet',
+                    },
+                },
+            }
         }
     }
     class esams-prod inherits role::swift::base {
@@ -195,7 +211,7 @@ class role::swift {
         }
         class proxy inherits role::swift::esams-prod {
             class { '::swift::proxy':
-                statsd_host          => 'statsd.eqiad.wmnet',
+                statsd_host          => 'localhost',
                 statsd_metric_prefix => "swift.esams-prod.${::hostname}",
                 bind_port            => '80',
                 proxy_address        => 'http://ms-fe.esams.wmnet',
@@ -217,11 +233,27 @@ class role::swift {
                 host => 'ms-fe.esams.wmnet',
             }
             include role::swift::icehouse
+
+            class { '::txstatsd':
+                settings => {
+                    statsd => {
+                        'carbon-cache-host' => 'graphite-in.eqiad.wmnet',
+                    },
+                },
+            }
         }
         class storage inherits role::swift::esams-prod {
             include ::swift::storage
             include ::swift::storage::monitoring
             include role::swift::icehouse
+
+            class { '::txstatsd':
+                settings => {
+                    statsd => {
+                        'carbon-cache-host' => 'graphite-in.eqiad.wmnet',
+                    },
+                },
+            }
         }
     }
 

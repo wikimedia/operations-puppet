@@ -228,7 +228,7 @@ class swift::storage {
     }
 
     class config (
-        $statsd_host = 'statsd.eqiad.wmnet',
+        $statsd_host = 'localhost',
         $statsd_metric_prefix = "swift.${::swift::base::cluster_name}.${::hostname}"
     ){
         require swift::storage::packages
