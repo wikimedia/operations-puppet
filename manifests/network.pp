@@ -282,7 +282,7 @@ class network::checks {
     ### ESAMS ###
 
     # cr1-esams
-    @monitor_host { 'cr1-esams':
+    @monitoring::host { 'cr1-esams':
         ip_address => '91.198.174.245',
         group      => 'routers',
     }
@@ -307,7 +307,7 @@ class network::checks {
 #    }
 
     # cr2-knams
-    @monitor_host { 'cr2-knams':
+    @monitoring::host { 'cr2-knams':
         ip_address => '91.198.174.246',
         group      => 'routers',
     }
@@ -325,7 +325,7 @@ class network::checks {
     }
 
     # mr1-esams
-    @monitor_host { 'mr1-esams':
+    @monitoring::host { 'mr1-esams':
         ip_address => '91.198.174.247',
         group      => 'routers'
     }
@@ -339,7 +339,7 @@ class network::checks {
     ### EQIAD ###
 
     # cr1-eqiad
-    @monitor_host { 'cr1-eqiad':
+    @monitoring::host { 'cr1-eqiad':
         ip_address => '208.80.154.196',
         group      => 'routers',
     }
@@ -357,7 +357,7 @@ class network::checks {
     }
 
     # cr2-eqiad
-    @monitor_host { 'cr2-eqiad':
+    @monitoring::host { 'cr2-eqiad':
         ip_address => '208.80.154.197',
         group      => 'routers',
     }
@@ -375,7 +375,7 @@ class network::checks {
     }
 
     # mr1-eqiad
-    @monitor_host { 'mr1-eqiad':
+    @monitoring::host { 'mr1-eqiad':
         ip_address => '10.65.0.1',
         group      => 'routers',
     }
@@ -387,12 +387,12 @@ class network::checks {
     }
 
     # NAS
-    @monitor_host { 'nas1001-a.eqiad.wmnet':
+    @monitoring::host { 'nas1001-a.eqiad.wmnet':
         ip_address => '10.64.16.4',
         group      => 'storage',
         critical   => true,
     }
-    @monitor_host { 'nas1001-b.eqiad.wmnet':
+    @monitoring::host { 'nas1001-b.eqiad.wmnet':
         ip_address => '10.64.16.5',
         group      => 'storage',
         critical   => true,
@@ -401,7 +401,7 @@ class network::checks {
     ### ULSFO ###
 
     # cr1-ulsfo
-    @monitor_host { 'cr1-ulsfo':
+    @monitoring::host { 'cr1-ulsfo':
         ip_address => '198.35.26.192',
         group      => 'routers',
     }
@@ -419,7 +419,7 @@ class network::checks {
     }
 
     # cr2-ulsfo
-    @monitor_host { 'cr2-ulsfo':
+    @monitoring::host { 'cr2-ulsfo':
         ip_address => '198.35.26.193',
         group      => 'routers',
     }
@@ -437,7 +437,7 @@ class network::checks {
     }
 
     # mr1-ulsfo
-    @monitor_host { 'mr1-ulsfo':
+    @monitoring::host { 'mr1-ulsfo':
         ip_address => '10.128.128.1',
         group      => 'routers',
     }
@@ -451,7 +451,7 @@ class network::checks {
     ### CODFW ###
 
     # cr1-codfw
-    @monitor_host { 'cr1-codfw':
+    @monitoring::host { 'cr1-codfw':
         ip_address => '208.80.153.192',
         group      => 'routers',
     }
@@ -469,7 +469,7 @@ class network::checks {
     }
 
     # cr2-codfw
-    @monitor_host { 'cr2-codfw':
+    @monitoring::host { 'cr2-codfw':
         ip_address => '208.80.153.193',
         group      => 'routers',
     }
