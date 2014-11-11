@@ -84,10 +84,15 @@ class MinimalPuppetAgentCollector(diamond.collector.Collector):
         summary = self._get_summary()
 
         # Only publish total executed time and 'time since last puppet run'
-        total_time = summary['time']['total']
+        if 'total' in summary['time']:
+            total_time = summary['time']['total']
+            self.publish('total_time', total_time)
         time_since = int(time.time()) - int(summary['time']['last_run'])
-        failed_events = summary['events']['failure']
 
-        self.publish('total_time', total_time)
+        if 'events' in summary and 'failure' in summary['events']:
+            failed_events = summary['events']['failure']
+        else:
+            failed_events = 1  # This means that there was a syntax error
+
         self.publish('time_since_last_run', time_since)
         self.publish('failed_events', failed_events)
