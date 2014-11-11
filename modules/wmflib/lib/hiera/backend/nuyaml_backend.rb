@@ -21,7 +21,6 @@
 # :expand_path be expanded when looking the file up on disk. This
 # allows both to have a more granular set of files, but also to avoid
 # unnecessary cache evictions for cached data.
-#
 # === Example
 #
 # Say your hiera.yaml has defined
@@ -40,6 +39,30 @@
 # inside the file #{datadir}/module_data/passwords/mysql.yaml
 #
 # Unless very small, all files should be split up like this.
+#
+# == Regexp matching
+#
+# As multiple hosts may correspond to the same rules/configs in a
+# large cluster, we allow to define a self-contained "regex.yaml" file
+# in your datadir, where each different class of servers may be
+# represented by a label and a corresponding regexp.
+#
+# === Example
+# Say you have a lookup for "cluster", and you have
+#"regex/%{hostname}" in your hierarchy; also, let's say that your
+# scope contains hostname = "web1001.local". So if your regex.yaml
+# file contains:
+#
+# databases:
+#   __regex: !ruby/regex '/db.*\.local/'
+#   cluster: db
+#
+# webservices:
+#   __regex: !ruby/regex '/^web.*\.local$/'
+#   cluster: www
+#
+# This will make it so that "cluster" will assume the value "www"
+# given the regex matches the "webservices" stanza
 #
 # == Dynamic lookup
 #
@@ -82,6 +105,12 @@ class Hiera
 
       def get_path(key, scope, source)
         config_section = :nuyaml
+        # Special case: regex
+        if m = /^regex\//.match(source)
+          Hiera.debug("Regex match going on - using regex.yaml")
+          return key, Backend.datafile(config_section, scope, 'regex', "yaml")
+        end
+
         # Special case: 'private' repository.
         # We use a different datadir in this case.
         # Example: private/common will search in the common source
@@ -110,6 +139,26 @@ class Hiera
         return key, Backend.datafile(config_section, scope, source, "yaml")
       end
 
+      def plain_lookup(key, data, scope)
+          return nil unless data.include?(key)
+          return Backend.parse_answer(data[key], scope)
+      end
+
+      def regex_lookup(key, matchon, data, scope)
+        data.each do |label, datahash|
+          r = datahash["__regex"]
+          Hiera.debug("Scanning label #{label} for matches to '#{r}' in '#{matchon}' ")
+          next unless r.match(matchon)
+          Hiera.debug("Label #{label} matches; searching within it")
+          next unless datahash.include?(key)
+          return Backend.parse_answer(datahash[key], scope)
+        end
+        return nil
+      rescue => detail
+        Hiera.debug(detail)
+        return nil
+      end
+
       def lookup(key, scope, order_override, resolution_type)
         answer = nil
 
@@ -127,7 +176,6 @@ class Hiera
             dynsource ||= 'default'
             source += "/#{dynsource}"
           end
-
           Hiera.debug("Loading info from #{source} for #{key}")
 
           lookup_key, yamlfile = get_path(key, scope, source)
@@ -145,13 +193,19 @@ class Hiera
           end
 
           next if data.empty?
-          next unless data.include?(lookup_key)
 
+          if m = /regex\/(.*)$/.match(source)
+            matchto = m[1]
+            new_answer = regex_lookup(lookup_key, matchto, data, scope)
+          else
+            new_answer = plain_lookup(key, data, scope)
+          end
+          next if new_answer.nil?
           # Extra logging that we found the key. This can be outputted
           # multiple times if the resolution type is array or hash but that
           # should be expected as the logging will then tell the user ALL the
           # places where the key is found.
-          Hiera.debug("Found #{lookup_key} in #{source}")
+          Hiera.debug("Found #{key} in #{source}")
 
           # for array resolution we just append to the array whatever
           # we find, we then goes onto the next file and keep adding to
@@ -160,7 +214,6 @@ class Hiera
           # for priority searches we break after the first found data
           # item
 
-          new_answer = Backend.parse_answer(data[lookup_key], scope)
           case resolution_type
           when :array
             raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of? Array or new_answer.kind_of? String
