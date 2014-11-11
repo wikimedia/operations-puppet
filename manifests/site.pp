@@ -3039,7 +3039,7 @@ node 'uranium.wikimedia.org' {
 
     include standard
     include admin
-    include ganglia::web
+    include role::ganglia::web
     include misc::monitoring::views
 
     install_certificate{ 'ganglia.wikimedia.org': }
