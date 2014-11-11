@@ -1,0 +1,9 @@
+Verified+2: jenkins-bot
+Code-Review+2: Yuvipanda <yuvipanda@gmail.com>
+Code-Review+1: Faidon Liambotis <faidon@wikimedia.org>
+Code-Review+1: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-by: Yuvipanda <yuvipanda@gmail.com>
+Submitted-at: Tue, 11 Nov 2014 19:54:05 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/170974
+Project: operations/puppet
+Branch: refs/heads/production
