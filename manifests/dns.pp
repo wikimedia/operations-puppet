@@ -43,7 +43,7 @@ class dns::auth-server::ldap(
     }
 
     # Monitoring
-    monitor_host { $dns_auth_soa_name:
+    monitoring::host { $dns_auth_soa_name:
         ip_address => $dns_auth_ipaddress,
     }
     monitor_service { 'auth dns':
@@ -114,7 +114,7 @@ class dns::recursor(
 
     define monitor() {
         # Monitoring
-        monitor_host { $title:
+        monitoring::host { $title:
             ip_address => $title,
         }
         monitor_service { "recursive dns ${title}":

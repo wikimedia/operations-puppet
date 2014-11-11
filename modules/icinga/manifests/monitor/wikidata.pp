@@ -3,7 +3,7 @@
 # Monitor wikidata dispatch lag
 class icinga::monitor::wikidata {
 
-    @monitor_host { 'wikidata':
+    @monitoring::host { 'wikidata':
         ip_address => '91.198.174.192',
     }
 

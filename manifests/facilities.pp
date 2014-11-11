@@ -45,7 +45,7 @@ define monitor_pdu_3phase(
     $breaker  = '30',
     $redundant= true
 ) {
-    @monitor_host { $title:
+    @monitoring::host { $title:
         ip_address => $ip,
         group      => 'pdus',
     }
