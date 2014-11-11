@@ -15,13 +15,18 @@
 #
 module Puppet::Parser::Functions
   newfunction(:require_package, :arity => -2) do |args|
-    args.each do |package_name|
+    Puppet::Parser::Functions.function :create_resources
+    args.flatten.each do |package_name|
       class_name = 'packages::' + package_name.tr('-', '_')
       unless compiler.topscope.find_hostclass(class_name)
         host = Puppet::Resource::Type.new(:hostclass, class_name)
         known_resource_types.add_hostclass(host)
-        send Puppet::Parser::Functions.function(:create_resources),
-             ['package', { package_name => { :ensure => :present } }]
+        cls = Puppet::Parser::Resource.new('class', class_name,
+                                           :scope => compiler.topscope)
+        catalog.add_resource(cls)
+        host.evaluate_code(cls)
+        compiler.topscope.class_scope(host).function_create_resources(
+             ['package', { package_name => { :ensure => :present } }])
       end
       send Puppet::Parser::Functions.function(:require), [class_name]
     end
