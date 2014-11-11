@@ -1,0 +1,43 @@
+<VirtualHost *:80>
+    ServerName <%= @ganglia_servername %>
+    ServerAlias <%= @ganglia_serveralias %>
+    DocumentRoot /var/www
+    ServerAdmin root@wikimedia.org
+
+    <Directory "/var/www">
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+    </Directory>
+
+    Alias /latest <%= @ganglia_webdir %>
+
+    RedirectMatch ^/$ http://<%= @ganglia_servername %>/latest
+    ErrorLog /var/log/apache2/ganglia.wikimedia.org-error.log
+    LogLevel warn
+</VirtualHost>
+<% if @ganglia_ssl_cert %>
+<VirtualHost *:443>
+    ServerName <%= @ganglia_servername %>
+    ServerAlias <%= @ganglia_serveralias %>
+    DocumentRoot /var/www
+    ServerAdmin root@wikimedia.org
+
+    SSLEngine on
+    SSLCertificateFile <%= @ganglia_ssl_cert %>
+    SSLCertificateKeyFile <%= @ganglia_ssl_key %>
+    <%= @ssl_settings.join("\n") %>
+
+    <Directory "/var/www">
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+    </Directory>
+
+    Alias /latest <%= @ganglia_webdir %>
+
+    RedirectMatch ^/$ https://<%= @ganglia_servername %>/latest
+    ErrorLog /var/log/apache2/ganglia.wikimedia.org-error.log
+    LogLevel warn
+</VirtualHost>
+<% end %>
