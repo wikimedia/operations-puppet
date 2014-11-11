@@ -25,5 +25,13 @@ class puppet::self::geoip {
         ensure => link,
         target => 'GeoLiteCity.dat',
     }
+    file { "$geoip_destdir/GeoIP2-Country.mmdb":
+        ensure => link,
+        target => 'GeoLite2-Country.mmdb',
+    }
+    file { "$geoip_destdir/GeoIP2-City.mmdb":
+        ensure => link,
+        target => 'GeoLite2-City.mmdb',
+    }
 }
 
