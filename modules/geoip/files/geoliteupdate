@@ -16,35 +16,19 @@ if [ ! -d "$DESTDIR" ]; then
 	exit 1
 fi
 
-GEOIP_URL="http://geolite.maxmind.com/download/geoip/database/"
-
-GEOLITE_COUNTRY_PATH="GeoLiteCountry/"
-GEOLITE_COUNTRY_FILE="GeoIP.dat.gz"
-
-GEOLITE_COUNTRY_IPV6_PATH=""
-GEOLITE_COUNTRY_IPV6_FILE="GeoIPv6.dat.gz"
-
-GEOLITE_CITY_PATH=""
-GEOLITE_CITY_FILE="GeoLiteCity.dat.gz"
-
-GEOLITE_CITY_IPV6_PATH="GeoLiteCityv6-beta/"
-GEOLITE_CITY_IPV6_FILE="GeoLiteCityv6.dat.gz"
-
-GEOLITE_ASNUM_PATH="asnum/"
-GEOLITE_ASNUM_FILE="GeoIPASNum.dat.gz"
-
-GEOLITE_ASNUM_IPV6_PATH="asnum/"
-GEOLITE_ASNUM_IPV6_FILE="GeoIPASNumv6.dat.gz"
+GEOIP_URL="http://geolite.maxmind.com/download/geoip/database"
 
 FAILED=0
 
 for url in \
-    "$GEOIP_URL$GEOLITE_COUNTRY_PATH$GEOLITE_COUNTRY_FILE" \
-    "$GEOIP_URL$GEOLITE_COUNTRY_IPV6_PATH$GEOLITE_COUNTRY_IPV6_FILE" \
-    "$GEOIP_URL$GEOLITE_CITY_PATH$GEOLITE_CITY_FILE" \
-    "$GEOIP_URL$GEOLITE_CITY_IPV6_PATH$GEOLITE_CITY_IPV6_FILE" \
-    "$GEOIP_URL$GEOLITE_ASNUM_PATH$GEOLITE_ASNUM_FILE" \
-    "$GEOIP_URL$GEOLITE_ASNUM_IPV6_PATH$GEOLITE_ASNUM_IPV6_FILE"
+    "$GEOIP_URL/GeoLiteCountry/GeoIP.dat.gz" \
+    "$GEOIP_URL/GeoIPv6.dat.gz" \
+    "$GEOIP_URL/GeoLiteCity.dat.gz" \
+    "$GEOIP_URL/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz" \
+    "$GEOIP_URL/asnum/GeoIPASNum.dat.gz" \
+    "$GEOIP_URL/asnum/GeoIPASNumv6.dat.gz" \
+    "$GEOIP_URL/GeoLite2-Country" \
+    "$GEOIP_URL/GeoLite2-City.mmdb.gz"
 do
     echo "Downloading: $url"
 

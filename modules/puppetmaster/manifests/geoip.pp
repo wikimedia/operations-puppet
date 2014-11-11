@@ -28,6 +28,14 @@ class puppetmaster::geoip {
             ensure => link,
             target => 'GeoLiteCity.dat',
         }
+        file { "$geoip_destdir/GeoIP2-Country.mmdb":
+            ensure => link,
+            target => 'GeoLite2-Country.mmdb',
+        }
+        file { "$geoip_destdir/GeoIP2-City.mmdb":
+            ensure => link,
+            target => 'GeoLite2-City.mmdb',
+        }
     } else {
         # Fetch the proprietary paid-for MaxMind database
         include passwords::geoip
