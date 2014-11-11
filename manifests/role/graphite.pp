@@ -253,6 +253,4 @@ class role::graphite::labmon {
     include beta::monitoring::graphite
     include toollabs::monitoring::graphite
     include contint::monitoring::graphite
-
-    include graphite::labs::archiver
 }
