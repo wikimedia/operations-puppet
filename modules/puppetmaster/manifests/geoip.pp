@@ -40,7 +40,6 @@ class puppetmaster::geoip {
             product_ids    => [
                 '106', # GeoIP.dat
                 '115', # GeoIPRegion.dat
-                '121', # GeoIPISP.dat
                 '132', # GeoIPCity.dat
                 '133', # GeoIPCity.dat
                 '171', # GeoIPNetSpeed.dat
