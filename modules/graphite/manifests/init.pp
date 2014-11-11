@@ -14,7 +14,7 @@ class graphite(
     $storage_aggregation = {},
     $storage_dir = '/var/lib/carbon',
 ) {
-    require_package('graphite-carbon', 'python-whisper')
+    package { ['graphite-carbon', 'python-whisper']: }
 
     $carbon_service_defaults = {
         log_updates              => false,
