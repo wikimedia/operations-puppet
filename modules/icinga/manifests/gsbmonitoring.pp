@@ -1,5 +1,5 @@
 class icinga::gsbmonitoring {
-    @monitor_host { 'google':
+    @monitoring::host { 'google':
         ip_address => '74.125.225.84',
     }
 
