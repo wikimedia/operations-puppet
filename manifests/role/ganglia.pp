@@ -74,7 +74,7 @@ class role::ganglia::web {
     # TODO: Automate the gmetad trusted hosts variable
     class { 'ganglia_new::gmetad':
         grid             => 'Wikimedia',
-        authority        => 'http://ganglia.wikimedia.org/latest',
+        authority        => 'http://ganglia.wikimedia.org',
         gmetad_root      => $gmetad_root,
         rrd_rootdir      => $rrd_rootdir,
         rrdcached_socket => $gmetad_socket,
@@ -83,7 +83,7 @@ class role::ganglia::web {
                         '208.80.154.14', # neon
                         '10.64.32.13', # terbium
                         ],
-        data_sources     => $role::ganglia::config::datasources,
+        data_sources     => $role::ganglia::config::data_sources,
         rra_sizes        => $role::ganglia::config::rra_sizes,
     }
 
