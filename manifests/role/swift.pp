@@ -114,7 +114,13 @@ class role::swift {
             class { '::txstatsd':
                 settings => {
                     statsd => {
-                        'carbon-cache-host' => 'graphite-in.eqiad.wmnet',
+                        'carbon-cache-host'          => 'graphite-in.eqiad.wmnet',
+                        'carbon-cache-port'          => 2004,
+                        'listen-port'                => 8125,
+                        'statsd-compliance'          => 0,
+                        'prefix'                     => '',
+                        'max-queue-size'             => 1000 * 1000,
+                        'max-datapoints-per-message' => 10 * 1000,
                     },
                 },
             }
@@ -129,7 +135,13 @@ class role::swift {
             class { '::txstatsd':
                 settings => {
                     statsd => {
-                        'carbon-cache-host' => 'graphite-in.eqiad.wmnet',
+                        'carbon-cache-host'          => 'graphite-in.eqiad.wmnet',
+                        'carbon-cache-port'          => 2004,
+                        'listen-port'                => 8125,
+                        'statsd-compliance'          => 0,
+                        'prefix'                     => '',
+                        'max-queue-size'             => 1000 * 1000,
+                        'max-datapoints-per-message' => 10 * 1000,
                     },
                 },
             }
@@ -237,7 +249,13 @@ class role::swift {
             class { '::txstatsd':
                 settings => {
                     statsd => {
-                        'carbon-cache-host' => 'graphite-in.eqiad.wmnet',
+                        'carbon-cache-host'          => 'graphite-in.eqiad.wmnet',
+                        'carbon-cache-port'          => 2004,
+                        'listen-port'                => 8125,
+                        'statsd-compliance'          => 0,
+                        'prefix'                     => '',
+                        'max-queue-size'             => 1000 * 1000,
+                        'max-datapoints-per-message' => 10 * 1000,
                     },
                 },
             }
@@ -250,7 +268,13 @@ class role::swift {
             class { '::txstatsd':
                 settings => {
                     statsd => {
-                        'carbon-cache-host' => 'graphite-in.eqiad.wmnet',
+                        'carbon-cache-host'          => 'graphite-in.eqiad.wmnet',
+                        'carbon-cache-port'          => 2004,
+                        'listen-port'                => 8125,
+                        'statsd-compliance'          => 0,
+                        'prefix'                     => '',
+                        'max-queue-size'             => 1000 * 1000,
+                        'max-datapoints-per-message' => 10 * 1000,
                     },
                 },
             }
@@ -393,7 +417,13 @@ class role::swift::proxy {
     class { '::txstatsd':
         settings => {
             statsd => {
-                'carbon-cache-host' => "${::swift_new::params::graphite_host}",
+                'carbon-cache-host'          => "${::swift_new::params::graphite_host}",
+                'carbon-cache-port'          => 2004,
+                'listen-port'                => 8125,
+                'statsd-compliance'          => 0,
+                'prefix'                     => '',
+                'max-queue-size'             => 1000 * 1000,
+                'max-datapoints-per-message' => 10 * 1000,
             },
         },
     }
@@ -428,7 +458,13 @@ class role::swift::storage {
     class { '::txstatsd':
         settings => {
             statsd => {
-                'carbon-cache-host' => "${::swift_new::params::graphite_host}",
+                'carbon-cache-host'          => "${::swift_new::params::graphite_host}",
+                'carbon-cache-port'          => 2004,
+                'listen-port'                => 8125,
+                'statsd-compliance'          => 0,
+                'prefix'                     => '',
+                'max-queue-size'             => 1000 * 1000,
+                'max-datapoints-per-message' => 10 * 1000,
             },
         },
     }
