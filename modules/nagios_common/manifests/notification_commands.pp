@@ -17,16 +17,21 @@
 #   The group which should own the check config files.
 #   Defaults to 'icinga'
 #
+# [*lover_name*]
+#   Name of thing that gives the recipient love when notifying
+#   them via email of bad things that have happened
+#
 class nagios_common::notification_commands(
     $ensure = present,
     $config_dir = '/etc/icinga',
     $owner = 'icinga',
     $group = 'icinga',
+    $lover_name = 'Icinga',
 ) {
     file { "$config_dir/notification_commands.cfg":
-        ensure => $ensure,
-        source => 'puppet:///modules/nagios_common/notification_commands.cfg',
-        owner  => $owner,
-        group  => $group,
+        ensure  => $ensure,
+        content => template('nagios_common/notification_commands.cfg.erb'),
+        owner   => $owner,
+        group   => $group,
     }
 }
