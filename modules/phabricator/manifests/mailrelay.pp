@@ -19,10 +19,9 @@
 # === Examples
 #
 #    class { '::phabricator::mailrelay':
-#        address_routing         => { maint-announce => 3},
+#        address_routing         => { maint-announce => ops-maint-announce},
 #        direct_comments_allowed => { testproj => 'cisco.com,gmail.com'},
 #        phab_bot => { root_dir   => '/srv/phab/phabricator/',
-#                      env         => 'default',
 #                      username    => 'phabot',
 #                      host        => 'http://myhost/api/',
 #                      certificate => $certificate,

@@ -89,12 +89,14 @@ class role::phabricator::main {
     include phabricator::monitoring
 
     class { '::phabricator::mailrelay':
-        default                   => { security => 'default'},
+        default                   => { security => 'users',
+                                       maint    => 'false',
+                                       save     => 'false',
+        },
         address_routing           => { testproj => 'demoproject'},
         phab_bot                  => { root_dir    => '/srv/phab/phabricator/',
-                                       env         => 'default',
                                        username    => 'emailbot',
-                                       host        => "http://${domain}",
+                                       host        => "https://${domain}/api/",
                                        certificate => $emailbotcert,
         },
     }
