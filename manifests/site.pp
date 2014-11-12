@@ -2207,15 +2207,10 @@ node 'netmon1001.wikimedia.org' {
     }
 }
 
-node 'nickel.wikimedia.org' {
-    $ganglia_aggregator = true
+node 'nickel.eqiad.wmnet' {
 
     include standard
     include admin
-    include ganglia::web
-    include misc::monitoring::views
-
-    install_certificate{ 'ganglia.wikimedia.org': }
 }
 
 node 'nitrogen.wikimedia.org' {
