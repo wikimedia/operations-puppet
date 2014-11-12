@@ -37,10 +37,31 @@ class mediawiki::users {
 
     user { 'mwdeploy':
         ensure     => present,
-        shell      => '/bin/false',
-        home       => '/var/lib/mwdeploy',
+        shell      => '/bin/bash',
+        home       => '/home/mwdeploy',
         system     => true,
         managehome => true,
+    }
+
+    file { '/home/mwdeploy':
+        ensure => directory,
+        owner  => 'mwdeploy',
+        group  => 'mwdeploy',
+        mode   => '0755',
+    }
+
+    file { '/home/mwdeploy/.ssh':
+        ensure => directory,
+        owner  => 'mwdeploy',
+        group  => 'mwdeploy',
+        mode   => '0500',
+    }
+
+    file { '/home/mwdeploy/.ssh/authorized_keys':
+        source  => 'puppet:///modules/mediawiki/authorized_keys.mwdeploy',
+        owner   => 'mwdeploy',
+        group   => 'mwdeploy',
+        mode    => '0400',
     }
 
 
