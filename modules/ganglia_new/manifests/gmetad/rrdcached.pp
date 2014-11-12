@@ -4,9 +4,17 @@ class ganglia_new::gmetad::rrdcached(
     $rrdpath,
     $gmetad_socket,
     $gweb_socket,
+    $journal_dir='/var/lib/rrdcached/journal',
 ) {
     package { 'rrdcached':
         ensure => $ensure,
+    }
+
+    file { $journal_dir:
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
     }
 
     file { '/etc/default/rrdcached':
@@ -22,5 +30,6 @@ class ganglia_new::gmetad::rrdcached(
         provider => 'upstart',
     }
 
-    Package['rrdcached'] -> File['/etc/default/rrdcached'] -> Service['rrdcached']
+    # We also notify on file changes
+    Package['rrdcached'] -> File['/etc/default/rrdcached'] ~> Service['rrdcached']
 }

@@ -90,6 +90,7 @@ class role::ganglia::web {
     class { 'ganglia_new::web':
         rrdcached_socket => $gweb_socket,
         gmetad_root      => $gmetad_root,
+        journal_dir      => '/srv/rrdcached_journal',
     }
 
     # Get better insight into how disks are faring
