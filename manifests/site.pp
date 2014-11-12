@@ -466,9 +466,11 @@ node 'caesium.eqiad.wmnet' {
 }
 
 # cerium,praseodymium, ruthenium and xenon are cassandra test host
+# ruthenium and xenon are also parsoid regression test servers
+# https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
 node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
 
-    class { 'admin': groups => ['cassandra-roots'] }
+    class { 'admin': groups => ['cassandra-roots', 'parsoid-roots'] }
 
     system::role { 'role::cassandra-test':
         description => 'Cassandra test server',
