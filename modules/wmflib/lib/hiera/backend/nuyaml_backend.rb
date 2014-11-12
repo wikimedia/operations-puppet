@@ -198,14 +198,14 @@ class Hiera
             matchto = m[1]
             new_answer = regex_lookup(lookup_key, matchto, data, scope)
           else
-            new_answer = plain_lookup(key, data, scope)
+            new_answer = plain_lookup(lookup_key, data, scope)
           end
           next if new_answer.nil?
           # Extra logging that we found the key. This can be outputted
           # multiple times if the resolution type is array or hash but that
           # should be expected as the logging will then tell the user ALL the
           # places where the key is found.
-          Hiera.debug("Found #{key} in #{source}")
+          Hiera.debug("Found #{lookup_key} in #{source}")
 
           # for array resolution we just append to the array whatever
           # we find, we then goes onto the next file and keep adding to
