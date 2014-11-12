@@ -12,7 +12,7 @@ DISABLE=0
 # (do not specify -p <pidfile> - this is handled by the init script)
 # default: see /etc/init.d/rrdcached
 #OPTS=""
-OPTS="-s nogroup -l unix:<%= @gmetadsocket %> -s www-data -P PENDING,FLUSH,STATS -l unix:<%= @gwebsocket %> -j /var/lib/rrdcached/journal/ -b <%= @rrdpath %> -B"
+OPTS="-s nogroup -l unix:<%= @gmetad_socket %> -s www-data -P PENDING,FLUSH,STATS -l unix:<%= @gweb_socket %> -j /var/lib/rrdcached/journal/ -b <%= @rrdpath %> -B"
 
 # number of seconds to wait for rrdcached to shut down
 # (writing the data to disk may take some time;
