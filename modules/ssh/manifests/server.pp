@@ -1,4 +1,6 @@
-class ssh::server {
+class ssh::server (
+    $listen_port = '22',
+) {
     package { 'openssh-server':
         ensure => latest;
     }
