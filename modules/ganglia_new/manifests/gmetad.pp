@@ -49,8 +49,9 @@ class ganglia_new::gmetad(
         content => template('ganglia_new/gmetad.upstart'),
     }
 
-    Package['gmetad'] -> File['/etc/ganglia/gmetad.conf'] -> Service['gmetad']
-    Package['gmetad'] -> File['/etc/init/gmetad.conf'] -> Service['gmetad']
+    # We also notify on file changes
+    Package['gmetad'] -> File['/etc/ganglia/gmetad.conf'] ~> Service['gmetad']
+    Package['gmetad'] -> File['/etc/init/gmetad.conf'] ~> Service['gmetad']
     File[$gmetad_root] -> File[$rrd_rootdir]
     File[$rrd_rootdir] -> Service['gmetad']
 }
