@@ -76,13 +76,21 @@ class shinken::server(
     class { [
       'nagios_common::user_macros',
       'nagios_common::timeperiods',
-      'nagios_common::notification_commands',
     ] :
         config_dir => '/etc/shinken',
         owner      => 'shinken',
         group      => 'shinken',
         notify     => Service['shinken'],
         require    => Package['shinken'],
+    }
+
+    class { 'nagios_common::notification_commands':
+        config_dir => '/etc/shinken',
+        owner      => 'shinken',
+        group      => 'shinken',
+        notify     => Service['shinken'],
+        require    => Package['shinken'],
+        lover_name => 'Shinken',
     }
 
     # Default localhost config, we do not need this
