@@ -69,6 +69,7 @@ class role::ganglia::web {
         rrdpath       => $rrd_rootdir,
         gmetad_socket => $gmetad_socket,
         gweb_socket   => $gwebsocket,
+        journal_dir      => '/srv/rrdcached_journal',
     }
 
     # TODO: Automate the gmetad trusted hosts variable
@@ -90,7 +91,6 @@ class role::ganglia::web {
     class { 'ganglia_new::web':
         rrdcached_socket => $gweb_socket,
         gmetad_root      => $gmetad_root,
-        journal_dir      => '/srv/rrdcached_journal',
     }
 
     # Get better insight into how disks are faring
