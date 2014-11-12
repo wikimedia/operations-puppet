@@ -761,8 +761,10 @@ class role::cache {
         # unless they're overridden!
         $backend_weight = 10
 
-        # Ganglia monitoring
-        class { 'varnish::monitoring::ganglia': }
+        if $::realm != 'labs' {
+            # Ganglia monitoring, only for production (labs has no ganglia)
+            class { 'varnish::monitoring::ganglia': }
+        }
     }
 
     # Ancestor class for common resources of 2-layer clusters
@@ -780,9 +782,11 @@ class role::cache {
             $memory_storage_size = 1
         }
 
-        # Ganglia monitoring
-        class { 'varnish::monitoring::ganglia':
-            varnish_instances => [ '', 'frontend' ],
+        if $::realm != 'labs' {
+            # Ganglia monitoring, only for production (labs has no ganglia)
+            class { 'varnish::monitoring::ganglia':
+                varnish_instances => [ '', 'frontend' ],
+            }
         }
     }
 
