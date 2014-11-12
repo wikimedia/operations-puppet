@@ -42,7 +42,7 @@ class eventlogging {
     include ::eventlogging::package
     include ::eventlogging::monitoring
 
-    $log_dir = '/var/log/eventlogging'
+    $log_dir = '/srv/log/eventlogging'
 
     group { 'eventlogging':
         ensure => present,
