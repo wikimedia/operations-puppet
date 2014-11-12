@@ -439,23 +439,26 @@ node 'caesium.eqiad.wmnet' {
     include role::releases
 }
 
-# cerium,praseodymium, ruthenium and xenon are cassandra test host
-node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
+# cerium,praseodymium and xenon are cassandra test host
+node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 
     class { 'admin': groups => ['cassandra-roots'] }
 
-    system::role { 'role::cassandra-test':
+    system::role { 'role::cassandra':
         description => 'Cassandra test server',
     }
 
     include standard
+}
 
-    # XXX: to be moved into the puppet class
-    sysctl::parameters { 'cassandra':
-        values => {
-            'vm.max_map_count' => 1048575,
-        },
-    }
+# ruthenium is a parsoid regression test server
+# https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
+node /^ruthenium\.eqiad\.wmnet$/ {
+
+    class { 'admin': groups => ['parsoid-roots',
+                                'parsoid-admin'] }
+
+    include standard
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
