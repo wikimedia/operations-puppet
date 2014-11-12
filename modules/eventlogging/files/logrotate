@@ -1,9 +1,9 @@
 # This file is managed by Puppet.
 # puppet:///modules/eventlogging/logrotate
 
-/var/log/eventlogging/*.log {
+<%= @log_dir =>/*.log {
        daily
-       olddir /var/log/eventlogging/archive
+       olddir <%= @log_dir %>/archive
        notifempty
        maxage 45
        rotate 1000

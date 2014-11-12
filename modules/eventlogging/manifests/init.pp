@@ -42,6 +42,8 @@ class eventlogging {
     include ::eventlogging::package
     include ::eventlogging::monitoring
 
+    $log_dir = '/var/log/eventlogging'
+
     group { 'eventlogging':
         ensure => present,
     }
@@ -102,8 +104,8 @@ class eventlogging {
         ensure => directory,
     }
 
-    # Logs are collected in </var/log/eventlogging> and rotated daily.
-    file { [ '/var/log/eventlogging', '/var/log/eventlogging/archive' ]:
+    # Logs are collected in <$log_dir> and rotated daily.
+    file { [ $log_dir, "${log_dir}/archive" ]:
         ensure  => directory,
         owner   => 'eventlogging',
         group   => 'eventlogging',
@@ -112,7 +114,7 @@ class eventlogging {
 
     file { '/etc/logrotate.d/eventlogging':
         source  => 'puppet:///modules/eventlogging/logrotate',
-        require => File['/var/log/eventlogging/archive'],
+        require => File["${log_dir}/archive"],
         mode    => '0444',
     }
 }
