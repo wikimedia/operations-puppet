@@ -2267,7 +2267,15 @@ node 'rhenium.wikimedia.org' {
     class { 'admin': groups => ['pmacct-roots'] }
 }
 
+# ruthenium is a parsoid regression test server
+# https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
 node 'ruthenium.eqiad.wmnet' {
+    class { 'admin':
+        groups => [
+            'parsoid-roots',
+            'parsoid-admin',
+        ]
+    }
     include standard
 }
 
