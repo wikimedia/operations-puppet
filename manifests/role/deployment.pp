@@ -146,6 +146,10 @@ class role::deployment::deployment_servers::common {
         user          => 'root',
         remote_branch => 'readonly/master'
     }
+
+    class { '::keyholder':
+        trusted_group => 'wikidev',
+    }
 }
 
 class role::deployment::deployment_servers::production {
