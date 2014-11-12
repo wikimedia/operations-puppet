@@ -439,8 +439,8 @@ node 'caesium.eqiad.wmnet' {
     include role::releases
 }
 
-# cerium,praseodymium, ruthenium and xenon are cassandra test host
-node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
+# cerium,praseodymium and xenon are cassandra test host
+node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 
     class { 'admin': groups => ['cassandra-roots'] }
 
@@ -456,6 +456,16 @@ node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
             'vm.max_map_count' => 1048575,
         },
     }
+}
+
+# ruthenium is a parsoid regression test server
+# https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
+node /^ruthenium\.eqiad\.wmnet$/ {
+
+    class { 'admin': groups => ['parsoid-roots',
+                                'parsoid-admin'] }
+
+    include standard
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
