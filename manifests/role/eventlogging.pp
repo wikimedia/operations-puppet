@@ -94,19 +94,21 @@ class role::eventlogging {
     ## Flat files
 
     # Log all raw log records and decoded events to flat files in
-    # /var/log/eventlogging as a medium of last resort. These files
-    # are rotated and rsynced to stat1003 & stat1002 for backup.
+    # $log_dir as a medium of last resort. These files are rotated
+    # and rsynced to stat1003 & stat1002 for backup.
+
+    $log_dir = $::eventlogging::log_dir
 
     eventlogging::service::consumer {
         'server-side-events.log':
             input  => "tcp://${processor}:8421?raw=1",
-            output => 'file:///var/log/eventlogging/server-side-events.log';
+            output => "file://${log_dir}/server-side-events.log";
         'client-side-events.log':
             input  => "tcp://${processor}:8422?raw=1",
-            output => 'file:///var/log/eventlogging/client-side-events.log';
+            output => "file://${log_dir}/client-side-events.log";
         'all-events.log':
             input  => "tcp://${processor}:8600",
-            output => 'file:///var/log/eventlogging/all-events.log';
+            output => "file://${log_dir}/all-events.log";
     }
 
     $backup_destinations = $::realm ? {
@@ -118,10 +120,10 @@ class role::eventlogging {
         include rsync::server
 
         rsync::server::module { 'eventlogging':
-            path        => '/var/log/eventlogging',
+            path        => $log_dir,
             read_only   => 'yes',
             list        => 'yes',
-            require     => File['/var/log/eventlogging'],
+            require     => File[$log_dir],
             hosts_allow => $backup_destinations,
         }
     }
