@@ -4,9 +4,13 @@
 
 # What ports, IPs and protocols we listen for
 Port <%= listen_port %>
+<% if @listen_address %>
+ListenAddress <%= @listen_address %>
+<% else %>
 # Use these options to restrict which interfaces/protocols sshd will bind to
 #ListenAddress ::
 #ListenAddress 0.0.0.0
+<% end %>
 Protocol 2
 # HostKeys for protocol version 2
 HostKey /etc/ssh/ssh_host_rsa_key
