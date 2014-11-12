@@ -3040,7 +3040,8 @@ node 'uranium.wikimedia.org' {
     include standard
     include admin
     include role::ganglia::web
-    include misc::monitoring::views
+    # TODO: Resolve this
+    #include misc::monitoring::views
 
     install_certificate{ 'ganglia.wikimedia.org': }
 
