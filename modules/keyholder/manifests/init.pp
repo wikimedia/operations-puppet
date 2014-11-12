@@ -46,6 +46,9 @@
 # (shared with just one group) on a particular node.
 #
 class keyholder( $trusted_group ) {
+
+    require_package('python3')
+
     group { 'keyholder':
         ensure => present,
     }
