@@ -124,6 +124,15 @@ class eventlogging {
         mode    => '0664',
     }
 
+    # Link logs to /var/log/eventlogging, so people can find it in a
+    # more prominent place too.
+    if ( $log_dir != '/var/log/eventlogging' ) {
+        file { '/var/log/eventlogging':
+            ensure  => 'link',
+            target  => $log_dir,
+        }
+    }
+
     file { '/etc/logrotate.d/eventlogging':
         source  => 'puppet:///modules/eventlogging/logrotate',
         require => File["${log_dir}/archive"],
