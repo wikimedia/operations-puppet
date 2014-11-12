@@ -9,6 +9,7 @@ class role::icinga {
     include icinga::nsca::daemon
     include icinga::monitor::wikidata
     include icinga::groups::misc
+    include icinga::ircbot
     include lvs::monitor
     include role::authdns::monitoring
     include network::checks
