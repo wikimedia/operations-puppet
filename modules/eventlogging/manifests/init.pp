@@ -42,7 +42,19 @@ class eventlogging {
     include ::eventlogging::package
     include ::eventlogging::monitoring
 
-    $log_dir = '/var/log/eventlogging'
+    $log_dir = '/srv/log/eventlogging'
+
+    # We ensure the /srv/log (parent of $log_dir) manually here, as
+    # there is no proper class to rely on for this, and starting a
+    # separate would be an overkill for now.
+    if !defined(File['/srv/log']) {
+        file { '/srv/log':
+            ensure  => 'directory',
+            mode    => '755',
+            owner   => 'root',
+            group   => 'root',
+        }
+    }
 
     group { 'eventlogging':
         ensure => present,
