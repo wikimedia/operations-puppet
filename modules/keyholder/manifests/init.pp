@@ -59,6 +59,13 @@ class keyholder( $trusted_group ) {
         managehome => false,
     }
 
+    file { '/run/keyholder':
+        ensure => directory,
+        owner  => 'keyholder',
+        group  => 'keyholder',
+        mode   => '0755',
+    }
+
     file { '/usr/local/bin/ssh-agent-proxy':
         source => 'puppet:///modules/keyholder/ssh-agent-proxy',
         owner  => 'root',
@@ -82,7 +89,7 @@ class keyholder( $trusted_group ) {
     service { 'keyholder-agent':
         ensure   => running,
         provider => 'upstart',
-        require  => User['keyholder'],
+        require  => File['/run/keyholder'],
     }
 
 
