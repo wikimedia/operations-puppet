@@ -6,7 +6,7 @@
 #
 
 # Where gmetad stores the rrd archives.
-$conf['gmetad_root'] = "<%= @gmetad_root %>"
+$conf['gmetad_root'] = "<%= @gmetad_root %>";
 $conf['rrds'] = "${conf['gmetad_root']}/rrds";
 
 # If you want to grab data from a different ganglia source specify it here.
@@ -20,5 +20,8 @@ $conf['ganglia_port'] = 8654;
 # Default metric
 #
 $conf['default_metric'] = "cpu_report";
+
+# rrdcached
+$conf['rrdcached_socket'] = "unix:<%= @rrdcached_socket %>";
 
 ?>
