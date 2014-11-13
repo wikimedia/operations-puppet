@@ -21,12 +21,17 @@
 #   Name of thing that gives the recipient love when notifying
 #   them via email of bad things that have happened
 #
+# [*irc_dir_path*]
+#   Directory containing files that are used by ircecho to
+#   echo notifications to IRC
+#
 class nagios_common::notification_commands(
     $ensure = present,
     $config_dir = '/etc/icinga',
     $owner = 'icinga',
     $group = 'icinga',
     $lover_name = 'Icinga',
+    $irc_dir_path = '/var/log/icinga',
 ) {
     file { "$config_dir/notification_commands.cfg":
         ensure  => $ensure,
