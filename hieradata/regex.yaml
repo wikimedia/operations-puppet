@@ -1,0 +1,41 @@
+# mw1017-1032, mw1053 are apaches (trusty)
+hhvm_appservers:
+  __regex: !ruby/regexp /^mw10(1[7-9]|2[0-9]|3[0-2]|53)\.eqiad\.wmnet$/
+  mainrole: appserver_hhvm
+  admin::groups:
+    - deployment
+
+#mw1033-mw1113 are are api apaches (precise) 
+appservers_1:
+  __regex: !ruby/regexp /^mw1(03[3-9]|0[4-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/
+  mainrole: appserver
+  admin::groups:
+    - deployment
+
+# mw1114-1148 are api apaches (precise)
+api_1:
+  __regex: !ruby/regexp /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/
+  mainrole: api_appserver
+  admin::groups:
+    - deployment
+
+# mw1149-1152 are apaches (precise)
+appservers_2:
+  __regex: !ruby/regexp /^mw11(49|5[0-2])\.eqiad\.wmnet$/
+  mainrole: appserver
+  admin::groups:
+    - deployment
+
+# mw1161-1188 are apaches (precise)
+appservers_3:
+  __regex: !ruby/regexp /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/
+  mainrole: appserver
+  admin::groups:
+    - deployment
+
+# mw1189-1208 are api apaches (precise)
+api_2:
+  __regex: !ruby/regexp /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/
+  mainrole: api_appserver
+  admin::groups:
+    - deployment
