@@ -125,7 +125,7 @@ class eventlogging {
     }
 
     file { '/etc/logrotate.d/eventlogging':
-        source  => 'puppet:///modules/eventlogging/logrotate',
+        content => template('eventlogging/logrotate.erb'),
         require => File["${log_dir}/archive"],
         mode    => '0444',
     }
