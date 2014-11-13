@@ -154,8 +154,8 @@ class role::deployment::deployment_servers::common {
     file { '/root/.ssh/mwdeploy_rsa':
         source => 'puppet:///private/ssh/tin/mwdeploy_rsa',
         owner  => 'root',
-        group  => 'root',
-        mode   => '0400',
+        group  => 'keyholder',
+        mode   => '0440',
     }
 }
 
