@@ -26,9 +26,9 @@ appservers_2:
   admin::groups:
     - deployment
 
-# mw1153-1160 are imagescalers (precise)
+# Imagescalers
 imagescalers:
-  __regex: !ruby/regex /^mw11(5[3-9]|60)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^mw11(5[3-9]|60)\.eqiad\.wmnet$/
   mainrole: imagescaler
 
 # mw1161-1188 are apaches (precise)
