@@ -2,7 +2,15 @@
 #
 # Sets up a icinga instance which checks services
 # and hosts for Wikimedia Production cluster
-class role::icinga {
+#
+# = Parameters
+#
+# [*ircbot*]
+#   Setup an ircbot using ircecho to support echoing notifications
+#
+class role::icinga(
+    $ircbot = true,
+){
     include facilities::pdu_monitoring
     include icinga::monitor::checkpaging
     include icinga::nsca::firewall
@@ -17,6 +25,10 @@ class role::icinga {
     include icinga::gsbmonitoring
     include nrpe
     include certificates::globalsign_ca
+
+    if $ircbot {
+        include icinga::ircbot
+    }
 
     class { '::icinga':            }
     class { '::icinga::web':       }
