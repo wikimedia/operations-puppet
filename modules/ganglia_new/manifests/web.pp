@@ -10,7 +10,7 @@ class ganglia_new::web(
     include ::apache::mod::rewrite
 
     $ganglia_servername = 'ganglia.wikimedia.org'
-    $ganglia_serveralias = 'nickel.wikimedia.org uranium.wikimedia.org'
+    $ganglia_serveralias = 'uranium.wikimedia.org'
     $ganglia_webdir = '/usr/share/ganglia-webfrontend'
     $ganglia_confdir = '/var/lib/ganglia-web'
     $ganglia_ssl_cert = '/etc/ssl/certs/ganglia.wikimedia.org.pem'
