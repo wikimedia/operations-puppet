@@ -835,7 +835,6 @@ define misc::statistics::limn::data::generate() {
 #
 class misc::statistics::limn::data::jobs {
     misc::statistics::limn::data::generate { 'mobile': }
-    misc::statistics::limn::data::generate { 'flow': }
 }
 
 # == Class misc::statistics::geowiki::params
