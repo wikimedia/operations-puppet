@@ -91,7 +91,6 @@ class role::phabricator::main {
     class { '::phabricator::mailrelay':
         default                   => { security => 'users',
                                        maint    => 'false',
-                                       save     => 'false',
         },
         address_routing           => { testproj => 'demoproject'},
         phab_bot                  => { root_dir    => '/srv/phab/phabricator/',
