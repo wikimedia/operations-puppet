@@ -92,12 +92,13 @@ class shinken::server(
     }
 
     class { 'nagios_common::notification_commands':
-        config_dir => '/etc/shinken',
-        owner      => 'shinken',
-        group      => 'shinken',
-        notify     => Service['shinken'],
-        require    => Package['shinken'],
-        lover_name => 'Shinken',
+        config_dir   => '/etc/shinken',
+        owner        => 'shinken',
+        group        => 'shinken',
+        notify       => Service['shinken'],
+        require      => Package['shinken'],
+        lover_name   => 'Shinken',
+        irc_dir_path => '/var/log/shinken/irc',
     }
 
     # Default localhost config, we do not need this
