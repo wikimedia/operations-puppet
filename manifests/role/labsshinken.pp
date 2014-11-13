@@ -1,8 +1,15 @@
 # = Class: role::labs::shinken
 # Sets up a shinken server for labs
-
-class role::labs::shinken {
-    class { '::shinken':
+#
+# = Parameters
+#
+# [*ircbot*]
+#   Setup an ircbot using ircecho to support echoing notifications
+#
+class role::labs::shinken(
+    $ircbot = true,
+){
+    class { 'shinken':
         auth_secret => 'This is insecure, should switch to using private repo',
     }
 
@@ -12,6 +19,10 @@ class role::labs::shinken {
     }
     shinken::services { 'basic-instance-checks':
         source => 'puppet:///modules/shinken/labs/basic-instance-checks.cfg',
+    }
+
+    if $ircbot {
+        include shinken::ircbot
     }
 
     include beta::monitoring::shinken

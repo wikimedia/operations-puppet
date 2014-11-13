@@ -101,28 +101,3 @@ define command{
 	command_name	notify-service-by-irc-labs
 	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" >> <%= @irc_dir_path %>/irc-labs.log
 	}
-
-################################################################################
-#
-# SAMPLE PERFORMANCE DATA COMMANDS
-#
-# These are sample performance data commands that can be used to send performance
-# data output to two text files (one for hosts, another for services).  If you
-# plan on simply writing performance data out to a file, consider using the
-# host_perfdata_file and service_perfdata_file options in the main config file.
-#
-################################################################################
-
-
-# 'process-host-perfdata' command definition
-define command{
-	command_name	process-host-perfdata
-	command_line	/usr/bin/printf "%b" "$LASTHOSTCHECK$\t$HOSTNAME$\t$HOSTSTATE$\t$HOSTATTEMPT$\t$HOSTSTATETYPE$\t$HOSTEXECUTIONTIME$\t$HOSTOUTPUT$\t$HOSTPERFDATA$\n" >> <%= @irc_dir_path %>/host-perfdata.out
-	}
-
-
-# 'process-service-perfdata' command definition
-define command{
-	command_name	process-service-perfdata
-	command_line	/usr/bin/printf "%b" "$LASTSERVICECHECK$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICESTATE$\t$SERVICEATTEMPT$\t$SERVICESTATETYPE$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$\n" >> <%= @irc_dir_path %>/service-perfdata.out
-	}
