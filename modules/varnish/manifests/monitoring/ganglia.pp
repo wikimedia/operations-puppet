@@ -25,5 +25,22 @@ class varnish::monitoring::ganglia($varnish_instances=['']) {
         notify  => Service['gmond'],
     }
 
+    file { '/usr/local/sbin/check-gmond-restart':
+        ensure => present,
+        source => 'puppet:///modules/varnish/ganglia/check-gmond-restart',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+    }
+
+    file { '/etc/cron.d/check-gmond-restart':
+        ensure  => present,
+        content => "*/5 * * * * root /usr/local/sbin/check-gmond-restart > /dev/null 2>&1",
+        require => File['/usr/local/sbin/check-gmond-restart'],
+    }
+
+    # Dependencies
+    # Exec the config generation AFTER all varnish instances have started
+    Service <| tag == 'varnish_instance' |> -> Exec['generate varnish.pyconf']
     Exec['generate varnish.pyconf'] -> Exec['replace varnish.pyconf']
 }
