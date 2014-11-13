@@ -54,6 +54,8 @@ class role::cache {
     class configuration {
         include lvs::configuration
 
+        $has_ganglia = hiera('has_ganglia', true)
+
         $active_nodes = {
             'production' => {
                 'text' => {
@@ -761,8 +763,9 @@ class role::cache {
         # unless they're overridden!
         $backend_weight = 10
 
-        # Ganglia monitoring
-        class { 'varnish::monitoring::ganglia': }
+        if $::role::cache::configuration::has_ganglia {
+            include varnish::monitoring::ganglia
+        }
     }
 
     # Ancestor class for common resources of 2-layer clusters
@@ -781,8 +784,10 @@ class role::cache {
         }
 
         # Ganglia monitoring
-        class { 'varnish::monitoring::ganglia':
-            varnish_instances => [ '', 'frontend' ],
+        if $::role::cache::configuration::has_ganglia{
+            class { 'varnish::monitoring::ganglia':
+                varnish_instances => [ '', 'frontend' ],
+            }
         }
     }
 
@@ -829,7 +834,9 @@ class role::cache {
             varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
         }
 
-        include varnish::monitoring::ganglia::vhtcpd
+        if $::role::cache::configuration::has_ganglia {
+            include varnish::monitoring::ganglia::vhtcpd
+        }
 
         $runtime_params = $::site ? {
             #'esams' => ['prefer_ipv6=on','default_ttl=2592000'],
@@ -998,7 +1005,9 @@ class role::cache {
             varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
         }
 
-        include varnish::monitoring::ganglia::vhtcpd
+        if $::role::cache::configuration::has_ganglia {
+            include varnish::monitoring::ganglia::vhtcpd
+        }
 
         case $::realm {
             'production': {
@@ -1257,7 +1266,9 @@ class role::cache {
             varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
         }
 
-        include varnish::monitoring::ganglia::vhtcpd
+        if $::role::cache::configuration::has_ganglia {
+            include varnish::monitoring::ganglia::vhtcpd
+        }
 
         case $::realm {
             'production': {
