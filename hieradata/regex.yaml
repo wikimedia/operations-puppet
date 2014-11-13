@@ -5,7 +5,7 @@ hhvm_appservers:
   admin::groups:
     - deployment
 
-#mw1033-mw1113 are are api apaches (precise) 
+# mw1033-mw1113 are are api apaches (precise)
 appservers_1:
   __regex: !ruby/regexp /^mw1(03[3-9]|0[4-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/
   mainrole: appserver
