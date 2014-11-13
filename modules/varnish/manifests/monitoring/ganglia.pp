@@ -25,5 +25,10 @@ class varnish::monitoring::ganglia($varnish_instances=['']) {
         notify  => Service['gmond'],
     }
 
+    # Dependencies
+    # Exec the config generation AFTER all varnish instances have started
+    Service <| tag == 'varnish_instance' |> -> Exec['generate varnish.pyconf']
+    # Restart gmond if one varnish instance has been refreshed
+    Service <| tag == 'varnish_instance' |> ~> Service['gmond']
     Exec['generate varnish.pyconf'] -> Exec['replace varnish.pyconf']
 }
