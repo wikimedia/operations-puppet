@@ -1,0 +1,94 @@
+#!/usr/bin/python
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/ldap/scripts/ldaplist
+#####################################################################
+
+import ldapsupportlib
+from optparse import OptionParser
+import re
+from signal import signal, SIGPIPE, SIG_DFL
+import sys
+import traceback
+
+try:
+    import ldap
+except ImportError:
+    sys.stderr.write("Unable to import LDAP library.\n")
+    sys.exit(1)
+
+# Avoid "IOError: [Errno 32] Broken pipe" when piping to head & Co.
+signal(SIGPIPE, SIG_DFL)
+
+def main():
+    "Print ssh keys for a given ldap user.  Mostly cribbed from 'ldaplist'"
+
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage("ldap-keys [options] <username>\n\nexample: ldaplist andrew")
+
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+    ldapSupportLib.addParserOptions(parser)
+
+    (options, args) = parser.parse_args()
+
+    ldapSupportLib.setBindInfoByOptions(options, parser)
+
+    base = "ou=people," + ldapSupportLib.getBase()
+
+    if (len(args) != 1):
+        print parser.usage
+        exit(1)
+
+    ds = ldapSupportLib.connect()
+
+    # w00t We're in!
+    try:
+        PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
+                                "(uid="+ args[0] + ")")
+
+    except ldap.NO_SUCH_OBJECT:
+        sys.stderr.write("Object not found. If you are trying to use * in your search, make sure that you wrap your string in single quotes to avoid shell expansion.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.PROTOCOL_ERROR:
+        sys.stderr.write("The search returned a protocol error, this shouldn't ever happen, please submit a trouble ticket.\n")
+        ds.unbind()
+        sys.exit(1)
+    except Exception:
+        sys.stderr.write("The search returned an error.\n")
+        ds.unbind()
+        sys.exit(1)
+
+    PosixData.sort()
+
+    # PosixData is a list of lists where:
+    # index 0 of PosixData[N]: contains the distinquished name
+    # index 1 of PosixData[N]: contains a dictionary of lists hashed by the following keys:
+    #               telephoneNumber, departmentNumber, uid, objectClass, loginShell,
+    #               uidNumber, gidNumber, sn, homeDirectory, givenName, cn
+
+    for i in range(len(PosixData)):
+        for (k, v) in PosixData[i][1].items():
+            if ( k != "sshPublicKey" ):
+                continue
+            for v2 in v:
+                print v2
+
+    ds.unbind()
+
+def showdatabase(objectbasedns, args):
+    print ""
+    if len(args) < 1:
+        print objectbasedns["base"]
+    else:
+        if args[0].find('auto_') != -1:
+            objectbasedns["auto_*"] = objectbasedns["auto_*"].replace("auto_AUTO", args[0])
+            args[0] = "auto_*"
+        if args[0] in objectbasedns:
+            print objectbasedns[args[0]]
+        else:
+            print "Database " + args[0] + " not found, use ldaplist -h to list database types."
+
+if __name__ == "__main__":
+    main()
