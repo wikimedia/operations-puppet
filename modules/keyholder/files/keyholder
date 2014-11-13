@@ -4,14 +4,12 @@
 show_usage() {
   /bin/echo >&2 "keyholder -- Manage shared SSH agent
 
+  keyholder status
+    Lists service status and the fingerprints of all identities
+    currently represented by the agent
+
   keyholder add KEY
     Add a private key identity to the agent
-
-  keyholder list
-    Lists fingerprints of all identities currently represented by the agent
-
-  keyholder list-proxy
-    Lists fingerprints of all identities currently represented by the proxy
 
   keyholder clear
     Deletes all identities from the agent
@@ -25,14 +23,11 @@ show_usage() {
 command=$1; shift
 case "$command" in
     status)
-        /sbin/status keyholder-agent
-        /sbin/status keyholder-proxy
-        ;;
-    list)
-        SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/ssh-add -l
-        ;;
-    list-proxy)
-        SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/bin/ssh-add -l
+        for service in agent proxy; do
+            /sbin/status "keyholder-${service}" || continue
+            [ -r "/run/keyholder/${service}.sock" ] || continue
+            SSH_AUTH_SOCK="/run/keyholder/${service}.sock" /usr/bin/ssh-add -l | sed 's/^/- /'
+        done
         ;;
     add)
         SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add "$@"
