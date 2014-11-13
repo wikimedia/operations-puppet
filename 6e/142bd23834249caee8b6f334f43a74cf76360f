@@ -1,0 +1,8 @@
+Verified+2: jenkins-bot
+Code-Review+1: Yuvipanda <yuvipanda@gmail.com>
+Code-Review+2: Springle <springle@wikimedia.org>
+Submitted-by: Springle <springle@wikimedia.org>
+Submitted-at: Thu, 13 Nov 2014 02:32:45 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/170479
+Project: operations/puppet
+Branch: refs/heads/production
