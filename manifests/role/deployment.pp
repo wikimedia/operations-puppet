@@ -150,6 +150,13 @@ class role::deployment::deployment_servers::common {
     class { '::keyholder':
         trusted_group => 'wikidev',
     }
+
+    file { '/root/.ssh/mwdeploy_rsa':
+        source => 'puppet:///private/ssh/tin/mwdeploy_rsa',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0400',
+    }
 }
 
 class role::deployment::deployment_servers::production {
