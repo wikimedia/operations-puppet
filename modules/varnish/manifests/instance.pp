@@ -86,7 +86,7 @@ define varnish::instance(
         hasstatus => false,
         pattern   => "/var/run/varnishd${instancesuffix}.pid",
         subscribe => Package['varnish'],
-        before    => Exec['generate varnish.pyconf'],
+        tag       => 'varnish_instance'
     }
 
     # This mechanism with the touch/rm conditionals in the pair of execs
@@ -120,14 +120,5 @@ define varnish::instance(
     monitor_service { "varnish http ${title}":
         description   => "Varnish HTTP ${title}",
         check_command => "check_http_generic!varnishcheck!${port}"
-    }
-
-    # Restart gmond if this varnish instance has been (re)started later
-    # than gmond was started
-    exec { "restart gmond for varnish${instancesuffix}":
-        path    => '/bin:/usr/bin',
-        command => 'true',
-        onlyif  => "test /var/run/varnishd${instancesuffix}.pid -nt /var/run/gmond.pid",
-        notify  => Service['gmond'],
     }
 }
