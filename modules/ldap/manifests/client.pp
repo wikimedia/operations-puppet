@@ -171,6 +171,24 @@ class ldap::client::utils($ldapconfig) {
         source => 'puppet:///modules/ldap/scripts/ldaplist',
     }
 
+    if $::realm == 'labs' {
+        if ubuntu_version('>= trusty') {
+            # The 'ldapkeys' tool is called during login ssh via AuthorizedKeysCommand.  It
+            #  returns public keys from ldap for the specified username.
+            file { '/usr/local/bin/ldapkeys':
+                owner  => 'ldapkeys',
+                group  => 'ldapkeys',
+                mode   => '0555',
+                source => 'puppet:///modules/ldap/scripts/ldapkeys',
+            }
+            # For security purposes, sshd will only run ldapkeys as the 'ldapkeys' user.
+            user { 'ldapkeys':
+                ensure => present,
+                system => true,
+            }
+        }
+    }
+
     file { '/usr/local/sbin/change-ldap-passwd':
         owner  => 'root',
         group  => 'root',
