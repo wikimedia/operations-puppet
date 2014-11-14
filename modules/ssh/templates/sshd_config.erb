@@ -28,7 +28,12 @@ LogLevel VERBOSE
 
 # Authentication:
 LoginGraceTime 120
+<% if @permit_root %>
 PermitRootLogin yes
+<% else %>
+PermitRootLogin no
+<% end %>
+
 StrictModes yes
 
 RSAAuthentication yes
