@@ -278,9 +278,6 @@ class ldap::client::autofs($ldapconfig) {
         $nfs_server_name = $instanceproject ? {
             default => 'labs-nfs1',
         }
-        $gluster_server_name = $instanceproject ? {
-            default => 'projectstorage.pmtpa.wmnet',
-        }
         $autofs_subscribe = ['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf', '/data', '/public']
     } else {
         $homedir_location = '/home'
