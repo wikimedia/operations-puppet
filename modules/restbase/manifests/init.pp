@@ -12,6 +12,9 @@
 # [*seeds*]
 #   Array of cassandra hosts (IP or host names) to contact.
 #   Default: ['localhost']
+# [*cassandra_defaultConsistency*]
+#   Default cassandra query consistency level. Typically 'one' or
+#   'localQuorum'. Default: 'localQuorum'.
 # [*port*]
 #   Port where to run the restbase service. Default: 7231
 # [*logstash_host*]
@@ -51,7 +54,7 @@ class restbase(
         ensure => directory,
         owner  => 'restbase',
         group  => 'restbase',
-        mode   => '0775',
+        mode   => '755',
         before => Service['restbase'],
     }
 
@@ -59,7 +62,7 @@ class restbase(
         content => template('restbase/restbase.default.erb'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '444',
         notify  => Service['restbase'],
     }
 
@@ -67,15 +70,15 @@ class restbase(
         content => template('restbase/restbase.init'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0755',
+        mode    => '755',
         notify  => Service['restbase'],
     }
 
     file { '/etc/restbase':
         ensure => directory,
-        owner  => 'restbase',
-        group  => 'restbase',
-        mode   => '0775',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '755',
         before => Service['restbase'],
     }
 
@@ -83,15 +86,15 @@ class restbase(
         content => template('restbase/config.yaml.erb'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '444',
         notify  => Service['restbase'],
     }
 
     file { '/usr/lib/restbase':
         ensure => directory,
-        owner  => 'restbase',
-        group  => 'restbase',
-        mode   => '0775',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '755',
         before => Service['restbase'],
     }
 
