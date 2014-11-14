@@ -162,3 +162,67 @@ class role::logstash::puppetreports {
         priority => 50,
     }
 }
+
+
+# == Class: role::logstash::apifeatureusage
+#
+# Builds on role::logstash to insert sanitized data for
+# Extension:ApiFeatureUsage into Elasticsearch.
+#
+class role::logstash::apifeatureusage {
+    include ::role::logstash
+
+    # Variables for the templates
+    $host            = $::realm ? {
+        'production' => '10.2.2.30', # search.svc.eqiad.wmnet
+        'labs'       => 'deployment-elastic05', # Pick one at random
+    }
+    $port            = 9200
+
+    $uri = "http://${host}:${port}"
+
+    # Add the index to ES
+    file { '/etc/logstash/apifeatureusage-elasticsearch-template.json':
+        ensure  => present,
+        source  => 'puppet:///files/logstash/apifeatureusage-elasticsearch-template.json',
+    }
+
+    exec { 'Create apifeatureusage index template':
+        command => template('logstash/create-apifeatureusage-index.erb'),
+        unless => template('logstash/check-apifeatureusage-index.erb'),
+        require => [
+            Service['elasticsearch'],
+            File['/etc/logstash/apifeatureusage-elasticsearch-template.json'],
+        ]
+    }
+
+    # Add configuration to logstash
+    logstash::conf { 'filter_apifeatureusage':
+        source   => 'puppet:///files/logstash/filter-apifeatureusage.conf',
+        priority => 70,
+    }
+
+    logstash::conf{ 'output-apifeatureusage':
+        content  => template('logstash/apifeatureusage.erb'),
+        priority => 10,
+    }
+
+    # Cron jobs to delete and optimize indexes
+    cron { 'apifeatureusage_delete_index':
+        command => "/usr/local/bin/logstash_delete_index.sh ${uri} \"apifeatureusage-$(date -d '-31days' +\\%Y.\\%m.\\%d)\"",
+        user    => 'root',
+        hour    => 0,
+        minute  => 42,
+        require => File['/usr/local/bin/logstash_delete_index.sh'],
+    }
+
+    cron { 'apifeatureusage_optimize_index':
+        command => "/usr/local/bin/logstash_optimize_index.sh ${uri} \"apifeatureusage-$(date -d '-1day' +\\%Y.\\%m.\\%d)\"",
+        user    => 'root',
+        hour    => 1,
+        # Stagger execution on each node of cluster to avoid running in
+        # parallel.
+        minute  => 5 * fqdn_rand(12, 'apifeatureusage_optimize_index'),
+        require => File['/usr/local/bin/logstash_optimize_index.sh'],
+    }
+}
