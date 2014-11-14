@@ -142,9 +142,9 @@ Puppet::Type.type(:package).provide(
 
   # Get the SHA1 associated with a Git tag.
   def resolve_tag(tag)
-    ['origin', './.'].each do |remote|
+    ['origin', target_path].each do |remote|
       sha1 = git('ls-remote', remote, '--tags', "refs/tags/#{tag}")
-      return sha1[/^\S+/] if sha1.is_a?(String)
+      return sha1[/^\S+/] unless sha1.nil? or sha1.empty?
     end
   rescue Puppet::ExecutionFailure
   end
