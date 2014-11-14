@@ -168,11 +168,4 @@ class toollabs {
         force  => true,
         target => "${store}/mail",
     }
-
-    # Don't collect MountStats, because we have no clear use for it atm.
-    # Should be removed in a day or two
-    diamond::collector { 'MountStats':
-        ensure => absent,
-    }
-
 }
