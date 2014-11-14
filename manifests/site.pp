@@ -2281,7 +2281,7 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     if $::hostname =~ /^logstash100[13]$/ {
         $ganglia_aggregator = true
     }
-    role logstash, kibana
+    role logstash, kibana, logstash::apifeatureusage
 }
 
 node 'tin.eqiad.wmnet' {
