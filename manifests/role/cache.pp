@@ -567,7 +567,7 @@ class role::cache {
     class varnish::logging::eventlistener {
         $event_listener = $::realm ? {
             'production' => '10.64.21.123',  # vanadium
-            'labs'       => '10.4.0.48',     # deployment-eventlogging
+            'labs'       => '10.68.16.52',   # deployment-eventlogging02
         }
 
         varnish::logging { 'vanadium' :
