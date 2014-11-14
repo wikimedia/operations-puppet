@@ -1,7 +1,5 @@
-class openstack::nova::compute($openstack_version="folsom", $novaconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+class openstack::nova::compute($novaconfig) {
+    include openstack::repo
 
     if ( $::realm == "production" ) {
         $certname = "virt-star.${site}.wmnet"

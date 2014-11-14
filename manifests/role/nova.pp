@@ -13,6 +13,7 @@ class role::nova::config {
 }
 
 class role::nova::config::common {
+
     include passwords::openstack::nova
     include passwords::openstack::neutron
 
@@ -23,7 +24,6 @@ class role::nova::config::common {
         metadata_pass              => $passwords::openstack::nova::nova_metadata_pass,
         neutron_ldap_user_pass     => $passwords::openstack::neutron::neutron_ldap_user_pass,
         my_ip                      => $::ipaddress_eth0,
-        use_neutron                => $use_neutron,
         ldap_base_dn               => 'dc=wikimedia,dc=org',
         ldap_user_dn               => 'uid=novaadmin,ou=people,dc=wikimedia,dc=org',
         ldap_user_pass             => $passwords::openstack::nova::nova_ldap_user_pass,
@@ -152,13 +152,13 @@ class role::nova::config::eqiad inherits role::nova::config::common {
 }
 
 class role::nova::common {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
     include passwords::misc::scripts
 
     class { 'openstack::common':
-        openstack_version                => $openstack_version,
         novaconfig                       => $novaconfig,
         instance_status_wiki_host        => $::realm ? {
             'production' => 'wikitech.wikimedia.org',
@@ -176,6 +176,7 @@ class role::nova::common {
 }
 
 class role::nova::manager {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -200,13 +201,13 @@ class role::nova::manager {
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
     class { 'openstack::openstack-manager':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
         certificate       => $certificate,
     }
 }
 
 class role::nova::controller {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -234,24 +235,19 @@ class role::nova::controller {
 
     if ( $openstack_version == 'havana' ) {
         class { 'openstack::nova::conductor':
-            openstack_version => $openstack_version,
             novaconfig        => $novaconfig,
         }
     }
     class { 'openstack::nova::scheduler':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
     class { 'openstack::glance::service':
-        openstack_version => $openstack_version,
         glanceconfig      => $glanceconfig,
     }
     class { 'openstack::queue-server':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
     class { 'openstack::database-server':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
         glanceconfig      => $glanceconfig,
         keystoneconfig    => $keystoneconfig,
@@ -294,13 +290,13 @@ class role::nova::controller {
 }
 
 class role::nova::api {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
     include role::nova::common
 
     class { 'openstack::nova::api':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
 }
@@ -313,6 +309,7 @@ class role::nova::network::bonding {
 }
 
 class role::nova::network {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -339,7 +336,6 @@ class role::nova::network {
     }
 
     class { 'openstack::nova::network':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
 }
@@ -381,6 +377,7 @@ class role::nova::wikiupdates {
 }
 
 class role::nova::compute {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -403,7 +400,6 @@ class role::nova::compute {
     }
 
     class { 'openstack::nova::compute':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
 

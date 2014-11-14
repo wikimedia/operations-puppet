@@ -1,5 +1,4 @@
 class openstack::openstack-manager(
-    $openstack_version='folsom',
     $novaconfig,
     $certificate
 ) {
