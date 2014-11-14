@@ -38,16 +38,18 @@
 #
 # === Example:
 #
-#  protoproxy{ 'bits.wikimedia.org':
+#  protoproxy{ 'bits':
 #    proxy_addresses => {
-#      'pmtpa' => [ '192.0.2.1' ],
+#      'eqiad' => [ '208.80.154.234', '[2620:0:861:ed1a::1:a]' ],
+#      'esams' => [ '91.198.174.202', '[2620:0:862:ed1a::1:a]' ],
 #    },
-#    proxy_server_name      => 'bits.wikimedia.org',
+#    proxy_server_name      => 'bits.wikimedia.org geoiplookup.wikimedia.org',
 #    proxy_server_cert_name => 'unified.wikimedia.org',
 #    proxy_backend => {
-#     'pmtpa' => {'primary' => 'apaches.wmnet' },
+#       'eqiad' => { 'primary' => '10.2.2.23' },
+#       'esams' => { 'primary' => '10.2.3.23', 'secondary' => '208.80.154.234' },
 #    },
-#    ipv6_enabled => false
+#    ipv6_enabled => true,
 #  }
 #
 define protoproxy(
