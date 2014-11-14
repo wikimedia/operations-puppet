@@ -12,7 +12,6 @@ class lvs::configuration {
                 default => undef,
             },
             'labs' => $::site ? {
-                'pmtpa' => [ "i-00000051" ],
                 default => undef,
             },
             default => undef,
@@ -26,7 +25,6 @@ class lvs::configuration {
                 default => undef,
             },
             'labs' => $::site ? {
-                'pmtpa' => [ "i-00000051" ],
                 default => undef,
             },
             default => undef,
@@ -41,7 +39,6 @@ class lvs::configuration {
                 default => undef,
             },
             'labs' => $::site ? {
-                'pmtpa' => [ "i-00000051" ],
                 default => undef,
             },
             default => undef,
@@ -54,7 +51,6 @@ class lvs::configuration {
                 default => undef,
             },
             'labs' => $::site ? {
-                'pmtpa' => [ "i-00000051" ],
                 default => undef,
             },
             default => undef,
@@ -244,29 +240,20 @@ class lvs::configuration {
         },
         'labs' => {
             'text' => {
-                'pmtpa' => "10.4.0.4",
             },
             'apaches' => {
-                'pmtpa' => "10.4.0.254",
             },
             'hhvm_appservers' => {
-                'pmtpa' => "10.4.0.254",
             },
             'hhvm_apaches' => {
-                # left empty as probably not used anymore
             },
             'rendering' => {
-                # Used to be 10.4.0.252
-                'pmtpa' => [ '10.4.0.166', '10.4.0.187', ],
             },
             'api' => {
-                'pmtpa' => "10.4.0.253",
             },
             'hhvm_api' => {
-                'pmtpa' => "10.4.0.254",
             },
             'bits' => {
-                'pmtpa' => "10.4.0.252",
             },
             'search_pool1' => {},
             'search_pool2' => {},
@@ -292,10 +279,6 @@ class lvs::configuration {
                 'eqiad' => '10.68.16.189',  # deployment-upload.eqiad.wmflabs
             },
             'upload' => {
-                'pmtpa' => {
-                    'uploadlb'  => [ '10.4.0.166', '10.4.0.187', ],
-                    'uploadsvc' => [ '10.4.0.166', '10.4.0.187', ],
-                },
             },
             'parsoid' => {},
             'parsoidcache' => {},
