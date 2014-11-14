@@ -1,0 +1,16 @@
+# vim:set sw=2 ts=2 sts=2 et
+output {
+  if [type] == "api-feature-usage-sanitized" {
+    # Send api-feature-usage-sanitized messages to ElasticSearch
+    # We use the http sender so that the cluster and logstash don't have to be
+    # tightly coupled by the binary protocol
+    elasticsearch_http {
+        flush_size      => 100
+        host            => "<%= @host %>"
+        replication     => "async"
+        idle_flush_time => 1
+        index           => "apifeatureusage-%{+YYYY.MM.dd}"
+        port            => <%= @port %>
+    }
+  }
+}
