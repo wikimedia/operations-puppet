@@ -12,7 +12,8 @@ class role::nova::config {
     }
 }
 
-class role::nova::config::common {
+class role::nova::config::common ($use_neutron = false) {
+
     include passwords::openstack::nova
     include passwords::openstack::neutron
 
@@ -151,7 +152,8 @@ class role::nova::config::eqiad inherits role::nova::config::common {
     }
 }
 
-class role::nova::common {
+class role::nova::common ($openstack_version = 'havana') {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -175,7 +177,8 @@ class role::nova::common {
     include role::nova::wikiupdates
 }
 
-class role::nova::manager {
+class role::nova::manager ($openstack_version = 'havana') {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -206,7 +209,8 @@ class role::nova::manager {
     }
 }
 
-class role::nova::controller {
+class role::nova::controller ($openstack_version = 'havana') {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -293,7 +297,8 @@ class role::nova::controller {
     }
 }
 
-class role::nova::api {
+class role::nova::api ($openstack_version = 'havana') {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -312,7 +317,8 @@ class role::nova::network::bonding {
     }
 }
 
-class role::nova::network {
+class role::nova::network ($openstack_version = 'havana') {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -344,7 +350,7 @@ class role::nova::network {
     }
 }
 
-class role::nova::wikiupdates {
+class role::nova::wikiupdates ($openstack_version = 'havana') {
 
     if $::realm == 'production' {
         if ! defined(Package['python-mwclient']) {
@@ -380,7 +386,11 @@ class role::nova::wikiupdates {
     }
 }
 
-class role::nova::compute {
+class role::nova::compute (
+    $openstack_version = 'havana',
+    $use_neutron = false
+    ) {
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 

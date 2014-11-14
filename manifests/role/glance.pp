@@ -40,7 +40,7 @@ class role::glance::config::eqiad inherits role::glance::config {
     $glanceconfig = merge($eqiadglanceconfig, $commonglanceconfig)
 }
 
-class role::glance::server {
+class role::glance::server ($openstack_version = 'havana') {
     include role::glance::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {

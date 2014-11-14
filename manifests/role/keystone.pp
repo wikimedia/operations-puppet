@@ -52,7 +52,7 @@ class role::keystone::config::eqiad inherits role::keystone::config {
     $keystoneconfig = merge($eqiadkeystoneconfig, $commonkeystoneconfig)
 }
 
-class role::keystone::server ($glanceconfig) {
+class role::keystone::server ($openstack_version = 'havana', $glanceconfig) {
     include role::keystone::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {

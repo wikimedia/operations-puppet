@@ -68,7 +68,7 @@ class role::neutron::controller {
     }
 }
 
-class role::neutron::nethost {
+class role::neutron::nethost ($openstack_version = 'havana') {
     include role::neutron::config::eqiad
 
     $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
