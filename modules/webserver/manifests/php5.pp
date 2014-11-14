@@ -15,7 +15,7 @@ class webserver::php5(
     }
 
     # Monitoring
-    monitor_service { 'http':
+    monitoring::service { 'http':
         description   => 'HTTP',
         check_command => 'check_http',
     }

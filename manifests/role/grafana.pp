@@ -36,7 +36,7 @@ class role::grafana {
         ],
     }
 
-    monitor_service { 'grafana':
+    monitoring::service { 'grafana':
         description   => "grafana.${domain_suffix}",
         check_command => "check_http_url!grafana.${domain_suffix}!/",
     }

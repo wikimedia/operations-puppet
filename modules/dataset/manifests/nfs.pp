@@ -34,7 +34,7 @@ class dataset::nfs($enable=true) {
         ],
     }
 
-    monitor_service { 'nfs':
+    monitoring::service { 'nfs':
         description   => 'NFS',
         check_command => 'check_tcp!2049',
     }

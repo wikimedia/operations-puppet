@@ -20,7 +20,7 @@
 #    $timeout
 #       Defaults to 10. The check timeout in seconds (check_nrpe -t option)
 #    $critical
-#       Defaults to 'false'. It will passed directly to monitor_service which
+#       Defaults to 'false'. It will passed directly to monitoring::service which
 #       will use nagios_service, so extra care, it is not a boolean, it is a string
 #    $ensure
 #       Defaults to present
@@ -35,12 +35,10 @@ define nrpe::monitor_service( $description,
 
     nrpe::check { "check_${title}":
         command => $nrpe_command,
-        before  => ::Monitor_service[$title],
+        before  => Monitoring::Service[$title],
     }
 
-    # TODO: Refactor this to make a call to nagios::monitor_service (or similar) after nagios
-    # has been refactored to a module. It is known to cause rspec tests to fail
-    ::monitor_service { $title:
+    monitoring::service { $title:
         ensure        => $ensure,
         description   => $description,
         check_command => "nrpe_check!check_${title}!${timeout}",

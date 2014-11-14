@@ -107,11 +107,11 @@ class role::installserver {
     }
 
     # Monitoring
-    monitor_service { 'squid':
+    monitoring::service { 'squid':
         description   => 'Squid',
         check_command => 'check_tcp!8080',
     }
-    monitor_service { 'http':
+    monitoring::service { 'http':
         description   => 'HTTP',
         check_command => 'check_http',
     }

@@ -8,7 +8,7 @@ class role::citoid {
 class role::citoid::production {
     require role::citoid
 
-    monitor_service { 'citoid':
+    monitoring::service { 'citoid':
       description   => 'citoid',
       check_command => 'check_http_on_port!1970',
     }

@@ -22,7 +22,7 @@ class base::monitoring::host($contact_group = 'admins') {
     monitoring::host { $::hostname:
         contact_group => $contact_group
     }
-    monitor_service { 'ssh':
+    monitoring::service { 'ssh':
         description   => 'SSH',
         check_command => 'check_ssh',
         contact_group => $contact_group

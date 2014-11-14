@@ -46,7 +46,7 @@ class publichtml(
         group   => 'root',
     }
 
-    monitor_service { 'http-peopleweb':
+    monitoring::service { 'http-peopleweb':
         description   => 'HTTP-peopleweb',
         check_command => "check_http_url!${sitename}!http://${sitename}",
     }

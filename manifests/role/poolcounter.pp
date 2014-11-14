@@ -12,7 +12,7 @@ class role::poolcounter{
     }
 
     # TCP port 7531 reacheable
-    monitor_service { 'poolcounterd_port_7531':
+    monitoring::service { 'poolcounterd_port_7531':
         description   => 'Poolcounter connection',
         check_command => 'check_tcp!7531',
     }

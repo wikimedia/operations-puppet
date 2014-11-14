@@ -7,7 +7,7 @@
 #
 # Parameters:
 #   $title (implicit parameter)
-#       Name of the check, referenced by monitor_service and check_command
+#       Name of the check, referenced by monitoring::service and check_command
 #       e.g. check_varnishhtcpd
 #   $command
 #       Command run by NRPE,

@@ -1,5 +1,5 @@
 # == Define monitoring::ganglia
-# Wrapper for monitor_service using check_ganglia command.
+# Wrapper for monitoring::service using check_ganglia command.
 # This allows you to monitor arbitrary values in ganglia
 # with icinga without having to add entries to checkcommands.cfg.erb
 #
@@ -61,7 +61,7 @@
 # $retries
 # $group
 # $ensure
-# $nagios_critical      - passed as $critical to monitor_service define
+# $nagios_critical      - passed as $critical to monitoring::service define
 # $passive
 # $freshness
 # $normal_check_interval
@@ -111,7 +111,7 @@ define monitoring::ganglia(
     #   $ARG6$  -c critical threshold
     #   $ARG7$  -C ganglia cluster name
 
-    monitor_service { $title:
+    monitoring::service { $title:
         ensure                => $ensure,
         description           => $description,
         check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}!${::ganglia::cname}",
