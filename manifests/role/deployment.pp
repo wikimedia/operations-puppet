@@ -151,11 +151,8 @@ class role::deployment::deployment_servers::common {
         trusted_group => 'wikidev',
     }
 
-    file { '/root/.ssh/mwdeploy_rsa':
+    keyholder::private_key { 'mwdeploy_rsa':
         source => 'puppet:///private/ssh/tin/mwdeploy_rsa',
-        owner  => 'root',
-        group  => 'keyholder',
-        mode   => '0440',
     }
 }
 

@@ -11,6 +11,9 @@ show_usage() {
   keyholder add KEY
     Add a private key identity to the agent
 
+  keyholder arm
+    Add all keys in /etc/keyholder.d
+
   keyholder clear
     Deletes all identities from the agent
 
@@ -20,25 +23,37 @@ show_usage() {
   exit 1
 }
 
+is_valid_private_key() {
+  # Check that $1 is a passphrase-protected private key file.
+  [ -f "$1" ] && /usr/bin/openssl rsa -in "$1" -check -pubout -passin pass: 2>&1 | \
+      /bin/grep -q "bad password"
+}
+
 command=$1; shift
 case "$command" in
     status)
-        for service in agent proxy; do
-            /sbin/status "keyholder-${service}" || continue
-            [ -r "/run/keyholder/${service}.sock" ] || continue
-            SSH_AUTH_SOCK="/run/keyholder/${service}.sock" /usr/bin/ssh-add -l | sed 's/^/- /'
-        done
-        ;;
+      for service in agent proxy; do
+        /sbin/status "keyholder-${service}" || continue
+        [ -r "/run/keyholder/${service}.sock" ] || continue
+        SSH_AUTH_SOCK="/run/keyholder/${service}.sock" /usr/bin/ssh-add -l | sed 's/^/- /'
+      done
+      ;;
     add)
-        SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add "$@"
-        ;;
+      SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add "$@"
+      ;;
+    arm)
+      for key in /etc/keyholder.d/*; do
+        is_valid_private_key "$key" || continue
+        $0 add "$key"
+      done
+      ;;
     clear)
-        SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add -D
-        ;;
+      SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add -D
+      ;;
     start|stop|restart)
-        "/sbin/${command}" keyholder-agent
-        ;;
+      "/sbin/${command}" keyholder-agent
+      ;;
     *)
-        show_usage
-        ;;
+      show_usage
+      ;;
 esac

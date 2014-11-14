@@ -69,6 +69,16 @@ class keyholder( $trusted_group ) {
         mode   => '0755',
     }
 
+    file { '/etc/keyholder.d':
+        ensure  => directory,
+        owner   => 'keyholder',
+        group   => 'keyholder',
+        mode    => '0750',
+        recurse => true,
+        purge   => true,
+        force   => true,
+    }
+
     file { '/usr/local/bin/ssh-agent-proxy':
         source => 'puppet:///modules/keyholder/ssh-agent-proxy',
         owner  => 'root',
