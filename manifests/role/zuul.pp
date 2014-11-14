@@ -155,22 +155,6 @@ class role::zuul::merger {
 
 } # /role::zuul::merger
 
-
-# == Class: role::zuul::labs
-#
-# Install the Zuul gating system suitable for the Continuous Integration labs
-# instance. This role can not really be reused on a different instance since it
-# hardcodes several parameters such as the Gerrit IP or the URL hostnames.
-#
-# For back compatibility purposes
-class role::zuul::labs {
-    system::role { 'role::zuul::labs (obsolete)': description => 'Zuul on labs!' }
-
-    include role::zuul::merger
-    include role::zuul::server
-
-} # /role::zuul::labs
-
 # Class: role::zuul::production
 #
 # Install the continuous integration Zuul instance for production usage.
