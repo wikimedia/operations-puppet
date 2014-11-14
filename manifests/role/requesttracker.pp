@@ -43,7 +43,7 @@ class role::requesttracker {
         port  => '443',
     }
 
-    monitor_service { 'RT-https':
+    monitoring::service { 'RT-https':
         description   => 'RT-HTTPS',
         check_command => 'check_https_url!rt.wikimedia.org!/',
     }

@@ -69,7 +69,7 @@ class role::mail::mx {
 
     Class['spamassassin'] -> Class['exim::roled']
 
-    monitor_service { 'smtp':
+    monitoring::service { 'smtp':
         description   => 'Exim SMTP',
         check_command => 'check_smtp',
     }
@@ -148,7 +148,7 @@ class role::mail::lists {
     include role::backup::host
     backup::set { 'var-lib-mailman': }
 
-    monitor_service { 'smtp':
+    monitoring::service { 'smtp':
         description   => 'Exim SMTP',
         check_command => 'check_smtp',
     }
@@ -163,12 +163,12 @@ class role::mail::lists {
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\''
     }
 
-    monitor_service { 'mailman_listinfo':
+    monitoring::service { 'mailman_listinfo':
         description   => 'mailman list info',
         check_command => 'check_https_url_for_string!lists.wikimedia.org!/mailman/listinfo/wikimedia-l!\'Discussion list for the Wikimedia community\'',
     }
 
-    monitor_service { 'mailman_archives':
+    monitoring::service { 'mailman_archives':
         description   => 'mailman archives',
         check_command => 'check_https_url_for_string!lists.wikimedia.org!/pipermail/wikimedia-l/!\'The Wikimedia-l Archives\'',
     }

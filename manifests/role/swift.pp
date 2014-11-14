@@ -428,11 +428,11 @@ class role::swift::proxy {
         },
     }
 
-    monitor_service { 'swift-http-frontend':
+    monitoring::service { 'swift-http-frontend':
         description   => 'Swift HTTP frontend',
         check_command => "check_http_url!${swift_check_http_host}!/monitoring/frontend",
     }
-    monitor_service { 'swift-http-backend':
+    monitoring::service { 'swift-http-backend':
         description   => 'Swift HTTP backend',
         check_command => "check_http_url!${swift_check_http_host}!/monitoring/backend",
     }

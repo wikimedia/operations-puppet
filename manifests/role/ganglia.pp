@@ -96,7 +96,7 @@ class role::ganglia::web {
     # Get better insight into how disks are faring
     ganglia::plugin::python { 'diskstat': }
 
-    monitor_service { 'ganglia_http':
+    monitoring::service { 'ganglia_http':
         description   => 'HTTP',
         check_command => 'check_http',
     }

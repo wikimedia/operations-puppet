@@ -26,7 +26,7 @@ class role::solr(
         undef   => 'check_solr',
         default => 'check_replicated_solr',
     }
-    monitor_service { 'Solr':
+    monitoring::service { 'Solr':
         description   => 'Solr',
         check_command => "$check_command!$average_request_time!5",
     }

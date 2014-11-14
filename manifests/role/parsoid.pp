@@ -114,7 +114,7 @@ class role::parsoid::production {
         require    => Package['parsoid/deploy'],
     }
 
-    monitor_service { 'parsoid':
+    monitoring::service { 'parsoid':
         description   => 'Parsoid',
         check_command => 'check_http_on_port!8000',
     }

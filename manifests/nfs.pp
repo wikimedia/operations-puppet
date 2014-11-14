@@ -239,7 +239,7 @@ class misc::nfs-server::home {
     }
 
     class monitoring {
-        monitor_service { 'nfs': description => 'NFS', check_command => 'check_tcp!2049' }
+        monitoring::service { 'nfs': description => 'NFS', check_command => 'check_tcp!2049' }
     }
 
     include monitoring

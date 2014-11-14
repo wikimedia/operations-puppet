@@ -20,7 +20,7 @@
 #    $timeout
 #       Defaults to 10. The check timeout in seconds (check_nrpe -t option)
 #    $critical
-#       Defaults to 'false'. It will passed directly to monitor_service which
+#       Defaults to 'false'. It will passed directly to monitoring::service which
 #       will use nagios_service, so extra care, it is not a boolean, it is a string
 #    $ensure
 #       Defaults to present
