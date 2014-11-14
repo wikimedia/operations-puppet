@@ -1,7 +1,5 @@
-class openstack::keystone::service($openstack_version="folsom", $keystoneconfig, $glanceconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+class openstack::keystone::service($keystoneconfig, $glanceconfig) {
+    include openstack::repo
 
     package { [ "keystone" ]:
         ensure  => present,

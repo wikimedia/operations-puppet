@@ -1,7 +1,4 @@
-class openstack::repo(
-    $openstack_version='folsom'
-) {
-
+class openstack::repo {
     if ($::lsbdistcodename == 'precise') {
         apt::repository { 'ubuntucloud':
             uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',

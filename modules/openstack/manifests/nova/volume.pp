@@ -1,7 +1,5 @@
-class openstack::nova::volume($openstack_version="folsom", $novaconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+class openstack::nova::volume($novaconfig) {
+    include openstack::repo
 
     package { [ "nova-volume" ]:
         ensure  => absent,

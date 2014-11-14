@@ -1,7 +1,5 @@
-class openstack::nova::scheduler($openstack_version="folsom", $novaconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+class openstack::nova::scheduler($novaconfig) {
+    include openstack::repo
 
     package { "nova-scheduler":
         ensure  => present,

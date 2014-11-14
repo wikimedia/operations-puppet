@@ -1,10 +1,5 @@
-class openstack::queue-server(
-    $openstack_version,
-    $novaconfig
-) {
-    if ! defined(Class['openstack::repo']) {
-        class { 'openstack::repo': openstack_version => $openstack_version }
-    }
+class openstack::queue-server ($novaconfig) {
+    include openstack::repo
 
     package { [ 'rabbitmq-server' ]:
         ensure  => present,

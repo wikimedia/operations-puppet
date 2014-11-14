@@ -54,7 +54,6 @@ class role::glance::server {
     }
 
     class { 'openstack::glance::service':
-        openstack_version => $openstack_version,
         glanceconfig      => $glanceconfig,
     }
 }

@@ -1,7 +1,5 @@
-class openstack::nova::conductor($openstack_version="folsom", $novaconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+class openstack::nova::conductor($novaconfig) {
+    include openstack::repo
 
     package { "nova-conductor":
         ensure  => present,

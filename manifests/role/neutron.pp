@@ -74,7 +74,6 @@ class role::neutron::nethost {
     $neutronconfig  = $role::neutron::config::eqiad::neutronconfig
 
     class { 'openstack::neutron::nethost':
-        openstack_version  => $openstack_version,
         external_interface => 'eth5.1122',
         neutronconfig      => $neutronconfig,
         data_interface_ip  => '10.68.16.1',

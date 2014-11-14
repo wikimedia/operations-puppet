@@ -1,7 +1,5 @@
-class openstack::glance::service($openstack_version="folsom", $glanceconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+class openstack::glance::service($glanceconfig) {
+    include openstack::repo
 
     package { [ "glance" ]:
         ensure  => present,
