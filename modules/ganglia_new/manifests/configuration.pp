@@ -65,9 +65,6 @@ class ganglia_new::configuration {
         'virt'  => {
             'name'      => 'Virtualization cluster',
             'id'    => 29 },
-        'gluster'   => {
-            'name'      => 'Glusterfs cluster',
-            'id'    => 30 },
         'jobrunner' =>  {
             'name'      => 'Jobrunners',
             'id'    => 31 },

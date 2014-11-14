@@ -171,8 +171,6 @@ libvirt_opts = [
                   'sheepdog=nova.virt.libvirt.volume.LibvirtNetVolumeDriver',
                   'nfs=nova.virt.libvirt.volume.LibvirtNFSVolumeDriver',
                   'aoe=nova.virt.libvirt.volume.LibvirtAOEVolumeDriver',
-                  'glusterfs='
-                      'nova.virt.libvirt.volume.LibvirtGlusterfsVolumeDriver',
                   'fibre_channel=nova.virt.libvirt.volume.'
                       'LibvirtFibreChannelVolumeDriver',
                   'scality='
