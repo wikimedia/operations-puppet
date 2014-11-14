@@ -136,16 +136,17 @@ Puppet::Type.type(:package).provide(
       source = ('http://' + source) unless source.include?('://')
       source.gsub!(/\/?$/, "/#{repo}/.git/deploy/deploy")
       tag = open(source) { |raw| PSON.load(raw)['tag'] }
-      @cached_sha1 = resolve_tag(tag)
+      @cached_sha1 = resolve_tag(tag) || tag
     end
   end
 
   # Get the SHA1 associated with a Git tag.
   def resolve_tag(tag)
-    entry = git('ls-remote', 'origin', "refs/tags/#{tag}")
-    entry[/^\S+/] || tag
+    ['origin', './.'].each do |remote|
+      sha1 = git('ls-remote', remote, '--tags', "refs/tags/#{tag}")[/^\S+/]
+      return sha1 unless sha1.nil?
+    end
   rescue Puppet::ExecutionFailure
-    tag
   end
 
   def latest
