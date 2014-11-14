@@ -178,11 +178,11 @@ class swift::proxy(
 }
 
 class swift::proxy::monitoring($host) {
-    monitor_service { 'swift-http-frontend':
+    monitoring::service { 'swift-http-frontend':
         description   => 'Swift HTTP frontend',
         check_command => "check_http_url!${host}!/monitoring/frontend",
     }
-    monitor_service { 'swift-http-backend':
+    monitoring::service { 'swift-http-backend':
         description   => 'Swift HTTP backend',
         check_command => "check_http_url!${host}!/monitoring/backend",
     }
@@ -315,7 +315,7 @@ class swift::storage {
         define monitor_swift_daemon {
             # nrpe::monitor_service will create
             # nrpe::check command definition and a
-            # monitor_service definition which exports to nagios
+            # monitoring::service definition which exports to nagios
             nrpe::monitor_service { $title:
                 description  => $title,
                 nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/${title}'",

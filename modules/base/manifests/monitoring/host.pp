@@ -18,11 +18,12 @@
 #
 class base::monitoring::host($contact_group = 'admins') {
     include base::puppet::params # In order to be able to use some variables
+    require monitoring::config
 
     monitoring::host { $::hostname:
         contact_group => $contact_group
     }
-    monitor_service { 'ssh':
+    monitoring::service { 'ssh':
         description   => 'SSH',
         check_command => 'check_ssh',
         contact_group => $contact_group

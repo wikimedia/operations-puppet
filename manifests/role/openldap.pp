@@ -31,7 +31,7 @@ class role::openldap::corp {
         srange => '$ALL_NETWORKS',
     }
 
-    monitor_service { 'corp_ldap_mirror':
+    monitoring::service { 'corp_ldap_mirror':
         description   => 'Corp OIT LDAP Mirror ',
         check_command => 'check_ldap!dc=corp,dc=wikimedia,dc=org',
     }

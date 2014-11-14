@@ -39,7 +39,7 @@ class role::mathoid::production {
       port  => '10042'
     }
 
-    monitor_service { 'mathoid':
+    monitoring::service { 'mathoid':
       description => 'mathoid',
       check_command => 'check_http_on_port!10042',
     }

@@ -20,7 +20,7 @@ class webserver::static {
     }
 
     # Monitoring
-    monitor_service { 'http':
+    monitoring::service { 'http':
         description   => 'HTTP',
         check_command => 'check_http',
     }

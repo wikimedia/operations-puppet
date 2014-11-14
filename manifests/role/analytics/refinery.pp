@@ -113,28 +113,28 @@ class role::analytics::refinery::data::check {
     # Monitor that each webrequest source is succesfully imported.
     # This is a passive check that is triggered by the Oozie
     # webrequest add partition jobs.
-    monitor_service { 'hive_partition_webrequest-bits':
+    monitoring::service { 'hive_partition_webrequest-bits':
         description     => 'hive_partition_webrequest-bits',
         check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest bits!${alert_return_code}",
         passive         => 'true',
         freshness       => $freshness_threshold,
         retries         => 1,
     }
-    monitor_service { 'hive_partition_webrequest-mobile':
+    monitoring::service { 'hive_partition_webrequest-mobile':
         description     => 'hive_partition_webrequest-mobile',
         check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest mobile!${alert_return_code}",
         passive         => 'true',
         freshness       => $freshness_threshold,
         retries         => 1,
     }
-    monitor_service { 'hive_partition_webrequest-text':
+    monitoring::service { 'hive_partition_webrequest-text':
         description     => 'hive_partition_webrequest-text',
         check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest text!${alert_return_code}",
         passive         => 'true',
         freshness       => $freshness_threshold,
         retries         => 1,
     }
-    monitor_service { 'hive_partition_webrequest-upload':
+    monitoring::service { 'hive_partition_webrequest-upload':
         description     => 'hive_partition_webrequest-upload',
         check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest upload!${alert_return_code}",
         passive         => 'true',

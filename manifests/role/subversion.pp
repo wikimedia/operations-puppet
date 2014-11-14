@@ -27,7 +27,7 @@ class role::subversion {
         port  => '443'
     }
 
-    monitor_service { 'https':
+    monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => "check_ssl_cert!${svnhost}",
     }

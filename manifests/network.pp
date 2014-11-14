@@ -286,7 +286,7 @@ class network::checks {
         ip_address => '91.198.174.245',
         group      => 'routers',
     }
-    @monitor_service { 'cr1-esams interfaces':
+    @monitoring::service { 'cr1-esams interfaces':
         host          => 'cr1-esams',
         group         => 'routers',
         description   => 'Router interfaces',
@@ -299,7 +299,7 @@ class network::checks {
 #  and it's relatively high-latency from neon.  Need to investigate a
 #  better solution, as the check_bgp perl script sucks in general and
 #  is ancient.
-#    @monitor_service { 'cr1-esams bgp status':
+#    @monitoring::service { 'cr1-esams bgp status':
 #        host          => 'cr1-esams',
 #        group         => 'routers',
 #        description   => 'BGP status',
@@ -311,13 +311,13 @@ class network::checks {
         ip_address => '91.198.174.246',
         group      => 'routers',
     }
-    @monitor_service { 'cr2-knams interfaces':
+    @monitoring::service { 'cr2-knams interfaces':
         host          => 'cr2-knams',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
-    @monitor_service { 'cr2-knams bgp status':
+    @monitoring::service { 'cr2-knams bgp status':
         host          => 'cr2-knams',
         group         => 'routers',
         description   => 'BGP status',
@@ -329,7 +329,7 @@ class network::checks {
         ip_address => '91.198.174.247',
         group      => 'routers'
     }
-    @monitor_service { 'mr1-esams interfaces':
+    @monitoring::service { 'mr1-esams interfaces':
         host          => 'mr1-esams',
         group         => 'routers',
         description   => 'Router interfaces',
@@ -343,13 +343,13 @@ class network::checks {
         ip_address => '208.80.154.196',
         group      => 'routers',
     }
-    @monitor_service { 'cr1-eqiad interfaces':
+    @monitoring::service { 'cr1-eqiad interfaces':
         host          => 'cr1-eqiad',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
-    @monitor_service { 'cr1-eqiad bgp status':
+    @monitoring::service { 'cr1-eqiad bgp status':
         host          => 'cr1-eqiad',
         group         => 'routers',
         description   => 'BGP status',
@@ -361,13 +361,13 @@ class network::checks {
         ip_address => '208.80.154.197',
         group      => 'routers',
     }
-    @monitor_service { 'cr2-eqiad interfaces':
+    @monitoring::service { 'cr2-eqiad interfaces':
         host          => 'cr2-eqiad',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
-    @monitor_service { 'cr2-eqiad bgp status':
+    @monitoring::service { 'cr2-eqiad bgp status':
         host          => 'cr2-eqiad',
         group         => 'routers',
         description   => 'BGP status',
@@ -379,7 +379,7 @@ class network::checks {
         ip_address => '10.65.0.1',
         group      => 'routers',
     }
-    @monitor_service { 'mr1-eqiad interfaces':
+    @monitoring::service { 'mr1-eqiad interfaces':
         host          => 'mr1-eqiad',
         group         => 'routers',
         description   => 'Router interfaces',
@@ -405,13 +405,13 @@ class network::checks {
         ip_address => '198.35.26.192',
         group      => 'routers',
     }
-    @monitor_service { 'cr1-ulsfo interfaces':
+    @monitoring::service { 'cr1-ulsfo interfaces':
         host          => 'cr1-ulsfo',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
-    @monitor_service { 'cr1-ulsfo bgp status':
+    @monitoring::service { 'cr1-ulsfo bgp status':
         host          => 'cr1-ulsfo',
         group         => 'routers',
         description   => 'BGP status',
@@ -423,13 +423,13 @@ class network::checks {
         ip_address => '198.35.26.193',
         group      => 'routers',
     }
-    @monitor_service { 'cr2-ulsfo interfaces':
+    @monitoring::service { 'cr2-ulsfo interfaces':
         host          => 'cr2-ulsfo',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
-    @monitor_service { 'cr2-ulsfo bgp status':
+    @monitoring::service { 'cr2-ulsfo bgp status':
         host          => 'cr2-ulsfo',
         group         => 'routers',
         description   => 'BGP status',
@@ -441,7 +441,7 @@ class network::checks {
         ip_address => '10.128.128.1',
         group      => 'routers',
     }
-    @monitor_service { 'mr1-ulsfo interfaces':
+    @monitoring::service { 'mr1-ulsfo interfaces':
         host          => 'mr1-ulsfo',
         group         => 'routers',
         description   => 'Router interfaces',
@@ -455,13 +455,13 @@ class network::checks {
         ip_address => '208.80.153.192',
         group      => 'routers',
     }
-    @monitor_service { 'cr1-codfw interfaces':
+    @monitoring::service { 'cr1-codfw interfaces':
         host          => 'cr1-codfw',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
-    @monitor_service { 'cr1-codfw bgp status':
+    @monitoring::service { 'cr1-codfw bgp status':
         host          => 'cr1-codfw',
         group         => 'routers',
         description   => 'BGP status',
@@ -473,13 +473,13 @@ class network::checks {
         ip_address => '208.80.153.193',
         group      => 'routers',
     }
-    @monitor_service { 'cr2-codfw interfaces':
+    @monitoring::service { 'cr2-codfw interfaces':
         host          => 'cr2-codfw',
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
-    @monitor_service { 'cr2-codfw bgp status':
+    @monitoring::service { 'cr2-codfw bgp status':
         host          => 'cr2-codfw',
         group         => 'routers',
         description   => 'BGP status',

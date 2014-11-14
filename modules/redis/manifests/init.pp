@@ -69,6 +69,6 @@ class redis (
     }
 
     if $monitor {
-        monitor_service { $servicename: description => "Redis", check_command => "check_tcp!${port}" }
+        monitoring::service { $servicename: description => "Redis", check_command => "check_tcp!${port}" }
     }
 }

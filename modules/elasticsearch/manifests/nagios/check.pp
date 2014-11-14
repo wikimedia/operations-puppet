@@ -4,7 +4,7 @@
 # the elasticsearch::nagios::plugin class.
 #
 class elasticsearch::nagios::check {
-    monitor_service { 'elasticsearch shards':
+    monitoring::service { 'elasticsearch shards':
         check_command => 'check_elasticsearch_shards',
         description   => 'ElasticSearch health check for shards',
     }

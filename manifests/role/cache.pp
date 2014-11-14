@@ -592,7 +592,7 @@ class role::cache {
         }
 
         # Nagios monitoring
-        monitor_service { "https_${name}":
+        monitoring::service { "https_${name}":
             description   => "HTTPS_${name}",
             check_command => "check_ssl_cert!${check_cert}",
         }
@@ -694,7 +694,7 @@ class role::cache {
 
         # FIXME: Icinga monitoring with support for SNI
 
-        monitor_service { 'https':
+        monitoring::service { 'https':
             description   => 'HTTPS',
             check_command => "check_ssl_cert!*.wikimedia.org",
         }

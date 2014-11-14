@@ -42,7 +42,7 @@ class memcached (
             nrpe_command  => "/usr/lib/nagios/plugins/check_tcp -H $memcached_ip -p $memcached_port",
         }
     } else {
-        monitor_service { 'memcached':
+        monitoring::service { 'memcached':
             description   => 'Memcached',
             check_command => "check_tcp!$memcached_port",
         }

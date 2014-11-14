@@ -2,8 +2,8 @@
 # Exports the resource that monitors hosts in icinga/shinken
 #
 define monitoring::host (
-    $ip_address = $::ipaddress,
-    $group         = hiera('nagios_group', "${cluster}_${::site}"),
+    $ip_address    = $::ipaddress,
+    $group     = $monitoring::configuration::group,
     $ensure        = present,
     $critical      = 'false',
     $contact_group = 'admins'
@@ -12,23 +12,14 @@ define monitoring::host (
         fail("Parameter $ip_address not defined!")
     }
 
-    # Determine the hostgroup:
-    # If defined in the declaration of resource, we use it;
-    # If not, adopt the standard format
-    $hostgroup = $group ? {
-        /.+/    => $group,
-        default => $cluster ? {
-            default => "${cluster}_${::site}"
-        }
-    }
 
     # Export the nagios host instance
     @@nagios_host { $title:
         ensure               => $ensure,
-        target               => "${::nagios_config_dir}/puppet_hosts.cfg",
+        target               => "${::monitoring::configuration::dir}/puppet_hosts.cfg",
         host_name            => $title,
         address              => $ip_address,
-        hostgroups           => $hostgroup,
+        hostgroups           => $group,
         check_command        => 'check_ping!500,20%!2000,100%',
         check_period         => '24x7',
         max_check_attempts   => 2,
@@ -50,7 +41,7 @@ define monitoring::host (
         # Couple it with some hostextinfo
         @@nagios_hostextinfo { $title:
             ensure          => $ensure,
-            target          => "${::nagios_config_dir}/puppet_hostextinfo.cfg",
+            target          => "${::monitoring::configuration::dir}/puppet_hostextinfo.cfg",
             host_name       => $title,
             notes           => $title,
             icon_image      => "${image}.png",

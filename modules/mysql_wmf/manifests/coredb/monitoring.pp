@@ -41,19 +41,19 @@ class mysql_wmf::coredb::monitoring(
         critical      => $crit,
         contact_group => $contact_group,
     }
-    monitor_service { 'mysql recent restart':
+    monitoring::service { 'mysql recent restart':
         description   => 'MySQL Recent Restart',
         check_command => 'nrpe_check_mysql_recent_restart',
         critical      => $crit,
         contact_group => $contact_group,
     }
-    monitor_service { 'mysql processlist':
+    monitoring::service { 'mysql processlist':
         description   => 'MySQL Processlist',
         check_command => 'nrpe_pmp_check_mysql_processlist',
         critical      => false,
         contact_group => $contact_group,
     }
-    monitor_service { 'mysql innodb':
+    monitoring::service { 'mysql innodb':
         description   => 'MySQL InnoDB',
         check_command => 'nrpe_pmp_check_mysql_innodb',
         critical      => false,
@@ -61,31 +61,31 @@ class mysql_wmf::coredb::monitoring(
     }
 
     if $no_slave == false {
-        monitor_service { 'full lvs snapshot':
+        monitoring::service { 'full lvs snapshot':
             description   => 'Full LVS Snapshot',
             check_command => 'nrpe_check_lvs',
             critical      => false,
             contact_group => $contact_group,
         }
-        monitor_service { 'mysql idle transaction':
+        monitoring::service { 'mysql idle transaction':
             description   => 'MySQL Idle Transactions',
             check_command => 'nrpe_check_mysql_idle_transactions',
             critical      => false,
             contact_group => $contact_group,
         }
-        monitor_service { 'mysql replication heartbeat':
+        monitoring::service { 'mysql replication heartbeat':
             description   => 'MySQL Replication Heartbeat',
             check_command => 'nrpe_check_mysql_slave_heartbeat',
             critical      => false,
             contact_group => $contact_group,
         }
-        monitor_service { 'mysql slave delay':
+        monitoring::service { 'mysql slave delay':
             description   => 'MySQL Slave Delay',
             check_command => 'nrpe_check_mysql_slave_delay',
             critical      => false,
             contact_group => 'admins,analytics',
         }
-        monitor_service { 'mysql slave running':
+        monitoring::service { 'mysql slave running':
             description   => 'MySQL Slave Running',
             check_command => 'nrpe_check_mysql_slave_running',
             critical      => false,

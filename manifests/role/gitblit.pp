@@ -20,7 +20,7 @@ class role::gitblit {
         rule => 'proto tcp dport 8080 { saddr $INTERNAL ACCEPT; }'
     }
 
-    monitor_service { 'gitblit_web':
+    monitoring::service { 'gitblit_web':
         description   => 'git.wikimedia.org',
         check_command => 'check_http_url!git.wikimedia.org!/tree/mediawiki%2Fcore.git',
     }

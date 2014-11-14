@@ -136,7 +136,7 @@ class lucene {
         }
 
         if $lucene::server::indexer == false {
-            monitor_service { 'lucene':
+            monitoring::service { 'lucene':
                 description   => 'Lucene',
                 check_command => 'check_lucene',
                 retries       => '6'
