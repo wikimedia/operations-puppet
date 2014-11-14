@@ -53,6 +53,21 @@
           "index" : "analyzed",
           "omit_norms" : true
         },
+        "normalized_message" : {
+          "type": "multi_field",
+          "fields": {
+            "raw": {
+              "type": "string",
+              "index": "no",
+              "fielddata": { "format": "doc_values" }
+            },
+            "normalized_message": {
+              "index" : "analyzed",
+              "omit_norms" : true,
+              "type" : "string"
+            }
+          }
+        },
         "sequence_id" : { "type": "long" },
         "tags" : {
           "type" : "string",
