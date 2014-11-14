@@ -7,7 +7,7 @@
 # call masterha_master_switch individually.
 #
 root=/etc/mha
-sites="|eqiad|pmtpa|"
+sites="|eqiad|codfw|"
 primary=$(cat $root/primary_site)
 configs="${root}/*dc.cnf"
 switch_options="--master_state=alive --orig_master_is_new_slave --interactive=0"
@@ -29,7 +29,7 @@ function usage {
 	"
 	echo "Example:
 	$0 -s eqiad -y	# all shards will be mastered in eqiad. if some already are, nothing is changed.
-	$0 -j -y		# if s[1-7] are mastered in eqiad and es[2-3] in pmtpa, s[1-7] masters switched to pmtpa and es[2-3] to eqiad."
+	$0 -j -y		# if s[1-7] are mastered in eqiad and es[2-3] in codfw, s[1-7] masters switched to codfw and es[2-3] to eqiad."
 	exit 1
 }
 
