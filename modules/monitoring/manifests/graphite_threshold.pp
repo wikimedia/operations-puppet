@@ -1,5 +1,5 @@
 # == Define monitoring::graphite_threshold
-# Wrapper for monitor_service using check_graphite command.
+# Wrapper for monitoring::service using check_graphite command.
 # This allows you to monitor arbitrary metrics in graphite
 # with icinga without having to add entries to checkcommands.cfg.erb
 #
@@ -91,7 +91,7 @@ define monitoring::graphite_threshold(
         true    => 'check_graphite_series_threshold',
         default => 'check_graphite_threshold'
     }
-    monitor_service { $title:
+    monitoring::service { $title:
         ensure                => $ensure,
         description           => $description,
         check_command         => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${percentage}!${modifier}",

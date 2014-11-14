@@ -1,7 +1,7 @@
 class role::releases {
     system::role { 'releases': description => 'Releases webserver' }
 
-    monitor_service { 'http':
+    monitoring::service { 'http':
         description     => 'HTTP',
         check_command   => 'check_http',
     }

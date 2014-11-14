@@ -174,12 +174,12 @@ class role::otrs (
         command => '/usr/local/bin/train_spamassassin',
     }
 
-    monitor_service { 'smtp':
+    monitoring::service { 'smtp':
         description   => 'OTRS SMTP',
         check_command => 'check_smtp',
     }
 
-    monitor_service { 'https':
+    monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => 'check_ssl_cert!ticket.wikimedia.org',
     }

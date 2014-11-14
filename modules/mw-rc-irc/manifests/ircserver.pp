@@ -31,7 +31,7 @@ class mw-rc-irc::ircserver {
          },
     }
 
-    monitor_service { 'ircd':
+    monitoring::service { 'ircd':
         description   => 'ircd',
         check_command => 'check_ircd',
     }

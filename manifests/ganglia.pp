@@ -461,7 +461,7 @@ class ganglia::web {
     }
 
     # Monitoring
-    monitor_service { 'ganglia_http':
+    monitoring::service { 'ganglia_http':
         description   => 'HTTP',
         check_command => 'check_http',
     }

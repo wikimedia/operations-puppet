@@ -21,7 +21,7 @@ class download::wikimedia {
 
     include vm::higher_min_free_kbytes
 
-    monitor_service { 'lighttpd http':
+    monitoring::service { 'lighttpd http':
         description   => 'LighttpdHTTP',
         check_command => 'check_http'
     }

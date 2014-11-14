@@ -46,7 +46,7 @@ class dns::auth-server::ldap(
     monitoring::host { $dns_auth_soa_name:
         ip_address => $dns_auth_ipaddress,
     }
-    monitor_service { 'auth dns':
+    monitoring::service { 'auth dns':
         host          => $dns_auth_soa_name,
         description   => 'Auth DNS',
         check_command => 'check_dns!nagiostest.beta.wmflabs.org',
@@ -117,7 +117,7 @@ class dns::recursor(
         monitoring::host { $title:
             ip_address => $title,
         }
-        monitor_service { "recursive dns ${title}":
+        monitoring::service { "recursive dns ${title}":
             host          => $title,
             description   => 'Recursive DNS',
             check_command => 'check_dns!www.wikipedia.org',

@@ -28,7 +28,7 @@ class role::mediawiki::common {
         },
     }
 
-    monitor_service { 'mediawiki-installation DSH group':
+    monitoring::service { 'mediawiki-installation DSH group':
         description           => 'mediawiki-installation DSH group',
         check_command         => 'check_dsh_groups!mediawiki-installation',
         normal_check_interval => 60,
@@ -60,13 +60,13 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_poo
         realserver_ips => $ips,
     }
 
-    monitor_service { 'appserver http':
+    monitoring::service { 'appserver http':
         description   => 'Apache HTTP',
         check_command => 'check_http_wikipedia',
     }
 
     if ubuntu_version('>= trusty') {
-        monitor_service { 'appserver_http_hhvm':
+        monitoring::service { 'appserver_http_hhvm':
             description   => 'HHVM rendering',
             check_command => 'check_http_wikipedia_main',
         }

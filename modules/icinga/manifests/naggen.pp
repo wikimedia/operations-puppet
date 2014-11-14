@@ -37,7 +37,7 @@ class icinga::naggen {
     Monitoring::Host <| |> {
         notify  => Service['icinga'],
     }
-    Monitor_service <| tag != 'nrpe' |> {
+    Monitoring::Service <| tag != 'nrpe' |> {
         notify  => Service['icinga'],
     }
 

@@ -1,5 +1,5 @@
 # == Define monitoring::graphite_anomaly
-# Wrapper for monitor_service using check_graphite command.
+# Wrapper for monitoring::service using check_graphite command.
 # This allows you to monitor arbitrary metrics in graphite
 # with icinga without having to add entries to checkcommands.cfg.erb
 #
@@ -86,7 +86,7 @@ define monitoring::graphite_anomaly(
     #   $ARG5$  -C critical threshold
     #   $ARG6$  --check_window sampling size
     #   $ARG7$  --over or --under
-    monitor_service { $title:
+    monitoring::service { $title:
         ensure                => $ensure,
         description           => $description,
         check_command         => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!$modifier",

@@ -89,7 +89,7 @@ class role::librenms {
         custom => [ "Redirect permanent / https://${sitename}/" ],
     }
 
-    monitor_service { 'librenms':
+    monitoring::service { 'librenms':
         description   => 'LibreNMS HTTPS',
         check_command => "check_https_url!${sitename}!http://${sitename}",
     }
