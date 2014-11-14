@@ -296,7 +296,7 @@ funnel	*wiktionary.eu	//www.wiktionary.org
 rewrite	sources.wikipedia.org	//wikisource.org
 rewrite	*.wikisource.com	//*.wikisource.org
 rewrite	wikisource.com	//wikisource.org
-
+rewrite	mul.wikisource.org	//wikisource.org
 
 # Wikiquote
 
