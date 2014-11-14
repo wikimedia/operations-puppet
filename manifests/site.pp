@@ -2687,6 +2687,7 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
 
     include standard
     include role::logstash
+    #include role::logstash::apifeatureusage
     include role::kibana
 }
 
