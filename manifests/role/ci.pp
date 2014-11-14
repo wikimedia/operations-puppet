@@ -471,3 +471,15 @@ class role::ci::website {
         zuul_git_dir => $role::zuul::configuration::zuul_git_dir,
     }
 }
+
+class role::ci::website::labs {
+
+    system::role { 'role::ci::website::labs': description => 'CI Website (labs)' }
+
+    include contint::website::labs
+    include ::jenkins
+
+    package { 'gerrit':
+        ensure => present,
+    }
+}
