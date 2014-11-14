@@ -6,7 +6,6 @@
 class beta::autoupdater {
     include ::beta::config
     require misc::deployment::common_scripts
-    include ::beta::mwdeploy_sudo
 
     $stage_dir = $::beta::config::scap_stage_dir
 

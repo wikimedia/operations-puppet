@@ -106,6 +106,17 @@ class mediawiki::users {
         ],
     }
 
+    # Grant mwdeploy sudo rights to run anything as itself or apache.
+    # This allows MediaWiki deployers to deploy as mwdeploy.
+
+    sudo::user { 'mwdeploy':
+        privileges => [
+            'ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
+            'ALL = (root) NOPASSWD: /sbin/restart hhvm',
+            'ALL = (root) NOPASSWD: /sbin/start hhvm',
+        ]
+    }
+
     sudo::user { 'l10nupdate':
         require    => User['l10nupdate', 'mwdeploy'],
         privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'],
