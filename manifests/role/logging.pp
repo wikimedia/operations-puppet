@@ -47,7 +47,6 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     # TODO remove once beta cluster is migrated to eqiad
     $logtash_host_beta = $::site ? {
         eqiad => 'deployment-logstash1.eqiad.wmflabs',
-        pmtpa => 'logstash.pmtpa.wmflabs',
     }
     $logstash_host = $::realm ? {
         # TODO: Find a way to use multicast that doesn't cause duplicate

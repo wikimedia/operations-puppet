@@ -96,12 +96,12 @@ class mha::manager inherits role::coredb::config {
             mha_shard_config { "${name}-eqiad":
                 shard   => $shard,
                 site    => 'eqiad',
-                altsite => 'pmtpa',
+                altsite => 'codfw',
             }
-            # pmtpa
-            mha_shard_config { "${name}-pmtpa":
+            # codfw
+            mha_shard_config { "${name}-codfw":
                 shard   => $shard,
-                site    => 'pmtpa',
+                site    => 'codfw',
                 altsite => 'eqiad',
             }
             # dc switch
