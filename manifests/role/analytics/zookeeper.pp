@@ -58,7 +58,7 @@ class role::analytics::zookeeper::client {
 
     class { '::zookeeper':
         hosts   => $role::analytics::zookeeper::config::hosts,
-        version => '3.3.5+dfsg1-1ubuntu1',
+        version => '3.4.5+dfsg-1',
         # Default tick_time is 2000ms, this should allow a max
         # of 16 seconds of latency for Zookeeper client sessions.
         # See comments in role::analytics::kafka::server for more info.
