@@ -12,7 +12,7 @@ define authdns::monitoring::global($address, $prefixlen=undef) {
 
     @monitoring::host { $hostlabel: ip_address => $address }
 
-    @monitor_service { $hostlabel:
+    @monitoring::service { $hostlabel:
         host          => $hostlabel,
         description   => 'Auth DNS',
         check_command => 'check_dns!www.wikipedia.org'

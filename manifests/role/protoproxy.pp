@@ -56,7 +56,7 @@ class role::protoproxy::ssl {
         protoproxy::ganglia
 
     # Nagios monitoring
-    monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikipedia.org", critical => true }
+    monitoring::service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikipedia.org", critical => true }
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['https'][$::site]

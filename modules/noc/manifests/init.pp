@@ -16,7 +16,7 @@ class noc {
     include ::apache::mod::ssl
 
     # Monitoring
-    monitor_service { 'http-noc':
+    monitoring::service { 'http-noc':
         description   => 'HTTP-noc',
         check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org' }
 

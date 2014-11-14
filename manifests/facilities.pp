@@ -31,7 +31,7 @@ define monitor_pdu_service(
         $crit_hi = $breaker * 0.8 * 100
     }
 
-    @monitor_service { $title:
+    @monitoring::service { $title:
         host          => $host,
         group         => 'pdus',
         description   => $title,
@@ -107,7 +107,7 @@ define monitor_pdu_3phase(
 # Nagios monitoring
 @monitoring::group { 'pdus':
     description => 'PDUs',
-    }
+}
 
 
 class facilities::pdu_monitoring {

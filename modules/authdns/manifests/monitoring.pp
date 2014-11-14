@@ -8,7 +8,7 @@
 #  view of reality, though, as the mapping of listener addresses
 #  to real hosts could be fluid due to routing/anycast.
 class authdns::monitoring {
-    monitor_service { 'auth dns':
+    monitoring::service { 'auth dns':
         description   => 'Auth DNS',
         check_command => 'check_dns!www.wikipedia.org'
     }

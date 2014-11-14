@@ -1,10 +1,4 @@
-# nagios.pp
-
-$nagios_config_dir = '/etc/nagios'
-
-$ganglia_url = 'http://ganglia.wikimedia.org'
-
-define monitor_service(
+define monitoring::service(
     $description,
     $check_command,
     $host                  = $::hostname,
@@ -16,7 +10,8 @@ define monitor_service(
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
-    $contact_group         = 'admins'
+    $contact_group         = 'admins',
+    $config_dir            = '/etc/nagios',
 )
 {
     if ! $host {
@@ -26,7 +21,7 @@ define monitor_service(
     # Export the nagios service instance
     @@nagios_service { "${::hostname} ${title}":
         ensure                  => $ensure,
-        target                  => "${::nagios_config_dir}/puppet_checks.d/${host}.cfg",
+        target                  => "${config_dir}/puppet_checks.d/${host}.cfg",
         host_name               => $host,
         servicegroups           => $group,
         service_description     => $description,

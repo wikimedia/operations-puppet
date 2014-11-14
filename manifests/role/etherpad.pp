@@ -53,11 +53,11 @@ class role::etherpad{
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^/usr/bin/node /usr/share/etherpad-lite/node_modules/ep_etherpad-lite/node/server.js'",
     }
 
-    monitor_service { 'etherpad-lite-http':
+    monitoring::service { 'etherpad-lite-http':
         description   => 'etherpad.wikimedia.org HTTP',
         check_command => 'check_http_url!etherpad.wikimedia.org!/',
     }
-    monitor_service { 'etherpad-lite-https':
+    monitoring::service { 'etherpad-lite-https':
         description   => 'etherpad.wikimedia.org HTTPS',
         check_command => 'check_https_url_for_string!etherpad.wikimedia.org!//p/Etherpad!\'<title>Etherpad\'',
     }

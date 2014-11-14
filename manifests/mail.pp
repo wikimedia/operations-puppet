@@ -252,7 +252,7 @@ class mailman {
 
         # monitor SSL cert expiry
         if ( $::realm == 'production' ) {
-            monitor_service { 'https':
+            monitoring::service { 'https':
                 description   => 'HTTPS',
                 check_command => 'check_ssl_cert!lists.wikimedia.org',
             }

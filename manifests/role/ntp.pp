@@ -101,7 +101,7 @@ class role::ntp {
             query_acl => $neon_acl,
         }
 
-        monitor_service { 'ntp peers':
+        monitoring::service { 'ntp peers':
             description   => 'NTP peers',
             check_command => 'check_ntp_peer!0.1!0.5';
         }
@@ -123,7 +123,7 @@ class role::ntp {
             servers_opt => $s_opt,
         }
 
-        monitor_service { 'ntp':
+        monitoring::service { 'ntp':
             description   => 'NTP',
             check_command => 'check_ntp_time!0.5!1',
             retries       => 15, # wait for resync, don't flap after restart

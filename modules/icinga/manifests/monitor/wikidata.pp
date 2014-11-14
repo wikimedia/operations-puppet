@@ -7,7 +7,7 @@ class icinga::monitor::wikidata {
         ip_address => '91.198.174.192',
     }
 
-    monitor_service { 'wikidata.org dispatch lag':
+    monitoring::service { 'wikidata.org dispatch lag':
         description           => 'check if wikidata.org dispatch lag is higher than 2 minutes',
         check_command         => 'check_wikidata',
         host                  => 'wikidata',

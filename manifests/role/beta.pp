@@ -108,7 +108,7 @@ class role::beta::appserver {
     include ::mediawiki::web
     include ::mediawiki::web::beta_sites
 
-    monitor_service { 'appserver http':
+    monitoring::service { 'appserver http':
         description   => 'Apache HTTP',
         check_command => 'check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page',
     }
