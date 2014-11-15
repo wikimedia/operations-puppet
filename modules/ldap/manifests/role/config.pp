@@ -39,7 +39,7 @@ class ldap::role::config::production {
 
     $basedn = 'dc=wikimedia,dc=org'
     $servernames = $site ? {
-        'pmtpa' => [ ],
+        'codfw' => [ ],
         'eqiad' => [ ],
     }
     $sudobasedn = "ou=sudoers,${basedn}"
