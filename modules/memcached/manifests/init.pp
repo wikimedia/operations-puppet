@@ -48,7 +48,9 @@ class memcached (
         }
     }
 
-    include ::memcached::ganglia
+    if hiera('use_ganglia', true) {
+        include ::memcached::ganglia
+    }
 }
 
 class memcached::disabled {
