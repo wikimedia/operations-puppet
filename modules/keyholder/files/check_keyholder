@@ -1,0 +1,37 @@
+#!/bin/bash
+# Icinga plugin for keyholder
+
+export SSH_AUTH_SOCK="/run/keyholder/proxy.sock"
+
+configured_keys() {
+  # Get a sorted list of all key files in /etc/keyholder.d
+  /usr/bin/find /etc/keyholder.d -type f 2>/dev/null | /usr/bin/sort
+}
+
+active_keys() {
+  # Get a sorted list of all keys currently represented by the agent.
+  /usr/bin/ssh-add -l 2>/dev/null | /usr/bin/cut -d' ' -f 3 | /usr/bin/sort
+}
+
+[ -S "$SSH_AUTH_SOCK" ] || {
+  echo "CRITICAL: Cannot connect to keyholder-proxy socket $SSH_AUTH_SOCK."
+  exit 2
+}
+
+[ -r /etc/keyholder.d ] || {
+  echo "UNKNOWN: You do not have permission to list /etc/keyholder.d."
+  exit 3
+}
+
+[ -w "$SSH_AUTH_SOCK" ] || {
+  echo "UNKNOWN: You do not have permission to communicate with the keyholder socket."
+  exit 3
+}
+
+[ "$(configured_keys)" == "$(active_keys)" ] || {
+  echo "WARNING: Keyholder is not armed. Run 'keyholder arm' to arm it."
+  exit 1
+}
+
+echo "OK: Keyholder is armed with all configured keys."
+exit 0
