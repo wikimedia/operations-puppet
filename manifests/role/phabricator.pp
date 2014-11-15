@@ -39,7 +39,9 @@ class role::phabricator::legalpad {
 
 class role::phabricator::main {
 
-    system::role { 'role::phabricator::main': description => 'Phabricator (Main)' }
+    system::role { 'role::phabricator::main':
+      description => 'Phabricator (Main)'
+    }
 
     #let's go jenkins
     $current_tag = 'wmoauth-20141110'
@@ -51,8 +53,8 @@ class role::phabricator::main {
         mysql_admin_pass => $::mysql_adminpass,
         auth_type        => 'dual',
         extension_tag    => 'HEAD',
-        extensions       => ['MediaWikiUserpageCustomField.php',
-                             'SecurityPolicyEnforcerAction.php'],
+        extensions       => [ 'MediaWikiUserpageCustomField.php',
+                              'SecurityPolicyEnforcerAction.php'],
         settings         => {
             'search.elastic.host'                    => 'http://search.svc.eqiad.wmnet:9200',
             'search.elastic.namespace'               => 'phabricatormain',
@@ -90,14 +92,16 @@ class role::phabricator::main {
     include phabricator::monitoring
 
     class { '::phabricator::mailrelay':
-        default                   => { security => 'users',
-                                       maint    => 'false',
+        default                   => {
+          security => 'users',
+          maint    => 'false',
         },
         address_routing           => { testproj => 'demoproject'},
-        phab_bot                  => { root_dir    => '/srv/phab/phabricator/',
-                                       username    => 'emailbot',
-                                       host        => "https://${domain}/api/",
-                                       certificate => $emailbotcert,
+        phab_bot                  => {
+          root_dir    => '/srv/phab/phabricator/',
+          username    => 'emailbot',
+          host        => "https://${domain}/api/",
+          certificate => $emailbotcert,
         },
     }
 
@@ -116,6 +120,15 @@ class role::phabricator::main {
         port   => '25',
         proto  => 'tcp',
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
+    }
+
+    phabricator::redirector { 'phabricator.wikimedia.org':
+        mysql_user  => $passwords::mysql::phabricator::maniphest_user,
+        mysql_pass  => $passwords::mysql::phabricator::maniphest_pass,
+        mysql_host  => 'm3-master.eqiad.wmnet',
+        rootdir     => '/srv/phab',
+        field_index => '4rRUkCdImLQU',
+        phab_host   => 'phabricator.wikimedia.org',
     }
 }
 
@@ -178,10 +191,12 @@ class role::phabricator::labs {
 
     # dummy redirector to test out the redirect patterns for bugzilla
     phabricator::redirector { 'phabzilla.wmflabs.org':
-        mysql_user => 'root',
-        mysql_pass => $mysqlpass,
-        mysql_host => 'localhost',
-        rootdir => '/srv/phab',
+        mysql_user  => 'root',
+        mysql_pass  => $mysqlpass,
+        mysql_host  => 'localhost',
+        rootdir     => '/srv/phab',
+        field_index => 'yERhvoZPNPtM',
+        phab_host   => 'phab-01.wmflabs.org',
     }
 
 }
