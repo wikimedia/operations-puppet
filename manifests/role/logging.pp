@@ -44,16 +44,11 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         labs       => "deployment-fluoride.${::site}.wmflabs",
     }
 
-    # TODO remove once beta cluster is migrated to eqiad
-    $logtash_host_beta = $::site ? {
-        eqiad => 'deployment-logstash1.eqiad.wmflabs',
-        pmtpa => 'logstash.pmtpa.wmflabs',
-    }
     $logstash_host = $::realm ? {
         # TODO: Find a way to use multicast that doesn't cause duplicate
         # messages to be stored in logstash. This is a SPOF.
         production => 'logstash1001.eqiad.wmnet',
-        labs       => $logtash_host_beta,
+        labs       => 'deployment-logstash1.eqiad.wmflabs',
     }
 
     $logstash_port = 8324
