@@ -82,6 +82,9 @@ class base::environment {
 
     # Write core dumps to /var/tmp/core/core.<host>.<executable>.<pid>.<timestamp>.
     # Remove core dumps with atime > one week.
+    # Allow overrides of the core dump path with hiera, so places
+    # where we want core dumps to be elsewhere (CWD, etc) can
+    # still have that.
 
     file { '/var/tmp/core':
         ensure => directory,
@@ -90,8 +93,9 @@ class base::environment {
         mode   => '1773',
     }
 
+    $core_dump_pattern = hiera('core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t')
     sysctl::parameters { 'core_dumps':
-        values  => { 'kernel.core_pattern' => '/var/tmp/core/core.%h.%e.%p.%t', },
+        values  => { 'kernel.core_pattern' => $core_dump_pattern, },
         require => File['/var/tmp/core'],
     }
 
