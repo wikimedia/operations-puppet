@@ -7,8 +7,8 @@
 # replication is a hash which maps remote "names" to their URLs
 # and other settings.
 
-if replication != "" then
-  replication.sort.each { |remote,settings|
+if @replication != "" then
+  @replication.sort.each { |remote,settings|
     %>[remote "<%= remote %>"]
 <%
     settings.sort.each { |option,params|

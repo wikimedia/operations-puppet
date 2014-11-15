@@ -29,7 +29,7 @@
 [sendemail]
     includeDiff = true
     smtpServerPort = 25
-<% if smtp_host != "" then %>
+<% if @smtp_host != "" then %>
     smtpServer = <%= @smtp_host %>
 <% else %>
     enable = false
