@@ -12,11 +12,11 @@ class wikitech::wiki::passwords {
 
     # Drop this file onto the mediawiki deployment host so that the passwords are deployed
     file { '/srv/mediawiki/private/WikitechPrivateSettings.php':
-        ensure => present,
+        ensure  => present,
         content => template('wikitech/wikitech_private.php.erb'),
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
     }
 
     file { '/srv/mediawiki/private/WikitechPrivateLdapSettings.php':

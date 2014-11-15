@@ -46,11 +46,11 @@ class nagios_common::contacts(
         }
     } else {
         file { "$config_dir/contacts.cfg":
-            ensure => $ensure,
+            ensure  => $ensure,
             content => template($template),
-            owner  => $owner,
-            group  => $group,
-            mode   => '0600', # Only $owner:$group can read/write
+            owner   => $owner,
+            group   => $group,
+            mode    => '0600', # Only $owner:$group can read/write
         }
     }
 }

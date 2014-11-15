@@ -10,7 +10,7 @@ define generic::upstart_job($install=false, $start=false) {
 
     if $install == true or $install == 'true' {
         file { "/etc/init/${title}.conf":
-            owner    => 'root',
+            owner   => 'root',
             group   => 'root',
             mode    => '0444',
             source  => "puppet:///modules/generic/upstart/${title}.conf",
