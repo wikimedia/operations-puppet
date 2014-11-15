@@ -30,6 +30,10 @@ class role::gerrit {
         system::role { 'role::gerrit::production': description => 'Gerrit master' }
         include role::backup::host
 
+        install_certificate{ 'gerrit.wikimedia.org':
+            ca => 'RapidSSL_CA.pem',
+        }
+
         backup::set { 'var-lib-gerrit2-review_site-git': }
 
         interface::ip { 'role::gerrit::production_ipv4':
