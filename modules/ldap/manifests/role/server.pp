@@ -109,7 +109,7 @@ class ldap::role::server::production {
     $proxyagent = $ldap::role::config::production::ldapconfig['proxyagent']
     $proxypass = $ldap::role::config::production::ldapconfig['proxypass']
 
-    $certificate = "${hostname}.pmtpa.wmnet"
+    $certificate = "${hostname}.eqiad.wmnet"
     $ca_name = 'wmf-ca.pem'
     install_certificate{ $certificate: }
     create_pkcs12{ "${certificate}.opendj":
