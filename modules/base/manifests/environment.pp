@@ -1,4 +1,16 @@
-class base::environment {
+# = Class: base::environment
+#
+# Sets up the base environment for all hosts (profile, editor, sysctl, etc)
+#
+# = Parameters
+#
+# [*core_dump_pattern*]
+#   Sets the pattern for the path where core dumps are kept.
+#   See documentation for values at http://man7.org/linux/man-pages/man5/core.5.html under 'Naming of core dump files'
+#
+class base::environment(
+    $core_dump_pattern = '/var/tmp/core/core.%h.%e.%p.%t',
+){
     case $::realm {
         'production': {
             exec { 'uncomment root bash aliases':
@@ -91,7 +103,7 @@ class base::environment {
     }
 
     sysctl::parameters { 'core_dumps':
-        values  => { 'kernel.core_pattern' => '/var/tmp/core/core.%h.%e.%p.%t', },
+        values  => { 'kernel.core_pattern' => $core_dump_pattern, },
         require => File['/var/tmp/core'],
     }
 
