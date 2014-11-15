@@ -24,10 +24,8 @@ if $::ipaddress_eth0 != undef {
 }
 
 $site = $main_ipaddress ? {
-    /^208\.80\.152\./                         => 'pmtpa',
     /^208\.80\.153\./                         => 'codfw',
     /^208\.80\.15[45]\./                      => 'eqiad',
-    /^10\.[0-4]\./                            => 'pmtpa',
     /^10\.6[48]\./                            => 'eqiad',
     /^10\.192\./                              => 'codfw',
     /^91\.198\.174\./                         => 'esams',
@@ -55,7 +53,7 @@ $nameservers = $site ? {
     'codfw' => [ '208.80.153.254', '208.80.154.239' ], # codfw -> codfw, eqiad
     'ulsfo' => [ '208.80.154.239', '208.80.153.254' ], # ulsfo -> eqiad, codfw
     'esams' => [ '91.198.174.6',   '208.80.154.239' ], # esams -> esams (nescio, not LVS), eqiad
-    default => [ '208.80.154.239', '208.80.153.254' ], # pmtpa? -> eqiad, codfw
+    default => [ '208.80.154.239', '208.80.153.254' ], #   ?   -> eqiad, codfw
 }
 $domain_search = $domain
 
