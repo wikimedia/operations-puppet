@@ -169,6 +169,7 @@ class role::ci::slave {
         group       => 'jenkins-slave',
         mount_point => '/var/lib/jenkins-slave/tmpfs',
         size        => '512M',
+        require     => [ User['jenkins-slave'], Group['jenkins-slave'] ],
     }
     nrpe::monitor_service { 'ci_tmpfs':
         description  => 'CI tmpfs disk space',
