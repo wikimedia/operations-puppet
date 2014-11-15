@@ -2982,8 +2982,6 @@ node 'uranium.wikimedia.org' {
     # TODO: Resolve this
     #include misc::monitoring::views
 
-    install_certificate{ 'ganglia.wikimedia.org': }
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -3015,10 +3013,6 @@ node 'ytterbium.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
     include role::gerrit::production
-
-    install_certificate{ 'gerrit.wikimedia.org':
-        ca => 'RapidSSL_CA.pem',
-    }
 
 }
 
