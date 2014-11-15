@@ -265,7 +265,7 @@ class role::ci::slave::labs::common {
         require => $slash_mnt_require,
     }
 
-    # Create a homedir for `jenkins-deploy` so it does not ends up being created
+    # Create a homedir for `jenkins-deploy` so it does not end up being created
     # on /home which is using GlusterFS on the integration project.  The user is
     # only LDAP and is not created by puppet
     # bug 61144
@@ -343,20 +343,6 @@ class role::ci::slave::browsertests {
     }
 
     include role::ci::slave::labs::common
-
-    /**
-    * FIXME breaks puppet because jenkins-deploy is not known
-    * by puppet since it is provided via LDAP.
-    */
-    /**
-    contint::tmpfs { 'tmpfs for jenkins CI slave':
-        user        => 'jenkins-deploy',
-        group       => 'wikidev',
-        # Jobs expect the tmpfs to be in $HOME/tmpfs
-        mount_point => '/home/jenkins-deploy/tmpfs',
-        size        => '128M',
-    }
-    **/
 
     # We are in labs context, so use /mnt (== /dev/vdb)
     # Never EVER think about using GlusterFS.
@@ -436,6 +422,14 @@ class role::ci::slave::labs {
         require    => File['/srv/localhost/mediawiki'],
     }
     include contint::qunit_localhost
+
+    contint::tmpfs { 'tmpfs for jenkins labs slaves':
+        user        => 'jenkins-deploy',
+        group       => 'root',
+        mount_point => '/mnt/home/jenkins-deploy/tmpfs',
+        size        => '512M',
+        require     => File['/mnt/home/jenkins-deploy'],
+    }
 
     # Trebuchet replacement on labs
     include contint::slave-scripts
