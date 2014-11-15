@@ -9,58 +9,58 @@
 #    The path on disk to clone the needed repositories
 #
 # [*timezone]
-#   A php.ini compatible timezone
-#   http://www.php.net//manual/en/datetime.configuration.php
+#     A php.ini compatible timezone
+#     http://www.php.net//manual/en/datetime.configuration.php
 #
 # [*lock_file*]
-#   The path on disk to place a file for holding a tag
-#   in the repos until the phab_update_tag command is run by root.
+#     The path on disk to place a file for holding a tag
+#     in the repos until the phab_update_tag command is run by root.
 #
 # [*git_tag*]
-#   The tag in the Phabricator repos to maintain.
+#     The tag in the Phabricator repos to maintain.
 #
 #    NOTE:
 #
 #    If the lockfile is set this tag will not be honored by an existing
-#    install until the phab_update_tag command is run.  This needs to be an
+#    install until the phab_update_tag command is run.    This needs to be an
 #    interactive and monitored process to allow for the necessary DB and
 #    schema changes.
 #
 #    For more info on tag forwarding see git::install
 #
 # [*settings*]
-#   A hash of configuration options for the local settings json file.
-#   https://secure.phabricator.com/book/phabricator/article/advanced_configuration/#configuration-sources
+#     A hash of configuration options for the local settings json file.
+#     https://secure.phabricator.com/book/phabricator/article/advanced_configuration/#configuration-sources
 #
 # [*mysql_admin_user*]
-#   Specify to use a different user for schema upgrades and database maintenance
-#   Requires: mysql_admin_pass
+#     Specify to use a different user for schema upgrades and database maintenance
+#     Requires: mysql_admin_pass
 #
 # [*mysql_admin_pass*]
-#   Specify to use a different password for schema upgrades and database maintenance
-#   Requires: mysql_admin_user
+#     Specify to use a different password for schema upgrades and database maintenance
+#     Requires: mysql_admin_user
 #
 # [*auth_type*]
-#   Specify a template to match the provided login mechanisms
+#     Specify a template to match the provided login mechanisms
 #
 # [*libext_tag*]
-#   Track extension revision
+#     Track extension revision
 #
 # [*extension_tag*]
-#   Track extension revision
+#     Track extension revision
 #
 # [*extensions*]
-#   Array of extensions to load
+#     Array of extensions to load
 #
 # === Examples
 #
-#  class { 'phabricator':
-#    git_tag   => 'demo',
-#    lock_file => '/var/run/phab_repo_lock',
-#     settings  => {
-#      'phabricator.base-uri' => 'http://myurl.domain',
-#    },
-#  }
+#    class { 'phabricator':
+#        git_tag     => 'demo',
+#        lock_file => '/var/run/phab_repo_lock',
+#        settings    => {
+#            'phabricator.base-uri' => 'http://myurl.domain',
+#        },
+#    }
 #
 # See README for post install instructions
 #
@@ -93,10 +93,10 @@ class phabricator (
     # depending on what type of auth we use (SUL,LDAP,both,others) we change
     # which template we use for the login message
     case $auth_type {
-        'local':  { $auth_template = 'auth_log_message_local.erb' }
-        'sul':  { $auth_template = 'auth_log_message_sul.erb' }
-        'dual': { $auth_template = 'auth_log_message_dual.erb'}
-        default: { fail ('please set an auth type for the login message') }
+        'local':    { $auth_template = 'auth_log_message_local.erb' }
+        'sul':      { $auth_template = 'auth_log_message_sul.erb' }
+        'dual':     { $auth_template = 'auth_log_message_dual.erb'}
+        default:    { fail ('please set an auth type for the login message') }
     }
 
     $phab_settings['auth.login-message'] = template("phabricator/${auth_template}")
@@ -219,7 +219,7 @@ class phabricator (
     }
 
     file { $php_ini:
-        content => template("phabricator/${lsbdistcodename}_php.ini.erb"),
+        content => template("phabricator/${::lsbdistcodename}_php.ini.erb"),
         notify  => Service['apache2'],
         require => Package['php5'],
     }
@@ -233,18 +233,18 @@ class phabricator (
     #default location for phabricator tracked repositories
     if ($phab_settings['repository.default-local-path']) {
         file { $phab_settings['repository.default-local-path']:
-            ensure  => directory,
-            owner   => 'www-data',
-            group   => 'www-data',
-            require => Git::Install['phabricator/phabricator'],
+            ensure   => directory,
+            owner    => 'www-data',
+            group    => 'www-data',
+            require  => Git::Install['phabricator/phabricator'],
         }
     }
 
     file { '/usr/local/sbin/phab_update_tag':
-        content => template('phabricator/phab_update_tag.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
+        content   => template('phabricator/phab_update_tag.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0500',
     }
 
     # Phabricator needs an initial index built and from there
@@ -252,10 +252,10 @@ class phabricator (
     if ($phab_settings['search.elastic.host']) {
         $create_index = "${phabdir}/phabricator/bin/search index --all"
         exec { 'elastic_search_setup':
-            command   => "${create_index} && touch ${phabdir}/needs_es_indexed_false",
-            creates   => "${phabdir}/needs_es_indexed_false",
-            logoutput => true,
-            require   => File["${phabdir}/phabricator/conf/local/local.json"],
+            command     => "${create_index} && touch ${phabdir}/needs_es_indexed_false",
+            creates     => "${phabdir}/needs_es_indexed_false",
+            logoutput   => true,
+            require     => File["${phabdir}/phabricator/conf/local/local.json"],
         }
     }
 
