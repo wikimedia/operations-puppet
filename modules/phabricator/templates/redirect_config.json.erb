@@ -5,29 +5,33 @@
         "pass": "<%= @mysql_pass %>",
         "host": "<%= @mysql_host %>"
     },
-    "fieldIndex": "eMsRmlNjLuet",
+    "fieldIndex": "<%= @field_index %>",
     "urlPatterns": [
         {
-            "pattern": "bug[szila]+.wikimedia.org/show_bug.cgi\\?id=([0-9]+)",
-            "fieldValue": "bz$1",
-            "redirectUrl": "https://phabricator.wikimedia.org/T$id"
+            "pattern": "(bugs|bugzila).wikimedia.org/show_bug.cgi\\?id=([0-9]+)",
+            "fieldValue": "bz$2",
+            "redirectUrl": "https://<%= @phab_host %>/T$id"
         },
         {
-            "pattern": "bug[szila]+.wikimedia.org/([0-9]+)",
-            "fieldValue": "bz$1",
-            "redirectUrl": "shttp://phabricator.wikimedia.org/T$id"
+            "pattern": "(bugs|bugzila).wikimedia.org/([0-9]+)",
+            "fieldValue": "bz$2",
+            "redirectUrl": "https://<%= @phab_host %>/T$id"
         },
         {
-            "pattern": "https://bug[szila]+.wikimedia.org/index.cgi",
-            "redirectUrl": "https://phabricator.wikimedia.org/"
+            "pattern": "(bugs|bugzila).wikimedia.org/buglist.cgi\\?(.*)",
+            "redirectUrl": "https://old-bugzilla.wikimedia.org/buglist.cgi?$2"
         },
         {
-            "pattern": "https://bug[szila]+.wikimedia.org/query.cgi",
-            "redirectUrl": "https://phabricator.wikimedia.org/maniphest/query/advanced/"
+            "pattern": "(bugs|bugzila).wikimedia.org/query.cgi",
+            "redirectUrl": "https://<%= @phab_host %>/maniphest/query/advanced/"
         },
         {
-            "pattern": "https://bug[szila]+.wikimedia.org/describecomponents.cgi",
-            "redirectUrl": "https://phabricator.wikimedia.org/fact/"
+            "pattern": "(bugs|bugzila).wikimedia.org/describecomponents.cgi",
+            "redirectUrl": "https://<%= @phab_host %>/fact/"
+        },
+        {
+            "pattern": "(bugs|bugzila).wikimedia.org/[a-zA-Z]+.cgi",
+            "redirectUrl": "https://<%= @phab_host %>/"
         }
     ]
 }
