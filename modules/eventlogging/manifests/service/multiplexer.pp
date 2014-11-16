@@ -34,10 +34,16 @@ define eventlogging::service::multiplexer(
     $sid     = $title,
     $ensure  = present,
 ) {
+    include eventlogging
+
     $basename = regsubst($title, '\W', '-', 'G')
     file { "/etc/eventlogging.d/multiplexers/${basename}":
         ensure  => $ensure,
         content => template('eventlogging/multiplexer.erb'),
-        notify  => Service['eventlogging/init', 'gmond'],
+        notify  => Service['eventlogging/init'],
+    }
+
+    if hiera('has_ganglia', true) {
+        File["/etc/eventlogging.d/multiplexers/${basename}"] ~> Service['gmond']
     }
 }

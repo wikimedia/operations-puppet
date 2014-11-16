@@ -42,6 +42,8 @@ define eventlogging::service::consumer(
     $sid    = $title,
     $ensure = present,
 ) {
+    include eventlogging
+
     $basename = regsubst($title, '\W', '-', 'G')
     file { "/etc/eventlogging.d/consumers/${basename}":
         ensure  => $ensure,
