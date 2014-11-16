@@ -59,6 +59,10 @@ define eventlogging::service::processor(
     file { "/etc/eventlogging.d/processors/${basename}":
         ensure  => $ensure,
         content => template('eventlogging/processor.erb'),
-        notify  => Service['eventlogging/init', 'gmond'],
+        notify  => Service['eventlogging/init'],
+    }
+
+    if hiera('has_ganglia', true) {
+        File["/etc/eventlogging.d/processors/${basename}"] ~> Service['gmond']
     }
 }
