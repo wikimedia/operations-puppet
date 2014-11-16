@@ -32,6 +32,10 @@ define eventlogging::service::reporter(
     file { "/etc/eventlogging.d/reporters/${basename}":
         ensure  => $ensure,
         content => template('eventlogging/reporter.erb'),
-        notify  => Service['eventlogging/init', 'gmond'],
+        notify  => Service['eventlogging/init'],
+    }
+
+    if hiera('has_ganglia', true) {
+        File["/etc/eventlogging.d/reporters/${basename}"] ~> Service['gmond']
     }
 }

@@ -40,7 +40,10 @@
 #
 class eventlogging {
     include ::eventlogging::package
-    include ::eventlogging::monitoring
+
+    if hiera('has_ganglia', true) {
+        include ::eventlogging::monitoring
+    }
 
     $log_dir = '/srv/log/eventlogging'
 
