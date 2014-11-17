@@ -882,11 +882,6 @@ host db1016 {
 	fixed-address db1016.eqiad.wmnet;
 }
 
-host db1017 {
-	hardware ethernet 78:2b:cb:05:03:99;
-	fixed-address db1017.eqiad.wmnet;
-}
-
 host db1018 {
 	hardware ethernet 78:2b:cb:0a:13:12;
 	fixed-address db1018.eqiad.wmnet;
@@ -1624,6 +1619,11 @@ host gadolinium {
 host gold {
 	hardware ethernet F0:1F:AF:E8:C1:87;
 	fixed-address gold.wikimedia.org;
+}
+
+host graphite1001 {
+	hardware ethernet 78:2b:cb:05:03:99;
+	fixed-address graphite1001.eqiad.wmnet;
 }
 
 host hafnium {
