@@ -1,5 +1,5 @@
 class openstack::repo(
-    $openstack_version='folsom'
+    $openstack_version='havana'
 ) {
 
     if ($::lsbdistcodename == 'precise') {

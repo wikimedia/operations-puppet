@@ -7,7 +7,7 @@ class openstack::common(
             $instance_status_dns_domain,
             $instance_status_wiki_user,
             $instance_status_wiki_pass,
-            $openstack_version='folsom',
+            $openstack_version='havana',
             ) {
     if ! defined(Class['openstack::repo']) {
         class { 'openstack::repo': openstack_version => $openstack_version }

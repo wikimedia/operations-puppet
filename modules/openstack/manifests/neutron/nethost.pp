@@ -1,6 +1,6 @@
 # Set up neutron on a dedicated network node
 class openstack::neutron::nethost(
-    $openstack_version='folsom',
+    $openstack_version='havana',
     $external_interface='eth0',
     $neutronconfig,
     $data_interface_ip
