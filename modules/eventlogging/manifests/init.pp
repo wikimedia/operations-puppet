@@ -40,7 +40,6 @@
 #
 class eventlogging {
     include ::eventlogging::package
-    include ::eventlogging::monitoring
 
     $log_dir = '/srv/log/eventlogging'
 

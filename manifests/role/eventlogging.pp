@@ -18,7 +18,10 @@
 #
 class role::eventlogging {
     include eventlogging
-    include eventlogging::monitoring
+
+    if $::realm == 'production' {
+        include eventlogging::monitoring
+    }
 
     system::role { 'role::eventlogging':
         description => 'EventLogging',
