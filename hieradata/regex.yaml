@@ -55,22 +55,22 @@ appservers_4:
 swift_fe_eqiad:
   __regex: !ruby/regexp /^ms-fe100[1-4]\.eqiad\.wmnet$/
   cluster: swift
-  nagios_group: swift
+  monitoring::configuration::group: swift
 
 swift_be_eqiad:
   __regex: !ruby/regexp /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/
   cluster: swift
-  nagios_group: swift
+  monitoring::configuration::group: swift
 
 swift_fe_esams:
   __regex: !ruby/regexp /^ms-fe300[1-2]\.esams\.wmnet$/
   cluster: swift
-  nagios_group: swift
+  monitoring::configuration::group: swift
 
 swift_be_esams:
   __regex: !ruby/regexp /^ms-be300[1-4]\.esams\.wmnet$/
   cluster: swift
-  nagios_group: swift
+  monitoring::configuration::group: swift
 
 swift_fe_codfw:
   __regex: !ruby/regexp /^ms-fe200[1-4]\.codfw\.wmnet$/
@@ -95,4 +95,4 @@ zookeeper:
 lsearchd:
   __regex: !ruby/regexp /^search10[0-2][0-9]\.eqiad\.wmnet$/
   cluster: search
-  nagios_group: lucene
+  monitoring::configuration::group: lucene
