@@ -3,7 +3,7 @@ define monitoring::service(
     $check_command,
     $host                  = $::hostname,
     $retries               = 3,
-    $group                 = hiera('nagios_group', undef),
+    $group                 = hiera('nagios_group', "${cluster}_${::site}"),
     $ensure                = present,
     $critical              = 'false',
     $passive               = 'false',
