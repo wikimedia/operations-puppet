@@ -18,7 +18,10 @@
 #
 class role::eventlogging {
     include eventlogging
-    include eventlogging::monitoring
+
+    if hiera('has_ganglia', true) {
+        include role::eventlogging::monitoring
+    }
 
     system::role { 'role::eventlogging':
         description => 'EventLogging',
@@ -151,9 +154,15 @@ class role::eventlogging {
         # to undergo some production failover testing.  Disabling this for now.
         ensure => 'absent',
     }
+}
 
 
-    ## Monitoring
+# == Class: role::eventlogging::monitoring
+#
+# Provisions scripts for reporting state to monitoring tools.
+#
+class role::eventlogging::monitoring {
+    include ::eventlogging::monitoring
 
     eventlogging::service::reporter { 'statsd':
         host => 'statsd.eqiad.wmnet',

@@ -4,7 +4,8 @@
 # (measured in events per second) of all locally-published event streams.
 #
 class eventlogging::monitoring {
-    include eventlogging
+    include ::eventlogging
+    include ::ganglia
 
     file { '/usr/lib/ganglia/python_modules/eventlogging_mon.py':
         ensure  => present,
@@ -23,6 +24,14 @@ class eventlogging::monitoring {
         source => 'puppet:///modules/eventlogging/check_eventlogging_jobs',
         mode   => '0755',
     }
+
+    # The EventLogging Ganglia module scans /etc/eventlogging.d
+    # to determine which endpoints to monitor, so if the contents
+    # of that directory change, the module should be restarted.
+
+    Eventlogging::Service::Multiplexer <| |> ~> Service['gmond']
+    Eventlogging::Service::Processor <| |> ~> Service['gmond']
+    Eventlogging::Service::Reporter <| |> ~> Service['gmond']
 }
 
 
