@@ -56,7 +56,7 @@ groups:
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
-      jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz]
+      jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz, bmansurov]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -161,7 +161,7 @@ groups:
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
               howief, awight, dr0ptp4kt, qchris, tnegrin, nuria,
               leila, manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
-              spage, erik]
+              spage, erik, bmansurov]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -1193,3 +1193,10 @@ users:
     realname: Jon Katz
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+A9f2ZCC4XyAsXS8t6xlZGOxL480Qi8i3vs4bjvGFX42GTgUpil6AcfuD9n+VzSKb+bjR21jrXPFuss9xapZdsRieIR5C3NC+g1Sh0zVuzNRvC9kUv1DAxG9ADDTW228SmyJ2zfZFdqu1p0++AlAU+agGcvp1Ih97VU8ZpkEKcYRSXbAKnKkV+sdx3BtEOC0m7O/+wPGDfwOYQfgqDkj2t4alEi7gV60b98f/9kOM6JQH5NC5UhKIx5yc4tVrTvTEyJj96qhitzjB9vDXDc14pg2nMNT4d5J+YMAEgmgA5J0W5EteI8lP2RqmLjwgVsoVQI4rNVmnKyO6pPCaSkPj jkatz@jon-katzs-air.corp.wikimedia.org]
     uid: 10747
+  bmansurov:
+    ensure: present
+    gid: 500
+    name: bmansurov
+    realname: Bahodir Mansurov
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC50DOWu62crD61EV/CKVpA4velNf0sExkBqn4+j6mkSfjBQ3u1NbIiTuRevJ1QejKLrwt+r6RTFH6Zo8HdhumnfHLemNb6b6lPI3X+t9zMP9bfstnE7KpSvAIEPuN83nR9nfs0hMndcqsR1jmSs+zAfZ9rPorIcaGKGnsscao1Xv22yvGk6zAtbQmkEW0uH8d339EgVo9WSVWcJL3EgDuunJyy28XWqjB+YTYxiwlHnla4YZXsXm9YxoC3PNYbe83jDfxkG0TTqW5BSYeVaOwtwRpYiW6pWU3tNyCX6RUx57IhuC2TTshox05EhsREC0eYQcUAny9PAYf5moehRY8V bmansurov@wikimedia.org]
+    uid: 10570
