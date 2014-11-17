@@ -2779,7 +2779,6 @@ node 'virt1000.wikimedia.org' {
     $ganglia_aggregator    = true
     $is_puppet_master      = true
     $is_labs_puppet_master = true
-    $openstack_version     = 'icehouse'
     $use_neutron           = false
 
     include standard
@@ -2802,7 +2801,6 @@ node 'labcontrol2001.wikimedia.org' {
     $ganglia_aggregator    = true
     #$is_puppet_master      = true
     #$is_labs_puppet_master = true
-    #$openstack_version     = 'folsom'
     #$use_neutron           = false
 
     include standard
@@ -2823,7 +2821,6 @@ node 'neptunium.wikimedia.org' {
     $cluster               = 'virt'
     #$is_puppet_master      = true
     #$is_labs_puppet_master = true
-    #$openstack_version     = 'folsom'
     #$use_neutron           = false
 
     include standard
@@ -2839,7 +2836,6 @@ node 'neptunium.wikimedia.org' {
 
 node 'labnet1001.eqiad.wmnet' {
     $cluster = 'virt'
-    $openstack_version = 'icehouse'
     $use_neutron = false
 
     $ganglia_aggregator = true
@@ -2857,7 +2853,6 @@ node 'labnet1001.eqiad.wmnet' {
 
 node /virt100[1-9].eqiad.wmnet/ {
     $cluster = 'virt'
-    $openstack_version = 'icehouse'
     $use_neutron = false
 
     include admin
