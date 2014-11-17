@@ -43,6 +43,12 @@ class role::gerrit {
             prefixlen => '128',
         }
 
+        # sshd listening on the _non_ gerrit IP,
+        # so that gerrit can have 22 on its own IP
+        ssh::server { 'sshd':
+            listen_address => '208.80.154.80',
+        }
+
         ferm::service { 'gerrit_ssh':
             proto  => 'tcp',
             port   => '29418',
