@@ -26,11 +26,16 @@ function clean_puppet {
 
 function clean_salt {
     nodename=${1}
+    force_yes=${2}
     log "cleaning salt key cache for ${nodename}"
     # delete the key only if it has been accepted already, we are going to
     # ask confirmation later about unaccepted keys
     if salt-key --list accepted | fgrep -q ${nodename}; then
-        salt-key --delete ${nodename}
+        if [ ${force_yes} -eq 1 ]; then
+            salt-key -y --delete ${nodename}
+        else
+            salt-key --delete ${nodename}
+        fi
     fi
     # salt-key --delete above exits 0 regardless, double check
     if salt-key --list accepted | fgrep -q ${nodename}; then
@@ -70,6 +75,7 @@ function sign_puppet {
 
 function sign_salt {
     nodename=${1}
+    force_yes=${2}
     while true; do
         log "Seeking the node key to add"
         if ! salt-key --list unaccepted | fgrep -q ${nodename}; then
@@ -77,13 +83,32 @@ function sign_salt {
             sleep $SLEEPTIME
             continue
         fi;
-        salt-key -a ${nodename}
+        if [ ${force_yes} -eq 1 ]; then
+            salt-key -y -a ${nodename}
+        else
+            salt-key -a ${nodename}
+        fi
         break
     done
 }
 
+function set_pxe_and_reboot {
+    mgmtname=${1}
+    if [ -z "$IPMI_PASSWORD" ]; then
+	    echo "WARNING: IPMI_PASSWORD not found. Assuming bash, do: "
+	    echo "HISTCONTROL=ignoreboth<enter>"
+	    echo "<space>export IPMI_PASSWORD='supersecretpass'"
+	    echo "WARNING: Continuing without auto rebooting the box"
+	    return
+    fi
+    export IPMI_PASSWORD
+    ipmitool -I lanplus -H ${mgmtname} -U root -E chassis bootdev pxe
+    ipmitool -I lanplus -H ${mgmtname} -U root -E chassis power cycle
+
+}
+
 function usage {
-    echo "Usage: $0 [-y][-s SECONDS] <nodename>"; exit 1;
+    echo "Usage: $0 [-y][-s SECONDS] <nodename> <mgmtname>"; exit 1;
 }
 
 ## Main script
@@ -103,12 +128,15 @@ esac
 done
 shift $((OPTIND-1))
 nodename=$1
+mgmtname=$2
 test -z ${nodename} && usage
+test -z ${mgmtname} && usage
 log "Preparing reimaging of node ${nodename}"
 
 clean_puppet $nodename
-clean_salt $nodename
+clean_salt $nodename $FORCE
+set_pxe_and_reboot $mgmtname
 sign_puppet $nodename $FORCE
-sign_salt $nodename
+sign_salt $nodename $FORCE
 
 log "Node ${nodename} is now signed and both puppet and salt should work."
