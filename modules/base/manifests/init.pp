@@ -222,6 +222,16 @@ class base {
         certname => $certname,
     }
 
+    # include base::monitor::host.
+    # if $nagios_contact_group is set, then use it
+    # as the monitor host's contact group.
+    class { 'base::monitoring::host':
+        contact_group => $::nagios_contact_group ? {
+            undef     => 'admins',
+            default   => $::nagios_contact_group,
+        }
+    }
+
     include passwords::root,
         base::grub,
         base::resolving,
@@ -239,15 +249,6 @@ class base {
         nrpe
 
 
-    # include base::monitor::host.
-    # if $nagios_contact_group is set, then use it
-    # as the monitor host's contact group.
-    class { 'base::monitoring::host':
-        contact_group => $::nagios_contact_group ? {
-            undef     => 'admins',
-            default   => $::nagios_contact_group,
-        }
-    }
 
     # CA for the new ldap-eqiad/ldap-codfw ldap servers, among
     # other things.
