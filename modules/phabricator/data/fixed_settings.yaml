@@ -12,6 +12,29 @@ ui.footer-items:
   - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use/Phabricator', name: Terms of Use}
   - {href: 'https://wikimediafoundation.org/wiki/Wikimedia:General_disclaimer', name: Disclaimer}
 
+# Due to issues with 'gd' rending thumbnails for
+# Mimetype icon/x-icon
+# Disabling previews for icons for now
+# https://secure.phabricator.com/T6573
+files.viewable-mime-types:
+  'image/jpeg': 'image/jpeg'
+  'image/jpg': 'image/jpg'
+  'image/png': 'image/png'
+  'image/gif': 'image/gif'
+  'text/plain': 'text/plain; charset=utf-8'
+  'text/x-diff': "text/plain; charset=utf-8'
+  'image/vnd.microsoft.icon': 'image/x-icon'
+  'audio/x-wav': 'audio/x-wav'
+  'application/ogg': 'application/ogg'
+  'audio/mpeg': 'audio/mpeg'
+
+files.image-mime-types:
+  image/jpeg
+  image/jpg
+  image/png
+  image/gif
+  image/vnd.microsoft.icon
+
 maniphest.priorities:
   '100':
     name: 'Unbreak Now!'
