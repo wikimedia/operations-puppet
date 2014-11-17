@@ -1,2 +1,2 @@
 cluster: analytics
-nagios_group: analytics_eqiad
+monitoring::configuration::group: analytics_eqiad

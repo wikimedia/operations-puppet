@@ -1,2 +1,2 @@
-nagios_group: lucene
+monitoring::configuration::group: lucene
 cluster: search
