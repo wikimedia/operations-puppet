@@ -271,54 +271,6 @@ class ldap::client::openldap($ldapconfig, $ldapincludes) {
     }
 }
 
-class ldap::client::autofs($ldapconfig) {
-    # TODO: parametize this.
-    if $::realm == 'labs' {
-        $homedir_location = "/export/home/${instanceproject}"
-        $nfs_server_name = $instanceproject ? {
-            default => 'labs-nfs1',
-        }
-        $gluster_server_name = $instanceproject ? {
-            default => 'projectstorage.pmtpa.wmnet',
-        }
-        $autofs_subscribe = ['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf', '/data', '/public']
-    } else {
-        $homedir_location = '/home'
-        $nfs_server_name = 'nfs-home.pmtpa.wmnet'
-        $autofs_subscribe = ['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf']
-    }
-
-    package { [ 'autofs5', 'autofs5-ldap' ]:
-        ensure => 'latest',
-    }
-
-# autofs requires the permissions of this file to be 0600
-    file { '/etc/autofs_ldap_auth.conf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0600',
-        notify  => Service['autofs'],
-        content => template('ldap/autofs_ldap_auth.erb'),
-    }
-
-    file { '/etc/default/autofs':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['autofs'],
-        content => template('ldap/autofs.default.erb'),
-    }
-
-    service { 'autofs':
-        ensure     => running,
-        enable     => true,
-        hasrestart => true,
-        pattern    => 'automount',
-        require    => Package['autofs5', 'autofs5-ldap', 'ldap-utils', 'libnss-ldapd' ],
-        subscribe  => File[$autofs_subscribe],
-    }
-}
-
 class ldap::client::includes($ldapincludes, $ldapconfig) {
     if 'openldap' in $ldapincludes {
         class { 'ldap::client::openldap':
