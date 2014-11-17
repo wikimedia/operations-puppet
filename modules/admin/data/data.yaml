@@ -161,7 +161,7 @@ groups:
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
               howief, awight, dr0ptp4kt, qchris, tnegrin, nuria,
               leila, manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
-              spage, erik, bmansurov]
+              spage, erik, bmansurov, rmoen]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -688,8 +688,7 @@ users:
     gid: 500
     name: rmoen
     realname: Rob Moen
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDG/0pPRUoAhvHvgodmPYnqh6JZH3+QFlECg1rCbetr2sVx/0cpEPkqciEC3UlYm8iIRHLr1AyxXS2fq9ruB1oNnzzCzSHitzCP1XkjqqofkKVWSAUhnjhZyJ6VN61XDj7PvMJW1dPY6ueqKfjFR5/1icbG1yIqeUeJ89frPsOQiXxUAnebOojRK5dNkhVuX41jJfUBI5y0CaxxE2EqEQn+LlI6ZYDpORj5q8vP6YyvrDYS/708pJltUN+4rM/BKTSbJ2TTqc89klkY9AcLgGW/i6QMw+Qaxc22cx9TmpAAhUmvh8GX+yX1jylh6Nt4mky8L2cf6wW4ShAuDKLZoRFF
-        rmoen@WMF317]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDyIouVYQ75ICw9EPhVv9CpW83UKyammMJpEuc0UUEbEhEI2VQhr664EW0kF1IzIjFIxb2m5jMli80sRxbVbB5bOn07g7sMkccToBC7WbypKJXeyDe8s4rL5bWI/0LfjQh4wgmDsRcHbe7wxwsmOGYJds+NZ+WVo4tcEh7YUXlQYZp0IffIg33Gb/yWdJsgO59Xi5bkmWEvHsMcylfPMcCN3y3+xhv3LNzHuGcFm8PY40KgxeOpLvnZ0SZr5caDmEvKdqRRWs5cjBH4Fh/EylvsRKp4kx1IMUWbDcWDTvDBItrLIO2zswN2IRMkVNkIGHX4P6fobe2UOhnHeftBBZ1R dev@sane.ly]
     uid: 2099
   robla:
     ensure: present
