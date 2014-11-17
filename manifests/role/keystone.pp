@@ -65,7 +65,7 @@ class role::keystone::server ($glanceconfig) {
         }
     }
 
-    class { 'openstack::keystone::service': openstack_version => $openstack_version, keystoneconfig => $keystoneconfig, glanceconfig => $glanceconfig }
+    class { 'openstack::keystone::service': keystoneconfig => $keystoneconfig, glanceconfig => $glanceconfig }
 
     include role::keystone::redis
 }

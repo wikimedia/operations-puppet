@@ -1,5 +1,5 @@
 class openstack::openstack-manager(
-    $openstack_version='havana',
+    $openstack_version=$::openstack::version,
     $novaconfig,
     $certificate
 ) {

@@ -30,3 +30,9 @@ ocg::nagios::check::cjs: 800000
 ocg::nagios::check::wrj: 500
 ocg::nagios::check::crj: 3000
 ocg::ganglia::module::data_filesystem: "/srv"
+
+#
+# Labs
+#
+# This is redundant but will be useful when we start setting up codfw
+openstack::version: 'havana'
