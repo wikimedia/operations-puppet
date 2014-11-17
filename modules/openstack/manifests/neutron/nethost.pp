@@ -5,9 +5,7 @@ class openstack::neutron::nethost(
     $neutronconfig,
     $data_interface_ip
 ) {
-    if ! defined(Class['openstack::repo']) {
-        class { 'openstack::repo': openstack_version => $openstack_version }
-    }
+    include openstack::repo
 
     package { 'neutron-dhcp-agent':
         ensure  => 'present',

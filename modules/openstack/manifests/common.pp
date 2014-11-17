@@ -9,9 +9,7 @@ class openstack::common(
             $instance_status_wiki_pass,
             $openstack_version='havana',
             ) {
-    if ! defined(Class['openstack::repo']) {
-        class { 'openstack::repo': openstack_version => $openstack_version }
-    }
+    include openstack::repo
 
     package { [ 'nova-common', 'python-keystone' ]:
         ensure  => present,

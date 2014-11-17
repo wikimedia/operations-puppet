@@ -30,3 +30,8 @@ ocg::nagios::check::cjs: 800000
 ocg::nagios::check::wrj: 500
 ocg::nagios::check::crj: 3000
 ocg::ganglia::module::data_filesystem: "/srv"
+
+#
+# Labs
+#
+openstack_version: "havana"
