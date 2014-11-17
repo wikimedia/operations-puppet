@@ -22,6 +22,7 @@ keys = rotated_file
 ### Defaults options for all Collectors
 path_prefix = <%= @path_prefix %>
 interval = <%= @interval %>
+hostname_method = hostname # Explicitly set to fix undeterministic names for some public machines
 
 [loggers]
 
