@@ -1,13 +1,11 @@
 # Set up neutron on a dedicated network node
 class openstack::neutron::nethost(
-    $openstack_version='havana',
+    $openstack_version=$::openstack::version,
     $external_interface='eth0',
     $neutronconfig,
     $data_interface_ip
 ) {
-    if ! defined(Class['openstack::repo']) {
-        class { 'openstack::repo': openstack_version => $openstack_version }
-    }
+    include openstack::repo
 
     package { 'neutron-dhcp-agent':
         ensure  => 'present',

@@ -1,7 +1,7 @@
-class openstack::glance::service($openstack_version="havana", $glanceconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+class openstack::glance::service(
+    $openstack_version=$::openstack::version,
+    $glanceconfig) {
+    include openstack::repo
 
     package { [ "glance" ]:
         ensure  => present,
