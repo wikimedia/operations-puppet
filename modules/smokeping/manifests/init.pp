@@ -12,8 +12,8 @@ class smokeping {
     }
 
     service { 'smokeping':
-        require => [ Package['smokeping'], File['/etc/smokeping/config.d'] ],
+        require   => [ Package['smokeping'], File['/etc/smokeping/config.d'] ],
         subscribe => File['/etc/smokeping/config.d'],
-        ensure => running;
+        ensure    => running;
     }
 }

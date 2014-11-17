@@ -20,8 +20,8 @@ class mw-rc-irc::irc-echo(
 
     # Ensure that the service is running.
     service { 'ircecho':
-        ensure => running,
+        ensure   => running,
         provider => 'upstart',
-        require => File['/etc/init/ircecho.conf'],
+        require  => File['/etc/init/ircecho.conf'],
     }
 }
