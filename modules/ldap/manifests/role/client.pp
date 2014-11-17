@@ -2,11 +2,7 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
     include ldap::role::config::labs
 
     if ( $::realm == 'labs' ) {
-        if( $::site == 'eqiad' ) {
-            $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'access']
-        } else {
-            $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs', 'access']
-        }
+        $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'access']
 
         # Cert for the old virt1000/virt0 ldap servers:
         include certificates::wmf_labs_ca
