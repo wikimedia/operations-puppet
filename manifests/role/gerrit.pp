@@ -43,6 +43,10 @@ class role::gerrit {
             prefixlen => '128',
         }
 
+        ssh::server {
+            listen_address => '208.80.154.80',
+        }
+
         ferm::service { 'gerrit_ssh':
             proto  => 'tcp',
             port   => '29418',
