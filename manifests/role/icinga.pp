@@ -11,7 +11,7 @@
 class role::icinga(
     $ircbot = true,
 ){
-    include facilities::pdu_monitoring
+    include nagios_common::pdu_monitoring
     include icinga::monitor::checkpaging
     include icinga::nsca::firewall
     include icinga::nsca::daemon

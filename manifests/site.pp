@@ -4,7 +4,6 @@
 import 'realm.pp' # These ones first
 import 'certs.pp'
 import 'dns.pp'
-import 'facilities.pp'
 import 'ganglia.pp'
 import 'iptables.pp'
 import 'mail.pp'
