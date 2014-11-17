@@ -1,2 +1,2 @@
 cluster: analytics_kafka
-nagios_group: analytics_eqiad
+monitoring::configuration::group: analytics_eqiad

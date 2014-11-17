@@ -3,7 +3,7 @@
 #
 define monitoring::host (
     $ip_address = $::ipaddress,
-    $group         = hiera('nagios_group', "${cluster}_${::site}"),
+    $group         = $monitoring::configuration::group,
     $ensure        = present,
     $critical      = 'false',
     $contact_group = 'admins'
@@ -25,7 +25,7 @@ define monitoring::host (
     # Export the nagios host instance
     @@nagios_host { $title:
         ensure               => $ensure,
-        target               => "/etc/nagios/puppet_hosts.cfg",
+        target               => "${::monitoring::configuration::dir}/puppet_hosts.cfg",
         host_name            => $title,
         address              => $ip_address,
         hostgroups           => $hostgroup,
@@ -50,7 +50,7 @@ define monitoring::host (
         # Couple it with some hostextinfo
         @@nagios_hostextinfo { $title:
             ensure          => $ensure,
-            target          => "/etc/nagios/puppet_hostextinfo.cfg",
+            target          => "${::monitoring::configuration::dir}/puppet_hostextinfo.cfg",
             host_name       => $title,
             notes           => $title,
             icon_image      => "${image}.png",

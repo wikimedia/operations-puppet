@@ -13,7 +13,7 @@
 define monitoring::group (
     $description,
     $ensure=present,
-    $config_dir = '/etc/nagios'
+    $config_dir = $::monitoring::configuration::dir,
     ) {
     # Nagios hostgroup instance
     nagios_hostgroup { $title:
