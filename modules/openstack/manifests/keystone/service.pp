@@ -1,7 +1,5 @@
 class openstack::keystone::service($openstack_version="havana", $keystoneconfig, $glanceconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+    include openstack::repo
 
     package { [ "keystone" ]:
         ensure  => present,

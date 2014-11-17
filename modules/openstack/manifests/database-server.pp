@@ -1,8 +1,7 @@
 class openstack::database-server(
     $novaconfig,
     $keystoneconfig,
-    $glanceconfig,
-    $openstack_version='havana',
+    $glanceconfig
     ) {
     $nova_db_name = $novaconfig['db_name']
     $nova_db_user = $novaconfig['db_user']

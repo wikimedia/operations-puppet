@@ -1,4 +1,8 @@
-class openstack::neutron::controller($neutronconfig, $data_interface_ip) {
+class openstack::neutron::controller(
+    $neutronconfig,
+    $data_interface_ip,
+    $openstack_version = 'havana'
+    ) {
     package { 'neutron-server':
         ensure  => 'present',
         require => Class['openstack::repo'],

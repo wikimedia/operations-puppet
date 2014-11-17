@@ -1,7 +1,5 @@
 class openstack::nova::api($openstack_version="havana", $novaconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+    include openstack::repo
 
     package {  [ "nova-api" ]:
         ensure  => present,
