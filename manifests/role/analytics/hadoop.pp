@@ -354,9 +354,9 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             ensure => 'installed',
         }
         # symlink into hadoop classpath
-        file { '/usr/lib/hadoop/lib/json_simple-1.1.jar':
+        file { '/usr/lib/hadoop/lib/json_simple.jar':
             ensure => 'link',
-            target => '/usr/share/java/json_simple-1.1.jar',
+            target => '/usr/share/java/json_simple.jar',
             require => Package['libjson-simple-java'],
         }
         # the libary itself: logstash-gelf.jar
