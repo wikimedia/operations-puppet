@@ -1,7 +1,5 @@
-class openstack::nova::compute($openstack_version="havana", $novaconfig) {
-    if ! defined(Class["openstack::repo"]) {
-        class { "openstack::repo": openstack_version => $openstack_version }
-    }
+class openstack::nova::compute($openstack_version=$::openstack::version, $novaconfig) {
+    include openstack::repo
 
     if ( $::realm == "production" ) {
         $certname = "virt-star.${site}.wmnet"
@@ -92,7 +90,7 @@ class openstack::nova::compute($openstack_version="havana", $novaconfig) {
         "/etc/libvirt/qemu/networks/autostart/default.xml":
             ensure  => absent;
         # Live hack to use qcow2 ephemeral base images. Need to upstream
-        # a config option for this in havana.
+        # a config option for this.
         "/usr/share/pyshared/nova/virt/libvirt/driver.py":
             source  => "puppet:///modules/openstack/${openstack_version}/nova/virt-libvirt-driver",
             notify  => Service['nova-compute'],

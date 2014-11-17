@@ -13,6 +13,7 @@ class role::nova::config {
 }
 
 class role::nova::config::common {
+    require openstack
     include passwords::openstack::nova
     include passwords::openstack::neutron
 
@@ -158,7 +159,6 @@ class role::nova::common {
     include passwords::misc::scripts
 
     class { 'openstack::common':
-        openstack_version                => $openstack_version,
         novaconfig                       => $novaconfig,
         instance_status_wiki_host        => $::realm ? {
             'production' => 'wikitech.wikimedia.org',
@@ -200,13 +200,13 @@ class role::nova::manager {
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
     class { 'openstack::openstack-manager':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
         certificate       => $certificate,
     }
 }
 
 class role::nova::controller {
+    require openstack
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -232,26 +232,19 @@ class role::nova::controller {
 
     include role::nova::common
 
-    if ( $openstack_version == 'havana' ) {
-        class { 'openstack::nova::conductor':
-            openstack_version => $openstack_version,
-            novaconfig        => $novaconfig,
-        }
+    class { 'openstack::nova::conductor':
+        novaconfig        => $novaconfig,
     }
     class { 'openstack::nova::scheduler':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
     class { 'openstack::glance::service':
-        openstack_version => $openstack_version,
         glanceconfig      => $glanceconfig,
     }
     class { 'openstack::queue-server':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
     class { 'openstack::database-server':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
         glanceconfig      => $glanceconfig,
         keystoneconfig    => $keystoneconfig,
@@ -294,13 +287,13 @@ class role::nova::controller {
 }
 
 class role::nova::api {
+    require openstack
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
     include role::nova::common
 
     class { 'openstack::nova::api':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
 }
@@ -313,6 +306,7 @@ class role::nova::network::bonding {
 }
 
 class role::nova::network {
+    require openstack
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -339,13 +333,12 @@ class role::nova::network {
     }
 
     class { 'openstack::nova::network':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
 }
 
 class role::nova::wikiupdates {
-
+    require openstack
     if $::realm == 'production' {
         if ! defined(Package['python-mwclient']) {
             package { 'python-mwclient':
@@ -354,7 +347,7 @@ class role::nova::wikiupdates {
         }
     }
 
-    if ($openstack_version == 'folsom') {
+    if ($::openstack::version == 'folsom') {
         package { 'python-openstack-wikistatus':
             ensure  => installed,
             require => Package['python-mwclient'],
@@ -362,7 +355,7 @@ class role::nova::wikiupdates {
     } else {
         if ($::lsbdistcodename == 'lucid') {
             file { '/usr/local/lib/python2.6/dist-packages/wikinotifier.py':
-                source  => "puppet:///modules/openstack/${openstack_version}/nova/wikinotifier.py",
+                source  => "puppet:///modules/openstack/${::openstack::version}/nova/wikinotifier.py",
                 mode    => '0644',
                 owner   => 'root',
                 group   => 'root',
@@ -370,7 +363,7 @@ class role::nova::wikiupdates {
             }
         } else {
             file { '/usr/local/lib/python2.7/dist-packages/wikinotifier.py':
-                source  => "puppet:///modules/openstack/${openstack_version}/nova/wikinotifier.py",
+                source  => "puppet:///modules/openstack/${::openstack::version}/nova/wikinotifier.py",
                 mode    => '0644',
                 owner   => 'root',
                 group   => 'root',
@@ -381,6 +374,7 @@ class role::nova::wikiupdates {
 }
 
 class role::nova::compute {
+    require openstack
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -403,7 +397,6 @@ class role::nova::compute {
     }
 
     class { 'openstack::nova::compute':
-        openstack_version => $openstack_version,
         novaconfig        => $novaconfig,
     }
 
@@ -429,4 +422,3 @@ class role::nova::compute {
 @monitoring::group { 'virt_esams': description => 'esams virt servers' }
 @monitoring::group { 'virt_codfw': description => 'codfw virt servers' }
 @monitoring::group { 'virt_ulsfo': description => 'ulsfo virt servers' }
-
