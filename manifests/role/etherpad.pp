@@ -54,11 +54,11 @@ class role::etherpad{
     }
 
     monitor_service { 'etherpad-lite-http':
-        description   => 'etherpad.wikimedia.org',
+        description   => 'etherpad.wikimedia.org HTTP',
         check_command => 'check_http_url!etherpad.wikimedia.org!/',
     }
     monitor_service { 'etherpad-lite-https':
-        description   => 'etherpad.wikimedia.org',
+        description   => 'etherpad.wikimedia.org HTTPS',
         check_command => 'check_https_url_for_string!etherpad.wikimedia.org!//p/Etherpad!\'<title>Etherpad\'',
     }
 
