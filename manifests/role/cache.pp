@@ -410,7 +410,7 @@ class role::cache {
                 priority => 70,
             }
 
-            class { '::varnishkafka':
+            varnishkafka::instance { $varnish_name:
                 brokers                      => $kafka_brokers,
                 topic                        => $topic,
                 format_type                  => 'json',
@@ -443,12 +443,12 @@ class role::cache {
                 require                      => Rsyslog::Conf['varnishkafka'],
             }
 
-            class { '::varnishkafka::monitoring': }
+            varnishkafka::monitor { $varnish_name: }
 
             # Generate icinga alert if varnishkafka is not running.
             nrpe::monitor_service { 'varnishkafka':
                 description  => 'Varnishkafka log producer',
-                nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C varnishkafka',
+                nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C varnishkafka',
                 require      => Class['::varnishkafka'],
             }
 
