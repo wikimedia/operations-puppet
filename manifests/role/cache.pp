@@ -443,7 +443,11 @@ class role::cache {
                 require                      => Rsyslog::Conf['varnishkafka'],
             }
 
-            varnishkafka::monitor { $varnish_name: }
+            varnishkafka::monitor { $varnish_name:
+                # The primary webrequest varnishkafka instance was formerly the
+                # only one running, so we don't prefix its Ganglia metric keys.
+                key_prefix => '',
+            }
 
             # Generate icinga alert if varnishkafka is not running.
             nrpe::monitor_service { 'varnishkafka':
