@@ -604,12 +604,12 @@ host cp1070 {
 
 host cp3001 {
 	hardware ethernet 78:2b:cb:45:4a:31;
-	fixed-address cp3001.esams.wikimedia.org;
+	fixed-address cp3001.esams.wmnet;
 }
 
 host cp3002 {
 	hardware ethernet 78:2b:cb:45:3a:7d;
-	fixed-address cp3002.esams.wikimedia.org;
+	fixed-address cp3002.esams.wmnet;
 }
 
 host cp3003 {
