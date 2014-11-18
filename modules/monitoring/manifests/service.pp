@@ -18,12 +18,18 @@ define monitoring::service(
         fail("Parameter $host not defined!")
     }
 
+    if $group {
+        $servicegroups = $group
+    } else {
+        $servicegroups = undef
+    }
+
     # Export the nagios service instance
     @@nagios_service { "${::hostname} ${title}":
         ensure                  => $ensure,
         target                  => "${config_dir}/puppet_checks.d/${host}.cfg",
         host_name               => $host,
-        servicegroups           => $group,
+        servicegroups           => $servicegroups,
         service_description     => $description,
         check_command           => $check_command,
         max_check_attempts      => $retries,
