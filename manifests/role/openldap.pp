@@ -3,7 +3,7 @@
     description => 'Corp OIT LDAP Mirror'
 }
 @monitoring::group { 'openldap_corp_mirror_codfw':
-    description => 'Corp OIT LDAP Mirror'
+    description => 'Corp OIT LDAP Mirror codfw'
 }
 
 class role::openldap::corp {
