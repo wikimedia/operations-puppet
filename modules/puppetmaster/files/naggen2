@@ -40,7 +40,9 @@ GROUP BY resources.id ORDER BY resources.title ASC"""
         'services': """define service {
 # --PUPPET_NAME-- {{ name }}
 {% for line in data -%}
+{% if line[1] -%}
 {{ "\t%-30s %s" % line }}
+{% endif %}
 {% endfor %}
 }
 """,
