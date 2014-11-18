@@ -469,6 +469,24 @@ class role::cache {
         }
     }
 
+    class varnish::logging::statslistener {
+        require role::analytics::kafka::config
+
+        $brokers = keys($role::analytics::kafka::config::cluster_config['eqiad'])
+        $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{@ip}h %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
+
+        varnishkafka::instance { 'stats':
+            brokers           => $brokers,
+            format            => $format,
+            format_type       => 'json',
+            topic             => 'stats',
+            varnish_name      => $::hostname,
+            varnish_opts      => { 'm' => 'RxURL:^/s\//', },
+        }
+
+        varnishkafka::monitor { 'stats': }
+    }
+
     class varnish::logging::eventlistener {
         $event_listener = $::realm ? {
             'production' => '10.64.21.123',  # vanadium
@@ -1113,6 +1131,7 @@ class role::cache {
         }
 
         include role::cache::varnish::logging::eventlistener
+        include role::cache::varnish::logging::statslistener
 
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
