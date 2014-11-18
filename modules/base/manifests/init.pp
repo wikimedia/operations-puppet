@@ -230,6 +230,7 @@ class base {
         base::motd,
         base::standard-packages,
         base::environment,
+        base::phaste,
         base::platform,
         base::screenconfig,
         ssh::client,
