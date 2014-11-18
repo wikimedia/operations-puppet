@@ -49,9 +49,7 @@ class openstack::common(
             require => Package['nova-common'];
     }
 
-    if ( $openstack_version == 'havana' ) {
-        package { 'python-novaclient':
-            ensure => present,
-        }
+    package { 'python-novaclient':
+        ensure => present,
     }
 }
