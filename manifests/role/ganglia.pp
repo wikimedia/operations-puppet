@@ -60,6 +60,8 @@ class role::ganglia::config {
 class role::ganglia::web {
     include role::ganglia::config
 
+    install_certificate{ 'ganglia.wikimedia.org': }
+
     $gmetad_root = '/srv/ganglia'
     $rrd_rootdir = "${gmetad_root}/rrds"
     $gmetad_socket = '/var/run/rrdcached-gmetad.sock'
