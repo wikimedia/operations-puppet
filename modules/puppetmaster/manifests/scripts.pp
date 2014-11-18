@@ -2,7 +2,14 @@
 #
 # This class installs some puppetmaster server side scripts required for the
 # manifests
-class puppetmaster::scripts {
+#
+# == Parameters
+#
+# [*keep_reports_minutes*]
+#   Number of minutes to keep older reports for before deleting them
+class puppetmaster::scripts(
+    $keep_reports_minutes = 2160,
+) {
 
     require puppetmaster::naggen2
 
@@ -31,13 +38,13 @@ class puppetmaster::scripts {
         source  => 'puppet:///modules/puppetmaster/puppet-merge'
     }
 
-    # Clear out reports older than 36 hours.
+    # Clear out older reports
     cron { 'removeoldreports':
         ensure  => present,
-        command => 'find /var/lib/puppet/reports -type f -mmin +2160 -delete',
+        command => "find /var/lib/puppet/reports -type f -mmin +$keep_reports_minutes -delete",
         user    => puppet,
-        hour    => [4,16],
-        minute  => 27,
+        hour    => '*',
+        minute  => 0,
     }
 
     # Helper script to clean stored data about a server we're reimaging.
