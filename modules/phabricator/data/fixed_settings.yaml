@@ -28,11 +28,11 @@ files.viewable-mime-types:
   'application/ogg': 'application/ogg'
   'audio/mpeg': 'audio/mpeg'
 
-files.image-mime-types: ['image/jpeg',
-                         'image/jpg',
-                         'image/png',
-                         'image/gif',
-                         'image/vnd.microsoft.icon']
+files.image-mime-types: image/jpeg,
+                        image/jpg,
+                        image/png,
+                        image/gif,
+                        image/vnd.microsoft.icon
 
 maniphest.priorities:
   '100':
