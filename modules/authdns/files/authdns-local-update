@@ -75,6 +75,9 @@ fi
 if [ ! -e "$WORKINGDIR/config-geo" ]; then
     die "config-geo not found, system misconfigured?"
 fi
+if [ ! -e "$WORKINGDIR/admin_state" ]; then
+    die "admin_state not found, system misconfigured?"
+fi
 
 echo "Generating zonefiles from zone templates"
 authdns-gen-zones $WORKINGDIR/templates /etc/gdnsd/zones
@@ -100,6 +103,9 @@ if ! gdnsd checkconf >/dev/null; then
     fi
     die "gdnsd checkconf failed, aborting"
 fi
+
+echo "Copying admin_state into place; will take effect immediately"
+cp -f $WORKINGDIR/admin_state /var/lib/gdnsd/
 
 ### reload
 
