@@ -53,7 +53,11 @@ class gdash(
         provider => 'trebuchet',
     }
 
-    package { [ 'ruby-rack', 'ruby-sinatra', 'rubygems' ]: }
+    if ubuntu_version('< trusty') {
+        package { [ 'ruby-rack', 'ruby-sinatra', 'rubygems' ]: }
+    } else {
+        package { [ 'ruby-rack', 'ruby-sinatra' ]: }
+    }
 
     file { '/etc/gdash':
         ensure => directory,
