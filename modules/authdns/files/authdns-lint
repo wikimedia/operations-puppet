@@ -22,6 +22,9 @@ trap cleanup EXIT
 WORKINGDIR=$1
 TESTDIR=$2
 
+# 1.x and 2.x have different path-related flags...
+(gdnsd -h 2>&1 | grep -q 'gdnsd version 2') || die "This script only supports gdnsd 2.x"
+
 if [ -z "$WORKINGDIR" ]; then
     die "no template dir specified"
 fi
@@ -57,11 +60,4 @@ sed -nr 's/.*(geoip_db(.*)?|city_region_names)\s*=>\s*//p' $TESTDIR/etc/config \
     echo "  $file"
 done
 
-# 1.x and 2.x have different path-related flags...
-v2=1
-(gdnsd -h 2>&1 | grep -q 'gdnsd version 2') || v2=0
-if [ $v2 -eq 1 ]; then
-    gdnsd -sSc $TESTDIR/etc checkconf
-else
-    gdnsd -sSd $TESTDIR checkconf
-fi
+gdnsd -sSc $TESTDIR/etc checkconf

@@ -21,8 +21,7 @@ if [ "$(id -u)" -ne "0" ]; then
 fi
 
 # 1.x and 2.x have differences
-GDNSD_V2=1
-(gdnsd -h 2>&1 | grep -q 'gdnsd version 2') || GDNSD_V2=0
+(gdnsd -h 2>&1 | grep -q 'gdnsd version 2') || die "This script only supports gdnsd 2.x"
 
 # setup locking; only one copy of this may be running at the same time
 LOCKFILE=/var/lock/authdns-local-update
@@ -98,20 +97,11 @@ if ! which gdnsd > /dev/null || [ "$SKIP_RELOAD" = "true" ]; then
     exit 0
 fi
 
-if [ $GDNSD_V2 -eq 1 ]; then
-    if ! gdnsd checkconf >/dev/null; then
-        if [ -f /etc/gdnsd/config~ ]; then
-            mv /etc/gdnsd/config~ /etc/gdnsd/config
-        fi
-        die "gdnsd checkconf failed, aborting"
+if ! gdnsd checkconf >/dev/null; then
+    if [ -f /etc/gdnsd/config~ ]; then
+        mv /etc/gdnsd/config~ /etc/gdnsd/config
     fi
-else
-    if ! gdnsd checkconf 2>/dev/null; then
-        if [ -f /etc/gdnsd/config~ ]; then
-            mv /etc/gdnsd/config~ /etc/gdnsd/config
-        fi
-        die "gdnsd checkconf failed, aborting"
-    fi
+    die "gdnsd checkconf failed, aborting"
 fi
 
 ### reload
@@ -123,9 +113,5 @@ if ! cmp --quiet /etc/gdnsd/config~ /etc/gdnsd/config; then
 else
     rm -f /etc/gdnsd/config~
     echo "Reloading zones"
-    if [ $GDNSD_V2 -eq 1 ]; then
-        gdnsd reload-zones
-    else
-        gdnsd reload
-    fi
+    gdnsd reload-zones
 fi
