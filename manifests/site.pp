@@ -2885,8 +2885,7 @@ node 'uranium.wikimedia.org' {
     include standard
     include admin
     include role::ganglia::web
-    # TODO: Resolve this
-    #include misc::monitoring::views
+    include misc::monitoring::views
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
