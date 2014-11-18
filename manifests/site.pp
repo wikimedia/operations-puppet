@@ -2801,6 +2801,15 @@ node 'tungsten.eqiad.wmnet' {
     include role::performance
 }
 
+# graphite test machine, currently with SSD caching + spinning disks
+node 'graphite1001.eqiad.wmnet' {
+    include admin
+    include standard
+    include role::graphite::production
+    include role::txstatsd
+    include role::gdash
+}
+
 # Labs Graphite and StatsD host
 node 'labmon1001.eqiad.wmnet' {
     include standard
