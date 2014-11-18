@@ -142,6 +142,7 @@ class role::phabricator::main {
       rootdir     => '/srv/phab',
       field_index => '4rRUkCdImLQU',
       phab_host   => 'phabricator.wikimedia.org',
+      alt_host    => $altdom
   }
 }
 

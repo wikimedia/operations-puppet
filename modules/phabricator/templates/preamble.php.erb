@@ -11,6 +11,7 @@ if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
 class redirector {
   protected $config;
   protected $mysqli;
+  protected $connected=false;
 
   function __construct() {
     $this->config = json_decode(
@@ -26,11 +27,17 @@ class redirector {
       $msg = 'redirector.php: Connect Error (' . $this->mysqli->connect_errno . ') '
            . $this->mysqli->connect_error;
       error_log($msg);
-      die($msg);
+      //die($msg);
+      $this->connected=false;
+    } else {
+      $this->connected=true;
     }
   }
 
   public function redirect($url) {
+    if (!$this->connected) {
+      return;
+    }
     foreach ($this->config->urlPatterns as $i=>$p) {
       $matches = array();
       $pattern = '#'.$p->pattern.'#';
@@ -73,7 +80,8 @@ class redirector {
   }
 }
 
-if ($_SERVER['HTTP_HOST'] !== '<%= @phab_host %>') {
+if ($_SERVER['HTTP_HOST'] !== '<%= @phab_host %>'
+ && $_SERVER['HTTP_HOST'] !== '<%= @alt_host %>') {
   $full_uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
   $r = new redirector();
   $r->redirect($full_uri);
