@@ -94,6 +94,9 @@ class misc::statistics::packages {
         'php5-mysql',
         'sqlite3', # For storing and interacting with intermediate results
         'libbz2-dev' # for compiling some python libs.  RT 8278
+        'libboost-regex-dev',  # Ironholds wants these
+        'libboost-system-dev',
+        'libyaml-cpp0.3',
     ]:
         ensure => 'latest',
     }
