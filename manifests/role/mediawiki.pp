@@ -130,7 +130,7 @@ class role::mediawiki::jobrunner {
 class role::mediawiki::searchmonitor {
 
     # https://search.wikimedia.org/?lang=en&site=wikipedia&search=Wikimedia_Foundation&limit=1
-    monitor_service { 'mediawiki-dict-bridge':
+    monitoring::service { 'mediawiki-dict-bridge':
         description   => 'Mediawiki Apple Dictionary Bridge',
         check_command => 'check_https_dictbridge',
     }
