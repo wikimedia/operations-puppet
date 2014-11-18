@@ -183,6 +183,16 @@ class role::ci::slave {
         mode   => '0755',
     }
 
+    # install private key for Travis integration
+    # RT: 8866
+    file { '/home/npmtravis/.ssh/npmtravis_id_rsa':
+        ensure => present,
+        owner  => 'npmtravis',
+        group  => 'npmtravis',
+        mode   => '0400',
+        source => 'puppet:///private/ssh/ci/npmtravis_id_rsa',
+    }
+
     file { '/srv/localhost':
         ensure => directory,
         mode   => '0775',
