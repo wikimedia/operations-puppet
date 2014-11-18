@@ -30,14 +30,14 @@ class authdns(
         group  => 'root',
         mode   => '0755',
     }
-    # to be replaced with config + include statement, post-1.9.0
-    file { '/etc/gdnsd/config-head':
+    file { '/etc/gdnsd/config':
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template("${module_name}/config-head.erb"),
+        content => template("${module_name}/config.erb"),
         require => File['/etc/gdnsd'],
+        notify  => Service['gdnsd'],
     }
     file { '/etc/gdnsd/zones':
         ensure => 'directory',
