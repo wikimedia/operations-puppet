@@ -392,81 +392,123 @@ class role::cache {
     }
 
     # == Class varnish::kafka
-    # Sets up a varnishkafka instance producing varnish
-    # logs to the analytics Kafka brokers in eqiad.
-    class varnish::kafka($topic, $varnish_name = 'frontend')
-    {
-        # ToDo: Remove production conditional once this works
-        # is verified to work in labs.
-        if $::realm == 'production' {
-            require role::analytics::kafka::config
-            # All producers currently produce to the (only) Kafka cluster in eqiad.
-            $kafka_brokers = keys($role::analytics::kafka::config::cluster_config['eqiad'])
+    # Base class for instances of varnishkafka on cache servers.
+    #
+    class varnish::kafka {
+        require role::analytics::kafka::config
+        # All producers currently produce to the (only) Kafka cluster in eqiad.
+        $kafka_brokers = keys($role::analytics::kafka::config::cluster_config['eqiad'])
 
-
-            # Make sure varnishkafka rsyslog file is in place properly.
-            rsyslog::conf { 'varnishkafka':
-                source   => 'puppet:///files/varnish/varnishkafka_rsyslog.conf',
-                priority => 70,
-            }
-
-            varnishkafka::instance { $varnish_name:
-                brokers                      => $kafka_brokers,
-                topic                        => $topic,
-                format_type                  => 'json',
-                compression_codec            => 'snappy',
-                varnish_name                 => $varnish_name,
-                # Note: fake_tag tricks varnishkafka into allowing hardcoded string into a JSON field.
-                # Hardcoding the $fqdn into hostname rather than using %l to account for
-                # possible slip ups where varnish only writes the short hostname for %l.
-                format                       => "%{fake_tag0@hostname?${::fqdn}}x %{@sequence!num?0}n %{%FT%T@dt}t %{Varnish:time_firstbyte@time_firstbyte!num?0.0}x %{@ip}h %{Varnish:handling@cache_status}x %{@http_status}s %{@response_size!num?0}b %{@http_method}m %{Host@uri_host}i %{@uri_path}U %{@uri_query}q %{Content-Type@content_type}o %{Referer@referer}i %{X-Forwarded-For@x_forwarded_for}i %{User-Agent@user_agent}i %{Accept-Language@accept_language}i %{X-Analytics@x_analytics}o %{Range@range}i",
-                message_send_max_retries     => 3,
-                # At ~6000 msgs per second, 500000 messages is over 1 minute
-                # of buffering, which should be more than enough.
-                queue_buffering_max_messages => 500000,
-                # bits varnishes can do about 6000 reqs / sec each.
-                # We want to send batches at least once a second.
-                batch_num_messages           => 6000,
-                # large timeout to account for potential cross DC latencies
-                topic_request_timeout_ms     => 30000, # request ack timeout
-                # By requiring 2 ACKs per message batch, we survive a
-                # single broker dropping out of its leader role,
-                # without seeing lost messages.
-                topic_request_required_acks  => '2',
-                # Write out stats to varnishkafka.stats.json
-                # this often.  This is set at 15 so that
-                # stats will be fresh when polled from gmetad.
-                log_statistics_interval      => 15,
-                # Require the varnishkafka rsyslog file so that
-                # logs will go to rsyslog the first time puppet
-                # sets up varnishkafka.
-                require                      => Rsyslog::Conf['varnishkafka'],
-            }
-
-            varnishkafka::monitor { $varnish_name:
-                # The primary webrequest varnishkafka instance was formerly the
-                # only one running, so we don't prefix its Ganglia metric keys.
-                key_prefix => '',
-            }
-
-            # Generate icinga alert if varnishkafka is not running.
-            nrpe::monitor_service { 'varnishkafka':
-                description  => 'Varnishkafka log producer',
-                nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C varnishkafka',
-                require      => Class['::varnishkafka'],
-            }
-
-             # Generate an alert if too many delivery report errors
-            monitoring::ganglia { 'varnishkafka-drerr':
-                description => 'Varnishkafka Delivery Errors',
-                metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
-                # Warn if between more than 0 but less than 30
-                warning     => '0.1:29.9',
-                # Critical if greater than 30.
-                critical    => '30.0',
-                require     => Varnishkafka::Monitor[$varnish_name],
-            }
+        # Make sure varnishkafka rsyslog file is in place properly.
+        rsyslog::conf { 'varnishkafka':
+            source   => 'puppet:///files/varnish/varnishkafka_rsyslog.conf',
+            priority => 70,
         }
+
+        # Make any subclass that uses varnishkafka::instance
+        # require Rsyslog::Conf['varnishkafka'] by default
+        # so that logs will go to rsyslog the first time puppet
+        # sets up varnishkafka.
+        Varnishkafka::Instance { require => Rsyslog::Conf['varnishkafka'] }
+
+    }
+
+    # == Class varnish::kafka::webrequest
+    # Sets up a varnishkafka instance producing varnish
+    # webrequest logs to the analytics Kafka brokers in eqiad.
+    #
+    # == Parameters
+    # $topic            - the name of kafka topic to which to send messages
+    # $varnish_name - the name of the varnish instance to read shared logs from.  Default 'frontend'
+    #
+    class varnish::kafka::webrequest(
+        $topic,
+        $varnish_name = 'frontend'
+    ) inherits role::cache::varnish::kafka
+    {
+        varnishkafka::instance { $varnish_name:
+            brokers                      => $kafka_brokers,
+            topic                        => $topic,
+            format_type                  => 'json',
+            compression_codec            => 'snappy',
+            varnish_name                 => $varnish_name,
+            # Note: fake_tag tricks varnishkafka into allowing hardcoded string into a JSON field.
+            # Hardcoding the $fqdn into hostname rather than using %l to account for
+            # possible slip ups where varnish only writes the short hostname for %l.
+            format                       => "%{fake_tag0@hostname?${::fqdn}}x %{@sequence!num?0}n %{%FT%T@dt}t %{Varnish:time_firstbyte@time_firstbyte!num?0.0}x %{@ip}h %{Varnish:handling@cache_status}x %{@http_status}s %{@response_size!num?0}b %{@http_method}m %{Host@uri_host}i %{@uri_path}U %{@uri_query}q %{Content-Type@content_type}o %{Referer@referer}i %{X-Forwarded-For@x_forwarded_for}i %{User-Agent@user_agent}i %{Accept-Language@accept_language}i %{X-Analytics@x_analytics}o %{Range@range}i",
+            message_send_max_retries     => 3,
+            # At ~6000 msgs per second, 500000 messages is over 1 minute
+            # of buffering, which should be more than enough.
+            queue_buffering_max_messages => 500000,
+            # bits varnishes can do about 6000 reqs / sec each.
+            # We want to send batches at least once a second.
+            batch_num_messages           => 6000,
+            # large timeout to account for potential cross DC latencies
+            topic_request_timeout_ms     => 30000, # request ack timeout
+            # By requiring 2 ACKs per message batch, we survive a
+            # single broker dropping out of its leader role,
+            # without seeing lost messages.
+            topic_request_required_acks  => '2',
+            # Write out stats to varnishkafka.stats.json
+            # this often.  This is set at 15 so that
+            # stats will be fresh when polled from gmetad.
+            log_statistics_interval      => 15,
+        }
+
+        varnishkafka::monitor { $varnish_name:
+            # The primary webrequest varnishkafka instance was formerly the
+            # only one running, so we don't prefix its Ganglia metric keys.
+            key_prefix => '',
+        }
+
+        # Generate icinga alert if varnishkafka is not running.
+        nrpe::monitor_service { 'varnishkafka':
+            description  => 'Varnishkafka log producer',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C varnishkafka',
+            require      => Class['::varnishkafka'],
+        }
+
+         # Generate an alert if too many delivery report errors
+        monitoring::ganglia { 'varnishkafka-drerr':
+            description => 'Varnishkafka Delivery Errors',
+            metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
+            # Warn if between more than 0 but less than 30
+            warning     => '0.1:29.9',
+            # Critical if greater than 30.
+            critical    => '30.0',
+            require     => Varnishkafka::Monitor[$varnish_name],
+        }
+    }
+
+    # == Class varnish::kafka::statsv
+    # Sets up a varnishkafka logging endpoint for collecting
+    # application level metrics. We are calling this system
+    # statsv, as it is similar to statsd, but uses varnish
+    # as its logging endpoint.
+    #
+    # == Parameters
+    # $varnish_name - the name of the varnish instance to read shared logs from.  Default $::hostname
+    #
+    class varnish::kafka::statsv(
+        $varnish_name = $::hostname,
+    ) inherits role::cache::varnish::kafka
+    {
+        $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{@ip}h %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
+
+        varnishkafka::instance { 'statsv':
+            brokers           => $kafka_brokers,
+            format            => $format,
+            format_type       => 'json',
+            topic             => 'statsv',
+            varnish_name      => $varnish_name,
+            varnish_opts      => { 'm' => 'RxURL:^/statsv\//', },
+            # By requiring 2 ACKs per message batch, we survive a
+            # single broker dropping out of its leader role,
+            # without seeing lost messages.
+            topic_request_required_acks  => '2',
+        }
+
+        varnishkafka::monitor { 'statsv': }
     }
 
     class varnish::logging::eventlistener {
@@ -846,10 +888,14 @@ class role::cache {
             include misc::monitoring::htcp-loss
         }
 
-        # Install a varnishkafka producer to send
-        # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka':
-            topic => 'webrequest_text',
+        # ToDo: Remove production conditional once this works
+        # is verified to work in labs.
+        if $::realm == 'production' {
+            # Install a varnishkafka producer to send
+            # varnish webrequest logs to Kafka.
+            class { 'role::cache::varnish::kafka::webrequest':
+                topic => 'webrequest_text',
+            }
         }
     }
 
@@ -1021,10 +1067,14 @@ class role::cache {
             include misc::monitoring::htcp-loss
         }
 
-        # Install a varnishkafka producer to send
-        # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka':
-            topic => 'webrequest_upload',
+        # ToDo: Remove production conditional once this works
+        # is verified to work in labs.
+        if $::realm == 'production' {
+            # Install a varnishkafka producer to send
+            # varnish webrequest logs to Kafka.
+            class { 'role::cache::varnish::kafka::webrequest':
+                topic => 'webrequest_upload',
+            }
         }
     }
 
@@ -1113,12 +1163,17 @@ class role::cache {
         }
 
         include role::cache::varnish::logging::eventlistener
+        include role::cache::varnish::logging::statsv
 
-        # Install a varnishkafka producer to send
-        # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka':
-            topic        => 'webrequest_bits',
-            varnish_name => $::hostname,
+        # ToDo: Remove production conditional once this works
+        # is verified to work in labs.
+        if $::realm == 'production' {
+            # Install a varnishkafka producer to send
+            # varnish webrequest logs to Kafka.
+            class { 'role::cache::varnish::kafka::webrequest':
+                topic        => 'webrequest_bits',
+                varnish_name => $::hostname,
+            }
         }
     }
 
@@ -1295,10 +1350,14 @@ class role::cache {
         # udp2log kafka consumer is implemented and deployed.
         include role::cache::varnish::logging
 
-        # Install a varnishkafka producer to send
-        # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka':
-            topic => 'webrequest_mobile',
+        # ToDo: Remove production conditional once this works
+        # is verified to work in labs.
+        if $::realm == 'production' {
+            # Install a varnishkafka producer to send
+            # varnish webrequest logs to Kafka.
+            class { 'role::cache::varnish::kafka::webrequest':
+                topic => 'webrequest_mobile',
+            }
         }
     }
 
