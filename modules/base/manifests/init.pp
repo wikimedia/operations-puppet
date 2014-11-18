@@ -255,4 +255,13 @@ class base {
     # TODO: Kill the old wmf_ca
     include certificates::wmf_ca
     include certificates::wmf_ca_2014_2017
+
+
+    include passwords::phabricator
+
+    class { 'phaste':
+        user => 'ProdPasteBot',
+        cert => $passwords::phabricator::pastebot_cert,
+        phab => 'https://phabricator.wikimedia.org',
+    }
 }
