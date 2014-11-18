@@ -73,7 +73,7 @@ class authdns(
         timeout     => 60,
         require     => [
                 File['/etc/wikimedia-authdns.conf'],
-                File['/etc/gdnsd/config-head'],
+                File['/etc/gdnsd/config'],
                 Git::Clone['/srv/authdns/git'],
             ],
         # we prepare the config even before the package gets installed, leaving
