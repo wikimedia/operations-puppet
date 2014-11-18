@@ -131,18 +131,16 @@ class openstack::openstack-manager(
 
     include nrpe
 
-    if ( $openstack_version == 'havana' ) {
-        package { 'nova-xvpvncproxy':
-            ensure => present,
-        }
-        package { 'nova-novncproxy':
-            ensure => present,
-        }
-        package { 'nova-consoleauth':
-            ensure => present,
-        }
-        package { 'novnc':
-            ensure => present,
-        }
+    package { 'nova-xvpvncproxy':
+        ensure => present,
+    }
+    package { 'nova-novncproxy':
+        ensure => present,
+    }
+    package { 'nova-consoleauth':
+        ensure => present,
+    }
+    package { 'novnc':
+        ensure => present,
     }
 }
