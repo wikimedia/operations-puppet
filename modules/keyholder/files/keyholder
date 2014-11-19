@@ -1,6 +1,8 @@
 #!/bin/bash
 # keyholder -- Manage shared SSH agent
 
+command=$1; shift
+
 show_usage() {
   /bin/echo >&2 "keyholder -- Manage shared SSH agent
 
@@ -14,7 +16,7 @@ show_usage() {
   keyholder arm
     Add all keys in /etc/keyholder.d
 
-  keyholder clear
+  keyholder disarm
     Deletes all identities from the agent
 
   keyholder start/stop/restart
@@ -26,34 +28,43 @@ show_usage() {
 is_valid_private_key() {
   # Check that $1 is a passphrase-protected private key file.
   [ -f "$1" ] && /usr/bin/openssl rsa -in "$1" -check -pubout -passin pass: 2>&1 | \
-      /bin/grep -q "bad password"
+    /bin/grep -q "bad password"
 }
 
-command=$1; shift
+is_root()       { [ "$EUID" -eq 0 -o ! -z "$SUDO_COMMAND" ] ; }
+can_sudo()      { /usr/bin/groups | /bin/grep -qw ops ; }
+requires_root() { is_root || { sudo $0 "$command" ; exit $? ; } ; }
+prefers_root()  { ! is_root && can_sudo && { sudo $0 "$command" ; exit $? ; } ; }
+
 case "$command" in
-    status)
-      for service in agent proxy; do
-        /sbin/status "keyholder-${service}" || continue
-        [ -r "/run/keyholder/${service}.sock" ] || continue
-        SSH_AUTH_SOCK="/run/keyholder/${service}.sock" /usr/bin/ssh-add -l | sed 's/^/- /'
-      done
-      ;;
-    add)
-      SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add "$@"
-      ;;
-    arm)
-      for key in /etc/keyholder.d/*; do
-        is_valid_private_key "$key" || continue
-        $0 add "$key"
-      done
-      ;;
-    clear)
-      SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add -D
-      ;;
-    start|stop|restart)
-      "/sbin/${command}" keyholder-agent
-      ;;
-    *)
-      show_usage
-      ;;
+  status)
+    prefers_root
+    for service in agent proxy; do
+      /sbin/status "keyholder-${service}" || continue
+      [ -r "/run/keyholder/${service}.sock" ] || continue
+      SSH_AUTH_SOCK="/run/keyholder/${service}.sock" /usr/bin/ssh-add -l | sed 's/^/- /'
+    done
+    ;;
+  add)
+    requires_root
+    SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add "$@"
+    ;;
+  arm)
+    requires_root
+    for key in /etc/keyholder.d/*; do
+      is_valid_private_key "$key" || continue
+      $0 add "$key"
+    done
+    ;;
+  disarm)
+    requires_root
+    SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add -D
+    ;;
+  start|stop|restart)
+    requires_root
+    "/sbin/${command}" keyholder-agent
+    ;;
+  *)
+    show_usage
+    ;;
 esac
