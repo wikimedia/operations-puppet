@@ -12,13 +12,22 @@ class extdist(
     $src_path = "${base_dir}/src"
     $pid_folder = '/run/extdist'
 
-    $settings = {
+    $ext_settings = {
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
-        'DIST_PATH' => $dist_dir,
         'GIT_URL'   => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/%s',
+        'DIST_PATH' => "${dist_dir}/extensions",
         'LOG_FILE'  => $log_path,
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/pid.lock"
+    }
+
+    $skin_settings = {
+        'API_URL'   => 'https://www.mediawiki.org/w/api.php',
+        'DIST_PATH' => "${dist_dir}/skins",
+        'GIT_URL'   => 'https://gerrit.wikimedia.org/r/mediawiki/skins/%s',
+        'LOG_FILE'  => $log_path,
+        'SRC_PATH'  => $src_path,
+        'PID_FILE'  => "${pid_folder}/skinpid.lock"
     }
 
     user { 'extdist':
@@ -57,7 +66,14 @@ class extdist(
 
     file { '/etc/extdist.conf':
         ensure  => present,
-        content => ordered_json($settings),
+        content => ordered_json($ext_settings),
+        owner   => 'extdist',
+        require => User['extdist']
+    }
+
+    file { '/etc/skindist.conf':
+        ensure  => present,
+        content => ordered_json($skin_settings),
         owner   => 'extdist',
         require => User['extdist']
     }
@@ -71,6 +87,18 @@ class extdist(
             Git::Clone['labs/tools/extdist'],
             User['extdist'],
             File['/etc/extdist.conf']
+        ]
+    }
+
+    cron { 'skindist-generate-tarballs':
+        command => "/usr/bin/python $clone_dir/nightly.py --all --skins",
+        user    => 'extdist',
+        minute  => '30',
+        hour    => '*',
+        require => [
+            Git::Clone['labs/tools/extdist'],
+            User['extdist'],
+            File['/etc/skindist.conf']
         ]
     }
 
