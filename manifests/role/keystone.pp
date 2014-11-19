@@ -45,7 +45,8 @@ class role::keystone::config::eqiad inherits role::keystone::config {
             }
         },
         token_driver => $::realm ? {
-            'production' => 'redis',
+            # Temporarily disable the redis keystone driver... it doesn't work in icehouse
+            'production' => 'normal',
             'labs'       => 'redis',
         },
     }
