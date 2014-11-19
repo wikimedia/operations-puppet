@@ -29,8 +29,8 @@ active_keys() {
 }
 
 [ "$(configured_keys)" == "$(active_keys)" ] || {
-  echo "WARNING: Keyholder is not armed. Run 'keyholder arm' to arm it."
-  exit 1
+  echo "CRITICAL: Keyholder is not armed. Run 'keyholder arm' to arm it."
+  exit 2
 }
 
 echo "OK: Keyholder is armed with all configured keys."
