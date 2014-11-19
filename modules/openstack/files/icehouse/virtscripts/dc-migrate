@@ -1,7 +1,7 @@
 #!/bin/bash
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/openstack/havana/virtscripts/dc-migrate
+### puppet:///modules/openstack/icehouse/virtscripts/dc-migrate
 #####################################################################
 #set -x
 ssh-add -l > /dev/null

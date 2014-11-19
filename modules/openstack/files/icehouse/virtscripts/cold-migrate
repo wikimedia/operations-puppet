@@ -1,7 +1,7 @@
 #!/bin/bash
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/openstack/havana/virtscripts/cold-migrate
+### puppet:///modules/openstack/icehouse/virtscripts/cold-migrate
 #####################################################################
 ssh-add -l > /dev/null
 if [ "$?" != "0" ]

@@ -1,7 +1,7 @@
 #!/bin/bash
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/openstack/havana/virtscripts/prod.sh
+### puppet:///modules/openstack/icehouse/virtscripts/prod.sh
 #####################################################################
 
 set -x

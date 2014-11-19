@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/openstack/havana/virtscripts/logstat.py
+### puppet:///modules/openstack/icehouse/virtscripts/logstat.py
 #####################################################################
 # encoding: utf-8
 """
