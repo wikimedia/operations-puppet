@@ -2900,7 +2900,7 @@ node 'labnet1001.eqiad.wmnet' {
 
 node /virt100[1-9].eqiad.wmnet/ {
     $cluster = 'virt'
-    $openstack_version = 'havana'
+    $openstack_version = 'icehouse'
     $use_neutron = false
 
     include admin
