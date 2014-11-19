@@ -26,7 +26,7 @@ class openstack::adminscripts(
     # (specifically, pmtpa to eqiad)
     file { '/root/dc-migrate':
         ensure => present,
-        source => 'puppet:///modules/openstack/${openstack_version}/virtscripts/dc-migrate',
+        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/dc-migrate",
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
