@@ -54,6 +54,8 @@ log_config = /etc/keystone/logging.conf
 # onready = keystone.common.systemd
 
 [sql]
+
+[database]
 # The SQLAlchemy connection string used to connect to the database
 connection = mysql://<%= keystoneconfig["db_user"] %>:<%= keystoneconfig["db_pass"] %>@<%= keystoneconfig["db_host"] %>/<%= keystoneconfig["db_name"] %>
 
