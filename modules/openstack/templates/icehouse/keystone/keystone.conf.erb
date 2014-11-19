@@ -54,11 +54,12 @@ log_config = /etc/keystone/logging.conf
 # onready = keystone.common.systemd
 
 [sql]
-# The SQLAlchemy connection string used to connect to the database
-connection = mysql://<%= keystoneconfig["db_user"] %>:<%= keystoneconfig["db_pass"] %>@<%= keystoneconfig["db_host"] %>/<%= keystoneconfig["db_name"] %>
-
 # the timeout before idle sql connections are reaped
 # idle_timeout = 200
+
+[database]
+# The SQLAlchemy connection string used to connect to the database
+connection = mysql://<%= keystoneconfig["db_user"] %>:<%= keystoneconfig["db_pass"] %>@<%= keystoneconfig["db_host"] %>/<%= keystoneconfig["db_name"] %>
 
 [identity]
 driver = keystone.identity.backends.ldap.Identity
