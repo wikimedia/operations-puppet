@@ -37,9 +37,8 @@ sub vcl_recv {
 		set req.backend = test_wikipedia;
 	}
 
-	/* Use the hhvm backend for any request to the standard appservers.
-	 On a request restart (often due to an error), fallback to the Zend pool */
-	if ( req.http.X-Use-HHVM == "1" && req.restarts == 0) {
+	/* Use the hhvm backend for any request to the standard appservers. */
+	if ( req.http.Cookie ~ "hhvm=true" ) {
 		if (req.backend == api) {
 			set req.backend = hhvm_api;
 		} else {
@@ -92,20 +91,11 @@ sub vcl_fetch {
 		}
 	}
 
-<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
-	/* If a request to HHVM has got a 503 response, retry it, on Zend this time */
-	if (req.http.X-Use-HHVM == "1" && req.restarts == 0 && beresp.status == 503 ){
-		return(restart);
-	}
-	call hhvm_add_vary;
-<% end -%>
-
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
 
-	call hhvm_is_cacheable;
 	return (deliver);
 }
 
