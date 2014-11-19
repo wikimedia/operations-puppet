@@ -2822,7 +2822,7 @@ node 'virt1000.wikimedia.org' {
     $ganglia_aggregator    = true
     $is_puppet_master      = true
     $is_labs_puppet_master = true
-    $openstack_version     = 'havana'
+    $openstack_version     = 'icehouse'
     $use_neutron           = false
 
     include standard
