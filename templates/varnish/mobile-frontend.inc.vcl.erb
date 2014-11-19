@@ -100,15 +100,6 @@ sub vcl_recv {
 		return (pass);
 	}
 
-	/* Set the hhvm header for requests:
-	 * not for testwiki */
-	if ( req.http.X-Orig-Cookie ~ "hhvm=true"
-		&& req.http.host !~ "^test\.") {
-		set req.http.X-Use-HHVM = "1";
-	} else {
-		unset req.http.X-Use-HHVM;
-	}
-
 	set req.hash_ignore_busy = true;
 
 	unset req.http.Surrogate-Capability;
@@ -149,7 +140,6 @@ sub vcl_fetch {
 	}
 */
 
-	call hhvm_is_cacheable;
 	return (deliver);
 }
 
