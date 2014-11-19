@@ -2882,7 +2882,7 @@ node 'neptunium.wikimedia.org' {
 
 node 'labnet1001.eqiad.wmnet' {
     $cluster = 'virt'
-    $openstack_version = 'havana'
+    $openstack_version = 'icehouse'
     $use_neutron = false
 
     $ganglia_aggregator = true
