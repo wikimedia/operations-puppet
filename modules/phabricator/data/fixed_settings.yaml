@@ -171,8 +171,10 @@ phpmailer.smtp-port: '25'
 security.allow-outbound-http: false
 
 translation.override:
+  'Execute Query': 'Search'
   'Maniphest Task': 'Task'
   'Pholio Mock': 'Mockup'
+  'Real Name': 'Also Known As'
 
 # We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
