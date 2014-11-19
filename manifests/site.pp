@@ -2105,9 +2105,9 @@ node 'netmon1001.wikimedia.org' {
     include smokeping
     include smokeping::web
     include role::librenms
-    include misc::torrus
-    include misc::torrus::web
-    include misc::torrus::xml-generation::cdn
+    include ::torrus
+    include ::torrus::web
+    include ::torrus::xml-generation::cdn
     include passwords::network
     include ganglia::collector
     include role::servermon
@@ -2152,19 +2152,19 @@ node 'netmon1001.wikimedia.org' {
         'nas1001-b.eqiad.wmnet',
     ]
 
-    misc::torrus::discovery::ddxfile { 'corerouters':
+    ::torrus::discovery::ddxfile { 'corerouters':
         subtree        => '/Core_routers',
         snmp_community => $snmp_ro_community,
         hosts          => $corerouters,
     }
 
-    misc::torrus::discovery::ddxfile { 'accessswitches':
+    ::torrus::discovery::ddxfile { 'accessswitches':
         subtree        => '/Access_switches',
         snmp_community => $snmp_ro_community,
         hosts          => $accessswitches,
     }
 
-    misc::torrus::discovery::ddxfile { 'storage':
+    ::torrus::discovery::ddxfile { 'storage':
         subtree        => '/Storage',
         snmp_community => $snmp_ro_community,
         hosts          => $storagehosts,
