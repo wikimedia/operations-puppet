@@ -1,2 +1,2 @@
-projects: [ 'tools', 'deployment-prep', 'extdist' ]
+projects: [ 'tools', 'deployment-prep', 'extdist', 'analytics' ]
 base_path: '/etc/shinken/generated'
