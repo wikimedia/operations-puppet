@@ -33,6 +33,11 @@ class role::mediawiki::common {
         check_command         => 'check_dsh_groups!mediawiki-installation',
         normal_check_interval => 60,
     }
+
+    $scap_proxies = hiera('dsh::config::scap_proxies',[])
+    if member($scap_proxies, $::fqdn) {
+        include deployment::scap_proxy
+    }
 }
 
 class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_pool = undef ) {
@@ -136,4 +141,3 @@ class role::mediawiki::searchmonitor {
     }
 
 }
-
