@@ -1,3 +1,11 @@
+# Scap proxy list
+#
+dsh::config::scap_proxies:
+  - "mw1010.eqiad.wmnet"
+  - "mw1070.eqiad.wmnet"
+  - "mw1161.eqiad.wmnet"
+  - "mw1201.eqiad.wmnet"
+
 mediawiki_memcached_servers:
   - '10.64.0.180:11211:1'
   - '10.64.0.181:11211:1'
