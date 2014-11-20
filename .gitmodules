@@ -25,3 +25,6 @@
 [submodule "modules/cdh"]
 	path = modules/cdh
 	url = https://gerrit.wikimedia.org/r/operations/puppet/cdh
+[submodule "modules/cassandra"]
+	path = modules/cassandra
+	url = https://gerrit.wikimedia.org/r/operations/puppet/cassandra
