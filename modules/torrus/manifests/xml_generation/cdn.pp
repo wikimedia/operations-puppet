@@ -1,4 +1,4 @@
-t st# Class: torrus::xml_generation::cdn
+# Class: torrus::xml_generation::cdn
 #
 # This class automatically generates XML files for
 # Squid and Varnish servers
