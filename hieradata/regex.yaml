@@ -51,7 +51,21 @@ appservers_4:
   mainrole: appserver
   admin::groups:
     - deployment
+    
+#mw1221-mw1235 are api apaches (trusty) 
+api_3:
+  __regex: !ruby/regexp /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/
+  mainrole: api_appserver
+  admin::groups:
+    - deployment
 
+appservers_5:
+  __regex: !ruby/regexp /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/
+  mainrole: appserver
+  admin::groups:
+    - deployment
+
+    
 swift_fe_eqiad:
   __regex: !ruby/regexp /^ms-fe100[1-4]\.eqiad\.wmnet$/
   cluster: swift
