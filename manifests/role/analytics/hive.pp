@@ -86,5 +86,7 @@ class role::analytics::hive::server inherits role::analytics::hive::client {
     Package['mysql-server'] -> Class['cdh::hive::metastore::mysql']
 
     # Setup Hive server and Metastore
-    class { 'cdh::hive::master': }
+    class { 'cdh::hive::master':
+        heapsize => '512',
+    }
 }
