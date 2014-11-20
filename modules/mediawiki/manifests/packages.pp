@@ -1,5 +1,6 @@
 class mediawiki::packages {
-    include mediawiki::packages::php5
+    include ::mediawiki::packages::php5
+    require ::apt
 
     package { [
         'imagemagick',
