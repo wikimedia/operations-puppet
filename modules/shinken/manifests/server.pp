@@ -71,6 +71,15 @@ class shinken::server(
         notify  => Service['shinken'],
     }
 
+    file { "/etc/shinken/notification_commands.cfg":
+        ensure  => present,
+        source  => 'puppet:///modules/shinken/notification_commands.cfg',
+        owner   => 'shinken',
+        group   => 'shinken',
+        require => Package['shinken'],
+        notify  => Service['shinken'],
+    }
+
     class { 'nagios_common::contacts':
         source     => 'puppet:///modules/shinken/contacts.cfg',
         owner      => 'shinken',
@@ -89,15 +98,6 @@ class shinken::server(
         group      => 'shinken',
         notify     => Service['shinken'],
         require    => Package['shinken'],
-    }
-
-    class { 'nagios_common::notification_commands':
-        config_dir => '/etc/shinken',
-        owner      => 'shinken',
-        group      => 'shinken',
-        notify     => Service['shinken'],
-        require    => Package['shinken'],
-        lover_name => 'Shinken',
     }
 
     # Default localhost config, we do not need this
