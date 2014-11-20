@@ -41,10 +41,10 @@ class mediawiki::hhvm {
     # See `furl --help` for documentation and usage.
 
     file { '/usr/local/bin/furl':
-        source  => 'puppet:///modules/mediawiki/furl',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        source => 'puppet:///modules/mediawiki/furl',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
 
@@ -87,8 +87,9 @@ class mediawiki::hhvm {
     # But this way we can be sure we're not forgetting to turn it off.
 
     exec { 'ensure_jemalloc_prof_deactivated':
-        command => '/usr/bin/curl -fs http://localhost:9002/jemalloc-prof-deactivate',
-        unless  => '/usr/bin/curl -fs http://localhost:9002/jemalloc-stats-print | grep -Pq "opt.prof(_active)?: false"',
-        require => Service['hhvm'],
+        command  => '/usr/bin/curl -fs http://localhost:9002/jemalloc-prof-deactivate',
+        onlyif   => '! /usr/bin/curl -fs http://localhost:9002/jemalloc-stats-print | grep -Pq "opt.prof(_active)?: false"',
+        provider => 'shell',
+        require  => Service['hhvm'],
     }
 }
