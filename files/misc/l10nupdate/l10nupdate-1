@@ -1,9 +1,11 @@
 #!/bin/bash
 # This script belongs in /usr/local/bin/.
+
 . /etc/profile.d/mediawiki.sh
 . $MEDIAWIKI_STAGING_DIR/multiversion/MWRealm.sh
 
 BINDIR=/usr/local/bin
+SCAPDIR=/srv/deployment/scap/scap/bin
 MWMULTIDIR=$MEDIAWIKI_STAGING_DIR/multiversion
 # The configuration in CommonSettings.php should match GITDIR and GITREPOS
 GITDIR=/var/lib/l10nupdate/mediawiki
@@ -99,10 +101,18 @@ do
 
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
 		SYNC_START=$(date +%s)
-		NOLOGMSG=1 $BINDIR/sudo-withagent l10nupdate $BINDIR/sync-dir "php-$mwVerNum/cache/l10n"
+		# FIXME: This should use the keyholder proxy so we can kill the
+		# l10nupdate private key.
+		NOLOGMSG=1 $BINDIR/sudo-withagent l10nupdate $SCAPDIR/sync-dir "php-$mwVerNum/cache/l10n"
+		if [[ $? -ne 0 ]]; then
+			echo "Failed to sync-dir 'php-$mwVerNum/cache/l10n'"
+			exit 1
+		fi
+
 		# TODO: Add parameter to scap-rebuild-cdbs to only build 1 version of MW
-		dsh -g mediawiki-installation -M -F 40 -- "sudo -u mwdeploy $BINDIR/scap-rebuild-cdbs"
+		dsh -g mediawiki-installation -M -F 40 -- "sudo -u mwdeploy $SCAPDIR/scap-rebuild-cdbs"
 		SYNC_END=$(date +%s)
+
 		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date --rfc-3339=seconds`"
 		echo "All done at `date --rfc-3339=seconds`"
 		$BINDIR/deploy2graphite l10nupdate-sync $((SYNC_END-SYNC_START))
