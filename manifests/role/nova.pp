@@ -354,29 +354,19 @@ class role::nova::wikiupdates {
         }
     }
 
-    if ($openstack_version == 'folsom') {
-        package { 'python-openstack-wikistatus':
-            ensure  => installed,
-            require => Package['python-mwclient'],
-        }
-    } else {
-        if ($::lsbdistcodename == 'lucid') {
-            file { '/usr/local/lib/python2.6/dist-packages/wikinotifier.py':
-                source  => "puppet:///modules/openstack/${openstack_version}/nova/wikinotifier.py",
-                mode    => '0644',
-                owner   => 'root',
-                group   => 'root',
-                require => Package['python-mwclient'],
-            }
-        } else {
-            file { '/usr/local/lib/python2.7/dist-packages/wikinotifier.py':
-                source  => "puppet:///modules/openstack/${openstack_version}/nova/wikinotifier.py",
-                mode    => '0644',
-                owner   => 'root',
-                group   => 'root',
-                require => Package['python-mwclient'],
-            }
-        }
+    package { 'python-openstack-wikistatus':
+        ensure  => installed,
+        require => Package['python-mwclient'],
+    }
+
+    # Cleanup.  Can be removed by the time you are reading this.
+    file { '/usr/local/lib/python2.6/dist-packages/wikinotifier.py':
+        ensure => absent,
+    }
+
+    # Cleanup.  Can be removed by the time you are reading this.
+    file { '/usr/local/lib/python2.7/dist-packages/wikinotifier.py':
+        ensure => absent,
     }
 }
 

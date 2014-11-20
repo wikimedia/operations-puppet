@@ -92,7 +92,7 @@ vncserver_proxyclient_address=<%= novaconfig['my_ip'] %>
 dnsmasq_config_file=/etc/dnsmasq-nova.conf
 
 # Settings for wikistatus, the plugin that updates OSM with instance status:
-notification_driver=wikinotifier
+notification_driver=wikistatus
 notify_on_state_change=vm_state
 
 wiki_host=<%= instance_status_wiki_host %>
