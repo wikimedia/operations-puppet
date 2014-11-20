@@ -100,7 +100,7 @@ class Hiera
         @cache = cache || Filecache.new
         config = Config[:nuyaml]
         @dynlookup = config[:dynlookup] || []
-        @expand_path = config[:expand_path] || []
+        @expand_path = config[:expand_path]
       end
 
       def get_path(key, scope, source)
@@ -126,7 +126,8 @@ class Hiera
         # with fairly small yaml files as opposed to a very large one.
         # Example:
         # $apache::mpm::worker => 'worker' in common/apache/mpm.yaml
-        if @expand_path.include? source
+        paths = @expand_path.map{ |x| Backend.parse_string(x, scope) }
+        if paths.include? source
           namespaces = key.gsub(/^::/,'').split('::')
           newkey = namespaces.pop
 

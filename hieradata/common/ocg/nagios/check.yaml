@@ -1,0 +1,5 @@
+# see modules/ocg/files/nagios/check_ocg_health for descriptions
+wjs: 400000
+cjs: 800000
+wrj: 500
+crj: 3000
