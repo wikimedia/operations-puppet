@@ -83,10 +83,18 @@ class icinga {
         notify  => Service['icinga'],
     }
 
+    file { "/etc/icinga/notification_commands.cfg":
+        ensure  => present,
+        source  => 'puppet:///modules/icinga/notification_commands.cfg',
+        owner   => 'icinga',
+        group   => 'icinga',
+        require => Package['icinga'],
+        notify  => Service['icinga'],
+    }
+
     class { [
       'nagios_common::user_macros',
       'nagios_common::timeperiods',
-      'nagios_common::notification_commands',
     ] :
         require => Package['icinga'],
         notify  => Service['icinga'],
