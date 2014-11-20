@@ -103,7 +103,6 @@ class hhvm(
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             include_path             => '.:/usr/share/php',
-            perf_pid_map             => true,  # See <http://www.brendangregg.com/perf.html#JIT%20Symbols>
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
             log                      => {
@@ -130,6 +129,7 @@ class hhvm(
             jit_a_size        => $a_size,
             jit_a_cold_size   => $a_cold_size,
             jit_a_frozen_size => $a_frozen_size,
+            perf_pid_map      => true,  # See <http://www.brendangregg.com/perf.html#JIT%20Symbols>
             repo              => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
             admin_server      => { port => 9001 },
             server            => {
@@ -142,8 +142,9 @@ class hhvm(
 
     $cli_defaults = {
         hhvm => {
-            jit  => false,
-            repo => {
+            jit          => false,
+            perf_pid_map => false,
+            repo         => {
                 central => { path => '/run/hhvm/cache/cli.hhbc.sq3' },
                 local   => { mode => '--' },
             }
