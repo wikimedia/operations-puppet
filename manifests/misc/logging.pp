@@ -11,7 +11,7 @@
 # $basepath - Path where to write logs to, without trailing slash.
 #             Default: '/home/wikipedia/syslog'
 #
-class misc::syslog-server($config='nfs', $basepath='/home/wikipedia/syslog') {
+class misc::syslog-server($config='nfs', $basepath='/srv/syslog') {
 
     system::role { 'misc::syslog-server': description => "central syslog server (${config})" }
 
