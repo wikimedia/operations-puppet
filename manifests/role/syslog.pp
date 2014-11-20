@@ -9,7 +9,7 @@ class role::syslog::centralserver {
 
     class { 'misc::syslog-server':
         config   => 'nfs',
-        basepath => '/home/wikipedia/syslog',
+        basepath => '/srv/syslog',
     }
 
 }
