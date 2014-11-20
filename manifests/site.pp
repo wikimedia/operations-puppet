@@ -1949,10 +1949,6 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    if $::hostname == 'mw1010' {
-        include misc::deployment::scap_proxy
-    }
-
     include role::mediawiki::jobrunner
 }
 
@@ -1965,10 +1961,6 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
     if $::hostname =~ /^mw10(1[78]|5[45])$/ {
         $ganglia_aggregator = true
-    }
-
-    if $::hostname == 'mw1070' {
-        include misc::deployment::scap_proxy
     }
 
     include role::mediawiki::appserver
@@ -2012,10 +2004,6 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
 
-    if $::hostname == 'mw1161' {
-        include misc::deployment::scap_proxy
-    }
-
     include role::mediawiki::appserver
 }
 
@@ -2024,10 +2012,6 @@ node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
 
     class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
-    if $::hostname == 'mw1201' {
-        include misc::deployment::scap_proxy
-    }
-
     include role::mediawiki::appserver::api
 }
 
