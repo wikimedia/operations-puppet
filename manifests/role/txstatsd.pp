@@ -15,6 +15,7 @@ class role::txstatsd {
                 'prefix'                     => '',
                 'max-queue-size'             => 1000 * 1000,
                 'max-datapoints-per-message' => 10 * 1000,
+                'instance-name'              => "statsd.${::hostname}",
             },
         },
     }
