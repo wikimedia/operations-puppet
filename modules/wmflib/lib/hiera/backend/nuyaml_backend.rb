@@ -126,7 +126,8 @@ class Hiera
         # with fairly small yaml files as opposed to a very large one.
         # Example:
         # $apache::mpm::worker => 'worker' in common/apache/mpm.yaml
-        if @expand_path.include? source
+        paths = @expand_path.map{ |x| Backend.parse_string(x, scope) }
+        if paths.include? source
           namespaces = key.gsub(/^::/,'').split('::')
           newkey = namespaces.pop
 

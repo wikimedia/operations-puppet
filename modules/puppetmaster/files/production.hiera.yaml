@@ -6,13 +6,12 @@
     - mainrole
   :expand_path:
     - common
-    - realm
+    - "%{::site}"
 :private:
   :datadir: /etc/puppet/private/hieradata
 :hierarchy:
   - "hosts/%{::hostname}"
   - "regex/%{::fqdn}"
-  - "%{::realm}"
   - "%{::site}"
   - "private/%{::site}"
   - "mainrole"
