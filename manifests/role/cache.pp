@@ -1162,7 +1162,7 @@ class role::cache {
         }
 
         include role::cache::varnish::logging::eventlistener
-        include role::cache::varnish::logging::statsv
+        include role::cache::varnish::kafka::statsv
 
         # ToDo: Remove production conditional once this works
         # is verified to work in labs.
