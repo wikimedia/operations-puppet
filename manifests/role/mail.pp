@@ -38,7 +38,7 @@ class role::mail::mx {
                     'wikimedia.org'
                 ]
             $verp_post_connect_server = 'test2.wikipedia.org'
-            $verp_bounce_post_url     = "appservers.svc.${::mw_primary}.wmnet/w/api.php"
+            $verp_bounce_post_url     = "api.svc.${::mw_primary}.wmnet/w/api.php"
         }
         default: {
             fail('unknown realm, should be labs or production')
