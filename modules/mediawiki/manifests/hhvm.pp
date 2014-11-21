@@ -83,13 +83,18 @@ class mediawiki::hhvm {
 
 
     # Ensure that jemalloc heap profiling is disabled. This means that
-    # if you want to capture heap profiles, you have to disable Puppet.
+    # if you want to capture heap profiles, you have to disable Puppet
+    # and disable the cronjob by renaming it..
     # But this way we can be sure we're not forgetting to turn it off.
+    file { '/etc/cron.d/ensure_jemalloc_prof_deactivated':
+        source => 'puppet:///modules/mediawiki/hhvm/ensure_jemalloc_deactivated.cron',
+        owner  => 'root'
+    }
 
-    exec { 'ensure_jemalloc_prof_deactivated':
-        command  => '/usr/bin/curl -fs http://localhost:9002/jemalloc-prof-deactivate',
-        onlyif   => '! /usr/bin/curl -fs http://localhost:9002/jemalloc-stats-print | grep -Pq "opt.prof(_active)?: false"',
-        provider => 'shell',
-        require  => [Service['hhvm'],Service['apache2']],
+    file { '/usr/local/deactivate-jemalloc':
+        source => 'puppet:///modules/mediawiki/hhvm/deactivate-jemalloc',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 }

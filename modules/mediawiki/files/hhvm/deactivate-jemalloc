@@ -1,0 +1,5 @@
+#!/bin/bash -e
+/usr/bin/curl -fs http://localhost:9002/jemalloc-stats-print | grep -Pq "opt.prof(_active)?: false"
+if [ $? -eq 1 ]; then
+    /usr/bin/curl -fs http://localhost:9002/jemalloc-prof-deactivate
+fi;

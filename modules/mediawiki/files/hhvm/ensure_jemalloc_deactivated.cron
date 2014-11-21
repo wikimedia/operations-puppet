@@ -1,0 +1,2 @@
+# This file is managed by Puppet
+*/30 * * * * apache /usr/local/bin/deactivate-jemalloc >/dev/null 2>&1
