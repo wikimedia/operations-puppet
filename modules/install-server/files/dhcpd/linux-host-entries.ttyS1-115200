@@ -3275,13 +3275,18 @@ host mw1220 {
 }
 
 host mw1227 {
-	hardware ethernet B0:83:FE:CF:12:EB;
+	hardware ethernet B0:83:FE:CF:0A:84;
 	fixed-address mw1227.eqiad.wmnet;
 }
 
 host mw1228 {
-	hardware ethernet B0:83:FE:CF:0D:A3;
+	hardware ethernet B0:83:FE:CF:12:EB;
 	fixed-address mw1228.eqiad.wmnet;
+}
+
+host mw1229 {
+	hardware ethernet B0:83:FE:CF:0D:A3;
+	fixed-address mw1229.eqiad.wmnet;
 }
 
 host mw1230 {
@@ -3329,6 +3334,11 @@ host mw1238 {
 	fixed-address mw1238.eqiad.wmnet;
 }
 
+host mw1239 {
+	hardware ethernet B0:83:FE:CF:0E:3F;
+	fixed-address mw1239.eqiad.wmnet;
+}
+
 host mw1240 {
 	hardware ethernet B0:83:FE:CF:0F:CD;
 	fixed-address mw1240.eqiad.wmnet;
@@ -3362,6 +3372,66 @@ host mw1245 {
 host mw1246 {
 	hardware ethernet B0:83:FE:CE:FA:18;
 	fixed-address mw1246.eqiad.wmnet;
+}
+
+host mw1247 {
+	hardware ethernet B0:83:FE:CF:06:4E;
+	fixed-address mw1247.eqiad.wmnet;
+}
+
+host mw1248 {
+	hardware ethernet B0:83:FE:CF:0B:CD;
+	fixed-address mw1248.eqiad.wmnet;
+}
+
+host mw1249 {
+	hardware ethernet B0:83:FE:CF:03:D7;
+	fixed-address mw1249.eqiad.wmnet;
+}
+
+host mw1250 {
+	hardware ethernet B0:83:FE:CF:11:01;
+	fixed-address mw1250.eqiad.wmnet;
+}
+
+host mw1251 {
+	hardware ethernet B0:83:FE:CF:12:87;
+	fixed-address mw1251.eqiad.wmnet;
+}
+
+host mw1252 {
+	hardware ethernet B0:83:FE:CF:0F:F5;
+	fixed-address mw1252.eqiad.wmnet;
+}
+
+host mw1253 {
+	hardware ethernet B0:83:FE:CF:0D:BB;
+	fixed-address mw1253.eqiad.wmnet;
+}
+
+host mw1254 {
+	hardware ethernet B0:83:FE:CF:11:31;
+	fixed-address mw1254.eqiad.wmnet;
+}
+
+host mw1255 {
+	hardware ethernet B0:83:FE:CF:0D:BF;
+	fixed-address mw1255.eqiad.wmnet;
+}
+
+host mw1256 {
+	hardware ethernet B0:83:FE:CF:03:03;
+	fixed-address mw1256.eqiad.wmnet;
+}
+
+host mw1257 {
+	hardware ethernet B0:83:FE:CF:12:BB;
+	fixed-address mw1257.eqiad.wmnet;
+}
+
+host mw1258 {
+	hardware ethernet B0:83:FE:CF:13:13;
+	fixed-address mw1258.eqiad.wmnet;
 }
 
 host neon {
