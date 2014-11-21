@@ -81,6 +81,7 @@ class toollabs::dev_environ {
         'pyflakes',                    # Bug 57863
         'python-coverage',             # Bug 57002
         'python-dev',
+        'python3-dev',
         'qt4-qmake',
         'sbt',
         'sqlite3',
