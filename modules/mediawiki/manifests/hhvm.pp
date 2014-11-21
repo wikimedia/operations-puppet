@@ -90,6 +90,6 @@ class mediawiki::hhvm {
         command  => '/usr/bin/curl -fs http://localhost:9002/jemalloc-prof-deactivate',
         onlyif   => '! /usr/bin/curl -fs http://localhost:9002/jemalloc-stats-print | grep -Pq "opt.prof(_active)?: false"',
         provider => 'shell',
-        require  => Service['hhvm'],
+        require  => [Service['hhvm'],Service['apache2']],
     }
 }
