@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+# hiera_lookup: hiera lookup tool
+
+usage = <<-end
+hiera_lookup: hiera lookup tool
+Usage: hiera_lookup --fqdn=FQDN [--hostname=NAME] [--realm=REALM] [--site=SITE]
+
+If hostname, realm or site are not provided, they will be derived from the FQDN.
+
+Example: hiera_lookup --fqdn=mw1020.eqiad.wmnet
+end
+
+begin
+  require 'rubygems'
+rescue LoadError
+  nil
+end
+
+require 'hiera'
+require 'hiera/backend'
+
+abort(usage) if ARGV.include?('-h') || ARGV.include?('--help')
+
+$DIR = File.expand_path('..', __FILE__)
+$LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
+cfg = File.join($DIR, 'modules/puppetmaster/files/production.hiera.yaml')
+
+module Hiera
+  module Backend
+    class << self
+      alias_method :old_datadir, :datadir
+      def datadir(backend, scope)
+        old_datadir(backend, scope).gsub(/^.*(?=\/hieradata)/, $DIR)
+      end
+    end
+  end
+end
+
+scope = Hash[ARGV.map { |kv| "::#{kv.tr('-:', '')}".split('=') }]
+
+abort(usage << "\nError: --fqdn=FQDN is required.") unless scope['::fqdn']
+
+scope['::hostname'] ||= scope['::fqdn'][/^[^.]+/]
+scope['::realm'] ||= scope['::fqdn'].include?('labs') ? 'labs' : 'production'
+scope['::site'] ||= scope['::realm'] == 'labs' ? 'eqiad' : scope['::fqdn'].split('.')[-2]
+
+hiera = Hiera.new(:config => cfg)
+puts hiera.lookup('mainrole', nil, scope, nil, :priority)
