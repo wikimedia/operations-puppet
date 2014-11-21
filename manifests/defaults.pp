@@ -1,5 +1,5 @@
 class cassandra::defaults {
-    $seeds                            = pick($::cassandra_seeds,                            [$ipaddress])
+    $seeds                            = pick($::cassandra_seeds,                            [$::ipaddress])
     $cluster_name                     = pick($::cassandra_cluster_name,                     'Test Cluster')
     $num_tokens                       = pick($::cassandra_num_tokens,                       256)
     $authenticator                    = pick($::cassandra_authenticator,                    true)
@@ -44,7 +44,11 @@ class cassandra::defaults {
     }
 
     $jmx_port                         = pick($::cassandra_jmx_port,                          7199)
-    $additional_jvm_opts              = pick($::cassandra_additional_jvm_opts,              [])
+    # Since the default here is an empty array we can't use stdlib's pick().
+    $additional_jvm_opts = $::cassandra_additional_jvm_opts ? {
+        undef   => [],
+        default => $::cassandra_additional_jvm_opts,
+    }
     $dc                               = pick($::cassandra_dc,                               'dc1')
     $rack                             = pick($::cassandra_rack,                             'rack1')
 
