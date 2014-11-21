@@ -26,15 +26,6 @@
     RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
-<VirtualHost *:80>
-    ServerAdmin webmaster@wikimedia.org
-    ServerName bugzilla.wikipedia.org
-    Redirect permanent / https://<%= @svc_name %>/
-    RewriteEngine On
-    RewriteCond %{HTTPS} off
-    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
-</VirtualHost>
-
 <VirtualHost *:443>
     ServerAdmin webmaster@wikimedia.org
     ServerName bugs.wikimedia.org
