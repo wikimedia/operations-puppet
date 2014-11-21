@@ -50,7 +50,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
 
     # basic apache site and certs
     class {'bugzilla::apache':
-        svc_name        => 'bugzilla.wikimedia.org',
+        svc_name        => 'old-bugzilla.wikimedia.org',
         attach_svc_name => 'bug-attachment.wikimedia.org',
         docroot         => '/srv/org/wikimedia/bugzilla/',
     }
