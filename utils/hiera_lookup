@@ -1,0 +1,69 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+# hiera_lookup: hiera lookup tool
+
+def usage(error=nil)
+  msg = <<-end
+hiera_lookup: hiera lookup tool
+Usage: hiera_lookup --fqdn=FQDN [--site=SITE] [--roles=ROLE1,ROLE2] KEY
+
+If site is not provided, it will be derived from the FQDN whenever possible
+
+Example: hiera_lookup --fqdn=mw1020.eqiad.wmnet --roles=mediawiki::appserver admin::groups
+end
+  if error
+    msg << error
+  end
+end
+
+begin
+  require 'rubygems'
+rescue LoadError
+  nil
+end
+
+require 'hiera'
+require 'hiera/backend'
+
+abort(usage) if ARGV.include?('-h') || ARGV.include?('--help')
+key = ARGV.pop() || abort(usage "\nError: KEY is required")
+
+$DIR = ENV['PUPPETDIR'] || File.expand_path('../..', __FILE__)
+$LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
+cfg = File.join($DIR, 'modules/puppetmaster/files/production.hiera.yaml')
+
+# Get the scope from the command line arguments
+def get_scope()
+  # Transform the CL arguments in a dictionary in the form "::option" => argument
+  scope = Hash[ARGV.map { |kv| "::#{kv.tr('-', '')}".split('=') }]
+  abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']
+  scope['::hostname'] = scope['::fqdn'][/^[^.]+/]
+  scope['::realm'] = scope['::fqdn'].include?('labs') ? 'labs' : 'production'
+
+  # Attempt at determining the site
+  scope['::site'] ||= scope['::realm'] == 'labs' ? 'eqiad' : scope['::fqdn'].split('.')[-2]
+  abort(usage "\nError: --site=SITE is required if the FQDN doesn't contain it") if scope['::site'] == 'wikimedia'
+
+  # Transform roles in the form puppet expects
+  if scope['::roles']
+    scope['::_roles'] = Hash[scope['::roles'].split(',').map { |role| [role, true] }]
+    scope.delete('::roles')
+  end
+  scope
+end
+
+class Hiera
+  module Backend
+    class << self
+      alias_method :old_datadir, :datadir
+      def datadir(backend, scope)
+        old_datadir(backend, scope).gsub(/^.*(?=\/hieradata)/, $DIR)
+      end
+    end
+  end
+end
+
+hiera = Hiera.new(:config => cfg)
+#We're not really interested in debug info, I guess
+Hiera.logger = "noop"
+puts hiera.lookup(key, nil, get_scope(), nil, :priority)
