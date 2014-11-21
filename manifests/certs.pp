@@ -167,6 +167,7 @@ define install_certificate(
         # or will not properly have SSL enabled.
         $cas = $name ? {
             # NOTE: Those use .pem filenames
+            /^sni\./                       => 'GlobalSign_CA.pem',
             'unified.wikimedia.org'        => 'DigiCertHighAssuranceCA-3.pem',
             'star.wikimedia.org'           => 'RapidSSL_CA.pem RapidSSL_CA_2.pem GeoTrust_Global_CA.pem',
             'star.wikipedia.org'           => 'DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem',
@@ -182,7 +183,6 @@ define install_certificate(
             'star.wmflabs'                 => 'wmf-labs.pem',
             'star.planet.wikimedia.org'    => 'DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem',
             'star.wmfusercontent.org'      => 'GlobalSign_CA.pem',
-            'sni.wikimedia.org'            => 'GlobalSign_CA.pem',
             default => 'wmf-ca.pem',
         }
     }
