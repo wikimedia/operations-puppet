@@ -15,7 +15,7 @@ class bugzilla::apache ($svc_name, $attach_svc_name, $docroot){
 
     # this includes them both, 80 and 443
     apache::site { 'bugzilla.wikimedia.org':
-        content  => template("bugzilla/apache/${svc_name}.erb"),
+        content  => template("bugzilla/apache/bugzilla.wikimedia.org.erb"),
         priority => 10,
     }
 
