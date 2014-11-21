@@ -2055,13 +2055,16 @@ node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
     $cluster = 'appserver'
     include role::mediawiki::appserver
 }
+
 #mw1221-mw1235 are api apaches (trusty)
 node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
+    include admin
     include role::mediawiki::appserver::api
 }
 
 #mw1236-mw1258 are apaches (trusty)
 node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
+    include admin
     include role::mediawiki::appserver
 }
 
