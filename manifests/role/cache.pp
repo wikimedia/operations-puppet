@@ -580,28 +580,6 @@ class role::cache {
             default_server => true,
         }
 
-        define sni_star() {
-            localssl { $name:
-                certname => "star.${name}",
-                server_name => $name,
-                server_aliases => ["*.${name}"],
-            }
-        }
-
-        sni_star {
-            'wikipedia.org':;
-            'wiktionary.org':;
-            'wikiquote.org':;
-            'wikibooks.org':;
-            'wikisource.org':;
-            'wikinews.org':;
-            'wikiversity.org':;
-            'wikidata.org':;
-            'wikivoyage.org':;
-            'wikimediafoundation.org':;
-            'mediawiki.org':;
-        }
-
         define sni_cert() {
             localssl { $name:
                 certname => "sni.${name}",
@@ -611,7 +589,31 @@ class role::cache {
         }
 
         sni_cert {
+            'zero.wikipedia.org':;
+            'm.wikipedia.org':;
+            'wikipedia.org':;
+            'm.wikimedia.org':;
             'wikimedia.org':;
+            'm.wiktionary.org':;
+            'wiktionary.org':;
+            'm.wikiquote.org':;
+            'wikiquote.org':;
+            'm.wikibooks.org':;
+            'wikibooks.org':;
+            'm.wikisource.org':;
+            'wikisource.org':;
+            'm.wikinews.org':;
+            'wikinews.org':;
+            'm.wikiversity.org':;
+            'wikiversity.org':;
+            'm.wikidata.org':;
+            'wikidata.org':;
+            'm.wikivoyage.org':;
+            'wikivoyage.org':;
+            'm.wikimediafoundation.org':;
+            'wikimediafoundation.org':;
+            'm.mediawiki.org':;
+            'mediawiki.org':;
         }
     }
 
