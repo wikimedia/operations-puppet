@@ -19,15 +19,18 @@ class role::mariadb::misc(
     }
 
     include standard
-    include mariadb::packages_wmf
     include passwords::misc::scripts
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
 
     class { 'mariadb::config':
         prompt   => "MISC ${shard}",
         config   => 'mariadb/misc.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/a/sqldata',
-        tmpdir   => '/a/tmp',
+        datadir  => '/srv/sqldata',
+        tmpdir   => '/srv/tmp',
     }
 
     class { 'mariadb::monitor_disk':
