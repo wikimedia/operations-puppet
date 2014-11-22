@@ -5,8 +5,8 @@ $mysql_adminuser = $passwords::mysql::phabricator::admin_user
 $mysql_adminpass = $passwords::mysql::phabricator::admin_pass
 $mysql_appuser = $passwords::mysql::phabricator::app_user
 $mysql_apppass = $passwords::mysql::phabricator::app_pass
-$mysql_maniphestuser = $passwords::mysql::phabricator::maniphest_user
-$mysql_maniphestpass = $passwords::mysql::phabricator::maniphest_pass
+$mysql_maniphestuser = $passwords::mysql::phabricator::manifest_user
+$mysql_maniphestpass = $passwords::mysql::phabricator::manifest_pass
 
 # phabricator instance for legalpad.wikimedia.org
 class role::phabricator::legalpad {
@@ -17,10 +17,10 @@ class role::phabricator::legalpad {
 
     $current_tag = 'fabT440'
     class { '::phabricator':
-        git_tag                    => $current_tag,
+        git_tag                  => $current_tag,
         lock_file                => '/var/run/phab_repo_lock',
-        mysql_admin_user => $::mysql_adminuser,
-        mysql_admin_pass => $::mysql_adminpass,
+        mysql_admin_user         => $::mysql_adminuser,
+        mysql_admin_pass         => $::mysql_adminpass,
         auth_type                => 'sul',
         settings                 => {
             'darkconsole.enabled'       => false,
@@ -39,7 +39,7 @@ class role::phabricator::legalpad {
 
     # no 443 needed, we are behind misc. varnish
     ferm::service { 'phablegal_http':
-        proto => 'tcp',
+        proto   => 'tcp',
         port    => '80',
     }
 }
@@ -103,14 +103,14 @@ class role::phabricator::main {
     include phabricator::monitoring
 
     class { '::phabricator::mailrelay':
-        default => {
-            security => 'users',
-            maint    => false,
+        default         => {
+            security    => 'users',
+            maint       => false,
         },
         address_routing => {
             testproj => 'demoproject'
         },
-        phab_bot => {
+        phab_bot        => {
             root_dir    => '/srv/phab/phabricator/',
             username    => 'emailbot',
             host        => "https://${domain}/api/",

@@ -28,6 +28,10 @@
     {
       "pattern": "(bugs|bugzilla).wikimedia.org/[a-zA-Z_]+.cgi(\\?.*)$",
       "redirectUrl": "https://<%= @phab_host %>/"
+    },
+    {
+      "pattern": "(bugs|bugzilla).wikimedia.org/?",
+      "redirectUrl": "https://<%= @phab_host %>/"
     }
   ]
 }
