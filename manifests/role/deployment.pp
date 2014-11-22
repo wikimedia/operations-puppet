@@ -61,6 +61,7 @@ class role::deployment::config {
         'restbase/deploy' => {
             'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/restbase/deploy',
             'service_name'          => 'restbase',
+            'checkout_submodules'   => true,
         },
         'fluoride/fluoride'              => {
             'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
