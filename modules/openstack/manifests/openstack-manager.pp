@@ -17,7 +17,7 @@ class openstack::openstack-manager(
         }
 
         class { "memcached":
-            ip  => '127.0.0.1',
+            ip  => '0.0.0.0',
         }
     }
 
