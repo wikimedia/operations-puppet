@@ -147,12 +147,12 @@ class role::deployment::deployment_servers::common {
         remote_branch => 'readonly/master'
     }
 
-    class { '::keyholder':
-        trusted_group => 'wikidev',
-    } -> class { '::keyholder::monitoring': }
+    class { '::keyholder': trusted_group => 'wikidev', } ->
+
+    class { '::keyholder::monitoring': } ->
 
     keyholder::private_key { 'mwdeploy_rsa':
-        source => 'puppet:///private/ssh/tin/mwdeploy_rsa',
+        source  => 'puppet:///private/ssh/tin/mwdeploy_rsa',
     }
 }
 
