@@ -37,8 +37,6 @@ define keyholder::private_key(
         fail('"source" and "content" are mutually exclusive')
     }
 
-    include ::keyholder
-
     $title_safe  = regsubst($title, '\W', '_', 'G')
 
     file { "/etc/keyholder.d/${title_safe}":
