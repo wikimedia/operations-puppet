@@ -63,13 +63,16 @@ class redirector {
           $stmt = $this->mysqli->prepare($this->config->query);
           $stmt->bind_param('ss', $this->config->fieldIndex, $fieldValue );
           $stmt->execute();
-
-          if ($res = $stmt->get_result()) {
-            $res = $res->fetch_assoc();
+          $stmt->bind_result($task_id);
+          if ($stmt->fetch()) {
             // insert the cross referenced id into the redirectUrl
-            $redirect = str_replace('$id', $res['id'], $p->redirectUrl);
+            $redirect = str_replace('$id', $task_id, $p->redirectUrl);
             // dynamic redirect:
             $this->redirect_and_exit($redirect);
+          } else {
+            error_log('redirector: could not find task for '.$fieldValue);
+            echo 'Task not found for '.$fieldValue;
+            exit(404);
           }
         } else {
           $redirect = $p->redirectUrl;
