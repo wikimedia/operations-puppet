@@ -42,7 +42,7 @@ class role::phabricator::main {
     system::role { 'role::phabricator::main': description => 'Phabricator (Main)' }
 
     #let's go jenkins
-    $current_tag = 'wmoauth-20141110'
+    $current_tag = 'T1343'
     $domain = 'phabricator.wikimedia.org'
     class { '::phabricator':
         git_tag          => $current_tag,
@@ -124,7 +124,7 @@ class role::phabricator::labs {
 
     #pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
-    $current_tag = 'wmoauth-20141110'
+    $current_tag = 'T1343'
     class { '::phabricator':
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
