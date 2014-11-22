@@ -20,5 +20,23 @@ class phabricator::migration {
         hour    => '*/1',
         minute  => 0,
     }
+
+    $bz_header = '/var/run/bz_header.flock'
+    cron { 'bz_header_update':
+        ensure  => absent,
+        command => "/usr/bin/flock -n ${bz_header} -c '/srv/phab/tools/bugzilla_update_user_header.py -a' 2>&1",
+        user    => root,
+        hour    => '*/1',
+        minute  => 0,
+    }
+
+    $bz_comments = '/var/run/bz_comments.flock'
+    cron { 'bz_comment_update':
+        ensure  => absent,
+        command => "/usr/bin/flock -n ${bz_comments} -c '/srv/phab/tools/bugzilla_update_user_comments.py -a' 2>&1",
+        user    => root,
+        hour    => '*/1',
+        minute  => 0,
+    }
 }
 
