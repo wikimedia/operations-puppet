@@ -28,7 +28,7 @@ class bugzilla::reporter ($bz_report_user = 'reporter') {
     }
 
     cron { 'bugzilla_reporter_cron':
-        ensure  => 'present',
+        ensure  => 'absent',
         command => "php -q /home/reporter/bugzilla_report.php | mail -s \"Bugzilla Weekly Report\" wikitech-l@lists.wikimedia.org > /dev/null",
         user    => reporter,
         hour    => 3,
