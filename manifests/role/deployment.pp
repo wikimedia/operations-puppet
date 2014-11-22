@@ -149,9 +149,7 @@ class role::deployment::deployment_servers::common {
 
     class { '::keyholder':
         trusted_group => 'wikidev',
-    }
-
-    include ::keyholder::monitoring
+    } -> class { '::keyholder::monitoring': }
 
     keyholder::private_key { 'mwdeploy_rsa':
         source => 'puppet:///private/ssh/tin/mwdeploy_rsa',
