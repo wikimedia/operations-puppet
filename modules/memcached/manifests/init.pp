@@ -63,7 +63,7 @@ class memcached(
 
     # Prefer a direct check if memcached is not running on localhost.
 
-    if $memcached_ip == '127.0.0.1' {
+    if $ip == '127.0.0.1' {
         nrpe::monitor_service { 'memcached':
             description   => 'Memcached',
             nrpe_command  => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
