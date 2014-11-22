@@ -39,6 +39,7 @@ define bugzilla::logmail (
     }
 
     cron { "bugzillacron_${title}":
+        ensure   => 'absent',
         command  => "${bz_path}/${script_name}",
         user     => $script_user,
         hour     => $hour,
