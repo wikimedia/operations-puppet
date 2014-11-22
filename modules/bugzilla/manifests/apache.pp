@@ -8,7 +8,7 @@ class bugzilla::apache ($svc_name, $attach_svc_name, $docroot){
     include ::apache::mod::env
 
     # separate cert and ServerName for attachments for security
-    install_certificate{ 'bugzilla.wikimedia.org': }
+    install_certificate{ 'old-bugzilla.wikimedia.org': }
     install_certificate{ $attach_svc_name: }
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
