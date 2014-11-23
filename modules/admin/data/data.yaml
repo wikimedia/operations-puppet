@@ -43,7 +43,7 @@ groups:
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn,
       nikerabbit, phuedx, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
-      tgr, ssmith, bsimmers, ejegg, twentyafterfour, legoktm, catrope]
+      tgr, ssmith, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
