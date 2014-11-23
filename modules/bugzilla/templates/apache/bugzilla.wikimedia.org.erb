@@ -50,8 +50,8 @@
     Redirect permanent / https://<%= @svc_name %>/
     SSLEngine On
     SSLCompression Off
-    SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
-    SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
+    SSLCertificateFile /etc/ssl/certs/bugzilla.wikimedia.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/bugzilla.wikimedia.org.key
     SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
@@ -65,8 +65,8 @@
     DocumentRoot <%= @docroot %>
     SSLEngine On
     SSLCompression Off
-    SSLCertificateFile /etc/ssl/certs/<%= @svc_name %>.pem
-    SSLCertificateKeyFile /etc/ssl/private/<%= @svc_name %>.key
+    SSLCertificateFile /etc/ssl/certs/bugzilla.wikimedia.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/bugzilla.wikimedia.org.key
     SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
