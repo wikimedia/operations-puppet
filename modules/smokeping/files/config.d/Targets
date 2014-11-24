@@ -86,11 +86,6 @@ menu = iron
 title = iron.wikimedia.org [B4-EQIAD]
 host = iron.wikimedia.org
 
-+++ ssl1009
-menu = ssl1009
-title = ssl1009.wikimedia.org [C4-EQIAD]
-host = ssl1009.wikimedia.org
-
 + ESAMS
 
 menu = ESAMS

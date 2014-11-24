@@ -2386,32 +2386,20 @@ node 'sodium.wikimedia.org' {
     }
 }
 
+# To be decommed soon
 node /ssl100[1-9]\.wikimedia\.org/ {
-    $cluster = 'ssl'
-    if $::hostname =~ /^ssl100[12]$/ {
-        $ganglia_aggregator = true
-    }
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
     include admin
-    include role::protoproxy::ssl
 }
 
+# To be decommed soon
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
-    $cluster = 'ssl'
-    if $::hostname =~ /^ssl300[12]$/ {
-        $ganglia_aggregator = true
-    }
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0'
     }
-
     include admin
-    include role::protoproxy::ssl
 }
 
 node 'strontium.eqiad.wmnet' {
