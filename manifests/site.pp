@@ -2787,7 +2787,6 @@ node 'virt1000.wikimedia.org' {
     include standard
     include admin
     include role::dns::ldap
-    include ldap::role::server::labs
     include ldap::role::client::labs
     include role::nova::controller
     include role::nova::manager
