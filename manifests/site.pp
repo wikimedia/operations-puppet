@@ -2412,7 +2412,6 @@ node /ssl100[1-9]\.wikimedia\.org/ {
     }
 
     include admin
-    include role::protoproxy::ssl
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
@@ -2426,7 +2425,6 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
     }
 
     include admin
-    include role::protoproxy::ssl
 }
 
 node 'strontium.eqiad.wmnet' {
