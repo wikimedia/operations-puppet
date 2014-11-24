@@ -529,18 +529,10 @@ class role::cache {
     define localssl($certname, $server_name=$::fqdn, $server_aliases=[], $default_server=false) {
         # Assumes that LVS service IPs are setup elsewhere
 
-        # For unified or star certs we need to do a bit of
-        # mapping; in other cases we should be OK with the raw name
-        $check_cert = $certname ? {
-            'unified.wikimedia.org'         => '*.wikipedia.org',
-            /^star\.(.+)$/                  => "*.$1",
-            default                         => $certname
-        }
-
         # Nagios monitoring
         monitoring::service { "https_${name}":
             description   => "HTTPS_${name}",
-            check_command => "check_ssl_cert!${check_cert}",
+            check_command => "check_ssl_cert!${certname}",
         }
 
         install_certificate { $certname:
