@@ -36,7 +36,38 @@ class mediawiki::hhvm($experimental_features = false) {
         },
     }
 
-    $experimental_settings = {}
+    $experimental_settings = {
+        server => {
+            # limit threads to #cpus until this many requests; reduces
+            # starvation of threads that are JIT-compiling
+            warmup_throttle_request_count     => 1000,
+            # Limit number of child processes running at once
+            light_process_count               => 10,
+            # JobQueueWorker::dequeueMaybeExpiredImpl will by default
+            # wait() indefinitely; if set, it will timeout after
+            # thread_drop_cache_timeout_seconds seconds and call
+            # DropCachePolicy::dropCache()
+            thread_drop_cache_timeout_seconds => 5,
+            #If this is set to true, and drop cache timeout gets
+            #triggered, it will flush the thread stack upon killing
+            #it; I don't really see why one would want to set this to
+            #false if the other is different than 0
+            thread_drop_stack                 => true,
+        },
+        http   => {
+            # Log http client requests taking too much time
+            slow_query_threshold              => 10000,
+        },
+        stats  => {
+            enable        => true,
+            web           => true,
+            memory        => true,
+            memcache      => true,
+            sql           => true,
+            slot_duration => 30,
+            max_slot      => 10,
+        }
+    }
 
     if ($experimental_features) {
         $fcgi_settings = deep_merge(

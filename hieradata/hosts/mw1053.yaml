@@ -1,1 +1,2 @@
 mainrole: appserver_hhvm
+mediawiki::hhvm::experimental_features: true
