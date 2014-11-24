@@ -37,4 +37,11 @@ class apache::monitoring {
         require => File['/usr/lib/ganglia/python_modules/apache_status.py'],
         notify  => Service['gmond'],
     }
+
+    file { '/usr/local/bin/apache-status':
+        source  => 'puppet:///modules/apache/apache-status',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+    }
 }
