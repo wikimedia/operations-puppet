@@ -14,6 +14,23 @@ Apply a format string to each element of an array.
     $languages = [ 'finnish', 'french', 'greek', 'hebrew' ]
     $packages = apply_format('texlive-lang-%s', $languages)
 
+## deep_merge
+
+`deep_merge( hash $a, hash $b)`
+
+Merges two or more hashes together and returns the resulting hash.
+When there is a duplicate key, the key in the rightmost hash will
+"win"; however if the key is an hash, it will be merged itself as
+well.
+
+### Examples
+    $hash1 = {'one' => 1, 'two', => { 'numeral' => 2}}
+    $hash2 = {'two' => {'spanish' => 'dos'}, 'three', => 'tres'}
+    $merged_hash = deep_merge($hash1, $hash2)
+    # The resulting hash is equivalent to:
+    # $merged_hash =  {'one' => 1, 'two' => {'numeral' => 2,
+    #  'spanish' => 'dos'}, 'three' => 'tres'}
+
 
 ## ensure_directory
 

@@ -2,7 +2,10 @@
 #
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
-class mediawiki::hhvm {
+# [*experimental_features*]
+#   Boolean parameter. Can be used on single hosts to enable
+#   experimental features.
+class mediawiki::hhvm($experimental_features = false) {
     requires_ubuntu('>= trusty')
 
     include ::hhvm::admin
@@ -19,22 +22,37 @@ class mediawiki::hhvm {
         floor(to_bytes($::memorytotal) / to_bytes('120M')),
         $::processorcount*4)
 
+
+    $fcgi_standard_settings = {
+        error_handling => {
+            call_user_handler_on_fatals => true,
+        },
+        server         => {
+            source_root           => '/srv/mediawiki/docroot',
+            error_document500     => '/srv/mediawiki/hhvm-fatal-error.php',
+            error_document404     => '/srv/mediawiki/w/404.php',
+            request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
+            thread_count          => $max_threads,
+        },
+    }
+
+    $experimental_settings = {}
+
+    if ($experimental_features) {
+        $fcgi_settings = deep_merge(
+            $fcgi_standard_settings,
+            $experimental_settings)
+    }
+    else {
+        $fcgi_settings = $fcgi_standard_settings
+    }
+
+
     class { '::hhvm':
         user          => 'apache',
         group         => 'apache',
         fcgi_settings => {
-            hhvm => {
-                error_handling => {
-                    call_user_handler_on_fatals => true,
-                },
-                server         => {
-                    source_root           => '/srv/mediawiki/docroot',
-                    error_document500     => '/srv/mediawiki/hhvm-fatal-error.php',
-                    error_document404     => '/srv/mediawiki/w/404.php',
-                    request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
-                    thread_count          => $max_threads,
-                },
-            },
+            hhvm => $fcgi_settings,
         },
     }
 
