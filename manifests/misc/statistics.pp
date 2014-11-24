@@ -97,6 +97,7 @@ class misc::statistics::packages {
         'libboost-regex-dev',  # Ironholds wants these
         'libboost-system-dev',
         'libyaml-cpp0.3',
+        'libyaml-cpp0.3-dev',
         'libgoogle-glog-dev',
     ]:
         ensure => 'latest',
