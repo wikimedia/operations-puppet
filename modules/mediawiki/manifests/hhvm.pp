@@ -12,10 +12,12 @@ class mediawiki::hhvm {
     include ::mediawiki::users
     include ::mediawiki::hhvm::housekeeping
 
-    # Derive HHVM's thread count by dividing RAM by 120 MiB.
-    # This works out to be 100 threads on 12 GiB servers and
-    # 536 threads on 64 GiB servers.
-    $max_threads = floor(to_bytes($::memorytotal) / to_bytes('120M'))
+    # Derive HHVM's thread count by taking the smallest of:
+    #  - the memory of the system divided by a typical thread memory allocation
+    #  - processor count * 4 (we have hyperthreading)
+    $max_threads = min(
+        floor(to_bytes($::memorytotal) / to_bytes('120M')),
+        $::processorcount*4)
 
     class { '::hhvm':
         user          => 'apache',
