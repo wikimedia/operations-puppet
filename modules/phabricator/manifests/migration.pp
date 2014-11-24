@@ -26,8 +26,7 @@ class phabricator::migration {
         ensure  => present,
         command => "/usr/bin/flock -n ${bz_header} -c '/srv/phab/tools/bugzilla_update_user_header.py -a' 2>&1",
         user    => root,
-        hour    => '*/1',
-        minute  => 0,
+        hour    => '0',
     }
 
     $bz_comments = '/var/run/bz_comments.flock'
@@ -35,8 +34,7 @@ class phabricator::migration {
         ensure  => present,
         command => "/usr/bin/flock -n ${bz_comments} -c '/srv/phab/tools/bugzilla_update_user_comments.py -a' 2>&1",
         user    => root,
-        hour    => '*/1',
-        minute  => 0,
+        hour    => '1',
     }
 }
 
