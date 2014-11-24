@@ -40,7 +40,7 @@ class role::mediawiki::common {
     }
 }
 
-class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_pool = undef ) {
+class role::mediawiki::webserver( $pool, $workers_limit = undef) {
     include ::role::mediawiki::common
     include ::apache::monitoring
     include ::lvs::configuration
@@ -50,16 +50,7 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_poo
         workers_limit => $workers_limit,
     }
 
-    # Horrible, temporarily hack for hhvm - which is sharing servers for api and normal
-    # appservers; this will go away soon
-    if $additional_pool != undef {
-        $ips = [
-            $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site],
-            $lvs::configuration::lvs_service_ips[$::realm][$additional_pool][$::site]
-        ]
-    } else {
-        $ips = $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site]
-    }
+    $ips = $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site]
 
     class { 'lvs::realserver':
         realserver_ips => $ips,
