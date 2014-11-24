@@ -39,12 +39,6 @@ sub vcl_recv {
 		error 403 "HTTP method not allowed.";
 	}
 
-<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
-	if ( req.http.Cookie ~ "hhvm=true" ) {
-			set req.backend = hhvm_appservers;
-	}
-<% end -%>
-
 	if (req.http.host == "<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>") {
 	/* For https-only wikis, the redirect from http to https for bits assets should occur
 		in varnish instead of apache, since the apache redirect and mediawiki doesn't
