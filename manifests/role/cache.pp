@@ -609,34 +609,23 @@ class role::cache {
         }
     }
 
-    class ssl::misc::certs {
-        install_certificate { ['sni.wikimedia.org', 'star.wmfusercontent.org']: }
-    }
-
-    # This class sets up multiple sites with multiple SSL certs using SNI
+    # As above, but for misc instead of generic prod
     class ssl::misc {
+        #TODO: kill the old wmf_ca
+        include certificates::wmf_ca
+        include certificates::wmf_ca_2014_2017
         include role::protoproxy::ssl::common
-        require ::role::cache::ssl::misc::certs
 
-        # Assumes that LVS service IPs are setup elsewhere
-
-        protoproxy::localssl {
-            'wikimedia':
-                proxy_server_cert_name => 'sni.wikimedia.org',
-                server_name            => 'wikimedia.org',
-                server_aliases         => ['*.wikimedia.org'],
-                default_server         => true;
+        localssl {
+            'wikimedia.org':
+                certname => 'sni.wikimedia.org',
+                server_name => 'wikimedia.org',
+                server_aliases => ['*.wikimedia.org'],
+                default_server => true;
             'wmfusercontent.org':
-                proxy_server_cert_name => 'star.wmfusercontent.org',
-                server_name            => 'wmfusercontent.org',
-                server_aliases         => ['*.wmfusercontent.org'];
-        }
-
-        # FIXME: Icinga monitoring with support for SNI
-
-        monitoring::service { 'https':
-            description   => 'HTTPS',
-            check_command => "check_ssl_cert!*.wikimedia.org",
+                certname => 'star.wmfusercontent.org',
+                server_name => 'wmfusercontent.org',
+                server_aliases => ['*.wmfusercontent.org'],
         }
     }
 
