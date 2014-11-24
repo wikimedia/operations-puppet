@@ -102,9 +102,6 @@ class ganglia {
             'payments'  => {
                 'name'      => 'Fundraiser payments',
                 'ip_oct'    => '23' },
-            'ssl'       => {
-                'name'      => 'SSL cluster',
-                'ip_oct'    => '26' },
             'swift' => {
                 'name'      => 'Swift',
                 'ip_oct'    => '27' },
@@ -311,7 +308,6 @@ class ganglia::collector::config {
                     'MySQL'                          => 'db1050.eqiad.wmnet',
                     'PDF servers eqiad'              => 'ocg1001.eqiad.wmnet',
                     'Fundraising eqiad'              => 'pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet',
-                    'SSL cluster esams'              => 'hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org',
                     'Virtualization cluster eqiad'   => 'labnet1001.eqiad.wmnet virt1000.wikimedia.org',
                     'Labs NFS cluster eqiad'         => 'labstore1001.eqiad.wmnet labstore1003.eqiad.wmnet',
                     'MySQL eqiad'                    => 'db1053.eqiad.wmnet db1054.eqiad.wmnet db1057.eqiad.wmnet',
@@ -323,7 +319,6 @@ class ganglia::collector::config {
                     'Mobile caches esams'            => 'hooft.esams.wikimedia.org:11677',
                     'Bits caches eqiad'              => 'cp1056.eqiad.wmnet cp1057.eqiad.wmnet',
                     'Upload caches eqiad'            => 'cp1048.eqiad.wmnet cp1061.eqiad.wmnet',
-                    'SSL cluster eqiad'              => 'ssl1001.wikimedia.org ssl1002.wikimedia.org',
                     'Swift eqiad'                    => 'ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet',
                     'Swift esams'                    => 'hooft.esams.wikimedia.org:11676',
                     'Swift codfw'                    => 'install2001.wikimedia.org:10676',
