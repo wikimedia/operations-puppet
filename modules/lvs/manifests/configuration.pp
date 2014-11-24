@@ -111,36 +111,6 @@ class lvs::configuration {
                     'loginlb6'  => '2620:0:863:ed1a::1:9',
                 },
             },
-            # At this point, these are used to configure ssl[13]00x only
-            'https' => {
-                'eqiad' => {
-                    'textlbsecure' => "208.80.154.224",
-                    'loginlbsecure' => "208.80.154.233",
-                    'bitslbsecure' => "208.80.154.234",
-                    'uploadlbsecure' => '208.80.154.240',
-                    'mobilelbsecure' => "208.80.154.236",
-
-                    'textlbsecure6' => "2620:0:861:ed1a::1",
-                    'loginlbsecure6' => "2620:0:861:ed1a::1:9",
-                    'bitslbsecure6' => '2620:0:861:ed1a::1:a',
-                    'uploadlbsecure6' => '2620:0:861:ed1a::2:b',
-                    'mobilelbsecure6' => '2620:0:861:ed1a::1:c',
-                },
-                'esams' => {
-                    'textlbsecure' => '91.198.174.192',
-                    'loginlbsecure' => '91.198.174.201',
-                    'bitslbsecure' => '91.198.174.202',
-                    'uploadlbsecure' => '91.198.174.208',
-                    'mobilelbsecure' => '91.198.174.204',
-
-                    'textlb6secure'   => '2620:0:862:ed1a::1',
-                    'loginlbsecure6' => '2620:0:862:ed1a::1:9',
-                    'bitslbsecure6' => '2620:0:862:ed1a::1:a',
-                    'uploadlbsecure6' => '2620:0:862:ed1a::2:b',
-                    'mobilelbsecure6' => '2620:0:862:ed1a::1:c',
-                },
-                'ulsfo' => {}
-            },
             'bits' => {
                 'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => '2620:0:861:ed1a::1:a', 'bitssvc' => "10.2.2.23" },
                 'esams' => { 'bitslb' => '91.198.174.202', 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitssvc' => "10.2.3.23" },
