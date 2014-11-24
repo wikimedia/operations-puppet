@@ -5,11 +5,11 @@
 #
 # == Parameters
 # $data_directory - Where the data files should live.
-# $license_key    - MaxMind license key.  Required.
-# $user_id        - MaxMind user id.      Required.
+# $license_key    - MaxMind license key.
+# $user_id        - MaxMind user id.
 # $product_ids    - Array of MaxMind product ids to specify which data files
-#                   to download.  default: [106] (Country)
-# $proxy          - Proxy server to use to fetch files. Optional.
+#                   to download.  default: [506] (GeoLite Country)
+# $proxy          - Proxy server to use to fetch files.
 # == Example
 # You can use this class on your puppetmaster to stick the GeoIP .dat files
 # into a fileserver module.  Once the files are there, you can use the
@@ -28,9 +28,9 @@
 #
 class geoip::data::maxmind(
   $data_directory = '/usr/share/GeoIP',
-  $license_key    = false,
-  $user_id        = false,
-  $product_ids    = [106],
+  $user_id        = '999999',
+  $license_key    = '000000000000',
+  $product_ids    = [506],
   $proxy          = undef
 ) {
   package { 'geoipupdate':
