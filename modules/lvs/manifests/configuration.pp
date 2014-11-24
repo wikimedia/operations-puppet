@@ -167,17 +167,11 @@ class lvs::configuration {
             'apaches' => {
                 'eqiad' => "10.2.2.1",
             },
-            'hhvm_appservers' => {
-                'eqiad' => "10.2.2.2",
-            },
             'rendering' => {
                 'eqiad' => "10.2.2.21",
             },
             'api' => {
                 'eqiad' => "10.2.2.22",
-            },
-            'hhvm_api' => {
-                'eqiad' => "10.2.2.3",
             },
             'search_pool1' => {
                 'eqiad' => "10.2.2.11",
@@ -242,10 +236,6 @@ class lvs::configuration {
             'text' => {
             },
             'apaches' => {
-            },
-            'hhvm_appservers' => {
-            },
-            'hhvm_apaches' => {
             },
             'rendering' => {
             },
@@ -604,21 +594,6 @@ class lvs::configuration {
                 'RunCommand' => $runcommand_monitor_options
             },
         },
-        "hhvm_appservers" => {
-            'description' => "Main MediaWiki application server cluster (HHVM), hhvm-appservers.svc.eqiad.wmnet",
-            'class' => "low-traffic",
-            'sites' => [ "eqiad" ],
-            'ip' => $service_ips['hhvm_appservers'][$::site],
-            'bgp' => "yes",
-            'depool-threshold' => ".3",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
-                    },
-                'IdleConnection' => $idleconnection_monitor_options,
-                'RunCommand' => $runcommand_monitor_options
-            },
-        },
         "rendering" => {
             'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.eqiad.wmnet",
             'class' => "low-traffic",
@@ -645,21 +620,6 @@ class lvs::configuration {
                 'ProxyFetch' => {
                     'url' => [ 'http://en.wikipedia.org/w/api.php' ],
                     },
-                'IdleConnection' => $idleconnection_monitor_options,
-                'RunCommand' => $runcommand_monitor_options
-            },
-        },
-        "hhvm_api" => {
-            'description' => "MediaWiki API cluster (HHVM), hhvm-api.svc.eqiad.wmnet",
-            'class' => "low-traffic",
-            'sites' => [ "eqiad" ],
-            'ip' => $service_ips['hhvm_api'][$::site],
-            'bgp' => "yes",
-            'depool-threshold' => ".6",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://en.wikipedia.org/w/api.php' ],
-                },
                 'IdleConnection' => $idleconnection_monitor_options,
                 'RunCommand' => $runcommand_monitor_options
             },
