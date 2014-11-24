@@ -23,7 +23,7 @@ sub mangle_request {
 <% end -%>
 
 sub vcl_recv {
-	if (req.url ~ "^/event\.gif") {
+	if (req.url ~ "^/(event\.gif|statsv/)") {
 		error 204;
 	}
 
