@@ -50,13 +50,20 @@ alias ls="ls --color" ...="cd .." cd..="cd .." g="git"
 =()          { py "$*"; }
 mkpass()     { head -c 32 /dev/urandom | base64 | tr -cd [:alnum:]; }
 puppet()     { sudo puppet "$@"; }
-gdbh()       { sudo gdb -p "$(pidof hhvm)"; }
 warn()       { printf "$(tput setaf 1)%s$(tput sgr0)\n" "$1" >&2; }
 notice()     { printf "$(tput setaf 4)%s$(tput sgr0)\n" "$1"; }
 repackage()  { sudo dpkg-buildpackage -b -uc; }
 psmem()      { sudo ps_mem.py "${@}"; }
 where()      { find . -iname \*"$*"\* ; }
 reqs()       { curl -s 127.0.0.1/server-status | grep -Po '\d+(?= requests currently being processed)'; }
+perf()       { sudo perf "$@"; }
+gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
+
+ptop()       {
+  args=( top )
+  [[ -z $1 || $1 == -* ]] || { args+=( -p "$(pidof -s $1)" ); shift; }
+  sudo perf "${args[@]}" "$@"
+}
 
 localcurl()  {
   for var; do [[ $var == */* ]] && url="${var#*//}" || args+=("$var"); done
