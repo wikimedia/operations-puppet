@@ -30,14 +30,14 @@ class hhvm::debug {
 
     ## Profiling and debugging tools
 
-    # google-perftools includes `pprof` (aliased as `google-pprof`),
-    # which can generate useful reports from jemalloc heap dumps.
-    # The gv and graphiz packages enable pprof to generate PDF and SVG
-    # reports of things like call graphs.
-    #
-    # `apache2-utils` provides `ab`, an HTTP server benchmarking tool.
+    # - google-perftools includes `pprof` (aliased as `google-pprof`),
+    #   which can generate useful reports from jemalloc heap dumps.
+    #   The gv and graphiz packages enable pprof to generate PDF and SVG
+    #   reports of things like call graphs.
+    # - apache2-utils provides `ab`, an HTTP server benchmarking tool.
+    # - perf-tools is <https://github.com/brendangregg/perf-tools>.
 
-    package { [ 'google-perftools', 'graphviz', 'gv', 'apache2-utils' ]:
+    package { [ 'google-perftools', 'graphviz', 'gv', 'apache2-utils', 'perf-tools' ]:
         ensure => present,
     }
 
