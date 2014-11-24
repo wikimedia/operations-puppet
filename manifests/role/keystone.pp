@@ -31,7 +31,7 @@ class role::keystone::config::eqiad inherits role::keystone::config {
             }
         },
         ldap_host    => $::realm ? {
-            'production' => 'virt1000.wikimedia.org',
+            'production' => 'ldap-eqiad.wikimedia.org',
             'labs'       => $nova_controller_hostname ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_controller_hostname,
