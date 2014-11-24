@@ -556,18 +556,6 @@ class role::cache {
         }
     }
 
-    class ssl::unified {
-        #TODO: kill the old wmf_ca
-        include certificates::wmf_ca
-        include certificates::wmf_ca_2014_2017
-        include role::protoproxy::ssl::common
-
-        localssl { 'unified':
-            certname => 'unified.wikimedia.org',
-            default_server => true,
-        }
-    }
-
     # ssl::sni To replace ssl::unified above after testing...
     class ssl::sni {
         #TODO: kill the old wmf_ca
@@ -745,6 +733,10 @@ class role::cache {
             description => 'text Varnish cache server',
         }
 
+        if $::realm == 'production' {
+            include role::cache::ssl::sni
+        }
+
         require geoip
         require geoip::dev # for VCL compilation using libGeoIP
 
@@ -904,6 +896,10 @@ class role::cache {
 
         system::role { 'role::cache::upload':
             description => 'upload Varnish cache server',
+        }
+
+        if $::realm == 'production' {
+            include role::cache::ssl::sni
         }
 
         class { 'lvs::realserver':
@@ -1081,6 +1077,10 @@ class role::cache {
 
     class bits inherits role::cache::varnish::1layer {
 
+        if $::realm == 'production' {
+            include role::cache::ssl::sni
+        }
+
         class { 'lvs::realserver':
             realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site],
         }
@@ -1179,6 +1179,10 @@ class role::cache {
     }
 
     class mobile inherits role::cache::varnish::2layer {
+
+        if $::realm == 'production' {
+            include role::cache::ssl::sni
+        }
 
         class { 'lvs::realserver':
             realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site],
