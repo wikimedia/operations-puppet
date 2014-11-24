@@ -1,7 +1,5 @@
 class puppet::self::geoip {
-    # Fetch the GeoIP databases into puppet's volatile dir, so that other hosts
-    # can then just sync that directory into their own /usr/share/GeoIP via a
-    # normal puppet File resource (see the geoip module for more)
+    # FIXME: this a partial duplicate of puppetmaster::geoip
 
     $geoip_destdir = '/var/lib/puppet/volatile/GeoIP'
 
@@ -10,16 +8,30 @@ class puppet::self::geoip {
         ensure => directory,
     }
 
-    # fetch the GeoLite databases
-    class { 'geoip::data::lite':
+    # legacy; remove eventually
+    file { '/usr/local/bin/geoliteupdate':
+        ensure => absent,
+    }
+    cron { 'geoliteupdate':
+        ensure => absent,
+    }
+
+    class { 'geoip::data::maxmind':
         data_directory => $geoip_destdir,
+        product_ids    => [
+            '506', # GeoLite Legacy Country
+            '517', # GeoLite ASN
+            '533', # GeoLite Legacy City
+            'GeoLite2-Country',
+            'GeoLite2-City',
+            ],
     }
 
     # compatibility symlinks, so that users can use the stable paths
     # GeoIP.dat/GeoIPCity.dat between labs and production
     file { "$geoip_destdir/GeoIP.dat":
         ensure => link,
-        target => 'GeoLite.dat',
+        target => 'GeoLiteCountry.dat',
     }
     file { "$geoip_destdir/GeoIPCity.dat":
         ensure => link,
@@ -34,4 +46,3 @@ class puppet::self::geoip {
         target => 'GeoLite2-City.mmdb',
     }
 }
-

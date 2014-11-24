@@ -28,8 +28,8 @@
 #
 class geoip::data::maxmind(
   $data_directory = '/usr/share/GeoIP',
-  $license_key    = false,
-  $user_id        = false,
+  $user_id        = '999999',
+  $license_key    = '000000000000',
   $product_ids    = [106],
   $proxy          = undef
 ) {

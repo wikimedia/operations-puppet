@@ -11,18 +11,32 @@ class puppetmaster::geoip {
         ensure => directory,
     }
 
-    # fetch the GeoLite databases
-    class { 'geoip::data::lite':
-        data_directory => $geoip_destdir,
-        environment    => "http_proxy=$webproxy",
-    }
-
     if $is_labs_puppet_master {
+        # legacy; remove eventually
+        file { '/usr/local/bin/geoliteupdate':
+            ensure => absent,
+        }
+        cron { 'geoliteupdate':
+            ensure => absent,
+        }
+
+        class { 'geoip::data::maxmind':
+            data_directory => $geoip_destdir,
+            proxy          => $webproxy,
+            product_ids    => [
+                '506', # GeoLite Legacy Country
+                '517', # GeoLite ASN
+                '533', # GeoLite Legacy City
+                'GeoLite2-Country',
+                'GeoLite2-City',
+                ],
+        }
+
         # compatibility symlinks, so that users can use the stable paths
         # GeoIP.dat/GeoIPCity.dat between labs and production
         file { "$geoip_destdir/GeoIP.dat":
             ensure => link,
-            target => 'GeoLite.dat',
+            target => 'GeoLiteCountry.dat',
         }
         file { "$geoip_destdir/GeoIPCity.dat":
             ensure => link,
@@ -43,8 +57,8 @@ class puppetmaster::geoip {
         class { 'geoip::data::maxmind':
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
-            license_key    => $passwords::geoip::license_key,
             user_id        => $passwords::geoip::user_id,
+            license_key    => $passwords::geoip::license_key,
             product_ids    => [
                 '106', # GeoIP.dat
                 '115', # GeoIPRegion.dat
