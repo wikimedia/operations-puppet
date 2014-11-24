@@ -44,6 +44,9 @@
 # [*fcgi_settings*]
 #   Ditto, except for FastCGI mode.
 #
+# [*base_jit_size*]
+#   Base jit size, in bytes. Defaults to 100 Mb
+#
 # === Examples
 #
 #  class { 'hhvm':
@@ -59,6 +62,7 @@ class hhvm(
     $group         = 'www-data',
     $fcgi_settings = {},
     $cli_settings  = {},
+    $base_jit_size = to_bytes('100 Mb'),
 ) {
     requires_ubuntu('>= trusty')
 
@@ -87,13 +91,15 @@ class hhvm(
     # of the admin server.
     #
     # A ratio of 1 : 0.33 : 1 for a : a_cold : a_frozen is good general
-    # guidance.
+    # guidance. We also set a_prof_size, a_hot_size and g_data_size,
+    # with ratios that seem like sensible defaults.
 
-    $base_jit_size = to_bytes('100 Mb')
     $a_size        = $base_jit_size
     $a_cold_size   = 0.33 * $base_jit_size
     $a_frozen_size = $base_jit_size
-
+    $a_prof_size   = $base_jit_size
+    $g_data_size   = 0.33 * $base_jit_size
+    $a_hot_size    = 0.15 * $base_jit_size
 
     $common_defaults = {
         date => { timezone => 'UTC' },
@@ -125,14 +131,19 @@ class hhvm(
     $fcgi_defaults = {
         memory_limit => '300M',
         hhvm         => {
-            jit               => true,
-            jit_a_size        => $a_size,
-            jit_a_cold_size   => $a_cold_size,
-            jit_a_frozen_size => $a_frozen_size,
-            perf_pid_map      => true,  # See <http://www.brendangregg.com/perf.html#JIT%20Symbols>
-            repo              => { central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' } },
-            admin_server      => { port => 9001 },
-            server            => {
+            jit                  => true,
+            jit_a_size           => $a_size,
+            jit_a_hot_size       => $a_hot_size,
+            jit_a_cold_size      => $a_cold_size,
+            jit_a_frozen_size    => $a_frozen_size,
+            jit_a_prof_size      => $a_size,
+            jit_global_data_size => $g_data_size,
+            perf_pid_map         => true,  # See <http://www.brendangregg.com/perf.html#JIT%20Symbols>
+            repo                 => {
+                central => { path => '/run/hhvm/cache/fcgi.hhbc.sq3' }
+            },
+            admin_server         => { port => 9001 },
+            server               => {
                 port                   => 9000,
                 type                   => 'fastcgi',
                 gzip_compression_level => 0,
