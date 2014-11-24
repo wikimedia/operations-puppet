@@ -29,20 +29,6 @@ class lvs::configuration {
             },
             default => undef,
         },
-        # class https needs to be present on the same hosts as the corresponding
-        # http services
-        'https' => $::realm ? {
-            'production' => $::site ? {
-                'eqiad' => [ 'lvs1001', 'lvs1002', 'lvs1004', 'lvs1005' ],
-                'codfw' => [ 'lvs2001', 'lvs2002', 'lvs2004', 'lvs2005' ],
-                'esams' => [ 'lvs3001', 'lvs3002', 'lvs3003', 'lvs3004' ],
-                default => undef,
-            },
-            'labs' => $::site ? {
-                default => undef,
-            },
-            default => undef,
-        },
         'low-traffic' => $::realm ? {
             'production' => $::site ? {
                 'eqiad' => [ "lvs1003", "lvs1006" ],
@@ -125,6 +111,7 @@ class lvs::configuration {
                     'loginlb6'  => '2620:0:863:ed1a::1:9',
                 },
             },
+            # At this point, these are used to configure ssl[13]00x only
             'https' => {
                 'eqiad' => {
                     'textlbsecure' => "208.80.154.224",
@@ -259,7 +246,6 @@ class lvs::configuration {
             'search_pool2' => {},
             'search_pool3' => {},
             'dns_rec' => {},
-            'https' => {},
             'mathoid' => {},
             'citoid' => {},
             'misc_web' => {},
@@ -432,29 +418,12 @@ class lvs::configuration {
         'text-https' => {
             'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (nginx)",
             'class' => 'high-traffic1',
-            'sites' => [ 'ulsfo' ],
+            'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['text'][$::site],
             'port' => 443,
             'bgp' => 'no',
             'depool-threshold' => '.5',
             'monitors' => {
-                'IdleConnection' => $idleconnection_monitor_options
-            },
-        },
-        "https" => {
-            'description' => "HTTPS services",
-            'class' => "https",
-            'sites' => [ "eqiad", "esams" ],
-            'ip' => $service_ips['https'][$::site],
-            'port' => 443,
-            'scheduler' => 'sh',
-            # These IPs are announced by the corresponding HTTP services
-            'bgp' => "no",
-            'depool-threshold' => ".5",
-            'monitors' => {
-                #'ProxyFetch' => {
-                #    'url' => [ 'https://meta.wikimedia.org/wiki/Main_Page' ],
-                #    },
                 'IdleConnection' => $idleconnection_monitor_options
             },
         },
@@ -475,7 +444,7 @@ class lvs::configuration {
         "bits-https" => {
             'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
             'class' => 'high-traffic1',
-            'sites' => [ 'ulsfo' ],
+            'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['bits'][$::site],
             'port' => 443,
             'bgp' => 'no',
@@ -501,7 +470,7 @@ class lvs::configuration {
         "upload-https" => {
             'description' => "Images and other media, upload.${::site}.wikimedia.org",
             'class' => "high-traffic2",
-            'sites' => [ "ulsfo" ],
+            'sites' => [ "eqiad", "esams", "ulsfo" ],
             'ip' => $service_ips['upload'][$::site],
             'port' => 443,
             'bgp' => "no",
@@ -527,7 +496,7 @@ class lvs::configuration {
         "mobile-https" => {
             'description' => "MediaWiki based mobile site",
             'class' => 'high-traffic1',
-            'sites' => [ 'ulsfo' ],
+            'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['mobile'][$::site],
             'port' => 443,
             'bgp' => "no",
