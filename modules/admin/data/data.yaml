@@ -91,7 +91,7 @@ groups:
       ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
       kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
       nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
-      mforns, erik, jdlrobson, dr0ptp4kt, tgr]
+      mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur]
   ldap-admins:
     gid: 715
     description: ldap admins
