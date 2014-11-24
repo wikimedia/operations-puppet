@@ -1,7 +1,7 @@
 # mw1017-1032, mw1053 are apaches (trusty)
 hhvm_appservers:
   __regex: !ruby/regexp /^mw10(1[7-9]|2[0-9]|3[0-2]|53)\.eqiad\.wmnet$/
-  mainrole: appserver_hhvm
+  mainrole: appserver
   admin::groups:
     - deployment
 
