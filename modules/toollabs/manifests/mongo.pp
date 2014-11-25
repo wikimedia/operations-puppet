@@ -5,9 +5,9 @@ class toollabs::mongo::master inherits toollabs {
     # We need all the space we can get!
     include role::labs::lvm::srv
 
-    class { "mongodb":
+    class { 'mongodb':
         settings => {
             auth => "true"
         }
-   }
+    }
 }
