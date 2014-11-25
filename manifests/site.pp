@@ -444,6 +444,7 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     class { 'admin': groups => ['cassandra-roots'] }
     include standard
     include role::cassandra
+    include role::restbase
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
