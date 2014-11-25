@@ -167,7 +167,7 @@ $private_tables = [
 $wikimail_smarthost = $::realm ? {
     'production' => [ 'wiki-mail-eqiad.wikimedia.org' ],
     'labs'       => $::instanceproject ? {
-        'deployment-prep' => [ 'deployment-mx.wmflabs.org' ],
+        'deployment-prep' => [ 'deployment-mx.eqiad.wmflabs' ],
         default           => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
     }
 }
