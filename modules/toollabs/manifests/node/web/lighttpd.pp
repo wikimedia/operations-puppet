@@ -33,20 +33,20 @@ class toollabs::node::web::lighttpd inherits toollabs::node::web {
         mode   => '1777',
     }
 
-    file { "/usr/local/bin/tool-lighttpd":
+    file { '/usr/local/bin/tool-lighttpd':
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => "puppet:///modules/toollabs/tool-lighttpd",
+        source => 'puppet:///modules/toollabs/tool-lighttpd',
     }
 
-    file { "/usr/local/bin/lighttpd-starter":
+    file { '/usr/local/bin/lighttpd-starter':
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => "puppet:///modules/toollabs/lighttpd-starter",
+        source => 'puppet:///modules/toollabs/lighttpd-starter',
     }
 
 }

@@ -17,22 +17,24 @@ class toollabs::node::web::tomcat inherits toollabs::node::web {
     }
 
     # For now, the tomcat nodes double as the generic webserver nodes
-    class { 'toollabs::queues': queues => [ 'webgrid-tomcat', 'webgrid-generic' ] }
-
-    file { "/usr/local/bin/tool-tomcat":
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => "puppet:///modules/toollabs/tool-tomcat",
+    class { 'toollabs::queues':
+        queues => [ 'webgrid-tomcat', 'webgrid-generic' ]
     }
 
-    file { "/usr/local/bin/tomcat-starter":
+    file { '/usr/local/bin/tool-tomcat':
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => "puppet:///modules/toollabs/tomcat-starter",
+        source => 'puppet:///modules/toollabs/tool-tomcat',
+    }
+
+    file { '/usr/local/bin/tomcat-starter':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/toollabs/tomcat-starter',
         require => Package['xmlstarlet'],
     }
 

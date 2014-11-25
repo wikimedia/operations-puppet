@@ -75,7 +75,7 @@ class toollabs {
 
     $geconf     = "${sysdir}/gridengine"
     $collectors = "${geconf}/collectors"
-    
+
     file { $geconf:
         ensure  => directory,
         require => File[$sysdir],
