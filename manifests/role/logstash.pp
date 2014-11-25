@@ -89,6 +89,11 @@ class role::logstash {
         priority => 50,
     }
 
+    logstash::conf { 'filter_mw_via_redis':
+        source   => 'puppet:///files/logstash/filter-mw-via-redis.conf',
+        priority => 50,
+    }
+
     logstash::conf { 'filter_gelf':
         source   => 'puppet:///files/logstash/filter-gelf.conf',
         priority => 50,
