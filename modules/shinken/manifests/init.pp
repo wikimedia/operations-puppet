@@ -116,4 +116,3 @@ class shinken::server(
         notify     => Service['shinken'],
     }
 }
-

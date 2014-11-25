@@ -75,5 +75,11 @@ class role::puppet::self {
         class { 'puppet::self::client':
             server => $server,
         }
+        # If the puppetmaster_autoupdate variable is set, then
+        # run a cron job that automatically tries to update the local
+        # git repository, while trying to keep intact cherry picks
+        if $::puppetmaster_autoupdate {
+            include puppetmaster::gitsync
+        }
     }
 }
