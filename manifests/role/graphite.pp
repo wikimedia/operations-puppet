@@ -250,7 +250,5 @@ class role::graphite::labmon {
         hostname    => 'graphite.wmflabs.org',
     }
 
-    include beta::monitoring::graphite
-    include toollabs::monitoring::graphite
     include contint::monitoring::graphite
 }
