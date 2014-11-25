@@ -1,13 +1,19 @@
-# == Class: beta::puppetmaster::sync
+# == Class: puppetmaster::gitsync
 #
-# Sync local operations/puppet.git checkout with upstream
+# Sync local operations/puppet.git checkout with upstream.
+# Meant for use with local puppetmasters.
+# == Parameters
 #
-class beta::puppetmaster::sync {
+# [*repo_path*]
+#   The path to the operations/puppet.git repository
+class puppetmaster::gitsync(
+    $repo_path = '/var/lib/git/operations/puppet'
+){
 
     file { '/usr/local/bin/git-sync-upstream':
-        ensure => present,
-        source => 'puppet:///modules/beta/git-sync-upstream',
-        mode   => '0555',
+        ensure  => present,
+        content => template('puppetmaster/git-sync-upstream.erb'),
+        mode    => '0555',
     }
 
     cron { 'rebase_operations_puppet':
