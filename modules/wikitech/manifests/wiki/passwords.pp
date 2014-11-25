@@ -20,10 +20,10 @@ class wikitech::wiki::passwords {
     }
 
     file { '/srv/mediawiki/private/WikitechPrivateLdapSettings.php':
-        ensure => present,
+        ensure  => present,
         content => template('wikitech/wikitech_ldap.php.erb'),
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
     }
 }
