@@ -32,7 +32,7 @@ class toollabs::node::compute::dedicated {
     } else {
 
         system::role { 'toollabs::node::compute::dedicated':
-            description => "Unassigned dedicated computation node",
+            description => 'Unassigned dedicated computation node',
         }
 
     }
