@@ -4,7 +4,7 @@ define shinken::services(
     $ensure  = present,
     $source  = undef,
 ) {
-    include shinken::server
+    include shinken
 
     file { "/etc/shinken/services/$title.cfg":
         ensure  => $ensure,
