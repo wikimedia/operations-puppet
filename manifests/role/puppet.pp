@@ -63,6 +63,13 @@ class role::puppet::self {
           default     => "${::puppetmaster}.${::domain}",
     }
 
+    # If the puppetmaster_autoupdate variable is set, then
+    # run a cron job that automatically tries to update the local
+    # git repository, while trying to keep in tact cherry picks
+    if $::puppetmaster_autoupdate {
+        include puppetmaster::gitsync
+    }
+
     # If localhost or if $server matches this node's
     # $fqdn, then this is a puppetmaster.
     if ($server == 'localhost' or $server == $::fqdn) {
