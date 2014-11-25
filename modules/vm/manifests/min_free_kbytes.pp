@@ -28,11 +28,11 @@ define vm::min_free_kbytes($pct, $min, $max) {
 
     if $min_free_spec < $min_safety {
         $min_free = $min_safety
-        warning("vm::min_free_kbytes - calculated value $min_free_spec clamped upwards to $min_safety for safety reasons!")
+        warning("vm::min_free_kbytes - calculated value ${min_free_spec} clamped upwards to ${min_safety} for safety reasons!")
     }
     elsif $min_free_spec > $max_safety {
         $min_free = $max_safety
-        warning("vm::min_free_kbytes - calculated value $min_free_spec clamped downwards to $max_safety for safety reasons!")
+        warning("vm::min_free_kbytes - calculated value ${min_free_spec} clamped downwards to ${max_safety} for safety reasons!")
     }
     else {
         $min_free = $min_free_spec
