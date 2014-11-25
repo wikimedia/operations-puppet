@@ -36,3 +36,20 @@ ocg::ganglia::module::data_filesystem: "/srv"
 #
 # This is redundant but will be useful when we start setting up codfw
 openstack::version: 'icehouse'
+
+#
+# RESTBase cassandra cluster
+cassandra::seeds:
+    - xenon.eqiad.wmnet
+    - cerium.eqiad.wmnet
+    - praseodymium.eqiad.wmnet
+
+#
+# RESTBase
+#
+restbase::seeds:
+    - xenon.eqiad.wmnet
+    - cerium.eqiad.wmnet
+    - praseodymium.eqiad.wmnet
+restbase::logstash_host: logstash1002.eqiad.wmnet
+restbase::cassandra_defaultConsistency: localQuorum

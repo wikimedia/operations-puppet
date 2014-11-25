@@ -444,18 +444,11 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 
     class { 'admin': groups => ['cassandra-roots'] }
 
-    system::role { 'role::cassandra-test':
-        description => 'Cassandra test server',
+    system::role { 'role::cassandra':
+        description => 'Cassandra test servers',
     }
 
     include standard
-
-    # XXX: to be moved into the puppet class
-    sysctl::parameters { 'cassandra':
-        values => {
-            'vm.max_map_count' => 1048575,
-        },
-    }
 }
 
 # ruthenium is a parsoid regression test server
