@@ -1,7 +1,7 @@
-# = Class: shinken::server
+# = Class: shinken
 # Sets up a shinken monitoring server
 
-class shinken::server(
+class shinken(
     $auth_secret
 ) {
     include shinken::shinkengen

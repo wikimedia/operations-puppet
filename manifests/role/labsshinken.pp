@@ -2,7 +2,7 @@
 # Sets up a shinken server for labs
 
 class role::labs::shinken {
-    class { 'shinken::server':
+    class { '::shinken':
         auth_secret => 'This is insecure, should switch to using private repo',
     }
 
