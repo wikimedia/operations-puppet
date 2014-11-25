@@ -213,7 +213,7 @@ groups:
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
-              ezachte, mforns, reedy]
+              ezachte, mforns, reedy, west1]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1199,3 +1199,10 @@ users:
     realname: Bahodir Mansurov
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC50DOWu62crD61EV/CKVpA4velNf0sExkBqn4+j6mkSfjBQ3u1NbIiTuRevJ1QejKLrwt+r6RTFH6Zo8HdhumnfHLemNb6b6lPI3X+t9zMP9bfstnE7KpSvAIEPuN83nR9nfs0hMndcqsR1jmSs+zAfZ9rPorIcaGKGnsscao1Xv22yvGk6zAtbQmkEW0uH8d339EgVo9WSVWcJL3EgDuunJyy28XWqjB+YTYxiwlHnla4YZXsXm9YxoC3PNYbe83jDfxkG0TTqW5BSYeVaOwtwRpYiW6pWU3tNyCX6RUx57IhuC2TTshox05EhsREC0eYQcUAny9PAYf5moehRY8V bmansurov@wikimedia.org]
     uid: 10570
+west1:
+    ensure: present
+    gid: 500
+    name: west1
+    realname: Bob West
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAweYNj2Fsw5NjS+tM3JwvzpAymkw2GNE2NhgI79VuJukffj1XGPGYSJQVxRgIKuLCrmizCc/wYyF2gB+aO3iOmu1pSa84i3Xv141cO8ib5XHGdgPkfb8cvCOg0eD0OEe5esCbNLQrCe/6kzlhWLDkE9UZ++2lKt3j5IN9FEj2qLRv9zVEIBU001ciP/qA0YwIffweVzmX4FpcNF6h8pSKJpx3y+lHwIoD1Hm6d2IH39jPV3k/LmwNLHLjSxlIqXuU1EIeK4Rs+cKOpZatfT4Q8wpiZknvhGxXexhJAwSQ2DM8lONqmFF+AyWZSKahbjN4biBfsjJXLxQFw9yrn3XU2w== west1@madmax4.stanford.edu]
+    uid: 10972
