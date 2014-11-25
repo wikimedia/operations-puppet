@@ -7,7 +7,7 @@
 # files have changed
 class shinken::shinkengen {
 
-    include shinken::server
+    include shinken
 
     package { 'python3-shinkengen':
         ensure => latest,
