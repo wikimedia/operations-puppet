@@ -25,11 +25,11 @@ ocg::statsd_host: "statsd.eqiad.wmnet"
 ocg::graylog_host: "logstash1002.eqiad.wmnet"
 ocg::statsd_is_txstatsd: 1
 # see modules/ocg/files/nagios/check_ocg_health for descriptions
-ocg::nagios::check::wjs: 400000
-ocg::nagios::check::cjs: 800000
-ocg::nagios::check::wrj: 500
-ocg::nagios::check::crj: 3000
-ocg::ganglia::module::data_filesystem: "/srv"
+ocg::nagios::wjs: 400000
+ocg::nagios::cjs: 800000
+ocg::nagios::wrj: 500
+ocg::nagios::crj: 3000
+ocg::ganglia::data_filesystem: "/srv"
 
 #
 # Labs

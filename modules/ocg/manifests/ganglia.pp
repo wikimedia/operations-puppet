@@ -1,11 +1,11 @@
-# == Class ocg::ganglia::module
+# == Class ocg::ganglia
 # Includes the ocg.py ganglia module
 # include this class on your OCG node.
 #
-class ocg::ganglia::module (
-        $tmp_filesystem = $::ocg::temp_dir,
-        $data_filesystem = '/srv',
-    ) {
+class ocg::ganglia (
+    $tmp_filesystem = $::ocg::temp_dir,
+    $data_filesystem = '/srv',
+) {
     file { '/usr/lib/ganglia/python_modules/ocg.py':
         source => 'puppet:///modules/ocg/ganglia/ocg.py',
         owner  => 'root',

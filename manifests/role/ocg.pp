@@ -15,8 +15,8 @@ class role::ocg::production (
 
     include passwords::redis
     include ::ocg
-    include ::ocg::nagios::check
-    include ocg::ganglia::module
+    include ::ocg::nagios
+    include ::ocg::ganglia
 
     file { $::ocg::temp_dir:
         ensure => directory,
