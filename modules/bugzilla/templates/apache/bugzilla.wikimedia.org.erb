@@ -10,47 +10,17 @@
 
 <VirtualHost *:80>
     ServerAdmin webmaster@wikimedia.org
-    ServerName <%= @svc_name %>
+    ServerName bugs.wikimedia.org
     Redirect permanent / https://<%= @svc_name %>/
     RewriteEngine On
-    RewriteCond %{HTTPS} off
-    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
 </VirtualHost>
 
 <VirtualHost *:80>
     ServerAdmin webmaster@wikimedia.org
-    ServerName bugs.wikimedia.org
-    Redirect permanent / https://<%= @svc_name %>/
-    RewriteEngine On
-    RewriteCond %{HTTPS} off
-    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
-</VirtualHost>
-
-<VirtualHost *:443>
-    ServerAdmin webmaster@wikimedia.org
-    ServerName bugs.wikimedia.org
-    Redirect permanent / https://<%= @svc_name %>/
-    SSLEngine On
-    SSLCompression Off
-    SSLCertificateFile /etc/ssl/certs/bugzilla.wikimedia.org.pem
-    SSLCertificateKeyFile /etc/ssl/private/bugzilla.wikimedia.org.key
-    SSLCACertificatePath /etc/ssl/certs/
-    <%= @ssl_settings.join("\n") %>
-
-    RewriteEngine On
-    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
-</VirtualHost>
-
-<VirtualHost *:443>
-    ServerAdmin webmaster@wikimedia.org
     ServerName <%= @svc_name %>
     DocumentRoot <%= @docroot %>
-    SSLEngine On
-    SSLCompression Off
-    SSLCertificateFile /etc/ssl/certs/bugzilla.wikimedia.org.pem
-    SSLCertificateKeyFile /etc/ssl/private/bugzilla.wikimedia.org.key
-    SSLCACertificatePath /etc/ssl/certs/
-    <%= @ssl_settings.join("\n") %>
 
     <Directory />
         Options FollowSymLinks
