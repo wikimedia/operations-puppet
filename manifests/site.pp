@@ -439,23 +439,11 @@ node 'caesium.eqiad.wmnet' {
     include role::releases
 }
 
-# cerium,praseodymium, ruthenium and xenon are cassandra test host
-node /^(cerium|praseodymium|ruthenium|xenon)\.eqiad\.wmnet$/ {
-
+# cerium, praseodymium and xenon are Cassandra test hosts
+node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     class { 'admin': groups => ['cassandra-roots'] }
-
-    system::role { 'role::cassandra-test':
-        description => 'Cassandra test server',
-    }
-
     include standard
-
-    # XXX: to be moved into the puppet class
-    sysctl::parameters { 'cassandra':
-        values => {
-            'vm.max_map_count' => 1048575,
-        },
-    }
+    include role::cassandra
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
@@ -2277,6 +2265,10 @@ node 'rhenium.wikimedia.org' {
     include standard
     include role::pmacct
     class { 'admin': groups => ['pmacct-roots'] }
+}
+
+node 'ruthenium.eqiad.wmnet' {
+    include standard
 }
 
 node 'sanger.wikimedia.org' {
