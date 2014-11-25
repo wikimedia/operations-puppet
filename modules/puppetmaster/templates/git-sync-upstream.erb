@@ -11,7 +11,7 @@ set -e
 
 echo "--- $0 $(date +%Y-%m-%dT%H:%M:%S)"
 
-REPO=/var/lib/git/operations/puppet
+REPO='<%= @repo_path %>'
 TRACK_BRANCH=production
 REBASE_OPTS=(
     '--preserve-merges'
