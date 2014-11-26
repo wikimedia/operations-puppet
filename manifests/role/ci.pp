@@ -191,12 +191,19 @@ class role::ci::slave {
         system     => true,
     }
 
+    file { '/home/npmtravis/.ssh':
+        ensure => directory,
+        owner  => 'npmtravis',
+        mode   => '0500',
+        require => User['npmtravis'],
+    }
+
     file { '/home/npmtravis/.ssh/npmtravis_id_rsa':
         ensure  => present,
         owner   => 'npmtravis',
         mode    => '0400',
         source  => 'puppet:///private/ssh/ci/npmtravis_id_rsa',
-        require => User['npmtravis'],
+        require => File['/home/npmtravis/.ssh'],
     }
 
     file { '/srv/localhost':
