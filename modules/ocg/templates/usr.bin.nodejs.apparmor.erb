@@ -20,6 +20,8 @@
   <%= @postmortem_dir %>/** rwk,
   /tmp/** rwk,
 
+  /etc/papersize r,
+
   /bin/dash ix,
 
   /usr/bin/rsvg-convert cx -> imagetools,
@@ -31,12 +33,15 @@
     #include <abstractions/base>
     network stream, # Used for ImageMagick tools
 
-    /usr/bin/jpegtran rm,
     /usr/bin/rsvg-convert rm,
     /usr/bin/*.im6 rm, # ImageMagick binaries
+    /usr/bin/pdfseparate rm,
+    /usr/bin/jpegtran rm,
+    /usr/bin/ddjvu rm,
 
     /tmp/** rwk,
     <%= @temp_dir %>/** rwk,
+    <%= @postmortem_dir %>/** rw,
 
     /etc/fonts/** r,
     /usr/share/fonts/ r,
@@ -47,6 +52,8 @@
     /usr/share/poppler/cMap/** r,
     /usr/share/texmf/fonts/** r,
     /usr/share/texlive/texmf-dist/fonts/** r,
+
+    /usr/share/mime/** r,
 
     /etc/ImageMagick/** r,
     /usr/share/ImageMagick*/** r,
