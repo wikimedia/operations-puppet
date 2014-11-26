@@ -28,6 +28,14 @@ class mediawiki::web::modules {
             source   => 'puppet:///modules/mediawiki/apache/configs/hhvm_mark_engine.conf',
             priority => 49,
         }
+
+        # Add headers lost by mod_proxy_fastcgi
+        apache::conf { 'fcgi_headers':
+            source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',
+            priority => 0,
+        }
+
+
     } else {
         include ::apache::mod::php5
     }
