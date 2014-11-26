@@ -185,7 +185,7 @@ class role::ci::slave {
 
     # user and private key for Travis integration
     # RT: 8866
-    user { 'nmptravis':
+    user { 'npmtravis':
         home       => '/home/npmtravis',
         managehome => true,
         system     => true,
