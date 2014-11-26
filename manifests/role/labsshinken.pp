@@ -6,9 +6,12 @@ class role::labs::shinken {
         auth_secret => 'This is insecure, should switch to using private repo',
     }
 
-    # Basic labs monitoring
-    shinken::services { 'basic-checks':
-        source => 'puppet:///modules/shinken/basic-checks.cfg',
+    # Basic labs instance & infrastructure monitoring
+    shinken::services { 'basic-infra-checks':
+        source => 'puppet:///modules/shinken/labs/basic-infra-checks.cfg',
+    }
+    shinken::services { 'basic-instance-checks':
+        source => 'puppet:///modules/shinken/labs/basic-instance-checks.cfg',
     }
 
     include beta::monitoring::shinken
