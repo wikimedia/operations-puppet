@@ -36,6 +36,15 @@ sub vcl_recv {
 	if (req.http.host ~ "^test\.") {
 		set req.backend = test_wikipedia;
 	}
+
+	/* Use the hhvm backend for any request to the standard appservers. */
+	if ( req.http.Cookie ~ "hhvm=true" ) {
+		if (req.backend == api) {
+			set req.backend = hhvm_api;
+		} else {
+			set req.backend = hhvm_appservers;
+		}
+	}
 <% end -%>
 
 	call pass_requests;

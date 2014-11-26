@@ -19,6 +19,17 @@ sub vcl_recv {
 	}
 <% end -%>
 
+<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	/* Use the hhvm backend for any request to the standard appservers */
+	if ( req.http.X-Orig-Cookie ~ "hhvm=true" ) {
+		if (req.backend == api) {
+			set req.backend = hhvm_api;
+		} else {
+			set req.backend = hhvm_appservers;
+		}
+	}
+<% end -%>
+
 	/* Default (now modified) Varnish vcl_recv function */
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET and HEAD by default */
