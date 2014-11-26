@@ -33,6 +33,7 @@ class wikistats::updates {
                 'wf@10', # Wikifur
                 'wy@10', # Wikivoyage
                 'wv@11', # Wikiversities
+                'wi@11', # Wikia
                 'sc@12', # Scoutwikis
                 'ne@13', # Neoseeker
                 'wr@14', # Wikitravel
