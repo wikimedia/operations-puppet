@@ -6,6 +6,8 @@ set -e
 set -u
 SLEEPTIME=60
 FORCE=0
+NOCLEAN=0
+NOREBOOT=0
 
 function log  {
     echo "$@"
@@ -18,6 +20,7 @@ function clean_puppet {
     # An additional, paranoid check.
     if puppet cert list --all | fgrep -q ${nodename}; then
         log "unable to clean puppet cert, please check manually"
+        log "Maybe you need to use the -n switch?"
         exit 1
     fi
     log "cleaning puppet facts cache for ${nodename}"
@@ -40,6 +43,7 @@ function clean_salt {
     # salt-key --delete above exits 0 regardless, double check
     if salt-key --list accepted | fgrep -q ${nodename}; then
         log "unable to clean salt key, please check manually"
+        log "Maybe you need to use the -n switch?"
         exit 1
     fi
 }
@@ -47,15 +51,16 @@ function clean_salt {
 function sign_puppet {
     nodename=${1}
     force_yes=${2}
+    log "Seeking the Puppet certificate to sign"
     while true; do
-        log "Seeking the node cert to sign"
         res=$(puppet cert list | sed -ne "s/\"$nodename\"//p")
         if [ "x${res}" == "x" ]; then
-            log "cert not found, sleeping for ${SLEEPTIME}s"
+            #log "cert not found, sleeping for ${SLEEPTIME}s"
+            echo -n "."
             sleep $SLEEPTIME
             continue
         fi
-
+        echo "+"
         if [ ${force_yes} -eq 0 ]; then
             echo "We have found a key for ${nodename} " \
                  "with the following fingerprint:"
@@ -76,13 +81,15 @@ function sign_puppet {
 function sign_salt {
     nodename=${1}
     force_yes=${2}
+    log "Seeking the SALT node key to add"
+    log "This is the time to start a puppet run on the host."
     while true; do
-        log "Seeking the node key to add"
         if ! salt-key --list unaccepted | fgrep -q ${nodename}; then
-            log "key not found, sleeping for ${SLEEPTIME}s"
+            echo -n "."
             sleep $SLEEPTIME
             continue
         fi;
+        echo "+"
         if [ ${force_yes} -eq 1 ]; then
             salt-key -y -a ${nodename}
         else
@@ -104,8 +111,17 @@ function set_pxe_and_reboot {
     export IPMI_PASSWORD
     ipmitool -I lanplus -H ${mgmtname} -U root -E chassis bootdev pxe
     ipmitool -I lanplus -H ${mgmtname} -U root -E chassis power cycle
-
 }
+
+function enable_and_run_puppet {
+    nodename=${1}
+    log "Enabling puppet"
+    ssh -i /root/.ssh/install_new -o "UserKnownHostsFile=${hostsfile}" -o "GlobalKnownHostsFile=/dev/null" ${nodename} "puppet agent --enable"
+    log "Spawning the first puppet run as well"
+    ssh -q -i /root/.ssh/install_new -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" ${nodename} "puppet agent -t" > ${nodename}.puppetrun.log 2>&1 &
+    log "The first puppet run is ongoing, you can see what the result is in the file ${nodename}.puppetrun.log"
+}
+
 
 function usage {
     echo "Usage: $0 [-y][-s SECONDS] <nodename> <mgmtname>"; exit 1;
@@ -113,10 +129,16 @@ function usage {
 
 ## Main script
 
-while getopts "ys:" option; do
+while getopts "yrns:" option; do
     case $option in
         y)
             FORCE=1
+            ;;
+        r)
+            NOREBOOT=1
+            ;;
+        n)
+            NOCLEAN=1
             ;;
         s)
             SLEEPTIME=${OPTARG}
@@ -133,9 +155,11 @@ test -z ${nodename} && usage
 test -z ${mgmtname} && usage
 log "Preparing reimaging of node ${nodename}"
 
-clean_puppet $nodename
-clean_salt $nodename $FORCE
-set_pxe_and_reboot $mgmtname
+if [ $NOCLEAN -eq 0 ]; then
+    clean_puppet $nodename
+    clean_salt $nodename $FORCE
+fi;
+test $NOREBOOT -eq 0 && set_pxe_and_reboot $mgmtname
 sign_puppet $nodename $FORCE
 sign_salt $nodename $FORCE
 
