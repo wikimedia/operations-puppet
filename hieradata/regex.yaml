@@ -114,3 +114,25 @@ lsearchd:
 rcs_eqiad:
   __regex: !ruby/regexp /^rcs100[0-9]\.eqiad\.wmnet/
   cluster: rcstream
+
+restbase_eqiad:
+  __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
+  # TODO: set up a cluster variable similar to MySQL clusters to share
+  # cassandra cluster configs between cassandra & clients
+
+  #
+  # Cassandra test cluster for RESTBase
+  cassandra::seeds:
+      - xenon.eqiad.wmnet
+      - cerium.eqiad.wmnet
+      - praseodymium.eqiad.wmnet
+
+  #
+  # RESTBase
+  #
+  restbase::seeds:
+      - xenon.eqiad.wmnet
+      - cerium.eqiad.wmnet
+      - praseodymium.eqiad.wmnet
+  restbase::logstash_host: logstash1002.eqiad.wmnet
+  restbase::cassandra_defaultConsistency: localQuorum
