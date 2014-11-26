@@ -15,13 +15,10 @@
   /etc/ocg/mw-ocg-service.js r,
   /srv/deployment/ocg/ocg/** r,
   /srv/deployment/ocg/ocg/node_modules/**.node mr,
-  <%= @temp_dir %>/** rwk,
-  <%= @output_dir %>/*.pdf rw,
-  <%= @output_dir %>/*.tex rw,
-  <%= @output_dir %>/*.txt rw,
-  <%= @output_dir %>/*.zip rw,
+  <%= @temp_dir %>/** rwlk,
+  <%= @output_dir %>/** rw,
   <%= @postmortem_dir %>/** rwk,
-  /tmp/** rwk,  
+  /tmp/** rwk,
 
   /bin/dash ix,
 
@@ -34,6 +31,7 @@
     #include <abstractions/base>
     network stream, # Used for ImageMagick tools
 
+    /usr/bin/jpegtran rm,
     /usr/bin/rsvg-convert rm,
     /usr/bin/*.im6 rm, # ImageMagick binaries
 
@@ -85,8 +83,7 @@
 
     /srv/deployment/ocg/ocg/mw-ocg-latexer/tex/** rw,
     <%= @temp_dir %>/** rwk,
-    <%= @output_dir %>/*.pdf rw,
-    <%= @output_dir %>/*.tex rw,
+    <%= @output_dir %>/** rw,
     /tmp/** rwk,
 
     /etc/texmf/** r,
