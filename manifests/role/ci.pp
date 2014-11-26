@@ -183,6 +183,22 @@ class role::ci::slave {
         mode   => '0755',
     }
 
+    # user and private key for Travis integration
+    # RT: 8866
+    user { 'nmptravis':
+        home       => '/home/npmtravis',
+        managehome => true,
+        system     => true,
+    }
+
+    file { '/home/npmtravis/.ssh/npmtravis_id_rsa':
+        ensure  => present,
+        owner   => 'npmtravis',
+        mode    => '0400',
+        source  => 'puppet:///private/ssh/ci/npmtravis_id_rsa',
+        require => User['npmtravis'],
+    }
+
     file { '/srv/localhost':
         ensure => directory,
         mode   => '0775',
