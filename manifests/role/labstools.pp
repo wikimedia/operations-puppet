@@ -64,14 +64,6 @@ class role::labs::tools {
         }
     }
 
-    class mongo inherits role::labs::tools::common {
-        include toollabs::mongo::master
-
-        system::role { 'role::labs::tools::mongo':
-            description => 'Server that hosts shared MongoDB instance'
-        }
-    }
-
     ##
     ## NOTE: Those roles are transitional, and should be removed
     ## from Wikitech entirely in favor of role::labs::tools::compute
