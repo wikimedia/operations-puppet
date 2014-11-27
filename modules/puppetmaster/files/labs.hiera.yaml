@@ -1,6 +1,6 @@
 :backends:
-  - nuyaml
   - mwyaml
+  - nuyaml
 :nuyaml:
   :datadir: /etc/puppet/hieradata
   :expand_path:
