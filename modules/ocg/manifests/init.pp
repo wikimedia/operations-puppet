@@ -15,7 +15,7 @@ class ocg (
     $service_port = 8000,
     $redis_host = 'localhost',
     $redis_port = 6379,
-    $redis_password = $::passwords::redis::main_password, # HACK: Temp fix for https://phabricator.wikimedia.org/T76111
+    $redis_password = '',
     $statsd_host = 'localhost',
     $statsd_port = 8125,
     $statsd_is_txstatsd = 0,
