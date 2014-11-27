@@ -8,7 +8,13 @@
 # This module configures Wikimedia's MediaWiki execution environment,
 # which comprises software packages and service configuration.
 #
-class mediawiki {
+# === Parameters:
+# [*log_aggregator*]
+#   Udp2log aggregation server to send logs to. Default 'udplog:8420'.
+#
+class mediawiki (
+    $log_aggregator = 'udplog:8420',
+) {
     include ::mediawiki::cgroup
     include ::mediawiki::packages
     include ::mediawiki::scap
