@@ -153,11 +153,7 @@ class gerrit::jetty ($ldap_hosts,
     }
 
     file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublished.vm':
-        source  => 'puppet:///modules/gerrit/its/templates/DraftPublished.vm',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
+        ensure  => absent,
     }
 
     file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublishedPhabricator.vm':
