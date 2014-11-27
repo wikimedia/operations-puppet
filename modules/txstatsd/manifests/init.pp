@@ -23,7 +23,7 @@
 #  }
 #
 class txstatsd($settings) {
-    package { ['python-txstatsd', 'python-twisted-web']: }
+    require_package('python-txstatsd', 'python-twisted-web', 'graphite-carbon')
 
     file { '/etc/init/txstatsd.conf':
         source => 'puppet:///modules/txstatsd/txstatsd.conf',
@@ -56,7 +56,11 @@ class txstatsd($settings) {
         subscribe => File['/etc/txstatsd/txstatsd.cfg'],
         require   => [
             File['/etc/init/txstatsd.conf'],
-            Package['python-txstatsd', 'python-twisted-web'],
+            Class[
+                  'packages::python_txstatsd',
+                  'packages::python_twisted_web',
+                  'packages::graphite_carbon'
+                  ],
             User['txstatsd'],
         ],
     }

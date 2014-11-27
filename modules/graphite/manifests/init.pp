@@ -13,8 +13,8 @@ class graphite(
     $storage_schemas,
     $storage_aggregation = {},
     $storage_dir = '/var/lib/carbon',
-) {
-    package { ['graphite-carbon', 'python-whisper']: }
+    ) {
+    require_package('graphite-carbon', 'python-whisper')
 
     $carbon_service_defaults = {
         log_updates              => false,
@@ -41,24 +41,24 @@ class graphite(
         group   => '_graphite',
         mode    => '0755',
         before  => Service['carbon'],
-        require => Package['graphite-carbon'],
+        require => Class['packages::graphite_carbon'],
     }
 
     file { '/etc/carbon/storage-schemas.conf':
         content => configparser_format($storage_schemas),
-        require => Package['graphite-carbon'],
+        require => Class['packages::graphite_carbon'],
         notify  => Service['carbon'],
     }
 
     file { '/etc/carbon/carbon.conf':
         content => configparser_format($carbon_defaults, $carbon_settings),
-        require => Package['graphite-carbon'],
+        require => Class['packages::graphite_carbon'],
         notify  => Service['carbon'],
     }
 
     file { '/etc/carbon/storage-aggregation.conf':
         content => configparser_format($storage_aggregation),
-        require => Package['graphite-carbon'],
+        require => Class['packages::graphite_carbon'],
         notify  => Service['carbon'],
     }
 
