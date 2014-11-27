@@ -64,6 +64,16 @@ class extdist(
         group     => 'extdist',
     }
 
+    git::clone { 'integration/composer':
+        ensure             => 'latest',
+        directory          => '/srv/composer',
+        branch             => 'master',
+        require            => User['extdist'],
+        recurse_submodules => true,
+        owner              => 'extdist',
+        group              => 'extdist',
+    }
+
     file { '/etc/extdist.conf':
         ensure  => present,
         content => ordered_json($ext_settings),
