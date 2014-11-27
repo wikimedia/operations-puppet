@@ -15,7 +15,7 @@ class ocg (
     $service_port = 8000,
     $redis_host = 'localhost',
     $redis_port = 6379,
-    $redis_password = $::passwords::redis::main_password, # HACK: Temp fix for https://phabricator.wikimedia.org/T76111
+    $redis_password = '',
     $statsd_host = 'localhost',
     $statsd_port = 8125,
     $statsd_is_txstatsd = 0,
@@ -26,6 +26,10 @@ class ocg (
     $postmortem_dir = '/srv/deployment/ocg/postmortem',
     $log_dir = '/srv/deployment/ocg/log'
 ) {
+    if $redis_password == '' {
+        # HACK: Temp fix for https://phabricator.wikimedia.org/T76111
+        $redis_password = $::passwords::redis::main_password
+    }
     package { 'ocg/ocg':
         provider => 'trebuchet',
     }
