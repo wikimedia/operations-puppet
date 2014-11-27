@@ -101,14 +101,4 @@ class hhvm::debug {
         source  => 'puppet:///modules/hhvm/debug/printers.py',
         require => Package['libstdc++6-4.8-dbg'],
     }
-
-    # Set sensible gdb options for debugging HHVM and load gdb helpers
-    # bundled with the HHVM source distribution.
-
-    file { '/etc/gdb/gdbinit':
-        source  => 'puppet:///modules/hhvm/debug/gdbinit',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-    }
 }
