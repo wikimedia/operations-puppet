@@ -65,11 +65,15 @@ class extdist(
         group     => 'extdist',
     }
 
+    package { 'php5-cli':
+        ensure => 'present',
+    }
+
     git::clone { 'integration/composer':
         ensure             => 'latest',
         directory          => $composer_dir,
         branch             => 'master',
-        require            => [File[$composer_dir], User['extdist']],
+        require            => [File[$composer_dir], User['extdist'], Package['php5-cli']],
         recurse_submodules => true,
         owner              => 'extdist',
         group              => 'extdist',
