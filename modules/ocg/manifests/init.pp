@@ -15,7 +15,7 @@ class ocg (
     $service_port = 8000,
     $redis_host = 'localhost',
     $redis_port = 6379,
-    $redis_password = $::passwords::redis::main_password, # HACK: Temp fix for https://phabricator.wikimedia.org/T76111
+    $redis_password = undef,
     $statsd_host = 'localhost',
     $statsd_port = 8125,
     $statsd_is_txstatsd = 0,
@@ -25,7 +25,12 @@ class ocg (
     $output_dir = '/srv/deployment/ocg/output',
     $postmortem_dir = '/srv/deployment/ocg/postmortem',
     $log_dir = '/srv/deployment/ocg/log'
-) {
+    ) {
+
+    unless $redis_password {
+        fail("An empty redis password is not admitted!")
+    }
+
     package { 'ocg/ocg':
         provider => 'trebuchet',
     }

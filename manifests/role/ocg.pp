@@ -13,7 +13,7 @@ class role::ocg::production (
         description => 'offline content generator for MediaWiki Collection extension',
     }
 
-    include passwords::redis
+    require passwords::redis
     include ::ocg
     include ::ocg::nagios
     include ::ocg::ganglia
