@@ -10,6 +10,7 @@ class extdist(
     $dist_dir = "${base_dir}/dist"
     $clone_dir = "${base_dir}/extdist"
     $src_path = "${base_dir}/src"
+    $composer_dir = "${base_dir}/composer"
     $pid_folder = '/run/extdist'
 
     $ext_settings = {
@@ -48,7 +49,7 @@ class extdist(
         require => User['extdist']
     }
 
-    file { [$dist_dir, $clone_dir, $src_path, $pid_folder]:
+    file { [$dist_dir, $clone_dir, $src_path, $pid_folder, $composer_dir]:
         ensure => directory,
         owner  => 'extdist',
         group  => 'www-data',
@@ -62,6 +63,16 @@ class extdist(
         require   => [File[$clone_dir], User['extdist']],
         owner     => 'extdist',
         group     => 'extdist',
+    }
+
+    git::clone { 'integration/composer':
+        ensure             => 'latest',
+        directory          => $composer_dir,
+        branch             => 'master',
+        require            => [File[$composer_dir], User['extdist']],
+        recurse_submodules => true,
+        owner              => 'extdist',
+        group              => 'extdist',
     }
 
     file { '/etc/extdist.conf':
