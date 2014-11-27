@@ -13,7 +13,7 @@ class mediawiki::syslog {
     # the firehose in 50-default.conf.
 
     rsyslog::conf { 'mediawiki':
-        source   => 'puppet:///modules/mediawiki/rsyslog.conf',
+        content  => template('mediawiki/rsyslog.conf.erb'),
         priority => 40,
     }
 

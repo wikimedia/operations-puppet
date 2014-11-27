@@ -52,7 +52,7 @@ class mediawiki::php {
         }
 
         file { '/etc/php5/conf.d/wmerrors.ini':
-            source  => 'puppet:///modules/mediawiki/php/wmerrors.ini',
+            content => template('mediawiki/php/wmerrors.ini.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
