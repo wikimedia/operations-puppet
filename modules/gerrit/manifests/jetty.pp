@@ -153,23 +153,27 @@ class gerrit::jetty ($ldap_hosts,
     }
 
     file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublished.vm':
-        ensure  => absent,
+        source  => 'puppet:///modules/gerrit/its/templates/DraftPublished.vm',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0755',
+        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetCreated.vm':
+        source  => 'puppet:///modules/gerrit/its/templates/PatchSetCreated.vm',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0755',
+        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/its/templates/DraftPublishedPhabricator.vm':
-        source  => 'puppet:///modules/gerrit/its/templates/DraftPublishedPhabricator.vm',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
+        ensure  => absent,
     }
 
     file { '/var/lib/gerrit2/review_site/etc/its/templates/PatchSetCreatedPhabricator.vm':
-        source  => 'puppet:///modules/gerrit/its/templates/PatchSetCreatedPhabricator.vm',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0755',
-        require => File['/var/lib/gerrit2/review_site/etc/its/templates'],
+        ensure  => absent,
     }
 
     file { '/var/lib/gerrit2/review_site/static/page-bkg.jpg':
