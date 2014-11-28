@@ -1,0 +1,6 @@
+:backends:
+  - role
+:role:
+  :datadir: 'spec/fixtures/hieradata'
+:role_hierarchy:
+  - common
