@@ -1,0 +1,6 @@
+admin::groups:
+  - FooBar1
+an_hash:
+  test2: true
+  test3:
+    another: "level"
