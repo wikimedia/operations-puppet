@@ -118,3 +118,18 @@ host virt1009 {
         filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+#  I don't know the MAC address for this since it's offline
+#host virt1010 {
+	#hardware ethernet 00:00:00:00:00:00;
+	#fixed-address virt1010.eqiad.wmnet;
+#}
+
+host virt1011 {
+	hardware ethernet f0:92:1c:05:4a:98;
+	fixed-address virt1010.eqiad.wmnet;
+}
+
+host virt1012 {
+	hardware ethernet f0:92:1c:05:bc:d8;
+	fixed-address virt1010.eqiad.wmnet;
+}
