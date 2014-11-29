@@ -1439,6 +1439,19 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     }
 
     class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
+
+    group { 'apache':
+        ensure => present,
+        system => true,
+        gid    => 48,
+    }
+
+    user { "apache":
+        managehome => false,
+        system     => true
+        uid        => 48,
+        gid        => 48,
+    }
 }
 
 node 'labstore1003.eqiad.wmnet' {
