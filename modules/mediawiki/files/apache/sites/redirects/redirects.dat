@@ -462,6 +462,9 @@ funnel	labs.wikimedia.org	https://wikitech.wikimedia.org
 # wikimedia.com redirect
 funnel	*wikimedia.com	//www.wikimedia.org
 
+# wikimedia.community redirect
+funnel	wikimedia.community	//www.wikimedia.org
+
 # wikimedia.us redirect
 funnel	*wikimedia.us	//www.wikimedia.org
 
