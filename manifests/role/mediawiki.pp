@@ -122,7 +122,7 @@ class role::mediawiki::jobrunner {
     include ::role::mediawiki::common
 
     class { '::mediawiki::jobrunner':
-        queue_servers   => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
+        queue_servers   => ['rdb1002.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
         statsd_server   => 'statsd.eqiad.wmnet:8125',
         runners_basic   => 14,
         runners_parsoid => 4,
