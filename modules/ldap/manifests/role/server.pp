@@ -19,17 +19,13 @@ class ldap::role::server::labs {
         }
         'production': {
             case $::hostname {
-                'virt1000': {
-                    $ca_name = 'GlobalSign_CA.pem'
-                    $certificate = 'ldap-eqiad.wikimedia.org'
-                }
                 'labcontrol2001': {
                     $ca_name = 'GlobalSign_CA.pem'
                     $certificate = 'ldap-codfw.wikimedia.org'
                 }
                 'neptunium': {
                     $ca_name = 'GlobalSign_CA.pem'
-                    $certificate = 'ldap-codfw.wikimedia.org'
+                    $certificate = 'ldap-eqiad.wikimedia.org'
                 }
                 'default': {
                     fail('Production realm ldap certificates for virt1000/labcontrol2001 only!')
