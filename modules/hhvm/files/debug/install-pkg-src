@@ -1,6 +1,6 @@
 #!/bin/bash
 # Shell script to install the source code for an installed Debian
-# package into /usr/local/src.
+# package into /usr/src.
 #
 # Usage: install-pkg-src [--dry-run] PACKAGE_NAME
 
@@ -15,7 +15,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 pkg="$1"
-src_dir="/usr/local/src/${pkg}"
+src_dir="/usr/src/${pkg}"
 pkg_ver="$(dpkg -s "$pkg" | grep -Po '(?<=Version: ).*')"
 src_ver="$(readlink ${src_dir}/.pkg_ver 2>/dev/null)"
 
