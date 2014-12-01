@@ -75,11 +75,6 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_poo
             description   => 'HHVM rendering',
             check_command => 'check_http_wikipedia_main',
         }
-
-        nrpe::monitor_service { 'hhvm':
-            description   => 'HHVM processes',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1: -C hhvm',
-        }
     }
 }
 
