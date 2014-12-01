@@ -12,8 +12,12 @@
 # [*log_aggregator*]
 #   Udp2log aggregation server to send logs to. Default 'udplog:8420'.
 #
+# [*logstash_syslog*]
+#   Logstash aggregation server to forward syslog events to. Default undef.
+#
 class mediawiki (
-    $log_aggregator = 'udplog:8420',
+    $log_aggregator  = 'udplog:8420',
+    $logstash_syslog = undef,
 ) {
     include ::mediawiki::cgroup
     include ::mediawiki::packages
