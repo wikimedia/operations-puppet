@@ -16,3 +16,6 @@ mediawiki_memcached_servers:
   - '10.64.0.194:11211:1'
   - '10.64.0.195:11211:1'
 
+# TODO: setup something to loadbalance the logstash hosts rather than relying
+# on a single node in the cluster.
+"mediawiki::forward_syslog": "logstash1001.eqiad.wmnet:10514"
