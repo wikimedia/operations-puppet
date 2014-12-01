@@ -13,16 +13,30 @@ $outchannel apache2, /var/log/apache2.log, 100000000, /usr/sbin/logrotate -f /et
 
 :programname, isequal, "apache2" :omfile:$apache2
 & @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+<% if scope['::mediawiki::forward_syslog'] -%>
+& @<%= scope['::mediawiki::forward_syslog'] %>
+<% end -%>
 & ~
 
 # Forward HHVM logs and stack traces to log aggregator.
 :programname, isequal, "hhvm" @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+<% if scope['::mediawiki::forward_syslog'] -%>
+& @<%= scope['::mediawiki::forward_syslog'] %>
+<% end -%>
 & ~
 
 :syslogtag, isequal, "hhvm-fatal:" @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+<% if scope['::mediawiki::forward_syslog'] -%>
+& @<%= scope['::mediawiki::forward_syslog'] %>
+<% end -%>
 & ~
 
 # Forward messages logged by the kernel and containing the string
 # "hhvm" (such as warnings that the process was killed or respawned)
 # to the log aggregator.
-if $msg contains "hhvm" and $programname == "kernel" then @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+if $msg contains "hhvm" and $programname == "kernel" then {
+    @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+<% if scope['::mediawiki::forward_syslog'] -%>
+    @<%= scope['::mediawiki::forward_syslog'] %>
+<% end -%>
+}
