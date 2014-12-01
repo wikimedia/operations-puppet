@@ -19,7 +19,8 @@ class extdist(
         'DIST_PATH' => "${dist_dir}/extensions",
         'LOG_FILE'  => $log_path,
         'SRC_PATH'  => $src_path,
-        'PID_FILE'  => "${pid_folder}/pid.lock"
+        'PID_FILE'  => "${pid_folder}/pid.lock",
+        'COMPOSER'  => "${composer_dir}/vendor/bin/composer"
     }
 
     $skin_settings = {
@@ -28,7 +29,8 @@ class extdist(
         'GIT_URL'   => 'https://gerrit.wikimedia.org/r/mediawiki/skins/%s',
         'LOG_FILE'  => $log_path,
         'SRC_PATH'  => $src_path,
-        'PID_FILE'  => "${pid_folder}/skinpid.lock"
+        'PID_FILE'  => "${pid_folder}/skinpid.lock",
+        'COMPOSER'  => "${composer_dir}/vendor/bin/composer"
     }
 
     user { 'extdist':
