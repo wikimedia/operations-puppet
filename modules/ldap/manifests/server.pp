@@ -196,7 +196,7 @@ set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-ce
     # TODO: make this critical (paging) again once confirmed fixed
     monitoring::service { 'ldap cert':
         description   => 'Certificate expiration',
-        check_command => "check_ssl_ldap!${fqdn}!${ca_name}",
+        check_command => "check_ssl_ldap!${certificate}!${ca_name}",
         critical      => false
     }
 
