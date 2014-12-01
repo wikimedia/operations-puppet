@@ -78,7 +78,7 @@ class role::mediawiki::webserver( $pool, $workers_limit = undef, $additional_poo
 
         nrpe::monitor_service { 'hhvm':
             description   => 'HHVM processes',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1: -C hhvm',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
         }
     }
 }
