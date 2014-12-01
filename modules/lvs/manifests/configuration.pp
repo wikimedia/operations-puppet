@@ -391,6 +391,7 @@ class lvs::configuration {
             'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['text'][$::site],
             'port' => 443,
+            'scheduler' => 'sh',
             'bgp' => 'no',
             'depool-threshold' => '.5',
             'monitors' => {
@@ -417,6 +418,7 @@ class lvs::configuration {
             'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['bits'][$::site],
             'port' => 443,
+            'scheduler' => 'sh',
             'bgp' => 'no',
             'depool-threshold' => '.5',
             'monitors' => {
@@ -443,6 +445,7 @@ class lvs::configuration {
             'sites' => [ "eqiad", "esams", "ulsfo" ],
             'ip' => $service_ips['upload'][$::site],
             'port' => 443,
+            'scheduler' => 'sh',
             'bgp' => "no",
             'depool-threshold' => ".5",
             'monitors' => {
@@ -469,6 +472,7 @@ class lvs::configuration {
             'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['mobile'][$::site],
             'port' => 443,
+            'scheduler' => 'sh',
             'bgp' => "no",
             'depool-threshold' => ".6",
             'monitors' => {
