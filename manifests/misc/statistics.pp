@@ -88,14 +88,9 @@ class misc::statistics::packages {
         'zpubsub',
         # libwww-perl for wikistats stuff
         'libwww-perl',
-        'libgdal1-dev', # Requested by lzia for rgdal
-        'libproj-dev', # Requested by lzia for rgdal
         'php5-cli',
         'php5-mysql',
         'sqlite3', # For storing and interacting with intermediate results
-        'libbz2-dev', # for compiling some python libs.  RT 8278
-        'libboost-regex-dev',  # Ironholds wants these
-        'libboost-system-dev',
     ]:
         ensure => 'latest',
     }
@@ -105,6 +100,23 @@ class misc::statistics::packages {
     class { '::mysql': }
 }
 
+# packages used on stat1002 and stat1003 for analytics
+# user utilities.
+class misc::statistics::packages::utilities {
+    package { [
+        'libgdal1-dev', # Requested by lzia for rgdal
+        'libproj-dev', # Requested by lzia for rgdal
+        'libbz2-dev', # for compiling some python libs.  RT 8278
+        'libboost-regex-dev',  # Ironholds wants these
+        'libboost-system-dev',
+        'libyaml-cpp0.3',
+        'libyaml-cpp0.3-dev',
+        'libgoogle-glog-dev',
+        'libboost-iostreams-dev',
+    ]:
+        ensure => 'latest',
+    }
+}
 
 # Packages needed for various python stuffs
 # on statistics servers.

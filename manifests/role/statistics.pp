@@ -19,6 +19,7 @@ class role::statistics::cruncher inherits role::statistics {
     include misc::statistics::dataset_mount
     include misc::statistics::mediawiki
     include misc::statistics::plotting
+    include misc::statistics::packages::utilities
     # Aaron Halfaker (halfak) wants MongoDB for his project.
     include misc::statistics::db::mongo
     # Aaron Halfaker (halfak) wants python{,3}-dev environments for module
@@ -66,6 +67,7 @@ class role::statistics::private inherits role::statistics {
     include misc::statistics::dataset_mount
     include misc::statistics::mediawiki
     include misc::statistics::plotting
+    include misc::statistics::packages::utilities
     include misc::udp2log::udp_filter
     # rsync logs from logging hosts
     # wikistats code is run here to
