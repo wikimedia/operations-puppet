@@ -239,8 +239,10 @@ class certificates::base {
     ## and be mutually compatible up to Trusty; new versions will need
     ## validation before they are cleared.
 
-    if versioncmp($::lsbdistrelease, '14.04') > 0 {
-        fail("The apparmor profile for certificates::base is only known to work up to Trusty")
+    if (lsbdistid == 'Ubuntu') {
+        if versioncmp($::lsbdistrelease, '14.04') > 0 {
+            fail("The apparmor profile for certificates::base is only known to work up to Trusty")
+        }
     }
     file { '/etc/apparmor.d/abstractions/ssl_certs':
         ensure => file,
