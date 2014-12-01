@@ -18,6 +18,7 @@ else
   passwd -ld root
   passwd -ld ubuntu
   printf "%s\t%s\t%s\t%s\n" cloud-init cloud-init/datasources multiselect  "ConfigDrive, Ec2" | debconf-set-selections
+  mount -t proc proc /proc
   dpkg-reconfigure --frontend=noninteractive cloud-init
   apt-get update
   /root/install_sudo.sh
@@ -26,6 +27,7 @@ else
   /etc/init.d/salt-minion stop
   /etc/init.d/puppet stop
   /usr/bin/killall puppet
+  /usr/bin/killall salt-minion
   mv /etc/puppet/puppet.conf.install /etc/puppet/puppet.conf
   mv /etc/default/puppet.install /etc/default/puppet
   rm /etc/ssh/ssh_host*key*
@@ -37,6 +39,8 @@ else
   useradd -r -d /var/lib/icinga -s /bin/false icinga
   rm -f /etc/resolv.conf
   rm -f /etc/resolvconf/resolv.conf.d/original
+  umount /proc
+  sleep 5
 
 fi
 
