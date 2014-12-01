@@ -72,7 +72,7 @@ class hhvm::debug {
 
     ## Source code
 
-    # Install HHVM's source files to /usr/local/src/hhvm.
+    # Install HHVM's source files to /usr/src/hhvm.
 
     package { 'dpkg-dev':
         ensure => present,
