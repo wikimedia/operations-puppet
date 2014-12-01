@@ -1706,6 +1706,16 @@ host labstore1003 {
 	fixed-address labstore1003.eqiad.wmnet;
 }
 
+host labstore2001 {
+    hardware ethernet 78:2b:cb:76:1c:d2;
+	fixed-address labstore2001.eqiad.wmnet;
+}
+
+host labstore2002 {
+    hardware ethernet 78:2b:cb:75:8e:43;
+	fixed-address labstore2002.eqiad.wmnet;
+}
+
 host labsdb1004 {
 	hardware ethernet d4:ae:52:76:66:59;
 	fixed-address labsdb1004.eqiad.wmnet;
