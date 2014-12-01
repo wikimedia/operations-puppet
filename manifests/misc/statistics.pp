@@ -96,9 +96,6 @@ class misc::statistics::packages {
         'libbz2-dev', # for compiling some python libs.  RT 8278
         'libboost-regex-dev',  # Ironholds wants these
         'libboost-system-dev',
-        'libyaml-cpp0.3',
-        'libyaml-cpp0.3-dev',
-        'libgoogle-glog-dev',
     ]:
         ensure => 'latest',
     }
