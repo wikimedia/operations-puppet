@@ -20,6 +20,7 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
             metric          => "servers.${::hostname}.hhvmHealthCollector.queued.value",
             warning         => 10,
             critical        => 80,
+            percentage      => 30,
             nagios_critical => false
         }
 
@@ -28,6 +29,7 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
             metric          => "servers.${::hostname}.hhvmHealthCollector.load.value",
             warning         => $::mediawiki::hhvm::max_threads*0.6,
             critical        => $::mediawiki::hhvm::max_threads * 0.9,
+            percentage      => 30,
             nagios_critical => false
         }
 
