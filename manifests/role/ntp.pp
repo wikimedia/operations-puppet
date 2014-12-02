@@ -101,6 +101,11 @@ class role::ntp {
             query_acl => $neon_acl,
         }
 
+        ferm::service { 'ntp':
+            proto => 'udp',
+            port  => 'ntp',
+        }
+
         monitoring::service { 'ntp peers':
             description   => 'NTP peers',
             check_command => 'check_ntp_peer!0.1!0.5';
