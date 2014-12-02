@@ -1,4 +1,3 @@
-@monitoring::group { 'appserver_hhvm_eqiad':     description => 'eqiad application servers (HHVM)' }
 @monitoring::group { 'appserver_eqiad':     description => 'eqiad application servers' }
 @monitoring::group { 'api_appserver_eqiad': description => 'eqiad API application servers' }
 @monitoring::group { 'imagescaler_eqiad':   description => 'eqiad image scalers' }
