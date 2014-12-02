@@ -99,12 +99,17 @@ node 'analytics1003.eqiad.wmnet' {
     include standard
 
     include role::analytics
-    include role::analytics::kafkatee::webrequest::mobile
-    include role::analytics::kafkatee::webrequest::edits
-    include role::analytics::kafkatee::webrequest::5xx
-    include role::analytics::kafkatee::webrequest::api
-    include role::analytics::kafkatee::webrequest::glam_nara
-    include role::analytics::kafkatee::webrequest::webstatscollector
+
+    # Disabling these for now.
+    # analytics1003 is acting up since the Trusty upgrade. I halts with:
+    #   BUG: unable to handle kernel NULL pointer dereference at 00000000000001be
+    #
+    # include role::analytics::kafkatee::webrequest::mobile
+    # include role::analytics::kafkatee::webrequest::edits
+    # include role::analytics::kafkatee::webrequest::5xx
+    # include role::analytics::kafkatee::webrequest::api
+    # include role::analytics::kafkatee::webrequest::glam_nara
+    # include role::analytics::kafkatee::webrequest::webstatscollector
 }
 
 # analytics1009 used to be the standby NameNode,
