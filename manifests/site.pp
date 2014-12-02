@@ -2647,7 +2647,7 @@ node 'tin.eqiad.wmnet' {
     include mysql
     include role::labsdb::manager
     include ssh::hostkeys-collect
-    include role::apachesync
+    include role::apache::helper_scripts
     include role::releases::upload
 
     class { 'admin':
