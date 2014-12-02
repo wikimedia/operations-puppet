@@ -97,8 +97,8 @@
     match = "<li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_.-]+\" target=\"_blank\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>"
     html  = "<li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>"
 [commentlink "its-phabricator"]
-    match =  "\\bT(\\d+)\\b"
-    link = https://phabricator.wikimedia.org/T$1
+    match =  (^|\\s|[:,!?\\(\\[\\{])T(\\d+)\\b
+    html = "$1<a href=\"https://phabricator.wikimedia.org/T$2\">$2</a>"
 [mimetype "application/javascript"]
     safe = true
 [mimetype "application/x-php"]
