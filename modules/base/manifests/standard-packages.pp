@@ -1,4 +1,15 @@
-class base::standard-packages {
+# == Class: base::standard-packages
+#
+# Sets up standard packages that might be useful on all hosts.
+#
+# === Parameters
+#
+# [*atop_keeplogs_days*]
+#   Number of days to keep atop logs for.
+#
+class base::standard-packages(
+    $atop_logrotate_days = 7,
+){
 
     if ubuntu_version('>= trusty') {
         package { [ "linux-tools-${::kernelrelease}", 'linux-tools-generic' ]:
@@ -50,6 +61,11 @@ class base::standard-packages {
         # DEINSTALL these packages
         package { [ 'mlocate', 'os-prober' ]:
             ensure => absent,
+        }
+
+        file { '/etc/logrotate.d/atop':
+            require => Package['atop'],
+            content => template('base/atop.logrotate.erb'),
         }
     }
 }
