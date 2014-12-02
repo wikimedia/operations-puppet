@@ -1243,10 +1243,16 @@ node 'helium.eqiad.wmnet' {
     include role::backup::storage
 }
 
+# old blog server; currently left unpuppetized until it dies off
 node 'holmium.wikimedia.org' {
 
     include admin
     include base::firewall
+
+    # allow HTTP access to WMF OIT
+    ferm::rule { 'blog-http':
+        rule => 'proto tcp dport (http https) saddr 198.73.209.0/24 ACCEPT;'
+    }
 
     include standard
 
