@@ -49,7 +49,7 @@ class cassandra::defaults {
         undef   => [],
         default => $::cassandra_additional_jvm_opts,
     }
-    $dc                               = pick($::cassandra_dc,                               'dc1')
+    $dc                               = pick($::cassandra_dc,                               'datacenter1')
     $rack                             = pick($::cassandra_rack,                             'rack1')
 
     $yaml_template                    = pick($::cassandra_yaml_template,                    "${module}/cassandra.yaml.erb")
