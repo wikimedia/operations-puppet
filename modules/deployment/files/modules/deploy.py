@@ -242,6 +242,15 @@ def deployment_server_init():
             if status != 0:
                 ret_status = 1
                 continue
+            # Ensure checkout-submodules is also configured for trigger
+            if config['checkout_submodules']:
+                cmd = 'git config deploy.checkout-submodules true'
+            else:
+                cmd = 'git config deploy.checkout-submodules false'
+            status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
+                    runas=deploy_user, umask=002)
+            if status != 0:
+                ret_status = 1
     return ret_status
 
 
