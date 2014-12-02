@@ -17,3 +17,4 @@ restbase::seeds:
     - praseodymium.eqiad.wmnet
 restbase::logstash_host: logstash1002.eqiad.wmnet
 restbase::cassandra_defaultConsistency: localQuorum
+restbase::statsd_host: statsd.eqiad.wmnet
