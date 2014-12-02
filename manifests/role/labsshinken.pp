@@ -14,10 +14,10 @@ class role::labs::shinken(
     }
 
     # Basic labs instance & infrastructure monitoring
-    shinken::services { 'basic-infra-checks':
+    shinken::config { 'basic-infra-checks':
         source => 'puppet:///modules/shinken/labs/basic-infra-checks.cfg',
     }
-    shinken::services { 'basic-instance-checks':
+    shinken::config { 'basic-instance-checks':
         source => 'puppet:///modules/shinken/labs/basic-instance-checks.cfg',
     }
 

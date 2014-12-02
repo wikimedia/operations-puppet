@@ -1,12 +1,12 @@
-# = Define: shinken::services
-# Setup a shinken services definition file
-define shinken::services(
+# = Define: shinken::config
+# Setup a shinken definition file
+define shinken::config(
     $ensure  = present,
     $source  = undef,
 ) {
     include shinken
 
-    file { "/etc/shinken/services/$title.cfg":
+    file { "/etc/shinken/customconfig/$title.cfg":
         ensure  => $ensure,
         source  => $source,
         owner   => 'shinken',

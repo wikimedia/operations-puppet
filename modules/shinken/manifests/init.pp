@@ -55,7 +55,7 @@ class shinken(
         require => Package['shinken'],
     }
 
-    file { '/etc/shinken/services':
+    file { '/etc/shinken/customconfig':
         ensure  => directory,
         owner   => 'shinken',
         group   => 'shinken',
