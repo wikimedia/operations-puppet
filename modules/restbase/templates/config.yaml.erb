@@ -22,3 +22,6 @@ logging:
   - type: gelf
     host: <%= @logstash_host %>
     port: <%= @logstash_port %>
+
+monitoring:
+  statsdHost: <%= @statsd_host %>

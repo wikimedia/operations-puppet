@@ -21,6 +21,8 @@
 #   GELF logging host. Default: localhost
 # [*logstash_port*]
 #   GELF logging port. Default: 12201
+# [*statsd_host*]
+#   statsd host name. Default: localhost
 #
 class restbase(
     $cassandra_user = 'cassandra',
@@ -30,6 +32,7 @@ class restbase(
     $port           = 7231,
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
+    $statsd_host    = 'localhost',
 ) {
     ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
