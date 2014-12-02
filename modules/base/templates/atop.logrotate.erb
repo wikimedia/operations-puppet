@@ -1,0 +1,17 @@
+# atop logrotate configuration file
+
+/var/log/atop.log {
+    rotate <%= @atop_logrotate_days %>
+    daily
+    nocompress
+    nocreate
+    missingok
+    prerotate
+        if pidof atop 2>&1 > /dev/null; then
+            invoke-rc.d --quiet atop stop 2>&1 > /dev/null
+        fi
+    endscript
+    postrotate
+        invoke-rc.d --quiet atop start 2>&1 > /dev/null
+    endscript
+}
