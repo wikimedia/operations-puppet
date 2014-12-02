@@ -198,8 +198,6 @@ class lvs::configuration {
             },
             'api' => {
             },
-            'hhvm_api' => {
-            },
             'bits' => {
             },
             'search_pool1' => {},

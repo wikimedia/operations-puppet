@@ -144,9 +144,7 @@ class role::cache::configuration {
         $backends = {
             'production' => {
                 'appservers'        => ['1.1.1.1', '2.2.2.2',],
-                'hhvm_appservers'   => ['1.1.1.1', '2.2.2.2',],
                 'api'               => ['1.1.1.1', '2.2.2.2',],
-                'hhvm_api'          => ['1.1.1.1', '2.2.2.2',],
                 'rendering'         => ['1.1.1.1', '2.2.2.2',],
                 'bits' => {
                     'eqiad' => flatten(['1.1.1.1', '2.2.2.2',]),
@@ -166,19 +164,9 @@ class role::cache::configuration {
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
-                'hhvm_appservers' => {
-                    'eqiad' => [
-                        '10.68.17.208', # deployment-mediawiki02
-                    ],
-                },
                 'api' => {
                     'eqiad' => [
                         '10.68.17.96',  # deployment-mediawiki01
-                        '10.68.17.208', # deployment-mediawiki02
-                    ],
-                },
-                'hhvm_api' => {
-                    'eqiad' => [
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
