@@ -26,6 +26,10 @@
       "redirectUrl": "https://old-bugzilla.wikimedia.org/attachment.cgi?$2"
     },
     {
+      "pattern": "(bugs|bugzilla).wikimedia.org/show_bug.cgi\\?id=([A-Za-z0-9<>.$\/_-]+)$",
+      "redirectUrl": "https://old-bugzilla.wikimedia.org/show_bug.cgi?id=$2"
+    },
+    {
       "pattern": "(bugs|bugzilla).wikimedia.org/[a-zA-Z_]+.cgi(\\?.*)$",
       "redirectUrl": "https://<%= @phab_host %>/"
     },
