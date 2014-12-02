@@ -165,6 +165,8 @@ class role::deployment::deployment_servers::production {
     include role::deployment::deployment_servers::common
     include network::constants
     include wikitech::wiki::passwords
+    include apache::helper_scripts
+    include rsync::server
 
     file { '/srv/deployment':
         ensure => directory,
