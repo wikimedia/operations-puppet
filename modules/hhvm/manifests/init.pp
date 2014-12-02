@@ -99,7 +99,7 @@ class hhvm(
         date => { timezone => 'UTC' },
         hhvm => {
             dynamic_extension_path   => '/usr/lib/x86_64-linux-gnu/hhvm/extensions/current',
-            dynamic_extensions       => [ 'fss.so', 'luasandbox.so', 'wikidiff2.so' ],
+            dynamic_extensions       => [ 'fss.so', 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ],
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             include_path             => '.:/usr/share/php',
