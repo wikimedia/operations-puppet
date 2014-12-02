@@ -92,6 +92,9 @@ class role::analytics::kafka::config {
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host   = '239.192.1.45'
         $ganglia_port   = 8649
+        # TODO: use variables for graphite server from somewhere?
+        $graphite_host  = 'tungsten.wikimedia.org'
+        $graphite_port  = 2003
 
         # Increase ulimit for production kafka.
         $nofiles_ulimit = 65536
@@ -178,7 +181,8 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     # Include Kafka Server Jmxtrans class
     # to send Kafka Broker metrics to Ganglia.
     class { '::kafka::server::jmxtrans':
-        ganglia => "${ganglia_host}:${ganglia_port}",
+        ganglia  => "${ganglia_host}:${ganglia_port}",
+        graphite => "${graphite_host}:${graphite_port}",
     }
 
     # Generate icinga alert if this jmxtrans instance is not running.
