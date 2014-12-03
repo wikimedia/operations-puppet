@@ -15,8 +15,11 @@
   /etc/ocg/mw-ocg-service.js r,
   /srv/deployment/ocg/ocg/** r,
   /srv/deployment/ocg/ocg/node_modules/**.node mr,
+  <%= @temp_dir %> r,
   <%= @temp_dir %>/** rwlk,
+  <%= @output_dir %> r,
   <%= @output_dir %>/** rw,
+  <%= @postmortem_dir %> r,
   <%= @postmortem_dir %>/** rwk,
   /tmp/** rwk,
 
