@@ -41,10 +41,14 @@ class mediawiki::packages::php5 {
     if ubuntu_version('precise') {
         package { [
             'libmemcached11',  # Formerly a dependency for php5-memcached
-            'php5-igbinary',   # No longer in use
             'php5-wmerrors',   # Not packaged for Trusty
         ]:
             ensure => present,
         }
+    }
+
+    # No longer in use
+    package { 'php5-igbinary':
+        ensure => absent,
     }
 }

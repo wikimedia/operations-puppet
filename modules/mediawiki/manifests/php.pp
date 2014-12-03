@@ -42,15 +42,11 @@ class mediawiki::php {
         require => Package['php-mail'],
     }
 
-    if ubuntu_version('precise') {
-        file { '/etc/php5/conf.d/igbinary.ini':
-            source  => 'puppet:///modules/mediawiki/php/igbinary.ini',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => Package['php5-igbinary'],
-        }
+    file { '/etc/php5/conf.d/igbinary.ini':
+        ensure => absent,
+    }
 
+    if ubuntu_version('precise') {
         file { '/etc/php5/conf.d/wmerrors.ini':
             content => template('mediawiki/php/wmerrors.ini.erb'),
             owner   => 'root',
