@@ -172,7 +172,17 @@ class base::firewall($ensure = 'present') {
     }
 }
 
-class base {
+# == Class: base
+#
+# Contains base things, useful for base systems everywhere
+#
+# === Parameters
+#
+# [*acct_keeplogs_days*]
+#   Number of days to keep pacct logs for
+class base(
+    $acct_keeplogs_days = 7,
+){
     include apt
     include apt::update
 
@@ -202,11 +212,11 @@ class base {
         # Labs instances /var is quite small, provide our own default
         # to keep less records (bug 69604).
         file { '/etc/default/acct':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/base/labs-acct.default',
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('base/acct.default.erb'),
         }
     } else {
         $certname = undef
