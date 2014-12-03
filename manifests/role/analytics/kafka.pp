@@ -93,8 +93,9 @@ class role::analytics::kafka::config {
         $ganglia_host   = '239.192.1.45'
         $ganglia_port   = 8649
         # TODO: use variables for graphite server from somewhere?
-        $graphite_host  = 'tungsten.eqiad.wmnet'
-        $graphite_port  = 2003
+        $statsd_host  = 'statsd.eqiad.wmnet'
+        $statsd_port  = 8125
+
 
         # Increase ulimit for production kafka.
         $nofiles_ulimit = 65536
@@ -179,10 +180,10 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     }
 
     # Include Kafka Server Jmxtrans class
-    # to send Kafka Broker metrics to Ganglia.
+    # to send Kafka Broker metrics to Ganglia and statsd.
     class { '::kafka::server::jmxtrans':
         ganglia  => "${ganglia_host}:${ganglia_port}",
-        graphite => "${graphite_host}:${graphite_port}",
+        statsd   => "${statsd_host}:${statsd_port}",
     }
 
     # Generate icinga alert if this jmxtrans instance is not running.
