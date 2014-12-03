@@ -408,6 +408,11 @@ host calcium {
 	fixed-address calcium.wikimedia.org;
 }
 
+host californium {
+	hardware ethernet 84:2b:2b:fd:b9:f6;
+	fixed-address californium.wikimedia.org;
+}
+
 host carbon {
 	hardware ethernet 78:2b:cb:09:0e:a0;
 	fixed-address carbon.wikimedia.org;
