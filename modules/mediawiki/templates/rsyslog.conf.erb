@@ -2,34 +2,40 @@
 # This file is managed by Puppet
 
 # Emulate MediaWiki's wfDebugLog / wfErrorLog format
-$template MediaWiki,"%programname% %timegenerated% %HOSTNAME%: %msg%\n"
+template(name="MediaWiki" type="string" string="%programname% %timegenerated% %HOSTNAME%: %msg%\n")
 
 # The trailing tilde in the filter definitions below excludes
 # the messages from further processing.
 
-# Forward Apache to /var/log/apache2.log and log aggregator.
 # Rotate /var/log/apache2.log when it exceeds 100MB.
 $outchannel apache2, /var/log/apache2.log, 100000000, /usr/sbin/logrotate -f /etc/logrotate.d/mediawiki_apache
 
-:programname, isequal, "apache2" :omfile:$apache2
-& @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+# Forward Apache to /var/log/apache2.log and log aggregator.
+if $programname == "apache2" then {
+    :omfile:$apache2
+    @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
 <% if scope['::mediawiki::forward_syslog'] -%>
-& @<%= scope['::mediawiki::forward_syslog'] %>
+    @<%= scope['::mediawiki::forward_syslog'] %>
 <% end -%>
-& ~
+    stop
+}
 
 # Forward HHVM logs and stack traces to log aggregator.
-:programname, isequal, "hhvm" @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+if $programname == "hhvm" then {
+    @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
 <% if scope['::mediawiki::forward_syslog'] -%>
-& @<%= scope['::mediawiki::forward_syslog'] %>
+    @<%= scope['::mediawiki::forward_syslog'] %>
 <% end -%>
-& ~
+    stop
+}
 
-:syslogtag, isequal, "hhvm-fatal:" @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+if $syslogtag == "hhvm-fatal" then {
+    @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
 <% if scope['::mediawiki::forward_syslog'] -%>
-& @<%= scope['::mediawiki::forward_syslog'] %>
+    @<%= scope['::mediawiki::forward_syslog'] %>
 <% end -%>
-& ~
+    stop
+}
 
 # Forward messages logged by the kernel and containing the string
 # "hhvm" (such as warnings that the process was killed or respawned)
