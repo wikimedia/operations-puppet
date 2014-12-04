@@ -372,6 +372,7 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
         port                 => '51234',
         log_directory        => $lucene_log_directory,
         monitor_packet_loss  => false,
+        monitor_log_age      => false,
     }
 }
 # == Class role::logging::udp2log::erbium
