@@ -2168,6 +2168,7 @@ node 'palladium.eqiad.wmnet' {
     include role::access_new_install
     include role::puppetmaster::frontend
     include role::pybal_config
+    include misc::monitoring::ori_weekend_commits
 
     $domain_search = [
         'wikimedia.org',
