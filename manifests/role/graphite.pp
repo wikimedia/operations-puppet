@@ -237,6 +237,20 @@ class role::graphite::production {
         check_window => 100,
         over         => true
     }
+
+    # Use graphite's anomaly detection support.
+    monitoring::graphite_anomaly { 'kafka-broker-MessagesIn-anomaly':
+        description  => 'Kafka Broker Messages In Per Second',
+        metric       => 'sumSeries(kafka.*.kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.OneMinuteRate.value)',
+        # check over the 60 data points (an hour?) and:
+        # - alert warn if more than 30 are under the confidence band
+        # - alert critical if more than 45 are under the confidecne band
+        check_window => 60,
+        warning      => 30,
+        critical     => 45,
+        under        => true,
+        group        => 'analytics_eqiad',
+    }
 }
 
 # == Class: role::graphite::labmon
