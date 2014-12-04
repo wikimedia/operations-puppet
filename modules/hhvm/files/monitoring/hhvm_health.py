@@ -5,10 +5,14 @@
 
 """
 import json
+import logging
 import re
 import sys
 import time
 import urllib2
+
+
+logging.basicConfig(level=logging.INFO, stream=sys.stderr)
 
 
 def flatten(mapping, prefix=''):
@@ -27,10 +31,13 @@ class HealthStats(object):
         self.update()
 
     def update(self):
-        req = urllib2.urlopen(self.url)
-        res = flatten(json.load(req), 'HHVM.')
-        self.data.update(res)
-        self.last_fetched = time.time()
+        try:
+            req = urllib2.urlopen(self.url)
+            res = flatten(json.load(req), 'HHVM.')
+            self.data.update(res)
+            self.last_fetched = time.time()
+        except (AttributeError, EnvironmentError, ValueError):
+            logging.exception('Failed to update stats:')
 
     def expired(self):
         return time.time() - self.last_fetched > self.expiry
@@ -72,7 +79,7 @@ def self_test():
         for metric in metrics:
             name = metric['name']
             call_back = metric['call_back']
-            print '%s: %s' % (name, call_back(name))
+            logging.info('%s: %s', name, call_back(name))
         time.sleep(5)
 
 
