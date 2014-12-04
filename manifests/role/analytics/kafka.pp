@@ -210,6 +210,8 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 
     # Use graphite's anomaly detection support.
     monitoring::graphite_anomaly { 'kafka-broker-MessagesIn-anomaly':
+        # moving this to role::graphite::production since it is not a node based metric.
+        ensure       => 'absent',
         description  => 'Kafka Broker Messages In Per Second',
         metric       => 'sumSeries(kafka.*.kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.OneMinuteRate.value)',
         # check over the 60 data points (an hour?) and:
