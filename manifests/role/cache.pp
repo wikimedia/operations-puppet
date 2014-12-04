@@ -413,7 +413,6 @@ class role::cache {
         $varnish_name = 'frontend'
     ) inherits role::cache::varnish::kafka
     {
-
         # Experiment with lowering timeout.  We are
         # seeing message drops from esams during high
         # load time on caches with high traffic (bits and upload).
@@ -426,8 +425,7 @@ class role::cache {
             'cp3022' => 2000,
             default  => 30000,
         }
-
-        varnishkafka::instance { $varnish_name:
+        varnishkafka::instance { 'webrequest':
             brokers                      => $kafka_brokers,
             topic                        => $topic,
             format_type                  => 'json',
@@ -456,7 +454,7 @@ class role::cache {
             log_statistics_interval      => 15,
         }
 
-        varnishkafka::monitor { $varnish_name:
+        varnishkafka::monitor { 'webrequest':
             # The primary webrequest varnishkafka instance was formerly the
             # only one running, so we don't prefix its Ganglia metric keys.
             key_prefix => '',
