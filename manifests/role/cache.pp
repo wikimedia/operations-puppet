@@ -465,6 +465,14 @@ class role::cache {
             critical    => '30.0',
             require     => Varnishkafka::Monitor[$varnish_name],
         }
+
+        # Test using logster to send varnishkafka stats to statsd -> graphite.
+        # This may be moved into the varnishkafka module.
+        logster::job { 'varnishkafka-webrequest':
+            parser          => 'JsonParser',
+            logfile         => "/var/cache/varnishkafka/webrequest.stats.json",
+            logster_options => '--statsd-host=statsd.eqiad.wmnet:8125 --metric-prefix=varnishkafka.$HOSTNAME.webrequest'
+        }
     }
 
     # == Class varnish::kafka::statsv
