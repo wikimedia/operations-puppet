@@ -191,6 +191,7 @@ class role::eventlogging::monitoring {
 
 class role::eventlogging::graphite {
     include ::eventlogging
+    include ::eventlogging::monitoring
 
     eventlogging::service::consumer { 'graphite':
         input  => 'tcp://vanadium.eqiad.wmnet:8600',
