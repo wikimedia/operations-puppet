@@ -1,4 +1,3 @@
 hhvm::extra::fcgi:
   hhvm:
-    server:
-      stat_cache: true
+    check_sym_link: false
