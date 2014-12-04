@@ -29,11 +29,11 @@ class role::analytics::kafka::config {
     if ($::realm == 'labs') {
         # TODO: Make hostnames configurable via labs global variables.
         $cluster_config = {
-            'main'     => {
+            'eqiad'    => {
                 'kafka-main1.eqiad.wmflabs'     => { 'id' => 1 },
                 'kafka-main2.eqiad.wmflabs'     => { 'id' => 2 },
             },
-            'external'                          => {
+            'external' => {
                 'kafka-external1.eqiad.wmflabs' => { 'id' => 10 },
             },
         }
