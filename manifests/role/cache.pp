@@ -488,7 +488,7 @@ class role::cache {
             format_type       => 'json',
             topic             => 'statsv',
             varnish_name      => $varnish_name,
-            varnish_opts      => { 'm' => 'RxURL:^/statsv/', },
+            varnish_opts      => { 'm' => 'RxURL:^/statsv', },
             # By requiring 2 ACKs per message batch, we survive a
             # single broker dropping out of its leader role,
             # without seeing lost messages.
