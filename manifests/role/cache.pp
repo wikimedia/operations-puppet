@@ -413,7 +413,7 @@ class role::cache {
         $varnish_name = 'frontend'
     ) inherits role::cache::varnish::kafka
     {
-        varnishkafka::instance { $varnish_name:
+        varnishkafka::instance { 'webrequest':
             brokers                      => $kafka_brokers,
             topic                        => $topic,
             format_type                  => 'json',
