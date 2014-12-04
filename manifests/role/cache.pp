@@ -668,6 +668,19 @@ class role::cache {
         $mma1 = 0x540000000000
         $mma2 = 0x580000000000
         $mma3 = 0x5C0000000000
+
+        # These regexes are for optimization of PURGE traffic by having
+        #   non-upload sites ignore upload purges and having upload
+        #   ignore everything but upload purges via purge_host_regex
+        #   in child classes where warranted.
+        $purge_host_only_upload_re = $::realm ? {
+            'production' => '^upload\.wikimedia\.org$',
+            'labs'       => '^upload\.beta\.wmflabs\.org$',
+        }
+        $purge_host_not_upload_re = $::realm ? {
+            'production' => '^(?!upload\.wikimedia\.org)',
+            'labs' => '^(?!upload\.beta\.wmflabs\.org)',
+        }
     }
 
     # Ancestor class for common resources of 1-layer clusters
@@ -788,7 +801,7 @@ class role::cache {
                 'retry503'         => 1,
                 'retry5xx'         => 0,
                 'cache4xx'         => '1m',
-                'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
+                'purge_host_regex' => $purge_host_not_upload_re,
                 'cluster_tier'     => $cluster_tier,
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
@@ -829,7 +842,7 @@ class role::cache {
                 'retry503'         => 1,
                 'retry5xx'         => 0,
                 'cache4xx'         => '1m',
-                'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
+                'purge_host_regex' => $purge_host_not_upload_re,
                 'cluster_tier'     => $cluster_tier,
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
@@ -978,7 +991,7 @@ class role::cache {
                 'default_backend'  => $default_backend,
                 'retry5xx'         => 0,
                 'cache4xx'         => '1m',
-                'purge_host_regex' => '^upload\.wikimedia\.org$',
+                'purge_host_regex' => $purge_host_only_upload_re,
                 'cluster_tier'     => $cluster_tier,
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
@@ -1014,7 +1027,7 @@ class role::cache {
             vcl_config      => {
                 'retry5xx'         => 0,
                 'cache4xx'         => '1m',
-                'purge_host_regex' => '^upload\.wikimedia\.org$',
+                'purge_host_regex' => $purge_host_only_upload_re,
                 'cluster_tier'     => $cluster_tier,
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
@@ -1261,7 +1274,7 @@ class role::cache {
                 'default_backend'  => $default_backend,
                 'retry503'         => 4,
                 'retry5xx'         => 1,
-                'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
+                'purge_host_regex' => $purge_host_not_upload_re,
                 'cluster_tier'     => $cluster_tier,
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
@@ -1304,7 +1317,7 @@ class role::cache {
             director_type    => 'chash',
             vcl_config       => {
                 'retry5xx'         => 0,
-                'purge_host_regex' => '^(?!upload\.wikimedia\.org)',
+                'purge_host_regex' => $purge_host_not_upload_re,
                 'cluster_tier'     => $cluster_tier,
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
