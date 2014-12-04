@@ -1151,7 +1151,7 @@ class role::cache {
         }
 
         include role::cache::varnish::logging::eventlistener
-        include role::cache::varnish::kafka::statsv
+
 
         # ToDo: Remove production conditional once this works
         # is verified to work in labs.
@@ -1162,6 +1162,8 @@ class role::cache {
                 topic        => 'webrequest_bits',
                 varnish_name => $::hostname,
             }
+
+            include role::cache::varnish::kafka::statsv
         }
     }
 
