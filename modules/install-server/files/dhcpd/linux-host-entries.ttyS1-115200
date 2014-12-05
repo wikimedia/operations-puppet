@@ -3979,21 +3979,6 @@ host virt1000 {
 	fixed-address virt1000.wikimedia.org;
 }
 
-host virt1010 {
-        hardware ethernet f0:92:1c:05:6b:30;
-        fixed-address virt1010.eqiad.wmnet;
-}
-
-host virt1011 {
-        hardware ethernet f0:92:1c:05:4a:98;
-        fixed-address virt1011.eqiad.wmnet;
-}
-
-host virt1012 {
-        hardware ethernet f0:92:1c:05:bc:d8;
-        fixed-address virt1012.eqiad.wmnet;
-}
-
 host wtp1001 {
 	hardware ethernet 90:B1:1C:2D:85:30;
 	fixed-address wtp1001.eqiad.wmnet;
