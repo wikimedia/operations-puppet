@@ -1247,7 +1247,7 @@ node 'helium.eqiad.wmnet' {
     include role::backup::storage
 }
 
-node 'heze.eqiad.wmnet' {
+node 'heze.codfw.wmnet' {
     include admin
     include standard
     include role::backup::storage
