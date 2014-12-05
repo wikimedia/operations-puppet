@@ -56,7 +56,8 @@ groups:
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
-      jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz, bmansurov, west1]
+      jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
+      bmansurov, west1, jhernandez]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
