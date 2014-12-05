@@ -222,22 +222,21 @@ class base {
         certname => $certname,
     }
 
-    include passwords::root,
-        base::grub,
-        base::resolving,
-        base::remote-syslog,
-        base::sysctl,
-        base::motd,
-        base::standard-packages,
-        base::environment,
-        base::phaste,
-        base::platform,
-        base::screenconfig,
-        ssh::client,
-        ssh::server,
-        role::salt::minions,
-        role::trebuchet,
-        nrpe
+    include passwords::root
+    include base::grub
+    include base::resolving
+    include base::remote-syslog
+    include base::sysctl
+    include base::motd
+    include base::standard-packages
+    include base::environment
+    include base::phaste
+    include base::platform
+    include base::screenconfig
+    include ssh::client
+    include role::salt::minions
+    include role::trebuchet
+    include nrpe
 
 
     # include base::monitor::host.
