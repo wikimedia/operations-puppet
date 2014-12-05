@@ -26,8 +26,6 @@ class mediawiki (
     include ::mediawiki::syslog
     include ::mediawiki::php
 
-    include ::ssh::server
-
     if ubuntu_version('>= trusty') {
         include ::mediawiki::hhvm
     }
