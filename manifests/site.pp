@@ -1247,6 +1247,12 @@ node 'helium.eqiad.wmnet' {
     include role::backup::storage
 }
 
+node 'heze' {
+    include admin
+    include standard
+    include role::backup::storage
+}
+
 # old blog server; currently left unpuppetized until it dies off
 node 'holmium.wikimedia.org' {
 
