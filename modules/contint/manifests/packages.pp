@@ -13,6 +13,7 @@ class contint::packages {
     }
 
     include ::mediawiki::packages
+    include ::mediawiki::packages::multimedia  # T76661
 
     # Disable APC entirely it gets confused when files changes often
     file { '/etc/php5/conf.d/apc.ini':
