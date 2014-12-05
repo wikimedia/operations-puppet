@@ -29,6 +29,14 @@
 
   /dev/tty rw,
 
+  # can kill self, imagetools and other children
+  signal (send) set=("term","kill") peer=<%= @nodebin %>,
+  signal (send) set=("term","kill") peer=imagetools,
+  signal (send) set=("term","kill") peer=/usr/bin/{unzip,zip,xetex},
+
+  # can be killed
+  signal (receive) set=("term","kill") peer=<%= @nodebin %>,
+
   /usr/bin/rsvg-convert cx -> imagetools,
   /usr/bin/*.im6 cx -> imagetools,
   /usr/bin/pdfseparate cx -> imagetools,
@@ -37,6 +45,7 @@
   profile imagetools {
     #include <abstractions/base>
     network stream, # Used for ImageMagick tools
+    signal (receive) set=("term","kill") peer=<%= @nodebin %>, # can be killed
 
     /usr/bin/rsvg-convert rm,
     /usr/bin/*.im6 rm, # ImageMagick binaries
@@ -58,6 +67,7 @@
     /usr/share/texlive/texmf-dist/fonts/** r,
     /usr/share/djvu/** r,
     /usr/share/poppler/** r,
+    /usr/share/libthai/** r, # used by rsvg-convert
 
     /usr/share/mime/** r,
 
@@ -73,6 +83,7 @@
   /usr/bin/{unzip,zip} cx,
   profile /usr/bin/{unzip,zip} {
     #include <abstractions/base>
+    signal (receive) set=("term","kill") peer=<%= @nodebin %>, # can be killed
     /usr/bin/unzip rm,
     /usr/bin/zip rm,
 
@@ -88,6 +99,7 @@
   profile /usr/bin/xetex {
     #include <abstractions/base>
     network stream,
+    signal (receive) set=("term","kill") peer=<%= @nodebin %>, # can be killed
 
     /usr/bin/xetex rm,
     /usr/bin/mktextfm rmix,
