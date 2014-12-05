@@ -146,6 +146,14 @@ class role::phabricator::main {
         phab_host     => $domain,
         alt_host      => $altdom,
     }
+
+    # community metrics mail (RT #3962, T1003)
+    phabricator::logmail {'communitymetrics':
+        script_name  => 'community_metrics.sh',
+        rcpt_address => 'communitymetrics@wikimedia.org',
+        sndr_address => 'communitymetrics@wikimedia.org',
+        monthday     => '1',
+    }
 }
 
 # phabricator instance on wmflabs at phab-01.wmflabs.org
