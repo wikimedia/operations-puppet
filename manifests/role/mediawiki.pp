@@ -37,6 +37,10 @@ class role::mediawiki::common {
     if member($scap_proxies, $::fqdn) {
         include deployment::scap_proxy
     }
+
+    salt::grain { 'mediawiki-installation':
+        value => true, # could have version?
+    }
 }
 
 class role::mediawiki::webserver( $pool, $workers_limit = undef) {
