@@ -119,6 +119,6 @@ define varnish::instance(
 
     monitoring::service { "varnish http ${title}":
         description   => "Varnish HTTP ${title}",
-        check_command => "check_http_generic!varnishcheck!${port}"
+        check_command => "check_http_varnish!varnishcheck!${port}"
     }
 }
