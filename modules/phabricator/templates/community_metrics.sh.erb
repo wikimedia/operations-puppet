@@ -1,0 +1,203 @@
+#!/bin/bash
+# send the number of active users on <s>Bugzilla</s> Phabricator
+# in the last month to "community metrics" team
+# per RT-3962 - dzahn 20121219
+# per T1003 - dzahn,aklapper 20141205
+# ! this file is managed by puppet !
+# ./modules/phabricator/templates/<%= @script_name %>.erb
+
+declare rcpt_address='<%= @rcpt_address %>'
+declare sndr_address='<%= @sndr_address %>'
+
+declare sql_host='<%= scope.lookupvar('phabricator::mysql_host') %>'
+declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>'
+declare sql_name='phabricator_maniphest'
+declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
+
+#echo "result_activesusers"
+result_activeusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
+
+SELECT COUNT(DISTINCT authorPHID) FROM maniphest_transaction WHERE
+    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+#echo "result_authors"
+result_authors=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT COUNT(DISTINCT authorPHID) FROM maniphest_task WHERE
+    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+#echo "result_resolvers"
+result_resolvers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT COUNT(DISTINCT authorPHID) FROM maniphest_transaction WHERE (transactionType="mergedinto" OR
+    (transactionType="status" AND (oldValue="\"open\"" OR oldValue="\"stalled\"") AND
+    (newValue="\"resolved\"" OR newValue="\"invalid\"" OR newValue="\"declined\""))) AND
+    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+#echo "result_taskscreated"
+result_taskscreated=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT COUNT(*) AS '' FROM maniphest_task WHERE
+    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+#echo "result_tasksclosed"
+result_tasksclosed=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction WHERE (transactionType="mergedinto" OR
+    (transactionType="status" AND (oldValue="\"open\"" OR oldValue="\"stalled\"") AND
+    (newValue="\"resolved\"" OR newValue="\"invalid\"" OR newValue="\"declined\""))) AND
+    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+#echo "result_shelltasksclosed"
+result_shelltasksclosed=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction JOIN maniphest_nameindex JOIN edge WHERE
+    (maniphest_nameindex.indexedObjectName="shell" AND maniphest_nameindex.indexedObjectPHID=edge.dst
+    AND edge.src=maniphest_transaction.objectPHID) AND (transactionType="status" AND (oldValue="\"open\""
+    OR oldValue="\"stalled\"") AND newValue="\"resolved\"") AND
+    FROM_UNIXTIME(maniphest_transaction.dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+#echo "result_tasksopen"
+result_tasksopen=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT COUNT(*) AS '' FROM maniphest_task WHERE (status = "open" OR status = "stalled");
+
+END
+)
+
+#echo "results_mediantasksopen_unbreaknow"
+result_mediantasksopen_unbreaknow=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "100" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "100" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+
+END
+)
+
+#echo "rm_needstriage"
+result_mediantasksopen_needstriage=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "90" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "90" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+
+END
+)
+
+#echo "rm_high"
+result_mediantasksopen_high=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "80" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "80" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+
+END
+)
+
+#echo "rm_normal"
+result_mediantasksopen_normal=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "50" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "50" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+
+END
+)
+
+#echo "rm_low"
+result_mediantasksopen_low=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "25" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "25" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+
+END
+)
+
+#echo "rm_volunteer"
+result_mediantasksopen_needsvolunteer=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "10" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "10" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+
+END
+)
+
+
+activeusers=$(echo $result_activeusers | cut -d " " -f3)
+authors=$(echo $result_authors | cut -d " " -f3)
+resolvers=$(echo $result_resolvers | cut -d " " -f3)
+taskscreated=$(echo $result_taskscreated | cut -d " " -f3)
+tasksclosed=$(echo $result_tasksclosed | cut -d " " -f3)
+shelltasksclosed=$(echo $result_shelltasksclosed | cut -d " " -f3)
+
+tasksopen=$(echo $result_tasksopen | cut -d " " -f3)
+
+epochnow=$(date +%s)
+
+mediantasksopen_unbreaknow_epoch=$(echo $result_mediantasksopen_unbreaknow | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+diff_unbreaknow=$((epochnow-mediantasksopen_unbreaknow_epoch))
+mediantasksopen_unbreaknow=$(echo $((diff_unbreaknow/86400)))
+
+mediantasksopen_needstriage_epoch=$(echo $result_mediantasksopen_needstriage | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+diff_needstriage=$((epochnow-mediantasksopen_needstriage_epoch))
+mediantasksopen_needstriage=$(echo $((diff_needstriage/86400)))
+
+mediantasksopen_high_epoch=$(echo $result_mediantasksopen_high | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+diff_high=$((epochnow-mediantasksopen_high_epoch))
+mediantasksopen_high=$(echo $((diff_high/86400)))
+
+mediantasksopen_normal_epoch=$(echo $result_mediantasksopen_normal | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+diff_normal=$((epochnow-mediantasksopen_normal_epoch))
+mediantasksopen_normal=$(echo $((diff_normal/86400)))
+
+mediantasksopen_low_epoch=$(echo $result_mediantasksopen_low | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+diff_low=$((epochnow-mediantasksopen_low_epoch))
+mediantasksopen_low=$(echo $((diff_low/86400)))
+
+mediantasksopen_needsvolunteer_epoch=$(echo $result_mediantasksopen_needsvolunteer | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
+diff_needsvolunteer=$((epochnow-mediantasksopen_needsvolunteer_epoch))
+mediantasksopen_needsvolunteer=$(echo $((diff_needsvolunteer/86400)))
+
+
+lastmonth=$(date --date="last month" +%Y-%m)
+
+# the actual email
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator monthly statistics - ${lastmonth}" ${rcpt_address}
+
+Hi Community Metrics team,
+
+this is your automatic monthly Phabricator statistics mail.
+
+Number of active users (any activity) in (${lastmonth}): ${activeusers}
+Number of task authors in (${lastmonth}): ${authors}
+Number of users who have closed tasks in (${lastmonth}): ${resolvers}
+Number of tasks created in (${lastmonth}): ${taskscreated}
+Number of tasks closed in (${lastmonth}): ${tasksclosed}
+Number of tasks in the shell project closed as resolved,fixed in (${lastmonth}): ${shelltasksclosed}
+
+Number of open and stalled tasks in total: ${tasksopen}
+
+Median age in days of open tasks by priority:
+Unbreak now: ${mediantasksopen_unbreaknow}
+Needs Triage: ${mediantasksopen_needstriage}
+High: ${mediantasksopen_high}
+Normal: ${mediantasksopen_normal}
+Low: ${mediantasksopen_low}
+Needs Volunteer: ${mediantasksopen_needsvolunteer}
+
+TODO: Numbers which refer to closed tasks might not be correct, as described in T1003.
+
+Yours sincerely,
+Fab Rick Aytor
+
+(via $(basename $0) on $(hostname) at $(date))
+EOF
