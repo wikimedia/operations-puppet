@@ -21,7 +21,7 @@ class admin(
     $users = keys($uinfo)
 
     #making sure to include always_groups
-    $all_groups = split(inline_template("<%= (always_groups+groups).join(',') %>"),',')
+    $all_groups = concat($always_groups, $groups)
 
     #this custom function eliminates the need for virtual users
     $user_set = unique_users($data, $all_groups)
