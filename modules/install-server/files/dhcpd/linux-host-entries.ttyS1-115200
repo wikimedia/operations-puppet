@@ -1641,6 +1641,11 @@ host helium {
 	fixed-address helium.eqiad.wmnet;
 }
 
+host heze {
+	hardware ethernet 90:b1:1c:13:3d:22;
+	fixed-address heze.codfw.wmnet;
+}
+
 host holmium {
 	hardware ethernet 90:B1:1C:00:A1:0E;
 	fixed-address holmium.wikimedia.org;
