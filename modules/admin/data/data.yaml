@@ -91,7 +91,7 @@ groups:
       ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
       kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
       nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
-      mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur]
+      mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1206,3 +1206,10 @@ users:
     realname: Bob West
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAweYNj2Fsw5NjS+tM3JwvzpAymkw2GNE2NhgI79VuJukffj1XGPGYSJQVxRgIKuLCrmizCc/wYyF2gB+aO3iOmu1pSa84i3Xv141cO8ib5XHGdgPkfb8cvCOg0eD0OEe5esCbNLQrCe/6kzlhWLDkE9UZ++2lKt3j5IN9FEj2qLRv9zVEIBU001ciP/qA0YwIffweVzmX4FpcNF6h8pSKJpx3y+lHwIoD1Hm6d2IH39jPV3k/LmwNLHLjSxlIqXuU1EIeK4Rs+cKOpZatfT4Q8wpiZknvhGxXexhJAwSQ2DM8lONqmFF+AyWZSKahbjN4biBfsjJXLxQFw9yrn3XU2w== west1@madmax4.stanford.edu]
     uid: 1097
+  jhernandez:
+    ensure: present
+    gid: 500
+    name: jhernandez
+    realname: Joaquin Oltra Hernandez
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtMQRDSRzNKBgNQQWt3IW7+pKx7KN6QVxc+b2z7pH+ZstwGBJZhl2W/tZtsZEE1Hfm9slPddcVnYPoNezZuT6dpq0V1im3PHizproc2JIbqjN9A/omrux1tvatwphKpYCCGflbFv1o8tqIzU/HneMsgg79BmU+u8qcZjG9ZMaqavcpOOLqLDz0y79uoNtFWUqBptDCR8fy1ju6sIW7LL8U5uHT8VBnART0MhUxzttd34m73mA9ncNkLN5WqjS/cqAgm1O8zm/bnSEFWTW6SUbQ3NPeW+E6UUrPLCrj8MGFHBtK8cn8YGPmh3Di2VhL5jmE2Ugz2OIxx3VL61dw8LM9 jhernandez@mba.local]
+    uid: 10733
