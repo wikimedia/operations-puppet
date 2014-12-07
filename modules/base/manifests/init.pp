@@ -234,6 +234,7 @@ class base {
     include base::platform
     include base::screenconfig
     include ssh::client
+    include ssh::server
     include role::salt::minions
     include role::trebuchet
     include nrpe
