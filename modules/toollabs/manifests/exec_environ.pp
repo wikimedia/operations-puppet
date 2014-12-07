@@ -98,6 +98,7 @@ class toollabs::exec_environ {
         'libnet-ssleay-perl',
         'libnetaddr-ip-perl',
         'libobject-pluggable-perl',
+        'libparse-mediawikidump-perl', #T76976
         'libpod-simple-wiki-perl',
         'libpoe-component-irc-perl',
         'libpoe-component-syndicator-perl',
