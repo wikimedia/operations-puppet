@@ -14,7 +14,7 @@
     Redirect permanent / https://<%= @svc_name %>/
     RewriteEngine On
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI}
+    RewriteRule (.*) https://<%= @svc_name %>%{REQUEST_URI} [NE]
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -107,7 +107,7 @@ RewriteCond %{QUERY_STRING} ^(id=fields.html)$
 RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/Bugzilla/Fields? [R=303]
 
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
-RewriteRule (.*) https://old-bugzilla.wikimedia.org%{REQUEST_URI}
+RewriteRule (.*) https://old-bugzilla.wikimedia.org%{REQUEST_URI} [NE]
 
 </VirtualHost>
 
