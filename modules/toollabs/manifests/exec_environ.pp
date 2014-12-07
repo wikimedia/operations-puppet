@@ -120,6 +120,10 @@ class toollabs::exec_environ {
         'libxml-parser-perl',
         'libxml-simple-perl',
         'libxml-xpathengine-perl',     # For Checkwiki.
+        'liblog-log4perl-perl',        # T76974
+        'libregexp-common-perl',       # T76974
+        'libppix-regexp-perl',         # T76974
+        'libreadonly-perl',            # T76974
 
         # Python libraries
         'python-apport',
