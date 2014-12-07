@@ -89,6 +89,7 @@ class toollabs::exec_environ {
         'libirc-utils-perl',
         'libjson-perl',
         'libjson-xs-perl',
+        'liblog-log4perl-perl',        # T76974
         'liblwp-protocol-https-perl',
         'libmediawiki-api-perl',
         'libmediawiki-bot-perl',
@@ -102,7 +103,10 @@ class toollabs::exec_environ {
         'libpoe-component-syndicator-perl',
         'libpoe-filter-ircd-perl',
         'libpoe-perl',
+        'libppix-regexp-perl',         # T76974
+        'libreadonly-perl',            # T76974
         'libredis-perl',
+        'libregexp-common-perl',       # T76974
         'libsocket-getaddrinfo-perl',
         'libstring-diff-perl',
         'libtask-weaken-perl',
