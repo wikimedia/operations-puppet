@@ -71,3 +71,18 @@ SignWith: default
 DebOverride: deb-override
 Log:
  log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: jessie-wikimedia
+Codename: jessie-wikimedia
+Version: 8
+Architectures: source amd64 i386
+Components: main backports non-free
+UDebComponents: main
+Update: hwraid
+Description: Wikimedia packages for Debian Jessie
+SignWith: default
+DebOverride: deb-override
+Log:
+ log
