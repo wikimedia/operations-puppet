@@ -7,7 +7,7 @@ class swift_new::stats::accounts(
 ) {
     $required_packages = [
         Package['python-swiftclient'],
-        Package['python-statsd'],
+        Package['packages::python_statsd'],
         Package['swift'],
         ]
 

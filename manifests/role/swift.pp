@@ -47,7 +47,7 @@ class role::swift {
                 mode    => '0555',
                 source  => 'puppet:///files/swift/swift-account-stats',
                 require => [Package['python-swiftclient'],
-                            Package['python-statsd']
+                            Package['packages::python_statsd']
                         ],
             }
             file { '/etc/swift/account_mw_media.env':
@@ -71,7 +71,7 @@ class role::swift {
                 mode    => '0555',
                 source  => 'puppet:///files/swift/swift-dispersion-stats',
                 require => [Package['swift'],
-                            Package['python-statsd']
+                            Package['packages::python_statsd']
                         ],
             }
             cron { 'swift-dispersion-stats':
@@ -188,7 +188,7 @@ class role::swift {
                 mode    => '0555',
                 source  => 'puppet:///files/swift/swift-account-stats',
                 require => [Package['python-swiftclient'],
-                            Package['python-statsd']
+                            Package['packages::python_statsd']
                         ],
             }
             file { '/etc/swift/account_mw_media.env':
@@ -212,7 +212,7 @@ class role::swift {
                 mode    => '0555',
                 source  => 'puppet:///files/swift/swift-dispersion-stats',
                 require => [Package['swift'],
-                            Package['python-statsd']
+                            Package['packages::python_statsd']
                         ],
             }
             cron { 'swift-dispersion-stats':

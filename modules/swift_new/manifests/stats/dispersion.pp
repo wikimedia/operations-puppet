@@ -5,7 +5,7 @@ class swift_new::stats::dispersion(
 ) {
     $required_packages = [
         Package['python-swiftclient'],
-        Package['python-statsd'],
+        Package['packages::python_statsd'],
         Package['swift'],
     ]
 
