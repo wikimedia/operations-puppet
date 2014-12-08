@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -e
-set -x
 
 ## redo network configuration statically
 # at least trusty has ip under /sbin
@@ -26,8 +25,14 @@ debconf-set-selections /tmp/static_net.cfg
 killall.sh || kill-all-dhcp; netcfg
 
 ## preseed the correct wikimedia repository location
-SUITE=$(debconf-get mirror/suite)
-echo d-i apt-setup/local0/repository string  http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main universe non-free > /tmp/apt_repository.cfg
+if [ -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ]; then
+	SUITE=$(debconf-get mirror/suite)
+	echo d-i apt-setup/local0/repository string http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main universe non-free > /tmp/apt_repository.cfg
+else
+	#SUITE=$(debconf-get mirror/codename) # is set later in the process
+	SUITE=$(cat /etc/default-release)
+	echo d-i apt-setup/local0/repository string http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main backports non-free > /tmp/apt_repository.cfg
+fi
 debconf-set-selections /tmp/apt_repository.cfg
 
 # apt-setup doesn't allow us to set up pinning and hence everything we install
