@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -e
-set -x
 
 ## redo network configuration statically
 # at least trusty has ip under /sbin
@@ -29,9 +28,16 @@ killall.sh || kill-all-dhcp; netcfg
 # which is useful for debugging (see also network-console settings)
 anna-install network-console
 
-## preseed the correct wikimedia repository location
-SUITE=$(debconf-get mirror/suite)
-echo d-i apt-setup/local0/repository string  http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main universe thirdparty > /tmp/apt_repository.cfg
+# preseed the correct wikimedia repository location
+if [ -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ]; then
+	SUITE=$(debconf-get mirror/suite)-wikimedia
+	COMPONENTS="main universe thirdparty"
+else
+	#SUITE=$(debconf-get mirror/codename)-wikimedia # is set later in the installation process
+	SUITE=$(cat /etc/default-release)-wikimedia
+	COMPONENTS="main backports thirdparty"
+fi
+echo d-i apt-setup/local0/repository string http://apt.wikimedia.org/wikimedia $SUITE $COMPONENTS > /tmp/apt_repository.cfg
 debconf-set-selections /tmp/apt_repository.cfg
 
 # apt-setup doesn't allow us to set up pinning and hence everything we install
