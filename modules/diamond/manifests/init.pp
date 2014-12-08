@@ -63,8 +63,11 @@ class diamond(
     },
 ) {
     package { [ 'python-diamond', 'python-configobj' ]:
-        ensure => present,
+        ensure  => present,
+        require => Class['packages::python_statsd'],
     }
+
+    require_package('python-statsd')
 
     file { [ '/etc/diamond/collectors', '/etc/diamond/handlers' ]:
         ensure  => directory,
