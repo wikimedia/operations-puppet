@@ -26,10 +26,16 @@ class apt {
         require => Package['python-apt'],
     }
 
+    $components = $::lsbdistid ? {
+        'Debian' => 'main backports thirdparty',
+        'Ubuntu' => 'main universe thirdparty',
+        default  => fail('Unrecognized operating system'),
+    }
+
     apt::repository { 'wikimedia':
         uri         => 'http://apt.wikimedia.org/wikimedia',
         dist        => "${::lsbdistcodename}-wikimedia",
-        components  => 'main universe thirdparty',
+        components  => $components,
         comment_old => true,
     }
 
