@@ -3985,7 +3985,7 @@ host virt1010 {
 }
 
 host virt1011 {
-        hardware ethernet f0:92:1c:05:4a:98;
+        hardware ethernet f0:92:1c:05:4a:9c;
         fixed-address virt1011.eqiad.wmnet;
 }
 
