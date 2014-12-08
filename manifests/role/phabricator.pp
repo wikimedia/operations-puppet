@@ -63,6 +63,10 @@ class role::phabricator::main {
         mysql_admin_user => $::mysql_adminuser,
         mysql_admin_pass => $::mysql_adminpass,
         auth_type        => 'dual',
+        libext_tag       => '0.6.1.2',
+        libraries        => {
+                'sprint'   => '/srv/phab/libext/Sprint/src',
+        },
         extension_tag    => 'HEAD',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'SecurityPolicyEnforcerAction.php'],
@@ -158,9 +162,9 @@ class role::phabricator::labs {
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
         auth_type        => 'local',
-        libext_tag       => '0.5.2',
+        libext_tag       => '0.6.1.2',
         libraries        => {
-                'burndown' => '/srv/phab/libext/Sprint',
+              'sprint'   => '/srv/phab/libext/Sprint/src',
         },
         extension_tag    => 'HEAD',
         extensions       => ['SecurityPolicyEnforcerAction.php'],
