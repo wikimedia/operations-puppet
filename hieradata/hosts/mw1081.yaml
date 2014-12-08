@@ -1,4 +1,3 @@
 hhvm::extra::fcgi:
   hhvm:
     check_sym_link: false
-    dynamic_extensions: [ 'fss.so', 'luasandbox.so', 'wikidiff2.so', 'tidy.so' ]
