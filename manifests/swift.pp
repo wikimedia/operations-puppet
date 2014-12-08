@@ -33,10 +33,11 @@ class swift::base($hash_path_suffix, $cluster_name) {
         'swift-doc',
         'python-swift',
         'python-swiftclient',
-        'python-statsd',
         ]:
         ensure => 'present',
     }
+
+    require_package('python-statsd')
 
     File {
         owner => 'swift',
