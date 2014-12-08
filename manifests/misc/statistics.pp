@@ -113,6 +113,7 @@ class misc::statistics::packages::utilities {
         'libyaml-cpp0.3-dev',
         'libgoogle-glog-dev',
         'libboost-iostreams-dev',
+        'libmaxminddb-dev',
     ]:
         ensure => 'latest',
     }
