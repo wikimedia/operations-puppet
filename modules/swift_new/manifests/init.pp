@@ -37,11 +37,12 @@ class swift_new (
         'swift',
         'python-swift',
         'python-swiftclient',
-        'python-statsd',
         'parted',
     ]:
         ensure => 'present',
     }
+
+    require_package('python-statsd')
 
     File {
         owner => 'swift',

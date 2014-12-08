@@ -41,7 +41,6 @@ class zuul (
     'python-smmap',
 
     'python-extras',  # backported in Precise (bug 47122)
-    'python-statsd',
 
     'python-pip',
     'python-setuptools',
@@ -56,6 +55,7 @@ class zuul (
     'python-prettytable',
   ]
 
+  require_package('python-statsd')
   ensure_packages($packages)
 
   # Used to be in /var/lib/git/zuul but /var/lib/git can be used
