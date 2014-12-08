@@ -168,6 +168,25 @@ class misc::maintenance::update_special_pages( $ensure = present ) {
     }
 }
 
+class misc::maintenance::update_article_count( $ensure = present ) {
+    cron { 'update_article_count':
+        ensure   => $ensure,
+        command  => 'flock -n /var/lock/update-article-count /usr/local/bin/update-article-count > /var/log/mediawiki/updateArticleCount.log 2>&1',
+        user     => 'apache',
+        monthday => 29,
+        hour     => 5,
+        minute   => 0,
+    }
+
+    file { '/usr/local/bin/update-article-count':
+        ensure => $ensure,
+        source => 'puppet:///files/misc/scripts/update-article-count',
+        owner  => 'apache',
+        group  => 'wikidev',
+        mode   => '0755',
+    }
+}
+
 class misc::maintenance::wikidata( $ensure = present ) {
     cron { 'wikibase-repo-prune2':
         ensure  => $ensure,
