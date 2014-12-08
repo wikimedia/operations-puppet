@@ -25,6 +25,10 @@ EOF
 debconf-set-selections /tmp/static_net.cfg
 killall.sh || kill-all-dhcp; netcfg
 
+# install the network-console udeb, providing SSH access to the installer
+# which is useful for debugging (see also network-console settings)
+anna-install network-console
+
 ## preseed the correct wikimedia repository location
 SUITE=$(debconf-get mirror/suite)
 echo d-i apt-setup/local0/repository string  http://apt.wikimedia.org/wikimedia $SUITE-wikimedia main universe non-free > /tmp/apt_repository.cfg
