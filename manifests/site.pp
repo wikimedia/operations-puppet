@@ -406,6 +406,18 @@ node 'bast4001.wikimedia.org' {
     include role::installserver::tftp-server
 }
 
+# IPsec testing
+node /^(berkelium|curium)\.eqiad\.wmnet$/ {
+    $cluster = 'misc'
+    include standard
+    include admin
+    interface::add_ip6_mapped { 'main': }
+    rsyslog::conf { 'remote_logstash':
+       content  => "*.* @logstash1002.eqiad.wmnet:10514",
+       priority => 32,
+   }
+}
+
 node 'beryllium.wikimedia.org' {
     include admin
     include standard-noexim
@@ -560,6 +572,18 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
 
     $cluster = 'cache_bits'
     include role::cache::bits
+}
+
+# IPsec testing
+node /^cp300([1-2])\.esams\.(wikimedia\.org|wmnet)$/ {
+    $cluster = 'misc'
+    include standard
+    include admin
+    interface::add_ip6_mapped { 'main': }
+    rsyslog::conf { 'remote_logstash':
+       content  => "*.* @logstash1002.eqiad.wmnet:10514",
+       priority => 32,
+   }
 }
 
 node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
