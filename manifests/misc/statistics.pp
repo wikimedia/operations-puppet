@@ -838,7 +838,7 @@ define misc::statistics::limn::data::generate() {
 
     # This will generate data into $public_dir/${title} (if configured correctly)
     cron { "generate_${title}_limn_public_data":
-        command => "python ${command} ${config_dir} >> ${log}",
+        command => "python ${command} ${config_dir} >> ${log} 2>&1",
         user    => $user,
         minute  => 0,
     }
