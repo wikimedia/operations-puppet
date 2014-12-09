@@ -10,4 +10,22 @@ class wdq {
         ensure  => running,
         require => Package['wdq-mm'],
     }
+
+    package { 'monit':
+        ensure => present,
+    }
+
+    service { 'monit':
+        ensure  => running,
+        require => Package['monit'],
+    }
+
+    file { '/etc/monit/conf.d/wdq-mm':
+        source  => 'puppet:///modules/wdq-mm/monitrc',
+        require => [
+            Package['monit'],
+            Package['wdq-mm'],
+        },
+        notify => Service['monit'],
+    }
 }
