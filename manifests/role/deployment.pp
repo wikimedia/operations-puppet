@@ -66,6 +66,9 @@ class role::deployment::config {
         'fluoride/fluoride'              => {
             'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride',
         },
+        'statsv/statsv'                  => {
+            'upstream' => 'https://gerrit.wikimedia.org/r/analytics/statsv',
+        },
         'mwprof/mwprof'                  => {
             'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof',
         },
