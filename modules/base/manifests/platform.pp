@@ -35,6 +35,7 @@ respawn
 exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 "
 
+    # systemd systems are smart enough to do this automatically
     if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '10.04') >= 0 {
         file { "/etc/init/${lom_serial_port}.conf":
             owner   => root,

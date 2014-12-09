@@ -12,7 +12,7 @@ class base::puppet($server='puppet', $certname=undef) {
         require => Apt::Puppet['base']
     }
 
-    if $::lsbdistid == 'Ubuntu' and (versioncmp($::lsbdistrelease, '10.04') == 0 or versioncmp($::lsbdistrelease, '8.04') == 0) {
+    if os_version('ubuntu <= lucid') {
         package {'timeout':
             ensure => latest,
         }

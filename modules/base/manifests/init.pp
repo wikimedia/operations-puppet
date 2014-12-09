@@ -15,26 +15,14 @@ class base::grub {
         notify  => Exec['update-grub'],
     }
 
-    # Ubuntu Precise Pangolin no longer has a server kernel flavour.
-    # The generic flavour uses the CFQ I/O scheduler, which is rather
-    # suboptimal for some of our I/O work loads. Override with deadline.
-    # (the installer does this too, but not for Lucid->Precise upgrades)
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        exec { 'grub1 iosched deadline':
-            path    => "/bin:/usr/bin",
-            command => "sed -i '/^# kopt=/s/\$/ elevator=deadline/' /boot/grub/menu.lst",
-            unless  => "grep -q '^# kopt=.*elevator=deadline' /boot/grub/menu.lst",
-            onlyif  => "test -f /boot/grub/menu.lst",
-            notify  => Exec["update-grub"],
-        }
-
-        exec { 'grub2 iosched deadline':
-            path    => "/bin:/usr/bin",
-            command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\\"\$/ elevator=deadline\\\"/' /etc/default/grub",
-            unless  => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=deadline' /etc/default/grub",
-            onlyif  => 'test -f /etc/default/grub',
-            notify  => Exec['update-grub'];
-        }
+    # The CFQ I/O scheduler is rather # suboptimal for some of our I/O
+    # workloads. Override with deadline. (the installer does this too)
+    exec { 'grub2 iosched deadline':
+        path    => "/bin:/usr/bin",
+        command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\\"\$/ elevator=deadline\\\"/' /etc/default/grub",
+        unless  => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=deadline' /etc/default/grub",
+        onlyif  => 'test -f /etc/default/grub',
+        notify  => Exec['update-grub'];
     }
 
     exec { 'update-grub':
@@ -44,9 +32,7 @@ class base::grub {
 }
 
 class base::remote-syslog {
-    if ($::lsbdistid == 'Ubuntu') and
-            ($::hostname != 'lithium') and
-            ($::instancename != 'deployment-bastion') {
+    if ($::hostname != 'lithium') and ($::instancename != 'deployment-bastion') {
 
         $syslog_host = $::realm ? {
             'production' => 'syslog.eqiad.wmnet',
@@ -82,14 +68,12 @@ class base::instance-upstarts {
 }
 
 class base::screenconfig {
-    if $::lsbdistid == 'Ubuntu' {
-        file { '/root/.screenrc':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/base/screenrc',
-        }
+    file { '/root/.screenrc':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/base/screenrc',
     }
 }
 
@@ -111,31 +95,6 @@ class base::syslogs (
     }
 }
 
-
-class base::tcptweaks {
-    Class[base::puppet] -> Class[base::tcptweaks]
-
-    # unneeded since Linux 2.6.39, i.e. Ubuntu 11.10 Oneiric Ocelot
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '11.10') < 0 {
-        file { '/etc/network/if-up.d/initcwnd':
-            ensure  => present,
-            content => template('base/initcwnd.erb'),
-            mode    => '0555',
-            owner   => 'root',
-            group   => 'root',
-        }
-
-        exec { '/etc/network/if-up.d/initcwnd':
-            require     => File['/etc/network/if-up.d/initcwnd'],
-            subscribe   => File['/etc/network/if-up.d/initcwnd'],
-            refreshonly => true,
-        }
-    } else {
-        file { '/etc/network/if-up.d/initcwnd':
-            ensure  => absent,
-        }
-    }
-}
 
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
@@ -180,8 +139,6 @@ class base {
         include apt::unattendedupgrades,
             apt::noupgrade
     }
-
-    include base::tcptweaks
 
     file { '/usr/local/sbin':
         ensure => directory,

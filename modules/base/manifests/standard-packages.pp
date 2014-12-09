@@ -30,26 +30,19 @@ class base::standard-packages {
         'tree',
         'debian-goodies',
         'ethtool',
+        'lldpd',
     ]
 
-    if $::lsbdistid == 'Ubuntu' {
-        package { $packages:
-            ensure => latest,
-        }
+    package { $packages:
+        ensure => latest,
+    }
 
-        if $::network_zone == 'internal' {
-            include nrpe
-        }
+    if $::network_zone == 'internal' {
+        include nrpe
+    }
 
-        # Run lldpd on all >= Lucid hosts
-        if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '10.04') >= 0 {
-            package { 'lldpd':
-                ensure => latest, }
-        }
-
-        # DEINSTALL these packages
-        package { [ 'mlocate', 'os-prober' ]:
-            ensure => absent,
-        }
+    # uninstall these packages
+    package { [ 'mlocate', 'os-prober' ]:
+        ensure => absent,
     }
 }
