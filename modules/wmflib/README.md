@@ -129,6 +129,33 @@ Emit a hash as YAML with keys (both shallow and deep) in sorted order.
     }
 
 
+## os_version
+
+`os_version( string $version_predicate )`
+
+Performs semantic OS version comparison.
+
+Takes one or more string arguments, each containing one or more predicate
+expressions. Each expression consts of a distribution name, followed by a
+comparison operator, followed by a release name or number. Multiple clauses
+are OR'd together. The arguments are case-insensitive.
+
+The host's OS version will be compared to to the comparison target
+using the specified operator, returning a boolean. If no operator is
+present, the equality operator is assumed.
+
+### Examples
+
+    # True if Ubuntu Trusty or newer or Debian Jessie or newer
+    os_version('ubuntu >= trusty || debian >= Jessie')
+
+    # Same, but with each clause as a separate argument
+    os_version('ubuntu >= trusty', 'debian >= Jessie')
+
+    # True if exactly Debian Jessie
+    os_version('debian jessie')
+
+
 ## php_ini
 
 `php_ini( hash $ini_settings [, hash $... ] )`
