@@ -170,72 +170,38 @@ class ganglia {
         $clustername = $ganglia_clusters[$cluster][name]
         $cname = "${clustername}${name_suffix}"
 
-        if versioncmp($::lsbdistrelease, '9.10') >= 0 {
-            $gmond = 'ganglia-monitor'
-        }
-        else {
-            $gmond = 'gmond'
-        }
-
-        $gmondpath = $gmond ? {
-            'ganglia-monitor'       => '/etc/ganglia/gmond.conf',
-            default                 => '/etc/gmond.conf'
-        }
-
-
         # Resource definitions
-        file { 'gmondconfig':
+        file { '/etc/ganglia/gmond.conf':
             ensure  => present,
-            require => Package[$gmond],
-            name    => $gmondpath,
+            require => Package['ganglia-monitor'],
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
             content => template('ganglia/gmond_template.erb'),
-            notify  => Service['gmond'],
+            notify  => Service['ganglia-monitor'],
         }
 
-        case $gmond {
-            gmond: {
-                package { 'gmond':
-                    ensure => latest,
-                    alias  => 'gmond-package',
-                }
-                package { 'ganglia-monitor':
-                    ensure => purged,
-                    before => Package['gmond'],
-                }
-            }
-            ganglia-monitor: {
-                if !defined(Package['ganglia-monitor']) {
-                    package { 'gmond':
-                        ensure => purged,
-                        before => Package['ganglia-monitor'],
-                    }
-                    package { 'ganglia-monitor':
-                        ensure => present,
-                        alias  => 'gmond-package',
-                    }
-                }
-
-                file { [ '/etc/ganglia/conf.d', '/usr/lib/ganglia/python_modules' ]:
-                    ensure  => directory,
-                    require => Package['ganglia-monitor'],
-                }
-
-                file { '/etc/gmond.conf':
-                    ensure => absent,
-                }
+        if !defined(Package['ganglia-monitor']) {
+            package { 'ganglia-monitor':
+                ensure => present,
             }
         }
 
-        service { 'gmond':
+        file { [ '/etc/ganglia/conf.d', '/usr/lib/ganglia/python_modules' ]:
+            ensure  => directory,
+            require => Package['ganglia-monitor'],
+        }
+
+        service { 'ganglia-monitor':
             ensure    => running,
-            name      => $gmond,
-            require   => [ File['gmondconfig'], Package['gmond-package'] ],
-            subscribe => File['gmondconfig'],
+            require   => [
+                File['/etc/ganglia/gmond.conf'],
+                Package['ganglia-monitor']
+            ],
+            subscribe => File['/etc/ganglia/gmond.conf'],
             hasstatus => false,
             pattern   => 'gmond',
+            alias     => 'gmond',
         }
 
         group { 'gmetric':
@@ -651,14 +617,14 @@ define ganglia::plugin::python( $plugin = $title, $opts = {} ) {
         group  => 'root',
         mode   => '0444',
         source => "puppet:///files/ganglia/plugins/${plugin}.py",
-        notify => Service['gmond'],
+        notify => Service['ganglia-monitor'],
     }
     file { "/etc/ganglia/conf.d/${plugin}.pyconf":
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template("ganglia/plugins/${plugin}.pyconf.erb"),
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 }
 
