@@ -1,20 +1,5 @@
 Origin: Wikimedia
 Label: Wikimedia
-Suite: hardy-wikimedia
-Codename: hardy-wikimedia
-Version: 8.04
-Architectures: source amd64
-Components: main universe non-free
-UDebComponents: main
-Update: hwraid
-Description: Wikimedia specific packages for Ubuntu Hardy
-SignWith: default
-DebOverride: deb-override
-Log:
- log
-
-Origin: Wikimedia
-Label: Wikimedia
 Suite: lucid-wikimedia
 Codename: lucid-wikimedia
 Version: 10.04
@@ -23,20 +8,6 @@ Components: main universe non-free
 UDebComponents: main
 Update: hwraid
 Description: Wikimedia specific packages for Ubuntu Lucid
-SignWith: default
-DebOverride: deb-override
-Log:
- log
-
-Origin: Wikimedia
-Label: Wikimedia
-Suite: lucid-wikimedia-mysql
-Codename: lucid-wikimedia-mysql
-Version: 10.04
-Architectures: source amd64
-Components: main universe
-UDebComponents: main
-Description: Wikimedia specific mysql packages for Ubuntu Lucid
 SignWith: default
 DebOverride: deb-override
 Log:
