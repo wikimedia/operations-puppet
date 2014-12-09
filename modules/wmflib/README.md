@@ -301,50 +301,6 @@ Convert a unit of time expressed as a string to seconds.
     to_seconds('2 days')  # 172800
 
 
-## ubuntu_version
-
-`ubuntu_version( string $version_predicate )`
-
-Performs semantic Ubuntu version comparison.
-
-Takes a single string argument containing a comparison operator
-followed by an optional space, followed by a comparison target,
-provided as Ubuntu version number or release name.
-
-The host's Ubuntu version will be compared to to the comparison target
-using the specified operator, returning a boolean. If no operator is
-present, the equality operator is assumed.
-
-Release names are case-insensitive. The comparison operator and
-comparison target can be provided as two separate arguments, if you
-prefer.
-
-This function is DEPRECATED. Please see os_version() instead.
-
-### Examples
-
-    # True if Precise or newer
-    ubuntu_version('>= precise')
-    ubuntu_version('>= 12.04.4')
-
-    # True if older than Utopic
-    ubuntu_version('< utopic')
-
-    # True if newer than Precise
-    ubuntu_version('> precise')
-
-    # True if Trusty or older
-    ubuntu_version('<= trusty')
-
-    # True if exactly Trusty
-    ubuntu_version('trusty')
-    ubuntu_version('== trusty')
-
-    # True if anything but Trusty
-    ubuntu_version('!trusty')
-    ubuntu_version('!= trusty')
-
-
 ## validate_ensure
 
 `validate_ensure( string $ensure )`
