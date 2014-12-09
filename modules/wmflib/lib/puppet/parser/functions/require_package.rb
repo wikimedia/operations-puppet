@@ -35,11 +35,8 @@ module Puppet::Parser::Functions
 
       cls = Puppet::Parser::Resource.new(
           'class', class_name, :scope => compiler.topscope)
-      begin
-        catalog.add_resource(cls)
-        host.evaluate_code(cls)
-      rescue Puppet::Resource::Catalog::DuplicateResourceError
-      end
+      catalog.add_resource(cls) rescue nil
+      host.evaluate_code(cls) rescue nil
 
       # Create package resource
 
