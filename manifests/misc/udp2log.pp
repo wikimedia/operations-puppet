@@ -355,7 +355,7 @@ class misc::udp2log::monitoring {
         mode    => '0444',
         source  => 'puppet:///files/ganglia/plugins/udp2log_socket.py',
         require => File['/usr/lib/ganglia/python_modules'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 
     file { '/etc/ganglia/conf.d/udp2log_socket.pyconf':
@@ -364,7 +364,7 @@ class misc::udp2log::monitoring {
         mode    => '0444',
         source  => 'puppet:///files/ganglia/plugins/udp2log_socket.pyconf',
         require => File['/usr/lib/ganglia/python_modules/udp2log_socket.py'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 
     # include general UDP statistic monitoring.

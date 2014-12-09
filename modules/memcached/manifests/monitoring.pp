@@ -12,7 +12,7 @@ class memcached::monitoring {
         mode    => '0444',
         before  => File['/etc/ganglia/conf.d/memcached.pyconf'],
         require => Package['ganglia-monitor'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 
     file { '/etc/ganglia/conf.d/memcached.pyconf':
@@ -21,6 +21,6 @@ class memcached::monitoring {
         group   => 'root',
         mode    => '0444',
         require => Package['ganglia-monitor'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 }

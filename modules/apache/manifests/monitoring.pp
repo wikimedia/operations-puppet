@@ -35,7 +35,7 @@ class apache::monitoring {
         group   => 'root',
         mode    => '0444',
         require => File['/usr/lib/ganglia/python_modules/apache_status.py'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 
     file { '/usr/local/bin/apache-status':

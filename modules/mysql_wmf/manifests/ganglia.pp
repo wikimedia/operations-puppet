@@ -38,7 +38,7 @@ class mysql_wmf::ganglia(
     file { '/usr/lib/ganglia/python_modules/DBUtil.py':
             require => File['/usr/lib/ganglia/python_modules'],
             source  => 'puppet:///modules/mysql_wmf/ganglia/plugins/DBUtil.py',
-            notify  => Service['gmond'],
+            notify  => Service['ganglia-monitor'],
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -46,7 +46,7 @@ class mysql_wmf::ganglia(
     file { '/usr/lib/ganglia/python_modules/mysql.py':
             require => File['/usr/lib/ganglia/python_modules'],
             source  => 'puppet:///modules/mysql_wmf/ganglia/plugins/mysql.py',
-            notify  => Service['gmond'],
+            notify  => Service['ganglia-monitor'],
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
@@ -54,7 +54,7 @@ class mysql_wmf::ganglia(
     file { '/etc/ganglia/conf.d/mysql.pyconf':
             require => File['/usr/lib/ganglia/python_modules'],
             content => template('mysql_wmf/mysql.pyconf.erb'),
-            notify  => Service['gmond'],
+            notify  => Service['ganglia-monitor'],
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
