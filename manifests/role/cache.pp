@@ -413,6 +413,20 @@ class role::cache {
         $varnish_name = 'frontend'
     ) inherits role::cache::varnish::kafka
     {
+
+        # Experiment witih lowering timeout.  We are
+        # seeing message drops from esams during high
+        # load time on caches with high traffic (bits and upload).
+        # The vanrishkafka buffer gets too full and it drops messages.
+        # Perhaps this is a buffer bloat problem.  We set
+        # timeout to 2 seconds on cp3022 (a bits host) to see
+        # if this makes a difference.  Note that varnishkafka
+        # will retry a timed-out produce request.
+        $topic_request_timeout_ms = $::hostname ? {
+            'cp3022' => 2000,
+            default  => 30000,
+        }
+
         varnishkafka::instance { $varnish_name:
             brokers                      => $kafka_brokers,
             topic                        => $topic,
@@ -431,7 +445,7 @@ class role::cache {
             # We want to send batches at least once a second.
             batch_num_messages           => 6000,
             # large timeout to account for potential cross DC latencies
-            topic_request_timeout_ms     => 30000, # request ack timeout
+            topic_request_timeout_ms     => $topic_request_timeout_ms, # request ack timeout
             # By requiring 2 ACKs per message batch, we survive a
             # single broker dropping out of its leader role,
             # without seeing lost messages.
