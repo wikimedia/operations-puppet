@@ -18,6 +18,9 @@ class role::swift {
             cluster_name     => 'eqiad-prod',
         }
         class ganglia_reporter inherits role::swift::eqiad-prod {
+
+            require_package('python-statsd')
+
             # one host per cluster should report global stats
             file { '/usr/local/bin/swift-ganglia-report-global-stats':
                 ensure => present,
