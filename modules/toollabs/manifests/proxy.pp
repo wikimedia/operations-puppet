@@ -8,6 +8,7 @@ class toollabs::proxy inherits toollabs {
     }
 
     class { '::dynamicproxy':
+        ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
         luahandler           => 'urlproxy',
         resolver             => '10.68.16.1', # eqiad DNS resolver
         ssl_certificate_name => 'star.wmflabs.org',
