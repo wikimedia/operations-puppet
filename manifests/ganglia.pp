@@ -201,7 +201,6 @@ class ganglia {
             subscribe => File['/etc/ganglia/gmond.conf'],
             hasstatus => false,
             pattern   => 'gmond',
-            alias     => 'gmond',
         }
 
         group { 'gmetric':

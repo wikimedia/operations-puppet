@@ -13,7 +13,7 @@ class memcached::ganglia {
         mode    => '0444',
         source  => "puppet:///modules/${module_name}/ganglia/gmond_memcached.py",
         require => File['/usr/lib/ganglia/python_modules'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
     file { '/usr/lib/ganglia/python_modules/memcached.pyconf':
         ensure => absent,
@@ -24,6 +24,6 @@ class memcached::ganglia {
         mode    => '0444',
         source  => "puppet:///modules/${module_name}/ganglia/gmond_memcached.pyconf",
         require => File['/usr/lib/ganglia/python_modules/gmond_memcached.py'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 }

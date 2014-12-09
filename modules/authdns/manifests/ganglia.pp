@@ -10,7 +10,7 @@ class authdns::ganglia {
         group  => 'root',
         mode   => '0444',
         source => "puppet:///modules/${module_name}/ganglia/ganglia_gdnsd.py",
-        notify => Service['gmond'],
+        notify => Service['ganglia-monitor'],
     }
 
     file { '/etc/ganglia/conf.d/gdnsd.pyconf':
@@ -19,6 +19,6 @@ class authdns::ganglia {
         group  => 'root',
         mode   => '0444',
         source => "puppet:///modules/${module_name}/ganglia/gdnsd.pyconf",
-        notify => Service['gmond'],
+        notify => Service['ganglia-monitor'],
     }
 }

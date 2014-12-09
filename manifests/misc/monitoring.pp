@@ -5,7 +5,7 @@ class misc::monitoring::htcp-loss {
 
     File {
         require => File['/usr/lib/ganglia/python_modules'],
-        notify => Service['gmond']
+        notify => Service['ganglia-monitor']
     }
 
     # Ganglia
@@ -35,7 +35,7 @@ class misc::monitoring::htcp-loss {
             # owner   => 'root',
             # group   => 'root',
             # mode    => '0444',
-            notify  => Service['gmond'],
+            notify  => Service['ganglia-monitor'],
             ensure  => absent;
             # require => File["/etc/ganglia/conf.d"],
             # source  => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
@@ -53,14 +53,14 @@ class misc::monitoring::net::udp {
             mode    => '0444',
             source  => 'puppet:///files/ganglia/plugins/udp_stats.py',
             require => File['/usr/lib/ganglia/python_modules'],
-            notify  => Service['gmond'];
+            notify  => Service['ganglia-monitor'];
         '/etc/ganglia/conf.d/udp_stats.pyconf':
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
             source  => 'puppet:///files/ganglia/plugins/udp_stats.pyconf',
             require => File['/usr/lib/ganglia/python_modules/udp_stats.py'],
-            notify  => Service['gmond'];
+            notify  => Service['ganglia-monitor'];
     }
 }
 
