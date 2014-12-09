@@ -1493,6 +1493,7 @@ class role::cache {
                 'magnesium.wikimedia.org', # RT and racktables
                 'stat1001.wikimedia.org', # metrics and metrics-api
                 'palladium.eqiad.wmnet',
+                'citoid.svc.eqiad.wmnet',
             ],
             backend_options => [
             {
