@@ -12,7 +12,7 @@ class osm::ganglia(
         group  => 'root',
         mode   => '0444',
         source => "puppet:///modules/${module_name}/ganglia/osm.py",
-        notify => Service['gmond'],
+        notify => Service['ganglia-monitor'],
     }
 
     file { '/etc/ganglia/conf.d/osm.pyconf':
@@ -21,6 +21,6 @@ class osm::ganglia(
         group   => 'root',
         mode    => '0444',
         content => template('osm/ganglia/osm.pyconf.erb'),
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 }
