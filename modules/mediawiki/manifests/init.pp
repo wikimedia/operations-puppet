@@ -28,7 +28,7 @@ class mediawiki (
 
     include ::ssh::server
 
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         include ::mediawiki::hhvm
     }
 
