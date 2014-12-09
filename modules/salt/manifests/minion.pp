@@ -50,7 +50,6 @@ class salt::minion(
 
     service { 'salt-minion':
         ensure   => running,
-        provider => 'upstart',
     }
 
     file { '/etc/init/salt-minion.override':
