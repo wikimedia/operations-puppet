@@ -42,7 +42,7 @@ class mediawiki::php {
         require => Package['php-mail'],
     }
 
-    if ubuntu_version('precise') {
+    if os_version('ubuntu precise') {
         file { '/etc/php5/conf.d/igbinary.ini':
             source  => 'puppet:///modules/mediawiki/php/igbinary.ini',
             owner   => 'root',

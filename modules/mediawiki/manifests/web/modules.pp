@@ -10,7 +10,7 @@ class mediawiki::web::modules {
     include ::apache::mod::setenvif
     include ::apache::mod::status
 
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         include ::apache::mod::proxy_fcgi
 
         apache::mod_conf { 'mod_php5':

@@ -5,7 +5,7 @@
 #
 class contint::packages {
 
-    if ubuntu_version('precise') {
+    if os_version('ubuntu precise') {
         # Will stay on Precise and not reconducted on Trusty. Ie the jobs
         # depending on Android SDK will eventually be phased out whenever we
         # have time to do so.
@@ -128,7 +128,7 @@ class contint::packages {
         }
     }
 
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
 
         # Provide 'node' alias for 'nodejs' because Debian/Ubuntu
         # already has a package called 'node'

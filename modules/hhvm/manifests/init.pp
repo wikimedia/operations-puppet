@@ -60,7 +60,7 @@ class hhvm(
     $fcgi_settings = {},
     $cli_settings  = {},
 ) {
-    requires_ubuntu('>= trusty')
+    requires_os('ubuntu >= trusty')
 
 
     ## Packages

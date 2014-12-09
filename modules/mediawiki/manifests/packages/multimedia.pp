@@ -3,7 +3,7 @@
 # Provisions packages used by MediaWiki for image and video processing.
 #
 class mediawiki::packages::multimedia {
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         $libav_package   = 'libav-tools'
         $libvips_package = 'libvips37'
     } else {
