@@ -64,9 +64,13 @@ module Puppet::Parser::Functions
     clauses = args.join('||').split('||').map(&:strip)
 
     clauses.any? do |clause|
-      unless /^(?<other_id>\w+) *(?<operator>[<>=]*) *(?<other_release>[\w\.]+)$/ =~ clause
+      unless /^(\w+) *([<>=]*) *([\w\.]+)$/ =~ clause
         fail(ArgumentError, "os_version(): invalid expression '#{clause}'")
       end
+      # for ruby 1.8; replace with named groups with ruby >= 1.9
+      other_id = Regexp.last_match(1)
+      operator = Regexp.last_match(2)
+      other_release = Regexp.last_match(3)
 
       [other_id, other_release].each(&:capitalize!)
 
