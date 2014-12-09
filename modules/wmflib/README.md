@@ -149,9 +149,6 @@ present, the equality operator is assumed.
     # True if Ubuntu Trusty or newer or Debian Jessie or newer
     os_version('ubuntu >= trusty || debian >= Jessie')
 
-    # Same, but with each clause as a separate argument
-    os_version('ubuntu >= trusty', 'debian >= Jessie')
-
     # True if exactly Debian Jessie
     os_version('debian jessie')
 
