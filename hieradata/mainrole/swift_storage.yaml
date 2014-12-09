@@ -1,2 +1,2 @@
 cluster: swift
-monitoring::configuration::group: swift
+nagios_group: swift
