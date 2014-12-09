@@ -14,9 +14,9 @@
 #  requires_os('ubuntu >= trusty || debian >= Jessie')
 #
 module Puppet::Parser::Functions
-  newfunction(:requires_os, :arity => -2) do |args|
-    clauses = args.join('||')
+  newfunction(:requires_os, :arity => 1) do |args|
     Puppet::Parser::Functions.function(:os_version)
-    fail(Puppet::ParseError, "OS #{clauses} required.") unless function_os_version(clauses)
+    fail(ArgumentError, 'requires_os(): string argument required') unless args.first.is_a?(String)
+    fail(Puppet::ParseError, "OS #{args.first} required.") unless function_os_version(args)
   end
 end

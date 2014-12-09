@@ -56,12 +56,13 @@ module Puppet::Parser::Functions
     }
   }
 
-  newfunction(:os_version, :type => :rvalue, :arity => -2) do |args|
+  newfunction(:os_version, :type => :rvalue, :arity => 1) do |args|
     self_release = lookupvar('lsbdistrelease').capitalize
     self_id = lookupvar('lsbdistid').capitalize
 
-    # Multiple clauses are OR'd
-    clauses = args.join('||').split('||').map(&:strip)
+    fail(ArgumentError, 'os_version(): string argument required') unless args.first.is_a?(String)
+
+    clauses = args.first.split('||').map(&:strip)
 
     clauses.any? do |clause|
       unless /^(\w+) *([<>=]*) *([\w\.]+)$/ =~ clause
