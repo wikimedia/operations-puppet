@@ -86,12 +86,6 @@ class mysql::params {
     'Debian': {
 
       # begin WMF customization
-      if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '11.10') >= 0 {
-          $run_directory = '/run'
-      } else {
-          $run_directory = '/var/run'
-      }
-
       if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
         $ver = '5.5'
       } else {
@@ -100,8 +94,8 @@ class mysql::params {
       $client_package_name  = "mysql-client-${ver}"
       $server_package_name  = "mysql-server-${ver}"
 
-      $socket               = "$run_directory/mysqld/mysqld.sock"
-      $pidfile              = "$run_directory/mysqld/mysqld.pid"
+      $socket               = "/run/mysqld/mysqld.sock"
+      $pidfile              = "/run/mysqld/mysqld.pid"
       $datadir              = '/var/lib/mysql'
       $log_error            = '/var/log/mysql/mysql.err'
       # end WMF customization
