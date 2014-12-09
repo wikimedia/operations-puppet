@@ -1,4 +1,5 @@
 define sudo::group( $privileges=[], $ensure='present', $group = $title ) {
+    require sudo
 
     file { "/etc/sudoers.d/${title}":
         ensure  => $ensure,

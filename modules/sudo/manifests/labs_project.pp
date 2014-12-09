@@ -1,4 +1,6 @@
 class sudo::labs_project {
+    require sudo
+
     if $::realm != 'labs' {
         fail('This class is labs-specific')
     }
