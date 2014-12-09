@@ -2161,7 +2161,6 @@ node 'nitrogen.wikimedia.org' {
 node /^ocg100[123]\.eqiad\.wmnet$/ {
     # Mainrole: pdf!
     $ganglia_aggregator = hiera('ganglia_aggregator', false)
-    $gid = '500' # what is this used for? I couldn't get that.
 
     include base::firewall
     include standard

@@ -64,9 +64,6 @@ $domain_search = $domain
 
 # TODO: Better nesting of settings inside classes
 
-# Default group
-$gid = 500
-
 ## puppet-accessible list of private wikis
 ## please keep alphabetized
 $private_wikis = [ 
