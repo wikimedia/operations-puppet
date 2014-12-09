@@ -3,11 +3,7 @@
 globals {
   daemonize = yes
   setuid = yes
-<% if @lsbdistcodename == "hardy" then -%>
-  user = nobody
-<% else -%>
   user = ganglia
-<% end -%>
   debug_level = 0
   max_udp_msg_len = 1472
   mute = no

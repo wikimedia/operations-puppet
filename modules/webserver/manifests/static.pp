@@ -9,14 +9,8 @@ class webserver::static {
         ensure => 'present',
     }
 
-    $hasstatus = $::lsbdistcodename ? {
-        'hardy' => false,
-        default => true,
-    }
-
     service { 'lighttpd':
         ensure    => 'running',
-        hasstatus => $hasstatus,
     }
 
     # Monitoring

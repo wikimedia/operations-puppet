@@ -13,28 +13,6 @@ class mysql_wmf::ganglia(
         ensure => present;
     }
 
-    # FIXME: this belongs in ganglia.pp, not here.
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '8.04') == 0 {
-        file { '/etc/ganglia':
-                ensure => directory,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0755',
-        }
-        file { '/etc/ganglia/conf.d':
-                ensure => directory,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0755',
-        }
-        file { '/usr/lib/ganglia/python_modules':
-                ensure => directory,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0755',
-        }
-    }
-
     file { '/usr/lib/ganglia/python_modules/DBUtil.py':
             require => File['/usr/lib/ganglia/python_modules'],
             source  => 'puppet:///modules/mysql_wmf/ganglia/plugins/DBUtil.py',
