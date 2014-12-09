@@ -67,7 +67,10 @@ class diamond(
         require => Class['packages::python_statsd'],
     }
 
-    require_package('python-statsd')
+    # not worth backporting python-statsd to lucid
+    if ubuntu_version('>= precise') {
+      require_package('python-statsd')
+    }
 
     file { [ '/etc/diamond/collectors', '/etc/diamond/handlers' ]:
         ensure  => directory,
