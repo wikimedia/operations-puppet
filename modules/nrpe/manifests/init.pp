@@ -20,7 +20,6 @@ class nrpe($allowed_hosts=undef) {
     package { [ 'nagios-nrpe-server',
                 'nagios-plugins',
                 'nagios-plugins-basic',
-                'nagios-plugins-extra',
                 'nagios-plugins-standard',
             ]:
         ensure => present,

@@ -4,7 +4,6 @@ describe 'nrpe', :type => :class do
     it { should contain_package('nagios-nrpe-server') }
     it { should contain_package('nagios-plugins') }
     it { should contain_package('nagios-plugins-basic') }
-    it { should contain_package('nagios-plugins-extra') }
     it { should contain_package('nagios-plugins-standard') }
     it { should contain_file('/etc/nagios/nrpe_local.cfg') }
     it { should contain_file('/usr/local/lib/nagios/plugins/') }
