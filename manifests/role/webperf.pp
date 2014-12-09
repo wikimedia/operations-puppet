@@ -4,6 +4,8 @@
 # into StatsD.
 #
 class role::webperf {
+    include ::webperf::statsv
+
     $statsd_host = 'statsd.eqiad.wmnet'
 
     # Aggregate client-side latency measurements collected via the
