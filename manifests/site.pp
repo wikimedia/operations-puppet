@@ -744,7 +744,7 @@ node /^db10(05|21|26|37|45|58)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(06|10|15|22|23|30)\.eqiad\.wmnet/ {
+node /^db10(06|15|22|23|30)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -852,6 +852,15 @@ node /^db20(23)\.codfw\.wmnet/ {
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's5',
+    }
+}
+
+node /^db10(10)\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's6',
     }
 }
 
