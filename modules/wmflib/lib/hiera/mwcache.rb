@@ -11,7 +11,7 @@ class Hiera
       @http = HTTPClient.new(:agent_name => 'HieraMwCache/0.1')
       @stat_ttl = config[:cache_ttl] || 60
       if defined? @http.ssl_config.ssl_version
-        @http.ssl_config.ssl_version = 'TLSv1_2'
+        @http.ssl_config.ssl_version = 'TLSv1'
       else
         # Note: this seem to work in later versions of the library,
         # but has no effect. How cute, I <3 ruby.
