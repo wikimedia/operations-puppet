@@ -1,0 +1,19 @@
+# Worker MPM
+# StartServers: number of server processes to start
+# ThreadsPerChild: the number of threads deployed by each child process
+# MinSpareServers: minimum number of server threads which are kept spare
+# MaxSpareServers: maximum number of server threads which are kept spare
+# MaxRequestWorkers: maximum number of server processes allowed to start
+# MaxConnectionsPerChild: maximum number of requests a server process serves
+<IfModule mpm_worker_module>
+    ServerLimit         <%= @apache_server_limit %>
+    StartServers        10
+    ThreadsPerChild     <%= @threads_per_child %>
+    MinSpareThreads     10
+    MaxSpareThreads     25
+    MaxRequestWorkers   <%= @max_req_workers %>
+    <IfDefine SLOW>
+        MaxRequestWorkers    5
+    </IfDefine>
+    MaxRequestsPerChild 300000
+</IfModule>
