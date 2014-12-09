@@ -21,7 +21,7 @@ class postgresql::ganglia(
         group  => 'root',
         mode   => '0444',
         source => "puppet:///modules/${module_name}/ganglia/postgresql.py",
-        notify => Service['gmond'],
+        notify => Service['ganglia-monitor'],
     }
 
     file { '/etc/ganglia/conf.d/postgresql.pyconf':
@@ -30,6 +30,6 @@ class postgresql::ganglia(
         group   => 'root',
         mode    => '0444',
         content => template('postgresql/ganglia/postgresql.pyconf.erb'),
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 }

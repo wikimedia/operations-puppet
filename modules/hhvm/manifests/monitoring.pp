@@ -21,7 +21,7 @@ class hhvm::monitoring {
         group   => 'root',
         mode    => '0444',
         require => File['/usr/lib/ganglia/python_modules/hhvm_mem.py'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 
 
@@ -41,6 +41,6 @@ class hhvm::monitoring {
         group   => 'root',
         mode    => '0444',
         require => File['/usr/lib/ganglia/python_modules/hhvm_health.py'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 }

@@ -17,7 +17,7 @@ class eventlogging::monitoring {
         ensure  => present,
         source  => 'puppet:///modules/eventlogging/eventlogging_mon.pyconf',
         require => File['/usr/lib/ganglia/python_modules/eventlogging_mon.py'],
-        notify  => Service['gmond'],
+        notify  => Service['ganglia-monitor'],
     }
 
     file { '/usr/lib/nagios/plugins/check_eventlogging_jobs':
@@ -29,9 +29,9 @@ class eventlogging::monitoring {
     # to determine which endpoints to monitor, so if the contents
     # of that directory change, the module should be restarted.
 
-    Eventlogging::Service::Multiplexer <| |> ~> Service['gmond']
-    Eventlogging::Service::Processor <| |> ~> Service['gmond']
-    Eventlogging::Service::Reporter <| |> ~> Service['gmond']
+    Eventlogging::Service::Multiplexer <| |> ~> Service['ganglia-monitor']
+    Eventlogging::Service::Processor <| |> ~> Service['ganglia-monitor']
+    Eventlogging::Service::Reporter <| |> ~> Service['ganglia-monitor']
 }
 
 

@@ -4,13 +4,13 @@ class varnish::monitoring::ganglia::vhtcpd {
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            notify  => Service['gmond'],
+            notify  => Service['ganglia-monitor'],
     }
     file { '/etc/ganglia/conf.d/vhtcpd.pyconf':
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
             content => template("${module_name}/ganglia/vhtcpd.pyconf.erb"),
-            notify  => Service['gmond'],
+            notify  => Service['ganglia-monitor'],
     }
 }
