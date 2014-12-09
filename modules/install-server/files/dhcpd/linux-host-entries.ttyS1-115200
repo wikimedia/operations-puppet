@@ -1631,6 +1631,11 @@ host graphite1001 {
 	fixed-address graphite1001.eqiad.wmnet;
 }
 
+host graphite2001 {
+	hardware ethernet 90:B1:1C:22:D4:C8;
+	fixed-address graphite2001.codfw.wmnet;
+}
+
 host hafnium {
 	hardware ethernet 78:2b:cb:1f:17:48;
 	fixed-address hafnium.wikimedia.org;
