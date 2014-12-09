@@ -67,9 +67,7 @@ class diamond(
         require => Class['packages::python_statsd'],
     }
 
-    if os_version('debian >= jessie || ubuntu >= precise') {
-        require_package('python-statsd')
-    }
+    require_package('python-statsd')
 
     file { [ '/etc/diamond/collectors', '/etc/diamond/handlers' ]:
         ensure  => directory,
