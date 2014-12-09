@@ -45,6 +45,8 @@ class icinga::web {
         ensure => absent,
     }
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+
     install_certificate{ 'icinga.wikimedia.org':       ca => 'RapidSSL_CA.pem' }
     install_certificate{ 'icinga-admin.wikimedia.org': ca => 'RapidSSL_CA.pem' }
 
