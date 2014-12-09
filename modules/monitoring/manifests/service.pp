@@ -3,7 +3,7 @@ define monitoring::service(
     $check_command,
     $host                  = $::hostname,
     $retries               = 3,
-    $group                 = $monitoring::configuration::group,
+    $group                 = hiera('nagios_group', "${cluster}_${::site}"),
     $ensure                = present,
     $critical              = 'false',
     $passive               = 'false',
@@ -11,7 +11,7 @@ define monitoring::service(
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
     $contact_group         = 'admins',
-    $config_dir            = $monitoring::configuration::dir,
+    $config_dir            = '/etc/nagios',
 )
 {
     if ! $host {
