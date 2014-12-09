@@ -19,6 +19,7 @@ class mediawiki::users {
 
     user { 'apache':
         ensure     => present,
+        uid        => 48,
         gid        => 48,
         shell      => '/sbin/nologin',
         home       => '/var/www',
