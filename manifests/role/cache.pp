@@ -475,7 +475,7 @@ class role::cache {
             warning     => '0.1:29.9',
             # Critical if greater than 30.
             critical    => '30.0',
-            require     => Varnishkafka::Monitor[$varnish_name],
+            require     => Varnishkafka::Monitor['webrequest'],
         }
     }
 
