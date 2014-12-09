@@ -10,7 +10,7 @@
 
 class pybal::web ($ensure = 'present', $vhostnames = ['pybal-config.eqiad.wmnet']) {
 
-    $is_24 = ubuntu_version('>= trusty')
+    $is_24 = os_version('ubuntu >= trusty')
 
     apache::site { 'pybal-config':
         ensure   => $ensure,

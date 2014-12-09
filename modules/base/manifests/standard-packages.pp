@@ -1,6 +1,6 @@
 class base::standard-packages {
 
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         package { [ "linux-tools-${::kernelrelease}", 'linux-tools-generic' ]:
             ensure => present,
         }

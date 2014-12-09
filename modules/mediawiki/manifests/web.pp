@@ -44,7 +44,7 @@ class mediawiki::web( $workers_limit = undef ) {
         },
     }
 
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         apache::def { 'HHVM': }
     }
 }

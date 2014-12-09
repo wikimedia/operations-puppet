@@ -2,7 +2,7 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
     include ::apache
     include ::network::constants
 
-    if ubuntu_version('< trusty') {
+    if os_version('ubuntu < trusty') {
         $endpoints = {'apc' => 'apc_stats.php'}
     } else {
         $endpoints = {}

@@ -18,7 +18,7 @@
 #
 class toollabs::dev_environ {
 
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         package { [
             # Previously we installed libmariadbclient-dev, but that causes
             # dependency issues on Trusty.  libmariadbclient-dev formerly

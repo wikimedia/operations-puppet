@@ -79,7 +79,7 @@ class apache {
         require => Package['apache2'],
     }
 
-    if ubuntu_version('< trusty') {
+    if os_version('ubuntu < trusty') {
         # Early releases of Apache manage configuration snippets in conf.d/.
         # We standardize on conf-enabled/*.conf with this small shim.
         file { '/etc/apache2/conf.d/load-conf-enabled.conf':

@@ -5,7 +5,7 @@
 class trebuchet::packages {
     include ::redis::client::python
 
-    if ubuntu_version('> lucid') {
+    if os_version('ubuntu > lucid') {
         package { 'git-fat':
             ensure => present,
         }
