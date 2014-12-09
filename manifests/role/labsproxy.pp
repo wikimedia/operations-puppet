@@ -3,6 +3,9 @@ class role::dynamicproxy::eqiad {
     install_certificate{ 'star.wmflabs.org':
         privatekey => false
     }
+
+    $ssl_settings = ssl_ciphersuite('nginx', 'strong')
+
     class { '::dynamicproxy':
         ssl_certificate_name => 'star.wmflabs.org',
         set_xff              => true,
