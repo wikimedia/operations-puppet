@@ -25,6 +25,8 @@ define sudo::user(
     $ensure = present,
     $user   = $title,
 ) {
+    require sudo
+
     validate_ensure($ensure)
 
     $title_safe = regsubst($title, '\W', '-', 'G')
