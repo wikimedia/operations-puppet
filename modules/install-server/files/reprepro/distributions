@@ -4,7 +4,7 @@ Suite: lucid-wikimedia
 Codename: lucid-wikimedia
 Version: 10.04
 Architectures: source amd64
-Components: main universe non-free
+Components: main universe non-free thirdparty
 UDebComponents: main
 Update: hwraid
 Description: Wikimedia specific packages for Ubuntu Lucid
@@ -19,7 +19,7 @@ Suite: precise-wikimedia
 Codename: precise-wikimedia
 Version: 12.04
 Architectures: source amd64
-Components: main universe non-free mariadb
+Components: main universe non-free thirdparty mariadb
 UDebComponents: main
 Update: jenkins cloudera hwraid cassandra elasticsearch logstash
 Description: Wikimedia specific packages for Ubuntu Precise
@@ -34,7 +34,7 @@ Suite: trusty-wikimedia
 Codename: trusty-wikimedia
 Version: 14.04
 Architectures: source amd64
-Components: main universe non-free
+Components: main universe non-free thirdparty
 UDebComponents: main
 Update: hwraid cassandra elasticsearch
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr

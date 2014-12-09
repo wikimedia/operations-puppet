@@ -1,7 +1,7 @@
 Name: jenkins
 Method: http://pkg.jenkins-ci.org/debian-stable/
 Suite: binary
-Flat: main
+Flat: thirdparty
 GetInRelease: no
 Architectures: all>amd64
 VerifyRelease: 9B7D32F2D50582E6
@@ -10,7 +10,7 @@ ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 # track the cloudera hadoop release
 Name: cloudera
 Method: http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh/
-Components: contrib>main
+Components: contrib>thirdparty
 UDebComponents:
 GetInRelease: no
 Suite: precise-cdh5.0.2
@@ -20,7 +20,7 @@ ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^hadoop-0.20-mapreduce$|^b
 
 Name: hwraid
 Method: http://hwraid.le-vert.net/ubuntu
-Components: main>non-free
+Components: main>thirdparty
 UDebComponents:
 GetInRelease: no
 Suite: precise
@@ -30,7 +30,7 @@ ListShellHook: grep-dctrl -X -S megacli -o -X -P arcconf || [ $? -eq 1 ]
 
 Name: cassandra
 Method: http://www.apache.org/dist/cassandra/debian
-Components: main>main
+Components: main>thirdparty
 UDebComponents:
 Suite: 20x
 Architectures: amd64 source
@@ -39,7 +39,7 @@ ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
 
 Name: elasticsearch
 Method: http://packages.elasticsearch.org/elasticsearch/1.3/debian
-Components: main>main
+Components: main>thirdparty
 UDebComponents:
 Suite: stable
 GetInRelease: no
@@ -49,7 +49,7 @@ ListShellHook: grep-dctrl -X -S elasticsearch || [ $? -eq 1 ]
 
 Name: logstash
 Method: http://packages.elasticsearch.org/logstash/1.2/debian
-Components: main>main
+Components: main>thirdparty
 UDebComponents:
 Suite: stable
 GetInRelease: no
