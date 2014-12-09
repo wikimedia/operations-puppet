@@ -118,7 +118,7 @@ class contint::packages {
         ensure => 'installed',
     }
 
-    if ubuntu_version( '< trusty') {
+    if os_version('ubuntu < trusty') {
         # Packages that are not available on Trusty.
         # The related Jenkins jobs need to be rewritten anyway.
 

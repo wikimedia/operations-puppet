@@ -49,4 +49,4 @@ class apache::mod::wsgi            { apache::mod_conf { 'wsgi':           } <- p
 # Modules that target a specific distribution
 class apache::mod::access_compat { if os_version('ubuntu >= 13.10') { apache::mod_conf { 'access_compat': } } }
 class apache::mod::proxy_fcgi    { if os_version('ubuntu >= 13.10') { apache::mod_conf { 'proxy_fcgi':    } } }
-class apache::mod::version       { if ubuntu_version( '< 13.10') { apache::mod_conf { 'version':       } } }
+class apache::mod::version       { if os_version('ubuntu < 13.10')  { apache::mod_conf { 'version':       } } }
