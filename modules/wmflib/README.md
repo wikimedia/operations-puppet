@@ -129,6 +129,33 @@ Emit a hash as YAML with keys (both shallow and deep) in sorted order.
     }
 
 
+## os_version
+
+`os_version( string $version_predicate )`
+
+Performs semantic OS version comparison.
+
+Takes one or more string arguments, each containing one or more predicate
+expressions. Each expression consts of a distribution name, followed by a
+comparison operator, followed by a release name or number. Multiple clauses
+are OR'd together. The arguments are case-insensitive.
+
+The host's OS version will be compared to to the comparison target
+using the specified operator, returning a boolean. If no operator is
+present, the equality operator is assumed.
+
+### Examples
+
+    # True if Ubuntu Trusty or newer or Debian Jessie or newer
+    os_version('ubuntu >= trusty || debian >= Jessie')
+
+    # Same, but with each clause as a separate argument
+    os_version('ubuntu >= trusty', 'debian >= Jessie')
+
+    # True if exactly Debian Jessie
+    os_version('debian jessie')
+
+
 ## php_ini
 
 `php_ini( hash $ini_settings [, hash $... ] )`
@@ -177,23 +204,23 @@ Abort catalog compilation if it is not.
     requires_realm('labs')
 
 
-## requires_ubuntu
+## requires_os
 
-`requires_ubuntu( string $version_predicate )`
+`requires_os( string $version_predicate )`
 
-Validate that the host Ubuntu version satisfies a version
+Validate that the host OS version satisfies a version
 check. Abort catalog compilation if not.
 
-See the documentation for ubuntu_version() for supported
+See the documentation for os_version() for supported
 predicate syntax.
 
 ### Examples
 
     # Fail unless version is Trusty
-    requires_ubuntu('trusty')
+    requires_os('trusty')
 
     # Fail unless Trusty or newer
-    requires_ubuntu('> trusty')
+    requires_os('> trusty')
 
 
 
@@ -291,6 +318,8 @@ present, the equality operator is assumed.
 Release names are case-insensitive. The comparison operator and
 comparison target can be provided as two separate arguments, if you
 prefer.
+
+This function is DEPRECATED. Please see os_version() instead.
 
 ### Examples
 
