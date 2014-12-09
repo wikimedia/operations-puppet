@@ -22,7 +22,7 @@ class contint::browsertests(
     }
 
     # Ruby gems is provided within ruby since Trusty
-    if ubuntu_version('< trusty') {
+    if os_version('ubuntu < trusty') {
         package { 'rubygems':
             ensure => present,
         }

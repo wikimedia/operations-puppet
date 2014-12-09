@@ -53,7 +53,7 @@ class gdash(
         provider => 'trebuchet',
     }
 
-    if ubuntu_version('< trusty') {
+    if os_version('ubuntu < trusty') {
         package { [ 'ruby-rack', 'ruby-sinatra', 'rubygems' ]: }
     } else {
         package { [ 'ruby-rack', 'ruby-sinatra' ]: }

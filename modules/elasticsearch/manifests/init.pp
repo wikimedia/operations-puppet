@@ -154,7 +154,7 @@ class elasticsearch($cluster_name,
     }
 
     # Cluster management tool, trusty only
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         file { '/usr/local/bin/es-tool':
             ensure  => file,
             owner   => 'root',

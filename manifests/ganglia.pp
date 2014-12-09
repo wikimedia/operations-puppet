@@ -501,7 +501,7 @@ class ganglia::web {
         $ganglia_servername = 'ganglia.wikimedia.org'
         $ganglia_serveralias = 'uranium.wikimedia.org'
         #TODO: Ugly hideous hack to be removed soon after we migrate to trusty
-        if ubuntu_version('>= trusty') {
+        if os_version('ubuntu >= trusty') {
             package { 'ganglia-webfrontend':
                 ensure => present,
             }

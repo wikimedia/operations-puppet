@@ -32,7 +32,7 @@ class rcstream(
     $ensure       = present,
     $bind_address = '0.0.0.0',
 ) {
-    requires_ubuntu('>= trusty')
+    requires_os('ubuntu >= trusty')
 
     include ::redis::client::python
 

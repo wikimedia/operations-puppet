@@ -44,7 +44,7 @@ class apache::mpm( $mpm = 'prefork' ) {
     }
 
     #Those are not needed in modern apache packages.
-    if ubuntu_version('< trusty') {
+    if os_version('ubuntu < trusty') {
         package { $selected_pkg:
             ensure => present,
             before => File[$selected_cfg],

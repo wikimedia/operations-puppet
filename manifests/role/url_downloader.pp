@@ -32,7 +32,7 @@ class role::url_downloader {
     }
 
     # pin package to the default, Ubuntu version, instead of our own
-    if ubuntu_version('>= 12.04') {
+    if os_version('ubuntu >= 12.04') {
         $pinned_packages = [
                             'squid3',
                             'squid-common3',

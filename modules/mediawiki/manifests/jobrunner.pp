@@ -68,7 +68,7 @@ class mediawiki::jobrunner (
         mode    => '0444',
     }
 
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         include ::apache::mod::proxy_fcgi
 
         class { 'apache::mpm':

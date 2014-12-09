@@ -16,7 +16,7 @@
 #           service_ip  => '10.10.10.10' # Probably a public ip though
 #       }
 class url_downloader($service_ip) {
-    if ubuntu_version('>= 12.04') {
+    if os_version('ubuntu >= 12.04') {
         $package_name = 'squid3'
     } else {
         $package_name = 'squid'

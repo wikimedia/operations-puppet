@@ -77,7 +77,7 @@ class contint::packages::labs {
         require  => Package['python-pip'],
     }
 
-    if ubuntu_version('>= trusty') {
+    if os_version('ubuntu >= trusty') {
         exec { '/usr/bin/apt-get -y build-dep hhvm':
             onlyif => '/usr/bin/apt-get -s build-dep hhvm | /bin/grep -Pq "will be (installed|upgraded)"',
         }
