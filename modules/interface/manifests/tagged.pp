@@ -57,24 +57,22 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
             ]
     }
 
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '10.04') >= 0 {
-        if $remove == 'true' {
-            exec { "/sbin/ifdown ${intf}":
-                before => Augeas[$intf],
-            }
+    if $remove == 'true' {
+        exec { "/sbin/ifdown ${intf}":
+            before => Augeas[$intf],
         }
+    }
 
-        # Use augeas
-        augeas { $intf:
-            context => '/files/etc/network/interfaces/',
-            changes => $augeas_cmd;
-        }
+    # Use augeas
+    augeas { $intf:
+        context => '/files/etc/network/interfaces/',
+        changes => $augeas_cmd;
+    }
 
-        if $remove != 'true' {
-            exec { "/sbin/ifup ${intf}":
-                subscribe => Augeas[$intf],
-                refreshonly => true,
-            }
+    if $remove != 'true' {
+        exec { "/sbin/ifup ${intf}":
+            subscribe => Augeas[$intf],
+            refreshonly => true,
         }
     }
 }
