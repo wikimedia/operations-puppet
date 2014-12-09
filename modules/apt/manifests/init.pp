@@ -50,39 +50,44 @@ class apt {
     # no longer needed after the installation is over
     file { '/etc/apt/apt.conf':
         ensure  => absent,
-        require => [
-                Apt::Conf['wikimedia-proxy'],
-                Apt::Conf['security-ubuntu-proxy'],
-                Apt::Conf['ubuntu-cloud-archive-proxy'],
-                Apt::Conf['old-releases-proxy'],
-                ]
-    }
-    apt::conf { 'wikimedia-proxy':
-        ensure   => absent,
-        priority => '80',
-        key      => 'Acquire::http::Proxy',
-        value    => $http_proxy,
     }
 
-    apt::conf { 'security-ubuntu-proxy':
-        ensure   => present,
-        priority => '80',
-        key      => 'Acquire::http::Proxy::security.ubuntu.com',
-        value    => $http_proxy,
-    }
+    if $::lsbdistid == 'Debian' {
+        # XXX: temporary, until we have a mirror
+        apt::conf { 'wikimedia-proxy':
+            ensure   => present,
+            priority => '80',
+            key      => 'Acquire::http::Proxy',
+            value    => $http_proxy,
+        }
+    } elsif $::lsbdistid == 'Ubuntu' {
+        apt::conf { 'wikimedia-proxy':
+            ensure   => absent,
+            priority => '80',
+            key      => 'Acquire::http::Proxy',
+            value    => $http_proxy,
+        }
 
-    apt::conf { 'ubuntu-cloud-archive-proxy':
-        ensure   => present,
-        priority => '80',
-        key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
-        value    => $http_proxy,
-    }
+        apt::conf { 'security-ubuntu-proxy':
+            ensure   => present,
+            priority => '80',
+            key      => 'Acquire::http::Proxy::security.ubuntu.com',
+            value    => $http_proxy,
+        }
 
-    apt::conf { 'old-releases-proxy':
-        ensure   => present,
-        priority => '80',
-        key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
-        value    => $http_proxy,
+        apt::conf { 'ubuntu-cloud-archive-proxy':
+            ensure   => present,
+            priority => '80',
+            key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
+            value    => $http_proxy,
+        }
+
+        apt::conf { 'old-releases-proxy':
+            ensure   => present,
+            priority => '80',
+            key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
+            value    => $http_proxy,
+        }
     }
 
     # apt-get should not install recommended packages
