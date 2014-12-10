@@ -62,12 +62,13 @@ class diamond(
                        port => '8125',
     },
 ) {
-    package { [ 'python-diamond', 'python-configobj' ]:
-        ensure  => present,
-        require => Class['packages::python_statsd'],
+    if os_version('debian >= jessie || ubuntu >= precise') {
+        require_package('python-statsd')
     }
 
-    require_package('python-statsd')
+    package { [ 'python-diamond', 'python-configobj' ]:
+        ensure  => present,
+    }
 
     file { [ '/etc/diamond/collectors', '/etc/diamond/handlers' ]:
         ensure  => directory,
