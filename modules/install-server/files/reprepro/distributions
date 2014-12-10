@@ -18,7 +18,7 @@ Label: Wikimedia
 Suite: precise-wikimedia
 Codename: precise-wikimedia
 Version: 12.04
-Architectures: source amd64
+Architectures: source amd64 i386
 Components: main universe non-free thirdparty mariadb
 UDebComponents: main
 Update: jenkins cloudera hwraid cassandra elasticsearch logstash
@@ -33,7 +33,7 @@ Label: Wikimedia
 Suite: trusty-wikimedia
 Codename: trusty-wikimedia
 Version: 14.04
-Architectures: source amd64
+Architectures: source amd64 i386
 Components: main universe non-free thirdparty
 UDebComponents: main
 Update: hwraid cassandra elasticsearch
