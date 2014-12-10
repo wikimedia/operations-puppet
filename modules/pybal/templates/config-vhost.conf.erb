@@ -5,12 +5,13 @@
     DocumentRoot /srv/pybal-config
 
     <Directory "/srv/pybal-config">
- <% if @is_24 -%>
+	 <IfVersion >= 2.4>
          Require all granted
-<% else -%>
+	</IfVersion>
+	<IfVersion < 2.4>
          Order allow,deny
          Allow from all
-<% end -%>
+	</IfVersion>
          Options +Indexes +Followsymlinks
          AllowOverride None
      </Directory>
