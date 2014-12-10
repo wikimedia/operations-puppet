@@ -52,7 +52,7 @@ class role::phabricator::main {
     }
 
     #let's go jenkins
-    $current_tag = 'T1343'
+    $current_tag = 'T77082'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
@@ -153,7 +153,7 @@ class role::phabricator::labs {
 
     #pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
-    $current_tag = 'T1343'
+    $current_tag = 'T77082'
     class { '::phabricator':
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
