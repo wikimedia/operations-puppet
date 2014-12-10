@@ -33,11 +33,11 @@ class dynamicproxy (
     # explicitly here.
     File['/etc/redis/redis.conf'] ~> Service['redis']
 
-    include misc::labsdebrepo
+    include ::labs_debrepo
 
     class { 'nginx':
         variant => 'extras',
-        require => Class['misc::labsdebrepo'],
+        require => Class['::labs_debrepo'],
     }
 
     file { '/etc/logrotate.d/nginx':
