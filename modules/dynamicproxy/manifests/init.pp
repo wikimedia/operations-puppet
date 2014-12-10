@@ -13,13 +13,13 @@
 #limitations under the License.
 
 class dynamicproxy (
+    $ssl_settings,
+    $resolver,
     $redis_maxmemory='512MB',
     $ssl_certificate_name=false,
-    $ssl_settings,
     $notfound_servers=[],
     $luahandler='domainproxy',
     $set_xff=false,
-    $resolver,
 ) {
     class { '::redis':
         persist       => 'aof',
