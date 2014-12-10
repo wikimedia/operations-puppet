@@ -2605,28 +2605,28 @@ node 'terbium.eqiad.wmnet' {
 
     include ldap::role::client::labs
 
-    include misc::maintenance::pagetriage
-    include misc::maintenance::translationnotifications
-    include misc::maintenance::updatetranslationstats
-    include misc::maintenance::wikidata
-    include misc::maintenance::echo_mail_batch
-    include misc::maintenance::parsercachepurging
-    include misc::maintenance::cleanup_upload_stash
-    include misc::maintenance::tor_exit_node
-    include misc::maintenance::update_flaggedrev_stats
-    include misc::maintenance::refreshlinks
-    include misc::maintenance::update_special_pages
-    include misc::maintenance::purge_abusefilter
-    include misc::maintenance::purge_checkuser
+    include mediawiki::maintenance::pagetriage
+    include mediawiki::maintenance::translationnotifications
+    include mediawiki::maintenance::updatetranslationstats
+    include mediawiki::maintenance::wikidata
+    include mediawiki::maintenance::echo_mail_batch
+    include mediawiki::maintenance::parsercachepurging
+    include mediawiki::maintenance::cleanup_upload_stash
+    include mediawiki::maintenance::tor_exit_node
+    include mediawiki::maintenance::update_flaggedrev_stats
+    include mediawiki::maintenance::refreshlinks
+    include mediawiki::maintenance::update_special_pages
+    include mediawiki::maintenance::purge_abusefilter
+    include mediawiki::maintenance::purge_checkuser
 
     # Revert of https://gerrit.wikimedia.org/r/74592 per request from James Alexander.
-    class { '::misc::maintenance::purge_securepoll':
+    class { '::mediawiki::maintenance::purge_securepoll':
         ensure => absent,
     }
 
     # (bug 15434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
-    include misc::maintenance::updatequerypages
+    include mediawiki::maintenance::updatequerypages
 
     package { 'python-mysqldb':
         ensure => installed,
