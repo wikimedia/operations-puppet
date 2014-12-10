@@ -433,6 +433,10 @@ class role::ci::slave::labs {
     # Include package unsafe for production
     include contint::packages::labs
 
+    if os_version('ubuntu >= trusty') {
+        include contint::hhvm
+    }
+
     include role::ci::slave::labs::common
 
     include role::ci::slave::localbrowser
