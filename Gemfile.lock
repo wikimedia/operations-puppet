@@ -48,10 +48,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  facter
   puppet (~> 3.4.3)
   rake (~> 10.4, >= 10.4.2)
   rspec-puppet (~> 2.3.2)
   rubocop (~> 0.35.1)
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
