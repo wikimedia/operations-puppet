@@ -13,6 +13,7 @@ class base::grub {
         path    => '/bin:/usr/bin',
         command => "sed -i '/^GRUB_TERMINAL/s/=.*/=\"console serial\"/' /etc/default/grub",
         unless  => "grep -q '^GRUB_TERMINAL=.*console serial' /etc/default/grub",
+        onlyif  => 'test -f /etc/default/grub',
         notify  => Exec['update-grub'],
     }
 
