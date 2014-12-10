@@ -30,6 +30,8 @@ class role::icinga(
         include icinga::ircbot
     }
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+
     class { '::icinga':            }
     class { '::icinga::web':       }
     class { '::icinga::naggen':    }
