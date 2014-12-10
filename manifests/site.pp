@@ -2461,24 +2461,6 @@ node 'sodium.wikimedia.org' {
     }
 }
 
-# To be decommed soon
-node /ssl100[1-9]\.wikimedia\.org/ {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    include standard
-    include admin
-}
-
-# To be decommed soon
-node /ssl300[1-4]\.esams\.wikimedia\.org/ {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0'
-    }
-    include standard
-    include admin
-}
-
 node 'strontium.eqiad.wmnet' {
     include standard
     include admin
