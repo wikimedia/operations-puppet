@@ -20,7 +20,7 @@ def delete_and_vacuum(dbh, tables):
     log.info("Deleting tables")
     for table in tables:
         log.debug("Deleting table %s", table)
-        cur.execute("DROP TABLE {}".format(tables))
+        cur.execute("DROP TABLE {}".format(table))
     log.info("Vacuuming the db")
     cur.execute("VACUUM")
     log.info("Done")
