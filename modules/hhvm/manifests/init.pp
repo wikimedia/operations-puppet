@@ -37,28 +37,45 @@
 # [*group*]
 #   Run the FastCGI server as this group (default: 'www-data').
 #
+# [*common_settings*]
+#   A hash of php.ini settings shared between CLI and FastCGI mode. These will
+#   be merged/override the defaults provided by the puppet class.
+#
 # [*cli_settings*]
-#   A hash of php.ini settings for CLI mode. These will override
-#   the defaults (declared below).
+#  Ditto, except for CLI mode.
 #
 # [*fcgi_settings*]
 #   Ditto, except for FastCGI mode.
 #
-# === Examples
+# [*packages_ensure*]
+# The state of puppet packages. Set to 'latest' to have puppet magically
+# upgrade hhvm related packages (default: 'present').
+#
+# === Example
+#
+# Disable hhvm.log.use_syslog for both cli and cgi, setting a different
+# source_root for fcgi:
 #
 #  class { 'hhvm':
-#    user          => 'apache',
-#    group         => 'wikidev',
-#    fcgi_settings => {
+#    user            => 'apache',
+#    group           => 'wikidev',
+#    common_settings => {
+#      'hhvm' => {
+#        log => { use_sylog => false },
+#      },
+#    },
+#    fcgi_settings   => {
 #      'hhvm' => { server => { source_root => '/srv/mediawiki' } },
 #    },
 #  }
 #
 class hhvm(
-    $user          = 'www-data',
-    $group         = 'www-data',
-    $fcgi_settings = {},
-    $cli_settings  = {},
+    $user            = 'www-data',
+    $group           = 'www-data',
+    $common_settings = {},
+    $fcgi_settings   = {},
+    $cli_settings    = {},
+    $packages_ensure = 'present',
 ) {
     requires_os('ubuntu >= trusty')
 
@@ -66,11 +83,11 @@ class hhvm(
     ## Packages
 
     package { 'hhvm':
-        ensure => present,
+        ensure => $packages_ensure,
     }
 
     package { [ 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]:
-        ensure => present,
+        ensure => $packages_ensure,
     }
 
 
@@ -161,14 +178,14 @@ class hhvm(
     ## Config files
 
     file { '/etc/hhvm/php.ini':
-        content => php_ini($common_defaults, $cli_defaults, $cli_settings, $cli_hiera),
+        content => php_ini($common_defaults, $cli_defaults, $common_settings, $cli_settings, $cli_hiera),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
     }
 
     file { '/etc/hhvm/fcgi.ini':
-        content => php_ini($common_defaults, $fcgi_defaults, $fcgi_settings, $fcgi_hiera),
+        content => php_ini($common_defaults, $fcgi_defaults, $common_settings, $fcgi_settings, $fcgi_hiera),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
