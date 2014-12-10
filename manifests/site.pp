@@ -2255,33 +2255,10 @@ node 'terbium.eqiad.wmnet' {
     include scap::scripts
     include role::noc
     include role::mediawiki::searchmonitor
+    include role::mediawiki::maintenance
 
     include admin
     include ldap::role::client::labs
-
-    include misc::maintenance::pagetriage
-    include misc::maintenance::translationnotifications
-    include misc::maintenance::updatetranslationstats
-    include misc::maintenance::wikidata
-    include misc::maintenance::echo_mail_batch
-    include misc::maintenance::parsercachepurging
-    include misc::maintenance::cleanup_upload_stash
-    include misc::maintenance::tor_exit_node
-    include misc::maintenance::update_flaggedrev_stats
-    include misc::maintenance::refreshlinks
-    include misc::maintenance::update_special_pages
-    include misc::maintenance::update_article_count
-    include misc::maintenance::purge_abusefilter
-    include misc::maintenance::purge_checkuser
-
-    # Revert of https://gerrit.wikimedia.org/r/74592 per request from James Alexander.
-    class { '::misc::maintenance::purge_securepoll':
-        ensure => absent,
-    }
-
-    # (bug 15434) Periodical run of currently disabled special pages
-    # to be run against PMTPA slaves
-    include misc::maintenance::updatequerypages
 
     package { 'python-mysqldb':
         ensure => installed,
