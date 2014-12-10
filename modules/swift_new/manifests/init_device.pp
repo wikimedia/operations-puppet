@@ -1,6 +1,4 @@
 define swift_new::init_device($partition_nr='1') {
-    require base::platform
-
     if (! $title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
         fail("unable to init ${title} for swift")
     }

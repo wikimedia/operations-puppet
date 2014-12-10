@@ -385,8 +385,6 @@ class swift::storage {
 #   - $title:
 #       The device to partition
 define swift::create_filesystem($partition_nr='1') {
-    require base::platform
-
     if ($title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
         $dev        = "${title}${partition_nr}"
         $dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')

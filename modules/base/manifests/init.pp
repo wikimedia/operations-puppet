@@ -188,7 +188,6 @@ class base {
     include base::standard-packages
     include base::environment
     include base::phaste
-    include base::platform
     include base::screenconfig
     include ssh::client
     include ssh::server
