@@ -2466,6 +2466,7 @@ node /ssl100[1-9]\.wikimedia\.org/ {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    include standard
     include admin
 }
 
@@ -2474,6 +2475,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0'
     }
+    include standard
     include admin
 }
 
