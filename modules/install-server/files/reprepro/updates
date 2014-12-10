@@ -48,7 +48,7 @@ VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl -X -S elasticsearch || [ $? -eq 1 ]
 
 Name: logstash
-Method: http://packages.elasticsearch.org/logstash/1.2/debian
+Method: http://packages.elasticsearch.org/logstash/1.4/debian
 Components: main>thirdparty
 UDebComponents:
 Suite: stable
