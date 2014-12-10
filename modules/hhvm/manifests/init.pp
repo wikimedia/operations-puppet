@@ -44,6 +44,10 @@
 # [*fcgi_settings*]
 #   Ditto, except for FastCGI mode.
 #
+# [*packages_ensure*]
+# The state of puppet packages. Set to 'latest' to have puppet magically
+# upgrade hhvm related packages (default: 'present').
+#
 # === Examples
 #
 #  class { 'hhvm':
@@ -55,10 +59,11 @@
 #  }
 #
 class hhvm(
-    $user          = 'www-data',
-    $group         = 'www-data',
-    $fcgi_settings = {},
-    $cli_settings  = {},
+    $user            = 'www-data',
+    $group           = 'www-data',
+    $fcgi_settings   = {},
+    $cli_settings    = {},
+    $packages_ensure = 'present',
 ) {
     requires_os('ubuntu >= trusty')
 
@@ -66,11 +71,11 @@ class hhvm(
     ## Packages
 
     package { 'hhvm':
-        ensure => present,
+        ensure => $packages_ensure,
     }
 
     package { [ 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]:
-        ensure => present,
+        ensure => $packages_ensure,
     }
 
 
