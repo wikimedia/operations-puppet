@@ -13,6 +13,5 @@ class ganglia_new::monitor::service() {
 
     service { 'ganglia-monitor':
         ensure   => running,
-        require  => File['/etc/init/ganglia-monitor.conf'],
     }
 }
