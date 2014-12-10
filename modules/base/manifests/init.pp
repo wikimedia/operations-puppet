@@ -46,16 +46,6 @@ class base::remote-syslog {
     }
 }
 
-# Class: base::packages::emacs
-#
-# Installs emacs package
-class base::packages::emacs {
-    package { 'emacs23':
-        ensure => 'installed',
-        alias  => 'emacs',
-    }
-}
-
 class base::instance-upstarts {
 
     file { '/etc/init/ttyS0.conf':

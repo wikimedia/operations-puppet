@@ -3,7 +3,10 @@
 class role::statistics {
     include misc::statistics::user
     include misc::statistics::base
-    include base::packages::emacs
+
+    package { 'emacs23':
+        ensure => 'installed',
+    }
 
     include role::backup::host
     backup::set { 'home' : }
