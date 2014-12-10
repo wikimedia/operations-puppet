@@ -26,36 +26,18 @@ class mediawiki (
     include ::mediawiki::syslog
     include ::mediawiki::php
 
-    include ::ssh::server
-
     if os_version('ubuntu >= trusty') {
         include ::mediawiki::hhvm
     }
 
-
     # Set the Salt grain 'php' to the name of the PHP runtime, to make
     # it easier to select a subset of MediaWiki servers. For example:
     #   $ salt -G php:hhvm cmd.run 'apt-show-versions hhvm'
-
     $php = $::lsbdistcodename ? { trusty => 'hhvm', default => 'php5' }
     salt::grain { 'php': value => $php }
 
-
-    # Increase the scheduling priority of sshd so we can still
-    # log in remotely in cases of overload.
-
-    file { '/etc/init/ssh.override':
-        content => "nice -10\n",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['ssh'],
-    }
-
-
     # /var/log/mediawiki contains log files for the MediaWiki jobrunner
     # and for various periodic jobs that are managed by cron.
-
     file { '/var/log/mediawiki':
         ensure => directory,
         owner  => 'apache',
