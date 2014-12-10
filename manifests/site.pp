@@ -2807,7 +2807,7 @@ node 'tungsten.eqiad.wmnet' {
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
-node 'graphite1001.eqiad.wmnet' {
+node 'graphite1002.eqiad.wmnet' {
     include admin
     include standard
     include role::graphite::production
