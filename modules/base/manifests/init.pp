@@ -8,6 +8,14 @@ class base::grub {
         notify  => Exec['update-grub'],
     }
 
+    # show the GRUB menu on both console & serial (default is serial)
+    exec { 'grub2 terminal':
+        path    => '/bin:/usr/bin',
+        command => "sed -i '/^GRUB_TERMINAL/s/=.*/=\"console serial\"/' /etc/default/grub",
+        unless  => "grep -q '^GRUB_TERMINAL=.*console serial' /etc/default/grub",
+        notify  => Exec['update-grub'],
+    }
+
     # The CFQ I/O scheduler is rather # suboptimal for some of our I/O
     # workloads. Override with deadline. (the installer does this too)
     exec { 'grub2 iosched deadline':
