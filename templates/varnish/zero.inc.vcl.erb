@@ -143,24 +143,24 @@ sub vcl_deliver {
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
-        } else if (req.http.X-CS2 == "470-03") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-                if (req.http.host ~ "^((en|bn)\.)?(zero|m)\.") {
-                    set req.http.X-CS = req.http.X-CS2;
-                }
-            }
-        } else if (req.http.X-CS2 == "624-02") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-                if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
-                    set req.http.X-CS = req.http.X-CS2;
-                }
-            }
-        } else if (req.http.X-CS2 == "605-01") {
-            if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
-                if (req.http.host ~ "^((fr|ru|ja|zh|it|de|en|es|ar)\.)?m\.") {
-                    set req.http.X-CS = req.http.X-CS2;
-                }
-            }
+        // } else if (req.http.X-CS2 == "470-03") {
+        //     if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+        //         if (req.http.host ~ "^((en|bn)\.)?(zero|m)\.") {
+        //             set req.http.X-CS = req.http.X-CS2;
+        //         }
+        //     }
+        // } else if (req.http.X-CS2 == "624-02") {
+        //     if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+        //         if (req.http.host ~ "^((fr|ha|ln|yo|eo|ar|zh|en|es|de)\.)?m\.") {
+        //             set req.http.X-CS = req.http.X-CS2;
+        //         }
+        //     }
+        // } else if (req.http.X-CS2 == "605-01") {
+        //     if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
+        //         if (req.http.host ~ "^((fr|ru|ja|zh|it|de|en|es|ar)\.)?m\.") {
+        //             set req.http.X-CS = req.http.X-CS2;
+        //         }
+        //     }
         } else if (req.http.X-CS2 == "641-14") {
             if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
                 if (req.http.host ~ "^((en|zh|ar|hi|fr|sw|rw|de|es|ko)\.)?m\.") {
@@ -173,12 +173,12 @@ sub vcl_deliver {
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
-        } else if (req.http.X-CS2 == "410-01") {
-            if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
-                if (req.http.host ~ "^((en|ur)\.)?(zero|m)\.") {
-                    set req.http.X-CS = req.http.X-CS2;
-                }
-            }
+        // } else if (req.http.X-CS2 == "410-01") {
+        //     if ((!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) || req.http.X-Forwarded-By == "Opera") {
+        //         if (req.http.host ~ "^((en|ur)\.)?(zero|m)\.") {
+        //             set req.http.X-CS = req.http.X-CS2;
+        //         }
+        //     }
         } else if (req.http.X-CS2 == "510-11") {
             if (!req.http.X-Forwarded-Proto && !req.http.X-Forwarded-By) {
                 if (req.http.host ~ "^((id|en|zh|ar|hi|ms|jv|su)\.)?zero\.") {
@@ -263,14 +263,15 @@ sub vcl_deliver {
                     set req.http.X-CS = req.http.X-CS2;
                 }
             }
-        } else if (req.http.X-CS2 ~ "^(255-03|310-260|410-06|436-05|515-05|604-00|621-30|623-03|630-03|631-02|TEST.*)(\|.*)?$") {
+//        } else if (req.http.X-CS2 ~ "^(255-03|310-260|410-06|436-05|515-05|604-00|621-30|623-03|630-03|631-02|TEST.*)(\|.*)?$") {
+        } else {
             // Support HTTPS, allows all proxies
             // Once analytics is fixed, this will be done for everything
             set req.http.X-CS = req.http.X-CS2;
-        } else if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
-            // Default: Support HTTPS for both DIRECT and OPERA, allows all subnets
-            // 401-01|414-06|416-03|429-02|437-01|514-02|515-03
-            set req.http.X-CS = req.http.X-CS2;
+        // } else if (!req.http.X-Forwarded-By || req.http.X-Forwarded-By == "Opera") {
+        //     // Default: Support HTTPS for both DIRECT and OPERA, allows all subnets
+        //     // 401-01|414-06|416-03|429-02|437-01|514-02|515-03
+        //     set req.http.X-CS = req.http.X-CS2;
         }
     }
 
