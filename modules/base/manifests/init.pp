@@ -1,17 +1,10 @@
 class base::grub {
     # Disable the 'quiet' kernel command line option so console messages
     # will be printed.
-    exec { 'grub1 remove quiet':
-        path    => '/bin:/usr/bin',
-        command => "sed -i '/^# defoptions.*[= ]quiet /s/quiet //' /boot/grub/menu.lst",
-        onlyif  => "grep -q '^# defoptions.*[= ]quiet ' /boot/grub/menu.lst",
-        notify  => Exec['update-grub'],
-    }
-
     exec { 'grub2 remove quiet':
         path    => '/bin:/usr/bin',
-        command => "sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"/s/quiet splash//' /etc/default/grub",
-        onlyif  => "grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"' /etc/default/grub",
+        command => "sed -r -i '/^GRUB_CMDLINE_LINUX_DEFAULT/s/quiet( splash)?//' /etc/default/grub",
+        onlyif  => "grep -E -q '^GRUB_CMDLINE_LINUX_DEFAULT=.*quiet( splash)?' /etc/default/grub",
         notify  => Exec['update-grub'],
     }
 
