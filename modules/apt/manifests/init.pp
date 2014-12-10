@@ -29,7 +29,7 @@ class apt {
     apt::repository { 'wikimedia':
         uri         => 'http://apt.wikimedia.org/wikimedia',
         dist        => "${::lsbdistcodename}-wikimedia",
-        components  => 'main universe non-free',
+        components  => 'main universe thirdparty',
         comment_old => true,
     }
 
