@@ -77,4 +77,17 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
 
     $endpoint_list = keys($endpoints)
     mediawiki::monitoring::webserver::endpoint { $endpoint_list: }
+
+
+    # Provision `apachetop`, a top-like tool for observing Apache requests.
+
+    require_package('apachetop')
+
+    file { '/etc/profile.d/apachetop.sh':
+        ensure  => $ensure,
+        content => 'alias apachetop="sudo /usr/sbin/apachetop -f /var/log/apache2/other_vhosts_access.log"',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
 }
