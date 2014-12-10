@@ -21,6 +21,13 @@ class snapshot::wikidatajsondump(
         source  => 'puppet:///modules/snapshot/dumpwikidatajson.sh',
     }
 
+    file { '/var/log/wikidatadump':
+        mode    => '0755',
+        ensure  => 'directory',
+        owner   => 'datasets',
+        group   => 'apache',
+    }
+
     cron { 'wikidatajson-dump':
         ensure      => $ensure,
         command     => "/usr/local/bin/dumpwikidatajson.sh",
