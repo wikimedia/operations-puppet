@@ -12,9 +12,7 @@ class role::labs::bastion {
         }
     }
 
-    if versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        package { 'mosh':
-            ensure => present,
-        }
+    package { 'mosh':
+        ensure => present,
     }
 }
