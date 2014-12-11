@@ -1,0 +1,32 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+  Prune old tables from an HHVM HHBC file
+
+"""
+import logging
+import logging.handlers
+import sqlite3
+import subprocess
+
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+log.addHandler(logging.StreamHandler())
+log.addHandler(logging.handlers.SysLogHandler(
+    '/dev/log', logging.handlers.SysLogHandler.LOG_LOCAL3))
+
+schema = subprocess.check_output(('/usr/bin/hhvm', '--repo-schema')).rstrip()
+hhbc = '/run/hhvm/cache/fcgi.hhbc.sq3'
+
+try:
+    with sqlite3.connect(hhbc, timeout=10) as db:
+        cursor = db.cursor()
+        cursor.execute('select name from sqlite_master where type="table" '
+                       ' and name not like "%%%s"' % schema)
+        for table, in cursor.fetchall():
+            log.info('dropping table "%s" from %s', table, hhbc)
+            db.execute('drop table %s' % table)
+        db.execute('vacuum')
+except:
+    log.exception('failed to prune %s:', hhbc)

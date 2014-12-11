@@ -49,11 +49,12 @@ class mediawiki::hhvm {
         mode   => '0555',
     }
 
-    # This command is useful prune the hhvm bytecode cache from old tables that
-    # are just left around
+    # Prune unused tables from HHVM's HHBC (sqlite bytecode repo).
+    # Tables are deemed unused if they reference a repo schema
+    # other than the one reported by 'hhvm --repo-schema'.
 
-    file { '/usr/local/bin/hhvm_cleanup_cache':
-        source => 'puppet:///modules/mediawiki/hhvm/cleanup_cache',
+    file { '/usr/local/sbin/hhbc-clean':
+        source => 'puppet:///modules/mediawiki/hhvm/hhbc-clean',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
