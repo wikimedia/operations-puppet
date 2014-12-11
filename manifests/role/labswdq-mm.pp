@@ -17,3 +17,11 @@ class role::labs::wdq-mm {
         ]
     }
 }
+
+# == Class: role::labs::wdq-mm::lb
+# Load balancer for balancing across multiple instances
+# of role::labs::wdq-mm
+class role::labs::wdq-mm::lb {
+    class { '::wdq-mm::lb':
+    }
+}
