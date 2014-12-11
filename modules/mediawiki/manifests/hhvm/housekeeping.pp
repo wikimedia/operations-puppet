@@ -14,4 +14,18 @@ class mediawiki::hhvm::housekeeping {
         require  => [Service['hhvm'],Service['apache2']],
     }
 
+    # This command is useful prune the hhvm bytecode cache from old tables that
+    # are just left around
+
+    file { '/usr/local/sbin/hhvm_cleanup_cache':
+        source => 'puppet:///modules/mediawiki/hhvm/cleanup_cache',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    # Temporary - remove the old script location
+    file { '/usr/local/bin/hhvm_cleanup_cache':
+        ensure => absent,
+    }
 }

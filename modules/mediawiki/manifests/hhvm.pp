@@ -49,15 +49,6 @@ class mediawiki::hhvm {
         mode   => '0555',
     }
 
-    # This command is useful prune the hhvm bytecode cache from old tables that
-    # are just left around
-
-    file { '/usr/local/bin/hhvm_cleanup_cache':
-        source => 'puppet:///modules/mediawiki/hhvm/cleanup_cache',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
 
     # Provision an Upstart task (a short-running process) that runs
     # when HHVM is started and that warms up the JIT by repeatedly
