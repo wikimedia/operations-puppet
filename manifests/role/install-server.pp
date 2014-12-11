@@ -84,26 +84,10 @@ class role::installserver {
             ]
     backup::set { $sets : }
 
-    # pin package to the default, Ubuntu version, instead of our own
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        $pinned_packages = [
-                            'squid3',
-                            'squid-common3',
-                            'squid-langpack',
-                        ]
-        $before_package = 'squid3'
-    } else {
-        $pinned_packages = [
-                            'squid',
-                            'squid-common',
-                            'squid-langpack',
-                        ]
-        $before_package = 'squid'
-    }
-    apt::pin { $pinned_packages:
+    apt::pin { [ 'squid3', 'squid-common3', 'squid-langpack' ]: 
         pin      => 'release o=Ubuntu',
         priority => '1001',
-        before   => Package[$before_package],
+        before   => Package['squid3'],
     }
 
     # Monitoring

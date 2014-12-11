@@ -13,44 +13,31 @@
 #   include install-server::caching-proxy
 
 class install-server::caching-proxy {
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        $confdir = '/etc/squid3'
-        $package_name = 'squid3'
-        $service_name = 'squid3'
-    } else {
-        $confdir = '/etc/squid'
-        $package_name = 'squid'
-        $service_name = 'squid'
-    }
-
-    file { "${confdir}/squid.conf":
+    file { '/etc/squid3/squid.conf':
         ensure  => present,
-        require => Package[$package_name],
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => "puppet:///modules/install-server/${package_name}-apt-proxy.conf",
+        source  => 'puppet:///modules/install-server/squid3-apt-proxy.conf',
+        require => Package['squid3'],
     }
 
-    file { "/etc/logrotate.d/${package_name}":
+    file { '/etc/logrotate.d/squid3':
         ensure  => present,
-        require => Package[$package_name],
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => "puppet:///modules/install-server/${package_name}-logrotate",
+        source  => 'puppet:///modules/install-server/squid3-logrotate',
+        require => Package['squid3'],
     }
 
-    package { $package_name:
-        ensure => latest,
+    package { 'squid3':
+        ensure => installed,
     }
 
-    service { $service_name:
-        ensure      => running,
-        require     => [
-                        File["${confdir}/squid.conf"],
-                        Package[$package_name]
-                       ],
-        subscribe   => File["${confdir}/squid.conf"],
+    service { 'squid3':
+        ensure    => running,
+        require   => [ Package['squid3'], File['/etc/squid3/squid.conf'] ],
+        subscribe => File['/etc/squid3/squid.conf'],
     }
 }
