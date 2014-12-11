@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# older versions of timeout (before coreutils) didn't support -k
+# remove the coditional after the last lucid host goes
+if timeout -k 10 10 true >/dev/null 2>&1; then
+	KILL_TIMEOUT="-k 300"
+fi
+
+set -e
+
+timeout $KILL_TIMEOUT 1800 apt-get update
+
+# We pass show-diff, show the log may be sensitive,
+# so make sure it's sufficiently protected
+umask 077
+
+timeout $KILL_TIMEOUT puppet agent \
+  --onetime \
+  --no-daemonize \
+  --verbose \
+  --show_diff \
+  --splay \
+  --splaylimit 59 \
+  >> /var/log/puppet.log 2>&1
