@@ -1,0 +1,9 @@
+# logrotate config for Wikidata json dump logs
+# This file is managed by Puppet
+/var/log/wikidatadump/dumpwikidatajson-* {
+    daily
+    missingok
+    rotate 5
+    compress
+    notifempty
+}
