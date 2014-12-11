@@ -9,4 +9,5 @@ class dsh {
     }
 
     include dsh::config
+    dsh::group { 'mediawiki-installation': }
 }

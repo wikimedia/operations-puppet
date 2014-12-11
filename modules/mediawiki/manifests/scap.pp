@@ -22,6 +22,8 @@ class mediawiki::scap {
         provider => 'trebuchet',
     }
 
+    # Add this host to the mediawiki-installation dsh group
+    dsh::add_to_group { 'mediawiki-installation': }
 
     # /srv/mediawiki is the root path of the MediaWiki deployment tree.
 
