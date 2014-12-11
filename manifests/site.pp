@@ -873,7 +873,7 @@ node /^db20(28)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(07|39)\.eqiad\.wmnet/ {
+node /^db10(04|07|39)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -1072,13 +1072,6 @@ node /^dbstore1002\.eqiad\.wmnet/ {
         lag_warn => 1800,
         lag_crit => 3600,
     }
-}
-
-# springle using for codfw preparation
-node 'db1004.eqiad.wmnet' {
-
-    include admin
-    include standard
 }
 
 node 'dbproxy1002.eqiad.wmnet' {
