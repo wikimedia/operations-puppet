@@ -5,9 +5,6 @@ class base::standard-packages {
             ensure => present,
         }
 
-        package { 'quickstack':
-            ensure => present,
-        }
     }
 
     $packages = [
@@ -31,6 +28,7 @@ class base::standard-packages {
         'debian-goodies',
         'ethtool',
         'lldpd',
+        'quickstack', # not upstream
     ]
 
     package { $packages:
