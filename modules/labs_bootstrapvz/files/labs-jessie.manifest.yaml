@@ -1,0 +1,200 @@
+---
+provider:
+  name: kvm
+bootstrapper:
+  workspace: /target
+image:
+  name: debian-{system.release}-{system.architecture}-{%y}{%m}{%d}
+  description: Debian {system.release} {system.architecture}
+system:
+  release: jessie
+  architecture: amd64
+  bootloader: grub
+  charmap: UTF-8
+  locale: en_US
+  timezone: UTC
+volume:
+  backing: raw
+  partitions:
+    type: gpt
+    boot:
+      filesystem: ext4
+      size: 512MiB
+    root:
+      filesystem: ext4
+      size: 10GiB
+    swap:
+      size: 128MiB
+packages:
+  install_standard: true
+  install:
+    - coreutils
+    - snmp
+    - wipe
+    - tzdata
+    - zsh-beta
+    - jfsutils
+    - xfsprogs
+    - screen
+    - gdb
+    - iperf
+    - htop
+    - vim
+    - sysstat
+    - ngrep
+    - acct
+    - git-core
+    - lldpd
+    - emacs
+    - nslcd
+    - nslcd-utils
+    - libpam-ldapd
+    - ldap-utils
+    - libnss-ldapd
+    - nss-updatedb
+    - libnss-db
+    - nscd
+    - libpam-ldapd
+    - python-ldap
+    - python-pycurl
+    - openssl
+    - ca-certificates
+    - ssl-cert
+    - rsyslog
+    - exim4-config
+    - exim4-daemon-light
+    - cloud-init
+    - cloud-utils
+    - euca2ools
+    - openssh-server
+    - curl
+    - nfs-client
+    - tree
+    - libfile-next-perl
+    - ack-grep
+    - puppet-lint
+    - ntp
+    - debian-goodies
+    - python-redis
+    - atop
+    - pv
+plugins:
+  root_password:
+    password: test
+  cloud_init:
+    username: admin
+    metadata_sources: ConfigDrive
+  puppet:
+    assets: /etc/bootstrap-vz/puppet
+  salt:
+    install_source: stable
+  image_copy:
+    files:
+      -
+        src: /etc/bootstrap-vz/firstscripts/firstboot.sh
+        dst: /root/firstboot.sh
+        permissions: 755
+        owner: root
+      -
+        src: /etc/bootstrap-vz/firstscripts/firstbootrc
+        dst: /etc/rc.local
+        permissions: 755
+        owner: root
+      -
+        src: /etc/bootstrap-vz/install_sudo.sh
+        dst: /root/install_sudo.sh
+        permissions: 755
+        owner: root
+      -
+        src: /etc/bootstrap-vz/access.conf
+        dst: /etc/security/access.conf
+      -
+        src: /etc/ldap.conf
+        dst: /etc/ldap.conf
+      -
+        src: /etc/bootstrap-vz/nss_ldap.conf
+        dst: /etc/ldap/ldap.conf
+      -
+        src: /etc/nscd.conf
+        dst: /etc/nscd.conf
+      -
+        src: /etc/bootstrap-vz/nslcd.conf
+        dst: /etc/nslcd.conf
+      -
+        src: /etc/nsswitch.conf
+        dst: /etc/nsswitch.conf
+      -
+        src: /etc/pam.d/common-auth
+        dst: /etc/pam.d/common-auth
+      -
+        src: /etc/pam.d/sshd
+        dst: /etc/pam.d/sshd
+      -
+        src: /etc/pam.d/common-account
+        dst: /etc/pam.d/common-account
+      -
+        src: /etc/pam.d/common-password
+        dst: /etc/pam.d/common-password
+      -
+        src: /etc/pam.d/common-session
+        dst: /etc/pam.d/common-session
+      -
+        src: /etc/pam.d/common-session-noninteractive
+        dst: /etc/pam.d/common-session-noninteractive
+      -
+        src: /etc/exim4/exim4.conf
+        dst: /etc/exim4/exim4.conf
+      -
+        src: /etc/sudoers
+        dst: /etc/sudoers
+      -
+        src: /etc/sudoers.d/ops
+        dst: /etc/sudoers.d/ops
+      -
+        src: /etc/ssh/sshd_config
+        dst: /etc/ssh/sshd_config
+      -
+        src: /etc/ssh/sshd_banner
+        dst: /etc/ssh/sshd_banner
+      -
+        src: /etc/apt/trusted.gpg
+        dst: /etc/apt/trusted.gpg
+      -
+        src: /etc/apt/sources.list.d/wikimedia.list
+        dst: /etc/apt/sources.list.d/wikimedia.list
+      -
+        src: /etc/apt/preferences.d/wikimedia.pref
+        dst: /etc/apt/preferences.d/wikimedia.pref
+      -
+        src: /etc/apt/apt.conf.d/80old-releases-proxy
+        dst: /etc/apt/apt.conf.d/80old-releases-proxy
+      -
+        src: /etc/apt/apt.conf.d/80workaround-squid-issues
+        dst: /etc/apt/apt.conf.d/80workaround-squid-issues
+      -
+        src: /etc/apt/apt.conf.d/80security-ubuntu-proxy
+        dst: /etc/apt/apt.conf.d/80security-ubuntu-proxy
+      -
+        src: /etc/cron.d/puppet
+        dst: /etc/cron.d/puppet
+      -
+        src: /etc/ssl/certs/GlobalSign_CA.pem
+        dst: /etc/ssl/certs/GlobalSign_CA.pem
+    image_commands:
+    commands:
+      - ['chroot', '{root}', 'passwd', '-ld', 'root']
+      - ['chroot', '{root}', 'passwd', '-ld', 'debian']
+      - ['chroot', '{root}', '/root/install_sudo.sh']
+      - ['chroot', '{root}', 'rm', '/root/install_sudo.sh']
+      - ['chroot', '{root}', 'rm', '/etc/ssh/ssh_host*key*']
+      - ['chroot', '{root}', 'sed', '-i', '/^kernel/s/$/ console=ttyS0/', '/boot/grub/menu.lst']
+      - ['chroot', '{root}', 'sed', '-i', '/console=hvc0/xencons=hvc0 console=hvc0/', '/boot/grub/menu.lst']
+      - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
+      - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']
+      - ['chroot', '{root}', 'rm', '-f', '/etc/resolv.conf']
+      - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
+
+  unattended_upgrades:
+    update_interval: 1
+    download_interval: 1
+    upgrade_interval: 1
