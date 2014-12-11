@@ -168,6 +168,7 @@ define install_certificate(
         $cas = $name ? {
             # NOTE: Those use .pem filenames
             /^sni\./                       => 'GlobalSign_CA.pem',
+            'uni.wikimedia.org'            => 'GlobalSign_CA.pem',
             'unified.wikimedia.org'        => 'DigiCertHighAssuranceCA-3.pem',
             'star.wmflabs.org'             => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
             'star.wmflabs'                 => 'wmf-labs.pem',
