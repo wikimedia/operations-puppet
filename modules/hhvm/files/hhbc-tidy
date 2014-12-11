@@ -1,0 +1,80 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+  hhbc-tidy
+  ~~~~~~~~~
+
+  Prune unused tables from HHVM's HHBC (sqlite bytecode repo).
+  Tables are deemed unused if they reference a repo schema
+  other than the one reported by 'hhvm --repo-schema'.
+
+  Usage: hhbc-clean [-h] [--dry-run] REPO
+
+    REPO        path to HHBC repo
+    -h, --help  show this help message and exit
+    --dry-run   show what would be done, but take no action
+
+"""
+import argparse
+import logging
+import logging.handlers
+import sqlite3
+import subprocess
+import os.path
+
+
+parser = argparse.ArgumentParser(
+    prog='hhbc-tidy',
+    description='Prune unused tables from an HHBC file (HHVM bytecode repo)',
+    epilog='Tables are deemed unused if they reference a repo schema other '
+           'than the one reported by `hhvm --repo-schema`.')
+parser.add_argument('--dry-run', action='store_true', default=False,
+                    help='show what would be done, but take no action')
+parser.add_argument('repo', help='path to HHBC repo')
+args = parser.parse_args()
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+log.addHandler(logging.StreamHandler())
+if not args.dry_run:
+    log.addHandler(logging.handlers.SysLogHandler(
+        '/dev/log', logging.handlers.SysLogHandler.LOG_LOCAL3))
+
+schema = subprocess.check_output(('hhvm', '--repo-schema')).rstrip()
+
+repo_size_before = os.path.getsize(args.repo)
+
+
+def destructive_query(db, sql):
+    log.info(sql)
+    if not args.dry_run:
+        return db.execute(sql)
+
+try:
+    with sqlite3.connect(args.repo, timeout=10) as db:
+
+        tables = db.execute('''
+            SELECT name FROM sqlite_master
+            WHERE type="table"
+            AND name NOT LIKE "%%%s"''' % schema).fetchall()
+
+        for table, in tables:
+            destructive_query(db, 'DROP TABLE IF EXISTS %s', table)
+
+        file_table = 'FileMd5_%s' % schema
+        file_paths = db.execute('SELECT path FROM %s' % file_table).fetchall()
+        for file_path, in file_paths:
+            if not os.path.isfile(file_path):
+                destructive_query(db, 'DELETE FROM %s WHERE path="%s"' %
+                                  (file_table, file_path))
+
+        destructive_query(db, 'VACUUM')
+
+except:
+    log.exception('Failed to prune %s:', args.repo)
+
+else:
+    if not args.dry_run:
+        repo_size_after = os.path.getsize(args.repo)
+        kb_change = (repo_size_before - repo_size_after) / 1024.0
+        log.info('Pruned %.2f kB.', kb_change)
