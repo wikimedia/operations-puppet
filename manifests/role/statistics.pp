@@ -43,6 +43,8 @@ class role::statistics::www inherits role::statistics {
         description => 'statistics web server',
     }
 
+    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+
     include misc::statistics::webserver
     # stats.wikimedia.org
     include misc::statistics::sites::stats
