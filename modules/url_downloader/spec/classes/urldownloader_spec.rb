@@ -9,7 +9,6 @@ describe 'url_downloader', :type => :class do
 
     it { should contain_package('squid3') }
     it { should contain_service('squid3') }
-    it { should contain_file('/etc/logrotate.d/squid3') }
     it { should contain_file('/etc/squid3/squid.conf').
         with_content(/10.10.10.10/).
         with_content(/^acl (?! all src)/)

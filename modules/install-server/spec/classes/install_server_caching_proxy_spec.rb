@@ -11,12 +11,5 @@ describe 'install-server::caching-proxy', :type => :class do
             'owner'  => 'root',
             'group'  => 'root',
         }).without_path()
-
-        should contain_file('/etc/logrotate.d/squid').with({
-            'ensure' => 'present',
-            'mode'   => '0444',
-            'owner'  => 'root',
-            'group'  => 'root',
-        }).without_path()
     end
 end
