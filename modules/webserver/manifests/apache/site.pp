@@ -30,7 +30,7 @@ define webserver::apache::site(
     $ensure       = 'present',
     ) {
 
-    if os_version('ubuntu >= trusty') {
+    if os_version('debian >= jessie || ubuntu >= trusty') {
         $ssl_settings = ssl_ciphersuite('apache-2.4', 'compat')
     } else {
         $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
