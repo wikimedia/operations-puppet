@@ -258,6 +258,8 @@ class misc::statistics::webserver {
     include ::apache::mod::rewrite
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
+    include ::apache::mod::headers
+
 }
 
 # reportcard.wikimedia.org
