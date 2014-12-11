@@ -3,10 +3,6 @@
 # This file is managed by Puppet!
 #
 
-<% if @realm == "labs" then %>
-# BEGIN AUTOGEN FROM CRON
-# END AUTOGEN FROM CRON
-<% end %>
 <% if @data_sources %>
 <% @data_sources.keys.sort.each do |ds_key| -%>
 data_source "<%= ds_key %>" <%= @data_sources[ds_key] %>
