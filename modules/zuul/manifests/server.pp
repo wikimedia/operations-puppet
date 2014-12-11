@@ -20,16 +20,16 @@
 # **statsd_host** IP/hostname of a statsd daemon to send metrics to. If unset
 # (the default), nothing is ported.
 class zuul::server (
-    $statsd_host = '',
     $gerrit_server,
     $gerrit_user,
     $gearman_server,
     $gearman_server_start,
-    $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $jenkins_server,
     $jenkins_user,
     $jenkins_apikey,
     $url_pattern,
+    $statsd_host = '',
+    gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $status_url = "https://${::fqdn}/zuul/status",
 ) {
 
