@@ -399,7 +399,6 @@ class ganglia::web {
 # Class for the ganglia frontend machine
 
     require ganglia::collector
-    require subversion::client
 
     include ::apache
     include ::apache::mod::php5
@@ -465,30 +464,20 @@ class ganglia::web {
         # We are in production land
         $ganglia_servername = 'ganglia.wikimedia.org'
         $ganglia_serveralias = 'uranium.wikimedia.org'
-        #TODO: Ugly hideous hack to be removed soon after we migrate to trusty
-        if os_version('ubuntu >= trusty') {
-            package { 'ganglia-webfrontend':
-                ensure => present,
-            }
-            $ganglia_webdir = '/usr/share/ganglia-webfrontend'
-            $ganglia_confdir = '/var/lib/ganglia-web'
-            file { '/etc/ganglia-webfrontend/conf.php':
-                ensure  => present,
-                mode    => '0444',
-                owner   => 'root',
-                group   => 'root',
-                source  => 'puppet:///files/ganglia/conf_production.php',
-                require => Package['ganglia-webfrontend'],
-            }
-            $is_trusty = true
-            $tmpfs_ensure = 'absent'
-        }
-        else {
-            $ganglia_webdir = '/srv/org/wikimedia/ganglia-web-latest'
-            $ganglia_confdir = '/srv/org/wikimedia/ganglia-web-conf'
-            $tmpfs_ensure = 'present'
-        }
 
+        package { 'ganglia-webfrontend':
+            ensure => present,
+        }
+        $ganglia_webdir = '/usr/share/ganglia-webfrontend'
+        $ganglia_confdir = '/var/lib/ganglia-web'
+        file { '/etc/ganglia-webfrontend/conf.php':
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            source  => 'puppet:///files/ganglia/conf_production.php',
+            require => Package['ganglia-webfrontend'],
+        }
         $ganglia_ssl_cert = '/etc/ssl/certs/ganglia.wikimedia.org.pem'
         $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
 
@@ -499,83 +488,6 @@ class ganglia::web {
 
     apache::site { $ganglia_servername:
         content => template("apache/sites/${ganglia_servername}.erb"),
-    }
-
-    file { '/usr/local/bin/restore-gmetad-rrds':
-        ensure => $tmpfs_ensure,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///files/ganglia/restore-gmetad-rrds',
-    }
-    file { '/usr/local/bin/save-gmetad-rrds':
-        ensure => $tmpfs_ensure,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///files/ganglia/save-gmetad-rrds',
-    }
-    file { '/etc/init.d/gmetad':
-        ensure => $tmpfs_ensure,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///files/ganglia/gmetad',
-    }
-    file { '/var/lib/ganglia/rrds.pmtpa/':
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'nobody',
-        group  => 'root',
-    }
-    file { '/etc/rc.local':
-        ensure => $tmpfs_ensure,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///files/ganglia/rc.local',
-    }
-
-    # back up rrds every half hour
-    cron { 'save-rrds':
-        ensure  => $tmpfs_ensure,
-        command => '/usr/local/bin/save-gmetad-rrds',
-        user    => 'root',
-        minute  => [ 7, 37 ],
-    }
-
-    # Mount /mnt/ganglia_tmp as tmpfs to avoid Linux flushing mlocked
-    # shm memory to disk
-    $ganglia_tmp_mountpoint = '/mnt/ganglia_tmp'
-
-    file { $ganglia_tmp_mountpoint:
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    # Avoiding mounting as tmpfs on trusty
-    case $tmpfs_ensure {
-        'present': { $mount_tmpfs = 'mounted' }
-        default: { $mount_tmpfs = 'absent' }
-    }
-    mount { $ganglia_tmp_mountpoint:
-        ensure  => $mount_tmpfs,
-        require => File[$ganglia_tmp_mountpoint],
-        device  => 'tmpfs',
-        fstype  => 'tmpfs',
-        options => 'noauto,noatime,defaults,size=4000m',
-        pass    => 0,
-        dump    => 0,
-    }
-
-    file { "${ganglia_tmp_mountpoint}/rrds.pmtpa":
-        ensure  => directory,
-        require => Mount[$ganglia_tmp_mountpoint],
-        mode    => '0755',
-        owner   => 'nobody',
-        group   => 'root',
     }
 }
 

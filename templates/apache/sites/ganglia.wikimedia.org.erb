@@ -7,12 +7,7 @@
     <Directory "/var/www">
     Options FollowSymLinks
     AllowOverride None
-    <% if @is_trusty %>
     Require all granted
-    <% else %>
-    Order allow,deny
-    Allow from all
-    <% end %>
     </Directory>
 
     Alias /latest <%= @ganglia_webdir %>
@@ -36,12 +31,7 @@
     <Directory "/var/www">
     Options FollowSymLinks
     AllowOverride None
-    <% if @is_trusty %>
     Require all granted
-    <% else %>
-    Order allow,deny
-    Allow from all
-    <% end %>
     </Directory>
 
     Alias /latest <%= @ganglia_webdir %>
