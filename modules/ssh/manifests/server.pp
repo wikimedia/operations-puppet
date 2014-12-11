@@ -13,13 +13,7 @@ class ssh::server (
     }
 
     if ($::realm == 'labs') {
-        if versioncmp($::lsbdistrelease, '12.04') >= 0 {
-            $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u/.ssh/authorized_keys /public/keys/%u/.ssh/authorized_keys'
-        } else {
-            $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u/.ssh/authorized_keys'
-            $ssh_authorized_keys_file2 = '/public/keys/%u/.ssh/authorized_keys'
-
-        }
+        $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u/.ssh/authorized_keys /public/keys/%u/.ssh/authorized_keys'
     }
 
     # publish this hosts's host key
