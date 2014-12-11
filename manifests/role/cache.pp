@@ -532,9 +532,9 @@ class role::cache {
         # For unified or star certs we need to do a bit of
         # mapping; in other cases we should be OK with the raw name
         $check_cert = $certname ? {
-            'unified.wikimedia.org'         => '*.wikipedia.org',
-            /^star\.(.+)$/                  => "*.$1",
-            default                         => $certname
+            'unified.wikimedia.org' => '*.wikipedia.org',
+            'uni.wikimedia.org'     => '*.wikipedia.org',
+            default                 => $certname
         }
 
         # Nagios monitoring
@@ -564,7 +564,10 @@ class role::cache {
         include role::protoproxy::ssl::common
 
         localssl { 'unified':
-            certname => 'unified.wikimedia.org',
+            certname => $::hostname ? {
+                'cp1008' => 'uni.wikimedia.org',
+                default  => 'unified.wikimedia.org',
+            },
             default_server => true,
         }
 
