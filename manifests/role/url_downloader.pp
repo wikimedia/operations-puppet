@@ -12,7 +12,6 @@
 #       Pin our packages
 #
 # Requires:
-#       Definition Apt::pin
 #       Module url_downloader
 #       ferm
 #       nagios definitions for wmf
@@ -29,12 +28,6 @@ class role::url_downloader {
 
     class { '::url_downloader':
         service_ip => $url_downloader_ip
-    }
-
-    apt::pin { [ 'squid3', 'squid-common3', 'squid-langpack' ]:
-        pin      => 'release o=Ubuntu',
-        priority => '1001',
-        before   => Class['::url_downloader'],
     }
 
     # Firewall
