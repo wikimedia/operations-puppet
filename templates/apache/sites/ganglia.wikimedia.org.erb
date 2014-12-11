@@ -1,6 +1,5 @@
 <VirtualHost *:80>
     ServerName <%= @ganglia_servername %>
-    ServerAlias <%= @ganglia_serveralias %>
     DocumentRoot /var/www
     ServerAdmin root@wikimedia.org
 
@@ -19,7 +18,6 @@
 <% if @ganglia_ssl_cert %>
 <VirtualHost *:443>
     ServerName <%= @ganglia_servername %>
-    ServerAlias <%= @ganglia_serveralias %>
     DocumentRoot /var/www
     ServerAdmin root@wikimedia.org
 

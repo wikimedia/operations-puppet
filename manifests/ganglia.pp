@@ -423,7 +423,6 @@ class ganglia::web {
 
     if $::realm == 'labs' {
         $ganglia_servername = 'ganglia.wmflabs.org'
-        $ganglia_serveralias = 'aggregator.eqiad.wmflabs'
         $ganglia_webdir = '/usr/share/ganglia-webfrontend'
         $ganglia_confdir = '/var/lib/ganglia/conf'
         $ganglia_dwoo = '/var/lib/ganglia/dwoo'
@@ -463,7 +462,6 @@ class ganglia::web {
     } else {
         # We are in production land
         $ganglia_servername = 'ganglia.wikimedia.org'
-        $ganglia_serveralias = 'uranium.wikimedia.org'
 
         package { 'ganglia-webfrontend':
             ensure => present,
