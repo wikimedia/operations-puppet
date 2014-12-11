@@ -26,7 +26,8 @@ class role::analytics::clients {
         role::analytics::hive::client,
         role::analytics::oozie::client,
         role::analytics::pig,
-        role::analytics::sqoop
+        role::analytics::sqoop,
+        role::analytics::mahout
 
     # This packages conflicts with the hadoop-fuse-dfs
     # script in that two libjvm.so files get added
