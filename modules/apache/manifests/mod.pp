@@ -47,6 +47,6 @@ class apache::mod::uwsgi           { apache::mod_conf { 'uwsgi':          } <- p
 class apache::mod::wsgi            { apache::mod_conf { 'wsgi':           } <- package { 'libapache2-mod-wsgi':      } }
 
 # Modules that target a specific distribution
-class apache::mod::access_compat { if os_version('ubuntu >= 13.10') { apache::mod_conf { 'access_compat': } } }
-class apache::mod::proxy_fcgi    { if os_version('ubuntu >= 13.10') { apache::mod_conf { 'proxy_fcgi':    } } }
+class apache::mod::access_compat { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'access_compat': } } }
+class apache::mod::proxy_fcgi    { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'proxy_fcgi':    } } }
 class apache::mod::version       { if os_version('ubuntu < 13.10')  { apache::mod_conf { 'version':       } } }
