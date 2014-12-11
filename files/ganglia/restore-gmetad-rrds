@@ -1,7 +1,0 @@
-#!/bin/bash
-GANGLIA_TMP='/mnt/ganglia_tmp'
-mountpoint -q "${GANGLIA_TMP}" || mount "${GANGLIA_TMP}"
-mountpoint -q "${GANGLIA_TMP}" || exit 1
-[ -d /mnt/ganglia_tmp/rrds.pmtpa ] || mkdir /mnt/ganglia_tmp/rrds.pmtpa
-chown nobody /mnt/ganglia_tmp/rrds.pmtpa
-rsync -a /var/lib/ganglia/rrds.pmtpa/ /mnt/ganglia_tmp/rrds.pmtpa
