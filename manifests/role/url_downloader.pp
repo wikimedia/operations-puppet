@@ -31,24 +31,7 @@ class role::url_downloader {
         service_ip => $url_downloader_ip
     }
 
-    # pin package to the default, Ubuntu version, instead of our own
-    if os_version('ubuntu >= 12.04') {
-        $pinned_packages = [
-                            'squid3',
-                            'squid-common3',
-                            'squid-langpack',
-                        ]
-        $before_package = 'squid3'
-    } else {
-        $pinned_packages = [
-                            'squid',
-                            'squid-common',
-                            'squid-langpack',
-                        ]
-        $before_package = 'squid'
-    }
-
-    apt::pin { $pinned_packages:
+    apt::pin { [ 'squid3', 'squid-common3', 'squid-langpack' ]:
         pin      => 'release o=Ubuntu',
         priority => '1001',
         before   => Class['::url_downloader'],

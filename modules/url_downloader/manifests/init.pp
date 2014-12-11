@@ -16,40 +16,31 @@
 #           service_ip  => '10.10.10.10' # Probably a public ip though
 #       }
 class url_downloader($service_ip) {
-    if os_version('ubuntu >= 12.04') {
-        $package_name = 'squid3'
-    } else {
-        $package_name = 'squid'
-    }
-
-    $confdir = "/etc/${package_name}"
-    $service_name = $package_name
-
-    file { "${confdir}/squid.conf":
+    file { '/etc/squid3/squid.conf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('url_downloader/squid.conf.erb'),
     }
 
-    file { "/etc/logrotate.d/${package_name}":
+    file { '/etc/logrotate.d/squid3':
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template('url_downloader/squid-logrotate.erb'),
+        source => 'puppet:///modules/url_downloader/squid3-logrotate',
     }
 
-    package { $package_name:
+    package { 'squid3':
         ensure => installed,
     }
 
-    service { $service_name:
+    service { 'squid3':
         ensure => running,
     }
 
-    Package[$package_name] -> Service[$service_name]
-    Package[$package_name] -> File["/etc/logrotate.d/${package_name}"]
-    Package[$package_name] -> File["${confdir}/squid.conf"]
-    File["${confdir}/squid.conf"] ~> Service[$service_name] # also notify
+    Package['squid3'] -> Service['squid3']
+    Package['squid3'] -> File['/etc/logrotate.d/squid3']
+    Package['squid3'] -> File['/etc/squid3/squid.conf']
+    File['/etc/squid3/squid.conf'] ~> Service['squid3'] # also notify
 }
