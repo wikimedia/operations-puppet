@@ -10,5 +10,6 @@ define apt::conf(
         group   => 'root',
         mode    => '0444',
         content => "${key} \"${value}\";\n",
+        notify  => Exec['apt-get update'],
     }
 }

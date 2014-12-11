@@ -1,4 +1,11 @@
 class apt {
+    exec { 'apt-get update':
+        path        => '/usr/bin',
+        timeout     => 240,
+        returns     => [ 0, 100 ],
+        refreshonly => true,
+    }
+
     # Directory to hold the repository signing keys
     file { '/var/lib/apt/keys':
         ensure  => directory,
@@ -56,6 +63,7 @@ class apt {
     # no longer needed after the installation is over
     file { '/etc/apt/apt.conf':
         ensure  => absent,
+        notify  => Exec['apt-get update'],
     }
 
     if $::lsbdistid == 'Debian' {
