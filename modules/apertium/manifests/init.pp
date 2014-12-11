@@ -18,9 +18,6 @@ class apertium(){
 
     service { 'apertium-apy':
         ensure     => running,
-        hasstatus  => true,
-        hasrestart => true,
-        provider   => 'upstart',
         require    => Package['apertium-apy'],
     }
 }

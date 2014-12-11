@@ -69,6 +69,5 @@ class nutcracker(
 
     service { 'nutcracker':
         ensure   => ensure_service($ensure),
-        provider => 'upstart',
     }
 }

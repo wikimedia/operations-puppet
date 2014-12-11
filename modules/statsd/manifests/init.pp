@@ -51,6 +51,5 @@ class statsd(
 
     service { 'statsd':
         ensure   => running,
-        provider => upstart,
     }
 }

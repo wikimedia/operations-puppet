@@ -56,7 +56,6 @@ class mongodb (
 
     service { 'mongodb':
         ensure    => running,
-        provider  => upstart,
         subscribe => File['/etc/mongodb.conf'],
     }
 }
