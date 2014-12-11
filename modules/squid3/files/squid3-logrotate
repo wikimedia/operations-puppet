@@ -2,7 +2,7 @@
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
 #
-#	Logrotate fragment for squid.
+#	Logrotate fragment for squid3.
 #
 /var/log/squid3/*.log {
 	daily
