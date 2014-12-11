@@ -15,11 +15,7 @@ define ganglia_new::monitor::aggregator::instance($monitored_site) {
     }
     $id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$monitored_site]
     $desc = $ganglia_new::configuration::clusters[$cluster]['name']
-    $portnr = $ganglia_new::configuration::base_port + $id
-    $gmond_port = $::realm ? {
-        production => $portnr,
-        labs => $::project_gid
-    }
+    $gmond_port = $ganglia_new::configuration::base_port + $id
     $cname = "${desc} ${::site}"
     if $monitored_site in $sites {
         $ensure = 'present'
