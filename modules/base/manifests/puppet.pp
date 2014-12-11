@@ -12,12 +12,6 @@ class base::puppet($server='puppet', $certname=undef) {
         require => Apt::Puppet['base']
     }
 
-    if os_version('ubuntu <= lucid') {
-        package {'timeout':
-            ensure => latest,
-        }
-    }
-
     file { '/etc/default/puppet':
         owner  => 'root',
         group  => 'root',
@@ -91,12 +85,27 @@ class base::puppet($server='puppet', $certname=undef) {
         enable => false,
     }
 
+    if os_version('ubuntu <= lucid') {
+        # folded into coreutils in newer distros
+        package {'timeout':
+            ensure => present,
+            before => File['/usr/local/sbin/puppet-run'],
+        }
+    }
+
+    file { '/usr/local/sbin/puppet-run':
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/base/puppet/puppet-run',
+    }
+
     file { '/etc/cron.d/puppet':
-        require => File['/etc/default/puppet'],
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
         content => template('base/puppet.cron.erb'),
+        require => File['usr/local/sbin/puppet-run'],
     }
 
     file { '/etc/logrotate.d/puppet':

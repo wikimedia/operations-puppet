@@ -10,5 +10,6 @@ define apt::pin (
         group   => 'root',
         mode    => '0444',
         content => "Package: ${package}\nPin: ${pin}\nPin-Priority: ${priority}\n",
+        notify  => Exec['apt-get update'],
     }
 }
