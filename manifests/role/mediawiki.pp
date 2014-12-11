@@ -39,15 +39,12 @@ class role::mediawiki::common {
     }
 }
 
-class role::mediawiki::webserver( $pool, $workers_limit = undef) {
+class role::mediawiki::webserver( $pool) {
     include ::role::mediawiki::common
     include ::apache::monitoring
     include ::lvs::configuration
     include ::mediawiki::web::sites
-
-    class { '::mediawiki::web':
-        workers_limit => $workers_limit,
-    }
+    include ::mediawiki::web
 
     $ips = $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site]
 
