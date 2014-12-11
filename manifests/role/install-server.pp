@@ -20,7 +20,6 @@
 #   Define['backup::set']
 #   Class['base::firewall']
 #   Define['ferm::rule']
-#   Define['apt::pin']
 #
 # Sample Usage:
 #       include role::installserver
@@ -83,12 +82,6 @@ class role::installserver {
               'srv-wikimedia',
             ]
     backup::set { $sets : }
-
-    apt::pin { [ 'squid3', 'squid-common3', 'squid-langpack' ]: 
-        pin      => 'release o=Ubuntu',
-        priority => '1001',
-        before   => Package['squid3'],
-    }
 
     # Monitoring
     monitoring::service { 'squid':
