@@ -105,7 +105,7 @@ UsePAM yes
 
 <% if @realm == "labs" then %>
 Banner /etc/ssh/sshd_banner
-<% if @lsbdistcodename == 'trusty'%>
+<% if scope.function_os_version(['debian >= jessie || ubuntu >= trusty']) %>
 AuthorizedKeysCommand /usr/local/sbin/ldapkeys
 AuthorizedKeysCommandUser ldapkeys
 <% end %>

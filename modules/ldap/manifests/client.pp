@@ -172,7 +172,7 @@ class ldap::client::utils($ldapconfig) {
     }
 
     if $::realm == 'labs' {
-        if os_version('ubuntu >= trusty') {
+        if os_version('debian >= jessie || ubuntu >= trusty') {
             # The 'ldapkeys' tool is called during login ssh via AuthorizedKeysCommand.  It
             #  returns public keys from ldap for the specified username.
             file { '/usr/local/sbin/ldapkeys':
