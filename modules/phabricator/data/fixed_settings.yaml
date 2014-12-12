@@ -76,7 +76,7 @@ maniphest.custom-field-definitions:
     description: Used for security oriented custom extensions
     search: true
     type: select
-    default: none
+    default: default
     options:
       default: none
       security-bug: 'Security or Sensitive Bug'
