@@ -25,6 +25,7 @@ define apt::repository(
         group   => 'root',
         mode    => '0444',
         content => "${binline}${srcline}${pinline}",
+        notify  => Exec['apt-get update'],
     }
 
     if $comment_old {
@@ -54,13 +55,5 @@ define apt::repository(
             subscribe   => File["/var/lib/apt/keys/${name}.gpg"],
             refreshonly => true,
         }
-    }
-
-    exec { "apt-update-for-${name}":
-        command     => '/usr/bin/apt-get update',
-        timeout     => 240,
-        returns     => [ 0, 100 ],
-        subscribe   => File["/etc/apt/sources.list.d/${name}.list"],
-        refreshonly => true,
     }
 }

@@ -147,7 +147,6 @@ class base::firewall($ensure = 'present') {
 
 class base {
     include apt
-    include apt::update
 
     if ($::realm == 'labs') {
         include apt::unattendedupgrades,
