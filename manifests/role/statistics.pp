@@ -48,8 +48,6 @@ class role::statistics::www inherits role::statistics {
     include misc::statistics::webserver
     # stats.wikimedia.org
     include misc::statistics::sites::stats
-    # community-analytics.wikimedia.org
-    include misc::statistics::sites::community_analytics
     # metrics.wikimedia,.org and metrics-api.wikimedia.org
     include misc::statistics::sites::metrics
     # reportcard.wikimedia.org
