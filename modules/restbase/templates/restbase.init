@@ -48,7 +48,7 @@ export INTERFACE
 do_start()
 {
 	# up the number of fds [sockets] from 1024
-	ulimit -n 100000
+	ulimit -n 1000000
 
 	# Return
 	#   0 if daemon has been started
