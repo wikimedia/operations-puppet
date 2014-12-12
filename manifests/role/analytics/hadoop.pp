@@ -273,7 +273,6 @@ class role::analytics::hadoop::config {
         # below, I just create them here.
         file { [
             $hadoop_var_directory,
-            $hadoop_journal_directory,
             $hadoop_data_directory,
         ]:
             ensure => 'directory',
