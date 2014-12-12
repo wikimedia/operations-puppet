@@ -3,18 +3,18 @@
 # older versions of timeout (before coreutils) didn't support -k
 # remove the coditional after the last lucid host goes
 if timeout -k 10 10 true >/dev/null 2>&1; then
-	KILL_TIMEOUT="-k 300"
+	KILL_TIMEOUT="-k 60"
 fi
 
 set -e
 
-timeout $KILL_TIMEOUT 1800 apt-get update
+timeout $KILL_TIMEOUT 300 apt-get update >/dev/null 2>&1
 
 # We pass show-diff, show the log may be sensitive,
 # so make sure it's sufficiently protected
 umask 077
 
-timeout $KILL_TIMEOUT 1800 puppet agent \
+timeout $KILL_TIMEOUT 600 puppet agent \
   --onetime \
   --no-daemonize \
   --verbose \
