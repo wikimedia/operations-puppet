@@ -1,3 +1,4 @@
+# https://www.mediawiki.org/wiki/Extension:OpenStackManager
 class openstack::openstack-manager(
     $openstack_version=$::openstack::version,
     $novaconfig,
@@ -9,14 +10,14 @@ class openstack::openstack-manager(
         class {'webserver::php5': ssl => true; }
     }
 
-    if !defined(Class["memcached"]) {
+    if !defined(Class['memcached']) {
         apt::pin { 'memcached':
             pin      => 'release o=Ubuntu',
             priority => '1001',
             before   => Package['memcached'],
         }
 
-        class { "memcached":
+        class { 'memcached':
             ip  => '127.0.0.1',
         }
     }
@@ -46,10 +47,10 @@ class openstack::openstack-manager(
 
     file {
         '/a':
+            ensure => directory;
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
-            ensure => directory;
         '/var/www/robots.txt':
             ensure => present,
             mode   => '0644',
@@ -57,15 +58,15 @@ class openstack::openstack-manager(
             group  => 'root',
             source => 'puppet:///modules/openstack/wikitech-robots.txt';
         '/a/backup':
+            ensure => directory;
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
-            ensure => directory;
         '/a/backup/public':
+            ensure => directory;
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
-            ensure => directory;
         '/usr/local/sbin/db-bak.sh':
             mode   => '0555',
             owner  => 'root',
@@ -85,41 +86,41 @@ class openstack::openstack-manager(
 
     cron {
         'run-jobs':
+            ensure  => present;
             user    => 'apache',
             command => '/usr/local/bin/mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1',
-            ensure  => present;
         'send-echo-emails':
+            ensure  => present;
             user    => 'apache',
             command => '/usr/local/bin/mwscript extensions/Echo/maintenance/processEchoEmailBatch.php --wiki=labswiki > /dev/null 2>&1',
-            ensure  => present;
         'db-bak':
+            ensure  => present;
             user    => 'root',
             hour    => 1,
             minute  => 0,
             command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
             require => File['/a/backup'],
-            ensure  => present;
         'mw-xml':
+            ensure  => present;
             user    => 'root',
             hour    => 1,
             minute  => 30,
             command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
             require => File['/a/backup'],
-            ensure  => present;
         'mw-files':
+            ensure  => present;
             user    => 'root',
             hour    => 2,
             minute  => 0,
             command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
             require => File['/a/backup'],
-            ensure  => present;
         'backup-cleanup':
+            ensure  => present;
             user    => 'root',
             hour    => 3,
             minute  => 0,
             command => 'find /a/backup -type f -mtime +4 -delete',
             require => File['/a/backup'],
-            ensure  => present;
     }
 
 
