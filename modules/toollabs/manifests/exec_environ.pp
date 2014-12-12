@@ -343,7 +343,6 @@ class toollabs::exec_environ {
         'postgis',                     # Bug T76226
         'postgresql-client',
         'pstoedit',                    # Bug 57000
-        'pv',                          # Bug 57001
         'rrdtool',                     # Bug 57004
         'socat',                       # Bug 57005
         'supybot',                     # Bug 61088.
