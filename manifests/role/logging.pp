@@ -285,6 +285,12 @@ class role::logging::webstatscollector {
         ],
     }
 
+    ferm::service { 'webstats-collector':
+        proto  => 'tcp',
+        port   => '3815',
+        srange => '$ALL_NETWORKS',
+    }
+
     # install a nrpe check for the webstatscollector collector process
     nrpe::monitor_service { 'webstats-collector':
         description   => "webstats-collector process running",
