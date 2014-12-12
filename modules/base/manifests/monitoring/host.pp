@@ -119,15 +119,15 @@ class base::monitoring::host($contact_group = 'admins') {
         nrpe_command => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
     }
     nrpe::monitor_service {'check_eth':
-        description  => 'check configured eth',
+        description  => 'configured eth',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_eth',
     }
     nrpe::monitor_service { 'check_dhclient':
-        description  => 'check if dhclient is running',
+        description  => 'dhclient process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
     }
     nrpe::monitor_service { 'check_salt_minion':
-        description  => 'check if salt-minion is running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:4 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
+        description  => 'salt-minion processes',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1: -c 1:4 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
     }
 }
