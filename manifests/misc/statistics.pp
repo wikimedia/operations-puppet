@@ -367,61 +367,6 @@ class misc::statistics::sites::stats {
     }
 }
 
-# community-analytics.wikimedia.org
-class misc::statistics::sites::community_analytics {
-    include misc::statistics::base
-
-    $site_name = 'community-analytics.wikimedia.org'
-    $docroot   = '/srv/org.wikimedia.community-analytics/community-analytics/web_interface'
-
-    # org.wikimedia.community-analytics is kinda big,
-    # it really lives on $working_path.
-    # Symlink /srv/a/org.wikimedia.community-analytics to it.
-    # Oof, this /srv | /a stuff is a mess... :(
-    file { '/srv/org.wikimedia.community-analytics':
-        ensure => "${misc::statistics::base::working_path}/srv/org.wikimedia.community-analytics",
-    }
-
-    webserver::apache::site { $site_name:
-        require      => [Class['webserver::apache'], Class['misc::statistics::packages::python']],
-        docroot      => $docroot,
-        server_admin => 'noc@wikimedia.org',
-        custom       => [
-            'SetEnv MPLCONFIGDIR /srv/org.wikimedia.community-analytics/mplconfigdir',
-
-    "<Location \"/\">
-        SetHandler python-program
-
-        PythonHandler django.core.handlers.modpython
-        SetEnv DJANGO_SETTINGS_MODULE web_interface.settings
-        PythonOption django.root /community-analytics/web_interface
-        PythonDebug On
-        PythonPath \"['/srv/org.wikimedia.community-analytics/community-analytics'] + sys.path\"
-
-
-
-
-
-
-    </Location>",
-
-    "<Location \"/media\">
-        SetHandler None
-
-    </Location>",
-
-    "<Location \"/static\">
-        SetHandler None
-
-    </Location>",
-
-    "<LocationMatch \"\\.(jpg|gif|png)$\">
-        SetHandler None
-    </LocationMatch>",
-    ],
-    }
-}
-
 # mertics.wikimedia.org and metrics-api.wikimedia.org
 # They should just redirect to Wikimetrics
 #
