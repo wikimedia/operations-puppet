@@ -29,6 +29,7 @@ class base::standard-packages {
         'ethtool',
         'lldpd',
         'quickstack',
+        'pv',
     ]
 
     package { $packages:
