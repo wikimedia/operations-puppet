@@ -1,3 +1,0 @@
-hhvm::extra::fcgi:
-  hhvm:
-    xenon.period: 600

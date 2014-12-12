@@ -24,6 +24,9 @@ class mediawiki::hhvm {
         group         => 'apache',
         fcgi_settings => {
             hhvm => {
+                xenon          => {
+                    period => to_seconds('10 minutes'),
+                },
                 error_handling => {
                     call_user_handler_on_fatals => true,
                 },
