@@ -21,6 +21,9 @@
 #   GELF logging host. Default: localhost
 # [*logstash_port*]
 #   GELF logging port. Default: 12201
+# [*logging_level*]
+#   The logging level. One of ['trace','debug','info','warn','error','fatal']
+#   Default: 'warn'
 # [*statsd_host*]
 #   statsd host name. Default: localhost
 #
@@ -32,6 +35,7 @@ class restbase(
     $port           = 7231,
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
+    $logging_level  = 'warn',
     $statsd_host    = 'localhost',
 ) {
     ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
