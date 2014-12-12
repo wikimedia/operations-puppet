@@ -33,10 +33,10 @@ class apt {
         require => Package['python-apt'],
     }
 
-    $components = $::lsbdistid ? {
-        'Debian' => 'main backports thirdparty',
-        'Ubuntu' => 'main universe thirdparty',
-        default  => fail('Unrecognized operating system'),
+    case $::lsbdistid {
+        'Debian': { $components = 'main backports thirdparty' }
+        'Ubuntu': { $components = 'main universe thirdparty'  }
+        default:  { fail('Unrecognized operating system')     }
     }
 
     apt::repository { 'wikimedia':
