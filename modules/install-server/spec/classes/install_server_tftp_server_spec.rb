@@ -3,7 +3,6 @@ require 'spec_helper'
 describe 'install-server::tftp-server', :type => :class do
 
     it { should contain_package('atftpd').with_ensure('latest') }
-    it { should contain_package('openbsd-inetd').with_ensure('purged') }
 
     it do
         should contain_file('/etc/default/atftpd').with({
