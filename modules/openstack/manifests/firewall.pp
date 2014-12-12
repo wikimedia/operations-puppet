@@ -30,28 +30,28 @@ class openstack::firewall {
 
     # Redis replication for keystone
     ferm::rule { 'redis_replication':
-        rule => "saddr ($other_master) proto tcp dport (6379) ACCEPT;",
+        rule => "saddr (${other_master}) proto tcp dport (6379) ACCEPT;",
     }
 
     # internal services to Labs virt servers
     ferm::rule { 'keystone':
-        rule => "saddr ($other_master $labs_nodes) proto tcp dport (5000 35357) ACCEPT;",
+        rule => "saddr (${other_master} ${labs_nodes}) proto tcp dport (5000 35357) ACCEPT;",
     }
     ferm::rule { 'mysql_nova':
-        rule => "saddr $labs_nodes proto tcp dport (3306) ACCEPT;",
+        rule => "saddr ${labs_nodes} proto tcp dport (3306) ACCEPT;",
     }
     ferm::rule { 'beam_nova':
-        rule => "saddr $labs_nodes proto tcp dport (5672 56918) ACCEPT;",
+        rule => "saddr ${labs_nodes} proto tcp dport (5672 56918) ACCEPT;",
     }
     ferm::rule { 'glance_api_nova':
-        rule => "saddr $labs_nodes proto tcp dport 9292 ACCEPT;",
+        rule => "saddr ${labs_nodes} proto tcp dport 9292 ACCEPT;",
     }
 
     # services provided to Labs instances
     ferm::rule { 'puppetmaster':
-        rule => "saddr $labs_private_net proto tcp dport 8140 ACCEPT;",
+        rule => "saddr ${labs_private_net} proto tcp dport 8140 ACCEPT;",
     }
     ferm::rule { 'salt':
-        rule => "saddr $labs_private_net proto tcp dport (4505 4506) ACCEPT;",
+        rule => "saddr ${labs_private_net} proto tcp dport (4505 4506) ACCEPT;",
     }
 }
