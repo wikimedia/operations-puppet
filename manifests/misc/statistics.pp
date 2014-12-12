@@ -354,8 +354,6 @@ class misc::statistics::sites::stats {
         mode    => '0750',
     }
 
-    install_certificate{ $site_name: }
-
     apache::site { $site_name:
         content => template("apache/sites/${site_name}.erb"),
     }
