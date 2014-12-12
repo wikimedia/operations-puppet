@@ -114,23 +114,10 @@ sub vcl_deliver {
         header.append(resp.http.Set-Cookie,"ZeroOpts=tls");
     }
 
-    // All mobile responses need to have the X-CS set if it came from a zero network.
-    // This allows apps to detect when we switch from zero to non-zero and back,
-    // or when the user switches from one network to another and both are zero (multi-sim phones).
-    // The client should constantly check each response for this header, and if it changes,
-    // re-request the partner's message info.
-    // This value is only based on Varnish's zero detection, not the backend processing of any sort
-    // We are in vcl_deliver, so changing it here would not affect the cached object
-    if (req.http.X-CS) {
-        set resp.http.X-CS = req.http.X-CS;
-    } else {
-        unset resp.http.X-CS;
-    }
-
-    /* Assemble X-Analytics header
-       Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
-       Note that vcl_deliver in other files may also modify X-Analytics
-    */
+    // Prepare for outbound X-CS and X-Analytics header assembly.
+    // See following section where actual outbound X-CS and X-Analytics are set.
+    // Some of the headers used for X-Analytics are not varied on, so add them after the backend processing.
+    // Note that vcl_deliver in other files may also modify X-Analytics
     if (req.http.X-CS == "ON") {
         // This is where all conditionals from above will be moved to support analytics
         // until they finish their migration
@@ -275,13 +262,26 @@ sub vcl_deliver {
         }
     }
 
+    // Now that we've updated the req.http.X-CS for postprocessing, set outbound headers
+    // and X-Analytics.
     if (req.http.X-CS) {
+
+        // All mobile responses need to have the X-CS set if it came from a zero network.
+        // This allows apps to detect when we switch from zero to non-zero and back,
+        // or when the user switches from one network to another and both are zero (multi-SIM phones).
+        // The client should constantly check each response for this header, and if it changes,
+        // re-request the partner's message info.
+        // This value is only based on Varnish's zero detection, not the backend processing of any sort.
+        // When apps see an outbound X-CS, they ask the API for the formal enabled/disabled status in a JSON object.
+        // We are in vcl_deliver, so setting the resp.http.X-CS should not impact caching; it's postprocessing.
+        set resp.http.X-CS = req.http.X-CS;
 
         // Some carriers have multiple ip ranges with different rules. IP set name is added at
         // the end of the X-CS, e.g. "123-45|wap" to indicate a wap gateway with their own IPs.
         // To minimize analytics impact, the 'zero' value in X-Analytics will stay as carrier id,
         // and the additional suffix will go into the 'zeronet=xxx' if it was present.
 
+        // The following is strictly related to X-Analytics, not outbound X-CS for apps.
         // Remove everything before and including the first '|' char
         set req.http.X-ZEROSFX = regsub(req.http.X-CS, "^[^\|]*\|?", "");
         if (req.http.X-ZEROSFX != "") {
@@ -301,6 +301,9 @@ sub vcl_deliver {
         } else {
             set resp.http.X-Analytics = req.http.X-CS;
         }
+    } else {
+        // Let's ensure no outbound X-CS if pre-analytics X-CS (as determined in corresponding if) was not set.
+        unset resp.http.X-CS;
     }
     if (req.http.X-Forwarded-By2) {
         if (resp.http.X-Analytics) {
