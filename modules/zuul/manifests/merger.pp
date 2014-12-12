@@ -17,13 +17,13 @@
 #
 class zuul::merger (
     $gearman_server,
-    $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $gerrit_server,
     $gerrit_user,
+    $url_pattern,
+    $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $git_dir = '/var/lib/zuul/git',
     $git_email = "zuul-merger@${::hostname}",
     $git_name = 'Wikimedia Zuul Merger',
-    $url_pattern,
     $status_url = "https://${::fqdn}/zuul/status",
     $zuul_url = 'git://zuul.eqiad.wmnet',
 ) {
