@@ -105,7 +105,7 @@ class base::puppet($server='puppet', $certname=undef) {
         owner   => 'root',
         group   => 'root',
         content => template('base/puppet.cron.erb'),
-        require => File['usr/local/sbin/puppet-run'],
+        require => File['/usr/local/sbin/puppet-run'],
     }
 
     file { '/etc/logrotate.d/puppet':
