@@ -244,6 +244,12 @@ class role::analytics::kafkatee::webrequest::webstatscollector {
         require    => Package['webstatscollector'],
     }
 
+    ferm::service { 'webstats-collector':
+        proto  => 'tcp',
+        port   => $collector_port,
+        srange => '$ALL_NETWORKS',
+    }
+
     # Gzip pagecounts files hourly.
     cron { 'webstats-dumps-gzip':
         # 2014-10-30 turning of webstatscollector here while we
