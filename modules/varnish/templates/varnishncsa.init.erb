@@ -21,7 +21,7 @@ PIDFILE=/var/run/varnishncsa/$NAME.pid
 LOGFILE=/var/log/varnish/varnishncsa.log
 USER=varnishlog
 
-DAEMON_OPTS="-n <%= @shm_name %> -w <%= listener_address %>:<%= port %> <%= cli_args %> -P $PIDFILE"
+DAEMON_OPTS="-n <%= @shm_name %> -w <%= @listener_address %>:<%= @port %> <%= @cli_args %> -P $PIDFILE"
 
 # Include defaults if available
 if [ -f /etc/default/varnishncsa ] ; then
@@ -42,13 +42,13 @@ fi
 test -x $DAEMON || exit 0
 
 
-# I can't seem to make quoting work properly with 
+# I can't seem to make quoting work properly with
 # $LOG_FORMAT set from /etc/default/varnishncsa.
 # I have to manually quote the LOG_FORMAT string
 # in the start-stop-daemon line here.  NOT ideal
 # at all.  This means I have to ALWAYS pass the -F
 # option with a hardcoded default LOG_FORMAT.
-# The default is already hardcoded into 
+# The default is already hardcoded into
 # Wikimedia's package of varnishncsa, so yuck.
 # I don't like it.
 
@@ -63,7 +63,7 @@ start_varnishncsa() {
     output=$(/bin/tempfile -s.varnish)
     log_daemon_msg "Starting $DESC" "$NAME"
     create_pid_directory
-    
+
     if start-stop-daemon --start --quiet --pidfile ${PIDFILE} \
         --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS} -F "${LOG_FORMAT}" \
         > ${output} 2>&1; then

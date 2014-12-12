@@ -8,12 +8,12 @@ sub vcl_recv {
 	/* FIXME: restrict access */
 
 	if ( req.http.host ~ "^test\." ) {
-<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
 		set req.backend = test_wikipedia;
 <% end -%>
 		return (pass);
 	}
-<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
 	}
