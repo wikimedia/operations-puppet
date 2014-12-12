@@ -4,7 +4,7 @@ class openstack::openstack-manager(
     $novaconfig,
     $certificate
 ) {
-    # require mediawiki::users::mwdeploy  -- temp. removed for ::mediawiki refactor -- OL
+    require mediawiki::users
 
     if !defined(Class['webserver::php5']) {
         class {'webserver::php5': ssl => true; }
