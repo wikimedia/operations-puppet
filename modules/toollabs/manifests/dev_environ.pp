@@ -18,14 +18,22 @@
 #
 class toollabs::dev_environ {
 
-    if os_version('ubuntu trusty') {
-        # libmariadbclient-dev is buggy on trusty
-        # https://bugs.debian.org/759309
-        package { 'libmysqlclient-dev':
+    if os_version('ubuntu >= trusty') {
+        package { [
+            # Previously we installed libmariadbclient-dev, but that causes
+            # dependency issues on Trusty.  libmariadbclient-dev formerly
+            # provided libmysqlclient-dev, but not in trusty.
+            # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759309
+            'libmysqlclient-dev',
+            'libboost-python1.54-dev',
+        ]:
             ensure  => latest,
         }
     } else {
-        package { 'libmariadbclient-dev':
+        package { [
+            'libmariadbclient-dev',
+            'libboost-python1.48-dev',
+        ]:
             ensure  => latest,
         }
     }
@@ -74,7 +82,6 @@ class toollabs::dev_environ {
         'python-coverage',             # Bug 57002
         'python-dev',
         'python3-dev',
-        'libboost-python-dev',
         'qt4-qmake',
         'sbt',
         'sqlite3',
