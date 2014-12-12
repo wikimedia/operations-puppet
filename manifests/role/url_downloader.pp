@@ -26,8 +26,8 @@ class role::url_downloader {
         description => 'Upload-by-URL proxy'
     }
 
-    class { '::url_downloader':
-        service_ip => $url_downloader_ip
+    class { 'squid3':
+        config_content => template('url_downloader/squid.conf.erb'),
     }
 
     # Firewall
