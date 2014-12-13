@@ -10,7 +10,6 @@ class mediawiki::hhvm {
     include ::hhvm::debug
 
     include ::mediawiki::users
-    include ::mediawiki::hhvm::housekeeping
 
     # Derive HHVM's thread count by taking the smallest of:
     #  - the memory of the system divided by a typical thread memory allocation
