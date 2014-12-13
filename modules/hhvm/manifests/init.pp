@@ -247,5 +247,6 @@ class hhvm(
     cron { 'tidy_perf_maps':
         command => '/usr/bin/find /tmp -name "perf-*" -not -cnewer /run/hhvm/hhvm.pid -delete > /dev/null 2>&1',
         hour    => fqdn_rand(23, 'tidy_perf_maps'),
+        minute  => 0,
     }
 }
