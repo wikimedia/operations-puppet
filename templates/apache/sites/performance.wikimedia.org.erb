@@ -14,4 +14,7 @@
         Order allow,deny
         allow from all
     </Directory>
+
+    ProxyPass /xenon http://fluorine.eqiad.wmnet
+    ProxyPassReverse /xenon http://fluorine.eqiad.wmnet
 </VirtualHost>
