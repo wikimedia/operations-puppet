@@ -48,7 +48,7 @@ export INTERFACE
 do_start()
 {
 	# up the number of fds [sockets] from 1024
-	ulimit -n 1000000
+	ulimit -n 200000
 
 	# Return
 	#   0 if daemon has been started
@@ -57,11 +57,13 @@ do_start()
 
 	start-stop-daemon --start --quiet --pidfile $PIDFILE -bm \
 		-c restbase:restbase --test \
-		--exec $DAEMON -- $DAEMON_ARGS \
+                --exec /bin/sh -- \
+                -c "$DAEMON $DAEMON_ARGS 2>&1 | logger -i -t restbase" \
 		|| return 1
 	start-stop-daemon --start --quiet --pidfile $PIDFILE -bm \
 		-c restbase:restbase \
-		--exec $DAEMON -- $DAEMON_ARGS \
+                --exec /bin/sh -- \
+                -c "$DAEMON $DAEMON_ARGS 2>&1 | logger -i -t restbase" \
 		|| return 2
 	echo "Started RESTBase server, by default listening on port 7231"
 
