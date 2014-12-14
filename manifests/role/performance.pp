@@ -5,6 +5,7 @@
 #
 class role::performance {
     include ::apache
+    include ::apache::mod::proxy
 
     package { 'reporter/reporter':
         provider => 'trebuchet',
