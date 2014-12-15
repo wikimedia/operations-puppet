@@ -1,20 +1,24 @@
 # == Class: graphite
 #
 # Graphite is a monitoring tool that stores numeric time-series data and
-# renders graphs of this data on demand. It consists of three software
+# renders graphs of this data on demand. It consists of the following software
 # components:
 #
 #  - Carbon, a daemon that listens for time-series data
+#  - Carbon-c-relay, an high-performance metric router
 #  - Whisper, a database library for storing time-series data
 #  - Graphite webapp, a webapp which renders graphs on demand
 #
 class graphite(
     $carbon_settings,
+    $c_relay_settings,
     $storage_schemas,
     $storage_aggregation = {},
     $storage_dir = '/var/lib/carbon',
     ) {
-    package { ['graphite-carbon', 'python-whisper']: }
+    package { ['graphite-carbon', 'python-whisper']:
+      ensure => installed,
+    }
 
     # force installation of python-twisted-core separatedly, there seem to be a
     # race condition with dropin.cache generation when apt-get installing
@@ -23,6 +27,26 @@ class graphite(
     package { 'python-twisted-core':
         ensure => installed,
         before => Package['graphite-carbon'],
+    }
+
+    $default_c_relay_settings = {
+            'carbon-cache' => [
+                '127.0.0.1:2103',
+                '127.0.0.1:2203',
+                '127.0.0.1:2303',
+                '127.0.0.1:2403',
+                '127.0.0.1:2503',
+                '127.0.0.1:2603',
+                '127.0.0.1:2703',
+                '127.0.0.1:2803',
+            ],
+            'backends' => [
+                'localhost:1903',
+            ],
+    }
+
+    class { '::graphite::carbon_c_relay':
+      c_relay_settings => merge($default_c_relay_settings, $c_relay_settings),
     }
 
     $carbon_service_defaults = {

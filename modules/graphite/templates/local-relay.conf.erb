@@ -1,0 +1,13 @@
+# simple carbon-c-relay configuration to replace carbon-relay, will
+# load-balance metrics sending among all members of the local cluster.
+
+cluster carbon-cache
+  any_of
+  <% @c_relay_settings['carbon-cache'].each do |b| -%>
+      <%= b %>
+  <% end -%>
+  ;
+
+match *
+  send to carbon-cache
+  ;

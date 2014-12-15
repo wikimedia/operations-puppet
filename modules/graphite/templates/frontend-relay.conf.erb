@@ -1,0 +1,10 @@
+cluster backends
+  forward
+  <% @c_relay_settings['backends'].each do |b| -%>
+      <%= b %>
+  <% end -%>
+  ;
+
+match *
+  send to backends
+  ;
