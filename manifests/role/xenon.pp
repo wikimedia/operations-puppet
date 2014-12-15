@@ -4,9 +4,11 @@
 # application servers, showing where time is spent.
 #
 class role::xenon {
+    include ::xenon
+
+    include ::apache::mod::mime
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
-    include ::xenon
 
     class { '::redis':
         maxmemory         => '1Mb',
@@ -15,6 +17,16 @@ class role::xenon {
     }
 
     Service['redis'] ~> Service['xenon-log']
+
+    file { '/srv/xenon/theme':
+        ensure  => directory,
+        source  => 'puppet:///files/xenon/theme',
+        owner   => 'www-data',
+        group   => 'www-data',
+        mode    => 0755,
+        recurse => true,
+        before  => Apache::Site['xenon'],
+    }
 
     apache::site { 'xenon':
         content => template('apache/sites/xenon.erb'),
