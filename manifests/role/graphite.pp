@@ -16,13 +16,14 @@
 #   Set to true to enable LDAP based authentication to access the graphite interface
 #
 class role::graphite::base(
-    $storage_dir = '/var/lib/carbon',
-    $auth = true,
-    $hostname = 'graphite.wikimedia.org',
+    $storage_dir      = '/var/lib/carbon',
+    $auth             = true,
+    $hostname         = 'graphite.wikimedia.org',
+    $c_relay_settings = {},
 ) {
     include ::passwords::graphite
 
-    if ($::realm == 'labs') {
+    if $::realm == 'labs' {
         # Mount extra disk on /srv so carbon has somewhere to store metrics
         require role::labs::lvm::srv
     }
@@ -141,10 +142,9 @@ class role::graphite::base(
             ## Carbon relay ##
 
             'relay'   => {
-                line_receiver_interface   => '0.0.0.0',
                 pickle_receiver_interface => '0.0.0.0',
-                udp_receiver_interface    => '0.0.0.0',
-                enable_udp_listener       => true,
+                # disabled, see ::graphite::carbon_c_relay
+                line_receiver_port        => '0',
                 relay_method              => 'consistent-hashing',
                 max_queue_size            => '500000',
                 destinations              => [
@@ -162,6 +162,7 @@ class role::graphite::base(
 
         storage_dir         => $carbon_storage_dir,
         whisper_lock_writes => true,
+        c_relay_settings    => $c_relay_settings,
     }
 
     class { '::graphite::web':
@@ -218,8 +219,13 @@ class role::graphite::base(
 #
 class role::graphite::production {
     class { 'role::graphite::base':
-        storage_dir => '/var/lib/carbon',
-        auth        => true,
+        storage_dir      => '/var/lib/carbon',
+        auth             => true,
+        c_relay_settings => {
+          backends => [
+            'graphite1001.eqiad.wmnet:1903',
+          ],
+        }
     }
 
     include role::backup::host
