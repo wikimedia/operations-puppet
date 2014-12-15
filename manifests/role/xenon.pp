@@ -12,7 +12,7 @@ class role::xenon {
         redis_replication => undef,
     }
 
-    Service['redis'] ~> Service['xenon']
+    Service['redis'] ~> Service['xenon-log']
 
     apache::site { 'xenon':
         content => template('apache/sites/xenon.erb'),
