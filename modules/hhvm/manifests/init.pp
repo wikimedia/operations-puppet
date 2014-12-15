@@ -96,13 +96,15 @@ class hhvm(
 
 
     $common_defaults = {
-        date => { timezone => 'UTC' },
-        hhvm => {
+        date         => { timezone => 'UTC' },
+        include_path => '.:/usr/share/php',
+
+        # HHVM specific
+        hhvm         => {
             dynamic_extension_path   => '/usr/lib/x86_64-linux-gnu/hhvm/extensions/current',
             dynamic_extensions       => [ 'fss.so', 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ],
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
-            include_path             => '.:/usr/share/php',
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
             log                      => {
