@@ -1,9 +1,0 @@
-#!/bin/bash
-set +C  # OK to clobber out-of-date SVGs
-for log in "/srv/xenon/logs/*/*.log"; do
-    svg="${log//log/svg}"
-    mkdir -m0755 -p "$(dirname $svg)"
-    [ ! -f "$svg" -o "$svg" -ot "$log" ] && {
-        /usr/local/bin/flamegraph.pl --minwidth=1 "$log" > "$svg"
-    }
-done
