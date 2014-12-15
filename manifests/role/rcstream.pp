@@ -7,10 +7,6 @@
 # a convenience layer over the WebSockets protocol.
 #
 class role::rcstream {
-    if versioncmp($::lsbdistrelease, '14.04') < 0 {
-        fail('requires 14.04+')
-    }
-
     include lvs::configuration
 
     system::role { 'role::rcstream':
