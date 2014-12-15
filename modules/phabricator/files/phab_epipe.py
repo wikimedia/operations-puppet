@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """2014 Chase Pettet <cpettet@wikimedia.org>
 
 This script acts as an intermediary between an MTA and phabricator providing
@@ -21,7 +20,11 @@ Looks for configuration file: /etc/phab_epipe.conf
     # saves particular messages from a comma
     # separated list of users
     debug = <emails_to_dump_for_debug>
+    # email that phab is set to accept new tasks on
+    taskcreation = <task@phab.foo.com>
 
+    # Direct route an email to new tasks associated with
+    # a project.
     [address_routing]
     <dest_email_address> = <project_name/security>
 
@@ -103,6 +106,16 @@ def main():
     for name, value in parser.items('direct_comments_allowed'):
         direct_com[name] = value.split(',')
 
+    def sanitize_email(email):
+        """make an email str worthy of crawlers
+        :param email: str
+        """
+        if '@' not in email:
+            return ''
+        u, e = email.split('@')
+        u = u.lstrip('<')
+        return '<%s at %s>' % (u, e.split('.')[0])
+
     def get_proj_by_name(name):
         """return json response
         :param name: str of project name
@@ -137,21 +150,27 @@ def main():
                 block += "\n    {%s}" % (ref,)
         return external_user_comment(task, block)
 
-    def mail2task(sender, date, subject, body, project, security):
-        block = "**`%s`** created via email on `%s`\n\n" % (sender, date)
+    def mail2task(sender, src_addy, date, subject, body, project, security):
+        block = "**`%s`** //%s// created via email on `%s`\n\n" % (sender,
+                                                                   src_addy,
+                                                                   date)
+
         block += '\n'.join(['> ' + s for s in body.splitlines()])
+        block += '\n\n                  this task filed by anonymous email'
         project_info = get_proj_by_name(project)
         if not project_info['data']:
             raise EmailParsingError("project %s does not exist" % (project))
 
+        # XXX: if we need direct security task filing this is where to do it
         # auxiliary contains any custom maniphest settings
-        security_dict = {"std:maniphest:security_topic": security}
+        # security_dict = {"std:maniphest:security_topic": security}
+
         # find the first phid (we only associate one for now)
         proj_phid = project_info['data'].keys()[0]
+
         return phab.maniphest.createtask(title=subject,
                                          description=block,
-                                         projectPHIDs=[proj_phid],
-                                         auxiliary=security_dict)
+                                         projectPHIDs=[proj_phid])
 
     def parse_from_string(from_str):
         """ parses from elements
@@ -190,6 +209,12 @@ def main():
             data = payload.get_payload()
             upload = upload_file(name, data)
             return upload['objectName']
+
+    def phab_handoff(email):
+        handler = os.path.join(parser.get(parser_mode, 'root_dir'),
+                               "scripts/mail/mail_handler.php")
+        process = subprocess.Popen([handler], stdin=subprocess.PIPE)
+        process.communicate(email)
 
     def extract_body_and_attached(msg):
         """ get body and payload objects
@@ -313,14 +338,33 @@ def main():
                          uploads))
 
     elif routed_addresses:
+
         route_address = routed_addresses[0]
         body, attached = extract_body_and_attached(msg)
+
+        # If this user is known to phabricator use standard
+        # email parsing logic.
+        userinfo = phab.user.query(emails=[src_addy])
+        if userinfo.response:
+            from email.mime.image import MIMEImage
+            from email.mime.multipart import MIMEMultipart
+            from email.mime.text import MIMEText
+            body += "\n\n#%s" % (route_address,)
+            # XXX TODO: handle MIME attachments for direct route tasks
+            nmsg = MIMEMultipart()
+            nmsg['From'] = src_addy
+            nmsg['To'] = defaults['taskcreation']
+            nmsg['subject'] = msg['subject']
+            mbody = MIMEText(body, 'plain')
+            nmsg.attach(mbody)
+            phab_handoff(nmsg.as_string())
+            return
+
 
         # XXX: handle secure uploads for routed tasks
         # uploads = []
         # for payload in attached:
         #    uploads.append(extract_payload_and_upload(payload))
-
         log('found routed address: %s' % (route_address,))
         if '/' in address_routing[route_address]:
             project, security = address_routing[route_address].split('/')
@@ -329,17 +373,14 @@ def main():
             security = defaults['security']
 
         log(mail2task(src_name,
+                      sanitize_email(src_addy),
                       msg['date'],
                       msg['subject'],
                       body,
                       project,
                       security))
     else:
-        handler = os.path.join(parser.get(parser_mode, 'root_dir'),
-                               "scripts/mail/mail_handler.php")
-        process = subprocess.Popen([handler], stdin=subprocess.PIPE)
-        process.communicate(stdin)
-
+        phab_handoff(stdin)
 
 if __name__ == '__main__':
     contact = 'Please contact a WMF Phabricator admin.'
