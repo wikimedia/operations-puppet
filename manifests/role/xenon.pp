@@ -4,6 +4,8 @@
 # application servers, showing where time is spent.
 #
 class role::xenon {
+    include ::apache::mod::proxy
+    include ::apache::mod::proxy_http
     include ::xenon
 
     class { '::redis':
