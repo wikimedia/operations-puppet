@@ -30,7 +30,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('config', nargs='?', default='/etc/xenon-log.yaml')
 args = parser.parse_args()
 
-with args.config as f:
+with open(args.config) as f:
     config = yaml.load(f)
 
 
