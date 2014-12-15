@@ -350,7 +350,7 @@ def main():
             from email.mime.image import MIMEImage
             from email.mime.multipart import MIMEMultipart
             from email.mime.text import MIMEText
-            body += "\n\n#%s" % (route_address,)
+            body += "\n\n#%s" % (address_routing[route_address],)
             # XXX TODO: handle MIME attachments for direct route tasks
             nmsg = MIMEMultipart()
             nmsg['From'] = src_addy
