@@ -57,7 +57,7 @@ groups:
     members: [howief, jforrester, jmorgan, maryana, msyed,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
-      bmansurov, west1, jhernandez]
+      bmansurov, west1, jhernandez, smalyshev]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -259,7 +259,7 @@ groups:
   wikidata-query-roots:
     gid: 740
     description: Full root on the Wikidata Query Service nodes.
-    members: [manybubbles,aaron,gwicke]
+    members: [manybubbles,aaron,gwicke, smalyshev]
     privs: ['ALL = NOPASSWD: ALL']
 
 users:
@@ -1219,3 +1219,10 @@ users:
     realname: Joaquin Oltra Hernandez
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtMQRDSRzNKBgNQQWt3IW7+pKx7KN6QVxc+b2z7pH+ZstwGBJZhl2W/tZtsZEE1Hfm9slPddcVnYPoNezZuT6dpq0V1im3PHizproc2JIbqjN9A/omrux1tvatwphKpYCCGflbFv1o8tqIzU/HneMsgg79BmU+u8qcZjG9ZMaqavcpOOLqLDz0y79uoNtFWUqBptDCR8fy1ju6sIW7LL8U5uHT8VBnART0MhUxzttd34m73mA9ncNkLN5WqjS/cqAgm1O8zm/bnSEFWTW6SUbQ3NPeW+E6UUrPLCrj8MGFHBtK8cn8YGPmh3Di2VhL5jmE2Ugz2OIxx3VL61dw8LM9 jhernandez@mba.local]
     uid: 10733
+  smalyshev:
+    ensure: present
+    gid: 500
+    name: smalyshev
+    realname: Stas Malyshev
+    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBAKvb1yH7JA7Ht7xjVZ7th0CZhGLXpte9XjXC7aSn+c1J3FenXGarDE0GS2JKqESaOCUsdipArLfYJxoGkXhUr3o8TR28cn2BmnczGuCkT1CYgGT/ODhEFkXQOFkrPvPrw7ZumA/9JftFlsGfrWBx6xmHo75nrokJuoE8Bruzl+pxAAAAFQDNO2HXkWZ96qfG6X6aPn/2GSmozwAAAIB49Soffd7QLXYsdPW2CAL2gCkYEyB6G8y3et0nV8i7AgG0+upLa4dk5cdl11J1VINopGXowlizpp/V/Os985jYhUztDpzBPILhE+BK1MToL+bTOBdAmj2cgdBEIZeXCU2gZpY2UoWM4pT6CKktTehiOSYbjLms1Ls06ntslO63KAAAAIA3mDuxcpidBajFk5nbvfTS/B0CVabv+W5OrKe828FG/PAKXc5XE26q1ShTWGEvA0O8TKl9eyRtJaqLJdRU63Ia0a3bHse3N/PNcRPKm80+nJEfpQ2Q/XFeATFMO8uroXayObHn2dh3QIDWd53YoO8jihyjrUR1/BAvSNOcGGL8wA== smalyshev@stasmacbook]
+    uid: 10977
