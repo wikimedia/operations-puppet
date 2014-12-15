@@ -1,20 +1,22 @@
 # == Class: graphite
 #
 # Graphite is a monitoring tool that stores numeric time-series data and
-# renders graphs of this data on demand. It consists of three software
+# renders graphs of this data on demand. It consists of the following software
 # components:
 #
 #  - Carbon, a daemon that listens for time-series data
+#  - Carbon-c-relay, an high-performance metric router
 #  - Whisper, a database library for storing time-series data
 #  - Graphite webapp, a webapp which renders graphs on demand
 #
 class graphite(
     $carbon_settings,
+    $c_relay_settings,
     $storage_schemas,
     $storage_aggregation = {},
     $storage_dir = '/var/lib/carbon',
     ) {
-    require_package('graphite-carbon', 'python-whisper')
+    require_package('graphite-carbon', 'python-whisper', 'carbon-c-relay')
 
     $carbon_service_defaults = {
         log_updates              => false,
@@ -62,6 +64,26 @@ class graphite(
         notify  => Service['carbon'],
     }
 
+    file { '/etc/carbon/local-relay.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('graphite/local-relay.conf.erb'),
+        notify  => Service['carbon/local-relay'],
+    }
+
+    # NOTE: the service is named local-relay as opposed to c-relay otherwise
+    # we'd have these very similar but different names:
+    # service carbon-c-relay # from debian package, the standard relay
+    # service carbon/c-relay # from this module, forwarding to local carbon-cache
+    file { '/etc/init/carbon/local-relay.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('graphite/local-relay.upstart.conf.erb'),
+        notify  => Service['carbon/local-relay'],
+    }
+
     file { '/etc/init/carbon':
         source  => 'puppet:///modules/graphite/carbon-upstart',
         recurse => true,
@@ -78,6 +100,11 @@ class graphite(
         source => 'puppet:///modules/graphite/graphite-carbon',
         mode   => '0644',
         before => Service['carbon'],
+    }
+
+    service { 'carbon/local-relay':
+        ensure   => 'running',
+        provider => 'upstart',
     }
 
     service { 'carbon':

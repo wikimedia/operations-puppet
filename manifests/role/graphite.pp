@@ -130,10 +130,7 @@ class role::graphite::base(
             ## Carbon relay ##
 
             'relay'   => {
-                line_receiver_interface   => '0.0.0.0',
                 pickle_receiver_interface => '0.0.0.0',
-                udp_receiver_interface    => '0.0.0.0',
-                enable_udp_listener       => true,
                 relay_method              => 'consistent-hashing',
                 destinations              => [
                     '127.0.0.1:2104:a',
@@ -149,6 +146,18 @@ class role::graphite::base(
         },
 
         storage_dir         => $carbon_storage_dir,
+        c_relay_settings => {
+            'backends' => [
+                '127.0.0.1:2103',
+                '127.0.0.1:2203',
+                '127.0.0.1:2303',
+                '127.0.0.1:2403',
+                '127.0.0.1:2503',
+                '127.0.0.1:2603',
+                '127.0.0.1:2703',
+                '127.0.0.1:2803',
+            ],
+        },
     }
 
     class { '::graphite::web':
