@@ -256,6 +256,11 @@ groups:
     description: Full root on EventLogging servers.
     members: [qchris]
     privs: ['ALL = NOPASSWD: ALL']
+  wikidata-query-roots:
+    gid: 740
+    description: Full root on the Wikidata Query Service nodes.
+    members: [manybubbles,aaron,gwicke]
+    privs: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
