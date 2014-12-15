@@ -12,6 +12,8 @@ case "$command" in
                 /sbin/status carbon/cache NAME="$name"  |& sed 's/ //'
             done
             grep -Fqx '[relay]' /etc/carbon/carbon.conf && /sbin/status carbon/relay
+            [ -e /etc/carbon/local-relay.conf ] && /sbin/status carbon/local-relay
+            [ -e /etc/carbon/frontend-relay.conf ] && /sbin/status carbon/frontend-relay
         } |& { sed 's/, process//' | column -t | tee /dev/stderr | grep -qv running ; } 2>&1
         ;;
     check)
