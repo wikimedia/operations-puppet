@@ -152,10 +152,7 @@ class role::deployment::deployment_servers::common {
     }
 
     class { '::keyholder': trusted_group => 'wikidev', } ->
-    class { '::keyholder::monitoring': } ->
-    keyholder::private_key { 'mwdeploy_rsa':
-        source  => 'puppet:///private/ssh/tin/mwdeploy_rsa',
-    }
+    class { '::keyholder::monitoring': }
 }
 
 class role::deployment::deployment_servers::production {
@@ -195,6 +192,11 @@ class role::deployment::deployment_servers::production {
             'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *',
             'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
         ],
+    }
+
+    keyholder::private_key { 'mwdeploy_rsa':
+        source  => 'puppet:///private/ssh/tin/mwdeploy_rsa',
+        require => Class['::keyholder'],
     }
 }
 
