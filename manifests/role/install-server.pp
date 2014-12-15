@@ -46,7 +46,9 @@ class role::installserver {
         rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
     }
 
-    include install-server::caching-proxy
+    class { 'squid3':
+        config_source => 'puppet:///files/caching-proxy/squid3-apt-proxy.conf',
+    }
     ferm::rule { 'proxy':
         rule => 'proto tcp dport 8080 { saddr $ALL_NETWORKS ACCEPT; }'
     }
