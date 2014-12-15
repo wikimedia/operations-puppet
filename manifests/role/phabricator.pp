@@ -107,12 +107,14 @@ class role::phabricator::main {
     include phabricator::monitoring
 
     class { '::phabricator::mailrelay':
-        default         => {
-            security    => 'users',
-            maint       => false,
+        default          => {
+            security     => 'users',
+            maint        => false,
+            taskcreation => "task@${domain}",
         },
         address_routing => {
-            testproj => 'demoproject'
+            ops-requests => 'operations',
+            testproj    => 'demoproject'
         },
         phab_bot        => {
             root_dir    => '/srv/phab/phabricator/',
