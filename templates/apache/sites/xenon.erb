@@ -15,6 +15,9 @@
         Order allow,deny
         allow from all
 
+        AddType image/svg+xml svg svgz
+        AddEncoding gzip svgz
+
         IndexOptions +Charset=UTF-8 +FancyIndexing +IgnoreCase +FoldersFirst +XHTML +HTMLTable +SuppressRules +SuppressDescription +NameWidth=* +IconsAreLinks
         IndexHeadInsert "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
         IndexIgnore .htaccess /theme
@@ -22,7 +25,7 @@
         AddIcon /xenon/theme/icons/blank.png ^^BLANKICON^^
         AddIcon /xenon/theme/icons/folder.png ^^DIRECTORY^^
         AddIcon /xenon/theme/icons/folder-home.png ..
-        AddIcon /xenon/theme/icons/draw.png .svg
+        AddIcon /xenon/theme/icons/draw.png .svg .svgz
         AddIcon /xenon/theme/icons/doc.png .log
         DefaultIcon /xenon/theme/icons/default.png
 
