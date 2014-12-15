@@ -71,14 +71,8 @@ class graphite::web(
         require => Package['graphite-web'],
     }
 
-    if $::lsbdistcodename == 'trusty' {
-        $graphite_manage_path = '/usr/lib/python2.7/dist-packages/graphite/manage.py'
-    } else {
-        $graphite_manage_path = '/usr/share/pyshared/graphite/manage.py'
-    }
-
     exec { 'graphite_syncdb':
-        command     => "/usr/bin/python $graphite_manage_path syncdb --noinput",
+        command     => '/usr/bin/graphite-manage syncdb --noinput',
         user        => 'www-data',
         subscribe   => File['/etc/graphite/local_settings.py'],
         refreshonly => true,
