@@ -1,0 +1,12 @@
+description "carbon-c-relay instance, used to forward to local carbon-cache only"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on [!12345]
+
+limit nofile 32768 32768
+
+setuid carbon-c-relay
+
+# it is possible there's another carbon-c-relay running on the same host, so
+# change the hostname
+exec /usr/bin/carbon-c-relay -H <%= "#{hostname}_local-relay" -%> -p 1903 -f /etc/carbon/local-relay.conf
