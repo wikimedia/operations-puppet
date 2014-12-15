@@ -259,7 +259,7 @@ groups:
   wikidata-query-roots:
     gid: 740
     description: Full root on the Wikidata Query Service nodes.
-    members: [manybubbles,aaron,gwicke, smalyshev]
+    members: [manybubbles, aaron, gwicke, smalyshev]
     privs: ['ALL = NOPASSWD: ALL']
 
 users:
