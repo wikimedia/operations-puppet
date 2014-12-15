@@ -2,7 +2,7 @@
 ### THIS FILE IS MANAGED BY PUPPET
 ######################################################################
 
-http_port <%= @service_ip %>:8080
+http_port <%= @url_downloader_ip %>:8080
 hierarchy_stoplist cgi-bin ?
 # The following 3 are built-in in squid 3.3 but not squid 3.1
 acl manager proto cache_object
@@ -71,7 +71,7 @@ http_reply_access allow all
 
 icp_access deny all
 
-tcp_outgoing_address <%= @service_ip %>
+tcp_outgoing_address <%= @url_downloader_ip %>
 
 reply_body_max_size 1010 MB all
 
