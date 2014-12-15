@@ -1,12 +1,6 @@
 # Apache configuration for Phabricator (<%= @phab_servername %>)
 # This file is managed by Puppet.
 
-<%# Apache Prior to 2.3.11 %>
-<%# http://httpd.apache.org/docs/current/mod/core.html %>
-<% if @lsbdistcodename == 'precise'%>
-  NameVirtualHost *:<%= @port %>
-<% end -%>
-
 <VirtualHost *:80>
   ServerName <%= @phab_servername.gsub('http://', '').gsub('https://', '') %>
 
@@ -25,21 +19,10 @@
   # enable HTTP Strict Transport Security
   Header set Strict-Transport-Security "max-age=31536000"
 
-<%# Apache 2.4 and Newer %>
-<% if @lsbdistcodename == 'trusty'%>
   <Directory "<%= @docroot %>">
     Options Indexes FollowSymLinks MultiViews
     Require all granted
   </Directory>
-<%# Apache Older Than 2.4 %>
-<% else %>
-  <Directory <%= @docroot %>>
-    Options Indexes FollowSymLinks MultiViews
-    AllowOverride None
-    Order allow,deny
-    allow from all
-  </Directory>
-<% end -%>
 
   ErrorLog /var/log/apache2/<%= @name %>_error.log
   LogLevel warn

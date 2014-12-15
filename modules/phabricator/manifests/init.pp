@@ -213,13 +213,8 @@ class phabricator (
         path    => '/usr/bin:/bin',
     }
 
-    case $::operatingsystemrelease {
-        '12.04': { $php_ini = '/etc/php5/apache2filter/php.ini' }
-        default: { $php_ini = '/etc/php5/apache2/php.ini'}
-    }
-
-    file { $php_ini:
-        content => template("phabricator/${::lsbdistcodename}_php.ini.erb"),
+    file { '/etc/php5/apache2/php.ini':
+        content => template("phabricator/php.ini.erb"),
         notify  => Service['apache2'],
         require => Package['php5'],
     }
