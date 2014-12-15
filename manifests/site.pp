@@ -1104,6 +1104,12 @@ node 'eeden.esams.wikimedia.org' {
     include role::authdns::server
 }
 
+node 'eisteinium.eqiad.wmnet' {
+    include standard
+    include admin
+    system::role { 'Titan test host': }
+}
+
 # erbium is a webrequest udp2log host
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
