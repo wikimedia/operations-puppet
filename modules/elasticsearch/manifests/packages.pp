@@ -23,5 +23,6 @@ class elasticsearch::packages {
     # library for elasticsearch. only in trusty+
     if os_version('ubuntu >= trusty') {
         package { 'python-elasticsearch': ensure => present }
+        package { 'python-ipaddr': ensure => present }
     }
 }
