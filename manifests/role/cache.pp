@@ -564,10 +564,7 @@ class role::cache {
         include role::protoproxy::ssl::common
 
         localssl { 'unified':
-            certname => $::hostname ? {
-                'cp1008' => 'uni.wikimedia.org',
-                default  => 'unified.wikimedia.org',
-            },
+            certname => 'uni.wikimedia.org',
             default_server => true,
         }
 
