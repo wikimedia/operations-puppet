@@ -1,14 +1,50 @@
 # vim: set ts=4 et sw=4:
 
-# We do not have monitoring yet
-#@monitoring::group { 'cxserver_eqiad': description => 'eqiad cxserver servers' }
+class role::cxserver::production {
+    system::role { 'role::cxserver::production':
+        description => 'content translation server'
+    }
 
-# Skipping production for now
-#class role::cxserver::production {}
+    class { '::cxserver':
+        base_path => '/srv/deployment/cxserver/cxserver',
+        node_path => '/srv/deployment/cxserver/deploy/node_modules',
+        conf_path => '/srv/deployment/cxserver/config.js',
+        log_dir   => '/var/log/cxserver',
+        parsoid   => 'http://parsoid-lb.eqiad.wikimedia.org',
+        apertium  => 'http://apertium.svc.eqiad.wmnet',
+    }
+
+    group { 'cxserver':
+      ensure => present,
+      name   => 'cxserver',
+      system => true,
+    }
+
+    user { 'cxserver':
+      gid           => 'cxserver',
+      home          => '/srv/deployment/cxserver/cxserver',
+      managehome    => true,
+      system        => true,
+    }
+
+    # Define cxserver port
+    $cxserver_port = '8080'
+
+    # We have to explicitly open the cxserver port (bug T47868)
+    ferm::service { 'cxserver_http':
+        proto => 'tcp',
+        port  => $cxserver_port,
+    }
+
+    monitor_service { 'cxserver':
+        description   => 'cxserver',
+        check_command => 'check_http_on_port!8080',
+    }
+}
 
 class role::cxserver::beta {
     system::role { 'role::cxserver::beta':
-        description => 'cxserver server (on beta)'
+        description => 'content translation server (on beta)'
     }
 
     class { '::cxserver':
