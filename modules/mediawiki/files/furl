@@ -11,6 +11,7 @@
  *   --docroot DOCROOT   Document root of FastCGI server. Defaults to "/srv/mediawiki".
  *   --script SCRIPT     Path to script file, relative to the document root.
  *   --timeout SECONDS   Request timeout, in seconds. Defaults to 30 seconds.
+ *   --request FILE      Add to the request all the headers we have in the file, one per line
  *
  * This program includes PHP-FastCGI-Client
  * https://github.com/adoy/PHP-FastCGI-Client
@@ -605,25 +606,38 @@ class Client
     }
 }
 
+function envFromHeaders($filename) {
+    $retval = array();
+    if (!file_exists($filename)) return $retval;
+    foreach(file($filename) as $line) {
+        $m = array();
+        if (!preg_match('/^([\w\-]+): (.*)$/', $line, $m)) continue;
+        $envVar = sprintf("HTTP_%s", strtoupper(str_replace('-','_', $m[1])));
+        $retval[$envVar] = $m[2];
+    }
+    return $retval;
+}
 
-function doFcgiRequest($server, $docroot, $script, $uri, $timeout) {
+
+function doFcgiRequest($server, $docroot, $script, $uri, $timeout, $requestFile) {
     if (strpos($server, ':') !== false) {
         list($host, $port) = explode(':', $server);
     } else {
         $host = $server;
         $port = 9000;
     }
+    $additionalEnv = envFromHeaders($requestFile);
     $client = new Client($host, $port);
     $client->setReadWriteTimeout($timeout * 1000);
     $uri = parse_url($uri);
-    $env = array(
+    $env = array_merge(array(
         'SERVER_NAME'       => $uri['host'],
         'REMOTE_ADDR'       => '10.20.30.40',
         'DOCUMENT_ROOT'     => $docroot,
         'SCRIPT_FILENAME'   => $docroot . $script,
         'REQUEST_METHOD'    => 'GET',
         'REQUEST_URI'       => $uri['path'],
-   );
+    ), $additionalEnv);
     if (!empty($uri['query'])) {
         $env['QUERY_STRING'] = $uri['query'];
     }
@@ -633,7 +647,7 @@ function doFcgiRequest($server, $docroot, $script, $uri, $timeout) {
 $usage = <<<EOT
 fURL - FastCGI cURL-like tool for MediaWiki
 
-Usage: furl [--headers] [--server SERVER] [--docroot DOCROOT] [--script SCRIPT] URI
+Usage: furl [--headers] [--server SERVER] [--docroot DOCROOT] [--script SCRIPT] [--request FILE] URI
 
   URI                 Request URI.
   --headers           Print headers only.
@@ -641,6 +655,7 @@ Usage: furl [--headers] [--server SERVER] [--docroot DOCROOT] [--script SCRIPT] 
   --docroot DOCROOT   Document root of FastCGI server. Defaults to "/srv/mediawiki".
   --script SCRIPT     Path to script file, relative to the document root.
   --timeout SECONDS   Request timeout, in seconds. Defaults to 30 seconds.
+  --request FILE      File containing additional headers for the request.
 
 
 EOT;
@@ -668,11 +683,12 @@ $opts = array_merge(array(
     'script'  => '/w/index.php',
     'server'  => 'localhost:9000',
     'timeout' => 30,
-), getopt('', array('docroot:', 'script:', 'server:', 'headers')));
+    'request' => NULL,
+), getopt('', array('docroot:', 'script:', 'server:', 'headers', 'request:')));
 
 while ($uri) {
     try {
-        $resp = doFcgiRequest($opts['server'], $opts['docroot'], $opts['script'], $uri, $opts['timeout']);
+        $resp = doFcgiRequest($opts['server'], $opts['docroot'], $opts['script'], $uri, $opts['timeout'], $opts['request']);
     } catch (Exception $e) {
         file_put_contents('php://stderr', $e->getMessage() . "\n");
         exit(1);
