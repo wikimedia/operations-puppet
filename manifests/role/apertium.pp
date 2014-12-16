@@ -1,10 +1,30 @@
 # vim: set ts=4 et sw=4:
 
-# We do not have monitoring yet
-#@monitoring::group { 'apertium_eqiad': description => 'eqiad apertium servers' }
+# Apertium is in a service cluster A.
+@monitoring::group { 'sca_eqiad': description => 'Service Cluster A servers' }
 
-# Skipping production for now
-#class role::apertium::production {}
+class role::apertium::production {
+    system::role { 'role::apertium::production':
+        description => 'Apertium APY server'
+    }
+
+    include ::apertium
+
+    # Define Apertium log directory and port
+    $log_dir = '/var/log/apertium'
+    $apertium_port = '2737'
+
+    # We have to explicitly open the apertium port (bug T47868)
+    ferm::service { 'apertium_http':
+        proto => 'tcp',
+        port  => $apertium_port,
+    }
+
+    monitor_service { 'apertium':
+        description => 'apertium apy',
+        check_command => 'check_http_on_port!2737',
+    }
+}
 
 class role::apertium::beta {
     system::role { 'role::apertium::beta':
