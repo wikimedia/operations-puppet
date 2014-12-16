@@ -25,7 +25,9 @@ groups:
     privs: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload']
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload',
+            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
+            'ALL = (parsoid-rt) NOPASSWD: /home/parsoid-rt/update-code.sh']
   gerrit-root:
     gid: 703
     description: manage gerrit server
