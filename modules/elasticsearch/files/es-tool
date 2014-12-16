@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import argparse
+import ipaddr
 import os
 import subprocess
 import sys
@@ -35,17 +36,17 @@ def set_allocation_state(status):
     return set_setting("cluster.routing.allocation.enable", status)
 
 
-def set_banned_ips(iplist):
-    return set_setting("cluster.routing.allocation.exclude._ip",
-                       ",".join(iplist))
+def set_banned_nodes(nodelist, node_type):
+    return set_setting("cluster.routing.allocation.exclude." + node_type,
+                       ",".join(nodelist))
 
 
-def get_banned_ips():
+def get_banned_nodes(node_type):
     es = Elasticsearch(args.server)
     res = es.cluster.get_settings()
     try:
         bannedstr = res["transient"]["cluster"]["routing"]["allocation"][
-            "exclude"]["_ip"]
+            "exclude"][node_type]
         if bannedstr:
             return bannedstr.split(",")
     except KeyError:
@@ -55,21 +56,27 @@ def get_banned_ips():
 
 # Add new command functions here
 def es_ban_node():
-    if args.IP == "":
-        print "No IP address provided"
+    if args.node == "":
+        print "No node provided"
         return os.EX_UNAVAILABLE
 
-    banned = get_banned_ips()
-    if args.IP in banned:
-        print args.IP + " already banned from allocation, nothing to do"
+    try:
+        ipaddr.IPv4Address(args.node)
+        node_type = "_ip"
+    except ipaddr.AddressValueError:
+        node_type = "_host"
+
+    banned = get_banned_nodes(node_type)
+    if args.node in banned:
+        print args.node + " already banned from allocation, nothing to do"
         return os.EX_OK
 
-    banned.append(args.IP)
-    if set_banned_ips(banned):
-        print "Banned " + args.IP
+    banned.append(args.node)
+    if set_banned_nodes(banned, node_type):
+        print "Banned " + args.node
         return os.EX_OK
     else:
-        print "Failed to ban " + args.IP
+        print "Failed to ban " + args.node
         return os.EX_UNAVAILABLE
 
 
@@ -158,21 +165,27 @@ def es_stop_replication():
 
 
 def es_unban_node():
-    if args.IP == "":
-        print "No IP address provided"
+    if args.node == "":
+        print "No node provided"
         return os.EX_UNAVAILABLE
 
-    banned = get_banned_ips()
-    if args.IP not in banned:
-        print args.IP + " not banned from allocation currently, nothing to do"
+    try:
+        ipaddr.IPv4Address(args.node)
+        node_type = "_ip"
+    except ipaddr.AddressValueError:
+        node_type = "_host"
+
+    banned = get_banned_nodes(node_type)
+    if args.node not in banned:
+        print args.node + " not banned from allocation, nothing to do"
         return os.EX_OK
 
-    banned.remove(args.IP)
-    if set_banned_ips(banned):
-        print "Unbanned " + args.IP
+    banned.remove(args.node)
+    if set_banned_nodes(banned, node_type):
+        print "Unbanned " + args.node
         return os.EX_OK
     else:
-        print "Failed to unban " + args.IP
+        print "Failed to unban " + args.node
         return os.EX_UNAVAILABLE
 
 # And register them here
@@ -191,8 +204,8 @@ parser = argparse.ArgumentParser(
 parser.add_argument("command", metavar='CMD', type=str,
                     choices=commands.keys(),
                     help="Subcommand, one of: " + ",".join(commands))
-parser.add_argument("IP", metavar='IP', type=str, nargs="?", default="",
-                    help="IP address, used by (un)ban-node")
+parser.add_argument("node", metavar='NODE', type=str, nargs="?", default="",
+                    help="IP address or hostname, used by (un)ban-node")
 parser.add_argument("--server", metavar='S', type=str, default="localhost",
                     help="Server to work on, default localhost")
 args = parser.parse_args()
