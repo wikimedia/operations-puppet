@@ -198,9 +198,9 @@ task :spec do
 			puts '-' * 80
 			puts "Running rspec tests for module #{module_name}"
 			puts '-' * 80
-			if not system('bundle exec rspec --color --format doc')
-				failed_modules << module_name  # recording
-			end
+			RSpec::Core::Runner.run(['.'])
+			# TODO Figure out how to catch the test result to update the list
+			# of failling modules.
 		end
 	end
 
