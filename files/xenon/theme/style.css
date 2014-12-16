@@ -5,7 +5,10 @@
     Theme name: Apaxy
     Theme author: @adamwhitcroft
 \*------------------------------------*/
+/*
+ * Loading content from 3rd party resources violates the privacy policy
 @import url('//fonts.googleapis.com/css?family=Open+Sans');
+*/
 /* Have to use @import for the font, as you can only specify a single stylesheet */
 * {
 	margin:0;
