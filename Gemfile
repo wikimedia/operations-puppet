@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'puppet'
 gem 'facter'
+gem 'puppetlabs_spec_helper'
+gem 'rake'
 
 gem 'rspec-puppet',
     # We need rspec-puppet v2.0.0+ to fix a rspec matcher protocol error in

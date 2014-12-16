@@ -16,10 +16,24 @@ GEM
     hiera (1.3.4)
       json_pure
     json_pure (1.8.1)
+    metaclass (0.0.4)
+    mocha (1.1.0)
+      metaclass (~> 0.0.1)
     puppet (3.7.3)
       facter (> 1.6, < 3)
       hiera (~> 1.0)
       json_pure
+    puppet-lint (1.1.0)
+    puppet-syntax (1.3.0)
+      rake
+    puppetlabs_spec_helper (0.8.2)
+      mocha
+      puppet-lint
+      puppet-syntax
+      rake
+      rspec
+      rspec-puppet
+    rake (10.4.2)
     rspec (2.99.0)
       rspec-core (~> 2.99.0)
       rspec-expectations (~> 2.99.0)
@@ -35,4 +49,6 @@ PLATFORMS
 DEPENDENCIES
   facter
   puppet
+  puppetlabs_spec_helper
+  rake
   rspec-puppet!
