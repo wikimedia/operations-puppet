@@ -130,7 +130,10 @@ class role::deployment::salt_masters::production {
     }
 }
 
-class role::deployment::deployment_servers::common {
+class role::deployment::deployment_servers::common(
+    # Source of the key, change this if not in production, with hiera.
+    $key_source = 'puppet:///private/ssh/tin/mwdeploy_rsa',
+) {
     # Can't include this while scap is present on tin:
     # include misc::deployment::scripts
 
@@ -154,7 +157,7 @@ class role::deployment::deployment_servers::common {
     class { '::keyholder': trusted_group => 'wikidev', } ->
     class { '::keyholder::monitoring': } ->
     keyholder::private_key { 'mwdeploy_rsa':
-        source  => 'puppet:///private/ssh/tin/mwdeploy_rsa',
+        source  => $key_source,
     }
 }
 
