@@ -18,6 +18,17 @@ systemctl restart rsyslog.service
 if ! /sbin/vgdisplay -c vd
 then
   echo 'Creating the volume group'
+  # There seems to be a bug in boostrapvz that (can?)
+  # create the gpt of the image with the "wrong" size,
+  # where the extent of the disk is the sum of the
+  # existing partitions rather than the actual size of
+  # the image.  Sadly, the only way to fix this is
+  # by invoking parted "interactively" and accept an
+  # error if that is not the case (because then the
+  # 'fix' parameter becomes an answer to a question
+  # that is never asked.)
+  /sbin/parted -s /dev/vda print fix >/dev/null 2>&1
+
   # the tail|sed|cut is just to get the start and
   # end of the last unpartitioned span on the disk
   /sbin/parted -s /dev/vda print
