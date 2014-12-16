@@ -49,6 +49,8 @@ sub vcl_recv {
 		return (pass);
 	} elsif (req.http.Host == "noc.wikimedia.org") {
 		set req.backend = terbium;
+	} elsif (req.http.Host == "hue.wikimedia.org") {
+		set req.backend = analytics1027;
 	} else {
 		error 404 "Domain not served here";
 	}

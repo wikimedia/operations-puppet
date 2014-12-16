@@ -1508,6 +1508,8 @@ class role::cache {
                 'magnesium.wikimedia.org', # RT and racktables
                 'stat1001.wikimedia.org', # metrics and metrics-api
                 'palladium.eqiad.wmnet',
+                'analytics1027.eqiad.wmnet', # Hue (Hadoop GUI)
+
             ],
             backend_options => [
             {
