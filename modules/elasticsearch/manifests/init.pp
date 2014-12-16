@@ -163,7 +163,7 @@ class elasticsearch($cluster_name,
             group   => 'root',
             mode    => '0755',
             source  => 'puppet:///modules/elasticsearch/es-tool',
-            require => Package['python-elasticsearch']
+            require => [Package['python-elasticsearch'], Package['python-ipaddr']]
         }
     }
 }
