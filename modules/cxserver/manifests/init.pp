@@ -33,7 +33,6 @@ class cxserver(
     $apertium,
     $port=8080
 ) {
-    # apertium-* packages are for machine translation.
     # dictd-* packages for dictionary server.
     require_package('nodejs')
 
