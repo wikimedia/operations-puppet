@@ -36,11 +36,10 @@ class role::apertium::beta {
         'ALL = (root)  NOPASSWD:/usr/sbin/service apertium-apy restart',
     ] }
 
-    # Define Apertium log directory and port
-    $log_dir = '/var/log/apertium'
+    # Define Apertium port
     $apertium_port = '2737'
 
-    # We have to explicitly open the apertium port (bug 45868)
+    # We have to explicitly open the apertium port (bug T47868)
     ferm::service { 'apertium_http':
         proto => 'tcp',
         port  => $apertium_port,
