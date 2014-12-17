@@ -46,16 +46,10 @@ define admin::sudo(
         $priv_holder = $name
     }
 
-    if member($privs, 'absent') {
-        $final_ensure = 'absent'
-    } else {
-        $final_ensure = $ensure
-    }
-
     #WARNING: if path supplied is an existing dir Puppet will swallow this silently
     $filepath = "/etc/sudoers.d/50_${name}"
     file { $filepath:
-        ensure  => $final_ensure,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
