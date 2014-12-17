@@ -163,17 +163,6 @@ Assigning sudo permissions to a group:
         # This file is managed by Puppet!
         %adm ALL=(ALL:ALL) ALL
 
-Removing sudo permissions from a group:
-
--> if you remove a group the permissions are removed as well
--> the 'absent' keyword will also remove all sudo permissions while
--> retaining the group and members
-
-    bar:
-      gid: 680
-      privs: [absent]
-      members: [a, b, c]
-
 Users can be given sudo permissions in the same way:
 
 -> this is a limited use approach.  these permissions would apply across the entire env.
