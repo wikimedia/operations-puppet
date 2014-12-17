@@ -46,7 +46,6 @@ class quarry::base {
     # Otherwise fabric deployment wokn't work
     admin::sudo { 'wikidev':
         is_group => true,
-        comment  => 'Give human users full ability to sudo as anyone without password',
         privs    => ['ALL=(ALL) NOPASSWD: ALL']
     }
 

@@ -175,7 +175,6 @@ Assigning one-off (single user, single case) sudo permissions:
 
     admin::sudo { "foo_user_only_should_do_x":
         user=>'bob',
-        comment=>'this is good karma',
         privs=>['ALL = NOPASSWD: X'],
     }
 
