@@ -363,7 +363,7 @@ class role::nova::wikiupdates {
     }
 }
 
-class role::nova::compute {
+class role::nova::compute($instance_dev='/dev/md1') {
     require openstack
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
@@ -393,7 +393,7 @@ class role::nova::compute {
     if $::realm == 'production' {
         mount { '/var/lib/nova/instances':
             ensure  => mounted,
-            device  => '/dev/md1',
+            device  => $instance_dev,
             fstype  => 'xfs',
             options => 'defaults',
         }

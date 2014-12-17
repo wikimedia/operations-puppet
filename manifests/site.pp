@@ -2904,7 +2904,7 @@ node /virt101[0-2].eqiad.wmnet/ {
 
     include admin
     include standard
-    include role::nova::compute
+    class { 'role::nova::compute': instance_dev => '/dev/sdb1' }
     if $use_neutron == true {
         include role::neutron::computenode
     }

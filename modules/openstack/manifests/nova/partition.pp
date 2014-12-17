@@ -32,7 +32,6 @@ define openstack::nova::partition($partition_nr='1') {
     }
 }
 
-
 define openstack::nova::mount_filesystem {
     $dev         = $title
     $dev_suffix  = regsubst($dev, '^\/dev\/(.*)$', '\1')
@@ -51,5 +50,7 @@ define openstack::nova::mount_filesystem {
         device   => "LABEL=virt-${dev_suffix}",
         name     => $mount_point,
         fstype   => 'xfs',
+        atboot   => true,
+        remounts => true,
     }
 }
