@@ -2,7 +2,11 @@ class role::labs::instance {
 
     include standard
     include base::instance-upstarts
-    include sudo::labs_project
+    include sudo
+
+    sudo::group { 'ops':
+        privileges => ['ALL=(ALL) NOPASSWD: ALL'],
+    }
 
     class { 'ldap::role::client::labs':
         # Puppet requires ldap, so we need to update ldap before anything
