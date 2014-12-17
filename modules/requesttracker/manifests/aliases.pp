@@ -3,6 +3,6 @@ class requesttracker::aliases {
         owner   => root,
         group   => root,
         mode    => 0444,
-        source  => 'modules/requesttracker/rt.aliases',
+        source  => 'puppet:///modules/requesttracker/rt.aliases',
     }
 }
