@@ -1,9 +1,10 @@
 class sudo {
-    if $::realm == 'labs' {
-        # We use sudo-ldap, defined elsewhere.
-    } else {
-        package { 'sudo':
-            ensure => installed,
-        }
+    $package = $::realm ? {
+        'labs'  => 'sudo-ldap',
+        default => 'sudo',
+    }
+
+    package { $package:
+        ensure => installed,
     }
 }
