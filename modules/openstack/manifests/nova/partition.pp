@@ -9,6 +9,14 @@ define openstack::nova::partition($partition_nr='1') {
     $parted_cmd    = "parted --script --align optimal ${title}"
     $parted_script = "mklabel gpt mkpart ${fs_label} 0 100%"
 
+    package { [
+        'parted',
+        'xfsprogs',
+        ]:
+        ensure => 'present',
+    }
+
+
     exec { "parted-${title}":
         path    => '/usr/bin:/bin:/usr/sbin:/sbin',
         require => Package['parted'],
