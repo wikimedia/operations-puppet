@@ -42,7 +42,8 @@ class install-server::tftp-server {
     }
 
     service { 'atftpd':
-        ensure  => running,
-        require => Package['atftpd'],
+        ensure    => running,
+        hasstatus => false,
+        require   => Package['atftpd'],
     }
 }
