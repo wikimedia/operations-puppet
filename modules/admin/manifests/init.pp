@@ -14,6 +14,7 @@ class admin(
     $always_groups=['absent', 'ops', 'wikidev'],
 )
 {
+    include sudo
 
     $module_path = get_module_path($module_name)
     $data = loadyaml("${module_path}/data/data.yaml")
@@ -30,15 +31,6 @@ class admin(
         ensure => file,
         mode   => '0555',
         source => 'puppet:///modules/admin/enforce-users-groups.sh',
-    }
-
-    file { '/etc/sudoers':
-        ensure => file,
-        mode   => '0440',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/admin/sudoers',
-        tag    => 'sudoers',
     }
 
     admin::hashgroup { $all_groups:
