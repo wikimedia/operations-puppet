@@ -56,7 +56,7 @@ class misc::udp2log($monitor = true) {
 #
 class misc::udp2log::rsyncd(
         $path        = '/var/log/udp2log/archive',
-        $hosts_allow = ['208.80.152.146', '10.64.0.16']
+        $hosts_allow = ['stat1002.eqiad.wmnet']
 ) {
     include rsync::server
     rsync::server::module { 'udp2log':

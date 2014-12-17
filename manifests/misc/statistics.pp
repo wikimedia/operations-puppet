@@ -55,9 +55,9 @@ class misc::statistics::base {
 
     # Manually set a list of statistics servers.
     $servers = [
-        'stat1001.wikimedia.org',
+        'stat1001.eqiad.wmnet',
         'stat1002.eqiad.wmnet',
-        'stat1003.wikimedia.org',
+        'stat1003.eqiad.wmnet',
         'analytics1027.eqiad.wmnet',
     ]
 
@@ -305,7 +305,7 @@ class misc::statistics::public_datasets {
 
     # rsync from stat1003:/srv/public-datasets to $working_path/public-datasets
     cron { 'rsync public datasets':
-        command => "/usr/bin/rsync -rt --delete stat1003.wikimedia.org::srv/public-datasets/* ${working_path}/public-datasets/",
+        command => "/usr/bin/rsync -rt --delete stat1003.eqiad.wmnet::srv/public-datasets/* ${working_path}/public-datasets/",
         require => File["${working_path}/public-datasets"],
         user    => 'root',
         minute  => '*/30',
@@ -461,7 +461,7 @@ class misc::statistics::rsyncd(
     ferm::service { 'rsync':
         proto  => 'tcp',
         port   => '873',
-        srange => '($INTERNAL 208.80.154.155/32 208.80.154.82/32)',
+        srange => '($INTERNAL)',
     }
 }
 
@@ -693,7 +693,7 @@ class misc::statistics::limn::data {
     $public_dir        = "${working_path}/limn-public-data"
 
     # Rsync generated data to stat1001 at http://datasets.wikimedia.org/limn-public-data/
-    $rsync_to          = "stat1001.wikimedia.org::www/limn-public-data/"
+    $rsync_to          = "stat1001.eqiad.wmnet::www/limn-public-data/"
 
     # user to own files and run cron job as (stats).
     $user              = $misc::statistics::user::username
