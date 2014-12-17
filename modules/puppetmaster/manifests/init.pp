@@ -40,10 +40,6 @@ class puppetmaster(
     # so the postinst scripts do the right things.
     require puppetmaster::config
 
-    apt::puppet {'puppetmaster':
-        packages => 'puppetmaster puppetmaster-common vim-puppet puppet-el'
-    }
-
     package { [
         'puppetmaster',
         'puppetmaster-common',
@@ -54,7 +50,6 @@ class puppetmaster(
         'ruby-json'
         ]:
         ensure  => latest,
-        require => Apt::Puppet['puppetmaster']
     }
 
     if $server_type == 'frontend' {

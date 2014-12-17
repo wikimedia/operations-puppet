@@ -58,12 +58,6 @@ class puppet::self::master($server) {
         require => Class['puppet::self::config'],
     }
 
-    # pin puppetmaster packages
-    apt::puppet {'puppetmaster':
-        packages => 'puppetmaster puppetmaster-common vim-puppet puppet-el',
-        before   => Package['puppetmaster']
-    }
-
     package { [
         'vim-puppet',
         'puppet-el',

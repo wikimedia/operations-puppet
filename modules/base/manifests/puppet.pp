@@ -6,10 +6,8 @@ class base::puppet($server='puppet', $certname=undef) {
     $crontime = $base::puppet::params::crontime
     $freshnessinterval = $base::puppet::params::freshnessinterval
 
-
     package { [ 'puppet', 'facter' ]:
         ensure  => latest,
-        require => Apt::Puppet['base']
     }
 
     file { '/etc/puppet/puppet.conf':

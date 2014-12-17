@@ -21,11 +21,6 @@ class puppetmaster::passenger(
 ) {
     include ::apache::mod::passenger
 
-    apt::puppet { 'passenger':
-        packages => 'puppetmaster-passenger',
-        before   => Package['puppetmaster-passenger'],
-    }
-
     package { 'puppetmaster-passenger':
         ensure => latest,
     }
