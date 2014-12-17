@@ -363,6 +363,19 @@ phab:
 <% if @rt_relay == true then -%>
 # Mail destined for RT
 
+# Special alias file for the RT domain
+rt_aliases:
+	driver = redirect
+	domains = +rt_domains
+	require_files = CONFDIR/aliases/rt
+	data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/rt}}
+	qualify_preserve_domain
+	allow_fail
+	allow_defer
+	forbid_file
+	forbid_pipe
+	include_directory = CONFDIR
+
 # This router checks whether the local part consists of solely digits,
 # and assumes this is the ticket number of an existing ticket if this is
 # the case. It rewrites the address to the general queue, and puts the
