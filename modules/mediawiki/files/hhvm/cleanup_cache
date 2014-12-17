@@ -15,7 +15,7 @@ import sqlite3
 import argparse
 
 TABLES_QUERY = """
-SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%{}'
+SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE '%{}'
 """
 
 
@@ -88,9 +88,11 @@ def main():
             hhvm_db = args.filename
         with sqlite3.connect(hhvm_db) as dbh:
             cursor = dbh.cursor()
-            tables_to_clean = cursor.execute(
-                TABLES_QUERY.format(repo_schema)
-            ).fetchall()
+            tables_to_clean = [
+                t for (t,) in cursor.execute(
+                    TABLES_QUERY.format(repo_schema)
+                ).fetchall()
+            ]
             # To remove the annoying unicode marker
             printable_tables = ", ".join(tables_to_clean)
             if args.noop:
@@ -99,7 +101,7 @@ def main():
             else:
                 log.debug("Tables to remove: %s", printable_tables)
                 delete_and_vacuum(dbh, tables_to_clean)
-        repo_size_after = os.path.getsize(args.repo)
+        repo_size_after = os.path.getsize(args.filename)
         kb_change = (repo_size_before - repo_size_after) / 1024.0
         log.info('Pruned %.2f kB.', kb_change)
     except Exception as e:
