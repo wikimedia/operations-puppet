@@ -2901,6 +2901,13 @@ node /virt101[0-2].eqiad.wmnet/ {
     openstack::nova::partition{ '/dev/sdb': }
 
     $use_neutron = false
+
+    include admin
+    include standard
+    include role::nova::compute
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
 }
 
 node 'iodine.wikimedia.org' {
