@@ -3861,7 +3861,7 @@ host sodium {
 
 host stat1001 {
 	hardware ethernet 78:2b:cb:35:c4:f7;
-	fixed-address stat1001.wikimedia.org;
+	fixed-address stat1001.eqiad.wmnet;'
 }
 
 host stat1002 {
@@ -3871,7 +3871,7 @@ host stat1002 {
 
 host stat1003 {
 	hardware ethernet F0:1F:AF:E8:BA:E3;
-	fixed-address stat1003.wikimedia.org;
+	fixed-address stat1003.eqiad.wmnet;
 }
 
 host strontium {

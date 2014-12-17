@@ -58,8 +58,7 @@ class role::analytics::kafkatee::webrequest inherits role::analytics::kafkatee {
         content => template('kafkatee/logrotate.erb'),
     }
 
-    # stat1002.eqiad.wmnet == 10.64.0.16
-    $hosts_allow = ['10.64.0.16']
+    $hosts_allow = ['stat1002.eqiad.wmnet']
     include rsync::server
     rsync::server::module { 'webrequest':
         comment     => 'kafkatee generated webrequest log files',
