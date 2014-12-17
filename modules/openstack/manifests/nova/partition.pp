@@ -7,7 +7,7 @@ define openstack::nova::partition($partition_nr='1') {
     $dev_suffix    = regsubst($dev, '^\/dev\/(.*)$', '\1')
     $fs_label      = "virt-${dev_suffix}"
     $parted_cmd    = "parted --script --align optimal ${title}"
-    $parted_script = "mklabel gpt mkpart ${fs_label} 0 100%"
+    $parted_script = "mklabel gpt mkpart ${fs_label} 4096s 100%"
 
     package { [
         'parted',
