@@ -65,7 +65,6 @@ class toollabs::mailrelay($maildomain) inherits toollabs
     # Diamond user needs sudo to access exim
     admin::sudo { 'diamond_sudo_for_exim':
         user    => 'diamond',
-        comment => 'diamond needs sudo to access exim mail queue length',
         privs   => ['ALL=(root) NOPASSWD: /usr/sbin/exim']
     }
 

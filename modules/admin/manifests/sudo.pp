@@ -15,10 +15,6 @@
 #  WARNING:  Use for user oneoffs.  Sudo privs should be handled in
 #            the main user/group definition in almost all cases.
 #
-# [*comment*]
-#  In case of a non-user definition/non-group definition priv a comment
-#  can be provided.
-#
 # [*privs*]
 #  An array of lines to be included in a sudoers.d/ file
 #
@@ -30,7 +26,6 @@
 define admin::sudo(
     $ensure='present',
     $user=undef,
-    $comment=undef,
     $privs=[],
     $is_group=false,
 )
