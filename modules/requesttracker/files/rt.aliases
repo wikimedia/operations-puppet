@@ -1,0 +1,13 @@
+RT aliases
+
+ops-request: ops-private@lists.wikimedia.org
+phabricator: rt@phabricator.wikimedia.org
+foo: task@phabricator.wikimedia.org
+ulsfo: ops-private@lists.wikimedia.org
+pmtpa: ops-private@lists.wikimedia.org
+todo: ops-private@lists.wikimedia.org
+eqiad: ops-private@lists.wikimedia.org
+esams: ops-private@lists.wikimedia.org
+network: ops-private@lists.wikimedia.org
+codfw: ops-private@lists.wikimedia.org
+core-ops: ops-private@lists.wikimedia.org
