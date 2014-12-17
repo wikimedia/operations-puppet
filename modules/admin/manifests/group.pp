@@ -12,7 +12,7 @@
 #  Sets the group id
 #
 # [*privileges*]
-#  An array of privileges to setup via admin::sudo
+#  An array of sudo privileges to setup
 #
 
 define admin::group(
@@ -33,10 +33,9 @@ define admin::group(
     }
 
     if !empty($privileges) {
-        admin::sudo { $name:
+        sudo::group { $name:
             ensure     => $ensure,
             privileges => $privileges,
-            is_group   => true,
         }
     }
 }
