@@ -1,12 +1,12 @@
 # Class: install-server::web-server
 #
-# This class installs and configures lighttpd to act as a repository for new
+# This class installs and configures nginx to act as a repository for new
 # installation enviroments
 #
 # Parameters:
 #
 # Actions:
-#   Install and configure lighttpd
+#   Install and configure nginx
 #
 # Requires:
 #
@@ -14,26 +14,15 @@
 #   include install-server::web-server
 
 class install-server::web-server {
-    package { 'lighttpd':
-        ensure => latest,
+    include ::nginx
+
+    nginx::site { 'install-server':
+        source  => 'puppet:///modules/install-server/nginx.conf';
     }
 
-    file {
-        '/etc/lighttpd/lighttpd.conf':
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            source  => 'puppet:///modules/install-server/lighttpd.conf';
-        '/etc/logrotate.d/lighttpd':
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            source  => 'puppet:///modules/install-server/logrotate-lighttpd';
-    }
-
-    service { 'lighttpd':
-        ensure      => running,
-        require     => [ File['/etc/lighttpd/lighttpd.conf'], Package['lighttpd'] ],
-        subscribe   => File['/etc/lighttpd/lighttpd.conf'],
+    # prevent a /srv root autoindex; empty for now.
+    file { '/srv/index.html':
+        ensure  => present,
+        content => '',
     }
 }
