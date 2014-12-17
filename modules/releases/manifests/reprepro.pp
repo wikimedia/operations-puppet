@@ -150,8 +150,8 @@ class releases::reprepro::upload (
         before => File['/usr/local/bin/deb-upload'],
     }
 
-    admin::sudo { 'releases_dput':
-        user  => $sudo_user,
-        privs => ["ALL = (${user}) NOPASSWD: /usr/bin/dput"],
+    sudo::user { 'releases_dput':
+        user       => $sudo_user,
+        privileges => ["ALL = (${user}) NOPASSWD: /usr/bin/dput"],
     }
 }
