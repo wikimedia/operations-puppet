@@ -35,7 +35,7 @@ class role::installserver {
     include install-server::apt-repository
     include install-server::preseed-server
 
-    include install-server::ubuntu-mirror
+    include mirrors::ubuntu
     nrpe::monitor_service {'check_apt_mirror':
         description  => 'Ubuntu mirror in sync with upstream',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror'
@@ -62,20 +62,6 @@ class role::installserver {
     include install-server::dhcp-server
     ferm::rule { 'dhcp':
         rule => 'proto udp dport bootps { saddr $ALL_NETWORKS ACCEPT; }'
-    }
-
-    # System user and group for mirroring
-    group { 'mirror':
-        ensure => present,
-        name   => 'mirror',
-        system => true,
-    }
-
-    user { 'mirror':
-        home       => '/var/lib/mirror',
-        managehome => true,
-        system     => true,
-        before     => Class['install-server::ubuntu-mirror'],
     }
 
     # Backup
