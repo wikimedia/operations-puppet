@@ -35,7 +35,7 @@
 #  The login shell.
 #
 # [*privileges*]
-#  An array of privileges to setup via admin::sudo
+#  An array of sudo privileges to setup
 #  Rarely should a user differ from an established group.
 #
 # [*ssh_keys*]
@@ -122,7 +122,7 @@ define admin::user (
     }
 
     if !empty($privileges) {
-        admin::sudo { $name:
+        sudo::user { $name:
             ensure     => $ensure,
             privileges => $privileges,
         }
