@@ -16,4 +16,14 @@ class sudo {
         source  => 'puppet:///modules/sudo/sudoers',
         require => Package[$package],
     }
+
+    file { '/etc/sudoers.d':
+        ensure  => directory,
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        recurse => true,
+        purge   => true,
+        require => Package[$package],
+    }
 }
