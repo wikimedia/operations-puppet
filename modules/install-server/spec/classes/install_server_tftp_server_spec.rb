@@ -20,18 +20,4 @@ describe 'install-server::tftp-server', :type => :class do
             'recurse'  => 'remote',
         })
     end
-    it do
-        should contain_file('/srv/tftpboot/restricted/').with({
-            'ensure' => 'directory',
-            'mode'   => '0755',
-            'owner'  => 'root',
-            'group'  => 'root',
-        })
-    end
-    it do
-        should contain_file('/tftpboot').with({
-            'ensure' => 'link',
-            'target' => '/srv/tftpboot',
-        })
-    end
 end
