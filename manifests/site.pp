@@ -2896,6 +2896,13 @@ node /virt100[1-9].eqiad.wmnet/ {
     }
 }
 
+node /virt101[0-2].eqiad.wmnet/ {
+    $cluster = 'virt'
+    openstack::nova::partition{ '/dev/sdb': }
+
+    $use_neutron = false
+}
+
 node 'iodine.wikimedia.org' {
     class { 'base::firewall': }
 
