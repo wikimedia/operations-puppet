@@ -2471,7 +2471,7 @@ node 'strontium.eqiad.wmnet' {
     include role::puppetmaster::backend
 }
 
-node 'stat1001.wikimedia.org' {
+node 'stat1001.eqiad.wmnet' {
     include standard
     include role::statistics::www
     class { 'admin': groups => ['statistics-web-users'] }
@@ -2525,7 +2525,7 @@ node 'stat1002.eqiad.wmnet' {
 # researchers and analysts.  It is primarily used
 # to connect to MySQL research databases and save
 # query results for further processing on this node.
-node 'stat1003.wikimedia.org' {
+node 'stat1003.eqiad.wmnet' {
     include standard
 
     # stat1003 has a public IP and should be pretty

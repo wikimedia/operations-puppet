@@ -75,9 +75,9 @@ class role::analytics::password::research {
 class role::analytics::rsyncd {
 
     $hosts_allow = [
-        'stat1001.wikimedia.org',
+        'stat1001.eqiad.wmnet',
         'stat1002.eqiad.wmnet',
-        'stat1003.wikimedia.org',
+        'stat1003.eqiad.wmnet',
         'analytics1027.eqiad.wmnet',
         'dataset1001.wikimedia.org',
     ]
