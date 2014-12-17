@@ -51,6 +51,7 @@ class contint::packages::labs {
 
         # Let us compile python modules:
         'python-dev',
+        'libmysqlclient-dev',  # For python SQLAlchemy
 
         # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
         'zip',
