@@ -34,8 +34,8 @@
 # [*shell*]
 #  The login shell.
 #
-# [*privs*]
-#  An array of priviledges to setup via admin::sudo
+# [*privileges*]
+#  An array of privileges to setup via admin::sudo
 #  Rarely should a user differ from an established group.
 #
 # [*ssh_keys*]
@@ -43,14 +43,14 @@
 #
 
 define admin::user (
-    $ensure   = 'present',
-    $uid      = undef,
-    $gid      = undef,
-    $groups   = [],
-    $comment  = '',
-    $shell    = '/bin/bash',
-    $privs    = undef,
-    $ssh_keys = [],
+    $ensure     = 'present',
+    $uid        = undef,
+    $gid        = undef,
+    $groups     = [],
+    $comment    = '',
+    $shell      = '/bin/bash',
+    $privileges = undef,
+    $ssh_keys   = [],
     )
 {
     validate_ensure($ensure)
@@ -121,10 +121,10 @@ define admin::user (
         }
     }
 
-    if !empty($privs) {
+    if !empty($privileges) {
         admin::sudo { $name:
-            ensure => $ensure,
-            privs  => $privs,
+            ensure     => $ensure,
+            privileges => $privileges,
         }
     }
 }

@@ -11,14 +11,14 @@
 # [*gid*]
 #  Sets the group id
 #
-# [*privs*]
-#  An array of priviledges to setup via admin::sudo
+# [*privileges*]
+#  An array of privileges to setup via admin::sudo
 #
 
 define admin::group(
     $ensure         = 'present',
     $gid            = undef,
-    $privs          = [],
+    $privileges     = [],
 )
     {
 
@@ -32,11 +32,11 @@ define admin::group(
         }
     }
 
-    if !empty($privs) {
+    if !empty($privileges) {
         admin::sudo { $name:
-            ensure   => $ensure,
-            privs    => $privs,
-            is_group => true,
+            ensure     => $ensure,
+            privileges => $privileges,
+            is_group   => true,
         }
     }
 }

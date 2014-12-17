@@ -12,17 +12,17 @@ groups:
     members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, yuvipanda,
               dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling,
               ori, midom]
-    privs: ['ALL = (ALL) NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
     description: RT 5934
     members: [gwicke, catrope]
-    privs: ['ALL = (parsoid) NOPASSWD: ALL']
+    privileges: ['ALL = (parsoid) NOPASSWD: ALL']
   parsoid-admin:
     gid: 702
     description: RT 5934
     members: [ssastry, cscott, arlolra]
-    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload']
@@ -30,7 +30,7 @@ groups:
     gid: 703
     description: manage gerrit server
     members: [demon, catrope]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
   gerrit-admin:
     gid: 704
     description: RT 6720 - assist in managing gerrit server
@@ -62,12 +62,12 @@ groups:
     gid: 708
     description: users with root on cassandra hosts
     members: [gwicke, ssastry]
-    privs: ['ALL = (ALL) NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
     members: [manybubbles, demon]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
   dataset-admins:
     gid: 710
     description: does work on dataset hosts
@@ -97,7 +97,7 @@ groups:
     gid: 715
     description: ldap admins
     members: [robla, reedy, demon]
-    privs: ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
+    privileges: ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
             'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
             'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
             'ALL = NOPASSWD: /usr/local/bin/svn-group',
@@ -107,7 +107,7 @@ groups:
     gid: 716
     description: non-ops admins for search
     members: [manybubbles, demon]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
   search-users:
     gid: 717
     description: elastic search testing
@@ -120,7 +120,7 @@ groups:
     gid: 719
     description: users with some sudo permissions on jenkins hosts
     members: [bd808, cscott, demon, krinkle, reedy, marktraceur]
-    privs: ['ALL = (jenkins) NOPASSWD: ALL',
+    privileges: ['ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
             'ALL = (gerritslave) NOPASSWD: ALL',
             'ALL = (zuul) NOPASSWD: ALL',
@@ -131,12 +131,12 @@ groups:
     gid: 720
     description: users who have full root on jenkins servers
     members: [hashar]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
   ocg-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)
     members: [cscott, ssastry, gwicke, arlolra]
-    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service ocg reload',
@@ -145,12 +145,12 @@ groups:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [aaron, bd808, manybubbles, demon, reedy]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
   pmacct-roots:
     gid: 723
     description: root on netflow machines
     members: [jkrauska]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
@@ -175,12 +175,12 @@ groups:
     posix_name: stats
     description: access files created by stats user cron jobs
     members: [ezachte, ironholds, qchris, milimetric]
-    privs: ['ALL = (stats) NOPASSWD: ALL']
+    privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727
     description: office it folk
     members: [jkrauska]
-    privs: ['ALL = (syslog) NOPASSWD: ALL']
+    privileges: ['ALL = (syslog) NOPASSWD: ALL']
   pdf-qa-users:
     gid: 728
     description: developers on the PDF QA system
@@ -189,12 +189,12 @@ groups:
     gid: 729
     description: root rights for mathoid
     members: [gwicke, catrope]
-    privs: ['ALL = (mathoid) NOPASSWD: ALL']
+    privileges: ['ALL = (mathoid) NOPASSWD: ALL']
   mathoid-admin:
     gid: 730
     description: group of mathoid admins
     members: [gwicke, catrope]
-    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
@@ -221,7 +221,7 @@ groups:
         This will grant shell access on all Analytics Cluster nodes, as well
         as the ability to sudo to certain Analytics Cluster system users.
     members: [qchris]
-    privs: ['ALL = (hdfs)  NOPASSWD: ALL',
+    privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
             'ALL = (oozie) NOPASSWD: ALL',
             'ALL = (hive)  NOPASSWD: ALL']
   eventlogging-admins:
@@ -232,17 +232,17 @@ groups:
     gid: 734
     description: Full root access to labmon nodes
     members: [yuvipanda]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
   citoid-roots:
     gid: 735
     description: root rights for citoid
     members: [gwicke, catrope]
-    privs: ['ALL = (citoid) NOPASSWD: ALL']
+    privileges: ['ALL = (citoid) NOPASSWD: ALL']
   citoid-admin:
     gid: 736
     description: group of citoid admins
     members: [gwicke, catrope]
-    privs: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid stop',
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid reload']
@@ -250,17 +250,17 @@ groups:
       gid: 738
       description: Full root access to Analytics Cluster nodes.
       members: [qchris]
-      privs: ['ALL = NOPASSWD: ALL']
+      privileges: ['ALL = NOPASSWD: ALL']
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers.
     members: [qchris]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
   wikidata-query-roots:
     gid: 740
     description: Full root on the Wikidata Query Service nodes.
     members: [manybubbles, aaron, gwicke, smalyshev]
-    privs: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:
