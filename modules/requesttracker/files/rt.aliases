@@ -1,0 +1,13 @@
+RT aliases
+
+ops-requests: root@wikimedia.org
+phabricator: rt@phabricator.wikimedia.org
+foo: task@phabricator.wikimedia.org
+ulsfo: root@wikimedia.org
+pmtpa: root@wikimedia.org
+todo: root@wikimedia.org
+eqiad: root@wikimedia.org
+esams: root@wikimedia.org
+network: root@wikimedia.org
+codfw: root@wikimedia.org
+core-ops: root@wikimedia.org
