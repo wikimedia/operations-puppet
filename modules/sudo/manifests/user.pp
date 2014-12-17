@@ -30,12 +30,20 @@ define sudo::user(
     validate_ensure($ensure)
 
     $title_safe = regsubst($title, '\W', '-', 'G')
+    $filename = "/etc/sudoers.d/${title_safe}"
 
-    file { "/etc/sudoers.d/${title_safe}":
+    file { $filename:
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
         content => template('sudo/sudoers.erb'),
+    }
+
+    exec { "sudo_user_${title}_linting":
+        command   => "rm -f ${filename} && false",
+        unless    => "test -e ${filename} && visudo -cf ${filename} || exit 0",
+        path      => '/bin:/usr/bin:/usr/sbin',
+        subscribe => File[$filename],
     }
 }
