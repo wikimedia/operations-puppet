@@ -8,6 +8,7 @@ class base::standard-packages {
     }
 
     $packages = [
+        'coreutils',
         'wipe',
         'tzdata',
         'zsh-beta',
