@@ -20,4 +20,5 @@
 /var/log/hhvm/stacktrace.*.log.* {
     rotate 0
     maxage 7
+    missingok
 }
