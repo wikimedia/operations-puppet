@@ -171,19 +171,6 @@ Users can be given sudo permissions in the same way:
     ensure: present
     privileges: [ALL=(ALL:ALL) ALL]
 
-Assigning one-off (single user, single case) sudo permissions:
-
-    admin::sudo { "foo_user_only_should_do_x":
-        user       =>'bob',
-        privileges =>['ALL = NOPASSWD: X'],
-    }
-
-    Creates '/etc/sudoers.d/foo_user_only_should_do_x':
-
-    # This file is managed by Puppet!
-    #this is good karma
-    bob ALL = NOPASSWD: X
-
 Getting your /home/ stuff wherever you are:
 
 -> if you define a dir for your username in '${module}/files/home' all contents are managed
