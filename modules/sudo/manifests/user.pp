@@ -22,8 +22,8 @@
 #
 define sudo::user(
     $privileges,
-    $ensure = present,
-    $user   = $title,
+    $ensure  = present,
+    $user    = $title,
 ) {
     require sudo
 
@@ -33,9 +33,9 @@ define sudo::user(
 
     file { "/etc/sudoers.d/${title_safe}":
         ensure  => $ensure,
-        content => template('sudo/sudoers.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
+        content => template('sudo/sudoers.erb'),
     }
 }
