@@ -26,7 +26,7 @@ define phabricator::logmail (
     $phab_tools  = '/srv/phab/tools',
     $hour        = '0',
     $minute      = '0',
-    $monthday    = '*',
+    $monthday    = '1',
 ) {
 
     file { "${phab_tools}/${script_name}":
