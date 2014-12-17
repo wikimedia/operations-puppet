@@ -40,16 +40,6 @@ class quarry::base {
         owner     => 'quarry',
         group     => 'www-data'
     }
-
-    # Temp. hack until Coren figures out why normal users
-    # can't do 'sudo -u <user> <command' on labs
-    # Otherwise fabric deployment wokn't work
-    admin::sudo { 'wikidev':
-        is_group => true,
-        comment  => 'Give human users full ability to sudo as anyone without password',
-        privs    => ['ALL=(ALL) NOPASSWD: ALL']
-    }
-
 }
 
 # = Class: quarry::database
