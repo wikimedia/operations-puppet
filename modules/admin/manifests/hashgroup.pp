@@ -27,8 +27,8 @@ define admin::hashgroup(
     }
 
     admin::group { $group_name:
-        ensure => $gdata['ensure'],
-        gid    => $gdata['gid'],
-        privs  => $gdata['privs'],
+        ensure     => $gdata['ensure'],
+        gid        => $gdata['gid'],
+        privileges => $gdata['privileges'],
     }
 }

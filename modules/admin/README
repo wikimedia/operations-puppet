@@ -156,7 +156,7 @@ Assigning sudo permissions to a group:
     groups:
         adm:
         members: [foo, bar]
-        privs: [ALL=(ALL:ALL) ALL]
+        privileges: [ALL=(ALL:ALL) ALL]
 
     Creates: '/etc/sudoers.d/adm'
 
@@ -169,13 +169,13 @@ Users can be given sudo permissions in the same way:
 
   foo:
     ensure: present
-    privs: [ALL=(ALL:ALL) ALL]
+    privileges: [ALL=(ALL:ALL) ALL]
 
 Assigning one-off (single user, single case) sudo permissions:
 
     admin::sudo { "foo_user_only_should_do_x":
-        user=>'bob',
-        privs=>['ALL = NOPASSWD: X'],
+        user       =>'bob',
+        privileges =>['ALL = NOPASSWD: X'],
     }
 
     Creates '/etc/sudoers.d/foo_user_only_should_do_x':

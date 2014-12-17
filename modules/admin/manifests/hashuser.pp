@@ -28,13 +28,13 @@ define admin::hashuser(
     }
 
     admin::user { $name:
-        ensure   => $uinfo['ensure'],
-        uid      => $uinfo['uid'],
-        gid      => $group_id,
-        groups   => $uinfo['groups'],
-        comment  => $uinfo['realname'],
-        shell    => $uinfo['shell'],
-        privs    => $uinfo['privs'],
-        ssh_keys => $key_set,
+        ensure     => $uinfo['ensure'],
+        uid        => $uinfo['uid'],
+        gid        => $group_id,
+        groups     => $uinfo['groups'],
+        comment    => $uinfo['realname'],
+        shell      => $uinfo['shell'],
+        privileges => $uinfo['privileges'],
+        ssh_keys   => $key_set,
     }
 }
