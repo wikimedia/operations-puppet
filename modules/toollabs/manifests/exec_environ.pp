@@ -385,6 +385,7 @@ class toollabs::exec_environ {
     } elsif $::lsbdistcodename == 'trusty' {
         # No obvious package available for libgdal
         package { [
+            'hhvm',                        # Bug T78783
             'libboost-python1.54.0',
             'libmpc3',
             'libprotobuf8',
