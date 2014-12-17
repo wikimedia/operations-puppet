@@ -15,7 +15,7 @@
 #  WARNING:  Use for user oneoffs.  Sudo privs should be handled in
 #            the main user/group definition in almost all cases.
 #
-# [*privs*]
+# [*privileges*]
 #  An array of lines to be included in a sudoers.d/ file
 #
 # [*is_group*]
@@ -26,7 +26,7 @@
 define admin::sudo(
     $ensure='present',
     $user=undef,
-    $privs=[],
+    $privileges=[],
     $is_group=false,
 )
 {
