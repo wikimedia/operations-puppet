@@ -7,16 +7,9 @@ class base::puppet($server='puppet', $certname=undef) {
     $freshnessinterval = $base::puppet::params::freshnessinterval
 
 
-    package { [ 'puppet', 'facter', 'coreutils' ]:
+    package { [ 'puppet', 'facter' ]:
         ensure  => latest,
         require => Apt::Puppet['base']
-    }
-
-    file { '/etc/default/puppet':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/base/puppet/puppet.default',
     }
 
     file { '/etc/puppet/puppet.conf':
@@ -42,13 +35,6 @@ class base::puppet($server='puppet', $certname=undef) {
         notify  => Exec['compile puppet.conf'],
     }
 
-    # restrict access to logs to root, RT #8022
-    file { '/var/log/puppet.log':
-        owner => 'root',
-        group => 'root',
-        mode  => '0640',
-    }
-
     if $::realm == 'labs' {
         # Clear master certs if puppet.conf changed
         exec { 'delete master certs':
@@ -58,13 +44,6 @@ class base::puppet($server='puppet', $certname=undef) {
             subscribe   => File['/etc/puppet/puppet.conf.d/10-main.conf'],
             refreshonly => true,
         }
-    }
-
-    file { '/etc/init.d/puppet':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/puppet/puppet.init',
     }
 
     class { 'puppet_statsd':
@@ -79,7 +58,7 @@ class base::puppet($server='puppet', $certname=undef) {
         refreshonly => true,
     }
 
-    ## do not use puppet agent
+    ## do not use puppet agent, use a cron-based puppet-run instead
     service {'puppet':
         ensure => stopped,
         enable => false,
