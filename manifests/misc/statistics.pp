@@ -871,7 +871,7 @@ class misc::statistics::geowiki::data::private_bare::sync {
     $geowiki_base_path                   = $misc::statistics::geowiki::geowiki_base_path
     $geowiki_private_data_bare_path      = $misc::statistics::geowiki::params::private_data_bare_path
     $geowiki_private_data_bare_host      = 'stat1003'
-    $geowiki_private_data_bare_host_fqdn = "${geowiki_private_data_bare_host}.wikimedia.org"
+    $geowiki_private_data_bare_host_fqdn = "${geowiki_private_data_bare_host}.eqiad.wmnet"
 
     file { $geowiki_private_data_bare_path:
         ensure => directory,
