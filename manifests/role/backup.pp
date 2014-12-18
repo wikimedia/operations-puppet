@@ -60,7 +60,7 @@ class role::backup::director {
     # One pool for all
     bacula::director::pool { $pool:
         max_vols         => 50,
-        storage          => 'FileStorage1',
+        storage          => "${::hostname}-FileStorage1",
         volume_retention => '180 days',
         label_fmt        => $pool,
         max_vol_bytes    => '536870912000',
@@ -69,14 +69,14 @@ class role::backup::director {
     # Default pool needed internally by bacula
     bacula::director::pool { 'Default':
         max_vols         => 1,
-        storage          => 'FileStorage1',
+        storage          => "${::hostname}-FileStorage1",
         volume_retention => '1800 days',
     }
 
     # Archive pool for long term archival.
     bacula::director::pool { 'Archive':
         max_vols         => 5,
-        storage          => 'FileStorage2',
+        storage          => "${::hostname}-FileStorage2",
         volume_retention => '5 years',
         label_fmt        => 'archive',
         max_vol_bytes    => '536870912000',
