@@ -261,7 +261,7 @@ class ldap::client::utils($ldapconfig) {
 }
 
 class ldap::client::sudo($ldapconfig) {
-    require sudo
+    require ::sudo
 
     # sudo-ldap.conf has always been a duplicate of /etc/ldap/ldap.conf.
     #  Make it official.
