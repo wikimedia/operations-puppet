@@ -2900,7 +2900,7 @@ node /virt100[1-9].eqiad.wmnet/ {
     }
 }
 
-node /virt101[0-2].eqiad.wmnet/ {
+node /virt101[0-1].eqiad.wmnet/ {
     $cluster = 'virt'
     openstack::nova::partition{ '/dev/sdb': }
 
@@ -2909,6 +2909,27 @@ node /virt101[0-2].eqiad.wmnet/ {
     include admin
     include standard
     class { 'role::nova::compute': instance_dev => '/dev/sdb1' }
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
+}
+
+node 'virt1012.eqiad.wmnet' {
+    # virt1012 is a nova node, similar to virt1010-1011.
+    # Its nova-compute service is currently OFF to keep it in reserve
+    # as a lifeboat should we need to evacuate a different virt host.
+    #
+    # To move this into active service, just remove the \# from
+    # the role::nova::compute line below, or consolidate in the
+    # /virt101[0-1].eqiad.wmnet/ section above.
+    $cluster = 'virt'
+    openstack::nova::partition{ '/dev/sdb': }
+
+    $use_neutron = false
+
+    include admin
+    include standard
+    #class { 'role::nova::compute': instance_dev => '/dev/sdb1' }
     if $use_neutron == true {
         include role::neutron::computenode
     }
