@@ -3861,7 +3861,7 @@ host sodium {
 
 host stat1001 {
 	hardware ethernet 78:2b:cb:35:c4:f7;
-	fixed-address stat1001.eqiad.wmnet;'
+	fixed-address stat1001.eqiad.wmnet;
 }
 
 host stat1002 {
