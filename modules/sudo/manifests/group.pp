@@ -40,11 +40,12 @@ define sudo::group(
         content => template('sudo/sudoers.erb'),
     }
 
-    exec { "sudo_group_${title}_linting":
-        command     => "rm -f ${filename} && false",
-        unless      => "test -e ${filename} && visudo -cf ${filename} || exit 0",
-        path        => '/bin:/usr/bin:/usr/sbin',
-        refreshonly => true,
-        subscribe   => File[$filename],
+    if $ensure == 'present' {
+        exec { "sudo_group_${title}_linting":
+            command     => "/bin/rm -f ${filename} && /bin/false",
+            unless      => "/usr/sbin/visudo -cqf ${filename}",
+            refreshonly => true,
+            subscribe   => File[$filename],
+        }
     }
 }
