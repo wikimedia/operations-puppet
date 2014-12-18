@@ -24,9 +24,9 @@ class mediawiki::hhvm {
         group         => 'apache',
         fcgi_settings => {
             hhvm => {
-                xenon          => {
-                    period => to_seconds('10 minutes'),
-                },
+#                xenon          => {
+#                    period => to_seconds('10 minutes'),
+#                },
                 error_handling => {
                     call_user_handler_on_fatals => true,
                 },
@@ -37,6 +37,9 @@ class mediawiki::hhvm {
                     request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
                     thread_count          => $max_threads,
                 },
+                stats           => {
+                    enable_hot_profiler   => false,
+                }
             },
         },
     }
