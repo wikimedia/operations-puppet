@@ -71,7 +71,7 @@ class misc::maintenance::translationnotifications( $ensure = present ) {
     cron { 'translationnotifications-metawiki':
         ensure  => $ensure,
         user    => 'apache',
-        command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/mediawiki/translationnotifications/digests.log',
+        command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log',
         weekday => 1, # Monday
         hour    => 10,
         minute  => 0,
@@ -80,7 +80,7 @@ class misc::maintenance::translationnotifications( $ensure = present ) {
     cron { 'translationnotifications-mediawikiwiki':
         ensure  => $ensure,
         user    => 'apache',
-        command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/mediawiki/translationnotifications/digests.log',
+        command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log',
         weekday => 1, # Monday
         hour    => 10,
         minute  => 5,
@@ -114,7 +114,7 @@ class misc::maintenance::tor_exit_node( $ensure = present ) {
 class misc::maintenance::echo_mail_batch( $ensure = present ) {
     cron { 'echo_mail_batch':
         ensure  => $ensure,
-        command => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php 2>/dev/null',
+        command => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php >/dev/null',
         user    => 'apache',
         minute  => 0,
         hour    => 0,
@@ -252,7 +252,7 @@ class misc::maintenance::updatetranslationstats( $ensure = present ) {
         minute  => 0,
         hour    => 0,
         weekday => 1,
-        command => '/usr/local/bin/characterEditStatsTranslate',
+        command => '/usr/local/bin/characterEditStatsTranslate >/dev/null',
     }
 }
 
