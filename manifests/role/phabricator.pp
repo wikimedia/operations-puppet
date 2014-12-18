@@ -116,8 +116,15 @@ class role::phabricator::main {
             taskcreation => "task@${domain}",
         },
         address_routing => {
+            ops-ulsfo    => 'ops-ulsfo',
+            ops-codfw    => 'ops-codfw',
+            ops-pmtpa    => 'ops-pmtpa',
+            ops-esams    => 'ops-esams',
+            ops-eqiad    => 'ops-eqiad',
+            ops-core     => 'ops-core',
+            ops-network  => 'ops-network',
             ops-requests => 'operations',
-            testproj    => 'demoproject'
+            testproj     => 'demoproject'
         },
         phab_bot        => {
             root_dir    => '/srv/phab/phabricator/',
