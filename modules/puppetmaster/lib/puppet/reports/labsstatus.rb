@@ -12,7 +12,7 @@ Puppet::Reports.register_report(:labsstatus) do
     desc 'Record puppet status of labs instances in labs instance metadata'
 
     def addMeta(conf, project, host, key, value)
-            command = "/usr/bin/nova --no-cache --os-region-name #{conf['region']} --os-auth-url #{conf['auth_url']} --os-password #{conf['password']} --os-username #{conf['username']} --os-tenant-name #{project} meta #{host} set #{key}=#{value}"
+            command = "/usr/bin/nova --os-region-name #{conf['region']} --os-auth-url #{conf['auth_url']} --os-password #{conf['password']} --os-username #{conf['username']} --os-tenant-name #{project} meta #{host} set #{key}=#{value}"
             #system("echo trying \"#{command}\" >> /var/log/labsstatus.log")
 
             stdin, stdout, stderr, wait_thr = Open3.popen3(command)
