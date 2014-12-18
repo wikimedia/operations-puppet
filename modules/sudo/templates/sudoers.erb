@@ -1,9 +1,9 @@
 # This file is managed by Puppet!
 
 <%- @privileges.each do |privilege| -%>
-<%- if @user then %>
-<%= @priv_holder %> <%= privilege %>
-<%- elsif @group then %>
-%<%= @priv_holder %> <%= privilege %>
+<%- if @user then -%>
+<%= @user %> <%= privilege %>
+<%- elsif @group then -%>
+%<%= @group %> <%= privilege %>
 <%- end -%>
 <%- end -%>
