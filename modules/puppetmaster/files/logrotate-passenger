@@ -10,8 +10,16 @@
 	rotate 7
 	compress
 	delaycompress
+	create 640 root adm
 	sharedscripts
 	postrotate
-		/usr/sbin/service apache2 graceful
+                if /etc/init.d/apache2 status > /dev/null ; then \
+                    /etc/init.d/apache2 reload > /dev/null; \
+                fi;
+	endscript
+	prerotate
+		if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+			run-parts /etc/logrotate.d/httpd-prerotate; \
+		fi; \
 	endscript
 }
