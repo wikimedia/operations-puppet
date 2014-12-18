@@ -225,6 +225,11 @@ class role::backup::director {
     class { 'bacula::console':
         director   => $::fqdn,
     }
+
+    nrpe::monitor_service { 'bacula_director':
+        description  => 'bacula director process',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-dir",
+    }
 }
 
 class role::backup::storage() {
@@ -279,5 +284,10 @@ class role::backup::storage() {
         media_type      => 'File',
         archive_device  => '/srv/baculasd2',
         max_concur_jobs => 2,
+    }
+
+    nrpe::monitor_service { 'bacula_sd':
+        description  => 'bacula sd process',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd",
     }
 }
