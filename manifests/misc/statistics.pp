@@ -437,12 +437,24 @@ class misc::statistics::rsyncd(
     include rsync::server
 
     # Set up an rsync module
-    # (in /etc/rsync.conf) for /srv.
+    # (in /etc/rsyncd.conf) for /srv.
     rsync::server::module { 'srv':
         path        => $path,
         read_only   => 'no',
         list        => 'yes',
         hosts_allow => $hosts_allow,
+    }
+
+    # Set up an rsync module for /a if
+    # we are using /srv a working path on this node.
+    # This if for backwards compatibility.
+    if ($path == '/srv') {
+        rsync::server::module { 'a':
+            path        => $path,
+            read_only   => 'no',
+            list        => 'yes',
+            hosts_allow => $hosts_allow,
+        }
     }
 
     # Set up an rsync module
