@@ -45,6 +45,14 @@ class role::labs::tools {
         system::role { 'role::labs::tools::proxy': description => 'Tool labs generic web proxy' }
     }
 
+    class static inherits role::labs::tools::common {
+        include toollabs::static
+
+        system::role { 'role::labs::tools::static':
+            description => 'Tool Labs static http server',
+        }
+    }
+
     class mailrelay inherits role::labs::tools::common {
         system::role { 'role::labs::tools::mailrelay': description => 'Tool Labs mail relay' }
 
