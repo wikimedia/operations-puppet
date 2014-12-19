@@ -31,7 +31,7 @@ chomp $host;
 
 socket(PROXY, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
     connect(PROXY, sockaddr_in(8282, inet_aton('tools-webproxy'))) and
-    syswrite PROXY, ".*\n$host:$port\n";
+    syswrite PROXY, ".*\nhttp://$host:$port\n";
 
 exec @ARGV, $port;
 
