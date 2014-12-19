@@ -45,8 +45,8 @@ appservers_4:
   mainrole: appserver
   admin::groups:
     - deployment
-    
-#mw1221-mw1235 are api apaches (trusty) 
+
+#mw1221-mw1235 are api apaches (trusty)
 api_3:
   __regex: !ruby/regexp /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/
   mainrole: api_appserver
@@ -59,7 +59,7 @@ appservers_5:
   admin::groups:
     - deployment
 
-    
+
 swift_fe_eqiad:
   __regex: !ruby/regexp /^ms-fe100[1-4]\.eqiad\.wmnet$/
   cluster: swift
@@ -99,6 +99,10 @@ kafka_brokers:
 zookeeper:
   __regex: !ruby/regexp /analytics102[345].eqiad.wmnet/
   mainrole: analytics_zookeeper
+
+statistics:
+  __regex: !ruby/regexp /stat100[123].eqiad.wmnet/
+  mainrole: statistics
 
 lsearchd:
   __regex: !ruby/regexp /^search10[0-2][0-9]\.eqiad\.wmnet$/
