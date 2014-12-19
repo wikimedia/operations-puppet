@@ -40,6 +40,9 @@ server {
         return 403 "Requests must have a user agent";
     }
 
+    # We primarily serve from NFS, so let's turn off sendfile
+    senfile off;
+
     # GZIP ALL THE THINGS!
     gzip on;
     gzip_proxied any;
@@ -47,7 +50,7 @@ server {
 
     location ~ ^/([^/]+)(/.*)?$ {
         autoindex on;
-        root /data/project/$1/public_html/static;
-        try_files $2 $2.html $2/index.html $2/;
+        autoindex on;
+        alias /data/project/$1/public_html/static$2;
     }
 }
