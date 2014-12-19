@@ -50,7 +50,6 @@ server {
 
     location ~ ^/([^/]+)(/.*)?$ {
         autoindex on;
-        autoindex on;
         alias /data/project/$1/public_html/static$2;
     }
 }
