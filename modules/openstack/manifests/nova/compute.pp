@@ -67,7 +67,14 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
         require => Package["nova-common"];
     }
 
-    package { [ 'nova-compute', 'nova-compute-kvm', 'qemu-system' ]:
+    package { [ 'nova-compute', 'nova-compute-kvm' ]:
+        ensure  => present,
+        require => [Class["openstack::repo"], Package['qemu-system']];
+    }
+
+    # Without qemu-system, apt will install qemu-kvm by default,
+    # which is somewhat broken.
+    package { 'qemu-system':
         ensure  => present,
         require => Class["openstack::repo"];
     }
