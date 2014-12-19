@@ -15,9 +15,9 @@
 
 
 class squid3(
- $ensure  = present,
- $config_content = undef,
- $config_source  = undef,
+    $ensure  = present,
+    $config_content = undef,
+    $config_source  = undef,
 ) {
     validate_re($ensure, '^(present|absent)$')
 

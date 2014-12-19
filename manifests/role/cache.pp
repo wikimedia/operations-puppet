@@ -467,7 +467,7 @@ class role::cache {
             require      => Class['::varnishkafka'],
         }
 
-         # Generate an alert if too many delivery report errors
+        # Generate an alert if too many delivery report errors
         monitoring::ganglia { 'varnishkafka-drerr':
             description => 'Varnishkafka Delivery Errors',
             metric      => 'kafka.varnishkafka.kafka_drerr.per_second',

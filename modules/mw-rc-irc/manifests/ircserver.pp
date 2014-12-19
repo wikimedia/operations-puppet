@@ -28,7 +28,7 @@ class mw-rc-irc::ircserver {
         source   => 'puppet:///modules/mw-rc-irc/monitor/ircd_stats.py',
         settings => {
             method => 'Threaded',
-         },
+        },
     }
 
     monitoring::service { 'ircd':

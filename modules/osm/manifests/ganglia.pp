@@ -2,9 +2,9 @@
 # This installs a Ganglia plugin for osm
 #
 class osm::ganglia(
-                 $state_path,
-                 $refresh_rate = 15,
-                 $ensure = 'present'
+          $state_path,
+          $refresh_rate = 15,
+          $ensure = 'present'
 ) {
     file { '/usr/lib/ganglia/python_modules/osm.py':
         ensure => $ensure,
