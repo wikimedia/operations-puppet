@@ -69,6 +69,9 @@ class role::deployment::config {
         'statsv/statsv'                  => {
             'upstream' => 'https://gerrit.wikimedia.org/r/analytics/statsv',
         },
+        'abacist/abacist'                  => {
+            'upstream' => 'https://gerrit.wikimedia.org/r/analytics/abacist',
+        },
         'mwprof/mwprof'                  => {
             'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof',
         },
