@@ -133,20 +133,11 @@ class lvs::configuration {
             'search_pool1' => {
                 'eqiad' => "10.2.2.11",
             },
-            'search_pool2' => {
-                'eqiad' => "10.2.2.12",
-            },
             'search_pool3' => {
                 'eqiad' => "10.2.2.13",
             },
-            'search_pool4' => {
-                'eqiad' => "10.2.2.14",
-            },
             'search_prefix' => {
                 'eqiad' => "10.2.2.15",
-            },
-            'search_pool5' => {
-                'eqiad' => "10.2.2.16",
             },
             'mobile' => {
                 'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilesvc' => "10.2.2.26"},
@@ -201,7 +192,6 @@ class lvs::configuration {
             'bits' => {
             },
             'search_pool1' => {},
-            'search_pool2' => {},
             'search_pool3' => {},
             'dns_rec' => {},
             'mathoid' => {},
@@ -211,10 +201,7 @@ class lvs::configuration {
             'ocg' => {},
             'osm' => {},
             'search_pool1' => {},
-            'search_pool2' => {},
             'search_pool3' => {},
-            'search_pool4' => {},
-            'search_pool5' => {},
             'search_poolbeta' => {},
             'search_prefix' => {},
             'swift' => {
@@ -582,23 +569,6 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
-        "search_pool2" => {
-            'description' => "Lucene search pool 2",
-            'class' => "low-traffic",
-            'protocol' => "tcp",
-            'sites' => [ "eqiad" ],
-            'ip' => $service_ips['search_pool2'][$::site],
-            'port' => 8123,
-            'scheduler' => "wrr",
-            'bgp' => "yes",
-            'depool-threshold' => ".1",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://localhost/stats' ],
-                    },
-                'IdleConnection' => $idleconnection_monitor_options,
-            },
-        },
         "search_pool3" => {
             'description' => "Lucene search pool 3",
             'class' => "low-traffic",
@@ -612,40 +582,6 @@ class lvs::configuration {
             'monitors' => {
                 'ProxyFetch' => {
                     'url' => [ 'http://localhost/stats' ],
-                    },
-                'IdleConnection' => $idleconnection_monitor_options,
-            },
-        },
-        "search_pool4" => {
-            'description' => "Lucene search pool 4",
-            'class' => "low-traffic",
-            'protocol' => "tcp",
-            'sites' => [ "eqiad" ],
-            'ip' => $service_ips['search_pool4'][$::site],
-            'port' => 8123,
-            'scheduler' => "wrr",
-            'bgp' => "yes",
-            'depool-threshold' => ".1",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://localhost/search/enwikinews/us?limit=1' ],
-                    },
-                'IdleConnection' => $idleconnection_monitor_options,
-            },
-        },
-        "search_pool5" => {
-            'description' => "Lucene search pool 5",
-            'class' => "low-traffic",
-            'protocol' => "tcp",
-            'sites' => [ "eqiad" ],
-            'ip' => $service_ips['search_pool5'][$::site],
-            'port' => 8123,
-            'scheduler' => "wrr",
-            'bgp' => "yes",
-            'depool-threshold' => ".1",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://localhost/search/commonswiki/cat?limit=1' ],
                     },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
