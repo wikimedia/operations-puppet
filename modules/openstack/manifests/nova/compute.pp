@@ -67,9 +67,18 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
         require => Package["nova-common"];
     }
 
-    package { [ 'nova-compute', "nova-compute-kvm" ]:
+    package { [ 'nova-compute', 'nova-compute-kvm', 'qemu-system' ]:
         ensure  => present,
         require => Class["openstack::repo"];
+    }
+
+    # qemu-kvm and qemu-system are alternative packages to meet the needs of libvirt.
+    #  Lately, Precise has been installing qemu-kvm by default.  That's different
+    #  from our old, existing servers, and it also defaults to use spice for vms
+    #  even though spice is not installed.  Messy.
+    package { [ 'qemu-kvm' ]:
+        ensure  => absent,
+        require => Package['qemu-system'];
     }
 
     # nova-compute adds the user with /bin/false, but resize, live migration, etc.
