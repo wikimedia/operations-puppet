@@ -7,8 +7,8 @@ vtitle 'milliseconds'
 
 field :q2, :color => 'blue',
            :alias => 'Median',
-           :data  => 've.performance.user.saveComplete.median'
+           :data  => 've.mwtiming.performance.user.saveComplete.median'
 
 field :q3, :color => 'red',
            :alias => '75th percentile',
-           :data  => 've.performance.user.saveComplete.75percentile'
+           :data  => 've.mwtiming.performance.user.saveComplete.75percentile'
