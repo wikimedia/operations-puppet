@@ -38,7 +38,8 @@ if routes_arr then
             else
                 -- Temp hack since portgrabber did not
                 -- specify the http:// protocol by default
-                route = 'http://' . backend
+                route = 'http://' .. backend
+            end
             break
         end
     end
