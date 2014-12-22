@@ -17,7 +17,7 @@
 define postgresql::spatialdb(
     $ensure = 'present',
     $pg_version = '9.1',
-     ) {
+    ) {
 
     # Check if our db exists and store it
     $db_exists = "/usr/bin/psql --tuples-only -c \'SELECT datname FROM pg_catalog.pg_database;\' | /bin/grep \'^ ${name}\'"

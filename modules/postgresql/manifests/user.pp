@@ -25,16 +25,16 @@
 # Based upon https://github.com/uggedal/puppet-module-postgresql
 #
 define postgresql::user(
-     $user,
-     $password,
-     $database = 'template1',
-     $type = 'host',
-     $method = 'md5',
-     $cidr = '127.0.0.1/32',
-     $pgversion = '9.1',
-     $attrs = '',
-     $ensure = 'present'
-     ) {
+    $user,
+    $password,
+    $database = 'template1',
+    $type = 'host',
+    $method = 'md5',
+    $cidr = '127.0.0.1/32',
+    $pgversion = '9.1',
+    $attrs = '',
+    $ensure = 'present'
+    ) {
 
     # Check if our user exists and store it
     $userexists = "/usr/bin/psql --tuples-only -c \'SELECT rolname FROM pg_catalog.pg_roles;\' | /bin/grep \'^ ${user}\'"

@@ -25,9 +25,9 @@
 #       }
 #
 define bacula::client::job(
-           $fileset,
-           $jobdefaults,
-           $extras=undef) {
+    $fileset,
+    $jobdefaults,
+    $extras=undef) {
 
     $director = $::bacula::client::director
 
