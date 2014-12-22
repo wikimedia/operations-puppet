@@ -1,5 +1,5 @@
 class apt::unattendedupgrades($ensure=present) {
-    package { [ 'unattended-upgrades', 'update-notifier-common' ]:
+    package { 'unattended-upgrades':
         ensure => $ensure,
     }
 
