@@ -5,6 +5,8 @@
 require 'facter'
 
 Facter.add(:project_gid) do
+  confine :realm => :labs
+
   setcode do
     # Dig deep in ldap for the project name.  This code echoes that in the labs
     #  firstboot.sh
