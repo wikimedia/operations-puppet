@@ -91,7 +91,7 @@ class role::elasticsearch::config {
         }
 
         if ($rack == 'Unknown') {
-             fail("Don't know rack for $::host")
+            fail("Don't know rack for $::host")
         }
 
         $row                  = regsubst($rack, '^(.).$', '\1' )

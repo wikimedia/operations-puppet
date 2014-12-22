@@ -413,9 +413,9 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     include admin
     interface::add_ip6_mapped { 'main': }
     rsyslog::conf { 'remote_logstash':
-       content  => "*.* @logstash1002.eqiad.wmnet:10514",
-       priority => 32,
-   }
+        content  => "*.* @logstash1002.eqiad.wmnet:10514",
+        priority => 32,
+    }
 }
 
 node 'beryllium.wikimedia.org' {
@@ -581,9 +581,9 @@ node /^cp300([1-2])\.esams\.(wikimedia\.org|wmnet)$/ {
     include admin
     interface::add_ip6_mapped { 'main': }
     rsyslog::conf { 'remote_logstash':
-       content  => "*.* @logstash1002.eqiad.wmnet:10514",
-       priority => 32,
-   }
+        content  => "*.* @logstash1002.eqiad.wmnet:10514",
+        priority => 32,
+    }
 }
 
 node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {

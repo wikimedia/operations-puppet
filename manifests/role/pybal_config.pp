@@ -3,11 +3,11 @@ class role::pybal_config {
 
     class { '::pybal::web':
         vhostnames => [
-                       'config-master.eqiad.wmnet',
-                       'config-master.codfw.wmnet',
-                       'config-master.esams.wmnet',
-                       'config-master.ulsfo.wmnet',
-                       'config-master.wikimedia.org',
-                       ]
+            'config-master.eqiad.wmnet',
+            'config-master.codfw.wmnet',
+            'config-master.esams.wmnet',
+            'config-master.ulsfo.wmnet',
+            'config-master.wikimedia.org',
+            ]
     }
 }
