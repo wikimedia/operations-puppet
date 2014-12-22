@@ -53,6 +53,8 @@ sub vcl_recv {
 		set req.backend = terbium;
 	} elsif (req.http.Host == "hue.wikimedia.org") {
 		set req.backend = analytics1027;
+	} elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org") {
+		set req.backend = zirconium;
 	} else {
 		error 404 "Domain not served here";
 	}
