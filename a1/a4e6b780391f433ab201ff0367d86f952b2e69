@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Springle <springle@wikimedia.org>
+Submitted-by: Springle <springle@wikimedia.org>
+Submitted-at: Mon, 22 Dec 2014 23:37:59 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/181524
+Project: operations/puppet
+Branch: refs/heads/production
