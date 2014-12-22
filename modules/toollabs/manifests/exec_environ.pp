@@ -48,6 +48,7 @@ class toollabs::exec_environ {
         'golang',
         'luarocks',
         'mono-complete',
+        'mono-fastcgi-server',         # Bug T85142
         'nodejs',
         'openjdk-7-jre-headless',
         'python3',
