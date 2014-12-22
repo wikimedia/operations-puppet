@@ -22,26 +22,26 @@ define lvs::monitor_service_https ( $ip_address, $check_command, $port=443, $cri
 define lvs::monitor_service_http_https ( $ip_address, $uri, $critical="true", $contact_group="admins" ) {
     # Virtual resource for the monitoring host
     @monitoring::host { $title:
-        ip_address => $ip_address,
-        group => "lvs",
-        critical => "true",
+        ip_address    => $ip_address,
+        group         => "lvs",
+        critical      => "true",
         contact_group => $contact_group
     }
 
     @monitoring::service { $title:
-        host => $title,
-        group => "lvs",
-        description => "LVS HTTP IPv4",
+        host          => $title,
+        group         => "lvs",
+        description   => "LVS HTTP IPv4",
         check_command => "check_http_lvs!${uri}",
-        critical => $critical
+        critical      => $critical
     }
 
     @monitoring::service { "${title}_https":
-        host => $title,
-        group => "lvs",
-        description => "LVS HTTPS IPv4",
+        host          => $title,
+        group         => "lvs",
+        description   => "LVS HTTPS IPv4",
         check_command => "check_https_url!${uri}",
-        critical => $critical
+        critical      => $critical
     }
 }
 
@@ -49,23 +49,23 @@ define lvs::monitor_service6_http_https ( $ip_address, $uri, $critical="true" ) 
     # Virtual resource for the monitoring host
     @monitoring::host { "${title}_ipv6":
         ip_address => $ip_address,
-        group => "lvs",
-        critical => "true"
+        group      => "lvs",
+        critical   => "true"
     }
 
     @monitoring::service { "${title}_ipv6":
-        host => "${title}_ipv6",
-        group => "lvs",
-        description => "LVS HTTP IPv6",
+        host          => "${title}_ipv6",
+        group         => "lvs",
+        description   => "LVS HTTP IPv6",
         check_command => "check_http_lvs!${uri}",
-        critical => $critical
+        critical      => $critical
     }
 
     @monitoring::service { "${title}_ipv6_https":
-        host => "${title}_ipv6",
-        group => "lvs",
-        description => "LVS HTTPS IPv6",
+        host          => "${title}_ipv6",
+        group         => "lvs",
+        description   => "LVS HTTPS IPv6",
         check_command => "check_https_url!${uri}",
-        critical => $critical
+        critical      => $critical
     }
 }
