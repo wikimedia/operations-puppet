@@ -14,54 +14,7 @@
     ProxyPass / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/ retry=15
     ProxyPassReverse / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/
     ProxyPreserveHost On
-    RewriteRule /p/*$ https://<%= @etherpad_host %>/ [NC,L]
-    RewriteCond %{REQUEST_URI} !^/locales/
-    RewriteCond %{REQUEST_URI} !^/locales.json
-    RewriteCond %{REQUEST_URI} !^/admin
-    RewriteCond %{REQUEST_URI} !^/p/
-    RewriteCond %{REQUEST_URI} !^/static/
-    RewriteCond %{REQUEST_URI} !^/pluginfw/
-    RewriteCond %{REQUEST_URI} !^/javascripts/
-    RewriteCond %{REQUEST_URI} !^/socket.io/
-    RewriteCond %{REQUEST_URI} !^/ep/
-    RewriteCond %{REQUEST_URI} !^/minified/
-    RewriteCond %{REQUEST_URI} !^/api/
-    RewriteCond %{REQUEST_URI} !^/ro/
-    RewriteCond %{REQUEST_URI} !^/error/
-    RewriteCond %{REQUEST_URI} !^/jserror
-    RewriteCond %{REQUEST_URI} !/favicon.ico
-    RewriteCond %{REQUEST_URI} !/robots.txt
-    RewriteRule ^/+(.+)$ https://<%= @etherpad_host %>/p/$1 [L]
-
-    RewriteCond %{HTTP_HOST} !<%= @etherpad_host %>
-    RewriteRule ^/+(.+)$ https://<%= @etherpad_host %>/$1 [R=301,L]
-
-    <Proxy *>
-        Options FollowSymLinks MultiViews
-        AllowOverride All
-        Order allow,deny
-        Allow from all
-    </Proxy>
-
-</VirtualHost>
-
-
-<VirtualHost *:443>
-
-    ServerName <%= @etherpad_host %>
-
-    SSLEngine on
-    SSLCertificateFile <%= @etherpad_ssl_cert %>
-    SSLCertificateKeyFile <%= @etherpad_ssl_key %>
-    SSLCACertificatePath /etc/ssl/certs
-    <%= @ssl_settings.join("\n") %>
-
-    RewriteEngine on
-    ProxyVia On
-    ProxyRequests Off
-    ProxyPass / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/ retry=15
-    ProxyPassReverse / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/
-    ProxyPreserveHost On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule /p/*$ https://<%= @etherpad_host %>/ [NC,L]
     RewriteCond %{REQUEST_URI} !^/locales/
     RewriteCond %{REQUEST_URI} !^/locales.json
