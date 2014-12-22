@@ -8,17 +8,17 @@ class lvs::balancer::runcommand {
         "/etc/pybal/runcommand":
             owner => root,
             group => root,
-            mode => 0755,
+            mode => '0755',
             ensure => directory;
         "/etc/pybal/runcommand/check-apache":
             owner => root,
             group => root,
-            mode => 0555,
+            mode => '0555',
             source => "puppet:///modules/${module_name}/pybal/check-apache";
         "/root/.ssh/pybal-check":
             owner => root,
             group => root,
-            mode => 0600,
+            mode => '0600',
             source => "puppet:///private/pybal/pybal-check";
     }
 }
