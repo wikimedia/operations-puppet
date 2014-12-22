@@ -7,9 +7,15 @@ class apertium(){
     package { [
         'apertium',
         'apertium-apy',
+        'apertium-en-ca',
+        'apertium-en-eo',
+        'apertium-en-es',
         'apertium-es-ca',
         'apertium-es-pt',
+        'apertium-id-ms',
+        'apertium-nno-nob',
         'apertium-pt-ca',
+        'apertium-sv-da',
         'apertium-lex-tools',
         'lttoolbox'
     ]:
