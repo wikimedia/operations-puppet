@@ -58,7 +58,7 @@ class role::coredb::config {
         },
         'x1' => {
             'hosts' => {
-                         'eqiad' => [ 'db1029', 'db1031' ] },
+                'eqiad' => [ 'db1029', 'db1031' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1029' },
             'snapshot'     => [ 'db1031' ],
@@ -66,7 +66,7 @@ class role::coredb::config {
         },
         'm1' => {
             'hosts' => {
-                         'eqiad' => ['db1001', 'db1016'] },
+                'eqiad' => ['db1001', 'db1016'] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1001' },
             'snapshot'     => ['db1016' ],

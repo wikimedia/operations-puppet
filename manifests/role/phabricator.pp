@@ -32,9 +32,9 @@ class role::phabricator::legalpad {
             'mysql.host'                => 'm3-master.eqiad.wmnet',
             'storage.default-namespace' => 'phlegal',
             'phpmailer.smtp-host'       =>
-               inline_template('<%= @mail_smarthost.join(";") %>'),
+                inline_template('<%= @mail_smarthost.join(";") %>'),
             'metamta.default-address'   =>
-               'no-reply@legalpad.wikimedia.org',
+                'no-reply@legalpad.wikimedia.org',
             'metamta.domain'            => 'legalpad.wikimedia.org',
         },
     }

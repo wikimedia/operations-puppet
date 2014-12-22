@@ -58,8 +58,9 @@ class diamond(
     $path_prefix   = 'servers',
     $keep_logs_for = '5',
     $service       = running,
-    $settings      = { host => 'localhost',
-                       port => '8125',
+    $settings      = {
+        host => 'localhost',
+        port => '8125',
     },
 ) {
     if os_version('debian >= jessie || ubuntu >= precise') {

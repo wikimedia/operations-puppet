@@ -38,9 +38,10 @@ class install-server::dhcp-server {
 
     service { $service_name:
         ensure    => running,
-        require   => [ Package[$package_name],
-                       File[$confdir]
-                      ],
+        require   => [
+            Package[$package_name],
+            File[$confdir]
+        ],
         subscribe => File[$confdir],
     }
 }
