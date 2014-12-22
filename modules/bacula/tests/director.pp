@@ -6,16 +6,16 @@ class { 'bacula::director':
 }
 
 bacula::director::catalog { 'MYDB':
-    dbname      => 'bacula',
-    dbuser      => 'bacula',
-    dbhost      => 'bacula-db.example.org',
-    dbport      => '3306',
-    dbpassword  => 'bacula',
+    dbname     => 'bacula',
+    dbuser     => 'bacula',
+    dbhost     => 'bacula-db.example.org',
+    dbport     => '3306',
+    dbpassword => 'bacula',
 }
 
 bacula::director::schedule { 'Monthly-Sat':
     runs => [
-                { 'level' => 'Full', 'at' => '1st Sat at 06:00', },
+                { 'level' => 'Full', 'at'         => '1st Sat at 06:00', },
                 { 'level' => 'Differential', 'at' => '2nd Sat at 06:00', },
             ],
 }
@@ -27,12 +27,12 @@ bacula::director::pool { 'mypool':
 }
 
 bacula::director::fileset { 'root-var':
-    includes     => [ '/', '/var',],
-    excludes     => [ '/tmp', ],
+    includes => [ '/', '/var',],
+    excludes => [ '/tmp', ],
 }
 
 bacula::director::jobdefaults { '1st-sat-mypool':
-    when        => 'Monthly-Sat',
-    pool        => 'mypool',
+    when => 'Monthly-Sat',
+    pool => 'mypool',
 }
 

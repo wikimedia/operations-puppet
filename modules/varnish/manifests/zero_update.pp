@@ -38,16 +38,16 @@ class varnish::zero_update($site, $auth_src, $hour = '*', $minute = '*/5') {
 
     file { '/etc/zerofetcher':
         ensure => directory,
-        owner => 'root',
-        group => 'root',
-        mode  => '0555',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     file { '/etc/zerofetcher/zerofetcher.auth':
-        owner => 'netmap',
-        group => 'netmap',
-        mode  => '0400',
-        source => $auth_src,
+        owner   => 'netmap',
+        group   => 'netmap',
+        mode    => '0400',
+        source  => $auth_src,
         require => [File["/etc/zerofetcher"]],
     }
 
