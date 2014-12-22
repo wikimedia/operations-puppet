@@ -116,3 +116,9 @@ rcs_eqiad:
 restbase_eqiad:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   mainrole: restbase
+
+orientdb_test:
+  __regex: !ruby/regexp /^(haedus|capella)\.codfw\.wmnet$/
+  admin::groups:
+    - wikidata-query-roots
+

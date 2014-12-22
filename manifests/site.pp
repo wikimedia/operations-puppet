@@ -1281,6 +1281,12 @@ node 'gallium.wikimedia.org' {
     }
 }
 
+node /^(haedus|capella)\.codfw\.wmnet$/ {
+    include admin
+    include standard
+    system::role{ 'Orientdb test cluster': }
+}
+
 node 'helium.eqiad.wmnet' {
     include admin
     include standard
