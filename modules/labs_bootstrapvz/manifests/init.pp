@@ -49,9 +49,7 @@ class labs_bootstrapvz() {
     file { "${bootstrap_filepath}/install_sudo.sh":
         mode    => '0555',
         source  => 'puppet:///modules/labs_bootstrapvz/install_sudo.sh',
-        require => [Package['bootstrap-vz'],
-                    File["${bootstrap_filepath}"],
-                    ],
+        require => File[$bootstrap_filepath],
     }
 
     $projectregex = "s/${instanceproject}/_PROJECT_/g"
