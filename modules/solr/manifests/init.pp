@@ -28,9 +28,9 @@ class solr::install {
 
 class solr::config ( $schema = undef, $replication_master = undef, $max_heap = undef ) {
   File {
-    owner => 'jetty',
-    group => 'root',
-    mode  => '0644',
+    owner   => 'jetty',
+    group   => 'root',
+    mode    => '0644',
     require => Class["solr::install"],
     notify  => Class["solr::service"],
   }
@@ -38,7 +38,7 @@ class solr::config ( $schema = undef, $replication_master = undef, $max_heap = u
   file {
     "/etc/default/jetty":
       ensure  => present,
-      content  => template("solr/jetty.erb"),
+      content => template("solr/jetty.erb"),
       owner   => 'root';
     "/etc/solr/conf/solrconfig.xml":
       ensure  => present,
@@ -71,10 +71,10 @@ class solr::service {
 
   cron { "delete-old-jetty-logs":
     command => "find /var/log/jetty/* -mtime +7 -delete",
-    user => "root",
-    hour => 0,
-    minute => 0,
-    ensure => present,
+    user    => "root",
+    hour    => 0,
+    minute  => 0,
+    ensure  => present,
   }
 }
 
@@ -83,8 +83,8 @@ class solr ($schema = undef, $replication_master = undef, $max_heap = undef ) {
     solr::service
 
   class { "solr::config":
-    schema => $schema,
+    schema             => $schema,
     replication_master => $replication_master,
-    max_heap => $max_heap
+    max_heap           => $max_heap
   }
 }
