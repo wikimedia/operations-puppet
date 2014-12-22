@@ -621,7 +621,11 @@ class role::cache {
             'wmfusercontent.org':
                 certname => 'star.wmfusercontent.org',
                 server_name => 'wmfusercontent.org',
-                server_aliases => ['*.wmfusercontent.org'],
+                server_aliases => ['*.wmfusercontent.org'];
+            'planet.wikimedia.org':
+                certname       => 'planet.wikimedia.org',
+                server_name    => 'planet.wikimedia.org',
+                server_aliases => ['*.planet.wikimedia.org'];
         }
     }
 
