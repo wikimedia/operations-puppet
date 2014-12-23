@@ -1,0 +1,221 @@
+#!/usr/bin/perl
+
+# Copyright 2014 Faidon Liambotis
+# Copyright 2014 Wikimedia Foundation, Inc.
+#
+# This nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY.
+# It may be used, redistributed and/or modified under the terms of the GNU
+# General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+#
+# Example usage:
+#   check_ssl -H svn.wikimedia.org -p 443
+#   check_ssl -H text-lb.wikimedia.org -p 443 --cn en.wikipedia.org --warning 30 --critical 60 --issuer GlobalSign
+
+use strict;
+use warnings;
+use Nagios::Plugin::Getopt;
+use Nagios::Plugin::Functions;
+use Net::SSLeay;
+use IO::Socket::SSL;
+use Socket qw(AF_INET AF_INET6 AF_UNSPEC);
+use Date::Parse;
+use POSIX qw(strftime);
+
+my $ng = Nagios::Plugin::Getopt->new(
+    usage => 'Usage: %s -H <host> -p <port> -w <warningdays> -c <criticaldays> [...]',
+    version => 1,
+    blurb   => 'Connects to a host and checks their SSL/TLS certificate',
+);
+
+$ng->arg(
+    spec     => 'host|H=s',
+    help     => 'Hostname or IP address of the server to check against',
+    required => 1,
+);
+$ng->arg(
+    spec     => 'port|p=i',
+    help     => 'TCP port',
+    required => 1,
+);
+$ng->arg(
+    spec => 'cn|n=s',
+    help => 'commonName to check for (default: hostname)',
+);
+$ng->arg(
+    spec => 'protocol|P=s',
+    help => 'use the specific protocol (http|rfc2818|xmpp|ftp|smtp|imap|pop3|snmp|ldap|sip|gist), default: %s',
+    default => 'http',
+);
+$ng->arg(
+    spec => 'ipv4|4',
+    help => 'force IPv4',
+);
+$ng->arg(
+    spec => 'ipv6|6',
+    help => 'force IPv6',
+);
+$ng->arg(
+    spec    => 'rootcert|r=s',
+    help    => 'root certificate or directory (default: %s)',
+    default => '/etc/ssl/certs',
+);
+$ng->arg(
+    spec => 'ssl|S=s',
+    help => 'force SSL/TLS version (SSLv3, TLSv1, TLSv1.1 etc)',
+);
+$ng->arg(
+    spec    => 'verify|no-verify|verify!',
+    help    => 'verify hostname & authority (default: true)',
+    default => 1,
+);
+$ng->arg(
+    spec => 'subject|s=s',
+    help => 'subject name to match against',
+);
+$ng->arg(
+    spec => 'issuer|s=s',
+    help => 'issuer name to match against',
+);
+
+$ng->arg(
+    spec => 'warning|w=i',
+    help => 'minimum number of days a certificate has to be valid to issue a WARNING status (default: %s)',
+    default => 30,
+);
+$ng->arg(
+    spec => 'critical|c=i',
+    help => 'minimum number of days a certificate has to be valid to issue a CRITICAL status (default: %s)',
+    default => 15,
+);
+
+$ng->getopts;
+my $cn = $ng->cn ? $ng->cn : $ng->host;
+
+my ( $client, @crit, @warn, @ok, @verbose );
+
+# initialize Net::SSLeay
+BEGIN {
+    Net::SSLeay::load_error_strings();
+    Net::SSLeay::SSLeay_add_ssl_algorithms();
+    Net::SSLeay::randomize();
+}
+
+sub ssl_connect {
+    my %sopts = ();
+
+    if ( $ng->ipv4 && $ng->ipv6 ) {
+        $sopts{Domain} = AF_UNSPEC;
+    }
+    elsif ( $ng->ipv4 ) {
+        $sopts{Domain} = AF_INET;
+    }
+    elsif ( $ng->ipv6 ) {
+        $sopts{Domain} = AF_INET6;
+    }
+
+    $sopts{PeerHost}     = $ng->host;
+    $sopts{PeerPort}     = $ng->port;
+    $sopts{SSL_version}  = $ng->ssl if $ng->ssl;
+    $sopts{timeout}      = $ng->timeout;
+    $sopts{SSL_hostname} = $cn;
+
+    if ( -d $ng->rootcert ) {
+        $sopts{'SSL_ca_path'} = $ng->rootcert;
+    }
+    else {
+        $sopts{'SSL_ca_file'} = $ng->rootcert;
+    }
+
+    # we use IO::Socket::SSL for its verify hostname routines that are
+    # complicated enough to handles SANs, wildcards etc., depending on the given
+    # protocol (e.g. RFC 2818 rules for HTTPS)
+    $client = IO::Socket::SSL->new(%sopts)
+      or nagios_exit( CRITICAL, 'failed to connect or SSL handshake:' . $@ );
+}
+
+sub ssl_verify {
+    my $name = $client->peer_certificate('commonName');
+    my @sans = $client->peer_certificate('subjectAltNames');
+
+    # handle Net::SSLeay's list of tuples (get even elements, ignore odd)
+    @sans = @sans[ grep { $_ & 1 } 1..$#sans ];
+
+    # commonName + SANs-except-commonName
+    my @names = ( $name, grep { !/^\Q$name\E$/ } @sans );
+
+    if ( $ng->verify ) {
+        $client->verify_hostname( $cn, $ng->protocol )
+          or push @crit, 'failed to verify against ' . join( ', ', @names );
+    }
+}
+
+sub ssl_subject_matches {
+    my $subject = $client->peer_certificate('subject');
+    my $issuer  = $client->peer_certificate('issuer');
+    my $sans    = $client->peer_certificate('subjectAltNames');
+
+    push @verbose, "Certificate subject: $subject";
+    push @verbose, "Certificate issuer: $issuer";
+    push @verbose, "Certificate SANs: $sans";
+
+    if ( $ng->subject && $subject !~ /\Q$ng->{subject}\E/ ) {
+        push @crit, "Certificate subject $subject didn't match argument";
+    }
+    if ( $ng->issuer && $issuer !~ /\b$ng->{issuer}\b/ ) {
+        push @crit, "Certificate issuer $issuer didn't match argument";
+    }
+}
+
+sub ssl_expiry_check {
+    my $name = $client->peer_certificate('commonName');
+
+    # We fallback to lower-level Net::SSLeay for extracting information about the
+    # certificate itself, such as expiry time, subject names etc.
+    my $ssl  = $client->_get_ssl_object;
+    my $x509 = Net::SSLeay::get_peer_certificate($ssl);
+
+    my $notBefore = str2time(
+        Net::SSLeay::P_ASN1_UTCTIME_put2string(
+            Net::SSLeay::X509_get_notBefore($x509)
+        )
+    );
+    my $notAfter = str2time(
+        Net::SSLeay::P_ASN1_UTCTIME_put2string(
+            Net::SSLeay::X509_get_notAfter($x509)
+        )
+    );
+    my $expiry = strftime( '%Y-%m-%d %H:%M:%S +0000', gmtime($notAfter) );
+    my $now = time;
+
+    if ( $notBefore > $now ) {
+        push @crit, "Certificate $name not yet valid";
+    }
+    elsif ( $notAfter < $now ) {
+        push @crit, "Certificate $name expired";
+    }
+    elsif ( $notAfter - $now < $ng->critical * 86400 ) {
+        push @crit, "Certificate $name expires on $expiry";
+    }
+    elsif ( $notAfter - $now < $ng->warning * 86400 ) {
+        push @warn, "Certificate $name expires on $expiry";
+    }
+    elsif ( $ng->verbose ) {
+        push @verbose, "Certificate $name expires on $expiry";
+    }
+}
+
+ssl_connect;
+ssl_verify;
+ssl_subject_matches;
+ssl_expiry_check;
+
+print join( "\n", @verbose ), "\n" if $ng->verbose;
+
+nagios_exit(
+    check_messages(
+        critical => \@crit,
+        warning  => \@warn,
+        ok       => \@ok,
+        join     => ';',
+    )
+);
