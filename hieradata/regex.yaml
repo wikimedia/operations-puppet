@@ -1,7 +1,7 @@
 
-# mw1017-mw1113 are are apaches
+# mw1018-mw1113 are are apaches
 appservers_1:
-  __regex: !ruby/regexp /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^mw1(01[8-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/
   mainrole: appserver
   admin::groups:
     - deployment
