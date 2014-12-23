@@ -1,4 +1,7 @@
 class Hiera
+  class MediawikiNonExistentError < StandardError
+  end
+
   class Mwcache < Filecache
     def initialize
       super
@@ -17,6 +20,16 @@ class Hiera
         # but has no effect. How cute, I <3 ruby.
         @http.ssl_config.options = OpenSSL::SSL::OP_NO_SSLv3
       end
+    end
+
+    def read(path, expected_type, default={}, &block)
+      read_file(path, expected_type, &block)
+    rescue Hiera::MediawikiNonExistentError => detail
+      @cache[path][:data] = default
+      Hiera.debug(detail)
+    rescue => detail
+      error = "Reading data from #{path} failed: #{detail.class}: #{detail}"
+      raise error
     end
 
     def read_file(path, expected_type = Object, &block)
@@ -50,8 +63,8 @@ class Hiera
         @cache[path][:meta] = meta
         return true
       end
-    rescue => detail
-      error = "Retrieving metadata from #{path} failed: #{detail}"
+    rescue Hiera::MediawikiNonExistentError => detail
+      error = "Page #{detail} is non-existent"
       Hiera.warn(error)
       # Fill  this up with very safe defaults - we cache non-existence
       # for cache_ttl as well.
@@ -85,12 +98,12 @@ class Hiera
         raise IOError, "Could not correctly fetch revision for #{path}, HTTP status code #{res.status_code}"
       end
       # We shamelessly throw exceptions here, and catch them upper in the chain
-      # specifically in stale? and Filecache.read
+      # specifically in Hiera::Mwcache.stale? and Hiera::Mwcache.read
       body = JSON.parse(res.body)
       pages = body["query"]["pages"]
       # Quoting Yuvi: "MediaWiki API doesn't give a fuck about HTTP status codes"
       if pages.keys.include? "-1"
-        raise IndexError, "The mediawiki page was non-existent"
+        raise Hiera::MediawikiNonExistentError, "Hiera:#{path}"
       end
       #yes, it's that convoluted.
       key = pages.keys[0]
