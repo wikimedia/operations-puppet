@@ -10,7 +10,6 @@ args = [
     '--plugin', 'router_rewrite',
     '--http-socket', ':' + str(port),
     '--wsgi-file', 'app.py',
-    '--venv', os.path.expanduser('~/www/python/venv'),
     '--chdir', os.path.expanduser('~/www/python/src'),
     '--logto', os.path.expanduser('~/uwsgi.log'),
     '--route', '/([^/]+)/(.*) rewrite:/$2',
@@ -19,6 +18,9 @@ args = [
     '--strict',
     '--master'
 ]
+
+if os.path.exists(os.path.expanduser('~/www/python/venv')):
+    args += ['--venv', os.path.expanduser('~/www/python/venv')]
 
 if os.path.exists(os.path.expanduser('~/www/python/uwsgi.ini')):
     args += ['--ini', os.path.expanduser('~/www/python/uwsgi.ini')]
