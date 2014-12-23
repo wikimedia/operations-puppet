@@ -72,7 +72,9 @@ class role::phabricator::main {
         },
         extension_tag    => 'HEAD',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
+                              'LDAPUserpageCustomField.php',
                               'SecurityPolicyEnforcerAction.php'],
+
         settings         => {
             'search.elastic.host'                       => 'http://search.svc.eqiad.wmnet:9200',
             'search.elastic.namespace'                  => 'phabricatormain',
