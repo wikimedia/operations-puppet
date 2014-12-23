@@ -181,7 +181,7 @@ class role::otrs (
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => 'check_ssl_cert!ticket.wikimedia.org',
+        check_command => 'check_ssl_http!ticket.wikimedia.org',
     }
 
     monitoring::ganglia { 'exim_messages_in':
