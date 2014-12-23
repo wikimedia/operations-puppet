@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+# nagios: -epn
+# icinga: -epn
+
 # Copyright 2014 Faidon Liambotis
 # Copyright 2014 Wikimedia Foundation, Inc.
 #
