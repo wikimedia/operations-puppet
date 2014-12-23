@@ -1108,6 +1108,31 @@ node 'eisteinium.eqiad.wmnet' {
     include standard
     include admin
     system::role { 'Titan test host': }
+
+    # Temporarily set up Elasticsearh on Einsteinium for testing Titan indexes
+    package { 'elasticsearch/plugins':
+        provider => 'trebuchet',
+    }
+
+    include ::elasticsearch
+    class { '::elasticsearch':
+        multicast_group      => '224.2.2.5',
+        master_eligible      => true,
+        minimum_master_nodes => 1,
+        cluster_name         => "${::realm}-titan-test-elasticsearch-${::site}",
+        heap_memory          => '5G',
+        plugins_dir          => '/srv/deployment/elasticsearch/plugins',
+        auto_create_index    => true,
+        expected_nodes       => 1,
+        recover_after_nodes  => 1,
+        recover_after_time   => '1m',
+    }
+    include ::elasticsearch::log::hot_threads
+    # jq is really useful, especially for parsing
+    # elasticsearch REST command JSON output.
+    package { 'jq':
+        ensure => 'installed',
+    }
 }
 
 # erbium is a webrequest udp2log host

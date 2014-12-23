@@ -1,2 +1,12 @@
 admin::groups:
   - wikidata-query-roots
+elasticsearch::multicast_group: '224.2.2.5'
+elasticsearch::master_eligible: true
+elasticsearch::minimum_master_nodes: 1
+elasticsearch::cluster_name: "%{::realm}-titan-test-elasticsearch-%{::site}"
+elasticsearch::heap_memory: '5G'
+elasticsearch::plugins_dir: '/srv/deployment/elasticsearch/plugins'
+elasticsearch::auto_create_index: true
+elasticsearch::expected_nodes: 1
+elasticsearch::recover_after_nodes: 1
+elasticsearch::recover_after_time: '1m'
