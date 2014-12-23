@@ -1,4 +1,2 @@
-cluster: jobrunner
 admin::groups:
   - deployment
-
