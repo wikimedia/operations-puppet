@@ -75,12 +75,24 @@ class Hiera
       end
 
       def get_path(key, role, source, scope)
+        config_section = :role
+
+        # Special case: 'private' repository.
+        # We use a different datadir in this case.
+        # Example: private/common will search in the role/common source
+        # within the private datadir
+        if m = /private\/(.*)/.match(source)
+          config_section = :private
+          source = m[1]
+        end
+
         # Variables for role::foo::bar will be searched in:
         # role/foo/bar.yaml
         # role/$::site/foo/bar.yaml
         # etc, depending on your hierarchy
         path = role.split('::').join('/')
         src = "role/#{source}/#{path}"
+
         # Use the datadir for the 'role' section of the config
         return Backend.datafile(:role, scope, src, "yaml")
       end

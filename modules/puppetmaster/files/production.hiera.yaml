@@ -1,5 +1,8 @@
 :backends:
   - nuyaml
+  - role
+:role:
+  :datadir: /etc/puppet/hieradata
 :nuyaml:
   :datadir: /etc/puppet/hieradata
   :dynlookup:
@@ -16,4 +19,10 @@
   - "private/%{::site}"
   - "mainrole"
   - "common"
+  - "private/common"
+
+:role_hierarchy:
+  - "%{::site}"
+  - "common"
+  - "private/%{::site}"
   - "private/common"
