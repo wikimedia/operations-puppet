@@ -2010,77 +2010,71 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
 # mw1114-1148 are api apaches
 node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
-
-    class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
     if $::hostname =~ /^mw111[45]$/ {
         $ganglia_aggregator = true
     }
-
-    include role::mediawiki::appserver::api
+    role mediawiki::appserver::api
+    include admin
 }
 
 # mw1152 is (temporarily) the HAT jobrunner
 node 'mw1152.eqiad.wmnet' {
     include admin
-    include role::mediawiki::jobrunner
+    role mediawiki::jobrunner
 }
 
 # mw1149-1151 are apaches
 node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
-
-    class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
-
-    include role::mediawiki::appserver
+    role mediawiki::appserver
+    include admin
 }
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
-
-    class {'::admin': groups => ['deployment']}
     $cluster = 'imagescaler'
     if $::hostname =~ /^mw115[34]$/ {
         $ganglia_aggregator = true
     }
 
-    include role::mediawiki::imagescaler
+    role mediawiki::imagescaler
+    include admin
 }
 
 # mw1161-1188 are apaches
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
-
-    class {'::admin': groups => ['deployment']}
-
-    include role::mediawiki::appserver
+    $cluster = 'appserver'
+    role mediawiki::appserver
+    include admin
 }
 
 # mw1189-1208 are api apaches
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
-
-    class {'::admin': groups => ['deployment']}
     $cluster = 'api_appserver'
-    include role::mediawiki::appserver::api
+    role mediawiki::appserver::api
+    include admin
 }
 
 # mw1209-1220 are apaches
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
-
-    class {'::admin': groups => ['deployment']}
     $cluster = 'appserver'
-    include role::mediawiki::appserver
+    role mediawiki::appserver
+    include admin
 }
 
 #mw1221-mw1235 are api apaches
 node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
+    $cluster = 'api_appserver'
+    role mediawiki::appserver::api
     include admin
-    include role::mediawiki::appserver::api
 }
 
 #mw1236-mw1258 are apaches
 node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
+    $cluster = 'appserver'
+    role mediawiki::appserver
     include admin
-    include role::mediawiki::appserver
 }
 
 node 'neon.wikimedia.org' {

@@ -1,2 +1,0 @@
-cluster: appserver
-role::mediawiki::webserver::pool: apaches
