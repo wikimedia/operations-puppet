@@ -3529,6 +3529,11 @@ host mw1258 {
 	fixed-address mw1258.eqiad.wmnet;
 }
 
+host nembus {
+	hardware ethernet 90:B1:1C:00:AB:0D;
+	fixed-address nembus.wikimedia.org;
+}
+
 host neon {
 	hardware ethernet 78:2b:cb:08:a4:2f;
 	fixed-address neon.wikimedia.org;
