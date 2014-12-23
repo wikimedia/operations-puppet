@@ -1601,6 +1601,11 @@ host es2003 {
 	fixed-address es2003.codfw.wmnet;
 }
 
+host es2004 {
+	hardware ethernet 78:2b:cb:60:34:26;
+	fixed-address es2004.codfw.wmnet;
+}
+
 host es2005 {
 	hardware ethernet d4:ae:52:93:43:23;
 	fixed-address es2005.codfw.wmnet;
@@ -1611,6 +1616,11 @@ host es2006 {
 	fixed-address es2006.codfw.wmnet;
 }
 
+host es2007 {
+	hardware ethernet d4:ae:52:8b:d2:0a;
+	fixed-address es2007.codfw.wmnet;
+}
+
 host es2008 {
 	hardware ethernet d4:ae:52:93:47:03;
 	fixed-address es2008.codfw.wmnet;
@@ -1619,6 +1629,11 @@ host es2008 {
 host es2009 {
 	hardware ethernet d4:ae:52:b0:4e:b5;
 	fixed-address es2009.codfw.wmnet;
+}
+
+host es2010 {
+	hardware ethernet d4:ae:52:b0:3a:ca;
+	fixed-address es2010.codfw.wmnet;
 }
 
 host erbium {
