@@ -131,6 +131,15 @@ SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, 
 END
 )
 
+echo "number of accounts created"
+result_accounts_created=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user phabricator_user << END
+
+SELECT COUNT(id) as '' FROM user WHERE FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+accountscreated=$(echo $result_accounts_created | tr -d '\n')
 
 activeusers=$(echo $result_activeusers | cut -d " " -f3)
 authors=$(echo $result_authors | cut -d " " -f3)
@@ -177,6 +186,7 @@ Hi Community Metrics team,
 
 this is your automatic monthly Phabricator statistics mail.
 
+Number of accounts created in (${lastmonth}): ${accountscreated}
 Number of active users (any activity) in (${lastmonth}): ${activeusers}
 Number of task authors in (${lastmonth}): ${authors}
 Number of users who have closed tasks in (${lastmonth}): ${resolvers}
