@@ -194,7 +194,10 @@ class role::cache {
                     'eqiad' => ['cp1043.eqiad.wmnet', 'cp1044.eqiad.wmnet'],
                     'esams' => [],
                     'ulsfo' => [],
-                }
+                },
+                'cxserver' => {
+                    'eqiad' => 'cxserver.svc.eqiad.wmnet',
+                },
             },
             'labs' => {
                 'api'    => {
@@ -214,6 +217,9 @@ class role::cache {
                 },
                 'parsoid' => {
                     'eqiad' => '127.0.0.1',
+                },
+                'cxserver' => {
+                    'eqiad' => 'cxserver-beta.wmflabs.org',
                 },
             },
         }
@@ -1456,7 +1462,8 @@ class role::cache {
             admin_port       => 6083,
             storage          => $storage_conf,
             directors        => {
-                'backend' => $role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+                'backend'  => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+                'cxserver' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
             },
             director_options => {
                 'retries' => 2,
@@ -1466,6 +1473,11 @@ class role::cache {
                 'ssl_proxies' => $wikimedia_networks,
             },
             backend_options  => [
+                {
+                    'backend_match'         => '^cxserver',
+                    'port'                  => 8080,
+                    'probe'                 => false,
+                },
                 {
                     'port'                  => 8000,
                     'connect_timeout'       => '5s',
@@ -1482,7 +1494,8 @@ class role::cache {
             port             => 80,
             admin_port       => 6082,
             directors        => {
-                'backend' => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
+                'backend'  => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
+                'cxserver' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
             },
             director_type    => 'chash',
             director_options => {
@@ -1492,7 +1505,13 @@ class role::cache {
                 'retry5xx'    => 0,
                 'ssl_proxies' => $wikimedia_networks,
             },
-            backend_options  => {
+            backend_options  => [
+                {
+                    'backend_match'         => '^cxserver',
+                    'port'                  => 8080,
+                    'probe'                 => false,
+                },
+                {
                 'port'                  => 3128,
                 'weight'                => $backend_weight,
                 'connect_timeout'       => '5s',
@@ -1500,7 +1519,7 @@ class role::cache {
                 'between_bytes_timeout' => '20s',
                 'max_connections'       => 100000,
                 'probe'                 => 'varnish',
-            },
+            }],
         }
     }
 
