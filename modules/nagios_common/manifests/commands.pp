@@ -30,7 +30,6 @@ class nagios_common::commands(
         'check_graphite',
         'check_dsh_groups',
         'check_wikidata',
-        'check_cert',
         'check_solr',
         'check_all_memcached.php',
         'check_to_check_nagios_paging',
