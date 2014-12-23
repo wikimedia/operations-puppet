@@ -1,4 +1,7 @@
 class Hiera
+  class MediawikiNotFoundError < Exception
+  end
+
   class Mwcache < Filecache
     def initialize
       super
@@ -17,6 +20,18 @@ class Hiera
         # but has no effect. How cute, I <3 ruby.
         @http.ssl_config.options = OpenSSL::SSL::OP_NO_SSLv3
       end
+    end
+
+    def read(path, expected_type, default=nil, &block)
+      read_file(path, expected_type, &block)
+    rescue Hiera::MediawikiNotFoundError => detail
+      # Any errors other than this will cause hiera to raise an error and puppet to fail.
+      @cache[path][:data] = default
+      Hiera.debug("Page #{detail} is non-existent, setting defaults #{default}")
+    rescue => detail
+      # When failing to read data, we raise an exception, see https://phabricator.wikimedia.org/T78408
+      error = "Reading data from #{path} failed: #{detail.class}: #{detail}"
+      raise error
     end
 
     def read_file(path, expected_type = Object, &block)
@@ -50,8 +65,9 @@ class Hiera
         @cache[path][:meta] = meta
         return true
       end
-    rescue => detail
-      error = "Retrieving metadata from #{path} failed: #{detail}"
+    rescue Hiera::MediawikiNotFoundError => detail
+      # Any errors other than this will cause hiera to raise an error and puppet to fail.
+      error = "Page #{detail} is non-existent"
       Hiera.warn(error)
       # Fill  this up with very safe defaults - we cache non-existence
       # for cache_ttl as well.
@@ -85,12 +101,12 @@ class Hiera
         raise IOError, "Could not correctly fetch revision for #{path}, HTTP status code #{res.status_code}"
       end
       # We shamelessly throw exceptions here, and catch them upper in the chain
-      # specifically in stale? and Filecache.read
+      # specifically in Hiera::Mwcache.stale? and Hiera::Mwcache.read
       body = JSON.parse(res.body)
       pages = body["query"]["pages"]
       # Quoting Yuvi: "MediaWiki API doesn't give a fuck about HTTP status codes"
       if pages.keys.include? "-1"
-        raise IndexError, "The mediawiki page was non-existent"
+        raise Hiera::MediawikiNotFoundError, "Hiera:#{path}"
       end
       #yes, it's that convoluted.
       key = pages.keys[0]
