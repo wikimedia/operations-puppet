@@ -12,7 +12,7 @@
 #
 class toollabs::node::web::uwsgi inherits toollabs::node::web {
 
-    package { [
+    package {[
         'uwsgi',
         'uwsgi-plugin-python',
         'uwsgi-plugin-python3',

@@ -19,7 +19,7 @@ class mysql_multi_instance {
         require  => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
     }
 
-    package { ['percona-xtrabackup', 
+    package { ['percona-xtrabackup',
             'percona-toolkit',
             'libaio1',
             'lvm2' ]:

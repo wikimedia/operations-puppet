@@ -66,7 +66,7 @@ $domain_search = $domain
 
 ## puppet-accessible list of private wikis
 ## please keep alphabetized
-$private_wikis = [ 
+$private_wikis = [
     'arbcom_dewiki',
     'arbcom_enwiki',
     'arbcom_fiwiki',

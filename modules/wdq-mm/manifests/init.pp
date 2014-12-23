@@ -1,5 +1,5 @@
 # == Class: wdq-mm
-# 
+#
 # Class for setting up an instance of Magnus' WDQ
 class wdq-mm {
     package { 'wdq-mm':
