@@ -2042,8 +2042,7 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     if $::hostname =~ /^mw10(5[45])$/ {
         $ganglia_aggregator = true
     }
-
-    include role::mediawiki::appserver
+    role mediawiki::appserver
 }
 
 # mw1114-1148 are api apaches
