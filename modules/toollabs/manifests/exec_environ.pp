@@ -391,6 +391,7 @@ class toollabs::exec_environ {
             'libmpc3',
             'libprotobuf8',
             'libvips37',
+            'openjdk-8-jre-headless',
             ]:
             ensure => latest,
         }
