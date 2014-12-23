@@ -134,7 +134,6 @@ class role::labs::instance {
     service { 'idmapd':
         ensure    => running,
         subscribe => File['/etc/idmapd.conf'],
-        provider  => upstart,
     }
 
     file { '/etc/idmapd.conf':
