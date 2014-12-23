@@ -20,8 +20,12 @@ class toollabs::node::web::uwsgi inherits toollabs::node::web {
         ensure => latest,
     }
 
-
     class { 'toollabs::queues':
         queues => [ 'webgrid-uwsgi' ],
+    }
+
+    file { '/usr/local/bin/tool-uwsgi-python':
+        source => 'puppet:///modules/toollabs/tool-uwsgi-python',
+        mode   => '0555',
     }
 }
