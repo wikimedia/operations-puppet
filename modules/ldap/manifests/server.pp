@@ -26,7 +26,7 @@ class ldap::firewall( $server_list) {
     }
 }
 
-class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $base_dn, $proxyagent, $proxyagent_pass, $server_bind_ips, $initial_password, $first_master=false ) {
+class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $proxyagent, $proxyagent_pass, $server_bind_ips, $initial_password, $first_master=false ) {
     package { 'openjdk-6-jre':
         ensure => latest,
     }
@@ -196,7 +196,7 @@ set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-ce
     # TODO: make this critical (paging) again once confirmed fixed
     monitoring::service { 'ldap cert':
         description   => 'Certificate expiration',
-        check_command => "check_ssl_ldap!${certificate}!${ca_name}",
+        check_command => "check_ssl_ldap!${certificate}",
         critical      => false
     }
 
