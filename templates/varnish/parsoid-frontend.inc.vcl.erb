@@ -21,4 +21,7 @@ sub vcl_pass {
 
 sub vcl_fetch {
 	set beresp.ttl = 0s;
+	if ( req.http.Host ~ "cxserver" ) {
+		return (hit_for_pass);
+	}
 }
