@@ -2037,14 +2037,12 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 #mw1017-mw1113 are apaches
 node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     $cluster = 'appserver'
-    role mediawiki::appserver
-
-    class {'::admin': groups => ['deployment']}
-
     if $::hostname =~ /^mw10(5[45])$/ {
         $ganglia_aggregator = true
     }
 
+    role mediawiki::appserver
+    include ::admin
 }
 
 # mw1114-1148 are api apaches
