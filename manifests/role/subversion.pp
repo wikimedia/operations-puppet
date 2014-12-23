@@ -29,7 +29,7 @@ class role::subversion {
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_cert!${svnhost}",
+        check_command => "check_ssl_http!${svnhost}",
     }
 }
 

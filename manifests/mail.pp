@@ -254,7 +254,7 @@ class mailman {
         if ( $::realm == 'production' ) {
             monitoring::service { 'https':
                 description   => 'HTTPS',
-                check_command => 'check_ssl_cert!lists.wikimedia.org',
+                check_command => 'check_ssl_http!lists.wikimedia.org',
             }
         }
     }
