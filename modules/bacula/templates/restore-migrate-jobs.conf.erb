@@ -13,7 +13,7 @@ Job {
   Name = "Migrate Job"
   Type = Migrate
   Level = Full
-  Pool = Default
+  Pool = production
   FileSet = "root"
   Client = <%= @fqdn -%>-fd
   Messages = Standard
@@ -26,7 +26,7 @@ Job {
   Name = "Offsite Job"
   Type = Copy
   Level = Full
-  Pool = Default
+  Pool = production
   FileSet = "root"
   Client = <%= @fqdn -%>-fd
   Messages = Standard
