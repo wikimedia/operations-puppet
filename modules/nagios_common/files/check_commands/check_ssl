@@ -14,6 +14,8 @@
 #   check_ssl -H svn.wikimedia.org -p 443
 #   check_ssl -H text-lb.wikimedia.org -p 443 --cn en.wikipedia.org --warning 30 --critical 60 --issuer GlobalSign
 
+package Local::CheckSSL;
+
 use strict;
 use warnings;
 use Nagios::Plugin::Getopt;
@@ -24,80 +26,86 @@ use Socket qw(AF_INET AF_INET6 AF_UNSPEC);
 use Date::Parse;
 use POSIX qw(strftime);
 
-my $ng = Nagios::Plugin::Getopt->new(
-    usage => 'Usage: %s -H <host> -p <port> -w <warningdays> -c <criticaldays> [...]',
-    version => 1,
-    blurb   => 'Connects to a host and checks their SSL/TLS certificate',
-);
+# this not exactly great; this isn't a very OO-package, but ePN restricts the
+# use of global variables, so package variables should do, for now.
+our ( $ng, $cn );
+our ( $client, @crit, @warn, @ok, @verbose );
 
-$ng->arg(
-    spec     => 'host|H=s',
-    help     => 'Hostname or IP address of the server to check against',
-    required => 1,
-);
-$ng->arg(
-    spec     => 'port|p=i',
-    help     => 'TCP port',
-    required => 1,
-);
-$ng->arg(
-    spec => 'cn|n=s',
-    help => 'commonName to check for (default: hostname)',
-);
-$ng->arg(
-    spec => 'protocol|P=s',
-    help => 'use the specific protocol (http|rfc2818|xmpp|ftp|smtp|imap|pop3|snmp|ldap|sip|gist), default: %s',
-    default => 'http',
-);
-$ng->arg(
-    spec => 'ipv4|4',
-    help => 'force IPv4',
-);
-$ng->arg(
-    spec => 'ipv6|6',
-    help => 'force IPv6',
-);
-$ng->arg(
-    spec    => 'rootcert|r=s',
-    help    => 'root certificate or directory (default: %s)',
-    default => '/etc/ssl/certs',
-);
-$ng->arg(
-    spec => 'ssl|S=s',
-    help => 'force SSL/TLS version (SSLv3, TLSv1, TLSv1.1 etc)',
-);
-$ng->arg(
-    spec    => 'verify|no-verify|verify!',
-    help    => 'verify hostname & authority (default: true)',
-    default => 1,
-);
-$ng->arg(
-    spec => 'subject|s=s',
-    help => 'subject name to match against',
-);
-$ng->arg(
-    spec => 'issuer|i=s',
-    help => 'issuer name to match against',
-);
+sub init {
+    ( @crit, @warn, @ok, @verbose ) = ();
 
-$ng->arg(
-    spec => 'warning|w=i',
-    help => 'minimum number of days a certificate has to be valid to issue a WARNING status (default: %s)',
-    default => 30,
-);
-$ng->arg(
-    spec => 'critical|c=i',
-    help => 'minimum number of days a certificate has to be valid to issue a CRITICAL status (default: %s)',
-    default => 15,
-);
+    $ng = Nagios::Plugin::Getopt->new(
+        usage   => 'Usage: %s -H <host> -p <port> -w <days> -c <days> [...]',
+        version => 1,
+        blurb   => 'Connects to a host and checks their SSL/TLS certificate',
+    );
 
-$ng->getopts;
-my $cn = $ng->cn ? $ng->cn : $ng->host;
+    $ng->arg(
+        spec     => 'host|H=s',
+        help     => 'Hostname or IP address of the server to check against',
+        required => 1,
+    );
+    $ng->arg(
+        spec     => 'port|p=i',
+        help     => 'TCP port',
+        required => 1,
+    );
+    $ng->arg(
+        spec => 'cn|n=s',
+        help => 'commonName to check for (default: hostname)',
+    );
+    $ng->arg(
+        spec => 'protocol|P=s',
+        help =>
+'use the specific protocol (http|xmpp|ftp|smtp|imap|pop3|snmp|ldap|sip), default: %s',
+        default => 'http',
+    );
+    $ng->arg(
+        spec => 'ipv4|4',
+        help => 'force IPv4',
+    );
+    $ng->arg(
+        spec => 'ipv6|6',
+        help => 'force IPv6',
+    );
+    $ng->arg(
+        spec    => 'rootcert|r=s',
+        help    => 'root certificate or directory (default: %s)',
+        default => '/etc/ssl/certs',
+    );
+    $ng->arg(
+        spec => 'ssl|S=s',
+        help => 'force SSL/TLS version (SSLv3, TLSv1, TLSv1.1 etc)',
+    );
+    $ng->arg(
+        spec    => 'noverify|no-verify',
+        help    => 'do not verify hostname & authority (default: verify)',
+        default => 0,
+    );
+    $ng->arg(
+        spec => 'subject|s=s',
+        help => 'subject name to match against',
+    );
+    $ng->arg(
+        spec => 'issuer|i=s',
+        help => 'issuer name to match against',
+    );
 
-my ( $client, @crit, @warn, @ok, @verbose );
+    $ng->arg(
+        spec    => 'warning|w=i',
+        help    => 'min validity days left to issue a WARNING (default: %s)',
+        default => 30,
+    );
+    $ng->arg(
+        spec    => 'critical|c=i',
+        help    => 'min validity days left to issue a CRITICAL (default: %s)',
+        default => 15,
+    );
 
-# initialize Net::SSLeay
-BEGIN {
+    $ng->getopts;
+    $cn = $ng->cn ? $ng->cn : $ng->host;
+
+    # initialize Net::SSLeay
     Net::SSLeay::load_error_strings();
     Net::SSLeay::SSLeay_add_ssl_algorithms();
     Net::SSLeay::randomize();
@@ -141,14 +149,14 @@ sub ssl_verify {
     my @sans = $client->peer_certificate('subjectAltNames');
 
     # handle Net::SSLeay's list of tuples (get even elements, ignore odd)
-    @sans = @sans[ grep { $_ & 1 } 1..$#sans ];
+    @sans = @sans[ grep { $_ & 1 } 1 .. $#sans ];
 
     # commonName + SANs-except-commonName
     my @names = ( $name, grep { !/^\Q$name\E$/ } @sans );
 
-    if ( $ng->verify ) {
+    unless ( $ng->noverify ) {
         $client->verify_hostname( $cn, $ng->protocol )
-          or push @crit, 'failed to verify against ' . join( ', ', @names );
+          or push @crit, "failed to verify $cn against " . join( ', ', @names );
     }
 }
 
@@ -164,7 +172,7 @@ sub ssl_subject_matches {
     if ( $ng->subject && $subject !~ /\Q$ng->{subject}\E/ ) {
         push @crit, "Certificate subject $subject didn't match argument";
     }
-    if ( $ng->issuer && $issuer !~ /\b$ng->{issuer}\b/ ) {
+    if ( $ng->issuer && $issuer !~ /\Q$ng->{issuer}\E/ ) {
         push @crit, "Certificate issuer $issuer didn't match argument";
     }
 }
@@ -172,8 +180,9 @@ sub ssl_subject_matches {
 sub ssl_expiry_check {
     my $name = $client->peer_certificate('commonName');
 
-    # We fallback to lower-level Net::SSLeay for extracting information about the
-    # certificate itself, such as expiry time, subject names etc.
+    # We fallback to lower-level Net::SSLeay for extracting information about
+    # the certificate itself, such as expiry time, subject names etc.
+    # This uses an *internal* Net::SSLeay function so it's prone to failure.
     my $ssl  = $client->_get_ssl_object;
     my $x509 = Net::SSLeay::get_peer_certificate($ssl);
 
@@ -187,8 +196,9 @@ sub ssl_expiry_check {
             Net::SSLeay::X509_get_notAfter($x509)
         )
     );
-    my $expiry = strftime( '%Y-%m-%d %H:%M:%S +0000', gmtime($notAfter) );
     my $now = time;
+    my $expiry = strftime( '%Y-%m-%d %H:%M:%S +0000', gmtime($notAfter) );
+    $expiry .= ' (expires in ' . int( ( $notAfter - $now ) / 86400 ) . ' days)';
 
     if ( $notBefore > $now ) {
         push @crit, "Certificate $name not yet valid";
@@ -197,28 +207,38 @@ sub ssl_expiry_check {
         push @crit, "Certificate $name expired";
     }
     elsif ( $notAfter - $now < $ng->critical * 86400 ) {
-        push @crit, "Certificate $name expires on $expiry";
+        push @crit, "Certificate $name valid until $expiry";
     }
     elsif ( $notAfter - $now < $ng->warning * 86400 ) {
-        push @warn, "Certificate $name expires on $expiry";
+        push @warn, "Certificate $name valid until $expiry";
     }
-    elsif ( $ng->verbose ) {
-        push @verbose, "Certificate $name expires on $expiry";
+    else {
+        push @ok, "Certificate $name valid until $expiry";
     }
 }
 
-ssl_connect;
-ssl_verify;
-ssl_subject_matches;
-ssl_expiry_check;
+sub run {
+    init;
+    ssl_connect;
+    ssl_verify;
+    ssl_subject_matches;
+    ssl_expiry_check;
 
-print join( "\n", @verbose ), "\n" if $ng->verbose;
+    print join( "\n", @verbose ), "\n" if $ng->verbose;
 
-nagios_exit(
-    check_messages(
-        critical => \@crit,
-        warning  => \@warn,
-        ok       => \@ok,
-        join     => ';',
-    )
-);
+    nagios_exit(
+        check_messages(
+            critical => \@crit,
+            warning  => \@warn,
+            ok       => \@ok,
+            join     => ';',
+        )
+    );
+}
+
+# call run() if are we running interactively or via ePN
+__PACKAGE__->run() if ( !caller || (caller)[0] eq 'Embed::Persistent' );
+
+1;
+
+# vim: ts=4 sw=4 sts=4 et
