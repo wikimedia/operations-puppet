@@ -31,6 +31,8 @@ class base::standard-packages {
         'lldpd',
         'quickstack',
         'pv',
+        'mcelog',
+        'intel-microcode',
     ]
 
     package { $packages:
