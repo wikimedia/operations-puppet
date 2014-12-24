@@ -370,6 +370,7 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
         content  => "*.* @logstash1002.eqiad.wmnet:10514",
         priority => 32,
     }
+    role ipsec
 }
 
 node 'calcium.wikimedia.org' {
@@ -492,6 +493,7 @@ node /^cp300([1-2])\.esams\.(wikimedia\.org|wmnet)$/ {
         content  => "*.* @logstash1002.eqiad.wmnet:10514",
         priority => 32,
     }
+    role ipsec
 }
 
 node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
