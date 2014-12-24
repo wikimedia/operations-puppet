@@ -16,6 +16,8 @@ Pool {
     Recycle = <%= @recycle %>
     Catalog Files = <%= @catalog_files %>
     Recycle Oldest Volume = yes
-    # Next pool = # used for migrations
+    <%- if @next_pool -%>
+    Next pool = <%= @next_pool %>
+    <%- end -%>
     # Cleaning Prefix = # used with tapes
 }

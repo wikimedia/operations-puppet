@@ -17,6 +17,9 @@
 #       yes, no, defaults to yes. Whether autopruning will happen for this pool
 #   $label_fmt
 #       The format for autolabeled volumes. A good example can be "company-$numvols".
+#   $next_pool
+#       The pool that jobs will be migrated/copied to if specified. Default to
+#       undef
 #
 # Actions:
 #       Will create a pool definition to be included by the director
@@ -38,7 +41,8 @@ define bacula::director::pool(
                             $recycle='yes',
                             $autoprune='yes',
                             $max_vol_bytes=undef,
-                            $label_fmt=undef) {
+                            $label_fmt=undef,
+                            $next_pool=undef) {
 
     file { "/etc/bacula/conf.d/pool-${name}.conf":
         ensure  => present,
