@@ -10,6 +10,9 @@ class role::backup::config {
     $database = 'db1001.eqiad.wmnet'
     $days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
     $pool = 'production'
+    $offsite_pool = 'offsite'
+    $onsite_sd = 'helium'
+    $offsite_sd = 'heze'
 }
 
 class role::backup::host {
@@ -49,6 +52,9 @@ class role::backup::director {
     include passwords::bacula
     require misc::statistics::geowiki::params
     $pool = $role::backup::config::pool
+    $offsite_pool = $role::backup::config::offsite_pool
+    $onsite_sd = $role::backup::config::onsite_sd
+    $offsite_sd = $role::backup::config::offsite_sd
 
     system::role { 'role::backup::director': description => 'Backup server' }
 
@@ -60,7 +66,7 @@ class role::backup::director {
     # One pool for all
     bacula::director::pool { $pool:
         max_vols         => 50,
-        storage          => "${::hostname}-FileStorage1",
+        storage          => "${onsite_sd}-FileStorage1",
         volume_retention => '180 days',
         label_fmt        => $pool,
         max_vol_bytes    => '536870912000',
@@ -69,16 +75,25 @@ class role::backup::director {
     # Default pool needed internally by bacula
     bacula::director::pool { 'Default':
         max_vols         => 1,
-        storage          => "${::hostname}-FileStorage1",
+        storage          => "${onsite_sd}-FileStorage1",
         volume_retention => '1800 days',
     }
 
     # Archive pool for long term archival.
     bacula::director::pool { 'Archive':
         max_vols         => 5,
-        storage          => "${::hostname}-FileStorage2",
+        storage          => "${onsite_sd}-FileStorage2",
         volume_retention => '5 years',
         label_fmt        => 'archive',
+        max_vol_bytes    => '536870912000',
+    }
+
+    # Off site pool for off site backups
+    bacula::director::pool { $offsite_pool:
+        max_vols         => 50,
+        storage          => "${offsite_sd}-FileStorage1",
+        volume_retention => '180 days',
+        label_fmt        => $offsite_pool,
         max_vol_bytes    => '536870912000',
     }
 
