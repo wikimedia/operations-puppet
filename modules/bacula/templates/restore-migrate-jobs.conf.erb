@@ -21,3 +21,15 @@ Job {
   Selection Pattern = "SELECT 15515"
   Priority = 20
 }
+
+Job {
+  Name = "Offsite Job"
+  Type = Copy
+  Level = Full
+  Pool = Default
+  FileSet = "root"
+  Client = <%= @fqdn -%>-fd
+  Messages = Standard
+  Selection Type = PoolUncopiedJobs
+  Priority = 20
+}
