@@ -23,8 +23,12 @@ account  required     pam_access.so
 # Standard Un*x session setup and teardown.
 @include common-session
 
-# Print the message of the day upon successful login.
-session    optional     pam_motd.so # [1]
+# Prints the message of the day upon succesful login.
+# (Replaces the `MOTD_FILE' option in login.defs)
+# This includes a dynamically generated part from /run/motd.dynamic
+# and a static (admin-editable) part from /etc/motd.
+session    optional   pam_motd.so  motd=/run/motd.dynamic noupdate
+session    optional   pam_motd.so
 
 # Print the status of the user's mailbox upon successful login.
 session    optional     pam_mail.so standard noenv # [1]
