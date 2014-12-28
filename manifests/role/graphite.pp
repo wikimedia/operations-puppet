@@ -163,6 +163,7 @@ class role::graphite::base(
 
     include ::apache
     include ::apache::mod::uwsgi
+    include ::apache::mod::rewrite
 
     if $auth {
         # Production
