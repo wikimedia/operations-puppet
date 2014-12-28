@@ -3,6 +3,10 @@
 <VirtualHost *:80>
     ServerName <%= @hostname %>
 
+    # Push to SSL
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^(.*)$ https://<%= @hostname %>$1 [R=301]
+
     <Location />
         Order allow,deny
         Allow from all
