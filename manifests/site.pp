@@ -683,6 +683,10 @@ node 'dataset1001.wikimedia.org' {
 
     class { 'admin': groups => [dataset-admins] }
 
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
     include standard
     include role::diamond
     include role::dataset::systemusers
