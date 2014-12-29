@@ -31,9 +31,15 @@ class txstatsd($settings) {
 
     file { '/etc/txstatsd':
         ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     file { '/etc/txstatsd/txstatsd.cfg':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
         content => template('txstatsd/txstatsd.cfg.erb'),
     }
 
