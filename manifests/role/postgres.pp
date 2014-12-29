@@ -3,7 +3,7 @@
 class role::postgres::common {
     include standard
 
-    $datadir = '/srv/postgres'
+    $datadir = '/srv/postgres/9.1/main'
 
     file { '/etc/postgresql/9.1/main/tuning.conf':
         ensure => 'present',
