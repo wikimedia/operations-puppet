@@ -55,10 +55,9 @@ class eventlogging::monitoring::graphite {
     # Alarms if 1% of Navigation Timing event throughput goes under 2 req/sec
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
-    
     # Note:
     # you can test this via doing:
-    #  ./files/icinga/check_graphite 
+    #  ./files/icinga/check_graphite
     # --url http://graphite.wikimedia.org check_threshold
     # eventlogging.schema.NavigationTiming.rate --from 15min -C 1 -W 2 --under
     # it will report the following:
