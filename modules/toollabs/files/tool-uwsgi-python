@@ -7,12 +7,10 @@ port = uid = os.getuid()
 args = [
     '/usr/bin/uwsgi',
     '--plugin', 'python',
-    '--plugin', 'router_rewrite',
     '--http-socket', ':' + str(port),
     '--wsgi-file', 'app.py',
     '--chdir', os.path.expanduser('~/www/python/src'),
     '--logto', os.path.expanduser('~/uwsgi.log'),
-    '--route', '/([^/]+)/(.*) rewrite:/$2',
     '--callable', 'app',
     '--die-on-term',
     '--strict',
