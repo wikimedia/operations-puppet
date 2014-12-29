@@ -57,7 +57,7 @@ groups:
     members: [howief, jforrester, jmorgan, maryana, msyed,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
-      bmansurov, west1, jhernandez, smalyshev]
+      bmansurov, west1, jhernandez, smalyshev, ananthrk]
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -214,7 +214,7 @@ groups:
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
-              ezachte, mforns, reedy, west1, phuedx]
+              ezachte, mforns, reedy, west1, phuedx, ananthrk]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1226,3 +1226,10 @@ users:
     realname: Stas Malyshev
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpDNpAh83SAftCCJtjnvyTkN8uag0OmMk/Wpn+iAtZz5THTocU7MLdggW5scut+lMfog6Mf7aECC5vPo2eGtGkCXbmsGMhHsuA4mxo4vhnI5PduLY6F9PU4YCRe477NTEFfffy/HxDQR9gHNnuLyoHGqEgCQmmEtQoD1ChEiVHbwM35m6OVZjraMyy5Hfcnr7txHjOnVBGFW3Nn+bT3S42YdJDy3l9SIOg7NGi1WHo+cZaKIpO+wTelDSem1o7m+ERk10XaDOakCpznjnxmzfoy0WKeJWAkG0uGiE7vVAKzOhNw4/v6vaSSXWNRMD7MBea6iDaFduA1ghnq8i6Xf7f smalyshev@wikimedia.org]
     uid: 10977
+  ananthrk:
+    ensure: present
+    gid: 500
+    name: ananthrk
+    realname: Ananth Ramakrishnan
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDt/i1A7KCnZCqaV8oWp3Qg7ueXNFnU+Nl8809U4vvjouTYqndJGaV5xbe1zA6O3KbJH5iNKJf0UzEpTPoy7MR2CNVEh+JfUOgAYJYBnjJde5uogRBVGO6ZYG9FJ7fPuDoM3ueb32My5H/HxTiP21c3OlK6ZDHfiWkJ58PthvhM49is6N2rzdqFPMTWtaFPxtQW8XMJJJ56p2yubhLWDx0uDLV7m04f4ZSpWrnHIjFhVbURoDHA4p5Jaeq7JUV19Z61Iu5vJPS95iKpkcBrbtKPVSDnG3fk6OAKwnU9Ams6w6IWLnMwPuSOqUycxD6YSdDc/Q3JkX0iHqCKfneVqCPF ananthrk@ymxdata.com]
+    uid: 11223
