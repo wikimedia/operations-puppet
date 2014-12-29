@@ -1,4 +1,35 @@
 #!/usr/bin/python3
+#   Copyright 2014 Yuvi Panda <yuvipanda@gmail.com>
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+"""
+Generates config about labs instances for shinken, taking info from LDAP.
+
+Emits a host definition for each instance in the whitelisted projects
+(whitelist in the config file).
+
+Sets as hostgroup for each instance:
+    - Name of project instance is a part of
+    - Each puppet role explicitly applied to it (via Wikitech)
+
+Sets as contact for each instance a contactgroup with the same name as the
+project the instance is in. This contactgroup must be created whenever a
+new project is whitelisted.
+
+Sets the project name in the notes section of each instance, so that
+can be used when constructing graphite metric paths.
+"""
 import yaml
 import ldap3
 import jinja2
@@ -36,7 +67,7 @@ class LDAPSource(object):
                                      user=bindas, password=passwd,
                                      auto_bind=ldap3.AUTO_BIND_TLS_AFTER_BIND)
 
-    def get_hosts(self, project):
+    def get_instances(self, project):
         """
         Get info about all instances in the given project.
 
@@ -86,7 +117,7 @@ if __name__ == '__main__':
                             config['ldap']['password'])
 
     for project in config['projects']:
-        instances = ldapsource.get_hostsinfo(project)
+        instances = ldapsource.get_instances(project)
         host_configs = []
         for instance in instances:
             co = ConfigObject('host')
@@ -105,7 +136,7 @@ if __name__ == '__main__':
             co.properties['notes'] = project  # Used for auto deriving graphite path
             host_configs.append(co)
         hosts_config_path = '%s/%s.cfg' % (
-            config['base_path'], project
+            config['output_path'], project
         )
         with open(hosts_config_path, 'w') as hostsfile:
             hostsfile.write('\n'.join([str(hc) for hc in host_configs]))
