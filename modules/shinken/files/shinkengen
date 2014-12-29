@@ -1,0 +1,112 @@
+#!/usr/bin/python3
+import os
+import yaml
+import ldap3
+import jinja2
+from collections import OrderedDict
+
+from shingen.ldapsource import LDAPSource
+from shingen.shinkenconfig import ConfigObject
+
+
+class ConfigObject():
+    """
+    A Shinken configuration object.
+
+    Has a type (Host, Hostgroup, Service, etc) and a bunch of key
+    value pairs that it can output in a format that shinken understands.
+    """
+    TEMPLATE = jinja2.Template('''define {{ o.type }} {
+{% for key, value in o.properties.items() -%}
+    {{ key }}        {{ value }}
+{% endfor -%}
+}''')
+
+    def __init__(self, type):
+        self.type = type # Host, HostGroup, Service, whatever
+        self.properties = OrderedDict()
+
+    def __str__(self):
+        return ConfigObject.TEMPLATE.render(o=self)
+
+
+class LDAPSource(object):
+    """
+    A source of information about labs instances, querying LDAP
+    """
+    def __init__(self, server, bindas, passwd):
+        server = ldap3.Server(server)
+        self.conn = ldap3.Connection(server, read_only=True,
+                                     user=bindas, password=passwd,
+                                     auto_bind=ldap3.AUTO_BIND_TLS_AFTER_BIND)
+
+    def get_hosts(self, project):
+        """
+        Get info about all instances in the given project.
+
+        Returns the following information for each instance in given project:
+            - ec2id: Permanent id for this particular instance
+            - ip: Internal IP of this instance
+            - region: Which OpenStack Region this Instance is in
+            - puppetClasses: List of puppet classes applied to this instance via
+                             configure page in wikitech. Also contains default
+                             roles `role::labs::instance` and `base`
+            - project: Name of project the instance is contained in
+            - name: Name of the instance
+            - puppetVars: Dictionary containing any custom puppet variables that
+                          have been set in the configure page in wikitech. Also
+                          contains default keys of `instanceproject` & `instancename`
+        """
+        self.conn.search('ou=hosts,dc=wikimedia,dc=org',
+                         '(puppetVar=instanceproject=%s)' % project,
+                         ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
+                         attributes=ldap3.ALL_ATTRIBUTES)
+        hosts = []
+        for responseitem in self.conn.response:
+            hostinfo = responseitem['attributes']
+            ip = [a for a in hostinfo['aRecord'] if a.startswith('10.')][0]
+            puppetvars = {var[0]: var[1] for var in [pv.split("=") for pv in hostinfo['puppetVar']]}
+            hosts.append({
+                'ec2id': hostinfo['dc'][0],
+                'ip': ip,
+                'region': hostinfo['l'][0],
+                'puppetClasses': hostinfo['puppetClass'],
+                'project': project,
+                'name': puppetvars['instancename'],
+                'puppetVars': puppetvars
+            })
+
+        return hosts
+
+if __name__ == '__main__':
+    with open('/etc/shinkengen.yaml') as f:
+        config = yaml.load(f)
+
+    ldapsource = LDAPSource(config['ldap']['server'],
+                            config['ldap']['bindas'],
+                            config['ldap']['password'])
+
+    for project in config['projects']:
+        instances = ldapsource.get_hostsinfo(project)
+        host_configs = []
+        for instance in instances:
+            co = ConfigObject('host')
+            co.properties['use'] = 'generic-host'
+            co.properties['host_name'] = instance['name']
+            co.properties['address'] = instance['ip']
+            # Each role applied to this instance explicitly, via wikitech,
+            # is added as a hostgroup, so we can target particular roles wich checks.
+            co.properties['hostgroups'] = ','.join([project] + instance['puppetClasses'])
+            # For each project added to monitoring we expect a contactgroup with the same
+            # name added.
+            # FIXME: Implement access mechanism more fine grained than per-project
+            co.properties['contact_groups'] = project
+            # Used to auto derive metric paths in graphite, which is of the form
+            # <projectname>.<instancename>.<metric-path>.
+            co.properties['notes'] = project  # Used for auto deriving graphite path
+            host_configs.append(co)
+        hosts_config_path = '%s/%s.cfg' % (
+            config['base_path'], project
+        )
+        with open(hosts_config_path, 'w') as hostsfile:
+            hostsfile.write('\n'.join([str(co) for co in host_configs]))
