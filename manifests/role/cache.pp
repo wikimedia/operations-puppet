@@ -379,6 +379,26 @@ class role::cache {
         }
     }
 
+    # == Class varnish::statsd
+    # Installs a local statsd instance for aggregating and serializing
+    # stats before sending them off to a remote statsd instance.
+    class varnish::statsd {
+        class { '::txstatsd':
+            settings => {
+                statsd => {
+                    'carbon-cache-host'          => "graphite-in.eqiad.wmnet",
+                    'carbon-cache-port'          => 2004,
+                    'listen-port'                => 8125,
+                    'statsd-compliance'          => 0,
+                    'prefix'                     => '',
+                    'max-queue-size'             => 1000 * 1000,
+                    'max-datapoints-per-message' => 10 * 1000,
+                    'instance-name'              => "statsd.${::hostname}",
+                },
+            },
+        }
+    }
+
     # == Class varnish::kafka
     # Base class for instances of varnishkafka on cache servers.
     #
@@ -425,6 +445,7 @@ class role::cache {
             'cp3022' => 2000,
             default  => 30000,
         }
+
         varnishkafka::instance { 'webrequest':
             brokers                      => $kafka_brokers,
             topic                        => $topic,
@@ -476,6 +497,25 @@ class role::cache {
             # Critical if greater than 30.
             critical    => '30.0',
             require     => Varnishkafka::Monitor['webrequest'],
+        }
+
+        # test this on mobilesb before applying to all varnishes.
+        if ($topic == 'webrequest_mobile') {
+            # varnishkafka will use a local statsd instance for
+            # using logster to collect metrics.
+            # NOTE: This include will be moved into the parent
+            # varnish::kafka class once logster and local statsd
+            # are proven to work on mobiles.
+            include role::cache::varnish::statsd
+
+            # Test using logster to send varnishkafka stats to statsd -> graphite.
+            # This may be moved into the varnishkafka module.
+            logster::job { 'varnishkafka-webrequest':
+                parser          => 'JsonParser',
+                logfile         => "/var/cache/varnishkafka/webrequest.stats.json",
+                logster_options => "--statsd-host=localhost:8125 --metric-prefix=varnishkafka.${::hostname}.webrequest",
+                require         => Class['role::cache::varnish::statsd'],
+            }
         }
     }
 
