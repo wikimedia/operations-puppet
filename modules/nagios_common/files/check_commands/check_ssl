@@ -83,6 +83,11 @@ sub init {
         default => 0,
     );
     $ng->arg(
+        spec    => 'nosni|no-sni',
+        help    => 'do not use SNI (default: use SNI)',
+        default => 0,
+    );
+    $ng->arg(
         spec => 'subject|s=s',
         help => 'subject name to match against',
     );
@@ -129,6 +134,10 @@ sub ssl_connect {
     $sopts{SSL_version}  = $ng->ssl if $ng->ssl;
     $sopts{timeout}      = $ng->timeout;
     $sopts{SSL_hostname} = $cn;
+
+    # not setting this (or setting to undef) does *not* disable SNI;
+    # only setting to empty string does (this is documented)
+    $sopts{SSL_hostname} = '' if $ng->nosni;
 
     if ( -d $ng->rootcert ) {
         $sopts{'SSL_ca_path'} = $ng->rootcert;
