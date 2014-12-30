@@ -49,21 +49,26 @@ sub check_ssl {
 sub run {
     my ( @exits, @lines );
 
-    foreach my $domain (DOMAINS) {
-        foreach my $prefix ( '', 'en.', 'en.m.' ) {
-            my $cn = $prefix . $domain;
+    foreach my $sni ( 1, 0 ) {
+        my $sni_arg  = !$sni ? '--no-sni' : '';
+        my $sni_mark = $sni  ? '(SNI)'    : '';
 
-            my @argv = ( @ARGV, '--cn', $cn );
-            my $e = check_ssl(@argv);
+        foreach my $domain (DOMAINS) {
+            foreach my $prefix ( '', 'en.', 'en.m.' ) {
+                my $cn = $prefix . $domain;
 
-            my $msg = $e->message;
-            $msg =~ s/^\w+ (.+)\n/$1/;
+                my @argv = ( @ARGV, '--cn', $cn, $sni_arg );
+                my $e = check_ssl(@argv);
 
-            # prepend with $cn and format in columns to ease debugging
-            $msg = sprintf( '%-30s %s', $cn, $msg );
+                my $msg = $e->message;
+                $msg =~ s/^\w+ (.+)\n/$1/;
 
-            push @lines, $msg;
-            push @exits, $e->return_code;
+                # prepend with $cn and format in columns to ease debugging
+                $msg = sprintf( '%-30s %-5s %s', $cn, $sni_mark, $msg );
+
+                push @lines, $msg;
+                push @exits, $e->return_code;
+            }
         }
     }
 
