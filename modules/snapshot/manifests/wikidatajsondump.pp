@@ -14,13 +14,6 @@ class snapshot::wikidatajsondump(
         description => 'producer of weekly wikidata json dumps'
     }
 
-    file { '/etc/logrotate.d/dumpwikidatajson':
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/snapshot/logrotate.d_dumpwikidatajson',
-    }
-
     file { '/usr/local/bin/dumpwikidatajson.sh':
         mode    => '0755',
         owner   => 'root',

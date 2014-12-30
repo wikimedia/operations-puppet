@@ -13,13 +13,14 @@ tempDir=`egrep "^temp=" "$configfile" | mawk -Ftemp= '{ print $2 }'`
 
 multiversionscript="${apacheDir}/multiversion/MWScript.php"
 
-targetFile=$targetDir/`date +'%Y%m%d'`.json.gz
+filename=`date +'%Y%m%d'`
+targetFile=$targetDir/$filename.json.gz
 
 i=0
 shards=4
 
 while [ $i -lt $shards ]; do
-	php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> /var/log/wikidatadump/dumpwikidatajson-$i.log | gzip > $tempDir/wikidataJson.$i.gz &
+	php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> /var/log/wikidatadump/dumpwikidatajson-$filename-$i.log | gzip > $tempDir/wikidataJson.$i.gz &
 	let i++
 done
 
@@ -46,3 +47,12 @@ filesToDelete=`ls -r $targetDir/20*.gz | tail -n +11`
 if [ -n "$filesToDelete" ]; then
 	rm $filesToDelete
 fi
+
+# Remove old logs (keep 5)
+while [ $i -lt $shards ]; do
+	filesToDelete=`ls -r /var/log/wikidatadump/dumpwikidatajson-*-$i.log | tail -n +6`
+	if [ -n "$filesToDelete" ]; then
+		rm $filesToDelete
+	fi
+	let i++
+done
