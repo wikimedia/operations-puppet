@@ -407,6 +407,10 @@ class role::cache {
         # All producers currently produce to the (only) Kafka cluster in eqiad.
         $kafka_brokers = keys($role::analytics::kafka::config::cluster_config['eqiad'])
 
+        # varnishkafka will use a local statsd instance for
+        # using logster to collect metrics.
+        include role::cache::varnish::statsd
+
         # Make sure varnishkafka rsyslog file is in place properly.
         rsyslog::conf { 'varnishkafka':
             source   => 'puppet:///files/varnish/varnishkafka_rsyslog.conf',
@@ -499,27 +503,17 @@ class role::cache {
             require     => Varnishkafka::Monitor['webrequest'],
         }
 
-        # test this on mobilesb before applying to all varnishes.
-        if ($topic == 'webrequest_mobile') {
-            # varnishkafka will use a local statsd instance for
-            # using logster to collect metrics.
-            # NOTE: This include will be moved into the parent
-            # varnish::kafka class once logster and local statsd
-            # are proven to work on mobiles.
-            include role::cache::varnish::statsd
-
-            # Extract cache type name from topic for use in statsd prefix.
-            # There is probably a better way to do this.
-            $cache_type = regsubst($topic, '^webrequest_(.+)$', '\1')
-            # Test using logster to send varnishkafka stats to statsd -> graphite.
-            # This may be moved into the varnishkafka module.
-            logster::job { 'varnishkafka-webrequest':
-                minute          => '*/1',
-                parser          => 'JsonLogster',
-                logfile         => "/var/cache/varnishkafka/webrequest.stats.json",
-                logster_options => "-o statsd --statsd-host=localhost:8125 --metric-prefix=varnishkafka.${::hostname}.webrequest.${cache_type}",
-                require         => Class['role::cache::varnish::statsd'],
-            }
+        # Extract cache type name from topic for use in statsd prefix.
+        # There is probably a better way to do this.
+        $cache_type = regsubst($topic, '^webrequest_(.+)$', '\1')
+        # Test using logster to send varnishkafka stats to statsd -> graphite.
+        # This may be moved into the varnishkafka module.
+        logster::job { 'varnishkafka-webrequest':
+            minute          => '*/1',
+            parser          => 'JsonLogster',
+            logfile         => "/var/cache/varnishkafka/webrequest.stats.json",
+            logster_options => "-o statsd --statsd-host=localhost:8125 --metric-prefix=varnishkafka.${::hostname}.webrequest.${cache_type}",
+            require         => Class['role::cache::varnish::statsd'],
         }
     }
 
