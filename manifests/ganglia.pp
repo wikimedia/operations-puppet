@@ -24,6 +24,9 @@ class ganglia {
         class { 'ganglia_new::monitor':
             cluster => $ganglia_cluster,
         }
+
+        # FIXME: ugly, but without it bad things happen with check_ganglia
+        $cname = $ganglia_new::monitor::cname
     } else {
             if ! $::cluster {
                 $cluster = 'misc'
