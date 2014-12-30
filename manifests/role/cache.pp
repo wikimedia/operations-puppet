@@ -567,14 +567,6 @@ class role::cache {
     define localssl($certname, $server_name=$::fqdn, $server_aliases=[], $default_server=false) {
         # Assumes that LVS service IPs are setup elsewhere
 
-        # Nagios monitoring
-        # FIXME: figure out a way to monitor the unified certificate
-        # (unified.wikimedia.org / uni.wikimedia.org) without SNI
-        monitoring::service { "https_${name}":
-            description   => "HTTPS_${name}",
-            check_command => "check_ssl_http!${certname}",
-        }
-
         install_certificate { $certname:
             before => Protoproxy::Localssl[$name],
         }
@@ -588,7 +580,6 @@ class role::cache {
         }
     }
 
-    # ssl::sni To replace ssl::unified above after testing...
     class ssl::sni {
         #TODO: kill the old wmf_ca
         include certificates::wmf_ca
@@ -634,6 +625,11 @@ class role::cache {
             'wikimediafoundation.org':;
             'm.mediawiki.org':;
             'mediawiki.org':;
+        }
+
+        monitoring::service { 'https':
+            description   => 'HTTPS',
+            check_command => 'check_sslxNN',
         }
     }
 
