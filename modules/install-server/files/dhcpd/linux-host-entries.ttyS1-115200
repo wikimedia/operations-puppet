@@ -1360,6 +1360,16 @@ host dbstore1002 {
 	fixed-address dbstore1002.eqiad.wmnet;
 }
 
+host dbstore2001 {
+	hardware ethernet 40:a8:f0:26:b9:84;
+	fixed-address dbstore1001.codfw.wmnet;
+}
+
+host dbstore2002 {
+	hardware ethernet 40:a8:f0:26:8a:14;
+	fixed-address dbstore1002.codfw.wmnet;
+}
+
 host dickson {
 	hardware ethernet 78:2b:cb:09:0c:5a;
 	fixed-address dickson.wikimedia.org;
