@@ -21,7 +21,7 @@
 #
 #  motd::script { 'mediawiki_vagrant':
 #    ensure   => present,
-#    content  => "echo 'You are using MediaWiki-Vagrant!'\n",
+#    content  => "#!/bin/sh\necho 'You are using MediaWiki-Vagrant!'\n",
 #    priority => 60,
 #  }
 #
@@ -46,6 +46,5 @@ define motd::script(
         content => $content,
         source  => $source,
         mode    => '0555',
-        notify  => Exec['update_motd'],
     }
 }
