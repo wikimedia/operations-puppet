@@ -692,7 +692,7 @@ node 'dataset1001.wikimedia.org' {
 }
 
 # eqiad dbs
-node /^db10(51|52|61|65)\.eqiad\.wmnet/ {
+node /^db10(51|52|61)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -765,7 +765,7 @@ node /^db10(33|34|41)\.eqiad\.wmnet/ {
 }
 
 # MariaDB 10
-node /^db10(55|62|66|72|73)\.eqiad\.wmnet/ {
+node /^db10(55|62|65|66|72|73)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
