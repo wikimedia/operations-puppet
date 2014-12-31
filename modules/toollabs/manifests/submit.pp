@@ -26,12 +26,10 @@ class toollabs::submit inherits toollabs {
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
     }
 
-    file { '/etc/update-motd.d/40-bastion-banner':
-        ensure => file,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/toollabs/40-${::instanceproject}-submithost-banner",
+    motd::script { 'submithost-banner':
+        ensure   => present,
+        priority => 40,
+        source   => "puppet:///modules/toollabs/40-${::instanceproject}-submithost-banner",
     }
 
     file { "${toollabs::store}/submithost-${::fqdn}":
