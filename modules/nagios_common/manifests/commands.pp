@@ -35,6 +35,7 @@ class nagios_common::commands(
         'check_dsh_groups',
         'check_wikidata',
         'check_ssl',
+        'check_sslxNN',
         'check_solr',
         'check_all_memcached.php',
         'check_to_check_nagios_paging',
