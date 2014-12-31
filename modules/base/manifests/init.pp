@@ -197,7 +197,7 @@ class base {
     include base::resolving
     include base::remote-syslog
     include base::sysctl
-    include base::motd
+    include ::motd
     include base::standard-packages
     include base::environment
     include base::phaste
