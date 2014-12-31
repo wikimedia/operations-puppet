@@ -1,14 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 # Script that reports when Puppet last ran, in bold if more than an hour ago.
-# Written by Mark Bergsma <mark@wikimedia.org>
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/base/puppet/97-last-puppet-run
-#####################################################################
 
 set -e
 
 PATH=/bin:/usr/bin
+LANG=C
 
 TSLASTPUPPETRUN=$(stat -c %Z /var/lib/puppet/state/classes.txt)
 NOW=$(date +%s)
@@ -18,8 +14,8 @@ NORM="\033[0m"
 
 echo -n "The last Puppet run was at $(date -d @$TSLASTPUPPETRUN) "
 
-if [[ $DELTAMIN -gt 60 ]]; then
-	echo -e "${BOLD}($DELTAMIN minutes ago)${NORM}."
+if [ $DELTAMIN -gt 60 ]; then
+	echo "${BOLD}($DELTAMIN minutes ago)${NORM}."
 else
 	echo "($DELTAMIN minutes ago)."
 fi
