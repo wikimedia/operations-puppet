@@ -36,7 +36,8 @@ use warnings;
 use Nagios::Plugin::Functions qw(nagios_exit max_state %STATUS_TEXT);
 
 # this is required to be in the same directory as us
-require 'check_ssl';    ## no critic
+use FindBin;
+require "$FindBin::Bin/check_ssl";    ## no critic
 
 sub check_ssl {
     local @ARGV = @_;
