@@ -11,4 +11,6 @@ class motd {
         recurse => true,
         purge   => true,
     }
+
+    include motd::defaults
 }
