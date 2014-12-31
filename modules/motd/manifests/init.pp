@@ -5,14 +5,10 @@
 class motd {
     file { '/etc/update-motd.d':
         ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
         recurse => true,
-        ignore  => '9*',
         purge   => true,
-        notify  => Exec['update_motd'],
-    }
-
-    exec { 'update_motd':
-        command     => '/bin/run-parts --lsbsysinit /etc/update-motd.d > /run/motd',
-        refreshonly => true,
     }
 }
