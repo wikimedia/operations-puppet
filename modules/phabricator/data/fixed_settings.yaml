@@ -88,6 +88,8 @@ maniphest.custom-field-definitions:
 #ops-sensitive: 'Operations Sensitive'
 #sensitive: 'Another Private Issue'
 
+events.listeners: ['SecurityPolicyEventListener']
+
 maniphest.statuses:
   open:
     name: Open
