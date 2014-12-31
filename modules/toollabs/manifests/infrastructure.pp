@@ -14,12 +14,9 @@
 #
 class toollabs::infrastructure {
 
-    file { '/etc/update-motd.d/40-infrastructure-banner':
-        ensure => file,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/toollabs/40-${::instanceproject}-infrastructure-banner",
+    motd::script { 'infrastructure-banner':
+        ensure   => present,
+        source   => "puppet:///modules/toollabs/40-${::instanceproject}-infrastructure-banner",
     }
 
     # Infrastructure instances are limited to an (arbitrarily picked) local

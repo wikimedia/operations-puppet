@@ -19,12 +19,9 @@ class toollabs::compute inherits toollabs {
     include toollabs::exec_environ,
             toollabs::hba
 
-    file { '/etc/update-motd.d/40-exechost-banner':
-        ensure => file,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/toollabs/40-${::instanceproject}-exechost-banner",
+    motd::script { 'exechost-banner':
+        ensure   => present,
+        source   => "puppet:///modules/toollabs/40-${::instanceproject}-exechost-banner",
     }
 
     file { "${toollabs::store}/execnode-${::fqdn}":
