@@ -368,7 +368,7 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'ProxyFetch' => {
-                    'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
+                    'url' => [ 'http://en.wikipedia.org/wiki/Special:BlankPage' ],
                 },
                 'IdleConnection' => $idleconnection_monitor_options
             },
@@ -449,7 +449,7 @@ class lvs::configuration {
             'depool-threshold' => ".6",
             'monitors' => {
                 'ProxyFetch' => {
-                    'url' => [ 'http://en.m.wikipedia.org/wiki/Angelsberg' ],
+                    'url' => [ 'http://en.m.wikipedia.org/wiki/Special:BlankPage' ],
                     },
                 'IdleConnection' => $idleconnection_monitor_options
             },
@@ -529,7 +529,7 @@ class lvs::configuration {
             'depool-threshold' => ".9",
             'monitors' => {
                 'ProxyFetch' => {
-                    'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
+                    'url' => [ 'http://en.wikipedia.org/wiki/Special:BlankPage' ],
                     },
                 'IdleConnection' => $idleconnection_monitor_options,
                 'RunCommand' => $runcommand_monitor_options
