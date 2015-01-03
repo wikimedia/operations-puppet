@@ -17,7 +17,7 @@ groups:
     gid: 701
     description: RT 5934
     members: [gwicke, catrope]
-    privileges: ['ALL = (parsoid) NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-admin:
     gid: 702
     description: RT 5934
