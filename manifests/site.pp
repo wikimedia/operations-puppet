@@ -765,7 +765,7 @@ node /^db10(33|34|41)\.eqiad\.wmnet/ {
 }
 
 # MariaDB 10
-node /^db10(55|61|62|65|66|72|73)\.eqiad\.wmnet/ {
+node /^db10(55|57|61|62|65|66|72|73)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -991,44 +991,6 @@ node 'db1047.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
     include role::mariadb::analytics
-}
-
-## SANITARIUM
-
-node 'db1057.eqiad.wmnet' {
-
-    include admin
-    $cluster = 'mysql'
-    $ganglia_aggregator = true
-    class { 'role::db::sanitarium':
-        instances => {
-            's3' => {
-                'port'                    => '3306',
-                'innodb_log_file_size'    => '500M',
-                'ram'                     => '24G',
-                'repl_ignore_dbs'         => $::private_wikis,
-                'repl_wild_ignore_tables' => $::private_tables,
-                'log_bin'                 => true,
-                'binlog_format'           => 'row',
-            },
-            's6' => {
-                'port'                    => '3307',
-                'innodb_log_file_size'    => '500M',
-                'ram'                     => '24G',
-                'repl_wild_ignore_tables' => $::private_tables,
-                'log_bin'                 => true,
-                'binlog_format'           => 'row',
-            },
-            's7' => {
-                'port'                    => '3308',
-                'innodb_log_file_size'    => '500M',
-                'ram'                     => '24G',
-                'repl_wild_ignore_tables' => $::private_tables,
-                'log_bin'                 => true,
-                'binlog_format'           => 'row',
-            },
-        }
-    }
 }
 
 node 'db1069.eqiad.wmnet' {
