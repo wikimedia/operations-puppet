@@ -196,7 +196,6 @@ class hhvm(
 
     service { 'hhvm':
         ensure    => 'running',
-        provider  => 'upstart',
         subscribe => Package['hhvm', 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-wikidiff2'],
     }
 

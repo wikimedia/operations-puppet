@@ -65,7 +65,6 @@ class gitblit(
 
     service { 'gitblit':
         ensure    => running,
-        provider  => 'upstart',
         subscribe => File['/var/lib/gitblit/data/gitblit.properties'],
         require   => File['/etc/init/gitblit.conf'],
     }

@@ -100,7 +100,6 @@ class ipython::notebook(
 
     service { 'ipython-notebook':
         ensure    => running,
-        provider  => 'upstart',
         subscribe => File['/etc/init/ipython-notebook.conf'],
         require   => [
                     Package['ipython-notebook'],

@@ -83,7 +83,6 @@ define tcpircbot::instance(
 
     service { "tcpircbot-${title}":
         ensure    => running,
-        provider  => 'upstart',
         subscribe => File["/etc/init/tcpircbot-${title}.conf", "${tcpircbot::dir}/${title}.json"],
         require   => [
             Package['python-irclib'],
