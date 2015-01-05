@@ -97,7 +97,6 @@ class cxserver(
         ensure     => running,
         hasstatus  => true,
         hasrestart => true,
-        provider   => 'upstart',
         require    => [
             File[$log_dir],
             File['/etc/init.d/cxserver']
