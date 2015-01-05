@@ -260,7 +260,7 @@ define misc::udp2log::instance::monitoring(
         # instance into ganglia.
         cron { "ganglia-logtailer-udp2log-${name}":
             ensure  => $ensure_monitor_packet_loss,
-            command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file ${packet_loss_log_file} --mode cron",
+            command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file ${packet_loss_log_file} --mode cron >> /var/log/ganglia/ganglia-logtailer.log 2>&1 ",
             user    => 'root',
             minute  => '*/5',
         }
