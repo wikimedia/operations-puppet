@@ -66,15 +66,15 @@ class role::phabricator::main {
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         auth_type        => 'dual',
-        libext_tag       => '0.6.1.4',
+        sprint_tag       => '0.6.1.2',
+        security_tag     => 'T518.1',
         libraries        => {
                 'sprint'   => '/srv/phab/libext/Sprint/src',
+                'security'   => '/srv/phab/libext/security/src',
         },
         extension_tag    => 'HEAD',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
-                              'LDAPUserpageCustomField.php',
-                              'SecurityPolicyEnforcerAction.php'],
-
+                              'LDAPUserpageCustomField.php'],
         settings         => {
             'search.elastic.host'                       => 'http://search.svc.eqiad.wmnet:9200',
             'search.elastic.namespace'                  => 'phabricatormain',

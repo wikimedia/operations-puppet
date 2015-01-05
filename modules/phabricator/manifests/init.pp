@@ -43,11 +43,14 @@
 # [*auth_type*]
 #     Specify a template to match the provided login mechanisms
 #
-# [*libext_tag*]
-#     Track extension revision
+# [*sprint_tag*]
+#     Track sprint app by tag
+#
+# [*security_tag*]
+#     Track security extension by tag
 #
 # [*extension_tag*]
-#     Track extension revision
+#     Track generic / small extensions by tag
 #
 # [*extensions*]
 #     Array of extensions to load
@@ -70,7 +73,8 @@ class phabricator (
     $timezone         = 'UTC',
     $lock_file        = '',
     $git_tag          = 'HEAD',
-    $libext_tag       = '',
+    $sprint_tag       = '',
+    $security_tag     = '',
     $libraries        = {},
     $extension_tag    = '',
     $extensions       = [],
@@ -164,19 +168,29 @@ class phabricator (
         notify    => Exec["ensure_lock_${lock_file}"],
     }
 
-    if ($libext_tag) {
-
+    if ($libraries) {
         file { "${phabdir}/libext":
             ensure => 'directory',
         }
 
         $phab_settings['load-libraries'] = $libraries
-
         $libext_lock_path = "${lock_file}_libext"
+    }
 
+    # Would love to do these as an array but the sprint vs Sprint
+    # case issue makes this complicated at the moment.
+    if ($sprint_tag) {
         phabricator::libext { 'Sprint':
             rootdir          => $phabdir,
-            libext_tag       => $libext_tag,
+            libext_tag       => $sprint_tag,
+            libext_lock_path => $libext_lock_path,
+        }
+    }
+
+    if ($security_tag) {
+        phabricator::libext { 'security':
+            rootdir          => $phabdir,
+            libext_tag       => $security_tag,
             libext_lock_path => $libext_lock_path,
         }
     }
