@@ -13,9 +13,10 @@ define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname =
             before    => Git::Install['phabricator/phabricator'],
         }
 
-        exec {$libext_lock_path:
-            command => "touch ${libext_lock_path}",
-            unless  => "test -z ${libext_lock_path} || test -e ${libext_lock_path}",
+        $libname_lock = "${libext_lock_path}_${libname}"
+        exec {$libname_lock:
+            command => "touch ${libname_lock}",
+            unless  => "test -z ${libname_lock} || test -e ${libname_lock}",
             path    => '/usr/bin:/bin',
         }
 }
