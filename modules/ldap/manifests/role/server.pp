@@ -20,6 +20,11 @@ class ldap::role::server::labs {
         'production': {
             case $::hostname {
                 'labcontrol2001': {
+                    # Remove this section once nembus is up and running
+                    $ca_name = 'GlobalSign_CA.pem'
+                    $certificate = 'ldap-codfw.wikimedia.org'
+                }
+                'nembus': {
                     $ca_name = 'GlobalSign_CA.pem'
                     $certificate = 'ldap-codfw.wikimedia.org'
                 }
@@ -28,7 +33,7 @@ class ldap::role::server::labs {
                     $certificate = 'ldap-eqiad.wikimedia.org'
                 }
                 'default': {
-                    fail('Production realm ldap certificates for virt1000/labcontrol2001 only!')
+                    fail('Production realm ldap certificates for nembus/neptunium only!')
                 }
             }
         }
