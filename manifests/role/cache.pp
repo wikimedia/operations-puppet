@@ -485,6 +485,8 @@ class role::cache {
         }
 
         # Generate an alert if too many delivery report errors
+        # NOTE: This will soon be deprecated in favor of the
+        # graphite_threshold check below.
         monitoring::ganglia { 'varnishkafka-drerr':
             description => 'Varnishkafka Delivery Errors',
             metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
@@ -495,17 +497,32 @@ class role::cache {
             require     => Varnishkafka::Monitor['webrequest'],
         }
 
+
         # Extract cache type name from topic for use in statsd prefix.
         # There is probably a better way to do this.
         $cache_type = regsubst($topic, '^webrequest_(.+)$', '\1')
+        $graphite_metric_prefix = "varnishkafka.${::hostname}.webrequest.${cache_type}"
+
         # Test using logster to send varnishkafka stats to statsd -> graphite.
         # This may be moved into the varnishkafka module.
         logster::job { 'varnishkafka-webrequest':
             minute          => '*/1',
             parser          => 'JsonLogster',
             logfile         => "/var/cache/varnishkafka/webrequest.stats.json",
-            logster_options => "-o statsd --statsd-host=localhost:8125 --metric-prefix=varnishkafka.${::hostname}.webrequest.${cache_type}",
+            logster_options => "-o statsd --statsd-host=localhost:8125 --metric-prefix=${graphite_metric_prefix}",
             require         => Class['role::cache::varnish::statsd'],
+        }
+
+        # Generate an alert if too many delivery report errors per second
+        monitoring::graphite_threshold { 'varnishkafka-drerr':
+            description     => 'Varnishkafka Delivery Errors',
+            metric          => "summarize(derivative(${graphite_metric_prefix}.varnishkafka.kafka_drerr.value), '1sec', 'sum')",
+            # warn if more than 0 errors in the last 15 minutes
+            warning         => 0,
+            # critical if more than 30 errors in the last 15 minutes
+            critical        => 30,
+            from            => '15min',
+            nagios_critical => 'false'
         }
     }
 
