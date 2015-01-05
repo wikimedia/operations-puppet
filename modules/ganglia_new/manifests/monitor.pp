@@ -11,8 +11,8 @@ class ganglia_new::monitor($cluster) {
     $aggregator_hosts = $ganglia_new::configuration::aggregator_hosts[$::site]
 
     class { 'ganglia_new::monitor::config':
-        gmond_port        => $gmond_port,
-        cname             => $cname,
-        aggregator_hosts  => $aggregator_hosts,
+        gmond_port       => $gmond_port,
+        cname            => $cname,
+        aggregator_hosts => $aggregator_hosts,
     }
 }

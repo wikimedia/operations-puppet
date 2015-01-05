@@ -15,16 +15,16 @@ class ganglia_new::gmetad(
     }
 
     file { $gmetad_root:
-        ensure  => directory,
-        owner   => 'ganglia',
-        group   => 'ganglia',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'ganglia',
+        group  => 'ganglia',
+        mode   => '0755',
     }
     file { $rrd_rootdir:
-        ensure  => directory,
-        owner   => 'nobody',
-        group   => 'root',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'nobody',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/etc/ganglia/gmetad.conf':
@@ -42,7 +42,7 @@ class ganglia_new::gmetad(
 
     # We override the shipped by ubuntu upstart. We want to use rrdcached
     file { '/etc/init/gmetad.conf':
-        ensure => $ensure,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
