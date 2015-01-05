@@ -1542,6 +1542,11 @@ class role::cache {
                 'probe'         => 'logstash',
             },
             {
+                # hue serves requests on port 8888
+                'backend_match' => '^analytics1027',
+                'port'          => 8888,
+            },
+            {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
