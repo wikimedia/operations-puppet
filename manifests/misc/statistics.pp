@@ -556,17 +556,6 @@ class misc::statistics::rsync::jobs::webrequest {
         source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz',
         destination => "${working_path}/squid/archive/mobile",
     }
-
-    # rsync kafkatee generated webrequest logs
-    misc::statistics::rsync_job { 'webrequest_mobile':
-        source      => 'analytics1003.eqiad.wmnet::webrequest/archive/mobile*.gz',
-        destination => "${working_path}/log/webrequest/mobile",
-    }
-    # rsync kafkatee generated webrequest logs
-    misc::statistics::rsync_job { 'webrequest_zero':
-        source      => 'analytics1003.eqiad.wmnet::webrequest/archive/zero*.gz',
-        destination => "${working_path}/log/webrequest/zero",
-    }
 }
 
 # Class: misc::statistics::rsync::jobs::eventlogging
