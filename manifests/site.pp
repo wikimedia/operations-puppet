@@ -766,7 +766,7 @@ node /^db10(33|34|41)\.eqiad\.wmnet/ {
 
 # MariaDB 10
 
-node /^db10(55|57|61|62|65|66|72|73)\.eqiad\.wmnet/ {
+node /^db10(55|57|65|66|72|73)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -856,7 +856,7 @@ node /^db20(23)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(10|15|37)\.eqiad\.wmnet/ {
+node /^db10(10|15|37|61)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -874,7 +874,7 @@ node /^db20(28)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(04|07|28|39)\.eqiad\.wmnet/ {
+node /^db10(04|07|28|39|62)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
