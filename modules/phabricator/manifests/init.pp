@@ -75,7 +75,7 @@ class phabricator (
     $git_tag          = 'HEAD',
     $sprint_tag       = '',
     $security_tag     = '',
-    $libraries        = {},
+    $libraries        = [],
     $extension_tag    = '',
     $extensions       = [],
     $settings         = {},
