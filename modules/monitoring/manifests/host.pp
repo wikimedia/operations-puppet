@@ -24,15 +24,15 @@ define monitoring::host (
 
     # Export the nagios host instance
     @@nagios_host { $title:
-        ensure               => $ensure,
-        target               => '/etc/nagios/puppet_hosts.cfg',
-        host_name            => $title,
-        address              => $ip_address,
-        hostgroups           => $hostgroup,
-        check_command        => 'check_ping!500,20%!2000,100%',
-        check_period         => '24x7',
-        max_check_attempts   => 2,
-        contact_groups       => $critical ? {
+        ensure                => $ensure,
+        target                => '/etc/nagios/puppet_hosts.cfg',
+        host_name             => $title,
+        address               => $ip_address,
+        hostgroups            => $hostgroup,
+        check_command         => 'check_ping!500,20%!2000,100%',
+        check_period          => '24x7',
+        max_check_attempts    => 2,
+        contact_groups        => $critical ? {
             'true'  => 'admins,sms',
             default => $contact_group,
         },
