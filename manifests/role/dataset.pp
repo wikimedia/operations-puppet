@@ -19,7 +19,7 @@ class role::dataset::pagecountsraw($enable=true) {
 #
 class role::dataset::pagecounts_all_sites($enable = true) {
     class { '::dataset::cron::pagecounts_all_sites':
-        source  =>  'stat1002.eqiad.wmnet::hdfs-archive/webstats',
+        source  =>  'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-all-sites',
         enable  => $enable,
         user    => 'datasets',
     }
