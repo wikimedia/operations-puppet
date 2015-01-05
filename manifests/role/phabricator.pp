@@ -68,10 +68,8 @@ class role::phabricator::main {
         auth_type        => 'dual',
         sprint_tag       => '0.6.1.2',
         security_tag     => 'T518.1',
-        libraries        => {
-                'sprint'   => '/srv/phab/libext/Sprint/src',
-                'security'   => '/srv/phab/libext/security/src',
-        },
+        libraries        => ['/srv/phab/libext/Sprint/src',
+                             '/srv/phab/libext/security'],
         extension_tag    => 'HEAD',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php'],
