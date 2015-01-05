@@ -165,8 +165,6 @@ class role::ci::slave {
     }
 
     contint::tmpfs { 'tmpfs for jenkins CI slave':
-        user        => 'jenkins-slave',
-        group       => 'jenkins-slave',
         mount_point => '/var/lib/jenkins-slave/tmpfs',
         size        => '512M',
     }
@@ -344,13 +342,7 @@ class role::ci::slave::browsertests {
     include role::ci::slave::labs::common
 
     /**
-    * FIXME breaks puppet because jenkins-deploy is not known
-    * by puppet since it is provided via LDAP.
-    */
-    /**
     contint::tmpfs { 'tmpfs for jenkins CI slave':
-        user        => 'jenkins-deploy',
-        group       => 'wikidev',
         # Jobs expect the tmpfs to be in $HOME/tmpfs
         mount_point => '/home/jenkins-deploy/tmpfs',
         size        => '128M',
