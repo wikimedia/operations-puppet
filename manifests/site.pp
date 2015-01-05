@@ -2823,21 +2823,24 @@ node 'labcontrol2001.wikimedia.org' {
     #include role::deployment::salt_masters::labs
 }
 
+# Eqiad ldap server, aka ldap-eqiad
 node 'neptunium.wikimedia.org' {
     $cluster               = 'virt'
-    #$is_puppet_master      = true
-    #$is_labs_puppet_master = true
-    #$use_neutron           = false
 
     include standard
     include admin
     include ldap::role::server::labs
     include ldap::role::client::labs
+}
 
-    #include role::nova::controller
-    #include role::nova::manager
-    #include role::salt::masters::labs
-    #include role::deployment::salt_masters::labs
+# Codfw ldap server
+node 'nembus.wikimedia.org' {
+    $cluster               = 'virt'
+
+    include standard
+    include admin
+    include ldap::role::server::labs
+    include ldap::role::client::labs
 }
 
 node 'labnet1001.eqiad.wmnet' {
