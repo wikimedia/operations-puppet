@@ -23,12 +23,14 @@ HOSTCOLOR="$(tput setaf $(($(cksum<<<$HOSTNAME|cut -d' ' -f-1)%6+1)))"
 
 export VISUAL="vim" EDITOR="vim" TERM="xterm-256color"
 export LC_ALL="en_US.UTF-8" LANG="en_US"
-export HISTCONTROL="ignoredups" HISTFILESIZE=2000 HISTSIZE=1000
+export HISTCONTROL="ignoreboth" HISTFILESIZE=2000 HISTSIZE=1000
 export BLOCKSIZE=1024 CLICOLOR=1
 export PS1='\[$BRIGHT\]\[$BLACK\][\[$HOSTCOLOR\]${HOSTNAME}\[$GREY\]:\[$RESET\]\[$GREY\]\w\[$BRIGHT\]\[$BLACK\]]\[$RESET\] $ '
 export PATH="${PATH}:${HOME}/.bin"
 export DEBFULLNAME="Ori Livneh" DEBEMAIL="ori@wikimedia.org"
 export PYTHONSTARTUP="${HOME}/.pythonrc"
+export PROMPT_COMMAND="history -a; history -n"
+
 
 
 #
