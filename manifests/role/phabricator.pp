@@ -66,7 +66,7 @@ class role::phabricator::main {
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         auth_type        => 'dual',
-        sprint_tag       => '0.6.1.2',
+        sprint_tag       => '0.6.1.4',
         security_tag     => 'T518.1',
         libraries        => ['/srv/phab/libext/Sprint/src',
                              '/srv/phab/libext/security/src'],
