@@ -96,7 +96,10 @@ sub vcl_recv {
 		unset req.http.Cookie;
 	}
 
-	if ( req.http.host ~ "^test\." ) {
+	if (req.http.host ~ "^test\.") {
+		set req.http.X-Wikimedia-Debug = "1";
+	}
+	if (req.http.X-Wikimedia-Debug = "1") {
 		return (pass);
 	}
 
