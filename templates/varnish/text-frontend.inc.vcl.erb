@@ -92,12 +92,14 @@ sub vcl_recv {
 	call normalize_path;
 	call mobile_redirect;
 
+	if (req.http.host ~ "^test\.") {
+		set req.http.X-Wikimedia-Debug = "1";
+	}
+
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 		set req.backend = backend_random;
 		set req.hash_ignore_busy = true;
 	}
-
-	call pass_requests;
 
 	// Users that just logged out, should not get a 304 for their
 	// (locally cached) logged in pages.
@@ -106,6 +108,10 @@ sub vcl_recv {
 	}
 
 	call evaluate_cookie;
+
+	if (req.request != "GET" && req.request != "HEAD") {
+		return (pass);
+	}
 
 	return (lookup);
 }
@@ -119,7 +125,7 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
-	if (beresp.ttl <= 0s) {
+	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
