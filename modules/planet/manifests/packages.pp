@@ -7,4 +7,13 @@ class planet::packages {
         ensure => 'present',
     }
 
+    # feedparser: we added a workaround for bug T47806
+    file { '/usr/share/pyshared/planet/vendor/feedparser.py':
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0555',
+        require => Package['planet-venus'],
+    }
+
 }
