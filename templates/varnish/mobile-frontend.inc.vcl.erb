@@ -93,7 +93,7 @@ sub vcl_recv {
 	}
 
 	if (req.http.host ~ "^test\.") {
-		return (pass);
+		set req.http.X-Wikimedia-Debug = "1";
 	}
 
 	set req.hash_ignore_busy = true;
@@ -129,7 +129,7 @@ sub vcl_fetch {
 		set beresp.ttl = 60 s;
 	}
 
-	if (beresp.ttl <= 0s) {
+	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
