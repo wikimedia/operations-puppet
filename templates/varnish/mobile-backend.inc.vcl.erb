@@ -7,13 +7,13 @@ sub vcl_recv {
 	// FIXME: restrict access
 
 	if (req.http.host ~ "^test\.") {
-<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
-		set req.backend = test_wikipedia;
-<% end -%>
-		return (pass);
+		set req.http.X-Wikimedia-Debug = "1";
 	}
+
 <% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
-	if (req.url ~ "^/w/api\.php") {
+	if (req.http.X-Wikimedia-Debug == "1") {
+		set req.backend = test_wikipedia;
+	} else if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
 	}
 <% end -%>
@@ -35,7 +35,7 @@ sub vcl_fetch {
 		set beresp.ttl = 60 s;
 	}
 
-	if (beresp.ttl <= 0s) {
+	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
