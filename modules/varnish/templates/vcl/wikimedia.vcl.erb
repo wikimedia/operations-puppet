@@ -3,9 +3,9 @@
 
 import std;
 
-# this is needed by geoip.inc.vcl and zero.inc.vcl, and in general is the only
-#   way to sanely do Set-Cookie in the face of multiple independent cookies
-#   being set from different code.
+# Required by {bits,geoip,mobile-backend,text-backend,zero}.inc.vcl, and in
+# general is the only way to sanely do Set-Cookie in the face of multiple
+# independent cookies being set from different code.
 import header;
 
 <%
@@ -389,6 +389,13 @@ sub vcl_error {
 		set obj.http.Connection = "keep-alive";
 	}
 	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_hash {
+	if (req.http.X-Wikimedia-Debug) {
+		hash_data(X-Wikimedia-Debug);
+	}
+	/* Function vcl_hash in <%= @vcl %>.inc.vcl will be appended here */
 }
 
 

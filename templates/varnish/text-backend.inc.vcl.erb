@@ -1,5 +1,7 @@
 # Varnish VCL include file for text backends
 
+# Note: This requires "import header" in the including VCL
+
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 include "hhvm.inc.vcl";
@@ -34,6 +36,9 @@ sub vcl_recv {
 		set req.backend = rendering;
 	}
 	if (req.http.host ~ "^test\.") {
+		set req.http.X-Wikimedia-Debug = "1";
+	}
+	if (req.http.X-Wikimedia-Debug == "1") {
 		set req.backend = test_wikipedia;
 	}
 <% end -%>
@@ -84,6 +89,12 @@ sub vcl_fetch {
 
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;
+		return (hit_for_pass);
+	}
+
+	if (req.http.X-Wikimedia-Debug == "1") {
+		set beresp.ttl = 0s;
+		header.append(beresp.http.Vary, "X-Wikimedia-Debug");
 		return (hit_for_pass);
 	}
 
