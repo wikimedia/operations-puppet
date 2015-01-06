@@ -34,6 +34,9 @@ sub vcl_recv {
 		set req.backend = rendering;
 	}
 	if (req.http.host ~ "^test\.") {
+		set req.http.X-Wikimedia-Debug = "1";
+	}
+	if (req.http.X-Wikimedia-Debug = "1") {
 		set req.backend = test_wikipedia;
 	}
 <% end -%>
@@ -84,6 +87,11 @@ sub vcl_fetch {
 
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;
+		return (hit_for_pass);
+	}
+
+	if (req.http.X-Wikimedia-Debug == "1") {
+		set beresp.ttl = 0s;
 		return (hit_for_pass);
 	}
 
