@@ -37,9 +37,6 @@ class mediawiki::hhvm {
                     request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
                     thread_count          => $max_threads,
                 },
-                stats           => {
-                    enable_hot_profiler   => false,
-                }
             },
         },
     }
