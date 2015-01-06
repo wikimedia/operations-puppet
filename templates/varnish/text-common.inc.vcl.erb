@@ -4,9 +4,6 @@ sub pass_requests {
 	if (req.request != "GET" && req.request != "HEAD") {
 		return (pass);
 	}
-	if (req.http.Host ~ "^test\.") {
-		return (pass);
-	}
 }
 
 sub cookie_munging {

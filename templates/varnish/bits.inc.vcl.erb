@@ -40,6 +40,13 @@ sub vcl_recv {
 	}
 
 	if (req.http.host == "<%= @cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>") {
+
+<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	if (req.http.X-Wikimedia-Debug == "1") {
+		set req.backend = test_wikipedia;
+	}
+<% end -%>
+
 	/* For https-only wikis, the redirect from http to https for bits assets should occur
 		in varnish instead of apache, since the apache redirect and mediawiki doesn't
 		vary by protocol. This can result in a redirect loop and assets not loading. */
@@ -74,6 +81,10 @@ sub vcl_fetch {
 	*/
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;
+		return (hit_for_pass);
+	}
+
+	if (req.http.X-Wikimedia-Debug == "1") {
 		return (hit_for_pass);
 	}
 
