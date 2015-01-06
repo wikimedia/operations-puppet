@@ -16,7 +16,7 @@ class role::xenon {
         redis_replication => undef,
     }
 
-    Service['redis'] ~> Service['xenon-log']
+    Service['redis-server'] ~> Service['xenon-log']
 
     file { '/srv/xenon/theme':
         ensure  => directory,
