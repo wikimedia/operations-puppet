@@ -7,7 +7,10 @@ sub vcl_recv {
 	call vcl_recv_purge;
 	/* FIXME: restrict access */
 
-	if ( req.http.host ~ "^test\." ) {
+	if (req.http.host ~ "^test\.") {
+		set req.http.X-Wikimedia-Debug = "1";
+	}
+	if (req.http.X-Wikimedia-Debug == "1") {
 <% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
 		set req.backend = test_wikipedia;
 <% end -%>
@@ -34,6 +37,10 @@ sub vcl_recv {
 sub vcl_fetch {
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
+	}
+
+	if (req.http.X-Wikimedia-Debug == "1") {
+		return (hit_for_pass);
 	}
 
 	if (beresp.ttl <= 0s) {
