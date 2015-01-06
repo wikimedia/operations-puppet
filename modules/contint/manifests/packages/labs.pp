@@ -9,6 +9,26 @@ class contint::packages::labs {
     # Fonts needed for browser tests screenshots (bug 69535)
     include mediawiki::packages::fonts
 
+    # Self update the wikimedia packages (such as hhvm) on an hourly basis
+    include apt::unattendedupgrades
+
+    apt::conf { 'unattended-upgrades-wikimedia':
+        priority => '51',
+        key      => 'Unattended-Upgrade::Allowed-Origins',
+        value    => 'Wikimedia:${distro_codename}-wikimedia',
+    }
+    apt::conf { 'lower-periodic-randomsleep':
+        priority => '51',
+        key      => 'APT::Periodic::RandomSleep',
+        value    => '300',
+    }
+
+    file { '/etc/cron.hourly/apt':
+        ensure  => link,
+        target  => '/etc/cron.daily/apt',
+        require => Package['unattended-upgrades'],
+    }
+
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
 
