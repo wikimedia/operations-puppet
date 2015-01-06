@@ -1,0 +1,7 @@
+// This file is managed by puppet
+// file:///contint/51unattended-upgrades-wikimedia
+Unattended-Upgrade::Allowed-Origins { "Wikimedia:${distro_codename}-wikimedia"; }
+
+// Default is to sleep for 1800 seconds to spread load
+// Reduce the period since we run the apt cron hourly
+APT::Periodic::RandomSleep "300";
