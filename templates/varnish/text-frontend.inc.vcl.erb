@@ -121,7 +121,7 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
-	if (beresp.ttl <= 0s) {
+	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}

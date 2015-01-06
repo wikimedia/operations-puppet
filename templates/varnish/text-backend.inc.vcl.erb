@@ -27,13 +27,17 @@ sub vcl_recv {
 	call vcl_recv_purge;
 	call restrict_access;
 
+	if (req.http.host ~ "^test\.") {
+		set req.http.X-Wikimedia-Debug = "1";
+	}
+
 <% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
 		set req.backend = rendering;
 	}
-	if (req.http.host ~ "^test\.") {
+	if (req.http.X-Wikimedia-Debug == "1") {
 		set req.backend = test_wikipedia;
 	}
 <% end -%>
@@ -82,7 +86,7 @@ sub vcl_fetch {
 		}
 	}
 
-	if (beresp.ttl <= 0s) {
+	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
