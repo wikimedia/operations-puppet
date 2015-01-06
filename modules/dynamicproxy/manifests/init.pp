@@ -31,7 +31,7 @@ class dynamicproxy (
     # The redis module intentionally does not restart the redis
     # service if the configuration changes, so we have to do this
     # explicitly here.
-    File['/etc/redis/redis.conf'] ~> Service['redis']
+    File['/etc/redis/redis.conf'] ~> Service['redis-server']
 
     include misc::labsdebrepo
 
