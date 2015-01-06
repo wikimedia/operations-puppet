@@ -62,6 +62,7 @@ class mediawiki::packages {
     package { [
         'lilypond',
         'timidity',
+        'freepats',
     ]:
         ensure => present,
     }
