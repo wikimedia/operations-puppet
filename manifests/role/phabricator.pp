@@ -72,7 +72,8 @@ class role::phabricator::main {
                              '/srv/phab/libext/security/src'],
         extension_tag    => 'HEAD',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
-                              'LDAPUserpageCustomField.php'],
+                              'LDAPUserpageCustomField.php',
+                              'SecurityPolicyEnforcerAction.php'],
         settings         => {
             'search.elastic.host'                       => 'http://search.svc.eqiad.wmnet:9200',
             'search.elastic.namespace'                  => 'phabricatormain',
