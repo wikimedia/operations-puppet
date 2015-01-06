@@ -1,14 +1,5 @@
 # Common functions for the Text Varnish cluster
 
-sub pass_requests {
-	if (req.request != "GET" && req.request != "HEAD") {
-		return (pass);
-	}
-	if (req.http.Host ~ "^test\.") {
-		return (pass);
-	}
-}
-
 sub cookie_munging {
 	/* This header is saved, and restored before sending it to MediaWiki */
 	if (req.restarts == 0) {
