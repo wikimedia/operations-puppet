@@ -1,0 +1,3 @@
+// This file is managed by puppet
+// file:///contint/51unattended-upgrades-wikimedia
+Unattended-Upgrade::Allowed-Origins { "${distro_id}:${distro_codename}-wikimedia"; }
