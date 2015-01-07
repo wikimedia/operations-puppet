@@ -1,0 +1,3 @@
+role::mediawiki::webserver::pool: api
+admin::groups:
+  - deployment
