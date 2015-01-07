@@ -14,19 +14,6 @@ class role::cxserver::production {
         apertium  => 'http://apertium.svc.eqiad.wmnet',
     }
 
-    group { 'cxserver':
-      ensure => present,
-      name   => 'cxserver',
-      system => true,
-    }
-
-    user { 'cxserver':
-      gid           => 'cxserver',
-      home          => '/srv/deployment/cxserver/cxserver',
-      managehome    => true,
-      system        => true,
-    }
-
     # Define cxserver port
     $cxserver_port = '8080'
 
@@ -36,9 +23,9 @@ class role::cxserver::production {
         port  => $cxserver_port,
     }
 
-    monitor_service { 'cxserver':
+    monitoring::service { 'cxserver':
         description   => 'cxserver',
-        check_command => 'check_http_on_port!8080',
+        check_command => "check_http_on_port!${cxserver_port}",
     }
 }
 
@@ -54,10 +41,6 @@ class role::cxserver::beta {
         log_dir   => '/data/project/cxserver/log',
         parsoid   => 'http://parsoid-lb.eqiad.wikimedia.org',
         apertium  => 'http://apertium-beta.wmflabs.org',
-        require   => [
-            File['/srv/deployment/cxserver'],
-            File['/data/project/cxserver']
-        ],
     }
 
     # Need to allow jenkins-deploy to reload cxserver
@@ -66,22 +49,6 @@ class role::cxserver::beta {
         # OpenStack manager interface at wikitech
         'ALL = (root)  NOPASSWD:/usr/sbin/service cxserver restart',
     ] }
-
-    # Make sure the log directory parent exists on beta
-    file { '/data/project/cxserver':
-        ensure => directory,
-        owner  => cxserver,
-        group  => cxserver,
-        mode   => '0775',
-    }
-
-    # cxserver repositories and config under /srv/deployment/cxserver
-    file { '/srv/deployment/cxserver':
-        ensure => directory,
-        owner  => jenkins-deploy,
-        group  => wikidev,
-        mode   => '0755',
-    }
 
     # Define cxserver port
     $cxserver_port = '8080'
