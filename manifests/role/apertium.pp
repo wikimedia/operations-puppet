@@ -7,9 +7,6 @@ class role::apertium::production {
 
     include ::apertium
 
-    # Define apertium port
-    $apertium_port = '2737'
-
     # We have to explicitly open the apertium port (bug T47868)
     ferm::service { 'apertium_http':
         proto => 'tcp',
@@ -18,7 +15,7 @@ class role::apertium::production {
 
     monitor_service { 'apertium':
         description   => 'apertium apy',
-        check_command => 'check_http_on_port!2737',
+        check_command => "check_http_on_port!${apertium_port}",
     }
 }
 
