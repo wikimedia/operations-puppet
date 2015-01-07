@@ -2920,7 +2920,7 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
 
     include role::mathoid::production
     include role::citoid::production
-    role apertium::production
+    role apertium::production, cxserver::production
 
     class { 'admin':
         groups => [
@@ -2928,6 +2928,7 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
             'mathoid-admin',
             'citoid-roots',
             'citoid-admin',
+            'cxserver-admin',
         ]
     }
     class { 'lvs::realserver':
