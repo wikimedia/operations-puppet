@@ -163,11 +163,11 @@ class base {
     if ($::realm == 'labs') {
         # For labs, use instanceid.domain rather than the fqdn
         # to ensure we're always using a unique certname.
-        # $::ec2id is a fact that queries the instance metadata
-        if($::ec2id == '') {
+        # $::ec2_instance_id is a fact that queries the instance metadata
+        if($::ec2_instance_id == '') {
             fail('Failed to fetch instance ID')
         }
-        $certname = "${::ec2id}.${::domain}"
+        $certname = "${::ec2_instance_id}.${::domain}"
 
         # Labs instances /var is quite small, provide our own default
         # to keep less records (bug 69604).
