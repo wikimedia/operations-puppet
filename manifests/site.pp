@@ -2990,20 +2990,6 @@ node 'ytterbium.wikimedia.org' {
 
 }
 
-node 'zinc.eqiad.wmnet' {
-
-    include standard
-
-    # zinc is a Solr box.  It will be handy
-    # for search-roots to have access
-    # here to help troubleshoot problems.
-    # RT: 8144
-    class { 'admin':
-        groups => ['search-roots'],
-    }
-    include role::solr::ttm
-}
-
 node 'zirconium.wikimedia.org' {
     class { 'base::firewall': }
 
