@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cat > /etc/apt/sources.list.d/wikimedia.list <<EOF
+deb http://apt.wikimedia.org/wikimedia <%= @distribution %>-wikimedia <% if @hook_components -%><%= @hook_components %><%- else -%><%= @components %><%- end -%>
+deb-src http://apt.wikimedia.org/wikimedia <%= @distribution %>-wikimedia <% if @hook_components -%><%= @hook_components %><%- else -%><%= @components %><%- end -%>
+EOF
+apt-get install wget -y
+wget -O - -o /dev/null http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg | apt-key add -
+apt-get update

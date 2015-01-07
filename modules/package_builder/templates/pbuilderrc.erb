@@ -1,0 +1,20 @@
+AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
+
+# Defaulting the architecture if not specified
+ARCH=${ARCH:="$(dpkg --print-architecture)"}
+# Defaulting the distribution if not specified
+DIST=${DIST:="$(lsb_release --short --codename)"}
+
+# Avoid running hooks if wikimedia is not specified
+if [ -z "${WIKIMEDIA}" ]; then
+	HOOKDIR="/dev/null"
+else
+	# Hooks explicitly don't have an architecture
+	HOOKDIR=/var/cache/pbuilder/hooks/$DIST
+fi
+
+DISTRIBUTION="$DIST"
+PDEBUILD_PBUILDER="cowbuilder"
+BASEPATH="<%= @basepath %>-base-${DIST}-${ARCH}.cow/"
+BUILDRESULT="<%= @basepath %>/result/$DIST-$ARCH"
+APTCACHE="<%= @basepath %>/aptcache/$DIST-$ARCH"
