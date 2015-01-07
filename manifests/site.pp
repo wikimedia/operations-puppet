@@ -802,7 +802,7 @@ node /^db20(17)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(27|35|44)\.eqiad\.wmnet/ {
+node /^db10(15|27|35|44)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -856,7 +856,7 @@ node /^db20(23)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(10|15|37|61)\.eqiad\.wmnet/ {
+node /^db10(37|61)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -874,7 +874,7 @@ node /^db20(28)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(04|07|28|39|62)\.eqiad\.wmnet/ {
+node /^db10(28|39|62)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
