@@ -1,0 +1,11 @@
+AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
+if [ -z "${DIST}" ]; then
+	DIST="jessie"
+fi
+
+DISTRIBUTION="$DIST"
+PDEBUILD_PBUILDER="cowbuilder"
+BASEPATH="/var/cache/pbuilder/base-$DIST.cow/"
+HOOKDIR=/var/cache/pbuilder/$DIST/hooks
+BUILDRESULT="/var/cache/pbuilder/$DIST/result/"
+APTCACHE="/var/cache/pbuilder/$DIST/aptcache/"
