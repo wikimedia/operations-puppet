@@ -133,7 +133,7 @@ class role::logstash::beta {
     logstash::input::irc { 'freenode':
         user     => $irc_name,
         nick     => $irc_name,
-        channels => ['#wikimedia-labs', '#wikimedia-qa'],
+        channels => ['#wikimedia-labs', '#wikimedia-qa', '#wikimedia-releng'],
     }
 
     logstash::input::tcp { 'tcp_json':
