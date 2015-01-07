@@ -22,9 +22,6 @@ class puppetmaster::scripts(
         mode    => '0555',
         source  => 'puppet:///modules/puppetmaster/uuid-generator',
     }
-    file {'/usr/local/bin/naggen':
-        ensure  => 'absent',
-    }
     file {'/usr/local/sbin/puppetstoredconfigclean.rb':
         ensure  => 'present',
         owner   => 'root',
