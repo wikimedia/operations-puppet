@@ -8,6 +8,9 @@
 # [*uwsgi_processes*]
 #   Number of uWSGI workers to run (default: 8).
 #
+# [*max_memory*]
+#   Maximum memory allowed for uWSGI workers *combined* (default: 8G).
+#
 # [*memcached_size*]
 #   Size of memcached store, in megabytes (default: 200).
 #
@@ -38,6 +41,7 @@ class graphite::web(
     $secret_key,
     $storage_dir,
     $uwsgi_processes   = 8,
+    $max_memory        = to_bytes("8G"),
     $memcached_size    = 200,
     $admin_user        = 'admin',
     $documentation_url = 'http://graphite.readthedocs.org/',
@@ -45,7 +49,7 @@ class graphite::web(
 ) {
     include ::graphite
 
-    package { ['memcached', 'python-memcache', 'graphite-web']: }
+    package { ['memcached', 'python-memcache', 'graphite-web', 'cgroup-bin']: }
 
     file { '/etc/graphite/cors.py':
         source  => 'puppet:///modules/graphite/cors.py',
@@ -104,6 +108,8 @@ class graphite::web(
                 'die-on-term' => true,
                 'master'      => true,
                 'processes'   => $uwsgi_processes,
+                'cgroup'      => '/sys/fs/cgroup/memory/graphite-web',
+                'cgroup-opt'  => "memory.limit_in_bytes=$max_memory",
             },
         },
         require  => File['/var/log/graphite-web'],
