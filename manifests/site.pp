@@ -2934,6 +2934,7 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
     }
     class { 'lvs::realserver':
         realserver_ips => [
+                    '10.2.2.18', # cxserver.svc.eqiad.wmnet
                     '10.2.2.19', # citoid.svc.eqiad.wmnet
                     '10.2.2.20', # mathoid.svc.eqiad.wmnet
                     ],
