@@ -1997,8 +1997,15 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     include role::mediawiki::jobrunner
 }
 
-#mw1017-mw1113 are apaches
-node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+# mw1017-mw1025 are canary appservers
+node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
+    $cluster = 'appserver'
+    role mediawiki::canary_appserver
+    include ::admin
+}
+
+# mw1026-mw1113 are appservers
+node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     $cluster = 'appserver'
     if $::hostname =~ /^mw10(5[45])$/ {
         $ganglia_aggregator = true
@@ -2008,8 +2015,15 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     include ::admin
 }
 
-# mw1114-1148 are api apaches
-node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
+# mw1114-mw1119 are canary api appservers
+node /^mw111[4-9]\.eqiad\.wmnet$/ {
+    $cluster = 'api_appserver'
+    role mediawiki::appserver::canary_api
+    include admin
+}
+
+# mw1120-1148 are api apaches
+node /^mw11([23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
     $cluster = 'api_appserver'
     if $::hostname =~ /^mw111[45]$/ {
         $ganglia_aggregator = true
