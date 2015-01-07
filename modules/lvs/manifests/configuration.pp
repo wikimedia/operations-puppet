@@ -188,6 +188,9 @@ class lvs::configuration {
             'citoid' => {
                 'eqiad' => "10.2.2.19",
             },
+            'cxserver' => {
+                'eqiad' => "10.2.2.18",
+            },
         },
         'labs' => {
             'text' => {
@@ -206,6 +209,7 @@ class lvs::configuration {
             'dns_rec' => {},
             'mathoid' => {},
             'citoid' => {},
+            'cxserver' => {},
             'misc_web' => {},
             'mobile' => {},
             'ocg' => {},
@@ -794,6 +798,19 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'http://citoid.svc.eqiad.wmnet' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            }
+        },
+        'cxserver' => {
+            'description' => 'Content Translation service, cxserver.svc.eqiad.wmnet',
+            'class' => 'low-traffic',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['cxserver'][$::site],
+            'port' => 8080,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://cxserver.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             }
         }
