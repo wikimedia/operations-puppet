@@ -15,7 +15,7 @@ class role::cxserver::production {
     }
 
     # Define cxserver port
-    $cxserver_port = '8080'
+    $cxserver_port = hiera('role::cxserver::cxserver_port', 8080)
 
     # We have to explicitly open the cxserver port (bug T47868)
     ferm::service { 'cxserver_http':
@@ -51,7 +51,7 @@ class role::cxserver::beta {
     ] }
 
     # Define cxserver port
-    $cxserver_port = '8080'
+    $cxserver_port = hiera('role::cxserver::cxserver_port', 8080)
 
     # We have to explicitly open the cxserver port (bug 45868)
     ferm::service { 'cxserver_http':
