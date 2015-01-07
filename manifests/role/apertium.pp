@@ -5,10 +5,10 @@ class role::apertium::production {
         description => 'Apertium APY server'
     }
 
-    include ::apertium
+    # Define Apertium port
+    $apertium_port = hiera('role::apertium::apertium_port', '2737')
 
-    # Define apertium port
-    $apertium_port = '2737'
+    include ::apertium
 
     # We have to explicitly open the apertium port (bug T47868)
     ferm::service { 'apertium_http':
@@ -18,7 +18,7 @@ class role::apertium::production {
 
     monitor_service { 'apertium':
         description   => 'apertium apy',
-        check_command => 'check_http_on_port!2737',
+        check_command => "check_http_on_port!${apertium_port}",
     }
 }
 
@@ -26,6 +26,9 @@ class role::apertium::beta {
     system::role { 'role::apertium::beta':
         description => 'Apertium APY server (on beta)'
     }
+
+    # Define Apertium port
+    $apertium_port = hiera('role::apertium::apertium_port', '2737')
 
     include ::apertium
 
@@ -35,9 +38,6 @@ class role::apertium::beta {
         # OpenStack manager interface at wikitech
         'ALL = (root)  NOPASSWD:/usr/sbin/service apertium-apy restart',
     ] }
-
-    # Define Apertium port
-    $apertium_port = '2737'
 
     # We have to explicitly open the apertium port (bug T47868)
     ferm::service { 'apertium_http':
