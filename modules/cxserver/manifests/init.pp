@@ -36,19 +36,29 @@ class cxserver(
     # dictd-* packages for dictionary server.
     require_package('nodejs')
 
-    package { 'dictd':
-        ensure => present,
+    package { 'cxserver':
+        ensure   => present,
+        provider => 'trebuchet',
     }
 
-    package { 'dict-freedict-eng-spa':
-        ensure => present,
+    group { 'cxserver':
+      ensure => present,
+      name   => 'cxserver',
+      system => true,
     }
 
-    package { 'dict-freedict-spa-eng':
-        ensure => present,
+    user { 'cxserver':
+      gid        => 'cxserver',
+      home       => '/var/lib/cxserver',
+      managehome => true,
+      system     => true,
     }
 
-    package { 'dict-freedict-eng-hin':
+    package { [ 'dictd',
+                'dict-freedict-eng-spa',
+                'dict-freedict-spa-eng',
+                'dict-freedict-eng-hin',
+            ]:
         ensure => present,
     }
 
@@ -56,15 +66,15 @@ class cxserver(
 
     file { $log_dir:
         ensure => directory,
-        owner  => cxserver,
-        group  => cxserver,
+        owner  => 'cxserver',
+        group  => 'cxserver',
         mode   => '0775',
     }
 
     file { $conf_path:
         ensure  => present,
-        owner   => cxserver,
-        group   => cxserver,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0555',
         content => template('cxserver/config.erb'),
         notify  => Service['cxserver'],
@@ -73,16 +83,16 @@ class cxserver(
     # The upstart configuration
     file { '/etc/init/cxserver.conf':
         ensure  => present,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
         content => template('cxserver/upstart.erb'),
     }
 
     file { '/etc/logrotate.d/cxserver':
         ensure  => present,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
         content => template('cxserver/logrotate.erb'),
     }
