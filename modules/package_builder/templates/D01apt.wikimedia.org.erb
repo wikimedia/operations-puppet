@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Avoid running hooks if wikimedia is not specified
+if [ -n "${WIKIMEDIA}" ]; then
+	cat > /etc/apt/sources.list.d/wikimedia.list <<-'EOF'
+	deb <%= @mirror %> <%= @distribution %>-wikimedia <%= @components %>
+	deb-src <%= @mirror %> <%= @distribution %>-wikimedia <%= @components %>
+EOF
+	apt-get install wget -y
+	wget -O - -o /dev/null http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg | apt-key add -
+	apt-get update
+fi

@@ -1,0 +1,23 @@
+# Don't sign packages by default
+AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
+# Defaulting the architecture if not specified
+ARCH=${ARCH:-"$(dpkg --print-architecture)"}
+# Defaulting the distribution if not specified
+DIST=${DIST:="$(lsb_release --short --codename)"}
+
+# If DIST has been declared like dist-wikimedia, handle it like as if the user
+# wanted to specify WIKIMEDIA="yes" which will satisfy build dependencies from
+# the wikimedia repos
+if [ "${DIST#*-}" = "wikimedia" ];
+	WIKIMEDIA="yes"
+	DIST=${DIST%-wikimedia}
+fi
+
+DISTRIBUTION="$DIST"
+PDEBUILD_PBUILDER="cowbuilder"
+BASEPATH="<%= @basepath %>/base-${DIST}-${ARCH}.cow/"
+BUILDRESULT="<%= @basepath %>/result/${DIST}-${ARCH}"
+APTCACHE="<%= @basepath %>/aptcache/${DIST}-${ARCH}"
+
+# Hooks explicitly don't have an architecture
+HOOKDIR=<%= @basepath %>/hooks/$DIST
