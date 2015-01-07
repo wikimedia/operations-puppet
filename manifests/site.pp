@@ -1132,7 +1132,7 @@ node /es100[5]\.eqiad\.wmnet/ {
     }
 }
 
-node /es200[6]\.codfw\.wmnet/ {
+node /es200[567]\.codfw\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
