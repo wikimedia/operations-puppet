@@ -1,3 +1,4 @@
 role::mediawiki::webserver::pool: api
+mediawiki::web::mpm_config::mpm: worker
 admin::groups:
   - deployment

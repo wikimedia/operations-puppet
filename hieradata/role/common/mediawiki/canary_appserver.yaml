@@ -1,4 +1,5 @@
 cluster: appserver
 role::mediawiki::webserver::pool: apaches
+mediawiki::web::mpm_config::mpm: worker
 admin::groups:
   - deployment
