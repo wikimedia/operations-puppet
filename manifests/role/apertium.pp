@@ -18,7 +18,7 @@ class role::apertium::production {
 
     monitoring::service { 'apertium':
         description   => 'apertium apy',
-        check_command => "check_http_on_port!${apertium_port}",
+        check_command => "check_http_url_on_port!${apertium_port}!/listPairs",
     }
 }
 
