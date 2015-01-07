@@ -514,7 +514,7 @@ class role::cache {
         }
 
         # Generate an alert if too many delivery report errors per second
-        monitoring::graphite_threshold { 'varnishkafka-drerr':
+        monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
             description     => 'Varnishkafka Delivery Errors',
             metric          => "summarize(derivative(${graphite_metric_prefix}.varnishkafka.kafka_drerr.value), '1sec', 'sum')",
             # warn if more than 0 errors in the last 15 minutes
