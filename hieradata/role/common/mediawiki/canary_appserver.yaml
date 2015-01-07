@@ -1,0 +1,4 @@
+cluster: appserver
+role::mediawiki::webserver::pool: apaches
+admin::groups:
+  - deployment
