@@ -34,6 +34,9 @@ class contint::packages {
     if ! defined ( Package['openjdk-7-jdk'] ) {
         package { 'openjdk-7-jdk': ensure => present }
     }
+    if os_version('ubuntu >= trusty') and ! defined ( Package['openjdk-8-jdk'] ) {
+        package { 'openjdk-8-jdk': ensure => present }
+    }
 
     package { 'maven2':
         ensure => present,
