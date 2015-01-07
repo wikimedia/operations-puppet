@@ -513,16 +513,18 @@ class role::cache {
             require         => Class['role::cache::varnish::statsd'],
         }
 
-        # Generate an alert if too many delivery report errors per second
+        # Generate an alert if too many delivery report errors per minute
+        # (logster only reports once a minute)
         monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
-            description     => 'Varnishkafka Delivery Errors',
-            metric          => "summarize(derivative(${graphite_metric_prefix}.varnishkafka.kafka_drerr.value), '1sec', 'sum')",
-            # warn if more than 0 errors in the last 15 minutes
+            description     => 'Varnishkafka Delivery Errors per minute',
+            metric          => "derivative(${graphite_metric_prefix}.varnishkafka.kafka_drerr.value)",
+            # warn if more than 0 errors in the last 10 minutes
             warning         => 0,
-            # critical if more than 30 errors in the last 15 minutes
+            # critical if more than 30 errors in the last 10 minutes
             critical        => 30,
-            from            => '15min',
-            nagios_critical => 'false'
+            from            => '10min',
+            nagios_critical => 'false',
+            require         => Logster::Job['varnishkafka-webrequest'],
         }
     }
 
