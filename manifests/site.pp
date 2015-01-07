@@ -86,6 +86,7 @@ node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+
 # analytics1003 is being used for testing kafkatee
 # in preperation for replacing udp2log
 node 'analytics1003.eqiad.wmnet' {
@@ -111,23 +112,32 @@ node 'analytics1003.eqiad.wmnet' {
     # include role::analytics::kafkatee::webrequest::webstatscollector
 }
 
-# analytics1009 used to be the standby NameNode,
-# but during cluster reinstall in 2014-07, it
-# had an error when booting.  analytics1004
-# has been repurposed as analytics standby NameNode.
-node 'analytics1009.eqiad.wmnet' {
-    # analytics1009 is analytics Ganglia aggregator for Row A
-    # $ganglia_aggregator = true
 
+# analytics1001 will soon be the primary Hadoop NameNode
+node 'analytics1001.eqiad.wmnet' {
     class { 'admin':
         groups => [
+            'analytics-users',
+            'analytics-privatedata-users',
             'analytics-roots',
             'analytics-admins',
         ],
     }
     include standard
+}
 
-    # include role::analytics::hadoop::standby
+
+# analytics1002 will soon be the standby Hadoop NameNode
+node 'analytics1002.eqiad.wmnet' {
+    class { 'admin':
+        groups => [
+            'analytics-users',
+            'analytics-privatedata-users',
+            'analytics-roots',
+            'analytics-admins',
+        ],
+    }
+    include standard
 }
 
 
