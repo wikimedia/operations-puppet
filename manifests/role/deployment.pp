@@ -109,6 +109,10 @@ class role::deployment::config {
             'grain'    => 'iegreview',
             'upstream' => 'https://gerrit.wikimedia.org/r/wikimedia/iegreview',
         },
+        'cxserver/cxserver'      => {
+            'service_name' => 'cxserver',
+            'upstream'     => 'https://gerrit.wikimedia.org/r/mediawiki/services/cxserver',
+        },
     }
 }
 
