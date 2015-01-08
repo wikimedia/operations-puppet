@@ -8,7 +8,7 @@ class apertium(){
         'apertium',
         'apertium-apy',
         'apertium-en-ca',
-        'apertium-en-eo',
+        'apertium-eo-en',
         'apertium-en-es',
         'apertium-es-ca',
         'apertium-es-pt',
