@@ -41,7 +41,7 @@ groups:
     members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808,
       brion, cmcmahon, cscott, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
-      maxsem, mattflaschen, marktraceur, milimetric, mlitn,
+      maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
       nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
       tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair]
   restricted:
@@ -1255,3 +1255,10 @@ users:
     realname: Tilman Bayer
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWtvR5ADWxY6uskCz05XZ6BdPsUsrSqdJNjsX3pOpbk/sy+S6Jw0GGJjf+rQl+w/3bGmaifYyw2EXFk7ipDuhYJXrjpFALZocqbS1CA7/whQRtFy1kN+MZS1KJHQl4386dsvw7vBO4cIdnbW7DO9jEZPZRZB9WXMh6C1sK9qx2665NYsZ2WH4S634avmjqKAufT95sVY10/VUAeP/RPKsiThjRnynUKQn+vRvzFT+B6w5jzkZ3GeNFw7Re3WAfMHt3d588aRZu45rJ2H8evfcU0xXPcTjYMuxjTcVKmeFMflDl+f/FzbZuH3tvr6UcfEV+/+Cug6nBzYbzRQ3LWoPmGIZAlJ51I9OVrdGfTi2v2gjL1Re+t7imXgCWKrilLMhdQm6roed/9KeH3oSqoyl7lVhtvHmf5nxbP2N14Oabpq5lfr9dhkmQP7tnfGH1tmU82mg4P2shc1b0p0gMM8AVEPXHAIFKKVaywrHt03xhQ0iOLHxJE/I20LWqlZiQ2OfEr/QtR/ijtGgBtDJLmF2REg8m6FvIiY4+OOfMmBKg0vpg/53FQqpdLKBZdXOaCAkGxLnV5X405UESGUQtru/3A6c/Ie0qwxougb9ytPhDMsLnS8M77vJ4VVuVn9E0nPkpHvwPDC91FFip92viXNxP3xGyfis9sE++TnTk1cWGTw== tbayer@wikimedia.org]
     uid: 3029
+  andyrussg:
+    ensure: present
+    gid: 500
+    name: andyrussg
+    realname: Andrew Green
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQD46lk/Jc4xkSRKu8z4Go5zzYuA0HRwyd9RqbtMGfC61EVY17oYx/lIEikVLBzhyL7PCCA/mBvElTeUr4S9gvmxqtOwczj2FTwIIEFE7nbvF6NJdf2n3f/kRAKOtc9FaOJJ7sbje6rrnJdxiMcUtf9MEo0m3k7Dw5CYU68xVJnowiWE0KBqMps4xkOfdBmk1L8bOfmC+pfe7LIVoX5MxU+sJ2f+QGErtPq/inIppsifW4aw2Lvamc11X/uyUBwzcQzgrE0nViOdSobW9hB56GnMHLN3OrjUbhbM2iDtvsEo00bcVSsUfsHPjiqf95Ugm3NFLLhY7odnWlo6tTvj0NJiU1PvxMRN4b+bgzuw/Angr6IdnpNDclAc8cAY5bkSnXacgzuCkBTz6vNKdFS8XfCEOAZaWSYf9Hc/u8rJzt9Lz4LieJXx5sB3ncQmRmUZNEHopYzZLF4KSNjGM+d5N4a8sJlAyCqeGCaE579yS+Q1ZnvtIIwakdNiuwiOYA0j+X+EzLp+0eYuRn9ZPGSbgarjWY/RsrAai93RVxFHq4+zHrPZ1eFw2g0WydEGNuHh+6JQdZfK6hUwCoOYjxX06xdjbbaFWNgeT3p1LrUH1sQ+Iht+zJp7cg5Hv8h2Xvq5Z8GA/hP9dU7h2esqErpu1Vk1Yyld0sdC/oYxW8JPsXuR55G++qGtyfBJNdVJo2f4+w6gjcuiaE7KrenuzxcC4IyKwiqwknqv1FiWINCjDADxol2YTEP8Ia7ZzDACwCoJ9YZMksX26lHLCC+UiTMoSDrAvtEUM930ZwnkxUAzu4m90qt4YaXZlrEeOiUru/ydaZ9dDHdqtCf6yT6QpNCQmJ/cQfqJ/E7fV7GmSt5VAbBfl0BuVJlirZQtZ9/FXG/z3UDqBkYaSnxuKsh9iB/tgr0Y9xXMK7AcSPQiR84SqDAn+0zYKoLP1ZO+2Zh7D2FNHmKDj7XQFVFdKp6i0kMDAT2Ro/7Z3W671t8+0lKua1zi7vm10ey4K4FS8/1gHuhhB/S7imncehsvWMdvakFhWoaA9gJc0HrTSibY4/A1HLV0KK+4CCN08R/Zei9DXJeIwbCD3i9VzXKoWTUqBmZAAV2IcXGswoHA4UJ/q7zJp5MRuvziKbXNgbBMJUsiezAERqZ35xMkcnTHjFS0DpnNXlDts0nPfsHUVUpW6wAvsSg+ZieGrSjkua8/d0WMgxlVlKICRb5XhDWAGMu+tEfhYjFD/c5UkzaHU4L49W4h7C16PRwJdfRRb8ULb7YBFcrEzOnyYAi0DQmpJPsBJ9tfhAZXMqXQ8hhNLHuCi7MuEwU9sHO7wk+/Pq9F5AD/pdi7pZ2/bZg6c5+2BigynwHy4z3l home@lap]
+    uid: 3609
