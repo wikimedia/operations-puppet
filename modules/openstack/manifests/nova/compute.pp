@@ -31,7 +31,7 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
                 group   => 'nova',
                 mode    => '0600',
                 require => File["/var/lib/nova/.ssh"];
-            "/var/lib/nova/.ssh/authorized_keys":
+            "/var/lib/nova/.ssh/id_rsa.pub":
                 source  => "puppet:///private/ssh/nova/nova.pub",
                 owner   => 'nova',
                 group   => 'nova',
@@ -59,6 +59,10 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
                 content => template("openstack/common/nova/nova-compute.conf.erb"),
                 require => Package["nova-common"];
         }
+    }
+
+    ssh::userkey { 'nova':
+        source  => "puppet:///private/ssh/nova/nova.pub",
     }
 
     service { "libvirt-bin":
