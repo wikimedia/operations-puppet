@@ -520,8 +520,8 @@ class role::cache {
             metric          => "derivative(${graphite_metric_prefix}.varnishkafka.kafka_drerr.value)",
             # warn if more than 0 errors per minute in the last 10 minutes
             warning         => 0,
-            # critical if more than 30 errors per minute in the last 10 minutes
-            critical        => 30,
+            # critical if more than 20000 errors per minute in the last 10 minutes
+            critical        => 20000,
             from            => '10min',
             nagios_critical => 'false',
             require         => Logster::Job['varnishkafka-webrequest'],
