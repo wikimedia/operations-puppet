@@ -15,7 +15,7 @@
 class mirrors::ubuntu {
     require mirrors
 
-    file { '/srv/ubuntu/':
+    file { '/srv/mirrors/ubuntu':
         ensure  => directory,
         owner   => 'mirror',
         group   => 'mirror',

@@ -15,7 +15,7 @@
 class mirrors::debian {
     require mirrors
 
-    file { '/srv/debian/':
+    file { '/srv/mirrors/debian':
         ensure  => directory,
         owner   => 'mirror',
         group   => 'mirror',

@@ -11,7 +11,7 @@ fatal() {
 RSYNCSOURCE=rsync://us.rsync.archive.ubuntu.com/ubuntu
 
 # Define where you want the mirror-data to be on your mirror
-BASEDIR=/srv/ubuntu
+BASEDIR=/srv/mirrors/ubuntu
 
 if [ ! -d ${BASEDIR} ]; then
   fatal "${BASEDIR} doesn't exist."
