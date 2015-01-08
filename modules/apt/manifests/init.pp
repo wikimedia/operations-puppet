@@ -63,22 +63,21 @@ class apt {
         notify  => Exec['apt-get update'],
     }
 
+    apt::conf { 'wikimedia-proxy':
+        ensure   => absent,
+        priority => '80',
+        key      => 'Acquire::http::Proxy',
+        value    => $http_proxy,
+    }
+
     if $::lsbdistid == 'Debian' {
-        # XXX: temporary, until we have a mirror
-        apt::conf { 'wikimedia-proxy':
+        apt::conf { 'security-debian-proxy':
             ensure   => present,
             priority => '80',
-            key      => 'Acquire::http::Proxy',
+            key      => 'Acquire::http::Proxy::security.debian.org',
             value    => $http_proxy,
         }
     } elsif $::lsbdistid == 'Ubuntu' {
-        apt::conf { 'wikimedia-proxy':
-            ensure   => absent,
-            priority => '80',
-            key      => 'Acquire::http::Proxy',
-            value    => $http_proxy,
-        }
-
         apt::conf { 'security-ubuntu-proxy':
             ensure   => present,
             priority => '80',
