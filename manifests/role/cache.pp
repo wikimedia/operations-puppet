@@ -1530,7 +1530,7 @@ class role::cache {
                 'caesium.eqiad.wmnet',
                 'dataset1001.wikimedia.org',
                 'gallium.wikimedia.org',  # CI server
-                'ytterbium.wikimedia.org',
+                'ytterbium.wikimedia.org', # Gerrit
                 'tungsten.eqiad.wmnet',
                 'zirconium.wikimedia.org',
                 'ruthenium.eqiad.wmnet', # parsoid rt test server
