@@ -29,7 +29,7 @@ class ssh::server (
         $type = 'ssh-ed25519'
     } elsif $::sshecdsakey {
         $key  = $::sshecdsakey
-        $type = 'ssh-ecdsa'
+        $type = 'ecdsa-sha2-nistp256'
     } elsif $::sshrsakey {
         $key  = $::sshrsakey
         $type = 'ssh-rsa'
