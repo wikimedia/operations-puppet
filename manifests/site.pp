@@ -2028,6 +2028,9 @@ node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 # mw1114-mw1119 are canary api appservers
 node /^mw111[4-9]\.eqiad\.wmnet$/ {
     $cluster = 'api_appserver'
+    if $::hostname =~ /^mw111[45]$/ {
+        $ganglia_aggregator = true
+    }
     role mediawiki::appserver::canary_api
     include admin
 }
@@ -2035,9 +2038,6 @@ node /^mw111[4-9]\.eqiad\.wmnet$/ {
 # mw1120-1148 are api apaches
 node /^mw11([23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
     $cluster = 'api_appserver'
-    if $::hostname =~ /^mw111[45]$/ {
-        $ganglia_aggregator = true
-    }
     role mediawiki::appserver::api
     include admin
 }
