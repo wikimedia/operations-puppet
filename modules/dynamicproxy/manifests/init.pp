@@ -89,6 +89,19 @@ class dynamicproxy (
         source  => 'puppet:///modules/dynamicproxy/redis.lua',
     }
 
+    package { 'bind9':
+        ensure  => 'present',
+    }
+
+    file { '/etc/bind/named.conf.options':
+        ensure  => 'file',
+        require => Package['bind9'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/dynamicproxy/named.conf.options',
+    }
+
     diamond::collector::nginx { 'diamond-monitor-proxy': }
 
     # Also monitor local redis
