@@ -43,9 +43,8 @@ class authdns::account {
         mode   => '0400',
         source => 'puppet:///private/authdns/id_rsa.pub',
     }
-    file { "${home}/.ssh/authorized_keys":
-        ensure => 'link',
-        target => 'id_rsa.pub',
+    ssh::userkey { $user:
+        source => 'puppet:///private/authdns/id_rsa.pub',
     }
 
     file { "${home}/git-shell-commands":
