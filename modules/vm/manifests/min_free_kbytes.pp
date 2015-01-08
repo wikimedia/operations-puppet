@@ -4,7 +4,7 @@
 define vm::min_free_kbytes($pct, $min, $max) {
 
     # calculate min_free_spec according to the input params
-    $min_free_from_pct = $::memorysizeinbytes * $pct / 100 / 1024
+    $min_free_from_pct = $::memorysize_mb * 1024 * $pct / 100
     if $min_free_from_pct > $max {
         $min_free_spec = $max
     }
@@ -21,7 +21,7 @@ define vm::min_free_kbytes($pct, $min, $max) {
     # (if someone really has a reason to go beyond that,
     #  they deserve to come look here first before they
     #  break something)
-    $max_safety = $::memorysizeinbytes / 10 / 1024
+    $max_safety = $::memorysize_mb * 1024 / 10
 
     # min safety is hardcoded at 8MB
     $min_safety = 8192
