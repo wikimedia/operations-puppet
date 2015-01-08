@@ -130,7 +130,7 @@ class reprepro (
         content => template("reprepro/log.erb"),
     }
 
-    file { [ "${homedir}/.gnupg", "${homedir}/.ssh" ]:
+    file { "${homedir}/.gnupg":
         ensure  => directory,
         owner   => $user,
         group   => $group,
@@ -138,12 +138,7 @@ class reprepro (
         require => User['reprepro'],
     }
 
-    file { "${homedir}/.ssh/authorized_keys":
-        ensure  => file,
-        owner   => $user,
-        group   => $group,
-        mode    => '0600',
-        require => User['reprepro'],
+    ssh::userkey { 'reprepro':
         content => template("reprepro/authorized_keys.erb"),
     }
 
