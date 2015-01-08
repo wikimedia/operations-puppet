@@ -5,6 +5,6 @@ class ssh::hostkeys-collect {
         notice("Collecting SSH host keys on $hostname.")
 
     # Install all collected ssh host keys
-        Ssh::Hostkey <<| |>>
+        Sshkey <<| |>>
     }
 }
