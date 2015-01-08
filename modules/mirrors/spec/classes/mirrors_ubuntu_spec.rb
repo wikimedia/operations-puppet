@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'install-server::ubuntu-mirror', :type => :class do
+describe 'mirrors::ubuntu', :type => :class do
 
     it do
         should contain_file('/srv/ubuntu/').with({
@@ -16,7 +16,7 @@ describe 'install-server::ubuntu-mirror', :type => :class do
             'owner'   => 'root',
             'group'   => 'root',
             'mode'    => '0555',
-            'source'  => 'puppet:///modules/install-server/update-ubuntu-mirror',
+            'source'  => 'puppet:///modules/mirrors/update-ubuntu-mirror',
         })
     end
     it do
