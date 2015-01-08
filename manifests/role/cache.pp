@@ -752,9 +752,9 @@ class role::cache {
         $backend_weight = 100
         $storage_size_bigobj = 50
 
-        if regsubst($::memorytotal, '^([0-9]+)\.[0-9]* GB$', '\1') > 96 {
+        if $::memorysize_mb > 98304 { # 96GB
             $memory_storage_size = 16
-        } elsif regsubst($::memorytotal, '^([0-9]+)\.[0-9]* GB$', '\1') > 32 {
+        } elsif $::memorysize_mb > 32768 { # 32GB
             $memory_storage_size = 8
         } else {
             $memory_storage_size = 1
@@ -1157,7 +1157,7 @@ class role::cache {
         }
         $cluster_options = merge($common_cluster_options, $realm_cluster_options)
 
-        if regsubst($::memorytotal, '^([0-9]+)\.[0-9]* GB$', '\1') > 96 {
+        if $::memorysize_mb > 98304 { # 96GB
             $memory_storage_size = 32
         } else {
             $memory_storage_size = 2
