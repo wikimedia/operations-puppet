@@ -35,6 +35,15 @@ class mirrors::debian {
         source  => 'puppet:///modules/mirrors/archvsync',
     }
 
+    # don't purge logs (you'd expect more from people that love the FHS...)
+    file { "${mirrors::homedir}/archvsync/log":
+        ensure  => directory,
+        purge   => false,
+        owner   => 'mirror',
+        group   => 'mirror',
+        mode    => '0444',
+    }
+
     # this is our configuration for archvsync
     file { "${mirrors::homedir}/archvsync/etc/ftpsync.conf":
         ensure  => present,
