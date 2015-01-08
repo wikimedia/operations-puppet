@@ -66,6 +66,7 @@ class network::constants {
                     '10.4.1.120',
                     '10.4.1.137',
                     '10.68.16.210', # shinken-01.eqiad.wmflabs
+                    '10.68.16.42',  # shinken-server-01.eqiad.wmflabs (test server)
                     ],
         }
     }
