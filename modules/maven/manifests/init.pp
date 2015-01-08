@@ -13,7 +13,7 @@ class maven {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///files/analytics/maven/settings.xml',
+        source  => 'puppet:///modules/maven/settings.xml',
         require => Package['maven'],
     }
 }
