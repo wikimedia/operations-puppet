@@ -169,10 +169,4 @@ class role::labs::instance {
     #  It needs to know project/hostname for nova access.
     notify{"instanceproject: ${::instanceproject}":}
     notify{"hostname: ${::instancename}":}
-
-    apt::conf { 'labs-timeout':
-        priority => '98',
-        key      => 'Acquire::http::Timeout',
-        value    => '300',
-    }
 }
