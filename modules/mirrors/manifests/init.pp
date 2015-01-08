@@ -1,8 +1,11 @@
 class mirrors {
+    $homedir = '/var/lib/mirror'
+
     user { 'mirror':
         ensure     => present,
-        gid        => 'mirror'
-        home       => '/var/lib/mirror',
+        gid        => 'mirror',
+        home       => $homedir,
+        shell      => '/bin/bash',
         managehome => true,
         system     => true,
     }
@@ -11,5 +14,14 @@ class mirrors {
         ensure => present,
         name   => 'mirror',
         system => true,
+    }
+
+    # monitoring for Debian/Ubuntu mirrors being in sync with upstream
+    file { '/usr/local/lib/nagios/plugins/check_apt_mirror':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/mirrors/check_apt_mirror';
     }
 }

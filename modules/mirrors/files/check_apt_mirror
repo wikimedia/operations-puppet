@@ -3,7 +3,12 @@
 . /usr/lib/nagios/plugins/utils.sh
 
 # Where the archive is.
-TO=/srv/ubuntu
+TO=$1
+if [ "x$TO" = "x" ]; then
+	echo "Usage: $0 <mirrordir>"
+	exit 1
+fi
+
 HOSTNAME=$(hostname -f)
 STAMP=${TO}/project/trace/${HOSTNAME}
 WARN=6
