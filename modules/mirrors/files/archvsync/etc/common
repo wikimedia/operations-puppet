@@ -1,0 +1,262 @@
+# -*- mode:sh -*-
+# vim:syn=sh
+# Little common functions
+
+# push a mirror attached to us.
+# Arguments (using an array named SIGNAL_OPTS):
+#
+# $MIRROR      - Name for the mirror, also basename for the logfile
+# $HOSTNAME    - Hostname to push to
+# $USERNAME    - Username there
+# $SSHPROTO    - Protocol version, either 1 or 2.
+# $SSHKEY      - the ssh private key file to use for this push
+# $SSHOPTS     - any other option ssh accepts, passed blindly, be careful
+# $PUSHLOCKOWN - own lockfile name to touch after stage1 in pushtype=staged
+# $PUSHTYPE    - what kind of push should be done?
+#                all    - normal, just push once with ssh backgrounded and finish
+#                staged - staged. first push stage1, then wait for $PUSHLOCKs to appear,
+#                         then push stage2
+# $PUSHARCHIVE - what archive to sync? (Multiple mirrors behind one ssh key!)
+# $PUSHCB      - do we want a callback?
+# $PUSHKIND    - whats going on? are we doing mhop push or already stage2?
+# $FROMFTPSYNC - set to true if we run from within ftpsync.
+#
+# This function assumes that the variable LOG is set to a directory where
+# logfiles can be written to.
+# Additionally $PUSHLOCKS has to be defined as a set of space delimited strings
+# (list of "lock"files) to wait for if you want pushtype=staged
+#
+# Pushes might be done in background (for type all).
+signal () {
+    ARGS="SIGNAL_OPTS[*]"
+    local ${!ARGS}
+
+    MIRROR=${MIRROR:-""}
+    HOSTNAME=${HOSTNAME:-""}
+    USERNAME=${USERNAME:-""}
+    SSHPROTO=${SSHPROTO:-""}
+    SSHKEY=${SSHKEY:-""}
+    SSHOPTS=${SSHOPTS:-""}
+    PUSHLOCKOWN=${PUSHLOCKOWN:-""}
+    PUSHTYPE=${PUSHTYPE:-"all"}
+    PUSHARCHIVE=${PUSHARCHIVE:-""}
+    PUSHCB=${PUSHCB:-""}
+    PUSHKIND=${PUSHKIND:-"all"}
+    FROMFTPSYNC=${FROMFTPSYNC:-"false"}
+
+    # And now get # back to space...
+    SSHOPTS=${SSHOPTS/\#/ }
+
+    # Defaults we always want, no matter what
+    SSH_OPTIONS="-o user=${USERNAME} -o BatchMode=yes -o ServerAliveInterval=45 -o ConnectTimeout=45 -o PasswordAuthentication=no"
+
+    # If there are userdefined ssh options, add them.
+    if [ -n "${SSH_OPTS}" ]; then
+        SSH_OPTIONS="${SSH_OPTIONS} ${SSH_OPTS}"
+    fi
+
+    # Does this machine need a special key?
+    if [ -n "${SSHKEY}" ]; then
+        SSH_OPTIONS="${SSH_OPTIONS} -i ${SSHKEY}"
+    fi
+
+    # Does this machine have an extra own set of ssh options?
+    if [ -n "${SSHOPTS}" ]; then
+        SSH_OPTIONS="${SSH_OPTIONS} ${SSHOPTS}"
+    fi
+
+    # Set the protocol version
+    if [ ${SSHPROTO} -ne 1 ] && [ ${SSHPROTO} -ne 2 ] && [ ${SSHPROTO} -ne 99 ]; then
+        # Idiots, we only want 1 or 2. Cant decide? Lets force 2.
+        SSHPROTO=2
+    fi
+    if [ -n "${SSHPROTO}" ] && [ ${SSHPROTO} -ne 99 ]; then
+        SSH_OPTIONS="${SSH_OPTIONS} -${SSHPROTO}"
+    fi
+
+    date -u >> "${LOGDIR}/${MIRROR}.log"
+
+    PUSHARGS=""
+    # PUSHARCHIVE empty or not, we always add the sync:archive: command to transfer.
+    # Otherwise, if nothing else is added, ssh -f would not work ("no command to execute")
+    # But ftpsync does treat "sync:archive:" as the main archive, so this works nicely.
+    PUSHARGS="${PUSHARGS} sync:archive:${PUSHARCHIVE}"
+
+    # We have a callback wish, tell downstreams
+    if [ -n "${PUSHCB}" ]; then
+        PUSHARGS="${PUSHARGS} sync:callback"
+    fi
+    # If we are running an mhop push AND our downstream is one to receive it, tell it.
+    if [ "xmhopx" = "x${PUSHKIND}x" ] && [ "xmhopx" = "x${PUSHTYPE}x" ]; then
+        PUSHARGS="${PUSHARGS} sync:mhop"
+    fi
+
+    if [ "xallx" = "x${PUSHTYPE}x" ]; then
+        # Default normal "fire and forget" push. We background that, we do not care about the mirrors doings
+        log "Sending normal push" >> "${LOGDIR}/${MIRROR}.log"
+        PUSHARGS1="sync:all"
+        ssh -n $SSH_OPTIONS "${HOSTNAME}" "${PUSHARGS} ${PUSHARGS1}" >>"${LOGDIR}/${MIRROR}.log" 2>&1
+        if [ $? -eq 255 ]; then
+            error "Trigger to ${HOSTNAME} failed"  >> "${LOG}"
+        else
+            log "Trigger to ${HOSTNAME} succeed" >> "${LOG}"
+        fi
+    elif [ "xstagedx" = "x${PUSHTYPE}x" ] || [ "xmhopx" = "x${PUSHTYPE}x" ]; then
+        # Want a staged push. Fine, lets do that. Not backgrounded. We care about the mirrors doings.
+        log "Sending staged push" >> "${LOGDIR}/${MIRROR}.log"
+
+        # Only send stage1 if we havent already send it. When called with stage2, we already did.
+        if [ "xstage2x" != "x${PUSHKIND}x" ]; then
+            # Step1: Do a push to only sync stage1, do not background
+            PUSHARGS1="sync:stage1"
+            ssh $SSH_OPTIONS "${HOSTNAME}" "${PUSHARGS} ${PUSHARGS1}" >>"${LOGDIR}/${MIRROR}.log" 2>&1
+            if [ $? -eq 255 ]; then
+                error "Trigger to ${HOSTNAME} failed"  >> "${LOG}"
+            else
+                log "Trigger to ${HOSTNAME} succeed" >> "${LOG}"
+            fi
+            touch "${PUSHLOCKOWN}"
+
+            # Step2: Wait for all the other "lock"files to appear.
+            tries=0
+            # We do not wait forever
+            while [ ${tries} -lt ${PUSHDELAY} ]; do
+                total=0
+                found=0
+                for file in ${PUSHLOCKS}; do
+                    total=$((total + 1))
+                    if [ -f ${file} ]; then
+                        found=$((found + 1))
+                    fi
+                done
+                if [ ${total} -eq ${found} ] || [ -f "${LOCKDIR}/all_stage1" ]; then
+                    touch "${LOCKDIR}/all_stage1"
+                    break
+                fi
+                tries=$((tries + 5))
+                sleep 5
+            done
+            # In case we did not have all PUSHLOCKS and still continued, note it
+            # This is a little racy, especially if the other parts decide to do this
+            # at the same time, but it wont hurt more than a mail too much, so I don't care much
+            if [ ${tries} -ge ${PUSHDELAY} ]; then
+                log "Failed to wait for all other mirrors. Failed ones are:" >> "${LOGDIR}/${MIRROR}.log"
+                for file in ${PUSHLOCKS}; do
+                    if [ ! -f ${file} ]; then
+                        log "${file}" >> "${LOGDIR}/${MIRROR}.log"
+                        error "Missing Pushlockfile ${file} after waiting ${tries} second, continuing"
+                    fi
+                done
+            fi
+            rm -f "${PUSHLOCKOWN}"
+        fi
+
+        # Step3: It either timed out or we have all the "lock"files, do the rest
+        # If we are doing mhop AND are called from ftpsync - we now exit.
+        # That way we notify our uplink that we and all our clients are done with their
+        # stage1. It can then finish its own, and if all our upstreams downlinks are done,
+        # it will send us stage2.
+        # If we are not doing mhop or are not called from ftpsync, we start stage2
+        if [ "xtruex" = "x${FROMFTPSYNC}x" ] && [ "xmhopx" = "x${PUSHKIND}x" ]; then
+            return
+        else
+            PUSHARGS2="sync:stage2"
+            log "Now doing the second stage push" >> "${LOGDIR}/${MIRROR}.log"
+            ssh $SSH_OPTIONS "${HOSTNAME}" "${PUSHARGS} ${PUSHARGS2}" >>"${LOGDIR}/${MIRROR}.log" 2>&1
+            if [ $? -eq 255 ]; then
+                error "Trigger to ${HOSTNAME} failed"  >> "${LOG}"
+            else
+                log "Trigger to ${HOSTNAME} succeed" >> "${LOG}"
+            fi
+        fi
+    else
+        # Can't decide? Then you get nothing.
+        return
+    fi
+}
+
+# callback, used by ftpsync
+callback () {
+    # Defaults we always want, no matter what
+    SSH_OPTIONS="-o BatchMode=yes -o ServerAliveInterval=45 -o ConnectTimeout=45 -o PasswordAuthentication=no"
+    ssh $SSH_OPTIONS -i "$3" -o"user $1" "$2" callback:${HOSTNAME}
+}
+
+# log something (basically echo it together with a timestamp)
+#
+# Set $PROGRAM to a string to have it added to the output.
+log () {
+    if [ -z "${PROGRAM}" ]; then
+        echo "$(date +"%b %d %H:%M:%S") $(hostname -s) [$$] $@"
+    else
+        echo "$(date +"%b %d %H:%M:%S") $(hostname -s) ${PROGRAM}[$$]: $@"
+    fi
+}
+
+# log the message using log() but then also send a mail
+# to the address configured in MAILTO (if non-empty)
+error () {
+    log "$@"
+    if [ -n "${MAILTO}" ]; then
+        echo "$@" | mail -e -s "[$PROGRAM@$(hostname -s)] ERROR [$$]" ${MAILTO}
+    fi
+}
+
+# run a hook
+# needs array variable HOOK setup with HOOKNR being a number an HOOKSCR
+# the script to run.
+hook () {
+    ARGS='HOOK[@]'
+    local "${!ARGS}"
+    if [ -n "${HOOKSCR}" ]; then
+        log "Running hook $HOOKNR: ${HOOKSCR}"
+        set +e
+        ${HOOKSCR}
+        result=$?
+        set -e
+        if [ ${result} -ne 0 ] ; then
+            error "Back from hook $HOOKNR, got returncode ${result}"
+        else
+            log "Back from hook $HOOKNR, got returncode ${result}"
+        fi
+        return $result
+    else
+        return 0
+    fi
+}
+
+# Return the list of 2-stage mirrors.
+get2stage() {
+    egrep '^(staged|mhop)' "${MIRRORS}" | {
+        while read MTYPE MLNAME MHOSTNAME MUSER MPROTO MKEYFILE; do
+            PUSHLOCKS="${LOCKDIR}/${MLNAME}.stage1 ${PUSHLOCKS}"
+        done
+        echo "$PUSHLOCKS"
+    }
+}
+
+# Rotate logfiles
+savelog() {
+    torotate="$1"
+    count=${2:-${LOGROTATE}}
+    while [ ${count} -gt 0 ]; do
+        prev=$(( count - 1 ))
+        if [ -e "${torotate}.${prev}" ]; then
+            mv "${torotate}.${prev}" "${torotate}.${count}"
+        fi
+        count=$prev
+    done
+    if [ -e "${torotate}" ]; then
+        mv "${torotate}" "${torotate}.0"
+    fi
+}
+
+# Return rsync version
+rsync_protocol() {
+    RSYNC_VERSION="$(${RSYNC} --version)"
+    RSYNC_REGEX="(protocol[ ]+version[ ]+([0-9]+))"    
+    if [[ ${RSYNC_VERSION} =~ ${RSYNC_REGEX} ]]; then
+        echo ${BASH_REMATCH[2]}
+    fi
+    unset RSYNC_VERSION RSYNC_REGEX
+}
