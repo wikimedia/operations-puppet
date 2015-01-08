@@ -19,8 +19,14 @@ class nagios_common::commands(
     $group = 'icinga',
 ) {
 
-    package { 'libnagios-plugin-perl':
-        ensure => present,
+    # needed for (at least) check_ssl
+    package { [
+        'libnagios-plugin-perl',
+        'libnet-ssleay-perl',
+        'libio-socket-ssl-perl',
+        'libio-socket-inet6-perl',
+        ]:
+            ensure => present,
     }
 
     file { "$config_dir/commands":
