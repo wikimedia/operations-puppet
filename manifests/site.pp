@@ -712,7 +712,7 @@ node /^db10(51|52)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(02|09|18|54)\.eqiad\.wmnet/ {
+node /^db10(18|54)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -722,7 +722,7 @@ node /^db10(02|09|18|54)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(03|19|38)\.eqiad\.wmnet/ {
+node /^db10(19|38)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -744,7 +744,7 @@ node /^db10(40|53|56)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
+node /^db10(21|26|45|58)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -754,7 +754,7 @@ node /^db10(05|21|26|45|58)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(06|22|23|30)\.eqiad\.wmnet/ {
+node /^db10(22|23|30)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
