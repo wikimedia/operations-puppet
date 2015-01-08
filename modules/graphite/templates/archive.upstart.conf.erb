@@ -1,0 +1,12 @@
+description "archive local carbon metric traffic to disk"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on [!12345]
+
+limit nofile 32768 32768
+
+setuid _graphite
+
+env ARCHIVE_DIR=<%= "#{storage_dir}/archive" %>
+
+exec <%= "#{carbon_archive_path}" %>

@@ -1,0 +1,13 @@
+#!/bin/bash
+# listen on LISTEN_PORT and log the received traffic to ARCHIVE_DIR according
+# to TEMPLATE
+set -e
+set -u
+
+listen_port=${LISTEN_PORT:-1803}
+archive_dir=${ARCHIVE_DIR:-/var/lib/carbon/archive}
+template=${TEMPLATE:-%Y-%m-%dT%H.log}
+
+nc -k -l "${listen_port}" |
+  cronolog --symlink "${archive_dir}/current" \
+    "${archive_dir}/${template}"
