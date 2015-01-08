@@ -47,20 +47,8 @@ define ssh::userkey(
     }
 
     file { "/etc/ssh/userkeys/${user}":
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-    }
-    file { "/etc/ssh/userkeys/${user}/.ssh":
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-    }
-
-    file { "/etc/ssh/userkeys/.ssh/${user}/authorized_keys":
         ensure  => $ensure,
+        force   => true,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
