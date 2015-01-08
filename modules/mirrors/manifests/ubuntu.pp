@@ -39,13 +39,4 @@ class mirrors::ubuntu {
         minute  => '43',
         require => File['/usr/local/sbin/update-ubuntu-mirror'],
     }
-
-    # monitoring for Ubuntu mirror being in sync with upstream
-    file { '/usr/local/lib/nagios/plugins/check_apt_mirror':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/mirrors/check_apt_mirror';
-    }
 }

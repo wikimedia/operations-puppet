@@ -36,9 +36,15 @@ class role::installserver {
     include install-server::preseed-server
 
     include mirrors::ubuntu
-    nrpe::monitor_service {'check_apt_mirror':
+    nrpe::monitor_service {'check_ubuntu_mirror':
         description  => 'Ubuntu mirror in sync with upstream',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror'
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/ubuntu',
+    }
+
+    include mirrors::debian
+    nrpe::monitor_service {'check_debian_mirror':
+        description  => 'Debian mirror in sync with upstream',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/debian',
     }
 
     include install-server::tftp-server
