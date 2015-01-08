@@ -493,13 +493,12 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     }
 }
 
-# cp1008: temporary test host for SNI SSL
+# cp1008: prod-like SSL test host
 node 'cp1008.wikimedia.org' {
     include admin
     interface::add_ip6_mapped { 'main': }
     $cluster = 'cache_text'
     include role::cache::text
-    include role::authdns::testns # test dns stuff too
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {

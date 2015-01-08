@@ -454,12 +454,10 @@ host copper {
 }
 
 host cp1008 {
-	# temp test box for SNI
-	# precise for more-exact test against current live cache setup
 	hardware ethernet 84:2b:2b:fd:bd:05;
 	fixed-address cp1008.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host cp1037 {
