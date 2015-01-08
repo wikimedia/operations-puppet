@@ -16,9 +16,17 @@ class ssh::server (
         $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u/.ssh/authorized_keys /public/keys/%u/.ssh/authorized_keys'
     }
 
+    file { '/etc/ssh/userkeys':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
     file { '/etc/ssh/sshd_config':
-        owner   => root,
-        group   => root,
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
         content => template('ssh/sshd_config.erb'),
     }
