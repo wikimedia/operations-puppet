@@ -1,6 +1,6 @@
 #! /bin/bash
 
-. /etc/profile.d/mediawiki.sh
+. /usr/local/lib/mw-deployment-vars.sh
 
 usage() {
 	echo "Usage: $0 deploy_type [deploy_duration_seconds]"
