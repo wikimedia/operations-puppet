@@ -9,6 +9,8 @@ module.exports = {
 	logDir: '<%= @log_dir %>',
 	'parsoid.api': '<%= @parsoid %>',
 	'mt.apertium.api': '<%= @apertium %>',
+	// Accept requests from the given domains. * for all domains.
+	allowCORS: '*.wikimedia.org',
 	registry: {
 		ca: {
 			es: {
