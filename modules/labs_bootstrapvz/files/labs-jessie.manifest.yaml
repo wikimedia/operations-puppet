@@ -21,6 +21,7 @@ volume:
       filesystem: ext4
       size: 10GiB
 packages:
+  mirror: http://mirrors.wikimedia.org/debian
   install_standard: true
   install:
     - coreutils
