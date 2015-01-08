@@ -44,9 +44,6 @@ PubkeyAuthentication yes
 <% if @ssh_authorized_keys_file then %>
 AuthorizedKeysFile	<%= @ssh_authorized_keys_file %>
 <% end %>
-<% if @ssh_authorized_keys_file2 then %>
-AuthorizedKeysFile2	<%= @ssh_authorized_keys_file2 %>
-<% end %>
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
