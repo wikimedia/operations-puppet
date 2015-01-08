@@ -1,10 +1,10 @@
 #! /bin/bash
 
-cmd="tail -n 10000 /a/mw-log/apache2.log |
-    grep 'PHP\|Segmentation fault' |
-    grep -v 'filemtime\|failed to mkdir\|GC cache entry\|cache slam averted\|SHA-1 metadata' |
-    sed -r 's/\[notice\] child pid [0-9]+ exit signal //g' |
-    sed 's/, referer.*$//g' |
+# HHVM's logger appends a newline to each event it emits. This is encoded as
+# "#012" by rsyslog to preserve the single line semantics of a syslog line.
+# The `sed 's/#012//'` removes this unneeded visual noise.
+cmd="tail -n 1000 /a/mw-log/hhvm.log |
+    sed 's/#012//' |
     cut -d ' ' -f 7- |
     sort |
     uniq -c |
