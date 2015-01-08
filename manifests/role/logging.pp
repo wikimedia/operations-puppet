@@ -369,18 +369,6 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
     }
 }
 
-# lucene udp2log instance for capturing search logs
-class role::logging::udp2log::lucene inherits role::logging::udp2log {
-    # udp2log::instance will ensure this is created
-    $lucene_log_directory    = "$log_directory/lucene"
-
-    misc::udp2log::instance { 'lucene':
-        port                 => '51234',
-        log_directory        => $lucene_log_directory,
-        monitor_packet_loss  => false,
-        monitor_log_age      => false,
-    }
-}
 # == Class role::logging::udp2log::erbium
 # Erbium udp2log instance:
 # - Fundraising: This requires write permissions on the netapp mount.
