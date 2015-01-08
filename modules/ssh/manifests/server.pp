@@ -47,6 +47,6 @@ class ssh::server (
         ensure       => present,
         type         => $type,
         key          => $key,
-        host_aliases => [ $::hostname, $::ipaddress ],
+        host_aliases => [ $::hostname, $::ipaddress, $::ipaddress6 ],
     }
 }
