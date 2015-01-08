@@ -1,21 +1,21 @@
-define ssh::hostkey($ip, $key) {
+define ssh::hostkey($ip, $key, $type) {
     $host = regsubst($title, '^([^\.]+)\..*$', '\1')
 
     sshkey { $title:
         ensure => present,
-        type   => ssh-rsa,
+        type   => $type,
         key    => $key,
     }
 
     sshkey { $host:
         ensure => present,
-        type   => ssh-rsa,
+        type   => $type,
         key    => $key,
     }
 
     sshkey { $ip:
         ensure => present,
-        type   => ssh-rsa,
+        type   => $type,
         key    => $key,
     }
 }
