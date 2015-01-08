@@ -25,14 +25,24 @@ class ssh::server (
 
     # publish this hosts's host key; prefer ECDSA -> RSA (no DSA)
     #
-    # Puppet's sshkey provider tries to be smart and hardcodes key types that
-    # it understands. While facter & puppet support came roughly at the same
-    # time, here we only export the keys and the system that collects them may
-    # have an older puppet version that doesn't understand a newer keytype.
+    # There's two issues that stop us from using ed25519 keys:
     #
-    # This is preventing us from exporting ed25519 keys from jessie hosts as
-    # consuming them fails from precise & trusty hosts :(
+    # 1) We need to still be able to collect on precise hosts and precise's
+    # OpenSSH version does not support ed25519. While you'd think we could
+    # export both and use a puppet collector filter to exclude type !=
+    # 'ed25519', puppet's sshkey type is stupid and uses namevar for the
+    # hostname and namevar is unique, so you can't define two different keys of
+    # a different type for the same host. This is waiting until <= precise is
+    # gone.
+    #
+    # 2) Puppet sshkey is also stupid in that it hardcodes acceptable types in
+    # its code, and ed25519 is not a valid type in trusty's version (3.4.3). It
+    # is in jessie's version (3.7.3), though. So this is waiting until <=
+    # trusty is gone, or until we backport a newer version of puppet to trusty.
+
     if $::sshecdsakey {
+        # facter bug: one key regardless of ECDSA keytype;
+        # no type exported as a separate variable
         $key  = $::sshecdsakey
         $type = 'ecdsa-sha2-nistp256'
     } elsif $::sshrsakey {
