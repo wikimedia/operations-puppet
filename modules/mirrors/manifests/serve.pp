@@ -3,7 +3,7 @@ class mirrors::serve {
     include ::nginx
 
     nginx::site { 'mirrors':
-        source => 'puppet:///files/mirrors/nginx.conf',
+        source => 'puppet:///modules/mirrors/nginx.conf',
     }
 
     file { '/srv/mirrors/index.html':
@@ -11,6 +11,6 @@ class mirrors::serve {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///files/mirrors/index.html',
+        source  => 'puppet:///modules/mirrors/index.html',
     }
 }
