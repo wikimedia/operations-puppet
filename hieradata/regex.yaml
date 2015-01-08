@@ -43,11 +43,6 @@ statistics:
   __regex: !ruby/regexp /stat100[123].eqiad.wmnet/
   mainrole: statistics
 
-lsearchd:
-  __regex: !ruby/regexp /^search10[0-2][0-9]\.eqiad\.wmnet$/
-  cluster: search
-  nagios_group: lucene
-
 rcs_eqiad:
   __regex: !ruby/regexp /^rcs100[0-9]\.eqiad\.wmnet/
   cluster: rcstream
