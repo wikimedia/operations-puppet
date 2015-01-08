@@ -41,7 +41,7 @@ class mirrors::debian {
         purge   => false,
         owner   => 'mirror',
         group   => 'mirror',
-        mode    => '0444',
+        mode    => '0755',
     }
 
     # this is our configuration for archvsync
