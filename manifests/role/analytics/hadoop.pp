@@ -385,6 +385,11 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
     # Need python3 on Hadoop nodes in order to run
     # Hadoop Streaming python jobs.
     require_package('python3')
+
+    # Some users want jq on Hadoop nodes to parse
+    # JSON using Hadoop Streaming.
+    require_package('jq')
+    }
 }
 
 
