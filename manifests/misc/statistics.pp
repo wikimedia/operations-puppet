@@ -801,6 +801,7 @@ class misc::statistics::limn::data::jobs {
     misc::statistics::limn::data::generate { 'mobile': }
     misc::statistics::limn::data::generate { 'flow': }
     misc::statistics::limn::data::generate { 'edit': }
+    misc::statistics::limn::data::generate { 'language': }
 }
 
 # == Class misc::statistics::geowiki::params
