@@ -17,13 +17,6 @@ class lvs::monitor {
     lvs::monitor_service_http { 'mathoid.svc.eqiad.wmnet': ip_address => $ip['mathoid']['eqiad'], check_command => "check_http_lvs_on_port!mathoid.svc.eqiad.wmnet!10042!/" }
     lvs::monitor_service_http { 'citoid.svc.eqiad.wmnet': ip_address => $ip['citoid']['eqiad'], check_command => "check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/" }
 
-    lvs::monitor_service_custom { "search-pool1.svc.eqiad.wmnet": ip_address => "10.2.2.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-    lvs::monitor_service_custom { "search-pool2.svc.eqiad.wmnet": ip_address => "10.2.2.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-    lvs::monitor_service_custom { "search-pool3.svc.eqiad.wmnet": ip_address => "10.2.2.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-    lvs::monitor_service_custom { "search-pool4.svc.eqiad.wmnet": ip_address => "10.2.2.14", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-    lvs::monitor_service_custom { "search-pool5.svc.eqiad.wmnet": ip_address => "10.2.2.16", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-    lvs::monitor_service_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
-
     # INTERNAL CODFW
 
     lvs::monitor_service_http { "ms-fe.svc.codfw.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.svc.codfw.wmnet!/monitoring/backend" }
