@@ -2214,8 +2214,6 @@ node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 
     # main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
         include role::logging::udp2log::oxygen
-    # Also include lucene search loggging udp2log instance
-        include role::logging::udp2log::lucene
 }
 
 node 'palladium.eqiad.wmnet' {
