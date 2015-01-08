@@ -32,9 +32,10 @@ class misc::statistics::base {
     include misc::statistics::packages
 
     # we are attempting to stop using /a and to start using
-    # /srv instead.  stat1001 and stat1002 still use
-    # /a by default.  # stat1003 uses /srv.
+    # /srv instead.  stat1002 still use
+    # /a by default.  # stat1001 and stat1003 use /srv.
     $working_path = $::hostname ? {
+        'stat1001' => '/srv',
         'stat1003' => '/srv',
         default    => '/a',
     }
