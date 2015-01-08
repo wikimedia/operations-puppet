@@ -1,7 +1,11 @@
 class base::sysctl {
-    # Defaults sysctl parameters for Ubuntu Precise
-    # We set them ourselves so we can purge /etc/sysctl.d.
-    sysctl::parameters { 'ubuntu precise defaults':
+    # Ubuntu-inspired default sysctl parameters.
+    #
+    # These are up-to-date as of *trusty*. These are hand-picked and deemed to
+    # be a good idea, so we install them in Debian systems as well.
+    #
+    # We also set them ourselves so we can purge /etc/sysctl.d.
+    sysctl::parameters { 'ubuntu defaults':
         values => {
             # 10-console-messages.conf
             'kernel.printk'                   => [ 4, 4, 1, 7 ],
@@ -17,10 +21,15 @@ class base::sysctl {
             # 10-ptrace.conf
             'kernel.yama.ptrace_scope'        => 1,
 
+            # 10-link-restrictions.conf
+            'fs.protected_hardlinks'          => 1,
+            'fs.protected_symlinks'           => 1,
+
             # 10-zeropage.conf
             'vm.mmap_min_addr'                => 65536,
 
-            # We don't want 10-ipv6-privacy.conf, so skip it.
+            # skip 10-ipv6-privacy.conf
+            # skip 10-magic-sysrq.conf
         },
         priority => 10,
     }
