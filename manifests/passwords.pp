@@ -9,7 +9,6 @@ class passwords::ldap::initial_setup { }
 class passwords::ldap::wmf_cluster { }
 class passwords::ldap::wmf_corp_cluster { }
 class passwords::ldap::wmf_test_cluster { }
-class passwords::lucene { }
 class passwords::misc::scripts { }
 class passwords::nagios::monitor { }
 class passwords::nagios::mysql { }

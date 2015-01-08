@@ -12,7 +12,6 @@ import 'network.pp'
 import 'nfs.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
-import 'search.pp'
 import 'swift.pp'
 
 # Include stages last
@@ -2348,107 +2347,6 @@ node 'sanger.wikimedia.org' {
     include ldap::role::server::corp
     include ldap::role::client::corp
     class { 'admin': groups => ['oit'] }
-}
-
-node /^search100[0-6]\.eqiad\.wmnet/ {
-    if $::hostname =~ /^search100(1|2)$/ {
-        $ganglia_aggregator = true
-    }
-
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    include role::lucene::front_end::pool1
-}
-
-node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    include role::lucene::front_end::pool2
-}
-
-node /^search101[1-4]\.eqiad\.wmnet/ {
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    include role::lucene::front_end::pool3
-}
-
-node /^search101[56]\.eqiad\.wmnet/ {
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    include role::lucene::front_end::pool4
-}
-
-node /^search10(19|20)\.eqiad\.wmnet/ {
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    include role::lucene::front_end::pool5
-}
-
-node /^search101[78]\.eqiad\.wmnet/ {
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    include role::lucene::front_end::prefix
-}
-
-node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    include role::lucene::front_end::pool4
-}
-
-node /^search102[3-4]\.eqiad\.wmnet/ {
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    include role::lucene::front_end::pool3
-}
-
-node /^searchidx100[0-2]\.eqiad\.wmnet/ {
-    class { 'admin':
-        groups => [
-            'deployment',
-            'search-roots',
-        ],
-    }
-    mount { '/srv/mediawiki':
-        ensure  => present,
-        fstype  => 'none',
-        options => 'bind',
-        device  => '/a/bind-mount-mediawiki',
-        before  => Exec['fetch_mediawiki']
-    }
-    include role::lucene::indexer
 }
 
 node 'sodium.wikimedia.org' {
