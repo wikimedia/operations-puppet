@@ -48,27 +48,9 @@ class mediawiki::users(
         managehome => true,
     }
 
-    file { '/home/mwdeploy':
-        ensure => directory,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0755',
-    }
-
-    file { '/home/mwdeploy/.ssh':
-        ensure => directory,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0500',
-    }
-
-    file { '/home/mwdeploy/.ssh/authorized_keys':
+    ssh::userkey { 'mwdeploy':
         content => $mwdeploy_pub_key,
-        owner   => 'mwdeploy',
-        group   => 'mwdeploy',
-        mode    => '0400',
     }
-
 
     # The l10nupdate account is used for updating the localisation files
     # with new interface message translations.
@@ -86,6 +68,7 @@ class mediawiki::users(
         managehome => true,
     }
 
+<<<<<<< HEAD
     file { '/home/l10nupdate/.ssh':
         ensure => directory,
         owner  => 'l10nupdate',
@@ -98,6 +81,10 @@ class mediawiki::users(
         owner   => 'l10nupdate',
         group   => 'l10nupdate',
         mode    => '0400',
+=======
+    ssh::userkey { 'l10nupdate':
+        source  => 'puppet:///modules/mediawiki/authorized_keys.l10nupdate',
+>>>>>>> mediawiki: transition to ssh::userkey
     }
 
     sudo::group { 'wikidev':
@@ -144,24 +131,7 @@ class mediawiki::users(
         managehome => true,
     }
 
-    file { '/var/lib/pybal-check':
-        ensure  => directory,
-        owner   => 'pybal-check',
-        group   => 'pybal-check',
-        mode    => '0755',
-    }
-
-    file { '/var/lib/pybal-check/.ssh':
-        ensure  => directory,
-        owner   => 'pybal-check',
-        group   => 'pybal-check',
-        mode    => '0550',
-    }
-
-    file { '/var/lib/pybal-check/.ssh/authorized_keys':
+    ssh::userkey { 'pybal-check':
         source  => 'puppet:///modules/mediawiki/pybal_key',
-        owner   => 'pybal-check',
-        group   => 'pybal-check',
-        mode    => '0440',
     }
 }
