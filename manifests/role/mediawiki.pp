@@ -10,21 +10,37 @@ class role::mediawiki::common {
     include ::mediawiki
     include ::nutcracker::monitoring
 
+    $nutcracker_pools = {
+        'memcached' => {
+            auto_eject_hosts     => true,
+            distribution         => 'ketama',
+            hash                 => 'md5',
+            listen               => '127.0.0.1:11212',
+            preconnect           => true,
+            server_connections   => 2,
+            server_failure_limit => 3,
+            timeout              => 250,
+            servers              => hiera('mediawiki_memcached_servers'),
+        }
+    }
+    # Test having nutcracker listen on a UNIX domain socket. -- Ori, 2015-01-08
+    if $::hostname == 'mw1230' or $::hostname == 'mw1231' {
+        $nutcracker_pools['mc-unix'] = {
+            auto_eject_hosts     => true,
+            distribution         => 'ketama',
+            hash                 => 'md5',
+            listen               => '/var/run/nutcracker/nutcracker.sock',
+            preconnect           => true,
+            server_connections   => 2,
+            server_failure_limit => 3,
+            timeout              => 250,
+            servers              => hiera('mediawiki_memcached_servers'),
+        }
+    }
+
     class { '::nutcracker':
         mbuf_size => '64k',
-        pools     => {
-            'memcached' => {
-                auto_eject_hosts     => true,
-                distribution         => 'ketama',
-                hash                 => 'md5',
-                listen               => '127.0.0.1:11212',
-                preconnect           => true,
-                server_connections   => 2,
-                server_failure_limit => 3,
-                timeout              => 250,
-                servers              => hiera('mediawiki_memcached_servers'),
-            },
-        },
+        pools     => $nutcracker_pools,
     }
 
     monitoring::service { 'mediawiki-installation DSH group':
