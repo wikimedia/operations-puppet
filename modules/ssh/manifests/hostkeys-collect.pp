@@ -4,7 +4,12 @@ class ssh::hostkeys-collect {
     if $hostname == "tin" or $hostname == "bast1001" or $potm == "True" {
         notice("Collecting SSH host keys on $hostname.")
 
-    # Install all collected ssh host keys
+        # install all collected SSH host keys
         Sshkey <<| |>>
+
+        # clean up unmanaged host keys
+        resources { 'sshkey':
+            purge => true,
+        }
     }
 }
