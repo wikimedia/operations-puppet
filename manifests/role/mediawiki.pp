@@ -10,6 +10,13 @@ class role::mediawiki::common {
     include ::mediawiki
     include ::nutcracker::monitoring
 
+    # Test having nutcracker listen on a UNIX domain socket. -- Ori, 2015-01-08
+    if $::hostname == 'mw1230' or $::hostname == 'mw1231' {
+        $nutcracker_listen = '/var/run/nutcracker/nutcracker.sock'
+    } else {
+        $nutcracker_listen = '127.0.0.1:11212'
+    }
+
     class { '::nutcracker':
         mbuf_size => '64k',
         pools     => {
@@ -17,7 +24,7 @@ class role::mediawiki::common {
                 auto_eject_hosts     => true,
                 distribution         => 'ketama',
                 hash                 => 'md5',
-                listen               => '127.0.0.1:11212',
+                listen               => $nutcracker_listen,
                 preconnect           => true,
                 server_connections   => 2,
                 server_failure_limit => 3,
