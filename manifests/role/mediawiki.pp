@@ -6,6 +6,7 @@
 
 class role::mediawiki::common {
     include ::standard
+    include ::admin
     include ::geoip
     include ::mediawiki
     include ::nutcracker::monitoring
