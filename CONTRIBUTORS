@@ -1,60 +1,34 @@
-# Cannonical commit name mappings
-#
-# Mappings use one of two forms. The first maps an email address to the
-# cannonical proper name:
-#   Proper Name <commit@email.xx>
-#
-# The second maps any Proper Name <email> value to a cannonical Proper Name
-# <email> value based on the email used by the commit:
-#   Proper Name <proper@email.xx> <commit@email.xx>
-#
-# Some users have multiple mappings to deal with a variety of emails and/or
-# proper names associated with their commit history.
-#
-# See https://www.kernel.org/pub/software/scm/git/docs/git-shortlog.html
-#
-# Generate an updated CONTRIBUTORS file via:
-#
-#   $ git log --format='%aN <%aE>' | sort -f | uniq > CONTRIBUTORS
 Aaron Schulz <aschulz@wikimedia.org>
+Adam Roses Wight <awight@wikimedia.org>
 Addshore <addshorewiki@gmail.com>
 Adminxor <soumyadip.bt@gmail.com>
 Alex Monk <krenair@gmail.com>
-Alex Monk <krenair@gmail.com> <alex@wikimedia.org>
-Alex Monk <krenair@gmail.com> <krenair@gmail.com>
-Alex Monk <krenair@gmail.com> <krenair@wikimedia.org>
+Alexandre De Dommelin <adedommelin@tuxz.net>
 Alexandros Kosiaris <akosiaris@wikimedia.org>
-Alexandros Kosiaris <akosiaris@wikimedia.org> <akosiaris@gmail.com>
-Amir Sarabadani <ladsgroup@gmail.com> <Ladsgroup@gmail.com>
 Amir E. Aharoni <amir.aharoni@mail.huji.ac.il>
+Amir Sarabadani <ladsgroup@gmail.com>
 Andre Klapper <aklapper@wikimedia.org>
-Andre Klapper <aklapper@wikimedia.org> <a9016009@gmx.de>
-Andre Klapper <aklapper@wikimedia.org> <ak-47@gmx.net>
 Andrew "FastLizard4" Adams <FastLizard4-Git-Commits@fastlizard4.org>
 Andrew Bogott <abogott@wikimedia.org>
-Andrew Bogott <abogott@wikimedia.org> <andrew@CodeWeavers.com>
-Andrew Bogott <abogott@wikimedia.org> root <root@openstack-test-ceilometer.eqiad.wmflabs>
 Andrew Otto <otto@wikimedia.org>
-Andrew Otto <otto@wikimedia.org> <acotto@gmail.com>
-Andrew Otto <otto@wikimedia.org> <otto@wikimedia.org>
 Antoine Musso <hashar@free.fr>
 Ariel T. Glenn <ariel@wikimedia.org>
 Arlo Breault <abreault@wikimedia.org>
 Arthur Richards <arichards@wikimedia.org>
 Asher <afeldman@wikimedia.org>
 aude <aude.wiki@gmail.com>
+Baha <bmansurov@wikimedia.org>
 Bartosz Dziewoński <matma.rex@gmail.com>
 Base <base-w@yandex.ru>
+BearND <bsitzmann@wikimedia.org>
 Bene <benestar.wikimedia@gmail.com>
+berndsi <besitzus@gmail.com>
 Bhartshorne <ben@wikimedia.org>
 Brad Jorsch <bjorsch@wikimedia.org>
 Brandon Black <bblack@wikimedia.org>
 Brian Wolff <bawolff+wn@gmail.com>
 Brion Vibber <brion@pobox.com>
 Bryan Davis <bd808@wikimedia.org>
-Bryan Davis <bd808@wikimedia.org> <bd808@bd808.com>
-Bryan Davis <bd808@wikimedia.org> <bd808@wikimedia.org>
-Bryan Davis <bd808@wikimedia.org> <bdavis@wikimedia.org>
 bsitu <bsitu@wikimedia.org>
 C. Scott Ananian <cscott@cscott.net>
 Carl Fürstenberg <azatoth@gmail.com>
@@ -63,7 +37,6 @@ Chris McMahon <cmcmahon@wikimedia.org>
 Christian Aistleitner <christian@quelltextlich.at>
 Christopher Johnson <christopher.johnson@wikimedia.de>
 Cmjohnson <cmjohnson@wikimedia.org>
-coren <marc@uberbox.org>
 cpettet <rush@wikimedia.org>
 csteipp <csteipp@wikimedia.org>
 Damian Zaremba <damian@damianzaremba.co.uk>
@@ -71,35 +44,35 @@ Dan Duvall <dduvall@wikimedia.org>
 dan-nl <d_entous@yahoo.com>
 danakim <akim.dan@gmail.com>
 Daniel Zahn <dzahn@wikimedia.org>
-Daniel Zahn <dzahn@wikimedia.org> <dzahn@sphinx.corp.wikimedia.org>
+Danny B <danny.b@email.cz>
 Dapete <dev@dapete.net>
+datguy <datguysteam@gmail.com>
 dcausse <dcausse@wikimedia.org>
 Diederik van Liere <dvanliere@wikimedia.org>
 domas <domas@wikimedia.org>
 dr0ptp4kt <abaso@wikimedia.org>
 drtrigon <dr.trigon@surfeu.ch>
 Ebrahim Byagowi <ebrahim@gnu.org>
+Ed Sanders <esanders@wikimedia.org>
 Elliott Eggleston <ejegg@ejegg.com>
 Eloquence <erik@wikimedia.org>
 Emanuele Rocca <ema@wikimedia.org>
 Eric Evans <eevans@wikimedia.org>
-Eric Evans <eevans@wikimedia.org> <eevans@sym-link.com>
 Erik Bernhardson <ebernhardson@wikimedia.org>
 Faidon Liambotis <faidon@wikimedia.org>
 Federico Leva <federicoleva@tiscali.it>
 Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Florian Schmidt <florian.schmidt.stargatewissen@gmail.com>
 Gabriel Wicke <gwicke@wikimedia.org>
-Gabriel Wicke <gwicke@wikimedia.org> <wicke@wikidev.net>
 Geoffrey Mon <geofbot@gmail.com>
 Gergő Tisza <gtisza@wikimedia.org>
-Gergő Tisza <gtisza@wikimedia.org> <tgr.huwiki@gmail.com>
 Gilles Dubuc <gdubuc@wikimedia.org>
-Gilles Dubuc <gdubuc@wikimedia.org> <gilles@wikimedia.org>
 Giuseppe Lavagetto <glavagetto@wikimedia.org>
 gladoscc <admin@glados.cc>
 Glaisher <glaisher.wiki@gmail.com>
 Greg Grossmeier <greg@wikimedia.org>
 Guillaume Lederrey <glederrey@wikimedia.org>
+Guillaume Lederrey <guillaume.lederrey@wikimedia.org>
 halfak <aaron.halfaker@gmail.com>
 Hazard-SJ <hazard_sj@yahoo.com>
 Hedonil <hedonil@action.ms>
@@ -110,74 +83,67 @@ James Alexander <jalexander@wikimedia.org>
 James D. Forrester <jforrester@wikimedia.org>
 Jamison Lofthouse <jamison.lofthouse@gmail.com>
 Jan Gerber <jgerber@wikimedia.org>
-Jan Gerber <jgerber@wikimedia.org> <j@thing.net>
 Jan Zerebecki <jan.wikimedia@zerebecki.de>
 jarry1250 <jarry1250@gmail.com>
 Jeff Gage <jgerard@wikimedia.org>
-Jeff Gage <jgerard@wikimedia.org> <jgage@wikimedia.org>
 Jeff Green <jgreen@wikimedia.org>
 jeremyb <jeremy@tuxmachine.com>
 jeroendedauw <jeroendedauw@gmail.com>
 jhobs <jhobson@wikimedia.org>
 Joel Krauska <jkrauska@wikimedia.org>
-Joel Krauska <jkrauska@wikimedia.org> <jkrauska@wikimedia.org>
 John F. Lewis <johnflewis93@gmail.com>
 John Vandenberg <jayvdb@gmail.com>
 Johnduhart <john@compwhizii.net>
 Jon Robson <jdlrobson@gmail.com>
 Joseph Allemandou <joal@wikimedia.org>
+jstenval <jan.stenvall@gmail.com>
 Juliusz Gonera <jgonera@wikimedia.org>
+juniorsys <juniorsys_wikimedia@outlook.com>
+Kaldari <rkaldari@wikimedia.org>
 Kartik Mistry <kartik.mistry@gmail.com>
+Kevin Israel <pleasestand@live.com>
 Kunal Mehta <legoktm@member.fsf.org>
-Kunal Mehta <legoktm@member.fsf.org> <legoktm@gmail.com>
 Lcarr <lcarr@wikimedia.org>
 Leszek Manicki <leszek.manicki@wikimedia.de>
 Liangent <liangent@gmail.com>
 lokal-profil <lokal.profil@gmail.com>
 Luca Toscano <ltoscano@wikimedia.org>
-Luca Toscano <ltoscano@wikimedia.org> <ltoscano@ltoscanowmf1553.local>
-Luca Toscano <ltoscano@wikimedia.org> <ltoscano@wikimedia.org>
 Luke Welling <lwelling@wikimedia.org>
+Luke081515 <luke081515@web.de>
 Madhumitha Viswanathan <mviswanathan@wikimedia.org>
+Manuel Arostegui <marostegui@wikimedia.org>
 Marc A. Pelletier <marc@uberbox.org>
-Marc A. Pelletier <marc@uberbox.org> <marc@uberbox.org>
-Marc A. Pelletier <marc@uberbox.org> <mpelletier@wikimedia.org>
 Marcel Ruiz Forns <mforns@wikimedia.org>
+MarcoAurelio <strigiwm@gmail.com>
 Marius Hoch <hoo@online.de>
 Mark Bergsma <mark@wikimedia.org>
 Mark Holmquist <mtraceur@member.fsf.org>
 Marko Obrovac <mobrovac@wikimedia.org>
 Matanya Moses <matanya@foss.co.il>
-Matanya Moses <matanya@foss.co.il> <matanya.moses@gmail.com>
-Matanya Moses <matanya@foss.co.il> matanya <matanya@moses.co.il>
 Matt Walker <mwalker@wikimedia.org>
-Matt Walker <mwalker@wikimedia.org> <mwalker@khaosdev.com>
 Matthew Flaschen <mflaschen@wikimedia.org>
 Max Semenik <maxsem.wiki@gmail.com>
 Merlijn van Deen <valhallasw@arctus.nl>
-Merlijn van Deen <valhallasw@arctus.nl> <valhallasw+lisilwen@gmail.com>
 Michael Holloway <mholloway@wikimedia.org>
+Mikhail Popov <mpopov@wikimedia.org>
 milimetric <dandreescu@wikimedia.org>
 Moritz Mühlenhoff <mmuhlenhoff@wikimedia.org>
-Moritz Mühlenhoff <mmuhlenhoff@wikimedia.org> <mmuehlenhoff@wikimedia.org>
-Moritz Mühlenhoff <mmuhlenhoff@wikimedia.org> <mmuhlenhoff@wikimedia.org>
 Moritz Schubotz (Physikerwelt) <wiki@physikerwelt.de>
 Mschon <schon.mar@gmail.com>
 Mukunda Modell <mmodell@wikimedia.org>
 Munagala Ramanath <ram@wikimedia.org>
 MZMcBride <g@mzmcbride.com>
+Nathaniel Schaaf <nschaaf@wikimedia.org>
 nextPrime <chmarkine@hotmail.com>
-nextPrime <chmarkine@hotmail.com> <boxgit@outlook.com>
+Nicko <nicko.glayre@gmail.com>
 Nik Everett <neverett@wikimedia.org>
 Niklas Laxström <niklas.laxstrom@gmail.com>
 Nuria Ruiz <nuria@wikimedia.org>
 Ori Livneh <ori@wikimedia.org>
-Ori Livneh <ori@wikimedia.org> <ori.livneh@gmail.com>
+Ottomata <aotto@wikimedia.org>
 Paladox <thomasmulhall410@yahoo.com>
 papaul <ptshibamba@wikimedia.org>
-papaul <ptshibamba@wikimedia.org> <ptshibamba@wikimedia.org>
 Patrick Reilly <preilly@wikimedia.org>
-Patrick Reilly <preilly@wikimedia.org> <preilly@wikimedia.org>
 Peter Gehres <pgehres@wikimedia.org>
 Peter Hedenskog <phedenskog@wikimedia.org>
 Peter Youngmeister <py@wikimedia.org>
@@ -190,16 +156,15 @@ Rangilo Gujarati <sonara.arnav@gmail.com>
 raymond <raimond.spekking@gmail.com>
 rfaulk <rfaulkner@wikimedia.org>
 Riccardo Coccioli <rcoccioli@wikimedia.org>
-Riccardo Coccioli <rcoccioli@wikimedia.org> <rcoccioli@gmail.com>
 Ricordisamoa <ricordisamoa@openmailbox.org>
 Roan Kattouw <roan.kattouw@gmail.com>
 Rob Moen <rmoen@wikimedia.org>
 RobH <rob@wikimedia.org>
-RobH <rob@wikimedia.org> <rhalsell@wikimedia.org>
-root <root@openstack-test-ceilometer.eqiad.wmflabs>
+rolf jordi <maturain@gmail.com>
+root <root@deployment-puppetmaster.deployment-prep.eqiad.wmflabs>
 Ryan Lane <ryan@wikimedia.org>
-Ryan Lane <ryan@wikimedia.org> <rlane@wikimedia.org>
 S Page <spage@wikimedia.org>
+sabya <sabyasachi.ruj@webyog.com>
 Sam Reed <reedy@wikimedia.org>
 Sam Smith <git@samsmith.io>
 saper <saper@saper.info>
@@ -216,14 +181,13 @@ Subramanya Sastry <ssastry@wikimedia.org>
 Sébastien Santoro <dereckson@espace-win.org>
 terry chay <tchay@wikimedia.org>
 Thiemo Mättig (WMDE) <thiemo.maettig@wikimedia.de>
+Thomas Arrow <thomasarrow@gmail.com>
 thrawn <mike.hoover@gmail.com>
 Tim Landscheidt <tim@tim-landscheidt.de>
 Tim Starling <tstarling@wikimedia.org>
 Timo Tijhof <krinklemail@gmail.com>
-Timo Tijhof <krinklemail@gmail.com> <ttijhof@wikimedia.org>
 tinajohnson.1234 <tinajohnson.1234@gmail.com>
 Tomasz W. Kozlowski <tomasz@twkozlowski.net>
-Tomasz W. Kozlowski <tomasz@twkozlowski.net> <twkozlowski@gmail.com>
 Tony Thomas <01tonythomas@gmail.com>
 Tpt <thomaspt@hotmail.fr>
 Tyler Cipriani <tcipriani@wikimedia.org>
@@ -231,7 +195,5 @@ Vincent Bernat <vincent@bernat.im>
 withoutaname <drevitchi@gmail.com>
 Yuri Astrakhan <yurik@wikimedia.org>
 Yuvi Panda <yuvipanda@wikimedia.org>
-Yuvi Panda <yuvipanda@wikimedia.org> <yuvipanda@gmail.com>
-Yuvi Panda <yuvipanda@wikimedia.org> <yuvipanda@wikimedia.org>
 Zhuyifei1999 <zhuyifei1999@gmail.com>
 Željko Filipin <zeljko.filipin@gmail.com>
