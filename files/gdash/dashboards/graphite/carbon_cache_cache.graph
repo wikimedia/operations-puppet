@@ -2,12 +2,12 @@ title   "carbon cache utilization"
 
 field :cache_size,
                :alias => "cache size (bytes)",
-               :data  => "sumSeries(carbon.agents.tungsten-*.cache.size)",
+               :data  => "sumSeries(carbon.agents.tungsten-*.cache.size)"
 
 field :queues,
                :alias => "queues",
-               :data  => "sumSeries(carbon.agents.tungsten-*.cache.queues)",
+               :data  => "sumSeries(carbon.agents.tungsten-*.cache.queues)"
 
 field :overflow,
                :alias => "overflow",
-               :data  => "secondYAxis(sumSeries(carbon.agents.tungsten-*.cache.overflow))",
+               :data  => "secondYAxis(sumSeries(carbon.agents.tungsten-*.cache.overflow))"
