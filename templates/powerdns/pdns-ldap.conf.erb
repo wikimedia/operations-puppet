@@ -21,11 +21,6 @@ default-soa-name=<%= @dns_auth_soa_name %>
 # and may even impact performance.
 #distributor-threads=1
 
-<% if scope.function_versioncmp([@lsbdistrelease, "14.04"]) < 0 %>
-# We are not using wildcards
-wildcards=yes
-<% end -%>
-
 # Master for allowing AXFRs
 master=yes
 slave=no
