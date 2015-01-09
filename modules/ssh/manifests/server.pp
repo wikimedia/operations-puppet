@@ -15,10 +15,7 @@ class ssh::server (
     if ($::realm == 'labs') {
         $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u /public/keys/%u/.ssh/authorized_keys'
     } else {
-        # Lucid doesn't seem to like this at all, ssh refuses to start
-        if os_version('ubuntu > lucid') {
-            $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u .ssh/authorized_keys .ssh/authorized_keys2'
-        }
+        $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u'
     }
 
     file { '/etc/ssh/userkeys':
