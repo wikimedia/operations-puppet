@@ -48,6 +48,7 @@ class role::lvs::balancer {
             $sip['parsoid'][$::site],
             $sip['mathoid'][$::site],
             $sip['citoid'][$::site],
+            $sip['cxserver'][$::site],
             $sip['search'][$::site],
             ],
 
