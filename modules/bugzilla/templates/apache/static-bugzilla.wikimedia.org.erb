@@ -1,0 +1,32 @@
+# Apache config for static-bugzilla.wikimedia.org
+# ! THIS FILE IS MANAGED BY PUPPET !
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@wikimedia.org
+    ServerName static-bugzilla.wikimedia.org
+    DocumentRoot /srv/org/wikimedia/static-bugzilla
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory /srv/org/wikimedia/static-bugzilla>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        Deny from env=nobots
+        allow from all
+    </Directory>
+
+ErrorLog /var/log/apache2/error.log
+
+# Possible values include: debug, info, notice, warn, error, crit,
+# alert, emerg.
+LogLevel warn
+
+CustomLog /var/log/apache2/access.log combined
+ServerSignature On
+
+</VirtualHost>
+
