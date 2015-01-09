@@ -36,10 +36,6 @@ class ipython(
     $user       = 'ipython',
     $group      = 'ipython'
 ) {
-    if $::operatingsystem != 'Ubuntu' {
-        fail("Module ${module_name} is not supported on ${::operatingsystem}")
-    }
-
     package { 'ipython':
         ensure => latest,
     }
