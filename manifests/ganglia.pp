@@ -20,7 +20,7 @@ class ganglia {
 
     # FIXME: remove after the ganglia module migration
     if ($::hostname in ['netmon1001'] or $::site == 'esams' or $::site == 'codfw') {
-        $ganglia_cluster = $cluster
+        $ganglia_cluster = hiera('cluster', $cluster)
         class { 'ganglia_new::monitor':
             cluster => $ganglia_cluster,
         }
@@ -28,16 +28,14 @@ class ganglia {
         # FIXME: ugly, but without it bad things happen with check_ganglia
         $cname = $ganglia_new::monitor::cname
     } else {
-            if ! $::cluster {
-                $cluster = 'misc'
-            }
-            # aggregator should not be deaf (they should listen)
-            # ganglia_aggregator for production are defined in site.pp;
-            if $ganglia_aggregator {
-                $deaf = 'no'
-            } else {
-                $deaf = 'yes'
-            }
+        $cluster = hiera('cluster', $::cluster)
+        # aggregator should not be deaf (they should listen)
+        # ganglia_aggregator for production are defined in site.pp;
+        if $ganglia_aggregator {
+            $deaf = 'no'
+        } else {
+            $deaf = 'yes'
+        }
 
         $authority_url = 'http://ganglia.wikimedia.org'
 
