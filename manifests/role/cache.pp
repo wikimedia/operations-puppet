@@ -673,6 +673,7 @@ class role::cache {
         include lvs::configuration
         include role::cache::configuration
         include network::constants
+        include ::admin
 
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!

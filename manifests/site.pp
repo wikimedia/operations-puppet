@@ -78,7 +78,6 @@ node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
         }
     }
     role cache::text
-    include admin
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -492,7 +491,6 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 # cp1008: prod-like SSL test host
 node 'cp1008.wikimedia.org' {
     role cache::text
-    include admin
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -502,22 +500,18 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
     }
     interface::add_ip6_mapped { 'main': }
     role cache::text
-    include admin
-
 }
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
     $ganglia_aggregator = true
     interface::add_ip6_mapped { 'main': }
     role cache::misc
-    include admin
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
     $ganglia_aggregator = true
     interface::add_ip6_mapped { 'main': }
     role cache::parsoid
-    include admin
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
@@ -527,7 +521,6 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 
     interface::add_ip6_mapped { 'main': }
     role cache::mobile
-    include admin
 }
 
 node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
@@ -537,7 +530,6 @@ node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
     role cache::upload
-    include admin
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
@@ -547,7 +539,6 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
     role cache::text
-    include admin
 }
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
@@ -557,7 +548,6 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
 
     interface::add_ip6_mapped { 'main': }
     role cache::bits
-    include admin
 }
 
 # IPsec testing
@@ -580,25 +570,19 @@ node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
     interface::add_ip6_mapped { 'main': }
 
     role cache::upload
-    include admin
 }
 
 node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
     interface::add_ip6_mapped { 'main': }
-
     role cache::mobile
-    include admin
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
     if $::hostname =~ /^cp(3019|3020)$/ {
         $ganglia_aggregator = true
     }
-
     interface::add_ip6_mapped { 'main': }
-
     role cache::bits
-    include admin
 }
 
 #
@@ -613,9 +597,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
     }
 
     interface::add_ip6_mapped { 'main': }
-
     role cache::bits
-    include admin
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
@@ -624,9 +606,7 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
     }
 
     interface::add_ip6_mapped { 'main': }
-
     role cache::upload
-    include admin
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
@@ -635,19 +615,15 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
     }
 
     interface::add_ip6_mapped { 'main': }
-
     role cache::text
-    include admin
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     if $::hostname =~ /^cp401[19]$/ {
         $ganglia_aggregator = true
     }
-
     interface::add_ip6_mapped { 'main': }
     role cache::mobile
-    include admin
 }
 
 node 'dataset1001.wikimedia.org' {
@@ -1972,13 +1948,11 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
     role mediawiki::jobrunner
-    include admin
 }
 
 # mw1017-mw1025 are canary appservers
 node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
     role mediawiki::canary_appserver
-    include ::admin
 }
 
 # mw1026-mw1113 are appservers
@@ -1988,7 +1962,6 @@ node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     }
 
     role mediawiki::appserver
-    include ::admin
 }
 
 # mw1114-mw1119 are canary api appservers
@@ -1997,26 +1970,22 @@ node /^mw111[4-9]\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
     role mediawiki::appserver::canary_api
-    include admin
 }
 
 # mw1120-1148 are api apaches
 node /^mw11([23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver::api
-    include admin
 }
 
 
 # mw1149-1151 are apaches
 node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
-    include admin
 }
 
 # mw1152 is (temporarily) the HAT imagescaler
 node 'mw1152.eqiad.wmnet' {
     role mediawiki::imagescaler
-    include admin
 }
 
 
@@ -2027,37 +1996,31 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
     }
 
     role mediawiki::imagescaler
-    include admin
 }
 
 # mw1161-1188 are apaches
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
-    include admin
 }
 
 # mw1189-1208 are api apaches
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver::api
-    include admin
 }
 
 # mw1209-1220 are apaches
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
     role mediawiki::appserver
-    include admin
 }
 
 #mw1221-mw1235 are api apaches
 node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
     role mediawiki::appserver::api
-    include admin
 }
 
 #mw1236-mw1258 are apaches
 node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
-    include admin
 }
 
 node 'neon.wikimedia.org' {
