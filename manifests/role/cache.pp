@@ -1211,11 +1211,17 @@ class role::cache {
         # ToDo: Remove production conditional once this works
         # is verified to work in labs.
         if $::realm == 'production' {
-            # Install a varnishkafka producer to send
-            # varnish webrequest logs to Kafka.
-            class { 'role::cache::varnish::kafka::webrequest':
-                topic        => 'webrequest_bits',
-                varnish_name => $::hostname,
+
+            # Temporarily disable esams bits production
+            # while qchris and ottomata investigate
+            # cross DC delivery error issues.
+            if ($::site != 'esams') {
+                # Install a varnishkafka producer to send
+                # varnish webrequest logs to Kafka.
+                class { 'role::cache::varnish::kafka::webrequest':
+                    topic        => 'webrequest_bits',
+                    varnish_name => $::hostname,
+                }
             }
 
             include role::cache::varnish::kafka::statsv
