@@ -264,7 +264,7 @@ groups:
   cxserver-admin:
     gid: 741
     description: group of cxserver admins
-    members: [kartik, ]
+    members: [kartik]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service cxserver stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service cxserver start',
             'ALL = (root) NOPASSWD: /usr/sbin/service cxserver restart',
