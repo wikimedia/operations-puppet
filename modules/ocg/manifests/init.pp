@@ -43,26 +43,14 @@ class ocg (
         system     => true,
     }
 
-    if (os_version('ubuntu >= trusty') ) {
-        # Although we need NodeJS on the server, only ubuntu 14.04 currently
-        # comes with it. On labs or 12.04 boxes it has to be installed by hand :(
-        require_package('nodejs')
-    }
+    require_package('nodejs')
 
     # NOTE: If you change $nodebin you MUST also change the AppArmor
     #       profile creation below and the maintenance sudo rules in
     #       modules/admin/data/data.yaml
     $nodebin = '/usr/bin/nodejs-ocg'
-    if ( $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 ) {
-        # On ubuntu versions greater than 12.04 node is known as nodejs
-        # We use the hardlink for a discrete AppArmor profile
-        apparmor::hardlink { $nodebin:
-            target => '/usr/bin/nodejs',
-        }
-    } else {
-        apparmor::hardlink { $nodebin:
-            target => '/usr/bin/node',
-        }
+    apparmor::hardlink { $nodebin:
+        target => '/usr/bin/nodejs',
     }
 
     package {
