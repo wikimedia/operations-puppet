@@ -1,17 +1,24 @@
 #!/usr/bin/python
+import re
 import socket
 import os
+import pwd
 
-port = uid = os.getuid()
+pwd_entry = pwd.getpwuid(os.getuid())  # Use uid as reserved port for eacht ool
+TOOL = re.sub(r'^tools.', '', pwd_entry.pw_name) # Tool users are of form tools.TOOLNAME
+
+PORT = os.getuid()
 
 args = [
     '/usr/bin/uwsgi',
     '--plugin', 'python',
-    '--http-socket', ':' + str(port),
+    '--http-socket', ':' + str(PORT),
     '--wsgi-file', 'app.py',
     '--chdir', os.path.expanduser('~/www/python/src'),
     '--logto', os.path.expanduser('~/uwsgi.log'),
     '--callable', 'app',
+    '--manage-script-name',
+    '--mount', '/%s=%s' % (TOOL, 'app.py'),
     '--die-on-term',
     '--strict',
     '--master'
@@ -25,6 +32,6 @@ if os.path.exists(os.path.expanduser('~/www/python/uwsgi.ini')):
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect(('tools-webproxy', 8282))
-sock.send(".*\nhttp://%s:%s\n" % (socket.getfqdn(), port))
+sock.send(".*\nhttp://%s:%s\n" % (socket.getfqdn(), PORT))
 
 os.execv('/usr/bin/uwsgi', args)
