@@ -1,0 +1,4 @@
+cluster: cache_parsoid
+admin::groups:
+  - parsoid-roots
+  - parsoid-admin

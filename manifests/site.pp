@@ -70,17 +70,13 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
 # amssq31-62 are text varnish (and the only nodes with this legacy prefix)
 node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
-    include admin
-
     sysctl::parameters { 'vm dirty page flushes':
         values => {
             'vm.dirty_background_ratio' => 5,
         }
     }
-
-    $cluster = 'cache_text'
-    include role::cache::text
-
+    role cache::text
+    include admin
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -497,92 +493,73 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 
 # cp1008: prod-like SSL test host
 node 'cp1008.wikimedia.org' {
+    role cache::text
     include admin
     interface::add_ip6_mapped { 'main': }
-    $cluster = 'cache_text'
-    include role::cache::text
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
-    include admin
     if $::hostname =~ /^cp103[78]$/ {
         $ganglia_aggregator = true
     }
     interface::add_ip6_mapped { 'main': }
-    $cluster = 'cache_text'
-    include role::cache::text
+    role cache::text
+    include admin
+
 }
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
-    include admin
     $ganglia_aggregator = true
-
     interface::add_ip6_mapped { 'main': }
-
-    $cluster = 'cache_misc'
-    include role::cache::misc
+    role cache::misc
+    include admin
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
-    class { 'admin': groups => ['parsoid-roots',
-                                'parsoid-admin'] }
-
     $ganglia_aggregator = true
-
     interface::add_ip6_mapped { 'main': }
-
-    $cluster = 'cache_parsoid'
-    include role::cache::parsoid
+    role cache::parsoid
+    include admin
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
-    include admin
     if $::hostname =~ /^cp104[67]$/ {
         $ganglia_aggregator = true
     }
 
     interface::add_ip6_mapped { 'main': }
-
-    $cluster = 'cache_mobile'
-    include role::cache::mobile
+    role cache::mobile
+    include admin
 }
 
 node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
-    include admin
     if $::hostname =~ /^(cp1048|cp1061)$/ {
         $ganglia_aggregator = true
     }
 
     interface::add_ip6_mapped { 'main': }
-
-    $cluster = 'cache_upload'
-    include role::cache::upload
+    role cache::upload
+    include admin
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
-
-    include admin
     if $::hostname =~ /^cp105[23]$/ {
         $ganglia_aggregator = true
     }
 
     interface::add_ip6_mapped { 'main': }
-
-    $cluster = 'cache_text'
-    include role::cache::text
+    role cache::text
+    include admin
 }
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
-
-    include admin
     if $::hostname =~ /^cp105[67]$/ {
         $ganglia_aggregator = true
     }
 
     interface::add_ip6_mapped { 'main': }
-
-    $cluster = 'cache_bits'
-    include role::cache::bits
+    role cache::bits
+    include admin
 }
 
 # IPsec testing
@@ -598,37 +575,32 @@ node /^cp300([1-2])\.esams\.(wikimedia\.org|wmnet)$/ {
 }
 
 node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
-
-    include admin
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
     }
     $cluster = 'cache_upload'
     interface::add_ip6_mapped { 'main': }
 
-    include role::cache::upload
+    role cache::upload
+    include admin
 }
 
 node /^cp301[1-4]\.esams\.(wikimedia\.org|wmnet)$/ {
-
-    include admin
     interface::add_ip6_mapped { 'main': }
 
-    $cluster = 'cache_mobile'
-    include role::cache::mobile
+    role cache::mobile
+    include admin
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
-
-    include admin
     if $::hostname =~ /^cp(3019|3020)$/ {
         $ganglia_aggregator = true
     }
 
     interface::add_ip6_mapped { 'main': }
 
-    $cluster = 'cache_bits'
-    include role::cache::bits
+    role cache::bits
+    include admin
 }
 
 #
@@ -636,8 +608,6 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
-
-    include admin
     # cp4001 and cp4003 are in different racks,
     # make them each ganglia aggregators.
     if $::hostname =~ /^cp(4001|4003)$/ {
@@ -646,47 +616,40 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
 
-    $cluster = 'cache_bits'
-    include role::cache::bits
+    role cache::bits
+    include admin
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
-
-    include admin
     if $::hostname =~ /^cp(4005|4013)$/ {
         $ganglia_aggregator = true
     }
 
     interface::add_ip6_mapped { 'main': }
 
-    $cluster = 'cache_upload'
-    include role::cache::upload
+    role cache::upload
+    include admin
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
-
-    include admin
     if $::hostname =~ /^cp(4008|4016)$/ {
         $ganglia_aggregator = true
     }
 
     interface::add_ip6_mapped { 'main': }
 
-    $cluster = 'cache_text'
-    include role::cache::text
+    role cache::text
+    include admin
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
-
-    include admin
     if $::hostname =~ /^cp401[19]$/ {
         $ganglia_aggregator = true
     }
 
     interface::add_ip6_mapped { 'main': }
-
-    $cluster = 'cache_mobile'
-    include role::cache::mobile
+    role cache::mobile
+    include admin
 }
 
 node 'dataset1001.wikimedia.org' {
